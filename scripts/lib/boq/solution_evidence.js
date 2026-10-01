@@ -38,6 +38,48 @@ function solutionFingerprint(evaluation, catalogData = null) {
   })).digest('hex');
 }
 
+function canonicalJson(value) {
+  return JSON.stringify(value, (_key, entry) => entry && typeof entry === 'object' && !Array.isArray(entry)
+    ? Object.fromEntries(Object.keys(entry).sort().map(key => [key, entry[key]])) : entry);
+}
+
+/** Bind presentation inputs, not a caller-supplied cached fingerprint. Keep
+ * lifecycle/ledger/export paths out: those legitimately change after issuance.
+ * Both candidate collections and both SKU representations are included because
+ * different public writers consume them (including SAN and baseline fallbacks).
+ */
+function deliveryFingerprint(evaluation) {
+  const graph = evaluation.conflictGraph || {};
+  const content = {
+    chassis: evaluation.chassis || evaluation.chassisVariant || evaluation.targetChassis || evaluation.detectedChassis || null,
+    productType: evaluation.productType,
+    items: evaluation.items,
+    parsedItems: evaluation.parsedItems,
+    recommendedSolutions: graph.recommendedSolutions,
+    rankedSolutions: graph.rankedSolutions,
+    resolvedFixes: graph.resolvedFixes,
+    missingDependencies: evaluation.missingDependencies,
+    clusterSizing: evaluation.clusterSizing,
+    serverCount: evaluation.serverCount,
+    requirements: evaluation.requirementResolution,
+    selectors: evaluation.selectors,
+    selectorsByConfiguration: evaluation.selectorsByConfiguration,
+    supportPolicy: evaluation.supportPolicy,
+    budgetOptimization: evaluation.budgetOptimization,
+    catalogData: evaluation.catalogData,
+    validationClaims: {
+      isMathClean: evaluation.isMathClean,
+      aspectChecks: evaluation.aspectChecks,
+      notebookLmStatus: evaluation.notebookLmStatus,
+      cloudGroundingStatus: evaluation.cloudGroundingStatus,
+      ephemeralSourceValidation: evaluation.ephemeralSourceValidation,
+      acceptanceGate: evaluation.acceptanceGate,
+      isWholeSolutionValid: graph.isWholeSolutionValid
+    }
+  };
+  return crypto.createHash('sha256').update(canonicalJson(content)).digest('hex');
+}
+
 function candidateReviewCurrent(evaluation) {
   const review = evaluation.ephemeralSourceValidation;
   const manifest = solutionManifest(evaluation);
@@ -58,4 +100,4 @@ function candidateDelta(baseline, candidate) {
   const after = quantities(candidate.skuPartsList || candidate.skuList || []);
   return [...new Set([...before.keys(), ...after.keys()])].sort().map(sku => ({ sku, before: before.get(sku) || 0, after: after.get(sku) || 0 })).filter(row => row.before !== row.after);
 }
-module.exports = { solutionManifest, solutionFingerprint, candidateReviewCurrent, candidateDelta };
+module.exports = { solutionManifest, solutionFingerprint, deliveryFingerprint, candidateReviewCurrent, candidateDelta };

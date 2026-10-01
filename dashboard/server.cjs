@@ -28,6 +28,12 @@ const fs = require('fs');
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 require('dotenv').config({ path: path.join(PROJECT_ROOT, '.env') });
 
+// Ensure cross-process delivery authorization secret is shared with all spawned evaluation jobs
+if (!process.env.DELIVERY_AUTH_SECRET) {
+  const crypto = require('crypto');
+  process.env.DELIVERY_AUTH_SECRET = crypto.randomBytes(32).toString('hex');
+}
+
 const OUTPUTS_DIR = path.join(PROJECT_ROOT, 'outputs');
 const TEMP_DIR = path.join(OUTPUTS_DIR, 'temp');
 const HISTORY_DIR = path.join(OUTPUTS_DIR, 'history');

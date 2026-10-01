@@ -20,8 +20,6 @@ const { resolveRequirementIntent } = require('../lib/boq/requirement_intent_reso
 const { verifyVendorBOM, auditSingleVendorBOM } = require('../lib/boq/vendor_bom_verifier.js');
 const { getChassisMap, listAllCatalogs } = require('../lib/catalog/catalog_discovery.js');
 
-const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
-
 function getBaseChassisSku(chassisKey = '') {
   try {
     const cmap = getChassisMap();
@@ -881,35 +879,50 @@ function _handleBomReconciliation(queryText, context) {
   if (vendorFile && fs.existsSync(vendorFile)) {
     let proposedSolution = null;
     let isTwoBaseline = false;
+    let customerFileEmpty = false;
     if (customerFile && fs.existsSync(customerFile)) {
       const customerItems = readRoutedItems({ filePath: customerFile, targetSheet: context.targetSheet });
-      proposedSolution = { rank: 1, name: 'Original customer baseline', skuList: customerItems };
-      isTwoBaseline = true;
+      if (Array.isArray(customerItems) && customerItems.length > 0) {
+        proposedSolution = { rank: 1, name: 'Original customer baseline', skuList: customerItems };
+        isTwoBaseline = true;
+      } else {
+        customerFileEmpty = true;
+      }
     } else if (context.proposedSolution) {
-      proposedSolution = context.proposedSolution;
-      isTwoBaseline = true;
+      const pItems = context.proposedSolution.skuList || context.proposedSolution.skuPartsList || [];
+      if (Array.isArray(pItems) && pItems.length > 0) {
+        proposedSolution = context.proposedSolution;
+        isTwoBaseline = true;
+      }
     }
 
     const auditReport = isTwoBaseline
       ? verifyVendorBOM(path.resolve(vendorFile), proposedSolution, chassisInfo.catalogDir)
       : auditSingleVendorBOM(path.resolve(vendorFile), chassisInfo.catalogDir);
 
+    // Re-verify that auditReport actually ran as two-baseline comparison
+    const actuallyTwoBaseline = isTwoBaseline && Boolean(auditReport?.isTwoBaselineComparison);
+
     if (auditReport?.discrepancies?.uncatalogedSkus?.length) {
       auditReport.discrepancies.uncatalogedSkus = normalizeUncataloged(auditReport.discrepancies.uncatalogedSkus);
     }
+    const singleFileNote = customerFileEmpty
+      ? 'Note: Customer tender was provided but contained no recognizable items; comparison requires both valid files.'
+      : 'Note: Customer tender was not provided; comparison requires both files.';
+
     return {
       intent: 'BOM_RECONCILIATION',
-      status: isTwoBaseline ? 'RECONCILIATION_COMPLETE' : 'SINGLE_FILE_AUDIT',
-      isTwoBaselineComparison: isTwoBaseline,
+      status: actuallyTwoBaseline ? 'RECONCILIATION_COMPLETE' : 'SINGLE_FILE_AUDIT',
+      isTwoBaselineComparison: actuallyTwoBaseline,
       auditReport,
-      message: isTwoBaseline
+      message: actuallyTwoBaseline
         ? (auditReport.is100PercentMatch
             ? 'Vendor quote perfectly matches proposed configuration.'
             : `Reconciliation identified ${auditReport.discrepancies.addedByVendor.length} added, ${auditReport.discrepancies.removedByVendor.length} removed, and ${auditReport.discrepancies.uncatalogedSkus.length} uncataloged SKUs.`)
         : (auditReport.isCatalogClean
-            ? `Single-file vendor quote cleanly matched against catalog ${chassisInfo.chassisKey}. Note: Customer tender was not provided; comparison requires both files.`
-            : `Single-file vendor quote audited against catalog ${chassisInfo.chassisKey} (${auditReport.uncatalogedSkus?.length || 0} uncataloged SKU(s) identified). Note: Customer tender was not provided; comparison requires both files.`),
-      suggestedAction: isTwoBaseline ? null : 'SUPPLY_CUSTOMER_TENDER_FOR_FULL_RECONCILIATION'
+            ? `Single-file vendor quote cleanly matched against catalog ${chassisInfo.chassisKey}. ${singleFileNote}`
+            : `Single-file vendor quote audited against catalog ${chassisInfo.chassisKey} (${auditReport.uncatalogedSkus?.length || 0} uncataloged SKU(s) identified). ${singleFileNote}`),
+      suggestedAction: actuallyTwoBaseline ? null : 'SUPPLY_CUSTOMER_TENDER_FOR_FULL_RECONCILIATION'
     };
   } else if (context.filePath && fs.existsSync(context.filePath)) {
     const auditReport = auditSingleVendorBOM(path.resolve(context.filePath), chassisInfo.catalogDir);
@@ -1172,16 +1185,24 @@ async function _handleWorkbookGeneration(queryText, context) {
   const scope = requireScopedCatalog(queryText, context);
   const input = { ...context, items: context.items || context.evalResults?.items || context.evalResults?.parsedItems };
   const items = readRoutedItems(input);
-  const evaluation = evaluateBOQMultiAspect(items, { catalogData: scope.catalogData, targetDir: scope.catalogDir });
-  const acceptance = require('../lib/boq/bom_verifier').verifyPrePresentationAcceptance(evaluation, 'BOQ_EVALUATION', { ...context, catalogData: scope.catalogData });
-  if (!acceptance.isValid) return { intent: 'WORKBOOK_GENERATION', status: 'VALIDATION_REQUIRED',
-    evaluation, acceptanceGate: acceptance, message: 'Workbook export blocked by pre-presentation checks.' };
-  const name = 'Portal_Draft_' + new Date().toISOString().replace(/[:.]/g, '-') + '.xlsx';
-  const exportPath = path.join(scope.catalogDir, 'deliverables', name);
-  require('../lib/boq/generate_boq_xlsx').generateRankedPortalWorkbook(evaluation, exportPath);
-  if (!fs.existsSync(exportPath)) throw new Error('Workbook writer did not create the artifact.');
+  const evaluation = await _handleBoqEvaluation(queryText, {
+    ...context, items, filePath: undefined, chassisDir: scope.catalogDir
+  });
+  if (evaluation.status === 'ERROR') return { ...evaluation, intent: 'WORKBOOK_GENERATION' };
+  const { deliveryFingerprint } = require('../lib/boq/solution_evidence');
+  const { verifyDeliveryAuthorization } = require('../lib/contracts/workflow_contract');
+  const authorized = evaluation.acceptanceGate?.isValid === true &&
+    verifyDeliveryAuthorization(evaluation.deliveryAuthorization, deliveryFingerprint(evaluation), {
+      chassisKey: scope.chassisKey, profile: 'BOQ_EVALUATION'
+    });
+  const exportPath = evaluation.portalWorkbookPath;
+  if (!authorized || evaluation.deliveryError || !exportPath || !fs.existsSync(exportPath)) return {
+    intent: 'WORKBOOK_GENERATION', status: 'VALIDATION_REQUIRED', evaluation,
+    acceptanceGate: evaluation.acceptanceGate,
+    message: evaluation.deliveryError || 'Canonical evaluation did not produce an authorized portal workbook.'
+  };
   return { intent: 'WORKBOOK_GENERATION', status: 'GENERATED_DRAFT', chassis: scope.chassisKey,
-    exportPath, fileName: name, acceptanceGate: acceptance,
+    exportPath, fileName: path.basename(exportPath), evaluation, acceptanceGate: evaluation.acceptanceGate,
     portalValidationStatus: 'PORTAL VALIDATION PENDING',
     schema: '7-column Partner Portal reconciliation workbook', message: 'Draft workbook exported from evaluated candidate data.' };
 }

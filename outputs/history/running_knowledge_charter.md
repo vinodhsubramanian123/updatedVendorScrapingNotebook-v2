@@ -2,7 +2,7 @@
 
 **Document Classification:** Canonical Ground-Truth Architecture & Validation Charter  
 **Maintained By:** HPE ProLiant AI Studio Autonomous Knowledge Engine (Antigravity AI)  
-**Last Synchronized:** 2026-10-01T10:03:55.000Z  
+**Last Synchronized:** 2026-10-01T14:26:46.988Z  
 **Total Deduplicated Learned Rules:** 93  
 **Universal Invariant Compliance:** INV-1 through INV-38 Certified  
 **Google Drive Destination:** `shared_folder_id: 1YR0lBh-gg00amKHRxuOqp5Aea3iL5O7-`
@@ -160,7 +160,7 @@ The Catalog Vendor Solution provides modular, AI-assisted catalog ingestion, nor
 
 ## 5. Deduplicated Learned Rule Ledger & Verification Provenance
 
-Total verified rules indexed in this build: **93**.
+Total verified rules indexed in this build: **99**.
 
 | Scope | Target Chassis | Category | Affected SKU | Dependency SKU | Rule Summary / Validation Directive | Verifications |
 | :--- | :--- | :--- | :--- | :--- | :--- | :---: |
@@ -173,6 +173,12 @@ Total verified rules indexed in this build: **93**.
 | 🌐 UNIVERSAL | `GLOBAL` | `CUSTOMER_INTENT_POLICY` | `undefined` | `—` | Closest rank preserves customer requirements and makes only necessary compatibility/buildability changes. Budget alterna | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `COMPONENT_DOMAIN_ROUTING` | `undefined` | `—` | Route by component role and exact product, never vendor or family alone. Synergy compute, fabric and frame use separate  | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `GUARDRAIL_RECOVERY_POLICY` | `undefined` | `—` | Gemini guardrail API sends must retain systemInstruction and function declarations when overriding SDK send config. Enfo | 1x |
+| 🌐 UNIVERSAL | `GLOBAL` | `RECONCILIATION_ROUTING_HONESTY` | `undefined` | `—` | Missing or empty customer tender baseline must route as SINGLE_FILE_AUDIT, never asserting RECONCILIATION_COMPLETE. | 1x |
+| 🌐 UNIVERSAL | `GLOBAL` | `CROSS_PROCESS_DELIVERY_AUTH` | `undefined` | `—` | DELIVERY_AUTH_SECRET must be exported to process.env so spawned evaluators and tests share HMAC signing key deterministically. | 1x |
+| 🌐 UNIVERSAL | `GLOBAL` | `CHASSIS_SCOPE_NORMALIZATION` | `undefined` | `—` | Scope validation normalizes chassis strings across delimiters (underscore, space, hyphen) to avoid false-negative rejections. | 1x |
+| 🌐 UNIVERSAL | `GLOBAL` | `LIFECYCLE_PHASE8_INTEGRITY` | `undefined` | `—` | All deliverables including ANALYSIS_REPORT must be written and registered before Phase 8 completes, preventing double-completion. | 1x |
+| 🌐 UNIVERSAL | `GLOBAL` | `WEIGHTED_PRICE_AGGREGATION` | `undefined` | `—` | Duplicate SKU lines with different unit prices compute weighted average price upon aggregation. | 1x |
+| 🌐 UNIVERSAL | `GLOBAL` | `EXPORTER_DELIVERY_GATE` | `undefined` | `—` | All public workbook/CSV export methods enforce cryptographic delivery authorization before writing deliverables to disk. | 1x |
 | 📦 CHASSIS | `DL145_Gen11` | `PROCESSOR_FAMILY` | `P71964-B21` | `—` | DL145 Gen11 is single-socket AMD EPYC 8004 only. No dual-socket configurations supported. | 1x |
 | 📦 CHASSIS | `DL145_Gen11` | `DRIVE_CAGE_FORMAT` | `P71985-B21` | `P77271-B21` | DL145 Gen11 uses EDSFF E3.S form factor drives only. Standard SFF/LFF drives are incompatible. | 1x |
 | 📦 CHASSIS | `DL145_Gen11` | `PSU_WATTAGE_LIMIT` | `P71964-B21` | `P54290-B21` | DL145 Gen11 supports maximum 1000W PSUs. 1600W/2400W PSUs are physically incompatible. | 1x |

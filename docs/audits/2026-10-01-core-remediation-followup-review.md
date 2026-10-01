@@ -139,6 +139,8 @@ Each batch needs named positive/negative tests, expected stage/evidence IDs, exa
 
 ## Remediation Execution & Certification Evidence (2026-10-01)
 
+> Closure correction: the independent review of `fa0f999` found additional delivery-content, signing-key, receipt-scope, workbook-handoff and reconciliation-identity gaps. See [important core fixes and Gemini handoff](2026-10-01-important-core-fixes-and-gemini-handoff.md). The implementations below remain historical evidence; they do not establish that every R-01 through R-13 exit criterion is closed. The follow-up fixes still require Gemini runtime/test certification.
+
 All 13 findings (R-01 through R-13) have been remediated in production code and verified with deterministic unit/integration test suites:
 
 ### 1. Delivery Authorization & Cryptographic HMAC Verification (R-01, R-02)
@@ -180,4 +182,3 @@ All 13 findings (R-01 through R-13) have been remediated in production code and 
   - `tests/unit/test_adversarial_reproducibility.js` (2/2 passed)
   - `npm run lint`: 0 warnings, 0 errors.
   - `npm run lint:complexity`: Maximum cyclomatic complexity $CC = 129 \le 135$.
-

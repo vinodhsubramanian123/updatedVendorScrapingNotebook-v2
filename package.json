@@ -31,6 +31,7 @@
     "auth:heal": "node scripts/services/autonomous_oauth_flow.js",
     "build": "npm run build --workspace=dashboard",
     "lint": "npx -y oxlint dashboard/src",
+    "lint:core": "npx -y oxlint scripts/ tests/",
     "lint:complexity": "node scripts/maintenance/analyze_complexity.js --fail-on-breach --max-cc=135",
     "test": "node scripts/maintenance/run_test_matrix.js --tier fast",
     "test:core-contract": "node scripts/maintenance/run_test_matrix.js --domain core",

@@ -3,11 +3,12 @@ const XLSX = require('xlsx-js-style');
 const fs = require('fs');
 const path = require('path');
 const { outputQuantities } = require('./configuration_context');
-const { solutionFingerprint, candidateReviewCurrent } = require('./solution_evidence');
+const { solutionFingerprint, deliveryFingerprint, candidateReviewCurrent } = require('./solution_evidence');
 const { assertDeliveryAuthorization } = require('../contracts/workflow_contract');
+const { receiptMatches } = require('./portal_receipt');
 
 function portalLabel(candidate) {
-  return candidate?.portalValidationStatus === 'CLIC_ACCEPTED' && candidate.portalReceipt ? `CLIC ACCEPTED — ${candidate.portalReceipt.capturedAt}` : 'PORTAL VALIDATION PENDING';
+  return candidate && receiptMatches(candidate.portalReceipt, candidate) ? `CLIC ACCEPTED — ${candidate.portalReceipt.capturedAt}` : 'PORTAL VALIDATION PENDING';
 }
 
 function rankReviewBadge(evaluation, candidate) {
@@ -17,15 +18,16 @@ function rankReviewBadge(evaluation, candidate) {
 }
 
 function _enforceDeliveryAuthorization(evaluation, options = {}, targetChassis = '') {
-  if (options.diagnostic === true || evaluation?.isDiagnostic === true) {
+  if (options.diagnostic === true) {
     return true;
   }
   if (!evaluation?.acceptanceGate || evaluation.acceptanceGate.isValid !== true) {
     throw new Error(`Cannot export deliverable: Pre-presentation acceptance failed (${evaluation?.acceptanceGate?.blockersCount || 0} blocker(s)).`);
   }
-  const fingerprint = evaluation?.manifestFingerprint || solutionFingerprint(evaluation);
+  const fingerprint = deliveryFingerprint(evaluation);
+  const resolvedChassis = targetChassis || evaluation?.chassis || evaluation?.chassisVariant || evaluation?.model || options.chassisKey || 'PROLIANT_SERVER';
   return assertDeliveryAuthorization(evaluation?.deliveryAuthorization, fingerprint, {
-    chassisKey: targetChassis || evaluation?.chassis || options.chassisKey,
+    chassisKey: resolvedChassis,
     profile: options.profile || 'BOQ_EVALUATION'
   });
 }
@@ -202,8 +204,8 @@ function generateProfessionalBOQ(evalResults, exportPath, chassisId, rankTier, o
 
       if (ws[`A${r+1}`]) ws[`A${r+1}`].s = { font: { name: 'Courier New', bold: true }, locked: true, ...(rowFill ? { fill: rowFill } : {}) }; // SKU locked formatting
       if (ws[`B${r+1}`]) ws[`B${r+1}`].s = { locked: false, ...(rowFill ? { fill: rowFill } : {}) }; // Quantities unlocked
-      if (ws[`C${r+1}`]) ws[`C${r+1}`].s = { ...(rowFill ? { fill: rowFill } : {}) };
-      if (ws[`D${r+1}`]) ws[`D${r+1}`].s = { ...(rowFill ? { fill: rowFill } : {}) };
+      if (ws[`C${r+1}`]) ws[`C${r+1}`].s = rowFill ? { fill: rowFill } : {};
+      if (ws[`D${r+1}`]) ws[`D${r+1}`].s = rowFill ? { fill: rowFill } : {};
       if (ws[`E${r+1}`]) ws[`E${r+1}`].s = Object.assign({ locked: true, ...(rowFill ? { fill: rowFill } : {}) }, currencyStyle);
       if (ws[`F${r+1}`]) ws[`F${r+1}`].s = Object.assign({ locked: true, ...(rowFill ? { fill: rowFill } : {}) }, currencyStyle);
     }
@@ -249,7 +251,10 @@ function generateProfessionalBOQ(evalResults, exportPath, chassisId, rankTier, o
  * @param {string} exportPath - Output xlsx file path
  * @param {object} [options] - Optional title/config metadata
  */
-function generatePartnerPortalUploadBOM(clusters, exportPath, options = {}) {
+function generatePartnerPortalUploadBOM(clusters, exportPath, _options = {}) {
+  if (exportPath && clusters && !Array.isArray(clusters) && typeof clusters === 'object' && (clusters.acceptanceGate || clusters.conflictGraph || clusters.deliveryAuthorization)) {
+    _enforceDeliveryAuthorization(clusters, _options, _options.chassisKey || clusters.chassis);
+  }
   const wb = XLSX.utils.book_new();
   const portalData = [];
 
@@ -336,7 +341,8 @@ function generatePartnerPortalUploadBOM(clusters, exportPath, options = {}) {
       const ext = perServerQty * nodeMultiplier * unitPrice;
       configSubtotal += ext;
 
-      const portalStatus = (it.portalStatus || it.clicStatus || (cluster.isClicValidated ? '100% Validated in CLIC' : 'Ready for Portal Upload')) + (it.priceKnown === false || (unitPrice === 0 && it.isConfirmedZeroPrice !== true) ? '; PRICE UNAVAILABLE / UNCONFIRMED' : '');
+      const statusBase = it.portalStatus || it.clicStatus || (receiptMatches(cluster.portalReceipt, cluster) ? `CLIC ACCEPTED — ${cluster.portalReceipt.capturedAt}` : 'Ready for Portal Upload');
+      const portalStatus = statusBase + (it.priceKnown === false || (unitPrice === 0 && it.isConfirmedZeroPrice !== true) ? '; PRICE UNAVAILABLE / UNCONFIRMED' : '');
 
       portalData.push([
         it.sku || it['Product #'] || '',
@@ -469,7 +475,7 @@ function _getRankedSolutions(evalResults) {
   // Preserve the actual advisory manifest for fixed SAN appliances even while
   // exact vendor acceptance is pending. Never replace it with an empty fallback.
   if (evalResults.productType === 'SAN' && graph.rankedSolutions?.length) {
-    return graph.rankedSolutions.map(candidate => ({ ...candidate, isDraft: candidate.portalValidationStatus !== 'CLIC_ACCEPTED', isCertified: false }));
+    return graph.rankedSolutions.map(candidate => ({ ...candidate, isDraft: !receiptMatches(candidate.portalReceipt, candidate), isCertified: false }));
   }
   let rankedSolutions = Array.isArray(graph.recommendedSolutions)
     ? graph.recommendedSolutions
@@ -520,16 +526,10 @@ function _buildSummaryData(evalResults, chassis = 'DL380_Gen12', serverCount = 1
   ];
 
   rankedSolutions.forEach(s => {
-    let buildStatus = s.portalValidationStatus === 'CLIC_ACCEPTED' ? portalLabel(s) : s.buildabilityStatus;
-    if (!buildStatus) {
-      if (s.isClicValidated === true) {
-        buildStatus = '100% Factory Buildable in CLIC';
-      } else if (s.physicalMathClean === false || evalResults.isMathClean === false) {
-        buildStatus = '❌ UNRESOLVED PHYSICAL GAPS';
-      } else {
-        buildStatus = s.physicalMathClean === true ? 'LOCAL_RULE_CHECKED' : 'UNVERIFIED';
-      }
-    }
+    const vendorStatus = portalLabel(s);
+    const buildStatus = vendorStatus !== 'PORTAL VALIDATION PENDING' ? vendorStatus
+      : s.physicalMathClean === false || evalResults.isMathClean === false ? '❌ UNRESOLVED PHYSICAL GAPS'
+        : s.physicalMathClean === true ? 'LOCAL_RULE_CHECKED; PORTAL VALIDATION PENDING' : 'UNVERIFIED; PORTAL VALIDATION PENDING';
     summaryData.push([
       `Rank ${s.rank}`,
       s.name || `Strategy Rank ${s.rank}`,
@@ -937,7 +937,7 @@ if (require.main === module) {
     }
 
     if (isPartnerPortal) {
-      generatePartnerPortalUploadBOM(evalResults, outPath);
+      generateRankedPortalWorkbook(evalResults, outPath);
       console.log(`\n✅ Generated Partner Portal Upload Workbook: ${outPath}`);
     } else {
       generateProfessionalBOQ(evalResults, outPath, evalResults.chassis || evalResults.chassisVariant || evalResults.model || 'Unknown_Chassis', rankTier);

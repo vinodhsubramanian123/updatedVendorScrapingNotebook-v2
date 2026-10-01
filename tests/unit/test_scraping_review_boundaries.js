@@ -67,6 +67,26 @@ test('readback tolerates indexed word wrapping but rejects small omissions in lo
   }
 });
 
+test('readback preserves rule operators, decimal prices, SKU suffixes and indexed-body provenance', () => {
+  const { markdown } = projectWorkbookToMarkdown([{ title: 'Rules', rows: [
+    ['SKU', 'Rule', 'Price'], ['ABC-B21', 'ambient ≤27°C and power <300W', '12.50']
+  ] }]);
+  for (const [before, after] of [['≤', '≥'], ['&lt;', '&gt;'], ['12.50', '1250'], ['ABC-B21', 'ABCB21']]) {
+    assert.throws(() => verifySemanticProjectionReadback(markdown,
+      JSON.stringify({ content: markdown.replace(before, after), title: markdown })), /READBACK_INCOMPLETE/);
+  }
+  assert.throws(() => verifySemanticProjectionReadback(markdown, JSON.stringify({ title: markdown })), /READBACK_EMPTY/);
+});
+
+test('readback cannot reuse an earlier occurrence to hide a missing sheet row', () => {
+  const { markdown } = projectWorkbookToMarkdown([
+    { title: 'First', rows: [['SKU'], ['ABC']] },
+    { title: 'Second', rows: [['SKU'], ['XYZ']] }
+  ]);
+  assert.throws(() => verifySemanticProjectionReadback(markdown,
+    JSON.stringify({ content: markdown.replace('| 1 | SKU |\n| 2 | XYZ |', '| 2 | XYZ |') })), /READBACK_INCOMPLETE/);
+});
+
 test('capture receipt distinguishes active inventory from retained tombstones', () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'capture-tombstones-'));
   const product = 'FIXTURE';

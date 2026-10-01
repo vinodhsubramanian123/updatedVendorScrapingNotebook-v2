@@ -259,16 +259,27 @@ router.post('/eval-boq', (req, res) => {
 
 // ── Export Corrected BOQ ──────────────────────────────────────────────────────
 router.post('/export-boq', (req, res) => {
-  const { evalResults, chassisId, rankTier } = req.body;
+  const { evalResults, chassisId, rankTier, diagnostic } = req.body;
   if (!evalResults) return sendErrorResponse(res, 400, 'evalResults payload is required', { source: 'EVALUATION_ROUTER' });
+  const actualEvalResults = evalResults.evalResults || evalResults.data?.evalResults || evalResults;
   const tier = rankTier || 1;
   const timestamp = Date.now();
   const exportDir = path.join(OUTPUTS_DIR, 'temp', 'exports');
   if (!fs.existsSync(exportDir)) fs.mkdirSync(exportDir, { recursive: true });
-  const cleanChassisId = String(chassisId || 'unknown').replace(/[^a-zA-Z0-9_\-]/g, '_');
+  const targetChassis = chassisId || actualEvalResults.chassis || actualEvalResults.chassisVariant || actualEvalResults.model || 'unknown';
+  const cleanChassisId = String(targetChassis).replace(/[^a-zA-Z0-9_-]/g, '_');
   const exportFilename = `corrected_boq_rank${tier}_${cleanChassisId}_${timestamp}.xlsx`;
   const exportPath = path.join(exportDir, exportFilename);
-  generateProfessionalBOQ(evalResults, exportPath, chassisId, tier);
+  const isDiagnostic = Boolean(diagnostic || req.query?.diagnostic === 'true');
+  try {
+    generateProfessionalBOQ(actualEvalResults, exportPath, targetChassis, tier, {
+      diagnostic: isDiagnostic,
+      chassisKey: targetChassis,
+      deliveryAuthorization: req.body.deliveryAuthorization || actualEvalResults.deliveryAuthorization
+    });
+  } catch (err) {
+    return sendErrorResponse(res, 403, `Export blocked: ${err.message}`, { source: 'EVALUATION_ROUTER' });
+  }
   const rankedSolution = evalResults.conflictGraph?.rankedSolutions?.find(s => s.rank === tier) || null;
   const historyExportsDir = path.join(OUTPUTS_DIR, 'history', 'exports');
   if (!fs.existsSync(historyExportsDir)) fs.mkdirSync(historyExportsDir, { recursive: true });
@@ -332,7 +343,7 @@ router.get('/decision-traces', (req, res) => {
 // ── Presales Intent Query Router ──────────────────────────────────────────────
 router.post('/query/route', async (req, res) => {
   try {
-    const { classifyQueryIntent, executeRoutedQuery } = require('../../scripts/evaluators/route_query.js');
+    const { executeRoutedQuery } = require('../../scripts/evaluators/route_query.js');
     const { query, context } = req.body || {};
     if (!query) return sendErrorResponse(res, 400, 'Missing query parameter', { source: 'EVALUATION_ROUTER' });
     const result = await executeRoutedQuery(query, context || {});

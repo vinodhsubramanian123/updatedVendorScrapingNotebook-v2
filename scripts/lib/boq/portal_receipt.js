@@ -5,13 +5,18 @@ const crypto = require('crypto');
 
 const normalizeSku = value => String(value || '').trim().toUpperCase().replace(/\s+/g, '#');
 const parsePrice = value => /^\d+(?:,\d{3})*(?:\.\d+)?$/.test(String(value ?? '').trim()) ? Number(String(value).replace(/,/g, '')) : NaN;
+const canonicalScope = scope => JSON.stringify(scope, (_key, value) => value && typeof value === 'object' && !Array.isArray(value)
+  ? Object.fromEntries(Object.keys(value).sort().map(key => [key, value[key]])) : value);
 
 function serializeManifest(rows) {
   const totals = new Map();
   for (const row of rows) {
     const sku = normalizeSku(row.sku || row['Product #']);
-    if (!sku) continue;
-    totals.set(sku, (totals.get(sku) || 0) + Number(row.quantity || row.qty || 1));
+    const quantity = Number(row.quantity ?? row.qty);
+    if (!sku || !Number.isSafeInteger(quantity) || quantity <= 0) throw new Error('Invalid portal manifest row');
+    const total = (totals.get(sku) || 0) + quantity;
+    if (!Number.isSafeInteger(total)) throw new Error('Invalid portal manifest total');
+    totals.set(sku, total);
   }
   return JSON.stringify([...totals].sort(([a], [b]) => a.localeCompare(b)));
 }
@@ -21,10 +26,9 @@ function serializeManifest(rows) {
  * SKU/quantity manifest and bound scope; it cannot certify a later substitution or another BOM.
  *
  * @param {string} targetDir - Directory containing evidence folder
- * @param {object} [options] - Optional scope binding parameters
  * @returns {object|null}
  */
-function readPortalReceipt(targetDir, options = {}) {
+function readPortalReceipt(targetDir) {
   try {
     const bomPath = path.join(targetDir, 'evidence', 'clic_corrected_bom.json');
     const checkPath = path.join(targetDir, 'evidence', 'clic_corrected_configuration.json');
@@ -36,7 +40,7 @@ function readPortalReceipt(targetDir, options = {}) {
     if (times.some(time => !Number.isFinite(time) || time > Date.now() + 60000)) return null;
     if (/partial BOM/i.test(bom.text || '') || !/Overall Status:\s*OK\s*Unbuildables\s*0\s*Errors:\s*0\s*Warnings:\s*0\s*Process control\s*0/.test(check.text || '')) return null;
     if (Math.abs(Date.parse(bom.capturedAt) - Date.parse(check.capturedAt)) > 15 * 60000) return null;
-    if (Date.now() - Date.parse(check.capturedAt) > 24 * 3600000) return null;
+    if (times.some(time => Date.now() - time > 24 * 3600000)) return null;
     const table = (bom.tables || []).find(t => t.rows?.length > 1 && t.rows[0].includes('Hierarchy') && t.rows[0].includes('Unit Price (USD)'));
     if (!table) return null;
     const h = table.rows[0];
@@ -57,17 +61,27 @@ function readPortalReceipt(targetDir, options = {}) {
     const displayedTotal = parsePrice((bom.text || '').match(/Solution List Price\s*[⇄\s]*USD\s*([\d,.]+)/)?.[1]);
     if (!Number.isFinite(displayedTotal) || Math.abs(totalUsd - displayedTotal) > 0.01) return null;
 
-    const baseRow = rows.find(r => /cto|server|chassis/i.test(r.description || ''));
+    // Scope must be observed in BOTH captures. Reader arguments, directory names
+    // and description heuristics are expectations, not vendor evidence.
+    const scope = bom.capturedScope;
+    const scopeVerified = Boolean(scope && check.capturedScope &&
+      typeof scope.chassis === 'string' && scope.chassis.trim() &&
+      typeof scope.baseSku === 'string' && scope.baseSku.trim() && scope.configurationName === rows[0].configurationName &&
+      scope.selectors && typeof scope.selectors === 'object' && !Array.isArray(scope.selectors) &&
+      Object.values(scope.selectors).every(value => typeof value === 'string' || typeof value === 'boolean' || (typeof value === 'number' && Number.isFinite(value))) &&
+      canonicalScope(scope) === canonicalScope(check.capturedScope) &&
+      rows.some(row => row.sku === normalizeSku(scope.baseSku)));
     const manifestStr = serializeManifest(rows);
     const manifestSha256 = crypto.createHash('sha256').update(manifestStr).digest('hex');
 
     return {
-      status: 'CLIC_ACCEPTED',
-      capturedAt: check.capturedAt,
-      chassis: options.chassis || path.basename(targetDir),
-      baseSku: baseRow ? baseRow.sku : (options.baseSku || null),
+      status: scopeVerified ? 'CLIC_ACCEPTED' : 'CLIC_OBSERVED_UNSCOPED',
+      capturedAt: new Date(Math.min(...times)).toISOString(),
+      chassis: scopeVerified ? scope.chassis : null,
+      baseSku: scopeVerified ? normalizeSku(scope.baseSku) : null,
       configurationName: rows[0].configurationName,
-      selectors: options.selectors || null,
+      configurationId: scopeVerified ? scope.configurationId || null : null,
+      selectors: scopeVerified ? scope.selectors : null,
       rows,
       totalUsd,
       bomPath,
@@ -76,7 +90,7 @@ function readPortalReceipt(targetDir, options = {}) {
       bomSha256: crypto.createHash('sha256').update(bomBytes).digest('hex'),
       checkSha256: crypto.createHash('sha256').update(checkBytes).digest('hex')
     };
-  } catch (_) { return null; }
+  } catch { return null; }
 }
 
 /**
@@ -89,43 +103,52 @@ function readPortalReceipt(targetDir, options = {}) {
  * @returns {boolean}
  */
 function receiptMatches(receipt, candidate, options = {}) {
-  if (!receipt || typeof receipt !== 'object') return false;
+  if (!receipt || receipt.status !== 'CLIC_ACCEPTED') return false;
   if (!candidate) return false;
+  const captured = Date.parse(receipt.capturedAt);
+  if (!Number.isFinite(captured) || captured > Date.now() + 60000 || Date.now() - captured > 24 * 3600000) return false;
 
   const items = Array.isArray(candidate) ? candidate : (candidate.skuPartsList || candidate.skuList || candidate.items || []);
   if (!Array.isArray(items) || items.length === 0) return false;
 
   // Scope binding 1: Chassis / Product model match
-  const candidateChassis = options.chassisKey || options.chassis || candidate.chassis || candidate.model;
-  if (candidateChassis && receipt.chassis && String(candidateChassis).trim().toLowerCase() !== String(receipt.chassis).trim().toLowerCase()) {
+  const candidateChassis = String(options.chassisKey || options.chassis || candidate.chassis || candidate.model || '').trim().toLowerCase().replace(/[\s-]+/g, '_');
+  const receiptChassis = String(receipt.chassis || '').trim().toLowerCase().replace(/[\s-]+/g, '_');
+  if (!candidateChassis || !receiptChassis || candidateChassis !== receiptChassis) {
     return false;
   }
 
   // Scope binding 2: Base SKU match
   const candidateBase = options.baseSku || candidate.baseSku;
-  if (candidateBase && receipt.baseSku && normalizeSku(candidateBase) !== normalizeSku(receipt.baseSku)) {
+  if (!candidateBase || !receipt.baseSku || normalizeSku(candidateBase) !== normalizeSku(receipt.baseSku)) {
     return false;
   }
 
   // Scope binding 3: Owning configuration name match
-  if (receipt.configurationName && candidate.configurationName) {
-    if (String(receipt.configurationName).trim() !== String(candidate.configurationName).trim()) {
-      return false;
-    }
-  }
+  const owner = options.configurationName || candidate.configurationName;
+  if (!owner || String(receipt.configurationName).trim() !== String(owner).trim()) return false;
+  const candidateConfigId = options.configurationId || candidate.configurationId || null;
+  const receiptConfigId = receipt.configurationId || null;
+  if (receiptConfigId !== candidateConfigId) return false;
+  if (items.some(item => (item.configurationName && item.configurationName !== owner) ||
+    (receiptConfigId && item.configurationId && item.configurationId !== receiptConfigId) ||
+    // Owner/hierarchy mappings not present in this single-icon capture cannot
+    // be proved by aggregate SKU equality. Leave those candidates pending.
+    item.ownerId || item.parentId || item.subParentId)) return false;
 
   // Scope binding 4: Selector state match
   const expectedSelectors = options.selectors || candidate.selectors;
-  if (expectedSelectors && receipt.selectors) {
-    for (const [k, v] of Object.entries(expectedSelectors)) {
-      if (receipt.selectors[k] !== undefined && receipt.selectors[k] !== v) {
-        return false;
-      }
-    }
-  }
+  if (!expectedSelectors || !receipt.selectors) return false;
+  const keys = Object.keys(expectedSelectors).sort();
+  if (JSON.stringify(keys) !== JSON.stringify(Object.keys(receipt.selectors).sort())) return false;
+  if (keys.some(key => receipt.selectors[key] !== expectedSelectors[key])) return false;
 
   // Scope binding 5: Exact aggregate SKU & quantity manifest matching
-  return serializeManifest(receipt.rows) === serializeManifest(items);
+  try {
+    const manifest = serializeManifest(receipt.rows);
+    return crypto.createHash('sha256').update(manifest).digest('hex') === receipt.manifestSha256 &&
+      manifest === serializeManifest(items);
+  } catch { return false; }
 }
 
 module.exports = {

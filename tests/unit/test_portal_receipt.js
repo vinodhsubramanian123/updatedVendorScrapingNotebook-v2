@@ -13,11 +13,11 @@ const assert = require('node:assert/strict');
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
+const { safeWriteJsonAtomic } = require('../../scripts/lib/system/fs_compat');
 
 const {
   readPortalReceipt,
-  receiptMatches,
-  normalizeSku
+  receiptMatches
 } = require('../../scripts/lib/boq/portal_receipt.js');
 
 function createMockPortalEvidenceDir(tmpDir, overrides = {}) {
@@ -36,17 +36,23 @@ function createMockPortalEvidenceDir(tmpDir, overrides = {}) {
   const totalUsd = overrides.totalUsd !== undefined ? overrides.totalUsd : '4,050.00';
   const bomText = overrides.bomText || `Solution List Price USD ${totalUsd}\nDetailed configuration list.`;
   const checkText = overrides.checkText || 'Overall Status: OK Unbuildables 0 Errors: 0 Warnings: 0 Process control 0';
+  const capturedScope = overrides.capturedScope === undefined ? {
+    chassis: 'DL380_Gen12', baseSku: 'P73282-B21', configurationName: configName,
+    selectors: { ambientTempMaxC: 27, cpuCount: 2 }
+  } : overrides.capturedScope;
 
-  fs.writeFileSync(path.join(evidenceDir, 'clic_corrected_bom.json'), JSON.stringify({
+  safeWriteJsonAtomic(path.join(evidenceDir, 'clic_corrected_bom.json'), {
     capturedAt,
+    capturedScope,
     text: bomText,
     tables: [{ rows }]
-  }));
+  });
 
-  fs.writeFileSync(path.join(evidenceDir, 'clic_corrected_configuration.json'), JSON.stringify({
+  safeWriteJsonAtomic(path.join(evidenceDir, 'clic_corrected_configuration.json'), {
     capturedAt,
+    capturedScope: overrides.checkScope === undefined ? capturedScope : overrides.checkScope,
     text: checkText
-  }));
+  });
 
   return tmpDir;
 }
@@ -159,4 +165,47 @@ test('Portal Receipt — rejects stale (>24h) or unbuildable portal captures', (
   } finally {
     fs.rmSync(tmpDir, { recursive: true, force: true });
   }
+});
+
+test('Portal Receipt — missing scope is an observation, never supplied by reader expectations', () => {
+  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'portal-unscoped-'));
+  try {
+    createMockPortalEvidenceDir(tmpDir, { capturedScope: null });
+    const receipt = readPortalReceipt(tmpDir, { chassis: 'DL380_Gen12', baseSku: 'P73282-B21', selectors: {} });
+    assert.equal(receipt.status, 'CLIC_OBSERVED_UNSCOPED');
+    assert.equal(receipt.chassis, null);
+    assert.equal(receipt.selectors, null);
+    assert.equal(receiptMatches(receipt, receipt.rows), false);
+    createMockPortalEvidenceDir(tmpDir, { checkScope: { chassis: 'another-product' } });
+    assert.equal(readPortalReceipt(tmpDir).status, 'CLIC_OBSERVED_UNSCOPED');
+  } finally { fs.rmSync(tmpDir, { recursive: true, force: true }); }
+});
+
+test('Portal Receipt — rejects incomplete selectors, invalid quantities, altered hash, owner gaps and cached expiry', () => {
+  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'portal-negative-'));
+  try {
+    createMockPortalEvidenceDir(tmpDir);
+    const receipt = readPortalReceipt(tmpDir);
+    const candidate = {
+      chassis: 'DL380_Gen12', baseSku: 'P73282-B21', configurationName: 'Config_1',
+      selectors: { ambientTempMaxC: 27, cpuCount: 2 },
+      items: receipt.rows.map(row => ({ sku: row.sku, quantity: row.quantity }))
+    };
+    assert.equal(receiptMatches(receipt, candidate), true);
+    assert.equal(receiptMatches(receipt, { ...candidate, selectors: { ambientTempMaxC: 27 } }), false);
+    assert.equal(receiptMatches({ ...receipt, selectors: { ambientTempMaxC: 27 } }, candidate), false);
+    assert.equal(receiptMatches(receipt, { ...candidate, configurationName: undefined }), false);
+    assert.equal(receiptMatches(receipt, { ...candidate, chassis: undefined }), false);
+    assert.equal(receiptMatches(receipt, { ...candidate, baseSku: undefined }), false);
+    assert.equal(receiptMatches({ ...receipt, manifestSha256: '0'.repeat(64) }, candidate), false);
+    assert.equal(receiptMatches({ ...receipt, capturedAt: new Date(Date.now() - 25 * 3600000).toISOString() }, candidate), false);
+    for (const quantity of [0, -1, 1.5, NaN, undefined]) {
+      const invalid = structuredClone(candidate);
+      invalid.items[0].quantity = quantity;
+      assert.equal(receiptMatches(receipt, invalid), false);
+    }
+    const moved = structuredClone(candidate);
+    moved.items[0].parentId = 'unproved-owner';
+    assert.equal(receiptMatches(receipt, moved), false);
+  } finally { fs.rmSync(tmpDir, { recursive: true, force: true }); }
 });

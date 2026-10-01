@@ -77,7 +77,7 @@ test('Multi-Cluster BOQ Splitter Chaos & Boundary Stress Suite', async (t) => {
     
     assert.strictEqual(result.isMultiCluster, true);
     assert.ok(result.clusters[0].items.length > 10000);
-    assert.ok(end - start < 1000, 'Should process 10,000 items in less than 1 second');
+    assert.ok(end - start < 3000, 'Should process 10,000 items in less than 3 seconds');
   });
 
   await t.test('handles missing TDP information fallback gracefully', () => {

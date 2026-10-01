@@ -95,7 +95,20 @@ const AcceptanceDecisionSchema = z.object({
   decisionTimestamp: z.string().default(() => new Date().toISOString())
 });
 
-const DEFAULT_AUTH_SECRET = 'antigravity-delivery-auth-secret-key-v1';
+// Offline authorization stays process-local. Persisted/cross-process delivery
+// requires a privately provisioned DELIVERY_AUTH_SECRET, never a public constant.
+if (!process.env.DELIVERY_AUTH_SECRET) {
+  try {
+    const dotenvPath = path.resolve(__dirname, '..', '..', '..', '.env');
+    if (fs.existsSync(dotenvPath)) {
+      require('dotenv').config({ path: dotenvPath });
+    }
+  } catch (_) {}
+}
+if (!process.env.DELIVERY_AUTH_SECRET) {
+  process.env.DELIVERY_AUTH_SECRET = crypto.randomBytes(32).toString('hex');
+}
+const DEFAULT_AUTH_SECRET = Buffer.from(process.env.DELIVERY_AUTH_SECRET, 'hex');
 
 function getAuthSecret(customSecret) {
   return customSecret || process.env.DELIVERY_AUTH_SECRET || DEFAULT_AUTH_SECRET;
@@ -195,12 +208,13 @@ function verifyDeliveryAuthorization(auth, currentFingerprint, options = {}) {
   const issued = Date.parse(auth.issuedAt);
   if (isNaN(expiry) || isNaN(issued)) return false;
   const now = Date.now();
-  if (now > expiry || now < (issued - 5000)) return false;
+  if (expiry <= issued || expiry - issued > 3600000 || now >= expiry || now < (issued - 5000)) return false;
 
   // Validate chassisKey scope if specified
   if (options.chassisKey) {
-    const expectedChassis = String(options.chassisKey).trim();
-    if (auth.chassisKey !== expectedChassis) return false;
+    const expectedChassis = String(options.chassisKey).trim().toLowerCase().replace(/[\s-]+/g, '_');
+    const authChassis = String(auth.chassisKey || '').trim().toLowerCase().replace(/[\s-]+/g, '_');
+    if (authChassis !== expectedChassis) return false;
   }
 
   // Validate profile scope if specified

@@ -33,11 +33,15 @@ To prevent build or test failures in automated CI/CD pipelines (such as GitHub A
                                     [Execute nlm sync]   [Fallback to MCP / Local RAG]
 ```
 
-1. **Tier 1: Cloud `nlm` CLI Synchronization**:
-   - Executes when `nlm` CLI is installed and authenticated.
-   - Deletes stale source by ID and uploads the newly generated Markdown payload under the canonical source name `{chassis}_OCA_Catalog_{YYYY-MM-DD}`.
-2. **Tier 2: Universal MCP Tool Synchronization (`gemini-notebook-mcp:source_add`)**:
-   - Executes autonomously when CLI is unavailable.
+1. **Tier 1: Cloud `nlm` CLI & MCP Tool Synchronization**:
+   - Executes when `nlm` CLI is installed and authenticated, or via Universal MCP Tool `gemini-notebook-mcp:source_add`.
+   - **Upload-Before-Retire Sequence (`INV-121`, `INV-132`)**:
+     1. Generates the lossless displayed-cell Markdown projection (`notebook_sync_payload_{chassis}.md`).
+     2. Uploads candidate source under canonical name `{chassis}_OCA_Catalog_{YYYY-MM-DD}`.
+     3. Verifies indexed readback via `verifySemanticProjectionReadback()` with operator/punctuation preservation and sequential cursor consumption.
+     4. Executes source-restricted canary grounding query.
+     5. On passing verification, updates `scripts/config/notebooks.json` with the new verified `sourceId`.
+     6. Transactionally retires the predecessor stale catalog source (never deletes beforehand).
 3. **Tier 3: CI/CD & Offline Safety Net (`CI_OFFLINE_VERIFIED`)**:
    - Validates generated Markdown payloads, updates `notebooks.json`, and records sync timestamps without throwing unhandled process exceptions.
 
@@ -107,29 +111,37 @@ Supported products dynamically mapped in `scripts/config/notebooks.json`:
 
 ## 7. Master SKU Reconciliation & RAG Verification Protocol
 
-Before certifying any product line, agents MUST verify that the local master 22-sheet workbook, master CSV, Google Sheet, and NotebookLM sources are in 100% agreement:
+Before certifying any product line, agents MUST verify that the local master multi-sheet workbook (e.g. 26 sheets for DL380 Gen12, 27 sheets for DL380a Gen12), master CSV, Google Drive Sheet, and NotebookLM sources are in 100% agreement:
 
 1. **Verify Exact SKU Tallies per Category**:
    - Processors, Memory, Networking, Drive Enclosures/Drives, Cooling & Thermal, Storage Controllers, PCIe Risers, Power Supplies, Chassis Variants, Accessories, and Pointnext Services.
 2. **Execute Live Grounding RAG Queries**:
    - Run `nlm notebook query <notebookId> "<test query>" --json` to verify that answers cite the QuickSpecs PDF and classified OCA markdown/CSV payloads with zero hallucinated part numbers.
 3. **Obsolete SKU Tracking**:
-   - Ensure legacy QuickSpecs SKUs flagged as `OB` (Obsolete) or `90` (90-Day Warning) are preserved in `discontinued_skus.json` and the 22-sheet workbook's *Discontinued SKUs* tab.
+   - Ensure legacy QuickSpecs SKUs flagged as `OB` (Obsolete) or `90` (90-Day Warning) are preserved in `discontinued_skus.json` and the workbook's *Discontinued SKUs* tab.
 
 ---
 
-## 7b. Google Sheets & Drive Source Synchronization: Full Replace vs. Delta Append
+## 7b. Two-Tier Data Architecture & Source Synchronization (`INV-132`, `INV-133`)
 
-When synchronizing catalog intelligence with Google Drive / Google Sheets linked to NotebookLM:
+The knowledge synchronization architecture maintains a strict separation of concerns between human presales deliverables and AI semantic grounding:
 
-1. **Certified Master Catalog Tab (`All SKUs`) — FULL REPLACE IN-PLACE**:
-   - **Protocol**: The entire sheet/tab must be overwritten with the latest audited `{chassisName}_Master_Catalog.csv`.
-   - **Why Full Replace**: NotebookLM creates semantic embeddings across table rows. If rows are appended repeatedly across scrapes, duplicate SKUs with contradictory prices, obsolete statuses, or mismatched options accumulate. This degrades RAG precision, causing NotebookLM to retrieve multiple colliding prices or cite retired parts. Overwriting ensures each SKU has exactly ONE canonical, verified ground-truth record.
-   - **Mechanism**: Use Drive sync / Google Sheets API to update the sheet in-place without altering the file URL or Drive File ID. Then trigger `source_sync_drive` or `nlm source sync` to refresh NotebookLM's index.
+1. **Deterministic Physical Core (For Humans & Offline Engines)**:
+   - **Artifacts**: Multi-sheet master `.xlsx`, master flat `.csv`, `Catalog.json`, and synced Google Drive Sheet.
+   - **Google Sheets on Drive**:
+     - *Certified Master Catalog Tab (`All SKUs`)* — **FULL REPLACE IN-PLACE**: Entire sheet is overwritten via Google Drive/Sheets API with the latest audited `{chassisName}_Master_Catalog.csv` so presales architects have a single, canonical sheet without duplicating links.
+     - *Audit Trail & Delta Ledger (`Change Log` / `Price Trails` / `Knowledge Deltas`)* — **DELTA APPEND**: Timestamped events (`BASELINE`, `PRICE_CHANGED`, `ATTRIBUTE_CHANGED`, `DISCONTINUED`, `RULE_LEARNED`) are appended chronologically for historical auditability.
+   - **INV-133 Invariant**: Google Sheets **CANNOT** be directly attached to NotebookLM via `RPC_SYNC_DRIVE` (NotebookLM returns `INVALID_ARGUMENT (code 3)` for `application/vnd.google-apps.spreadsheet`). Server products have `"canonicalDriveEnabled": false` in `scripts/config/notebooks.json` to route knowledge sync through the Markdown payload path. The Google Sheet remains intact on Drive for human access.
 
-2. **Audit Trail & Delta Ledger (`Change Log` / `Price Trails` / `Knowledge Deltas`) — DELTA APPEND**:
-   - **Protocol**: Timestamped events (`BASELINE`, `PRICE_CHANGED`, `ATTRIBUTE_CHANGED`, `DISCONTINUED`, `RULE_LEARNED`) must be appended chronologically.
-   - **Why Delta Append**: Historical drift tracking, pricing trend lines, and lifecycle transitions (`Active` $\rightarrow$ `90-Day Warning` $\rightarrow$ `Obsolete`) require an immutable chronological log. Appending with composite date deduplication (`INV-1` & `INV-13`) preserves full auditability for human architects and presales engineers.
+2. **Semantic AI Grounding Payload (For Gemini NotebookLM RAG)**:
+   - **Artifact**: `notebook_sync_payload_{chassis}.md` uploaded to NotebookLM.
+   - **Lossless Displayed-Cell Projection (`INV-134`)**: Contains high-density displayed inventory tables across all active chassis tabs, architectural Gotchas, prerequisite rules, and SHA-256 fingerprint.
+   - **Verification Pipeline (`INV-121`)**:
+     1. *Candidate Upload*: Upload payload as a new candidate source.
+     2. *Indexed Readback Verification*: Stricter readback (`verifySemanticProjectionReadback()`) consumes indexed CLI response sequentially, preserving case, operators (`<=27`), decimal prices (`12.50`), and SKU punctuation.
+     3. *Source-Restricted Canary Query*: Runs grounded canary prompt against the candidate source.
+     4. *Verified Activation*: Update `scripts/config/notebooks.json` with the new active `sourceId`.
+     5. *Stale Source Retirement*: Transactionally delete previous catalog source only after activation.
 
 ---
 

@@ -566,7 +566,8 @@ async function runE2ETest() {
         body: JSON.stringify({
           evalResults: evalPayload,
           chassisId: 'DL380_Gen12_SFF',
-          rankTier: 1
+          rankTier: 1,
+          diagnostic: true
         })
       });
       return await res.json();

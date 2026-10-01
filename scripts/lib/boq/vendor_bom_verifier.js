@@ -18,6 +18,7 @@ const path = require('path');
 const { parseAndConsolidateBOQ } = require('./boq_evaluator.js');
 const { processPortalFeedback } = require('../feedback/feedback_loop.js');
 const { isValidHpeSKU, cleanBaseSKU } = require('../catalog/sku.js');
+const { normalizeSku } = require('./portal_receipt');
 
 function loadCatalogSkusAndPrices(chassisDir) {
   const chassisPrefix = path.basename(chassisDir || '');
@@ -33,12 +34,10 @@ function loadCatalogSkusAndPrices(chassisDir) {
           (entry.skus || []).forEach(s => {
             const sku = s['Product #'] || s.sku;
             if (sku) {
-              const clean = cleanBaseSKU(sku);
-              catalogSkus.add(sku);
-              if (clean) catalogSkus.add(clean);
+              const exact = normalizeSku(sku);
+              catalogSkus.add(exact);
               const price = parseFloat(String(s['Unit Price (USD)'] || s['Price (USD)'] || '0').replace(/[^0-9.]/g, '')) || 0;
-              catalogPriceMap.set(sku, price);
-              if (clean) catalogPriceMap.set(clean, price);
+              catalogPriceMap.set(exact, price);
             }
           });
         });
@@ -56,19 +55,30 @@ function aggregateItemQuantities(items) {
   const map = new Map();
   for (const it of items) {
     const rawSku = String(it.sku || it['Product #'] || '').trim();
-    const clean = cleanBaseSKU(rawSku);
-    if (!clean) continue;
-    const qty = Number(it.quantity ?? it.qty ?? 1);
+    const exact = normalizeSku(rawSku);
+    const qty = Number(it.quantity ?? it.qty);
+    if (!exact || !Number.isSafeInteger(qty) || qty <= 0) throw new Error('BOM audit requires a SKU and positive integer quantity for every row.');
+    const multiplier = it.configurationMultiplier ?? 1;
+    if (!Number.isSafeInteger(Number(multiplier)) || Number(multiplier) <= 0) throw new Error('BOM audit requires a positive integer configuration multiplier.');
+    const identity = JSON.stringify([exact, it.configurationId || null, it.configurationName || null,
+      it.ownerId || null, it.parentId || null, it.subParentId || null, it.quantityScope || 'configuration', Number(multiplier)]);
     const unitPrice = parseFloat(String(it.unitPriceUsd || it.price || it['Unit Price (USD)'] || 0)) || 0;
-    const existing = map.get(clean);
+    const existing = map.get(identity);
     if (existing) {
+      const priorExt = existing.quantity * (existing.unitPriceUsd || 0);
+      const newExt = qty * unitPrice;
       existing.quantity += qty;
+      if (!Number.isSafeInteger(existing.quantity)) throw new Error('BOM audit aggregate quantity exceeds the safe integer range.');
       existing.rawRows.push(it);
       if (!existing.description && it.description) existing.description = it.description;
-      if (existing.unitPriceUsd === 0 && unitPrice > 0) existing.unitPriceUsd = unitPrice;
+      if (existing.quantity > 0 && (priorExt > 0 || newExt > 0)) {
+        existing.unitPriceUsd = (priorExt + newExt) / existing.quantity;
+      } else if (existing.unitPriceUsd === 0 && unitPrice > 0) {
+        existing.unitPriceUsd = unitPrice;
+      }
     } else {
-      map.set(clean, {
-        sku: clean,
+      map.set(identity, {
+        sku: exact,
         rawSku,
         quantity: qty,
         description: it.description || '',
@@ -90,7 +100,7 @@ function aggregateItemQuantities(items) {
  * @param {object} [options]
  * @returns {object} Audit report with catalog membership, valid format, and uncataloged analysis
  */
-function auditSingleVendorBOM(vendorBomInput, chassisDir, options = {}) {
+function auditSingleVendorBOM(vendorBomInput, chassisDir, _options = {}) {
   let vendorItems = [];
   if (typeof vendorBomInput === 'string' && fs.existsSync(vendorBomInput)) {
     const rawContent = fs.readFileSync(vendorBomInput, 'utf-8');
@@ -104,6 +114,7 @@ function auditSingleVendorBOM(vendorBomInput, chassisDir, options = {}) {
   if (vendorItems.length === 0) {
     throw new Error('Vendor BOM input contains zero items.');
   }
+  aggregateItemQuantities(vendorItems); // Reject malformed rows; do not silently omit them.
 
   const chassisPrefix = path.basename(chassisDir || '');
   const { catalogSkus, catalogPriceMap } = loadCatalogSkusAndPrices(chassisDir);
@@ -117,9 +128,10 @@ function auditSingleVendorBOM(vendorBomInput, chassisDir, options = {}) {
     const rawSku = String(vItem.sku || vItem['Product #'] || '').trim();
     const clean = cleanBaseSKU(rawSku);
     if (!clean) return;
-    vendorSkuSet.add(clean);
+    const exact = normalizeSku(rawSku);
+    vendorSkuSet.add(exact);
 
-    const inCatalog = catalogSkus.size > 0 && (catalogSkus.has(rawSku) || catalogSkus.has(clean));
+    const inCatalog = catalogSkus.has(exact);
     const validFormat = isValidHpeSKU(rawSku) || isValidHpeSKU(clean);
 
     if (!validFormat) {
@@ -142,7 +154,7 @@ function auditSingleVendorBOM(vendorBomInput, chassisDir, options = {}) {
           : 'SKU present in Vendor quote but missing from local scraped catalog.'
       });
     } else {
-      const catalogPrice = catalogPriceMap.get(clean) || catalogPriceMap.get(rawSku) || 0;
+      const catalogPrice = catalogPriceMap.get(exact) || 0;
       catalogMatchedSkus.push({
         sku: rawSku,
         cleanSku: clean,
@@ -166,7 +178,7 @@ function auditSingleVendorBOM(vendorBomInput, chassisDir, options = {}) {
     isCatalogClean: catalogSkus.size > 0 && uncatalogedSkus.length === 0,
     requiresFreshScrape,
     is100PercentMatch: false,
-    hasDiscrepancies: false,
+    hasDiscrepancies: uncatalogedSkus.length > 0 || invalidFormatSkus.length > 0,
     quarantinedObservationCount: 0,
     quarantinedObservationIds: [],
     uncatalogedSkus,
@@ -227,13 +239,14 @@ function verifyVendorBOM(vendorBomInput, proposedRankSolution, chassisDir, optio
   };
 
   // 1. Audit Vendor SKUs against Proposed SKUs
-  for (const [cleanSku, vItem] of vendorAgg) {
-    const pItem = proposedAgg.get(cleanSku);
-    const inCatalog = catalogSkus.size > 0 && (catalogSkus.has(cleanSku) || catalogSkus.has(vItem.rawSku));
+  for (const [identity, vItem] of vendorAgg) {
+    const pItem = proposedAgg.get(identity);
+    const inCatalog = catalogSkus.has(vItem.sku);
 
     if (!inCatalog) {
       discrepancies.uncatalogedSkus.push({
         sku: vItem.rawSku,
+        scopeIdentity: identity,
         quantity: vItem.quantity,
         description: vItem.description,
         reason: catalogSkus.size === 0
@@ -245,20 +258,22 @@ function verifyVendorBOM(vendorBomInput, proposedRankSolution, chassisDir, optio
     if (!pItem) {
       discrepancies.addedByVendor.push({
         sku: vItem.rawSku,
+        scopeIdentity: identity,
         quantity: vItem.quantity,
         description: vItem.description,
-        reason: 'Vendor Partner Portal automatically inserted this SKU into the quote.'
+        reason: 'Vendor quote contains a scoped line absent from the proposed manifest; insertion origin is unverified.'
       });
     } else {
       const qtyDiff = vItem.quantity - pItem.quantity;
-      const vPrice = parseFloat(String(vItem.unitPriceUsd || 0)) || catalogPriceMap.get(cleanSku) || 0;
-      const pPrice = parseFloat(String(pItem.unitPriceUsd || 0)) || catalogPriceMap.get(cleanSku) || 0;
+      const vPrice = parseFloat(String(vItem.unitPriceUsd || 0)) || catalogPriceMap.get(vItem.sku) || 0;
+      const pPrice = parseFloat(String(pItem.unitPriceUsd || 0)) || catalogPriceMap.get(pItem.sku) || 0;
       const priceDiff = Math.abs(vPrice - pPrice);
       const hasPriceDelta = vPrice > 0 && pPrice > 0 && priceDiff > 1.0;
 
       if (hasPriceDelta) {
         discrepancies.priceDeltas.push({
           sku: vItem.rawSku,
+          scopeIdentity: identity,
           proposedPriceUsd: pPrice,
           vendorPriceUsd: vPrice,
           priceDeltaUsd: vPrice - pPrice,
@@ -269,6 +284,7 @@ function verifyVendorBOM(vendorBomInput, proposedRankSolution, chassisDir, optio
       if (qtyDiff !== 0) {
         discrepancies.quantityDeltas.push({
           sku: vItem.rawSku,
+          scopeIdentity: identity,
           proposedQty: pItem.quantity,
           vendorQty: vItem.quantity,
           qtyDelta: qtyDiff,
@@ -280,6 +296,7 @@ function verifyVendorBOM(vendorBomInput, proposedRankSolution, chassisDir, optio
       if (qtyDiff === 0 && !hasPriceDelta) {
         discrepancies.exactMatches.push({
           sku: vItem.rawSku,
+          scopeIdentity: identity,
           proposedQty: pItem.quantity,
           vendorQty: vItem.quantity,
           qtyMatch: true
@@ -289,13 +306,14 @@ function verifyVendorBOM(vendorBomInput, proposedRankSolution, chassisDir, optio
   }
 
   // 2. Audit Proposed SKUs missing from Vendor BOM
-  for (const [cleanSku, pItem] of proposedAgg) {
-    if (!vendorAgg.has(cleanSku)) {
+  for (const [identity, pItem] of proposedAgg) {
+    if (!vendorAgg.has(identity)) {
       discrepancies.removedByVendor.push({
         sku: pItem.rawSku,
+        scopeIdentity: identity,
         quantity: pItem.quantity,
         description: pItem.description,
-        reason: 'SKU was included in proposed Rank solution but dropped by Vendor Partner Portal.'
+        reason: 'Proposed scoped line is absent from the vendor quote; removal origin is unverified.'
       });
     }
   }
@@ -318,7 +336,7 @@ function verifyVendorBOM(vendorBomInput, proposedRankSolution, chassisDir, optio
         if (isBaseChassis(added.description || '')) {
           return;
         }
-        const feedbackMsg = `Vendor Partner Portal auto-inserted SKU ${added.sku} (Qty ${added.quantity}): ${added.description}`;
+        const feedbackMsg = `Unverified vendor observation: SKU ${added.sku} (Qty ${added.quantity}) is absent from the proposed scoped manifest: ${added.description}`;
         const observation = processPortalFeedback(feedbackMsg, chassisDir);
         if (observation.governanceStatus === 'QUARANTINED') quarantinedObservations.push(observation.quarantineId);
         else observationErrors.push({ sku: added.sku, reasons: observation.rejectionReasons || ['Observation was not quarantined'] });

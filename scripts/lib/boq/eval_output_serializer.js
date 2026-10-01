@@ -20,7 +20,7 @@ const { triggerPostFlowSyncAsync } = require('../sync/post_flow_sync.js');
 const { recordEvaluationTelemetry } = require('../system/telemetry.js');
 const { emitProgress } = require('../system/progress.js');
 const logger = require('../system/pipeline_logger.js');
-const { candidateReviewCurrent, solutionFingerprint } = require('./solution_evidence');
+const { candidateReviewCurrent, deliveryFingerprint } = require('./solution_evidence');
 const { verifyDeliveryAuthorization } = require('../contracts/workflow_contract');
 const { toClickableFileUri, toReportLink } = require('../system/uri_helper.js');
 
@@ -461,32 +461,8 @@ async function handleGoogleDriveUpload(workbookPath) {
   }
 }
 
-/**
- * Master Output Serializer and Deliverable Exporter
- * @param {object} ctx - Execution context
- */
-async function serializeAndExportResults(ctx) {
-  const {
-    outputPath, evalResults, chassisPrefix, inputFile, startTime, items,
-    graph, notebookId, stage1ParsingMs, stage2AspectMathMs, stage3RAGMs,
-    stage4GuardrailMs, stage5MatrixMs, JSON_MODE, chassisDir, chassisDetection,
-    budgetOpt, ragAnswer, queryPayload
-  } = ctx;
-
-  const reportDir = path.dirname(outputPath);
-  if (!fs.existsSync(reportDir)) fs.mkdirSync(reportDir, { recursive: true });
-  // Rebuild from final ranks so substitutions cannot retain an obsolete plan.
-  const { buildRuntimeDiscoveryPlan } = require('./runtime_discovery_plan');
-  evalResults.runtimeDiscoveryPlan = buildRuntimeDiscoveryPlan({ ...evalResults, items }, {
-    catalogData: ctx.catalogData, targetDir: chassisDir, productId: chassisPrefix,
-    selectorsByConfiguration: ctx.selectorsByConfiguration
-  });
-  const runtimePlanPath = path.join(reportDir, 'evidence', `${path.basename(outputPath, path.extname(outputPath))}_runtime_discovery_plan.json`);
-  fs.mkdirSync(path.dirname(runtimePlanPath), { recursive: true });
-  require('../system/fs_compat').safeWriteJsonAtomic(runtimePlanPath, evalResults.runtimeDiscoveryPlan);
-  evalResults.runtimeDiscoveryPlanPath = runtimePlanPath;
-
-  // Post-flow sync
+async function _executePostFlowSync(ctx, evalResults) {
+  const { chassisPrefix, JSON_MODE } = ctx;
   try {
     const autoUpload = !ctx.OFFLINE_MODE && !ctx.DEFER_RAG;
     const syncResult = await triggerPostFlowSyncAsync(chassisPrefix, 'EVALUATION', { autoUploadNLM: autoUpload, syncRunningKnowledge: autoUpload });
@@ -503,6 +479,62 @@ async function serializeAndExportResults(ctx) {
     if (!evalResults.warnings) evalResults.warnings = [];
     evalResults.warnings.push(`⚠️ Post-flow knowledge sync crashed: ${syncErr.message}. NotebookLM is NOT in sync.`);
   }
+}
+
+function _completeLedgerPhase9(ledger, ctx, evalResults) {
+  ledger.startPhase(9, 'Continuous Learning Reflection & Shared State Export', { newLearningsCount: evalResults.newLearningsCount || 0 });
+  let phase9Status = 'ACTION_REQUIRED';
+  const sync = evalResults.postFlowSync;
+  const isOffline = Boolean(ctx.OFFLINE_MODE || ctx.DEFER_RAG);
+  const syncRequested = Boolean(ctx.SYNC_RAG);
+
+  if (isOffline || (!syncRequested && !sync)) {
+    phase9Status = 'SKIPPED';
+  } else if (sync?.success === false || sync?.error || sync?.syncStatus === 'FAILED') {
+    phase9Status = 'ACTION_REQUIRED';
+  } else if (sync?.success === true && sync?.syncStatus === 'CLOUD_VERIFIED') {
+    phase9Status = 'PASSED';
+  } else if (!syncRequested && sync?.success === true && sync?.syncStatus === 'LOCAL_PAYLOAD_ONLY') {
+    phase9Status = 'PASSED';
+  }
+  ledger.completePhase(9, phase9Status, {
+    newLearningsCount: evalResults.newLearningsCount || 0,
+    postFlowSync: evalResults.postFlowSync || null,
+    priceDrift: evalResults.priceDriftResult || null,
+    syncRequested,
+    isOffline,
+    skipReason: phase9Status === 'SKIPPED' ? (isOffline ? 'Offline mode requested by user configuration' : 'Cloud sync was not requested') : undefined,
+    policyCode: phase9Status === 'SKIPPED' ? (isOffline ? 'POLICY_OFFLINE_SKIP' : 'POLICY_NO_SYNC_REQUESTED') : undefined
+  });
+}
+
+/**
+ * Master Output Serializer and Deliverable Exporter
+ * @param {object} ctx - Execution context
+ */
+async function serializeAndExportResults(ctx) {
+  const {
+    outputPath, evalResults, chassisPrefix, inputFile, startTime, items,
+    graph, notebookId, stage1ParsingMs, stage2AspectMathMs, stage3RAGMs,
+    stage4GuardrailMs, stage5MatrixMs, JSON_MODE, chassisDir, chassisDetection,
+    budgetOpt, queryPayload
+  } = ctx;
+
+  const reportDir = path.dirname(outputPath);
+  if (!fs.existsSync(reportDir)) fs.mkdirSync(reportDir, { recursive: true });
+  // Rebuild from final ranks so substitutions cannot retain an obsolete plan.
+  const { buildRuntimeDiscoveryPlan } = require('./runtime_discovery_plan');
+  evalResults.runtimeDiscoveryPlan = buildRuntimeDiscoveryPlan({ ...evalResults, items }, {
+    catalogData: ctx.catalogData, targetDir: chassisDir, productId: chassisPrefix,
+    selectorsByConfiguration: ctx.selectorsByConfiguration
+  });
+  const runtimePlanPath = path.join(reportDir, 'evidence', `${path.basename(outputPath, path.extname(outputPath))}_runtime_discovery_plan.json`);
+  fs.mkdirSync(path.dirname(runtimePlanPath), { recursive: true });
+  require('../system/fs_compat').safeWriteJsonAtomic(runtimePlanPath, evalResults.runtimeDiscoveryPlan);
+  evalResults.runtimeDiscoveryPlanPath = runtimePlanPath;
+
+  // Post-flow sync
+  await _executePostFlowSync(ctx, evalResults);
 
   // Multi-Rank Solution Deliverable Export
   const inputBase = path.basename(inputFile, path.extname(inputFile));
@@ -514,9 +546,9 @@ async function serializeAndExportResults(ctx) {
     evalResults.items = items;
   }
 
-  const targetChassisName = chassisPrefix || ctx.detectedChassisName || (graph.chassisInfo ? graph.chassisInfo.model : (ctx.chassisDir ? path.basename(ctx.chassisDir) : 'Generic_Server'));
-  const candidateFingerprint = evalResults.manifestFingerprint || solutionFingerprint(evalResults);
-  const isAuthValid = verifyDeliveryAuthorization(evalResults.deliveryAuthorization, candidateFingerprint, {
+  const targetChassisName = evalResults.chassis || chassisPrefix || ctx.detectedChassisName || (graph.chassisInfo ? graph.chassisInfo.model : '') || (ctx.chassisDir ? path.basename(ctx.chassisDir) : '') || 'PROLIANT_SERVER';
+  const candidateFingerprint = deliveryFingerprint(evalResults);
+  const isAuthValid = evalResults.acceptanceGate?.isValid === true && verifyDeliveryAuthorization(evalResults.deliveryAuthorization, candidateFingerprint, {
     chassisKey: targetChassisName,
     profile: 'BOQ_EVALUATION'
   });
@@ -525,7 +557,9 @@ async function serializeAndExportResults(ctx) {
     evalResults.deliveryError = `Presentation export blocked: Pre-presentation acceptance failed (${evalResults.acceptanceGate.blockersCount} blocker(s): ${evalResults.acceptanceGate.blockers.map(b => b.name || b.id).join(', ')}).`;
     logger.warn('EVAL_OUTPUT_SERIALIZER', evalResults.deliveryError);
   } else if (!isAuthValid) {
-    evalResults.deliveryError = 'Presentation export blocked: Valid cryptographic DeliveryAuthorization is missing or invalid for this candidate manifest.';
+    evalResults.deliveryError = evalResults.deliveryAuthError
+      ? `Presentation export blocked: Cryptographic DeliveryAuthorization failed: ${evalResults.deliveryAuthError}`
+      : 'Presentation export blocked: Valid cryptographic DeliveryAuthorization is missing or invalid for this candidate manifest.';
     logger.warn('EVAL_OUTPUT_SERIALIZER', evalResults.deliveryError);
   } else {
     try {
@@ -574,65 +608,44 @@ async function serializeAndExportResults(ctx) {
     }
   }
 
+  // Generate evaluation report markdown
+  const reportContent = generateMarkdownReport(ctx) + '\n\n' +
+    require('./runtime_discovery_plan').formatRuntimeDiscoveryPlan(evalResults.runtimeDiscoveryPlan);
+  fs.writeFileSync(outputPath, reportContent, 'utf-8');
+
   const ledger = evalResults.evidenceLedger;
-  if (ledger) {
-
-    ledger.recordArtifact('RANKED_WORKBOOK', evalResults.multiRankWorkbookPath, { googleDriveDeliverable: evalResults.googleDriveDeliverable || null });
-    ledger.recordArtifact('RANKED_CSV', evalResults.multiRankCsvPath);
-    ledger.recordArtifact('PARTNER_PORTAL_WORKBOOK', evalResults.portalWorkbookPath, { googleDriveDeliverable: evalResults.googleDriveDeliverable || null });
-    ledger.completePhase(8, evalResults.deliveryError ? 'FAILED' : 'PASSED', { workbookPath: evalResults.multiRankWorkbookPath || null, googleDriveDeliverable: evalResults.googleDriveDeliverable || null, uploadRequested: Boolean(ctx.UPLOAD_DRIVE) }, [], [], evalResults.deliveryError ? [evalResults.deliveryError] : []);
-    ledger.startPhase(9, 'Continuous Learning Reflection & Shared State Export', { newLearningsCount: evalResults.newLearningsCount || 0 });
-    let phase9Status = 'ACTION_REQUIRED';
-    const sync = evalResults.postFlowSync;
-    const isOffline = Boolean(ctx.OFFLINE_MODE || ctx.DEFER_RAG);
-    const syncRequested = Boolean(ctx.SYNC_RAG);
-
-    if (isOffline || (!syncRequested && !sync)) {
-      phase9Status = 'SKIPPED';
-    } else if (sync?.success === false || sync?.error || sync?.syncStatus === 'FAILED') {
-      phase9Status = 'ACTION_REQUIRED';
-    } else if (sync?.success === true && sync?.syncStatus === 'CLOUD_VERIFIED') {
-      phase9Status = 'PASSED';
-    } else if (!syncRequested && sync?.success === true && sync?.syncStatus === 'LOCAL_PAYLOAD_ONLY') {
-      phase9Status = 'PASSED';
-    }
-    ledger.completePhase(9, phase9Status, {
-      newLearningsCount: evalResults.newLearningsCount || 0,
-      postFlowSync: evalResults.postFlowSync || null,
-      priceDrift: evalResults.priceDriftResult || null,
-      syncRequested,
-      isOffline,
-      skipReason: phase9Status === 'SKIPPED' ? (isOffline ? 'Offline mode requested by user configuration' : 'Cloud sync was not requested') : undefined,
-      policyCode: phase9Status === 'SKIPPED' ? (isOffline ? 'POLICY_OFFLINE_SKIP' : 'POLICY_NO_SYNC_REQUESTED') : undefined
-    });
-
-  }
-
   if (ledger) {
     // Retain evidence beside its deliverables so a moved checkout keeps links valid.
     ctx.evidenceDir = path.join(path.dirname(path.resolve(outputPath)), 'evidence');
     const evidenceDir = ctx.evidenceDir;
     evalResults.evidenceLogPath = path.join(evidenceDir, `evidence_log_${ledger.traceId}.json`);
     evalResults.evidenceSummaryPath = path.join(evidenceDir, `evidence_summary_${ledger.traceId}.md`);
-    evalResults.evidenceHealth = ledger.getHealth();
-  }
-  const reportContent = generateMarkdownReport(ctx) + '\n\n' +
-    require('./runtime_discovery_plan').formatRuntimeDiscoveryPlan(evalResults.runtimeDiscoveryPlan);
-  fs.writeFileSync(outputPath, reportContent, 'utf-8');
-  if (ledger) {
+
     ledger.recordArtifact('ANALYSIS_REPORT', outputPath);
+    ledger.recordArtifact('RANKED_WORKBOOK', evalResults.multiRankWorkbookPath, { googleDriveDeliverable: evalResults.googleDriveDeliverable || null });
+    ledger.recordArtifact('RANKED_CSV', evalResults.multiRankCsvPath);
+    ledger.recordArtifact('PARTNER_PORTAL_WORKBOOK', evalResults.portalWorkbookPath, { googleDriveDeliverable: evalResults.googleDriveDeliverable || null });
+
     const requiredArtifacts = ['ANALYSIS_REPORT', 'RANKED_WORKBOOK', 'RANKED_CSV', 'PARTNER_PORTAL_WORKBOOK'];
     const missing = requiredArtifacts.filter(role => !ledger.artifacts.some(artifact => artifact.role === role && artifact.exists && artifact.sha256));
-    if (missing.length) {
+    if (missing.length && !evalResults.deliveryError) {
       evalResults.deliveryError = `Missing deliverable artifacts: ${missing.join(', ')}`;
-      ledger.completePhase(8, 'FAILED', { missingArtifacts: missing }, [], [], [evalResults.deliveryError]);
     }
+
+    ledger.completePhase(8, evalResults.deliveryError ? 'FAILED' : 'PASSED', {
+      workbookPath: evalResults.multiRankWorkbookPath || null,
+      googleDriveDeliverable: evalResults.googleDriveDeliverable || null,
+      uploadRequested: Boolean(ctx.UPLOAD_DRIVE),
+      missingArtifacts: missing.length ? missing : undefined
+    }, [], [], evalResults.deliveryError ? [evalResults.deliveryError] : []);
+
+    _completeLedgerPhase9(ledger, ctx, evalResults);
+
     const exported = ledger.finalizeAndExport(ctx.evidenceDir);
     evalResults.evidenceLogPath = exported.jsonPath;
     evalResults.evidenceSummaryPath = exported.mdPath;
     evalResults.evidenceHealth = exported.payload.health;
   }
-
 
   const workflowSteps = _buildWorkflowSteps(ctx);
 
@@ -647,6 +660,7 @@ async function serializeAndExportResults(ctx) {
 
     const jsonResult = {
       status: isFatalDeliveryError ? 'ERROR' : (evalResults.evidenceHealth?.workflowStatus === 'COMPLETE' ? 'SUCCESS' : 'ACTION_REQUIRED'),
+      error: isFatalDeliveryError ? evalResults.deliveryError : undefined,
       data: {
         traceId,
         provenanceTrace,
@@ -656,6 +670,8 @@ async function serializeAndExportResults(ctx) {
         chassisDetection,
         notebookId,
         notebookDegradedMode: ctx.notebookDegradedMode || null,
+        deliveryError: evalResults.deliveryError || null,
+        deliveryAuthError: evalResults.deliveryAuthError || null,
         tracePayloads,
         outputReportPath: outputPath,
         evidenceLogPath: evalResults.evidenceLogPath || null,
@@ -767,7 +783,7 @@ async function serializeAndExportResults(ctx) {
  * @param {object} [options]
  * @returns {string} Multi-line markdown narrative
  */
-function generateEvaluationNarrative(evalResult, chassisInfo, options = {}) {
+function generateEvaluationNarrative(evalResult, chassisInfo, _options = {}) {
   const lines = [];
   const model = chassisInfo?.cleanName || chassisInfo?.model || 'Unknown Chassis';
   const now = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });

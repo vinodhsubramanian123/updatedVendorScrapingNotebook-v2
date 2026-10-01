@@ -31,7 +31,7 @@ const { runWithTrace } = require('../lib/system/trace_context');
 const { candidateDelta, solutionFingerprint } = require('../lib/boq/solution_evidence');
 const { loadActiveKnowledgeRules } = require('../lib/catalog/active_knowledge_router.js');
 const { recordAndCertifyLearnedRule } = require('../lib/feedback/continuous_learning_verifier.js');
-const { getNotebookDegradedMode, assertNotebookHealth, loadNotebookConfig } = require('../lib/sync/knowledge_sync.js');
+const { assertNotebookHealth, loadNotebookConfig } = require('../lib/sync/knowledge_sync.js');
 
 /**
  * Load notebook ID from config file for a specific chassis or use default.
@@ -798,7 +798,7 @@ async function executeEphemeralSourceValidation(options, ingestCtx, evalResults)
 // ============================================================
 // Stage 7: Continuous Learning Reflection & Self-Reinforcement
 // ============================================================
-function executeContinuousLearningReflection(evidenceLedger, ingestCtx, evalResults, options) {
+function executeContinuousLearningReflection(evidenceLedger, ingestCtx, evalResults, _options) {
   const chassisDir = ingestCtx.chassisDir;
   if (!chassisDir || !fs.existsSync(chassisDir)) return 0;
 
@@ -1174,15 +1174,16 @@ async function runEvaluationPipelineWithinTrace(options) {
   const acceptance = verifyPrePresentationAcceptance(evalResults, 'BOQ_EVALUATION', {
     ...options,
     ...ingestCtx,
-    catalogData: options.catalogData
+    catalogData: ingestCtx.catalogData || options.catalogData
   });
   evalResults.acceptanceGate = acceptance;
 
   if (acceptance.isValid) {
-    const { solutionFingerprint } = require('../lib/boq/solution_evidence.js');
-    const rawFingerprint = solutionFingerprint(evalResults, options.catalogData);
+    const { deliveryFingerprint } = require('../lib/boq/solution_evidence.js');
+    const rawFingerprint = deliveryFingerprint(evalResults);
     evalResults.manifestFingerprint = rawFingerprint;
-    const targetChassis = ingestCtx.chassisDir ? path.basename(ingestCtx.chassisDir) : (evalResults.chassis || 'PROLIANT_SERVER');
+    const targetChassis = ingestCtx.chassisPrefix || (ingestCtx.chassisDir ? path.basename(ingestCtx.chassisDir) : '') || evalResults.chassis || ingestCtx.detectedChassisName || 'PROLIANT_SERVER';
+    evalResults.chassis = targetChassis;
     try {
       evalResults.deliveryAuthorization = issueDeliveryAuthorization({
         manifestFingerprint: rawFingerprint,
@@ -1200,11 +1201,17 @@ async function runEvaluationPipelineWithinTrace(options) {
       evalResults.customerDisposition = 'PRESENTATION_READY';
     } catch (_authErr) {
       evalResults.customerDisposition = 'VALIDATION_REQUIRED';
+      evalResults.deliveryAuthError = _authErr.message;
+      const _logger = require('../lib/system/pipeline_logger.js');
+      _logger.warn('EVAL_BOQ', `Delivery authorization issuance deferred: ${_authErr.message}`);
     }
   } else {
     evalResults.customerDisposition = evalResults.isMathClean === false
       ? 'DELIVERY_BLOCKED_UNBUILDABLE'
       : 'VALIDATION_REQUIRED';
+    if (!evalResults.deliveryAuthError && acceptance.blockersCount > 0) {
+      evalResults.deliveryAuthError = `Pre-presentation acceptance failed with ${acceptance.blockersCount} blocker(s): ${acceptance.blockers.map(b => b.name || b.id).join(', ')}`;
+    }
   }
 
   await serializeAndExportResults({
@@ -1336,7 +1343,7 @@ function recomputeStrategyMatrixWithRag(baseData, ragResult, chassisDirOverride 
       learnedDeltasCount: learnedCount
     },
     evalResults: {
-      ...(baseData.evalResults || {}),
+      ...baseData.evalResults,
       ...reEval,
       isProvisional: true,
       matrixStatus: 'CANDIDATE_REVIEW_REQUIRED',
@@ -1345,7 +1352,7 @@ function recomputeStrategyMatrixWithRag(baseData, ragResult, chassisDirOverride 
       ragResult
     },
     conflictGraph: {
-      ...(baseData.conflictGraph || {}),
+      ...baseData.conflictGraph,
       ...updatedGraph,
       rankedSolutions: newRankedSolutions
     },

@@ -29,10 +29,13 @@ const {
   generateRankedPortalWorkbook,
   generateProfessionalBOQ,
   generateMultiRankSolutionWorkbook,
-  generateMultiRankSolutionCsv
+  generateMultiRankSolutionCsv,
+  _buildSummaryData
 } = require('../../scripts/lib/boq/generate_boq_xlsx.js');
 const { evaluateDomainAspects, getRegisteredAspectsForDomain } = require('../../scripts/lib/aspects/aspect_registry.js');
 const { verifyVendorBOM, auditSingleVendorBOM } = require('../../scripts/lib/boq/vendor_bom_verifier.js');
+const { deliveryFingerprint } = require('../../scripts/lib/boq/solution_evidence.js');
+const { safeWriteJsonAtomic } = require('../../scripts/lib/system/fs_compat');
 
 // Helper to generate a valid 64-character SHA-256 hex string
 function generateValidFingerprint(seed = 'test-candidate-manifest') {
@@ -227,11 +230,9 @@ test('Core Contracts — EvidenceLedger state transitions & zero default success
 
 test('Core Contracts — Pre-Presentation Acceptance blocks all 4 public presentation exporters (INV-128 / R-01)', () => {
   const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'portal-auth-all-'));
-  const testFingerprint = generateValidFingerprint('candidate-export-test');
 
   const candidateEvaluation = {
     chassis: 'DL380_Gen12',
-    manifestFingerprint: testFingerprint,
     acceptanceGate: {
       isValid: true,
       status: 'PASSED',
@@ -252,6 +253,8 @@ test('Core Contracts — Pre-Presentation Acceptance blocks all 4 public present
   const p2 = path.join(tempDir, 'Test_Proposal.xlsx');
   const p3 = path.join(tempDir, 'Test_MultiRank.xlsx');
   const p4 = path.join(tempDir, 'Test_MultiRank.csv');
+  const testFingerprint = deliveryFingerprint(candidateEvaluation);
+  candidateEvaluation.manifestFingerprint = testFingerprint;
 
   try {
     // 1. Without deliveryAuthorization, all 4 exporters MUST throw
@@ -349,9 +352,106 @@ test('Core Contracts — Pre-Presentation Acceptance blocks all 4 public present
       generateMultiRankSolutionCsv(authorizedEvaluation, p4);
     }, 'Authorized evaluation must allow multi-rank CSV generation');
 
+    // A cached fingerprint is not proof of the current export contents.
+    const mutated = structuredClone(authorizedEvaluation);
+    mutated.items[0].quantity = 3;
+    for (const exporter of [
+      () => generateRankedPortalWorkbook(mutated, p1),
+      () => generateProfessionalBOQ(mutated, p2, 'DL380_Gen12', 1),
+      () => generateMultiRankSolutionWorkbook(mutated, p3, 'DL380_Gen12'),
+      () => generateMultiRankSolutionCsv(mutated, p4)
+    ]) assert.throws(exporter, /failed cryptographic verification/i);
+
+    const dataBypass = { ...candidateEvaluation, isDiagnostic: true };
+    assert.throws(() => generateMultiRankSolutionCsv(dataBypass), /DeliveryAuthorization is missing/i);
+
   } finally {
     fs.rmSync(tempDir, { recursive: true, force: true });
   }
+});
+
+test('Delivery fingerprint binds every candidate representation, scope and price but not lifecycle bookkeeping', () => {
+  const evaluation = {
+    chassis: 'DL380_Gen12', acceptanceGate: { isValid: true },
+    conflictGraph: {
+      recommendedSolutions: [{ rank: 1, skuPartsList: [{ sku: 'A', quantity: 1, parentId: 'owner-1', unitPriceUsd: 5 }] }],
+      rankedSolutions: [{ rank: 2, skuList: [{ sku: 'B', quantity: 2 }] }]
+    },
+    selectors: { ambientTempMaxC: 27 }, clusterSizing: { serverCount: 2 }
+  };
+  const fingerprint = deliveryFingerprint(evaluation);
+  for (const mutate of [
+    result => { result.conflictGraph.recommendedSolutions[0].skuPartsList[0].parentId = 'owner-2'; },
+    result => { result.conflictGraph.recommendedSolutions[0].skuPartsList[0].unitPriceUsd = 99; },
+    result => { result.conflictGraph.rankedSolutions[0].skuList[0].quantity = 3; },
+    result => { result.selectors.ambientTempMaxC = 30; },
+    result => { result.clusterSizing.serverCount = 3; },
+    result => { result.acceptanceGate.isValid = false; }
+  ]) {
+    const altered = structuredClone(evaluation);
+    mutate(altered);
+    assert.notEqual(deliveryFingerprint(altered), fingerprint);
+  }
+  assert.equal(deliveryFingerprint({ ...evaluation, manifestFingerprint: 'cached', postFlowSync: { success: true }, runtimeDiscoveryPlanPath: 'report' }), fingerprint);
+});
+
+test('Workbook cannot claim vendor acceptance from a bare boolean or unscoped receipt', () => {
+  const summary = _buildSummaryData({ isMathClean: true }, 'DL380_Gen12', 1, [{
+    rank: 1, physicalMathClean: true, isClicValidated: true,
+    buildabilityStatus: '100% Factory Buildable in CLIC', portalValidationStatus: 'CLIC_ACCEPTED',
+    portalReceipt: { status: 'CLIC_ACCEPTED', capturedAt: new Date().toISOString() }
+  }]);
+  assert.doesNotMatch(JSON.stringify(summary), /100% Factory Buildable|CLIC ACCEPTED —/);
+  assert.match(JSON.stringify(summary), /PORTAL VALIDATION PENDING/);
+});
+
+test('Public legacy secret cannot forge default offline authorization', () => {
+  const configuredSecret = process.env.DELIVERY_AUTH_SECRET;
+  try {
+    delete process.env.DELIVERY_AUTH_SECRET;
+    const fingerprint = generateValidFingerprint('legacy-secret-forgery');
+    const forged = issueDeliveryAuthorization({
+      manifestFingerprint: fingerprint, chassisKey: 'DL380_Gen12',
+      acceptanceDecision: { isApproved: true }, secret: 'antigravity-delivery-auth-secret-key-v1'
+    });
+    assert.equal(verifyDeliveryAuthorization(forged, fingerprint), false);
+    assert.equal(verifyDeliveryAuthorization(forged, fingerprint, { secret: 'antigravity-delivery-auth-secret-key-v1' }), true);
+  } finally {
+    if (configuredSecret === undefined) delete process.env.DELIVERY_AUTH_SECRET;
+    else process.env.DELIVERY_AUTH_SECRET = configuredSecret;
+  }
+});
+
+test('Reconciliation rejects malformed quantities and preserves owner and exact SKU suffix identity', () => {
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'reconciliation-identity-'));
+  const chassisDir = path.join(tempDir, 'DL380_Gen12');
+  fs.mkdirSync(chassisDir);
+  safeWriteJsonAtomic(path.join(chassisDir, 'DL380_Gen12_Catalog.json'), {
+    metadata: { chassis: 'DL380_Gen12', scrapeDate: new Date().toISOString() },
+    entries: [{ skus: [{ 'Product #': 'P74573-B21' }, { 'Product #': 'P74573-B21#ABA' }] }]
+  });
+  try {
+    const original = { sku: 'P74573-B21', quantity: 1, configurationId: 'node-A', description: 'CTO Server' };
+    const proposed = { skuPartsList: [original] };
+    assert.equal(verifyVendorBOM([original], proposed, chassisDir).is100PercentMatch, true);
+    const moved = verifyVendorBOM([{ ...original, configurationId: 'node-B' }], proposed, chassisDir);
+    assert.equal(moved.is100PercentMatch, false);
+    assert.equal(moved.discrepancies.addedByVendor.length, 1);
+    assert.equal(moved.discrepancies.removedByVendor.length, 1);
+    assert.ok(moved.discrepancies.addedByVendor[0].scopeIdentity.includes('node-B'));
+    const suffixed = verifyVendorBOM([{ ...original, sku: 'P74573-B21#ABB' }], {
+      skuPartsList: [{ ...original, sku: 'P74573-B21#ABA' }]
+    }, chassisDir);
+    assert.equal(suffixed.is100PercentMatch, false);
+    assert.equal(suffixed.discrepancies.uncatalogedSkus.length, 1);
+    const single = auditSingleVendorBOM([{ ...original, sku: 'P74573-B21#ABB' }], chassisDir);
+    assert.equal(single.isCatalogClean, false);
+    for (const quantity of [0, -1, 1.5, NaN, undefined]) {
+      const malformed = [{ ...original, quantity }];
+      assert.throws(() => verifyVendorBOM(malformed, proposed, chassisDir), /positive integer quantity/);
+      assert.throws(() => auditSingleVendorBOM(malformed, chassisDir), /positive integer quantity/);
+    }
+  } finally { fs.rmSync(tempDir, { recursive: true, force: true }); }
 });
 
 test('Core Contracts — Aspect Registry evaluates domain checkers dynamically', () => {

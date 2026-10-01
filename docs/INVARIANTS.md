@@ -749,4 +749,33 @@ To ensure that future AI agents (Antigravity, Codex, Claude, or subagents) never
   - This planned delivery block must emit `status: 'ACTION_REQUIRED'` on the evaluation payload, reserving `status: 'ERROR'` strictly for unhandled process crashes, corrupt inputs, or missing catalog dependencies.
   - API routers (`evaluation.cjs`) and frontend normalizers (`evalNormalizer.js`) must always broadcast and normalize the full evaluation data payload (`evalResults`, `items`, `violations`, `conflictGraph`, `rankedSolutions`) when findings exist, ensuring the UI remains interactive and enabling partner quote reconciliation and alternative topology selection.
 
+- **INV-141: Single-File Audit vs. Two-Baseline Reconciliation Honesty**:
+  - When evaluating a vendor quote without a valid, non-empty customer tender baseline (`customerItems.length === 0` or empty file), the presales query router (`route_query.js`) MUST route execution as `SINGLE_FILE_AUDIT` (`isTwoBaselineComparison: false`).
+  - It is strictly prohibited to declare `status: 'RECONCILIATION_COMPLETE'`, invent comparison deltas (`addedByVendor: []`, `removedByVendor: []`), or suggest zero discrepancies when no comparison tender existed.
+  - The audit report must clearly disclose that comparison against a customer tender was omitted due to missing or empty input, and suggest supplying a valid customer tender.
+
+- **INV-142: Cross-Process Cryptographic Secret Inheritance**:
+  - Cryptographic delivery authorization (`issueDeliveryAuthorization`) and verification (`verifyDeliveryAuthorization`) require identical HMAC signing secrets across parent processes (e.g. `dashboard/server.cjs`), child evaluators (`eval_boq.js` spawned via `child_process.spawn`), and CLI runners.
+  - `workflow_contract.js` MUST export `DELIVERY_AUTH_SECRET` into `process.env` upon module load if unset (attempting `.env` first, falling back to a secure random hex buffer), guaranteeing all descendant processes inheriting `process.env` share the identical secret.
+
+- **INV-143: Delimiter- and Case-Agnostic Chassis Scope Binding**:
+  - Delivery authorization tokens and portal validation receipts must normalize chassis keys (`String(chassis).trim().toLowerCase().replace(/[\s-]+/g, '_')`) across underscores, spaces, hyphens, and casing.
+  - Cryptographic scope verification must never reject valid tokens or receipts due to trivial presentation differences (e.g. `DL380_Gen12` vs `DL380 Gen12`).
+
+- **INV-144: Evidence Ledger Phase 8 Lifecycle Sequence Invariant**:
+  - Evidence ledger Phase 8 (`Multi-Rank Solution Deliverables & Excel Generation`) encapsulates all customer deliverables, including the executive evaluation report markdown (`ANALYSIS_REPORT`).
+  - All deliverables must be written to disk and recorded into the ledger before Phase 8 completes. Calling `completePhase(8)` out-of-order after Phase 9 (`Continuous Learning Reflection`) has started or completed is strictly prohibited.
+
+- **INV-145: Weighted Average Pricing for Merged Duplicate Rows in BOM Verification**:
+  - When `aggregateItemQuantities` encounters duplicate rows for the same SKU and scope identity with differing unit prices, it must compute the weighted average unit price (`(priorExt + newExt) / totalQty`) rather than silently discarding subsequent row prices.
+
+- **INV-146: Exporter Delivery Authorization Boundary Enforcement**:
+  - Every public workbook and tabular export function (`generateRankedPortalWorkbook`, `generateProfessionalBOQ`, `generateMultiRankSolutionWorkbook`, `generateMultiRankSolutionCsv`, and `generatePartnerPortalUploadBOM` when passed an evaluation object with an `exportPath`) MUST enforce `_enforceDeliveryAuthorization`.
+  - No public export API may allow exporting unvalidated or unbuildable deliverables to disk without valid cryptographic authorization or explicit diagnostic mode.
+
+- **INV-147: Strict Sequential Cursor Readback Verification Without Semantic Loss**:
+  - `verifySemanticProjectionReadback` compares projected Markdown text against indexed NotebookLM response bodies using sequential cursor consumption (`actual.indexOf(line, cursor)`).
+  - The verifier must preserve exact case, mathematical and thermal operators (`≤`, `≥`, `<`, `>`), decimal prices, unit symbols, and SKU punctuation while normalizing only formatting artifacts (whitespace, Markdown table borders, and shared text tags). Expected lines must appear sequentially, and each match advances the cursor so earlier duplicate text cannot conceal a missing later row.
+
+
 

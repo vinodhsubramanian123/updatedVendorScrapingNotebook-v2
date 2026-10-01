@@ -3,7 +3,40 @@
 const test = require('node:test');
 const assert = require('node:assert');
 const path = require('path');
+const fs = require('fs');
+const os = require('os');
 const { classifyQueryIntent, executeRoutedQuery } = require('../../scripts/evaluators/route_query.js');
+
+test('QueryRouter — workbook handoff uses canonical pipeline and rejects unsigned or mutated delivery', async t => {
+  const pipeline = require('../../scripts/evaluators/eval_boq.js');
+  const { deliveryFingerprint } = require('../../scripts/lib/boq/solution_evidence');
+  const { issueDeliveryAuthorization } = require('../../scripts/lib/contracts/workflow_contract');
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'workbook-route-'));
+  try {
+    const exportPath = path.join(tempDir, 'fixture.xlsx');
+    fs.writeFileSync(exportPath, 'fixture: exporter content verified separately');
+    const evaluation = { chassis: 'DL380_Gen12', items: [{ sku: 'P74573-B21', quantity: 2 }],
+      acceptanceGate: { isValid: true }, portalWorkbookPath: exportPath };
+    const mocked = t.mock.method(pipeline, 'runEvaluationPipeline', async () => evaluation);
+    const context = { intent: 'WORKBOOK_GENERATION', chassisName: 'DL380_Gen12', items: evaluation.items, offlineMode: true };
+    const request = () => executeRoutedQuery('Generate Partner Portal upload Excel sheet for DL380 Gen12', context);
+    const unsigned = await request();
+    assert.strictEqual(unsigned.result.status, 'VALIDATION_REQUIRED');
+    assert.deepStrictEqual(mocked.mock.calls[0].arguments[0].inputItems, context.items);
+    assert.strictEqual(mocked.mock.calls[0].arguments[0].OFFLINE_MODE, true);
+    assert.strictEqual(mocked.mock.calls[0].arguments[0].JSON_MODE, true);
+
+    evaluation.deliveryAuthorization = issueDeliveryAuthorization({
+      manifestFingerprint: deliveryFingerprint(evaluation), chassisKey: 'DL380_Gen12',
+      acceptanceDecision: { isApproved: true }
+    });
+    const authorized = await request();
+    assert.strictEqual(authorized.result.status, 'GENERATED_DRAFT');
+    assert.strictEqual(authorized.result.exportPath, exportPath);
+    evaluation.items[0].quantity = 3;
+    assert.strictEqual((await request()).result.status, 'VALIDATION_REQUIRED');
+  } finally { fs.rmSync(tempDir, { recursive: true, force: true }); }
+});
 
 test('QueryRouter — Correctly classifies FREEFORM_QA questions', () => {
   const q = 'Can I install 4x L40S GPUs in a DL380 Gen12? What power cables are required?';

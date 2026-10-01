@@ -54,24 +54,38 @@ function projectWorkbookToMarkdown(tabs, options = {}) {
 function verifySemanticProjectionReadback(payload, indexedContent) {
   const projection = String(payload).split('## Complete workbook text projection')[1];
   if (!projection) throw new Error('SEMANTIC_PROJECTION_MISSING');
-  const strings = value => typeof value === 'string' ? [value] :
-    value && typeof value === 'object' ? Object.values(value).flatMap(strings) : [];
   let parsed;
   try { parsed = JSON.parse(indexedContent); } catch (_) { parsed = indexedContent; }
-  const normalize = value => String(value).replace(/&(?:amp|lt|gt|#124);|<br>/g, ' ')
-    .replace(/[^\p{L}\p{N}]+/gu, ' ').trim().toLowerCase();
-  const actual = normalize(strings(parsed).join('\n'));
-  const expectedLines = projection.split('\n').map(normalize).filter(line => line.length > 3);
+  // Only indexed source content is evidence; titles and other response metadata
+  // must never fill a hole in the indexed body.
+  const body = typeof parsed === 'string' ? parsed : parsed?.content;
+  if (typeof body !== 'string' || !body.trim()) throw new Error('SEMANTIC_PROJECTION_READBACK_EMPTY');
+  const normalize = value => String(value)
+    .replace(/<br\s*\/?\s*>/gi, ' ')
+    .replace(/&(?:amp|lt|gt|#124);/g, entity => ({ '&amp;': '&', '&lt;': '<', '&gt;': '>', '&#124;': '|' })[entity])
+    .replace(/^\s*\|(?:\s*:?-+:?\s*\|)+\s*$/gm, '')
+    .replace(/^\s*#{1,6}\s+/gm, '')
+    .replace(/\[(TEXT_\d+)\]/g, '$1')
+    .replace(/\|/g, '').replace(/\s/g, '');
+  const actual = normalize(body);
+  const expectedLines = projection.split('\n').map(normalize).filter(Boolean);
   // NotebookLM can insert whitespace inside words and SKUs in long cells.
   // Compare every normalized character in order, never a percentage of chunks:
   // a missing price, SKU or prerequisite must still fail readback.
-  const compactActual = actual.replace(/\s/g, '');
+  // Consume matches in order, so an earlier duplicate cannot conceal a missing
+  // row or a value moved to the wrong sheet. Keep case, prices and operators.
+  const heading = normalize('Complete workbook text projection');
+  let cursor = actual.indexOf(heading);
+  if (cursor < 0) throw new Error('SEMANTIC_PROJECTION_READBACK_INCOMPLETE: heading');
+  cursor += heading.length;
 
   for (let i = 0; i < expectedLines.length; i++) {
     const line = expectedLines[i];
-    if (!actual.includes(line) && !compactActual.includes(line.replace(/\s/g, ''))) {
+    const position = actual.indexOf(line, cursor);
+    if (position < 0) {
       throw new Error(`SEMANTIC_PROJECTION_READBACK_INCOMPLETE: normalized line ${i + 1}`);
     }
+    cursor = position + line.length;
   }
   return true;
 }

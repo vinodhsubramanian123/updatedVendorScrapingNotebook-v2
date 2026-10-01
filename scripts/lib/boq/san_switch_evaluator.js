@@ -59,7 +59,12 @@ function evaluateSanSwitch(items, catalogData, targetDir, chassisInfo, rules, op
     }
   }
   const retained = items.filter(item => !excluded.has(cleanBaseSKU(item.sku)));
-  const portalAccepted = receiptMatches(receipt, retained);
+  const portalAccepted = receiptMatches(receipt, retained, {
+    chassisKey: productId,
+    baseSku: chassisInfo.baseSku || bundle?.baseSku,
+    configurationName: options.configurationName,
+    selectors: options.selectors
+  });
   if (portalAccepted) aspectChecks[2].detail = 'Scoped hardware and product-qualified services verified; corrected candidate matches the complete live CLIC receipt.';
   const parts = retained.map(item => {
     const record = index.get(cleanBaseSKU(item.sku));
@@ -75,6 +80,8 @@ function evaluateSanSwitch(items, catalogData, targetDir, chassisInfo, rules, op
   const unresolved = parts.filter(item => item.priceStatus === 'UNRESOLVED').map(item => item.sku);
   const subtotal = parts.reduce((sum, item) => sum + (item.extendedPriceUsd || 0), 0);
   const candidate = {
+    chassis: productId, baseSku: chassisInfo.baseSku || bundle?.baseSku,
+    configurationName: options.configurationName, selectors: options.selectors,
     rank: 1, name: 'SAN bundle reconciliation', tierTitle: 'SAN bundle reconciliation',
     skuPartsList: parts, estimatedCostUsd: unresolved.length ? null : subtotal,
     pricingComplete: unresolved.length === 0, unresolvedPriceSkus: unresolved,
