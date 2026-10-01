@@ -112,7 +112,22 @@ async function extractTablesAsRows(ws, sendCommand, scopeSelector = null) {
               const pid = (pidSpan.innerText || pidSpan.textContent || '').trim();
               cells.push(badge ? (pid + ' [' + badge + ']') : pid);
             } else {
-              const cellText = (cell.innerText || cell.textContent || '').trim();
+              let cellText = (cell.innerText || cell.textContent || '').trim();
+              if (!cellText) {
+                const hasCheckImg = cell.querySelector('img[src*="check" i], img[src*="tick" i], img[src*="rec" i], img[title*="recommend" i], img[alt*="recommend" i]');
+                const hasCheckIcon = cell.querySelector('[class*="check" i], [class*="tick" i], [class*="recommend" i], svg');
+                const hasCheckedInput = cell.querySelector('input[type="checkbox"]:checked, input[type="radio"]:checked');
+                const ariaOrTitle = cell.getAttribute('aria-label') || cell.getAttribute('title') ||
+                  cell.querySelector('[aria-label*="recommend" i], [title*="recommend" i]')?.getAttribute('title') ||
+                  cell.querySelector('[aria-label*="recommend" i], [title*="recommend" i]')?.getAttribute('aria-label') || '';
+                if (hasCheckImg || hasCheckIcon || /recommend/i.test(ariaOrTitle)) {
+                  cellText = 'Yes';
+                } else if (hasCheckedInput) {
+                  cellText = 'Selected';
+                }
+              } else if (/[✓✔√\u2713\u2714]/.test(cellText)) {
+                cellText = 'Yes';
+              }
               cells.push(cellText);
             }
           });

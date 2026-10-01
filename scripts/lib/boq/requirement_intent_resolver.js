@@ -93,7 +93,10 @@ function flattenCatalog(catalogData) {
         parentCategory: entry.parentCategory || '',
         subCategory: entry.subCategory || '',
         lifecycleStatus: skuData['Lifecycle Status'] || skuData.Status || '',
-        listPrice: Number(skuData.listPrice || skuData['Unit Price (USD)'] || 0)
+        listPrice: Number(skuData.listPrice || skuData['Unit Price (USD)'] || 0),
+        hpeRecommended: skuData['HPE Recommended'] || skuData.hpeRecommended || '',
+        leadTime: skuData['Lead Time'] || skuData.leadTime || '',
+        vendorAttributes: skuData.vendorAttributes || {}
       });
     }
   }
@@ -117,10 +120,35 @@ function scoreCandidate(candidate, line, suspectedSku, roleInference) {
   const numeric = requestedNumbers.size ? jaccard(requestedNumbers, candidateNumbers) : 0.5;
   const sku = suspectedSku ? skuSimilarity(suspectedSku, candidate.sku) : 0;
   const lifecyclePenalty = /\b(?:ob|obsolete|eol|discontinued)\b/i.test(candidate.lifecycleStatus) ? 0.2 : 0;
+
+  let recommendationBoost = 0;
+  if (/\b(?:recommended|hpe\s*recommended|hpe-recommended)\b/i.test(line)) {
+    if (candidate.hpeRecommended === 'Yes' || candidate.vendorAttributes?.hpeRecommended === 'Yes') {
+      recommendationBoost = 0.15;
+    }
+  }
+
+  let workloadBoost = 0;
+  if (/\bread\s*intensive\b|\bri\b/i.test(line) && /\bread\s*intensive\b|\bri\b/i.test(candidate.description)) {
+    workloadBoost = 0.1;
+  } else if (/\bmixed\s*use\b|\bmu\b/i.test(line) && /\bmixed\s*use\b|\bmu\b/i.test(candidate.description)) {
+    workloadBoost = 0.1;
+  } else if (/\bwrite\s*intensive\b|\bwi\b/i.test(line) && /\bwrite\s*intensive\b|\bwi\b/i.test(candidate.description)) {
+    workloadBoost = 0.1;
+  }
+
+  let leadTimeBoost = 0;
+  if (/\b(?:short(?:est)?\s*lead\s*time|fast(?:est)?\s*delivery|immediate|quick)\b/i.test(line)) {
+    const lt = String(candidate.leadTime || candidate.vendorAttributes?.leadTime || '').toLowerCase();
+    if (lt.includes('short') || lt.includes('stock') || lt.includes('standard') || lt.includes('fast')) {
+      leadTimeBoost = 0.05;
+    }
+  }
+
   const score = Math.max(0, Math.min(1,
-    (0.42 * roleInference.certainty) + (0.33 * words) + (0.2 * numeric) + (0.05 * sku) - lifecyclePenalty
+    (0.42 * roleInference.certainty) + (0.33 * words) + (0.2 * numeric) + (0.05 * sku) + recommendationBoost + workloadBoost + leadTimeBoost - lifecyclePenalty
   ));
-  return { ...candidate, score: Number(score.toFixed(4)), scoreBreakdown: { category: roleInference.certainty, semantic: words, numeric, skuTieBreak: sku, lifecyclePenalty } };
+  return { ...candidate, score: Number(score.toFixed(4)), scoreBreakdown: { category: roleInference.certainty, semantic: words, numeric, skuTieBreak: sku, recommendationBoost, workloadBoost, leadTimeBoost, lifecyclePenalty } };
 }
 
 function extractRequirementIntent(rawLines) {

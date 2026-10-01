@@ -8,7 +8,7 @@
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
     "scrapeDate": "2026-09-30",
     "scrapeTimestamp": "2026-09-30T18:45:29.474Z",
-    "builtAt": "2026-09-30T18:45:31.606Z",
+    "builtAt": "2026-10-01T05:08:50.115Z",
     "totalSubcategories": 68,
     "totalUniqueSKUs": 603,
     "totalTables": 96,
@@ -21,7 +21,7 @@
       "priceAndAttributeChanged": 16,
       "unchanged": 0,
       "reinstated": 0,
-      "discontinuedTotal": 18
+      "discontinuedTotal": 20
     },
     "historySnapshot": "catalog_2026-09-30.json",
     "priceAnalytics": {
@@ -527,15 +527,15 @@
     },
     "incrementalStats": {
       "totalScrapedSkus": 606,
-      "unchangedSkusCount": 5,
-      "modifiedSkusCount": 596,
-      "addedSkusCount": 5,
-      "removedSkusCount": 4,
+      "unchangedSkusCount": 606,
+      "modifiedSkusCount": 0,
+      "addedSkusCount": 0,
+      "removedSkusCount": 0,
       "estimatedTokensSaved": 0,
       "estimatedProcessingTimeSavedMs": 0
     },
     "chassisVariantCount": 6,
-    "rulesGeneratedAt": "2026-09-30T18:45:32.474Z"
+    "rulesGeneratedAt": "2026-10-01T05:08:50.871Z"
   },
   "chassisVariants": [
     {
@@ -730,6 +730,624 @@
       "maxQty": 1,
       "sourceSnapshot": "catalog_2026-09-09.json"
     }
+  },
+  "smartChassisCombinations": [
+    {
+      "patternId": "dl380pat001b94fb",
+      "description": "1 drive cage(s) (8SFF x4 U.3 TM Drive Cage)",
+      "price": 1567,
+      "qtyDriveCages": 1,
+      "qtyBays": 8,
+      "qtyPciSlots": 3,
+      "controllers": "DA",
+      "source": "HPE OCA Top Selling Smart Chassis Combinations"
+    },
+    {
+      "patternId": "dl380pat00267c0e",
+      "description": "1 drive cage(s) (8SFF x4 U.3 TM Drive Cage) + 1 riser card(s) (x8/x16/x8 Secondary Riser)",
+      "price": 1832,
+      "qtyDriveCages": 1,
+      "qtyBays": 8,
+      "qtyPciSlots": 6,
+      "controllers": "DA",
+      "source": "HPE OCA Top Selling Smart Chassis Combinations"
+    },
+    {
+      "patternId": "dl380pat0030031a",
+      "description": "1 drive cage(s) (8SFF x4 U.3 TM Drive Cage) + 2 riser card(s) (x16/x16/x16 Primary Riser; x16/x16/x16 Secondary Riser) + 4 riser accessory item(s) (x8 Riser Enablement Cable)",
+      "price": 2530,
+      "qtyDriveCages": 1,
+      "qtyBays": 8,
+      "qtyPciSlots": 6,
+      "controllers": "DA",
+      "source": "HPE OCA Top Selling Smart Chassis Combinations"
+    },
+    {
+      "patternId": "dl380pat0041042d",
+      "description": "1 drive cage(s) (8SFF x1 U.3 TM Drive Cage) + 1 OCP controller(s) (MR416i-o)",
+      "price": 6020,
+      "qtyDriveCages": 1,
+      "qtyBays": 8,
+      "qtyPciSlots": 3,
+      "controllers": "MR416I-O",
+      "source": "HPE OCA Top Selling Smart Chassis Combinations"
+    },
+    {
+      "patternId": "dl380pat0059c6f3",
+      "description": "1 drive cage(s) (8SFF x1 U.3 TM Drive Cage) + 1 OCP controller(s) (MR408i-o)",
+      "price": 4920,
+      "qtyDriveCages": 1,
+      "qtyBays": 8,
+      "qtyPciSlots": 3,
+      "controllers": "MR408I-O",
+      "source": "HPE OCA Top Selling Smart Chassis Combinations"
+    },
+    {
+      "patternId": "dl380pat00693560",
+      "description": "1 drive cage(s) (8SFF x1 U.3 TM Drive Cage) + 1 PCIe controller(s) (MR416i-p)",
+      "price": 6356,
+      "qtyDriveCages": 1,
+      "qtyBays": 8,
+      "qtyPciSlots": 3,
+      "controllers": "MR416I-P",
+      "source": "HPE OCA Top Selling Smart Chassis Combinations"
+    },
+    {
+      "patternId": "dl380pat00772cf8",
+      "description": "1 drive cage(s) (8SFF x1 U.3 TM Drive Cage) + 1 PCIe controller(s) (MR408i-p)",
+      "price": 5056,
+      "qtyDriveCages": 1,
+      "qtyBays": 8,
+      "qtyPciSlots": 3,
+      "controllers": "MR408I-P",
+      "source": "HPE OCA Top Selling Smart Chassis Combinations"
+    },
+    {
+      "patternId": "dl380pat011166bc",
+      "description": "1 drive cage(s) (8SFF x1 U.3 TM Drive Cage) + 1 riser card(s) (x8/x16/x8 Secondary Riser) + 1 PCIe controller(s) (MR408i-p)",
+      "price": 5321,
+      "qtyDriveCages": 1,
+      "qtyBays": 8,
+      "qtyPciSlots": 6,
+      "controllers": "MR408I-P",
+      "source": "HPE OCA Top Selling Smart Chassis Combinations"
+    },
+    {
+      "patternId": "dl380pat0089a7e1",
+      "description": "1 drive cage(s) (8SFF x1 U.3 TM Drive Cage) + 1 riser card(s) (x8/x16/x8 Secondary Riser) + 1 OCP controller(s) (MR416i-o)",
+      "price": 6285,
+      "qtyDriveCages": 1,
+      "qtyBays": 8,
+      "qtyPciSlots": 6,
+      "controllers": "MR416I-O",
+      "source": "HPE OCA Top Selling Smart Chassis Combinations"
+    },
+    {
+      "patternId": "dl380pat0096409d",
+      "description": "1 drive cage(s) (8SFF x1 U.3 TM Drive Cage) + 1 riser card(s) (x8/x16/x8 Secondary Riser) + 1 PCIe controller(s) (MR416i-p)",
+      "price": 6621,
+      "qtyDriveCages": 1,
+      "qtyBays": 8,
+      "qtyPciSlots": 6,
+      "controllers": "MR416I-P",
+      "source": "HPE OCA Top Selling Smart Chassis Combinations"
+    },
+    {
+      "patternId": "dl380pat01073679",
+      "description": "1 drive cage(s) (8SFF x1 U.3 TM Drive Cage) + 1 riser card(s) (x8/x16/x8 Secondary Riser) + 1 OCP controller(s) (MR408i-o)",
+      "price": 5185,
+      "qtyDriveCages": 1,
+      "qtyBays": 8,
+      "qtyPciSlots": 6,
+      "controllers": "MR408I-O",
+      "source": "HPE OCA Top Selling Smart Chassis Combinations"
+    },
+    {
+      "patternId": "dl380pat0127a94e",
+      "description": "3 drive cage(s) (8SFF x4 U.3 TM Drive Cage) + 2 riser card(s) (x16/x16/x16 Primary Riser; x16/x16/x16 Secondary Riser)",
+      "price": 6870,
+      "qtyDriveCages": 3,
+      "qtyBays": 24,
+      "qtyPciSlots": 6,
+      "controllers": "DA",
+      "source": "HPE OCA Top Selling Smart Chassis Combinations"
+    },
+    {
+      "patternId": "dl380pat013e4966",
+      "description": "3 drive cage(s) (8SFF x4 U.3 TM Drive Cage) + 2 riser card(s) (x16/x16/x16 Primary Riser; x16/x16/x16 Secondary Riser)",
+      "price": 4360,
+      "qtyDriveCages": 3,
+      "qtyBays": 24,
+      "qtyPciSlots": 6,
+      "controllers": "DA",
+      "source": "HPE OCA Top Selling Smart Chassis Combinations"
+    },
+    {
+      "patternId": "dl380smtch_1-0",
+      "description": "Smart Chassis Selection:",
+      "price": 0,
+      "qtyDriveCages": 0,
+      "qtyBays": 0,
+      "qtyPciSlots": 3,
+      "controllers": "DA",
+      "source": "HPE OCA Top Selling Smart Chassis Combinations"
+    },
+    {
+      "patternId": "dl380smtch_1-1",
+      "description": "Smart Chassis Selection:",
+      "price": 0,
+      "qtyDriveCages": 0,
+      "qtyBays": 0,
+      "qtyPciSlots": 3,
+      "controllers": "DA",
+      "source": "HPE OCA Top Selling Smart Chassis Combinations"
+    },
+    {
+      "patternId": "dl380smtch_1-2",
+      "description": "Smart Chassis Selection:",
+      "price": 0,
+      "qtyDriveCages": 0,
+      "qtyBays": 0,
+      "qtyPciSlots": 3,
+      "controllers": "DA",
+      "source": "HPE OCA Top Selling Smart Chassis Combinations"
+    }
+  ],
+  "solutionManifest": {
+    "commercialBreakdown": {
+      "hardware": 46095,
+      "support": 35916,
+      "services": 1234,
+      "software": 1220,
+      "total": 84465
+    },
+    "deliveryAndSupport": {
+      "iconId": "I156472454-01",
+      "edt": "18 - 23 days",
+      "configName": "OCA Config 2",
+      "attachedServices": [
+        {
+          "deviceTarget": "DL380 Gen12 #1\nP73282-B21CTO",
+          "reactiveSupport": "HU4A6A50C4V HPE 5Y Tech Care Essential Service",
+          "installation": "H39VPA1#5A6 HPE Technology Remote Installation and Startup Service",
+          "deviceSpecific": ""
+        },
+        {
+          "deviceTarget": "Intel Xeon 6520P 2.4GHz 24-core 210W Processor for HPE",
+          "reactiveSupport": "HU4A6A5#699 HPE 5Y Tech Care Essential Service",
+          "installation": "N/A",
+          "deviceSpecific": ""
+        },
+        {
+          "deviceTarget": "HPE 32GB (1x32GB) Dual Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit",
+          "reactiveSupport": "HU4A6A5#699 HPE 5Y Tech Care Essential Service",
+          "installation": "N/A",
+          "deviceSpecific": ""
+        },
+        {
+          "deviceTarget": "Broadcom BCM5719 Ethernet 1Gb 4-port BASE-T OCP3 Adapter for HPE",
+          "reactiveSupport": "HU4A6A5#699 HPE 5Y Tech Care Essential Service",
+          "installation": "N/A",
+          "deviceSpecific": ""
+        },
+        {
+          "deviceTarget": "HPE DL380Gen12 Default Primary Riser (x8/x16/x8)",
+          "reactiveSupport": "",
+          "installation": "N/A",
+          "deviceSpecific": ""
+        },
+        {
+          "deviceTarget": "HPE 1000W Flex Slot Titanium Hot Plug Power Supply Kit",
+          "reactiveSupport": "HU4A6A5#699 HPE 5Y Tech Care Essential Service",
+          "installation": "N/A",
+          "deviceSpecific": ""
+        },
+        {
+          "deviceTarget": "HPE ProLiant DL380/DL560 Gen11 2U High Performance Fan Kit",
+          "reactiveSupport": "HU4A6A5#699 HPE 5Y Tech Care Essential Service",
+          "installation": "N/A",
+          "deviceSpecific": ""
+        },
+        {
+          "deviceTarget": "HPE C13 - C14 250V 10Amp 2m FIO Power Cord",
+          "reactiveSupport": "HU4A6A5#699 HPE 5Y Tech Care Essential Service",
+          "installation": "N/A",
+          "deviceSpecific": ""
+        },
+        {
+          "deviceTarget": "HPE iLO Advanced 1-server License with 3yr Support on iLO Licensed Features",
+          "reactiveSupport": "HU4A6A5#R2M HPE 5Y Tech Care Essential Service",
+          "installation": "N/A",
+          "deviceSpecific": ""
+        }
+      ]
+    },
+    "baselineHierarchy": [
+      {
+        "hierarchyLevel": "(1)",
+        "sku": "P73282-B21",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-order Server",
+        "configName": "DL380 Gen12 #1",
+        "unitPrice": 5584,
+        "extPrice": 5584,
+        "startDate": "02/24/2025",
+        "discDate": "06/30/2029"
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "P73282-B21",
+        "optionCode": "B19",
+        "quantity": 1,
+        "description": "HPE DL380 Gen12 SFF NC Configure-to-order Server",
+        "configName": "DL380 Gen12 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "02/24/2025",
+        "discDate": "06/30/2029"
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "P74568-B21",
+        "optionCode": "",
+        "quantity": 2,
+        "description": "Intel Xeon 6520P 2.4GHz 24-core 210W Processor for HPE",
+        "configName": "DL380 Gen12 #1",
+        "unitPrice": 4242,
+        "extPrice": 8484,
+        "startDate": "02/24/2025",
+        "discDate": "06/30/2029"
+      },
+      {
+        "hierarchyLevel": "(3)",
+        "sku": "P74568-B21",
+        "optionCode": "0D1",
+        "quantity": 2,
+        "description": "Factory Integrated",
+        "configName": "DL380 Gen12 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "02/24/2025",
+        "discDate": "06/30/2029"
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "P69727-F21",
+        "optionCode": "",
+        "quantity": 2,
+        "description": "HPE 32GB (1x32GB) Dual Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit",
+        "configName": "DL380 Gen12 #1",
+        "unitPrice": 13909,
+        "extPrice": 27818,
+        "startDate": "04/06/2026",
+        "discDate": "03/31/2028"
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "P51181-B21",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "Broadcom BCM5719 Ethernet 1Gb 4-port BASE-T OCP3 Adapter for HPE",
+        "configName": "DL380 Gen12 #1",
+        "unitPrice": 485,
+        "extPrice": 485,
+        "startDate": "06/06/2022",
+        "discDate": "12/31/2028"
+      },
+      {
+        "hierarchyLevel": "(3)",
+        "sku": "P51181-B21",
+        "optionCode": "0D1",
+        "quantity": 1,
+        "description": "Factory Integrated",
+        "configName": "DL380 Gen12 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "06/06/2022",
+        "discDate": "12/31/2028"
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "P03178-B21",
+        "optionCode": "",
+        "quantity": 2,
+        "description": "HPE 1000W Flex Slot Titanium Hot Plug Power Supply Kit",
+        "configName": "DL380 Gen12 #1",
+        "unitPrice": 926,
+        "extPrice": 1852,
+        "startDate": "12/05/2022",
+        "discDate": "06/30/2028"
+      },
+      {
+        "hierarchyLevel": "(3)",
+        "sku": "P03178-B21",
+        "optionCode": "0D1",
+        "quantity": 2,
+        "description": "Factory Integrated",
+        "configName": "DL380 Gen12 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "12/05/2022",
+        "discDate": "06/30/2028"
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "P78145-B21",
+        "optionCode": "",
+        "quantity": 2,
+        "description": "HPE C13 - C14 250V 10Amp 2m FIO Power Cord",
+        "configName": "DL380 Gen12 #1",
+        "unitPrice": 11,
+        "extPrice": 22,
+        "startDate": "02/03/2025",
+        "discDate": "07/31/2028"
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "BD505A",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE iLO Advanced 1-server License with 3yr Support on iLO Licensed Features",
+        "configName": "DL380 Gen12 #1",
+        "unitPrice": 469,
+        "extPrice": 469,
+        "startDate": "03/26/2012",
+        "discDate": "01/25/2036"
+      },
+      {
+        "hierarchyLevel": "(3)",
+        "sku": "BD505A",
+        "optionCode": "0D1",
+        "quantity": 1,
+        "description": "Factory Integrated",
+        "configName": "DL380 Gen12 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "01/08/2013",
+        "discDate": "01/25/2036"
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "S1A05A",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE Compute Cloud Management Server FIO Enablement",
+        "configName": "DL380 Gen12 #1",
+        "unitPrice": 1,
+        "extPrice": 1,
+        "startDate": "04/01/2024",
+        "discDate": "02/29/2028"
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "P72203-B21",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE ProLiant Compute DL3XX/ML350 Gen12 CPU1 to Rear OCP SlotB x8 Cable Kit",
+        "configName": "DL380 Gen12 #1",
+        "unitPrice": 77,
+        "extPrice": 77,
+        "startDate": "02/24/2025",
+        "discDate": "06/30/2029"
+      },
+      {
+        "hierarchyLevel": "(3)",
+        "sku": "P72203-B21",
+        "optionCode": "0D1",
+        "quantity": 1,
+        "description": "Factory Integrated",
+        "configName": "DL380 Gen12 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "02/24/2025",
+        "discDate": "06/30/2029"
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "P48820-B21",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE ProLiant DL380/DL560 Gen11 2U High Performance Fan Kit",
+        "configName": "DL380 Gen12 #1",
+        "unitPrice": 972,
+        "extPrice": 972,
+        "startDate": "01/10/2023",
+        "discDate": "06/30/2029"
+      },
+      {
+        "hierarchyLevel": "(3)",
+        "sku": "P48820-B21",
+        "optionCode": "0D1",
+        "quantity": 1,
+        "description": "Factory Integrated",
+        "configName": "DL380 Gen12 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "01/10/2023",
+        "discDate": "06/30/2029"
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "P52341-B21",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit",
+        "configName": "DL380 Gen12 #1",
+        "unitPrice": 164,
+        "extPrice": 164,
+        "startDate": "11/10/2022",
+        "discDate": "05/31/2029"
+      },
+      {
+        "hierarchyLevel": "(3)",
+        "sku": "P52341-B21",
+        "optionCode": "0D1",
+        "quantity": 1,
+        "description": "Factory Integrated",
+        "configName": "DL380 Gen12 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "11/10/2022",
+        "discDate": "05/31/2029"
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "P73325-B21",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE ProLiant Compute Localization FIO Kit",
+        "configName": "DL380 Gen12 #1",
+        "unitPrice": 4,
+        "extPrice": 4,
+        "startDate": "02/24/2025",
+        "discDate": "02/28/2028"
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "P74792-B21",
+        "optionCode": "",
+        "quantity": 2,
+        "description": "HPE ProLiant Compute DL380 Gen12 2U High Performance Heat Sink Kit",
+        "configName": "DL380 Gen12 #1",
+        "unitPrice": 316,
+        "extPrice": 632,
+        "startDate": "02/24/2025",
+        "discDate": "06/30/2029"
+      },
+      {
+        "hierarchyLevel": "(3)",
+        "sku": "P74792-B21",
+        "optionCode": "0D1",
+        "quantity": 2,
+        "description": "Factory Integrated",
+        "configName": "DL380 Gen12 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "02/24/2025",
+        "discDate": "06/30/2029"
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "P79552-B21",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE ProLiant Compute 30C Maximum Recommended Ambient Temperature Configuration Tracking",
+        "configName": "DL380 Gen12 #1",
+        "unitPrice": 1,
+        "extPrice": 1,
+        "startDate": "02/24/2025",
+        "discDate": "06/30/2029"
+      },
+      {
+        "hierarchyLevel": "(1)",
+        "sku": "R7A12AAE",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE Compute Ops Management Standard 5-year Upfront ProLiant SaaS",
+        "configName": "DL380 Gen12 #1",
+        "unitPrice": 750,
+        "extPrice": 750,
+        "startDate": "06/06/2022",
+        "discDate": "02/29/2028"
+      },
+      {
+        "hierarchyLevel": "(1)",
+        "sku": "H1SR4AS",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE Service Credit",
+        "configName": "DL380 Gen12 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "04/27/2016",
+        "discDate": "04/06/2099"
+      },
+      {
+        "hierarchyLevel": "(1)",
+        "sku": "H0JD4A5",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE 5Y Service Credits 10 Per Yr SVC",
+        "configName": "DL380 Gen12 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "05/02/2016",
+        "discDate": "12/31/2099"
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "H0JD4A5",
+        "optionCode": "WFK",
+        "quantity": 1,
+        "description": "HPE 5Y Service Credits Qty 50 SVC",
+        "configName": "DL380 Gen12 #1",
+        "unitPrice": 17526,
+        "extPrice": 17526,
+        "startDate": "05/02/2016",
+        "discDate": "12/31/2099"
+      },
+      {
+        "hierarchyLevel": "(1)",
+        "sku": "H39VPA1",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE Technology Remote Installation and Startup Service",
+        "configName": "DL380 Gen12 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "07/24/2023",
+        "discDate": "12/31/2099"
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "H39VPA1",
+        "optionCode": "5A6",
+        "quantity": 1,
+        "description": "HPE Proliant DL/ML Rmt Startup SVC",
+        "configName": "DL380 Gen12 #1",
+        "unitPrice": 1234,
+        "extPrice": 1234,
+        "startDate": "07/24/2023",
+        "discDate": "12/31/2099"
+      },
+      {
+        "hierarchyLevel": "(1)",
+        "sku": "HU4A6A5",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE 5Y Tech Care Essential Service",
+        "configName": "DL380 Gen12 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "03/01/2021",
+        "discDate": "12/31/2099"
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "HU4A6A5",
+        "optionCode": "R2M",
+        "quantity": 1,
+        "description": "HPE iLO Advanced Non Blade Support",
+        "configName": "DL380 Gen12 #1",
+        "unitPrice": 77,
+        "extPrice": 77,
+        "startDate": "03/01/2021",
+        "discDate": "02/08/2050"
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "HU4A6A50C4V",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE DL380 Gen12 Support",
+        "configName": "DL380 Gen12 #1",
+        "unitPrice": 18313,
+        "extPrice": 18313,
+        "startDate": "03/01/2021",
+        "discDate": "12/31/2099"
+      }
+    ]
   },
   "subcategories": [
     {

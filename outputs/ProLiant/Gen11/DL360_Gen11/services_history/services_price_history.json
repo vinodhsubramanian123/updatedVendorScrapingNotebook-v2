@@ -5143,5 +5143,19 @@
       "price": 0,
       "status": "BASELINE"
     }
+  ],
+  "339781-B21": [
+    {
+      "date": "2026-09-16",
+      "price": 1,
+      "status": "BASELINE"
+    }
+  ],
+  "389692-B21": [
+    {
+      "date": "2026-09-16",
+      "price": 1,
+      "status": "BASELINE"
+    }
   ]
 }

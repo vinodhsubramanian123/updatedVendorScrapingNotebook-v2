@@ -98,8 +98,10 @@ const CatalogMetadataSchema = z.object({
 
 const CatalogMasterSchema = z.object({
   metadata: CatalogMetadataSchema,
-  entries: z.array(CatalogEntrySchema).default([])
-});
+  entries: z.array(CatalogEntrySchema).default([]),
+  smartChassisCombinations: z.array(z.any()).optional(),
+  solutionManifest: z.any().optional()
+}).passthrough();
 
 // ==========================================
 // 3. BOQ Item & Input Schemas

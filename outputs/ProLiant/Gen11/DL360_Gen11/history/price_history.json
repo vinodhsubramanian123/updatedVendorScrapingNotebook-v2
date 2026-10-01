@@ -921,14 +921,16 @@
     {
       "date": "2026-09-16",
       "price": 1,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "389692-B21": [
     {
       "date": "2026-09-16",
       "price": 1,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "P48895-B21": [
@@ -4862,6 +4864,27 @@
     {
       "date": "2026-09-16",
       "price": 0,
+      "status": "BASELINE"
+    }
+  ],
+  "R8W23AAE": [
+    {
+      "date": "2026-09-16",
+      "price": 12980,
+      "status": "BASELINE"
+    }
+  ],
+  "R8W26AAE": [
+    {
+      "date": "2026-09-16",
+      "price": 10810,
+      "status": "BASELINE"
+    }
+  ],
+  "R8W27AAE": [
+    {
+      "date": "2026-09-16",
+      "price": 9190,
       "status": "BASELINE"
     }
   ]

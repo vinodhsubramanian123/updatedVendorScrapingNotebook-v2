@@ -51,7 +51,10 @@ function generateMainSheet(entries, chassisRoot, profile = null) {
       // Rule #20: HPE OCA > Chassis [BaseSKU] > Category > Subcategory
       const hierarchyPath = `HPE OCA > ${chassisRoot} > ${entry.parentCategory} > ${entry.subCategory}`;
 
-      const isRecommended = 'Unknown';
+      let isRecommended = sku['HPE Recommended'] || sku.hpeRecommended || '';
+      if (!isRecommended || isRecommended === 'Unknown') {
+        isRecommended = (entry.parentCategory === 'Chassis' || entry.subCategory === 'Variants') ? 'Unknown' : 'No';
+      }
 
       const vendorAttributes = sku.vendorAttributes && typeof sku.vendorAttributes === 'object'
         ? JSON.stringify(sku.vendorAttributes)
@@ -61,7 +64,7 @@ function generateMainSheet(entries, chassisRoot, profile = null) {
         entry.parentCategory, entry.subCategory, hierarchyPath, role, constraintStr, minQtyVal, maxQtyVal,
         (entry.rules || []).join(' | '), sku['Product #'] || sku.sku || '', sku['Option Type'] || sku.optionType || 'Standard', sku['Description'] || sku.description || '', cleanQty,
         priceVal, sku['Price Delta (USD)'] || '', sku['Extended Price (USD)'] || '',
-        sku['Price per GB (USD)'] || '', sku['HPE Recommended'] || isRecommended,
+        sku['Price per GB (USD)'] || '', isRecommended,
         sku.Availability || sku['Supply Status'] || '', sku['Lead Time'] || sku.estimatedDelivery || '',
         sku['Lead Time Source'] || '', sku['Lifecycle Status'] || sku['CLIC Status'] || sku.lifecycleStatus || '',
         sku['Start Date'] || sku['Start'] || '', sku['Discontinued Date'] || sku['Discontinued'] || '', vendorAttributes,

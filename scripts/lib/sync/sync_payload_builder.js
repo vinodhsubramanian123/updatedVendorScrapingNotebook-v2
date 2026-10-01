@@ -263,6 +263,75 @@ function _buildSameProductVariantSection(chassisName, targetIdentity) {
   return md;
 }
 
+function _buildSmartChassisAndRecommendedSection(catalogData) {
+  let md = '';
+  const smartCombos = catalogData?.smartChassisCombinations || [];
+  if (smartCombos.length > 0) {
+    md += `## 🛠️ 7. Valid Smart Chassis Combinations & Topological Capacity\n\n`;
+    md += `| Pattern ID | Description | Base Price | Drive Cages | Total Bays | PCIe Slots | Controller |\n`;
+    md += `|---|---|---:|---:|---:|---:|---|\n`;
+    smartCombos.forEach(c => {
+      md += `| \`${c.patternId}\` | ${c.description} | $${Number(c.price || 0).toLocaleString()} | ${c.qtyDriveCages} | ${c.qtyBays} | ${c.qtyPciSlots} | ${c.controllers} |\n`;
+    });
+    md += `\n`;
+  }
+
+  const recSkus = [];
+  for (const entry of catalogData?.entries || []) {
+    for (const sku of entry.skus || []) {
+      if (sku['HPE Recommended'] === 'Yes' || sku.vendorRecommended === true) {
+        recSkus.push({
+          sku: sku['Product #'] || sku.sku,
+          description: sku.Description || sku.description || '',
+          category: entry.parentCategory || '',
+          price: sku.listPrice || sku['Unit Price (USD)'] || '0.00',
+          leadTime: sku['Lead Time'] || 'Standard'
+        });
+      }
+    }
+  }
+
+  if (recSkus.length > 0) {
+    md += `## ⭐ 8. Vendor Recommended & Preferred Hardware Options\n\n`;
+    md += `| Product # | Description | Category | List Price (USD) | Lead Time |\n`;
+    md += `|---|---|---|---:|---|\n`;
+    recSkus.forEach(s => {
+      md += `| \`${s.sku}\` | ${s.description} | ${s.category} | $${Number(s.price).toLocaleString()} | ${s.leadTime} |\n`;
+    });
+    md += `\n`;
+  }
+
+  const manifest = catalogData?.solutionManifest;
+  if (manifest) {
+    md += `## 📦 9. Solution Manifest, EDT & Commercial Baseline\n\n`;
+    if (manifest.deliveryAndSupport) {
+      const d = manifest.deliveryAndSupport;
+      md += `**Configuration Profile**: \`${d.configName || 'Standard'}\` | **Icon ID**: \`${d.iconId || 'N/A'}\` | **Estimated Delivery Time (EDT)**: \`${d.edt || 'Standard'}\`\n\n`;
+    }
+    if (manifest.commercialBreakdown) {
+      const c = manifest.commercialBreakdown;
+      md += `| Hardware (USD) | Support (USD) | Services (USD) | Software (USD) | Total Baseline (USD) |\n`;
+      md += `|---:|---:|---:|---:|---:|\n`;
+      md += `| $${Number(c.hardware || 0).toLocaleString()} | $${Number(c.support || 0).toLocaleString()} | $${Number(c.services || 0).toLocaleString()} | $${Number(c.software || 0).toLocaleString()} | **$${Number(c.total || 0).toLocaleString()}** |\n\n`;
+    }
+    if (Array.isArray(manifest.baselineHierarchy) && manifest.baselineHierarchy.length > 0) {
+      md += `### Authoritative Baseline BOM Hierarchy\n\n`;
+      md += `| Level | Product # | Description | Qty | Unit Price (USD) | Ext. Price (USD) |\n`;
+      md += `|---|---|---|---:|---:|---:|\n`;
+      manifest.baselineHierarchy.slice(0, 20).forEach(h => {
+        const pn = h.optionCode ? `${h.sku} ${h.optionCode}` : h.sku;
+        md += `| ${h.hierarchyLevel} | \`${pn}\` | ${h.description} | ${h.quantity} | $${Number(h.unitPrice || 0).toLocaleString()} | $${Number(h.extPrice || 0).toLocaleString()} |\n`;
+      });
+      if (manifest.baselineHierarchy.length > 20) {
+        md += `*... [${manifest.baselineHierarchy.length - 20} additional baseline items omitted for brevity]*\n`;
+      }
+      md += `\n`;
+    }
+  }
+
+  return md;
+}
+
 /**
  * Generate comprehensive markdown sync payload for target chassis
  *
@@ -382,6 +451,7 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
   md += _buildDiscontinuedSection(chassisName, discontinuedRegistry, servicesDiscontinuedRegistry, cfg);
   md += _buildAttributeHistorySection(attributeHistory);
   md += _buildSameProductVariantSection(chassisName, targetIdentity);
+  md += _buildSmartChassisAndRecommendedSection(catalogData);
   // Publish vendor-observed service evidence separately from customer inputs.
   // The receipt is fresh, complete, and icon-scoped; this does not certify a
   // future candidate or make its complete customer manifest an authority.

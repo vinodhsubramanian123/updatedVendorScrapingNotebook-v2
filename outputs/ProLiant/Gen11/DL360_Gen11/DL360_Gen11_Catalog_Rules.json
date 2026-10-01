@@ -4,11 +4,14 @@
     "model": "DL360_Gen11",
     "family": "ProLiant",
     "generation": "Gen11",
+    "pillar": "SERVER",
+    "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
     "scrapeDate": "2026-09-16",
-    "scrapeTimestamp": "2026-09-16T18:14:17.324Z",
-    "totalSubcategories": 66,
-    "totalUniqueSKUs": 694,
-    "totalTables": 103,
+    "scrapeTimestamp": "2026-09-16T14:12:24.753Z",
+    "builtAt": "2026-10-01T05:10:53.975Z",
+    "totalSubcategories": 67,
+    "totalUniqueSKUs": 695,
+    "totalTables": 104,
     "diffSummary": {
       "added": 0,
       "removed": 0,
@@ -16,7 +19,7 @@
       "priceChanged": 0,
       "attributeChanged": 0,
       "priceAndAttributeChanged": 0,
-      "unchanged": 703,
+      "unchanged": 704,
       "reinstated": 0,
       "discontinuedTotal": 0
     },
@@ -145,8 +148,8 @@
           "avgPrice": 47410.15151515151
         },
         "Storage Controllers": {
-          "totalSKUs": 16,
-          "totalPrice": 37010,
+          "totalSKUs": 18,
+          "totalPrice": 37950,
           "minPrice": 1,
           "maxPrice": 11155,
           "subcategories": {
@@ -155,14 +158,19 @@
               "totalPrice": 36175,
               "avgPrice": 5167.857142857143
             },
+            "Smart Storage Batteries": {
+              "totalSKUs": 4,
+              "totalPrice": 942,
+              "avgPrice": 235.5
+            },
             "Internal Storage Controller Cables": {
               "totalSKUs": 0,
               "totalPrice": 0,
               "avgPrice": 0
             },
-            "RAID Settings": {
-              "totalSKUs": 6,
-              "totalPrice": 6,
+            "Storage Controllers Options": {
+              "totalSKUs": 4,
+              "totalPrice": 4,
               "avgPrice": 1
             },
             "INTEL VROC Products-FIO": {
@@ -171,41 +179,7 @@
               "avgPrice": 276.3333333333333
             }
           },
-          "avgPrice": 2313.125
-        },
-        "Cables & Enablement Kits": {
-          "totalSKUs": 33,
-          "totalPrice": 40160,
-          "minPrice": 1,
-          "maxPrice": 14299,
-          "subcategories": {
-            "Smart Storage Batteries": {
-              "totalSKUs": 4,
-              "totalPrice": 942,
-              "avgPrice": 235.5
-            },
-            "Factory Configuration Settings": {
-              "totalSKUs": 1,
-              "totalPrice": 1,
-              "avgPrice": 1
-            },
-            "Solid State Drives (NVMe/SAS/SATA)": {
-              "totalSKUs": 3,
-              "totalPrice": 36397,
-              "avgPrice": 12132.333333333334
-            },
-            "Storage Controller Cable Kits": {
-              "totalSKUs": 4,
-              "totalPrice": 568,
-              "avgPrice": 142
-            },
-            "Power Cords": {
-              "totalSKUs": 21,
-              "totalPrice": 2252,
-              "avgPrice": 107.23809523809524
-            }
-          },
-          "avgPrice": 1216.969696969697
+          "avgPrice": 2108.3333333333335
         },
         "Drive Enclosures / Drives": {
           "totalSKUs": 3,
@@ -370,6 +344,35 @@
           },
           "avgPrice": 22991.143250688707
         },
+        "Cables & Enablement Kits": {
+          "totalSKUs": 29,
+          "totalPrice": 39218,
+          "minPrice": 1,
+          "maxPrice": 14299,
+          "subcategories": {
+            "Factory Configuration Settings": {
+              "totalSKUs": 1,
+              "totalPrice": 1,
+              "avgPrice": 1
+            },
+            "Solid State Drives (NVMe/SAS/SATA)": {
+              "totalSKUs": 3,
+              "totalPrice": 36397,
+              "avgPrice": 12132.333333333334
+            },
+            "Storage Controller Cable Kits": {
+              "totalSKUs": 4,
+              "totalPrice": 568,
+              "avgPrice": 142
+            },
+            "Power Cords": {
+              "totalSKUs": 21,
+              "totalPrice": 2252,
+              "avgPrice": 107.23809523809524
+            }
+          },
+          "avgPrice": 1352.344827586207
+        },
         "Factory Configuration Settings": {
           "totalSKUs": 1,
           "totalPrice": 1,
@@ -480,18 +483,23 @@
           "avgPrice": 0
         },
         "Graphics & GPU": {
-          "totalSKUs": 1,
-          "totalPrice": 10589,
-          "minPrice": 10589,
-          "maxPrice": 10589,
+          "totalSKUs": 4,
+          "totalPrice": 43569,
+          "minPrice": 9190,
+          "maxPrice": 12980,
           "subcategories": {
             "Graphics": {
               "totalSKUs": 1,
               "totalPrice": 10589,
               "avgPrice": 10589
+            },
+            "GPU Accelerators": {
+              "totalSKUs": 3,
+              "totalPrice": 32980,
+              "avgPrice": 10993.333333333334
             }
           },
-          "avgPrice": 10589
+          "avgPrice": 10892.25
         },
         "HPE Compute Ops Management": {
           "totalSKUs": 1,
@@ -524,16 +532,16 @@
       }
     },
     "incrementalStats": {
-      "totalScrapedSkus": 703,
-      "unchangedSkusCount": 87,
-      "modifiedSkusCount": 616,
-      "addedSkusCount": 0,
-      "removedSkusCount": 0,
-      "estimatedTokensSaved": 13050,
-      "estimatedProcessingTimeSavedMs": 17400
+      "totalScrapedSkus": 695,
+      "unchangedSkusCount": 3,
+      "modifiedSkusCount": 689,
+      "addedSkusCount": 3,
+      "removedSkusCount": 2,
+      "estimatedTokensSaved": 0,
+      "estimatedProcessingTimeSavedMs": 0
     },
     "chassisVariantCount": 3,
-    "rulesGeneratedAt": "2026-09-16T18:14:17.659Z"
+    "rulesGeneratedAt": "2026-10-01T05:10:54.367Z"
   },
   "chassisVariants": [
     {
@@ -543,6 +551,8 @@
       "listPrice": 5045,
       "listPriceFormatted": "$5045.00",
       "optionType": "CTO",
+      "hpeRecommended": "Yes",
+      "HPE Recommended": "Unknown",
       "startDate": "2026-09-16",
       "discontinuedDate": "05/31/2028",
       "constraint": "min 1, max 1",
@@ -557,6 +567,8 @@
       "listPrice": 5045,
       "listPriceFormatted": "$5045.00",
       "optionType": "CTO",
+      "hpeRecommended": "Yes",
+      "HPE Recommended": "Unknown",
       "startDate": "2026-09-16",
       "discontinuedDate": "05/31/2028",
       "constraint": "min 1, max 1",
@@ -571,6 +583,8 @@
       "listPrice": 5045,
       "listPriceFormatted": "$5045.00",
       "optionType": "CTO",
+      "hpeRecommended": "Yes",
+      "HPE Recommended": "Unknown",
       "startDate": "2026-09-16",
       "discontinuedDate": "05/31/2028",
       "constraint": "min 1, max 1",
@@ -587,6 +601,8 @@
       "listPrice": 5045,
       "listPriceFormatted": "$5045.00",
       "optionType": "CTO",
+      "hpeRecommended": "Yes",
+      "HPE Recommended": "Unknown",
       "startDate": "2026-09-16",
       "discontinuedDate": "05/31/2028",
       "constraint": "min 1, max 1",
@@ -601,6 +617,8 @@
       "listPrice": 5045,
       "listPriceFormatted": "$5045.00",
       "optionType": "CTO",
+      "hpeRecommended": "Yes",
+      "HPE Recommended": "Unknown",
       "startDate": "2026-09-16",
       "discontinuedDate": "05/31/2028",
       "constraint": "min 1, max 1",
@@ -615,6 +633,8 @@
       "listPrice": 5045,
       "listPriceFormatted": "$5045.00",
       "optionType": "CTO",
+      "hpeRecommended": "Yes",
+      "HPE Recommended": "Unknown",
       "startDate": "2026-09-16",
       "discontinuedDate": "05/31/2028",
       "constraint": "min 1, max 1",
@@ -622,6 +642,427 @@
       "diffStatus": "BASELINE",
       "priceHistoryTrail": "2026-09-16: $5045.00"
     }
+  },
+  "smartChassisCombinations": [],
+  "solutionManifest": {
+    "commercialBreakdown": {
+      "hardware": 71918,
+      "support": 29281,
+      "services": 1432,
+      "software": 1220,
+      "total": 103851
+    },
+    "deliveryAndSupport": {
+      "iconId": "I155720940-01",
+      "edt": "24 - 30 days",
+      "configName": "OCA Config 2",
+      "attachedServices": [
+        {
+          "deviceTarget": "DL360 Gen11 #1\nP52499-B21CTO",
+          "reactiveSupport": "HU4A6A500DJ HPE 5Y Tech Care Essential Service",
+          "installation": "H39VPA1#5A6 HPE Technology Remote Installation and Startup Service",
+          "deviceSpecific": ""
+        },
+        {
+          "deviceTarget": "Intel Xeon-Gold 5416S 2.0GHz 16-core 150W Processor for HPE",
+          "reactiveSupport": "HU4A6A5#699 HPE 5Y Tech Care Essential Service",
+          "installation": "N/A",
+          "deviceSpecific": ""
+        },
+        {
+          "deviceTarget": "HPE 64GB (1x64GB) Dual Rank x4 DDR5-4800 CAS-40-39-39 EC8 Registered Smart FIO Memory Kit",
+          "reactiveSupport": "HU4A6A5#699 HPE 5Y Tech Care Essential Service",
+          "installation": "N/A",
+          "deviceSpecific": ""
+        },
+        {
+          "deviceTarget": "Intel I350-T4 Ethernet 1Gb 4-port BASE-T OCP3 Adapter for HPE",
+          "reactiveSupport": "HU4A6A5#699 HPE 5Y Tech Care Essential Service",
+          "installation": "N/A",
+          "deviceSpecific": ""
+        },
+        {
+          "deviceTarget": "HPE DL360Gen11 Standard Riser",
+          "reactiveSupport": "",
+          "installation": "N/A",
+          "deviceSpecific": ""
+        },
+        {
+          "deviceTarget": "HPE 1000W Flex Slot Titanium Hot Plug Power Supply Kit",
+          "reactiveSupport": "HU4A6A5#699 HPE 5Y Tech Care Essential Service",
+          "installation": "N/A",
+          "deviceSpecific": ""
+        },
+        {
+          "deviceTarget": "HPE iLO Advanced 1-server License with 3yr Support on iLO Licensed Features",
+          "reactiveSupport": "HU4A6A5#R2M HPE 5Y Tech Care Essential Service",
+          "installation": "N/A",
+          "deviceSpecific": ""
+        }
+      ]
+    },
+    "baselineHierarchy": [
+      {
+        "hierarchyLevel": "(1)",
+        "sku": "P52499-B21",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE ProLiant DL360 Gen11 8SFF NC Configure-to-order Server",
+        "configName": "DL360 Gen11 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "",
+        "discDate": ""
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "P52499-B21",
+        "optionCode": "B19",
+        "quantity": 1,
+        "description": "HPE ProLiant DL360 Gen11 8SFF Configure-to-order Server Europe Multilingual",
+        "configName": "DL360 Gen11 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "",
+        "discDate": ""
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "P49653-B21",
+        "optionCode": "",
+        "quantity": 2,
+        "description": "Intel Xeon-Gold 5416S 2.0GHz 16-core 150W Processor for HPE",
+        "configName": "DL360 Gen11 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "",
+        "discDate": ""
+      },
+      {
+        "hierarchyLevel": "(3)",
+        "sku": "P49653-B21",
+        "optionCode": "0D1",
+        "quantity": 2,
+        "description": "Factory Integrated",
+        "configName": "DL360 Gen11 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "",
+        "discDate": ""
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "P43331-F21",
+        "optionCode": "",
+        "quantity": 2,
+        "description": "HPE 64GB (1x64GB) Dual Rank x4 DDR5-4800 CAS-40-39-39 EC8 Registered Smart FIO Memory Kit",
+        "configName": "DL360 Gen11 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "",
+        "discDate": ""
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "P08449-B21",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "Intel I350-T4 Ethernet 1Gb 4-port BASE-T OCP3 Adapter for HPE",
+        "configName": "DL360 Gen11 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "",
+        "discDate": ""
+      },
+      {
+        "hierarchyLevel": "(3)",
+        "sku": "P08449-B21",
+        "optionCode": "0D1",
+        "quantity": 1,
+        "description": "Factory Integrated",
+        "configName": "DL360 Gen11 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "",
+        "discDate": ""
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "P48907-B21",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE ProLiant DL3X0 Gen11 1U Standard Fan Kit",
+        "configName": "DL360 Gen11 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "",
+        "discDate": ""
+      },
+      {
+        "hierarchyLevel": "(3)",
+        "sku": "P48907-B21",
+        "optionCode": "0D1",
+        "quantity": 1,
+        "description": "Factory Integrated",
+        "configName": "DL360 Gen11 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "",
+        "discDate": ""
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "P54697-B21",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE ProLiant DL3X0 Gen11 1U 2P Standard Fan Kit",
+        "configName": "DL360 Gen11 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "",
+        "discDate": ""
+      },
+      {
+        "hierarchyLevel": "(3)",
+        "sku": "P54697-B21",
+        "optionCode": "0D1",
+        "quantity": 1,
+        "description": "Factory Integrated",
+        "configName": "DL360 Gen11 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "",
+        "discDate": ""
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "P03178-B21",
+        "optionCode": "",
+        "quantity": 2,
+        "description": "HPE 1000W Flex Slot Titanium Hot Plug Power Supply Kit",
+        "configName": "DL360 Gen11 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "",
+        "discDate": ""
+      },
+      {
+        "hierarchyLevel": "(3)",
+        "sku": "P03178-B21",
+        "optionCode": "0D1",
+        "quantity": 2,
+        "description": "Factory Integrated",
+        "configName": "DL360 Gen11 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "",
+        "discDate": ""
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "BD505A",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE iLO Advanced 1-server License with 3yr Support on iLO Licensed Features",
+        "configName": "DL360 Gen11 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "",
+        "discDate": ""
+      },
+      {
+        "hierarchyLevel": "(3)",
+        "sku": "BD505A",
+        "optionCode": "0D1",
+        "quantity": 1,
+        "description": "Factory Integrated",
+        "configName": "DL360 Gen11 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "",
+        "discDate": ""
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "S1A05A",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE Compute Cloud Management Server FIO Enablement",
+        "configName": "DL360 Gen11 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "",
+        "discDate": ""
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "P48904-B21",
+        "optionCode": "",
+        "quantity": 2,
+        "description": "HPE ProLiant DL3X0 Gen11 1U Standard Heat Sink Kit",
+        "configName": "DL360 Gen11 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "",
+        "discDate": ""
+      },
+      {
+        "hierarchyLevel": "(3)",
+        "sku": "P48904-B21",
+        "optionCode": "0D1",
+        "quantity": 2,
+        "description": "Factory Integrated",
+        "configName": "DL360 Gen11 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "",
+        "discDate": ""
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "P52341-B21",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit",
+        "configName": "DL360 Gen11 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "",
+        "discDate": ""
+      },
+      {
+        "hierarchyLevel": "(3)",
+        "sku": "P52341-B21",
+        "optionCode": "0D1",
+        "quantity": 1,
+        "description": "Factory Integrated",
+        "configName": "DL360 Gen11 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "",
+        "discDate": ""
+      },
+      {
+        "hierarchyLevel": "(1)",
+        "sku": "R7A12AAE",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE Compute Ops Management Standard 5-year Upfront ProLiant SaaS",
+        "configName": "DL360 Gen11 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "",
+        "discDate": ""
+      },
+      {
+        "hierarchyLevel": "(1)",
+        "sku": "AC111A",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE ProLiant Door/dock Small Logistic Service",
+        "configName": "DL360 Gen11 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "",
+        "discDate": ""
+      },
+      {
+        "hierarchyLevel": "(1)",
+        "sku": "H1SR4AS",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE Service Credit",
+        "configName": "DL360 Gen11 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "",
+        "discDate": ""
+      },
+      {
+        "hierarchyLevel": "(1)",
+        "sku": "H0JD4A5",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE 5Y Service Credits 10 Per Yr SVC",
+        "configName": "DL360 Gen11 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "",
+        "discDate": ""
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "H0JD4A5",
+        "optionCode": "WFK",
+        "quantity": 1,
+        "description": "HPE 5Y Service Credits Qty 50 SVC",
+        "configName": "DL360 Gen11 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "",
+        "discDate": ""
+      },
+      {
+        "hierarchyLevel": "(1)",
+        "sku": "H39VPA1",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE Technology Remote Installation and Startup Service",
+        "configName": "DL360 Gen11 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "",
+        "discDate": ""
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "H39VPA1",
+        "optionCode": "5A6",
+        "quantity": 1,
+        "description": "HPE Proliant DL/ML Rmt Startup SVC",
+        "configName": "DL360 Gen11 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "",
+        "discDate": ""
+      },
+      {
+        "hierarchyLevel": "(1)",
+        "sku": "HU4A6A5",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE 5Y Tech Care Essential Service",
+        "configName": "DL360 Gen11 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "",
+        "discDate": ""
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "HU4A6A5",
+        "optionCode": "R2M",
+        "quantity": 1,
+        "description": "HPE iLO Advanced Non Blade Support",
+        "configName": "DL360 Gen11 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "",
+        "discDate": ""
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "HU4A6A500DJ",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE DL360 Gen11 Support",
+        "configName": "DL360 Gen11 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "",
+        "discDate": ""
+      }
+    ]
   },
   "subcategories": [
     {
@@ -809,7 +1250,7 @@
       "rule": "Selection constraint for SAS Controller: max 3"
     },
     {
-      "parentCategory": "Cables & Enablement Kits",
+      "parentCategory": "Storage Controllers",
       "subCategory": "Smart Storage Batteries",
       "constraint": "max 2",
       "maxQty": 2,
@@ -845,7 +1286,7 @@
     },
     {
       "parentCategory": "Storage Controllers",
-      "subCategory": "RAID Settings",
+      "subCategory": "Storage Controllers Options",
       "constraint": "max 1",
       "maxQty": 1,
       "rule": "Selection constraint for RAID Settings: max 1"
@@ -1376,6 +1817,13 @@
       "rule": "Selection constraint for Linux Value Added Software: no max"
     },
     {
+      "parentCategory": "Graphics & GPU",
+      "subCategory": "GPU Accelerators",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for GPU Accelerators: no max"
+    },
+    {
       "parentCategory": "Accessories & Infrastructure",
       "subCategory": "Accessories & Infrastructure Options",
       "constraint": "no max",
@@ -1416,6 +1864,13 @@
       "constraint": "no max",
       "maxQty": -1,
       "rule": "Selection constraint for Server Management & Operating System Licenses: no max"
+    },
+    {
+      "parentCategory": "Support Services",
+      "subCategory": "RAID Settings",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for RAID Settings: max 1"
     },
     {
       "parentCategory": "Support Services",
@@ -1495,13 +1950,6 @@
       "rule": "Selection constraint for NVIDIA GPU SW: no max"
     },
     {
-      "parentCategory": "Graphics & GPU",
-      "subCategory": "GPU Accelerators",
-      "constraint": "no max",
-      "maxQty": -1,
-      "rule": "Selection constraint for GPU Accelerators: no max"
-    },
-    {
       "parentCategory": "Software & Licenses",
       "subCategory": "OEM Software",
       "constraint": "max 999",
@@ -1510,13 +1958,6 @@
     },
     {
       "parentCategory": "Support Services",
-      "subCategory": "Reseller Option Kit",
-      "constraint": "no max",
-      "maxQty": -1,
-      "rule": "Selection constraint for Reseller Option Kit: no max"
-    },
-    {
-      "parentCategory": "OEM Software",
       "subCategory": "Reseller Option Kit",
       "constraint": "no max",
       "maxQty": -1,

@@ -4,7 +4,7 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen12/DL380_Gen12`
 
-**Sync Timestamp**: 2026-09-30T19:11:02.937Z
+**Sync Timestamp**: 2026-10-01T05:14:36.932Z
 
 **Total Verified SKUs**: `1125` (`603` Hardware + `522` Services)
 
@@ -422,6 +422,8 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 | `P69726-B21` | HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit | **DISCONTINUED** | 2026-09-30 | $7439.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
 | `P69726-F21` | HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit | **DISCONTINUED** | 2026-09-30 | $7439.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
 | `804398-B21` | HPE Smart Array E208e-p SR Gen10 (8 External Lanes/No Cache) 12G SAS PCIe Plug-in Controller | **DISCONTINUED** | 2026-09-30 | $1775.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `339781-B21` | HPE RAID FIO Advanced Data Guarding Option | **DISCONTINUED** | 2026-09-30 | $1.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+| `389692-B21` | HPE Customer Defined RAID Setting Service | **DISCONTINUED** | 2026-09-30 | $1.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
 | `469774-409` | HPE Remove Standard Power Cords | **DISCONTINUED** | 2026-09-10 | $1.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
 | `P60283-B21` | [SHARED_ACCESSORY_VERIFIED target=DL380_Gen12] HPE OEM ProLiant DL380 Gen11 Over Pack FIO Shipping Kit (Class: CABLE; Evidence: CERTIFIED_OCA_CATALOG; Sources: DL380_Gen12_Master_Catalog) | **REINSTATED** | 2026-09-10 | $99.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
 | `P73325-B21` | HPE ProLiant Compute Localization FIO Kit | **REINSTATED** | 2026-09-10 | $4.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
@@ -450,21 +452,21 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Timestamp | SKU | Attribute | Old Value | New Value |
 |-----------|-----|-----------|-----------|-----------|
-| 2026-09-30 | `339781-B21` | Option Type | Standard | **** |
-| 2026-09-30 | `339781-B21` | Start Date | 08/01/2008 | **** |
-| 2026-09-30 | `339781-B21` | Discontinued Date | 09/30/2043 | **** |
-| 2026-09-30 | `339781-B21` | Lifecycle Status | Active | **** |
-| 2026-09-30 | `339781-B21` | Availability | Available | **** |
-| 2026-09-30 | `339781-B21` | Lead Time Source | Not published by OCA | **** |
-| 2026-09-30 | `339781-B21` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **** |
-| 2026-09-30 | `389692-B21` | Description | HPE Customer Defined RAID Setting Service | **** |
-| 2026-09-30 | `389692-B21` | Option Type | Standard | **** |
-| 2026-09-30 | `389692-B21` | Start Date | 02/02/2005 | **** |
-| 2026-09-30 | `389692-B21` | Discontinued Date | 12/31/2043 | **** |
-| 2026-09-30 | `389692-B21` | Lifecycle Status | Active | **** |
-| 2026-09-30 | `389692-B21` | Availability | Available | **** |
-| 2026-09-30 | `389692-B21` | Lead Time Source | Not published by OCA | **** |
-| 2026-09-30 | `389692-B21` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **** |
+| 2026-09-30 | `S4R34A` | HPE Recommended |  | **No** |
+| 2026-09-30 | `S4R35A` | HPE Recommended |  | **No** |
+| 2026-09-30 | `S4R36A` | HPE Recommended |  | **No** |
+| 2026-09-30 | `S4R37A` | HPE Recommended |  | **No** |
+| 2026-09-30 | `S4R38A` | HPE Recommended |  | **No** |
+| 2026-09-30 | `S4R39A` | HPE Recommended |  | **No** |
+| 2026-09-30 | `S4R40A` | HPE Recommended |  | **No** |
+| 2026-09-30 | `S4R41A` | HPE Recommended |  | **No** |
+| 2026-09-30 | `S4R42A` | HPE Recommended |  | **No** |
+| 2026-09-30 | `S4R43A` | HPE Recommended |  | **No** |
+| 2026-09-30 | `S4R44A` | HPE Recommended |  | **No** |
+| 2026-09-30 | `S4R45A` | HPE Recommended |  | **No** |
+| 2026-09-30 | `S4R46A` | HPE Recommended |  | **No** |
+| 2026-09-30 | `S4R47A` | HPE Recommended |  | **No** |
+| 2026-09-30 | `S4R48A` | HPE Recommended |  | **No** |
 
 ## 🧩 6. Same-Product CTO Variant Matrix
 
@@ -472,34 +474,65 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 |--------------------|----------------|------------|-------------|--------------|
 | **DL380_Gen12** | ProLiant | Gen12 | 8SFF | `P73282-B21` |
 
+## 🛠️ 7. Valid Smart Chassis Combinations & Topological Capacity
 
-<!-- MANAGED_FULL_CATALOG -->
-Content fingerprint: 9d570a46a8fe28147a6fd22faa178318aff96b169424844c2a78da75cfb0eb0b
+| Pattern ID | Description | Base Price | Drive Cages | Total Bays | PCIe Slots | Controller |
+|---|---|---:|---:|---:|---:|---|
+| `dl380pat001b94fb` | 1 drive cage(s) (8SFF x4 U.3 TM Drive Cage) | $1,567 | 1 | 8 | 3 | DA |
+| `dl380pat00267c0e` | 1 drive cage(s) (8SFF x4 U.3 TM Drive Cage) + 1 riser card(s) (x8/x16/x8 Secondary Riser) | $1,832 | 1 | 8 | 6 | DA |
+| `dl380pat0030031a` | 1 drive cage(s) (8SFF x4 U.3 TM Drive Cage) + 2 riser card(s) (x16/x16/x16 Primary Riser; x16/x16/x16 Secondary Riser) + 4 riser accessory item(s) (x8 Riser Enablement Cable) | $2,530 | 1 | 8 | 6 | DA |
+| `dl380pat0041042d` | 1 drive cage(s) (8SFF x1 U.3 TM Drive Cage) + 1 OCP controller(s) (MR416i-o) | $6,020 | 1 | 8 | 3 | MR416I-O |
+| `dl380pat0059c6f3` | 1 drive cage(s) (8SFF x1 U.3 TM Drive Cage) + 1 OCP controller(s) (MR408i-o) | $4,920 | 1 | 8 | 3 | MR408I-O |
+| `dl380pat00693560` | 1 drive cage(s) (8SFF x1 U.3 TM Drive Cage) + 1 PCIe controller(s) (MR416i-p) | $6,356 | 1 | 8 | 3 | MR416I-P |
+| `dl380pat00772cf8` | 1 drive cage(s) (8SFF x1 U.3 TM Drive Cage) + 1 PCIe controller(s) (MR408i-p) | $5,056 | 1 | 8 | 3 | MR408I-P |
+| `dl380pat011166bc` | 1 drive cage(s) (8SFF x1 U.3 TM Drive Cage) + 1 riser card(s) (x8/x16/x8 Secondary Riser) + 1 PCIe controller(s) (MR408i-p) | $5,321 | 1 | 8 | 6 | MR408I-P |
+| `dl380pat0089a7e1` | 1 drive cage(s) (8SFF x1 U.3 TM Drive Cage) + 1 riser card(s) (x8/x16/x8 Secondary Riser) + 1 OCP controller(s) (MR416i-o) | $6,285 | 1 | 8 | 6 | MR416I-O |
+| `dl380pat0096409d` | 1 drive cage(s) (8SFF x1 U.3 TM Drive Cage) + 1 riser card(s) (x8/x16/x8 Secondary Riser) + 1 PCIe controller(s) (MR416i-p) | $6,621 | 1 | 8 | 6 | MR416I-P |
+| `dl380pat01073679` | 1 drive cage(s) (8SFF x1 U.3 TM Drive Cage) + 1 riser card(s) (x8/x16/x8 Secondary Riser) + 1 OCP controller(s) (MR408i-o) | $5,185 | 1 | 8 | 6 | MR408I-O |
+| `dl380pat0127a94e` | 3 drive cage(s) (8SFF x4 U.3 TM Drive Cage) + 2 riser card(s) (x16/x16/x16 Primary Riser; x16/x16/x16 Secondary Riser) | $6,870 | 3 | 24 | 6 | DA |
+| `dl380pat013e4966` | 3 drive cage(s) (8SFF x4 U.3 TM Drive Cage) + 2 riser card(s) (x16/x16/x16 Primary Riser; x16/x16/x16 Secondary Riser) | $4,360 | 3 | 24 | 6 | DA |
+| `dl380smtch_1-0` | Smart Chassis Selection: | $0 | 0 | 0 | 3 | DA |
+| `dl380smtch_1-1` | Smart Chassis Selection: | $0 | 0 | 0 | 3 | DA |
+| `dl380smtch_1-2` | Smart Chassis Selection: | $0 | 0 | 0 | 3 | DA |
 
-### Certified Catalog Workbook Inventory
-- **Category Summary**: 148 rows
-- **All SKUs**: 607 rows
-- **Chassis Variants**: 6 rows
-- **Chassis Options Matrix**: 6 rows
-- **Rules & Constraints**: 1252 rows
-- **Unavailable Rules & Gates**: 34 rows
-- **Hardware Accessories**: 27 rows
-- **Software & Licenses**: 672 rows
-- **Support Services**: 98 rows
-- **Catalog Diffs**: 1129 rows
-- **Price History Timeline**: 1129 rows
-- **Processor**: 35 rows
-- **Memory**: 12 rows
-- **Networking**: 81 rows
-- **Power Supplies**: 6 rows
-- **Chassis**: 6 rows
-- **Accessories & Infrastructure**: 22 rows
-- **Cooling  Thermal**: 12 rows
-- **Drive Enclosures  Drives**: 26 rows
-- **PCIe Risers**: 11 rows
-- **Storage Controllers**: 50 rows
-- **Cables & Enablement Kits**: 67 rows
-- **Graphics & GPU**: 17 rows
-- **HPE Compute Ops Management**: 2 rows
-- **Discontinued SKUs**: 924 rows
-- **Metadata**: 22 rows
+## ⭐ 8. Vendor Recommended & Preferred Hardware Options
+
+| Product # | Description | Category | List Price (USD) | Lead Time |
+|---|---|---|---:|---|
+| `P01366-B21` | HPE 96W Smart Storage Lithium-ion Battery with 145mm Cable Kit | Storage Controllers | $110 | Standard |
+| `P03178-B21` | HPE 1000W Flex Slot Titanium Hot Plug Power Supply Kit | Power Supplies | $926 | Standard |
+
+## 📦 9. Solution Manifest, EDT & Commercial Baseline
+
+**Configuration Profile**: `OCA Config 2` | **Icon ID**: `I156472454-01` | **Estimated Delivery Time (EDT)**: `18 - 23 days`
+
+| Hardware (USD) | Support (USD) | Services (USD) | Software (USD) | Total Baseline (USD) |
+|---:|---:|---:|---:|---:|
+| $46,095 | $35,916 | $1,234 | $1,220 | **$84,465** |
+
+### Authoritative Baseline BOM Hierarchy
+
+| Level | Product # | Description | Qty | Unit Price (USD) | Ext. Price (USD) |
+|---|---|---|---:|---:|---:|
+| (1) | `P73282-B21` | HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-order Server | 1 | $5,584 | $5,584 |
+| (2) | `P73282-B21 B19` | HPE DL380 Gen12 SFF NC Configure-to-order Server | 1 | $0 | $0 |
+| (2) | `P74568-B21` | Intel Xeon 6520P 2.4GHz 24-core 210W Processor for HPE | 2 | $4,242 | $8,484 |
+| (3) | `P74568-B21 0D1` | Factory Integrated | 2 | $0 | $0 |
+| (2) | `P69727-F21` | HPE 32GB (1x32GB) Dual Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit | 2 | $13,909 | $27,818 |
+| (2) | `P51181-B21` | Broadcom BCM5719 Ethernet 1Gb 4-port BASE-T OCP3 Adapter for HPE | 1 | $485 | $485 |
+| (3) | `P51181-B21 0D1` | Factory Integrated | 1 | $0 | $0 |
+| (2) | `P03178-B21` | HPE 1000W Flex Slot Titanium Hot Plug Power Supply Kit | 2 | $926 | $1,852 |
+| (3) | `P03178-B21 0D1` | Factory Integrated | 2 | $0 | $0 |
+| (2) | `P78145-B21` | HPE C13 - C14 250V 10Amp 2m FIO Power Cord | 2 | $11 | $22 |
+| (2) | `BD505A` | HPE iLO Advanced 1-server License with 3yr Support on iLO Licensed Features | 1 | $469 | $469 |
+| (3) | `BD505A 0D1` | Factory Integrated | 1 | $0 | $0 |
+| (2) | `S1A05A` | HPE Compute Cloud Management Server FIO Enablement | 1 | $1 | $1 |
+| (2) | `P72203-B21` | HPE ProLiant Compute DL3XX/ML350 Gen12 CPU1 to Rear OCP SlotB x8 Cable Kit | 1 | $77 | $77 |
+| (3) | `P72203-B21 0D1` | Factory Integrated | 1 | $0 | $0 |
+| (2) | `P48820-B21` | HPE ProLiant DL380/DL560 Gen11 2U High Performance Fan Kit | 1 | $972 | $972 |
+| (3) | `P48820-B21 0D1` | Factory Integrated | 1 | $0 | $0 |
+| (2) | `P52341-B21` | HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit | 1 | $164 | $164 |
+| (3) | `P52341-B21 0D1` | Factory Integrated | 1 | $0 | $0 |
+| (2) | `P73325-B21` | HPE ProLiant Compute Localization FIO Kit | 1 | $4 | $4 |
+*... [12 additional baseline items omitted for brevity]*
+

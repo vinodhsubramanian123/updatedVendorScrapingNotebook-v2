@@ -2537,8 +2537,7 @@
     {
       "date": "2026-09-30",
       "price": 7439,
-      "status": "REMOVED",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "P69726-F21": [
@@ -2593,8 +2592,7 @@
     {
       "date": "2026-09-30",
       "price": 7439,
-      "status": "REMOVED",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "P69729-F21": [
@@ -5558,8 +5556,7 @@
     {
       "date": "2026-09-30",
       "price": 1775,
-      "status": "REMOVED",
-      "validationState": "VALIDATED"
+      "status": "REMOVED"
     }
   ],
   "P79567-B21": [
@@ -8945,7 +8942,8 @@
     {
       "date": "2026-09-30",
       "price": 1,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "389692-B21": [
@@ -9000,7 +8998,8 @@
     {
       "date": "2026-09-30",
       "price": 1,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "726536-B21": [
