@@ -4,7 +4,7 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen11/DL380_Gen11`
 
-**Sync Timestamp**: 2026-09-27T17:09:45.947Z
+**Sync Timestamp**: 2026-10-01T10:05:40.390Z
 
 **Total Verified SKUs**: `1408` (`753` Hardware + `655` Services)
 
@@ -92,6 +92,10 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
    - **Rule**: undefined
    - **Affected SKU**: `write-cach` | **Required Dependency**: `P48918-B21`
 
+
+## 🔒 3b. Physical & Architectural Gating Rules (DOM Unavailable Tables)
+
+*No portal-conditional gating rules detected in default DOM state.*
 
 ## ⚠️ 4. Discontinued & Obsolete SKUs Registry
 

@@ -4,7 +4,7 @@
 
 **Scope Identity**: `HPE/STORAGE/StoreEver/Tape/MSL3040_Tape`
 
-**Sync Timestamp**: 2026-09-27T17:09:54.222Z
+**Sync Timestamp**: 2026-10-01T10:05:52.164Z
 
 **Total Verified SKUs**: `232` (`141` Hardware + `91` Services)
 
@@ -18,9 +18,9 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Reinstated | Status |
 |----------|------------|---------------------|---------------|-------------------|------------|--------|
-| **Hardware Components** | 141 | 14 | 0 | 127 | 0 | **CERTIFIED** |
+| **Hardware Components** | 141 | 14 | 0 | 90 | 0 | **CERTIFIED** |
 | **Support Services & SLAs** | 91 | 0 | 0 | 0 | 0 | **CERTIFIED** |
-| **Total Portfolio** | **232** | **14** | **0** | **127** | **0** | **ACTIVE** |
+| **Total Portfolio** | **232** | **14** | **0** | **90** | **0** | **ACTIVE** |
 
 ## 🌐 1. Universal Vendor Rules (HPE)
 
@@ -41,6 +41,10 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 ## 🎯 3. Chassis & Solution-Type Gotchas (MSL3040_Tape)
 
 *No specific gotchas logged for MSL3040_Tape. Baseline chassis layout rules active.*
+
+## 🔒 3b. Physical & Architectural Gating Rules (DOM Unavailable Tables)
+
+*No portal-conditional gating rules detected in default DOM state.*
 
 ## ⚠️ 4. Discontinued & Obsolete SKUs Registry
 

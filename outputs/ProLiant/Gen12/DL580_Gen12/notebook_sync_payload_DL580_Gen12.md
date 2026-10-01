@@ -4,7 +4,7 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen12/DL580_Gen12`
 
-**Sync Timestamp**: 2026-09-27T17:09:51.869Z
+**Sync Timestamp**: 2026-10-01T10:05:49.270Z
 
 **Total Verified SKUs**: `868` (`485` Hardware + `383` Services)
 
@@ -41,6 +41,10 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 ## 🎯 3. Chassis & Solution-Type Gotchas (DL580_Gen12)
 
 *No specific gotchas logged for DL580_Gen12. Baseline chassis layout rules active.*
+
+## 🔒 3b. Physical & Architectural Gating Rules (DOM Unavailable Tables)
+
+*No portal-conditional gating rules detected in default DOM state.*
 
 ## ⚠️ 4. Discontinued & Obsolete SKUs Registry
 

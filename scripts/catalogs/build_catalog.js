@@ -326,7 +326,7 @@ async function initCatalogBuild(rawInputPath, jsonOutputPath, argv = process.arg
   diagnostics.setRawTableCount(tables.length);
 
   const meta = parseProductMeta(chassisLabel);
-  const capturedAt = rawData.timestamp || rawData.scrapeTimestamp;
+  const capturedAt = rawData.timestamp || rawData.scrapeTimestamp || rawData?.metadata?.scrapeTimestamp;
   if (!capturedAt || !Number.isFinite(new Date(capturedAt).getTime()) || new Date(capturedAt).getTime() > Date.now()) {
     throw new Error('ERR_CAPTURE_TIMESTAMP: Raw vendor capture requires a valid, non-future timestamp; rebuilding cannot establish freshness.');
   }

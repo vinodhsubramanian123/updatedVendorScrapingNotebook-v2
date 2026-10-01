@@ -4,9 +4,9 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen11/DL360_Gen11`
 
-**Sync Timestamp**: 2026-09-27T17:09:43.681Z
+**Sync Timestamp**: 2026-10-01T10:05:37.727Z
 
-**Total Verified SKUs**: `1429` (`694` Hardware + `735` Services)
+**Total Verified SKUs**: `1429` (`695` Hardware + `734` Services)
 
 **Total Synced KnowledgeDeltas**: `9`
 
@@ -18,8 +18,8 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Reinstated | Status |
 |----------|------------|---------------------|---------------|-------------------|------------|--------|
-| **Hardware Components** | 694 | 0 | 0 | 0 | 0 | **CERTIFIED** |
-| **Support Services & SLAs** | 735 | 0 | 0 | 0 | 0 | **CERTIFIED** |
+| **Hardware Components** | 695 | 0 | 0 | 0 | 0 | **CERTIFIED** |
+| **Support Services & SLAs** | 734 | 0 | 0 | 0 | 0 | **CERTIFIED** |
 | **Total Portfolio** | **1429** | **0** | **0** | **0** | **0** | **ACTIVE** |
 
 ## 🌐 1. Universal Vendor Rules (HPE)
@@ -42,6 +42,10 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 *No specific gotchas logged for DL360_Gen11. Baseline chassis layout rules active.*
 
+## 🔒 3b. Physical & Architectural Gating Rules (DOM Unavailable Tables)
+
+*No portal-conditional gating rules detected in default DOM state.*
+
 ## ⚠️ 4. Discontinued & Obsolete SKUs Registry
 
 *No discontinued or reinstated SKUs detected for DL360_Gen11. All cataloged SKUs are active.*
@@ -56,3 +60,43 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 |--------------------|----------------|------------|-------------|--------------|
 | **DL360_Gen11** | ProLiant | Gen11 | 8SFF | `P52499-B21` |
 
+## ⭐ 8. Vendor Recommended & Preferred Hardware Options
+
+| Product # | Description | Category | List Price (USD) | Lead Time |
+|---|---|---|---:|---|
+| `P01366-B21` | HPE 96W Smart Storage Lithium-ion Battery with 145mm Cable Kit | Storage Controllers | $110 | Standard |
+| `P03178-B21` | HPE 1000W Flex Slot Titanium Hot Plug Power Supply Kit | Power Supplies | $926 | Standard |
+
+## 📦 9. Solution Manifest, EDT & Commercial Baseline
+
+**Configuration Profile**: `OCA Config 2` | **Icon ID**: `I155720940-01` | **Estimated Delivery Time (EDT)**: `24 - 30 days`
+
+| Hardware (USD) | Support (USD) | Services (USD) | Software (USD) | Total Baseline (USD) |
+|---:|---:|---:|---:|---:|
+| $71,918 | $29,281 | $1,432 | $1,220 | **$103,851** |
+
+### Authoritative Baseline BOM Hierarchy
+
+| Level | Product # | Description | Qty | Unit Price (USD) | Ext. Price (USD) |
+|---|---|---|---:|---:|---:|
+| (1) | `P52499-B21` | HPE ProLiant DL360 Gen11 8SFF NC Configure-to-order Server | 1 | $0 | $0 |
+| (2) | `P52499-B21 B19` | HPE ProLiant DL360 Gen11 8SFF Configure-to-order Server Europe Multilingual | 1 | $0 | $0 |
+| (2) | `P49653-B21` | Intel Xeon-Gold 5416S 2.0GHz 16-core 150W Processor for HPE | 2 | $0 | $0 |
+| (3) | `P49653-B21 0D1` | Factory Integrated | 2 | $0 | $0 |
+| (2) | `P43331-F21` | HPE 64GB (1x64GB) Dual Rank x4 DDR5-4800 CAS-40-39-39 EC8 Registered Smart FIO Memory Kit | 2 | $0 | $0 |
+| (2) | `P08449-B21` | Intel I350-T4 Ethernet 1Gb 4-port BASE-T OCP3 Adapter for HPE | 1 | $0 | $0 |
+| (3) | `P08449-B21 0D1` | Factory Integrated | 1 | $0 | $0 |
+| (2) | `P48907-B21` | HPE ProLiant DL3X0 Gen11 1U Standard Fan Kit | 1 | $0 | $0 |
+| (3) | `P48907-B21 0D1` | Factory Integrated | 1 | $0 | $0 |
+| (2) | `P54697-B21` | HPE ProLiant DL3X0 Gen11 1U 2P Standard Fan Kit | 1 | $0 | $0 |
+| (3) | `P54697-B21 0D1` | Factory Integrated | 1 | $0 | $0 |
+| (2) | `P03178-B21` | HPE 1000W Flex Slot Titanium Hot Plug Power Supply Kit | 2 | $0 | $0 |
+| (3) | `P03178-B21 0D1` | Factory Integrated | 2 | $0 | $0 |
+| (2) | `BD505A` | HPE iLO Advanced 1-server License with 3yr Support on iLO Licensed Features | 1 | $0 | $0 |
+| (3) | `BD505A 0D1` | Factory Integrated | 1 | $0 | $0 |
+| (2) | `S1A05A` | HPE Compute Cloud Management Server FIO Enablement | 1 | $0 | $0 |
+| (2) | `P48904-B21` | HPE ProLiant DL3X0 Gen11 1U Standard Heat Sink Kit | 2 | $0 | $0 |
+| (3) | `P48904-B21 0D1` | Factory Integrated | 2 | $0 | $0 |
+| (2) | `P52341-B21` | HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit | 1 | $0 | $0 |
+| (3) | `P52341-B21 0D1` | Factory Integrated | 1 | $0 | $0 |
+*... [10 additional baseline items omitted for brevity]*

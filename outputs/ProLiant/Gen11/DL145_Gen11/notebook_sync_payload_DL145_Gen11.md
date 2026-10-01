@@ -4,7 +4,7 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen11/DL145_Gen11`
 
-**Sync Timestamp**: 2026-09-27T17:09:41.727Z
+**Sync Timestamp**: 2026-10-01T10:05:35.575Z
 
 **Total Verified SKUs**: `624` (`413` Hardware + `211` Services)
 
@@ -56,6 +56,10 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
    - **Rule**: DL145 Gen11 edge deployments use P73021-B21 for extended -5C to 45C ambient temperature tracking.
    - **Affected SKU**: `P71964-B21` | **Required Dependency**: `P73021-B21`
 
+
+## 🔒 3b. Physical & Architectural Gating Rules (DOM Unavailable Tables)
+
+*No portal-conditional gating rules detected in default DOM state.*
 
 ## ⚠️ 4. Discontinued & Obsolete SKUs Registry
 

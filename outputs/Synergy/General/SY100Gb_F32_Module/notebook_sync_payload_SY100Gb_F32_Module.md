@@ -4,7 +4,7 @@
 
 **Scope Identity**: `HPE/NETWORKING/Synergy/General/SY100Gb_F32`
 
-**Sync Timestamp**: 2026-09-27T17:09:56.408Z
+**Sync Timestamp**: 2026-10-01T10:05:54.577Z
 
 **Total Verified SKUs**: `3` (`3` Hardware + `0` Services)
 
@@ -41,6 +41,10 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 ## 🎯 3. Chassis & Solution-Type Gotchas (SY100Gb_F32_Module)
 
 *No specific gotchas logged for SY100Gb_F32_Module. Baseline chassis layout rules active.*
+
+## 🔒 3b. Physical & Architectural Gating Rules (DOM Unavailable Tables)
+
+*No portal-conditional gating rules detected in default DOM state.*
 
 ## ⚠️ 4. Discontinued & Obsolete SKUs Registry
 

@@ -4,7 +4,7 @@
 
 **Scope Identity**: `HPE/NETWORKING/SAN/FC/SN3600B_FC`
 
-**Sync Timestamp**: 2026-09-27T17:09:52.892Z
+**Sync Timestamp**: 2026-10-01T10:05:50.803Z
 
 **Total Verified SKUs**: `158` (`58` Hardware + `100` Services)
 
@@ -18,9 +18,9 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Reinstated | Status |
 |----------|------------|---------------------|---------------|-------------------|------------|--------|
-| **Hardware Components** | 58 | 1 | 0 | 34 | 0 | **CERTIFIED** |
+| **Hardware Components** | 58 | 1 | 1 | 34 | 0 | **CERTIFIED** |
 | **Support Services & SLAs** | 100 | 0 | 0 | 0 | 0 | **CERTIFIED** |
-| **Total Portfolio** | **158** | **1** | **0** | **34** | **0** | **ACTIVE** |
+| **Total Portfolio** | **158** | **1** | **1** | **34** | **0** | **ACTIVE** |
 
 ## 🌐 1. Universal Vendor Rules (HPE)
 
@@ -41,6 +41,10 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 ## 🎯 3. Chassis & Solution-Type Gotchas (SN3600B_FC)
 
 *No specific gotchas logged for SN3600B_FC. Baseline chassis layout rules active.*
+
+## 🔒 3b. Physical & Architectural Gating Rules (DOM Unavailable Tables)
+
+*No portal-conditional gating rules detected in default DOM state.*
 
 ## ⚠️ 4. Discontinued & Obsolete SKUs Registry
 

@@ -4,9 +4,9 @@
 
 **Scope Identity**: `HPE/SERVER/Synergy/Gen12/SY480_Gen12`
 
-**Sync Timestamp**: 2026-09-27T17:09:55.606Z
+**Sync Timestamp**: 2026-10-01T10:05:53.669Z
 
-**Total Verified SKUs**: `557` (`154` Hardware + `403` Services)
+**Total Verified SKUs**: `581` (`178` Hardware + `403` Services)
 
 **Total Synced KnowledgeDeltas**: `18`
 
@@ -18,9 +18,9 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Reinstated | Status |
 |----------|------------|---------------------|---------------|-------------------|------------|--------|
-| **Hardware Components** | 154 | 0 | 0 | 6 | 0 | **CERTIFIED** |
+| **Hardware Components** | 178 | 0 | 0 | 6 | 0 | **CERTIFIED** |
 | **Support Services & SLAs** | 403 | 0 | 0 | 0 | 0 | **CERTIFIED** |
-| **Total Portfolio** | **557** | **0** | **0** | **6** | **0** | **ACTIVE** |
+| **Total Portfolio** | **581** | **0** | **0** | **6** | **0** | **ACTIVE** |
 
 ## 🌐 1. Universal Vendor Rules (HPE)
 
@@ -76,6 +76,10 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
    - **Rule**: Synergy startup services (HA124A1#5ZM First Frame Onsite, HA124A1#5ZQ Additional Frame Onsite) must be placed ONLY at the Icon #2 container level under Services → Deployment Services → Install-Install and Start Up. They must NEVER be placed locally under individual "Synergy 12000 Frame #N" child items. Duplicate placement between icon container and child frames causes CLIC Rule 81039677 to fire against the first line item (typically DL380) in the solution BOM.
    - **Affected SKU**: `HA124A1#5ZM` | **Required Dependency**: `HA124A1#5ZQ`
 
+
+## 🔒 3b. Physical & Architectural Gating Rules (DOM Unavailable Tables)
+
+*No portal-conditional gating rules detected in default DOM state.*
 
 ## ⚠️ 4. Discontinued & Obsolete SKUs Registry
 
