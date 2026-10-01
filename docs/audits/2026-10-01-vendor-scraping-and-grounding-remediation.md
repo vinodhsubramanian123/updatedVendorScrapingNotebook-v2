@@ -69,11 +69,12 @@ This remediation establishes complete clarity regarding how vendor catalog data 
 
 ### 3.1 HPE ProLiant DL380 Gen12 (Enterprise 2U Compute)
 * **Workspace**: `outputs/ProLiant/Gen12/DL380_Gen12/`
-* **Catalog XLSX**: `DL380_Gen12_OCA_Catalog.xlsx` (14.4 MB, 26 tabs)
+* **Catalog XLSX**: `DL380_Gen12_OCA_Catalog.xlsx` (14.4 MB, 26 tabs, 606 HW SKUs + 522 Service SKUs)
 * **Master CSV**: `DL380_Gen12_Master_Catalog.csv` (1.5 MB)
 * **NotebookLM Sync**: Notebook ID `1d190853-4e9c-48df-aa70-eae66c6f2c1f` (`cloudSyncState: VERIFIED`)
-* **Certified Source ID**: `93d78ae2-e20e-4485-8750-7948369ba18b`
+* **Certified Source ID**: `40a1f8ba-0c92-4770-aeb2-5430153e53f1` (`DL380_Gen12_OCA_Catalog_2026-10-01`)
 * **Running Knowledge Google Doc**: `1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M`
+* **Grounding Citations Verified**: 45 citations confirming 1,128 portfolio SKUs, 5 CTO variants ($5,584–$7,120), EDT (18–23 days), 7 Smart Chassis topological patterns, recommended drives/controllers, and 990 attribute delta changes.
 
 ### 3.2 HPE ProLiant DL380a Gen12 (AI Accelerator Server)
 * **Workspace**: `outputs/ProLiant/Gen12/DL380a_Gen12/`
@@ -85,9 +86,35 @@ This remediation establishes complete clarity regarding how vendor catalog data 
   - Live query: *"What are the primary base chassis and GPU options supported on DL380a Gen12?"*
   - **Verdict**: 100% grounded response with 19 exact citations verifying base chassis `P76706-B21` (iLO 7 mandate for Intel Xeon 6 P-Cores), `P74461-B21` (iLO 6 constraint), NVIDIA H200 NVL (`S3U30C`), NVIDIA RTX PRO 6000 Blackwell (`S6A73C`), and the exact 5-PSU/8-PSU Titanium power redundancy matrix.
 
+### 3.3 Dynamic DOM Attributes & Smart Chassis Combinations (INV-138)
+1. **Dynamic Checkmark & Recommendation Extraction**:
+   - `dom_extract.js` sniffs checkmark images (`img[src*="check|tick|rec|recommend"]`), SVG icons, and `input:checked` elements, correctly populating `HPE Recommended = 'Yes'`.
+2. **Dynamic Header Normalization**:
+   - Normalized `Cost (USD)` alongside `Unit Price (USD)`, unlocking 620 priced SKUs on Gen11 platforms that render "Cost" instead of "Price".
+   - Non-canonical keys (e.g. `Workload Type`, `Lead Time`, `Controllers: DA`, `Hierarchy Level`) dynamically populate `obj.vendorAttributes` with zero hardcoded column indices.
+3. **Smart Chassis Pattern Tables Captured**:
+   - Parsed OCA Table 11 (`dl380pat...` and `dl380smtch...`) into `smartChassisCombinations` with drive cages, bay counts, PCIe slot counts, and controllers.
+4. **Solution Manifest Extraction**:
+   - Captured commercial totals (Hardware, Support, Services, Software), icon IDs, and Estimated Delivery Time (EDT: 18–23 days on DL380 Gen12, 24–30 days on DL360 Gen11, 14–18 days on SN3600B FC Switch).
+5. **Requirement Intent Resolver Boosts**:
+   - Applied recommendation scoring boosts (+0.15 for recommended drives, +0.10 for Read Intensive/Mixed Use workload types, +0.05 for short lead times) in candidate ranking.
+
+### 3.4 Post-Diff SKU Tally Discrepancy & Resolution (INV-139)
+- **The Issue**: Historical diff engine (`diff_catalog.js`) injected 3 tombstoned discontinued SKUs into `catalogData.entries`, raising entries from 603 to 606, but `metadata.totalUniqueSKUs` remained at 603.
+- **The Resolution**: Updated `diff_catalog.js` and `build_catalog.js` to dynamically re-evaluate `metadata.totalUniqueSKUs` and `totalSubcategories` immediately after tombstone SKU insertion and before writing snapshots or output JSON. Updated `getUniqueSkuCount()` to trim and filter non-empty strings.
+
+### 3.5 Pre-Presentation Cryptographic Gate vs. Evaluation Results Pipeline (INV-140)
+- **The Issue**: When evaluating unbuildable customer BOQs (e.g. `DOC-20260821-WA0000_Customer_BOQ.xlsx`), pre-presentation delivery gates (INV-128) intentionally block workbook export (`customerDisposition = 'DELIVERY_BLOCKED_UNBUILDABLE'`). `eval_output_serializer.js` marked `jsonResult.status = 'ERROR'`, which caused the API route to broadcast an error payload and disabled the `Reconcile Partner Quote` button in the UI.
+- **The Resolution**: Updated `eval_output_serializer.js` to treat unbuildable customer BOQs as `status: 'ACTION_REQUIRED'` rather than fatal `ERROR`. Updated `evaluation.cjs` and `evalNormalizer.js` to preserve and broadcast the complete evaluation data payload so the UI retains all violations, metrics, and interactive reconciliation actions.
+
 ---
 
 ## 4. Test Suite Certification & Linter Discipline
-* **Scraping Domain Test Matrix**: **21/21 suites PASSED (100.0%)** across Unit (10/10), Chaos (9/9), Integration (1/1), and E2E (1/1).
+* **Headless Browser E2E Test**: `test_e2e_downloads_boq_and_vendor_bom.js` **9/9 steps PASSED (100.0%)** (Full end-to-end flow from upload to 6 aspects, matrix, quote reconciliation with auto-inserted P69728-F21, feedback drawer, RAG, and Excel export).
+* **Smoke Domain Test Matrix**: **8/8 suites PASSED (100.0%)**.
+* **BOQ & Preprocessor Domain Matrix**: **25/25 suites PASSED (100.0%)** (13 unit, 4 chaos, 7 integration, 1 E2E).
+* **Scraping Domain Test Matrix**: **21/21 suites PASSED (100.0%)**.
 * **Linter Status**: **0 warnings, 0 errors** (`npx oxlint dashboard/src` across 111 files).
-* **Cyclomatic Complexity**: All 1,210 functions strictly conform to $CC \le 135$.
+* **Cyclomatic Complexity**: All 1,220 functions strictly conform to $CC \le 135$.
+* **Semantic AST Knowledge Graph**: Rebuilt and synchronized at 6,916 nodes and 12,385 edges across 418 communities.
+

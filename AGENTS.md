@@ -164,8 +164,22 @@ The scraping pipeline produces two independent, non-competing outputs:
 - This intelligence lives in `navigate_oca.js:searchAndConfigureChassis()` and must never be simplified to a raw text search.
 - Other vendors may use different terminology for configure-to-order; never assume `CTO` applies cross-vendor.
 
+#### INV-138: Dynamic DOM Attribute Sniffing & Schema Normalization
+- Scrapers and parsers (`dom_extract.js`, `build_catalog.js`) must never hardcode numerical column indices (`cells[3]`).
+- Sniff checkmark icons (`img[src*="check|tick|rec"]`, SVG icons, `:checked` inputs) to populate recommendation flags (`HPE Recommended = 'Yes'`).
+- Normalize multi-generation headers (`Cost (USD)` vs `Price (USD)`, `Lead Time`, `Workload Type`, `Controllers: DA`). Non-canonical columns dynamically populate `vendorAttributes` to maintain zero-loss forward compatibility across vendors.
+
+#### INV-139: Post-Diff Catalog SKU Tally Synchronization
+- When `diffRemovedCatalogEntries` appends tombstone SKUs to `catalogData.entries`, `metadata.totalUniqueSKUs` and `metadata.totalSubcategories` MUST be dynamically re-evaluated before snapshot serialization.
+- `getUniqueSkuCount()` trims and filters non-empty strings, guaranteeing identical counts with `catalog_discovery.js:isCatalogCertified`.
+
+#### INV-140: Unbuildable Candidate BOQ Disposition as `ACTION_REQUIRED`
+- When evaluating unbuildable customer BOQs with physical constraint violations or missing enablement kits, delivery gates intentionally block presentation workbook export (`customerDisposition = 'DELIVERY_BLOCKED_UNBUILDABLE'`).
+- This planned block emits `status: 'ACTION_REQUIRED'` on the evaluation payload, reserving `status: 'ERROR'` strictly for fatal engine crashes.
+- The API router (`evaluation.cjs`) and frontend normalizer (`evalNormalizer.js`) must always broadcast and normalize the evaluation data payload, preserving interactive partner quote reconciliation.
+
 #### Grounded Products Certified as of 2026-10-01
 | Chassis | Notebook ID | Source ID | SKUs | cloudSyncState |
 |---|---|---|---|---|
-| `DL380_Gen12` | `1d190853-4e9c-48df-aa70-eae66c6f2c1f` | `93d78ae2-e20e-4485-8750-7948369ba18b` | 26 tabs / 1.5 MB CSV | `VERIFIED` |
+| `DL380_Gen12` | `1d190853-4e9c-48df-aa70-eae66c6f2c1f` | `40a1f8ba-0c92-4770-aeb2-5430153e53f1` | 26 tabs / 606 HW + 522 Svc | `VERIFIED` |
 | `DL380a_Gen12` | `b233ec88-4682-4164-a801-3ee6ca649dc1` | `d271a1ea-80dd-49bf-bff2-ea484e1ac24e` | 24 tabs / 440 HW + 220 Svc | `VERIFIED` |

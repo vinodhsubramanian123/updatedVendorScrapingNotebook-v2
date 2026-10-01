@@ -735,3 +735,18 @@ To ensure that future AI agents (Antigravity, Codex, Claude, or subagents) never
   - This intelligence is implemented in `navigate_oca.js:searchAndConfigureChassis()` and must never be simplified to a raw text search or `String.includes('CTO')` filter.
   - Other vendors may use different configure-to-order terminology; never assume `CTO` applies cross-vendor. `Smart CTO` is HPE-specific vocabulary.
 
+- **INV-138: Dynamic DOM Attribute Sniffing & Schema Normalization Without Column Indices**:
+  - Scrapers and catalog parsers (`dom_extract.js`, `build_catalog.js`) must never hardcode numerical column offsets (`cells[3]`) or assume static schemas across product generations or vendors.
+  - Table headers must be dynamically discovered via `normalizeHeaderName()` to handle multi-vendor and multi-generation naming variations (e.g. `Cost (USD)` on Gen11 vs `Price (USD)` on Gen12, `HPE Recommended` vs `Vendor Recommended`, `Lead Time`, `Workload Type`).
+  - Boolean indicators like checkmarks must inspect `img[src*="check|tick|rec"]`, SVG icons, and `:checked` inputs rather than relying solely on raw textContent. Non-canonical columns dynamically populate `vendorAttributes` to guarantee forward compatibility without schema breaking changes.
+
+- **INV-139: Post-Diff Catalog SKU Tally Synchronization (Tombstone Recalculation)**:
+  - When historical diff processing (`diff_catalog.js:diffRemovedCatalogEntries`) appends tombstone SKUs to `catalog.entries` for discontinued/removed SKUs, `metadata.totalUniqueSKUs` and `metadata.totalSubcategories` MUST be dynamically re-evaluated and updated before persisting the snapshot and the output JSON.
+  - Catalog counting functions (`getUniqueSkuCount`) must trim and filter non-empty SKU strings to strictly match `catalog_discovery.js:isCatalogCertified`. Desynchronization between `metadata.totalUniqueSKUs` and `actualSkus.size` triggers pre-flight rejection (`ERR_UNSCRAPED_SOLUTION`).
+
+- **INV-140: Unbuildable Candidate BOQ Disposition as `ACTION_REQUIRED`, Never Fatal Engine `ERROR`**:
+  - When evaluating an unbuildable customer BOQ with physical constraint violations or missing enablement kits, pre-presentation delivery gates (INV-128) intentionally block workbook export (`customerDisposition = 'DELIVERY_BLOCKED_UNBUILDABLE'`).
+  - This planned delivery block must emit `status: 'ACTION_REQUIRED'` on the evaluation payload, reserving `status: 'ERROR'` strictly for unhandled process crashes, corrupt inputs, or missing catalog dependencies.
+  - API routers (`evaluation.cjs`) and frontend normalizers (`evalNormalizer.js`) must always broadcast and normalize the full evaluation data payload (`evalResults`, `items`, `violations`, `conflictGraph`, `rankedSolutions`) when findings exist, ensuring the UI remains interactive and enabling partner quote reconciliation and alternative topology selection.
+
+
