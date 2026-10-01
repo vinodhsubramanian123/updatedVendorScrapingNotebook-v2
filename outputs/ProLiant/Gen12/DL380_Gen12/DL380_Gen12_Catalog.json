@@ -8,9 +8,9 @@
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
     "scrapeDate": "2026-09-30",
     "scrapeTimestamp": "2026-09-30T18:45:29.474Z",
-    "builtAt": "2026-10-01T05:08:50.115Z",
+    "builtAt": "2026-10-01T05:32:51.880Z",
     "totalSubcategories": 68,
-    "totalUniqueSKUs": 603,
+    "totalUniqueSKUs": 606,
     "totalTables": 96,
     "diffSummary": {
       "added": 5,

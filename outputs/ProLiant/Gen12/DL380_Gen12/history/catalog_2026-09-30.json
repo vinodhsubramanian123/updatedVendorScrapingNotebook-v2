@@ -8,9 +8,9 @@
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
     "scrapeDate": "2026-09-30",
     "scrapeTimestamp": "2026-09-30T18:45:29.474Z",
-    "builtAt": "2026-10-01T05:08:50.115Z",
+    "builtAt": "2026-10-01T05:32:51.880Z",
     "totalSubcategories": 68,
-    "totalUniqueSKUs": 603,
+    "totalUniqueSKUs": 606,
     "totalTables": 96,
     "diffSummary": {
       "added": 5,
@@ -534,8 +534,8 @@
       "estimatedTokensSaved": 0,
       "estimatedProcessingTimeSavedMs": 0
     },
-    "snapshotChecksum": "c92b23ce24b5333f7cb5f5e35e63a0fabaef7b6dd8ef12717bb0942c720a54d4",
-    "snapshotTimestamp": "2026-10-01T05:08:50.609Z"
+    "snapshotChecksum": "669fa4fa6f53571eb650480b88d846d918768e1748931b46d0996fa2dc679e2e",
+    "snapshotTimestamp": "2026-10-01T05:32:52.958Z"
   },
   "subcategories": [
     {

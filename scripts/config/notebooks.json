@@ -11,14 +11,13 @@
       "driveSheetId": "1ODabKd0jVBFJU0ga4hfZOs5TtzNIuCXJWb4oXr88ocY",
       "driveSheetUrl": "https://docs.google.com/spreadsheets/d/1ODabKd0jVBFJU0ga4hfZOs5TtzNIuCXJWb4oXr88ocY/edit",
       "driveSourceId": "00cb0c3d-6d19-4a49-9cfa-aea446f08338",
-      "lastSyncedAt": "2026-09-30T19:12:21.895Z",
+      "lastSyncedAt": "2026-10-01T05:35:05.288Z",
       "lastSyncDeltaCount": 56,
-      "lastSyncedSourceId": "93d78ae2-e20e-4485-8750-7948369ba18b",
-      "lastSyncedSourceName": "DL380_Gen12_OCA_Catalog_2026-09-30",
+      "lastSyncedSourceId": "40a1f8ba-0c92-4770-aeb2-5430153e53f1",
+      "lastSyncedSourceName": "DL380_Gen12_OCA_Catalog_2026-10-01",
       "trustedSourceIds": [
         "6eb52606-9295-4f0b-af65-89454b2d443a",
-        "93d78ae2-e20e-4485-8750-7948369ba18b",
-        "1c9f7b40-d826-4974-8dcb-0e1e73bd6520"
+        "40a1f8ba-0c92-4770-aeb2-5430153e53f1"
       ],
       "officialSourceIds": [
         "6eb52606-9295-4f0b-af65-89454b2d443a"
@@ -33,35 +32,34 @@
       "isolationLevel": "CHASSIS_SPECIFIC",
       "queryEnabled": true,
       "certifiedCatalogSourceIds": [
-        "93d78ae2-e20e-4485-8750-7948369ba18b"
+        "40a1f8ba-0c92-4770-aeb2-5430153e53f1"
       ],
       "verifiedLearningSourceIds": [],
       "canonicalKnowledgeSourceIds": [
-        "93d78ae2-e20e-4485-8750-7948369ba18b",
-        "1c9f7b40-d826-4974-8dcb-0e1e73bd6520"
+        "40a1f8ba-0c92-4770-aeb2-5430153e53f1"
       ],
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeSourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
       "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
-      "lastPayloadChecksum": "d7de405f1ea49dafff18d6d479d2015f9e1d2c5c924e2d06c71dfe84d8145bfa",
+      "lastPayloadChecksum": "197fcb95a155c7d6ca74d46bc8101b6cb9f71d734bd721bc45c0eb0b24bfd215",
       "lastContentFingerprints": {
-        "catalog": "aa02e07ef82a8ee2d70d3c8b70958c8eb49469ba24e907b80feb509c00ae68c9",
-        "learnings": "935e6b3ba624d884ae1441e9ee7ea04fb93f0e2cbd9cd8ec68f8cccd4dceda76",
-        "changes": "9c0b303ecb9349472bb15b9526d3804958c54a6b8d69a8c5d78c5535ad6b3372",
-        "workbook": "4b9dc023ad7d699db9f6db3d1e68f9165a2fce130c18fa6fe87bcd083a3bebf7",
-        "combined": "9d570a46a8fe28147a6fd22faa178318aff96b169424844c2a78da75cfb0eb0b"
+        "catalog": "db5a9d729e086b3eb528f194d8ac083e269fe8df37704d6b35bd07e3e2627766",
+        "learnings": "c65287ada7628fe6ac4946319b3d3ba7eb912a1ce37d82789b5951927fe4a21a",
+        "changes": "901396f236da4d932f92ed0d17df6eab74c71cee89d80c2fa73125a55f9002d5",
+        "workbook": "fdb11c0263c3a5494f54cd152d337dd79a57415c8d9ed31187c6d0fa20ec1155",
+        "combined": "b755be5ff9f1402136397b78d110a82de473cf482b699afeb8d63f70a140eb52"
       },
       "runningKnowledgeVerifiedRevision": "3cd8066a9cc44bafb52b5154d3006c2138ea053586d1bbf5c146632dad2a8a9b",
       "runningKnowledgeVerifiedAt": "2026-09-30T19:20:38.863Z",
-      "lastSyncAttemptAt": "2026-09-30T19:09:45.520Z",
+      "lastSyncAttemptAt": "2026-10-01T05:35:05.288Z",
       "lastSyncError": null,
       "cloudSyncState": "VERIFIED",
-      "lastCatalogSha256": "b12654decfa52117550a89a638c51f65f7680f0530f22720772a601e75cad4cd",
+      "lastCatalogSha256": "a3e05797ffaf3286c47a228532e00c200bd740958bd4159d87cbda9248905937",
       "lastArtifactHashes": {
-        "Catalog.json": "b12654decfa52117550a89a638c51f65f7680f0530f22720772a601e75cad4cd",
-        "Services.json": "4312771ad35c8666810b92bda4203e125a8596e51893a9cc833fc68c1fc10435",
-        "Catalog_Rules.json": "d3a5b4e716d275649b152ff1a02b996fc1615212bc79244a839921530e0d2d9f",
-        "OCA_Catalog.xlsx": "f6ffcad049f4f3f1102cd918d774ef5d747fd18f902225664052e8143efdfe18"
+        "Catalog.json": "a3e05797ffaf3286c47a228532e00c200bd740958bd4159d87cbda9248905937",
+        "Services.json": "0c8e1fc80b874c1f127df7698b75bcbc7c32e427b3997da10a034d9924e89f7e",
+        "Catalog_Rules.json": "3041c3de4cfb304d235dc0328026a7cfa59f516d5cec77cfafaebdc51908b783",
+        "OCA_Catalog.xlsx": "7bf981409639bda60fb42661cc9cbac49c860a692798f977e27eafe16c6ca0f1"
       }
     },
     "DL360_Gen11": {
@@ -197,8 +195,8 @@
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeSourceId": "e164272a-35cd-49d5-9b3f-a2cf4a653180",
       "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
-      "lastSyncAttemptAt": "2026-09-13T08:30:20.035Z",
-      "lastSyncError": "Canonical Google Sheet synchronization failed before retirement: Command failed: /home/vinodh/.nvm/versions/node/v22.12.0/bin/node /home/vinodh/vendorNotebookSolution/scripts/lib/sync/google_sheets_writer.js --create Alletra_Storage_System Canonical Knowledge /home/vinodh/vendorNotebookSolution/outputs/Alletra/Storage/Alletra_Storage_System/Alletra_Storage_System_Master_Catalog.csv /home/vinodh/vendorNotebookSolution/outputs/Alletra/Storage/Alletra_Storage_System/notebook_sync_payload_Alletra_Storage_System.md Alletra_Storage_System\ninvalid_grant\n. Old source remains active.",
+      "lastSyncAttemptAt": "2026-10-01T05:52:16.593Z",
+      "lastSyncError": "Canonical Google Sheet synchronization failed before retirement: Command failed: C:\\Program Files\\nodejs\\node.exe C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\scripts\\lib\\sync\\google_sheets_writer.js --create Alletra_Storage_System Canonical Knowledge C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\Alletra\\Storage\\Alletra_Storage_System\\Alletra_Storage_System_Master_Catalog.csv C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\Alletra\\Storage\\Alletra_Storage_System\\notebook_sync_payload_Alletra_Storage_System.md Alletra_Storage_System\ninvalid_grant\n. Old source remains active.",
       "cloudSyncState": "FAILED",
       "runningKnowledgeVerifiedRevision": "3cd8066a9cc44bafb52b5154d3006c2138ea053586d1bbf5c146632dad2a8a9b",
       "runningKnowledgeVerifiedAt": "2026-09-30T19:20:50.366Z"

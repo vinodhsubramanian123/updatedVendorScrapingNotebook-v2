@@ -4,7 +4,7 @@
 
 **Scope Identity**: `HPE/STORAGE/Alletra/Storage/Alletra_Storage_System`
 
-**Sync Timestamp**: 2026-09-30T12:26:19.265Z
+**Sync Timestamp**: 2026-10-01T05:52:11.921Z
 
 **Total Verified SKUs**: `3` (`3` Hardware + `0` Services)
 
@@ -41,6 +41,10 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 ## 🎯 3. Chassis & Solution-Type Gotchas (Alletra_Storage_System)
 
 *No specific gotchas logged for Alletra_Storage_System. Baseline chassis layout rules active.*
+
+## 🔒 3b. Physical & Architectural Gating Rules (DOM Unavailable Tables)
+
+*No portal-conditional gating rules detected in default DOM state.*
 
 ## ⚠️ 4. Discontinued & Obsolete SKUs Registry
 

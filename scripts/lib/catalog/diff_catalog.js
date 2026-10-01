@@ -699,6 +699,12 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog', o
 
   diffSummary.discontinuedTotal = Object.values(discontinuedRegistry).filter(d => d.status === 'DISCONTINUED').length;
 
+  const actualUniqueSkus = new Set((catalogData.entries || []).flatMap(entry => entry.skus || []).map(row => String(row.sku || row['Product #'] || '').trim()).filter(Boolean));
+  if (catalogData.metadata) {
+    catalogData.metadata.totalUniqueSKUs   = actualUniqueSkus.size;
+    catalogData.metadata.totalSubcategories = new Set((catalogData.entries || []).map(e => e.subCategory)).size;
+  }
+
   // Save historical snapshot, price history, attribute history, and discontinued SKU registry atomically
   safeWriteJsonAtomic(currentSnapshotPath, catalogData);
   safeWriteJsonAtomic(priceHistoryPath, priceHistory);

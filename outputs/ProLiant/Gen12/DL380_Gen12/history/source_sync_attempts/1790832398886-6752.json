@@ -1,0 +1,36 @@
+{
+  "product": "DL380_Gen12",
+  "notebookId": "1d190853-4e9c-48df-aa70-eae66c6f2c1f",
+  "replacementSourceId": "f9e221b2-b678-4770-9842-c1d6605219db",
+  "verifiedAt": "2026-10-01T05:26:38.886Z",
+  "contentFingerprints": {
+    "catalog": "db5a9d729e086b3eb528f194d8ac083e269fe8df37704d6b35bd07e3e2627766",
+    "learnings": "c65287ada7628fe6ac4946319b3d3ba7eb912a1ce37d82789b5951927fe4a21a",
+    "changes": "901396f236da4d932f92ed0d17df6eab74c71cee89d80c2fa73125a55f9002d5",
+    "workbook": "fdb11c0263c3a5494f54cd152d337dd79a57415c8d9ed31187c6d0fa20ec1155",
+    "combined": "b755be5ff9f1402136397b78d110a82de473cf482b699afeb8d63f70a140eb52"
+  },
+  "legacyFingerprint": "b755be5ff9f1402136397b78d110a82de473cf482b699afeb8d63f70a140eb52",
+  "retirementRequested": true,
+  "plannedRetirementIds": [
+    "00cb0c3d-6d19-4a49-9cfa-aea446f08338",
+    "5096c62b-53e4-4395-936e-50bee2c88955",
+    "8e7eefd5-a18a-4852-b2ca-125ed0f31f67",
+    "93d78ae2-e20e-4485-8750-7948369ba18b",
+    "f9c914cc-0ed2-4a31-8ca5-662fa88980eb",
+    "9b3d0964-3dd0-4bfd-b94e-ba3d934885d7",
+    "db72a668-a271-42ab-bedc-0a82abc1d609"
+  ],
+  "status": "CONSOLIDATED",
+  "retiredSourceIds": [
+    "00cb0c3d-6d19-4a49-9cfa-aea446f08338",
+    "5096c62b-53e4-4395-936e-50bee2c88955",
+    "8e7eefd5-a18a-4852-b2ca-125ed0f31f67",
+    "93d78ae2-e20e-4485-8750-7948369ba18b",
+    "f9c914cc-0ed2-4a31-8ca5-662fa88980eb",
+    "9b3d0964-3dd0-4bfd-b94e-ba3d934885d7",
+    "db72a668-a271-42ab-bedc-0a82abc1d609"
+  ],
+  "remainingSourceIds": [],
+  "retirementErrors": []
+}

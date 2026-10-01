@@ -189,7 +189,10 @@ function createCatalogMetadata(family = 'ProLiant', gen = 'Gen12', model = 'DL38
 
 function getUniqueSkuCount(entries) {
   const set = new Set();
-  entries.forEach(e => (e.skus || []).forEach(s => set.add(s.sku || s['Product #'])));
+  entries.forEach(e => (e.skus || []).forEach(s => {
+    const pn = String(s.sku || s['Product #'] || '').trim();
+    if (pn) set.add(pn);
+  }));
   return set.size;
 }
 
@@ -1684,6 +1687,15 @@ async function reconcilePriceAndLifecycleHistory(hardwareEntries, cleanServicesE
     'services',
     { companionCatalog: catalogObj }
   );
+
+  if (enrichedCatalog?.metadata) {
+    enrichedCatalog.metadata.totalUniqueSKUs = getUniqueSkuCount(enrichedCatalog.entries);
+    enrichedCatalog.metadata.totalSubcategories = new Set(enrichedCatalog.entries.map(e => e.subCategory)).size;
+  }
+  if (enrichedServicesCatalog?.metadata) {
+    enrichedServicesCatalog.metadata.totalUniqueSKUs = getUniqueSkuCount(enrichedServicesCatalog.entries);
+    enrichedServicesCatalog.metadata.totalSubcategories = new Set(enrichedServicesCatalog.entries.map(e => e.subCategory)).size;
+  }
 
   let existingCatalogForDiff = null;
   const currentCatalogJsonFile = path.join(targetDir, `${filePrefix}_Catalog.json`);

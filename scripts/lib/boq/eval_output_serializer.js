@@ -627,9 +627,11 @@ async function serializeAndExportResults(ctx) {
     const tracePayloads = _buildTracePayloads(ctx);
 
     const isMathClean = evalResults.isMathClean === true && (!evalResults.missingDependencies || evalResults.missingDependencies.length === 0);
+    const hasUnbuildableDisposition = evalResults.customerDisposition === 'DELIVERY_BLOCKED_UNBUILDABLE' || evalResults.acceptanceGate?.isValid === false;
+    const isFatalDeliveryError = evalResults.deliveryError && !hasUnbuildableDisposition;
 
     const jsonResult = {
-      status: evalResults.deliveryError ? 'ERROR' : (evalResults.evidenceHealth?.workflowStatus === 'COMPLETE' ? 'SUCCESS' : 'ACTION_REQUIRED'),
+      status: isFatalDeliveryError ? 'ERROR' : (evalResults.evidenceHealth?.workflowStatus === 'COMPLETE' ? 'SUCCESS' : 'ACTION_REQUIRED'),
       data: {
         traceId,
         provenanceTrace,

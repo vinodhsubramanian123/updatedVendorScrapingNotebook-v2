@@ -160,7 +160,7 @@ function extractProvenanceAndTrace(data, inner) {
  * @returns {object}        Normalised evalResults object
  */
 export function normalizeEvalResult(payload) {
-  if (payload.error) {
+  if (payload.error && !payload.data) {
     return { status: 'ERROR', error: payload.error?.error || 'Evaluation failed' };
   }
 
