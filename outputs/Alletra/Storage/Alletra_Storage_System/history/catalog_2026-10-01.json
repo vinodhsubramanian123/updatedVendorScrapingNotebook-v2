@@ -19,9 +19,9 @@
       "discontinuedTotal": 0
     },
     "source": "OCA Portal Master Registry Sync",
-    "historySnapshot": "catalog_2026-10-01.json",
+    "historySnapshot": "catalog_2026-09-14.json",
     "priceAnalytics": {
-      "scrapeDate": "2026-10-01",
+      "scrapeDate": "2026-09-14",
       "categoryBreakdown": {
         "Chassis": {
           "totalSKUs": 3,

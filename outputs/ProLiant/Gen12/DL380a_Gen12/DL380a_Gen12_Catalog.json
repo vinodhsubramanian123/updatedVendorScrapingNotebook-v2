@@ -9,19 +9,19 @@
     "scrapeDate": "2026-09-30",
     "scrapeTimestamp": "2026-09-30T19:18:53.569Z",
     "builtAt": "2026-09-30T19:18:54.601Z",
-    "totalSubcategories": 44,
-    "totalUniqueSKUs": 440,
-    "totalTables": 58,
+    "totalSubcategories": 9,
+    "totalUniqueSKUs": 455,
+    "totalTables": 59,
     "diffSummary": {
       "added": 6,
-      "removed": 15,
-      "categoryMigrated": 1,
+      "removed": 1,
+      "categoryMigrated": 0,
       "priceChanged": 0,
       "attributeChanged": 224,
       "priceAndAttributeChanged": 210,
       "unchanged": 0,
       "reinstated": 0,
-      "discontinuedTotal": 28
+      "discontinuedTotal": 29
     },
     "historySnapshot": "catalog_2026-09-30.json",
     "priceAnalytics": {
@@ -123,8 +123,8 @@
           "avgPrice": 24218.8125
         },
         "Storage Controllers": {
-          "totalSKUs": 19,
-          "totalPrice": 29034,
+          "totalSKUs": 20,
+          "totalPrice": 29035,
           "minPrice": 1,
           "maxPrice": 11399,
           "subcategories": {
@@ -147,9 +147,14 @@
               "totalSKUs": 2,
               "totalPrice": 600,
               "avgPrice": 300
+            },
+            "RAID Settings": {
+              "totalSKUs": 1,
+              "totalPrice": 1,
+              "avgPrice": 1
             }
           },
-          "avgPrice": 1528.1052631578948
+          "avgPrice": 1451.75
         },
         "Drive Enclosures / Drives": {
           "totalSKUs": 51,
@@ -16931,6 +16936,58 @@
           "Price Change (%)": "-100.00%",
           "Attribute Deltas": "SKU Discontinued & Tombstoned",
           "Price History Trail": "2026-09-13: $37899.00 → 2026-09-30: $37899.00 (✕ REMOVED)"
+        }
+      ]
+    },
+    {
+      "parentCategory": "Storage Controllers",
+      "subCategory": "RAID Settings",
+      "constraint": "Discontinued",
+      "maxQty": 0,
+      "rules": [
+        "[DISCONTINUED] SKU present in previous scrape but removed from active catalog"
+      ],
+      "headers": [
+        "Product #",
+        "Description",
+        "Current Qty",
+        "Unit Price (USD)",
+        "Days Active"
+      ],
+      "skuCount": 1,
+      "skus": [
+        {
+          "Main Category": "Storage Controllers",
+          "Sub-Category": "RAID Settings",
+          "Hierarchy Path": "HPE OCA > DL380a Gen12 > Deprecation Archive > Discontinued SKUs",
+          "Component Role": "Discontinued Hardware",
+          "Constraint Text": "Discontinued",
+          "Subcategory Max Qty": "0",
+          "Table Rule/Note": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog",
+          "Option Type": "Standard",
+          "Product #": "389692-B21",
+          "Description": "[REMOVED SKU] HPE Customer Defined RAID Setting Service",
+          "Current Qty": "0",
+          "Unit Price (USD)": "1.00",
+          "Price Delta (USD)": "-",
+          "Extended Price (USD)": "0.00",
+          "Price per GB (USD)": "-",
+          "HPE Recommended": "No",
+          "Start Date": "02/02/2005",
+          "Discontinued Date": "2026-09-30",
+          "Days Active": "24",
+          "Diff Status": "REMOVED",
+          "Lifecycle Status": "Active",
+          "Lifecycle Badge": "DS",
+          "Availability": "Available",
+          "Lead Time": "Not available (Discontinued)",
+          "Lead Time Source": "Not published by OCA",
+          "Vendor Attributes (JSON)": "{}",
+          "Previous List Price (USD)": "1.00",
+          "Price Change (USD)": "-$1.00",
+          "Price Change (%)": "-100.00%",
+          "Attribute Deltas": "SKU Discontinued & Tombstoned",
+          "Price History Trail": "2026-09-06: $1.00 → 2026-09-30: $1.00 (✕ REMOVED)"
         }
       ]
     }

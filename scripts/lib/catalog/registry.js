@@ -43,7 +43,18 @@ function updateScrapedRegistry(info) {
   const relOutputDir  = normOutputDir.replace(/.*\/outputs\//, 'outputs/').replace(/\/+$/, '') + '/';
 
   const skuDisplayCount = info.skuCount !== undefined ? info.skuCount : (info.tablesCount || 0);
-  const learnedCount = info.learnedCount !== undefined ? info.learnedCount : 0;
+  let learnedCount = info.learnedCount !== undefined ? info.learnedCount : 0;
+  if (learnedCount === 0 && info.outputDir) {
+    const deltasP1 = path.join(info.outputDir, 'history', 'catalog_deltas.json');
+    const deltasP2 = path.join(info.outputDir, 'catalog_deltas.json');
+    const candidatePath = fs.existsSync(deltasP1) ? deltasP1 : (fs.existsSync(deltasP2) ? deltasP2 : null);
+    if (candidatePath) {
+      try {
+        const deltas = JSON.parse(fs.readFileSync(candidatePath, 'utf-8'));
+        learnedCount = Array.isArray(deltas) ? deltas.length : (Array.isArray(deltas?.rules) ? deltas.rules.length : 0);
+      } catch (_) {}
+    }
+  }
 
   const newRow =
     `| ${dateStr} | ${info.solutionName || 'OCA Solution'} | ${info.family} | ` +
@@ -62,7 +73,9 @@ function updateScrapedRegistry(info) {
     // Simple migration: if file didn't have Learned Rules column, fix header
     if (!content.includes('| Learned Rules |')) {
        content = content.replace('| Total SKUs | Excel |', '| Total SKUs | Learned Rules | Excel |');
+       content = content.replace('| Sheets / Entries | Excel Workbook |', '| Sheets / Entries | Learned Rules | Excel Workbook |');
        content = content.replace('| :--- | :--- | :--- | :--- | :--- | ---: | :--- | :--- | :--- | :--- |', '| :--- | :--- | :--- | :--- | :--- | ---: | ---: | :--- | :--- | :--- | :--- |');
+       content = content.replace('|------|--------------|--------|-----|-------------|------------------|----------------|--------------|----------------|-------------|', '|------|--------------|--------|-----|-------------|------------------|---------------|----------------|--------------|----------------|-------------|');
     }
     fs.writeFileSync(REGISTRY_PATH, content);
     console.log(`Updated existing row in Master Registry for: ${relOutputDir}`);

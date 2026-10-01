@@ -13,10 +13,10 @@
       "added": 1,
       "removed": 0,
       "categoryMigrated": 0,
-      "priceChanged": 0,
+      "priceChanged": 1,
       "attributeChanged": 34,
       "priceAndAttributeChanged": 22,
-      "unchanged": 1,
+      "unchanged": 0,
       "reinstated": 0,
       "discontinuedTotal": 0
     },
@@ -167,10 +167,10 @@
           "provenance": "HPE OCA Product Search via authenticated CDP session",
           "Previous List Price (USD)": "N/A",
           "Attribute Deltas": "None",
-          "Diff Status": "UNCHANGED",
-          "Price Change (USD)": "$0.00",
+          "Diff Status": "PRICE_CHANGED",
+          "Price Change (USD)": "+$19746.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-09-21: (no price)"
+          "Price History Trail": "2026-09-21: (no price) → 2026-09-22: $19746.00"
         }
       ]
     },

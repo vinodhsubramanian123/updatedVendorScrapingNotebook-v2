@@ -9,19 +9,19 @@
     "scrapeDate": "2026-09-30",
     "scrapeTimestamp": "2026-09-30T18:45:29.474Z",
     "builtAt": "2026-09-30T18:45:31.606Z",
-    "totalSubcategories": 68,
-    "totalUniqueSKUs": 603,
+    "totalSubcategories": 11,
+    "totalUniqueSKUs": 606,
     "totalTables": 96,
     "diffSummary": {
       "added": 5,
-      "removed": 3,
-      "categoryMigrated": 2,
+      "removed": 2,
+      "categoryMigrated": 0,
       "priceChanged": 0,
       "attributeChanged": 582,
       "priceAndAttributeChanged": 16,
       "unchanged": 0,
       "reinstated": 0,
-      "discontinuedTotal": 18
+      "discontinuedTotal": 20
     },
     "historySnapshot": "catalog_2026-09-30.json",
     "priceAnalytics": {
@@ -260,8 +260,8 @@
           "avgPrice": 330.1
         },
         "Storage Controllers": {
-          "totalSKUs": 49,
-          "totalPrice": 51656,
+          "totalSKUs": 51,
+          "totalPrice": 51658,
           "minPrice": 1,
           "maxPrice": 11399,
           "subcategories": {
@@ -289,9 +289,14 @@
               "totalSKUs": 2,
               "totalPrice": 600,
               "avgPrice": 300
+            },
+            "RAID Settings": {
+              "totalSKUs": 2,
+              "totalPrice": 2,
+              "avgPrice": 1
             }
           },
-          "avgPrice": 1054.204081632653
+          "avgPrice": 1012.9019607843137
         },
         "Cables & Enablement Kits": {
           "totalSKUs": 64,
@@ -24556,6 +24561,91 @@
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
           "Price History Trail": "2026-08-12: $3759.00 → 2026-09-13: $3759.00 → 2026-09-30: $3759.00"
+        }
+      ]
+    },
+    {
+      "parentCategory": "Storage Controllers",
+      "subCategory": "RAID Settings",
+      "constraint": "Discontinued",
+      "maxQty": 0,
+      "rules": [
+        "[DISCONTINUED] SKU present in previous scrape but removed from active catalog"
+      ],
+      "headers": [
+        "Product #",
+        "Description",
+        "Current Qty",
+        "Unit Price (USD)",
+        "Days Active"
+      ],
+      "skuCount": 2,
+      "skus": [
+        {
+          "Main Category": "Storage Controllers",
+          "Sub-Category": "RAID Settings",
+          "Hierarchy Path": "HPE OCA > DL380 Gen12 > Deprecation Archive > Discontinued SKUs",
+          "Component Role": "Discontinued Hardware",
+          "Constraint Text": "Discontinued",
+          "Subcategory Max Qty": "0",
+          "Table Rule/Note": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog",
+          "Option Type": "Standard",
+          "Product #": "339781-B21",
+          "Description": "[REMOVED SKU] HPE RAID FIO Advanced Data Guarding Option",
+          "Current Qty": "0",
+          "Unit Price (USD)": "1.00",
+          "Price Delta (USD)": "-",
+          "Extended Price (USD)": "0.00",
+          "Price per GB (USD)": "-",
+          "HPE Recommended": "No",
+          "Start Date": "08/01/2008",
+          "Discontinued Date": "2026-09-30",
+          "Days Active": "49",
+          "Diff Status": "REMOVED",
+          "Lifecycle Status": "Active",
+          "Lifecycle Badge": "DS",
+          "Availability": "Available",
+          "Lead Time": "Not available (Discontinued)",
+          "Lead Time Source": "Not published by OCA",
+          "Vendor Attributes (JSON)": "{}",
+          "Previous List Price (USD)": "1.00",
+          "Price Change (USD)": "-$1.00",
+          "Price Change (%)": "-100.00%",
+          "Attribute Deltas": "SKU Discontinued & Tombstoned",
+          "Price History Trail": "2026-08-12: $1.00 → 2026-08-13: $1.00 → 2026-08-14: $1.00 → 2026-08-16: $1.00 → 2026-08-19: $1.00 → 2026-08-22: $1.00 → 2026-09-09: $1.00 → 2026-09-10: $1.00 → 2026-09-30: $1.00 (✕ REMOVED)"
+        },
+        {
+          "Main Category": "Storage Controllers",
+          "Sub-Category": "RAID Settings",
+          "Hierarchy Path": "HPE OCA > DL380 Gen12 > Deprecation Archive > Discontinued SKUs",
+          "Component Role": "Discontinued Hardware",
+          "Constraint Text": "Discontinued",
+          "Subcategory Max Qty": "0",
+          "Table Rule/Note": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog",
+          "Option Type": "Standard",
+          "Product #": "389692-B21",
+          "Description": "[REMOVED SKU] HPE Customer Defined RAID Setting Service",
+          "Current Qty": "0",
+          "Unit Price (USD)": "1.00",
+          "Price Delta (USD)": "-",
+          "Extended Price (USD)": "0.00",
+          "Price per GB (USD)": "-",
+          "HPE Recommended": "No",
+          "Start Date": "02/02/2005",
+          "Discontinued Date": "2026-09-30",
+          "Days Active": "49",
+          "Diff Status": "REMOVED",
+          "Lifecycle Status": "Active",
+          "Lifecycle Badge": "DS",
+          "Availability": "Available",
+          "Lead Time": "Not available (Discontinued)",
+          "Lead Time Source": "Not published by OCA",
+          "Vendor Attributes (JSON)": "{}",
+          "Previous List Price (USD)": "1.00",
+          "Price Change (USD)": "-$1.00",
+          "Price Change (%)": "-100.00%",
+          "Attribute Deltas": "SKU Discontinued & Tombstoned",
+          "Price History Trail": "2026-08-12: $1.00 → 2026-08-13: $1.00 → 2026-08-14: $1.00 → 2026-08-16: $1.00 → 2026-08-19: $1.00 → 2026-08-22: $1.00 → 2026-09-09: $1.00 → 2026-09-10: $1.00 → 2026-09-30: $1.00 (✕ REMOVED)"
         }
       ]
     }

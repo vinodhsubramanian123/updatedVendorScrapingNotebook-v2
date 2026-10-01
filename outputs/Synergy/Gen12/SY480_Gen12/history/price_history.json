@@ -621,154 +621,176 @@
     {
       "date": "2026-09-11",
       "price": 10183,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q0D23A": [
     {
       "date": "2026-09-11",
       "price": 6264,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q5W20A": [
     {
       "date": "2026-09-11",
       "price": 4072,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q5W19A": [
     {
       "date": "2026-09-11",
       "price": 2505,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q5W22A": [
     {
       "date": "2026-09-11",
       "price": 6787,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q5W21A": [
     {
       "date": "2026-09-11",
       "price": 4175,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q8U19A": [
     {
       "date": "2026-09-11",
       "price": 6737,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q8U21A": [
     {
       "date": "2026-09-11",
       "price": 5483,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q8U20A": [
     {
       "date": "2026-09-11",
       "price": 11229,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q8U22A": [
     {
       "date": "2026-09-11",
       "price": 9139,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q8U15A": [
     {
       "date": "2026-09-11",
       "price": 24680,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q8U17A": [
     {
       "date": "2026-09-11",
       "price": 20325,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q8U16A": [
     {
       "date": "2026-09-11",
       "price": 41134,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q8U18A": [
     {
       "date": "2026-09-11",
       "price": 33874,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q5W24A": [
     {
       "date": "2026-09-11",
       "price": 14516,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q5W23A": [
     {
       "date": "2026-09-11",
       "price": 9072,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q5W26A": [
     {
       "date": "2026-09-11",
       "price": 24194,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q5W25A": [
     {
       "date": "2026-09-11",
       "price": 15119,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q0D26A": [
     {
       "date": "2026-09-11",
       "price": 7532,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q0D25A": [
     {
       "date": "2026-09-11",
       "price": 2085,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q0D30A": [
     {
       "date": "2026-09-11",
       "price": 15095,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q0D29A": [
     {
       "date": "2026-09-11",
       "price": 4395,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "P11086-B21": [
@@ -1115,14 +1137,16 @@
     {
       "date": "2026-09-11",
       "price": 7803,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "N0U75A": [
     {
       "date": "2026-09-11",
       "price": 13005,
-      "status": "REMOVED"
+      "status": "REMOVED",
+      "validationState": "VALIDATED"
     }
   ],
   "P46172-AA1": [

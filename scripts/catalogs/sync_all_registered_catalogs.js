@@ -48,7 +48,11 @@ function parseRegistryMD() {
     const chassisShorthand = cols[5].replace(/`/g, '');
     const skusStr = cols[6].replace(/\*/g, '').replace(/,/g, '');
     const totalSKUs = parseInt(skusStr, 10) || 0;
-    const outputDirMatch = cols[10].replace(/`/g, '').trim();
+    const outputDirCol = cols.find(c => {
+      const clean = c.replace(/`/g, '').trim();
+      return clean.startsWith('outputs/') || clean.startsWith('outputs\\');
+    });
+    const outputDirMatch = (outputDirCol || cols[cols.length - 2] || '').replace(/`/g, '').trim();
 
     if (!chassisShorthand || !outputDirMatch || BLOCKED_CHASSIS.has(chassisShorthand) || BLOCKED_CHASSIS.has(outputDirMatch)) {
       continue;

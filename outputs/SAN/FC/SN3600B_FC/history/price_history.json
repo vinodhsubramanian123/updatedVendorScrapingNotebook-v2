@@ -4,6 +4,12 @@
       "date": "2026-09-21",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-09-22",
+      "price": 19746,
+      "status": "PRICE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R7M09A": [

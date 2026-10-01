@@ -25,18 +25,18 @@
       "scrapeDate": "2026-09-22",
       "categoryBreakdown": {
         "Chassis": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
+          "totalSKUs": 1,
+          "totalPrice": 19746,
+          "minPrice": 19746,
+          "maxPrice": 19746,
           "subcategories": {
             "Variants": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
+              "totalSKUs": 1,
+              "totalPrice": 19746,
+              "avgPrice": 19746
             }
           },
-          "avgPrice": 0
+          "avgPrice": 19746
         },
         "Networking": {
           "totalSKUs": 16,
@@ -124,9 +124,7 @@
       "removedSkusCount": 0,
       "estimatedTokensSaved": 5100,
       "estimatedProcessingTimeSavedMs": 6800
-    },
-    "snapshotChecksum": "d6f50a3e8c943243381929df4fde57d47e962a802b599902069dc315d172a359",
-    "snapshotTimestamp": "2026-09-22T02:35:27.992Z"
+    }
   },
   "subcategories": [],
   "entries": [
@@ -156,8 +154,8 @@
           "Component Role": "Base Chassis",
           "Description": "HPE SN3600B 32Gb 24/8 8-port 32Gb Short Wave SFP28 Fibre Channel Switch",
           "Current Qty": "1",
-          "Unit Price (USD)": "0.00",
-          "listPrice": 0,
+          "Unit Price (USD)": "19,746.00",
+          "listPrice": 19746,
           "CLIC Status": "Active",
           "Lifecycle Status": "Active",
           "lifecycleStatus": "Active",
@@ -169,10 +167,10 @@
           "provenance": "HPE OCA Product Search via authenticated CDP session",
           "Previous List Price (USD)": "N/A",
           "Attribute Deltas": "None",
-          "Diff Status": "UNCHANGED",
-          "Price Change (USD)": "$0.00",
+          "Diff Status": "PRICE_CHANGED",
+          "Price Change (USD)": "+$19746.00",
           "Price Change (%)": "0.00%",
-          "Price History Trail": "2026-09-21: (no price)"
+          "Price History Trail": "2026-09-21: (no price) → 2026-09-22: $19746.00"
         }
       ]
     },

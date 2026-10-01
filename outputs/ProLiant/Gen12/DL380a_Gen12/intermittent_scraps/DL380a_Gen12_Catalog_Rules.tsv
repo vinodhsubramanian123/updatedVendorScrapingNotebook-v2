@@ -1,54 +1,13 @@
 Main Category	Sub-Category	Constraint	Rule Type	Rule Text
-Unknown		Unlimited	Quantity Constraint	Quantity: Unlimited
 Processor	Processor	max 2	Quantity Constraint	Quantity: max 2
-Processor	Heatsink Kit	max 1	Quantity Constraint	Quantity: max 1
 Memory	Memory	max 32	Quantity Constraint	Quantity: max 32
-Memory	GPU Mode	max 1	Quantity Constraint	Quantity: max 1
-Storage Devices	SAS Controller	max 2	Quantity Constraint	Quantity: max 2
-Storage Devices	Drive Cage	max 4	Quantity Constraint	Quantity: max 4
-Storage Devices	Internal Storage Controller Cables	max 2	Quantity Constraint	Quantity: max 2
-Storage Devices	Hot Plug SFF	max 4	Quantity Constraint	Quantity: max 4
-Storage Devices	RAID Settings	max 1	Quantity Constraint	Quantity: max 1
-Factory Configuration Settings	iLO Common Password	max 1	Quantity Constraint	Quantity: max 1
-Factory Configuration Settings	Memory Setting	max 1	Quantity Constraint	Quantity: max 1
-Factory Configuration Settings	Riser Cards	max 5	Quantity Constraint	Quantity: max 5
-Factory Configuration Settings	Accessories	max 3	Quantity Constraint	Quantity: max 3
 Networking	InfiniBand PCIe	max 2	Quantity Constraint	Quantity: max 2
 Networking	Ethernet PCIe	max 2	Quantity Constraint	Quantity: max 2
 Networking	Ethernet OCP	max 2	Quantity Constraint	Quantity: max 2
 Networking	Fibre Channel HBA	max 2	Quantity Constraint	Quantity: max 2
-Networking	Upgrades	max 3	Quantity Constraint	Quantity: max 3
 Networking	Transceivers	max 14	Quantity Constraint	Quantity: max 14
-Graphics Options	Graphics Accessories	max 16	Quantity Constraint	Quantity: max 16
-Graphics Options	Power Supplies	max 8	Quantity Constraint	Quantity: max 8
-Graphics Options	Accessories	max 1	Quantity Constraint	Quantity: max 1
-Graphics Options	Power Cooling Options	max 2	Quantity Constraint	Quantity: max 2
-Graphics Options	Power Cords	max 8	Quantity Constraint	Quantity: max 8
-Accessories	Management Hardware	max 2	Quantity Constraint	Quantity: max 2
-Security Options	Security Hardware	max 1	Quantity Constraint	Quantity: max 1
-Rack Options	Rack Options	max 2	Quantity Constraint	Quantity: max 2
 OS Boot Device	OS Boot Device	max 2	Quantity Constraint	Quantity: max 2
-Manufacturing Services	Manufacturing Services	max 2	Quantity Constraint	Quantity: max 2
-HPC Software Products	HPC Software Products	Unlimited	Quantity Constraint	Quantity: Unlimited
-HPC Software Products	High Availability Computing - Cluster Software	Unlimited	Quantity Constraint	Quantity: Unlimited
-HPC Software Products	NVIDIA GPU SW	Unlimited	Quantity Constraint	Quantity: Unlimited
-HPC Software Products	Partner Software - Operating System	Unlimited	Quantity Constraint	Quantity: Unlimited
-HPE Compute Ops Management	Compute Ops Management SKUs (required)	max 1	Quantity Constraint	Quantity: max 1
 HPE Compute Ops Management	Compute Ops Management SKUs	min 1, Required	Quantity Constraint	Quantity: min 1, Required
-HPE Compute Ops Management	Compute Ops Management Enablement SKUs	max 1	Quantity Constraint	Quantity: max 1
-OEM Software	OEM Software	Unlimited	Quantity Constraint	Quantity: Unlimited
-ProLiant Media Kits and License	Red Hat (add-ons)	Unlimited	Quantity Constraint	Quantity: Unlimited
-ProLiant Media Kits and License	iLO	Unlimited	Quantity Constraint	Quantity: Unlimited
-ProLiant Media Kits and License	OneView Management Software	max 1	Quantity Constraint	Quantity: max 1
-ProLiant Media Kits and License	INTEL VROC Products	max 1	Quantity Constraint	Quantity: max 1
-ProLiant Media Kits and License	Supported Operating System	Unlimited	Quantity Constraint	Quantity: Unlimited
-ProLiant Media Kits and License	MS Windows Server	Unlimited	Quantity Constraint	Quantity: Unlimited
-ProLiant Media Kits and License	Red Hat OpenShift Platform Container	Unlimited	Quantity Constraint	Quantity: Unlimited
-ProLiant Media Kits and License	Resale Option Kit	Unlimited	Quantity Constraint	Quantity: Unlimited
-ProLiant Media Kits and License	SUSE Linux Enterprise Server	Unlimited	Quantity Constraint	Quantity: Unlimited
-ProLiant Media Kits and License	Microsoft Windows CAL Packs	Unlimited	Quantity Constraint	Quantity: Unlimited
-ProLiant Media Kits and License	Red Hat Enterprise Linux Server-Virtualization	Unlimited	Quantity Constraint	Quantity: Unlimited
-ProLiant Media Kits and License	VMware vCloud Products	Unlimited	Quantity Constraint	Quantity: Unlimited
 Chassis	Variants	min 1, max 1 — Active OCA CTO chassis	Configuration Rule	Select exactly one currently discoverable, non-TAA/non-GTA CTO base chassis
 Processor	Processor	max 2	Configuration Rule	Selection constraint for Processor: max 2
 Cooling / Thermal	Heatsink Kit	max 1	Configuration Rule	Selection constraint for Heatsink Kit: max 1
@@ -361,124 +320,4 @@ Software & Licenses	Microsoft Windows CAL Packs	no max	Configuration Rule	P77122
 Software & Licenses	Microsoft Windows CAL Packs	no max	Configuration Rule	P77123-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Software & Licenses	Red Hat Enterprise Linux Server-Virtualization	no max	Configuration Rule	Selection constraint for Red Hat Enterprise Linux Server-Virtualization: no max
 Graphics & GPU	GPU Accelerators	Discontinued	Configuration Rule	[DISCONTINUED] SKU present in previous scrape but removed from active catalog
-Support Services	RAID Settings	max 1	Configuration Rule	Selection constraint for RAID Settings: max 1
-Software & Licenses	HPC Software Products	no max	Configuration Rule	Selection constraint for HPC Software Products: no max
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	R1T30AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	R1T31AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	R1T32AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	R1T36AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	R7P98AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	R8V45AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	R8V46AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W12AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W13AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W14AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W15AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W16AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W17AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W18AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W19AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W20AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W21AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W22AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W23AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W24AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W25AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W26AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W27AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W28AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W29AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Graphics & GPU	NVIDIA GPU SW	no max	Configuration Rule	Selection constraint for NVIDIA GPU SW: no max
-Accessories & Infrastructure	Compute Ops Management Enablement SKUs	max 1	Configuration Rule	Selection constraint for Compute Ops Management Enablement SKUs: max 1
-Software & Licenses	Supported Operating System	no max	Configuration Rule	Q0D22AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Supported Operating System	no max	Configuration Rule	Q0D23AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Supported Operating System	no max	Configuration Rule	Q0D25AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Supported Operating System	no max	Configuration Rule	Q0D26AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Supported Operating System	no max	Configuration Rule	Q0D29AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Supported Operating System	no max	Configuration Rule	Q0D30AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Supported Operating System	no max	Configuration Rule	Q5W19AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Supported Operating System	no max	Configuration Rule	Q5W20AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Supported Operating System	no max	Configuration Rule	Q5W21AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Supported Operating System	no max	Configuration Rule	Q5W22AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Supported Operating System	no max	Configuration Rule	Q5W23AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Supported Operating System	no max	Configuration Rule	Q5W24AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Supported Operating System	no max	Configuration Rule	Q5W25AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Supported Operating System	no max	Configuration Rule	Q5W26AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Supported Operating System	no max	Configuration Rule	Q8U15AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Supported Operating System	no max	Configuration Rule	Q8U16AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Supported Operating System	no max	Configuration Rule	Q8U17AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Supported Operating System	no max	Configuration Rule	Q8U18AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Supported Operating System	no max	Configuration Rule	Q8U19AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Supported Operating System	no max	Configuration Rule	Q8U20AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Supported Operating System	no max	Configuration Rule	Q8U21AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Supported Operating System	no max	Configuration Rule	Q8U22AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Supported Operating System	no max	Configuration Rule	S3B60AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Supported Operating System	no max	Configuration Rule	S3B61AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Supported Operating System	no max	Configuration Rule	S3B62AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Supported Operating System	no max	Configuration Rule	S3B63AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Supported Operating System	no max	Configuration Rule	S3B64AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Supported Operating System	no max	Configuration Rule	S3B65AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Supported Operating System	no max	Configuration Rule	S3B66AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Supported Operating System	no max	Configuration Rule	S3B67AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Supported Operating System	no max	Configuration Rule	S3B68AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Supported Operating System	no max	Configuration Rule	S3B69AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Supported Operating System	no max	Configuration Rule	S3B70AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Supported Operating System	no max	Configuration Rule	S3B71AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Supported Operating System	no max	Configuration Rule	S7N77AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Supported Operating System	no max	Configuration Rule	S7N78AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Red Hat OpenShift Platform Container	no max	Configuration Rule	Selection constraint for Red Hat OpenShift Platform Container: no max
-Software & Licenses	Red Hat OpenShift Platform Container	no max	Configuration Rule	R6J26AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Red Hat OpenShift Platform Container	no max	Configuration Rule	R6J29AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Red Hat OpenShift Platform Container	no max	Configuration Rule	R6J33AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Red Hat OpenShift Platform Container	no max	Configuration Rule	R6J34AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Red Hat OpenShift Platform Container	no max	Configuration Rule	R6J35AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Red Hat OpenShift Platform Container	no max	Configuration Rule	S3Z84AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Red Hat OpenShift Platform Container	no max	Configuration Rule	S3Z85AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Red Hat OpenShift Platform Container	no max	Configuration Rule	S3Z86AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Red Hat OpenShift Platform Container	no max	Configuration Rule	S3Z87AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Red Hat OpenShift Platform Container	no max	Configuration Rule	S3Z88AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Red Hat OpenShift Platform Container	no max	Configuration Rule	S3Z89AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Red Hat OpenShift Platform Container	no max	Configuration Rule	S3Z90AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Red Hat OpenShift Platform Container	no max	Configuration Rule	S3Z91AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Support Services	System Options		Configuration Rule	S2G27AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Support Services	System Options		Configuration Rule	S2G28AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Support Services	System Options		Configuration Rule	Private Product is not valid for current customer account
-Support Services	System Options		Configuration Rule	S4F94AAE conditional visibility: portal selector activation required (Private Product is not valid for current customer account); PORTAL_CONDITIONAL
-Support Services	System Options		Configuration Rule	S4G00AAE conditional visibility: portal selector activation required (Private Product is not valid for current customer account); PORTAL_CONDITIONAL
-Support Services	System Options		Configuration Rule	S4R76AAE conditional visibility: portal selector activation required (Private Product is not valid for current customer account); PORTAL_CONDITIONAL
-Learned Feedback Rules	P74700-B21	learned	Learned Feedback Rule	Observed price drift on P74700-B21 (memory)
-Learned Feedback Rules	S4A91C	learned	Learned Feedback Rule	Observed price drift on S4A91C (drive)
-Learned Feedback Rules	HA113A1	learned	Learned Feedback Rule	Observed price drift on HA113A1 (support)
-Learned Feedback Rules	HU4B2A30C4W	learned	Learned Feedback Rule	Observed price drift on HU4B2A30C4W (service)
-Memory	Configuration Rules	Mixing of memory is not allowed.	Learned Feedback Rule	[MEMORY_MIXING] Mixing of memory is not allowed.
-Storage Devices	Configuration Rules	Mixing of Drive Cage not allowed.	Learned Feedback Rule	[MUTUAL_EXCLUSION] Mixing of Drive Cage not allowed.
-Storage Devices	Configuration Rules	This Cable (P76700-B21) can be selected only if MR416i-p controller is selected.	Learned Feedback Rule	[MUTUAL_EXCLUSION] This Cable (P76700-B21) can be selected only if MR416i-p controller is selected.
-Storage Devices	Configuration Rules	This Cable (P76702-B21) can be selected only if MR416i-o controller is selected.	Learned Feedback Rule	[MUTUAL_EXCLUSION] This Cable (P76702-B21) can be selected only if MR416i-o controller is selected.
-Networking	Configuration Rules	If 4NVMe Direct Attach Cable (P74702-B21) is selected, then HPE DL380a Gen12 OCPB Cbl Kit (P74696-B21) cannot be selected.	Learned Feedback Rule	[MUTUAL_EXCLUSION] If 4NVMe Direct Attach Cable (P74702-B21) is selected, then HPE DL380a Gen12 OCPB Cbl Kit (P74696-B21) cannot be selected.
-Power and Cooling	Configuration Rules	Mixing of Power Supply is not allowed.	Learned Feedback Rule	[MUTUAL_EXCLUSION] Mixing of Power Supply is not allowed.
-Power and Cooling	Configuration Rules	BTO products are not allowed in CTO Base Model.	Learned Feedback Rule	[BTO_DISALLOWED] BTO products are not allowed in CTO Base Model.
-Power and Cooling	Configuration Rules	Supports C19/ C19-C20 Power Cords only.	Learned Feedback Rule	[MUTUAL_EXCLUSION] Supports C19/ C19-C20 Power Cords only.
-Accessories	Configuration Rules	Cannot be selected with HPE DL380a Gen12 8DW/16SW CTO Svr (P76706-B21).	Learned Feedback Rule	[MUTUAL_EXCLUSION] Cannot be selected with HPE DL380a Gen12 8DW/16SW CTO Svr (P76706-B21).
-OS Boot Device	Configuration Rules	Private Product is not valid for current customer account	Learned Feedback Rule	[MUTUAL_EXCLUSION] Private Product is not valid for current customer account
-Manufacturing Services	Configuration Rules	Power cord cannot be selected if HPE Remove Standard Power Cords (469774-409) is in the configuration.	Learned Feedback Rule	[MUTUAL_EXCLUSION] Power cord cannot be selected if HPE Remove Standard Power Cords (469774-409) is in the configuration.
-Virtualization	Configuration Rules	Private Product is not valid for current customer account	Learned Feedback Rule	[MUTUAL_EXCLUSION] Private Product is not valid for current customer account
-Storage Devices	SAS Controller		Reference Link	For More details on Adapter - Transceiver support, please refer to: https://www.hpe.com/psnow/doc/A00002507ENW?jumpid=in_lit-psnow-red (Fibre Channel HBA, InfiniBand PCIe, SAS Controller, Ethernet PCIe, Transceivers, Power Cooling Options, Ethernet OCP)
-Networking	InfiniBand PCIe		Reference Link	For More details on Adapter - Transceiver support, please refer to: https://www.hpe.com/psnow/doc/A00002507ENW?jumpid=in_lit-psnow-red (Fibre Channel HBA, InfiniBand PCIe, SAS Controller, Ethernet PCIe, Transceivers, Power Cooling Options, Ethernet OCP)
-Networking	Ethernet PCIe		Reference Link	For More details on Adapter - Transceiver support, please refer to: https://www.hpe.com/psnow/doc/A00002507ENW?jumpid=in_lit-psnow-red (Fibre Channel HBA, InfiniBand PCIe, SAS Controller, Ethernet PCIe, Transceivers, Power Cooling Options, Ethernet OCP)
-Networking	Ethernet OCP		Reference Link	For More details on Adapter - Transceiver support, please refer to: https://www.hpe.com/psnow/doc/A00002507ENW?jumpid=in_lit-psnow-red (Fibre Channel HBA, InfiniBand PCIe, SAS Controller, Ethernet PCIe, Transceivers, Power Cooling Options, Ethernet OCP)
-Networking	Fibre Channel HBA		Reference Link	For More details on Adapter - Transceiver support, please refer to: https://www.hpe.com/psnow/doc/A00002507ENW?jumpid=in_lit-psnow-red (Fibre Channel HBA, InfiniBand PCIe, SAS Controller, Ethernet PCIe, Transceivers, Power Cooling Options, Ethernet OCP)
-Networking	Transceivers		Reference Link	For More details on Adapter - Transceiver support, please refer to: https://www.hpe.com/psnow/doc/A00002507ENW?jumpid=in_lit-psnow-red (Fibre Channel HBA, InfiniBand PCIe, SAS Controller, Ethernet PCIe, Transceivers, Power Cooling Options, Ethernet OCP)
-Graphics Options	Power Cooling Options		Reference Link	For More details on Adapter - Transceiver support, please refer to: https://www.hpe.com/psnow/doc/A00002507ENW?jumpid=in_lit-psnow-red (Fibre Channel HBA, InfiniBand PCIe, SAS Controller, Ethernet PCIe, Transceivers, Power Cooling Options, Ethernet OCP)
-HPC Software Products	Partner Software - Operating System		Minimum Requirement	Minimum 1 of any of the OS SKUs must be selected.
-ProLiant Media Kits and License	Supported Operating System		Minimum Requirement	Minimum 1 of any of the OS SKUs must be selected.
-ProLiant Media Kits and License	MS Windows Server		Minimum Requirement	Minimum 1 of any of the OS SKUs must be selected.
-ProLiant Media Kits and License	Resale Option Kit		Minimum Requirement	Minimum 1 of any of the OS SKUs must be selected.
-ProLiant Media Kits and License	SUSE Linux Enterprise Server		Minimum Requirement	Minimum 1 of any of the OS SKUs must be selected.
-ProLiant Media Kits and License	Red Hat Enterprise Linux Server-Virtualization		Minimum Requirement	Minimum 1 of any of the OS SKUs must be selected.
-HPC Software Products	Partner Software - Operating System		Recommendation	It is recommended to select an Operating System (Partner Software - Operating System, Supported Operating System, MS Windows Server, Resale Option Kit, SUSE Linux Enterprise Server, Red Hat Enterprise Linux Server-Virtualization)
-ProLiant Media Kits and License	Supported Operating System		Recommendation	It is recommended to select an Operating System (Partner Software - Operating System, Supported Operating System, MS Windows Server, Resale Option Kit, SUSE Linux Enterprise Server, Red Hat Enterprise Linux Server-Virtualization)
-ProLiant Media Kits and License	MS Windows Server		Recommendation	It is recommended to select an Operating System (Partner Software - Operating System, Supported Operating System, MS Windows Server, Resale Option Kit, SUSE Linux Enterprise Server, Red Hat Enterprise Linux Server-Virtualization)
-ProLiant Media Kits and License	Resale Option Kit		Recommendation	It is recommended to select an Operating System (Partner Software - Operating System, Supported Operating System, MS Windows Server, Resale Option Kit, SUSE Linux Enterprise Server, Red Hat Enterprise Linux Server-Virtualization)
-ProLiant Media Kits and License	SUSE Linux Enterprise Server		Recommendation	It is recommended to select an Operating System (Partner Software - Operating System, Supported Operating System, MS Windows Server, Resale Option Kit, SUSE Linux Enterprise Server, Red Hat Enterprise Linux Server-Virtualization)
-ProLiant Media Kits and License	Red Hat Enterprise Linux Server-Virtualization		Recommendation	It is recommended to select an Operating System (Partner Software - Operating System, Supported Operating System, MS Windows Server, Resale Option Kit, SUSE Linux Enterprise Server, Red Hat Enterprise Linux Server-Virtualization)
-Manufacturing Services	Manufacturing Services		Conditional Rule	If "Remove Standard Power Cords" is selected by mistake, then please make sure to de-select it. (Manufacturing Services)
+Storage Controllers	RAID Settings	Discontinued	Configuration Rule	[DISCONTINUED] SKU present in previous scrape but removed from active catalog

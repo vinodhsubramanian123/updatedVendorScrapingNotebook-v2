@@ -9,9 +9,9 @@
     "scrapeDate": "2026-09-30",
     "scrapeTimestamp": "2026-09-30T19:18:53.569Z",
     "builtAt": "2026-09-30T19:18:54.601Z",
-    "totalSubcategories": 44,
-    "totalUniqueSKUs": 440,
-    "totalTables": 58,
+    "totalSubcategories": 9,
+    "totalUniqueSKUs": 455,
+    "totalTables": 59,
     "diffSummary": {
       "added": 6,
       "removed": 15,
@@ -402,9 +402,7 @@
       "removedSkusCount": 1,
       "estimatedTokensSaved": 0,
       "estimatedProcessingTimeSavedMs": 0
-    },
-    "snapshotChecksum": "5688c3d6d2ed1edfc43da0b820c82a42bbbca42406483276b75faedb6e39e2fd",
-    "snapshotTimestamp": "2026-09-30T19:18:54.854Z"
+    }
   },
   "subcategories": [
     {
@@ -16933,6 +16931,58 @@
           "Price Change (%)": "-100.00%",
           "Attribute Deltas": "SKU Discontinued & Tombstoned",
           "Price History Trail": "2026-09-13: $37899.00 → 2026-09-30: $37899.00 (✕ REMOVED)"
+        }
+      ]
+    },
+    {
+      "parentCategory": "Storage Controllers",
+      "subCategory": "RAID Settings",
+      "constraint": "Discontinued",
+      "maxQty": 0,
+      "rules": [
+        "[DISCONTINUED] SKU present in previous scrape but removed from active catalog"
+      ],
+      "headers": [
+        "Product #",
+        "Description",
+        "Current Qty",
+        "Unit Price (USD)",
+        "Days Active"
+      ],
+      "skuCount": 1,
+      "skus": [
+        {
+          "Main Category": "Storage Controllers",
+          "Sub-Category": "RAID Settings",
+          "Hierarchy Path": "HPE OCA > DL380a Gen12 > Deprecation Archive > Discontinued SKUs",
+          "Component Role": "Discontinued Hardware",
+          "Constraint Text": "Discontinued",
+          "Subcategory Max Qty": "0",
+          "Table Rule/Note": "[DISCONTINUED] SKU removed from latest HPE OCA portal catalog",
+          "Option Type": "Standard",
+          "Product #": "389692-B21",
+          "Description": "[REMOVED SKU] HPE Customer Defined RAID Setting Service",
+          "Current Qty": "0",
+          "Unit Price (USD)": "1.00",
+          "Price Delta (USD)": "-",
+          "Extended Price (USD)": "0.00",
+          "Price per GB (USD)": "-",
+          "HPE Recommended": "No",
+          "Start Date": "02/02/2005",
+          "Discontinued Date": "2026-09-30",
+          "Days Active": "24",
+          "Diff Status": "REMOVED",
+          "Lifecycle Status": "Active",
+          "Lifecycle Badge": "DS",
+          "Availability": "Available",
+          "Lead Time": "Not available (Discontinued)",
+          "Lead Time Source": "Not published by OCA",
+          "Vendor Attributes (JSON)": "{}",
+          "Previous List Price (USD)": "1.00",
+          "Price Change (USD)": "-$1.00",
+          "Price Change (%)": "-100.00%",
+          "Attribute Deltas": "SKU Discontinued & Tombstoned",
+          "Price History Trail": "2026-09-06: $1.00 → 2026-09-30: $1.00 (✕ REMOVED)"
         }
       ]
     }

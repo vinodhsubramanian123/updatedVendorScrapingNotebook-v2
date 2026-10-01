@@ -7,18 +7,18 @@
     "scrapeDate": "2026-09-11",
     "scrapeTimestamp": "2026-09-11T16:10:32.450Z",
     "totalSubcategories": 2,
-    "totalUniqueSKUs": 154,
-    "totalTables": 29,
+    "totalUniqueSKUs": 178,
+    "totalTables": 31,
     "diffSummary": {
       "added": 0,
-      "removed": 0,
+      "removed": 24,
       "categoryMigrated": 0,
       "priceChanged": 0,
-      "attributeChanged": 0,
+      "attributeChanged": 6,
       "priceAndAttributeChanged": 0,
-      "unchanged": 154,
+      "unchanged": 148,
       "reinstated": 0,
-      "discontinuedTotal": 0
+      "discontinuedTotal": 24
     },
     "historySnapshot": "catalog_2026-09-11.json",
     "priceAnalytics": {
@@ -152,8 +152,8 @@
           "avgPrice": 130.16666666666666
         },
         "Software & Licenses": {
-          "totalSKUs": 70,
-          "totalPrice": 1566947,
+          "totalSKUs": 94,
+          "totalPrice": 1866350,
           "minPrice": 1,
           "maxPrice": 99999,
           "subcategories": {
@@ -166,9 +166,19 @@
               "totalSKUs": 3,
               "totalPrice": 590,
               "avgPrice": 196.66666666666666
+            },
+            "Red Hat Enterprise Linux Server": {
+              "totalSKUs": 22,
+              "totalPrice": 278595,
+              "avgPrice": 12663.40909090909
+            },
+            "OEM Software": {
+              "totalSKUs": 2,
+              "totalPrice": 20808,
+              "avgPrice": 10404
             }
           },
-          "avgPrice": 22384.957142857143
+          "avgPrice": 19854.787234042553
         },
         "Storage Controllers": {
           "totalSKUs": 9,
