@@ -4,7 +4,7 @@
 
 **Scope Identity**: `HPE/SERVER/Synergy/Gen12/SY480_Gen12`
 
-**Sync Timestamp**: 2026-09-27T17:09:55.606Z
+**Sync Timestamp**: 2026-10-01T15:35:28.538Z
 
 **Total Verified SKUs**: `557` (`154` Hardware + `403` Services)
 
