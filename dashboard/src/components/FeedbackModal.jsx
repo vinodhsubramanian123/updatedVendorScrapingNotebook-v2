@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { MessageSquare, X, Send } from 'lucide-react';
+import { MessageSquare, X, Send, RefreshCw } from 'lucide-react';
 
 export default function FeedbackModal({ isOpen, onClose, resolutionCard }) {
   const [feedback, setFeedback] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -16,7 +17,8 @@ export default function FeedbackModal({ isOpen, onClose, resolutionCard }) {
   if (!isOpen || !resolutionCard) return null;
 
   const handleSubmit = async () => {
-    if (!feedback.trim()) return;
+    if (!feedback.trim() || isSubmitting) return;
+    setIsSubmitting(true);
     try {
       await fetch('/api/portal-feedback', {
         method: 'POST',
@@ -33,6 +35,9 @@ export default function FeedbackModal({ isOpen, onClose, resolutionCard }) {
         onClose();
       }, 1500);
     } catch (e) { console.warn('Caught suppressed error in FeedbackModal.jsx:', e); }
+    finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -69,11 +74,19 @@ export default function FeedbackModal({ isOpen, onClose, resolutionCard }) {
           </div>
         ) : (
           <div className="flex gap-2">
-            <button onClick={onClose} className="flex-1 btn-secondary justify-center text-xs">
+            <button onClick={onClose} disabled={isSubmitting} className="flex-1 btn-secondary justify-center text-xs disabled:opacity-50 disabled:cursor-not-allowed">
               Cancel
             </button>
-            <button onClick={handleSubmit} className="flex-1 btn-primary justify-center text-xs">
-              <Send className="w-3.5 h-3.5" /> Queue Observation
+            <button
+              onClick={handleSubmit}
+              disabled={isSubmitting || !feedback.trim()}
+              className="flex-1 btn-primary justify-center text-xs disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isSubmitting ? (
+                <><RefreshCw className="w-3.5 h-3.5 animate-spin" /> Queueing...</>
+              ) : (
+                <><Send className="w-3.5 h-3.5" /> Queue Observation</>
+              )}
             </button>
           </div>
         )}
