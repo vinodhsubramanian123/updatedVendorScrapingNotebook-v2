@@ -39,7 +39,7 @@ describe('⚡ Partner Portal Upload BOM Scalability & Stress Suite', () => {
     }
 
     assert.doesNotThrow(() => {
-      const res = generatePartnerPortalUploadBOM(clusters, exportFile, { title: 'Stress 20 Clusters' });
+      generatePartnerPortalUploadBOM(clusters, exportFile, { title: 'Stress 20 Clusters', diagnostic: true });
       assert(fs.existsSync(exportFile), 'Excel export must exist');
 
       const wb = XLSX.readFile(exportFile);
@@ -74,7 +74,7 @@ describe('⚡ Partner Portal Upload BOM Scalability & Stress Suite', () => {
       ]
     }];
 
-    generatePartnerPortalUploadBOM(clusterWithUnsolicited, exportFile);
+    generatePartnerPortalUploadBOM(clusterWithUnsolicited, exportFile, { diagnostic: true });
     assert(fs.existsSync(exportFile), 'Excel file must be generated');
 
     const wb = XLSX.readFile(exportFile);

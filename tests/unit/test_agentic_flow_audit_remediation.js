@@ -26,7 +26,6 @@ const { isCatalogCertified } = require('../../scripts/lib/catalog/catalog_discov
 const { synthesize5TierRankedSolutions } = require('../../scripts/lib/conflict/strategy_synthesizer.js');
 const { filterDeltaRules } = require('../../scripts/lib/catalog/active_knowledge_router.js');
 const { recordAndCertifyLearnedRule } = require('../../scripts/lib/feedback/continuous_learning_verifier.js');
-const { generateUniversalCharterMarkdown } = require('../../scripts/services/running_knowledge_sync.js');
 const { isTargetDriveSourceFresh } = require('../../scripts/lib/sync/nlm_sync_client.js');
 const { toChangeRows } = require('../../scripts/lib/sync/google_sheets_writer.js');
 const { KNOWN_QUICKSPECS_DOC_MAP } = require('../../scripts/lib/sync/quickspecs_sync.js');
@@ -101,7 +100,7 @@ test('Codex Audit Remediation — Full 13-Finding Validation Matrix', async (t) 
     const tempXlsx = path.join(os.tmpdir(), `test_portal_${Date.now()}.xlsx`);
 
     try {
-      generatePartnerPortalReadyWorkbook(multiClusterSolution, tempXlsx);
+      generatePartnerPortalReadyWorkbook(multiClusterSolution, tempXlsx, { diagnostic: true });
       assert.strictEqual(fs.existsSync(tempXlsx), true, 'Portal workbook must be created');
 
       const XLSX = require('xlsx-js-style');

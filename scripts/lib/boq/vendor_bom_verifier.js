@@ -56,33 +56,38 @@ function aggregateItemQuantities(items) {
   for (const it of items) {
     const rawSku = String(it.sku || it['Product #'] || '').trim();
     const exact = normalizeSku(rawSku);
-    const qty = Number(it.quantity ?? it.qty);
-    if (!exact || !Number.isSafeInteger(qty) || qty <= 0) throw new Error('BOM audit requires a SKU and positive integer quantity for every row.');
+    const rawQuantity = it.quantity ?? it.qty;
+    const qty = Number(rawQuantity);
+    if (!exact || !['number', 'string'].includes(typeof rawQuantity) || !Number.isSafeInteger(qty) || qty <= 0) throw new Error('BOM audit requires a SKU and positive integer quantity for every row.');
     const multiplier = it.configurationMultiplier ?? 1;
     if (!Number.isSafeInteger(Number(multiplier)) || Number(multiplier) <= 0) throw new Error('BOM audit requires a positive integer configuration multiplier.');
     const identity = JSON.stringify([exact, it.configurationId || null, it.configurationName || null,
-      it.ownerId || null, it.parentId || null, it.subParentId || null, it.quantityScope || 'configuration', Number(multiplier)]);
-    const unitPrice = parseFloat(String(it.unitPriceUsd || it.price || it['Unit Price (USD)'] || 0)) || 0;
+      it.ownerId || null, it.parentId || null, it.subParentId || null, it.quantityScope || 'configuration', Number(multiplier),
+      it.quantityBasis || 'base', Boolean(it.isClusterPreMultiplied)]);
+    const rawPrice = it.unitPriceUsd ?? it.price ?? it['Unit Price (USD)'];
+    const priceText = String(rawPrice ?? '').trim();
+    const unitPrice = /^(?:USD\s*|\$)?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d+)?$/i.test(priceText)
+      ? Number(priceText.replace(/^(?:USD\s*|\$)/i, '').replace(/,/g, '')) : NaN;
+    const pricingComplete = Number.isFinite(unitPrice) && (unitPrice > 0 || (unitPrice === 0 && it.isConfirmedZeroPrice === true));
+    const knownExtendedPriceUsd = pricingComplete ? qty * unitPrice : 0;
     const existing = map.get(identity);
     if (existing) {
-      const priorExt = existing.quantity * (existing.unitPriceUsd || 0);
-      const newExt = qty * unitPrice;
       existing.quantity += qty;
       if (!Number.isSafeInteger(existing.quantity)) throw new Error('BOM audit aggregate quantity exceeds the safe integer range.');
       existing.rawRows.push(it);
       if (!existing.description && it.description) existing.description = it.description;
-      if (existing.quantity > 0 && (priorExt > 0 || newExt > 0)) {
-        existing.unitPriceUsd = (priorExt + newExt) / existing.quantity;
-      } else if (existing.unitPriceUsd === 0 && unitPrice > 0) {
-        existing.unitPriceUsd = unitPrice;
-      }
+      existing.knownExtendedPriceUsd += knownExtendedPriceUsd;
+      existing.pricingComplete = existing.pricingComplete && pricingComplete && Number.isFinite(existing.knownExtendedPriceUsd);
+      existing.unitPriceUsd = existing.pricingComplete ? existing.knownExtendedPriceUsd / existing.quantity : null;
     } else {
       map.set(identity, {
         sku: exact,
         rawSku,
         quantity: qty,
         description: it.description || '',
-        unitPriceUsd: unitPrice,
+        unitPriceUsd: pricingComplete && Number.isFinite(knownExtendedPriceUsd) ? unitPrice : null,
+        pricingComplete: pricingComplete && Number.isFinite(knownExtendedPriceUsd),
+        knownExtendedPriceUsd,
         rawRows: [it]
       });
     }
@@ -114,7 +119,10 @@ function auditSingleVendorBOM(vendorBomInput, chassisDir, _options = {}) {
   if (vendorItems.length === 0) {
     throw new Error('Vendor BOM input contains zero items.');
   }
-  aggregateItemQuantities(vendorItems); // Reject malformed rows; do not silently omit them.
+  const auditedItems = aggregateItemQuantities(vendorItems); // Reject malformed rows; do not silently omit them.
+  const pricingGaps = [...auditedItems].filter(([, item]) => !item.pricingComplete).map(([identity, item]) => ({
+    sku: item.rawSku, scopeIdentity: identity, reason: 'Quote price is missing, malformed or an unconfirmed zero.'
+  }));
 
   const chassisPrefix = path.basename(chassisDir || '');
   const { catalogSkus, catalogPriceMap } = loadCatalogSkusAndPrices(chassisDir);
@@ -178,7 +186,8 @@ function auditSingleVendorBOM(vendorBomInput, chassisDir, _options = {}) {
     isCatalogClean: catalogSkus.size > 0 && uncatalogedSkus.length === 0,
     requiresFreshScrape,
     is100PercentMatch: false,
-    hasDiscrepancies: uncatalogedSkus.length > 0 || invalidFormatSkus.length > 0,
+    hasDiscrepancies: uncatalogedSkus.length > 0 || invalidFormatSkus.length > 0 || pricingGaps.length > 0,
+    pricingComplete: pricingGaps.length === 0,
     quarantinedObservationCount: 0,
     quarantinedObservationIds: [],
     uncatalogedSkus,
@@ -188,6 +197,7 @@ function auditSingleVendorBOM(vendorBomInput, chassisDir, _options = {}) {
       addedByVendor: [],
       removedByVendor: [],
       priceDeltas: [],
+      pricingGaps,
       quantityDeltas: [],
       uncatalogedSkus,
       exactMatches: []
@@ -224,7 +234,7 @@ function verifyVendorBOM(vendorBomInput, proposedRankSolution, chassisDir, optio
     throw new Error('Comparison mode requires non-empty vendor BOM items.');
   }
 
-  const { catalogSkus, catalogPriceMap } = loadCatalogSkusAndPrices(chassisDir);
+  const { catalogSkus } = loadCatalogSkusAndPrices(chassisDir);
 
   const vendorAgg = aggregateItemQuantities(vendorItems);
   const proposedAgg = aggregateItemQuantities(proposedItems);
@@ -233,6 +243,7 @@ function verifyVendorBOM(vendorBomInput, proposedRankSolution, chassisDir, optio
     addedByVendor: [],
     removedByVendor: [],
     priceDeltas: [],
+    pricingGaps: [],
     quantityDeltas: [],
     uncatalogedSkus: [],
     exactMatches: []
@@ -265,10 +276,17 @@ function verifyVendorBOM(vendorBomInput, proposedRankSolution, chassisDir, optio
       });
     } else {
       const qtyDiff = vItem.quantity - pItem.quantity;
-      const vPrice = parseFloat(String(vItem.unitPriceUsd || 0)) || catalogPriceMap.get(vItem.sku) || 0;
-      const pPrice = parseFloat(String(pItem.unitPriceUsd || 0)) || catalogPriceMap.get(pItem.sku) || 0;
+      const vPrice = vItem.unitPriceUsd;
+      const pPrice = pItem.unitPriceUsd;
+      const pricingComplete = vItem.pricingComplete && pItem.pricingComplete;
+      if (!pricingComplete) discrepancies.pricingGaps.push({
+        sku: vItem.rawSku, scopeIdentity: identity,
+        vendorPriceKnown: vItem.pricingComplete, proposedPriceKnown: pItem.pricingComplete,
+        reason: 'Missing, malformed or unconfirmed-zero quote price; catalog prices do not prove commercial parity.'
+      });
       const priceDiff = Math.abs(vPrice - pPrice);
-      const hasPriceDelta = vPrice > 0 && pPrice > 0 && priceDiff > 1.0;
+      const hasPriceDelta = pricingComplete && (priceDiff > 0.01 ||
+        (qtyDiff === 0 && Math.abs(vItem.knownExtendedPriceUsd - pItem.knownExtendedPriceUsd) > 0.01));
 
       if (hasPriceDelta) {
         discrepancies.priceDeltas.push({
@@ -277,7 +295,7 @@ function verifyVendorBOM(vendorBomInput, proposedRankSolution, chassisDir, optio
           proposedPriceUsd: pPrice,
           vendorPriceUsd: vPrice,
           priceDeltaUsd: vPrice - pPrice,
-          percentChange: (((vPrice - pPrice) / pPrice) * 100).toFixed(2) + '%'
+          percentChange: pPrice === 0 ? null : (((vPrice - pPrice) / pPrice) * 100).toFixed(2) + '%'
         });
       }
 
@@ -293,7 +311,7 @@ function verifyVendorBOM(vendorBomInput, proposedRankSolution, chassisDir, optio
         });
       }
 
-      if (qtyDiff === 0 && !hasPriceDelta) {
+      if (qtyDiff === 0 && pricingComplete && !hasPriceDelta) {
         discrepancies.exactMatches.push({
           sku: vItem.rawSku,
           scopeIdentity: identity,
@@ -322,6 +340,7 @@ function verifyVendorBOM(vendorBomInput, proposedRankSolution, chassisDir, optio
     discrepancies.removedByVendor.length > 0 ||
     discrepancies.uncatalogedSkus.length > 0 ||
     discrepancies.priceDeltas.length > 0 ||
+    discrepancies.pricingGaps.length > 0 ||
     discrepancies.quantityDeltas.length > 0;
 
   const requiresFreshScrape = discrepancies.uncatalogedSkus.length > 0;
@@ -356,6 +375,8 @@ function verifyVendorBOM(vendorBomInput, proposedRankSolution, chassisDir, optio
     isTwoBaselineComparison: true,
     isSingleFileAudit: false,
     is100PercentMatch: !hasDiscrepancies,
+    isStructuralMatch: discrepancies.addedByVendor.length === 0 && discrepancies.removedByVendor.length === 0 && discrepancies.quantityDeltas.length === 0,
+    pricingComplete: discrepancies.pricingGaps.length === 0 && [...vendorAgg.values(), ...proposedAgg.values()].every(item => item.pricingComplete),
     hasDiscrepancies,
     requiresFreshScrape,
     learnedDeltaCount: 0,

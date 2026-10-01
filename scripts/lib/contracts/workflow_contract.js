@@ -11,6 +11,8 @@
 
 const { z } = require('zod');
 const crypto = require('crypto');
+const fs = require('fs');
+const path = require('path');
 
 // ==========================================
 // 1. Evidence & Stage Enums
@@ -101,14 +103,19 @@ if (!process.env.DELIVERY_AUTH_SECRET) {
   try {
     const dotenvPath = path.resolve(__dirname, '..', '..', '..', '.env');
     if (fs.existsSync(dotenvPath)) {
-      require('dotenv').config({ path: dotenvPath });
+      const loaded = require('dotenv').config({ path: dotenvPath });
+      if (loaded.error) throw loaded.error;
     }
-  } catch (_) {}
+  } catch {
+    process.emitWarning('Delivery key configuration could not be loaded; a generated process-family key will be used if no key is configured.', { code: 'DELIVERY_KEY_CONFIGURATION_UNAVAILABLE' });
+  }
 }
 if (!process.env.DELIVERY_AUTH_SECRET) {
   process.env.DELIVERY_AUTH_SECRET = crypto.randomBytes(32).toString('hex');
 }
-const DEFAULT_AUTH_SECRET = Buffer.from(process.env.DELIVERY_AUTH_SECRET, 'hex');
+// Signing uses the configured string as-is; retain the same bytes if a caller
+// later removes the environment variable (configured secrets need not be hex).
+const DEFAULT_AUTH_SECRET = process.env.DELIVERY_AUTH_SECRET;
 
 function getAuthSecret(customSecret) {
   return customSecret || process.env.DELIVERY_AUTH_SECRET || DEFAULT_AUTH_SECRET;

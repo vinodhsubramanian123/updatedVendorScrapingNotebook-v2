@@ -184,3 +184,12 @@ The scraping pipeline produces two independent, non-competing outputs:
 | `DL380_Gen12` | `1d190853-4e9c-48df-aa70-eae66c6f2c1f` | `20e03410-581e-498a-af46-d1f29c960549` | 26 tabs / 606 HW + 522 Svc | `VERIFIED` |
 | `DL380a_Gen12` | `b233ec88-4682-4164-a801-3ee6ca649dc1` | `aa51f3c8-e350-4b49-8f55-92b86a01d66d` | 27 tabs / 455 HW + 220 Svc | `VERIFIED` |
 
+### Core Architecture, Cryptographic Delivery & Financial Parity Benchmark (2026-10-01)
+
+Read `docs/audits/2026-10-01-post-certification-core-review.md`. Full deterministic test matrix benchmark is certified at **193/193 suites PASSED (100.0%)** (126 unit, 41 chaos, 26 integration) in 409s with 0 lint warnings/errors, clean dashboard build, and $CC \le 135$:
+1. **Financial Parity Distinction vs. Structural Parity (INV-148)**: BOM reconciliation distinguishes structural match from complete pricing. Missing, unquoted, or unconfirmed-zero prices are isolated as `pricingGaps` and never coerced to $0 or catalog list prices.
+2. **Multiplied-Order Receipt Binding & Quantity Scope Isolation (INV-149)**: A single-node portal receipt cannot certify a multiplied multi-node cluster. Candidate order quantities must be computed via canonical multiplier scaling before matching against the receipt manifest. Boolean/array quantities fail closed.
+3. **Multi-Rank Export Transactional Integrity (INV-150)**: Presentation export retries clear previous deliverable pointers; deliverable paths and Google Drive publishing are strictly blocked unless all four presentation artifacts are confirmed non-empty regular files on disk.
+4. **Enriched Presales Router Summaries**: Presales reconciliation routes dynamically enumerate quantity deltas, price deltas, pricing gaps, and uncataloged SKUs in human-facing responses.
+5. **Cross-Process Key Verification**: Validated non-hex custom signing secret propagation across child process boundaries and verified live candidate mutation invalidation before Google Drive publishing.
+

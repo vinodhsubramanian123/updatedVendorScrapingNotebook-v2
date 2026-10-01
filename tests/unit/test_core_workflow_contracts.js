@@ -30,7 +30,8 @@ const {
   generateProfessionalBOQ,
   generateMultiRankSolutionWorkbook,
   generateMultiRankSolutionCsv,
-  _buildSummaryData
+  _buildSummaryData,
+  generatePartnerPortalUploadBOM
 } = require('../../scripts/lib/boq/generate_boq_xlsx.js');
 const { evaluateDomainAspects, getRegisteredAspectsForDomain } = require('../../scripts/lib/aspects/aspect_registry.js');
 const { verifyVendorBOM, auditSingleVendorBOM } = require('../../scripts/lib/boq/vendor_bom_verifier.js');
@@ -422,6 +423,71 @@ test('Public legacy secret cannot forge default offline authorization', () => {
   }
 });
 
+test('Inherited signing secret retains identical signing bytes when the environment entry is removed', () => {
+  const configuredSecret = process.env.DELIVERY_AUTH_SECRET;
+  const fingerprint = generateValidFingerprint('secret-snapshot');
+  const auth = issueDeliveryAuthorization({ manifestFingerprint: fingerprint, chassisKey: 'DL380_Gen12', acceptanceDecision: { isApproved: true } });
+  try {
+    delete process.env.DELIVERY_AUTH_SECRET;
+    assert.equal(verifyDeliveryAuthorization(auth, fingerprint), true);
+  } finally {
+    if (configuredSecret !== undefined) process.env.DELIVERY_AUTH_SECRET = configuredSecret;
+  }
+});
+
+test('Direct portal file export cannot evade authorization by supplying raw clusters or a plain object', () => {
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'raw-portal-gate-'));
+  try {
+    const target = path.join(tempDir, 'portal.xlsx');
+    const clusters = [{ items: [{ sku: 'A', quantity: 1 }] }];
+    assert.throws(() => generatePartnerPortalUploadBOM(clusters, target), /Raw clusters have no DeliveryAuthorization/);
+    assert.throws(() => generatePartnerPortalUploadBOM({ items: clusters[0].items }, target), /Pre-presentation acceptance failed/);
+    assert.equal(fs.existsSync(target), false);
+    assert.doesNotThrow(() => generatePartnerPortalUploadBOM(clusters, target, { diagnostic: true }));
+    const evaluation = { chassis: 'DL380_Gen12', acceptanceGate: { isValid: true }, clusters };
+    evaluation.deliveryAuthorization = issueDeliveryAuthorization({ manifestFingerprint: deliveryFingerprint(evaluation), chassisKey: evaluation.chassis, acceptanceDecision: { isApproved: true } });
+    assert.doesNotThrow(() => generatePartnerPortalUploadBOM(evaluation, target));
+    evaluation.clusters[0].items[0].quantity = 2;
+    assert.throws(() => generatePartnerPortalUploadBOM(evaluation, target), /failed cryptographic verification/);
+  } finally { fs.rmSync(tempDir, { recursive: true, force: true }); }
+});
+
+test('Direct Drive upload rejects an unsigned or failed evaluation before touching the provider', async () => {
+  const { handleGoogleDriveUpload } = require('../../scripts/lib/boq/eval_output_serializer');
+  await assert.rejects(handleGoogleDriveUpload('stale.xlsx'), /Current acceptance/);
+  await assert.rejects(handleGoogleDriveUpload('stale.xlsx', { acceptanceGate: { isValid: true }, deliveryError: 'Export failed' }), /Current acceptance/);
+  await assert.rejects(handleGoogleDriveUpload('stale.xlsx', { acceptanceGate: { isValid: true } }), /DeliveryAuthorization is missing/);
+});
+
+test('Financial reconciliation distinguishes unknown prices, confirmed zero, comma formatting and partial duplicate pricing', () => {
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'quote-price-evidence-'));
+  const chassisDir = path.join(tempDir, 'DL380_Gen12');
+  fs.mkdirSync(chassisDir);
+  safeWriteJsonAtomic(path.join(chassisDir, 'DL380_Gen12_Catalog.json'), {
+    metadata: { chassis: 'DL380_Gen12' }, entries: [{ skus: [{ 'Product #': 'P74573-B21', 'Unit Price (USD)': '9,999.00' }] }]
+  });
+  const row = { sku: 'P74573-B21', quantity: 1, description: 'CTO Server' };
+  const compare = (vendor, proposed) => verifyVendorBOM(vendor, { skuPartsList: proposed }, chassisDir);
+  try {
+    for (const unitPriceUsd of [undefined, null, 0, 'n/a', -5, '12USDjunk']) {
+      const result = compare([{ ...row, unitPriceUsd }], [{ ...row, unitPriceUsd: 10 }]);
+      assert.equal(result.isStructuralMatch, true);
+      assert.equal(result.is100PercentMatch, false);
+      assert.equal(result.pricingComplete, false);
+      assert.equal(result.discrepancies.pricingGaps.length, 1);
+      assert.equal(result.discrepancies.exactMatches.length, 0);
+    }
+    assert.equal(compare([{ ...row, unitPriceUsd: '1,200.00' }], [{ ...row, unitPriceUsd: 1200 }]).is100PercentMatch, true);
+    const zero = { ...row, unitPriceUsd: 0, isConfirmedZeroPrice: true };
+    assert.equal(compare([zero], [zero]).is100PercentMatch, true);
+    assert.equal(compare([zero], [{ ...row, unitPriceUsd: 10 }]).discrepancies.priceDeltas.length, 1);
+    assert.equal(compare([{ ...row, unitPriceUsd: 10.5 }], [{ ...row, unitPriceUsd: 10 }]).is100PercentMatch, false);
+    assert.equal(compare([{ ...row, unitPriceUsd: 10 }, row], [{ ...row, quantity: 2, unitPriceUsd: 5 }]).is100PercentMatch, false);
+    assert.equal(compare([{ ...row, unitPriceUsd: 10 }, { ...row, unitPriceUsd: 20 }], [{ ...row, quantity: 2, unitPriceUsd: 15 }]).is100PercentMatch, true);
+    assert.equal(compare([{ ...row, unitPriceUsd: 10, quantityBasis: 'total' }], [{ ...row, unitPriceUsd: 10, quantityBasis: 'base' }]).is100PercentMatch, false);
+  } finally { fs.rmSync(tempDir, { recursive: true, force: true }); }
+});
+
 test('Reconciliation rejects malformed quantities and preserves owner and exact SKU suffix identity', () => {
   const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'reconciliation-identity-'));
   const chassisDir = path.join(tempDir, 'DL380_Gen12');
@@ -431,7 +497,7 @@ test('Reconciliation rejects malformed quantities and preserves owner and exact 
     entries: [{ skus: [{ 'Product #': 'P74573-B21' }, { 'Product #': 'P74573-B21#ABA' }] }]
   });
   try {
-    const original = { sku: 'P74573-B21', quantity: 1, configurationId: 'node-A', description: 'CTO Server' };
+    const original = { sku: 'P74573-B21', quantity: 1, configurationId: 'node-A', description: 'CTO Server', unitPriceUsd: 10 };
     const proposed = { skuPartsList: [original] };
     assert.equal(verifyVendorBOM([original], proposed, chassisDir).is100PercentMatch, true);
     const moved = verifyVendorBOM([{ ...original, configurationId: 'node-B' }], proposed, chassisDir);
@@ -446,7 +512,7 @@ test('Reconciliation rejects malformed quantities and preserves owner and exact 
     assert.equal(suffixed.discrepancies.uncatalogedSkus.length, 1);
     const single = auditSingleVendorBOM([{ ...original, sku: 'P74573-B21#ABB' }], chassisDir);
     assert.equal(single.isCatalogClean, false);
-    for (const quantity of [0, -1, 1.5, NaN, undefined]) {
+    for (const quantity of [0, -1, 1.5, NaN, undefined, true, [1]]) {
       const malformed = [{ ...original, quantity }];
       assert.throws(() => verifyVendorBOM(malformed, proposed, chassisDir), /positive integer quantity/);
       assert.throws(() => auditSingleVendorBOM(malformed, chassisDir), /positive integer quantity/);
@@ -535,5 +601,78 @@ test('Core Contracts — Single-file audit does not invent vendor additions or t
     assert.equal(audit.uncatalogedSkus[0].sku, 'P99999-B21');
   } finally {
     fs.rmSync(tmpDir, { recursive: true, force: true });
+  }
+});
+
+test('Cross-process configured non-hex secret issuance and verification across process boundaries', () => {
+  const { execSync } = require('child_process');
+  const customSecret = 'Custom-Enterprise-Secret-Key-Not-Hex-12345';
+  const fingerprint = generateValidFingerprint('cross-process-manifest');
+  const issueScript = `
+    const { issueDeliveryAuthorization } = require('./scripts/lib/contracts/workflow_contract.js');
+    const auth = issueDeliveryAuthorization({
+      manifestFingerprint: '${fingerprint}',
+      chassisKey: 'DL380_Gen12',
+      acceptanceDecision: { isApproved: true }
+    });
+    console.log(JSON.stringify(auth));
+  `;
+  const output = execSync(`node -e "${issueScript.replace(/"/g, '\\"').replace(/\n/g, ' ')}"`, {
+    env: { ...process.env, DELIVERY_AUTH_SECRET: customSecret },
+    encoding: 'utf-8'
+  }).trim();
+  const auth = JSON.parse(output);
+
+  const verifyScript = `
+    const { verifyDeliveryAuthorization } = require('./scripts/lib/contracts/workflow_contract.js');
+    const auth = ${JSON.stringify(auth)};
+    const valid = verifyDeliveryAuthorization(auth, '${fingerprint}', { chassisKey: 'DL380_Gen12' });
+    if (!valid) process.exit(1);
+  `;
+  assert.doesNotThrow(() => {
+    execSync(`node -e "${verifyScript.replace(/"/g, '\\"').replace(/\n/g, ' ')}"`, {
+      env: { ...process.env, DELIVERY_AUTH_SECRET: customSecret }
+    });
+  });
+});
+
+test('Direct Drive upload re-verifies delivery authorization and candidate review against live mutations', async () => {
+  const { handleGoogleDriveUpload } = require('../../scripts/lib/boq/eval_output_serializer');
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'upload-tamper-test-'));
+  try {
+    const portalFile = path.join(tempDir, 'sample_Partner_Portal.xlsx');
+    fs.writeFileSync(portalFile, 'mock-portal-bytes');
+
+    const evaluation = {
+      chassis: 'DL380_Gen12',
+      acceptanceGate: { isValid: true },
+      portalWorkbookPath: portalFile,
+      items: [{ sku: 'P74573-B21', quantity: 1 }],
+      ephemeralSourceValidation: {
+        isCloudGrounded: true,
+        manifestSha256: generateValidFingerprint('initial-eval'),
+        rankVerdicts: [{ rank: 1, verdict: 'PASS' }]
+      }
+    };
+    const { solutionFingerprint } = require('../../scripts/lib/boq/solution_evidence');
+    evaluation.ephemeralSourceValidation.manifestSha256 = solutionFingerprint(evaluation);
+    evaluation.deliveryAuthorization = issueDeliveryAuthorization({
+      manifestFingerprint: deliveryFingerprint(evaluation),
+      chassisKey: evaluation.chassis,
+      acceptanceDecision: { isApproved: true }
+    });
+
+    // Mutate item after delivery authorization was issued
+    const mutatedEvaluation = {
+      ...evaluation,
+      items: [{ sku: 'P74573-B21', quantity: 5 }]
+    };
+
+    await assert.rejects(
+      handleGoogleDriveUpload(portalFile, mutatedEvaluation),
+      /failed cryptographic verification/
+    );
+  } finally {
+    fs.rmSync(tempDir, { recursive: true, force: true });
   }
 });

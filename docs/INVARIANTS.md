@@ -777,5 +777,18 @@ To ensure that future AI agents (Antigravity, Codex, Claude, or subagents) never
   - `verifySemanticProjectionReadback` compares projected Markdown text against indexed NotebookLM response bodies using sequential cursor consumption (`actual.indexOf(line, cursor)`).
   - The verifier must preserve exact case, mathematical and thermal operators (`≤`, `≥`, `<`, `>`), decimal prices, unit symbols, and SKU punctuation while normalizing only formatting artifacts (whitespace, Markdown table borders, and shared text tags). Expected lines must appear sequentially, and each match advances the cursor so earlier duplicate text cannot conceal a missing later row.
 
+- **INV-148: Financial Parity Distinction vs. Structural Parity in BOM Verification**:
+  - `isStructuralMatch` strictly tracks SKU, quantity, and configuration ownership agreement between vendor quote and proposed solution.
+  - Commercial / financial parity requires complete verified pricing (`pricingComplete`). Missing, unquoted, malformed, or unconfirmed zero-price lines must be flagged as `pricingGaps` and can never be coerced to free ($0) lines or catalog prices to fabricate an exact match.
+  - Weighted average pricing applies only when all contributing line prices are known positive numbers or confirmed zeroes.
+
+- **INV-149: Multiplied-Order Receipt Binding & Per-Node Quantity Scope Isolation**:
+  - A portal receipt capturing a single-node configuration cannot certify a multi-node multiplied cluster order. Candidate order quantities must be computed via canonical multiplier scaling (`outputQuantities(item, multiplier).totalQty`) before matching against the receipt manifest.
+  - Boolean and array quantities are rejected fail-closed to prevent quantity coercion vulnerabilities.
+
+- **INV-150: Multi-Rank Presentation Export Transactional Completeness**:
+  - Presentation export retry operations must clear previous deliverable pointers (`multiRankWorkbookPath`, `proposalWorkbookPath`, `portalWorkbookPath`) to prevent stale artifacts from reaching delivery.
+  - Deliverable file pointers and Google Drive uploads are strictly blocked unless all four presentation artifacts exist and are confirmed non-empty regular files on disk.
+
 
 

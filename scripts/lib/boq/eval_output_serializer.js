@@ -21,7 +21,7 @@ const { recordEvaluationTelemetry } = require('../system/telemetry.js');
 const { emitProgress } = require('../system/progress.js');
 const logger = require('../system/pipeline_logger.js');
 const { candidateReviewCurrent, deliveryFingerprint } = require('./solution_evidence');
-const { verifyDeliveryAuthorization } = require('../contracts/workflow_contract');
+const { verifyDeliveryAuthorization, assertDeliveryAuthorization } = require('../contracts/workflow_contract');
 const { toClickableFileUri, toReportLink } = require('../system/uri_helper.js');
 
 function _buildHeaderSection(ctx) {
@@ -441,7 +441,20 @@ function _buildTracePayloads(ctx) {
 /**
  * Handle Google Drive deliverable upload if requested
  */
-async function handleGoogleDriveUpload(workbookPath) {
+async function handleGoogleDriveUpload(workbookPath, evaluation) {
+  if (!evaluation || evaluation.acceptanceGate?.isValid !== true || evaluation.deliveryError) {
+    throw new Error('Google Sheet publication blocked: Current acceptance and successful delivery are required.');
+  }
+  const resolvedChassis = evaluation.chassis || evaluation.chassisVariant || evaluation.model || evaluation.targetChassis || evaluation.detectedChassis || 'PROLIANT_SERVER';
+  assertDeliveryAuthorization(evaluation.deliveryAuthorization, deliveryFingerprint(evaluation), {
+    chassisKey: resolvedChassis,
+    profile: 'BOQ_EVALUATION'
+  });
+  if (!workbookPath || !evaluation.portalWorkbookPath || path.resolve(workbookPath) !== path.resolve(evaluation.portalWorkbookPath) ||
+    !fs.existsSync(workbookPath) || !fs.statSync(workbookPath).isFile() || fs.statSync(workbookPath).size === 0) {
+    throw new Error('Google Sheet publication blocked: Current portal workbook is missing or mismatched.');
+  }
+  if (!candidateReviewCurrent(evaluation)) throw new Error('Google Sheet publication blocked: Current grounded candidate review is required.');
   try {
     const { uploadFileToGoogleSheet, ensureGoogleAuthValid } = require('../../services/google_sheets_service.js');
     const authCheck = await ensureGoogleAuthValid({ autoHeal: true, verbose: false });
@@ -450,6 +463,15 @@ async function handleGoogleDriveUpload(workbookPath) {
       console.log(`👉 Run "npm run auth:drive" or "npm run auth:check" to authenticate without human in the loop.\n`);
       return null;
     } else {
+      // Authentication recovery can outlive the certificate or the candidate.
+      // Recheck immediately before the external write, not just before awaiting it.
+      if (evaluation.deliveryError || evaluation.acceptanceGate?.isValid !== true || !candidateReviewCurrent(evaluation)) {
+        throw new Error('Google Sheet publication blocked: Evaluation changed during authentication.');
+      }
+      assertDeliveryAuthorization(evaluation.deliveryAuthorization, deliveryFingerprint(evaluation), {
+        chassisKey: resolvedChassis,
+        profile: 'BOQ_EVALUATION'
+      });
       const driveResult = await uploadFileToGoogleSheet(workbookPath);
       console.log(`☁️ Google Drive Live Deliverable: ${driveResult.spreadsheetUrl}`);
       console.log(`📄 Spreadsheet ID: ${driveResult.spreadsheetId}\n`);
@@ -541,6 +563,11 @@ async function serializeAndExportResults(ctx) {
   const fileSuffix = ctx.targetSheetName ? `${inputBase}_${ctx.targetSheetName.replace(/[/\\?*[\]:]/g, '_')}` : inputBase;
   const multiRankWorkbookPath = path.join(reportDir, `${fileSuffix}_MultiRank_Solutions.xlsx`);
   const multiRankCsvPath = path.join(reportDir, `${fileSuffix}_MultiRank_Solutions.csv`);
+  // A retry must never publish artifacts retained from an earlier evaluation.
+  for (const key of ['multiRankWorkbookPath', 'multiRankCsvPath', 'proposalWorkbookPath', 'portalWorkbookPath', 'googleDriveDeliverable']) {
+    delete evalResults[key];
+  }
+  let exportsCompleted = false;
 
   if (!evalResults.items && items) {
     evalResults.items = items;
@@ -569,14 +596,19 @@ async function serializeAndExportResults(ctx) {
       generateMultiRankSolutionCsv(evalResults, multiRankCsvPath, {
         clusterSizing: evalResults.clusterSizing
       });
-      evalResults.multiRankWorkbookPath = multiRankWorkbookPath;
-      evalResults.multiRankCsvPath = multiRankCsvPath;
       const proposalPath = path.join(reportDir, `${fileSuffix}_Proposal.xlsx`);
       generateProfessionalBOQ(evalResults, proposalPath, targetChassisName, graph.recommendedSolutions?.[0]?.rank || 1);
-      evalResults.proposalWorkbookPath = proposalPath;
       const portalWorkbookPath = path.join(reportDir, `${fileSuffix}_Partner_Portal.xlsx`);
       generateRankedPortalWorkbook(evalResults, portalWorkbookPath);
+      const artifactPaths = [multiRankWorkbookPath, multiRankCsvPath, proposalPath, portalWorkbookPath];
+      if (artifactPaths.some(file => !fs.existsSync(file) || !fs.statSync(file).isFile() || fs.statSync(file).size === 0)) {
+        throw new Error('Presentation export did not create all required non-empty artifacts.');
+      }
+      evalResults.multiRankWorkbookPath = multiRankWorkbookPath;
+      evalResults.multiRankCsvPath = multiRankCsvPath;
+      evalResults.proposalWorkbookPath = proposalPath;
       evalResults.portalWorkbookPath = portalWorkbookPath;
+      exportsCompleted = true;
     } catch (sheetErr) {
       logger.warn('EVAL_OUTPUT_SERIALIZER', `Multi-Rank workbook export note: ${sheetErr.message}`);
       evalResults.deliveryError = sheetErr.message;
@@ -594,13 +626,15 @@ async function serializeAndExportResults(ctx) {
   recordEvaluationTelemetry(evalResults, inputFile, Date.now() - startTime);
 
   // Deliverable Drive Upload if requested
-  if (ctx.UPLOAD_DRIVE && !isAuthValid) {
+  if (ctx.UPLOAD_DRIVE && (!exportsCompleted || evalResults.deliveryError)) {
+    evalResults.deliveryError = evalResults.deliveryError || 'Google Sheet publication withheld: Current delivery artifacts were not produced successfully.';
+  } else if (ctx.UPLOAD_DRIVE && !isAuthValid) {
     evalResults.deliveryError = 'Google Sheet publication withheld: Valid cryptographic DeliveryAuthorization is missing or invalid for this candidate manifest.';
     logger.warn('EVAL_OUTPUT_SERIALIZER', evalResults.deliveryError);
   } else if (ctx.UPLOAD_DRIVE && !candidateReviewCurrent(evalResults)) {
     evalResults.deliveryError = 'Google Sheet publication withheld: the final candidate BOM has no current successful document review';
-  } else if (ctx.UPLOAD_DRIVE && evalResults.multiRankWorkbookPath) {
-    const driveUpload = await handleGoogleDriveUpload(evalResults.portalWorkbookPath);
+  } else if (ctx.UPLOAD_DRIVE && exportsCompleted && evalResults.portalWorkbookPath) {
+    const driveUpload = await handleGoogleDriveUpload(evalResults.portalWorkbookPath, evalResults);
     if (driveUpload) {
       evalResults.googleDriveDeliverable = driveUpload;
     } else {

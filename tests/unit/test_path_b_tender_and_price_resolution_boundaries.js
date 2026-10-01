@@ -78,7 +78,7 @@ test('▶ [SUITE 2]: Standardized 7-Column Reconciliation BOM Schema (INV-32)', 
   fs.mkdirSync(path.dirname(tempOutputPath), { recursive: true });
 
   // Generate standardized Partner Portal Upload BOM workbook
-  generatePartnerPortalUploadBOM(sampleClusters, tempOutputPath);
+  generatePartnerPortalUploadBOM(sampleClusters, tempOutputPath, { diagnostic: true });
   assert.ok(fs.existsSync(tempOutputPath), 'Tender BOM workbook must be created on disk');
 
   const wb = XLSX.readFile(tempOutputPath, { cellStyles: true });

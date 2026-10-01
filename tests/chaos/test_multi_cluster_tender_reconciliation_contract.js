@@ -92,7 +92,7 @@ async function runTests() {
     { clusterIndex: 1, clusterName: 'Compute_Cluster_A', multiplier: 10, items: uploadBOMItems }
   ];
 
-  generatePartnerPortalUploadBOM(uploadBOMItems, uploadXlsxPath, multiClusterTenderData);
+  generatePartnerPortalUploadBOM(uploadBOMItems, uploadXlsxPath, { ...multiClusterTenderData, diagnostic: true });
   assert(fs.existsSync(uploadXlsxPath), 'Generated Partner Portal Upload BOM workbook');
 
   const uploadWb = xlsx.readFile(uploadXlsxPath);
@@ -104,8 +104,7 @@ async function runTests() {
   // Verify exact 7-column header contract (INV-32/37)
   const expectedHeaders = ['Part No', 'Qty', 'Set', ' Description', 'Unit List Price (USD)', 'Extended Price (USD)', 'Portal / CLIC Status'];
   const actualHeaders = uploadRows[0];
-  assert(Array.isArray(actualHeaders) && actualHeaders.length === 7, `Header row has exactly 7 columns (Actual: ${actualHeaders?.length})`);
-  assert(actualHeaders[0] === 'Part No' && actualHeaders[1] === 'Qty' && actualHeaders[2] === 'Set' && actualHeaders[6] === 'Portal / CLIC Status', 'Header columns match exact contract schema');
+  assert(Array.isArray(actualHeaders) && actualHeaders.length === 7 && JSON.stringify(actualHeaders) === JSON.stringify(expectedHeaders), 'Header columns match exact contract schema');
 
   // Verify subtotal row demarcation: CONFIG #1 SUBTOTAL:
   const subtotalRow = uploadRows.find(r => Array.isArray(r) && r.some(cell => String(cell).includes('SUBTOTAL:')));

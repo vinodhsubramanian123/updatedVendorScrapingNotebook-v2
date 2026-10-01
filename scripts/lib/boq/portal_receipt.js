@@ -2,6 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { outputQuantities } = require('./configuration_context');
 
 const normalizeSku = value => String(value || '').trim().toUpperCase().replace(/\s+/g, '#');
 const parsePrice = value => /^\d+(?:,\d{3})*(?:\.\d+)?$/.test(String(value ?? '').trim()) ? Number(String(value).replace(/,/g, '')) : NaN;
@@ -12,8 +13,9 @@ function serializeManifest(rows) {
   const totals = new Map();
   for (const row of rows) {
     const sku = normalizeSku(row.sku || row['Product #']);
-    const quantity = Number(row.quantity ?? row.qty);
-    if (!sku || !Number.isSafeInteger(quantity) || quantity <= 0) throw new Error('Invalid portal manifest row');
+    const rawQuantity = row.quantity ?? row.qty;
+    const quantity = Number(rawQuantity);
+    if (!sku || !['number', 'string'].includes(typeof rawQuantity) || !Number.isSafeInteger(quantity) || quantity <= 0) throw new Error('Invalid portal manifest row');
     const total = (totals.get(sku) || 0) + quantity;
     if (!Number.isSafeInteger(total)) throw new Error('Invalid portal manifest total');
     totals.set(sku, total);
@@ -131,7 +133,7 @@ function receiptMatches(receipt, candidate, options = {}) {
   const receiptConfigId = receipt.configurationId || null;
   if (receiptConfigId !== candidateConfigId) return false;
   if (items.some(item => (item.configurationName && item.configurationName !== owner) ||
-    (receiptConfigId && item.configurationId && item.configurationId !== receiptConfigId) ||
+    (item.configurationId && item.configurationId !== receiptConfigId) ||
     // Owner/hierarchy mappings not present in this single-icon capture cannot
     // be proved by aggregate SKU equality. Leave those candidates pending.
     item.ownerId || item.parentId || item.subParentId)) return false;
@@ -146,8 +148,15 @@ function receiptMatches(receipt, candidate, options = {}) {
   // Scope binding 5: Exact aggregate SKU & quantity manifest matching
   try {
     const manifest = serializeManifest(receipt.rows);
+    const multiplier = options.serverCount ?? candidate.clusterSizing?.serverCount ?? candidate.serverCount ?? candidate.nodeCount ?? 1;
+    const orderedItems = items.map(item => {
+      // Validate the source quantity before converting it; never default a
+      // missing quantity or reuse a per-node receipt for a multiplied order.
+      serializeManifest([item]);
+      return { ...item, quantity: outputQuantities(item, multiplier).totalQty };
+    });
     return crypto.createHash('sha256').update(manifest).digest('hex') === receipt.manifestSha256 &&
-      manifest === serializeManifest(items);
+      manifest === serializeManifest(orderedItems);
   } catch { return false; }
 }
 

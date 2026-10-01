@@ -15,8 +15,7 @@ const XLSX = require('xlsx-js-style');
 const { generatePartnerPortalUploadBOM } = require('../../scripts/lib/boq/generate_boq_xlsx.js');
 const {
   evalSupportManufacturing,
-  isUnsolicitedOptionalService,
-  UNSOLICITED_OPTIONAL_SERVICE_SKUS
+  isUnsolicitedOptionalService
 } = require('../../scripts/lib/aspects/support_manufacturing.js');
 
 describe('Partner Portal Upload BOM & INV-32 Reconciliation Suite', () => {
@@ -74,7 +73,7 @@ describe('Partner Portal Upload BOM & INV-32 Reconciliation Suite', () => {
       }
     ];
 
-    generatePartnerPortalUploadBOM(sampleClusters, tempExportPath);
+    generatePartnerPortalUploadBOM(sampleClusters, tempExportPath, { diagnostic: true });
     assert.equal(fs.existsSync(tempExportPath), true);
 
     const wb = XLSX.readFile(tempExportPath);

@@ -856,6 +856,34 @@ async function _handleRfpSizing(queryText, context) {
   };
 }
 
+function _formatReconciliationMessage(auditReport, actuallyTwoBaseline, singleFileNote, chassisKey) {
+  if (actuallyTwoBaseline) {
+    if (auditReport.is100PercentMatch) {
+      return 'Vendor quote perfectly matches proposed configuration.';
+    }
+    const disc = auditReport.discrepancies || {};
+    const parts = [];
+    if (disc.addedByVendor?.length) parts.push(`${disc.addedByVendor.length} added`);
+    if (disc.removedByVendor?.length) parts.push(`${disc.removedByVendor.length} removed`);
+    if (disc.quantityDeltas?.length) parts.push(`${disc.quantityDeltas.length} quantity delta(s)`);
+    if (disc.priceDeltas?.length) parts.push(`${disc.priceDeltas.length} price delta(s)`);
+    if (disc.pricingGaps?.length) parts.push(`${disc.pricingGaps.length} pricing gap(s)`);
+    if (disc.uncatalogedSkus?.length) parts.push(`${disc.uncatalogedSkus.length} uncataloged SKU(s)`);
+    const detail = parts.length > 0 ? parts.join(', ') : 'discrepancies';
+    return `Reconciliation identified ${detail}.`;
+  }
+  const pricingGapsCount = auditReport.discrepancies?.pricingGaps?.length || 0;
+  const uncatCount = auditReport.uncatalogedSkus?.length || 0;
+  if (auditReport.isCatalogClean && pricingGapsCount === 0) {
+    return `Single-file vendor quote cleanly matched against catalog ${chassisKey}. ${singleFileNote}`;
+  }
+  const issues = [];
+  if (uncatCount > 0) issues.push(`${uncatCount} uncataloged SKU(s)`);
+  if (pricingGapsCount > 0) issues.push(`${pricingGapsCount} pricing gap(s)`);
+  const issueText = issues.length > 0 ? ` (${issues.join(', ')} identified)` : '';
+  return `Single-file vendor quote audited against catalog ${chassisKey}${issueText}. ${singleFileNote}`;
+}
+
 function _handleBomReconciliation(queryText, context) {
   const chassisInfo = getChassisCatalog(queryText, context);
   const vendorFile = context.vendorFilePath || context.secondaryFilePath || (context.filePath?.toLowerCase().includes('vendor') ? context.filePath : null);
@@ -915,13 +943,7 @@ function _handleBomReconciliation(queryText, context) {
       status: actuallyTwoBaseline ? 'RECONCILIATION_COMPLETE' : 'SINGLE_FILE_AUDIT',
       isTwoBaselineComparison: actuallyTwoBaseline,
       auditReport,
-      message: actuallyTwoBaseline
-        ? (auditReport.is100PercentMatch
-            ? 'Vendor quote perfectly matches proposed configuration.'
-            : `Reconciliation identified ${auditReport.discrepancies.addedByVendor.length} added, ${auditReport.discrepancies.removedByVendor.length} removed, and ${auditReport.discrepancies.uncatalogedSkus.length} uncataloged SKUs.`)
-        : (auditReport.isCatalogClean
-            ? `Single-file vendor quote cleanly matched against catalog ${chassisInfo.chassisKey}. ${singleFileNote}`
-            : `Single-file vendor quote audited against catalog ${chassisInfo.chassisKey} (${auditReport.uncatalogedSkus?.length || 0} uncataloged SKU(s) identified). ${singleFileNote}`),
+      message: _formatReconciliationMessage(auditReport, actuallyTwoBaseline, singleFileNote, chassisInfo.chassisKey),
       suggestedAction: actuallyTwoBaseline ? null : 'SUPPLY_CUSTOMER_TENDER_FOR_FULL_RECONCILIATION'
     };
   } else if (context.filePath && fs.existsSync(context.filePath)) {
@@ -934,9 +956,7 @@ function _handleBomReconciliation(queryText, context) {
       status: 'SINGLE_FILE_AUDIT',
       isTwoBaselineComparison: false,
       auditReport,
-      message: auditReport.isCatalogClean
-        ? `Single-file vendor quote cleanly matched against catalog ${chassisInfo.chassisKey}. Note: Customer tender was not provided; comparison requires both files.`
-        : `Single-file audit completed against catalog ${chassisInfo.chassisKey} (${auditReport.uncatalogedSkus?.length || 0} uncataloged SKU(s) identified). Note: Customer tender was not provided; comparison requires both files.`,
+      message: _formatReconciliationMessage(auditReport, false, 'Note: Customer tender was not provided; comparison requires both files.', chassisInfo.chassisKey),
       suggestedAction: 'SUPPLY_CUSTOMER_TENDER_FOR_FULL_RECONCILIATION'
     };
   } else {

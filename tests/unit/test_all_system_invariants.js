@@ -87,7 +87,7 @@ test('🏛️ SYSTEM INVARIANTS HARNESS (INV-1 to INV-19)', async (t) => {
 
     try {
       const errorMsg = 'P49610-B21 requires P48820-B21 High Performance Fan Kit for cooling.';
-      const delta1 = processPortalFeedback(errorMsg, tmpDir, {
+      processPortalFeedback(errorMsg, tmpDir, {
         affectedSku: 'P49610-B21',
         requiredDependencySku: 'P48820-B21',
         humanReasoning: 'Initial observation'
@@ -99,7 +99,7 @@ test('🏛️ SYSTEM INVARIANTS HARNESS (INV-1 to INV-19)', async (t) => {
       assert.strictEqual(deltas.length, 1);
 
       // Ingest duplicate error with updated reasoning
-      const delta2 = processPortalFeedback(errorMsg, tmpDir, {
+      processPortalFeedback(errorMsg, tmpDir, {
         affectedSku: 'P49610-B21',
         requiredDependencySku: 'P48820-B21',
         humanReasoning: 'Updated secondary verification reasoning'
@@ -151,7 +151,7 @@ test('🏛️ SYSTEM INVARIANTS HARNESS (INV-1 to INV-19)', async (t) => {
     }];
     const tempFile = path.join(process.cwd(), 'outputs', 'temp', 'inv37_test.xlsx');
     fs.mkdirSync(path.dirname(tempFile), { recursive: true });
-    generatePartnerPortalUploadBOM(sampleClusters, tempFile);
+    generatePartnerPortalUploadBOM(sampleClusters, tempFile, { diagnostic: true });
     
     const XLSX = require('xlsx-js-style');
     const wb = XLSX.readFile(tempFile);

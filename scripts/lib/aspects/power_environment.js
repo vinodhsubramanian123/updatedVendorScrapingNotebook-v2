@@ -168,6 +168,27 @@ function checkLot9CeRemovalNeeds(tally, estimatedNodeWattage) {
   return tally.hasPlatinumPsu && !tally.hasTitaniumPsu && estimatedNodeWattage >= 500 && !tally.hasCeRemovalKit;
 }
 
+function checkMixedWattagePsus(tally, items, serverCount) {
+  if (serverCount <= 1 || !serverCount) {
+    return tally.psuWattages.size > 1;
+  }
+  return items.filter(it => {
+    const d = (it.description || '').toLowerCase();
+    return d.includes('power supply') || d.includes('flex slot') || d.includes('platinum') || d.includes('titanium');
+  }).some(it => ((it.quantity || it.qty || 1) % 2) !== 0);
+}
+
+function checkMixedEfficiencyPsus(tally, serverCount) {
+  if (serverCount <= 1 || !serverCount) {
+    return tally.hasPlatinumPsu && tally.hasTitaniumPsu;
+  }
+  return false;
+}
+
+function checkDl145PsuOversizing(tally) {
+  return tally.isDl145EdgeChassis && tally.maxPsuWattage > 1000;
+}
+
 function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}, serverCount = 1) {
   const tally = {
     hasAcPowerSupply: false,
@@ -242,17 +263,14 @@ function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}, ser
     requiredDl380aPsuCountPerServer: dl380aPsu.requiredCountPerServer,
     requiredDl380aPsuCount: dl380aPsu.requiredCount,
     hasMixedPsuWattages: dl380aPsu.hasMixedWattages,
-    hasMixedWattagePsus: (serverCount <= 1 || !serverCount) ? tally.psuWattages.size > 1 : items.filter(it => {
-      const d = (it.description || '').toLowerCase();
-      return d.includes('power supply') || d.includes('flex slot') || d.includes('platinum') || d.includes('titanium');
-    }).some(it => ((it.quantity || it.qty || 1) % 2) !== 0),
-    hasMixedEfficiencyPsus: (serverCount <= 1 || !serverCount) ? (tally.hasPlatinumPsu && tally.hasTitaniumPsu) : false,
+    hasMixedWattagePsus: checkMixedWattagePsus(tally, items, serverCount),
+    hasMixedEfficiencyPsus: checkMixedEfficiencyPsus(tally, serverCount),
     platinumPsuCount: tally.platinumPsuCount || 0,
     titaniumPsuCount: tally.titaniumPsuCount || 0,
     hasSupportedDl380aPsuWattage: dl380aPsu.hasSupportedWattage,
     hasDl380aGpuPsuShortage: dl380aPsu.hasShortage,
     isDl145EdgeChassis: tally.isDl145EdgeChassis,
-    hasDl145PsuOversizing: tally.isDl145EdgeChassis && tally.maxPsuWattage > 1000
+    hasDl145PsuOversizing: checkDl145PsuOversizing(tally)
   };
 }
 

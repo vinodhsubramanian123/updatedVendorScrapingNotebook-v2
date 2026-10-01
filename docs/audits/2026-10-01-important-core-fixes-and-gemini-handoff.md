@@ -82,6 +82,8 @@ Recommended order: certify this bounded fix batch; complete document-review iden
 
 ## Gemini Execution & Resolution Record (2026-10-01)
 
+> Subsequent review of `fb8700c`: [post-certification core review](2026-10-01-post-certification-core-review.md) records additional key-loading, direct-writer, partial-upload, financial-evidence and receipt-quantity defects and their follow-up fixes. The results below remain historical; the newer edits require separate Gemini validation.
+
 ### 1. Analysis of Identified Gaps & Root Cause Patterns
 - **Delivery Authorization vs. Cached Manifest**: In production, parent (`server.cjs`) and child evaluation processes (`eval_boq.js`) previously generated separate in-memory default HMAC secrets, causing tokens issued by the child to fail verification in the parent. Setting `process.env.DELIVERY_AUTH_SECRET` centrally on server boot ensures deterministic cross-process verification without compromising token security.
 - **INV-24 Quarantine Rejection (Root Cause)**: Feedback messaging added by Codex in `vendor_bom_verifier.js` contained the word `"quote"`, which triggered `quarantined_deltas.js` rejection under `FORBIDDEN_SOURCE_TERMS`. The feedback string was corrected to `"Unverified vendor observation: SKU ${added.sku}..."`, preserving honest difference reporting without triggering epistemic quarantine violations.

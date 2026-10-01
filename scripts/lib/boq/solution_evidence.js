@@ -55,6 +55,8 @@ function deliveryFingerprint(evaluation) {
     productType: evaluation.productType,
     items: evaluation.items,
     parsedItems: evaluation.parsedItems,
+    clusters: evaluation.clusters,
+    multiplier: evaluation.multiplier,
     recommendedSolutions: graph.recommendedSolutions,
     rankedSolutions: graph.rankedSolutions,
     resolvedFixes: graph.resolvedFixes,

@@ -192,6 +192,7 @@ test('Portal Receipt — rejects incomplete selectors, invalid quantities, alter
       items: receipt.rows.map(row => ({ sku: row.sku, quantity: row.quantity }))
     };
     assert.equal(receiptMatches(receipt, candidate), true);
+    assert.equal(receiptMatches(receipt, { ...candidate, serverCount: 2 }), false, 'Per-node manifest cannot certify a multiplied order');
     assert.equal(receiptMatches(receipt, { ...candidate, selectors: { ambientTempMaxC: 27 } }), false);
     assert.equal(receiptMatches({ ...receipt, selectors: { ambientTempMaxC: 27 } }, candidate), false);
     assert.equal(receiptMatches(receipt, { ...candidate, configurationName: undefined }), false);
@@ -199,12 +200,15 @@ test('Portal Receipt — rejects incomplete selectors, invalid quantities, alter
     assert.equal(receiptMatches(receipt, { ...candidate, baseSku: undefined }), false);
     assert.equal(receiptMatches({ ...receipt, manifestSha256: '0'.repeat(64) }, candidate), false);
     assert.equal(receiptMatches({ ...receipt, capturedAt: new Date(Date.now() - 25 * 3600000).toISOString() }, candidate), false);
-    for (const quantity of [0, -1, 1.5, NaN, undefined]) {
+    for (const quantity of [0, -1, 1.5, NaN, undefined, true, [1]]) {
       const invalid = structuredClone(candidate);
       invalid.items[0].quantity = quantity;
       assert.equal(receiptMatches(receipt, invalid), false);
     }
     const moved = structuredClone(candidate);
+    moved.items[0].configurationId = 'unproved-configuration';
+    assert.equal(receiptMatches(receipt, moved), false);
+    delete moved.items[0].configurationId;
     moved.items[0].parentId = 'unproved-owner';
     assert.equal(receiptMatches(receipt, moved), false);
   } finally { fs.rmSync(tmpDir, { recursive: true, force: true }); }

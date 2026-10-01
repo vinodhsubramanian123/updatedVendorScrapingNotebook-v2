@@ -252,8 +252,11 @@ function generateProfessionalBOQ(evalResults, exportPath, chassisId, rankTier, o
  * @param {object} [options] - Optional title/config metadata
  */
 function generatePartnerPortalUploadBOM(clusters, exportPath, _options = {}) {
-  if (exportPath && clusters && !Array.isArray(clusters) && typeof clusters === 'object' && (clusters.acceptanceGate || clusters.conflictGraph || clusters.deliveryAuthorization)) {
-    _enforceDeliveryAuthorization(clusters, _options, _options.chassisKey || clusters.chassis);
+  if (exportPath) {
+    if (Array.isArray(clusters) && _options.diagnostic !== true) {
+      throw new Error('Presentation export blocked: Raw clusters have no DeliveryAuthorization. Use the canonical evaluated manifest or explicit diagnostic mode.');
+    }
+    _enforceDeliveryAuthorization(clusters, _options, _options.chassisKey || clusters?.chassis);
   }
   const wb = XLSX.utils.book_new();
   const portalData = [];
