@@ -50,7 +50,7 @@ function getChassisMap() {
       try {
         const _logger = require('../system/pipeline_logger.js');
         _logger.warn('CATALOG_DISCOVERY', 'Failed to parse chassis_map.json', err);
-      } catch (_) { /* ignore */ }
+      } catch { /* ignore */ }
     }
   }
 
@@ -115,7 +115,7 @@ function detectChassisVariant(items, overrideVariant = '') {
         model: overrideVariant,
         id: overrideVariant
       };
-    } catch (_) {
+    } catch {
       return { family: 'ProLiant', gen: 'General', formFactor: overrideVariant, model: overrideVariant, id: overrideVariant };
     }
   }
@@ -389,7 +389,7 @@ function autoDetectChassisDetailed(boqItems = []) {
           containsBaseSku = (catalogData.entries || []).some(entry => (entry.skus || []).some(skuData =>
             cleanBaseSKU(skuData['Product #'] || skuData.sku) === variant.baseSku
           ));
-        } catch (_) { /* unreadable catalogs are ignored by discovery */ }
+        } catch { /* unreadable catalogs are ignored by discovery */ }
         if (containsBaseSku) {
           return {
             chassisDir: cat.catalogDir,
@@ -590,10 +590,11 @@ function isCatalogCertified(chassisId, outputsRoot = OUTPUTS_ROOT) {
   if (actualSkus.size !== Number(meta.totalUniqueSKUs)) {
     return { certified: false, catalogPath: matched.catalogJsonPath, reason: `Catalog SKU tally mismatch: metadata=${meta.totalUniqueSKUs}, actual=${actualSkus.size}` };
   }
+  let workbook;
   try {
     const bytes = fs.readFileSync(matched.xlsxPath);
     if (bytes[0] !== 0x50 || bytes[1] !== 0x4b) throw new Error('Not an XLSX ZIP container');
-    const workbook = require('xlsx-js-style').read(bytes, { type: 'buffer' });
+    workbook = require('xlsx-js-style').read(bytes, { type: 'buffer' });
     if (!workbook.Sheets['All SKUs']) throw new Error('Missing All SKUs sheet');
   } catch (error) {
     return { certified: false, catalogPath: matched.catalogJsonPath, xlsxPath: matched.xlsxPath, reason: `Invalid master workbook: ${error.message}` };
@@ -610,17 +611,41 @@ function isCatalogCertified(chassisId, outputsRoot = OUTPUTS_ROOT) {
     };
   }
 
-  // Minimum cardinality check for flagship rack servers
+  // Minimum cardinality and essential subcategories check for flagship rack servers
   const isFlagshipRackServer = /dl380|dl360|dl580|sy480/i.test(cleanId);
-  if (isFlagshipRackServer && (matched.skuCount < 20)) {
-    return {
-      certified: false,
-      catalogDir: matched.catalogDir,
-      catalogPath: matched.catalogJsonPath,
-      xlsxPath: matched.xlsxPath,
-      skuCount: matched.skuCount,
-      reason: `Flagship server '${cleanId}' has only ${matched.skuCount} SKUs, failing minimum cardinality threshold (>= 20). Incomplete catalog.`
-    };
+  if (isFlagshipRackServer) {
+    if (matched.skuCount < 20) {
+      return {
+        certified: false,
+        catalogDir: matched.catalogDir,
+        catalogPath: matched.catalogJsonPath,
+        xlsxPath: matched.xlsxPath,
+        skuCount: matched.skuCount,
+        reason: `Flagship server '${cleanId}' has only ${matched.skuCount} SKUs, failing minimum cardinality threshold (>= 20). Incomplete catalog.`
+      };
+    }
+    const subcats = (catalogContent.entries || []).map(e => String(e.subCategory || '').toLowerCase());
+    const hasCompute = subcats.some(s => s.includes('processor') || s.includes('cpu') || s.includes('compute'));
+    const hasMemory = subcats.some(s => s.includes('memory') || s.includes('dimm') || s.includes('rdimm'));
+    if (!hasCompute || !hasMemory) {
+      return {
+        certified: false,
+        catalogDir: matched.catalogDir,
+        catalogPath: matched.catalogJsonPath,
+        xlsxPath: matched.xlsxPath,
+        skuCount: matched.skuCount,
+        reason: `Flagship server '${cleanId}' is missing mandatory subcategories (compute=${hasCompute}, memory=${hasMemory}). Incomplete catalog.`
+      };
+    }
+  }
+
+  // Coverage Profile Check (F07 / INV-125)
+  try {
+    const services = JSON.parse(fs.readFileSync(path.join(matched.catalogDir, `${matched.id}_Services.json`), 'utf8'));
+    const coverage = require('./catalog_coverage.js').validateCatalogCoverage(matched.id, catalogContent, services, workbook);
+    if (!coverage.valid) return { certified: false, catalogPath: matched.catalogJsonPath, reason: coverage.reason };
+  } catch (error) {
+    return { certified: false, catalogPath: matched.catalogJsonPath, reason: `Coverage evidence unavailable: ${error.message}` };
   }
 
   const { auditCatalogFreshness, verifyTabularIntegrity } = require('./catalog_freshness_guard.js');

@@ -9,6 +9,7 @@
 
 const { cleanBaseSKU } = require('../catalog/sku.js');
 const { getSkuListPrice } = require('./budget_optimizer.js');
+const { extractWorkloadDna } = require('../conflict/workload_dna.js');
 
 /**
  * Determine primary workload profile from items and aspect telemetry
@@ -22,12 +23,39 @@ function classifyWorkloadProfile(items, evalResults = {}) {
   const storage = evalResults.aspects?.storage || {};
   const pcie = evalResults.aspects?.pcie || {};
 
-  const cpuCount = compute.cpuCount || 2;
-  const memoryGb = memory.totalMemoryGb || 256;
-  const driveCount = storage.driveCount || 0;
-  const gpuCount = pcie.gpuCount || 0;
+  const dna = (Array.isArray(items) && items.length > 0) ? extractWorkloadDna(items) : null;
 
-  const ramPerCore = cpuCount > 0 ? (memoryGb / (cpuCount * 16)) : 8;
+  // Check if we have any evidenced data at all
+  const hasAspectEvidence = Boolean(
+    evalResults.aspects &&
+    (compute.cpuCount != null || memory.totalMemoryGb != null || storage.driveCount != null || pcie.gpuCount != null || compute.maxCpuTdpWatts != null)
+  );
+  const hasItemEvidence = Boolean(
+    dna && (dna.totalCores > 0 || dna.totalMemoryGb > 0 || dna.driveCount > 0 || dna.hasGpu)
+  );
+
+  if (!hasAspectEvidence && !hasItemEvidence && (!Array.isArray(items) || items.length === 0)) {
+    return {
+      profile: 'UNKNOWN',
+      traits: ['No telemetry or hardware items provided for workload classification.'],
+      ramPerCore: null,
+      cpuCount: 0,
+      memoryGb: 0,
+      driveCount: 0,
+      gpuCount: 0,
+      workloadDna: null,
+      isUnknown: true
+    };
+  }
+
+  const cpuCount = compute.cpuCount != null ? compute.cpuCount : (dna?.totalCores ? Math.ceil(dna.totalCores / 16) : 2);
+  const memoryGb = memory.totalMemoryGb != null ? memory.totalMemoryGb : (dna?.totalMemoryGb || 256);
+  const driveCount = storage.driveCount != null ? storage.driveCount : (dna?.driveCount || 0);
+  const gpuCount = pcie.gpuCount != null ? pcie.gpuCount : (dna?.totalGpuCount || 0);
+
+  const coresPerCpu = compute.coresPerCpu || (dna?.totalCores && cpuCount > 0 ? (dna.totalCores / cpuCount) : 16);
+  const totalCores = dna?.totalCores || (cpuCount * coresPerCpu);
+  const ramPerCore = (totalCores > 0 && memoryGb != null) ? (memoryGb / totalCores) : 8;
 
   let profile = 'BALANCED_ENTERPRISE';
   const traits = [];
@@ -49,7 +77,7 @@ function classifyWorkloadProfile(items, evalResults = {}) {
     traits.push(`Capacity storage with energy-efficient compute profile.`);
   }
 
-  return { profile, traits, ramPerCore, cpuCount, memoryGb, driveCount, gpuCount };
+  return { profile, traits, ramPerCore, cpuCount, memoryGb, driveCount, gpuCount, workloadDna: dna };
 }
 
 /**
@@ -251,6 +279,8 @@ function analyzeDealValueEngineering(items, evalResults = {}, catalogData = null
   return {
     workloadProfile: workload.profile,
     workloadTraits: workload.traits,
+    workloadDna: workload.workloadDna || null,
+    hasQuotedPricing: items.some(it => typeof it.unitListPrice === 'number'),
     baselineCapExUsd: baselineTotalUsd,
     optimizedCapExUsd: optimizedTotalUsd,
     potentialSavingsUsd,

@@ -200,7 +200,7 @@
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeSourceId": "e164272a-35cd-49d5-9b3f-a2cf4a653180",
       "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
-      "lastSyncAttemptAt": "2026-10-01T14:18:39.740Z",
+      "lastSyncAttemptAt": "2026-10-03T16:34:21.378Z",
       "lastSyncError": "Canonical Google Sheet synchronization failed before retirement: Command failed: C:\\Program Files\\nodejs\\node.exe C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\scripts\\lib\\sync\\google_sheets_writer.js --create Alletra_Storage_System Canonical Knowledge C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\Alletra\\Storage\\Alletra_Storage_System\\Alletra_Storage_System_Master_Catalog.csv C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\Alletra\\Storage\\Alletra_Storage_System\\notebook_sync_payload_Alletra_Storage_System.md Alletra_Storage_System\ninvalid_grant\n. Old source remains active.",
       "cloudSyncState": "FAILED",
       "runningKnowledgeVerifiedRevision": "3cd8066a9cc44bafb52b5154d3006c2138ea053586d1bbf5c146632dad2a8a9b",

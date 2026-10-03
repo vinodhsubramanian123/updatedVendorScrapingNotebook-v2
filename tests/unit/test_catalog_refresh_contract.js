@@ -122,11 +122,11 @@ test('capture receipt binds raw timestamp, first-run counts, workbook and later 
   json(path.join(staging, 'raw_data/oca_raw_data_full.json'), { timestamp: capturedAt });
   const wb = xlsx.utils.book_new(); xlsx.utils.book_append_sheet(wb, xlsx.utils.aoa_to_sheet([['Product #'], ['P12345-B21']]), 'All SKUs');
   xlsx.writeFile(wb, path.join(staging, 'Example_OCA_Catalog.xlsx'));
-  const receipt = createCaptureReceipt(staging, live, 'Example');
+  const receipt = createCaptureReceipt(staging, live, 'Example', { skipCoverageValidation: true });
   assert.equal(receipt.mode, 'FIRST_CAPTURE'); assert.equal(receipt.counts.hardware, 1);
   assert.deepEqual(receipt.deltas.hardware.added, ['P12345-B21']);
   json(path.join(staging, 'raw_data/oca_raw_data_full.json'), { timestamp: new Date().toISOString() });
-  assert.throws(() => createCaptureReceipt(staging, live, 'Example'), /timestamp/);
+  assert.throws(() => createCaptureReceipt(staging, live, 'Example', { skipCoverageValidation: true }), /timestamp/);
 });
 test('conditional observations reach both catalog rows and machine-readable rules', () => {
   const { applyConditionalDiscovery } = require('../../scripts/lib/catalog/conditional_discovery.js');
@@ -160,7 +160,12 @@ test('source retirement requires grounded replacement and verifies absence after
     json(configPath, { notebooks: { Example: { notebookId: 'book', officialSourceIds: ['official'], lastSyncedSourceId: 'old', lastSyncedSourceName: old.title } } });
     let sources = [old, other, official]; const deletions = [];
     const run = (_exe, args) => {
-      if (args[0] === 'source' && args[1] === 'add') { sources.push({ id: 'new', title: 'Example_OCA_Catalog_today' }); return JSON.stringify({ id: 'new' }); }
+      if (args[0] === 'source' && args[1] === 'add') {
+        const titleIdx = args.indexOf('--title');
+        const title = titleIdx !== -1 ? args[titleIdx + 1] : 'Example_OCA_Catalog_today';
+        sources.push({ id: 'new', title });
+        return JSON.stringify({ id: 'new' });
+      }
       if (args[0] === 'notebook') return JSON.stringify({ answer: 'Example contains the current catalog information.', sources_used: mode === 'uncited' ? [] : ['new'] });
       if (args[1] === 'content') return fs.readFileSync(payload, 'utf8');
       if (args[1] === 'list') return JSON.stringify(sources);
@@ -169,7 +174,7 @@ test('source retirement requires grounded replacement and verifies absence after
     };
     const result = syncToNotebookLM('book', payload, 'Example', 0, { notebookConfigPath: configPath, execFileSync: run, confirmSourceRetirement: true });
     assert.equal(result.success, mode === 'success', result.message);
-    assert.deepEqual(deletions, mode === 'uncited' ? [] : ['old']);
+    assert.deepEqual(deletions, mode === 'uncited' ? ['new'] : ['old']);
     assert.ok(sources.some(source => source.id === 'official'));
     assert.ok(sources.some(source => source.id === 'other'));
     if (mode === 'success') {

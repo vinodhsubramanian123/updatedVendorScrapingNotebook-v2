@@ -8,10 +8,10 @@ test('LifecycleEngine — Registers and retrieves canonical pipeline phases', ()
   const engine = new LifecycleEngine();
   const phases = engine.getPhases();
 
-  assert.strictEqual(phases.length, 10);
+  assert.strictEqual(phases.length, 9);
   assert.strictEqual(phases[0].id, 'INGESTION');
   assert.strictEqual(phases[1].id, 'FINGERPRINTING');
-  assert.strictEqual(phases[9].id, 'DELIVERABLES_FINALIZATION');
+  assert.strictEqual(phases[8].id, 'REFLECTION_LEARNING');
 });
 
 test('LifecycleEngine — Executes phases, logs checklists, and evaluates health', () => {

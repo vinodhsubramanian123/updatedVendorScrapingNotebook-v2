@@ -96,9 +96,10 @@ describe('NotebookLM Ephemeral Solution Source Validation Suite', () => {
       }
     };
 
+    const expectedNotebookId = resolveProductNotebookId('DL380_Gen12');
     const res = await validateSolutionWithEphemeralSource(sampleEvalResults, {
       isMock: true,
-      notebookId: 'nb-mock-test'
+      notebookId: expectedNotebookId
     });
 
     assert.strictEqual(res.success, false, 'A mock attachment is not a cloud validation success');
@@ -124,9 +125,11 @@ describe('NotebookLM Ephemeral Solution Source Validation Suite', () => {
     };
 
     const { solutionFingerprint } = require('../../scripts/lib/boq/solution_evidence.js');
-    const { setCachedRagResult } = require('../../scripts/lib/notebook/notebook_query_utils.js');
+    const { setCachedRagResult, getNotebookConfigEntry } = require('../../scripts/lib/notebook/notebook_query_utils.js');
     const fp = solutionFingerprint(sampleEvalResults);
-    const key = `solution_validator:${fp}:DL380_Gen12`;
+    const expectedNotebookId = resolveProductNotebookId('DL380_Gen12');
+    const trustEntry = getNotebookConfigEntry(expectedNotebookId, { chassis: 'DL380_Gen12' })?.entry || {};
+    const key = `solution_validator:v2:${fp}:${expectedNotebookId}:simulation:${JSON.stringify(trustEntry)}`;
 
     // Pre-seed cache
     setCachedRagResult(key, {
@@ -134,16 +137,26 @@ describe('NotebookLM Ephemeral Solution Source Validation Suite', () => {
       simulationPassed: true,
       operationalStatus: 'MOCK_VERIFIED',
       manifestSha256: fp,
+      notebookId: expectedNotebookId,
+      sourceDetached: true,
       doubleCheckVerdict: 'DOUBLE_CHECK_PASSED'
     });
 
     const res = await validateSolutionWithEphemeralSource(sampleEvalResults, {
       isMock: true,
-      notebookId: 'nb-mock-test'
+      notebookId: expectedNotebookId
     });
 
     assert.strictEqual(res.isCached, true, 'Result should be served from cache');
     assert.strictEqual(res.manifestSha256, fp);
     assert.strictEqual(res.doubleCheckVerdict, 'DOUBLE_CHECK_PASSED');
+  });
+
+  test('7. validateSolutionWithEphemeralSource rejects arbitrary unmapped notebook overrides', async () => {
+    const sampleEvalResults = { chassis: 'DL380_Gen12', items: [] };
+    await assert.rejects(
+      validateSolutionWithEphemeralSource(sampleEvalResults, { notebookId: 'unmapped-arbitrary-nb' }),
+      /Candidate review notebook does not match the dedicated product mapping/
+    );
   });
 });

@@ -263,11 +263,24 @@ async function main() {
 
   // STEP 6: Post-Flight Quality Audit
   console.log('\n--- STEP 6: Staging Post-Flight Quality Audit ---');
+  let captureReceipt = null;
+  const liveOutputDir = path.join(OUTPUTS_ROOT, meta.family, meta.gen, meta.cleanName);
   try {
     execSync(
       `node "${path.join(PROJECT_ROOT, 'tests', 'integration', 'verify_excel_tally.js')}" "${catalogXlsx}"`,
       { stdio: 'inherit', cwd: PROJECT_ROOT }
     );
+    // Strict Pre-Promotion JSON Schema & Cardinality Guardrail
+    const stagingCatalogContent = JSON.parse(fs.readFileSync(catalogJson, 'utf-8'));
+    const skuCount = stagingCatalogContent.metadata?.totalUniqueSKUs || 0;
+    const entriesCount = Array.isArray(stagingCatalogContent.entries) ? stagingCatalogContent.entries.length : 0;
+    if (!stagingCatalogContent.metadata || skuCount <= 0) {
+      throw new Error(`Pre-Promotion Schema Guard Failed: totalUniqueSKUs is ${skuCount} (must be > 0).`);
+    }
+    if (entriesCount === 0) {
+      throw new Error(`Pre-Promotion Schema Guard Failed: entries[] is empty or not an array.`);
+    }
+    captureReceipt = require('../lib/catalog/catalog_capture_receipt.js').createCaptureReceipt(outputDir, liveOutputDir, meta.cleanName, { solutionDomain: 'STORAGE' });
     console.log('✅ Staging audit passed 100%! Ready to promote to live workspace.');
   } catch (e) {
     const failedStagingDir = path.join(OUTPUTS_ROOT, 'temp', `failed_staging_${meta.cleanName}_${Date.now()}`);
@@ -280,8 +293,10 @@ async function main() {
   // STEP 7: Promote Staging to Live Workspace, Update Registry & Sync
   console.log('\n--- STEP 7: Promoting Staging to Live Workspace & Master Knowledge Sync ---');
   const { promoteStagingDirectory } = require('../lib/system/fs_compat.js');
-  const liveOutputDir = path.join(OUTPUTS_ROOT, meta.family, meta.gen, meta.cleanName);
   promoteStagingDirectory(outputDir, liveOutputDir);
+  if (captureReceipt) {
+    require('../lib/catalog/catalog_capture_receipt.js').finalizeCaptureReceipt(liveOutputDir, captureReceipt, null);
+  }
 
   const liveCatalogJson = path.join(liveOutputDir, `${meta.cleanName}_Catalog.json`);
   const liveCatalogXlsx = path.join(liveOutputDir, `${meta.cleanName}_OCA_Catalog.xlsx`);

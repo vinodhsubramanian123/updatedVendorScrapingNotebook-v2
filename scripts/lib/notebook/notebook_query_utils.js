@@ -68,7 +68,7 @@ try {
       }
     }
   }
-} catch (_) {}
+} catch {}
 
 function persistRagCache() {
   try {
@@ -78,7 +78,7 @@ function persistRagCache() {
       obj[k] = v; // Already in { value, cachedAt } format
     }
     safeWriteJsonAtomic(RAG_CACHE_FILE, obj);
-  } catch (_) {}
+  } catch {}
 }
 
 /**
@@ -144,7 +144,7 @@ function getNotebookConfigEntry(notebookId, context = {}) {
       .sort((a, b) => b.normalizedKey.length - a.normalizedKey.length);
 
     return matches[0] || null;
-  } catch (_) {
+  } catch {
     return null;
   }
 }
@@ -160,13 +160,37 @@ function getAuthoritativeSourceIds(entry = {}) {
   ].filter(id => id && !quarantined.has(String(id))).map(String)));
 }
 
+// Retrieval may include a run-owned candidate, but that candidate is never
+// vendor authority. Use the same scope for dispatch, cache and citation checks.
+function resolveQuerySourceScope(notebookId, entry = {}, options = {}) {
+  const authoritativeSourceIds = getAuthoritativeSourceIds(entry).sort();
+  const trusted = new Set(authoritativeSourceIds);
+  const requested = options.sourceIds ?? (options.sourceId ? [options.sourceId] : options.querySourceIds) ?? options.context?.authoritativeSourceIds ?? [];
+  if (!Array.isArray(requested) || requested.some(id => typeof id !== 'string' || !trusted.has(id))) {
+    return { valid: false, reason: 'UNTRUSTED_QUERY_SOURCE', authoritativeSourceIds, querySourceIds: [] };
+  }
+  const ephemeral = options.ephemeralSource;
+  const ownedCandidate = ephemeral?.createdThisRun === true && ephemeral.notebookId === notebookId &&
+    typeof ephemeral.sourceId === 'string' && ephemeral.sourceId.trim().length > 0 &&
+    !(entry.quarantinedSourceIds || []).includes(ephemeral.sourceId);
+  if (ephemeral && !ownedCandidate) {
+    return { valid: false, reason: 'INVALID_EPHEMERAL_SOURCE_SCOPE', authoritativeSourceIds, querySourceIds: [] };
+  }
+  return {
+    valid: authoritativeSourceIds.length > 0,
+    reason: authoritativeSourceIds.length ? null : 'EMPTY_TRUSTED_SOURCE_ALLOWLIST',
+    authoritativeSourceIds,
+    querySourceIds: [...new Set([...authoritativeSourceIds, ...(ownedCandidate ? [ephemeral.sourceId] : [])])].sort()
+  };
+}
+
 /**
  * Dynamically resolve target Notebook UUID:
  * 1. Explicit UUID if provided
  * 2. Exact product mapping from scripts/config/notebooks.json
  * 3. Fail closed when no dedicated mapping exists
  */
-async function resolveNotebookIdAsync(requestedId, context = {}, nlmExecutable, extendedPath) {
+async function resolveNotebookIdAsync(requestedId, context = {}, _nlmExecutable, _extendedPath) {
   if (requestedId && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(requestedId.trim())) {
     const requested = getNotebookConfigEntry(requestedId.trim(), {});
     if (typeof requested?.entry !== 'object') return null;
@@ -227,7 +251,19 @@ function _executeCloudQueryWithRetry(nlmExecutable, targetNotebookId, sanitizedQ
       }, 15000);
       if (typeof heartbeat.unref === 'function') heartbeat.unref();
 
-      const trustedSourceIds = options.querySourceIds || options.context?.authoritativeSourceIds || [];
+      const trustedSourceIds = options.querySourceIds || [];
+      if (!Array.isArray(trustedSourceIds) || trustedSourceIds.length === 0) {
+        clearInterval(heartbeat);
+        logger.warn('NOTEBOOK_QUERY', `[INV-24 FAIL_CLOSED] Empty trusted source allowlist for [${targetNotebookId}]; refusing unconstrained query.`);
+        return resolve({
+          answer: 'Grounding query blocked: no authoritative or trusted sources configured for notebook (fail-closed).',
+          citations: [],
+          isCloudGrounded: false,
+          groundingVerification: 'DEGRADED_UNGROUNDED',
+          status: 'DEGRADED',
+          reason: 'EMPTY_TRUSTED_SOURCE_ALLOWLIST'
+        });
+      }
       const queryArgs = buildNotebookQueryArgs(targetNotebookId, sanitizedQuery, trustedSourceIds, currentTimeout);
       execFile(nlmExecutable, queryArgs, {
         timeout: currentTimeout,
@@ -330,10 +366,27 @@ async function executeNotebookQuery(notebookId, rawQuery, options = {}) {
     };
   }
 
-  const cacheKey = `${targetNotebookId}:${sanitizedQuery.trim()}:${JSON.stringify(getNotebookConfigEntry(targetNotebookId, options.context || {}))}:${JSON.stringify(options.sourceIds || [])}`;
+  const configured = getNotebookConfigEntry(targetNotebookId, options.context || {});
+  const configuredEntry = configured && typeof configured.entry === 'object' ? configured.entry : {};
+  const scope = resolveQuerySourceScope(targetNotebookId, configuredEntry, options);
+  const { authoritativeSourceIds, querySourceIds: combinedSourceIds } = scope;
+
+  if (!scope.valid) {
+    logger.info('NOTEBOOK_QUERY', 'Notebook has no canary-verified trusted source allow-list (INV-24 fail-closed).');
+    const localRes = queryLocalKnowledgeBase(rawQuery, options.context ? options.context.chassis : '');
+    return {
+      ...localRes,
+      source: 'LOCAL_RAG_FALLBACK',
+      isCloudGrounded: false,
+      fallbackReason: scope.reason
+    };
+  }
+
+  const cacheKey = `trusted_query_v2:${targetNotebookId}:${sanitizedQuery.trim()}:${JSON.stringify(configuredEntry)}:${JSON.stringify(combinedSourceIds)}`;
   if (!options.bypassCache && !options.offlineMode && !options.useLocalRagOnly && process.env.USE_LOCAL_RAG_ONLY !== '1' && process.env.LOCAL_EVAL_ONLY !== '1') {
     const cached = getCachedRagResult(cacheKey);
-    if (cached?.isCloudGrounded === true && cached?.groundingVerification === 'VERIFIED_GROUNDED') {
+    const verifiedCache = cached && postProcessNotebookResult(cached, sanitizedQuery, { ...options.context, authoritativeSourceIds });
+    if (verifiedCache?.isCloudGrounded === true && verifiedCache?.groundingVerification === 'VERIFIED_GROUNDED') {
       logger.info('NOTEBOOK_QUERY', `RAG query cache hit (fresh) for key [${cacheKey.slice(0, 40)}...]`);
       return { ...cached, cached: true };
     } else if (cached) {
@@ -353,24 +406,10 @@ async function executeNotebookQuery(notebookId, rawQuery, options = {}) {
   }
 
   try {
-    const configured = getNotebookConfigEntry(targetNotebookId, options.context || {});
-    const configuredEntry = configured && typeof configured.entry === 'object' ? configured.entry : {};
-    const authoritativeSourceIds = getAuthoritativeSourceIds(configuredEntry);
-    if (authoritativeSourceIds.length === 0) {
-      const localRes = queryLocalKnowledgeBase(rawQuery, options.context ? options.context.chassis : '');
-      return {
-        ...localRes,
-        source: 'LOCAL_RAG_FALLBACK',
-        isCloudGrounded: false,
-        fallbackReason: 'Notebook has no canary-verified trusted source allow-list (INV-24 fail-closed)'
-      };
-    }
-    const candidateSourceIds = Array.isArray(options.sourceIds) ? options.sourceIds : (options.sourceId ? [options.sourceId] : []);
-    const combinedSourceIds = Array.from(new Set([...authoritativeSourceIds, ...candidateSourceIds]));
     const queryOptions = {
       ...options,
       querySourceIds: combinedSourceIds,
-      context: { ...(options.context || {}), authoritativeSourceIds }
+      context: { ...options.context, authoritativeSourceIds }
     };
     const cloudResult = await _executeCloudQueryWithRetry(nlmExecutable, targetNotebookId, sanitizedQuery, timeoutMs, extendedPath, queryOptions);
     if (cloudResult.groundingVerification === 'VERIFIED_GROUNDED') {
@@ -468,5 +507,7 @@ module.exports = {
   queryCache,
   RAG_CACHE_TTL_MS,
   RAG_TIMEOUT_MS,
-  getAuthoritativeSourceIds
+  getAuthoritativeSourceIds,
+  getNotebookConfigEntry,
+  resolveQuerySourceScope
 };

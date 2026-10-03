@@ -14,7 +14,7 @@ const crypto = require('crypto');
  * @param {object} skuObj - SKU entry containing product #, description, price, optionType, etc.
  * @returns {string} 16-character hex hash prefix
  */
-function computeSkuHash(skuObj) {
+function computeSkuHash(skuObj, options = {}) {
   if (!skuObj) return '';
   const pn = String(skuObj.sku || skuObj['Product #'] || skuObj['SKU'] || '').trim();
   const desc = String(skuObj.description || skuObj['Description'] || '').trim();
@@ -29,7 +29,12 @@ function computeSkuHash(skuObj) {
     skuObj['Start Date'] ?? '', skuObj['Discontinued Date'] ?? '',
     skuObj.thresholdValue ?? skuObj.thresholdDegC ?? null,
     skuObj.conditionOperator ?? skuObj.operator ?? '', skuObj.conditionKey ?? '']);
-  return crypto.createHash('sha256').update(payload).digest('hex').substring(0, 16);
+  const fullHash = crypto.createHash('sha256').update(payload).digest('hex');
+  return options.full ? fullHash : fullHash.substring(0, 16);
+}
+
+function computeFullSkuHash(skuObj) {
+  return computeSkuHash(skuObj, { full: true });
 }
 
 /**
@@ -230,6 +235,7 @@ function assertDiffAnomalyBounds(diffResult, existingCatalog, options = {}) {
 
 module.exports = {
   computeSkuHash,
+  computeFullSkuHash,
   computeTableHash,
   computeIncrementalDifferential,
   assertDiffAnomalyBounds

@@ -124,7 +124,7 @@ const DOMAIN_METADATA = {
     name: 'Core Architecture & Invariants',
     icon: '🏛️',
     description: 'System invariants, schemas, orchestrator, BOM verifier, evidence truth, and catalog refresh contracts',
-    matcher: p => /all_system_invariants|evaluation_orchestrator|schemas|bom_verifier|evidence_workflow|catalog_refresh_contract|decision_trace|core_workflow_contracts|workflow_contract|product_metadata_manager|portal_receipt/i.test(p)
+    matcher: p => /all_system_invariants|evaluation_orchestrator|schemas|bom_verifier|evidence_workflow|catalog_refresh_contract|decision_trace|core_workflow_contracts|workflow_contract|product_metadata_manager|portal_receipt|post_hardening_boundary_review|test_m[0-5]_/i.test(p)
   },
   smoke: {
     id: 'smoke',

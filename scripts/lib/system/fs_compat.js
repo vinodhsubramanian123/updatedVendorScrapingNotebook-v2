@@ -192,45 +192,146 @@ function copyDirRecursive(srcDir, destDir) {
 
 /**
  * Promote an isolated staging directory to live workspace output path.
- * Creates a temporary backup of liveTargetDir and restores it if promotion fails.
- * Cleans up backup directory on success.
+ * Prepare a complete sibling snapshot, then swap directories. Never merge a
+ * partial capture into the active directory. Retain the prior snapshot/journal
+ * for recovery; Windows has a short gap between the two rename operations.
  * @param {string} stagingDir Path to temporary staging folder
  * @param {string} liveTargetDir Destination live workspace path
  * @returns {object} { success: boolean, liveTargetDir: string }
  */
-function promoteStagingDirectory(stagingDir, liveTargetDir) {
-  if (!fs.existsSync(stagingDir)) {
-    throw new Error(`Staging directory does not exist: ${stagingDir}`);
-  }
-  const backupDir = `${liveTargetDir}_promotion_bak_${Date.now()}`;
-  let backupCreated = false;
-
-  if (fs.existsSync(liveTargetDir)) {
-    try {
-      copyDirRecursive(liveTargetDir, backupDir);
-      backupCreated = true;
-      console.log(`[INFO] [FS_COMPAT] Live workspace backed up to: ${path.basename(backupDir)}`);
-    } catch (err) {
-      console.warn(`[WARN] [FS_COMPAT] Could not back up live target ${liveTargetDir}: ${err.message}`);
+function mergeDirRecursive(sourceDir, destDir) {
+  if (!fs.existsSync(sourceDir)) return;
+  fs.mkdirSync(destDir, { recursive: true });
+  const entries = fs.readdirSync(sourceDir, { withFileTypes: true });
+  for (const entry of entries) {
+    const srcPath = path.join(sourceDir, entry.name);
+    const dstPath = path.join(destDir, entry.name);
+    if (entry.isDirectory()) {
+      mergeDirRecursive(srcPath, dstPath);
+    } else if (!fs.existsSync(dstPath)) {
+      fs.copyFileSync(srcPath, dstPath);
     }
-  }
-
-  try {
-    copyDirRecursive(stagingDir, liveTargetDir);
-    if (backupCreated && fs.existsSync(backupDir)) {
-      fs.rmSync(backupDir, { recursive: true, force: true });
-      console.log(`[INFO] [FS_COMPAT] Promotion backup cleaned up — live workspace promoted successfully: ${path.basename(liveTargetDir)}`);
-    }
-    return { success: true, liveTargetDir };
-  } catch (err) {
-    if (backupCreated && fs.existsSync(backupDir)) {
-      console.warn(`[WARN] [FS_COMPAT] Promotion failed — restoring live workspace from backup: ${liveTargetDir}`);
-      fs.rmSync(liveTargetDir, { recursive: true, force: true });
-      copyDirRecursive(backupDir, liveTargetDir);
-      fs.rmSync(backupDir, { recursive: true, force: true });
-    }
-    throw new Error(`Failed to promote staging directory to live workspace: ${err.message}`);
   }
 }
 
-module.exports = { moveFile, toForwardSlash, cleanStrayPDFs, safeWriteJsonAtomic, copyDirRecursive, promoteStagingDirectory };
+function promotionLease(target) {
+  const name = 'promotion-' + require('crypto').createHash('sha256').update(target.toLowerCase()).digest('hex').slice(0, 24);
+  return require('./workflow_lease.js').acquireWorkflowLease(name, path.join(path.dirname(target), '.promotion-locks'));
+}
+
+function recoverPromotionUnderLease(target) {
+  const parent = path.dirname(target);
+  const prefix = path.join(parent, '.' + path.basename(target) + '.promotion');
+  if (fs.existsSync(prefix + '.lock')) throw new Error('Legacy promotion lock requires verified owner recovery.');
+  const journalFiles = fs.existsSync(parent) ? fs.readdirSync(parent)
+    .filter(name => name.startsWith(path.basename(prefix) + '.') && name.endsWith('.json')) : [];
+  const recoveries = [];
+  for (const file of journalFiles) {
+    const journalPath = path.join(parent, file);
+    const journal = JSON.parse(fs.readFileSync(journalPath, 'utf8'));
+    const identity = prefix + '.' + journal.transactionId;
+    if (!/^[a-z0-9-]+$/i.test(journal.transactionId || '') || path.resolve(journal.target || '') !== target ||
+        journalPath !== identity + '.json' || journal.backup !== identity + '.previous' ||
+        journal.prepared !== identity + '.next') throw new Error('Invalid promotion journal paths.');
+    for (const location of [target, journal.backup, journal.prepared]) {
+      if (fs.existsSync(location) && (!fs.lstatSync(location).isDirectory() || fs.lstatSync(location).isSymbolicLink())) throw new Error('Promotion recovery requires real directories.');
+    }
+    if (['COMMITTED', 'ROLLED_BACK'].includes(journal.status)) continue;
+    if (fs.existsSync(journal.backup)) {
+      if (fs.existsSync(target)) {
+        if (fs.existsSync(journal.prepared)) throw new Error('Ambiguous promotion recovery; preserve all snapshots.');
+        fs.renameSync(target, journal.prepared);
+      }
+      fs.renameSync(journal.backup, target);
+    } else if (journal.baselineExisted === false && fs.existsSync(target) && !fs.existsSync(journal.prepared)) {
+      fs.renameSync(target, journal.prepared);
+    } else if (!fs.existsSync(journal.prepared)) {
+      throw new Error('Promotion recovery has no verified prior/prepared snapshot.');
+    }
+    journal.status = 'ROLLED_BACK';
+    journal.recoveryNote = 'Baseline restored; uncommitted snapshot retained';
+    safeWriteJsonAtomic(journalPath, journal);
+    recoveries.push({ file, action: 'RECOVERED_BASELINE' });
+  }
+  return { recovered: recoveries.length > 0, recoveries };
+}
+
+function recoverUnfinishedPromotion(liveTargetDir) {
+  const target = path.resolve(liveTargetDir);
+  if (target === path.parse(target).root) throw new Error('Root recovery is forbidden.');
+  const release = promotionLease(target);
+  try { return recoverPromotionUnderLease(target); } finally { release(); }
+}
+
+function promoteStagingDirectory(stagingDir, liveTargetDir) {
+  const stage = path.resolve(stagingDir);
+  const target = path.resolve(liveTargetDir);
+  const within = (parent, child) => { const rel = path.relative(parent, child); return !rel || (!rel.startsWith('..') && !path.isAbsolute(rel)); };
+  if (within(stage, target) || within(target, stage) || target === path.parse(target).root) throw new Error('Overlapping or root promotion paths are forbidden.');
+  if (!fs.statSync(stage).isDirectory() || fs.lstatSync(stage).isSymbolicLink()) throw new Error('Staging must be a real directory.');
+  if (fs.existsSync(target) && (!fs.statSync(target).isDirectory() || fs.lstatSync(target).isSymbolicLink())) throw new Error('Live target must be a real directory.');
+  const parent = path.dirname(target);
+  fs.mkdirSync(parent, { recursive: true });
+  const prefix = path.join(parent, `.${path.basename(target)}.promotion`);
+  const release = promotionLease(target);
+  const transactionId = require('crypto').randomUUID();
+  const prepared = `${prefix}.${transactionId}.next`;
+  const backup = `${prefix}.${transactionId}.previous`;
+  const journalPath = `${prefix}.${transactionId}.json`;
+  let baselineMoved = false;
+  let preparedPublished = false;
+  const journal = { transactionId, stage, target, prepared, backup, status: 'PREPARING', baselineExisted: fs.existsSync(target), startedAt: new Date().toISOString() };
+  try {
+    recoverPromotionUnderLease(target);
+    for (const file of fs.readdirSync(parent).filter(name => name.startsWith(path.basename(prefix)) && name.endsWith('.json'))) {
+      const previous = JSON.parse(fs.readFileSync(path.join(parent, file), 'utf8'));
+      if (!['COMMITTED', 'ROLLED_BACK'].includes(previous.status)) throw new Error(`Unfinished promotion requires recovery: ${file}`);
+    }
+    safeWriteJsonAtomic(journalPath, journal);
+    copyDirRecursive(stage, prepared);
+    // Retain historical customer/evidence records without inheriting current
+    // raw captures, TSVs, catalog artifacts or NotebookLM payloads.
+    // Deep merge so older records are preserved even if staging contains partial history.
+    for (const folder of ['history', 'services_history', 'evidence', 'reports']) {
+      const prior = path.join(target, folder);
+      const next = path.join(prepared, folder);
+      if (fs.existsSync(prior)) mergeDirRecursive(prior, next);
+    }
+    journal.status = 'PREPARED';
+    safeWriteJsonAtomic(journalPath, journal);
+    if (fs.existsSync(target)) { fs.renameSync(target, backup); baselineMoved = true; }
+    journal.status = 'BASELINE_MOVED';
+    safeWriteJsonAtomic(journalPath, journal);
+    fs.renameSync(prepared, target);
+    preparedPublished = true;
+    journal.status = 'COMMITTED';
+    safeWriteJsonAtomic(journalPath, journal);
+    return { success: true, liveTargetDir: target, backupDir: baselineMoved ? backup : null, journalPath };
+  } catch (error) {
+    if (baselineMoved) {
+      if (fs.existsSync(target) && !fs.existsSync(prepared)) fs.renameSync(target, prepared);
+      if (!fs.existsSync(target)) fs.renameSync(backup, target);
+    } else if (preparedPublished && journal.baselineExisted === false && fs.existsSync(target) && !fs.existsSync(prepared)) {
+      fs.renameSync(target, prepared);
+    }
+    if (fs.existsSync(journalPath)) {
+      journal.status = fs.existsSync(prepared) ? 'ROLLED_BACK' : 'RECOVERY_REQUIRED';
+      journal.error = error.message;
+      safeWriteJsonAtomic(journalPath, journal);
+    }
+    throw new Error(`Failed to promote staging directory: ${error.message}`);
+  } finally {
+    release();
+  }
+}
+
+module.exports = {
+  moveFile,
+  toForwardSlash,
+  cleanStrayPDFs,
+  safeWriteJsonAtomic,
+  copyDirRecursive,
+  mergeDirRecursive,
+  promoteStagingDirectory,
+  recoverUnfinishedPromotion
+};

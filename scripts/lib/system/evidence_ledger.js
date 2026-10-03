@@ -18,6 +18,18 @@ const logger = require('./pipeline_logger.js');
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
 const EVIDENCE_LOGS_DIR = path.join(PROJECT_ROOT, 'outputs', 'history', 'evidence_logs');
 
+function evidenceSnapshot(value) {
+  const copy = JSON.parse(JSON.stringify(value));
+  const freeze = entry => {
+    if (entry && typeof entry === 'object') {
+      Object.values(entry).forEach(freeze);
+      Object.freeze(entry);
+    }
+    return entry;
+  };
+  return freeze(copy);
+}
+
 class EvidenceLedger {
   constructor(options = {}) {
     this.traceId = options.traceId || (getTraceId() !== 'NO_TRACE_CONTEXT' ? getTraceId() : `TRC-${Date.now()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`);
@@ -46,6 +58,48 @@ class EvidenceLedger {
       dualBrainVerified: false,
       activeDeltaCount: 0
     };
+    this.candidateAttempts = [];
+    this.phaseResolutions = [];
+    this.workflowFailures = [];
+  }
+
+  /**
+   * Append an immutable candidate resolution attempt to the ledger
+   */
+  recordCandidateAttempt(attemptData = {}) {
+    const attempt = evidenceSnapshot({
+      ...attemptData,
+      attemptIndex: this.candidateAttempts.length + 1,
+      timestamp: new Date().toISOString()
+    });
+    this.candidateAttempts.push(attempt);
+    this.events.push({
+      sequence: this.events.length + 1,
+      event: 'CANDIDATE_ATTEMPT',
+      attemptIndex: this.candidateAttempts.length,
+      timestamp: new Date().toISOString()
+    });
+    return attempt;
+  }
+
+  recordPhaseResolution(phaseNum, evidence = {}) {
+    const phase = this.phases[`phase_${phaseNum}`];
+    if (!phase?.completedAt || phase.status !== 'ACTION_REQUIRED' || evidence.candidateGatePassed !== true ||
+        evidence.documentReviewVerified !== true || !/^[a-f0-9]{64}$/i.test(evidence.manifestSha256 || '')) {
+      throw new Error('Phase resolution requires completed baseline diagnostics and current candidate validation evidence.');
+    }
+    const resolution = evidenceSnapshot({ ...evidence, phaseNum, baselineStatus: phase.status,
+      status: 'RESOLVED', timestamp: new Date().toISOString() });
+    this.phaseResolutions.push(resolution);
+    this.events.push({ sequence: this.events.length + 1, phaseNum, event: 'CANDIDATE_RESOLUTION',
+      resolutionIndex: this.phaseResolutions.length, timestamp: resolution.timestamp });
+    return resolution;
+  }
+
+  recordWorkflowFailure(error) {
+    const failure = evidenceSnapshot({ message: error.message || String(error), timestamp: new Date().toISOString() });
+    this.workflowFailures.push(failure);
+    this.events.push({ sequence: this.events.length + 1, event: 'WORKFLOW_FAILED', ...failure });
   }
 
   /**
@@ -78,6 +132,7 @@ class EvidenceLedger {
    * Start a named phase in the pipeline
    */
   startPhase(phaseNum, phaseName, inputSummary = {}) {
+    if (this.phases[`phase_${phaseNum}`]) throw new Error(`Phase already started: ${phaseNum}`);
     this.events.push({ sequence: this.events.length + 1, phaseNum, event: 'STARTED', timestamp: new Date().toISOString() });
     const key = `phase_${phaseNum}`;
     this.phases[key] = {
@@ -107,12 +162,14 @@ class EvidenceLedger {
     if (!VALID_STATUSES.includes(status)) {
       throw new Error(`[INV-105] Invalid phase status "${status}". Allowed statuses: ${VALID_STATUSES.join(', ')}`);
     }
-    this.events.push({ sequence: this.events.length + 1, phaseNum, event: status, timestamp: new Date().toISOString() });
     const key = `phase_${phaseNum}`;
     if (!this.phases[key]) {
       throw new Error(`[INV-105 ILLEGAL_TRANSITION] completePhase(phaseNum=${phaseNum}) called on phase that was never started. Phases must be started via startPhase() before completion.`);
     }
     const phase = this.phases[key];
+    if (phase.completedAt) {
+      throw new Error(`Completed phase is immutable: ${phaseNum}; append candidate resolution evidence instead.`);
+    }
     if (status === 'SKIPPED') {
       const skipReason = outputSummary?.skipReason || outputSummary?.reason;
       const policyCode = outputSummary?.policyCode || outputSummary?.policy;
@@ -129,6 +186,8 @@ class EvidenceLedger {
     phase.checks = Array.isArray(checks) ? checks : [];
     phase.warnings = Array.isArray(warnings) ? warnings : [];
     phase.errors = Array.isArray(errors) ? errors : [];
+    this.phases[key] = evidenceSnapshot(phase);
+    this.events.push({ sequence: this.events.length + 1, phaseNum, event: status, timestamp: phase.completedAt });
 
     // Execution completion and validation outcome are separate facts.
     const executed = !['RUNNING', 'SKIPPED', 'NOT_RUN'].includes(status);
@@ -234,8 +293,11 @@ class EvidenceLedger {
     }
     if (!this.skuAuditLedger.length) gaps.push('SKU_DECISIONS_MISSING');
     if (!this.artifacts.some(a => a.role === 'CUSTOMER_INPUT' && a.sha256)) gaps.push('INPUT_FINGERPRINT_MISSING');
-    const outcomes = Object.values(this.phases).map(p => p.status);
-    return { healthy: gaps.length === 0, gaps, workflowStatus: outcomes.includes('FAILED') ? 'FAILED' : (outcomes.every(s => s === 'PASSED' || s === 'RESOLVED' || s === 'SKIPPED') && gaps.length === 0 ? 'COMPLETE' : 'INCOMPLETE') };
+    const outcomes = Object.values(this.phases).map(p => p.status === 'ACTION_REQUIRED' &&
+      this.phaseResolutions.some(resolution => resolution.phaseNum === p.phaseNumber) ? 'RESOLVED' : p.status);
+    const workflowStatus = this.workflowFailures.length || outcomes.includes('FAILED') ? 'FAILED' :
+      (outcomes.every(s => s === 'PASSED' || s === 'RESOLVED' || s === 'SKIPPED') && gaps.length === 0 ? 'COMPLETE' : 'INCOMPLETE');
+    return { healthy: gaps.length === 0, gaps, workflowStatus };
   }
 
   /**
@@ -265,6 +327,9 @@ class EvidenceLedger {
       execution,
       health: this.getHealth(),
       events: this.events,
+      candidateAttempts: this.candidateAttempts,
+      phaseResolutions: this.phaseResolutions,
+      workflowFailures: this.workflowFailures,
       artifacts: this.artifacts,
       traceId: this.traceId,
       startedAt: this.startedAt,
@@ -331,7 +396,7 @@ class EvidenceLedger {
       lines.push('| :--- | :---: | :--- | :--- |');
       phase3.checks.forEach(c => {
         const formula = c.equation || c.formula || 'NOT_RECORDED';
-        lines.push(`| ${c.name || c.id || 'Aspect'} | **${c.status || 'PASS'}** | \`${formula}\` | ${c.detail || ''} |`);
+        lines.push(`| ${c.name || c.id || 'Aspect'} | **${c.status || 'UNKNOWN'}** | \`${formula}\` | ${c.detail || ''} |`);
       });
     }
 

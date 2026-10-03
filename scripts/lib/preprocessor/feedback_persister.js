@@ -29,7 +29,18 @@ function savePreprocessingRuleFeedback(feedbackData, outputDir) {
   if (fs.existsSync(file)) {
     try {
       history = JSON.parse(fs.readFileSync(file, 'utf-8'));
-    } catch (_) {
+      if (!Array.isArray(history)) {
+        throw new Error('Corrupted history: root element is not an array');
+      }
+    } catch (parseErr) {
+      // Quarantine corrupted history per INV-131 and Finding F13
+      const timestamp = Date.now();
+      const quarantineFile = path.join(historyDir, `preprocessing_rules_history.corrupt.${timestamp}.json`);
+      try {
+        fs.copyFileSync(file, quarantineFile);
+      } catch (copyErr) {
+        try { fs.renameSync(file, quarantineFile); } catch (_) {}
+      }
       history = [];
     }
   }

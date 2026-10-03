@@ -69,7 +69,7 @@ const StageResultSchema = z.object({
   evidenceIds: z.array(z.string()).default([]),
   data: z.record(z.any()).default({}),
   timestamp: z.string().default(() => new Date().toISOString())
-}).refine(data => {
+}).passthrough().refine(data => {
   // INV-105: If executionState is SKIPPED, BOTH skipReason and policyCode are mandatory
   if (data.executionState === 'SKIPPED') {
     const hasReason = Boolean(data.skipReason && data.skipReason.trim().length > 0);
@@ -87,6 +87,7 @@ const StageResultSchema = z.object({
 
 const AcceptanceDecisionSchema = z.object({
   isApproved: z.boolean(),
+  isValid: z.boolean().optional(),
   profile: z.string().default('BOQ_EVALUATION'),
   evaluatedChecksCount: z.number().default(0),
   passedChecks: z.array(z.string()).default([]),
@@ -95,7 +96,71 @@ const AcceptanceDecisionSchema = z.object({
   warnings: z.array(z.string()).default([]),
   authorizationToken: z.string().nullable().default(null),
   decisionTimestamp: z.string().default(() => new Date().toISOString())
-});
+}).passthrough();
+
+/**
+ * Lossless adapter between acceptance decision representations (isValid <-> isApproved).
+ */
+function adaptAcceptanceDecision(decision = {}) {
+  const approval = decision.isApproved ?? decision.isValid;
+  const isApproved = approval === true && decision.isApproved !== false && decision.isValid !== false &&
+    !['FAILED', 'INCOMPLETE', 'ACTION_REQUIRED'].includes(decision.status) &&
+    !(Number(decision.blockersCount) > 0);
+  return {
+    ...decision,
+    isApproved,
+    isValid: isApproved,
+    status: decision.status || (isApproved ? 'PASSED' : 'FAILED'),
+    profile: decision.profile || decision.track || 'BOQ_EVALUATION'
+  };
+}
+
+/**
+ * Maps ledger phase statuses into typed StageResult representation.
+ */
+function toStageResult(phaseNum, phaseData = {}) {
+  const status = phaseData.status || 'NOT_STARTED';
+  let executionState = 'IN_PROGRESS';
+  let outcome = 'NOT_EVALUATED';
+
+  if (['NOT_STARTED', 'NOT_RUN'].includes(status)) {
+    executionState = 'NOT_STARTED';
+    outcome = 'NOT_EVALUATED';
+  } else if (status === 'RUNNING') {
+    executionState = 'IN_PROGRESS';
+    outcome = 'NOT_EVALUATED';
+  } else if (status === 'SKIPPED') {
+    executionState = 'SKIPPED';
+    outcome = 'NOT_EVALUATED';
+  } else if (['PASSED', 'RESOLVED'].includes(status)) {
+    executionState = 'COMPLETED';
+    outcome = 'PASSED';
+  } else if (status === 'WARNING') {
+    executionState = 'COMPLETED';
+    outcome = 'WARNING';
+  } else if (status === 'DEGRADED') {
+    executionState = 'COMPLETED';
+    outcome = 'DEGRADED';
+  } else if (status === 'ACTION_REQUIRED') {
+    executionState = 'COMPLETED';
+    outcome = 'ACTION_REQUIRED';
+  } else if (status === 'FAILED') {
+    executionState = 'FAILED';
+    outcome = 'FAILED';
+  }
+
+  return {
+    stageId: `phase_${phaseNum}`,
+    stageName: phaseData.phaseName || `Phase ${phaseNum}`,
+    executionState,
+    outcome,
+    skipReason: phaseData.skipReason,
+    policyCode: phaseData.policyCode,
+    evidenceIds: phaseData.evidenceIds || [],
+    data: phaseData.outputSummary || {},
+    timestamp: phaseData.completedAt || new Date().toISOString()
+  };
+}
 
 // Offline authorization stays process-local. Persisted/cross-process delivery
 // requires a privately provisioned DELIVERY_AUTH_SECRET, never a public constant.
@@ -311,7 +376,29 @@ const WorkflowResultSchema = z.object({
     exportedArtifacts: z.array(z.string()).default([])
   }).default({ authorized: false, authorizationToken: null, exportedArtifacts: [] }),
   portalValidationStatus: z.string().default('PORTAL VALIDATION PENDING')
-});
+}).passthrough();
+
+function artifactIntegrityPayload(manifest) {
+  const { signature: _signature, ...content } = manifest;
+  return JSON.stringify(content, (_key, value) => value && typeof value === 'object' && !Array.isArray(value)
+    ? Object.fromEntries(Object.keys(value).sort().map(key => [key, value[key]])) : value);
+}
+
+function signArtifactIntegrityManifest(manifest, authorization) {
+  if (!verifyDeliveryAuthorization(authorization, manifest.manifestFingerprint, { chassisKey: manifest.chassisKey, profile: 'BOQ_EVALUATION' })) {
+    throw new Error('Artifact integrity receipt requires current delivery authorization.');
+  }
+  const content = { ...manifest, authorizationToken: authorization.token };
+  return { ...content, signature: computeDeliveryHmac(`ARTIFACT-INTEGRITY:${artifactIntegrityPayload(content)}`) };
+}
+
+function verifyArtifactIntegrityManifest(manifest, authorization) {
+  try {
+    if (!manifest || manifest.authorizationToken !== authorization?.token || !/^[a-f0-9]{64}$/i.test(manifest.signature || '')) return false;
+    const expected = signArtifactIntegrityManifest(manifest, authorization).signature;
+    return crypto.timingSafeEqual(Buffer.from(manifest.signature, 'hex'), Buffer.from(expected, 'hex'));
+  } catch { return false; }
+}
 
 module.exports = {
   EvidenceStateEnum,
@@ -324,5 +411,9 @@ module.exports = {
   WorkflowResultSchema,
   issueDeliveryAuthorization,
   verifyDeliveryAuthorization,
-  assertDeliveryAuthorization
+  assertDeliveryAuthorization,
+  adaptAcceptanceDecision,
+  toStageResult,
+  signArtifactIntegrityManifest,
+  verifyArtifactIntegrityManifest
 };

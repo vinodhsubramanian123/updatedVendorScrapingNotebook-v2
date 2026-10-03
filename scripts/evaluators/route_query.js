@@ -1239,8 +1239,22 @@ async function _handleRemarksReconciliation(queryText, context) {
 async function _handleMultiClusterTender(queryText, context) {
   const scope = requireScopedCatalog(queryText, context);
   const profile = getChassisMap()[scope.chassisKey];
+  let partitionResult = null;
+  if (context.filePath && fs.existsSync(context.filePath)) {
+    try {
+      const { analyzeAndPartitionClusters, extractRawItemsFromWorkbook } = require('../lib/boq/multi_cluster_splitter.js');
+      const rawItems = extractRawItemsFromWorkbook(context.filePath);
+      partitionResult = analyzeAndPartitionClusters(rawItems, path.basename(context.filePath));
+    } catch (_) {}
+  } else if (Array.isArray(context.items) && context.items.length > 0) {
+    try {
+      const { analyzeAndPartitionClusters } = require('../lib/boq/multi_cluster_splitter.js');
+      partitionResult = analyzeAndPartitionClusters(context.items, 'tender_items');
+    } catch (_) {}
+  }
+
   const counts = [...queryText.matchAll(/\b(\d+)\s*(?:nodes?|servers?|units?)\b/gi)].map(match => Number(match[1]));
-  const count = context.serverCount ?? (counts.length === 1 ? counts[0] : null);
+  const count = context.serverCount ?? (partitionResult?.totalChassis || (counts.length === 1 ? counts[0] : null));
   if (!Number.isSafeInteger(count) || count < 1) throw new Error('Supply an explicit serverCount or decompose multiple groups before rack sizing.');
   const rackUnits = context.usableRackUnits;
   const watts = context.nodePowerWatts;
@@ -1251,7 +1265,9 @@ async function _handleMultiClusterTender(queryText, context) {
   return { intent: 'MULTI_CLUSTER_TENDER', status: 'DRAFT_VALIDATION_REQUIRED', chassis: scope.chassisKey,
     clusterAnalysis: { totalServers: count, totalRackUnits,
       rackCount: totalRackUnits != null && rackUnits != null ? Math.ceil(totalRackUnits / rackUnits) : null,
-      powerEnvelopeKw: watts != null ? count * watts / 1000 : null },
+      powerEnvelopeKw: watts != null ? count * watts / 1000 : null,
+      discoveredClusters: partitionResult?.clusters || null,
+      clusterCount: partitionResult?.clusters?.length || 1 },
     message: 'Rack and power estimates use explicit product height and supplied site/power inputs. Blade enclosure and multi-tier relationships require separate sizing.' };
 }
 
@@ -1409,9 +1425,11 @@ async function executeRoutedQuery(queryText = '', context = {}) {
         filePath: context.filePath || 'ROUTER_QUERY_INPUT'
       });
       ledger.startPhase(1, 'Presales Query Intake', { query: queryText, intent: classification.intent });
-      ledger.completePhase(1, 'PASSED', { intent: classification.intent });
+      const phase1Status = classification.intent && classification.intent !== 'UNKNOWN' ? 'PASSED' : 'ACTION_REQUIRED';
+      ledger.completePhase(1, phase1Status, { intent: classification.intent });
       ledger.startPhase(2, 'Router Dispatch & Execution', { skillTarget: classification.skillTarget });
-      ledger.completePhase(2, 'PASSED', { status: responseData.status || 'COMPLETED' });
+      const phase2Status = (responseData.status === 'ERROR' || responseData.status === 'FAILED') ? 'FAILED' : (responseData.status === 'ACTION_REQUIRED' ? 'ACTION_REQUIRED' : 'PASSED');
+      ledger.completePhase(2, phase2Status, { status: responseData.status || 'COMPLETED' });
       const exported = ledger.finalizeAndExport();
       evidenceLogPath = exported.jsonPath;
       responseData.evidenceLogPath = evidenceLogPath;

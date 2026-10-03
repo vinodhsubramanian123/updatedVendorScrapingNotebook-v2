@@ -102,7 +102,7 @@ test('capture receipt distinguishes active inventory from retained tombstones', 
     const workbook = xlsx.utils.book_new();
     xlsx.utils.book_append_sheet(workbook, xlsx.utils.json_to_sheet(rows), 'All SKUs');
     xlsx.writeFile(workbook, path.join(root, `${product}_OCA_Catalog.xlsx`));
-    const receipt = createCaptureReceipt(root, path.join(root, 'absent'), product);
+    const receipt = createCaptureReceipt(root, path.join(root, 'absent'), product, { skipCoverageValidation: true });
     assert.equal(receipt.counts.hardware, 1);
     assert.equal(receipt.counts.retainedHardware, 2);
     assert.equal(receipt.counts.hardwareTombstones, 1);

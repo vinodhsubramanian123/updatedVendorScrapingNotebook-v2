@@ -55,9 +55,31 @@ test('every candidate requires exactly one explicit cited verdict', () => {
   assert.equal(parseRankVerdicts(JSON.stringify({ ranks: [{ ...pass, issues: ['missing cable'] }] }), evaluation)[0].verdict, 'UNKNOWN');
 });
 
-test('quantity or SKU changes invalidate the candidate review receipt', () => {
-  const evaluation = { conflictGraph: { rankedSolutions: [{ rank: 1, skuPartsList: [{ sku: 'A', quantity: 2 }] }] } };
-  evaluation.ephemeralSourceValidation = { success: true, manifestSha256: solutionFingerprint(evaluation) };
+test('quantity or SKU changes invalidate the candidate review receipt', (t) => {
+  const crypto = require('crypto');
+  const notebook = require('../../scripts/lib/notebook/notebook_query_utils.js');
+  const { canonicalJson } = require('../../scripts/lib/boq/solution_evidence');
+  const entry = { notebookId: 'product-notebook', queryEnabled: true, cloudSyncState: 'VERIFIED', officialSourceIds: ['vendor-source'] };
+  t.mock.method(notebook, 'getNotebookConfigEntry', () => ({ key: 'DL380_Gen12', entry }));
+  const evaluation = {
+    chassis: 'DL380_Gen12',
+    items: [{ sku: 'A', quantity: 2 }],
+    conflictGraph: { rankedSolutions: [{ rank: 1, skuPartsList: [{ sku: 'A', quantity: 2 }] }] }
+  };
+  evaluation.ephemeralSourceValidation = {
+    success: true,
+    isCloudGrounded: true,
+    sourceDetached: true,
+    reviewedAt: new Date().toISOString(),
+    doubleCheckVerdict: 'DOUBLE_CHECK_PASSED',
+    notebookId: entry.notebookId,
+    sourceId: 'candidate-source',
+    authoritativeSourceIds: ['vendor-source'],
+    authoritativeScopeSha256: crypto.createHash('sha256').update(canonicalJson(entry)).digest('hex'),
+    citations: [{ source_id: 'vendor-source', index: 1 }],
+    rankVerdicts: [{ rank: 1, verdict: 'PASS', intentPreserved: true, mandatoryChangesOnly: true, issues: [], citations: ['[1]'] }],
+    manifestSha256: solutionFingerprint(evaluation)
+  };
   assert.equal(candidateReviewCurrent(evaluation), true);
   evaluation.conflictGraph.rankedSolutions[0].skuPartsList[0].quantity = 3;
   assert.equal(candidateReviewCurrent(evaluation), false);

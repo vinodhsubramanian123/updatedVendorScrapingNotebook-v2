@@ -19,6 +19,7 @@
  */
 
 const { isValidHpeSKU, cleanBaseSKU, buildCatalogSkuIndex } = require('../catalog/sku.js');
+const { candidateReviewCurrent } = require('./solution_evidence.js');
 
 /**
  * Construct an epistemic check result conforming to INV-105.
@@ -188,29 +189,52 @@ function validateBoqEvaluationCriteria(output, context = {}) {
     checks.push(
       makeCheck('B1', 'Scoped Physical Checks Completed', 'BLOCK', 'UNKNOWN', 'Physical aspect checks were not evaluated or missing from output.', { evaluated: false })
     );
-  } else if (aspectChecks.length < 7) {
-    checks.push(
-      makeCheck('B1', 'Scoped Physical Checks Completed', 'BLOCK', 'FAILED', `Incomplete physical checks: expected 7 aspects, found ${aspectChecks.length}.`, { aspectCount: aspectChecks.length })
-    );
   } else {
-    const unknownAspects = aspectChecks.filter(a => a.status === 'UNKNOWN' || a.status === 'NOT_EVALUATED');
-    const failedAspects = aspectChecks.filter(a => a.status === 'FAIL');
-    if (unknownAspects.length > 0) {
-      checks.push(
-        makeCheck('B1', 'Scoped Physical Checks Completed', 'BLOCK', 'ACTION_REQUIRED',
-          `Physical checks contain UNKNOWN evaluations per INV-105: ${unknownAspects.map(a => a.name || a.id).join(', ')}.`,
-          { unknownAspects: unknownAspects.map(a => a.id) })
-      );
-    } else if (failedAspects.length > 0) {
+    const uniqueAspects = new Set(aspectChecks.map(a => String(a.id || a.name || '').toUpperCase()).filter(Boolean));
+    const normalizedTokens = new Set(aspectChecks.flatMap(a => [
+      String(a.id || '').toUpperCase(),
+      String(a.id || '').replace(/^ASPECT[_\s-]?/i, ''),
+      String(a.name || '').toUpperCase(),
+      String(a.name || '').split(/[\s&_,]+/)[0].toUpperCase()
+    ]).filter(Boolean));
+    const registeredPhysical = ['COMPUTE_THERMAL', 'MEMORY_CHANNEL', 'STORAGE_TRI_MODE', 'PCIE_RISER', 'NETWORKING_OCP', 'POWER_ENVIRONMENT', 'SUPPORT_MANUFACTURING'];
+    const knownIdentitySet = registeredPhysical.every(id => normalizedTokens.has(id)) ||
+      [1, 2, 3, 4, 5, 6, 7].every(id => normalizedTokens.has(String(id))) ||
+      ['COMPUTE', 'MEMORY', 'STORAGE', 'POWER', 'NETWORKING', 'PCIE', 'SUPPORT'].every(k => normalizedTokens.has(k)) ||
+      ['THERMAL', 'MEMORY', 'STORAGE', 'PCIE', 'NETWORKING', 'POWER', 'SUPPORT'].every(k => normalizedTokens.has(k));
+    if (aspectChecks.length < 7 || uniqueAspects.size < 7 || !knownIdentitySet) {
       checks.push(
         makeCheck('B1', 'Scoped Physical Checks Completed', 'BLOCK', 'FAILED',
-          `Physical checks failed on: ${failedAspects.map(a => a.name || a.id).join(', ')}.`,
-          { failedAspects: failedAspects.map(a => a.id) })
+          `Incomplete physical checks: expected the 7 registered physical aspects, found ${aspectChecks.length} checks (${uniqueAspects.size} distinct identities; known set=${knownIdentitySet}).`,
+          { aspectCount: aspectChecks.length, uniqueCount: uniqueAspects.size })
       );
     } else {
-      checks.push(
-        makeCheck('B1', 'Scoped Physical Checks Completed', 'BLOCK', 'PASSED', `All ${aspectChecks.length} physical aspect checks evaluated cleanly.`)
-      );
+      const failedAspects = aspectChecks.filter(a => a.status === 'FAIL' || a.status === 'FAILED');
+      const unknownAspects = aspectChecks.filter(a => a.status === 'UNKNOWN' || a.status === 'NOT_EVALUATED');
+      const actionRequiredAspects = aspectChecks.filter(a => a.status === 'ACTION_REQUIRED' || (!['PASS', 'PASSED'].includes(a.status) && !failedAspects.includes(a) && !unknownAspects.includes(a)));
+      if (failedAspects.length > 0) {
+        checks.push(
+          makeCheck('B1', 'Scoped Physical Checks Completed', 'BLOCK', 'FAILED',
+            `Physical checks failed on: ${failedAspects.map(a => a.name || a.id).join(', ')}.`,
+            { failedAspects: failedAspects.map(a => a.id) })
+        );
+      } else if (unknownAspects.length > 0) {
+        checks.push(
+          makeCheck('B1', 'Scoped Physical Checks Completed', 'BLOCK', 'ACTION_REQUIRED',
+            `Physical checks contain UNKNOWN evaluations per INV-105: ${unknownAspects.map(a => a.name || a.id).join(', ')}.`,
+            { unknownAspects: unknownAspects.map(a => a.id) })
+        );
+      } else if (actionRequiredAspects.length > 0) {
+        checks.push(
+          makeCheck('B1', 'Scoped Physical Checks Completed', 'BLOCK', 'ACTION_REQUIRED',
+            `Physical checks require action on: ${actionRequiredAspects.map(a => a.name || a.id).join(', ')}.`,
+            { actionRequiredAspects: actionRequiredAspects.map(a => a.id) })
+        );
+      } else {
+        checks.push(
+          makeCheck('B1', 'Scoped Physical Checks Completed', 'BLOCK', 'PASSED', `All ${aspectChecks.length} physical aspect checks evaluated cleanly.`)
+        );
+      }
     }
   }
 
@@ -331,13 +355,66 @@ function validateBoqEvaluationCriteria(output, context = {}) {
     );
   }
 
+  // B13: NotebookLM Grounding & Degraded State Gate (INV-105 / INV-140) (BLOCK)
+  const notebookHealth = output?.notebookHealth || context?.notebookHealth || null;
+  const solutionDoubleCheck = output?.ephemeralSourceValidation || output?.solutionDoubleCheck || null;
+  const agenticReview = output?.agenticReview || context?.agenticReview || null;
+  const notebookLmStatus = output?.notebookLmStatus || null;
+  const isOffline = Boolean(output?.offlineMode || context?.offlineMode || context?.OFFLINE_MODE || process.env.OFFLINE_MODE === '1' || process.env.LOCAL_EVAL_ONLY === '1');
+
+  if (notebookHealth && notebookHealth.isHealthy === false) {
+    checks.push(
+      makeCheck('B13', 'NotebookLM Grounding & Degraded State', 'BLOCK', 'ACTION_REQUIRED',
+        `Product notebook is degraded (${output.notebookDegradedMode || notebookHealth.degradationMode || 'DEGRADED_UNGROUNDED'}). Presentation cannot claim fully grounded certification.`,
+        { degradationMode: notebookHealth.degradationMode || output.notebookDegradedMode })
+    );
+  } else if (solutionDoubleCheck && (
+    solutionDoubleCheck.doubleCheckVerdict === 'DOUBLE_CHECK_REJECTED' ||
+    solutionDoubleCheck.verdict === 'DOUBLE_CHECK_REJECTED' ||
+    solutionDoubleCheck.status === 'DOUBLE_CHECK_REJECTED' ||
+    (Array.isArray(solutionDoubleCheck.rankVerdicts) && solutionDoubleCheck.rankVerdicts.some(row => row?.verdict === 'FAIL'))
+  )) {
+    checks.push(
+      makeCheck('B13', 'NotebookLM Grounding & Degraded State', 'BLOCK', 'FAILED',
+        'NotebookLM ephemeral source validation rejected candidate strategy ranks.',
+        { verdict: solutionDoubleCheck.doubleCheckVerdict || solutionDoubleCheck.verdict || solutionDoubleCheck.status })
+    );
+  } else if (!isOffline && candidateReviewCurrent(output)) {
+    checks.push(
+      makeCheck('B13', 'NotebookLM Grounding & Degraded State', 'BLOCK', 'PASSED',
+        'NotebookLM grounding verified with affirmative cloud candidate validation.',
+        {
+          citationsCount: solutionDoubleCheck.citations?.length || 0,
+          isCloudGrounded: Boolean(solutionDoubleCheck.isCloudGrounded)
+        })
+    );
+  } else if (isOffline) {
+    checks.push(
+      makeCheck('B13', 'NotebookLM Grounding & Degraded State', 'BLOCK', 'ACTION_REQUIRED',
+        'Grounding unverified in OFFLINE_MODE. Presentation cannot claim cloud-grounded certification.',
+        { offline: true })
+    );
+  } else if (!solutionDoubleCheck && !notebookHealth && !agenticReview && !notebookLmStatus) {
+    checks.push(
+      makeCheck('B13', 'NotebookLM Grounding & Degraded State', 'BLOCK', 'ACTION_REQUIRED',
+        'Grounding evidence is absent. Presentation delivery requires a current candidate review with native authoritative citations.',
+        { missingEvidence: true })
+    );
+  } else {
+    checks.push(
+      makeCheck('B13', 'NotebookLM Grounding & Degraded State', 'BLOCK', 'ACTION_REQUIRED',
+        'NotebookLM grounding lacked affirmative cloud verification; presentation cannot claim grounded certification.',
+        { status: 'UNVERIFIED_GROUNDING' })
+    );
+  }
+
   return checks;
 }
 
 /**
  * RFP Sizing Criteria (R1–R6)
  */
-function validateRfpSizingCriteria(output, context = {}) {
+function validateRfpSizingCriteria(output, _context = {}) {
   const checks = [];
 
   // R1: All Detected Roles Resolved (BLOCK)
@@ -393,7 +470,7 @@ function validateRfpSizingCriteria(output, context = {}) {
 /**
  * BOM Reconciliation Criteria (C1–C4)
  */
-function validateBomReconciliationCriteria(output, context = {}) {
+function validateBomReconciliationCriteria(output, _context = {}) {
   const checks = [];
   const report = output?.auditReport || output;
 
@@ -516,8 +593,8 @@ function verifyPrePresentationAcceptance(outputArtifact, track = 'BOQ_EVALUATION
     // For specialized or operational tracks (WORKLOAD_DNA, VALUE_ENGINEERING, etc.),
     // universal criteria provide baseline integrity.
     checks.push(
-      makeCheck('TRACK_PROFILE', 'Track Specific Acceptance Profile', 'WARN', 'PASSED',
-        `Standard presales baseline verified for ${normTrack}; specialized track profile active.`)
+      makeCheck('TRACK_PROFILE', 'Track Specific Acceptance Profile', 'BLOCK', 'UNKNOWN',
+        `No implemented delivery acceptance profile for ${normTrack}; universal diagnostics cannot certify this track.`)
     );
   }
 
@@ -543,6 +620,7 @@ function verifyPrePresentationAcceptance(outputArtifact, track = 'BOQ_EVALUATION
 
   return {
     isValid,
+    isApproved: isValid,
     status,
     track: normTrack,
     timestamp: new Date().toISOString(),

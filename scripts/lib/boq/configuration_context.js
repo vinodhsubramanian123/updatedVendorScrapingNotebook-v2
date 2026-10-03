@@ -27,6 +27,11 @@ function ambiguity(message) {
   return error;
 }
 
+function validQuantity(value) {
+  return (typeof value === 'number' || (typeof value === 'string' && value.trim() !== '')) &&
+    Number.isSafeInteger(Number(value)) && Number(value) > 0;
+}
+
 function isGlobalItem(it, multiplier = 1) {
   if (it.quantityScope) return it.quantityScope === 'global';
   if (/\b(?:spare|order.level|bulk accessory|lift handle)\b/i.test(it.description || '') ||
@@ -46,7 +51,9 @@ function isGlobalItem(it, multiplier = 1) {
 function normalizeConfiguration(items) {
   const anchors = items.filter(isCtoBaseChassis);
   const anchor = anchors[0];
-  const multiplier = Number(anchor?.configurationMultiplier ?? anchor?.quantity ?? 1);
+  const multiplierValue = anchor?.configurationMultiplier ?? anchor?.quantity ?? 1;
+  if (!validQuantity(multiplierValue)) throw ambiguity('Invalid configuration count.');
+  const multiplier = Number(multiplierValue);
   const local = items.filter(it => !isGlobalItem(it, multiplier));
   const owners = new Set(local.map(it => it.configurationId).filter(Boolean));
   const nested = local.some(it => it.parentId || it.subParentId || /synergy.*(?:frame|enclosure)|(?:frame|enclosure).*synergy/i.test(it.description || ''));
@@ -56,7 +63,9 @@ function normalizeConfiguration(items) {
   if (!Number.isInteger(multiplier) || multiplier < 1) throw ambiguity('Invalid configuration count.');
   const configurationId = anchor?.configurationId || [...owners][0] || 'configuration-1';
   const normalized = items.map(it => {
-    const raw = Number(it.quantity ?? it.qty ?? 1);
+    const quantity = it.quantity ?? it.qty ?? 1;
+    if (!validQuantity(quantity)) throw ambiguity(`Invalid quantity for ${it.sku}.`);
+    const raw = Number(quantity);
     if (!Number.isInteger(raw) || raw < 1) throw ambiguity(`Invalid quantity for ${it.sku}.`);
     const global = isGlobalItem(it, multiplier);
     if (global) return { ...it, quantityScope: 'global', quantityBasis: 'total', configurationMultiplier: 1, atomicQuantity: raw, totalQuantity: raw, isIntegerDivisor: true };
@@ -73,13 +82,17 @@ function normalizeConfiguration(items) {
 }
 
 function outputQuantities(item, multiplier = 1) {
-  const raw = Number(item.quantity ?? item.qty ?? 1);
+  const quantity = item.quantity ?? item.qty ?? 1;
+  if (!validQuantity(quantity)) throw ambiguity(`Invalid export quantity for ${item.sku}.`);
+  const raw = Number(quantity);
   if (item.quantityScope === 'global') return { perNodeQty: raw, nodeMult: 1, totalQty: raw };
-  const nodeMult = Number(item.configurationMultiplier ?? multiplier);
+  const multiplierValue = item.configurationMultiplier ?? multiplier;
+  if (!validQuantity(multiplierValue)) throw ambiguity(`Invalid export multiplier for ${item.sku}.`);
+  const nodeMult = Number(multiplierValue);
   // Untagged candidate parts are base quantities by contract, never guessed by divisibility.
   const perNodeQty = item.quantityBasis === 'total' || item.isClusterPreMultiplied
     ? raw / nodeMult : raw;
-  if (!Number.isInteger(perNodeQty) || perNodeQty < 1 || !Number.isInteger(nodeMult) || nodeMult < 1) {
+  if (!Number.isSafeInteger(perNodeQty) || perNodeQty < 1 || !Number.isSafeInteger(perNodeQty * nodeMult)) {
     throw ambiguity(`Invalid export quantity for ${item.sku}.`);
   }
   return { perNodeQty, nodeMult, totalQty: perNodeQty * nodeMult };

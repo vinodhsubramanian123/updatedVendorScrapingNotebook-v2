@@ -13,6 +13,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const { generateMultiRankSolutionWorkbook, generateMultiRankSolutionCsv, generateRankedPortalWorkbook, generateProfessionalBOQ } = require('./generate_boq_xlsx.js');
 const { outputQuantities } = require('./configuration_context');
 const { formatNotebookQueryPayload } = require('./boq_evaluator.js');
@@ -21,7 +22,7 @@ const { recordEvaluationTelemetry } = require('../system/telemetry.js');
 const { emitProgress } = require('../system/progress.js');
 const logger = require('../system/pipeline_logger.js');
 const { candidateReviewCurrent, deliveryFingerprint } = require('./solution_evidence');
-const { verifyDeliveryAuthorization, assertDeliveryAuthorization } = require('../contracts/workflow_contract');
+const { verifyDeliveryAuthorization, assertDeliveryAuthorization, signArtifactIntegrityManifest, verifyArtifactIntegrityManifest } = require('../contracts/workflow_contract');
 const { toClickableFileUri, toReportLink } = require('../system/uri_helper.js');
 
 function _buildHeaderSection(ctx) {
@@ -101,16 +102,21 @@ function _buildAspectsSection(evalResults) {
 }
 
 function _buildWorkloadSection(graph, chassisDir, chassisDetection) {
-  if (graph.chassisInfo?.family === 'SAN') return `## SAN Configuration Scope\n\nFixed Fibre Channel switch; server CPU, memory, drive and riser rules do not apply. Bundle composition is verified against retained official evidence. Live exact-configuration acceptance remains pending.\n\n`;
+  if (graph?.chassisInfo?.family === 'SAN') return `## SAN Configuration Scope\n\nFixed Fibre Channel switch; server CPU, memory, drive and riser rules do not apply. Bundle composition is verified against retained official evidence. Live exact-configuration acceptance remains pending.\n\n`;
   let md = `## 1. Workload Fingerprint & Intent Analysis  \n`;
-  md += `- **Detected Chassis Variant**: \`${graph.chassisInfo ? graph.chassisInfo.model : (chassisDir.split('/').pop() || 'Unknown')}\`  \n`;
-  md += `- **Primary Workload DNA**: \`${graph.workloadDna ? graph.workloadDna.workloadDescription : 'Balanced Enterprise'}\`  \n`;
+  const fallbackModel = (typeof chassisDir === 'string' && chassisDir.length > 0)
+    ? (chassisDir.split(/[/\\]/).pop() || 'Unknown')
+    : 'Unknown';
+  md += `- **Detected Chassis Variant**: \`${graph?.chassisInfo ? graph.chassisInfo.model : fallbackModel}\`  \n`;
+  md += `- **Primary Workload DNA**: \`${graph?.workloadDna ? graph.workloadDna.workloadDescription : 'Balanced Enterprise'}\`  \n`;
   if (chassisDetection) {
     md += `- **Chassis Auto-Detection**: Match Type \`${chassisDetection.matchType}\` (Confidence: ${Math.round(chassisDetection.confidenceScore * 100)}%)  \n`;
   }
 
-  const rulesSrcName = chassisDir ? `${chassisDir.split('/').pop()}_Catalog.json` : 'Unknown_Catalog.json';
-  md += `- **Rules Loaded Source**: \`${graph.rulesSource || rulesSrcName}\` ${graph.isFallbackSource ? '(Fallback Safety Net)' : '(Dual Safety Net)'}  \n\n`;
+  const rulesSrcName = (typeof chassisDir === 'string' && chassisDir.length > 0)
+    ? `${chassisDir.split(/[/\\]/).pop()}_Catalog.json`
+    : 'Unknown_Catalog.json';
+  md += `- **Rules Loaded Source**: \`${graph?.rulesSource || rulesSrcName}\` ${graph?.isFallbackSource ? '(Fallback Safety Net)' : '(Dual Safety Net)'}  \n\n`;
 
   if (graph.auditLog && graph.auditLog.length > 0) {
     md += `| Hierarchy Level | Evaluated Rule Text | Status | Technical Audit Details |\n`;
@@ -137,7 +143,7 @@ function _buildWorkloadSection(graph, chassisDir, chassisDetection) {
     md += `| Rank | Solution Tier Name | Score | Est. Cost (USD) | Workload Match | SKU Mods | Technical Tradeoff Rationale |\n`;
     md += `|---|---|---|---|---|---|---|\n`;
     graph.recommendedSolutions.forEach(rs => {
-      md += `| **Rank ${rs.rank}** | ${rs.name} | \`${rs.score}\` | \$${(rs.totalOrderCostUsd ?? rs.estimatedCostUsd).toLocaleString()} | ${rs.workloadDnaMatch} | ${rs.changesCount} | ${rs.reasoning} |\n`;
+      md += `| **Rank ${rs.rank}** | ${rs.name || 'Custom Solution'} | \`${rs.score || 'N/A'}\` | \$${(rs.totalOrderCostUsd ?? rs.estimatedCostUsd ?? 0).toLocaleString()} | ${rs.workloadDnaMatch || 'N/A'} | ${rs.changesCount ?? 0} | ${rs.reasoning || 'N/A'} |\n`;
     });
     md += `\n`;
   }
@@ -376,11 +382,12 @@ function _buildProvenanceTrace(ctx, traceId) {
     stage3RAGMs, stage4GuardrailMs, stage5MatrixMs, evalResults, notebookId
   } = ctx;
 
+  const validStartTime = (typeof startTime === 'number' && !Number.isNaN(startTime)) ? startTime : Date.now();
   return {
     traceId,
-    timestamp: new Date(startTime).toISOString(),
+    timestamp: new Date(validStartTime).toISOString(),
     completedAt: new Date().toISOString(),
-    totalDurationMs: Date.now() - startTime,
+    totalDurationMs: Math.max(0, Date.now() - validStartTime),
     chassis: chassisPrefix || graph.chassisInfo?.model || 'UNKNOWN_CHASSIS',
     inputFile: path.basename(inputFile),
     stages: [
@@ -441,6 +448,26 @@ function _buildTracePayloads(ctx) {
 /**
  * Handle Google Drive deliverable upload if requested
  */
+function assertArtifactIntegrity(evaluation) {
+  const receipt = evaluation.artifactIntegrityManifest;
+  const keys = ['multiRankWorkbookPath', 'multiRankCsvPath', 'proposalWorkbookPath', 'portalWorkbookPath'];
+  if (!verifyArtifactIntegrityManifest(receipt, evaluation.deliveryAuthorization) ||
+      receipt.manifestFingerprint !== deliveryFingerprint(evaluation) || !Array.isArray(receipt.artifacts) || receipt.artifacts.length !== keys.length) {
+    throw new Error('Google Sheet publication blocked: Valid signed artifact integrity manifest is required.');
+  }
+  const expectedPaths = keys.map(key => evaluation[key] && path.resolve(evaluation[key]));
+  if (expectedPaths.some(file => !file) || new Set(expectedPaths).size !== keys.length) throw new Error('Artifact set is incomplete or duplicated.');
+  for (const file of expectedPaths) {
+    const entries = receipt.artifacts.filter(entry => entry?.path && path.resolve(entry.path) === file);
+    if (entries.length !== 1 || !fs.existsSync(file) || !fs.statSync(file).isFile()) throw new Error('Required artifact is missing or mismatched.');
+    const bytes = fs.readFileSync(file);
+    if (!bytes.length || bytes.length !== entries[0].sizeBytes || crypto.createHash('sha256').update(bytes).digest('hex') !== entries[0].sha256) {
+      throw new Error('Portal workbook file on disk was modified or corrupted after generation; artifact set integrity failed.');
+    }
+  }
+  return receipt;
+}
+
 async function handleGoogleDriveUpload(workbookPath, evaluation) {
   if (!evaluation || evaluation.acceptanceGate?.isValid !== true || evaluation.deliveryError) {
     throw new Error('Google Sheet publication blocked: Current acceptance and successful delivery are required.');
@@ -455,6 +482,7 @@ async function handleGoogleDriveUpload(workbookPath, evaluation) {
     throw new Error('Google Sheet publication blocked: Current portal workbook is missing or mismatched.');
   }
   if (!candidateReviewCurrent(evaluation)) throw new Error('Google Sheet publication blocked: Current grounded candidate review is required.');
+  assertArtifactIntegrity(evaluation);
   try {
     const { uploadFileToGoogleSheet, ensureGoogleAuthValid } = require('../../services/google_sheets_service.js');
     const authCheck = await ensureGoogleAuthValid({ autoHeal: true, verbose: false });
@@ -472,7 +500,15 @@ async function handleGoogleDriveUpload(workbookPath, evaluation) {
         chassisKey: resolvedChassis,
         profile: 'BOQ_EVALUATION'
       });
-      const driveResult = await uploadFileToGoogleSheet(workbookPath);
+      assertArtifactIntegrity(evaluation);
+      const driveResult = await uploadFileToGoogleSheet(workbookPath, '', {
+        expectedSha256: evaluation.artifactIntegrityManifest.artifacts.find(entry => path.resolve(entry.path) === path.resolve(workbookPath)).sha256,
+        beforeWrite: () => {
+          if (evaluation.deliveryError || evaluation.acceptanceGate?.isValid !== true || !candidateReviewCurrent(evaluation)) throw new Error('Delivery evidence changed before provider write.');
+          assertDeliveryAuthorization(evaluation.deliveryAuthorization, deliveryFingerprint(evaluation), { chassisKey: resolvedChassis, profile: 'BOQ_EVALUATION' });
+          assertArtifactIntegrity(evaluation);
+        }
+      });
       console.log(`☁️ Google Drive Live Deliverable: ${driveResult.spreadsheetUrl}`);
       console.log(`📄 Spreadsheet ID: ${driveResult.spreadsheetId}\n`);
       return driveResult;
@@ -530,6 +566,277 @@ function _completeLedgerPhase9(ledger, ctx, evalResults) {
   });
 }
 
+function _prepareExportPaths(reportDir, inputFile, targetSheetName) {
+  const inputBase = path.basename(inputFile, path.extname(inputFile));
+  const fileSuffix = targetSheetName ? `${inputBase}_${targetSheetName.replace(/[/\\?*[\]:]/g, '_')}` : inputBase;
+  return {
+    fileSuffix,
+    multiRankWorkbookPath: path.join(reportDir, `${fileSuffix}_MultiRank_Solutions.xlsx`),
+    multiRankCsvPath: path.join(reportDir, `${fileSuffix}_MultiRank_Solutions.csv`),
+    proposalPath: path.join(reportDir, `${fileSuffix}_Proposal.xlsx`),
+    portalWorkbookPath: path.join(reportDir, `${fileSuffix}_Partner_Portal.xlsx`)
+  };
+}
+
+function _executeStagedFileAtomicity(stagingArtifacts, exportStagingDir) {
+  if (!Array.isArray(stagingArtifacts) || stagingArtifacts.length !== 4) throw new Error('Four staged artifacts are required.');
+  if (stagingArtifacts.some(item => !fs.existsSync(item.staging) || !fs.statSync(item.staging).isFile() || fs.statSync(item.staging).size === 0)) {
+    throw new Error('Presentation export did not create all required non-empty artifacts in staging.');
+  }
+
+  const stage = path.resolve(exportStagingDir);
+  const generation = path.dirname(path.resolve(stagingArtifacts[0].target));
+  if (path.dirname(stage) !== path.dirname(generation) || fs.existsSync(generation) ||
+      stagingArtifacts.length !== 4 || new Set(stagingArtifacts.map(item => item.target)).size !== 4 ||
+      stagingArtifacts.some(item => path.dirname(path.resolve(item.staging)) !== stage ||
+        path.dirname(path.resolve(item.target)) !== generation || path.basename(item.staging) !== path.basename(item.target))) {
+    throw new Error('Invalid staged generation paths.');
+  }
+  // Publish the whole immutable generation with one same-volume directory rename.
+  fs.renameSync(stage, generation);
+}
+
+function _exportStagedDeliverables({ evalResults, reportDir, paths, targetChassisName, graph, candidateFingerprint }) {
+  const generationId = crypto.randomUUID();
+  const generationDir = path.join(reportDir, `deliverables_${generationId}`);
+  paths = Object.fromEntries(Object.entries(paths).map(([key, value]) =>
+    [key, key === 'fileSuffix' ? value : path.join(generationDir, path.basename(value))]));
+  const exportStagingDir = path.join(reportDir, `.export_staging_${generationId}`);
+  fs.mkdirSync(exportStagingDir, { recursive: true });
+
+  const stagingMultiRankWorkbook = path.join(exportStagingDir, path.basename(paths.multiRankWorkbookPath));
+  const stagingMultiRankCsv = path.join(exportStagingDir, path.basename(paths.multiRankCsvPath));
+  const stagingProposal = path.join(exportStagingDir, path.basename(paths.proposalPath));
+  const stagingPortalWorkbook = path.join(exportStagingDir, path.basename(paths.portalWorkbookPath));
+
+  try {
+    generateMultiRankSolutionWorkbook(evalResults, stagingMultiRankWorkbook, targetChassisName, {
+      clusterSizing: evalResults.clusterSizing
+    });
+    generateMultiRankSolutionCsv(evalResults, stagingMultiRankCsv, {
+      clusterSizing: evalResults.clusterSizing
+    });
+    generateProfessionalBOQ(evalResults, stagingProposal, targetChassisName, graph.recommendedSolutions?.[0]?.rank || 1);
+    generateRankedPortalWorkbook(evalResults, stagingPortalWorkbook);
+
+    const stagingArtifacts = [
+      { staging: stagingMultiRankWorkbook, target: paths.multiRankWorkbookPath },
+      { staging: stagingMultiRankCsv, target: paths.multiRankCsvPath },
+      { staging: stagingProposal, target: paths.proposalPath },
+      { staging: stagingPortalWorkbook, target: paths.portalWorkbookPath }
+    ];
+
+    _executeStagedFileAtomicity(stagingArtifacts, exportStagingDir);
+
+    const artifactPaths = [paths.multiRankWorkbookPath, paths.multiRankCsvPath, paths.proposalPath, paths.portalWorkbookPath];
+    if (artifactPaths.some(file => !fs.existsSync(file) || !fs.statSync(file).isFile() || fs.statSync(file).size === 0)) {
+      throw new Error('Presentation export did not establish all required non-empty artifacts on disk.');
+    }
+
+    const artifactIntegrityManifest = {
+      manifestFingerprint: candidateFingerprint,
+      chassisKey: targetChassisName,
+      createdAt: new Date().toISOString(),
+      artifacts: artifactPaths.map(file => {
+        const stats = fs.statSync(file);
+        const sha256 = crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
+        return {
+          filename: path.basename(file),
+          path: file,
+          sizeBytes: stats.size,
+          sha256
+        };
+      })
+    };
+    evalResults.artifactIntegrityManifest = signArtifactIntegrityManifest(artifactIntegrityManifest, evalResults.deliveryAuthorization);
+    evalResults.multiRankWorkbookPath = paths.multiRankWorkbookPath;
+    evalResults.multiRankCsvPath = paths.multiRankCsvPath;
+    evalResults.proposalWorkbookPath = paths.proposalPath;
+    evalResults.portalWorkbookPath = paths.portalWorkbookPath;
+    if (evalResults.acceptanceGate?.isValid) {
+      evalResults.customerDisposition = 'PRESENTATION_READY';
+    }
+    return true;
+  } catch (sheetErr) {
+    try {
+      if (path.dirname(path.resolve(exportStagingDir)) !== path.resolve(reportDir) || !path.basename(exportStagingDir).startsWith('.export_staging_')) throw new Error('Unsafe export cleanup path');
+      fs.rmSync(exportStagingDir, { recursive: true, force: true });
+    } catch {}
+    logger.warn('EVAL_OUTPUT_SERIALIZER', `Multi-Rank workbook export note: ${sheetErr.message}`);
+    evalResults.deliveryError = sheetErr.message;
+    if (evalResults.customerDisposition === 'PRESENTATION_READY') {
+      evalResults.customerDisposition = 'ACTION_REQUIRED';
+    }
+    return false;
+  }
+}
+
+async function _handleDeliverableDrivePublication(ctx, evalResults, exportsCompleted, isAuthValid) {
+  if (!ctx.UPLOAD_DRIVE) return;
+  if (!exportsCompleted || evalResults.deliveryError) {
+    evalResults.deliveryError = evalResults.deliveryError || 'Google Sheet publication withheld: Current delivery artifacts were not produced successfully.';
+  } else if (!isAuthValid) {
+    evalResults.deliveryError = 'Google Sheet publication withheld: Valid cryptographic DeliveryAuthorization is missing or invalid for this candidate manifest.';
+    logger.warn('EVAL_OUTPUT_SERIALIZER', evalResults.deliveryError);
+  } else if (!candidateReviewCurrent(evalResults)) {
+    evalResults.deliveryError = 'Google Sheet publication withheld: the final candidate BOM has no current successful document review';
+  } else if (exportsCompleted && evalResults.portalWorkbookPath) {
+    const portalFile = evalResults.portalWorkbookPath;
+    const recordedEntry = evalResults.artifactIntegrityManifest?.artifacts?.find(a => a.path === portalFile);
+    const currentBytes = fs.existsSync(portalFile) ? fs.readFileSync(portalFile) : null;
+    const currentHash = currentBytes ? crypto.createHash('sha256').update(currentBytes).digest('hex') : null;
+    if (!currentBytes || !recordedEntry || currentHash !== recordedEntry.sha256) {
+      evalResults.deliveryError = 'Google Sheet publication withheld: Portal workbook file on disk was modified or corrupted after generation.';
+      logger.warn('EVAL_OUTPUT_SERIALIZER', evalResults.deliveryError);
+    } else {
+      const driveUpload = await handleGoogleDriveUpload(evalResults.portalWorkbookPath, evalResults);
+      if (driveUpload) {
+        evalResults.googleDriveDeliverable = driveUpload;
+      } else {
+        evalResults.deliveryError = 'Requested Google Sheet upload did not return a delivery receipt';
+      }
+    }
+  }
+}
+
+function _recordLedgerDeliverableArtifacts(ledger, ctx, evalResults, outputPath) {
+  if (!ledger) return;
+  ctx.evidenceDir = path.join(path.dirname(path.resolve(outputPath)), 'evidence');
+  const evidenceDir = ctx.evidenceDir;
+  evalResults.evidenceLogPath = path.join(evidenceDir, `evidence_log_${ledger.traceId}.json`);
+  evalResults.evidenceSummaryPath = path.join(evidenceDir, `evidence_summary_${ledger.traceId}.md`);
+
+  ledger.recordArtifact('ANALYSIS_REPORT', outputPath);
+  ledger.recordArtifact('RANKED_WORKBOOK', evalResults.multiRankWorkbookPath, { googleDriveDeliverable: evalResults.googleDriveDeliverable || null });
+  ledger.recordArtifact('RANKED_CSV', evalResults.multiRankCsvPath);
+  ledger.recordArtifact('PARTNER_PORTAL_WORKBOOK', evalResults.portalWorkbookPath, { googleDriveDeliverable: evalResults.googleDriveDeliverable || null });
+
+  const requiredArtifacts = ['ANALYSIS_REPORT', 'RANKED_WORKBOOK', 'RANKED_CSV', 'PARTNER_PORTAL_WORKBOOK'];
+  const missing = requiredArtifacts.filter(role => !ledger.artifacts.some(artifact => artifact.role === role && artifact.exists && artifact.sha256));
+  if (missing.length && !evalResults.deliveryError) {
+    evalResults.deliveryError = `Missing deliverable artifacts: ${missing.join(', ')}`;
+  }
+
+  ledger.completePhase(8, evalResults.deliveryError ? 'FAILED' : 'PASSED', {
+    workbookPath: evalResults.multiRankWorkbookPath || null,
+    googleDriveDeliverable: evalResults.googleDriveDeliverable || null,
+    uploadRequested: Boolean(ctx.UPLOAD_DRIVE),
+    missingArtifacts: missing.length ? missing : undefined
+  }, [], [], evalResults.deliveryError ? [evalResults.deliveryError] : []);
+
+  _completeLedgerPhase9(ledger, ctx, evalResults);
+
+  const exported = ledger.finalizeAndExport(ctx.evidenceDir);
+  evalResults.evidenceLogPath = exported.jsonPath;
+  evalResults.evidenceSummaryPath = exported.mdPath;
+  evalResults.evidenceHealth = exported.payload.health;
+}
+
+function _emitSerializedJsonResponse(ctx, evalResults, graph, budgetOpt, queryPayload, safeStartTime, outputPath, workflowSteps, ledger) {
+  const {
+    inputFile, chassisDir, chassisPrefix, chassisDetection, notebookId, items,
+    stage1ParsingMs, stage2AspectMathMs, stage3RAGMs, stage4GuardrailMs, stage5MatrixMs
+  } = ctx;
+  const traceId = ledger?.traceId || `TRACE-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+  const provenanceTrace = _buildProvenanceTrace(ctx, traceId);
+  const tracePayloads = _buildTracePayloads(ctx);
+
+  const isMathClean = evalResults.isMathClean === true && (!evalResults.missingDependencies || evalResults.missingDependencies.length === 0);
+  const hasUnbuildableDisposition = evalResults.customerDisposition === 'DELIVERY_BLOCKED_UNBUILDABLE' || evalResults.acceptanceGate?.isValid === false;
+  const isFatalDeliveryError = evalResults.deliveryError && !hasUnbuildableDisposition;
+
+  const jsonResult = {
+    status: isFatalDeliveryError ? 'ERROR' : (evalResults.evidenceHealth?.workflowStatus === 'COMPLETE' ? 'SUCCESS' : 'ACTION_REQUIRED'),
+    error: isFatalDeliveryError ? evalResults.deliveryError : undefined,
+    data: {
+      traceId,
+      provenanceTrace,
+      inputFile,
+      chassisDir,
+      chassisPrefix,
+      chassisDetection,
+      notebookId,
+      notebookDegradedMode: ctx.notebookDegradedMode || null,
+      deliveryError: evalResults.deliveryError || null,
+      deliveryAuthError: evalResults.deliveryAuthError || null,
+      tracePayloads,
+      outputReportPath: outputPath,
+      evidenceLogPath: evalResults.evidenceLogPath || null,
+      evidenceSummaryPath: evalResults.evidenceSummaryPath || null,
+      googleDriveDeliverable: evalResults.googleDriveDeliverable || null,
+      buildStatus: isMathClean ? 'LOCAL_RULE_CHECKED' : 'ACTION_REQUIRED',
+      itemCount: items.length,
+      items,
+      workflowSteps,
+      parsedSheets: [
+        { sheetName: 'BOQ_Main_Quote', itemCount: items.length, status: 'PARSED' }
+      ],
+      telemetry: {
+        parsingTimeMs: stage1ParsingMs,
+        aspectMathTimeMs: stage2AspectMathMs,
+        ragTimeMs: stage3RAGMs,
+        guardrailTimeMs: stage4GuardrailMs,
+        matrixTimeMs: stage5MatrixMs,
+        totalEvalTimeMs: Date.now() - safeStartTime
+      },
+      ragAnswer: evalResults.ragAnswer || null,
+      ragResult: evalResults.ragResult || null,
+      notebookLmStatus: evalResults.notebookLmStatus || null,
+      agenticReviewStatus: evalResults.agenticReviewStatus || 'NOT_RUN',
+      agenticReview: evalResults.agenticReview || null,
+      postFlowSync: evalResults.postFlowSync || null,
+      needsActions: evalResults.evalSummary?.needsActions || [],
+      requirementResolution: evalResults.requirementResolution || null,
+      pcieTopology: evalResults.evalSummary?.pcie?.slotLayout || null,
+      unsolicitedOptionalItems: evalResults.unsolicitedOptionalItems || [],
+      totalUnsolicitedCostUsd: evalResults.totalUnsolicitedCostUsd || 0,
+      aspectChecks: evalResults.aspectChecks || [],
+      solutionTopology: evalResults.solutionTopology || null,
+      stageBreakdown: evalResults.stageBreakdown || {},
+      evalResults: {
+        ...evalResults,
+        notebookLmStatus: evalResults.notebookLmStatus || null,
+        postFlowSync: evalResults.postFlowSync || null,
+        needsActions: evalResults.evalSummary?.needsActions || [],
+        unsolicitedOptionalItems: evalResults.unsolicitedOptionalItems || [],
+        totalUnsolicitedCostUsd: evalResults.totalUnsolicitedCostUsd || 0,
+        aspectChecks: evalResults.aspectChecks || [],
+        stageBreakdown: evalResults.stageBreakdown || {},
+        provenanceTrace
+      },
+      clusterSizing: evalResults.clusterSizing || null,
+      chassisDefaults: evalResults.chassisDefaults || [],
+      redundantDefaults: evalResults.redundantDefaults || [],
+      opinionDiscrepancies: evalResults.opinionDiscrepancies || [],
+      conflictGraph: {
+        chassisInfo: graph.chassisInfo,
+        workloadDna: graph.workloadDna,
+        isWholeSolutionValid: graph.isWholeSolutionValid,
+        totalRulesEvaluated: graph.totalRulesEvaluated,
+        rulesApplicable: graph.rulesApplicable ?? null,
+        rulesUnevaluated: graph.rulesUnevaluated ?? null,
+        conflicts: graph.conflicts,
+        resolvedFixes: graph.resolvedFixes,
+        rankedSolutions: graph.rankedSolutions,
+        recommendedSolutions: evalResults.conflictGraph?.recommendedSolutions || [],
+        auditLog: graph.auditLog,
+        rulesSource: graph.rulesSource,
+        isFallbackSource: graph.isFallbackSource
+      },
+      budgetOptimization: budgetOpt,
+      notebookPayload: queryPayload,
+      ragVerified: evalResults.ragVerified ?? null,
+      ragViolationDetected: evalResults.ragViolationDetected ?? null,
+      multiRankWorkbookPath: evalResults.multiRankWorkbookPath || null,
+      multiRankCsvPath: evalResults.multiRankCsvPath || null,
+      ephemeralSourceValidation: evalResults.ephemeralSourceValidation || null,
+      durationMs: Date.now() - safeStartTime
+    }
+  };
+  emitProgress(10, 10, 'Evaluation Finished', 'completed', `Analysis status: ${jsonResult.status}. Consult evidence health for outstanding gates.`);
+  process.stdout.write('\n__EVAL_RESULT_JSON__' + JSON.stringify(jsonResult) + '__EVAL_RESULT_JSON__\n');
+}
+
 /**
  * Master Output Serializer and Deliverable Exporter
  * @param {object} ctx - Execution context
@@ -537,14 +844,15 @@ function _completeLedgerPhase9(ledger, ctx, evalResults) {
 async function serializeAndExportResults(ctx) {
   const {
     outputPath, evalResults, chassisPrefix, inputFile, startTime, items,
-    graph, notebookId, stage1ParsingMs, stage2AspectMathMs, stage3RAGMs,
-    stage4GuardrailMs, stage5MatrixMs, JSON_MODE, chassisDir, chassisDetection,
+    graph, stage1ParsingMs, stage2AspectMathMs, stage3RAGMs,
+    stage4GuardrailMs, stage5MatrixMs, JSON_MODE, chassisDir,
     budgetOpt, queryPayload
   } = ctx;
 
+  const safeStartTime = (typeof startTime === 'number' && !Number.isNaN(startTime)) ? startTime : Date.now();
   const reportDir = path.dirname(outputPath);
   if (!fs.existsSync(reportDir)) fs.mkdirSync(reportDir, { recursive: true });
-  // Rebuild from final ranks so substitutions cannot retain an obsolete plan.
+
   const { buildRuntimeDiscoveryPlan } = require('./runtime_discovery_plan');
   evalResults.runtimeDiscoveryPlan = buildRuntimeDiscoveryPlan({ ...evalResults, items }, {
     catalogData: ctx.catalogData, targetDir: chassisDir, productId: chassisPrefix,
@@ -555,16 +863,10 @@ async function serializeAndExportResults(ctx) {
   require('../system/fs_compat').safeWriteJsonAtomic(runtimePlanPath, evalResults.runtimeDiscoveryPlan);
   evalResults.runtimeDiscoveryPlanPath = runtimePlanPath;
 
-  // Post-flow sync
   await _executePostFlowSync(ctx, evalResults);
 
-  // Multi-Rank Solution Deliverable Export
-  const inputBase = path.basename(inputFile, path.extname(inputFile));
-  const fileSuffix = ctx.targetSheetName ? `${inputBase}_${ctx.targetSheetName.replace(/[/\\?*[\]:]/g, '_')}` : inputBase;
-  const multiRankWorkbookPath = path.join(reportDir, `${fileSuffix}_MultiRank_Solutions.xlsx`);
-  const multiRankCsvPath = path.join(reportDir, `${fileSuffix}_MultiRank_Solutions.csv`);
-  // A retry must never publish artifacts retained from an earlier evaluation.
-  for (const key of ['multiRankWorkbookPath', 'multiRankCsvPath', 'proposalWorkbookPath', 'portalWorkbookPath', 'googleDriveDeliverable']) {
+  const paths = _prepareExportPaths(reportDir, inputFile, ctx.targetSheetName);
+  for (const key of ['multiRankWorkbookPath', 'multiRankCsvPath', 'proposalWorkbookPath', 'portalWorkbookPath', 'googleDriveDeliverable', 'artifactIntegrityManifest', 'deliveryError']) {
     delete evalResults[key];
   }
   let exportsCompleted = false;
@@ -582,37 +884,23 @@ async function serializeAndExportResults(ctx) {
 
   if (evalResults.acceptanceGate && evalResults.acceptanceGate.isValid === false) {
     evalResults.deliveryError = `Presentation export blocked: Pre-presentation acceptance failed (${evalResults.acceptanceGate.blockersCount} blocker(s): ${evalResults.acceptanceGate.blockers.map(b => b.name || b.id).join(', ')}).`;
+    evalResults.customerDisposition = evalResults.isMathClean === false ? 'DELIVERY_BLOCKED_UNBUILDABLE' : 'ACTION_REQUIRED';
     logger.warn('EVAL_OUTPUT_SERIALIZER', evalResults.deliveryError);
   } else if (!isAuthValid) {
     evalResults.deliveryError = evalResults.deliveryAuthError
       ? `Presentation export blocked: Cryptographic DeliveryAuthorization failed: ${evalResults.deliveryAuthError}`
       : 'Presentation export blocked: Valid cryptographic DeliveryAuthorization is missing or invalid for this candidate manifest.';
+    evalResults.customerDisposition = 'ACTION_REQUIRED';
     logger.warn('EVAL_OUTPUT_SERIALIZER', evalResults.deliveryError);
   } else {
-    try {
-      generateMultiRankSolutionWorkbook(evalResults, multiRankWorkbookPath, targetChassisName, {
-        clusterSizing: evalResults.clusterSizing
-      });
-      generateMultiRankSolutionCsv(evalResults, multiRankCsvPath, {
-        clusterSizing: evalResults.clusterSizing
-      });
-      const proposalPath = path.join(reportDir, `${fileSuffix}_Proposal.xlsx`);
-      generateProfessionalBOQ(evalResults, proposalPath, targetChassisName, graph.recommendedSolutions?.[0]?.rank || 1);
-      const portalWorkbookPath = path.join(reportDir, `${fileSuffix}_Partner_Portal.xlsx`);
-      generateRankedPortalWorkbook(evalResults, portalWorkbookPath);
-      const artifactPaths = [multiRankWorkbookPath, multiRankCsvPath, proposalPath, portalWorkbookPath];
-      if (artifactPaths.some(file => !fs.existsSync(file) || !fs.statSync(file).isFile() || fs.statSync(file).size === 0)) {
-        throw new Error('Presentation export did not create all required non-empty artifacts.');
-      }
-      evalResults.multiRankWorkbookPath = multiRankWorkbookPath;
-      evalResults.multiRankCsvPath = multiRankCsvPath;
-      evalResults.proposalWorkbookPath = proposalPath;
-      evalResults.portalWorkbookPath = portalWorkbookPath;
-      exportsCompleted = true;
-    } catch (sheetErr) {
-      logger.warn('EVAL_OUTPUT_SERIALIZER', `Multi-Rank workbook export note: ${sheetErr.message}`);
-      evalResults.deliveryError = sheetErr.message;
-    }
+    exportsCompleted = _exportStagedDeliverables({
+      evalResults,
+      reportDir,
+      paths,
+      targetChassisName,
+      graph,
+      candidateFingerprint
+    });
   }
 
   evalResults.stageBreakdown = {
@@ -623,167 +911,20 @@ async function serializeAndExportResults(ctx) {
     stage5ResolutionMatrixMs: stage5MatrixMs
   };
 
-  recordEvaluationTelemetry(evalResults, inputFile, Date.now() - startTime);
+  recordEvaluationTelemetry(evalResults, inputFile, Date.now() - safeStartTime);
 
-  // Deliverable Drive Upload if requested
-  if (ctx.UPLOAD_DRIVE && (!exportsCompleted || evalResults.deliveryError)) {
-    evalResults.deliveryError = evalResults.deliveryError || 'Google Sheet publication withheld: Current delivery artifacts were not produced successfully.';
-  } else if (ctx.UPLOAD_DRIVE && !isAuthValid) {
-    evalResults.deliveryError = 'Google Sheet publication withheld: Valid cryptographic DeliveryAuthorization is missing or invalid for this candidate manifest.';
-    logger.warn('EVAL_OUTPUT_SERIALIZER', evalResults.deliveryError);
-  } else if (ctx.UPLOAD_DRIVE && !candidateReviewCurrent(evalResults)) {
-    evalResults.deliveryError = 'Google Sheet publication withheld: the final candidate BOM has no current successful document review';
-  } else if (ctx.UPLOAD_DRIVE && exportsCompleted && evalResults.portalWorkbookPath) {
-    const driveUpload = await handleGoogleDriveUpload(evalResults.portalWorkbookPath, evalResults);
-    if (driveUpload) {
-      evalResults.googleDriveDeliverable = driveUpload;
-    } else {
-      evalResults.deliveryError = 'Requested Google Sheet upload did not return a delivery receipt';
-    }
-  }
+  await _handleDeliverableDrivePublication(ctx, evalResults, exportsCompleted, isAuthValid);
 
-  // Generate evaluation report markdown
   const reportContent = generateMarkdownReport(ctx) + '\n\n' +
     require('./runtime_discovery_plan').formatRuntimeDiscoveryPlan(evalResults.runtimeDiscoveryPlan);
   fs.writeFileSync(outputPath, reportContent, 'utf-8');
 
-  const ledger = evalResults.evidenceLedger;
-  if (ledger) {
-    // Retain evidence beside its deliverables so a moved checkout keeps links valid.
-    ctx.evidenceDir = path.join(path.dirname(path.resolve(outputPath)), 'evidence');
-    const evidenceDir = ctx.evidenceDir;
-    evalResults.evidenceLogPath = path.join(evidenceDir, `evidence_log_${ledger.traceId}.json`);
-    evalResults.evidenceSummaryPath = path.join(evidenceDir, `evidence_summary_${ledger.traceId}.md`);
-
-    ledger.recordArtifact('ANALYSIS_REPORT', outputPath);
-    ledger.recordArtifact('RANKED_WORKBOOK', evalResults.multiRankWorkbookPath, { googleDriveDeliverable: evalResults.googleDriveDeliverable || null });
-    ledger.recordArtifact('RANKED_CSV', evalResults.multiRankCsvPath);
-    ledger.recordArtifact('PARTNER_PORTAL_WORKBOOK', evalResults.portalWorkbookPath, { googleDriveDeliverable: evalResults.googleDriveDeliverable || null });
-
-    const requiredArtifacts = ['ANALYSIS_REPORT', 'RANKED_WORKBOOK', 'RANKED_CSV', 'PARTNER_PORTAL_WORKBOOK'];
-    const missing = requiredArtifacts.filter(role => !ledger.artifacts.some(artifact => artifact.role === role && artifact.exists && artifact.sha256));
-    if (missing.length && !evalResults.deliveryError) {
-      evalResults.deliveryError = `Missing deliverable artifacts: ${missing.join(', ')}`;
-    }
-
-    ledger.completePhase(8, evalResults.deliveryError ? 'FAILED' : 'PASSED', {
-      workbookPath: evalResults.multiRankWorkbookPath || null,
-      googleDriveDeliverable: evalResults.googleDriveDeliverable || null,
-      uploadRequested: Boolean(ctx.UPLOAD_DRIVE),
-      missingArtifacts: missing.length ? missing : undefined
-    }, [], [], evalResults.deliveryError ? [evalResults.deliveryError] : []);
-
-    _completeLedgerPhase9(ledger, ctx, evalResults);
-
-    const exported = ledger.finalizeAndExport(ctx.evidenceDir);
-    evalResults.evidenceLogPath = exported.jsonPath;
-    evalResults.evidenceSummaryPath = exported.mdPath;
-    evalResults.evidenceHealth = exported.payload.health;
-  }
+  _recordLedgerDeliverableArtifacts(evalResults.evidenceLedger, ctx, evalResults, outputPath);
 
   const workflowSteps = _buildWorkflowSteps(ctx);
 
   if (JSON_MODE) {
-    const traceId = ledger?.traceId || `TRACE-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
-    const provenanceTrace = _buildProvenanceTrace(ctx, traceId);
-    const tracePayloads = _buildTracePayloads(ctx);
-
-    const isMathClean = evalResults.isMathClean === true && (!evalResults.missingDependencies || evalResults.missingDependencies.length === 0);
-    const hasUnbuildableDisposition = evalResults.customerDisposition === 'DELIVERY_BLOCKED_UNBUILDABLE' || evalResults.acceptanceGate?.isValid === false;
-    const isFatalDeliveryError = evalResults.deliveryError && !hasUnbuildableDisposition;
-
-    const jsonResult = {
-      status: isFatalDeliveryError ? 'ERROR' : (evalResults.evidenceHealth?.workflowStatus === 'COMPLETE' ? 'SUCCESS' : 'ACTION_REQUIRED'),
-      error: isFatalDeliveryError ? evalResults.deliveryError : undefined,
-      data: {
-        traceId,
-        provenanceTrace,
-        inputFile,
-        chassisDir,
-        chassisPrefix,
-        chassisDetection,
-        notebookId,
-        notebookDegradedMode: ctx.notebookDegradedMode || null,
-        deliveryError: evalResults.deliveryError || null,
-        deliveryAuthError: evalResults.deliveryAuthError || null,
-        tracePayloads,
-        outputReportPath: outputPath,
-        evidenceLogPath: evalResults.evidenceLogPath || null,
-        evidenceSummaryPath: evalResults.evidenceSummaryPath || null,
-        googleDriveDeliverable: evalResults.googleDriveDeliverable || null,
-        buildStatus: isMathClean ? 'LOCAL_RULE_CHECKED' : 'ACTION_REQUIRED',
-        itemCount: items.length,
-        items,
-        workflowSteps,
-        parsedSheets: [
-          { sheetName: 'BOQ_Main_Quote', itemCount: items.length, status: 'PARSED' }
-        ],
-        telemetry: {
-          parsingTimeMs: stage1ParsingMs,
-          aspectMathTimeMs: stage2AspectMathMs,
-          ragTimeMs: stage3RAGMs,
-          guardrailTimeMs: stage4GuardrailMs,
-          matrixTimeMs: stage5MatrixMs,
-          totalEvalTimeMs: Date.now() - startTime
-        },
-        ragAnswer: evalResults.ragAnswer || null,
-        ragResult: evalResults.ragResult || null,
-        notebookLmStatus: evalResults.notebookLmStatus || null,
-        agenticReviewStatus: evalResults.agenticReviewStatus || 'NOT_RUN',
-        agenticReview: evalResults.agenticReview || null,
-        postFlowSync: evalResults.postFlowSync || null,
-        needsActions: evalResults.evalSummary?.needsActions || [],
-        requirementResolution: evalResults.requirementResolution || null,
-        pcieTopology: evalResults.evalSummary?.pcie?.slotLayout || null,
-        unsolicitedOptionalItems: evalResults.unsolicitedOptionalItems || [],
-        totalUnsolicitedCostUsd: evalResults.totalUnsolicitedCostUsd || 0,
-        aspectChecks: evalResults.aspectChecks || [],
-        solutionTopology: evalResults.solutionTopology || null,
-        stageBreakdown: evalResults.stageBreakdown || {},
-        evalResults: {
-          ...evalResults,
-          notebookLmStatus: evalResults.notebookLmStatus || null,
-          postFlowSync: evalResults.postFlowSync || null,
-          needsActions: evalResults.evalSummary?.needsActions || [],
-          unsolicitedOptionalItems: evalResults.unsolicitedOptionalItems || [],
-          totalUnsolicitedCostUsd: evalResults.totalUnsolicitedCostUsd || 0,
-          aspectChecks: evalResults.aspectChecks || [],
-          stageBreakdown: evalResults.stageBreakdown || {},
-          provenanceTrace
-        },
-        clusterSizing: evalResults.clusterSizing || null,
-        chassisDefaults: evalResults.chassisDefaults || [],
-        redundantDefaults: evalResults.redundantDefaults || [],
-        opinionDiscrepancies: evalResults.opinionDiscrepancies || [],
-        conflictGraph: {
-          chassisInfo: graph.chassisInfo,
-          workloadDna: graph.workloadDna,
-          isWholeSolutionValid: graph.isWholeSolutionValid,
-          // Honest rule accounting (C6 fix) — use broken-out fields not the legacy inflated total
-          totalRulesEvaluated: graph.totalRulesEvaluated,
-          rulesApplicable: graph.rulesApplicable ?? null,
-          rulesUnevaluated: graph.rulesUnevaluated ?? null,
-          conflicts: graph.conflicts,
-          resolvedFixes: graph.resolvedFixes,
-          rankedSolutions: graph.rankedSolutions,
-          recommendedSolutions: evalResults.conflictGraph?.recommendedSolutions || [],
-          auditLog: graph.auditLog,
-          rulesSource: graph.rulesSource,
-          isFallbackSource: graph.isFallbackSource
-        },
-        budgetOptimization: budgetOpt,
-        notebookPayload: queryPayload,
-        // Phase 1.2 Fix (C3): ragVerified/ragViolationDetected now wired in eval_boq executeGroundedRagValidation
-        ragVerified: evalResults.ragVerified ?? null,
-        ragViolationDetected: evalResults.ragViolationDetected ?? null,
-        multiRankWorkbookPath: evalResults.multiRankWorkbookPath || null,
-        multiRankCsvPath: evalResults.multiRankCsvPath || null,
-        ephemeralSourceValidation: evalResults.ephemeralSourceValidation || null,
-        durationMs: Date.now() - startTime
-      }
-    };
-    emitProgress(10, 10, 'Evaluation Finished', 'completed', `Analysis status: ${jsonResult.status}. Consult evidence health for outstanding gates.`);
-    process.stdout.write('\n__EVAL_RESULT_JSON__' + JSON.stringify(jsonResult) + '__EVAL_RESULT_JSON__\n');
+    _emitSerializedJsonResponse(ctx, evalResults, graph, budgetOpt, queryPayload, safeStartTime, outputPath, workflowSteps, evalResults.evidenceLedger);
   } else {
     console.log(`\n===============================================================`);
     console.log(`✅ EVALUATION COMPLETE! Deliverables generated:`);
@@ -927,5 +1068,7 @@ module.exports = {
   generateMarkdownReport,
   generateEvaluationNarrative,
   handleGoogleDriveUpload,
+  assertArtifactIntegrity,
+  _executeStagedFileAtomicity,
   serializeAndExportResults
 };

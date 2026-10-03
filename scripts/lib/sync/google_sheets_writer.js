@@ -12,6 +12,7 @@ const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 const xlsx = require('xlsx-js-style');
+const { safeWriteJsonAtomic } = require('../system/fs_compat.js');
 const { GoogleAuth } = require('google-auth-library');
 
 const SHEETS_SCOPE = 'https://www.googleapis.com/auth/spreadsheets';
@@ -184,9 +185,25 @@ function quoteSheetTitle(title) {
   return `'${String(title).replace(/'/g, "''")}'`;
 }
 
+function sheetSnapshotFingerprint(sheets) {
+  if (!Array.isArray(sheets)) throw new Error('Missing sheet snapshot');
+  const canonical = sheets.map(sheet => ({ id: sheet.properties.sheetId, title: sheet.properties.title,
+    grid: { rowCount: sheet.properties.gridProperties?.rowCount, columnCount: sheet.properties.gridProperties?.columnCount }, cells: (sheet.data || []).flatMap(data =>
+      (data.rowData || []).flatMap((row, r) => (row.values || []).flatMap((cell, c) => cell.userEnteredValue ?
+        [[(data.startRow || 0) + r, (data.startColumn || 0) + c, cell.userEnteredValue]] : []))) })).sort((a,b) => a.id-b.id);
+  return crypto.createHash('sha256').update(JSON.stringify(canonical)).digest('hex');
+}
+
 async function replaceGoogleSheetWorkbook(spreadsheetId, datasets, options = {}) {
+  const leaseName = 'sheet-' + crypto.createHash('sha256').update(String(spreadsheetId)).digest('hex').slice(0, 24);
+  const release = require('../system/workflow_lease.js').acquireWorkflowLease(leaseName);
+  try { return await replaceGoogleSheetWorkbookWithinLease(spreadsheetId, datasets, options); }
+  finally { release(); }
+}
+
+async function replaceGoogleSheetWorkbookWithinLease(spreadsheetId, datasets, options = {}) {
   if (!spreadsheetId) throw new Error('Google spreadsheet ID is required');
-  const tabs = { ...DEFAULT_TABS, ...(options.tabs || {}) };
+  const tabs = { ...DEFAULT_TABS, ...options.tabs };
   const tabRows = [
     [tabs.catalog, datasets.catalogRows],
     [tabs.learnings, datasets.learningRows],
@@ -199,7 +216,8 @@ async function replaceGoogleSheetWorkbook(spreadsheetId, datasets, options = {})
   const client = options.client || await auth.getClient();
   const baseUrl = `https://sheets.googleapis.com/v4/spreadsheets/${encodeURIComponent(spreadsheetId)}`;
   const metadata = await client.request({ url: `${baseUrl}?fields=sheets.properties`, method: 'GET' });
-  const properties = (metadata.data?.sheets || []).map(sheet => sheet.properties);
+  if (!Array.isArray(metadata.data?.sheets)) throw new Error('Sheet metadata is unavailable; mutation blocked.');
+  const properties = metadata.data.sheets.map(sheet => sheet.properties);
   let nextId = Math.max(0, ...properties.map(p => p.sheetId)) + 1;
   const requests = [];
   for (const [title, values] of tabRows) {
@@ -211,11 +229,21 @@ async function replaceGoogleSheetWorkbook(spreadsheetId, datasets, options = {})
     // One atomic batch replaces all values, including stale trailing cells.
     requests.push({ updateCells: { range: { sheetId }, fields: 'userEnteredValue', rows: values.map(row => ({ values: row.map(value => ({ userEnteredValue: typeof value === 'number' ? { numberValue: value } : typeof value === 'boolean' ? { boolValue: value } : { stringValue: String(value ?? '') } })) })) } });
   }
-  await client.request({
-    url: `${baseUrl}:batchUpdate`,
-    method: 'POST',
-    data: { requests }
-  });
+  // The full entered-value snapshot preserves formulas and literal strings.
+  const snapshotUrl = baseUrl + '?includeGridData=true&fields=sheets(properties,data(startRow,startColumn,rowData.values.userEnteredValue))';
+  const backupData = await client.request({ url: snapshotUrl, method: 'GET' });
+  const originalSheets = backupData.data?.sheets;
+  if (!Array.isArray(originalSheets) || originalSheets.length !== properties.length || properties.some(p => !originalSheets.some(sheet => sheet.properties?.sheetId === p.sheetId && sheet.properties.title === p.title))) {
+    throw new Error('Complete sheet backup is unavailable; mutation blocked.');
+  }
+  const backupDir = options.backupDir || path.resolve(__dirname, '../../../outputs/history/drive_backups');
+  const backupFile = path.join(backupDir, 'drive_backup_' + crypto.randomUUID() + '.json');
+  safeWriteJsonAtomic(backupFile, { spreadsheetId, backedUpAt: new Date().toISOString(), sheets: originalSheets });
+  const persisted = JSON.parse(fs.readFileSync(backupFile, 'utf8'));
+  if (JSON.stringify(persisted.sheets) !== JSON.stringify(originalSheets)) throw new Error('Sheet backup persistence failed; mutation blocked.');
+  let readbackFingerprints;
+  try {
+    await client.request({ url: baseUrl + ':batchUpdate', method: 'POST', data: { requests } });
   const ranges = tabRows.map(([title]) => `ranges=${encodeURIComponent(quoteSheetTitle(title))}`).join('&');
   const readback = await client.request({ url: `${baseUrl}/values:batchGet?${ranges}&valueRenderOption=UNFORMATTED_VALUE`, method: 'GET' });
   const normalize = rows => {
@@ -223,7 +251,7 @@ async function replaceGoogleSheetWorkbook(spreadsheetId, datasets, options = {})
     while (result.length && result.at(-1).length === 0) result.pop();
     return result;
   };
-  const readbackFingerprints = {};
+  readbackFingerprints = {};
   for (let index = 0; index < tabRows.length; index++) {
     const [title, expected] = tabRows[index];
     const actual = readback.data?.valueRanges?.[index]?.values;
@@ -231,9 +259,47 @@ async function replaceGoogleSheetWorkbook(spreadsheetId, datasets, options = {})
     readbackFingerprints[title] = stableRowsFingerprint(normalize(actual));
   }
 
+  } catch (mutationError) {
+    const restoreRequests = [];
+    const managedIds = new Set(requests.filter(request => request.updateCells).map(request => request.updateCells.range.sheetId));
+    for (const request of requests) {
+      if (request.addSheet) restoreRequests.push({ deleteSheet: { sheetId: request.addSheet.properties.sheetId } });
+    }
+    for (const sheet of originalSheets) {
+      if (!managedIds.has(sheet.properties.sheetId)) continue;
+      const sheetId = sheet.properties.sheetId;
+      restoreRequests.push({ updateCells: { range: { sheetId }, fields: 'userEnteredValue', rows: [] } });
+      for (const data of sheet.data || []) {
+        restoreRequests.push({ updateCells: { start: { sheetId, rowIndex: data.startRow || 0, columnIndex: data.startColumn || 0 },
+          fields: 'userEnteredValue', rows: data.rowData || [] } });
+      }
+      if (sheet.properties.gridProperties) restoreRequests.push({ updateSheetProperties: {
+        properties: { sheetId, gridProperties: sheet.properties.gridProperties }, fields: 'gridProperties.rowCount,gridProperties.columnCount' } });
+    }
+    try {
+      // Delete only newly added tabs that actually exist (the failed batch may not have committed).
+      const current = await client.request({ url: baseUrl + '?fields=sheets.properties', method: 'GET' });
+      const currentIds = new Set((current.data?.sheets || []).map(sheet => sheet.properties.sheetId));
+      const recoveryRequests = restoreRequests.filter(request => !request.deleteSheet || currentIds.has(request.deleteSheet.sheetId));
+      await client.request({ url: baseUrl + ':batchUpdate', method: 'POST', data: { requests: recoveryRequests } });
+      const restored = await client.request({ url: snapshotUrl, method: 'GET' });
+      if (sheetSnapshotFingerprint(restored.data?.sheets) !== sheetSnapshotFingerprint(originalSheets)) throw new Error('Rollback readback mismatch');
+      mutationError.rollbackVerified = true;
+    } catch (rollbackError) {
+      mutationError.rollbackVerified = false;
+      mutationError.rollbackError = rollbackError.message;
+      mutationError.message += '; rollback pending: ' + rollbackError.message;
+    }
+    safeWriteJsonAtomic(backupFile, { ...persisted, rollbackStatus: mutationError.rollbackVerified ? 'RESTORED' : 'RECOVERY_REQUIRED',
+      error: mutationError.message, rollbackError: mutationError.rollbackError || null, updatedAt: new Date().toISOString() });
+    mutationError.backupFile = backupFile;
+    throw mutationError;
+  }
+
   return {
     success: true,
     spreadsheetId,
+    backupFile,
     tabsWritten: tabRows.map(([title, rows]) => ({ title, rows: rows.length })),
     readbackVerified: true,
     readbackFingerprints,
@@ -243,7 +309,7 @@ async function replaceGoogleSheetWorkbook(spreadsheetId, datasets, options = {})
 }
 
 async function createGoogleSheetWorkbook(title, datasets, options = {}) {
-  const tabs = { ...DEFAULT_TABS, ...(options.tabs || {}) };
+  const tabs = { ...DEFAULT_TABS, ...options.tabs };
   const auth = options.auth || new GoogleAuth({ scopes: [SHEETS_SCOPE] });
   const client = options.client || await auth.getClient();
   const created = await client.request({

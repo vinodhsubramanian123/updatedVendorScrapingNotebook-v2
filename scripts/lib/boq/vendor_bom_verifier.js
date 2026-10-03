@@ -399,8 +399,7 @@ function verifyVendorBOM(vendorBomInput, proposedRankSolution, chassisDir, optio
 }
 
 // ── CLI Runner ─────────────────────────────────────────────────────────────
-if (require.main === module) {
-  const args = process.argv.slice(2);
+function runCli(args = process.argv.slice(2)) {
   if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
     console.log('Usage: node scripts/lib/boq/vendor_bom_verifier.js --vendor <vendor_quote.xlsx> [--customer <customer_boq.xlsx>] [--catalog <catalog_dir>] [--json]');
     console.log('       node scripts/lib/boq/vendor_bom_verifier.js <vendor_quote.xlsx> [customer_boq.xlsx] [catalog_dir] [--json]');
@@ -542,7 +541,12 @@ if (require.main === module) {
   }
 }
 
+if (require.main === module) {
+  runCli();
+}
+
 module.exports = {
   verifyVendorBOM,
-  auditSingleVendorBOM
+  auditSingleVendorBOM,
+  runCli
 };

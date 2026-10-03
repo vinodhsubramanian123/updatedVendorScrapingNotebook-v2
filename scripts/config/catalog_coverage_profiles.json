@@ -1,0 +1,104 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "profiles": {
+    "DL380_Gen12": {
+      "product": "DL380 Gen12",
+      "pillar": "SERVER",
+      "family": "ProLiant",
+      "generation": "Gen12",
+      "expectedWorkbookSheets": 26,
+      "minHardwareSKUs": 500,
+      "minServicesSKUs": 200,
+      "mandatoryCategories": [
+        "Processor",
+        "Memory",
+        "Drive Cage",
+        "Storage Controllers Options",
+        "Riser Cards",
+        "Power Supplies",
+        "OCP3 Networking Adapters"
+      ],
+      "mandatoryServicesCategories": [
+        "Manufacturing Services",
+        "Compute Ops Management"
+      ],
+      "conditionalCategories": [
+        "GPU Accelerators",
+        "Direct Liquid Cooling",
+        "-48VDC Power Supplies & Cable Kits"
+      ]
+    },
+    "DL380a_Gen12": {
+      "product": "DL380a Gen12",
+      "pillar": "SERVER",
+      "family": "ProLiant",
+      "generation": "Gen12",
+      "expectedWorkbookSheets": 27,
+      "minHardwareSKUs": 350,
+      "minServicesSKUs": 150,
+      "mandatoryCategories": [
+        "Processor",
+        "Memory",
+        "Drive Cage",
+        "Storage Controllers Options",
+        "Riser Cards",
+        "Power Supplies"
+      ],
+      "mandatoryServicesCategories": [
+        "Compute Ops Management"
+      ],
+      "conditionalCategories": [
+        "GPU Accelerators",
+        "Direct Liquid Cooling",
+        "-48VDC Power Supplies & Cable Kits"
+      ]
+    },
+    "DL380_Gen11": {
+      "product": "DL380 Gen11",
+      "pillar": "SERVER",
+      "family": "ProLiant",
+      "generation": "Gen11",
+      "expectedWorkbookSheets": 24,
+      "minHardwareSKUs": 400,
+      "minServicesSKUs": 150,
+      "mandatoryCategories": [
+        "Processor",
+        "Memory",
+        "Drive Cage",
+        "SAS Controller",
+        "Riser Cards",
+        "Power Supplies"
+      ],
+      "mandatoryServicesCategories": [
+        "Compute Ops Management"
+      ]
+    },
+    "Alletra_Storage_System": {
+      "product": "Alletra Storage System",
+      "pillar": "STORAGE",
+      "family": "Alletra",
+      "generation": "General",
+      "expectedWorkbookSheets": 10,
+      "minHardwareSKUs": 50,
+      "mandatoryCategories": [
+        "Storage Array Controller",
+        "Drive Enclosure",
+        "Power Supplies"
+      ]
+    },
+    "SN3600B_Fibre_Channel_Switch": {
+      "product": "SN3600B Fibre Channel Switch",
+      "pillar": "NETWORKING",
+      "family": "B-Series",
+      "generation": "General",
+      "expectedWorkbookSheets": 8,
+      "minHardwareSKUs": 20,
+      "mandatoryCategories": [
+        "Switch Ports",
+        "Power Supplies",
+        "Transceivers"
+      ]
+    }
+  }
+}

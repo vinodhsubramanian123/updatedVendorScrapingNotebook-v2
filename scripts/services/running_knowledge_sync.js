@@ -300,11 +300,11 @@ function generateRunningKnowledgeCharterMarkdown(deduplicatedRules, syncMetadata
 
   return `# ${CHARTER_TITLE}
 
-**Document Classification:** Canonical Ground-Truth Architecture & Validation Charter  
-**Maintained By:** HPE ProLiant AI Studio Autonomous Knowledge Engine (Antigravity AI)  
-**Last Synchronized:** ${timestamp}  
-**Total Deduplicated Learned Rules:** ${totalRules}  
-**Universal Invariant Compliance:** INV-1 through INV-38 Certified  
+**Document Classification:** Canonical Ground-Truth Architecture & Validation Charter<br>
+**Maintained By:** HPE ProLiant AI Studio Autonomous Knowledge Engine (Antigravity AI)<br>
+**Last Synchronized:** ${timestamp}<br>
+**Total Deduplicated Learned Rules:** ${totalRules}<br>
+**Universal Invariant Compliance:** INV-1 through INV-38 Certified<br>
 **Google Drive Destination:** \`shared_folder_id: ${DEFAULT_DRIVE_FOLDER_ID}\`
 
 ---
@@ -486,10 +486,10 @@ function generateUniversalCharterMarkdown(universalRules) {
   const timestamp = new Date().toISOString();
   return `# Universal Vendor Architecture & Platform Invariants Charter
 
-**Document Classification:** Canonical Universal Vendor Standards & Invariants  
-**Maintained By:** HPE ProLiant AI Studio Autonomous Knowledge Engine (Antigravity AI)  
-**Last Synchronized:** ${timestamp}  
-**Scope:** Universal Hardware & Platform Laws (INV-1 through INV-38)  
+**Document Classification:** Canonical Universal Vendor Standards & Invariants<br>
+**Maintained By:** HPE ProLiant AI Studio Autonomous Knowledge Engine (Antigravity AI)<br>
+**Last Synchronized:** ${timestamp}<br>
+**Scope:** Universal Hardware & Platform Laws (INV-1 through INV-38)
 
 ---
 

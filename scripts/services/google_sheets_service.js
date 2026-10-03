@@ -11,6 +11,7 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const crypto = require('crypto');
 const { GoogleAuth } = require('google-auth-library');
 const xlsx = require('xlsx-js-style');
 
@@ -229,6 +230,7 @@ async function createGoogleSheet(title, options = {}) {
       mimeType: 'application/vnd.google-apps.spreadsheet',
       parents: [folderId]
     };
+    options.beforeWrite?.();
     try {
       const driveRes = await client.request({
         url: 'https://www.googleapis.com/drive/v3/files',
@@ -245,6 +247,7 @@ async function createGoogleSheet(title, options = {}) {
   }
 
   if (!spreadsheetId) {
+    options.beforeWrite?.();
     const createRes = await client.request({
       url: 'https://sheets.googleapis.com/v4/spreadsheets',
       method: 'POST',
@@ -276,6 +279,7 @@ async function createGoogleSheet(title, options = {}) {
     }
 
     if (dataPayload.length > 0) {
+      options.beforeWrite?.();
       await client.request({
         url: `https://sheets.googleapis.com/v4/spreadsheets/${encodeURIComponent(spreadsheetId)}/values:batchUpdate`,
         method: 'POST',
@@ -311,6 +315,9 @@ async function uploadFileToGoogleSheet(filePath, customTitle = '', options = {})
 
   const title = customTitle || path.basename(resolvedPath, path.extname(resolvedPath));
   const fileBuffer = fs.readFileSync(resolvedPath);
+  if (options.expectedSha256 && crypto.createHash('sha256').update(fileBuffer).digest('hex') !== options.expectedSha256) {
+    throw new Error('Upload buffer differs from the signed artifact receipt.');
+  }
   const workbook = xlsx.read(fileBuffer, { type: 'buffer', raw: false });
 
   const sheetDataMap = {};
@@ -326,7 +333,8 @@ async function uploadFileToGoogleSheet(filePath, customTitle = '', options = {})
   const sheet = await createGoogleSheet(title, {
     data: sheetDataMap,
     auth: options.auth,
-    client: options.client
+    client: options.client,
+    beforeWrite: options.beforeWrite
   });
   return {
     ...sheet,
@@ -568,7 +576,7 @@ if (require.main === module) {
         console.log('Initiating autonomous OAuth2 login flow for Google Drive / Sheets...');
         const { startOAuthFlow } = require('./autonomous_oauth_flow.js');
         const port = parseInt(args[1], 10) || 8085;
-        const result = await startOAuthFlow(port);
+        await startOAuthFlow(port);
         console.log('\n[SUCCESS] Login completed. Verifying updated credentials...');
         const updated = await checkGoogleAuth();
         console.log('Authenticated:', updated.authenticated ? 'YES ✅' : 'NO ❌');

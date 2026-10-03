@@ -17,7 +17,7 @@ const {
 } = require('../lib/boq/boq_evaluator.js');
 const { executeNotebookQuery } = require('../lib/notebook/notebook_query_utils.js');
 const { queryLocalKnowledgeBase } = require('../lib/rag/local_rag_search.js');
-const { loadNotebookConfig, getNotebookIdForChassis } = require('../lib/sync/knowledge_sync.js');
+const { loadNotebookConfig, getNotebookIdForChassis, getNotebookDegradedMode } = require('../lib/sync/knowledge_sync.js');
 const { processPortalFeedback } = require('../lib/feedback/feedback_loop.js');
 const { listAllCatalogs } = require('../lib/catalog/catalog_discovery.js');
 
@@ -217,7 +217,6 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         let result;
         if (!notebookId) {
           // No notebook mapped or disabled — return degraded mode rather than passing null
-          const { getNotebookDegradedMode, queryLocalKnowledgeBase: _lkb } = require('./lib/sync/knowledge_sync.js');
           const degradedMode = getNotebookDegradedMode(cfg, args.chassis_id);
           const localResult = queryLocalKnowledgeBase(args.query, args.chassis_id);
           result = { ...localResult, source: 'LOCAL_RAG_NO_NOTEBOOK_MAPPED', degradedMode };

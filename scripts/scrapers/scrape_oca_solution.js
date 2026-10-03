@@ -76,16 +76,19 @@ async function auditAndPromoteStaging({
 
     // Strict Pre-Promotion JSON Schema & Cardinality Guardrail
     const stagingCatalogContent = JSON.parse(fs.readFileSync(catalogJson, 'utf-8'));
-    if (!stagingCatalogContent.metadata || stagingCatalogContent.metadata.totalUniqueSKUs <= 0) {
-      throw new Error(`Pre-Promotion Schema Guard Failed: totalUniqueSKUs is ${stagingCatalogContent.metadata?.totalUniqueSKUs || 0} (must be > 0).`);
+    const skuCount = stagingCatalogContent.metadata?.totalUniqueSKUs || 0;
+    const entriesCount = Array.isArray(stagingCatalogContent.entries) ? stagingCatalogContent.entries.length : 0;
+    if (!stagingCatalogContent.metadata || skuCount <= 0) {
+      throw new Error(`Pre-Promotion Schema Guard Failed: totalUniqueSKUs is ${skuCount} (must be > 0).`);
     }
-    if (!Array.isArray(stagingCatalogContent.entries) || stagingCatalogContent.entries.length === 0) {
+    if (entriesCount === 0) {
       throw new Error(`Pre-Promotion Schema Guard Failed: entries[] is empty or not an array.`);
     }
     captureReceipt = require('../lib/catalog/catalog_capture_receipt.js').createCaptureReceipt(outputDir, liveOutputDir, meta.cleanName);
 
     const { verifyScrapingStep, selfReflectOnScrapingSession, AtomicStepAnomalyError } = require('../lib/scraper/scraping_verifiability.js');
-    const step8Result = verifyScrapingStep(8, { tallyAuditPassed: true });
+    const isTallyVerified = skuCount > 0 && entriesCount > 0 && fs.existsSync(catalogXlsx);
+    const step8Result = verifyScrapingStep(8, { tallyAuditPassed: isTallyVerified, skuCount, entriesCount });
     stepTelemetry[8] = step8Result;
     if (!step8Result.valid) {
       throw new AtomicStepAnomalyError(8, step8Result.stage, step8Result.failure.assertionId, step8Result.failure.message, step8Result.failure);
@@ -446,29 +449,9 @@ function seedStagingFromLiveWorkspace(liveOutputDir, outputDir, meta) {
     const existingServicesHistory = path.join(liveOutputDir, 'services_history');
     if (fs.existsSync(existingServicesHistory)) copyDirRecursive(existingServicesHistory, path.join(outputDir, 'services_history'));
 
-    const existingScraps = path.join(liveOutputDir, 'intermittent_scraps');
-    if (fs.existsSync(existingScraps)) {
-      copyDirRecursive(existingScraps, path.join(outputDir, 'intermittent_scraps'));
-      console.log(`   ✅ intermittent_scraps/ seeded (TSV intermediates preserved)`);
-    }
-
-    const existingCatalog = path.join(liveOutputDir, `${meta.cleanName}_Catalog.json`);
-    if (fs.existsSync(existingCatalog)) {
-      fs.copyFileSync(existingCatalog, path.join(outputDir, `${meta.cleanName}_Catalog.json`));
-      console.log(`   ✅ ${meta.cleanName}_Catalog.json seeded`);
-    }
-
-    const existingServices = path.join(liveOutputDir, `${meta.cleanName}_Services.json`);
-    if (fs.existsSync(existingServices)) {
-      fs.copyFileSync(existingServices, path.join(outputDir, `${meta.cleanName}_Services.json`));
-      console.log(`   ✅ ${meta.cleanName}_Services.json seeded`);
-    }
-
-    const existingRules = path.join(liveOutputDir, `${meta.cleanName}_Catalog_Rules.json`);
-    if (fs.existsSync(existingRules)) {
-      fs.copyFileSync(existingRules, path.join(outputDir, `${meta.cleanName}_Catalog_Rules.json`));
-      console.log(`   ✅ ${meta.cleanName}_Catalog_Rules.json seeded`);
-    }
+    // INV-125 / F06: Do NOT copy stale intermittent_scraps, catalogs, services, or rules into staging.
+    // Staging must be a clean room so that missing tabs or scrape failures are not masked by stale intermediates.
+    console.log(`   🛡️ Clean-room staging active: stale TSVs/catalogs excluded; fresh capture builds strictly from current run`);
 
     const existingPdfs = fs.readdirSync(liveOutputDir, { withFileTypes: true })
       .filter(entry => entry.isFile() && entry.name.toLowerCase().endsWith('.pdf'));

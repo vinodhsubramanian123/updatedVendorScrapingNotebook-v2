@@ -32,6 +32,7 @@ const { candidateDelta, solutionFingerprint } = require('../lib/boq/solution_evi
 const { loadActiveKnowledgeRules } = require('../lib/catalog/active_knowledge_router.js');
 const { recordAndCertifyLearnedRule } = require('../lib/feedback/continuous_learning_verifier.js');
 const { assertNotebookHealth, loadNotebookConfig } = require('../lib/sync/knowledge_sync.js');
+const { LifecycleEngine } = require('../lib/lifecycle/lifecycle_engine.js');
 
 /**
  * Load notebook ID from config file for a specific chassis or use default.
@@ -268,7 +269,7 @@ async function ingestAndConsolidateBoq(options) {
     // Interactive ambiguity triage if running in interactive TTY mode
     const { listAllCatalogs } = require('../lib/catalog/catalog_discovery.js');
     let availableCatalogs = [];
-    try { availableCatalogs = listAllCatalogs(); } catch (_) {}
+    try { availableCatalogs = listAllCatalogs(); } catch {}
     if (process.stdin.isTTY && !JSON_MODE && !process.env.CI && availableCatalogs.length > 0) {
       const userChoice = await promptUserForChassisTriage(availableCatalogs, chassisDetection);
       if (userChoice && userChoice.chassisDir) {
@@ -347,7 +348,7 @@ async function ingestAndConsolidateBoq(options) {
     const nbCfg = loadNotebookConfig();
     notebookHealth = assertNotebookHealth(nbCfg, detectedChassisName, logger);
     notebookDegradedMode = notebookHealth.degradationMode;
-  } catch (_) { /* non-fatal */ }
+  } catch { /* non-fatal */ }
 
   const defaultReportsDir = path.join(chassisDir, 'reports');
   if (!fs.existsSync(defaultReportsDir)) {
@@ -448,6 +449,9 @@ async function ingestAndConsolidateBoq(options) {
 function executePhysicalPreChecks(items, catalogData, chassisDir, JSON_MODE, requirementResolution = null) {
   const tAspectStart = Date.now();
   const evalResults = evaluatePhysicalMath(items, catalogData, chassisDir);
+  evalResults.catalogData = catalogData;
+  const rulesPath = path.join(chassisDir, `${path.basename(chassisDir)}_Catalog_Rules.json`);
+  evalResults.catalogRules = fs.existsSync(rulesPath) ? JSON.parse(fs.readFileSync(rulesPath, 'utf8')) : null;
   evalResults.requirementResolution = requirementResolution;
   if (requirementResolution?.requiresHumanClarification) {
     evalResults.confidence.isHitlTriggered = true;
@@ -912,7 +916,7 @@ function _handlePipelineFailure(error, evidenceLedger, options) {
   }
   if (!recordedFailure) {
     failedPhaseNum = evidenceLedger.phases.phase_8 ? 8 : 1;
-    evidenceLedger.completePhase(failedPhaseNum, 'FAILED', { failureStage: 'FINALIZATION_OR_INTAKE' }, [], [], [error.message]);
+    evidenceLedger.recordWorkflowFailure(error);
   }
   for (let n = 1; n <= 9; n++) {
     if (!evidenceLedger.phases[`phase_${n}`]) {
@@ -969,7 +973,7 @@ function _recordAspectPhaseEvidence(evidenceLedger, evalResults, ingestCtx, opti
 }
 
 function _recordCandidateValidationsEvidence(evidenceLedger, evalResults, ingestCtx) {
-  evidenceLedger.phases.phase_6.outputSummary.candidateValidations = (evalResults.conflictGraph?.rankedSolutions || []).map(candidate => ({
+  const candidateValidations = (evalResults.conflictGraph?.rankedSolutions || []).map(candidate => ({
     rank: candidate.rank,
     name: candidate.name,
     rationale: candidate.reasoning,
@@ -978,30 +982,11 @@ function _recordCandidateValidationsEvidence(evidenceLedger, evalResults, ingest
     finalValidation: candidate.finalValidation,
     buildabilityStatus: candidate.buildabilityStatus
   }));
-  evidenceLedger.phases.phase_6.outputSummary.manifestSha256 = solutionFingerprint(evalResults);
+  evidenceLedger.recordCandidateAttempt({ candidateValidations, manifestSha256: solutionFingerprint(evalResults),
+    candidateGate: evalResults.adversarialGateResult });
 }
 
-async function runEvaluationPipelineWithinTrace(options) {
-  const startTime = Date.now();
-  const evidenceLedger = createEvidenceLedger({
-    chassis: options.chassisDir ? path.basename(options.chassisDir) : (options.CHASSIS_OVERRIDE || 'UNKNOWN_CHASSIS'),
-    filePath: options.inputFile || options.BOQ_FILE || (options.inputItems || options.rawText !== undefined ? 'IN_MEMORY_BOM' : null)
-  });
-  if (!options.inputFile && (options.inputItems || options.rawText !== undefined)) {
-    evidenceLedger.recordInlineArtifact('CUSTOMER_INPUT', options.inputItems ?? options.rawText);
-  } else {
-    evidenceLedger.recordArtifact('CUSTOMER_INPUT', options.inputFile || options.BOQ_FILE);
-  }
-  try {
-  const { ingestCtx, activeRules } = await _executeIntakeAndKnowledgePhases(options, evidenceLedger);
-
-  evidenceLedger.startPhase(3, '7-Aspect Physical Pre-Flight Math', { itemCount: ingestCtx.items.length });
-  const { evalResults, graph, queryPayload, stage2AspectMathMs } = executePhysicalPreChecks(
-    ingestCtx.items, ingestCtx.catalogData, ingestCtx.chassisDir, options.JSON_MODE, ingestCtx.requirementResolution
-  );
-  ingestCtx.items = evalResults.items || ingestCtx.items;
-  _recordAspectPhaseEvidence(evidenceLedger, evalResults, ingestCtx, options);
-
+function _executePhase4And5(options, evidenceLedger, graph, activeRules) {
   evidenceLedger.startPhase(4, 'Conflict Graph & Contested Resource Arbitration', {});
   const phase4Passed = graph?.isWholeSolutionValid === true;
   evidenceLedger.completePhase(4, phase4Passed ? 'PASSED' : 'ACTION_REQUIRED', {
@@ -1017,77 +1002,30 @@ async function runEvaluationPipelineWithinTrace(options) {
   }
 
   evidenceLedger.startPhase(5, 'Generational Modernization & Least-Delta Combinator', {});
-  const modCount = activeRules.generationalModernizations.length;
-  evidenceLedger.completePhase(5, 'PASSED', {
-    activeModernizationCount: modCount
-  });
+  const modCount = activeRules.generationalModernizations ? activeRules.generationalModernizations.length : 0;
+  const hasModernizations = Array.isArray(graph?.modernizations) && graph.modernizations.length > 0;
+  const hasLeastDelta = Boolean(graph?.leastDeltaCandidate || graph?.tradeoffMatrix?.trigger);
+  const phase5Status = (modCount > 0 || hasModernizations || hasLeastDelta) ? 'PASSED' : 'SKIPPED';
+  const phase5Summary = {
+    activeModernizationCount: modCount,
+    hasModernizations,
+    hasLeastDelta
+  };
+  if (phase5Status === 'SKIPPED') {
+    phase5Summary.skipReason = 'No generational modernizations or least-delta alternatives required for this clean BOM';
+    phase5Summary.policyCode = 'INV-105_NO_MODERNIZATION_REQUIRED';
+  }
+  evidenceLedger.completePhase(5, phase5Status, phase5Summary);
   if (!options.JSON_MODE) {
     const PipelineLogger = require('../lib/system/pipeline_logger.js');
     PipelineLogger.checklist(5, 'Generational Modernization & Least-Delta Combinator', [
-      { status: 'PASS', label: `Platform modernization evaluated (${modCount} rules checked)` },
-      { status: 'PASS', label: `Least-delta minimal mutation synthesis initialized` }
+      { status: phase5Status === 'PASSED' ? 'PASS' : 'SKIP', label: `Platform modernization evaluated (${modCount} rules checked)` },
+      { status: hasLeastDelta ? 'PASS' : 'SKIP', label: hasLeastDelta ? 'Least-delta minimal mutation alternative synthesized' : 'No troublesome SKU mutations needed' }
     ]);
   }
+}
 
-  evidenceLedger.startPhase(6, '5-Tier Strategy Matrix Synthesis', {});
-  const tMatrixStart = Date.now();
-  emitProgress(9, 10, 'Strategic Matrix Synthesis', 'in_progress', 'Generating 5-Tier resolution matrix and tradeoff constraints.');
-  const budgetOpt = optimizeForBudget(ingestCtx.items, evalResults, options.targetBudgetUsd, ingestCtx.catalogData, ingestCtx.chassisDir);
-  evalResults.budgetOptimization = budgetOpt;
-  const stage5MatrixMs = Math.max(Date.now() - tMatrixStart, 1);
-  const confidenceScore = evalResults.confidence?.score ?? 1.0;
-  const isLowConfidence = confidenceScore < 0.55 || Boolean(evalResults.confidence?.isHitlTriggered);
-  if (isLowConfidence) {
-    for (const candidate of evalResults.conflictGraph?.rankedSolutions || []) {
-      candidate.advisoryStatus = 'LOW_CONFIDENCE_ADVISORY';
-    }
-  }
-  const ranks = evalResults.conflictGraph?.rankedSolutions || [];
-  const phase6Passed = !isLowConfidence && ranks.length > 0;
-  evidenceLedger.completePhase(6, phase6Passed ? 'PASSED' : 'ACTION_REQUIRED', {
-    ranksProduced: ranks.length,
-    budgetCapEx: budgetOpt?.hasZeroPriceSkus ? null : budgetOpt?.mandatoryBomCostUsd ?? null,
-    confidenceScore,
-    isLowConfidence
-  });
-  if (!options.JSON_MODE) {
-    const PipelineLogger = require('../lib/system/pipeline_logger.js');
-    PipelineLogger.checklist(6, '5-Tier Strategy Matrix Synthesis', [
-      { status: ranks.length > 0 ? 'PASS' : 'WARN', label: `Strategy tiers synthesized: ${ranks.length} candidate solutions` },
-      { status: !isLowConfidence ? 'PASS' : 'WARN', label: `Confidence evaluation score: ${(confidenceScore * 100).toFixed(1)}%` },
-      { status: budgetOpt?.hasZeroPriceSkus ? 'WARN' : 'PASS', label: `Order-level ${budgetOpt?.hasZeroPriceSkus ? 'known-price subtotal (INCOMPLETE)' : 'CapEx'}: ${(budgetOpt?.mandatoryBomCostUsd || 0).toLocaleString()} USD` }
-    ]);
-  }
-
-  evidenceLedger.startPhase(7, 'Gemini NotebookLM Grounding & Dual-Brain Verification', {});
-  let quickSpecs = { status: 'NOT_RUN_OFFLINE_OR_DEFERRED' };
-  if (!options.OFFLINE_MODE && !options.DEFER_RAG && ingestCtx.notebookId) {
-    const { verifyNotebookQuickSpecs } = require('../lib/sync/quickspecs_sync');
-    quickSpecs = await verifyNotebookQuickSpecs(path.basename(ingestCtx.chassisDir), { autoUpload: true, forcedNotebookId: ingestCtx.notebookId });
-  }
-  evalResults.quickSpecsVerification = quickSpecs;
-  const sourceReady = quickSpecs.status === 'CERTIFIED_GROUNDED';
-  const { ragResult, ragAnswer, stage3RAGMs, stage4GuardrailMs } = await executeGroundedRagValidation({
-    ...ingestCtx,
-    evalResults,
-    OFFLINE_MODE: options.OFFLINE_MODE || (!options.DEFER_RAG && !sourceReady),
-    JSON_MODE: options.JSON_MODE,
-    SYNC_RAG: options.SYNC_RAG,
-    DEFER_RAG: options.DEFER_RAG
-  });
-  if (ragResult) {
-    evidenceLedger.recordNotebookLmTrace(queryPayload, ragResult, ragResult?.citations || []);
-  }
-  evidenceLedger.phases.phase_7.outputSummary = {
-    primaryRag: {
-      verified: evidenceLedger.sharedState.dualBrainVerified,
-      citationsCount: ragResult?.citations?.length || 0,
-      quickSpecs
-    }
-  };
-
-  applyLearnedRAGDeltasIfPresent(evalResults, graph, ingestCtx, options, ragResult);
-
+function _revalidateAndRankCandidates(evalResults, ingestCtx, evidenceLedger) {
   for (const candidate of evalResults.conflictGraph?.rankedSolutions || []) {
     const checked = evaluatePhysicalMath(candidate.skuPartsList || [], ingestCtx.catalogData, ingestCtx.chassisDir, { skipSynthesis: true });
     candidate.finalValidation = {
@@ -1110,7 +1048,13 @@ async function runEvaluationPipelineWithinTrace(options) {
     passed: validatedCandidates.length > 0 && validatedCandidates.every(candidate => candidate.physicalMathClean)
   };
   evalResults.adversarialGatePassed = evalResults.adversarialGateResult.passed;
-  evidenceLedger.phases.phase_6.outputSummary.candidateGate = evalResults.adversarialGateResult;
+  if (typeof evidenceLedger.recordCandidateAttempt === 'function') {
+    evidenceLedger.recordCandidateAttempt({
+      kind: 'DETERMINISTIC_FINAL_CANDIDATE_REVALIDATION',
+      manifestSha256: solutionFingerprint(evalResults),
+      passed: evalResults.adversarialGateResult.passed
+    });
+  }
   if (evalResults.conflictGraph?.recommendedSolutions) {
     const validCandidates = (evalResults.conflictGraph.rankedSolutions || [])
       .filter(candidate => candidate.physicalMathClean && candidate.isUniqueBom !== false && candidate.isParetoOptimal !== false);
@@ -1123,69 +1067,259 @@ async function runEvaluationPipelineWithinTrace(options) {
       .map((candidate, index) => ({ ...candidate, strategyRank: candidate.rank, rank: index + 1, name: candidate.name.replace(/^Rank \d+:/, `Rank ${index + 1}:`) }));
   }
   _recordCandidateValidationsEvidence(evidenceLedger, evalResults, ingestCtx);
+}
 
-  const ephemeralSourceResult = sourceReady ? await executeEphemeralSourceValidation(options, ingestCtx, evalResults) : null;
+async function _handleBoqIngestionPhase(ctx, options, evidenceLedger) {
+  evidenceLedger.startPhase(1, 'Intake, Ingestion & CTO Normalization', { boqFile: options.inputFile || options.BOQ_FILE });
+  const ingestCtx = await ingestAndConsolidateBoq(options);
+  if (ingestCtx.chassisDir) {
+    evidenceLedger.updateTargetChassis(path.basename(ingestCtx.chassisDir), ingestCtx.chassisDir);
+    evidenceLedger.recordArtifact('CATALOG', path.join(ingestCtx.chassisDir, `${path.basename(ingestCtx.chassisDir)}_Catalog.json`));
+    evidenceLedger.recordArtifact('CATALOG_RULES', path.join(ingestCtx.chassisDir, `${path.basename(ingestCtx.chassisDir)}_Catalog_Rules.json`));
+  }
+  evidenceLedger.customerInput.totalRequestedLines = ingestCtx.items.length;
+  evidenceLedger.customerInput.serverCount = ingestCtx.serverCount || 1;
+  evidenceLedger.sharedState.nodeMultiplier = ingestCtx.serverCount || 1;
+  ingestCtx.items.forEach(item => evidenceLedger.recordSkuAudit(item.sku, 'NORMALIZED_INPUT', 'Parsed customer input; this record does not certify compatibility.', null, item.category, { quantity: item.quantity }));
+  evidenceLedger.completePhase(1, 'PASSED', {
+    itemsCount: ingestCtx.items.length,
+    chassisDir: ingestCtx.chassisDir,
+    nodeMultiplier: ingestCtx.serverCount || 1,
+    chassisSelection: ingestCtx.chassisDetection,
+    ocr: ingestCtx.ocrMetadata,
+    catalogAudit: ingestCtx.catalogAudit
+  });
+  ctx.ingestCtx = ingestCtx;
+  return {
+    status: 'PASSED',
+    summary: { itemsCount: ingestCtx.items.length, chassisDir: ingestCtx.chassisDir },
+    checks: [
+      { status: 'PASS', label: `BOQ parsed successfully (${ingestCtx.items.length} hardware items)` },
+      { status: !ingestCtx.chassisDetection?.unknown ? 'PASS' : 'WARN', label: `Chassis identified: ${path.basename(ingestCtx.chassisDir || 'Unknown')}` },
+      { status: 'PASS', label: `CTO multiplier normalized: ${ingestCtx.serverCount || 1} node(s)` }
+    ]
+  };
+}
+
+async function _handleBoqFingerprintingPhase(ctx, options, evidenceLedger) {
+  evidenceLedger.startPhase(2, 'Active Knowledge Routing & Discovery', { chassis: path.basename(ctx.ingestCtx.chassisDir) });
+  const activeRules = loadActiveKnowledgeRules(path.basename(ctx.ingestCtx.chassisDir), ctx.ingestCtx.chassisDir);
+  evidenceLedger.completePhase(2, 'PASSED', {
+    totalRulesAvailable: activeRules.allRules.length,
+    availableRuleIds: activeRules.allRules.map(r => r.ruleId || r.deltaId),
+    modernizationsCount: activeRules.generationalModernizations.length,
+    substitutionsCount: activeRules.substitutions.length,
+    dependenciesCount: activeRules.mandatoryDependencies.length
+  });
+  ctx.activeRules = activeRules;
+  return {
+    status: 'PASSED',
+    summary: { totalRulesAvailable: activeRules.allRules.length },
+    checks: [
+      { status: 'PASS', label: `Catalog rules loaded: ${activeRules.allRules.length} rules active` },
+      { status: 'PASS', label: `Generational modernizations available: ${activeRules.generationalModernizations.length}` },
+      { status: 'PASS', label: `Mandatory hardware dependencies: ${activeRules.mandatoryDependencies.length}` }
+    ]
+  };
+}
+
+async function _handleBoqDomainAspectsPhase(ctx, options, evidenceLedger) {
+  evidenceLedger.startPhase(3, '7-Aspect Physical Pre-Flight Math', { itemCount: ctx.ingestCtx.items.length });
+  const { evalResults, graph, queryPayload, stage2AspectMathMs } = executePhysicalPreChecks(
+    ctx.ingestCtx.items, ctx.ingestCtx.catalogData, ctx.ingestCtx.chassisDir, options.JSON_MODE, ctx.ingestCtx.requirementResolution
+  );
+  ctx.ingestCtx.items = evalResults.items || ctx.ingestCtx.items;
+  ctx.evalResults = evalResults;
+  ctx.graph = graph;
+  ctx.queryPayload = queryPayload;
+  ctx.stage2AspectMathMs = stage2AspectMathMs;
+  _recordAspectPhaseEvidence(evidenceLedger, evalResults, ctx.ingestCtx, options);
+  const aspectPhaseStatus = evidenceLedger.phases?.phase_3?.status || (evalResults.isMathClean ? 'PASSED' : 'ACTION_REQUIRED');
+  return {
+    status: aspectPhaseStatus,
+    summary: { missingDependencies: evalResults.missingDependencies?.length || 0 },
+    checks: (evalResults.aspectChecks || []).map(a => ({ status: a.status || (a.checked ? 'PASS' : 'FAIL'), label: `${a.name || a.id}: ${a.detail || ''}` }))
+  };
+}
+
+async function _handleBoqConflictGraphPhase(ctx, options, evidenceLedger) {
+  evidenceLedger.startPhase(4, 'Conflict Graph & Contested Resource Arbitration', {});
+  const phase4Passed = ctx.graph?.isWholeSolutionValid === true;
+  evidenceLedger.completePhase(4, phase4Passed ? 'PASSED' : 'ACTION_REQUIRED', {
+    conflicts: ctx.graph?.conflicts?.length || 0,
+    hasContentions: Boolean(ctx.graph?.arbitrationResults?.hasContentions)
+  });
+  return {
+    status: phase4Passed ? 'PASSED' : 'ACTION_REQUIRED',
+    summary: { conflicts: ctx.graph?.conflicts?.length || 0 },
+    checks: [
+      { status: phase4Passed ? 'PASS' : 'WARN', label: `Cross-aspect conflict graph: ${ctx.graph?.conflicts?.length || 0} conflict(s)` },
+      { status: !ctx.graph?.arbitrationResults?.hasContentions ? 'PASS' : 'WARN', label: `Contested slot arbitration: ${ctx.graph?.arbitrationResults?.hasContentions ? 'Contentions resolved' : 'Clean slot allocation'}` }
+    ]
+  };
+}
+
+async function _handleBoqModernizationPhase(ctx, options, evidenceLedger) {
+  evidenceLedger.startPhase(5, 'Generational Modernization & Least-Delta Combinator', {});
+  const modCount = ctx.activeRules?.generationalModernizations ? ctx.activeRules.generationalModernizations.length : 0;
+  const hasModernizations = Array.isArray(ctx.graph?.modernizations) && ctx.graph.modernizations.length > 0;
+  const hasLeastDelta = Boolean(ctx.graph?.leastDeltaCandidate || ctx.graph?.tradeoffMatrix?.trigger);
+  const phase5Status = (modCount > 0 || hasModernizations || hasLeastDelta) ? 'PASSED' : 'SKIPPED';
+  const phase5Summary = {
+    activeModernizationCount: modCount,
+    hasModernizations,
+    hasLeastDelta,
+    skipReason: phase5Status === 'SKIPPED' ? 'No generational modernizations or least-delta alternatives required for this clean BOM' : undefined,
+    policyCode: phase5Status === 'SKIPPED' ? 'INV-105_NO_MODERNIZATION_REQUIRED' : undefined
+  };
+  evidenceLedger.completePhase(5, phase5Status, phase5Summary);
+  return {
+    status: phase5Status,
+    summary: phase5Summary,
+    checks: [
+      { status: phase5Status === 'PASSED' ? 'PASS' : 'SKIP', label: `Platform modernization evaluated (${modCount} rules checked)` },
+      { status: hasLeastDelta ? 'PASS' : 'SKIP', label: hasLeastDelta ? 'Least-delta minimal mutation alternative synthesized' : 'No troublesome SKU mutations needed' }
+    ]
+  };
+}
+
+async function _handleBoqStrategySynthesisPhase(ctx, options, evidenceLedger) {
+  evidenceLedger.startPhase(6, '5-Tier Strategy Matrix Synthesis', {});
+  const tMatrixStart = Date.now();
+  emitProgress(9, 10, 'Strategic Matrix Synthesis', 'in_progress', 'Generating 5-Tier resolution matrix and tradeoff constraints.');
+  const budgetOpt = optimizeForBudget(ctx.ingestCtx.items, ctx.evalResults, options.targetBudgetUsd, ctx.ingestCtx.catalogData, ctx.ingestCtx.chassisDir);
+  ctx.evalResults.budgetOptimization = budgetOpt;
+  ctx.budgetOpt = budgetOpt;
+  ctx.stage5MatrixMs = Math.max(Date.now() - tMatrixStart, 1);
+  const confidenceScore = ctx.evalResults.confidence?.score ?? 1.0;
+  const isLowConfidence = confidenceScore < 0.55 || Boolean(ctx.evalResults.confidence?.isHitlTriggered);
+  if (isLowConfidence) {
+    for (const candidate of ctx.evalResults.conflictGraph?.rankedSolutions || []) {
+      candidate.advisoryStatus = 'LOW_CONFIDENCE_ADVISORY';
+    }
+  }
+  const ranks = ctx.evalResults.conflictGraph?.rankedSolutions || [];
+  const phase6Passed = !isLowConfidence && ranks.length > 0;
+  evidenceLedger.completePhase(6, phase6Passed ? 'PASSED' : 'ACTION_REQUIRED', {
+    ranksProduced: ranks.length,
+    budgetCapEx: budgetOpt?.hasZeroPriceSkus ? null : budgetOpt?.mandatoryBomCostUsd ?? null,
+    confidenceScore,
+    isLowConfidence
+  });
+  return {
+    status: phase6Passed ? 'PASSED' : 'ACTION_REQUIRED',
+    summary: { ranksProduced: ranks.length, isLowConfidence },
+    checks: [
+      { status: ranks.length > 0 ? 'PASS' : 'WARN', label: `Strategy tiers synthesized: ${ranks.length} candidate solutions` },
+      { status: !isLowConfidence ? 'PASS' : 'WARN', label: `Confidence evaluation score: ${(confidenceScore * 100).toFixed(1)}%` },
+      { status: budgetOpt?.hasZeroPriceSkus ? 'WARN' : 'PASS', label: `Order-level ${budgetOpt?.hasZeroPriceSkus ? 'known-price subtotal (INCOMPLETE)' : 'CapEx'}: ${(budgetOpt?.mandatoryBomCostUsd || 0).toLocaleString()} USD` }
+    ]
+  };
+}
+
+async function _handleBoqRagGroundingPhase(ctx, options, evidenceLedger) {
+  evidenceLedger.startPhase(7, 'Gemini NotebookLM Grounding & Dual-Brain Verification', {});
+  let quickSpecs = { status: 'NOT_RUN_OFFLINE_OR_DEFERRED' };
+  if (!options.OFFLINE_MODE && !options.DEFER_RAG && ctx.ingestCtx.notebookId) {
+    const { verifyNotebookQuickSpecs } = require('../lib/sync/quickspecs_sync');
+    quickSpecs = await verifyNotebookQuickSpecs(path.basename(ctx.ingestCtx.chassisDir), { autoUpload: true, forcedNotebookId: ctx.ingestCtx.notebookId });
+  }
+  ctx.evalResults.quickSpecsVerification = quickSpecs;
+  const sourceReady = quickSpecs.status === 'CERTIFIED_GROUNDED';
+  const { ragResult, ragAnswer, stage3RAGMs, stage4GuardrailMs } = await executeGroundedRagValidation({
+    ...ctx.ingestCtx,
+    evalResults: ctx.evalResults,
+    OFFLINE_MODE: options.OFFLINE_MODE || (!options.DEFER_RAG && !sourceReady),
+    JSON_MODE: options.JSON_MODE,
+    SYNC_RAG: options.SYNC_RAG,
+    DEFER_RAG: options.DEFER_RAG
+  });
+  ctx.ragResult = ragResult;
+  ctx.ragAnswer = ragAnswer;
+  ctx.stage3RAGMs = stage3RAGMs;
+  ctx.stage4GuardrailMs = stage4GuardrailMs;
+  if (ragResult) {
+    evidenceLedger.recordNotebookLmTrace(ctx.queryPayload, ragResult, ragResult?.citations || []);
+  }
+  evidenceLedger.phases.phase_7.outputSummary = {
+    primaryRag: {
+      verified: evidenceLedger.sharedState.dualBrainVerified,
+      citationsCount: ragResult?.citations?.length || 0,
+      quickSpecs
+    }
+  };
+
+  applyLearnedRAGDeltasIfPresent(ctx.evalResults, ctx.graph, ctx.ingestCtx, options, ragResult);
+  _revalidateAndRankCandidates(ctx.evalResults, ctx.ingestCtx, evidenceLedger);
+
+  const ephemeralSourceResult = sourceReady ? await executeEphemeralSourceValidation(options, ctx.ingestCtx, ctx.evalResults) : null;
   if (ephemeralSourceResult) {
-    evalResults.ephemeralSourceValidation = ephemeralSourceResult;
+    ctx.evalResults.ephemeralSourceValidation = ephemeralSourceResult;
     evidenceLedger.recordNotebookLmTrace(ephemeralSourceResult.queryPayload, ephemeralSourceResult, ephemeralSourceResult.citations || [], ephemeralSourceResult.success ? 'VERIFIED_GROUNDED' : 'ACTION_REQUIRED');
   }
   evidenceLedger.phases.phase_7.outputSummary.solutionSourceValidation = ephemeralSourceResult || { status: 'NOT_RUN' };
-  evidenceLedger.phases.phase_7.outputSummary.agenticReview = evalResults.agenticReview || { status: 'NOT_RUN' };
+  evidenceLedger.phases.phase_7.outputSummary.agenticReview = ctx.evalResults.agenticReview || { status: 'NOT_RUN' };
   evidenceLedger.sharedState.dualBrainVerified = ephemeralSourceResult?.success === true;
   evidenceLedger.completePhase(7, ephemeralSourceResult?.success ? 'PASSED' : 'ACTION_REQUIRED', evidenceLedger.phases.phase_7.outputSummary);
-  if (!options.JSON_MODE) {
-    const PipelineLogger = require('../lib/system/pipeline_logger.js');
-    PipelineLogger.checklist(7, 'Gemini NotebookLM Grounding & Dual-Brain Verification', [
-      { checked: Boolean(evalResults.notebookLmStatus?.isCloudGrounded), status: evalResults.notebookLmStatus?.isCloudGrounded ? 'PASS' : (options.OFFLINE_MODE ? 'SKIP' : 'WARN'), label: `Grounding source: ${evalResults.notebookLmStatus?.source || 'N/A'}` },
-      { checked: (evalResults.notebookLmStatus?.citationsCount || 0) > 0, label: `QuickSpecs document citations: ${evalResults.notebookLmStatus?.citationsCount || 0} citations` },
-      { checked: (evalResults.opinionDiscrepancies || []).length === 0, label: `Dual-Brain consensus: ${evalResults.opinionDiscrepancies?.length || 0} opinion discrepancies` }
-    ]);
-  }
   if (ephemeralSourceResult?.success) {
     for (const phaseNumber of [3, 4]) {
       const phase = evidenceLedger.phases[`phase_${phaseNumber}`];
-      if (phase.status === 'ACTION_REQUIRED') evidenceLedger.completePhase(phaseNumber, 'RESOLVED', { ...phase.outputSummary, resolvedBy: 'Final candidate validation in phase 6 and cited candidate review in phase 7' }, phase.checks, phase.warnings, phase.errors);
+      if (phase.status === 'ACTION_REQUIRED' && ctx.evalResults.adversarialGatePassed === true) {
+        evidenceLedger.recordPhaseResolution(phaseNumber, { manifestSha256: solutionFingerprint(ctx.evalResults),
+          candidateGatePassed: true, documentReviewVerified: true,
+          resolvedBy: 'Final physical candidate validation and cited candidate review in phase 7' });
+      }
     }
   }
-  for (const candidate of evalResults.conflictGraph?.rankedSolutions || []) {
+  for (const candidate of ctx.evalResults.conflictGraph?.rankedSolutions || []) {
     for (const part of candidate.skuPartsList || []) {
       evidenceLedger.recordSkuAudit(part.sku, part.isFixInjected ? 'PROPOSED_FIX' : 'CANDIDATE_COMPONENT', part.reason || candidate.reasoning || 'Candidate manifest; consult validation verdict.', part.ruleId || null, part.category, { rank: candidate.rank, quantity: part.quantity, physicalMathClean: candidate.physicalMathClean });
     }
   }
+  return {
+    status: ephemeralSourceResult?.success ? 'PASSED' : 'ACTION_REQUIRED',
+    summary: evidenceLedger.phases.phase_7.outputSummary,
+    checks: [
+      { status: ctx.evalResults.notebookLmStatus?.isCloudGrounded ? 'PASS' : (options.OFFLINE_MODE ? 'SKIP' : 'WARN'), label: `Grounding source: ${ctx.evalResults.notebookLmStatus?.source || 'N/A'}` },
+      { status: (ctx.evalResults.notebookLmStatus?.citationsCount || 0) > 0 ? 'PASS' : 'WARN', label: `QuickSpecs document citations: ${ctx.evalResults.notebookLmStatus?.citationsCount || 0} citations` },
+      { status: (ctx.evalResults.opinionDiscrepancies || []).length === 0 ? 'PASS' : 'WARN', label: `Dual-Brain consensus: ${ctx.evalResults.opinionDiscrepancies?.length || 0} opinion discrepancies` }
+    ]
+  };
+}
 
+async function _handleBoqDeliverablesPhase(ctx, options, evidenceLedger, startTime) {
   evidenceLedger.startPhase(8, 'Multi-Rank Solution Deliverables & Excel Generation', {});
-  Object.defineProperty(evalResults, 'evidenceLedger', { value: evidenceLedger, enumerable: false, configurable: true });
+  Object.defineProperty(ctx.evalResults, 'evidenceLedger', { value: evidenceLedger, enumerable: false, configurable: true });
 
-  const newLearningsCount = executeContinuousLearningReflection(evidenceLedger, ingestCtx, evalResults, options);
-  evalResults.newLearningsCount = newLearningsCount;
-  evalResults.notebookHealth = ingestCtx.notebookHealth || null;
-  evalResults.notebookDegradedMode = ingestCtx.notebookDegradedMode || null;
-  if (ingestCtx.notebookHealth && !ingestCtx.notebookHealth.isHealthy) {
-    if (!evalResults.warnings) evalResults.warnings = [];
-    evalResults.warnings.push(`[DEGRADED_NOTEBOOK] Notebook for "${ingestCtx.detectedChassisName}" is degraded (${ingestCtx.notebookDegradedMode}). Confidence: ${ingestCtx.notebookHealth.confidenceLabel}.`);
+  const newLearningsCount = executeContinuousLearningReflection(evidenceLedger, ctx.ingestCtx, ctx.evalResults, options);
+  ctx.evalResults.newLearningsCount = newLearningsCount;
+  ctx.evalResults.notebookHealth = ctx.ingestCtx.notebookHealth || null;
+  ctx.evalResults.notebookDegradedMode = ctx.ingestCtx.notebookDegradedMode || null;
+  if (ctx.ingestCtx.notebookHealth && !ctx.ingestCtx.notebookHealth.isHealthy) {
+    if (!ctx.evalResults.warnings) ctx.evalResults.warnings = [];
+    ctx.evalResults.warnings.push(`[DEGRADED_NOTEBOOK] Notebook for "${ctx.ingestCtx.detectedChassisName}" is degraded (${ctx.ingestCtx.notebookDegradedMode}). Confidence: ${ctx.ingestCtx.notebookHealth.confidenceLabel}.`);
   }
   if (Array.isArray(options.priceDriftItems) && options.priceDriftItems.length) {
-    evalResults.priceDriftResult = require('../lib/feedback/feedback_loop.js').promotePriceDriftDeltas(ingestCtx.chassisDir, options.priceDriftItems, options.priceDriftMetadata || {});
+    ctx.evalResults.priceDriftResult = require('../lib/feedback/feedback_loop.js').promotePriceDriftDeltas(ctx.ingestCtx.chassisDir, options.priceDriftItems, options.priceDriftMetadata || {});
   }
 
-  // Pre-Presentation Acceptance Verification (INV-106 / F-02)
   const { verifyPrePresentationAcceptance } = require('../lib/boq/bom_verifier.js');
   const { issueDeliveryAuthorization } = require('../lib/contracts/workflow_contract.js');
-  const acceptance = verifyPrePresentationAcceptance(evalResults, 'BOQ_EVALUATION', {
+  const acceptance = verifyPrePresentationAcceptance(ctx.evalResults, 'BOQ_EVALUATION', {
     ...options,
-    ...ingestCtx,
-    catalogData: ingestCtx.catalogData || options.catalogData
+    ...ctx.ingestCtx,
+    catalogData: ctx.ingestCtx.catalogData || options.catalogData
   });
-  evalResults.acceptanceGate = acceptance;
+  ctx.evalResults.acceptanceGate = acceptance;
 
   if (acceptance.isValid) {
+    const targetChassis = ctx.ingestCtx.chassisPrefix || (ctx.ingestCtx.chassisDir ? path.basename(ctx.ingestCtx.chassisDir) : '') || ctx.evalResults.chassis || ctx.ingestCtx.detectedChassisName || 'PROLIANT_SERVER';
+    ctx.evalResults.chassis = targetChassis;
     const { deliveryFingerprint } = require('../lib/boq/solution_evidence.js');
-    const rawFingerprint = deliveryFingerprint(evalResults);
-    evalResults.manifestFingerprint = rawFingerprint;
-    const targetChassis = ingestCtx.chassisPrefix || (ingestCtx.chassisDir ? path.basename(ingestCtx.chassisDir) : '') || evalResults.chassis || ingestCtx.detectedChassisName || 'PROLIANT_SERVER';
-    evalResults.chassis = targetChassis;
+    const rawFingerprint = deliveryFingerprint(ctx.evalResults);
+    ctx.evalResults.manifestFingerprint = rawFingerprint;
     try {
-      evalResults.deliveryAuthorization = issueDeliveryAuthorization({
+      ctx.evalResults.deliveryAuthorization = issueDeliveryAuthorization({
         manifestFingerprint: rawFingerprint,
         chassisKey: targetChassis,
         acceptanceDecision: {
@@ -1198,50 +1332,113 @@ async function runEvaluationPipelineWithinTrace(options) {
           warnings: acceptance.warnings.map(w => w.detail)
         }
       });
-      evalResults.customerDisposition = 'PRESENTATION_READY';
+      ctx.evalResults.customerDisposition = 'VALIDATION_REQUIRED';
     } catch (_authErr) {
-      evalResults.customerDisposition = 'VALIDATION_REQUIRED';
-      evalResults.deliveryAuthError = _authErr.message;
+      ctx.evalResults.customerDisposition = 'VALIDATION_REQUIRED';
+      ctx.evalResults.deliveryAuthError = _authErr.message;
       const _logger = require('../lib/system/pipeline_logger.js');
       _logger.warn('EVAL_BOQ', `Delivery authorization issuance deferred: ${_authErr.message}`);
     }
   } else {
-    evalResults.customerDisposition = evalResults.isMathClean === false
+    ctx.evalResults.customerDisposition = ctx.evalResults.isMathClean === false
       ? 'DELIVERY_BLOCKED_UNBUILDABLE'
       : 'VALIDATION_REQUIRED';
-    if (!evalResults.deliveryAuthError && acceptance.blockersCount > 0) {
-      evalResults.deliveryAuthError = `Pre-presentation acceptance failed with ${acceptance.blockersCount} blocker(s): ${acceptance.blockers.map(b => b.name || b.id).join(', ')}`;
+    if (!ctx.evalResults.deliveryAuthError && acceptance.blockersCount > 0) {
+      ctx.evalResults.deliveryAuthError = `Pre-presentation acceptance failed with ${acceptance.blockersCount} blocker(s): ${acceptance.blockers.map(b => b.name || b.id).join(', ')}`;
     }
   }
 
   await serializeAndExportResults({
     ...options,
-    ...ingestCtx,
-    evalResults,
-    graph,
-    ragAnswer,
-    budgetOpt,
-    queryPayload,
+    ...ctx.ingestCtx,
+    evalResults: ctx.evalResults,
+    graph: ctx.graph,
+    ragAnswer: ctx.ragAnswer,
+    budgetOpt: ctx.budgetOpt,
+    queryPayload: ctx.queryPayload,
     startTime,
-    stage2AspectMathMs,
-    stage3RAGMs,
-    stage4GuardrailMs,
-    stage5MatrixMs
+    stage2AspectMathMs: ctx.stage2AspectMathMs,
+    stage3RAGMs: ctx.stage3RAGMs,
+    stage4GuardrailMs: ctx.stage4GuardrailMs,
+    stage5MatrixMs: ctx.stage5MatrixMs
   });
 
-  if (!options.JSON_MODE) {
-    const PipelineLogger = require('../lib/system/pipeline_logger.js');
-    PipelineLogger.checklist(8, 'Multi-Rank Solution Deliverables & Excel Generation', [
-      { checked: Boolean(evalResults.multiRankWorkbookPath), label: `Multi-Rank Matrix (.xlsx): ${evalResults.multiRankWorkbookPath ? path.basename(evalResults.multiRankWorkbookPath) : 'Pending'}` },
-      { checked: Boolean(evalResults.multiRankCsvPath), label: `Token-Dense CSV: ${evalResults.multiRankCsvPath ? path.basename(evalResults.multiRankCsvPath) : 'Pending'}` },
-      { checked: Boolean(evalResults.portalWorkbookPath), label: `Partner Portal Sheet: ${evalResults.portalWorkbookPath ? path.basename(evalResults.portalWorkbookPath) : 'Pending'}` }
-    ]);
-    PipelineLogger.checklist(9, 'Closed-Loop Knowledge Reflection & Shared State Export', [
-      { checked: true, label: `Knowledge reflection complete (${evalResults.newLearningsCount || 0} new learnings evaluated)` },
-      { checked: Boolean(evalResults.evidenceLogPath), label: `Evidence ledger exported: ${evalResults.evidenceLogPath ? path.basename(evalResults.evidenceLogPath) : 'outputs/history/evidence_logs'}` }
-    ]);
+  const exportOk = Boolean(ctx.evalResults.multiRankWorkbookPath && !ctx.evalResults.deliveryError);
+  return {
+    status: exportOk ? 'PASSED' : 'ACTION_REQUIRED',
+    summary: {
+      multiRankWorkbookPath: ctx.evalResults.multiRankWorkbookPath,
+      deliveryError: ctx.evalResults.deliveryError || null
+    },
+    checks: [
+      { status: ctx.evalResults.multiRankWorkbookPath ? 'PASS' : 'WARN', label: `Multi-Rank Matrix (.xlsx): ${ctx.evalResults.multiRankWorkbookPath ? path.basename(ctx.evalResults.multiRankWorkbookPath) : 'Pending'}` },
+      { status: ctx.evalResults.multiRankCsvPath ? 'PASS' : 'WARN', label: `Token-Dense CSV: ${ctx.evalResults.multiRankCsvPath ? path.basename(ctx.evalResults.multiRankCsvPath) : 'Pending'}` },
+      { status: ctx.evalResults.portalWorkbookPath ? 'PASS' : 'WARN', label: `Partner Portal Sheet: ${ctx.evalResults.portalWorkbookPath ? path.basename(ctx.evalResults.portalWorkbookPath) : 'Pending'}` }
+    ]
+  };
+}
+
+async function _handleBoqReflectionPhase(ctx) {
+  return {
+    status: 'PASSED',
+    summary: {
+      newLearningsCount: ctx.evalResults.newLearningsCount || 0,
+      evidenceLogPath: ctx.evalResults.evidenceLogPath || null
+    },
+    checks: [
+      { status: 'PASS', label: `Knowledge reflection complete (${ctx.evalResults.newLearningsCount || 0} new learnings evaluated)` },
+      { status: ctx.evalResults.evidenceLogPath ? 'PASS' : 'WARN', label: `Evidence ledger exported: ${ctx.evalResults.evidenceLogPath ? path.basename(ctx.evalResults.evidenceLogPath) : 'Pending'}` }
+    ]
+  };
+}
+
+async function runEvaluationPipelineWithinTrace(options) {
+  const startTime = Date.now();
+  const evidenceLedger = createEvidenceLedger({
+    chassis: options.chassisDir ? path.basename(options.chassisDir) : (options.CHASSIS_OVERRIDE || 'UNKNOWN_CHASSIS'),
+    filePath: options.inputFile || options.BOQ_FILE || (options.inputItems || options.rawText !== undefined ? 'IN_MEMORY_BOM' : null)
+  });
+  if (!options.inputFile && (options.inputItems || options.rawText !== undefined)) {
+    evidenceLedger.recordInlineArtifact('CUSTOMER_INPUT', options.inputItems ?? options.rawText);
+  } else {
+    evidenceLedger.recordArtifact('CUSTOMER_INPUT', options.inputFile || options.BOQ_FILE);
   }
-  return evalResults;
+  try {
+    const lifecycleEngine = new LifecycleEngine('canonical_boq_eval');
+    const dagContext = {
+      options,
+      evidenceLedger,
+      startTime,
+      ingestCtx: null,
+      activeRules: null,
+      evalResults: null,
+      graph: null,
+      queryPayload: null,
+      stage2AspectMathMs: 0,
+      stage3RAGMs: 0,
+      stage4GuardrailMs: 0,
+      stage5MatrixMs: 0,
+      budgetOpt: null,
+      ragResult: null,
+      ragAnswer: null
+    };
+
+    const phaseHandlers = {
+      INGESTION: ctx => _handleBoqIngestionPhase(ctx, options, evidenceLedger),
+      FINGERPRINTING: ctx => _handleBoqFingerprintingPhase(ctx, options, evidenceLedger),
+      DOMAIN_ASPECTS: ctx => _handleBoqDomainAspectsPhase(ctx, options, evidenceLedger),
+      CONFLICT_GRAPH: ctx => _handleBoqConflictGraphPhase(ctx, options, evidenceLedger),
+      MODERNIZATION_LEAST_DELTA: ctx => _handleBoqModernizationPhase(ctx, options, evidenceLedger),
+      STRATEGY_SYNTHESIS: ctx => _handleBoqStrategySynthesisPhase(ctx, options, evidenceLedger),
+      RAG_GROUNDING: ctx => _handleBoqRagGroundingPhase(ctx, options, evidenceLedger),
+      DELIVERABLES_FINALIZATION: ctx => _handleBoqDeliverablesPhase(ctx, options, evidenceLedger, startTime),
+      REFLECTION_LEARNING: ctx => _handleBoqReflectionPhase(ctx)
+    };
+
+    const lifecycleHealth = await lifecycleEngine.executePipelineDAG(dagContext, phaseHandlers);
+    dagContext.evalResults.lifecycleEngine = lifecycleEngine;
+    dagContext.evalResults.lifecycleHealth = lifecycleHealth;
+    return dagContext.evalResults;
   } catch (error) {
     _handlePipelineFailure(error, evidenceLedger, options);
     throw error;
@@ -1290,7 +1487,7 @@ function recomputeStrategyMatrixWithRag(baseData, ragResult, chassisDirOverride 
   const catalogPath = path.join(targetDir, `${chassisPrefix}_Catalog.json`);
   let catalogData = baseData.catalogData || null;
   if (!catalogData && fs.existsSync(catalogPath)) {
-    try { catalogData = JSON.parse(fs.readFileSync(catalogPath, 'utf-8')); } catch (_) {}
+    try { catalogData = JSON.parse(fs.readFileSync(catalogPath, 'utf-8')); } catch {}
   }
 
   // 1. Extract and persist learned deltas from verified cloud RAG answer
@@ -1305,7 +1502,7 @@ function recomputeStrategyMatrixWithRag(baseData, ragResult, chassisDirOverride 
         catalogData
       });
       learnedCount = learned.count || 0;
-    } catch (_) {}
+    } catch {}
   }
 
   // 2. Re-run aspect math with newly active rules/deltas

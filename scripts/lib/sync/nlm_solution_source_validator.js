@@ -23,9 +23,9 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const { generateMultiRankSolutionWorkbook, generateMultiRankSolutionCsv } = require('../boq/generate_boq_xlsx.js');
 const { extractKnowledgeFromRagAnswer } = require('../notebook/knowledge_extractor.js');
-const { executeNotebookQuery, getCachedRagResult, setCachedRagResult } = require('../notebook/notebook_query_utils.js');
+const { executeNotebookQuery, getCachedRagResult, setCachedRagResult, getNotebookConfigEntry, getAuthoritativeSourceIds } = require('../notebook/notebook_query_utils.js');
 const logger = require('../system/pipeline_logger.js');
-const { solutionFingerprint, solutionManifest } = require('../boq/solution_evidence');
+const { solutionFingerprint, solutionManifest, candidateReviewCurrent } = require('../boq/solution_evidence');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
 const CONFIG_NOTEBOOKS = path.join(PROJECT_ROOT, 'scripts', 'config', 'notebooks.json');
@@ -189,19 +189,28 @@ function parseRankVerdicts(answer, evalResults) {
     const blocks = [...raw.matchAll(/```json\s*([\s\S]*?)```/gi)];
     const text = blocks.length === 1 ? blocks[0][1].trim() : raw.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '');
     parsed = JSON.parse(text);
-  } catch (_) { parsed = {}; }
+  } catch { parsed = {}; }
   const rows = Array.isArray(parsed) ? parsed : (Array.isArray(parsed?.ranks) ? parsed.ranks : []);
   const isJsonFormat = Array.isArray(parsed) || Array.isArray(parsed?.ranks);
   return candidates.map(candidate => {
-    const matches = rows.filter(row => row && typeof row === 'object' && !Array.isArray(row) && String(row.rank) === String(candidate.rank));
+    const matches = rows.filter(r => r && typeof r === 'object' && !Array.isArray(r) && String(r.rank) === String(candidate.rank));
     const row = matches.length === 1 ? matches[0] : {};
-    const verdict = row.verdict === 'FAIL' ? 'FAIL' : (row.verdict === 'PASS' && row.intentPreserved === true && row.mandatoryChangesOnly === true && Array.isArray(row.issues) && row.issues.length === 0 && Array.isArray(row.citations) && row.citations.length > 0 ? 'PASS' : 'UNKNOWN');
+    let verdict;
+    if (row.verdict === 'FAIL') {
+      verdict = 'FAIL';
+    } else if (row.verdict === 'PASS' && row.intentPreserved === true && row.mandatoryChangesOnly === true && Array.isArray(row.issues) && row.issues.length === 0 && Array.isArray(row.citations) && row.citations.length > 0) {
+      verdict = 'PASS';
+    } else if (!isJsonFormat && isNegativeRagVerdict(answer)) {
+      verdict = 'FAIL';
+    } else {
+      verdict = 'UNKNOWN';
+    }
     return {
       rank: candidate.rank,
       verdict,
       intentPreserved: row.intentPreserved === true,
       mandatoryChangesOnly: row.mandatoryChangesOnly === true,
-      issues: row.issues || [],
+      issues: row.issues || (!isJsonFormat && isNegativeRagVerdict(answer) ? ['Unstructured negative technical verdict detected in NotebookLM answer'] : []),
       citations: row.citations || [],
       rawCommentary: !isJsonFormat ? String(answer || '').slice(0, 500) : (row.notes || row.rationale || null)
     };
@@ -256,11 +265,21 @@ async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
   const timestamp = Date.now();
   const manifest = solutionManifest(evalResults);
   const manifestSha256 = solutionFingerprint(evalResults);
-  const cacheKey = `solution_validator:${manifestSha256}:${chassisName}`;
+  const expectedNotebookId = resolveProductNotebookId(chassisName);
+  if (options.notebookId && options.notebookId !== expectedNotebookId) {
+    throw new Error('Candidate review notebook does not match the dedicated product mapping.');
+  }
+  const notebookId = expectedNotebookId;
+  const trustEntry = getNotebookConfigEntry(notebookId, { chassis: chassisName })?.entry || {};
+  const authoritativeSourceIds = getAuthoritativeSourceIds(trustEntry).sort();
+  const isMock = Boolean(options.isMock || options.offlineTest || process.env.NODE_ENV === 'test' || process.env.NLM_MOCK_MODE === 'true');
+  const modeTag = isMock ? 'simulation' : 'live_cloud';
+  const cacheKey = `solution_validator:v2:${manifestSha256}:${notebookId}:${modeTag}:${JSON.stringify(trustEntry)}`;
 
   if (!options.bypassCache && manifestSha256) {
     const cached = getCachedRagResult(cacheKey);
-    if (cached) {
+    if (cached && cached.manifestSha256 === manifestSha256 && cached.notebookId === notebookId &&
+        cached.sourceDetached === true && (isMock ? cached.simulationPassed === true : candidateReviewCurrent({ ...evalResults, ephemeralSourceValidation: cached }))) {
       logger.info('NLM_SOURCE_VALIDATOR', `Cache HIT for solution manifest ${manifestSha256.slice(0, 12)} (${chassisName}) — skipping duplicate NLM source query.`);
       return { ...cached, isCached: true };
     }
@@ -283,7 +302,6 @@ async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
   generateMultiRankSolutionCsv(evalResults, csvPath, { ...options, diagnostic: true });
 
   // Step 2: Resolve target notebook UUID
-  const notebookId = options.notebookId || resolveProductNotebookId(chassisName);
   const hasLiveNotebook = Boolean(notebookId);
 
   // Step 3: Attach ephemeral source
@@ -304,7 +322,8 @@ async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
         context: { chassis: chassisName, structuredValidation: true },
         timeout: options.timeoutMs || 120000,
         bypassCache: true,
-        sourceIds: options.sourceIds || (sourceId ? [sourceId] : undefined)
+        sourceIds: options.sourceIds,
+        ephemeralSource: { notebookId, sourceId, createdThisRun: true }
       });
       ragAnswer = queryRes.answer || '';
       citations = queryRes.citations || [];
@@ -378,6 +397,7 @@ async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
   const isSimulationPassed = attachRes.success && attachRes.isMock === true && allPassed && sourceDetached;
 
   const result = {
+    reviewedAt: new Date().toISOString(),
     success: isRealCloudCertified,
     simulationPassed: isSimulationPassed,
     operationalStatus: isRealCloudCertified ? 'CLOUD_CERTIFIED' : (isSimulationPassed ? 'MOCK_VERIFIED' : 'UNVERIFIED'),
@@ -397,12 +417,19 @@ async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
     ragAnswer,
     queryPayload,
     citations,
+    authoritativeSourceIds,
+    authoritativeScopeSha256: require('crypto').createHash('sha256').update(require('../boq/solution_evidence.js').canonicalJson(trustEntry)).digest('hex'),
     extractedDeltas,
     syncStatus,
     isCached: false
   };
 
-  if (manifestSha256 && (isRealCloudCertified || isSimulationPassed)) {
+  if (result.success && !candidateReviewCurrent({ ...evalResults, ephemeralSourceValidation: result })) {
+    result.success = false;
+    result.operationalStatus = 'UNVERIFIED';
+    result.doubleCheckVerdict = 'DOUBLE_CHECK_UNVERIFIED';
+  }
+  if (manifestSha256 && (result.success || isSimulationPassed)) {
     setCachedRagResult(cacheKey, result);
   }
 
