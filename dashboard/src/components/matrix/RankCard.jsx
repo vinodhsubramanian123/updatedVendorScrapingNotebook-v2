@@ -92,6 +92,7 @@ export default function RankCard({
               </span>
               <div className="flex items-center gap-1.5">
                 <button
+                  aria-label="Copy BOM to clipboard"
                   onClick={() => onCopyBom(tier)}
                   className="text-[11px] font-semibold text-slate-600 hover:text-slate-900 flex items-center gap-1 px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 transition-colors"
                   title="Copy BOM to clipboard"
@@ -109,6 +110,8 @@ export default function RankCard({
                   )}
                 </button>
                 <button
+                  aria-label={isExpanded ? "Collapse rank details" : "Expand rank details"}
+                  aria-expanded={isExpanded}
                   onClick={() => onToggleExpand(tier.rank)}
                   className="text-[11px] font-semibold text-blue-600 hover:text-blue-800"
                 >
@@ -202,6 +205,8 @@ export default function RankCard({
                 Least-Delta Cascade Pruning:
               </span>
               <button
+                aria-label={isLeastDeltaExpanded ? "Collapse least-delta trace" : "Expand least-delta trace"}
+                aria-expanded={isLeastDeltaExpanded}
                 onClick={() => setIsLeastDeltaExpanded(!isLeastDeltaExpanded)}
                 className="text-[10px] font-semibold text-blue-700 hover:text-blue-900 flex items-center gap-0.5 cursor-pointer"
               >
@@ -253,6 +258,8 @@ export default function RankCard({
                 Thinking & Decision Chain:
               </span>
               <button
+                aria-label={isDecisionTraceExpanded ? "Collapse decision trace" : "Expand decision trace"}
+                aria-expanded={isDecisionTraceExpanded}
                 onClick={() => setIsDecisionTraceExpanded(!isDecisionTraceExpanded)}
                 className="text-[10px] font-semibold text-slate-600 hover:text-slate-900 flex items-center gap-0.5 cursor-pointer"
               >
