@@ -5,17 +5,23 @@ This document provides the complete, authoritative mapping of the entire `vendor
 ```
 vendorNotebookSolution/
 ├── .agents/                               ← Agent rules, schemas, and specialized workflow skills
-│   ├── AGENTS.md                          ← Core system architecture & agent directives (INV-1 to INV-88)
+│   ├── AGENTS.md                          ← Core system architecture & agent directives (INV-1 to INV-156)
 │   ├── DATA_DICTIONARY.md                 ← JSON schemas & pipeline contracts
 │   ├── PORTFOLIO_STATUS.md                ← Live portfolio intelligence state of health (10 canonical products)
-│   └── skills/                            ← 22 Specialized workflow skills
+│   └── skills/                            ← 28 Specialized workflow skills
 │       ├── adversarial-validation-skill/  ← Enterprise chaos red-teaming & 10 failure mode checks
 │       ├── bom-reconciliation-skill/      ← Customer tender vs partner quote reconciler
 │       ├── boq-eval-skill/                ← 7-aspect physical math & pre-flight BOQ validation
+│       ├── boq-remarks-reconciliation-skill/ ← Commercial remarks annotation & quantity bridging
 │       ├── catalog-intelligence-skill/    ← Pricing trends & lifecycle state tracking
+│       ├── clic-portal-validation-skill/  ← Scoped portal conditions & final acceptance verification
+│       ├── conditional-sku-discovery-skill/ ← Hidden & selector-dependent SKU discovery
+│       ├── continuous-learning-skill/     ← Closed-loop continuous learning & reachability
+│       ├── cross-vendor-transformation-skill/ ← Cisco/Dell/Lenovo tender to HPE translation
+│       ├── degraded-mode-skill/           ← Stale catalog & degraded NotebookLM recovery
 │       ├── design-taste-frontend/         ← Anti-slop UI design system
 │       ├── execution-trace-skill/         ← Auditable execution trace ledger & delta report
-│       ├── frontend-design/               ← Frontend motion & interactive standards
+│       ├── heterogeneous-tender-modernizer/ ← Mixed-domain tender planning & carrier allocation
 │       ├── jules-autonomous-protocol/     ← Google Jules multi-agent protocol & task manager
 │       ├── knowledge-sync-skill/          ← Bi-directional RAG knowledge sync skill
 │       ├── least-delta-combinator-skill/  ← Troublesome SKU pruning & minimal-mutation (Rank 1L/1M)
@@ -39,31 +45,32 @@ vendorNotebookSolution/
 │   ├── maintenance/                       ← Portfolio lifecycle, certification & sync
 │   ├── services/                          ← MCP server, Jules orchestrator & feedback listeners
 │   ├── demos/                             ← Live CDP visual demos & topology screen capture
-│   ├── config/                            ← Chassis maps, JSON profiles, category configs
+│   ├── config/                            ← Chassis maps, JSON profiles, category configs, catalog_coverage_profiles.json
 │   ├── lib/                               ← Domain library subsystems
 │   │   ├── aspects/                       ← 7 Physical hardware aspect math checkers
-│   │   ├── boq/                           ← Preprocessor, parser, math engine, deal_optimizer.js & Excel exporter
-│   │   ├── catalog/                       ← Rules extractor, discovery, diffing & versioning
+│   │   ├── boq/                           ← Preprocessor, parser, math engine, acceptance_gate.js, vendor_quote_reconciler.js & Excel exporter
+│   │   ├── catalog/                       ← Rules extractor, discovery, diffing, catalog_coverage.js & versioning
 │   │   ├── conflict/                      ← Conflict graph, least_delta_combinator.js, decision_trace.js & strategy synthesis
+│   │   ├── contracts/                     ← Typed workflow schemas, delivery authorization & signing secrets
 │   │   ├── feedback/                      ← HITL feedback capture & learning queue
 │   │   ├── notebook/                      ← NotebookLM RAG, knowledge extractor & sanitizer
-│   │   ├── lifecycle/                     ← Declarative lifecycle engine & dynamic phase execution
+│   │   ├── lifecycle/                     ← Declarative lifecycle engine & dynamic DAG phase execution
 │   │   ├── ocr/                           ← Gemini Vision OCR service & table parser
 │   │   ├── orchestrator/                  ← Unified canonical evaluation pipeline orchestrator
 │   │   ├── preprocessor/                  ← CTO normalizer, variation clusterer & feedback persister
 │   │   ├── prompts/                       ← Guardrail prompt templates for agentic LLM loops
 │   │   ├── rag/                           ← Dual-brain local RAG & agentic guardrails
 │   │   ├── scraper/                       ← CDP connection kernel, DOM extractors & multi-vendor adapters
-│   │   ├── sync/                          ← Knowledge payload builder & drift sync hook
-│   │   ├── system/                        ← Telemetry, atomic FS, key rotator, Zod schemas & error envelope
+│   │   ├── sync/                          ← Knowledge payload builder, NLM sync client & Google Sheets writer
+│   │   ├── system/                        ← Telemetry, atomic FS, workflow leases, Zod schemas & error envelope
 │   │   ├── taxonomy/                      ← Vendor-agnostic hardware schema, domain classifier & parameterized equations
 │   │   └── index.js                       ← Master barrel re-export
 │   └── README.md                          ← Scripts directory guide
 │
-├── tests/                                 ← 171 isolated test suites across 4 tiers (100% PASS)
-│   ├── unit/                              ← 105 suites: aspect registry, vendor-agnostic schema, sku resolver, lifecycle engine, query router
-│   ├── chaos/                             ← 40 suites: chaos failure modes, memory fuzz, mutex tests, offline pipeline resilience
-│   ├── integration/                       ← 26 suites: multi-chassis BOM audits, portfolio Excel, 15-scenario BOQ benchmarks
+├── tests/                                 ← 200+ isolated test suites across 4 tiers (100% PASS)
+│   ├── unit/                              ← 128+ suites: aspect registry, schemas, sku resolver, lifecycle engine, boundary review, failure recovery
+│   ├── chaos/                             ← 41 suites: chaos failure modes, memory fuzz, mutex tests, offline pipeline resilience
+│   ├── integration/                       ← 27 suites: multi-chassis BOM audits, portfolio Excel, 15-scenario BOQ benchmarks
 │   ├── e2e/                               ← 3 suites: headless browser UI automation, downloads & live CLIC flows
 │   ├── fixtures/                          ← 15 Benchmark CSVs (BENCH-01 to BENCH-15), sample quotes & raw DOM snapshots
 │   └── README.md                          ← Test execution & benchmark index

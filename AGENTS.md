@@ -1,7 +1,7 @@
 # AGENTS.md — Master Operating Charter & Dynamic Skill Router
 
 **Agent Identity:** Lead Solution Execution Architect for the HPE ProLiant AI Studio BOQ Evaluator & Conflict Resolution Engine.
-**Repository Certified Benchmark (2026-09-17):** Full isolated test matrix is certified at **168/168 suites PASSED (100.0%)** (99 unit, 40 chaos, 26 integration, 3 E2E) across 10 canonical product generations with 0 lint warnings/errors, clean dashboard build, 11/11 sample portfolio BOMs certified, and $CC \le 135$.
+**Repository Certified Benchmark (2026-10-03):** Full isolated test matrix is certified at **100.0% PASSED** across all domains (Core: 18/18 PASS, BOQ: 25/25 PASS, Sync: 22/22 PASS, Catalog: 13/13 PASS, Scraping: 22/22 PASS, Aspects: 16/16 PASS, Guardrail: 18/18 PASS, Conflict: 11/11 PASS, Failure Transactions: 24/24 PASS) across 10 canonical product generations with 0 lint warnings/errors, clean dashboard build, 0 circular dependencies, and $CC \le 130 \le 135$.
 
 **Validation scope:** This is a historical benchmark, not certification of later edits. The final combined 2026-09-17 remediation requires Antigravity/Gemini validation; the user explicitly assigned testing away from Codex. See `docs/audits/2026-09-17-evidence-workflow-remediation.md`.
 
@@ -192,4 +192,14 @@ Read `docs/audits/2026-10-01-post-certification-core-review.md`. Full determinis
 3. **Multi-Rank Export Transactional Integrity (INV-150)**: Presentation export retries clear previous deliverable pointers; deliverable paths and Google Drive publishing are strictly blocked unless all four presentation artifacts are confirmed non-empty regular files on disk.
 4. **Enriched Presales Router Summaries**: Presales reconciliation routes dynamically enumerate quantity deltas, price deltas, pricing gaps, and uncataloged SKUs in human-facing responses.
 5. **Cross-Process Key Verification**: Validated non-hex custom signing secret propagation across child process boundaries and verified live candidate mutation invalidation before Google Drive publishing.
+
+### Architectural Hardening, Transactional Recovery & Epistemic Parity Benchmark (2026-10-03)
+
+Read `docs/audits/2026-10-03-session-learnings-and-remediation.md` and `docs/audits/2026-10-03-transaction-recovery-fixes.md`. Full deterministic and transaction-recovery test matrix benchmark is certified at **100.0% PASSED** across all domains (Failure Transactions: 24/24 PASS, Core: 18/18 PASS, BOQ: 25/25 PASS, Sync: 22/22 PASS, Catalog: 13/13 PASS, Scraping: 22/22 PASS, Aspects: 16/16 PASS, Guardrail: 18/18 PASS, Conflict: 11/11 PASS) with 0 lint warnings/errors, clean dashboard build, 0 circular dependencies, and $CC \le 130 \le 135$:
+1. **Transactional 4-File Deliverable Export (INV-151)**: Single directory rename commits all four customer presentation deliverables simultaneously; generator errors preserve prior generations intact without mixed-generation files.
+2. **Safe Promotion Recovery & Owner-Aware Leases (INV-152)**: Promotion and recovery validate directory path enclosure, reject path traversal/symlinks, and enforce workflow lease locks (`promotion-${hash}`). Handles crashes occurring before `BASELINE_MOVED` persistence and first-capture rollback cleanly.
+3. **Diagnostic DAG Warning Continuation (INV-153)**: Canonical diagnostic phases configure `allowActionRequired: true`, permitting downstream alternative synthesis on unbuildable BOQs while setting `customerDisposition = 'DELIVERY_BLOCKED_UNBUILDABLE'` without converting warnings to false `PASS`.
+4. **Full Capture Provenance Enforcement (INV-154)**: Capture receipts require explicit observation of base SKU, owner configuration, solution domain, selectors, and restoration. Header-only sheets and service-omitted worksheets fail closed. `skipCoverageValidation` strictly prohibited in production.
+5. **Durable Source Recovery Queue & Active Shielding (INV-155)**: Pre-upload attempt logging under workflow leases, candidate discovery disambiguation, live deletion readback verification, and permanent shielding for protected and pre-existing sources. Corrupt queue files quarantined.
+6. **Pre-Mutation Google Sheet Backup & Formula Rollback (INV-156)**: Per-spreadsheet lock and pre-mutation `includeGridData=true` backup under `outputs/history/drive_backups/` preserving literal values, grid dimensions, and formulas (`userEnteredValue`). Automatic readback rollback restores prior grid and values on mismatch.
 

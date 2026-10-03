@@ -13,13 +13,14 @@ description: Use this skill to validate the completeness, correctness, and quali
 
 Every output, regardless of track, MUST pass these universal checks:
 
-| # | Criterion | Validation Rule | Severity |
-|---|-----------|----------------|----------|
-| U1 | **Non-Empty Response** | Output contains ≥1 actionable recommendation, answer, or finding | 🔴 BLOCK |
-| U2 | **Server Model Identified** | Target server model/generation is explicitly stated in the output | 🟡 WARN |
-| U3 | **No Hallucinated SKUs** | Every part number mentioned passes `isValidHpeSKU()` and exists in certified `catalog.json` for the target chassis | 🔴 BLOCK |
-| U4 | **Timestamp & Provenance** | Output includes execution timestamp and source attribution (which catalog version, which NLM notebook) | 🟡 WARN |
-| U5 | **Honest Uncertainty** | Any unresolvable gaps are explicitly flagged (never silently omitted or filled with guesses) | 🔴 BLOCK |
+| # | Criterion | Validation Rule | Severity | Enforcement |
+|---|-----------|----------------|----------|-------------|
+| U1 | **Non-Empty Response** | Output contains ≥1 actionable recommendation, answer, or finding | 🔴 BLOCK | Programmatic (`bom_verifier.js`) |
+| U2 | **Server Model Identified** | Target server model/generation is explicitly stated in the output | 🟡 WARN | Programmatic (`bom_verifier.js`) |
+| U3 | **No Hallucinated SKUs** | Every part number mentioned passes `isValidHpeSKU()` and exists in certified `catalog.json` for the target chassis | 🔴 BLOCK | Programmatic (`bom_verifier.js`) |
+| U4 | **Timestamp & Provenance** | Output includes execution timestamp and source attribution (which catalog version, which NLM notebook) | 🟡 WARN | Programmatic (`bom_verifier.js`) |
+| U5 | **Honest Uncertainty** | Any unresolvable gaps are explicitly flagged (never silently omitted or filled with guesses) | 🔴 BLOCK | Programmatic (`bom_verifier.js`) |
+| U6 | **BOQ-scoped Conditional Discovery** | Investigate absent/conditional SKUs in exact live configuration; a catalog miss is not proof of incompatibility | 🔴 BLOCK | Programmatic (`bom_verifier.js`) |
 
 ---
 
@@ -27,25 +28,25 @@ Every output, regardless of track, MUST pass these universal checks:
 
 ### Track: BOQ Evaluation
 
-| # | Criterion | Validation Rule | Severity |
-|---|-----------|----------------|----------|
-| B1 | **All 7 Aspects Evaluated** | Output contains results from: Compute & Thermal, Memory Channel, Storage Tri-Mode, Networking & OCP, PCIe Riser, Power & Environmental, Support & Manufacturing | 🔴 BLOCK |
-| B2 | **At Least 1 Ranked Solution** | Output contains at least Rank 1 (or explicit `UNBUILDABLE` determination with rationale) | 🔴 BLOCK |
-| B3 | **No Duplicate Ranks** | Each rank number appears at most once (sub-paths like 1A/1B are allowed) | 🟡 WARN |
-| B4 | **Financial Table Present** | Every solution includes: SKU, Description, Qty, Unit List Price (USD), Extended Price (USD) | 🔴 BLOCK |
-| B5 | **Total CapEx Computed** | Total CapEx Budget sum is present and equals the sum of Extended Prices (±$0.01 tolerance) | 🔴 BLOCK |
-| B6 | **Unresolved Prices Flagged** | If any SKU price could not be resolved, output states `(INCOMPLETE — N SKU(s) unresolved)` per `INV-33` | 🔴 BLOCK |
-| B7 | **Dual-Brain Badges Present** | Output contains at least `[🧠 Deterministic Brain]` badge. RAG badge shows actual quality level per RAG Quality Gate | 🟡 WARN |
-| B8 | **No Unsolicited Services** | Rank 1 solution does NOT contain installation/startup services unless customer explicitly requested them (`INV-32`) | 🔴 BLOCK |
-| B9 | **FIO Tags for CTO Components** | Internal components in CTO containers have `#0D1` / `-F21` annotation in the description or notes (`INV-25`) | 🟡 WARN |
-| B10 | **Cluster Sizing (if multi-node)** | If tender has >1 server node, output includes: Total RU, Rack Count, Peak kW, Rail Kit coverage (`INV-29`) | 🟡 WARN |
-| B11 | **Delta Report Present** | Output contains "Customer Asked → We Produced" delta comparison showing additions, removals, and substitutions | 🟡 WARN |
-| B12 | **Mandatory Accessories Injected** | Secondary heatsink, fan kits, controller cables, and enablement kits are present where required by INV-26 through INV-31 | 🔴 BLOCK |
-| B13 | **Adversarial Self-Validation Clean** | Output passes automated adversarial sanity checks against 10 enterprise edge-case failure modes (`INV-106`). If adversarial check is `undefined`, unexecuted, or `NOT_RUN`, evaluates strictly as 🔴 BLOCK (never defaults to pass) with `[VALIDATION_B13: Adversarial check not executed — OUTPUT BLOCKED]` | 🔴 BLOCK |
-| B14 | **HITL Escalation on Uncertainty** | Any low-confidence RAG answer, conflicting source, or unmapped SKU was escalated to human operator with options | 🔴 BLOCK |
-| B15 | **Proactive Presales Consultation Gate** | Output proactively presents the key qualifying questions (workload type, electrical facility, networking fabric) and next-step actions without waiting for user prompts | 🟡 WARN |
-| B16 | **Google Drive & ADC Health Gate** | If cloud deliverable or Google Drive upload requested, verify token validity and lifespan via `ensureGoogleAuthValid({ autoHeal: true })` before presentation. If expired or expiring within 48h, auto-heal autonomously (`npm run auth:heal` / `npm run auth:drive`) without human in loop (`INV-90`) | 🔴 BLOCK |
-| B17 | **Delivery Authorization Gate** | Verify cryptographic `DeliveryAuthorization` certificate via `verifyDeliveryAuthorization()`. If unbuildable or unverified, deliverable generation and export are strictly blocked with `DELIVERY_BLOCKED_UNBUILDABLE` (`INV-128`) | 🔴 BLOCK |
+| # | Criterion | Validation Rule | Severity | Enforcement |
+|---|-----------|----------------|----------|-------------|
+| B1 | **All 7 Aspects Evaluated** | Output contains results from: Compute & Thermal, Memory Channel, Storage Tri-Mode, Networking & OCP, PCIe Riser, Power & Environmental, Support & Manufacturing | 🔴 BLOCK | Programmatic (`bom_verifier.js`) |
+| B2 | **At Least 1 Ranked Solution** | Output contains at least Rank 1 (or explicit `UNBUILDABLE` determination with rationale) | 🔴 BLOCK | Programmatic (`bom_verifier.js`) |
+| B3 | **No Duplicate Ranks** | Each rank number appears at most once (sub-paths like 1A/1B are allowed) | 🟡 WARN | Programmatic (`bom_verifier.js`) |
+| B4 | **Financial Table Present** | Every solution includes: SKU, Description, Qty, Unit List Price (USD), Extended Price (USD) | 🔴 BLOCK | Programmatic (`bom_verifier.js`) |
+| B5 | **Total CapEx Computed** | Total CapEx Budget sum is present and equals the sum of Extended Prices (±$0.01 tolerance) | 🔴 BLOCK | Presales Presentation Gate |
+| B6 | **Unresolved Prices Flagged** | If any SKU price could not be resolved, output states `(INCOMPLETE — N SKU(s) unresolved)` per `INV-33` | 🔴 BLOCK | Programmatic (`bom_verifier.js`) |
+| B7 | **Dual-Brain Badges Present** | Output contains at least `[🧠 Deterministic Brain]` badge. RAG badge shows actual quality level per RAG Quality Gate | 🟡 WARN | Presales Presentation Gate |
+| B8 | **No Unsolicited Services** | Rank 1 solution does NOT contain installation/startup services unless customer explicitly requested them (`INV-32`) | 🔴 BLOCK | Programmatic (`bom_verifier.js`) |
+| B9 | **FIO Tags for CTO Components** | Internal components in CTO containers have `#0D1` / `-F21` annotation in the description or notes (`INV-25`) | 🟡 WARN | Presales Presentation Gate |
+| B10 | **Cluster Sizing (if multi-node)** | If tender has >1 server node, output includes: Total RU, Rack Count, Peak kW, Rail Kit coverage (`INV-29`) | 🟡 WARN | Presales Presentation Gate |
+| B11 | **Delta Report Present** | Output contains "Customer Asked → We Produced" delta comparison showing additions, removals, and substitutions | 🟡 WARN | Presales Presentation Gate |
+| B12 | **Mandatory Accessories Injected** | Secondary heatsink, fan kits, controller cables, and enablement kits are present where required by INV-26 through INV-31 | 🔴 BLOCK | Programmatic (`bom_verifier.js`) |
+| B13 | **NotebookLM Grounding & Degraded State Gate** | Ephemeral source validation and product notebook health verified (`INV-105`/`INV-140`). Cannot claim grounded certification if degraded or unverified | 🔴 BLOCK | Programmatic (`bom_verifier.js`) |
+| B14 | **HITL Escalation on Uncertainty** | Any low-confidence RAG answer, conflicting source, or unmapped SKU was escalated to human operator with options | 🔴 BLOCK | Presales Review Gate |
+| B15 | **Proactive Presales Consultation Gate** | Output proactively presents key qualifying questions (workload type, electrical facility, networking fabric) and next-step actions without waiting for user prompts | 🟡 WARN | Presales Presentation Gate |
+| B16 | **Google Drive & ADC Health Gate** | If cloud deliverable or Google Drive upload requested, verify token validity and lifespan via `ensureGoogleAuthValid({ autoHeal: true })` before presentation. If expired or expiring within 48h, auto-heal autonomously (`npm run auth:heal` / `npm run auth:drive`) without human in loop (`INV-90`) | 🔴 BLOCK | Cloud Export Gate |
+| B17 | **Delivery Authorization Gate** | Verify cryptographic `DeliveryAuthorization` certificate via `verifyDeliveryAuthorization()`. If unbuildable or unverified, deliverable generation and export are strictly blocked with `DELIVERY_BLOCKED_UNBUILDABLE` (`INV-128`) | 🔴 BLOCK | Cryptographic Gate (`acceptance_gate.js` / `workflow_contract.js`) |
 
 ### Track: RFP Sizing-to-BOM
 

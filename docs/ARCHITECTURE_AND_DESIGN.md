@@ -210,7 +210,7 @@ To eliminate silent hallucination or unverified knowledge drift:
 - **Component Design**: Tailwind-based, strict `rounded-xl` (12px) radiuses, and tightly-controlled custom tinted drop-shadows (e.g., `TelemetryCard.jsx`, `ResolutionMatrix.jsx`) for maximum data-density.
 
 ## 5. Subsystem Architecture & Master Barrel API
-The engine is structured into decoupled domain namespaces exported via [`scripts/lib/index.js`](file:///home/vinodh/vendorNotebookSolution/scripts/lib/index.js):
+The engine is structured into decoupled domain namespaces exported via [`scripts/lib/index.js`](../scripts/lib/index.js):
 
 | Subsystem | Modules | Core Responsibilities |
 |---|---|---|
@@ -222,7 +222,7 @@ The engine is structured into decoupled domain namespaces exported via [`scripts
 | **`scraper` & `feedback`** | `cdp`, `domExtract`, `navigateOca`, `loop`, `queue` | Hands-free CDP automation, zero-touch browser runner, closed-loop `KnowledgeDelta` learning (via CoR Extractor) & HITL queue |
 
 ## 6. Visual BOQ Configuration Topology & Mindmap Engine
-The frontend incorporates a decoupled, high-density SVG visualizer located in [`dashboard/src/components/topology/`](file:///home/vinodh/vendorNotebookSolution/dashboard/src/components/topology/) driven by the [`topologyGraphBuilder.js`](file:///home/vinodh/vendorNotebookSolution/dashboard/src/services/topologyGraphBuilder.js) pure service.
+The frontend incorporates a decoupled, high-density SVG visualizer located in [`dashboard/src/components/topology/`](../dashboard/src/components/topology/) driven by the [`topologyGraphBuilder.js`](../dashboard/src/services/topologyGraphBuilder.js) pure service.
 
 ```mermaid
 graph LR

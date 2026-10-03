@@ -97,7 +97,7 @@ npm run dev
 | `npm run build` | Build production dashboard assets via Vite |
 | `npm run lint` | Run `oxlint` on dashboard source files (0-warning, 0-error gate) |
 | `npm run lint:complexity` | Verify cyclomatic complexity gate ($CC \le 135$) across all functions |
-| `npm test` | Run complete isolated test matrix (155 suites across Unit, Chaos, Integration tiers) |
+| `npm test` | Run complete isolated test matrix (193+ suites across Unit, Chaos, Integration tiers) |
 | `npm run test:portfolio` | Run portfolio verification audit (`verify_all.js`) across 8 canonical products |
 | `npm run status` | Display unified observability dashboard overview (`observability_status.js`) |
 | `npm run status:sync` | Re-sync live portfolio state and generate `.agents/PORTFOLIO_STATUS.md` |
@@ -181,7 +181,7 @@ The OCA scraping engine relies on dynamic JSON profiles to dictate product-speci
 |---|---|---|---|
 | Aspect Math | `npm run test:aspect_units` | 34 | 7 physical hardware math checkers (compute, memory, storage, pcie, power, chassis, support) |
 | BOQ Benchmarks | `npm run test:benchmarks` | 15 scenarios | Comprehensive BOQ evaluation with 100% recall/precision across all real-world edge cases |
-| Full Test Matrix | `npm test` | 155 suites | Full automated regression across Unit (92), Chaos (38), and Integration (25) tiers (100% PASS) |
+| Full Test Matrix | `npm test` | 193+ suites | Full automated regression across Unit (126+), Chaos (41), and Integration (26+) tiers (100% PASS) |
 | Portfolio Audit | `npm run test:portfolio` | 8 product lines | Validates all catalog outputs across 5 families on disk against 7 guardrails |
 | Least-Delta Combinator | `node tests/unit/test_least_delta_combinator.js` | 10 tests | Validates troublesome SKU identification, cascade pruning, and dynamic catalog alternatives |
 | Decision Trace Ledger | `node tests/unit/test_decision_trace_ledger.js` | 10 tests | Validates structured reasoning chain, persistence, and 4-brain attribution |
@@ -200,10 +200,10 @@ Run `node scripts/evaluators/adversarial_agent.js` to execute an adversarial red
 ## 7. Project Architecture & Consolidated References
 
 For detailed architecture documentation, see:
-- [DIRECTORY_STRUCTURE.md](file:///home/vinodh/vendorNotebookSolution/docs/DIRECTORY_STRUCTURE.md) — Comprehensive canonical directory and subsystem layout
-- [ARCHITECTURE_AND_DESIGN.md](file:///home/vinodh/vendorNotebookSolution/docs/ARCHITECTURE_AND_DESIGN.md) — Core architecture, Dual-Brain paradigm, Mermaid diagrams
-- [WORKFLOWS_AND_LEARNINGS.md](file:///home/vinodh/vendorNotebookSolution/docs/WORKFLOWS_AND_LEARNINGS.md) — E2E pipelines, Agentic Guardrail loops, 28 comprehensive learnings
-- [DATA_DICTIONARY.md](file:///home/vinodh/vendorNotebookSolution/.agents/DATA_DICTIONARY.md) — JSON schemas and data contracts
+- [DIRECTORY_STRUCTURE.md](DIRECTORY_STRUCTURE.md) — Comprehensive canonical directory and subsystem layout
+- [ARCHITECTURE_AND_DESIGN.md](ARCHITECTURE_AND_DESIGN.md) — Core architecture, Dual-Brain paradigm, Mermaid diagrams
+- [WORKFLOWS_AND_LEARNINGS.md](WORKFLOWS_AND_LEARNINGS.md) — E2E pipelines, Agentic Guardrail loops, 28 comprehensive learnings
+- [DATA_DICTIONARY.md](../.agents/DATA_DICTIONARY.md) — JSON schemas and data contracts
 
 ---
 

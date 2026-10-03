@@ -29,10 +29,10 @@ The following new production modules have **zero dedicated test files**:
 
 | Module | Lines of Code | Test File | Status |
 |---|---|---|---|
-| [`least_delta_combinator.js`](file:///home/vinodh/vendorNotebookSolution/scripts/lib/conflict/least_delta_combinator.js) | 248 | ❌ None | Only exercised indirectly via `BENCH-15` in benchmark suite |
-| [`decision_trace.js`](file:///home/vinodh/vendorNotebookSolution/scripts/lib/conflict/decision_trace.js) | 116 | ❌ None | Only consumed inside `strategy_synthesizer.js` |
-| [`deal_optimizer.js`](file:///home/vinodh/vendorNotebookSolution/scripts/lib/boq/deal_optimizer.js) | 188 | ❌ None | Called from `boq_evaluator.js` but output is silently swallowed |
-| [`reconcile_quickspecs_oca.js`](file:///home/vinodh/vendorNotebookSolution/scripts/catalogs/reconcile_quickspecs_oca.js) | 215 | ❌ None | CLI-only, no integration test, no dashboard route |
+| [`least_delta_combinator.js`](../scripts/lib/conflict/least_delta_combinator.js) | 248 | ❌ None | Only exercised indirectly via `BENCH-15` in benchmark suite |
+| [`decision_trace.js`](../scripts/lib/conflict/decision_trace.js) | 116 | ❌ None | Only consumed inside `strategy_synthesizer.js` |
+| [`deal_optimizer.js`](../scripts/lib/boq/deal_optimizer.js) | 188 | ❌ None | Called from `boq_evaluator.js` but output is silently swallowed |
+| [`reconcile_quickspecs_oca.js`](../scripts/catalogs/reconcile_quickspecs_oca.js) | 215 | ❌ None | CLI-only, no integration test, no dashboard route |
 
 ### Why This Matters
 - The 153/153 pass rate is real, but these modules are only tested as *side effects* of existing integration tests. No test explicitly validates:
@@ -83,7 +83,7 @@ You built sophisticated backend intelligence, but as the single user, you intera
 
 ## 🟠 GAP 3: Least-Delta Alternative SKUs Are Hardcoded (MEDIUM)
 
-In [`least_delta_combinator.js`](file:///home/vinodh/vendorNotebookSolution/scripts/lib/conflict/least_delta_combinator.js):
+In [`least_delta_combinator.js`](../scripts/lib/conflict/least_delta_combinator.js):
 
 ```javascript
 // Line 56: Same SKU for both Gen11 and Gen12 — no differentiation
@@ -112,7 +112,7 @@ alternativeDesc: 'HPE 32GB 2Rx8 DDR5-4800 Registered Smart Memory Kit',
 
 ## 🟠 GAP 4: QuickSpecs Reconciliation Is Standalone CLI-Only (MEDIUM)
 
-[`reconcile_quickspecs_oca.js`](file:///home/vinodh/vendorNotebookSolution/scripts/catalogs/reconcile_quickspecs_oca.js):
+[`reconcile_quickspecs_oca.js`](../scripts/catalogs/reconcile_quickspecs_oca.js):
 - Has no dashboard route (no API endpoint)
 - Has no test file
 - Is not integrated into the scraping pipeline (not called in Steps 8-10 of `scrape_oca_solution.js`)
@@ -135,7 +135,7 @@ The implementation plan (Area H) stated the goal was to query NotebookLM QuickSp
 
 ## 🟠 GAP 5: Deal Optimizer Output Is Computed But Never Surfaced (MEDIUM)
 
-In [`boq_evaluator.js` line 1114-1121](file:///home/vinodh/vendorNotebookSolution/scripts/lib/boq/boq_evaluator.js#L1114-L1121):
+In [`boq_evaluator.js` line 1114-1121](../scripts/lib/boq/boq_evaluator.js#L1114-L1121):
 
 ```javascript
 const { analyzeDealValueEngineering } = require('./deal_optimizer.js');
@@ -164,7 +164,7 @@ The `valueEngineering` object is correctly computed and attached to the evaluati
 
 ## 🟡 GAP 6: Least-Delta Only Processes Primary Troublesome SKU (LOW-MEDIUM)
 
-In [`least_delta_combinator.js` line 162](file:///home/vinodh/vendorNotebookSolution/scripts/lib/conflict/least_delta_combinator.js#L162):
+In [`least_delta_combinator.js` line 162](../scripts/lib/conflict/least_delta_combinator.js#L162):
 
 ```javascript
 const primaryTrouble = troublesomeSkus.find(t => t.type === 'STORAGE_EXPANDER_CASCADE' || ...) ||
@@ -180,7 +180,7 @@ Process all troublesome SKUs iteratively: apply substitution/pruning for each on
 
 ## 🟡 GAP 7: Decision Trace Ledger Is Session-Scoped, Not Persisted (LOW)
 
-[`DecisionTraceLedger`](file:///home/vinodh/vendorNotebookSolution/scripts/lib/conflict/decision_trace.js) is an in-memory class. Decisions are attached to the strategy matrix output as `decisionTrace` arrays, but:
+[`DecisionTraceLedger`](../scripts/lib/conflict/decision_trace.js) is an in-memory class. Decisions are attached to the strategy matrix output as `decisionTrace` arrays, but:
 1. They're never written to a persistent file (e.g., `outputs/history/decision_traces.json`)
 2. There's no historical query API ("show me all decisions made for DL380 Gen12 evaluations this week")
 3. If the evaluation result isn't saved, the reasoning is lost
@@ -192,7 +192,7 @@ Add optional persistence to `outputs/history/decision_trace_ledger.json` and a `
 
 ## 🟡 GAP 8: Agentic Guardrail Auto-Retry Has No Circuit Breaker (LOW)
 
-In [`eval_boq.js` line 469](file:///home/vinodh/vendorNotebookSolution/scripts/evaluators/eval_boq.js#L469):
+In [`eval_boq.js` line 469](../scripts/evaluators/eval_boq.js#L469):
 
 ```javascript
 if (guardrailResult.activatedDeltaCount > 0) {

@@ -2,7 +2,7 @@
 
 **Agent Identity:** You are managing the HPE ProLiant AI Studio BOQ Evaluator & Conflict Resolution Engine.
 
-**Current engineering handoff (2026-09-17):** Phases 1 through 13 of `docs/CONTINUATION_CHECKPOINT.md` are completed, committed, and fully certified. The full isolated test matrix is **167/167 suites PASSED (100.0%)** (101 unit, 40 chaos, 26 integration) plus 3/3 Playwright headless E2E browser suites with 0 lint warnings/errors on 110 files, clean dashboard build, 11/11 sample portfolio BOMs certified, all Codex audit findings F01–F13 resolved, and all functions passing the cyclomatic complexity gate ($CC \le 135$). See `docs/CONTINUATION_CHECKPOINT.md`. All AI agents must strictly follow the canonical production workflow without writing ad-hoc scripts.
+**Current engineering handoff (2026-10-03):** Phases 1 through 13 of `docs/CONTINUATION_CHECKPOINT.md` and subsequent architectural hardening remediations are completed, committed, and fully certified. The full isolated test matrix is **193+ suites PASSED (100.0%)** (126+ unit, 41 chaos, 26+ integration) plus 3/3 Playwright headless E2E browser suites with 0 lint warnings/errors on 111 files, clean dashboard build, 11/11 sample portfolio BOMs certified, all audit findings resolved, and all functions passing the cyclomatic complexity gate ($CC \le 135$). See `docs/CONTINUATION_CHECKPOINT.md`. All AI agents must strictly follow the canonical production workflow without writing ad-hoc scripts.
 
 ## 0. Permanent Universal MCP Auto-Approval & Zero-Waiting Policy (MANDATORY & UNCONDITIONAL)
 - **100% Pre-Authorization**: The human developer has granted **FULL, UNCONDITIONAL, AND PERMANENT APPROVAL** for EVERY MCP tool call across ALL configured and future servers without exception:
@@ -23,7 +23,7 @@
 - **Dynamic Logic (Query on Demand):** File dependencies, execution paths, and specific implementation logic change frequently. Query the live graph for these.
 
 ## 3. Golden Directives (Token-Optimized)
-- **Use Skills for Depth:** This project uses specialized skills in [`.agents/skills/`](file:///home/vinodh/vendorNotebookSolution/.agents/skills/). If you need details on BOQ Evaluation, Scraping, NotebookLM RAG, Knowledge Sync, or Orchestration workflows, read the respective `SKILL.md`.
+- **Use Skills for Depth:** This project uses specialized skills in [`.agents/skills/`](../.agents/skills/). If you need details on BOQ Evaluation, Scraping, NotebookLM RAG, Knowledge Sync, or Orchestration workflows, read the respective `SKILL.md`.
 - **Atomic File Operations:** Always use `safeWriteJsonAtomic` in `scripts/lib/system/fs_compat.js` for writing JSON files to prevent corruption. No bare `fs.writeFileSync` for JSON.
 - **Fail-Safe & Dual-Brain:** The system relies on a local Rule Engine (deterministic) and an Agentic MCP Guardrail (LLM/RAG). The frontend MUST NOT break if the LLM/API is offline or rate-limited.
 - **No Mock Stubs:** All UI components and backend scripts must be fully functional and trigger real actions. UI metrics must be derived dynamically from JSON metadata.
@@ -31,16 +31,16 @@
 
 ## 4. Architecture & Documentation Index
 For full architectural details, coding decisions, and project learnings, refer to the consolidated docs:
-- [`docs/DIRECTORY_STRUCTURE.md`](file:///home/vinodh/vendorNotebookSolution/docs/DIRECTORY_STRUCTURE.md): Canonical directory mapping and file hierarchy across the entire repository.
-- [`docs/ARCHITECTURE_AND_DESIGN.md`](file:///home/vinodh/vendorNotebookSolution/docs/ARCHITECTURE_AND_DESIGN.md): Core architecture, Dual-Brain paradigm, data dictionary, and Mermaid diagrams.
-- [`docs/WORKFLOWS_AND_LEARNINGS.md`](file:///home/vinodh/vendorNotebookSolution/docs/WORKFLOWS_AND_LEARNINGS.md): E2E Pipelines, Agentic Guardrail loops, Continuous Benchmarking (Adversarial Red-Teaming), and MCP workflows.
-- [`docs/DEVELOPER_GUIDE.md`](file:///home/vinodh/vendorNotebookSolution/docs/DEVELOPER_GUIDE.md): Local development, UI/UX standards, testing (eval/benchmarks), and API rate limit handling.
+- [`docs/DIRECTORY_STRUCTURE.md`](DIRECTORY_STRUCTURE.md): Canonical directory mapping and file hierarchy across the entire repository.
+- [`docs/ARCHITECTURE_AND_DESIGN.md`](ARCHITECTURE_AND_DESIGN.md): Core architecture, Dual-Brain paradigm, data dictionary, and Mermaid diagrams.
+- [`docs/WORKFLOWS_AND_LEARNINGS.md`](WORKFLOWS_AND_LEARNINGS.md): E2E Pipelines, Agentic Guardrail loops, Continuous Benchmarking (Adversarial Red-Teaming), and MCP workflows.
+- [`docs/DEVELOPER_GUIDE.md`](DEVELOPER_GUIDE.md): Local development, UI/UX standards, testing (eval/benchmarks), and API rate limit handling.
 
 ## 5. Key Technical Decisions & Operational Guardrails
 - **MCP Agentic Loop & Closed-Loop Extractor:** The BOQ Evaluator utilizes an MCP Server (`scripts/services/mcp_server.js`), an Agentic Guardrail (`scripts/lib/rag/agentic_guardrail.js`), and a generic NLP Knowledge Extractor (`scripts/lib/notebook/knowledge_extractor.js`) to parse verified RAG answers into persistent `KnowledgeDelta` records.
 - **Autonomous Learning & Drift Sync:** RAG responses are structured and scoped into `catalog_deltas.json` (chassis-specific) and `master_knowledge_registry.json` (family/universal). Post-flow sync (`scripts/lib/sync/post_flow_sync.js`) guarantees bi-directional alignment before logging telemetry.
 - **Zero-Hardcoding Compliance:** Aspect checkers (`scripts/lib/aspects/compute_thermal.js`, `memory_channel.js`, `power_environment.js`, etc.) maintain strict 0-hardcoded SKU strings, resolving form factor rules dynamically via `chassis_map.json` and catalog rules.
-- **Red-Teaming & 100% Test Certification:** Continual adversarial stress-testing (`tests/chaos/test_failure_modes_and_chaos.js`) and 50+ comprehensive test suites maintain a 100% pass benchmark across unit, integration, chaos, and e2e tiers.
+- **Red-Teaming & 100% Test Certification:** Continual adversarial stress-testing (`tests/chaos/test_failure_modes_and_chaos.js`) and 200+ comprehensive test suites maintain a 100% pass benchmark across unit, integration, chaos, and e2e tiers.
 - **Async Task Mutex & Process Lifecycle:** `server.cjs` manages long-running child processes with `isTaskRunning()` and `proc.on('error')` guards, preventing stale mutex locks and false 409 Conflict errors.
 - **Zero-Warning Code Quality:** All React dashboard components and backend services strictly adhere to a 0-warning, 0-error lint benchmark (`npm run lint` with `oxlint`).
 - **Universal MCP & Learning Auto-Approval:** EVERY MCP server and tool (`gemini-notebook-mcp`, `graphify`, `notebooks`, `data-agent-kit`, `visualization`, CDP browser navigation, knowledge extraction, and learning pipelines) is 100% pre-authorized and auto-approved across all workflows (scraping, verification, knowledge sync, graph generation, BOQ evaluation). AI Agents MUST NOT prompt the human user for permission to execute MCP tool calls; run them autonomously without friction.
@@ -78,7 +78,7 @@ The system leverages Google Jules for background code review, test generation, a
 
 3. **PR Merge & Artifact Hygiene Standards**:
    - Before merging any PR created by Jules, the agent must inspect `git diff --stat` to ensure no accidental build artifacts (e.g. `outputs/history/*.json` dumps, temp files) were committed (Invariant INV-7 & INV-10).
-   - Ensure all 50+ test suites (`npm run test:all`), portfolio audits (`npm test`), and zero-warning lints (`npm run lint`) pass 100% before integrating into `main`.
+   - Ensure all test suites (`npm test` / `npm run test:all`), portfolio audits (`npm run test:portfolio`), and zero-warning lints (`npm run lint`) pass 100% before integrating into `main`.
 
 4. **Post-Merge Remote Branch Pruning & Full Ownership (`INV-11`)**:
    - Once all code and tests from a Jules PR branch are merged and certified on `main`, the AI agent takes full responsibility to delete the stale remote feature branch (`git push origin --delete <branch>`) and send a completion message to Jules.
@@ -790,5 +790,31 @@ To ensure that future AI agents (Antigravity, Codex, Claude, or subagents) never
   - Presentation export retry operations must clear previous deliverable pointers (`multiRankWorkbookPath`, `proposalWorkbookPath`, `portalWorkbookPath`) to prevent stale artifacts from reaching delivery.
   - Deliverable file pointers and Google Drive uploads are strictly blocked unless all four presentation artifacts exist and are confirmed non-empty regular files on disk.
 
+- **INV-151: Transactional Directory-Level Deliverable Publication & Atomic Rollback**:
+  - `eval_output_serializer.js` generates all four customer presentation deliverables (`.xlsx`, `.csv`, `.md`, `partner_portal.xlsx`) into an isolated sibling directory (`.generation_${timestamp}_${pid}`) and validates that each file exists, is a regular file, and contains $>0$ bytes.
+  - Deliverables are committed to production via a single atomic directory rename (`fs.renameSync(staging, generation)`), preventing partially exported deliverables or mixed-generation artifacts if a generator fails.
+  - Previous complete generations remain intact on disk. Delivery manifests and hashes are signed only after atomic publication completes.
 
+- **INV-152: Production Promotion Recovery, Path Enclosure & Owner-Aware Leases**:
+  - Staging directory promotions (`fs_compat.js:promoteStagingDirectory`) and recovery operations (`recoverUnfinishedPromotion`) must validate that journal, target, backup, and prepared paths are non-symlink directories contained strictly within the target parent directory, rejecting path traversal attempts.
+  - Promotions and recoveries must be guarded by an owner-aware workflow lease (`promotion-${hash}`). Recovery handles crashes occurring prior to `BASELINE_MOVED` journal persistence by rolling back the previous baseline and preserving uncommitted snapshots for diagnostic review.
+  - First-capture promotions (`baselineExisted: false`) roll back by restoring target to prepared, cleanly returning the environment to its initial uninitialized state.
 
+- **INV-153: Diagnostic DAG Warning Continuation Without False Success**:
+  - In `lifecycle_engine.js`, prerequisite phases that finish with warnings (`status: 'WARNED'`) allow execution to continue only when the downstream phase explicitly configures `allowWarnings: true` or `allowActionRequired: true`.
+  - Canonical diagnostic phases (`DOMAIN_ASPECTS`, `CONFLICT_GRAPH`, `NOTEBOOK_RAG_GROUNDING`, `DELIVERY_EXPORT`) allow continuation so that unbuildable BOQs can be analyzed and remediated into Rank 1L/1M alternatives without converting diagnostic warnings into false `PASS` verdicts. Strict phases without `allowActionRequired` fail closed.
+
+- **INV-154: Full Capture Provenance Enforcement & Test-Harness Boundary Guards**:
+  - Catalog capture receipts (`catalog_capture_receipt.js`) require explicit observation of `selectedBaseSku`, `ownerConfiguration`, `solutionDomain`, `observedSelectors`, and `finalSelectorsRestored`. Substituting metadata-derived defaults or unverified values is strictly prohibited.
+  - Header-only worksheets and `All SKUs` sheets omitting service SKUs are rejected fail-closed.
+  - `skipCoverageValidation` is restricted strictly to test harness contexts (`assertTestHarnessEnvironment`) and raises a fatal error if invoked when `NODE_ENV === 'production'`.
+
+- **INV-155: Durable Source Recovery Queue, Candidate Discovery & Active Shielding**:
+  - NotebookLM candidate management (`nlm_sync_client.js`) logs pre-upload cleanup attempts with unique attempt titles and serializes queue operations under workflow leases at `outputs/history/source_recovery_queue.json`.
+  - Unknown candidate timeout IDs are resolved only when live inventory exhibits exactly one unique matching title. Ambiguous matches remain pending without performing unverified deletions.
+  - Deletions require live inventory readback verification. Protected sources (active, drive, official, canonical, verified, and trusted IDs) and pre-existing source IDs are permanently shielded from deletion.
+  - Corrupt recovery queue files are automatically quarantined (`.corrupt-${uuid}`) and trigger audit errors rather than being silently overwritten.
+
+- **INV-156: Pre-Mutation Google Sheet Backup, Formula Preservation & Readback Rollback**:
+  - `google_sheets_writer.js` acquires a per-spreadsheet lock and takes a full pre-mutation snapshot via `includeGridData=true` under `outputs/history/drive_backups/`, preserving all literal values, cell grid dimensions, and formulas (`userEnteredValue`).
+  - Readback verification triggers automatic rollback on mismatch, restoring previous values and grid properties and removing newly created tabs. Rollback status is dually recorded as `RESTORED` or `RECOVERY_REQUIRED`.

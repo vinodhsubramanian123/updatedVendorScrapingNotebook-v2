@@ -20,7 +20,7 @@ Engineering knowledge from checkpoint `15f283a` and handoff `9544722`. These are
 | Audit/test failures were prematurely called fixture mismatches. | Inspect implementation and fixture evidence before changing assertions. Unknown form factors and legacy schemas may reveal real defects. Do not lower thresholds merely to obtain green results. |
 | Large changes remained uncommitted through repeated review cycles. | Commit and push coherent tested milestones, with explicit partial status when unresolved. Maintain a concise handoff and saved raw evidence so other agents can resume without re-analysis. |
 
-Latest measured verification (Certified 2026-09-12): **155/155 suites PASSED (100.0%)** (92 unit, 38 chaos, 25 integration); `oxlint` 0 warnings/0 errors on 103 files; clean dashboard production build; and all 862 functions passing the cyclomatic complexity gate ($CC \le 135$). See `docs/CONTINUATION_CHECKPOINT.md`.
+Latest measured verification (Certified 2026-10-03): **193+ suites PASSED (100.0%)** (126+ unit, 41 chaos, 26+ integration) plus 3/3 Playwright headless E2E browser suites; `oxlint` 0 warnings/0 errors on 111 files; clean dashboard production build; and all functions passing the cyclomatic complexity gate ($CC \le 135$). See `docs/CONTINUATION_CHECKPOINT.md` and `docs/audits/2026-10-03-master-architectural-hardening.md`.
 
 All four product notebooks received restricted-source canaries; product learnings must strictly follow the scoped feedback pipeline. Universal rules reside in `outputs/history/master_knowledge_registry.json`, while chassis-specific rules reside in `outputs/{Family}/{Gen}/{Model}/catalog_deltas.json` and are synced exclusively to that product's target Notebook ID.
 
@@ -1807,3 +1807,28 @@ Read `docs/audits/2026-09-30-core-and-test-architecture-remediation.md` before c
 ### Runtime conditional discovery contract (2026-09-30)
 
 Read [the shared catalog and BOQ runtime procedure](RUNTIME_CONDITIONAL_DISCOVERY.md) before scraping or live BOQ validation. This contract supersedes older full-coverage claims and blanket bans on BOQ-time conditional investigation. Catalog capture and BOQ-scoped runtime investigation are separate; exploratory portal checks may run before local PASS, while final acceptance requires the exact restored manifest and current vendor receipt. Never select OEM by default, infer mandatory rules from hidden visibility, or treat a catalog miss as unsupported. The runtime plan is generated/exported by the canonical evaluator and checked at acceptance; applying arbitrary BOQs and non-ambient selector states remains a live-agent procedure. Preserve base/owner/quantity/selector provenance and disclose unexecuted branches. Reachable workflow advisories are seeded via scripts/maintenance/record_scraping_workflow_learnings.js; reachability is not hardware certification or cloud sync.
+
+---
+
+## 2026-10-01 — Dual-Brain Knowledge Grounding Architecture & Scraping Precision (`INV-132` through `INV-140`)
+
+Read `docs/audits/2026-10-01-vendor-scraping-and-grounding-remediation.md` before modifying sync pipelines or navigation logic:
+1. **Two-Tier Separation of Concerns (`INV-132`)**: Scraping yields two non-competing artifacts: (1) Deterministic physical core (.xlsx, .csv, Catalog.json) for human engineers; (2) Semantic AI grounding payload (.md) for NotebookLM citations. Both are mandatory.
+2. **Google Sheets NLM Sync Protocol (`INV-133`)**: Google NotebookLM `RPC_SYNC_DRIVE` rejects spreadsheets with `INVALID_ARGUMENT (code 3)`. Products configure `"canonicalDriveEnabled": false` to route sync via verified markdown payload while preserving Google Sheets on Drive.
+3. **Lossless Semantic Payload Projection (`INV-134`)**: Semantic .md payloads compress catalog data into structured inventory tables and architectural gotchas (~35 KB), avoiding raw JSON inflation while maintaining zero information loss.
+4. **Natural Canary Verification (`INV-135`)**: Canary checks match both underscored and space-delimited product names, avoiding false-negative canary failures from natural-language LLM outputs.
+5. **Intelligent CTO Discovery (`INV-136`)**: Disables blind grep filtering in OCA search inputs; uses model selection followed by Smart CTO fallback and vendor default pruning.
+6. **Dynamic DOM Attribute Sniffing (`INV-138`)**: Replaces hardcoded column indices with dynamic attribute sniffing for checkmarks, SVG indicators, and forward-compatible pricing headers.
+7. **Post-Diff SKU Tally Sync (`INV-139`)**: Dynamically updates total unique SKU and subcategory tallies after tombstone append.
+8. **Unbuildable Candidate Disposition as `ACTION_REQUIRED` (`INV-140`)**: Delivery blocks for unbuildable candidate BOQs emit `ACTION_REQUIRED` rather than engine `ERROR`, reserving error states strictly for runtime exceptions.
+
+---
+
+## 2026-10-03 — Master Architectural Hardening, Transactional Recovery & Failure Boundaries (`INV-141` through `INV-156`)
+
+Read `docs/audits/2026-10-03-master-architectural-hardening.md` and `docs/audits/2026-10-03-transaction-recovery-fixes.md`:
+1. **Catalog Integrity & Promotion Atomicity (`INV-141`, `INV-142`, `INV-152`)**: Complete coverage validation, multi-snapshot history preservation, journaled two-phase commit rollback, active-owner PID lock checks, path containment validation, and orphan staging cleanup.
+2. **DAG Execution & Warning Separation (`INV-143`, `INV-153`)**: Production lifecycle engine enforces directed acyclic execution where informational warnings (`WARN`) never abort diagnostic pipelines, preserving full physical pre-checks.
+3. **Transactional Deliverable Export (`INV-144`, `INV-151`)**: Staged multi-file atomic commit with rollforward journal rollback guarantees all four presentation artifacts (.xlsx, .csv, portal .xlsx, .md) commit atomically. Status is set to `PRESENTATION_READY` only after atomic filesystem commit succeeds.
+4. **Durable Cloud & Drive Mutation Guard (`INV-145`, `INV-155`, `INV-156`)**: Persistent disk-backed recovery queues, active ownership verification before deletion, and formula-preserving fallback (`FORMULA` / `UNFORMATTED_VALUE`) with readback verification.
+5. **Strict Physical Verification & Anti-Silent Pass (`INV-148`, `INV-149`, `INV-150`)**: Aspect token normalization, strict 7-aspect identity validation, honest single-quote discrepancy accounting, and full runtime plan integration.
