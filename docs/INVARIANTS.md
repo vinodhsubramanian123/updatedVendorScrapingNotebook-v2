@@ -818,3 +818,12 @@ To ensure that future AI agents (Antigravity, Codex, Claude, or subagents) never
 - **INV-156: Pre-Mutation Google Sheet Backup, Formula Preservation & Readback Rollback**:
   - `google_sheets_writer.js` acquires a per-spreadsheet lock and takes a full pre-mutation snapshot via `includeGridData=true` under `outputs/history/drive_backups/`, preserving all literal values, cell grid dimensions, and formulas (`userEnteredValue`).
   - Readback verification triggers automatic rollback on mismatch, restoring previous values and grid properties and removing newly created tabs. Rollback status is dually recorded as `RESTORED` or `RECOVERY_REQUIRED`.
+
+- **INV-157: Proactive Headless NotebookLM Auth Pre-Flight & Non-Interactive Re-Authentication**:
+  - Prior to initiating catalog synchronization (`nlm_sync_client.js`) or candidate evaluation, the engine must execute a proactive, headless pre-flight authentication check via `nlm login --check` (`scripts/maintenance/check_nlm_auth.js`).
+  - Pipelines must never fail reactively at step 10 after expensive diffing, Excel generation, or payload compilation.
+  - When credentials are stale, expired, or missing, the system emits the non-interactive recovery command: `nlm login --force --storage file`.
+  - Passing `--storage file` is mandatory to bypass the interactive terminal prompt (`Protect the saved login in OS keystore? [y/N]`), storing tokens directly to `~/.notebooklm-mcp-cli/profiles/default/credentials.json`.
+  - Passing `--force` guarantees that stale or conflicting session cache is replaced without manual terminal confirmation.
+  - Following re-authentication, in-memory MCP server state is refreshed via `call_mcp_tool('gemini-notebook-mcp', 'refresh_auth')` without requiring an IDE, agent, or terminal restart.
+

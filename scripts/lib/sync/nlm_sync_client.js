@@ -658,6 +658,25 @@ function syncToNotebookLMWithinLease(notebookId, payloadPath, chassisName = 'Unk
     let canonicalDriveSheetId = cfgEntry?.driveSheetId || null;
     let canonicalDriveSheetUrl = cfgEntry?.driveSheetUrl || null;
     let canonicalDriveSourceId = cfgEntry?.driveSourceId || null;
+
+    if (!options.skipAuthPreflight && execFileSync === defaultExecFileSync) {
+      try {
+        const authCheck = execFileSync('nlm', ['login', '--check'], {
+          encoding: 'utf-8',
+          timeout: 15000,
+          env: { ...process.env, PATH: extendedPath }
+        });
+        if (!authCheck.includes('Authentication valid')) {
+          throw new Error('nlm login --check returned invalid authentication');
+        }
+      } catch (authErr) {
+        throw new Error(
+          `NotebookLM credentials are stale or expired (${authErr.message.trim()}). ` +
+          `Please re-authenticate proactively by running in PowerShell: nlm login --force --storage file`
+        );
+      }
+    }
+
     assertPayloadProductIsolation(fs.readFileSync(payloadPath, 'utf8'), chassisName, notebookCfg);
     let legacyFingerprint = null;
     if (!useCanonicalDrive) {

@@ -174,7 +174,7 @@ function diagnoseNotebookFailure(notebookId, err) {
   } else if (errMsg.includes('401') || errMsg.includes('UNAUTHENTICATED') || errMsg.includes('auth')) {
     diagnostic.errorType = 'AUTH_EXPIRED';
     diagnostic.rootCause = 'NotebookLM session token expired or unauthenticated.';
-    diagnostic.remediationAction = 'Run `nlm login` in terminal to refresh Google Auth credentials.';
+    diagnostic.remediationAction = 'Run `nlm login --force --storage file` in PowerShell to re-authenticate without interactive prompts.';
   } else if (errMsg.includes('ETIMEDOUT') || errMsg.includes('timeout')) {
     diagnostic.errorType = 'QUERY_TIMEOUT';
     diagnostic.rootCause = 'NotebookLM response exceeded wait window due to heavy source processing.';

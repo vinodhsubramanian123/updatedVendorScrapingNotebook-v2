@@ -31,15 +31,25 @@ Error: authentication may have expired
 usable for weeks, so do not re-authenticate solely because time has passed.
 
 **Solution:**
-```bash
-nlm login
+```powershell
+# Re-authenticate cleanly without interactive terminal prompts
+nlm login --force --storage file
 ```
 
-**Prevention:** For long-running scripts, implement periodic re-authentication:
-```bash
-# Check auth before critical operations
-nlm login --check || nlm login
+**Prevention (Proactive Pre-Flight Checks):**
+Never wait for a multi-step sync or evaluation to fail midway. Always verify proactively:
+```powershell
+# Fast non-blocking check (< 2s, does not open browser)
+npm run auth:nlm:check
+# Or directly:
+nlm login --check
 ```
+- If valid (`exit 0`), proceed without browser interruption.
+- If expired/stale (`exit 1`), run:
+  `nlm login --force --storage file`
+  - `--force`: Overwrites profile cleanly without confirmation even if session or account differed.
+  - `--storage file`: Bypasses the OS keystore prompt (`Protect the saved login in OS keystore? [y/N]`), storing directly to `~/.notebooklm-mcp-cli/profiles/default/`.
+  - After re-auth, hot-reload the running MCP server without restarting via the `refresh_auth` MCP tool.
 
 ### Browser Doesn't Launch
 

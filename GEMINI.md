@@ -126,3 +126,9 @@ Read `docs/audits/2026-10-01-vendor-scraping-and-grounding-remediation.md` for f
 - HPE OCA WebLogic search is not full-text. Filtering raw `CTO` substrings into the search box breaks chassis tree rendering.
 - Navigate by model name, select from rendered options. If standard CTO is hidden, navigate to Smart CTO, disable vendor defaults, then walk the full DOM. This logic lives in `navigate_oca.js:searchAndConfigureChassis()`.
 - `CTO` is case-sensitive and HPE-specific. Other vendors use different terminology.
+
+**INV-157 — Proactive Headless NLM Auth Pre-Flight & Non-Interactive Recovery:**
+- The engine executes a headless pre-flight authentication check (`nlm login --check` / `npm run auth:nlm:check`) prior to payload upload or evaluation.
+- When credentials expire, the remediation command `nlm login --force --storage file` overwrites stale tokens and completely bypasses the interactive OS keystore `[y/N]` prompt.
+- Following re-authentication, `call_mcp_tool('gemini-notebook-mcp', 'refresh_auth')` reloads fresh tokens into memory without restarting processes.
+

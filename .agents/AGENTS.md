@@ -7,7 +7,7 @@
 - **Epistemic Truth & Cognitive Rules**: Detailed anti-pattern prevention rules (Anti-Patterns 1–14) are codified in [`.agents/rules/epistemic_truth_and_deep_reasoning.md`](file:///.agents/rules/epistemic_truth_and_deep_reasoning.md).
 - **Graphify Knowledge Graph**: Graph rules are codified in [`.agents/rules/graphify.md`](file:///.agents/rules/graphify.md). Run `/graphify query` for token-efficient architecture discovery.
 - **Data Dictionary**: Canonical data contracts and schemas are defined in [`.agents/DATA_DICTIONARY.md`](file:///.agents/DATA_DICTIONARY.md).
-- **Complete Invariant Catalog**: All 156 technical invariants (INV-1 through INV-156) are cataloged in [`docs/INVARIANTS.md`](file:///docs/INVARIANTS.md).
+- **Complete Invariant Catalog**: All 157 technical invariants (INV-1 through INV-157) are cataloged in [`docs/INVARIANTS.md`](file:///docs/INVARIANTS.md).
 
 
 ### Runtime conditional discovery contract (2026-09-30)

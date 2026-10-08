@@ -42,7 +42,7 @@ nlm --version           # Check installed version
 
 ## Critical Rules (Read First!)
 
-1. **Authenticate when needed**: Run `nlm login` for first-time setup or confirmed stale/missing credentials. Saved cookies often remain usable for weeks.
+1. **Authenticate when needed & verify proactively**: Verify credentials headlessly using `npm run auth:nlm:check` or `nlm login --check` before long operations. If stale or expired, run `nlm login --force --storage file` in PowerShell (bypasses keystore prompts and overwrites stale cookies cleanly) and hot-reload via the MCP `refresh_auth` tool. Saved cookies remain usable for 7–14 days.
 2. **Do not confuse network failures with expired auth**: `auth_status="unverified"` means the probe was inconclusive. Check connectivity or try an API call before asking the user to log in again.
 3. **Auto-Authentication Recovery**: The CLI includes automatic 3-layer auth recovery (CSRF refresh -> Token reload -> Headless Auth) and 3x server error retries. Most errors are handled automatically. You only need to manually run `nlm login` if all recovery layers fail.
 4. **⚠️ ALWAYS ASK USER BEFORE DELETE**: Before executing ANY delete command, ask the user for explicit confirmation. Deletions are **irreversible**. Show what will be deleted and warn about permanent data loss.
