@@ -23,6 +23,69 @@ function isExcludedPcieRole(role) {
          role === 'PCIe Riser';
 }
 
+// Registered dual-GPU factory power cable kits across product lines
+const REGISTERED_DUAL_GPU_CABLE_SKUS = new Set([
+  'P74700-B21', // HPE ProLiant DL380a Gen12 GPU 16-pin FIO Cable Kit (Powers 2 GPUs)
+  'P83526-B21'  // HPE ProLiant DL380a Gen12 GPU Dual Power Cable Kit
+]);
+
+function resolveGpuCableCapacity(sku, desc, mandatorySkus = {}) {
+  const cleanSku = cleanBaseSKU(sku);
+  // 1. Mandatory SKU configuration override
+  if (mandatorySkus?.GPU_POWER_CABLE_KIT) {
+    const configuredSku = cleanBaseSKU(mandatorySkus.GPU_POWER_CABLE_KIT.sku);
+    if (configuredSku === cleanSku) {
+      if (Number.isFinite(mandatorySkus.GPU_POWER_CABLE_KIT.capacity)) {
+        return mandatorySkus.GPU_POWER_CABLE_KIT.capacity;
+      }
+      if (mandatorySkus.GPU_POWER_CABLE_KIT.dualGpu === true) return 2;
+    }
+  }
+
+  // 2. Known dual-GPU cable registry
+  if (REGISTERED_DUAL_GPU_CABLE_SKUS.has(cleanSku)) return 2;
+
+  // 3. Physical wiring semantics in description
+  const d = String(desc || '').toLowerCase();
+  const hasDualWiringSemantics =
+    d.includes('gpu 16-pin') ||
+    d.includes('16-pin') ||
+    d.includes('dual gpu') ||
+    d.includes('2-gpu') ||
+    d.includes('dual-gpu') ||
+    d.includes('12vhpwr dual') ||
+    d.includes('dual power cable kit');
+
+  if (hasDualWiringSemantics) return 2;
+
+  // 4. Default for evidenced single-GPU cables
+  return 1;
+}
+
+function isEvidencedGpuPowerCable(sku, desc, role, isDl380a, mandatorySkus = {}) {
+  const cleanSku = cleanBaseSKU(sku);
+  if (mandatorySkus?.GPU_POWER_CABLE_KIT?.sku && cleanSku === cleanBaseSKU(mandatorySkus.GPU_POWER_CABLE_KIT.sku)) {
+    return true;
+  }
+  if (REGISTERED_DUAL_GPU_CABLE_SKUS.has(cleanSku)) return true;
+
+  const d = String(desc || '').toLowerCase();
+  const hasGpuToken = d.includes('gpu') || d.includes('12vhpwr') || (role === 'Power Cable' && d.includes('gpu'));
+  if (!hasGpuToken) return false;
+
+  const hasPowerOrCableToken =
+    d.includes('power') ||
+    d.includes('cable') ||
+    d.includes('aux') ||
+    d.includes('12vhpwr') ||
+    d.includes('16-pin');
+
+  if (hasPowerOrCableToken) return true;
+  if (isDl380a && (d.includes('cable kit') || d.includes('power cable'))) return true;
+
+  return false;
+}
+
 function tallyPcieCablesAndGpus(tally, desc, sku, qty, role, mandatorySkus = {}) {
   const isPrimaryCable = (desc.includes('primary') && (desc.includes('cable kit') || desc.includes('prim cbl') || desc.includes('riser cable'))) ||
                          desc.includes('riser 1/6') ||
@@ -40,19 +103,10 @@ function tallyPcieCablesAndGpus(tally, desc, sku, qty, role, mandatorySkus = {})
     tally.hasSecondaryCableKit = true;
   }
 
-  const isDl380aGpuCable = sku === 'P74700-B21' || sku === 'P83526-B21' || 
-                           (tally.isDl380a && (desc.includes('cable kit') || desc.includes('power cable')) && desc.includes('gpu'));
-  const isGpuPowerCable = desc.includes('gpu power') || desc.includes('gpu cable') || desc.includes('gpu aux') || 
-                          desc.includes('12vhpwr') || desc.includes('gpu 16-pin') || 
-                          (role === 'Power Cable' && desc.includes('gpu')) ||
-                          isDl380aGpuCable ||
-                          (mandatorySkus?.GPU_POWER_CABLE_KIT?.sku && sku === cleanBaseSKU(mandatorySkus.GPU_POWER_CABLE_KIT.sku));
-  if (isGpuPowerCable) {
+  if (isEvidencedGpuPowerCable(sku, desc, role, tally.isDl380a, mandatorySkus)) {
     tally.hasGpuPowerCableKit = true;
-    // Multiplier: 16-pin / dual-GPU cables provide 2 GPU connections per kit.
-    // DL380a factory cable kits P74700-B21 and P83526-B21 always power 2 GPUs per kit.
-    const multiplier = (isDl380aGpuCable || desc.includes('gpu 16-pin') || desc.includes('dual gpu') || desc.includes('2-gpu')) ? 2 : 1;
-    tally.gpuPowerCableKitCount += (qty * multiplier);
+    const capacityPerKit = resolveGpuCableCapacity(sku, desc, mandatorySkus);
+    tally.gpuPowerCableKitCount += (qty * capacityPerKit);
   }
 
   if (isGpuComponent(role, desc)) {
