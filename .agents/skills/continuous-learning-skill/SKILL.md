@@ -9,10 +9,13 @@ description: Closed-loop continuous learning, evidence log reflection, and autom
 
 ---
 
-## 🔁 The 5-Stage Continuous Learning Lifecycle
+## 🔁 The 6-Stage Continuous Learning Lifecycle
 
 ```
 [Customer Query / BOQ Run]
+       │
+       ▼
+0. Up-Front Ambiguity Triage (Confidence < 0.95 -> ask_question -> Learned Decision)
        │
        ▼
 1. Pipeline Execution & Shared State Logging (EvidenceLedger)
@@ -27,7 +30,7 @@ description: Closed-loop continuous learning, evidence log reflection, and autom
 4. Active Knowledge Router Discovery (Categorized into dependencies, modernizations, substitutions)
        │
        ▼
-5. Automated Reachability Pre-Check (In-memory verification that next run applies the rule)
+5. Automated Reachability Pre-Check & Loop Testing (Verifies next run applies rule autonomously)
 ```
 
 ---
@@ -58,6 +61,17 @@ description: Closed-loop continuous learning, evidence log reflection, and autom
   - `outputs/history/evidence_logs/evidence_log_{traceId}.json` (machine-readable shared state across all 9 phases).
   - `outputs/history/evidence_logs/evidence_summary_{traceId}.md` (human-readable table of phases, active rules reached, and SKU audit decisions).
 - When investigating why a rule did or did not apply, the agent MUST inspect the `activeRulesReached` section of the evidence log.
+
+### 4. Ephemeral Scratchpad Isolation vs Sealed Master State (`INV-24`, `INV-128`)
+- **Zero Premature Master Writes**: Candidate evaluations, exploratory tests, and draft syntheses MUST execute against in-memory state or temporary scratchpads (`os.tmpdir()`).
+- Master files (`master_knowledge_registry.json`, `Catalog_Rules.json`, `notebook_sync_payload_*.md`) may **ONLY** be modified via `safeWriteJsonAtomic` after an evaluation passes the 14-Point Delivery Gate (`DeliveryAuthorization`) or receives explicit human approval. This prevents unverified candidate errors from permanently poisoning ground truth.
+
+### 5. Up-Front Disambiguation to Autonomous Promotion Protocol (`INV-73`, `INV-111`)
+- When a customer inquiry exhibits ambiguity (confidence $< 0.95$, multiple matching chassis, or ambiguous cluster counts):
+  1. **Triage Gate**: Prompt the user with numbered, structured choices via `ask_question`.
+  2. **Ingestion**: Ingest the human decision into `feedback_loop.js` (`processPortalFeedback()`) with explicit scope taxonomy and reasoning.
+  3. **Loop Testing**: Automatically run a targeted regression check asserting that the previously ambiguous input now resolves with confidence $\ge 0.95$.
+  4. **Autonomous Promotion**: Commit the certified rule to `master_knowledge_registry.json`. Future queries matching this pattern resolve autonomously without human prompts!
 
 ---
 

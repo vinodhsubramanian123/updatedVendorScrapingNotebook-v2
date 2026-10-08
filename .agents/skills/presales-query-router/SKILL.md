@@ -23,6 +23,7 @@ Whenever the user submits a message, file, or quote, classify the input into the
 | **Customer Hardware BOQ / Quote**<br>*(e.g., `.xlsx`, `.csv`, or tabular text containing SKUs/quantities)* | Pre-Flight 7-Aspect BOQ Validation & Matrix Ranking | `boq-eval-skill` | `node scripts/evaluators/eval_boq.js <file>` |
 | **Two BOMs / Discrepancy Comparison**<br>*(e.g., Customer BOQ vs HPE Partner Quote BOM, or Gen11 vs Gen12 migration)* | BOM Reconciliation & Gap Analysis | `bom-reconciliation-skill` | `node scripts/lib/boq/vendor_bom_verifier.js` |
 | **Pricing Drift / Lifecycle / Obsolete SKUs**<br>*(e.g., "What SKUs went obsolete last week?" or "Show price trail for P64707-B21")* | Catalog Intelligence & Price History | `catalog-intelligence-skill` | `price_history.json`, `diff_catalog.js`, `discontinued_skus.json` |
+| **Single-SKU / Standalone Component Inquiry**<br>*(e.g., "Check P74700-B21", "Price of P83526-B21", "Is P69727-F21 obsolete?")* | Standalone Option Lifecycle & Pricing (Never Monolithic BOQ) | `catalog-intelligence-skill` | `route_query.js` $\rightarrow$ `_handleCatalogIntelligence` / `sku_versioning.js` |
 | **Explicit competitor conversion / equivalence request** | Cross-Vendor Requirement Extraction & Candidate Handoff | `cross-vendor-transformation-skill` | `route_query.js` → `cross_vendor_transformer.js` |
 | **Customer-facing reconciliation remarks** | Commercial Actions & Quantity Bridges | `boq-remarks-reconciliation-skill` | `scripts/lib/boq/commercial_remarks.js` |
 | **Heterogeneous Multi-Domain / Ad-Hoc Tender**<br>*(e.g., mixed servers + storage + switch + tape, or loose unbuildable DIMMs/NICs/drives)* | Heterogeneous Tender Modernization & Carrier Sizing | `heterogeneous-tender-modernizer` | `route_query.js` $\rightarrow$ `heterogeneous_tender_modernizer.js` |
@@ -262,13 +263,23 @@ After classification AND before executing the target skill, the agent MUST verif
 
 | # | Check | Pass Condition |
 |---|-------|---------------|
-| VG1 | Intent confidence ≥ 0.85 | If below, ask user for clarification |
+| VG1 | Critical scope/requirement ambiguity resolved before execution (`INV-73`) | Clarify consequential unknowns before deep execution; preserve explicit customer requirements |
 | VG2 | Target skill exists | Skill directory is present in `.agents/skills/` |
 | VG3 | Handoff payload complete | All required fields populated (no `null` or `undefined`) |
 | VG4 | File accessible (if file-based) | File exists on disk and is readable |
 | VG5 | Catalog directory available | Target chassis `outputs/{Family}/{Gen}/{Model}/` exists |
 
-If any gate fails, the agent MUST:
+**Up-Front HITL Ambiguity Triage Contract (`INV-73` + `INV-111`):**
+- When query confidence is $< 0.95$ or `isAmbiguous: true` (e.g. `AMBIGUOUS_PRODUCT` with multiple generation candidates like Gen11 vs Gen12, ambiguous cluster node counts, or conflicting file hints):
+  1. The engine sets `hitlRequired: true` and attaches structured `ambiguityDetails` (`{ error, candidates, chassisKey }`).
+  2. The agent MUST NOT guess or pick a default. The agent presents an interactive disambiguation prompt using `ask_question` with structured, numbered choices.
+  3. Once the user selects an option, the decision is ingested into `feedback_loop.js` (`processPortalFeedback()`), verified via loop test, and promoted to autonomous execution for future runs.
+
+**Single-SKU Component Isolation Invariant:**
+- Queries referencing a single hardware part number without a full server bill of materials (e.g., "Check P74700-B21", "Price of P83526-B21", "Is P69727-F21 obsolete?") MUST NEVER be dispatched to `boq-eval-skill`.
+- They route directly to `catalog-intelligence-skill` (for price, lifecycle, and inventory lookup) or `nlm-skill` (for compatibility rules), preventing false `DELIVERY_BLOCKED_UNBUILDABLE` errors caused by missing chassis, CPU, or memory.
+
+If any verification gate fails, the agent MUST:
 1. Report which gate failed and why
 2. Suggest corrective action (e.g., "File not found — please provide the correct path")
 3. Record the failure in the execution trace (per `execution-trace-skill`)
@@ -291,3 +302,15 @@ Read `docs/SOLUTION_TOPOLOGY_AND_VALIDATION.md` before onboarding a new product 
 ### Runtime conditional discovery contract (2026-09-30)
 
 Read [the shared catalog and BOQ runtime procedure](../../../docs/RUNTIME_CONDITIONAL_DISCOVERY.md) before scraping or live BOQ validation. This contract supersedes older full-coverage claims and blanket bans on BOQ-time conditional investigation. Catalog capture and BOQ-scoped runtime investigation are separate; exploratory portal checks may run before local PASS, while final acceptance requires the exact restored manifest and current vendor receipt. Never select OEM by default, infer mandatory rules from hidden visibility, or treat a catalog miss as unsupported. The runtime plan is generated/exported by the canonical evaluator and checked at acceptance; applying arbitrary BOQs and non-ambient selector states remains a live-agent procedure. Preserve base/owner/quantity/selector provenance and disclose unexecuted branches. Reachable workflow advisories are seeded via scripts/maintenance/record_scraping_workflow_learnings.js; reachability is not hardware certification or cloud sync.
+
+### CP7a planner ownership — engineering reference, unused at runtime
+
+This skill owns the additive [pure query planner](../../../scripts/lib/boq/presales_query_planner.js) and its [declarative rules](../../../scripts/lib/boq/presales_query_plan_rules.js). `planPresalesQuery(queryText, context)` proposes an objective, source modality, requested capabilities, transforms and unresolved choices while retaining the original requirements. It imports no router, evaluator or service and cannot dispatch. `PLANNED` only means an objective was resolved; confidence, format support and product/vendor scope remain unverified. The legacy override is `context.intent` (16 early-map tracks); OCR is a planner intake hint and has no such legacy override. There is no legacy `context.explicitTrack` alias.
+
+CP7a is independently verified. The planner is consumed only by the default-disabled CP7b report-only observer; it cannot dispatch. Follow the existing canonical router for customer requests. CP7b shadow integration requires isolated CP0 goldens and the CP6r shared-lease receipt; CP7c activation requires CP11 and each applicable continuation receipt. See the [CP7a handoff](../../../docs/audits/2026-10-04-skill-workflow-cp7a-handoff.md) for exact-source checks and limits. This ownership reference does not add a runtime call or certify the planner's decisions.
+
+### CP7b report-only shadow ownership — integrated, default disabled
+
+This skill owns the internal [shadow observation helper](../../../scripts/lib/boq/presales_query_shadow.js). In the integrated report-only path, `PRESALES_QUERY_SHADOW=1` opts into a pure plan comparison while the unchanged legacy router executes once. The default is disabled. The public router exports, returned envelope and primary error remain compatible; no `explicitTrack` alias is introduced. Unique atomic reports live under `outputs/history/skill_workflow_excellence/CP7b/shadow`, contain bounded projections and source hashes, and never serialize full query/context/result objects. Planner/report failures cannot replace the legacy result or error.
+
+Reports are engineering observations, not actual skill-invocation evidence, child traces, grounding, vendor acceptance or delivery authorization. Requested transforms remain unexecuted proposals; the returned legacy classification cannot prove whether a child capability ran. CP7b is independently reviewed and integrated after CP0/CP6r readiness; customer-path activation is separate. See the [CP7b integration handoff](../../../docs/audits/2026-10-07-cp7b-integration-handoff.md). CP11 terminal ownership and CP7c dispatch are unchanged.

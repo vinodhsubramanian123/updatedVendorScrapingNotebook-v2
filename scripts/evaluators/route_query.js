@@ -12,6 +12,7 @@
  */
 
 const fs = require('fs');
+const { observeRouterEntry, observeActualInvocation, resolveEntryTraceId } = require('../lib/system/execution_trace_runtime.js');
 const path = require('path');
 const { queryLocalKnowledgeBase } = require('../lib/rag/local_rag_search.js');
 const { evaluateBOQMultiAspect } = require('../lib/boq/boq_evaluator.js');
@@ -460,8 +461,17 @@ function classifyQueryIntent(queryText = '', context = {}) {
   }
 
 
-  // 3. Catalog Intelligence keywords
+  // 3. Catalog Intelligence keywords & Standalone Single-SKU inquiries
+  const detectedSkus = (text.match(/\b([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6}|[A-Z0-9]{5,8}AAE|[HURS][A-Z0-9]{4,11})\b/gi) || []).filter(isValidHpeSKU);
+  const isSingleSkuInquiry = detectedSkus.length === 1 && !filePath && (!context.items || !Array.isArray(context.items) || context.items.length <= 1);
+  const isSingleSkuPricingOrLifecycle = isSingleSkuInquiry && (
+    /\b(?:price|pricing|cost|rate|gpl|list\s*price|trend|history|obsolete|eol|lifecycle|direct\s*ship|status|availability|available|details?|lookup|check\s+(?:sku|part|price|status)?)\b/i.test(text) ||
+    !text.includes(' ') ||
+    /^(?:check|show|get|find|lookup|inspect|price\s+of|cost\s+of|status\s+of)?\s*[a-z0-9-]+$/i.test(text)
+  );
+
   const hasCatalogKeywords =
+    isSingleSkuPricingOrLifecycle ||
     text.includes('price trend') ||
     text.includes('pricing history') ||
     text.includes('is obsolete') ||
@@ -476,7 +486,9 @@ function classifyQueryIntent(queryText = '', context = {}) {
       intent: 'CATALOG_INTELLIGENCE',
       confidence: 0.95,
       skillTarget: 'catalog-intelligence-skill',
-      rationale: 'Query targets pricing history, SKU lifecycle status, or option catalog metadata.'
+      rationale: isSingleSkuPricingOrLifecycle
+        ? `Single SKU inquiry for ${detectedSkus[0]} directed to catalog intelligence to avoid monolithic server evaluation.`
+        : 'Query targets pricing history, SKU lifecycle status, or option catalog metadata.'
     };
   }
 
@@ -588,6 +600,13 @@ async function _handleFreeformQa(queryText, context) {
   };
 }
 
+function _boqPipelineFailure(error, context) {
+  const cancelled = context.signal?.aborted && Object.is(error, context.signal.reason);
+  return { status: cancelled ? 'CANCELLED' : 'ERROR',
+    error: cancelled ? 'BOQ evaluation cancelled' : (error?.message ?? String(error)),
+    traceId: error?.traceId || null, evidenceLogPath: error?.evidenceLogPath || null };
+}
+
 async function _handleBoqEvaluation(queryText, context) {
   const chassisInfo = getChassisCatalog(queryText, context);
   if (context.filePath && fs.existsSync(context.filePath)) {
@@ -597,11 +616,12 @@ async function _handleBoqEvaluation(queryText, context) {
         inputFile: context.filePath,
         chassisDir: context.chassisDir || (chassisInfo?.catalogDir || undefined),
         targetSheetName: context.targetSheet || undefined,
+        signal: context.signal,
         JSON_MODE: true,
         OFFLINE_MODE: Boolean(context.offlineMode || process.env.OFFLINE_MODE === 'true')
       });
     } catch (pipeErr) {
-      return { status: 'ERROR', error: pipeErr.message, traceId: pipeErr.traceId || null, evidenceLogPath: pipeErr.evidenceLogPath || null };
+      return _boqPipelineFailure(pipeErr, context);
     }
   } else if (context.items && Array.isArray(context.items)) {
     try {
@@ -610,11 +630,12 @@ async function _handleBoqEvaluation(queryText, context) {
         inputItems: context.items,
         chassisDir: context.chassisDir || (chassisInfo?.catalogDir || undefined),
         targetSheetName: context.targetSheet || undefined,
+        signal: context.signal,
         JSON_MODE: true,
         OFFLINE_MODE: Boolean(context.offlineMode || process.env.OFFLINE_MODE === 'true')
       });
     } catch (pipeErr) {
-      return { status: 'ERROR', error: pipeErr.message, traceId: pipeErr.traceId || null, evidenceLogPath: pipeErr.evidenceLogPath || null };
+      return _boqPipelineFailure(pipeErr, context);
     }
   } else {
     return {
@@ -1271,13 +1292,27 @@ async function _handleMultiClusterTender(queryText, context) {
     message: 'Rack and power estimates use explicit product height and supplied site/power inputs. Blade enclosure and multi-tier relationships require separate sizing.' };
 }
 
+// CP7b report-only proposal. Disabled until independently verified CP0/CP6r parity.
+async function executeRoutedQuery(queryText = '', context = {}) {
+  return observeRouterEntry(__filename, queryText, () => _executeRoutedQueryWithShadow(queryText, context));
+}
+
+async function _executeRoutedQueryWithShadow(queryText = '', context = {}) {
+  if (process.env.PRESALES_QUERY_SHADOW !== '1') return _executeLegacyRoutedQuery(queryText, context);
+  let observe;
+  try { observe = require('../lib/boq/presales_query_shadow.js').executeWithQueryShadow; }
+  catch { return _executeLegacyRoutedQuery(queryText, context); }
+  if (typeof observe !== 'function') return _executeLegacyRoutedQuery(queryText, context);
+  return observe(queryText, context, _executeLegacyRoutedQuery);
+}
+
 /**
  * Execute routed presales query based on classified intent
  * @param {string} queryText 
  * @param {object} context 
  * @returns {Promise<object>} Execution result
  */
-async function executeRoutedQuery(queryText = '', context = {}) {
+async function _executeLegacyRoutedQuery(queryText = '', context = {}) {
   const classification = classifyQueryIntent(queryText, context);
   const startTime = Date.now();
 
@@ -1326,71 +1361,71 @@ async function executeRoutedQuery(queryText = '', context = {}) {
 
   switch (classification.intent) {
     case 'CROSS_VENDOR_TRANSFORMATION':
-      responseData = await _handleCrossVendorTransformation(queryText, context);
+      responseData = await observeActualInvocation('_handleCrossVendorTransformation', __filename, () => _handleCrossVendorTransformation(queryText, context));
       break;
 
     case 'HETEROGENEOUS_TENDER_MODERNIZATION':
-      responseData = await _handleHeterogeneousTenderModernization(queryText, context);
+      responseData = await observeActualInvocation('_handleHeterogeneousTenderModernization', __filename, () => _handleHeterogeneousTenderModernization(queryText, context));
       break;
 
     case 'FREEFORM_QA':
-      responseData = await _handleFreeformQa(queryText, context);
+      responseData = await observeActualInvocation('_handleFreeformQa', __filename, () => _handleFreeformQa(queryText, context));
       break;
 
     case 'BOQ_EVALUATION':
-      responseData = await _handleBoqEvaluation(queryText, context);
+      responseData = await observeActualInvocation('_handleBoqEvaluation', __filename, () => _handleBoqEvaluation(queryText, context));
       break;
 
     case 'OCR_QUOTE_INGESTION':
-      responseData = _handleOcrQuoteIngestion(queryText, context);
+      responseData = observeActualInvocation('_handleOcrQuoteIngestion', __filename, () => _handleOcrQuoteIngestion(queryText, context));
       break;
 
     case 'CATALOG_INTELLIGENCE':
-      responseData = _handleCatalogIntelligence(queryText, context);
+      responseData = observeActualInvocation('_handleCatalogIntelligence', __filename, () => _handleCatalogIntelligence(queryText, context));
       break;
 
     case 'RFP_SIZING_TO_BOM':
-      responseData = await _handleRfpSizing(queryText, context);
+      responseData = await observeActualInvocation('_handleRfpSizing', __filename, () => _handleRfpSizing(queryText, context));
       break;
 
     case 'BOM_RECONCILIATION':
-      responseData = _handleBomReconciliation(queryText, context);
+      responseData = observeActualInvocation('_handleBomReconciliation', __filename, () => _handleBomReconciliation(queryText, context));
       break;
 
     case 'WORKLOAD_DNA':
-      responseData = await _handleWorkloadDna(queryText, context);
+      responseData = await observeActualInvocation('_handleWorkloadDna', __filename, () => _handleWorkloadDna(queryText, context));
       break;
 
     case 'VALUE_ENGINEERING':
-      responseData = await _handleValueEngineering(queryText, context);
+      responseData = await observeActualInvocation('_handleValueEngineering', __filename, () => _handleValueEngineering(queryText, context));
       break;
 
     case 'LEAST_DELTA_SYNTHESIS':
-      responseData = await _handleLeastDeltaSynthesis(queryText, context);
+      responseData = await observeActualInvocation('_handleLeastDeltaSynthesis', __filename, () => _handleLeastDeltaSynthesis(queryText, context));
       break;
 
     case 'WORKBOOK_GENERATION':
-      responseData = await _handleWorkbookGeneration(queryText, context);
+      responseData = await observeActualInvocation('_handleWorkbookGeneration', __filename, () => _handleWorkbookGeneration(queryText, context));
       break;
 
     case 'REMARKS_RECONCILIATION':
-      responseData = await _handleRemarksReconciliation(queryText, context);
+      responseData = await observeActualInvocation('_handleRemarksReconciliation', __filename, () => _handleRemarksReconciliation(queryText, context));
       break;
 
     case 'MULTI_CLUSTER_TENDER':
-      responseData = await _handleMultiClusterTender(queryText, context);
+      responseData = await observeActualInvocation('_handleMultiClusterTender', __filename, () => _handleMultiClusterTender(queryText, context));
       break;
 
     case 'ADVERSARIAL_VALIDATION':
-      responseData = await _handleAdversarialValidation(queryText, context);
+      responseData = await observeActualInvocation('_handleAdversarialValidation', __filename, () => _handleAdversarialValidation(queryText, context));
       break;
 
     case 'CONTINUOUS_LEARNING':
-      responseData = await _handleContinuousLearning(queryText, context);
+      responseData = await observeActualInvocation('_handleContinuousLearning', __filename, () => _handleContinuousLearning(queryText, context));
       break;
 
     case 'KNOWLEDGE_SYNC':
-      responseData = await _handleKnowledgeSync(queryText, context);
+      responseData = await observeActualInvocation('_handleKnowledgeSync', __filename, () => _handleKnowledgeSync(queryText, context));
       break;
 
     default:
@@ -1409,7 +1444,7 @@ async function executeRoutedQuery(queryText = '', context = {}) {
   let evidenceLogPath = responseData?.evidenceLogPath || null;
 
   if (!traceId) {
-    traceId = `TRC-${Date.now()}-${crypto.randomBytes(3).toString('hex').toUpperCase()}`;
+    traceId = resolveEntryTraceId(() => `TRC-${Date.now()}-${crypto.randomBytes(3).toString('hex').toUpperCase()}`);
     if (responseData && typeof responseData === 'object') {
       responseData.traceId = traceId;
     }
@@ -1473,9 +1508,13 @@ async function executeRoutedQuery(queryText = '', context = {}) {
     result: responseData,
     traceId,
     executionTimeMs: Date.now() - startTime,
-    timestamp: new Date().toISOString(),
     classificationConfidence: confidence, // 0.0-1.0
-    hitlRequired: confidence < 0.80,
+    hitlRequired: confidence < 0.95 || Boolean(chassisInfoForConf?.isAmbiguous),
+    ambiguityDetails: chassisInfoForConf?.isAmbiguous ? {
+      error: chassisInfoForConf.error,
+      candidates: chassisInfoForConf.candidates || chassisInfoForConf.availableCatalogs || [],
+      chassisKey: chassisInfoForConf.chassisKey
+    } : null,
     classificationBasis
   };
 }
