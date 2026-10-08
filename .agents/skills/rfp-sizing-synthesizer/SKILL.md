@@ -104,7 +104,7 @@ When a customer or sales engineer provides a tender wishlist without HPE part nu
 ## 💻 Autonomous Sizing Workflow
 
 1. **Parse & Tokenize Intent**: Extract requested CPU core targets, RAM capacity, storage IOPS profile, and network bandwidth.
-2. **Resolve to Catalog SKUs**: Use [`scripts/lib/boq/requirement_intent_resolver.js`](../../scripts/lib/boq/requirement_intent_resolver.js) to map the tokenized roles to concrete, certified catalog part numbers from `outputs/{Family}/{Gen}/{Model}/`.
+2. **Resolve to Catalog SKUs**: Use [`scripts/lib/boq/requirement_intent_resolver.js`](../../../scripts/lib/boq/requirement_intent_resolver.js) to map the tokenized roles to concrete, certified catalog part numbers from `outputs/{Family}/{Gen}/{Model}/`.
 3. **Compile Baseline BOM**: Create a structured CSV/JSON payload matching the schema below.
 4. **Pre-Flight Sizing Verification**: Run the verification checklist below BEFORE piping into eval.
 5. **Validate via 7-Aspect Engine**:

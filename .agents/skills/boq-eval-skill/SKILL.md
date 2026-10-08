@@ -72,7 +72,7 @@ While the React Dashboard provides an exceptional visual interface for reviewing
    - Executes $O(1)$ indexed checks across: (1) Compute & Thermal TDP, (2) Memory Channel symmetry (1DPC/2DPC), (3) Storage Tri-Mode controllers & drive cages, (4) Networking & OCP slot constraints, (5) PCIe Riser card & slot capacity, (6) Power redundancy & -48VDC telco lug kits, (7) Support services & OS physical core multiplier licensing (`INV-28`).
    - **Intra-Category Mutual Exclusion (`INV-91`)**: Validates intra-category consistency prior to downstream checks: AC vs -48VDC telco power, Platinum vs Titanium PSU efficiency mixing (with even-pair cluster tolerance), wattage uniformity, Onsite (`HA114A1`) vs Remote (`HA454A1`) deployment contradiction, DDR4 vs DDR5 memory generation incompatibility, RDIMM vs LRDIMM module mixing, dual-socket CPU model uniformity, and LFF storage in SFF chassis.
    - **SaaS vs Hardware Support Delineation (`INV-92`)**: Delineates SaaS cloud management software (`R7A11AAE`, `S1A05A`) from physical break-fix hardware care (`HU4B2A3`). Never conflates software subscriptions with hardware maintenance, emitting `hasSaasWithoutHardwareSupport` advisory flag when hardware care is absent.
-   - **Zero-Hardcoding Compliance**: Generic aspect checkers maintain 0 hardcoded SKU strings. All platform enablement kits (fans, cables, batteries, risers, DC lugs, CE mark kits) are dynamically resolved via `mandatorySkus` from [`scripts/config/chassis_map.json`](../../scripts/config/chassis_map.json) and catalog rules. Default primary risers provide 3 electrically active slots without requiring extra cable kits.
+   - **Zero-Hardcoding Compliance**: Generic aspect checkers maintain 0 hardcoded SKU strings. All platform enablement kits (fans, cables, batteries, risers, DC lugs, CE mark kits) are dynamically resolved via `mandatorySkus` from [`scripts/config/chassis_map.json`](../../../scripts/config/chassis_map.json) and catalog rules. Default primary risers provide 3 electrically active slots without requiring extra cable kits.
 3. **Grounded Gemini NotebookLM Verification (Double Safety Net)**:
    - Evaluates the query payload against the official vendor QuickSpecs PDF and 22-sheet master catalog in NotebookLM.
    - **INV-24 Compliance & Ephemeral Solution Source Validation (`nlm_solution_source_validator.js`)**:
@@ -231,7 +231,7 @@ graph TD
 ## 2. Phase-by-Phase Execution Engine
 
 ### Phase 1: Ingestion & Multi-Sheet Multi-Config Engine
-- **Module**: [`scripts/lib/boq/boq_evaluator.js`](../../scripts/lib/boq/boq_evaluator.js), [`scripts/lib/boq/boq_preprocessor.js`](../../scripts/lib/boq/boq_preprocessor.js) & [`scripts/lib/boq/boq_parser.js`](../../scripts/lib/boq/boq_parser.js)
+- **Module**: [`scripts/lib/boq/boq_evaluator.js`](../../../scripts/lib/boq/boq_evaluator.js), [`scripts/lib/boq/boq_preprocessor.js`](../../../scripts/lib/boq/boq_preprocessor.js) & [`scripts/lib/boq/boq_parser.js`](../../../scripts/lib/boq/boq_parser.js)
 - **Functions**: `parseAndConsolidateBOQ(rawContent, filePath)`, `preprocessAndGroupBOQ(rawInput, filePath, options)`, `parseSkuLines(lines)`, `detectAndNormalizeAtomicCto(items)`
 - **Capabilities**:
   - **Multi-Unit CTO Normalization**: Resolves $N$-unit multiplied quotes (e.g. 5x DL380 server orders) into atomic 1-unit server profiles, normalizing CPU, RAM, storage, and accessory counts.
@@ -247,7 +247,7 @@ graph TD
   - Multi-part inline SKU extraction via `isValidHpeSKU()` filtering.
 
 ### Phase 2: Modular 7-Aspect Physical Math Pre-Checks & 10-Step Progress Streaming
-- **Module**: [`scripts/lib/boq/boq_evaluator.js`](../../scripts/lib/boq/boq_evaluator.js)
+- **Module**: [`scripts/lib/boq/boq_evaluator.js`](../../../scripts/lib/boq/boq_evaluator.js)
 - **Functions**: `evaluatePhysicalMath(consolidatedItems)`
 - **High-Performance $O(1)$ SKU Indexing Contract (`INV-59`)**: All aspect checkers use `buildCatalogSkuIndex(catalogData)` with memoization on `catalogData._skuIndex`, eliminating $O(N \times M \times K)$ nested loops and cutting evaluation latency by >18%.
 - **Strict Delimited Lifecycle Parsing (`INV-62`)**: `support_services.js` checks lifecycle status using strict token delimiters (`/^(?:90|EOL)\s+/i`, `[90]`, `(90)`, `90-DAY`), preventing false-positive EOL flags on SKUs starting with "90".
@@ -265,7 +265,7 @@ graph TD
 - **Streaming Output Protocol**: Structured results are enclosed within `\n__EVAL_RESULT_JSON__...__EVAL_RESULT_JSON__\n` delimiters to guarantee uncorrupted extraction over chunked streams.
 
 ### Phase 2.5: 5-Level Dependency Conflict Graph & Closed-Loop Delta Auto-Injection
-- **Module**: [`scripts/lib/conflict/conflict_graph.js`](../../scripts/lib/conflict/conflict_graph.js) & [`scripts/lib/catalog/catalog_rules.js`](../../scripts/lib/catalog/catalog_rules.js)
+- **Module**: [`scripts/lib/conflict/conflict_graph.js`](../../../scripts/lib/conflict/conflict_graph.js) & [`scripts/lib/catalog/catalog_rules.js`](../../../scripts/lib/catalog/catalog_rules.js)
 - **Functions**: `validateConflictGraph()`, `loadLearnedKnowledgeDeltas()`, `extractWorkloadDna()`, `synthesize5TierRankedSolutions()`, `analyzeCascadingImpact()`, `introspectSku()`
 - **Tender Base SKU Quantity Accumulation (`INV-60`)**: In `conflict_graph.js`, duplicate base hardware entries accumulate quantities (`fullBomMap.get(sku).quantity += qty`) rather than overwriting, preserving total tender hardware counts.
 - **Dynamic Generation-Aware Mandatory SKUs & SSOT (`INV-61`)**: `catalog_rules.js` serves as the Single Source of Truth (`DEFAULT_MANDATORY_SKUS`). Resolves heatsinks and riser cable kits dynamically by generation (`P48818-B21` / `P76453-B21` for Gen12; `P74792-B21` / `P56073-B21` / `P56074-B21` for Gen11) without hardcoded cross-generation pollution.
@@ -293,22 +293,22 @@ graph TD
   - **Rank 5**: Budget & CapEx Minimized Buildable Baseline
 
 ### Phase 3: Gemini Notebook RAG Payload Generation (Decoupled Architecture)
-- **Module**: [`scripts/evaluators/eval_boq.js`](../../scripts/evaluators/eval_boq.js)
+- **Module**: [`scripts/evaluators/eval_boq.js`](../../../scripts/evaluators/eval_boq.js)
 - **Functions**: `formatNotebookQueryPayload(items, evalResults)`
 - **Dynamic Routing**: Dynamically derives the target Notebook ID via `scripts/config/notebooks.json` to prevent cross-pollination of vendor constraints.
 - **Asynchronous Execution**: `eval_boq.js` does **not** block or execute the query directly. It embeds the `notebookPayload` in the output JSON. The frontend (`App.jsx`) intercepts this and fires a non-blocking background request to `/api/notebook-query-async`.
 - **RAG Second Opinion**: The `ResolutionMatrix` UI renders a "Pending Verification" badge, which smoothly updates with the real RAG certification once the background polling completes.
 
 ### Phase 4: Budget Optimization & Golden Rule Assurance
-- **Module**: [`scripts/lib/boq/budget_optimizer.js`](../../scripts/lib/boq/budget_optimizer.js)
+- **Module**: [`scripts/lib/boq/budget_optimizer.js`](../../../scripts/lib/boq/budget_optimizer.js)
 - Enforces the Golden Rule: Mandatory buildability fixes take precedence over budget caps.
 
 ### Phase 5 & 6: Dual Outputs, Telemetry & Closed-Loop Feedback Learning
-- **Output 1 (Dashboard API & Telemetry)**: Submissions sent via `/api/eval-boq` display in React frontend and automatically log execution metrics to `pipeline_telemetry.json` via [`scripts/lib/system/telemetry.js`](../../scripts/lib/system/telemetry.js).
+- **Output 1 (Dashboard API & Telemetry)**: Submissions sent via `/api/eval-boq` display in React frontend and automatically log execution metrics to `pipeline_telemetry.json` via [`scripts/lib/system/telemetry.js`](../../../scripts/lib/system/telemetry.js).
 - **Output 2 (Corrected BOQ Excel & Partner Portal Upload BOM)**:
   - Generates multi-sheet **Corrected BOQ Excel** output (`/api/export-boq`) containing NotebookLM Rationale Summary and finalized BOM.
   - Generates flat **Partner Portal Upload BOM** workbook strictly adhering to `INV-37` (7-column schema, per-cluster subtotal rows, and 2-line separator gaps).
-- **Feedback Module**: [`scripts/lib/feedback/feedback_loop.js`](../../scripts/lib/feedback/feedback_loop.js)
+- **Feedback Module**: [`scripts/lib/feedback/feedback_loop.js`](../../../scripts/lib/feedback/feedback_loop.js)
 - **Command**: `npm run eval:boq <boq_file> --simulate-portal-error "<error_text>"` or Dashboard modal.
 - Logs permanent `KnowledgeDeltas` in `outputs/history/catalog_deltas.json` and updates `_Catalog_Rules.json`.
 
@@ -386,7 +386,7 @@ npm run eval:boq tests/fixtures/test_boq_dl380_gen12.csv --simulate-portal-error
 
 ## 3. Multi-Cluster Tender Mathematical Partitioning Engine
 
-When enterprise tenders (e.g. `GID-RFQS-HPE-2026-006.xlsx`) arrive with multiple server models or mixed CPU/PSU types collapsed into a single 60-node total quantity, [`scripts/lib/boq/multi_cluster_splitter.js`](../../scripts/lib/boq/multi_cluster_splitter.js) automatically solves the partitioning:
+When enterprise tenders (e.g. `GID-RFQS-HPE-2026-006.xlsx`) arrive with multiple server models or mixed CPU/PSU types collapsed into a single 60-node total quantity, [`scripts/lib/boq/multi_cluster_splitter.js`](../../../scripts/lib/boq/multi_cluster_splitter.js) automatically solves the partitioning:
 
 1. **Multi-Line Bundled Cell Parsing**: Extracts individual SKUs and descriptions embedded inside multi-line cell blocks (e.g. 13 bundled accessory SKUs in a single row) using `isValidHpeSKU()` regex filtering.
 2. **Diophantine Processor Node Allocation**:

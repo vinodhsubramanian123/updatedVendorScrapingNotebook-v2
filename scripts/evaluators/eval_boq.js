@@ -12,6 +12,7 @@
  */
 
 const fs = require('fs');
+const terminalOwner = require('../lib/lifecycle/canonical_terminal_owner.js');
 const crypto = require('crypto');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '..', '..', '.env') });
@@ -28,6 +29,7 @@ const { optimizeForBudget } = require('../lib/boq/budget_optimizer.js');
 const { extractAndPersistLearnedDeltas } = require('../lib/notebook/knowledge_extractor.js');
 const { createEvidenceLedger } = require('../lib/system/evidence_ledger.js');
 const { runWithTrace } = require('../lib/system/trace_context');
+const { observeActualInvocation, associateCanonicalTrace } = require('../lib/system/execution_trace_runtime.js');
 const { candidateDelta, solutionFingerprint } = require('../lib/boq/solution_evidence');
 const { loadActiveKnowledgeRules } = require('../lib/catalog/active_knowledge_router.js');
 const { recordAndCertifyLearnedRule } = require('../lib/feedback/continuous_learning_verifier.js');
@@ -446,9 +448,21 @@ async function ingestAndConsolidateBoq(options) {
 // ============================================================
 // Stage 3: Modular Physical Pre-Checks & Conflict Graph
 // ============================================================
-function executePhysicalPreChecks(items, catalogData, chassisDir, JSON_MODE, requirementResolution = null) {
+// Ingest has already validated ownership and normalized quantities. Evaluate only
+// its base configuration, then restore order scope through the shared contract.
+function evaluateIngestedPhysicalContext(items, catalogData, chassisDir, configurationContext) {
+  if (!configurationContext || configurationContext.ownershipEvidence === 'AMBIGUOUS_OWNERSHIP_RAW') {
+    return evaluatePhysicalMath(items, catalogData, chassisDir);
+  }
+  const { applyConfigurationContext } = require('../lib/boq/configuration_context');
+  const baseItems = configurationContext.items.filter(item => item.quantityScope !== 'global');
+  const result = evaluatePhysicalMath(baseItems, catalogData, chassisDir, { baseConfigurationOnly: true });
+  return applyConfigurationContext(result, configurationContext);
+}
+
+function executePhysicalPreChecks(items, catalogData, chassisDir, JSON_MODE, requirementResolution = null, configurationContext = null) {
   const tAspectStart = Date.now();
-  const evalResults = evaluatePhysicalMath(items, catalogData, chassisDir);
+  const evalResults = evaluateIngestedPhysicalContext(items, catalogData, chassisDir, configurationContext);
   evalResults.catalogData = catalogData;
   const rulesPath = path.join(chassisDir, `${path.basename(chassisDir)}_Catalog_Rules.json`);
   evalResults.catalogRules = fs.existsSync(rulesPath) ? JSON.parse(fs.readFileSync(rulesPath, 'utf8')) : null;
@@ -780,7 +794,10 @@ async function executeEphemeralSourceValidation(options, ingestCtx, evalResults)
       notebookId: ingestCtx.notebookId,
       chassisName: ingestCtx.detectedChassisName || ingestCtx.chassisPrefix,
       targetDir: ingestCtx.chassisDir,
-      isMock: options.OFFLINE_MODE
+      isMock: options.OFFLINE_MODE,
+      signal: options.signal,
+      timeoutMs: options.timeoutMs || options.timeout,
+      deadlineAt: options.deadlineAt
     });
     if (result) {
       evalResults.solutionDoubleCheck = {
@@ -793,6 +810,7 @@ async function executeEphemeralSourceValidation(options, ingestCtx, evalResults)
     }
     return result;
   } catch (ephErr) {
+    if ((options.signal?.aborted && Object.is(ephErr, options.signal.reason)) || ephErr?.code === 'NOTEBOOK_QUERY_DEADLINE_EXCEEDED') throw ephErr;
     const _logger = require('../lib/system/pipeline_logger.js');
     _logger.warn('EVAL_BOQ', `Ephemeral source validation note: ${ephErr.message}`);
     return null;
@@ -804,6 +822,7 @@ async function executeEphemeralSourceValidation(options, ingestCtx, evalResults)
 // ============================================================
 function executeContinuousLearningReflection(evidenceLedger, ingestCtx, evalResults, _options) {
   const chassisDir = ingestCtx.chassisDir;
+  terminalOwner.recordReflectionTarget(evidenceLedger, chassisDir);
   if (!chassisDir || !fs.existsSync(chassisDir)) return 0;
 
   const chassisName = path.basename(chassisDir);
@@ -832,12 +851,14 @@ function executeContinuousLearningReflection(evidenceLedger, ingestCtx, evalResu
         };
         try {
           const cert = recordAndCertifyLearnedRule(delta, chassisDir);
+          terminalOwner.recordReflectionProposal(evidenceLedger, cert);
           if (cert && cert.persisted) {
             learnedCount++;
             existingPairings.add(pairKey);
             evidenceLedger.recordSkuAudit(dep.sku, 'LEARNING_PROPOSED', delta.ruleUpdate, delta.deltaId, 'Mandatory dependency proposal', { status: 'PENDING' });
           }
         } catch (learnErr) {
+          terminalOwner.recordReflectionFailure(evidenceLedger);
           const _logger = require('../lib/system/pipeline_logger.js');
           _logger.warn('EVAL_BOQ', `Continuous learning proposal failed: ${learnErr.message}`);
         }
@@ -851,7 +872,10 @@ function executeContinuousLearningReflection(evidenceLedger, ingestCtx, evalResu
 // Main Orchestrator Pipeline
 // ============================================================
 function runEvaluationPipeline(options) {
-  return runWithTrace(options.traceId, () => runEvaluationPipelineWithinTrace(options));
+  return observeActualInvocation('runEvaluationPipeline', __filename, () => runWithTrace(options.traceId, () => {
+    associateCanonicalTrace();
+    return runEvaluationPipelineWithinTrace(options);
+  }));
 }
 
 async function _executeIntakeAndKnowledgePhases(options, evidenceLedger) {
@@ -1126,7 +1150,7 @@ async function _handleBoqFingerprintingPhase(ctx, options, evidenceLedger) {
 async function _handleBoqDomainAspectsPhase(ctx, options, evidenceLedger) {
   evidenceLedger.startPhase(3, '7-Aspect Physical Pre-Flight Math', { itemCount: ctx.ingestCtx.items.length });
   const { evalResults, graph, queryPayload, stage2AspectMathMs } = executePhysicalPreChecks(
-    ctx.ingestCtx.items, ctx.ingestCtx.catalogData, ctx.ingestCtx.chassisDir, options.JSON_MODE, ctx.ingestCtx.requirementResolution
+    ctx.ingestCtx.items, ctx.ingestCtx.catalogData, ctx.ingestCtx.chassisDir, options.JSON_MODE, ctx.ingestCtx.requirementResolution, ctx.ingestCtx.configurationContext
   );
   ctx.ingestCtx.items = evalResults.items || ctx.ingestCtx.items;
   ctx.evalResults = evalResults;
@@ -1134,7 +1158,8 @@ async function _handleBoqDomainAspectsPhase(ctx, options, evidenceLedger) {
   ctx.queryPayload = queryPayload;
   ctx.stage2AspectMathMs = stage2AspectMathMs;
   _recordAspectPhaseEvidence(evidenceLedger, evalResults, ctx.ingestCtx, options);
-  const aspectPhaseStatus = evidenceLedger.phases?.phase_3?.status || (evalResults.isMathClean ? 'PASSED' : 'ACTION_REQUIRED');
+  const aspectPhaseStatus = terminalOwner.requestedPhaseStatus(evidenceLedger, 3,
+    evidenceLedger.phases?.phase_3?.status || (evalResults.isMathClean ? 'PASSED' : 'ACTION_REQUIRED'));
   return {
     status: aspectPhaseStatus,
     summary: { missingDependencies: evalResults.missingDependencies?.length || 0 },
@@ -1287,21 +1312,36 @@ async function _handleBoqRagGroundingPhase(ctx, options, evidenceLedger) {
   };
 }
 
-async function _handleBoqDeliverablesPhase(ctx, options, evidenceLedger, startTime) {
-  evidenceLedger.startPhase(8, 'Multi-Rank Solution Deliverables & Excel Generation', {});
-  Object.defineProperty(ctx.evalResults, 'evidenceLedger', { value: evidenceLedger, enumerable: false, configurable: true });
-
-  const newLearningsCount = executeContinuousLearningReflection(evidenceLedger, ctx.ingestCtx, ctx.evalResults, options);
-  ctx.evalResults.newLearningsCount = newLearningsCount;
+function _prepareNotebookDeliveryHealth(ctx) {
   ctx.evalResults.notebookHealth = ctx.ingestCtx.notebookHealth || null;
   ctx.evalResults.notebookDegradedMode = ctx.ingestCtx.notebookDegradedMode || null;
   if (ctx.ingestCtx.notebookHealth && !ctx.ingestCtx.notebookHealth.isHealthy) {
     if (!ctx.evalResults.warnings) ctx.evalResults.warnings = [];
     ctx.evalResults.warnings.push(`[DEGRADED_NOTEBOOK] Notebook for "${ctx.ingestCtx.detectedChassisName}" is degraded (${ctx.ingestCtx.notebookDegradedMode}). Confidence: ${ctx.ingestCtx.notebookHealth.confidenceLabel}.`);
   }
+}
+
+function _promoteTerminalPriceDrift(ctx, options) {
   if (Array.isArray(options.priceDriftItems) && options.priceDriftItems.length) {
     ctx.evalResults.priceDriftResult = require('../lib/feedback/feedback_loop.js').promotePriceDriftDeltas(ctx.ingestCtx.chassisDir, options.priceDriftItems, options.priceDriftMetadata || {});
   }
+
+}
+
+function _runLegacyDeliverablesPrelude(ctx, options, evidenceLedger) {
+  const newLearningsCount = executeContinuousLearningReflection(evidenceLedger, ctx.ingestCtx, ctx.evalResults, options);
+  ctx.evalResults.newLearningsCount = newLearningsCount;
+  _prepareNotebookDeliveryHealth(ctx);
+  _promoteTerminalPriceDrift(ctx, options);
+}
+
+async function _handleBoqDeliverablesPhase(ctx, options, evidenceLedger, startTime) {
+  evidenceLedger.startPhase(8, 'Multi-Rank Solution Deliverables & Excel Generation', {});
+  Object.defineProperty(ctx.evalResults, 'evidenceLedger', { value: evidenceLedger, enumerable: false, configurable: true });
+
+  terminalOwner.prepareDeliverables(ctx,
+    () => _runLegacyDeliverablesPrelude(ctx, options, evidenceLedger),
+    () => _prepareNotebookDeliveryHealth(ctx));
 
   const { verifyPrePresentationAcceptance } = require('../lib/boq/bom_verifier.js');
   const { issueDeliveryAuthorization } = require('../lib/contracts/workflow_contract.js');
@@ -1348,7 +1388,7 @@ async function _handleBoqDeliverablesPhase(ctx, options, evidenceLedger, startTi
     }
   }
 
-  await serializeAndExportResults({
+  await serializeAndExportResults(terminalOwner.serializerContext(ctx, {
     ...options,
     ...ctx.ingestCtx,
     evalResults: ctx.evalResults,
@@ -1361,10 +1401,10 @@ async function _handleBoqDeliverablesPhase(ctx, options, evidenceLedger, startTi
     stage3RAGMs: ctx.stage3RAGMs,
     stage4GuardrailMs: ctx.stage4GuardrailMs,
     stage5MatrixMs: ctx.stage5MatrixMs
-  });
+  }));
 
   const exportOk = Boolean(ctx.evalResults.multiRankWorkbookPath && !ctx.evalResults.deliveryError);
-  return {
+  return terminalOwner.phase8Outcome(ctx, {
     status: exportOk ? 'PASSED' : 'ACTION_REQUIRED',
     summary: {
       multiRankWorkbookPath: ctx.evalResults.multiRankWorkbookPath,
@@ -1375,7 +1415,7 @@ async function _handleBoqDeliverablesPhase(ctx, options, evidenceLedger, startTi
       { status: ctx.evalResults.multiRankCsvPath ? 'PASS' : 'WARN', label: `Token-Dense CSV: ${ctx.evalResults.multiRankCsvPath ? path.basename(ctx.evalResults.multiRankCsvPath) : 'Pending'}` },
       { status: ctx.evalResults.portalWorkbookPath ? 'PASS' : 'WARN', label: `Partner Portal Sheet: ${ctx.evalResults.portalWorkbookPath ? path.basename(ctx.evalResults.portalWorkbookPath) : 'Pending'}` }
     ]
-  };
+  });
 }
 
 async function _handleBoqReflectionPhase(ctx) {
@@ -1392,7 +1432,7 @@ async function _handleBoqReflectionPhase(ctx) {
   };
 }
 
-async function runEvaluationPipelineWithinTrace(options) {
+async function _runLegacyEvaluationPipelineWithinTrace(options) {
   const startTime = Date.now();
   const evidenceLedger = createEvidenceLedger({
     chassis: options.chassisDir ? path.basename(options.chassisDir) : (options.CHASSIS_OVERRIDE || 'UNKNOWN_CHASSIS'),
@@ -1445,15 +1485,79 @@ async function runEvaluationPipelineWithinTrace(options) {
   }
 }
 
+function _createOwnedEvaluationLedger(options) {
+  const evidenceLedger = createEvidenceLedger({
+    chassis: options.chassisDir ? path.basename(options.chassisDir) : (options.CHASSIS_OVERRIDE || 'UNKNOWN_CHASSIS'),
+    filePath: options.inputFile || options.BOQ_FILE || (options.inputItems || options.rawText !== undefined ? 'IN_MEMORY_BOM' : null)
+  });
+  if (!options.inputFile && (options.inputItems || options.rawText !== undefined)) {
+    evidenceLedger.recordInlineArtifact('CUSTOMER_INPUT', options.inputItems ?? options.rawText);
+  } else {
+    evidenceLedger.recordArtifact('CUSTOMER_INPUT', options.inputFile || options.BOQ_FILE);
+  }
+  return evidenceLedger;
+}
+
+function _createOwnedDagContext(options, evidenceLedger, startTime) {
+  return {
+      options,
+      evidenceLedger,
+      startTime,
+      ingestCtx: null,
+      activeRules: null,
+      evalResults: null,
+      graph: null,
+      queryPayload: null,
+      stage2AspectMathMs: 0,
+      stage3RAGMs: 0,
+      stage4GuardrailMs: 0,
+      stage5MatrixMs: 0,
+      budgetOpt: null,
+      ragResult: null,
+      ragAnswer: null
+  };
+}
+
+function _createOwnedPhaseHandlers(options, evidenceLedger, startTime) {
+  return {
+      INGESTION: ctx => _handleBoqIngestionPhase(ctx, options, evidenceLedger),
+      FINGERPRINTING: ctx => _handleBoqFingerprintingPhase(ctx, options, evidenceLedger),
+      DOMAIN_ASPECTS: ctx => _handleBoqDomainAspectsPhase(ctx, options, evidenceLedger),
+      CONFLICT_GRAPH: ctx => _handleBoqConflictGraphPhase(ctx, options, evidenceLedger),
+      MODERNIZATION_LEAST_DELTA: ctx => _handleBoqModernizationPhase(ctx, options, evidenceLedger),
+      STRATEGY_SYNTHESIS: ctx => _handleBoqStrategySynthesisPhase(ctx, options, evidenceLedger),
+      RAG_GROUNDING: ctx => _handleBoqRagGroundingPhase(ctx, options, evidenceLedger),
+      DELIVERABLES_FINALIZATION: ctx => _handleBoqDeliverablesPhase(ctx, options, evidenceLedger, startTime),
+      REFLECTION_LEARNING: ctx => terminalOwner.runReflection(ctx,
+        () => executeContinuousLearningReflection(evidenceLedger, ctx.ingestCtx, ctx.evalResults, options),
+        () => _promoteTerminalPriceDrift(ctx, options))
+  };
+}
+
+function runEvaluationPipelineWithinTrace(options) {
+  return terminalOwner.selectPipeline(
+    () => _runLegacyEvaluationPipelineWithinTrace(options),
+    () => {
+      const startTime = Date.now();
+      return terminalOwner.executeOwnedPipeline({ options,
+        createLedger: () => _createOwnedEvaluationLedger(options),
+        createEngine: () => new LifecycleEngine('canonical_boq_eval'),
+        createContext: ledger => _createOwnedDagContext(options, ledger, startTime),
+        createHandlers: ledger => _createOwnedPhaseHandlers(options, ledger, startTime)
+      });
+    });
+}
+
 async function main() {
   const options = parseEvaluationArguments(process.argv.slice(2));
   if (!options) return;
-  await runEvaluationPipeline(options);
+  await require('../lib/lifecycle/canonical_cli_cancellation.js').runCliPipeline(options, runEvaluationPipeline);
 }
 
 if (require.main === module) {
   main().catch(err => {
     const JSON_MODE = process.argv.includes('--json');
+    terminalOwner.reportCliFailure(err, JSON_MODE, () => {
     if (JSON_MODE) {
       process.stdout.write('\n__EVAL_RESULT_JSON__' + JSON.stringify({
         status: 'ERROR',
@@ -1466,6 +1570,7 @@ if (require.main === module) {
     } else {
       console.error('Fatal evaluation error:', err);
     }
+    });
     process.exit(1);
   });
 }

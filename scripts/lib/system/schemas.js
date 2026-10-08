@@ -355,7 +355,95 @@ function safeParseKnowledgeDelta(data) {
   return { success: false, data: null, errors: result.error.format() };
 }
 
+// CP4: additive, unused declarations. No legacy schema/parser changes or coercion.
+// These describe future capability handoffs, not existing function signatures.
+const WorkflowId = z.string().regex(/^[a-z][a-z0-9_-]*$/);
+const WorkflowPath = z.string().regex(/^(?:\.agents|scripts|dashboard|tests)\/[A-Za-z0-9_./-]+$/)
+  .refine(value => !value.split('/').includes('..'), 'Use a repository-relative path');
+const WorkflowScopeSchema = z.object({
+  vendor: z.string().min(1).nullable(),
+  domain: z.string().min(1).nullable(),
+  product: z.string().min(1).nullable(),
+  generation: z.string().min(1).nullable(),
+  ownerId: z.string().min(1).nullable().optional(),
+  quantityBasis: z.enum(['PER_NODE', 'ORDER_TOTAL', 'PER_OWNER']).nullable().optional()
+}).strict();
+const CapabilityHandoffSchema = z.object({
+  capabilityId: WorkflowId,
+  scope: WorkflowScopeSchema,
+  artifactRefs: z.array(z.string().min(1)),
+  evidenceRefs: z.array(z.string().min(1)),
+  unresolvedRequirements: z.array(z.string().min(1))
+}).strict();
+const WorkflowSchemaRef = z.object({ path: WorkflowPath, exportName: z.string().min(1) }).strict();
+const WorkflowEntrypointSchema = z.object({
+  path: WorkflowPath,
+  exportName: z.string().min(1).nullable(),
+  invocation: z.enum(['MODULE', 'CLI', 'SERVICE', 'UI', 'AGENT_PROCEDURE']),
+  importPolicy: z.literal('DO_NOT_IMPORT_DURING_INVENTORY')
+}).strict();
+const WorkflowCapabilitySchema = z.object({
+  capabilityId: WorkflowId,
+  skillPath: WorkflowPath,
+  kind: z.enum(['CUSTOMER', 'OPERATIONAL', 'ENGINEERING', 'SHARED']),
+  intents: z.array(z.string().min(1)),
+  triggers: z.array(z.string().min(1)).min(1),
+  applicability: z.array(z.string().min(1)).min(1),
+  vendorScope: z.array(z.string().min(1)).min(1),
+  domainScope: z.array(z.string().min(1)).min(1),
+  executionMode: z.enum(['LOCAL', 'HYBRID', 'AGENT_ASSISTED', 'CLI', 'SERVICE', 'UI']),
+  entrypoints: z.array(WorkflowEntrypointSchema).min(1),
+  inputSchema: WorkflowSchemaRef,
+  outputSchema: WorkflowSchemaRef,
+  schemaApplicability: z.literal('PROPOSED_HANDOFF_NOT_LEGACY_SIGNATURE'),
+  requires: z.array(WorkflowId),
+  next: z.array(z.object({ capabilityId: WorkflowId, when: z.string().min(1) }).strict()),
+  completionEvidence: z.array(z.string().min(1)).min(1),
+  coverageLimits: z.array(z.string().min(1)).min(1),
+  tests: z.array(WorkflowPath),
+  maintainer: z.string().min(1)
+}).strict();
+const VendorAdapterDescriptorSchema = z.object({
+  vendorId: z.string().min(1),
+  contractVersion: z.literal(1),
+  domains: z.array(z.string().min(1)).min(1),
+  capabilities: z.array(z.enum(['IDENTIFIER', 'CLASSIFICATION', 'ROLE_RESOLUTION', 'SUPPORT_POLICY', 'GLOSSARY', 'PORTAL_EXTRACTION', 'PORTAL_ACCEPTANCE'])),
+  implementationStatus: z.enum(['CONTRACT_ONLY', 'FIXTURE', 'IMPLEMENTED']),
+  evidenceLimits: z.array(z.string().min(1)).min(1)
+}).strict();
+const InternalEngineeringObservationSchema = z.object({
+  ownerCapabilityId: WorkflowId,
+  checkpoint: z.string().min(1),
+  activation: z.string().min(1),
+  entrypoint: WorkflowEntrypointSchema,
+  evidenceKind: z.string().min(1),
+  reportDirectory: z.string().min(1),
+  tests: z.array(WorkflowPath),
+  limits: z.array(z.string().min(1))
+}).strict();
+const SkillWorkflowRegistrySchema = z.object({
+  schemaVersion: z.literal(1),
+  activation: z.literal('UNUSED'),
+  dependencySemantics: z.literal('DECLARED_CONDITIONAL_HANDOFFS_NOT_ACTIVE_DISPATCH'),
+  capabilities: z.array(WorkflowCapabilitySchema).min(1),
+  internalEngineeringObservations: z.array(InternalEngineeringObservationSchema).optional(),
+  vendorAdapterInterface: z.object({
+    path: WorkflowPath,
+    exportName: z.string().min(1),
+    existingComponents: z.array(WorkflowEntrypointSchema).min(1),
+    status: z.literal('CONTRACT_ONLY_NO_VENDOR_MIGRATION')
+  }).strict()
+}).strict();
+
 module.exports = {
+  // CP4 declarations are opt-in; existing callers continue using prior exports.
+  WorkflowScopeSchema,
+  CapabilityHandoffSchema,
+  WorkflowEntrypointSchema,
+  WorkflowCapabilitySchema,
+  InternalEngineeringObservationSchema,
+  SkillWorkflowRegistrySchema,
+  VendorAdapterDescriptorSchema,
   // Regex & Primitives
   HpeSkuRegex,
   CoercedNumber,

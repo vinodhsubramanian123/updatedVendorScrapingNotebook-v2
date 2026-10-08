@@ -1,0 +1,196 @@
+{
+  "exit": {
+    "code": 1,
+    "signal": null
+  },
+  "kills": [],
+  "events": [
+    {
+      "type": "TASK_STARTED",
+      "task": "EVAL_BOQ",
+      "runId": "run_1791475855359_dr4r"
+    },
+    {
+      "type": "LOG",
+      "text": "◇ injected env (6) from .env // tip: ⌘ enable debugging { debug: true }",
+      "stream": "stdout"
+    },
+    {
+      "type": "LOG",
+      "text": "◇ injected env (0) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }",
+      "stream": "stdout"
+    },
+    {
+      "type": "LOG",
+      "text": "◇ injected env (0) from .env // tip: ◈ encrypted .env [www.dotenvx.com]",
+      "stream": "stdout"
+    },
+    {
+      "type": "LOG",
+      "text": "[2026-10-08T16:10:56.471Z] [INFO ] [GEMINI_ROTATOR] New UTC calendar day detected (2026-10-08). Resetting all daily quota counters.",
+      "stream": "stderr"
+    },
+    {
+      "type": "LOG",
+      "text": "◇ injected env (0) from scripts\\.env // tip: ⌘ multiple files { path: ['.env.local', '.env'] }",
+      "stream": "stdout"
+    },
+    {
+      "type": "LOG",
+      "text": "[2026-10-08T16:10:56.535Z] [INFO ] [CHECKLIST] [2026-10-08T16:10:56.535Z] [CHECK] [Phase 1: BOM Ingestion & Normalization]",
+      "stream": "stderr"
+    },
+    {
+      "type": "LOG",
+      "text": "[2026-10-08T16:10:56.535Z] [INFO ] [EVIDENCE_LEDGER] [Phase 1: BOM Ingestion & Normalization] STARTED (Trace: TRC-1791475856502-5174C4)",
+      "stream": "stderr"
+    },
+    {
+      "type": "LOG",
+      "text": "[2026-10-08T16:10:56.536Z] [INFO ] [EVIDENCE_LEDGER] [Phase 1: BOM Ingestion & Normalization] COMPLETED (FAILED) in 1ms",
+      "stream": "stderr"
+    },
+    {
+      "type": "LOG",
+      "text": "[2026-10-08T16:10:56.536Z] [INFO ] [EVIDENCE_LEDGER] [Phase 2: Phase 2] STARTED (Trace: TRC-1791475856502-5174C4)",
+      "stream": "stderr"
+    },
+    {
+      "type": "LOG",
+      "text": "[2026-10-08T16:10:56.536Z] [INFO ] [EVIDENCE_LEDGER] [Phase 2: Phase 2] COMPLETED (NOT_REACHED) in 1ms",
+      "stream": "stderr"
+    },
+    {
+      "type": "LOG",
+      "text": "[2026-10-08T16:10:56.536Z] [INFO ] [EVIDENCE_LEDGER] [Phase 3: Phase 3] STARTED (Trace: TRC-1791475856502-5174C4)",
+      "stream": "stderr"
+    },
+    {
+      "type": "LOG",
+      "text": "[2026-10-08T16:10:56.536Z] [INFO ] [EVIDENCE_LEDGER] [Phase 3: Phase 3] COMPLETED (NOT_REACHED) in 1ms",
+      "stream": "stderr"
+    },
+    {
+      "type": "LOG",
+      "text": "[2026-10-08T16:10:56.537Z] [INFO ] [EVIDENCE_LEDGER] [Phase 4: Phase 4] STARTED (Trace: TRC-1791475856502-5174C4)",
+      "stream": "stderr"
+    },
+    {
+      "type": "LOG",
+      "text": "[2026-10-08T16:10:56.537Z] [INFO ] [EVIDENCE_LEDGER] [Phase 4: Phase 4] COMPLETED (NOT_REACHED) in 1ms",
+      "stream": "stderr"
+    },
+    {
+      "type": "LOG",
+      "text": "[2026-10-08T16:10:56.537Z] [INFO ] [EVIDENCE_LEDGER] [Phase 5: Phase 5] STARTED (Trace: TRC-1791475856502-5174C4)",
+      "stream": "stderr"
+    },
+    {
+      "type": "LOG",
+      "text": "[2026-10-08T16:10:56.537Z] [INFO ] [EVIDENCE_LEDGER] [Phase 5: Phase 5] COMPLETED (NOT_REACHED) in 1ms",
+      "stream": "stderr"
+    },
+    {
+      "type": "LOG",
+      "text": "[2026-10-08T16:10:56.537Z] [INFO ] [EVIDENCE_LEDGER] [Phase 6: Phase 6] STARTED (Trace: TRC-1791475856502-5174C4)",
+      "stream": "stderr"
+    },
+    {
+      "type": "LOG",
+      "text": "[2026-10-08T16:10:56.537Z] [INFO ] [EVIDENCE_LEDGER] [Phase 6: Phase 6] COMPLETED (NOT_REACHED) in 1ms",
+      "stream": "stderr"
+    },
+    {
+      "type": "LOG",
+      "text": "[2026-10-08T16:10:56.537Z] [INFO ] [EVIDENCE_LEDGER] [Phase 7: Phase 7] STARTED (Trace: TRC-1791475856502-5174C4)",
+      "stream": "stderr"
+    },
+    {
+      "type": "LOG",
+      "text": "[2026-10-08T16:10:56.537Z] [INFO ] [EVIDENCE_LEDGER] [Phase 7: Phase 7] COMPLETED (NOT_REACHED) in 1ms",
+      "stream": "stderr"
+    },
+    {
+      "type": "LOG",
+      "text": "[2026-10-08T16:10:56.537Z] [INFO ] [EVIDENCE_LEDGER] [Phase 8: Phase 8] STARTED (Trace: TRC-1791475856502-5174C4)",
+      "stream": "stderr"
+    },
+    {
+      "type": "LOG",
+      "text": "[2026-10-08T16:10:56.537Z] [INFO ] [EVIDENCE_LEDGER] [Phase 8: Phase 8] COMPLETED (NOT_REACHED) in 1ms",
+      "stream": "stderr"
+    },
+    {
+      "type": "LOG",
+      "text": "[2026-10-08T16:10:56.537Z] [INFO ] [EVIDENCE_LEDGER] [Phase 9: Phase 9] STARTED (Trace: TRC-1791475856502-5174C4)",
+      "stream": "stderr"
+    },
+    {
+      "type": "LOG",
+      "text": "[2026-10-08T16:10:56.537Z] [INFO ] [EVIDENCE_LEDGER] [Phase 9: Phase 9] COMPLETED (NOT_REACHED) in 1ms",
+      "stream": "stderr"
+    },
+    {
+      "type": "LOG",
+      "text": "warning: in the working copy of 'dashboard/routes/evaluation.cjs', LF will be replaced by CRLF the next time Git touches it",
+      "stream": "stderr"
+    },
+    {
+      "type": "LOG",
+      "text": "warning: in the working copy of 'dashboard/routes/tasks.cjs', LF will be replaced by CRLF the next time Git touches it",
+      "stream": "stderr"
+    },
+    {
+      "type": "LOG",
+      "text": "warning: in the working copy of 'dashboard/services/taskManager.cjs', LF will be replaced by CRLF the next time Git touches it",
+      "stream": "stderr"
+    },
+    {
+      "type": "LOG",
+      "text": "warning: in the working copy of 'scripts/evaluators/eval_boq.js', CRLF will be replaced by LF the next time Git touches it",
+      "stream": "stderr"
+    },
+    {
+      "type": "LOG",
+      "text": "__EVAL_RESULT_JSON__{\"status\":\"CANCELLED\",\"error\":\"dashboard_test_cancel\",\"data\":{\"traceId\":\"TRC-1791475856502-5174C4\",\"evidenceLogPath\":\"C:\\\\Users\\\\latha\\\\.gemini\\\\antigravity\\\\scratch\\\\antigravityProjects\\\\updatedVendorScrapingNotebook-v2\\\\outputs\\\\history\\\\evidence_logs\\\\evidence_log_TRC-1791475856502-5174C4.json\"}}__EVAL_RESULT_JSON__",
+      "stream": "stdout"
+    },
+    {
+      "type": "TASK_COMPLETED",
+      "code": 1,
+      "task": "EVAL_BOQ",
+      "runId": "run_1791475855359_dr4r",
+      "durationMs": 2075
+    },
+    {
+      "type": "EVAL_RESULT",
+      "error": {
+        "status": "CANCELLED",
+        "error": "dashboard_test_cancel",
+        "data": {
+          "traceId": "TRC-1791475856502-5174C4",
+          "evidenceLogPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\history\\evidence_logs\\evidence_log_TRC-1791475856502-5174C4.json"
+        }
+      },
+      "runId": "run_1791475855359_dr4r"
+    }
+  ],
+  "frameCount": 1,
+  "parentRootId": "2e9a5d35-257d-4015-afa6-e0e1fafacb43",
+  "ledgerPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\history\\evidence_logs\\evidence_log_TRC-1791475856502-5174C4.json",
+  "phaseStatuses": [
+    "FAILED",
+    "NOT_REACHED",
+    "NOT_REACHED",
+    "NOT_REACHED",
+    "NOT_REACHED",
+    "NOT_REACHED",
+    "NOT_REACHED",
+    "NOT_REACHED",
+    "NOT_REACHED"
+  ],
+  "limits": [
+    "VM route ingress with actual child/helper/CLI; no Express/browser/cloud",
+    "Existing CANCELLED envelope is retained under EVAL_RESULT.error; no frontend success claim"
+  ]
+}

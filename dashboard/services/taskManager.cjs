@@ -54,18 +54,28 @@ function addSseClient(res) { sseClients.add(res); }
 function removeSseClient(res) { sseClients.delete(res); }
 
 // ── Task Mutex ─────────────────────────────────────────────────────────────
-/** @type {{ type: string, runId: string, pid: number, process: import('child_process').ChildProcess, startTime: number } | null} */
+/** @type {{ type: string, runId: string, pid: number, process: import('child_process').ChildProcess, startTime: number, closed?: boolean } | null} */
 let activeTask = null;
 
 /**
  * Check if a background task is currently running.
- * Auto-clears stale mutex if the process has already exited.
+ * Clears mutex ONLY on populated actual exitCode/signalCode or observed close.
+ * Undefined exitCode or proc.killed does not indicate exit.
  */
 function isTaskRunning() {
   if (!activeTask) return false;
-  if (activeTask.process && (activeTask.process.exitCode !== null || activeTask.process.killed)) {
+  if (activeTask.closed) {
     activeTask = null;
     return false;
+  }
+  const proc = activeTask.process;
+  if (proc) {
+    const hasExitCode = proc.exitCode !== null && proc.exitCode !== undefined;
+    const hasSignalCode = proc.signalCode !== null && proc.signalCode !== undefined;
+    if (hasExitCode || hasSignalCode) {
+      activeTask = null;
+      return false;
+    }
   }
   return true;
 }
@@ -85,8 +95,10 @@ function getActiveTask() { return activeTask ? { ...activeTask } : null; }
 function startTask(type, proc, res, outputsDir) {
   const runId = `run_${Date.now()}_${Math.random().toString(36).substr(2, 4)}`;
   const logs = [];
+  let completed = false;
+  const startTime = Date.now();
 
-  activeTask = { type, runId, pid: proc.pid, process: proc, startTime: Date.now() };
+  activeTask = { type, runId, pid: proc?.pid, process: proc, startTime };
   broadcastSSE({ type: 'TASK_STARTED', task: type, runId });
 
   const handleData = (data, streamType) => {
@@ -108,40 +120,86 @@ function startTask(type, proc, res, outputsDir) {
     });
   };
 
-  proc.stdout.on('data', data => handleData(data, 'stdout'));
-  proc.stderr.on('data', data => handleData(data, 'stderr'));
+  if (proc?.stdout && typeof proc.stdout.on === 'function') {
+    proc.stdout.on('data', data => handleData(data, 'stdout'));
+  }
+  if (proc?.stderr && typeof proc.stderr.on === 'function') {
+    proc.stderr.on('data', data => handleData(data, 'stderr'));
+  }
 
-  proc.on('error', (err) => {
-    activeTask = null;
-    broadcastSSE({ type: 'LOG', text: `Task execution error: ${err.message}`, stream: 'stderr' });
-    broadcastSSE({ type: 'TASK_COMPLETED', code: 1, task: type, runId });
-  });
+  if (proc && typeof proc.on === 'function') {
+    proc.on('error', (err) => {
+      broadcastSSE({ type: 'LOG', text: `Task execution error: ${err.message}`, stream: 'stderr' });
+      const hasLivePid = Boolean(proc && typeof proc.pid === 'number' && proc.pid > 0);
+      if (!hasLivePid) {
+        // Spawn failure without pid terminates once
+        if (completed) return;
+        completed = true;
+        if (activeTask && (activeTask.runId === runId || activeTask.process === proc)) {
+          activeTask.closed = true;
+          activeTask = null;
+        }
+        broadcastSSE({ type: 'TASK_COMPLETED', code: 1, task: type, runId, durationMs: 0 });
 
-  proc.on('close', (code) => {
-    const taskRef = activeTask;
-    activeTask = null;
-    const durationMs = taskRef ? Date.now() - taskRef.startTime : 0;
-    broadcastSSE({ type: 'TASK_COMPLETED', code, task: type, runId, durationMs });
+        // Persist trace log
+        if (outputsDir) {
+          const traceDir = path.join(outputsDir, 'history', 'runs');
+          if (!fs.existsSync(traceDir)) fs.mkdirSync(traceDir, { recursive: true });
+          try {
+            const { safeWriteJsonAtomic } = require('../../scripts/lib/system/fs_compat.js');
+            safeWriteJsonAtomic(path.join(traceDir, `${runId}.json`), {
+              runId,
+              taskType: type,
+              startTime: new Date(startTime).toISOString(),
+              durationMs: 0,
+              exitCode: 1,
+              logs
+            });
+          } catch (e) {
+            console.error(`[taskManager] Failed to persist trace ${runId}:`, e.message);
+          }
+        }
+      }
+      // Runtime error on live pid does NOT release ownership until close
+    });
 
-    // Persist trace log atomically
-    const traceDir = path.join(outputsDir, 'history', 'runs');
-    if (!fs.existsSync(traceDir)) fs.mkdirSync(traceDir, { recursive: true });
-    try {
-      const { safeWriteJsonAtomic } = require('../../scripts/lib/system/fs_compat.js');
-      safeWriteJsonAtomic(path.join(traceDir, `${runId}.json`), {
-        runId,
-        taskType: type,
-        startTime: taskRef ? new Date(taskRef.startTime).toISOString() : new Date().toISOString(),
-        durationMs,
-        exitCode: code,
-        logs
-      });
-    } catch (e) {
-      console.error(`[taskManager] Failed to persist trace ${runId}:`, e.message);
-    }
-  });
+    proc.on('close', (code) => {
+      if (completed) return;
+      completed = true;
 
-  res.json({ message: `${type} task started`, runId, pid: proc.pid });
+      const isCurrentTask = Boolean(activeTask && (activeTask.runId === runId || activeTask.process === proc));
+      if (isCurrentTask) {
+        activeTask.closed = true;
+        activeTask = null;
+      }
+
+      const durationMs = Date.now() - startTime;
+      broadcastSSE({ type: 'TASK_COMPLETED', code, task: type, runId, durationMs });
+
+      // Persist trace log atomically
+      if (outputsDir) {
+        const traceDir = path.join(outputsDir, 'history', 'runs');
+        if (!fs.existsSync(traceDir)) fs.mkdirSync(traceDir, { recursive: true });
+        try {
+          const { safeWriteJsonAtomic } = require('../../scripts/lib/system/fs_compat.js');
+          safeWriteJsonAtomic(path.join(traceDir, `${runId}.json`), {
+            runId,
+            taskType: type,
+            startTime: new Date(startTime).toISOString(),
+            durationMs,
+            exitCode: code,
+            logs
+          });
+        } catch (e) {
+          console.error(`[taskManager] Failed to persist trace ${runId}:`, e.message);
+        }
+      }
+    });
+  }
+
+  if (res && typeof res.json === 'function') {
+    res.json({ message: `${type} task started`, runId, pid: proc?.pid });
+  }
 }
 
 /**

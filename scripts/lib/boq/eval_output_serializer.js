@@ -12,6 +12,7 @@
  */
 
 const fs = require('fs');
+const terminalOwner = require('../lifecycle/canonical_terminal_owner.js');
 const path = require('path');
 const crypto = require('crypto');
 const { generateMultiRankSolutionWorkbook, generateMultiRankSolutionCsv, generateRankedPortalWorkbook, generateProfessionalBOQ } = require('./generate_boq_xlsx.js');
@@ -658,6 +659,7 @@ function _exportStagedDeliverables({ evalResults, reportDir, paths, targetChassi
     }
     return true;
   } catch (sheetErr) {
+    terminalOwner.recordExporterFailure(evalResults, sheetErr);
     try {
       if (path.dirname(path.resolve(exportStagingDir)) !== path.resolve(reportDir) || !path.basename(exportStagingDir).startsWith('.export_staging_')) throw new Error('Unsafe export cleanup path');
       fs.rmSync(exportStagingDir, { recursive: true, force: true });
@@ -703,6 +705,7 @@ function _recordLedgerDeliverableArtifacts(ledger, ctx, evalResults, outputPath)
   if (!ledger) return;
   ctx.evidenceDir = path.join(path.dirname(path.resolve(outputPath)), 'evidence');
   const evidenceDir = ctx.evidenceDir;
+  terminalOwner.setEvidenceDirectory(ctx, evidenceDir);
   evalResults.evidenceLogPath = path.join(evidenceDir, `evidence_log_${ledger.traceId}.json`);
   evalResults.evidenceSummaryPath = path.join(evidenceDir, `evidence_summary_${ledger.traceId}.md`);
 
@@ -717,6 +720,7 @@ function _recordLedgerDeliverableArtifacts(ledger, ctx, evalResults, outputPath)
     evalResults.deliveryError = `Missing deliverable artifacts: ${missing.join(', ')}`;
   }
 
+  return terminalOwner.serializerLedgerCompletion(ctx, () => {
   ledger.completePhase(8, evalResults.deliveryError ? 'FAILED' : 'PASSED', {
     workbookPath: evalResults.multiRankWorkbookPath || null,
     googleDriveDeliverable: evalResults.googleDriveDeliverable || null,
@@ -724,12 +728,14 @@ function _recordLedgerDeliverableArtifacts(ledger, ctx, evalResults, outputPath)
     missingArtifacts: missing.length ? missing : undefined
   }, [], [], evalResults.deliveryError ? [evalResults.deliveryError] : []);
 
+  }, () => {
   _completeLedgerPhase9(ledger, ctx, evalResults);
 
   const exported = ledger.finalizeAndExport(ctx.evidenceDir);
   evalResults.evidenceLogPath = exported.jsonPath;
   evalResults.evidenceSummaryPath = exported.mdPath;
   evalResults.evidenceHealth = exported.payload.health;
+  });
 }
 
 function _emitSerializedJsonResponse(ctx, evalResults, graph, budgetOpt, queryPayload, safeStartTime, outputPath, workflowSteps, ledger) {
@@ -863,7 +869,7 @@ async function serializeAndExportResults(ctx) {
   require('../system/fs_compat').safeWriteJsonAtomic(runtimePlanPath, evalResults.runtimeDiscoveryPlan);
   evalResults.runtimeDiscoveryPlanPath = runtimePlanPath;
 
-  await _executePostFlowSync(ctx, evalResults);
+  await terminalOwner.serializerSync(ctx, () => _executePostFlowSync(ctx, evalResults));
 
   const paths = _prepareExportPaths(reportDir, inputFile, ctx.targetSheetName);
   for (const key of ['multiRankWorkbookPath', 'multiRankCsvPath', 'proposalWorkbookPath', 'portalWorkbookPath', 'googleDriveDeliverable', 'artifactIntegrityManifest', 'deliveryError']) {
@@ -921,6 +927,7 @@ async function serializeAndExportResults(ctx) {
 
   _recordLedgerDeliverableArtifacts(evalResults.evidenceLedger, ctx, evalResults, outputPath);
 
+  return terminalOwner.serializerEmission(ctx, () => {
   const workflowSteps = _buildWorkflowSteps(ctx);
 
   if (JSON_MODE) {
@@ -946,6 +953,7 @@ async function serializeAndExportResults(ctx) {
     }
     console.log(`===============================================================\n`);
   }
+  });
 }
 
 /**

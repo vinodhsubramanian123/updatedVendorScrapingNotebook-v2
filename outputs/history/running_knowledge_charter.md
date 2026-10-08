@@ -2,8 +2,8 @@
 
 **Document Classification:** Canonical Ground-Truth Architecture & Validation Charter<br>
 **Maintained By:** HPE ProLiant AI Studio Autonomous Knowledge Engine (Antigravity AI)<br>
-**Last Synchronized:** 2026-10-03T16:37:50.602Z<br>
-**Total Deduplicated Learned Rules:** 93<br>
+**Last Synchronized:** 2026-10-08T14:49:40.151Z<br>
+**Total Deduplicated Learned Rules:** 94<br>
 **Universal Invariant Compliance:** INV-1 through INV-38 Certified<br>
 **Google Drive Destination:** `shared_folder_id: 1YR0lBh-gg00amKHRxuOqp5Aea3iL5O7-`
 
@@ -160,7 +160,7 @@ The Catalog Vendor Solution provides modular, AI-assisted catalog ingestion, nor
 
 ## 5. Deduplicated Learned Rule Ledger & Verification Provenance
 
-Total verified rules indexed in this build: **93**.
+Total verified rules indexed in this build: **94**.
 
 | Scope | Target Chassis | Category | Affected SKU | Dependency SKU | Rule Summary / Validation Directive | Verifications |
 | :--- | :--- | :--- | :--- | :--- | :--- | :---: |
@@ -173,6 +173,18 @@ Total verified rules indexed in this build: **93**.
 | 🌐 UNIVERSAL | `GLOBAL` | `CUSTOMER_INTENT_POLICY` | `undefined` | `—` | Closest rank preserves customer requirements and makes only necessary compatibility/buildability changes. Budget alterna | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `COMPONENT_DOMAIN_ROUTING` | `undefined` | `—` | Route by component role and exact product, never vendor or family alone. Synergy compute, fabric and frame use separate  | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `GUARDRAIL_RECOVERY_POLICY` | `undefined` | `—` | Gemini guardrail API sends must retain systemInstruction and function declarations when overriding SDK send config. Enfo | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `STORAGE_COLLISION` | `P74710-B21` | `—` | DL380a prohibits mixing 4SFF cage P74710-B21 and 4EDSFF cage P74712-B21. | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `PROCESSOR_POPULATION` | `P76706-B21` | `—` | DL380a Gen12 requires two identical processor models; single-processor and mixed-processor configurations are unsupporte | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `POWER_REDUNDANCY` | `P76706-B21` | `—` | Requires a minimum of five power supplies for 2DW/4DW GPU configurations (up to eight for N+N grid redundancy or pre-pop | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `LIVE_QUOTE_RECONCILIATION` | `HU4B2A30C4W` | `—` | Pointnext support on 8-GPU H200 DL380a scales to accelerator tier ($11,306), install scales to 4U GPU tier ($507), NVLin | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `SOFTWARE_OPTIONALITY` | `S1A05A` | `—` | Cloud Management FIO Enablement (S1A05A) and Compute Ops Management SaaS (R7A11AAE) are strictly optional services/licen | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `STORAGE_OVERRIDE` | `873763-B21` | `—` | When 873763-B21 is present, bypass physical drive cage, storage controller, and battery minimums. | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `LOCALIZATION_GATE` | `P73282-B21` | `P73325-B21` | If Gen12 CTO base chassis is selected, P73325-B21 is mandatory for portal buildability. | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `MANAGEMENT_LICENSING` | `P73282-B21` | `R7A11AAE` | Gen12 requires exactly 1 management SaaS license (R7A11AAE). Remove redundant BD505A when R7A11AAE is selected. | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `POWER_BYPASS` | `P38995-B21` | `P35876-B21` | If Platinum PSUs are selected on Gen12, P35876-B21 clears EU Lot 9 CE prompts. | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `THERMAL_TRACKING` | `P73282-B21` | `P79558-B21` | P79558-B21 tracks 25C ambient baseline for Gen12 chassis. | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `COOLING_MANDATE` | `P74507-B21` | `P48820-B21` | CPUs > 185W TDP mandate High-Performance Fan Kit P48820-B21 and High-Performance Heatsink P74792-B21. | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `DEPENDENCY` | `HU4B2A30C4V` | `P73282-B21` | Every HPE ProLiant DL380 Gen12 server (P73282-B21) requires a hardware maintenance support contract. Common customer err | 1x |
 | 📦 CHASSIS | `DL145_Gen11` | `PROCESSOR_FAMILY` | `P71964-B21` | `—` | DL145 Gen11 is single-socket AMD EPYC 8004 only. No dual-socket configurations supported. | 1x |
 | 📦 CHASSIS | `DL145_Gen11` | `DRIVE_CAGE_FORMAT` | `P71985-B21` | `P77271-B21` | DL145 Gen11 uses EDSFF E3.S form factor drives only. Standard SFF/LFF drives are incompatible. | 1x |
 | 📦 CHASSIS | `DL145_Gen11` | `PSU_WATTAGE_LIMIT` | `P71964-B21` | `P54290-B21` | DL145 Gen11 supports maximum 1000W PSUs. 1600W/2400W PSUs are physically incompatible. | 1x |
@@ -190,21 +202,10 @@ Total verified rules indexed in this build: **93**.
 | 📦 CHASSIS | `DL380_Gen11` | `DEPENDENCY_CHAIN` | `P02377-B21` | `P48918-B21` | P02377-B21` or `P01366-B21` **mandates the inclusion of `P48918-B21 | 1x |
 | 📦 CHASSIS | `DL380_Gen11` | `DEPENDENCY_CHAIN` | `P58335-B21` | `P48918-B21` | P58335-B21`)** with the **Smart Storage Hybrid Capacitor (`P02377-B21`)** strictly requires `P48918-B21 | 1x |
 | 📦 CHASSIS | `DL380_Gen11` | `DEPENDENCY_CHAIN` | `write-cach` | `P48918-B21` | write-cache backup for `P58335-B21`; requires enablement cable **`P48918-B21 | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `STORAGE_COLLISION` | `P74710-B21` | `—` | DL380a prohibits mixing 4SFF cage P74710-B21 and 4EDSFF cage P74712-B21. | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `PROCESSOR_POPULATION` | `P76706-B21` | `—` | DL380a Gen12 requires two identical processor models; single-processor and mixed-processor configurations are unsupporte | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `POWER_REDUNDANCY` | `P76706-B21` | `—` | Use exactly five power supplies for 2DW/4DW GPU configurations and eight for 8DW/10DW; H100/H200 NVL supports 2400W P672 | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `LIVE_QUOTE_RECONCILIATION` | `HU4B2A30C4W` | `—` | Pointnext support on 8-GPU H200 DL380a scales to accelerator tier ($11,306), install scales to 4U GPU tier ($507), NVLin | 1x |
 | 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `P74700-B21` | `—` | Observed price drift on P74700-B21 (memory) | 1x |
 | 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `S4A91C` | `—` | Observed price drift on S4A91C (drive) | 1x |
 | 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `HA113A1` | `—` | Observed price drift on HA113A1 (support) | 1x |
 | 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `HU4B2A30C4W` | `—` | Observed price drift on HU4B2A30C4W (service) | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `STORAGE_OVERRIDE` | `873763-B21` | `—` | When 873763-B21 is present, bypass physical drive cage, storage controller, and battery minimums. | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `LOCALIZATION_GATE` | `P73282-B21` | `P73325-B21` | If Gen12 CTO base chassis is selected, P73325-B21 is mandatory for portal buildability. | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `MANAGEMENT_LICENSING` | `P73282-B21` | `R7A11AAE` | Gen12 requires exactly 1 management SaaS license (R7A11AAE). Remove redundant BD505A when R7A11AAE is selected. | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `POWER_BYPASS` | `P38995-B21` | `P35876-B21` | If Platinum PSUs are selected on Gen12, P35876-B21 clears EU Lot 9 CE prompts. | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `THERMAL_TRACKING` | `P73282-B21` | `P79558-B21` | P79558-B21 tracks 25C ambient baseline for Gen12 chassis. | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `COOLING_MANDATE` | `P74507-B21` | `P48820-B21` | CPUs > 185W TDP mandate High-Performance Fan Kit P48820-B21 and High-Performance Heatsink P74792-B21. | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `DEPENDENCY` | `HU4B2A30C4V` | `P73282-B21` | Every HPE ProLiant DL380 Gen12 server (P73282-B21) requires a hardware maintenance support contract. Common customer err | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `undefined` | `P76453-B21` | `—` | Portal validation flagged restriction on P76453-B21. | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `undefined` | `P73282-B21` | `P73282-B21` | If P73282-B21 is present, P73282-B21 is mandatory. | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `undefined` | `P74573-B21` | `P74573-B21` | If P74573-B21 is present, P74573-B21 is mandatory. | 1x |

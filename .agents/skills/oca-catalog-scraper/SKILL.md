@@ -135,7 +135,7 @@ sequenceDiagram
      4. Refresh Tab 1 via CDP (`Page.reload`) to regenerate fresh SAML tool links.
      5. Click "One Config Advanced" under Quick links (`#quick-links-807 a`).
      6. Connect to the fresh OCA tab, navigate to the target chassis Menu tab via `scripts/lib/scraper/navigate_oca.js`, and resume extraction.
-   - For full navigation details and DOM selectors, refer to [`.agents/skills/oca-portal-navigator/SKILL.md`](../../.agents/skills/oca-portal-navigator/SKILL.md).
+   - For full navigation details and DOM selectors, refer to [`.agents/skills/oca-portal-navigator/SKILL.md`](../oca-portal-navigator/SKILL.md).
 
 ---
 

@@ -10,6 +10,7 @@
  */
 
 const PipelineLogger = require('../system/pipeline_logger.js');
+const terminalOwner = require('./canonical_terminal_owner.js');
 
 const ALLOWED_STATUSES = Object.freeze(new Set([
   'NOT_STARTED',
@@ -172,9 +173,11 @@ class LifecycleEngine {
         const checks = result?.checks || [];
         this.completePhase(phase.id, status, summary, checks);
       } catch (err) {
+        terminalOwner.failRunningPhase(this, phase, err, () => {
         if (this.executedPhases.get(phase.id)?.status === 'RUNNING') {
           this.completePhase(phase.id, 'FAILED', { error: err.message }, [], [], [err.message]);
         }
+        });
         throw err;
       }
     }

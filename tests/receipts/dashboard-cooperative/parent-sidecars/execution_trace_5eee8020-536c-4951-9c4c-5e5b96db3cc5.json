@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "observationKind": "ACTUAL_CALLBACK_SCOPE",
+  "rootId": "eaf016e5-3a37-46cd-9e99-e6e7ebe5ef01",
+  "parentRootId": null,
+  "parentInvocationId": null,
+  "metadata": {
+    "name": "DASHBOARD_CANCELLATION_COMPOSED",
+    "metadataFingerprint": "0036e5cd35d3acd4d43540df244e1228c051b02f83678f77cbc63469d511a780",
+    "fingerprintScope": "BOUNDED_METADATA_PROJECTION"
+  },
+  "events": [
+    {
+      "sequence": 1,
+      "timestamp": "2026-10-08T15:57:16.558Z",
+      "event": "INTAKE_OBSERVED",
+      "rootId": "eaf016e5-3a37-46cd-9e99-e6e7ebe5ef01",
+      "metadata": {
+        "name": "DASHBOARD_CANCELLATION_COMPOSED",
+        "metadataFingerprint": "0036e5cd35d3acd4d43540df244e1228c051b02f83678f77cbc63469d511a780",
+        "fingerprintScope": "BOUNDED_METADATA_PROJECTION"
+      }
+    },
+    {
+      "sequence": 2,
+      "timestamp": "2026-10-08T15:57:16.570Z",
+      "event": "STARTED",
+      "rootId": "eaf016e5-3a37-46cd-9e99-e6e7ebe5ef01",
+      "invocationId": "54b8d478-c55a-4afd-9a76-cb7f02c389f1",
+      "parentInvocationId": null,
+      "metadata": {
+        "name": "dashboard/routes/evaluation.cjs#eval_boq",
+        "sourceRevision": "sha256:ede09b84b3e1af4281682e6908149b119cd587c25770a28ff7289d82b38122c6",
+        "metadataFingerprint": "49f37b020a729b5b504e6c4a31dc2fc5443f6046b2308b6c489156eb27c48cd7",
+        "fingerprintScope": "BOUNDED_METADATA_PROJECTION"
+      }
+    },
+    {
+      "sequence": 3,
+      "timestamp": "2026-10-08T15:57:17.827Z",
+      "event": "RETURNED",
+      "rootId": "eaf016e5-3a37-46cd-9e99-e6e7ebe5ef01",
+      "invocationId": "54b8d478-c55a-4afd-9a76-cb7f02c389f1",
+      "callbackOutcome": "RETURNED",
+      "domainOutcome": "RETURNED_ERROR",
+      "valueType": "object"
+    },
+    {
+      "sequence": 4,
+      "timestamp": "2026-10-08T15:57:17.846Z",
+      "event": "TERMINAL_OBSERVED",
+      "rootId": "eaf016e5-3a37-46cd-9e99-e6e7ebe5ef01",
+      "callbackOutcome": "RETURNED",
+      "domainOutcome": "UNCLASSIFIED",
+      "valueType": "undefined"
+    }
+  ],
+  "eventCount": 4,
+  "droppedEventCount": 0,
+  "traceAssociations": [
+    {
+      "traceId": "TRC-1791475036558-922992",
+      "traceIdSha256": "6647bd8224ce3327941a82d10bcedbcffcd9f16f603219bfc321ccca08bf4713",
+      "traceIdTruncated": false,
+      "invocationId": null
+    },
+    {
+      "traceId": "TRC-1791475036558-922992",
+      "traceIdSha256": "6647bd8224ce3327941a82d10bcedbcffcd9f16f603219bfc321ccca08bf4713",
+      "traceIdTruncated": false,
+      "invocationId": "54b8d478-c55a-4afd-9a76-cb7f02c389f1"
+    }
+  ],
+  "droppedAssociationCount": 0,
+  "faults": [],
+  "droppedFaultCount": 0,
+  "terminal": {
+    "callbackOutcome": "RETURNED",
+    "domainOutcome": "UNCLASSIFIED",
+    "valueType": "undefined",
+    "timestamp": "2026-10-08T15:57:17.846Z"
+  },
+  "persistence": {
+    "status": "WRITE_REQUESTED"
+  }
+}

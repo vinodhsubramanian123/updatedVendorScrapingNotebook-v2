@@ -128,7 +128,7 @@ graph TD
 | **Multi-Cluster Tender Splitting** | [`multi-cluster-tender-skill`](../multi-cluster-tender-skill/SKILL.md) | Multi-node cluster partitioning & 42U sizing: [`multi_cluster_splitter.js`](../../../scripts/lib/boq/multi_cluster_splitter.js). |
 | **RFP Sizing-to-BOM** | [`rfp-sizing-synthesizer`](../rfp-sizing-synthesizer/SKILL.md) | Natural language sizing requirements to starting BOM. |
 | **BOM Reconciliation** | [`bom-reconciliation-skill`](../bom-reconciliation-skill/SKILL.md) | Tender vs vendor quote verification: [`vendor_bom_verifier.js`](../../../scripts/lib/boq/vendor_bom_verifier.js). |
-| **Value Engineering & CapEx** | [`value-engineering-skill`](../value-engineering-skill/SKILL.md) | Post-buildability CapEx/OpEx deal optimizer: [`deal_optimizer.js`](../../../scripts/lib/conflict/deal_optimizer.js). |
+| **Value Engineering & CapEx** | [`value-engineering-skill`](../value-engineering-skill/SKILL.md) | Post-buildability CapEx/OpEx deal optimizer: [`deal_optimizer.js`](../../../scripts/lib/boq/deal_optimizer.js). |
 | **Adversarial Chaos Validation** | [`adversarial-validation-skill`](../adversarial-validation-skill/SKILL.md) | Enterprise chaos red-teaming: [`adversarial_agent.js`](../../../scripts/evaluators/adversarial_agent.js). |
 | **Multimodal Vision OCR** | [`ocr-quote-ingestion-skill`](../ocr-quote-ingestion-skill/SKILL.md) | Vision OCR for PDF/image quotes: [`ocr_service.js`](../../../scripts/lib/ocr/ocr_service.js). |
 | **Deliverables & Workbook Export** | [`workbook-generator-skill`](../workbook-generator-skill/SKILL.md) | 12-column workbooks & CSV companions: [`generate_boq_xlsx.js`](../../../scripts/lib/boq/generate_boq_xlsx.js). |

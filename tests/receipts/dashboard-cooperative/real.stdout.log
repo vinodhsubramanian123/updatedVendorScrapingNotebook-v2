@@ -1,0 +1,6 @@
+◇ injected env (6) from .env // tip: ⌘ enable debugging { debug: true }
+◇ injected env (0) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+◇ injected env (0) from .env // tip: ◈ encrypted .env [www.dotenvx.com]
+◇ injected env (0) from scripts\.env // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+
+__EVAL_RESULT_JSON__{"status":"CANCELLED","error":"dashboard_test_cancel","data":{"traceId":"TRC-1791475856502-5174C4","evidenceLogPath":"C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\history\\evidence_logs\\evidence_log_TRC-1791475856502-5174C4.json"}}__EVAL_RESULT_JSON__

@@ -545,7 +545,21 @@ function recordGuardrailTelemetry(guardrailResult, chassisId = 'Unknown_Chassis'
   return entry;
 }
 
+// CP6 opt-in measurement contracts; the legacy persistence/metric paths are unchanged.
+function normalizeTelemetryMeasurement(input) {
+  return require('./telemetry_measurement.js').normalizeTelemetryMeasurement(input);
+}
+function migrateLegacyTelemetry(legacy, options) {
+  return require('./telemetry_legacy_migration.js').migrateLegacyTelemetry(legacy, options);
+}
+function summarizeTelemetryPopulation(entries, selection) {
+  return require('./telemetry_populations.js').summarizeTelemetryPopulation(entries, selection);
+}
+
 module.exports = {
+  normalizeTelemetryMeasurement,
+  migrateLegacyTelemetry,
+  summarizeTelemetryPopulation,
   loadTelemetry,
   pruneTelemetry,
   MAX_TELEMETRY_ENTRIES,

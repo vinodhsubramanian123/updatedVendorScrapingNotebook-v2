@@ -1,0 +1,117 @@
+{
+  "version": "2.0.0",
+  "execution": {
+    "nodeVersion": "v24.19.0",
+    "platform": "win32",
+    "gitRevision": null,
+    "workingDiffSha256": null,
+    "revisionError": "ISOLATION_BOUNDARY_DENIED: NON_NODE_SUBPROCESS"
+  },
+  "health": {
+    "healthy": false,
+    "gaps": [
+      "PHASE_3_MISSING",
+      "PHASE_4_MISSING",
+      "PHASE_5_MISSING",
+      "PHASE_6_MISSING",
+      "PHASE_7_MISSING",
+      "PHASE_8_MISSING",
+      "PHASE_9_MISSING",
+      "SKU_DECISIONS_MISSING",
+      "INPUT_FINGERPRINT_MISSING"
+    ],
+    "workflowStatus": "INCOMPLETE"
+  },
+  "events": [
+    {
+      "sequence": 1,
+      "phaseNum": 1,
+      "event": "STARTED",
+      "timestamp": "2026-10-05T06:11:16.594Z"
+    },
+    {
+      "sequence": 2,
+      "phaseNum": 1,
+      "event": "PASSED",
+      "timestamp": "2026-10-05T06:11:16.595Z"
+    },
+    {
+      "sequence": 3,
+      "phaseNum": 2,
+      "event": "STARTED",
+      "timestamp": "2026-10-05T06:11:16.596Z"
+    },
+    {
+      "sequence": 4,
+      "phaseNum": 2,
+      "event": "PASSED",
+      "timestamp": "2026-10-05T06:11:16.596Z"
+    }
+  ],
+  "candidateAttempts": [],
+  "phaseResolutions": [],
+  "workflowFailures": [],
+  "artifacts": [],
+  "traceId": "TRC-1791180676589-F19D88",
+  "startedAt": "2026-10-05T06:11:16.594Z",
+  "completedAt": "2026-10-05T06:11:16.597Z",
+  "totalDurationMs": 3,
+  "chassis": "DL380_Gen12",
+  "customerInput": {
+    "filePath": "ROUTER_QUERY_INPUT",
+    "serverCount": 1,
+    "totalRequestedLines": 0
+  },
+  "sharedState": {
+    "currentChassis": "DL380_Gen12",
+    "nodeMultiplier": 1,
+    "detectedFormFactor": "Standard",
+    "aspectChecksCompleted": false,
+    "conflictGraphCompleted": false,
+    "strategySynthesized": false,
+    "dualBrainVerified": false,
+    "activeDeltaCount": 0
+  },
+  "phases": {
+    "phase_1": {
+      "phaseNumber": 1,
+      "phaseName": "Presales Query Intake",
+      "status": "PASSED",
+      "startedAt": "2026-10-05T06:11:16.595Z",
+      "completedAt": "2026-10-05T06:11:16.595Z",
+      "durationMs": 1,
+      "inputSummary": {
+        "query": "What is the maximum memory capacity on DL380 Gen12?",
+        "intent": "FREEFORM_QA"
+      },
+      "outputSummary": {
+        "intent": "FREEFORM_QA"
+      },
+      "checks": [],
+      "warnings": [],
+      "errors": []
+    },
+    "phase_2": {
+      "phaseNumber": 2,
+      "phaseName": "Router Dispatch & Execution",
+      "status": "PASSED",
+      "startedAt": "2026-10-05T06:11:16.596Z",
+      "completedAt": "2026-10-05T06:11:16.596Z",
+      "durationMs": 1,
+      "inputSummary": {
+        "skillTarget": "presales-query-router"
+      },
+      "outputSummary": {
+        "status": "COMPLETED"
+      },
+      "checks": [],
+      "warnings": [],
+      "errors": []
+    }
+  },
+  "activeRulesReached": [],
+  "arbitrationDecisions": [],
+  "modernizationDecisions": [],
+  "skuAuditLedger": [],
+  "notebookLmTraces": []
+}

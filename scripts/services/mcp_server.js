@@ -174,8 +174,20 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
   };
 });
 
-server.setRequestHandler(CallToolRequestSchema, async (request) => {
+server.setRequestHandler(CallToolRequestSchema, async (request, extra = {}) => {
+  const { observeActualInvocation } = require('../lib/system/execution_trace_runtime.js');
+  return observeActualInvocation(`MCP:${request.params.name}`, __filename,
+    () => executeToolRequest(request, extra));
+});
+
+function throwIfRequestAborted(signal) {
+  if (signal?.aborted) throw signal.reason;
+}
+
+async function executeToolRequest(request, extra) {
+  const signal = extra.signal;
   try {
+    throwIfRequestAborted(signal);
     const args = request.params.arguments;
     let items = [];
     if (args.items_json) {
@@ -221,7 +233,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           const localResult = queryLocalKnowledgeBase(args.query, args.chassis_id);
           result = { ...localResult, source: 'LOCAL_RAG_NO_NOTEBOOK_MAPPED', degradedMode };
         } else {
-          result = await executeNotebookQuery(notebookId, args.query, { context: { chassis: args.chassis_id } });
+          result = await executeNotebookQuery(notebookId, args.query, { context: { chassis: args.chassis_id }, signal });
+          throwIfRequestAborted(signal);
         }
         return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
       }
@@ -258,12 +271,18 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         throw new Error(`Unknown tool: ${request.params.name}`);
     }
   } catch (error) {
+    if (signal?.aborted && Object.is(error, signal.reason)) {
+      return {
+        content: [{ type: "text", text: "Tool request cancelled" }],
+        isError: true,
+      };
+    }
     return {
-      content: [{ type: "text", text: `Error executing tool: ${error.message}` }],
+      content: [{ type: "text", text: `Error executing tool: ${error?.message ?? String(error)}` }],
       isError: true,
     };
   }
-});
+}
 
 async function run() {
   const transport = new StdioServerTransport();

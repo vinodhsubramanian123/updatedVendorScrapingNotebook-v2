@@ -48,15 +48,15 @@ function launchPersistedJob(job, executeQueryFn, options = {}) {
 
   setImmediate(() => {
     const beforeStart = getJob(job.jobId);
-    if (!beforeStart || beforeStart.status === 'CANCELLED' || controller.signal.aborted) {
+    if (!beforeStart || isTerminalStatus(beforeStart.status) || controller.signal.aborted) {
       clearInterval(heartbeat);
       activeAbortControllers.delete(job.jobId);
       return;
     }
-    Promise.resolve(executeQueryFn(job.notebookId, finalQueryPayload, executionOptions))
+    Promise.resolve().then(() => executeQueryFn(job.notebookId, finalQueryPayload, executionOptions))
       .then((res) => {
         const persisted = getJob(job.jobId);
-        if (!persisted || persisted.status === 'CANCELLED') return;
+        if (!persisted || isTerminalStatus(persisted.status)) return;
 
         const endTime = Date.now();
         const durationMs = endTime - job.startTime;
@@ -132,7 +132,7 @@ function launchPersistedJob(job, executeQueryFn, options = {}) {
       })
       .catch((err) => {
         const persisted = getJob(job.jobId);
-        if (!persisted || persisted.status === 'CANCELLED') return;
+        if (!persisted || isTerminalStatus(persisted.status)) return;
         const endTime = Date.now();
         const updates = {
           status: 'FAILED',
@@ -259,6 +259,8 @@ function getAsyncNotebookQueryJobStatus(jobId) {
     Object.assign(job, updates);
     updateJob(jobId, updates);
     activeQueryJobs.set(jobId, job);
+    const controller = activeAbortControllers.get(jobId);
+    if (controller) controller.abort(timeoutErr);
   }
 
   const resObj = {

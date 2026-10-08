@@ -634,7 +634,24 @@ function verifyPrePresentationAcceptance(outputArtifact, track = 'BOQ_EVALUATION
   };
 }
 
+// CP5 opt-in response contracts. Lazy wrappers keep legacy import/execution paths
+// unchanged. Response validity never replaces this module's delivery acceptance.
+function getPresalesResponseProfile(track) {
+  return require('./presales_response_profiles.js').getPresalesResponseProfile(track);
+}
+
+function adaptPresalesResponse(legacy, options) {
+  return require('../contracts/presales_response_adapter.js').adaptPresalesResponse(legacy, options);
+}
+
+function verifyPresalesResponseAcceptance(response) {
+  return require('./presales_response_validator.js').verifyPresalesResponseAcceptance(response);
+}
+
 module.exports = {
+  getPresalesResponseProfile,
+  adaptPresalesResponse,
+  verifyPresalesResponseAcceptance,
   verifyPrePresentationAcceptance,
   validateUniversalCriteria,
   validateBoqEvaluationCriteria,

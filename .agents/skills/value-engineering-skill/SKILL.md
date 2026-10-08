@@ -44,7 +44,7 @@ The agent MUST NOT invoke value engineering when:
 ## 🔧 5 Optimization Dimensions
 
 ### 1. CPU Right-Sizing
-- **Engine**: [`deal_optimizer.js`](../../scripts/lib/boq/deal_optimizer.js) → `analyzeCpuRightSizing()`
+- **Engine**: [`deal_optimizer.js`](../../../scripts/lib/boq/deal_optimizer.js) → `analyzeCpuRightSizing()`
 - **Logic**: Compare customer's selected CPU against the workload DNA profile:
   - If workload is `VIRTUALIZATION_DENSE` (many VMs, low per-VM compute) and customer selected 64-core 350W Platinum, suggest 32-core 270W Gold (same socket count, lower TDP, lower cost, sufficient compute density)
   - If workload is `DATABASE_IN_MEMORY` (high per-core frequency critical) and customer selected many-core low-frequency, suggest fewer-core higher-GHz alternative

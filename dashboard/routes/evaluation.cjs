@@ -50,6 +50,7 @@ const { recordCleansingPreflightTelemetry, recordOcrTelemetry } = require('../..
 const telemetryLib = require('../../scripts/lib/system/telemetry.js');
 const { generateProfessionalBOQ } = require('../../scripts/lib/boq/generate_boq_xlsx.js');
 const { safeParseEvalResult } = require('../../scripts/lib/system/schemas.js');
+const { spawnObservedChild } = require('../../scripts/lib/system/observed_child_process.js');
 
 // ── Upload BOQ ────────────────────────────────────────────────────────────────
 router.post('/upload-boq', upload.single('boqFile'), (req, res) => {
@@ -145,20 +146,25 @@ router.post('/eval-boq', (req, res) => {
   if (safeChassisDir) args.push('--chassis', safeChassisDir);
   if (process.env.OFFLINE_MODE === '1' || process.env.NODE_ENV === 'test') args.push('--offline');
 
-  const proc = spawn('node', args, { cwd: PROJECT_ROOT, env: { ...process.env, STRUCTURED_PROGRESS: '1' } });
-  // Set activeTask directly via internal reference — taskManager owns the state
-  const { startTime: _t, ...rest } = { startTime: Date.now() };
-  // Use broadcastSSE to signal start; we manage this eval task inline since it has
-  // special stdout-parsing logic for EVAL_RESULT extraction
+  const ownedCli = process.env.PRESALES_TERMINAL_OWNER === '1';
+  const proc = spawnObservedChild('eval_boq', __filename, (extraEnv) =>
+    spawn('node', args, {
+      cwd: PROJECT_ROOT,
+      env: { ...process.env, STRUCTURED_PROGRESS: '1', ...extraEnv },
+      ...(ownedCli ? { stdio: ['pipe', 'pipe', 'pipe', 'ipc'] } : {})
+    })
+  );
+  if (ownedCli) proc._presalesCooperativeCancellation = true;
   broadcastSSE({ type: 'TASK_STARTED', task: 'EVAL_BOQ', runId });
   res.status(202).json({ status: 'ACCEPTED', runId, message: 'Evaluation job started in background' });
 
   let stdoutBuffer = '';
   const lineBuffers = { stdout: '', stderr: '' };
   const evalStartTime = Date.now();
+  let completed = false;
+  let lastErrorMessage = null;
 
   // Mark activeTask manually for mutex guard compatibility
-  // (taskManager.getActiveTask() is checked by isTaskRunning)
   require('../services/taskManager.cjs')._setActiveTask({ type: 'EVAL_BOQ', runId, pid: proc.pid, process: proc, startTime: evalStartTime });
 
   const handleData = (data, streamType) => {
@@ -181,17 +187,58 @@ router.post('/eval-boq', (req, res) => {
     });
   };
 
-  proc.stdout.on('data', data => handleData(data, 'stdout'));
-  proc.stderr.on('data', data => handleData(data, 'stderr'));
+  if (proc.stdout && typeof proc.stdout.on === 'function') {
+    proc.stdout.on('data', data => handleData(data, 'stdout'));
+  }
+  if (proc.stderr && typeof proc.stderr.on === 'function') {
+    proc.stderr.on('data', data => handleData(data, 'stderr'));
+  }
+
+  proc.on('error', (err) => {
+    lastErrorMessage = err.message;
+    broadcastSSE({ type: 'LOG', text: `Evaluator process error: ${err.message}`, stream: 'stderr' });
+
+    const hasLivePid = Boolean(proc && typeof proc.pid === 'number' && proc.pid > 0);
+    if (!hasLivePid) {
+      // Spawn failure without pid can terminate once
+      if (completed) return;
+      completed = true;
+
+      const currentTask = require('../services/taskManager.cjs').getActiveTask();
+      if (currentTask && (currentTask.runId === runId || currentTask.process === proc)) {
+        require('../services/taskManager.cjs')._setActiveTask(null);
+      }
+
+      broadcastSSE({ type: 'TASK_COMPLETED', code: 1, task: 'EVAL_BOQ', runId, durationMs: 0 });
+      broadcastSSE({ type: 'EVAL_RESULT', error: err.message, runId });
+
+      const traceDir = path.join(OUTPUTS_DIR, 'history', 'runs');
+      if (!fs.existsSync(traceDir)) fs.mkdirSync(traceDir, { recursive: true });
+      try {
+        const { safeWriteJsonAtomic } = require('../../scripts/lib/system/fs_compat.js');
+        safeWriteJsonAtomic(path.join(traceDir, `${runId}.json`), { runId, taskType: 'EVAL_BOQ', startTime: new Date(evalStartTime).toISOString(), durationMs: 0, exitCode: 1, logs });
+      } catch (e) {
+        console.error(`[evaluation.cjs] Failed to persist trace ${runId}:`, e.message);
+      }
+    }
+  });
 
   proc.on('close', (code) => {
+    if (completed) return;
+    completed = true;
+
     ['stdout', 'stderr'].forEach(st => {
       if (lineBuffers[st]?.trim()) {
         logs.push({ timestamp: new Date().toISOString(), stream: st, text: lineBuffers[st] });
         broadcastSSE({ type: 'LOG', text: lineBuffers[st], stream: st });
       }
     });
-    require('../services/taskManager.cjs')._setActiveTask(null);
+
+    const currentTask = require('../services/taskManager.cjs').getActiveTask();
+    if (currentTask && (currentTask.runId === runId || currentTask.process === proc)) {
+      require('../services/taskManager.cjs')._setActiveTask(null);
+    }
+
     const durationMs = Date.now() - evalStartTime;
     broadcastSSE({ type: 'TASK_COMPLETED', code, task: 'EVAL_BOQ', runId, durationMs });
 
@@ -204,7 +251,7 @@ router.post('/eval-boq', (req, res) => {
     if (!fs.existsSync(traceDir)) fs.mkdirSync(traceDir, { recursive: true });
     try {
       const { safeWriteJsonAtomic } = require('../../scripts/lib/system/fs_compat.js');
-      safeWriteJsonAtomic(path.join(traceDir, `${runId}.json`), { runId, taskType: 'EVAL_BOQ', startTime: new Date(evalStartTime).toISOString(), durationMs, exitCode: code, logs });
+      safeWriteJsonAtomic(path.join(traceDir, `${runId}.json`), { runId, taskType: 'EVAL_BOQ', startTime: new Date(evalStartTime).toISOString(), durationMs: 0, exitCode: code, logs });
     } catch (e) {
       console.error(`[evaluation.cjs] Failed to persist trace ${runId}:`, e.message);
     }
@@ -246,14 +293,8 @@ router.post('/eval-boq', (req, res) => {
         throw new Error('No valid JSON result found in stdout');
       }
     } catch (err) {
-      broadcastSSE({ type: 'EVAL_RESULT', error: 'Failed to parse evaluator JSON', runId });
+      broadcastSSE({ type: 'EVAL_RESULT', error: lastErrorMessage || 'Failed to parse evaluator JSON', runId });
     }
-  });
-
-  proc.on('error', (err) => {
-    require('../services/taskManager.cjs')._setActiveTask(null);
-    broadcastSSE({ type: 'LOG', text: `Evaluator process error: ${err.message}`, stream: 'stderr' });
-    broadcastSSE({ type: 'EVAL_RESULT', error: err.message, runId });
   });
 });
 
@@ -366,5 +407,3 @@ router.post('/query/classify', (req, res) => {
 });
 
 module.exports = router;
-
-

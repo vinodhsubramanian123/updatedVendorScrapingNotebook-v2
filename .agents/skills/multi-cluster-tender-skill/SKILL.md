@@ -45,10 +45,13 @@ For any cluster where $N > 1$:
 1. **Total Rack Units (RU)**:
    $$\text{Total RU} = \sum (\text{ServerCount}_i \times \text{ChassisRU}_i)$$
    *(e.g., 60x DL380 Gen12 2U nodes = 120 RU)*.
-2. **Standard 42U Rack Count**:
-   $$\text{Rack Count} = \left\lceil \frac{\text{Total RU}}{42 - \text{PDU/Cable Management Headroom (e.g. 4RU)}} \right\rceil = \left\lceil \frac{120}{38} \right\rceil = 4 \text{ Racks}$$
-3. **Peak Facility Power Envelope**:
-   $$\text{Peak kW} = \frac{\sum (\text{ServerCount}_i \times \text{PSU Wattage} \times \text{PSU Count})}{1000}$$
+2. **Raw 42U Rack Count and Site Reserve**:
+   $$\text{Raw Rack Count} = \left\lceil \frac{\text{Total RU}}{42} \right\rceil$$
+   With an explicitly assumed 4 RU reserve per rack, usable space is 38 RU: $\lceil 120/38 \rceil = 4$ racks, versus $\lceil 120/42 \rceil = 3$ raw racks. The reserve is an illustrative site assumption, not a universal PDU requirement.
+3. **Installed PSU Nameplate Capacity (Not Power Draw)**:
+   $$\text{Installed Capacity kW} = \frac{\sum (\text{ServerCount}_i \times \text{PSU Wattage} \times \text{Installed PSU Count}_i)}{1000}$$
+   State redundancy separately. Under the illustrative assumption of equal-rated supplies, 1+1 uses one supply's nominal rating per node; 4+4 uses four. These ratings precede product/input-voltage derating and do not establish workload draw, facility feed demand or cooling requirements.
+   **Current implementation:** `computeClusterSizing()` in `scripts/lib/boq/multi_cluster_splitter.js` reports raw rack count and a component-power heuristic; site-adjusted rack count, total facility power and peak feed remain `null`. Do not present the worked examples below as values measured or certified by that function. CP8 owns the runtime continuation and facility-sizing gaps.
 4. **High-Line 200V–240V Utility Power Derating**:
    If estimated node power draw exceeds $800\text{W}$, alert the customer to derate below 110V/120V circuits and mandate high-line 200V–240V C13/C14 PDUs (`INV-29`).
 5. **Rail Kit Coverage**:
@@ -109,15 +112,19 @@ When completing a multi-cluster tender evaluation, the agent MUST present:
    - RAM per Node & Total Cluster RAM
    - Per-Node CapEx & Extended Cluster CapEx
 2. **Datacenter Facility Infrastructure Sizing Box**:
+   The following are worked arithmetic examples using assumed chassis sizes and PSU populations. Product SKUs, accessories, redundancy support and electrical constraints require exact catalog/vendor and site evidence; these examples provide none. Actual workload draw remains unknown without an evidenced estimate or measurement.
    - **Standard Enterprise Compute Example (60x DL380 Gen12 2U Nodes)**:
    ```
    ====================================================================
    🏢 DATACENTER FACILITY & POWER ENVELOPE SIZING (60x NODES TOTAL)
    ====================================================================
    • Total Rack Space Required : 120 RU
-   • Standard 42U Racks Needed : 4 Racks (allowing 30 RU usable per rack)
-   • Peak Facility Power Draw  : 96.0 kW (based on dual 1600W PSUs per node)
-   • Utility Power Requirement : High-line 200V–240V PDU circuits (C13/C14)
+   • Raw 42U Rack Count        : 3 Racks (no site reserve)
+   • With Assumed 4 RU Reserve : 4 Racks (38 RU usable per rack)
+   • Installed PSU Capacity   : 192.0 kW (60 x 2 x 1600W)
+   • Nominal 1+1 Capacity      : 96.0 kW before derating (assumed redundancy)
+   • Actual / Peak Power Draw : Unknown; requires evidenced load and site inputs
+   • Utility / PDU Selection  : Requires product and site validation
    • Rail Kit Coverage         : 60x HPE Easy Install Rail Kits (P52341-B21)
    • Server Management         : 60x HPE iLO Advanced Licenses included
    ====================================================================
@@ -129,10 +136,13 @@ When completing a multi-cluster tender evaluation, the agent MUST present:
    ====================================================================
    • Total Server Count        : 20 Nodes (160x NVIDIA H200 NVL GPUs)
    • Total Rack Space Required : 80 RU (20x 4U Chassis)
-   • Physical Rack Footprint   : 2x 42U Racks (Physical) / 4-8 Racks (Power-Distributed)
-   • Per-Node Power Capacity   : 19.2 kW (8x 2400W Titanium PSUs in 4+4 Redundancy)
-   • Facility Peak Power Draw  : 384 kW Nameplate / ~120 kW Steady-State Training
-   • Thermal & PDU Mandate     : High-density 3-phase 415V/480V PDUs (IEC 60309)
+   • Raw 42U Rack Count        : 2 Racks (no site reserve)
+   • With Assumed 4 RU Reserve : 3 Racks (38 RU usable per rack)
+   • Per-Node Installed PSUs   : 19.2 kW nameplate (8 x 2400W assumed)
+   • Nominal 4+4 Capacity      : 9.6 kW per node before derating
+   • Cluster Installed PSUs    : 384 kW nameplate / 192 kW nominal 4+4 capacity
+   • Actual / Peak Power Draw : Unknown; no training-load measurement supplied
+   • Thermal & PDU Selection  : Requires product and site validation
    • Interconnect & Cabling    : 80x GPU 16-pin power kits (P74700-B21), 40x Switchboards (P74714-B21)
    • Rail Kit Coverage         : 20x HPE ProLiant Compute DL380a Gen12 Ball Bearing Rail Kits (P69770-B21)
    ====================================================================

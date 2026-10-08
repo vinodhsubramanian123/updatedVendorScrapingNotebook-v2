@@ -1,0 +1,1568 @@
+{
+  "state": "DIAGNOSTIC_REPROJECTION_NOT_QUALIFIED_CAPTURE",
+  "originalArchive": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\history\\skill_workflow_excellence\\cp0_goldens\\2026-10-05T06-09-02-156Z-c85613be-90c0-4aa4-9c09-1ae639b395d9",
+  "comparisonPolicy": {
+    "version": 1,
+    "runtimePaths": [
+      "response.traceId",
+      "response.timestamp",
+      "response.executionTimeMs",
+      "response.result.traceId",
+      "response.result.lifecycleEngine.startTime",
+      "envelopes.*.data.traceId",
+      "envelopes.*.data.provenanceTrace.traceId",
+      "envelopes.*.data.provenanceTrace.timestamp",
+      "envelopes.*.data.provenanceTrace.completedAt",
+      "envelopes.*.data.provenanceTrace.totalDurationMs",
+      "envelopes.*.data.provenanceTrace.stages.*.durationMs",
+      "envelopes.*.data.tracePayloads.*.timestamp",
+      "envelopes.*.data.telemetry.parsingTimeMs",
+      "envelopes.*.data.telemetry.aspectMathTimeMs",
+      "envelopes.*.data.telemetry.ragTimeMs",
+      "envelopes.*.data.telemetry.guardrailTimeMs",
+      "envelopes.*.data.telemetry.matrixTimeMs",
+      "envelopes.*.data.telemetry.totalEvalTimeMs"
+    ],
+    "copiedRoot": "EXACT_COPIED_ROOT_ONLY",
+    "generatedIds": "EXACT_RETURNED_TRACE_IDS_ONLY",
+    "ordering": "PRESERVED",
+    "facts": "STATUSES_QUANTITIES_PRICES_OWNERS_SKUS_CITATIONS_SOURCE_DATES_AND_MANIFEST_HASHES_PRESERVED"
+  },
+  "records": [
+    {
+      "pass": 1,
+      "root": "C:\\Users\\latha\\AppData\\Local\\Temp\\skill-workflow-isolation-2vOhXP\\project",
+      "raw": {
+        "worker": {
+          "schemaVersion": 1,
+          "scenarioId": "S01-scoped-qa",
+          "family": "S01",
+          "labeledIntent": "FREEFORM_QA",
+          "mode": "CANONICAL_ROUTER",
+          "response": {
+            "query": "What is the maximum memory capacity on DL380 Gen12?",
+            "classification": {
+              "intent": "FREEFORM_QA",
+              "confidence": 0.92,
+              "skillTarget": "presales-query-router",
+              "rationale": "Freeform conversational inquiry regarding HPE server architecture, rules, or QuickSpecs."
+            },
+            "result": {
+              "chassis": "DL380_Gen12",
+              "catalogDir": "C:\\Users\\latha\\AppData\\Local\\Temp\\skill-workflow-isolation-2vOhXP\\project\\outputs\\ProLiant\\Gen12\\DL380_Gen12",
+              "answer": "• [DL380_Gen12 Hardware SKUs] Accessories & Infrastructure > AmbientTemperature: P79567-B21 (HPE ProLiant Compute 18C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00; P79564-B21 (HPE ProLiant Compute 20C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00; P79561-B21 (HPE ProLiant Compute 23C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00; P79558-B21 (HPE ProLiant Compute 25C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00\n\n• [DL380_Gen12 Hardware SKUs] Software & Licenses > HPC Software Products: S2M19A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 10 Developers 1-year LTU) - $23466.00; S2M21A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 25 Developers 1-year LTU) - $46916.00; S2M23A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 50 Developers 1-year LTU) - $70366.00; S2M25A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 10 Developers 3-year LTU) - $39921.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory: P69727-F21 (HPE 32GB (1x32GB) Dual Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $13909.00; P69726-B21 ([REMOVED SKU] HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit) - $7439.00; P69726-F21 ([REMOVED SKU] HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $7439.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory: P69728-F21 (HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $28532.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory: P69729-F21 (HPE 96GB (1x96GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $47056.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory: P69730-F21 (HPE 128GB (1x128GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $60190.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory: P73447-F21 (HPE 256GB (1x256GB) Quad Rank x4 DDR5-6400 CAS-60-52-52 EC8 Registered 3DS Smart FIO Memory Kit) - $133186.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory Setting: 875293-B21 (HPE Smart Memory Fast Fault Tolerance FIO Setting) - $1.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory Blank Kit: P07818-B21 (HPE DDR4 DIMM Blank Kit) - $129.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory Blank Kit: 807878-B21 (HPE Gen9 LFF HDD Spade Blank Kit) - $32.00; 666987-B21 (HPE Small Form Factor Hard Drive Blank Kit) - $18.00\n\n• [DL380_Gen12 Catalog Rule] Category: Memory > Memory | Constraint: CONDITIONAL_VISIBILITY (P69727-F21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL)\n\n• [DL380_Gen12 Catalog Rule] Category: Memory > Memory | Constraint: CONDITIONAL_VISIBILITY (P69728-F21 conditional visibility: portal selector activation required (Mixing of x4 and x8 memory is not allowed); PORTAL_CONDITIONAL)\n\n• [DL380_Gen12 Catalog Rule] Category: Memory > Memory | Constraint: CONDITIONAL_VISIBILITY (P69729-F21 conditional visibility: portal selector activation required (96GB Memory cannot be mixed with any other Memory.); PORTAL_CONDITIONAL)\n\n• [DL380_Gen12 Catalog Rule] Category: Memory > Memory | Constraint: CONDITIONAL_VISIBILITY (P69730-F21 conditional visibility: portal selector activation required (128GB Memory cannot be mixed with any other Memory.); PORTAL_CONDITIONAL)\n\n• [DL380_Gen12 Catalog Rule] Category: Memory > Memory | Constraint: CONDITIONAL_VISIBILITY (P73447-F21 conditional visibility: portal selector activation required (Mixing of 3DS and non 3DS memory is not allowed.); PORTAL_CONDITIONAL)",
+              "citations": [
+                {
+                  "title": "DL380_Gen12 AmbientTemperature SKUs",
+                  "snippet": "P79567-B21 (HPE ProLiant Compute 18C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00; P79564-B21 (HPE ProLiant Compute 20C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00; P79561-B21 (HPE ProLiant Compute 23C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00; P79558-B21 (HPE ProLiant Compute 25C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00",
+                  "url": "/artifacts/ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog.json"
+                },
+                {
+                  "title": "DL380_Gen12 HPC Software Products SKUs",
+                  "snippet": "S2M19A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 10 Developers 1-year LTU) - $23466.00; S2M21A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 25 Developers 1-year LTU) - $46916.00; S2M23A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 50 Developers 1-year LTU) - $70366.00; S2M25A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 10 Developers 3-year LTU) - $39921.00",
+                  "url": "/artifacts/ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog.json"
+                },
+                {
+                  "title": "DL380_Gen12 Memory SKUs",
+                  "snippet": "P69727-F21 (HPE 32GB (1x32GB) Dual Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $13909.00; P69726-B21 ([REMOVED SKU] HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit) - $7439.00; P69726-F21 ([REMOVED SKU] HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $7439.00",
+                  "url": "/artifacts/ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog.json"
+                },
+                {
+                  "title": "DL380_Gen12 Memory Setting SKUs",
+                  "snippet": "875293-B21 (HPE Smart Memory Fast Fault Tolerance FIO Setting) - $1.00",
+                  "url": "/artifacts/ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog.json"
+                },
+                {
+                  "title": "DL380_Gen12 Memory Blank Kit SKUs",
+                  "snippet": "P07818-B21 (HPE DDR4 DIMM Blank Kit) - $129.00",
+                  "url": "/artifacts/ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog.json"
+                },
+                {
+                  "title": "DL380_Gen12 Catalog Rules",
+                  "snippet": "Memory > Memory: P69727-F21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+                  "url": "/artifacts/ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog_Rules.json"
+                }
+              ],
+              "source": "Local RAG Dual-Layer Search & Master Knowledge Registry",
+              "isCloudGrounded": false,
+              "traceId": "TRC-1791180676589-F19D88",
+              "evidenceLogPath": "C:\\Users\\latha\\AppData\\Local\\Temp\\skill-workflow-isolation-2vOhXP\\project\\outputs\\history\\evidence_logs\\evidence_log_TRC-1791180676589-F19D88.json",
+              "traceStatus": "PERSISTED_EVIDENCE_LEDGER",
+              "acceptanceGate": {
+                "status": "FAILED",
+                "isValid": false,
+                "blockersCount": 2,
+                "warningsCount": 0,
+                "blockers": [
+                  {
+                    "id": "U3",
+                    "name": "Referenced SKUs Present in Scoped Catalog",
+                    "status": "FAILED",
+                    "detail": "SKU syntax check failed: 3 invalid part number(s) [DDR5-6400, REMOVED, 133186]."
+                  },
+                  {
+                    "id": "Q2",
+                    "name": "Part Numbers Verified",
+                    "status": "UNKNOWN",
+                    "detail": "Syntax valid for 24 SKU(s), but catalog data was not supplied to verify catalog presence."
+                  }
+                ],
+                "warnings": []
+              }
+            },
+            "traceId": "TRC-1791180676589-F19D88",
+            "executionTimeMs": 1469,
+            "timestamp": "2026-10-05T06:11:16.848Z",
+            "classificationConfidence": 0.8,
+            "hitlRequired": false,
+            "classificationBasis": "FREEFORM_QA_DEFAULT"
+          },
+          "error": null,
+          "outcome": "RETURNED"
+        },
+        "response": {
+          "query": "What is the maximum memory capacity on DL380 Gen12?",
+          "classification": {
+            "intent": "FREEFORM_QA",
+            "confidence": 0.92,
+            "skillTarget": "presales-query-router",
+            "rationale": "Freeform conversational inquiry regarding HPE server architecture, rules, or QuickSpecs."
+          },
+          "result": {
+            "chassis": "DL380_Gen12",
+            "catalogDir": "C:\\Users\\latha\\AppData\\Local\\Temp\\skill-workflow-isolation-2vOhXP\\project\\outputs\\ProLiant\\Gen12\\DL380_Gen12",
+            "answer": "• [DL380_Gen12 Hardware SKUs] Accessories & Infrastructure > AmbientTemperature: P79567-B21 (HPE ProLiant Compute 18C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00; P79564-B21 (HPE ProLiant Compute 20C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00; P79561-B21 (HPE ProLiant Compute 23C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00; P79558-B21 (HPE ProLiant Compute 25C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00\n\n• [DL380_Gen12 Hardware SKUs] Software & Licenses > HPC Software Products: S2M19A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 10 Developers 1-year LTU) - $23466.00; S2M21A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 25 Developers 1-year LTU) - $46916.00; S2M23A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 50 Developers 1-year LTU) - $70366.00; S2M25A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 10 Developers 3-year LTU) - $39921.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory: P69727-F21 (HPE 32GB (1x32GB) Dual Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $13909.00; P69726-B21 ([REMOVED SKU] HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit) - $7439.00; P69726-F21 ([REMOVED SKU] HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $7439.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory: P69728-F21 (HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $28532.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory: P69729-F21 (HPE 96GB (1x96GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $47056.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory: P69730-F21 (HPE 128GB (1x128GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $60190.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory: P73447-F21 (HPE 256GB (1x256GB) Quad Rank x4 DDR5-6400 CAS-60-52-52 EC8 Registered 3DS Smart FIO Memory Kit) - $133186.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory Setting: 875293-B21 (HPE Smart Memory Fast Fault Tolerance FIO Setting) - $1.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory Blank Kit: P07818-B21 (HPE DDR4 DIMM Blank Kit) - $129.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory Blank Kit: 807878-B21 (HPE Gen9 LFF HDD Spade Blank Kit) - $32.00; 666987-B21 (HPE Small Form Factor Hard Drive Blank Kit) - $18.00\n\n• [DL380_Gen12 Catalog Rule] Category: Memory > Memory | Constraint: CONDITIONAL_VISIBILITY (P69727-F21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL)\n\n• [DL380_Gen12 Catalog Rule] Category: Memory > Memory | Constraint: CONDITIONAL_VISIBILITY (P69728-F21 conditional visibility: portal selector activation required (Mixing of x4 and x8 memory is not allowed); PORTAL_CONDITIONAL)\n\n• [DL380_Gen12 Catalog Rule] Category: Memory > Memory | Constraint: CONDITIONAL_VISIBILITY (P69729-F21 conditional visibility: portal selector activation required (96GB Memory cannot be mixed with any other Memory.); PORTAL_CONDITIONAL)\n\n• [DL380_Gen12 Catalog Rule] Category: Memory > Memory | Constraint: CONDITIONAL_VISIBILITY (P69730-F21 conditional visibility: portal selector activation required (128GB Memory cannot be mixed with any other Memory.); PORTAL_CONDITIONAL)\n\n• [DL380_Gen12 Catalog Rule] Category: Memory > Memory | Constraint: CONDITIONAL_VISIBILITY (P73447-F21 conditional visibility: portal selector activation required (Mixing of 3DS and non 3DS memory is not allowed.); PORTAL_CONDITIONAL)",
+            "citations": [
+              {
+                "title": "DL380_Gen12 AmbientTemperature SKUs",
+                "snippet": "P79567-B21 (HPE ProLiant Compute 18C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00; P79564-B21 (HPE ProLiant Compute 20C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00; P79561-B21 (HPE ProLiant Compute 23C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00; P79558-B21 (HPE ProLiant Compute 25C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00",
+                "url": "/artifacts/ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog.json"
+              },
+              {
+                "title": "DL380_Gen12 HPC Software Products SKUs",
+                "snippet": "S2M19A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 10 Developers 1-year LTU) - $23466.00; S2M21A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 25 Developers 1-year LTU) - $46916.00; S2M23A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 50 Developers 1-year LTU) - $70366.00; S2M25A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 10 Developers 3-year LTU) - $39921.00",
+                "url": "/artifacts/ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog.json"
+              },
+              {
+                "title": "DL380_Gen12 Memory SKUs",
+                "snippet": "P69727-F21 (HPE 32GB (1x32GB) Dual Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $13909.00; P69726-B21 ([REMOVED SKU] HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit) - $7439.00; P69726-F21 ([REMOVED SKU] HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $7439.00",
+                "url": "/artifacts/ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog.json"
+              },
+              {
+                "title": "DL380_Gen12 Memory Setting SKUs",
+                "snippet": "875293-B21 (HPE Smart Memory Fast Fault Tolerance FIO Setting) - $1.00",
+                "url": "/artifacts/ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog.json"
+              },
+              {
+                "title": "DL380_Gen12 Memory Blank Kit SKUs",
+                "snippet": "P07818-B21 (HPE DDR4 DIMM Blank Kit) - $129.00",
+                "url": "/artifacts/ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog.json"
+              },
+              {
+                "title": "DL380_Gen12 Catalog Rules",
+                "snippet": "Memory > Memory: P69727-F21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+                "url": "/artifacts/ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog_Rules.json"
+              }
+            ],
+            "source": "Local RAG Dual-Layer Search & Master Knowledge Registry",
+            "isCloudGrounded": false,
+            "traceId": "TRC-1791180676589-F19D88",
+            "evidenceLogPath": "C:\\Users\\latha\\AppData\\Local\\Temp\\skill-workflow-isolation-2vOhXP\\project\\outputs\\history\\evidence_logs\\evidence_log_TRC-1791180676589-F19D88.json",
+            "traceStatus": "PERSISTED_EVIDENCE_LEDGER",
+            "acceptanceGate": {
+              "status": "FAILED",
+              "isValid": false,
+              "blockersCount": 2,
+              "warningsCount": 0,
+              "blockers": [
+                {
+                  "id": "U3",
+                  "name": "Referenced SKUs Present in Scoped Catalog",
+                  "status": "FAILED",
+                  "detail": "SKU syntax check failed: 3 invalid part number(s) [DDR5-6400, REMOVED, 133186]."
+                },
+                {
+                  "id": "Q2",
+                  "name": "Part Numbers Verified",
+                  "status": "UNKNOWN",
+                  "detail": "Syntax valid for 24 SKU(s), but catalog data was not supplied to verify catalog presence."
+                }
+              ],
+              "warnings": []
+            }
+          },
+          "traceId": "TRC-1791180676589-F19D88",
+          "executionTimeMs": 1469,
+          "timestamp": "2026-10-05T06:11:16.848Z",
+          "classificationConfidence": 0.8,
+          "hitlRequired": false,
+          "classificationBasis": "FREEFORM_QA_DEFAULT"
+        },
+        "error": null,
+        "envelopes": []
+      },
+      "semantic": {
+        "artifacts": [
+          {
+            "content": {
+              "activeRulesReached": [],
+              "arbitrationDecisions": [],
+              "artifacts": [],
+              "candidateAttempts": [],
+              "chassis": "DL380_Gen12",
+              "completedAt": "2026-10-05T06:11:16.597Z",
+              "customerInput": {
+                "filePath": "ROUTER_QUERY_INPUT",
+                "serverCount": 1,
+                "totalRequestedLines": 0
+              },
+              "events": [
+                {
+                  "event": "STARTED",
+                  "phaseNum": 1,
+                  "sequence": 1,
+                  "timestamp": "2026-10-05T06:11:16.594Z"
+                },
+                {
+                  "event": "PASSED",
+                  "phaseNum": 1,
+                  "sequence": 2,
+                  "timestamp": "2026-10-05T06:11:16.595Z"
+                },
+                {
+                  "event": "STARTED",
+                  "phaseNum": 2,
+                  "sequence": 3,
+                  "timestamp": "2026-10-05T06:11:16.596Z"
+                },
+                {
+                  "event": "PASSED",
+                  "phaseNum": 2,
+                  "sequence": 4,
+                  "timestamp": "2026-10-05T06:11:16.596Z"
+                }
+              ],
+              "execution": {
+                "gitRevision": null,
+                "nodeVersion": "v24.19.0",
+                "platform": "win32",
+                "revisionError": "ISOLATION_BOUNDARY_DENIED: NON_NODE_SUBPROCESS",
+                "workingDiffSha256": null
+              },
+              "health": {
+                "gaps": [
+                  "PHASE_3_MISSING",
+                  "PHASE_4_MISSING",
+                  "PHASE_5_MISSING",
+                  "PHASE_6_MISSING",
+                  "PHASE_7_MISSING",
+                  "PHASE_8_MISSING",
+                  "PHASE_9_MISSING",
+                  "SKU_DECISIONS_MISSING",
+                  "INPUT_FINGERPRINT_MISSING"
+                ],
+                "healthy": false,
+                "workflowStatus": "INCOMPLETE"
+              },
+              "modernizationDecisions": [],
+              "notebookLmTraces": [],
+              "phaseResolutions": [],
+              "phases": {
+                "phase_1": {
+                  "checks": [],
+                  "completedAt": "2026-10-05T06:11:16.595Z",
+                  "durationMs": 1,
+                  "errors": [],
+                  "inputSummary": {
+                    "intent": "FREEFORM_QA",
+                    "query": "What is the maximum memory capacity on DL380 Gen12?"
+                  },
+                  "outputSummary": {
+                    "intent": "FREEFORM_QA"
+                  },
+                  "phaseName": "Presales Query Intake",
+                  "phaseNumber": 1,
+                  "startedAt": "2026-10-05T06:11:16.595Z",
+                  "status": "PASSED",
+                  "warnings": []
+                },
+                "phase_2": {
+                  "checks": [],
+                  "completedAt": "2026-10-05T06:11:16.596Z",
+                  "durationMs": 1,
+                  "errors": [],
+                  "inputSummary": {
+                    "skillTarget": "presales-query-router"
+                  },
+                  "outputSummary": {
+                    "status": "COMPLETED"
+                  },
+                  "phaseName": "Router Dispatch & Execution",
+                  "phaseNumber": 2,
+                  "startedAt": "2026-10-05T06:11:16.596Z",
+                  "status": "PASSED",
+                  "warnings": []
+                }
+              },
+              "sharedState": {
+                "activeDeltaCount": 0,
+                "aspectChecksCompleted": false,
+                "conflictGraphCompleted": false,
+                "currentChassis": "DL380_Gen12",
+                "detectedFormFactor": "Standard",
+                "dualBrainVerified": false,
+                "nodeMultiplier": 1,
+                "strategySynthesized": false
+              },
+              "skuAuditLedger": [],
+              "startedAt": "2026-10-05T06:11:16.594Z",
+              "totalDurationMs": 3,
+              "traceId": "<GENERATED_TRACE_ID>",
+              "version": "2.0.0",
+              "workflowFailures": []
+            },
+            "path": "outputs/history/evidence_logs/evidence_log_<GENERATED_TRACE_ID>.json",
+            "state": "PARSED_JSON"
+          },
+          {
+            "bytes": 2075,
+            "path": "outputs/history/evidence_logs/evidence_summary_<GENERATED_TRACE_ID>.md",
+            "sha256": "6f575950de6de25dc78f0f48292f3a172b89dae0111455f8d24d527ef0fd1661",
+            "state": "EXACT_BYTES"
+          }
+        ],
+        "copiedConfig": {
+          "disposition": "NO_ISOLATED_CONFIG_SIDE_EFFECTS",
+          "removed": [],
+          "semantics": []
+        },
+        "envelopes": [],
+        "error": null,
+        "removedOutputs": [],
+        "response": {
+          "classification": {
+            "confidence": 0.92,
+            "intent": "FREEFORM_QA",
+            "rationale": "Freeform conversational inquiry regarding HPE server architecture, rules, or QuickSpecs.",
+            "skillTarget": "presales-query-router"
+          },
+          "classificationBasis": "FREEFORM_QA_DEFAULT",
+          "classificationConfidence": 0.8,
+          "executionTimeMs": "<GENERATED_RUNTIME_FIELD>",
+          "hitlRequired": false,
+          "query": "What is the maximum memory capacity on DL380 Gen12?",
+          "result": {
+            "acceptanceGate": {
+              "blockers": [
+                {
+                  "detail": "SKU syntax check failed: 3 invalid part number(s) [DDR5-6400, REMOVED, 133186].",
+                  "id": "U3",
+                  "name": "Referenced SKUs Present in Scoped Catalog",
+                  "status": "FAILED"
+                },
+                {
+                  "detail": "Syntax valid for 24 SKU(s), but catalog data was not supplied to verify catalog presence.",
+                  "id": "Q2",
+                  "name": "Part Numbers Verified",
+                  "status": "UNKNOWN"
+                }
+              ],
+              "blockersCount": 2,
+              "isValid": false,
+              "status": "FAILED",
+              "warnings": [],
+              "warningsCount": 0
+            },
+            "answer": "• [DL380_Gen12 Hardware SKUs] Accessories & Infrastructure > AmbientTemperature: P79567-B21 (HPE ProLiant Compute 18C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00; P79564-B21 (HPE ProLiant Compute 20C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00; P79561-B21 (HPE ProLiant Compute 23C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00; P79558-B21 (HPE ProLiant Compute 25C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00\n\n• [DL380_Gen12 Hardware SKUs] Software & Licenses > HPC Software Products: S2M19A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 10 Developers 1-year LTU) - $23466.00; S2M21A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 25 Developers 1-year LTU) - $46916.00; S2M23A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 50 Developers 1-year LTU) - $70366.00; S2M25A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 10 Developers 3-year LTU) - $39921.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory: P69727-F21 (HPE 32GB (1x32GB) Dual Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $13909.00; P69726-B21 ([REMOVED SKU] HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit) - $7439.00; P69726-F21 ([REMOVED SKU] HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $7439.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory: P69728-F21 (HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $28532.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory: P69729-F21 (HPE 96GB (1x96GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $47056.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory: P69730-F21 (HPE 128GB (1x128GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $60190.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory: P73447-F21 (HPE 256GB (1x256GB) Quad Rank x4 DDR5-6400 CAS-60-52-52 EC8 Registered 3DS Smart FIO Memory Kit) - $133186.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory Setting: 875293-B21 (HPE Smart Memory Fast Fault Tolerance FIO Setting) - $1.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory Blank Kit: P07818-B21 (HPE DDR4 DIMM Blank Kit) - $129.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory Blank Kit: 807878-B21 (HPE Gen9 LFF HDD Spade Blank Kit) - $32.00; 666987-B21 (HPE Small Form Factor Hard Drive Blank Kit) - $18.00\n\n• [DL380_Gen12 Catalog Rule] Category: Memory > Memory | Constraint: CONDITIONAL_VISIBILITY (P69727-F21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL)\n\n• [DL380_Gen12 Catalog Rule] Category: Memory > Memory | Constraint: CONDITIONAL_VISIBILITY (P69728-F21 conditional visibility: portal selector activation required (Mixing of x4 and x8 memory is not allowed); PORTAL_CONDITIONAL)\n\n• [DL380_Gen12 Catalog Rule] Category: Memory > Memory | Constraint: CONDITIONAL_VISIBILITY (P69729-F21 conditional visibility: portal selector activation required (96GB Memory cannot be mixed with any other Memory.); PORTAL_CONDITIONAL)\n\n• [DL380_Gen12 Catalog Rule] Category: Memory > Memory | Constraint: CONDITIONAL_VISIBILITY (P69730-F21 conditional visibility: portal selector activation required (128GB Memory cannot be mixed with any other Memory.); PORTAL_CONDITIONAL)\n\n• [DL380_Gen12 Catalog Rule] Category: Memory > Memory | Constraint: CONDITIONAL_VISIBILITY (P73447-F21 conditional visibility: portal selector activation required (Mixing of 3DS and non 3DS memory is not allowed.); PORTAL_CONDITIONAL)",
+            "catalogDir": "<ISOLATED_ROOT>\\outputs\\ProLiant\\Gen12\\DL380_Gen12",
+            "chassis": "DL380_Gen12",
+            "citations": [
+              {
+                "snippet": "P79567-B21 (HPE ProLiant Compute 18C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00; P79564-B21 (HPE ProLiant Compute 20C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00; P79561-B21 (HPE ProLiant Compute 23C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00; P79558-B21 (HPE ProLiant Compute 25C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00",
+                "title": "DL380_Gen12 AmbientTemperature SKUs",
+                "url": "/artifacts/ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog.json"
+              },
+              {
+                "snippet": "S2M19A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 10 Developers 1-year LTU) - $23466.00; S2M21A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 25 Developers 1-year LTU) - $46916.00; S2M23A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 50 Developers 1-year LTU) - $70366.00; S2M25A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 10 Developers 3-year LTU) - $39921.00",
+                "title": "DL380_Gen12 HPC Software Products SKUs",
+                "url": "/artifacts/ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog.json"
+              },
+              {
+                "snippet": "P69727-F21 (HPE 32GB (1x32GB) Dual Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $13909.00; P69726-B21 ([REMOVED SKU] HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit) - $7439.00; P69726-F21 ([REMOVED SKU] HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $7439.00",
+                "title": "DL380_Gen12 Memory SKUs",
+                "url": "/artifacts/ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog.json"
+              },
+              {
+                "snippet": "875293-B21 (HPE Smart Memory Fast Fault Tolerance FIO Setting) - $1.00",
+                "title": "DL380_Gen12 Memory Setting SKUs",
+                "url": "/artifacts/ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog.json"
+              },
+              {
+                "snippet": "P07818-B21 (HPE DDR4 DIMM Blank Kit) - $129.00",
+                "title": "DL380_Gen12 Memory Blank Kit SKUs",
+                "url": "/artifacts/ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog.json"
+              },
+              {
+                "snippet": "Memory > Memory: P69727-F21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+                "title": "DL380_Gen12 Catalog Rules",
+                "url": "/artifacts/ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog_Rules.json"
+              }
+            ],
+            "evidenceLogPath": "<ISOLATED_ROOT>\\outputs\\history\\evidence_logs\\evidence_log_<GENERATED_TRACE_ID>.json",
+            "isCloudGrounded": false,
+            "source": "Local RAG Dual-Layer Search & Master Knowledge Registry",
+            "traceId": "<GENERATED_RUNTIME_FIELD>",
+            "traceStatus": "PERSISTED_EVIDENCE_LEDGER"
+          },
+          "timestamp": "<GENERATED_RUNTIME_FIELD>",
+          "traceId": "<GENERATED_RUNTIME_FIELD>"
+        },
+        "workbooks": []
+      },
+      "artifacts": [
+        {
+          "path": "outputs/history/evidence_logs/evidence_log_TRC-1791180676589-F19D88.json",
+          "bytes": 2879,
+          "sha256": "4c3601c06f63c8f408d4e3e5a45c93da964b3f1aadd304ca674be2aede624dd9",
+          "archivePath": "artifacts/outputs/history/evidence_logs/evidence_log_TRC-1791180676589-F19D88.json"
+        },
+        {
+          "path": "outputs/history/evidence_logs/evidence_summary_TRC-1791180676589-F19D88.md",
+          "bytes": 2075,
+          "sha256": "6f575950de6de25dc78f0f48292f3a172b89dae0111455f8d24d527ef0fd1661",
+          "archivePath": "artifacts/outputs/history/evidence_logs/evidence_summary_TRC-1791180676589-F19D88.md"
+        }
+      ],
+      "workbooks": [],
+      "artifactSemantics": [
+        {
+          "path": "outputs/history/evidence_logs/evidence_log_TRC-1791180676589-F19D88.json",
+          "state": "PARSED_JSON",
+          "content": {
+            "version": "2.0.0",
+            "execution": {
+              "nodeVersion": "v24.19.0",
+              "platform": "win32",
+              "gitRevision": null,
+              "workingDiffSha256": null,
+              "revisionError": "ISOLATION_BOUNDARY_DENIED: NON_NODE_SUBPROCESS"
+            },
+            "health": {
+              "healthy": false,
+              "gaps": [
+                "PHASE_3_MISSING",
+                "PHASE_4_MISSING",
+                "PHASE_5_MISSING",
+                "PHASE_6_MISSING",
+                "PHASE_7_MISSING",
+                "PHASE_8_MISSING",
+                "PHASE_9_MISSING",
+                "SKU_DECISIONS_MISSING",
+                "INPUT_FINGERPRINT_MISSING"
+              ],
+              "workflowStatus": "INCOMPLETE"
+            },
+            "events": [
+              {
+                "sequence": 1,
+                "phaseNum": 1,
+                "event": "STARTED",
+                "timestamp": "2026-10-05T06:11:16.594Z"
+              },
+              {
+                "sequence": 2,
+                "phaseNum": 1,
+                "event": "PASSED",
+                "timestamp": "2026-10-05T06:11:16.595Z"
+              },
+              {
+                "sequence": 3,
+                "phaseNum": 2,
+                "event": "STARTED",
+                "timestamp": "2026-10-05T06:11:16.596Z"
+              },
+              {
+                "sequence": 4,
+                "phaseNum": 2,
+                "event": "PASSED",
+                "timestamp": "2026-10-05T06:11:16.596Z"
+              }
+            ],
+            "candidateAttempts": [],
+            "phaseResolutions": [],
+            "workflowFailures": [],
+            "artifacts": [],
+            "traceId": "TRC-1791180676589-F19D88",
+            "startedAt": "2026-10-05T06:11:16.594Z",
+            "completedAt": "2026-10-05T06:11:16.597Z",
+            "totalDurationMs": 3,
+            "chassis": "DL380_Gen12",
+            "customerInput": {
+              "filePath": "ROUTER_QUERY_INPUT",
+              "serverCount": 1,
+              "totalRequestedLines": 0
+            },
+            "sharedState": {
+              "currentChassis": "DL380_Gen12",
+              "nodeMultiplier": 1,
+              "detectedFormFactor": "Standard",
+              "aspectChecksCompleted": false,
+              "conflictGraphCompleted": false,
+              "strategySynthesized": false,
+              "dualBrainVerified": false,
+              "activeDeltaCount": 0
+            },
+            "phases": {
+              "phase_1": {
+                "phaseNumber": 1,
+                "phaseName": "Presales Query Intake",
+                "status": "PASSED",
+                "startedAt": "2026-10-05T06:11:16.595Z",
+                "completedAt": "2026-10-05T06:11:16.595Z",
+                "durationMs": 1,
+                "inputSummary": {
+                  "query": "What is the maximum memory capacity on DL380 Gen12?",
+                  "intent": "FREEFORM_QA"
+                },
+                "outputSummary": {
+                  "intent": "FREEFORM_QA"
+                },
+                "checks": [],
+                "warnings": [],
+                "errors": []
+              },
+              "phase_2": {
+                "phaseNumber": 2,
+                "phaseName": "Router Dispatch & Execution",
+                "status": "PASSED",
+                "startedAt": "2026-10-05T06:11:16.596Z",
+                "completedAt": "2026-10-05T06:11:16.596Z",
+                "durationMs": 1,
+                "inputSummary": {
+                  "skillTarget": "presales-query-router"
+                },
+                "outputSummary": {
+                  "status": "COMPLETED"
+                },
+                "checks": [],
+                "warnings": [],
+                "errors": []
+              }
+            },
+            "activeRulesReached": [],
+            "arbitrationDecisions": [],
+            "modernizationDecisions": [],
+            "skuAuditLedger": [],
+            "notebookLmTraces": []
+          }
+        },
+        {
+          "path": "outputs/history/evidence_logs/evidence_summary_TRC-1791180676589-F19D88.md",
+          "state": "EXACT_BYTES",
+          "sha256": "6f575950de6de25dc78f0f48292f3a172b89dae0111455f8d24d527ef0fd1661",
+          "bytes": 2075
+        }
+      ],
+      "mutatedOutputs": [
+        {
+          "path": "outputs/history/evidence_logs/evidence_log_TRC-1791180676589-F19D88.json",
+          "bytes": 2879,
+          "sha256": "4c3601c06f63c8f408d4e3e5a45c93da964b3f1aadd304ca674be2aede624dd9"
+        },
+        {
+          "path": "outputs/history/evidence_logs/evidence_summary_TRC-1791180676589-F19D88.md",
+          "bytes": 2075,
+          "sha256": "6f575950de6de25dc78f0f48292f3a172b89dae0111455f8d24d527ef0fd1661"
+        }
+      ],
+      "removedOutputs": [],
+      "copiedConfig": {
+        "disposition": "NO_ISOLATED_CONFIG_SIDE_EFFECTS",
+        "before": [
+          {
+            "path": "scripts/config/catalog_coverage_profiles.json",
+            "bytes": 2694,
+            "sha256": "063b6ebfcd6c09e131193c3f2b8752c915a55197a8e3a8b76c3385aabebed6b4"
+          },
+          {
+            "path": "scripts/config/categories.json",
+            "bytes": 4535,
+            "sha256": "596c6d28ae0ee54397a5dd29e7e72ee386cc7940f867dd71acc12bde21a34ba3"
+          },
+          {
+            "path": "scripts/config/chassis_map.json",
+            "bytes": 59800,
+            "sha256": "2e451354bca012d63e2f4d7873cc18bd50eca76c8cdd7694c9166c72576649eb"
+          },
+          {
+            "path": "scripts/config/generic_domain_rules_matrix.json",
+            "bytes": 18764,
+            "sha256": "a51d544d9c440e6f7c73c30c170b485c2e4e06b77f3e1b7d3a8df7ef25004e59"
+          },
+          {
+            "path": "scripts/config/notebooks.json",
+            "bytes": 28417,
+            "sha256": "bb44598d258493795a1b71ccf0ae6efb011b276852112a4f6174ab126944286c"
+          },
+          {
+            "path": "scripts/config/notebooks.json.1790856325634.tmp",
+            "bytes": 28417,
+            "sha256": "adb7bc5965d6f1c602c302ebbac517f1340d5cb6b80161bc90f4970d46f62f06"
+          },
+          {
+            "path": "scripts/config/profiles/alletra_storage.json",
+            "bytes": 562,
+            "sha256": "da064b537645047879b45a8bca1a190f14ac6beefdc9b4dbf03628dc494566af"
+          },
+          {
+            "path": "scripts/config/profiles/cray_rack.json",
+            "bytes": 494,
+            "sha256": "543d18921cd6c17ff59149f1e430f311f86253c580cd1e4d7112eb5fa5f7d78c"
+          },
+          {
+            "path": "scripts/config/profiles/default_profile.json",
+            "bytes": 896,
+            "sha256": "c67603ea609cd5ac071111098178385aa8679d6e69fffb966701efacc128492f"
+          },
+          {
+            "path": "scripts/config/profiles/proliant_gen11.json",
+            "bytes": 458,
+            "sha256": "ae6220bf14f9a09b3a89d25b3e010ffe631ee2e2853953d1ceb983e039b969de"
+          },
+          {
+            "path": "scripts/config/profiles/proliant_gen12.json",
+            "bytes": 347,
+            "sha256": "70113cf1b1c91e6a70ea1464d0385110c56dc46680fc2b4c853e8476ba06aaf0"
+          },
+          {
+            "path": "scripts/config/profiles/storeever_tape.json",
+            "bytes": 472,
+            "sha256": "3d07456cb2424670fbcaf8efafc0154ce8918941046f5717b6e9a0419ae84ff7"
+          },
+          {
+            "path": "scripts/config/profiles/synergy_module.json",
+            "bytes": 475,
+            "sha256": "14f2b8d83e3be187181b8721ca97c555c9da252a623d1d774cd9b250bb2d8620"
+          },
+          {
+            "path": "scripts/config/scraping_workflow_learnings.js",
+            "bytes": 2332,
+            "sha256": "38f921eb2b09b50542784987bcbec4d7e5e137e00ad53f17b8db86815fb2c620"
+          },
+          {
+            "path": "scripts/config/skill_workflow_registry.js",
+            "bytes": 19551,
+            "sha256": "f20e8c0d7c9b0a24bcc95523c238f7fec107f29800a315648e181b5c92c85930"
+          },
+          {
+            "path": "scripts/config/strategy_addons.json",
+            "bytes": 3529,
+            "sha256": "b3d539a23fa593cac7dd92354cebf480f3ca4801143d97c784ada0bd754414d8"
+          },
+          {
+            "path": "scripts/config/upgrade_templates.json",
+            "bytes": 1342,
+            "sha256": "e4333a79041f8d4119de5de700903e3be3f70d422669f33bf8179aa047e92bba"
+          }
+        ],
+        "after": [
+          {
+            "path": "scripts/config/catalog_coverage_profiles.json",
+            "bytes": 2694,
+            "sha256": "063b6ebfcd6c09e131193c3f2b8752c915a55197a8e3a8b76c3385aabebed6b4"
+          },
+          {
+            "path": "scripts/config/categories.json",
+            "bytes": 4535,
+            "sha256": "596c6d28ae0ee54397a5dd29e7e72ee386cc7940f867dd71acc12bde21a34ba3"
+          },
+          {
+            "path": "scripts/config/chassis_map.json",
+            "bytes": 59800,
+            "sha256": "2e451354bca012d63e2f4d7873cc18bd50eca76c8cdd7694c9166c72576649eb"
+          },
+          {
+            "path": "scripts/config/generic_domain_rules_matrix.json",
+            "bytes": 18764,
+            "sha256": "a51d544d9c440e6f7c73c30c170b485c2e4e06b77f3e1b7d3a8df7ef25004e59"
+          },
+          {
+            "path": "scripts/config/notebooks.json",
+            "bytes": 28417,
+            "sha256": "bb44598d258493795a1b71ccf0ae6efb011b276852112a4f6174ab126944286c"
+          },
+          {
+            "path": "scripts/config/notebooks.json.1790856325634.tmp",
+            "bytes": 28417,
+            "sha256": "adb7bc5965d6f1c602c302ebbac517f1340d5cb6b80161bc90f4970d46f62f06"
+          },
+          {
+            "path": "scripts/config/profiles/alletra_storage.json",
+            "bytes": 562,
+            "sha256": "da064b537645047879b45a8bca1a190f14ac6beefdc9b4dbf03628dc494566af"
+          },
+          {
+            "path": "scripts/config/profiles/cray_rack.json",
+            "bytes": 494,
+            "sha256": "543d18921cd6c17ff59149f1e430f311f86253c580cd1e4d7112eb5fa5f7d78c"
+          },
+          {
+            "path": "scripts/config/profiles/default_profile.json",
+            "bytes": 896,
+            "sha256": "c67603ea609cd5ac071111098178385aa8679d6e69fffb966701efacc128492f"
+          },
+          {
+            "path": "scripts/config/profiles/proliant_gen11.json",
+            "bytes": 458,
+            "sha256": "ae6220bf14f9a09b3a89d25b3e010ffe631ee2e2853953d1ceb983e039b969de"
+          },
+          {
+            "path": "scripts/config/profiles/proliant_gen12.json",
+            "bytes": 347,
+            "sha256": "70113cf1b1c91e6a70ea1464d0385110c56dc46680fc2b4c853e8476ba06aaf0"
+          },
+          {
+            "path": "scripts/config/profiles/storeever_tape.json",
+            "bytes": 472,
+            "sha256": "3d07456cb2424670fbcaf8efafc0154ce8918941046f5717b6e9a0419ae84ff7"
+          },
+          {
+            "path": "scripts/config/profiles/synergy_module.json",
+            "bytes": 475,
+            "sha256": "14f2b8d83e3be187181b8721ca97c555c9da252a623d1d774cd9b250bb2d8620"
+          },
+          {
+            "path": "scripts/config/scraping_workflow_learnings.js",
+            "bytes": 2332,
+            "sha256": "38f921eb2b09b50542784987bcbec4d7e5e137e00ad53f17b8db86815fb2c620"
+          },
+          {
+            "path": "scripts/config/skill_workflow_registry.js",
+            "bytes": 19551,
+            "sha256": "f20e8c0d7c9b0a24bcc95523c238f7fec107f29800a315648e181b5c92c85930"
+          },
+          {
+            "path": "scripts/config/strategy_addons.json",
+            "bytes": 3529,
+            "sha256": "b3d539a23fa593cac7dd92354cebf480f3ca4801143d97c784ada0bd754414d8"
+          },
+          {
+            "path": "scripts/config/upgrade_templates.json",
+            "bytes": 1342,
+            "sha256": "e4333a79041f8d4119de5de700903e3be3f70d422669f33bf8179aa047e92bba"
+          }
+        ],
+        "changed": [],
+        "removed": [],
+        "archived": [],
+        "semantics": []
+      }
+    },
+    {
+      "pass": 2,
+      "root": "C:\\Users\\latha\\AppData\\Local\\Temp\\skill-workflow-isolation-84pmXG\\project",
+      "raw": {
+        "worker": {
+          "schemaVersion": 1,
+          "scenarioId": "S01-scoped-qa",
+          "family": "S01",
+          "labeledIntent": "FREEFORM_QA",
+          "mode": "CANONICAL_ROUTER",
+          "response": {
+            "query": "What is the maximum memory capacity on DL380 Gen12?",
+            "classification": {
+              "intent": "FREEFORM_QA",
+              "confidence": 0.92,
+              "skillTarget": "presales-query-router",
+              "rationale": "Freeform conversational inquiry regarding HPE server architecture, rules, or QuickSpecs."
+            },
+            "result": {
+              "chassis": "DL380_Gen12",
+              "catalogDir": "C:\\Users\\latha\\AppData\\Local\\Temp\\skill-workflow-isolation-84pmXG\\project\\outputs\\ProLiant\\Gen12\\DL380_Gen12",
+              "answer": "• [DL380_Gen12 Hardware SKUs] Accessories & Infrastructure > AmbientTemperature: P79567-B21 (HPE ProLiant Compute 18C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00; P79564-B21 (HPE ProLiant Compute 20C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00; P79561-B21 (HPE ProLiant Compute 23C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00; P79558-B21 (HPE ProLiant Compute 25C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00\n\n• [DL380_Gen12 Hardware SKUs] Software & Licenses > HPC Software Products: S2M19A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 10 Developers 1-year LTU) - $23466.00; S2M21A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 25 Developers 1-year LTU) - $46916.00; S2M23A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 50 Developers 1-year LTU) - $70366.00; S2M25A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 10 Developers 3-year LTU) - $39921.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory: P69727-F21 (HPE 32GB (1x32GB) Dual Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $13909.00; P69726-B21 ([REMOVED SKU] HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit) - $7439.00; P69726-F21 ([REMOVED SKU] HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $7439.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory: P69728-F21 (HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $28532.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory: P69729-F21 (HPE 96GB (1x96GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $47056.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory: P69730-F21 (HPE 128GB (1x128GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $60190.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory: P73447-F21 (HPE 256GB (1x256GB) Quad Rank x4 DDR5-6400 CAS-60-52-52 EC8 Registered 3DS Smart FIO Memory Kit) - $133186.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory Setting: 875293-B21 (HPE Smart Memory Fast Fault Tolerance FIO Setting) - $1.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory Blank Kit: P07818-B21 (HPE DDR4 DIMM Blank Kit) - $129.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory Blank Kit: 807878-B21 (HPE Gen9 LFF HDD Spade Blank Kit) - $32.00; 666987-B21 (HPE Small Form Factor Hard Drive Blank Kit) - $18.00\n\n• [DL380_Gen12 Catalog Rule] Category: Memory > Memory | Constraint: CONDITIONAL_VISIBILITY (P69727-F21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL)\n\n• [DL380_Gen12 Catalog Rule] Category: Memory > Memory | Constraint: CONDITIONAL_VISIBILITY (P69728-F21 conditional visibility: portal selector activation required (Mixing of x4 and x8 memory is not allowed); PORTAL_CONDITIONAL)\n\n• [DL380_Gen12 Catalog Rule] Category: Memory > Memory | Constraint: CONDITIONAL_VISIBILITY (P69729-F21 conditional visibility: portal selector activation required (96GB Memory cannot be mixed with any other Memory.); PORTAL_CONDITIONAL)\n\n• [DL380_Gen12 Catalog Rule] Category: Memory > Memory | Constraint: CONDITIONAL_VISIBILITY (P69730-F21 conditional visibility: portal selector activation required (128GB Memory cannot be mixed with any other Memory.); PORTAL_CONDITIONAL)\n\n• [DL380_Gen12 Catalog Rule] Category: Memory > Memory | Constraint: CONDITIONAL_VISIBILITY (P73447-F21 conditional visibility: portal selector activation required (Mixing of 3DS and non 3DS memory is not allowed.); PORTAL_CONDITIONAL)",
+              "citations": [
+                {
+                  "title": "DL380_Gen12 AmbientTemperature SKUs",
+                  "snippet": "P79567-B21 (HPE ProLiant Compute 18C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00; P79564-B21 (HPE ProLiant Compute 20C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00; P79561-B21 (HPE ProLiant Compute 23C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00; P79558-B21 (HPE ProLiant Compute 25C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00",
+                  "url": "/artifacts/ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog.json"
+                },
+                {
+                  "title": "DL380_Gen12 HPC Software Products SKUs",
+                  "snippet": "S2M19A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 10 Developers 1-year LTU) - $23466.00; S2M21A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 25 Developers 1-year LTU) - $46916.00; S2M23A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 50 Developers 1-year LTU) - $70366.00; S2M25A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 10 Developers 3-year LTU) - $39921.00",
+                  "url": "/artifacts/ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog.json"
+                },
+                {
+                  "title": "DL380_Gen12 Memory SKUs",
+                  "snippet": "P69727-F21 (HPE 32GB (1x32GB) Dual Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $13909.00; P69726-B21 ([REMOVED SKU] HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit) - $7439.00; P69726-F21 ([REMOVED SKU] HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $7439.00",
+                  "url": "/artifacts/ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog.json"
+                },
+                {
+                  "title": "DL380_Gen12 Memory Setting SKUs",
+                  "snippet": "875293-B21 (HPE Smart Memory Fast Fault Tolerance FIO Setting) - $1.00",
+                  "url": "/artifacts/ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog.json"
+                },
+                {
+                  "title": "DL380_Gen12 Memory Blank Kit SKUs",
+                  "snippet": "P07818-B21 (HPE DDR4 DIMM Blank Kit) - $129.00",
+                  "url": "/artifacts/ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog.json"
+                },
+                {
+                  "title": "DL380_Gen12 Catalog Rules",
+                  "snippet": "Memory > Memory: P69727-F21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+                  "url": "/artifacts/ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog_Rules.json"
+                }
+              ],
+              "source": "Local RAG Dual-Layer Search & Master Knowledge Registry",
+              "isCloudGrounded": false,
+              "traceId": "TRC-1791180825068-956DC7",
+              "evidenceLogPath": "C:\\Users\\latha\\AppData\\Local\\Temp\\skill-workflow-isolation-84pmXG\\project\\outputs\\history\\evidence_logs\\evidence_log_TRC-1791180825068-956DC7.json",
+              "traceStatus": "PERSISTED_EVIDENCE_LEDGER",
+              "acceptanceGate": {
+                "status": "FAILED",
+                "isValid": false,
+                "blockersCount": 2,
+                "warningsCount": 0,
+                "blockers": [
+                  {
+                    "id": "U3",
+                    "name": "Referenced SKUs Present in Scoped Catalog",
+                    "status": "FAILED",
+                    "detail": "SKU syntax check failed: 3 invalid part number(s) [DDR5-6400, REMOVED, 133186]."
+                  },
+                  {
+                    "id": "Q2",
+                    "name": "Part Numbers Verified",
+                    "status": "UNKNOWN",
+                    "detail": "Syntax valid for 24 SKU(s), but catalog data was not supplied to verify catalog presence."
+                  }
+                ],
+                "warnings": []
+              }
+            },
+            "traceId": "TRC-1791180825068-956DC7",
+            "executionTimeMs": 1159,
+            "timestamp": "2026-10-05T06:13:45.213Z",
+            "classificationConfidence": 0.8,
+            "hitlRequired": false,
+            "classificationBasis": "FREEFORM_QA_DEFAULT"
+          },
+          "error": null,
+          "outcome": "RETURNED"
+        },
+        "response": {
+          "query": "What is the maximum memory capacity on DL380 Gen12?",
+          "classification": {
+            "intent": "FREEFORM_QA",
+            "confidence": 0.92,
+            "skillTarget": "presales-query-router",
+            "rationale": "Freeform conversational inquiry regarding HPE server architecture, rules, or QuickSpecs."
+          },
+          "result": {
+            "chassis": "DL380_Gen12",
+            "catalogDir": "C:\\Users\\latha\\AppData\\Local\\Temp\\skill-workflow-isolation-84pmXG\\project\\outputs\\ProLiant\\Gen12\\DL380_Gen12",
+            "answer": "• [DL380_Gen12 Hardware SKUs] Accessories & Infrastructure > AmbientTemperature: P79567-B21 (HPE ProLiant Compute 18C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00; P79564-B21 (HPE ProLiant Compute 20C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00; P79561-B21 (HPE ProLiant Compute 23C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00; P79558-B21 (HPE ProLiant Compute 25C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00\n\n• [DL380_Gen12 Hardware SKUs] Software & Licenses > HPC Software Products: S2M19A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 10 Developers 1-year LTU) - $23466.00; S2M21A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 25 Developers 1-year LTU) - $46916.00; S2M23A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 50 Developers 1-year LTU) - $70366.00; S2M25A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 10 Developers 3-year LTU) - $39921.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory: P69727-F21 (HPE 32GB (1x32GB) Dual Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $13909.00; P69726-B21 ([REMOVED SKU] HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit) - $7439.00; P69726-F21 ([REMOVED SKU] HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $7439.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory: P69728-F21 (HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $28532.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory: P69729-F21 (HPE 96GB (1x96GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $47056.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory: P69730-F21 (HPE 128GB (1x128GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $60190.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory: P73447-F21 (HPE 256GB (1x256GB) Quad Rank x4 DDR5-6400 CAS-60-52-52 EC8 Registered 3DS Smart FIO Memory Kit) - $133186.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory Setting: 875293-B21 (HPE Smart Memory Fast Fault Tolerance FIO Setting) - $1.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory Blank Kit: P07818-B21 (HPE DDR4 DIMM Blank Kit) - $129.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory Blank Kit: 807878-B21 (HPE Gen9 LFF HDD Spade Blank Kit) - $32.00; 666987-B21 (HPE Small Form Factor Hard Drive Blank Kit) - $18.00\n\n• [DL380_Gen12 Catalog Rule] Category: Memory > Memory | Constraint: CONDITIONAL_VISIBILITY (P69727-F21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL)\n\n• [DL380_Gen12 Catalog Rule] Category: Memory > Memory | Constraint: CONDITIONAL_VISIBILITY (P69728-F21 conditional visibility: portal selector activation required (Mixing of x4 and x8 memory is not allowed); PORTAL_CONDITIONAL)\n\n• [DL380_Gen12 Catalog Rule] Category: Memory > Memory | Constraint: CONDITIONAL_VISIBILITY (P69729-F21 conditional visibility: portal selector activation required (96GB Memory cannot be mixed with any other Memory.); PORTAL_CONDITIONAL)\n\n• [DL380_Gen12 Catalog Rule] Category: Memory > Memory | Constraint: CONDITIONAL_VISIBILITY (P69730-F21 conditional visibility: portal selector activation required (128GB Memory cannot be mixed with any other Memory.); PORTAL_CONDITIONAL)\n\n• [DL380_Gen12 Catalog Rule] Category: Memory > Memory | Constraint: CONDITIONAL_VISIBILITY (P73447-F21 conditional visibility: portal selector activation required (Mixing of 3DS and non 3DS memory is not allowed.); PORTAL_CONDITIONAL)",
+            "citations": [
+              {
+                "title": "DL380_Gen12 AmbientTemperature SKUs",
+                "snippet": "P79567-B21 (HPE ProLiant Compute 18C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00; P79564-B21 (HPE ProLiant Compute 20C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00; P79561-B21 (HPE ProLiant Compute 23C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00; P79558-B21 (HPE ProLiant Compute 25C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00",
+                "url": "/artifacts/ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog.json"
+              },
+              {
+                "title": "DL380_Gen12 HPC Software Products SKUs",
+                "snippet": "S2M19A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 10 Developers 1-year LTU) - $23466.00; S2M21A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 25 Developers 1-year LTU) - $46916.00; S2M23A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 50 Developers 1-year LTU) - $70366.00; S2M25A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 10 Developers 3-year LTU) - $39921.00",
+                "url": "/artifacts/ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog.json"
+              },
+              {
+                "title": "DL380_Gen12 Memory SKUs",
+                "snippet": "P69727-F21 (HPE 32GB (1x32GB) Dual Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $13909.00; P69726-B21 ([REMOVED SKU] HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit) - $7439.00; P69726-F21 ([REMOVED SKU] HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $7439.00",
+                "url": "/artifacts/ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog.json"
+              },
+              {
+                "title": "DL380_Gen12 Memory Setting SKUs",
+                "snippet": "875293-B21 (HPE Smart Memory Fast Fault Tolerance FIO Setting) - $1.00",
+                "url": "/artifacts/ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog.json"
+              },
+              {
+                "title": "DL380_Gen12 Memory Blank Kit SKUs",
+                "snippet": "P07818-B21 (HPE DDR4 DIMM Blank Kit) - $129.00",
+                "url": "/artifacts/ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog.json"
+              },
+              {
+                "title": "DL380_Gen12 Catalog Rules",
+                "snippet": "Memory > Memory: P69727-F21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+                "url": "/artifacts/ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog_Rules.json"
+              }
+            ],
+            "source": "Local RAG Dual-Layer Search & Master Knowledge Registry",
+            "isCloudGrounded": false,
+            "traceId": "TRC-1791180825068-956DC7",
+            "evidenceLogPath": "C:\\Users\\latha\\AppData\\Local\\Temp\\skill-workflow-isolation-84pmXG\\project\\outputs\\history\\evidence_logs\\evidence_log_TRC-1791180825068-956DC7.json",
+            "traceStatus": "PERSISTED_EVIDENCE_LEDGER",
+            "acceptanceGate": {
+              "status": "FAILED",
+              "isValid": false,
+              "blockersCount": 2,
+              "warningsCount": 0,
+              "blockers": [
+                {
+                  "id": "U3",
+                  "name": "Referenced SKUs Present in Scoped Catalog",
+                  "status": "FAILED",
+                  "detail": "SKU syntax check failed: 3 invalid part number(s) [DDR5-6400, REMOVED, 133186]."
+                },
+                {
+                  "id": "Q2",
+                  "name": "Part Numbers Verified",
+                  "status": "UNKNOWN",
+                  "detail": "Syntax valid for 24 SKU(s), but catalog data was not supplied to verify catalog presence."
+                }
+              ],
+              "warnings": []
+            }
+          },
+          "traceId": "TRC-1791180825068-956DC7",
+          "executionTimeMs": 1159,
+          "timestamp": "2026-10-05T06:13:45.213Z",
+          "classificationConfidence": 0.8,
+          "hitlRequired": false,
+          "classificationBasis": "FREEFORM_QA_DEFAULT"
+        },
+        "error": null,
+        "envelopes": []
+      },
+      "semantic": {
+        "artifacts": [
+          {
+            "content": {
+              "activeRulesReached": [],
+              "arbitrationDecisions": [],
+              "artifacts": [],
+              "candidateAttempts": [],
+              "chassis": "DL380_Gen12",
+              "completedAt": "2026-10-05T06:13:45.075Z",
+              "customerInput": {
+                "filePath": "ROUTER_QUERY_INPUT",
+                "serverCount": 1,
+                "totalRequestedLines": 0
+              },
+              "events": [
+                {
+                  "event": "STARTED",
+                  "phaseNum": 1,
+                  "sequence": 1,
+                  "timestamp": "2026-10-05T06:13:45.074Z"
+                },
+                {
+                  "event": "PASSED",
+                  "phaseNum": 1,
+                  "sequence": 2,
+                  "timestamp": "2026-10-05T06:13:45.075Z"
+                },
+                {
+                  "event": "STARTED",
+                  "phaseNum": 2,
+                  "sequence": 3,
+                  "timestamp": "2026-10-05T06:13:45.075Z"
+                },
+                {
+                  "event": "PASSED",
+                  "phaseNum": 2,
+                  "sequence": 4,
+                  "timestamp": "2026-10-05T06:13:45.075Z"
+                }
+              ],
+              "execution": {
+                "gitRevision": null,
+                "nodeVersion": "v24.19.0",
+                "platform": "win32",
+                "revisionError": "ISOLATION_BOUNDARY_DENIED: NON_NODE_SUBPROCESS",
+                "workingDiffSha256": null
+              },
+              "health": {
+                "gaps": [
+                  "PHASE_3_MISSING",
+                  "PHASE_4_MISSING",
+                  "PHASE_5_MISSING",
+                  "PHASE_6_MISSING",
+                  "PHASE_7_MISSING",
+                  "PHASE_8_MISSING",
+                  "PHASE_9_MISSING",
+                  "SKU_DECISIONS_MISSING",
+                  "INPUT_FINGERPRINT_MISSING"
+                ],
+                "healthy": false,
+                "workflowStatus": "INCOMPLETE"
+              },
+              "modernizationDecisions": [],
+              "notebookLmTraces": [],
+              "phaseResolutions": [],
+              "phases": {
+                "phase_1": {
+                  "checks": [],
+                  "completedAt": "2026-10-05T06:13:45.075Z",
+                  "durationMs": 1,
+                  "errors": [],
+                  "inputSummary": {
+                    "intent": "FREEFORM_QA",
+                    "query": "What is the maximum memory capacity on DL380 Gen12?"
+                  },
+                  "outputSummary": {
+                    "intent": "FREEFORM_QA"
+                  },
+                  "phaseName": "Presales Query Intake",
+                  "phaseNumber": 1,
+                  "startedAt": "2026-10-05T06:13:45.074Z",
+                  "status": "PASSED",
+                  "warnings": []
+                },
+                "phase_2": {
+                  "checks": [],
+                  "completedAt": "2026-10-05T06:13:45.075Z",
+                  "durationMs": 1,
+                  "errors": [],
+                  "inputSummary": {
+                    "skillTarget": "presales-query-router"
+                  },
+                  "outputSummary": {
+                    "status": "COMPLETED"
+                  },
+                  "phaseName": "Router Dispatch & Execution",
+                  "phaseNumber": 2,
+                  "startedAt": "2026-10-05T06:13:45.075Z",
+                  "status": "PASSED",
+                  "warnings": []
+                }
+              },
+              "sharedState": {
+                "activeDeltaCount": 0,
+                "aspectChecksCompleted": false,
+                "conflictGraphCompleted": false,
+                "currentChassis": "DL380_Gen12",
+                "detectedFormFactor": "Standard",
+                "dualBrainVerified": false,
+                "nodeMultiplier": 1,
+                "strategySynthesized": false
+              },
+              "skuAuditLedger": [],
+              "startedAt": "2026-10-05T06:13:45.071Z",
+              "totalDurationMs": 4,
+              "traceId": "<GENERATED_TRACE_ID>",
+              "version": "2.0.0",
+              "workflowFailures": []
+            },
+            "path": "outputs/history/evidence_logs/evidence_log_<GENERATED_TRACE_ID>.json",
+            "state": "PARSED_JSON"
+          },
+          {
+            "bytes": 2075,
+            "path": "outputs/history/evidence_logs/evidence_summary_<GENERATED_TRACE_ID>.md",
+            "sha256": "34d02f9963da59610dd3b339c03342f1ba55970783f3e5e0ff3a410a3f463d4b",
+            "state": "EXACT_BYTES"
+          }
+        ],
+        "copiedConfig": {
+          "disposition": "NO_ISOLATED_CONFIG_SIDE_EFFECTS",
+          "removed": [],
+          "semantics": []
+        },
+        "envelopes": [],
+        "error": null,
+        "removedOutputs": [],
+        "response": {
+          "classification": {
+            "confidence": 0.92,
+            "intent": "FREEFORM_QA",
+            "rationale": "Freeform conversational inquiry regarding HPE server architecture, rules, or QuickSpecs.",
+            "skillTarget": "presales-query-router"
+          },
+          "classificationBasis": "FREEFORM_QA_DEFAULT",
+          "classificationConfidence": 0.8,
+          "executionTimeMs": "<GENERATED_RUNTIME_FIELD>",
+          "hitlRequired": false,
+          "query": "What is the maximum memory capacity on DL380 Gen12?",
+          "result": {
+            "acceptanceGate": {
+              "blockers": [
+                {
+                  "detail": "SKU syntax check failed: 3 invalid part number(s) [DDR5-6400, REMOVED, 133186].",
+                  "id": "U3",
+                  "name": "Referenced SKUs Present in Scoped Catalog",
+                  "status": "FAILED"
+                },
+                {
+                  "detail": "Syntax valid for 24 SKU(s), but catalog data was not supplied to verify catalog presence.",
+                  "id": "Q2",
+                  "name": "Part Numbers Verified",
+                  "status": "UNKNOWN"
+                }
+              ],
+              "blockersCount": 2,
+              "isValid": false,
+              "status": "FAILED",
+              "warnings": [],
+              "warningsCount": 0
+            },
+            "answer": "• [DL380_Gen12 Hardware SKUs] Accessories & Infrastructure > AmbientTemperature: P79567-B21 (HPE ProLiant Compute 18C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00; P79564-B21 (HPE ProLiant Compute 20C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00; P79561-B21 (HPE ProLiant Compute 23C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00; P79558-B21 (HPE ProLiant Compute 25C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00\n\n• [DL380_Gen12 Hardware SKUs] Software & Licenses > HPC Software Products: S2M19A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 10 Developers 1-year LTU) - $23466.00; S2M21A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 25 Developers 1-year LTU) - $46916.00; S2M23A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 50 Developers 1-year LTU) - $70366.00; S2M25A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 10 Developers 3-year LTU) - $39921.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory: P69727-F21 (HPE 32GB (1x32GB) Dual Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $13909.00; P69726-B21 ([REMOVED SKU] HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit) - $7439.00; P69726-F21 ([REMOVED SKU] HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $7439.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory: P69728-F21 (HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $28532.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory: P69729-F21 (HPE 96GB (1x96GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $47056.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory: P69730-F21 (HPE 128GB (1x128GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $60190.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory: P73447-F21 (HPE 256GB (1x256GB) Quad Rank x4 DDR5-6400 CAS-60-52-52 EC8 Registered 3DS Smart FIO Memory Kit) - $133186.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory Setting: 875293-B21 (HPE Smart Memory Fast Fault Tolerance FIO Setting) - $1.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory Blank Kit: P07818-B21 (HPE DDR4 DIMM Blank Kit) - $129.00\n\n• [DL380_Gen12 Hardware SKUs] Memory > Memory Blank Kit: 807878-B21 (HPE Gen9 LFF HDD Spade Blank Kit) - $32.00; 666987-B21 (HPE Small Form Factor Hard Drive Blank Kit) - $18.00\n\n• [DL380_Gen12 Catalog Rule] Category: Memory > Memory | Constraint: CONDITIONAL_VISIBILITY (P69727-F21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL)\n\n• [DL380_Gen12 Catalog Rule] Category: Memory > Memory | Constraint: CONDITIONAL_VISIBILITY (P69728-F21 conditional visibility: portal selector activation required (Mixing of x4 and x8 memory is not allowed); PORTAL_CONDITIONAL)\n\n• [DL380_Gen12 Catalog Rule] Category: Memory > Memory | Constraint: CONDITIONAL_VISIBILITY (P69729-F21 conditional visibility: portal selector activation required (96GB Memory cannot be mixed with any other Memory.); PORTAL_CONDITIONAL)\n\n• [DL380_Gen12 Catalog Rule] Category: Memory > Memory | Constraint: CONDITIONAL_VISIBILITY (P69730-F21 conditional visibility: portal selector activation required (128GB Memory cannot be mixed with any other Memory.); PORTAL_CONDITIONAL)\n\n• [DL380_Gen12 Catalog Rule] Category: Memory > Memory | Constraint: CONDITIONAL_VISIBILITY (P73447-F21 conditional visibility: portal selector activation required (Mixing of 3DS and non 3DS memory is not allowed.); PORTAL_CONDITIONAL)",
+            "catalogDir": "<ISOLATED_ROOT>\\outputs\\ProLiant\\Gen12\\DL380_Gen12",
+            "chassis": "DL380_Gen12",
+            "citations": [
+              {
+                "snippet": "P79567-B21 (HPE ProLiant Compute 18C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00; P79564-B21 (HPE ProLiant Compute 20C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00; P79561-B21 (HPE ProLiant Compute 23C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00; P79558-B21 (HPE ProLiant Compute 25C Maximum Recommended Ambient Temperature Configuration Tracking) - $1.00",
+                "title": "DL380_Gen12 AmbientTemperature SKUs",
+                "url": "/artifacts/ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog.json"
+              },
+              {
+                "snippet": "S2M19A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 10 Developers 1-year LTU) - $23466.00; S2M21A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 25 Developers 1-year LTU) - $46916.00; S2M23A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 50 Developers 1-year LTU) - $70366.00; S2M25A (Intel oneAPI Base and HPC Premium Support Maximum 63 Nodes up to 10 Developers 3-year LTU) - $39921.00",
+                "title": "DL380_Gen12 HPC Software Products SKUs",
+                "url": "/artifacts/ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog.json"
+              },
+              {
+                "snippet": "P69727-F21 (HPE 32GB (1x32GB) Dual Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $13909.00; P69726-B21 ([REMOVED SKU] HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit) - $7439.00; P69726-F21 ([REMOVED SKU] HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit) - $7439.00",
+                "title": "DL380_Gen12 Memory SKUs",
+                "url": "/artifacts/ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog.json"
+              },
+              {
+                "snippet": "875293-B21 (HPE Smart Memory Fast Fault Tolerance FIO Setting) - $1.00",
+                "title": "DL380_Gen12 Memory Setting SKUs",
+                "url": "/artifacts/ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog.json"
+              },
+              {
+                "snippet": "P07818-B21 (HPE DDR4 DIMM Blank Kit) - $129.00",
+                "title": "DL380_Gen12 Memory Blank Kit SKUs",
+                "url": "/artifacts/ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog.json"
+              },
+              {
+                "snippet": "Memory > Memory: P69727-F21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+                "title": "DL380_Gen12 Catalog Rules",
+                "url": "/artifacts/ProLiant\\Gen12\\DL380_Gen12\\DL380_Gen12_Catalog_Rules.json"
+              }
+            ],
+            "evidenceLogPath": "<ISOLATED_ROOT>\\outputs\\history\\evidence_logs\\evidence_log_<GENERATED_TRACE_ID>.json",
+            "isCloudGrounded": false,
+            "source": "Local RAG Dual-Layer Search & Master Knowledge Registry",
+            "traceId": "<GENERATED_RUNTIME_FIELD>",
+            "traceStatus": "PERSISTED_EVIDENCE_LEDGER"
+          },
+          "timestamp": "<GENERATED_RUNTIME_FIELD>",
+          "traceId": "<GENERATED_RUNTIME_FIELD>"
+        },
+        "workbooks": []
+      },
+      "artifacts": [
+        {
+          "path": "outputs/history/evidence_logs/evidence_log_TRC-1791180825068-956DC7.json",
+          "bytes": 2879,
+          "sha256": "62093c239a69ebc236b64637283ed0f650b50281bada14be1bb0ed5a3c699042",
+          "archivePath": "artifacts/outputs/history/evidence_logs/evidence_log_TRC-1791180825068-956DC7.json"
+        },
+        {
+          "path": "outputs/history/evidence_logs/evidence_summary_TRC-1791180825068-956DC7.md",
+          "bytes": 2075,
+          "sha256": "34d02f9963da59610dd3b339c03342f1ba55970783f3e5e0ff3a410a3f463d4b",
+          "archivePath": "artifacts/outputs/history/evidence_logs/evidence_summary_TRC-1791180825068-956DC7.md"
+        }
+      ],
+      "workbooks": [],
+      "artifactSemantics": [
+        {
+          "path": "outputs/history/evidence_logs/evidence_log_TRC-1791180825068-956DC7.json",
+          "state": "PARSED_JSON",
+          "content": {
+            "version": "2.0.0",
+            "execution": {
+              "nodeVersion": "v24.19.0",
+              "platform": "win32",
+              "gitRevision": null,
+              "workingDiffSha256": null,
+              "revisionError": "ISOLATION_BOUNDARY_DENIED: NON_NODE_SUBPROCESS"
+            },
+            "health": {
+              "healthy": false,
+              "gaps": [
+                "PHASE_3_MISSING",
+                "PHASE_4_MISSING",
+                "PHASE_5_MISSING",
+                "PHASE_6_MISSING",
+                "PHASE_7_MISSING",
+                "PHASE_8_MISSING",
+                "PHASE_9_MISSING",
+                "SKU_DECISIONS_MISSING",
+                "INPUT_FINGERPRINT_MISSING"
+              ],
+              "workflowStatus": "INCOMPLETE"
+            },
+            "events": [
+              {
+                "sequence": 1,
+                "phaseNum": 1,
+                "event": "STARTED",
+                "timestamp": "2026-10-05T06:13:45.074Z"
+              },
+              {
+                "sequence": 2,
+                "phaseNum": 1,
+                "event": "PASSED",
+                "timestamp": "2026-10-05T06:13:45.075Z"
+              },
+              {
+                "sequence": 3,
+                "phaseNum": 2,
+                "event": "STARTED",
+                "timestamp": "2026-10-05T06:13:45.075Z"
+              },
+              {
+                "sequence": 4,
+                "phaseNum": 2,
+                "event": "PASSED",
+                "timestamp": "2026-10-05T06:13:45.075Z"
+              }
+            ],
+            "candidateAttempts": [],
+            "phaseResolutions": [],
+            "workflowFailures": [],
+            "artifacts": [],
+            "traceId": "TRC-1791180825068-956DC7",
+            "startedAt": "2026-10-05T06:13:45.071Z",
+            "completedAt": "2026-10-05T06:13:45.075Z",
+            "totalDurationMs": 4,
+            "chassis": "DL380_Gen12",
+            "customerInput": {
+              "filePath": "ROUTER_QUERY_INPUT",
+              "serverCount": 1,
+              "totalRequestedLines": 0
+            },
+            "sharedState": {
+              "currentChassis": "DL380_Gen12",
+              "nodeMultiplier": 1,
+              "detectedFormFactor": "Standard",
+              "aspectChecksCompleted": false,
+              "conflictGraphCompleted": false,
+              "strategySynthesized": false,
+              "dualBrainVerified": false,
+              "activeDeltaCount": 0
+            },
+            "phases": {
+              "phase_1": {
+                "phaseNumber": 1,
+                "phaseName": "Presales Query Intake",
+                "status": "PASSED",
+                "startedAt": "2026-10-05T06:13:45.074Z",
+                "completedAt": "2026-10-05T06:13:45.075Z",
+                "durationMs": 1,
+                "inputSummary": {
+                  "query": "What is the maximum memory capacity on DL380 Gen12?",
+                  "intent": "FREEFORM_QA"
+                },
+                "outputSummary": {
+                  "intent": "FREEFORM_QA"
+                },
+                "checks": [],
+                "warnings": [],
+                "errors": []
+              },
+              "phase_2": {
+                "phaseNumber": 2,
+                "phaseName": "Router Dispatch & Execution",
+                "status": "PASSED",
+                "startedAt": "2026-10-05T06:13:45.075Z",
+                "completedAt": "2026-10-05T06:13:45.075Z",
+                "durationMs": 1,
+                "inputSummary": {
+                  "skillTarget": "presales-query-router"
+                },
+                "outputSummary": {
+                  "status": "COMPLETED"
+                },
+                "checks": [],
+                "warnings": [],
+                "errors": []
+              }
+            },
+            "activeRulesReached": [],
+            "arbitrationDecisions": [],
+            "modernizationDecisions": [],
+            "skuAuditLedger": [],
+            "notebookLmTraces": []
+          }
+        },
+        {
+          "path": "outputs/history/evidence_logs/evidence_summary_TRC-1791180825068-956DC7.md",
+          "state": "EXACT_BYTES",
+          "sha256": "34d02f9963da59610dd3b339c03342f1ba55970783f3e5e0ff3a410a3f463d4b",
+          "bytes": 2075
+        }
+      ],
+      "mutatedOutputs": [
+        {
+          "path": "outputs/history/evidence_logs/evidence_log_TRC-1791180825068-956DC7.json",
+          "bytes": 2879,
+          "sha256": "62093c239a69ebc236b64637283ed0f650b50281bada14be1bb0ed5a3c699042"
+        },
+        {
+          "path": "outputs/history/evidence_logs/evidence_summary_TRC-1791180825068-956DC7.md",
+          "bytes": 2075,
+          "sha256": "34d02f9963da59610dd3b339c03342f1ba55970783f3e5e0ff3a410a3f463d4b"
+        }
+      ],
+      "removedOutputs": [],
+      "copiedConfig": {
+        "disposition": "NO_ISOLATED_CONFIG_SIDE_EFFECTS",
+        "before": [
+          {
+            "path": "scripts/config/catalog_coverage_profiles.json",
+            "bytes": 2694,
+            "sha256": "063b6ebfcd6c09e131193c3f2b8752c915a55197a8e3a8b76c3385aabebed6b4"
+          },
+          {
+            "path": "scripts/config/categories.json",
+            "bytes": 4535,
+            "sha256": "596c6d28ae0ee54397a5dd29e7e72ee386cc7940f867dd71acc12bde21a34ba3"
+          },
+          {
+            "path": "scripts/config/chassis_map.json",
+            "bytes": 59800,
+            "sha256": "2e451354bca012d63e2f4d7873cc18bd50eca76c8cdd7694c9166c72576649eb"
+          },
+          {
+            "path": "scripts/config/generic_domain_rules_matrix.json",
+            "bytes": 18764,
+            "sha256": "a51d544d9c440e6f7c73c30c170b485c2e4e06b77f3e1b7d3a8df7ef25004e59"
+          },
+          {
+            "path": "scripts/config/notebooks.json",
+            "bytes": 28417,
+            "sha256": "bb44598d258493795a1b71ccf0ae6efb011b276852112a4f6174ab126944286c"
+          },
+          {
+            "path": "scripts/config/notebooks.json.1790856325634.tmp",
+            "bytes": 28417,
+            "sha256": "adb7bc5965d6f1c602c302ebbac517f1340d5cb6b80161bc90f4970d46f62f06"
+          },
+          {
+            "path": "scripts/config/profiles/alletra_storage.json",
+            "bytes": 562,
+            "sha256": "da064b537645047879b45a8bca1a190f14ac6beefdc9b4dbf03628dc494566af"
+          },
+          {
+            "path": "scripts/config/profiles/cray_rack.json",
+            "bytes": 494,
+            "sha256": "543d18921cd6c17ff59149f1e430f311f86253c580cd1e4d7112eb5fa5f7d78c"
+          },
+          {
+            "path": "scripts/config/profiles/default_profile.json",
+            "bytes": 896,
+            "sha256": "c67603ea609cd5ac071111098178385aa8679d6e69fffb966701efacc128492f"
+          },
+          {
+            "path": "scripts/config/profiles/proliant_gen11.json",
+            "bytes": 458,
+            "sha256": "ae6220bf14f9a09b3a89d25b3e010ffe631ee2e2853953d1ceb983e039b969de"
+          },
+          {
+            "path": "scripts/config/profiles/proliant_gen12.json",
+            "bytes": 347,
+            "sha256": "70113cf1b1c91e6a70ea1464d0385110c56dc46680fc2b4c853e8476ba06aaf0"
+          },
+          {
+            "path": "scripts/config/profiles/storeever_tape.json",
+            "bytes": 472,
+            "sha256": "3d07456cb2424670fbcaf8efafc0154ce8918941046f5717b6e9a0419ae84ff7"
+          },
+          {
+            "path": "scripts/config/profiles/synergy_module.json",
+            "bytes": 475,
+            "sha256": "14f2b8d83e3be187181b8721ca97c555c9da252a623d1d774cd9b250bb2d8620"
+          },
+          {
+            "path": "scripts/config/scraping_workflow_learnings.js",
+            "bytes": 2332,
+            "sha256": "38f921eb2b09b50542784987bcbec4d7e5e137e00ad53f17b8db86815fb2c620"
+          },
+          {
+            "path": "scripts/config/skill_workflow_registry.js",
+            "bytes": 19551,
+            "sha256": "f20e8c0d7c9b0a24bcc95523c238f7fec107f29800a315648e181b5c92c85930"
+          },
+          {
+            "path": "scripts/config/strategy_addons.json",
+            "bytes": 3529,
+            "sha256": "b3d539a23fa593cac7dd92354cebf480f3ca4801143d97c784ada0bd754414d8"
+          },
+          {
+            "path": "scripts/config/upgrade_templates.json",
+            "bytes": 1342,
+            "sha256": "e4333a79041f8d4119de5de700903e3be3f70d422669f33bf8179aa047e92bba"
+          }
+        ],
+        "after": [
+          {
+            "path": "scripts/config/catalog_coverage_profiles.json",
+            "bytes": 2694,
+            "sha256": "063b6ebfcd6c09e131193c3f2b8752c915a55197a8e3a8b76c3385aabebed6b4"
+          },
+          {
+            "path": "scripts/config/categories.json",
+            "bytes": 4535,
+            "sha256": "596c6d28ae0ee54397a5dd29e7e72ee386cc7940f867dd71acc12bde21a34ba3"
+          },
+          {
+            "path": "scripts/config/chassis_map.json",
+            "bytes": 59800,
+            "sha256": "2e451354bca012d63e2f4d7873cc18bd50eca76c8cdd7694c9166c72576649eb"
+          },
+          {
+            "path": "scripts/config/generic_domain_rules_matrix.json",
+            "bytes": 18764,
+            "sha256": "a51d544d9c440e6f7c73c30c170b485c2e4e06b77f3e1b7d3a8df7ef25004e59"
+          },
+          {
+            "path": "scripts/config/notebooks.json",
+            "bytes": 28417,
+            "sha256": "bb44598d258493795a1b71ccf0ae6efb011b276852112a4f6174ab126944286c"
+          },
+          {
+            "path": "scripts/config/notebooks.json.1790856325634.tmp",
+            "bytes": 28417,
+            "sha256": "adb7bc5965d6f1c602c302ebbac517f1340d5cb6b80161bc90f4970d46f62f06"
+          },
+          {
+            "path": "scripts/config/profiles/alletra_storage.json",
+            "bytes": 562,
+            "sha256": "da064b537645047879b45a8bca1a190f14ac6beefdc9b4dbf03628dc494566af"
+          },
+          {
+            "path": "scripts/config/profiles/cray_rack.json",
+            "bytes": 494,
+            "sha256": "543d18921cd6c17ff59149f1e430f311f86253c580cd1e4d7112eb5fa5f7d78c"
+          },
+          {
+            "path": "scripts/config/profiles/default_profile.json",
+            "bytes": 896,
+            "sha256": "c67603ea609cd5ac071111098178385aa8679d6e69fffb966701efacc128492f"
+          },
+          {
+            "path": "scripts/config/profiles/proliant_gen11.json",
+            "bytes": 458,
+            "sha256": "ae6220bf14f9a09b3a89d25b3e010ffe631ee2e2853953d1ceb983e039b969de"
+          },
+          {
+            "path": "scripts/config/profiles/proliant_gen12.json",
+            "bytes": 347,
+            "sha256": "70113cf1b1c91e6a70ea1464d0385110c56dc46680fc2b4c853e8476ba06aaf0"
+          },
+          {
+            "path": "scripts/config/profiles/storeever_tape.json",
+            "bytes": 472,
+            "sha256": "3d07456cb2424670fbcaf8efafc0154ce8918941046f5717b6e9a0419ae84ff7"
+          },
+          {
+            "path": "scripts/config/profiles/synergy_module.json",
+            "bytes": 475,
+            "sha256": "14f2b8d83e3be187181b8721ca97c555c9da252a623d1d774cd9b250bb2d8620"
+          },
+          {
+            "path": "scripts/config/scraping_workflow_learnings.js",
+            "bytes": 2332,
+            "sha256": "38f921eb2b09b50542784987bcbec4d7e5e137e00ad53f17b8db86815fb2c620"
+          },
+          {
+            "path": "scripts/config/skill_workflow_registry.js",
+            "bytes": 19551,
+            "sha256": "f20e8c0d7c9b0a24bcc95523c238f7fec107f29800a315648e181b5c92c85930"
+          },
+          {
+            "path": "scripts/config/strategy_addons.json",
+            "bytes": 3529,
+            "sha256": "b3d539a23fa593cac7dd92354cebf480f3ca4801143d97c784ada0bd754414d8"
+          },
+          {
+            "path": "scripts/config/upgrade_templates.json",
+            "bytes": 1342,
+            "sha256": "e4333a79041f8d4119de5de700903e3be3f70d422669f33bf8179aa047e92bba"
+          }
+        ],
+        "changed": [],
+        "removed": [],
+        "archived": [],
+        "semantics": []
+      }
+    }
+  ],
+  "comparison": {
+    "equal": false,
+    "differences": [
+      {
+        "path": "$.artifacts[0].content.completedAt",
+        "code": "VALUE_CHANGED",
+        "before": "2026-10-05T06:11:16.597Z",
+        "after": "2026-10-05T06:13:45.075Z"
+      },
+      {
+        "path": "$.artifacts[0].content.events[0].timestamp",
+        "code": "VALUE_CHANGED",
+        "before": "2026-10-05T06:11:16.594Z",
+        "after": "2026-10-05T06:13:45.074Z"
+      },
+      {
+        "path": "$.artifacts[0].content.events[1].timestamp",
+        "code": "VALUE_CHANGED",
+        "before": "2026-10-05T06:11:16.595Z",
+        "after": "2026-10-05T06:13:45.075Z"
+      },
+      {
+        "path": "$.artifacts[0].content.events[2].timestamp",
+        "code": "VALUE_CHANGED",
+        "before": "2026-10-05T06:11:16.596Z",
+        "after": "2026-10-05T06:13:45.075Z"
+      },
+      {
+        "path": "$.artifacts[0].content.events[3].timestamp",
+        "code": "VALUE_CHANGED",
+        "before": "2026-10-05T06:11:16.596Z",
+        "after": "2026-10-05T06:13:45.075Z"
+      },
+      {
+        "path": "$.artifacts[0].content.phases.phase_1.completedAt",
+        "code": "VALUE_CHANGED",
+        "before": "2026-10-05T06:11:16.595Z",
+        "after": "2026-10-05T06:13:45.075Z"
+      },
+      {
+        "path": "$.artifacts[0].content.phases.phase_1.startedAt",
+        "code": "VALUE_CHANGED",
+        "before": "2026-10-05T06:11:16.595Z",
+        "after": "2026-10-05T06:13:45.074Z"
+      },
+      {
+        "path": "$.artifacts[0].content.phases.phase_2.completedAt",
+        "code": "VALUE_CHANGED",
+        "before": "2026-10-05T06:11:16.596Z",
+        "after": "2026-10-05T06:13:45.075Z"
+      },
+      {
+        "path": "$.artifacts[0].content.phases.phase_2.startedAt",
+        "code": "VALUE_CHANGED",
+        "before": "2026-10-05T06:11:16.596Z",
+        "after": "2026-10-05T06:13:45.075Z"
+      },
+      {
+        "path": "$.artifacts[0].content.startedAt",
+        "code": "VALUE_CHANGED",
+        "before": "2026-10-05T06:11:16.594Z",
+        "after": "2026-10-05T06:13:45.071Z"
+      },
+      {
+        "path": "$.artifacts[0].content.totalDurationMs",
+        "code": "VALUE_CHANGED",
+        "before": 3,
+        "after": 4
+      },
+      {
+        "path": "$.artifacts[1].sha256",
+        "code": "VALUE_CHANGED",
+        "before": "6f575950de6de25dc78f0f48292f3a172b89dae0111455f8d24d527ef0fd1661",
+        "after": "34d02f9963da59610dd3b339c03342f1ba55970783f3e5e0ff3a410a3f463d4b"
+      }
+    ]
+  }
+}
