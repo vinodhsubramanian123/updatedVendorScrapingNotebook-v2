@@ -20,7 +20,24 @@
 
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 const { execFileSync } = require('child_process');
+
+function getNlmExecutable() {
+  const homeBin = path.join(os.homedir(), '.local', 'bin');
+  const binName = process.platform === 'win32' ? 'nlm.exe' : 'nlm';
+  const nlmUserPath = path.join(homeBin, binName);
+  if (fs.existsSync(nlmUserPath)) return nlmUserPath;
+  return binName;
+}
+
+function getNlmEnv() {
+  const homeBin = path.join(os.homedir(), '.local', 'bin');
+  return {
+    ...process.env,
+    PATH: [homeBin, process.env.PATH || ''].filter(Boolean).join(path.delimiter)
+  };
+}
 const { generateMultiRankSolutionWorkbook, generateMultiRankSolutionCsv } = require('../boq/generate_boq_xlsx.js');
 const { extractKnowledgeFromRagAnswer } = require('../notebook/knowledge_extractor.js');
 const { executeNotebookQuery, getCachedRagResult, setCachedRagResult, getNotebookConfigEntry, getAuthoritativeSourceIds } = require('../notebook/notebook_query_utils.js');
@@ -102,9 +119,11 @@ function attachSolutionSource(notebookId, filePath, title, options = {}) {
   }
 
   try {
-    const out = execFileSync('nlm', ['source', 'add', notebookId, '--file', filePath, '--title', title, '--wait', '--json'], {
+    const nlmExe = getNlmExecutable();
+    const out = execFileSync(nlmExe, ['source', 'add', notebookId, '--file', filePath, '--title', title, '--wait', '--json'], {
       encoding: 'utf-8',
-      timeout: 45000
+      timeout: 45000,
+      env: getNlmEnv()
     });
     const parsed = JSON.parse(out);
     const sourceId = parsed.source_id || parsed.id || parsed.sourceId;
@@ -125,14 +144,6 @@ function attachSolutionSource(notebookId, filePath, title, options = {}) {
  * @param {object} [options] - Optional flags
  * @returns {boolean} True if successfully detached
  */
-/**
- * Detach an ephemeral solution source from NotebookLM (INV-24 Compliance).
- *
- * @param {string} notebookId - Target notebook UUID
- * @param {string} sourceId - Ephemeral source UUID to delete
- * @param {object} [options] - Optional flags
- * @returns {boolean} True if successfully detached
- */
 function detachSolutionSource(notebookId, sourceId, options = {}) {
   if (!sourceId) return false;
 
@@ -143,12 +154,19 @@ function detachSolutionSource(notebookId, sourceId, options = {}) {
   }
 
   try {
+    const nlmExe = getNlmExecutable();
+    const nlmEnv = getNlmEnv();
     // Note: nlm source delete accepts source_ids, not notebook UUID
-    execFileSync('nlm', ['source', 'delete', sourceId, '--confirm'], {
+    execFileSync(nlmExe, ['source', 'delete', sourceId, '--confirm'], {
       encoding: 'utf-8',
-      timeout: 20000
+      timeout: 20000,
+      env: nlmEnv
     });
-    const listed = JSON.parse(execFileSync('nlm', ['source', 'list', notebookId, '--json'], { encoding: 'utf-8', timeout: 20000 }));
+    const listed = JSON.parse(execFileSync(nlmExe, ['source', 'list', notebookId, '--json'], {
+      encoding: 'utf-8',
+      timeout: 20000,
+      env: nlmEnv
+    }));
     const sources = Array.isArray(listed) ? listed : listed.sources;
     if (!Array.isArray(sources) || sources.some(source => (source.id || source.source_id) === sourceId)) {
       throw new Error('Source deletion could not be verified against notebook source inventory');
@@ -328,7 +346,7 @@ async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
     if (hasLiveNotebook && attachRes.success && !attachRes.isMock) {
       const queryRes = await executeNotebookQuery(notebookId, prompt, {
         context: { chassis: chassisName, structuredValidation: true },
-        timeout: options.timeoutMs || 120000,
+        timeout: options.timeoutMs || parseInt(process.env.NLM_SOLUTION_TIMEOUT_MS || process.env.RAG_TIMEOUT_MS || '600000', 10),
         signal: options.signal,
         deadlineAt: options.deadlineAt,
         bypassCache: true,
