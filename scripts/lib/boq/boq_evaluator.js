@@ -502,7 +502,7 @@ function validateStorageRules(ctx) {
 }
 
 function validatePowerRules(ctx) {
-  const { power, pcie, serverCount, mandatorySkus, errors, warnings, mathDeductions, missingDependencies, items } = ctx;
+  const { power, pcie, serverCount, mandatorySkus, errors, warnings, mathDeductions, missingDependencies, items, chassisInfo } = ctx;
   if (power.hasMixedAcDcPower) {
     const reason = `Power Architecture Conflict: Configuration mixes AC power supplies (${power.acPsuCount}) and -48VDC power supplies (${power.dcPsuCount}) in the same chassis enclosure. AC and DC power supplies cannot be mixed within the same backplane.`;
     errors.push(reason);
@@ -558,16 +558,23 @@ function validatePowerRules(ctx) {
   }
 
   if (pcie.needsGpuPowerCableKit) {
+    const isGen12 = Boolean(chassisInfo?.gen?.includes('12') || chassisInfo?.model?.includes('Gen12'));
+    const gpuCableSku = mandatorySkus?.GPU_POWER_CABLE_KIT?.sku || (power.isDl380aGpuChassis ? 'P74700-B21' : (isGen12 ? 'P76450-B21' : 'P48816-B21'));
+    const gpuCableDesc = mandatorySkus?.GPU_POWER_CABLE_KIT?.name || (power.isDl380aGpuChassis ? 'HPE ProLiant Compute DL380a Gen12 GPU 16-pin FIO Cable Kit' : (isGen12 ? 'HPE ProLiant DL380 Gen12 GPU Auxiliary Power Cable Kit' : 'HPE ProLiant DL380 Gen11 GPU Power Cable Kit'));
+    const isDualGpuKit = power.isDl380aGpuChassis || mandatorySkus?.GPU_POWER_CABLE_KIT?.dualGpu === true || mandatorySkus?.GPU_POWER_CABLE_KIT?.capacity === 2;
+    const requiredKitsPerNode = isDualGpuKit
+      ? Math.ceil((pcie.gpuCount - pcie.gpuPowerCableKitCount) / 2)
+      : (pcie.gpuCount - pcie.gpuPowerCableKitCount);
     const reason = power.isDl380aGpuChassis
-      ? `GPU Power Math: ${pcie.gpuCount} front-bay GPU accelerator(s) detected on DL380a Gen12. Requires ${Math.ceil(pcie.gpuCount / 2)} GPU 16-pin FIO Cable Kits (P74700-B21, 1 kit per 2 GPUs). Found ${Math.floor(pcie.gpuPowerCableKitCount / 2)}.`
-      : `GPU Power Math: ${pcie.gpuCount} PCIe GPU accelerator(s) detected. Requires ${pcie.gpuCount} GPU Auxiliary Power Cable Kit(s) (P48816-B21 / P76450-B21) to connect to power distribution board. Found ${pcie.gpuPowerCableKitCount}.`;
+      ? `GPU Power Math: ${pcie.gpuCount} front-bay GPU accelerator(s) detected on DL380a Gen12. Requires ${Math.ceil(pcie.gpuCount / 2)} GPU 16-pin FIO Cable Kits (${gpuCableSku}, 1 kit per 2 GPUs). Found ${Math.floor(pcie.gpuPowerCableKitCount / 2)}.`
+      : `GPU Power Math: ${pcie.gpuCount} PCIe GPU accelerator(s) detected. Requires ${pcie.gpuCount} GPU Auxiliary Power Cable Kit(s) (${gpuCableSku}) to connect to power distribution board. Found ${pcie.gpuPowerCableKitCount}.`;
     warnings.push(reason);
     missingDependencies.push({
       key: 'GPU_AUX_POWER_CABLE_KIT',
       rule: 'GPU Accelerator Auxiliary Power Rule',
-      sku: power.isDl380aGpuChassis ? 'P74700-B21' : 'P48816-B21',
-      description: power.isDl380aGpuChassis ? 'HPE ProLiant Compute DL380a Gen12 GPU 16-pin FIO Cable Kit' : 'HPE ProLiant DL380 Gen11 GPU Power Cable Kit',
-      quantity: power.isDl380aGpuChassis ? Math.ceil((pcie.gpuCount - pcie.gpuPowerCableKitCount) / 2) * serverCount : (pcie.gpuCount - pcie.gpuPowerCableKitCount) * serverCount,
+      sku: gpuCableSku,
+      description: gpuCableDesc,
+      quantity: requiredKitsPerNode * serverCount,
       reasoning: reason
     });
   }
