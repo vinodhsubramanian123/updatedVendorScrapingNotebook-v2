@@ -258,6 +258,12 @@ function buildSolutionSourceValidationPrompt(sourceTitle, chassisName) {
  * @returns {Promise<object>} Validation report with workbook deliverable and learned deltas
  */
 async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
+  if (options.signal?.aborted) throw options.signal.reason;
+  if (Number.isFinite(options.deadlineAt) && Date.now() >= options.deadlineAt) {
+    const error = new Error('NotebookLM query deadline exceeded');
+    error.code = 'NOTEBOOK_QUERY_DEADLINE_EXCEEDED';
+    throw error;
+  }
   const chassisName = evalResults.chassis || evalResults.chassisVariant || evalResults.targetChassis || evalResults.detectedChassis || options.chassis || options.chassisName || (evalResults.conflictGraph?.chassisInfo?.model) || (options.targetDir ? path.basename(options.targetDir) : null);
   if (!chassisName) {
     throw new Error('[Guardrail INV-24] Missing target chassis identifier in evaluation results. Dynamic resolution required.');
@@ -312,8 +318,10 @@ async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
   let citations = [];
   let isCloudGrounded = false;
   let sourceDetached = false;
+  let recoveredFromGateway = false;
 
   try {
+    if (options.signal?.aborted) throw options.signal.reason;
     // Step 4: Dispatch focused solution validation query
     const prompt = queryPayload;
 
@@ -321,18 +329,23 @@ async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
       const queryRes = await executeNotebookQuery(notebookId, prompt, {
         context: { chassis: chassisName, structuredValidation: true },
         timeout: options.timeoutMs || 120000,
+        signal: options.signal,
+        deadlineAt: options.deadlineAt,
         bypassCache: true,
         sourceIds: options.sourceIds,
         ephemeralSource: { notebookId, sourceId, createdThisRun: true }
       });
+      if (options.signal?.aborted) throw options.signal.reason;
       ragAnswer = queryRes.answer || '';
       citations = queryRes.citations || [];
       isCloudGrounded = queryRes.isCloudGrounded || false;
+      recoveredFromGateway = Boolean(queryRes.recoveredFromGateway);
     } else {
       ragAnswer = 'Cloud candidate validation was not performed. No buildability verdict is available from this stage.';
       isCloudGrounded = false;
     }
   } catch (queryErr) {
+    if ((options.signal?.aborted && Object.is(queryErr, options.signal.reason)) || queryErr?.code === 'NOTEBOOK_QUERY_DEADLINE_EXCEEDED') throw queryErr;
     logger.warn('NLM_SOURCE_VALIDATOR', `NotebookLM query failed: ${queryErr.message}; preserving physical math certification.`);
     ragAnswer = `Cloud candidate validation failed: ${queryErr.message}. No buildability verdict is available from this stage.`;
   } finally {
@@ -412,6 +425,7 @@ async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
     sourceTitle,
     sourceDetached,
     isCloudGrounded,
+    recoveredFromGateway,
     workbookPath,
     csvPath,
     ragAnswer,
