@@ -583,44 +583,6 @@
     "firstSeenDate": "2026-08-12",
     "status": "ACTIVE"
   },
-  "P69726-B21": {
-    "productNumber": "P69726-B21",
-    "description": "HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit",
-    "mainCategory": "Memory",
-    "subCategory": "Memory",
-    "firstSeenDate": "2026-08-12",
-    "discontinuedDate": "2026-09-30",
-    "daysActive": 49,
-    "lastKnownPrice": "7439.00",
-    "fullPriceTrail": "2026-08-12: $7439.00 → 2026-08-13: $7439.00 → 2026-08-14: $7439.00 → 2026-08-16: $7439.00 → 2026-08-19: $7439.00 → 2026-08-22: $7439.00 → 2026-08-24: (no price) → 2026-09-09: $7439.00 → 2026-09-10: $7439.00 → 2026-09-30: $7439.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
-    "removalReason": "ABSENT_FROM_CATALOG",
-    "previousLifecycleStatus": "Active",
-    "vendorDiscontinuedDate": "11/30/2027",
-    "trackingState": "STOPPED_AFTER_REMOVAL",
-    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
-    "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
-  },
-  "P69726-F21": {
-    "productNumber": "P69726-F21",
-    "description": "HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit",
-    "mainCategory": "Memory",
-    "subCategory": "Memory",
-    "firstSeenDate": "2026-08-12",
-    "discontinuedDate": "2026-09-30",
-    "daysActive": 49,
-    "lastKnownPrice": "7439.00",
-    "fullPriceTrail": "2026-08-12: $7439.00 → 2026-08-13: $7439.00 → 2026-08-14: $7439.00 → 2026-08-16: $7439.00 → 2026-08-19: $7439.00 → 2026-08-22: $7439.00 → 2026-09-09: $7439.00 → 2026-09-10: $7439.00 → 2026-09-30: $7439.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
-    "removalReason": "ABSENT_FROM_CATALOG",
-    "previousLifecycleStatus": "Active",
-    "vendorDiscontinuedDate": "11/30/2027",
-    "trackingState": "STOPPED_AFTER_REMOVAL",
-    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
-    "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
-  },
   "P69729-F21": {
     "productNumber": "P69729-F21",
     "description": "HPE 96GB (1x96GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit",
@@ -6821,14 +6783,6 @@
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
     "reason": "Removed from active HPE OCA portal catalog"
-  },
-  "P76706-B21": {
-    "productNumber": "P76706-B21",
-    "description": "HPE ProLiant Compute DL380a Gen12 8DW/16SW CTO Server",
-    "mainCategory": "Chassis",
-    "subCategory": "Variants",
-    "firstSeenDate": "2026-08-24",
-    "status": "ACTIVE"
   },
   "P94926-B21": {
     "productNumber": "P94926-B21",

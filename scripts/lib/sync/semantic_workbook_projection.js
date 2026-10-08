@@ -66,6 +66,7 @@ function verifySemanticProjectionReadback(payload, indexedContent) {
     .replace(/^\s*\|(?:\s*:?-+:?\s*\|)+\s*$/gm, '')
     .replace(/^\s*#{1,6}\s+/gm, '')
     .replace(/\[(TEXT_\d+)\]/g, '$1')
+    .replace(/\\/g, '/')
     .replace(/\|/g, '').replace(/\s/g, '');
   const actual = normalize(body);
   const expectedLines = projection.split('\n').map(normalize).filter(Boolean);

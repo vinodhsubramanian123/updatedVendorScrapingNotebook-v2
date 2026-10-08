@@ -40,14 +40,18 @@ function tallyPcieCablesAndGpus(tally, desc, sku, qty, role, mandatorySkus = {})
     tally.hasSecondaryCableKit = true;
   }
 
+  const isDl380aGpuCable = sku === 'P74700-B21' || sku === 'P83526-B21' || 
+                           (tally.isDl380a && (desc.includes('cable kit') || desc.includes('power cable')) && desc.includes('gpu'));
   const isGpuPowerCable = desc.includes('gpu power') || desc.includes('gpu cable') || desc.includes('gpu aux') || 
                           desc.includes('12vhpwr') || desc.includes('gpu 16-pin') || 
                           (role === 'Power Cable' && desc.includes('gpu')) ||
+                          isDl380aGpuCable ||
                           (mandatorySkus?.GPU_POWER_CABLE_KIT?.sku && sku === cleanBaseSKU(mandatorySkus.GPU_POWER_CABLE_KIT.sku));
   if (isGpuPowerCable) {
     tally.hasGpuPowerCableKit = true;
-    // Multiplier: 16-pin / dual-GPU cables provide 2 GPU connections per kit
-    const multiplier = (desc.includes('gpu 16-pin') || desc.includes('dual gpu') || desc.includes('2-gpu')) ? 2 : 1;
+    // Multiplier: 16-pin / dual-GPU cables provide 2 GPU connections per kit.
+    // DL380a factory cable kits P74700-B21 and P83526-B21 always power 2 GPUs per kit.
+    const multiplier = (isDl380aGpuCable || desc.includes('gpu 16-pin') || desc.includes('dual gpu') || desc.includes('2-gpu')) ? 2 : 1;
     tally.gpuPowerCableKitCount += (qty * multiplier);
   }
 

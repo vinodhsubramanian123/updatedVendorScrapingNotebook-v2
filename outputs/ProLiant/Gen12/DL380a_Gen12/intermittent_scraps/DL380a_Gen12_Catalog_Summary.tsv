@@ -1,56 +1,8 @@
 Main Category	Sub-Category	Constraint	Min Qty	Max Qty	Total SKUs	Has Rules	Rule Count
-Unknown		no max	0	Unlimited	0	No	0
-Processor	Processor	max 2	0	2	32	Yes	1
-Processor	Heatsink Kit	max 1	0	1	0	No	0
-Memory	Memory	max 32	0	32	12	Yes	7
-Memory	GPU Mode	max 1	0	1	0	No	0
-Storage Devices	SAS Controller	max 2	0	2	0	No	0
-Storage Devices	Drive Cage	max 4	0	4	0	No	0
-Storage Devices	Internal Storage Controller Cables	max 2	0	2	0	No	0
-Storage Devices	Hot Plug SFF	max 4	0	4	0	No	0
-Storage Devices	RAID Settings	max 1	0	1	0	No	0
-Factory Configuration Settings	iLO Common Password	max 1	0	1	0	No	0
-Factory Configuration Settings	Memory Setting	max 1	0	1	0	No	0
-Factory Configuration Settings	Riser Cards	max 5	0	5	0	No	0
-Factory Configuration Settings	Accessories	max 3	0	3	0	No	0
-Networking	InfiniBand PCIe	max 2	0	2	15	Yes	16
-Networking	Ethernet PCIe	max 2	0	2	13	Yes	1
-Networking	Ethernet OCP	max 2	0	2	11	Yes	1
-Networking	Fibre Channel HBA	max 2	0	2	6	Yes	1
-Networking	Upgrades	max 3	0	3	0	No	0
-Networking	Transceivers	max 14	0	14	15	Yes	16
-Graphics Options	Graphics Accessories	max 16	0	16	0	No	0
-Graphics Options	Power Supplies	max 8	0	8	0	No	0
-Graphics Options	Accessories	max 1	0	1	0	No	0
-Graphics Options	Power Cooling Options	max 2	0	2	0	No	0
-Graphics Options	Power Cords	max 8	0	8	0	No	0
-Accessories	Management Hardware	max 2	0	2	0	No	0
-Security Options	Security Hardware	max 1	0	1	0	No	0
-Rack Options	Rack Options	max 2	0	2	0	No	0
-OS Boot Device	OS Boot Device	max 2	0	2	1	Yes	2
-Manufacturing Services	Manufacturing Services	max 2	0	2	0	No	0
-HPC Software Products	HPC Software Products	no max	0	Unlimited	0	No	0
-HPC Software Products	High Availability Computing - Cluster Software	no max	0	Unlimited	0	No	0
-HPC Software Products	NVIDIA GPU SW	no max	0	Unlimited	0	No	0
-HPC Software Products	Partner Software - Operating System	no max	0	Unlimited	0	No	0
-HPE Compute Ops Management	Compute Ops Management SKUs (required)	max 1	0	1	0	No	0
-HPE Compute Ops Management	Compute Ops Management SKUs	required	1	Required	7	Yes	2
-HPE Compute Ops Management	Compute Ops Management Enablement SKUs	max 1	0	1	0	No	0
-OEM Software	OEM Software	no max	0	Unlimited	0	No	0
-ProLiant Media Kits and License	Red Hat (add-ons)	no max	0	Unlimited	0	No	0
-ProLiant Media Kits and License	iLO	no max	0	Unlimited	0	No	0
-ProLiant Media Kits and License	OneView Management Software	max 1	0	1	0	No	0
-ProLiant Media Kits and License	INTEL VROC Products	max 1	0	1	0	No	0
-ProLiant Media Kits and License	Supported Operating System	no max	0	Unlimited	0	No	0
-ProLiant Media Kits and License	MS Windows Server	no max	0	Unlimited	0	No	0
-ProLiant Media Kits and License	Red Hat OpenShift Platform Container	no max	0	Unlimited	0	No	0
-ProLiant Media Kits and License	Resale Option Kit	no max	0	Unlimited	0	No	0
-ProLiant Media Kits and License	SUSE Linux Enterprise Server	no max	0	Unlimited	0	No	0
-ProLiant Media Kits and License	Microsoft Windows CAL Packs	no max	0	Unlimited	0	No	0
-ProLiant Media Kits and License	Red Hat Enterprise Linux Server-Virtualization	no max	0	Unlimited	0	No	0
-ProLiant Media Kits and License	VMware vCloud Products	no max	0	Unlimited	0	No	0
 Chassis	Variants	min 1, max 1 — Active OCA CTO chassis	1	1	1	Yes	1
+Processor	Processor	max 2	1	2	32	Yes	1
 Cooling / Thermal	Heatsink Kit	max 1	0	1	4	Yes	7
+Memory	Memory	max 32	0	32	12	Yes	7
 Graphics & GPU	GPU Mode	max 1	0	1	4	Yes	1
 Storage Controllers	SAS Controller	max 2	0	2	3	Yes	1
 Drive Enclosures / Drives	Drive Cage	max 4	0	4	2	Yes	3
@@ -61,7 +13,12 @@ Software & Licenses	iLO Common Password	max 1	0	1	1	Yes	1
 Memory	Memory Setting	max 1	0	1	1	Yes	1
 PCIe Risers	Riser Cards	max 5	0	5	6	Yes	1
 Cables & Enablement Kits	Accessories	max 3	0	3	1	Yes	1
+Networking	InfiniBand PCIe	max 2	0	2	15	Yes	16
+Networking	Ethernet PCIe	max 2	0	2	13	Yes	1
+Networking	Ethernet OCP	max 2	0	2	11	Yes	1
+Networking	Fibre Channel HBA	max 2	0	2	6	Yes	1
 Cables & Enablement Kits	OCP3 Networking Adapters	max 3	0	3	1	Yes	1
+Networking	Transceivers	max 14	0	14	15	Yes	16
 Graphics & GPU	Graphics Accessories	max 16	0	16	5	Yes	6
 Power Supplies	Power Supplies	max 8	1	8	3	Yes	4
 Power Supplies	Flex Slot Power Supplies	max 4	1	4	2	Yes	3
@@ -72,23 +29,19 @@ Cables & Enablement Kits	Management Hardware	max 2	0	2	1	Yes	1
 Software & Licenses	Server Management & Operating System Licenses	max 1	0	1	34	Yes	37
 Accessories & Infrastructure	Chassis Infrastructure & Rail Kits	max 1	0	1	3	Yes	2
 OS Boot Device	Solid State Drives (NVMe/SAS/SATA)	max 2	0	2	4	Yes	1
+OS Boot Device	OS Boot Device	max 2	0	2	1	Yes	2
 Accessories & Infrastructure	Accessories & Infrastructure Options	max 2	0	2	1	Yes	1
-Software & Licenses	High Availability Computing - Cluster Software	no max	0	Unlimited	26	Yes	28
-Software & Licenses	Partner Software - Operating System	no max	0	Unlimited	30	Yes	2
+Software & Licenses	High Availability Computing - Cluster Software	no max	0	Unlimited	1	Yes	2
+Software & Licenses	Partner Software - Operating System	no max	0	Unlimited	9	Yes	1
+HPE Compute Ops Management	Compute Ops Management SKUs	required	1	Required	1	Yes	1
 Software & Licenses	OEM Software	no max	0	Unlimited	4	Yes	1
-Software & Licenses	Red Hat (add-ons)	no max	0	Unlimited	26	Yes	2
+Software & Licenses	Red Hat (add-ons)	no max	0	Unlimited	12	Yes	1
 Software & Licenses	iLO	no max	0	Unlimited	6	Yes	1
-Software & Licenses	OneView Management Software	max 1	0	1	7	Yes	2
-Storage Controllers	INTEL VROC Products	max 1	0	1	4	Yes	2
-Software & Licenses	Supported Operating System	no max	0	Unlimited	64	Yes	66
+Software & Licenses	OneView Management Software	max 1	0	1	5	Yes	1
+Storage Controllers	INTEL VROC Products	max 1	0	1	2	Yes	1
+Software & Licenses	Supported Operating System	no max	0	Unlimited	28	Yes	29
 Software & Licenses	MS Windows Server	no max	0	Unlimited	62	Yes	64
-Software & Licenses	SUSE Linux Enterprise Server	no max	0	Unlimited	22	Yes	2
+Software & Licenses	SUSE Linux Enterprise Server	no max	0	Unlimited	8	Yes	1
 Software & Licenses	Microsoft Windows CAL Packs	no max	0	Unlimited	30	Yes	31
-Software & Licenses	Red Hat Enterprise Linux Server-Virtualization	no max	0	Unlimited	36	Yes	2
-Graphics & GPU	GPU Accelerators	Discontinued	0	Discontinued	8	Yes	1
-Support Services	RAID Settings	max 1	0	1	1	Yes	1
-Software & Licenses	HPC Software Products	no max	0	Unlimited	1	Yes	1
-Graphics & GPU	NVIDIA GPU SW	no max	0	Unlimited	60	Yes	1
-Accessories & Infrastructure	Compute Ops Management Enablement SKUs	max 1	0	1	2	Yes	1
-Software & Licenses	Red Hat OpenShift Platform Container	no max	0	Unlimited	13	Yes	14
-Support Services	System Options		0	N/A	5	Yes	6
+Software & Licenses	Red Hat Enterprise Linux Server-Virtualization	no max	0	Unlimited	18	Yes	1
+Graphics & GPU	GPU Accelerators	max 8	0	8	8	Yes	1

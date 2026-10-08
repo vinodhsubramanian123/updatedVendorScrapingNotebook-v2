@@ -480,6 +480,10 @@ function diffRemovedCatalogEntries(catalogData, prevSkuMap, currSkuMap, companio
       removalReason = 'VENDOR_OBSOLETE';
     } else if (vendorDiscontinuedDate && new Date(vendorDiscontinuedDate) <= new Date(scrapeDate)) {
       removalReason = 'SCHEDULED_END_DATE';
+    } else if (vendorDiscontinuedDate && new Date(vendorDiscontinuedDate) > new Date(scrapeDate)) {
+      // Safeguard (INV-141): Do not mark a SKU as discontinued or tombstoned if vendor lifecycle has a future end date
+      // Dynamic WebLogic DOM sub-trees (e.g. GPU Accelerators or memory-mixing exclusions) are conditional, not EOL.
+      continue;
     }
 
     const existingEntry = discontinuedRegistry[pn];

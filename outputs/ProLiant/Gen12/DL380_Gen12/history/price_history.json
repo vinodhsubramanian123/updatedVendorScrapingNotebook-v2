@@ -2533,11 +2533,6 @@
       "price": 7439,
       "status": "ATTRIBUTE_CHANGED",
       "validationState": "VALIDATED"
-    },
-    {
-      "date": "2026-09-30",
-      "price": 7439,
-      "status": "REMOVED"
     }
   ],
   "P69726-F21": [
@@ -2588,11 +2583,6 @@
       "price": 7439,
       "status": "ATTRIBUTE_CHANGED",
       "validationState": "VALIDATED"
-    },
-    {
-      "date": "2026-09-30",
-      "price": 7439,
-      "status": "REMOVED"
     }
   ],
   "P69729-F21": [
@@ -23169,14 +23159,6 @@
       "date": "2026-09-09",
       "price": 100,
       "status": "REMOVED",
-      "validationState": "VALIDATED"
-    }
-  ],
-  "P76706-B21": [
-    {
-      "date": "2026-08-24",
-      "price": 9850,
-      "status": "ADDED",
       "validationState": "VALIDATED"
     }
   ],

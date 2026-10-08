@@ -1,8 +1,8 @@
 {
   "registryVersion": "2.0.0",
   "schemaVersion": "1.0",
-  "generatedAt": "2026-10-03T16:48:44.221Z",
-  "lastUpdated": "2026-10-03T16:48:44.221Z",
+  "generatedAt": "2026-10-04T15:28:22.974Z",
+  "lastUpdated": "2026-10-04T15:28:22.974Z",
   "totalLearnedRules": 93,
   "totalDeduplicatedRules": 93,
   "productFamiliesSynced": [
@@ -626,7 +626,7 @@
       "ruleType": "POWER_REDUNDANCY",
       "affectedSku": "P76706-B21",
       "requiredDependencySku": null,
-      "ruleUpdate": "Use exactly five power supplies for 2DW/4DW GPU configurations and eight for 8DW/10DW; H100/H200 NVL supports 2400W P67252-B21 or 3200W P67248-B21 Titanium supplies, without mixing wattages.",
+      "ruleUpdate": "Requires a minimum of five power supplies for 2DW/4DW GPU configurations (up to eight for N+N grid redundancy or pre-populating all 8 bays) and eight power supplies for 8DW/10DW; H100/H200 NVL supports 2400W P67252-B21 or 3200W P67248-B21 Titanium supplies, without mixing wattages.",
       "scopeTaxonomy": "CHASSIS_SPECIFIC",
       "solutionType": "DL380a Gen12 GPU Server",
       "status": "VERIFIED",

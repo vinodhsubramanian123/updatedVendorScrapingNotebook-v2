@@ -13,6 +13,7 @@
 const fs   = require('fs');
 const XLSX = require('xlsx-js-style');
 const path = require('path');
+const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
 
 /**
  * Sanitize a string for use as an Excel sheet name.
@@ -40,6 +41,14 @@ function sanitizeSheetName(name, existingNames) {
     counter++;
   }
   return candidate;
+}
+
+function toPosixRelative(filePath) {
+  const normalized = String(filePath || '').replace(/\\/g, '/');
+  const idx = normalized.indexOf('/outputs/');
+  if (idx >= 0) return normalized.slice(idx + 1);
+  if (normalized.startsWith('outputs/')) return normalized;
+  return path.relative(PROJECT_ROOT, path.resolve(filePath)).replace(/\\/g, '/');
 }
 
 // ── Argument handling ─────────────────────────────────────────────────────────
@@ -602,8 +611,8 @@ const metaData = [
   { Field: 'Diff Unchanged SKUs',        Value: String(diffCounts.unchanged) },
   { Field: 'Discontinued (All-Time)',    Value: String(discontinuedRows.filter(r => r['Status'] === 'DISCONTINUED' || r['Status'] === 'REMOVED').length) },
   { Field: 'Reinstated (All-Time)',      Value: String(discontinuedRows.filter(r => r['Status'] === 'REINSTATED').length) },
-  { Field: 'Services JSON',              Value: fs.existsSync(servicesJsonPath) ? servicesJsonPath : '(Not yet generated)' },
-  { Field: 'Output Folder',              Value: targetDir },
+  { Field: 'Services JSON',              Value: fs.existsSync(servicesJsonPath) ? toPosixRelative(servicesJsonPath) : '(Not yet generated)' },
+  { Field: 'Output Folder',              Value: toPosixRelative(targetDir) },
 ];
 const metaWS = createStyledSheet(metaData, [{ wch: 30 }, { wch: 80 }]);
 XLSX.utils.book_append_sheet(wb, metaWS, 'Metadata');

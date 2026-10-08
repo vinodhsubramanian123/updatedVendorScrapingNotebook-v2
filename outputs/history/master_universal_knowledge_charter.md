@@ -1,6 +1,6 @@
 # HPE Knowledge Registry — Local Audit Index
 
-**Document Version**: `2.0.0` | **Generated**: `2026-10-03T16:48:44.221Z`
+**Document Version**: `2.0.0` | **Generated**: `2026-10-04T15:28:22.974Z`
 **Scope**: Local governance index. This file is not a NotebookLM source; product notebooks receive independently scoped projections.
 **Total Verified Knowledge Deltas**: `93` (`9` Universal + `0` Family/Gen + `84` Chassis Specific)
 
@@ -134,7 +134,7 @@
 
 ### 23. [DELTA_DL380A_GEN12_GPU_PSU_COUNT_MATRIX] DL380a_Gen12 — POWER_REDUNDANCY
 - **Scope**: `CHASSIS_SPECIFIC`
-- **Rule**: Use exactly five power supplies for 2DW/4DW GPU configurations and eight for 8DW/10DW; H100/H200 NVL supports 2400W P67252-B21 or 3200W P67248-B21 Titanium supplies, without mixing wattages.
+- **Rule**: Requires a minimum of five power supplies for 2DW/4DW GPU configurations (up to eight for N+N grid redundancy or pre-populating all 8 bays) and eight power supplies for 8DW/10DW; H100/H200 NVL supports 2400W P67252-B21 or 3200W P67248-B21 Titanium supplies, without mixing wattages.
 - **Affected SKU**: `P76706-B21`
 
 ### 24. [DELTA_DL380A_GEN12_LIVE_OCA_PRICING_ALIGNMENT_5155756524-01] DL380a_Gen12 — LIVE_QUOTE_RECONCILIATION
@@ -533,3 +533,9 @@
 - **Rule**: Synergy startup services (HA124A1#5ZM First Frame Onsite, HA124A1#5ZQ Additional Frame Onsite) must be placed ONLY at the Icon #2 container level under Services → Deployment Services → Install-Install and Start Up. They must NEVER be placed locally under individual "Synergy 12000 Frame #N" child items. Duplicate placement between icon container and child frames causes CLIC Rule 81039677 to fire against the first line item (typically DL380) in the solution BOM.
 - **Affected SKU**: `HA124A1#5ZM`
 - **Required Dependency**: `HA124A1#5ZQ`
+
+
+### 94. [DELTA_UNIVERSAL_CLOUD_MANAGEMENT_OPTIONAL] GLOBAL — SOFTWARE_OPTIONALITY
+- **Scope**: `UNIVERSAL_VENDOR`
+- **Rule**: Cloud Management FIO Enablement (`S1A05A`) and Compute Ops Management SaaS (`R7A11AAE`) are strictly optional services/licenses. They are not required for hardware buildability, power-on, or vendor portal acceptance.
+- **Affected SKU**: `S1A05A`

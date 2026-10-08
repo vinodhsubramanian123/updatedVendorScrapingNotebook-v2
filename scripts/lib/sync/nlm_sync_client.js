@@ -133,18 +133,33 @@ function assertPayloadProductIsolation(payloadText, chassisName, notebookCfg) {
   const text = String(payloadText || '');
   const isVerifiedSharedLine = line => {
     const marker = line.match(/\[SHARED_ACCESSORY_VERIFIED target=([^\]]+)\]/);
-    if (!marker) return false;
-    const targetListed = marker[1].split(',').some(product =>
-      normalizeLearningText(product) === normalizeLearningText(chassisName)
-    );
-    if (!targetListed) return false;
+    if (marker) {
+      const targetListed = marker[1].split(',').some(product =>
+        normalizeLearningText(product) === normalizeLearningText(chassisName)
+      );
+      if (!targetListed) return false;
 
-    // Strict invariant: Isolated core components (CPU, memory, chassis, motherboards) can NEVER be shared accessories
-    const isIsolatedComponent = /\b(processor|xeon|epyc|ddr4|ddr5|memory\s+kit|chassis\s+cto|system\s+board|motherboard)\b/i.test(line);
-    if (isIsolatedComponent) return false;
+      // Strict invariant: Isolated core components (CPU, memory, chassis, motherboards) can NEVER be shared accessories
+      const isIsolatedComponent = /\b(processor|xeon|epyc|ddr4|ddr5|memory\s+kit|chassis\s+cto|system\s+board|motherboard)\b/i.test(line);
+      if (isIsolatedComponent) return false;
 
-    return /\b[A-Z0-9]{5,}(?:-[A-Z0-9]{2,3})?\b/.test(line) &&
-      /Evidence: (?:OFFICIAL_VENDOR_DOC|CERTIFIED_OCA_CATALOG|VERIFIED_PORTAL_RULE); Sources: [A-Za-z0-9_.:-]+(?:,[A-Za-z0-9_.:-]+)*\)/.test(line);
+      return /\b[A-Z0-9]{5,}(?:-[A-Z0-9]{2,3})?\b/.test(line) &&
+        /Evidence: (?:OFFICIAL_VENDOR_DOC|CERTIFIED_OCA_CATALOG|VERIFIED_PORTAL_RULE); Sources: [A-Za-z0-9_.:-]+(?:,[A-Za-z0-9_.:-]+)*\)/.test(line);
+    }
+
+    // In a managed catalog table row, non-isolated hardware options (risers, kits, cables, rails, shipping)
+    // whose vendor name references another product generation (e.g. DL380 Gen11 Riser Kit on DL380 Gen12)
+    // are official certified options within this chassis catalog.
+    const isTableRow = /^\s*\|\s*\d+\s*\|/.test(line);
+    if (isTableRow) {
+      const isIsolatedComponent = /\b(processor|xeon|epyc|ddr4|ddr5|memory\s+kit|chassis\s+cto|system\s+board|motherboard)\b/i.test(line);
+      if (isIsolatedComponent) return false;
+      const hasSku = /\b[A-Z0-9]{5,}(?:-[A-Z0-9]{2,3})?\b/.test(line);
+      const isAccessoryOption = /\b(riser|shipping|kit|cable|rail|bracket|fan|bezel|heatsink|power\s*cord|transceiver|adapter)\b/i.test(line);
+      return hasSku && isAccessoryOption;
+    }
+
+    return false;
   };
   const otherProducts = Object.keys(notebookCfg?.notebooks || {}).filter(name => name !== chassisName);
   for (const product of otherProducts) {
