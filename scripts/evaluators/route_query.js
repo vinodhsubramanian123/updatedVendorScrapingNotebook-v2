@@ -1328,6 +1328,9 @@ async function _executeLegacyRoutedQuery(queryText = '', context = {}) {
   if (classification.intent === 'AMBIGUOUS_QUERY' || chassisInfoForConf?.isAmbiguous) {
     confidence = 0.40;
     classificationBasis = 'AMBIGUOUS_QUERY';
+  } else if (context.chassisName && chassisInfoForConf && !chassisInfoForConf.isAmbiguous) {
+    confidence = 1.0;
+    classificationBasis = 'CHASSIS_EXPLICIT_ID_MATCH';
   } else if (classification.intent === 'BOQ_EVALUATION') {
     const hasFile = Boolean(context.filePath || context.file);
     confidence = hasFile ? 0.95 : 0.90;
@@ -1342,15 +1345,9 @@ async function _executeLegacyRoutedQuery(queryText = '', context = {}) {
     confidence = chassisInfoForConf && !chassisInfoForConf.isAmbiguous ? 0.80 : 0.80;
     classificationBasis = 'FREEFORM_QA_DEFAULT';
   } else if (chassisInfoForConf && !chassisInfoForConf.isAmbiguous) {
-    // Chassis was resolved — refine by how it was matched
-    if (context.chassisName && chassisInfoForConf.chassisKey === (context.chassisName || '').replace(/\s+/g, '_')) {
-      confidence = 1.0;
-      classificationBasis = 'CHASSIS_EXACT_ID_MATCH';
-    } else {
-      // Check if it was a single-platform match (PLATFORM_SIGNATURES single match → 0.90)
-      confidence = 0.90;
-      classificationBasis = 'CHASSIS_PLATFORM_SIGNATURE_SINGLE_MATCH';
-    }
+    // Check if it was a single-platform match (PLATFORM_SIGNATURES single match → 0.90)
+    confidence = 0.90;
+    classificationBasis = 'CHASSIS_PLATFORM_SIGNATURE_SINGLE_MATCH';
   } else {
     confidence = classification.confidence || 0.80;
     classificationBasis = 'CLASSIFIER_SCORE';
