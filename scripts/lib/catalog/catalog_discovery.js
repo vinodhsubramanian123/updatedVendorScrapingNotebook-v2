@@ -205,7 +205,7 @@ resolve({ ok: false, pages: [], hasActiveOca: false });
   });
 }
 
-const IGNORED_DISCOVERY_DIRS = new Set(['temp', 'node_modules', '.git', 'test_payloads', 'test_portal_stress', 'test_reconciliation', 'test_tenders', 'split_clusters']);
+const IGNORED_DISCOVERY_DIRS = new Set(['history', 'temp', 'node_modules', '.git', 'test_payloads', 'test_portal_stress', 'test_reconciliation', 'test_tenders', 'split_clusters']);
 
 function isIgnoredDiscoveryPath(file, filePath) {
   if (file.startsWith('.')) return true;
@@ -213,6 +213,7 @@ function isIgnoredDiscoveryPath(file, filePath) {
   if (file.startsWith('failed_staging') || file.startsWith('staging_')) return true;
   if (file.endsWith('.tmp') || file.endsWith('.bak') || file.includes('.tmp')) return true;
   if (filePath && (filePath.includes(`${path.sep}temp${path.sep}`) || filePath.endsWith(`${path.sep}temp`))) return true;
+  if (filePath && (filePath.includes(`${path.sep}history${path.sep}`) || filePath.endsWith(`${path.sep}history`))) return true;
   return false;
 }
 

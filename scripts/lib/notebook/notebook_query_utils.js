@@ -11,7 +11,7 @@
  * - scripts/lib/notebook/job_manager.js
  */
 
-const { execFile } = require('child_process');
+const { execFile, execFileSync } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
@@ -227,17 +227,103 @@ function formatQueryDuration(ms) {
   return `${min}m ${sec < 10 ? '0' : ''}${sec}s (${ms}ms)`;
 }
 
+function throwIfQueryStopped(options) {
+  if (options.signal?.aborted) throw options.signal.reason;
+  if (Number.isFinite(options.deadlineAt) && Date.now() >= options.deadlineAt) {
+    const error = new Error('NotebookLM query deadline exceeded');
+    error.code = 'NOTEBOOK_QUERY_DEADLINE_EXCEEDED';
+    throw error;
+  }
+}
+
+function findMatchingChatTurn(turns, cleanPrefix) {
+  if (!Array.isArray(turns) || turns.length === 0) return null;
+  for (let i = turns.length - 1; i >= 0; i--) {
+    const turn = turns[i];
+    const queryText = String(turn.query || turn.user_query || turn.question || turn.prompt || '').toLowerCase();
+    const responseText = turn.answer || turn.response || turn.text || turn.model_turn?.text || '';
+    const citations = Array.isArray(turn.citations) ? turn.citations : (turn.references || []);
+
+    const isMatch = !cleanPrefix || queryText.includes(cleanPrefix.slice(0, 30)) || cleanPrefix.includes(queryText.slice(0, 30));
+    if (isMatch && responseText && responseText.length > 20) {
+      return { responseText, citations };
+    }
+  }
+  return null;
+}
+
+function attemptGatewaySessionRecovery(nlmExecutable, targetNotebookId, sanitizedQuery, extendedPath, options = {}) {
+  const logger = require('../system/pipeline_logger.js');
+  if (options.bypassRecovery === true) return null;
+  try {
+    const listArgs = ['chats', 'list', targetNotebookId, '--json'];
+    const stdout = execFileSync(nlmExecutable, listArgs, {
+      encoding: 'utf-8',
+      timeout: 10000,
+      env: { ...process.env, PATH: extendedPath }
+    });
+    const parsed = JSON.parse(stdout);
+    const chats = Array.isArray(parsed) ? parsed : (parsed?.chats || parsed?.sessions || []);
+    if (!Array.isArray(chats) || chats.length === 0) return null;
+
+    const cleanPrefix = sanitizedQuery.slice(0, 60).toLowerCase().trim();
+    for (const chat of chats.slice(0, 5)) {
+      const chatId = chat.id || chat.session_id || chat.chat_id;
+      if (!chatId) continue;
+      try {
+        const getArgs = ['chats', 'get', targetNotebookId, chatId, '--json'];
+        const chatStdout = execFileSync(nlmExecutable, getArgs, {
+          encoding: 'utf-8',
+          timeout: 15000,
+          env: { ...process.env, PATH: extendedPath }
+        });
+        const chatData = JSON.parse(chatStdout);
+        const turns = Array.isArray(chatData?.turns) ? chatData.turns : (chatData?.messages || []);
+        const matched = findMatchingChatTurn(turns, cleanPrefix);
+        if (matched) {
+          logger.info('NOTEBOOK_QUERY', `🎯 Successfully recovered cloud response from gateway session [${chatId.slice(0, 8)}...]!`);
+          return {
+            rawAnswer: matched.responseText,
+            citations: matched.citations,
+            chatSessionId: chatId,
+            recoveredFromGateway: true
+          };
+        }
+      } catch {}
+    }
+    return null;
+  } catch (err) {
+    logger.warn('NOTEBOOK_QUERY', `Gateway session recovery probe noted: ${err.message}`);
+    return null;
+  }
+}
+
 function _executeCloudQueryWithRetry(nlmExecutable, targetNotebookId, sanitizedQuery, timeoutMs, extendedPath, options = {}) {
   const logger = require('../system/pipeline_logger.js');
   const maxAttempts = typeof options === 'number' ? options : (options.maxRetries || 3);
 
   return new Promise((resolve, reject) => {
     let attempt = 0;
+    let settled = false;
+    let retryTimer;
+    let activeHeartbeat;
+    const cleanup = () => { clearTimeout(retryTimer); clearInterval(activeHeartbeat); options.signal?.removeEventListener('abort', onAbort); };
+    const finish = (callback, value) => { if (settled) return; settled = true; cleanup(); callback(value); };
+    const onAbort = () => finish(reject, options.signal.reason);
+    options.signal?.addEventListener('abort', onAbort, { once: true });
+    const scheduleRetry = delay => {
+      if (settled) return;
+      const remaining = Number.isFinite(options.deadlineAt) ? options.deadlineAt - Date.now() : Infinity;
+      retryTimer = setTimeout(runAttempt, Math.max(0, Math.min(delay, remaining)));
+    };
 
     function runAttempt() {
+      if (settled) return;
+      try { throwIfQueryStopped(options); } catch (error) { return finish(reject, error); }
       attempt++;
       const startTime = Date.now();
-      const currentTimeout = timeoutMs + (attempt > 1 ? 60000 : 0); // Add 60s buffer on retry
+      const remaining = Number.isFinite(options.deadlineAt) ? options.deadlineAt - Date.now() : Infinity;
+      const currentTimeout = Math.max(1, Math.min(timeoutMs + (attempt > 1 ? 60000 : 0), remaining)); // Add 60s buffer on retry
       const budgetMin = Math.round(currentTimeout / 60000);
       const skuCount = options.context?.skus?.length || options.context?.items?.length || 0;
       const chassisName = options.context?.chassis || 'Target Solution';
@@ -249,13 +335,14 @@ function _executeCloudQueryWithRetry(nlmExecutable, targetNotebookId, sanitizedQ
         const elapsedMs = Date.now() - startTime;
         logger.info('NOTEBOOK_QUERY', `⏳ NotebookLM deep synthesis in progress: ${focusDetail} [Elapsed: ${formatQueryDuration(elapsedMs)} / Timeout Budget: ${budgetMin}m] (Notebook: ${targetNotebookId.slice(0, 8)}...)`);
       }, 15000);
+      activeHeartbeat = heartbeat;
       if (typeof heartbeat.unref === 'function') heartbeat.unref();
 
       const trustedSourceIds = options.querySourceIds || [];
       if (!Array.isArray(trustedSourceIds) || trustedSourceIds.length === 0) {
         clearInterval(heartbeat);
         logger.warn('NOTEBOOK_QUERY', `[INV-24 FAIL_CLOSED] Empty trusted source allowlist for [${targetNotebookId}]; refusing unconstrained query.`);
-        return resolve({
+        return finish(resolve, {
           answer: 'Grounding query blocked: no authoritative or trusted sources configured for notebook (fail-closed).',
           citations: [],
           isCloudGrounded: false,
@@ -265,55 +352,82 @@ function _executeCloudQueryWithRetry(nlmExecutable, targetNotebookId, sanitizedQ
         });
       }
       const queryArgs = buildNotebookQueryArgs(targetNotebookId, sanitizedQuery, trustedSourceIds, currentTimeout);
-      execFile(nlmExecutable, queryArgs, {
-        timeout: currentTimeout,
-        signal: options.signal,
-        env: { ...process.env, PATH: extendedPath },
-        maxBuffer: 10 * 1024 * 1024
-      }, (err, stdout, stderr) => {
-        clearInterval(heartbeat);
-        const latencyMs = Date.now() - startTime;
-        const timeTaken = formatQueryDuration(latencyMs);
+      try {
+        execFile(nlmExecutable, queryArgs, {
+          timeout: currentTimeout,
+          signal: options.signal,
+          env: { ...process.env, PATH: extendedPath },
+          maxBuffer: 10 * 1024 * 1024
+        }, (err, stdout, stderr) => {
+          clearInterval(heartbeat);
+          if (settled) return;
+          try { throwIfQueryStopped(options); } catch (error) { return finish(reject, error); }
+          const latencyMs = Date.now() - startTime;
+          const timeTaken = formatQueryDuration(latencyMs);
+  
+          if (err) {
+            const isTimeout = err.killed || err.code === 'ETIMEDOUT' || (err.message && err.message.includes('timeout'));
+            if (isTimeout) {
+              logger.warn('NOTEBOOK_QUERY', `⏱️ Cloud query attempt ${attempt}/${maxAttempts} reached timeout limit after ${timeTaken} during validation of ${skuCount} SKUs.`);
+            }
 
-        if (err) {
-          const isTimeout = err.killed || err.code === 'ETIMEDOUT' || (err.message && err.message.includes('timeout'));
-          if (isTimeout) {
-            logger.warn('NOTEBOOK_QUERY', `⏱️ Cloud query attempt ${attempt}/${maxAttempts} reached timeout limit after ${timeTaken} during validation of ${skuCount} SKUs.`);
+            if (isTimeout || (err.message && err.message.includes('socket'))) {
+              const recovered = attemptGatewaySessionRecovery(nlmExecutable, targetNotebookId, sanitizedQuery, extendedPath, options);
+              if (recovered && recovered.rawAnswer) {
+                const processed = postProcessNotebookResult(JSON.stringify({ answer: recovered.rawAnswer, citations: recovered.citations }), sanitizedQuery, options.context);
+                if (processed && processed.answer) {
+                  return finish(resolve, {
+                    ...processed,
+                    source: 'NOTEBOOK_LM_CLOUD_RECOVERED',
+                    targetNotebookId,
+                    chatSessionId: recovered.chatSessionId,
+                    latencyMs,
+                    timeTaken,
+                    attempts: attempt,
+                    isCloudGrounded: true,
+                    recoveredFromGateway: true
+                  });
+                }
+              }
+            }
+  
+            const isRetryable = attempt < maxAttempts && (
+              (err.message && (err.message.includes('429') || err.message.includes('500') || err.message.includes('503') || err.message.includes('socket')))
+            );
+  
+            if (isRetryable) {
+              const backoffMs = Math.min(10000, 1500 * Math.pow(2, attempt - 1));
+              logger.warn('NOTEBOOK_QUERY', `Cloud query attempt ${attempt}/${maxAttempts} failed (${err.message || 'Transient error'}). Retrying in ${backoffMs}ms...`);
+              return scheduleRetry(backoffMs);
+            }
+  
+            return finish(reject, { err, stderr, latencyMs, timeTaken, attempts: attempt });
           }
-
-          const isRetryable = attempt < maxAttempts && (
-            (err.message && (err.message.includes('429') || err.message.includes('500') || err.message.includes('503') || err.message.includes('socket')))
-          );
-
-          if (isRetryable) {
-            const backoffMs = Math.min(10000, 1500 * Math.pow(2, attempt - 1));
-            logger.warn('NOTEBOOK_QUERY', `Cloud query attempt ${attempt}/${maxAttempts} failed (${err.message || 'Transient error'}). Retrying in ${backoffMs}ms...`);
-            return setTimeout(runAttempt, backoffMs);
+  
+          logger.info('NOTEBOOK_QUERY', `✅ NotebookLM deep synthesis completed successfully in ${timeTaken}.`);
+  
+          let processed = postProcessNotebookResult(stdout, sanitizedQuery, options.context);
+          if (!processed || !processed.answer || processed.answer.includes('No response returned')) {
+            if (attempt < maxAttempts) {
+              const backoffMs = 2000;
+              logger.warn('NOTEBOOK_QUERY', `Empty answer received after ${timeTaken}. Retrying attempt ${attempt + 1}/${maxAttempts} in ${backoffMs}ms...`);
+              return scheduleRetry(backoffMs);
+            }
           }
-
-          return reject({ err, stderr, latencyMs, timeTaken, attempts: attempt });
-        }
-
-        logger.info('NOTEBOOK_QUERY', `✅ NotebookLM deep synthesis completed successfully in ${timeTaken}.`);
-
-        let processed = postProcessNotebookResult(stdout, sanitizedQuery, options.context);
-        if (!processed || !processed.answer || processed.answer.includes('No response returned')) {
-          if (attempt < maxAttempts) {
-            const backoffMs = 2000;
-            logger.warn('NOTEBOOK_QUERY', `Empty answer received after ${timeTaken}. Retrying attempt ${attempt + 1}/${maxAttempts} in ${backoffMs}ms...`);
-            return setTimeout(runAttempt, backoffMs);
-          }
-        }
-
-        resolve({
-          ...processed,
-          source: 'NOTEBOOK_LM_CLOUD',
-          targetNotebookId,
-          latencyMs,
-          timeTaken,
-          attempts: attempt
+  
+          finish(resolve, {
+            ...processed,
+            source: 'NOTEBOOK_LM_CLOUD',
+            targetNotebookId,
+            latencyMs,
+            timeTaken,
+            attempts: attempt
+          });
         });
-      });
+      } catch (error) {
+        clearInterval(heartbeat);
+        finish(reject, error);
+      }
     }
 
     runAttempt();
@@ -333,6 +447,7 @@ function _executeCloudQueryWithRetry(nlmExecutable, targetNotebookId, sanitizedQ
  * @returns {Promise<object>} Normalized result { query, answer, citations, source, isCloudGrounded }
  */
 async function executeNotebookQuery(notebookId, rawQuery, options = {}) {
+  throwIfQueryStopped(options);
   const { queryLocalKnowledgeBase } = require('../rag/local_rag_search.js');
   const logger = require('../system/pipeline_logger.js');
 
@@ -350,6 +465,7 @@ async function executeNotebookQuery(notebookId, rawQuery, options = {}) {
     : (fs.existsSync(macHomebrewPath) ? macHomebrewPath : (fs.existsSync(macUsrPath) ? macUsrPath : binName));
 
   const targetNotebookId = await resolveNotebookIdAsync(notebookId, options.context, nlmExecutable, extendedPath);
+  throwIfQueryStopped(options);
   const sanitizedQuery = sanitizeNotebookQuery(rawQuery, options.context);
   const timeoutMs = options.timeout || options.timeoutMs || parseInt(process.env.RAG_TIMEOUT_MS || '120000', 10);
   const isStrictCloud = options.strictCloud === true || process.env.STRICT_NOTEBOOKLM_MODE === '1';
@@ -412,6 +528,7 @@ async function executeNotebookQuery(notebookId, rawQuery, options = {}) {
       context: { ...options.context, authoritativeSourceIds }
     };
     const cloudResult = await _executeCloudQueryWithRetry(nlmExecutable, targetNotebookId, sanitizedQuery, timeoutMs, extendedPath, queryOptions);
+    throwIfQueryStopped(options);
     if (cloudResult.groundingVerification === 'VERIFIED_GROUNDED') {
       cloudResult.isCloudGrounded = true;
       cloudResult.groundingTier = 'TIER_1_LIVE_CLOUD_GROUNDED';
@@ -425,6 +542,7 @@ async function executeNotebookQuery(notebookId, rawQuery, options = {}) {
     }
     return cloudResult;
   } catch (failure) {
+    if ((options.signal?.aborted && Object.is(failure, options.signal.reason)) || failure?.code === 'NOTEBOOK_QUERY_DEADLINE_EXCEEDED') throw failure;
     const diagnostic = diagnoseNotebookFailure(targetNotebookId, failure?.err);
     const timeTaken = failure?.timeTaken || (failure?.latencyMs ? `${Math.floor(failure.latencyMs / 1000)}s` : 'unknown');
     diagnostic.timeTaken = timeTaken;
@@ -509,5 +627,7 @@ module.exports = {
   RAG_TIMEOUT_MS,
   getAuthoritativeSourceIds,
   getNotebookConfigEntry,
-  resolveQuerySourceScope
+  resolveQuerySourceScope,
+  attemptGatewaySessionRecovery,
+  findMatchingChatTurn
 };
