@@ -8,7 +8,7 @@ Revision 5.43, 9 October 2026. GPU ownership/capacity/remedy/narrative fixes ind
 | :--- | :--- |
 | Execution workspace | C:/Users/latha/.gemini/antigravity/scratch/antigravityProjects/updatedVendorScrapingNotebook-v2 |
 | Equivalent path alias | C:/Users/latha/antigravityProjects/updatedVendorScrapingNotebook-v2 — parent junction resolves to the execution workspace; not a second checkout |
-| Holder | Codex root live writerPID8008/session29945 during revision5.42; release explicitly at handoff, reacquire on resume |
+| Holder | Codex rootPID8008/session29945 held the live lease for this integration; explicit release and lock absence checked at boundary; reacquire before new writes |
 | Reservation | Live `.git/codex-maintenance-locks/skill-workflow-excellence.lock`; agents write only isolated copies; no expiry-only reclamation |
 | Baseline commit | 823725a214816c972bf1d91a4ec01db7bb76b860 — re-record at CP0 |
 | Starting tree | Three untracked audit Markdown files; no tracked code changes at review start |
@@ -670,3 +670,5 @@ Agy authored4production sources and2test updates; root independently verified17 
 ## Revision5.43 — pricing presence integrated; full price basis still open
 
 Agy6production sources independently reviewed by root:23pricing controls; main42/42; isolatedgroup28/28 including actual offline2/9/20node child evaluations after complete certifiedfixture preparation. Existing quantity wrapper1 and parser/workbook7pass. New missing-price0->null assertion is an explicitly intended difference; original setup failures preserved. Canonical quantityBridge/XLSX requirements retained; no unowned fallback added. Maincycles0/617,CC131,explicitnode lint3before/3after,0new/0errors. Graph9358nodes/17032edges/499communities. Receipt pricing-main-integration/acceptance-receipt.json. Router skill no longer instructs fabricated ACTIVE hardware learning or blanket confidence blocking. Formal12/35 unchanged: fullCP10a/CP8b/customer scope not closed. Nextknown gaps: budget_optimizer quote/list replacement, nullable schema and remaining BatchA gates. User authorized local main commits; no push.
+
+Final local check-in: query-choice db32541 and pricing3c5e18b on main; all latest source hashes bound. Pricing author receipt predates2last guard corrections and is preserved as superseded; root final bindings/main42checks are acceptance authority. Current status snapshot removes the obsolete pricing pending row. Reusable Agy reference updated with complete-fixture preparation, source-unchanged observation and stale receipt lessons. NextCP12 audit should check any prior HUMAN_HITL/synthetic citation records before consuming hardware learning; no contamination is asserted without evidence. No push.

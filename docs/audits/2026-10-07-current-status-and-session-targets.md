@@ -4,7 +4,7 @@ Updated 9 October 2026, revision 5.43. This is the current snapshot; historical 
 
 ## Saved and usable on local main
 
-Verified runtime fixes are committed on local main, with no outstanding working-tree changes at the start of this handoff. Runtime HEAD before this documentation checkpoint: 4d4be2a. Six local commits are ahead of the last fetched origin/main (7ac4baf); no push has been performed. A local commit protects work from ordinary session/context loss, but is not an off-machine backup.
+Verified runtime fixes are committed on local main, with no outstanding working-tree changes at the start of this handoff. Latest verified runtime commits: db32541 (query choice) and3c5e18b (pricing presence). Local main was nine commits ahead of the last fetched origin/main (7ac4baf) at the final runtime verification; no push has been performed. A local commit protects work from ordinary session/context loss, but is not an off-machine backup.
 
 | Delivery | Commit | Evidence and limits |
 | --- | --- | --- |
@@ -50,7 +50,7 @@ Verify git status and current source bindings; acquire the canonical live writer
 
 ## Revision5.42 active pricing continuation
 
-Agy choice conversation920b6942-057a-4905-8f3c-51a4d62744df produced the integrated fix above; verify receipt sources before treating later candidate edits as accepted. Pricing conversation0b38f300-b4ce-45b2-8abc-18ce3d5d0001, isolated Temp/agy-pricing-implementation-20261009, observer72710 after concrete overflow/report correction. Root independent22 checks:20pass/2fail (Markdown incomplete fallback and sum-overflow); still NOT promoted. Source/brief/preimage records and baseline failures in choice-pricing-execution. No blind restart on print timeout. WriterPID8008/session29945 held for edits; release explicitly before handoff. Formal12/35 unchanged; a substantive memory/router fix is now delivered without claiming fullscopeclosure.
+Historical revision5.42 pricing failures are superseded by revision5.43 acceptance. Both Agy implementation conversations now have their tested fixes promoted to main. Do not resume their completed code authoring. Pricing author receipt predates2guard corrections; it is labelled superseded. Final main source bindings and42tests govern acceptance. Source/brief/preimage records and original failures remain archived.
 
 ## Revision5.43 delivered and next gate
 
