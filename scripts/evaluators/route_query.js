@@ -1074,11 +1074,35 @@ async function _handleHeterogeneousTenderModernization(queryText, context) {
     strictZeroJargon: true
   });
 
-  let parsedTables = context.tables;
-  if (!parsedTables && context.filePath && path.extname(context.filePath).toLowerCase() === '.json') {
-    const data = JSON.parse(fs.readFileSync(context.filePath, 'utf8'));
-    parsedTables = data.tables || data;
+  let parsedTables = context.tables || context.sheets;
+  if (!parsedTables && Array.isArray(context.items) && context.items.length > 0) {
+    parsedTables = [{ title: context.title || 'Tender Items', items: context.items, multiplier: context.multiplier || 1 }];
   }
+  if (!parsedTables && context.filePath) {
+    const ext = path.extname(context.filePath).toLowerCase();
+    if (ext === '.json') {
+      const data = JSON.parse(fs.readFileSync(context.filePath, 'utf8'));
+      parsedTables = data.tables || data.sheets || (Array.isArray(data) ? data : data.items ? [{ items: data.items }] : null);
+    } else if (['.xlsx', '.xls', '.csv'].includes(ext)) {
+      try {
+        const XLSX = require('xlsx-js-style');
+        const workbook = XLSX.readFile(context.filePath);
+        const { parseSkuLines } = require('../lib/boq/boq_parser.js');
+        parsedTables = workbook.SheetNames.map(name => {
+          const rows = XLSX.utils.sheet_to_json(workbook.Sheets[name], { header: 1, defval: '' });
+          const flatLines = rows.map(r => (Array.isArray(r) ? r.join(' ') : String(r))).filter(l => l.trim().length > 0);
+          const parsed = parseSkuLines(flatLines);
+          return {
+            title: name,
+            items: parsed.items || []
+          };
+        }).filter(table => table.items.length > 0);
+      } catch (fileErr) {
+        _logger.warn('HETEROGENEOUS_TENDER', `Failed to parse workbook ${context.filePath}: ${fileErr.message}`);
+      }
+    }
+  }
+
   if (!parsedTables || (Array.isArray(parsedTables) && !parsedTables.length)) return {
     intent: 'HETEROGENEOUS_TENDER_MODERNIZATION', status: 'STRUCTURED_TENDER_REQUIRED',
     message: 'Supply nonempty parsed tables with owned items and quantity multipliers. Ingest spreadsheet/PDF files before modernization.'
@@ -1134,18 +1158,70 @@ async function _handleCrossVendorTransformation(queryText, context) {
     inputData = extension === '.json' ? JSON.parse(contents) : contents;
   }
 
+  const candidateItems = context.targetBom || (Array.isArray(context.items) ? context.items : null);
   const transformResult = transformCompetitorQuote(inputData, sourceVendor, targetChassis, {
-    nodeMultiplier: nodeCount, targetBom: context.targetBom
+    nodeMultiplier: nodeCount, targetBom: candidateItems || []
   });
+
+  let evaluatedSolution = null;
+  const parityGaps = [];
+  const spec = transformResult.competitorSpec;
+
+  if (targetChassis && transformResult.candidateBom.length > 0) {
+    if (spec.compute?.totalCores != null) {
+      const cpuItems = transformResult.candidateBom.filter(it => /\b(xeon|epyc|processor|cpu)\b/i.test(it.description || ''));
+      const candidateCores = cpuItems.reduce((acc, it) => {
+        const cores = Number(it.description?.match(/(\d+)[\s-]*(?:cores?|c\b)/i)?.[1] || 0);
+        return acc + (cores * (it.quantity || 1));
+      }, 0);
+      if (candidateCores < spec.compute.totalCores) {
+        parityGaps.push({ subsystem: 'COMPUTE_PROCESSORS', status: 'GAP_IDENTIFIED', requested: spec.compute.totalCores, candidate: candidateCores, reason: 'Candidate cores below requested specification.' });
+      }
+    }
+    if (spec.memory?.totalMemoryGb != null) {
+      const memItems = transformResult.candidateBom.filter(it => /\b(rdimm|dimm|memory)\b/i.test(it.description || ''));
+      const candidateMem = memItems.reduce((acc, it) => {
+        const cap = Number(it.description?.match(/(\d+)\s*gb/i)?.[1] || 0);
+        return acc + (cap * (it.quantity || 1));
+      }, 0);
+      if (candidateMem < spec.memory.totalMemoryGb) {
+        parityGaps.push({ subsystem: 'MEMORY_TOPOLOGY', status: 'GAP_IDENTIFIED', requested: spec.memory.totalMemoryGb, candidate: candidateMem, reason: 'Candidate memory capacity below requested specification.' });
+      }
+    }
+
+    if (context.continueEvaluation) {
+      try {
+        const chassisInfo = getChassisCatalog(targetChassis, context);
+        evaluatedSolution = evaluateBOQMultiAspect(transformResult.candidateBom, {
+          chassis: targetChassis,
+          targetDir: chassisInfo.catalogDir || '',
+          catalogData: chassisInfo.catalogData
+        });
+      } catch (evalErr) {
+        evaluatedSolution = { status: 'ERROR', error: evalErr.message };
+      }
+    }
+  }
+
+  const finalStatus = !targetChassis
+    ? 'TARGET_PRODUCT_REQUIRED'
+    : (transformResult.candidateBom.length === 0
+      ? 'SCOPED_SIZING_REQUIRED'
+      : (evaluatedSolution
+        ? (evaluatedSolution.errors?.length > 0 ? 'CANDIDATE_VIOLATIONS_DETECTED' : 'CANDIDATE_EVALUATION_COMPLETE')
+        : 'CANDIDATE_EVALUATION_REQUIRED'));
 
   return {
     intent: 'CROSS_VENDOR_TRANSFORMATION',
     skillTarget: 'cross-vendor-transformation-skill',
     ...transformResult,
+    status: finalStatus,
     sourceVendor,
     targetChassis,
     competitorSpec: transformResult.competitorSpec,
     auditReport: transformResult.auditReport,
+    parityGaps,
+    evaluatedSolution,
     strategyMatrix: transformResult.strategyMatrix,
     recommendedBom: transformResult.recommendedBom
   };
@@ -1277,9 +1353,37 @@ async function _handleLeastDeltaSynthesis(queryText, context) {
 }
 
 async function _handleAdversarialValidation(queryText, context) {
-  const { generateAdversarialBOQ } = require('./adversarial_agent.js');
+  const { generateAdversarialBOQ, scrutinizeCandidateBOM } = require('./adversarial_agent.js');
   const chassisInfo = getChassisCatalog(queryText, context);
   const targetChassis = context.chassisName || chassisInfo.chassisKey;
+
+  const hasSuppliedCandidate = Boolean(context.items || context.filePath);
+  if (hasSuppliedCandidate) {
+    const candidateItems = readRoutedItems(context);
+    const scrutinyResult = scrutinizeCandidateBOM(candidateItems, {
+      chassis: targetChassis,
+      targetDir: chassisInfo.catalogDir || '',
+      catalogData: chassisInfo.catalogData
+    });
+    return {
+      intent: 'ADVERSARIAL_VALIDATION',
+      skillTarget: 'adversarial-validation-skill',
+      mode: 'CANDIDATE_SCRUTINY',
+      isSyntheticTest: false,
+      chassis: targetChassis,
+      generatedBoq: candidateItems,
+      candidateBoq: candidateItems,
+      evaluation: {
+        isCaught: scrutinyResult.totalIssuesCaught > 0,
+        totalIssuesCaught: scrutinyResult.totalIssuesCaught,
+        errors: scrutinyResult.errors,
+        missingDependencies: scrutinyResult.missingDependencies.map(m => m.reason || m.sku || m.key)
+      },
+      scrutiny: scrutinyResult,
+      status: scrutinyResult.status,
+      message: scrutinyResult.message
+    };
+  }
 
   const fakeBoq = await generateAdversarialBOQ(targetChassis);
   const evalResult = evaluateBOQMultiAspect(fakeBoq, {
@@ -1295,6 +1399,10 @@ async function _handleAdversarialValidation(queryText, context) {
   return {
     intent: 'ADVERSARIAL_VALIDATION',
     skillTarget: 'adversarial-validation-skill',
+    mode: 'SYNTHETIC_CHAOS',
+    isSyntheticTest: true,
+    customerDisposition: 'NOT_FOR_CUSTOMER_DELIVERY',
+    syntheticPassNeverCertifiesCandidate: true,
     chassis: targetChassis,
     generatedBoq: fakeBoq,
     evaluation: {
@@ -1303,9 +1411,10 @@ async function _handleAdversarialValidation(queryText, context) {
       errors,
       missingDependencies: missing.map(m => m.reason || m.sku || m.key)
     },
+    status: totalIssuesCaught > 0 ? 'SYNTHETIC_STRESS_PASSED' : 'SYNTHETIC_STRESS_ANOMALY_MISSED',
     message: totalIssuesCaught > 0
-      ? `Adversarial stress-testing successful: physical constraint checkers caught ${totalIssuesCaught} anomaly(ies).`
-      : 'Adversarial advisory: Evaluator did not flag violations on the generated test configuration.'
+      ? `Adversarial stress-testing successful: physical constraint checkers caught ${totalIssuesCaught} anomaly(ies) in synthetic test (never certifies customer deliverables).`
+      : 'Adversarial advisory: Evaluator did not flag violations on the generated synthetic test configuration.'
   };
 }
 

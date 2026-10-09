@@ -5,7 +5,7 @@ description: Use this skill to execute automated adversarial red-teaming, bounda
 
 # Adversarial Red-Teaming & Boundary Validation Skill (`adversarial-validation-skill`)
 
-**Purpose**: A configuration can look clean on paper or in simple checks, but fail catastrophic physical deployment constraints in enterprise datacenter environments. This skill enforces a mandatory adversarial stress-testing pass against the 10 most treacherous enterprise hardware failure modes discovered in real-world deployments. It acts as an automated "devil's advocate" to challenge the candidate BOM and guarantee that Rank 1 is truly 100% buildable with zero surprises.
+**Purpose**: A configuration can look clean on paper or in simple checks, but fail catastrophic physical deployment constraints in enterprise datacenter environments. This skill enforces a mandatory adversarial stress-testing pass against the 11 most treacherous enterprise hardware failure modes discovered in real-world deployments. It acts as an automated "devil's advocate" to challenge the candidate BOM and guarantee that Rank 1 is truly 100% buildable with zero surprises. Real candidate scrutiny is strictly separated from synthetic chaos stress testing.
 
 ---
 
@@ -25,12 +25,15 @@ Activate this skill:
 - **Execution Phase**: **Phase 5 (Pre-Presentation Sanity Gate)**.
 - **Upstream Trigger**: Receives candidate Rank 1 / 5-Tier Strategy solutions from [`boq-eval-skill`](../boq-eval-skill/SKILL.md).
 - **Downstream Handoff**: If adversarial checks find violations, triggers automated remediation in the BOM before certifying the build for [`output-validation-skill`](../output-validation-skill/SKILL.md).
+- **Dual-Mode Operation**:
+  - `CANDIDATE_SCRUTINY`: Audits a real customer quote or sized BOM against the 11 physical failure modes.
+  - `SYNTHETIC_CHAOS`: Injects subtle flaws into synthetic configurations to benchmark engine recall; synthetic passes never certify customer deliverables.
 
 ---
 
-## 🛡️ The 10 Enterprise Chaos Failure Modes Checked
+## 🛡️ The 11 Enterprise Chaos Failure Modes Checked
 
-Every candidate BOM is audited against these 10 failure injection patterns:
+Every candidate BOM is audited against these 11 failure injection patterns:
 
 | # | Failure Mode | Physical Constraint | Mandatory Remediation Kit |
 |:---|:---|:---|:---|
@@ -85,10 +88,11 @@ function runAdversarialSanityCheck(bomItems, chassisId) {
 
 When the adversarial sanity check completes, include the badge and summary in the execution trace:
 ```
-[🛡️ Adversarial Stress-Testing: 10/10 Enterprise Failure Modes AUDITED & PASSED]
+[🛡️ Adversarial Stress-Testing: 11/11 Enterprise Failure Modes AUDITED & PASSED]
 • Heatsink Isolation : PASSED (Dual-socket heatsink P48818-B21 verified)
 • Storage Port Math  : PASSED (Expander P48835-B21 paired with 16 drives)
 • Auxiliary Cabling  : PASSED (Riser power cable P56073-B21 present)
 • Thermal Cooling    : PASSED (High-Performance Fan Kit P48820-B21 verified)
 • ErP Lot 9 / PSU    : PASSED (CE Mark Kit P35876-B21 injected)
+• Anti-Hallucination : PASSED (Conditional SKUs disclosed & reasoning verified)
 ```

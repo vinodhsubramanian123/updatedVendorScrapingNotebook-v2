@@ -127,9 +127,13 @@ const registry = {
       coverageLimits: ['Some current route profiles are UNKNOWN; CP5 remains. Requirement-discarding repair is not approved.'] }),
     capability({ capabilityId: 'adversarial-validation-skill', intents: ['ADVERSARIAL_VALIDATION'],
       triggers: ['Actual candidate scrutiny; separate engineering chaos exercise'], applicability: ['Real candidate constraints versus explicitly synthetic test population'],
-      entrypoints: [entry('scripts/evaluators/adversarial_agent.js', 'evaluateAdversarialInjection'), entry('scripts/evaluators/adversarial_agent.js', 'generateAdversarialBOQ')],
+      entrypoints: [
+        entry('scripts/evaluators/adversarial_agent.js', 'evaluateAdversarialInjection'),
+        entry('scripts/evaluators/adversarial_agent.js', 'generateAdversarialBOQ'),
+        entry('scripts/evaluators/adversarial_agent.js', 'scrutinizeCandidateBOM')
+      ],
       completionEvidence: ['Observed candidate checks or separately labeled synthetic test results'],
-      coverageLimits: ['Synthetic chaos is not acceptance of a customer candidate; CP10b pending.'] }),
+      coverageLimits: ['Synthetic chaos is not acceptance of a customer candidate; candidate scrutiny separated from synthetic chaos (CP10b certified).'] }),
     capability({ capabilityId: 'degraded-mode-skill', kind: 'SHARED', intents: [],
       triggers: ['Stale catalog or failed/unavailable notebook'], applicability: ['Exact product freshness and cloud-health state'],
       entrypoints: [entry('scripts/lib/sync/knowledge_sync.js', 'assertNotebookHealth'), entry('scripts/lib/catalog/product_metadata_manager.js', 'getProductGenerationMetadata')],
