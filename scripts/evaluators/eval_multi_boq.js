@@ -41,6 +41,7 @@ async function evaluateMultiBoq(inputFile, options = {}) {
   }
   if (options.chassisDir != null && typeof options.chassisDir !== 'string') throw new TypeError('chassisDir must be a string.');
   validateChildLimits(options);
+  require('../lib/system/execution_budget.js').assertCallerActive(options, Date.now());
   if (options.signal !== undefined) {
     if (!options.signal || typeof options.signal !== 'object' || typeof options.signal.aborted !== 'boolean' || typeof options.signal.addEventListener !== 'function') {
       throw new TypeError('signal must be an AbortSignal.');
@@ -51,7 +52,7 @@ async function evaluateMultiBoq(inputFile, options = {}) {
 }
 
 function validateChildLimits(options) {
-  for (const key of ['timeoutMs', 'maxOutputBytes', 'graceMs', 'confirmationMs']) {
+  for (const key of ['timeoutMs', 'childTimeoutMs', 'queryTimeoutMs', 'deadlineAt', 'maxOutputBytes', 'graceMs', 'confirmationMs']) {
     if (options[key] !== undefined && (!Number.isSafeInteger(options[key]) || options[key] <= 0)) throw new TypeError(`${key} must be a positive safe integer.`);
   }
 }
@@ -65,6 +66,9 @@ async function evaluateTargets(inputFile, options) {
     chassisDir: chassisFlag,
     offline: OFFLINE_MODE,
     timeoutMs: options.timeoutMs,
+    childTimeoutMs: options.childTimeoutMs,
+    queryTimeoutMs: options.queryTimeoutMs,
+    deadlineAt: options.deadlineAt,
     maxOutputBytes: options.maxOutputBytes,
     signal: options.signal
   };

@@ -4,7 +4,7 @@
  *
  * Tracks durable, file-backed query jobs, executes background RAG queries,
  * maintains execution telemetry, supports 10-15 minute deadlines, and ensures
- * queries survive server restarts and reconnections.
+ * records survive restarts; ambiguous remote queries require explicit review.
  */
 
 const { sanitizeNotebookQuery, classifyQueryScenario } = require('./query_sanitizer.js');
@@ -21,6 +21,12 @@ const {
 // In-memory mirror for low-latency lookups and backward-compatibility
 const activeQueryJobs = new Map();
 const activeAbortControllers = new Map();
+const { logicalQueryOptions } = require('../system/execution_budget.js');
+const { getNotebookQueryRecovery } = require('./query_attempt_record.js');
+function jobFailureDiagnostic(job, error, signal) {
+  const recovery = getNotebookQueryRecovery(error, signal) || job.queryAttempt;
+  return { ...diagnoseNotebookFailure(job.notebookId, error), ...(recovery ? { queryRecovery: recovery } : {}) };
+}
 
 function isTerminalStatus(status) {
   return ['COMPLETED', 'CLOUD_VERIFIED', 'LOCAL_FALLBACK', 'FAILED', 'CANCELLED'].includes(status);
@@ -42,7 +48,9 @@ function launchPersistedJob(job, executeQueryFn, options = {}) {
   const executionOptions = {
     ...options,
     context: job.context || { chassis: job.chassis },
-    timeout: options.timeout || job.timeoutMs,
+    queryTimeoutMs: job.timeoutMs,
+    deadlineAt: job.deadlineAt,
+    onAttempt: attempt => { job.queryAttempt = attempt; updateJob(job.jobId, { queryAttempt: attempt }); },
     signal: controller.signal
   };
 
@@ -79,6 +87,7 @@ function launchPersistedJob(job, executeQueryFn, options = {}) {
           answer: res?.answer || '',
           citations: res?.citations || [],
           source: res?.source,
+          ...(res?.queryAttempt ? { queryAttempt: res.queryAttempt } : {}),
           isCloudGrounded,
           groundingVerification: res?.groundingVerification || (isCloudGrounded ? 'VERIFIED_GROUNDED' : 'UNVERIFIED'),
           groundingTier: isCloudGrounded ? 'TIER_1_LIVE_CLOUD_GROUNDED' : (res?.groundingTier || 'TIER_2_UNCITED_ADVISORY')
@@ -140,7 +149,7 @@ function launchPersistedJob(job, executeQueryFn, options = {}) {
           endTime,
           durationMs: endTime - job.startTime,
           error: err?.message || 'NotebookLM query failed',
-          diagnostic: diagnoseNotebookFailure(job.notebookId, err)
+          diagnostic: jobFailureDiagnostic(job, err, controller.signal)
         };
         Object.assign(job, updates);
         updateJob(job.jobId, updates);
@@ -162,6 +171,7 @@ function launchPersistedJob(job, executeQueryFn, options = {}) {
  * @returns {object} { jobId, status, query, pollIntervalMs, cached, joinedInFlight }
  */
 function startAsyncNotebookQueryJob(notebookId, rawQuery, options = {}, executeQueryFn) {
+  require('../system/execution_budget.js').assertCallerActive(options, Date.now());
   const sanitizedQuery = sanitizeNotebookQuery(rawQuery, options.context);
   const chassis = (options.context && options.context.chassis) ? options.context.chassis : 'UNSPECIFIED';
   const idempotencyKey = computeIdempotencyKey(notebookId, chassis, sanitizedQuery);
@@ -179,6 +189,11 @@ function startAsyncNotebookQueryJob(notebookId, rawQuery, options = {}, executeQ
         pollIntervalMs: 1000,
         cached: true
       };
+    } else if (isTerminalStatus(existingJob.status) && (existingJob.queryAttempt?.remoteState === 'REMOTE_STATE_UNKNOWN' || existingJob.diagnostic?.remoteState === 'REMOTE_STATE_UNKNOWN' || existingJob.diagnostic?.queryRecovery?.remoteState === 'REMOTE_STATE_UNKNOWN')) {
+      activeQueryJobs.set(existingJob.jobId, existingJob);
+      return { jobId: existingJob.jobId, status: existingJob.status, query: existingJob.query, chassis: existingJob.chassis,
+        recoveryRequired: true, verification: 'NOT_VERIFIED', remoteState: 'REMOTE_STATE_UNKNOWN',
+        diagnostic: existingJob.diagnostic || { queryRecovery: existingJob.queryAttempt } };
     } else if (existingJob.status === 'PROCESSING') {
       activeQueryJobs.set(existingJob.jobId, existingJob);
       return {
@@ -193,7 +208,8 @@ function startAsyncNotebookQueryJob(notebookId, rawQuery, options = {}, executeQ
   }
 
   const jobId = `JOB_NLM_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
-  const timeoutMs = options.timeout || parseInt(process.env.RAG_TIMEOUT_MS || '600000', 10); // 10 minutes default
+  const budget = logicalQueryOptions(options, Date.now(), parseInt(process.env.RAG_TIMEOUT_MS || '600000', 10));
+  const timeoutMs = budget.queryTimeoutMs;
 
   const job = {
     jobId,
@@ -205,6 +221,7 @@ function startAsyncNotebookQueryJob(notebookId, rawQuery, options = {}, executeQ
     startTime: Date.now(),
     pollIntervalMs: 1500,
     timeoutMs,
+    deadlineAt: budget.deadlineAt,
     answer: null,
     citations: [],
     error: null,
@@ -247,14 +264,14 @@ function getAsyncNotebookQueryJobStatus(jobId) {
   const currentDuration = job.endTime ? job.durationMs : (Date.now() - job.startTime);
 
   // Check for timeout if still processing
-  if (job.status === 'PROCESSING' && job.timeoutMs && currentDuration > job.timeoutMs) {
+  if (job.status === 'PROCESSING' && (job.deadlineAt ? Date.now() >= job.deadlineAt : job.timeoutMs && currentDuration > job.timeoutMs)) {
     const timeoutErr = new Error(`Query deadline exceeded after ${Math.round(currentDuration / 1000)}s (configured timeout: ${Math.round(job.timeoutMs / 1000)}s)`);
     const updates = {
       status: 'FAILED',
       endTime: Date.now(),
       durationMs: currentDuration,
       error: timeoutErr.message,
-      diagnostic: diagnoseNotebookFailure(job.notebookId, timeoutErr)
+      diagnostic: jobFailureDiagnostic(job, timeoutErr, activeAbortControllers.get(jobId)?.signal)
     };
     Object.assign(job, updates);
     updateJob(jobId, updates);
@@ -322,36 +339,26 @@ function cancelNotebookQueryJob(jobId, reason = 'CANCELLED_BY_CLIENT') {
  * @param {Function} executeQueryFn
  * @returns {Array<object>} Resumed / failed job records
  */
-function resumePendingJobs(executeQueryFn) {
-  const active = listActiveJobs();
-  const resumed = [];
+function resumePendingJobs(_executeQueryFn) {
+  const recovered = [];
   const now = Date.now();
-
-  for (const job of active) {
+  for (const job of listActiveJobs()) {
+    if (isTerminalStatus(job.status) || activeAbortControllers.has(job.jobId)) continue;
     const elapsed = now - (job.startTime || now);
-    if (elapsed > (job.timeoutMs || 600000)) {
-      const updates = {
-        status: 'FAILED',
-        endTime: now,
-        durationMs: elapsed,
-        error: 'Server restart recovery: query deadline expired while service was offline.'
-      };
-      updateJob(job.jobId, updates);
-      resumed.push({ jobId: job.jobId, action: 'EXPIRED' });
-    } else if (typeof executeQueryFn === 'function') {
-      job.status = 'PROCESSING';
-      job.recoveredAt = new Date(now).toISOString();
-      job.recoveryCount = (job.recoveryCount || 0) + 1;
-      updateJob(job.jobId, job);
-      activeQueryJobs.set(job.jobId, job);
-      launchPersistedJob(job, executeQueryFn, {
-        context: job.context || { chassis: job.chassis },
-        timeout: (job.timeoutMs || 600000) - elapsed
-      });
-      resumed.push({ jobId: job.jobId, action: 'RESUMED' });
-    }
+    const expired = job.deadlineAt ? now >= job.deadlineAt : elapsed > (job.timeoutMs || 600000);
+    const diagnostic = { verification: 'NOT_VERIFIED', remoteState: 'REMOTE_STATE_UNKNOWN', recoveryRequired: true,
+      queryRecovery: job.queryAttempt || { attemptId: null, attemptPath: null, conversationId: null,
+        verification: 'NOT_VERIFIED', remoteState: 'REMOTE_STATE_UNKNOWN', recoveryRequired: true,
+        recovery: 'No recorded submission proof or conversation ID. Do not automatically resubmit or select the latest conversation.' } };
+    const updates = { status: 'FAILED', endTime: now, durationMs: elapsed,
+      error: expired ? 'Server restart recovery: caller deadline expired; remote completion remains unknown.' :
+        'Server restart recovery requires remote-state review; automatic query resubmission is disabled.', diagnostic };
+    Object.assign(job, updates);
+    updateJob(job.jobId, updates);
+    activeQueryJobs.set(job.jobId, job);
+    recovered.push({ jobId: job.jobId, action: expired ? 'EXPIRED_REMOTE_STATE_REVIEW_REQUIRED' : 'REMOTE_STATE_REVIEW_REQUIRED' });
   }
-  return resumed;
+  return recovered;
 }
 
 module.exports = {

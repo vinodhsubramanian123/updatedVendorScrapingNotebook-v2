@@ -1,0 +1,44 @@
+{
+  "status": "VERIFIED_INDEPENDENT_CP8a",
+  "reviewer": "/root/cp8a_closure_review",
+  "head": "c7c4dd80ca87f462da7f4b2110954f1aaebae142",
+  "scope": "CP8a importable multi facade; retained CLI flags/exit/result fields; no import execution/process.exit. CP8b continuation/pricing excluded.",
+  "current": {
+    "file": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\scripts\\evaluators\\eval_multi_boq.js",
+    "sha256": "0570a12a94a32c1a88c5f57bce461f27073198dfab350a49e917bfbe6a80f7c3",
+    "checks": 10,
+    "passed": 10
+  },
+  "imminentCandidate": {
+    "file": "C:\\Users\\latha\\AppData\\Local\\Temp\\codex-long-notebook-budget-author-20261008\\scripts\\evaluators\\eval_multi_boq.js",
+    "sha256": "b34d88c49cb74d5511289206bb9dfcf9a10ec23291b0b43709026f30ef06b81d",
+    "checks": 10,
+    "passed": 10,
+    "scope": "CP8a facade assertions only; execution budget internals mocked and remain parent review responsibility"
+  },
+  "test": {
+    "file": "C:\\Users\\latha\\AppData\\Local\\Temp\\codex-cp8a-closure-review-20261009\\review.cjs",
+    "sha256": "99d912b3d9cc41d1877b670eefa627fe934f11dbec93cf66d791b9d989c976d7",
+    "command": "node --test --test-timeout=5000 C:/Users/latha/AppData/Local/Temp/codex-cp8a-closure-review-20261009/review.cjs; CP8_REVIEW_TARGET selects exact candidate"
+  },
+  "logs": [
+    {
+      "file": "C:\\Users\\latha\\AppData\\Local\\Temp\\codex-cp8a-closure-review-20261009\\current-final2.tap",
+      "sha256": "27098ef697a9dbdacb9d34e72f548c3c0794276913304af0f2d70b86ff9443be"
+    },
+    {
+      "file": "C:\\Users\\latha\\AppData\\Local\\Temp\\codex-cp8a-closure-review-20261009\\candidate-final.tap",
+      "sha256": "8e1d2b3b002dcf34e70f716326dd637fa7d3ecd813ab2017d662dfa9eca95178"
+    }
+  ],
+  "reusedIntegration": {
+    "file": "outputs/history/skill_workflow_excellence/2026-10-08/latest-composition-integration/integration-receipt.json",
+    "sha256": "7565fa242e89b3f76b89a011b6fbd99e6dc697024ec28f247bb53600f06dfa90"
+  },
+  "limits": [
+    "No main edits; no customer/cloud/portal run; no full suite",
+    "Current dependency files remain bound to integration receipt except explicitly later-changed router/dashboard/notebook files; CP8a facade/child/group/facility source hashes unchanged",
+    "Old78 tests inspected as historical characterization only; not claimed rerun on current grouped source",
+    "Initial candidate check failed Windows slash normalization in reviewer spy; fixed target normalization only; failure candidate.tap retained"
+  ]
+}

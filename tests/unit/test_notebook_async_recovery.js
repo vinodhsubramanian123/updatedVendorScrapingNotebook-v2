@@ -42,7 +42,9 @@ test('findMatchingChatTurn correctly identifies matching turns in chat session',
       citations: [{ title: 'QuickSpecs', uri: 'https://hpe.com' }]
     }
   ];
-  const matched = findMatchingChatTurn(turns, 'what are the processor options for dl380a');
+  assert.equal(findMatchingChatTurn(turns, 'what are the processor options for dl380a'), null);
+  assert.equal(findMatchingChatTurn(turns, ''), null);
+  const matched = findMatchingChatTurn(turns, 'What are the processor options for DL380a Gen12?');
   assert.ok(matched);
   assert.match(matched.responseText, /Intel Xeon Scalable/);
   assert.equal(matched.citations.length, 1);

@@ -1,0 +1,19 @@
+CP8A_SOURCE {"target":"C:\\Users\\latha\\AppData\\Local\\Temp\\codex-long-notebook-budget-author-20261008\\scripts\\evaluators\\eval_multi_boq.js","sha256":"b34d88c49cb74d5511289206bb9dfcf9a10ec23291b0b43709026f30ef06b81d"}
+✔ current import lazy and guard does not evaluate/exit/output (3.668ms)
+✔ real Node import has no dependency/load/spawn/filesystem/output side effects (91.889ms)
+✔ silent importable text result fields retained (1.4552ms)
+✔ CLI json/offline/chassis flags and array contract retained (2.7586ms)
+✔ workbook CLI retains json result array and owned child selection (1.4655ms)
+✔ legacy dependency-before-input error precedence and exit1 (1.5107ms)
+✔ missing input usage/error exit1 retained (1.566ms)
+✔ fatal json CLI envelope/error exit1 retained (1.6438ms)
+✔ main CLI executes guard and returns actual missing-input exit1 (217.4136ms)
+✔ source hash remains bound through checks (1.7037ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 455.4449

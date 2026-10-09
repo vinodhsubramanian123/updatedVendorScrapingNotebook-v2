@@ -1,0 +1,120 @@
+{
+  "state": "INTEGRATED_INDEPENDENT_SCOPE_VERIFICATION",
+  "author": "/root/notebook_budget_rebase",
+  "reviewer": "Codex root",
+  "preIntegrationHead": "c7c4dd8",
+  "files": [
+    {
+      "file": "scripts/evaluators/eval_boq.js",
+      "sha256": "8e81cd8dfeee78d04ae8eff01baed6cc158d87a636e3dbf9591aac2fe73d2535"
+    },
+    {
+      "file": "scripts/evaluators/eval_multi_boq.js",
+      "sha256": "b34d88c49cb74d5511289206bb9dfcf9a10ec23291b0b43709026f30ef06b81d"
+    },
+    {
+      "file": "scripts/lib/boq/multi_child_evaluation.js",
+      "sha256": "3597aaed332ac29ed2fce39d2f07f6e4c54b17578aab0dccfd3a17ede7cf8dff"
+    },
+    {
+      "file": "scripts/lib/notebook/notebook_query_utils.js",
+      "sha256": "82ba7b12a13e0a9b4b23a0012be8002fe50d2cb3532d776a9697635fce454e75"
+    },
+    {
+      "file": "scripts/lib/notebook/job_manager.js",
+      "sha256": "4510871bd1e9d83e326068acb9a6ce5e773d9752f3f76f594ae1450fc1dddd23"
+    },
+    {
+      "file": "scripts/lib/notebook/query_attempt_record.js",
+      "sha256": "319e3d9f17e3c5bd14ef2b1507eb87d120366a313090de2e5b32e89656627e68"
+    },
+    {
+      "file": "scripts/lib/system/execution_budget.js",
+      "sha256": "5d4ec173db7d0c362056f8e1c997597e67e98c618ba43d976834492b9cfdd896"
+    },
+    {
+      "file": "scripts/lib/sync/nlm_solution_source_validator.js",
+      "sha256": "a60264c376a2856313730a7ec75cd15e0ccc0d8caf0d8e17cdba11af50123f9e"
+    },
+    {
+      "file": "tests/unit/test_long_notebook_budget.js",
+      "sha256": "edea30ae10f42743359380208b21350b516b446259706e3c758bfc07f2661f83"
+    },
+    {
+      "file": "tests/unit/test_notebook_async_recovery.js",
+      "sha256": "20f5a6fa4aa8481f3bd288a6d892bed24f5e6cb61c060d99a4400b9f3e3e7d8c"
+    }
+  ],
+  "checks": [
+    {
+      "command": "node --test tests/unit/test_long_notebook_budget.js tests/unit/test_notebook_async_recovery.js",
+      "environment": "isolated candidate",
+      "passed": 17,
+      "failed": 0,
+      "toolChunk": "bfdc64"
+    },
+    {
+      "command": "node --test tests/unit/test_long_notebook_budget.js tests/unit/test_notebook_async_recovery.js",
+      "environment": "main with NODE_ENV=test OFFLINE_MODE=1",
+      "passed": 17,
+      "failed": 0,
+      "toolChunk": "4d4410"
+    },
+    {
+      "command": "node --test tests/unit/test_notebook_query_utils.js",
+      "environment": "isolated",
+      "assertions": 7,
+      "nodeWrapperTests": 1,
+      "passed": 1,
+      "liveQuerySkipped": true,
+      "toolChunk": "a1f2bd"
+    },
+    {
+      "command": "node --test tests/unit/test_notebook_job_and_diagnostics.js",
+      "environment": "isolated",
+      "passed": 8,
+      "failed": 0,
+      "toolChunk": "115dff"
+    },
+    {
+      "command": "node --test tests/unit/test_nlm_solution_source_validator.js",
+      "environment": "isolated mocked",
+      "passed": 7,
+      "failed": 0,
+      "toolChunk": "cdd88a"
+    },
+    {
+      "command": "oxlint eight production sources",
+      "exitCode": 0,
+      "toolChunk": "b9c077"
+    },
+    {
+      "command": "npm.cmd run lint:complexity",
+      "maxCC": 131,
+      "threshold": 135,
+      "exitCode": 0
+    },
+    {
+      "command": "node scripts/maintenance/analyze_circular_deps.js",
+      "scanned": 608,
+      "cycles": 0,
+      "exitCode": 0
+    }
+  ],
+  "intendedDifferences": [
+    "No automatic retry on ambiguous query failure or server restart",
+    "Unowned prefix/latest-chat transcript recovery disabled",
+    "Default logical query600000ms; online child1800000ms; offline child120000ms",
+    "Attempt persistence and honest recovery diagnostics"
+  ],
+  "protectedDelta": "git diff --name-only outputs scripts/config empty; new audit archives are declared",
+  "limits": [
+    "No main writes or commits",
+    "No live cloud calls or qualification",
+    "No automatic remote polling implemented; local job IDs are not remote conversation IDs",
+    "Recovered persisted jobs fail closed to NOT_VERIFIED/REMOTE_STATE_UNKNOWN; explicit separate recovery remains required",
+    "Attachment/deletion operations retain latest45s/20s CLI budgets; ambiguous attachment/source ownership recovery is outside scope",
+    "Whole-manifest prompt construction retained; no per-SKU splitting"
+  ],
+  "scopeClosure": "CP8a independently closed separately; CP11 remains IN_PROGRESS including actual remote recovery/ingress qualification"
+}

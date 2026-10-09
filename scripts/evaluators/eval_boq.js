@@ -81,6 +81,8 @@ Options:
   --output <output_report.md>  Output report path
   --json                       Machine-parseable JSON output mode
   --defer-rag                  Return local result and let the dashboard own the cloud job
+  --query-timeout-ms <ms>      Total budget per logical Notebook query (default600000)
+  --deadline-at <epoch-ms>     Shared absolute caller deadline
   --budget <usd>               Target CapEx budget in USD
   --support-default            Apply owner standard 3-year Basic using an exact live product-qualified receipt
   --simulate-portal-error ".." Simulate a portal rejection error
@@ -97,7 +99,7 @@ Examples:
   const fileArgIdx = args.indexOf('--file');
   let inputFile = (fileArgIdx !== -1 && args[fileArgIdx + 1]) ? args[fileArgIdx + 1] : null;
   if (!inputFile) {
-    const flagsWithVal = new Set(['--chassis', '--notebook-id', '--output', '--sheet', '--simulate-portal-error', '--output-dir', '--budget', '--file']);
+    const flagsWithVal = new Set(['--chassis', '--notebook-id', '--output', '--sheet', '--simulate-portal-error', '--output-dir', '--budget', '--file', '--query-timeout-ms', '--deadline-at']);
     for (let i = 0; i < args.length; i++) {
       const arg = args[i];
       if (flagsWithVal.has(arg)) {
@@ -147,7 +149,13 @@ Examples:
   const SHEET_VALIDATION = args.includes('--sheet-validation') || args.includes('--source-validation');
   const UPLOAD_DRIVE = args.includes('--upload-drive') || process.env.AUTO_UPLOAD_DRIVE === 'true';
 
+  const { numericCliOption } = require('../lib/system/execution_budget.js');
+  const queryTimeoutMs = numericCliOption(args, '--query-timeout-ms');
+  const deadlineAt = numericCliOption(args, '--deadline-at');
+
   return {
+    ...(queryTimeoutMs === undefined ? {} : { queryTimeoutMs }),
+    ...(deadlineAt === undefined ? {} : { deadlineAt }),
     inputFile,
     JSON_MODE,
     OFFLINE_MODE,
@@ -565,9 +573,15 @@ async function executeGroundedRagValidation(ctx) {
       skus: items.map(i => i.sku).filter(Boolean),
       items: items
     },
+    onAttempt: attempt => { evalResults.notebookQueryRecovery = attempt; ctx.onQueryAttempt?.(attempt); },
     offlineMode: OFFLINE_MODE,
-    timeout: parseInt(process.env.RAG_TIMEOUT_MS || '600000', 10)
+    timeout: parseInt(process.env.RAG_TIMEOUT_MS || '600000', 10),
+    queryTimeoutMs: ctx.queryTimeoutMs,
+    deadlineAt: ctx.deadlineAt,
+    signal: ctx.signal
   });
+  delete evalResults.notebookQueryRecovery;
+  if (ragResult.queryAttempt) evalResults.notebookQueryAttempt = ragResult.queryAttempt;
   const stage3RAGMs = Math.max(Date.now() - tRagStart, 1);
   const ragDurationFormatted = ragResult.timeTaken || `${Math.floor(stage3RAGMs / 60000)}m ${Math.floor((stage3RAGMs % 60000) / 1000)}s (${stage3RAGMs}ms)`;
 
@@ -796,7 +810,7 @@ async function executeEphemeralSourceValidation(options, ingestCtx, evalResults)
       targetDir: ingestCtx.chassisDir,
       isMock: options.OFFLINE_MODE,
       signal: options.signal,
-      timeoutMs: options.timeoutMs || options.timeout,
+      queryTimeoutMs: options.queryTimeoutMs,
       deadlineAt: options.deadlineAt
     });
     if (result) {
@@ -805,11 +819,14 @@ async function executeEphemeralSourceValidation(options, ingestCtx, evalResults)
         verdict: result.doubleCheckVerdict,
         sourceId: result.sourceId,
         citationsCount: (result.citations || []).length,
-        extractedDeltasCount: (result.extractedDeltas || []).length
+        extractedDeltasCount: (result.extractedDeltas || []).length,
+        ...(result.queryRecovery ? { queryRecovery: result.queryRecovery } : {})
       };
     }
     return result;
   } catch (ephErr) {
+    const recovery = require('../lib/notebook/query_attempt_record.js').getNotebookQueryRecovery(ephErr, options.signal);
+    if (recovery) { evalResults.notebookQueryRecovery = recovery; throw ephErr; }
     if ((options.signal?.aborted && Object.is(ephErr, options.signal.reason)) || ephErr?.code === 'NOTEBOOK_QUERY_DEADLINE_EXCEEDED') throw ephErr;
     const _logger = require('../lib/system/pipeline_logger.js');
     _logger.warn('EVAL_BOQ', `Ephemeral source validation note: ${ephErr.message}`);
@@ -872,6 +889,7 @@ function executeContinuousLearningReflection(evidenceLedger, ingestCtx, evalResu
 // Main Orchestrator Pipeline
 // ============================================================
 function runEvaluationPipeline(options) {
+  require('../lib/system/execution_budget.js').assertCallerActive(options, Date.now());
   return observeActualInvocation('runEvaluationPipeline', __filename, () => runWithTrace(options.traceId, () => {
     associateCanonicalTrace();
     return runEvaluationPipelineWithinTrace(options);
@@ -1257,7 +1275,14 @@ async function _handleBoqRagGroundingPhase(ctx, options, evidenceLedger) {
     OFFLINE_MODE: options.OFFLINE_MODE || (!options.DEFER_RAG && !sourceReady),
     JSON_MODE: options.JSON_MODE,
     SYNC_RAG: options.SYNC_RAG,
-    DEFER_RAG: options.DEFER_RAG
+    DEFER_RAG: options.DEFER_RAG,
+    queryTimeoutMs: options.queryTimeoutMs,
+    deadlineAt: options.deadlineAt,
+    signal: options.signal,
+    onQueryAttempt: attempt => {
+      const phase = evidenceLedger.phases.phase_7;
+      phase.outputSummary = { ...phase.outputSummary, queryAttempt: attempt };
+    }
   });
   ctx.ragResult = ragResult;
   ctx.ragAnswer = ragAnswer;

@@ -1,0 +1,19 @@
+CP8A_SOURCE {"target":"C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\scripts\\evaluators\\eval_multi_boq.js","sha256":"0570a12a94a32c1a88c5f57bce461f27073198dfab350a49e917bfbe6a80f7c3"}
+✔ current import lazy and guard does not evaluate/exit/output (2.6153ms)
+✔ real Node import has no dependency/load/spawn/filesystem/output side effects (94.7401ms)
+✔ silent importable text result fields retained (1.789ms)
+✔ CLI json/offline/chassis flags and array contract retained (2.6249ms)
+✔ workbook CLI retains json result array and owned child selection (1.6441ms)
+✔ legacy dependency-before-input error precedence and exit1 (1.2706ms)
+✔ missing input usage/error exit1 retained (1.142ms)
+✔ fatal json CLI envelope/error exit1 retained (1.1984ms)
+✔ main CLI executes guard and returns actual missing-input exit1 (225.2744ms)
+✔ source hash remains bound through checks (2.1311ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 470.9009

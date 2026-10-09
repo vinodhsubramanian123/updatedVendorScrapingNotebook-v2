@@ -1,0 +1,71 @@
+CP8A_SOURCE {"target":"C:/Users/latha/AppData/Local/Temp/codex-long-notebook-budget-author-20261008/scripts/evaluators/eval_multi_boq.js","sha256":"b34d88c49cb74d5511289206bb9dfcf9a10ec23291b0b43709026f30ef06b81d"}
+✔ current import lazy and guard does not evaluate/exit/output (14.4293ms)
+✖ real Node import has no dependency/load/spawn/filesystem/output side effects (276.1289ms)
+✔ silent importable text result fields retained (3.4527ms)
+✔ CLI json/offline/chassis flags and array contract retained (5.2306ms)
+✔ workbook CLI retains json result array and owned child selection (2.4558ms)
+✔ legacy dependency-before-input error precedence and exit1 (2.396ms)
+✔ missing input usage/error exit1 retained (5.416ms)
+✔ fatal json CLI envelope/error exit1 retained (3.593ms)
+✔ main CLI executes guard and returns actual missing-input exit1 (730.6639ms)
+✔ source hash remains bound through checks (3.8984ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 9
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1650.4913
+
+✖ failing tests:
+
+test at ..\..\..\..\..\AppData\Local\Temp\codex-cp8a-closure-review-20261009\review.cjs:7:1
+✖ real Node import has no dependency/load/spawn/filesystem/output side effects (276.1289ms)
+  AssertionError [ERR_ASSERTION]: node:assert:152
+    throw new AssertionError(obj);
+    ^
+  
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'C:\\Users\\latha\\AppData\\Local\\Temp\\codex-long-notebook-budget-author-20261008\\scripts\\evaluators\\eval_multi_boq.js'
+  - 'C:/Users/latha/AppData/Local/Temp/codex-long-notebook-budget-author-20261008/scripts/evaluators/eval_multi_boq.js'
+  
+      at fs.readFileSync ([eval]:1:207)
+      at defaultLoadImpl (node:internal/modules/cjs/loader:1196:17)
+      at loadSource (node:internal/modules/cjs/loader:1898:20)
+      at Object..js (node:internal/modules/cjs/loader:1996:44)
+      at Module.load (node:internal/modules/cjs/loader:1594:32)
+      at Module.<anonymous> (node:internal/modules/cjs/loader:1396:12)
+      at M._load ([eval]:1:555)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+      at Module.require (node:internal/modules/cjs/loader:1617:12)
+      at require (node:internal/modules/helpers:153:16) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'C:\\Users\\latha\\AppData\\Local\\Temp\\codex-long-notebook-budget-author-20261008\\scripts\\evaluators\\eval_multi_boq.js',
+    expected: 'C:/Users/latha/AppData/Local/Temp/codex-long-notebook-budget-author-20261008/scripts/evaluators/eval_multi_boq.js',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+  
+  Node.js v24.19.0
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (C:\Users\latha\AppData\Local\Temp\codex-cp8a-closure-review-20261009\review.cjs:7:843)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

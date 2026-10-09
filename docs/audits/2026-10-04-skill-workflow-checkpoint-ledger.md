@@ -1,6 +1,6 @@
 # Skill/workflow excellence — checkpoint ledger
 
-Revision 5.37, 9 October 2026. Latest Antigravity input HEAD7ac4baf/origin main synchronized; ten new commits under gap review. Dashboard cancellation envelope independently reviewed and integrated24/24 focused main checks, no tracked protected delta. Formal11/35 retained; see current-status snapshot for actual deliveries and pending scope. Local reviewed commits now authorized by user; no push requested.
+Revision 5.37, 9 October 2026. Latest Antigravity input HEAD7ac4baf/origin main synchronized; ten new commits under gap review. Dashboard cancellation envelope independently reviewed and integrated24/24 focused main checks, no tracked protected delta. Formal12/35 after CP8a independent closure; see current-status snapshot for actual deliveries and pending scope. Local reviewed commits now authorized by user; no push requested.
 
 ## Workspace and writer record
 
@@ -603,7 +603,7 @@ Parallel execution: Codex root owns semantic decisions, independent acceptance a
 
 ## AUTHORITATIVE restart — revision5.36
 
-Revision 5.37, 9 October 2026. Latest Antigravity input HEAD7ac4baf/origin main synchronized; ten new commits under gap review. Dashboard cancellation envelope independently reviewed and integrated24/24 focused main checks, no tracked protected delta. Formal11/35 retained; see current-status snapshot for actual deliveries and pending scope. Local reviewed commits now authorized by user; no push requested.
+Revision 5.37, 9 October 2026. Latest Antigravity input HEAD7ac4baf/origin main synchronized; ten new commits under gap review. Dashboard cancellation envelope independently reviewed and integrated24/24 focused main checks, no tracked protected delta. Formal12/35 after CP8a independent closure; see current-status snapshot for actual deliveries and pending scope. Local reviewed commits now authorized by user; no push requested.
 
 Durable acceptance: outputs/history/skill_workflow_excellence/2026-10-08/latest-composition-integration/integration-receipt.json,154archived files readback verified. Controlledcopy execution1791465753220; source allowlist exact20, no registry/config/maintenanceoverwrite. Eightstaleparentfiles+three currenthelpers reconciled in candidateonly; original failedreadback retained and superseded by404check finalreview. CP8 base/context quantity correction applies in currentmain; newtrace/owner observations require explicitflags. No CP8/CP11 wholecheckpointclosure or CP7c pathactivationclaim. Mainactualchain proof reused from97candidate checks with sameproduction dependencies; main27focuschecks executed without maincatalogwrites.
 
@@ -625,3 +625,10 @@ Input7ac4baf2be2a1f1722f5c97251a7ac827b117a42, clean initial tree; origin0/0 aft
 Dashboard cancellation: Codex author, two native Agy independent reviewers APPROVED_ISOLATED_SCOPE. Verified5candidate hashes/3mainpreimages; narrow production changes preserve CANCELLED through backend and frontend. Main5backend+19frontend pass; fixture portable import adaptation tested. No tracked outputs/scripts/config delta. Durable source-bound receipt and independent reviews in2026-10-09/dashboard-cancel-integration. Not run: live browser/cancelled CLI or cloud/portal for this narrow fix. CP11 remains IN_PROGRESS.
 
 New blocking findings under current source review: wrong-transcript recovery (empty question/prefix match), blind query resubmission/restart, GPU capacity/remedy disagreement, disambiguation fabricated human/source evidence and explicit-context loop misrepresented as consumed learning. Existing pricing and scraper gates retained. Notebook candidate rebase reuses prior work; Agy native parallel GPU author/router-learning audit requested. CLI initial cwd discrepancy detected before any Agy main writes and corrected using same conversation. No completed scope reruns or new full matrix.
+
+
+### CP8a scope closure and Notebook integration — revision5.37
+
+Independent reviewer /root/cp8a_closure_review verified10/10 current and10/10 imminent-candidate facade assertions against plan line183. Real subprocess import/missing-input exit, exact exports, lazy imports, CLIflags/result/error compatibility, no import execution verified. Archived exact receipt/test/log hashes under2026-10-09/cp8a-closure. CP8a VERIFIED_INDEPENDENT; CP8b remains IN_PROGRESS; formal12/35(34.3%). This closes the import facade scope only.
+
+Notebook author /root/notebook_budget_rebase, independent root verifier/integrator:8production/2test files integrated after10exact candidate/current preimages.17/17 isolated and17/17 main; affected isolated consumers7assertions/8node tests/7validator tests; lint0/8sources, CC131<=135,0cycles608files, no tracked outputs/config delta. Preserved upstream Windows/PATH source operations45/20s, public recoveredFromGateway:false, whole-manifest prompt and existing exports. Intentional changes:600s logicalquery/1800s onlinechild/120s offlinechild; no ambiguous query retry/restart resubmit; no unowned chat scanning; durable original attempt/error identity and persistence diagnostics. No live cloud or remote transcript polling proof; attachment ambiguity remains open. Receipt2026-10-09/notebook-budget-integration/root-integration-receipt.json. CP11 remains IN_PROGRESS.

@@ -1,0 +1,26 @@
+✔ query and child budgets are distinct; offline120000, online1800000, legacy child alias preserved (1.6969ms)
+✔ healthy eight-minute logical query succeeds without real wait and advisory15000 stays separate (10.2816ms)
+✔ shared absolute deadline caps query once; generic503 and socket never resubmit or fallback (4.2641ms)
+✔ active cancellation preserves false/null/NaN/frozen identity and weak signal diagnostic; late callback cannot promote (12.279ms)
+✔ invalid/expired numeric budgets perform no dispatch or fallback (2.2376ms)
+✔ durable initial attempt binds hash/source/deadline and explicit conversation ID only (22.7936ms)
+✔ group2 receives unchanged shared absolute deadline/query budget and child alias (5.0756ms)
+✔ child lifetime survives eight fake minutes online; explicit query/deadline flags propagate; expired no spawn (59.5262ms)
+✔ conversation identity rejects local job IDs, conflicting fields and ambiguous generic chat recovery (7.321ms)
+✔ restart never redispatches persisted unknown jobs, with or without remote ID or expired deadline (7.9683ms)
+✔ running async query remains joined while active; restart helper leaves live owned jobs alone (1.6137ms)
+✔ source attachment and delete readback preserve cross-platform executable/PATH and45/20s operation budgets (3.3321ms)
+✔ durable update failure is visible without replacing frozen failure or abort identities (1.7947ms)
+◇ injected env (0) from .env // tip: ⌘ override existing { override: true }
+✔ attemptGatewaySessionRecovery returns null when bypassRecovery is true (0.8997ms)
+✔ attemptGatewaySessionRecovery handles invalid or non-existent notebook gracefully without throwing (0.1766ms)
+✔ findMatchingChatTurn correctly identifies matching turns in chat session (0.412ms)
+✔ executeNotebookQuery in offline mode falls back to local RAG without invoking cloud CLI (204.2276ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 660.1254

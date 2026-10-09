@@ -276,6 +276,7 @@ function buildSolutionSourceValidationPrompt(sourceTitle, chassisName) {
  * @returns {Promise<object>} Validation report with workbook deliverable and learned deltas
  */
 async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
+  require('../system/execution_budget.js').assertCallerActive(options, Date.now());
   if (options.signal?.aborted) throw options.signal.reason;
   if (Number.isFinite(options.deadlineAt) && Date.now() >= options.deadlineAt) {
     const error = new Error('NotebookLM query deadline exceeded');
@@ -333,10 +334,10 @@ async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
   const sourceId = attachRes.sourceId;
 
   let ragAnswer = '';
+  let queryRecovery = null;
   let citations = [];
   let isCloudGrounded = false;
   let sourceDetached = false;
-  let recoveredFromGateway = false;
 
   try {
     if (options.signal?.aborted) throw options.signal.reason;
@@ -346,9 +347,10 @@ async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
     if (hasLiveNotebook && attachRes.success && !attachRes.isMock) {
       const queryRes = await executeNotebookQuery(notebookId, prompt, {
         context: { chassis: chassisName, structuredValidation: true },
-        timeout: options.timeoutMs || parseInt(process.env.NLM_SOLUTION_TIMEOUT_MS || process.env.RAG_TIMEOUT_MS || '600000', 10),
+        queryTimeoutMs: options.queryTimeoutMs ?? options.timeoutMs ?? Number(process.env.NLM_SOLUTION_TIMEOUT_MS || process.env.RAG_TIMEOUT_MS || 600000),
         signal: options.signal,
         deadlineAt: options.deadlineAt,
+        onAttempt: attempt => { evalResults.notebookQueryAttempt = attempt; },
         bypassCache: true,
         sourceIds: options.sourceIds,
         ephemeralSource: { notebookId, sourceId, createdThisRun: true }
@@ -357,12 +359,13 @@ async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
       ragAnswer = queryRes.answer || '';
       citations = queryRes.citations || [];
       isCloudGrounded = queryRes.isCloudGrounded || false;
-      recoveredFromGateway = Boolean(queryRes.recoveredFromGateway);
     } else {
       ragAnswer = 'Cloud candidate validation was not performed. No buildability verdict is available from this stage.';
       isCloudGrounded = false;
     }
   } catch (queryErr) {
+    queryRecovery = require('../notebook/query_attempt_record.js').getNotebookQueryRecovery(queryErr, options.signal);
+    if (queryRecovery) evalResults.notebookQueryRecovery = queryRecovery;
     if ((options.signal?.aborted && Object.is(queryErr, options.signal.reason)) || queryErr?.code === 'NOTEBOOK_QUERY_DEADLINE_EXCEEDED') throw queryErr;
     logger.warn('NLM_SOURCE_VALIDATOR', `NotebookLM query failed: ${queryErr.message}; preserving physical math certification.`);
     ragAnswer = `Cloud candidate validation failed: ${queryErr.message}. No buildability verdict is available from this stage.`;
@@ -443,10 +446,11 @@ async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
     sourceTitle,
     sourceDetached,
     isCloudGrounded,
-    recoveredFromGateway,
+    recoveredFromGateway: false,
     workbookPath,
     csvPath,
     ragAnswer,
+    ...(queryRecovery ? { queryRecovery } : {}),
     queryPayload,
     citations,
     authoritativeSourceIds,

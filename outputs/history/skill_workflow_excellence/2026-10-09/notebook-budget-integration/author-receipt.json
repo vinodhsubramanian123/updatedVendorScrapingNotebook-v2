@@ -1,0 +1,108 @@
+{
+  "createdAt": "2026-10-09T06:34:52.703Z",
+  "candidateRoot": "C:\\Users\\latha\\AppData\\Local\\Temp\\codex-long-notebook-budget-author-20261008",
+  "readOnlyMainRoot": "C:/Users/latha/.gemini/antigravity/scratch/antigravityProjects/updatedVendorScrapingNotebook-v2",
+  "mainHead": "c7c4dd80ca87f462da7f4b2110954f1aaebae142",
+  "files": [
+    {
+      "file": "scripts/evaluators/eval_boq.js",
+      "sha256": "8e81cd8dfeee78d04ae8eff01baed6cc158d87a636e3dbf9591aac2fe73d2535",
+      "preimageSha256": "dcda88795eb2eb6f4f5d7e1190071bc39a8e79724eb2e3475af7fadaad800815",
+      "preimage": "C:\\Users\\latha\\AppData\\Local\\Temp\\codex-long-notebook-budget-author-20261008\\tests\\receipts\\long-notebook-budget\\rebase-7ac4baf\\preimages\\scripts\\evaluators\\eval_boq.js"
+    },
+    {
+      "file": "scripts/evaluators/eval_multi_boq.js",
+      "sha256": "b34d88c49cb74d5511289206bb9dfcf9a10ec23291b0b43709026f30ef06b81d",
+      "preimageSha256": "0570a12a94a32c1a88c5f57bce461f27073198dfab350a49e917bfbe6a80f7c3",
+      "preimage": "C:\\Users\\latha\\AppData\\Local\\Temp\\codex-long-notebook-budget-author-20261008\\tests\\receipts\\long-notebook-budget\\rebase-7ac4baf\\preimages\\scripts\\evaluators\\eval_multi_boq.js"
+    },
+    {
+      "file": "scripts/lib/boq/multi_child_evaluation.js",
+      "sha256": "3597aaed332ac29ed2fce39d2f07f6e4c54b17578aab0dccfd3a17ede7cf8dff",
+      "preimageSha256": "f702441446dad967bc2703378d8fbbf8fb09cd1f22c361f5c609faa2740ceef9",
+      "preimage": "C:\\Users\\latha\\AppData\\Local\\Temp\\codex-long-notebook-budget-author-20261008\\tests\\receipts\\long-notebook-budget\\rebase-7ac4baf\\preimages\\scripts\\lib\\boq\\multi_child_evaluation.js"
+    },
+    {
+      "file": "scripts/lib/notebook/notebook_query_utils.js",
+      "sha256": "82ba7b12a13e0a9b4b23a0012be8002fe50d2cb3532d776a9697635fce454e75",
+      "preimageSha256": "6ef6c1da0473aafbdd5b72c42591fc45f8da029ca04bbcceec49423df56b9c4b",
+      "preimage": "C:\\Users\\latha\\AppData\\Local\\Temp\\codex-long-notebook-budget-author-20261008\\tests\\receipts\\long-notebook-budget\\rebase-7ac4baf\\preimages\\scripts\\lib\\notebook\\notebook_query_utils.js"
+    },
+    {
+      "file": "scripts/lib/notebook/job_manager.js",
+      "sha256": "4510871bd1e9d83e326068acb9a6ce5e773d9752f3f76f594ae1450fc1dddd23",
+      "preimageSha256": "92f916386c2e21eb21373a9248364adc001be9940f7e22f23cc84bd34d84d0fd",
+      "preimage": "C:\\Users\\latha\\AppData\\Local\\Temp\\codex-long-notebook-budget-author-20261008\\tests\\receipts\\long-notebook-budget\\rebase-7ac4baf\\preimages\\scripts\\lib\\notebook\\job_manager.js"
+    },
+    {
+      "file": "scripts/lib/notebook/query_attempt_record.js",
+      "sha256": "319e3d9f17e3c5bd14ef2b1507eb87d120366a313090de2e5b32e89656627e68",
+      "preimageSha256": null,
+      "preimage": null
+    },
+    {
+      "file": "scripts/lib/system/execution_budget.js",
+      "sha256": "5d4ec173db7d0c362056f8e1c997597e67e98c618ba43d976834492b9cfdd896",
+      "preimageSha256": null,
+      "preimage": null
+    },
+    {
+      "file": "scripts/lib/sync/nlm_solution_source_validator.js",
+      "sha256": "a60264c376a2856313730a7ec75cd15e0ccc0d8caf0d8e17cdba11af50123f9e",
+      "preimageSha256": "3d54fdec62366f22e67f7c8ee4548413e8565bcbc2d70d2dabdcdb29a8b70b30",
+      "preimage": "C:\\Users\\latha\\AppData\\Local\\Temp\\codex-long-notebook-budget-author-20261008\\tests\\receipts\\long-notebook-budget\\rebase-7ac4baf\\preimages\\scripts\\lib\\sync\\nlm_solution_source_validator.js"
+    },
+    {
+      "file": "tests/unit/test_long_notebook_budget.js",
+      "sha256": "edea30ae10f42743359380208b21350b516b446259706e3c758bfc07f2661f83",
+      "preimageSha256": null,
+      "preimage": null
+    },
+    {
+      "file": "tests/unit/test_notebook_async_recovery.js",
+      "sha256": "20f5a6fa4aa8481f3bd288a6d892bed24f5e6cb61c060d99a4400b9f3e3e7d8c",
+      "preimageSha256": "37a156bde338d6b39ad74e7e3c00d265a0bc7ff784d9d988c201009e0c095359",
+      "preimage": "C:\\Users\\latha\\AppData\\Local\\Temp\\codex-long-notebook-budget-author-20261008\\tests\\receipts\\long-notebook-budget\\rebase-7ac4baf\\preimages\\tests\\unit\\test_notebook_async_recovery.js"
+    }
+  ],
+  "command": "node --test tests/unit/test_long_notebook_budget.js tests/unit/test_notebook_async_recovery.js",
+  "testExitCode": 0,
+  "testCount": 17,
+  "passed": 17,
+  "syntaxExitCodes": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "limits": [
+    "No main writes or commits",
+    "No live cloud calls or qualification",
+    "No automatic remote polling implemented; local job IDs are not remote conversation IDs",
+    "Recovered persisted jobs fail closed to NOT_VERIFIED/REMOTE_STATE_UNKNOWN; explicit separate recovery remains required",
+    "Attachment/deletion operations retain latest45s/20s CLI budgets; ambiguous attachment/source ownership recovery is outside scope",
+    "Whole-manifest prompt construction retained; no per-SKU splitting"
+  ],
+  "notImported": [
+    "findMatchingChatTurn prefix recovery",
+    "generic chats list scanning",
+    "automatic429/500/503/socket retries",
+    "restart blind redispatch"
+  ],
+  "validation": "Mocked focused lifecycle and budget tests only; no remote completion claimed",
+  "sourceHeadContract": {
+    "requestedHead": "7ac4baf",
+    "observedHead": "c7c4dd80ca87f462da7f4b2110954f1aaebae142",
+    "relevantSourcesUnchangedBetweenHeads": true
+  },
+  "compatibility": "Public recovery helper names retained. Whole question matching is exact and unambiguous; gateway recovery conservatively returns null pending a verified attempt-owned remote transcript contract. Upstream recovery suite is included with intentional prefix-match rejection expectations.",
+  "persistence": "Secondary attempt update errors are visible as diagnostic.persistence while preserving original abort/failure identities.",
+  "publicFields": "Validator recoveredFromGateway remains publicly present and false. Legacy DEFAULT_TIMEOUT_MS remains exported. All upstream notebook utils exported keys retained.",
+  "validatorResealSyntaxExitCode": 0
+}

@@ -3,6 +3,7 @@ const path = require('path');
 const { spawn } = require('child_process');
 const { requestChildTermination } = require('../system/child_termination.js');
 const { spawnObservedChild } = require('../system/observed_child_process.js');
+const { validateBudgetOptions, childTimeout } = require('../system/execution_budget.js');
 
 const MARKER = '__EVAL_RESULT_JSON__';
 const DEFAULT_TIMEOUT_MS = 120000;
@@ -40,6 +41,8 @@ function childArguments(group, options, evalScript) {
   const args = [evalScript, group.filePath, '--json', '--sheet', group.sheetName];
   if (options.chassisDir) args.push('--chassis', options.chassisDir);
   if (options.offline) args.push('--offline');
+  if (options.queryTimeoutMs !== undefined) args.push('--query-timeout-ms', String(options.queryTimeoutMs));
+  if (options.deadlineAt !== undefined) args.push('--deadline-at', String(options.deadlineAt));
   return args;
 }
 
@@ -75,6 +78,7 @@ function executeGroupChild(group, options = {}) {
   return new Promise((resolve, reject) => {
     try {
       validateSignal(options.signal);
+      validateBudgetOptions(options);
       validatePositiveSafeInteger(options.graceMs, 'graceMs');
       validatePositiveSafeInteger(options.confirmationMs, 'confirmationMs');
       validatePositiveSafeInteger(options.timeoutMs, 'timeoutMs');
@@ -91,6 +95,9 @@ function executeGroupChild(group, options = {}) {
         process: { exitCode: null, signal: null, terminationRequested: false }
       }));
     }
+
+    let lifetimeMs;
+    try { lifetimeMs = childTimeout(options, Date.now()); } catch (error) { return reject(error); }
 
     let child = null;
     let timer = null;
@@ -269,7 +276,8 @@ function executeGroupChild(group, options = {}) {
         }
       }
 
-      timer = setTimeout(() => terminate('ERROR', 'Canonical evaluator timed out', 'MULTI_CHILD_TIMEOUT'), options.timeoutMs ?? DEFAULT_TIMEOUT_MS);
+      const remainingMs = options.deadlineAt === undefined ? lifetimeMs : Math.max(1, Math.min(lifetimeMs, options.deadlineAt - Date.now()));
+      timer = setTimeout(() => terminate('ERROR', 'Canonical evaluator timed out', 'MULTI_CHILD_TIMEOUT'), remainingMs);
     } catch (error) {
       settle(resultEnvelope(group, 'ERROR', { error: error.message, code: 'MULTI_CHILD_SPAWN_ERROR', stderr, process: { exitCode: null, signal: null } }));
     }
