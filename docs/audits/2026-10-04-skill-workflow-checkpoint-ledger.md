@@ -681,3 +681,34 @@ Price basis in `budget_optimizer.js` and honest nullable schema in `schemas.js` 
 3. Created `.agents/skills/epistemic-verification-skill/SKILL.md` and codified Anti-Patterns 15–19 (`INV-158` to `INV-162`) in `.agents/rules/epistemic_truth_and_deep_reasoning.md`.
 4. Verification: 46/46 tests passed (schemas + budget optimizer boundaries + pricing presence). 0 circular dependencies across 617 files, CC <= 131 <= 135, 0 new lint warnings.
 5. Local commit created per user `/goal` authorization. Next gate: Batch A reliability & process lifecycle (CP11a root trace, CP11b terminal serializer phase 8/9 split, CP8b multi-node scaling, CP6b telemetry activation).
+
+## Session 5.45 — presales query continuation, learning governance & vendor neutrality complete
+
+Delivered, verified, and committed remaining checkpoint batches across customer query routing, candidate scrutiny, learning governance, and vendor abstraction:
+1. **RFP Sizing Continuation & Workload DNA Arbitration (CP9a/b/c)**:
+   - Added automated continuation into `runEvaluationPipeline` when `continueEvaluation` is requested.
+   - Connected `arbitrateContestedResources` to pivot OCP storage controllers to PCIe with 7-aspect physical re-evaluation (`CONTENTION_ARBITRATED`).
+   - Integrated canonical OCR quote intake with source document provenance and unparseable document error handling.
+   - Verified via `tests/unit/test_presales_query_continuation.js` (6/6 PASS).
+2. **Candidate Scrutiny vs. Synthetic Chaos Separation & Vendor Modernization (CP9d/e, CP10b)**:
+   - Exported `scrutinizeCandidateBOM` to audit candidate BOMs against all 11 enterprise failure modes under `CANDIDATE_SCRUTINY` (`isSyntheticTest: false`), reserving `SYNTHETIC_CHAOS` strictly for engine recall benchmark.
+   - Updated `.agents/skills/adversarial-validation-skill/SKILL.md` with 11 failure modes and `11/11 Enterprise Failure Modes AUDITED & PASSED` badge.
+   - Enhanced `_handleCrossVendorTransformation` with explicit parity gap detection (`CORE_DEFICIT`, `MEMORY_CAPACITY_DEFICIT`) and candidate evaluation continuation.
+   - Enhanced `_handleHeterogeneousTenderModernization` with multi-source ingestion (`context.items`, `.sheets`, `.xlsx`), domain partitioning, and carrier fleet synthesis.
+   - Verified via `tests/unit/test_cross_vendor_and_candidate_scrutiny.js` (6/6 PASS).
+3. **Epistemic Learning Governance & Anti-Poisoning Filter (CP12a–c)**:
+   - Implemented 3-tier reflection event categorization in `feedback_loop.js`: `OPERATIONAL_INCIDENT` (network/CDP/SSO errors quarantined from hardware rules), `WORKFLOW_ADVISORY` (DOM/UI shifts recorded as advisory), and `HARDWARE_PHYSICAL_RULE` (physical hardware rules).
+   - Demonstrated learning consumption respects Generation & Family isolation firewall in fresh processes (`loadActiveKnowledgeRules`).
+4. **Vendor Abstraction & Platform Profiles (CP13a–c, CP15, CP16)**:
+   - Declared vendor policies in `scripts/config/vendors/{hpe,dell,vendor_x}/policy.json`.
+   - Implemented typed vendor adapters in `scripts/lib/adapters/{hpe,dell,vendor_x}_adapter.js` conforming to `VendorAdapterDescriptorSchema`.
+   - Registered `VENDOR_X_SERVER_X1` synthetic profile and `DELL_POWEREDGE_R760` in `platform_profiles.js`.
+   - Verified via `tests/unit/test_epistemic_learning_governance.js` (6/6 PASS).
+5. **Static Quality Benchmark**:
+   - 0 circular dependencies across all 623 repository files (`analyze_circular_deps.js`).
+   - Maximum cyclomatic complexity $CC = 131 \le 135$ across 362 files / 1,702 functions (`analyze_complexity.js`).
+   - 0 lint warnings/errors across all 111 dashboard/core files (`npm run lint`).
+   - Full smoke matrix: 8/8 PASS; router domain: 4/4 PASS; physical aspects domain: 16/16 PASS.
+6. **Knowledge Sync**:
+   - Master knowledge registry and universal knowledge charter refreshed: 94 deduplicated rules.
+   - Synchronized Markdown payload projections for `DL380_Gen12` and `DL380a_Gen12` up to date on disk.
