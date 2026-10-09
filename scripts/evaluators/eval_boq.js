@@ -1453,11 +1453,27 @@ async function _handleBoqDeliverablesPhase(ctx, options, evidenceLedger, startTi
 }
 
 async function _handleBoqReflectionPhase(ctx) {
+  let reasoningAnalysis = null;
+  try {
+    const { performReasoningPostAnalysis } = require('../lib/system/reasoning_post_analyzer.js');
+    reasoningAnalysis = performReasoningPostAnalysis({
+      queryText: ctx.options.inputFile || ctx.options.BOQ_FILE || 'BOQ_EVALUATION',
+      context: ctx.options,
+      classification: { intent: 'BOQ_EVALUATION', confidence: 1.0, rationale: 'Canonical Multi-Rank BOQ Evaluation' },
+      responseData: ctx.evalResults,
+      traceId: ctx.evalResults.traceId || ctx.evidenceLedger?.traceId,
+      executionTimeMs: Date.now() - ctx.startTime,
+      evidenceLedger: ctx.evidenceLedger
+    });
+    ctx.evalResults.reasoningAnalysis = reasoningAnalysis;
+  } catch (_) {}
+
   return {
     status: 'PASSED',
     summary: {
       newLearningsCount: ctx.evalResults.newLearningsCount || 0,
-      evidenceLogPath: ctx.evalResults.evidenceLogPath || null
+      evidenceLogPath: ctx.evalResults.evidenceLogPath || null,
+      epistemicTier: reasoningAnalysis?.epistemicIntegrity?.tier || 'TIER_1_PHYSICAL_SANITY'
     },
     checks: [
       { status: 'PASS', label: `Knowledge reflection complete (${ctx.evalResults.newLearningsCount || 0} new learnings evaluated)` },

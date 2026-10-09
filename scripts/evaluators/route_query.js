@@ -1715,39 +1715,12 @@ async function _executeLegacyRoutedQuery(queryText = '', context = {}) {
   // Ensure universal trace ID & execution provenance across all routed tracks (GAP-33 / INV-111)
   const crypto = require('crypto');
   let traceId = responseData?.traceId;
-  let evidenceLogPath = responseData?.evidenceLogPath || null;
 
   if (!traceId) {
     traceId = resolveEntryTraceId(() => `TRC-${Date.now()}-${crypto.randomBytes(3).toString('hex').toUpperCase()}`);
     if (responseData && typeof responseData === 'object') {
       responseData.traceId = traceId;
     }
-  }
-
-  // Persist evidence ledger if requested or if candidate BOM was evaluated without prior ledger
-  if (context.persistLedger && !evidenceLogPath && responseData && typeof responseData === 'object') {
-    try {
-      const { createEvidenceLedger } = require('../lib/system/evidence_ledger.js');
-      const ledger = createEvidenceLedger({
-        traceId,
-        chassis: responseData.chassis || context.chassisName || 'SCOPED_ROUTER_QUERY',
-        filePath: context.filePath || 'ROUTER_QUERY_INPUT'
-      });
-      ledger.startPhase(1, 'Presales Query Intake', { query: queryText, intent: classification.intent });
-      const phase1Status = classification.intent && classification.intent !== 'UNKNOWN' ? 'PASSED' : 'ACTION_REQUIRED';
-      ledger.completePhase(1, phase1Status, { intent: classification.intent });
-      ledger.startPhase(2, 'Router Dispatch & Execution', { skillTarget: classification.skillTarget });
-      const phase2Status = (responseData.status === 'ERROR' || responseData.status === 'FAILED') ? 'FAILED' : (responseData.status === 'ACTION_REQUIRED' ? 'ACTION_REQUIRED' : 'PASSED');
-      ledger.completePhase(2, phase2Status, { status: responseData.status || 'COMPLETED' });
-      const exported = ledger.finalizeAndExport();
-      evidenceLogPath = exported.jsonPath;
-      responseData.evidenceLogPath = evidenceLogPath;
-      responseData.traceStatus = 'PERSISTED_EVIDENCE_LEDGER';
-    } catch (e) {
-      responseData.traceStatus = 'CORRELATION_ONLY_NO_PERSISTED_LEDGER';
-    }
-  } else if (responseData && typeof responseData === 'object' && !responseData.traceStatus) {
-    responseData.traceStatus = evidenceLogPath ? 'PERSISTED_EVIDENCE_LEDGER' : 'CORRELATION_ONLY_NO_PERSISTED_LEDGER';
   }
 
   // 14-Point Pre-Presentation Acceptance Gate (GAP-24, GAP-36, output-validation-skill)
@@ -1776,12 +1749,32 @@ async function _executeLegacyRoutedQuery(queryText = '', context = {}) {
     };
   }
 
+  // Automated Reasoning Post-Analysis, Feedback Reflection Hook & Default Ledger Persistence
+  const executionTimeMs = Date.now() - startTime;
+  let reasoningAnalysis = null;
+  try {
+    const { performReasoningPostAnalysis } = require('../lib/system/reasoning_post_analyzer.js');
+    reasoningAnalysis = performReasoningPostAnalysis({
+      queryText,
+      context,
+      classification,
+      responseData,
+      traceId,
+      executionTimeMs
+    });
+  } catch (_analysisErr) {
+    if (responseData && typeof responseData === 'object' && !responseData.traceStatus) {
+      responseData.traceStatus = responseData.evidenceLogPath ? 'PERSISTED_EVIDENCE_LEDGER' : 'CORRELATION_ONLY_NO_PERSISTED_LEDGER';
+    }
+  }
+
   return {
     query: queryText,
     classification,
     result: responseData,
+    reasoningAnalysis,
     traceId,
-    executionTimeMs: Date.now() - startTime,
+    executionTimeMs,
     classificationConfidence: confidence, // 0.0-1.0
     hitlRequired: Boolean(chassisInfoForConf?.isAmbiguous) || unresolvedAmbiguity,
     platformSelectionMemory,
