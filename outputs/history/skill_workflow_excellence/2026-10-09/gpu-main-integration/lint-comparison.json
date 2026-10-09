@@ -1,0 +1,14 @@
+{
+  "invocation": "Explicit node executable, not shell extension association",
+  "before": {
+    "exitCode": 0,
+    "warnings": 8,
+    "errors": 0
+  },
+  "after": {
+    "exitCode": 0,
+    "warnings": 8,
+    "errors": 0
+  },
+  "newWarnings": 0
+}

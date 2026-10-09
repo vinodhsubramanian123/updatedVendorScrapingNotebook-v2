@@ -1,0 +1,32 @@
+✔ custom capacity 1 conserved in tally and9node remedy (3.6684ms)
+✔ custom capacity 3 conserved in tally and9node remedy (0.3844ms)
+✔ invalidcapacity 0 rejects (0.1982ms)
+✔ invalidcapacity -1 rejects (0.1029ms)
+✔ invalidcapacity 1.5 rejects (0.1276ms)
+✔ invalidcapacity NaN rejects (0.0937ms)
+✔ invalidcapacity 9007199254740992 rejects (0.1747ms)
+✔ metadata ownership {"capacity":3} (0.137ms)
+✔ metadata ownership {"sku":"OTHER","capacity":3} (0.1807ms)
+✔ metadata ownership {"sku":"","capacity":3} (0.3174ms)
+✔ metadata ownership null (1.5404ms)
+✔ knownkit P74700-B21 (0.566ms)
+✔ knownkit P83526-B21 (0.1354ms)
+✔ generic16pin and12VHPWR are not dualproof (0.2698ms)
+✔ mixedcapacity narrative never fabricates physical kitcount (1.0972ms)
+✔ P74700-B21 retains evidenced connection capacity (4.8885ms)
+✔ P83526-B21 retains evidenced connection capacity (0.4807ms)
+✔ UNKNOWN-SINGLE-GPU retains evidenced connection capacity (0.3989ms)
+✔ UNKNOWN-DUAL-GPU retains evidenced connection capacity (0.352ms)
+✔ UNKNOWN-2-GPU retains evidenced connection capacity (0.2542ms)
+✔ UNKNOWN-16PIN retains evidenced connection capacity (0.2217ms)
+✔ UNKNOWN-12VHPWR retains evidenced connection capacity (1.1208ms)
+✔ non-GPU storage cable does not receive GPU power cable capacity (0.3356ms)
+✔ generic AC power cord does not receive GPU power cable capacity (0.5469ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 248.3253

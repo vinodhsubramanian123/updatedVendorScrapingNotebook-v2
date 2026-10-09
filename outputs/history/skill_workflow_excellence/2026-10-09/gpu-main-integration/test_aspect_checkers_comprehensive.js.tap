@@ -1,0 +1,61 @@
+◇ injected env (0) from .env // tip: ⌁ auth for agents [www.vestauth.com]
+▶ Physical Aspect Checkers Comprehensive Suite
+  ▶ evalComputeThermal
+    ✔ Identifies standard CPUs correctly (6.3373ms)
+    ✔ Identifies high TDP CPUs and cooling kits (0.7447ms)
+    ✔ Handles missing TDP info gracefully (0.2438ms)
+    ✔ Handles empty item list (0.2013ms)
+    ✔ Detects mixed processor models on single-node build (0.2657ms)
+  ✔ evalComputeThermal (9.4867ms)
+  ▶ evalMemoryChannel
+    ✔ Identifies balanced memory (8 channels, 2 CPUs, 16 DIMMs) (0.6128ms)
+    ✔ Identifies unbalanced memory (2 CPUs, 14 DIMMs) (0.3384ms)
+    ✔ Detects BTO memory in CTO environment (0.3173ms)
+    ✔ Handles FIO memory in CTO gracefully (0.415ms)
+    ✔ Handles empty items list (0.2543ms)
+    ✔ Detects DDR generation and memory module type conflicts (0.3131ms)
+  ✔ evalMemoryChannel (3.1599ms)
+  ▶ evalPowerEnvironment
+    ✔ Identifies standard AC power supplies (3.2897ms)
+    ✔ Identifies -48VDC power supply and lug kit (0.4076ms)
+    ✔ Identifies empty lists (0.1441ms)
+    ✔ applies source-verified DL380a GPU mode PSU cardinality without SKU hardcoding (1.1716ms)
+    ✔ rejects mixed or unsupported DL380a PSU wattages (0.5186ms)
+    ✔ Detects mixed AC and DC power supply conflict (0.2514ms)
+  ✔ evalPowerEnvironment (6.5761ms)
+  ▶ evalPcieRiserSlots
+    ✔ Calculates slots and risers correctly (No secondary needed) (1.1095ms)
+    ✔ Calculates slots and risers correctly (Needs secondary) (0.1665ms)
+    ✔ Calculates OCP and embedded cards (Should ignore) (0.1527ms)
+    ✔ Empty items list (0.1208ms)
+    ✔ does not count a DL380a GPU mode selector as a physical GPU card (0.1932ms)
+  ✔ evalPcieRiserSlots (2.1657ms)
+  ▶ evalStorageTriMode
+    ✔ Identifies drives and storage controllers (1.3895ms)
+    ✔ Identifies Smart Storage Battery and No Drive Kit (0.2706ms)
+    ✔ Empty items list (0.1403ms)
+    ✔ Detects LFF drives in SFF chassis mismatch (0.1567ms)
+  ✔ evalStorageTriMode (2.3441ms)
+  ▶ evalNetworkingOcp
+    ✔ Calculates networking ports and OCP slots correctly (under limit) (0.945ms)
+    ✔ Calculates networking ports and OCP slots correctly (over limit) (0.3139ms)
+    ✔ Calculates quad and single port names correctly (0.2952ms)
+    ✔ Catalog max qty override (0.1692ms)
+    ✔ Empty items list (0.1164ms)
+  ✔ evalNetworkingOcp (2.2551ms)
+  ▶ evalSupportManufacturing
+    ✔ Identifies Tech Care support service (23.7254ms)
+    ✔ Identifies standard component without support service (0.4778ms)
+    ✔ Empty items list (0.1292ms)
+    ✔ Detects contradictory installation services (Onsite vs Remote) (0.201ms)
+  ✔ evalSupportManufacturing (24.8771ms)
+  ✔ DL380a local fallback surfaces the source-verified PSU matrix (322.948ms)
+✔ Physical Aspect Checkers Comprehensive Suite (375.4985ms)
+ℹ tests 44
+ℹ suites 0
+ℹ pass 44
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1177.6566

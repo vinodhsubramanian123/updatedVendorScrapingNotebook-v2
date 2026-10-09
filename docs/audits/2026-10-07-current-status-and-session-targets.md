@@ -1,6 +1,6 @@
 # Current execution status and restart instructions
 
-Updated 9 October 2026, revision 5.39. This snapshot supersedes earlier appended status narratives. Historical evidence remains in the checkpoint ledger.
+Updated 9 October 2026, revision 5.40. This snapshot supersedes earlier appended status narratives. Historical evidence remains in the checkpoint ledger.
 
 ## Actual position
 
@@ -66,3 +66,9 @@ Agy GPU source candidate now exists but root reproduced a new metadata ownership
 Codex newdelegates stopped with usage-limit errors; they are not running. Exactpartial typedmemorystore archivedunused in2026-10-09/continuation-5-39, syntaxvalid but no behavior/consumption certification. Pricingpresencelane notcomplete. Root GPU independent24checks:23pass/1fail; capacity/ownership/9node remedy proven, mixed-kit narrative still CHANGES_REQUIRED. GPU sameworker correctionobserver13363 pending; roottest failure retained. Agy routeraudit still has no finalreceipt. Mainruntime unchanged and formal12/35.
 
 Resume from corrected candidate plus independentreview.cjs/rawfailure, not another baseline audit. Record actual conversation/artifacts before continuation. Do not retry quotaerroredCodex agents until reset; use existing Agy conversations for bounded missingsteps. ActualremoteNotebook poll/recovery remains an open proofrequirement (CLIconversation-id is follow-up, chatsget transcript is separate). Writer19716/session51262 released at boundary; acquire canonicallease before mainwrites.
+
+## GPU delivery and remaining-work forecast — revision5.40
+
+CorrectedGPU candidate is now integrated in localmain: independently24/24, main24/24,4affected suites pass, sourceboundreceipt gpu-main-integration. Previous ownership andmixednarrative failures are superseded by exacttested corrections; no pendingGPUretry needed. Lint has8existingwarnings inthese2sources,8before/after,0new/0errors (explicitnodeCLI); CC131. Do notrepeat passedGPUchecks unless sourceschange. Formal12/35 unchanged because broaderCP8b/CP10/CP13work remains.
+
+Planningallowance6–8 substantialexecution sessions, fourbatches: A reliability/activation; B customercontinuations/pricing; C learning/vendor/28skill conformance; D finalextraction/regression. Forecast is a range, not guaranteed3–4quota sessions. Focus on acceptedcustomer-path delivery eachsession, save/promote eachverifiedfix. Next: finish typedquery-choice memory/routing andunknown/confirmedzero pricepreservation; existingpartialmemory source archived, Codexdelegatesquotaerrored, Agyrouterauditstillpending. No newbaseline audits.

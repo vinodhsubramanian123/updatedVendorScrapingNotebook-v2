@@ -8,7 +8,7 @@ for(const[sku,description,expected]of[
  ['UNKNOWN-SINGLE-GPU','GPU power cable kit',4],
  ['UNKNOWN-DUAL-GPU','Dual GPU power cable kit',8],
  ['UNKNOWN-2-GPU','2-GPU power cable kit',8],
- ['UNKNOWN-16PIN','GPU 16-pin power cable kit',8],
+ ['UNKNOWN-16PIN','GPU 16-pin power cable kit',4],
  ['UNKNOWN-12VHPWR','12VHPWR Dual GPU power cable kit',8]
 ])test(sku+' retains evidenced connection capacity',()=>{
  const result=evalPcieRiserSlots([

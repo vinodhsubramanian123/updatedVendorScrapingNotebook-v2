@@ -1,0 +1,41 @@
+================================================================
+🚀 PCIE RISER ASPECT TEST SUITE
+================================================================
+
+🔹 Test Group 1: Required PCIe Cards Counting
+  ✅ PASS: Counted 3 required PCIe cards (2 GPUs + 1 HBA)
+  ✅ PASS: Counted 3 cards (FLR not explicitly excluded in basic regex unless it has 'ocp' or 'lom')
+  ✅ PASS: Excluded OCP adapter from PCIe card count
+
+🔹 Test Group 2: Riser Counting and Total Slots
+  ✅ PASS: Counted 1 primary riser
+  ✅ PASS: Calculated 6 slots available (3 base + 3 from primary riser)
+  ✅ PASS: Counted 1 secondary riser
+  ✅ PASS: Counted 1 tertiary riser
+  ✅ PASS: Calculated 8 slots available (3 base + 0 primary + 3 secondary + 2 tertiary)
+
+🔹 Test Group 3: Secondary Riser Requirement Logic
+  ✅ PASS: 4 cards require secondary riser (3 base slots available)
+  ✅ PASS: 3 cards do not require secondary riser
+  ✅ PASS: 5 cards with primary riser (6 slots) do not require secondary riser
+  ✅ PASS: 7 cards with primary riser (6 slots) require secondary riser
+
+🔹 Test Group 4: Default Primary Riser Active Slot Capacity
+  ✅ PASS: Counted 3 required PCIe cards
+  ✅ PASS: Default primary riser provides 3 active slots without additional riser cable kit
+  ✅ PASS: 3 cards do not exceed active slots on default primary riser
+  ✅ PASS: No primary cable kit required for 3 PCIe cards on default primary riser
+
+================================================================
+📊 FINAL TEST SUMMARY: 16 PASSED | 0 FAILED
+================================================================
+
+✔ tests\unit\test_aspect_pcie_riser.js (92.0382ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 103.1479

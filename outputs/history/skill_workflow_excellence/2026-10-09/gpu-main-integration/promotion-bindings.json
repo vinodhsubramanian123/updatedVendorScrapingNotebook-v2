@@ -1,0 +1,22 @@
+{
+  "author": "Antigravity worker b9f490b7-4bbd-4812-b771-480ff01e5866",
+  "reviewer": "Codex root",
+  "mainPreIntegrationHead": "ef9e0614f96cc4b228baf3b93402aab6d7bbbe8a",
+  "bindings": [
+    {
+      "file": "scripts/lib/aspects/pcie_riser.js",
+      "preimageSha256": "c16d7d935aa9aa62fb0874f94da9caf7038f6b4018c3e0f387c85ea640248ebf",
+      "sha256": "8639d3a4416545081eac49a06910e59b4c3b123dea1f47d57587bb66356b85ba"
+    },
+    {
+      "file": "scripts/lib/boq/boq_evaluator.js",
+      "preimageSha256": "8ab4f0c75e994d42697819e2c7610a79a63e541b063bf89268fe4b459bab2cde",
+      "sha256": "b431ee0db224e855a1ee9a21729f894f7ccf14f7208fe570a20505eded08438e"
+    },
+    {
+      "file": "tests/unit/test_gpu_cable_capacity.js",
+      "preimageSha256": "53da82d1c0c785ddf4e64682307daf9e8856ab4bf4fc47398ec343052e885802",
+      "sha256": "46b89aebc78044b8cd74cb1a8bb9320149be6a0427d92896eadc6fd0f1292062"
+    }
+  ]
+}

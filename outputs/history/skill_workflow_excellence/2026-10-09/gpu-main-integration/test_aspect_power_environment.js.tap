@@ -1,0 +1,48 @@
+================================================================
+🚀 POWER & ENVIRONMENTAL ASPECT TEST SUITE
+================================================================
+
+🔹 Test Group 1: PSU Counting and AC vs DC Detection
+  ✅ PASS: Counted 2 PSUs
+  ✅ PASS: Correctly identified AC power supply (no DC flag)
+  ✅ PASS: Counted 2 PSUs
+  ✅ PASS: Detected -48VDC power supply
+  ✅ PASS: Detected 48V DC power supply by description
+
+🔹 Test Group 2: DC Lug Kit Detection
+  ✅ PASS: Detected DC Lug Kit by SKU
+  ✅ PASS: Detected DC Lug Kit by description
+  ✅ PASS: Did not detect DC Lug Kit when absent
+
+🔹 Test Group 3: High-line 277V requirement triggers
+  ✅ PASS: Counted 2 high-line PSUs
+  ✅ PASS: High-line 277VAC is not marked as DC
+
+🔹 Test Group 4: Mixed AC and DC Power Supply Conflict Detection
+  ✅ PASS: Detected AC power supply in mixed config
+  ✅ PASS: Detected DC power supply in mixed config
+  ✅ PASS: Correctly flagged hasMixedAcDcPower conflict
+  ✅ PASS: Counted 2 AC PSUs
+  ✅ PASS: Counted 2 DC PSUs
+
+🔹 Test Group 5: Mixed PSU Efficiency and Mixed Wattage Detection
+  ✅ PASS: Detected Platinum PSU
+  ✅ PASS: Detected Titanium PSU
+  ✅ PASS: Flagged hasMixedEfficiencyPsus conflict
+  ✅ PASS: Flagged hasMixedWattagePsus (800W vs 1000W)
+  ✅ PASS: No mixed efficiency for dual Platinum
+  ✅ PASS: No mixed wattage for dual 800W
+
+================================================================
+📊 FINAL TEST SUMMARY: 21 PASSED | 0 FAILED
+================================================================
+
+✔ tests\unit\test_aspect_power_environment.js (170.8849ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 181.1408

@@ -1,0 +1,25 @@
+▶ Cross-Chassis 7-Aspect Physical Math Checker Suite
+  ▶ Edge Case Combinations
+    ✔ Mismatched TDP/fan requirements (Compute Thermal) (3.7489ms)
+    ✔ Unbuffered vs registered DDR5 DIMM balance (Memory Channel) (1.4455ms)
+    ✔ Missing storage cache batteries (Storage Tri-mode) (5.1722ms)
+    ✔ Missing secondary PCIe risers (PCIe Riser) (0.8801ms)
+    ✔ Pointnext Tech Care SLA options (Support Manufacturing) (2.4797ms)
+  ✔ Edge Case Combinations (15.3563ms)
+  ▶ All 7 Aspect Checkers run successfully against 6 different base chassis SKUs
+    ✔ Chassis Validation: DL380 Gen12 SFF (P73282-B21) (1.7162ms)
+    ✔ Chassis Validation: DL380 Gen11 (P52534-B21) (0.4944ms)
+    ✔ Chassis Validation: MSL3040 Tape (Q2R41A) (0.4541ms)
+    ✔ Chassis Validation: GX5000 Rack (P57100-B21) (0.8389ms)
+    ✔ Chassis Validation: Synergy 12000 Frame (797740-B21) (0.7665ms)
+    ✔ Chassis Validation: Alletra Storage (R0Q35A) (0.3906ms)
+  ✔ All 7 Aspect Checkers run successfully against 6 different base chassis SKUs (5.5575ms)
+✔ Cross-Chassis 7-Aspect Physical Math Checker Suite (21.5859ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 153.3967

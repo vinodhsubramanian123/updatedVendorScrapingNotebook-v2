@@ -31,11 +31,11 @@ const REGISTERED_DUAL_GPU_CABLE_SKUS = new Set([
 
 function resolveGpuCableCapacity(sku, desc, mandatorySkus = {}) {
   const cleanSku = cleanBaseSKU(sku);
-  // 1. Mandatory SKU configuration override
-  if (mandatorySkus?.GPU_POWER_CABLE_KIT) {
+  // 1. Mandatory SKU configuration override (requires exact nonempty SKU match)
+  if (mandatorySkus?.GPU_POWER_CABLE_KIT?.sku && cleanSku) {
     const configuredSku = cleanBaseSKU(mandatorySkus.GPU_POWER_CABLE_KIT.sku);
-    if (configuredSku === cleanSku) {
-      if (Number.isFinite(mandatorySkus.GPU_POWER_CABLE_KIT.capacity)) {
+    if (configuredSku && configuredSku === cleanSku) {
+      if (Number.isSafeInteger(mandatorySkus.GPU_POWER_CABLE_KIT.capacity) && mandatorySkus.GPU_POWER_CABLE_KIT.capacity > 0) {
         return mandatorySkus.GPU_POWER_CABLE_KIT.capacity;
       }
       if (mandatorySkus.GPU_POWER_CABLE_KIT.dualGpu === true) return 2;
@@ -43,18 +43,19 @@ function resolveGpuCableCapacity(sku, desc, mandatorySkus = {}) {
   }
 
   // 2. Known dual-GPU cable registry
-  if (REGISTERED_DUAL_GPU_CABLE_SKUS.has(cleanSku)) return 2;
+  if (cleanSku && REGISTERED_DUAL_GPU_CABLE_SKUS.has(cleanSku)) return 2;
 
   // 3. Physical wiring semantics in description
   const d = String(desc || '').toLowerCase();
   const hasDualWiringSemantics =
-    d.includes('gpu 16-pin') ||
-    d.includes('16-pin') ||
     d.includes('dual gpu') ||
     d.includes('2-gpu') ||
     d.includes('dual-gpu') ||
     d.includes('12vhpwr dual') ||
-    d.includes('dual power cable kit');
+    d.includes('dual power cable kit') ||
+    d.includes('dual 16-pin') ||
+    d.includes('2x 16-pin') ||
+    d.includes('2x16-pin');
 
   if (hasDualWiringSemantics) return 2;
 
@@ -325,5 +326,8 @@ function evalPcieRiserSlots(items, catalogData = null, mandatorySkus = {}, serve
 
 module.exports = {
   evalPcieRiserSlots,
-  parseRiserSlotCount
+  parseRiserSlotCount,
+  resolveGpuCableCapacity,
+  REGISTERED_DUAL_GPU_CABLE_SKUS,
+  isEvidencedGpuPowerCable
 };

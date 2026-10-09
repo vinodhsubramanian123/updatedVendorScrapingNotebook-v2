@@ -1,0 +1,8 @@
+scripts/lib/boq/boq_evaluator.js:36:14: warning eslint(no-unused-vars): Catch parameter '_' is caught but never used. help: Consider handling this error.
+scripts/lib/boq/boq_evaluator.js:74:12: warning eslint(no-unused-vars): Catch parameter '_' is caught but never used. help: Consider handling this error.
+scripts/lib/boq/boq_evaluator.js:701:51: warning eslint(no-unused-vars): Variable 'support' is declared but never used. Unused variables should start with a '_'. help: Consider removing this declaration.
+scripts/lib/boq/boq_evaluator.js:701:96: warning eslint(no-unused-vars): Variable 'warnings' is declared but never used. Unused variables should start with a '_'. help: Consider removing this declaration.
+scripts/lib/boq/boq_evaluator.js:897:12: warning eslint(no-unused-vars): Catch parameter '_' is caught but never used. help: Consider handling this error.
+scripts/lib/boq/boq_evaluator.js:1081:54: warning eslint(no-unused-vars): Variable 'compute' is declared but never used. Unused variables should start with a '_'. help: Consider removing this declaration.
+scripts/lib/boq/boq_evaluator.js:1575:12: warning eslint(no-unused-vars): Catch parameter '_freshnessErr' is caught but never used. help: Consider handling this error.
+scripts/lib/boq/boq_evaluator.js:1606:12: warning eslint(no-unused-vars): Catch parameter 'veErr' is caught but never used. help: Consider handling this error.
