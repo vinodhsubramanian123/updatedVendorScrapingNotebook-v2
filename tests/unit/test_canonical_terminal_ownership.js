@@ -105,6 +105,7 @@ function fixture(configuration = {}, legacy = false) {
     if (name.endsWith('solution_evidence.js')) return { deliveryFingerprint: () => 'manifest' };
     if (name.endsWith('feedback_loop.js')) return { promotePriceDriftDeltas() { events.push('PRICE_REFLECTION'); if (configuration.priceError) throw configuration.priceError; return { count: 1 }; } };
     if (name.includes('pipeline_logger')) return { warn() {} };
+    if (name.includes('execution_budget')) return require('../../scripts/lib/system/execution_budget.js');
     return {};
   };
   canonicalRequire.main = null;

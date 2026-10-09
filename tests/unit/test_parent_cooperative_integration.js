@@ -75,6 +75,7 @@ function groupRunner(owned, termination) {
       if (name === 'child_process') return { spawn: (...args) => { calls.push(args); return c; } };
       if (name.endsWith('observed_child_process.js')) return { spawnObservedChild: (name, source, start) => { wrappers.push({ name, source }); return start(owned ? { PRESALES_EXECUTION_PARENT_ROOT_ID: 'fixture-parent' } : {}); } };
       if (name.endsWith('child_termination.js')) return { requestChildTermination: (child, options) => termination(child, options) };
+      if (name.endsWith('execution_budget.js')) return require('../../scripts/lib/system/execution_budget.js');
       throw new Error('Unexpected dependency: ' + name);
     } }, { filename: file });
   return { ...m.exports, child: c, calls, wrappers };
