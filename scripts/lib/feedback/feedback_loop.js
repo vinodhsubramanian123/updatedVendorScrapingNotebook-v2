@@ -32,9 +32,35 @@ function classifyPortalError(errorMessage) {
   const msg = String(errorMessage || '').trim();
   const lower = msg.toLowerCase();
 
+  const isOperational = /\b(etimedout|econnrefused|econnreset|socket hang up|timeout|timed out|session expired|sso|login failed|unauthorized|forbidden|403|502|503|504|cdp|remote debugging|chrome disconnected|navigation failed)\b/i.test(msg);
+  if (isOperational) {
+    return {
+      category: 'OPERATIONAL_INCIDENT',
+      errorType: 'OPERATIONAL_INCIDENT',
+      rawMessage: msg,
+      affectedSku: 'NONE',
+      requiredSku: null,
+      timestamp: new Date().toISOString()
+    };
+  }
+
+  const isWorkflow = /\b(selector|button relocated|smart cto button|dom element|xpath|css selector|ui element|layout shifted|menu tab)\b/i.test(msg);
+  if (isWorkflow) {
+    return {
+      category: 'WORKFLOW_ADVISORY',
+      errorType: 'WORKFLOW_ADVISORY',
+      rawMessage: msg,
+      affectedSku: 'NONE',
+      requiredSku: null,
+      timestamp: new Date().toISOString()
+    };
+  }
+
   let errorType = 'PERMANENT_PHYSICAL_DEPENDENCY';
+  let category = 'HARDWARE_PHYSICAL_RULE';
   if (lower.includes('out of stock') || lower.includes('lead time') || lower.includes('supply constraint') || lower.includes('restricted availability')) {
     errorType = 'TEMPORARY_SUPPLY_CONSTRAINT';
+    category = 'TEMPORARY_SUPPLY_CONSTRAINT';
   }
 
   const extractGlobal = new RegExp(HPE_SKU_EXTRACT_REGEX.source, 'gi');
@@ -57,6 +83,7 @@ function classifyPortalError(errorMessage) {
   }
 
   return {
+    category,
     errorType,
     rawMessage: msg,
     affectedSku,
@@ -80,6 +107,28 @@ function processPortalFeedback(portalError, outputDir, options = {}) {
     ? portalError 
     : ((portalError && (portalError.reason || portalError.rawMessage || portalError.errorType)) || JSON.stringify(portalError || ''));
   const classification = classifyPortalError(errorText);
+
+  if (classification.category === 'OPERATIONAL_INCIDENT') {
+    return {
+      status: 'OPERATIONAL_INCIDENT_RECORDED',
+      category: 'OPERATIONAL_INCIDENT',
+      governanceStatus: 'IGNORED_FOR_HARDWARE_RULES',
+      rawMessage: classification.rawMessage,
+      timestamp: classification.timestamp,
+      message: 'Operational incident (network/auth/CDP error) quarantined from hardware knowledge base.'
+    };
+  }
+
+  if (classification.category === 'WORKFLOW_ADVISORY') {
+    return {
+      status: 'WORKFLOW_ADVISORY_RECORDED',
+      category: 'WORKFLOW_ADVISORY',
+      governanceStatus: 'WORKFLOW_ADVISORY_ONLY',
+      rawMessage: classification.rawMessage,
+      timestamp: classification.timestamp,
+      message: 'Workflow advisory (UI/DOM change) recorded; hardware knowledge base unaffected.'
+    };
+  }
 
   const historyDir = path.join(outputDir, 'history');
   if (!fs.existsSync(historyDir)) {

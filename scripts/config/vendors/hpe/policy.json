@@ -1,0 +1,20 @@
+{
+  "vendorId": "HPE",
+  "vendorName": "Hewlett Packard Enterprise",
+  "defaultSupportPolicy": {
+    "tier": "TECH_CARE_BASIC",
+    "durationYears": 3,
+    "description": "HPE 3-Year Tech Care Basic (Product-Qualified Default)"
+  },
+  "terminology": {
+    "ctoTerm": "CTO",
+    "smartCto": "Smart CTO",
+    "portalName": "One Config Advanced (OCA)",
+    "rulesEngine": "CLIC WebLogic"
+  },
+  "domains": ["server", "storage", "networking", "archive"],
+  "evidenceLimits": [
+    "QuickSpecs citations provide document evidence, not live ordering availability.",
+    "CLIC WebLogic portal verification is required for final vendor acceptance receipt."
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "vendorId": "VENDOR_X",
+  "vendorName": "Synthetic Vendor-X",
+  "defaultSupportPolicy": {
+    "tier": "STANDARD_SUPPORT",
+    "durationYears": 1,
+    "description": "Vendor-X Standard 1-Year Hardware Support"
+  },
+  "terminology": {
+    "ctoTerm": "Build-to-Order",
+    "smartCto": "Express Config",
+    "portalName": "Synthetic Partner Portal",
+    "rulesEngine": "Synthetic Rules Validator"
+  },
+  "domains": ["server"],
+  "evidenceLimits": [
+    "Vendor-X is a synthetic conformance fixture for validating multi-vendor architecture abstractions.",
+    "Zero live portal scraping or ordering claimed."
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "vendorId": "DELL",
+  "vendorName": "Dell Technologies",
+  "defaultSupportPolicy": {
+    "tier": "PROSUPPORT",
+    "durationYears": 3,
+    "description": "Dell 3-Year ProSupport Next Business Day"
+  },
+  "terminology": {
+    "ctoTerm": "Custom Configuration",
+    "smartCto": "Smart Selection",
+    "portalName": "Dell Premier / OSC",
+    "rulesEngine": "Dell Solutions Configurator"
+  },
+  "domains": ["server", "storage", "networking"],
+  "evidenceLimits": [
+    "Dell technical guides provide specification evidence, not live partner portal receipt.",
+    "Live portal scraping or automated ordering not claimed for Dell platforms."
+  ]
+}

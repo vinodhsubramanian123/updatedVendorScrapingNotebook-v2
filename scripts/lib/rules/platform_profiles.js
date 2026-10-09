@@ -235,6 +235,29 @@ const PLATFORM_PROFILES = {
     targetHpeEquivalent: 'HPE_PROLIANT_DL380_GEN11'
   },
 
+  // --- SYNTHETIC VENDOR CONFORMANCE (Vendor-X) ---
+  'VENDOR_X_SERVER_X1': {
+    domain: 'server',
+    vendor: 'Vendor-X',
+    family: 'ServerX',
+    generation: 'Gen1',
+    formFactor: '1U Rack',
+    maxSockets: 2,
+    baseChassis: { sku: 'VX-SRV-X1', description: 'Vendor-X Server X1 CTO Chassis' },
+    detection: GENERIC_DETECTION_PATTERNS,
+    memoryArchitecture: {
+      generation: 'DDR5',
+      channelsPerSocket: 8,
+      dimmsPerChannel: 1,
+      maxDimmsPerSocket: 8,
+      maxDimmsPerChassis: 16,
+      minCpuForMaxDimms: 2,
+      speedMt: 4800,
+      allowMixedCapacities: false
+    },
+    targetHpeEquivalent: 'HPE_PROLIANT_DL380_GEN12'
+  },
+
   // --- STORAGE PLATFORMS ---
   'HPE_MSA_2060': {
     domain: 'storage',
