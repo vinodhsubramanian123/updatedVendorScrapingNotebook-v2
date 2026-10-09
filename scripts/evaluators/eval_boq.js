@@ -529,6 +529,15 @@ function executePhysicalPreChecks(items, catalogData, chassisDir, JSON_MODE, req
       console.log(`\n⚠️ PHYSICAL WARNINGS:`);
       evalResults.warnings.forEach(w => console.log(`   - ${w}`));
     }
+
+    if (graph.conflicts && graph.conflicts.length > 0) {
+      const hints = graph.conflicts.filter(c => c.diagnosticHint).map(c => c.diagnosticHint);
+      if (hints.length > 0) {
+        evalResults.diagnosticHints = hints;
+        console.log(`\n💡 HISTORICAL DIAGNOSTIC REFERENCES (${hints.length} known pattern(s) identified):`);
+        hints.forEach(h => console.log(`   - ${h.referenceNotice || h.rule}`));
+      }
+    }
   }
 
   return { evalResults, graph, queryPayload, stage2AspectMathMs };

@@ -13,7 +13,7 @@ const {
   extractHiddenElements, probeConditionalSkuVisibility, extractUnavailableDomRules,
   sleep
 } = require('../lib/scraper/cdp.js');
-const { emitProgress, emitLog, emitResult } = require('../lib/system/progress.js');
+const { emitProgress, emitResult } = require('../lib/system/progress.js');
 const { updateScrapedRegistry } = require('../lib/catalog/registry.js');
 const { parseProductMeta } = require('../lib/catalog/product_meta.js');
 const { normalize, resolveProductIdentity } = require('../lib/catalog/product_scope.js');
@@ -81,12 +81,17 @@ async function auditAndPromoteStaging({
     if (!stagingCatalogContent.metadata || skuCount <= 0) {
       throw new Error(`Pre-Promotion Schema Guard Failed: totalUniqueSKUs is ${skuCount} (must be > 0).`);
     }
-    if (entriesCount === 0) {
-      throw new Error(`Pre-Promotion Schema Guard Failed: entries[] is empty or not an array.`);
-    }
+    const { assertScrapedCatalogQuality } = require('../lib/catalog/catalog_freshness_guard.js');
+    assertScrapedCatalogQuality(outputDir, {
+      chassisName: meta.cleanName,
+      isStaging: true,
+      throwOnError: true,
+      humanConfirmed: true
+    });
+
     captureReceipt = require('../lib/catalog/catalog_capture_receipt.js').createCaptureReceipt(outputDir, liveOutputDir, meta.cleanName);
 
-    const { verifyScrapingStep, selfReflectOnScrapingSession, AtomicStepAnomalyError } = require('../lib/scraper/scraping_verifiability.js');
+    const { verifyScrapingStep, AtomicStepAnomalyError } = require('../lib/scraper/scraping_verifiability.js');
     const isTallyVerified = skuCount > 0 && entriesCount > 0 && fs.existsSync(catalogXlsx);
     const step8Result = verifyScrapingStep(8, { tallyAuditPassed: isTallyVerified, skuCount, entriesCount });
     stepTelemetry[8] = step8Result;
@@ -191,7 +196,7 @@ async function auditAndPromoteStaging({
   require('../lib/catalog/catalog_capture_receipt.js').finalizeCaptureReceipt(liveOutputDir, captureReceipt, postFlowSyncResult);
   require('../lib/catalog/product_metadata_manager.js').refreshMasterProductMetadata();
 
-  const { verifyScrapingStep, selfReflectOnScrapingSession, AtomicStepAnomalyError } = require('../lib/scraper/scraping_verifiability.js');
+  const { verifyScrapingStep } = require('../lib/scraper/scraping_verifiability.js');
   const step9Result = verifyScrapingStep(9, {
     cloudSyncVerified: Boolean(postFlowSyncResult?.success && postFlowSyncResult.syncStatus === 'CLOUD_VERIFIED')
   });
@@ -527,7 +532,7 @@ async function main() {
     ws = await connectWS(pageTarget.webSocketDebuggerUrl);
   }
 
-  const { verifyScrapingStep, selfReflectOnScrapingSession, AtomicStepAnomalyError } = require('../lib/scraper/scraping_verifiability.js');
+  const { verifyScrapingStep, AtomicStepAnomalyError } = require('../lib/scraper/scraping_verifiability.js');
   const stepTelemetry = {};
 
   const step1Result = verifyScrapingStep(1, { wsConnected: true, ws });
@@ -869,7 +874,7 @@ async function main() {
     if (
       !meta.cleanName ||
       BLOCKED_CHASSIS_NAMES.has(meta.cleanName) ||
-      !/^[A-Za-z0-9][A-Za-z0-9_\-]+$/.test(meta.cleanName) ||
+      !/^[A-Za-z0-9][A-Za-z0-9_-]+$/.test(meta.cleanName) ||
       meta.cleanName.includes('..') ||
       meta.cleanName.length > 80
     ) {
@@ -882,7 +887,7 @@ async function main() {
     console.log(`Family: "${meta.family}", Gen: "${meta.gen}", Chassis: "${meta.cleanName}"`);
 
     const liveOutputDir = path.join(OUTPUTS_ROOT, meta.family, meta.gen, meta.cleanName);
-    const stagingDir = path.join(OUTPUTS_ROOT, 'temp', `staging_${meta.cleanName.replace(/[^a-zA-Z0-9_\-]/g, '_')}_${Date.now()}`);
+    const stagingDir = path.join(OUTPUTS_ROOT, 'temp', `staging_${meta.cleanName.replace(/[^a-zA-Z0-9_-]/g, '_')}_${Date.now()}`);
     outputDir = stagingDir;
 
     if (!chassisDiscovery) {

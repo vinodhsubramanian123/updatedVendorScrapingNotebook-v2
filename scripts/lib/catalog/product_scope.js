@@ -16,7 +16,6 @@ const PILLAR_FAMILIES = {
 
 function inferPillar(family, productId = '') {
   const normalizedFamily = normalize(family);
-  const normalizedProductId = normalize(productId);
 
   // Synergy is a special composite — pillar depends on component role
   if (normalizedFamily === 'synergy') {
@@ -156,13 +155,33 @@ function isVerifiedSharedAccessoryRule(rule, target) {
   return compatibleProducts.some(productId => same(baseProductId(productId), target.productId));
 }
 
+const APPROVED_UNIVERSAL_POLICY_SKUS = new Set([
+  'SOLUTION_TREE_ITEM_0100_01',
+  'HU4B2A3',
+  'S1A05A',
+  'R7A11AAE',
+  'P35876-B21'
+]);
+
+function isApprovedUniversalPolicySku(sku) {
+  if (!sku) return true;
+  const clean = String(sku).trim().toUpperCase();
+  if (['NONE', 'N/A', 'GLOBAL', 'UNIVERSAL', 'ALL', 'OPTIONAL'].includes(clean)) return true;
+  return APPROVED_UNIVERSAL_POLICY_SKUS.has(clean);
+}
+
 function ruleAppliesToProduct(rule, target, config = {}) {
   if (!rule || !target) return false;
   const source = identityFromRule(rule, config);
   if (!same(source.vendor || target.vendor, target.vendor)) return false;
   if (rule.sharedAccessoryVerified === true) return isVerifiedSharedAccessoryRule(rule, target);
   const normalizedScope = String(rule.scopeTaxonomy || rule.scope || 'CHASSIS_SPECIFIC').toUpperCase().replace(/_RULES$/, '');
-  if (normalizedScope === 'UNIVERSAL_VENDOR') return !rule.vendor || same(rule.vendor, target.vendor);
+  if (normalizedScope === 'UNIVERSAL_VENDOR') {
+    // Strict invariant (INV-48 / INV-110): Universal vendor rules cannot contain chassis-specific hardware SKUs
+    if (rule.affectedSku && !isApprovedUniversalPolicySku(rule.affectedSku)) return false;
+    if (rule.requiredDependencySku && !isApprovedUniversalPolicySku(rule.requiredDependencySku)) return false;
+    return !rule.vendor || same(rule.vendor, target.vendor);
+  }
 
   if (source.pillar && !same(source.pillar, target.pillar)) return false;
   if (normalizedScope === 'FAMILY_GEN') {
@@ -198,5 +217,8 @@ module.exports = {
   resolveProductIdentity,
   isVerifiedSharedAccessoryRule,
   ruleAppliesToProduct,
-  scopeRegistryForProduct
+  scopeRegistryForProduct,
+  APPROVED_UNIVERSAL_POLICY_SKUS,
+  isApprovedUniversalPolicySku
 };
+

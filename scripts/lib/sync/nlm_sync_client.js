@@ -677,6 +677,15 @@ function syncToNotebookLMWithinLease(notebookId, payloadPath, chassisName = 'Unk
       }
     }
 
+    const payloadDir = path.dirname(payloadPath);
+    const { assertScrapedCatalogQuality } = require('../catalog/catalog_freshness_guard.js');
+    assertScrapedCatalogQuality(payloadDir, {
+      chassisName,
+      throwOnError: true,
+      requireHumanConfirmation: options.requireHumanConfirmation === true,
+      humanConfirmed: options.humanConfirmed === true
+    });
+
     assertPayloadProductIsolation(fs.readFileSync(payloadPath, 'utf8'), chassisName, notebookCfg);
     let legacyFingerprint = null;
     if (!useCanonicalDrive) {

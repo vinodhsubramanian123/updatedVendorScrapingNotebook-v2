@@ -358,7 +358,7 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
   ]);
   const cfg = loadNotebookConfig();
   const isRegisteredChassis = cfg.notebooks && !!cfg.notebooks[chassisName];
-  const isValidFormat = chassisName && /^[A-Za-z0-9][A-Za-z0-9_\-]*$/.test(chassisName) && chassisName.length <= 80;
+  const isValidFormat = chassisName && /^[A-Za-z0-9][A-Za-z0-9_-]*$/.test(chassisName) && chassisName.length <= 80;
 
   if (BLOCKED_CHASSIS.has(chassisName) || (!isRegisteredChassis && !isValidFormat)) {
     logger.warn('KNOWLEDGE_SYNC', `Refusing to generate sync payload for invalid chassis: "${chassisName}"`);
@@ -380,6 +380,17 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
     } catch (e) {
       logger.error('KNOWLEDGE_SYNC', `Failed to parse catalogData at ${catalogPath}`, e);
       throw new Error(`SyncPayloadBuilderError: Corrupt catalog JSON at ${catalogPath}: ${e.message}`);
+    }
+
+    // Pre-flight catalog quality assertion (INV-124 / INV-139 / INV-158)
+    if (!isTestChassis) {
+      const { assertScrapedCatalogQuality } = require('../catalog/catalog_freshness_guard.js');
+      assertScrapedCatalogQuality(targetDir, {
+        chassisName,
+        throwOnError: true,
+        requireHumanConfirmation: syncOptions.requireHumanConfirmation === true,
+        humanConfirmed: syncOptions.humanConfirmed === true
+      });
     }
   }
 

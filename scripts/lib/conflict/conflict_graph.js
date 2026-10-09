@@ -10,7 +10,6 @@
  * Level 5: SKU Level (Exact Part # Pre-requisites & Co-requisites)
  */
 
-const fs = require('fs');
 const path = require('path');
 const { cleanBaseSKU, isValidHpeSKU } = require('../catalog/sku.js');
 const { SKU_BLACKLIST } = require('../feedback/quarantined_deltas.js');
@@ -307,15 +306,76 @@ function _evaluateLearnedDeltas(fullBomMap, fullBomList, learnedDeltas, targetCh
       const hasReq = fullBomMap.has(requiredSku) || fullBomList.some(it => (it.description || '').includes(requiredSku));
       if (!hasReq) {
         const err = `Learned Rule Violation (${delta.deltaId || delta.id || 'LEARNED'}): SKU ${affectedSku} requires mandatory ${requiredSku}. ${msg}`;
-        conflicts.push({ level: 'LEARNED_DELTA', type: 'LEARNED_DEPENDENCY', message: err });
+        const diagnosticHint = {
+          deltaId: delta.deltaId || delta.id || 'LEARNED_LESSON',
+          rule: delta.ruleUpdate || msg,
+          rationale: delta.humanReasoning || null,
+          provenance: delta.provenance || 'CLIC_VERIFIED_HISTORICAL_RECORD',
+          referenceNotice: `💡 Diagnostic Hint [${delta.deltaId || 'LEARNED'}]: Past CLIC validation confirmed ${affectedSku} requires ${requiredSku}.${delta.humanReasoning ? ` Engineering Rationale: ${delta.humanReasoning}` : ''}`
+        };
+        conflicts.push({ level: 'LEARNED_DELTA', type: 'LEARNED_DEPENDENCY', message: err, diagnosticHint });
         recordAudit('LEARNED_DELTA', `Learned Rule: ${affectedSku} requires ${requiredSku}`, 'FAIL', err, affectedSku);
       } else {
         recordAudit('LEARNED_DELTA', `Learned Rule: ${affectedSku} requires ${requiredSku}`, 'PASS', `Satisfied: ${requiredSku} present in BOM.`, affectedSku);
       }
     } else if (msg) {
-      recordAudit('LEARNED_DELTA', `Learned Restriction on ${affectedSku}`, 'WARNING', `Portal Rejection History: ${msg}`, affectedSku);
+      // Check for mutual exclusion described in learned delta
+      const isMutualExclusion = delta.ruleType === 'MUTUAL_EXCLUSION' || delta.errorType === 'MUTUAL_EXCLUSION' || delta.ruleType === 'STORAGE_COLLISION' || /cannot be populated simultaneously|prohibits mixing|cannot mix|mutually exclusive/i.test(msg);
+      let conflictDetected = false;
+      if (isMutualExclusion) {
+        const { HPE_SKU_EXTRACT_REGEX, cleanBaseSKU, isValidHpeSKU } = require('../catalog/sku.js');
+        const matches = (msg.match(new RegExp(HPE_SKU_EXTRACT_REGEX.source, 'gi')) || [])
+          .map(cleanBaseSKU)
+          .filter(s => s && s !== affectedSku && isValidHpeSKU(s));
+        const presentConflicts = matches.filter(s => fullBomMap.has(s) || fullBomList.some(it => (it.description || '').includes(s)));
+        if (presentConflicts.length > 0) {
+          const conflictingSku = presentConflicts[0];
+          const err = `Learned Mutual Exclusion Violation (${delta.deltaId || 'LEARNED'}): Cannot mix ${affectedSku} and ${conflictingSku}. ${msg}`;
+          const diagnosticHint = {
+            deltaId: delta.deltaId || 'LEARNED_LESSON',
+            rule: delta.ruleUpdate || msg,
+            rationale: delta.humanReasoning || null,
+            provenance: delta.provenance || 'CLIC_VERIFIED_HISTORICAL_RECORD',
+            referenceNotice: `💡 Diagnostic Hint [${delta.deltaId || 'LEARNED'}]: Past CLIC validation confirmed ${affectedSku} and ${conflictingSku} are mutually exclusive.${delta.humanReasoning ? ` Engineering Rationale: ${delta.humanReasoning}` : ''}`
+          };
+          conflicts.push({ level: 'LEARNED_DELTA', type: 'MUTUAL_EXCLUSION', message: err, diagnosticHint });
+          recordAudit('LEARNED_DELTA', `Learned Mutual Exclusion on ${affectedSku}`, 'FAIL', err, affectedSku);
+          conflictDetected = true;
+        }
+      }
+      if (!conflictDetected) {
+        recordAudit('LEARNED_DELTA', `Learned Restriction on ${affectedSku}`, 'WARNING', `Portal Rejection History: ${msg}`, affectedSku);
+      }
     }
   });
+}
+
+function _enrichConflictsWithDiagnosticHints(conflicts, learnedDeltas) {
+  if (!Array.isArray(conflicts) || !Array.isArray(learnedDeltas)) return;
+  for (const c of conflicts) {
+    if (c.diagnosticHint) continue;
+    const msg = String(c.message || '').toLowerCase();
+    const matchingDelta = learnedDeltas.find(d => {
+      const dSku = (d.affectedSku || '').toLowerCase();
+      const dReq = (d.requiredDependencySku || '').toLowerCase();
+      const dMsg = (d.rawMessage || d.ruleUpdate || '').toLowerCase();
+      if (dSku && msg.includes(dSku)) return true;
+      if (dReq && msg.includes(dReq)) return true;
+      if (c.type === 'MUTUAL_EXCLUSION' && (d.ruleType === 'MUTUAL_EXCLUSION' || d.errorType === 'MUTUAL_EXCLUSION') && (msg.includes('mixing') || msg.includes('memory') || msg.includes('power'))) {
+        return dMsg.includes('mixing') || dMsg.includes('memory') || dMsg.includes('power');
+      }
+      return false;
+    });
+    if (matchingDelta) {
+      c.diagnosticHint = {
+        deltaId: matchingDelta.deltaId || 'HISTORICAL_LESSON',
+        rule: matchingDelta.ruleUpdate || matchingDelta.rawMessage,
+        rationale: matchingDelta.humanReasoning || null,
+        provenance: matchingDelta.provenance || 'CLIC_VERIFIED_HISTORICAL_RECORD',
+        referenceNotice: `💡 Diagnostic Hint [${matchingDelta.deltaId || 'HISTORICAL_LESSON'}]: Past learning: ${matchingDelta.ruleUpdate || matchingDelta.rawMessage}${matchingDelta.humanReasoning ? ` (${matchingDelta.humanReasoning})` : ''}`
+      };
+    }
+  }
 }
 
 function _evaluateChassisFormFactorRules(catalogData, chassisInfo, fullBomList, rulesEvaluated, recordAudit, conflicts) {
@@ -484,6 +544,9 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
       recordAudit('CONTESTED_RESOURCE', `Contested Resource: ${con.resourceType}`, 'INFO', con.tradeoffSummary);
     });
   }
+
+  // Enrich conflicts with relevant historical diagnostic hints
+  _enrichConflictsWithDiagnosticHints(conflicts, learnedDeltas);
 
   const isWholeSolutionValid = conflicts.length === 0 && unresolvedConflicts.length === 0;
 

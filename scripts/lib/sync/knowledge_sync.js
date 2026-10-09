@@ -12,7 +12,7 @@
 const fs = require('fs');
 const path = require('path');
 const { safeWriteJsonAtomic } = require('../system/fs_compat.js');
-const { inferPillar, resolveProductIdentity } = require('../catalog/product_scope.js');
+const { inferPillar, resolveProductIdentity, isApprovedUniversalPolicySku } = require('../catalog/product_scope.js');
 
 // Modular subcomponents
 const { syncToNotebookLM } = require('./nlm_sync_client.js');
@@ -21,7 +21,6 @@ const { inspectKnowledgeDrift: runDriftInspection } = require('./drift_inspector
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
 const OUTPUTS_ROOT = path.join(PROJECT_ROOT, 'outputs');
-const MASTER_REGISTRY_FILE = path.join(OUTPUTS_ROOT, 'history', 'master_knowledge_registry.json');
 
 /**
  * Normalizes chassis names to canonical format (INV-36 compliance).
@@ -117,6 +116,16 @@ function classifyKnowledgeScope(deltaOrText) {
     ? deltaOrText.toLowerCase()
     : String(deltaOrText.rawMessage || deltaOrText.ruleUpdate || deltaOrText.errorType || '').toLowerCase();
   const ruleType = isString ? '' : String(deltaOrText.ruleType || '').toUpperCase();
+
+  // Strict Invariant (INV-48 / INV-110): Universal / shared rules must NEVER contain chassis hardware SKUs
+  if (!isString) {
+    const hasChassisHardwareSku =
+      Boolean(deltaOrText.affectedSku && !isApprovedUniversalPolicySku(deltaOrText.affectedSku)) ||
+      Boolean(deltaOrText.requiredDependencySku && !isApprovedUniversalPolicySku(deltaOrText.requiredDependencySku));
+    if (hasChassisHardwareSku) {
+      return 'CHASSIS_SPECIFIC';
+    }
+  }
 
   if (raw.includes('all hpe') || raw.includes('global') || raw.includes('vendor-wide') || raw.includes('across all servers') ||
       raw.includes('taa') || raw.includes('gta') || raw.includes('dc lug') || raw.includes('-48vdc') || raw.includes('telco')) {
@@ -221,9 +230,13 @@ function buildMasterKnowledgeRegistry(options = {}) {
     // because its prose contained words such as "global" or "Gen12". Keep it
     // chassis-specific unless broad applicability was explicitly verified.
     const hasProductProvenance = Boolean(d.chassis || d.productId);
+    const hasChassisHardwareSku =
+      Boolean(d.affectedSku && !isApprovedUniversalPolicySku(d.affectedSku)) ||
+      Boolean(d.requiredDependencySku && !isApprovedUniversalPolicySku(d.requiredDependencySku));
     const scopeWasCorrected =
       (scope === 'UNIVERSAL_VENDOR' && hasProductProvenance && !hasExplicitWideScopeEvidence(d, 'vendor')) ||
-      (scope === 'FAMILY_GEN' && hasProductProvenance && !hasExplicitWideScopeEvidence(d, 'family'));
+      (scope === 'FAMILY_GEN' && hasProductProvenance && !hasExplicitWideScopeEvidence(d, 'family')) ||
+      ((scope === 'UNIVERSAL_VENDOR' || scope === 'FAMILY_GEN') && hasChassisHardwareSku);
     if (scopeWasCorrected) scope = 'CHASSIS_SPECIFIC';
 
     const identity = resolveProductIdentity(d.chassis || '', notebookConfig);
@@ -286,12 +299,44 @@ function buildMasterKnowledgeRegistry(options = {}) {
   md += `**Total Verified Knowledge Deltas**: \`${allDeltas.length}\` (\`${universalRules.length}\` Universal + \`${familyGenRules.length}\` Family/Gen + \`${chassisSpecificRules.length}\` Chassis Specific)  \n\n`;
   md += `---\n\n`;
   md += `## Scoped Knowledge Delta Inventory\n\n`;
-  if (allDeltas.length === 0) {
-    md += `*No persistent knowledge deltas logged.*\n`;
+
+  md += `### 🌐 1. Universal Vendor Rules (Zero Product-Specific SKUs)\n\n`;
+  if (universalRules.length === 0) {
+    md += `*No verified universal vendor rules logged.*\n\n`;
   } else {
-    allDeltas.forEach((d, idx) => {
-      md += `### ${idx + 1}. [${d.deltaId || `DELTA-${idx+1}`}] ${d.chassis || 'Universal'} — ${d.ruleType || 'RULE'}\n`;
-      md += `- **Scope**: \`${d.scopeTaxonomy || 'CHASSIS_SPECIFIC'}\`\n`;
+    universalRules.forEach((d, idx) => {
+      md += `#### U${idx + 1}. [${d.deltaId || `DELTA-U${idx+1}`}] ${d.ruleType || 'POLICY'}\n`;
+      md += `- **Scope**: \`UNIVERSAL_VENDOR\`\n`;
+      md += `- **Rule**: ${d.ruleUpdate || d.rawMessage}\n`;
+      if (d.affectedSku) md += `- **Affected Policy Token**: \`${d.affectedSku}\`\n`;
+      if (d.requiredDependencySku) md += `- **Required Dependency**: \`${d.requiredDependencySku}\`\n`;
+      if (d.humanReasoning) md += `- **Engineering Rationale**: *${d.humanReasoning}*\n`;
+      md += `\n`;
+    });
+  }
+
+  md += `### 🏛️ 2. Family & Generation Rules\n\n`;
+  if (familyGenRules.length === 0) {
+    md += `*No verified family/generation rules logged.*\n\n`;
+  } else {
+    familyGenRules.forEach((d, idx) => {
+      md += `#### F${idx + 1}. [${d.deltaId || `DELTA-F${idx+1}`}] ${d.family || 'Family'} ${d.generation || 'Gen'} — ${d.ruleType || 'RULE'}\n`;
+      md += `- **Scope**: \`FAMILY_GEN\`\n`;
+      md += `- **Rule**: ${d.ruleUpdate || d.rawMessage}\n`;
+      if (d.affectedSku) md += `- **Affected SKU**: \`${d.affectedSku}\`\n`;
+      if (d.requiredDependencySku) md += `- **Required Dependency**: \`${d.requiredDependencySku}\`\n`;
+      if (d.humanReasoning) md += `- **Engineering Rationale**: *${d.humanReasoning}*\n`;
+      md += `\n`;
+    });
+  }
+
+  md += `### 🎯 3. Chassis & Solution Gotchas (Grouped by Product)\n\n`;
+  if (chassisSpecificRules.length === 0) {
+    md += `*No persistent chassis-specific gotchas logged.*\n\n`;
+  } else {
+    chassisSpecificRules.forEach((d, idx) => {
+      md += `#### C${idx + 1}. [${d.deltaId || `DELTA-C${idx+1}`}] ${d.chassis || 'Chassis'} — ${d.ruleType || 'RULE'}\n`;
+      md += `- **Scope**: \`CHASSIS_SPECIFIC\`\n`;
       md += `- **Rule**: ${d.ruleUpdate || d.rawMessage}\n`;
       if (d.affectedSku) md += `- **Affected SKU**: \`${d.affectedSku}\`\n`;
       if (d.requiredDependencySku) md += `- **Required Dependency**: \`${d.requiredDependencySku}\`\n`;

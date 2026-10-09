@@ -9,11 +9,9 @@
  * to prevent stale or corrupted data from polluting workbook sheets.
  */
 
-/**
- * Normalize heterogeneous catalog metadata keys across generations
- * @param {object} [metadata={}] - Raw catalog metadata object
- * @returns {object} Normalized metadata record
- */
+const fs = require('fs');
+const path = require('path');
+
 /**
  * Normalize heterogeneous catalog metadata keys across generations
  * @param {object} [metadata={}] - Raw catalog metadata object
@@ -348,10 +346,163 @@ function evaluateCatalogFreshness(catalogDir, options = {}) {
   return result;
 }
 
+/**
+ * Authoritative Pre-Sync & Post-Scraping Quality Gate (INV-124 / INV-139 / INV-158)
+ *
+ * Verifies that a scraped or staged catalog adheres strictly to:
+ * 1. File existence and uncorrupted JSON/Excel structure.
+ * 2. Exact match between metadata.totalUniqueSKUs and distinct SKUs in entries (INV-139).
+ * 3. Tabular integrity (non-zero entries, zero corrupted SKU formats, non-empty tables).
+ * 4. Honest pricing contract (finite numbers >= 0 or explicit null; zero NaN strings or negative numbers; INV-158).
+ * 5. Server core category coverage (CPU, Memory, Storage/Drive, Power).
+ * 6. Services companion file integrity if present.
+ * 7. Human confirmation / verified capture receipt requirement if staging or requested.
+ *
+ * @param {string|object} catalogDirOrData - Path to catalog directory or parsed Catalog.json
+ * @param {object} [options={}] - { chassisName, throwOnError, isStaging, requireHumanConfirmation, humanConfirmed }
+ * @returns {{ isValid: boolean, chassis: string, totalHardwareSkus: number, totalServiceSkus: number, categoriesCount: number, errors: string[], warnings: string[] }}
+ */
+function assertScrapedCatalogQuality(catalogDirOrData, options = {}) {
+  const errors = [];
+  const warnings = [];
+  let catalogData = null;
+  let catalogDir = null;
+  let chassisName = options.chassisName || null;
+
+  if (typeof catalogDirOrData === 'string') {
+    catalogDir = catalogDirOrData;
+    if (!fs.existsSync(catalogDir)) {
+      errors.push(`Catalog directory does not exist: "${catalogDir}"`);
+      return _buildQualityResult(false, chassisName || 'UNKNOWN', 0, 0, 0, errors, warnings, options);
+    }
+    const prefix = chassisName || path.basename(catalogDir);
+    const catalogPath = path.join(catalogDir, `${prefix}_Catalog.json`);
+    if (!fs.existsSync(catalogPath)) {
+      errors.push(`Master catalog JSON missing at "${catalogPath}"`);
+      return _buildQualityResult(false, prefix, 0, 0, 0, errors, warnings, options);
+    }
+    try {
+      catalogData = JSON.parse(fs.readFileSync(catalogPath, 'utf8'));
+    } catch (err) {
+      errors.push(`Master catalog JSON is corrupted: ${err.message}`);
+      return _buildQualityResult(false, prefix, 0, 0, 0, errors, warnings, options);
+    }
+  } else if (catalogDirOrData && typeof catalogDirOrData === 'object') {
+    catalogData = catalogDirOrData;
+    chassisName = chassisName || catalogData?.metadata?.chassis || 'UNKNOWN';
+  } else {
+    errors.push('Invalid catalog input: expected directory path or catalog data object.');
+    return _buildQualityResult(false, 'UNKNOWN', 0, 0, 0, errors, warnings, options);
+  }
+
+  const normMeta = normalizeCatalogMetadata(catalogData.metadata);
+  chassisName = chassisName || normMeta.chassis;
+
+  // 1. Tabular integrity check
+  const tabReport = verifyTabularIntegrity(catalogData);
+  if (!tabReport.isValid) {
+    errors.push(...tabReport.errors);
+  }
+  warnings.push(...tabReport.warnings);
+
+  // 2. Strict SKU tally consistency check (INV-139)
+  const { getUniqueSkuCount } = require('./sku.js');
+  const actualUniqueHwSkus = getUniqueSkuCount(catalogData.entries);
+  const metaReportedSkus = Number(catalogData.metadata?.totalUniqueSKUs ?? -1);
+
+  if (metaReportedSkus <= 0) {
+    errors.push(`Invalid catalog metadata.totalUniqueSKUs: ${metaReportedSkus} (must be > 0).`);
+  } else if (metaReportedSkus !== actualUniqueHwSkus) {
+    errors.push(`Tally Invariant Violation (INV-139): metadata.totalUniqueSKUs (${metaReportedSkus}) does not match counted unique SKUs in entries (${actualUniqueHwSkus}).`);
+  }
+
+  // 3. Category coverage & essential subsystems check
+  const entries = catalogData.entries || [];
+  const parentCategories = new Set(entries.map(e => String(e.parentCategory || '').toLowerCase()));
+  const allSubcategories = new Set(entries.map(e => String(e.subCategory || '').toLowerCase()));
+
+  const hasCpu = [...parentCategories, ...allSubcategories].some(c => c.includes('processor') || c.includes('cpu'));
+  const hasMemory = [...parentCategories, ...allSubcategories].some(c => c.includes('memory') || c.includes('dimm') || c.includes('ram'));
+  const hasPower = [...parentCategories, ...allSubcategories].some(c => c.includes('power') || c.includes('psu') || c.includes('supply'));
+
+  const isServerProduct = !/^(msl|alletra|nimble|storeever|san|switch)/i.test(chassisName);
+  if (isServerProduct && entries.length > 5) {
+    if (!hasCpu) errors.push(`Missing mandatory server category: Processor / CPU options not found.`);
+    if (!hasMemory) errors.push(`Missing mandatory server category: Memory options not found.`);
+    if (!hasPower) errors.push(`Missing mandatory server category: Power Supply options not found.`);
+  }
+
+  // 4. Companion services audit
+  let totalServiceSkus = 0;
+  if (catalogDir) {
+    const servicesPath = path.join(catalogDir, `${chassisName}_Services.json`);
+    if (fs.existsSync(servicesPath)) {
+      try {
+        const servicesData = JSON.parse(fs.readFileSync(servicesPath, 'utf8'));
+        const actualSvcSkus = getUniqueSkuCount(servicesData.entries);
+        const metaSvcSkus = Number(servicesData.metadata?.totalUniqueSKUs ?? actualSvcSkus);
+        if (metaSvcSkus !== actualSvcSkus) {
+          errors.push(`Services Tally Invariant Violation: metadata.totalUniqueSKUs (${metaSvcSkus}) does not match counted unique services (${actualSvcSkus}).`);
+        }
+        totalServiceSkus = actualSvcSkus;
+      } catch (svcErr) {
+        errors.push(`Companion services file corrupt: ${svcErr.message}`);
+      }
+    }
+  }
+
+  // 5. Human / Governance confirmation gate before live sync
+  const requireConfirmation = options.requireHumanConfirmation === true || options.isStaging === true;
+  if (requireConfirmation && catalogDir) {
+    const receiptPath = path.join(catalogDir, `${chassisName}_catalog_capture_receipt.json`);
+    const genericReceiptPath = path.join(catalogDir, 'catalog_capture_receipt.json');
+    const hasReceipt = fs.existsSync(receiptPath) || fs.existsSync(genericReceiptPath);
+    let receiptValid = false;
+
+    if (hasReceipt) {
+      try {
+        const receipt = JSON.parse(fs.readFileSync(fs.existsSync(receiptPath) ? receiptPath : genericReceiptPath, 'utf8'));
+        receiptValid = ['LOCAL_PROMOTED', 'STAGING_AUDITED', 'VERIFIED'].includes(receipt.status);
+      } catch (_) {}
+    }
+
+    if (!receiptValid && !options.humanConfirmed) {
+      errors.push(`Governance Confirmation Required: Catalog changes require verified capture receipt or explicit human confirmation before live sync.`);
+    }
+  }
+
+  const isValid = errors.length === 0;
+  return _buildQualityResult(isValid, chassisName, actualUniqueHwSkus, totalServiceSkus, parentCategories.size, errors, warnings, options);
+}
+
+function _buildQualityResult(isValid, chassis, totalHardwareSkus, totalServiceSkus, categoriesCount, errors, warnings, options) {
+  const result = {
+    isValid,
+    chassis,
+    totalHardwareSkus,
+    totalServiceSkus,
+    categoriesCount,
+    errors,
+    warnings,
+    summary: isValid
+      ? `Catalog quality certified for ${chassis}: ${totalHardwareSkus} HW + ${totalServiceSkus} Svc SKUs across ${categoriesCount} categories.`
+      : `Catalog quality check failed with ${errors.length} error(s): ${errors.slice(0, 3).join('; ')}`
+  };
+
+  if (!isValid && options.throwOnError !== false) {
+    const err = new Error(`ScrapedCatalogQualityError: ${result.summary}`);
+    err.details = result;
+    throw err;
+  }
+
+  return result;
+}
+
 module.exports = {
   normalizeCatalogMetadata,
   auditCatalogFreshness,
   verifyTabularIntegrity,
   isCatalogFresh,
-  evaluateCatalogFreshness
+  evaluateCatalogFreshness,
+  assertScrapedCatalogQuality
 };

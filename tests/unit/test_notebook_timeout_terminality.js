@@ -25,6 +25,15 @@ function fixture() {
     };
     if (name === './knowledge_extractor.js') return { extractAndPersistLearnedDeltas: () => { learning++; return { count: 2 }; } };
     if (name === '../system/telemetry.js') return { recordNotebookConsultationTelemetry: () => telemetry++ };
+    if (name === '../system/execution_budget.js') {
+      const budget = require('../../scripts/lib/system/execution_budget.js');
+      return {
+        ...budget,
+        assertCallerActive: (opts, now) => budget.assertCallerActive(opts, now ?? ClockDate.now()),
+        logicalQueryOptions: (opts, now, legacy) => budget.logicalQueryOptions(opts, now ?? ClockDate.now(), legacy)
+      };
+    }
+    if (name === './query_attempt_record.js') return { getNotebookQueryRecovery: () => null };
     throw new Error('Unexpected dependency ' + name);
   };
   vm.runInNewContext(source, { module: exportsModule, exports: exportsModule.exports, require: requireMock,

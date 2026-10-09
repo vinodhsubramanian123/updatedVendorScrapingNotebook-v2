@@ -226,6 +226,15 @@ function classifySkuValidation(sku, catalogData = null) {
   return result;
 }
 
+function getUniqueSkuCount(entries) {
+  const set = new Set();
+  (entries || []).forEach(e => (e.skus || []).forEach(s => {
+    const pn = String(s.sku || s['Product #'] || '').trim();
+    if (pn) set.add(pn);
+  }));
+  return set.size;
+}
+
 module.exports = {
   HPE_SKU_REGEX,
   HPE_SKU_EXTRACT_REGEX,
@@ -234,5 +243,7 @@ module.exports = {
   classifyOptionType,
   isServiceSku,
   buildCatalogSkuIndex,
-  classifySkuValidation
+  classifySkuValidation,
+  getUniqueSkuCount
 };
+
