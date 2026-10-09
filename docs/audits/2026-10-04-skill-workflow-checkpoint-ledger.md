@@ -1,6 +1,6 @@
 # Skill/workflow excellence — checkpoint ledger
 
-Revision 5.40, 9 October 2026. GPU ownership/capacity/remedy/narrative fixes independently tested and integrated in main24/24; source-bound receipt retained. Verified dashboard/Notebook fixes and receipts promoted to local main; no push. Latest Antigravity input HEAD7ac4baf/origin main synchronized; ten new commits under gap review. Dashboard cancellation envelope independently reviewed and integrated24/24 focused main checks, no tracked protected delta. Formal12/35 after CP8a independent closure; see current-status snapshot for actual deliveries and pending scope. Local reviewed commits now authorized by user; no push requested.
+Revision 5.41, 9 October 2026. GPU ownership/capacity/remedy/narrative fixes independently tested and integrated in main24/24; source-bound receipt retained. Verified dashboard/Notebook fixes and receipts promoted to local main; no push. Latest Antigravity input HEAD7ac4baf/origin main synchronized; ten new commits under gap review. Dashboard cancellation envelope independently reviewed and integrated24/24 focused main checks, no tracked protected delta. Formal12/35 after CP8a independent closure; see current-status snapshot for actual deliveries and pending scope. Local reviewed commits now authorized by user; no push requested.
 
 ## Workspace and writer record
 
@@ -8,13 +8,13 @@ Revision 5.40, 9 October 2026. GPU ownership/capacity/remedy/narrative fixes ind
 | :--- | :--- |
 | Execution workspace | C:/Users/latha/.gemini/antigravity/scratch/antigravityProjects/updatedVendorScrapingNotebook-v2 |
 | Equivalent path alias | C:/Users/latha/antigravityProjects/updatedVendorScrapingNotebook-v2 — parent junction resolves to the execution workspace; not a second checkout |
-| Holder | Codex root integrator; no active holder at handoff; review/archive helperPID19716/session51262 released at boundary; reacquire canonical lease before writes |
+| Holder | Codex root; live ownerPID19716/session51262 verified before handoff edits; release canonical lease after commit and verify removal |
 | Reservation | Live `.git/codex-maintenance-locks/skill-workflow-excellence.lock`; agents write only isolated copies; no expiry-only reclamation |
 | Baseline commit | 823725a214816c972bf1d91a4ec01db7bb76b860 — re-record at CP0 |
 | Starting tree | Three untracked audit Markdown files; no tracked code changes at review start |
 | Pre-authoring input tree fingerprint | `c5f9f8fcb65010782dab70173f9711de157825c82d6ad64f9493b52316d20159` — CP0 baseline JSON includes all entries |
 | Test executor | Codex under the latest explicit human instruction; preserves historical Antigravity receipts; independent-review role remains separate |
-| Active implementation checkpoint | Latest upstream GPU boundary fix integrated26checks/lint0/protected0. CP11 whole-manifest17checks accepted isolated; latest dependency composition active. Product/SKU-bound accessory evidence design active. Independent combined acceptance/mainCP11 integration next; no customer activation. |
+| Active implementation checkpoint | Dashboard/Notebook/GPU fixes committed on local main; CP8a accepted. Next: factual query-choice memory and pricing presence. GPU24/24 main; lint0new/8existing; full scope12/35. |
 
 An execution writer must use the atomic owner-aware lease in Appendix E, held by a live process for the entire edit session. This table cannot enforce exclusivity. Read-only reviews may run concurrently; changes in one shared checkout may not. Never reclaim solely because a displayed expiry passed.
 
@@ -658,3 +658,7 @@ Agy sourceauthor b9f490b7-4bbd-4812-b771-480ff01e5866 corrected ownership and mi
 Actualcustomer improvement now live in localmain: no generic16pin=>dual inference; positive safeinteger capacity requires exactSKU owner; tally/remedy use sameformula;9node scaling once; mixedcapacity narrative retainsfacts. Formal12/35 remains whole-scope denominator, not a count of all integrated fixes. RemainingGPUvendorprofile generality belongsCP13.
 
 Updatedplanning allowance6–8 substantialexecution sessions across fourdelivery batches; not quota-reset guarantee. Prior3–4 notsupportedby currentthroughput. Finish/promote bounded fixes promptly; no new broaddelegation or repeatedbaselines while a smallintegration gate is outstanding. Codexcritical helper/pricing lanes hit quota; archivedpartialmemory resumes fromactualsource, no renewedaudit needed. Agyrouterreview still lacksfinalreceipt. Singlewriter19716/session51262 released atboundary.
+
+## Revision5.41 — durable main handoff
+
+Verified clean local main4d4be2a, six commits ahead of last fetched origin/main; no push. Replaced stale current-status narrative with one authoritative snapshot. Versioned the Agy skill/CLI evidence guide and bounded pending memory/pricing implementation contracts. Archived partial code remains explicitly unused/unverified. No runtime change, tests reused rather than repeated. Runtime work remains12/35 accepted; session forecast is not completion evidence.
