@@ -1,0 +1,25 @@
+{
+  "state": "UNVERIFIED_CANDIDATE_ARCHIVED_NOT_RUNTIME",
+  "worker": "b9f490b7-4bbd-4812-b771-480ff01e5866",
+  "candidate": "C:\\Users\\latha\\AppData\\Local\\Temp/agy-latest-gaps-20261009",
+  "rootReview": "CHANGES_REQUIRED",
+  "counterexample": {
+    "sku": "OTHER-KIT",
+    "description": "GPU power cable",
+    "metadata": {
+      "GPU_POWER_CABLE_KIT": {
+        "capacity": 3
+      }
+    },
+    "observed": 3,
+    "expected": 1
+  },
+  "correction": "Nonempty exact SKU ownership and positive safe integer capacity; focused regression proof required",
+  "observer": 52478,
+  "routerWorker": "9618307e-48a4-439a-a4f5-b82d02f335dd",
+  "notRun": [
+    "Candidate finalfocused tests",
+    "GPU main integration"
+  ],
+  "liveCodePromoted": false
+}

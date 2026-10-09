@@ -1,0 +1,37 @@
+diff --git a/scripts/lib/boq/boq_evaluator.js "b/C:\\Users\\latha\\AppData\\Local\\Temp\\agy-latest-gaps-20261009\\scripts\\lib\\boq\\boq_evaluator.js"
+index aace095..9f314b1 100644
+--- a/scripts/lib/boq/boq_evaluator.js
++++ "b/C:\\Users\\latha\\AppData\\Local\\Temp\\agy-latest-gaps-20261009\\scripts\\lib\\boq\\boq_evaluator.js"
+@@ -45,7 +45,7 @@ const { evalComputeThermal } = require('../aspects/compute_thermal.js');
+ const { evalMemoryChannel } = require('../aspects/memory_channel.js');
+ const { evalStorageTriMode } = require('../aspects/storage_tri_mode.js');
+ const { evalNetworkingOcp } = require('../aspects/networking_ocp.js');
+-const { evalPcieRiserSlots } = require('../aspects/pcie_riser.js');
++const { evalPcieRiserSlots, resolveGpuCableCapacity } = require('../aspects/pcie_riser.js');
+ const { evalPowerEnvironment } = require('../aspects/power_environment.js');
+ const { evalSupportManufacturing } = require('../aspects/support_manufacturing.js');
+ const { evalSupportServices } = require('../aspects/support_services.js');
+@@ -561,13 +561,17 @@ function validatePowerRules(ctx) {
+     const isGen12 = Boolean(chassisInfo?.gen?.includes('12') || chassisInfo?.model?.includes('Gen12'));
+     const gpuCableSku = mandatorySkus?.GPU_POWER_CABLE_KIT?.sku || (power.isDl380aGpuChassis ? 'P74700-B21' : (isGen12 ? 'P76450-B21' : 'P48816-B21'));
+     const gpuCableDesc = mandatorySkus?.GPU_POWER_CABLE_KIT?.name || (power.isDl380aGpuChassis ? 'HPE ProLiant Compute DL380a Gen12 GPU 16-pin FIO Cable Kit' : (isGen12 ? 'HPE ProLiant DL380 Gen12 GPU Auxiliary Power Cable Kit' : 'HPE ProLiant DL380 Gen11 GPU Power Cable Kit'));
+-    const isDualGpuKit = power.isDl380aGpuChassis || mandatorySkus?.GPU_POWER_CABLE_KIT?.dualGpu === true || mandatorySkus?.GPU_POWER_CABLE_KIT?.capacity === 2;
+-    const requiredKitsPerNode = isDualGpuKit
+-      ? Math.ceil((pcie.gpuCount - pcie.gpuPowerCableKitCount) / 2)
+-      : (pcie.gpuCount - pcie.gpuPowerCableKitCount);
++    const cableCapacity = resolveGpuCableCapacity(gpuCableSku, gpuCableDesc, mandatorySkus);
++    const requiredKitsPerNode = Math.ceil((pcie.gpuCount - pcie.gpuPowerCableKitCount) / cableCapacity);
++    const requiredTotalKits = Math.ceil(pcie.gpuCount / cableCapacity);
++    const foundKits = Math.floor(pcie.gpuPowerCableKitCount / cableCapacity);
++    const ratioNote = cableCapacity > 1 ? `, 1 kit per ${cableCapacity} GPUs` : '';
++
+     const reason = power.isDl380aGpuChassis
+-      ? `GPU Power Math: ${pcie.gpuCount} front-bay GPU accelerator(s) detected on DL380a Gen12. Requires ${Math.ceil(pcie.gpuCount / 2)} GPU 16-pin FIO Cable Kits (${gpuCableSku}, 1 kit per 2 GPUs). Found ${Math.floor(pcie.gpuPowerCableKitCount / 2)}.`
+-      : `GPU Power Math: ${pcie.gpuCount} PCIe GPU accelerator(s) detected. Requires ${pcie.gpuCount} GPU Auxiliary Power Cable Kit(s) (${gpuCableSku}) to connect to power distribution board. Found ${pcie.gpuPowerCableKitCount}.`;
++      ? `GPU Power Math: ${pcie.gpuCount} front-bay GPU accelerator(s) detected on DL380a Gen12. Requires ${requiredTotalKits} GPU 16-pin FIO Cable Kits (${gpuCableSku}${ratioNote}). Found ${foundKits}.`
++      : (cableCapacity > 1
++        ? `GPU Power Math: ${pcie.gpuCount} PCIe GPU accelerator(s) detected. Requires ${requiredTotalKits} GPU Auxiliary Power Cable Kit(s) (${gpuCableSku}${ratioNote}) to connect to power distribution board. Found ${foundKits}.`
++        : `GPU Power Math: ${pcie.gpuCount} PCIe GPU accelerator(s) detected. Requires ${pcie.gpuCount} GPU Auxiliary Power Cable Kit(s) (${gpuCableSku}) to connect to power distribution board. Found ${pcie.gpuPowerCableKitCount}.`);
+     warnings.push(reason);
+     missingDependencies.push({
+       key: 'GPU_AUX_POWER_CABLE_KIT',

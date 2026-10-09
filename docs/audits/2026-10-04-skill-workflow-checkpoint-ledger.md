@@ -1,6 +1,6 @@
 # Skill/workflow excellence — checkpoint ledger
 
-Revision 5.37, 9 October 2026. Latest Antigravity input HEAD7ac4baf/origin main synchronized; ten new commits under gap review. Dashboard cancellation envelope independently reviewed and integrated24/24 focused main checks, no tracked protected delta. Formal12/35 after CP8a independent closure; see current-status snapshot for actual deliveries and pending scope. Local reviewed commits now authorized by user; no push requested.
+Revision 5.38, 9 October 2026. Verified dashboard/Notebook fixes and receipts promoted to local main; no push. Latest Antigravity input HEAD7ac4baf/origin main synchronized; ten new commits under gap review. Dashboard cancellation envelope independently reviewed and integrated24/24 focused main checks, no tracked protected delta. Formal12/35 after CP8a independent closure; see current-status snapshot for actual deliveries and pending scope. Local reviewed commits now authorized by user; no push requested.
 
 ## Workspace and writer record
 
@@ -8,7 +8,7 @@ Revision 5.37, 9 October 2026. Latest Antigravity input HEAD7ac4baf/origin main 
 | :--- | :--- |
 | Execution workspace | C:/Users/latha/.gemini/antigravity/scratch/antigravityProjects/updatedVendorScrapingNotebook-v2 |
 | Equivalent path alias | C:/Users/latha/antigravityProjects/updatedVendorScrapingNotebook-v2 — parent junction resolves to the execution workspace; not a second checkout |
-| Holder | Codex root integrator; live writer helperPID25240/session4818; oldPID12940 proved absent, canonical lease reacquired |
+| Holder | Codex root integrator; no active holder at handoff; promotion helperPID9564/session18669 released at boundary; reacquire canonical lease before writes |
 | Reservation | Live `.git/codex-maintenance-locks/skill-workflow-excellence.lock`; agents write only isolated copies; no expiry-only reclamation |
 | Baseline commit | 823725a214816c972bf1d91a4ec01db7bb76b860 — re-record at CP0 |
 | Starting tree | Three untracked audit Markdown files; no tracked code changes at review start |
@@ -603,7 +603,7 @@ Parallel execution: Codex root owns semantic decisions, independent acceptance a
 
 ## AUTHORITATIVE restart — revision5.36
 
-Revision 5.37, 9 October 2026. Latest Antigravity input HEAD7ac4baf/origin main synchronized; ten new commits under gap review. Dashboard cancellation envelope independently reviewed and integrated24/24 focused main checks, no tracked protected delta. Formal12/35 after CP8a independent closure; see current-status snapshot for actual deliveries and pending scope. Local reviewed commits now authorized by user; no push requested.
+Revision 5.38, 9 October 2026. Verified dashboard/Notebook fixes and receipts promoted to local main; no push. Latest Antigravity input HEAD7ac4baf/origin main synchronized; ten new commits under gap review. Dashboard cancellation envelope independently reviewed and integrated24/24 focused main checks, no tracked protected delta. Formal12/35 after CP8a independent closure; see current-status snapshot for actual deliveries and pending scope. Local reviewed commits now authorized by user; no push requested.
 
 Durable acceptance: outputs/history/skill_workflow_excellence/2026-10-08/latest-composition-integration/integration-receipt.json,154archived files readback verified. Controlledcopy execution1791465753220; source allowlist exact20, no registry/config/maintenanceoverwrite. Eightstaleparentfiles+three currenthelpers reconciled in candidateonly; original failedreadback retained and superseded by404check finalreview. CP8 base/context quantity correction applies in currentmain; newtrace/owner observations require explicitflags. No CP8/CP11 wholecheckpointclosure or CP7c pathactivationclaim. Mainactualchain proof reused from97candidate checks with sameproduction dependencies; main27focuschecks executed without maincatalogwrites.
 
@@ -638,3 +638,9 @@ Notebook author /root/notebook_budget_rebase, independent root verifier/integrat
 Local commits c7c4dd8 (dashboard cancellation plus reconciliation) and189c708 (Notebook reliability, CP8a closure and receipts) created on codex/skill-workflow-excellence-20261009; no push. ASTgraph refreshed:9126nodes/16658edges/498communities; semantic labels not refreshed (APIkey unavailable), not runtime proof. Raw historical reviewer failure TAP and exact reviewer source preserved unchanged; git whitespace check flags their original whitespace only, production lint passes. Code/docs whitespace gate excludes archived raw evidence.
 
 Agy parent conversation8c0aeeae-672b-41eb-a876-254e06645407 launched native GPUworker b9f490b7-4bbd-4812-b771-480ff01e5866 and routerworker9618307e-48a4-439a-a4f5-b82d02f335dd. Parent print results were incomplete start/status reports. Existingworker direct continuations use isolated actualworkdir, observers28759/58032. Pending concrete GPU/source and router receipts; do not restart/recreate workers or credit completion from process exit. Reusable personal CLI reference updated with proven native behavior, cwd and command interruption corrections. Next gate: accept those actual artifacts, fix factual HITL/learning findings, then remaining BatchA customer activation before BatchB–D. Main writer released on session end; next session must acquire live canonicallease.
+
+## Revision5.38 — human-authorized local main promotion
+
+Clean main/origin7ac4baf0/0 fetched; fast-forwarded main to94416d7 using --ff-only, no merge conflict or changed source bytes. Verified dashboard/Notebook commits c7c4dd8/189c708 now consumed by customer runs and other local agents. No push. Reused source-bound passing checks; no repeat full matrix just for identical-byte branch promotion. Writer reacquiredPID9564/session18669 and released at boundary.
+
+Agy GPU partialcandidate rejected: new !configuredSku||!cleanSku condition applies capacity3 to OTHER-KIT with missing configuredSKU. Exact counterexample reproduced; correcting sameworker with nonempty exactownership/safeinteger tests. Unverified patches archived as unused evidence2026-10-09/agy-pending-candidates; no runtimepromotion. Router/learning audit still pending actualreceipt. Formal12/35 retained; all remaining plan gates stay active.
