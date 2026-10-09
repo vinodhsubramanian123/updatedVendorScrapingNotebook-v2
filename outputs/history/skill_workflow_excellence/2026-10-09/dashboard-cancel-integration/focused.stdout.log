@@ -1,0 +1,10 @@
+
+ RUN  v3.2.7 C:/Users/latha/AppData/Local/Temp/codex-dashboard-cancel-normalizer-20261008
+
+ ✓ src/services/__tests__/evalNormalizer.test.js (19 tests) 13ms
+
+ Test Files  1 passed (1)
+      Tests  19 passed (19)
+   Start at  19:01:48
+   Duration  1.39s (transform 82ms, setup 0ms, collect 89ms, tests 13ms, environment 0ms, prepare 718ms)
+

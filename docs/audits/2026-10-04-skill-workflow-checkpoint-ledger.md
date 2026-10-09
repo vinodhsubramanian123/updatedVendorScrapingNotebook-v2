@@ -1,6 +1,6 @@
 # Skill/workflow excellence — checkpoint ledger
 
-Revision 5.36, 8 October 2026. Latest upstream7a63bc6 preserved. CP8/CP11 combined batch now independently reviewed and INTEGRATED:20runtime files+15tests/fixtures;404hashchecks0mismatches;97candidate controls reused+27main checks passed;0cycles/597files;maxCC130<=135;lint28->22with0newwarnings;430trackedprotected files unchanged. Formal11/35(31.4%) remains full-scope accounting, not a measure of integrated partial delivery. Trace/terminal-owner stay opt-in; long-query budgets/remote recovery, MCP ingress and remaining customer workflows are incomplete. No commits/publication.
+Revision 5.37, 9 October 2026. Latest Antigravity input HEAD7ac4baf/origin main synchronized; ten new commits under gap review. Dashboard cancellation envelope independently reviewed and integrated24/24 focused main checks, no tracked protected delta. Formal11/35 retained; see current-status snapshot for actual deliveries and pending scope. Local reviewed commits now authorized by user; no push requested.
 
 ## Workspace and writer record
 
@@ -8,7 +8,7 @@ Revision 5.36, 8 October 2026. Latest upstream7a63bc6 preserved. CP8/CP11 combin
 | :--- | :--- |
 | Execution workspace | C:/Users/latha/.gemini/antigravity/scratch/antigravityProjects/updatedVendorScrapingNotebook-v2 |
 | Equivalent path alias | C:/Users/latha/antigravityProjects/updatedVendorScrapingNotebook-v2 — parent junction resolves to the execution workspace; not a second checkout |
-| Holder | Codex root integrator; live writer helperPID12940/tool83525, acquired after confirming oldPID26264 absent |
+| Holder | Codex root integrator; live writer helperPID25240/session4818; oldPID12940 proved absent, canonical lease reacquired |
 | Reservation | Live `.git/codex-maintenance-locks/skill-workflow-excellence.lock`; agents write only isolated copies; no expiry-only reclamation |
 | Baseline commit | 823725a214816c972bf1d91a4ec01db7bb76b860 — re-record at CP0 |
 | Starting tree | Three untracked audit Markdown files; no tracked code changes at review start |
@@ -603,7 +603,7 @@ Parallel execution: Codex root owns semantic decisions, independent acceptance a
 
 ## AUTHORITATIVE restart — revision5.36
 
-Revision 5.36, 8 October 2026. Latest upstream7a63bc6 preserved. CP8/CP11 combined batch now independently reviewed and INTEGRATED:20runtime files+15tests/fixtures;404hashchecks0mismatches;97candidate controls reused+27main checks passed;0cycles/597files;maxCC130<=135;lint28->22with0newwarnings;430trackedprotected files unchanged. Formal11/35(31.4%) remains full-scope accounting, not a measure of integrated partial delivery. Trace/terminal-owner stay opt-in; long-query budgets/remote recovery, MCP ingress and remaining customer workflows are incomplete. No commits/publication.
+Revision 5.37, 9 October 2026. Latest Antigravity input HEAD7ac4baf/origin main synchronized; ten new commits under gap review. Dashboard cancellation envelope independently reviewed and integrated24/24 focused main checks, no tracked protected delta. Formal11/35 retained; see current-status snapshot for actual deliveries and pending scope. Local reviewed commits now authorized by user; no push requested.
 
 Durable acceptance: outputs/history/skill_workflow_excellence/2026-10-08/latest-composition-integration/integration-receipt.json,154archived files readback verified. Controlledcopy execution1791465753220; source allowlist exact20, no registry/config/maintenanceoverwrite. Eightstaleparentfiles+three currenthelpers reconciled in candidateonly; original failedreadback retained and superseded by404check finalreview. CP8 base/context quantity correction applies in currentmain; newtrace/owner observations require explicitflags. No CP8/CP11 wholecheckpointclosure or CP7c pathactivationclaim. Mainactualchain proof reused from97candidate checks with sameproduction dependencies; main27focuschecks executed without maincatalogwrites.
 
@@ -616,3 +616,12 @@ User timeout/recovery requirement: localtimeout means NOT_VERIFIED, remoteexecut
 Accessoryguard candidate18/18 remains staged: exacttypedSKU/target/trustedsourcepath works; actualP48802 sourcebinding notproven. Full-finalpayload fingerprint comparison qualified for self-containingmanagedprojection; corrected preprojectionreproduction daecf090... still differs stored7f171337...; causeunknown, no cloudstalenessclaim. Do notactivateguard that blocks currentlegitimateoptions until explicitproof/controlleddisposition.
 
 Agy task59e9b099-2216-4a14-b5c7-313544a170db: first300s observer and sameconversation120s correction timedout with backendturninprogress; blankSUCCESSresponses are NOTreceipts. No candidateedits orfinal-author-receipt observed. Latestreported cumulativeusage input318474/output23248/cache2284901; no savingsclaim and no categorysum. Observerhandles88441/1248 terminal; backendstateUNKNOWN, don'trestartduplicate. Nativeworker spawning notyetverified: CLI --agent selectsagent; agentslistreturnedempty. Corrected brief backendpath dashboard/routes/evaluation.cjs. Nextreconcile actualcapabilities/output rather thanmore broadprompts. Codex implementation continuesindependently.
+
+
+## Revision5.37 — latest upstream review and cancellation integration
+
+Input7ac4baf2be2a1f1722f5c97251a7ac827b117a42, clean initial tree; origin0/0 after fetch. Source additions committed by Antigravity do not automatically close checkpoints. Canonical live writerPID25240/session4818; parallel agents use isolated copies. User explicitly authorized local check-ins; root feature branch codex/skill-workflow-excellence-20261009, no push.
+
+Dashboard cancellation: Codex author, two native Agy independent reviewers APPROVED_ISOLATED_SCOPE. Verified5candidate hashes/3mainpreimages; narrow production changes preserve CANCELLED through backend and frontend. Main5backend+19frontend pass; fixture portable import adaptation tested. No tracked outputs/scripts/config delta. Durable source-bound receipt and independent reviews in2026-10-09/dashboard-cancel-integration. Not run: live browser/cancelled CLI or cloud/portal for this narrow fix. CP11 remains IN_PROGRESS.
+
+New blocking findings under current source review: wrong-transcript recovery (empty question/prefix match), blind query resubmission/restart, GPU capacity/remedy disagreement, disambiguation fabricated human/source evidence and explicit-context loop misrepresented as consumed learning. Existing pricing and scraper gates retained. Notebook candidate rebase reuses prior work; Agy native parallel GPU author/router-learning audit requested. CLI initial cwd discrepancy detected before any Agy main writes and corrected using same conversation. No completed scope reruns or new full matrix.

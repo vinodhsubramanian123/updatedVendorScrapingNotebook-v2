@@ -1,0 +1,53 @@
+{
+  "role": "backend_reviewer",
+  "status": "APPROVED_ISOLATED_SCOPE",
+  "candidateRoot": "C:/Users/latha/AppData/Local/Temp/codex-dashboard-cancel-normalizer-20261008",
+  "sourcehashes": {
+    "dashboard/routes/evaluation.cjs": "789351a97a3c984c8e1f64df034455f6168f51ffa2545514402b6a10aef3845c",
+    "tests/unit/test_dashboard_cancel_envelope.cjs": "23fa0376e0947feb8e6cd0d9f310fd3d979d620e50b14e75e3da73655e18c4ab"
+  },
+  "sourcehashesVerified": {
+    "dashboard/routes/evaluation.cjs": true,
+    "tests/unit/test_dashboard_cancel_envelope.cjs": true
+  },
+  "productionDelta": {
+    "filePath": "dashboard/routes/evaluation.cjs",
+    "line": 286,
+    "isSingleConditionOnly": true,
+    "diffDetails": [
+      {
+        "line": 286,
+        "prod": "      if (parsedData?.data && parsedData.status !== 'CANCELLED' && (['SUCCESS', 'ACTION_REQUIRED'].includes(parsedData.status) || parsedData.data.items || parsedData.data.evalResults)) {",
+        "pre": "      if (parsedData?.data && (['SUCCESS', 'ACTION_REQUIRED'].includes(parsedData.status) || parsedData.data.items || parsedData.data.evalResults)) {"
+      }
+    ]
+  },
+  "findings": [
+    "Strict single-condition production change verified: only line 286 modified to add parsedData.status !== 'CANCELLED' &&.",
+    "Envelope integrity: CANCELLED envelopes containing items or evalResults in data are prevented from being parsed as valid success data, ensuring outer status CANCELLED is never dropped.",
+    "Preservation of valid envelopes: Existing SUCCESS and ACTION_REQUIRED envelopes remain unchanged and continue to broadcast data payloads.",
+    "Test environment distinction: Tests execute in Node.js unit harness via dashboard_route_harness.cjs simulating process stdout/SSE events, not in a live browser.",
+    "Reused test evidence: envelope.stdout.log confirms 5/5 tests passed (3 CANCELLED variations, 1 SUCCESS, 1 ACTION_REQUIRED) with 0 failures.",
+    "Bounded scope verification: Fix addresses isolated envelope routing flaw without side effects on trace persistence or SSE structure."
+  ],
+  "testevidencereused": {
+    "logFile": "envelope.stdout.log",
+    "totalTests": 5,
+    "passed": 5,
+    "failed": 0,
+    "testEnvironment": "Node.js VM backend route harness (fixtures/dashboard_route_harness.cjs)",
+    "isLiveBrowser": false,
+    "suites": [
+      "CANCELLED envelope retained with traceId,evidenceLogPath",
+      "CANCELLED envelope retained with items,traceId",
+      "CANCELLED envelope retained with evalResults,traceId",
+      "SUCCESS existing data envelope unchanged",
+      "ACTION_REQUIRED existing data envelope unchanged"
+    ]
+  },
+  "notRun": [
+    "Live browser end-to-end tests (not applicable to backend route envelope unit test)",
+    "Duplicate test execution (authoritative evidence verified from envelope.stdout.log)",
+    "Live server deployment or external HTTP calls"
+  ]
+}

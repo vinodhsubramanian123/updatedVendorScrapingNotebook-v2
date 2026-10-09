@@ -283,7 +283,7 @@ router.post('/eval-boq', (req, res) => {
           } catch (_) {}
         }
       }
-      if (parsedData?.data && (['SUCCESS', 'ACTION_REQUIRED'].includes(parsedData.status) || parsedData.data.items || parsedData.data.evalResults)) {
+      if (parsedData?.data && parsedData.status !== 'CANCELLED' && (['SUCCESS', 'ACTION_REQUIRED'].includes(parsedData.status) || parsedData.data.items || parsedData.data.evalResults)) {
         const validated = safeParseEvalResult(parsedData.data);
         const broadcastPayload = validated.success ? validated.data : parsedData.data;
         broadcastSSE({ type: 'EVAL_RESULT', data: broadcastPayload, runId });

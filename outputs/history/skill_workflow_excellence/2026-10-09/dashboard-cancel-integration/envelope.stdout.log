@@ -1,0 +1,13 @@
+✔ CANCELLED envelope retained with traceId,evidenceLogPath (57.1038ms)
+✔ CANCELLED envelope retained with items,traceId (5.2605ms)
+✔ CANCELLED envelope retained with evalResults,traceId (4.3573ms)
+✔ SUCCESS existing data envelope unchanged (7.8577ms)
+✔ ACTION_REQUIRED existing data envelope unchanged (3.2055ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 176.1036

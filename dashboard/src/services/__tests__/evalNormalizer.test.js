@@ -255,3 +255,44 @@ describe('evalNormalizer', () => {
     });
   });
 });
+
+describe('canonical cancellation envelopes', () => {
+  it('preserves exact terminal status, canonical evidence and reason from backend error envelope', () => {
+    const reason = { code: 'USER_CANCELLED', detail: 'requested' };
+    const data = { traceId: 'TRC-actual', evidenceLogPath: '/actual/evidence.json', evidenceHealth: { status: 'FAILED' } };
+    const cancellation = { status: 'CANCELLED', error: 'Evaluation cancelled', reason, data };
+    const result = normalizeEvalResult({ error: cancellation });
+    expect(result.status).toBe('CANCELLED');
+    expect(result.error).toBe('Evaluation cancelled');
+    expect(result.data).toBe(data);
+    expect(result.reason).toBe(reason);
+    expect(result.traceId).toBe(data.traceId);
+    expect(result.evidenceLogPath).toBe(data.evidenceLogPath);
+    expect(result.evidenceHealth).toBe(data.evidenceHealth);
+    expect(result.isMathClean).toBeNull();
+    expect(result.portalValidationStatus).toBe('PENDING');
+  });
+  it('outer cancellation stays terminal even when inner snapshot was successful', () => {
+    const result = normalizeEvalResult({ error: { status: 'CANCELLED', data: { status: 'SUCCESS', items: [{ sku: 'A', quantity: 2 }] } } });
+    expect(result.status).toBe('CANCELLED'); expect(result.items[0].quantity).toBe(2);
+  });
+  it('ordinary error, unknown and lowercase statuses remain fatal errors', () => {
+    for (const status of ['ERROR', 'UNKNOWN', 'cancelled', undefined]) {
+      expect(normalizeEvalResult({ error: { status, error: 'backend failure' } })).toEqual({ status: 'ERROR', error: 'backend failure' });
+    }
+  });
+  it('malformed cancellation data retains cancellation without inventing verification', () => {
+    for (const data of [null, 'bad', [], false]) {
+      const result = normalizeEvalResult({ error: { status: 'CANCELLED', data } });
+      expect(result.status).toBe('CANCELLED'); expect(result.error).toBe('Evaluation cancelled');
+      expect(result.isMathClean).toBeNull(); expect(result.portalValidationStatus).toBe('PENDING');
+    }
+  });
+  it('normal data envelope remains authoritative with accompanying cancellation error', () => {
+    const result = normalizeEvalResult({ data: { status: 'ACTION_REQUIRED', traceId: 'TRC-current' }, error: { status: 'CANCELLED', data: { traceId: 'TRC-old' } } });
+    expect(result.status).toBe('ACTION_REQUIRED'); expect(result.traceId).toBe('TRC-current');
+  });
+  it('retains falsy explicit error values rather than inventing an engine failure', () => {
+    for (const error of ['', false, 0]) expect(normalizeEvalResult({ error: { status: 'CANCELLED', error } }).error).toBe(error);
+  });
+});

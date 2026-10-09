@@ -1,0 +1,51 @@
+{
+  "state": "INTEGRATED_INDEPENDENTLY_REVIEWED_SCOPE",
+  "baseline": "7ac4baf2be2a1f1722f5c97251a7ac827b117a42",
+  "author": "Codex root",
+  "reviewer": "Antigravity native backend/frontend reviewers",
+  "checks": [
+    {
+      "command": "node --test --test-timeout=5000 tests/unit/test_dashboard_cancel_envelope.cjs",
+      "tests": 5,
+      "passed": 5,
+      "exit": 0
+    },
+    {
+      "command": "node node_modules/vitest/vitest.mjs run src/services/__tests__/evalNormalizer.test.js",
+      "cwd": "dashboard",
+      "tests": 19,
+      "passed": 19,
+      "exit": 0,
+      "durationSeconds": 26.4
+    }
+  ],
+  "sources": [
+    {
+      "file": "dashboard/routes/evaluation.cjs",
+      "sha256": "789351a97a3c984c8e1f64df034455f6168f51ffa2545514402b6a10aef3845c"
+    },
+    {
+      "file": "dashboard/src/services/evalNormalizer.js",
+      "sha256": "bee3e4a09fae48d00119cee5fdb0e58efc47f4c5ec8d1d4a83f5666a75264bb2"
+    },
+    {
+      "file": "dashboard/src/services/__tests__/evalNormalizer.test.js",
+      "sha256": "d3c55a8d5e734e34dd8a5642568e9b4e7542fa04d35c79b5d4fbfc6d04ab6ec7"
+    },
+    {
+      "file": "tests/unit/test_dashboard_cancel_envelope.cjs",
+      "sha256": "23fa0376e0947feb8e6cd0d9f310fd3d979d620e50b14e75e3da73655e18c4ab"
+    },
+    {
+      "file": "tests/fixtures/dashboard_route_harness.cjs",
+      "sha256": "1e847c67a0fa948bfcfdefe9dd4e316d2d542728f87377bca31f102a70de968a"
+    }
+  ],
+  "fixtureAdaptation": "Replaced workstation-specific createRequire path with relative require; backend5controls pass.",
+  "protectedDelta": "No tracked outputs or scripts/config changed; only this declared audit archive added.",
+  "notRun": [
+    "Live browser cancellation",
+    "NotebookLM/portal live validation"
+  ],
+  "closure": "Narrow cancellation envelope fix only; CP11 remains IN_PROGRESS"
+}

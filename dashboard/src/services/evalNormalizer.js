@@ -160,6 +160,14 @@ function extractProvenanceAndTrace(data, inner) {
  * @returns {object}        Normalised evalResults object
  */
 export function normalizeEvalResult(payload) {
+  if (!payload.data && payload.error && typeof payload.error === 'object' &&
+      !Array.isArray(payload.error) && payload.error.status === 'CANCELLED') {
+    const cancellation = payload.error;
+    const data = cancellation.data && typeof cancellation.data === 'object' && !Array.isArray(cancellation.data)
+      ? cancellation.data : {};
+    return { ...normalizeEvalResult({ data }), ...cancellation, status: 'CANCELLED',
+      error: cancellation.error ?? cancellation.message ?? 'Evaluation cancelled' };
+  }
   if (payload.error && !payload.data) {
     return { status: 'ERROR', error: payload.error?.error || 'Evaluation failed' };
   }
