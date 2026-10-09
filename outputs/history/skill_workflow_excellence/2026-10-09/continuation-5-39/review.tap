@@ -1,0 +1,52 @@
+✔ custom capacity 1 conserved in tally and9node remedy (7.3492ms)
+✔ custom capacity 3 conserved in tally and9node remedy (0.9361ms)
+✔ invalidcapacity 0 rejects (0.2383ms)
+✔ invalidcapacity -1 rejects (0.1703ms)
+✔ invalidcapacity 1.5 rejects (0.1528ms)
+✔ invalidcapacity NaN rejects (0.1196ms)
+✔ invalidcapacity 9007199254740992 rejects (0.1653ms)
+✔ metadata ownership {"capacity":3} (0.2118ms)
+✔ metadata ownership {"sku":"OTHER","capacity":3} (1.6474ms)
+✔ metadata ownership {"sku":"","capacity":3} (0.5387ms)
+✔ metadata ownership null (0.3888ms)
+✔ knownkit P74700-B21 (0.3915ms)
+✔ knownkit P83526-B21 (0.1458ms)
+✔ generic16pin and12VHPWR are not dualproof (0.2257ms)
+✖ mixedcapacity narrative never fabricates physical kitcount (1.9489ms)
+✔ P74700-B21 retains evidenced connection capacity (10.3329ms)
+✔ P83526-B21 retains evidenced connection capacity (0.7977ms)
+✔ UNKNOWN-SINGLE-GPU retains evidenced connection capacity (0.5464ms)
+✔ UNKNOWN-DUAL-GPU retains evidenced connection capacity (0.6973ms)
+✔ UNKNOWN-2-GPU retains evidenced connection capacity (0.8739ms)
+✔ UNKNOWN-16PIN retains evidenced connection capacity (0.2777ms)
+✔ UNKNOWN-12VHPWR retains evidenced connection capacity (1.4844ms)
+✔ non-GPU storage cable does not receive GPU power cable capacity (0.3649ms)
+✔ generic AC power cord does not receive GPU power cable capacity (0.4238ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 23
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 400.795
+
+✖ failing tests:
+
+test at review.cjs:18:1
+✖ mixedcapacity narrative never fabricates physical kitcount (1.9489ms)
+  AssertionError [ERR_ASSERTION]: 5connection capacity from two differingkits cannot be declaredone physicalkit
+      at TestContext.<anonymous> (C:\Users\latha\AppData\Local\Temp\codex-gpu-independent-20261009\review.cjs:20:93)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'GPU Power Math: 8 front-bay GPU accelerator(s) detected on DL380a Gen12. Requires 3 GPU 16-pin FIO Cable Kits (CUSTOM, 1 kit per 3 GPUs). Found 1.',
+    expected: /Found 1\./,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }

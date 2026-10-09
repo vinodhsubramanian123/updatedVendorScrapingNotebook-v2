@@ -1,6 +1,6 @@
 # Current execution status and restart instructions
 
-Updated 9 October 2026, revision 5.38. This snapshot supersedes earlier appended status narratives. Historical evidence remains in the checkpoint ledger.
+Updated 9 October 2026, revision 5.39. This snapshot supersedes earlier appended status narratives. Historical evidence remains in the checkpoint ledger.
 
 ## Actual position
 
@@ -60,3 +60,9 @@ Check-in: c7c4dd8 and189c708 saved locally; no push. Graph refresh completed9126
 On user instruction, clean local main7ac4baf/origin0/0 was fast-forwarded to94416d7, preserving both verified runtime fix commits and all receipts. No source bytes changed during promotion; existing bound tests reused. Other local agents/customer commands now run this code from main. No push performed. Trace/terminal-owner flags remain opt-in pending their acceptance gates; commit promotion does not imply activation of unfinished paths.
 
 Agy GPU source candidate now exists but root reproduced a new metadata ownership leak (OTHER-KIT plus missing configuredSKU/capacity3 yields3instead of1). Rejected for runtime promotion; sameworker corrected viaobserver52478. Three candidate patches saved durably under2026-10-09/agy-pending-candidates, explicitly unused/unverified. Router/learning reviewer is pending actualreceipt. Next integration follows correctedtest proof, not another baseline re-audit. Accepted12/35 scopes unchanged by mainpromotion.
+
+## Latest continuation — revision5.39
+
+Codex newdelegates stopped with usage-limit errors; they are not running. Exactpartial typedmemorystore archivedunused in2026-10-09/continuation-5-39, syntaxvalid but no behavior/consumption certification. Pricingpresencelane notcomplete. Root GPU independent24checks:23pass/1fail; capacity/ownership/9node remedy proven, mixed-kit narrative still CHANGES_REQUIRED. GPU sameworker correctionobserver13363 pending; roottest failure retained. Agy routeraudit still has no finalreceipt. Mainruntime unchanged and formal12/35.
+
+Resume from corrected candidate plus independentreview.cjs/rawfailure, not another baseline audit. Record actual conversation/artifacts before continuation. Do not retry quotaerroredCodex agents until reset; use existing Agy conversations for bounded missingsteps. ActualremoteNotebook poll/recovery remains an open proofrequirement (CLIconversation-id is follow-up, chatsget transcript is separate). Writer19716/session51262 released at boundary; acquire canonicallease before mainwrites.

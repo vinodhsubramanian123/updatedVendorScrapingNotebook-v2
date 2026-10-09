@@ -1,6 +1,6 @@
 # Skill/workflow excellence — checkpoint ledger
 
-Revision 5.38, 9 October 2026. Verified dashboard/Notebook fixes and receipts promoted to local main; no push. Latest Antigravity input HEAD7ac4baf/origin main synchronized; ten new commits under gap review. Dashboard cancellation envelope independently reviewed and integrated24/24 focused main checks, no tracked protected delta. Formal12/35 after CP8a independent closure; see current-status snapshot for actual deliveries and pending scope. Local reviewed commits now authorized by user; no push requested.
+Revision 5.39, 9 October 2026. Verified dashboard/Notebook fixes and receipts promoted to local main; no push. Latest Antigravity input HEAD7ac4baf/origin main synchronized; ten new commits under gap review. Dashboard cancellation envelope independently reviewed and integrated24/24 focused main checks, no tracked protected delta. Formal12/35 after CP8a independent closure; see current-status snapshot for actual deliveries and pending scope. Local reviewed commits now authorized by user; no push requested.
 
 ## Workspace and writer record
 
@@ -8,7 +8,7 @@ Revision 5.38, 9 October 2026. Verified dashboard/Notebook fixes and receipts pr
 | :--- | :--- |
 | Execution workspace | C:/Users/latha/.gemini/antigravity/scratch/antigravityProjects/updatedVendorScrapingNotebook-v2 |
 | Equivalent path alias | C:/Users/latha/antigravityProjects/updatedVendorScrapingNotebook-v2 — parent junction resolves to the execution workspace; not a second checkout |
-| Holder | Codex root integrator; no active holder at handoff; promotion helperPID9564/session18669 released at boundary; reacquire canonical lease before writes |
+| Holder | Codex root integrator; no active holder at handoff; review/archive helperPID19716/session51262 released at boundary; reacquire canonical lease before writes |
 | Reservation | Live `.git/codex-maintenance-locks/skill-workflow-excellence.lock`; agents write only isolated copies; no expiry-only reclamation |
 | Baseline commit | 823725a214816c972bf1d91a4ec01db7bb76b860 — re-record at CP0 |
 | Starting tree | Three untracked audit Markdown files; no tracked code changes at review start |
@@ -603,7 +603,7 @@ Parallel execution: Codex root owns semantic decisions, independent acceptance a
 
 ## AUTHORITATIVE restart — revision5.36
 
-Revision 5.38, 9 October 2026. Verified dashboard/Notebook fixes and receipts promoted to local main; no push. Latest Antigravity input HEAD7ac4baf/origin main synchronized; ten new commits under gap review. Dashboard cancellation envelope independently reviewed and integrated24/24 focused main checks, no tracked protected delta. Formal12/35 after CP8a independent closure; see current-status snapshot for actual deliveries and pending scope. Local reviewed commits now authorized by user; no push requested.
+Revision 5.39, 9 October 2026. Verified dashboard/Notebook fixes and receipts promoted to local main; no push. Latest Antigravity input HEAD7ac4baf/origin main synchronized; ten new commits under gap review. Dashboard cancellation envelope independently reviewed and integrated24/24 focused main checks, no tracked protected delta. Formal12/35 after CP8a independent closure; see current-status snapshot for actual deliveries and pending scope. Local reviewed commits now authorized by user; no push requested.
 
 Durable acceptance: outputs/history/skill_workflow_excellence/2026-10-08/latest-composition-integration/integration-receipt.json,154archived files readback verified. Controlledcopy execution1791465753220; source allowlist exact20, no registry/config/maintenanceoverwrite. Eightstaleparentfiles+three currenthelpers reconciled in candidateonly; original failedreadback retained and superseded by404check finalreview. CP8 base/context quantity correction applies in currentmain; newtrace/owner observations require explicitflags. No CP8/CP11 wholecheckpointclosure or CP7c pathactivationclaim. Mainactualchain proof reused from97candidate checks with sameproduction dependencies; main27focuschecks executed without maincatalogwrites.
 
@@ -644,3 +644,9 @@ Agy parent conversation8c0aeeae-672b-41eb-a876-254e06645407 launched native GPUw
 Clean main/origin7ac4baf0/0 fetched; fast-forwarded main to94416d7 using --ff-only, no merge conflict or changed source bytes. Verified dashboard/Notebook commits c7c4dd8/189c708 now consumed by customer runs and other local agents. No push. Reused source-bound passing checks; no repeat full matrix just for identical-byte branch promotion. Writer reacquiredPID9564/session18669 and released at boundary.
 
 Agy GPU partialcandidate rejected: new !configuredSku||!cleanSku condition applies capacity3 to OTHER-KIT with missing configuredSKU. Exact counterexample reproduced; correcting sameworker with nonempty exactownership/safeinteger tests. Unverified patches archived as unused evidence2026-10-09/agy-pending-candidates; no runtimepromotion. Router/learning audit still pending actualreceipt. Formal12/35 retained; all remaining plan gates stay active.
+
+## Revision5.39 — independent GPU counterexamples and quota-aware continuation
+
+Progress turn: root verified actual Agy-authored candidate in a separate snapshot,24 meaningful checks:23passed/1failed/0skipped. Knownkits, generic16pin, invalid/scope-missing capacities and1/3capacity9node remedy pass. Mixedcapacity narrative incorrectly says Found1physicalkit from5GPUconnection capacity; rejected, sameworker correction observer13363. No candidate runtimepromotion. Exact tests/sourcehashes/failure and partial typed USER_PLATFORM_SELECTION module archived2026-10-09/continuation-5-39. All three new Codex agents errored on accountusage limit; no independent finalreceipt claimed. Partial memorymodule syntax checked but remains unwired/unverified; pricingauthor notcomplete. Do not retry quota-error agents until available; resume actualfiles/receipts, not freshcopies/audits.
+
+InstalledCLI read-only help confirms --conversation-id is follow-upquery input and chats offerslist/get/export/to-note, not a proven remotejobpolling contract. No cloudcall/sourcewrites. Local main accepted runtime remains c7c4dd8/189c708, formal12/35. Pendingnext: finish Agy GPU narrative/tests; independent rootacceptance/maincommit; finish factual querychoice memory/router consumption and pricingpresence; original BatchA–D scope retained. Writer19716/session51262 released at sessionboundary. Goalactive, notcomplete/paused; this turn made new counterexample and preserved partialimplementation evidence.
