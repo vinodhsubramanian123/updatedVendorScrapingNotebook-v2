@@ -646,8 +646,61 @@ async function _handleBoqEvaluation(queryText, context) {
   }
 }
 
-function _handleOcrQuoteIngestion(queryText, context) {
+async function _handleOcrQuoteIngestion(queryText, context) {
   const imgPath = context.filePath || (queryText.match(/[\w\-./\\]+\.(?:png|jpg|jpeg|webp|tiff|bmp|pdf)/i)?.[0] || '');
+  if (context.executeOcr && imgPath) {
+    const { performGeminiOcr } = require('../lib/ocr/ocr_service.js');
+    const { parseSkuLines } = require('../lib/boq/boq_parser.js');
+    if (!fs.existsSync(imgPath)) {
+      return {
+        intent: 'OCR_QUOTE_INGESTION',
+        filePath: imgPath,
+        skillTarget: 'ocr-quote-ingestion-skill',
+        status: 'FILE_NOT_FOUND',
+        error: `Target image file not found: ${imgPath}`
+      };
+    }
+    const ocrResult = await performGeminiOcr(imgPath);
+    if (!ocrResult || !ocrResult.isOcrProcessed || ocrResult.ocrStatus !== 'SUCCESS') {
+      return {
+        intent: 'OCR_QUOTE_INGESTION',
+        filePath: imgPath,
+        skillTarget: 'ocr-quote-ingestion-skill',
+        status: 'OCR_EXTRACTION_FAILED',
+        error: ocrResult?.rawError || ocrResult?.text || 'OCR processing failed',
+        remediationAction: ocrResult?.remediationAction || 'Check image clarity or provide structured text BOM.'
+      };
+    }
+    const lines = ocrResult.text.split(/\r?\n/).filter(l => l.trim().length > 0);
+    const parsed = parseSkuLines(lines);
+    if (!parsed.items.length) {
+      return {
+        intent: 'OCR_QUOTE_INGESTION',
+        filePath: imgPath,
+        skillTarget: 'ocr-quote-ingestion-skill',
+        status: 'EMPTY_OR_AMBIGUOUS_OCR',
+        lineCount: ocrResult.lineCount,
+        detectedSkus: ocrResult.detectedSkus,
+        message: 'OCR extracted document text but identified zero valid enterprise hardware part numbers.'
+      };
+    }
+    return {
+      intent: 'OCR_QUOTE_INGESTION',
+      filePath: imgPath,
+      skillTarget: 'ocr-quote-ingestion-skill',
+      status: 'OCR_EXTRACTION_SUCCESS',
+      provenance: {
+        sourceDocument: path.resolve(imgPath),
+        sourceFilename: path.basename(imgPath),
+        modelUsed: ocrResult.modelUsed,
+        lineCount: ocrResult.lineCount,
+        rawSkuMatches: ocrResult.detectedSkus
+      },
+      itemCount: parsed.items.length,
+      items: parsed.items,
+      message: `Successfully extracted ${parsed.items.length} hardware BOM item(s) from ${path.basename(imgPath)} via Gemini Vision OCR.`
+    };
+  }
   return {
     intent: 'OCR_QUOTE_INGESTION',
     filePath: imgPath,
@@ -860,6 +913,27 @@ async function _handleRfpSizing(queryText, context) {
     _logger.warn('ROUTE_QUERY', 'Failed to finalize RFP sizing evidence ledger', err);
   }
 
+  let evaluatedSolution = null;
+  if (context.continueEvaluation && candidateItems.length > 0) {
+    try {
+      const { runEvaluationPipeline } = require('./eval_boq.js');
+      evaluatedSolution = await runEvaluationPipeline({
+        inputItems: candidateItems,
+        chassisDir: chassisInfo.catalogDir,
+        serverCount,
+        OFFLINE_MODE: true,
+        JSON_MODE: true,
+        traceId
+      });
+    } catch (evalErr) {
+      evaluatedSolution = { status: 'ERROR', error: evalErr.message };
+    }
+  }
+
+  const status = candidateItems.length === 0
+    ? 'REQUIRES_HUMAN_CLARIFICATION'
+    : (evaluatedSolution ? (evaluatedSolution.status || 'EVALUATION_COMPLETE') : 'SIZING_DRAFT');
+
   return {
     intent: 'RFP_SIZING_TO_BOM',
     chassis: chassisInfo.chassisKey,
@@ -872,9 +946,10 @@ async function _handleRfpSizing(queryText, context) {
     requiresHumanClarification: sizingResult?.requiresHumanClarification ?? true,
     candidateBOM: candidateItems,
     evaluation,
+    evaluatedSolution,
     traceId,
     evidenceLogPath,
-    status: !sizingResult || sizingResult.requiresHumanClarification ? 'REQUIRES_HUMAN_CLARIFICATION' : 'SIZING_DRAFT'
+    status
   };
 }
 
@@ -1111,14 +1186,63 @@ function requireScopedCatalog(queryText, context) {
 
 async function _handleWorkloadDna(queryText, context) {
   const { extractWorkloadDna } = require('../lib/conflict/workload_dna');
+  const { arbitrateContestedResources } = require('../lib/conflict/resource_arbitrator');
   if (!context.items && !context.filePath) return {
     intent: 'WORKLOAD_DNA', status: 'SCOPED_SIZING_REQUIRED', requestedWorkload: queryText,
     message: 'Preserve the requested workload and size an exact product candidate before hardware profiling.'
   };
   const items = readRoutedItems(context);
-  return { intent: 'WORKLOAD_DNA', status: 'ADVISORY', requestedWorkload: queryText,
-    dna: extractWorkloadDna(items), items, arbitrationAvailable: false,
-    message: 'Hardware profile extracted. Application suitability, NUMA placement and resource arbitration require scoped evaluation.' };
+  const dna = extractWorkloadDna(items);
+  const chassisInfo = getChassisCatalog(queryText, context);
+  const arbitration = arbitrateContestedResources(items, chassisInfo.chassisKey);
+
+  let evaluatedBranches = [];
+  if (arbitration.hasContentions && chassisInfo.catalogData) {
+    evaluatedBranches = arbitration.branches.map(branch => {
+      let pivotedItems = structuredClone(items);
+      (branch.substitutions || []).forEach(sub => {
+        if (sub.action && (sub.action.includes('PIVOT_STORAGE_CONTROLLER') || sub.action.includes('PIVOT_BOOT_DEVICE')) && sub.originalSku && sub.injectedSku) {
+          pivotedItems = pivotedItems.map(it => {
+            if (cleanBaseSKU(it.sku) === cleanBaseSKU(sub.originalSku)) {
+              return { ...it, sku: sub.injectedSku, description: sub.injectedDesc };
+            }
+            return it;
+          });
+        }
+      });
+      let branchEval = null;
+      try {
+        branchEval = evaluateBOQMultiAspect(pivotedItems, {
+          chassis: chassisInfo.chassisKey,
+          catalogData: chassisInfo.catalogData,
+          targetDir: chassisInfo.catalogDir
+        });
+      } catch (err) {
+        branchEval = { error: err.message };
+      }
+      return {
+        ...branch,
+        evaluation: branchEval
+      };
+    });
+  }
+
+  return {
+    intent: 'WORKLOAD_DNA',
+    status: arbitration.hasContentions ? 'CONTENTION_ARBITRATED' : 'ADVISORY',
+    requestedWorkload: queryText,
+    chassis: chassisInfo.chassisKey,
+    dna,
+    items,
+    arbitrationAvailable: true,
+    hasContentions: arbitration.hasContentions,
+    contentionsCount: arbitration.contentionsCount,
+    contentions: arbitration.contentions,
+    arbitrationBranches: evaluatedBranches.length > 0 ? evaluatedBranches : arbitration.branches,
+    message: arbitration.hasContentions
+      ? `Workload DNA analyzed (${dna.primaryWorkload}). Detected ${arbitration.contentionsCount} physical resource contention(s); synthesized ${arbitration.branchesCount} arbitration branch(es) with 7-aspect evaluation.`
+      : `Workload DNA analyzed (${dna.primaryWorkload}). Zero resource collisions detected across solution slots.`
+  };
 }
 
 async function _handleValueEngineering(queryText, context) {
@@ -1417,7 +1541,7 @@ async function _executeLegacyRoutedQuery(queryText = '', context = {}) {
         break;
 
       case 'OCR_QUOTE_INGESTION':
-        responseData = observeActualInvocation('_handleOcrQuoteIngestion', __filename, () => _handleOcrQuoteIngestion(queryText, context));
+        responseData = await observeActualInvocation('_handleOcrQuoteIngestion', __filename, () => _handleOcrQuoteIngestion(queryText, context));
         break;
 
       case 'CATALOG_INTELLIGENCE':
