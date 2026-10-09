@@ -41,7 +41,7 @@ function getSkuListPrice(skuStr, catalogData = null, chassisDir = null) {
       const histResult = getHistoricalSkuPrice(skuStr, chassisDir);
       const histPrice = Number(histResult?.priceUsd);
       if (Number.isFinite(histPrice) && histPrice > 0) return histPrice;
-    } catch (_) {}
+    } catch {}
   }
 
   return 0.00; // Zero Hardcoding Rule: Return 0 if not found
@@ -92,18 +92,48 @@ function optimizeForBudget(consolidatedItems, evalResults, targetBudgetUsd = 0, 
   // GAP-10: Buildability gate — upgrades MUST NOT run on unbuildable configurations
   const _buildabilityConfirmed = evalResults?.isMathClean === true && evalResults?.isGraphClean === true;
 
-  // Calculate current baseline BOM cost
+  // Calculate current baseline BOM cost (preserving quoted vs. catalog estimate provenance, INV-158)
   const { isConfirmedFreeSku } = require('../catalog/sku_versioning.js');
+  let hasUnquotedCustomerItems = false;
+  let quotedSubtotal = 0;
+  let catalogEstimatedSubtotal = 0;
+
   consolidatedItems.forEach(it => {
-    if (it.inputUnitPriceUsd === undefined) it.inputUnitPriceUsd = it.unitPriceUsd ?? null;
+    if (it.inputUnitPriceUsd === undefined) {
+      it.inputUnitPriceUsd = (typeof it.unitPriceUsd === 'number' && Number.isFinite(it.unitPriceUsd)) ? it.unitPriceUsd : null;
+    }
     const receiptRow = portalReceipt?.rows.find(row => row.sku === normalizeSku(it.sku) && row.quantity === outputQuantities(it, multiplier).totalQty);
-    const unitPrice = receiptRow ? receiptRow.unitPriceUsd : getSkuListPrice(it.sku, catalogData, resolvedChassisDir);
-    const isFree = receiptRow ? unitPrice === 0 : isConfirmedFreeSku(it.sku, it.description);
-    if (receiptRow) { it.priceSource = `Live OCA BOM ${portalReceipt.capturedAt}`; it.isConfirmedZeroPrice = isFree; }
-    if (unitPrice === 0 && !isFree) zeroPriceCount++;
-    it.unitPriceUsd = unitPrice;
-    it.extendedPriceUsd = unitPrice * it.quantity;
-    currentBomCost += unitPrice * outputQuantities(it, multiplier).totalQty;
+    const catalogEstimatePrice = receiptRow ? receiptRow.unitPriceUsd : getSkuListPrice(it.sku, catalogData, resolvedChassisDir);
+    const isFree = receiptRow ? catalogEstimatePrice === 0 : isConfirmedFreeSku(it.sku, it.description);
+    if (receiptRow) {
+      it.receiptPriceSource = `Live OCA BOM ${portalReceipt.capturedAt}`;
+      it.isConfirmedZeroPrice = isFree;
+    }
+    it.catalogListPriceUsd = catalogEstimatePrice;
+
+    const hasQuotedPrice = it.inputUnitPriceUsd !== null && it.inputUnitPriceUsd !== undefined;
+    const lineQty = outputQuantities(it, multiplier).totalQty;
+
+    if (hasQuotedPrice) {
+      it.quotedUnitPriceUsd = it.inputUnitPriceUsd;
+      it.unitPriceUsd = it.inputUnitPriceUsd;
+      it.extendedPriceUsd = it.unitPriceUsd * it.quantity;
+      it.priceSource = it.priceSource || (receiptRow ? `Live OCA BOM ${portalReceipt.capturedAt}` : 'CUSTOMER_QUOTE');
+      if (it.unitPriceUsd === 0 && !isFree && !it.isConfirmedZeroPrice) zeroPriceCount++;
+      quotedSubtotal += it.unitPriceUsd * lineQty;
+      currentBomCost += it.unitPriceUsd * lineQty;
+      catalogEstimatedSubtotal += it.unitPriceUsd * lineQty;
+    } else {
+      hasUnquotedCustomerItems = true;
+      it.quotedUnitPriceUsd = null;
+      it.unitPriceUsd = null;
+      it.extendedPriceUsd = null;
+      it.estimatedUnitPriceUsd = catalogEstimatePrice;
+      it.priceSource = receiptRow ? `Live OCA BOM ${portalReceipt.capturedAt}` : 'CATALOG_ESTIMATE';
+      if (catalogEstimatePrice === 0 && !isFree) zeroPriceCount++;
+      currentBomCost += catalogEstimatePrice * lineQty;
+      catalogEstimatedSubtotal += catalogEstimatePrice * lineQty;
+    }
   });
 
   // Calculate mandatory buildable BOM cost (Injecting direct SKU fixes)
@@ -178,6 +208,14 @@ function optimizeForBudget(consolidatedItems, evalResults, targetBudgetUsd = 0, 
     targetBudgetUsd,
     currentBomCostUsd: currentBomCost,
     mandatoryBomCostUsd: mandatoryBomCost,
+    quotedBomCostUsd: hasUnquotedCustomerItems ? null : quotedSubtotal,
+    knownQuotedSubtotalUsd: quotedSubtotal,
+    catalogEstimatedSubtotalUsd: catalogEstimatedSubtotal,
+    hasUnquotedCustomerItems,
+    pricingBasis: (!hasUnquotedCustomerItems && consolidatedItems.length > 0)
+      ? 'CUSTOMER_QUOTE'
+      : (quotedSubtotal > 0 ? 'HYBRID_QUOTE_ESTIMATE' : 'CATALOG_ESTIMATE'),
+    pricingComplete: !hasUnquotedCustomerItems,
     injectedSkus,
     hasBudgetConstraint,
     isBudgetExceeded,

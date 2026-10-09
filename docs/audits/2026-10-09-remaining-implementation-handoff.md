@@ -30,6 +30,15 @@ Use repository agy-orchestration/SKILL.md. User selected gemini-3.8-flash-high w
 
 Retain failed evidence, fix the demonstrated counterexample, rerun only invalidated checks. Before integration verify current preimages, copy accepted changes, run required composition checks, archive artifacts, update plan/ledger/current snapshot and commit locally to main. User has authorized local commits; no push requested. A cancelled/unknown remote request stays NOT_VERIFIED unless an owned provider contract actually yields its result. Source attachments and live scraping remain distinct unresolved qualifications.
 
-## Implemented supersession — revision5.43
+## Implemented supersession — revision 5.43
 
-Query-choice contract above is now integrated in db32541; do not reimplement. Pricing presence above is integrated in this checkpoint and independently accepted for its bounded paths. Resume from current-status and exact acceptance receipts. Nextprice basis: budget_optimizer.js lines95–105 currently saves inputUnitPriceUsd then replaces unitPriceUsd from catalog or receipt; preserve quoted versus catalogue estimate provenance and never label missing quotes complete. schemas.js BOQItemSchema.unitPriceUsd defaults0 and rejectsnull; runtime use search currently finds declarations only, but conformance/activation must accept honest nullable pricing. No generic CoercedNumber change: other numeric contracts depend on it. Separate price contract and test null/missing/confirmedzero/valid/invalid values and actual serializer behavior. Six recorded scraping/session issues and real owned provider recovery remain open.
+Query-choice contract above is now integrated in db32541; do not reimplement. Pricing presence above is integrated in this checkpoint and independently accepted for its bounded paths. Resume from current-status and exact acceptance receipts.
+
+## Implemented supersession — revision 5.44
+
+Price basis in `budget_optimizer.js` and honest nullable schema in `schemas.js` are now integrated and verified:
+1. `schemas.js`: Added `NullablePriceNumber` (validates floats, strips currency syntax, preserves `null` for null/undefined/'N/A'/'NULL', rejects negative numbers). `BOQItemSchema.unitPriceUsd` now defaults to `null` and supports `inputUnitPriceUsd`, `quotedUnitPriceUsd`, `catalogListPriceUsd`, `extendedPriceUsd`, and `isConfirmedZeroPrice`. `CoercedNumber` remains unmodified for non-price numeric contracts.
+2. `budget_optimizer.js`: Lines 95–108 now preserve `quotedUnitPriceUsd` from customer quotes, record `catalogListPriceUsd` from catalog/receipt, leave unquoted items as `unitPriceUsd = null`, and return `quotedBomCostUsd: null` whenever unquoted items exist. Exposes `knownQuotedSubtotalUsd`, `hasUnquotedCustomerItems`, `pricingBasis`, and `pricingComplete`.
+3. Verification: `tests/unit/test_schemas.js` (6/6 pass, 46 assertions across suite) and `tests/unit/test_budget_optimizer_boundaries.js` (3/3 pass, including quoted discount preservation, unquoted null retention, and hybrid quote calculation). 0 circular dependencies, CC <= 131 <= 135, 0 new lint warnings.
+4. Created `.agents/skills/epistemic-verification-skill/SKILL.md` and codified Anti-Patterns 15–19 (`INV-158` to `INV-162`) in `.agents/rules/epistemic_truth_and_deep_reasoning.md`.
+5. Next gate: Batch A reliability & process lifecycle (CP11a root trace, CP11b terminal serializer phase 8/9 split, CP8b multi-node scaling, CP6b telemetry activation).

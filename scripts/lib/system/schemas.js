@@ -35,6 +35,23 @@ const CoercedNumber = z.union([z.number(), z.string()]).transform((val, ctx) => 
   return num;
 });
 
+const NullablePriceNumber = z.union([z.number(), z.string(), z.null(), z.undefined()]).optional().nullable().transform((val) => {
+  if (val === null || val === undefined) return null;
+  if (typeof val === 'number') {
+    if (isNaN(val) || !isFinite(val) || val < 0) return null;
+    return val;
+  }
+  const clean = String(val).replace(/[$,\s]/g, '').trim().toUpperCase();
+  if (!clean || clean === 'N/A' || clean === 'NA' || clean === '-' || clean === 'NONE' || clean === 'NULL' || clean === 'UNKNOWN') {
+    return null;
+  }
+  const num = Number(clean);
+  if (isNaN(num) || !isFinite(num) || num < 0) {
+    return null;
+  }
+  return num;
+});
+
 // ==========================================
 // 2. Catalog Master Schema
 // ==========================================
@@ -111,12 +128,18 @@ const BOQItemSchema = z.object({
   sku: SkuString,
   description: z.string().default(''),
   quantity: z.union([z.number(), z.string()]).transform(v => Math.max(0, parseInt(String(v), 10) || 0)).default(1),
-  unitPriceUsd: CoercedNumber.default(0),
+  unitPriceUsd: NullablePriceNumber.default(null),
+  inputUnitPriceUsd: NullablePriceNumber.optional(),
+  quotedUnitPriceUsd: NullablePriceNumber.optional(),
+  catalogListPriceUsd: NullablePriceNumber.optional(),
+  extendedPriceUsd: NullablePriceNumber.optional(),
   category: z.string().default('General'),
   componentRole: z.string().default('Other'),
   isFixInjected: z.boolean().default(false),
+  isConfirmedZeroPrice: z.boolean().optional(),
+  priceSource: z.string().optional(),
   reasoning: z.string().optional()
-});
+}).passthrough();
 
 const BOQInputSchema = z.object({
   rawInput: z.string().optional(),
@@ -447,6 +470,7 @@ module.exports = {
   // Regex & Primitives
   HpeSkuRegex,
   CoercedNumber,
+  NullablePriceNumber,
   
   // Zod Schemas
   CatalogSkuItemSchema,

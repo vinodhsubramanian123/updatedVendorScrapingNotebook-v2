@@ -12,7 +12,7 @@ const {
   safeParseEvalResult,
   safeParseKnowledgeDelta,
   BOQItemSchema,
-  RankedSolutionSchema
+  RankedSolutionSchema: _RankedSolutionSchema
 } = require('../../scripts/lib/system/schemas.js');
 
 console.log('🧪 Starting Zod Runtime Schema Validation Tests...\n');
@@ -40,7 +40,24 @@ const parsedBoq = safeParseBOQ(sampleBOQ);
 assert.strictEqual(parsedBoq.success, true, 'BOQ validation failed');
 assert.strictEqual(parsedBoq.data.items[0].quantity, 2, 'Quantity was not coerced to number');
 assert.strictEqual(parsedBoq.data.items[0].unitPriceUsd, 2700, 'Unit price currency string was not coerced');
-console.log('✅ [2/5] BOQItemSchema properly coerces quantity and currency strings.');
+
+// Test honest nullable pricing contracts in BOQItemSchema (INV-158)
+const nullItem = BOQItemSchema.parse({ sku: 'P64706-B21', unitPriceUsd: null });
+assert.strictEqual(nullItem.unitPriceUsd, null, 'Explicit null price must be preserved as null');
+
+const omittedItem = BOQItemSchema.parse({ sku: 'P64706-B21' });
+assert.strictEqual(omittedItem.unitPriceUsd, null, 'Omitted price must default to null');
+
+const naItem = BOQItemSchema.parse({ sku: 'P64706-B21', unitPriceUsd: 'N/A' });
+assert.strictEqual(naItem.unitPriceUsd, null, 'N/A price must be parsed as null');
+
+const zeroItem = BOQItemSchema.parse({ sku: 'P64706-B21', unitPriceUsd: 0, isConfirmedZeroPrice: true });
+assert.strictEqual(zeroItem.unitPriceUsd, 0, 'Confirmed zero price must be preserved as 0');
+
+const negativeItem = BOQItemSchema.parse({ sku: 'P64706-B21', unitPriceUsd: -50 });
+assert.strictEqual(negativeItem.unitPriceUsd, null, 'Negative price must evaluate to null');
+
+console.log('✅ [2/5] BOQItemSchema properly coerces quantity, currency strings, and preserves honest nullable pricing.');
 
 // Test 3: Evaluation Result & 5-Tier Strategy Validation
 const sampleEval = {

@@ -92,6 +92,26 @@ This rule document governs all AI agents (Antigravity, Codex, Claude, subagents,
 - **The Mistake**: Recording only phases 1-3 during quick RFP sizing, leaving phases 4-9 missing, omitting customer input fingerprints, and producing `healthy: false` evidence records.
 - **The Invariant (`INV-116`)**: Every presales pipeline track that creates an `EvidenceLedger` MUST bring all 9 phases to a terminal status (`PASSED`, `ACTION_REQUIRED`, or `RESOLVED`), cryptographically fingerprint the customer input (text or file), and record all candidate SKUs in `skuAuditLedger`.
 
+### Anti-Pattern 15: The "Manufactured Zero" Pricing Trap (Coerced Free Equipment)
+- **The Mistake**: Using `unitPriceUsd ?? 0` or converting unquoted/blank/null prices to `0`. In enterprise commercial procurement, \$0 means 100% free of charge, distorting deal margins, CapEx totals, and customer contracts.
+- **The Invariant (`INV-158`)**: Missing, blank, or unquoted prices MUST evaluate to `null` with `pricingComplete = false`. Commercial quotes must preserve `knownOrderSubtotalUsd` while reporting `totalOrderCostUsd = null` whenever line items lack confirmed prices. Confirmed free items (e.g. promotional bundles, standard included accessories) require explicit catalog provenance (`isConfirmedFreeSku`).
+
+### Anti-Pattern 16: The "Preference-to-Physical Rule" Poisoning Trap (Feedback Confusion)
+- **The Mistake**: Taking a human user's session disambiguation response (e.g., selecting `DL380 Gen12` over `DL360 Gen12`) and recording it as a permanent `HARDWARE_PHYSICAL_RULE` in the master knowledge base.
+- **The Invariant (`INV-159`)**: User tender preferences and platform selections MUST be quarantined in scoped preference stores (`user_platform_selection_store.js`). They must NEVER be promoted into physical hardware conflict rules or CLIC acceptance records without official vendor QuickSpecs documentation.
+
+### Anti-Pattern 17: The "Prompt Clarification as Learned Memory" Trap (Superficial Learning)
+- **The Mistake**: Claiming a continuous learning delta or preference was "learned" merely because the agent passed the preference as prompt context into the LLM on subsequent turns.
+- **The Invariant (`INV-160`)**: Continuous learning and preference memory require demonstrated consumption by an unprimed, fresh Node process querying the normalized key from disk without prompt injection. If the runner only behaves correctly with injected prompt hints, it is conversational clarification, not architectural learning.
+
+### Anti-Pattern 18: The "Shallow Regex / Missing Owner" Capacity Trap (Loose Cable Inference)
+- **The Mistake**: Awarding component capacities (e.g., GPU auxiliary power connections) to unmapped or empty SKUs using fallback clauses like `!configuredSku || !cleanSku`, or using divergent formulas between component tallies and remedy injection.
+- **The Invariant (`INV-161`)**: Hardware enablement capacity requires exact SKU ownership. Enablement kits must be positive safe integers. Tallies and remedy quantities must use the exact same mathematical formula, and multi-node clusters must scale quantities exactly once.
+
+### Anti-Pattern 19: The "Destructive Process Abort" Lifecycle Trap (Orphaned Windows Locks)
+- **The Mistake**: Abruptly force-killing worker processes on evaluation cancellation, throwing unhandled rejections, leaving `.lock` files orphaned on Windows, and dropping intermediate evidence logs.
+- **The Invariant (`INV-162`)**: Cancellation must be cooperative and terminal. Aborted evaluations must return `status: 'CANCELLED'` (not fatal `'ERROR'`), bring the 9-phase ledger to a clean terminal state (`CANCELLED` / `SKIPPED`), and release all filesystem locks in unconditional `finally` blocks.
+
 ---
 
 ## 3. Mandatory Protocols for Autonomous Execution

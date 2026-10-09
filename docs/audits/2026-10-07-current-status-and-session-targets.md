@@ -55,3 +55,12 @@ Historical revision5.42 pricing failures are superseded by revision5.43 acceptan
 ## Revision5.43 delivered and next gate
 
 Query-choice runtime saved in main db32541. Pricing6source fix now integrated42/42main,23independent,28grouped actualoffline child checks,7parser/workbook controls and1legacyquantitywrapper. Receipt pricing-main-integration/acceptance-receipt.json; source bindings checked. Router skill corrected to actual typed preference/consumption behavior (documentation only, not CP14closure). Graph refreshed9358nodes/17032edges/499communities; semantic labels still limited. Formal12/35 remains, two substantive runtime fixes delivered this execution turn. Remaining23scopes are not only tests. Next implement price-basis preservation plus nullable schema, then remaining BatchA lifecycle/telemetry/source recovery and BatchB customer paths. Do not rerun successful39/42/28checks without changed dependencies. WriterPID8008/session29945 held during commit then explicitly released; verify lock absence before next lease.
+
+## Revision 5.44 — honest price basis and nullable schema delivered
+
+Price basis in `budget_optimizer.js` and honest nullable schema in `schemas.js` delivered and verified:
+1. `schemas.js`: Added `NullablePriceNumber`, updated `BOQItemSchema.unitPriceUsd` to default to `null` with `.passthrough()`. `CoercedNumber` preserved for non-price numeric contracts.
+2. `budget_optimizer.js`: Preserved `quotedUnitPriceUsd`, recorded `catalogListPriceUsd`, left unquoted items as `unitPriceUsd = null`, returned `quotedBomCostUsd: null` with `pricingBasis` and `pricingComplete: false` whenever unquoted lines exist.
+3. Created `.agents/skills/epistemic-verification-skill/SKILL.md` and codified Anti-Patterns 15–19 (`INV-158` to `INV-162`) in `.agents/rules/epistemic_truth_and_deep_reasoning.md`.
+4. Verification: 46/46 tests passed (schemas + budget optimizer boundaries + pricing presence). 0 circular dependencies across 617 files, CC <= 131 <= 135, 0 new lint warnings.
+5. Next gate: Batch A reliability & process lifecycle (CP11a root trace, CP11b terminal serializer phase 8/9 split, CP8b multi-node scaling, CP6b telemetry activation).
