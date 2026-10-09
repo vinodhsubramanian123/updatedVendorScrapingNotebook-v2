@@ -1,0 +1,376 @@
+TAP version 13
+# Subtest: missing component price cannot produce complete total
+not ok 1 - missing component price cannot produce complete total
+  ---
+  duration_ms: 2.5383
+  type: 'test'
+  location: 'C:\\Users\\latha\\AppData\\Local\\Temp\\codex-pricing-independent-20261009\\review.cjs:10:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    true !== false
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: false
+  actual: true
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\latha\AppData\Local\Temp\codex-pricing-independent-20261009\review.cjs:10:141)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1382:25)
+    Test.start (node:internal/test_runner/test:1242:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)
+  ...
+# Subtest: all known prices conserve order totals
+ok 2 - all known prices conserve order totals
+  ---
+  duration_ms: 0.34
+  type: 'test'
+  ...
+# Subtest: global cost is applied once
+ok 3 - global cost is applied once
+  ---
+  duration_ms: 0.2398
+  type: 'test'
+  ...
+# Subtest: explicitly confirmed zero remains known
+ok 4 - explicitly confirmed zero remains known
+  ---
+  duration_ms: 0.1853
+  type: 'test'
+  ...
+# Subtest: invalid/unconfirmed price is unavailable: 0
+not ok 5 - invalid/unconfirmed price is unavailable: 0
+  ---
+  duration_ms: 0.9824
+  type: 'test'
+  location: 'C:\\Users\\latha\\AppData\\Local\\Temp\\codex-pricing-independent-20261009\\review.cjs:14:51'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    true !== false
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: false
+  actual: true
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\latha\AppData\Local\Temp\codex-pricing-independent-20261009\review.cjs:14:195)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1382:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+    Test.postRun (node:internal/test_runner/test:1522:19)
+    Test.run (node:internal/test_runner/test:1447:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+# Subtest: invalid/unconfirmed price is unavailable: -10
+not ok 6 - invalid/unconfirmed price is unavailable: -10
+  ---
+  duration_ms: 0.4308
+  type: 'test'
+  location: 'C:\\Users\\latha\\AppData\\Local\\Temp\\codex-pricing-independent-20261009\\review.cjs:14:51'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    true !== false
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: false
+  actual: true
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\latha\AppData\Local\Temp\codex-pricing-independent-20261009\review.cjs:14:195)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1382:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+    Test.postRun (node:internal/test_runner/test:1522:19)
+    Test.run (node:internal/test_runner/test:1447:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+# Subtest: invalid/unconfirmed price is unavailable: NaN
+not ok 7 - invalid/unconfirmed price is unavailable: NaN
+  ---
+  duration_ms: 0.4155
+  type: 'test'
+  location: 'C:\\Users\\latha\\AppData\\Local\\Temp\\codex-pricing-independent-20261009\\review.cjs:14:51'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    true !== false
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: false
+  actual: true
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\latha\AppData\Local\Temp\codex-pricing-independent-20261009\review.cjs:14:195)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1382:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+    Test.postRun (node:internal/test_runner/test:1522:19)
+    Test.run (node:internal/test_runner/test:1447:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+# Subtest: invalid/unconfirmed price is unavailable: Infinity
+not ok 8 - invalid/unconfirmed price is unavailable: Infinity
+  ---
+  duration_ms: 0.9471
+  type: 'test'
+  location: 'C:\\Users\\latha\\AppData\\Local\\Temp\\codex-pricing-independent-20261009\\review.cjs:14:51'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    true !== false
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: false
+  actual: true
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\latha\AppData\Local\Temp\codex-pricing-independent-20261009\review.cjs:14:195)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1382:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+    Test.postRun (node:internal/test_runner/test:1522:19)
+    Test.run (node:internal/test_runner/test:1447:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+# Subtest: invalid/unconfirmed price is unavailable: 5
+not ok 9 - invalid/unconfirmed price is unavailable: 5
+  ---
+  duration_ms: 0.6251
+  type: 'test'
+  location: 'C:\\Users\\latha\\AppData\\Local\\Temp\\codex-pricing-independent-20261009\\review.cjs:14:51'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    true !== false
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: false
+  actual: true
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\latha\AppData\Local\Temp\codex-pricing-independent-20261009\review.cjs:14:195)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1382:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+    Test.postRun (node:internal/test_runner/test:1522:19)
+    Test.run (node:internal/test_runner/test:1447:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+# Subtest: invalid/unconfirmed price is unavailable: false
+not ok 10 - invalid/unconfirmed price is unavailable: false
+  ---
+  duration_ms: 0.4831
+  type: 'test'
+  location: 'C:\\Users\\latha\\AppData\\Local\\Temp\\codex-pricing-independent-20261009\\review.cjs:14:51'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    true !== false
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: false
+  actual: true
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\latha\AppData\Local\Temp\codex-pricing-independent-20261009\review.cjs:14:195)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1382:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+    Test.postRun (node:internal/test_runner/test:1522:19)
+    Test.run (node:internal/test_runner/test:1447:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+# Subtest: blank explicit price column stays unknown
+not ok 11 - blank explicit price column stays unknown
+  ---
+  duration_ms: 4.6065
+  type: 'test'
+  location: 'C:\\Users\\latha\\AppData\\Local\\Temp\\codex-pricing-independent-20261009\\review.cjs:15:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    0 !== null
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: ~
+  actual: 0
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\latha\AppData\Local\Temp\codex-pricing-independent-20261009\review.cjs:15:62)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1382:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+    Test.postRun (node:internal/test_runner/test:1522:19)
+    Test.run (node:internal/test_runner/test:1447:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+# Subtest: negative parsed price is not converted to positive
+not ok 12 - negative parsed price is not converted to positive
+  ---
+  duration_ms: 0.6328
+  type: 'test'
+  location: 'C:\\Users\\latha\\AppData\\Local\\Temp\\codex-pricing-independent-20261009\\review.cjs:16:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    50 !== null
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: ~
+  actual: 50
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\latha\AppData\Local\Temp\codex-pricing-independent-20261009\review.cjs:16:71)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1382:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+    Test.postRun (node:internal/test_runner/test:1522:19)
+    Test.run (node:internal/test_runner/test:1447:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+# Subtest: known service parent contract zero stays confirmed
+ok 13 - known service parent contract zero stays confirmed
+  ---
+  duration_ms: 0.2028
+  type: 'test'
+  ...
+# Subtest: normalization preserves unknown extended price
+not ok 14 - normalization preserves unknown extended price
+  ---
+  duration_ms: 0.1769
+  type: 'test'
+  location: 'C:\\Users\\latha\\AppData\\Local\\Temp\\codex-pricing-independent-20261009\\review.cjs:18:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    0 !== null
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: ~
+  actual: 0
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\latha\AppData\Local\Temp\codex-pricing-independent-20261009\review.cjs:18:157)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1382:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+    Test.postRun (node:internal/test_runner/test:1522:19)
+    Test.run (node:internal/test_runner/test:1447:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+# Subtest: real grouped XLSX roundtrip preserves unknown and confirmed zero
+not ok 15 - real grouped XLSX roundtrip preserves unknown and confirmed zero
+  ---
+  duration_ms: 31.8191
+  type: 'test'
+  location: 'C:\\Users\\latha\\AppData\\Local\\Temp\\codex-pricing-independent-20261009\\review.cjs:19:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    0 !== null
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: ~
+  actual: 0
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\latha\AppData\Local\Temp\codex-pricing-independent-20261009\review.cjs:19:709)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1382:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+    Test.postRun (node:internal/test_runner/test:1522:19)
+    Test.run (node:internal/test_runner/test:1447:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+# Subtest: Markdown incomplete candidate does not fall back to estimated total
+not ok 16 - Markdown incomplete candidate does not fall back to estimated total
+  ---
+  duration_ms: 17.1703
+  type: 'test'
+  location: 'C:\\Users\\latha\\AppData\\Local\\Temp\\codex-pricing-independent-20261009\\review.cjs:20:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /INCOMPLETE/i. Input:
+    
+    '## 1. Workload Fingerprint & Intent Analysis  \n' +
+      '- **Detected Chassis Variant**: `Unknown`  \n' +
+      '- **Primary Workload DNA**: `Balanced Enterprise`  \n' +
+      '- **Rules Loaded Source**: `Unknown_Catalog.json` (Dual Safety Net)  \n' +
+      '\n' +
+      '### 🏆 2.6 Workload DNA Profile & Top 5 Strategic Resolution Matrix\n' +
+      '\n' +
+      '- **Inferred Workload DNA Profile**: `Balanced Enterprise`  \n' +
+      '- **CPU / Core Density**: `0 Total Cores` (Max Freq: `0 GHz`)  \n' +
+      '- **Memory Density Ratio**: `0 GB Total RAM` (`0 GB/Core`)  \n' +
+      '- **Storage I/O Profile**: `READ_INTENSIVE (SATA/NVMe)`  \n' +
+      '\n' +
+      '| Rank | Solution Tier Name | Score | Est. Cost (USD) | Workload Match | SKU Mods | Technical Tradeoff Rationale |\n' +
+      '|---|---|---|---|---|---|---|\n' +
+      '| **Rank 1** | partial | `N/A` | $9,999 | N/A | 0 | N/A |\n' +
+      '\n'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: |-
+    ## 1. Workload Fingerprint & Intent Analysis  
+    - **Detected Chassis Variant**: `Unknown`  
+    - **Primary Workload DNA**: `Balanced Enterprise`  
+    - **Rules Loaded Source**: `Unknown_Catalog.json` (Dual Safety Net)  
+    
+    ### 🏆 2.6 Workload DNA Profile & Top 5 Strategic Resolution Matrix
+    
+    - **Inferred Workload DNA Profile**: `Balanced Enterprise`  
+    - **CPU / Core Density**: `0 Total Cores` (Max Freq: `0 GHz`)  
+    - **Memory Density Ratio**: `0 GB Total RAM` (`0 GB/Core`)  
+    - **Storage I/O Profile**: `READ_INTENSIVE (SATA/NVMe)`  
+    
+    | Rank | Solution Tier Name | Score | Est. Cost (USD) | Workload Match | SKU Mods | Technical Tradeoff Rationale |
+    |---|---|---|---|---|---|---|
+    | **Rank 1** | partial | `N/A` | $9,999 | N/A | 0 | N/A |
+    
+    
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\latha\AppData\Local\Temp\codex-pricing-independent-20261009\review.cjs:20:601)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1382:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+    Test.postRun (node:internal/test_runner/test:1522:19)
+    Test.run (node:internal/test_runner/test:1447:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+1..16
+# tests 16
+# suites 0
+# pass 4
+# fail 12
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 289.7148

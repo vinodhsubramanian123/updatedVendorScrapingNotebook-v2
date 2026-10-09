@@ -1,0 +1,124 @@
+{
+  "verdict": "VERIFIED_INDEPENDENT_FIX_SCOPE_INTEGRATED",
+  "author": "Antigravity gemini-3.8-flash-high",
+  "verifier": "Codex root",
+  "sources": [
+    {
+      "file": "scripts/lib/boq/configuration_context.js",
+      "sha256": "e639d6352db8d5d7434afa48addf3539442d61d5d717b7e44dccb47837710c8e"
+    },
+    {
+      "file": "scripts/lib/boq/multi_group_plan.js",
+      "sha256": "739380ffe26d38ee9e08ef325c320fbdcf48289b05d422d45e0fc88d9d1399bb"
+    },
+    {
+      "file": "scripts/lib/boq/boq_parser.js",
+      "sha256": "7644120a51b2179612ae1c0f90ff1dce93a2dcc660e05f3f671937afa3be0d91"
+    },
+    {
+      "file": "scripts/lib/boq/eval_output_serializer.js",
+      "sha256": "2d60a8843c8d05b56d9c66b09181e50ff7c9d8d94fc85979959235ada2220d31"
+    },
+    {
+      "file": "scripts/lib/boq/generate_boq_xlsx.js",
+      "sha256": "a1dd093c1e8a278fc4193531738bb3502e217f6e504b474f8fdf772bb15ff366"
+    },
+    {
+      "file": "scripts/lib/boq/pricing_presence.js",
+      "sha256": "e463cfdbf7dde1653f83fb893f7a322589a3accef0fffc1780ed96550ec7f1c3"
+    }
+  ],
+  "authorReceiptMismatches": [
+    "scripts/lib/boq/pricing_presence.js",
+    "scripts/lib/boq/multi_group_plan.js"
+  ],
+  "checks": [
+    {
+      "scope": "Independent pricing syntax/presence/order scaling/duplicates/XLSX/Markdown/workbook fallback/overflow",
+      "tests": 23,
+      "passed": 23,
+      "failed": 0,
+      "skipped": 0,
+      "log": "candidate-guards-final.tap"
+    },
+    {
+      "scope": "Main23independent+19authored focused",
+      "tests": 42,
+      "passed": 42,
+      "failed": 0,
+      "skipped": 0,
+      "log": "main-tests.tap"
+    },
+    {
+      "scope": "Affected grouped continuation with actual2/9/20node offline canonical children",
+      "tests": 28,
+      "passed": 28,
+      "failed": 0,
+      "skipped": 0,
+      "log": "grouped-final-guards.tap"
+    },
+    {
+      "scope": "Existing quantity-context legacy script",
+      "wrappers": 1,
+      "passed": 1,
+      "log": "test_configuration_quantity_context.js.tap"
+    },
+    {
+      "scope": "Existing parser and workbook robustness",
+      "tests": 7,
+      "passed": 7,
+      "failed": 0,
+      "log": "test_boq_parser_and_xlsx_robustness.js.tap"
+    },
+    {
+      "scope": "Full main circular graph",
+      "files": 617,
+      "cycles": 0,
+      "log": "main-cycles.log"
+    },
+    {
+      "scope": "Full main complexity",
+      "max": 131,
+      "threshold": 135,
+      "log": "main-complexity.log"
+    },
+    {
+      "scope": "Explicit node oxlint cohort",
+      "beforeWarnings": 3,
+      "afterWarnings": 3,
+      "newWarnings": 0,
+      "errors": 0,
+      "logs": [
+        "lint-before.log",
+        "lint-after-corrected.log"
+      ]
+    },
+    {
+      "scope": "AST graph refresh",
+      "nodes": 9358,
+      "edges": 17032,
+      "communities": 499,
+      "log": "graph-refresh.log"
+    }
+  ],
+  "intendedDifferences": [
+    "Blank explicit Unit Price column in BOQ input preserves unitPriceUsd: null rather than defaulting to 0 or inferring from other columns.",
+    "Unconfirmed 0 price preserves unitPriceUsd: null, requiring explicit provenance (Confirmed Zero Price header, isConfirmedZeroPrice flag, or confirmed service parent contracts HA113A1/HU4B2A3) to treat 0 as known.",
+    "Incomplete configurations retain knownOrderSubtotalUsd while setting totalOrderCostUsd: null and pricingComplete: false.",
+    "Duplicate SKU consolidation preserves null and records priceConflict (MIXED_PRICING_EVIDENCE or CONFLICTING_OBSERVED_PRICES) instead of silently pricing missing occurrences from later occurrences.",
+    "Markdown workload summary formats incomplete solutions as INCOMPLETE with explicitly known subtotal instead of falling back to estimatedCostUsd.",
+    "Workbook baseline fallback uses canonical pricing summary helper with outputQuantities callback instead of fabricating 0 total."
+  ],
+  "limitations": [
+    "Partial CP10a/CP8b; full customer-path price basis remains open",
+    "budget_optimizer currently replaces inputUnitPriceUsd with catalog estimates; quote/list separation required next",
+    "BOQItemSchema still defaults missing price0 and does not accept nullable prices; currently no external safeParseBOQ runtime callers found, fix contract before activation",
+    "Original fixture/setup failures preserved; full certified fixture copied to isolation rather than skipping preflight",
+    "One grouped regression assertion intentionally updated unquoted0->null; all quantity assertions retained",
+    "No live cloud/vendor qualification; semantic graph labels need API key",
+    "Existing lint warnings remain; final zero-warning gate not closed",
+    "Agy author receipt source mismatches explicitly retained; do not reuse its old hashes or treat it as final-code approval"
+  ],
+  "capturedAt": "2026-10-09T15:09:28.211Z",
+  "authorReceiptStatus": "Superseded:2source hashes predate final quantity-guard/lint corrections; final root source-bindings and main42checks are acceptance authority"
+}

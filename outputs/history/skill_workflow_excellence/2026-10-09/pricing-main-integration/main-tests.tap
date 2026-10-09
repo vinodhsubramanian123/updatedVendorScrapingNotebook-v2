@@ -1,0 +1,264 @@
+TAP version 13
+# ◇ injected env (6) from .env // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+# Subtest: missing component price cannot produce complete total
+ok 1 - missing component price cannot produce complete total
+  ---
+  duration_ms: 2.9733
+  type: 'test'
+  ...
+# Subtest: all known prices conserve order totals
+ok 2 - all known prices conserve order totals
+  ---
+  duration_ms: 0.2321
+  type: 'test'
+  ...
+# Subtest: global cost is applied once
+ok 3 - global cost is applied once
+  ---
+  duration_ms: 0.263
+  type: 'test'
+  ...
+# Subtest: explicitly confirmed zero remains known
+ok 4 - explicitly confirmed zero remains known
+  ---
+  duration_ms: 0.214
+  type: 'test'
+  ...
+# Subtest: invalid/unconfirmed price is unavailable: 0
+ok 5 - invalid/unconfirmed price is unavailable: 0
+  ---
+  duration_ms: 0.4859
+  type: 'test'
+  ...
+# Subtest: invalid/unconfirmed price is unavailable: -10
+ok 6 - invalid/unconfirmed price is unavailable: -10
+  ---
+  duration_ms: 0.1675
+  type: 'test'
+  ...
+# Subtest: invalid/unconfirmed price is unavailable: NaN
+ok 7 - invalid/unconfirmed price is unavailable: NaN
+  ---
+  duration_ms: 0.1433
+  type: 'test'
+  ...
+# Subtest: invalid/unconfirmed price is unavailable: Infinity
+ok 8 - invalid/unconfirmed price is unavailable: Infinity
+  ---
+  duration_ms: 0.1509
+  type: 'test'
+  ...
+# Subtest: invalid/unconfirmed price is unavailable: 5
+ok 9 - invalid/unconfirmed price is unavailable: 5
+  ---
+  duration_ms: 0.1345
+  type: 'test'
+  ...
+# Subtest: invalid/unconfirmed price is unavailable: false
+ok 10 - invalid/unconfirmed price is unavailable: false
+  ---
+  duration_ms: 0.214
+  type: 'test'
+  ...
+# Subtest: blank explicit price column stays unknown
+ok 11 - blank explicit price column stays unknown
+  ---
+  duration_ms: 4.1338
+  type: 'test'
+  ...
+# Subtest: negative parsed price is not converted to positive
+ok 12 - negative parsed price is not converted to positive
+  ---
+  duration_ms: 0.5984
+  type: 'test'
+  ...
+# Subtest: known service parent contract zero stays confirmed
+ok 13 - known service parent contract zero stays confirmed
+  ---
+  duration_ms: 0.1395
+  type: 'test'
+  ...
+# Subtest: normalization preserves unknown extended price
+ok 14 - normalization preserves unknown extended price
+  ---
+  duration_ms: 0.1043
+  type: 'test'
+  ...
+# Subtest: real grouped XLSX roundtrip preserves unknown and confirmed zero
+ok 15 - real grouped XLSX roundtrip preserves unknown and confirmed zero
+  ---
+  duration_ms: 27.1801
+  type: 'test'
+  ...
+# Subtest: Markdown incomplete candidate does not fall back to estimated total
+ok 16 - Markdown incomplete candidate does not fall back to estimated total
+  ---
+  duration_ms: 51.1921
+  type: 'test'
+  ...
+# Subtest: mixed duplicate SKU prices cannot manufacture complete quote
+ok 17 - mixed duplicate SKU prices cannot manufacture complete quote
+  ---
+  duration_ms: 0.8207
+  type: 'test'
+  ...
+# Subtest: conflicting duplicate prices remain unresolved
+ok 18 - conflicting duplicate prices remain unresolved
+  ---
+  duration_ms: 0.2499
+  type: 'test'
+  ...
+# Subtest: quantity-owned total is not multiplied twice
+ok 19 - quantity-owned total is not multiplied twice
+  ---
+  duration_ms: 0.4495
+  type: 'test'
+  ...
+# Subtest: overflow never exposes infinite known subtotal
+ok 20 - overflow never exposes infinite known subtotal
+  ---
+  duration_ms: 0.1628
+  type: 'test'
+  ...
+# Subtest: sum overflow remains representable and incomplete
+ok 21 - sum overflow remains representable and incomplete
+  ---
+  duration_ms: 0.1323
+  type: 'test'
+  ...
+# Subtest: strict observed-price syntax rejects arrays hex malformed commas
+ok 22 - strict observed-price syntax rejects arrays hex malformed commas
+  ---
+  duration_ms: 0.1247
+  type: 'test'
+  ...
+# Subtest: workbook baseline fallback retains incomplete price evidence
+ok 23 - workbook baseline fallback retains incomplete price evidence
+  ---
+  duration_ms: 22.4277
+  type: 'test'
+  ...
+# ◇ injected env (6) from .env // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+# Subtest: reproduced applyConfigurationContext: CTO qty 9 price 100 + CPU qty 18 missing price
+ok 24 - reproduced applyConfigurationContext: CTO qty 9 price 100 + CPU qty 18 missing price
+  ---
+  duration_ms: 2.0772
+  type: 'test'
+  ...
+# Subtest: all known prices produce complete totalOrderCostUsd and pricingComplete true
+ok 25 - all known prices produce complete totalOrderCostUsd and pricingComplete true
+  ---
+  duration_ms: 0.2027
+  type: 'test'
+  ...
+# Subtest: global items are added once and do not scale with multiplier
+ok 26 - global items are added once and do not scale with multiplier
+  ---
+  duration_ms: 0.2001
+  type: 'test'
+  ...
+# Subtest: explicitly confirmed zero price is treated as known 0 with provenance
+ok 27 - explicitly confirmed zero price is treated as known 0 with provenance
+  ---
+  duration_ms: 0.1831
+  type: 'test'
+  ...
+# Subtest: invalid or unconfirmed price (0) results in incomplete pricing
+ok 28 - invalid or unconfirmed price (0) results in incomplete pricing
+  ---
+  duration_ms: 0.2692
+  type: 'test'
+  ...
+# Subtest: invalid or unconfirmed price (-10) results in incomplete pricing
+ok 29 - invalid or unconfirmed price (-10) results in incomplete pricing
+  ---
+  duration_ms: 0.1553
+  type: 'test'
+  ...
+# Subtest: invalid or unconfirmed price (NaN) results in incomplete pricing
+ok 30 - invalid or unconfirmed price (NaN) results in incomplete pricing
+  ---
+  duration_ms: 0.1534
+  type: 'test'
+  ...
+# Subtest: invalid or unconfirmed price (Infinity) results in incomplete pricing
+ok 31 - invalid or unconfirmed price (Infinity) results in incomplete pricing
+  ---
+  duration_ms: 0.1637
+  type: 'test'
+  ...
+# Subtest: invalid or unconfirmed price (5) results in incomplete pricing
+ok 32 - invalid or unconfirmed price (5) results in incomplete pricing
+  ---
+  duration_ms: 0.1431
+  type: 'test'
+  ...
+# Subtest: invalid or unconfirmed price (false) results in incomplete pricing
+ok 33 - invalid or unconfirmed price (false) results in incomplete pricing
+  ---
+  duration_ms: 0.1776
+  type: 'test'
+  ...
+# Subtest: blank explicit Unit Price column does not infer from description or other cells
+ok 34 - blank explicit Unit Price column does not infer from description or other cells
+  ---
+  duration_ms: 4.3206
+  type: 'test'
+  ...
+# Subtest: negative unit price is not converted to positive
+ok 35 - negative unit price is not converted to positive
+  ---
+  duration_ms: 0.7446
+  type: 'test'
+  ...
+# Subtest: known service parent contract zero is confirmed
+ok 36 - known service parent contract zero is confirmed
+  ---
+  duration_ms: 0.1922
+  type: 'test'
+  ...
+# Subtest: normalizeConfiguration preserves null extended price when unitPriceUsd is unknown
+ok 37 - normalizeConfiguration preserves null extended price when unitPriceUsd is unknown
+  ---
+  duration_ms: 0.0929
+  type: 'test'
+  ...
+# Subtest: real grouped XLSX round-trip preserves null and confirmed zero prices
+ok 38 - real grouped XLSX round-trip preserves null and confirmed zero prices
+  ---
+  duration_ms: 26.0718
+  type: 'test'
+  ...
+# Subtest: duplicate SKU consolidation discloses mixed pricing and does not silently price missing occurrence
+ok 39 - duplicate SKU consolidation discloses mixed pricing and does not silently price missing occurrence
+  ---
+  duration_ms: 0.8008
+  type: 'test'
+  ...
+# Subtest: duplicate SKU consolidation with conflicting prices sets unitPriceUsd to null
+ok 40 - duplicate SKU consolidation with conflicting prices sets unitPriceUsd to null
+  ---
+  duration_ms: 0.3768
+  type: 'test'
+  ...
+# Subtest: sum overflow nullifies subtotal and marks incomplete
+ok 41 - sum overflow nullifies subtotal and marks incomplete
+  ---
+  duration_ms: 0.156
+  type: 'test'
+  ...
+# Subtest: parseObservedUnitPrice rejects non-number/non-string, hex, and malformed syntax
+ok 42 - parseObservedUnitPrice rejects non-number/non-string, hex, and malformed syntax
+  ---
+  duration_ms: 0.196
+  type: 'test'
+  ...
+1..42
+# tests 42
+# suites 0
+# pass 42
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 397.7281

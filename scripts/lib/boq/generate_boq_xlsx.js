@@ -486,12 +486,22 @@ function _getRankedSolutions(evalResults) {
   if (!Array.isArray(rankedSolutions) || rankedSolutions.length === 0) {
     const isClean = evalResults.isMathClean === true && evalResults.conflictGraph?.isWholeSolutionValid === true && Array.isArray(evalResults.aspectChecks) && evalResults.aspectChecks.length >= 7 && evalResults.aspectChecks.every(a => a.status === 'PASS') && (!evalResults.missingDependencies || evalResults.missingDependencies.length === 0);
     const baseItems = (evalResults.items || []).map(it => ({ ...it, isFixInjected: false }));
+    const { summarizeCandidatePricing } = require('./pricing_presence.js');
+    const pricingSummary = summarizeCandidatePricing(
+      baseItems,
+      evalResults.clusterSizing?.serverCount || 1,
+      [],
+      outputQuantities
+    );
     rankedSolutions = [{
       rank: 1,
       name: isClean ? 'Customer Intent Preserved (Deterministic Verified)' : 'Customer Intent (Unresolved Physical Gaps - Draft)',
       reasoning: isClean ? 'Baseline configuration with all mandatory 7-aspect hardware dependency kits satisfied.' : 'Uncertified baseline configuration with pending physical requirements or conflicts.',
       estimatedCostUsd: evalResults.budgetOptimization?.currentBomCostUsd || 0,
-      totalOrderCostUsd: baseItems.reduce((sum, it) => sum + outputQuantities(it, evalResults.clusterSizing?.serverCount || 1).totalQty * (it.unitPriceUsd || 0), 0),
+      totalOrderCostUsd: pricingSummary.totalOrderCostUsd,
+      knownOrderSubtotalUsd: pricingSummary.knownOrderSubtotalUsd,
+      pricingComplete: pricingSummary.pricingComplete,
+      priceUnavailableSkus: pricingSummary.priceUnavailableSkus,
       skuPartsList: baseItems,
       tradeoffMetrics: { intentAlignment: isClean ? '100%' : 'PENDING_RESOLUTION' },
       isDraft: !isClean,

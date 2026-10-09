@@ -144,7 +144,15 @@ function _buildWorkloadSection(graph, chassisDir, chassisDetection) {
     md += `| Rank | Solution Tier Name | Score | Est. Cost (USD) | Workload Match | SKU Mods | Technical Tradeoff Rationale |\n`;
     md += `|---|---|---|---|---|---|---|\n`;
     graph.recommendedSolutions.forEach(rs => {
-      md += `| **Rank ${rs.rank}** | ${rs.name || 'Custom Solution'} | \`${rs.score || 'N/A'}\` | \$${(rs.totalOrderCostUsd ?? rs.estimatedCostUsd ?? 0).toLocaleString()} | ${rs.workloadDnaMatch || 'N/A'} | ${rs.changesCount ?? 0} | ${rs.reasoning || 'N/A'} |\n`;
+      let costCell = '';
+      if (rs.pricingComplete === false) {
+        costCell = rs.knownOrderSubtotalUsd !== null && rs.knownOrderSubtotalUsd !== undefined
+          ? `INCOMPLETE (Subtotal: \$${Number(rs.knownOrderSubtotalUsd).toLocaleString()})`
+          : 'INCOMPLETE';
+      } else {
+        costCell = `\$${(rs.totalOrderCostUsd ?? rs.estimatedCostUsd ?? 0).toLocaleString()}`;
+      }
+      md += `| **Rank ${rs.rank}** | ${rs.name || 'Custom Solution'} | \`${rs.score || 'N/A'}\` | ${costCell} | ${rs.workloadDnaMatch || 'N/A'} | ${rs.changesCount ?? 0} | ${rs.reasoning || 'N/A'} |\n`;
     });
     md += `\n`;
   }

@@ -1,0 +1,27 @@
+✔ reproduced applyConfigurationContext: CTO qty 9 price 100 + CPU qty 18 missing price (2.2683ms)
+✔ all known prices produce complete totalOrderCostUsd and pricingComplete true (0.2318ms)
+✔ global items are added once and do not scale with multiplier (0.2064ms)
+✔ explicitly confirmed zero price is treated as known 0 with provenance (0.2114ms)
+✔ invalid or unconfirmed price (0) results in incomplete pricing (0.3223ms)
+✔ invalid or unconfirmed price (-10) results in incomplete pricing (0.1809ms)
+✔ invalid or unconfirmed price (NaN) results in incomplete pricing (0.1648ms)
+✔ invalid or unconfirmed price (Infinity) results in incomplete pricing (0.1268ms)
+✔ invalid or unconfirmed price (5) results in incomplete pricing (0.1414ms)
+✔ invalid or unconfirmed price (false) results in incomplete pricing (0.1931ms)
+✔ blank explicit Unit Price column does not infer from description or other cells (4.1283ms)
+✔ negative unit price is not converted to positive (1.1217ms)
+✔ known service parent contract zero is confirmed (0.2677ms)
+✔ normalizeConfiguration preserves null extended price when unitPriceUsd is unknown (0.1506ms)
+✔ real grouped XLSX round-trip preserves null and confirmed zero prices (34.1081ms)
+✔ duplicate SKU consolidation discloses mixed pricing and does not silently price missing occurrence (2.8952ms)
+✔ duplicate SKU consolidation with conflicting prices sets unitPriceUsd to null (0.6259ms)
+✔ sum overflow nullifies subtotal and marks incomplete (0.2748ms)
+✔ parseObservedUnitPrice rejects non-number/non-string, hex, and malformed syntax (0.2367ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 307.4814

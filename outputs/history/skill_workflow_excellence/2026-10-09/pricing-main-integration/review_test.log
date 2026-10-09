@@ -1,0 +1,31 @@
+✔ missing component price cannot produce complete total (4.3792ms)
+✔ all known prices conserve order totals (0.2986ms)
+✔ global cost is applied once (0.2394ms)
+✔ explicitly confirmed zero remains known (0.2485ms)
+✔ invalid/unconfirmed price is unavailable: 0 (0.4061ms)
+✔ invalid/unconfirmed price is unavailable: -10 (0.1739ms)
+✔ invalid/unconfirmed price is unavailable: NaN (0.1231ms)
+✔ invalid/unconfirmed price is unavailable: Infinity (0.1316ms)
+✔ invalid/unconfirmed price is unavailable: 5 (0.1412ms)
+✔ invalid/unconfirmed price is unavailable: false (0.2162ms)
+✔ blank explicit price column stays unknown (4.527ms)
+✔ negative parsed price is not converted to positive (0.6407ms)
+✔ known service parent contract zero stays confirmed (0.1495ms)
+✔ normalization preserves unknown extended price (0.1135ms)
+✔ real grouped XLSX roundtrip preserves unknown and confirmed zero (38.6781ms)
+✔ Markdown incomplete candidate does not fall back to estimated total (31.5243ms)
+✔ mixed duplicate SKU prices cannot manufacture complete quote (0.5213ms)
+✔ conflicting duplicate prices remain unresolved (0.2845ms)
+✔ quantity-owned total is not multiplied twice (0.7534ms)
+✔ overflow never exposes infinite known subtotal (0.2595ms)
+✔ sum overflow remains representable and incomplete (0.1821ms)
+✔ strict observed-price syntax rejects arrays hex malformed commas (0.2869ms)
+✔ workbook baseline fallback retains incomplete price evidence (29.1001ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 122.9017

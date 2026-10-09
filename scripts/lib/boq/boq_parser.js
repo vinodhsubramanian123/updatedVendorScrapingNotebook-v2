@@ -195,6 +195,9 @@ function detectHeaderColumnMap(line, delimiter) {
     if (col.includes('unit price') || col.includes('einzelpreis') || col.includes('net price') || col.includes('list price') || col === 'price' || col === 'preis') {
       map.price = idx;
     }
+    if (col.includes('confirmed zero') || col === 'is_confirmed_zero' || col === 'price provenance' || col.includes('provenance')) {
+      map.confirmedZero = idx;
+    }
     const ownershipColumns = { 'configuration id': 'configurationId', 'parent id': 'parentId', 'sub-parent id': 'subParentId', 'quantity scope': 'quantityScope', 'quantity basis': 'quantityBasis' };
     if (ownershipColumns[col]) map[ownershipColumns[col]] = idx;
     if (/^(?:purpose|allocation|notes|status\s*\/\s*notes)$/.test(col)) map.purpose = idx;
@@ -263,10 +266,28 @@ function extractStructuredSkuRow(parts, activeColumnMap) {
   }
 
   // Find Unit Price
-  let unitPriceUsd = 0;
-  if (priceIndex !== -1 && parts[priceIndex]) {
-    const num = parseFloat(parts[priceIndex].replace(/[^0-9.]/g, ''));
-    if (!isNaN(num)) unitPriceUsd = num;
+  let isConfirmedZeroPrice = false;
+  if (activeColumnMap && activeColumnMap.confirmedZero !== undefined && activeColumnMap.confirmedZero !== -1) {
+    const rawCz = String(parts[activeColumnMap.confirmedZero] || '').trim().toLowerCase();
+    if (rawCz === 'true' || rawCz === 'yes' || rawCz === 'confirmed_zero' || rawCz === '1') {
+      isConfirmedZeroPrice = true;
+    }
+  }
+
+  const { parseObservedUnitPrice, CONFIRMED_ZERO_PARENT_CONTRACTS } = require('./pricing_presence.js');
+
+  let unitPriceUsd = null;
+  if (priceIndex !== -1) {
+    const rawVal = parts[priceIndex];
+    if (rawVal !== undefined && rawVal !== null && String(rawVal).trim() !== '') {
+      unitPriceUsd = parseObservedUnitPrice(rawVal);
+      if (unitPriceUsd === 0 && (isConfirmedZeroPrice || CONFIRMED_ZERO_PARENT_CONTRACTS.has(cleanSku))) {
+        isConfirmedZeroPrice = true;
+      }
+    } else {
+      // With an explicit Unit Price column BLANK, do NOT infer price from other columns or stringify 0
+      unitPriceUsd = null;
+    }
   } else {
     for (let i = 0; i < parts.length; i++) {
       if (i === skuIndex || i === descIndex || i === qtyIndex) continue;
@@ -281,6 +302,10 @@ function extractStructuredSkuRow(parts, activeColumnMap) {
     }
   }
 
+  if (unitPriceUsd === 0 && CONFIRMED_ZERO_PARENT_CONTRACTS.has(cleanSku)) {
+    isConfirmedZeroPrice = true;
+  }
+
   const isFioLine = rawSkuPart.includes('0D1') || rawSkuPart.includes('B19') || rawDescPart.toLowerCase().includes('factory integrated');
 
   return {
@@ -291,7 +316,8 @@ function extractStructuredSkuRow(parts, activeColumnMap) {
     description: rawDescPart && !rawDescPart.toLowerCase().includes('factory integrated') ? rawDescPart : cleanSku,
     purpose: activeColumnMap?.purpose !== undefined ? parts[activeColumnMap.purpose] : '',
     quantity: lineQty,
-    unitPriceUsd: unitPriceUsd || 0,
+    unitPriceUsd,
+    isConfirmedZeroPrice,
     isFactoryIntegrated: isFioLine
   };
 }
@@ -341,7 +367,8 @@ function extractFreeFormSkuRows(line) {
       sku: cleanSku,
       description: cleanDesc,
       quantity: lineQty,
-      unitPriceUsd: 0,
+      unitPriceUsd: null,
+      isConfirmedZeroPrice: false,
       isFactoryIntegrated: isFioLine
     });
   }
@@ -483,11 +510,34 @@ function parseSkuLines(lines) {
         } else {
           existing.quantity += totalQty;
         }
-        if (item.unitPriceUsd > 0 && !existing.unitPriceUsd) {
-          existing.unitPriceUsd = item.unitPriceUsd;
+
+        existing.priceObservations = existing.priceObservations || [existing.unitPriceUsd];
+        existing.priceObservations.push(item.unitPriceUsd);
+
+        const p1 = existing.unitPriceUsd;
+        const p2 = item.unitPriceUsd;
+
+        const p1Known = typeof p1 === 'number' && Number.isFinite(p1) && (p1 > 0 || (p1 === 0 && existing.isConfirmedZeroPrice));
+        const p2Known = typeof p2 === 'number' && Number.isFinite(p2) && (p2 > 0 || (p2 === 0 && item.isConfirmedZeroPrice));
+
+        if (!p1Known || !p2Known) {
+          // If either occurrence is unpriced/unconfirmed, do NOT silently price the line!
+          if (p1Known !== p2Known) {
+            existing.priceConflict = 'MIXED_PRICING_EVIDENCE';
+            existing.unitPriceUsd = null;
+            existing.extendedPriceUsd = null;
+          }
+        } else if (p1 !== p2) {
+          existing.priceConflict = 'CONFLICTING_OBSERVED_PRICES';
+          existing.unitPriceUsd = null;
+          existing.extendedPriceUsd = null;
+        } else {
+          existing.unitPriceUsd = p1;
           existing.extendedPriceUsd = existing.unitPriceUsd * existing.quantity;
         }
       } else {
+        const isKnown = typeof item.unitPriceUsd === 'number' && Number.isFinite(item.unitPriceUsd) && (item.unitPriceUsd > 0 || (item.unitPriceUsd === 0 && item.isConfirmedZeroPrice));
+        const finalUnitPrice = isKnown ? item.unitPriceUsd : null;
         itemMap.set(itemKey, {
           ...item,
           sku: item.sku,
@@ -495,9 +545,11 @@ function parseSkuLines(lines) {
           quantityBasis: item.quantityBasis || 'total',
           description: item.description,
           quantity: totalQty,
-          unitPriceUsd: item.unitPriceUsd || 0,
-          extendedPriceUsd: (item.unitPriceUsd || 0) * totalQty,
-          isFactoryIntegrated: item.isFactoryIntegrated
+          unitPriceUsd: finalUnitPrice,
+          isConfirmedZeroPrice: item.isConfirmedZeroPrice || false,
+          extendedPriceUsd: finalUnitPrice !== null ? finalUnitPrice * totalQty : null,
+          isFactoryIntegrated: item.isFactoryIntegrated,
+          priceObservations: [item.unitPriceUsd]
         });
       }
     }

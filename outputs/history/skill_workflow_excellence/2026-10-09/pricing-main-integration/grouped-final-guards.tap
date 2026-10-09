@@ -1,0 +1,181 @@
+TAP version 13
+# Subtest: frozen CP8a characterizes child ACTION_REQUIRED/nonzero mislabel and absent error completion
+ok 1 - frozen CP8a characterizes child ACTION_REQUIRED/nonzero mislabel and absent error completion
+  ---
+  duration_ms: 4.1453
+  type: 'test'
+  ...
+# Subtest: 2 nodes conserve order totals through actual parser/context exactly once
+ok 2 - 2 nodes conserve order totals through actual parser/context exactly once
+  ---
+  duration_ms: 115.1305
+  type: 'test'
+  ...
+# Subtest: 9 nodes conserve order totals through actual parser/context exactly once
+ok 3 - 9 nodes conserve order totals through actual parser/context exactly once
+  ---
+  duration_ms: 49.282
+  type: 'test'
+  ...
+# Subtest: 20 nodes conserve order totals through actual parser/context exactly once
+ok 4 - 20 nodes conserve order totals through actual parser/context exactly once
+  ---
+  duration_ms: 48.7608
+  type: 'test'
+  ...
+# Subtest: distinct explicit configurations inside one sheet retain every owner and source item index
+ok 5 - distinct explicit configurations inside one sheet retain every owner and source item index
+  ---
+  duration_ms: 47.3494
+  type: 'test'
+  ...
+# Subtest: global order rows stay once while configured rows scale
+ok 6 - global order rows stay once while configured rows scale
+  ---
+  duration_ms: 31.561
+  type: 'test'
+  ...
+# Subtest: ambiguous/nested/nondivisible group fails closed without guessed multiplier
+ok 7 - ambiguous/nested/nondivisible group fails closed without guessed multiplier
+  ---
+  duration_ms: 15.1747
+  type: 'test'
+  ...
+# Subtest: ambiguous/nested/nondivisible group fails closed without guessed multiplier
+ok 8 - ambiguous/nested/nondivisible group fails closed without guessed multiplier
+  ---
+  duration_ms: 12.7364
+  type: 'test'
+  ...
+# Subtest: ambiguous/nested/nondivisible group fails closed without guessed multiplier
+ok 9 - ambiguous/nested/nondivisible group fails closed without guessed multiplier
+  ---
+  duration_ms: 12.9414
+  type: 'test'
+  ...
+# Subtest: invalid and unresolved source rows are accounted diagnostic without executing splitter
+ok 10 - invalid and unresolved source rows are accounted diagnostic without executing splitter
+  ---
+  duration_ms: 25.2345
+  type: 'test'
+  ...
+# Subtest: existing allocation conservation permits exact split and rejects additions/rounding
+ok 11 - existing allocation conservation permits exact split and rejects additions/rounding
+  ---
+  duration_ms: 34.2429
+  type: 'test'
+  ...
+# Subtest: child preserves truthful ACTION_REQUIRED and literal evidence
+ok 12 - child preserves truthful ACTION_REQUIRED and literal evidence
+  ---
+  duration_ms: 0.4787
+  type: 'test'
+  ...
+# Subtest: child preserves truthful CANCELLED and literal evidence
+ok 13 - child preserves truthful CANCELLED and literal evidence
+  ---
+  duration_ms: 0.0922
+  type: 'test'
+  ...
+# Subtest: child preserves truthful NOT_EVALUATED and literal evidence
+ok 14 - child preserves truthful NOT_EVALUATED and literal evidence
+  ---
+  duration_ms: 0.0652
+  type: 'test'
+  ...
+# Subtest: nonzero/signal/malformed/duplicate/missing/unknown payloads never report SUCCESS
+ok 15 - nonzero/signal/malformed/duplicate/missing/unknown payloads never report SUCCESS
+  ---
+  duration_ms: 0.4017
+  type: 'test'
+  ...
+# Subtest: child actual args bind worksheet and same Node binary with existing flags
+ok 16 - child actual args bind worksheet and same Node binary with existing flags
+  ---
+  duration_ms: 4.2482
+  type: 'test'
+  ...
+# Subtest: async spawn error and subsequent close settle once
+ok 17 - async spawn error and subsequent close settle once
+  ---
+  duration_ms: 1.7775
+  type: 'test'
+  ...
+# Subtest: synchronous spawn throw produces bounded per-group error
+ok 18 - synchronous spawn throw produces bounded per-group error
+  ---
+  duration_ms: 1.4885
+  type: 'test'
+  ...
+# Subtest: hung child retains ownership after timeout until actual close
+ok 19 - hung child retains ownership after timeout until actual close
+  ---
+  duration_ms: 86.0488
+  type: 'test'
+  ...
+# Subtest: stdout output limit requests termination without accepting partial payload
+ok 20 - stdout output limit requests termination without accepting partial payload
+  ---
+  duration_ms: 1.8058
+  type: 'test'
+  ...
+# Subtest: stderr output limit requests termination without accepting partial payload
+ok 21 - stderr output limit requests termination without accepting partial payload
+  ---
+  duration_ms: 1.6312
+  type: 'test'
+  ...
+# Subtest: facility aggregation sums canonical quantities while every site/power unknown remains null
+ok 22 - facility aggregation sums canonical quantities while every site/power unknown remains null
+  ---
+  duration_ms: 0.4863
+  type: 'test'
+  ...
+# Subtest: facade limits fail before child work and import remains lazy
+ok 23 - facade limits fail before child work and import remains lazy
+  ---
+  duration_ms: 0.8639
+  type: 'test'
+  ...
+# CP8B_REAL_CANONICAL_OBSERVATION {"nodes":2,"outerStatus":"ACTION_REQUIRED","buildStatus":"LOCAL_RULE_CHECKED","totalRackUnits":4,"acceptance":null,"groupId":"group-b65a3489f08dd20ea2da","evidenceLogPath":"C:\\\\Users\\\\latha\\\\AppData\\\\Local\\\\Temp\\\\agy-pricing-implementation-20261009\\\\outputs\\\\ProLiant\\\\Gen12\\\\DL380_Gen12\\\\reports\\\\evidence\\\\evidence_log_TRC-1791558393491-FBB469.json"}
+# Subtest: 2 actual offline canonical child returns exact owned order and pending delivery
+ok 24 - 2 actual offline canonical child returns exact owned order and pending delivery
+  ---
+  duration_ms: 6289.7155
+  type: 'test'
+  ...
+# CP8B_REAL_CANONICAL_OBSERVATION {"nodes":9,"outerStatus":"ACTION_REQUIRED","buildStatus":"LOCAL_RULE_CHECKED","totalRackUnits":18,"acceptance":null,"groupId":"group-b77b53fc9d0313350223","evidenceLogPath":"C:\\\\Users\\\\latha\\\\AppData\\\\Local\\\\Temp\\\\agy-pricing-implementation-20261009\\\\outputs\\\\ProLiant\\\\Gen12\\\\DL380_Gen12\\\\reports\\\\evidence\\\\evidence_log_TRC-1791558399709-5C57DC.json"}
+# Subtest: 9 actual offline canonical child returns exact owned order and pending delivery
+ok 25 - 9 actual offline canonical child returns exact owned order and pending delivery
+  ---
+  duration_ms: 5912.8803
+  type: 'test'
+  ...
+# CP8B_REAL_CANONICAL_OBSERVATION {"nodes":20,"outerStatus":"ACTION_REQUIRED","buildStatus":"LOCAL_RULE_CHECKED","totalRackUnits":40,"acceptance":null,"groupId":"group-3d1a34ccf1af0721c500","evidenceLogPath":"C:\\\\Users\\\\latha\\\\AppData\\\\Local\\\\Temp\\\\agy-pricing-implementation-20261009\\\\outputs\\\\ProLiant\\\\Gen12\\\\DL380_Gen12\\\\reports\\\\evidence\\\\evidence_log_TRC-1791558405617-D0F3BF.json"}
+# Subtest: 20 actual offline canonical child returns exact owned order and pending delivery
+ok 26 - 20 actual offline canonical child returns exact owned order and pending delivery
+  ---
+  duration_ms: 6348.2335
+  type: 'test'
+  ...
+# Subtest: mixed sheets account independent groups and keep blocked ownership separate
+ok 27 - mixed sheets account independent groups and keep blocked ownership separate
+  ---
+  duration_ms: 6928.8128
+  type: 'test'
+  ...
+# Subtest: single explicit owner with unowned anchor uses canonical ownership inference
+ok 28 - single explicit owner with unowned anchor uses canonical ownership inference
+  ---
+  duration_ms: 29.3049
+  type: 'test'
+  ...
+1..28
+# tests 28
+# suites 0
+# pass 28
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 26287.8016

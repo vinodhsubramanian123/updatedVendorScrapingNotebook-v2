@@ -1,0 +1,17 @@
+TAP version 13
+# PASS: normalization, ownership ambiguity, branch isolation, service options, idempotency, CSV, MultiRank formulas, Partner Upload and Proposal.
+# Subtest: tests\\unit\\test_configuration_quantity_context.js
+ok 1 - tests\\unit\\test_configuration_quantity_context.js
+  ---
+  duration_ms: 296.1614
+  type: 'test'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 1
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 304.1795

@@ -1,0 +1,53 @@
+TAP version 13
+# Subtest: BOQ Parser & Excel Generator Robustness Tests
+    # Subtest: boq_parser.js - parses valid standard buffers (TSV/CSV)
+    ok 1 - boq_parser.js - parses valid standard buffers (TSV/CSV)
+      ---
+      duration_ms: 8.0044
+      type: 'test'
+      ...
+    # Subtest: boq_parser.js - ambiguous column headers
+    ok 2 - boq_parser.js - ambiguous column headers
+      ---
+      duration_ms: 1.0431
+      type: 'test'
+      ...
+    # Subtest: boq_parser.js - malformed/corrupted data (empty files, whitespace, negative quantities)
+    ok 3 - boq_parser.js - malformed/corrupted data (empty files, whitespace, negative quantities)
+      ---
+      duration_ms: 1.6127
+      type: 'test'
+      ...
+    # Subtest: boq_parser.js - multi-sheet workbooks with mixed summary and hardware tabs
+    ok 4 - boq_parser.js - multi-sheet workbooks with mixed summary and hardware tabs
+      ---
+      duration_ms: 1.2803
+      type: 'test'
+      ...
+    # Subtest: generate_boq_xlsx.js - single item list & 500+ item list & empty list
+    ok 5 - generate_boq_xlsx.js - single item list & 500+ item list & empty list
+      ---
+      duration_ms: 104.884
+      type: 'test'
+      ...
+    # Subtest: generate_boq_xlsx.js - Verify all required sheets are present and styled
+    ok 6 - generate_boq_xlsx.js - Verify all required sheets are present and styled
+      ---
+      duration_ms: 10.3964
+      type: 'test'
+      ...
+    1..6
+ok 1 - BOQ Parser & Excel Generator Robustness Tests
+  ---
+  duration_ms: 131.0169
+  type: 'test'
+  ...
+1..1
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 436.0728

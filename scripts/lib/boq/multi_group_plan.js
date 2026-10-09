@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { normalizeConfiguration, outputQuantities } = require('./configuration_context.js');
+const { evaluateItemPricing } = require('./pricing_presence.js');
 
 function groupIdentity(sourceSha256, sheetName, owner, index) {
   return 'group-' + crypto.createHash('sha256').update(JSON.stringify([sourceSha256, sheetName, owner, index])).digest('hex').slice(0, 20);
@@ -74,9 +75,21 @@ function planSheetGroups(parsed, metadata, splitter) {
 }
 function writeGroupInput(group, directory, XLSX) {
   if (group.blocked) return group;
-  const rows = [['Part Number', 'Qty', 'Description', 'Unit Price', 'Configuration ID', 'Quantity Scope', 'Quantity Basis']];
-  group.items.forEach((item, index) => rows.push([item.sku, group.quantityBridge[index].totalQty, item.description || '',
-    item.unitPriceUsd ?? 0, group.groupId, item.quantityScope, 'total']));
+  const rows = [['Part Number', 'Qty', 'Description', 'Unit Price', 'Configuration ID', 'Quantity Scope', 'Quantity Basis', 'Confirmed Zero Price']];
+  group.items.forEach((item, index) => {
+    const { isPriced, unitPriceUsd, isConfirmedZero } = evaluateItemPricing(item);
+    const priceVal = isPriced && unitPriceUsd !== null ? unitPriceUsd : '';
+    rows.push([
+      item.sku,
+      group.quantityBridge[index].totalQty,
+      item.description || '',
+      priceVal,
+      group.groupId,
+      item.quantityScope,
+      'total',
+      isConfirmedZero ? 'TRUE' : ''
+    ]);
+  });
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, XLSX.utils.aoa_to_sheet(rows), 'Server Config');
   const filePath = path.join(directory, group.groupId + '.xlsx');
@@ -101,4 +114,4 @@ function planWorkbookGroups(inputFile, workbook, XLSX, projectRoot) {
   fs.mkdirSync(directory, { recursive: true });
   return groups.map(group => writeGroupInput(group, directory, XLSX));
 }
-module.exports = { planWorkbookGroups, planSheetGroups, ownedGroup, quantityTotals };
+module.exports = { planWorkbookGroups, planSheetGroups, ownedGroup, quantityTotals, writeGroupInput };

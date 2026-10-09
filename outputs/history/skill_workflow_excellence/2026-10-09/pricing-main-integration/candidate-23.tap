@@ -1,0 +1,148 @@
+TAP version 13
+# Subtest: missing component price cannot produce complete total
+ok 1 - missing component price cannot produce complete total
+  ---
+  duration_ms: 2.841
+  type: 'test'
+  ...
+# Subtest: all known prices conserve order totals
+ok 2 - all known prices conserve order totals
+  ---
+  duration_ms: 0.2015
+  type: 'test'
+  ...
+# Subtest: global cost is applied once
+ok 3 - global cost is applied once
+  ---
+  duration_ms: 0.2028
+  type: 'test'
+  ...
+# Subtest: explicitly confirmed zero remains known
+ok 4 - explicitly confirmed zero remains known
+  ---
+  duration_ms: 0.1783
+  type: 'test'
+  ...
+# Subtest: invalid/unconfirmed price is unavailable: 0
+ok 5 - invalid/unconfirmed price is unavailable: 0
+  ---
+  duration_ms: 0.3027
+  type: 'test'
+  ...
+# Subtest: invalid/unconfirmed price is unavailable: -10
+ok 6 - invalid/unconfirmed price is unavailable: -10
+  ---
+  duration_ms: 0.1554
+  type: 'test'
+  ...
+# Subtest: invalid/unconfirmed price is unavailable: NaN
+ok 7 - invalid/unconfirmed price is unavailable: NaN
+  ---
+  duration_ms: 0.1026
+  type: 'test'
+  ...
+# Subtest: invalid/unconfirmed price is unavailable: Infinity
+ok 8 - invalid/unconfirmed price is unavailable: Infinity
+  ---
+  duration_ms: 0.1116
+  type: 'test'
+  ...
+# Subtest: invalid/unconfirmed price is unavailable: 5
+ok 9 - invalid/unconfirmed price is unavailable: 5
+  ---
+  duration_ms: 0.1063
+  type: 'test'
+  ...
+# Subtest: invalid/unconfirmed price is unavailable: false
+ok 10 - invalid/unconfirmed price is unavailable: false
+  ---
+  duration_ms: 0.2297
+  type: 'test'
+  ...
+# Subtest: blank explicit price column stays unknown
+ok 11 - blank explicit price column stays unknown
+  ---
+  duration_ms: 4.364
+  type: 'test'
+  ...
+# Subtest: negative parsed price is not converted to positive
+ok 12 - negative parsed price is not converted to positive
+  ---
+  duration_ms: 0.5554
+  type: 'test'
+  ...
+# Subtest: known service parent contract zero stays confirmed
+ok 13 - known service parent contract zero stays confirmed
+  ---
+  duration_ms: 0.129
+  type: 'test'
+  ...
+# Subtest: normalization preserves unknown extended price
+ok 14 - normalization preserves unknown extended price
+  ---
+  duration_ms: 0.1061
+  type: 'test'
+  ...
+# Subtest: real grouped XLSX roundtrip preserves unknown and confirmed zero
+ok 15 - real grouped XLSX roundtrip preserves unknown and confirmed zero
+  ---
+  duration_ms: 29.5283
+  type: 'test'
+  ...
+# Subtest: Markdown incomplete candidate does not fall back to estimated total
+ok 16 - Markdown incomplete candidate does not fall back to estimated total
+  ---
+  duration_ms: 16.8458
+  type: 'test'
+  ...
+# Subtest: mixed duplicate SKU prices cannot manufacture complete quote
+ok 17 - mixed duplicate SKU prices cannot manufacture complete quote
+  ---
+  duration_ms: 0.5744
+  type: 'test'
+  ...
+# Subtest: conflicting duplicate prices remain unresolved
+ok 18 - conflicting duplicate prices remain unresolved
+  ---
+  duration_ms: 0.2483
+  type: 'test'
+  ...
+# Subtest: quantity-owned total is not multiplied twice
+ok 19 - quantity-owned total is not multiplied twice
+  ---
+  duration_ms: 0.5238
+  type: 'test'
+  ...
+# Subtest: overflow never exposes infinite known subtotal
+ok 20 - overflow never exposes infinite known subtotal
+  ---
+  duration_ms: 0.7777
+  type: 'test'
+  ...
+# Subtest: sum overflow remains representable and incomplete
+ok 21 - sum overflow remains representable and incomplete
+  ---
+  duration_ms: 0.4165
+  type: 'test'
+  ...
+# Subtest: strict observed-price syntax rejects arrays hex malformed commas
+ok 22 - strict observed-price syntax rejects arrays hex malformed commas
+  ---
+  duration_ms: 0.4024
+  type: 'test'
+  ...
+# Subtest: workbook baseline fallback retains incomplete price evidence
+ok 23 - workbook baseline fallback retains incomplete price evidence
+  ---
+  duration_ms: 19.4082
+  type: 'test'
+  ...
+1..23
+# tests 23
+# suites 0
+# pass 23
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 282.7905

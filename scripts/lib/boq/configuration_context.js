@@ -8,9 +8,6 @@ const KNOWN_CTO_SKU_PREFIXES = new Set([
   'P76706', 'P56900', 'P52533', 'P73282', 'R0Q21', 'P52534', 'P76449'
 ]);
 
-// Confirmed $0 service parent contract containers — never mark these as price-unavailable.
-// They are order-level placeholders; child options carry the real priced SKUs.
-const CONFIRMED_ZERO_PARENT_CONTRACTS = new Set(['HA113A1', 'HU4B2A3']);
 
 function isCtoBaseChassis(it) {
   const desc = (it.description || '').toLowerCase();
@@ -67,15 +64,34 @@ function normalizeConfiguration(items) {
     if (!validQuantity(quantity)) throw ambiguity(`Invalid quantity for ${it.sku}.`);
     const raw = Number(quantity);
     if (!Number.isInteger(raw) || raw < 1) throw ambiguity(`Invalid quantity for ${it.sku}.`);
+    const rawUnitPrice = it.unitPriceUsd;
+    const isPriced = typeof rawUnitPrice === 'number' && Number.isFinite(rawUnitPrice) && rawUnitPrice >= 0;
+    const unitPriceUsd = isPriced ? rawUnitPrice : null;
     const global = isGlobalItem(it, multiplier);
-    if (global) return { ...it, quantityScope: 'global', quantityBasis: 'total', configurationMultiplier: 1, atomicQuantity: raw, totalQuantity: raw, isIntegerDivisor: true };
+    if (global) {
+      const extendedPriceUsd = unitPriceUsd !== null ? raw * unitPriceUsd : null;
+      return {
+        ...it,
+        quantityScope: 'global',
+        quantityBasis: 'total',
+        configurationMultiplier: 1,
+        atomicQuantity: raw,
+        totalQuantity: raw,
+        isIntegerDivisor: true,
+        unitPriceUsd,
+        isConfirmedZeroPrice: it.isConfirmedZeroPrice || false,
+        extendedPriceUsd
+      };
+    }
     if (it.configurationId && it.configurationId !== configurationId) throw ambiguity(`Foreign owner for ${it.sku}.`);
     const base = it.quantityBasis === 'base' ? raw : raw / multiplier;
     if (!Number.isInteger(base) || base < 1) throw ambiguity(`${it.sku}: ${raw} cannot be assigned evenly to ${multiplier} configurations; mark global/spare or clarify ownership.`);
+    const extendedPriceUsd = unitPriceUsd !== null ? base * unitPriceUsd : null;
     return { ...it, quantity: base, atomicQuantity: base, perNodeQuantity: base, isIntegerDivisor: true,
       quantityBasis: 'base', quantityScope: 'configuration', configurationId,
       configurationMultiplier: multiplier, totalQuantity: base * multiplier,
-      extendedPriceUsd: base * (it.unitPriceUsd || 0) };
+      unitPriceUsd, isConfirmedZeroPrice: it.isConfirmedZeroPrice || false,
+      extendedPriceUsd };
   });
   return { items: normalized, configurationId, multiplier, baseChassisQuantity: anchor ? 1 : null,
     ownershipEvidence: anchor ? 'SINGLE_CTO_CONFIGURATION' : 'SINGLE_UNIT_INPUT' };
@@ -104,6 +120,8 @@ function applyConfigurationContext(result, context) {
   const globals = context.items.filter(it => it.quantityScope === 'global');
   const graph = result.conflictGraph || {};
   const candidates = new Set([...(graph.rankedSolutions || []), ...(graph.recommendedSolutions || [])]);
+  const { summarizeCandidatePricing } = require('./pricing_presence.js');
+
   for (const candidate of candidates) {
     candidate.skuPartsList = (candidate.skuPartsList || []).filter(it => it.quantityScope !== 'global').map(it => ({
       ...it, quantityBasis: 'base', quantityScope: 'configuration',
@@ -111,16 +129,18 @@ function applyConfigurationContext(result, context) {
       perNodeQuantity: it.quantity, totalQuantity: it.quantity * context.multiplier
     })).concat(globals);
     candidate.skuList = candidate.skuPartsList;
-    candidate.priceUnavailableSkus = [...new Set([
-      ...(candidate.priceUnavailableSkus || []),
-      ...globals.filter(it =>
-        !(it.unitPriceUsd > 0) &&
-        !it.isConfirmedZeroPrice &&
-        !CONFIRMED_ZERO_PARENT_CONTRACTS.has((it.sku || '').split(' ')[0].replace(/[^a-zA-Z0-9]/g, ''))
-      ).map(it => it.sku)
-    ])];
-    candidate.pricingComplete = candidate.priceUnavailableSkus.length === 0;
-    candidate.totalOrderCostUsd = candidate.skuPartsList.reduce((sum, it) => sum + outputQuantities(it, context.multiplier).totalQty * (it.unitPriceUsd || 0), 0);
+
+    const summary = summarizeCandidatePricing(
+      candidate.skuPartsList,
+      context.multiplier,
+      candidate.priceUnavailableSkus || [],
+      outputQuantities
+    );
+
+    candidate.priceUnavailableSkus = summary.priceUnavailableSkus;
+    candidate.pricingComplete = summary.pricingComplete;
+    candidate.knownOrderSubtotalUsd = summary.knownOrderSubtotalUsd;
+    candidate.totalOrderCostUsd = summary.totalOrderCostUsd;
   }
   if (result.clusterSizing) {
     result.baseConfigurationSizing = { ...result.clusterSizing };

@@ -73,7 +73,7 @@ for (const count of [2, 9, 20]) test(count + ' nodes conserve order totals throu
   assert.deepEqual(context.items.map(item => outputQuantities(item, count).totalQty), rows.map(item => item.quantity));
   assert.deepEqual(context.items.map(item => item.quantity), localFixture(root).rows.map(item => item.quantity));
   assert.equal(parsed.items.every(item => item.quantityBasis === 'total'), true);
-  assert.equal(parsed.items.every(item => item.unitPriceUsd === 0), true);
+  assert.equal(parsed.items.every(item => item.unitPriceUsd === null), true);
   assert.equal(group.sourceRows.length, rows.length); assert.equal(group.inputQuantityBasis, 'ORDER_TOTAL_CANONICAL_CONTEXT_NORMALIZES_ONCE');
 });
 test('distinct explicit configurations inside one sheet retain every owner and source item index', t => {

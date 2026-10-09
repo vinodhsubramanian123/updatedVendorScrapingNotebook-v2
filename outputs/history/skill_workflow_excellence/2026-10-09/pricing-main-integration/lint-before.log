@@ -1,0 +1,4 @@
+scripts/lib/boq/boq_parser.js:303:41: warning eslint(no-useless-escape): Unnecessary escape character '/' help: Replace `\/` with `/`.
+scripts/lib/boq/boq_parser.js:303:43: warning eslint(no-useless-escape): Unnecessary escape character '|' help: Replace `\|` with `|`.
+scripts/lib/boq/boq_parser.js:303:46: warning eslint(no-useless-escape): Unnecessary escape character '+' help: Replace `\+` with `+`.
+

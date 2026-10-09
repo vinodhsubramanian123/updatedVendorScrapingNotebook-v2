@@ -269,11 +269,13 @@ After classification AND before executing the target skill, the agent MUST verif
 | VG4 | File accessible (if file-based) | File exists on disk and is readable |
 | VG5 | Catalog directory available | Target chassis `outputs/{Family}/{Gen}/{Model}/` exists |
 
-**Up-Front HITL Ambiguity Triage Contract (`INV-73` + `INV-111`):**
-- When query confidence is $< 0.95$ or `isAmbiguous: true` (e.g. `AMBIGUOUS_PRODUCT` with multiple generation candidates like Gen11 vs Gen12, ambiguous cluster node counts, or conflicting file hints):
-  1. The engine sets `hitlRequired: true` and attaches structured `ambiguityDetails` (`{ error, candidates, chassisKey }`).
-  2. The agent MUST NOT guess or pick a default. The agent presents an interactive disambiguation prompt using `ask_question` with structured, numbered choices.
-  3. Once the user selects an option, the decision is ingested into `feedback_loop.js` (`processPortalFeedback()`), verified via loop test, and promoted to autonomous execution for future runs.
+**Up-Front Platform Clarification and User-Choice Memory Contract:**
+- Actual unresolved platform ambiguity (`AMBIGUOUS_PRODUCT`, `AMBIGUOUS_QUERY`, or `GENERATION_MISMATCH`) returns `ACTION_REQUIRED` before a handler runs. Present its structured question and actual candidate list; never invent a default or recommendation. Common trace and acceptance handling remains active. Missing node counts or file scope require their own intake clarification, not a guessed platform.
+- A numeric classification score alone does not imply unresolved platform ambiguity. An ordinary unambiguous `FREEFORM_QA` may have confidence0.8 and execute with `hitlRequired: false`. Classification confidence is not hardware or cloud verification.
+- Parse exactly one actual candidate with [the disambiguation helper](../../../scripts/lib/boq/presales_disambiguation.js). Unknown or multiple selections return null. Call `recordDisambiguationDecision(originalQuery, selectedChassis)` only for an actual ambiguous query candidate; it persists a typed `USER_PLATFORM_SELECTION`/`USER_CHOICE` preference in that catalog's history using atomic writes and an owner-aware lease.
+- A platform choice is a local user preference, **not** an active hardware rule, QuickSpecs citation or vendor acceptance. Do not send it through `processPortalFeedback` or fabricate a SKU, reviewer approval or source ID. Missing authoritative base-SKU metadata returns null.
+- The router consults exact normalized-query and candidate-scope records before dispatch. Explicit conflicting context wins. Distinguish `platformSelectionMemory.retrievedIds` from `usedIds`; corrupt or wrong-scope memory cannot justify selection.
+- `runDisambiguationLoopTest(originalQuery, selectedChassis)` proves memory consumption only when the original query is rerun without injecting the chosen chassis, the intended route/platform matches and an actual preference ID is used. An explicit-context rerun may verify clarification but cannot prove learning. Broader learning, cloud grounding and complete customer-path acceptance remain separate gates.
 
 **Single-SKU Component Isolation Invariant:**
 - Queries referencing a single hardware part number without a full server bill of materials (e.g., "Check P74700-B21", "Price of P83526-B21", "Is P69727-F21 obsolete?") MUST NEVER be dispatched to `boq-eval-skill`.

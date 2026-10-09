@@ -1,0 +1,72 @@
+{
+  "verdict": "AUTHORED_PENDING_REVIEW",
+  "author": "antigravity-flash-high-worker",
+  "reviewer": "independent reviewer pending (PRICE_REVIEW_ROOT)",
+  "candidate": "C:/Users/latha/AppData/Local/Temp/agy-pricing-implementation-20261009",
+  "sources": [
+    {
+      "path": "scripts/lib/boq/pricing_presence.js",
+      "sha256": "593e6ef6bc34957df794fb33381a3b154afc6cb4fb53de1621dbe2625fc45f55"
+    },
+    {
+      "path": "scripts/lib/boq/configuration_context.js",
+      "sha256": "e639d6352db8d5d7434afa48addf3539442d61d5d717b7e44dccb47837710c8e"
+    },
+    {
+      "path": "scripts/lib/boq/multi_group_plan.js",
+      "sha256": "b3fad6c8892acefafe1452a912dc0f49d9c693ceed340b641c963bde0aaab73a"
+    },
+    {
+      "path": "scripts/lib/boq/boq_parser.js",
+      "sha256": "7644120a51b2179612ae1c0f90ff1dce93a2dcc660e05f3f671937afa3be0d91"
+    },
+    {
+      "path": "scripts/lib/boq/eval_output_serializer.js",
+      "sha256": "2d60a8843c8d05b56d9c66b09181e50ff7c9d8d94fc85979959235ada2220d31"
+    },
+    {
+      "path": "scripts/lib/boq/generate_boq_xlsx.js",
+      "sha256": "a1dd093c1e8a278fc4193531738bb3502e217f6e504b474f8fdf772bb15ff366"
+    }
+  ],
+  "checks": [
+    {
+      "command": "node --test tests/pricing_presence_focused.test.js",
+      "cwd": "C:/Users/latha/AppData/Local/Temp/agy-pricing-implementation-20261009",
+      "exitCode": 0,
+      "tests": 19,
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0,
+      "logPath": "tests/focused_test.log"
+    },
+    {
+      "command": "node C:/Users/latha/AppData/Local/Temp/codex-pricing-independent-20261009/review.cjs",
+      "cwd": "C:/Users/latha/AppData/Local/Temp/agy-pricing-implementation-20261009",
+      "exitCode": 0,
+      "tests": 23,
+      "passed": 23,
+      "failed": 0,
+      "skipped": 0,
+      "logPath": "tests/review_test.log"
+    }
+  ],
+  "reusedEvidence": [],
+  "intentionalDifferences": [
+    "Blank explicit Unit Price column in BOQ input preserves unitPriceUsd: null rather than defaulting to 0 or inferring from other columns.",
+    "Unconfirmed 0 price preserves unitPriceUsd: null, requiring explicit provenance (Confirmed Zero Price header, isConfirmedZeroPrice flag, or confirmed service parent contracts HA113A1/HU4B2A3) to treat 0 as known.",
+    "Incomplete configurations retain knownOrderSubtotalUsd while setting totalOrderCostUsd: null and pricingComplete: false.",
+    "Duplicate SKU consolidation preserves null and records priceConflict (MIXED_PRICING_EVIDENCE or CONFLICTING_OBSERVED_PRICES) instead of silently pricing missing occurrences from later occurrences.",
+    "Markdown workload summary formats incomplete solutions as INCOMPLETE with explicitly known subtotal instead of falling back to estimatedCostUsd.",
+    "Workbook baseline fallback uses canonical pricing summary helper with outputQuantities callback instead of fabricating 0 total."
+  ],
+  "findings": [
+    "NEXT checkpoint finding: budget_optimizer.js currently overwrites parsed unitPriceUsd with getSkuListPrice while saving inputUnitPriceUsd; catalog estimates and quoted customer price basis need explicit architectural separation in remaining CP10a."
+  ],
+  "notRun": [
+    "Full test matrix across unrelated domains (maintenance, scraping, gen11/gen12 hardware certs) omitted per isolated workspace boundary instructions."
+  ],
+  "limitations": [
+    "Tests prove parser, multi-group plan, configuration context, serializer, and generator fallback paths; full engine commercial pricing basis across budget_optimizer remains deferred to remaining CP10a."
+  ]
+}

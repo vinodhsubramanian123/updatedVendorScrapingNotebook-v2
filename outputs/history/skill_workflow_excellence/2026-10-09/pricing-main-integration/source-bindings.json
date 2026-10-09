@@ -1,0 +1,40 @@
+{
+  "inputCommit": "db32541",
+  "author": "Antigravity gemini-3.8-flash-high",
+  "verifier": "Codex root",
+  "bindings": [
+    {
+      "file": "scripts/lib/boq/configuration_context.js",
+      "sourceSha256": "e639d6352db8d5d7434afa48addf3539442d61d5d717b7e44dccb47837710c8e",
+      "preimageSha256": "b9233d4353c542fa96a1d0b9a4c6d93fde35fa3350da4636884e74fc241f0c57"
+    },
+    {
+      "file": "scripts/lib/boq/multi_group_plan.js",
+      "sourceSha256": "739380ffe26d38ee9e08ef325c320fbdcf48289b05d422d45e0fc88d9d1399bb",
+      "preimageSha256": "b566eab4907d23fabd0362dce87d34adad7dfe0634b2641d09b89ededcfb73e3"
+    },
+    {
+      "file": "scripts/lib/boq/boq_parser.js",
+      "sourceSha256": "7644120a51b2179612ae1c0f90ff1dce93a2dcc660e05f3f671937afa3be0d91",
+      "preimageSha256": "3aa26c5a489993e5b5ba9669047dee1b2f36835bdbf4996cab36161a89292517"
+    },
+    {
+      "file": "scripts/lib/boq/eval_output_serializer.js",
+      "sourceSha256": "2d60a8843c8d05b56d9c66b09181e50ff7c9d8d94fc85979959235ada2220d31",
+      "preimageSha256": "e82438bb662e274b46458743d659c721311b922167960d6fc55e95fb2b4802bc"
+    },
+    {
+      "file": "scripts/lib/boq/generate_boq_xlsx.js",
+      "sourceSha256": "a1dd093c1e8a278fc4193531738bb3502e217f6e504b474f8fdf772bb15ff366",
+      "preimageSha256": "e2913a819808f2e5cd7bdb4cb40a109b78372d2f284e8d134818eb20a6fb8068"
+    },
+    {
+      "file": "scripts/lib/boq/pricing_presence.js",
+      "sourceSha256": "e463cfdbf7dde1653f83fb893f7a322589a3accef0fffc1780ed96550ec7f1c3",
+      "preimageSha256": null
+    }
+  ],
+  "intendedTestUpdate": "One existing grouped assertion missing price0->null; root copied complete certified fixture to isolation instead of bypassing preflight",
+  "testAdaptations": "Relative import and default workspace paths only",
+  "remaining": "Full engine catalog list estimate versus customer quote basis in budget_optimizer remains CP10a work"
+}

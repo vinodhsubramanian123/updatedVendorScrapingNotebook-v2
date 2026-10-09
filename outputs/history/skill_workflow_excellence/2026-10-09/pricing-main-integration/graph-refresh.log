@@ -1,0 +1,24 @@
+
+> booktoskill-hpe-oca-scraper@1.1.0 update:graph
+> graphify update . && node scripts/maintenance/link_graphify.js
+
+Re-extracting code files in . (no LLM needed)...
+[graphify watch] 139 file(s) not classified (no supported extension or shebang), skipped: .env.example, .gitattributes, .gitignore, .prettierrc, Alletra_Storage_System_Catalog_Rules.tsv, Alletra_Storage_System_Catalog_SKUs.tsv (+133 more)
+  AST extraction: 100/970 uncached files (10%) [8 workers]
+  AST extraction: 200/970 uncached files (20%) [8 workers]
+  AST extraction: 300/970 uncached files (30%) [8 workers]
+  AST extraction: 400/970 uncached files (41%) [8 workers]
+  AST extraction: 500/970 uncached files (51%) [8 workers]
+  AST extraction: 600/970 uncached files (61%) [8 workers]
+  AST extraction: 700/970 uncached files (72%) [8 workers]
+  AST extraction: 800/970 uncached files (82%) [8 workers]
+  AST extraction: 900/970 uncached files (92%) [8 workers]
+  AST extraction: 970/970 uncached files (100%) [8 workers]
+[graphify] backed up curated graph (4 files) -> 2026-10-09/
+Graph has 9358 nodes (above 5000 limit). Building aggregated community view...
+graph.html written (aggregated: 499 community nodes, 2205 cross-community edges)
+Tip: run with --obsidian for full node-level detail.
+[graphify watch] Rebuilt: 9358 nodes, 17032 edges, 499 communities
+[graphify watch] graph.json, graph.html and GRAPH_REPORT.md updated in graphify-out
+Code graph updated. For doc/paper/image changes run /graphify --update in your AI assistant.
+Tip: set GEMINI_API_KEY or GOOGLE_API_KEY to use Gemini for semantic extraction.

@@ -565,3 +565,7 @@ Verified runtime fixes through4d4be2a are committed on local main. See the rewri
 ## Revision5.42 — query-choice fix delivered
 
 Actual ambiguous-platform handlers are gated before execution, common trace/acceptance completion preserved, and exact scoped USER_PLATFORM_SELECTION is consumed on the next original query. Fabricated chassis defaults/hardware certification removed. Independently17controls, main39, isolatedrouter4/4, cycles0/614,CC131,lint0new/10existing. Receipt query-choice-main-integration/acceptance-receipt.json; this is partialCP7c/CP12 rather than broadclosure. Next pricing is implemented in an isolated candidate but awaiting Markdown/overflow corrections and22control acceptance; do not promote failures.
+
+## Revision5.43 — pricing presence and skill clarity delivered
+
+Six-source pricing fix preserves unknown/confirmedzero/duplicate conflicts through canonical grouped inputs, normalized order costs, Markdown and workbook fallback. Independent23,main42,group28 actualoffline child controls, existingparser7/quantitywrapper1; cycles0/617,CC131,lint0new/3existing. Exactreceipt pricing-main-integration. Router skill aligned with implemented query-choice memory. FullCP10a remains: budget_optimizer replaces input prices with catalog estimates; BOQ schemas still assume default0/non-null and must be corrected before activation. No global acceptance or live certification inferred. Formal12/35 retained; continue four delivery batches without repeated baseline audits.

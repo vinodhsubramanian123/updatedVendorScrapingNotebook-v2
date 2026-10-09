@@ -1,0 +1,5 @@
+scripts/lib/boq/pricing_presence.js:27:14: warning eslint(no-useless-escape): Unnecessary escape character '(' help: Replace `\(` with `(`.
+scripts/lib/boq/boq_parser.js:329:41: warning eslint(no-useless-escape): Unnecessary escape character '/' help: Replace `\/` with `/`.
+scripts/lib/boq/boq_parser.js:329:43: warning eslint(no-useless-escape): Unnecessary escape character '|' help: Replace `\|` with `|`.
+scripts/lib/boq/boq_parser.js:329:46: warning eslint(no-useless-escape): Unnecessary escape character '+' help: Replace `\+` with `+`.
+

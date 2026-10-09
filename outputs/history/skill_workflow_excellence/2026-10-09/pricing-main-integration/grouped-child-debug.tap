@@ -1,0 +1,35 @@
+TAP version 13
+# Subtest: 2 actual offline canonical child returns exact owned order and pending delivery
+not ok 1 - 2 actual offline canonical child returns exact owned order and pending delivery
+  ---
+  duration_ms: 556.8036
+  type: 'test'
+  location: 'C:\\Users\\latha\\AppData\\Local\\Temp\\agy-pricing-implementation-20261009\\tests\\unit\\test_multi_grouped_debug.js:171:33'
+  failureType: 'testCodeFailure'
+  error: |-
+    {"error":"Canonical evaluator did not exit successfully","stderr":"[2026-10-09T15:00:25.062Z] [INFO ] [EVIDENCE_LEDGER] [Phase 1: Intake, Ingestion & CTO Normalization] STARTED (Trace: TRC-1791558025057-49FB1D)\n❌ PRE-FLIGHT ERROR: [ERR_UNSCRAPED_SOLUTION] Solution 'DL380_Gen12' has not been scraped or certified.\nReason: Master 22-sheet Excel catalog (.xlsx) missing on disk for 'DL380_Gen12'. Scrape must be fully exported.\n💡 Run 'npm run scrape:oca -- --profile <profile>' or trigger the scraper in the dashboard to establish ground truth before evaluating.\n[2026-10-09T15:00:25.109Z] [INFO ] [CHECKLIST] [2026-10-09T15:00:25.109Z] [CHECK] [Phase 1: BOM Ingestion & Normalization]\n[2026-10-09T15:00:25.109Z] [INFO ] [EVIDENCE_LEDGER] [Phase 1: Intake, Ingestion & CTO Normalization] COMPLETED (FAILED) in 47ms\nfatal: not a git repository (or any of the parent directories): .git\n","payload":{"status":"ERROR","error":"ERR_UNSCRAPED_SOLUTION: Master 22-sheet Excel catalog (.xlsx) missing on disk for 'DL380_Gen12'. Scrape must be fully exported.","data":{"traceId":"TRC-1791558025057-49FB1D","evidenceLogPath":"C:\\Users\\latha\\AppData\\Local\\Temp\\agy-pricing-implementation-20261009\\outputs\\history\\evidence_logs\\evidence_log_TRC-1791558025057-49FB1D.json"}}}
+    + actual - expected
+    
+    + 'ERROR'
+    - 'ACTION_REQUIRED'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'ACTION_REQUIRED'
+  actual: 'ERROR'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\latha\AppData\Local\Temp\agy-pricing-implementation-20261009\tests\unit\test_multi_grouped_debug.js:174:72)
+    process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    async Test.run (node:internal/test_runner/test:1389:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 803.9881
