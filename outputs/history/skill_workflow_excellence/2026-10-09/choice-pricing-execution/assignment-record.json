@@ -1,0 +1,65 @@
+{
+  "status": "IMPLEMENTATION_IN_PROGRESS_NOT_ACCEPTED",
+  "inputCommit": "4dfeff5",
+  "author": "Antigravity gemini-3.8-flash-high",
+  "verifier": "Codex root",
+  "preimages": [
+    {
+      "file": "scripts/evaluators/route_query.js",
+      "sha256": "01a85e9f9a34760b099ede1b48bd6694ab87373bd672d69360610974c7711922"
+    },
+    {
+      "file": "scripts/lib/boq/presales_disambiguation.js",
+      "sha256": "1656ac2de6a210603a92a95181bda5c502499287e9da414cd1c3339087405d56"
+    },
+    {
+      "file": "scripts/lib/boq/configuration_context.js",
+      "sha256": "b9233d4353c542fa96a1d0b9a4c6d93fde35fa3350da4636884e74fc241f0c57"
+    },
+    {
+      "file": "scripts/lib/boq/multi_group_plan.js",
+      "sha256": "b566eab4907d23fabd0362dce87d34adad7dfe0634b2641d09b89ededcfb73e3"
+    },
+    {
+      "file": "scripts/lib/boq/boq_parser.js",
+      "sha256": "3aa26c5a489993e5b5ba9669047dee1b2f36835bdbf4996cab36161a89292517"
+    },
+    {
+      "file": "scripts/lib/boq/eval_output_serializer.js",
+      "sha256": "e82438bb662e274b46458743d659c721311b922167960d6fc55e95fb2b4802bc"
+    },
+    {
+      "file": "scripts/lib/boq/generate_boq_xlsx.js",
+      "sha256": "e2913a819808f2e5cd7bdb4cb40a109b78372d2f284e8d134818eb20a6fb8068"
+    }
+  ],
+  "choice": {
+    "conversation": "920b6942-057a-4905-8f3c-51a4d62744df",
+    "workspace": "C:/Users/latha/AppData/Local/Temp/agy-choice-implementation-20261009",
+    "observer": 13148,
+    "independentChecks": {
+      "passed": 15,
+      "failed": 1,
+      "total": 16
+    },
+    "remaining": "Common trace/acceptance handling must survive early ambiguity; author receipt/legacy test updates/caller regression pending"
+  },
+  "pricing": {
+    "conversation": "0b38f300-b4ce-45b2-8abc-18ce3d5d0001",
+    "workspace": "C:/Users/latha/AppData/Local/Temp/agy-pricing-implementation-20261009",
+    "observer": 28740,
+    "baselineChecks": {
+      "passed": 4,
+      "failed": 12,
+      "total": 16
+    },
+    "remaining": "No changed production candidate yet. Implement pricing contract including report and workbook fallback; no acceptance or runtime promotion."
+  },
+  "limits": [
+    "Agy print timeout/SUCCESS is not completion",
+    "Writer root PID8008/session29945 is live during edits; release before handoff",
+    "Existing personal skill copied into repository; do not repeat discovery",
+    "No claim of full CP7c/CP12/CP10 closure"
+  ],
+  "capturedAt": "2026-10-09T14:47:00.483Z"
+}

@@ -1,6 +1,6 @@
 # Skill/workflow excellence — checkpoint ledger
 
-Revision 5.41, 9 October 2026. GPU ownership/capacity/remedy/narrative fixes independently tested and integrated in main24/24; source-bound receipt retained. Verified dashboard/Notebook fixes and receipts promoted to local main; no push. Latest Antigravity input HEAD7ac4baf/origin main synchronized; ten new commits under gap review. Dashboard cancellation envelope independently reviewed and integrated24/24 focused main checks, no tracked protected delta. Formal12/35 after CP8a independent closure; see current-status snapshot for actual deliveries and pending scope. Local reviewed commits now authorized by user; no push requested.
+Revision 5.42, 9 October 2026. GPU ownership/capacity/remedy/narrative fixes independently tested and integrated in main24/24; source-bound receipt retained. Verified dashboard/Notebook fixes and receipts promoted to local main; no push. Latest Antigravity input HEAD7ac4baf/origin main synchronized; ten new commits under gap review. Dashboard cancellation envelope independently reviewed and integrated24/24 focused main checks, no tracked protected delta. Formal12/35 after CP8a independent closure; see current-status snapshot for actual deliveries and pending scope. Local reviewed commits now authorized by user; no push requested.
 
 ## Workspace and writer record
 
@@ -8,7 +8,7 @@ Revision 5.41, 9 October 2026. GPU ownership/capacity/remedy/narrative fixes ind
 | :--- | :--- |
 | Execution workspace | C:/Users/latha/.gemini/antigravity/scratch/antigravityProjects/updatedVendorScrapingNotebook-v2 |
 | Equivalent path alias | C:/Users/latha/antigravityProjects/updatedVendorScrapingNotebook-v2 — parent junction resolves to the execution workspace; not a second checkout |
-| Holder | Codex root; live ownerPID19716/session51262 verified before handoff edits; release canonical lease after commit and verify removal |
+| Holder | Codex root live writerPID8008/session29945 during revision5.42; release explicitly at handoff, reacquire on resume |
 | Reservation | Live `.git/codex-maintenance-locks/skill-workflow-excellence.lock`; agents write only isolated copies; no expiry-only reclamation |
 | Baseline commit | 823725a214816c972bf1d91a4ec01db7bb76b860 — re-record at CP0 |
 | Starting tree | Three untracked audit Markdown files; no tracked code changes at review start |
@@ -662,3 +662,7 @@ Updatedplanning allowance6–8 substantialexecution sessions across fourdelivery
 ## Revision5.41 — durable main handoff
 
 Verified clean local main4d4be2a, six commits ahead of last fetched origin/main; no push. Replaced stale current-status narrative with one authoritative snapshot. Versioned the Agy skill/CLI evidence guide and bounded pending memory/pricing implementation contracts. Archived partial code remains explicitly unused/unverified. No runtime change, tests reused rather than repeated. Runtime work remains12/35 accepted; session forecast is not completion evidence.
+
+## Revision5.42 — implemented query-choice intelligence, not fabricated hardware learning
+
+Agy authored4production sources and2test updates; root independently verified17 controls including fresh-process consumption and17intent exact dispatch. Main39/39 checks; isolatedrouter4/4; cycles0/614; CC131; explicitnode lint10before/10after,0new/0errors. Up-front ambiguity retains common trace/acceptance tail and optional evidence handling. Exact sources bound in query-choice-main-integration/acceptance-receipt.json. Root preserved initial isolated setup failure and corrected catalog/fixture preparation before accepting4suite result. PartialCP7c/CP12 runtime fix delivered; formal12/35 unchanged. Pricing22checks20pass/2fail remains unaccepted; author correction72710, exactassignmentrecord in choice-pricing-execution. User authorization permits local main commits and supersedes historical no-commit goal text; no push.

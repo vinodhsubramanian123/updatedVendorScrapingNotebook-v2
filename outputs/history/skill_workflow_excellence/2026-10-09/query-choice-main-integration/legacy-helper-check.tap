@@ -1,0 +1,61 @@
+TAP version 13
+# ◇ injected env (0) from .env // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+# [WARN] [FRESHNESS] Catalog metadata missing valid scrapeTimestamp.
+# [2026-10-09T14:51:21.586Z] [INFO ] [EVIDENCE_LEDGER] [Phase 1: Presales Sizing Intake & Parsing] STARTED (Trace: TRC-1791557481586-DL3DKT)
+# [2026-10-09T14:51:21.586Z] [INFO ] [EVIDENCE_LEDGER] [Phase 1: Presales Sizing Intake & Parsing] COMPLETED (PASSED) in 1ms
+# [2026-10-09T14:51:21.586Z] [INFO ] [EVIDENCE_LEDGER] [Phase 2: Dynamic Catalog Resolution] STARTED (Trace: TRC-1791557481586-DL3DKT)
+# [2026-10-09T14:51:21.586Z] [INFO ] [EVIDENCE_LEDGER] [Phase 2: Dynamic Catalog Resolution] COMPLETED (PASSED) in 1ms
+# [2026-10-09T14:51:21.586Z] [INFO ] [EVIDENCE_LEDGER] [Phase 3: 7-Aspect Physical Evaluation of Sized Candidate BOM] STARTED (Trace: TRC-1791557481586-DL3DKT)
+# [2026-10-09T14:51:21.587Z] [INFO ] [EVIDENCE_LEDGER] [Phase 3: 7-Aspect Physical Evaluation of Sized Candidate BOM] COMPLETED (ACTION_REQUIRED) in 1ms
+# [2026-10-09T14:51:21.587Z] [INFO ] [EVIDENCE_LEDGER] [Phase 4: Workload DNA & Construction Plan Analysis] STARTED (Trace: TRC-1791557481586-DL3DKT)
+# [2026-10-09T14:51:21.587Z] [INFO ] [EVIDENCE_LEDGER] [Phase 4: Workload DNA & Construction Plan Analysis] COMPLETED (ACTION_REQUIRED) in 1ms
+# [2026-10-09T14:51:21.587Z] [INFO ] [EVIDENCE_LEDGER] [Phase 5: Strategy Synthesis & Multi-Node Cluster Sizing] STARTED (Trace: TRC-1791557481586-DL3DKT)
+# [2026-10-09T14:51:21.587Z] [INFO ] [EVIDENCE_LEDGER] [Phase 5: Strategy Synthesis & Multi-Node Cluster Sizing] COMPLETED (ACTION_REQUIRED) in 1ms
+# [2026-10-09T14:51:21.587Z] [INFO ] [EVIDENCE_LEDGER] [Phase 6: Confidence Floor & Presales Clarification Scoring] STARTED (Trace: TRC-1791557481586-DL3DKT)
+# [2026-10-09T14:51:21.587Z] [INFO ] [EVIDENCE_LEDGER] [Phase 6: Confidence Floor & Presales Clarification Scoring] COMPLETED (ACTION_REQUIRED) in 1ms
+# [2026-10-09T14:51:21.587Z] [INFO ] [EVIDENCE_LEDGER] [Phase 7: QuickSpecs & Dynamic Catalog Verification] STARTED (Trace: TRC-1791557481586-DL3DKT)
+# [2026-10-09T14:51:21.587Z] [INFO ] [EVIDENCE_LEDGER] [Phase 7: QuickSpecs & Dynamic Catalog Verification] COMPLETED (ACTION_REQUIRED) in 1ms
+# [2026-10-09T14:51:21.587Z] [INFO ] [EVIDENCE_LEDGER] [Phase 8: Presales Candidate BOM Generation] STARTED (Trace: TRC-1791557481586-DL3DKT)
+# [2026-10-09T14:51:21.587Z] [INFO ] [EVIDENCE_LEDGER] [Phase 8: Presales Candidate BOM Generation] COMPLETED (ACTION_REQUIRED) in 1ms
+# [2026-10-09T14:51:21.587Z] [INFO ] [EVIDENCE_LEDGER] [Phase 9: Presales Evidence Trace Finalization] STARTED (Trace: TRC-1791557481586-DL3DKT)
+# [2026-10-09T14:51:21.587Z] [INFO ] [EVIDENCE_LEDGER] [Phase 9: Presales Evidence Trace Finalization] COMPLETED (ACTION_REQUIRED) in 1ms
+# fatal: not a git repository (or any of the parent directories): .git
+# Subtest: Presales Disambiguation — Formats ask_question prompt from ambiguous response
+ok 1 - Presales Disambiguation — Formats ask_question prompt from ambiguous response
+  ---
+  duration_ms: 131.2769
+  type: 'test'
+  ...
+# Subtest: Presales Disambiguation — Parses user selection to canonical chassis ID
+ok 2 - Presales Disambiguation — Parses user selection to canonical chassis ID
+  ---
+  duration_ms: 0.3127
+  type: 'test'
+  ...
+# Subtest: Presales Disambiguation — Ingests decision into feedback loop and certifies activation
+ok 3 - Presales Disambiguation — Ingests decision into feedback loop and certifies activation
+  ---
+  duration_ms: 10.812
+  type: 'test'
+  ...
+# Subtest: Presales Disambiguation — Closed-loop verification re-runs query to achieve autonomous confidence
+ok 4 - Presales Disambiguation — Closed-loop verification re-runs query to achieve autonomous confidence
+  ---
+  duration_ms: 423.952
+  type: 'test'
+  ...
+# Subtest: Presales Disambiguation — All 5 helper exports stay and getBaseChassisSku resolves correctly
+ok 5 - Presales Disambiguation — All 5 helper exports stay and getBaseChassisSku resolves correctly
+  ---
+  duration_ms: 2.8842
+  type: 'test'
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 5
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2097.6888

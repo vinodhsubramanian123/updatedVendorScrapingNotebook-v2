@@ -561,3 +561,7 @@ Revision5.40: Agy GPU corrections independently qualified and promoted in localm
 ## Revision5.41 — recoverable execution state
 
 Verified runtime fixes through4d4be2a are committed on local main. See the rewritten current-status snapshot and 2026-10-09-remaining-implementation-handoff.md for exact saved/unfinished boundaries and bounded memory/pricing contracts. The Agy operating skill and CLI lessons are versioned in docs/audits/agy-orchestration/. Formal12/35 remains; no acceptance scope removed. Integrate and commit verified fixes promptly, reuse source-valid evidence, and do not repeat the6–8 session allowance as a new measured forecast. No push requested.
+
+## Revision5.42 — query-choice fix delivered
+
+Actual ambiguous-platform handlers are gated before execution, common trace/acceptance completion preserved, and exact scoped USER_PLATFORM_SELECTION is consumed on the next original query. Fabricated chassis defaults/hardware certification removed. Independently17controls, main39, isolatedrouter4/4, cycles0/614,CC131,lint0new/10existing. Receipt query-choice-main-integration/acceptance-receipt.json; this is partialCP7c/CP12 rather than broadclosure. Next pricing is implemented in an isolated candidate but awaiting Markdown/overflow corrections and22control acceptance; do not promote failures.

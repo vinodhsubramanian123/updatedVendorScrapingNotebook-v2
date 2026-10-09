@@ -1,0 +1,41 @@
+
+> booktoskill-hpe-oca-scraper@1.1.0 lint:complexity
+> node scripts/maintenance/analyze_complexity.js --fail-on-breach --max-cc=135
+
+================================================================
+🔍 CYCLOMATIC COMPLEXITY & CODE QUALITY PROFILER
+================================================================
+
+📊 Scanned: 358 files | 1697 total functions
+
+🟢 Low Complexity (1-9 CC)      : 957 functions (56.4%)
+🟡 Moderate Complexity (10-15 CC): 259 functions (15.3%)
+🟠 High Complexity (16-25 CC)    : 200 functions
+🔴 Critical Complexity (>25 CC)  : 281 functions
+
+----------------------------------------------------------------
+📌 TOP 10 HIGHEST CYCLOMATIC COMPLEXITY FUNCTIONS
+----------------------------------------------------------------
+1. [CC: 131] [LOC: 355] 🔴 CRITICAL classifyQueryIntent()
+   File: scripts\evaluators\route_query.js:204
+2. [CC: 130] [LOC: 230] 🔴 CRITICAL validateBoqEvaluationCriteria()
+   File: scripts\lib\boq\bom_verifier.js:183
+3. [CC: 129] [LOC: 176] 🔴 CRITICAL buildAspectChecks()
+   File: scripts\lib\boq\boq_evaluator.js:903
+4. [CC: 127] [LOC: 607] 🔴 CRITICAL main()
+   File: scripts\scrapers\scrape_oca_solution.js:488
+5. [CC: 120] [LOC: 391] 🔴 CRITICAL evaluatePhysicalMath()
+   File: scripts\lib\boq\boq_evaluator.js:1116
+6. [CC: 110] [LOC: 284] 🔴 CRITICAL synthesizeCatalogEntries()
+   File: scripts\catalogs\build_catalog.js:934
+7. [CC: 108] [LOC: 316] 🔴 CRITICAL preprocessAndGroupBOQ()
+   File: scripts\lib\boq\boq_preprocessor.js:210
+8. [CC: 108] [LOC: 208] 🔴 CRITICAL searchAndConfigureChassis()
+   File: scripts\lib\scraper\navigate_oca.js:422
+9. [CC: 104] [LOC: 248] 🔴 CRITICAL _executeLegacyRoutedQuery()
+   File: scripts\evaluators\route_query.js:1316
+10. [CC: 103] [LOC: 116] 🔴 CRITICAL validateCandidateAgainstCriteria()
+   File: scripts\lib\taxonomy\sku_resolver.js:55
+
+================================================================
+✅ All scanned functions within acceptable CC threshold (<= 135).

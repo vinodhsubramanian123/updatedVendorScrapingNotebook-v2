@@ -1,0 +1,265 @@
+TAP version 13
+# ◇ injected env (6) from .env // tip: ⌘ suppress logs { quiet: true }
+# [WARN] [FRESHNESS] Catalog metadata missing valid scrapeTimestamp.
+# [2026-10-09T14:52:04.175Z] [INFO ] [EVIDENCE_LEDGER] [Phase 1: Presales Sizing Intake & Parsing] STARTED (Trace: TRC-1791557524174-Q9FLVR)
+# [2026-10-09T14:52:04.175Z] [INFO ] [EVIDENCE_LEDGER] [Phase 1: Presales Sizing Intake & Parsing] COMPLETED (PASSED) in 1ms
+# [2026-10-09T14:52:04.175Z] [INFO ] [EVIDENCE_LEDGER] [Phase 2: Dynamic Catalog Resolution] STARTED (Trace: TRC-1791557524174-Q9FLVR)
+# [2026-10-09T14:52:04.175Z] [INFO ] [EVIDENCE_LEDGER] [Phase 2: Dynamic Catalog Resolution] COMPLETED (PASSED) in 1ms
+# [2026-10-09T14:52:04.176Z] [INFO ] [EVIDENCE_LEDGER] [Phase 3: 7-Aspect Physical Evaluation of Sized Candidate BOM] STARTED (Trace: TRC-1791557524174-Q9FLVR)
+# [2026-10-09T14:52:04.176Z] [INFO ] [EVIDENCE_LEDGER] [Phase 3: 7-Aspect Physical Evaluation of Sized Candidate BOM] COMPLETED (ACTION_REQUIRED) in 1ms
+# [2026-10-09T14:52:04.176Z] [INFO ] [EVIDENCE_LEDGER] [Phase 4: Workload DNA & Construction Plan Analysis] STARTED (Trace: TRC-1791557524174-Q9FLVR)
+# [2026-10-09T14:52:04.176Z] [INFO ] [EVIDENCE_LEDGER] [Phase 4: Workload DNA & Construction Plan Analysis] COMPLETED (ACTION_REQUIRED) in 1ms
+# [2026-10-09T14:52:04.176Z] [INFO ] [EVIDENCE_LEDGER] [Phase 5: Strategy Synthesis & Multi-Node Cluster Sizing] STARTED (Trace: TRC-1791557524174-Q9FLVR)
+# [2026-10-09T14:52:04.177Z] [INFO ] [EVIDENCE_LEDGER] [Phase 5: Strategy Synthesis & Multi-Node Cluster Sizing] COMPLETED (ACTION_REQUIRED) in 1ms
+# [2026-10-09T14:52:04.177Z] [INFO ] [EVIDENCE_LEDGER] [Phase 6: Confidence Floor & Presales Clarification Scoring] STARTED (Trace: TRC-1791557524174-Q9FLVR)
+# [2026-10-09T14:52:04.177Z] [INFO ] [EVIDENCE_LEDGER] [Phase 6: Confidence Floor & Presales Clarification Scoring] COMPLETED (ACTION_REQUIRED) in 1ms
+# [2026-10-09T14:52:04.177Z] [INFO ] [EVIDENCE_LEDGER] [Phase 7: QuickSpecs & Dynamic Catalog Verification] STARTED (Trace: TRC-1791557524174-Q9FLVR)
+# [2026-10-09T14:52:04.177Z] [INFO ] [EVIDENCE_LEDGER] [Phase 7: QuickSpecs & Dynamic Catalog Verification] COMPLETED (ACTION_REQUIRED) in 1ms
+# [2026-10-09T14:52:04.177Z] [INFO ] [EVIDENCE_LEDGER] [Phase 8: Presales Candidate BOM Generation] STARTED (Trace: TRC-1791557524174-Q9FLVR)
+# [2026-10-09T14:52:04.177Z] [INFO ] [EVIDENCE_LEDGER] [Phase 8: Presales Candidate BOM Generation] COMPLETED (ACTION_REQUIRED) in 1ms
+# [2026-10-09T14:52:04.177Z] [INFO ] [EVIDENCE_LEDGER] [Phase 9: Presales Evidence Trace Finalization] STARTED (Trace: TRC-1791557524174-Q9FLVR)
+# [2026-10-09T14:52:04.177Z] [INFO ] [EVIDENCE_LEDGER] [Phase 9: Presales Evidence Trace Finalization] COMPLETED (ACTION_REQUIRED) in 1ms
+# Subtest: Presales Disambiguation — Formats ask_question prompt from ambiguous response
+ok 1 - Presales Disambiguation — Formats ask_question prompt from ambiguous response
+  ---
+  duration_ms: 99.3717
+  type: 'test'
+  ...
+# Subtest: Presales Disambiguation — Parses user selection to canonical chassis ID
+ok 2 - Presales Disambiguation — Parses user selection to canonical chassis ID
+  ---
+  duration_ms: 0.4068
+  type: 'test'
+  ...
+# Subtest: Presales Disambiguation — Ingests decision into feedback loop and certifies activation
+ok 3 - Presales Disambiguation — Ingests decision into feedback loop and certifies activation
+  ---
+  duration_ms: 13.6299
+  type: 'test'
+  ...
+# Subtest: Presales Disambiguation — Closed-loop verification re-runs query to achieve autonomous confidence
+ok 4 - Presales Disambiguation — Closed-loop verification re-runs query to achieve autonomous confidence
+  ---
+  duration_ms: 7651.8488
+  type: 'test'
+  ...
+# Subtest: Presales Disambiguation — All 5 helper exports stay and getBaseChassisSku resolves correctly
+ok 5 - Presales Disambiguation — All 5 helper exports stay and getBaseChassisSku resolves correctly
+  ---
+  duration_ms: 2.4975
+  type: 'test'
+  ...
+# Subtest: unknown user choice never falls back
+ok 6 - unknown user choice never falls back
+  ---
+  duration_ms: 76.0434
+  type: 'test'
+  ...
+# Subtest: multiple selected platforms fail closed
+ok 7 - multiple selected platforms fail closed
+  ---
+  duration_ms: 5.255
+  type: 'test'
+  ...
+# Subtest: no candidates yields no invented recommendation
+ok 8 - no candidates yields no invented recommendation
+  ---
+  duration_ms: 3.5895
+  type: 'test'
+  ...
+# Subtest: actual ambiguity stops before handler
+ok 9 - actual ambiguity stops before handler
+  ---
+  duration_ms: 14.2282
+  type: 'test'
+  ...
+# Subtest: record is preference, not hardware verification
+ok 10 - record is preference, not hardware verification
+  ---
+  duration_ms: 26.7532
+  type: 'test'
+  ...
+# Subtest: recorded choice consumed before sizing handler
+ok 11 - recorded choice consumed before sizing handler
+  ---
+  duration_ms: 16.4885
+  type: 'test'
+  ...
+# Subtest: unrelated query does not consume choice
+ok 12 - unrelated query does not consume choice
+  ---
+  duration_ms: 12.0864
+  type: 'test'
+  ...
+# Subtest: conflicting explicit platform wins
+ok 13 - conflicting explicit platform wins
+  ---
+  duration_ms: 13.4038
+  type: 'test'
+  ...
+# Subtest: explicit context is not proof of learning
+ok 14 - explicit context is not proof of learning
+  ---
+  duration_ms: 9.6712
+  type: 'test'
+  ...
+# Subtest: loop proves real memory use without context injection
+ok 15 - loop proves real memory use without context injection
+  ---
+  duration_ms: 25.0858
+  type: 'test'
+  ...
+# Subtest: fresh process consumes persisted preference
+ok 16 - fresh process consumes persisted preference
+  ---
+  duration_ms: 314.0706
+  type: 'test'
+  ...
+# Subtest: base SKU derives actual catalog and unknown yields null
+ok 17 - base SKU derives actual catalog and unknown yields null
+  ---
+  duration_ms: 7.8025
+  type: 'test'
+  ...
+# Subtest: invalid selected platform cannot be recorded
+ok 18 - invalid selected platform cannot be recorded
+  ---
+  duration_ms: 8.5488
+  type: 'test'
+  ...
+# Subtest: changed candidate scope is retrieved but not used
+ok 19 - changed candidate scope is retrieved but not used
+  ---
+  duration_ms: 11.3335
+  type: 'test'
+  ...
+# Subtest: corrupt preference fails transparently before handler
+ok 20 - corrupt preference fails transparently before handler
+  ---
+  duration_ms: 10.7791
+  type: 'test'
+  ...
+# Subtest: ambiguous result keeps common trace and diagnostic contract
+ok 21 - ambiguous result keeps common trace and diagnostic contract
+  ---
+  duration_ms: 9.4284
+  type: 'test'
+  ...
+# Subtest: 17 route dispatches preserve intent and invoke exact handler once
+ok 22 - 17 route dispatches preserve intent and invoke exact handler once
+  ---
+  duration_ms: 101.662
+  type: 'test'
+  ...
+# ◇ injected env (6) from .env // tip: ◈ encrypted .env [www.dotenvx.com]
+# Subtest: exact single choice only; unknown, arrays, and multiple choices fail closed
+ok 23 - exact single choice only; unknown, arrays, and multiple choices fail closed
+  ---
+  duration_ms: 1.4712
+  type: 'test'
+  ...
+# Subtest: no candidate invention or recommendation from absent evidence
+ok 24 - no candidate invention or recommendation from absent evidence
+  ---
+  duration_ms: 0.9931
+  type: 'test'
+  ...
+# Subtest: base SKU from explicit catalog metadata only
+ok 25 - base SKU from explicit catalog metadata only
+  ---
+  duration_ms: 5.4675
+  type: 'test'
+  ...
+# Subtest: real platform ambiguity returns ACTION_REQUIRED before sizing handler
+ok 26 - real platform ambiguity returns ACTION_REQUIRED before sizing handler
+  ---
+  duration_ms: 90.6905
+  type: 'test'
+  ...
+# Subtest: multiple-platform ambiguity offers only actual matched platforms
+ok 27 - multiple-platform ambiguity offers only actual matched platforms
+  ---
+  duration_ms: 2.351
+  type: 'test'
+  ...
+# Subtest: missing stored choice cannot verify loop
+ok 28 - missing stored choice cannot verify loop
+  ---
+  duration_ms: 2.1855
+  type: 'test'
+  ...
+# Subtest: explicit chosen context can verify route but cannot verify memory
+ok 29 - explicit chosen context can verify route but cannot verify memory
+  ---
+  duration_ms: 25.4383
+  type: 'test'
+  ...
+# Subtest: invalid choice and mismatched target history never write
+ok 30 - invalid choice and mismatched target history never write
+  ---
+  duration_ms: 1.3396
+  type: 'test'
+  ...
+# Subtest: human choice produces local typed preference with no fabricated hardware evidence
+ok 31 - human choice produces local typed preference with no fabricated hardware evidence
+  ---
+  duration_ms: 14.6392
+  type: 'test'
+  ...
+# Subtest: fresh process consumes exact normalized query memory before handler
+ok 32 - fresh process consumes exact normalized query memory before handler
+  ---
+  duration_ms: 402.6273
+  type: 'test'
+  ...
+# Subtest: stored decision is verified by original query loop
+ok 33 - stored decision is verified by original query loop
+  ---
+  duration_ms: 41.6578
+  type: 'test'
+  ...
+# Subtest: unrelated query does not retrieve or consume selection
+ok 34 - unrelated query does not retrieve or consume selection
+  ---
+  duration_ms: 353.4097
+  type: 'test'
+  ...
+# Subtest: conflicting explicit context never consumes remembered decision
+ok 35 - conflicting explicit context never consumes remembered decision
+  ---
+  duration_ms: 367.8053
+  type: 'test'
+  ...
+# Subtest: wrong candidate set is retrieved but not used
+ok 36 - wrong candidate set is retrieved but not used
+  ---
+  duration_ms: 1.9514
+  type: 'test'
+  ...
+# Subtest: ordinary FREEFORM 0.8 remains usable
+ok 37 - ordinary FREEFORM 0.8 remains usable
+  ---
+  duration_ms: 293.5085
+  type: 'test'
+  ...
+# Subtest: owner-aware lease prevents concurrent preference writes
+ok 38 - owner-aware lease prevents concurrent preference writes
+  ---
+  duration_ms: 13.4039
+  type: 'test'
+  ...
+# Subtest: explicit context and all 17 public routes retain dispatch under non-ambiguous input
+ok 39 - explicit context and all 17 public routes retain dispatch under non-ambiguous input
+  ---
+  duration_ms: 49.4152
+  type: 'test'
+  ...
+1..39
+# tests 39
+# suites 0
+# pass 39
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 8978.8066

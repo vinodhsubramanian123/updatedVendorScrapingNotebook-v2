@@ -1,6 +1,6 @@
 # Current execution status and restart instructions
 
-Updated 9 October 2026, revision 5.41. This is the current snapshot; historical sessions and receipts remain in the checkpoint ledger.
+Updated 9 October 2026, revision 5.42. This is the current snapshot; historical sessions and receipts remain in the checkpoint ledger.
 
 ## Saved and usable on local main
 
@@ -11,6 +11,7 @@ Verified runtime fixes are committed on local main, with no outstanding working-
 | Dashboard cancellation envelopes | c7c4dd8 | Independent Agy reviews; 19 frontend plus 5 backend checks. CANCELLED stays terminal despite nested evaluation data. |
 | Notebook attempts and long-call budgets | 189c708 | 17 candidate plus 17 main checks; affected isolated consumers passed. Durable attempt binding, no blind resubmission, query600s/online child1800s/offline child120s. Actual provider polling/recovery and ambiguous source attachment remain open. |
 | GPU capacity ownership, remedies and narrative | 4d4be2a | Independent24/24 and main24/24; four affected suites passed. Exact SKU ownership and positive integer capacity; quantity multiplication once; mixed kits not misreported. Lint8 existing warnings before/after,0new,0errors; CC131. |
+| Query-choice memory and up-front clarification | This checkpoint | Independent17 and main39 checks; router4/4; cycles0/614; CC131; lint0new/10existing. Actual scoped preference consumption replaces fabricated hardware evidence. Full CP7c/CP12 remain open. |
 | Reasoning, receipts and unfinished candidates | 94416d7,4365a57,ef9e061 | History preserved; partial typed choice store is archived UNUSED/UNVERIFIED. Superseded GPU failures retained, corrected evidence in gpu-main-integration. |
 
 All receipt folders above live under outputs/history/skill_workflow_excellence/2026-10-09/. Production source, reviewer tests, raw results, source/preimage bindings and limitations are committed where indicated by their receipts. Earlier lint0 claims based on shell association are superseded: use explicit node to invoke cached oxlint; Notebook lint needs requalification at the next relevant stable boundary.
@@ -23,7 +24,7 @@ Combined CP8/CP11 transport/facade/trace code is already committed. PRESALES_TER
 
 ## Next implementation: bounded missing steps
 
-1. Factual query-choice memory and up-front disambiguation. Follow 2026-10-09-remaining-implementation-handoff.md; reuse the partial unused store, not synthetic hardware learning. Prove actual next-run retrieval and consumption before closing learning scopes.
+1. Query-choice fix is independently integrated and saved in this checkpoint; do not reauthor it. Remaining broader CP7c/CP12: end-to-end learning/telemetry activation and path coverage. Receipt: query-choice-main-integration/acceptance-receipt.json.
 2. Missing-price/confirmed-zero preservation through grouped XLSX round-trip and quantity normalization. Preserve known totals; unknown totals stay unknown. This is partial CP10a/CP8b, not whole pricing acceptance.
 3. Finish remaining reliability gates: MCP ingress/trace ownership, telemetry activation, source-attachment ambiguity, supported provider recovery, whole-manifest validation and six recorded scraper/session findings.
 
@@ -45,3 +46,7 @@ Codex delegates disambiguation_intelligence_author/pricing_presence_author stopp
 Read this snapshot, the plan, ledger and bounded implementation handoff. The versioned Agy guide is agy-orchestration/SKILL.md with references/cli-operation.md. Personal installed skill is a convenience; the repository copy preserves delegation lessons for other agents.
 
 Verify git status and current source bindings; acquire the canonical live writer lease before edits. Never reclaim by age alone. Isolated authors have disjoint writes, root integrates independently verified fixes promptly and commits exact allowlists. No new baseline capture or rerun of passing GPU/dashboard checks unless dependencies change. CLI SUCCESS or print timeout is not completion; require actual artifacts and assertion evidence. Notebook conversation-id means follow-up, not remote-job polling. Whole solutions stay whole; no fragmented verification or invented citations/certification.
+
+## Revision5.42 active pricing continuation
+
+Agy choice conversation920b6942-057a-4905-8f3c-51a4d62744df produced the integrated fix above; verify receipt sources before treating later candidate edits as accepted. Pricing conversation0b38f300-b4ce-45b2-8abc-18ce3d5d0001, isolated Temp/agy-pricing-implementation-20261009, observer72710 after concrete overflow/report correction. Root independent22 checks:20pass/2fail (Markdown incomplete fallback and sum-overflow); still NOT promoted. Source/brief/preimage records and baseline failures in choice-pricing-execution. No blind restart on print timeout. WriterPID8008/session29945 held for edits; release explicitly before handoff. Formal12/35 unchanged; a substantive memory/router fix is now delivered without claiming fullscopeclosure.

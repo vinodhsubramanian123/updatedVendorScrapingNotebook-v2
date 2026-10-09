@@ -160,6 +160,7 @@ function getChassisCatalog(queryText = '', context = {}) {
         catalogPath: null,
         catalogData: null,
         isAmbiguous: true,
+        candidates: catalogs.filter(c => matchedPlatforms.some(p => c.id.toLowerCase().startsWith(p.prefix))).map(c => c.id),
         error: `Multiple hardware platforms matched query text: ${matchedPlatforms.map(p => p.key.toUpperCase()).join(', ')}. Please specify a single target model.`,
         availableCatalogs: catalogs.map(c => c.id)
       };
@@ -1315,124 +1316,167 @@ async function _executeRoutedQueryWithShadow(queryText = '', context = {}) {
 async function _executeLegacyRoutedQuery(queryText = '', context = {}) {
   const classification = classifyQueryIntent(queryText, context);
   const startTime = Date.now();
+  const initialPlatform = getChassisCatalog(queryText, context);
+  const platformSelectionMemory = { retrievedIds: [], usedIds: [], status: 'NOT_APPLICABLE' };
+  if (initialPlatform.isAmbiguous && initialPlatform.candidates?.length > 1) {
+    try {
+      const { retrievePlatformSelection } = require('../lib/boq/user_platform_selection_store.js');
+      const memory = retrievePlatformSelection(queryText, initialPlatform.candidates, listAllCatalogs(), context);
+      platformSelectionMemory.retrievedIds = memory.retrievedIds;
+      platformSelectionMemory.status = memory.reason;
+      if (memory.selected) {
+        const selectedContext = { ...context, chassisName: memory.selected.selectedPlatform };
+        const resolved = getChassisCatalog(queryText, selectedContext);
+        if (!resolved.isAmbiguous && resolved.chassisKey === memory.selected.selectedPlatform) {
+          context = selectedContext;
+          platformSelectionMemory.usedIds = [memory.selected.id];
+        }
+      }
+    } catch (error) {
+      platformSelectionMemory.status = 'PREFERENCE_READ_FAILED';
+      platformSelectionMemory.error = error.message;
+    }
+  }
 
   // ── Classification confidence scoring ───────────────────────────────────
   // Derive a 0.0-1.0 confidence score based on how the chassis and track were resolved.
-  let confidence = 1.0;
-  let classificationBasis = 'EXPLICIT_CONTEXT';
-
+  let confidence = 0.95;
+  let classificationBasis = 'EXPLICIT_CHASSIS';
   const chassisInfoForConf = (() => {
     try { return getChassisCatalog(queryText, context); } catch (_) { return null; }
   })();
 
-  if (classification.intent === 'AMBIGUOUS_QUERY' || chassisInfoForConf?.isAmbiguous) {
-    confidence = 0.40;
-    classificationBasis = 'AMBIGUOUS_QUERY';
-  } else if (context.chassisName && chassisInfoForConf && !chassisInfoForConf.isAmbiguous) {
-    confidence = 1.0;
-    classificationBasis = 'CHASSIS_EXPLICIT_ID_MATCH';
-  } else if (classification.intent === 'BOQ_EVALUATION') {
-    const hasFile = Boolean(context.filePath || context.file);
-    confidence = hasFile ? 0.95 : 0.90;
-    classificationBasis = hasFile ? 'BOQ_EVALUATION_WITH_FILE' : 'BOQ_EVALUATION_KEYWORD';
-  } else if (classification.intent === 'RFP_SIZING_TO_BOM') {
-    // Count sizing-specific keywords to gauge strength
-    const sizingKeywords = ['sizing', 'size a', 'build a bom', 'generate a bom', 'cores', 'ram', 'tb storage', 'need', 'memory', 'processor'];
-    const kwCount = sizingKeywords.filter(kw => (queryText || '').toLowerCase().includes(kw)).length;
-    confidence = kwCount >= 3 ? 0.90 : 0.75;
-    classificationBasis = `RFP_SIZING_KEYWORD_COUNT_${kwCount}`;
-  } else if (classification.intent === 'FREEFORM_QA') {
-    confidence = chassisInfoForConf && !chassisInfoForConf.isAmbiguous ? 0.80 : 0.80;
-    classificationBasis = 'FREEFORM_QA_DEFAULT';
-  } else if (chassisInfoForConf && !chassisInfoForConf.isAmbiguous) {
-    // Check if it was a single-platform match (PLATFORM_SIGNATURES single match → 0.90)
-    confidence = 0.90;
-    classificationBasis = 'CHASSIS_PLATFORM_SIGNATURE_SINGLE_MATCH';
-  } else {
-    confidence = classification.confidence || 0.80;
-    classificationBasis = 'CLASSIFIER_SCORE';
-  }
-  // ────────────────────────────────────────────────────────────────────────
-
+  const unresolvedAmbiguity = ['AMBIGUOUS_QUERY', 'AMBIGUOUS_PRODUCT', 'GENERATION_MISMATCH'].includes(chassisInfoForConf?.chassisKey) || classification.intent === 'AMBIGUOUS_QUERY';
   let responseData = null;
 
-  switch (classification.intent) {
-    case 'CROSS_VENDOR_TRANSFORMATION':
-      responseData = await observeActualInvocation('_handleCrossVendorTransformation', __filename, () => _handleCrossVendorTransformation(queryText, context));
-      break;
+  if (unresolvedAmbiguity) {
+    confidence = 0.40;
+    classificationBasis = 'AMBIGUOUS_QUERY';
+    const ambiguityDetails = {
+      error: chassisInfoForConf?.error,
+      candidates: chassisInfoForConf?.candidates || [],
+      chassisKey: chassisInfoForConf?.chassisKey
+    };
+    const interimResponse = {
+      query: queryText,
+      classification,
+      hitlRequired: true,
+      ambiguityDetails
+    };
+    const question = require('../lib/boq/platform_disambiguation_prompt.js').formatDisambiguationPrompt(interimResponse, queryText);
+    responseData = {
+      status: 'ACTION_REQUIRED',
+      code: 'PLATFORM_CLARIFICATION_REQUIRED',
+      reason: chassisInfoForConf?.error || 'Ambiguous platform target requiring human clarification',
+      message: chassisInfoForConf?.error || 'Ambiguous platform target requiring human clarification',
+      nextAction: 'PRESENT_DISAMBIGUATION_CHOICE_TO_USER',
+      question
+    };
+  } else {
+    if (context.chassisName && chassisInfoForConf && !chassisInfoForConf.isAmbiguous) {
+      confidence = 1.0;
+      classificationBasis = 'CHASSIS_EXPLICIT_ID_MATCH';
+    } else if (classification.intent === 'BOQ_EVALUATION') {
+      const hasFile = Boolean(context.filePath || context.file);
+      confidence = hasFile ? 0.95 : 0.90;
+      classificationBasis = hasFile ? 'BOQ_EVALUATION_WITH_FILE' : 'BOQ_EVALUATION_KEYWORD';
+    } else if (classification.intent === 'RFP_SIZING_TO_BOM') {
+      // Count sizing-specific keywords to gauge strength
+      const sizingKeywords = ['sizing', 'size a', 'build a bom', 'generate a bom', 'cores', 'ram', 'tb storage', 'need', 'memory', 'processor'];
+      const kwCount = sizingKeywords.filter(kw => (queryText || '').toLowerCase().includes(kw)).length;
+      confidence = kwCount >= 3 ? 0.90 : 0.75;
+      classificationBasis = `RFP_SIZING_KEYWORD_COUNT_${kwCount}`;
+    } else if (classification.intent === 'FREEFORM_QA') {
+      confidence = chassisInfoForConf && !chassisInfoForConf.isAmbiguous ? 0.80 : 0.80;
+      classificationBasis = 'FREEFORM_QA_DEFAULT';
+    } else if (chassisInfoForConf && !chassisInfoForConf.isAmbiguous) {
+      // Check if it was a single-platform match (PLATFORM_SIGNATURES single match → 0.90)
+      confidence = 0.90;
+      classificationBasis = 'CHASSIS_PLATFORM_SIGNATURE_SINGLE_MATCH';
+    } else {
+      confidence = classification.confidence || 0.80;
+      classificationBasis = 'CLASSIFIER_SCORE';
+    }
+    // ────────────────────────────────────────────────────────────────────────
 
-    case 'HETEROGENEOUS_TENDER_MODERNIZATION':
-      responseData = await observeActualInvocation('_handleHeterogeneousTenderModernization', __filename, () => _handleHeterogeneousTenderModernization(queryText, context));
-      break;
+    switch (classification.intent) {
+      case 'CROSS_VENDOR_TRANSFORMATION':
+        responseData = await observeActualInvocation('_handleCrossVendorTransformation', __filename, () => _handleCrossVendorTransformation(queryText, context));
+        break;
 
-    case 'FREEFORM_QA':
-      responseData = await observeActualInvocation('_handleFreeformQa', __filename, () => _handleFreeformQa(queryText, context));
-      break;
+      case 'HETEROGENEOUS_TENDER_MODERNIZATION':
+        responseData = await observeActualInvocation('_handleHeterogeneousTenderModernization', __filename, () => _handleHeterogeneousTenderModernization(queryText, context));
+        break;
 
-    case 'BOQ_EVALUATION':
-      responseData = await observeActualInvocation('_handleBoqEvaluation', __filename, () => _handleBoqEvaluation(queryText, context));
-      break;
+      case 'FREEFORM_QA':
+        responseData = await observeActualInvocation('_handleFreeformQa', __filename, () => _handleFreeformQa(queryText, context));
+        break;
 
-    case 'OCR_QUOTE_INGESTION':
-      responseData = observeActualInvocation('_handleOcrQuoteIngestion', __filename, () => _handleOcrQuoteIngestion(queryText, context));
-      break;
+      case 'BOQ_EVALUATION':
+        responseData = await observeActualInvocation('_handleBoqEvaluation', __filename, () => _handleBoqEvaluation(queryText, context));
+        break;
 
-    case 'CATALOG_INTELLIGENCE':
-      responseData = observeActualInvocation('_handleCatalogIntelligence', __filename, () => _handleCatalogIntelligence(queryText, context));
-      break;
+      case 'OCR_QUOTE_INGESTION':
+        responseData = observeActualInvocation('_handleOcrQuoteIngestion', __filename, () => _handleOcrQuoteIngestion(queryText, context));
+        break;
 
-    case 'RFP_SIZING_TO_BOM':
-      responseData = await observeActualInvocation('_handleRfpSizing', __filename, () => _handleRfpSizing(queryText, context));
-      break;
+      case 'CATALOG_INTELLIGENCE':
+        responseData = observeActualInvocation('_handleCatalogIntelligence', __filename, () => _handleCatalogIntelligence(queryText, context));
+        break;
 
-    case 'BOM_RECONCILIATION':
-      responseData = observeActualInvocation('_handleBomReconciliation', __filename, () => _handleBomReconciliation(queryText, context));
-      break;
+      case 'RFP_SIZING_TO_BOM':
+        responseData = await observeActualInvocation('_handleRfpSizing', __filename, () => _handleRfpSizing(queryText, context));
+        break;
 
-    case 'WORKLOAD_DNA':
-      responseData = await observeActualInvocation('_handleWorkloadDna', __filename, () => _handleWorkloadDna(queryText, context));
-      break;
+      case 'BOM_RECONCILIATION':
+        responseData = observeActualInvocation('_handleBomReconciliation', __filename, () => _handleBomReconciliation(queryText, context));
+        break;
 
-    case 'VALUE_ENGINEERING':
-      responseData = await observeActualInvocation('_handleValueEngineering', __filename, () => _handleValueEngineering(queryText, context));
-      break;
+      case 'WORKLOAD_DNA':
+        responseData = await observeActualInvocation('_handleWorkloadDna', __filename, () => _handleWorkloadDna(queryText, context));
+        break;
 
-    case 'LEAST_DELTA_SYNTHESIS':
-      responseData = await observeActualInvocation('_handleLeastDeltaSynthesis', __filename, () => _handleLeastDeltaSynthesis(queryText, context));
-      break;
+      case 'VALUE_ENGINEERING':
+        responseData = await observeActualInvocation('_handleValueEngineering', __filename, () => _handleValueEngineering(queryText, context));
+        break;
 
-    case 'WORKBOOK_GENERATION':
-      responseData = await observeActualInvocation('_handleWorkbookGeneration', __filename, () => _handleWorkbookGeneration(queryText, context));
-      break;
+      case 'LEAST_DELTA_SYNTHESIS':
+        responseData = await observeActualInvocation('_handleLeastDeltaSynthesis', __filename, () => _handleLeastDeltaSynthesis(queryText, context));
+        break;
 
-    case 'REMARKS_RECONCILIATION':
-      responseData = await observeActualInvocation('_handleRemarksReconciliation', __filename, () => _handleRemarksReconciliation(queryText, context));
-      break;
+      case 'WORKBOOK_GENERATION':
+        responseData = await observeActualInvocation('_handleWorkbookGeneration', __filename, () => _handleWorkbookGeneration(queryText, context));
+        break;
 
-    case 'MULTI_CLUSTER_TENDER':
-      responseData = await observeActualInvocation('_handleMultiClusterTender', __filename, () => _handleMultiClusterTender(queryText, context));
-      break;
+      case 'REMARKS_RECONCILIATION':
+        responseData = await observeActualInvocation('_handleRemarksReconciliation', __filename, () => _handleRemarksReconciliation(queryText, context));
+        break;
 
-    case 'ADVERSARIAL_VALIDATION':
-      responseData = await observeActualInvocation('_handleAdversarialValidation', __filename, () => _handleAdversarialValidation(queryText, context));
-      break;
+      case 'MULTI_CLUSTER_TENDER':
+        responseData = await observeActualInvocation('_handleMultiClusterTender', __filename, () => _handleMultiClusterTender(queryText, context));
+        break;
 
-    case 'CONTINUOUS_LEARNING':
-      responseData = await observeActualInvocation('_handleContinuousLearning', __filename, () => _handleContinuousLearning(queryText, context));
-      break;
+      case 'ADVERSARIAL_VALIDATION':
+        responseData = await observeActualInvocation('_handleAdversarialValidation', __filename, () => _handleAdversarialValidation(queryText, context));
+        break;
 
-    case 'KNOWLEDGE_SYNC':
-      responseData = await observeActualInvocation('_handleKnowledgeSync', __filename, () => _handleKnowledgeSync(queryText, context));
-      break;
+      case 'CONTINUOUS_LEARNING':
+        responseData = await observeActualInvocation('_handleContinuousLearning', __filename, () => _handleContinuousLearning(queryText, context));
+        break;
 
-    default:
-      responseData = {
-        intent: classification.intent,
-        skillTarget: classification.skillTarget,
-        instructions: `Engage ${classification.skillTarget} to process: ${classification.rationale}`,
-        promptContext: queryText
-      };
-      break;
+      case 'KNOWLEDGE_SYNC':
+        responseData = await observeActualInvocation('_handleKnowledgeSync', __filename, () => _handleKnowledgeSync(queryText, context));
+        break;
+
+      default:
+        responseData = {
+          intent: classification.intent,
+          skillTarget: classification.skillTarget,
+          instructions: `Engage ${classification.skillTarget} to process: ${classification.rationale}`,
+          promptContext: queryText
+        };
+        break;
+    }
   }
 
   // Ensure universal trace ID & execution provenance across all routed tracks (GAP-33 / INV-111)
@@ -1506,11 +1550,13 @@ async function _executeLegacyRoutedQuery(queryText = '', context = {}) {
     traceId,
     executionTimeMs: Date.now() - startTime,
     classificationConfidence: confidence, // 0.0-1.0
-    hitlRequired: confidence < 0.95 || Boolean(chassisInfoForConf?.isAmbiguous),
-    ambiguityDetails: chassisInfoForConf?.isAmbiguous ? {
-      error: chassisInfoForConf.error,
-      candidates: chassisInfoForConf.candidates || chassisInfoForConf.availableCatalogs || [],
-      chassisKey: chassisInfoForConf.chassisKey
+    hitlRequired: Boolean(chassisInfoForConf?.isAmbiguous) || unresolvedAmbiguity,
+    platformSelectionMemory,
+    resolvedPlatform: chassisInfoForConf && !chassisInfoForConf.isAmbiguous ? chassisInfoForConf.chassisKey : null,
+    ambiguityDetails: (chassisInfoForConf?.isAmbiguous || unresolvedAmbiguity) ? {
+      error: chassisInfoForConf?.error,
+      candidates: chassisInfoForConf?.candidates || chassisInfoForConf?.availableCatalogs || [],
+      chassisKey: chassisInfoForConf?.chassisKey
     } : null,
     classificationBasis
   };

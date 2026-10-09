@@ -1,0 +1,106 @@
+TAP version 13
+# Subtest: unknown user choice never falls back
+ok 1 - unknown user choice never falls back
+  ---
+  duration_ms: 15.6563
+  type: 'test'
+  ...
+# Subtest: multiple selected platforms fail closed
+ok 2 - multiple selected platforms fail closed
+  ---
+  duration_ms: 2.396
+  type: 'test'
+  ...
+# Subtest: no candidates yields no invented recommendation
+ok 3 - no candidates yields no invented recommendation
+  ---
+  duration_ms: 2.3392
+  type: 'test'
+  ...
+# Subtest: actual ambiguity stops before handler
+ok 4 - actual ambiguity stops before handler
+  ---
+  duration_ms: 8.8977
+  type: 'test'
+  ...
+# Subtest: record is preference, not hardware verification
+ok 5 - record is preference, not hardware verification
+  ---
+  duration_ms: 20.0715
+  type: 'test'
+  ...
+# Subtest: recorded choice consumed before sizing handler
+ok 6 - recorded choice consumed before sizing handler
+  ---
+  duration_ms: 7.5917
+  type: 'test'
+  ...
+# Subtest: unrelated query does not consume choice
+ok 7 - unrelated query does not consume choice
+  ---
+  duration_ms: 4.9225
+  type: 'test'
+  ...
+# Subtest: conflicting explicit platform wins
+ok 8 - conflicting explicit platform wins
+  ---
+  duration_ms: 7.3541
+  type: 'test'
+  ...
+# Subtest: explicit context is not proof of learning
+ok 9 - explicit context is not proof of learning
+  ---
+  duration_ms: 4.4115
+  type: 'test'
+  ...
+# Subtest: loop proves real memory use without context injection
+ok 10 - loop proves real memory use without context injection
+  ---
+  duration_ms: 5.4438
+  type: 'test'
+  ...
+# Subtest: fresh process consumes persisted preference
+ok 11 - fresh process consumes persisted preference
+  ---
+  duration_ms: 104.5994
+  type: 'test'
+  ...
+# Subtest: base SKU derives actual catalog and unknown yields null
+ok 12 - base SKU derives actual catalog and unknown yields null
+  ---
+  duration_ms: 4.0941
+  type: 'test'
+  ...
+# Subtest: invalid selected platform cannot be recorded
+ok 13 - invalid selected platform cannot be recorded
+  ---
+  duration_ms: 2.5574
+  type: 'test'
+  ...
+# Subtest: changed candidate scope is retrieved but not used
+ok 14 - changed candidate scope is retrieved but not used
+  ---
+  duration_ms: 8.9412
+  type: 'test'
+  ...
+# Subtest: corrupt preference fails transparently before handler
+ok 15 - corrupt preference fails transparently before handler
+  ---
+  duration_ms: 5.8001
+  type: 'test'
+  ...
+# Subtest: ambiguous result keeps common trace and diagnostic contract
+ok 16 - ambiguous result keeps common trace and diagnostic contract
+  ---
+  duration_ms: 5.3535
+  type: 'test'
+  ...
+1..16
+# tests 16
+# suites 0
+# pass 16
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 435.446

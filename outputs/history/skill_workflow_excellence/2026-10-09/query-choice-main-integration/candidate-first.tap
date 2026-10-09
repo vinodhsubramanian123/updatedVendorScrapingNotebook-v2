@@ -1,0 +1,82 @@
+TAP version 13
+# Subtest: unknown user choice never falls back
+ok 1 - unknown user choice never falls back
+  ---
+  duration_ms: 14.3369
+  type: 'test'
+  ...
+# Subtest: multiple selected platforms fail closed
+ok 2 - multiple selected platforms fail closed
+  ---
+  duration_ms: 4.3082
+  type: 'test'
+  ...
+# Subtest: no candidates yields no invented recommendation
+ok 3 - no candidates yields no invented recommendation
+  ---
+  duration_ms: 2.1854
+  type: 'test'
+  ...
+# Subtest: actual ambiguity stops before handler
+ok 4 - actual ambiguity stops before handler
+  ---
+  duration_ms: 8.5772
+  type: 'test'
+  ...
+# Subtest: record is preference, not hardware verification
+ok 5 - record is preference, not hardware verification
+  ---
+  duration_ms: 21.9157
+  type: 'test'
+  ...
+# Subtest: recorded choice consumed before sizing handler
+ok 6 - recorded choice consumed before sizing handler
+  ---
+  duration_ms: 8.2008
+  type: 'test'
+  ...
+# Subtest: unrelated query does not consume choice
+ok 7 - unrelated query does not consume choice
+  ---
+  duration_ms: 4.5479
+  type: 'test'
+  ...
+# Subtest: conflicting explicit platform wins
+ok 8 - conflicting explicit platform wins
+  ---
+  duration_ms: 5.6312
+  type: 'test'
+  ...
+# Subtest: explicit context is not proof of learning
+ok 9 - explicit context is not proof of learning
+  ---
+  duration_ms: 3.9846
+  type: 'test'
+  ...
+# Subtest: loop proves real memory use without context injection
+ok 10 - loop proves real memory use without context injection
+  ---
+  duration_ms: 4.7403
+  type: 'test'
+  ...
+# Subtest: fresh process consumes persisted preference
+ok 11 - fresh process consumes persisted preference
+  ---
+  duration_ms: 88.558
+  type: 'test'
+  ...
+# Subtest: base SKU derives actual catalog and unknown yields null
+ok 12 - base SKU derives actual catalog and unknown yields null
+  ---
+  duration_ms: 3.9443
+  type: 'test'
+  ...
+1..12
+# tests 12
+# suites 0
+# pass 12
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 275.2833

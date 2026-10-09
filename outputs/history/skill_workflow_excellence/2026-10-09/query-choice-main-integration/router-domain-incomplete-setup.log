@@ -1,0 +1,73 @@
+
+> booktoskill-hpe-oca-scraper@1.1.0 test:domain
+> node scripts/maintenance/run_test_matrix.js --domain router
+
+
+================================================================
+🧪 ISOLATED TEST MATRIX & TIERED TELEMETRY HARNESS
+================================================================
+
+🎯 Filtered by domain "🧭 Presales Router & Skill Handlers": 1 suite(s) found
+
+
+================================================================
+📦 TIER: UNIT TESTS (tests/unit) — [1 Suites]
+   Deterministic physical aspect checks, schemas, parsers, rotator, and preprocessors
+----------------------------------------------------------------
+  #   STATUS   DURATION   TEST SUITE
+----------------------------------------------------------------
+[  1]  RUNNING   ...        tests/unit/test_query_router.js[  1]  ❌ FAIL     3.36s   tests/unit/test_query_router.js
+
+  ┌──────────────────────────────────────────────────────────┐
+  │ ⚠️  FAILURE ISOLATION & DIAGNOSTIC TRACE                 │
+  ├──────────────────────────────────────────────────────────┤
+  │ Test File: tests/unit/test_query_router.js
+  │ Tier:      UNIT
+  │ Exit Code: 1
+  │ Duration:  3357ms
+  │ Re-run:    node tests/unit/test_query_router.js
+  │ Isolated:  npm run test:isolated -- tests/unit/test_query_router.js
+  └──────────────────────────────────────────────────────────┘
+
+  📋 Error Diagnostics:
+
+    test at tests\unit\test_query_router.js:10:1
+      Error: Product platform and generation could not be resolved from input.
+          at requireScopedCatalog [90m(C:\Users\latha\AppData\Local\Temp\agy-choice-implementation-20261009\[39mscripts\evaluators\route_query.js:1108:75[90m)[39m
+          at _handleWorkbookGeneration [90m(C:\Users\latha\AppData\Local\Temp\agy-choice-implementation-20261009\[39mscripts\evaluators\route_query.js:1227:17[90m)[39m
+          at [90mC:\Users\latha\AppData\Local\Temp\agy-choice-implementation-20261009\[39mscripts\evaluators\route_query.js:1448:101
+          at observe [90m(C:\Users\latha\AppData\Local\Temp\agy-choice-implementation-20261009\[39mscripts\lib\system\execution_trace_runtime.js:27:26[90m)[39m
+          at observeActualInvocation [90m(C:\Users\latha\AppData\Local\Temp\agy-choice-implementation-20261009\[39mscripts\lib\system\execution_trace_runtime.js:49:10[90m)[39m
+          at _executeLegacyRoutedQuery [90m(C:\Users\latha\AppData\Local\Temp\agy-choice-implementation-20261009\[39mscripts\evaluators\route_query.js:1448:30[90m)[39m
+          at _executeRoutedQueryWithShadow [90m(C:\Users\latha\AppData\Local\Temp\agy-choice-implementation-20261009\[39mscripts\evaluators\route_query.js:1302:57[90m)[39m
+          at [90mC:\Users\latha\AppData\Local\Temp\agy-choice-implementation-20261009\[39mscripts\evaluators\route_query.js:1298:58
+          at observe [90m(C:\Users\latha\AppData\Local\Temp\agy-choice-implementation-20261009\[39mscripts\lib\system\execution_trace_runtime.js:27:26[90m)[39m
+          at observeRouterEntry [90m(C:\Users\latha\AppData\Local\Temp\agy-choice-implementation-20261009\[39mscripts\lib\system\execution_trace_runtime.js:45:10[90m)[39m
+    test at tests\unit\test_query_router.js:120:1
+      AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+          at TestContext.<anonymous> [90m(C:\Users\latha\AppData\Local\Temp\agy-choice-implementation-20261009\[39mtests\unit\test_query_router.js:123:10[90m)[39m
+
+----------------------------------------------------------------
+
+
+================================================================
+📊 TEST MATRIX TIERED EXECUTION SUMMARY
+================================================================
+  📦 Unit Tests                            : 0/1 PASSED (0.0%) ❌  ⏱️   3.36s
+----------------------------------------------------------------
+  Total Suites:   1
+  Passed:         0 ✅
+  Failed:         1 ❌
+  Pass Rate:      0.0%
+  Total Time:     3.38s
+
+⏱️  Slowest Test Suites:
+  • 3.36s — [UNIT] tests/unit/test_query_router.js
+
+💾 Saved 1 failure record(s) to:
+   C:\Users\latha\AppData\Local\Temp\agy-choice-implementation-20261009\outputs\history\test_failure_ledger.json
+
+💡 To re-test ONLY the failing suite(s) after fixing:
+   npm run test:failed
+================================================================
+

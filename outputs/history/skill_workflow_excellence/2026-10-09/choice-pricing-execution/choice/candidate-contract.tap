@@ -1,0 +1,123 @@
+TAP version 13
+# Subtest: unknown user choice never falls back
+ok 1 - unknown user choice never falls back
+  ---
+  duration_ms: 18.7719
+  type: 'test'
+  ...
+# Subtest: multiple selected platforms fail closed
+ok 2 - multiple selected platforms fail closed
+  ---
+  duration_ms: 2.4336
+  type: 'test'
+  ...
+# Subtest: no candidates yields no invented recommendation
+ok 3 - no candidates yields no invented recommendation
+  ---
+  duration_ms: 2.285
+  type: 'test'
+  ...
+# Subtest: actual ambiguity stops before handler
+ok 4 - actual ambiguity stops before handler
+  ---
+  duration_ms: 8.5295
+  type: 'test'
+  ...
+# Subtest: record is preference, not hardware verification
+ok 5 - record is preference, not hardware verification
+  ---
+  duration_ms: 17.243
+  type: 'test'
+  ...
+# Subtest: recorded choice consumed before sizing handler
+ok 6 - recorded choice consumed before sizing handler
+  ---
+  duration_ms: 7.2964
+  type: 'test'
+  ...
+# Subtest: unrelated query does not consume choice
+ok 7 - unrelated query does not consume choice
+  ---
+  duration_ms: 4.4838
+  type: 'test'
+  ...
+# Subtest: conflicting explicit platform wins
+ok 8 - conflicting explicit platform wins
+  ---
+  duration_ms: 5.2386
+  type: 'test'
+  ...
+# Subtest: explicit context is not proof of learning
+ok 9 - explicit context is not proof of learning
+  ---
+  duration_ms: 4.0795
+  type: 'test'
+  ...
+# Subtest: loop proves real memory use without context injection
+ok 10 - loop proves real memory use without context injection
+  ---
+  duration_ms: 8.0796
+  type: 'test'
+  ...
+# Subtest: fresh process consumes persisted preference
+ok 11 - fresh process consumes persisted preference
+  ---
+  duration_ms: 90.899
+  type: 'test'
+  ...
+# Subtest: base SKU derives actual catalog and unknown yields null
+ok 12 - base SKU derives actual catalog and unknown yields null
+  ---
+  duration_ms: 3.7854
+  type: 'test'
+  ...
+# Subtest: invalid selected platform cannot be recorded
+ok 13 - invalid selected platform cannot be recorded
+  ---
+  duration_ms: 4.0011
+  type: 'test'
+  ...
+# Subtest: changed candidate scope is retrieved but not used
+ok 14 - changed candidate scope is retrieved but not used
+  ---
+  duration_ms: 7.4072
+  type: 'test'
+  ...
+# Subtest: corrupt preference fails transparently before handler
+ok 15 - corrupt preference fails transparently before handler
+  ---
+  duration_ms: 8.1629
+  type: 'test'
+  ...
+# Subtest: ambiguous result keeps common trace and diagnostic contract
+not ok 16 - ambiguous result keeps common trace and diagnostic contract
+  ---
+  duration_ms: 6.8322
+  type: 'test'
+  location: 'C:\\Users\\latha\\AppData\\Local\\Temp\\codex-choice-independent-20261009\\review.cjs:19:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + undefined
+    - 'TRC-5a20092f-9ec4-4f98-9c02-03066cda0860'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'TRC-5a20092f-9ec4-4f98-9c02-03066cda0860'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\latha\AppData\Local\Temp\codex-choice-independent-20261009\review.cjs:19:221)
+    async Test.run (node:internal/test_runner/test:1389:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+1..16
+# tests 16
+# suites 0
+# pass 15
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 316.7705

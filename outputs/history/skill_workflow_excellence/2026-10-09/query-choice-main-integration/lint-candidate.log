@@ -1,0 +1,11 @@
+scripts/evaluators/route_query.js:34:12: warning eslint(no-unused-vars): Catch parameter '_' is caught but never used. help: Consider handling this error.
+scripts/evaluators/route_query.js:39:12: warning eslint(no-unused-vars): Catch parameter '_' is caught but never used. help: Consider handling this error.
+scripts/evaluators/route_query.js:50:12: warning eslint(no-unused-vars): Catch parameter '_' is caught but never used. help: Consider handling this error.
+scripts/evaluators/route_query.js:186:14: warning eslint(no-unused-vars): Catch parameter '_' is caught but never used. help: Consider handling this error.
+scripts/evaluators/route_query.js:587:14: warning eslint(no-unused-vars): Catch parameter '_' is caught but never used. help: Consider handling this error.
+scripts/evaluators/route_query.js:670:14: warning eslint(no-unused-vars): Catch parameter 'e' is caught but never used. help: Consider handling this error.
+scripts/evaluators/route_query.js:1270:14: warning eslint(no-unused-vars): Catch parameter '_' is caught but never used. help: Consider handling this error.
+scripts/evaluators/route_query.js:1275:14: warning eslint(no-unused-vars): Catch parameter '_' is caught but never used. help: Consider handling this error.
+scripts/evaluators/route_query.js:1346:66: warning eslint(no-unused-vars): Catch parameter '_' is caught but never used. help: Consider handling this error.
+scripts/evaluators/route_query.js:1513:14: warning eslint(no-unused-vars): Catch parameter 'e' is caught but never used. help: Consider handling this error.
+

@@ -1,0 +1,113 @@
+TAP version 13
+# ◇ injected env (0) from .env // tip: ◈ encrypted .env [www.dotenvx.com]
+# Subtest: exact single choice only; unknown, arrays, and multiple choices fail closed
+ok 1 - exact single choice only; unknown, arrays, and multiple choices fail closed
+  ---
+  duration_ms: 1.3578
+  type: 'test'
+  ...
+# Subtest: no candidate invention or recommendation from absent evidence
+ok 2 - no candidate invention or recommendation from absent evidence
+  ---
+  duration_ms: 1.1007
+  type: 'test'
+  ...
+# Subtest: base SKU from explicit catalog metadata only
+ok 3 - base SKU from explicit catalog metadata only
+  ---
+  duration_ms: 7.1622
+  type: 'test'
+  ...
+# Subtest: real platform ambiguity returns ACTION_REQUIRED before sizing handler
+ok 4 - real platform ambiguity returns ACTION_REQUIRED before sizing handler
+  ---
+  duration_ms: 12.0413
+  type: 'test'
+  ...
+# Subtest: multiple-platform ambiguity offers only actual matched platforms
+ok 5 - multiple-platform ambiguity offers only actual matched platforms
+  ---
+  duration_ms: 2.418
+  type: 'test'
+  ...
+# Subtest: missing stored choice cannot verify loop
+ok 6 - missing stored choice cannot verify loop
+  ---
+  duration_ms: 2.0232
+  type: 'test'
+  ...
+# Subtest: explicit chosen context can verify route but cannot verify memory
+ok 7 - explicit chosen context can verify route but cannot verify memory
+  ---
+  duration_ms: 8.2162
+  type: 'test'
+  ...
+# Subtest: invalid choice and mismatched target history never write
+ok 8 - invalid choice and mismatched target history never write
+  ---
+  duration_ms: 0.604
+  type: 'test'
+  ...
+# Subtest: human choice produces local typed preference with no fabricated hardware evidence
+ok 9 - human choice produces local typed preference with no fabricated hardware evidence
+  ---
+  duration_ms: 16.1742
+  type: 'test'
+  ...
+# Subtest: fresh process consumes exact normalized query memory before handler
+ok 10 - fresh process consumes exact normalized query memory before handler
+  ---
+  duration_ms: 291.3083
+  type: 'test'
+  ...
+# Subtest: stored decision is verified by original query loop
+ok 11 - stored decision is verified by original query loop
+  ---
+  duration_ms: 26.0055
+  type: 'test'
+  ...
+# Subtest: unrelated query does not retrieve or consume selection
+ok 12 - unrelated query does not retrieve or consume selection
+  ---
+  duration_ms: 241.9398
+  type: 'test'
+  ...
+# Subtest: conflicting explicit context never consumes remembered decision
+ok 13 - conflicting explicit context never consumes remembered decision
+  ---
+  duration_ms: 231.8671
+  type: 'test'
+  ...
+# Subtest: wrong candidate set is retrieved but not used
+ok 14 - wrong candidate set is retrieved but not used
+  ---
+  duration_ms: 1.5986
+  type: 'test'
+  ...
+# Subtest: ordinary FREEFORM 0.8 remains usable
+ok 15 - ordinary FREEFORM 0.8 remains usable
+  ---
+  duration_ms: 232.5624
+  type: 'test'
+  ...
+# Subtest: owner-aware lease prevents concurrent preference writes
+ok 16 - owner-aware lease prevents concurrent preference writes
+  ---
+  duration_ms: 9.6899
+  type: 'test'
+  ...
+# Subtest: explicit context and all 17 public routes retain dispatch under non-ambiguous input
+ok 17 - explicit context and all 17 public routes retain dispatch under non-ambiguous input
+  ---
+  duration_ms: 43.5883
+  type: 'test'
+  ...
+1..17
+# tests 17
+# suites 0
+# pass 17
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1423.583

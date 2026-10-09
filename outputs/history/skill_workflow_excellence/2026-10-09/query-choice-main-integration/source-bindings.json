@@ -1,0 +1,39 @@
+{
+  "inputCommit": "4dfeff5",
+  "author": "Antigravity gemini-3.8-flash-high",
+  "verifier": "Codex root",
+  "bindings": [
+    {
+      "file": "scripts/evaluators/route_query.js",
+      "sourceSha256": "44c2c12fd47366fb2d6297a9dd015944521b413e680728103bf7b448072ed3af",
+      "preimageSha256": "01a85e9f9a34760b099ede1b48bd6694ab87373bd672d69360610974c7711922"
+    },
+    {
+      "file": "scripts/lib/boq/presales_disambiguation.js",
+      "sourceSha256": "58730d19f9911df6b7d96892e3085ecab9344d86d9dd898158fe238750185373",
+      "preimageSha256": "1656ac2de6a210603a92a95181bda5c502499287e9da414cd1c3339087405d56"
+    },
+    {
+      "file": "scripts/lib/boq/platform_disambiguation_prompt.js",
+      "sourceSha256": "cc66c71678a699d0956bb19d97856120d51954b7c27b40ea81bd8cf51daeb276",
+      "preimageSha256": null
+    },
+    {
+      "file": "scripts/lib/boq/user_platform_selection_store.js",
+      "sourceSha256": "055e15b7e0dbf999909c9929173ab4f4f1f57a39a6356b5f227f57ee363bc6e8",
+      "preimageSha256": null
+    },
+    {
+      "file": "tests/unit/test_presales_disambiguation.js",
+      "sourceSha256": "79deec5e2d65a835e722d1389a496934b56b2c125c293b45e3f9e4a52369adb0",
+      "preimageSha256": "94f154228260d6995ceba3ef143f9f9a6c29f182e0f1bfe28a9b274487b9b2c4"
+    },
+    {
+      "file": "tests/unit/test_user_platform_selection.js",
+      "sourceSha256": "227b4416ce56c7d560a79eb95aa10d995f1f0f88ca91755aea1888814e487c9a",
+      "preimageSha256": null
+    }
+  ],
+  "independentTestAdaptations": "Only fixture path and default workspace path changed for permanent tests",
+  "authorReceipt": "Pending; root source-bound verification provides scoped independent evidence, not full checkpoint closure"
+}

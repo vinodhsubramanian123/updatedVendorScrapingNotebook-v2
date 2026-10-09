@@ -1,0 +1,51 @@
+
+> booktoskill-hpe-oca-scraper@1.1.0 test:domain
+> node scripts/maintenance/run_test_matrix.js --domain router
+
+
+================================================================
+🧪 ISOLATED TEST MATRIX & TIERED TELEMETRY HARNESS
+================================================================
+
+🎯 Filtered by domain "🧭 Presales Router & Skill Handlers": 4 suite(s) found
+
+
+================================================================
+📦 TIER: UNIT TESTS (tests/unit) — [3 Suites]
+   Deterministic physical aspect checks, schemas, parsers, rotator, and preprocessors
+----------------------------------------------------------------
+  #   STATUS   DURATION   TEST SUITE
+----------------------------------------------------------------
+[  1]  RUNNING   ...        tests/unit/test_presales_skill_boundaries.js[  1]  ✅ PASS     0.23s   tests/unit/test_presales_skill_boundaries.js
+[  2]  RUNNING   ...        tests/unit/test_presales_skill_workflow_auditors.js[  2]  ✅ PASS     0.93s   tests/unit/test_presales_skill_workflow_auditors.js
+[  3]  RUNNING   ...        tests/unit/test_query_router.js[  3]  ✅ PASS    12.12s   tests/unit/test_query_router.js
+
+================================================================
+⚡ TIER: CHAOS & FAULT INJECTION (tests/chaos) — [1 Suites]
+   Adversarial fuzzing, race conditions, memory stress, mutexes, and crash recovery
+----------------------------------------------------------------
+  #   STATUS   DURATION   TEST SUITE
+----------------------------------------------------------------
+[  4]  RUNNING   ...        tests/chaos/test_presales_skills_chaos.js[  4]  ✅ PASS     0.23s   tests/chaos/test_presales_skills_chaos.js
+
+================================================================
+📊 TEST MATRIX TIERED EXECUTION SUMMARY
+================================================================
+  📦 Unit Tests                            : 3/3 PASSED (100.0%) ✅  ⏱️  13.28s
+  ⚡ Chaos & Fault Injection               : 1/1 PASSED (100.0%) ✅  ⏱️   0.23s
+----------------------------------------------------------------
+  Total Suites:   4
+  Passed:         4 ✅
+  Failed:         0 
+  Pass Rate:      100.0%
+  Total Time:     13.61s
+
+⏱️  Slowest Test Suites:
+  • 12.12s — [UNIT] tests/unit/test_query_router.js
+  • 0.93s — [UNIT] tests/unit/test_presales_skill_workflow_auditors.js
+  • 0.23s — [UNIT] tests/unit/test_presales_skill_boundaries.js
+  • 0.23s — [CHAOS] tests/chaos/test_presales_skills_chaos.js
+
+✨ All test suites passed! Failure ledger is clear.
+================================================================
+

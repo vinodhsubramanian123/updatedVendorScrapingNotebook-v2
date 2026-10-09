@@ -1,0 +1,96 @@
+{
+  "verdict": "VERIFIED_INDEPENDENT_FIX_SCOPE_INTEGRATED",
+  "author": "Antigravity gemini-3.8-flash-high",
+  "verifier": "Codex root",
+  "inputCommit": "4dfeff5",
+  "sources": [
+    {
+      "file": "scripts/evaluators/route_query.js",
+      "sha256": "44c2c12fd47366fb2d6297a9dd015944521b413e680728103bf7b448072ed3af"
+    },
+    {
+      "file": "scripts/lib/boq/presales_disambiguation.js",
+      "sha256": "58730d19f9911df6b7d96892e3085ecab9344d86d9dd898158fe238750185373"
+    },
+    {
+      "file": "scripts/lib/boq/platform_disambiguation_prompt.js",
+      "sha256": "cc66c71678a699d0956bb19d97856120d51954b7c27b40ea81bd8cf51daeb276"
+    },
+    {
+      "file": "scripts/lib/boq/user_platform_selection_store.js",
+      "sha256": "055e15b7e0dbf999909c9929173ab4f4f1f57a39a6356b5f227f57ee363bc6e8"
+    },
+    {
+      "file": "tests/unit/test_presales_disambiguation.js",
+      "sha256": "79deec5e2d65a835e722d1389a496934b56b2c125c293b45e3f9e4a52369adb0"
+    },
+    {
+      "file": "tests/unit/test_user_platform_selection.js",
+      "sha256": "227b4416ce56c7d560a79eb95aa10d995f1f0f88ca91755aea1888814e487c9a"
+    }
+  ],
+  "checks": [
+    {
+      "scope": "Independent exact choice/persistence/pre-handler dispatch/corrupt and wrong-scope/fresh-process/common trace/17intent dispatch",
+      "tests": 17,
+      "passed": 17,
+      "failed": 0,
+      "skipped": 0,
+      "log": "candidate-dispatch.tap"
+    },
+    {
+      "scope": "Permanent main tests:17independent+17authored+5legacy updated",
+      "tests": 39,
+      "passed": 39,
+      "failed": 0,
+      "skipped": 0,
+      "log": "main-tests.tap"
+    },
+    {
+      "scope": "Isolated affected router domain",
+      "suites": 4,
+      "passed": 4,
+      "failed": 0,
+      "log": "router-domain.log"
+    },
+    {
+      "scope": "Full main circular graph",
+      "files": 614,
+      "cycles": 0,
+      "log": "main-cycles.log"
+    },
+    {
+      "scope": "Full main complexity",
+      "max": 131,
+      "threshold": 135,
+      "log": "main-complexity.log"
+    },
+    {
+      "scope": "Explicit node oxlint source cohort",
+      "beforeWarnings": 10,
+      "afterWarnings": 10,
+      "newWarnings": 0,
+      "errors": 0,
+      "logs": [
+        "lint-baseline.log",
+        "lint-candidate.log"
+      ]
+    }
+  ],
+  "intendedDifferences": [
+    "Unknown/multiple choice=null instead of guessed default",
+    "Actual ambiguous platform stops before handlers and retains common trace/acceptance completion",
+    "USER_CHOICE local preference replaces fabricated ACTIVE hardware/QuickSpecs evidence",
+    "Original query retrieves and consumes exact scoped stored preference; explicit context is not learning proof",
+    "Ordinary low-confidence freeform remains usable; ambiguity governs required platform choice"
+  ],
+  "limitations": [
+    "17intent fixture checks dispatch mechanics, not whole customer-path end-to-end acceptance",
+    "Partial CP7c/CP12 fix; full scopes remain open",
+    "Catalog metadata SKU only; missing authoritative SKU returns null",
+    "No live cloud/portal qualification",
+    "Initial isolated router run had incomplete setup (relative source copy and missing catalog inputs); failed log retained, corrected explicit-copy4suite run passed",
+    "Agy final author receipt not yet received; exact implemented sources and independent root acceptance bound above"
+  ],
+  "capturedAt": "2026-10-09T14:56:14.550Z"
+}
