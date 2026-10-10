@@ -669,8 +669,16 @@ function _exportStagedDeliverables({ evalResults, reportDir, paths, targetChassi
   } catch (sheetErr) {
     terminalOwner.recordExporterFailure(evalResults, sheetErr);
     try {
-      if (path.dirname(path.resolve(exportStagingDir)) !== path.resolve(reportDir) || !path.basename(exportStagingDir).startsWith('.export_staging_')) throw new Error('Unsafe export cleanup path');
-      fs.rmSync(exportStagingDir, { recursive: true, force: true });
+      if (fs.existsSync(exportStagingDir)) {
+        if (path.dirname(path.resolve(exportStagingDir)) === path.resolve(reportDir) && path.basename(exportStagingDir).startsWith('.export_staging_')) {
+          fs.rmSync(exportStagingDir, { recursive: true, force: true });
+        }
+      }
+      if (fs.existsSync(generationDir)) {
+        if (path.dirname(path.resolve(generationDir)) === path.resolve(reportDir) && path.basename(generationDir).startsWith('deliverables_')) {
+          fs.rmSync(generationDir, { recursive: true, force: true });
+        }
+      }
     } catch {}
     logger.warn('EVAL_OUTPUT_SERIALIZER', `Multi-Rank workbook export note: ${sheetErr.message}`);
     evalResults.deliveryError = sheetErr.message;

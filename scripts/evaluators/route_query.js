@@ -201,9 +201,7 @@ function getChassisCatalog(queryText = '', context = {}) {
  * @param {object} context 
  * @returns {object} Intent classification
  */
-function classifyQueryIntent(queryText = '', context = {}) {
-  const text = String(queryText || '').trim().toLowerCase();
-  const filePath = context.filePath || context.file || '';
+function _classifyExplicitTrack(text, context, filePath) {
   const explicitTracks = {
     WORKLOAD_DNA: 'workload-dna-skill', VALUE_ENGINEERING: 'value-engineering-skill',
     LEAST_DELTA_SYNTHESIS: 'least-delta-combinator-skill', WORKBOOK_GENERATION: 'workbook-generator-skill',
@@ -214,23 +212,27 @@ function classifyQueryIntent(queryText = '', context = {}) {
     BOM_RECONCILIATION: 'bom-reconciliation-skill', FREEFORM_QA: 'nlm-skill',
     RFP_SIZING_TO_BOM: 'rfp-sizing-synthesizer', CATALOG_INTELLIGENCE: 'catalog-intelligence-skill'
   };
-  if (context.intent && explicitTracks[context.intent]) return {
-    intent: context.intent, confidence: 1, skillTarget: explicitTracks[context.intent], rationale: 'Explicit requested execution track.'
-  };
+  if (context.intent && explicitTracks[context.intent]) {
+    return {
+      intent: context.intent, confidence: 1, skillTarget: explicitTracks[context.intent], rationale: 'Explicit requested execution track.'
+    };
+  }
   // A file is input to an explicit requested operation, not an overriding intent.
   if (filePath) {
     const operation = classifyQueryIntent(text, { ...context, filePath: '', file: '' });
     if (!['FREEFORM_QA', 'BOQ_EVALUATION', 'OCR_QUOTE_INGESTION'].includes(operation.intent)) return operation;
   }
-
-
   // Explicit canonical handoffs must not loop back into competitor detection.
-  if (context.intent === 'RFP_SIZING_TO_BOM') return {
-    intent: context.intent, confidence: 1, skillTarget: 'rfp-sizing-synthesizer',
-    rationale: 'Explicit scoped sizing handoff.'
-  };
+  if (context.intent === 'RFP_SIZING_TO_BOM') {
+    return {
+      intent: context.intent, confidence: 1, skillTarget: 'rfp-sizing-synthesizer',
+      rationale: 'Explicit scoped sizing handoff.'
+    };
+  }
+  return null;
+}
 
-  // 0. Heterogeneous Tender Modernization & Carrier Fleet Synthesis keywords
+function _classifyHeterogeneousAndCompetitor(text, context) {
   const isHeterogeneous =
     text.includes('heterogeneous') ||
     text.includes('mixed domain') ||
@@ -248,7 +250,6 @@ function classifyQueryIntent(queryText = '', context = {}) {
     Boolean(context.heterogeneous) ||
     context.intent === 'HETEROGENEOUS_TENDER_MODERNIZATION';
 
-
   if (isHeterogeneous) {
     return {
       intent: 'HETEROGENEOUS_TENDER_MODERNIZATION',
@@ -258,7 +259,6 @@ function classifyQueryIntent(queryText = '', context = {}) {
     };
   }
 
-  // 0b. Cross-Vendor Architectural Transformation keywords
   const isCrossVendorQuestion =
     /^(?:is\s+|can\s+|what\s+|how\s+|does\s+)/i.test(text) &&
     text.includes('?') &&
@@ -276,7 +276,6 @@ function classifyQueryIntent(queryText = '', context = {}) {
     context.intent === 'CROSS_VENDOR_TRANSFORMATION'
   );
 
-
   if (isCrossVendor) {
     return {
       intent: 'CROSS_VENDOR_TRANSFORMATION',
@@ -285,38 +284,42 @@ function classifyQueryIntent(queryText = '', context = {}) {
       rationale: 'Input requests cross-vendor architectural transformation and physical parity audit from competitor to target vendor.'
     };
   }
+  return null;
+}
 
-  // 1. File-based detection
+function _classifyFileBased(text, filePath, context) {
   const detectedPath = filePath || (text.match(/[\w\-./\\]+\.(?:png|jpg|jpeg|webp|tiff|bmp|pdf|xlsx|xls|csv|tsv)/i)?.[0] || '');
-  if (detectedPath) {
-    const ext = path.extname(detectedPath).toLowerCase();
-    if (['.png', '.jpg', '.jpeg', '.webp', '.tiff', '.bmp', '.pdf'].includes(ext)) {
-      return {
-        intent: 'OCR_QUOTE_INGESTION',
-        confidence: 0.98,
-        skillTarget: 'ocr-quote-ingestion-skill',
-        rationale: 'Input contains an image file or scanned quote document designated for OCR ingestion.'
-      };
-    }
-    if (['.csv', '.xlsx', '.xls', '.tsv'].includes(ext)) {
-      if (text.includes('reconcile') || text.includes('compare') || text.includes('quote vs tender') || context.secondaryFilePath) {
-        return {
-          intent: 'BOM_RECONCILIATION',
-          confidence: 0.96,
-          skillTarget: 'bom-reconciliation-skill',
-          rationale: 'Input contains spreadsheet files designated for multi-workbook reconciliation.'
-        };
-      }
-      return {
-        intent: 'BOQ_EVALUATION',
-        confidence: 0.98,
-        skillTarget: 'boq-eval-skill',
-        rationale: 'Input contains a single customer BOQ/BOM file for physical buildability evaluation.'
-      };
-    }
-  }
+  if (!detectedPath) return null;
 
-  // 2. Reconciliation keywords
+  const ext = path.extname(detectedPath).toLowerCase();
+  if (['.png', '.jpg', '.jpeg', '.webp', '.tiff', '.bmp', '.pdf'].includes(ext)) {
+    return {
+      intent: 'OCR_QUOTE_INGESTION',
+      confidence: 0.98,
+      skillTarget: 'ocr-quote-ingestion-skill',
+      rationale: 'Input contains an image file or scanned quote document designated for OCR ingestion.'
+    };
+  }
+  if (['.csv', '.xlsx', '.xls', '.tsv'].includes(ext)) {
+    if (text.includes('reconcile') || text.includes('compare bom') || text.includes('quote vs tender') || context.secondaryFilePath || text.includes('tender vs quote')) {
+      return {
+        intent: 'BOM_RECONCILIATION',
+        confidence: 0.96,
+        skillTarget: 'bom-reconciliation-skill',
+        rationale: 'Input contains spreadsheet files designated for multi-workbook reconciliation.'
+      };
+    }
+    return {
+      intent: 'BOQ_EVALUATION',
+      confidence: 0.98,
+      skillTarget: 'boq-eval-skill',
+      rationale: 'Input contains a single customer BOQ/BOM file for physical buildability evaluation.'
+    };
+  }
+  return null;
+}
+
+function _classifyAdvancedPresalesTracks(text, context, detectedPath) {
   if (
     text.includes('reconcile') ||
     text.includes('compare bom') ||
@@ -332,12 +335,11 @@ function classifyQueryIntent(queryText = '', context = {}) {
     };
   }
 
-  // 2a. Workload DNA & Application Profiling keywords
   const isWorkloadDna =
     /\b(?:sap\s*hana|vmware|vcf|vsphere|vdi|ai\s*inference|llm\s*inference|machine\s*learning|hft|high[\s-]frequency\s*trading|oltp|sql\s*server|big\s*data|database\s*in[\s-]memory|workload\s*dna|numa\s*balanc|contested\s*resource|resource\s*arbitrat)\b/i.test(text) ||
     context.intent === 'WORKLOAD_DNA';
 
-  if (isWorkloadDna && !text.includes('reconcile') && !isHeterogeneous && !isCrossVendor) {
+  if (isWorkloadDna && !text.includes('reconcile')) {
     return {
       intent: 'WORKLOAD_DNA',
       confidence: 0.95,
@@ -346,7 +348,6 @@ function classifyQueryIntent(queryText = '', context = {}) {
     };
   }
 
-  // 2b. Value Engineering & Deal CapEx/OpEx Optimization keywords
   const isValueEngineering =
     /\b(?:value\s*engineering|budget\s*optimi[sz]|optimize.*budget|budget.*optimi[sz]|for\s*budget|reduce\s*capex|cost\s*reduction|surplus\s*budget|deal\s*capex|downsize\s*cpu|right[\s-]size\s*cpu)\b/i.test(text) ||
     Boolean(context.budget) ||
@@ -361,7 +362,6 @@ function classifyQueryIntent(queryText = '', context = {}) {
     };
   }
 
-  // 2c. Least-Delta Solution Combinator keywords
   const isLeastDelta =
     /\b(?:least[\s-]delta|minimal[\s-]mutation|minimum[\s-]change|least[\s-]change|prune\s*troublesome|troublesome\s*sku|rank\s*1l|alternative\s*topology)\b/i.test(text) ||
     context.intent === 'LEAST_DELTA_SYNTHESIS';
@@ -375,7 +375,6 @@ function classifyQueryIntent(queryText = '', context = {}) {
     };
   }
 
-  // 2d. Commercial Remarks Reconciliation keywords
   const isRemarksReconciliation =
     /\b(?:commercial\s*remarks|reconciliation\s*remarks|append\s*remarks|engineering\s*remarks|commercial\s*action)\b/i.test(text) ||
     context.intent === 'REMARKS_RECONCILIATION';
@@ -389,11 +388,9 @@ function classifyQueryIntent(queryText = '', context = {}) {
     };
   }
 
-  // 2e. Professional Workbook & Portal Upload Generator keywords
   const isWorkbookGen =
     /\b(?:generate.*(?:excel|workbook|spreadsheet|\.xlsx)|create.*(?:excel|workbook|spreadsheet|\.xlsx)|export.*(?:excel|workbook|spreadsheet|\.xlsx)|portal\s*upload|partner\s*portal|7[\s-]column\s*portal|standardized\s*7[\s-]column)\b/i.test(text) ||
     context.intent === 'WORKBOOK_GENERATION';
-
 
   if (isWorkbookGen && !text.includes('reconcile')) {
     return {
@@ -404,7 +401,6 @@ function classifyQueryIntent(queryText = '', context = {}) {
     };
   }
 
-  // 2f. Multi-Node Cluster Tender Sizing (Text-only without files)
   const isMultiClusterTender =
     (/\b(?:\d{2,}\s*(?:nodes?|servers?)|multi[\s-]cluster|3[\s-]tier|web[\s/]app[\s/]db|datacenter\s*rack\s*layout|42u\s*rack|power\s*envelope\s*kw)\b/i.test(text) &&
     /\b(?:tender|cluster|rack|facility|layout|sizing|nodes?)\b/i.test(text)) ||
@@ -419,7 +415,6 @@ function classifyQueryIntent(queryText = '', context = {}) {
     };
   }
 
-  // 2g. Adversarial Validation & Chaos Red-Teaming keywords (GAP-26)
   const isAdversarial =
     /\b(?:adversarial|red[\s-]team|stress[\s-]test|boundary[\s-]fuzz|chaos[\s-]test|fuzz\s*validation)\b/i.test(text) ||
     context.intent === 'ADVERSARIAL_VALIDATION';
@@ -433,7 +428,6 @@ function classifyQueryIntent(queryText = '', context = {}) {
     };
   }
 
-  // 2h. Continuous Learning Feedback & Quarantine keywords (GAP-29)
   const isContinuousLearning =
     /\b(?:continuous[\s-]learning|record\s*feedback|reflect.*(?:feedback|error)|register\s*learned|quarantine\s*(?:delta|rule)|learning\s*reachability|feedback\s*loop)\b/i.test(text) ||
     context.intent === 'CONTINUOUS_LEARNING';
@@ -447,7 +441,6 @@ function classifyQueryIntent(queryText = '', context = {}) {
     };
   }
 
-  // 2i. Knowledge Sync & Drift Guard keywords (GAP-32)
   const isKnowledgeSync =
     /\b(?:knowledge[\s-]sync|synchroniz(?:e|ation)\s*knowledge|sync\s*deltas?|sync\s*catalog|inspect\s*drift|knowledge\s*drift|post[\s-]flow\s*sync)\b/i.test(text) ||
     context.intent === 'KNOWLEDGE_SYNC';
@@ -461,8 +454,10 @@ function classifyQueryIntent(queryText = '', context = {}) {
     };
   }
 
+  return null;
+}
 
-  // 3. Catalog Intelligence keywords & Standalone Single-SKU inquiries
+function _classifyCatalogSizingOrQa(text, filePath, context) {
   const detectedSkus = (text.match(/\b([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6}|[A-Z0-9]{5,8}AAE|[HURS][A-Z0-9]{4,11})\b/gi) || []).filter(isValidHpeSKU);
   const isSingleSkuInquiry = detectedSkus.length === 1 && !filePath && (!context.items || !Array.isArray(context.items) || context.items.length <= 1);
   const isSingleSkuPricingOrLifecycle = isSingleSkuInquiry && (
@@ -493,7 +488,6 @@ function classifyQueryIntent(queryText = '', context = {}) {
     };
   }
 
-  // 4. RFP Sizing & Presales Sizing Specifications (Evaluated before generic question trigger)
   const serverModelPattern = /\b(?:dl\s*380a?|dl\s*145|dl\s*580|sy\s*480|synergy|alletra|cray|sn\s*3600b?|computescale|tensorscale|proliant)\b/i;
   const specPattern = /\b(?:processor|cpu|cores?|memory|ram|dimm|gpus?|accelerators?|h200|h100|l40s|drive|drives|storage|nvme|ssd|1gbe|10gbe|25gbe|sfp|base-t|nodes?|units?|no\s+local\s+drive|basic\s+processor|minimum\s+memory)\b/i;
   const hasSpecTokens = /\b(?:\d+x|\d+\s*(?:gb|tb|cores?|units?|nodes?)|with|plus|and)\b/i.test(text);
@@ -520,7 +514,6 @@ function classifyQueryIntent(queryText = '', context = {}) {
     };
   }
 
-  // 5. Interrogative Questions & Knowledge Architecture (FREEFORM_QA)
   const isQuestion =
     /^(?:can\s+i|what\s+(?:is|are|options|can|do|does)|how\s+|why\s+|does\s+|is\s+(?:it|there))\b/i.test(text) ||
     text.includes('?');
@@ -534,7 +527,6 @@ function classifyQueryIntent(queryText = '', context = {}) {
     };
   }
 
-  // 6. BOQ Evaluation text check (Broadened regex matching 6-char, AAE, and service SKUs per GAP-31)
   const detectedSkuTokens = (text.match(/\b([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6}|[A-Z0-9]{5,8}AAE|[HURS][A-Z0-9]{4,11})\b/gi) || []).filter(isValidHpeSKU);
   const hasSkuTokens = detectedSkuTokens.length >= 2;
   const hasBoqKeywords = text.includes('evaluate boq') || text.includes('verify bom') || text.includes('check buildability') || text.includes('validate boq');
@@ -548,13 +540,32 @@ function classifyQueryIntent(queryText = '', context = {}) {
     };
   }
 
-  // 7. Default to Freeform Q&A Grounded via NotebookLM
   return {
     intent: 'FREEFORM_QA',
     confidence: 0.88,
     skillTarget: 'nlm-skill',
     rationale: 'Freeform conversational inquiry regarding HPE server architecture, rules, or QuickSpecs.'
   };
+}
+
+function classifyQueryIntent(queryText = '', context = {}) {
+  const text = String(queryText || '').trim().toLowerCase();
+  const filePath = context.filePath || context.file || '';
+
+  const explicit = _classifyExplicitTrack(text, context, filePath);
+  if (explicit) return explicit;
+
+  const heterogeneousOrCompetitor = _classifyHeterogeneousAndCompetitor(text, context);
+  if (heterogeneousOrCompetitor) return heterogeneousOrCompetitor;
+
+  const fileIntent = _classifyFileBased(text, filePath, context);
+  if (fileIntent) return fileIntent;
+
+  const detectedPath = filePath || (text.match(/[\w\-./\\]+\.(?:png|jpg|jpeg|webp|tiff|bmp|pdf|xlsx|xls|csv|tsv)/i)?.[0] || '');
+  const advancedIntent = _classifyAdvancedPresalesTracks(text, context, detectedPath);
+  if (advancedIntent) return advancedIntent;
+
+  return _classifyCatalogSizingOrQa(text, filePath, context);
 }
 
 /**

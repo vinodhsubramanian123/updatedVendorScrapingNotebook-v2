@@ -184,7 +184,20 @@ function detachSolutionSource(notebookId, sourceId, options = {}) {
  */
 function isNegativeRagVerdict(answer) {
   if (!answer || typeof answer !== 'string') return false;
-  const lower = answer.toLowerCase();
+  let text = answer.toLowerCase();
+
+  // Strip negation phrases before scanning for negative signals to avoid false positives:
+  // e.g. "no clic error or unbuildable flag", "zero missing mandatory parts", "without incompatible options"
+  const negationPatterns = [
+    /\b(?:no|zero|without|not)\s+(?:[\w-]+\s+){0,3}(?:clic\s+errors?|unbuildable(?:\s+\w+)?|not\s+buildable|missing\s+mandatory|incompatible(?:\s+\w+)?|rule\s+violations?|invalid\s+configurations?|validation\s+failures?)\b/gi,
+    /\b(?:does\s+not|doesn't|did\s+not|didn't)\s+(?:violate|fail|contain\s+(?:errors?|issues?))\b/gi,
+    /\bno\s+issues?\s+found\b/gi,
+    /\ball\s+(?:tests?|checks?)\s+passed\b/gi
+  ];
+  for (const pattern of negationPatterns) {
+    text = text.replace(pattern, ' ');
+  }
+
   const negativeSignals = [
     'not buildable',
     'unbuildable',
@@ -196,7 +209,7 @@ function isNegativeRagVerdict(answer) {
     'validation failed',
     'invalid configuration'
   ];
-  return negativeSignals.some(s => lower.includes(s));
+  return negativeSignals.some(s => text.includes(s));
 }
 
 function parseRankVerdicts(answer, evalResults) {
@@ -478,5 +491,6 @@ module.exports = {
   attachSolutionSource,
   detachSolutionSource,
   buildSolutionSourceValidationPrompt,
-  validateSolutionWithEphemeralSource
+  validateSolutionWithEphemeralSource,
+  isNegativeRagVerdict
 };
