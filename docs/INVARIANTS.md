@@ -825,5 +825,15 @@ To ensure that future AI agents (Antigravity, Codex, Claude, or subagents) never
   - When credentials are stale, expired, or missing, the system emits the non-interactive recovery command: `nlm login --force --storage file`.
   - Passing `--storage file` is mandatory to bypass the interactive terminal prompt (`Protect the saved login in OS keystore? [y/N]`), storing tokens directly to `~/.notebooklm-mcp-cli/profiles/default/credentials.json`.
   - Passing `--force` guarantees that stale or conflicting session cache is replaced without manual terminal confirmation.
-  - Following re-authentication, in-memory MCP server state is refreshed via `call_mcp_tool('gemini-notebook-mcp', 'refresh_auth')` without requiring an IDE, agent, or terminal restart.
+- **INV-163: Prompt Boundary & Tier-0 Candidate Isolation**:
+  - External customer BOQ items, descriptions, and user notes injected into agentic guardrails must be enclosed in structural XML/markdown delimiter tags (`<untrusted_candidate_items>`) with explicit system directives declaring them as untrusted passive data inputs.
+  - LLMs must be explicitly forbidden from interpreting strings within candidate items as system overrides or execution commands.
 
+- **INV-164: CDP Connection Watchdog Timeout & Terminate**:
+  - WebSocket handshakes initiated by CDP client wrappers (`cdp.js`) must be bounded by a strict connection timeout ($\le 10,000\text{ms}$) with socket termination to prevent indefinite pipeline hangs when headless browser endpoints freeze.
+
+- **INV-165: Preflight Output Directory Safety Guard**:
+  - Preprocessing and audit logging endpoints must validate target chassis directories using `assertSafePath` before writing disk state, preventing directory traversal outside authorized project roots.
+
+- **INV-166: Negation-Preserving RAG Verdict Evaluation**:
+  - RAG answer scanners detecting unbuildability or vendor errors must strip preceding negation clauses ("no", "zero", "without", "does not violate") with multi-word gaps before matching failure keywords, preventing false-negative build rejections.
