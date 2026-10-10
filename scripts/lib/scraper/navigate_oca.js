@@ -705,7 +705,7 @@ async function performAutomatedSignIn(partnerTarget) {
 
     // 2. Wait for credential / password page and submit password
     let passwordSubmitted = false;
-    for (let passAttempt = 0; passAttempt < 180 && !passwordSubmitted; passAttempt++) {
+    for (let passAttempt = 0; passAttempt < 30 && !passwordSubmitted; passAttempt++) {
       try {
         const passState = await sendCommand(ws, 'Runtime.evaluate', {
           expression: `(() => {
@@ -748,7 +748,6 @@ async function performAutomatedSignIn(partnerTarget) {
             expression: `(() => {
               const passInput = Array.from(document.querySelectorAll('#password-sign-in, input[type="password"], #okta-signin-password, #onepass-password')).find(el => el.getClientRects().length);
               if (passInput) {
-                if (${JSON.stringify(Boolean(portalPass))}) Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(passInput, ${JSON.stringify(portalPass)});
                 passInput.dispatchEvent(new Event('input', { bubbles: true }));
                 passInput.dispatchEvent(new Event('change', { bubbles: true }));
               }

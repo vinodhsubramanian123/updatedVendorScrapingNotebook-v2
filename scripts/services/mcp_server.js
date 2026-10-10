@@ -188,13 +188,14 @@ async function executeToolRequest(request, extra) {
   const signal = extra.signal;
   try {
     throwIfRequestAborted(signal);
-    const args = request.params.arguments;
+    const toolName = request.params?.name || request.name;
+    const args = request.params?.arguments || request.arguments || {};
     let items = [];
     if (args.items_json) {
       items = JSON.parse(args.items_json);
     }
 
-    switch (request.params.name) {
+    switch (toolName) {
       case "evaluate_aspect_thermal": {
         const result = evalComputeThermal(items);
         return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
@@ -255,7 +256,14 @@ async function executeToolRequest(request, extra) {
         const cat = listAllCatalogs().find(c => c.id === args.chassis_id);
         let outputDir = cat ? cat.catalogDir : null;
         if (!outputDir) {
-          outputDir = path.resolve(__dirname, '..', '..', 'outputs', args.chassis_id);
+          const rawChassisId = String(args.chassis_id || '').trim();
+          if (!rawChassisId || !rawChassisId.replace(/[^a-zA-Z0-9]/g, '')) throw new Error('Invalid chassis_id');
+          const cleanChassisId = rawChassisId.replace(/[^a-zA-Z0-9_\-]/g, '_');
+          outputDir = path.resolve(__dirname, '..', '..', 'outputs', cleanChassisId);
+        }
+        const outputsRoot = path.resolve(__dirname, '..', '..', 'outputs');
+        if (!outputDir.startsWith(outputsRoot + path.sep) && outputDir !== outputsRoot) {
+          throw new Error('Path Traversal: outputDir must reside within outputs directory');
         }
         if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
         const result = processPortalFeedback("MCP tool rule update", outputDir, {
@@ -284,10 +292,11 @@ async function executeToolRequest(request, extra) {
   }
 }
 
-async function run() {
-  const transport = new StdioServerTransport();
-  await server.connect(transport);
-  console.error("HPE BOQ Evaluator MCP Server running on stdio");
+if (require.main === module) {
+  run().catch(console.error);
 }
 
-run().catch(console.error);
+module.exports = {
+  executeToolRequest,
+  server
+};

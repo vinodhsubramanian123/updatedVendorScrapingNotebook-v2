@@ -39,7 +39,19 @@ const storage = multer.diskStorage({
     cb(null, `boq_${Date.now()}_${cleanName}`);
   }
 });
-const upload = multer({ storage });
+const upload = multer({
+  storage,
+  limits: { fileSize: 50 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    const ext = path.extname(file.originalname).toLowerCase();
+    const allowed = ['.xlsx', '.xls', '.csv', '.json', '.txt', '.pdf', '.png', '.jpg', '.jpeg', '.webp'];
+    if (allowed.includes(ext)) {
+      cb(null, true);
+    } else {
+      cb(new Error(`File type ${ext} not allowed for BOQ ingestion`));
+    }
+  }
+});
 
 // Top-level imports for lib helpers
 const { preprocessAndGroupBOQ, savePreprocessingRuleFeedback } = require('../../scripts/lib/boq/boq_preprocessor.js');
@@ -81,8 +93,13 @@ router.post('/preprocess-boq', asyncHandler(async (req, res) => {
   }
 
   try {
-    const preflightResult = preprocessAndGroupBOQ(inputContent, targetPath || '', { chassisDir, ocrResult });
-    const targetDir = chassisDir && fs.existsSync(chassisDir) ? chassisDir : HISTORY_DIR;
+    let targetDir = HISTORY_DIR;
+    if (chassisDir) {
+      try {
+        const safeDir = assertSafePath(resolveChassisDirectory(chassisDir));
+        if (fs.existsSync(safeDir)) targetDir = safeDir;
+      } catch (_) {}
+    }
     safeWriteJsonAtomic(path.join(targetDir, 'preflight_audit_log.json'), preflightResult);
     if (preflightResult.preflightPipeline) {
       recordCleansingPreflightTelemetry(preflightResult.preflightPipeline, targetPath || 'BOQ_Text');

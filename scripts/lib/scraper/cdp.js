@@ -162,8 +162,19 @@ async function connectWS(debuggerUrl, retries = 3, backoffMs = 1500) {
     try {
       return await new Promise((resolve, reject) => {
         const ws = new WebSocket(debuggerUrl);
-        ws.once('open', () => resolve(ws));
-        ws.once('error', reject);
+        const connectTimer = setTimeout(() => {
+          try { ws.terminate(); } catch (_) { try { ws.close(); } catch (__) {} }
+          reject(new Error(`WebSocket connection timeout (10000ms) to ${debuggerUrl}`));
+        }, 10000);
+
+        ws.once('open', () => {
+          clearTimeout(connectTimer);
+          resolve(ws);
+        });
+        ws.once('error', (err) => {
+          clearTimeout(connectTimer);
+          reject(err);
+        });
       });
     } catch (err) {
       if (attempt === retries) throw err;
