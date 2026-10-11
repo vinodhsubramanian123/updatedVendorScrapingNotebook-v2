@@ -110,6 +110,7 @@ export default function ResolutionMatrix({
           cascadingImpact: sol.cascadingImpact || null,
           leastDeltaAnalysis: sol.leastDeltaAnalysis || null,
           decisionTrace: sol.decisionTrace || [],
+          portalConditionalSkus: sol.portalConditionalSkus || [],
           isLeastDeltaPath: Boolean(sol.leastDeltaAnalysis?.isLeastDeltaPath || sol.isLeastDeltaPath)
         };
       })
@@ -198,6 +199,31 @@ export default function ResolutionMatrix({
         exportError={exportError}
         onOpenTopology={onOpenTopology}
       />
+
+      {/* Cryptographic Delivery Gate (INV-128 / INV-140) */}
+      {evalResults?.customerDisposition === 'DELIVERY_BLOCKED_UNBUILDABLE' ? (
+        <div className="p-3.5 rounded-xl border-2 border-rose-500 bg-rose-50/90 text-rose-950 text-xs flex items-center justify-between shadow-xs">
+          <div className="flex items-center gap-2.5">
+            <span className="px-2 py-0.5 rounded text-[10px] bg-rose-700 text-white font-bold font-mono uppercase shrink-0">
+              DELIVERY_BLOCKED_UNBUILDABLE
+            </span>
+            <span className="font-medium">
+              Pre-Presentation Acceptance Gate blocked: Customer proposal export is cryptographically restricted until critical physical violations and enablement kits are resolved.
+            </span>
+          </div>
+        </div>
+      ) : evalResults?.deliveryAuthorization ? (
+        <div className="p-2.5 rounded-xl border border-emerald-300 bg-emerald-50/70 text-emerald-950 text-xs flex items-center justify-between shadow-xs">
+          <div className="flex items-center gap-2.5">
+            <span className="px-2 py-0.5 rounded text-[10px] bg-emerald-700 text-white font-bold font-mono uppercase shrink-0">
+              DELIVERY_AUTHORIZED
+            </span>
+            <span className="font-medium">
+              Cryptographic delivery authorization verified ({evalResults.deliveryAuthorization.certificateId || 'CERT-OK'}). 100% buildable proposal export cleared.
+            </span>
+          </div>
+        </div>
+      ) : null}
 
       {/* Dual-Brain Provisional vs Verified Status Banner (GAP 2) */}
       {evalResults?.isProvisional ? (
