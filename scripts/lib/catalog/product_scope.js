@@ -160,7 +160,8 @@ const APPROVED_UNIVERSAL_POLICY_SKUS = new Set([
   'HU4B2A3',
   'S1A05A',
   'R7A11AAE',
-  'P35876-B21'
+  'P35876-B21',
+  'P36877-B21'   // DC lug terminal kit — telco -48VDC, vendor-wide accessory
 ]);
 
 function isApprovedUniversalPolicySku(sku) {

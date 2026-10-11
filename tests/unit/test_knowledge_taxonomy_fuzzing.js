@@ -136,8 +136,8 @@ test('Knowledge Taxonomy, Feedback Loop, and Schema Contracts Fuzzing', async (t
       }
       if (norm.includes('history/catalog_deltas.json')) {
         return JSON.stringify([
-          { deltaId: 'D1', affectedSku: 'S1', rawMessage: 'all hpe' },
-          { deltaId: 'D2', affectedSku: 'S2', rawMessage: 'family-wide option policy' }
+          { deltaId: 'D1', rawMessage: 'all hpe' },
+          { deltaId: 'D2', rawMessage: 'family-wide option policy', ruleType: 'OPTION_TYPE_SUBSTITUTION' }
         ]);
       }
       if (norm.includes('chassis_A/catalog_deltas.json')) {

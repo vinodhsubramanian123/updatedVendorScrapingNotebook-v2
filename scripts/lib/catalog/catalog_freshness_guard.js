@@ -425,11 +425,16 @@ function assertScrapedCatalogQuality(catalogDirOrData, options = {}) {
   const hasMemory = [...parentCategories, ...allSubcategories].some(c => c.includes('memory') || c.includes('dimm') || c.includes('ram'));
   const hasPower = [...parentCategories, ...allSubcategories].some(c => c.includes('power') || c.includes('psu') || c.includes('supply'));
 
-  const isServerProduct = !/^(msl|alletra|nimble|storeever|san|switch)/i.test(chassisName);
-  if (isServerProduct && entries.length > 5) {
+  const isNonServerOrSpecialty = /^(msl|alletra|nimble|storeever|san|switch|sn\d|sy100gb)/i.test(chassisName);
+  const isSynergyCompute = /^sy\d/i.test(chassisName);
+  if (!isNonServerOrSpecialty && !isSynergyCompute && entries.length > 5) {
     if (!hasCpu) errors.push(`Missing mandatory server category: Processor / CPU options not found.`);
     if (!hasMemory) errors.push(`Missing mandatory server category: Memory options not found.`);
     if (!hasPower) errors.push(`Missing mandatory server category: Power Supply options not found.`);
+  } else if (isSynergyCompute && entries.length > 5) {
+    if (!hasCpu) errors.push(`Missing mandatory server category: Processor / CPU options not found.`);
+    if (!hasMemory) errors.push(`Missing mandatory server category: Memory options not found.`);
+    // Synergy compute blades receive power from the shared Synergy 12000 frame
   }
 
   // 4. Companion services audit
