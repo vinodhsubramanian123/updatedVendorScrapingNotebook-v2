@@ -20,5 +20,21 @@ module.exports = [
     deltaId: 'LEARN_DL380_GEN12_COVERAGE_BOUNDARY_20260930',
     ruleType: 'WORKFLOW_CAPTURE_COVERAGE_ADVISORY',
     rawMessage: 'Chassis discovery does not establish traversal. Current automated conditional capture covers hidden DOM and ambient probes; other selector combinations and all-base coverage remain unverified. Unknown recommendation, price and variant capability stay unknown. Do not retire prior NotebookLM sources before replacement verification.'
+  },
+  {
+    deltaId: 'LEARN_CHASSIS_THREE_TIER_DOMAIN_CLASSIFICATION_20261012',
+    ruleType: 'WORKFLOW_CHASSIS_CLASSIFICATION_ADVISORY',
+    rawMessage: 'Specialty hardware categories (SAN switches like SN3600B, fabric interconnect modules like SY100Gb, and tape libraries like MSL) do not contain server compute components (CPU, Memory, Power). Synergy compute blades (SY480 Gen12) require CPU and Memory, but Power supplies are governed at the Synergy 12000 enclosure frame level. Freshness guards must evaluate compliance using a three-tier domain discriminator rather than enforcing server categories on all products (INV-158).'
+  },
+  {
+    deltaId: 'LEARN_UNIVERSAL_ACCESSORY_SCOPE_ISOLATION_20261012',
+    ruleType: 'WORKFLOW_SCOPE_ISOLATION_ADVISORY', affectedSku: 'P36877-B21',
+    rawMessage: 'Passive accessories such as DC lug terminal kits (P36877-B21), power cords, and rail kits are architecture-invariant and span multiple product generations. They must be registered in APPROVED_UNIVERSAL_POLICY_SKUS in product_scope.js to prevent false-positive cross-generation isolation quarantines by the drift engine (INV-159).'
+  },
+  {
+    deltaId: 'LEARN_WEBLOGIC_EXPAND_SECTIONS_COST_CAPTURE_20261012',
+    ruleType: 'WORKFLOW_DOM_EXTRACTION_ADVISORY',
+    rawMessage: 'WebLogic OCA table expansion in cdp.js must explicitly toggle show_cost alongside show_price and trigger change events on all discovered showmore inputs. Omitting show_cost prevents cost column rendering, leaving tabular price-breakdown structures incomplete (INV-161).'
   }
 ];
+

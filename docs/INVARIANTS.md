@@ -825,6 +825,29 @@ To ensure that future AI agents (Antigravity, Codex, Claude, or subagents) never
   - When credentials are stale, expired, or missing, the system emits the non-interactive recovery command: `nlm login --force --storage file`.
   - Passing `--storage file` is mandatory to bypass the interactive terminal prompt (`Protect the saved login in OS keystore? [y/N]`), storing tokens directly to `~/.notebooklm-mcp-cli/profiles/default/credentials.json`.
   - Passing `--force` guarantees that stale or conflicting session cache is replaced without manual terminal confirmation.
+
+- **INV-158: Three-Tier Chassis Domain Categorization in Catalog Freshness Guard**:
+  - `catalog_freshness_guard.js` enforces a strict three-tier classification:
+    1. `isNonServerOrSpecialty` (`msl`, `alletra`, `nimble`, `storeever`, `san`, `switch`, `sn\d`, `sy100gb`): SAN switches, fabric interconnect modules, and tape libraries must NOT enforce server category floors (CPU, Memory, Power).
+    2. `isSynergyCompute` (`sy\d` compute blades like SY480 Gen12): Requires CPU and Memory categories, but Power supply floors are exempted because power is supplied at the shared enclosure frame level (Synergy 12000 frame).
+    3. Standard Rack Server (`DL\d+`, `ML\d+`, `Apollo`, `Cray`): Enforces mandatory presence of CPU, Memory, and Power categories.
+
+- **INV-159: Universal Accessory SKU Exemption from Multi-Gen Drift Engine**:
+  - Accessories and passive hardware options that span multiple product generations without architectural mutation (such as DC lug terminal kit `P36877-B21`, standard power cords, rail kits, and universal cable management arms) must be explicitly registered in `APPROVED_UNIVERSAL_POLICY_SKUS` in `product_scope.js`.
+  - Multi-generation drift engines must not flag these cross-generation hardware SKUs as chassis-specific isolation violations.
+
+- **INV-160: Async Handler Boundary and Sandboxed VM Context Integrity**:
+  - Test harnesses and dynamic runners that evaluate extracted pipeline handlers (e.g. `_handleBoqEvaluation` in `route_query.js`) within `vm.runInNewContext` must provide complete CommonJS environment mocks (`module: { exports: {} }, exports: {}`).
+  - Extraction regexes must account for `async` function prefixes (`(?:async\s+)?function <name>`) to prevent syntax boundary truncation and ReferenceErrors during test ingress simulation.
+
+- **INV-161: Lossless Multi-Column WebLogic Scraper Expansion & Cost Column Capture**:
+  - Dynamic DOM section expansion in `cdp.js:expandSections` must systematically discover and trigger change events on `show_cost` alongside `show_price`, `show_extra_columns`, `show_dates`, and `show_obsolete_date`.
+  - Both native and jQuery `change` events must be dispatched on all discovered `showmore` inputs to guarantee that both List Price and Cost Price columns are rendered in the DOM before tabular extraction occurs.
+
+- **INV-162: Single-Quote Pre-Flight Audit vs Two-Baseline Comparison Delineation**:
+  - When evaluating a vendor quote or customer tender lacking a second baseline document, the evaluation pipeline must route as `SINGLE_FILE_AUDIT` (`isTwoBaselineComparison: false`).
+  - In this mode, missing-item counts and quantity-mismatch metrics must be reported as `N/A` rather than falsely classifying non-requested catalog items as discrepancies (INV-130 alignment).
+
 - **INV-163: Prompt Boundary & Tier-0 Candidate Isolation**:
   - External customer BOQ items, descriptions, and user notes injected into agentic guardrails must be enclosed in structural XML/markdown delimiter tags (`<untrusted_candidate_items>`) with explicit system directives declaring them as untrusted passive data inputs.
   - LLMs must be explicitly forbidden from interpreting strings within candidate items as system overrides or execution commands.

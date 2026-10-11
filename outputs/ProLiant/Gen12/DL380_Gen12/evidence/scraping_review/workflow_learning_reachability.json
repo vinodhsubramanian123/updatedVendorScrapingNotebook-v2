@@ -1,5 +1,5 @@
 {
-  "recordedAt": "2026-10-01T06:11:41.440Z",
+  "recordedAt": "2026-10-11T19:42:09.517Z",
   "results": [
     {
       "deltaId": "LEARN_DL380_GEN12_H200_OBSERVED_STATES_20261001",
@@ -12,7 +12,7 @@
         "targetSku": "",
         "scopeTaxonomy": "CHASSIS_SPECIFIC",
         "simulationResult": null,
-        "verifiedAt": "2026-10-01T06:11:41.372Z"
+        "verifiedAt": "2026-10-11T19:42:09.353Z"
       }
     },
     {
@@ -26,7 +26,7 @@
         "targetSku": "",
         "scopeTaxonomy": "CHASSIS_SPECIFIC",
         "simulationResult": null,
-        "verifiedAt": "2026-10-01T06:11:41.408Z"
+        "verifiedAt": "2026-10-11T19:42:09.387Z"
       }
     },
     {
@@ -40,7 +40,7 @@
         "targetSku": "",
         "scopeTaxonomy": "CHASSIS_SPECIFIC",
         "simulationResult": null,
-        "verifiedAt": "2026-10-01T06:11:41.423Z"
+        "verifiedAt": "2026-10-11T19:42:09.414Z"
       }
     },
     {
@@ -54,7 +54,49 @@
         "targetSku": "",
         "scopeTaxonomy": "CHASSIS_SPECIFIC",
         "simulationResult": null,
-        "verifiedAt": "2026-10-01T06:11:41.440Z"
+        "verifiedAt": "2026-10-11T19:42:09.435Z"
+      }
+    },
+    {
+      "deltaId": "LEARN_CHASSIS_THREE_TIER_DOMAIN_CLASSIFICATION_20261012",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_CHASSIS_THREE_TIER_DOMAIN_CLASSIFICATION_20261012",
+        "ruleType": "WORKFLOW_CHASSIS_CLASSIFICATION_ADVISORY",
+        "affectedSku": "",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-10-11T19:42:09.463Z"
+      }
+    },
+    {
+      "deltaId": "LEARN_UNIVERSAL_ACCESSORY_SCOPE_ISOLATION_20261012",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_UNIVERSAL_ACCESSORY_SCOPE_ISOLATION_20261012",
+        "ruleType": "WORKFLOW_SCOPE_ISOLATION_ADVISORY",
+        "affectedSku": "P36877-B21",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-10-11T19:42:09.490Z"
+      }
+    },
+    {
+      "deltaId": "LEARN_WEBLOGIC_EXPAND_SECTIONS_COST_CAPTURE_20261012",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_WEBLOGIC_EXPAND_SECTIONS_COST_CAPTURE_20261012",
+        "ruleType": "WORKFLOW_DOM_EXTRACTION_ADVISORY",
+        "affectedSku": "",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-10-11T19:42:09.517Z"
       }
     }
   ],
