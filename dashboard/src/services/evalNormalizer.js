@@ -201,6 +201,10 @@ export function normalizeEvalResult(payload) {
     ...extractProvenanceAndTrace(data, inner),
     // RAG fields — read directly from evaluation result if already synthesized
     ragAnswer: inner.ragAnswer ?? data.ragAnswer ?? null,
-    ragData: inner.ragResult ?? data.ragResult ?? null
+    ragData: inner.ragResult ?? data.ragResult ?? null,
+    // Architectural Narrative & Delivery Gate (INV-126 & INV-128)
+    customerDisposition: inner.customerDisposition ?? data.customerDisposition ?? null,
+    deliveryAuthorization: inner.deliveryAuthorization ?? data.deliveryAuthorization ?? null,
+    evaluationNarrative: inner.evaluationNarrative ?? data.evaluationNarrative ?? null
   };
 }

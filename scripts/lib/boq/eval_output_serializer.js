@@ -766,6 +766,7 @@ function _emitSerializedJsonResponse(ctx, evalResults, graph, budgetOpt, queryPa
   const isMathClean = evalResults.isMathClean === true && (!evalResults.missingDependencies || evalResults.missingDependencies.length === 0);
   const hasUnbuildableDisposition = evalResults.customerDisposition === 'DELIVERY_BLOCKED_UNBUILDABLE' || evalResults.acceptanceGate?.isValid === false;
   const isFatalDeliveryError = evalResults.deliveryError && !hasUnbuildableDisposition;
+  const narrative = generateEvaluationNarrative(evalResults, graph?.chassisInfo || { model: chassisPrefix });
 
   const jsonResult = {
     status: isFatalDeliveryError ? 'ERROR' : (evalResults.evidenceHealth?.workflowStatus === 'COMPLETE' ? 'SUCCESS' : 'ACTION_REQUIRED'),
@@ -781,6 +782,9 @@ function _emitSerializedJsonResponse(ctx, evalResults, graph, budgetOpt, queryPa
       notebookDegradedMode: ctx.notebookDegradedMode || null,
       deliveryError: evalResults.deliveryError || null,
       deliveryAuthError: evalResults.deliveryAuthError || null,
+      deliveryAuthorization: evalResults.deliveryAuthorization || null,
+      customerDisposition: evalResults.customerDisposition || (hasUnbuildableDisposition ? 'DELIVERY_BLOCKED_UNBUILDABLE' : 'DELIVERY_AUTHORIZED'),
+      evaluationNarrative: narrative,
       tracePayloads,
       outputReportPath: outputPath,
       evidenceLogPath: evalResults.evidenceLogPath || null,
@@ -824,7 +828,8 @@ function _emitSerializedJsonResponse(ctx, evalResults, graph, budgetOpt, queryPa
         totalUnsolicitedCostUsd: evalResults.totalUnsolicitedCostUsd || 0,
         aspectChecks: evalResults.aspectChecks || [],
         stageBreakdown: evalResults.stageBreakdown || {},
-        provenanceTrace
+        provenanceTrace,
+        evaluationNarrative: narrative
       },
       clusterSizing: evalResults.clusterSizing || null,
       chassisDefaults: evalResults.chassisDefaults || [],
