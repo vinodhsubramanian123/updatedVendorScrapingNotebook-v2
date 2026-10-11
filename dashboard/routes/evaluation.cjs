@@ -93,6 +93,7 @@ router.post('/preprocess-boq', asyncHandler(async (req, res) => {
   }
 
   try {
+    const preflightResult = preprocessAndGroupBOQ(inputContent, targetPath || '', { chassisDir, ocrResult });
     let targetDir = HISTORY_DIR;
     if (chassisDir) {
       try {
@@ -316,7 +317,7 @@ router.post('/eval-boq', (req, res) => {
 });
 
 // ── Export Corrected BOQ ──────────────────────────────────────────────────────
-router.post('/export-boq', (req, res) => {
+router.post(['/export-boq', '/export-boq-xlsx'], (req, res) => {
   const { evalResults, chassisId, rankTier, diagnostic } = req.body;
   if (!evalResults) return sendErrorResponse(res, 400, 'evalResults payload is required', { source: 'EVALUATION_ROUTER' });
   const actualEvalResults = evalResults.evalResults || evalResults.data?.evalResults || evalResults;
@@ -349,7 +350,7 @@ router.post('/export-boq', (req, res) => {
     fs.writeFileSync(path.join(historyExportsDir, `${timestamp}-${tier}.json`), JSON.stringify(metadata, null, 2));
   }
   try { telemetryLib.recordExportTelemetry(metadata); } catch (_) {}
-  res.json({ message: `Rank ${tier} corrected BOQ Excel exported`, filename: exportFilename, downloadPath: metadata.downloadPath, exportedAt: metadata.exportedAt });
+  res.json({ success: true, message: `Rank ${tier} corrected BOQ Excel exported`, filename: exportFilename, downloadPath: metadata.downloadPath, exportedAt: metadata.exportedAt });
 });
 
 // ── Audit Catalog ─────────────────────────────────────────────────────────────

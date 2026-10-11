@@ -23,7 +23,23 @@ export default function MacroOrchestratorFlow({
   onOpenTool, // function(toolName) to open BoqUploader, Matrix, etc.
   onNavigateTab
 }) {
-  const [viewMode, setViewMode] = useState('simulator'); // 'simulator', 'stepper', 'macro', 'both'
+  const [viewMode, setViewModeState] = useState(() => {
+    try {
+      return localStorage.getItem('dashboard_macro_view_mode') || 'macro';
+    } catch {
+      return 'macro';
+    }
+  });
+
+  const setViewMode = (mode) => {
+    setViewModeState(mode);
+    try {
+      localStorage.setItem('dashboard_macro_view_mode', mode);
+    } catch {
+      // ignore storage access errors
+    }
+  };
+
   const [showLogConsole, setShowLogConsole] = useState(false);
   const consoleEndRef = useRef(null);
 
@@ -278,6 +294,7 @@ export default function MacroOrchestratorFlow({
                  <button
                    onClick={() => onOpenTool('reconciliation')}
                    disabled={!hasEval || isTaskRunning}
+                   title={!hasEval ? 'Stage 1 candidate BOQ evaluation must be completed first to establish a baseline BOM.' : 'Reconcile Partner Quote against baseline BOM'}
                    className={`py-2 px-5 rounded-xl text-xs font-bold flex items-center gap-2 shadow-sm transition-transform active:scale-95 ${
                      hasEval 
                        ? 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald-600/20' 
@@ -286,6 +303,11 @@ export default function MacroOrchestratorFlow({
                  >
                    <Repeat className="w-4 h-4" /> Reconcile Partner Quote
                  </button>
+                 {!hasEval && (
+                   <span className="text-[11px] text-slate-400 italic">
+                     (Requires Stage 1 BOM Baseline)
+                   </span>
+                 )}
                  
                  <button
                    onClick={onTriggerSyncKnowledge}

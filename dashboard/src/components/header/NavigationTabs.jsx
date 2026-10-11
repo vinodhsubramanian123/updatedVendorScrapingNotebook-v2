@@ -1,12 +1,13 @@
 import React from 'react';
 import { 
-  LayoutDashboard, Table, FileSpreadsheet, Activity, Terminal, MessageSquare, Settings, ShieldAlert
+  LayoutDashboard, Table, FileSpreadsheet, Activity, Terminal, MessageSquare, Settings, ShieldAlert, FileCode
 } from 'lucide-react';
 
 const TABS = [
   { id: 'orchestrator', label: 'BOQ Evaluator', icon: LayoutDashboard },
   { id: 'matrix', label: 'Resolution Matrix', icon: Table },
   { id: 'catalog', label: 'Catalog Explorer', icon: FileSpreadsheet },
+  { id: 'artifacts', label: 'Artifacts & Audit', icon: FileCode },
   { id: 'telemetry', label: 'Agentic Insights', icon: Activity },
   { id: 'pipeline', label: 'Pipeline Ops', icon: Terminal }
 ];

@@ -433,7 +433,7 @@ export default function App() {
 
         {activeTab === 'artifacts' && (
           <div key="artifacts" className="animate-tab-enter">
-            <ArtifactInspector currentCatalog={currentCatObj} onAuditCatalog={() => {}} />
+            <ArtifactInspector currentCatalog={currentCatObj} />
           </div>
         )}
 

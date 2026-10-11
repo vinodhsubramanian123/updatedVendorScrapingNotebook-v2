@@ -89,7 +89,8 @@ async function runTests() {
   // -------------------------------------------------------------
   console.log(`\n🔹 Test Group 2: Process Error & Mutex Immediate Release`);
   
-  // Simulate child process error event
+  // Simulate child process error event (in Node.js spawn failure, proc.pid is undefined)
+  mockProc.pid = undefined;
   mockProc.emit('error', new Error('Simulated spawn failure'));
 
   assert(isTaskRunning() === false, 'isTaskRunning() immediately resets to false on process error');

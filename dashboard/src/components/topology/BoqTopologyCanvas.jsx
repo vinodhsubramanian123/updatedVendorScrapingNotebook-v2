@@ -1,5 +1,5 @@
 import React, { useState, useRef, useMemo, useCallback } from 'react';
-import { ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
+import { ZoomIn, ZoomOut, RotateCcw, Layers } from 'lucide-react';
 import { SUBSYSTEM_DEFS } from '../../services/topologyGraphBuilder';
 
 const HUB_POSITIONS = {
@@ -379,6 +379,21 @@ export default function BoqTopologyCanvas({
           })}
         </svg>
       </div>
+
+      {/* Empty State Overlay */}
+      {(!graphData || !graphData.rootNode || Object.keys(layout.nodeCoords).length === 0) && (
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10 p-4">
+          <div className="bg-slate-900/95 border border-slate-700/80 rounded-2xl p-6 sm:p-8 max-w-md text-center shadow-2xl backdrop-blur-md pointer-events-auto animate-fade-in">
+            <div className="w-14 h-14 mx-auto mb-4 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400">
+              <Layers className="w-7 h-7" />
+            </div>
+            <h3 className="text-base font-bold text-slate-100 mb-2">No Hardware Topology Loaded</h3>
+            <p className="text-xs text-slate-400 leading-relaxed mb-1">
+              Evaluate a candidate BOQ in Stage 1 or load a sample configuration to visualize its 23-node subsystem tree and physical bus links.
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Legend Footer */}
       <div className="absolute bottom-3 left-4 z-10 flex items-center gap-4 bg-slate-900/90 backdrop-blur-md border border-slate-800 rounded-lg px-3 py-1.5 text-[11px] text-slate-300">
