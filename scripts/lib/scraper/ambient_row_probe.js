@@ -70,15 +70,35 @@ async function selectAmbientRow(ws, sendCommand, row, options = {}) {
 async function probeAmbientRows(ws, sendCommand, thresholds, captureState = null, options = {}) {
   const baseline = await readAmbientRows(ws, sendCommand);
   if (!baseline.ambient.length) return null; // unsupported adapter, not an empty successful sweep
-  const selected = baseline.ambient.filter(row => row.selected);
-  if (selected.length !== 1) throw new Error('AMBIENT_BASELINE_AMBIGUOUS');
+
+  // GAP-11 FIX: On portal first-load the ambient section may have 0 selected rows because
+  // the portal hasn't applied its default selection yet. Poll up to 3× before giving up.
+  // Multiple selections (>1) are a genuine configuration error and still throw immediately.
+  let ambientState = baseline;
+  let selected = ambientState.ambient.filter(row => row.selected);
+  if (selected.length === 0) {
+    const MAX_RETRIES = 3;
+    const RETRY_DELAY_MS = 1000;
+    for (let attempt = 0; attempt < MAX_RETRIES && selected.length === 0; attempt++) {
+      await new Promise(resolve => setTimeout(resolve, RETRY_DELAY_MS));
+      ambientState = await readAmbientRows(ws, sendCommand);
+      selected = ambientState.ambient.filter(row => row.selected);
+    }
+  }
+  if (selected.length !== 1) {
+    throw new Error(selected.length === 0
+      ? 'AMBIENT_BASELINE_AMBIGUOUS: portal did not select a default ambient row after 3 retries — portal may not have finished loading'
+      : `AMBIENT_BASELINE_AMBIGUOUS: ${selected.length} ambient rows are simultaneously selected — portal state is inconsistent`);
+  }
   const original = selected[0];
   const results = [];
-  const defaultAvailable = new Set(baseline.options.filter(row => !row.unavailable).map(row => row.sku));
+  const defaultAvailable = new Set(ambientState.options.filter(row => !row.unavailable).map(row => row.sku));
+
   try {
     for (const temperature of thresholds) {
-      const row = baseline.ambient.find(item => item.temperature === temperature);
+      const row = ambientState.ambient.find(item => item.temperature === temperature);
       if (!row || row.unavailable) continue;
+
       const state = await selectAmbientRow(ws, sendCommand, row, options);
       if (!state) continue; // Row was unavailable
       if (captureState) await captureState({ conditionKey: 'ambientTempC', thresholdValue: temperature,

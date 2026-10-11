@@ -111,14 +111,19 @@ test('Step 5 (DOM_EXTRACTION) verification logic', () => {
 });
 
 test('Step 6 (RULES_PARSING) verification logic', () => {
-  const pass = verifyScrapingStep(6, { ctoVariantsCount: 5 });
+  const pass = verifyScrapingStep(6, { ctoVariantsCount: 5, rawTablesCount: 12 });
   assert.equal(pass.valid, true);
   assert.equal(pass.stage, 'RULES_PARSING');
 
-  const fail = verifyScrapingStep(6, { ctoVariantsCount: 0 });
+  const fail = verifyScrapingStep(6, { ctoVariantsCount: 0, rawTablesCount: 12 });
   assert.equal(fail.valid, false);
   assert.equal(fail.failure.assertionId, 'CTO_VARIANTS_IDENTIFIED');
+
+  const failTables = verifyScrapingStep(6, { ctoVariantsCount: 5, rawTablesCount: 0 });
+  assert.equal(failTables.valid, false);
+  assert.equal(failTables.failure.assertionId, 'RAW_TABLES_AVAILABLE');
 });
+
 
 test('Step 7 (CATALOG_GEN) verification logic', () => {
   const pass = verifyScrapingStep(7, { diffAnomalySafe: true, recommendedColumnVerified: true });

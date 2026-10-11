@@ -275,17 +275,43 @@ async function expandSections(ws) {
     expression: `(() => {
       const visible = el => !!el.getClientRects().length && getComputedStyle(el).visibility !== 'hidden';
       const expandAll = Array.from(document.querySelectorAll('a, button, span')).find(el => visible(el) && (el.innerText || '').trim() === 'Expand All');
-      if (expandAll) expandAll.click();
-      else Array.from(document.querySelectorAll('.accordion_header.collapsed, .section_header.collapsed')).filter(visible).forEach(el => el.click());
-      for (const id of ['show_extra_columns', 'show_dates', 'show_obsolete_date', 'show_price']) {
+      if (expandAll) {
+        expandAll.click();
+      } else {
+        const accordionSelectors = [
+          '.accordion_header.collapsed',
+          '.section_header.collapsed',
+          '.ui-accordion-header:not(.ui-state-active)',
+          '.expander.collapsed',
+          '.choice_header1.collapsed'
+        ];
+        document.querySelectorAll(accordionSelectors.join(', ')).forEach(el => {
+          if (visible(el)) el.click();
+        });
+      }
+
+      for (const id of ['show_extra_columns', 'show_dates', 'show_obsolete_date', 'show_price', 'show_cost']) {
         const el = document.getElementById(id);
         if (el && visible(el) && !el.classList.contains('active') && !el.checked) el.click();
       }
+
       const rec = document.querySelector('#view_recommended_only, [id*="recommended_only"]');
       if (rec && visible(rec) && rec.checked) rec.click();
-      for (const el of document.querySelectorAll('input[type="checkbox"][id*="showmore"]')) {
+
+      // INV-20: Trigger showmore inputs with both native events and jQuery change dispatch
+      const showmoreInputs = Array.from(document.querySelectorAll('input[type="checkbox"][id*="showmore"], input[id*="showmore"], [id*="show_more"]'));
+      for (const el of showmoreInputs) {
         const label = document.querySelector('label[for="' + el.id + '"]');
-        if (!el.checked && (visible(el) || (label && visible(label)))) el.click();
+        if (!el.checked && (visible(el) || (label && visible(label)))) {
+          el.click();
+          el.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+      }
+
+      if (typeof jQuery !== 'undefined') {
+        try {
+          jQuery('input[id*="showmore"]:not(:checked)').prop('checked', true).trigger('change');
+        } catch (_) {}
       }
       // Expansion must not select hardware modes, service levels, or controls
       // in hidden tabs. Those invoke stale server widgets and mutate the BOM.
@@ -293,6 +319,7 @@ async function expandSections(ws) {
   });
   await sleep(1500);
 }
+
 
 /**
  * Assert DOM expansion using adaptive scroll height thresholds.
@@ -383,7 +410,22 @@ async function waitForDOMPredicate(ws, expression, maxTimeoutMs = 15000, interva
       }, Math.min(intervalMs * 2, 5000));
       const val = evalRes?.result?.value;
       if (val) return val;
-    } catch (_) {}
+    } catch (err) {
+      // GAP-12 FIX: Distinguish fatal session/target errors from transient evaluation failures.
+      // Fatal errors must rethrow immediately; polling them for maxTimeoutMs wastes time and
+      // masks the real root cause (closed tab, dropped WebSocket, etc.).
+      const msg = String(err?.message || '').toLowerCase();
+      const isFatal = msg.includes('target closed') ||
+                      msg.includes('session not found') ||
+                      msg.includes('websocket is not open') ||
+                      msg.includes('websocket closed') ||
+                      msg.includes('connection refused') ||
+                      msg.includes('epipe') ||
+                      msg.includes('econnreset');
+      if (isFatal) throw err; // rethrow immediately — no point polling a dead session
+      // Transient eval errors (e.g. page still loading, temp JS exception) — continue polling
+    }
+
     await sleep(intervalMs);
   }
   return false;
@@ -482,7 +524,13 @@ async function setupNetworkSniffer(ws, options = {}) {
       const bodyRes = await sendCommand(ws, 'Network.getResponseBody', { requestId }, 8000);
       if (!bodyRes?.body) throw new Error('EMPTY_RESPONSE_BODY');
       const body = bodyRes.base64Encoded ? Buffer.from(bodyRes.body, 'base64').toString('utf8') : bodyRes.body;
-      if (Buffer.byteLength(body) > 8 * 1024 * 1024) throw new Error('RESPONSE_TOO_LARGE');
+      const bodyBytes = Buffer.byteLength(body);
+      if (bodyBytes > 8 * 1024 * 1024) {
+        // GAP-13 FIX: Emit a warning so operators know a large rule payload was dropped.
+        // Previously this was silently added to the failures array with no console output.
+        console.warn(`  ⚠️  [CDP_NETWORK_SNIFFER] Response too large (${(bodyBytes / 1024 / 1024).toFixed(1)} MB) — rule payload from ${response.url.split(/[?#]/)[0]} discarded. Consider streaming if this endpoint contains critical constraint data.`);
+        throw new Error('RESPONSE_TOO_LARGE');
+      }
       const parsed = JSON.parse(body);
       const url = response.url.split(/[?#]/)[0];
       capturedResponses.push({ url, status: response.status, timestamp: new Date().toISOString() });

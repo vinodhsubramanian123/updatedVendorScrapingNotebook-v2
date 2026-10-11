@@ -58,8 +58,10 @@ async function auditAndPromoteStaging({
   treeInfo,
   pdfDestPath,
   pipelineStart,
-  stepTelemetry = {}
+  stepTelemetry = {},
+  conditionalSkusCount = 0
 }) {
+
   let captureReceipt;
   // STEP 8: Automated Post-Flight Audit Verification
   console.log('\n--- STEP 8: Staging Post-Flight Quality Audit ---');
@@ -211,22 +213,48 @@ async function auditAndPromoteStaging({
     stage: 'REGISTRY_SYNC', percent: 98, category: meta.cleanName
   });
 
+  // GAP-09 FIX: Run immutability check BEFORE cleaning up staging, so if it fails
+  // the staging dir still exists for diagnosis and the live workspace can be quarantined.
   const promotedCatalog = JSON.parse(fs.readFileSync(liveCatalogJson, 'utf8'));
   if (promotedCatalog.metadata?.totalUniqueSKUs !== hwSkuCount) {
-    throw new Error(`Step 10 immutability check failed: promoted catalog changed from ${hwSkuCount} to ${promotedCatalog.metadata?.totalUniqueSKUs}.`);
+    const quarantineDir = path.join(OUTPUTS_ROOT, 'temp', `quarantine_immutability_${meta.cleanName}_${Date.now()}`);
+    console.error(`\n❌ Step 10 immutability check failed: promoted catalog changed from ${hwSkuCount} to ${promotedCatalog.metadata?.totalUniqueSKUs}.`);
+    console.error(`   Staging dir preserved for diagnosis at: ${outputDir}`);
+    try { fs.renameSync(liveOutputDir, quarantineDir); } catch (_) {}
+    throw new Error(`Step 10 immutability check failed: promoted catalog SKU count changed from ${hwSkuCount} to ${promotedCatalog.metadata?.totalUniqueSKUs}. Live dir quarantined to ${path.basename(quarantineDir)}.`);
   }
 
-  // Clean up staging folder
+  // Clean up staging folder only after immutability check passes
   try { if (fs.existsSync(outputDir)) fs.rmSync(outputDir, { recursive: true, force: true }); } catch (_) {}
 
-  if (!postFlowSyncResult?.success || postFlowSyncResult.syncStatus !== 'CLOUD_VERIFIED') {
-    throw new Error(`Local catalog was promoted safely, but mandatory NotebookLM synchronization is pending: ${postFlowSyncResult?.error || postFlowSyncResult?.syncStatus || 'unknown cloud failure'}`);
+  // GAP-08 FIX: NLM sync failure is a PARTIAL_SUCCESS (local catalog is promoted and safe).
+  // Cloud sync can be retried independently with: npm run sync:nlm <chassis>
+  // Never crash or report ERROR when only the cloud grounding step is pending.
+  const nlmSyncPending = !postFlowSyncResult?.success || postFlowSyncResult.syncStatus !== 'CLOUD_VERIFIED';
+  if (nlmSyncPending) {
+    const syncReason = postFlowSyncResult?.error || postFlowSyncResult?.syncStatus || 'unknown cloud state';
+    console.warn(`\n⚠️  [PARTIAL_SUCCESS] Local catalog promoted successfully to live workspace.`);
+    console.warn(`   NotebookLM cloud sync pending: ${syncReason}`);
+    console.warn(`   Retry cloud sync with: npm run sync:nlm -- --chassis ${meta.cleanName}`);
+    console.warn(`   Local catalog, Excel workbook, and BOQ engine are fully operational.\n`);
   }
 
   const durationSec = ((Date.now() - pipelineStart) / 1000).toFixed(1);
 
   const step10Result = verifyScrapingStep(10, { registryUpdated: true });
   stepTelemetry[10] = step10Result;
+
+  // GAP-07 FIX: Read conditionalSkusCount from passed parameter or fallback to promoted raw_data
+  let finalConditionalSkusCount = conditionalSkusCount || 0;
+  if (!finalConditionalSkusCount) {
+    try {
+      const rawJsonForRefl = path.join(liveOutputDir, 'raw_data', 'conditional_skus.json');
+      if (fs.existsSync(rawJsonForRefl)) {
+        finalConditionalSkusCount = JSON.parse(fs.readFileSync(rawJsonForRefl, 'utf8')).totalConditionalSkus || 0;
+      }
+    } catch (_) {}
+  }
+
 
   selfReflectOnScrapingSession({
     product: meta.cleanName,
@@ -236,16 +264,23 @@ async function auditAndPromoteStaging({
     totalSkusScraped: totalSkuCount,
     hwSkuCount,
     serviceSkuCount,
-    cloudSyncState: postFlowSyncResult?.syncStatus || 'CLOUD_VERIFIED',
+    conditionalSkusCount: finalConditionalSkusCount,
+    cloudSyncState: nlmSyncPending ? 'CLOUD_SYNC_PENDING' : (postFlowSyncResult?.syncStatus || 'CLOUD_VERIFIED'),
     stepTelemetry
   });
 
-  emitProgress(10, 10, 'Scrape Pipeline & Knowledge Sync Complete', 'completed', `Completed in ${durationSec}s`, {
-    stage: 'REGISTRY_SYNC', percent: 100, category: meta.cleanName
+  // GAP-08: emit PARTIAL_SUCCESS when NLM sync is pending, not SUCCESS
+  const pipelineStatus = nlmSyncPending ? 'PARTIAL_SUCCESS' : 'SUCCESS';
+  const completionLabel = nlmSyncPending
+    ? `Scrape Pipeline Complete (NLM Sync Pending)`
+    : `Scrape Pipeline & Knowledge Sync Complete`;
+  emitProgress(10, 10, completionLabel, 'completed', `Completed in ${durationSec}s`, {
+    stage: 'REGISTRY_SYNC', percent: 100, category: meta.cleanName,
+    nlmSyncPending
   });
 
   if (JSON_MODE) {
-    emitResult('SUCCESS', {
+    emitResult(pipelineStatus, {
       solutionName: treeInfo.solutionName || 'OCA Solution',
       family:       meta.family,
       gen:          meta.gen,
@@ -257,13 +292,23 @@ async function auditAndPromoteStaging({
       tablesCount:  totalSkuCount,
       hwSkuCount,
       serviceSkuCount,
+      conditionalSkusCount: finalConditionalSkusCount,
+      nlmSyncPending,
       durationSec
     });
+
   } else {
     console.log('\n================================================================');
-    console.log(`🎉 PIPELINE COMPLETED SUCCESSFULLY in ${durationSec}s — Live Workspace Updated:`);
-    console.log(`   ${liveOutputDir}`);
-    console.log(`   HW SKUs: ${hwSkuCount} | Service SKUs: ${serviceSkuCount} | Total: ${totalSkuCount}`);
+    if (nlmSyncPending) {
+      console.log(`✅ PIPELINE COMPLETED (LOCAL) in ${durationSec}s — Live Workspace Updated:`);
+      console.log(`   ${liveOutputDir}`);
+      console.log(`   HW SKUs: ${hwSkuCount} | Service SKUs: ${serviceSkuCount} | Total: ${totalSkuCount}`);
+      console.log(`   ⚠️  NotebookLM sync pending — retry: npm run sync:nlm -- --chassis ${meta.cleanName}`);
+    } else {
+      console.log(`🎉 PIPELINE COMPLETED SUCCESSFULLY in ${durationSec}s — Live Workspace Updated:`);
+      console.log(`   ${liveOutputDir}`);
+      console.log(`   HW SKUs: ${hwSkuCount} | Service SKUs: ${serviceSkuCount} | Total: ${totalSkuCount}`);
+    }
     console.log('================================================================\n');
   }
 }
@@ -490,7 +535,55 @@ async function sweepUnavailableDomRules(ws, sendCommand) {
   }
 }
 
+async function navigateProductNode(ws, targetHint, options = {}) {
+
+  const { isComponentsTab = false, enterMenu = false } = options;
+  await sendCommand(ws, 'Runtime.evaluate', {
+    expression: `(() => {
+      const target = ${JSON.stringify(targetHint)};
+      const allEls = Array.from(document.querySelectorAll('a, button, span, tr, td, li, .fancytree-title'));
+      const matchingEls = allEls.filter(e => {
+        const t = (e.innerText || '').trim().toLowerCase();
+        return t.includes(target) && !t.includes('messages') && !t.includes('export');
+      });
+      if (matchingEls.length > 0) {
+        matchingEls[0].click();
+        const evt = new MouseEvent('dblclick', { bubbles: true, cancelable: true, view: window });
+        matchingEls[0].dispatchEvent(evt);
+      }
+
+      if (${Boolean(isComponentsTab)}) {
+        const compTab = Array.from(document.querySelectorAll('a, button, span, li, .tab_header'))
+          .find(a => (a.innerText || '').trim() === 'Components');
+        if (compTab) compTab.click();
+      }
+
+      if (${Boolean(enterMenu)}) {
+        const menuTabs = Array.from(document.querySelectorAll('a, button, span, li, .tab_header'))
+          .filter(el => (el.innerText || '').trim() === 'Menu');
+        if (menuTabs.length > 0) menuTabs[0].click();
+
+        if (typeof jQuery !== 'undefined') {
+          const titleSpan = jQuery('.fancytree-title, span[id*="node_title"]').filter((i, el) => {
+            const t = jQuery(el).text().toLowerCase();
+            if (target && t.includes(target)) return true;
+            return t.includes('gen11') || t.includes('gen12') || t.includes('#1');
+          });
+          if (titleSpan.length > 0) titleSpan.first().trigger('click').trigger('dblclick');
+          const lastVal = jQuery('#selectNavTreeOption option').last().val();
+          if (lastVal) jQuery('#selectNavTreeOption').val(lastVal).trigger('change');
+          jQuery('a[href*="extended_overview_menu"]').click();
+        }
+        const extMenuTab = document.querySelector('a[href*="extended_overview_menu"], #ui-id-24');
+        if (extMenuTab) extMenuTab.click();
+      }
+    })()`,
+    returnByValue: true
+  });
+}
+
 async function main() {
+
   const pipelineStart = Date.now();
   const logger = require('../lib/system/pipeline_logger.js');
 
@@ -526,7 +619,7 @@ async function main() {
   } catch (wsErr) {
     console.warn(`⚠️ [RECOVERY] Failed to connect to OCA target WebSocket (${wsErr.message}). Initiating Tab 1 Self-Healing Recovery...`);
     const { recoverAndLaunchFreshOCA } = require('../lib/scraper/navigate_oca.js');
-    const recovery = await recoverAndLaunchFreshOCA(navQuery, { forceDiscovery: true });
+    const recovery = await recoverAndLaunchFreshOCA(navQuery, { forceDiscovery: true, forceFreshSession: true });
     chassisDiscovery = recovery.chassisDiscovery || chassisDiscovery;
     pageTarget = await getOCATarget();
     ws = await connectWS(pageTarget.webSocketDebuggerUrl);
@@ -550,6 +643,8 @@ async function main() {
   let totalLen = 0;
   let treeInfo = {};
   let networkSniffer = null;
+  let conditionalSkus = [];
+
 
   try {
     // Enable automated JS dialog & WebLogic modal prompt handler
@@ -585,27 +680,7 @@ async function main() {
     console.log(`Current Page State: hasMenu=${alreadyAtMenu}, tableCount=${currentTables}`);
 
     if (!alreadyAtMenu) {
-      await sendCommand(ws, 'Runtime.evaluate', {
-        expression: `(() => {
-          const target = ${JSON.stringify(targetHint)};
-          const allEls = Array.from(document.querySelectorAll('a, button, span, tr, td, li, .fancytree-title'));
-          const matchingEls = allEls.filter(e => {
-            const t = (e.innerText || '').trim().toLowerCase();
-            return t.includes(target) && !t.includes('messages') && !t.includes('export');
-          });
-          if (matchingEls.length > 0) {
-            matchingEls[0].click();
-            const evt = new MouseEvent('dblclick', { bubbles: true, cancelable: true, view: window });
-            matchingEls[0].dispatchEvent(evt);
-          }
-
-          const compTab = Array.from(document.querySelectorAll('a, button, span, li, .tab_header'))
-            .find(a => (a.innerText || '').trim() === 'Components');
-          if (compTab) compTab.click();
-        })()`,
-        returnByValue: true
-      });
-
+      await navigateProductNode(ws, targetHint, { isComponentsTab: true });
       await sleep(2500);
     }
 
@@ -637,44 +712,10 @@ async function main() {
     });
 
     if (!alreadyAtMenu) {
-      await sendCommand(ws, 'Runtime.evaluate', {
-        expression: `(() => {
-          const target = ${JSON.stringify(targetHint)};
-          const allEls = Array.from(document.querySelectorAll('a, button, span, tr, td, li, .fancytree-title'));
-          const matchingEls = allEls.filter(e => {
-            const t = (e.innerText || '').trim().toLowerCase();
-            return t.includes(target) && !t.includes('messages') && !t.includes('export');
-          });
-          if (matchingEls.length > 0) {
-            matchingEls[0].click();
-            const evt = new MouseEvent('dblclick', { bubbles: true, cancelable: true, view: window });
-            matchingEls[0].dispatchEvent(evt);
-          }
-
-          // Try clicking Menu tab in OCA configuration view
-          const menuTabs = Array.from(document.querySelectorAll('a, button, span, li, .tab_header'))
-            .filter(el => (el.innerText || '').trim() === 'Menu');
-          if (menuTabs.length > 0) menuTabs[0].click();
-
-          if (typeof jQuery !== 'undefined') {
-            const titleSpan = jQuery('.fancytree-title, span[id*="node_title"]').filter((i, el) => {
-              const t = jQuery(el).text().toLowerCase();
-              if (target && t.includes(target)) return true;
-              return t.includes('gen11') || t.includes('gen12') || t.includes('#1');
-            });
-            if (titleSpan.length > 0) titleSpan.first().trigger('click').trigger('dblclick');
-            const lastVal = jQuery('#selectNavTreeOption option').last().val();
-            if (lastVal) jQuery('#selectNavTreeOption').val(lastVal).trigger('change');
-            jQuery('a[href*="extended_overview_menu"]').click();
-          }
-          const extMenuTab = document.querySelector('a[href*="extended_overview_menu"], #ui-id-24');
-          if (extMenuTab) extMenuTab.click();
-        })()`,
-        returnByValue: true
-      });
-
+      await navigateProductNode(ws, targetHint, { enterMenu: true });
       await sleep(4000);
     }
+
 
     await sleep(4000);
 
@@ -821,8 +862,9 @@ async function main() {
 
     // ── Conditional SKU Sweep: Probe ambient-temperature gated SKUs ──
     console.log('\nRunning conditional SKU visibility sweep (ambient temperature gates)...');
-    let conditionalSkus = [];
+    conditionalSkus = [];
     try {
+
       const hidden = await extractHiddenElements(ws, sendCommand);
       const seenTables = new Set(tables.map(table => JSON.stringify(table)));
       conditionalSkus = await probeConditionalSkuVisibility(ws, sendCommand, undefined, async () => {
@@ -1035,13 +1077,26 @@ async function main() {
     stage: 'RULES_PARSING', percent: 75, category: meta.cleanName
   });
 
-  const step6Result = verifyScrapingStep(6, { ctoVariantsCount: chassisDiscovery?.candidates?.length || 0 });
-  stepTelemetry[6] = step6Result;
-  if (!step6Result.valid) throw new AtomicStepAnomalyError(6, step6Result.stage, step6Result.failure.assertionId, step6Result.failure.message);
-
   catalogJson = path.join(outputDir, `${meta.cleanName}_Catalog.json`);
   catalogXlsx = path.join(outputDir, `${meta.cleanName}_OCA_Catalog.xlsx`);
   const rawJsonPath = path.join(outputDir, 'raw_data', 'oca_raw_data_full.json');
+
+  // GAP-05 FIX: Assert raw data JSON exists and has non-zero tables before invoking parser
+  if (!fs.existsSync(rawJsonPath)) {
+    throw new Error(`Step 6 failure: raw data JSON file not found at ${rawJsonPath}`);
+  }
+  const rawDataForStep6 = JSON.parse(fs.readFileSync(rawJsonPath, 'utf8'));
+  const rawTablesCount = rawDataForStep6?.tables?.length || 0;
+  if (rawTablesCount === 0) {
+    throw new Error(`Step 6 failure: raw data contains 0 tables; aborting catalog generation.`);
+  }
+
+  const step6Result = verifyScrapingStep(6, {
+    ctoVariantsCount: chassisDiscovery?.candidates?.length || 0,
+    rawTablesCount
+  });
+  stepTelemetry[6] = step6Result;
+  if (!step6Result.valid) throw new AtomicStepAnomalyError(6, step6Result.stage, step6Result.failure.assertionId, step6Result.failure.message);
 
   // ── STAGING SEED: Copy ALL critical live files into staging BEFORE any scrape ──
   const liveOutputDir = path.join(OUTPUTS_ROOT, meta.family, meta.gen, meta.cleanName);
@@ -1052,9 +1107,14 @@ async function main() {
     stage: 'CATALOG_GEN', percent: 85, category: meta.cleanName
   });
 
+  // GAP-06 FIX: Pass --force-large-diff down to build_catalog.js if specified
+  const forceLargeDiff = process.argv.includes('--force-large-diff') || process.env.FORCE_LARGE_CATALOG_DIFF === '1';
+  const buildCatalogArgs = [path.join(PROJECT_ROOT, 'scripts', 'catalogs', 'build_catalog.js'), rawJsonPath, catalogJson];
+  if (forceLargeDiff) buildCatalogArgs.push('--force-large-diff');
+
   execFileSync(
     process.execPath,
-    [path.join(PROJECT_ROOT, 'scripts', 'catalogs', 'build_catalog.js'), rawJsonPath, catalogJson],
+    buildCatalogArgs,
     { stdio: 'inherit', cwd: PROJECT_ROOT }
   );
   execFileSync(
@@ -1072,14 +1132,20 @@ async function main() {
   const currentSkus = new Set(currentRows.map(row => row.sku || row['Product #']).filter(Boolean));
   const previousSkus = new Set(activeRows(previousCatalog).map(row => row.sku || row['Product #']).filter(Boolean));
   const removedCount = [...previousSkus].filter(sku => !currentSkus.has(sku)).length;
+
+  // GAP-05 & GAP-06 FIX: First-run catalogs require currentSkus >= 1; forceLargeDiff overrides ratio
+  const isFirstRun = !previousSkus.size;
+  const isDiffAnomalySafe = forceLargeDiff || (currentSkus.size > 0 && (isFirstRun ? currentSkus.size >= 1 : removedCount / previousSkus.size <= 0.25));
+
   const step7Result = verifyScrapingStep(7, {
-    diffAnomalySafe: currentSkus.size > 0 && (!previousSkus.size || removedCount / previousSkus.size <= 0.25),
+    diffAnomalySafe: isDiffAnomalySafe,
     recommendedColumnVerified: currentRows.length > 0 && currentRows.every(row => ['Yes', 'No', 'Unknown'].includes(row['HPE Recommended']))
   });
   stepTelemetry[7] = step7Result;
   if (!step7Result.valid) {
     throw new AtomicStepAnomalyError(7, step7Result.stage, step7Result.failure.assertionId, step7Result.failure.message, step7Result.failure);
   }
+
 
   // STEPS 8, 9, 10: Staging Audit, Live Promotion, and Registry Sync
   await auditAndPromoteStaging({
@@ -1093,8 +1159,10 @@ async function main() {
     treeInfo,
     pdfDestPath,
     pipelineStart,
-    stepTelemetry
+    stepTelemetry,
+    conditionalSkusCount: (conditionalSkus || []).length
   });
+
 
 }
 

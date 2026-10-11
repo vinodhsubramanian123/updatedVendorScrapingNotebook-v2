@@ -24,12 +24,13 @@ function parseObservedUnitPrice(rawValue) {
   const str = rawValue.trim();
   if (str === '') return null;
   // Negative inputs are not observed prices
-  if (/^[\s\-(]*-|\(\$?\d/.test(str) || /-\s*\$?\d/.test(str)) return null;
+  if (/^[\s\-(]*-|\([\$€£]?\d/.test(str) || /-\s*[\$€£]?\d/.test(str)) return null;
 
-  // Accepted decimal/currency syntax: optional $, digits with optional standard commas (every 3 digits), optional .cents
+  // Accepted decimal/currency syntax: optional $, €, £, USD, EUR, GBP, digits with optional standard commas (every 3 digits), optional .cents
   // Rejects hex (0x10), malformed commas (1,2), strings, NaN, Infinity
-  const match = str.match(/^\$?\s*(\d{1,3}(?:,\d{3})+|\d+)(?:\.(\d+))?$/);
+  const match = str.match(/^(?:[\$€£]|USD|EUR|GBP)?\s*(\d{1,3}(?:,\d{3})+|\d+)(?:\.(\d+))?$/i);
   if (!match) return null;
+
 
   const intPart = match[1].replace(/,/g, '');
   const fracPart = match[2] ? '.' + match[2] : '';

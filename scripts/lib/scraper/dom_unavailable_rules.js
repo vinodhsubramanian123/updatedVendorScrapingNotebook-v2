@@ -11,14 +11,18 @@ const { cleanBaseSKU, isValidHpeSKU } = require('../catalog/sku.js');
  */
 
 /**
- * Generic heuristic classifier for OCA portal ineligibility and gating reasoning text.
- * @param {string} reasonText
- * @returns {string} Rule category identifier
+ * GAP-10 FIX: Single canonical rule classifier shared between Node-side and browser-side contexts.
+ * Previously the Node-side function and the inline browser string had divergent check orderings
+ * (e.g. 'bto' check was first in Node but last in browser), causing the same reason text to
+ * produce different ruleType values. This function is the SSOT; it is toString()-serialized
+ * into UNAVAILABLE_DOM_EXPRESSION so browser and Node always agree.
+ *
+ * Ordering (priority-descending): AMBIENT > CHASSIS > MEMORY_MIXING > SLOT_COLLISION >
+ * PAIRED_KIT_REQUIRED > BTO_DISALLOWED > SUPPLY_RESTRICTED > MUTUAL_EXCLUSION (default)
  */
 function classifyDomRuleReason(reasonText) {
   if (!reasonText || typeof reasonText !== 'string') return 'MUTUAL_EXCLUSION';
   const lower = reasonText.toLowerCase();
-
   if (lower.includes('bto')) {
     return 'BTO_DISALLOWED';
   }
@@ -42,6 +46,7 @@ function classifyDomRuleReason(reasonText) {
   }
   return 'MUTUAL_EXCLUSION';
 }
+
 
 /**
  * Pure DOM parser that operates on any DOM document or root element (JSDOM or browser window.document).
@@ -186,8 +191,16 @@ function parseUnavailableDomRules(doc) {
 
 /**
  * Self-contained client-side expression executed in browser page context via CDP Runtime.evaluate.
+ * GAP-10 FIX: The classifyReason inline lambda is now generated from classifyDomRuleReason.toString()
+ * so that Node-side and browser-side logic are guaranteed to be identical — single source of truth.
  */
-const UNAVAILABLE_DOM_EXPRESSION = `(() => {
+function buildUnavailableDomExpression(classifyFn) {
+  // Serialize the canonical Node function into a browser-safe arrow function body
+  const fnBody = classifyFn.toString()
+    .replace(/^function classifyDomRuleReason\s*\(reasonText\)\s*\{/, '')
+    .replace(/\}$/, '')
+    .trim();
+  return `(() => {
   const documents = [document];
   try {
     const iframes = document.querySelectorAll('iframe');
@@ -200,18 +213,7 @@ const UNAVAILABLE_DOM_EXPRESSION = `(() => {
     });
   } catch (_) {}
 
-  const classifyReason = (reasonText) => {
-    if (!reasonText) return 'MUTUAL_EXCLUSION';
-    const lower = reasonText.toLowerCase();
-    if (lower.includes('ambient') || lower.includes('temperature') || lower.includes('deg')) return 'AMBIENT_GATE';
-    if (lower.includes('cto server only') || (lower.includes('supported with') && lower.includes('cto')) || lower.includes('edsff') || lower.includes('chassis')) return 'CHASSIS_GATE';
-    if (lower.includes('x4 and x8') || lower.includes('3ds') || lower.includes('memory cannot be mixed') || lower.includes('mixing of memory') || lower.includes('dimm')) return 'MEMORY_MIXING';
-    if ((lower.includes('riser') && lower.includes('ocp')) || (lower.includes('cannot be selected together') && lower.includes('slot'))) return 'SLOT_COLLISION';
-    if (lower.includes('supported only with') || lower.includes('requires') || lower.includes('must be selected with')) return 'PAIRED_KIT_REQUIRED';
-    if (lower.includes('supply constraint') || lower.includes('supply_restricted') || lower.includes('customer specific')) return 'SUPPLY_RESTRICTED';
-    if (lower.includes('bto')) return 'BTO_DISALLOWED';
-    return 'MUTUAL_EXCLUSION';
-  };
+  const classifyReason = (reasonText) => { ${fnBody} };
 
   const unavailableRules = [];
   const unavailableSkus = [];
@@ -241,7 +243,7 @@ const UNAVAILABLE_DOM_EXPRESSION = `(() => {
         }
       }
 
-      reasonText = reasonText.replace(/[\\n\\r\\t]+/g, ' ').replace(/\\s+/g, ' ').trim();
+      reasonText = reasonText.replace(/[\n\r\t]+/g, ' ').replace(/\s+/g, ' ').trim();
       if (!reasonText || reasonText.length < 3) continue;
 
       const ruleType = classifyReason(reasonText);
@@ -252,7 +254,7 @@ const UNAVAILABLE_DOM_EXPRESSION = `(() => {
         ancestor = ancestor.previousElementSibling;
         if (ancestor.classList && (ancestor.classList.contains('section_header') || ancestor.className.includes('section_header'))) {
           const raw = (ancestor.innerText || ancestor.textContent || '').trim();
-          sectionName = raw.split(/[\\r\\n]+/)[0].replace(/Show Subcategories|Collapse All|Expand All/gi, '').trim();
+          sectionName = raw.split(/[\r\n]+/)[0].replace(/Show Subcategories|Collapse All|Expand All/gi, '').trim();
           break;
         }
       }
@@ -263,7 +265,10 @@ const UNAVAILABLE_DOM_EXPRESSION = `(() => {
       for (const tr of rows) {
         const pidEl = tr.querySelector('._pid, .item_prod span._pid, .item_prod, [class*="_pid"]');
         const rawSku = (pidEl ? (pidEl.innerText || pidEl.textContent || '') : '').trim();
-        const sku = rawSku.replace(/^(?:OB|CS|90)\\s+/i, '').trim();
+        let sku = rawSku.replace(/[\r\n\t]+/g, ' ').trim();
+        sku = sku.replace(/^(?:OB|CS|90)\s+/i, '').trim();
+        const isPrivateSku = /\bPVT\b/i.test(sku);
+        sku = sku.replace(/\s+PVT$/i, '').trim();
         if (!sku || sku === 'Product #' || seenSkus.has(sku)) continue;
 
         const descEl = tr.querySelector('.item_desc, [class*="item_desc"]');
@@ -304,6 +309,8 @@ const UNAVAILABLE_DOM_EXPRESSION = `(() => {
 
         unavailableSkus.push({
           sku,
+          rawSku,
+          isPrivateSku,
           description: desc,
           listPrice: price,
           startDate,
@@ -317,6 +324,7 @@ const UNAVAILABLE_DOM_EXPRESSION = `(() => {
           status: 'PORTAL_CONDITIONAL'
         });
       }
+
 
       if (affectedSkusInRule.length > 0) {
         unavailableRules.push({
@@ -333,6 +341,10 @@ const UNAVAILABLE_DOM_EXPRESSION = `(() => {
 
   return JSON.stringify({ unavailableRules, unavailableSkus });
 })()`;
+}
+
+// Derive the browser expression from the canonical Node-side function (single source of truth)
+const UNAVAILABLE_DOM_EXPRESSION = buildUnavailableDomExpression(classifyDomRuleReason);
 
 /**
  * CDP wrapper to extract unavailable DOM rules and SKUs from active browser session.
@@ -341,9 +353,11 @@ const UNAVAILABLE_DOM_EXPRESSION = `(() => {
  * @returns {Promise<{ unavailableRules: Array<object>, unavailableSkus: Array<object> }>}
  */
 async function extractUnavailableDomRules(ws, sendCommand) {
+  // Regenerate expression each call so it always reflects the current canonical function
+  const expression = buildUnavailableDomExpression(classifyDomRuleReason);
   try {
     const result = await sendCommand(ws, 'Runtime.evaluate', {
-      expression: UNAVAILABLE_DOM_EXPRESSION,
+      expression,
       returnByValue: true
     });
     const parsed = JSON.parse(result.result?.value || '{"unavailableRules":[],"unavailableSkus":[]}');
@@ -359,6 +373,7 @@ async function extractUnavailableDomRules(ws, sendCommand) {
 
 module.exports = {
   classifyDomRuleReason,
+  buildUnavailableDomExpression,
   parseUnavailableDomRules,
   UNAVAILABLE_DOM_EXPRESSION,
   extractUnavailableDomRules

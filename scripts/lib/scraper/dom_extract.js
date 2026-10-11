@@ -114,16 +114,21 @@ async function extractTablesAsRows(ws, sendCommand, scopeSelector = null) {
             } else {
               let cellText = (cell.innerText || cell.textContent || '').trim();
               if (!cellText) {
-                const hasCheckImg = cell.querySelector('img[src*="check" i], img[src*="tick" i]');
+                const hasCheckImg = cell.querySelector('img[src*="check" i], img[src*="tick" i], img[src*="rec" i]');
                 // An empty hpe_recommended span or arbitrary SVG is not a positive flag.
                 const hasCheckIcon = cell.querySelector('.icon-check, .fa-check, .glyphicon-ok, [data-icon="check"], [data-icon="tick"]');
                 const hasCheckedInput = cell.querySelector('input[type="checkbox"]:checked, input[type="radio"]:checked');
+                // GAP-04 FIX: OCA WebLogic uses inline SVG checkmarks (not img or class names).
+                // Detect a single visible <svg> child element as a positive recommendation signal.
+                const svgEls = Array.from(cell.querySelectorAll('svg'));
+                const hasVisibleSvg = svgEls.length > 0 && svgEls.some(svg => svg.getClientRects().length > 0);
                 const ariaOrTitle = cell.getAttribute('aria-label') || cell.getAttribute('title') ||
                   cell.querySelector('[aria-label*="recommend" i], [title*="recommend" i]')?.getAttribute('title') ||
                   cell.querySelector('[aria-label*="recommend" i], [title*="recommend" i]')?.getAttribute('aria-label') || '';
-                if (/not recommended|non.recommended/i.test(ariaOrTitle)) {
+                // GAP-04 FIX: Widen negative pattern to catch 'Not HPE recommended' (HPE between Not and recommended)
+                if (/not\s+(?:hpe\s+)?recommended|non[\s-]+recommended/i.test(ariaOrTitle)) {
                   cellText = 'No';
-                } else if (hasCheckImg || hasCheckIcon || /recommend/i.test(ariaOrTitle)) {
+                } else if (hasCheckImg || hasCheckIcon || hasVisibleSvg || /recommend/i.test(ariaOrTitle)) {
                   cellText = 'Yes';
                 } else if (hasCheckedInput) {
                   cellText = 'Selected';
@@ -131,6 +136,7 @@ async function extractTablesAsRows(ws, sendCommand, scopeSelector = null) {
               } else if (/[✓✔√\u2713\u2714]/.test(cellText)) {
                 cellText = 'Yes';
               }
+
               cells.push(cellText);
             }
           });

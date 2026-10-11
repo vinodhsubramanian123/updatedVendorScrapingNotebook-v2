@@ -113,9 +113,16 @@ const SCRAPING_VERIFIABILITY_MATRIX = Object.freeze({
         description: 'At least one Configure-to-Order base chassis identified',
         verify: ctx => (ctx.ctoVariantsCount || 0) >= 1,
         remediation: 'Verify CTO chassis search criteria and Option Type in product catalog.'
+      },
+      {
+        id: 'RAW_TABLES_AVAILABLE',
+        description: 'Raw ingested tables from Step 5 must be available for classification',
+        verify: ctx => ctx.rawTablesCount === undefined || ctx.rawTablesCount > 0,
+        remediation: 'Raw scrape data contains 0 tables. Check DOM extraction at Step 5.'
       }
     ]
   },
+
   7: {
     stage: 'CATALOG_GEN',
     name: 'Catalog Generation & Workbook Compilation',
