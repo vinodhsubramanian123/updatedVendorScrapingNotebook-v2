@@ -37,7 +37,8 @@ function loadMcp(overrides = {}) {
   vm.runInNewContext(fs.readFileSync(path.join(base, 'scripts/services/mcp_server.js'), 'utf8'), {
     require: name => { assert.ok(Object.hasOwn(deps, name), name); return deps[name]; },
     __filename: path.join(base, 'scripts/services/mcp_server.js'), __dirname: path.join(base, 'scripts/services'),
-    console: { error() {} }
+    console: { error() {} },
+    module: { exports: {} }, exports: {}
   });
   return { invoke: (name, args = {}, extra = {}) => handlers.get('call')({ params: { name, arguments: args } }, extra),
     list: handlers.get('list'), calls, observations };
@@ -97,7 +98,8 @@ test('MCP ordinary failure keeps existing error envelope', async () => {
 function loadBoqHandler(pipeline) {
   const source = fs.readFileSync(path.join(base, 'scripts/evaluators/route_query.js'), 'utf8');
   const start = source.indexOf('function _boqPipelineFailure(');
-  const end = source.indexOf('function _handleOcrQuoteIngestion', start);
+  const endMatch = source.slice(start).match(/(?:async\s+)?function _handleOcrQuoteIngestion/);
+  const end = endMatch ? start + endMatch.index : -1;
   assert.ok(start > 0 && end > start);
   return vm.runInNewContext(source.slice(start, end) + '\n_handleBoqEvaluation;', {
     getChassisCatalog: () => ({ catalogDir: 'fixture' }),

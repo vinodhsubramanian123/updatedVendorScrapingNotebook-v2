@@ -11,7 +11,7 @@ const loaderEnd = original.indexOf("test('all seven", loaderStart);
 const boqStart = original.indexOf('function loadBoqHandler(');
 const boqEnd = original.indexOf('\nfor (const input', boqStart);
 const base = path.resolve(__dirname, '../..');
-const loaders = vm.runInNewContext(original.slice(loaderStart, loaderEnd) + original.slice(boqStart, boqEnd) + '\n({ loadMcp, loadBoqHandler });', { assert, fs, path, vm, base });
+const loaders = vm.runInNewContext(original.slice(loaderStart, loaderEnd) + original.slice(boqStart, boqEnd) + '\n({ loadMcp, loadBoqHandler });', { assert, fs, path, vm, base, module: { exports: {} }, exports: {} });
 
 test('peer: MCP preserves unrelated NotebookLM rejection during abort race', async () => {
   const controller = new AbortController();
