@@ -5,6 +5,7 @@ import EvaluationProgressSteps from './uploader/EvaluationProgressSteps';
 import PreflightPipelineAudit from './uploader/PreflightPipelineAudit';
 import MultiConfigSplitModal from './uploader/MultiConfigSplitModal';
 import GuardrailReviewStatus from './uploader/GuardrailReviewStatus';
+import EvaluationNarrativeCard from './uploader/EvaluationNarrativeCard';
 
 export default function BoqUploader({
   onEvaluateBoq,
@@ -336,6 +337,13 @@ export default function BoqUploader({
                 <div><span className="text-slate-500">Cluster active</span><div className="font-mono font-bold">{evalResults.pcieTopology.clusterTotals?.electricallyActiveSlotCapacity ?? 0}</div></div>
               </div>
             </div>
+          )}
+
+          {evalResults.evaluationNarrative && (
+            <EvaluationNarrativeCard
+              narrative={evalResults.evaluationNarrative}
+              chassis={evalResults.chassis}
+            />
           )}
 
           <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100 flex-wrap">

@@ -244,6 +244,27 @@ export default function RankCard({
           </div>
         )}
 
+        {/* Gated Conditional Options (INV-125 & INV-126) */}
+        {tier.portalConditionalSkus && tier.portalConditionalSkus.length > 0 && (
+          <div className="mt-3 p-3 bg-amber-50/80 rounded-xl border border-amber-300 text-xs">
+            <div className="flex items-center gap-1.5 font-bold text-amber-900 mb-1">
+              <span className="px-1.5 py-0.5 rounded text-[10px] bg-amber-600 text-white font-mono font-bold">PORTAL_CONDITIONAL</span>
+              <span>Gated Options ({tier.portalConditionalSkus.length})</span>
+            </div>
+            <p className="text-[11px] text-amber-800 mb-2 leading-tight">
+              Hardware option(s) require portal selector activation or ambient operating constraints:
+            </p>
+            <div className="space-y-1">
+              {tier.portalConditionalSkus.map((cs, csIdx) => (
+                <div key={csIdx} className="bg-white/80 p-1.5 rounded border border-amber-200 text-[11px] flex items-center justify-between font-mono">
+                  <span className="font-bold text-slate-800">{cs.sku}</span>
+                  <span className="text-amber-700 font-semibold">{cs.conditionKey || 'ambient'}: {cs.operator || '<='} {cs.thresholdDegC || cs.thresholdValue || '27'}°C</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Decision Chain & Trade-Offs Ledger */}
         {tier.decisionTrace && tier.decisionTrace.length > 0 && (
           <div className="mt-3 p-3 bg-slate-100/90 rounded-xl border border-slate-200 text-xs">

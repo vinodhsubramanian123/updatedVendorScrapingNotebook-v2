@@ -13,8 +13,21 @@ export default function VendorMatchTable({
   const missingFromVendor = discrepancies.missingFromVendor || [];
   const quantityMismatches = discrepancies.quantityMismatches || [];
 
+  const isSingleQuote = auditReport.isSingleFileAudit === true || auditReport.isTwoBaselineComparison === false;
+
   return (
     <div className="space-y-4">
+      {isSingleQuote && (
+        <div className="p-2.5 rounded-lg bg-indigo-50 border border-indigo-200 text-indigo-900 text-xs flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-indigo-600 text-white uppercase">
+              SINGLE_FILE_AUDIT (INV-130)
+            </span>
+            <span>Single quote audited directly against catalog rules (no second customer baseline required).</span>
+          </div>
+        </div>
+      )}
+
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className="p-3 bg-emerald-50 rounded-xl border border-emerald-100">
           <span className="text-[11px] text-emerald-800 font-medium">Exact SKU Matches</span>
@@ -26,11 +39,11 @@ export default function VendorMatchTable({
         </div>
         <div className="p-3 bg-amber-50 rounded-xl border border-amber-100">
           <span className="text-[11px] text-amber-800 font-medium">Missing from Vendor</span>
-          <p className="font-bold text-amber-900 text-lg">{missingFromVendor.length}</p>
+          <p className="font-bold text-amber-900 text-lg">{isSingleQuote ? 'N/A' : missingFromVendor.length}</p>
         </div>
         <div className="p-3 bg-blue-50 rounded-xl border border-blue-100">
           <span className="text-[11px] text-blue-800 font-medium">Qty Mismatches</span>
-          <p className="font-bold text-blue-900 text-lg">{quantityMismatches.length}</p>
+          <p className="font-bold text-blue-900 text-lg">{isSingleQuote ? 'N/A' : quantityMismatches.length}</p>
         </div>
       </div>
 
