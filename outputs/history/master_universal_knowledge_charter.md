@@ -1,8 +1,8 @@
 # HPE Knowledge Registry — Local Audit Index
 
-**Document Version**: `2.0.0` | **Generated**: `2026-10-10T15:20:49.242Z`
+**Document Version**: `2.0.0` | **Generated**: `2026-10-11T19:46:47.831Z`
 **Scope**: Local governance index. This file is not a NotebookLM source; product notebooks receive independently scoped projections.
-**Total Verified Knowledge Deltas**: `94` (`9` Universal + `0` Family/Gen + `85` Chassis Specific)
+**Total Verified Knowledge Deltas**: `97` (`9` Universal + `0` Family/Gen + `88` Chassis Specific)
 
 ---
 
@@ -483,65 +483,78 @@
 - **Rule**: Live OCA evidence on commercial DL380 Gen12 base P73282-B21: S3U30C NVIDIA H200 NVL 141GB was already present in the DOM at selected 30C tracking SKU P79552-B21, but hidden and marked unavailable. Vendor text says H200 NVL and 30C cannot be selected together. At selected 27C tracking SKU P79555-B21 the unavailable flag and restriction disappeared; the collapsed section still hid the row visually. Original 30C was restored. This is two observed selector states, not proof of every lower temperature or final CLIC build acceptance. Evidence: evidence/scraping_review/h200_at_30c_before.json and h200_at_27c.json. Do not compile the 30C prohibition as an allowed <=30C gate.
 - **Affected SKU**: `S3U30C`
 
-#### C75. [DELTA_SYNERGY_FRAME_STARTUP_MATH] SY480_Gen12 — STARTUP_SERVICE_FORMULA
+#### C75. [LEARN_CHASSIS_THREE_TIER_DOMAIN_CLASSIFICATION_20261012] DL380_Gen12 — WORKFLOW_CHASSIS_CLASSIFICATION_ADVISORY
+- **Scope**: `CHASSIS_SPECIFIC`
+- **Rule**: Specialty hardware categories (SAN switches like SN3600B, fabric interconnect modules like SY100Gb, and tape libraries like MSL) do not contain server compute components (CPU, Memory, Power). Synergy compute blades (SY480 Gen12) require CPU and Memory, but Power supplies are governed at the Synergy 12000 enclosure frame level. Freshness guards must evaluate compliance using a three-tier domain discriminator rather than enforcing server categories on all products (INV-158).
+
+#### C76. [LEARN_UNIVERSAL_ACCESSORY_SCOPE_ISOLATION_20261012] DL380_Gen12 — WORKFLOW_SCOPE_ISOLATION_ADVISORY
+- **Scope**: `CHASSIS_SPECIFIC`
+- **Rule**: Passive accessories such as DC lug terminal kits (P36877-B21), power cords, and rail kits are architecture-invariant and span multiple product generations. They must be registered in APPROVED_UNIVERSAL_POLICY_SKUS in product_scope.js to prevent false-positive cross-generation isolation quarantines by the drift engine (INV-159).
+- **Affected SKU**: `P36877-B21`
+
+#### C77. [LEARN_WEBLOGIC_EXPAND_SECTIONS_COST_CAPTURE_20261012] DL380_Gen12 — WORKFLOW_DOM_EXTRACTION_ADVISORY
+- **Scope**: `CHASSIS_SPECIFIC`
+- **Rule**: WebLogic OCA table expansion in cdp.js must explicitly toggle show_cost alongside show_price and trigger change events on all discovered showmore inputs. Omitting show_cost prevents cost column rendering, leaving tabular price-breakdown structures incomplete (INV-161).
+
+#### C78. [DELTA_SYNERGY_FRAME_STARTUP_MATH] SY480_Gen12 — STARTUP_SERVICE_FORMULA
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Onsite Frame Startup requires exactly 1x HA124A1#5ZM + (TotalFrames - 1)x HA124A1#5ZQ. Purge all HA124A1#V0F lines when onsite startup is selected.
 - **Affected SKU**: `HA124A1`
 - **Required Dependency**: `HA124A1#5ZM`
 
-#### C76. [DELTA_SYNERGY_VC_100GB_SUPPORT_ENTITLEMENT] SY480_Gen12 — HARDWARE_SUPPORT_1TO1
+#### C79. [DELTA_SYNERGY_VC_100GB_SUPPORT_ENTITLEMENT] SY480_Gen12 — HARDWARE_SUPPORT_1TO1
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Qty of HU4B2A3#Z1R must exactly equal qty of 867796-B21 (VC SE 100Gb F32 Module).
 - **Affected SKU**: `867796-B21`
 - **Required Dependency**: `HU4B2A3#Z1R`
 
-#### C77. [DELTA_SYNERGY_COMPOSER2_SUPPORT_ENTITLEMENT] SY480_Gen12 — HARDWARE_SUPPORT_1TO1
+#### C80. [DELTA_SYNERGY_COMPOSER2_SUPPORT_ENTITLEMENT] SY480_Gen12 — HARDWARE_SUPPORT_1TO1
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Qty of HU4B2A3#Z1Q must exactly equal qty of 872957-B21 (Synergy Composer2 Management Appliance).
 - **Affected SKU**: `872957-B21`
 - **Required Dependency**: `HU4B2A3#Z1Q`
 
-#### C78. [DELTA_SYNERGY_BROCADE_FC_SUPPORT_ENTITLEMENT] SY480_Gen12 — HARDWARE_SUPPORT_1TO1
+#### C81. [DELTA_SYNERGY_BROCADE_FC_SUPPORT_ENTITLEMENT] SY480_Gen12 — HARDWARE_SUPPORT_1TO1
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Qty of HU4B2A30BU5 must exactly equal qty of P77653-B21 (Brocade 64Gb FC Switch Module).
 - **Affected SKU**: `P77653-B21`
 - **Required Dependency**: `HU4B2A30BU5`
 
-#### C79. [DELTA_SYNERGY_COMPUTE_MODULE_SUPPORT_ENTITLEMENT] SY480_Gen12 — HARDWARE_SUPPORT_1TO1
+#### C82. [DELTA_SYNERGY_COMPUTE_MODULE_SUPPORT_ENTITLEMENT] SY480_Gen12 — HARDWARE_SUPPORT_1TO1
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Qty of HU4B2A30BT7 must exactly equal qty of P68217-B21 (HPE SY480 Gen12 Compute Module).
 - **Affected SKU**: `P68217-B21`
 - **Required Dependency**: `HU4B2A30BT7`
 
-#### C80. [DELTA_SYNERGY_WARRANTY_VS_STARTUP_DECOUPLING] SY480_Gen12 — DECOUPLING
+#### C83. [DELTA_SYNERGY_WARRANTY_VS_STARTUP_DECOUPLING] SY480_Gen12 — DECOUPLING
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: HPE Synergy quoting requires strict decoupling of two independent service domains: (1) HU4B2A3 — ongoing Point-of-Sale hardware maintenance (3Y Tech Care Basic, 9x5 NBD), decomposed per-subsystem (#WJN Frame, #Z1Q Composer2, #Z1R VC, 0BT7 Compute, 0BU5 Brocade); and (2) HA124A1 — one-time professional deployment/startup services (SOW-scoped). These are NOT interchangeable and must never be conflated in BOQ assembly.
 - **Affected SKU**: `HA124A1`
 - **Required Dependency**: `HU4B2A3`
 
-#### C81. [DELTA_SYNERGY_REMOTE_ONSITE_CONFLICT] SY480_Gen12 — EXCLUSION
+#### C84. [DELTA_SYNERGY_REMOTE_ONSITE_CONFLICT] SY480_Gen12 — EXCLUSION
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Remote startup (HA124A1#V0F) and Onsite startup (HA124A1#5ZM) are mutually exclusive delivery models for Synergy frame deployment. When Onsite is selected, all Remote startup lines MUST be purged to zero. Quoting both simultaneously creates SOW delivery scope conflicts that trigger CLIC Rule 81039677.
 - **Affected SKU**: `HA124A1#V0F`
 - **Required Dependency**: `HA124A1#5ZM`
 
-#### C82. [DELTA_OCA_RULE_81039677_CROSS_ICON_ATTRIBUTION] GLOBAL — DIAGNOSTIC
+#### C85. [DELTA_OCA_RULE_81039677_CROSS_ICON_ATTRIBUTION] GLOBAL — DIAGNOSTIC
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: In multi-icon OCA solutions (Icon Separation mode), CLIC Rule 81039677 ("Installation and Startup must be quoted for ALL frames") attaches its error to Item 0100/01 — the first physical line of the entire solution BOM — even when the root cause is in a completely different icon container (e.g. Synergy Icon #2). Engineers must NEVER modify DL380 server lines to fix this error. Instead, trace to the Synergy icon Services → Lifecycle and fix startup placement and quantities there.
 - **Affected SKU**: `P73282-B21`
 - **Required Dependency**: `HA124A1#5ZM`
 
-#### C83. [DELTA_SYNERGY_ICON_ISOLATION_GUARDRAIL] SY480_Gen12 — ISOLATION
+#### C86. [DELTA_SYNERGY_ICON_ISOLATION_GUARDRAIL] SY480_Gen12 — ISOLATION
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: When applying support services in OCA multi-icon solutions, NEVER check "Apply displayed install/support to all icons inside the solution". Always scope to "inside the Current Icon" only. This prevents Synergy frame support attributes from leaking into ProLiant rack server trees (or vice versa), which corrupts per-icon support decomposition and generates phantom entitlement mismatches.
 - **Affected SKU**: `HU4B2A3`
 
-#### C84. [DELTA_OCA_SUPPORT_CACHE_FLUSH_PROTOCOL] GLOBAL — PROCEDURE
+#### C87. [DELTA_OCA_SUPPORT_CACHE_FLUSH_PROTOCOL] GLOBAL — PROCEDURE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: When OCA CLIC Rules 99916598/99916599 persist after correcting support quantities, the stale rules cache must be flushed: (1) Navigate to Icon container level → Services → set Support to "No Support" with TS5 and "Apply to all nodes inside Current Icon" checked → Save; (2) Dismiss advisory warning about minimum service requirement; (3) Re-apply via "Select Your Own" → filter 3 Years → select HU4B2A3 Tech Care Basic; (4) Set Install Level to "No Installation"; (5) Check "Apply displayed Install/Support level to all nodes inside Current Icon" → OK → Save. This forces OCA to regenerate all child support entitlements from scratch.
 - **Affected SKU**: `HU4B2A3`
 
-#### C85. [DELTA_SYNERGY_STARTUP_PLACEMENT_HIERARCHY] SY480_Gen12 — PLACEMENT
+#### C88. [DELTA_SYNERGY_STARTUP_PLACEMENT_HIERARCHY] SY480_Gen12 — PLACEMENT
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Synergy startup services (HA124A1#5ZM First Frame Onsite, HA124A1#5ZQ Additional Frame Onsite) must be placed ONLY at the Icon #2 container level under Services → Deployment Services → Install-Install and Start Up. They must NEVER be placed locally under individual "Synergy 12000 Frame #N" child items. Duplicate placement between icon container and child frames causes CLIC Rule 81039677 to fire against the first line item (typically DL380) in the solution BOM.
 - **Affected SKU**: `HA124A1#5ZM`
