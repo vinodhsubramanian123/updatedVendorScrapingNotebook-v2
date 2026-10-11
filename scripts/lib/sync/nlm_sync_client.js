@@ -547,7 +547,8 @@ function retireStaleNotebookSources({
     safeWriteJsonAtomic(attemptPath, attempt);
 
     const ownedIds = new Set([previousSourceId, cfgEntry?.lastSyncedSourceId, cfgEntry?.driveSourceId,
-      ...(cfgEntry?.certifiedCatalogSourceIds || []), ...(cfgEntry?.canonicalKnowledgeSourceIds || [])].filter(Boolean));
+      ...(cfgEntry?.certifiedCatalogSourceIds || []), ...(cfgEntry?.canonicalKnowledgeSourceIds || []),
+      ...(cfgEntry?.trustedSourceIds || [])].filter(Boolean));
     // A familiar title is a discovery hint, not authority to delete that source.
     for (const stale of allowSourceDeletion ? staleSources.filter(source => ownedIds.has(source.id)) : []) {
       try {
