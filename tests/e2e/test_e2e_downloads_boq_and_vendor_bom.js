@@ -1,4 +1,5 @@
 'use strict';
+/* global document */
 /**
  * tests/test_e2e_downloads_boq_and_vendor_bom.js
  *

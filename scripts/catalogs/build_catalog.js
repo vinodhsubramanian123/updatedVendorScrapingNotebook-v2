@@ -379,7 +379,7 @@ function loadHistoricalPriceMap(targetDir) {
           }
         }
       } catch (err) {
-        PipelineLogger.debug('BUILD_CATALOG', `Failed parsing price history file at ${histFile}: ${err.message}`);
+        PipelineLogger.debug('BUILD_CATALOG', `Failed parsing price history file at ${priceHistoryPath}: ${err.message}`);
       }
     }
   }

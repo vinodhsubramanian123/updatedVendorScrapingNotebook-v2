@@ -10,24 +10,10 @@ function isPidAlive(pid) {
   if (pid === process.pid) return true;
   try {
     process.kill(pid, 0);
+    return true;
   } catch (error) {
     return error.code !== 'ESRCH';
   }
-  if (process.platform === 'win32') {
-    try {
-      const { execFileSync } = require('child_process');
-      const out = execFileSync('tasklist', ['/FI', `PID eq ${pid}`, '/FO', 'CSV', '/NH'], {
-        encoding: 'utf8',
-        timeout: 3000,
-        windowsHide: true,
-        stdio: ['pipe', 'pipe', 'ignore']
-      });
-      return /node\.exe|electron\.exe/i.test(out);
-    } catch (_) {
-      return true;
-    }
-  }
-  return true;
 }
 
 function busy(name, file, cause) {

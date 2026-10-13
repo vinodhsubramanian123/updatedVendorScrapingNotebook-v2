@@ -34,6 +34,7 @@ const { loadActiveKnowledgeRules } = require('../lib/catalog/active_knowledge_ro
 const { recordAndCertifyLearnedRule } = require('../lib/feedback/continuous_learning_verifier.js');
 const { assertNotebookHealth, loadNotebookConfig } = require('../lib/sync/knowledge_sync.js');
 const { LifecycleEngine } = require('../lib/lifecycle/lifecycle_engine.js');
+const logger = require('../lib/system/pipeline_logger.js');
 
 /**
  * Load notebook ID from config file for a specific chassis or use default.

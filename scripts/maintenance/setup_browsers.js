@@ -52,7 +52,6 @@ async function setupAndVerifyBrowsers() {
         cwd: PROJECT_ROOT,
         stdio: 'inherit'
       });
-      installedPlaywright = true;
       console.log('✅ Playwright Chromium installation verified.');
     } catch (err) {
       console.warn(`⚠️  Playwright install command returned non-zero (${err.message}).`);

@@ -678,7 +678,19 @@ function syncToNotebookLMWithinLease(notebookId, payloadPath, chassisName = 'Unk
     }
 
     const payloadDir = path.dirname(payloadPath);
-    if (!options.skipCatalogQualityCheck && execFileSync === defaultExecFileSync) {
+    if (options.skipCatalogQualityCheck) {
+      if (process.env.NODE_ENV === 'production') {
+        throw new Error('[INV-105] skipCatalogQualityCheck is strictly prohibited in production.');
+      }
+      const testsRoot = path.resolve(__dirname, '../../../tests');
+      const entry = path.resolve(process.argv[1] || '.');
+      const relative = path.relative(testsRoot, entry);
+      const isEnclosedTest = !relative.startsWith('..') && !path.isAbsolute(relative) && /^test_.*\.js$/i.test(path.basename(entry));
+      const isTestContext = Boolean(process.env.NODE_TEST_CONTEXT) || process.env.NODE_ENV === 'test' || isEnclosedTest;
+      if (!isTestContext) {
+        throw new Error('[INV-105] skipCatalogQualityCheck is restricted to test harnesses only.');
+      }
+    } else {
       const { assertScrapedCatalogQuality } = require('../catalog/catalog_freshness_guard.js');
       assertScrapedCatalogQuality(payloadDir, {
         chassisName,

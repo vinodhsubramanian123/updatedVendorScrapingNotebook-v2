@@ -9,6 +9,7 @@ const path = require('path');
 const fs = require('fs');
 
 const { spawn } = require('child_process');
+const http = require('http');
 const os = require('os');
 const { launchPlaywrightChromium } = require('../../scripts/lib/scraper/browser_launcher.js');
 

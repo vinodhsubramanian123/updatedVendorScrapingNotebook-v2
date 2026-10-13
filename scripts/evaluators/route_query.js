@@ -1122,7 +1122,7 @@ async function _handleHeterogeneousTenderModernization(queryText, context) {
           };
         }).filter(table => table.items.length > 0);
       } catch (fileErr) {
-        _logger.warn('HETEROGENEOUS_TENDER', `Failed to parse workbook ${context.filePath}: ${fileErr.message}`);
+        logger.warn('HETEROGENEOUS_TENDER', `Failed to parse workbook ${context.filePath}: ${fileErr.message}`);
       }
     }
   }

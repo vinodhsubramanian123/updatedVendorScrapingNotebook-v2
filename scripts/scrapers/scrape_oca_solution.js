@@ -198,7 +198,7 @@ async function auditAndPromoteStaging({
   require('../lib/catalog/catalog_capture_receipt.js').finalizeCaptureReceipt(liveOutputDir, captureReceipt, postFlowSyncResult);
   require('../lib/catalog/product_metadata_manager.js').refreshMasterProductMetadata();
 
-  const { verifyScrapingStep } = require('../lib/scraper/scraping_verifiability.js');
+  const { verifyScrapingStep, selfReflectOnScrapingSession } = require('../lib/scraper/scraping_verifiability.js');
   const step9Result = verifyScrapingStep(9, {
     cloudSyncVerified: Boolean(postFlowSyncResult?.success && postFlowSyncResult.syncStatus === 'CLOUD_VERIFIED')
   });

@@ -12,6 +12,7 @@ export default function VendorBomVerificationModal({
   isOpen = true
 }) {
   const [vendorText, setVendorText] = useState('');
+  const [_file, setFile] = useState(null);
   const [isVerifying, setIsVerifying] = useState(false);
   const [isOcrProcessing, setIsOcrProcessing] = useState(false);
   const [auditReport, setAuditReport] = useState(null);

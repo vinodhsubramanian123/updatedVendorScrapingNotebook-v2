@@ -72,7 +72,7 @@ const evaluationTools = [
 ];
 
 async function runAgenticEval(inputFile) {
-  const geminiRotator = lib.system.geminiRotator;
+  const geminiRotator = require('../lib/system/gemini_rotator.js');
   const activeKeyInfo = geminiRotator.getActiveKey();
   if (!activeKeyInfo || !activeKeyInfo.apiKey) {
     console.error('GEMINI_API_KEY environment variable is required.');

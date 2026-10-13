@@ -1,7 +1,7 @@
 import Tooltip from './Tooltip';
 import React, { useState, useEffect } from 'react';
 import TaskStatusBadge from './TaskStatusBadge';
-import { Play, RefreshCw, Terminal, Download, Server, Sparkles, Loader, Square, ShieldAlert, CheckCircle, Navigation, KeyRound } from 'lucide-react';
+import { Play, RefreshCw, Terminal, Download, Server, Sparkles, Loader, Square, ShieldAlert, CheckCircle, Navigation, KeyRound, X } from 'lucide-react';
 import VendorScraperProgress from './VendorScraperProgress';
 import ScrapingHistorySection from './ScrapingHistorySection';
 

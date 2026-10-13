@@ -35,13 +35,14 @@ function compareSkus(before, after) {
 // A receipt describes captured coverage; it never certifies every portal state.
 function createCaptureReceipt(stagingDir, liveDir, product, options = {}) {
   if (options.skipCoverageValidation) {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('[INV-105] skipCoverageValidation is strictly prohibited in production.');
+    }
     const testsRoot = path.resolve(__dirname, '../../../tests');
     const entry = path.resolve(process.argv[1] || '.');
     const relative = path.relative(testsRoot, entry);
-    const isTestEnv = Boolean(process.env.NODE_TEST_CONTEXT) ||
-      /^test_.*\.js$/i.test(path.basename(entry)) ||
-      /[\\/]tests[\\/]/i.test(entry) ||
-      (!relative.startsWith('..') && !path.isAbsolute(relative) && /^test_.*\.js$/i.test(path.basename(entry)));
+    const isEnclosedTest = !relative.startsWith('..') && !path.isAbsolute(relative) && /^test_.*\.js$/i.test(path.basename(entry));
+    const isTestEnv = Boolean(process.env.NODE_TEST_CONTEXT) || isEnclosedTest;
     if (!isTestEnv) {
       throw new Error('[INV-105] skipCoverageValidation is restricted to test harnesses only.');
     }

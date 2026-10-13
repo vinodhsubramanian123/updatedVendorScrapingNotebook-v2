@@ -172,7 +172,7 @@ test('source retirement requires grounded replacement and verifies absence after
       if (args[1] === 'delete') { deletions.push(args[2]); if (mode === 'failed-delete') throw new Error('Deletion failed'); sources = sources.filter(source => source.id !== args[2]); return ''; }
       throw new Error(`Unexpected command ${args.join(' ')}`);
     };
-    const result = syncToNotebookLM('book', payload, 'Example', 0, { notebookConfigPath: configPath, execFileSync: run, confirmSourceRetirement: true });
+    const result = syncToNotebookLM('book', payload, 'Example', 0, { notebookConfigPath: configPath, execFileSync: run, confirmSourceRetirement: true, skipCatalogQualityCheck: true });
     assert.equal(result.success, mode === 'success', result.message);
     assert.deepEqual(deletions, mode === 'uncited' ? ['new'] : ['old']);
     assert.ok(sources.some(source => source.id === 'official'));
