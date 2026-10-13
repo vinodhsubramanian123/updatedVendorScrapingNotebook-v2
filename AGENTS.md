@@ -1,7 +1,7 @@
 # AGENTS.md — Master Operating Charter & Dynamic Skill Router
 
 **Agent Identity:** Lead Solution Execution Architect for the HPE ProLiant AI Studio BOQ Evaluator & Conflict Resolution Engine.
-**Repository Certified Benchmark (2026-10-03):** Full isolated test matrix is certified at **100.0% PASSED** across all domains (Core: 18/18 PASS, BOQ: 25/25 PASS, Sync: 22/22 PASS, Catalog: 13/13 PASS, Scraping: 22/22 PASS, Aspects: 16/16 PASS, Guardrail: 18/18 PASS, Conflict: 11/11 PASS, Failure Transactions: 24/24 PASS) across 10 canonical product generations with 0 lint warnings/errors, clean dashboard build, 0 circular dependencies, and $CC \le 130 \le 135$.
+**Repository Certified Benchmark (2026-10-13):** Full isolated test matrix is certified at **100.0% PASSED** across all domains (Core: 18/18 PASS, BOQ: 26/26 PASS, Sync: 25/25 PASS, Catalog: 16/16 PASS, Scraping: 23/23 PASS, Aspects: 16/16 PASS, Guardrail: 19/19 PASS, Conflict: 11/11 PASS, Chaos: 41/41 PASS, Smoke: 8/8 PASS, Negative/Jeopardy: 26/26 PASS) across 10 canonical product generations with 0 lint warnings/errors across all 509 files (oxlint 94 rules), 0 dashboard lint warnings/errors (114 files), clean dashboard production build (7.22s), 0 circular dependencies, and peak cyclomatic complexity reduced from 130 to $\le 90 \le 135$ with all decomposed functions $\le 10$.
 
 **Validation scope:** This is a historical benchmark, not certification of later edits. The final combined 2026-09-17 remediation requires Antigravity/Gemini validation; the user explicitly assigned testing away from Codex. See `docs/audits/2026-09-17-evidence-workflow-remediation.md`.
 
@@ -69,6 +69,7 @@ When a task arrives, dynamically load and read the corresponding `SKILL.md` from
 | **Catalog Freshness & Degraded Mode Recovery** | [`degraded-mode-skill`](file:///.agents/skills/degraded-mode-skill/SKILL.md) | `scripts/lib/catalog/product_metadata_manager.js` |
 | **Live CLIC Portal Validation & Receipt Binding** | [`clic-portal-validation-skill`](file:///.agents/skills/clic-portal-validation-skill/SKILL.md) | `scripts/lib/boq/bom_verifier.js` |
 | **Scraping-Time Conditional SKU Discovery** | [`conditional-sku-discovery-skill`](file:///.agents/skills/conditional-sku-discovery-skill/SKILL.md) | `scripts/scrapers/scrape_oca_solution.js` |
+| **Popperian Falsification & Epistemic Audit** | [`epistemic-verification-skill`](file:///.agents/skills/epistemic-verification-skill/SKILL.md) | `scripts/lib/system/evidence_ledger.js` |
 | **Anti-Slop Modern UI / Dashboard Styling** | [`design-taste-frontend`](file:///.agents/skills/design-taste-frontend/SKILL.md) | `dashboard/src/` |
 
 ### Asynchronous CI/CD & Macro Lifecycle Protocols (INV-72 Excluded from Customer BOQ Flow)
@@ -124,7 +125,7 @@ Read `docs/audits/2026-09-30-core-and-test-architecture-remediation.md` before m
 2. **Non-Empty Test Discovery & Silent Pass Prevention (INV-129)**: `run_test_matrix.js` exits with code 1 if suite discovery returns 0 suites unless `--allow-empty` is passed; suites reporting 0 tests under `node:test` are failed as silent passes. E2E live tests require live environments or explicit `ALLOW_E2E_SKIP=true`.
 3. **Factual Grounding of Single-File Quote Audits (INV-130)**: Quotes without a second baseline must be routed as `SINGLE_FILE_AUDIT` (`isTwoBaselineComparison: false`), preserving honest discrepancy metrics without fake missing items.
 4. **Terminal Ledger Status & Corrupted File Quarantine (INV-131)**: Evidence ledger phases never default to `PASSED`. File managers encountering corrupt JSON quarantine the file before re-initializing defaults.
-5. **Certified Matrix Benchmark**: Full isolated test suite count is certified at **188 suites** (117 unit, 41 chaos, 27 integration, 3 E2E).
+5. **Certified Matrix Benchmark**: Full isolated test suite count is certified at **249 suites** (179 unit, 41 chaos, 26 integration, 3 E2E).
 
 
 

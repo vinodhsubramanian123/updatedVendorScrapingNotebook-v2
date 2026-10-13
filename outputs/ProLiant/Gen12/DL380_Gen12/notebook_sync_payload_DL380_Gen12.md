@@ -4,11 +4,11 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen12/DL380_Gen12`
 
-**Sync Timestamp**: 2026-10-10T15:20:49.357Z
+**Sync Timestamp**: 2026-10-13T12:27:12.621Z
 
 **Total Verified SKUs**: `1128` (`606` Hardware + `522` Services)
 
-**Total Synced KnowledgeDeltas**: `57`
+**Total Synced KnowledgeDeltas**: `60`
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -234,6 +234,18 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 48. **[LEARN_DL380_GEN12_H200_OBSERVED_STATES_20261001] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
    - **Rule**: undefined
    - **Affected SKU**: `S3U30C` | **Required Dependency**: `N/A`
+
+49. **[LEARN_CHASSIS_THREE_TIER_DOMAIN_CLASSIFICATION_20261012] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: undefined
+   - **Affected SKU**: `N/A` | **Required Dependency**: `N/A`
+
+50. **[LEARN_UNIVERSAL_ACCESSORY_SCOPE_ISOLATION_20261012] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: undefined
+   - **Affected SKU**: `P36877-B21` | **Required Dependency**: `N/A`
+
+51. **[LEARN_WEBLOGIC_EXPAND_SECTIONS_COST_CAPTURE_20261012] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: undefined
+   - **Affected SKU**: `N/A` | **Required Dependency**: `N/A`
 
 
 ## 🔒 3b. Physical & Architectural Gating Rules (DOM Unavailable Tables)

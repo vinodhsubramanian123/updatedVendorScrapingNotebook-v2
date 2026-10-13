@@ -2,8 +2,8 @@
 
 **Document Classification:** Canonical Ground-Truth Architecture & Validation Charter<br>
 **Maintained By:** HPE ProLiant AI Studio Autonomous Knowledge Engine (Antigravity AI)<br>
-**Last Synchronized:** 2026-10-11T19:43:29.692Z<br>
-**Total Deduplicated Learned Rules:** 97<br>
+**Last Synchronized:** 2026-10-13T12:17:04.583Z<br>
+**Total Deduplicated Learned Rules:** 100<br>
 **Universal Invariant Compliance:** INV-1 through INV-38 Certified<br>
 **Google Drive Destination:** `shared_folder_id: 1YR0lBh-gg00amKHRxuOqp5Aea3iL5O7-`
 
@@ -160,7 +160,7 @@ The Catalog Vendor Solution provides modular, AI-assisted catalog ingestion, nor
 
 ## 5. Deduplicated Learned Rule Ledger & Verification Provenance
 
-Total verified rules indexed in this build: **97**.
+Total verified rules indexed in this build: **100**.
 
 | Scope | Target Chassis | Category | Affected SKU | Dependency SKU | Rule Summary / Validation Directive | Verifications |
 | :--- | :--- | :--- | :--- | :--- | :--- | :---: |
@@ -261,6 +261,9 @@ Total verified rules indexed in this build: **97**.
 | 📦 CHASSIS | `SY480_Gen12` | `ISOLATION` | `HU4B2A3` | `—` | When applying support services in OCA multi-icon solutions, NEVER check "Apply displayed install/support to all icons in | 1x |
 | 📦 CHASSIS | `GLOBAL` | `PROCEDURE` | `HU4B2A3` | `—` | When OCA CLIC Rules 99916598/99916599 persist after correcting support quantities, the stale rules cache must be flushed | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `PLACEMENT` | `HA124A1#5ZM` | `HA124A1#5ZQ` | Synergy startup services (HA124A1#5ZM First Frame Onsite, HA124A1#5ZQ Additional Frame Onsite) must be placed ONLY at th | 1x |
+| 📦 CHASSIS | `SY480_Gen12` | `EXCLUSION_UNBUILDABLE` | `R3P67A` | `Q2E58AAE` | On HPE Synergy 12000 Frames (P51174-B21) populated solely with SY480 Gen12 compute nodes (P68217-B21), selecting Virtual | 1x |
+| 📦 CHASSIS | `SY480_Gen12` | `STANDALONE_ORDERING_TAXONOMY` | `R3P67A` | `R3P67AAE` | R3P67A is a Factory Integrated Option (FIO LTU) ending in 'A', which strictly requires sub-iteming under a factory CTO c | 1x |
+| 📦 CHASSIS | `SY480_Gen12` | `MULTI_ORDER_PARTITIONING_PATTERN` | `P51174-B21` | `Q2E58AAE` | When a multi-frame Synergy deployment (e.g. 2 frames, 24 nodes) is partitioned into separate commercial orders (Option B | 1x |
 
 ---
 *End of Master Running Knowledge & Learnings Charter. Auto-generated and synchronized by Antigravity AI.*
