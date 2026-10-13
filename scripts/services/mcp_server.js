@@ -16,7 +16,7 @@ const {
 } = require('../lib/boq/boq_evaluator.js');
 const { executeNotebookQuery } = require('../lib/notebook/notebook_query_utils.js');
 const { queryLocalKnowledgeBase } = require('../lib/rag/local_rag_search.js');
-const { loadNotebookConfig, getNotebookIdForChassis, getNotebookDegradedMode } = require('../lib/sync/knowledge_sync.js');
+const { loadNotebookConfig, getNotebookIdForChassis, getNotebookDegradedMode, normalizeChassisName } = require('../lib/sync/knowledge_sync.js');
 const { processPortalFeedback } = require('../lib/feedback/feedback_loop.js');
 const { listAllCatalogs } = require('../lib/catalog/catalog_discovery.js');
 
@@ -224,26 +224,30 @@ async function executeToolRequest(request, extra) {
         return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
       }
       case "query_notebooklm": {
+        const chassisId = normalizeChassisName(args.chassis_id);
         const cfg = loadNotebookConfig();
-        const notebookId = getNotebookIdForChassis(cfg, args.chassis_id);
+        const notebookId = getNotebookIdForChassis(cfg, chassisId) || getNotebookIdForChassis(cfg, args.chassis_id);
         let result;
         if (!notebookId) {
           // No notebook mapped or disabled — return degraded mode rather than passing null
-          const degradedMode = getNotebookDegradedMode(cfg, args.chassis_id);
-          const localResult = queryLocalKnowledgeBase(args.query, args.chassis_id);
+          const degradedMode = getNotebookDegradedMode(cfg, chassisId) || getNotebookDegradedMode(cfg, args.chassis_id);
+          const localResult = queryLocalKnowledgeBase(args.query, chassisId);
           result = { ...localResult, source: 'LOCAL_RAG_NO_NOTEBOOK_MAPPED', degradedMode };
         } else {
-          result = await executeNotebookQuery(notebookId, args.query, { context: { chassis: args.chassis_id }, signal });
+          result = await executeNotebookQuery(notebookId, args.query, { context: { chassis: chassisId }, signal });
           throwIfRequestAborted(signal);
         }
         return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
       }
       case "query_catalog_db": {
-        const result = queryLocalKnowledgeBase(args.query, args.chassis_id);
+        const chassisId = normalizeChassisName(args.chassis_id);
+        const result = queryLocalKnowledgeBase(args.query, chassisId);
         return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
       }
       case "simulate_build": {
-        const result = evaluateBOQMultiAspect(items, { chassis: args.chassis_id });
+        const chassisId = normalizeChassisName(args.chassis_id);
+        const cat = listAllCatalogs().find(c => c.id === chassisId || c.id === args.chassis_id);
+        const result = evaluateBOQMultiAspect(items, { chassis: chassisId, targetDir: cat?.catalogDir });
         const envelope = {
           simulationType: 'LOCAL_PHYSICAL_MATH_SIMULATION',
           portalValidationStatus: 'PORTAL VALIDATION PENDING',
@@ -252,10 +256,11 @@ async function executeToolRequest(request, extra) {
         return { content: [{ type: "text", text: JSON.stringify(envelope, null, 2) }] };
       }
       case "record_knowledge_delta": {
-        const cat = listAllCatalogs().find(c => c.id === args.chassis_id);
+        const chassisId = normalizeChassisName(args.chassis_id);
+        const cat = listAllCatalogs().find(c => c.id === chassisId || c.id === args.chassis_id);
         let outputDir = cat ? cat.catalogDir : null;
         if (!outputDir) {
-          const rawChassisId = String(args.chassis_id || '').trim();
+          const rawChassisId = String(chassisId || args.chassis_id || '').trim();
           if (!rawChassisId || !rawChassisId.replace(/[^a-zA-Z0-9]/g, '')) throw new Error('Invalid chassis_id');
           const cleanChassisId = rawChassisId.replace(/[^a-zA-Z0-9_-]/g, '_');
           outputDir = path.resolve(__dirname, '..', '..', 'outputs', cleanChassisId);
