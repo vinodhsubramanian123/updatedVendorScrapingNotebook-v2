@@ -44,6 +44,7 @@ export default function ValueEngineeringPanel({ valueEngineering }) {
         </div>
 
         <button
+          aria-expanded={isExpanded}
           onClick={() => setIsExpanded(!isExpanded)}
           className="p-1.5 rounded-lg text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors flex items-center gap-1 text-xs font-semibold"
         >
