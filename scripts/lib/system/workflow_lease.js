@@ -7,8 +7,27 @@ const CLEANUP_ATTEMPTS = 3;
 
 function isPidAlive(pid) {
   if (!Number.isSafeInteger(pid) || pid <= 0) return true;
-  try { process.kill(pid, 0); return true; }
-  catch (error) { return error.code !== 'ESRCH'; }
+  if (pid === process.pid) return true;
+  try {
+    process.kill(pid, 0);
+  } catch (error) {
+    return error.code !== 'ESRCH';
+  }
+  if (process.platform === 'win32') {
+    try {
+      const { execFileSync } = require('child_process');
+      const out = execFileSync('tasklist', ['/FI', `PID eq ${pid}`, '/FO', 'CSV', '/NH'], {
+        encoding: 'utf8',
+        timeout: 3000,
+        windowsHide: true,
+        stdio: ['pipe', 'pipe', 'ignore']
+      });
+      return /node\.exe|electron\.exe/i.test(out);
+    } catch (_) {
+      return true;
+    }
+  }
+  return true;
 }
 
 function busy(name, file, cause) {
@@ -73,8 +92,15 @@ function initializeHandle(file, holder) {
 }
 
 function readDeadClaim(file) {
-  const identity = fs.statSync(file);
-  const token = fs.readFileSync(file, 'utf8');
+  let identity;
+  let token;
+  try {
+    identity = fs.statSync(file);
+    token = fs.readFileSync(file, 'utf8');
+  } catch (error) {
+    if (error.code === 'ENOENT') return null;
+    throw error;
+  }
   const lines = token.trimEnd().split('\n');
   const pid = /^\d+$/.test(lines[0]) ? Number(lines[0]) : NaN;
   const timestamp = lines[1];
@@ -138,8 +164,11 @@ function acquireClaim(name, claimFile, holder) {
 
 function removeDeadLease(name, file) {
   let content;
-  try { content = fs.readFileSync(file, 'utf8'); }
-  catch (error) {
+  let identity;
+  try {
+    content = fs.readFileSync(file, 'utf8');
+    identity = fs.statSync(file);
+  } catch (error) {
     if (error.code === 'ENOENT') return;
     if (BUSY_CODES.has(error.code)) throw busy(name, file, error);
     throw error;
@@ -147,7 +176,7 @@ function removeDeadLease(name, file) {
   const pidText = content.split('\n')[0].trim();
   if (!/^\d+$/.test(pidText) || isPidAlive(Number(pidText))) throw busy(name, file);
   // Claim ownership serializes cooperating writers, including stale-lock cleanup.
-  const candidate = { file, identity: fs.statSync(file), token: content, initialized: true };
+  const candidate = { file, identity, token: content, initialized: true };
   removeOwned(candidate);
 }
 

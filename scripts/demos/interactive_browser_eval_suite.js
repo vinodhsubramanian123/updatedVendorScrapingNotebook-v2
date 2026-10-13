@@ -9,7 +9,6 @@
 
 const { chromium } = require('playwright');
 const path = require('path');
-const fs = require('fs');
 const { safeWriteJsonAtomic } = require('../lib/system/fs_compat.js');
 const { launchPlaywrightChromium } = require('../lib/scraper/browser_launcher.js');
 

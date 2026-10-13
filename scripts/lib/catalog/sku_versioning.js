@@ -70,7 +70,7 @@ function getSkuAuditHistory(targetSku, chassisDir) {
   if (!targetSku) throw new Error('Target SKU is required for version audit');
   
   const resolvedChassisDir = resolveChassisDirectory(chassisDir);
-  const cleanSku = String(targetSku).replace(/[^a-zA-Z0-9\-]/g, '').trim();
+  const cleanSku = String(targetSku).replace(/[^a-zA-Z0-9-]/g, '').trim();
   const historyDir = path.join(resolvedChassisDir, 'history');
   
   const auditResult = {
@@ -346,7 +346,7 @@ function getHistoricalSkuPrice(targetSku, targetDateOrDir, maybeChassisDir) {
 
   dir = resolveChassisDirectory(dir);
   const audit = dir ? getSkuAuditHistory(targetSku, dir) : { priceTimeline: [] };
-  const cleanSku = String(targetSku).replace(/[^a-zA-Z0-9\-]/g, '').trim();
+  const cleanSku = String(targetSku).replace(/[^a-zA-Z0-9-]/g, '').trim();
   const priceTimeline = Array.isArray(audit.priceTimeline) ? audit.priceTimeline : [];
 
   const checkFileForSkuPrice = (filePath) => {
@@ -355,23 +355,25 @@ function getHistoricalSkuPrice(targetSku, targetDateOrDir, maybeChassisDir) {
       if (!catalogPriceCache.has(filePath)) {
         const cat = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
         const map = new Map();
+        const parsePrice = (s) => parseFloat(String(s.priceUsd || s['Unit Price (USD)'] || s['Unit List Price (USD)'] || s.price || 0).replace(/[^0-9.]/g, '')) || 0;
         const entries = Array.isArray(cat.entries) ? cat.entries : [];
         entries.forEach(e => {
           const skus = Array.isArray(e.skus) ? e.skus : [];
           skus.forEach(s => {
-            const k = (s.sku || s['Product #'] || s['SKU'] || '').replace(/[^a-zA-Z0-9\-]/g, '').trim();
-            if (k) map.set(k, s);
+            const k = (s.sku || s['Product #'] || s['SKU'] || '').replace(/[^a-zA-Z0-9-]/g, '').trim();
+            if (k) map.set(k, parsePrice(s));
           });
         });
         if (Array.isArray(cat.skus)) {
           cat.skus.forEach(s => {
-            const k = (s.sku || s['Product #'] || s['SKU'] || '').replace(/[^a-zA-Z0-9\-]/g, '').trim();
-            if (k) map.set(k, s);
+            const k = (s.sku || s['Product #'] || s['SKU'] || '').replace(/[^a-zA-Z0-9-]/g, '').trim();
+            if (k) map.set(k, parsePrice(s));
           });
         }
         catalogPriceCache.set(filePath, map);
       }
       const match = catalogPriceCache.get(filePath).get(cleanSku);
+      if (typeof match === 'number') return match;
       if (match) {
         return parseFloat(String(match.priceUsd || match['Unit Price (USD)'] || match['Unit List Price (USD)'] || match.price || 0).replace(/[^0-9.]/g, '')) || 0;
       }
@@ -379,7 +381,7 @@ function getHistoricalSkuPrice(targetSku, targetDateOrDir, maybeChassisDir) {
     return 0;
   };
 
-  const hasTimelinePrice = priceTimeline.length > 0 && priceTimeline.some(e => Number(e.price) > 0);
+  const hasTimelinePrice = priceTimeline.some(e => Number(e.price) > 0);
 
   if (!hasTimelinePrice) {
     // If no positive price timeline in history, check current catalog, services, and peer fallback price
@@ -732,7 +734,7 @@ function recordVersionSnapshot(catalogData, historyDir) {
   const versionedCatalog = {
     ...catalogData,
     metadata: {
-      ...(catalogData.metadata || {}),
+      ...catalogData.metadata,
       snapshotChecksum: checksum,
       snapshotTimestamp: new Date().toISOString()
     }

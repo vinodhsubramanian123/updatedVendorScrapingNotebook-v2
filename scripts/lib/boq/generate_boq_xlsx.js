@@ -251,71 +251,26 @@ function generateProfessionalBOQ(evalResults, exportPath, chassisId, rankTier, o
  * @param {string} exportPath - Output xlsx file path
  * @param {object} [options] - Optional title/config metadata
  */
-function generatePartnerPortalUploadBOM(clusters, exportPath, _options = {}) {
-  if (exportPath) {
-    if (Array.isArray(clusters) && _options.diagnostic !== true) {
-      throw new Error('Presentation export blocked: Raw clusters have no DeliveryAuthorization. Use the canonical evaluated manifest or explicit diagnostic mode.');
-    }
-    _enforceDeliveryAuthorization(clusters, _options, _options.chassisKey || clusters?.chassis);
-  }
-  const wb = XLSX.utils.book_new();
-  const portalData = [];
-
-  const C_DARK = '0B192C';
-  const C_EMERALD = '008559';
-  const C_SLATE = '1E3E62';
-  const C_ROW_ALT = 'F4F8F6';
-  const C_WHITE = 'FFFFFF';
-  const C_BORDER = 'DDE4E1';
-
-  const borderThin = {
-    top: { style: 'thin', color: { rgb: C_BORDER } },
-    bottom: { style: 'thin', color: { rgb: C_BORDER } },
-    left: { style: 'thin', color: { rgb: C_BORDER } },
-    right: { style: 'thin', color: { rgb: C_BORDER } }
-  };
-
-  const fontBase = (bold = false, color = '000000', size = 10) => ({
-    name: 'Segoe UI',
-    sz: size,
-    bold,
-    color: { rgb: color }
-  });
-
-  const cellStyle = (fillRgb = C_WHITE, bold = false, align = 'left', textRgb = '000000', size = 10) => ({
-    fill: { fgColor: { rgb: fillRgb } },
-    font: fontBase(bold, textRgb, size),
-    alignment: { horizontal: align, vertical: 'center', wrapText: true },
-    border: borderThin
-  });
-
-  const headerStyle = (fillRgb = C_DARK, textRgb = C_WHITE, size = 10) => ({
-    fill: { fgColor: { rgb: fillRgb } },
-    font: fontBase(true, textRgb, size),
-    alignment: { horizontal: 'center', vertical: 'center', wrapText: true },
-    border: borderThin
-  });
-
-  // Ensure clusters is an array and robustly handle evalResults objects
-  let clusterList = [];
-  if (Array.isArray(clusters)) {
-    clusterList = clusters;
-  } else if (clusters && typeof clusters === 'object') {
+function _normalizeClusterList(clusters) {
+  if (Array.isArray(clusters)) return clusters;
+  if (clusters && typeof clusters === 'object') {
     if (Array.isArray(clusters.clusters) && clusters.clusters.length > 0) {
-      clusterList = clusters.clusters;
-    } else {
-      const serverCount = clusters.clusterSizing?.serverCount || clusters.clusterSizing?.totalNodes || clusters.serverCount || clusters.multiplier || 1;
-      const rankedSolution = _getRankedSolutions(clusters)[0];
-      const items = rankedSolution?.skuPartsList || rankedSolution?.skuList || clusters.parsedItems || clusters.items || [];
-      clusterList = [{
-        name: clusters.chassis || 'Server_Cluster',
-        multiplier: serverCount,
-        items: Array.isArray(items) ? items : []
-      }];
+      return clusters.clusters;
     }
-  } else {
-    clusterList = [{ name: 'Default_Cluster', multiplier: 1, items: [] }];
+    const serverCount = clusters.clusterSizing?.serverCount || clusters.clusterSizing?.totalNodes || clusters.serverCount || clusters.multiplier || 1;
+    const rankedSolution = _getRankedSolutions(clusters)[0];
+    const items = rankedSolution?.skuPartsList || rankedSolution?.skuList || clusters.parsedItems || clusters.items || [];
+    return [{
+      name: clusters.chassis || 'Server_Cluster',
+      multiplier: serverCount,
+      items: Array.isArray(items) ? items : []
+    }];
   }
+  return [{ name: 'Default_Cluster', multiplier: 1, items: [] }];
+}
+
+function _buildPortalRowsForClusters(clusterList) {
+  const portalData = [];
   let grandTotal = 0;
   let totalServerNodes = 0;
 
@@ -372,12 +327,45 @@ function generatePartnerPortalUploadBOM(clusters, exportPath, _options = {}) {
     portalData.push(['GRAND TOTAL (ALL CONFIGURATIONS):', '', `${totalServerNodes} Total Server Nodes`, '', '', grandTotal, 'Portal validation pending']);
   }
 
-  const ws = XLSX.utils.aoa_to_sheet(portalData);
-  ws['!cols'] = [
-    { wch: 18 }, { wch: 8 }, { wch: 22 }, { wch: 65 }, { wch: 22 }, { wch: 22 }, { wch: 32 }
-  ];
+  return { portalData, grandTotal, totalServerNodes };
+}
 
-  // Apply cell styling to headers and numeric values
+function _applyPortalSheetFormatting(ws, portalData) {
+  const C_DARK = '0B192C';
+  const C_EMERALD = '008559';
+  const C_SLATE = '1E3E62';
+  const C_ROW_ALT = 'F4F8F6';
+  const C_WHITE = 'FFFFFF';
+  const C_BORDER = 'DDE4E1';
+
+  const borderThin = {
+    top: { style: 'thin', color: { rgb: C_BORDER } },
+    bottom: { style: 'thin', color: { rgb: C_BORDER } },
+    left: { style: 'thin', color: { rgb: C_BORDER } },
+    right: { style: 'thin', color: { rgb: C_BORDER } }
+  };
+
+  const fontBase = (bold = false, color = '000000', size = 10) => ({
+    name: 'Segoe UI',
+    sz: size,
+    bold,
+    color: { rgb: color }
+  });
+
+  const cellStyle = (fillRgb = C_WHITE, bold = false, align = 'left', textRgb = '000000', size = 10) => ({
+    fill: { fgColor: { rgb: fillRgb } },
+    font: fontBase(bold, textRgb, size),
+    alignment: { horizontal: align, vertical: 'center', wrapText: true },
+    border: borderThin
+  });
+
+  const headerStyle = (fillRgb = C_DARK, textRgb = C_WHITE, size = 10) => ({
+    fill: { fgColor: { rgb: fillRgb } },
+    font: fontBase(true, textRgb, size),
+    alignment: { horizontal: 'center', vertical: 'center', wrapText: true },
+    border: borderThin
+  });
+
   for (let r = 0; r < portalData.length; r++) {
     const row = portalData[r];
     if (!row || row.length === 0) continue;
@@ -413,6 +401,26 @@ function generatePartnerPortalUploadBOM(clusters, exportPath, _options = {}) {
       }
     }
   }
+}
+
+function generatePartnerPortalUploadBOM(clusters, exportPath, _options = {}) {
+  if (exportPath) {
+    if (Array.isArray(clusters) && _options.diagnostic !== true) {
+      throw new Error('Presentation export blocked: Raw clusters have no DeliveryAuthorization. Use the canonical evaluated manifest or explicit diagnostic mode.');
+    }
+    _enforceDeliveryAuthorization(clusters, _options, _options.chassisKey || clusters?.chassis);
+  }
+  const wb = XLSX.utils.book_new();
+
+  const clusterList = _normalizeClusterList(clusters);
+  const { portalData } = _buildPortalRowsForClusters(clusterList);
+
+  const ws = XLSX.utils.aoa_to_sheet(portalData);
+  ws['!cols'] = [
+    { wch: 18 }, { wch: 8 }, { wch: 22 }, { wch: 65 }, { wch: 22 }, { wch: 22 }, { wch: 32 }
+  ];
+
+  _applyPortalSheetFormatting(ws, portalData);
 
   XLSX.utils.book_append_sheet(wb, ws, 'Partner Portal Upload BOM');
   if (exportPath) {

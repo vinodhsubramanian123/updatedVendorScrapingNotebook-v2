@@ -211,14 +211,14 @@ function findGenerationalCpuUpgrade(currentSku, currentDesc, catalogData = null,
       const status = s['Lifecycle Status'] || 'ACTIVE';
       if (/obsolete|eol/i.test(status)) return;
       // 5th Gen Intel Xeon Scalable: model pattern x5xx
-      const cpuMatch = d.match(/intel\s+xeon[^\d]+(\d)5\d{2}([a-z\+]?)/i);
+      const cpuMatch = d.match(/intel\s+xeon[^\d]+(\d)5\d{2}([a-z+]?)/i);
       if (cpuMatch) {
         const cCoreMatch = d.match(/(\d+)\s*-?\s*core/i);
         const cCores = cCoreMatch ? parseInt(cCoreMatch[1], 10) : 0;
         const cTdpMatch = d.match(/(\d{2,3})\s*w/i);
         const cTdp = cTdpMatch ? parseInt(cTdpMatch[1], 10) : 0;
         const cIs1P = d.includes('1p') || /\b\d{4}u\b/i.test(d);
-        const price = parseFloat(String(s['Unit Price (USD)'] || s['Price (USD)'] || '0').replace(/[\$,]/g, '')) || 0;
+        const price = parseFloat(String(s['Unit Price (USD)'] || s['Price (USD)'] || '0').replace(/[$,]/g, '')) || 0;
 
         candidates.push({
           sku,
@@ -301,7 +301,7 @@ function findDdr5_5600MemoryUpgrade(currentSku, currentDesc, catalogData = null,
         const cCapMatch = d.match(/(\d+)\s*gb/i);
         const cCap = cCapMatch ? parseInt(cCapMatch[1], 10) : 0;
         const isFio = sku.endsWith('-F21') || d.includes('fio') || d.includes('factory integrated');
-        const price = parseFloat(String(s['Unit Price (USD)'] || s['Price (USD)'] || '0').replace(/[\$,]/g, '')) || 0;
+        const price = parseFloat(String(s['Unit Price (USD)'] || s['Price (USD)'] || '0').replace(/[$,]/g, '')) || 0;
         candidates.push({
           sku,
           description: s.Description || s.description,
@@ -351,96 +351,85 @@ function findDdr5_5600MemoryUpgrade(currentSku, currentDesc, catalogData = null,
  * @param {object} chassisInfo 
  * @returns {Array<object>} Detected troublesome SKU profiles with alternatives
  */
-function identifyTroublesomeSkus(items = [], evalResults = {}, catalogData = null, chassisInfo = {}) {
-  const troublesome = [];
-  const missing = evalResults.missingDependencies || [];
-  const errors = evalResults.errors || [];
-  const warnings = evalResults.warnings || [];
-  const aspects = evalResults.aspects || {};
-  const storage = aspects.storage || {};
-  const network = aspects.network || {};
-  const compute = aspects.compute || {};
-  const support = aspects.support || {};
-
-  // 1. Troublesome 8-Port Storage Controller with > 8 Drives (Forces SAS Expander + Cables)
+function _checkStorageExpanderCascade(items, storage, missing, warnings, catalogData, chassisInfo) {
   const hasExpanderMandate = missing.some(d => d.key === 'SAS_EXPANDER_CARD' || (d.description && d.description.toLowerCase().includes('expander'))) ||
                              warnings.some(w => w.toLowerCase().includes('sas expander'));
-  
-  if (hasExpanderMandate) {
-    const controllerItem = items.find(it => {
-      const desc = (it.description || '').toLowerCase();
-      return (desc.includes('controller') || desc.includes('raid') || it.sku?.startsWith('P')) &&
-             (desc.includes('408i') || desc.includes('8-port') || desc.includes('8 port') || (storage.controllerDirectCapacity === 8));
-    }) || items.find(it => {
-      const desc = (it.description || '').toLowerCase();
-      return desc.includes('controller') || desc.includes('mr408') || desc.includes('mr216');
-    });
+  if (!hasExpanderMandate) return null;
 
-    if (controllerItem) {
-      const alt = findBestAlternativeInCatalog('STORAGE_EXPANDER_CASCADE', controllerItem.sku, { driveCount: storage.driveCount || 16 }, catalogData, chassisInfo);
-      const eliminated = missing
-        .filter(d => d.key === 'SAS_EXPANDER_CARD' || (d.description && (d.description.toLowerCase().includes('expander') || d.description.toLowerCase().includes('cable'))))
-        .map(d => d.sku)
-        .filter(Boolean);
-      troublesome.push({
-        type: 'STORAGE_EXPANDER_CASCADE',
-        originalSku: cleanBaseSKU(controllerItem.sku),
-        originalDesc: controllerItem.description || '8-port Storage Controller',
-        troublesomeReason: `8-port controller requires adding SAS Expander Card and auxiliary cables for ${storage.driveCount || 16} drives.`,
-        alternativeSku: alt.sku,
-        alternativeDesc: alt.description,
-        action: 'SUBSTITUTE_CONTROLLER_DIRECT_ATTACH',
-        functionalEquivalence: `16-port Tri-Mode Controller provides direct-attach connectivity for up to 16 drives with 8GB cache, eliminating SAS Expander card latency and extra cable kits.`,
-        cascadingSkusEliminated: eliminated.length > 0 ? eliminated : ['SAS_EXPANDER_CARD'],
-        presalesValuePitch: 'Upgrading from an 8-port controller with an expander card to a direct 16-port controller eliminates single-point-of-failure expander cards, reduces drive latency, and yields fewer overall BOM line items.'
-      });
-    }
-  }
+  const controllerItem = items.find(it => {
+    const desc = (it.description || '').toLowerCase();
+    return (desc.includes('controller') || desc.includes('raid') || it.sku?.startsWith('P')) &&
+           (desc.includes('408i') || desc.includes('8-port') || desc.includes('8 port') || (storage.controllerDirectCapacity === 8));
+  }) || items.find(it => {
+    const desc = (it.description || '').toLowerCase();
+    return desc.includes('controller') || desc.includes('mr408') || desc.includes('mr216');
+  });
 
-  // 2. Troublesome OCP Storage Controller in Contested OCP Slot Environment (Dual OCP NICs)
+  if (!controllerItem) return null;
+
+  const alt = findBestAlternativeInCatalog('STORAGE_EXPANDER_CASCADE', controllerItem.sku, { driveCount: storage.driveCount || 16 }, catalogData, chassisInfo);
+  const eliminated = missing
+    .filter(d => d.key === 'SAS_EXPANDER_CARD' || (d.description && (d.description.toLowerCase().includes('expander') || d.description.toLowerCase().includes('cable'))))
+    .map(d => d.sku)
+    .filter(Boolean);
+
+  return {
+    type: 'STORAGE_EXPANDER_CASCADE',
+    originalSku: cleanBaseSKU(controllerItem.sku),
+    originalDesc: controllerItem.description || '8-port Storage Controller',
+    troublesomeReason: `8-port controller requires adding SAS Expander Card and auxiliary cables for ${storage.driveCount || 16} drives.`,
+    alternativeSku: alt.sku,
+    alternativeDesc: alt.description,
+    action: 'SUBSTITUTE_CONTROLLER_DIRECT_ATTACH',
+    functionalEquivalence: `16-port Tri-Mode Controller provides direct-attach connectivity for up to 16 drives with 8GB cache, eliminating SAS Expander card latency and extra cable kits.`,
+    cascadingSkusEliminated: eliminated.length > 0 ? eliminated : ['SAS_EXPANDER_CARD'],
+    presalesValuePitch: 'Upgrading from an 8-port controller with an expander card to a direct 16-port controller eliminates single-point-of-failure expander cards, reduces drive latency, and yields fewer overall BOM line items.'
+  };
+}
+
+function _checkContestedOcpSlot(items, network, missing, catalogData, chassisInfo) {
   const isOcpExceeded = network.isExceedingOcpSlots || missing.some(d => d.key === 'OCP_SLOT_EXCEEDED');
-  if (isOcpExceeded) {
-    const ocpControllerItem = items.find(it => {
-      const desc = (it.description || '').toLowerCase();
-      return (desc.includes('controller') || desc.includes('raid')) && (desc.includes('-o') || desc.includes('ocp'));
-    });
+  if (!isOcpExceeded) return null;
 
-    if (ocpControllerItem) {
-      const pcieAlt = findBestAlternativeInCatalog('CONTESTED_OCP_SLOT_COLLISION', ocpControllerItem.sku, {}, catalogData, chassisInfo);
-      troublesome.push({
-        type: 'CONTESTED_OCP_SLOT_COLLISION',
-        originalSku: cleanBaseSKU(ocpControllerItem.sku),
-        originalDesc: ocpControllerItem.description || 'OCP Storage Controller',
-        troublesomeReason: `OCP form-factor storage controller collides with customer's dual 10/25Gb OCP networking adapters, exceeding the 2 physical OCP chassis slots.`,
-        alternativeSku: pcieAlt.sku,
-        alternativeDesc: pcieAlt.description,
-        action: 'PIVOT_FORM_FACTOR_TO_PCIE',
-        functionalEquivalence: `PCIe Standup form-factor controller delivers identical 8GB cache Tri-Mode RAID capability while liberating OCP Slot 1 for customer's requested OCP NIC.`,
-        cascadingSkusEliminated: ['OCP_SLOT_CONFLICT', 'SECONDARY_RISER_CABLE_KIT'],
-        presalesValuePitch: 'Pivoting storage controller to PCIe standup form factor eliminates the unbuildable OCP slot collision while keeping 100% of customer requested 25Gb OCP network adapters.'
-      });
-    }
-  }
+  const ocpControllerItem = items.find(it => {
+    const desc = (it.description || '').toLowerCase();
+    return (desc.includes('controller') || desc.includes('raid')) && (desc.includes('-o') || desc.includes('ocp'));
+  });
 
-  // 3. Troublesome Unsolicited Optional Services / Add-on Software (INV-32)
-  if (support.unsolicitedOptionalItems && support.unsolicitedOptionalItems.length > 0) {
-    support.unsolicitedOptionalItems.forEach(unsolicited => {
-      troublesome.push({
-        type: 'UNSOLICITED_ECOSYSTEM_OUTLIER',
-        originalSku: cleanBaseSKU(unsolicited.sku),
-        originalDesc: unsolicited.description || 'Unsolicited Service / Software',
-        troublesomeReason: `Optional service / add-on was not requested by customer and inflates headline quotation CapEx.`,
-        alternativeSku: null,
-        alternativeDesc: null,
-        action: 'PRUNE_UNSOLICITED_OUTLIER',
-        functionalEquivalence: 'Core hardware deployment remains 100% buildable and functional under standard 3-year basic Tech Care.',
-        cascadingSkusEliminated: [unsolicited.sku],
-        presalesValuePitch: 'Unbundling unrequested startup services ensures the BOM remains strictly focused on core customer hardware specifications, improving commercial tender competitiveness.'
-      });
-    });
-  }
+  if (!ocpControllerItem) return null;
 
-  // 4. Troublesome Memory Speed Mismatch (DDR5-5600 throttled by low-TDP CPU)
+  const pcieAlt = findBestAlternativeInCatalog('CONTESTED_OCP_SLOT_COLLISION', ocpControllerItem.sku, {}, catalogData, chassisInfo);
+  return {
+    type: 'CONTESTED_OCP_SLOT_COLLISION',
+    originalSku: cleanBaseSKU(ocpControllerItem.sku),
+    originalDesc: ocpControllerItem.description || 'OCP Storage Controller',
+    troublesomeReason: `OCP form-factor storage controller collides with customer's dual 10/25Gb OCP networking adapters, exceeding the 2 physical OCP chassis slots.`,
+    alternativeSku: pcieAlt.sku,
+    alternativeDesc: pcieAlt.description,
+    action: 'PIVOT_FORM_FACTOR_TO_PCIE',
+    functionalEquivalence: `PCIe Standup form-factor controller delivers identical 8GB cache Tri-Mode RAID capability while liberating OCP Slot 1 for customer's requested OCP NIC.`,
+    cascadingSkusEliminated: ['OCP_SLOT_CONFLICT', 'SECONDARY_RISER_CABLE_KIT'],
+    presalesValuePitch: 'Pivoting storage controller to PCIe standup form factor eliminates the unbuildable OCP slot collision while keeping 100% of customer requested 25Gb OCP network adapters.'
+  };
+}
+
+function _checkUnsolicitedEcosystem(support) {
+  if (!support.unsolicitedOptionalItems || support.unsolicitedOptionalItems.length === 0) return [];
+  return support.unsolicitedOptionalItems.map(unsolicited => ({
+    type: 'UNSOLICITED_ECOSYSTEM_OUTLIER',
+    originalSku: cleanBaseSKU(unsolicited.sku),
+    originalDesc: unsolicited.description || 'Unsolicited Service / Software',
+    troublesomeReason: `Optional service / add-on was not requested by customer and inflates headline quotation CapEx.`,
+    alternativeSku: null,
+    alternativeDesc: null,
+    action: 'PRUNE_UNSOLICITED_OUTLIER',
+    functionalEquivalence: 'Core hardware deployment remains 100% buildable and functional under standard 3-year basic Tech Care.',
+    cascadingSkusEliminated: [unsolicited.sku],
+    presalesValuePitch: 'Unbundling unrequested startup services ensures the BOM remains strictly focused on core customer hardware specifications, improving commercial tender competitiveness.'
+  }));
+}
+
+function _checkMemoryBusSpeedBottleneck(items, compute, catalogData, chassisInfo) {
   const isSilverOrLowTdp = (compute.maxCpuTdpWatts > 0 && compute.maxCpuTdpWatts <= 165) ||
     items.some(it => {
       const d = (it.description || '').toLowerCase();
@@ -452,25 +441,25 @@ function identifyTroublesomeSkus(items = [], evalResults = {}, catalogData = nul
     return (d.includes('5600') || d.includes('6400') || d.includes('5200')) && (d.includes('memory') || d.includes('rdimm') || d.includes('dimm'));
   });
 
-  if (isSilverOrLowTdp && highSpeedMemory) {
-    const memAlt = findBestAlternativeInCatalog('MEMORY_BUS_SPEED_BOTTLENECK', highSpeedMemory.sku, { targetCapacityGb: 32 }, catalogData, chassisInfo);
-    troublesome.push({
-      type: 'MEMORY_BUS_SPEED_BOTTLENECK',
-      originalSku: cleanBaseSKU(highSpeedMemory.sku),
-      originalDesc: highSpeedMemory.description || 'High-Speed Memory',
-      troublesomeReason: 'Intel Xeon Silver processors throttle memory frequency to 4000-4400 MT/s, rendering DDR5-5600 premium investment ineffective.',
-      alternativeSku: memAlt.sku,
-      alternativeDesc: memAlt.description,
-      action: 'ALIGN_MEMORY_BUS_SPEED',
-      functionalEquivalence: 'DDR5-4800 delivers 100% of the effective memory throughput supported by the CPU memory controller at reduced acquisition cost.',
-      cascadingSkusEliminated: [],
-      presalesValuePitch: 'Aligning memory speed with CPU memory bus limits delivers identical throughput without paying for unused frequency headroom.'
-    });
-  }
+  if (!isSilverOrLowTdp || !highSpeedMemory) return null;
 
-  // 5. Troublesome 4th Gen Intel Sapphire Rapids Processor on Dual-Gen Platform (DL380 Gen11)
-  // Proactively modernizes 4th Gen Xeon (e.g. 6414U, 8480+) to active 5th Gen Emerald Rapids (6548Y+, 8570)
-  // and synchronously upgrades paired DDR5-4800 memory to DDR5-5600 Smart FIO memory.
+  const memAlt = findBestAlternativeInCatalog('MEMORY_BUS_SPEED_BOTTLENECK', highSpeedMemory.sku, { targetCapacityGb: 32 }, catalogData, chassisInfo);
+  return {
+    type: 'MEMORY_BUS_SPEED_BOTTLENECK',
+    originalSku: cleanBaseSKU(highSpeedMemory.sku),
+    originalDesc: highSpeedMemory.description || 'High-Speed Memory',
+    troublesomeReason: 'Intel Xeon Silver processors throttle memory frequency to 4000-4400 MT/s, rendering DDR5-5600 premium investment ineffective.',
+    alternativeSku: memAlt.sku,
+    alternativeDesc: memAlt.description,
+    action: 'ALIGN_MEMORY_BUS_SPEED',
+    functionalEquivalence: 'DDR5-4800 delivers 100% of the effective memory throughput supported by the CPU memory controller at reduced acquisition cost.',
+    cascadingSkusEliminated: [],
+    presalesValuePitch: 'Aligning memory speed with CPU memory bus limits delivers identical throughput without paying for unused frequency headroom.'
+  };
+}
+
+function _checkGenerationalCpuAndMemory(items, missing, chassisInfo, catalogData) {
+  const results = [];
   const isGen11Platform = (chassisInfo?.gen || '').includes('11') || (chassisInfo?.model || '').includes('Gen11') ||
     items.some(it => (it.description || '').toLowerCase().includes('gen11') || (it.sku || '').toLowerCase().includes('p52533') || (it.sku || '').toLowerCase().includes('p52534'));
 
@@ -478,58 +467,84 @@ function identifyTroublesomeSkus(items = [], evalResults = {}, catalogData = nul
     const d = (it.description || '').toLowerCase();
     const sku = cleanBaseSKU(it.sku);
     return (d.includes('processor') || d.includes('xeon') || sku.startsWith('P')) &&
-      (/intel\s+xeon[^\d]+(\d)4\d{2}([a-z\+]?)/i.test(d) || d.includes('6414u') || d.includes('8480+'));
+      (/intel\s+xeon[^\d]+(\d)4\d{2}([a-z+]?)/i.test(d) || d.includes('6414u') || d.includes('8480+'));
   });
 
-  if (isGen11Platform && gen4CpuItem) {
-    const altCpu = findBestAlternativeInCatalog('GENERATIONAL_CPU_OBSOLESCENCE', gen4CpuItem.sku, { originalDesc: gen4CpuItem.description }, catalogData, chassisInfo);
-    if (altCpu) {
-      troublesome.push({
-        type: 'GENERATIONAL_CPU_OBSOLESCENCE',
-        originalSku: cleanBaseSKU(gen4CpuItem.sku),
-        originalDesc: gen4CpuItem.description || 'Intel 4th Gen Xeon Processor',
-        troublesomeReason: `4th Gen Intel Sapphire Rapids processor carries impending obsolescence risk (6414U is discontinued OB; 8480+ is legacy) and constrains memory bus to 4800 MT/s.`,
-        alternativeSku: altCpu.sku,
-        alternativeDesc: altCpu.description,
-        action: 'UPGRADE_GENERATIONAL_CPU',
-        functionalEquivalence: `5th Gen Intel Emerald Rapids processor (${altCpu.sku}) delivers drop-in socket compatibility, higher IPC and clock frequencies at identical thermal envelope, and active production lifecycle.`,
-        cascadingSkusEliminated: [],
-        presalesValuePitch: `Upgrading 4th Gen Intel Sapphire Rapids to active 5th Gen Intel Emerald Rapids eliminates 90-day/OB obsolescence risk, increases memory throughput by +16.7% (5600 MT/s vs 4800 MT/s), delivers higher base/boost frequencies at identical TDP envelopes, and matches HPE factory validated solution.`
-      });
+  if (!isGen11Platform || !gen4CpuItem) return results;
 
-      // Synchronously find paired DDR5-4800 memory items and upgrade to DDR5-5600
-      const ddr4800MemItems = items.filter(it => {
-        const d = (it.description || '').toLowerCase();
-        return (d.includes('4800') || d.includes('ddr5-4800')) && (d.includes('memory') || d.includes('rdimm') || d.includes('smart memory'));
-      });
+  const altCpu = findBestAlternativeInCatalog('GENERATIONAL_CPU_OBSOLESCENCE', gen4CpuItem.sku, { originalDesc: gen4CpuItem.description }, catalogData, chassisInfo);
+  if (!altCpu) return results;
 
-      const isCto = items.some(it => (it.description || '').toLowerCase().includes('configure-to-order') || (it.description || '').toLowerCase().includes('cto'));
+  results.push({
+    type: 'GENERATIONAL_CPU_OBSOLESCENCE',
+    originalSku: cleanBaseSKU(gen4CpuItem.sku),
+    originalDesc: gen4CpuItem.description || 'Intel 4th Gen Xeon Processor',
+    troublesomeReason: `4th Gen Intel Sapphire Rapids processor carries impending obsolescence risk (6414U is discontinued OB; 8480+ is legacy) and constrains memory bus to 4800 MT/s.`,
+    alternativeSku: altCpu.sku,
+    alternativeDesc: altCpu.description,
+    action: 'UPGRADE_GENERATIONAL_CPU',
+    functionalEquivalence: `5th Gen Intel Emerald Rapids processor (${altCpu.sku}) delivers drop-in socket compatibility, higher IPC and clock frequencies at identical thermal envelope, and active production lifecycle.`,
+    cascadingSkusEliminated: [],
+    presalesValuePitch: `Upgrading 4th Gen Intel Sapphire Rapids to active 5th Gen Intel Emerald Rapids eliminates 90-day/OB obsolescence risk, increases memory throughput by +16.7% (5600 MT/s vs 4800 MT/s), delivers higher base/boost frequencies at identical TDP envelopes, and matches HPE factory validated solution.`
+  });
 
-      // Find any aspect fix parts injected for DDR5-4800 (e.g. P43328-F21, P43334-F21) to eliminate them
-      const eliminatedFioFixes = missing
-        .filter(d => (d.description || '').toLowerCase().includes('fio') && ((d.description || '').toLowerCase().includes('p433') || (d.sku || '').startsWith('P433')))
-        .map(d => d.sku)
-        .filter(Boolean);
+  // Synchronously find paired DDR5-4800 memory items and upgrade to DDR5-5600
+  const ddr4800MemItems = items.filter(it => {
+    const d = (it.description || '').toLowerCase();
+    return (d.includes('4800') || d.includes('ddr5-4800')) && (d.includes('memory') || d.includes('rdimm') || d.includes('smart memory'));
+  });
 
-      ddr4800MemItems.forEach(memItem => {
-        const altMem = findBestAlternativeInCatalog('GENERATIONAL_MEMORY_COUPLING', memItem.sku, { originalDesc: memItem.description, isCto }, catalogData, chassisInfo);
-        if (altMem) {
-          troublesome.push({
-            type: 'GENERATIONAL_MEMORY_COUPLING',
-            originalSku: cleanBaseSKU(memItem.sku),
-            originalDesc: memItem.description || 'DDR5-4800 Smart Memory Kit',
-            troublesomeReason: `DDR5-4800 memory operates at legacy 4800 MT/s and is architecturally coupled to 4th Gen CPU; 5th Gen CPU mandates DDR5-5600.`,
-            alternativeSku: altMem.sku,
-            alternativeDesc: altMem.description,
-            action: 'UPGRADE_GENERATIONAL_MEMORY',
-            functionalEquivalence: `DDR5-5600 Smart FIO Memory operates at full 5600 MT/s bus speed, matching 5th Gen CPU memory controller bandwidth and natively fulfilling CTO integration.`,
-            cascadingSkusEliminated: eliminatedFioFixes.length > 0 ? eliminatedFioFixes : [memItem.sku.replace(/-B21$/i, '-F21')],
-            presalesValuePitch: `Synchronously upgrading DDR5-4800 memory to DDR5-5600 Smart FIO Memory unlocks +16.7% memory bandwidth and natively satisfies CTO factory integration.`
-          });
-        }
+  const isCto = items.some(it => (it.description || '').toLowerCase().includes('configure-to-order') || (it.description || '').toLowerCase().includes('cto'));
+
+  // Find any aspect fix parts injected for DDR5-4800 (e.g. P43328-F21, P43334-F21) to eliminate them
+  const eliminatedFioFixes = missing
+    .filter(d => (d.description || '').toLowerCase().includes('fio') && ((d.description || '').toLowerCase().includes('p433') || (d.sku || '').startsWith('P433')))
+    .map(d => d.sku)
+    .filter(Boolean);
+
+  ddr4800MemItems.forEach(memItem => {
+    const altMem = findBestAlternativeInCatalog('GENERATIONAL_MEMORY_COUPLING', memItem.sku, { originalDesc: memItem.description, isCto }, catalogData, chassisInfo);
+    if (altMem) {
+      results.push({
+        type: 'GENERATIONAL_MEMORY_COUPLING',
+        originalSku: cleanBaseSKU(memItem.sku),
+        originalDesc: memItem.description || 'DDR5-4800 Smart Memory Kit',
+        troublesomeReason: `DDR5-4800 memory operates at legacy 4800 MT/s and is architecturally coupled to 4th Gen CPU; 5th Gen CPU mandates DDR5-5600.`,
+        alternativeSku: altMem.sku,
+        alternativeDesc: altMem.description,
+        action: 'UPGRADE_GENERATIONAL_MEMORY',
+        functionalEquivalence: `DDR5-5600 Smart FIO Memory operates at full 5600 MT/s bus speed, matching 5th Gen CPU memory controller bandwidth and natively fulfilling CTO integration.`,
+        cascadingSkusEliminated: eliminatedFioFixes.length > 0 ? eliminatedFioFixes : [memItem.sku.replace(/-B21$/i, '-F21')],
+        presalesValuePitch: `Synchronously upgrading DDR5-4800 memory to DDR5-5600 Smart FIO Memory unlocks +16.7% memory bandwidth and natively satisfies CTO factory integration.`
       });
     }
-  }
+  });
+
+  return results;
+}
+
+function identifyTroublesomeSkus(items = [], evalResults = {}, catalogData = null, chassisInfo = {}) {
+  const troublesome = [];
+  const missing = evalResults.missingDependencies || [];
+  const warnings = evalResults.warnings || [];
+  const aspects = evalResults.aspects || {};
+  const storage = aspects.storage || {};
+  const network = aspects.network || {};
+  const compute = aspects.compute || {};
+  const support = aspects.support || {};
+
+  const expanderCascade = _checkStorageExpanderCascade(items, storage, missing, warnings, catalogData, chassisInfo);
+  if (expanderCascade) troublesome.push(expanderCascade);
+
+  const contestedOcp = _checkContestedOcpSlot(items, network, missing, catalogData, chassisInfo);
+  if (contestedOcp) troublesome.push(contestedOcp);
+
+  troublesome.push(..._checkUnsolicitedEcosystem(support));
+
+  const memBottleneck = _checkMemoryBusSpeedBottleneck(items, compute, catalogData, chassisInfo);
+  if (memBottleneck) troublesome.push(memBottleneck);
+
+  troublesome.push(..._checkGenerationalCpuAndMemory(items, missing, chassisInfo, catalogData));
 
   return troublesome;
 }

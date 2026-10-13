@@ -10,7 +10,6 @@
 const fs = require('fs');
 const path = require('path');
 const { listAllCatalogs, collectKnowledgeDeltas } = require('../lib/catalog/catalog_discovery.js');
-const { safeWriteJsonAtomic } = require('../lib/system/fs_compat.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
 const OUTPUTS_ROOT = path.join(PROJECT_ROOT, 'outputs');

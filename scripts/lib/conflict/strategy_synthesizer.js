@@ -819,7 +819,6 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
   const pcieStorageBranch = arbitrationBranches.find(b => b.branchId === 'branch_pcie_storage_ocp_nic');
 
   let rank3Parts = [];
-  let rank3Cost = 0;
   let rank3AddonCost = 0;
   let rank3Addons = [];
   let rank3Name = 'Rank 3: High-IOPS & Storage Performance Optimized';
@@ -836,7 +835,6 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
       pcieStorageBranch, baseParts, fixParts, getPrice, loadedCatalog, chassisInfo, items, rank1Cost
     });
     rank3Parts = pcieRes.rank3Parts;
-    rank3Cost = pcieRes.rank3Cost;
     rank3AddonCost = pcieRes.rank3AddonCost;
     rank3CascadingImpact = pcieRes.rank3CascadingImpact;
   } else {
@@ -859,10 +857,8 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
     });
     const isModernizedGen5 = leastDeltaCandidate?.strategyName === 'MODERNIZED_5TH_GEN_PLATFORM';
     const rank3BaseParts = isModernizedGen5 ? rank2Parts : rank1Parts;
-    const rank3BaseCost = isModernizedGen5 ? rank2Cost : rank1Cost;
     rank3Parts = [...rank3BaseParts, ...rank3Addons];
     rank3AddonCost = rank3Addons.reduce((acc, a) => acc + a.extendedPriceUsd, 0);
-    rank3Cost = rank3BaseCost + rank3AddonCost;
     if (isModernizedGen5) {
       rank3Name = 'Rank 3: High-IOPS & Storage Performance Optimized (Modernized 5th Gen Platform)';
       rank3Reasoning = 'Upgrades storage write-cache and smart hybrid battery protection on the modernized 5th Gen platform for enhanced transactional database read/write IOPS.';
@@ -872,7 +868,6 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
   // Rank 4
   const isModernizedGen5 = leastDeltaCandidate?.strategyName === 'MODERNIZED_5TH_GEN_PLATFORM';
   const rank4BaseParts = isModernizedGen5 ? rank2Parts : rank1Parts;
-  const rank4BaseCost = isModernizedGen5 ? rank2Cost : rank1Cost;
   const rank4ConfigAddons = tierConfig.rank4 || [];
   const rank4RawList = rank4ConfigAddons.length > 0
     ? rank4ConfigAddons
@@ -892,7 +887,6 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
   });
   const rank4Parts = [...rank4BaseParts, ...rank4Addons];
   const rank4AddonCost = rank4Addons.reduce((acc, a) => acc + a.extendedPriceUsd, 0);
-  const rank4Cost = rank4BaseCost + rank4AddonCost;
   const rank4Name = isModernizedGen5
     ? 'Rank 4: Maximum Density & Future Scalability Expansion (Modernized 5th Gen Platform)'
     : 'Rank 4: Maximum Density & Future Scalability Expansion';

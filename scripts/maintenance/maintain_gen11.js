@@ -9,8 +9,6 @@
 
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
-const { checkCdpHealth } = require('../lib/catalog/catalog_discovery.js');
 const { safeWriteJsonAtomic } = require('../lib/system/fs_compat.js');
 const { verifyNotebookQuickSpecs } = require('../lib/sync/quickspecs_sync.js');
 

@@ -8,7 +8,7 @@ const fs   = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 const { sendCommand, getOCATarget, connectWS, setupDialogAutoHandler, extractTablesAsRows, extractChunkedText, sleep } = require('../lib/scraper/cdp.js');
-const { emitProgress, emitLog, emitResult } = require('../lib/system/progress.js');
+const { emitResult } = require('../lib/system/progress.js');
 const { updateScrapedRegistry } = require('../lib/catalog/registry.js');
 const { parseProductMeta } = require('../lib/catalog/product_meta.js');
 
@@ -150,9 +150,9 @@ async function main() {
           if (sel.options.length > 0) {
             const rows = [['Product #', 'Description', 'Quantity', 'Price (USD)']];
             sel.options.forEach(opt => {
-              const pnMatch = opt.text.match(/\(([A-Z0-9\-]{5,15})\)/) || opt.text.match(/\b([A-Z0-9]{3}[A-Z0-9\-]{2,20}[A-Z0-9])\b/);
+              const pnMatch = opt.text.match(/\(([A-Z0-9-]{5,15})\)/) || opt.text.match(/\b([A-Z0-9]{3}[A-Z0-9-]{2,20}[A-Z0-9])\b/);
               const pn = pnMatch ? pnMatch[1] : '';
-              const desc = opt.text.replace(/\([A-Z0-9\-]{5,15}\)\s*/, '').trim();
+              const desc = opt.text.replace(/\([A-Z0-9-]{5,15}\)\s*/, '').trim();
 
               if (pn) {
                 rows.push([pn, desc || opt.text, '0', '0.00']);
@@ -201,8 +201,7 @@ async function main() {
 
     console.log(`Family: "${meta.family}", Gen: "${meta.gen}", Chassis: "${meta.cleanName}"`);
 
-    const liveOutputDir = path.join(OUTPUTS_ROOT, meta.family, meta.gen, meta.cleanName);
-    const stagingDir = path.join(OUTPUTS_ROOT, 'temp', `staging_${meta.cleanName.replace(/[^a-zA-Z0-9_\-]/g, '_')}_${Date.now()}`);
+    const stagingDir = path.join(OUTPUTS_ROOT, 'temp', `staging_${meta.cleanName.replace(/[^a-zA-Z0-9_-]/g, '_')}_${Date.now()}`);
     outputDir = stagingDir;
 
     console.log(`\n🛡️ Staging Isolation Active: Scraping & building inside temporary staging directory:`);

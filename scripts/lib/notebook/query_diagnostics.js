@@ -117,7 +117,6 @@ function validateGroundingCitations(processedResult, context = {}) {
     : '';
   const allSources = [...citations, ...references, ...sourcesUsed];
   const allSourceTexts = allSources.map(sourceText).filter(Boolean);
-  const citedSourceIds = allSources.map(sourceId).filter(Boolean).map(String);
   const authoritativeSourceIds = new Set((context.authoritativeSourceIds || []).filter(Boolean).map(String));
 
   // A vetted vendor source may discuss customer requirements or quotations.

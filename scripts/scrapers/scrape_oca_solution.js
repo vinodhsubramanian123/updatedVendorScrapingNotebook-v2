@@ -582,32 +582,20 @@ async function navigateProductNode(ws, targetHint, options = {}) {
   });
 }
 
-async function main() {
-
-  const pipelineStart = Date.now();
-  const logger = require('../lib/system/pipeline_logger.js');
-
-  console.log('================================================================');
-  console.log('🚀 100% GENERIC DYNAMIC HPE OCA SOLUTION SCRAPER PIPELINE');
-  console.log('================================================================\n');
-
-  // ── Startup: Proactive cleanup of orphaned staging and stale failed runs ──
-  cleanupOrphanedStaging(path.join(OUTPUTS_ROOT, 'temp'), logger);
-
+function _parseCliArgs() {
   const chassisArgIdx = process.argv.indexOf('--chassis');
   const queryArgIdx = process.argv.indexOf('--query');
   const targetChassisQuery = (chassisArgIdx !== -1 && process.argv[chassisArgIdx + 1])
     ? process.argv[chassisArgIdx + 1].replace(/_/g, ' ')
     : ((queryArgIdx !== -1 && process.argv[queryArgIdx + 1]) ? process.argv[queryArgIdx + 1] : '');
   const isRecoverMode = process.argv.includes('--recover') || process.argv.includes('--fresh');
-
-  const { ensureChromeBrowserRunning } = require('../lib/scraper/browser_launcher.js');
-  await ensureChromeBrowserRunning(9222);
-
   const navQuery = targetChassisQuery || 'DL380 Gen12';
+  return { targetChassisQuery, isRecoverMode, navQuery };
+}
+
+async function initCdpAndSession({ navQuery, targetChassisQuery, isRecoverMode }) {
   let { pageTarget, chassisDiscovery } = await resolvePageTargetAndChassis({ navQuery, targetChassisQuery, isRecoverMode });
 
-  // STEP 1: CDP Handshake & Session Verification
   emitProgress(1, 10, 'CDP Handshake & Session Verification', 'started', `Connecting to ${pageTarget.title}`, {
     stage: 'CDP_CONNECT', percent: 10
   });
@@ -627,461 +615,469 @@ async function main() {
 
   const { verifyScrapingStep, AtomicStepAnomalyError } = require('../lib/scraper/scraping_verifiability.js');
   const stepTelemetry = {};
-
   const step1Result = verifyScrapingStep(1, { wsConnected: true, ws });
   stepTelemetry[1] = step1Result;
   if (!step1Result.valid) {
     throw new AtomicStepAnomalyError(1, step1Result.stage, step1Result.failure.assertionId, step1Result.failure.message, step1Result.failure);
   }
 
-  let outputDir = '';
-  let meta = {};
-  let catalogJson = '';
-  let catalogXlsx = '';
-  let pdfDestPath = null;
-  let tables = [];
-  let totalLen = 0;
-  let treeInfo = {};
+  await setupDialogAutoHandler(ws);
+
   let networkSniffer = null;
-  let conditionalSkus = [];
-
-
   try {
-    // Enable automated JS dialog & WebLogic modal prompt handler
-    await setupDialogAutoHandler(ws);
-
-    try {
-      const { setupNetworkSniffer } = require('../lib/scraper/cdp.js');
-      networkSniffer = await setupNetworkSniffer(ws);
-      console.log(`  🌐 CDP Network Sniffer active (intercepting backend REST/AJAX rule payloads)...`);
-    } catch (sniffErr) {
-      console.warn(`  ⚠️ Could not initialize CDP Network Sniffer: ${sniffErr.message}`);
-    }
-
-    // STEP 2: Solution Root Navigation & Pre-flight
-    console.log('\n--- STEP 2: Solution Root Discovery & Pre-flight ---');
-    emitProgress(2, 10, 'Solution Root Discovery & Navigation', 'in_progress', 'Locating components tree', {
-      stage: 'PORTAL_NAV', percent: 20
-    });
-
-    const targetHint = (targetChassisQuery || 'DL380 Gen11').toLowerCase();
-
-    // Check if the browser is already inside the server Menu configuration view
-    const menuStateRes = await sendCommand(ws, 'Runtime.evaluate', {
-      expression: `(() => {
-        const tableCount = document.querySelectorAll('table').length;
-        const hasMenu = Boolean(document.querySelector('#extended_overview_menu, .menu_label, .eo_nav_div, a[href*="extended_overview_menu"]') || tableCount > 40);
-        return { hasMenu, tableCount };
-      })()`,
-      returnByValue: true
-    });
-
-    const { hasMenu: alreadyAtMenu, tableCount: currentTables } = menuStateRes.result.value || {};
-    console.log(`Current Page State: hasMenu=${alreadyAtMenu}, tableCount=${currentTables}`);
-
-    if (!alreadyAtMenu) {
-      await navigateProductNode(ws, targetHint, { isComponentsTab: true });
-      await sleep(2500);
-    }
-
-    const treeInfoRes = await sendCommand(ws, 'Runtime.evaluate', {
-      expression: `(() => {
-        const selectNav = document.querySelector('#selectNavTreeOption');
-        const options = selectNav
-          ? Array.from(selectNav.options).map(o => ({ val: o.value, text: o.text.trim() }))
-          : [];
-        const solutionName =
-          document.querySelector('#solution_title, .solution-name, .breadcrumb-item')
-            ?.innerText.trim() || 'OCA Solution';
-        return JSON.stringify({ solutionName, options });
-      })()`,
-      returnByValue: true
-    });
-
-    treeInfo = JSON.parse(treeInfoRes.result.value);
-    console.log(`Discovered Solution Name: "${treeInfo.solutionName}"`);
-    console.log(`Discovered Nodes (${treeInfo.options.length}):`, treeInfo.options.map(o => o.text));
-
-    const step2Result = verifyScrapingStep(2, { solutionName: treeInfo.solutionName });
-    stepTelemetry[2] = step2Result;
-
-    // STEP 3: Navigate into Product Node Menu tab & Profiling
-    console.log('\n--- STEP 3: Navigating into Product Node Menu Catalog ---');
-    emitProgress(3, 10, 'Category Discovery & Profiling', 'in_progress', 'Entering configuration menu', {
-      stage: 'CATEGORY_DISCOVERY', percent: 30
-    });
-
-    if (!alreadyAtMenu) {
-      await navigateProductNode(ws, targetHint, { enterMenu: true });
-      await sleep(4000);
-    }
-
-
-    await sleep(4000);
-
-    // Extract Page Heading & Load Profile BEFORE Step 4
-    const headingRes = await sendCommand(ws, 'Runtime.evaluate', {
-      expression: `(() => {
-        // Priority-ordered selectors to find the most specific product model/description
-        const targetedSelectors = [
-          '.product_description',
-          '[id*="summary_property_description"]',
-          '[id*="summary_property_summary_name"]',
-          '.eo_nav_li.current',
-          '.eo_nav_div',
-          '.configName',
-          '.breadcrumb',
-          '.breadcrumb-item',
-          'h1, h2, h3, h4',
-          '.fancytree-title',
-          '.menu_info',
-          '.menu-title',
-          '#solution_title',
-          'strong, td'
-        ];
-
-        let foundHeading = '';
-        const pattern = /(?:DL|ML|RL|SY|GX)\\d{3}|ProLiant|Alletra|StoreEver|StoreOnce|MSL\\d+|Synergy|Cray|Gen\\d+/i;
-
-        for (const sel of targetedSelectors) {
-          const els = Array.from(document.querySelectorAll(sel));
-          for (const el of els) {
-            const t = (el.innerText || '').trim();
-            if (t && t.length < 200 && pattern.test(t)) {
-              foundHeading = t;
-              break;
-            }
-          }
-          if (foundHeading) break;
-        }
-
-        const rawHeading = foundHeading || document.title;
-        const pageHeading = rawHeading
-          .replace(/Collapse All|Expand All|Expand Subsections|Undo Selection|Remove Defaults|View HPE Recommended only/gi, '')
-          .trim();
-        const qsLink = document.querySelector('a[href*="quickspec"], a.qs-link-a')?.href || '';
-        return JSON.stringify({ pageHeading, qsLink });
-      })()`,
-      returnByValue: true
-    });
-    let { pageHeading, qsLink } = JSON.parse(headingRes.result.value);
-    if (!pageHeading || pageHeading.includes('External OCA') || pageHeading.includes('OCA Solution') || pageHeading.includes('General')) {
-      if (targetChassisQuery) {
-        pageHeading = targetChassisQuery;
-      }
-    }
-    console.log(`Active Product Node Title: "${pageHeading}"`);
-
-    meta = parseProductMeta(pageHeading, targetChassisQuery || pageTarget.title);
-    if (targetChassisQuery && (!meta.gen || meta.gen === 'General')) {
-      const overrideMeta = parseProductMeta(targetChassisQuery);
-      meta.family = overrideMeta.family || meta.family;
-      meta.gen = overrideMeta.gen || meta.gen;
-      meta.cleanName = overrideMeta.cleanName || meta.cleanName;
-    }
-
-    if (targetChassisQuery) {
-      const notebookConfig = JSON.parse(fs.readFileSync(path.join(PROJECT_ROOT, 'scripts', 'config', 'notebooks.json'), 'utf8'));
-      const expectedIdentity = resolveExpectedProductIdentity(targetChassisQuery, notebookConfig);
-      if (!expectedIdentity) {
-        throw new Error(`Product identity gate: requested product "${targetChassisQuery}" is not registered.`);
-      }
-      const observedIdentity = resolveProductIdentity(meta.cleanName, notebookConfig) || { productId: meta.cleanName };
-      if (!observedIdentity || normalize(observedIdentity.productId) !== normalize(expectedIdentity.productId)) {
-        throw new Error(`Product identity gate: requested ${expectedIdentity.productId}, but active OCA page resolved as ${meta.cleanName}. No data was promoted.`);
-      }
-      meta.cleanName = expectedIdentity.productId;
-      meta.family = expectedIdentity.family;
-      meta.gen = expectedIdentity.generation;
-    }
-
-    const { loadProfile } = require('../lib/system/profile_loader.js');
-    const profile = await loadProfile(meta.family, meta.gen);
-    console.log(`Loaded Profiler for Family: "${meta.family}", Gen: "${meta.gen}", Chassis: "${meta.cleanName}"`);
-
-    const step3Result = verifyScrapingStep(3, { cleanName: meta.cleanName, family: meta.family, gen: meta.gen, firewallPassed: true });
-    stepTelemetry[3] = step3Result;
-    if (!step3Result.valid) {
-      throw new AtomicStepAnomalyError(3, step3Result.stage, step3Result.failure.assertionId, step3Result.failure.message, step3Result.failure);
-    }
-
-    const scrollThreshold = profile.scraping_tuning.scrollHeightThreshold || 15000;
-    const targetTabsRegex = profile.scraping_tuning.targetTabsRegex || "pointnext|services|support services|tech care|^bom$";
-
-    // STEP 4: Full Page Section Expansion
-    console.log(`\n--- STEP 4: Expanding Page Sections (Threshold: ${scrollThreshold}px) ---`);
-    emitProgress(4, 10, 'Section Expansion & Multi-Tab Reveal', 'in_progress', `Threshold: ${scrollThreshold}px`, {
-      stage: 'PAGE_EXPAND', percent: 45, category: meta.cleanName
-    });
-
-    const { metrics, menuTables, menuText } = await expandAndVerifyDomSections(ws, scrollThreshold, targetTabsRegex);
-    console.log(`✅ Expansion verified: ${metrics.tablesCount} tables, ${metrics.totalRows} rows — Rule #19 passed.`);
-
-    const step4Result = verifyScrapingStep(4, { tablesCount: metrics.tablesCount, scrollHeight: metrics.scrollHeight, totalRows: metrics.totalRows });
-    stepTelemetry[4] = step4Result;
-    if (!step4Result.valid) {
-      throw new AtomicStepAnomalyError(4, step4Result.stage, step4Result.failure.assertionId, step4Result.failure.message, step4Result.failure);
-    }
-
-    // STEP 5: Extract Dynamic DOM & Metadata
-    console.log('\n--- STEP 5: Extracting DOM & Metadata ---');
-    emitProgress(5, 10, 'DOM Extraction & Tabular Row Scraping', 'in_progress', `${metrics.tablesCount} tables detected`, {
-      stage: 'DOM_EXTRACTION', percent: 60, itemsScraped: metrics.tablesCount, category: meta.cleanName
-    });
-
-    // Shared chunked text extraction
-    console.log('Extracting page text...');
-    const extractedText = await extractChunkedText(ws, 50000);
-    totalLen = extractedText.totalLen;
-    let fullText = extractedText.fullText;
-    console.log(`Extracted text: ${totalLen.toLocaleString()} chars`);
-
-    // Shared table extraction as row arrays
-    console.log('Extracting tables (row arrays)...');
-    tables = await extractTablesAsRows(ws);
-    const tableKey = table => table.tableId || JSON.stringify((table.rows || []).map(row => row.slice(0, 3)));
-    const menuKeys = new Set(menuTables.map(tableKey));
-    tables = [...menuTables, ...tables.filter(table => !menuKeys.has(tableKey(table)))];
-    fullText = `${menuText}\n${fullText}`;
-    console.log(`Extracted ${tables.length} tables.`);
-    const tableDerivedText = deriveTextFromTables(tables);
-    let textExtractionMode = 'FULL_BODY_TEXT';
-    let outsideTableNotesCaptured = true;
-    if (fullText.length < 2000 || fullText.length < tableDerivedText.length * 0.1) {
-      console.warn(`⚠️  Reactive body text collapsed (${fullText.length} chars); using ${tableDerivedText.length.toLocaleString()} chars reconstructed losslessly from extracted table rows.`);
-      fullText = tableDerivedText;
-      totalLen = fullText.length;
-      textExtractionMode = 'TABLE_RECONSTRUCTED_FALLBACK';
-      outsideTableNotesCaptured = false;
-    }
-
-    // Shared section header extraction
-    console.log('Extracting DOM section headers (landmarks)...');
-    const sections = await extractSectionHeaders(ws);
-    console.log(`Extracted ${sections.length} DOM section headers.`);
-
-    // ── Conditional SKU Sweep: Probe ambient-temperature gated SKUs ──
-    console.log('\nRunning conditional SKU visibility sweep (ambient temperature gates)...');
-    conditionalSkus = [];
-    try {
-
-      const hidden = await extractHiddenElements(ws, sendCommand);
-      const seenTables = new Set(tables.map(table => JSON.stringify(table)));
-      conditionalSkus = await probeConditionalSkuVisibility(ws, sendCommand, undefined, async () => {
-        const stateTables = await extractTablesAsRows(ws);
-        for (const table of stateTables) {
-          const key = JSON.stringify(table);
-          if (!seenTables.has(key)) { tables.push(table); seenTables.add(key); }
-        }
-      });
-      const discovered = new Set(conditionalSkus.map(item => item.sku));
-      conditionalSkus.push(...hidden.filter(item => !discovered.has(item.sku)).map(item => ({
-        ...item,
-        conditionType: 'PORTAL_CONDITIONAL_VIEW',
-        operator: 'requires_selection',
-        thresholdDegC: null,
-        visibleAtDefaultC: false,
-        portalVerificationRequired: true
-      })));
-      if (conditionalSkus.length > 0) {
-        console.log(`  🔍 Discovered ${conditionalSkus.length} conditionally-gated SKU(s):`);
-        for (const cs of conditionalSkus) {
-          if (cs.conditionType === 'AMBIENT_GATE' && cs.thresholdDegC !== null) {
-            console.log(`     • ${cs.sku} — AMBIENT_GATE ${cs.operator} ${cs.thresholdDegC}°C`);
-          } else {
-            const detail = cs.ruleContext || cs.evidence || cs.operator || 'requires_selection';
-            console.log(`     • ${cs.sku} — ${cs.conditionType} [${detail}]`);
-          }
-        }
-      } else {
-        console.log('  ✅ No conditional or gated SKUs detected.');
-      }
-    } catch (sweepErr) {
-      throw new Error(`Conditional discovery failed; staging cannot be promoted: ${sweepErr.message}`);
-    }
-
-    const { unavailableRules = [], unavailableSkus = [] } = await sweepUnavailableDomRules(ws, sendCommand);
-
-    const step5Result = verifyScrapingStep(5, { textLength: totalLen, rowsCount: tables.length });
-    stepTelemetry[5] = step5Result;
-    if (!step5Result.valid) {
-      throw new AtomicStepAnomalyError(5, step5Result.stage, step5Result.failure.assertionId, step5Result.failure.message, step5Result.failure);
-    }
-
-    // ── Phantom Chassis Guard ──
-    const BLOCKED_CHASSIS_NAMES = new Set([
-      'External_OCA_Hewlett_Packard_Enterprise', 'General', '', 'outputs',
-      '-------------', 'Output Path', 'Unknown_Chassis', 'OCA Solution', 'Chassis Dir'
-    ]);
-    if (
-      !meta.cleanName ||
-      BLOCKED_CHASSIS_NAMES.has(meta.cleanName) ||
-      !/^[A-Za-z0-9][A-Za-z0-9_-]+$/.test(meta.cleanName) ||
-      meta.cleanName.includes('..') ||
-      meta.cleanName.length > 80
-    ) {
-      throw new Error(
-        `Phantom chassis name rejected: "${meta.cleanName}" (parsed from: "${pageHeading}").\n` +
-        `Ensure you are on the correct Product Node Menu tab in OCA and the page heading contains a recognizable HPE product name.`
-      );
-    }
-
-    console.log(`Family: "${meta.family}", Gen: "${meta.gen}", Chassis: "${meta.cleanName}"`);
-
-    const liveOutputDir = path.join(OUTPUTS_ROOT, meta.family, meta.gen, meta.cleanName);
-    const stagingDir = path.join(OUTPUTS_ROOT, 'temp', `staging_${meta.cleanName.replace(/[^a-zA-Z0-9_-]/g, '_')}_${Date.now()}`);
-    outputDir = stagingDir;
-
-    if (!chassisDiscovery) {
-      const priorDiscoveryPath = path.join(liveOutputDir, 'raw_data', 'chassis_discovery.json');
-      if (fs.existsSync(priorDiscoveryPath)) {
-        try {
-          chassisDiscovery = JSON.parse(fs.readFileSync(priorDiscoveryPath, 'utf8'));
-          if (chassisDiscovery) {
-            chassisDiscovery.reusedAt = new Date().toISOString();
-          }
-        } catch (discoveryErr) {
-          console.warn(`Could not preserve prior chassis discovery evidence: ${discoveryErr.message}`);
-        }
-      }
-
-      const baseSku = resolveBaseSkuForProduct(meta, chassisDiscovery, profile);
-
-      const edtMatch = fullText.match(/EDT[\s\n]*(\d+[\s\n]*-[\s\n]*\d+[\s\n]*days?)/i);
-      const deliveryEstimate = edtMatch ? `EDT ${edtMatch[1].replace(/\s+/g, ' ')}` : (chassisDiscovery?.deliveryEstimate || '');
-
-      if (!chassisDiscovery || chassisDiscovery.selectedSku !== baseSku) {
-        chassisDiscovery = {
-          query: meta.cleanName,
-          selectedSku: baseSku,
-          source: 'HPE OCA Configuration Session via authenticated CDP session',
-          capturedAt: new Date().toISOString(),
-          deliveryEstimate,
-          candidates: [
-            {
-              type: 'dropdown-option',
-              cardSelector: '[data-cand-idx="0"]',
-              optionValue: baseSku,
-              text: `${baseSku} - ${pageHeading}`,
-              sku: baseSku,
-              listPriceUsd: 0,
-              availability: 'Available in OCA product catalog',
-              leadTime: deliveryEstimate,
-              deliveryLabel: '',
-              isBto: false,
-              isTaa: false,
-              isGta: false,
-              isCto: true
-            }
-          ]
-        };
-      } else {
-        chassisDiscovery.capturedAt = new Date().toISOString();
-        chassisDiscovery.deliveryEstimate = deliveryEstimate;
-        if (chassisDiscovery.candidates?.[0]) {
-          chassisDiscovery.candidates[0].leadTime = deliveryEstimate;
-        }
-      }
-    }
-
-    console.log(`\n🛡️ Staging Isolation Active: Scraping & building inside temporary staging directory:`);
-    console.log(`   ${stagingDir}`);
-
-    const rawDir = path.join(outputDir, 'raw_data');
-    fs.mkdirSync(rawDir, { recursive: true });
-
-    const rawJsonPath = path.join(rawDir, 'oca_raw_data_full.json');
-    await networkSniffer?.flush?.();
-    const networkSniffedRules = networkSniffer ? networkSniffer.getCapturedRules() : [];
-    if (networkSniffedRules.length > 0) {
-      console.log(`  📡 Captured ${networkSniffedRules.length} dynamic rule(s) via CDP Network Sniffer.`);
-    }
-
-    const rawData = {
-      timestamp:  new Date().toISOString(),
-      pageTitle:  pageTarget.title,
-      url:        pageTarget.url,
-      nodeText:   pageHeading,
-      qsLink,
-      scrollHeight: metrics.scrollHeight,
-      textLength: totalLen,
-      textExtractionMode,
-      outsideTableNotesCaptured,
-      fullText,
-      sections,
-      tables,
-      tableCount: tables.length,
-      conditionalSkus,
-      conditionalSkusCount: conditionalSkus.length,
-      conditionalDiscovery: 'HIDDEN_DOM_AND_AMBIENT_ONLY_OTHER_MACROS_UNVERIFIED',
-      unavailableRules,
-      unavailableRulesCount: unavailableRules.length,
-      unavailableSkus,
-      unavailableSkusCount: unavailableSkus.length,
-      networkSniffedRules,
-      networkSniffedRulesCount: networkSniffedRules.length,
-      networkCoverage: networkSniffer?.getCoverage?.() || { scope: 'UNAVAILABLE' },
-      chassisDiscovery
-    };
-    const { safeWriteJsonAtomic } = require('../lib/system/fs_compat.js');
-    safeWriteJsonAtomic(rawJsonPath, rawData);
-    if (chassisDiscovery) {
-      safeWriteJsonAtomic(path.join(rawDir, 'chassis_discovery.json'), chassisDiscovery);
-    }
-    console.log(`Raw data JSON saved atomically to staging: ${rawJsonPath}`);
-
-    if (conditionalSkus.length > 0) {
-      safeWriteJsonAtomic(path.join(rawDir, 'conditional_skus.json'), {
-        timestamp: new Date().toISOString(),
-        chassisName: meta.cleanName,
-        totalConditionalSkus: conditionalSkus.length,
-        skus: conditionalSkus
-      });
-      console.log(`Conditional SKUs saved to raw_data/conditional_skus.json`);
-    }
-
-    if (unavailableRules.length > 0 || unavailableSkus.length > 0) {
-      safeWriteJsonAtomic(path.join(rawDir, 'unavailable_rules.json'), {
-        timestamp: new Date().toISOString(),
-        chassisName: meta.cleanName,
-        totalUnavailableRules: unavailableRules.length,
-        totalUnavailableSkus: unavailableSkus.length,
-        rules: unavailableRules,
-        skus: unavailableSkus
-      });
-      console.log(`Unavailable rules & conditional SKUs saved to raw_data/unavailable_rules.json`);
-    }
-
-    if (networkSniffedRules.length > 0) {
-      safeWriteJsonAtomic(path.join(rawDir, 'network_sniffed_rules.json'), {
-        timestamp: new Date().toISOString(),
-        chassisName: meta.cleanName,
-        totalRules: networkSniffedRules.length,
-        rules: networkSniffedRules
-      });
-      console.log(`Network-sniffed rules saved to raw_data/network_sniffed_rules.json`);
-    }
-
-    // QuickSpecs PDF Download
-    pdfDestPath = downloadQuickSpecsPdfSafely(qsLink, outputDir, meta.cleanName);
-  } finally {
-    if (networkSniffer) {
-      try { await networkSniffer.detach(); } catch (_) {}
-    }
-    try { ws.close(); } catch (e) { const _logger = require('../lib/system/pipeline_logger.js'); _logger.warn('SCRAPE', 'Failed to close WebSocket', e); }
+    const { setupNetworkSniffer } = require('../lib/scraper/cdp.js');
+    networkSniffer = await setupNetworkSniffer(ws);
+    console.log(`  🌐 CDP Network Sniffer active (intercepting backend REST/AJAX rule payloads)...`);
+  } catch (sniffErr) {
+    console.warn(`  ⚠️ Could not initialize CDP Network Sniffer: ${sniffErr.message}`);
   }
 
-  // STEP 6: Catalog Parser & Excel Generator in Staging
+  return { ws, pageTarget, chassisDiscovery, stepTelemetry, networkSniffer };
+}
+
+async function discoverSolutionTreeAndMenu(ws, targetHint) {
+  console.log('\n--- STEP 2: Solution Root Discovery & Pre-flight ---');
+  emitProgress(2, 10, 'Solution Root Discovery & Navigation', 'in_progress', 'Locating components tree', {
+    stage: 'PORTAL_NAV', percent: 20
+  });
+
+  const menuStateRes = await sendCommand(ws, 'Runtime.evaluate', {
+    expression: `(() => {
+      const tableCount = document.querySelectorAll('table').length;
+      const hasMenu = Boolean(document.querySelector('#extended_overview_menu, .menu_label, .eo_nav_div, a[href*="extended_overview_menu"]') || tableCount > 40);
+      return { hasMenu, tableCount };
+    })()`,
+    returnByValue: true
+  });
+
+  const { hasMenu: alreadyAtMenu, tableCount: currentTables } = menuStateRes.result.value || {};
+  console.log(`Current Page State: hasMenu=${alreadyAtMenu}, tableCount=${currentTables}`);
+
+  if (!alreadyAtMenu) {
+    await navigateProductNode(ws, targetHint, { isComponentsTab: true });
+    await sleep(2500);
+  }
+
+  const treeInfoRes = await sendCommand(ws, 'Runtime.evaluate', {
+    expression: `(() => {
+      const selectNav = document.querySelector('#selectNavTreeOption');
+      const options = selectNav
+        ? Array.from(selectNav.options).map(o => ({ val: o.value, text: o.text.trim() }))
+        : [];
+      const solutionName =
+        document.querySelector('#solution_title, .solution-name, .breadcrumb-item')
+          ?.innerText.trim() || 'OCA Solution';
+      return JSON.stringify({ solutionName, options });
+    })()`,
+    returnByValue: true
+  });
+
+  const treeInfo = JSON.parse(treeInfoRes.result.value);
+  console.log(`Discovered Solution Name: "${treeInfo.solutionName}"`);
+  console.log(`Discovered Nodes (${treeInfo.options.length}):`, treeInfo.options.map(o => o.text));
+
+  const { verifyScrapingStep } = require('../lib/scraper/scraping_verifiability.js');
+  const step2Result = verifyScrapingStep(2, { solutionName: treeInfo.solutionName });
+
+  console.log('\n--- STEP 3: Navigating into Product Node Menu Catalog ---');
+  emitProgress(3, 10, 'Category Discovery & Profiling', 'in_progress', 'Entering configuration menu', {
+    stage: 'CATEGORY_DISCOVERY', percent: 30
+  });
+
+  if (!alreadyAtMenu) {
+    await navigateProductNode(ws, targetHint, { enterMenu: true });
+    await sleep(4000);
+  }
+  await sleep(4000);
+
+  return { treeInfo, alreadyAtMenu, step2Result };
+}
+
+async function resolveActiveProductAndProfile(ws, targetChassisQuery, pageTarget) {
+  const headingRes = await sendCommand(ws, 'Runtime.evaluate', {
+    expression: `(() => {
+      const targetedSelectors = [
+        '.product_description',
+        '[id*="summary_property_description"]',
+        '[id*="summary_property_summary_name"]',
+        '.eo_nav_li.current',
+        '.eo_nav_div',
+        '.configName',
+        '.breadcrumb',
+        '.breadcrumb-item',
+        'h1, h2, h3, h4',
+        '.fancytree-title',
+        '.menu_info',
+        '.menu-title',
+        '#solution_title',
+        'strong, td'
+      ];
+
+      let foundHeading = '';
+      const pattern = /(?:DL|ML|RL|SY|GX)\\d{3}|ProLiant|Alletra|StoreEver|StoreOnce|MSL\\d+|Synergy|Cray|Gen\\d+/i;
+
+      for (const sel of targetedSelectors) {
+        const els = Array.from(document.querySelectorAll(sel));
+        for (const el of els) {
+          const t = (el.innerText || '').trim();
+          if (t && t.length < 200 && pattern.test(t)) {
+            foundHeading = t;
+            break;
+          }
+        }
+        if (foundHeading) break;
+      }
+
+      const rawHeading = foundHeading || document.title;
+      const pageHeading = rawHeading
+        .replace(/Collapse All|Expand All|Expand Subsections|Undo Selection|Remove Defaults|View HPE Recommended only/gi, '')
+        .trim();
+      const qsLink = document.querySelector('a[href*="quickspec"], a.qs-link-a')?.href || '';
+      return JSON.stringify({ pageHeading, qsLink });
+    })()`,
+    returnByValue: true
+  });
+  let { pageHeading, qsLink } = JSON.parse(headingRes.result.value);
+  if (!pageHeading || pageHeading.includes('External OCA') || pageHeading.includes('OCA Solution') || pageHeading.includes('General')) {
+    if (targetChassisQuery) {
+      pageHeading = targetChassisQuery;
+    }
+  }
+  console.log(`Active Product Node Title: "${pageHeading}"`);
+
+  const meta = parseProductMeta(pageHeading, targetChassisQuery || pageTarget.title);
+  if (targetChassisQuery && (!meta.gen || meta.gen === 'General')) {
+    const overrideMeta = parseProductMeta(targetChassisQuery);
+    meta.family = overrideMeta.family || meta.family;
+    meta.gen = overrideMeta.gen || meta.gen;
+    meta.cleanName = overrideMeta.cleanName || meta.cleanName;
+  }
+
+  if (targetChassisQuery) {
+    const notebookConfig = JSON.parse(fs.readFileSync(path.join(PROJECT_ROOT, 'scripts', 'config', 'notebooks.json'), 'utf8'));
+    const expectedIdentity = resolveExpectedProductIdentity(targetChassisQuery, notebookConfig);
+    if (!expectedIdentity) {
+      throw new Error(`Product identity gate: requested product "${targetChassisQuery}" is not registered.`);
+    }
+    const observedIdentity = resolveProductIdentity(meta.cleanName, notebookConfig) || { productId: meta.cleanName };
+    if (!observedIdentity || normalize(observedIdentity.productId) !== normalize(expectedIdentity.productId)) {
+      throw new Error(`Product identity gate: requested ${expectedIdentity.productId}, but active OCA page resolved as ${meta.cleanName}. No data was promoted.`);
+    }
+    meta.cleanName = expectedIdentity.productId;
+    meta.family = expectedIdentity.family;
+    meta.gen = expectedIdentity.generation;
+  }
+
+  const { loadProfile } = require('../lib/system/profile_loader.js');
+  const profile = await loadProfile(meta.family, meta.gen);
+  console.log(`Loaded Profiler for Family: "${meta.family}", Gen: "${meta.gen}", Chassis: "${meta.cleanName}"`);
+
+  const { verifyScrapingStep, AtomicStepAnomalyError } = require('../lib/scraper/scraping_verifiability.js');
+  const step3Result = verifyScrapingStep(3, { cleanName: meta.cleanName, family: meta.family, gen: meta.gen, firewallPassed: true });
+  if (!step3Result.valid) {
+    throw new AtomicStepAnomalyError(3, step3Result.stage, step3Result.failure.assertionId, step3Result.failure.message, step3Result.failure);
+  }
+
+  return { meta, profile, pageHeading, qsLink, step3Result };
+}
+
+async function extractPageDomPayload(ws, meta, profile) {
+  const scrollThreshold = profile.scraping_tuning?.scrollHeightThreshold || 15000;
+  const targetTabsRegex = profile.scraping_tuning?.targetTabsRegex || "pointnext|services|support services|tech care|^bom$";
+
+  console.log(`\n--- STEP 4: Expanding Page Sections (Threshold: ${scrollThreshold}px) ---`);
+  emitProgress(4, 10, 'Section Expansion & Multi-Tab Reveal', 'in_progress', `Threshold: ${scrollThreshold}px`, {
+    stage: 'PAGE_EXPAND', percent: 45, category: meta.cleanName
+  });
+
+  const { metrics, menuTables, menuText } = await expandAndVerifyDomSections(ws, scrollThreshold, targetTabsRegex);
+  console.log(`✅ Expansion verified: ${metrics.tablesCount} tables, ${metrics.totalRows} rows — Rule #19 passed.`);
+
+  const { verifyScrapingStep, AtomicStepAnomalyError } = require('../lib/scraper/scraping_verifiability.js');
+  const step4Result = verifyScrapingStep(4, { tablesCount: metrics.tablesCount, scrollHeight: metrics.scrollHeight, totalRows: metrics.totalRows });
+  if (!step4Result.valid) {
+    throw new AtomicStepAnomalyError(4, step4Result.stage, step4Result.failure.assertionId, step4Result.failure.message, step4Result.failure);
+  }
+
+  console.log('\n--- STEP 5: Extracting DOM & Metadata ---');
+  emitProgress(5, 10, 'DOM Extraction & Tabular Row Scraping', 'in_progress', `${metrics.tablesCount} tables detected`, {
+    stage: 'DOM_EXTRACTION', percent: 60, itemsScraped: metrics.tablesCount, category: meta.cleanName
+  });
+
+  console.log('Extracting page text...');
+  const extractedText = await extractChunkedText(ws, 50000);
+  let totalLen = extractedText.totalLen;
+  let fullText = extractedText.fullText;
+  console.log(`Extracted text: ${totalLen.toLocaleString()} chars`);
+
+  console.log('Extracting tables (row arrays)...');
+  let tables = await extractTablesAsRows(ws);
+  const tableKey = table => table.tableId || JSON.stringify((table.rows || []).map(row => row.slice(0, 3)));
+  const menuKeys = new Set(menuTables.map(tableKey));
+  tables = [...menuTables, ...tables.filter(table => !menuKeys.has(tableKey(table)))];
+  fullText = `${menuText}\n${fullText}`;
+  console.log(`Extracted ${tables.length} tables.`);
+
+  const tableDerivedText = deriveTextFromTables(tables);
+  let textExtractionMode = 'FULL_BODY_TEXT';
+  let outsideTableNotesCaptured = true;
+  if (fullText.length < 2000 || fullText.length < tableDerivedText.length * 0.1) {
+    console.warn(`⚠️  Reactive body text collapsed (${fullText.length} chars); using ${tableDerivedText.length.toLocaleString()} chars reconstructed losslessly from extracted table rows.`);
+    fullText = tableDerivedText;
+    totalLen = fullText.length;
+    textExtractionMode = 'TABLE_RECONSTRUCTED_FALLBACK';
+    outsideTableNotesCaptured = false;
+  }
+
+  console.log('Extracting DOM section headers (landmarks)...');
+  const sections = await extractSectionHeaders(ws);
+  console.log(`Extracted ${sections.length} DOM section headers.`);
+
+  console.log('\nRunning conditional SKU visibility sweep (ambient temperature gates)...');
+  let conditionalSkus = [];
+  try {
+    const hidden = await extractHiddenElements(ws, sendCommand);
+    const seenTables = new Set(tables.map(table => JSON.stringify(table)));
+    conditionalSkus = await probeConditionalSkuVisibility(ws, sendCommand, undefined, async () => {
+      const stateTables = await extractTablesAsRows(ws);
+      for (const table of stateTables) {
+        const key = JSON.stringify(table);
+        if (!seenTables.has(key)) { tables.push(table); seenTables.add(key); }
+      }
+    });
+    const discovered = new Set(conditionalSkus.map(item => item.sku));
+    conditionalSkus.push(...hidden.filter(item => !discovered.has(item.sku)).map(item => ({
+      ...item,
+      conditionType: 'PORTAL_CONDITIONAL_VIEW',
+      operator: 'requires_selection',
+      thresholdDegC: null,
+      visibleAtDefaultC: false,
+      portalVerificationRequired: true
+    })));
+    if (conditionalSkus.length > 0) {
+      console.log(`  🔍 Discovered ${conditionalSkus.length} conditionally-gated SKU(s):`);
+      for (const cs of conditionalSkus) {
+        if (cs.conditionType === 'AMBIENT_GATE' && cs.thresholdDegC !== null) {
+          console.log(`     • ${cs.sku} — AMBIENT_GATE ${cs.operator} ${cs.thresholdDegC}°C`);
+        } else {
+          const detail = cs.ruleContext || cs.evidence || cs.operator || 'requires_selection';
+          console.log(`     • ${cs.sku} — ${cs.conditionType} [${detail}]`);
+        }
+      }
+    } else {
+      console.log('  ✅ No conditional or gated SKUs detected.');
+    }
+  } catch (sweepErr) {
+    throw new Error(`Conditional discovery failed; staging cannot be promoted: ${sweepErr.message}`);
+  }
+
+  const { unavailableRules = [], unavailableSkus = [] } = await sweepUnavailableDomRules(ws, sendCommand);
+
+  const step5Result = verifyScrapingStep(5, { textLength: totalLen, rowsCount: tables.length });
+  if (!step5Result.valid) {
+    throw new AtomicStepAnomalyError(5, step5Result.stage, step5Result.failure.assertionId, step5Result.failure.message, step5Result.failure);
+  }
+
+  return {
+    metrics,
+    totalLen,
+    fullText,
+    tables,
+    sections,
+    conditionalSkus,
+    unavailableRules,
+    unavailableSkus,
+    textExtractionMode,
+    outsideTableNotesCaptured,
+    step4Result,
+    step5Result
+  };
+}
+
+async function setupStagingAndPersistRawData({
+  meta,
+  profile,
+  pageTarget,
+  pageHeading,
+  qsLink,
+  domPayload,
+  chassisDiscovery: initDiscovery,
+  networkSniffer
+}) {
+  const BLOCKED_CHASSIS_NAMES = new Set([
+    'External_OCA_Hewlett_Packard_Enterprise', 'General', '', 'outputs',
+    '-------------', 'Output Path', 'Unknown_Chassis', 'OCA Solution', 'Chassis Dir'
+  ]);
+  if (
+    !meta.cleanName ||
+    BLOCKED_CHASSIS_NAMES.has(meta.cleanName) ||
+    !/^[A-Za-z0-9][A-Za-z0-9_-]+$/.test(meta.cleanName) ||
+    meta.cleanName.includes('..') ||
+    meta.cleanName.length > 80
+  ) {
+    throw new Error(
+      `Phantom chassis name rejected: "${meta.cleanName}" (parsed from: "${pageHeading}").\n` +
+      `Ensure you are on the correct Product Node Menu tab in OCA and the page heading contains a recognizable HPE product name.`
+    );
+  }
+
+  console.log(`Family: "${meta.family}", Gen: "${meta.gen}", Chassis: "${meta.cleanName}"`);
+
+  const liveOutputDir = path.join(OUTPUTS_ROOT, meta.family, meta.gen, meta.cleanName);
+  const stagingDir = path.join(OUTPUTS_ROOT, 'temp', `staging_${meta.cleanName.replace(/[^a-zA-Z0-9_-]/g, '_')}_${Date.now()}`);
+  const outputDir = stagingDir;
+
+  let chassisDiscovery = initDiscovery;
+  if (!chassisDiscovery) {
+    const priorDiscoveryPath = path.join(liveOutputDir, 'raw_data', 'chassis_discovery.json');
+    if (fs.existsSync(priorDiscoveryPath)) {
+      try {
+        chassisDiscovery = JSON.parse(fs.readFileSync(priorDiscoveryPath, 'utf8'));
+        if (chassisDiscovery) {
+          chassisDiscovery.reusedAt = new Date().toISOString();
+        }
+      } catch (discoveryErr) {
+        console.warn(`Could not preserve prior chassis discovery evidence: ${discoveryErr.message}`);
+      }
+    }
+
+    const baseSku = resolveBaseSkuForProduct(meta, chassisDiscovery, profile);
+    const edtMatch = domPayload.fullText.match(/EDT[\s\n]*(\d+[\s\n]*-[\s\n]*\d+[\s\n]*days?)/i);
+    const deliveryEstimate = edtMatch ? `EDT ${edtMatch[1].replace(/\s+/g, ' ')}` : (chassisDiscovery?.deliveryEstimate || '');
+
+    if (!chassisDiscovery || chassisDiscovery.selectedSku !== baseSku) {
+      chassisDiscovery = {
+        query: meta.cleanName,
+        selectedSku: baseSku,
+        source: 'HPE OCA Configuration Session via authenticated CDP session',
+        capturedAt: new Date().toISOString(),
+        deliveryEstimate,
+        candidates: [
+          {
+            type: 'dropdown-option',
+            cardSelector: '[data-cand-idx="0"]',
+            optionValue: baseSku,
+            text: `${baseSku} - ${pageHeading}`,
+            sku: baseSku,
+            listPriceUsd: 0,
+            availability: 'Available in OCA product catalog',
+            leadTime: deliveryEstimate,
+            deliveryLabel: '',
+            isBto: false,
+            isTaa: false,
+            isGta: false,
+            isCto: true
+          }
+        ]
+      };
+    } else {
+      chassisDiscovery.capturedAt = new Date().toISOString();
+      chassisDiscovery.deliveryEstimate = deliveryEstimate;
+      if (chassisDiscovery.candidates?.[0]) {
+        chassisDiscovery.candidates[0].leadTime = deliveryEstimate;
+      }
+    }
+  }
+
+  console.log(`\n🛡️ Staging Isolation Active: Scraping & building inside temporary staging directory:`);
+  console.log(`   ${stagingDir}`);
+
+  const rawDir = path.join(outputDir, 'raw_data');
+  fs.mkdirSync(rawDir, { recursive: true });
+
+  const rawJsonPath = path.join(rawDir, 'oca_raw_data_full.json');
+  await networkSniffer?.flush?.();
+  const networkSniffedRules = networkSniffer ? networkSniffer.getCapturedRules() : [];
+  if (networkSniffedRules.length > 0) {
+    console.log(`  📡 Captured ${networkSniffedRules.length} dynamic rule(s) via CDP Network Sniffer.`);
+  }
+
+  const rawData = {
+    timestamp:  new Date().toISOString(),
+    pageTitle:  pageTarget.title,
+    url:        pageTarget.url,
+    nodeText:   pageHeading,
+    qsLink,
+    scrollHeight: domPayload.metrics.scrollHeight,
+    textLength: domPayload.totalLen,
+    textExtractionMode: domPayload.textExtractionMode,
+    outsideTableNotesCaptured: domPayload.outsideTableNotesCaptured,
+    fullText: domPayload.fullText,
+    sections: domPayload.sections,
+    tables: domPayload.tables,
+    tableCount: domPayload.tables.length,
+    conditionalSkus: domPayload.conditionalSkus,
+    conditionalSkusCount: domPayload.conditionalSkus.length,
+    conditionalDiscovery: 'HIDDEN_DOM_AND_AMBIENT_ONLY_OTHER_MACROS_UNVERIFIED',
+    unavailableRules: domPayload.unavailableRules,
+    unavailableRulesCount: domPayload.unavailableRules.length,
+    unavailableSkus: domPayload.unavailableSkus,
+    unavailableSkusCount: domPayload.unavailableSkus.length,
+    networkSniffedRules,
+    networkSniffedRulesCount: networkSniffedRules.length,
+    networkCoverage: networkSniffer?.getCoverage?.() || { scope: 'UNAVAILABLE' },
+    chassisDiscovery
+  };
+  const { safeWriteJsonAtomic } = require('../lib/system/fs_compat.js');
+  safeWriteJsonAtomic(rawJsonPath, rawData);
+  if (chassisDiscovery) {
+    safeWriteJsonAtomic(path.join(rawDir, 'chassis_discovery.json'), chassisDiscovery);
+  }
+  console.log(`Raw data JSON saved atomically to staging: ${rawJsonPath}`);
+
+  if (domPayload.conditionalSkus.length > 0) {
+    safeWriteJsonAtomic(path.join(rawDir, 'conditional_skus.json'), {
+      timestamp: new Date().toISOString(),
+      chassisName: meta.cleanName,
+      totalConditionalSkus: domPayload.conditionalSkus.length,
+      skus: domPayload.conditionalSkus
+    });
+    console.log(`Conditional SKUs saved to raw_data/conditional_skus.json`);
+  }
+
+  if (domPayload.unavailableRules.length > 0 || domPayload.unavailableSkus.length > 0) {
+    safeWriteJsonAtomic(path.join(rawDir, 'unavailable_rules.json'), {
+      timestamp: new Date().toISOString(),
+      chassisName: meta.cleanName,
+      totalUnavailableRules: domPayload.unavailableRules.length,
+      totalUnavailableSkus: domPayload.unavailableSkus.length,
+      rules: domPayload.unavailableRules,
+      skus: domPayload.unavailableSkus
+    });
+    console.log(`Unavailable rules & conditional SKUs saved to raw_data/unavailable_rules.json`);
+  }
+
+  if (networkSniffedRules.length > 0) {
+    safeWriteJsonAtomic(path.join(rawDir, 'network_sniffed_rules.json'), {
+      timestamp: new Date().toISOString(),
+      chassisName: meta.cleanName,
+      totalRules: networkSniffedRules.length,
+      rules: networkSniffedRules
+    });
+    console.log(`Network-sniffed rules saved to raw_data/network_sniffed_rules.json`);
+  }
+
+  const pdfDestPath = downloadQuickSpecsPdfSafely(qsLink, outputDir, meta.cleanName);
+
+  return { outputDir, liveOutputDir, rawJsonPath, chassisDiscovery, pdfDestPath };
+}
+
+function compileCatalogAndVerifyStaging({
+  outputDir,
+  liveOutputDir,
+  meta,
+  chassisDiscovery,
+  stepTelemetry
+}) {
   console.log('\n--- STEP 6: Catalog Classification & Excel Generation in Staging ---');
   emitProgress(6, 10, 'Aspect Rules Engine & Constraint Graph', 'in_progress', 'Building catalog JSON and TSV intermediates', {
     stage: 'RULES_PARSING', percent: 75, category: meta.cleanName
   });
 
-  catalogJson = path.join(outputDir, `${meta.cleanName}_Catalog.json`);
-  catalogXlsx = path.join(outputDir, `${meta.cleanName}_OCA_Catalog.xlsx`);
+  const catalogJson = path.join(outputDir, `${meta.cleanName}_Catalog.json`);
+  const catalogXlsx = path.join(outputDir, `${meta.cleanName}_OCA_Catalog.xlsx`);
   const rawJsonPath = path.join(outputDir, 'raw_data', 'oca_raw_data_full.json');
 
-  // GAP-05 FIX: Assert raw data JSON exists and has non-zero tables before invoking parser
   if (!fs.existsSync(rawJsonPath)) {
     throw new Error(`Step 6 failure: raw data JSON file not found at ${rawJsonPath}`);
   }
@@ -1091,6 +1087,7 @@ async function main() {
     throw new Error(`Step 6 failure: raw data contains 0 tables; aborting catalog generation.`);
   }
 
+  const { verifyScrapingStep, AtomicStepAnomalyError } = require('../lib/scraper/scraping_verifiability.js');
   const step6Result = verifyScrapingStep(6, {
     ctoVariantsCount: chassisDiscovery?.candidates?.length || 0,
     rawTablesCount
@@ -1098,16 +1095,12 @@ async function main() {
   stepTelemetry[6] = step6Result;
   if (!step6Result.valid) throw new AtomicStepAnomalyError(6, step6Result.stage, step6Result.failure.assertionId, step6Result.failure.message);
 
-  // ── STAGING SEED: Copy ALL critical live files into staging BEFORE any scrape ──
-  const liveOutputDir = path.join(OUTPUTS_ROOT, meta.family, meta.gen, meta.cleanName);
   seedStagingFromLiveWorkspace(liveOutputDir, outputDir, meta);
 
-  // STEP 7: Build Catalog & Generate Multi-Sheet Excel
   emitProgress(7, 10, 'Catalog Generation & Workbook Compilation', 'in_progress', 'Generating 20-sheet Master Excel', {
     stage: 'CATALOG_GEN', percent: 85, category: meta.cleanName
   });
 
-  // GAP-06 FIX: Pass --force-large-diff down to build_catalog.js if specified
   const forceLargeDiff = process.argv.includes('--force-large-diff') || process.env.FORCE_LARGE_CATALOG_DIFF === '1';
   const buildCatalogArgs = [path.join(PROJECT_ROOT, 'scripts', 'catalogs', 'build_catalog.js'), rawJsonPath, catalogJson];
   if (forceLargeDiff) buildCatalogArgs.push('--force-large-diff');
@@ -1133,7 +1126,6 @@ async function main() {
   const previousSkus = new Set(activeRows(previousCatalog).map(row => row.sku || row['Product #']).filter(Boolean));
   const removedCount = [...previousSkus].filter(sku => !currentSkus.has(sku)).length;
 
-  // GAP-05 & GAP-06 FIX: First-run catalogs require currentSkus >= 1; forceLargeDiff overrides ratio
   const isFirstRun = !previousSkus.size;
   const isDiffAnomalySafe = forceLargeDiff || (currentSkus.size > 0 && (isFirstRun ? currentSkus.size >= 1 : removedCount / previousSkus.size <= 0.25));
 
@@ -1146,8 +1138,88 @@ async function main() {
     throw new AtomicStepAnomalyError(7, step7Result.stage, step7Result.failure.assertionId, step7Result.failure.message, step7Result.failure);
   }
 
+  return { catalogJson, catalogXlsx, step6Result, step7Result };
+}
 
-  // STEPS 8, 9, 10: Staging Audit, Live Promotion, and Registry Sync
+async function main() {
+  const pipelineStart = Date.now();
+  const logger = require('../lib/system/pipeline_logger.js');
+
+  console.log('================================================================');
+  console.log('🚀 100% GENERIC DYNAMIC HPE OCA SOLUTION SCRAPER PIPELINE');
+  console.log('================================================================\n');
+
+  cleanupOrphanedStaging(path.join(OUTPUTS_ROOT, 'temp'), logger);
+
+  const { targetChassisQuery, isRecoverMode, navQuery } = _parseCliArgs();
+  const { ensureChromeBrowserRunning } = require('../lib/scraper/browser_launcher.js');
+  await ensureChromeBrowserRunning(9222);
+
+  const { ws, pageTarget, chassisDiscovery: initDiscovery, stepTelemetry, networkSniffer } =
+    await initCdpAndSession({ navQuery, targetChassisQuery, isRecoverMode });
+
+  let chassisDiscovery = initDiscovery;
+  let outputDir = '';
+  let meta = {};
+  let catalogJson = '';
+  let catalogXlsx = '';
+  let pdfDestPath = null;
+  let tables = [];
+  let totalLen = 0;
+  let treeInfo = {};
+  let conditionalSkus = [];
+  let liveOutputDir = '';
+
+  try {
+    const targetHint = (targetChassisQuery || 'DL380 Gen11').toLowerCase();
+    const treeData = await discoverSolutionTreeAndMenu(ws, targetHint);
+    treeInfo = treeData.treeInfo;
+    stepTelemetry[2] = treeData.step2Result;
+
+    const prodData = await resolveActiveProductAndProfile(ws, targetChassisQuery, pageTarget);
+    meta = prodData.meta;
+    const profile = prodData.profile;
+    stepTelemetry[3] = prodData.step3Result;
+
+    const domPayload = await extractPageDomPayload(ws, meta, profile);
+    tables = domPayload.tables;
+    totalLen = domPayload.totalLen;
+    conditionalSkus = domPayload.conditionalSkus;
+    stepTelemetry[4] = domPayload.step4Result;
+    stepTelemetry[5] = domPayload.step5Result;
+
+    const stagingData = await setupStagingAndPersistRawData({
+      meta,
+      profile,
+      pageTarget,
+      pageHeading: prodData.pageHeading,
+      qsLink: prodData.qsLink,
+      domPayload,
+      chassisDiscovery,
+      networkSniffer
+    });
+
+    outputDir = stagingData.outputDir;
+    liveOutputDir = stagingData.liveOutputDir;
+    chassisDiscovery = stagingData.chassisDiscovery;
+    pdfDestPath = stagingData.pdfDestPath;
+  } finally {
+    if (networkSniffer) {
+      try { await networkSniffer.detach(); } catch (_) {}
+    }
+    try { ws.close(); } catch (e) { const _logger = require('../lib/system/pipeline_logger.js'); _logger.warn('SCRAPE', 'Failed to close WebSocket', e); }
+  }
+
+  const catalogData = compileCatalogAndVerifyStaging({
+    outputDir,
+    liveOutputDir,
+    meta,
+    chassisDiscovery,
+    stepTelemetry
+  });
+  catalogJson = catalogData.catalogJson;
+  catalogXlsx = catalogData.catalogXlsx;
+
   await auditAndPromoteStaging({
     outputDir,
     liveOutputDir,
@@ -1162,8 +1234,6 @@ async function main() {
     stepTelemetry,
     conditionalSkusCount: (conditionalSkus || []).length
   });
-
-
 }
 
 let releasePortalLease;

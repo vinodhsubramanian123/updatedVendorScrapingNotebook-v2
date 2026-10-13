@@ -320,7 +320,7 @@ function shouldUseNodeTestRunner(filePath, rootDir) {
 function runSingleTest(testFile, rootDir, timeoutMs, verbose) {
   return new Promise((resolve) => {
     const isNodeTest = shouldUseNodeTestRunner(testFile, rootDir);
-    const args = isNodeTest ? ['--test', testFile] : [testFile];
+    const args = isNodeTest ? ['--expose-gc', '--test', testFile] : ['--expose-gc', testFile];
     const startTime = Date.now();
 
     let stdout = '';

@@ -6,7 +6,6 @@
  * workbooks with full styling, reconciliation, audit matrices, and portal upload formatting.
  */
 
-const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const xlsx = require('xlsx-js-style');
@@ -22,9 +21,6 @@ const C_SLATE = '1E3E62';
 const C_ROW_ALT = 'F4F8F6';
 const C_WHITE = 'FFFFFF';
 const C_BORDER = 'DDE4E1';
-const C_WARN_BG = 'FEF3C7';
-const C_WARN_TEXT = '92400E';
-const C_PASS_BG = 'D1FAE5';
 const C_PASS_TEXT = '065F46';
 
 const borderThin = {

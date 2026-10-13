@@ -177,89 +177,70 @@ function validateUniversalCriteria(output, context = {}) {
   return checks;
 }
 
-/**
- * BOQ Evaluation Criteria (B1–B16)
- */
-function validateBoqEvaluationCriteria(output, context = {}) {
-  const checks = [];
-
-  // B1: All 7 Aspects Evaluated (BLOCK)
+function _checkPhysicalAspects(output) {
   const aspectChecks = output?.aspectChecks || output?.evalSummary?.aspectChecks || output?.evaluation?.aspectChecks || null;
   if (!Array.isArray(aspectChecks) || aspectChecks.length === 0) {
-    checks.push(
-      makeCheck('B1', 'Scoped Physical Checks Completed', 'BLOCK', 'UNKNOWN', 'Physical aspect checks were not evaluated or missing from output.', { evaluated: false })
-    );
-  } else {
-    const uniqueAspects = new Set(aspectChecks.map(a => String(a.id || a.name || '').toUpperCase()).filter(Boolean));
-    const normalizedTokens = new Set(aspectChecks.flatMap(a => [
-      String(a.id || '').toUpperCase(),
-      String(a.id || '').replace(/^ASPECT[_\s-]?/i, ''),
-      String(a.name || '').toUpperCase(),
-      String(a.name || '').split(/[\s&_,]+/)[0].toUpperCase()
-    ]).filter(Boolean));
-    const registeredPhysical = ['COMPUTE_THERMAL', 'MEMORY_CHANNEL', 'STORAGE_TRI_MODE', 'PCIE_RISER', 'NETWORKING_OCP', 'POWER_ENVIRONMENT', 'SUPPORT_MANUFACTURING'];
-    const knownIdentitySet = registeredPhysical.every(id => normalizedTokens.has(id)) ||
-      [1, 2, 3, 4, 5, 6, 7].every(id => normalizedTokens.has(String(id))) ||
-      ['COMPUTE', 'MEMORY', 'STORAGE', 'POWER', 'NETWORKING', 'PCIE', 'SUPPORT'].every(k => normalizedTokens.has(k)) ||
-      ['THERMAL', 'MEMORY', 'STORAGE', 'PCIE', 'NETWORKING', 'POWER', 'SUPPORT'].every(k => normalizedTokens.has(k));
-    if (aspectChecks.length < 7 || uniqueAspects.size < 7 || !knownIdentitySet) {
-      checks.push(
-        makeCheck('B1', 'Scoped Physical Checks Completed', 'BLOCK', 'FAILED',
-          `Incomplete physical checks: expected the 7 registered physical aspects, found ${aspectChecks.length} checks (${uniqueAspects.size} distinct identities; known set=${knownIdentitySet}).`,
-          { aspectCount: aspectChecks.length, uniqueCount: uniqueAspects.size })
-      );
-    } else {
-      const failedAspects = aspectChecks.filter(a => a.status === 'FAIL' || a.status === 'FAILED');
-      const unknownAspects = aspectChecks.filter(a => a.status === 'UNKNOWN' || a.status === 'NOT_EVALUATED');
-      const actionRequiredAspects = aspectChecks.filter(a => a.status === 'ACTION_REQUIRED' || (!['PASS', 'PASSED'].includes(a.status) && !failedAspects.includes(a) && !unknownAspects.includes(a)));
-      if (failedAspects.length > 0) {
-        checks.push(
-          makeCheck('B1', 'Scoped Physical Checks Completed', 'BLOCK', 'FAILED',
-            `Physical checks failed on: ${failedAspects.map(a => a.name || a.id).join(', ')}.`,
-            { failedAspects: failedAspects.map(a => a.id) })
-        );
-      } else if (unknownAspects.length > 0) {
-        checks.push(
-          makeCheck('B1', 'Scoped Physical Checks Completed', 'BLOCK', 'ACTION_REQUIRED',
-            `Physical checks contain UNKNOWN evaluations per INV-105: ${unknownAspects.map(a => a.name || a.id).join(', ')}.`,
-            { unknownAspects: unknownAspects.map(a => a.id) })
-        );
-      } else if (actionRequiredAspects.length > 0) {
-        checks.push(
-          makeCheck('B1', 'Scoped Physical Checks Completed', 'BLOCK', 'ACTION_REQUIRED',
-            `Physical checks require action on: ${actionRequiredAspects.map(a => a.name || a.id).join(', ')}.`,
-            { actionRequiredAspects: actionRequiredAspects.map(a => a.id) })
-        );
-      } else {
-        checks.push(
-          makeCheck('B1', 'Scoped Physical Checks Completed', 'BLOCK', 'PASSED', `All ${aspectChecks.length} physical aspect checks evaluated cleanly.`)
-        );
-      }
-    }
+    return makeCheck('B1', 'Scoped Physical Checks Completed', 'BLOCK', 'UNKNOWN', 'Physical aspect checks were not evaluated or missing from output.', { evaluated: false });
   }
 
-  // B2: At Least 1 Ranked Solution or Explicit Unbuildable Determination (BLOCK)
+  const uniqueAspects = new Set(aspectChecks.map(a => String(a.id || a.name || '').toUpperCase()).filter(Boolean));
+  const normalizedTokens = new Set(aspectChecks.flatMap(a => [
+    String(a.id || '').toUpperCase(),
+    String(a.id || '').replace(/^ASPECT[_\s-]?/i, ''),
+    String(a.name || '').toUpperCase(),
+    String(a.name || '').split(/[\s&_,]+/)[0].toUpperCase()
+  ]).filter(Boolean));
+  const registeredPhysical = ['COMPUTE_THERMAL', 'MEMORY_CHANNEL', 'STORAGE_TRI_MODE', 'PCIE_RISER', 'NETWORKING_OCP', 'POWER_ENVIRONMENT', 'SUPPORT_MANUFACTURING'];
+  const knownIdentitySet = registeredPhysical.every(id => normalizedTokens.has(id)) ||
+    [1, 2, 3, 4, 5, 6, 7].every(id => normalizedTokens.has(String(id))) ||
+    ['COMPUTE', 'MEMORY', 'STORAGE', 'POWER', 'NETWORKING', 'PCIE', 'SUPPORT'].every(k => normalizedTokens.has(k)) ||
+    ['THERMAL', 'MEMORY', 'STORAGE', 'PCIE', 'NETWORKING', 'POWER', 'SUPPORT'].every(k => normalizedTokens.has(k));
+
+  if (aspectChecks.length < 7 || uniqueAspects.size < 7 || !knownIdentitySet) {
+    return makeCheck('B1', 'Scoped Physical Checks Completed', 'BLOCK', 'FAILED',
+      `Incomplete physical checks: expected the 7 registered physical aspects, found ${aspectChecks.length} checks (${uniqueAspects.size} distinct identities; known set=${knownIdentitySet}).`,
+      { aspectCount: aspectChecks.length, uniqueCount: uniqueAspects.size });
+  }
+
+  const failedAspects = aspectChecks.filter(a => a.status === 'FAIL' || a.status === 'FAILED');
+  const unknownAspects = aspectChecks.filter(a => a.status === 'UNKNOWN' || a.status === 'NOT_EVALUATED');
+  const actionRequiredAspects = aspectChecks.filter(a => a.status === 'ACTION_REQUIRED' || (!['PASS', 'PASSED'].includes(a.status) && !failedAspects.includes(a) && !unknownAspects.includes(a)));
+
+  if (failedAspects.length > 0) {
+    return makeCheck('B1', 'Scoped Physical Checks Completed', 'BLOCK', 'FAILED',
+      `Physical checks failed on: ${failedAspects.map(a => a.name || a.id).join(', ')}.`,
+      { failedAspects: failedAspects.map(a => a.id) });
+  }
+  if (unknownAspects.length > 0) {
+    return makeCheck('B1', 'Scoped Physical Checks Completed', 'BLOCK', 'ACTION_REQUIRED',
+      `Physical checks contain UNKNOWN evaluations per INV-105: ${unknownAspects.map(a => a.name || a.id).join(', ')}.`,
+      { unknownAspects: unknownAspects.map(a => a.id) });
+  }
+  if (actionRequiredAspects.length > 0) {
+    return makeCheck('B1', 'Scoped Physical Checks Completed', 'BLOCK', 'ACTION_REQUIRED',
+      `Physical checks require action on: ${actionRequiredAspects.map(a => a.name || a.id).join(', ')}.`,
+      { actionRequiredAspects: actionRequiredAspects.map(a => a.id) });
+  }
+  return makeCheck('B1', 'Scoped Physical Checks Completed', 'BLOCK', 'PASSED', `All ${aspectChecks.length} physical aspect checks evaluated cleanly.`);
+}
+
+function _checkRankedSolutions(output) {
+  const checks = [];
   const rankedSolutions = output?.conflictGraph?.rankedSolutions || output?.rankedSolutions || [];
   const isUnbuildable = output?.isMathClean === false || output?.isWholeSolutionValid === false || output?.status === 'UNBUILDABLE';
+
+  // B2: At Least 1 Ranked Solution or Explicit Unbuildable Determination (BLOCK)
   if (isUnbuildable) {
-    checks.push(
-      makeCheck('B2', 'At Least 1 Ranked Solution or Unbuildable Determination', 'BLOCK', 'PASSED', 'Explicit unbuildable determination documented per INV-72.', { isUnbuildable: true })
-    );
+    checks.push(makeCheck('B2', 'At Least 1 Ranked Solution or Unbuildable Determination', 'BLOCK', 'PASSED', 'Explicit unbuildable determination documented per INV-72.', { isUnbuildable: true }));
   } else if (rankedSolutions.length >= 1) {
-    checks.push(
-      makeCheck('B2', 'At Least 1 Ranked Solution or Unbuildable Determination', 'BLOCK', 'PASSED', `Produced ${rankedSolutions.length} strategy rank(s).`, { rankCount: rankedSolutions.length })
-    );
+    checks.push(makeCheck('B2', 'At Least 1 Ranked Solution or Unbuildable Determination', 'BLOCK', 'PASSED', `Produced ${rankedSolutions.length} strategy rank(s).`, { rankCount: rankedSolutions.length }));
   } else {
-    checks.push(
-      makeCheck('B2', 'At Least 1 Ranked Solution or Unbuildable Determination', 'BLOCK', 'FAILED', 'No ranked solutions generated and no unbuildable determination recorded.', { rankedSolutionsCount: 0 })
-    );
+    checks.push(makeCheck('B2', 'At Least 1 Ranked Solution or Unbuildable Determination', 'BLOCK', 'FAILED', 'No ranked solutions generated and no unbuildable determination recorded.', { rankedSolutionsCount: 0 }));
   }
 
   // B3: No Duplicate Ranks (WARN)
   if (rankedSolutions.length === 0) {
-    checks.push(
-      makeCheck('B3', 'No Duplicate Ranks', 'WARN', 'NOT_APPLICABLE', 'No ranked solutions to check for rank tier uniqueness.')
-    );
+    checks.push(makeCheck('B3', 'No Duplicate Ranks', 'WARN', 'NOT_APPLICABLE', 'No ranked solutions to check for rank tier uniqueness.'));
   } else {
     const rankNumbers = rankedSolutions.map(r => String(r.rank));
     const isUnique = new Set(rankNumbers).size === rankNumbers.length;
@@ -269,8 +250,14 @@ function validateBoqEvaluationCriteria(output, context = {}) {
         : makeCheck('B3', 'No Duplicate Ranks', 'WARN', 'FAILED', `Duplicate rank tiers detected: ${rankNumbers.join(', ')}.`, { rankNumbers })
     );
   }
+  return checks;
+}
 
-  // B4: Financial Table & Prices Present (BLOCK)
+function _checkFinancialPricing(output) {
+  const checks = [];
+  const rankedSolutions = output?.conflictGraph?.rankedSolutions || output?.rankedSolutions || [];
+  const isUnbuildable = output?.isMathClean === false || output?.isWholeSolutionValid === false || output?.status === 'UNBUILDABLE';
+
   let totalPrice = 0;
   let partsCount = 0;
   if (rankedSolutions.length > 0) {
@@ -285,22 +272,15 @@ function validateBoqEvaluationCriteria(output, context = {}) {
     totalPrice = output.items.reduce((sum, p) => sum + (p.extendedPriceUsd || (p.quantity || 1) * (p.unitPriceUsd || 0)), 0);
   }
 
+  // B4: Financial Table & Prices Present (BLOCK)
   if (isUnbuildable) {
-    checks.push(
-      makeCheck('B4', 'Financial Table Present', 'BLOCK', 'NOT_APPLICABLE', 'Unbuildable BOM does not require financial totals.')
-    );
+    checks.push(makeCheck('B4', 'Financial Table Present', 'BLOCK', 'NOT_APPLICABLE', 'Unbuildable BOM does not require financial totals.'));
   } else if (totalPrice > 0) {
-    checks.push(
-      makeCheck('B4', 'Financial Table Present', 'BLOCK', 'PASSED', `Financial totals calculated ($${totalPrice.toLocaleString('en-US', { minimumFractionDigits: 2 })}).`, { totalPrice })
-    );
+    checks.push(makeCheck('B4', 'Financial Table Present', 'BLOCK', 'PASSED', `Financial totals calculated ($${totalPrice.toLocaleString('en-US', { minimumFractionDigits: 2 })}).`, { totalPrice }));
   } else if (partsCount === 0) {
-    checks.push(
-      makeCheck('B4', 'Financial Table Present', 'BLOCK', 'UNKNOWN', 'Pricing cannot be evaluated without candidate BOM items.', { partsCount: 0 })
-    );
+    checks.push(makeCheck('B4', 'Financial Table Present', 'BLOCK', 'UNKNOWN', 'Pricing cannot be evaluated without candidate BOM items.', { partsCount: 0 }));
   } else {
-    checks.push(
-      makeCheck('B4', 'Financial Table Present', 'BLOCK', 'FAILED', 'Pricing table missing or zero extended cost on buildable solution.', { totalPrice, partsCount })
-    );
+    checks.push(makeCheck('B4', 'Financial Table Present', 'BLOCK', 'FAILED', 'Pricing table missing or zero extended cost on buildable solution.', { totalPrice, partsCount }));
   }
 
   // B6: Unresolved Prices Flagged (INV-33) (BLOCK)
@@ -314,48 +294,42 @@ function validateBoqEvaluationCriteria(output, context = {}) {
         : makeCheck('B6', 'Unresolved Prices Flagged (INV-33)', 'BLOCK', 'FAILED', `${zeroPriceParts.length} SKU(s) have zero/missing price without mandatory INV-33 incomplete pricing notice.`, { zeroPriceSkus: zeroPriceParts.map(p => p.sku || p['Product #']) })
     );
   } else {
-    checks.push(
-      makeCheck('B6', 'Unresolved Prices Flagged (INV-33)', 'BLOCK', 'PASSED', 'All referenced SKU prices are confirmed with list pricing.')
-    );
+    checks.push(makeCheck('B6', 'Unresolved Prices Flagged (INV-33)', 'BLOCK', 'PASSED', 'All referenced SKU prices are confirmed with list pricing.'));
   }
 
-  // B8: No Unsolicited Services in Rank 1 (INV-32) (BLOCK)
+  return checks;
+}
+
+function _checkUnsolicitedServices(output, context = {}) {
+  const rankedSolutions = output?.conflictGraph?.rankedSolutions || output?.rankedSolutions || [];
   if (rankedSolutions.length === 0) {
-    checks.push(
-      makeCheck('B8', 'No Unsolicited Services in Rank 1 (INV-32)', 'BLOCK', 'NOT_APPLICABLE', 'No ranked solutions to check for unsolicited services.')
-    );
-  } else {
-    const rank1 = rankedSolutions[0];
-    const parts = rank1.skuPartsList || rank1.skuList || [];
-    const unsolicited = parts.filter(p => {
-      const desc = (p.description || '').toLowerCase();
-      const sku = cleanBaseSKU(p.sku);
-      const isService = /\b(installation|startup|deployment|pointnext|tech care)\b/i.test(desc) || /^(HA|HU|H7)/i.test(sku);
-      return isService && !p.customerRequested && p.isFixInjected !== true && !context.customerRequestedServices;
-    });
-    checks.push(
-      unsolicited.length === 0
-        ? makeCheck('B8', 'No Unsolicited Services in Rank 1 (INV-32)', 'BLOCK', 'PASSED', 'Rank 1 maintains pure hardware intent without unrequested services.')
-        : makeCheck('B8', 'No Unsolicited Services in Rank 1 (INV-32)', 'BLOCK', 'FAILED', `Rank 1 contains ${unsolicited.length} unsolicited service SKU(s) in violation of INV-32.`, { unsolicitedSkus: unsolicited.map(p => p.sku) })
-    );
+    return makeCheck('B8', 'No Unsolicited Services in Rank 1 (INV-32)', 'BLOCK', 'NOT_APPLICABLE', 'No ranked solutions to check for unsolicited services.');
   }
+  const rank1 = rankedSolutions[0];
+  const parts = rank1.skuPartsList || rank1.skuList || [];
+  const unsolicited = parts.filter(p => {
+    const desc = (p.description || '').toLowerCase();
+    const sku = cleanBaseSKU(p.sku);
+    const isService = /\b(installation|startup|deployment|pointnext|tech care)\b/i.test(desc) || /^(HA|HU|H7)/i.test(sku);
+    return isService && !p.customerRequested && p.isFixInjected !== true && !context.customerRequestedServices;
+  });
+  return unsolicited.length === 0
+    ? makeCheck('B8', 'No Unsolicited Services in Rank 1 (INV-32)', 'BLOCK', 'PASSED', 'Rank 1 maintains pure hardware intent without unrequested services.')
+    : makeCheck('B8', 'No Unsolicited Services in Rank 1 (INV-32)', 'BLOCK', 'FAILED', `Rank 1 contains ${unsolicited.length} unsolicited service SKU(s) in violation of INV-32.`, { unsolicitedSkus: unsolicited.map(p => p.sku) });
+}
 
-  // B12: Mandatory Accessories Injected (BLOCK)
+function _checkMandatoryAccessories(output) {
   if (output?.missingDependencies === undefined && output?.conflictGraph === undefined) {
-    checks.push(
-      makeCheck('B12', 'Mandatory Accessories Injected', 'BLOCK', 'UNKNOWN', 'Conflict graph and dependency injection was not evaluated.', { evaluated: false })
-    );
-  } else {
-    const missingDeps = output?.missingDependencies || [];
-    const resolvedFixes = output?.conflictGraph?.resolvedFixes || [];
-    checks.push(
-      missingDeps.length === 0
-        ? makeCheck('B12', 'Mandatory Accessories Injected', 'BLOCK', 'PASSED', `Mandatory physical accessories injected cleanly: ${resolvedFixes.length} fix(es) recorded.`, { fixCount: resolvedFixes.length })
-        : makeCheck('B12', 'Mandatory Accessories Injected', 'BLOCK', 'FAILED', `Unresolved mandatory physical dependencies: ${missingDeps.map(m => m.reason || m.sku).join('; ')}.`, { missingDeps })
-    );
+    return makeCheck('B12', 'Mandatory Accessories Injected', 'BLOCK', 'UNKNOWN', 'Conflict graph and dependency injection was not evaluated.', { evaluated: false });
   }
+  const missingDeps = output?.missingDependencies || [];
+  const resolvedFixes = output?.conflictGraph?.resolvedFixes || [];
+  return missingDeps.length === 0
+    ? makeCheck('B12', 'Mandatory Accessories Injected', 'BLOCK', 'PASSED', `Mandatory physical accessories injected cleanly: ${resolvedFixes.length} fix(es) recorded.`, { fixCount: resolvedFixes.length })
+    : makeCheck('B12', 'Mandatory Accessories Injected', 'BLOCK', 'FAILED', `Unresolved mandatory physical dependencies: ${missingDeps.map(m => m.reason || m.sku).join('; ')}.`, { missingDeps });
+}
 
-  // B13: NotebookLM Grounding & Degraded State Gate (INV-105 / INV-140) (BLOCK)
+function _checkNotebookGrounding(output, context = {}) {
   const notebookHealth = output?.notebookHealth || context?.notebookHealth || null;
   const solutionDoubleCheck = output?.ephemeralSourceValidation || output?.solutionDoubleCheck || null;
   const agenticReview = output?.agenticReview || context?.agenticReview || null;
@@ -363,52 +337,55 @@ function validateBoqEvaluationCriteria(output, context = {}) {
   const isOffline = Boolean(output?.offlineMode || context?.offlineMode || context?.OFFLINE_MODE || process.env.OFFLINE_MODE === '1' || process.env.LOCAL_EVAL_ONLY === '1');
 
   if (notebookHealth && notebookHealth.isHealthy === false) {
-    checks.push(
-      makeCheck('B13', 'NotebookLM Grounding & Degraded State', 'BLOCK', 'ACTION_REQUIRED',
-        `Product notebook is degraded (${output.notebookDegradedMode || notebookHealth.degradationMode || 'DEGRADED_UNGROUNDED'}). Presentation cannot claim fully grounded certification.`,
-        { degradationMode: notebookHealth.degradationMode || output.notebookDegradedMode })
-    );
-  } else if (solutionDoubleCheck && (
+    return makeCheck('B13', 'NotebookLM Grounding & Degraded State', 'BLOCK', 'ACTION_REQUIRED',
+      `Product notebook is degraded (${output.notebookDegradedMode || notebookHealth.degradationMode || 'DEGRADED_UNGROUNDED'}). Presentation cannot claim fully grounded certification.`,
+      { degradationMode: notebookHealth.degradationMode || output.notebookDegradedMode });
+  }
+  if (solutionDoubleCheck && (
     solutionDoubleCheck.doubleCheckVerdict === 'DOUBLE_CHECK_REJECTED' ||
     solutionDoubleCheck.verdict === 'DOUBLE_CHECK_REJECTED' ||
     solutionDoubleCheck.status === 'DOUBLE_CHECK_REJECTED' ||
     (Array.isArray(solutionDoubleCheck.rankVerdicts) && solutionDoubleCheck.rankVerdicts.some(row => row?.verdict === 'FAIL'))
   )) {
-    checks.push(
-      makeCheck('B13', 'NotebookLM Grounding & Degraded State', 'BLOCK', 'FAILED',
-        'NotebookLM ephemeral source validation rejected candidate strategy ranks.',
-        { verdict: solutionDoubleCheck.doubleCheckVerdict || solutionDoubleCheck.verdict || solutionDoubleCheck.status })
-    );
-  } else if (!isOffline && candidateReviewCurrent(output)) {
-    checks.push(
-      makeCheck('B13', 'NotebookLM Grounding & Degraded State', 'BLOCK', 'PASSED',
-        'NotebookLM grounding verified with affirmative cloud candidate validation.',
-        {
-          citationsCount: solutionDoubleCheck.citations?.length || 0,
-          isCloudGrounded: Boolean(solutionDoubleCheck.isCloudGrounded)
-        })
-    );
-  } else if (isOffline) {
-    checks.push(
-      makeCheck('B13', 'NotebookLM Grounding & Degraded State', 'BLOCK', 'ACTION_REQUIRED',
-        'Grounding unverified in OFFLINE_MODE. Presentation cannot claim cloud-grounded certification.',
-        { offline: true })
-    );
-  } else if (!solutionDoubleCheck && !notebookHealth && !agenticReview && !notebookLmStatus) {
-    checks.push(
-      makeCheck('B13', 'NotebookLM Grounding & Degraded State', 'BLOCK', 'ACTION_REQUIRED',
-        'Grounding evidence is absent. Presentation delivery requires a current candidate review with native authoritative citations.',
-        { missingEvidence: true })
-    );
-  } else {
-    checks.push(
-      makeCheck('B13', 'NotebookLM Grounding & Degraded State', 'BLOCK', 'ACTION_REQUIRED',
-        'NotebookLM grounding lacked affirmative cloud verification; presentation cannot claim grounded certification.',
-        { status: 'UNVERIFIED_GROUNDING' })
-    );
+    return makeCheck('B13', 'NotebookLM Grounding & Degraded State', 'BLOCK', 'FAILED',
+      'NotebookLM ephemeral source validation rejected candidate strategy ranks.',
+      { verdict: solutionDoubleCheck.doubleCheckVerdict || solutionDoubleCheck.verdict || solutionDoubleCheck.status });
   }
+  if (!isOffline && candidateReviewCurrent(output)) {
+    return makeCheck('B13', 'NotebookLM Grounding & Degraded State', 'BLOCK', 'PASSED',
+      'NotebookLM grounding verified with affirmative cloud candidate validation.',
+      {
+        citationsCount: solutionDoubleCheck.citations?.length || 0,
+        isCloudGrounded: Boolean(solutionDoubleCheck.isCloudGrounded)
+      });
+  }
+  if (isOffline) {
+    return makeCheck('B13', 'NotebookLM Grounding & Degraded State', 'BLOCK', 'ACTION_REQUIRED',
+      'Grounding unverified in OFFLINE_MODE. Presentation cannot claim cloud-grounded certification.',
+      { offline: true });
+  }
+  if (!solutionDoubleCheck && !notebookHealth && !agenticReview && !notebookLmStatus) {
+    return makeCheck('B13', 'NotebookLM Grounding & Degraded State', 'BLOCK', 'ACTION_REQUIRED',
+      'Grounding evidence is absent. Presentation delivery requires a current candidate review with native authoritative citations.',
+      { missingEvidence: true });
+  }
+  return makeCheck('B13', 'NotebookLM Grounding & Degraded State', 'BLOCK', 'ACTION_REQUIRED',
+    'NotebookLM grounding lacked affirmative cloud verification; presentation cannot claim grounded certification.',
+    { status: 'UNVERIFIED_GROUNDING' });
+}
 
-  return checks;
+/**
+ * BOQ Evaluation Criteria (B1–B16)
+ */
+function validateBoqEvaluationCriteria(output, context = {}) {
+  return [
+    _checkPhysicalAspects(output),
+    ..._checkRankedSolutions(output),
+    ..._checkFinancialPricing(output),
+    _checkUnsolicitedServices(output, context),
+    _checkMandatoryAccessories(output),
+    _checkNotebookGrounding(output, context)
+  ];
 }
 
 /**

@@ -26,43 +26,21 @@ const { classifyComponentRole } = require('../catalog/product_meta.js');
  * @param {object} [chassisInfo={}] - Detected chassis metadata
  * @returns {object} Full introspected component profile
  */
-function introspectSku(itemOrSku, catalogData = null, chassisInfo = {}) {
-  const safeItem = (itemOrSku && typeof itemOrSku === 'object') ? itemOrSku : {};
-  const rawSku = typeof itemOrSku === 'string' ? itemOrSku : (safeItem.sku || safeItem['Product #'] || '');
-  const sku = cleanBaseSKU(rawSku);
-  const desc = typeof itemOrSku === 'string' ? '' : (safeItem.description || safeItem.Description || '');
-  const descLower = desc.toLowerCase();
-
-  let matchedEntry = null;
-  let matchedSkuObj = null;
-
-  if (catalogData && Array.isArray(catalogData.entries)) {
-    for (const entry of catalogData.entries) {
-      if (entry.skus && Array.isArray(entry.skus)) {
-        const found = entry.skus.find(s => cleanBaseSKU(s['Product #'] || s.sku) === sku);
-        if (found) {
-          matchedEntry = entry;
-          matchedSkuObj = found;
-          break;
-        }
+function _findCatalogEntry(catalogData, sku) {
+  if (!catalogData || !Array.isArray(catalogData.entries)) return { matchedEntry: null, matchedSkuObj: null };
+  for (const entry of catalogData.entries) {
+    if (entry.skus && Array.isArray(entry.skus)) {
+      const found = entry.skus.find(s => cleanBaseSKU(s['Product #'] || s.sku) === sku);
+      if (found) {
+        return { matchedEntry: entry, matchedSkuObj: found };
       }
     }
   }
+  return { matchedEntry: null, matchedSkuObj: null };
+}
 
-  const parentCategory = matchedEntry?.parentCategory || safeItem.category || 'Option Component';
-  const subCategory = matchedEntry?.subCategory || 'General';
-  const hierarchyPath = matchedSkuObj?.['Hierarchy Path'] || `${parentCategory} > ${subCategory} > ${sku}`;
-  const effectiveDescription = matchedSkuObj?.Description || matchedSkuObj?.description || desc || `HPE Hardware Option (${sku})`;
-  const constraintText = matchedSkuObj?.['Constraint Text'] || matchedSkuObj?.constraint || '';
-  const rawPrice = matchedSkuObj?.['Unit Price (USD)'] || matchedSkuObj?.['Price (USD)'] || safeItem.unitPriceUsd;
-  const priceUsd = typeof rawPrice === 'number' ? rawPrice : parseFloat(String(rawPrice || '0').replace(/[\$,]/g, '')) || 0;
-  const lifecycleStatus = matchedSkuObj?.['Lifecycle Status'] || safeItem.lifecycleStatus || 'ACTIVE';
-
-  const role = classifyComponentRole(parentCategory, effectiveDescription);
-
-  // ── Extract Dynamic Capabilities from Description / Metadata ───────────────
+function _extractCapabilities(effLower, role) {
   const capabilities = {};
-  const effLower = effectiveDescription.toLowerCase();
 
   // Cores & Frequency (Processors)
   const coreMatch = effLower.match(/(\d+)\s*-?\s*core/i);
@@ -107,13 +85,10 @@ function introspectSku(itemOrSku, catalogData = null, chassisInfo = {}) {
   else if (effLower.includes('10gb') || effLower.includes('10g')) capabilities.speedGbps = 10;
   else if (effLower.includes('1gb') || effLower.includes('1g') || effLower.includes('base-t')) capabilities.speedGbps = 1;
 
-  // Maximum Quantity / Limits from constraintText or entry
-  let maxQty = null;
-  const maxMatch = constraintText.match(/max(?:imum)?\s*(\d+)/i) || constraintText.match(/up to\s*(\d+)/i);
-  if (maxMatch) maxQty = parseInt(maxMatch[1], 10);
-  else if (typeof matchedEntry?.maxQty === 'number') maxQty = matchedEntry.maxQty;
+  return capabilities;
+}
 
-  // Infer Mandatory Companion SKUs from constraints or role
+function _inferCompanionRequirements(capabilities, role, effLower) {
   const companionRequirements = [];
   if (capabilities.tdpWatts >= 240) {
     companionRequirements.push({ role: 'High Performance Cooling', reason: `TDP ${capabilities.tdpWatts}W >= 240W mandates High-Performance Fan Kit and Heatsink` });
@@ -130,6 +105,37 @@ function introspectSku(itemOrSku, catalogData = null, chassisInfo = {}) {
   if (role === 'Storage Controller' && (effLower.includes('-p') || effLower.includes('pcie'))) {
     companionRequirements.push({ role: 'Tri-Mode Splitter Cable', reason: 'PCIe standup controller requires splitter/box cable kit to drive cage' });
   }
+  return companionRequirements;
+}
+
+function introspectSku(itemOrSku, catalogData = null, chassisInfo = {}) {
+  const safeItem = (itemOrSku && typeof itemOrSku === 'object') ? itemOrSku : {};
+  const rawSku = typeof itemOrSku === 'string' ? itemOrSku : (safeItem.sku || safeItem['Product #'] || '');
+  const sku = cleanBaseSKU(rawSku);
+  const desc = typeof itemOrSku === 'string' ? '' : (safeItem.description || safeItem.Description || '');
+
+  const { matchedEntry, matchedSkuObj } = _findCatalogEntry(catalogData, sku);
+
+  const parentCategory = matchedEntry?.parentCategory || safeItem.category || 'Option Component';
+  const subCategory = matchedEntry?.subCategory || 'General';
+  const hierarchyPath = matchedSkuObj?.['Hierarchy Path'] || `${parentCategory} > ${subCategory} > ${sku}`;
+  const effectiveDescription = matchedSkuObj?.Description || matchedSkuObj?.description || desc || `HPE Hardware Option (${sku})`;
+  const constraintText = matchedSkuObj?.['Constraint Text'] || matchedSkuObj?.constraint || '';
+  const rawPrice = matchedSkuObj?.['Unit Price (USD)'] || matchedSkuObj?.['Price (USD)'] || safeItem.unitPriceUsd;
+  const priceUsd = typeof rawPrice === 'number' ? rawPrice : parseFloat(String(rawPrice || '0').replace(/[$,]/g, '')) || 0;
+  const lifecycleStatus = matchedSkuObj?.['Lifecycle Status'] || safeItem.lifecycleStatus || 'ACTIVE';
+
+  const role = classifyComponentRole(parentCategory, effectiveDescription);
+  const effLower = effectiveDescription.toLowerCase();
+
+  const capabilities = _extractCapabilities(effLower, role);
+
+  let maxQty = null;
+  const maxMatch = constraintText.match(/max(?:imum)?\s*(\d+)/i) || constraintText.match(/up to\s*(\d+)/i);
+  if (maxMatch) maxQty = parseInt(maxMatch[1], 10);
+  else if (typeof matchedEntry?.maxQty === 'number') maxQty = matchedEntry.maxQty;
+
+  const companionRequirements = _inferCompanionRequirements(capabilities, role, effLower);
 
   return {
     sku,
@@ -278,7 +284,7 @@ function discoverDynamicStrategyAddons(catalogData = null, chassisInfo = {}, wor
     if (parentCat.includes('infrastructure') || subCat.includes('rail') || subCat.includes('cable management') || subCat.includes('bezel')) {
       const validSku = skus.find(s => {
         const desc = (s.Description || s.description || '').toLowerCase();
-        const price = parseFloat(String(s['Unit Price (USD)'] || s['Price (USD)'] || '0').replace(/[\$,]/g, ''));
+        const price = parseFloat(String(s['Unit Price (USD)'] || s['Price (USD)'] || '0').replace(/[$,]/g, ''));
         return (desc.includes('rail') || desc.includes('management arm') || desc.includes('cma')) && price > 0 && price < 500;
       });
       if (validSku && rank2Addons.length < 2) {
@@ -286,7 +292,7 @@ function discoverDynamicStrategyAddons(catalogData = null, chassisInfo = {}, wor
           sku: cleanBaseSKU(validSku['Product #'] || validSku.sku),
           description: validSku.Description || validSku.description || 'Factory Baseline Infrastructure',
           quantity: 1,
-          unitPriceUsd: parseFloat(String(validSku['Unit Price (USD)'] || validSku['Price (USD)'] || '200').replace(/[\$,]/g, '')) || 200,
+          unitPriceUsd: parseFloat(String(validSku['Unit Price (USD)'] || validSku['Price (USD)'] || '200').replace(/[$,]/g, '')) || 200,
           category: 'Factory Baseline Accessory'
         });
       }
@@ -303,7 +309,7 @@ function discoverDynamicStrategyAddons(catalogData = null, chassisInfo = {}, wor
           sku: cleanBaseSKU(validSku['Product #'] || validSku.sku),
           description: validSku.Description || validSku.description || 'Storage / Throughput Performance Upgrade',
           quantity: 1,
-          unitPriceUsd: parseFloat(String(validSku['Unit Price (USD)'] || validSku['Price (USD)'] || '450').replace(/[\$,]/g, '')) || 450,
+          unitPriceUsd: parseFloat(String(validSku['Unit Price (USD)'] || validSku['Price (USD)'] || '450').replace(/[$,]/g, '')) || 450,
           category: 'Performance Acceleration'
         });
       }
@@ -320,7 +326,7 @@ function discoverDynamicStrategyAddons(catalogData = null, chassisInfo = {}, wor
           sku: cleanBaseSKU(validSku['Product #'] || validSku.sku),
           description: validSku.Description || validSku.description || 'Chassis Expansion Infrastructure',
           quantity: 1,
-          unitPriceUsd: parseFloat(String(validSku['Unit Price (USD)'] || validSku['Price (USD)'] || '750').replace(/[\$,]/g, '')) || 750,
+          unitPriceUsd: parseFloat(String(validSku['Unit Price (USD)'] || validSku['Price (USD)'] || '750').replace(/[$,]/g, '')) || 750,
           category: 'Scalability Expansion'
         });
       }

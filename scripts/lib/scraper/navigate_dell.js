@@ -64,6 +64,7 @@ function setupDellNetworkSniffer(ws, options = {}) {
   };
 
   return {
+    handleResponse,
     getCapturedRules: () => capturedRules,
     detach: () => {}
   };

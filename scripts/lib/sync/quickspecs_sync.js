@@ -15,7 +15,6 @@ const path = require('path');
 const os = require('os');
 const crypto = require('crypto');
 const { execFileSync } = require('child_process');
-const { safeWriteJsonAtomic } = require('../system/fs_compat.js');
 const logger = require('../system/pipeline_logger.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
@@ -283,6 +282,7 @@ async function verifyNotebookQuickSpecs(chassisName = 'DL380_Gen11', options = {
 
       result.uploadResult = {
         success: true,
+        stdout,
         message: `Successfully uploaded ${canonicalTitle} to Notebook ${notebookId}`
       };
       const verified = await verifyNotebookQuickSpecs(chassisName, { ...options, autoUpload: false });

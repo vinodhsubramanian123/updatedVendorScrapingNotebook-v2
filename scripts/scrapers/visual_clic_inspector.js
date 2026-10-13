@@ -7,8 +7,6 @@
  * logs KnowledgeDeltas into catalog_deltas.json, and synthesizes direct SKU fixes.
  */
 
-const fs = require('fs');
-const path = require('path');
 const { getOCATarget, getAnyPageTarget, connectWS, sendCommand, sleep, dismissDOMModals } = require('../lib/scraper/cdp.js');
 const { processPortalFeedback } = require('../lib/feedback/feedback_loop.js');
 

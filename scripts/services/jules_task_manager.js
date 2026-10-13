@@ -332,7 +332,7 @@ if (require.main === module) {
         let id = args[1];
         if (id && id !== 'all' && id !== 'completed') {
           console.log(`🔍 Auditing and archiving single session: ${id}...`);
-          const res = await archiveSession(id);
+          await archiveSession(id);
           console.log(`✅ Session ${id} archived successfully.`);
         } else {
           console.log('🔍 Auditing and archiving all completed Jules sessions...');

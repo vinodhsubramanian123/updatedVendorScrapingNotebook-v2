@@ -23,7 +23,7 @@ const { safeWriteJsonAtomic } = require('../system/fs_compat.js');
 
 function parsePrice(val) {
   if (val === null || val === undefined) return 0;
-  const cleaned = String(val).replace(/[^0-9.\-]/g, '').trim();
+  const cleaned = String(val).replace(/[^0-9.-]/g, '').trim();
   const num = parseFloat(cleaned);
   return isNaN(num) ? 0 : num;
 }
@@ -85,7 +85,7 @@ function sanitizePriceTrail(trail, options = {}) {
     const event = events[index];
     if (!(event.price > 0)) continue;
 
-    const previous = [...events.slice(0, index)].reverse().find(item => item.price > 0 && !item.quarantined);
+    const previous = events.slice(0, index).reverse().find(item => item.price > 0 && !item.quarantined);
     const next = events.slice(index + 1).find(item => item.price > 0 && !item.quarantined);
     const suspectedDate = isSuspectedDateParsePrice(event.price);
 
@@ -247,7 +247,7 @@ function isBusinessRelevantDiscontinuedSku(options, existingEntry, context) {
 }
 
 function resolvePreviousCatalogAndSkus(historyDir, snapshotPrefix, scrapeDate, options) {
-  const snapshotRegex = new RegExp(`^${snapshotPrefix}_\\d{4}-\\d{2}-\\d{2}\.json$`);
+  const snapshotRegex = new RegExp(`^${snapshotPrefix}_\\d{4}-\\d{2}-\\d{2}.json$`);
   const snapshotFiles = fs.readdirSync(historyDir)
     .filter(f => snapshotRegex.test(f) && f !== `${snapshotPrefix}_${scrapeDate}.json`)
     .sort();

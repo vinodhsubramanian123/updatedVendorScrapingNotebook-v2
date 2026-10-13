@@ -7,7 +7,6 @@
  */
 
 const fs = require('fs');
-const path = require('path');
 const XLSX = require('xlsx-js-style');
 
 const targetFiles = [
@@ -118,7 +117,6 @@ targetFiles.forEach(filePath => {
   const wb = XLSX.readFile(filePath, { cellStyles: true });
   const sheetName = wb.SheetNames[0];
   const ws = wb.Sheets[sheetName];
-  const rows = XLSX.utils.sheet_to_json(ws, { header: 1 });
 
   let computedGrandTotal = 0;
 

@@ -9,7 +9,6 @@
  *   npm run maintain:portfolio
  */
 
-const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 const { listAllCatalogs, checkCdpHealth } = require('../lib/catalog/catalog_discovery.js');
@@ -20,7 +19,6 @@ const OUTPUTS_ROOT = path.join(PROJECT_ROOT, 'outputs');
 const args = process.argv.slice(2);
 const chassisIdx = args.indexOf('--chassis');
 const targetChassis = chassisIdx !== -1 ? args[chassisIdx + 1] : null;
-const allBaseline = args.includes('--all-baseline');
 const syncOnly = args.includes('--sync-only');
 const certifyOnly = args.includes('--certify-only');
 

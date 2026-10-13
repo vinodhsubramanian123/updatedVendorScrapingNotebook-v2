@@ -33,11 +33,7 @@ function analyzeFile(filePath) {
   const content = fs.readFileSync(filePath, 'utf-8');
   const lines = content.split('\n');
   
-  // Find function definitions: function foo(), async function foo(), const foo = () => {}, foo() {}
-  const funcRegex = /(?:function\s+([a-zA-Z0-9_$]+)|(?:const|let|var)\s+([a-zA-Z0-9_$]+)\s*=\s*(?:async\s*)?\([^)]*\)\s*=>|([a-zA-Z0-9_$]+)\s*\([^)]*\)\s*\{)/g;
-  
   const functions = [];
-  let match;
 
   // Function boundary finder using brace counting
   for (let i = 0; i < lines.length; i++) {

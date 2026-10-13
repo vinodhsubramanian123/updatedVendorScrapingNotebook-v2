@@ -39,6 +39,8 @@ function createCaptureReceipt(stagingDir, liveDir, product, options = {}) {
     const entry = path.resolve(process.argv[1] || '.');
     const relative = path.relative(testsRoot, entry);
     const isTestEnv = Boolean(process.env.NODE_TEST_CONTEXT) ||
+      /^test_.*\.js$/i.test(path.basename(entry)) ||
+      /[\\/]tests[\\/]/i.test(entry) ||
       (!relative.startsWith('..') && !path.isAbsolute(relative) && /^test_.*\.js$/i.test(path.basename(entry)));
     if (!isTestEnv) {
       throw new Error('[INV-105] skipCoverageValidation is restricted to test harnesses only.');

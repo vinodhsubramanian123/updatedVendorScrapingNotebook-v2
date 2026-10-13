@@ -23,6 +23,7 @@ const {
   isCtoBaseChassis,
   KNOWN_CTO_SKU_PREFIXES
 } = require('../preprocessor/cto_normalizer.js');
+const { topologyRole } = require('./solution_topology.js');
 
 const {
   SPLIT_REASONS,
@@ -44,7 +45,6 @@ const INPUT_FILE_PATTERN = /\.(?:xlsx|xls|csv|tsv|txt)$/i;
  * @returns {{ isMixedDomain: boolean, activeDomains: string[], domainBuckets: object, primaryDomain: string }}
  */
 function sniffDomainComposition(parsedLines) {
-  const { topologyRole } = require('./solution_topology.js');
   const domainBuckets = { server: [], storage: [], networking: [], archive: [], unknown: [] };
 
   for (const line of (parsedLines || [])) {
@@ -100,7 +100,7 @@ function resolveBoqInputs(filePathOrRaw, rawTextOrFilePath) {
 
 function parseTextSections(rawText) {
   const text = String(rawText || '');
-  const sectionRegex = /(?:^|\n)(?:[=#*\-]{3,}\s*(.*?)\s*[=#*\-]{3,}|\[(.*?)\]|Configuration\s+(\d+[:\s\w]*))/gi;
+  const sectionRegex = /(?:^|\n)(?:[=#*-]{3,}\s*(.*?)\s*[=#*-]{3,}|\[(.*?)\]|Configuration\s+(\d+[:\s\w]*))/gi;
   let match;
   let lastIndex = 0;
   const sections = [];
@@ -171,7 +171,7 @@ function segmentSheetIntoConfigBlocks(lines, sheetName = 'Sheet') {
 
     if (isConfigBanner(line)) {
       if (currentBlock.lines.length > 0) blocks.push(currentBlock);
-      const bannerClean = line.replace(/^[#*=\-_\[\]\s]+|[#*=\-_\[\]\s]+$/g, '').trim();
+      const bannerClean = line.replace(/^[#*=\-_[\]\s]+|[#*=\-_[\]\s]+$/g, '').trim();
       currentBlock = { name: `${sheetName} - ${bannerClean}`, lines: [line], baseChassisFound: null };
       continue;
     }
@@ -197,6 +197,295 @@ function segmentSheetIntoConfigBlocks(lines, sheetName = 'Sheet') {
 
   if (currentBlock.lines.length > 0) blocks.push(currentBlock);
   return blocks.length > 0 ? blocks : [{ name: sheetName, lines }];
+}
+
+/**
+ * Parse SKU items for each section / sheet with intelligent intra-sheet config segmentation.
+ * @private
+ */
+function _parseRawVariations(sheetsData, addStep, auditTrail) {
+  const rawVariations = [];
+  let globalLineCount = 0;
+
+  sheetsData.forEach((sec) => {
+    const lines = sec.content.split(/\r?\n/).filter(l => l.trim().length > 0);
+    globalLineCount += lines.length;
+
+    const configBlocks = segmentSheetIntoConfigBlocks(lines, sec.sectionName);
+
+    configBlocks.forEach((block, bIdx) => {
+      const result = parseSkuLines(block.lines);
+      const { items, multiplier } = result;
+
+      // P2-3: HITL audit step for unmatched SKU tokens
+      if (result.unmatchedSkus && result.unmatchedSkus.length > 0) {
+        addStep('UNMATCHED_SKUS', 'Unmatched SKU Lines Detected',
+          `${result.unmatchedSkus.length} SKU(s) could not be matched to any catalog entry and require manual review`,
+          { unmatchedSkus: result.unmatchedSkus, hitlRequired: true }
+        );
+        auditTrail.hitlRequired = true;
+        auditTrail.hitlReasons = auditTrail.hitlReasons || [];
+        auditTrail.hitlReasons.push(`${result.unmatchedSkus.length} unmatched SKU(s): ${result.unmatchedSkus.map(s => s.rawSku).join(', ')}`);
+      }
+
+      if (items.length > 0) {
+        rawVariations.push({
+          configId: `config_${rawVariations.length + 1}`,
+          rawName: block.name || `${sec.sectionName}_Config_${bIdx + 1}`,
+          items: items,
+          multiplier: multiplier || 1
+        });
+      }
+    });
+  });
+
+  return { rawVariations, globalLineCount };
+}
+
+/**
+ * Intra-list variant detection if only 1 section with multiple distinct processors.
+ * @private
+ */
+function _detectIntraListCpuVariants(rawVariations, addStep) {
+  if (rawVariations.length !== 1) return;
+  const single = rawVariations[0];
+  const cpus = single.items.filter(it => {
+    const desc = (it.description || '').toLowerCase();
+    if (desc.includes('cable') || desc.includes('heatsink') || desc.includes('fan') || desc.includes('ocp')) return false;
+    return desc.includes('processor') || desc.includes('xeon') || desc.includes('epyc');
+  });
+
+  if (cpus.length > 1) {
+    addStep(4, 'Intra-List Variant Cluster Detection', `Detected ${cpus.length} distinct processor SKUs in single list. Splitting into configuration variations.`);
+
+    const splitVariations = cpus.map((cpuItem, cIdx) => {
+      const variantItems = single.items.filter(it => {
+        const desc = it.description.toLowerCase();
+        if (desc.includes('processor') || desc.includes('xeon') || desc.includes('epyc')) {
+          return cleanBaseSKU(it.sku) === cleanBaseSKU(cpuItem.sku);
+        }
+        return true;
+      });
+
+      return {
+        configId: `config_${cIdx + 1}`,
+        rawName: `Variation ${cIdx + 1} (${cpuItem.description.split(' ')[0] || cpuItem.sku})`,
+        items: variantItems,
+        primaryCpu: cpuItem,
+        multiplier: single.multiplier || 1
+      };
+    });
+
+    rawVariations.length = 0;
+    rawVariations.push(...splitVariations);
+  }
+}
+
+/**
+ * Infer chassis identity and solution domain from parsed items.
+ * @private
+ */
+function _inferChassisIdentity(items, options = {}) {
+  let chassisName = 'DL380 Gen12 SFF';
+  let solutionType = 'SERVER';
+  let vendor = 'HPE';
+  let family = 'ProLiant';
+  let gen = 'Gen12';
+
+  const allSkus = items.map(i => cleanBaseSKU(i.sku || '').toUpperCase());
+  const allDescs = items.map(i => (i.description || '').toLowerCase()).join(' ');
+
+  if (allDescs.includes('alletra') || allSkus.some(s => s.startsWith('R0Q') || s.startsWith('R7G') || s.startsWith('P764'))) {
+    chassisName = 'Alletra Storage System';
+    solutionType = 'STORAGE';
+    family = 'Alletra';
+    gen = 'Storage';
+  } else if (allDescs.includes('synergy') || allDescs.includes('vc 100gb') || allDescs.includes('sy') || allSkus.some(s => s.startsWith('Q8D') || s.startsWith('Q6F'))) {
+    chassisName = 'SY100Gb F32 Module';
+    solutionType = 'NETWORKING';
+    family = 'Synergy';
+    gen = 'General';
+  } else if (allDescs.includes('gx5000') || allDescs.includes('cray') || allDescs.includes('supercomputing') || allSkus.some(s => s.startsWith('P57'))) {
+    chassisName = 'GX5000 General RACK';
+    solutionType = 'HPC';
+    family = 'Cray';
+    gen = 'General';
+  } else if (allDescs.includes('msl3040') || allDescs.includes('tape library') || allDescs.includes('storeever') || allSkus.some(s => s.startsWith('Q6Q') || s.startsWith('Q6L'))) {
+    chassisName = 'MSL3040 Tape';
+    solutionType = 'TAPE';
+    family = 'StoreEver';
+    gen = 'Tape';
+  } else if ((allDescs.includes('dl380') || allDescs.includes('proliant')) && allDescs.includes('gen11')) {
+    chassisName = 'DL380 Gen11';
+    solutionType = 'SERVER';
+    family = 'ProLiant';
+    gen = 'Gen11';
+  } else if ((allDescs.includes('dl380') || allDescs.includes('proliant')) && (allDescs.includes('gen12') || allSkus.some(s => s.startsWith('P732') || s.startsWith('P767')))) {
+    chassisName = 'DL380 Gen12 SFF';
+    solutionType = 'SERVER';
+    family = 'ProLiant';
+    gen = 'Gen12';
+  } else if (options && options.chassisHint) {
+    chassisName = options.chassisHint;
+  }
+
+  return { chassisName, solutionType, vendor, family, gen };
+}
+
+/**
+ * Resolve notebook ID dynamically from notebooks.json without cross-pollinating unmapped chassis.
+ * @private
+ */
+function _resolveNotebookDegradedMode(chassisName) {
+  let notebookId = null;
+  let notebookDegradedMode = null;
+  try {
+    const configPath = path.join(__dirname, '..', '..', 'config', 'notebooks.json');
+    if (fs.existsSync(configPath)) {
+      const cfg = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+      const cleanChassisKey = chassisName.replace(/\s+/g, '_');
+      const entry = cfg.notebooks && cfg.notebooks[cleanChassisKey];
+      if (entry) {
+        if (typeof entry === 'object' && entry !== null) {
+          if (entry.queryEnabled === false) {
+            notebookDegradedMode = 'QUERY_DISABLED';
+          } else if (entry.cloudSyncState === 'FAILED') {
+            notebookDegradedMode = 'STALE_NOTEBOOK_SYNC';
+            notebookId = String(entry.notebookId || '').trim() || null;
+          } else {
+            notebookId = String(entry.notebookId || '').trim() || null;
+          }
+        } else {
+          notebookId = String(entry).trim() || null;
+        }
+      } else {
+        notebookDegradedMode = 'NO_NOTEBOOK_MAPPED';
+      }
+    }
+  } catch (_) { /* ignore — degraded mode will remain null */ }
+
+  return { notebookId, notebookDegradedMode };
+}
+
+/**
+ * Process a single variation: normalize CTO, extract profile, identity, and improbability.
+ * @private
+ */
+function _processVariation(v, idx, loadedRules, options) {
+  const ctoNorm = detectAndNormalizeAtomicCto(v.items, { explicitMultiplier: v.multiplier });
+  const profile = extractHardwareProfile(ctoNorm.items);
+  const { chassisName, solutionType, vendor, family, gen } = _inferChassisIdentity(v.items, options);
+  const { notebookId, notebookDegradedMode } = _resolveNotebookDegradedMode(chassisName);
+
+  const tempVar = {
+    configId: v.configId,
+    name: v.rawName || `Configuration #${idx + 1}`,
+    chassis: chassisName,
+    solutionType,
+    vendor,
+    family,
+    gen,
+    notebookId,
+    notebookDegradedMode,
+    itemCount: v.items.length,
+    items: ctoNorm.items,
+    profile: profile,
+    baseChassisSku: ctoNorm.baseChassisSku,
+    baseChassisQty: ctoNorm.baseChassisQty,
+    isMultipliedOrder: ctoNorm.isMultipliedOrder,
+    hasNonIntegerDivisor: ctoNorm.hasNonIntegerDivisor,
+    ctoAnomalies: ctoNorm.ctoAnomalies,
+    splitReasons: [],
+    businessRationale: '',
+    confidenceScore: ctoNorm.hasNonIntegerDivisor ? 0.70 : 0.95
+  };
+
+  const improbabilityMetrics = calculateImprobabilityMetrics(tempVar, loadedRules.subcategoryConstraints || []);
+  tempVar.improbabilityMetrics = improbabilityMetrics;
+  return tempVar;
+}
+
+/**
+ * Assign split reasons across multiple variations.
+ * @private
+ */
+function _assignSplitReasons(processedVariations) {
+  if (processedVariations.length <= 1) return;
+  const v1 = processedVariations[0];
+  for (let i = 1; i < processedVariations.length; i++) {
+    const vCurr = processedVariations[i];
+    const reasons = [];
+
+    if (v1.profile.cpus !== vCurr.profile.cpus || v1.profile.maxTdpWatts !== vCurr.profile.maxTdpWatts) {
+      reasons.push({ ...SPLIT_REASONS.COMPUTE_VARIATION, detectedDifferences: `Config 1: ${v1.profile.cpus} (${v1.profile.maxTdpWatts}W) vs Config ${i + 1}: ${vCurr.profile.cpus} (${vCurr.profile.maxTdpWatts}W)` });
+    }
+    if (v1.profile.totalRamGb !== vCurr.profile.totalRamGb || v1.profile.dimmCount !== vCurr.profile.dimmCount) {
+      reasons.push({ ...SPLIT_REASONS.MEMORY_DENSITY_VARIATION, detectedDifferences: `Config 1: ${v1.profile.totalRamGb}GB (${v1.profile.dimmCount} DIMMs) vs Config ${i + 1}: ${vCurr.profile.totalRamGb}GB (${vCurr.profile.dimmCount} DIMMs)` });
+    }
+    if (v1.profile.driveCount !== vCurr.profile.driveCount || v1.profile.driveMedia !== vCurr.profile.driveMedia) {
+      reasons.push({ ...SPLIT_REASONS.STORAGE_VARIATION, detectedDifferences: `Config 1: ${v1.profile.driveCount}x ${v1.profile.driveMedia} vs Config ${i + 1}: ${vCurr.profile.driveCount}x ${vCurr.profile.driveMedia}` });
+    }
+    if (v1.profile.psuType !== vCurr.profile.psuType) {
+      reasons.push({ ...SPLIT_REASONS.POWER_ELECTRICAL_VARIATION, detectedDifferences: `Config 1: ${v1.profile.psuType} vs Config ${i + 1}: ${vCurr.profile.psuType}` });
+    }
+    if (reasons.length === 0) {
+      reasons.push({ ...SPLIT_REASONS.WORKLOAD_NODE_PURPOSE, detectedDifferences: `Node role split by customer sheet: ${vCurr.name}` });
+    }
+
+    vCurr.splitReasons = reasons;
+    vCurr.businessRationale = `Split due to ${reasons.map(r => r.label).join(', ')}.`;
+  }
+  processedVariations[0].splitReasons = [{ code: 'PRIMARY_BASELINE', label: 'Primary Baseline Configuration', description: 'Initial baseline node configuration in quote.' }];
+  processedVariations[0].businessRationale = 'Baseline primary node.';
+}
+
+/**
+ * Build preflight 5-stage cleansing pipeline metrics and overall confidence score.
+ * @private
+ */
+function _buildPreflightPipeline(rawVariations, processedVariations, globalLineCount, auditTrail) {
+  const totalRawItems = rawVariations.reduce((acc, v) => acc + (v.items?.length || 0), 0);
+  const totalProcessedItems = processedVariations.reduce((acc, v) => acc + (v.items?.length || 0), 0);
+  const baseChassisDetected = processedVariations.some(v => v.baseChassisSku !== null);
+  const hasNonIntegerFraction = processedVariations.some(v => v.hasNonIntegerDivisor);
+  const anyHighlyAnomalous = processedVariations.some(v => v.improbabilityMetrics?.isHighlyAnomalous);
+
+  const preflightPipeline = {
+    totalStages: 5,
+    stagesCleared: 5,
+    totalRawItems,
+    totalProcessedItems,
+    isCleansingValid: !hasNonIntegerFraction,
+    hasNonInteger: hasNonIntegerFraction,
+    totalAnomaliesCount: processedVariations.reduce((acc, v) => acc + (v.ctoAnomalies?.length || 0), 0),
+    isHitlRequired: hasNonIntegerFraction || anyHighlyAnomalous,
+    cleansingStatus: hasNonIntegerFraction ? 'FRACTIONAL_ANOMALY_DETECTED' : 'CLEAN_INTEGER_DIVISORS',
+    stages: [
+      { id: 1, name: 'File Intake & Header Offset Cleansing', status: 'PASS', detail: `Processed ${globalLineCount} line(s) from ${auditTrail.rawInputSummary.source}` },
+      { id: 2, name: 'HPE SKU & Line Normalization', status: totalProcessedItems > 0 ? 'PASS' : 'WARN', detail: `Extracted ${totalProcessedItems} clean SKU item(s) from raw input` },
+      { id: 3, name: '1-Unit CTO Multiplier Normalization', status: hasNonIntegerFraction ? 'WARN' : 'PASS', detail: baseChassisDetected ? `Chassis multiplier: ${processedVariations[0]?.baseChassisQty}x (${processedVariations[0]?.baseChassisSku})` : 'Standalone / 1x unit order' },
+      { id: 4, name: 'Multi-Configuration Clustering', status: 'PASS', detail: `Grouped into ${processedVariations.length} configuration variation(s)` },
+      { id: 5, name: 'Preflight Improbability & Math Audit', status: anyHighlyAnomalous ? 'WARN' : 'PASS', detail: anyHighlyAnomalous ? 'High anomaly index flagged for review' : 'Hardware bounds & probability verified' }
+    ]
+  };
+
+  let overallConfidence = 0.98;
+  const confidenceReasons = [];
+
+  if (processedVariations.length > 1) {
+    overallConfidence = 0.92;
+    confidenceReasons.push(`Automated multi-config clustering generated ${processedVariations.length} configurations.`);
+  }
+  if (hasNonIntegerFraction) {
+    overallConfidence = 0.70;
+    confidenceReasons.push('CTO fractional non-integer quantity divisor anomaly detected.');
+  }
+  if (anyHighlyAnomalous) {
+    overallConfidence = Math.min(overallConfidence, 0.65);
+    confidenceReasons.push('High Improbability Index detected in configuration profile.');
+  }
+
+  return { preflightPipeline, overallConfidence, confidenceReasons };
 }
 
 /**
@@ -233,42 +522,7 @@ function preprocessAndGroupBOQ(filePathOrRaw = null, rawTextOrFilePath = null, o
   addStep(1, 'Raw File Intake & Sheet Discovery', `Reading BOQ input source: ${filePath ? path.basename(filePath) : 'Direct Text Input'}`);
 
   const sheetsData = loadInputSections(filePath, rawText, auditTrail, addStep);
-
-// Parse items for each section / sheet with intelligent intra-sheet config segmentation
-  const rawVariations = [];
-  let globalLineCount = 0;
-
-  sheetsData.forEach((sec) => {
-    const lines = sec.content.split(/\r?\n/).filter(l => l.trim().length > 0);
-    globalLineCount += lines.length;
-
-    const configBlocks = segmentSheetIntoConfigBlocks(lines, sec.sectionName);
-
-    configBlocks.forEach((block, bIdx) => {
-      const result = parseSkuLines(block.lines);
-      const { items, multiplier } = result;
-
-      // P2-3: HITL audit step for unmatched SKU tokens
-      if (result.unmatchedSkus && result.unmatchedSkus.length > 0) {
-        addStep('UNMATCHED_SKUS', 'Unmatched SKU Lines Detected',
-          `${result.unmatchedSkus.length} SKU(s) could not be matched to any catalog entry and require manual review`,
-          { unmatchedSkus: result.unmatchedSkus, hitlRequired: true }
-        );
-        auditTrail.hitlRequired = true;
-        auditTrail.hitlReasons = auditTrail.hitlReasons || [];
-        auditTrail.hitlReasons.push(`${result.unmatchedSkus.length} unmatched SKU(s): ${result.unmatchedSkus.map(s => s.rawSku).join(', ')}`);
-      }
-
-      if (items.length > 0) {
-        rawVariations.push({
-          configId: `config_${rawVariations.length + 1}`,
-          rawName: block.name || `${sec.sectionName}_Config_${bIdx + 1}`,
-          items: items,
-          multiplier: multiplier || 1
-        });
-      }
-    });
-  });
+  const { rawVariations, globalLineCount } = _parseRawVariations(sheetsData, addStep, auditTrail);
 
   auditTrail.rawInputSummary.totalLines = globalLineCount;
   addStep(3, 'Line-Level Cleaning & Quantity Normalization', `Processed ${globalLineCount} lines across sections. Cleaned SKU items extracted into ${rawVariations.length} configuration variation(s).`);
@@ -286,227 +540,17 @@ function preprocessAndGroupBOQ(filePathOrRaw = null, rawTextOrFilePath = null, o
   }
 
   // Intra-list variant detection if only 1 section with multiple distinct processors
-  if (rawVariations.length === 1) {
-    const single = rawVariations[0];
-    const cpus = single.items.filter(it => {
-      const desc = (it.description || '').toLowerCase();
-      if (desc.includes('cable') || desc.includes('heatsink') || desc.includes('fan') || desc.includes('ocp')) return false;
-      return desc.includes('processor') || desc.includes('xeon') || desc.includes('epyc');
-    });
-
-    if (cpus.length > 1) {
-      addStep(4, 'Intra-List Variant Cluster Detection', `Detected ${cpus.length} distinct processor SKUs in single list. Splitting into configuration variations.`);
-
-      const splitVariations = cpus.map((cpuItem, cIdx) => {
-        const variantItems = single.items.filter(it => {
-          const desc = it.description.toLowerCase();
-          if (desc.includes('processor') || desc.includes('xeon') || desc.includes('epyc')) {
-            return cleanBaseSKU(it.sku) === cleanBaseSKU(cpuItem.sku);
-          }
-          return true;
-        });
-
-        return {
-          configId: `config_${cIdx + 1}`,
-          rawName: `Variation ${cIdx + 1} (${cpuItem.description.split(' ')[0] || cpuItem.sku})`,
-          items: variantItems,
-          primaryCpu: cpuItem,
-          multiplier: single.multiplier || 1
-        };
-      });
-
-      rawVariations.length = 0;
-      rawVariations.push(...splitVariations);
-    }
-  }
+  _detectIntraListCpuVariants(rawVariations, addStep);
 
   addStep(5, 'Differential Analysis & Categorization', `Building comparative profile across ${rawVariations.length} configuration variation(s).`);
 
   const loadedRules = options.chassisDir ? loadCatalogRules(options.chassisDir) : { parsedRules: [], subcategoryConstraints: [] };
+  const processedVariations = rawVariations.map((v, idx) => _processVariation(v, idx, loadedRules, options));
 
-  const processedVariations = rawVariations.map((v, idx) => {
-    const ctoNorm = detectAndNormalizeAtomicCto(v.items, { explicitMultiplier: v.multiplier });
-    const profile = extractHardwareProfile(ctoNorm.items);
+  _assignSplitReasons(processedVariations);
 
-    let chassisName = 'DL380 Gen12 SFF';
-    let solutionType = 'SERVER';
-    let vendor = 'HPE';
-    let family = 'ProLiant';
-    let gen = 'Gen12';
-
-    const allSkus = v.items.map(i => cleanBaseSKU(i.sku || '').toUpperCase());
-    const allDescs = v.items.map(i => (i.description || '').toLowerCase()).join(' ');
-
-    if (allDescs.includes('alletra') || allSkus.some(s => s.startsWith('R0Q') || s.startsWith('R7G') || s.startsWith('P764'))) {
-      chassisName = 'Alletra Storage System';
-      solutionType = 'STORAGE';
-      family = 'Alletra';
-      gen = 'Storage';
-    } else if (allDescs.includes('synergy') || allDescs.includes('vc 100gb') || allDescs.includes('sy') || allSkus.some(s => s.startsWith('Q8D') || s.startsWith('Q6F'))) {
-      chassisName = 'SY100Gb F32 Module';
-      solutionType = 'NETWORKING';
-      family = 'Synergy';
-      gen = 'General';
-    } else if (allDescs.includes('gx5000') || allDescs.includes('cray') || allDescs.includes('supercomputing') || allSkus.some(s => s.startsWith('P57'))) {
-      chassisName = 'GX5000 General RACK';
-      solutionType = 'HPC';
-      family = 'Cray';
-      gen = 'General';
-    } else if (allDescs.includes('msl3040') || allDescs.includes('tape library') || allDescs.includes('storeever') || allSkus.some(s => s.startsWith('Q6Q') || s.startsWith('Q6L'))) {
-      chassisName = 'MSL3040 Tape';
-      solutionType = 'TAPE';
-      family = 'StoreEver';
-      gen = 'Tape';
-    } else if ((allDescs.includes('dl380') || allDescs.includes('proliant')) && allDescs.includes('gen11')) {
-      chassisName = 'DL380 Gen11';
-      solutionType = 'SERVER';
-      family = 'ProLiant';
-      gen = 'Gen11';
-    } else if ((allDescs.includes('dl380') || allDescs.includes('proliant')) && (allDescs.includes('gen12') || allSkus.some(s => s.startsWith('P732') || s.startsWith('P767')))) {
-      chassisName = 'DL380 Gen12 SFF';
-      solutionType = 'SERVER';
-      family = 'ProLiant';
-      gen = 'Gen12';
-    } else if (options && options.chassisHint) {
-      chassisName = options.chassisHint;
-    }
-
-    // Resolve notebook ID dynamically from notebooks.json.
-    // IMPORTANT: Do NOT fall back to defaultNotebookId for an unmapped chassis —
-    // that would cross-pollinate validation (e.g. Alletra BOQ grounded against DL380 QuickSpecs).
-    let notebookId = null;
-    let notebookDegradedMode = null;
-    try {
-      const configPath = path.join(__dirname, '..', '..', 'config', 'notebooks.json');
-      if (fs.existsSync(configPath)) {
-        const cfg = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
-        const cleanChassisKey = chassisName.replace(/\s+/g, '_');
-        const entry = cfg.notebooks && cfg.notebooks[cleanChassisKey];
-        if (entry) {
-          if (typeof entry === 'object' && entry !== null) {
-            if (entry.queryEnabled === false) {
-              notebookDegradedMode = 'QUERY_DISABLED';
-            } else if (entry.cloudSyncState === 'FAILED') {
-              notebookDegradedMode = 'STALE_NOTEBOOK_SYNC';
-              notebookId = String(entry.notebookId || '').trim() || null;
-            } else {
-              notebookId = String(entry.notebookId || '').trim() || null;
-            }
-          } else {
-            notebookId = String(entry).trim() || null;
-          }
-        } else {
-          notebookDegradedMode = 'NO_NOTEBOOK_MAPPED';
-        }
-      }
-    } catch (_) { /* ignore — degraded mode will remain null */ }
-
-    const tempVar = {
-      configId: v.configId,
-      name: v.rawName || `Configuration #${idx + 1}`,
-      chassis: chassisName,
-      solutionType,
-      vendor,
-      family,
-      gen,
-      notebookId,
-      notebookDegradedMode,
-      itemCount: v.items.length,
-      items: ctoNorm.items,
-      profile: profile,
-      baseChassisSku: ctoNorm.baseChassisSku,
-      baseChassisQty: ctoNorm.baseChassisQty,
-      isMultipliedOrder: ctoNorm.isMultipliedOrder,
-      hasNonIntegerDivisor: ctoNorm.hasNonIntegerDivisor,
-      ctoAnomalies: ctoNorm.ctoAnomalies,
-      splitReasons: [],
-      businessRationale: '',
-      confidenceScore: ctoNorm.hasNonIntegerDivisor ? 0.70 : 0.95
-    };
-
-    const improbabilityMetrics = calculateImprobabilityMetrics(tempVar, loadedRules.subcategoryConstraints || []);
-    tempVar.improbabilityMetrics = improbabilityMetrics;
-
-    return tempVar;
-  });
-
-  // Assign split reasons if multiple variations exist
-  if (processedVariations.length > 1) {
-    const v1 = processedVariations[0];
-    for (let i = 1; i < processedVariations.length; i++) {
-      const vCurr = processedVariations[i];
-      const reasons = [];
-
-      if (v1.profile.cpus !== vCurr.profile.cpus || v1.profile.maxTdpWatts !== vCurr.profile.maxTdpWatts) {
-        reasons.push({ ...SPLIT_REASONS.COMPUTE_VARIATION, detectedDifferences: `Config 1: ${v1.profile.cpus} (${v1.profile.maxTdpWatts}W) vs Config ${i + 1}: ${vCurr.profile.cpus} (${vCurr.profile.maxTdpWatts}W)` });
-      }
-
-      if (v1.profile.totalRamGb !== vCurr.profile.totalRamGb || v1.profile.dimmCount !== vCurr.profile.dimmCount) {
-        reasons.push({ ...SPLIT_REASONS.MEMORY_DENSITY_VARIATION, detectedDifferences: `Config 1: ${v1.profile.totalRamGb}GB (${v1.profile.dimmCount} DIMMs) vs Config ${i + 1}: ${vCurr.profile.totalRamGb}GB (${vCurr.profile.dimmCount} DIMMs)` });
-      }
-
-      if (v1.profile.driveCount !== vCurr.profile.driveCount || v1.profile.driveMedia !== vCurr.profile.driveMedia) {
-        reasons.push({ ...SPLIT_REASONS.STORAGE_VARIATION, detectedDifferences: `Config 1: ${v1.profile.driveCount}x ${v1.profile.driveMedia} vs Config ${i + 1}: ${vCurr.profile.driveCount}x ${vCurr.profile.driveMedia}` });
-      }
-
-      if (v1.profile.psuType !== vCurr.profile.psuType) {
-        reasons.push({ ...SPLIT_REASONS.POWER_ELECTRICAL_VARIATION, detectedDifferences: `Config 1: ${v1.profile.psuType} vs Config ${i + 1}: ${vCurr.profile.psuType}` });
-      }
-
-      if (reasons.length === 0) {
-        reasons.push({ ...SPLIT_REASONS.WORKLOAD_NODE_PURPOSE, detectedDifferences: `Node role split by customer sheet: ${vCurr.name}` });
-      }
-
-      vCurr.splitReasons = reasons;
-      vCurr.businessRationale = `Split due to ${reasons.map(r => r.label).join(', ')}.`;
-    }
-    processedVariations[0].splitReasons = [{ code: 'PRIMARY_BASELINE', label: 'Primary Baseline Configuration', description: 'Initial baseline node configuration in quote.' }];
-    processedVariations[0].businessRationale = 'Baseline primary node.';
-  }
-
-  // Preflight Cleansing Pipeline 5-Stage Gate Validation
-  const totalRawItems = rawVariations.reduce((acc, v) => acc + (v.items?.length || 0), 0);
-  const totalProcessedItems = processedVariations.reduce((acc, v) => acc + (v.items?.length || 0), 0);
-  const baseChassisDetected = processedVariations.some(v => v.baseChassisSku !== null);
-  const hasNonIntegerFraction = processedVariations.some(v => v.hasNonIntegerDivisor);
-  const anyHighlyAnomalous = processedVariations.some(v => v.improbabilityMetrics?.isHighlyAnomalous);
-
-  const preflightPipeline = {
-    totalStages: 5,
-    stagesCleared: 5,
-    isCleansingValid: !hasNonIntegerFraction,
-    hasNonInteger: hasNonIntegerFraction,
-    totalAnomaliesCount: processedVariations.reduce((acc, v) => acc + (v.ctoAnomalies?.length || 0), 0),
-    isHitlRequired: hasNonIntegerFraction || anyHighlyAnomalous,
-    cleansingStatus: hasNonIntegerFraction ? 'FRACTIONAL_ANOMALY_DETECTED' : 'CLEAN_INTEGER_DIVISORS',
-    stages: [
-      { id: 1, name: 'File Intake & Header Offset Cleansing', status: 'PASS', detail: `Processed ${globalLineCount} line(s) from ${auditTrail.rawInputSummary.source}` },
-      { id: 2, name: 'HPE SKU & Line Normalization', status: totalProcessedItems > 0 ? 'PASS' : 'WARN', detail: `Extracted ${totalProcessedItems} clean SKU item(s) from raw input` },
-      { id: 3, name: '1-Unit CTO Multiplier Normalization', status: hasNonIntegerFraction ? 'WARN' : 'PASS', detail: baseChassisDetected ? `Chassis multiplier: ${processedVariations[0]?.baseChassisQty}x (${processedVariations[0]?.baseChassisSku})` : 'Standalone / 1x unit order' },
-      { id: 4, name: 'Multi-Configuration Clustering', status: 'PASS', detail: `Grouped into ${processedVariations.length} configuration variation(s)` },
-      { id: 5, name: 'Preflight Improbability & Math Audit', status: anyHighlyAnomalous ? 'WARN' : 'PASS', detail: anyHighlyAnomalous ? 'High anomaly index flagged for review' : 'Hardware bounds & probability verified' }
-    ]
-  };
-
+  const { preflightPipeline, overallConfidence, confidenceReasons } = _buildPreflightPipeline(rawVariations, processedVariations, globalLineCount, auditTrail);
   const diffMatrix = buildConfigDiffMatrix(processedVariations);
-
-  let overallConfidence = 0.98;
-  const confidenceReasons = [];
-
-  if (processedVariations.length > 1) {
-    overallConfidence = 0.92;
-    confidenceReasons.push(`Automated multi-config clustering generated ${processedVariations.length} configurations.`);
-  }
-
-  if (hasNonIntegerFraction) {
-    overallConfidence = 0.70;
-    confidenceReasons.push('CTO fractional non-integer quantity divisor anomaly detected.');
-  }
-
-  if (anyHighlyAnomalous) {
-    overallConfidence = Math.min(overallConfidence, 0.65);
-    confidenceReasons.push('High Improbability Index detected in configuration profile.');
-  }
 
   return {
     rawSummary: auditTrail.rawInputSummary,

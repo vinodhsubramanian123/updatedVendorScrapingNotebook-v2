@@ -7,7 +7,7 @@
  * triggers CLIC check if available, and outputs current session state.
  */
 
-const { getOCATarget, getAnyPageTarget, connectWS, dismissDOMModals, sendCommand, triggerClicCheck, sleep } = require('../lib/scraper/cdp.js');
+const { getOCATarget, getAnyPageTarget, connectWS, dismissDOMModals, sendCommand, triggerClicCheck } = require('../lib/scraper/cdp.js');
 
 async function main() {
   console.log(`================================================================`);

@@ -7,11 +7,9 @@
  */
 
 const fs = require('fs');
-const path = require('path');
 const xlsx = require('xlsx-js-style');
 const { getOCATarget, getAnyPageTarget, connectWS, sendCommand } = require('../lib/scraper/cdp.js');
 const { processPortalFeedback } = require('../lib/feedback/feedback_loop.js');
-const { safeWriteJsonAtomic } = require('../lib/system/fs_compat.js');
 
 /**
  * Parse an exported CLIC Advice Excel file (e.g. CLIC_Advice_TempUCID.xlsx)

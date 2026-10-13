@@ -175,7 +175,14 @@ const registry = {
       vendorScope: ['NOT_APPLICABLE'], domainScope: ['UI'], executionMode: 'UI',
       entrypoints: [entry('dashboard/src/main.jsx', null, 'UI')],
       completionEvidence: ['Reviewed rendered UI and interface compatibility'],
-      coverageLimits: ['Engineering capability, not presales query dispatch.'] })
+      coverageLimits: ['Engineering capability, not presales query dispatch.'] }),
+    capability({ capabilityId: 'epistemic-verification-skill', kind: 'ENGINEERING', intents: [],
+      triggers: ['Popperian falsification, counterexample audits, and 9-phase terminal evidence ledger verification'],
+      applicability: ['Rigorous verification of nullable contracts, fresh-process learning, and non-repudiation on disk'],
+      vendorScope: ['NOT_APPLICABLE'], domainScope: ['CROSS_DOMAIN'], executionMode: 'LOCAL',
+      entrypoints: [entry('scripts/lib/system/evidence_ledger.js', 'createEvidenceLedger')],
+      completionEvidence: ['Terminal 9-phase evidence ledger and cryptographic audit trace'],
+      coverageLimits: ['Verifies epistemic contracts; does not generate hardware configurations.'] })
   ],
   internalEngineeringObservations: [{
     ownerCapabilityId: 'presales-query-router', checkpoint: 'CP7b', activation: 'DEFAULT_DISABLED_PROPOSAL',

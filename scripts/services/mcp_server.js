@@ -12,7 +12,6 @@ const {
   evalPcieRiserSlots,
   evalPowerEnvironment,
   evalSupportManufacturing,
-  parseAndConsolidateBOQ,
   evaluateBOQMultiAspect
 } = require('../lib/boq/boq_evaluator.js');
 const { executeNotebookQuery } = require('../lib/notebook/notebook_query_utils.js');
@@ -258,7 +257,7 @@ async function executeToolRequest(request, extra) {
         if (!outputDir) {
           const rawChassisId = String(args.chassis_id || '').trim();
           if (!rawChassisId || !rawChassisId.replace(/[^a-zA-Z0-9]/g, '')) throw new Error('Invalid chassis_id');
-          const cleanChassisId = rawChassisId.replace(/[^a-zA-Z0-9_\-]/g, '_');
+          const cleanChassisId = rawChassisId.replace(/[^a-zA-Z0-9_-]/g, '_');
           outputDir = path.resolve(__dirname, '..', '..', 'outputs', cleanChassisId);
         }
         const outputsRoot = path.resolve(__dirname, '..', '..', 'outputs');
@@ -292,11 +291,17 @@ async function executeToolRequest(request, extra) {
   }
 }
 
+async function run() {
+  const transport = new StdioServerTransport();
+  await server.connect(transport);
+}
+
 if (require.main === module) {
   run().catch(console.error);
 }
 
 module.exports = {
   executeToolRequest,
-  server
+  server,
+  run
 };

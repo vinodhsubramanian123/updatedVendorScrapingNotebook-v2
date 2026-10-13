@@ -760,8 +760,6 @@ if (require.main === module) {
   const jsonOut = args.includes('--json');
 
   try {
-    const rawItems = extractRawItemsFromWorkbook(filePath);
-    const partition = analyzeAndPartitionClusters(rawItems, path.basename(filePath));
     const result = splitAndWriteClusterWorkbooks(filePath, outDir);
 
     if (jsonOut) {

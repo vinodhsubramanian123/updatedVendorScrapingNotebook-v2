@@ -126,7 +126,7 @@ async function extractTablesAsRows(ws, sendCommand, scopeSelector = null) {
                   cell.querySelector('[aria-label*="recommend" i], [title*="recommend" i]')?.getAttribute('title') ||
                   cell.querySelector('[aria-label*="recommend" i], [title*="recommend" i]')?.getAttribute('aria-label') || '';
                 // GAP-04 FIX: Widen negative pattern to catch 'Not HPE recommended' (HPE between Not and recommended)
-                if (/not\s+(?:hpe\s+)?recommended|non[\s-]+recommended/i.test(ariaOrTitle)) {
+                if (/nots+(?:hpes+)?recommended|non[s-]+recommended/i.test(ariaOrTitle)) {
                   cellText = 'No';
                 } else if (hasCheckImg || hasCheckIcon || hasVisibleSvg || /recommend/i.test(ariaOrTitle)) {
                   cellText = 'Yes';

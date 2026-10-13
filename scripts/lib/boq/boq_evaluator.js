@@ -22,6 +22,14 @@ const { detectChassisVariant, validateConflictGraph, getChassisMap } = require('
 const { setPhysicalMathValidator } = require('../conflict/strategy_synthesizer.js');
 const { parseSkuLines, isNonBomSheet, isBomSheet } = require('./boq_parser.js');
 const { resolveRequirementIntent } = require('./requirement_intent_resolver.js');
+const { resolveSolutionTopology, evaluateUnprofiledTopology } = require('./solution_topology');
+const { normalizeConfiguration, applyConfigurationContext } = require('./configuration_context');
+const { evaluateBundleComposition } = require('./bundle_composition');
+const { buildRuntimeDiscoveryPlan } = require('./runtime_discovery_plan');
+const { evaluateSanSwitch } = require('./san_switch_evaluator');
+const { evaluateDomainAspects } = require('../aspects/aspect_registry.js');
+const { evaluateGenericDomainRules } = require('../catalog/generic_domain_templates.js');
+const { autoDetectChassisDir } = require('../catalog/catalog_discovery.js');
 
 let _cachedChassisMap = null;
 function getCachedChassisMap() {
@@ -698,7 +706,7 @@ function validateSupportRules(ctx) {
 }
 
 function validateBaseChassisRules(ctx) {
-  const { items, compute, memory, power, storage, support, serverCount, mandatorySkus, errors, warnings, mathDeductions, missingDependencies, CTO_BASE_SKUS, chassisInfo, cleanBaseSKU } = ctx;
+  const { items, serverCount, compute, memory, storage, power, mandatorySkus, errors, mathDeductions, missingDependencies, CTO_BASE_SKUS, chassisInfo, cleanBaseSKU } = ctx;
   const hasBaseChassis = items.some(it => {
     const clean = cleanBaseSKU(it.sku);
     return clean === chassisInfo.baseSku || CTO_BASE_SKUS.has(clean);
@@ -901,7 +909,7 @@ function collectChassisDefaultAdvisories(items, chassisInfo, warnings, skipGraph
 }
 
 function _buildAspect1Compute(ctx, _computePresent) {
-  const { compute, mandatorySkus, serverCount, hasBaseChassis, cpusPerServer, HIGH_TDP_THRESHOLD_WATTS, pcie } = ctx;
+  const { compute, mandatorySkus, hasBaseChassis, cpusPerServer, HIGH_TDP_THRESHOLD_WATTS, pcie } = ctx;
   const status = (hasBaseChassis && compute.cpuCount === 0) ? 'FAIL'
     : !_computePresent ? 'UNKNOWN'
     : ((compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS || (pcie.gpuCount > 0 && !compute.isDl380aAccelerator)) && !compute.hasHighPerfFans) || compute.fanKitExceedsMax ? 'FAIL' : 'PASS';
@@ -1120,7 +1128,7 @@ function buildAspectChecks(ctx) {
 }
 
 function buildArchitecturalRationale(ctx) {
-  const { power, pcie, storage, memory, serverCount, compute } = ctx;
+  const { power, pcie, storage, memory, serverCount } = ctx;
   const architecturalRationale = [];
   if (power.isDl380aGpuChassis) {
     if (pcie.gpuCount > 0) {
@@ -1155,20 +1163,14 @@ function buildArchitecturalRationale(ctx) {
   return architecturalRationale;
 }
 
-function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options = {}) {
-  // Classify before quantity normalization: a frame or another appliance cannot
-  // become a server accessory through an inferred configuration multiplier.
-  const { resolveSolutionTopology, evaluateUnprofiledTopology } = require('./solution_topology');
+function _handleTopologyAndScaling(items, catalogData, targetDir, options) {
   const topologyItems = Array.isArray(items) ? items : [];
   const detectedChassis = detectChassisVariant(topologyItems);
   const topology = resolveSolutionTopology(topologyItems, detectedChassis, catalogData);
   if (topologyItems.length && (topology.domain !== 'server' && !(topology.domain === 'networking' && detectedChassis.family === 'SAN'))) {
-    return evaluateUnprofiledTopology(items, topology, detectedChassis);
+    return { isHandled: true, result: evaluateUnprofiledTopology(items, topology, detectedChassis) };
   }
   if (Array.isArray(items) && items.length && !options.baseConfigurationOnly) {
-    const { normalizeConfiguration, applyConfigurationContext } = require('./configuration_context');
-    // Skip context normalization if items are already tagged as base quantities by the caller
-    // (e.g., pre-split cluster BOMs from multi_cluster_splitter or test fixtures).
     const alreadyNormalized = items.every(it => it.quantityBasis === 'base' || it.quantityScope === 'global');
     if (!alreadyNormalized) {
       try {
@@ -1176,61 +1178,55 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
         const baseItems = context.items.filter(it => it.quantityScope !== 'global');
         const result = evaluatePhysicalMath(baseItems, catalogData, targetDir, { ...options, baseConfigurationOnly: true });
         const applied = applyConfigurationContext(result, context);
-        // Promote scaled cluster totals back to evalSummary for backward-compat callers
         if (applied.evalSummary && applied.clusterSizing && context.multiplier > 1) {
           const m = context.multiplier;
           const es = applied.evalSummary;
           if (Number.isFinite(es.cpuCount)) es.cpuCount = es.cpuCount * m;
           if (Number.isFinite(es.memoryCount)) es.memoryCount = es.memoryCount * m;
           if (Number.isFinite(es.totalMemoryGb)) es.totalMemoryGb = es.totalMemoryGb * m;
-          // expose clusterSizing on evalSummary so test_advanced_enterprise_aspects can find it
           es.clusterSizing = applied.clusterSizing;
         }
-        return applied;
+        return { isHandled: true, result: applied };
       } catch (err) {
         if (err.code !== 'CONFIGURATION_OWNERSHIP_AMBIGUOUS') throw err;
-        // Degrade gracefully: proceed with raw items, flag ambiguity
         const result = evaluatePhysicalMath(items, catalogData, targetDir, { ...options, baseConfigurationOnly: true });
         result.ownershipAmbiguous = true;
         result.ownershipAmbiguityReason = err.message;
-        return result;
+        return { isHandled: true, result };
       }
     }
   }
-  if (!items || !Array.isArray(items) || items.length === 0) {
-    const reason = 'Empty BOQ: No SKUs or line items detected.';
-    return {
-      isMathClean: false,
-      isGraphClean: false,
-      criticalViolationsCount: 1,
-      confidence: {
-        score: 0.0,
-        isHitlTriggered: true,
-        confidenceReasons: [`[CRITICAL_MATH] ${reason}`]
-      },
-      errors: [reason],
-      warnings: [],
-      missingDependencies: [],
-      mathDeductions: [reason],
-      evalSummary: {},
-      aspectChecks: [],
-      conflictGraph: {
-        isWholeSolutionValid: false,
-        conflicts: [{ level: 'BOQ', type: 'EMPTY_INPUT', message: reason }],
-        resolvedFixes: [],
-        unresolvedConflicts: [],
-        rankedSolutions: []
-      }
-    };
-  }
+  return { isHandled: false, topology, detectedChassis };
+}
 
-  const chassisInfo = detectChassisVariant(items);
-  if (chassisInfo.family === 'SAN') {
-    return { ...require('./san_switch_evaluator').evaluateSanSwitch(items, catalogData, targetDir, chassisInfo, getCachedChassisMap().product_bundle_compositions || [], options), solutionTopology: topology };
-  }
-  const mandatorySkus = getMandatorySkusForChassis(chassisInfo);
+function _buildEmptyBoqResult() {
+  const reason = 'Empty BOQ: No SKUs or line items detected.';
+  return {
+    isMathClean: false,
+    isGraphClean: false,
+    criticalViolationsCount: 1,
+    confidence: {
+      score: 0.0,
+      isHitlTriggered: true,
+      confidenceReasons: [`[CRITICAL_MATH] ${reason}`]
+    },
+    errors: [reason],
+    warnings: [],
+    missingDependencies: [],
+    mathDeductions: [reason],
+    evalSummary: {},
+    aspectChecks: [],
+    conflictGraph: {
+      isWholeSolutionValid: false,
+      conflicts: [{ level: 'BOQ', type: 'EMPTY_INPUT', message: reason }],
+      resolvedFixes: [],
+      unresolvedConflicts: [],
+      rankedSolutions: []
+    }
+  };
+}
 
-  // Detect server / chassis node count for multi-node orders
+function _detectServerAndRailCount(items, chassisInfo) {
   let serverCount = 1;
   let railKitCount = 0;
   for (const it of items) {
@@ -1249,17 +1245,20 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
       railKitCount += parseInt(it.quantity, 10) || 1;
     }
   }
+  return { serverCount, railKitCount };
+}
 
+function _evaluateCoreAspects(items, catalogData, mandatorySkus, serverCount, options) {
   emitProgress(2, 10, 'Compute & Thermal Profiling', 'in_progress', `Analyzing ${items.length} SKUs for high-TDP processor constraints and heatsink counts.`);
   const compute = evalComputeThermal(items, catalogData, mandatorySkus, serverCount);
 
-  emitProgress(3, 10, 'Memory Channel Math', 'in_progress', `Validating 1DPC / 2DPC symmetry and balanced memory population.`);
+  emitProgress(3, 10, 'Memory Channel Math', 'in_progress', 'Validating 1DPC / 2DPC symmetry and balanced memory population.');
   const memory = evalMemoryChannel(items, compute.cpuCount, catalogData);
 
-  emitProgress(4, 10, 'Storage Tri-Mode Validation', 'in_progress', `Verifying NVMe/SAS/SATA drive cages, controllers, and backplane capacities.`);
+  emitProgress(4, 10, 'Storage Tri-Mode Validation', 'in_progress', 'Verifying NVMe/SAS/SATA drive cages, controllers, and backplane capacities.');
   const storage = evalStorageTriMode(items, catalogData, mandatorySkus, serverCount);
 
-  emitProgress(5, 10, 'Networking & PCIe Constraints', 'in_progress', `Analyzing OCP NICs and PCIe Riser slot math.`);
+  emitProgress(5, 10, 'Networking & PCIe Constraints', 'in_progress', 'Analyzing OCP NICs and PCIe Riser slot math.');
   const network = evalNetworkingOcp(items, catalogData, mandatorySkus, serverCount);
   const pcie = evalPcieRiserSlots(items, catalogData, mandatorySkus, serverCount);
   if (pcie.slotLayout) {
@@ -1280,7 +1279,7 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
     };
   }
 
-  emitProgress(6, 10, 'Power & Infrastructure Checking', 'in_progress', `Verifying DC power lug kits and redundancy.`);
+  emitProgress(6, 10, 'Power & Infrastructure Checking', 'in_progress', 'Verifying DC power lug kits and redundancy.');
   const power = evalPowerEnvironment(items, catalogData, mandatorySkus);
   const support = evalSupportManufacturing(items, catalogData, 0, serverCount);
   const lifecycle = (options.skipLifecycle || options.skipGraphValidation)
@@ -1290,13 +1289,15 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
     ? []
     : generateLifecycleRecommendations(items, catalogData, options.lifecycle || {});
 
-  // Universal Zero-Hardcoding Generic Domain Template Evaluation (INV-56)
+  return { compute, memory, storage, network, pcie, power, support, lifecycle, lifecycleRecommendations };
+}
+
+function _evaluateDomainAudits(items, catalogData, chassisInfo, topology, mandatorySkus, serverCount, memory, hasBaseChassis, options) {
   let genericDomainAudit = null;
   if (!options.skipGraphValidation) {
     try {
-      const genericTemplates = require('../catalog/generic_domain_templates.js');
       const detectedDomain = topology.domain.toUpperCase();
-      genericDomainAudit = genericTemplates.evaluateGenericDomainRules(items, {
+      genericDomainAudit = evaluateGenericDomainRules(items, {
         domain: detectedDomain,
         catalog: catalogData,
         chassisProfile: (chassisInfo.model || '').toLowerCase().includes('dl145') ? 'EDGE' : 'ENTERPRISE'
@@ -1306,178 +1307,61 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
     }
   }
 
-  const hasBaseChassis = items.some(it => {
-    const clean = cleanBaseSKU(it.sku);
-    return clean === chassisInfo.baseSku || CTO_BASE_SKUS.has(clean);
-  });
-
-  // Domain-Aware Dynamic Aspect Registry Integration (INV-56 / F-07 / R-06)
   let domainAspectAudit = null;
-  const errors = [];
-  const warnings = [];
+  const domainErrors = [];
+  const domainWarnings = [];
   try {
-    const { evaluateDomainAspects } = require('../aspects/aspect_registry.js');
     domainAspectAudit = evaluateDomainAspects(topology.domain, items, catalogData, mandatorySkus, serverCount, {
       chassisInfo, channelWidth: memory?.channelWidth || 8, isCtoChassis: hasBaseChassis, options
     });
     if (domainAspectAudit) {
       if (Array.isArray(domainAspectAudit.errors) && domainAspectAudit.errors.length > 0) {
-        errors.push(...domainAspectAudit.errors);
+        domainErrors.push(...domainAspectAudit.errors);
       }
       if (Array.isArray(domainAspectAudit.warnings) && domainAspectAudit.warnings.length > 0) {
-        warnings.push(...domainAspectAudit.warnings);
+        domainWarnings.push(...domainAspectAudit.warnings);
       }
     }
   } catch (aspectErr) {
     const errDetail = `Aspect Registry Evaluation Failure [${topology.domain}]: ${aspectErr.message}`;
     console.error('[BOQ_EVALUATOR]', errDetail);
-    errors.push(errDetail);
-  }
-  const missingDependencies = [];
-  const mathDeductions = [];
-  const { chassisDefaults, redundantDefaults } = collectChassisDefaultAdvisories(
-    items,
-    chassisInfo,
-    warnings,
-    options.skipGraphValidation
-  );
-
-  if (lifecycle.hasObsoleteRisk) {
-    warnings.push('Lifecycle Risk: Obsolete (OB) component(s) detected in BOM. Upgrade recommendations generated.');
-  }
-  if (lifecycle.hasEolWarning) {
-    warnings.push('Lifecycle Advisory: 90-Day EOL component(s) detected in BOM. Advance migration recommended.');
+    domainErrors.push(errDetail);
   }
 
-  const ocpSlotsClusterMax = network.maxOcpSlots * serverCount;
-  const pcieSlotsClusterMax = pcie.totalSlotsAvailable * serverCount;
-  const activePcieSlotsClusterMax = pcie.activeSlotsAvailable * serverCount;
-  const isExceedingOcp = network.ocpAdapterCount > ocpSlotsClusterMax;
-  const isExceedingPcie = pcie.requiredPcieCards > pcieSlotsClusterMax;
-  const isExceedingActivePcie = pcie.requiredPcieCards > activePcieSlotsClusterMax;
-  const psuPerServer = power.psuCount / serverCount;
-  const cpusPerServer = compute.cpuCount / serverCount;
-  const hasDriveCageKit = storage.hasDriveCage || items.some(it => (it.description || '').toLowerCase().includes('drive cage') || (it.description || '').toLowerCase().includes('cage kit') || (mandatorySkus?.GENERIC_CAGE?.sku && cleanBaseSKU(it.sku) === cleanBaseSKU(mandatorySkus.GENERIC_CAGE.sku)));
+  return { genericDomainAudit, domainAspectAudit, domainErrors, domainWarnings };
+}
 
-  
-  const ctx = {
-    items, serverCount, compute, memory, storage, network, pcie, power, support, lifecycle,
-    chassisInfo, mandatorySkus, CTO_BASE_SKUS, HIGH_TDP_THRESHOLD_WATTS,
-    errors, warnings, mathDeductions, missingDependencies, cleanBaseSKU,
-    hasDriveCageKit, hasBaseChassis, ocpSlotsClusterMax, pcieSlotsClusterMax, activePcieSlotsClusterMax,
-    isExceedingOcp, isExceedingPcie, isExceedingActivePcie,
-    psuPerServer, cpusPerServer
-  };
-
-  validateNetworkingRules(ctx);
-  validatePCIeRules(ctx);
-  validateThermalRules(ctx);
-  validateStorageRules(ctx);
-  validatePowerRules(ctx);
-  validateSupportRules(ctx);
-  validateBaseChassisRules(ctx);
-  validateAlletraRules(ctx);
-  validateStoreEverRules(ctx);
-  validateMemoryRules(ctx);
-
-  const aspectChecks = buildAspectChecks(ctx);
-  const { evaluateBundleComposition } = require('./bundle_composition');
-  const bundleComposition = evaluateBundleComposition(items, getCachedChassisMap().product_bundle_compositions || [], path.basename(targetDir));
-  const is4U = chassisInfo.formFactor === '4U' || /DL380a|DL384|DL580|4U/i.test(chassisInfo.model || '') || /DL380a|DL384/i.test(chassisInfo.id || '') || /8DW/i.test(chassisInfo.formFactor || '');
-  const is1U = chassisInfo.formFactor === '1U' || /DL360|1U/i.test(chassisInfo.model || '') || /DL360/i.test(chassisInfo.id || '');
-  const isBlade = /blade|compute module/i.test(chassisInfo.formFactor || '') || /SY480|SY100Gb/i.test(chassisInfo.model || '');
-  const formFactorRU = Number.isFinite(chassisInfo.uHeight) ? chassisInfo.uHeight : (isBlade ? 0 : is1U ? 1 : is4U ? 4 : 2);
-  const architecturalRationale = buildArchitecturalRationale(ctx);
-
-  const evalSummary = {
-    cpuCount: compute.cpuCount,
-    maxCpuTdpWatts: compute.maxCpuTdpWatts,
-    memoryCount: memory.memoryCount,
-    totalMemoryGb: memory.totalMemoryGb,
-    isBalancedChannel: memory.isBalancedChannel,
-    isSupportedPopulation: memory.isSupportedPopulation,
-    dimmsPerCpu: memory.dimmsPerCpu,
-    driveCount: storage.driveCount,
-    hasStorageController: storage.hasStorageController,
-    hasSmartBattery: storage.hasSmartBattery,
-    hasNoDriveKit: storage.hasNoDriveKit,
-    hasHighPerfFans: compute.hasHighPerfFans,
-    hasHeatsinks: compute.hasHeatsinks,
-    hasDcPowerSupply: power.hasDcPowerSupply,
-    hasDcLugKit: power.hasDcLugKit,
-    hasOcpAdapter: network.hasOcpAdapter,
-    networkPortsCount: network.networkPortsCount,
-    requiredPcieCards: pcie.requiredPcieCards,
-    totalPcieSlotsAvailable: pcie.totalSlotsAvailable,
-    architecturalRationale,
-    hasSupportService: support.hasSupportService,
-    lifecycleRisks: lifecycle,
-    lifecycleRecommendations,
-    // Nested aspect sub-objects for detailed observability & testability
-    compute,
-    memory,
-    storage,
-    networking: network,
-    pcie,
-    power,
-    support,
-    // Flat action checklist for fast UI and API consumption (QW-1)
-    needsActions: missingDependencies.map(d => d.key || d.sku),
-    // Cluster Infrastructure Sizing Matrix
-    clusterSizing: (() => {
-      let recRailSku = 'P52341-B21';
-      let recRailDesc = 'HPE ProLiant Easy Install Rail Kit';
-      if (catalogData?.entries) {
-        for (const entry of catalogData.entries) {
-          const match = entry.skus?.find(s => /Rail\s*Kit/i.test(s.Description || s.description || ''));
-          if (match) {
-            recRailSku = match.sku || match['Product #'] || recRailSku;
-            recRailDesc = match.Description || match.description || recRailDesc;
-            break;
-          }
-        }
+function _computeClusterSizing(serverCount, formFactorRU, power, catalogData, railKitCount) {
+  let recRailSku = 'P52341-B21';
+  let recRailDesc = 'HPE ProLiant Easy Install Rail Kit';
+  if (catalogData?.entries) {
+    for (const entry of catalogData.entries) {
+      const match = entry.skus?.find(s => /Rail\s*Kit/i.test(s.Description || s.description || ''));
+      if (match) {
+        recRailSku = match.sku || match['Product #'] || recRailSku;
+        recRailDesc = match.Description || match.description || recRailDesc;
+        break;
       }
-      return {
-        serverCount,
-        totalRackUnits: formFactorRU > 0 ? serverCount * formFactorRU : null,
-        standard42uRacksRequired: formFactorRU > 0 ? Math.ceil((serverCount * formFactorRU) / 42) : null,
-        totalFacilityPowerKw: Number(((serverCount * (power.maxPsuWattage || 800)) / 1000).toFixed(1)),
-        estimatedNodeWattage: power.estimatedNodeWattage,
-        railKitCoverage: {
-          required: serverCount,
-          recommendedSku: recRailSku,
-          description: recRailDesc,
-          providedCount: railKitCount || 0,
-          isCompliant: (railKitCount || 0) >= serverCount
-        },
-        needsHighLine220v: power.needsHighLine220v
-      };
-    })(),
-    errors,
-    warnings,
-    mathDeductions,
-    missingDependencies,
-    chassisDefaults,
-    redundantDefaults,
-    aspectChecks,
-    genericDomainAudit,
-    domainAspectAudit,
-    bundleComposition
-  };
-
-  let conflictGraphResults = { isWholeSolutionValid: true, conflicts: [], resolvedFixes: [], unresolvedConflicts: [], rankedSolutions: [] };
-  if (!options.skipGraphValidation) {
-    emitProgress(7, 10, 'Validating Conflict Graph', 'in_progress', 'Resolving dependencies and checking for architectural conflicts.');
-
-    let resolvedDir = targetDir;
-    if (!resolvedDir) {
-      const { autoDetectChassisDir } = require('../catalog/catalog_discovery.js');
-      resolvedDir = autoDetectChassisDir(items);
     }
-
-    conflictGraphResults = validateConflictGraph(items, missingDependencies, resolvedDir, '', { skipSynthesis: options.skipSynthesis === true });
   }
+  return {
+    serverCount,
+    totalRackUnits: formFactorRU > 0 ? serverCount * formFactorRU : null,
+    standard42uRacksRequired: formFactorRU > 0 ? Math.ceil((serverCount * formFactorRU) / 42) : null,
+    totalFacilityPowerKw: Number(((serverCount * (power.maxPsuWattage || 800)) / 1000).toFixed(1)),
+    estimatedNodeWattage: power.estimatedNodeWattage,
+    railKitCoverage: {
+      required: serverCount,
+      recommendedSku: recRailSku,
+      description: recRailDesc,
+      providedCount: railKitCount || 0,
+      isCompliant: (railKitCount || 0) >= serverCount
+    },
+    needsHighLine220v: power.needsHighLine220v
+  };
+}
 
+function _assessConfidenceAndCleanliness(errors, warnings, topology, aspectChecks, domainAspectAudit, conflictGraphResults) {
   if (topology.relationshipChecks.length) {
     const detail = 'Compute component checks do not validate its enclosure, bay, fabric, shared power or endpoint relationships. Resolve the owning solution before whole-solution certification.';
     warnings.push(detail);
@@ -1491,7 +1375,6 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
       candidate.isMathClean = false;
     }
   }
-  // INV-105: isMathClean requires zero errors, zero topology gaps, all aspect checks in terminal PASS/WARN, and clean domain registry verdict (R-06)
   const _hasUnknownOrFailAspect = !aspectChecks.length || aspectChecks.some(a => !['PASS', 'WARN', 'NOT_APPLICABLE'].includes(a.status));
   const isDomainClean = !domainAspectAudit || (domainAspectAudit.hasFailures !== true && (!domainAspectAudit.errors || domainAspectAudit.errors.length === 0));
   const isMathClean = errors.length === 0 && topology.relationshipChecks.length === 0 && !_hasUnknownOrFailAspect && isDomainClean;
@@ -1525,10 +1408,158 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
     }
   }
 
+  return { isMathClean, isGraphClean, criticalViolationsCount, confidenceScore, confidence };
+}
+
+function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options = {}) {
+  const scaled = _handleTopologyAndScaling(items, catalogData, targetDir, options);
+  if (scaled.isHandled) return scaled.result;
+  const { topology } = scaled;
+
+  if (!items || !Array.isArray(items) || items.length === 0) {
+    return _buildEmptyBoqResult();
+  }
+
+  const chassisInfo = detectChassisVariant(items);
+  if (chassisInfo.family === 'SAN') {
+    return { ...evaluateSanSwitch(items, catalogData, targetDir, chassisInfo, getCachedChassisMap().product_bundle_compositions || [], options), solutionTopology: topology };
+  }
+  const mandatorySkus = getMandatorySkusForChassis(chassisInfo);
+  const { serverCount, railKitCount } = _detectServerAndRailCount(items, chassisInfo);
+
+  const aspects = _evaluateCoreAspects(items, catalogData, mandatorySkus, serverCount, options);
+  const { compute, memory, storage, network, pcie, power, support, lifecycle, lifecycleRecommendations } = aspects;
+
+  const hasBaseChassis = items.some(it => {
+    const clean = cleanBaseSKU(it.sku);
+    return clean === chassisInfo.baseSku || CTO_BASE_SKUS.has(clean);
+  });
+
+  const domainAudits = _evaluateDomainAudits(items, catalogData, chassisInfo, topology, mandatorySkus, serverCount, memory, hasBaseChassis, options);
+  const { genericDomainAudit, domainAspectAudit, domainErrors, domainWarnings } = domainAudits;
+
+  const errors = [...domainErrors];
+  const warnings = [...domainWarnings];
+  const missingDependencies = [];
+  const mathDeductions = [];
+  const { chassisDefaults, redundantDefaults } = collectChassisDefaultAdvisories(
+    items,
+    chassisInfo,
+    warnings,
+    options.skipGraphValidation
+  );
+
+  if (lifecycle.hasObsoleteRisk) {
+    warnings.push('Lifecycle Risk: Obsolete (OB) component(s) detected in BOM. Upgrade recommendations generated.');
+  }
+  if (lifecycle.hasEolWarning) {
+    warnings.push('Lifecycle Advisory: 90-Day EOL component(s) detected in BOM. Advance migration recommended.');
+  }
+
+  const ocpSlotsClusterMax = network.maxOcpSlots * serverCount;
+  const pcieSlotsClusterMax = pcie.totalSlotsAvailable * serverCount;
+  const activePcieSlotsClusterMax = pcie.activeSlotsAvailable * serverCount;
+  const isExceedingOcp = network.ocpAdapterCount > ocpSlotsClusterMax;
+  const isExceedingPcie = pcie.requiredPcieCards > pcieSlotsClusterMax;
+  const isExceedingActivePcie = pcie.requiredPcieCards > activePcieSlotsClusterMax;
+  const psuPerServer = power.psuCount / serverCount;
+  const cpusPerServer = compute.cpuCount / serverCount;
+  const hasDriveCageKit = storage.hasDriveCage || items.some(it => (it.description || '').toLowerCase().includes('drive cage') || (it.description || '').toLowerCase().includes('cage kit') || (mandatorySkus?.GENERIC_CAGE?.sku && cleanBaseSKU(it.sku) === cleanBaseSKU(mandatorySkus.GENERIC_CAGE.sku)));
+
+  const ctx = {
+    items, serverCount, compute, memory, storage, network, pcie, power, support, lifecycle,
+    chassisInfo, mandatorySkus, CTO_BASE_SKUS, HIGH_TDP_THRESHOLD_WATTS,
+    errors, warnings, mathDeductions, missingDependencies, cleanBaseSKU,
+    hasDriveCageKit, hasBaseChassis, ocpSlotsClusterMax, pcieSlotsClusterMax, activePcieSlotsClusterMax,
+    isExceedingOcp, isExceedingPcie, isExceedingActivePcie,
+    psuPerServer, cpusPerServer
+  };
+
+  validateNetworkingRules(ctx);
+  validatePCIeRules(ctx);
+  validateThermalRules(ctx);
+  validateStorageRules(ctx);
+  validatePowerRules(ctx);
+  validateSupportRules(ctx);
+  validateBaseChassisRules(ctx);
+  validateAlletraRules(ctx);
+  validateStoreEverRules(ctx);
+  validateMemoryRules(ctx);
+
+  const aspectChecks = buildAspectChecks(ctx);
+  const bundleComposition = evaluateBundleComposition(items, getCachedChassisMap().product_bundle_compositions || [], path.basename(targetDir));
+  const is4U = chassisInfo.formFactor === '4U' || /DL380a|DL384|DL580|4U/i.test(chassisInfo.model || '') || /DL380a|DL384/i.test(chassisInfo.id || '') || /8DW/i.test(chassisInfo.formFactor || '');
+  const is1U = chassisInfo.formFactor === '1U' || /DL360|1U/i.test(chassisInfo.model || '') || /DL360/i.test(chassisInfo.id || '');
+  const isBlade = /blade|compute module/i.test(chassisInfo.formFactor || '') || /SY480|SY100Gb/i.test(chassisInfo.model || '');
+  const formFactorRU = Number.isFinite(chassisInfo.uHeight) ? chassisInfo.uHeight : (isBlade ? 0 : is1U ? 1 : is4U ? 4 : 2);
+  const architecturalRationale = buildArchitecturalRationale(ctx);
+  const clusterSizing = _computeClusterSizing(serverCount, formFactorRU, power, catalogData, railKitCount);
+
+  const evalSummary = {
+    cpuCount: compute.cpuCount,
+    maxCpuTdpWatts: compute.maxCpuTdpWatts,
+    memoryCount: memory.memoryCount,
+    totalMemoryGb: memory.totalMemoryGb,
+    isBalancedChannel: memory.isBalancedChannel,
+    isSupportedPopulation: memory.isSupportedPopulation,
+    dimmsPerCpu: memory.dimmsPerCpu,
+    driveCount: storage.driveCount,
+    hasStorageController: storage.hasStorageController,
+    hasSmartBattery: storage.hasSmartBattery,
+    hasNoDriveKit: storage.hasNoDriveKit,
+    hasHighPerfFans: compute.hasHighPerfFans,
+    hasHeatsinks: compute.hasHeatsinks,
+    hasDcPowerSupply: power.hasDcPowerSupply,
+    hasDcLugKit: power.hasDcLugKit,
+    hasOcpAdapter: network.hasOcpAdapter,
+    networkPortsCount: network.networkPortsCount,
+    requiredPcieCards: pcie.requiredPcieCards,
+    totalPcieSlotsAvailable: pcie.totalSlotsAvailable,
+    architecturalRationale,
+    hasSupportService: support.hasSupportService,
+    lifecycleRisks: lifecycle,
+    lifecycleRecommendations,
+    compute,
+    memory,
+    storage,
+    networking: network,
+    pcie,
+    power,
+    support,
+    needsActions: missingDependencies.map(d => d.key || d.sku),
+    clusterSizing,
+    errors,
+    warnings,
+    mathDeductions,
+    missingDependencies,
+    chassisDefaults,
+    redundantDefaults,
+    aspectChecks,
+    genericDomainAudit,
+    domainAspectAudit,
+    bundleComposition
+  };
+
+  let conflictGraphResults = { isWholeSolutionValid: true, conflicts: [], resolvedFixes: [], unresolvedConflicts: [], rankedSolutions: [] };
+  if (!options.skipGraphValidation) {
+    emitProgress(7, 10, 'Validating Conflict Graph', 'in_progress', 'Resolving dependencies and checking for architectural conflicts.');
+    let resolvedDir = targetDir;
+    if (!resolvedDir) {
+      resolvedDir = autoDetectChassisDir(items);
+    }
+    conflictGraphResults = validateConflictGraph(items, missingDependencies, resolvedDir, '', { skipSynthesis: options.skipSynthesis === true });
+  }
+
+  const { isMathClean, isGraphClean, criticalViolationsCount, confidence } = _assessConfidenceAndCleanliness(
+    errors, warnings, topology, aspectChecks, domainAspectAudit, conflictGraphResults
+  );
+
   return {
     isMathClean,
-    runtimeDiscoveryPlan: require('./runtime_discovery_plan').buildRuntimeDiscoveryPlan(
-      { items, conflictGraph: conflictGraphResults }, { catalogData, targetDir, selectorsByConfiguration: options.selectorsByConfiguration }),
+    runtimeDiscoveryPlan: buildRuntimeDiscoveryPlan(
+      { items, conflictGraph: conflictGraphResults },
+      { catalogData, targetDir, selectorsByConfiguration: options.selectorsByConfiguration }
+    ),
     solutionTopology: topology,
     isGraphClean,
     criticalViolationsCount,

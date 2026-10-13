@@ -114,7 +114,7 @@ function createMockAuditFixture(opts = {}) {
   const defaultHistory = {
     [opts.currentSnapshotName || 'catalog_2026-09-10.json']: catalog
   };
-  const historyFiles = { ...defaultHistory, ...(opts.historyFiles || {}) };
+  const historyFiles = { ...defaultHistory, ...opts.historyFiles };
   for (const [filename, content] of Object.entries(historyFiles)) {
     fs.writeFileSync(path.join(tmpDir, 'history', filename), typeof content === 'string' ? content : JSON.stringify(content, null, 2));
   }

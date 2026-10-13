@@ -100,7 +100,7 @@ function cleanBaseSKU(skuStr) {
   str = str.replace(/(?:\s+|#)(?:0D1|OD1|B19|B21|#0D1|#B19|#B21)\b/i, '').trim();
   str = str.replace(/(CTO|BTO|FIO)$/i, '');
   // Strip leading option badges/prefixes and punctuation (e.g. "[P73282-B21]", "P49147-B21.")
-  return str.replace(/^[\[\(\{"'`<]+|[\]\)\}"'`,;.:!?\/>]+$/g, '').trim();
+  return str.replace(/^[[({"'`<]+|[\])}"'`,;.:!?/>]+$/g, '').trim();
 }
 
 /**

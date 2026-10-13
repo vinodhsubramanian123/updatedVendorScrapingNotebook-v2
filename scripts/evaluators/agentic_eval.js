@@ -5,7 +5,6 @@
  * key rotation, model fallback resilience, and the 9-phase evidence ledger.
  */
 const fs = require('fs');
-const path = require('path');
 const { GoogleGenAI, Type } = require('@google/genai');
 const { parseAndConsolidateBOQ, evaluateBOQMultiAspect } = require('../lib/boq/boq_evaluator.js');
 const { executeNotebookQuery } = require('../lib/notebook/notebook_query_utils.js');

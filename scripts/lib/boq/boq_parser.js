@@ -326,7 +326,7 @@ function extractStructuredSkuRow(parts, activeColumnMap) {
  * Fallback free-form text line extractor.
  */
 function extractFreeFormSkuRows(line) {
-  const normalizedLine = line.replace(/[\/\|;\+,]|--/g, ' ');
+  const normalizedLine = line.replace(/[/|;+,]|--/g, ' ');
   const rawMatches = normalizedLine.match(new RegExp(HPE_SKU_EXTRACT_REGEX.source, 'gi')) || [];
   const validMatches = rawMatches.map(m => cleanBaseSKU(m)).filter(s => s && isValidHpeSKU(s));
   if (validMatches.length === 0) return [];

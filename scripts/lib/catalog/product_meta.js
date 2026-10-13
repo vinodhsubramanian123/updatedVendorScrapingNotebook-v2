@@ -78,7 +78,7 @@ function parseProductMeta(rawText, pageTitle = '') {
     cleanName = rawText
       .replace(/Collapse All|Expand All|Expand Subsections|Undo Selection|Remove Defaults|View HPE Recommended only/gi, '')
       .replace(/\b[A-Z0-9]{3,8}-[A-Z0-9]{3,4}\b/gi, '') // Strip SKU IDs (Rule #15)
-      .replace(/[^a-zA-Z0-9_\-]/g, '_')
+      .replace(/[^a-zA-Z0-9_-]/g, '_')
       .replace(/_+/g, '_')
       .replace(/^_|_$/g, '');
   }
@@ -87,7 +87,7 @@ function parseProductMeta(rawText, pageTitle = '') {
   cleanName = cleanName
     .replace(/^HPE_/i, '')
     .replace(/_[A-Z0-9]{5,8}-[A-Z0-9]{3,4}$/i, '')
-    .replace(/[^a-zA-Z0-9_\-]/g, '_')
+    .replace(/[^a-zA-Z0-9_-]/g, '_')
     .replace(/_+/g, '_');
 
   return { family, gen, cleanName };

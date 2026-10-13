@@ -7,7 +7,6 @@
  * while guaranteeing 100% buildable and reliable server architectures.
  */
 
-const { cleanBaseSKU } = require('../catalog/sku.js');
 const { getSkuListPrice } = require('./budget_optimizer.js');
 const { extractWorkloadDna } = require('../conflict/workload_dna.js');
 

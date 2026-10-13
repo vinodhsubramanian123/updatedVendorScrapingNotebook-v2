@@ -350,7 +350,7 @@ async function assertExpansionThreshold(ws, initialHeight = 5000) {
  */
 async function triggerClicCheck(ws, level = 'root') {
   await dismissDOMModals(ws);
-  const evalRes = await sendCommand(ws, 'Runtime.evaluate', {
+  await sendCommand(ws, 'Runtime.evaluate', {
     expression: `(() => {
       // Find top-right CLIC Check button
       const clicBtn = document.querySelector('#clic-button, #clic_check, .btn-clic, #nav_clic, [id*="clic_check"], [id*="clic-button"], a[href*="clic"], button[title*="CLIC" i], button[aria-label*="CLIC" i]');
@@ -580,7 +580,7 @@ async function setupNetworkSniffer(ws, options = {}) {
 
   const detach = async () => {
     ws.removeListener('message', messageHandler);
-    await Promise.allSettled([...pending]);
+    await Promise.allSettled(pending);
     try {
       await sendCommand(ws, 'Network.disable');
     } catch (_) {}
@@ -589,7 +589,7 @@ async function setupNetworkSniffer(ws, options = {}) {
   return {
     getCapturedPayloads: () => [...capturedResponses],
     getCapturedRules: () => [...capturedRules],
-    flush: () => Promise.allSettled([...pending]),
+    flush: () => Promise.allSettled(pending),
     getCoverage: () => ({ capturedResponses: capturedResponses.length, pendingResponses: responses.size + pending.size, failures: [...failures], scope: 'OBSERVED_REQUESTS_ONLY' }),
     detach
   };

@@ -59,7 +59,9 @@ function lookupChassisMapBaseSku(chassisLabel, meta, targetSku = '') {
         return { sku: skuId, ...info };
       }
     }
-  } catch (_) {}
+  } catch (err) {
+    PipelineLogger.debug('BUILD_CATALOG', `Chassis map lookup note: ${err?.message}`);
+  }
   return null;
 }
 
@@ -319,7 +321,9 @@ async function initCatalogBuild(rawInputPath, jsonOutputPath, argv = process.arg
   const discoveryPath = path.join(path.dirname(rawInputPath), 'chassis_discovery.json');
   let chassisDiscovery = rawData.chassisDiscovery || null;
   if (!chassisDiscovery && fs.existsSync(discoveryPath)) {
-    try { chassisDiscovery = JSON.parse(fs.readFileSync(discoveryPath, 'utf8')); } catch (_) {}
+    try { chassisDiscovery = JSON.parse(fs.readFileSync(discoveryPath, 'utf8')); } catch (err) {
+      PipelineLogger.warn('BUILD_CATALOG', `Failed reading chassis discovery at ${discoveryPath}: ${err.message}`);
+    }
   }
   const fullText = rawData.fullText || rawData.bodyText || '';
   const tables   = rawData.tables || [];
@@ -374,7 +378,9 @@ function loadHistoricalPriceMap(targetDir) {
             }
           }
         }
-      } catch (_) {}
+      } catch (err) {
+        PipelineLogger.debug('BUILD_CATALOG', `Failed parsing price history file at ${histFile}: ${err.message}`);
+      }
     }
   }
 
@@ -431,7 +437,9 @@ function loadPortfolioPriceBackfill(historyPriceMap, targetDir) {
             catalogFiles.push(fullPath);
           }
         }
-      } catch (_) {}
+      } catch (err) {
+        PipelineLogger.debug('BUILD_CATALOG', `Portfolio backfill directory traversal note: ${err?.message}`);
+      }
     };
 
     walkDir(outputsRoot);
@@ -451,9 +459,13 @@ function loadPortfolioPriceBackfill(historyPriceMap, targetDir) {
             }
           }
         }
-      } catch (_) {}
+      } catch (err) {
+        PipelineLogger.debug('BUILD_CATALOG', `Failed reading sibling catalog at ${catPath}: ${err?.message}`);
+      }
     }
-  } catch (_) {}
+  } catch (err) {
+    PipelineLogger.debug('BUILD_CATALOG', `loadPortfolioPriceBackfill note: ${err?.message}`);
+  }
   return backfillCount;
 }
 
@@ -718,7 +730,7 @@ function resolveRowRecommendation(obj, headers, pn) {
 }
 
 function resolveRowPrice(row, headers, obj, pn, historyPriceMap) {
-  let priceStr = String(obj['Unit Price (USD)'] || obj['Price (USD)'] || obj['Price'] || '').replace(/[\$,]/g, '').trim();
+  let priceStr = String(obj['Unit Price (USD)'] || obj['Price (USD)'] || obj['Price'] || '').replace(/[$,]/g, '').trim();
   const hasPriceHeader = headers.some(h => {
     const nh = String(h).trim().toLowerCase();
     return nh === 'unit price (usd)' || nh === 'price (usd)' || nh === 'list price (usd)' || nh === 'list price' || nh === 'price' || nh === 'cost' || nh === 'cost (usd)';
@@ -728,12 +740,12 @@ function resolveRowPrice(row, headers, obj, pn, historyPriceMap) {
       const qtyVal = String(obj['Current Qty'] || obj['Quantity'] || '').trim();
       const numCell = row.find(c => {
         const raw = c.trim();
-        const p = raw.replace(/[\$,]/g, '').trim();
+        const p = raw.replace(/[$,]/g, '').trim();
         const looksLikePrice = raw.includes('$') || raw.includes(',') || /^\d+\.\d{2}$/.test(p);
         return p && looksLikePrice && /^\d+(?:\.\d{1,2})?$/.test(p) && c !== pn
           && p !== qtyVal && !/^[A-Z]\d{5}/.test(raw);
       });
-      priceStr = numCell ? numCell.replace(/[\$,]/g, '').trim() : '0.00';
+      priceStr = numCell ? numCell.replace(/[$,]/g, '').trim() : '0.00';
     } else {
       priceStr = '0.00';
     }
@@ -752,7 +764,7 @@ function parseSingleTableRow(row, headers, offset, historyPriceMap) {
       const header = normalizeHeaderName(headers[hi]);
       let val = row[cellIdx].replace(/\n/g, ' ').trim();
       if (header === 'Unit Price (USD)') {
-        val = val.replace(/[\$,]/g, '').trim();
+        val = val.replace(/[$,]/g, '').trim();
       }
       obj[header] = val;
     }
@@ -842,7 +854,7 @@ function matchSubcategoryForTable(skus, headers, fullText, subcatList, ti, total
     let bestScore = 0;
     let bestSubcat = null;
     for (const sc of subcatList) {
-      const words = sc.name.toLowerCase().split(/[\s\/\-,()]+/).filter(w => w.length >= 3);
+      const words = sc.name.toLowerCase().split(/[\s/\-,()]+/).filter(w => w.length >= 3);
       if (words.length === 0) continue;
       let score = 0;
       for (const w of words) {
@@ -851,7 +863,7 @@ function matchSubcategoryForTable(skus, headers, fullText, subcatList, ti, total
       if (searchText.includes(sc.name.toLowerCase())) score += words.length;
       if (score > bestScore) { bestScore = score; bestSubcat = sc; }
     }
-    if (bestSubcat && (bestScore >= 2 || bestScore >= Math.ceil(bestSubcat.name.split(/[\s\/\-,()]+/).filter(w => w.length >= 3).length * 0.5))) {
+    if (bestSubcat && (bestScore >= 2 || bestScore >= Math.ceil(bestSubcat.name.split(/[\s/\-,()]+/).filter(w => w.length >= 3).length * 0.5))) {
       matchedSubcat = bestSubcat;
     }
   }
@@ -931,238 +943,153 @@ function resolveTableTaxonomyAndRole(matchedSubcat, textPos, table, tableRules, 
   return { parentCat, subCat, finalConstraint, finalMinQty, finalMaxQty, detectedRole, matchedParent, matchedVia };
 }
 
-function synthesizeCatalogEntries(tables, fullText, subcatList, historyPriceMap, diagnostics, profile, IS_VERBOSE) {
-  console.log('\n--- Step 3: Extracting Tables & SKUs ---');
-
-  let sourceTables = tables;
-  if (tables.length > 1 && tables[0].rows && tables[0].rows.length > 500) {
-    sourceTables = tables.slice(1);
+function _isSkippedReportTable(table, ti, diagnostics) {
+  if (!table.rows || table.rows.length < 2) {
+    diagnostics.recordSkippedTable(ti, 'Table rows < 2 or empty');
+    return true;
   }
+  const firstRowsText = (table.rows.slice(0, 3).map(r => r.join(' ')).join(' ')).toLowerCase();
+  if (firstRowsText.includes('node level quantity') || firstRowsText.includes('support install action')) {
+    diagnostics.recordSkippedTable(ti, 'BOM summary report table header');
+    return true;
+  }
+  const allHeaderCells = (table.rows[0] || []).map(c => String(c || '').toLowerCase().trim());
+  const isHierarchyBOMTable = allHeaderCells.includes('hierarchy') ||
+                              (allHeaderCells.includes('config name') && allHeaderCells.includes('unit reseller price (usd)')) ||
+                              (allHeaderCells.includes('qty') && allHeaderCells.includes('product #') && allHeaderCells.includes('config name'));
+  if (isHierarchyBOMTable) {
+    diagnostics.recordSkippedTable(ti, 'Solution hierarchy BOM summary table');
+    return true;
+  }
+  return false;
+}
 
-  const expandedTables = expandTableSections(sourceTables);
-  const allSKURows   = [];
-  const allSKUMap    = new Map();
-  const processedPNs = new Set();
-  const tableEntries = [];
-  const smartChassisCombinations = [];
-  let skippedTables  = 0;
+function _detectTableHeadersAndRules(table, ti, diagnostics) {
+  let headerIdx  = -1;
+  let headers    = [];
+  let tableRules = [];
+  let tableAvailability = '';
 
-  for (let ti = 0; ti < expandedTables.length; ti++) {
-    const table = expandedTables[ti];
-    if (!table.rows || table.rows.length < 2) {
-      diagnostics.recordSkippedTable(ti, 'Table rows < 2 or empty');
-      skippedTables++;
-      continue;
-    }
+  for (let ri = 0; ri < Math.min(4, table.rows.length); ri++) {
+    const row = table.rows[ri];
+    const hasProductHeader = row.some(c => c === 'Product #' || c === 'Product # / Option');
+    const hasDescHeader    = row.some(c => c === 'Description' || c === 'Product Description');
 
-    const firstRowsText = (table.rows.slice(0, 3).map(r => r.join(' ')).join(' ')).toLowerCase();
-    if (firstRowsText.includes('node level quantity') || firstRowsText.includes('support install action')) {
-      diagnostics.recordSkippedTable(ti, 'BOM summary report table header');
-      skippedTables++;
-      continue;
-    }
-    const allHeaderCells = (table.rows[0] || []).map(c => String(c || '').toLowerCase().trim());
-    const isHierarchyBOMTable = allHeaderCells.includes('hierarchy') ||
-                                (allHeaderCells.includes('config name') && allHeaderCells.includes('unit reseller price (usd)')) ||
-                                (allHeaderCells.includes('qty') && allHeaderCells.includes('product #') && allHeaderCells.includes('config name'));
-    if (isHierarchyBOMTable) {
-      diagnostics.recordSkippedTable(ti, 'Solution hierarchy BOM summary table');
-      skippedTables++;
-      continue;
-    }
-
-    let headerIdx  = -1;
-    let headers    = [];
-    let tableRules = [];
-    let tableAvailability = '';
-
-    for (let ri = 0; ri < Math.min(4, table.rows.length); ri++) {
-      const row = table.rows[ri];
-      const hasProductHeader = row.some(c => c === 'Product #' || c === 'Product # / Option');
-      const hasDescHeader    = row.some(c => c === 'Description' || c === 'Product Description');
-
-      if (hasProductHeader || hasDescHeader) {
-        headerIdx = ri;
-        headers   = row.map(h => h === 'Product Description' ? 'Description' : h);
-        break;
-      } else {
-        const text = row.join(' ').trim();
-        if (!tableAvailability && /^(?:available|not available|these products are hidden due to .+constraints)$/i.test(text)) {
-          tableAvailability = text;
-        }
-        if (text && text !== 'Available' && text.length > 5 && text.length < 300) {
-          tableRules.push(text);
-        }
+    if (hasProductHeader || hasDescHeader) {
+      headerIdx = ri;
+      headers   = row.map(h => h === 'Product Description' ? 'Description' : h);
+      break;
+    } else {
+      const text = row.join(' ').trim();
+      if (!tableAvailability && /^(?:available|not available|these products are hidden due to .+constraints)$/i.test(text)) {
+        tableAvailability = text;
       }
-    }
-
-    if (headerIdx === -1) {
-      const hasAnySku = table.rows.some(r => r.some(c => isValidHpeSKU(cleanBaseSKU(c.trim()))));
-      if (hasAnySku) {
-        headers = ['Product #', 'Description', 'Quantity', 'Price (USD)', 'Price Delta (USD)', 'Extended Price (USD)', 'HPE Recommended', 'Start', 'Discontinued'];
-        headerIdx = -1;
-      } else {
-        diagnostics.recordSkippedTable(ti, 'No valid SKU or headers detected');
-        skippedTables++;
-        continue;
+      if (text && text !== 'Available' && text.length > 5 && text.length < 300) {
+        tableRules.push(text);
       }
-    }
-
-    const skus = [];
-    for (let ri = headerIdx + 1; ri < table.rows.length; ri++) {
-      const row = table.rows[ri];
-      if (row.length < 2) continue;
-
-      let offset = 0;
-      if (headers[0] === 'Product #' && row[0] === '' && row.length > headers.length) offset = 1;
-
-      const parsed = parseSingleTableRow(row, headers, offset, historyPriceMap);
-      if (!parsed) continue;
-
-      const { obj, pn, descText } = parsed;
-      if ((!obj.Availability || obj.Availability === 'Not published by OCA') && tableAvailability) {
-        obj.Availability = tableAvailability;
-      }
-      const isPhantomFio = descText.toLowerCase() === 'factory integrated' ||
-                           (descText.toLowerCase().includes('factory integrated') && (!obj['Unit Price (USD)'] || obj['Unit Price (USD)'] === '0.00' || obj['Unit Price (USD)'] === '0'));
-
-      const existingSkuIndex = skus.findIndex(s => s['Product #'] === pn);
-      if (existingSkuIndex !== -1) {
-        if (isPhantomFio || obj['Option Type'] === 'CTO') {
-          skus[existingSkuIndex]['Option Type'] = 'CTO';
-          skus[existingSkuIndex].isFactoryIntegrated = true;
-        }
-        continue;
-      }
-
-      if (isPhantomFio && allSKUMap.has(pn)) {
-        const prev = allSKUMap.get(pn);
-        prev['Option Type'] = 'CTO';
-        prev.isFactoryIntegrated = true;
-        continue;
-      }
-
-      if (pn && pn.length >= 3 && pn.length < 30 && !pn.includes('Product #') && !pn.includes('Optional') && !pn.includes('Please make')) {
-        skus.push(obj);
-      }
-    }
-
-    if (skus.length === 0) {
-      const isPatternTable = (table.rows || []).some(r => (r || []).some(c => /^(?:dl\d+pat|dl\d+smtch)/i.test(String(c || '').trim())));
-      if (isPatternTable) {
-        for (let ri = (headerIdx >= 0 ? headerIdx + 1 : 0); ri < table.rows.length; ri++) {
-          const row = table.rows[ri];
-          const patternId = (row || []).find(c => /^(?:dl\d+pat|dl\d+smtch)/i.test(String(c || '').trim()));
-          if (!patternId) continue;
-          const desc = (row || []).find(c => /drive cage|riser|controller|smart chassis/i.test(String(c || ''))) || '';
-          const priceCell = (row || []).find(c => /^\d[\d,]*\.\d{2}$/.test(String(c || '').trim())) || '0.00';
-          const price = parseFloat(String(priceCell).replace(/,/g, '')) || 0;
-
-          const cageMatch = desc.match(/(\d+)\s*drive\s*cage/i);
-          const qtyDriveCages = cageMatch ? parseInt(cageMatch[1], 10) : 0;
-          let qtyBays = 0;
-          if (/8sff/i.test(desc)) qtyBays = qtyDriveCages * 8;
-          else if (/4lff|8lff|12lff/i.test(desc)) qtyBays = qtyDriveCages * 8;
-          else if (/edsff/i.test(desc)) qtyBays = qtyDriveCages * 12;
-
-          let qtyPciSlots = 3;
-          if (/secondary riser/i.test(desc)) qtyPciSlots += 3;
-          if (/tertiary riser/i.test(desc)) qtyPciSlots += 2;
-
-          let controllers = 'DA';
-          const cntrlMatch = desc.match(/\b(MR\d+i-[op]|SR\d+i-[op])\b/i);
-          if (cntrlMatch) controllers = cntrlMatch[1].toUpperCase();
-
-          smartChassisCombinations.push({
-            patternId,
-            description: desc,
-            price,
-            qtyDriveCages,
-            qtyBays,
-            qtyPciSlots,
-            controllers,
-            source: 'HPE OCA Top Selling Smart Chassis Combinations'
-          });
-        }
-      }
-      skippedTables++;
-      continue;
-    }
-
-    const { matchedSubcat, textPos } = matchSubcategoryForTable(skus, headers, fullText, subcatList, ti, tables.length);
-    const { parentCat, subCat, finalConstraint, finalMinQty, finalMaxQty, detectedRole, matchedVia } =
-      resolveTableTaxonomyAndRole(matchedSubcat, textPos, table, tableRules, profile, skus);
-
-    if (parentCat === 'Chassis' || subCat.toLowerCase().includes('variants') || skus.some(s => (s['Description'] || '').toLowerCase().includes('configure-to-order'))) {
-      skus.forEach(sku => { sku['Option Type'] = 'CTO'; });
-    }
-
-    tableEntries.push({
-      tableIndex:     ti,
-      parentCategory: parentCat,
-      subCategory:    subCat,
-      constraint:     finalConstraint,
-      minQty:         finalMinQty,
-      maxQty:         finalMaxQty,
-      rules:          tableRules,
-      headers,
-      skuCount:       skus.length,
-      skus
-    });
-
-    diagnostics.recordTableDecision({
-      tableIndex: ti,
-      subCategory: subCat,
-      parentCategory: parentCat,
-      matchedVia,
-      detectedRole,
-      constraint: finalConstraint,
-      minQty: finalMinQty,
-      maxQty: finalMaxQty,
-      skuCount: skus.length,
-      rules: tableRules
-    });
-
-    for (const sku of skus) {
-      const pn = sku['Product #'];
-      if (!pn) continue;
-
-      const newSKURow = {
-        parentCategory: parentCat,
-        subCategory:    subCat,
-        constraint:     finalConstraint,
-        rules:          tableRules.join(' | '),
-        ...sku
-      };
-      if (parentCat === 'Chassis') newSKURow['Option Type'] = 'CTO';
-
-      const hasValidPrice = (r) => {
-        const p = String(r['Unit Price (USD)'] || r['Price (USD)'] || r['Price'] || '').replace(/[\$,\s]/g, '');
-        return !isNaN(parseFloat(p)) && parseFloat(p) > 0;
-      };
-
-      if (!processedPNs.has(pn)) {
-        processedPNs.add(pn);
-        allSKUMap.set(pn, newSKURow);
-      } else {
-        const existing = allSKUMap.get(pn);
-        if (existing && !hasValidPrice(existing) && hasValidPrice(newSKURow)) {
-          allSKUMap.set(pn, newSKURow);
-        }
-      }
-    }
-
-    if (IS_VERBOSE) {
-      console.log(`  Table #${ti}: ${skus.length} SKUs → Subcat: "${matchedSubcat ? matchedSubcat.name : '(Sub-table)'}" (${parentCat})`);
     }
   }
 
-  console.log(`Processed ${tableEntries.length} valid product tables (${skippedTables} non-SKU/wrapper tables skipped).`);
-  allSKURows.push(...allSKUMap.values());
-  console.log(`Extracted ${processedPNs.size} unique SKUs.`);
+  if (headerIdx === -1) {
+    const hasAnySku = table.rows.some(r => r.some(c => isValidHpeSKU(cleanBaseSKU(c.trim()))));
+    if (hasAnySku) {
+      headers = ['Product #', 'Description', 'Quantity', 'Price (USD)', 'Price Delta (USD)', 'Extended Price (USD)', 'HPE Recommended', 'Start', 'Discontinued'];
+      headerIdx = -1;
+    } else {
+      diagnostics.recordSkippedTable(ti, 'No valid SKU or headers detected');
+      return null;
+    }
+  }
 
-  // Step 4: Merging sub-tables
-  console.log('\n--- Step 4: Merging Sub-Tables & Subcategory Inheritance ---');
+  return { headerIdx, headers, tableRules, tableAvailability };
+}
+
+function _extractSkusFromTable(table, headerInfo, historyPriceMap, allSKUMap) {
+  const { headerIdx, headers, tableAvailability } = headerInfo;
+  const skus = [];
+
+  for (let ri = headerIdx + 1; ri < table.rows.length; ri++) {
+    const row = table.rows[ri];
+    if (row.length < 2) continue;
+
+    let offset = 0;
+    if (headers[0] === 'Product #' && row[0] === '' && row.length > headers.length) offset = 1;
+
+    const parsed = parseSingleTableRow(row, headers, offset, historyPriceMap);
+    if (!parsed) continue;
+
+    const { obj, pn, descText } = parsed;
+    if ((!obj.Availability || obj.Availability === 'Not published by OCA') && tableAvailability) {
+      obj.Availability = tableAvailability;
+    }
+    const isPhantomFio = descText.toLowerCase() === 'factory integrated' ||
+                         (descText.toLowerCase().includes('factory integrated') && (!obj['Unit Price (USD)'] || obj['Unit Price (USD)'] === '0.00' || obj['Unit Price (USD)'] === '0'));
+
+    const existingSkuIndex = skus.findIndex(s => s['Product #'] === pn);
+    if (existingSkuIndex !== -1) {
+      if (isPhantomFio || obj['Option Type'] === 'CTO') {
+        skus[existingSkuIndex]['Option Type'] = 'CTO';
+        skus[existingSkuIndex].isFactoryIntegrated = true;
+      }
+      continue;
+    }
+
+    if (isPhantomFio && allSKUMap.has(pn)) {
+      const prev = allSKUMap.get(pn);
+      prev['Option Type'] = 'CTO';
+      prev.isFactoryIntegrated = true;
+      continue;
+    }
+
+    if (pn && pn.length >= 3 && pn.length < 30 && !pn.includes('Product #') && !pn.includes('Optional') && !pn.includes('Please make')) {
+      skus.push(obj);
+    }
+  }
+
+  return skus;
+}
+
+function _extractSmartChassisCombinations(table, headerIdx, smartChassisCombinations) {
+  const isPatternTable = (table.rows || []).some(r => (r || []).some(c => /^(?:dl\d+pat|dl\d+smtch)/i.test(String(c || '').trim())));
+  if (!isPatternTable) return;
+
+  for (let ri = (headerIdx >= 0 ? headerIdx + 1 : 0); ri < table.rows.length; ri++) {
+    const row = table.rows[ri];
+    const patternId = (row || []).find(c => /^(?:dl\d+pat|dl\d+smtch)/i.test(String(c || '').trim()));
+    if (!patternId) continue;
+    const desc = (row || []).find(c => /drive cage|riser|controller|smart chassis/i.test(String(c || ''))) || '';
+    const priceCell = (row || []).find(c => /^\d[\d,]*\.\d{2}$/.test(String(c || '').trim())) || '0.00';
+    const price = parseFloat(String(priceCell).replace(/,/g, '')) || 0;
+
+    const cageMatch = desc.match(/(\d+)\s*drive\s*cage/i);
+    const qtyDriveCages = cageMatch ? parseInt(cageMatch[1], 10) : 0;
+    let qtyBays = 0;
+    if (/8sff/i.test(desc)) qtyBays = qtyDriveCages * 8;
+    else if (/4lff|8lff|12lff/i.test(desc)) qtyBays = qtyDriveCages * 8;
+    else if (/edsff/i.test(desc)) qtyBays = qtyDriveCages * 12;
+
+    let qtyPciSlots = 3;
+    if (/secondary riser/i.test(desc)) qtyPciSlots += 3;
+    if (/tertiary riser/i.test(desc)) qtyPciSlots += 2;
+
+    let controllers = 'DA';
+    const cntrlMatch = desc.match(/\b(MR\d+i-[op]|SR\d+i-[op])\b/i);
+    if (cntrlMatch) controllers = cntrlMatch[1].toUpperCase();
+
+    smartChassisCombinations.push({
+      patternId,
+      description: desc,
+      price,
+      qtyDriveCages,
+      qtyBays,
+      qtyPciSlots,
+      controllers,
+      source: 'HPE OCA Top Selling Smart Chassis Combinations'
+    });
+  }
+}
+
+function _mergeSubtableInheritance(tableEntries) {
   const orderedEntries = [...tableEntries].sort((a, b) => a.tableIndex - b.tableIndex);
   let lastMatchedSubcat = null;
   let mergedSubtableCount = 0;
@@ -1180,11 +1107,10 @@ function synthesizeCatalogEntries(tables, fullText, subcatList, historyPriceMap,
     }
   }
   console.log(`Merged ${mergedSubtableCount} sub-tables into preceding parent subcategories (DOM index order).`);
+  return orderedEntries;
+}
 
-  // OCA occasionally places service-like SKUs in a table that also contains
-  // physical accessories. Classifying the entire table from one service SKU
-  // silently moved valid rails/cables/kits out of the hardware catalog. Split
-  // mixed tables at row granularity and preserve the original taxonomy.
+function _partitionAndDeduplicateServices(orderedEntries) {
   const { hardwareEntries, servicesEntries } = partitionCatalogEntries(orderedEntries);
 
   const seenHwSkus = new Set();
@@ -1205,6 +1131,126 @@ function synthesizeCatalogEntries(tables, fullText, subcatList, historyPriceMap,
       return true;
     })
   })).filter(e => e.skus.length > 0);
+
+  return { hardwareEntries, cleanServicesEntries };
+}
+
+function _recordTableSkusInCatalog(skus, parentCat, subCat, finalConstraint, tableRules, processedPNs, allSKUMap) {
+  const hasValidPrice = (r) => {
+    const p = String(r['Unit Price (USD)'] || r['Price (USD)'] || r['Price'] || '').replace(/[$,\s]/g, '');
+    return !isNaN(parseFloat(p)) && parseFloat(p) > 0;
+  };
+
+  for (const sku of skus) {
+    const pn = sku['Product #'];
+    if (!pn) continue;
+
+    const newSKURow = {
+      parentCategory: parentCat,
+      subCategory:    subCat,
+      constraint:     finalConstraint,
+      rules:          tableRules.join(' | '),
+      ...sku
+    };
+    if (parentCat === 'Chassis') newSKURow['Option Type'] = 'CTO';
+
+    if (!processedPNs.has(pn)) {
+      processedPNs.add(pn);
+      allSKUMap.set(pn, newSKURow);
+    } else {
+      const existing = allSKUMap.get(pn);
+      if (existing && !hasValidPrice(existing) && hasValidPrice(newSKURow)) {
+        allSKUMap.set(pn, newSKURow);
+      }
+    }
+  }
+}
+
+function synthesizeCatalogEntries(tables, fullText, subcatList, historyPriceMap, diagnostics, profile, IS_VERBOSE) {
+  console.log('\n--- Step 3: Extracting Tables & SKUs ---');
+
+  let sourceTables = tables;
+  if (tables.length > 1 && tables[0].rows && tables[0].rows.length > 500) {
+    sourceTables = tables.slice(1);
+  }
+
+  const expandedTables = expandTableSections(sourceTables);
+  const allSKURows   = [];
+  const allSKUMap    = new Map();
+  const processedPNs = new Set();
+  const tableEntries = [];
+  const smartChassisCombinations = [];
+  let skippedTables  = 0;
+
+  for (let ti = 0; ti < expandedTables.length; ti++) {
+    const table = expandedTables[ti];
+    if (_isSkippedReportTable(table, ti, diagnostics)) {
+      skippedTables++;
+      continue;
+    }
+
+    const headerInfo = _detectTableHeadersAndRules(table, ti, diagnostics);
+    if (!headerInfo) {
+      skippedTables++;
+      continue;
+    }
+
+    const skus = _extractSkusFromTable(table, headerInfo, historyPriceMap, allSKUMap);
+    if (skus.length === 0) {
+      _extractSmartChassisCombinations(table, headerInfo.headerIdx, smartChassisCombinations);
+      skippedTables++;
+      continue;
+    }
+
+    const { matchedSubcat, textPos } = matchSubcategoryForTable(skus, headerInfo.headers, fullText, subcatList, ti, tables.length);
+    const { parentCat, subCat, finalConstraint, finalMinQty, finalMaxQty, detectedRole, matchedVia } =
+      resolveTableTaxonomyAndRole(matchedSubcat, textPos, table, headerInfo.tableRules, profile, skus);
+
+    if (parentCat === 'Chassis' || subCat.toLowerCase().includes('variants') || skus.some(s => (s['Description'] || '').toLowerCase().includes('configure-to-order'))) {
+      skus.forEach(sku => { sku['Option Type'] = 'CTO'; });
+    }
+
+    tableEntries.push({
+      tableIndex:     ti,
+      parentCategory: parentCat,
+      subCategory:    subCat,
+      constraint:     finalConstraint,
+      minQty:         finalMinQty,
+      maxQty:         finalMaxQty,
+      rules:          headerInfo.tableRules,
+      headers:        headerInfo.headers,
+      skuCount:       skus.length,
+      skus
+    });
+
+    diagnostics.recordTableDecision({
+      tableIndex: ti,
+      subCategory: subCat,
+      parentCategory: parentCat,
+      matchedVia,
+      detectedRole,
+      constraint: finalConstraint,
+      minQty: finalMinQty,
+      maxQty: finalMaxQty,
+      skuCount: skus.length,
+      rules: headerInfo.tableRules
+    });
+
+    _recordTableSkusInCatalog(skus, parentCat, subCat, finalConstraint, headerInfo.tableRules, processedPNs, allSKUMap);
+
+    if (IS_VERBOSE) {
+      console.log(`  Table #${ti}: ${skus.length} SKUs → Subcat: "${matchedSubcat ? matchedSubcat.name : '(Sub-table)'}" (${parentCat})`);
+    }
+  }
+
+  console.log(`Processed ${tableEntries.length} valid product tables (${skippedTables} non-SKU/wrapper tables skipped).`);
+  allSKURows.push(...allSKUMap.values());
+  console.log(`Extracted ${processedPNs.size} unique SKUs.`);
+
+  // Step 4: Merging sub-tables
+  console.log('\n--- Step 4: Merging Sub-Tables & Subcategory Inheritance ---');
+  const orderedEntries = _mergeSubtableInheritance(tableEntries);
+  const { hardwareEntries, cleanServicesEntries } = _partitionAndDeduplicateServices(orderedEntries);
 
   return {
     hardwareEntries,
@@ -1462,7 +1508,9 @@ async function loadHistoricalChassisEvidence(targetDir, chassisLabel) {
           }
         }
       }
-    } catch (_) {}
+    } catch (err) {
+      PipelineLogger.debug('BUILD_CATALOG', `Failed reading historical chassis evidence from ${file}: ${err.message}`);
+    }
   }
   return result;
 }
@@ -1590,7 +1638,9 @@ async function injectChassisVariantsFromHistory(hardwareEntries, targetDir, chas
             break;
           }
         }
-      } catch (_) {}
+      } catch (err) {
+        PipelineLogger.debug('BUILD_CATALOG', `Failed reading history snapshot ${hf}: ${err.message}`);
+      }
     }
   }
 
@@ -1700,7 +1750,9 @@ async function reconcilePriceAndLifecycleHistory(hardwareEntries, cleanServicesE
   let existingCatalogForDiff = null;
   const currentCatalogJsonFile = path.join(targetDir, `${filePrefix}_Catalog.json`);
   if (fs.existsSync(currentCatalogJsonFile)) {
-    try { existingCatalogForDiff = JSON.parse(fs.readFileSync(currentCatalogJsonFile, 'utf-8')); } catch (_) {}
+    try { existingCatalogForDiff = JSON.parse(fs.readFileSync(currentCatalogJsonFile, 'utf-8')); } catch (err) {
+      PipelineLogger.warn('BUILD_CATALOG', `Failed reading existing catalog for diff at ${currentCatalogJsonFile}: ${err.message}`);
+    }
   }
   const incrementalDiff = computeIncrementalDifferential(catalogObj.entries, existingCatalogForDiff);
   if (incrementalDiff.isIncremental) {
@@ -1783,8 +1835,8 @@ async function buildChassisVariantMatrix(scrapsDir, filePrefix, targetDir) {
       sku: r['Product #'] || '',
       description: desc,
       formFactor,
-      listPrice: parseFloat(String(r['Unit Price (USD)'] || '0').replace(/[\$,]/g, '')) || 0,
-      listPriceFormatted: `$${(parseFloat(String(r['Unit Price (USD)'] || '0').replace(/[\$,]/g, '')) || 0).toFixed(2)}`,
+      listPrice: parseFloat(String(r['Unit Price (USD)'] || '0').replace(/[$,]/g, '')) || 0,
+      listPriceFormatted: `$${(parseFloat(String(r['Unit Price (USD)'] || '0').replace(/[$,]/g, '')) || 0).toFixed(2)}`,
       optionType: r['Option Type'] || 'CTO',
       hpeRecommended: 'Yes',
       'HPE Recommended': 'Unknown',
@@ -1843,8 +1895,8 @@ async function buildChassisVariantMatrix(scrapsDir, filePrefix, targetDir) {
               const formFactor = detectChassisFormFactor(desc);
               chassisVariantMatrix[pn] = {
                 sku: pn, description: desc, formFactor,
-                listPrice: parseFloat(String(s.listPrice || s['Unit Price (USD)'] || '0').replace(/[\$,]/g, '')) || 0,
-                listPriceFormatted: `$${(parseFloat(String(s.listPrice || s['Unit Price (USD)'] || '0').replace(/[\$,]/g, '')) || 0).toFixed(2)}`,
+                listPrice: parseFloat(String(s.listPrice || s['Unit Price (USD)'] || '0').replace(/[$,]/g, '')) || 0,
+                listPriceFormatted: `$${(parseFloat(String(s.listPrice || s['Unit Price (USD)'] || '0').replace(/[$,]/g, '')) || 0).toFixed(2)}`,
                 optionType: s['Option Type'] || s.optionType || 'CTO',
                 hpeRecommended: 'Yes',
                 'HPE Recommended': 'Unknown',
@@ -1857,7 +1909,9 @@ async function buildChassisVariantMatrix(scrapsDir, filePrefix, targetDir) {
             }
           }
           if (Object.keys(chassisVariantMatrix).length >= 6) break;
-        } catch (_) {}
+        } catch (err) {
+          PipelineLogger.debug('BUILD_CATALOG', `Failed parsing chassis variant from history ${hf}: ${err.message}`);
+        }
       }
     }
   }
@@ -1881,7 +1935,9 @@ async function exportCatalogArtifacts(ctx) {
       if (Array.isArray(existingRulesObj.rules)) {
         existingLearnedRules = existingRulesObj.rules.filter(r => (r.parentCategory || '').toLowerCase().includes('feedback') || (r.parentCategory || '').toLowerCase().includes('learned'));
       }
-    } catch (_) {}
+    } catch (err) {
+      PipelineLogger.warn('BUILD_CATALOG', `Failed reading existing learned rules from ${rulesJsonPath}: ${err.message}`);
+    }
   }
 
   const allCombinedEntries = [...(enrichedCatalog.entries || []), ...(enrichedServicesCatalog.entries || [])];
@@ -2024,7 +2080,9 @@ function resolveUnavailableRawData(rawData, rawInputPath) {
         rules.push(...(parsed.rules || []));
         skus.push(...(parsed.skus || []));
       }
-    } catch (_) {}
+    } catch (err) {
+      PipelineLogger.warn('BUILD_CATALOG', `Failed reading unavailable_rules.json from ${rawInputPath}: ${err.message}`);
+    }
   }
   return { rules, skus };
 }

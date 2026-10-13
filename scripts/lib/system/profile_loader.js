@@ -67,7 +67,7 @@ async function loadProfile(family, gen) {
   }
 
   // Deep merge component mapping, overriding defaults
-  const mergedMapping = { ...(defaultProfile.component_mapping || {}) };
+  const mergedMapping = { ...defaultProfile.component_mapping };
   if (overrideProfile.component_mapping) {
     for (const [category, keywords] of Object.entries(overrideProfile.component_mapping)) {
       if (!mergedMapping[category]) mergedMapping[category] = [];
@@ -77,8 +77,8 @@ async function loadProfile(family, gen) {
 
   return {
     scraping_tuning: {
-      ...(defaultProfile.scraping_tuning || {}),
-      ...(overrideProfile.scraping_tuning || {})
+      ...defaultProfile.scraping_tuning,
+      ...overrideProfile.scraping_tuning
     },
     component_mapping: mergedMapping
   };
@@ -134,7 +134,7 @@ function loadProfileSync(family, gen) {
     console.warn(`⚠️ Warning: Failed to parse profiles for overrides: ${err.message}`);
   }
 
-  const mergedMapping = { ...(defaultProfile.component_mapping || {}) };
+  const mergedMapping = { ...defaultProfile.component_mapping };
   if (overrideProfile.component_mapping) {
     for (const [category, keywords] of Object.entries(overrideProfile.component_mapping)) {
       if (!mergedMapping[category]) mergedMapping[category] = [];
@@ -144,8 +144,8 @@ function loadProfileSync(family, gen) {
 
   return {
     scraping_tuning: {
-      ...(defaultProfile.scraping_tuning || {}),
-      ...(overrideProfile.scraping_tuning || {})
+      ...defaultProfile.scraping_tuning,
+      ...overrideProfile.scraping_tuning
     },
     component_mapping: mergedMapping
   };

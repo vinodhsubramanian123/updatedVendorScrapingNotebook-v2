@@ -243,7 +243,7 @@ function buildUnavailableDomExpression(classifyFn) {
         }
       }
 
-      reasonText = reasonText.replace(/[\n\r\t]+/g, ' ').replace(/\s+/g, ' ').trim();
+      reasonText = reasonText.replace(/[\n\r\t]+/g, ' ').replace(/s+/g, ' ').trim();
       if (!reasonText || reasonText.length < 3) continue;
 
       const ruleType = classifyReason(reasonText);
@@ -266,9 +266,9 @@ function buildUnavailableDomExpression(classifyFn) {
         const pidEl = tr.querySelector('._pid, .item_prod span._pid, .item_prod, [class*="_pid"]');
         const rawSku = (pidEl ? (pidEl.innerText || pidEl.textContent || '') : '').trim();
         let sku = rawSku.replace(/[\r\n\t]+/g, ' ').trim();
-        sku = sku.replace(/^(?:OB|CS|90)\s+/i, '').trim();
+        sku = sku.replace(/^(?:OB|CS|90)s+/i, '').trim();
         const isPrivateSku = /\bPVT\b/i.test(sku);
-        sku = sku.replace(/\s+PVT$/i, '').trim();
+        sku = sku.replace(/s+PVT$/i, '').trim();
         if (!sku || sku === 'Product #' || seenSkus.has(sku)) continue;
 
         const descEl = tr.querySelector('.item_desc, [class*="item_desc"]');

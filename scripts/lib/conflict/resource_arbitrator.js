@@ -146,8 +146,6 @@ function arbitrateContestedResources(items = [], evalResults = {}, chassisInfo =
 
   const aspectChecks = evalResults.aspectChecks || {};
   const ocpAspect = aspectChecks.networkingOcp || {};
-  const pcieAspect = aspectChecks.pcieRiser || {};
-  const missingDeps = evalResults.missingDependencies || [];
 
   // 1. OCP 3.0 Slot Contention Analysis
   // Checks if storage controller and multiple OCP NICs exceed physical slot capacity (default: 2 slots)
@@ -159,7 +157,6 @@ function arbitrateContestedResources(items = [], evalResults = {}, chassisInfo =
 
   items.forEach(it => {
     const desc = (it.description || '').toLowerCase();
-    const sku = cleanBaseSKU(it.sku);
 
     const isStorageCtrl = desc.includes('controller') || desc.includes('storage') || desc.includes('raid');
     const isNic = desc.includes('adapter') || desc.includes('ethernet') || desc.includes('sfp') || desc.includes('bcm57') || desc.includes('mcx6');

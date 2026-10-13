@@ -20,6 +20,7 @@ const { cleanBaseSKU, isValidHpeSKU } = require('../lib/catalog/sku.js');
 const { resolveRequirementIntent } = require('../lib/boq/requirement_intent_resolver.js');
 const { verifyVendorBOM, auditSingleVendorBOM } = require('../lib/boq/vendor_bom_verifier.js');
 const { getChassisMap, listAllCatalogs } = require('../lib/catalog/catalog_discovery.js');
+const logger = require('../lib/system/pipeline_logger.js');
 
 function getBaseChassisSku(chassisKey = '') {
   try {
@@ -31,12 +32,16 @@ function getBaseChassisSku(chassisKey = '') {
         if (v.baseSku) return v.baseSku;
       }
     }
-  } catch (_) {}
+  } catch (err) {
+    logger.debug('ROUTE_QUERY', `Unable to resolve chassis map for ${chassisKey}: ${err?.message}`);
+  }
   try {
     const catalogs = listAllCatalogs();
     const found = catalogs.find(c => c.id.toLowerCase() === chassisKey.toLowerCase() || c.chassis?.toLowerCase() === chassisKey.toLowerCase());
     if (found?.baseSku) return found.baseSku;
-  } catch (_) {}
+  } catch (err) {
+    logger.debug('ROUTE_QUERY', `Unable to find catalog base SKU for ${chassisKey}: ${err?.message}`);
+  }
   return null;
 }
 
@@ -47,7 +52,9 @@ function getChassisCatalog(queryText = '', context = {}) {
   let catalogs = [];
   try {
     catalogs = listAllCatalogs();
-  } catch (_) {}
+  } catch (err) {
+    logger.debug('ROUTE_QUERY', `Dynamic catalog discovery note: ${err?.message}`);
+  }
 
   // 2. Explicit unsupported check derived dynamically from portfolio presence
   if ((text.includes('dl360') || text.includes('dl 360')) && (text.includes('gen12') || text.includes('gen 12'))) {
@@ -183,7 +190,9 @@ function getChassisCatalog(queryText = '', context = {}) {
   if (fs.existsSync(matchedCatalog.catalogJsonPath)) {
     try {
       catalogData = JSON.parse(fs.readFileSync(matchedCatalog.catalogJsonPath, 'utf-8'));
-    } catch (_) {}
+    } catch (err) {
+      logger.warn('ROUTE_QUERY', `Error parsing catalog JSON at ${matchedCatalog.catalogJsonPath}: ${err?.message}`);
+    }
   }
 
   return {
@@ -595,7 +604,9 @@ async function _handleFreeformQa(queryText, context) {
           cloudSource = queryRes.source;
         }
       }
-    } catch (_) {}
+    } catch (err) {
+      logger.debug('ROUTE_QUERY', `Notebook query failed for ${chassisName}, falling back to local RAG: ${err?.message}`);
+    }
   }
 
   if (!ragResult) {
@@ -731,7 +742,9 @@ function _handleCatalogIntelligence(queryText, context) {
     try {
       const hist = JSON.parse(fs.readFileSync(historyFile, 'utf-8'));
       skuHistory = targetSku ? (hist[targetSku] || null) : hist;
-    } catch (e) {}
+    } catch (e) {
+      logger.warn('ROUTE_QUERY', `Failed reading price history file at ${historyFile}: ${e?.message}`);
+    }
   }
 
   let liveSkuDetails = null;
@@ -1511,12 +1524,16 @@ async function _handleMultiClusterTender(queryText, context) {
       const { analyzeAndPartitionClusters, extractRawItemsFromWorkbook } = require('../lib/boq/multi_cluster_splitter.js');
       const rawItems = extractRawItemsFromWorkbook(context.filePath);
       partitionResult = analyzeAndPartitionClusters(rawItems, path.basename(context.filePath));
-    } catch (_) {}
+    } catch (err) {
+      logger.debug('ROUTE_QUERY', `Failed extracting cluster partition from ${context.filePath}: ${err?.message}`);
+    }
   } else if (Array.isArray(context.items) && context.items.length > 0) {
     try {
       const { analyzeAndPartitionClusters } = require('../lib/boq/multi_cluster_splitter.js');
       partitionResult = analyzeAndPartitionClusters(context.items, 'tender_items');
-    } catch (_) {}
+    } catch (err) {
+      logger.debug('ROUTE_QUERY', `Failed analyzing cluster partition from context items: ${err?.message}`);
+    }
   }
 
   const counts = [...queryText.matchAll(/\b(\d+)\s*(?:nodes?|servers?|units?)\b/gi)].map(match => Number(match[1]));
@@ -1551,6 +1568,100 @@ async function _executeRoutedQueryWithShadow(queryText = '', context = {}) {
   return observe(queryText, context, _executeLegacyRoutedQuery);
 }
 
+function _deriveClassificationConfidence(queryText, context, classification, chassisInfoForConf) {
+  if (context.chassisName && chassisInfoForConf && !chassisInfoForConf.isAmbiguous) {
+    return { confidence: 1.0, classificationBasis: 'CHASSIS_EXPLICIT_ID_MATCH' };
+  }
+  if (classification.intent === 'BOQ_EVALUATION') {
+    const hasFile = Boolean(context.filePath || context.file);
+    return {
+      confidence: hasFile ? 0.95 : 0.90,
+      classificationBasis: hasFile ? 'BOQ_EVALUATION_WITH_FILE' : 'BOQ_EVALUATION_KEYWORD'
+    };
+  }
+  if (classification.intent === 'RFP_SIZING_TO_BOM') {
+    const sizingKeywords = ['sizing', 'size a', 'build a bom', 'generate a bom', 'cores', 'ram', 'tb storage', 'need', 'memory', 'processor'];
+    const kwCount = sizingKeywords.filter(kw => (queryText || '').toLowerCase().includes(kw)).length;
+    return {
+      confidence: kwCount >= 3 ? 0.90 : 0.75,
+      classificationBasis: `RFP_SIZING_KEYWORD_COUNT_${kwCount}`
+    };
+  }
+  if (classification.intent === 'FREEFORM_QA') {
+    return { confidence: 0.80, classificationBasis: 'FREEFORM_QA_DEFAULT' };
+  }
+  if (chassisInfoForConf && !chassisInfoForConf.isAmbiguous) {
+    return { confidence: 0.90, classificationBasis: 'CHASSIS_PLATFORM_SIGNATURE_SINGLE_MATCH' };
+  }
+  return {
+    confidence: classification.confidence || 0.80,
+    classificationBasis: 'CLASSIFIER_SCORE'
+  };
+}
+
+async function _dispatchIntentHandler(classification, queryText, context) {
+  switch (classification.intent) {
+    case 'CROSS_VENDOR_TRANSFORMATION':
+      return await observeActualInvocation('_handleCrossVendorTransformation', __filename, () => _handleCrossVendorTransformation(queryText, context));
+
+    case 'HETEROGENEOUS_TENDER_MODERNIZATION':
+      return await observeActualInvocation('_handleHeterogeneousTenderModernization', __filename, () => _handleHeterogeneousTenderModernization(queryText, context));
+
+    case 'FREEFORM_QA':
+      return await observeActualInvocation('_handleFreeformQa', __filename, () => _handleFreeformQa(queryText, context));
+
+    case 'BOQ_EVALUATION':
+      return await observeActualInvocation('_handleBoqEvaluation', __filename, () => _handleBoqEvaluation(queryText, context));
+
+    case 'OCR_QUOTE_INGESTION':
+      return await observeActualInvocation('_handleOcrQuoteIngestion', __filename, () => _handleOcrQuoteIngestion(queryText, context));
+
+    case 'CATALOG_INTELLIGENCE':
+      return observeActualInvocation('_handleCatalogIntelligence', __filename, () => _handleCatalogIntelligence(queryText, context));
+
+    case 'RFP_SIZING_TO_BOM':
+      return await observeActualInvocation('_handleRfpSizing', __filename, () => _handleRfpSizing(queryText, context));
+
+    case 'BOM_RECONCILIATION':
+      return observeActualInvocation('_handleBomReconciliation', __filename, () => _handleBomReconciliation(queryText, context));
+
+    case 'WORKLOAD_DNA':
+      return await observeActualInvocation('_handleWorkloadDna', __filename, () => _handleWorkloadDna(queryText, context));
+
+    case 'VALUE_ENGINEERING':
+      return await observeActualInvocation('_handleValueEngineering', __filename, () => _handleValueEngineering(queryText, context));
+
+    case 'LEAST_DELTA_SYNTHESIS':
+      return await observeActualInvocation('_handleLeastDeltaSynthesis', __filename, () => _handleLeastDeltaSynthesis(queryText, context));
+
+    case 'WORKBOOK_GENERATION':
+      return await observeActualInvocation('_handleWorkbookGeneration', __filename, () => _handleWorkbookGeneration(queryText, context));
+
+    case 'REMARKS_RECONCILIATION':
+      return await observeActualInvocation('_handleRemarksReconciliation', __filename, () => _handleRemarksReconciliation(queryText, context));
+
+    case 'MULTI_CLUSTER_TENDER':
+      return await observeActualInvocation('_handleMultiClusterTender', __filename, () => _handleMultiClusterTender(queryText, context));
+
+    case 'ADVERSARIAL_VALIDATION':
+      return await observeActualInvocation('_handleAdversarialValidation', __filename, () => _handleAdversarialValidation(queryText, context));
+
+    case 'CONTINUOUS_LEARNING':
+      return await observeActualInvocation('_handleContinuousLearning', __filename, () => _handleContinuousLearning(queryText, context));
+
+    case 'KNOWLEDGE_SYNC':
+      return await observeActualInvocation('_handleKnowledgeSync', __filename, () => _handleKnowledgeSync(queryText, context));
+
+    default:
+      return {
+        intent: classification.intent,
+        skillTarget: classification.skillTarget,
+        instructions: `Engage ${classification.skillTarget} to process: ${classification.rationale}`,
+        promptContext: queryText
+      };
+  }
+}
+
 /**
  * Execute routed presales query based on classified intent
  * @param {string} queryText 
@@ -1583,7 +1694,6 @@ async function _executeLegacyRoutedQuery(queryText = '', context = {}) {
   }
 
   // ── Classification confidence scoring ───────────────────────────────────
-  // Derive a 0.0-1.0 confidence score based on how the chassis and track were resolved.
   let confidence = 0.95;
   let classificationBasis = 'EXPLICIT_CHASSIS';
   const chassisInfoForConf = (() => {
@@ -1617,110 +1727,11 @@ async function _executeLegacyRoutedQuery(queryText = '', context = {}) {
       question
     };
   } else {
-    if (context.chassisName && chassisInfoForConf && !chassisInfoForConf.isAmbiguous) {
-      confidence = 1.0;
-      classificationBasis = 'CHASSIS_EXPLICIT_ID_MATCH';
-    } else if (classification.intent === 'BOQ_EVALUATION') {
-      const hasFile = Boolean(context.filePath || context.file);
-      confidence = hasFile ? 0.95 : 0.90;
-      classificationBasis = hasFile ? 'BOQ_EVALUATION_WITH_FILE' : 'BOQ_EVALUATION_KEYWORD';
-    } else if (classification.intent === 'RFP_SIZING_TO_BOM') {
-      // Count sizing-specific keywords to gauge strength
-      const sizingKeywords = ['sizing', 'size a', 'build a bom', 'generate a bom', 'cores', 'ram', 'tb storage', 'need', 'memory', 'processor'];
-      const kwCount = sizingKeywords.filter(kw => (queryText || '').toLowerCase().includes(kw)).length;
-      confidence = kwCount >= 3 ? 0.90 : 0.75;
-      classificationBasis = `RFP_SIZING_KEYWORD_COUNT_${kwCount}`;
-    } else if (classification.intent === 'FREEFORM_QA') {
-      confidence = chassisInfoForConf && !chassisInfoForConf.isAmbiguous ? 0.80 : 0.80;
-      classificationBasis = 'FREEFORM_QA_DEFAULT';
-    } else if (chassisInfoForConf && !chassisInfoForConf.isAmbiguous) {
-      // Check if it was a single-platform match (PLATFORM_SIGNATURES single match → 0.90)
-      confidence = 0.90;
-      classificationBasis = 'CHASSIS_PLATFORM_SIGNATURE_SINGLE_MATCH';
-    } else {
-      confidence = classification.confidence || 0.80;
-      classificationBasis = 'CLASSIFIER_SCORE';
-    }
-    // ────────────────────────────────────────────────────────────────────────
+    const scored = _deriveClassificationConfidence(queryText, context, classification, chassisInfoForConf);
+    confidence = scored.confidence;
+    classificationBasis = scored.classificationBasis;
 
-    switch (classification.intent) {
-      case 'CROSS_VENDOR_TRANSFORMATION':
-        responseData = await observeActualInvocation('_handleCrossVendorTransformation', __filename, () => _handleCrossVendorTransformation(queryText, context));
-        break;
-
-      case 'HETEROGENEOUS_TENDER_MODERNIZATION':
-        responseData = await observeActualInvocation('_handleHeterogeneousTenderModernization', __filename, () => _handleHeterogeneousTenderModernization(queryText, context));
-        break;
-
-      case 'FREEFORM_QA':
-        responseData = await observeActualInvocation('_handleFreeformQa', __filename, () => _handleFreeformQa(queryText, context));
-        break;
-
-      case 'BOQ_EVALUATION':
-        responseData = await observeActualInvocation('_handleBoqEvaluation', __filename, () => _handleBoqEvaluation(queryText, context));
-        break;
-
-      case 'OCR_QUOTE_INGESTION':
-        responseData = await observeActualInvocation('_handleOcrQuoteIngestion', __filename, () => _handleOcrQuoteIngestion(queryText, context));
-        break;
-
-      case 'CATALOG_INTELLIGENCE':
-        responseData = observeActualInvocation('_handleCatalogIntelligence', __filename, () => _handleCatalogIntelligence(queryText, context));
-        break;
-
-      case 'RFP_SIZING_TO_BOM':
-        responseData = await observeActualInvocation('_handleRfpSizing', __filename, () => _handleRfpSizing(queryText, context));
-        break;
-
-      case 'BOM_RECONCILIATION':
-        responseData = observeActualInvocation('_handleBomReconciliation', __filename, () => _handleBomReconciliation(queryText, context));
-        break;
-
-      case 'WORKLOAD_DNA':
-        responseData = await observeActualInvocation('_handleWorkloadDna', __filename, () => _handleWorkloadDna(queryText, context));
-        break;
-
-      case 'VALUE_ENGINEERING':
-        responseData = await observeActualInvocation('_handleValueEngineering', __filename, () => _handleValueEngineering(queryText, context));
-        break;
-
-      case 'LEAST_DELTA_SYNTHESIS':
-        responseData = await observeActualInvocation('_handleLeastDeltaSynthesis', __filename, () => _handleLeastDeltaSynthesis(queryText, context));
-        break;
-
-      case 'WORKBOOK_GENERATION':
-        responseData = await observeActualInvocation('_handleWorkbookGeneration', __filename, () => _handleWorkbookGeneration(queryText, context));
-        break;
-
-      case 'REMARKS_RECONCILIATION':
-        responseData = await observeActualInvocation('_handleRemarksReconciliation', __filename, () => _handleRemarksReconciliation(queryText, context));
-        break;
-
-      case 'MULTI_CLUSTER_TENDER':
-        responseData = await observeActualInvocation('_handleMultiClusterTender', __filename, () => _handleMultiClusterTender(queryText, context));
-        break;
-
-      case 'ADVERSARIAL_VALIDATION':
-        responseData = await observeActualInvocation('_handleAdversarialValidation', __filename, () => _handleAdversarialValidation(queryText, context));
-        break;
-
-      case 'CONTINUOUS_LEARNING':
-        responseData = await observeActualInvocation('_handleContinuousLearning', __filename, () => _handleContinuousLearning(queryText, context));
-        break;
-
-      case 'KNOWLEDGE_SYNC':
-        responseData = await observeActualInvocation('_handleKnowledgeSync', __filename, () => _handleKnowledgeSync(queryText, context));
-        break;
-
-      default:
-        responseData = {
-          intent: classification.intent,
-          skillTarget: classification.skillTarget,
-          instructions: `Engage ${classification.skillTarget} to process: ${classification.rationale}`,
-          promptContext: queryText
-        };
-        break;
-    }
+    responseData = await _dispatchIntentHandler(classification, queryText, context);
   }
 
   // Ensure universal trace ID & execution provenance across all routed tracks (GAP-33 / INV-111)

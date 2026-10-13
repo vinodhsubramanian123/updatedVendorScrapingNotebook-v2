@@ -14,7 +14,7 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 const { chromium } = require('playwright');
-const { launchPlaywrightChromium, findChromeExecutable } = require('../lib/scraper/browser_launcher.js');
+const { launchPlaywrightChromium } = require('../lib/scraper/browser_launcher.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
 
@@ -30,8 +30,6 @@ async function setupAndVerifyBrowsers() {
   const releaseMajor = parseInt(os.release().split('.')[0], 10);
 
   console.log(`🖥️  Host OS: ${platform} (${os.type()} ${os.release()})`);
-
-  let installedPlaywright = false;
 
   if (isMac && releaseMajor <= 21) {
     console.log('🍎 macOS Monterey 12.7 detected (Darwin <= 21).');

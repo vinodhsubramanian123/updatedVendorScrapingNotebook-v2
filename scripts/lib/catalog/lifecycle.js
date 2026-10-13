@@ -6,7 +6,7 @@ function parseVendorDate(value) {
   const text = String(value || '').trim();
   if (!text || /^(?:n\/a|na|none|unknown|-)$/i.test(text)) return null;
 
-  const numeric = text.match(/^(\d{1,4})[\/-](\d{1,2})[\/-](\d{1,4})$/);
+  const numeric = text.match(/^(\d{1,4})[/-](\d{1,2})[/-](\d{1,4})$/);
   if (numeric) {
     const first = Number(numeric[1]);
     const second = Number(numeric[2]);

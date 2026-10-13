@@ -21,7 +21,7 @@ const { analyzeRetirementDate } = require('../catalog/lifecycle.js');
 const DEFAULT_CHASSIS_PARAMETERS = Object.freeze({});
 
 function getChassisEquationParameters(catalogData = null, chassisKey = '') {
-  return { ...(catalogData?.chassisMetadata || {}), chassisKey,
+  return { ...catalogData?.chassisMetadata, chassisKey,
     provenance: catalogData?.chassisMetadata?.provenance || null };
 }
 
@@ -52,53 +52,44 @@ function extractCatalogItemPrice(skuData) {
  * @param {object} criteria
  * @returns {{ eligible: boolean, score: number }}
  */
-function validateCandidateAgainstCriteria(skuData, parentCat, skuId, criteria = {}) {
-  const { role, keywords = [], specs = {}, allowObsolete = false } = criteria;
-  const targetRole = String(role || '').toLowerCase();
-  const kwList = Array.isArray(keywords) ? keywords.map(k => String(k).toLowerCase()) : [];
-  const desc = String(skuData.Description || skuData.description || '').toLowerCase();
-  const cat = String(parentCat || skuData['Parent Category'] || skuData.parentCategory || '').toLowerCase();
-  const subcat = String(skuData.subCategory || skuData['Subcategory'] || '').toLowerCase();
-  const itemRole = (skuData['Component Role'] || classifyComponentRole(parentCat, desc)).toLowerCase();
-
-  // 1. Lifecycle filter: reject obsolete/discontinued or near-retirement (<90 days) unless explicitly allowed
+function _checkLifecycleEligibility(skuData, allowObsolete) {
+  if (allowObsolete) return true;
   const lifecycle = String(skuData['Lifecycle Status'] || skuData.lifecycleStatus || '').toLowerCase();
-  if (!allowObsolete) {
-    if (lifecycle.includes('obsolete') || lifecycle.includes('discontinued') || skuData['Diff Status'] === 'REMOVED') {
-      return { eligible: false, score: 0 };
-    }
-    const discDate = skuData['Discontinued Date'] || skuData['Discontinuation Date'] || skuData.discontinuedDate || skuData.discontinuationDate;
-    if (discDate) {
-      const retirement = analyzeRetirementDate(discDate, { warningDays: 90 });
-      if (retirement.isPast || (retirement.known && retirement.daysRemaining < 90)) {
-        return { eligible: false, score: 0 };
-      }
+  if (lifecycle.includes('obsolete') || lifecycle.includes('discontinued') || skuData['Diff Status'] === 'REMOVED') {
+    return false;
+  }
+  const discDate = skuData['Discontinued Date'] || skuData['Discontinuation Date'] || skuData.discontinuedDate || skuData.discontinuationDate;
+  if (discDate) {
+    const retirement = analyzeRetirementDate(discDate, { warningDays: 90 });
+    if (retirement.isPast || (retirement.known && retirement.daysRemaining < 90)) {
+      return false;
     }
   }
+  return true;
+}
 
-  // 2. Role and Category compatibility filter
-  let roleMatch = false;
-  if (!targetRole) {
-    roleMatch = true;
-  } else if (itemRole && (itemRole === targetRole)) {
-    roleMatch = true;
-  } else if ((targetRole.includes('fan') || targetRole.includes('cooling')) && (itemRole.includes('cooling') || desc.includes('fan') || cat.includes('fan'))) {
-    roleMatch = true;
-  } else if ((targetRole.includes('battery') || targetRole.includes('capacitor')) && (itemRole.includes('battery') || desc.includes('battery') || cat.includes('battery') || desc.includes('bbu'))) {
-    roleMatch = true;
-  } else if ((targetRole.includes('transceiver') || targetRole.includes('optic')) && (itemRole.includes('transceiver') || desc.includes('transceiver') || desc.includes('sfp') || desc.includes('qsfp') || cat.includes('transceiver'))) {
-    roleMatch = true;
-  } else if ((targetRole.includes('cable') || targetRole.includes('lug')) && (itemRole.includes('cable') || desc.includes('cable') || desc.includes('lug kit') || cat.includes('cable'))) {
-    roleMatch = true;
-  } else if (targetRole.includes('drive') && (itemRole.includes('drive') || desc.includes('drive') || cat.includes('drive'))) {
-    roleMatch = true;
+function _checkRoleCompatibility(targetRole, itemRole, desc, cat) {
+  if (!targetRole) return true;
+  if (itemRole && (itemRole === targetRole)) return true;
+  if ((targetRole.includes('fan') || targetRole.includes('cooling')) && (itemRole.includes('cooling') || desc.includes('fan') || cat.includes('fan'))) {
+    return true;
   }
-
-  if (!roleMatch) {
-    return { eligible: false, score: 0 };
+  if ((targetRole.includes('battery') || targetRole.includes('capacitor')) && (itemRole.includes('battery') || desc.includes('battery') || cat.includes('battery') || desc.includes('bbu'))) {
+    return true;
   }
+  if ((targetRole.includes('transceiver') || targetRole.includes('optic')) && (itemRole.includes('transceiver') || desc.includes('transceiver') || desc.includes('sfp') || desc.includes('qsfp') || cat.includes('transceiver'))) {
+    return true;
+  }
+  if ((targetRole.includes('cable') || targetRole.includes('lug')) && (itemRole.includes('cable') || desc.includes('cable') || desc.includes('lug kit') || cat.includes('cable'))) {
+    return true;
+  }
+  if (targetRole.includes('drive') && (itemRole.includes('drive') || desc.includes('drive') || cat.includes('drive'))) {
+    return true;
+  }
+  return false;
+}
 
-  // 3. Keyword filtering (crucial for distinguishing e.g. "no drive" from ordinary drives)
+function _checkKeywordFiltering(kwList, desc, cat, subcat) {
   let matchedKwCount = 0;
   for (const kw of kwList) {
     if (desc.includes(kw) || cat.includes(kw) || subcat.includes(kw)) {
@@ -106,30 +97,30 @@ function validateCandidateAgainstCriteria(skuData, parentCat, skuId, criteria = 
     }
   }
 
-  // If looking for "no drive", candidate MUST explicitly have "no drive" or "diskless"
   if (kwList.some(k => k.includes('no drive') || k.includes('diskless'))) {
     const hasNoDrive = desc.includes('no drive') || desc.includes('diskless') || cat.includes('no drive');
-    if (!hasNoDrive) return { eligible: false, score: 0 };
+    if (!hasNoDrive) return { passed: false, matchedKwCount: 0 };
   }
 
-  // If requireKeywordMatch is set or keywords provided for generic roles, require at least one keyword match
-  if (kwList.length > 0) {
-    if (matchedKwCount === 0) return { eligible: false, score: 0 };
+  if (kwList.length > 0 && matchedKwCount === 0) {
+    return { passed: false, matchedKwCount: 0 };
   }
 
-  // 4. Specification filtering
+  return { passed: true, matchedKwCount };
+}
+
+function _checkSpecFiltering(specs, desc, cat) {
   if (specs.speedGb) {
     const targetSpeed = Number(specs.speedGb);
     const speedPattern = new RegExp(`\\b${targetSpeed}\\s*(?:gb|g|gbe)\\b`, 'i');
     if (!speedPattern.test(desc) && !speedPattern.test(cat)) {
-      return { eligible: false, score: 0 };
+      return false;
     }
-    // Reject conflicting optical speeds (e.g. 10Gb/25Gb/16Gb when 32Gb requested)
     if (targetSpeed === 32 && /\b(?:10|25|16|64|100)\s*(?:gb|g)\b/i.test(desc) && !desc.includes('32gb')) {
-      return { eligible: false, score: 0 };
+      return false;
     }
     if (targetSpeed === 64 && /\b(?:10|25|16|32|100)\s*(?:gb|g)\b/i.test(desc) && !desc.includes('64gb')) {
-      return { eligible: false, score: 0 };
+      return false;
     }
   }
 
@@ -137,7 +128,7 @@ function validateCandidateAgainstCriteria(skuData, parentCat, skuId, criteria = 
     const targetWattage = Number(specs.wattage);
     const wattPattern = new RegExp(`\\b${targetWattage}\\s*w\\b`, 'i');
     if (!wattPattern.test(desc)) {
-      return { eligible: false, score: 0 };
+      return false;
     }
   }
 
@@ -146,10 +137,13 @@ function validateCandidateAgainstCriteria(skuData, parentCat, skuId, criteria = 
     const matches = specs.protocol === 'fibre channel'
       ? /\bfibre\s*channel\b|\bfiber\s*channel\b|\bfc\b/i.test(protocolText)
       : protocolText.includes(String(specs.protocol).toLowerCase());
-    if (!matches) return { eligible: false, score: 0 };
+    if (!matches) return false;
   }
 
-  // 5. Score computation
+  return true;
+}
+
+function _computeCandidateScore({ skuData, targetRole, itemRole, matchedKwCount, specs, lifecycle }) {
   let score = 10;
   if (targetRole && itemRole.includes(targetRole)) score += 20;
   score += matchedKwCount * 10;
@@ -162,9 +156,45 @@ function validateCandidateAgainstCriteria(skuData, parentCat, skuId, criteria = 
   if (scoreDiscDate) {
     const retirement = analyzeRetirementDate(scoreDiscDate, { warningDays: 90 });
     if (retirement.known && !retirement.isPast && retirement.daysRemaining >= 180) {
-      score += 5; // Long active horizon
+      score += 5;
     }
   }
+  return score;
+}
+
+function validateCandidateAgainstCriteria(skuData, parentCat, skuId, criteria = {}) {
+  const { role, keywords = [], specs = {}, allowObsolete = false } = criteria;
+  const targetRole = String(role || '').toLowerCase();
+  const kwList = Array.isArray(keywords) ? keywords.map(k => String(k).toLowerCase()) : [];
+  const desc = String(skuData.Description || skuData.description || '').toLowerCase();
+  const cat = String(parentCat || skuData['Parent Category'] || skuData.parentCategory || '').toLowerCase();
+  const subcat = String(skuData.subCategory || skuData['Subcategory'] || '').toLowerCase();
+  const itemRole = (skuData['Component Role'] || classifyComponentRole(parentCat, desc)).toLowerCase();
+
+  // 1. Lifecycle filter
+  if (!_checkLifecycleEligibility(skuData, allowObsolete)) {
+    return { eligible: false, score: 0 };
+  }
+
+  // 2. Role and Category compatibility filter
+  if (!_checkRoleCompatibility(targetRole, itemRole, desc, cat)) {
+    return { eligible: false, score: 0 };
+  }
+
+  // 3. Keyword filtering
+  const { passed: kwPassed, matchedKwCount } = _checkKeywordFiltering(kwList, desc, cat, subcat);
+  if (!kwPassed) {
+    return { eligible: false, score: 0 };
+  }
+
+  // 4. Specification filtering
+  if (!_checkSpecFiltering(specs, desc, cat)) {
+    return { eligible: false, score: 0 };
+  }
+
+  // 5. Score computation
+  const lifecycle = String(skuData['Lifecycle Status'] || skuData.lifecycleStatus || '').toLowerCase();
+  const score = _computeCandidateScore({ skuData, targetRole, itemRole, matchedKwCount, specs, lifecycle });
 
   return { eligible: true, score };
 }

@@ -25,8 +25,7 @@ const {
   checkGoogleAuth
 } = require('./google_sheets_service.js');
 const {
-  buildMasterKnowledgeRegistry,
-  classifyKnowledgeScope
+  buildMasterKnowledgeRegistry
 } = require('../lib/sync/knowledge_sync.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
@@ -641,6 +640,7 @@ module.exports = {
   computeRuleCompositeKey,
   deduplicateRules,
   parseRulesFromMarkdown,
+  scanImportedSources,
   generateRunningKnowledgeCharterMarkdown,
   generateUniversalCharterMarkdown
 };

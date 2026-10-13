@@ -22,8 +22,6 @@ const { classifyKnowledgeScope } = require('../sync/knowledge_sync.js');
 const { validateKnowledgeDelta, saveQuarantinedDelta, SKU_BLACKLIST, buildKnowledgeFingerprint } = require('../feedback/quarantined_deltas.js');
 const logger = require('../system/pipeline_logger.js');
 
-const SKU_PATTERN = '([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6}|[HURS][A-Z0-9]{4,11})';
-
 /**
  * Extract structured knowledge deltas from a natural language RAG answer.
  * @param {string} ragAnswer - The grounded markdown text from NotebookLM

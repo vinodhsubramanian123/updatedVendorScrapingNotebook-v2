@@ -34,7 +34,7 @@ function prepareSearchTerms(query) {
   const cleanQuery = (rawQueryStr || '').toLowerCase();
   const rawWords = cleanQuery
     .replace(/[*_~`#]/g, ' ')
-    .split(/[\s,;.!?'"()[\]{}<>\/\\=+:|]+/)
+    .split(/[\s,;.!?'"()[\]{}<>/\\=+:|]+/)
     .filter(w => w.length > 0);
   const searchTerms = rawWords.filter(w => !STOP_WORDS.has(w) && w.length >= 2);
 
@@ -50,7 +50,7 @@ function prepareSearchTerms(query) {
   const activeTerms = specificTerms.length > 0 ? specificTerms : expandedSearchTerms;
 
   let minCores = null;
-  const coreMatch = cleanQuery.match(/(\d+)\s*(-|\s*)core/i) || cleanQuery.match(/(?:more than|equal to|at least|\>=)\s*(\d+)/i) || cleanQuery.match(/(\d+)\s*cores/i);
+  const coreMatch = cleanQuery.match(/(\d+)\s*(-|\s*)core/i) || cleanQuery.match(/(?:more than|equal to|at least|>=)\s*(\d+)/i) || cleanQuery.match(/(\d+)\s*cores/i);
   if (coreMatch) {
     minCores = parseInt(coreMatch[1], 10);
   }
@@ -74,6 +74,8 @@ function searchKnowledgeDeltas(chassisName, activeTerms, rawMatches) {
 
     for (const rule of rules) {
       if (!ruleAppliesToProduct(rule, targetIdentity, config)) continue;
+      if (rule.ruleType && rule.ruleType.startsWith('WORKFLOW_')) continue;
+      if (rule.evidenceType === 'WORKFLOW_REVIEW') continue;
 
       const raw = (rule.rawMessage || '').toLowerCase();
       const update = (rule.ruleUpdate || '').toLowerCase();

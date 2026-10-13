@@ -20,7 +20,7 @@ class PipelineLogger {
     this.sessionName = sessionName || 'Unknown_Session';
     this.outputDir   = outputDir || null;
     this.startTime   = new Date().toISOString();
-    this.runId       = `run_${this.sessionName.replace(/[^a-zA-Z0-9_\-]/g, '_')}_${Date.now()}`;
+    this.runId       = `run_${this.sessionName.replace(/[^a-zA-Z0-9_-]/g, '_')}_${Date.now()}`;
     
     this.steps = [];
     this.skuClassifications = [];

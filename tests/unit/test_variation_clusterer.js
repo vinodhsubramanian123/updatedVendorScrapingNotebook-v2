@@ -38,9 +38,7 @@ function runTests() {
 
   console.log('▶ Test: calculateImprobabilityMetrics');
   // High TDP without high-perf fans, -48VDC with Lug kit
-  const mockItemsHighTdpNoFans = [
-      ...mockItemsHighTdp.slice(0, 3)
-  ];
+  const mockItemsHighTdpNoFans = mockItemsHighTdp.slice(0, 3);
   // P48820-B21 is high perf fan kit. Let's make sure it's absent
   const profileHighNoFans = extractHardwareProfile(mockItemsHighTdpNoFans);
   const metricsHigh = calculateImprobabilityMetrics({ profile: profileHighNoFans, items: mockItemsHighTdpNoFans });

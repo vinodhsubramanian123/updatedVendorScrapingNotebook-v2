@@ -26,7 +26,7 @@ const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
  */
 function sanitizeSheetName(name, existingNames) {
   let safe = String(name)
-    .replace(/[:\\/?*\[\]]/g, '')  // Strip Excel-illegal characters
+    .replace(/[:\\/?*[\]]/g, '')  // Strip Excel-illegal characters
     .replace(/^'+|'+$/g, '')       // Strip leading/trailing single quotes
     .trim();
   if (safe.length === 0) safe = 'Sheet';
@@ -224,7 +224,7 @@ function normalizeRowsForExcel(rows) {
         if (sVal === 'N/A' || sVal === '-' || sVal.startsWith('[REMOVED') || sVal.includes('(')) {
           out[k] = sVal;
         } else {
-          const cleanNum = sVal.replace(/[\$,\s]/g, '');
+          const cleanNum = sVal.replace(/[$,\s]/g, '');
           const num = parseFloat(cleanNum);
           out[k] = isNaN(num) ? sVal : num;
         }
@@ -234,7 +234,7 @@ function normalizeRowsForExcel(rows) {
         if (sVal === 'Unlimited' || sVal === 'Required' || sVal === 'N/A' || sVal === '-') {
           out[k] = sVal;
         } else {
-          const cleanInt = sVal.replace(/[^0-9\-]/g, '');
+          const cleanInt = sVal.replace(/[^0-9-]/g, '');
           const num = parseInt(cleanInt, 10);
           out[k] = isNaN(num) ? sVal : num;
         }

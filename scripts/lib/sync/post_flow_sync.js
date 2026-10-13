@@ -4,7 +4,6 @@ const { buildMasterKnowledgeRegistry, generateNotebookSyncPayload, inspectKnowle
 const logger = require('../system/pipeline_logger.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
-const HISTORY_DIR  = path.join(PROJECT_ROOT, 'outputs', 'history');
 
 // GAP-7 FIX: Patterns matching ephemeral test chassis payload files that
 // should never accumulate in outputs/history/.

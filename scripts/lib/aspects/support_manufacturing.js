@@ -141,7 +141,7 @@ function tallySupportItems(items, catalogData) {
     }
 
     if (isUnsolicitedOptionalService(it.sku, it.description)) {
-      const uPrice = parseFloat(String(it.unitPrice || it.price || it['Unit Price (USD)'] || '0').replace(/[\$,]/g, '')) || 0;
+      const uPrice = parseFloat(String(it.unitPrice || it.price || it['Unit Price (USD)'] || '0').replace(/[^0-9.]/g, '')) || 0;
       const extPrice = uPrice * qty;
       tally.totalUnsolicitedCostUsd += extPrice;
       tally.unsolicitedOptionalItems.push({

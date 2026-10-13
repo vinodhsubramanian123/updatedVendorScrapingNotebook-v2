@@ -35,6 +35,7 @@ const { loadActiveKnowledgeRules } = require('../lib/catalog/active_knowledge_ro
 const { recordAndCertifyLearnedRule } = require('../lib/feedback/continuous_learning_verifier.js');
 const { assertNotebookHealth, loadNotebookConfig } = require('../lib/sync/knowledge_sync.js');
 const { LifecycleEngine } = require('../lib/lifecycle/lifecycle_engine.js');
+const logger = require('../lib/system/pipeline_logger.js');
 
 /**
  * Load notebook ID from config file for a specific chassis or use default.
@@ -210,19 +211,11 @@ async function promptUserForChassisTriage(catalogs, detection) {
   return null;
 }
 
-async function ingestAndConsolidateBoq(options) {
-  const inMemory = !options.inputFile && (Array.isArray(options.inputItems) || typeof options.rawText === 'string');
-  if (!inMemory && (!options.inputFile || !fs.existsSync(options.inputFile))) throw new Error(`Input BOQ file not found: ${options.inputFile || '(none provided)'}`);
-  const { inputFile = `InMemory_${crypto.randomUUID()}.txt`, targetSheetName, explicitNotebookId, explicitOutputPath, simulatePortalError, explicitOutputDir, JSON_MODE } = options;
-  let chassisDir = options.chassisDir;
-
-  const tStart = Date.now();
-  const inputBase = path.basename(inputFile, path.extname(inputFile));
-  const isExcel = /\.xlsx?$/i.test(inputFile);
+async function _extractRawBoqPayload(inputFile, options, inMemory, isExcel, JSON_MODE) {
   let rawContent = '';
   let ocrMetadata = null;
-
   const { isImageFile, performGeminiOcr } = require('../lib/ocr/ocr_service.js');
+
   if (inMemory) {
     rawContent = options.inputItems ?? options.rawText;
   } else if (isImageFile(inputFile)) {
@@ -246,13 +239,13 @@ async function ingestAndConsolidateBoq(options) {
     rawContent = fs.readFileSync(inputFile, 'utf-8');
   }
 
-  const parsedBoq = parseAndConsolidateBOQDetailed(rawContent, inMemory ? '' : inputFile, targetSheetName);
-  let items = parsedBoq.items;
-  if (!items.length) throw new Error('ERR_EMPTY_BOQ: No hardware items parsed.');
-  if (items.some(item => !item.sku || !Number.isInteger(Number(item.quantity)) || Number(item.quantity) < 1)) throw new Error('ERR_INVALID_BOQ: Every item requires a SKU and positive integer quantity.');
-  const stage1ParsingMs = Math.max(Date.now() - tStart, 1);
+  return { rawContent, ocrMetadata };
+}
 
+async function _resolveChassisSelection(items, explicitChassisDir, JSON_MODE) {
+  let chassisDir = explicitChassisDir;
   let chassisDetection = null;
+
   if (!chassisDir) {
     chassisDetection = autoDetectChassisDetailed(items);
     if (chassisDetection.requiresUserConfirmation || chassisDetection.confidenceScore < 0.75) {
@@ -276,10 +269,9 @@ async function ingestAndConsolidateBoq(options) {
   }
 
   if (!chassisDir && (chassisDetection.unknown || chassisDetection.requiresUserConfirmation)) {
-    // Interactive ambiguity triage if running in interactive TTY mode
     const { listAllCatalogs } = require('../lib/catalog/catalog_discovery.js');
     let availableCatalogs = [];
-    try { availableCatalogs = listAllCatalogs(); } catch {}
+    try { availableCatalogs = listAllCatalogs(); } catch { /* ignore */ }
     if (process.stdin.isTTY && !JSON_MODE && !process.env.CI && availableCatalogs.length > 0) {
       const userChoice = await promptUserForChassisTriage(availableCatalogs, chassisDetection);
       if (userChoice && userChoice.chassisDir) {
@@ -313,18 +305,19 @@ async function ingestAndConsolidateBoq(options) {
     throw new Error(errPayload.message);
   }
 
-  const detectedChassisName = path.basename(chassisDir || '');
+  return { chassisDir, chassisDetection };
+}
 
-  // Pre-Flight Scraped-Catalog Gate (INV-96)
-  const isExplicitTestPath = /(?:^|[\\/])tests[\\/]fixtures|(?:^|[\\/])outputs[\\/]temp[\\/]test_payloads/i.test(chassisDir) || process.env.NODE_ENV === 'test';
+function _preflightCatalogFreshness(detectedChassisName, chassisDir, options, isExplicitTestPath, JSON_MODE, chassisDetection) {
+  let resolvedChassisDir = chassisDir;
   if (!isExplicitTestPath && !options.OFFLINE_MODE && !process.env.CI) {
     const { buildRefreshPlan, executeRefreshPlan } = require('../lib/catalog/catalog_refresh_plan.js');
     const plan = buildRefreshPlan({ products: [detectedChassisName] });
     const refresh = executeRefreshPlan(plan);
     if (!refresh.success) throw new Error(`ERR_CATALOG_REFRESH: ${JSON.stringify(refresh.results)}`);
     const refreshed = require('../lib/catalog/product_metadata_manager.js').getProductGenerationMetadata(detectedChassisName);
-    chassisDir = refreshed.outputDir;
-    chassisDetection.chassisDir = chassisDir;
+    resolvedChassisDir = refreshed.outputDir;
+    chassisDetection.chassisDir = resolvedChassisDir;
   }
   if (!isExplicitTestPath && process.env.ALLOW_UNSCRAPED_EVAL !== '1') {
     const certCheck = isCatalogCertified(detectedChassisName);
@@ -344,48 +337,14 @@ async function ingestAndConsolidateBoq(options) {
     }
   }
 
-  if (!fs.existsSync(chassisDir) || !fs.statSync(chassisDir).isDirectory()) throw new Error('ERR_UNKNOWN_CHASSIS: Explicit chassis does not identify a catalog directory.');
-  const configuredNotebookId = getDefaultNotebookId(detectedChassisName);
-  const notebookId = explicitNotebookId && explicitNotebookId === configuredNotebookId
-    ? explicitNotebookId
-    : configuredNotebookId;
-
-  // Resolve degraded mode for this notebook entry so it surfaces in the report header
-  // and JSON payload rather than silently running against a disabled/stale notebook.
-  let notebookDegradedMode = null;
-  let notebookHealth = null;
-  try {
-    const nbCfg = loadNotebookConfig();
-    notebookHealth = assertNotebookHealth(nbCfg, detectedChassisName, logger);
-    notebookDegradedMode = notebookHealth.degradationMode;
-  } catch { /* non-fatal */ }
-
-  const defaultReportsDir = path.join(chassisDir, 'reports');
-  if (!fs.existsSync(defaultReportsDir)) {
-    fs.mkdirSync(defaultReportsDir, { recursive: true });
+  if (!fs.existsSync(resolvedChassisDir) || !fs.statSync(resolvedChassisDir).isDirectory()) {
+    throw new Error('ERR_UNKNOWN_CHASSIS: Explicit chassis does not identify a catalog directory.');
   }
 
-  const fileSuffix = targetSheetName ? `${inputBase}_${targetSheetName.replace(/[/\\?*[\]:]/g, '_')}` : inputBase;
-  let outputPath = explicitOutputPath || path.join(defaultReportsDir, `BOQ_Evaluation_${fileSuffix}.md`);
+  return resolvedChassisDir;
+}
 
-  if (simulatePortalError) {
-    const feedbackDir = explicitOutputDir || chassisDir;
-    if (!JSON_MODE) console.log(`\n🔄 Processing simulated partner portal error feedback...`);
-    const delta = processPortalFeedback(simulatePortalError, feedbackDir);
-    if (!JSON_MODE) console.log(`✅ KnowledgeDelta logged: ${delta.deltaId} (${delta.ruleUpdate})`);
-  }
-
-  if (!JSON_MODE) {
-    console.log(`\n===============================================================`);
-    console.log(`🚀 HPE BOQ PRE-FLIGHT EVALUATION & GEMINI NOTEBOOK VALIDATOR`);
-    console.log(`===============================================================`);
-    console.log(`  📄 Input BOQ File : ${inputFile}`);
-    console.log(`  📚 Notebook ID    : ${notebookId}`);
-    console.log(`  📝 Output Report  : ${outputPath}`);
-    console.log(`  🔧 Chassis Dir    : ${chassisDir}`);
-    console.log(`\n🔍 Phase 1: Consolidated ${items.length} unique hardware SKUs from BOQ.`);
-  }
-
+function _loadAndAuditCatalogData(chassisDir, isExplicitTestPath) {
   const chassisPrefix = path.basename(chassisDir);
   const catalogPath = path.join(chassisDir, `${chassisPrefix}_Catalog.json`);
   let catalogData = null;
@@ -405,7 +364,15 @@ async function ingestAndConsolidateBoq(options) {
   const { auditCatalogFreshness, verifyTabularIntegrity } = require('../lib/catalog/catalog_freshness_guard.js');
   const catalogAudit = { freshness: auditCatalogFreshness(catalogData), integrity: verifyTabularIntegrity(catalogData) };
   if (!catalogAudit.integrity.isValid) throw new Error(`ERR_CATALOG_INTEGRITY: ${catalogAudit.integrity.errors.join('; ')}`);
-  if (['UNKNOWN', 'INVALID_FUTURE_DATE', 'CRITICAL_OUTDATED'].includes(catalogAudit.freshness.freshnessStatus) && !isExplicitTestPath) throw new Error(`ERR_CATALOG_FRESHNESS: ${catalogAudit.freshness.freshnessStatus}`);
+  if (['UNKNOWN', 'INVALID_FUTURE_DATE', 'CRITICAL_OUTDATED'].includes(catalogAudit.freshness.freshnessStatus) && !isExplicitTestPath) {
+    throw new Error(`ERR_CATALOG_FRESHNESS: ${catalogAudit.freshness.freshnessStatus}`);
+  }
+
+  return { catalogData, catalogAudit, chassisPrefix };
+}
+
+function _applyPolicyAndConfiguration(rawItems, options, chassisDir, catalogData, parsedBoq, chassisDetection) {
+  let items = rawItems;
   const productConfirmed = !chassisDetection.requiresUserConfirmation && chassisDetection.confidenceScore >= 0.95;
   let supportPolicyChange = null;
   if (options.applySupportDefault) {
@@ -426,11 +393,87 @@ async function ingestAndConsolidateBoq(options) {
   try {
     configurationContext = require('../lib/boq/configuration_context').normalizeConfiguration(items);
     items = configurationContext.items;
-    if (options.serverCount !== undefined && Number(options.serverCount) !== configurationContext.multiplier) throw new Error('ERR_QUANTITY_CONTEXT: Requested serverCount disagrees with the customer configuration multiplier.');
+    if (options.serverCount !== undefined && Number(options.serverCount) !== configurationContext.multiplier) {
+      throw new Error('ERR_QUANTITY_CONTEXT: Requested serverCount disagrees with the customer configuration multiplier.');
+    }
   } catch (err) {
     if (err.code !== 'CONFIGURATION_OWNERSHIP_AMBIGUOUS') throw err;
     configurationContext = { items, multiplier: 1, ownershipEvidence: 'AMBIGUOUS_OWNERSHIP_RAW' };
   }
+
+  return { items, requirementResolution, configurationContext };
+}
+
+async function ingestAndConsolidateBoq(options) {
+  const inMemory = !options.inputFile && (Array.isArray(options.inputItems) || typeof options.rawText === 'string');
+  if (!inMemory && (!options.inputFile || !fs.existsSync(options.inputFile))) {
+    throw new Error(`Input BOQ file not found: ${options.inputFile || '(none provided)'}`);
+  }
+  const { inputFile = `InMemory_${crypto.randomUUID()}.txt`, targetSheetName, explicitNotebookId, explicitOutputPath, simulatePortalError, explicitOutputDir, JSON_MODE } = options;
+
+  const tStart = Date.now();
+  const inputBase = path.basename(inputFile, path.extname(inputFile));
+  const isExcel = /\.xlsx?$/i.test(inputFile);
+
+  const { rawContent, ocrMetadata } = await _extractRawBoqPayload(inputFile, options, inMemory, isExcel, JSON_MODE);
+
+  const parsedBoq = parseAndConsolidateBOQDetailed(rawContent, inMemory ? '' : inputFile, targetSheetName);
+  let items = parsedBoq.items;
+  if (!items.length) throw new Error('ERR_EMPTY_BOQ: No hardware items parsed.');
+  if (items.some(item => !item.sku || !Number.isInteger(Number(item.quantity)) || Number(item.quantity) < 1)) {
+    throw new Error('ERR_INVALID_BOQ: Every item requires a SKU and positive integer quantity.');
+  }
+  const stage1ParsingMs = Math.max(Date.now() - tStart, 1);
+
+  let { chassisDir, chassisDetection } = await _resolveChassisSelection(items, options.chassisDir, JSON_MODE);
+  const detectedChassisName = path.basename(chassisDir || '');
+
+  const isExplicitTestPath = /(?:^|[\\/])tests[\\/]fixtures|(?:^|[\\/])outputs[\\/]temp[\\/]test_payloads/i.test(chassisDir) || process.env.NODE_ENV === 'test';
+  chassisDir = _preflightCatalogFreshness(detectedChassisName, chassisDir, options, isExplicitTestPath, JSON_MODE, chassisDetection);
+
+  const configuredNotebookId = getDefaultNotebookId(detectedChassisName);
+  const notebookId = explicitNotebookId && explicitNotebookId === configuredNotebookId
+    ? explicitNotebookId
+    : configuredNotebookId;
+
+  let notebookDegradedMode = null;
+  let notebookHealth = null;
+  try {
+    const nbCfg = loadNotebookConfig();
+    notebookHealth = assertNotebookHealth(nbCfg, detectedChassisName, logger);
+    notebookDegradedMode = notebookHealth.degradationMode;
+  } catch { /* non-fatal */ }
+
+  const defaultReportsDir = path.join(chassisDir, 'reports');
+  if (!fs.existsSync(defaultReportsDir)) {
+    fs.mkdirSync(defaultReportsDir, { recursive: true });
+  }
+
+  const fileSuffix = targetSheetName ? `${inputBase}_${targetSheetName.replace(/[/\\?*[\]:]/g, '_')}` : inputBase;
+  const outputPath = explicitOutputPath || path.join(defaultReportsDir, `BOQ_Evaluation_${fileSuffix}.md`);
+
+  if (simulatePortalError) {
+    const feedbackDir = explicitOutputDir || chassisDir;
+    if (!JSON_MODE) console.log(`\n🔄 Processing simulated partner portal error feedback...`);
+    const delta = processPortalFeedback(simulatePortalError, feedbackDir);
+    if (!JSON_MODE) console.log(`✅ KnowledgeDelta logged: ${delta.deltaId} (${delta.ruleUpdate})`);
+  }
+
+  if (!JSON_MODE) {
+    console.log(`\n===============================================================`);
+    console.log(`🚀 HPE BOQ PRE-FLIGHT EVALUATION & GEMINI NOTEBOOK VALIDATOR`);
+    console.log(`===============================================================`);
+    console.log(`  📄 Input BOQ File : ${inputFile}`);
+    console.log(`  📚 Notebook ID    : ${notebookId}`);
+    console.log(`  📝 Output Report  : ${outputPath}`);
+    console.log(`  🔧 Chassis Dir    : ${chassisDir}`);
+    console.log(`\n🔍 Phase 1: Consolidated ${items.length} unique hardware SKUs from BOQ.`);
+  }
+
+  const { catalogData, catalogAudit, chassisPrefix } = _loadAndAuditCatalogData(chassisDir, isExplicitTestPath);
+  const policyResult = _applyPolicyAndConfiguration(items, options, chassisDir, catalogData, parsedBoq, chassisDetection);
+  items = policyResult.items;
+  const { requirementResolution, configurationContext } = policyResult;
 
   return {
     items,
@@ -543,6 +586,152 @@ function executePhysicalPreChecks(items, catalogData, chassisDir, JSON_MODE, req
   return { evalResults, graph, queryPayload, stage2AspectMathMs };
 }
 
+function _detectOpinionDiscrepancy(evalResults, ragResult) {
+  evalResults.opinionDiscrepancies = evalResults.opinionDiscrepancies || [];
+  const localHasConflicts = (evalResults.errors || []).length > 0;
+  const ragAnswerLower = (ragResult.answer || '').toLowerCase();
+  const ragClaimsFullyCompliant = ragAnswerLower.includes('fully compatible') || ragAnswerLower.includes('no issues detected') || ragAnswerLower.includes('100% buildable');
+
+  if (localHasConflicts && ragClaimsFullyCompliant) {
+    const discrepancy = {
+      type: 'LOCAL_RULE_OVERRIDE',
+      severity: 'WARNING',
+      message: 'Local rule engine flagged physical/thermal conflicts, but cloud commentary reported full compatibility. Deterministic aspect checks prevail.',
+      localConflicts: evalResults.errors,
+      cloudAnswerSnippet: (ragResult.answer || '').slice(0, 200)
+    };
+    evalResults.opinionDiscrepancies.push(discrepancy);
+    const _logger = require('../lib/system/pipeline_logger.js');
+    _logger.warn('EVAL_BOQ', 'Discrepancy detected: Deterministic local aspect rules prevail over cloud RAG commentary.');
+  }
+}
+
+function _evaluateRagGroundingAndViolations(evalResults, ragResult) {
+  evalResults.ragVerified = false;
+  evalResults.ragViolationDetected = null;
+
+  const isCloudGroundedWithCitations = evalResults.notebookLmStatus.isCloudGrounded &&
+    (evalResults.notebookLmStatus.citationsCount > 0);
+
+  if (isCloudGroundedWithCitations) {
+    const answerLc = (ragResult.answer || '').toLowerCase();
+    const violationSignals = [
+      'incompatible', 'not supported', 'conflict detected', 'violation', 'cannot be used',
+      'not compatible', 'requires', 'missing mandatory', 'will not work', 'mismatch'
+    ];
+    const ragFlagsViolation = violationSignals.some(sig => answerLc.includes(sig));
+    const hasLocalOverrideDiscrepancy = (evalResults.opinionDiscrepancies || [])
+      .some(d => d.type === 'LOCAL_RULE_OVERRIDE');
+
+    if (hasLocalOverrideDiscrepancy) {
+      evalResults.ragViolationDetected =
+        'NotebookLM answered "fully compatible" but local rule engine found critical physical errors. ' +
+        'Deterministic aspect checks prevail. Manual review required.';
+    } else if (ragFlagsViolation && (evalResults.errors || []).length === 0) {
+      const snippet = (ragResult.answer || '').slice(0, 300).replace(/\n/g, ' ');
+      evalResults.ragViolationDetected =
+        `NotebookLM flagged a potential violation not caught by local rules: "${snippet}..."`;
+    } else if (!ragFlagsViolation) {
+      evalResults.ragVerified = true;
+    }
+  }
+}
+
+function _extractVerifiedKnowledgeDeltas(evalResults, ragResult, chassisDir, catalogData) {
+  try {
+    const isVerifiedCloud = evalResults.notebookLmStatus.isCloudGrounded && (evalResults.notebookLmStatus.citationsCount > 0);
+    if (isVerifiedCloud) {
+      const learnedResult = extractAndPersistLearnedDeltas(ragResult.answer, chassisDir, {
+        chassis: (catalogData && catalogData.metadata && catalogData.metadata.chassis) || path.basename(chassisDir),
+        source: ragResult.source,
+        groundingVerification: ragResult.groundingVerification,
+        citations: ragResult.citations || [],
+        catalogData
+      });
+      evalResults.learnedDeltasCount = learnedResult.count;
+    } else {
+      evalResults.learnedDeltasCount = 0;
+    }
+  } catch (extractErr) {
+    const _logger = require('../lib/system/pipeline_logger.js');
+    _logger.warn('EVAL_BOQ', `Knowledge extraction skipped: ${extractErr.message}`);
+  }
+}
+
+function _formatRagAnswerText(ragResult, ragDurationFormatted, evalResults) {
+  return `### Pre-Flight Grounded Physical Validation Matrix (${ragResult.source})
+
+> ℹ️ **Knowledge Source**: \`${ragResult.source}\` ${ragResult.sourcesUsed && ragResult.sourcesUsed.length > 0 ? `(Active Cloud Sources: ${ragResult.sourcesUsed.join(', ')})` : ''}  
+> ⏱️ **Synthesis Time Taken**: \`${ragDurationFormatted}\`
+
+${ragResult.answer}
+
+#### Physical Validation Summary (Local Rules Engine)
+- **Errors Identified**: ${evalResults.errors.length} critical physical violation(s)
+- **Warnings Identified**: ${evalResults.warnings.length} physical warning(s)
+- **Quantitative Confidence Score**: ${evalResults.confidence.score} / 1.00
+
+#### Physical Validation Actions:
+${evalResults.errors.length === 0 ? '- ✅ No critical physical violations detected in input BOQ.' : evalResults.errors.map(e => `- ❌ Violation: ${e}`).join('\n')}
+${evalResults.warnings.length === 0 ? '' : evalResults.warnings.map(w => `- ⚠️ Advisory: ${w}`).join('\n')}`;
+}
+
+async function _executeAgenticGuardrailReview(items, chassisDir, inputFile, evalResults, OFFLINE_MODE, JSON_MODE, catalogData) {
+  let stage4GuardrailMs = 0;
+  const needsGuardrail = Boolean(
+    !OFFLINE_MODE && (
+      (evalResults.errors && evalResults.errors.length > 0) ||
+      (evalResults.confidence && (evalResults.confidence.isHitlTriggered || evalResults.confidence.score < 0.88)) ||
+      (evalResults.opinionDiscrepancies && evalResults.opinionDiscrepancies.length > 0)
+    )
+  );
+
+  if (!needsGuardrail) return stage4GuardrailMs;
+
+  const tGuardrailStart = Date.now();
+  if (!JSON_MODE) console.log('\n🤖 Triggering Agentic Guardrail Loop for resolution...');
+
+  const guardrailResult = await runAgenticGuardrail(items, chassisDir);
+  evalResults.agenticReviewStatus = guardrailResult.success === true && !guardrailResult.error ? 'ADVISORY_RETURNED' : 'UNAVAILABLE';
+  evalResults.agenticReview = {
+    status: evalResults.agenticReviewStatus,
+    model: guardrailResult.model || null,
+    recoveryEvents: guardrailResult.recoveryEvents || [],
+    error: guardrailResult.error || null,
+    durationMs: guardrailResult.durationMs || Date.now() - tGuardrailStart,
+    executedToolCalls: guardrailResult.executedToolCalls || []
+  };
+  if (!JSON_MODE) {
+    console.log('Agentic review response (inspect for errors; response is not a verification badge):');
+    console.log(guardrailResult.text || guardrailResult.error);
+  }
+  evalResults.agenticExplanation = guardrailResult.text || null;
+  stage4GuardrailMs = Math.max(Date.now() - tGuardrailStart, 1);
+
+  const MAX_GUARDRAIL_RETRIES = 1;
+  let guardrailRetries = 0;
+  if (guardrailResult.activatedDeltaCount > 0 && guardrailRetries < MAX_GUARDRAIL_RETRIES) {
+    guardrailRetries++;
+    evalResults.guardrailRetries = guardrailRetries;
+    if (!JSON_MODE) console.log(`\n🔄 Auto-retrying physical evaluation after autonomously learning ${guardrailResult.activatedDeltaCount} new rule(s) (attempt ${guardrailRetries}/${MAX_GUARDRAIL_RETRIES})...`);
+
+    const { evaluateBOQMultiAspect } = require('../lib/boq/boq_evaluator.js');
+    const retryResults = evaluateBOQMultiAspect(items, { filePath: inputFile || '', catalogData, targetDir: chassisDir });
+
+    evalResults.errors = retryResults.errors;
+    evalResults.warnings = retryResults.warnings;
+    evalResults.missingDependencies = retryResults.missingDependencies;
+    evalResults.confidence = retryResults.confidence;
+    evalResults.mathDeductions = retryResults.mathDeductions;
+    evalResults.conflictGraph = retryResults.conflictGraph;
+    evalResults.aspectChecks = retryResults.aspectChecks;
+
+    if (!JSON_MODE) console.log(`✅ Retry Complete. New Score: ${evalResults.confidence.score}`);
+  }
+
+  return stage4GuardrailMs;
+}
+
 // ============================================================
 // Stage 4: Grounded Gemini Notebook Validation & Agentic Loop
 // ============================================================
@@ -554,9 +743,6 @@ async function executeGroundedRagValidation(ctx) {
 
   const ragPayload = formatNotebookQueryPayload(items, evalResults, evalResults.conflictGraph ? evalResults.conflictGraph.rankedSolutions : []);
 
-  // Dashboard mode returns the deterministic result immediately. The long-running
-  // NotebookLM child must be owned by the dashboard server, otherwise this CLI
-  // process remains alive and the UI never receives the provisional result.
   if (!OFFLINE_MODE && ctx.DEFER_RAG) {
     const stage3RAGMs = Math.max(Date.now() - tRagStart, 1);
     evalResults.status = 'LOCAL_COMPLETE';
@@ -618,24 +804,7 @@ async function executeGroundedRagValidation(ctx) {
     evalResults.warnings.push(ragResult.warning);
   }
 
-  // Disagreement logging: Detect discrepancies between deterministic local aspect checks and advisory RAG commentary
-  evalResults.opinionDiscrepancies = evalResults.opinionDiscrepancies || [];
-  const localHasConflicts = (evalResults.errors || []).length > 0;
-  const ragAnswerLower = (ragResult.answer || '').toLowerCase();
-  const ragClaimsFullyCompliant = ragAnswerLower.includes('fully compatible') || ragAnswerLower.includes('no issues detected') || ragAnswerLower.includes('100% buildable');
-
-  if (localHasConflicts && ragClaimsFullyCompliant) {
-    const discrepancy = {
-      type: 'LOCAL_RULE_OVERRIDE',
-      severity: 'WARNING',
-      message: 'Local rule engine flagged physical/thermal conflicts, but cloud commentary reported full compatibility. Deterministic aspect checks prevail.',
-      localConflicts: evalResults.errors,
-      cloudAnswerSnippet: (ragResult.answer || '').slice(0, 200)
-    };
-    evalResults.opinionDiscrepancies.push(discrepancy);
-    const _logger = require('../lib/system/pipeline_logger.js');
-    _logger.warn('EVAL_BOQ', 'Discrepancy detected: Deterministic local aspect rules prevail over cloud RAG commentary.');
-  }
+  _detectOpinionDiscrepancy(evalResults, ragResult);
 
   if (evalResults.notebookLmStatus.isFallback && !evalResults.notebookLmStatus.cached) {
     const fallbackWarning = `⚠️ NotebookLM Cloud was NOT consulted — used local RAG fallback (Reason: ${ragResult.fallbackReason || 'NLM CLI timeout or unavailable'}). Verify critical dependencies manually or re-run with longer RAG_TIMEOUT_MS.`;
@@ -645,137 +814,11 @@ async function executeGroundedRagValidation(ctx) {
   evalResults.ragResult = ragResult;
   evalResults.ragAnswer = ragResult.answer || '';
 
-  // ── Phase 1.2 Fix (C3): Wire ragVerified / ragViolationDetected ──────────────
-  // These fields were read by feedback_loop.calculateConfidenceScore but NEVER
-  // written, making the +0.05 boost and -0.15 penalty completely unreachable.
-  //
-  // ragVerified = true   → cloud-grounded with citations; RAG does NOT flag any
-  //                         violation that local rules missed.
-  // ragViolationDetected → non-null string when RAG explicitly surfaces a conflict
-  //                         the local rule engine did not catch, OR when there is
-  //                         a LOCAL_RULE_OVERRIDE discrepancy.
-  evalResults.ragVerified = false;
-  evalResults.ragViolationDetected = null;
+  _evaluateRagGroundingAndViolations(evalResults, ragResult);
+  _extractVerifiedKnowledgeDeltas(evalResults, ragResult, chassisDir, catalogData);
 
-  const isCloudGroundedWithCitations = evalResults.notebookLmStatus.isCloudGrounded &&
-    (evalResults.notebookLmStatus.citationsCount > 0);
-
-  if (isCloudGroundedWithCitations) {
-    const answerLc = (ragResult.answer || '').toLowerCase();
-
-    // Detect RAG-flagged violations: look for explicit conflict language in the answer
-    const violationSignals = [
-      'incompatible', 'not supported', 'conflict detected', 'violation', 'cannot be used',
-      'not compatible', 'requires', 'missing mandatory', 'will not work', 'mismatch'
-    ];
-    const ragFlagsViolation = violationSignals.some(sig => answerLc.includes(sig));
-
-    // Detect LOCAL_RULE_OVERRIDE opinion discrepancy (local errors but RAG claims clean)
-    const hasLocalOverrideDiscrepancy = (evalResults.opinionDiscrepancies || [])
-      .some(d => d.type === 'LOCAL_RULE_OVERRIDE');
-
-    if (hasLocalOverrideDiscrepancy) {
-      // RAG contradicts local rules — this is a violation signal regardless of wording
-      evalResults.ragViolationDetected =
-        'NotebookLM answered "fully compatible" but local rule engine found critical physical errors. ' +
-        'Deterministic aspect checks prevail. Manual review required.';
-    } else if (ragFlagsViolation && (evalResults.errors || []).length === 0) {
-      // RAG caught something local rules missed — surface the RAG answer excerpt
-      const snippet = (ragResult.answer || '').slice(0, 300).replace(/\n/g, ' ');
-      evalResults.ragViolationDetected =
-        `NotebookLM flagged a potential violation not caught by local rules: "${snippet}..."`;
-    } else if (!ragFlagsViolation) {
-      // Cloud-grounded, cited, and no conflict language → verified
-      evalResults.ragVerified = true;
-    }
-  }
-  // ── End Phase 1.2 Fix ────────────────────────────────────────────────────────
-
-
-  try {
-    // Phase 0 Fix: Only extract learned deltas from verified cloud grounding with citations.
-    // Unverified local fallback, error responses, or uncited RAG MUST NEVER generate learned deltas.
-    const isVerifiedCloud = evalResults.notebookLmStatus.isCloudGrounded && (evalResults.notebookLmStatus.citationsCount > 0);
-    if (isVerifiedCloud) {
-      const learnedResult = extractAndPersistLearnedDeltas(ragResult.answer, chassisDir, {
-        chassis: (catalogData && catalogData.metadata && catalogData.metadata.chassis) || path.basename(chassisDir),
-        source: ragResult.source,
-        groundingVerification: ragResult.groundingVerification,
-        citations: ragResult.citations || [],
-        catalogData
-      });
-      evalResults.learnedDeltasCount = learnedResult.count;
-    } else {
-      evalResults.learnedDeltasCount = 0;
-    }
-  } catch (extractErr) {
-    const _logger = require('../lib/system/pipeline_logger.js');
-    _logger.warn('EVAL_BOQ', `Knowledge extraction skipped: ${extractErr.message}`);
-  }
-
-  let ragAnswer = `### Pre-Flight Grounded Physical Validation Matrix (${ragResult.source})
-
-> ℹ️ **Knowledge Source**: \`${ragResult.source}\` ${ragResult.sourcesUsed && ragResult.sourcesUsed.length > 0 ? `(Active Cloud Sources: ${ragResult.sourcesUsed.join(', ')})` : ''}  
-> ⏱️ **Synthesis Time Taken**: \`${ragDurationFormatted}\`
-
-${ragResult.answer}
-
-#### Physical Validation Summary (Local Rules Engine)
-- **Errors Identified**: ${evalResults.errors.length} critical physical violation(s)
-- **Warnings Identified**: ${evalResults.warnings.length} physical warning(s)
-- **Quantitative Confidence Score**: ${evalResults.confidence.score} / 1.00
-
-#### Physical Validation Actions:
-${evalResults.errors.length === 0 ? '- ✅ No critical physical violations detected in input BOQ.' : evalResults.errors.map(e => `- ❌ Violation: ${e}`).join('\n')}
-${evalResults.warnings.length === 0 ? '' : evalResults.warnings.map(w => `- ⚠️ Advisory: ${w}`).join('\n')}`;
-
-  let stage4GuardrailMs = 0;
-  const needsGuardrail = Boolean(
-    !OFFLINE_MODE && (
-      (evalResults.errors && evalResults.errors.length > 0) ||
-      (evalResults.confidence && (evalResults.confidence.isHitlTriggered || evalResults.confidence.score < 0.88)) ||
-      (evalResults.opinionDiscrepancies && evalResults.opinionDiscrepancies.length > 0)
-    )
-  );
-  if (needsGuardrail) {
-    const tGuardrailStart = Date.now();
-    if (!JSON_MODE) console.log('\n🤖 Triggering Agentic Guardrail Loop for resolution...');
-
-    const guardrailResult = await runAgenticGuardrail(items, chassisDir);
-    evalResults.agenticReviewStatus = guardrailResult.success === true && !guardrailResult.error ? 'ADVISORY_RETURNED' : 'UNAVAILABLE';
-    evalResults.agenticReview = { status: evalResults.agenticReviewStatus, model: guardrailResult.model || null,
-      recoveryEvents: guardrailResult.recoveryEvents || [], error: guardrailResult.error || null,
-      durationMs: guardrailResult.durationMs || Date.now() - tGuardrailStart,
-      executedToolCalls: guardrailResult.executedToolCalls || [] };
-    if (!JSON_MODE) {
-      console.log('Agentic review response (inspect for errors; response is not a verification badge):');
-      console.log(guardrailResult.text || guardrailResult.error);
-    }
-    evalResults.agenticExplanation = guardrailResult.text || null;
-    stage4GuardrailMs = Math.max(Date.now() - tGuardrailStart, 1);
-
-    // Auto-Retry with Circuit Breaker (maxRetries = 1) if rules were autonomously promoted
-    const MAX_GUARDRAIL_RETRIES = 1;
-    let guardrailRetries = 0;
-    if (guardrailResult.activatedDeltaCount > 0 && guardrailRetries < MAX_GUARDRAIL_RETRIES) {
-      guardrailRetries++;
-      evalResults.guardrailRetries = guardrailRetries;
-      if (!JSON_MODE) console.log(`\n🔄 Auto-retrying physical evaluation after autonomously learning ${guardrailResult.activatedDeltaCount} new rule(s) (attempt ${guardrailRetries}/${MAX_GUARDRAIL_RETRIES})...`);
-      
-      const { evaluateBOQMultiAspect } = require('../lib/boq/boq_evaluator.js');
-      const retryResults = evaluateBOQMultiAspect(items, { filePath: inputFile || ctx.inputFile || '', catalogData, targetDir: chassisDir });
-      
-      evalResults.errors = retryResults.errors;
-      evalResults.warnings = retryResults.warnings;
-      evalResults.missingDependencies = retryResults.missingDependencies;
-      evalResults.confidence = retryResults.confidence;
-      evalResults.mathDeductions = retryResults.mathDeductions;
-      evalResults.conflictGraph = retryResults.conflictGraph;
-      evalResults.aspectChecks = retryResults.aspectChecks;
-      
-      if (!JSON_MODE) console.log(`✅ Retry Complete. New Score: ${evalResults.confidence.score}`);
-    }
-  }
+  const ragAnswer = _formatRagAnswerText(ragResult, ragDurationFormatted, evalResults);
+  const stage4GuardrailMs = await _executeAgenticGuardrailReview(items, chassisDir, inputFile || ctx.inputFile, evalResults, OFFLINE_MODE, JSON_MODE, catalogData);
 
   return { ragResult, ragAnswer, stage3RAGMs, stage4GuardrailMs };
 }
@@ -1466,7 +1509,9 @@ async function _handleBoqReflectionPhase(ctx) {
       evidenceLedger: ctx.evidenceLedger
     });
     ctx.evalResults.reasoningAnalysis = reasoningAnalysis;
-  } catch (_) {}
+  } catch (err) {
+    logger.debug('EVAL_BOQ', `Post-evaluation reasoning analysis non-blocking note: ${err?.message || err}`);
+  }
 
   return {
     status: 'PASSED',

@@ -6,7 +6,7 @@
  * pricing consistency, and capacity constraint rules before updating local JSON workspace files.
  */
 
-const { isValidHpeSKU, cleanBaseSKU, classifyOptionType, isServiceSku } = require('../catalog/sku.js');
+const { isValidHpeSKU, cleanBaseSKU, classifyOptionType } = require('../catalog/sku.js');
 
 /**
  * Validates a complete catalog object (scraped JSON output) against predefined schema rules.
@@ -186,7 +186,7 @@ function parseUsdPrice(priceVal) {
   if (typeof priceVal === 'number') {
     return { amount: priceVal, isNaN: isNaN(priceVal) };
   }
-  const cleanStr = String(priceVal).replace(/[\$,\s]/g, '');
+  const cleanStr = String(priceVal).replace(/[$,\s]/g, '');
   if (cleanStr === '' || cleanStr.toUpperCase() === 'N/A' || cleanStr.toUpperCase() === 'NA' || cleanStr === '-') {
     return { amount: 0, isNaN: false };
   }

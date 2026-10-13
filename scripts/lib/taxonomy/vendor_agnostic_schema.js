@@ -27,8 +27,8 @@ const VENDOR_SKU_PATTERNS = [
   { vendor: 'HPE', regex: /^H[A-Z0-9]{6}$/i }, // Pointnext
   { vendor: 'HPE', regex: /^HU4B[A-Z0-9]+$/i },
   { vendor: 'HPE', regex: /^[A-Z][0-9][A-Z0-9]{3}[A-Z]$/i }, // HPE 6-char hardware SKUs (S3U30C, S2L70C, R2E09A, R0Q21A, Q6Q67A)
-  { vendor: 'Cisco', regex: /^UCS-[A-Z0-9\-]+$/i },
-  { vendor: 'Cisco', regex: /^N9K-[A-Z0-9\-]+$/i },
+  { vendor: 'Cisco', regex: /^UCS-[A-Z0-9-]+$/i },
+  { vendor: 'Cisco', regex: /^N9K-[A-Z0-9-]+$/i },
   { vendor: 'Dell', regex: /^\d{3}-[A-Z0-9]{4}$/i }, // 338-CCUR, 400-BDBY
   { vendor: 'Lenovo', regex: /^[0-9]{4}[A-Z0-9]{3}$/i }
 ];

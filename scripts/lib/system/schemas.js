@@ -20,7 +20,7 @@ const HpeSkuRegex = /^[A-Z0-9]{6,7}-B21$/i;
 const SkuString = z.string().trim().min(1, 'SKU cannot be empty');
 const CoercedNumber = z.union([z.number(), z.string()]).transform((val, ctx) => {
   if (typeof val === 'number') return isNaN(val) ? 0 : val;
-  const clean = String(val).replace(/[\$,\s]/g, '').trim().toUpperCase();
+  const clean = String(val).replace(/[$,\s]/g, '').trim().toUpperCase();
   if (!clean || clean === 'N/A' || clean === 'NA' || clean === '-' || clean === 'NONE' || clean === 'NULL') {
     return 0;
   }

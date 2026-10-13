@@ -5,8 +5,6 @@
  */
 
 const http = require('http');
-const fs = require('fs');
-const path = require('path');
 
 const command = process.argv[2];
 const args = process.argv.slice(3);

@@ -16,7 +16,7 @@ const SCRIPTING_PATTERNS = [
   /require\s*\(['"][^'"]+['"]\)/g,
   /import\s+.*?\s+from\s+['"][^'"]+['"]/g,
   /function\s*\w*\s*\(/g,
-  /\=>\s*\{/g,
+  /=>\s*\{/g,
   /console\.(log|error|warn)\s*\(/g,
   /process\.(env|exit|argv|stdout)/g,
   /execSync\s*\(/g,
@@ -138,7 +138,7 @@ function sanitizeNotebookQuery(rawQuery, context = {}) {
     clean = `For ${meta.family} ${meta.gen} ${chassisName} ${scope}: ${clean}`;
   }
 
-  clean = clean.replace(/[\[\]|`"$\\]/g, ' ').replace(/\s+/g, ' ').trim();
+  clean = clean.replace(/[[\]|`"$\\]/g, ' ').replace(/\s+/g, ' ').trim();
 
   return clean;
 }

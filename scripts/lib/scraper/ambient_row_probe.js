@@ -94,6 +94,7 @@ async function probeAmbientRows(ws, sendCommand, thresholds, captureState = null
   const results = [];
   const defaultAvailable = new Set(ambientState.options.filter(row => !row.unavailable).map(row => row.sku));
 
+  let probeErr = null;
   try {
     for (const temperature of thresholds) {
       const row = ambientState.ambient.find(item => item.temperature === temperature);
@@ -110,18 +111,29 @@ async function probeAmbientRows(ws, sendCommand, thresholds, captureState = null
           portalVerificationRequired: true });
       }
     }
-  } finally {
-    try {
-      const restored = await selectAmbientRow(ws, sendCommand, original, options);
-      if (!restored) throw new Error('Original ambient row is unavailable');
-      if (restored && captureState) {
-        await captureState({ conditionKey: 'ambientTempC', thresholdValue: original.temperature,
-          selectorKind: 'OCA_TRACKING_SKU_ROW', selectedSku: original.sku, restored: true, state: restored });
-      }
-    } catch (restoreErr) {
-      throw new Error(`AMBIENT_RESTORE_FAILED: ${restoreErr.message}`);
-    }
+  } catch (err) {
+    probeErr = err;
   }
+
+  // Restore baseline row
+  try {
+    const restored = await selectAmbientRow(ws, sendCommand, original, options);
+    if (!restored) {
+      const err = new Error('Original ambient row is unavailable');
+      if (probeErr) err.cause = probeErr;
+      throw err;
+    }
+    if (restored && captureState) {
+      await captureState({ conditionKey: 'ambientTempC', thresholdValue: original.temperature,
+        selectorKind: 'OCA_TRACKING_SKU_ROW', selectedSku: original.sku, restored: true, state: restored });
+    }
+  } catch (restoreErr) {
+    const failure = new Error(`AMBIENT_RESTORE_FAILED: ${restoreErr.message}`);
+    if (probeErr) failure.cause = probeErr;
+    throw failure;
+  }
+
+  if (probeErr) throw probeErr;
   return results;
 }
 

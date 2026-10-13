@@ -15,7 +15,7 @@
 const fs = require('fs');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '..', '..', '.env') });
-const { listSessions, getSessionDetails, sendMessageToSession, getJulesClient } = require('./jules_task_manager.js');
+const { listSessions, getJulesClient } = require('./jules_task_manager.js');
 
 const POLL_INTERVAL_MS = parseInt(process.env.JULES_POLL_INTERVAL_MS || '15000', 10);
 const ACTIVITY_LOG_PATH = path.join(__dirname, '..', '..', 'outputs', 'history', 'jules_activity_log.json');

@@ -1,5 +1,4 @@
 'use strict';
-const fs = require('fs');
 const path = require('path');
 const { evaluateBOQMultiAspect } = require('../lib/boq/boq_evaluator.js');
 const { loadTelemetry } = require('../lib/system/telemetry.js');

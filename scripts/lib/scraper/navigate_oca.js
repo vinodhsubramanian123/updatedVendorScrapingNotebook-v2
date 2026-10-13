@@ -9,11 +9,10 @@
 
 const http = require('http');
 const path = require('path');
-const dotenv = require('dotenv');
-const { sendCommand, connectWS, getOCATarget, waitForDOMPredicate, sleep } = require('./cdp.js');
+const { sendCommand, connectWS, waitForDOMPredicate, sleep } = require('./cdp.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
-dotenv.config({ path: path.join(PROJECT_ROOT, '.env') });
+require('dotenv').config({ path: path.join(PROJECT_ROOT, '.env') });
 
 const CDP_PORT = 9222;
 
@@ -127,7 +126,7 @@ async function checkActiveMenuTab(ocaTarget, query, options) {
       const exceptionBox = Array.from(document.querySelectorAll('.ui-dialog, .modal, [role="dialog"], .dqe-error, .modal-error, [class*="error-dialog"], [class*="exception-dialog"]'))
         .find(el => visible(el) && /an unexpected error|encountered a problem|exception occurred|internal server error|weblogic bridge message/i.test(el.innerText || ''));
       const hasException = Boolean(exceptionBox);
-      const exceptionDetail = exceptionBox ? (exceptionBox.innerText || '').slice(0, 300).replace(/\s+/g, ' ') : '';
+      const exceptionDetail = exceptionBox ? (exceptionBox.innerText || '').slice(0, 300).replace(/s+/g, ' ') : '';
       const hasMenu = Boolean(
         document.querySelector('#extended_overview_menu, .menu_label, .eo_nav_div, a[href*="extended_overview_menu"]') ||
         document.querySelectorAll('table').length > 20 ||
@@ -419,23 +418,9 @@ async function discoverChassisCandidates(ws, query) {
   return { candidates, eligibleCandidates };
 }
 
-async function searchAndConfigureChassis(ws, query, ocaTarget, options = {}) {
-  await sendCommand(ws, 'Page.bringToFront');
-  console.log(`🔍 At OCA Product Search page. Entering chassis query: "${query}"...`);
-  const navExpr = buildDiscoveryExpression(query);
-
-  const discoveryRes = await sendCommand(ws, 'Runtime.evaluate', {
-    expression: navExpr,
-    awaitPromise: true,
-    returnByValue: true
-  }, 120000);
-
-  const discovery = discoveryRes?.result?.value || {};
-  const candidates = Array.isArray(discovery.candidates) ? discovery.candidates : [];
-  const eligibleCandidates = candidates.filter(candidate => isExactProductCandidate(query, candidate));
-  
-  // Sort eligible candidates: prefer standard CTO over Smart CTO, standard worldwide -B21 CTO SKUs, ProLiant text, and SFF over LFF
-  eligibleCandidates.sort((a, b) => {
+function _sortAndFilterEligibleCandidates(candidates, query) {
+  const eligible = candidates.filter(candidate => isExactProductCandidate(query, candidate));
+  eligible.sort((a, b) => {
     const aSmart = /smart\s+cto/i.test(a.text || '') ? 1 : 0;
     const bSmart = /smart\s+cto/i.test(b.text || '') ? 1 : 0;
     if (aSmart !== bSmart) return aSmart - bSmart; // 0 (standard CTO) before 1 (Smart CTO)
@@ -454,9 +439,10 @@ async function searchAndConfigureChassis(ws, query, ocaTarget, options = {}) {
 
     return 0;
   });
+  return eligible;
+}
 
-  console.log(`Found ${candidates.length} search candidate(s) (${eligibleCandidates.length} matching CTO base(s), including specialized variants).`);
-
+function _resolveSelectedCandidate(eligibleCandidates, candidates, query, options) {
   let selected = null;
   if (options.targetSku) {
     selected = eligibleCandidates.find(c => String(c.sku || '').toUpperCase() === String(options.targetSku).toUpperCase());
@@ -471,7 +457,6 @@ async function searchAndConfigureChassis(ws, query, ocaTarget, options = {}) {
   }
 
   if (!selected) {
-    ws.close();
     const error = new Error(
       `No exact standard CTO base model found for query "${query}".\n` +
       `Discovered candidates (${candidates.length}):\n` +
@@ -480,27 +465,10 @@ async function searchAndConfigureChassis(ws, query, ocaTarget, options = {}) {
     error.code = 'OCA_PRODUCT_NOT_FOUND';
     throw error;
   }
+  return selected;
+}
 
-  console.log(`🎯 Selected ${/\boem\b/i.test(selected.text || '') ? 'OEM' : 'commercial'} CTO base: ${selected.sku} - "${selected.text}" (Price: ${selected.listPriceUsd > 0 ? '$' + selected.listPriceUsd : 'UNVERIFIED'})`);
-
-  const selectAndClickExpr = buildSelectAndClickExpression(selected);
-
-  const selectionResult = await sendCommand(ws, 'Runtime.evaluate', {
-    expression: selectAndClickExpr,
-    awaitPromise: true,
-    returnByValue: true
-  });
-  if (!selectionResult.result?.value?.success) {
-    ws.close();
-    const error = new Error(`Exact product selection failed: ${selectionResult.result?.value?.reason || 'unknown'}`);
-    error.code = 'OCA_SELECTION_FAILED';
-    throw error;
-  }
-
-  ws.close();
-  console.log(`⏳ Waiting for WebLogic configuration workspace to load...`);
-
-  // Dynamically poll for active OCA target to reach readiness
+async function _pollForActiveOcaReadiness() {
   const wsWaitStart = Date.now();
   while (Date.now() - wsWaitStart < 15000) {
     await sleep(1000);
@@ -519,92 +487,145 @@ async function searchAndConfigureChassis(ws, query, ocaTarget, options = {}) {
       } catch (_) {}
     }
   }
+}
 
-  // Handle intermediate "Customize" or "Configure" gateway page if present
+async function _handleIntermediateGatewayPage(selectedSku) {
   const intermediatePages = await getPageTargets();
   const intermediate = intermediatePages.find(t => t.url && t.url.includes('oca.ext.hpe.com'));
-  if (intermediate) {
-    const intermediateWs = await connectWS(intermediate.webSocketDebuggerUrl);
-    const clickRes = await sendCommand(intermediateWs, 'Runtime.evaluate', {
-      expression: String.raw`(() => {
-        const body = (document.body?.innerText || '').toLowerCase();
-        const expectedSku = ${JSON.stringify(selected.sku.toLowerCase())};
-        if (expectedSku && !body.includes(expectedSku)) return false;
-        const button = Array.from(document.querySelectorAll('button, a, input[type="button"], input[type="submit"]'))
-          .find(el => !el.matches('.dqe-customize-btn') && !el.closest('.cto-card') && el.getClientRects().length && /^(customize|configure)$/i.test((el.innerText || el.value || '').trim()));
-        if (!button) return false;
-        button.click();
-        return true;
-      })()`,
+  if (!intermediate) return;
+
+  const intermediateWs = await connectWS(intermediate.webSocketDebuggerUrl);
+  const clickRes = await sendCommand(intermediateWs, 'Runtime.evaluate', {
+    expression: String.raw`(() => {
+      const body = (document.body?.innerText || '').toLowerCase();
+      const expectedSku = ${JSON.stringify((selectedSku || '').toLowerCase())};
+      if (expectedSku && !body.includes(expectedSku)) return false;
+      const button = Array.from(document.querySelectorAll('button, a, input[type="button"], input[type="submit"]'))
+        .find(el => !el.matches('.dqe-customize-btn') && !el.closest('.cto-card') && el.getClientRects().length && /^(customize|configure)$/i.test((el.innerText || el.value || '').trim()));
+      if (!button) return false;
+      button.click();
+      return true;
+    })()`,
+    returnByValue: true
+  });
+  if (clickRes?.result?.value) {
+    console.log(`⏳ Clicked intermediate configuration button. Waiting for menu to load...`);
+    await waitForDOMPredicate(intermediateWs, `Boolean(
+      document.querySelector('#extended_overview_menu, .menu_label, .eo_nav_div, table.eo_category_table') ||
+      document.querySelectorAll('table').length > 20
+    )`, 12000, 500);
+  }
+  intermediateWs.close();
+}
+
+async function _verifyConfigWorkspaceReady(activeOca) {
+  let deliveryEstimate = '';
+  if (!activeOca) return { deliveryEstimate };
+
+  const summaryWs = await connectWS(activeOca.webSocketDebuggerUrl);
+  const deliveryResult = await sendCommand(summaryWs, 'Runtime.evaluate', {
+    expression: String.raw`(() => {
+      const text = (document.body?.innerText || '').replace(/\s+/g, ' ');
+      return text.match(/(?:EDT|estimated delivery|lead time)\s*[:\-]?\s*\d+\s*(?:-|to)\s*\d+\s*days?/i)?.[0] || '';
+    })()`,
+    returnByValue: true
+  });
+  deliveryEstimate = deliveryResult?.result?.value || '';
+  const ready = await waitForDOMPredicate(summaryWs, `(() => {
+    const visible = el => {
+      if (!el) return false;
+      const s = window.getComputedStyle(el);
+      return el.offsetWidth > 0 && el.offsetHeight > 0 && s.display !== 'none' && s.visibility !== 'hidden';
+    };
+    const isLoading = Array.from(document.querySelectorAll('.loading_div, .maui-loading-div, .toolbar_loading, [class*="loading-div"]')).some(visible);
+    if (isLoading) return false;
+
+    // Check for big modal exception dialogs
+    const exceptionBox = Array.from(document.querySelectorAll('.ui-dialog, .modal, [role="dialog"], div[class*="exception"], div[class*="error-dialog"]'))
+      .find(el => visible(el) && /an unexpected error|encountered a problem|exception occurred|internal server error|weblogic bridge message/i.test(el.innerText || ''));
+    if (exceptionBox) {
+      window.__lastOcaException = (exceptionBox.innerText || '').slice(0, 500).replace(/\\s+/g, ' ');
+    }
+
+    const hasMenuOrComp = Array.from(document.querySelectorAll('a, button, div, span')).some(e => {
+      const txt = (e.innerText || '').trim();
+      return txt === 'Menu' || txt === 'Components' || txt === 'Summary' || txt === 'BOM' || txt === 'Services';
+    });
+    const hasTables = document.querySelectorAll('table').length >= 10;
+    const hasLegacyMenu = Boolean(document.querySelector('#extended_overview_menu, .menu_label, .eo_nav_div, table.eo_category_table, a[href*="extended_overview_menu"]'));
+
+    return (hasMenuOrComp && hasTables) || hasLegacyMenu || (hasTables && (document.body?.innerText || '').includes('Config Status'));
+  })()`, 60000, 1000);
+
+  let capturedException = null;
+  try {
+    const excRes = await sendCommand(summaryWs, 'Runtime.evaluate', {
+      expression: 'window.__lastOcaException || ""',
       returnByValue: true
     });
-    if (clickRes?.result?.value) {
-      console.log(`⏳ Clicked intermediate configuration button. Waiting for menu to load...`);
-      await waitForDOMPredicate(intermediateWs, `Boolean(
-        document.querySelector('#extended_overview_menu, .menu_label, .eo_nav_div, table.eo_category_table') ||
-        document.querySelectorAll('table').length > 20
-      )`, 12000, 500);
+    capturedException = excRes?.result?.value || null;
+  } catch (_) {}
+
+  summaryWs.close();
+  if (!ready) {
+    if (capturedException) {
+      throw new Error(`OCA_CONFIG_EXCEPTION: OCA displayed a configuration exception dialog: "${capturedException}"`);
     }
-    intermediateWs.close();
+    throw new Error('OCA_CONFIG_NOT_READY: Product was selected but configuration workspace did not finish loading within timeout; verify server load or recover through Partner Portal.');
   }
 
-  // Re-verify target page
+  return { deliveryEstimate };
+}
+
+async function searchAndConfigureChassis(ws, query, ocaTarget, options = {}) {
+  await sendCommand(ws, 'Page.bringToFront');
+  console.log(`🔍 At OCA Product Search page. Entering chassis query: "${query}"...`);
+  const navExpr = buildDiscoveryExpression(query);
+
+  const discoveryRes = await sendCommand(ws, 'Runtime.evaluate', {
+    expression: navExpr,
+    awaitPromise: true,
+    returnByValue: true
+  }, 120000);
+
+  const discovery = discoveryRes?.result?.value || {};
+  const candidates = Array.isArray(discovery.candidates) ? discovery.candidates : [];
+  const eligibleCandidates = _sortAndFilterEligibleCandidates(candidates, query);
+
+  console.log(`Found ${candidates.length} search candidate(s) (${eligibleCandidates.length} matching CTO base(s), including specialized variants).`);
+
+  let selected;
+  try {
+    selected = _resolveSelectedCandidate(eligibleCandidates, candidates, query, options);
+  } catch (err) {
+    ws.close();
+    throw err;
+  }
+
+  console.log(`🎯 Selected ${/\boem\b/i.test(selected.text || '') ? 'OEM' : 'commercial'} CTO base: ${selected.sku} - "${selected.text}" (Price: ${selected.listPriceUsd > 0 ? '$' + selected.listPriceUsd : 'UNVERIFIED'})`);
+
+  const selectAndClickExpr = buildSelectAndClickExpression(selected);
+  const selectionResult = await sendCommand(ws, 'Runtime.evaluate', {
+    expression: selectAndClickExpr,
+    awaitPromise: true,
+    returnByValue: true
+  });
+  if (!selectionResult.result?.value?.success) {
+    ws.close();
+    const error = new Error(`Exact product selection failed: ${selectionResult.result?.value?.reason || 'unknown'}`);
+    error.code = 'OCA_SELECTION_FAILED';
+    throw error;
+  }
+
+  ws.close();
+  console.log(`⏳ Waiting for WebLogic configuration workspace to load...`);
+
+  await _pollForActiveOcaReadiness();
+  await _handleIntermediateGatewayPage(selected.sku);
+
   const updatedPages = await getPageTargets();
   const activeOca = updatedPages.find(t => t.url && t.url.includes('oca.ext.hpe.com'));
-  let deliveryEstimate = '';
-  if (activeOca) {
-    const summaryWs = await connectWS(activeOca.webSocketDebuggerUrl);
-    const deliveryResult = await sendCommand(summaryWs, 'Runtime.evaluate', {
-      expression: String.raw`(() => {
-        const text = (document.body?.innerText || '').replace(/\s+/g, ' ');
-        return text.match(/(?:EDT|estimated delivery|lead time)\s*[:\-]?\s*\d+\s*(?:-|to)\s*\d+\s*days?/i)?.[0] || '';
-      })()`,
-      returnByValue: true
-    });
-    deliveryEstimate = deliveryResult?.result?.value || '';
-    const ready = await waitForDOMPredicate(summaryWs, `(() => {
-      const visible = el => {
-        if (!el) return false;
-        const s = window.getComputedStyle(el);
-        return el.offsetWidth > 0 && el.offsetHeight > 0 && s.display !== 'none' && s.visibility !== 'hidden';
-      };
-      const isLoading = Array.from(document.querySelectorAll('.loading_div, .maui-loading-div, .toolbar_loading, [class*="loading-div"]')).some(visible);
-      if (isLoading) return false;
-
-      // Check for big modal exception dialogs
-      const exceptionBox = Array.from(document.querySelectorAll('.ui-dialog, .modal, [role="dialog"], div[class*="exception"], div[class*="error-dialog"]'))
-        .find(el => visible(el) && /an unexpected error|encountered a problem|exception occurred|internal server error|weblogic bridge message/i.test(el.innerText || ''));
-      if (exceptionBox) {
-        window.__lastOcaException = (exceptionBox.innerText || '').slice(0, 500).replace(/\\s+/g, ' ');
-      }
-
-      const hasMenuOrComp = Array.from(document.querySelectorAll('a, button, div, span')).some(e => {
-        const txt = (e.innerText || '').trim();
-        return txt === 'Menu' || txt === 'Components' || txt === 'Summary' || txt === 'BOM' || txt === 'Services';
-      });
-      const hasTables = document.querySelectorAll('table').length >= 10;
-      const hasLegacyMenu = Boolean(document.querySelector('#extended_overview_menu, .menu_label, .eo_nav_div, table.eo_category_table, a[href*="extended_overview_menu"]'));
-
-      return (hasMenuOrComp && hasTables) || hasLegacyMenu || (hasTables && (document.body?.innerText || '').includes('Config Status'));
-    })()`, 60000, 1000);
-
-    let capturedException = null;
-    try {
-      const excRes = await sendCommand(summaryWs, 'Runtime.evaluate', {
-        expression: 'window.__lastOcaException || ""',
-        returnByValue: true
-      });
-      capturedException = excRes?.result?.value || null;
-    } catch (_) {}
-
-    summaryWs.close();
-    if (!ready) {
-      if (capturedException) {
-        throw new Error(`OCA_CONFIG_EXCEPTION: OCA displayed a configuration exception dialog: "${capturedException}"`);
-      }
-      throw new Error('OCA_CONFIG_NOT_READY: Product was selected but configuration workspace did not finish loading within timeout; verify server load or recover through Partner Portal.');
-    }
-  }
+  const { deliveryEstimate } = await _verifyConfigWorkspaceReady(activeOca);
 
   eligibleCandidates.forEach(cand => {
     if (!cand.leadTime) cand.leadTime = deliveryEstimate;

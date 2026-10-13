@@ -67,7 +67,6 @@ function getMandatorySkusForChassis(chassisInfo) {
   const family = (chassisInfo?.family || '').toLowerCase();
   const model = (chassisInfo?.model || '').toLowerCase();
   const gen = (chassisInfo?.gen || '').toLowerCase();
-  const isGen12 = gen.includes('12') || model.includes('gen12');
 
   const normalizeStr = s => (s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
   const familyNorm = normalizeStr(family);
@@ -263,7 +262,6 @@ function loadCatalogRules(targetDir) {
   const rulesJsonPath = path.join(resolvedDir, `${prefix}_Catalog_Rules.json`);
   const rulesBakPath = path.join(resolvedDir, `${prefix}_Catalog_Rules.json.bak`);
   const catalogJsonPath = path.join(resolvedDir, `${prefix}_Catalog.json`);
-  const fixtureRulesPath = path.join(__dirname, '..', '..', 'tests', 'fixtures', 'sample_Catalog_Rules.json');
 
   let rawData = null;
   let sourceFile = '';
