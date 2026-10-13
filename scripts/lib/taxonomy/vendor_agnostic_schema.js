@@ -30,8 +30,9 @@ const VENDOR_SKU_PATTERNS = [
   { vendor: 'Cisco', regex: /^UCS-[A-Z0-9-]+$/i },
   { vendor: 'Cisco', regex: /^N9K-[A-Z0-9-]+$/i },
   { vendor: 'Dell', regex: /^\d{3}-[A-Z0-9]{4}$/i }, // 338-CCUR, 400-BDBY
-  { vendor: 'Dell', regex: /^[A-Z0-9]{7}$/i, validator: s => /[A-Z]/.test(s) && /\d/.test(s) }, // Dell 7-char Option-ID (GEYJA1G, GNS29DW)
-  { vendor: 'Lenovo', regex: /^[0-9]{4}[A-Z0-9]{3}$/i }
+  { vendor: 'Lenovo', regex: /^[0-9]{4}[A-Z0-9]{3}$/i }, // Lenovo 7-char (4 digits + 3 alphanumeric) e.g. 1234ABC
+  { vendor: 'Lenovo', regex: /^7[A-Z0-9]{3}[A-Z0-9]{3}$/i }, // Lenovo ThinkSystem machine type e.g. 7D14A00, 7X02CTO
+  { vendor: 'Dell', regex: /^G[A-Z0-9]{6}$/i, validator: s => /[A-Z]/.test(s) && /\d/.test(s) } // Dell 7-char Option-ID (GEYJA1G, GNS29DW)
 ];
 
 const DOMAIN_SIGNATURES = [
@@ -70,8 +71,8 @@ function detectVendor(text = '', partNumber = '', metadata = {}) {
   // 3. Part number regex signatures
   const cleanPn = cleanBaseSKU(partNumber);
   if (cleanPn) {
-    for (const { vendor, regex } of VENDOR_SKU_PATTERNS) {
-      if (regex.test(cleanPn)) {
+    for (const { vendor, regex, validator } of VENDOR_SKU_PATTERNS) {
+      if (regex.test(cleanPn) && (!validator || validator(cleanPn))) {
         return vendor;
       }
     }

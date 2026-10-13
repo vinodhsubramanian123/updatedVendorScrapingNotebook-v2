@@ -882,3 +882,14 @@ To ensure that future AI agents (Antigravity, Codex, Claude, or subagents) never
   - Emitting repetitive "Standing by / Awaiting completion" text during asynchronous tasks is an anti-pattern that spams user transcripts.
   - Background tasks wake up reactively on completion; agents yield the turn immediately upon launching background commands without polling.
 
+- **INV-171: Bidirectional Cross-Vendor Option-ID Bridge & Scoped Ownership Invariant**:
+  - Dell BOM reconciliation maps customer Option-IDs to vendor quote SKUs and vice-versa bidirectionally (`sku` + `optionId` matching).
+  - Preserves distinct items even when sharing Dell generic placeholder SKUs (`800-BBQV`) by indexing `${sku}#${optionId}`.
+  - Ownership scoping: Configuration IDs and parent boundaries isolate matching, preventing component stealing across separate clusters.
+  - Fail-closed validation: Quantities must be safe positive integers; booleans, arrays, or null fail closed. Empty customer/vendor inputs strictly reject 100% verdict.
+
+- **INV-172: Multi-Vendor Precedence & Context-Gated SKU Validation Invariant**:
+  - Specific 7-character signatures (e.g. Lenovo 4-digit prefix `1234ABC` and ThinkSystem machine types `7D14A00`) must take precedence over generic 7-character fallback heuristics.
+  - Non-orderable tokens and model names (e.g. HPE `SN1610Q`, DOM selectors `cntr123`) must not bypass HPE exclusions via loose vendor fallbacks; Dell Option-IDs require Dell context or explicit Option-ID headers.
+  - PID headers (`PID`, `Product ID`) must be mapped to SKU and trigger Cisco vendor detection.
+

@@ -1857,3 +1857,16 @@ Read `docs/audits/2026-10-03-master-architectural-hardening.md` and `docs/audits
    - Emitting repetitive "Standing by / Awaiting completion" text during asynchronous tasks is an anti-pattern that clutters chat transcripts.
    - Background tasks wake up reactively on completion; agents yield the turn immediately upon launching background commands without manual polling.
 
+5. **Bidirectional Option-ID Bridge & Scoped Ownership Parity (`INV-171`)**:
+   - Solves Dell placeholder SKU aggregation collapse where distinct Option-IDs (e.g. `GIY80C2`, `GSQ3CGA`, `GY4C8IL`) share generic zero-cost SKU `800-BBQV`.
+   - `boq_parser.js` keys items by `${sku}#${optionId}` to preserve unique options in consolidated item maps.
+   - Bidirectional Option-ID bridge matches customer SKU+OptionId to vendor quote OptionId as SKU or vice-versa.
+   - Configuration ownership (`configurationId`, `parentId`) isolates matching boundaries, preventing components from cross-matching across clusters.
+   - Fail-closed quantity validation rejects booleans, arrays, negatives, and non-safe integers. Empty inputs strictly reject 100% verdict.
+
+6. **Multi-Vendor Precedence & Context-Gated SKU Validation (`INV-172`)**:
+   - Specific Lenovo 4-digit prefix (`1234ABC`) and ThinkSystem machine types (`7D14A00`) take precedence over generic 7-character fallback heuristics.
+   - Non-orderable tokens and model names (e.g. HPE `SN1610Q`, DOM selectors `cntr123`) must not bypass HPE exclusions via loose vendor fallbacks; Dell Option-IDs require Dell context or explicit Option-ID headers.
+   - PID headers (`PID`, `Product ID`) map to SKU and trigger Cisco vendor detection.
+
+

@@ -174,14 +174,14 @@ function isMetadataOrDisclaimerLine(lowerLine) {
  */
 function detectHeaderColumnMap(line, delimiter) {
   const headerCandidates = splitStructuredRow(line, delimiter).map(c => c.toLowerCase());
-  const hasSkuHeader = headerCandidates.some(c => c.includes('product') || c.includes('part') || c.includes('sku') || c.includes('item #') || c.includes('pos') || c.includes('option id'));
+  const hasSkuHeader = headerCandidates.some(c => c.includes('product') || c.includes('part') || c.includes('sku') || c.includes('item #') || c.includes('pos') || c.includes('option id') || c === 'pid' || c.includes('pid'));
   const hasDescOrQtyHeader = headerCandidates.some(c => c.includes('description') || c.includes('qty') || c.includes('quantity') || c.includes('price') || c.includes('units') || c.includes('option name'));
 
   if (!hasSkuHeader || !hasDescOrQtyHeader) return null;
 
   const map = { sku: -1, desc: -1, qty: -1, price: -1, optionId: -1 };
   headerCandidates.forEach((col, idx) => {
-    if (col.includes('product number') || col.includes('part number') || col.includes('product #') || col.includes('part #') || col.includes('sku') || col === 'pn' || col === 'p/n' || col === 'material') {
+    if (col.includes('product number') || col.includes('part number') || col.includes('product #') || col.includes('part #') || col.includes('sku') || col === 'pn' || col === 'p/n' || col === 'material' || col === 'pid' || col.includes('pid') || col.includes('product id')) {
       map.sku = idx;
     } else if (map.sku === -1 && (col === 'product' || col === 'part')) {
       map.sku = idx;
@@ -191,7 +191,7 @@ function detectHeaderColumnMap(line, delimiter) {
       map.vendor = 'Dell';
       if (map.sku === -1) map.sku = idx;
     }
-    if (col.includes('cisco') || col.includes('smartnet') || col === 'pid' || col === 'product id') {
+    if (col.includes('cisco') || col.includes('smartnet') || col === 'pid' || col.includes('pid') || col === 'product id') {
       map.vendor = 'Cisco';
     }
     if (col.includes('description') || col.includes('product name') || col.includes('item description') || col === 'bezeichnung' || col === 'text' || col.includes('option name')) {
@@ -226,22 +226,22 @@ function isValidCandidateSku(rawStr, activeColumnMap = null) {
   // 1. Authoritative HPE SKU validation
   if (isValidHpeSKU(clean)) return true;
 
-  // 2. Dell Option-ID or Dell SKU validation (active when Option ID column is detected or in Dell context)
-  const isDellContext = activeColumnMap && (
+  // 2. Dell Option-ID or Dell SKU validation
+  const isDellContext = Boolean(activeColumnMap && (
     (activeColumnMap.optionId !== undefined && activeColumnMap.optionId !== -1) ||
     activeColumnMap.vendor === 'Dell'
-  );
-  if (isDellContext || /^\d{3}-[A-Z0-9]{4}$/i.test(clean) || /^[A-Z0-9]{7}$/i.test(clean)) {
-    if (/^\d{3}-[A-Z0-9]{4}$/i.test(clean)) return true; // Dell SKU e.g. 210-BDBX, 400-BGGP
-    if (/^[A-Z0-9]{7}$/i.test(clean) && /[A-Z]/.test(clean) && /\d/.test(clean)) return true; // Dell Option-ID e.g. GEYJA1G
+  ));
+  if (/^\d{3}-[A-Z0-9]{4}$/i.test(clean)) return true; // Dell SKU e.g. 210-BDBX, 400-BGGP (unambiguous format)
+  if (isDellContext && /^[A-Z0-9]{7}$/i.test(clean) && /[A-Z]/.test(clean) && /\d/.test(clean)) {
+    return true; // Dell Option-ID e.g. GEYJA1G (requires Dell context so HPE non-orderable tokens e.g. SN1610Q/cntr123 are preserved as unresolved)
   }
 
   // 3. Cisco PID validation
-  const isCiscoContext = activeColumnMap && (
+  const isCiscoContext = Boolean(activeColumnMap && (
     activeColumnMap.vendor === 'Cisco' ||
     /^UCS/i.test(clean) ||
     /^N9K/i.test(clean)
-  );
+  ));
   if (isCiscoContext && /^(?:UCS|N9K|C9\d{3}|UCSC|CON-)[A-Z0-9-]+$/i.test(clean)) return true;
 
   return false;
@@ -546,7 +546,7 @@ function parseSkuLines(lines) {
       if (isGlobalItem(item, currentMultiplier)) item.quantityScope = 'global';
       const totalQty = item.quantity * (item.quantityScope === 'global' ? 1 : currentMultiplier);
       const configurationId = item.configurationId || (currentCluster ? `configuration-${currentCluster.configIndex}` : undefined);
-      const itemKey = `${configurationId || ''}:${item.parentId || ''}:${item.subParentId || ''}:${item.quantityScope || ''}:${item.sku}`;
+      const itemKey = `${configurationId || ''}:${item.parentId || ''}:${item.subParentId || ''}:${item.quantityScope || ''}:${item.optionId ? `${item.sku}#${item.optionId}` : item.sku}`;
       if (currentCluster) {
         currentCluster.items.push({ ...item });
       }

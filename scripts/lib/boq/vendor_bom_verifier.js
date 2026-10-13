@@ -399,7 +399,17 @@ function verifyVendorBOM(vendorBomInput, proposedRankSolution, chassisDir, optio
 }
 
 /**
- * Reconcile cross-vendor customer BOQ against partner quotation using Option-ID bridge
+ * Parse and validate quantity strictly. Rejects booleans, arrays, negatives, and non-safe integers.
+ */
+function parseSafeQuantity(raw) {
+  if (typeof raw === 'boolean' || Array.isArray(raw) || raw === null || raw === undefined) return null;
+  const num = Number(raw);
+  if (!Number.isFinite(num) || !Number.isSafeInteger(num) || num <= 0) return null;
+  return num;
+}
+
+/**
+ * Reconcile cross-vendor customer BOQ against partner quotation using bidirectional Option-ID bridge
  * @param {Array<object>} customerItems
  * @param {Array<object>} vendorItems
  * @param {object} [options={}]
@@ -408,68 +418,126 @@ function verifyVendorBOM(vendorBomInput, proposedRankSolution, chassisDir, optio
 function reconcileCrossVendorBOMs(customerItems, vendorItems, options = {}) {
   const matches = [];
   const missingInVendor = [];
-  const vendorExtras = [...vendorItems];
+  const vendorExtras = [...(vendorItems || [])];
+  const unresolvedRequirements = options.unresolvedRequirements || [];
 
-  for (const c of customerItems) {
+  const validCustomerItems = (customerItems || []).filter(c => Boolean(c.partNumber || c.sku || c.optionId));
+  const totalCustomer = validCustomerItems.length;
+  const totalVendor = (vendorItems || []).length;
+
+  for (const c of validCustomerItems) {
     const rawCpn = String(c.partNumber || c.sku || c.optionId || '').trim();
-    if (!rawCpn) continue;
+    const cIdentifiers = [c.partNumber, c.sku, c.optionId]
+      .filter(Boolean)
+      .map(s => String(s).trim().toUpperCase());
+    if (cIdentifiers.length === 0) continue;
 
-    // Match by direct SKU or Option-ID bridge
-    const vIdx = vendorExtras.findIndex(v =>
-      (v.optionId && v.optionId.toUpperCase() === rawCpn.toUpperCase()) ||
-      (v.sku && v.sku.toUpperCase() === rawCpn.toUpperCase()) ||
-      (v.partNumber && v.partNumber.toUpperCase() === rawCpn.toUpperCase())
-    );
+    // Match by direct SKU or bidirectional Option-ID bridge, respecting configuration ownership
+    const vIdx = vendorExtras.findIndex(v => {
+      const vIdentifiers = [v.partNumber, v.sku, v.optionId]
+        .filter(Boolean)
+        .map(s => String(s).trim().toUpperCase());
+      const idMatch = cIdentifiers.some(cid => vIdentifiers.includes(cid));
+      if (!idMatch) return false;
+
+      // Scoped ownership check: if both specify configurationId or parentId, they must match
+      if (c.configurationId && v.configurationId && c.configurationId !== v.configurationId) return false;
+      if (c.parentId && v.parentId && c.parentId !== v.parentId) return false;
+
+      return true;
+    });
+
+    const customerQty = parseSafeQuantity(c.quantity ?? c.qty);
+    const cPrice = (typeof (c.unitPriceUsd ?? c.price) === 'number' && Number.isFinite(c.unitPriceUsd ?? c.price) && (c.unitPriceUsd ?? c.price) >= 0) ? (c.unitPriceUsd ?? c.price) : null;
 
     if (vIdx !== -1) {
       const v = vendorExtras.splice(vIdx, 1)[0];
-      const customerQty = Number(c.quantity ?? c.qty ?? 1);
-      const vendorQty = Number(v.quantity ?? v.qty ?? 1);
-      const qtyMatch = customerQty === vendorQty;
-      const isOptionBridge = Boolean(
-        (v.optionId && v.optionId.toUpperCase() === rawCpn.toUpperCase() && v.sku && v.sku.toUpperCase() !== rawCpn.toUpperCase()) ||
-        (c.optionId && c.optionId.toUpperCase() === String(v.sku || '').toUpperCase())
-      );
+      const vendorQty = parseSafeQuantity(v.quantity ?? v.qty);
+      const vPrice = (typeof (v.unitPriceUsd ?? v.price) === 'number' && Number.isFinite(v.unitPriceUsd ?? v.price) && (v.unitPriceUsd ?? v.price) >= 0) ? (v.unitPriceUsd ?? v.price) : null;
+
+      const qtyValid = customerQty !== null && vendorQty !== null;
+      const qtyMatch = qtyValid && customerQty === vendorQty;
+
+      const vIdentifiers = [v.partNumber, v.sku, v.optionId].filter(Boolean).map(s => String(s).trim().toUpperCase());
+      const isDirectSku = Boolean(c.sku && v.sku && c.sku.toUpperCase() === v.sku.toUpperCase());
+      const isOptionBridge = !isDirectSku && cIdentifiers.some(cid => vIdentifiers.includes(cid));
+
+      const priceDelta = (cPrice !== null && vPrice !== null) ? vPrice - cPrice : null;
+
       matches.push({
         customerPartNumber: rawCpn,
+        customerOptionId: c.optionId || null,
         vendorOptionId: v.optionId || null,
         vendorSku: v.sku || null,
         description: v.description || c.description || '',
         customerQty,
         vendorQty,
         qtyMatch,
-        matchType: isOptionBridge ? 'OPTION_ID_BRIDGE' : 'DIRECT_SKU'
+        qtyValid,
+        matchType: isOptionBridge ? 'OPTION_ID_BRIDGE' : 'DIRECT_SKU',
+        customerUnitPrice: cPrice,
+        vendorUnitPrice: vPrice,
+        unitPriceDelta: priceDelta,
+        extendedPriceDelta: (priceDelta !== null && customerQty !== null) ? priceDelta * customerQty : null
       });
     } else {
       missingInVendor.push({
         partNumber: rawCpn,
+        optionId: c.optionId || null,
         description: c.description || '',
-        quantity: Number(c.quantity ?? c.qty ?? 1)
+        quantity: customerQty,
+        qtyValid: customerQty !== null
       });
     }
   }
 
-  const unsolicitedExtras = vendorExtras.map(v => ({
-    partNumber: v.sku || v.optionId || v.partNumber || '',
-    optionId: v.optionId || null,
-    description: v.description || '',
-    quantity: Number(v.quantity ?? v.qty ?? 1)
-  }));
+  const unsolicitedExtras = vendorExtras.map(v => {
+    const vQty = parseSafeQuantity(v.quantity ?? v.qty);
+    const vPrice = (typeof (v.unitPriceUsd ?? v.price) === 'number' && Number.isFinite(v.unitPriceUsd ?? v.price) && (v.unitPriceUsd ?? v.price) >= 0) ? (v.unitPriceUsd ?? v.price) : null;
+    return {
+      partNumber: v.sku || v.optionId || v.partNumber || '',
+      optionId: v.optionId || null,
+      description: v.description || '',
+      quantity: vQty,
+      qtyValid: vQty !== null,
+      vendorUnitPrice: vPrice
+    };
+  });
 
-  const totalCustomer = customerItems.filter(c => Boolean(c.partNumber || c.sku || c.optionId)).length;
-  const is100PercentMatch = matches.length === totalCustomer && unsolicitedExtras.length === 0 && matches.every(m => m.qtyMatch);
+  // Structural parity gate: must not be empty, must match all customer items, zero extras, zero unresolved
+  const hasStructuralMatch = totalCustomer > 0 &&
+                             totalVendor > 0 &&
+                             unresolvedRequirements.length === 0 &&
+                             matches.length === totalCustomer &&
+                             unsolicitedExtras.length === 0 &&
+                             matches.every(m => m.qtyMatch && m.qtyValid);
+
+  // Financial parity evaluation
+  const pricingItems = matches.filter(m => m.customerUnitPrice !== null && m.vendorUnitPrice !== null);
+  const hasCompletePricing = matches.length > 0 && pricingItems.length === matches.length;
+  const hasFinancialParity = hasCompletePricing && matches.every(m => Math.abs(m.unitPriceDelta || 0) < 0.01);
+  const netPriceDeltaUsd = pricingItems.reduce((acc, m) => acc + (m.extendedPriceDelta || 0), 0);
+  const pricingGaps = matches.filter(m => (m.customerUnitPrice !== null && m.vendorUnitPrice === null) || (m.customerUnitPrice === null && m.vendorUnitPrice !== null));
+
+  const is100PercentMatch = hasStructuralMatch && (!hasCompletePricing || hasFinancialParity);
 
   return {
     isCrossVendorReconciliation: true,
     totalCustomer,
-    totalVendor: vendorItems.length,
+    totalVendor,
     matchedCount: matches.length,
     optionIdBridges: matches.filter(m => m.matchType === 'OPTION_ID_BRIDGE').length,
     directMatches: matches.filter(m => m.matchType === 'DIRECT_SKU').length,
-    missingCount: missingInVendor.length,
+    missingCount: missingInVendor.length + unresolvedRequirements.length,
+    unresolvedRequirements,
     vendorExtrasCount: vendorExtras.length,
     unsolicitedExtrasCount: unsolicitedExtras.length,
+    is100PercentStructuralMatch: hasStructuralMatch,
     is100PercentMatch,
+    hasCompletePricing,
+    hasFinancialParity,
+    netPriceDeltaUsd,
+    pricingGapsCount: pricingGaps.length,
     matches,
     missingInVendor,
     vendorExtras,
@@ -543,19 +611,40 @@ function runCli(args = process.argv.slice(2)) {
 
   if (!resolvedCatalogDir) {
     const { detectInputVendorAndProduct } = require('../taxonomy/vendor_agnostic_schema.js');
-    const vendorDetection = detectInputVendorAndProduct('', { filePath: customerFile || vendorFile });
-    if (!vendorDetection.isHpe && customerFile && vendorFile) {
+    let custSnippet = '';
+    let vendSnippet = '';
+    try {
+      if (customerFile && fs.existsSync(customerFile)) custSnippet = fs.readFileSync(customerFile, 'utf-8').slice(0, 2000);
+      if (vendorFile && fs.existsSync(vendorFile)) vendSnippet = fs.readFileSync(vendorFile, 'utf-8').slice(0, 2000);
+    } catch { /* ignore read error */ }
+
+    const custDetection = customerFile ? detectInputVendorAndProduct(custSnippet, { filePath: customerFile }) : null;
+    const vendDetection = vendorFile ? detectInputVendorAndProduct(vendSnippet, { filePath: vendorFile }) : null;
+
+    const isNonHpeVendor = (custDetection && !custDetection.isHpe) || (vendDetection && !vendDetection.isHpe);
+    const activeDetection = (vendDetection && !vendDetection.isHpe) ? vendDetection : (custDetection || { vendor: 'Cross-Vendor', productFamily: 'Hardware' });
+
+    if (isNonHpeVendor && customerFile && vendorFile) {
       // Cross-vendor direct BOM reconciliation mode
+      const { parseAndConsolidateBOQDetailed } = require('./boq_evaluator.js');
       const customerRaw = fs.readFileSync(customerFile, 'utf-8');
       const vendorRaw = fs.readFileSync(vendorFile, 'utf-8');
-      const customerItems = parseAndConsolidateBOQ(customerRaw, customerFile);
-      const vendorItems = parseAndConsolidateBOQ(vendorRaw, vendorFile);
-      const crossReport = reconcileCrossVendorBOMs(customerItems, vendorItems);
+      const customerParsed = parseAndConsolidateBOQDetailed(customerRaw, customerFile);
+      const vendorParsed = parseAndConsolidateBOQDetailed(vendorRaw, vendorFile);
+
+      const customerItems = customerParsed.items;
+      const vendorItems = vendorParsed.items;
+      const unresolvedRequirements = [
+        ...(customerParsed.unresolvedRequirements || []),
+        ...(customerParsed.unmatchedSkus || [])
+      ];
+
+      const crossReport = reconcileCrossVendorBOMs(customerItems, vendorItems, { unresolvedRequirements });
       if (jsonOutput) {
         console.log(JSON.stringify(crossReport, null, 2));
       } else {
         console.log(`\n============================================================`);
-        console.log(`📊 Cross-Vendor BOM Reconciliation (${vendorDetection.vendor} ${vendorDetection.productFamily})`);
+        console.log(`📊 Cross-Vendor BOM Reconciliation (${activeDetection.vendor} ${activeDetection.productFamily})`);
         console.log(`============================================================`);
         console.log(`Customer Items: ${crossReport.totalCustomer}`);
         console.log(`Vendor Items  : ${crossReport.totalVendor}`);

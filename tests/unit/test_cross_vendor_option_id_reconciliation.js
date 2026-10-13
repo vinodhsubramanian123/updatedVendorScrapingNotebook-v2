@@ -96,4 +96,82 @@ test('Cross-Vendor Option-ID Bridge Reconciliation Contract', async (t) => {
     assert.strictEqual(result.vendorExtras[0].optionId, 'GEXTRA');
   });
 
+  await t.test('Empty BOM Input Gate: Empty customer or vendor inputs reject complete match', () => {
+    const emptyResult1 = reconcileCrossVendorBOMs([], []);
+    assert.strictEqual(emptyResult1.is100PercentMatch, false);
+    assert.strictEqual(emptyResult1.is100PercentStructuralMatch, false);
+
+    const emptyResult2 = reconcileCrossVendorBOMs([{ partNumber: 'GEYJA1G', quantity: 1 }], []);
+    assert.strictEqual(emptyResult2.is100PercentMatch, false);
+  });
+
+  await t.test('Quantity Type Validation (INV-149): Booleans and arrays fail closed', () => {
+    const customerBOQ = [{ partNumber: 'GEYJA1G', quantity: false }];
+    const vendorBOM = [{ optionId: 'GEYJA1G', quantity: false }];
+    const result = reconcileCrossVendorBOMs(customerBOQ, vendorBOM);
+    assert.strictEqual(result.is100PercentMatch, false);
+    assert.strictEqual(result.matches[0].qtyValid, false);
+  });
+
+  await t.test('Configuration Ownership Scoping (INV-148): Disparate configuration IDs do not cross-match', () => {
+    const customerBOQ = [
+      { partNumber: 'GEYJA1G', quantity: 1, configurationId: 'config-1' }
+    ];
+    const vendorBOM = [
+      { optionId: 'GEYJA1G', quantity: 1, configurationId: 'config-2' }
+    ];
+    const result = reconcileCrossVendorBOMs(customerBOQ, vendorBOM);
+    assert.strictEqual(result.matchedCount, 0);
+    assert.strictEqual(result.missingCount, 1);
+    assert.strictEqual(result.unsolicitedExtrasCount, 1);
+    assert.strictEqual(result.is100PercentMatch, false);
+  });
+
+  await t.test('Bidirectional Option-ID Matching: Customer with SKU+OptionId matches Vendor with OptionId as SKU', () => {
+    const customerBOQ = [
+      { sku: '210-BDBX', optionId: 'GEYJA1G', quantity: 1 }
+    ];
+    const vendorBOM = [
+      { sku: 'GEYJA1G', quantity: 1 }
+    ];
+    const result = reconcileCrossVendorBOMs(customerBOQ, vendorBOM);
+    assert.strictEqual(result.matchedCount, 1);
+    assert.strictEqual(result.is100PercentMatch, true);
+  });
+
+  await t.test('Unresolved Diagnostics Gate: Diagnostic requirements fail 100% verdict', () => {
+    const customerBOQ = [{ partNumber: 'GEYJA1G', quantity: 1 }];
+    const vendorBOM = [{ optionId: 'GEYJA1G', quantity: 1 }];
+    const result = reconcileCrossVendorBOMs(customerBOQ, vendorBOM, {
+      unresolvedRequirements: [{ line: 'MISSING-01,NVMe drive,1' }]
+    });
+    assert.strictEqual(result.matchedCount, 1);
+    assert.strictEqual(result.is100PercentMatch, false);
+    assert.strictEqual(result.missingCount, 1);
+  });
+
+  await t.test('Lenovo vs Dell SKU Precedence: 4-digit + 3-char signature resolves to Lenovo, not Dell', () => {
+    const { detectVendor } = require('../../scripts/lib/taxonomy/vendor_agnostic_schema.js');
+    assert.strictEqual(detectVendor('', '1234ABC'), 'Lenovo');
+    assert.strictEqual(detectVendor('', '7D14A00'), 'Lenovo');
+  });
+
+  await t.test('Cisco PID Header Detection: PID header creates Cisco column map and valid SKUs', () => {
+    const { detectHeaderColumnMap, isValidCandidateSku } = require('../../scripts/lib/boq/boq_parser.js');
+    const map = detectHeaderColumnMap('PID,Description,Qty', ',');
+    assert.ok(map);
+    assert.strictEqual(map.vendor, 'Cisco');
+    assert.strictEqual(map.sku, 0);
+    assert.strictEqual(map.desc, 1);
+    assert.strictEqual(map.qty, 2);
+
+    assert.strictEqual(isValidCandidateSku('N9K-C93180YC-FX3', map), true);
+  });
+
+  await t.test('HPE Token Protection: Non-orderable tokens like SN1610Q do not match outside Dell context', () => {
+    const { isValidCandidateSku } = require('../../scripts/lib/boq/boq_parser.js');
+    assert.strictEqual(isValidCandidateSku('SN1610Q', null), false);
+    assert.strictEqual(isValidCandidateSku('cntr123', null), false);
+    assert.strictEqual(isValidCandidateSku('SN1610Q', { vendor: 'HPE' }), false);
+  });
 });
