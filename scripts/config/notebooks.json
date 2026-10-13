@@ -336,7 +336,8 @@
         "bed0c191-6268-41b9-9a98-371bc2c9960d",
         "fbef4c8a-9ee6-48a4-99e3-b0e1af4f5fe6",
         "103243a5-66ba-4e6d-940d-38425ab15fe4",
-        "197c1910-d257-46e9-ba13-784dfaaae008"
+        "197c1910-d257-46e9-ba13-784dfaaae008",
+        "360db92c-82ce-455d-924b-48a6d468ddb5"
       ],
       "officialSourceIds": [
         "72a1fc27-f62b-441f-a95d-b7b8a0a1e862",
@@ -351,7 +352,8 @@
         "197c1910-d257-46e9-ba13-784dfaaae008"
       ],
       "verifiedLearningSourceIds": [
-        "103243a5-66ba-4e6d-940d-38425ab15fe4"
+        "103243a5-66ba-4e6d-940d-38425ab15fe4",
+        "360db92c-82ce-455d-924b-48a6d468ddb5"
       ],
       "quarantinedSourceIds": [
         "099bd9d8-ca4c-44e7-bd9c-31090a4efa66"
@@ -359,7 +361,7 @@
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeSourceId": "197c1910-d257-46e9-ba13-784dfaaae008",
       "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
-      "lastSyncedAt": "2026-09-11T16:35:00.000Z",
+      "lastSyncedAt": "2026-10-13T09:36:43.345Z",
       "lastSyncDeltaCount": 8,
       "cloudSyncState": "VERIFIED",
       "lastSyncError": null,

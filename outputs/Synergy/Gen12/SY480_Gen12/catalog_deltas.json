@@ -237,5 +237,97 @@
       "synergyAnalysis.md",
       "Learning 4: Missing Rack Server Support"
     ]
+  },
+  {
+    "deltaId": "DELTA_SYNERGY_GEN12_FC_LICENSE_PROHIBITION",
+    "timestamp": "2026-10-13T09:35:49.117Z",
+    "chassis": "SY480_Gen12",
+    "scopeTaxonomy": "FAMILY_GEN",
+    "affectedSku": "R3P67A",
+    "alternateSku": "R3P67AAE",
+    "requiredDependencySku": "Q2E58AAE",
+    "ruleType": "EXCLUSION_UNBUILDABLE",
+    "ruleUpdate": "On HPE Synergy 12000 Frames (P51174-B21) populated solely with SY480 Gen12 compute nodes (P68217-B21), selecting Virtual Connect Fibre Channel upgrade licenses (R3P67A FIO LTU or R3P67AAE BTO E-LTU) is strictly forbidden and triggers CLIC Rules 81410905 and 81314323 (UNBUILDABLE CONFIGURATION: OVERRIDE REQUIRES FACTORY APPROVAL). SY480 Gen12 compute nodes route dedicated SAN traffic via Mezzanine 1 (P68131-B21 64Gb FC HBA) directly to Brocade 64Gb FC Switch Modules (P77653-B21) in Bays 1 & 4. Fibre Channel port expansion must be licensed via Brocade 8-port upgrade E-LTU (Q2E58AAE). Virtual Connect SE 100Gb F32 modules (867796-B21) in Bays 3 & 6 are dedicated to 25G/50G/100G Ethernet (via P64724-B21 adapter in Mezzanine 3), with no FCoE path on Gen12.",
+    "rawMessage": "CLIC Rule 81410905: FC License SKU (R3P67A/R3P67AAE) must not be allowed for selection if Synergy 12000 Frame includes only Synergy 480 Gen12 compute nodes. Virtual Connect is pure Ethernet on Gen12; SAN connectivity is delivered by Brocade 64Gb FC switches (P77653-B21) and Q2E58AAE.",
+    "clicRuleNumbers": [
+      "81410905",
+      "81314323"
+    ],
+    "status": "VERIFIED",
+    "governanceStatus": "ACTIVE",
+    "verificationCount": 1,
+    "firstLearnedAt": "2026-10-13T14:40:00.000Z",
+    "lastVerifiedAt": "2026-10-13T09:35:49.128Z",
+    "provenanceSources": [
+      "HPE OCA CLIC Validation Error Rule 81410905",
+      "UCID 5157030036-06",
+      "HPE Synergy 12000 & SY480 Gen12 QuickSpecs"
+    ],
+    "vendor": "HPE",
+    "pillar": "SERVER",
+    "family": "Synergy",
+    "generation": "Gen12",
+    "productId": "SY480_Gen12"
+  },
+  {
+    "deltaId": "DELTA_SYNERGY_FIO_VS_ELTU_STANDALONE_ORDERING",
+    "timestamp": "2026-10-13T09:35:49.128Z",
+    "chassis": "SY480_Gen12",
+    "scopeTaxonomy": "FAMILY_GEN",
+    "affectedSku": "R3P67A",
+    "alternateSku": "R3P67AAE",
+    "requiredDependencySku": "R3P67AAE",
+    "ruleType": "STANDALONE_ORDERING_TAXONOMY",
+    "ruleUpdate": "R3P67A is a Factory Integrated Option (FIO LTU) ending in 'A', which strictly requires sub-iteming under a factory CTO chassis base (P51174-B21), triggering CLIC Rules 81013168 and 81125904 ('must be ordered as a sub-item to the Base') if quoted standalone. If a customer procurement contract mandates this 32Gb FC license, it CANNOT be fulfilled using R3P67A. It must be ordered as R3P67AAE (BTO Electronic License / E-LTU) placed in a completely separate standalone software quote (new UCID) where no P51174-B21 chassis or Gen12 compute nodes exist, bypassing both Rule 81125904 and Rule 81410905.",
+    "rawMessage": "R3P67A FIO fails with Rules 81013168 and 81125904 when ordered standalone, and fails with Rule 81410905 when attached to Gen12 frame. Solution: quote R3P67AAE (E-LTU) on a separate software UCID with no frame.",
+    "clicRuleNumbers": [
+      "81013168",
+      "81125904"
+    ],
+    "status": "VERIFIED",
+    "governanceStatus": "ACTIVE",
+    "verificationCount": 1,
+    "firstLearnedAt": "2026-10-13T14:43:00.000Z",
+    "lastVerifiedAt": "2026-10-13T09:35:49.128Z",
+    "provenanceSources": [
+      "HPE OCA CLIC Validation Error Rules 81013168 & 81125904",
+      "HPE Virtual Connect SE 100Gb F32 QuickSpecs",
+      "HPE Licensing and Fulfillment Guidelines"
+    ],
+    "vendor": "HPE",
+    "pillar": "SERVER",
+    "family": "Synergy",
+    "generation": "Gen12",
+    "productId": "SY480_Gen12"
+  },
+  {
+    "deltaId": "DELTA_SYNERGY_MULTI_ORDER_ADHOC_CONTAINER_PARTITIONING",
+    "timestamp": "2026-10-13T09:35:49.128Z",
+    "chassis": "SY480_Gen12",
+    "scopeTaxonomy": "FAMILY_GEN",
+    "affectedSku": "P51174-B21",
+    "requiredDependencySku": "Q2E58AAE",
+    "ruleType": "MULTI_ORDER_PARTITIONING_PATTERN",
+    "ruleUpdate": "When a multi-frame Synergy deployment (e.g. 2 frames, 24 nodes) is partitioned into separate commercial orders (Option B): (1) Order 2 (Frame 2) is structured as a clean hardware clone with zero loose cables, zero loose transceivers, and zero unpack services; (2) Order 1 (Frame 1) hosts a dedicated Adhoc container carrying 100% of all loose physical connectivity for both frames (DAC cables: 487655-B21 10G, 845406-B21 100G; AOC cables: 845410-B21 100G; fiber: QK734A OM4; transceivers: 455883-B21 10G SFP+ SR, 845398-B21 25G SFP28 SR, 841716-B21 40G QSFP+ BiDi) totaling $96,236.00 list; (3) Embedded switch licenses (Q2E58AAE Brocade 8-port upgrade E-LTU) must NEVER be lumped into Adhoc—they must be split evenly inside the physical switch modules (4 in Frame 1, 4 in Frame 2) to preserve 1:1 hardware module licensing integrity; (4) Tech Care Basic support (HU4B2A3) must be preserved 1:1 on both frames ($46,156 each) to satisfy CLIC Rules 99916598/99916599.",
+    "rawMessage": "Multi-order Synergy split pattern (Option B): Frame 2 is a clean hardware clone with 0 accessories; Frame 1 carries consolidated Adhoc container with all 7 cables/transceivers for both orders ($96,236 list). Brocade Q2E58AAE licenses are split 4-and-4 inside switch modules, and support is 1:1 ($46,156 per frame).",
+    "clicRuleNumbers": [
+      "99916598",
+      "99916599"
+    ],
+    "status": "VERIFIED",
+    "governanceStatus": "ACTIVE",
+    "verificationCount": 1,
+    "firstLearnedAt": "2026-10-13T14:55:00.000Z",
+    "lastVerifiedAt": "2026-10-13T09:35:49.128Z",
+    "provenanceSources": [
+      "OCA_Config_3_5156661720-01_CF_Remarks.xlsx",
+      "Synergy_1f_12N_Adhoc_5157030036-06 (1).xlsx",
+      "Synergy_1f_12N_NoAccessories_5157071497-01 (1).xlsx"
+    ],
+    "vendor": "HPE",
+    "pillar": "SERVER",
+    "family": "Synergy",
+    "generation": "Gen12",
+    "productId": "SY480_Gen12"
   }
 ]
