@@ -174,25 +174,29 @@ function isMetadataOrDisclaimerLine(lowerLine) {
  */
 function detectHeaderColumnMap(line, delimiter) {
   const headerCandidates = splitStructuredRow(line, delimiter).map(c => c.toLowerCase());
-  const hasSkuHeader = headerCandidates.some(c => c.includes('product') || c.includes('part') || c.includes('sku') || c.includes('item #') || c.includes('pos'));
-  const hasDescOrQtyHeader = headerCandidates.some(c => c.includes('description') || c.includes('qty') || c.includes('quantity') || c.includes('price') || c.includes('units'));
+  const hasSkuHeader = headerCandidates.some(c => c.includes('product') || c.includes('part') || c.includes('sku') || c.includes('item #') || c.includes('pos') || c.includes('option id'));
+  const hasDescOrQtyHeader = headerCandidates.some(c => c.includes('description') || c.includes('qty') || c.includes('quantity') || c.includes('price') || c.includes('units') || c.includes('option name'));
 
   if (!hasSkuHeader || !hasDescOrQtyHeader) return null;
 
-  const map = { sku: -1, desc: -1, qty: -1, price: -1 };
+  const map = { sku: -1, desc: -1, qty: -1, price: -1, optionId: -1 };
   headerCandidates.forEach((col, idx) => {
     if (col.includes('product number') || col.includes('part number') || col.includes('product #') || col.includes('part #') || col.includes('sku') || col === 'pn' || col === 'p/n' || col === 'material') {
       map.sku = idx;
     } else if (map.sku === -1 && (col === 'product' || col === 'part')) {
       map.sku = idx;
     }
-    if (col.includes('description') || col.includes('product name') || col.includes('item description') || col === 'bezeichnung' || col === 'text') {
+    if (col === 'option id' || col.includes('option id')) {
+      map.optionId = idx;
+      if (map.sku === -1) map.sku = idx;
+    }
+    if (col.includes('description') || col.includes('product name') || col.includes('item description') || col === 'bezeichnung' || col === 'text' || col.includes('option name')) {
       map.desc = idx;
     }
     if (!['quantity scope', 'quantity basis'].includes(col) && (col === 'qty' || col === 'quantity' || col === 'menge' || col === 'count' || col === 'units' || col.includes('quantity') || col.includes('qty'))) {
       map.qty = idx;
     }
-    if (col.includes('unit price') || col.includes('einzelpreis') || col.includes('net price') || col.includes('list price') || col === 'price' || col === 'preis') {
+    if (col.includes('unit price') || col.includes('einzelpreis') || col.includes('net price') || col.includes('list price') || col === 'price' || col === 'preis' || col.includes('option list price')) {
       map.price = idx;
     }
     if (col.includes('confirmed zero') || col === 'is_confirmed_zero' || col === 'price provenance' || col.includes('provenance')) {

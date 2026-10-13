@@ -123,7 +123,7 @@ function readBoqLines(rawInput, filePath = '', targetSheet = null) {
     sheetNames.forEach(sheetName => {
       const sheet = workbook.Sheets[sheetName];
       const rows = xlsx.utils.sheet_to_json(sheet, { header: 1, defval: '' });
-      const headerRow = rows.findIndex(row => row.some(cell => /^(product\s*#|part\s*(?:no\.?|number)|sku)$/i.test(String(cell).trim())) && row.some(cell => /^(qty|quantity)$/i.test(String(cell).trim())));
+      const headerRow = rows.findIndex(row => row.some(cell => /^(product\s*#|part\s*(?:no\.?|number|#)|sku|skus|option\s*id|item\s*#)$/i.test(String(cell).trim())) && row.some(cell => /^(qty|quantity|product\s*qty)$/i.test(String(cell).trim())));
       // Report titles may contain model names resembling orderable SKUs.
       // When a structured BOM header exists, never ingest the cover rows.
       const csvText = xlsx.utils.sheet_to_csv(headerRow >= 0 ? xlsx.utils.aoa_to_sheet(rows.slice(headerRow)) : sheet);
