@@ -15,58 +15,7 @@
 
 const test = require('node:test');
 const assert = require('node:assert');
-
-function reconcileCrossVendorBOMs(customerItems, vendorItems) {
-  const matches = [];
-  const missingInVendor = [];
-  const vendorExtras = [...vendorItems];
-
-  for (const c of customerItems) {
-    const rawCpn = String(c.partNumber || c.sku || '').trim();
-    if (!rawCpn) continue;
-
-    // Match by direct SKU or Option-ID bridge
-    const vIdx = vendorExtras.findIndex(v =>
-      (v.optionId && v.optionId.toUpperCase() === rawCpn.toUpperCase()) ||
-      (v.sku && v.sku.toUpperCase() === rawCpn.toUpperCase())
-    );
-
-    if (vIdx !== -1) {
-      const v = vendorExtras.splice(vIdx, 1)[0];
-      const qtyMatch = Number(c.quantity) === Number(v.quantity);
-      const isOptionBridge = Boolean(v.optionId && v.optionId.toUpperCase() === rawCpn.toUpperCase() && v.sku && v.sku.toUpperCase() !== rawCpn.toUpperCase());
-      matches.push({
-        customerPartNumber: rawCpn,
-        vendorOptionId: v.optionId || null,
-        vendorSku: v.sku || null,
-        description: v.description || c.description || '',
-        customerQty: Number(c.quantity),
-        vendorQty: Number(v.quantity),
-        qtyMatch,
-        matchType: isOptionBridge ? 'OPTION_ID_BRIDGE' : 'DIRECT_SKU'
-      });
-    } else {
-      missingInVendor.push({
-        partNumber: rawCpn,
-        description: c.description || '',
-        quantity: Number(c.quantity)
-      });
-    }
-  }
-
-  return {
-    totalCustomer: customerItems.filter(c => Boolean(c.partNumber || c.sku)).length,
-    totalVendor: vendorItems.length,
-    matchedCount: matches.length,
-    optionIdBridges: matches.filter(m => m.matchType === 'OPTION_ID_BRIDGE').length,
-    directMatches: matches.filter(m => m.matchType === 'DIRECT_SKU').length,
-    missingCount: missingInVendor.length,
-    vendorExtrasCount: vendorExtras.length,
-    matches,
-    missingInVendor,
-    vendorExtras
-  };
-}
+const { reconcileCrossVendorBOMs } = require('../../scripts/lib/boq/vendor_bom_verifier.js');
 
 test('Cross-Vendor Option-ID Bridge Reconciliation Contract', async (t) => {
 

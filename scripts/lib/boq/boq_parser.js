@@ -188,7 +188,11 @@ function detectHeaderColumnMap(line, delimiter) {
     }
     if (col === 'option id' || col.includes('option id')) {
       map.optionId = idx;
+      map.vendor = 'Dell';
       if (map.sku === -1) map.sku = idx;
+    }
+    if (col.includes('cisco') || col.includes('smartnet') || col === 'pid' || col === 'product id') {
+      map.vendor = 'Cisco';
     }
     if (col.includes('description') || col.includes('product name') || col.includes('item description') || col === 'bezeichnung' || col === 'text' || col.includes('option name')) {
       map.desc = idx;
@@ -211,6 +215,39 @@ function detectHeaderColumnMap(line, delimiter) {
 }
 
 /**
+ * Validate SKU candidates across vendor ecosystems.
+ * Strict HPE rules by default; seamlessly expands to Dell Option-IDs / SKUs and Cisco PIDs when detected.
+ */
+function isValidCandidateSku(rawStr, activeColumnMap = null) {
+  if (!rawStr) return false;
+  const clean = cleanBaseSKU(String(rawStr).replace(/^(H[A-Z0-9]+)\s+[A-Z0-9]{3,}$/i, '$1')).trim();
+  if (!clean || !/\d/.test(clean) || /^\d+$/.test(clean)) return false;
+
+  // 1. Authoritative HPE SKU validation
+  if (isValidHpeSKU(clean)) return true;
+
+  // 2. Dell Option-ID or Dell SKU validation (active when Option ID column is detected or in Dell context)
+  const isDellContext = activeColumnMap && (
+    (activeColumnMap.optionId !== undefined && activeColumnMap.optionId !== -1) ||
+    activeColumnMap.vendor === 'Dell'
+  );
+  if (isDellContext || /^\d{3}-[A-Z0-9]{4}$/i.test(clean) || /^[A-Z0-9]{7}$/i.test(clean)) {
+    if (/^\d{3}-[A-Z0-9]{4}$/i.test(clean)) return true; // Dell SKU e.g. 210-BDBX, 400-BGGP
+    if (/^[A-Z0-9]{7}$/i.test(clean) && /[A-Z]/.test(clean) && /\d/.test(clean)) return true; // Dell Option-ID e.g. GEYJA1G
+  }
+
+  // 3. Cisco PID validation
+  const isCiscoContext = activeColumnMap && (
+    activeColumnMap.vendor === 'Cisco' ||
+    /^UCS/i.test(clean) ||
+    /^N9K/i.test(clean)
+  );
+  if (isCiscoContext && /^(?:UCS|N9K|C9\d{3}|UCSC|CON-)[A-Z0-9-]+$/i.test(clean)) return true;
+
+  return false;
+}
+
+/**
  * Extracts SKU, quantity, description, and price from a structured delimited row.
  */
 function extractStructuredSkuRow(parts, activeColumnMap) {
@@ -220,10 +257,10 @@ function extractStructuredSkuRow(parts, activeColumnMap) {
   const qtyIndex = activeColumnMap && activeColumnMap.qty !== -1 ? activeColumnMap.qty : -1;
   const priceIndex = activeColumnMap && activeColumnMap.price !== -1 ? activeColumnMap.price : -1;
 
-  if (skuIndex === -1 || !parts[skuIndex] || !isValidHpeSKU(lookupSku(parts[skuIndex]))) {
+  if (skuIndex === -1 || !parts[skuIndex] || !isValidCandidateSku(lookupSku(parts[skuIndex]), activeColumnMap)) {
     for (let i = 0; i < parts.length; i++) {
       const clean = lookupSku(parts[i]);
-      if (clean && isValidHpeSKU(clean)) {
+      if (clean && isValidCandidateSku(clean, activeColumnMap)) {
         skuIndex = i;
         break;
       }
@@ -234,7 +271,7 @@ function extractStructuredSkuRow(parts, activeColumnMap) {
 
   const rawSkuPart = parts[skuIndex];
   const cleanSku = lookupSku(rawSkuPart);
-  if (!cleanSku || !isValidHpeSKU(cleanSku)) return null;
+  if (!cleanSku || !isValidCandidateSku(cleanSku, activeColumnMap)) return null;
 
   // Find Quantity
   let lineQty = 1;
@@ -312,11 +349,17 @@ function extractStructuredSkuRow(parts, activeColumnMap) {
 
   const isFioLine = rawSkuPart.includes('0D1') || rawSkuPart.includes('B19') || rawDescPart.toLowerCase().includes('factory integrated');
 
+  const rawOptionId = activeColumnMap?.optionId !== undefined && activeColumnMap.optionId !== -1
+    ? String(parts[activeColumnMap.optionId] || '').trim()
+    : null;
+  const optionId = rawOptionId || (/^[A-Z0-9]{7}$/i.test(cleanSku) && /[A-Z]/.test(cleanSku) && /\d/.test(cleanSku) ? cleanSku : null);
+
   return {
     ...Object.fromEntries(['configurationId', 'parentId', 'subParentId', 'quantityScope', 'quantityBasis']
       .filter(key => activeColumnMap?.[key] !== undefined)
       .map(key => [key, parts[activeColumnMap[key]]])),
     sku: /^H[A-Z0-9]+\s+[A-Z0-9]{3,}$/i.test(rawSkuPart.trim()) ? rawSkuPart.trim() : cleanSku,
+    optionId: optionId || null,
     description: rawDescPart && !rawDescPart.toLowerCase().includes('factory integrated') ? rawDescPart : cleanSku,
     purpose: activeColumnMap?.purpose !== undefined ? parts[activeColumnMap.purpose] : '',
     quantity: lineQty,
@@ -577,6 +620,8 @@ function parseSkuLines(lines) {
 module.exports = {
   parseSkuLines,
   extractSuspectedPartTokens,
+  isValidCandidateSku,
+  detectHeaderColumnMap,
   isNonBomSheet,
   isBomSheet,
   NON_BOM_KEYWORDS,

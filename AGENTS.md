@@ -75,15 +75,16 @@ When a task arrives, dynamically load and read the corresponding `SKILL.md` from
 ### Asynchronous CI/CD & Macro Lifecycle Protocols (INV-72 Excluded from Customer BOQ Flow)
 | System Architecture Intent | Primary Protocol Skill | Implementation Service |
 | :--- | :--- | :--- |
+| **OpenAI Codex Static Peer Review & Gap Audit** | [`codex-peer-review-skill`](file:///.agents/skills/codex-peer-review-skill/SKILL.md) | `codex review` / `codex exec` |
 | **Google Jules Asynchronous CI/CD & PR Audits** | [`jules-autonomous-protocol`](file:///.agents/skills/jules-autonomous-protocol/SKILL.md) | `scripts/services/jules_task_manager.js` |
 | **Macro 7-Phase Learning Lifecycle & MCP Server** | [`orchestrator-workflow-skill`](file:///.agents/skills/orchestrator-workflow-skill/SKILL.md) | `scripts/services/mcp_server.js` |
 
 ---
 
 ## 4. Multi-Agent & Multi-Brain Division of Labor
-- **Antigravity / Gemini 3.6 Flash**: Lead Execution Architect and Pair Programmer. Drives evaluations, manages atomic operations, maintains $CC \le 135$ and 0-warning linter discipline.
+- **Antigravity / Gemini 3.8 / 3.6 Flash**: Lead Execution Architect and Pair Programmer. Drives evaluations, manages atomic operations, maintains $CC \le 135$ and 0-warning linter discipline.
 - **Gemini NotebookLM**: Authoritative Ground-Truth Brain. Grounded in official QuickSpecs PDFs and live 22-sheet catalogs.
-- **OpenAI Codex / Claude**: Independent Peer Review & Red-Teaming Safety Layer. Inspects diffs, audits edge cases, and benchmarks failure modes.
+- **OpenAI Codex / Claude**: Independent Peer Review & Red-Teaming Safety Layer (`codex-peer-review-skill`). Runs `gpt-6.1-sol` as default for static commit reviews, branch audits, and gap analysis; reserves `gpt-6-astra` for deep architectural proofs under ChatGPT Plus quota.
 - **Google Jules**: Background asynchronous CI/CD, boundary test generation, and pull request audits.
 
 ---

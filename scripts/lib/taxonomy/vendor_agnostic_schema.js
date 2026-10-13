@@ -15,7 +15,7 @@ const { classifyComponentRole } = require('../catalog/product_meta.js');
 
 const VENDOR_SIGNATURES = [
   { vendor: 'HPE', patterns: [/\bhpe\b/i, /\bproliant\b/i, /\bsynergy\b/i, /\balletra\b/i, /\bnimble\b/i, /\bstoreever\b/i, /\bstoreonce\b/i, /\bcray\b/i, /\bpointnext\b/i, /\bil[o0]\b/i, /\bsmart\s*array\b/i] },
-  { vendor: 'Dell', patterns: [/\bdell\b/i, /\bpoweredge\b/i, /\bpowerstore\b/i, /\bpowervault\b/i, /\bpowerscale\b/i, /\bidrac\b/i, /\bpercc\b/i, /\bprosupport\b/i, /\bcompellent\b/i] },
+  { vendor: 'Dell', patterns: [/\bdell\b/i, /\bpoweredge\b/i, /\bpowerstore\b/i, /\bpowervault\b/i, /\bpowerscale\b/i, /\bidrac\b/i, /\bperc\b/i, /\bprosupport\b/i, /\bcompellent\b/i, /\boption\s*id\b/i] },
   { vendor: 'Cisco', patterns: [/\bcisco\b/i, /\bucs\b/i, /\bnexus\b/i, /\bcatalyst\b/i, /\bintersight\b/i, /\bsmartnet\b/i, /\bvic\s*\d{4}\b/i] },
   { vendor: 'Lenovo', patterns: [/\blenovo\b/i, /\bthinksystem\b/i, /\bthinkagile\b/i, /\bxclarity\b/i] },
   { vendor: 'Supermicro', patterns: [/\bsupermicro\b/i, /\bsuperblade\b/i, /\bsupertwin\b/i, /\bmotherboard\b/i] }
@@ -30,6 +30,7 @@ const VENDOR_SKU_PATTERNS = [
   { vendor: 'Cisco', regex: /^UCS-[A-Z0-9-]+$/i },
   { vendor: 'Cisco', regex: /^N9K-[A-Z0-9-]+$/i },
   { vendor: 'Dell', regex: /^\d{3}-[A-Z0-9]{4}$/i }, // 338-CCUR, 400-BDBY
+  { vendor: 'Dell', regex: /^[A-Z0-9]{7}$/i, validator: s => /[A-Z]/.test(s) && /\d/.test(s) }, // Dell 7-char Option-ID (GEYJA1G, GNS29DW)
   { vendor: 'Lenovo', regex: /^[0-9]{4}[A-Z0-9]{3}$/i }
 ];
 
@@ -268,10 +269,93 @@ function normalizeHardwareItem(rawItem = {}, context = {}) {
   };
 }
 
+/**
+ * Identify target vendor, product family, and hardware domain from input text and file metadata
+ * @param {string} inputText
+ * @param {object} [options={}]
+ * @returns {object} { vendor, productFamily, domain, confidence, isHpe }
+ */
+function detectInputVendorAndProduct(inputText = '', options = {}) {
+  const text = String(inputText || '').toLowerCase();
+  const filePath = String(options.filePath || options.file || '').toLowerCase();
+  const combined = `${filePath} ${text}`;
+
+  // Dell detection
+  if (/\b(?:dell|powerstore|poweredge|powervault|powerscale|idrac|perc|prosupport)\b/i.test(combined) ||
+      /\boption\s*id\b/i.test(combined) ||
+      /powerstore_\d{4}t/i.test(combined)) {
+    let productFamily = 'Dell Hardware';
+    let domain = 'server';
+    let confidence = 0.90;
+
+    if (/powerstore/i.test(combined)) {
+      productFamily = 'PowerStore';
+      domain = 'storage';
+      confidence = 0.98;
+    } else if (/poweredge/i.test(combined)) {
+      productFamily = 'PowerEdge';
+      domain = 'server';
+      confidence = 0.98;
+    } else if (/powervault/i.test(combined)) {
+      productFamily = 'PowerVault';
+      domain = 'storage';
+      confidence = 0.95;
+    }
+    return { vendor: 'Dell', productFamily, domain, confidence, isHpe: false };
+  }
+
+  // Cisco detection
+  if (/\b(?:cisco|ucs|nexus|catalyst|intersight|smartnet|vic\s*\d{4})\b/i.test(combined)) {
+    let productFamily = 'UCS';
+    let domain = 'server';
+    let confidence = 0.95;
+
+    if (/nexus|catalyst/i.test(combined)) {
+      productFamily = 'Nexus / Catalyst';
+      domain = 'networking';
+      confidence = 0.98;
+    }
+    return { vendor: 'Cisco', productFamily, domain, confidence, isHpe: false };
+  }
+
+  // Lenovo detection
+  if (/\b(?:lenovo|thinksystem|thinkagile|xclarity)\b/i.test(combined)) {
+    return { vendor: 'Lenovo', productFamily: 'ThinkSystem', domain: 'server', confidence: 0.95, isHpe: false };
+  }
+
+  // HPE detection
+  if (/\b(?:hpe|proliant|synergy|alletra|storeever|storeonce|cray|pointnext|ilo|smart\s*array|dl380|dl360|dl145|dl580|sy480|sn3600b|msl3040|gx5000)\b/i.test(combined)) {
+    let productFamily = 'ProLiant';
+    let domain = 'server';
+    const confidence = 0.98;
+
+    if (/alletra|storeonce/i.test(combined)) {
+      productFamily = 'Alletra';
+      domain = 'storage';
+    } else if (/synergy|sy480|f32/i.test(combined)) {
+      productFamily = 'Synergy';
+      domain = 'composite';
+    } else if (/storeever|msl/i.test(combined)) {
+      productFamily = 'StoreEver';
+      domain = 'archive';
+    } else if (/sn3600b/i.test(combined)) {
+      productFamily = 'SAN Switch';
+      domain = 'networking';
+    } else if (/gx5000|cray/i.test(combined)) {
+      productFamily = 'Cray';
+      domain = 'server';
+    }
+    return { vendor: 'HPE', productFamily, domain, confidence, isHpe: true };
+  }
+
+  return { vendor: 'HPE', productFamily: 'ProLiant', domain: 'server', confidence: 0.60, isHpe: true };
+}
+
 module.exports = {
   detectVendor,
   detectHardwareDomain,
   detectSolutionDomain,
+  detectInputVendorAndProduct,
   extractComponentSpecifications,
   normalizeHardwareItem,
   VENDOR_SIGNATURES,

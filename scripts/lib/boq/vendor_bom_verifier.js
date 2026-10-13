@@ -398,6 +398,86 @@ function verifyVendorBOM(vendorBomInput, proposedRankSolution, chassisDir, optio
   return auditReport;
 }
 
+/**
+ * Reconcile cross-vendor customer BOQ against partner quotation using Option-ID bridge
+ * @param {Array<object>} customerItems
+ * @param {Array<object>} vendorItems
+ * @param {object} [options={}]
+ * @returns {object} Reconciliation audit
+ */
+function reconcileCrossVendorBOMs(customerItems, vendorItems, options = {}) {
+  const matches = [];
+  const missingInVendor = [];
+  const vendorExtras = [...vendorItems];
+
+  for (const c of customerItems) {
+    const rawCpn = String(c.partNumber || c.sku || c.optionId || '').trim();
+    if (!rawCpn) continue;
+
+    // Match by direct SKU or Option-ID bridge
+    const vIdx = vendorExtras.findIndex(v =>
+      (v.optionId && v.optionId.toUpperCase() === rawCpn.toUpperCase()) ||
+      (v.sku && v.sku.toUpperCase() === rawCpn.toUpperCase()) ||
+      (v.partNumber && v.partNumber.toUpperCase() === rawCpn.toUpperCase())
+    );
+
+    if (vIdx !== -1) {
+      const v = vendorExtras.splice(vIdx, 1)[0];
+      const customerQty = Number(c.quantity ?? c.qty ?? 1);
+      const vendorQty = Number(v.quantity ?? v.qty ?? 1);
+      const qtyMatch = customerQty === vendorQty;
+      const isOptionBridge = Boolean(
+        (v.optionId && v.optionId.toUpperCase() === rawCpn.toUpperCase() && v.sku && v.sku.toUpperCase() !== rawCpn.toUpperCase()) ||
+        (c.optionId && c.optionId.toUpperCase() === String(v.sku || '').toUpperCase())
+      );
+      matches.push({
+        customerPartNumber: rawCpn,
+        vendorOptionId: v.optionId || null,
+        vendorSku: v.sku || null,
+        description: v.description || c.description || '',
+        customerQty,
+        vendorQty,
+        qtyMatch,
+        matchType: isOptionBridge ? 'OPTION_ID_BRIDGE' : 'DIRECT_SKU'
+      });
+    } else {
+      missingInVendor.push({
+        partNumber: rawCpn,
+        description: c.description || '',
+        quantity: Number(c.quantity ?? c.qty ?? 1)
+      });
+    }
+  }
+
+  const unsolicitedExtras = vendorExtras.map(v => ({
+    partNumber: v.sku || v.optionId || v.partNumber || '',
+    optionId: v.optionId || null,
+    description: v.description || '',
+    quantity: Number(v.quantity ?? v.qty ?? 1)
+  }));
+
+  const totalCustomer = customerItems.filter(c => Boolean(c.partNumber || c.sku || c.optionId)).length;
+  const is100PercentMatch = matches.length === totalCustomer && unsolicitedExtras.length === 0 && matches.every(m => m.qtyMatch);
+
+  return {
+    isCrossVendorReconciliation: true,
+    totalCustomer,
+    totalVendor: vendorItems.length,
+    matchedCount: matches.length,
+    optionIdBridges: matches.filter(m => m.matchType === 'OPTION_ID_BRIDGE').length,
+    directMatches: matches.filter(m => m.matchType === 'DIRECT_SKU').length,
+    missingCount: missingInVendor.length,
+    vendorExtrasCount: vendorExtras.length,
+    unsolicitedExtrasCount: unsolicitedExtras.length,
+    is100PercentMatch,
+    matches,
+    missingInVendor,
+    vendorExtras,
+    unsolicitedExtras,
+    timestamp: new Date().toISOString()
+  };
+}
+
 // ── CLI Runner ─────────────────────────────────────────────────────────────
 function runCli(args = process.argv.slice(2)) {
   if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
@@ -460,7 +540,31 @@ function runCli(args = process.argv.slice(2)) {
       }
     }
   }
+
   if (!resolvedCatalogDir) {
+    const { detectInputVendorAndProduct } = require('../taxonomy/vendor_agnostic_schema.js');
+    const vendorDetection = detectInputVendorAndProduct('', { filePath: customerFile || vendorFile });
+    if (!vendorDetection.isHpe && customerFile && vendorFile) {
+      // Cross-vendor direct BOM reconciliation mode
+      const customerRaw = fs.readFileSync(customerFile, 'utf-8');
+      const vendorRaw = fs.readFileSync(vendorFile, 'utf-8');
+      const customerItems = parseAndConsolidateBOQ(customerRaw, customerFile);
+      const vendorItems = parseAndConsolidateBOQ(vendorRaw, vendorFile);
+      const crossReport = reconcileCrossVendorBOMs(customerItems, vendorItems);
+      if (jsonOutput) {
+        console.log(JSON.stringify(crossReport, null, 2));
+      } else {
+        console.log(`\n============================================================`);
+        console.log(`📊 Cross-Vendor BOM Reconciliation (${vendorDetection.vendor} ${vendorDetection.productFamily})`);
+        console.log(`============================================================`);
+        console.log(`Customer Items: ${crossReport.totalCustomer}`);
+        console.log(`Vendor Items  : ${crossReport.totalVendor}`);
+        console.log(`Matched       : ${crossReport.matchedCount} (${crossReport.is100PercentMatch ? '100% PASS' : 'GAPS DETECTED'})`);
+        console.log(`Missing       : ${crossReport.missingCount}`);
+        console.log(`Extras        : ${crossReport.unsolicitedExtrasCount}`);
+      }
+      process.exit(crossReport.is100PercentMatch ? 0 : 2);
+    }
     console.error('Error: Please specify target catalog directory via --catalog <dir> (e.g. --catalog outputs/ProLiant/Gen11/DL360_Gen11). Zero-hardcoding guardrail forbids defaulting.');
     process.exit(1);
   }
@@ -548,5 +652,6 @@ if (require.main === module) {
 module.exports = {
   verifyVendorBOM,
   auditSingleVendorBOM,
+  reconcileCrossVendorBOMs,
   runCli
 };
