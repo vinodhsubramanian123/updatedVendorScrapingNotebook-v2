@@ -860,3 +860,25 @@ To ensure that future AI agents (Antigravity, Codex, Claude, or subagents) never
 
 - **INV-166: Negation-Preserving RAG Verdict Evaluation**:
   - RAG answer scanners detecting unbuildability or vendor errors must strip preceding negation clauses ("no", "zero", "without", "does not violate") with multi-word gaps before matching failure keywords, preventing false-negative build rejections.
+
+- **INV-167: Cross-Vendor Header & Option-ID Bridge Invariant**:
+  - Customer tenders or quotes for third-party vendors (e.g. Dell PowerStore / PowerEdge) frequently place internal Option-IDs (e.g. `GEYJA1G`, `GNS29DW`) in the `Part Number` column, whereas vendor partner quotes place orderable SKUs (e.g. `210-BDBX`, `400-BGGP`) in the `SKUs` column and internal codes in the `Option ID` column.
+  - The reconciliation engine MUST establish a bi-directional bridge between Option-ID and SKU, achieving 100% direct match precision without manufacturing false missing items or unsolicited extras.
+  - Evaluator and parser headers must recognize `Option ID`, `Option Name`, `Option List Price`, `Item #`, and plural `SKUs`.
+
+- **INV-168: Vendor-Agnostic Schema & Product-Aware Parsing Invariant**:
+  - Parsers must NOT default to HPE-only SKU validation (`isValidHpeSKU`) when non-HPE vendors or cross-vendor quotes are being processed.
+  - The engine uses `detectInputVendorAndProduct` to classify vendor (`Dell`, `Cisco`, `Lenovo`, `HPE`), product line (`PowerStore`, `PowerEdge`, `UCS`, `ThinkSystem`), and domain (`server`, `storage`, `networking`).
+  - In structured table parsing, when `Option ID` or non-HPE headers are present, candidate SKUs are validated against vendor patterns rather than being discarded.
+
+- **INV-169: Autonomous Codex Peer Review Protocol & Plus Quota Invariant**:
+  - OpenAI Codex static peer reviews must follow `codex-peer-review-skill`.
+  - Zero speculative CLI search loops (`codex --help`).
+  - Model tiering: `gpt-6.1-sol` as default for reviews and gap analysis; `gpt-6-astra` reserved for deep topological dilemmas under ChatGPT Plus quota.
+  - Fail-Open Non-Blocking Protocol: When rolling 4-hour quota limits occur, local deterministic engines continue offline without stalling customer workflows.
+  - Avoid full branch sweeps when reviewing atomic changes; use `--commit <SHA>` or `--uncommitted` to save tokens.
+
+- **INV-170: Background Task Reactive Wakeup & Turn-Yield Discipline**:
+  - Emitting repetitive "Standing by / Awaiting completion" text during asynchronous tasks is an anti-pattern that spams user transcripts.
+  - Background tasks wake up reactively on completion; agents yield the turn immediately upon launching background commands without polling.
+

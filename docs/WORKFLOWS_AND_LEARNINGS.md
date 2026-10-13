@@ -1832,3 +1832,28 @@ Read `docs/audits/2026-10-03-master-architectural-hardening.md` and `docs/audits
 3. **Transactional Deliverable Export (`INV-144`, `INV-151`)**: Staged multi-file atomic commit with rollforward journal rollback guarantees all four presentation artifacts (.xlsx, .csv, portal .xlsx, .md) commit atomically. Status is set to `PRESENTATION_READY` only after atomic filesystem commit succeeds.
 4. **Durable Cloud & Drive Mutation Guard (`INV-145`, `INV-155`, `INV-156`)**: Persistent disk-backed recovery queues, active ownership verification before deletion, and formula-preserving fallback (`FORMULA` / `UNFORMATTED_VALUE`) with readback verification.
 5. **Strict Physical Verification & Anti-Silent Pass (`INV-148`, `INV-149`, `INV-150`)**: Aspect token normalization, strict 7-aspect identity validation, honest single-quote discrepancy accounting, and full runtime plan integration.
+
+---
+
+## 2026-10-13 — Multi-Vendor Generalization, Option-ID Bridge, Autonomous Codex Protocol & Non-Blocking Quota Governance (`INV-157` through `INV-170`)
+
+1. **Option-ID Bridge & Cross-Vendor Reconciliation (`INV-167`)**:
+   - Customer BOQs often use vendor Option-IDs (e.g. Dell `GEYJA1G`, `GNS29DW`) in the `Part Number` column, while vendor partner quotes place orderable SKUs (e.g. `210-BDBX`, `400-BGGP`) under `SKUs` and internal codes under `Option ID`.
+   - `reconcileCrossVendorBOMs` establishes an automated 1:1 bridge between Option-IDs and orderable SKUs, achieving 100% direct match precision without false missing items or unsolicited extras.
+   - Column header detection expanded to recognize `Option ID`, `Option Name`, `Option List Price`, `Item #`, and plural `SKUs`.
+
+2. **Vendor-Agnostic Schema & Product-Aware Parsing (`INV-168`)**:
+   - Parsers must not enforce HPE-only SKU validation (`isValidHpeSKU`) on competitor quotes.
+   - `detectInputVendorAndProduct` classifies vendor (`Dell`, `Cisco`, `Lenovo`, `HPE`), product line (`PowerStore`, `PowerEdge`, `UCS`, `ThinkSystem`), and domain (`server`, `storage`, `networking`).
+   - `isValidCandidateSku` dynamically accepts Dell Option-IDs/SKUs and Cisco PIDs when non-HPE context or `Option ID` headers are detected.
+
+3. **Autonomous OpenAI Codex Peer Review Protocol & Plus Quota Governance (`INV-169`)**:
+   - Created [`.agents/skills/codex-peer-review-skill/SKILL.md`](../.agents/skills/codex-peer-review-skill/SKILL.md) to eliminate speculative CLI exploration (`--help`).
+   - Model tiering: `gpt-6.1-sol` (sol 6.1) as default for static commit reviews, refactor audits, and gap analysis; `gpt-6-astra` reserved exclusively for deep architectural proofs under ChatGPT Plus quota.
+   - Fail-Open Non-Blocking Protocol: When a rolling 4-hour quota limit occurs, the local deterministic engine and test matrix continue offline without halting customer workflows.
+   - Token efficiency: Prefer targeted commit reviews (`codex review --commit <SHA>`) over sweeping repository history.
+
+4. **Background Task Reactive Wakeup & Turn-Yield Discipline (`INV-170`)**:
+   - Emitting repetitive "Standing by / Awaiting completion" text during asynchronous tasks is an anti-pattern that clutters chat transcripts.
+   - Background tasks wake up reactively on completion; agents yield the turn immediately upon launching background commands without manual polling.
+
