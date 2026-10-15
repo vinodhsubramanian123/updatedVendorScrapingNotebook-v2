@@ -1,6 +1,6 @@
 # HPE Knowledge Registry — Local Audit Index
 
-**Document Version**: `2.0.0` | **Generated**: `2026-10-13T13:01:46.997Z`
+**Document Version**: `2.0.0` | **Generated**: `2026-10-15T09:49:01.677Z`
 **Scope**: Local governance index. This file is not a NotebookLM source; product notebooks receive independently scoped projections.
 **Total Verified Knowledge Deltas**: `100` (`9` Universal + `0` Family/Gen + `91` Chassis Specific)
 
@@ -10,44 +10,44 @@
 
 ### 🌐 1. Universal Vendor Rules (Zero Product-Specific SKUs)
 
-#### U1. [DELTA_UNIVERSAL_MULTI_ICON_ERROR_ATTRIBUTION] ERROR_DIAGNOSTIC_ATTRIBUTION
+#### U1. [OWNER_STANDARD_3Y_BASIC] SUPPORT_POLICY
+- **Scope**: `UNIVERSAL_VENDOR`
+- **Rule**: Preserve explicit customer support term and tier in the closest rank; use 3-year Tech Care Basic only when unspecified or explicitly authorized. For this SN3600B BOQ the owner authorized 5-year Essential to 3-year Basic. Compare qualified fixed and flexible service options; disclose retention and preserve parent/suffix pairs. This commercial preference is not vendor qualification.
+
+#### U2. [OWNER_ICON_SERVICE_ISOLATION] ICON_SUPPORT_ISOLATION
+- **Scope**: `UNIVERSAL_VENDOR`
+- **Rule**: Select Services from Components for the owning icon, edit its dropdowns, and leave both apply-to-all icons and apply-to-all nodes off. Different icons retain their own SLA.
+
+#### U3. [OWNER_OCA_EXPIRED_SESSION] SESSION_RECOVERY_PROTOCOL
+- **Scope**: `UNIVERSAL_VENDOR`
+- **Rule**: When OCA says it encountered a problem, restart from Partner Portal refresh/login and open One Config Advanced through Quick Links. Do not reload the failed OCA session. Keep a Partner Portal tab before closing stale OCA so CDP does not disappear. This supersedes cache-flush advice for encountered-a-problem errors.
+
+#### U4. [OWNER_CLOSEST_REQUIREMENT_RANK] CUSTOMER_INTENT_POLICY
+- **Scope**: `UNIVERSAL_VENDOR`
+- **Rule**: Closest rank preserves customer requirements and makes only necessary compatibility/buildability changes. Budget alternatives disclose every deviation; do not silently reduce term, tier, capacity or resilience. Keep explicit owner overrides auditable against the original customer BOQ.
+
+#### U5. [OWNER_COMPONENT_DOMAIN_ROUTING] COMPONENT_DOMAIN_ROUTING
+- **Scope**: `UNIVERSAL_VENDOR`
+- **Rule**: Route by component role and exact product, never vendor or family alone. Synergy compute, fabric and frame use separate scopes. Resolve ownership before quantities. Validate each component and enclosure/bay, adapter/fabric, optical endpoints, shared power and per-icon SLA relationships; missing profiles remain NOT_EVALUATED and cannot inherit server defaults. Scraping completeness is not buildability certification.
+
+#### U6. [GUARDRAIL_TRANSPORT_RECOVERY] GUARDRAIL_RECOVERY_POLICY
+- **Scope**: `UNIVERSAL_VENDOR`
+- **Rule**: Gemini guardrail API sends must retain systemInstruction and function declarations when overriding SDK send config. Enforce scoped local simulation and NotebookLM checks. Retry bounded transient provider errors without exhausting keys, distinguish per-minute from explicit daily quotas, and use configured approved model fallback with preserved tool results and no replay side effects. Empty or unfinished responses are unavailable, not verification. Dashboard status is independent of NotebookLM and vendor acceptance.
+
+#### U7. [DELTA_UNIVERSAL_MULTI_ICON_ERROR_ATTRIBUTION] ERROR_DIAGNOSTIC_ATTRIBUTION
 - **Scope**: `UNIVERSAL_VENDOR`
 - **Rule**: When Rule 81039677 occurs on multi-icon tenders, trace errors to individual child icon containers instead of modifying the root BOM item.
 - **Affected Policy Token**: `SOLUTION_TREE_ITEM_0100_01`
 
-#### U2. [DELTA_UNIVERSAL_SUPPORT_TIER_ISOLATION] ICON_SUPPORT_ISOLATION
+#### U8. [DELTA_UNIVERSAL_SUPPORT_TIER_ISOLATION] ICON_SUPPORT_ISOLATION
 - **Scope**: `UNIVERSAL_VENDOR`
 - **Rule**: Configure support services independently per icon container. Never broadcast support attributes across diverse product families.
 - **Affected Policy Token**: `HU4B2A3`
 
-#### U3. [DELTA_UNIVERSAL_OCA_SUPPORT_CACHE_FLUSH] SESSION_RECOVERY_PROTOCOL
+#### U9. [DELTA_UNIVERSAL_OCA_SUPPORT_CACHE_FLUSH] SESSION_RECOVERY_PROTOCOL
 - **Scope**: `UNIVERSAL_VENDOR`
 - **Rule**: Historical service-selector workaround only: in an authenticated working OCA configuration with contradictory service selections, reselect services for the owning node and revalidate. It is not an expired-session recovery. If OCA displays encountered-a-problem, refresh/login from Partner Portal and launch One Config Advanced through Quick Links; never reload the failed OCA tab or remove services as a session fix.
 - **Affected Policy Token**: `HU4B2A3`
-
-#### U4. [OWNER_STANDARD_3Y_BASIC] SUPPORT_POLICY
-- **Scope**: `UNIVERSAL_VENDOR`
-- **Rule**: Preserve explicit customer support term and tier in the closest rank; use 3-year Tech Care Basic only when unspecified or explicitly authorized. For this SN3600B BOQ the owner authorized 5-year Essential to 3-year Basic. Compare qualified fixed and flexible service options; disclose retention and preserve parent/suffix pairs. This commercial preference is not vendor qualification.
-
-#### U5. [OWNER_ICON_SERVICE_ISOLATION] ICON_SUPPORT_ISOLATION
-- **Scope**: `UNIVERSAL_VENDOR`
-- **Rule**: Select Services from Components for the owning icon, edit its dropdowns, and leave both apply-to-all icons and apply-to-all nodes off. Different icons retain their own SLA.
-
-#### U6. [OWNER_OCA_EXPIRED_SESSION] SESSION_RECOVERY_PROTOCOL
-- **Scope**: `UNIVERSAL_VENDOR`
-- **Rule**: When OCA says it encountered a problem, restart from Partner Portal refresh/login and open One Config Advanced through Quick Links. Do not reload the failed OCA session. Keep a Partner Portal tab before closing stale OCA so CDP does not disappear. This supersedes cache-flush advice for encountered-a-problem errors.
-
-#### U7. [OWNER_CLOSEST_REQUIREMENT_RANK] CUSTOMER_INTENT_POLICY
-- **Scope**: `UNIVERSAL_VENDOR`
-- **Rule**: Closest rank preserves customer requirements and makes only necessary compatibility/buildability changes. Budget alternatives disclose every deviation; do not silently reduce term, tier, capacity or resilience. Keep explicit owner overrides auditable against the original customer BOQ.
-
-#### U8. [OWNER_COMPONENT_DOMAIN_ROUTING] COMPONENT_DOMAIN_ROUTING
-- **Scope**: `UNIVERSAL_VENDOR`
-- **Rule**: Route by component role and exact product, never vendor or family alone. Synergy compute, fabric and frame use separate scopes. Resolve ownership before quantities. Validate each component and enclosure/bay, adapter/fabric, optical endpoints, shared power and per-icon SLA relationships; missing profiles remain NOT_EVALUATED and cannot inherit server defaults. Scraping completeness is not buildability certification.
-
-#### U9. [GUARDRAIL_TRANSPORT_RECOVERY] GUARDRAIL_RECOVERY_POLICY
-- **Scope**: `UNIVERSAL_VENDOR`
-- **Rule**: Gemini guardrail API sends must retain systemInstruction and function declarations when overriding SDK send config. Enforce scoped local simulation and NotebookLM checks. Retry bounded transient provider errors without exhausting keys, distinguish per-minute from explicit daily quotas, and use configured approved model fallback with preserved tool results and no replay side effects. Empty or unfinished responses are unavailable, not verification. Dashboard status is independent of NotebookLM and vendor acceptance.
 
 ### 🏛️ 2. Family & Generation Rules
 
@@ -55,446 +55,446 @@
 
 ### 🎯 3. Chassis & Solution Gotchas (Grouped by Product)
 
-#### C1. [DELTA_DL380A_GEN12_DRIVE_CAGE_EXCLUSIVITY] DL380a_Gen12 — STORAGE_COLLISION
-- **Scope**: `CHASSIS_SPECIFIC`
-- **Rule**: DL380a prohibits mixing 4SFF cage P74710-B21 and 4EDSFF cage P74712-B21.
-- **Affected SKU**: `P74710-B21`
-
-#### C2. [DELTA_DL380A_GEN12_DUAL_CPU_HOMOGENEOUS] DL380a_Gen12 — PROCESSOR_POPULATION
-- **Scope**: `CHASSIS_SPECIFIC`
-- **Rule**: DL380a Gen12 requires two identical processor models; single-processor and mixed-processor configurations are unsupported.
-- **Affected SKU**: `P76706-B21`
-
-#### C3. [DELTA_DL380A_GEN12_GPU_PSU_COUNT_MATRIX] DL380a_Gen12 — POWER_REDUNDANCY
-- **Scope**: `CHASSIS_SPECIFIC`
-- **Rule**: Requires a minimum of five power supplies for 2DW/4DW GPU configurations (up to eight for N+N grid redundancy or pre-populating all 8 bays) and eight power supplies for 8DW/10DW; H100/H200 NVL supports 2400W P67252-B21 or 3200W P67248-B21 Titanium supplies, without mixing wattages.
-- **Affected SKU**: `P76706-B21`
-
-#### C4. [DELTA_DL380A_GEN12_LIVE_OCA_PRICING_ALIGNMENT_5155756524-01] DL380a_Gen12 — LIVE_QUOTE_RECONCILIATION
-- **Scope**: `CHASSIS_SPECIFIC`
-- **Rule**: Pointnext support on 8-GPU H200 DL380a scales to accelerator tier ($11,306), install scales to 4U GPU tier ($507), NVLink bridge list is $2,170, and GPU cable list is $114.
-- **Affected SKU**: `HU4B2A30C4W`
-
-#### C5. [DELTA_UNIVERSAL_CLOUD_MANAGEMENT_OPTIONAL] DL380a_Gen12 — SOFTWARE_OPTIONALITY
-- **Scope**: `CHASSIS_SPECIFIC`
-- **Rule**: Cloud Management FIO Enablement (S1A05A) and Compute Ops Management SaaS (R7A11AAE) are strictly optional services/licenses. They are not required for hardware buildability, power-on, or vendor portal acceptance.
-- **Affected SKU**: `S1A05A`
-
-#### C6. [DELTA_DL380_GEN12_NO_DRIVE_BYPASS] DL380_Gen12 — STORAGE_OVERRIDE
-- **Scope**: `CHASSIS_SPECIFIC`
-- **Rule**: When 873763-B21 is present, bypass physical drive cage, storage controller, and battery minimums.
-- **Affected SKU**: `873763-B21`
-
-#### C7. [DELTA_DL380_GEN12_LOCALIZATION_GATE] DL380_Gen12 — LOCALIZATION_GATE
-- **Scope**: `CHASSIS_SPECIFIC`
-- **Rule**: If Gen12 CTO base chassis is selected, P73325-B21 is mandatory for portal buildability.
-- **Affected SKU**: `P73282-B21`
-- **Required Dependency**: `P73325-B21`
-
-#### C8. [DELTA_DL380_GEN12_COM_SAAS_MANDATE] DL380_Gen12 — MANAGEMENT_LICENSING
-- **Scope**: `CHASSIS_SPECIFIC`
-- **Rule**: Gen12 requires exactly 1 management SaaS license (R7A11AAE). Remove redundant BD505A when R7A11AAE is selected.
-- **Affected SKU**: `P73282-B21`
-- **Required Dependency**: `R7A11AAE`
-
-#### C9. [DELTA_DL380_GEN12_LOT9_CE_BYPASS] DL380_Gen12 — POWER_BYPASS
-- **Scope**: `CHASSIS_SPECIFIC`
-- **Rule**: If Platinum PSUs are selected on Gen12, P35876-B21 clears EU Lot 9 CE prompts.
-- **Affected SKU**: `P38995-B21`
-- **Required Dependency**: `P35876-B21`
-
-#### C10. [DELTA_DL380_GEN12_25C_AMBIENT_TRACKING] DL380_Gen12 — THERMAL_TRACKING
-- **Scope**: `CHASSIS_SPECIFIC`
-- **Rule**: P79558-B21 tracks 25C ambient baseline for Gen12 chassis.
-- **Affected SKU**: `P73282-B21`
-- **Required Dependency**: `P79558-B21`
-
-#### C11. [DELTA_DL380_GEN12_HIGH_TDP_COOLING] DL380_Gen12 — COOLING_MANDATE
-- **Scope**: `CHASSIS_SPECIFIC`
-- **Rule**: CPUs > 185W TDP mandate High-Performance Fan Kit P48820-B21 and High-Performance Heatsink P74792-B21.
-- **Affected SKU**: `P74507-B21`
-- **Required Dependency**: `P48820-B21`
-
-#### C12. [DELTA_DL380_MISSING_SUPPORT_CONTRACT] DL380_Gen12 — DEPENDENCY
-- **Scope**: `CHASSIS_SPECIFIC`
-- **Rule**: Every HPE ProLiant DL380 Gen12 server (P73282-B21) requires a hardware maintenance support contract. Common customer error: quoting software licenses (P8B31A OneView) while omitting hardware warranty (HU4B2A30C4V 3Y Tech Care Basic at ,509/unit). The BOQ evaluator must flag any DL380 Gen12 config that has 0 support units against N physical servers.
-- **Affected SKU**: `HU4B2A30C4V`
-- **Required Dependency**: `P73282-B21`
-
-#### C13. [DELTA_DL145_GEN11_AMD_EPYC_8004] DL145_Gen11 — PROCESSOR_FAMILY
+#### C1. [DELTA_DL145_GEN11_AMD_EPYC_8004] DL145_Gen11 — PROCESSOR_FAMILY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: DL145 Gen11 is single-socket AMD EPYC 8004 only. No dual-socket configurations supported.
 - **Affected SKU**: `P71964-B21`
 
-#### C14. [DELTA_DL145_GEN11_4EDSFF_CAGE] DL145_Gen11 — DRIVE_CAGE_FORMAT
+#### C2. [DELTA_DL145_GEN11_4EDSFF_CAGE] DL145_Gen11 — DRIVE_CAGE_FORMAT
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: DL145 Gen11 uses EDSFF E3.S form factor drives only. Standard SFF/LFF drives are incompatible.
 - **Affected SKU**: `P71985-B21`
 - **Required Dependency**: `P77271-B21`
 
-#### C15. [DELTA_DL145_GEN11_PSU_PROFILE] DL145_Gen11 — PSU_WATTAGE_LIMIT
+#### C3. [DELTA_DL145_GEN11_PSU_PROFILE] DL145_Gen11 — PSU_WATTAGE_LIMIT
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: DL145 Gen11 supports maximum 1000W PSUs. 1600W/2400W PSUs are physically incompatible.
 - **Affected SKU**: `P71964-B21`
 - **Required Dependency**: `P54290-B21`
 
-#### C16. [DELTA_DL145_GEN11_EXTENDED_TEMP] DL145_Gen11 — EXTENDED_AMBIENT_TRACKING
+#### C4. [DELTA_DL145_GEN11_EXTENDED_TEMP] DL145_Gen11 — EXTENDED_AMBIENT_TRACKING
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: DL145 Gen11 edge deployments use P73021-B21 for extended -5C to 45C ambient temperature tracking.
 - **Affected SKU**: `P71964-B21`
 - **Required Dependency**: `P73021-B21`
 
-#### C17. [DELTA-1787856163365] DL380_Gen11 — RULE
+#### C5. [DELTA-1787856163365] DL380_Gen11 — RULE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: If PORTAL is present, P52534-B21 is mandatory.
 - **Affected SKU**: `PORTAL`
 - **Required Dependency**: `P52534-B21`
 
-#### C18. [DELTA-1787856163549] DL380_Gen11 — RULE
+#### C6. [DELTA-1787856163549] DL380_Gen11 — RULE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: If PORTAL is present, P64707-B21 is mandatory.
 - **Affected SKU**: `PORTAL`
 - **Required Dependency**: `P64707-B21`
 
-#### C19. [DELTA-1787856163672] DL380_Gen11 — RULE
+#### C7. [DELTA-1787856163672] DL380_Gen11 — RULE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Portal validation flagged restriction on PORTAL.
 - **Affected SKU**: `PORTAL`
 
-#### C20. [DELTA-1787856163759] DL380_Gen11 — RULE
+#### C8. [DELTA-1787856163759] DL380_Gen11 — RULE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: If PORTAL is present, P58335-B21 is mandatory.
 - **Affected SKU**: `PORTAL`
 - **Required Dependency**: `P58335-B21`
 
-#### C21. [DELTA_RAG_CARRYOVER_P48183-B21_1787856180158] DL380_Gen11 — CARRY_OVER_VALIDATED
+#### C9. [DELTA_RAG_CARRYOVER_P48183-B21_1787856180158] DL380_Gen11 — CARRY_OVER_VALIDATED
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: P48183-B21`)** [cite: 250] is fully supported
 - **Affected SKU**: `P48183-B21`
 
-#### C22. [DELTA_CLIC_81354632_DL380_GEN11] DL380_Gen11 — PHYSICAL_ATTACH_REQUIREMENT
+#### C10. [DELTA_CLIC_81354632_DL380_GEN11] DL380_Gen11 — PHYSICAL_ATTACH_REQUIREMENT
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: If P48832-B21 (Tri-Mode Splitter Cable) is selected, P48814-B21 (8SFF U.3 Premium Cage) is mandatory.
 - **Affected SKU**: `P48832-B21`
 - **Required Dependency**: `P48814-B21`
 
-#### C23. [DELTA_CLIC_81354652_DL380_GEN11] DL380_Gen11 — PHYSICAL_POWER_ENABLEMENT
+#### C11. [DELTA_CLIC_81354652_DL380_GEN11] DL380_Gen11 — PHYSICAL_POWER_ENABLEMENT
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: If P02377-B21 / P01366-B21 (Capacitor/Battery) is selected, P48918-B21 (Storage Controller Enablement Cable Kit) is mandatory.
 - **Affected SKU**: `P02377-B21`
 - **Required Dependency**: `P48918-B21`
 
-#### C24. [DELTA_CLIC_81355854_DL380_GEN11] DL380_Gen11 — MUTUAL_EXCLUSIVITY
+#### C12. [DELTA_CLIC_81355854_DL380_GEN11] DL380_Gen11 — MUTUAL_EXCLUSIVITY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: P51911-B21 and P48830-B21 cannot be selected together. Retain P48830-B21.
 - **Affected SKU**: `P51911-B21`
 - **Required Dependency**: `P48830-B21`
 
-#### C25. [DELTA_CLIC_81016755_DL380_GEN11] DL380_Gen11 — RISER_SLOT_ENABLEMENT
+#### C13. [DELTA_CLIC_81016755_DL380_GEN11] DL380_Gen11 — RISER_SLOT_ENABLEMENT
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: When 5+ PCIe cards are installed, P56073-B21 Primary Cable Kit is mandatory for Primary Riser Slot 1.
 - **Affected SKU**: `P48803-B21`
 - **Required Dependency**: `P56073-B21`
 
-#### C26. [DELTA_CLIC_EU_LOT9_P35876_DL380_GEN11] DL380_Gen11 — REGULATORY_ENABLEMENT
+#### C14. [DELTA_CLIC_EU_LOT9_P35876_DL380_GEN11] DL380_Gen11 — REGULATORY_ENABLEMENT
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: When ordering Platinum PSUs (P38997-B21) on high-draw dual-socket configurations, P35876-B21 (CE Mark Removal Kit) is required for non-EU deployment, or upgrade to Titanium PSUs (P44712-B21).
 - **Affected SKU**: `P38997-B21`
 - **Required Dependency**: `P35876-B21`
 
-#### C27. [DELTA_RAG_DEP_P02377-B21_P48918-B21_1787913302880] DL380_Gen11 — DEPENDENCY_CHAIN
+#### C15. [DELTA_RAG_DEP_P02377-B21_P48918-B21_1787913302880] DL380_Gen11 — DEPENDENCY_CHAIN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: P02377-B21` or `P01366-B21` **mandates the inclusion of `P48918-B21
 - **Affected SKU**: `P02377-B21`
 - **Required Dependency**: `P48918-B21`
 
-#### C28. [DELTA_RAG_DEP_P58335-B21_P48918-B21_1787913632019] DL380_Gen11 — DEPENDENCY_CHAIN
+#### C16. [DELTA_RAG_DEP_P58335-B21_P48918-B21_1787913632019] DL380_Gen11 — DEPENDENCY_CHAIN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: P58335-B21`)** with the **Smart Storage Hybrid Capacitor (`P02377-B21`)** strictly requires `P48918-B21
 - **Affected SKU**: `P58335-B21`
 - **Required Dependency**: `P48918-B21`
 
-#### C29. [DELTA_RAG_DEP_write-cach_P48918-B21_1787915281069] DL380_Gen11 — DEPENDENCY_CHAIN
+#### C17. [DELTA_RAG_DEP_write-cach_P48918-B21_1787915281069] DL380_Gen11 — DEPENDENCY_CHAIN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: write-cache backup for `P58335-B21`; requires enablement cable **`P48918-B21
 - **Affected SKU**: `write-cach`
 - **Required Dependency**: `P48918-B21`
 
-#### C30. [DELTA-1789752537004-v9j6p] DL380a_Gen12 — RULE
+#### C18. [DELTA_DL380_GEN12_NO_DRIVE_BYPASS] DL380_Gen12 — STORAGE_OVERRIDE
 - **Scope**: `CHASSIS_SPECIFIC`
-- **Rule**: Observed price drift on P74700-B21 (memory)
-- **Affected SKU**: `P74700-B21`
-- **Engineering Rationale**: *Manual price drift reconciliation from phase 15 audit*
+- **Rule**: When 873763-B21 is present, bypass physical drive cage, storage controller, and battery minimums.
+- **Affected SKU**: `873763-B21`
 
-#### C31. [DELTA-1789752537592-otj9t] DL380a_Gen12 — RULE
+#### C19. [DELTA_DL380_GEN12_LOCALIZATION_GATE] DL380_Gen12 — LOCALIZATION_GATE
 - **Scope**: `CHASSIS_SPECIFIC`
-- **Rule**: Observed price drift on S4A91C (drive)
-- **Affected SKU**: `S4A91C`
-- **Engineering Rationale**: *Manual price drift reconciliation from phase 15 audit*
+- **Rule**: If Gen12 CTO base chassis is selected, P73325-B21 is mandatory for portal buildability.
+- **Affected SKU**: `P73282-B21`
+- **Required Dependency**: `P73325-B21`
 
-#### C32. [DELTA-1789752537783-790yf] DL380a_Gen12 — RULE
+#### C20. [DELTA_DL380_GEN12_COM_SAAS_MANDATE] DL380_Gen12 — MANAGEMENT_LICENSING
 - **Scope**: `CHASSIS_SPECIFIC`
-- **Rule**: Observed price drift on HA113A1 (support)
-- **Affected SKU**: `HA113A1`
-- **Engineering Rationale**: *Manual price drift reconciliation from phase 15 audit*
+- **Rule**: Gen12 requires exactly 1 management SaaS license (R7A11AAE). Remove redundant BD505A when R7A11AAE is selected.
+- **Affected SKU**: `P73282-B21`
+- **Required Dependency**: `R7A11AAE`
 
-#### C33. [DELTA-1789752537975-31r35] DL380a_Gen12 — RULE
+#### C21. [DELTA_DL380_GEN12_LOT9_CE_BYPASS] DL380_Gen12 — POWER_BYPASS
 - **Scope**: `CHASSIS_SPECIFIC`
-- **Rule**: Observed price drift on HU4B2A30C4W (service)
-- **Affected SKU**: `HU4B2A30C4W`
-- **Engineering Rationale**: *Manual price drift reconciliation from phase 15 audit*
+- **Rule**: If Platinum PSUs are selected on Gen12, P35876-B21 clears EU Lot 9 CE prompts.
+- **Affected SKU**: `P38995-B21`
+- **Required Dependency**: `P35876-B21`
 
-#### C34. [DELTA-1787939298644] DL380_Gen12 — RULE
+#### C22. [DELTA_DL380_GEN12_25C_AMBIENT_TRACKING] DL380_Gen12 — THERMAL_TRACKING
+- **Scope**: `CHASSIS_SPECIFIC`
+- **Rule**: P79558-B21 tracks 25C ambient baseline for Gen12 chassis.
+- **Affected SKU**: `P73282-B21`
+- **Required Dependency**: `P79558-B21`
+
+#### C23. [DELTA_DL380_GEN12_HIGH_TDP_COOLING] DL380_Gen12 — COOLING_MANDATE
+- **Scope**: `CHASSIS_SPECIFIC`
+- **Rule**: CPUs > 185W TDP mandate High-Performance Fan Kit P48820-B21 and High-Performance Heatsink P74792-B21.
+- **Affected SKU**: `P74507-B21`
+- **Required Dependency**: `P48820-B21`
+
+#### C24. [DELTA_DL380_MISSING_SUPPORT_CONTRACT] DL380_Gen12 — DEPENDENCY
+- **Scope**: `CHASSIS_SPECIFIC`
+- **Rule**: Every HPE ProLiant DL380 Gen12 server (P73282-B21) requires a hardware maintenance support contract. Common customer error: quoting software licenses (P8B31A OneView) while omitting hardware warranty (HU4B2A30C4V 3Y Tech Care Basic at ,509/unit). The BOQ evaluator must flag any DL380 Gen12 config that has 0 support units against N physical servers.
+- **Affected SKU**: `HU4B2A30C4V`
+- **Required Dependency**: `P73282-B21`
+
+#### C25. [DELTA-1787939298644] DL380_Gen12 — RULE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Portal validation flagged restriction on P76453-B21.
 - **Affected SKU**: `P76453-B21`
 
-#### C35. [DELTA-1786705957681] DL380_Gen12 — RULE
+#### C26. [DELTA-1786705957681] DL380_Gen12 — RULE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: If P73282-B21 is present, P73282-B21 is mandatory.
 - **Affected SKU**: `P73282-B21`
 - **Required Dependency**: `P73282-B21`
 
-#### C36. [DELTA-1786705957757] DL380_Gen12 — RULE
+#### C27. [DELTA-1786705957757] DL380_Gen12 — RULE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: If P74573-B21 is present, P74573-B21 is mandatory.
 - **Affected SKU**: `P74573-B21`
 - **Required Dependency**: `P74573-B21`
 
-#### C37. [DELTA-1786705957802] DL380_Gen12 — RULE
+#### C28. [DELTA-1786705957802] DL380_Gen12 — RULE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: If P48820-B21 is present, P48820-B21 is mandatory.
 - **Affected SKU**: `P48820-B21`
 - **Required Dependency**: `P48820-B21`
 
-#### C38. [DELTA-1786705957846] DL380_Gen12 — RULE
+#### C29. [DELTA-1786705957846] DL380_Gen12 — RULE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: If P69728-B21 is present, P69728-B21 is mandatory.
 - **Affected SKU**: `P69728-B21`
 - **Required Dependency**: `P69728-B21`
 
-#### C39. [DELTA-1786705957894] DL380_Gen12 — RULE
+#### C30. [DELTA-1786705957894] DL380_Gen12 — RULE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: If P47777-B21 is present, P47777-B21 is mandatory.
 - **Affected SKU**: `P47777-B21`
 - **Required Dependency**: `P47777-B21`
 
-#### C40. [DELTA-1786705957933] DL380_Gen12 — RULE
+#### C31. [DELTA-1786705957933] DL380_Gen12 — RULE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: If P01366-B21 is present, P01366-B21 is mandatory.
 - **Affected SKU**: `P01366-B21`
 - **Required Dependency**: `P01366-B21`
 
-#### C41. [DELTA-1786705957977] DL380_Gen12 — RULE
+#### C32. [DELTA-1786705957977] DL380_Gen12 — RULE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: If P03178-B21 is present, P03178-B21 is mandatory.
 - **Affected SKU**: `P03178-B21`
 - **Required Dependency**: `P03178-B21`
 
-#### C42. [DELTA-1787939245188] DL380_Gen12 — RULE
+#### C33. [DELTA-1787939245188] DL380_Gen12 — RULE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Portal validation flagged restriction on P76450-B21.
 - **Affected SKU**: `P76449-B21`
 - **Required Dependency**: `P76450-B21`
 
-#### C43. [PREPROC-DELTA-1786781599909] DL380_Gen12 — PREPROCESSING_SPLIT_CONFIRMED
+#### C34. [PREPROC-DELTA-1786781599909] DL380_Gen12 — PREPROCESSING_SPLIT_CONFIRMED
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Confirmed configuration variation reason 'WORKLOAD_NODE_PURPOSE' for config_1
 
-#### C44. [DELTA-1786880389958] DL380_Gen12 — RULE
+#### C35. [DELTA-1786880389958] DL380_Gen12 — RULE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Intel Xeon 6730P 250W CPU requires HPE ProLiant Compute DL380 Gen12 Performance Heat Sink Kit (P74792-B21) due to exceeding the 185W standard thermal envelope.
 - **Affected SKU**: `P74573-B21`
 - **Required Dependency**: `P74792-B21`
 - **Engineering Rationale**: *Agentic Guardrail Loop derived from RAG/DB fact-check*
 
-#### C45. [DELTA-1786880394092] DL380_Gen12 — RULE
+#### C36. [DELTA-1786880394092] DL380_Gen12 — RULE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Intel Xeon 6730P 250W CPU requires HPE ProLiant High Performance Fan Kit (P48820-B21) because it exceeds the 240W system limit for standard chassis fans.
 - **Affected SKU**: `P74573-B21`
 - **Required Dependency**: `P48820-B21`
 - **Engineering Rationale**: *Agentic Guardrail Loop derived from RAG/DB fact-check*
 
-#### C46. [DELTA-1787315096377] DL380_Gen12 — RULE
+#### C37. [DELTA-1787315096377] DL380_Gen12 — RULE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: If P69728-F21 is present, DDR5-6400 is mandatory.
 - **Affected SKU**: `P69728-F21`
 - **Required Dependency**: `DDR5-6400`
 
-#### C47. [DELTA_RAG_FIO_P69728-B21_P69728-F21_1788145618089] DL380_Gen12 — OPTION_TYPE_SUBSTITUTION
+#### C38. [DELTA_RAG_FIO_P69728-B21_P69728-F21_1788145618089] DL380_Gen12 — OPTION_TYPE_SUBSTITUTION
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: | **`P69728-B21`** | HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 Smart Memory Kit | Memory / RDIMM (BTO) | **❌ BLOCKED in CTO (CLIC Suffix Violation)** | Standalone retail Build-to-Order (BTO) SKU [9, 15, 16]. Factory Configure-to-Order sessions enforce the rule: *"BTO products are not allowed in CTO B
 - **Affected SKU**: `P69728-B21`
 - **Required Dependency**: `P69728-F21`
 
-#### C48. [DELTA_RAG_DEP_P75740-B21_873763-B21_1788145618089] DL380_Gen12 — DEPENDENCY_CHAIN
+#### C39. [DELTA_RAG_DEP_P75740-B21_873763-B21_1788145618089] DL380_Gen12 — DEPENDENCY_CHAIN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: | **`P75740-B21`** | HPE DL3XX Gen12 8SFF x1 U.3 Tri-Mode Drive Cage Kit | Smart Chassis / Drive Cage | **✅ Valid Front Cage** | Installs an 8-bay SFF x1 U.3 Tri-Mode backplane into Box 1, 2, or 3 [19-23]. Installing this cage **clears the factory unbuildable drive-less chassis block** (which otherw
 - **Affected SKU**: `P75740-B21`
 - **Required Dependency**: `873763-B21`
 
-#### C49. [DELTA_RAG_DEP_P28586-B21_P75740-B21_1788145618089] DL380_Gen12 — DEPENDENCY_CHAIN
+#### C40. [DELTA_RAG_DEP_P28586-B21_P75740-B21_1788145618089] DL380_Gen12 — DEPENDENCY_CHAIN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: | **`P28586-B21`** | HPE 1.2TB SAS 12G 10K SFF BC 3yr Wty HDD | Storage / SFF SAS HDD | **✅ Valid SAS HDD** | 12G SAS 10K RPM Basic Carrier (BC) drive [21, 28]. Supported inside the `P75740-B21` drive cage [21, 22]. Requires a dedicated hardware storage controller (`P47777-B21`) as the system board
 - **Affected SKU**: `P28586-B21`
 - **Required Dependency**: `P75740-B21`
 
-#### C50. [DELTA_RAG_DEP_P51083-B21_P74573-B21_1788145618091] DL380_Gen12 — DEPENDENCY_CHAIN
+#### C41. [DELTA_RAG_DEP_P51083-B21_P74573-B21_1788145618091] DL380_Gen12 — DEPENDENCY_CHAIN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: | **`P51083-B21`** | HPE ProLiant DL380 Gen11 2U x16/x16/x16 Secondary Riser Kit | PCIe Expansion / Secondary Riser | **⚠️ BLOCKED if Single CPU (CPU 2 Dependency)** | Adds Slots 4, 5, and 6 (PCIe Gen5 x16) [35-37]. **QuickSpecs Mandate:** *"If Secondary OR Tertiary Riser is selected, then Second Pr
 - **Affected SKU**: `P51083-B21`
 - **Required Dependency**: `P74573-B21`
 
-#### C51. [DELTA_RAG_DEP_P47777-B21_P01366-B21_1788145618091] DL380_Gen12 — DEPENDENCY_CHAIN
+#### C42. [DELTA_RAG_DEP_P47777-B21_P01366-B21_1788145618091] DL380_Gen12 — DEPENDENCY_CHAIN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: | **`P47777-B21`** | HPE MR416i-p Gen11 x16 Lanes 8GB Cache PCI SPDM Storage Controller | Storage Controller / Tri-Mode | **⚠️ Conditional Pass (Requires 3 Co-Dependencies)** | Stand-up PCIe card (-p) installed into a PCIe riser slot [30, 36, 39-41]. Requires **`P01366-B21`** (battery), **`P48918-B2
 - **Affected SKU**: `P47777-B21`
 - **Required Dependency**: `P01366-B21`
 
-#### C52. [DELTA_RAG_DEP_P28586-B21_P40430-B21_1788145618092] DL380_Gen12 — DEPENDENCY_CHAIN
+#### C43. [DELTA_RAG_DEP_P28586-B21_P40430-B21_1788145618092] DL380_Gen12 — DEPENDENCY_CHAIN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Connecting SAS hard drives (`P28586-B21` and `P40430-B21`) in the 8SFF drive cage (`P75740-B21`) to the MR416i-p storage controller (`P47777-B21`) requires the following physical and logical connections [60–65, 97–102, 129–134]:
 - **Affected SKU**: `P28586-B21`
 - **Required Dependency**: `P40430-B21`
 
-#### C53. [DELTA_RAG_DEP_P76453-B21_P75740-B21_1788145618092] DL380_Gen12 — DEPENDENCY_CHAIN
+#### C44. [DELTA_RAG_DEP_P76453-B21_P75740-B21_1788145618092] DL380_Gen12 — DEPENDENCY_CHAIN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: 4.  **High-Speed Backplane Data Cable (`P76453-B21`):** Routing SAS/SATA/NVMe data lanes from Box 1 or Box 2 backplanes of the `P75740-B21` drive cage to the stand-up MR416i-p requires the **HPE ProLiant Compute DL380 Gen12 8SFF/2SFF UMB PCIe Cable Kit (`P76453-B21`)** [76, 80–85, 113, 117–122, 145,
 - **Affected SKU**: `P76453-B21`
 - **Required Dependency**: `P75740-B21`
 
-#### C54. [DELTA_RAG_FIO_P64707-B21_P69728-F21_1788148383105] DL380_Gen12 — OPTION_TYPE_SUBSTITUTION
+#### C45. [DELTA_RAG_FIO_P64707-B21_P69728-F21_1788148383105] DL380_Gen12 — OPTION_TYPE_SUBSTITUTION
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: | **`P64707-B21`** | HPE 64GB 2Rx4 DDR5-5600 Registered Memory | Memory / RDIMM | **❌ Incompatible Gen11 Memory** | Gen12 strictly mandates **DDR5-6400 Smart Memory** [200, 208–209, 240, 270]. DDR5-5600 is blocked. Factory CTO builds also mandate the **`-F21`** suffix (**`P69728-F21`**) [8-12]. |
 - **Affected SKU**: `P64707-B21`
 - **Required Dependency**: `P69728-F21`
 
-#### C55. [DELTA_RAG_DEP_P48818-B21_P38995-B21_1788148383108] DL380_Gen12 — DEPENDENCY_CHAIN
+#### C46. [DELTA_RAG_DEP_P48818-B21_P38995-B21_1788148383108] DL380_Gen12 — DEPENDENCY_CHAIN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: | **`P48818-B21`** | HPE 800W Flex Slot Platinum Hot Plug Power Supply | Power Supplies | **❌ Invalid SKU & Lack of Redundancy** | The valid 800W Platinum SKU is **`P38995-B21`** [23, 24]. A single PSU provides no 1+1 redundancy [25]. (EU ErP Lot 9 requires 96% Titanium `P03178-B21`) [25, 26]. |
 - **Affected SKU**: `P48818-B21`
 - **Required Dependency**: `P38995-B21`
 
-#### C56. [DELTA_RAG_DEP_P75740-B21_P75741-B21_1788148383112] DL380_Gen12 — DEPENDENCY_CHAIN
+#### C47. [DELTA_RAG_DEP_P75740-B21_P75741-B21_1788148383112] DL380_Gen12 — DEPENDENCY_CHAIN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: 2.  **Drive Cage Required:** You must add an **8SFF x1 U.3 Tri-Mode Drive Cage Kit (`P75740-B21`)** or an **8SFF x4 U.3 Drive Cage Kit (`P75741-B21`)** to Box 3 to physically mount the SSD [245–246, 256].
 - **Affected SKU**: `P75740-B21`
 - **Required Dependency**: `P75741-B21`
 
-#### C57. [DELTA_RAG_CARRYOVER_P47777-B21_1788459469422] DL380_Gen12 — CARRY_OVER_VALIDATED
+#### C48. [DELTA_RAG_CARRYOVER_P47777-B21_1788459469422] DL380_Gen12 — CARRY_OVER_VALIDATED
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: | **P47777-B21** | HPE MR416i-p Gen11 Storage Controller | **✅ VALID** | This PCIe plug-in controller is fully supported on Gen12 as a carry-forward option [16]. However, it **requires the P48918-B21 enablement cable kit** to bridge SPDM security and sideband power to the Gen12 motherboard [16]. | *
 - **Affected SKU**: `P47777-B21`
 
-#### C58. [DELTA_RAG_DEP_P01366-B21_P48918-B21_1788459469423] DL380_Gen12 — DEPENDENCY_CHAIN
+#### C49. [DELTA_RAG_DEP_P01366-B21_P48918-B21_1788459469423] DL380_Gen12 — DEPENDENCY_CHAIN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: | **P01366-B21** | HPE 96W Smart Storage Battery | **✅ VALID** | Fully compatible battery to protect the MR416i-p's volatile write cache [16]. It **requires the P48918-B21 enablement cable** to physically connect to the controller's cache module [16]. | **P01366-B21** *(Keep)* |
 - **Affected SKU**: `P01366-B21`
 - **Required Dependency**: `P48918-B21`
 
-#### C59. [DELTA_RAG_DEP_P10180-B21_P72203-B21_1788459469424] DL380_Gen12 — DEPENDENCY_CHAIN
+#### C50. [DELTA_RAG_DEP_P10180-B21_P72203-B21_1788459469424] DL380_Gen12 — DEPENDENCY_CHAIN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: | **P10180-B21** | Broadcom BCM5719 1Gb 4p BASE-T OCP3 NIC | **❌ OBSOLETE** | Legacy Gen11 part number [8]. It also **requires OCP enablement cable P72203-B21** to route high-speed PCIe lanes from CPU1 to rear OCP Slot B [25]. | **P51181-B21** (BCM5719 OCP3 NIC) and **P72203-B21** (OCP rear cable ki
 - **Affected SKU**: `P10180-B21`
 - **Required Dependency**: `P72203-B21`
 
-#### C60. [DELTA_RAG_DEP_P74573-B21_P48820-B21_1788461136463] DL380_Gen12 — DEPENDENCY_CHAIN
+#### C51. [DELTA_RAG_DEP_P74573-B21_P48820-B21_1788461136463] DL380_Gen12 — DEPENDENCY_CHAIN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: • [DL380_Gen12 Catalog Rule] Category: Learned Feedback Rules > P74573-B21 | Constraint: learned (Intel Xeon 6730P 250W CPU requires HPE ProLiant High Performance Fan Kit (P48820-B21) because it exceeds the 240W system limit for standard chassis fans.)
 - **Affected SKU**: `P74573-B21`
 - **Required Dependency**: `P48820-B21`
 
-#### C61. [DELTA_RAG_DEP_P74573-B21_P74792-B21_1788461136464] DL380_Gen12 — DEPENDENCY_CHAIN
+#### C52. [DELTA_RAG_DEP_P74573-B21_P74792-B21_1788461136464] DL380_Gen12 — DEPENDENCY_CHAIN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: • [DL380_Gen12 Catalog Rule] Category: Learned Feedback Rules > P74573-B21 | Constraint: learned (Intel Xeon 6730P 250W CPU requires HPE ProLiant Compute DL380 Gen12 Performance Heat Sink Kit (P74792-B21) due to exceeding the 185W standard thermal envelope.)
 - **Affected SKU**: `P74573-B21`
 - **Required Dependency**: `P74792-B21`
 
-#### C62. [DELTA-1788462981839] DL380_Gen12 — RULE
+#### C53. [DELTA-1788462981839] DL380_Gen12 — RULE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: P10180-B21 is obsolete Gen11 SKU for DL380 Gen12; replaced by P51181-B21 with mandatory OCP rear cable kit P72203-B21.
 - **Affected SKU**: `P10180-B21`
 - **Required Dependency**: `P51181-B21`
 - **Engineering Rationale**: *Agentic Guardrail Loop derived from RAG/DB fact-check*
 
-#### C63. [DELTA_RAG_DEP_P76453-B21_P48918-B21_1788463665182] DL380_Gen12 — DEPENDENCY_CHAIN
+#### C54. [DELTA_RAG_DEP_P76453-B21_P48918-B21_1788463665182] DL380_Gen12 — DEPENDENCY_CHAIN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: 3.  **Storage Cable Integration:** The inclusion of `P76453-B21` is correct for routing PCIe lanes from SFF drive cages back to the PCIe slot [16]. However, the configurator will throw an error unless it sees the **Storage Controller Enablement Cable Kit (`P48918-B21`)** which is physically required
 - **Affected SKU**: `P76453-B21`
 - **Required Dependency**: `P48918-B21`
 
-#### C64. [DELTA_RAG_DEP_P81130-B21_P74787-B21_1790182000001] DL380_Gen12 — OPTION_TYPE_SUBSTITUTION
+#### C55. [DELTA_RAG_DEP_P81130-B21_P74787-B21_1790182000001] DL380_Gen12 — OPTION_TYPE_SUBSTITUTION
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: When HPE ProLiant Compute DL380 Gen12 Cooling Upgrade Enablement Kit (P81130-B21) is selected, the only supported heatsink is HPE ProLiant Compute DL3XX Gen12 High Performance Heat Sink Kit (P74787-B21).
 - **Affected SKU**: `P81130-B21`
 - **Required Dependency**: `P74787-B21`
 
-#### C65. [DELTA_RAG_DEP_P81130-B21_P79555-B21_1790182000002] DL380_Gen12 — DEPENDENCY_CHAIN
+#### C56. [DELTA_RAG_DEP_P81130-B21_P79555-B21_1790182000002] DL380_Gen12 — DEPENDENCY_CHAIN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: HPE ProLiant Compute DL380 Gen12 Cooling Upgrade Enablement Kit (P81130-B21) supports processors up to 270W at 30C or up to 350W at 27C (P79555-B21).
 - **Affected SKU**: `P81130-B21`
 - **Required Dependency**: `P79555-B21`
 
-#### C66. [DELTA_RAG_DEP_P10115-B21_P72203-B21_1790182000003] DL380_Gen12 — DEPENDENCY_CHAIN
+#### C57. [DELTA_RAG_DEP_P10115-B21_P72203-B21_1790182000003] DL380_Gen12 — DEPENDENCY_CHAIN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Rear OCP Slot B on DL380 Gen12 NC chassis is unpowered and logically disconnected by default; configuring an OCP NIC requires P72203-B21 cable kit to route PCIe lanes from CPU 1.
 - **Affected SKU**: `P10115-B21`
 - **Required Dependency**: `P72203-B21`
 
-#### C67. [DELTA_RAG_DEP_P78279-B21_P74755-B21_1790182000004] DL380_Gen12 — DEPENDENCY_CHAIN
+#### C58. [DELTA_RAG_DEP_P78279-B21_P74755-B21_1790182000004] DL380_Gen12 — DEPENDENCY_CHAIN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: HPE NS204i-u v2 480GB NVMe Hot Plug Boot Storage Device (P78279-B21) requires HPE ProLiant Compute DL380 Gen12 NS204i-u Rear Boot Device Enablement Kit (P74755-B21).
 - **Affected SKU**: `P78279-B21`
 - **Required Dependency**: `P74755-B21`
 
-#### C68. [DELTA_CLIC_RULE_81392332_H200_16PIN_P93055-B21] DL380_Gen12 — DEPENDENCY_CHAIN
+#### C59. [DELTA_CLIC_RULE_81392332_H200_16PIN_P93055-B21] DL380_Gen12 — DEPENDENCY_CHAIN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Rule 81392332: P56072-B21 requires to be ordered with supported 8-pin GPUs. H200 NVL mandates P93055-B21 HPE GPU 16-pin Power Cable Kit.
 - **Affected SKU**: `S3U30C`
 - **Required Dependency**: `P93055-B21`
 
-#### C69. [DELTA_CLIC_RULE_81394885_SECONDARY_RISER_25C_AMBIENT] DL380_Gen12 — DEPENDENCY_CHAIN
+#### C60. [DELTA_CLIC_RULE_81394885_SECONDARY_RISER_25C_AMBIENT] DL380_Gen12 — DEPENDENCY_CHAIN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Rule 81394885: 1 qty 8SFF Cage + Processor above 270W + Air Cooled: H200 NVL (S3U30C) is not supported on Primary Riser (20C-30C) or Tertiary Riser (20C-30C). Supported on Secondary Riser only with <= 25C ambient temperature.
 - **Affected SKU**: `S3U30C`
 - **Required Dependency**: `P51083-B21`
 
-#### C70. [DELTA_CLIC_RULE_81393803_STORAGE_CABLE_P76453-B21] DL380_Gen12 — DEPENDENCY_CHAIN
+#### C61. [DELTA_CLIC_RULE_81393803_STORAGE_CABLE_P76453-B21] DL380_Gen12 — DEPENDENCY_CHAIN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Rule 81393803: P73282-B21 with 8SFF x1 Cage (P75740-B21) and 1 qty MR416i-p (P47777-B21) requires 1 qty of P76453-B21 (2SFF B1/ 8SFF x1 PCIe Cable).
 - **Affected SKU**: `P75740-B21`
 - **Required Dependency**: `P76453-B21`
 
-#### C71. [LEARN_DL380_GEN12_OEM_DEFAULT_20260930] DL380_Gen12 — WORKFLOW_OEM_SELECTION_ADVISORY
+#### C62. [LEARN_DL380_GEN12_OEM_DEFAULT_20260930] DL380_Gen12 — WORKFLOW_OEM_SELECTION_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: OCA observed P77819-B21 as OEM DL380 Gen12 CTO. Preserve it in scoped discovery; a generic commercial DL380 Gen12 request must not automatically choose OEM. P73282-B21 was observed as commercial CTO, not certified as a permanent substitute or live-price guarantee.
 - **Affected SKU**: `P77819-B21`
 
-#### C72. [LEARN_DL380_GEN12_RUNTIME_DISCOVERY_20260930] DL380_Gen12 — WORKFLOW_RUNTIME_DISCOVERY_ADVISORY
+#### C63. [LEARN_DL380_GEN12_RUNTIME_DISCOVERY_20260930] DL380_Gen12 — WORKFLOW_RUNTIME_DISCOVERY_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Catalog absence is not proof of unsupported hardware. Investigate missing and conditional BOQ SKUs on the exact base and owning configuration, with the requested quantities and environmental state. Hidden presence establishes observation only. Revalidate each changed manifest in CLIC; a runtime plan does not establish acceptance.
 
-#### C73. [LEARN_DL380_GEN12_COVERAGE_BOUNDARY_20260930] DL380_Gen12 — WORKFLOW_CAPTURE_COVERAGE_ADVISORY
+#### C64. [LEARN_DL380_GEN12_COVERAGE_BOUNDARY_20260930] DL380_Gen12 — WORKFLOW_CAPTURE_COVERAGE_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Chassis discovery does not establish traversal. Current automated conditional capture covers hidden DOM and ambient probes; other selector combinations and all-base coverage remain unverified. Unknown recommendation, price and variant capability stay unknown. Do not retire prior NotebookLM sources before replacement verification.
 
-#### C74. [LEARN_DL380_GEN12_H200_OBSERVED_STATES_20261001] DL380_Gen12 — WORKFLOW_VENDOR_OBSERVATION_ADVISORY
+#### C65. [LEARN_DL380_GEN12_H200_OBSERVED_STATES_20261001] DL380_Gen12 — WORKFLOW_VENDOR_OBSERVATION_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Live OCA evidence on commercial DL380 Gen12 base P73282-B21: S3U30C NVIDIA H200 NVL 141GB was already present in the DOM at selected 30C tracking SKU P79552-B21, but hidden and marked unavailable. Vendor text says H200 NVL and 30C cannot be selected together. At selected 27C tracking SKU P79555-B21 the unavailable flag and restriction disappeared; the collapsed section still hid the row visually. Original 30C was restored. This is two observed selector states, not proof of every lower temperature or final CLIC build acceptance. Evidence: evidence/scraping_review/h200_at_30c_before.json and h200_at_27c.json. Do not compile the 30C prohibition as an allowed <=30C gate.
 - **Affected SKU**: `S3U30C`
 
-#### C75. [LEARN_CHASSIS_THREE_TIER_DOMAIN_CLASSIFICATION_20261012] DL380_Gen12 — WORKFLOW_CHASSIS_CLASSIFICATION_ADVISORY
+#### C66. [LEARN_CHASSIS_THREE_TIER_DOMAIN_CLASSIFICATION_20261012] DL380_Gen12 — WORKFLOW_CHASSIS_CLASSIFICATION_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Specialty hardware categories (SAN switches like SN3600B, fabric interconnect modules like SY100Gb, and tape libraries like MSL) do not contain server compute components (CPU, Memory, Power). Synergy compute blades (SY480 Gen12) require CPU and Memory, but Power supplies are governed at the Synergy 12000 enclosure frame level. Freshness guards must evaluate compliance using a three-tier domain discriminator rather than enforcing server categories on all products (INV-158).
 
-#### C76. [LEARN_UNIVERSAL_ACCESSORY_SCOPE_ISOLATION_20261012] DL380_Gen12 — WORKFLOW_SCOPE_ISOLATION_ADVISORY
+#### C67. [LEARN_UNIVERSAL_ACCESSORY_SCOPE_ISOLATION_20261012] DL380_Gen12 — WORKFLOW_SCOPE_ISOLATION_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Passive accessories such as DC lug terminal kits (P36877-B21), power cords, and rail kits are architecture-invariant and span multiple product generations. They must be registered in APPROVED_UNIVERSAL_POLICY_SKUS in product_scope.js to prevent false-positive cross-generation isolation quarantines by the drift engine (INV-159).
 - **Affected SKU**: `P36877-B21`
 
-#### C77. [LEARN_WEBLOGIC_EXPAND_SECTIONS_COST_CAPTURE_20261012] DL380_Gen12 — WORKFLOW_DOM_EXTRACTION_ADVISORY
+#### C68. [LEARN_WEBLOGIC_EXPAND_SECTIONS_COST_CAPTURE_20261012] DL380_Gen12 — WORKFLOW_DOM_EXTRACTION_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: WebLogic OCA table expansion in cdp.js must explicitly toggle show_cost alongside show_price and trigger change events on all discovered showmore inputs. Omitting show_cost prevents cost column rendering, leaving tabular price-breakdown structures incomplete (INV-161).
+
+#### C69. [DELTA_DL380A_GEN12_DRIVE_CAGE_EXCLUSIVITY] DL380a_Gen12 — STORAGE_COLLISION
+- **Scope**: `CHASSIS_SPECIFIC`
+- **Rule**: DL380a prohibits mixing 4SFF cage P74710-B21 and 4EDSFF cage P74712-B21.
+- **Affected SKU**: `P74710-B21`
+
+#### C70. [DELTA_DL380A_GEN12_DUAL_CPU_HOMOGENEOUS] DL380a_Gen12 — PROCESSOR_POPULATION
+- **Scope**: `CHASSIS_SPECIFIC`
+- **Rule**: DL380a Gen12 requires two identical processor models; single-processor and mixed-processor configurations are unsupported.
+- **Affected SKU**: `P76706-B21`
+
+#### C71. [DELTA_DL380A_GEN12_GPU_PSU_COUNT_MATRIX] DL380a_Gen12 — POWER_REDUNDANCY
+- **Scope**: `CHASSIS_SPECIFIC`
+- **Rule**: Requires a minimum of five power supplies for 2DW/4DW GPU configurations (up to eight for N+N grid redundancy or pre-populating all 8 bays) and eight power supplies for 8DW/10DW; H100/H200 NVL supports 2400W P67252-B21 or 3200W P67248-B21 Titanium supplies, without mixing wattages.
+- **Affected SKU**: `P76706-B21`
+
+#### C72. [DELTA_DL380A_GEN12_LIVE_OCA_PRICING_ALIGNMENT_5155756524-01] DL380a_Gen12 — LIVE_QUOTE_RECONCILIATION
+- **Scope**: `CHASSIS_SPECIFIC`
+- **Rule**: Pointnext support on 8-GPU H200 DL380a scales to accelerator tier ($11,306), install scales to 4U GPU tier ($507), NVLink bridge list is $2,170, and GPU cable list is $114.
+- **Affected SKU**: `HU4B2A30C4W`
+
+#### C73. [DELTA_UNIVERSAL_CLOUD_MANAGEMENT_OPTIONAL] DL380a_Gen12 — SOFTWARE_OPTIONALITY
+- **Scope**: `CHASSIS_SPECIFIC`
+- **Rule**: Cloud Management FIO Enablement (S1A05A) and Compute Ops Management SaaS (R7A11AAE) are strictly optional services/licenses. They are not required for hardware buildability, power-on, or vendor portal acceptance.
+- **Affected SKU**: `S1A05A`
+
+#### C74. [DELTA-1789752537004-v9j6p] DL380a_Gen12 — RULE
+- **Scope**: `CHASSIS_SPECIFIC`
+- **Rule**: Observed price drift on P74700-B21 (memory)
+- **Affected SKU**: `P74700-B21`
+- **Engineering Rationale**: *Manual price drift reconciliation from phase 15 audit*
+
+#### C75. [DELTA-1789752537592-otj9t] DL380a_Gen12 — RULE
+- **Scope**: `CHASSIS_SPECIFIC`
+- **Rule**: Observed price drift on S4A91C (drive)
+- **Affected SKU**: `S4A91C`
+- **Engineering Rationale**: *Manual price drift reconciliation from phase 15 audit*
+
+#### C76. [DELTA-1789752537783-790yf] DL380a_Gen12 — RULE
+- **Scope**: `CHASSIS_SPECIFIC`
+- **Rule**: Observed price drift on HA113A1 (support)
+- **Affected SKU**: `HA113A1`
+- **Engineering Rationale**: *Manual price drift reconciliation from phase 15 audit*
+
+#### C77. [DELTA-1789752537975-31r35] DL380a_Gen12 — RULE
+- **Scope**: `CHASSIS_SPECIFIC`
+- **Rule**: Observed price drift on HU4B2A30C4W (service)
+- **Affected SKU**: `HU4B2A30C4W`
+- **Engineering Rationale**: *Manual price drift reconciliation from phase 15 audit*
 
 #### C78. [DELTA_SYNERGY_FRAME_STARTUP_MATH] SY480_Gen12 — STARTUP_SERVICE_FORMULA
 - **Scope**: `CHASSIS_SPECIFIC`
