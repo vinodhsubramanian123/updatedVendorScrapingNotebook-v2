@@ -399,8 +399,7 @@
       "lastSyncedSourceId": "fa126e4c-b313-488c-ac9a-0c0cced75a95",
       "trustedSourceIds": [
         "734fcb3d-d3a3-4ea2-9070-395c7193e2c9",
-        "fa126e4c-b313-488c-ac9a-0c0cced75a95",
-        "3c75e029-2864-4833-b7b1-f992f0d20232"
+        "fa126e4c-b313-488c-ac9a-0c0cced75a95"
       ],
       "officialSourceIds": [
         "734fcb3d-d3a3-4ea2-9070-395c7193e2c9"
@@ -408,8 +407,7 @@
       "quarantinedSourceIds": [],
       "queryEnabled": true,
       "canonicalKnowledgeSourceIds": [
-        "fa126e4c-b313-488c-ac9a-0c0cced75a95",
-        "3c75e029-2864-4833-b7b1-f992f0d20232"
+        "fa126e4c-b313-488c-ac9a-0c0cced75a95"
       ],
       "certifiedCatalogSourceIds": [
         "fa126e4c-b313-488c-ac9a-0c0cced75a95"

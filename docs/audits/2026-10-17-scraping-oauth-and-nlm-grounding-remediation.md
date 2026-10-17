@@ -84,6 +84,15 @@ Both server models were scraped, audited, promoted, and grounded with 100% cloud
 | **Verification Receipt** | `DL380_Gen12/scraping_verification_receipt.json` | `DL380a_Gen12/scraping_verification_receipt.json` |
 | **Markdown Diff Summary** | `DL380_Gen12_Catalog_Diff_Summary.md` | `DL380a_Gen12_Catalog_Diff_Summary.md` |
 
+6. **Subcategory Taxonomy Mapping & 26-Sheet Canonical Alignment**:
+   In `scripts/catalogs/build_catalog.js`, `compute ops` keywords are mapped directly to `Software & Licenses` (the canonical 26-sheet master catalog category) rather than introducing conflicting one-off parent names.
+7. **Trust Set Scoping for Non-Drive Products**:
+   For products with `canonicalDriveEnabled: false` (`DL380_Gen12`, `DL380a_Gen12`), `canonicalKnowledgeSourceIds` and `trustedSourceIds` are strictly bounded to verified official QuickSpecs and the current grounded catalog payload, matching `test_notebook_trust_config.js`.
+8. **Live Cloud Network Test Harness Tolerances**:
+   In `scripts/maintenance/run_test_matrix.js`, live query test suites (`test_product_notebook_resolution.js`, `test_clic_cross_product_validation.js`) are allocated an `effectiveTimeoutMs` of 180s to prevent premature abortion of live Gemini cloud reasoning.
+9. **Atomic Windows Text File Writes for Charters**:
+   In `scripts/services/running_knowledge_sync.js`, charter file output (`running_knowledge_charter.md`, `master_universal_knowledge_charter.md`) utilizes `writeTextAtomic` via `moveFile` (with automatic copy-and-unlink fallback), preventing Windows file-lock contention during test execution.
+
 ---
 
 ## 4. Invariants Codified in System Architecture
@@ -99,5 +108,7 @@ Both server models were scraped, audited, promoted, and grounded with 100% cloud
 
 1. **Never attempt in-place refresh on OCA**: Any WebLogic exception, session timeout, or logout MUST trigger `INV-89` / `INV-173` recovery via Tab 1 (`https://partner.hpe.com/group/prp`).
 2. **Never skip Pre-Flight**: Always run Step 0 (`scraping_preflight_gate.js`). A failure in NotebookLM or Google OAuth must be resolved before launching CDP scrapers.
-3. **Always use atomic writes on Windows**: When creating or moving catalog artifacts, use `safeWriteJsonAtomic` and fallback copy-and-unlink patterns.
+3. **Always use atomic writes on Windows**: When creating or moving catalog artifacts, use `safeWriteJsonAtomic` and fallback copy-and-unlink patterns (`moveFile`).
 4. **NotebookLM read vs write transport**: Use `nlmReadEnv` for high-throughput reads; keep mutations on safe channels with failover guarding.
+5. **Natural Language Canary Assertions (INV-135)**: Test assertions matching model responses must always accommodate natural language spaces (e.g. `DL380a Gen12`) alongside underscore forms.
+

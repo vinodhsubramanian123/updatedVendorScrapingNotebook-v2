@@ -547,8 +547,14 @@ async function syncRunningKnowledge(options = {}) {
   const sharedRevision = crypto.createHash('sha256').update(universalBase).digest('hex');
   const universalCharterMarkdown = `${universalBase}\nShared knowledge revision: ${sharedRevision}\n`;
 
-  fs.writeFileSync(RUNNING_CHARTER_PATH, charterMarkdown, 'utf8');
-  fs.writeFileSync(UNIVERSAL_CHARTER_PATH, universalCharterMarkdown, 'utf8');
+  const { moveFile } = require('../lib/system/fs_compat.js');
+  const writeTextAtomic = (targetPath, content) => {
+    const tmp = `${targetPath}.${Date.now()}.${Math.random().toString(36).slice(2, 6)}.tmp`;
+    fs.writeFileSync(tmp, content, 'utf8');
+    moveFile(tmp, targetPath);
+  };
+  writeTextAtomic(RUNNING_CHARTER_PATH, charterMarkdown);
+  writeTextAtomic(UNIVERSAL_CHARTER_PATH, universalCharterMarkdown);
   logger.info('RUNNING_KNOWLEDGE', `Wrote local charter markdown to ${RUNNING_CHARTER_PATH} and universal charter to ${UNIVERSAL_CHARTER_PATH}.`);
 
   // 6. Google Drive Document Creation or In-Place Update

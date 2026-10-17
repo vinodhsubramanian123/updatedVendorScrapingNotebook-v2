@@ -327,7 +327,13 @@ function runSingleTest(testFile, rootDir, timeoutMs, verbose) {
     let stderr = '';
     let timedOut = false;
 
-    const effectiveTimeoutMs = (testFile.includes('tests/e2e/') || testFile.includes('verify_all') || testFile.includes('test_boq_eval_benchmarks'))
+    const effectiveTimeoutMs = (
+      testFile.includes('tests/e2e/') ||
+      testFile.includes('verify_all') ||
+      testFile.includes('test_boq_eval_benchmarks') ||
+      testFile.includes('test_product_notebook_resolution') ||
+      testFile.includes('test_clic_cross_product_validation')
+    )
       ? Math.max(timeoutMs, 180000)
       : timeoutMs;
 
