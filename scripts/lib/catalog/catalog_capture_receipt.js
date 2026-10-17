@@ -75,7 +75,7 @@ function createCaptureReceipt(stagingDir, liveDir, product, options = {}) {
     }
   }
 
-  const workbookRows = require('xlsx-js-style').utils.sheet_to_json(workbook.Sheets['All SKUs']);
+  const workbookRows = workbook.SheetNames.flatMap(name => require('xlsx-js-style').utils.sheet_to_json(workbook.Sheets[name]));
   const actual = skuSet({ entries: [{ skus: workbookRows }] });
   const expected = new Set([...skuSet(next.catalog), ...skuSet(next.services)]);
   if ([...expected].some(sku => !actual.has(sku))) throw new Error('Workbook is missing catalog SKUs');

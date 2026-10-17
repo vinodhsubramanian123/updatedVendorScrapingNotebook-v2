@@ -1,6 +1,100 @@
 [
   {
     "summary": {
+      "runId": "run_DL380_Gen12_1792239991752",
+      "sessionName": "DL380_Gen12",
+      "startTime": "2026-10-17T12:26:31.749Z",
+      "endTime": "2026-10-17T12:26:35.017Z",
+      "durationMs": 3268,
+      "durationSec": "3.27",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 1172,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 602,
+      "validationStats": {
+        "totalEntries": 148,
+        "totalSKUs": 1172,
+        "validSKUs": 1172,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 5,
+        "zeroPriceSKUs": 76,
+        "priceErrors": 0,
+        "ruleCount": 769,
+        "categoryCount": 14
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-10-17T12:26:31.752Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_DL380_Gen12_1792239991302\\raw_data\\oca_raw_data_full.json",
+          "jsonOutputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_DL380_Gen12_1792239991302\\DL380_Gen12_Catalog.json",
+          "chassisLabel": "DL380 Gen12"
+        }
+      },
+      {
+        "timestamp": "2026-10-17T12:26:34.529Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 68,
+          "totalUniqueSKUs": 602,
+          "incrementalStats": {
+            "totalScrapedSkus": 602,
+            "unchangedSkusCount": 0,
+            "modifiedSkusCount": 0,
+            "addedSkusCount": 602,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-10-17T12:26:34.550Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 148,
+            "totalSKUs": 1172,
+            "validSKUs": 1172,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 5,
+            "zeroPriceSKUs": 76,
+            "priceErrors": 0,
+            "ruleCount": 769,
+            "categoryCount": 14
+          }
+        }
+      },
+      {
+        "timestamp": "2026-10-17T12:26:35.016Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_DL380_Gen12_1792239991302\\DL380_Gen12_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 1172,
+      "classified": 1172,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
       "runId": "run_DL380_Gen12_1790835899448",
       "sessionName": "DL380_Gen12",
       "startTime": "2026-10-01T06:24:59.436Z",
@@ -4720,112 +4814,6 @@
       },
       {
         "timestamp": "2026-08-14T12:31:57.498Z",
-        "message": "Base Chassis Variant SKU [P78061-B21] has $0 list price. Verify if CTO chassis price was scraped correctly."
-      }
-    ],
-    "errors": [],
-    "skuSummary": {
-      "total": 284,
-      "classified": 284,
-      "ambiguous": 0,
-      "failed": 0
-    }
-  },
-  {
-    "summary": {
-      "runId": "run_DL380_Gen12_SFF_1786710669848",
-      "sessionName": "DL380_Gen12_SFF",
-      "startTime": "2026-08-14T12:31:09.848Z",
-      "endTime": "2026-08-14T12:31:10.271Z",
-      "durationMs": 423,
-      "durationSec": "0.42",
-      "overallStatus": "COMPLETED",
-      "totalSteps": 4,
-      "totalSKUsProcessed": 284,
-      "warningCount": 3,
-      "errorCount": 0,
-      "totalUniqueSKUs": 284,
-      "validationStats": {
-        "totalEntries": 70,
-        "totalSKUs": 284,
-        "validSKUs": 284,
-        "invalidSKUs": 0,
-        "baseVariantsCount": 13,
-        "zeroPriceSKUs": 8,
-        "priceErrors": 0,
-        "ruleCount": 27,
-        "categoryCount": 9
-      }
-    },
-    "steps": [
-      {
-        "timestamp": "2026-08-14T12:31:09.848Z",
-        "stepName": "Initialize Classification Engine",
-        "status": "SUCCESS",
-        "details": {
-          "rawInputPath": "outputs/ProLiant/Gen12/DL380_Gen12_SFF/raw_data/oca_raw_data_full.json",
-          "jsonOutputPath": "outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog.json"
-        }
-      },
-      {
-        "timestamp": "2026-08-14T12:31:10.209Z",
-        "stepName": "Step 5: Catalog Diff Engine",
-        "status": "SUCCESS",
-        "details": {
-          "totalSubcategories": 1,
-          "totalUniqueSKUs": 284,
-          "incrementalStats": {
-            "totalScrapedSkus": 284,
-            "unchangedSkusCount": 271,
-            "modifiedSkusCount": 0,
-            "addedSkusCount": 13,
-            "removedSkusCount": 6,
-            "estimatedTokensSaved": 40650,
-            "estimatedProcessingTimeSavedMs": 54200
-          }
-        }
-      },
-      {
-        "timestamp": "2026-08-14T12:31:10.214Z",
-        "stepName": "Pre-Commit Data Integrity Validation",
-        "status": "SUCCESS",
-        "details": {
-          "isValid": true,
-          "errorCount": 0,
-          "warningCount": 3,
-          "stats": {
-            "totalEntries": 70,
-            "totalSKUs": 284,
-            "validSKUs": 284,
-            "invalidSKUs": 0,
-            "baseVariantsCount": 13,
-            "zeroPriceSKUs": 8,
-            "priceErrors": 0,
-            "ruleCount": 27,
-            "categoryCount": 9
-          }
-        }
-      },
-      {
-        "timestamp": "2026-08-14T12:31:10.270Z",
-        "stepName": "Step 6: Atomic Save Output JSON",
-        "status": "SUCCESS",
-        "details": {
-          "path": "outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog.json"
-        }
-      }
-    ],
-    "warnings": [
-      {
-        "timestamp": "2026-08-14T12:31:10.213Z",
-        "message": "Base Chassis Variant SKU [P78064-B21] has $0 list price. Verify if CTO chassis price was scraped correctly."
-      },
-      {
-        "timestamp": "2026-08-14T12:31:10.214Z",
-        "message": "Base Chassis Variant SKU [P78058-B21] has $0 list price. Verify if CTO chassis price was scraped correctly."
-      },
-      {
-        "timestamp": "2026-08-14T12:31:10.214Z",
         "message": "Base Chassis Variant SKU [P78061-B21] has $0 list price. Verify if CTO chassis price was scraped correctly."
       }
     ],

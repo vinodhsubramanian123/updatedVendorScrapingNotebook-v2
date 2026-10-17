@@ -1,15 +1,15 @@
 {
   "version": "1.0.0",
   "chassis": "DL380_Gen12",
-  "generatedAt": "2026-10-01T06:24:59.449Z",
-  "executionDurationMs": 1931,
+  "generatedAt": "2026-10-17T12:26:31.753Z",
+  "executionDurationMs": 3292,
   "summary": {
-    "totalRawTables": 126,
-    "validProductTables": 115,
-    "skippedTablesCount": 63,
-    "totalExtractedSKUs": 606,
-    "totalUniqueSKUs": 606,
-    "totalRulesExtracted": 1162,
+    "totalRawTables": 212,
+    "validProductTables": 197,
+    "skippedTablesCount": 65,
+    "totalExtractedSKUs": 1172,
+    "totalUniqueSKUs": 602,
+    "totalRulesExtracted": 649,
     "chassisVariantsCount": 6
   },
   "skippedTables": [
@@ -160,86 +160,11 @@
     },
     {
       "tableIndex": 134,
-      "reason": "Table rows < 2 or empty",
-      "sampleSnippet": null
-    },
-    {
-      "tableIndex": 135,
-      "reason": "Table rows < 2 or empty",
-      "sampleSnippet": null
-    },
-    {
-      "tableIndex": 136,
       "reason": "No valid SKU or headers detected",
-      "sampleSnippet": null
-    },
-    {
-      "tableIndex": 137,
-      "reason": "No valid SKU or headers detected",
-      "sampleSnippet": null
-    },
-    {
-      "tableIndex": 138,
-      "reason": "No valid SKU or headers detected",
-      "sampleSnippet": null
-    },
-    {
-      "tableIndex": 139,
-      "reason": "Table rows < 2 or empty",
-      "sampleSnippet": null
-    },
-    {
-      "tableIndex": 140,
-      "reason": "No valid SKU or headers detected",
-      "sampleSnippet": null
-    },
-    {
-      "tableIndex": 141,
-      "reason": "Table rows < 2 or empty",
       "sampleSnippet": null
     },
     {
       "tableIndex": 142,
-      "reason": "Table rows < 2 or empty",
-      "sampleSnippet": null
-    },
-    {
-      "tableIndex": 143,
-      "reason": "Table rows < 2 or empty",
-      "sampleSnippet": null
-    },
-    {
-      "tableIndex": 144,
-      "reason": "Table rows < 2 or empty",
-      "sampleSnippet": null
-    },
-    {
-      "tableIndex": 145,
-      "reason": "Table rows < 2 or empty",
-      "sampleSnippet": null
-    },
-    {
-      "tableIndex": 146,
-      "reason": "Table rows < 2 or empty",
-      "sampleSnippet": null
-    },
-    {
-      "tableIndex": 147,
-      "reason": "No valid SKU or headers detected",
-      "sampleSnippet": null
-    },
-    {
-      "tableIndex": 148,
-      "reason": "Table rows < 2 or empty",
-      "sampleSnippet": null
-    },
-    {
-      "tableIndex": 149,
-      "reason": "Table rows < 2 or empty",
-      "sampleSnippet": null
-    },
-    {
-      "tableIndex": 150,
       "reason": "Table rows < 2 or empty",
       "sampleSnippet": null
     },
@@ -255,47 +180,12 @@
     },
     {
       "tableIndex": 153,
-      "reason": "No valid SKU or headers detected",
+      "reason": "Solution hierarchy BOM summary table",
       "sampleSnippet": null
     },
     {
       "tableIndex": 154,
-      "reason": "Table rows < 2 or empty",
-      "sampleSnippet": null
-    },
-    {
-      "tableIndex": 155,
-      "reason": "Table rows < 2 or empty",
-      "sampleSnippet": null
-    },
-    {
-      "tableIndex": 156,
-      "reason": "Table rows < 2 or empty",
-      "sampleSnippet": null
-    },
-    {
-      "tableIndex": 157,
-      "reason": "Table rows < 2 or empty",
-      "sampleSnippet": null
-    },
-    {
-      "tableIndex": 158,
       "reason": "No valid SKU or headers detected",
-      "sampleSnippet": null
-    },
-    {
-      "tableIndex": 159,
-      "reason": "Table rows < 2 or empty",
-      "sampleSnippet": null
-    },
-    {
-      "tableIndex": 160,
-      "reason": "Table rows < 2 or empty",
-      "sampleSnippet": null
-    },
-    {
-      "tableIndex": 161,
-      "reason": "Table rows < 2 or empty",
       "sampleSnippet": null
     },
     {
@@ -304,27 +194,147 @@
       "sampleSnippet": null
     },
     {
-      "tableIndex": 164,
-      "reason": "No valid SKU or headers detected",
-      "sampleSnippet": null
-    },
-    {
-      "tableIndex": 165,
+      "tableIndex": 171,
       "reason": "Table rows < 2 or empty",
       "sampleSnippet": null
     },
     {
-      "tableIndex": 166,
-      "reason": "Solution hierarchy BOM summary table",
+      "tableIndex": 172,
+      "reason": "Table rows < 2 or empty",
       "sampleSnippet": null
     },
     {
-      "tableIndex": 167,
+      "tableIndex": 173,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 174,
       "reason": "No valid SKU or headers detected",
       "sampleSnippet": null
     },
     {
       "tableIndex": 175,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 176,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 177,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 178,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 179,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 180,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 181,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 182,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 183,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 184,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 185,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 186,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 187,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 188,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 189,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 190,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 191,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 192,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 193,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 194,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 195,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 196,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 197,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 198,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 199,
       "reason": "Table rows < 2 or empty",
       "sampleSnippet": null
     }
@@ -488,9 +498,9 @@
     },
     {
       "tableIndex": 44,
-      "subCategory": "SFF Drive Cages & Enablement",
-      "parentCategory": "Drive Enclosures / Drives",
-      "matchedVia": "role_classifier",
+      "subCategory": "Compute Ops Management Enablement SKUs",
+      "parentCategory": "HPE Compute Ops Management",
+      "matchedVia": "direct_taxonomy_keyword",
       "detectedRole": "Drive Cage / Drive",
       "constraint": "max 1",
       "minQty": 0,
@@ -705,8 +715,8 @@
     {
       "tableIndex": 63,
       "subCategory": "Compute Ops Management Enablement SKUs",
-      "parentCategory": "Cables & Enablement Kits",
-      "matchedVia": "role_classifier",
+      "parentCategory": "HPE Compute Ops Management",
+      "matchedVia": "direct_taxonomy_keyword",
       "detectedRole": "Cable Kit",
       "constraint": "max 1",
       "minQty": 0,
@@ -1179,11 +1189,23 @@
       "constraint": "max 1",
       "minQty": 0,
       "maxQty": 1,
-      "skuCount": 25,
+      "skuCount": 2,
       "rulesCount": 1
     },
     {
       "tableIndex": 103,
+      "subCategory": "Power Cords & Jumper Cables",
+      "parentCategory": "Cables & Enablement Kits",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Cable Kit",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 25,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 104,
       "subCategory": "-48VDC Power Supplies & Cable Kits",
       "parentCategory": "Cables & Enablement Kits",
       "matchedVia": "role_classifier",
@@ -1192,18 +1214,6 @@
       "minQty": 0,
       "maxQty": 1,
       "skuCount": 1,
-      "rulesCount": 1
-    },
-    {
-      "tableIndex": 104,
-      "subCategory": "Power Cords & Jumper Cables",
-      "parentCategory": "Cables & Enablement Kits",
-      "matchedVia": "role_classifier",
-      "detectedRole": "Cable Kit",
-      "constraint": "max 1",
-      "minQty": 0,
-      "maxQty": 1,
-      "skuCount": 2,
       "rulesCount": 1
     },
     {
@@ -1294,7 +1304,7 @@
       "tableIndex": 112,
       "subCategory": "Compute Ops Management SKUs",
       "parentCategory": "HPE Compute Ops Management",
-      "matchedVia": "portal_text_position",
+      "matchedVia": "direct_taxonomy_keyword",
       "detectedRole": "Option Component",
       "constraint": "required",
       "minQty": 1,
@@ -1305,7 +1315,7 @@
     {
       "tableIndex": 113,
       "subCategory": "Compute Ops Management Enablement SKUs",
-      "parentCategory": "Accessories & Infrastructure",
+      "parentCategory": "HPE Compute Ops Management",
       "matchedVia": "direct_taxonomy_keyword",
       "detectedRole": "Option Component",
       "constraint": "max 1",
@@ -1431,7 +1441,7 @@
       "constraint": "no max",
       "minQty": 0,
       "maxQty": -1,
-      "skuCount": 28,
+      "skuCount": 29,
       "rulesCount": 1
     },
     {
@@ -1443,7 +1453,7 @@
       "constraint": "no max",
       "minQty": 0,
       "maxQty": -1,
-      "skuCount": 37,
+      "skuCount": 35,
       "rulesCount": 1
     },
     {
@@ -1555,7 +1565,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 168,
+      "tableIndex": 135,
       "subCategory": "System Options",
       "parentCategory": "Support Services",
       "matchedVia": "role_classifier",
@@ -1567,7 +1577,7 @@
       "rulesCount": 0
     },
     {
-      "tableIndex": 169,
+      "tableIndex": 136,
       "subCategory": "System Options",
       "parentCategory": "Support Services",
       "matchedVia": "role_classifier",
@@ -1579,7 +1589,7 @@
       "rulesCount": 0
     },
     {
-      "tableIndex": 170,
+      "tableIndex": 137,
       "subCategory": "Energy Star",
       "parentCategory": "Support Services",
       "matchedVia": "role_classifier",
@@ -1591,7 +1601,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 171,
+      "tableIndex": 138,
       "subCategory": "Energy Star",
       "parentCategory": "Support Services",
       "matchedVia": "role_classifier",
@@ -1603,7 +1613,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 172,
+      "tableIndex": 139,
       "subCategory": "System Options",
       "parentCategory": "Support Services",
       "matchedVia": "role_classifier",
@@ -1615,7 +1625,7 @@
       "rulesCount": 0
     },
     {
-      "tableIndex": 173,
+      "tableIndex": 140,
       "subCategory": "HPE Virtualization",
       "parentCategory": "Support Services",
       "matchedVia": "role_classifier",
@@ -1627,7 +1637,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 174,
+      "tableIndex": 141,
       "subCategory": "Data Management Framework (SGI DMF)",
       "parentCategory": "Support Services",
       "matchedVia": "role_classifier",
@@ -1639,7 +1649,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 176,
+      "tableIndex": 143,
       "subCategory": "System Options",
       "parentCategory": "Support Services",
       "matchedVia": "role_classifier",
@@ -1651,7 +1661,7 @@
       "rulesCount": 0
     },
     {
-      "tableIndex": 177,
+      "tableIndex": 144,
       "subCategory": "System Options",
       "parentCategory": "Support Services",
       "matchedVia": "role_classifier",
@@ -1663,7 +1673,7 @@
       "rulesCount": 0
     },
     {
-      "tableIndex": 178,
+      "tableIndex": 145,
       "subCategory": "Red Hat (add-ons)",
       "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
@@ -1675,7 +1685,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 180,
+      "tableIndex": 147,
       "subCategory": "System Options",
       "parentCategory": "Support Services",
       "matchedVia": "role_classifier",
@@ -1687,7 +1697,7 @@
       "rulesCount": 0
     },
     {
-      "tableIndex": 181,
+      "tableIndex": 148,
       "subCategory": "VMware vCloud Products",
       "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
@@ -1699,7 +1709,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 183,
+      "tableIndex": 150,
       "subCategory": "HPE Virtualization",
       "parentCategory": "Support Services",
       "matchedVia": "role_classifier",
@@ -1709,54 +1719,1038 @@
       "maxQty": -1,
       "skuCount": 10,
       "rulesCount": 1
+    },
+    {
+      "tableIndex": 155,
+      "subCategory": "System Options",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "N/A",
+      "minQty": 0,
+      "maxQty": "",
+      "skuCount": 10,
+      "rulesCount": 0
+    },
+    {
+      "tableIndex": 156,
+      "subCategory": "System Options",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "N/A",
+      "minQty": 0,
+      "maxQty": "",
+      "skuCount": 7,
+      "rulesCount": 0
+    },
+    {
+      "tableIndex": 157,
+      "subCategory": "Energy Star",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 9,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 158,
+      "subCategory": "Energy Star",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 10,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 159,
+      "subCategory": "System Options",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "N/A",
+      "minQty": 0,
+      "maxQty": "",
+      "skuCount": 10,
+      "rulesCount": 0
+    },
+    {
+      "tableIndex": 160,
+      "subCategory": "HPE Virtualization",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 3,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 161,
+      "subCategory": "Data Management Framework (SGI DMF)",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 7,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 163,
+      "subCategory": "System Options",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "N/A",
+      "minQty": 0,
+      "maxQty": "",
+      "skuCount": 9,
+      "rulesCount": 0
+    },
+    {
+      "tableIndex": 164,
+      "subCategory": "System Options",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "N/A",
+      "minQty": 0,
+      "maxQty": "",
+      "skuCount": 8,
+      "rulesCount": 0
+    },
+    {
+      "tableIndex": 165,
+      "subCategory": "Red Hat (add-ons)",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 10,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 167,
+      "subCategory": "System Options",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "N/A",
+      "minQty": 0,
+      "maxQty": "",
+      "skuCount": 6,
+      "rulesCount": 0
+    },
+    {
+      "tableIndex": 168,
+      "subCategory": "VMware vCloud Products",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 2,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 170,
+      "subCategory": "HPE Virtualization",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 10,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 201,
+      "subCategory": "AmbientTemperature",
+      "parentCategory": "Accessories & Infrastructure",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Chassis Infrastructure",
+      "constraint": "required",
+      "minQty": 1,
+      "maxQty": -2,
+      "skuCount": 6,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 202,
+      "subCategory": "Graphics",
+      "parentCategory": "Graphics & GPU",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "GPU / Accelerator",
+      "constraint": "max 5",
+      "minQty": 0,
+      "maxQty": 5,
+      "skuCount": 8,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 203,
+      "subCategory": "NVIDIA GPU SW",
+      "parentCategory": "Graphics & GPU",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "GPU / Accelerator",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 204,
+      "subCategory": "Graphics Accessories",
+      "parentCategory": "Graphics & GPU",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Cable Kit",
+      "constraint": "max 3",
+      "minQty": 0,
+      "maxQty": 3,
+      "skuCount": 3,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 205,
+      "subCategory": "Power Supplies",
+      "parentCategory": "Power Supplies",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Power Supply",
+      "constraint": "max 2",
+      "minQty": 1,
+      "maxQty": 2,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 206,
+      "subCategory": "Flex Slot Power Supplies",
+      "parentCategory": "Power Supplies",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Power Supply",
+      "constraint": "max 1",
+      "minQty": 1,
+      "maxQty": 1,
+      "skuCount": 3,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 207,
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "parentCategory": "Power Supplies",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Power Supply",
+      "constraint": "max 1",
+      "minQty": 1,
+      "maxQty": 1,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 208,
+      "subCategory": "Power Cooling Options",
+      "parentCategory": "Cooling / Thermal",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Cable Kit",
+      "constraint": "max 3",
+      "minQty": 0,
+      "maxQty": 3,
+      "skuCount": 5,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 209,
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "parentCategory": "Cables & Enablement Kits",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Cable Kit",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 210,
+      "subCategory": "Power Cords",
+      "parentCategory": "Cables & Enablement Kits",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Cable Kit",
+      "constraint": "max 2",
+      "minQty": 0,
+      "maxQty": 2,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 211,
+      "subCategory": "Power Cords & Jumper Cables",
+      "parentCategory": "Cables & Enablement Kits",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Cable Kit",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 2,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 212,
+      "subCategory": "Power Cords & Jumper Cables",
+      "parentCategory": "Cables & Enablement Kits",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Cable Kit",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 25,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 213,
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "parentCategory": "Cables & Enablement Kits",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Cable Kit",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 214,
+      "subCategory": "Proliant Software Media Kits",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Operating System / License",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 215,
+      "subCategory": "GPU Accelerators",
+      "parentCategory": "Graphics & GPU",
+      "matchedVia": "role_classifier",
+      "detectedRole": "GPU / Accelerator",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 23,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 216,
+      "subCategory": "HPC Software Products",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 139,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 217,
+      "subCategory": "High Availability Computing - Cluster Software",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 26,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 218,
+      "subCategory": "Partner Software - Interconnect Management Array",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "GPU / Accelerator",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 3,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 219,
+      "subCategory": "NVIDIA GPU SW",
+      "parentCategory": "Graphics & GPU",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 60,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 220,
+      "subCategory": "Partner Software - Operating System",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 30,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 221,
+      "subCategory": "Compute Ops Management SKUs",
+      "parentCategory": "HPE Compute Ops Management",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Option Component",
+      "constraint": "required",
+      "minQty": 1,
+      "maxQty": -2,
+      "skuCount": 2,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 222,
+      "subCategory": "Compute Ops Management SKUs",
+      "parentCategory": "HPE Compute Ops Management",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Option Component",
+      "constraint": "required",
+      "minQty": 1,
+      "maxQty": -2,
+      "skuCount": 2,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 223,
+      "subCategory": "Compute Ops Management SKUs",
+      "parentCategory": "HPE Compute Ops Management",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Option Component",
+      "constraint": "required",
+      "minQty": 1,
+      "maxQty": -2,
+      "skuCount": 3,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 224,
+      "subCategory": "Compute Ops Management Enablement SKUs",
+      "parentCategory": "HPE Compute Ops Management",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Option Component",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 2,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 225,
+      "subCategory": "OEM Software",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 7,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 226,
+      "subCategory": "Proliant Software Media Kits",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Operating System / License",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 2,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 227,
+      "subCategory": "Red Hat (add-ons)",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Operating System / License",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 26,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 228,
+      "subCategory": "SUSE Add-ons",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Operating System / License",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 2,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 229,
+      "subCategory": "iLO",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 6,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 230,
+      "subCategory": "OneView Management Software",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 7,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 231,
+      "subCategory": "Server Management & Operating System Licenses",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Operating System / License",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 24,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 232,
+      "subCategory": "INTEL VROC Products",
+      "parentCategory": "Storage Controllers",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Storage Controller",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 4,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 233,
+      "subCategory": "Supported Operating System",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 96,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 234,
+      "subCategory": "MS Windows Server",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Operating System / License",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 29,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 235,
+      "subCategory": "MS Windows Server",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Operating System / License",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 35,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 236,
+      "subCategory": "Red Hat OpenShift Platform Container",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 13,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 237,
+      "subCategory": "Server Management & Operating System Licenses",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Operating System / License",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 30,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 238,
+      "subCategory": "SUSE containers",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 3,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 239,
+      "subCategory": "SUSE Linux Enterprise Server",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 44,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 240,
+      "subCategory": "Microsoft Windows CAL Packs",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 30,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 241,
+      "subCategory": "Server Management & Operating System Licenses",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Operating System / License",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 3,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 242,
+      "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 36,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 243,
+      "subCategory": "Energy Star",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 2,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 244,
+      "subCategory": "Energy Star",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 3,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 245,
+      "subCategory": "AmbientTemperature",
+      "parentCategory": "Accessories & Infrastructure",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Chassis Infrastructure",
+      "constraint": "required",
+      "minQty": 1,
+      "maxQty": -2,
+      "skuCount": 6,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 246,
+      "subCategory": "Compute Ops Management SKUs",
+      "parentCategory": "HPE Compute Ops Management",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Option Component",
+      "constraint": "required",
+      "minQty": 1,
+      "maxQty": -2,
+      "skuCount": 2,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 247,
+      "subCategory": "Compute Ops Management SKUs",
+      "parentCategory": "HPE Compute Ops Management",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Option Component",
+      "constraint": "required",
+      "minQty": 1,
+      "maxQty": -2,
+      "skuCount": 2,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 248,
+      "subCategory": "Compute Ops Management SKUs",
+      "parentCategory": "HPE Compute Ops Management",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Option Component",
+      "constraint": "required",
+      "minQty": 1,
+      "maxQty": -2,
+      "skuCount": 3,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 249,
+      "subCategory": "Compute Ops Management Enablement SKUs",
+      "parentCategory": "HPE Compute Ops Management",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Option Component",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 2,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 250,
+      "subCategory": "OEM Software",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 7,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 251,
+      "subCategory": "Proliant Software Media Kits",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Operating System / License",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 2,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 252,
+      "subCategory": "Red Hat (add-ons)",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Operating System / License",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 26,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 253,
+      "subCategory": "SUSE Add-ons",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Operating System / License",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 2,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 254,
+      "subCategory": "iLO",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 6,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 255,
+      "subCategory": "OneView Management Software",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 7,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 256,
+      "subCategory": "Server Management & Operating System Licenses",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Operating System / License",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 24,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 257,
+      "subCategory": "INTEL VROC Products",
+      "parentCategory": "Storage Controllers",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Storage Controller",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 4,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 258,
+      "subCategory": "Supported Operating System",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 96,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 259,
+      "subCategory": "MS Windows Server",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Operating System / License",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 29,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 260,
+      "subCategory": "MS Windows Server",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Operating System / License",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 35,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 261,
+      "subCategory": "Red Hat OpenShift Platform Container",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 13,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 262,
+      "subCategory": "Server Management & Operating System Licenses",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Operating System / License",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 30,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 263,
+      "subCategory": "SUSE containers",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 3,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 264,
+      "subCategory": "SUSE Linux Enterprise Server",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 44,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 265,
+      "subCategory": "Microsoft Windows CAL Packs",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 30,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 266,
+      "subCategory": "Server Management & Operating System Licenses",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Operating System / License",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 3,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 267,
+      "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 36,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 268,
+      "subCategory": "Energy Star",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 2,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 269,
+      "subCategory": "Energy Star",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 3,
+      "rulesCount": 1
     }
   ],
   "categoryDistribution": {
     "Chassis": 5,
-    "Accessories & Infrastructure": 21,
+    "Accessories & Infrastructure": 34,
     "Processor": 34,
-    "Cooling / Thermal": 11,
-    "Memory": 11,
-    "Drive Enclosures / Drives": 25,
+    "Cooling / Thermal": 16,
+    "Memory": 9,
+    "Drive Enclosures / Drives": 24,
+    "HPE Compute Ops Management": 5,
     "Networking": 80,
     "PCIe Risers": 10,
-    "Storage Controllers": 49,
-    "Cables & Enablement Kits": 66,
-    "Software & Licenses": 272,
-    "Graphics & GPU": 16,
-    "Power Supplies": 5,
-    "HPE Compute Ops Management": 1
+    "Storage Controllers": 52,
+    "Cables & Enablement Kits": 95,
+    "Software & Licenses": 767,
+    "Graphics & GPU": 31,
+    "Power Supplies": 10
   },
   "chassisVariantsMatrix": {
     "P73282-B21": {
       "description": "HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-order Server",
       "formFactor": "Small Form Factor (8-Bay SFF)",
       "listPrice": 5584,
-      "diffStatus": "ATTRIBUTE_CHANGED"
+      "diffStatus": "UNCHANGED"
     },
     "P73283-B21": {
       "description": "HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-order Server",
       "formFactor": "Small Form Factor (24-Bay SFF)",
       "listPrice": 5980,
-      "diffStatus": "ATTRIBUTE_CHANGED"
+      "diffStatus": "UNCHANGED"
     },
     "P73284-B21": {
       "description": "HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-order Server",
       "formFactor": "Large Form Factor (12-Bay LFF)",
       "listPrice": 6350,
-      "diffStatus": "ATTRIBUTE_CHANGED"
+      "diffStatus": "UNCHANGED"
     },
     "P73285-B21": {
       "description": "HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-order Server",
       "formFactor": "Large Form Factor (8-Bay LFF)",
       "listPrice": 6890,
-      "diffStatus": "ATTRIBUTE_CHANGED"
+      "diffStatus": "UNCHANGED"
     },
     "P73286-B21": {
       "description": "HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-order Server",
       "formFactor": "eDesign SFF (16-Bay EDSFF)",
       "listPrice": 7120,
-      "diffStatus": "ATTRIBUTE_CHANGED"
+      "diffStatus": "UNCHANGED"
     },
     "P73287-B21": {
       "description": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server",

@@ -3782,5 +3782,77 @@
     "subCategory": "Graphics Accessories",
     "firstSeenDate": "2026-09-30",
     "status": "ACTIVE"
+  },
+  "P88533-B21": {
+    "productNumber": "P88533-B21",
+    "description": "HPE 30.72TB NVMe Gen4 Mainstream Performance Read Intensive SFF BC U.3 PQC27 CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-10-17",
+    "status": "ACTIVE"
+  },
+  "P92309-B21": {
+    "productNumber": "P92309-B21",
+    "description": "HPE 1.6TB NVMe Gen4 Mainstream Performance Mixed Use SFF BC U.3 PQC27 CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-10-17",
+    "status": "ACTIVE"
+  },
+  "P92311-B21": {
+    "productNumber": "P92311-B21",
+    "description": "HPE 3.2TB NVMe Gen4 Mainstream Performance Mixed Use SFF BC U.3 PQC27 CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-10-17",
+    "status": "ACTIVE"
+  },
+  "P92313-B21": {
+    "productNumber": "P92313-B21",
+    "description": "HPE 6.4TB NVMe Gen4 Mainstream Performance Mixed Use SFF BC U.3 PQC27 CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-10-17",
+    "status": "ACTIVE"
+  },
+  "P92315-B21": {
+    "productNumber": "P92315-B21",
+    "description": "HPE 1.92TB NVMe Gen4 Mainstream Performance Read Intensive SFF BC U.3 PQC27 CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-10-17",
+    "status": "ACTIVE"
+  },
+  "P92317-B21": {
+    "productNumber": "P92317-B21",
+    "description": "HPE 3.84TB NVMe Gen4 Mainstream Performance Read Intensive SFF BC U.3 PQC27 CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-10-17",
+    "status": "ACTIVE"
+  },
+  "P92319-B21": {
+    "productNumber": "P92319-B21",
+    "description": "HPE 7.68TB NVMe Gen4 Mainstream Performance Read Intensive SFF BC U.3 PQC27 CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-10-17",
+    "status": "ACTIVE"
+  },
+  "P92321-B21": {
+    "productNumber": "P92321-B21",
+    "description": "HPE 15.36TB NVMe Gen4 Mainstream Performance Read Intensive SFF BC U.3 PQC27 CD9P SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-10-17",
+    "status": "ACTIVE"
+  },
+  "S6K30A": {
+    "productNumber": "S6K30A",
+    "description": "Microsoft Windows Server 2025 16-core Standard FIO Pre-installed UEFI WW ESD LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "MS Windows Server",
+    "firstSeenDate": "2026-10-17",
+    "status": "ACTIVE"
   }
 }

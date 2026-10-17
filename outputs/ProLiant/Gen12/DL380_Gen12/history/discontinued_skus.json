@@ -7719,5 +7719,13 @@
     "subCategory": "GPU Accelerators",
     "firstSeenDate": "2026-09-30",
     "status": "ACTIVE"
+  },
+  "S6K30A": {
+    "productNumber": "S6K30A",
+    "description": "Microsoft Windows Server 2025 16-core Standard FIO Pre-installed UEFI WW ESD LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "MS Windows Server",
+    "firstSeenDate": "2026-10-17",
+    "status": "ACTIVE"
   }
 }

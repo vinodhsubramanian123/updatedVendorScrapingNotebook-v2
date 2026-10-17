@@ -82,22 +82,22 @@ async function verifyGoogleDriveSheetsPreflight(skipCloudCheck) {
   if (skipCloudCheck) {
     return { pass: true, status: 'SKIPPED_BY_FLAG' };
   }
-  const { ensureGoogleAuthValid, checkGoogleAuthHealth } = require('../../services/google_sheets_service.js');
-  const valid = await ensureGoogleAuthValid({ autoHeal: true });
-  const health = await checkGoogleAuthHealth();
-  if (!valid || !health.valid || !health.hasSheetsScope || !health.hasDriveScope) {
+  const { ensureGoogleAuthValid } = require('../../services/google_sheets_service.js');
+  const authResult = await ensureGoogleAuthValid({ autoHeal: true });
+  const status = authResult?.status || {};
+  if (!authResult?.authenticated || !status.tokenValid || !status.hasSheetsScope || !status.hasDriveScope) {
     throw new Error(
       `[PREFLIGHT_GOOGLE_OAUTH_INCOMPLETE] Google Drive/Sheets OAuth check failed ` +
-      `(valid=${health.valid}, sheetsScope=${health.hasSheetsScope}, driveScope=${health.hasDriveScope}). ` +
+      `(valid=${status.tokenValid}, sheetsScope=${status.hasSheetsScope}, driveScope=${status.hasDriveScope}). ` +
       `Ensure spreadsheets, documents, and drive scopes are granted.`
     );
   }
   return {
     pass: true,
     status: 'VERIFIED_SCOPES',
-    account: health.account || 'authenticated',
-    hasSheetsScope: health.hasSheetsScope,
-    hasDriveScope: health.hasDriveScope
+    account: status.activeAccount || 'authenticated',
+    hasSheetsScope: status.hasSheetsScope,
+    hasDriveScope: status.hasDriveScope
   };
 }
 
@@ -133,8 +133,12 @@ async function runScrapingPreflightGate({ targetChassisQuery, navQuery, skipClou
 
 function summarizeCatalogDiffState(liveCatalogJson) {
   const catalog = loadJsonFileSafe(liveCatalogJson, {});
-  const allSkus = (catalog.entries || []).flatMap(entry => entry.skus || []);
+  const allSkus = (catalog.entries || []).flatMap(entry => (entry.skus || []).map(row => ({
+    ...row,
+    _category: entry.parentCategory || entry.subcategory || 'Hardware'
+  })));
   const counts = { ADDED: 0, MODIFIED: 0, REMOVED: 0, DISCONTINUED: 0, UNCHANGED: 0 };
+  const changedRows = [];
   for (const row of allSkus) {
     const status = String(row['Diff Status'] || 'UNCHANGED').toUpperCase();
     if (counts[status] !== undefined) {
@@ -144,13 +148,65 @@ function summarizeCatalogDiffState(liveCatalogJson) {
     } else {
       counts.UNCHANGED++;
     }
+    if (status !== 'UNCHANGED') {
+      changedRows.push({
+        sku: row.sku || row['Product #'] || '',
+        description: row.description || row['Description'] || '',
+        category: row._category,
+        status,
+        unitPriceUsd: row['Unit Price (USD)'] ?? row.price ?? '',
+        previousPriceUsd: row['Previous Price (USD)'] ?? '',
+        priceDeltaUsd: row['Price Delta (USD)'] ?? ''
+      });
+    }
+  }
+  let unavailableRulesCount = Array.isArray(catalog.unavailableRules) ? catalog.unavailableRules.length : 0;
+  if (!unavailableRulesCount && liveCatalogJson) {
+    try {
+      const unavailPath = path.join(path.dirname(liveCatalogJson), 'raw_data', 'unavailable_rules.json');
+      if (fs.existsSync(unavailPath)) {
+        const unavailData = JSON.parse(fs.readFileSync(unavailPath, 'utf8'));
+        unavailableRulesCount = unavailData.totalUnavailableRules || (Array.isArray(unavailData.rules) ? unavailData.rules.length : 0);
+      }
+    } catch (_) {}
   }
   return {
     totalUniqueSKUs: catalog.metadata?.totalUniqueSKUs || 0,
     totalSubcategories: catalog.metadata?.totalSubcategories || 0,
-    unavailableRulesCount: Array.isArray(catalog.unavailableRules) ? catalog.unavailableRules.length : 0,
-    diffCounts: counts
+    unavailableRulesCount,
+    diffCounts: counts,
+    changedRows
   };
+}
+
+function writeCatalogDiffSummaryMarkdown(diffSummaryMdPath, meta, diffMetrics, hwSkuCount, serviceSkuCount) {
+  const lines = [
+    `# ${meta.cleanName} — Catalog Refresh & Delta Summary`,
+    ``,
+    `- **Generated At**: ${new Date().toISOString()}`,
+    `- **Family / Generation**: ${meta.family} / ${meta.gen}`,
+    `- **Active Hardware SKUs**: ${hwSkuCount}`,
+    `- **Support & Service SKUs**: ${serviceSkuCount}`,
+    `- **Explicit Unavailable Rules**: ${diffMetrics.unavailableRulesCount}`,
+    `- **Diff Summary**: Added=${diffMetrics.diffCounts.ADDED}, Modified=${diffMetrics.diffCounts.MODIFIED}, Removed=${diffMetrics.diffCounts.REMOVED + diffMetrics.diffCounts.DISCONTINUED}, Unchanged=${diffMetrics.diffCounts.UNCHANGED}`,
+    ``
+  ];
+  if (Array.isArray(diffMetrics.changedRows) && diffMetrics.changedRows.length > 0) {
+    lines.push(
+      `## Changed SKUs (${diffMetrics.changedRows.length})`,
+      ``,
+      `| SKU | Status | Category | Previous Price (USD) | Current Price (USD) | Delta (USD) | Description |`,
+      `| :--- | :--- | :--- | :--- | :--- | :--- | :--- |`
+    );
+    for (const r of diffMetrics.changedRows) {
+      const safeDesc = String(r.description || '').replace(/\|/g, '/').replace(/\r?\n/g, ' ').trim();
+      lines.push(`| \`${r.sku}\` | **${r.status}** | ${r.category} | ${r.previousPriceUsd} | ${r.unitPriceUsd} | ${r.priceDeltaUsd} | ${safeDesc} |`);
+    }
+  } else {
+    lines.push(`## Changed SKUs`, ``, `No SKU additions, modifications, or removals detected against the prior snapshot.`);
+  }
+  lines.push(``);
+  fs.writeFileSync(diffSummaryMdPath, lines.join('\n'), 'utf8');
 }
 
 function runScrapingPostflightVerification({
@@ -166,8 +222,11 @@ function runScrapingPostflightVerification({
 }) {
   console.log('\n--- STEP 10B: Post-Flight Completeness & Catalog Delta Verification ---');
   const diffSummaryMdPath = path.join(liveOutputDir, `${meta.cleanName}_Catalog_Diff_Summary.md`);
-  const hasDiffSummaryMd = fs.existsSync(diffSummaryMdPath);
   const diffMetrics = summarizeCatalogDiffState(liveCatalogJson);
+  try {
+    writeCatalogDiffSummaryMarkdown(diffSummaryMdPath, meta, diffMetrics, hwSkuCount, serviceSkuCount);
+  } catch (_) {}
+  const hasDiffSummaryMd = fs.existsSync(diffSummaryMdPath);
 
   const receipt = {
     verifiedAt: new Date().toISOString(),
@@ -193,6 +252,7 @@ function runScrapingPostflightVerification({
 
   console.log(`  ✅ Catalog Delta Summary : Added=${diffMetrics.diffCounts.ADDED}, Modified=${diffMetrics.diffCounts.MODIFIED}, Removed=${diffMetrics.diffCounts.REMOVED + diffMetrics.diffCounts.DISCONTINUED}, Unchanged=${diffMetrics.diffCounts.UNCHANGED}`);
   console.log(`  ✅ Explicit Rules & Gates: ${diffMetrics.unavailableRulesCount} Unavailable Rules | ${conditionalSkusCount || 0} Conditional SKUs`);
+  console.log(`  ✅ Diff Summary Report   : ${diffSummaryMdPath}`);
   console.log(`  ✅ Verification Receipt  : ${receiptPath}`);
 
   return receipt;

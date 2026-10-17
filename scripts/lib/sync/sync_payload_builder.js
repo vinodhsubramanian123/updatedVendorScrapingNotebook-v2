@@ -478,13 +478,24 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
     }
   }
 
-  // Write payload file
+  // Write payload file atomically (prevents transient Windows file-lock errors right after staging promotion)
   const safeFilename = `notebook_sync_payload_${chassisName}.md`;
   const payloadPath = path.join(targetDir, safeFilename);
+  const tmpPayloadPath = `${payloadPath}.${Date.now()}.tmp`;
 
   try {
-    fs.writeFileSync(payloadPath, md, 'utf-8');
+    fs.writeFileSync(tmpPayloadPath, md, 'utf-8');
+    try {
+      if (fs.existsSync(payloadPath)) fs.unlinkSync(payloadPath);
+    } catch (_) {}
+    try {
+      fs.renameSync(tmpPayloadPath, payloadPath);
+    } catch (_) {
+      fs.copyFileSync(tmpPayloadPath, payloadPath);
+      try { fs.unlinkSync(tmpPayloadPath); } catch (__) {}
+    }
   } catch (err) {
+    try { if (fs.existsSync(tmpPayloadPath)) fs.unlinkSync(tmpPayloadPath); } catch (_) {}
     logger.warn('KNOWLEDGE_SYNC', `Failed to write payload to ${payloadPath}`, err);
   }
 

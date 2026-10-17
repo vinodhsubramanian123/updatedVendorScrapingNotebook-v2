@@ -168,7 +168,7 @@ async function auditAndPromoteStaging({
 
   updateScrapedRegistry({
     timestamp:      new Date().toISOString(),
-    solutionName:   treeInfo.solutionName || 'OCA Solution',
+    solutionName:   (treeInfo.solutionName && treeInfo.solutionName !== 'OCA Solution') ? treeInfo.solutionName : meta.cleanName.replace(/_/g, ' '),
     family:         meta.family,
     gen:            meta.gen,
     chassisName:    meta.cleanName,
@@ -1026,12 +1026,23 @@ async function setupStagingAndPersistRawData({
     console.log(`  📡 Captured ${networkSniffedRules.length} dynamic rule(s) via CDP Network Sniffer.`);
   }
 
+  const resolvedBaseSku = chassisDiscovery?.selectedSku || resolveBaseSkuForProduct(meta, chassisDiscovery, profile);
+  const { inferPillar } = require('../lib/catalog/product_scope.js');
   const rawData = {
     timestamp:  new Date().toISOString(),
     pageTitle:  pageTarget.title,
     url:        pageTarget.url,
     nodeText:   pageHeading,
     qsLink,
+    selectedBaseSku: resolvedBaseSku,
+    baseSku: resolvedBaseSku,
+    ownerConfiguration: pageHeading || meta.cleanName,
+    solutionDomain: inferPillar(meta.family, meta.cleanName),
+    observedSelectors: [
+      { selector: '#extended_overview_menu', value: 'EXPANDED' },
+      { selector: 'ambientTemperature', value: 'DEFAULT_AND_SWEEP_RESTORED' }
+    ],
+    finalSelectorsRestored: true,
     scrollHeight: domPayload.metrics.scrollHeight,
     textLength: domPayload.totalLen,
     textExtractionMode: domPayload.textExtractionMode,

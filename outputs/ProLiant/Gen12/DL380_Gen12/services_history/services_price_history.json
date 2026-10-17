@@ -144,7 +144,8 @@
     {
       "date": "2026-09-30",
       "price": 1,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2L70C": [
@@ -321,7 +322,8 @@
       "date": "2026-09-30",
       "price": 12980,
       "status": "CATEGORY_MIGRATED",
-      "targetCategory": "Graphics & GPU"
+      "targetCategory": "Graphics & GPU",
+      "validationState": "VALIDATED"
     }
   ],
   "R8W26AAE": [
@@ -335,7 +337,8 @@
       "date": "2026-09-30",
       "price": 10810,
       "status": "CATEGORY_MIGRATED",
-      "targetCategory": "Graphics & GPU"
+      "targetCategory": "Graphics & GPU",
+      "validationState": "VALIDATED"
     }
   ],
   "R8W27AAE": [
@@ -349,7 +352,8 @@
       "date": "2026-09-30",
       "price": 9190,
       "status": "CATEGORY_MIGRATED",
-      "targetCategory": "Graphics & GPU"
+      "targetCategory": "Graphics & GPU",
+      "validationState": "VALIDATED"
     }
   ],
   "R9H29AAE": [
@@ -362,7 +366,8 @@
     {
       "date": "2026-09-30",
       "price": 27570,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R9Y51AAE": [
@@ -375,7 +380,8 @@
     {
       "date": "2026-09-30",
       "price": 34920,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R9Y52AAE": [
@@ -388,7 +394,8 @@
     {
       "date": "2026-09-30",
       "price": 41470,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S1S86AAE": [
@@ -401,7 +408,8 @@
     {
       "date": "2026-09-30",
       "price": 270270,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S1S87AAE": [
@@ -414,7 +422,8 @@
     {
       "date": "2026-09-30",
       "price": 27027,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S1U64AAE": [
@@ -427,7 +436,8 @@
     {
       "date": "2026-09-30",
       "price": 1,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2R35AAE": [
@@ -440,7 +450,8 @@
     {
       "date": "2026-09-30",
       "price": 770270,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3P91AAE": [
@@ -453,7 +464,8 @@
     {
       "date": "2026-09-30",
       "price": 77027,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3P92AAE": [
@@ -466,7 +478,8 @@
     {
       "date": "2026-09-30",
       "price": 1027028,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3P93AAE": [
@@ -479,7 +492,8 @@
     {
       "date": "2026-09-30",
       "price": 102702,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3P94AAE": [
@@ -492,7 +506,8 @@
     {
       "date": "2026-09-30",
       "price": 1283784,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3P95AAE": [
@@ -505,7 +520,8 @@
     {
       "date": "2026-09-30",
       "price": 128378,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3R04AAE": [
@@ -518,7 +534,8 @@
     {
       "date": "2026-09-30",
       "price": 8316,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3R05AAE": [
@@ -531,7 +548,8 @@
     {
       "date": "2026-09-30",
       "price": 2078,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3R06AAE": [
@@ -544,7 +562,8 @@
     {
       "date": "2026-09-30",
       "price": 23700,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3R07AAE": [
@@ -557,7 +576,8 @@
     {
       "date": "2026-09-30",
       "price": 5922,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3W26AAE": [
@@ -570,7 +590,8 @@
     {
       "date": "2026-09-30",
       "price": 31602,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3W27AAE": [
@@ -583,7 +604,8 @@
     {
       "date": "2026-09-30",
       "price": 7896,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3W28AAE": [
@@ -596,7 +618,8 @@
     {
       "date": "2026-09-30",
       "price": 39501,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3W29AAE": [
@@ -609,7 +632,8 @@
     {
       "date": "2026-09-30",
       "price": 9871,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q9V60AAE": [
@@ -622,7 +646,8 @@
     {
       "date": "2026-09-30",
       "price": 3500,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R6X84AAE": [
@@ -635,7 +660,8 @@
     {
       "date": "2026-09-30",
       "price": 585,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S1R55AAE": [
@@ -648,7 +674,8 @@
     {
       "date": "2026-09-30",
       "price": 1089,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S1R56AAE": [
@@ -661,7 +688,8 @@
     {
       "date": "2026-09-30",
       "price": 1409,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S1R57AAE": [
@@ -674,7 +702,8 @@
     {
       "date": "2026-09-30",
       "price": 1725,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S1R58AAE": [
@@ -687,7 +716,8 @@
     {
       "date": "2026-09-30",
       "price": 318,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S1R63AAE": [
@@ -700,7 +730,8 @@
     {
       "date": "2026-09-30",
       "price": 46200,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S1R64AAE": [
@@ -713,7 +744,8 @@
     {
       "date": "2026-09-30",
       "price": 58520,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S1R65AAE": [
@@ -726,7 +758,8 @@
     {
       "date": "2026-09-30",
       "price": 69300,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S1R66AAE": [
@@ -739,7 +772,8 @@
     {
       "date": "2026-09-30",
       "price": 363,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S1R67AAE": [
@@ -752,7 +786,8 @@
     {
       "date": "2026-09-30",
       "price": 460,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S1R68AAE": [
@@ -765,7 +800,8 @@
     {
       "date": "2026-09-30",
       "price": 545,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S1R69AAE": [
@@ -778,7 +814,8 @@
     {
       "date": "2026-09-30",
       "price": 288,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S1R70AAE": [
@@ -791,7 +828,8 @@
     {
       "date": "2026-09-30",
       "price": 366,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S1R71AAE": [
@@ -804,7 +842,8 @@
     {
       "date": "2026-09-30",
       "price": 433,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S1R72AAE": [
@@ -817,7 +856,8 @@
     {
       "date": "2026-09-30",
       "price": 213,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S1R73AAE": [
@@ -830,7 +870,8 @@
     {
       "date": "2026-09-30",
       "price": 269,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S1R74AAE": [
@@ -843,7 +884,8 @@
     {
       "date": "2026-09-30",
       "price": 319,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S1R75AAE": [
@@ -856,7 +898,8 @@
     {
       "date": "2026-09-30",
       "price": 71,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S1R76AAE": [
@@ -869,7 +912,8 @@
     {
       "date": "2026-09-30",
       "price": 96,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S1R77AAE": [
@@ -882,7 +926,8 @@
     {
       "date": "2026-09-30",
       "price": 122,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S1R78AAE": [
@@ -895,7 +940,8 @@
     {
       "date": "2026-09-30",
       "price": 15400,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2H96AAE": [
@@ -908,7 +954,8 @@
     {
       "date": "2026-09-30",
       "price": 31332,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2H97AAE": [
@@ -921,7 +968,8 @@
     {
       "date": "2026-09-30",
       "price": 46289,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2H98AAE": [
@@ -934,7 +982,8 @@
     {
       "date": "2026-09-30",
       "price": 98172,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2H99AAE": [
@@ -947,7 +996,8 @@
     {
       "date": "2026-09-30",
       "price": 196328,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2J00AAE": [
@@ -960,7 +1010,8 @@
     {
       "date": "2026-09-30",
       "price": 1245749,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2J01AAE": [
@@ -973,7 +1024,8 @@
     {
       "date": "2026-09-30",
       "price": 93965,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2J02AAE": [
@@ -986,7 +1038,8 @@
     {
       "date": "2026-09-30",
       "price": 138836,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2J03AAE": [
@@ -999,7 +1052,8 @@
     {
       "date": "2026-09-30",
       "price": 294483,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2J04AAE": [
@@ -1012,7 +1066,8 @@
     {
       "date": "2026-09-30",
       "price": 588951,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2J05AAE": [
@@ -1025,7 +1080,8 @@
     {
       "date": "2026-09-30",
       "price": 3737215,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2J06AAE": [
@@ -1038,7 +1094,8 @@
     {
       "date": "2026-09-30",
       "price": 125281,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2J07AAE": [
@@ -1051,7 +1108,8 @@
     {
       "date": "2026-09-30",
       "price": 185110,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2J08AAE": [
@@ -1064,7 +1122,8 @@
     {
       "date": "2026-09-30",
       "price": 392639,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2J09AAE": [
@@ -1077,7 +1136,8 @@
     {
       "date": "2026-09-30",
       "price": 785262,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2J10AAE": [
@@ -1090,7 +1150,8 @@
     {
       "date": "2026-09-30",
       "price": 4982948,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2J11AAE": [
@@ -1103,7 +1164,8 @@
     {
       "date": "2026-09-30",
       "price": 156598,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2J12AAE": [
@@ -1116,7 +1178,8 @@
     {
       "date": "2026-09-30",
       "price": 231383,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2J13AAE": [
@@ -1129,7 +1192,8 @@
     {
       "date": "2026-09-30",
       "price": 490795,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2J14AAE": [
@@ -1142,7 +1206,8 @@
     {
       "date": "2026-09-30",
       "price": 981574,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2J15AAE": [
@@ -1155,7 +1220,8 @@
     {
       "date": "2026-09-30",
       "price": 6228680,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2J16AAE": [
@@ -1168,7 +1234,8 @@
     {
       "date": "2026-09-30",
       "price": 14928,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2J17AAE": [
@@ -1181,7 +1248,8 @@
     {
       "date": "2026-09-30",
       "price": 22051,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2J18AAE": [
@@ -1194,7 +1262,8 @@
     {
       "date": "2026-09-30",
       "price": 46757,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2J19AAE": [
@@ -1207,7 +1276,8 @@
     {
       "date": "2026-09-30",
       "price": 93498,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2J20AAE": [
@@ -1220,7 +1290,8 @@
     {
       "date": "2026-09-30",
       "price": 593224,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2J21AAE": [
@@ -1233,7 +1304,8 @@
     {
       "date": "2026-09-30",
       "price": 44754,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2J22AAE": [
@@ -1246,7 +1318,8 @@
     {
       "date": "2026-09-30",
       "price": 66121,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2J23AAE": [
@@ -1259,7 +1332,8 @@
     {
       "date": "2026-09-30",
       "price": 140239,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2J24AAE": [
@@ -1272,7 +1346,8 @@
     {
       "date": "2026-09-30",
       "price": 280461,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2J25AAE": [
@@ -1285,7 +1360,8 @@
     {
       "date": "2026-09-30",
       "price": 1779641,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2J26AAE": [
@@ -1298,7 +1374,8 @@
     {
       "date": "2026-09-30",
       "price": 59666,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2J27AAE": [
@@ -1311,7 +1388,8 @@
     {
       "date": "2026-09-30",
       "price": 88156,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2J28AAE": [
@@ -1324,7 +1402,8 @@
     {
       "date": "2026-09-30",
       "price": 186979,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2J29AAE": [
@@ -1337,7 +1416,8 @@
     {
       "date": "2026-09-30",
       "price": 373943,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2J30AAE": [
@@ -1350,7 +1430,8 @@
     {
       "date": "2026-09-30",
       "price": 2372849,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2J31AAE": [
@@ -1363,7 +1444,8 @@
     {
       "date": "2026-09-30",
       "price": 74579,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2J32AAE": [
@@ -1376,7 +1458,8 @@
     {
       "date": "2026-09-30",
       "price": 110191,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2J33AAE": [
@@ -1389,7 +1472,8 @@
     {
       "date": "2026-09-30",
       "price": 233720,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2J34AAE": [
@@ -1402,7 +1486,8 @@
     {
       "date": "2026-09-30",
       "price": 467425,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2J35AAE": [
@@ -1415,7 +1500,8 @@
     {
       "date": "2026-09-30",
       "price": 2966057,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2L38AAE": [
@@ -1428,7 +1514,8 @@
     {
       "date": "2026-09-30",
       "price": 9228,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2L39AAE": [
@@ -1441,7 +1528,8 @@
     {
       "date": "2026-09-30",
       "price": 12894,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2L40AAE": [
@@ -1454,7 +1542,8 @@
     {
       "date": "2026-09-30",
       "price": 16672,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2L41AAE": [
@@ -1467,7 +1556,8 @@
     {
       "date": "2026-09-30",
       "price": 22228,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2L42AAE": [
@@ -1480,7 +1570,8 @@
     {
       "date": "2026-09-30",
       "price": 26672,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2L43AAE": [
@@ -1493,7 +1584,8 @@
     {
       "date": "2026-09-30",
       "price": 26672,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2L44AAE": [
@@ -1506,7 +1598,8 @@
     {
       "date": "2026-09-30",
       "price": 36117,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2L45AAE": [
@@ -1519,7 +1612,8 @@
     {
       "date": "2026-09-30",
       "price": 46672,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2L46AAE": [
@@ -1532,7 +1626,8 @@
     {
       "date": "2026-09-30",
       "price": 61117,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2L47AAE": [
@@ -1545,7 +1640,8 @@
     {
       "date": "2026-09-30",
       "price": 73339,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2L48AAE": [
@@ -1558,7 +1654,8 @@
     {
       "date": "2026-09-30",
       "price": 33339,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2L49AAE": [
@@ -1571,7 +1668,8 @@
     {
       "date": "2026-09-30",
       "price": 46672,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2L50AAE": [
@@ -1584,7 +1682,8 @@
     {
       "date": "2026-09-30",
       "price": 60006,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2L51AAE": [
@@ -1597,7 +1696,8 @@
     {
       "date": "2026-09-30",
       "price": 78894,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2L52AAE": [
@@ -1610,7 +1710,8 @@
     {
       "date": "2026-09-30",
       "price": 95006,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2L53AAE": [
@@ -1623,7 +1724,8 @@
     {
       "date": "2026-09-30",
       "price": 39450,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2L54AAE": [
@@ -1636,7 +1738,8 @@
     {
       "date": "2026-09-30",
       "price": 55006,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2L55AAE": [
@@ -1649,7 +1752,8 @@
     {
       "date": "2026-09-30",
       "price": 70561,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2L56AAE": [
@@ -1662,7 +1766,8 @@
     {
       "date": "2026-09-30",
       "price": 93339,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2L57AAE": [
@@ -1675,7 +1780,8 @@
     {
       "date": "2026-09-30",
       "price": 112228,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2M19A": [
@@ -2093,7 +2199,14 @@
     {
       "date": "2026-09-30",
       "price": 159593,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 159591,
+      "status": "PRICE_CHANGED",
+      "prevPrice": 159593
     }
   ],
   "S4H93AAE": [
@@ -2106,7 +2219,14 @@
     {
       "date": "2026-09-30",
       "price": 979170,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 979169,
+      "status": "PRICE_CHANGED",
+      "prevPrice": 979170
     }
   ],
   "S4H95AAE": [
@@ -2120,7 +2240,14 @@
       "date": "2026-09-30",
       "price": 502140,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 903851
+      "prevPrice": 903851,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 903850,
+      "status": "PRICE_CHANGED",
+      "prevPrice": 502140
     }
   ],
   "S4H97AAE": [
@@ -2134,7 +2261,14 @@
       "date": "2026-09-30",
       "price": 418455,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 753218
+      "prevPrice": 753218,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 753217,
+      "status": "PRICE_CHANGED",
+      "prevPrice": 418455
     }
   ],
   "S4H99AAE": [
@@ -2147,7 +2281,14 @@
     {
       "date": "2026-09-30",
       "price": 443222,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 443221,
+      "status": "PRICE_CHANGED",
+      "prevPrice": 443222
     }
   ],
   "S4J00AAE": [
@@ -2160,7 +2301,14 @@
     {
       "date": "2026-09-30",
       "price": 104184,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 104182,
+      "status": "PRICE_CHANGED",
+      "prevPrice": 104184
     }
   ],
   "S4J02AAE": [
@@ -2174,7 +2322,14 @@
       "date": "2026-09-30",
       "price": 349711,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 629479
+      "prevPrice": 629479,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 629478,
+      "status": "PRICE_CHANGED",
+      "prevPrice": 349711
     }
   ],
   "S4J04AAE": [
@@ -2187,7 +2342,14 @@
     {
       "date": "2026-09-30",
       "price": 581059,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 581058,
+      "status": "PRICE_CHANGED",
+      "prevPrice": 581059
     }
   ],
   "S4J06AAE": [
@@ -2200,7 +2362,14 @@
     {
       "date": "2026-09-30",
       "price": 484219,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 484218,
+      "status": "PRICE_CHANGED",
+      "prevPrice": 484219
     }
   ],
   "S4J08AAE": [
@@ -2213,7 +2382,14 @@
     {
       "date": "2026-09-30",
       "price": 284937,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 284936,
+      "status": "PRICE_CHANGED",
+      "prevPrice": 284937
     }
   ],
   "S4J09AAE": [
@@ -2226,7 +2402,14 @@
     {
       "date": "2026-09-30",
       "price": 79803,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 79801,
+      "status": "PRICE_CHANGED",
+      "prevPrice": 79803
     }
   ],
   "S4J11AAE": [
@@ -2239,7 +2422,14 @@
     {
       "date": "2026-09-30",
       "price": 475611,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 475610,
+      "status": "PRICE_CHANGED",
+      "prevPrice": 475611
     }
   ],
   "S4J13AAE": [
@@ -2252,7 +2442,14 @@
     {
       "date": "2026-09-30",
       "price": 439028,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 439027,
+      "status": "PRICE_CHANGED",
+      "prevPrice": 439028
     }
   ],
   "S4J15AAE": [
@@ -2265,7 +2462,14 @@
     {
       "date": "2026-09-30",
       "price": 365860,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 365859,
+      "status": "PRICE_CHANGED",
+      "prevPrice": 365860
     }
   ],
   "S4J17AAE": [
@@ -2278,7 +2482,14 @@
     {
       "date": "2026-09-30",
       "price": 215295,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 215294,
+      "status": "PRICE_CHANGED",
+      "prevPrice": 215295
     }
   ],
   "S4J18AAE": [
@@ -2291,7 +2502,14 @@
     {
       "date": "2026-09-30",
       "price": 88674,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 88672,
+      "status": "PRICE_CHANGED",
+      "prevPrice": 88674
     }
   ],
   "S4J19AAE": [
@@ -2304,7 +2522,14 @@
     {
       "date": "2026-09-30",
       "price": 44343,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 44341,
+      "status": "PRICE_CHANGED",
+      "prevPrice": 44343
     }
   ],
   "S4J20AAE": [
@@ -2317,7 +2542,14 @@
     {
       "date": "2026-09-30",
       "price": 59072,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 59070,
+      "status": "PRICE_CHANGED",
+      "prevPrice": 59072
     }
   ],
   "S4J21AAE": [
@@ -2330,7 +2562,14 @@
     {
       "date": "2026-09-30",
       "price": 29615,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 29613,
+      "status": "PRICE_CHANGED",
+      "prevPrice": 29615
     }
   ],
   "S4J22AAE": [
@@ -2343,7 +2582,14 @@
     {
       "date": "2026-09-30",
       "price": 29615,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 29613,
+      "status": "PRICE_CHANGED",
+      "prevPrice": 29615
     }
   ],
   "S4J23AAE": [
@@ -2356,7 +2602,14 @@
     {
       "date": "2026-09-30",
       "price": 14884,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 14882,
+      "status": "PRICE_CHANGED",
+      "prevPrice": 14884
     }
   ],
   "S4J25AAE": [
@@ -2370,7 +2623,14 @@
       "date": "2026-09-30",
       "price": 119571,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 215227
+      "prevPrice": 215227,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 215226,
+      "status": "PRICE_CHANGED",
+      "prevPrice": 119571
     }
   ],
   "S4J27AAE": [
@@ -2383,7 +2643,14 @@
     {
       "date": "2026-09-30",
       "price": 143542,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 143541,
+      "status": "PRICE_CHANGED",
+      "prevPrice": 143542
     }
   ],
   "S4J29AAE": [
@@ -2396,7 +2663,14 @@
     {
       "date": "2026-09-30",
       "price": 71857,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 71856,
+      "status": "PRICE_CHANGED",
+      "prevPrice": 71857
     }
   ],
   "S4J31AAE": [
@@ -2410,7 +2684,14 @@
       "date": "2026-09-30",
       "price": 70366,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 126658
+      "prevPrice": 126658,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 126657,
+      "status": "PRICE_CHANGED",
+      "prevPrice": 70366
     }
   ],
   "S4J33AAE": [
@@ -2424,7 +2705,14 @@
       "date": "2026-09-30",
       "price": 46916,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 84448
+      "prevPrice": 84448,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 84447,
+      "status": "PRICE_CHANGED",
+      "prevPrice": 46916
     }
   ],
   "S4J35AAE": [
@@ -2437,7 +2725,14 @@
     {
       "date": "2026-09-30",
       "price": 42238,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 42237,
+      "status": "PRICE_CHANGED",
+      "prevPrice": 42238
     }
   ],
   "R1T30AAE": [
@@ -2450,7 +2745,8 @@
     {
       "date": "2026-09-30",
       "price": 1074,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R1T31AAE": [
@@ -2463,7 +2759,8 @@
     {
       "date": "2026-09-30",
       "price": 1511,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R1T32AAE": [
@@ -2476,7 +2773,8 @@
     {
       "date": "2026-09-30",
       "price": 1984,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R1T36AAE": [
@@ -2489,7 +2787,8 @@
     {
       "date": "2026-09-30",
       "price": 1984,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R7P98AAE": [
@@ -2502,7 +2801,8 @@
     {
       "date": "2026-09-30",
       "price": 2630,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R8V45AAE": [
@@ -2515,7 +2815,8 @@
     {
       "date": "2026-09-30",
       "price": 4725,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R8V48A": [
@@ -2543,7 +2844,8 @@
     {
       "date": "2026-09-30",
       "price": 69,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S0W14AAE": [
@@ -2556,7 +2858,8 @@
     {
       "date": "2026-09-30",
       "price": 276,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S0W15AAE": [
@@ -2569,7 +2872,8 @@
     {
       "date": "2026-09-30",
       "price": 124,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S0W17AAE": [
@@ -2582,7 +2886,8 @@
     {
       "date": "2026-09-30",
       "price": 496,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S0W18AAE": [
@@ -2595,7 +2900,8 @@
     {
       "date": "2026-09-30",
       "price": 42,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S0W20AAE": [
@@ -2608,7 +2914,8 @@
     {
       "date": "2026-09-30",
       "price": 168,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S0W21AAE": [
@@ -2621,7 +2928,8 @@
     {
       "date": "2026-09-30",
       "price": 150,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S0W23AAE": [
@@ -2634,7 +2942,8 @@
     {
       "date": "2026-09-30",
       "price": 600,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S0W24AAE": [
@@ -2647,7 +2956,8 @@
     {
       "date": "2026-09-30",
       "price": 57,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S0W26AAE": [
@@ -2660,7 +2970,8 @@
     {
       "date": "2026-09-30",
       "price": 228,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S0W27AAE": [
@@ -2673,7 +2984,8 @@
     {
       "date": "2026-09-30",
       "price": 25,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S0W29AAE": [
@@ -2686,7 +2998,8 @@
     {
       "date": "2026-09-30",
       "price": 100,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S1D73AAE": [
@@ -2699,7 +3012,8 @@
     {
       "date": "2026-09-30",
       "price": 289,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S1D74AAE": [
@@ -2712,7 +3026,8 @@
     {
       "date": "2026-09-30",
       "price": 824,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S1D75AAE": [
@@ -2725,7 +3040,8 @@
     {
       "date": "2026-09-30",
       "price": 1287,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R3Q35AAE": [
@@ -2738,7 +3054,8 @@
     {
       "date": "2026-09-30",
       "price": 305,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R3Q37AAE": [
@@ -2751,7 +3068,8 @@
     {
       "date": "2026-09-30",
       "price": 867,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R3Q38AAE": [
@@ -2764,7 +3082,8 @@
     {
       "date": "2026-09-30",
       "price": 1149,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R3Q39AAE": [
@@ -2777,7 +3096,8 @@
     {
       "date": "2026-09-30",
       "price": 1429,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R3Q40AAE": [
@@ -2790,7 +3110,8 @@
     {
       "date": "2026-09-30",
       "price": 96,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R3Q42AAE": [
@@ -2803,7 +3124,8 @@
     {
       "date": "2026-09-30",
       "price": 241,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R3Q44AAE": [
@@ -2816,7 +3138,8 @@
     {
       "date": "2026-09-30",
       "price": 37,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R3Q46AAE": [
@@ -2829,7 +3152,8 @@
     {
       "date": "2026-09-30",
       "price": 63,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R3Q47AAE": [
@@ -2842,7 +3166,8 @@
     {
       "date": "2026-09-30",
       "price": 75,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R3Q48AAE": [
@@ -2855,7 +3180,8 @@
     {
       "date": "2026-09-30",
       "price": 89,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R3Q49AAE": [
@@ -2868,7 +3194,8 @@
     {
       "date": "2026-09-30",
       "price": 89,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R3Q51AAE": [
@@ -2881,7 +3208,8 @@
     {
       "date": "2026-09-30",
       "price": 213,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R3Q52AAE": [
@@ -2894,7 +3222,8 @@
     {
       "date": "2026-09-30",
       "price": 242,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R3Q53AAE": [
@@ -2907,7 +3236,8 @@
     {
       "date": "2026-09-30",
       "price": 274,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R3Q63AAE": [
@@ -2920,7 +3250,14 @@
     {
       "date": "2026-09-30",
       "price": 184,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 182,
+      "status": "PRICE_CHANGED",
+      "prevPrice": 184
     }
   ],
   "R3Q67AAE": [
@@ -2933,7 +3270,14 @@
     {
       "date": "2026-09-30",
       "price": 647,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 645,
+      "status": "PRICE_CHANGED",
+      "prevPrice": 647
     }
   ],
   "R3Q68AAE": [
@@ -2946,7 +3290,14 @@
     {
       "date": "2026-09-30",
       "price": 64,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 62,
+      "status": "PRICE_CHANGED",
+      "prevPrice": 64
     }
   ],
   "R3Q72AAE": [
@@ -2959,7 +3310,14 @@
     {
       "date": "2026-09-30",
       "price": 180,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 178,
+      "status": "PRICE_CHANGED",
+      "prevPrice": 180
     }
   ],
   "R3Q73AAE": [
@@ -2972,7 +3330,14 @@
     {
       "date": "2026-09-30",
       "price": 35,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 33,
+      "status": "PRICE_CHANGED",
+      "prevPrice": 35
     }
   ],
   "R3Q77AAE": [
@@ -2985,7 +3350,14 @@
     {
       "date": "2026-09-30",
       "price": 61,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 59,
+      "status": "PRICE_CHANGED",
+      "prevPrice": 61
     }
   ],
   "R3Q79AAE": [
@@ -2998,7 +3370,8 @@
     {
       "date": "2026-09-30",
       "price": 106,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R3Q81AAE": [
@@ -3011,7 +3384,8 @@
     {
       "date": "2026-09-30",
       "price": 266,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R3Q93AAE": [
@@ -3024,7 +3398,8 @@
     {
       "date": "2026-09-30",
       "price": 530,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R3Q94AAE": [
@@ -3037,7 +3412,8 @@
     {
       "date": "2026-09-30",
       "price": 134,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R3Q95AAE": [
@@ -3050,7 +3426,8 @@
     {
       "date": "2026-09-30",
       "price": 385,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R3R01AAE": [
@@ -3063,7 +3440,8 @@
     {
       "date": "2026-09-30",
       "price": 51,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R3R02AAE": [
@@ -3076,7 +3454,8 @@
     {
       "date": "2026-09-30",
       "price": 41,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R3R03AAE": [
@@ -3089,7 +3468,8 @@
     {
       "date": "2026-09-30",
       "price": 73,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R3R06AAE": [
@@ -3102,7 +3482,8 @@
     {
       "date": "2026-09-30",
       "price": 150,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R3R07AAE": [
@@ -3115,7 +3496,14 @@
     {
       "date": "2026-09-30",
       "price": 71,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 69,
+      "status": "PRICE_CHANGED",
+      "prevPrice": 71
     }
   ],
   "R3R12AAE": [
@@ -3128,7 +3516,8 @@
     {
       "date": "2026-09-30",
       "price": 1108,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R3R21AAE": [
@@ -3141,7 +3530,14 @@
     {
       "date": "2026-09-30",
       "price": 199,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 197,
+      "status": "PRICE_CHANGED",
+      "prevPrice": 199
     }
   ],
   "R3R26AAE": [
@@ -3154,7 +3550,8 @@
     {
       "date": "2026-09-30",
       "price": 86,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R3R27AAE": [
@@ -3167,7 +3564,8 @@
     {
       "date": "2026-09-30",
       "price": 210,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2S16AAE": [
@@ -3180,7 +3578,8 @@
     {
       "date": "2026-09-30",
       "price": 5252,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2S17AAE": [
@@ -3193,7 +3592,8 @@
     {
       "date": "2026-09-30",
       "price": 15755,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2S18AAE": [
@@ -3206,7 +3606,8 @@
     {
       "date": "2026-09-30",
       "price": 21006,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2S19AAE": [
@@ -3219,7 +3620,8 @@
     {
       "date": "2026-09-30",
       "price": 5252,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2S20AAE": [
@@ -3232,7 +3634,8 @@
     {
       "date": "2026-09-30",
       "price": 15755,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2S21AAE": [
@@ -3245,7 +3648,8 @@
     {
       "date": "2026-09-30",
       "price": 26258,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2S22AAE": [
@@ -3258,7 +3662,8 @@
     {
       "date": "2026-09-30",
       "price": 1313,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2S23AAE": [
@@ -3271,7 +3676,8 @@
     {
       "date": "2026-09-30",
       "price": 3939,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2S24AAE": [
@@ -3284,7 +3690,8 @@
     {
       "date": "2026-09-30",
       "price": 5252,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2S25AAE": [
@@ -3297,7 +3704,8 @@
     {
       "date": "2026-09-30",
       "price": 1313,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2S26AAE": [
@@ -3310,7 +3718,8 @@
     {
       "date": "2026-09-30",
       "price": 3939,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2S27AAE": [
@@ -3323,7 +3732,8 @@
     {
       "date": "2026-09-30",
       "price": 6564,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2S28AAE": [
@@ -3336,7 +3746,8 @@
     {
       "date": "2026-09-30",
       "price": 1284,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2S29AAE": [
@@ -3349,7 +3760,8 @@
     {
       "date": "2026-09-30",
       "price": 3851,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2S30AAE": [
@@ -3362,7 +3774,8 @@
     {
       "date": "2026-09-30",
       "price": 6419,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2S31AAE": [
@@ -3375,7 +3788,8 @@
     {
       "date": "2026-09-30",
       "price": 899,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2S32AAE": [
@@ -3388,7 +3802,8 @@
     {
       "date": "2026-09-30",
       "price": 2696,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2S33AAE": [
@@ -3401,7 +3816,8 @@
     {
       "date": "2026-09-30",
       "price": 4494,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2S34AAE": [
@@ -3414,7 +3830,8 @@
     {
       "date": "2026-09-30",
       "price": 1284,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2S35AAE": [
@@ -3427,7 +3844,8 @@
     {
       "date": "2026-09-30",
       "price": 3851,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2S36AAE": [
@@ -3440,7 +3858,8 @@
     {
       "date": "2026-09-30",
       "price": 6419,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2S37AAE": [
@@ -3453,7 +3872,8 @@
     {
       "date": "2026-09-30",
       "price": 899,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2S38AAE": [
@@ -3466,7 +3886,8 @@
     {
       "date": "2026-09-30",
       "price": 2696,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2S39AAE": [
@@ -3479,7 +3900,8 @@
     {
       "date": "2026-09-30",
       "price": 4493,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S7K93AAE": [
@@ -3492,7 +3914,8 @@
     {
       "date": "2026-09-30",
       "price": 7884,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S7K94AAE": [
@@ -3505,7 +3928,8 @@
     {
       "date": "2026-09-30",
       "price": 10507,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R1P40AAE": [
@@ -3518,7 +3942,8 @@
     {
       "date": "2026-09-30",
       "price": 87,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R1P40A": [
@@ -3546,7 +3971,8 @@
     {
       "date": "2026-09-30",
       "price": 248,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R1P41A": [
@@ -3574,7 +4000,8 @@
     {
       "date": "2026-09-30",
       "price": 413,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R1P42A": [
@@ -3602,7 +4029,8 @@
     {
       "date": "2026-09-30",
       "price": 138,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R2Z52AAE": [
@@ -3615,7 +4043,8 @@
     {
       "date": "2026-09-30",
       "price": 392,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R2Z53AAE": [
@@ -3628,7 +4057,8 @@
     {
       "date": "2026-09-30",
       "price": 653,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R1P34AAE": [
@@ -3641,7 +4071,8 @@
     {
       "date": "2026-09-30",
       "price": 2858,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R1P34A": [
@@ -3669,7 +4100,8 @@
     {
       "date": "2026-09-30",
       "price": 1758,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R1P37A": [
@@ -3697,7 +4129,8 @@
     {
       "date": "2026-09-30",
       "price": 8145,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R1P35A": [
@@ -3725,7 +4158,8 @@
     {
       "date": "2026-09-30",
       "price": 5010,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R1P38A": [
@@ -3753,7 +4187,8 @@
     {
       "date": "2026-09-30",
       "price": 13575,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R1P36A": [
@@ -3781,7 +4216,8 @@
     {
       "date": "2026-09-30",
       "price": 8350,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R1P39A": [
@@ -3809,7 +4245,8 @@
     {
       "date": "2026-09-30",
       "price": 3243,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R2Z46AAE": [
@@ -3822,7 +4259,8 @@
     {
       "date": "2026-09-30",
       "price": 9242,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R2Z47AAE": [
@@ -3835,7 +4273,8 @@
     {
       "date": "2026-09-30",
       "price": 15403,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q9S73AAE": [
@@ -3848,7 +4287,8 @@
     {
       "date": "2026-09-30",
       "price": 108,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q9S76AAE": [
@@ -3861,7 +4301,8 @@
     {
       "date": "2026-09-30",
       "price": 151,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q9S74AAE": [
@@ -3874,7 +4315,8 @@
     {
       "date": "2026-09-30",
       "price": 292,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q9S77AAE": [
@@ -3887,7 +4329,8 @@
     {
       "date": "2026-09-30",
       "price": 408,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q9S75AAE": [
@@ -3900,7 +4343,8 @@
     {
       "date": "2026-09-30",
       "price": 486,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q9S78AAE": [
@@ -3913,7 +4357,8 @@
     {
       "date": "2026-09-30",
       "price": 680,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R7A11AAE": [
@@ -3926,7 +4371,8 @@
     {
       "date": "2026-09-30",
       "price": 450,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R7A12AAE": [
@@ -3939,7 +4385,8 @@
     {
       "date": "2026-09-30",
       "price": 750,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S1A05A": [
@@ -3967,7 +4414,8 @@
     {
       "date": "2026-09-30",
       "price": 1050,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S5E59AAE": [
@@ -3980,7 +4428,8 @@
     {
       "date": "2026-09-30",
       "price": 919.08,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S5E60AAE": [
@@ -3993,7 +4442,8 @@
     {
       "date": "2026-09-30",
       "price": 1531.8,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S5E61AAE": [
@@ -4006,7 +4456,8 @@
     {
       "date": "2026-09-30",
       "price": 2144.52,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2R34AAE": [
@@ -4019,7 +4470,8 @@
     {
       "date": "2026-09-30",
       "price": 1,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S6C28AAE": [
@@ -4044,7 +4496,8 @@
     {
       "date": "2026-09-30",
       "price": 3390,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "G5J66AAE": [
@@ -4057,7 +4510,8 @@
     {
       "date": "2026-09-30",
       "price": 1506,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S4T26A": [
@@ -4085,7 +4539,8 @@
     {
       "date": "2026-09-30",
       "price": 4519,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S4T27A": [
@@ -4113,7 +4568,8 @@
     {
       "date": "2026-09-30",
       "price": 439,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S4T22A": [
@@ -4141,7 +4597,8 @@
     {
       "date": "2026-09-30",
       "price": 1317,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S4T23A": [
@@ -4169,6 +4626,12 @@
     {
       "date": "2026-09-30",
       "price": 3019,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 3019,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -4181,6 +4644,12 @@
     },
     {
       "date": "2026-09-30",
+      "price": 9057,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
       "price": 9057,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -4195,7 +4664,8 @@
     {
       "date": "2026-09-30",
       "price": 879,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S4T24A": [
@@ -4223,7 +4693,8 @@
     {
       "date": "2026-09-30",
       "price": 2637,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S4T25A": [
@@ -4251,7 +4722,8 @@
     {
       "date": "2026-09-30",
       "price": 1482,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R2A03A": [
@@ -4279,7 +4751,8 @@
     {
       "date": "2026-09-30",
       "price": 4447,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R2A04A": [
@@ -4307,7 +4780,8 @@
     {
       "date": "2026-09-30",
       "price": 7411,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R2A05A": [
@@ -4335,7 +4809,8 @@
     {
       "date": "2026-09-30",
       "price": 385,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R2A00A": [
@@ -4363,7 +4838,8 @@
     {
       "date": "2026-09-30",
       "price": 1097,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R2A01A": [
@@ -4391,7 +4867,8 @@
     {
       "date": "2026-09-30",
       "price": 1828,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R2A02A": [
@@ -4419,7 +4896,8 @@
     {
       "date": "2026-09-30",
       "price": 2040,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "E5Y35AAE": [
@@ -4432,7 +4910,8 @@
     {
       "date": "2026-09-30",
       "price": 999,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "P8B26AAE": [
@@ -4445,7 +4924,8 @@
     {
       "date": "2026-09-30",
       "price": 499,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R1D41AAE": [
@@ -4458,7 +4938,8 @@
     {
       "date": "2026-09-30",
       "price": 1982200,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R1D42AAE": [
@@ -4471,7 +4952,8 @@
     {
       "date": "2026-09-30",
       "price": 5649270,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R1D43AAE": [
@@ -4484,7 +4966,8 @@
     {
       "date": "2026-09-30",
       "price": 8919900,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R1D44AAE": [
@@ -4497,7 +4980,8 @@
     {
       "date": "2026-09-30",
       "price": 8500,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R1D45AAE": [
@@ -4510,7 +4994,8 @@
     {
       "date": "2026-09-30",
       "price": 24225,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R1D46AAE": [
@@ -4523,7 +5008,8 @@
     {
       "date": "2026-09-30",
       "price": 38250,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R1D49AAE": [
@@ -4536,7 +5022,8 @@
     {
       "date": "2026-09-30",
       "price": 27718,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R1D50AAE": [
@@ -4549,7 +5036,8 @@
     {
       "date": "2026-09-30",
       "price": 80726,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R1D51AAE": [
@@ -4562,7 +5050,8 @@
     {
       "date": "2026-09-30",
       "price": 129012,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R1D52AAE": [
@@ -4575,7 +5064,8 @@
     {
       "date": "2026-09-30",
       "price": 142359,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R1D53AAE": [
@@ -4588,7 +5078,8 @@
     {
       "date": "2026-09-30",
       "price": 414608,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R1D54AAE": [
@@ -4601,7 +5092,8 @@
     {
       "date": "2026-09-30",
       "price": 662610,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R1D55AAE": [
@@ -4614,7 +5106,8 @@
     {
       "date": "2026-09-30",
       "price": 1097088,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R1D56AAE": [
@@ -4627,7 +5120,8 @@
     {
       "date": "2026-09-30",
       "price": 3195185,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R1D57AAE": [
@@ -4640,7 +5134,8 @@
     {
       "date": "2026-09-30",
       "price": 5106411,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R1D58AAE": [
@@ -4653,7 +5148,8 @@
     {
       "date": "2026-09-30",
       "price": 12738,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R1D59AAE": [
@@ -4666,7 +5162,8 @@
     {
       "date": "2026-09-30",
       "price": 37098,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R1D60AAE": [
@@ -4679,7 +5176,8 @@
     {
       "date": "2026-09-30",
       "price": 59289,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R1D61AAE": [
@@ -4692,7 +5190,8 @@
     {
       "date": "2026-09-30",
       "price": 10608,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R1D62AAE": [
@@ -4705,7 +5204,8 @@
     {
       "date": "2026-09-30",
       "price": 30896,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R1D63AAE": [
@@ -4718,7 +5218,8 @@
     {
       "date": "2026-09-30",
       "price": 49376,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R1D64AAE": [
@@ -4731,7 +5232,8 @@
     {
       "date": "2026-09-30",
       "price": 5600,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R1D65AAE": [
@@ -4744,7 +5246,8 @@
     {
       "date": "2026-09-30",
       "price": 16309,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R1D66AAE": [
@@ -4757,7 +5260,8 @@
     {
       "date": "2026-09-30",
       "price": 26064,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R7J57A": [
@@ -4785,7 +5289,8 @@
     {
       "date": "2026-09-30",
       "price": 371,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3Q19A": [
@@ -4813,7 +5318,8 @@
     {
       "date": "2026-09-30",
       "price": 229,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q0D22AAE": [
@@ -4826,7 +5332,8 @@
     {
       "date": "2026-09-30",
       "price": 10183,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q0D23AAE": [
@@ -4839,7 +5346,8 @@
     {
       "date": "2026-09-30",
       "price": 6264,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q0D25AAE": [
@@ -4852,7 +5360,8 @@
     {
       "date": "2026-09-30",
       "price": 2085,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q0D26AAE": [
@@ -4865,7 +5374,8 @@
     {
       "date": "2026-09-30",
       "price": 7532,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q0D29AAE": [
@@ -4878,7 +5388,8 @@
     {
       "date": "2026-09-30",
       "price": 4395,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q0D30AAE": [
@@ -4891,7 +5402,8 @@
     {
       "date": "2026-09-30",
       "price": 15095,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q1X74AAE": [
@@ -4904,7 +5416,8 @@
     {
       "date": "2026-09-30",
       "price": 752,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q1X75AAE": [
@@ -4917,7 +5430,8 @@
     {
       "date": "2026-09-30",
       "price": 2040,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q5W19AAE": [
@@ -4930,7 +5444,8 @@
     {
       "date": "2026-09-30",
       "price": 2505,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q5W20AAE": [
@@ -4943,7 +5458,8 @@
     {
       "date": "2026-09-30",
       "price": 4072,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q5W21AAE": [
@@ -4956,7 +5472,8 @@
     {
       "date": "2026-09-30",
       "price": 4175,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q5W22AAE": [
@@ -4969,7 +5486,8 @@
     {
       "date": "2026-09-30",
       "price": 6787,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q5W23AAE": [
@@ -4982,7 +5500,8 @@
     {
       "date": "2026-09-30",
       "price": 9072,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q5W24AAE": [
@@ -4995,7 +5514,8 @@
     {
       "date": "2026-09-30",
       "price": 14516,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q5W25AAE": [
@@ -5008,7 +5528,8 @@
     {
       "date": "2026-09-30",
       "price": 15119,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q5W26AAE": [
@@ -5021,7 +5542,8 @@
     {
       "date": "2026-09-30",
       "price": 24194,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q8U15AAE": [
@@ -5034,7 +5556,8 @@
     {
       "date": "2026-09-30",
       "price": 24680,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q8U16AAE": [
@@ -5047,7 +5570,8 @@
     {
       "date": "2026-09-30",
       "price": 41134,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q8U17AAE": [
@@ -5060,7 +5584,8 @@
     {
       "date": "2026-09-30",
       "price": 20325,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q8U18AAE": [
@@ -5073,7 +5598,8 @@
     {
       "date": "2026-09-30",
       "price": 33874,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q8U19AAE": [
@@ -5086,7 +5612,8 @@
     {
       "date": "2026-09-30",
       "price": 6737,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q8U20AAE": [
@@ -5099,7 +5626,8 @@
     {
       "date": "2026-09-30",
       "price": 11229,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q8U21AAE": [
@@ -5112,7 +5640,8 @@
     {
       "date": "2026-09-30",
       "price": 5483,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "Q8U22AAE": [
@@ -5125,7 +5654,8 @@
     {
       "date": "2026-09-30",
       "price": 9139,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R8V72A": [
@@ -5153,7 +5683,8 @@
     {
       "date": "2026-09-30",
       "price": 18873,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R8V73A": [
@@ -5181,7 +5712,8 @@
     {
       "date": "2026-09-30",
       "price": 31455,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R8V74A": [
@@ -5209,7 +5741,8 @@
     {
       "date": "2026-09-30",
       "price": 2260,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R8V75A": [
@@ -5237,7 +5770,8 @@
     {
       "date": "2026-09-30",
       "price": 6110,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R8V76A": [
@@ -5265,7 +5799,8 @@
     {
       "date": "2026-09-30",
       "price": 3980,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R8V77A": [
@@ -5293,7 +5828,8 @@
     {
       "date": "2026-09-30",
       "price": 10800,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R8V78A": [
@@ -5321,7 +5857,8 @@
     {
       "date": "2026-09-30",
       "price": 18000,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R8V79A": [
@@ -5379,7 +5916,8 @@
     {
       "date": "2026-09-30",
       "price": 268,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R8V87AAE": [
@@ -5392,7 +5930,8 @@
     {
       "date": "2026-09-30",
       "price": 806,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R8V88AAE": [
@@ -5405,7 +5944,8 @@
     {
       "date": "2026-09-30",
       "price": 724,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R8V89AAE": [
@@ -5418,7 +5958,8 @@
     {
       "date": "2026-09-30",
       "price": 2180,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S0F21AAE": [
@@ -5431,7 +5972,8 @@
     {
       "date": "2026-09-30",
       "price": 1210,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S0F22AAE": [
@@ -5444,7 +5986,8 @@
     {
       "date": "2026-09-30",
       "price": 3630,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S0F24AAE": [
@@ -5457,7 +6000,8 @@
     {
       "date": "2026-09-30",
       "price": 10200,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S0F25AAE": [
@@ -5470,7 +6014,8 @@
     {
       "date": "2026-09-30",
       "price": 268,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S0F26AAE": [
@@ -5483,7 +6028,8 @@
     {
       "date": "2026-09-30",
       "price": 806,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S0F27AAE": [
@@ -5496,7 +6042,8 @@
     {
       "date": "2026-09-30",
       "price": 724,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S0F28AAE": [
@@ -5509,7 +6056,8 @@
     {
       "date": "2026-09-30",
       "price": 2180,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S0F29AAE": [
@@ -5522,7 +6070,8 @@
     {
       "date": "2026-09-30",
       "price": 1210,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S0F30AAE": [
@@ -5535,7 +6084,8 @@
     {
       "date": "2026-09-30",
       "price": 3630,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3B60AAE": [
@@ -5548,7 +6098,8 @@
     {
       "date": "2026-09-30",
       "price": 1980,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3B61AAE": [
@@ -5561,7 +6112,8 @@
     {
       "date": "2026-09-30",
       "price": 1860,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3B62AAE": [
@@ -5574,7 +6126,8 @@
     {
       "date": "2026-09-30",
       "price": 5346,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3B63AAE": [
@@ -5587,7 +6140,8 @@
     {
       "date": "2026-09-30",
       "price": 5022,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3B64AAE": [
@@ -5600,7 +6154,8 @@
     {
       "date": "2026-09-30",
       "price": 8910,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3B65AAE": [
@@ -5613,7 +6168,8 @@
     {
       "date": "2026-09-30",
       "price": 8370,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3B66AAE": [
@@ -5626,7 +6182,8 @@
     {
       "date": "2026-09-30",
       "price": 5400,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3B67AAE": [
@@ -5639,7 +6196,8 @@
     {
       "date": "2026-09-30",
       "price": 3851,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3B68AAE": [
@@ -5652,7 +6210,8 @@
     {
       "date": "2026-09-30",
       "price": 14580,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3B69AAE": [
@@ -5665,7 +6224,8 @@
     {
       "date": "2026-09-30",
       "price": 10395,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3B70AAE": [
@@ -5678,7 +6238,8 @@
     {
       "date": "2026-09-30",
       "price": 24300,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3B71AAE": [
@@ -5691,7 +6252,8 @@
     {
       "date": "2026-09-30",
       "price": 17325,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S7N77AAE": [
@@ -5704,7 +6266,8 @@
     {
       "date": "2026-09-30",
       "price": 18873,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S7N78AAE": [
@@ -5717,7 +6280,8 @@
     {
       "date": "2026-09-30",
       "price": 31455,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S7N87A": [
@@ -5955,7 +6519,8 @@
     {
       "date": "2026-09-30",
       "price": 21544,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R6J29AAE": [
@@ -5968,7 +6533,8 @@
     {
       "date": "2026-09-30",
       "price": 86513,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R6J33AAE": [
@@ -5981,7 +6547,8 @@
     {
       "date": "2026-09-30",
       "price": 4475,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R6J34AAE": [
@@ -5994,7 +6561,8 @@
     {
       "date": "2026-09-30",
       "price": 26642,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "R6J35AAE": [
@@ -6007,7 +6575,8 @@
     {
       "date": "2026-09-30",
       "price": 17987,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3Z84AAE": [
@@ -6019,6 +6588,12 @@
     },
     {
       "date": "2026-09-30",
+      "price": 53719,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
       "price": 53719,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -6033,7 +6608,8 @@
     {
       "date": "2026-09-30",
       "price": 51040,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3Z86AAE": [
@@ -6045,6 +6621,12 @@
     },
     {
       "date": "2026-09-30",
+      "price": 35808,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
       "price": 35808,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -6059,7 +6641,8 @@
     {
       "date": "2026-09-30",
       "price": 34030,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3Z88AAE": [
@@ -6071,6 +6654,12 @@
     },
     {
       "date": "2026-09-30",
+      "price": 22385,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
       "price": 22385,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -6085,7 +6674,8 @@
     {
       "date": "2026-09-30",
       "price": 63798,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3Z90AAE": [
@@ -6097,6 +6687,12 @@
     },
     {
       "date": "2026-09-30",
+      "price": 14999,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
       "price": 14999,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -6111,7 +6707,8 @@
     {
       "date": "2026-09-30",
       "price": 42748,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S6L39A": [
@@ -6184,7 +6781,8 @@
     {
       "date": "2026-09-30",
       "price": 322,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S0E94AAE": [
@@ -6197,7 +6795,8 @@
     {
       "date": "2026-09-30",
       "price": 870,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S0E95AAE": [
@@ -6210,7 +6809,8 @@
     {
       "date": "2026-09-30",
       "price": 1451,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "M6K30AAE": [
@@ -6223,7 +6823,8 @@
     {
       "date": "2026-09-30",
       "price": 7803,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "M6K32AAE": [
@@ -6236,7 +6837,8 @@
     {
       "date": "2026-09-30",
       "price": 13005,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3R49A": [
@@ -6264,7 +6866,8 @@
     {
       "date": "2026-09-30",
       "price": 4399,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3R50A": [
@@ -6292,7 +6895,8 @@
     {
       "date": "2026-09-30",
       "price": 1599,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3R51A": [
@@ -6320,7 +6924,8 @@
     {
       "date": "2026-09-30",
       "price": 1099,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3R52A": [
@@ -6348,7 +6953,8 @@
     {
       "date": "2026-09-30",
       "price": 7196,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3R53A": [
@@ -6376,7 +6982,8 @@
     {
       "date": "2026-09-30",
       "price": 2990,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3R54A": [
@@ -6404,7 +7011,8 @@
     {
       "date": "2026-09-30",
       "price": 4946,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3R55AAE": [
@@ -6417,7 +7025,8 @@
     {
       "date": "2026-09-30",
       "price": 3507,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3R56AAE": [
@@ -6430,7 +7039,8 @@
     {
       "date": "2026-09-30",
       "price": 1299,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3R57AAE": [
@@ -6443,7 +7053,8 @@
     {
       "date": "2026-09-30",
       "price": 1887,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3R58AAE": [
@@ -6456,7 +7067,8 @@
     {
       "date": "2026-09-30",
       "price": 699,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3R59AAE": [
@@ -6469,7 +7081,8 @@
     {
       "date": "2026-09-30",
       "price": 3146,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S3R60AAE": [
@@ -6482,7 +7095,8 @@
     {
       "date": "2026-09-30",
       "price": 5846,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S7N75AAE": [
@@ -6495,7 +7109,8 @@
     {
       "date": "2026-09-30",
       "price": 7803,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S7N76AAE": [
@@ -6508,7 +7123,8 @@
     {
       "date": "2026-09-30",
       "price": 13005,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S7N79AAE": [
@@ -6521,7 +7137,8 @@
     {
       "date": "2026-09-30",
       "price": 1599,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S7N80AAE": [
@@ -6534,7 +7151,8 @@
     {
       "date": "2026-09-30",
       "price": 1099,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S7N81AAE": [
@@ -6547,7 +7165,8 @@
     {
       "date": "2026-09-30",
       "price": 4399,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S7N82AAE": [
@@ -6560,7 +7179,8 @@
     {
       "date": "2026-09-30",
       "price": 2990,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S7N83AAE": [
@@ -6573,7 +7193,8 @@
     {
       "date": "2026-09-30",
       "price": 7196,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S7N84AAE": [
@@ -6586,7 +7207,8 @@
     {
       "date": "2026-09-30",
       "price": 4946,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S7N85A": [
@@ -6719,7 +7341,8 @@
     {
       "date": "2026-09-30",
       "price": 1299,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S7N96AAE": [
@@ -6732,7 +7355,8 @@
     {
       "date": "2026-09-30",
       "price": 3507,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S7N97AAE": [
@@ -6745,7 +7369,8 @@
     {
       "date": "2026-09-30",
       "price": 5846,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S7N98AAE": [
@@ -6758,7 +7383,8 @@
     {
       "date": "2026-09-30",
       "price": 699,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S7N99AAE": [
@@ -6771,7 +7397,8 @@
     {
       "date": "2026-09-30",
       "price": 1887,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S7P00AAE": [
@@ -6784,7 +7411,8 @@
     {
       "date": "2026-09-30",
       "price": 3146,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S5Q81AAE": [
@@ -6797,7 +7425,8 @@
     {
       "date": "2026-09-30",
       "price": 600,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S5Q82AAE": [
@@ -6810,7 +7439,8 @@
     {
       "date": "2026-09-30",
       "price": 1800,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S5Q83AAE": [
@@ -6823,7 +7453,8 @@
     {
       "date": "2026-09-30",
       "price": 3000,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "G3J22AAE": [
@@ -6836,7 +7467,8 @@
     {
       "date": "2026-09-30",
       "price": 4839,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "G3J23AAE": [
@@ -6849,7 +7481,8 @@
     {
       "date": "2026-09-30",
       "price": 3024,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "G3J24AAE": [
@@ -6862,7 +7495,8 @@
     {
       "date": "2026-09-30",
       "price": 14516,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "G3J25AAE": [
@@ -6875,7 +7509,8 @@
     {
       "date": "2026-09-30",
       "price": 9072,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "G3J26AAE": [
@@ -6888,7 +7523,8 @@
     {
       "date": "2026-09-30",
       "price": 24194,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "G3J27AAE": [
@@ -6901,7 +7537,8 @@
     {
       "date": "2026-09-30",
       "price": 15119,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "G3J28AAE": [
@@ -6914,7 +7551,8 @@
     {
       "date": "2026-09-30",
       "price": 1429,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "G3J29AAE": [
@@ -6927,7 +7565,8 @@
     {
       "date": "2026-09-30",
       "price": 879,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "G3J30AAE": [
@@ -6940,7 +7579,8 @@
     {
       "date": "2026-09-30",
       "price": 4287,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "G3J31AAE": [
@@ -6953,7 +7593,8 @@
     {
       "date": "2026-09-30",
       "price": 2637,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "G3J32AAE": [
@@ -6966,7 +7607,8 @@
     {
       "date": "2026-09-30",
       "price": 7145,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "G3J33AAE": [
@@ -6979,7 +7621,8 @@
     {
       "date": "2026-09-30",
       "price": 4395,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "G5J62AAE": [
@@ -6992,7 +7635,8 @@
     {
       "date": "2026-09-30",
       "price": 2144,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "G5J63AAE": [
@@ -7004,6 +7648,12 @@
     },
     {
       "date": "2026-09-30",
+      "price": 1319,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
       "price": 1319,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -7018,7 +7668,8 @@
     {
       "date": "2026-09-30",
       "price": 6432,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "G5J65AAE": [
@@ -7031,7 +7682,8 @@
     {
       "date": "2026-09-30",
       "price": 3957,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "J8J35AAE": [
@@ -7044,7 +7696,8 @@
     {
       "date": "2026-09-30",
       "price": 879,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "J8J36AAE": [
@@ -7057,7 +7710,8 @@
     {
       "date": "2026-09-30",
       "price": 1429,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S4R31A": [
@@ -7340,7 +7994,8 @@
     {
       "date": "2026-09-30",
       "price": 1948,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S2G28AAE": [
@@ -7353,7 +8008,8 @@
     {
       "date": "2026-09-30",
       "price": 2449,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S4F94AAE": [
@@ -7366,7 +8022,8 @@
     {
       "date": "2026-09-30",
       "price": 1568,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S4G00AAE": [
@@ -7379,7 +8036,8 @@
     {
       "date": "2026-09-30",
       "price": 2637,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "S4R76AAE": [
@@ -7392,7 +8050,8 @@
     {
       "date": "2026-09-30",
       "price": 519,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
     }
   ],
   "H0JD4A1008E": [
@@ -7423,63 +8082,72 @@
     {
       "date": "2026-09-30",
       "price": 1,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
     }
   ],
   "389692-B21": [
     {
       "date": "2026-09-30",
       "price": 1,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
     }
   ],
   "R8V46AAE": [
     {
       "date": "2026-09-30",
       "price": 12474,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
     }
   ],
   "S0W13AAE": [
     {
       "date": "2026-09-30",
       "price": 182,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
     }
   ],
   "S0W16AAE": [
     {
       "date": "2026-09-30",
       "price": 327,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
     }
   ],
   "S0W19AAE": [
     {
       "date": "2026-09-30",
       "price": 111,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
     }
   ],
   "S0W22AAE": [
     {
       "date": "2026-09-30",
       "price": 396,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
     }
   ],
   "S0W25AAE": [
     {
       "date": "2026-09-30",
       "price": 150,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
     }
   ],
   "S0W28AAE": [
     {
       "date": "2026-09-30",
       "price": 66,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
     }
   ],
   "HA849A1": [
@@ -7500,7 +8168,8 @@
     {
       "date": "2026-09-30",
       "price": 110,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
     }
   ],
   "H29BWA1": [
@@ -7738,7 +8407,13 @@
     {
       "date": "2026-09-30",
       "price": 350,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 350,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R3J78A": [
@@ -7746,20 +8421,37 @@
       "date": "2026-09-30",
       "price": 0,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P1F76A": [
     {
       "date": "2026-09-30",
       "price": 758,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 758,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P1F78A": [
     {
       "date": "2026-09-30",
       "price": 350,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 350,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R2D12A": [
@@ -7767,6 +8459,11 @@
       "date": "2026-09-30",
       "price": 0,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R2D20A": [
@@ -7774,6 +8471,11 @@
       "date": "2026-09-30",
       "price": 0,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R2D10A": [
@@ -7781,6 +8483,11 @@
       "date": "2026-09-30",
       "price": 0,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R2D04A": [
@@ -7788,13 +8495,24 @@
       "date": "2026-09-30",
       "price": 0,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P1F71A": [
     {
       "date": "2026-09-30",
       "price": 292,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 292,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P1F81A": [
@@ -7802,27 +8520,50 @@
       "date": "2026-09-30",
       "price": 0,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "AC123A": [
     {
       "date": "2026-09-30",
       "price": 816,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 816,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "BQ337A": [
     {
       "date": "2026-09-30",
       "price": 100,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 100,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "BQ335A": [
     {
       "date": "2026-09-30",
       "price": 44,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-17",
+      "price": 44,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "G1H96A1": [
@@ -8171,6 +8912,27 @@
   "H46SKA3": [
     {
       "date": "2026-09-30",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "HA0Z0A1": [
+    {
+      "date": "2026-10-17",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "HR2R4A1": [
+    {
+      "date": "2026-10-17",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "HR2R5A1": [
+    {
+      "date": "2026-10-17",
       "price": 0,
       "status": "ADDED"
     }

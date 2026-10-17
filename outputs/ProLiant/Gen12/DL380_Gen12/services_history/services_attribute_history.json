@@ -20038,5 +20038,205 @@
     "field": "HPE Recommended",
     "oldValue": "",
     "newValue": "No"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "G5J68AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "Start Date",
+    "oldValue": "03/31/2014",
+    "newValue": "05/05/2014"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "G5J69AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "Start Date",
+    "oldValue": "03/31/2014",
+    "newValue": "05/05/2014"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "S3Z84AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Discontinued Date",
+    "oldValue": "11/02/2026",
+    "newValue": "12/07/2026"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "S3Z86AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Discontinued Date",
+    "oldValue": "11/02/2026",
+    "newValue": "12/07/2026"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "S3Z88AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Discontinued Date",
+    "oldValue": "11/02/2026",
+    "newValue": "12/07/2026"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "S3Z90AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Discontinued Date",
+    "oldValue": "11/02/2026",
+    "newValue": "12/07/2026"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "G5J63AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Start Date",
+    "oldValue": "03/31/2014",
+    "newValue": "04/03/2014"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "P1F74A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{}",
+    "newValue": "{\"Product Number\":\"P1F74A\"}"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "R3J78A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{}",
+    "newValue": "{\"Product Number\":\"R3J78A\"}"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "P1F76A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{}",
+    "newValue": "{\"Product Number\":\"P1F76A\"}"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "P1F78A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{}",
+    "newValue": "{\"Product Number\":\"P1F78A\"}"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "R2D12A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{}",
+    "newValue": "{\"Product Number\":\"R2D12A\"}"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "R2D20A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{}",
+    "newValue": "{\"Product Number\":\"R2D20A\"}"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "R2D10A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{}",
+    "newValue": "{\"Product Number\":\"R2D10A\"}"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "R2D04A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{}",
+    "newValue": "{\"Product Number\":\"R2D04A\"}"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "P1F71A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{}",
+    "newValue": "{\"Product Number\":\"P1F71A\"}"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "P1F81A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{}",
+    "newValue": "{\"Product Number\":\"P1F81A\"}"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "AC123A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{}",
+    "newValue": "{\"Product Number\":\"AC123A\"}"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "BQ337A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{}",
+    "newValue": "{\"Product Number\":\"BQ337A\"}"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "BQ335A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{}",
+    "newValue": "{\"Product Number\":\"BQ335A\"}"
   }
 ]

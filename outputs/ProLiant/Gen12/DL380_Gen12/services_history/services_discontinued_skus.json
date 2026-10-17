@@ -862,5 +862,29 @@
     "subCategory": "HPE Virtualization",
     "firstSeenDate": "2026-09-30",
     "status": "ACTIVE"
+  },
+  "HA0Z0A1": {
+    "productNumber": "HA0Z0A1",
+    "description": "HPE DL 1Yr Other 1GB Content Hosted SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-10-17",
+    "status": "ACTIVE"
+  },
+  "HR2R4A1": {
+    "productNumber": "HR2R4A1",
+    "description": "HPE Digital Learner Bronze 1Yr Subs SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-10-17",
+    "status": "ACTIVE"
+  },
+  "HR2R5A1": {
+    "productNumber": "HR2R5A1",
+    "description": "HPE Digital Learner Silver 1Yr Subs SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-10-17",
+    "status": "ACTIVE"
   }
 }

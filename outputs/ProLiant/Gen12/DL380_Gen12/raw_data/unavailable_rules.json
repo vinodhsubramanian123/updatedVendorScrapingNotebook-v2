@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-09-30T18:45:29.543Z",
+  "timestamp": "2026-10-17T12:26:31.428Z",
   "chassisName": "DL380_Gen12",
-  "totalUnavailableRules": 33,
-  "totalUnavailableSkus": 107,
+  "totalUnavailableRules": 35,
+  "totalUnavailableSkus": 112,
   "rules": [
     {
       "ruleId": "RULE_1",
@@ -158,11 +158,11 @@
       "affectedSkusCount": 6,
       "affectedSkus": [
         "P76473-B21",
-        "P76474-B21",
         "P77474-B21",
         "P77475-B21",
         "P77484-B21",
-        "P77485-B21"
+        "P77485-B21",
+        "P76474-B21"
       ]
     },
     {
@@ -172,8 +172,8 @@
       "reason": "Supported with 8LFF CTO Server only and requires 2SFF SBS Cage.",
       "affectedSkusCount": 3,
       "affectedSkus": [
-        "P77481-B21",
         "P76476-B21",
+        "P77481-B21",
         "P77480-B21"
       ]
     },
@@ -185,8 +185,8 @@
       "affectedSkusCount": 3,
       "affectedSkus": [
         "P83798-B21",
-        "P87968-B21",
-        "P83799-B21"
+        "P83799-B21",
+        "P87968-B21"
       ]
     },
     {
@@ -238,7 +238,7 @@
       "reason": "Private Product is not valid for current customer account",
       "affectedSkusCount": 1,
       "affectedSkus": [
-        "P74383-B21\n\n    PVT"
+        "P74383-B21"
       ]
     },
     {
@@ -248,7 +248,7 @@
       "reason": "Private Product is not valid for current customer account",
       "affectedSkusCount": 1,
       "affectedSkus": [
-        "P89140-B21\n\n    PVT"
+        "P89140-B21"
       ]
     },
     {
@@ -260,10 +260,10 @@
       "affectedSkus": [
         "AJ833A",
         "AJ836A",
+        "AJ837A",
         "AJ838A",
         "AJ839A",
-        "AJ834A",
-        "AJ837A"
+        "AJ834A"
       ]
     },
     {
@@ -273,8 +273,8 @@
       "reason": "Private Product is not valid for current customer account",
       "affectedSkusCount": 2,
       "affectedSkus": [
-        "P74606-B21\n\n    PVT",
-        "P97416-B21\n\n    PVT"
+        "P74606-B21",
+        "P97416-B21"
       ]
     },
     {
@@ -296,7 +296,7 @@
       "reason": "Private Product is not valid for current customer account",
       "affectedSkusCount": 1,
       "affectedSkus": [
-        "S7J51C\n\n    PVT"
+        "S7J51C"
       ]
     },
     {
@@ -333,6 +333,17 @@
     },
     {
       "ruleId": "RULE_29",
+      "ruleType": "BTO_DISALLOWED",
+      "section": "Power Supplies",
+      "reason": "BTO products are not allowed in CTO Base Model.",
+      "affectedSkusCount": 2,
+      "affectedSkus": [
+        "A0N33A",
+        "A0K02A"
+      ]
+    },
+    {
+      "ruleId": "RULE_30",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Power Supplies",
       "reason": "Max quantity of product limited by space available.",
@@ -341,9 +352,9 @@
         "AF556A",
         "AF557A",
         "AF568A",
-        "AF570A",
         "AF573A",
         "P78130-B21",
+        "P78156-B21",
         "AF558A",
         "AF559A",
         "AF560A",
@@ -354,36 +365,25 @@
         "AF566A",
         "AF567A",
         "AF569A",
+        "AF570A",
         "AF572A",
         "AF591A",
         "P78131-B21",
         "P78144-B21",
         "P78147-B21",
-        "P78156-B21",
         "P78940-B21",
         "P78941-B21",
         "R1C65A"
       ]
     },
     {
-      "ruleId": "RULE_30",
+      "ruleId": "RULE_31",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Power Supplies",
       "reason": "If AC Power Supply is selected then only AC Power Cords should be in the drop-down.",
       "affectedSkusCount": 1,
       "affectedSkus": [
         "P22173-B21"
-      ]
-    },
-    {
-      "ruleId": "RULE_31",
-      "ruleType": "BTO_DISALLOWED",
-      "section": "Power Supplies",
-      "reason": "BTO products are not allowed in CTO Base Model.",
-      "affectedSkusCount": 2,
-      "affectedSkus": [
-        "A0K02A",
-        "A0N33A"
       ]
     },
     {
@@ -399,19 +399,44 @@
     {
       "ruleId": "RULE_33",
       "ruleType": "MUTUAL_EXCLUSION",
+      "section": "HPE Compute Ops Management",
+      "reason": "Max 1 per server (This is applicable for both 3year and 5 year license in TOTAL) Total number of licenses within an order cannot exceed the number of servers",
+      "affectedSkusCount": 2,
+      "affectedSkus": [
+        "R7A11AAE",
+        "S2E10AAE"
+      ]
+    },
+    {
+      "ruleId": "RULE_34",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "section": "HPE Compute Ops Management",
+      "reason": "For Gen11/Gen12 servers ONLY Min 1/Max 1 per server. Total number of licenses within an order cannot exceed the number of servers",
+      "affectedSkusCount": 3,
+      "affectedSkus": [
+        "S5E59AAE",
+        "S5E60AAE",
+        "S5E61AAE"
+      ]
+    },
+    {
+      "ruleId": "RULE_35",
+      "ruleType": "MUTUAL_EXCLUSION",
       "section": "Virtualization",
       "reason": "Private Product is not valid for current customer account",
       "affectedSkusCount": 3,
       "affectedSkus": [
-        "S4F94AAE\n\n    PVT",
-        "S4G00AAE\n\n    PVT",
-        "S4R76AAE\n\n    PVT"
+        "S4F94AAE",
+        "S4G00AAE",
+        "S4R76AAE"
       ]
     }
   ],
   "skus": [
     {
       "sku": "P49145-B21",
+      "rawSku": "P49145-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant DL380 2U Standard Heat Sink Kit",
       "listPrice": 133,
       "startDate": "04/03/2023",
@@ -426,6 +451,8 @@
     },
     {
       "sku": "P74204-B21",
+      "rawSku": "P74204-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380 Gen12 Cold Plate Module FIO Kit from PCIe NS204-u",
       "listPrice": 2027,
       "startDate": "02/24/2025",
@@ -440,6 +467,8 @@
     },
     {
       "sku": "P74208-B21",
+      "rawSku": "P74208-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL3XX Gen12 Cold Plate Module FIO Kit from PCIe",
       "listPrice": 1996,
       "startDate": "02/24/2025",
@@ -454,6 +483,8 @@
     },
     {
       "sku": "P74787-B21",
+      "rawSku": "P74787-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL3XX Gen12 High Performance Heat Sink Kit",
       "listPrice": 293,
       "startDate": "02/24/2025",
@@ -468,6 +499,8 @@
     },
     {
       "sku": "P74794-B21",
+      "rawSku": "P74794-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380 Gen12 2U Max Performance Heat Sink Kit",
       "listPrice": 624,
       "startDate": "02/24/2025",
@@ -482,6 +515,8 @@
     },
     {
       "sku": "P69728-F21",
+      "rawSku": "P69728-F21",
+      "isPrivateSku": false,
       "description": "HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit",
       "listPrice": 28532,
       "startDate": "04/06/2026",
@@ -496,6 +531,8 @@
     },
     {
       "sku": "P69729-F21",
+      "rawSku": "P69729-F21",
+      "isPrivateSku": false,
       "description": "HPE 96GB (1x96GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit",
       "listPrice": 47056,
       "startDate": "04/06/2026",
@@ -510,6 +547,8 @@
     },
     {
       "sku": "P69730-F21",
+      "rawSku": "P69730-F21",
+      "isPrivateSku": false,
       "description": "HPE 128GB (1x128GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit",
       "listPrice": 60190,
       "startDate": "04/06/2026",
@@ -524,6 +563,8 @@
     },
     {
       "sku": "P73447-F21",
+      "rawSku": "P73447-F21",
+      "isPrivateSku": false,
       "description": "HPE 256GB (1x256GB) Quad Rank x4 DDR5-6400 CAS-60-52-52 EC8 Registered 3DS Smart FIO Memory Kit",
       "listPrice": 133186,
       "startDate": "04/06/2026",
@@ -538,6 +579,8 @@
     },
     {
       "sku": "P74738-B21",
+      "rawSku": "P74738-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute Gen12 12EDSFF Drive Cage Kit",
       "listPrice": 488,
       "startDate": "02/24/2025",
@@ -552,6 +595,8 @@
     },
     {
       "sku": "P74741-B21",
+      "rawSku": "P74741-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380 Gen12 4LFF SAS/SATA LP Midplane Drive Cage Kit",
       "listPrice": 262,
       "startDate": "02/24/2025",
@@ -566,6 +611,8 @@
     },
     {
       "sku": "P74746-B21",
+      "rawSku": "P74746-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380 Gen12 2LFF Rear Primary Drive Cage Kit",
       "listPrice": 182,
       "startDate": "02/24/2025",
@@ -580,6 +627,8 @@
     },
     {
       "sku": "P75411-B21",
+      "rawSku": "P75411-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380 Gen12 2LFF Rear/Tertiary Drive Cage Kit",
       "listPrice": 714,
       "startDate": "02/24/2025",
@@ -594,6 +643,8 @@
     },
     {
       "sku": "P76875-B21",
+      "rawSku": "P76875-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380 Gen12 2LFF Rear Secondary Drive Cage Kit",
       "listPrice": 182,
       "startDate": "02/24/2025",
@@ -608,6 +659,8 @@
     },
     {
       "sku": "P74744-B21",
+      "rawSku": "P74744-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL3XX Gen12 Front LFF for 2SFF Enablement Side-by-Side U.3 HDD Front Cage Kit",
       "listPrice": 224,
       "startDate": "02/24/2025",
@@ -622,6 +675,8 @@
     },
     {
       "sku": "cntr8sffx2",
+      "rawSku": "cntr8sffx2",
+      "isPrivateSku": false,
       "description": "Controller x2\n        \n             Nvme option not available with 8sff smart chassis choice.",
       "listPrice": 0,
       "startDate": "01/01/2000",
@@ -636,6 +691,8 @@
     },
     {
       "sku": "cntr8sffx4",
+      "rawSku": "cntr8sffx4",
+      "isPrivateSku": false,
       "description": "Controller x4\n        \n             Nvme option not available with 8sff smart chassis choice.",
       "listPrice": 0,
       "startDate": "01/01/2000",
@@ -650,6 +707,8 @@
     },
     {
       "sku": "da8sffx2",
+      "rawSku": "da8sffx2",
+      "isPrivateSku": false,
       "description": "Direct Attach x2\n        \n             Nvme option not available with 8sff smart chassis choice.",
       "listPrice": 0,
       "startDate": "01/01/2000",
@@ -664,6 +723,8 @@
     },
     {
       "sku": "da8sffx4",
+      "rawSku": "da8sffx4",
+      "isPrivateSku": false,
       "description": "Direct Attach x4\n        \n             Nvme option not available with 8sff smart chassis choice.",
       "listPrice": 0,
       "startDate": "01/01/2000",
@@ -678,6 +739,8 @@
     },
     {
       "sku": "P77955-B21",
+      "rawSku": "P77955-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach FIO Bundle Kit\n        \n             Nvme option not available with 8sff smart chassis choice.",
       "listPrice": 1,
       "startDate": "02/24/2025",
@@ -692,6 +755,8 @@
     },
     {
       "sku": "P77958-B21",
+      "rawSku": "P77958-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach Universal Media Bay FIO Bundle Kit\n        \n             Nvme option not available with 8sff smart chassis choice.",
       "listPrice": 1,
       "startDate": "02/24/2025",
@@ -706,6 +771,8 @@
     },
     {
       "sku": "P77931-B21",
+      "rawSku": "P77931-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Balanced FIO Bundle Kit\n        \n             Nvme option not available with 8sff smart chassis choice.",
       "listPrice": 1,
       "startDate": "02/24/2025",
@@ -720,6 +787,8 @@
     },
     {
       "sku": "P78064-B21",
+      "rawSku": "P78064-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit\n        \n             Nvme option not available with 8sff smart chassis choice.",
       "listPrice": 0,
       "startDate": "05/05/2025",
@@ -734,6 +803,8 @@
     },
     {
       "sku": "P77934-B21",
+      "rawSku": "P77934-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Universal Media Bay FIO Bundle Kit\n        \n             Nvme option not available with 8sff smart chassis choice.",
       "listPrice": 1,
       "startDate": "02/24/2025",
@@ -748,6 +819,8 @@
     },
     {
       "sku": "P77937-B21",
+      "rawSku": "P77937-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit\n        \n             Nvme option not available with 8sff smart chassis choice.",
       "listPrice": 1,
       "startDate": "02/24/2025",
@@ -762,6 +835,8 @@
     },
     {
       "sku": "P77940-B21",
+      "rawSku": "P77940-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Gen4 Retimer Card FIO Bundle Kit\n        \n             Nvme option not available with 8sff smart chassis choice.",
       "listPrice": 1,
       "startDate": "02/24/2025",
@@ -776,6 +851,8 @@
     },
     {
       "sku": "P77961-B21",
+      "rawSku": "P77961-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380 Gen12 24SFF x2 Direct Attach x16/x16/x16 OCP FIO Bundle Kit\n        \n             Nvme option not available with 8sff smart chassis choice.",
       "listPrice": 1,
       "startDate": "02/24/2025",
@@ -790,6 +867,8 @@
     },
     {
       "sku": "P78070-B21",
+      "rawSku": "P78070-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380 Gen12 8SFF x4 1P Direct Attach FIO Bundle Kit\n        \n             Nvme option not available with 8sff smart chassis choice.",
       "listPrice": 1,
       "startDate": "02/24/2025",
@@ -804,6 +883,8 @@
     },
     {
       "sku": "P78047-B21",
+      "rawSku": "P78047-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Balanced FIO Bundle Kit\n        \n             Nvme option not available with 8sff smart chassis choice.",
       "listPrice": 1,
       "startDate": "02/24/2025",
@@ -818,6 +899,8 @@
     },
     {
       "sku": "P78058-B21",
+      "rawSku": "P78058-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit\n        \n             Nvme option not available with 8sff smart chassis choice.",
       "listPrice": 0,
       "startDate": "05/05/2025",
@@ -832,6 +915,8 @@
     },
     {
       "sku": "P78061-B21",
+      "rawSku": "P78061-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach UMB Multiple Purpose Cage FIO Bundle Kit\n        \n             Nvme option not available with 8sff smart chassis choice.",
       "listPrice": 0,
       "startDate": "05/05/2025",
@@ -846,6 +931,8 @@
     },
     {
       "sku": "P77943-B21",
+      "rawSku": "P77943-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380 Gen12 Tertiary Riser 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit\n        \n             Nvme option not available with 8sff smart chassis choice.",
       "listPrice": 1,
       "startDate": "02/24/2025",
@@ -860,6 +947,8 @@
     },
     {
       "sku": "P74737-B21",
+      "rawSku": "P74737-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380 Gen12 2U x8/x16 Tertiary Riser Kit",
       "listPrice": 506,
       "startDate": "02/24/2025",
@@ -874,6 +963,8 @@
     },
     {
       "sku": "P80997-B21",
+      "rawSku": "P80997-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380 Gen12 Secondary Riser Paddle Card FIO Kit",
       "listPrice": 625,
       "startDate": "08/04/2025",
@@ -888,6 +979,8 @@
     },
     {
       "sku": "P83356-B21",
+      "rawSku": "P83356-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380 Gen12 Primary Riser Paddle Card FIO Kit",
       "listPrice": 590,
       "startDate": "08/04/2025",
@@ -902,6 +995,8 @@
     },
     {
       "sku": "dl380smtch_1-0",
+      "rawSku": "dl380smtch_1-0",
+      "isPrivateSku": false,
       "description": "Smart Chassis Selection:",
       "listPrice": 0,
       "startDate": "01/01/2000",
@@ -916,6 +1011,8 @@
     },
     {
       "sku": "dl380smtch_1-1",
+      "rawSku": "dl380smtch_1-1",
+      "isPrivateSku": false,
       "description": "Smart Chassis Selection:",
       "listPrice": 0,
       "startDate": "01/01/2000",
@@ -930,6 +1027,8 @@
     },
     {
       "sku": "dl380smtch_1-2",
+      "rawSku": "dl380smtch_1-2",
+      "isPrivateSku": false,
       "description": "Smart Chassis Selection:",
       "listPrice": 0,
       "startDate": "01/01/2000",
@@ -944,6 +1043,8 @@
     },
     {
       "sku": "P76473-B21",
+      "rawSku": "P76473-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380 Gen12 8LFF PCIe Controller Box 2/3 Cable Kit",
       "listPrice": 56,
       "startDate": "02/24/2025",
@@ -957,21 +1058,9 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
-      "sku": "P76474-B21",
-      "description": "HPE ProLiant Compute DL380 Gen12 8LFF OROC Box 2/3 Cable Kit",
-      "listPrice": 60,
-      "startDate": "02/24/2025",
-      "discontinuedDate": "06/30/2029",
-      "section": "Storage Devices",
-      "ruleType": "CHASSIS_GATE",
-      "ineligibilityReason": "Supported with 8LFF and 12LFF CTO Server only.",
-      "supplyBadge": "",
-      "supplyTitle": "",
-      "isSelectable": false,
-      "status": "PORTAL_CONDITIONAL"
-    },
-    {
       "sku": "P77474-B21",
+      "rawSku": "P77474-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380 Gen12 8LFF PCIe Box 1/7 Cable Kit",
       "listPrice": 55,
       "startDate": "02/24/2025",
@@ -986,6 +1075,8 @@
     },
     {
       "sku": "P77475-B21",
+      "rawSku": "P77475-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380 Gen12 8LFF OROC Box 1/7 Cable Kit",
       "listPrice": 61,
       "startDate": "02/24/2025",
@@ -1000,6 +1091,8 @@
     },
     {
       "sku": "P77484-B21",
+      "rawSku": "P77484-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380 Gen12 2LFF Rear PCIe Cable Kit",
       "listPrice": 80,
       "startDate": "02/24/2025",
@@ -1014,6 +1107,8 @@
     },
     {
       "sku": "P77485-B21",
+      "rawSku": "P77485-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380 Gen12 2LFF Rear OROC Cable Kit",
       "listPrice": 97,
       "startDate": "02/24/2025",
@@ -1027,14 +1122,16 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
-      "sku": "P77481-B21",
-      "description": "HPE ProLiant Compute DL380 Gen12 2SFF U.3 Side-by-Side Direct Attach Cable Kit",
-      "listPrice": 73,
+      "sku": "P76474-B21",
+      "rawSku": "P76474-B21",
+      "isPrivateSku": false,
+      "description": "HPE ProLiant Compute DL380 Gen12 8LFF OROC Box 2/3 Cable Kit",
+      "listPrice": 60,
       "startDate": "02/24/2025",
       "discontinuedDate": "06/30/2029",
       "section": "Storage Devices",
       "ruleType": "CHASSIS_GATE",
-      "ineligibilityReason": "Supported with 8LFF CTO Server only and requires 2SFF SBS Cage.",
+      "ineligibilityReason": "Supported with 8LFF and 12LFF CTO Server only.",
       "supplyBadge": "",
       "supplyTitle": "",
       "isSelectable": false,
@@ -1042,6 +1139,8 @@
     },
     {
       "sku": "P76476-B21",
+      "rawSku": "P76476-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380 Gen12 2SFF x4 U.3 Side-by-Side Cable Kit",
       "listPrice": 102,
       "startDate": "02/24/2025",
@@ -1055,7 +1154,25 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
+      "sku": "P77481-B21",
+      "rawSku": "P77481-B21",
+      "isPrivateSku": false,
+      "description": "HPE ProLiant Compute DL380 Gen12 2SFF U.3 Side-by-Side Direct Attach Cable Kit",
+      "listPrice": 73,
+      "startDate": "02/24/2025",
+      "discontinuedDate": "06/30/2029",
+      "section": "Storage Devices",
+      "ruleType": "CHASSIS_GATE",
+      "ineligibilityReason": "Supported with 8LFF CTO Server only and requires 2SFF SBS Cage.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
       "sku": "P77480-B21",
+      "rawSku": "P77480-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380 Gen12 OROC 2SFF U.3 Side-by-Side Cable Kit",
       "listPrice": 67,
       "startDate": "02/24/2025",
@@ -1070,6 +1187,8 @@
     },
     {
       "sku": "P83798-B21",
+      "rawSku": "P83798-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380 Gen12 MR932i-p 4EDSFF x4 Signal Cable Kit",
       "listPrice": 198,
       "startDate": "02/02/2026",
@@ -1083,21 +1202,9 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
-      "sku": "P87968-B21",
-      "description": "HPE ProLiant Compute DL380 Gen12 12EDSFF Power Cable Kit",
-      "listPrice": 20,
-      "startDate": "02/02/2026",
-      "discontinuedDate": "06/30/2029",
-      "section": "Storage Devices",
-      "ruleType": "CHASSIS_GATE",
-      "ineligibilityReason": "Supported with 12EDSFF CTO Server only.",
-      "supplyBadge": "",
-      "supplyTitle": "",
-      "isSelectable": false,
-      "status": "PORTAL_CONDITIONAL"
-    },
-    {
       "sku": "P83799-B21",
+      "rawSku": "P83799-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380 Gen12 MR932i-p 4EDSFF x2 Signal Cable Kit",
       "listPrice": 123,
       "startDate": "02/02/2026",
@@ -1111,7 +1218,25 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
+      "sku": "P87968-B21",
+      "rawSku": "P87968-B21",
+      "isPrivateSku": false,
+      "description": "HPE ProLiant Compute DL380 Gen12 12EDSFF Power Cable Kit",
+      "listPrice": 20,
+      "startDate": "02/02/2026",
+      "discontinuedDate": "06/30/2029",
+      "section": "Storage Devices",
+      "ruleType": "CHASSIS_GATE",
+      "ineligibilityReason": "Supported with 12EDSFF CTO Server only.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
       "sku": "701498-B21",
+      "rawSku": "701498-B21",
+      "isPrivateSku": false,
       "description": "HPE Mobile USB DVD-RW Optical Drive",
       "listPrice": 203,
       "startDate": "08/13/2012",
@@ -1126,6 +1251,8 @@
     },
     {
       "sku": "P74752-B21",
+      "rawSku": "P74752-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute Gen12 LFF ODD/Display Port Enablement Kit",
       "listPrice": 105,
       "startDate": "02/24/2025",
@@ -1140,6 +1267,8 @@
     },
     {
       "sku": "807878-B21",
+      "rawSku": "807878-B21",
+      "isPrivateSku": false,
       "description": "HPE Gen9 LFF HDD Spade Blank Kit",
       "listPrice": 32,
       "startDate": "09/24/2015",
@@ -1154,6 +1283,8 @@
     },
     {
       "sku": "666987-B21",
+      "rawSku": "666987-B21",
+      "isPrivateSku": false,
       "description": "HPE Small Form Factor Hard Drive Blank Kit",
       "listPrice": 18,
       "startDate": "03/06/2012",
@@ -1168,6 +1299,8 @@
     },
     {
       "sku": "P87692-B21",
+      "rawSku": "P87692-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380 Gen12 12EDSFF Drive Cage Box 3 FIO Kit",
       "listPrice": 1,
       "startDate": "02/02/2026",
@@ -1182,6 +1315,8 @@
     },
     {
       "sku": "P92742-B21",
+      "rawSku": "P92742-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380 Gen12 x2 EDSFF Controller Attach FIO Kit",
       "listPrice": 1,
       "startDate": "08/03/2026",
@@ -1195,7 +1330,9 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
-      "sku": "P74383-B21\n\n    PVT",
+      "sku": "P74383-B21",
+      "rawSku": "P74383-B21\n\n    PVT",
+      "isPrivateSku": true,
       "description": "Nvidia B3220L 200Gb 2p QSFP 112 Spl DPU",
       "listPrice": 15334,
       "startDate": "05/31/2024",
@@ -1209,7 +1346,9 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
-      "sku": "P89140-B21\n\n    PVT",
+      "sku": "P89140-B21",
+      "rawSku": "P89140-B21\n\n    PVT",
+      "isPrivateSku": true,
       "description": "HPE 100G 2p MCX623436AN OCP3 Spl Adp",
       "listPrice": 7749,
       "startDate": "02/14/2026",
@@ -1224,6 +1363,8 @@
     },
     {
       "sku": "AJ833A",
+      "rawSku": "AJ833A",
+      "isPrivateSku": false,
       "description": "HPE LC to LC Multi-mode OM3 2-Fiber 0.5m 1-Pack Fiber Optic Cable",
       "listPrice": 65,
       "startDate": "06/13/2008",
@@ -1238,6 +1379,8 @@
     },
     {
       "sku": "AJ836A",
+      "rawSku": "AJ836A",
+      "isPrivateSku": false,
       "description": "HPE LC to LC Multi-mode OM3 2-Fiber 5.0m 1-Pack Fiber Optic Cable",
       "listPrice": 115,
       "startDate": "06/13/2008",
@@ -1251,7 +1394,25 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
+      "sku": "AJ837A",
+      "rawSku": "AJ837A",
+      "isPrivateSku": false,
+      "description": "HPE LC to LC Multi-mode OM3 2-Fiber 15.0m 1-Pack Fiber Optic Cable",
+      "listPrice": 162,
+      "startDate": "06/13/2008",
+      "discontinuedDate": "11/30/2028",
+      "section": "Networking",
+      "ruleType": "BTO_DISALLOWED",
+      "ineligibilityReason": "BTO products are not allowed in CTO Base Model.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
       "sku": "AJ838A",
+      "rawSku": "AJ838A",
+      "isPrivateSku": false,
       "description": "HPE LC to LC Multi-mode OM3 2-Fiber 30.0m 1-Pack Fiber Optic Cable",
       "listPrice": 208,
       "startDate": "06/13/2008",
@@ -1266,6 +1427,8 @@
     },
     {
       "sku": "AJ839A",
+      "rawSku": "AJ839A",
+      "isPrivateSku": false,
       "description": "HPE LC to LC Multi-mode OM3 2-Fiber 50.0m 1-Pack Fiber Optic Cable",
       "listPrice": 253,
       "startDate": "06/13/2008",
@@ -1280,6 +1443,8 @@
     },
     {
       "sku": "AJ834A",
+      "rawSku": "AJ834A",
+      "isPrivateSku": false,
       "description": "HPE LC to LC Multi-mode OM3 2-Fiber 1.0m 1-Pack Fiber Optic Cable",
       "listPrice": 70,
       "startDate": "06/13/2008",
@@ -1293,21 +1458,9 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
-      "sku": "AJ837A",
-      "description": "HPE LC to LC Multi-mode OM3 2-Fiber 15.0m 1-Pack Fiber Optic Cable",
-      "listPrice": 162,
-      "startDate": "06/13/2008",
-      "discontinuedDate": "11/30/2028",
-      "section": "Networking",
-      "ruleType": "BTO_DISALLOWED",
-      "ineligibilityReason": "BTO products are not allowed in CTO Base Model.",
-      "supplyBadge": "",
-      "supplyTitle": "",
-      "isSelectable": false,
-      "status": "PORTAL_CONDITIONAL"
-    },
-    {
-      "sku": "P74606-B21\n\n    PVT",
+      "sku": "P74606-B21",
+      "rawSku": "P74606-B21\n\n    PVT",
+      "isPrivateSku": true,
       "description": "HPE DL380G11 DPU B3220 Spl PWR CBL",
       "listPrice": 12,
       "startDate": "03/27/2025",
@@ -1321,7 +1474,9 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
-      "sku": "P97416-B21\n\n    PVT",
+      "sku": "P97416-B21",
+      "rawSku": "P97416-B21\n\n    PVT",
+      "isPrivateSku": true,
       "description": "DL380 Gen12 2x8P Spl Cable Kit",
       "listPrice": 120,
       "startDate": "08/19/2026",
@@ -1336,6 +1491,8 @@
     },
     {
       "sku": "S3U30C",
+      "rawSku": "S3U30C",
+      "isPrivateSku": false,
       "description": "NVIDIA H200 NVL 141GB PCIe Accelerator for HPE",
       "listPrice": 112579,
       "startDate": "02/03/2025",
@@ -1350,6 +1507,8 @@
     },
     {
       "sku": "S6A73C",
+      "rawSku": "S6A73C",
+      "isPrivateSku": false,
       "description": "NVIDIA RTX PRO 6000 Blackwell Server Edition 96GB PCIe Accelerator for HPE",
       "listPrice": 57002,
       "startDate": "07/07/2025",
@@ -1364,6 +1523,8 @@
     },
     {
       "sku": "S6W21C",
+      "rawSku": "S6W21C",
+      "isPrivateSku": false,
       "description": "NVIDIA RTX PRO 6000D 84GB PCIe Accelerator for HPE",
       "listPrice": 37899,
       "startDate": "03/02/2026",
@@ -1377,7 +1538,9 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
-      "sku": "S7J51C\n\n    PVT",
+      "sku": "S7J51C",
+      "rawSku": "S7J51C\n\n    PVT",
+      "isPrivateSku": true,
       "description": "NVIDIA RTX Pro 5000 48GB Spl GPU",
       "listPrice": 0,
       "startDate": "10/24/2025",
@@ -1392,6 +1555,8 @@
     },
     {
       "sku": "P38995-B21",
+      "rawSku": "P38995-B21",
+      "isPrivateSku": false,
       "description": "HPE 800W Flex Slot Platinum Hot Plug Low Halogen Power Supply Kit",
       "listPrice": 524,
       "startDate": "02/01/2021",
@@ -1406,6 +1571,8 @@
     },
     {
       "sku": "P38997-B21",
+      "rawSku": "P38997-B21",
+      "isPrivateSku": false,
       "description": "HPE 1600W Flex Slot Platinum Hot Plug Low Halogen Power Supply Kit",
       "listPrice": 890,
       "startDate": "02/01/2021",
@@ -1420,6 +1587,8 @@
     },
     {
       "sku": "P44712-B21",
+      "rawSku": "P44712-B21",
+      "isPrivateSku": false,
       "description": "HPE 1800W-2200W Flex Slot Titanium Hot Plug Power Supply Kit",
       "listPrice": 1588,
       "startDate": "03/06/2023",
@@ -1434,6 +1603,8 @@
     },
     {
       "sku": "P17023-B21",
+      "rawSku": "P17023-B21",
+      "isPrivateSku": false,
       "description": "HPE 1600W Flex Slot -48VDC Hot Plug Power Supply Kit",
       "listPrice": 1561,
       "startDate": "12/07/2020",
@@ -1448,6 +1619,8 @@
     },
     {
       "sku": "P36877-B21",
+      "rawSku": "P36877-B21",
+      "isPrivateSku": false,
       "description": "HPE 1600W -48VDC Power Cable Lug Kit",
       "listPrice": 135,
       "startDate": "12/07/2020",
@@ -1461,11 +1634,45 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
+      "sku": "A0N33A",
+      "rawSku": "A0N33A",
+      "isPrivateSku": false,
+      "description": "HPE C13-NEMA 6-15P 10A/250V 3.6m Black Power Cord",
+      "listPrice": 78,
+      "startDate": "08/30/2011",
+      "discontinuedDate": "09/30/2031",
+      "section": "Power Supplies",
+      "ruleType": "BTO_DISALLOWED",
+      "ineligibilityReason": "BTO products are not allowed in CTO Base Model.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "A0K02A",
+      "rawSku": "A0K02A",
+      "isPrivateSku": false,
+      "description": "HPE C13 - C14 WW 250V 10Amp 2.0m Jumper Cord",
+      "listPrice": 34,
+      "startDate": "08/30/2011",
+      "discontinuedDate": "09/30/2031",
+      "section": "Power Supplies",
+      "ruleType": "BTO_DISALLOWED",
+      "ineligibilityReason": "BTO products are not allowed in CTO Base Model.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
       "sku": "AF556A",
+      "rawSku": "AF556A",
+      "isPrivateSku": false,
       "description": "HPE C13 - Nema 5-15P US/CA 110V 10Amp 1.83m Power Cord",
       "listPrice": 55,
       "startDate": "03/26/2007",
-      "discontinuedDate": "09/30/2028",
+      "discontinuedDate": "06/30/2029",
       "section": "Power Supplies",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "Max quantity of product limited by space available.",
@@ -1476,6 +1683,8 @@
     },
     {
       "sku": "AF557A",
+      "rawSku": "AF557A",
+      "isPrivateSku": false,
       "description": "HPE C13 - GB-1002 CN 250V 10Amp 1.83m Power Cord",
       "listPrice": 156,
       "startDate": "05/29/2006",
@@ -1490,6 +1699,8 @@
     },
     {
       "sku": "AF568A",
+      "rawSku": "AF568A",
+      "isPrivateSku": false,
       "description": "HPE C13 - CEE-VII EU 250V 10Amp 1.83m Power Cord",
       "listPrice": 71,
       "startDate": "11/13/2006",
@@ -1503,21 +1714,9 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
-      "sku": "AF570A",
-      "description": "HPE C13 - BS-1363A UK/HK/SG 250V 10Amp 1.83m Power Cord",
-      "listPrice": 55,
-      "startDate": "04/06/2011",
-      "discontinuedDate": "09/30/2028",
-      "section": "Power Supplies",
-      "ruleType": "MUTUAL_EXCLUSION",
-      "ineligibilityReason": "Max quantity of product limited by space available.",
-      "supplyBadge": "",
-      "supplyTitle": "",
-      "isSelectable": false,
-      "status": "PORTAL_CONDITIONAL"
-    },
-    {
       "sku": "AF573A",
+      "rawSku": "AF573A",
+      "isPrivateSku": false,
       "description": "HPE C13 - C14 WW 250V 10Amp Flint Gray 2.0m Jumper Cord",
       "listPrice": 38,
       "startDate": "07/09/2007",
@@ -1532,6 +1731,8 @@
     },
     {
       "sku": "P78130-B21",
+      "rawSku": "P78130-B21",
+      "isPrivateSku": false,
       "description": "HPE C13 - NEMA 5-15P 125V 10Amp 1.83m FIO Power Cord",
       "listPrice": 10,
       "startDate": "02/03/2025",
@@ -1545,11 +1746,29 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
+      "sku": "P78156-B21",
+      "rawSku": "P78156-B21",
+      "isPrivateSku": false,
+      "description": "HPE C13 - C14 250V 10Amp 3m FIO Power Cord",
+      "listPrice": 14,
+      "startDate": "02/03/2025",
+      "discontinuedDate": "07/31/2028",
+      "section": "Power Supplies",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Max quantity of product limited by space available.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
       "sku": "AF558A",
+      "rawSku": "AF558A",
+      "isPrivateSku": false,
       "description": "HPE C13 - IRAM -2073 AR 250V 10A 2.5m Power Cord",
       "listPrice": 65,
       "startDate": "05/29/2006",
-      "discontinuedDate": "09/30/2028",
+      "discontinuedDate": "06/30/2029",
       "section": "Power Supplies",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "Max quantity of product limited by space available.",
@@ -1560,10 +1779,12 @@
     },
     {
       "sku": "AF559A",
+      "rawSku": "AF559A",
+      "isPrivateSku": false,
       "description": "HPE C13 - Nema 5-15P TH/PH 250V 10Amp 1.83m Power Cord",
       "listPrice": 55,
-      "startDate": "05/29/2006",
-      "discontinuedDate": "09/30/2028",
+      "startDate": "08/13/2008",
+      "discontinuedDate": "06/30/2029",
       "section": "Power Supplies",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "Max quantity of product limited by space available.",
@@ -1574,10 +1795,12 @@
     },
     {
       "sku": "AF560A",
+      "rawSku": "AF560A",
+      "isPrivateSku": false,
       "description": "HPE C13 - KSC- 8305 KR 250V 10Amp 1.83m Power Cord",
       "listPrice": 55,
       "startDate": "05/29/2006",
-      "discontinuedDate": "09/30/2028",
+      "discontinuedDate": "06/30/2029",
       "section": "Power Supplies",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "Max quantity of product limited by space available.",
@@ -1588,10 +1811,12 @@
     },
     {
       "sku": "AF561A",
+      "rawSku": "AF561A",
+      "isPrivateSku": false,
       "description": "HPE C13 - CNS-690 TW 110V 13Amp 1.83m Power Cord",
       "listPrice": 55,
       "startDate": "05/29/2006",
-      "discontinuedDate": "09/30/2028",
+      "discontinuedDate": "06/30/2029",
       "section": "Power Supplies",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "Max quantity of product limited by space available.",
@@ -1602,6 +1827,8 @@
     },
     {
       "sku": "AF562A",
+      "rawSku": "AF562A",
+      "isPrivateSku": false,
       "description": "HPE C13 - IS-1293 IN 240V 6Amp LV 2.0m Power Cord",
       "listPrice": 194,
       "startDate": "05/29/2006",
@@ -1616,10 +1843,12 @@
     },
     {
       "sku": "AF564A",
+      "rawSku": "AF564A",
+      "isPrivateSku": false,
       "description": "HPE C13 - SI-32 IL 250V 10Amp 1.83m Power Cord",
       "listPrice": 55,
       "startDate": "12/15/2006",
-      "discontinuedDate": "09/30/2028",
+      "discontinuedDate": "06/30/2029",
       "section": "Power Supplies",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "Max quantity of product limited by space available.",
@@ -1630,10 +1859,12 @@
     },
     {
       "sku": "AF565A",
+      "rawSku": "AF565A",
+      "isPrivateSku": false,
       "description": "HPE C13 - SEV 1011 CH 250V 10Amp 1.83m Power Cord",
       "listPrice": 55,
       "startDate": "12/15/2006",
-      "discontinuedDate": "09/30/2028",
+      "discontinuedDate": "06/30/2029",
       "section": "Power Supplies",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "Max quantity of product limited by space available.",
@@ -1644,10 +1875,12 @@
     },
     {
       "sku": "AF566A",
+      "rawSku": "AF566A",
+      "isPrivateSku": false,
       "description": "HPE C13 - DK-2.5A DK 250V 10Amp 1.83m Power Cord",
       "listPrice": 55,
       "startDate": "11/13/2006",
-      "discontinuedDate": "09/30/2028",
+      "discontinuedDate": "06/30/2029",
       "section": "Power Supplies",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "Max quantity of product limited by space available.",
@@ -1658,10 +1891,12 @@
     },
     {
       "sku": "AF567A",
+      "rawSku": "AF567A",
+      "isPrivateSku": false,
       "description": "HPE C13 - SABS-164 ZA 250V 10Amp 2.5m Power Cord",
       "listPrice": 65,
-      "startDate": "11/13/2006",
-      "discontinuedDate": "09/30/2028",
+      "startDate": "11/14/2006",
+      "discontinuedDate": "06/30/2029",
       "section": "Power Supplies",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "Max quantity of product limited by space available.",
@@ -1672,10 +1907,28 @@
     },
     {
       "sku": "AF569A",
+      "rawSku": "AF569A",
+      "isPrivateSku": false,
       "description": "HPE C13 - AS3112-3 AU 250V 10Amp 2.5m Power Cord",
       "listPrice": 65,
       "startDate": "11/13/2006",
-      "discontinuedDate": "09/30/2028",
+      "discontinuedDate": "06/30/2029",
+      "section": "Power Supplies",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Max quantity of product limited by space available.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "AF570A",
+      "rawSku": "AF570A",
+      "isPrivateSku": false,
+      "description": "HPE C13 - BS-1363A UK/HK/SG 250V 10Amp 1.83m Power Cord",
+      "listPrice": 55,
+      "startDate": "04/06/2011",
+      "discontinuedDate": "06/30/2029",
       "section": "Power Supplies",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "Max quantity of product limited by space available.",
@@ -1686,10 +1939,12 @@
     },
     {
       "sku": "AF572A",
+      "rawSku": "AF572A",
+      "isPrivateSku": false,
       "description": "HPE C13 - JIS C8303 JP 100V 12Amp 2.0m Power Cord",
       "listPrice": 60,
       "startDate": "04/06/2011",
-      "discontinuedDate": "09/30/2028",
+      "discontinuedDate": "06/30/2029",
       "section": "Power Supplies",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "Max quantity of product limited by space available.",
@@ -1700,6 +1955,8 @@
     },
     {
       "sku": "AF591A",
+      "rawSku": "AF591A",
+      "isPrivateSku": false,
       "description": "HPE C13 - NBR-14136 BR 250V 10Amp 1.83m Power Cord",
       "listPrice": 49,
       "startDate": "07/14/2008",
@@ -1714,6 +1971,8 @@
     },
     {
       "sku": "P78131-B21",
+      "rawSku": "P78131-B21",
+      "isPrivateSku": false,
       "description": "HPE C13 - GB1002 250V 10Amp 1.83m FIO Power Cord",
       "listPrice": 10,
       "startDate": "02/03/2025",
@@ -1728,6 +1987,8 @@
     },
     {
       "sku": "P78144-B21",
+      "rawSku": "P78144-B21",
+      "isPrivateSku": false,
       "description": "HPE C13 - JIS C8303 100V 12Amp 2m FIO Power Cord",
       "listPrice": 46,
       "startDate": "02/03/2025",
@@ -1742,6 +2003,8 @@
     },
     {
       "sku": "P78147-B21",
+      "rawSku": "P78147-B21",
+      "isPrivateSku": false,
       "description": "HPE C13 - C14 250V 10Amp 2m IN FIO Power Cord",
       "listPrice": 77,
       "startDate": "02/03/2025",
@@ -1755,21 +2018,9 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
-      "sku": "P78156-B21",
-      "description": "HPE C13 - C14 250V 10Amp 3m FIO Power Cord",
-      "listPrice": 14,
-      "startDate": "02/03/2025",
-      "discontinuedDate": "07/31/2028",
-      "section": "Power Supplies",
-      "ruleType": "MUTUAL_EXCLUSION",
-      "ineligibilityReason": "Max quantity of product limited by space available.",
-      "supplyBadge": "",
-      "supplyTitle": "",
-      "isSelectable": false,
-      "status": "PORTAL_CONDITIONAL"
-    },
-    {
       "sku": "P78940-B21",
+      "rawSku": "P78940-B21",
+      "isPrivateSku": false,
       "description": "HPE C13 - C14 250V 10Amp 3m IN FIO Power Cord",
       "listPrice": 130,
       "startDate": "02/03/2025",
@@ -1784,6 +2035,8 @@
     },
     {
       "sku": "P78941-B21",
+      "rawSku": "P78941-B21",
+      "isPrivateSku": false,
       "description": "HPE C13 - C14 250V 10Amp 0.7m IN FIO Power Cord",
       "listPrice": 110,
       "startDate": "02/03/2025",
@@ -1798,6 +2051,8 @@
     },
     {
       "sku": "R1C65A",
+      "rawSku": "R1C65A",
+      "isPrivateSku": false,
       "description": "HPE C13-C14 IN 250V 10Amp 2m Black Jumper Cord",
       "listPrice": 119,
       "startDate": "12/03/2018",
@@ -1812,6 +2067,8 @@
     },
     {
       "sku": "P22173-B21",
+      "rawSku": "P22173-B21",
+      "isPrivateSku": false,
       "description": "HPE 1600W -48VDC 600V 3.5m Power Cable Kit",
       "listPrice": 818,
       "startDate": "12/07/2020",
@@ -1825,35 +2082,9 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
-      "sku": "A0K02A",
-      "description": "HPE C13 - C14 WW 250V 10Amp 2.0m Jumper Cord",
-      "listPrice": 34,
-      "startDate": "08/30/2011",
-      "discontinuedDate": "09/30/2031",
-      "section": "Power Supplies",
-      "ruleType": "BTO_DISALLOWED",
-      "ineligibilityReason": "BTO products are not allowed in CTO Base Model.",
-      "supplyBadge": "",
-      "supplyTitle": "",
-      "isSelectable": false,
-      "status": "PORTAL_CONDITIONAL"
-    },
-    {
-      "sku": "A0N33A",
-      "description": "HPE C13-NEMA 6-15P 10A/250V 3.6m Black Power Cord",
-      "listPrice": 78,
-      "startDate": "08/30/2011",
-      "discontinuedDate": "09/30/2031",
-      "section": "Power Supplies",
-      "ruleType": "BTO_DISALLOWED",
-      "ineligibilityReason": "BTO products are not allowed in CTO Base Model.",
-      "supplyBadge": "",
-      "supplyTitle": "",
-      "isSelectable": false,
-      "status": "PORTAL_CONDITIONAL"
-    },
-    {
       "sku": "S7J52A",
+      "rawSku": "S7J52A",
+      "isPrivateSku": false,
       "description": "HPE Morpheus VM Essentials Software for ProLiant Compute Gen12 FIO SW",
       "listPrice": 1,
       "startDate": "04/06/2026",
@@ -1867,7 +2098,89 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
-      "sku": "S4F94AAE\n\n    PVT",
+      "sku": "R7A11AAE",
+      "rawSku": "R7A11AAE",
+      "isPrivateSku": false,
+      "description": "HPE Compute Ops Management Standard 3-year Upfront ProLiant SaaS\n        \n             Current selection.",
+      "listPrice": 450,
+      "startDate": "06/06/2022",
+      "discontinuedDate": "02/29/2028",
+      "section": "HPE Compute Ops Management",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Max 1 per server (This is applicable for both 3year and 5 year license in TOTAL) Total number of licenses within an order cannot exceed the number of servers",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "S2E10AAE",
+      "rawSku": "S2E10AAE",
+      "isPrivateSku": false,
+      "description": "HPE Compute Ops Management Standard 7-year Upfront ProLiant SaaS\n        \n             Current selection.",
+      "listPrice": 1050,
+      "startDate": "09/03/2024",
+      "discontinuedDate": "02/29/2028",
+      "section": "HPE Compute Ops Management",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Max 1 per server (This is applicable for both 3year and 5 year license in TOTAL) Total number of licenses within an order cannot exceed the number of servers",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "S5E59AAE",
+      "rawSku": "S5E59AAE",
+      "isPrivateSku": false,
+      "description": "HPE Compute Ops Management Advanced 3-year Upfront ProLiant SaaS\n        \n             Current selection.",
+      "listPrice": 919.08,
+      "startDate": "04/07/2025",
+      "discontinuedDate": "02/29/2028",
+      "section": "HPE Compute Ops Management",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "For Gen11/Gen12 servers ONLY Min 1/Max 1 per server. Total number of licenses within an order cannot exceed the number of servers",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "S5E60AAE",
+      "rawSku": "S5E60AAE",
+      "isPrivateSku": false,
+      "description": "HPE Compute Ops Management Advanced 5-year Upfront ProLiant SaaS\n        \n             Current selection.",
+      "listPrice": 1531.8,
+      "startDate": "04/07/2025",
+      "discontinuedDate": "02/29/2028",
+      "section": "HPE Compute Ops Management",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "For Gen11/Gen12 servers ONLY Min 1/Max 1 per server. Total number of licenses within an order cannot exceed the number of servers",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "S5E61AAE",
+      "rawSku": "S5E61AAE",
+      "isPrivateSku": false,
+      "description": "HPE Compute Ops Management Advanced 7-year Upfront ProLiant SaaS\n        \n             Current selection.",
+      "listPrice": 2144.52,
+      "startDate": "04/07/2025",
+      "discontinuedDate": "02/29/2028",
+      "section": "HPE Compute Ops Management",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "For Gen11/Gen12 servers ONLY Min 1/Max 1 per server. Total number of licenses within an order cannot exceed the number of servers",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "S4F94AAE",
+      "rawSku": "OB\n         S4F94AAE\n\n    PVT",
+      "isPrivateSku": true,
       "description": "VMware Cloud Foundation Term per Core 3-year Subscription 24x7 Support E-RTU\n        \n             Product is obsolete: S4F94AAEProduct is obsolete: S4F94AAE",
       "listPrice": 1568,
       "startDate": "07/01/2024",
@@ -1881,7 +2194,9 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
-      "sku": "S4G00AAE\n\n    PVT",
+      "sku": "S4G00AAE",
+      "rawSku": "OB\n         S4G00AAE\n\n    PVT",
+      "isPrivateSku": true,
       "description": "VMware Cloud Foundation Term per Core 5-year Subscription 24x7 Support E-RTU\n        \n             Product is obsolete: S4G00AAEProduct is obsolete: S4G00AAE",
       "listPrice": 2637,
       "startDate": "07/01/2024",
@@ -1895,7 +2210,9 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
-      "sku": "S4R76AAE\n\n    PVT",
+      "sku": "S4R76AAE",
+      "rawSku": "S4R76AAE\n\n    PVT",
+      "isPrivateSku": true,
       "description": "VMware Cloud Foundation Term per Core 1-year 24x7 E-RTU",
       "listPrice": 519,
       "startDate": "08/05/2024",

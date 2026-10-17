@@ -95,6 +95,8 @@ graphify-out/
 
 # ── Scrape staging dirs (ephemeral — deleted on success promotion) ──
 outputs/temp/
+outputs/**/.*.promotion.*
+.*.promotion.*
 
 # ── Benchmark fixture CSVs (moved to tests/fixtures/) ───────────────
 outputs/temp_benchmarks/

@@ -87,8 +87,9 @@ function discoverAllProductCatalogs(rootDir = OUTPUTS_ROOT) {
     }
 
     for (const entry of entries) {
-      if (entry.isDirectory() && !entry.isSymbolicLink() && !['history', 'temp', 'raw_data', 'intermittent_scraps'].includes(entry.name)
-          && !/^(staging_|failed_)|_promotion_bak_/.test(entry.name)) {
+      if (entry.isDirectory() && !entry.isSymbolicLink() && !entry.name.startsWith('.')
+          && !['history', 'temp', 'raw_data', 'intermittent_scraps', 'evidence'].includes(entry.name)
+          && !/^(staging_|failed_)|_promotion_bak_|\.promotion\./.test(entry.name)) {
         scanDir(path.join(current, entry.name));
       }
     }

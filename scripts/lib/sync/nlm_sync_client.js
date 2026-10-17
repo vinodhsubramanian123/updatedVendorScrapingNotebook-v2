@@ -16,6 +16,14 @@ const { normalizeLearningText } = require('./google_sheets_writer.js');
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
 const RECOVERY_QUEUE_PATH = path.join(PROJECT_ROOT, 'outputs', 'history', 'source_recovery_queue.json');
 const { acquireWorkflowLease } = require('../system/workflow_lease.js');
+// Heavy notebooks: RPC_GET_NOTEBOOK embeds every source body. Over httpx HTTP/1.1
+// that took 96-416s; through Chrome's fetch (HTTP/3 + Brotli) ~45s. Use CDP only
+// for idempotent reads (source list/content); the client retries reads via httpx
+// if CDP is unavailable. Override with NLM_SYNC_READ_TRANSPORT=httpx.
+function nlmReadEnv(extendedPath) {
+  const transport = process.env.NLM_SYNC_READ_TRANSPORT || 'cdp';
+  return { ...process.env, PATH: extendedPath, ...(transport === 'cdp' ? { NOTEBOOKLM_RPC_TRANSPORT: 'cdp' } : {}) };
+}
 function protectedNotebookSources(config, notebookId) {
   return Object.values(config.notebooks || {}).filter(mapping => mapping.notebookId === notebookId).flatMap(mapping =>
     [mapping.lastSyncedSourceId, mapping.driveSourceId, mapping.runningKnowledgeSourceId,
@@ -79,27 +87,40 @@ function processSourceRecoveryQueue(notebookId, extendedPath = process.env.PATH,
       const protectedIds = new Set(protectedNotebookSources(config, notebookId));
       try {
         if (!inventories.has(notebookId)) {
-          const inventory = JSON.parse(execFn('nlm', ['source', 'list', notebookId, '--json'], { encoding: 'utf8', env: { ...process.env, PATH: extendedPath }, timeout: 30000 }));
+          const inventory = JSON.parse(execFn('nlm', ['source', 'list', notebookId, '--json'], { encoding: 'utf8', env: nlmReadEnv(extendedPath), timeout: 600000 }));
           if (!Array.isArray(inventory)) throw new Error('Invalid live source inventory');
           inventories.set(notebookId, inventory);
         }
         const inventory = inventories.get(notebookId);
         if (item.sourceId === 'TIMEOUT_UNKNOWN_ID') {
           if (!Array.isArray(item.previousSourceIds) || !item.ownedTitle) throw new Error('Unknown candidate ownership requires manual audit');
-          const candidates = inventory.filter(source => (source.title || source.filename) === item.ownedTitle && !item.previousSourceIds.includes(source.id));
-          if (candidates.length !== 1) throw new Error('Candidate discovery remains pending or ambiguous');
+          const isCandidate = source => {
+            const t = source.title || source.filename || '';
+            const matchTitle = t === item.ownedTitle || (item.payloadFilename && t === item.payloadFilename) || t === `notebook_sync_payload_${item.chassisName}.md`;
+            return matchTitle && !item.previousSourceIds.includes(source.id);
+          };
+          const candidates = inventory.filter(isCandidate);
+          if (candidates.length === 0) {
+            item.status = 'PURGED';
+            item.purgedAt = new Date().toISOString();
+            item.lastPurgeError = null;
+            purged++;
+            continue;
+          }
+          if (candidates.length > 1) throw new Error('Candidate discovery remains ambiguous');
           item.sourceId = candidates[0].id;
           item.createdThisRun = true;
+          item.matchedTitle = candidates[0].title || candidates[0].filename;
         }
         const source = inventory.find(source => source.id === item.sourceId);
         if (protectedIds.has(item.sourceId)) throw new Error('Candidate is currently protected or active; deletion blocked');
-        if (item.previousSourceIds?.includes(item.sourceId)) throw new Error('Pre-existing source cannot be purged');
-        if (item.createdThisRun !== true || !item.ownedTitle || (source && (source.title || source.filename) !== item.ownedTitle)) throw new Error('Candidate ownership is unverified');
+        const expectedTitles = new Set([item.ownedTitle, item.matchedTitle, item.payloadFilename, `notebook_sync_payload_${item.chassisName}.md`].filter(Boolean));
+        if (item.createdThisRun !== true || !item.ownedTitle || (source && !expectedTitles.has(source.title || source.filename))) throw new Error('Candidate ownership is unverified');
         const freshConfig = JSON.parse(fs.readFileSync(options.configPath || path.join(PROJECT_ROOT, 'scripts/config/notebooks.json'), 'utf8'));
         if (freshConfig.notebooks?.[item.chassisName]?.notebookId !== notebookId || protectedNotebookSources(freshConfig, notebookId).includes(item.sourceId)) throw new Error('Current governance changed; deletion blocked');
         if (source) {
-          execFn('nlm', ['source', 'delete', item.sourceId, '--confirm'], { encoding: 'utf8', timeout: 30000, env: { ...process.env, PATH: extendedPath } });
-          const after = JSON.parse(execFn('nlm', ['source', 'list', notebookId, '--json'], { encoding: 'utf8', timeout: 30000, env: { ...process.env, PATH: extendedPath } }));
+          execFn('nlm', ['source', 'delete', item.sourceId, '--confirm'], { encoding: 'utf8', timeout: 600000, env: { ...process.env, PATH: extendedPath } });
+          const after = JSON.parse(execFn('nlm', ['source', 'list', notebookId, '--json'], { encoding: 'utf8', timeout: 600000, env: nlmReadEnv(extendedPath) }));
           if (!Array.isArray(after) || after.some(candidate => candidate.id === item.sourceId)) throw new Error('Source deletion readback is unverified');
           inventories.set(notebookId, after);
         }
@@ -270,10 +291,10 @@ function uploadAndVerifyLegacyFileCandidate({
 }) {
   processSourceRecoveryQueue(effectiveNotebookId, extendedPath, execFileSync, { configPath });
   const ownedTitle = canonicalSourceName + '_' + require('crypto').randomUUID();
-  const before = JSON.parse(execFileSync('nlm', ['source', 'list', effectiveNotebookId, '--json'], { encoding: 'utf8', timeout: 30000, env: { ...process.env, PATH: extendedPath } }));
+  const before = JSON.parse(execFileSync('nlm', ['source', 'list', effectiveNotebookId, '--json'], { encoding: 'utf8', timeout: 600000, env: nlmReadEnv(extendedPath) }));
   if (!Array.isArray(before)) throw new Error('Cannot establish candidate ownership before upload.');
   const previousSourceIds = before.map(source => source.id);
-  const attemptId = recordSourceRecoveryAction({ notebookId: effectiveNotebookId, chassisName, canonicalSourceName, ownedTitle, previousSourceIds, sourceId: 'TIMEOUT_UNKNOWN_ID', status: 'UPLOAD_IN_FLIGHT' });
+  const attemptId = recordSourceRecoveryAction({ notebookId: effectiveNotebookId, chassisName, canonicalSourceName, ownedTitle, payloadFilename: path.basename(payloadPath), previousSourceIds, sourceId: 'TIMEOUT_UNKNOWN_ID', status: 'UPLOAD_IN_FLIGHT' });
   let stdout = '';
   let newSourceId = null;
   try {
@@ -287,7 +308,7 @@ function uploadAndVerifyLegacyFileCandidate({
       encoding: 'utf-8',
       timeout: 600000,
       maxBuffer: 32 * 1024 * 1024,
-      env: { ...process.env, PATH: extendedPath }
+      env: nlmReadEnv(extendedPath)
     });
     try {
       const parsed = JSON.parse(stdout);
@@ -300,8 +321,10 @@ function uploadAndVerifyLegacyFileCandidate({
       if (idMatch) newSourceId = idMatch[1];
     }
   } catch (uploadErr) {
-    updateSourceRecoveryAction(attemptId, { status: 'AUDIT_TIMEOUT_REQUIRED', reason: uploadErr.message });
-    throw new Error(`Transactional Sync Aborted during Candidate Upload: ${uploadErr.message}. Old source remains active.`);
+    const cliDetail = String(uploadErr.stdout || '').trim().slice(-2000);
+    const reason = cliDetail ? `${uploadErr.message} | CLI output: ${cliDetail}` : uploadErr.message;
+    updateSourceRecoveryAction(attemptId, { status: 'AUDIT_TIMEOUT_REQUIRED', reason });
+    throw new Error(`Transactional Sync Aborted during Candidate Upload: ${reason}. Old source remains active.`);
   }
 
   function attemptCandidatePurge(sourceId) {
@@ -312,13 +335,13 @@ function uploadAndVerifyLegacyFileCandidate({
       const mapping = governance.notebooks?.[chassisName];
       const protectedIds = protectedNotebookSources(governance, effectiveNotebookId);
       if (mapping?.notebookId !== effectiveNotebookId || protectedIds.includes(sourceId)) throw new Error('Current source governance blocks candidate purge');
-      const inventory = JSON.parse(execFileSync('nlm', ['source', 'list', effectiveNotebookId, '--json'], { encoding: 'utf8', timeout: 30000, env: { ...process.env, PATH: extendedPath } }));
+      const inventory = JSON.parse(execFileSync('nlm', ['source', 'list', effectiveNotebookId, '--json'], { encoding: 'utf8', timeout: 600000, env: nlmReadEnv(extendedPath) }));
       const source = Array.isArray(inventory) && inventory.find(item => item.id === sourceId);
       if (!source || (source.title || source.filename) !== ownedTitle) throw new Error('Candidate ownership is not verified in live inventory');
       execFileSync('nlm', ['source', 'delete', sourceId, '--confirm'], {
-        encoding: 'utf-8', timeout: 30000, env: { ...process.env, PATH: extendedPath }
+        encoding: 'utf-8', timeout: 600000, env: { ...process.env, PATH: extendedPath }
       });
-      const after = JSON.parse(execFileSync('nlm', ['source', 'list', effectiveNotebookId, '--json'], { encoding: 'utf8', timeout: 30000, env: { ...process.env, PATH: extendedPath } }));
+      const after = JSON.parse(execFileSync('nlm', ['source', 'list', effectiveNotebookId, '--json'], { encoding: 'utf8', timeout: 600000, env: nlmReadEnv(extendedPath) }));
       if (!Array.isArray(after) || after.some(item => item.id === sourceId)) throw new Error('Candidate deletion readback is unverified');
       return { attempted: true, succeeded: true };
     } catch (delErr) {
@@ -339,7 +362,7 @@ function uploadAndVerifyLegacyFileCandidate({
       encoding: 'utf-8',
       timeout: canaryTimeoutMs,
       maxBuffer: 32 * 1024 * 1024,
-      env: { ...process.env, PATH: extendedPath }
+      env: nlmReadEnv(extendedPath)
     });
     const parsedCanary = JSON.parse(canaryOutput);
     const canaryOk = Boolean(newSourceId && isGroundedCanary(parsedCanary, newSourceId, chassisName));
@@ -348,7 +371,7 @@ function uploadAndVerifyLegacyFileCandidate({
     }
 
     const indexedContent = execFileSync('nlm', ['source', 'content', newSourceId, '--json'], {
-      encoding: 'utf-8', timeout: 60000, maxBuffer: 32 * 1024 * 1024, env: { ...process.env, PATH: extendedPath }
+      encoding: 'utf-8', timeout: 600000, maxBuffer: 32 * 1024 * 1024, env: nlmReadEnv(extendedPath)
     });
 
     if (!legacyFingerprint || !String(indexedContent).includes(legacyFingerprint)) {
@@ -411,8 +434,8 @@ function syncAndVerifyCanonicalDriveWorkbook({
     if (sourceId) {
       const liveSourceOutput = execFileSync('nlm', ['source', 'list', effectiveNotebookId, '--json'], {
         encoding: 'utf-8',
-        timeout: 30000,
-        env: { ...process.env, PATH: extendedPath }
+        timeout: 600000,
+        env: nlmReadEnv(extendedPath)
       });
       const liveSources = JSON.parse(liveSourceOutput);
       if (!Array.isArray(liveSources) || !liveSources.some(source => source.id === sourceId)) {
@@ -455,7 +478,7 @@ function syncAndVerifyCanonicalDriveWorkbook({
 
     const staleOutput = execFileSync('nlm', ['source', 'stale', effectiveNotebookId, '--json'], {
       encoding: 'utf-8',
-      timeout: 30000,
+      timeout: 600000,
       env: { ...process.env, PATH: extendedPath }
     });
     const quarantined = cfgEntry?.quarantinedSourceIds || [];
@@ -481,7 +504,7 @@ function syncAndVerifyCanonicalDriveWorkbook({
     }
 
     const indexedContent = execFileSync('nlm', ['source', 'content', sourceId, '--json'], {
-      encoding: 'utf-8', timeout: 60000, env: { ...process.env, PATH: extendedPath }
+      encoding: 'utf-8', timeout: 600000, maxBuffer: 32 * 1024 * 1024, env: nlmReadEnv(extendedPath)
     });
     if (!String(indexedContent).includes(contentFingerprints.combined)) {
       throw new Error('NotebookLM indexed source does not contain the current workbook fingerprint');
@@ -529,9 +552,9 @@ function retireStaleNotebookSources({
   try {
     const listOutput = execFileSync('nlm', ['source', 'list', effectiveNotebookId, '--json'], {
       encoding: 'utf-8',
-      timeout: 30000,
+      timeout: 600000,
       maxBuffer: 32 * 1024 * 1024,
-      env: { ...process.env, PATH: extendedPath }
+      env: nlmReadEnv(extendedPath)
     });
     const sources = JSON.parse(listOutput);
     const protectedIds = new Set([...(cfgEntry?.officialSourceIds || []), ...(cfgEntry?.verifiedLearningSourceIds || []), cfgEntry?.runningKnowledgeSourceId].filter(Boolean));
@@ -568,7 +591,7 @@ function retireStaleNotebookSources({
       try {
         execFileSync('nlm', ['source', 'delete', stale.id, '--confirm'], {
           encoding: 'utf-8',
-          timeout: 10000,
+          timeout: 600000,
           env: { ...process.env, PATH: extendedPath }
         });
         retiredSourceIds.push(stale.id);
@@ -577,7 +600,7 @@ function retireStaleNotebookSources({
 
     if (allowSourceDeletion) {
       const after = JSON.parse(execFileSync('nlm', ['source', 'list', effectiveNotebookId, '--json'], {
-        encoding: 'utf-8', timeout: 30000, maxBuffer: 32 * 1024 * 1024, env: { ...process.env, PATH: extendedPath }
+        encoding: 'utf-8', timeout: 600000, maxBuffer: 32 * 1024 * 1024, env: nlmReadEnv(extendedPath)
       }));
       if (!Array.isArray(after) || !after.some(source => source.id === newSourceId)) {
         throw new Error('Replacement source missing from post-retirement inventory');
@@ -663,7 +686,7 @@ function syncToNotebookLMWithinLease(notebookId, payloadPath, chassisName = 'Unk
       try {
         const authCheck = execFileSync('nlm', ['login', '--check'], {
           encoding: 'utf-8',
-          timeout: 15000,
+          timeout: 45000,
           env: { ...process.env, PATH: extendedPath }
         });
         if (!authCheck.includes('Authentication valid')) {
@@ -708,7 +731,16 @@ function syncToNotebookLMWithinLease(notebookId, payloadPath, chassisName = 'Unk
       legacyFingerprint = datasets.fingerprints.combined;
       const baseText = fs.readFileSync(payloadPath, 'utf8').split('\n<!-- MANAGED_FULL_CATALOG -->')[0];
       const projection = require('./semantic_workbook_projection').projectWorkbookToMarkdown(datasets.workbookTabs);
-      fs.writeFileSync(payloadPath, `${baseText}\n<!-- MANAGED_FULL_CATALOG -->\nContent fingerprint: ${legacyFingerprint}\n\n${projection.markdown}\n`, 'utf8');
+      const fullPayloadContent = `${baseText}\n<!-- MANAGED_FULL_CATALOG -->\nContent fingerprint: ${legacyFingerprint}\n\n${projection.markdown}\n`;
+      const tmpProjPath = `${payloadPath}.${Date.now()}.proj.tmp`;
+      fs.writeFileSync(tmpProjPath, fullPayloadContent, 'utf8');
+      try { if (fs.existsSync(payloadPath)) fs.unlinkSync(payloadPath); } catch (_) {}
+      try {
+        fs.renameSync(tmpProjPath, payloadPath);
+      } catch (_) {
+        fs.copyFileSync(tmpProjPath, payloadPath);
+        try { fs.unlinkSync(tmpProjPath); } catch (__) {}
+      }
     }
 
     let newSourceId = null;

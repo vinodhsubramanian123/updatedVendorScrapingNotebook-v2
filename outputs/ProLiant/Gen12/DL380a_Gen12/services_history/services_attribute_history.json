@@ -13258,5 +13258,75 @@
     "field": "HPE Recommended",
     "oldValue": "",
     "newValue": "No"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "G5J68AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "Start Date",
+    "oldValue": "03/31/2014",
+    "newValue": "05/05/2014"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "G5J69AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "Start Date",
+    "oldValue": "03/31/2014",
+    "newValue": "05/05/2014"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "S3Z84AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Discontinued Date",
+    "oldValue": "11/02/2026",
+    "newValue": "12/07/2026"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "S3Z86AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Discontinued Date",
+    "oldValue": "11/02/2026",
+    "newValue": "12/07/2026"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "S3Z88AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Discontinued Date",
+    "oldValue": "11/02/2026",
+    "newValue": "12/07/2026"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "S3Z90AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Discontinued Date",
+    "oldValue": "11/02/2026",
+    "newValue": "12/07/2026"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "G5J63AAE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Start Date",
+    "oldValue": "03/31/2014",
+    "newValue": "04/03/2014"
   }
 ]

@@ -4,9 +4,9 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen12/DL380_Gen12`
 
-**Sync Timestamp**: 2026-10-17T10:03:40.502Z
+**Sync Timestamp**: 2026-10-17T14:42:42.710Z
 
-**Total Verified SKUs**: `1128` (`606` Hardware + `522` Services)
+**Total Verified SKUs**: `1124` (`602` Hardware + `522` Services)
 
 **Total Synced KnowledgeDeltas**: `60`
 
@@ -18,9 +18,9 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Reinstated | Status |
 |----------|------------|---------------------|---------------|-------------------|------------|--------|
-| **Hardware Components** | 606 | 5 | 0 | 582 | 0 | **CERTIFIED** |
-| **Support Services & SLAs** | 522 | 108 | 0 | 408 | 0 | **CERTIFIED** |
-| **Total Portfolio** | **1128** | **113** | **0** | **990** | **0** | **ACTIVE** |
+| **Hardware Components** | 602 | 3 | 66 | 47 | 0 | **CERTIFIED** |
+| **Support Services & SLAs** | 522 | 3 | 35 | 20 | 0 | **CERTIFIED** |
+| **Total Portfolio** | **1124** | **6** | **101** | **67** | **0** | **ACTIVE** |
 
 ## 🌐 1. Universal Vendor Rules (HPE)
 
@@ -298,15 +298,15 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 6. **[Storage Devices]**: Supported with 8LFF and 12LFF CTO Server only.
    - **Gated Rule Type**: `CHASSIS_GATE`
-   - **Affected SKUs (6)**: `P76473-B21`, `P76474-B21`, `P77474-B21`, `P77475-B21`, `P77484-B21`, `P77485-B21`
+   - **Affected SKUs (6)**: `P76473-B21`, `P77474-B21`, `P77475-B21`, `P77484-B21`, `P77485-B21`, `P76474-B21`
 
 7. **[Storage Devices]**: Supported with 8LFF CTO Server only and requires 2SFF SBS Cage.
    - **Gated Rule Type**: `CHASSIS_GATE`
-   - **Affected SKUs (3)**: `P77481-B21`, `P76476-B21`, `P77480-B21`
+   - **Affected SKUs (3)**: `P76476-B21`, `P77481-B21`, `P77480-B21`
 
 8. **[Storage Devices]**: Supported with 12EDSFF CTO Server only.
    - **Gated Rule Type**: `CHASSIS_GATE`
-   - **Affected SKUs (3)**: `P83798-B21`, `P87968-B21`, `P83799-B21`
+   - **Affected SKUs (3)**: `P83798-B21`, `P83799-B21`, `P87968-B21`
 
 9. **[Storage Devices]**: Supported with 8LFF CTO Server only.
    - **Gated Rule Type**: `CHASSIS_GATE`
@@ -340,29 +340,19 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 3. **[Networking]**: Private Product is not valid for current customer account
    - **Gated Rule Type**: `MUTUAL_EXCLUSION`
-   - **Affected SKUs (1)**: `P74383-B21
-
-    PVT`
+   - **Affected SKUs (1)**: `P74383-B21`
 
 4. **[Networking]**: Private Product is not valid for current customer account
    - **Gated Rule Type**: `MUTUAL_EXCLUSION`
-   - **Affected SKUs (1)**: `P89140-B21
-
-    PVT`
+   - **Affected SKUs (1)**: `P89140-B21`
 
 5. **[Networking]**: Private Product is not valid for current customer account
    - **Gated Rule Type**: `MUTUAL_EXCLUSION`
-   - **Affected SKUs (2)**: `P74606-B21
-
-    PVT`, `P97416-B21
-
-    PVT`
+   - **Affected SKUs (2)**: `P74606-B21`, `P97416-B21`
 
 6. **[Graphics Options]**: Private Product is not valid for current customer account
    - **Gated Rule Type**: `MUTUAL_EXCLUSION`
-   - **Affected SKUs (1)**: `S7J51C
-
-    PVT`
+   - **Affected SKUs (1)**: `S7J51C`
 
 7. **[Power Supplies]**: Mixing of Power supplies are not allowed.
    - **Gated Rule Type**: `MUTUAL_EXCLUSION`
@@ -374,7 +364,7 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 9. **[Power Supplies]**: Max quantity of product limited by space available.
    - **Gated Rule Type**: `MUTUAL_EXCLUSION`
-   - **Affected SKUs (25)**: `AF556A`, `AF557A`, `AF568A`, `AF570A`, `AF573A`, `P78130-B21`, `AF558A`, `AF559A`, `AF560A`, `AF561A`, `AF562A`, `AF564A`, `AF565A`, `AF566A`, `AF567A`, `AF569A`, `AF572A`, `AF591A`, `P78131-B21`, `P78144-B21`, `P78147-B21`, `P78156-B21`, `P78940-B21`, `P78941-B21`, `R1C65A`
+   - **Affected SKUs (25)**: `AF556A`, `AF557A`, `AF568A`, `AF573A`, `P78130-B21`, `P78156-B21`, `AF558A`, `AF559A`, `AF560A`, `AF561A`, `AF562A`, `AF564A`, `AF565A`, `AF566A`, `AF567A`, `AF569A`, `AF570A`, `AF572A`, `AF591A`, `P78131-B21`, `P78144-B21`, `P78147-B21`, `P78940-B21`, `P78941-B21`, `R1C65A`
 
 10. **[Power Supplies]**: If AC Power Supply is selected then only AC Power Cords should be in the drop-down.
    - **Gated Rule Type**: `MUTUAL_EXCLUSION`
@@ -384,15 +374,17 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
    - **Gated Rule Type**: `MUTUAL_EXCLUSION`
    - **Affected SKUs (1)**: `S7J52A`
 
-12. **[Virtualization]**: Private Product is not valid for current customer account
+12. **[HPE Compute Ops Management]**: Max 1 per server (This is applicable for both 3year and 5 year license in TOTAL) Total number of licenses within an order cannot exceed the number of servers
    - **Gated Rule Type**: `MUTUAL_EXCLUSION`
-   - **Affected SKUs (3)**: `S4F94AAE
+   - **Affected SKUs (2)**: `R7A11AAE`, `S2E10AAE`
 
-    PVT`, `S4G00AAE
+13. **[HPE Compute Ops Management]**: For Gen11/Gen12 servers ONLY Min 1/Max 1 per server. Total number of licenses within an order cannot exceed the number of servers
+   - **Gated Rule Type**: `MUTUAL_EXCLUSION`
+   - **Affected SKUs (3)**: `S5E59AAE`, `S5E60AAE`, `S5E61AAE`
 
-    PVT`, `S4R76AAE
-
-    PVT`
+14. **[Virtualization]**: Private Product is not valid for current customer account
+   - **Gated Rule Type**: `MUTUAL_EXCLUSION`
+   - **Affected SKUs (3)**: `S4F94AAE`, `S4G00AAE`, `S4R76AAE`
 
 ### CTO vs BTO Factory Integration Rules
 
@@ -406,11 +398,11 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 3. **[Networking]**: BTO products are not allowed in CTO Base Model.
    - **Gated Rule Type**: `BTO_DISALLOWED`
-   - **Affected SKUs (6)**: `AJ833A`, `AJ836A`, `AJ838A`, `AJ839A`, `AJ834A`, `AJ837A`
+   - **Affected SKUs (6)**: `AJ833A`, `AJ836A`, `AJ837A`, `AJ838A`, `AJ839A`, `AJ834A`
 
 4. **[Power Supplies]**: BTO products are not allowed in CTO Base Model.
    - **Gated Rule Type**: `BTO_DISALLOWED`
-   - **Affected SKUs (2)**: `A0K02A`, `A0N33A`
+   - **Affected SKUs (2)**: `A0N33A`, `A0K02A`
 
 ## ⚠️ 4. Discontinued & Obsolete SKUs Registry
 
@@ -466,21 +458,21 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Timestamp | SKU | Attribute | Old Value | New Value |
 |-----------|-----|-----------|-----------|-----------|
-| 2026-09-30 | `S4R34A` | HPE Recommended |  | **No** |
-| 2026-09-30 | `S4R35A` | HPE Recommended |  | **No** |
-| 2026-09-30 | `S4R36A` | HPE Recommended |  | **No** |
-| 2026-09-30 | `S4R37A` | HPE Recommended |  | **No** |
-| 2026-09-30 | `S4R38A` | HPE Recommended |  | **No** |
-| 2026-09-30 | `S4R39A` | HPE Recommended |  | **No** |
-| 2026-09-30 | `S4R40A` | HPE Recommended |  | **No** |
-| 2026-09-30 | `S4R41A` | HPE Recommended |  | **No** |
-| 2026-09-30 | `S4R42A` | HPE Recommended |  | **No** |
-| 2026-09-30 | `S4R43A` | HPE Recommended |  | **No** |
-| 2026-09-30 | `S4R44A` | HPE Recommended |  | **No** |
-| 2026-09-30 | `S4R45A` | HPE Recommended |  | **No** |
-| 2026-09-30 | `S4R46A` | HPE Recommended |  | **No** |
-| 2026-09-30 | `S4R47A` | HPE Recommended |  | **No** |
-| 2026-09-30 | `S4R48A` | HPE Recommended |  | **No** |
+| 2026-10-17 | `AF567A` | Discontinued Date | 09/30/2028 | **06/30/2029** |
+| 2026-10-17 | `AF569A` | Discontinued Date | 09/30/2028 | **06/30/2029** |
+| 2026-10-17 | `AF570A` | Discontinued Date | 09/30/2028 | **06/30/2029** |
+| 2026-10-17 | `AF572A` | Discontinued Date | 09/30/2028 | **06/30/2029** |
+| 2026-10-17 | `E6U59ABE` | Start Date | 09/10/2013 | **09/28/2013** |
+| 2026-10-17 | `E6U64ABE` | Start Date | 09/10/2013 | **09/28/2013** |
+| 2026-10-17 | `E5Y44A` | Start Date | 11/01/2013 | **11/02/2013** |
+| 2026-10-17 | `E5Y43A` | Start Date | 11/01/2013 | **11/02/2013** |
+| 2026-10-17 | `E5Y36A` | Start Date | 11/01/2013 | **11/02/2013** |
+| 2026-10-17 | `P79555-B21` | Vendor Attributes | {"Extended Price (USD)":"1.00","Price Delta (USD)":"+0.00"} | **{"Extended Price (USD)":"1.00","Price Delta (USD)":"Selected"}** |
+| 2026-10-17 | `P79552-B21` | Vendor Attributes | {"Extended Price (USD)":"1.00","Price Delta (USD)":"Selected"} | **{"Extended Price (USD)":"1.00","Price Delta (USD)":"+0.00"}** |
+| 2026-10-17 | `S3U30C` | Availability | Not published by OCA | **Available** |
+| 2026-10-17 | `S6A73C` | Availability | Not published by OCA | **Available** |
+| 2026-10-17 | `S6W21C` | Availability | Not published by OCA | **Available** |
+| 2026-10-17 | `P79558-B21` | Vendor Attributes | {"Extended Price (USD)":"1.00","Price Delta (USD)":"+0.00"} | **{"Extended Price (USD)":"1.00","Price Delta (USD)":"Selected"}** |
 
 ## 🧩 6. Same-Product CTO Variant Matrix
 
@@ -515,10 +507,11 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 |---|---|---|---:|---|
 | `P01366-B21` | HPE 96W Smart Storage Lithium-ion Battery with 145mm Cable Kit | Storage Controllers | $110 | Standard |
 | `P03178-B21` | HPE 1000W Flex Slot Titanium Hot Plug Power Supply Kit | Power Supplies | $926 | Standard |
+| `P03178-B21` | HPE 1000W Flex Slot Titanium Hot Plug Power Supply Kit | Power Supplies | $926 | Standard |
 
 ## 📦 9. Solution Manifest, EDT & Commercial Baseline
 
-**Configuration Profile**: `OCA Config 2` | **Icon ID**: `I156472454-01` | **Estimated Delivery Time (EDT)**: `18 - 23 days`
+**Configuration Profile**: `OCA Config 2` | **Icon ID**: `I157323295-01` | **Estimated Delivery Time (EDT)**: `18 - 23 days`
 
 | Hardware (USD) | Support (USD) | Services (USD) | Software (USD) | Total Baseline (USD) |
 |---:|---:|---:|---:|---:|

@@ -33778,5 +33778,265 @@
     "field": "HPE Recommended",
     "oldValue": "",
     "newValue": "No"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "P45641-H23",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "InfiniBand PCIe",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2026",
+    "newValue": "01/31/2028"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "AF556A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "06/30/2029"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "AF558A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "06/30/2029"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "AF559A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Start Date",
+    "oldValue": "05/29/2006",
+    "newValue": "08/13/2008"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "AF559A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "06/30/2029"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "AF560A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "06/30/2029"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "AF561A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "06/30/2029"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "AF564A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "06/30/2029"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "AF565A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "06/30/2029"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "AF566A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "06/30/2029"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "AF567A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Start Date",
+    "oldValue": "11/13/2006",
+    "newValue": "11/14/2006"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "AF567A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "06/30/2029"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "AF569A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "06/30/2029"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "AF570A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "06/30/2029"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "AF572A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "06/30/2029"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "E6U59ABE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "iLO",
+    "field": "Start Date",
+    "oldValue": "09/10/2013",
+    "newValue": "09/28/2013"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "E6U64ABE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "iLO",
+    "field": "Start Date",
+    "oldValue": "09/10/2013",
+    "newValue": "09/28/2013"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "E5Y44A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "OneView Management Software",
+    "field": "Start Date",
+    "oldValue": "11/01/2013",
+    "newValue": "11/02/2013"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "E5Y43A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "OneView Management Software",
+    "field": "Start Date",
+    "oldValue": "11/01/2013",
+    "newValue": "11/02/2013"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "E5Y36A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "OneView Management Software",
+    "field": "Start Date",
+    "oldValue": "11/01/2013",
+    "newValue": "11/02/2013"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "P79555-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "AmbientTemperature",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"1.00\",\"Price Delta (USD)\":\"+0.00\"}",
+    "newValue": "{\"Extended Price (USD)\":\"1.00\",\"Price Delta (USD)\":\"Selected\"}"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "P79552-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "AmbientTemperature",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"1.00\",\"Price Delta (USD)\":\"Selected\"}",
+    "newValue": "{\"Extended Price (USD)\":\"1.00\",\"Price Delta (USD)\":\"+0.00\"}"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "S3U30C",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics",
+    "field": "Availability",
+    "oldValue": "Not published by OCA",
+    "newValue": "Available"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "S6A73C",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics",
+    "field": "Availability",
+    "oldValue": "Not published by OCA",
+    "newValue": "Available"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "S6W21C",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics",
+    "field": "Availability",
+    "oldValue": "Not published by OCA",
+    "newValue": "Available"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "P79558-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "AmbientTemperature",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"1.00\",\"Price Delta (USD)\":\"+0.00\"}",
+    "newValue": "{\"Extended Price (USD)\":\"1.00\",\"Price Delta (USD)\":\"Selected\"}"
   }
 ]

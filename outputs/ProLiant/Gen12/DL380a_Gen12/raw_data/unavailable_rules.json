@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-09-30T19:18:53.617Z",
+  "timestamp": "2026-10-17T12:16:10.157Z",
   "chassisName": "DL380a_Gen12",
   "totalUnavailableRules": 12,
   "totalUnavailableSkus": 19,
@@ -106,7 +106,7 @@
       "reason": "Private Product is not valid for current customer account",
       "affectedSkusCount": 1,
       "affectedSkus": [
-        "P75693-B21\n\n    PVT"
+        "P75693-B21"
       ]
     },
     {
@@ -126,15 +126,17 @@
       "reason": "Private Product is not valid for current customer account",
       "affectedSkusCount": 3,
       "affectedSkus": [
-        "S4F94AAE\n\n    PVT",
-        "S4G00AAE\n\n    PVT",
-        "S4R76AAE\n\n    PVT"
+        "S4F94AAE",
+        "S4G00AAE",
+        "S4R76AAE"
       ]
     }
   ],
   "skus": [
     {
       "sku": "P69727-F21",
+      "rawSku": "P69727-F21",
+      "isPrivateSku": false,
       "description": "HPE 32GB (1x32GB) Dual Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit",
       "listPrice": 13909,
       "startDate": "04/06/2026",
@@ -149,6 +151,8 @@
     },
     {
       "sku": "P69729-F21",
+      "rawSku": "P69729-F21",
+      "isPrivateSku": false,
       "description": "HPE 96GB (1x96GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit",
       "listPrice": 47056,
       "startDate": "04/06/2026",
@@ -163,6 +167,8 @@
     },
     {
       "sku": "P69730-F21",
+      "rawSku": "P69730-F21",
+      "isPrivateSku": false,
       "description": "HPE 128GB (1x128GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit",
       "listPrice": 60190,
       "startDate": "04/06/2026",
@@ -177,6 +183,8 @@
     },
     {
       "sku": "P73447-F21",
+      "rawSku": "P73447-F21",
+      "isPrivateSku": false,
       "description": "HPE 256GB (1x256GB) Quad Rank x4 DDR5-6400 CAS-60-52-52 EC8 Registered 3DS Smart FIO Memory Kit",
       "listPrice": 133186,
       "startDate": "04/06/2026",
@@ -191,6 +199,8 @@
     },
     {
       "sku": "P74712-B21",
+      "rawSku": "P74712-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380a Gen12 4EDSFF FIO Drive Cage Kit",
       "listPrice": 227,
       "startDate": "11/04/2024",
@@ -205,6 +215,8 @@
     },
     {
       "sku": "P76700-B21",
+      "rawSku": "P76700-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380a Gen12 NVMe to Tri-Mode PCIe FIO Cable Kit",
       "listPrice": 518,
       "startDate": "03/03/2025",
@@ -219,6 +231,8 @@
     },
     {
       "sku": "P76702-B21",
+      "rawSku": "P76702-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380a Gen12 NVMe to Tri-Mode OCP FIO Cable Kit",
       "listPrice": 384,
       "startDate": "03/03/2025",
@@ -233,6 +247,8 @@
     },
     {
       "sku": "P74696-B21",
+      "rawSku": "P74696-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380a Gen12 OCPB Cable Kit",
       "listPrice": 87,
       "startDate": "11/04/2024",
@@ -247,6 +263,8 @@
     },
     {
       "sku": "P67248-B21",
+      "rawSku": "P67248-B21",
+      "isPrivateSku": false,
       "description": "HPE 3200W M-CRPS Titanium Hot Plug Power Supply Kit",
       "listPrice": 2723,
       "startDate": "02/24/2025",
@@ -261,6 +279,8 @@
     },
     {
       "sku": "P78196-B21",
+      "rawSku": "P78196-B21",
+      "isPrivateSku": false,
       "description": "HPE 2800W M-CRPS 277VAC Titanium Hot Plug Power Supply Kit",
       "listPrice": 2600,
       "startDate": "05/04/2026",
@@ -275,6 +295,8 @@
     },
     {
       "sku": "P80098-B21",
+      "rawSku": "P80098-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380a Gen12 Upgrade Chassis Fan Module",
       "listPrice": 0,
       "startDate": "05/05/2025",
@@ -289,6 +311,8 @@
     },
     {
       "sku": "J6X00A",
+      "rawSku": "J6X00A",
+      "isPrivateSku": false,
       "description": "HPE SAFDGRID-SAFDGRID 277V 15Amp DC 2.0m Jumper Cord",
       "listPrice": 111,
       "startDate": "08/18/2014",
@@ -303,6 +327,8 @@
     },
     {
       "sku": "S4X23A",
+      "rawSku": "OB\n         S4X23A",
+      "isPrivateSku": false,
       "description": "HPE Cray XD670 SDG-400 - SDG-300 300V 1m Power Cord",
       "listPrice": 92,
       "startDate": "11/04/2024",
@@ -317,6 +343,8 @@
     },
     {
       "sku": "P74726-B21",
+      "rawSku": "P74726-B21",
+      "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380a Gen12 iLO DC-SCM 2.0 FIO Management Module Kit",
       "listPrice": 639,
       "startDate": "11/04/2024",
@@ -330,7 +358,9 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
-      "sku": "P75693-B21\n\n    PVT",
+      "sku": "P75693-B21",
+      "rawSku": "P75693-B21\n\n    PVT",
+      "isPrivateSku": true,
       "description": "HPE NS204i-u Gen11 1.92TB Spl Boot Dev",
       "listPrice": 7200,
       "startDate": "07/04/2024",
@@ -345,6 +375,8 @@
     },
     {
       "sku": "469774-409",
+      "rawSku": "469774-409",
+      "isPrivateSku": false,
       "description": "HPE Remove Standard Power Cords",
       "listPrice": 1,
       "startDate": "12/17/2009",
@@ -358,7 +390,9 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
-      "sku": "S4F94AAE\n\n    PVT",
+      "sku": "S4F94AAE",
+      "rawSku": "OB\n         S4F94AAE\n\n    PVT",
+      "isPrivateSku": true,
       "description": "VMware Cloud Foundation Term per Core 3-year Subscription 24x7 Support E-RTU\n        \n             Product is obsolete: S4F94AAEProduct is obsolete: S4F94AAE",
       "listPrice": 1568,
       "startDate": "07/01/2024",
@@ -372,7 +406,9 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
-      "sku": "S4G00AAE\n\n    PVT",
+      "sku": "S4G00AAE",
+      "rawSku": "OB\n         S4G00AAE\n\n    PVT",
+      "isPrivateSku": true,
       "description": "VMware Cloud Foundation Term per Core 5-year Subscription 24x7 Support E-RTU\n        \n             Product is obsolete: S4G00AAEProduct is obsolete: S4G00AAE",
       "listPrice": 2637,
       "startDate": "07/01/2024",
@@ -386,7 +422,9 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
-      "sku": "S4R76AAE\n\n    PVT",
+      "sku": "S4R76AAE",
+      "rawSku": "S4R76AAE\n\n    PVT",
+      "isPrivateSku": true,
       "description": "VMware Cloud Foundation Term per Core 1-year 24x7 E-RTU",
       "listPrice": 519,
       "startDate": "08/05/2024",

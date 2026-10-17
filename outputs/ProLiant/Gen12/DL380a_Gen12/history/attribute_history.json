@@ -13858,5 +13858,235 @@
     "field": "HPE Recommended",
     "oldValue": "",
     "newValue": "No"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "P50219-B21",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"11.09\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"7.20\"}"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "P50233-B21",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"11.60\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"7.39\"}"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "P64842-B21",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"15.01\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"6.21\"}"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "P84236-B21",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"5.89\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"5.06\"}"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "P50227-B21",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": "EOL Warning (90-Day)"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "P50227-B21",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "field": "Lifecycle Badge",
+    "oldValue": "",
+    "newValue": "90"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "P50227-B21",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": "EOL Warning (90-Day)"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "P50227-B21",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"18.74\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"8.76\"}"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "P50222-B21",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"9.66\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"6.18\"}"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "P50224-B21",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"9.66\"}",
+    "newValue": "{\"Extended Price (USD)\":\"NA\",\"Price per GB (USD)\":\"5.60\"}"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "P50216-B21",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": "EOL Warning (90-Day)"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "P50216-B21",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "field": "Lifecycle Badge",
+    "oldValue": "",
+    "newValue": "90"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "P50216-B21",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": "EOL Warning (90-Day)"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "P50230-B21",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": "EOL Warning (90-Day)"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "P50230-B21",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "field": "Lifecycle Badge",
+    "oldValue": "",
+    "newValue": "90"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "P50230-B21",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": "EOL Warning (90-Day)"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "P45641-H23",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "InfiniBand PCIe",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2026",
+    "newValue": "01/31/2028"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "P74726-B21",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "HPE Compute Ops Management",
+    "subCategory": "Compute Ops Management SKUs (required)",
+    "field": "Component Role",
+    "oldValue": "Operating System / License",
+    "newValue": ""
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "E6U59ABE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "iLO",
+    "field": "Start Date",
+    "oldValue": "09/10/2013",
+    "newValue": "09/28/2013"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "E6U64ABE",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "iLO",
+    "field": "Start Date",
+    "oldValue": "09/10/2013",
+    "newValue": "09/28/2013"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "E5Y44A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "OneView Management Software",
+    "field": "Start Date",
+    "oldValue": "11/01/2013",
+    "newValue": "11/02/2013"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "E5Y43A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "OneView Management Software",
+    "field": "Start Date",
+    "oldValue": "11/01/2013",
+    "newValue": "11/02/2013"
+  },
+  {
+    "date": "2026-10-17",
+    "productNumber": "E5Y36A",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "OneView Management Software",
+    "field": "Start Date",
+    "oldValue": "11/01/2013",
+    "newValue": "11/02/2013"
   }
 ]

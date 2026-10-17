@@ -2,43 +2,71 @@
   "schemaVersion": 1,
   "product": "DL380a_Gen12",
   "vendor": "HPE",
-  "capturedAt": "2026-09-30T19:18:53.569Z",
-  "auditedAt": "2026-09-30T19:18:58.067Z",
+  "capturedAt": "2026-10-17T12:16:10.114Z",
+  "auditedAt": "2026-10-17T12:16:13.334Z",
   "mode": "REFRESH",
   "status": "LOCAL_PROMOTED",
+  "provenance": {
+    "baseSku": "P76706-B21",
+    "ownerConfiguration": "DL380a Gen12 #1",
+    "solutionDomain": "SERVER",
+    "observedUrl": "https://oca.ext.hpe.com/oca/OCAInternalLogin"
+  },
   "coverage": {
     "textExtractionMode": "FULL_BODY_TEXT",
     "outsideTableNotesCaptured": true,
     "conditionalDiscovery": "HIDDEN_DOM_AND_AMBIENT_ONLY_OTHER_MACROS_UNVERIFIED",
-    "completeness": "CAPTURED_STATES_ONLY"
+    "baseSku": "P76706-B21",
+    "ownerConfiguration": "DL380a Gen12 #1",
+    "solutionDomain": "SERVER",
+    "observedSelectors": [
+      {
+        "selector": "#extended_overview_menu",
+        "value": "EXPANDED"
+      },
+      {
+        "selector": "ambientTemperature",
+        "value": "DEFAULT_AND_SWEEP_RESTORED"
+      }
+    ],
+    "missingProvenance": [],
+    "completeness": "CAPTURED_STATES_ONLY",
+    "policy": {
+      "valid": true,
+      "reason": "",
+      "profileProduct": "DL380a_Gen12",
+      "scope": "PROFILE_MINIMUM_CAPTURE"
+    }
   },
   "counts": {
-    "hardware": 440,
-    "services": 220,
-    "rules": 420,
-    "categories": 15
+    "hardware": 443,
+    "services": 321,
+    "rules": 312,
+    "categories": 15,
+    "retainedHardware": 443,
+    "hardwareTombstones": 0
   },
   "previousCounts": {
-    "hardware": 450,
-    "services": 216,
-    "rules": 63,
+    "hardware": 443,
+    "services": 321,
+    "rules": 312,
     "categories": 15
   },
   "hashes": {
-    "Catalog.json": "89ac0743fa749f6352a36ab16f7becc06be0eeb7b098c4dbf1edd173133aa32d",
-    "Services.json": "93be61b0c03725208b070a3e581b1719809e75b9ec85f44aaf178d1a6c9c0dfa",
-    "Catalog_Rules.json": "9edfc3be42ef32da6c9c71cd4e6f08d92f8c8f32cb596fe19d073c69b8413938",
-    "OCA_Catalog.xlsx": "594184c2fa46498d69b61929f2d15f64ca7cc53877e86679e5c5ed4d74cd2891"
+    "Catalog.json": "5a7b7a995346b932f1a83dbe920ef0f3d0862da15f90f985566845ab74f03bb6",
+    "Services.json": "14b1ebcd470dac2cf2874b19ed9f91cb65eb6fa1555d93be02a8a09d6a11c8db",
+    "Catalog_Rules.json": "4e6f1c8ec5cecc07d3819d6c289d50e2c5f08325c8b567f27bdc03407583dba5",
+    "OCA_Catalog.xlsx": "4b9090f25675fd54811b0dec53c12711324d8e921ffc6c4c2a9b063465708be2"
   },
-  "rawSha256": "15c6c6e4bc08e440670bd6c11183f10a2b361d2c55be1087ec6f2375ae0168e8",
+  "rawSha256": "42be68ba0a9784b5ecbb0f015b0b0d610b7c36854ffe15e6cc4897eadf4fdfdd",
   "sheets": [
     {
       "name": "Category Summary",
-      "rows": 94
+      "rows": 93
     },
     {
       "name": "All SKUs",
-      "rows": 456
+      "rows": 444
     },
     {
       "name": "Chassis Variants",
@@ -50,7 +78,7 @@
     },
     {
       "name": "Rules & Constraints",
-      "rows": 484
+      "rows": 382
     },
     {
       "name": "Unavailable Rules & Gates",
@@ -62,19 +90,19 @@
     },
     {
       "name": "Software & Licenses",
-      "rows": 423
+      "rows": 432
     },
     {
       "name": "Support Services",
-      "rows": 7
+      "rows": 98
     },
     {
       "name": "Catalog Diffs",
-      "rows": 676
+      "rows": 164
     },
     {
       "name": "Price History Timeline",
-      "rows": 676
+      "rows": 765
     },
     {
       "name": "Processor",
@@ -82,7 +110,7 @@
     },
     {
       "name": "Memory",
-      "rows": 14
+      "rows": 7
     },
     {
       "name": "Networking",
@@ -102,7 +130,7 @@
     },
     {
       "name": "Graphics & GPU",
-      "rows": 18
+      "rows": 10
     },
     {
       "name": "Storage Controllers",
@@ -110,7 +138,7 @@
     },
     {
       "name": "Drive Enclosures  Drives",
-      "rows": 52
+      "rows": 56
     },
     {
       "name": "PCIe Risers",
@@ -121,6 +149,10 @@
       "rows": 13
     },
     {
+      "name": "HPE Compute Ops Management",
+      "rows": 3
+    },
+    {
       "name": "Accessories & Infrastructure",
       "rows": 5
     },
@@ -129,12 +161,8 @@
       "rows": 6
     },
     {
-      "name": "HPE Compute Ops Management",
-      "rows": 2
-    },
-    {
       "name": "Discontinued SKUs",
-      "rows": 470
+      "rows": 464
     },
     {
       "name": "Metadata",
@@ -143,71 +171,33 @@
   ],
   "deltas": {
     "hardware": {
-      "added": [
-        "P85241-B21",
-        "P50230-B21",
-        "P63845-B21",
-        "P63849-B21",
-        "P63853-B21",
-        "R6V66A"
-      ],
-      "removed": [
-        "P69726-B21",
-        "P69726-F21",
-        "P69727-B21",
-        "P69728-B21",
-        "P69729-B21",
-        "P69730-B21",
-        "P73447-B21",
-        "389692-B21",
-        "S2L70C",
-        "S6W30C",
-        "S0K89C",
-        "S2D86C",
-        "S5T74C",
-        "S3U30C",
-        "S6A73C",
-        "S6W21C"
-      ]
+      "added": [],
+      "removed": []
     },
     "services": {
-      "added": [
-        "389692-B21",
-        "R8V46AAE",
-        "S0W13AAE",
-        "S0W16AAE",
-        "S0W19AAE",
-        "S0W22AAE",
-        "S0W25AAE",
-        "S0W28AAE"
-      ],
-      "removed": [
-        "HA113A1 5A6",
-        "HA113A15A6",
-        "HU4B2A30C4W",
-        "HU4B2A3 0C4W"
-      ]
+      "added": [],
+      "removed": []
     },
-    "rulesChanged": true,
+    "rulesChanged": false,
     "hardwareChanges": {
-      "added": 6,
-      "removed": 15,
-      "categoryMigrated": 1,
-      "priceChanged": 0,
-      "attributeChanged": 224,
-      "priceAndAttributeChanged": 210,
-      "unchanged": 0,
+      "added": 9,
+      "removed": 6,
+      "categoryMigrated": 0,
+      "priceChanged": 22,
+      "attributeChanged": 9,
+      "priceAndAttributeChanged": 7,
+      "unchanged": 396,
       "reinstated": 0,
-      "discontinuedTotal": 28
+      "discontinuedTotal": 14
     },
     "serviceChanges": {
-      "added": 8,
+      "added": 101,
       "removed": 0,
       "categoryMigrated": 0,
-      "priceChanged": 0,
-      "attributeChanged": 1,
-      "priceAndAttributeChanged": 211,
-      "unchanged": 0,
+      "priceChanged": 8,
+      "attributeChanged": 7,
+      "priceAndAttributeChanged": 0,
+      "unchanged": 205,
       "reinstated": 0,
       "discontinuedTotal": 0
     }
@@ -215,9 +205,9 @@
   "cloud": {
     "status": "CLOUD_VERIFIED",
     "success": true,
-    "sourceId": "d271a1ea-80dd-49bf-bff2-ea484e1ac24e",
+    "sourceId": "fa126e4c-b313-488c-ac9a-0c0cced75a95",
     "consolidationVerified": true,
-    "error": "Uploaded and canary-verified \"DL380a_Gen12_OCA_Catalog_2026-09-30\" in NotebookLM (b233ec88-4682-4164-a801-3ee6ca649dc1). Existing sources were preserved unless explicit retirement was confirmed."
+    "error": "Uploaded and canary-verified \"DL380a_Gen12_OCA_Catalog_2026-10-17\" in NotebookLM (b233ec88-4682-4164-a801-3ee6ca649dc1). Existing sources were preserved unless explicit retirement was confirmed."
   },
-  "promotedAt": "2026-09-30T19:21:37.547Z"
+  "promotedAt": "2026-10-17T12:21:24.652Z"
 }

@@ -893,3 +893,28 @@ To ensure that future AI agents (Antigravity, Codex, Claude, or subagents) never
   - Non-orderable tokens and model names (e.g. HPE `SN1610Q`, DOM selectors `cntr123`) must not bypass HPE exclusions via loose vendor fallbacks; Dell Option-IDs require Dell context or explicit Option-ID headers.
   - PID headers (`PID`, `Product ID`) must be mapped to SKU and trigger Cisco vendor detection.
 
+- **INV-173: OCA Transport Guard & Hard Prohibition on Direct `OCAInternalLogin` / In-Place Reloads**:
+  - `https://oca.ext.hpe.com/oca/OCAInternalLogin` is a stateful SAML POST handoff endpoint invoked strictly by clicking the "One Config Advanced" link on Partner Portal Tab 1 (`https://partner.hpe.com/group/prp`). Direct HTTP GET or `Page.navigate` to `OCAInternalLogin` results in an immediate HTTP 403 Forbidden or broken login loop.
+  - WebLogic OCA maintains conversational session state bound to server-side JVM memory; in-place browser reload (`location.reload()` / `Page.reload`) invalidates the server conversation token and permanently corrupts the session.
+  - Enforcement: `cdp.js:assertSafeCdpNavigationGuard` blocks any navigation to `oca.ext.hpe.com`, `OCAInternalLogin`, or `eServiceId=187402`, and blocks `Page.reload` on active OCA tabs. Recovery strictly follows `INV-89`: close the broken OCA tab via CDP, return focus to Tab 1 (`https://partner.hpe.com/group/prp`), refresh Tab 1 to mint fresh SAML tokens, and click `#quick-links-807 a` ("One Config Advanced") to spawn a pristine OCA configuration tab.
+
+- **INV-174: Sub-Tab State Disambiguation vs Session Timeout Invariant**:
+  - WebLogic OCA DOM hides the chassis overview when sub-tabs such as `Services`, `BOM`, or `Summary` are active, or when WebLogic AJAX spinners (`.loading_div`) are rendering.
+  - Never misclassify an inactive `#extended_overview_menu` or an in-flight spinner as a session timeout or product mismatch.
+  - Enforcement: `navigate_oca.js:checkActiveMenuTab` must click and restore `a[href="#extended_overview_menu"]` before running product identity validation; `catalog_tab_capture.js:selectCatalogTab` waits for `.loading_div` overlay spinners to clear and verifies that the tab actually transitioned, re-clicking if an overlay swallowed the initial user gesture.
+
+- **INV-175: 4-Point Scraping Pre-Flight and Post-Flight Delta Verification Gate**:
+  - Scraping pipelines must never operate speculatively or fail late into execution. `scraping_preflight_gate.js` runs a mandatory 4-point pre-flight check in Step 0 before any DOM extraction:
+    1. Product & Notebook Registry: Validates product generation metadata, pillar identity (Server, Storage, Networking), and `scripts/config/notebooks.json` registration.
+    2. NotebookLM Authentication: Runs `nlm login --check` with 45s cold-start timeout and auto-heals without interactive OS keystore prompts.
+    3. Google Drive / Sheets OAuth: Validates refresh token health and ensures `spreadsheets`, `documents`, and `drive` scopes are active via automated CDP consent selection in `autonomous_oauth_flow.js`.
+    4. Vendor Portal Session Policies: Enforces vendor-specific session handling rules (`VENDOR_PORTAL_POLICIES` in `vendor_portal_router.js`).
+  - Step 10B Post-Flight Verification: Enforces that active hardware SKUs, support services, unavailable rules, and conditional SKUs meet integrity thresholds, generates `<Product>_Catalog_Diff_Summary.md` detailing added/modified/removed SKUs with price deltas, and persists `scraping_verification_receipt.json`.
+
+- **INV-176: High-Density NotebookLM Payload Compression & Transport Failover Architecture**:
+  - Large catalog notebooks (e.g. DL380 Gen12 with 1100+ SKUs and 26 sheets) generate multi-megabyte payloads. Full `RPC_GET_NOTEBOOK` calls over uncompressed HTTP/1.1 transport (`httpx`) take upwards of 400 seconds, triggering false timeout aborts.
+  - Enforcement: Read operations (`source list`, `source content`, `notebook query`) execute through Chrome's in-page CDP transport (`nlmReadEnv`) utilizing HTTP/3 QUIC and Brotli compression, shrinking responses by ~96% and finishing in <45 seconds.
+  - Failover: If CDP port 9223 or Chrome is unreachable, mutating operations and queries safely catch `ConnectionError` and fall back to `httpx` rather than crashing.
+  - Recovery Queue Resolution: `outputs/history/source_recovery_queue.json` matches orphans by both `ownedTitle` and `payloadFilename`. If a target notebook inventory contains 0 candidates, the recovery state transitions immediately to `PURGED`, eliminating phantom recovery stalls.
+
+

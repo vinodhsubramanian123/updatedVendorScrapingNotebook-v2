@@ -4,9 +4,9 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen12/DL380a_Gen12`
 
-**Sync Timestamp**: 2026-10-17T10:03:39.712Z
+**Sync Timestamp**: 2026-10-17T12:18:10.241Z
 
-**Total Verified SKUs**: `675` (`455` Hardware + `220` Services)
+**Total Verified SKUs**: `764` (`443` Hardware + `321` Services)
 
 **Total Synced KnowledgeDeltas**: `18`
 
@@ -18,9 +18,9 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Reinstated | Status |
 |----------|------------|---------------------|---------------|-------------------|------------|--------|
-| **Hardware Components** | 455 | 6 | 0 | 224 | 0 | **CERTIFIED** |
-| **Support Services & SLAs** | 220 | 8 | 0 | 1 | 0 | **CERTIFIED** |
-| **Total Portfolio** | **675** | **14** | **0** | **225** | **0** | **ACTIVE** |
+| **Hardware Components** | 443 | 9 | 22 | 9 | 0 | **CERTIFIED** |
+| **Support Services & SLAs** | 321 | 101 | 8 | 7 | 0 | **CERTIFIED** |
+| **Total Portfolio** | **764** | **110** | **30** | **16** | **0** | **ACTIVE** |
 
 ## 🌐 1. Universal Vendor Rules (HPE)
 
@@ -121,9 +121,7 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 8. **[OS Boot Device]**: Private Product is not valid for current customer account
    - **Gated Rule Type**: `MUTUAL_EXCLUSION`
-   - **Affected SKUs (1)**: `P75693-B21
-
-    PVT`
+   - **Affected SKUs (1)**: `P75693-B21`
 
 9. **[Manufacturing Services]**: Power cord cannot be selected if HPE Remove Standard Power Cords (469774-409) is in the configuration.
    - **Gated Rule Type**: `MUTUAL_EXCLUSION`
@@ -131,13 +129,7 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 10. **[Virtualization]**: Private Product is not valid for current customer account
    - **Gated Rule Type**: `MUTUAL_EXCLUSION`
-   - **Affected SKUs (3)**: `S4F94AAE
-
-    PVT`, `S4G00AAE
-
-    PVT`, `S4R76AAE
-
-    PVT`
+   - **Affected SKUs (3)**: `S4F94AAE`, `S4G00AAE`, `S4R76AAE`
 
 ### CTO vs BTO Factory Integration Rules
 
@@ -169,21 +161,21 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Timestamp | SKU | Attribute | Old Value | New Value |
 |-----------|-----|-----------|-----------|-----------|
-| 2026-09-30 | `S4R34A` | HPE Recommended |  | **No** |
-| 2026-09-30 | `S4R35A` | HPE Recommended |  | **No** |
-| 2026-09-30 | `S4R36A` | HPE Recommended |  | **No** |
-| 2026-09-30 | `S4R37A` | HPE Recommended |  | **No** |
-| 2026-09-30 | `S4R38A` | HPE Recommended |  | **No** |
-| 2026-09-30 | `S4R39A` | HPE Recommended |  | **No** |
-| 2026-09-30 | `S4R40A` | HPE Recommended |  | **No** |
-| 2026-09-30 | `S4R41A` | HPE Recommended |  | **No** |
-| 2026-09-30 | `S4R42A` | HPE Recommended |  | **No** |
-| 2026-09-30 | `S4R43A` | HPE Recommended |  | **No** |
-| 2026-09-30 | `S4R44A` | HPE Recommended |  | **No** |
-| 2026-09-30 | `S4R45A` | HPE Recommended |  | **No** |
-| 2026-09-30 | `S4R46A` | HPE Recommended |  | **No** |
-| 2026-09-30 | `S4R47A` | HPE Recommended |  | **No** |
-| 2026-09-30 | `S4R48A` | HPE Recommended |  | **No** |
+| 2026-10-17 | `P50222-B21` | Vendor Attributes | {"Extended Price (USD)":"NA","Price per GB (USD)":"9.66"} | **{"Extended Price (USD)":"NA","Price per GB (USD)":"6.18"}** |
+| 2026-10-17 | `P50224-B21` | Vendor Attributes | {"Extended Price (USD)":"NA","Price per GB (USD)":"9.66"} | **{"Extended Price (USD)":"NA","Price per GB (USD)":"5.60"}** |
+| 2026-10-17 | `P50216-B21` | Lifecycle Status | Active | **EOL Warning (90-Day)** |
+| 2026-10-17 | `P50216-B21` | Lifecycle Badge |  | **90** |
+| 2026-10-17 | `P50216-B21` | Availability | Available | **EOL Warning (90-Day)** |
+| 2026-10-17 | `P50230-B21` | Lifecycle Status | Active | **EOL Warning (90-Day)** |
+| 2026-10-17 | `P50230-B21` | Lifecycle Badge |  | **90** |
+| 2026-10-17 | `P50230-B21` | Availability | Available | **EOL Warning (90-Day)** |
+| 2026-10-17 | `P45641-H23` | Discontinued Date | 12/31/2026 | **01/31/2028** |
+| 2026-10-17 | `P74726-B21` | Component Role | Operating System / License | **** |
+| 2026-10-17 | `E6U59ABE` | Start Date | 09/10/2013 | **09/28/2013** |
+| 2026-10-17 | `E6U64ABE` | Start Date | 09/10/2013 | **09/28/2013** |
+| 2026-10-17 | `E5Y44A` | Start Date | 11/01/2013 | **11/02/2013** |
+| 2026-10-17 | `E5Y43A` | Start Date | 11/01/2013 | **11/02/2013** |
+| 2026-10-17 | `E5Y36A` | Start Date | 11/01/2013 | **11/02/2013** |
 
 ## 🧩 6. Same-Product CTO Variant Matrix
 
@@ -192,6 +184,8 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 | **DL380a_Gen12** | ProLiant | Gen12 | 8DW/16SW | `P76706-B21` |
 
 ## 📦 9. Solution Manifest, EDT & Commercial Baseline
+
+**Configuration Profile**: `OCA Config 2` | **Icon ID**: `I157323343-01` | **Estimated Delivery Time (EDT)**: `24 - 30 days`
 
 | Hardware (USD) | Support (USD) | Services (USD) | Software (USD) | Total Baseline (USD) |
 |---:|---:|---:|---:|---:|

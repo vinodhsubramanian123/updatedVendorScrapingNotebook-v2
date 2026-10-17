@@ -2,7 +2,7 @@
   "query": "DL380 Gen12",
   "selectedSku": "P73282-B21",
   "source": "HPE OCA Product Search via authenticated CDP session",
-  "capturedAt": "2026-09-30T18:44:47.712Z",
+  "capturedAt": "2026-10-17T12:24:54.023Z",
   "deliveryEstimate": "",
   "candidates": [
     {
@@ -307,7 +307,7 @@
     },
     {
       "type": "direct-button",
-      "cardSelector": "[data-cand-idx=\"6\"]",
+      "cardSelector": "[data-cand-idx=\"7\"]",
       "text": "DL380 Gen12 Enterprise AI - Small Scale AI Inferencing RTX PRO 4500 BSE The HPE ProLiant DL380 Gen12 EDSFF NC Configure-to-order Server delivers reliable, balanced performance for modern enterprise workloads. Featuring dual Intel Xeon 6515P 2.3GHz 16-core processors and 128GB (4x32GB) DDR5 memory, it is optimized for virtualization, databases, and mixed-use applications. Equipped with two 3.2TB NVMe Gen5 EDSFF SSDs, this server provides fast, high-performance storage for demanding data tasks. The included 5-year HPE Compute Ops Management Standard SaaS offers secure, cloud-based management for streamlined IT operations. - 2.3GHz 16-core - 1024GB - HPE 3.2TB NVMe Gen5 High Performance Mixed Use E3S EC1 EDSFF SPDM CM7 SSD i Unlocked Compare STs USD 132,101.50 Estimated Net Price Customize Quote",
       "sku": "DL380",
       "listPriceUsd": 0,
@@ -322,7 +322,7 @@
     {
       "type": "direct-button",
       "cardSelector": "[data-cand-idx=\"8\"]",
-      "text": "DL380 Gen12 Enterprise AI - Medium Scale AI Inferencing RTX PRO 4500 BSE The HPE ProLiant DL380 Gen12 EDSFF NC Configure-to-order Server delivers robust performance and scalability for demanding enterprise workloads. Powered by dual Intel Xeon 6527P 3.0GHz 24-core processors and 256GB (8x32GB) DDR5 memory, it excels at virtualization, database, and analytics tasks. Four 3.2TB NVMe Gen5 EDSFF SSDs provide high-speed, reliable storage for mixed-use applications. The included 5-year HPE Compute Ops Management Standard SaaS ensures streamlined, secure cloud-based server management and simplified IT operations. - 2x 3.0GHz 24-core - 256GB - HPE 3.2TB NVMe Gen5 High Performance Mixed Use E3S EC1 EDSFF SPDM CM7 SSD i Unlocked Compare STs USD 65,774.81 Estimated Net Price Customize Quote",
+      "text": "DL380 Gen12 Enterprise AI - Medium Scale AI Inferencing RTX PRO 4500 BSE The HPE ProLiant DL380 Gen12 EDSFF NC Configure-to-order Server delivers robust performance and scalability for demanding enterprise workloads. Powered by dual Intel Xeon 6527P 3.0GHz 24-core processors and 256GB (8x32GB) DDR5 memory, it excels at virtualization, database, and analytics tasks. Four 3.2TB NVMe Gen5 EDSFF SSDs provide high-speed, reliable storage for mixed-use applications. The included 5-year HPE Compute Ops Management Standard SaaS ensures streamlined, secure cloud-based server management and simplified IT operations. - 2x 3.0GHz 24-core - 256GB - HPE 3.2TB NVMe Gen5 High Performance Mixed Use E3S EC1 EDSFF SPDM CM7 SSD i Unlocked Compare STs USD 73,017.31 Estimated Net Price Customize Quote",
       "sku": "DL380",
       "listPriceUsd": 0,
       "availability": "Available in OCA product catalog",
@@ -336,7 +336,7 @@
     {
       "type": "direct-button",
       "cardSelector": "[data-cand-idx=\"15\"]",
-      "text": "DL380 Gen12 Virtualization, large-scale VMs and container workloads, database management, data analytics The HPE ProLiant DL380 Gen12 Configure to Order Server with two Intel Xeon 6527P 24 core processors, 256 GB total DDR5 memory, and two 1.92TB SATA read-intensive SSDs is well-suited for virtualization environments, supporting large-scale VMs and container workloads with excellent performance. It is well-suited for database management, including transactional and analytical processing, benefiting from high read speeds and reliable storage. The server is also suitable for data analytics, backup and recovery solutions, remote desktop services, and hybrid cloud deployments. Its scalable architecture allows for future expansion to accommodate growing workload demands, making it a versatile platform for enterprise data centers. - 2x 3.0GHz 24-core - 256GB - 1.92TB SATA 6G Read Intensive SFF BC Multi Vendor SSD i Unlocked Compare STs USD 47,020.46 Estimated Net Price Customize Quote",
+      "text": "DL380 Gen12 Virtualization, large-scale VMs and container workloads, database management, data analytics The HPE ProLiant DL380 Gen12 Configure to Order Server with two Intel Xeon 6527P 24 core processors, 256 GB total DDR5 memory, and two 1.92TB SATA read-intensive SSDs is well-suited for virtualization environments, supporting large-scale VMs and container workloads with excellent performance. It is well-suited for database management, including transactional and analytical processing, benefiting from high read speeds and reliable storage. The server is also suitable for data analytics, backup and recovery solutions, remote desktop services, and hybrid cloud deployments. Its scalable architecture allows for future expansion to accommodate growing workload demands, making it a versatile platform for enterprise data centers. - 2x 3.0GHz 24-core - 256GB - 1.92TB SATA 6G Read Intensive SFF BC Multi Vendor SSD i Unlocked Compare STs USD 35,432.96 Estimated Net Price Customize Quote",
       "sku": "DL380",
       "listPriceUsd": 0,
       "availability": "Available in OCA product catalog",
@@ -565,6 +565,36 @@
       "optionValue": "P86930-B21#GTA",
       "text": "P86930-B21#GTA - HPE ProLiant Compute DL380 Gen12 TAA Compliant Server Premier Solution for Azure Local",
       "sku": "P86930-B21#GTA",
+      "listPriceUsd": 0,
+      "availability": "Available in OCA product catalog",
+      "leadTime": "",
+      "deliveryLabel": "",
+      "isBto": false,
+      "isTaa": true,
+      "isGta": true,
+      "isCto": true
+    },
+    {
+      "type": "dropdown-option",
+      "cardSelector": "[data-cand-idx=\"0\"]",
+      "optionValue": "P96922-B21#GTA",
+      "text": "P96922-B21#GTA - HPE ProLiant Compute DL380 Gen12 TAA Compliant Server Premier Solution for Azure Local",
+      "sku": "P96922-B21#GTA",
+      "listPriceUsd": 0,
+      "availability": "Available in OCA product catalog",
+      "leadTime": "",
+      "deliveryLabel": "",
+      "isBto": false,
+      "isTaa": true,
+      "isGta": true,
+      "isCto": true
+    },
+    {
+      "type": "dropdown-option",
+      "cardSelector": "[data-cand-idx=\"0\"]",
+      "optionValue": "P96923-B21#GTA",
+      "text": "P96923-B21#GTA - HPE ProLiant Compute DL380 Gen12 TAA Compliant Server Premier Solution for Azure Local",
+      "sku": "P96923-B21#GTA",
       "listPriceUsd": 0,
       "availability": "Available in OCA product catalog",
       "leadTime": "",
@@ -1791,7 +1821,7 @@
     },
     {
       "type": "direct-button",
-      "cardSelector": "[data-cand-idx=\"7\"]",
+      "cardSelector": "[data-cand-idx=\"6\"]",
       "text": "DL380 Gen12 Enterprise AI - Small Scale Ultra-Fast Storage Data Center Density H200 NVL Drive AI, analytics, and high-performance workloads with the HPE ProLiant DL380 Gen12 EDSFF NC server, featuring dual Intel Xeon 6520P 24-core processors, 512GB ultra-fast DDR5 memory, and 6.4TB Gen5 NVMe EDSFF storage. Two NVIDIA H200 NVL 141GB accelerators deliver exceptional GPU power for intensive AI and data tasks. Experience ultra-fast 100Gb networking and secure, cloud-based management with HPE Compute Ops Management SaaS. - 2x 2.4GHz 24-core - 512GB - HPE 3.2TB NVMe Gen5 High Performance Mixed Use E3.S EC1 PM1755 SSD i Unlocked Compare STs USD 120,922.96 Estimated Net Price Customize Quote",
       "sku": "DL380",
       "listPriceUsd": 0,
@@ -1848,7 +1878,7 @@
     {
       "type": "direct-button",
       "cardSelector": "[data-cand-idx=\"12\"]",
-      "text": "DL380 Gen12 Flexible, High-Performance Server for Enterprise Workloads The HPE ProLiant DL380 Gen12 is a robust and scalable 2U server designed for enterprise environments requiring high computational power and large memory capacity. Featuring an Intel Xeon 6530P 32-core processor and 1024GB of memory, it is ideal for virtualization, database management, and memory-intensive applications. With no pre-configured storage, it offers flexibility for custom storage solutions tailored to specific workload requirements. Backed by HPE 3-Year Tech Care Essential Service, this server provides dependable support for mission-critical operations. - 2x 2.3GHz 32-core - 1024GB - Not Applicable i Unlocked Compare STs USD 184,310.17 Estimated Net Price Customize Quote",
+      "text": "DL380 Gen12 Flexible, High-Performance Server for Enterprise Workloads The HPE ProLiant DL380 Gen12 is a robust and scalable 2U server designed for enterprise environments requiring high computational power and large memory capacity. Featuring an Intel Xeon 6530P 32-core processor and 1024GB of memory, it is ideal for virtualization, database management, and memory-intensive applications. With no pre-configured storage, it offers flexibility for custom storage solutions tailored to specific workload requirements. Backed by HPE 3-Year Tech Care Essential Service, this server provides dependable support for mission-critical operations. - 2x 2.3GHz 32-core - 1024GB - Not Applicable i Full-Lock Compare STs USD 184,310.17 Estimated Net Price Customize Quote",
       "sku": "DL380",
       "listPriceUsd": 0,
       "availability": "Available in OCA product catalog",
