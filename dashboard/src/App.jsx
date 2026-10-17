@@ -18,6 +18,7 @@ import GlobalLoadingState from './components/GlobalLoadingState';
 import MacroOrchestratorFlow from './components/MacroOrchestratorFlow';
 import TraceabilityInspector from './components/TraceabilityInspector';
 import { BoqTopologyModal } from './components/topology';
+import PlatformDisambiguationCard from './components/PlatformDisambiguationCard';
 
 // Extracted services & hooks (GAP-L1, GAP-L4 fixes)
 import { useSSEStream } from './hooks/useSSEStream.js';
@@ -331,6 +332,12 @@ export default function App() {
     }
   };
 
+  const handleSelectClarification = async (candidate) => {
+    setSelectedChassis(candidate);
+    const prevPayload = evalResults?.originalPayload || {};
+    await handleEvaluateBoq({ ...prevPayload, chassisName: candidate, chassisDir: candidate });
+  };
+
   const currentCatObj = catalogs.find(c => c.id === selectedChassis);
 
   // ── Render ────────────────────────────────────────────────────────────────
@@ -355,6 +362,29 @@ export default function App() {
 
       <main className="max-w-7xl mx-auto px-6 mt-6 space-y-6">
         <GlobalLoadingState isTaskRunning={isTaskRunning} isQueryingRag={isQueryingRag} activeProgress={activeProgress} mode="banner" />
+
+        {evalResults?.clarificationRequired && (
+          <PlatformDisambiguationCard
+            evalResults={evalResults}
+            onSelectCandidate={handleSelectClarification}
+            onDismiss={() => setEvalResults(prev => prev ? { ...prev, clarificationRequired: false } : null)}
+          />
+        )}
+
+        {evalResults?.dualBrainBadges?.length > 0 && !evalResults?.clarificationRequired && (
+          <div className="flex flex-wrap items-center gap-2 bg-white/70 backdrop-blur-sm border border-slate-200/80 rounded-xl px-4 py-2.5 shadow-xs animate-tab-enter">
+            <span className="text-xs font-semibold text-slate-500 mr-1">Verification Status:</span>
+            {evalResults.dualBrainBadges.map(badge => (
+              <span
+                key={badge.id}
+                className={`badge badge-${badge.variant} text-xs cursor-help transition-transform hover:scale-105`}
+                title={badge.tooltip}
+              >
+                {badge.label}
+              </span>
+            ))}
+          </div>
+        )}
 
         {activeTab === 'orchestrator' && (
           <div key="orchestrator" className="animate-tab-enter">

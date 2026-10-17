@@ -1250,7 +1250,7 @@ function _detectServerAndRailCount(items, chassisInfo) {
 
 function _evaluateCoreAspects(items, catalogData, mandatorySkus, serverCount, options) {
   emitProgress(2, 10, 'Compute & Thermal Profiling', 'in_progress', `Analyzing ${items.length} SKUs for high-TDP processor constraints and heatsink counts.`);
-  const compute = evalComputeThermal(items, catalogData, mandatorySkus, serverCount);
+  const compute = evalComputeThermal(items, catalogData, mandatorySkus, serverCount, options);
 
   emitProgress(3, 10, 'Memory Channel Math', 'in_progress', 'Validating 1DPC / 2DPC symmetry and balanced memory population.');
   const memory = evalMemoryChannel(items, compute.cpuCount, catalogData);
@@ -1280,7 +1280,7 @@ function _evaluateCoreAspects(items, catalogData, mandatorySkus, serverCount, op
   }
 
   emitProgress(6, 10, 'Power & Infrastructure Checking', 'in_progress', 'Verifying DC power lug kits and redundancy.');
-  const power = evalPowerEnvironment(items, catalogData, mandatorySkus);
+  const power = evalPowerEnvironment(items, catalogData, mandatorySkus, serverCount, options);
   const support = evalSupportManufacturing(items, catalogData, 0, serverCount);
   const lifecycle = (options.skipLifecycle || options.skipGraphValidation)
     ? { hasObsoleteRisk: false, hasEolWarning: false, obsoleteSkus: [], eolSkus: [], nearExpirySkus: [] }
@@ -1472,7 +1472,7 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
     errors, warnings, mathDeductions, missingDependencies, cleanBaseSKU,
     hasDriveCageKit, hasBaseChassis, ocpSlotsClusterMax, pcieSlotsClusterMax, activePcieSlotsClusterMax,
     isExceedingOcp, isExceedingPcie, isExceedingActivePcie,
-    psuPerServer, cpusPerServer
+    psuPerServer, cpusPerServer, options
   };
 
   validateNetworkingRules(ctx);

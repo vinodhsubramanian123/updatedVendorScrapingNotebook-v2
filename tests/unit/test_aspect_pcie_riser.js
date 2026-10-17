@@ -99,6 +99,25 @@ assert(result.activeSlotsAvailable === 3, `Default primary riser provides 3 acti
 assert(result.isExceedingActiveSlots === false, `3 cards do not exceed active slots on default primary riser`);
 assert(result.needsPrimaryCableKit === false, `No primary cable kit required for 3 PCIe cards on default primary riser`);
 
+console.log(`\n🔹 Test Group 5: GPU Auxiliary Power Cable Recognition`);
+items = [
+  { sku: 'S0K89A', description: 'NVIDIA L40S 48GB PCIe GPU Accelerator', quantity: 2 },
+  { sku: 'P52410-B21', description: 'HPE DL380 Gen11 GPU Power Cable Kit', quantity: 2 }
+];
+result = evalPcieRiserSlots(items);
+assert(result.gpuCount === 2, `Counted 2 GPUs`);
+assert(result.hasGpuPowerCableKit === true, `P52410-B21 recognized as valid GPU power cable kit`);
+assert(result.gpuPowerCableKitCount === 2, `Counted 2 cable kit capacity`);
+assert(result.needsGpuPowerCableKit === false, `GPU power cable demand fully met`);
+
+items = [
+  { sku: 'S0K89A', description: 'NVIDIA L40S 48GB PCIe GPU Accelerator', quantity: 2 },
+  { sku: 'P52411-B21', description: 'HPE ProLiant GPU Aux Cable Kit', quantity: 1 }
+];
+result = evalPcieRiserSlots(items);
+assert(result.hasGpuPowerCableKit === true, `P52411-B21 recognized as valid GPU power cable kit`);
+assert(result.needsGpuPowerCableKit === true, `Deficit flagged when 2 GPUs have only 1 cable kit`);
+
 console.log(`\n================================================================`);
 console.log(`📊 FINAL TEST SUMMARY: ${totalPasses} PASSED | ${totalFails} FAILED`);
 console.log(`================================================================\n`);

@@ -4,7 +4,7 @@
 
 **Scope Identity**: `HPE/SERVER/Synergy/Gen12/SY480_Gen12`
 
-**Sync Timestamp**: 2026-10-13T09:33:59.346Z
+**Sync Timestamp**: 2026-10-17T09:43:33.876Z
 
 **Total Verified SKUs**: `581` (`178` Hardware + `403` Services)
 
@@ -36,22 +36,7 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 ## 🏛️ 2. Family & Generation Rules (Synergy Gen12)
 
-1. **[DELTA_SYNERGY_GEN12_FC_LICENSE_PROHIBITION]** (CLIC Rules 81410905 & 81314323 | Severity: UNBUILDABLE):
-   - **Rule**: On HPE Synergy 12000 Frames (`P51174-B21`) populated solely with SY480 Gen12 compute nodes (`P68217-B21`), selecting Virtual Connect Fibre Channel upgrade licenses (`R3P67A` FIO LTU or `R3P67AAE` BTO E-LTU) is strictly forbidden and triggers CLIC Rules 81410905 and 81314323 (*UNBUILDABLE CONFIGURATION: OVERRIDE REQUIRES FACTORY APPROVAL*).
-   - **Architectural Grounding**: SY480 Gen12 compute nodes route dedicated SAN traffic via Mezzanine 1 (`P68131-B21` 64Gb FC HBA) directly to Brocade 64Gb FC Switch Modules (`P77653-B21`) in Bays 1 & 4. Fibre Channel port expansion must be licensed via Brocade 8-port upgrade E-LTU (`Q2E58AAE`). Virtual Connect SE 100Gb F32 modules (`867796-B21`) in Bays 3 & 6 are dedicated to 25G/50G/100G Ethernet (via `P64724-B21` adapter in Mezzanine 3), with no FCoE path on Gen12.
-   - **Presales Action**: Purge `R3P67A` / `R3P67AAE` completely from all Gen12 frame quotes.
-
-2. **[DELTA_SYNERGY_FIO_VS_ELTU_STANDALONE_ORDERING]** (CLIC Rules 81013168 & 81125904 | Scope: UNIVERSAL_VENDOR):
-   - **Rule**: `R3P67A` is a Factory Integrated Option (FIO LTU) ending in 'A', which strictly requires sub-iteming under a factory CTO chassis base (`P51174-B21`), triggering CLIC Rules 81013168 and 81125904 (*"must be ordered as a sub-item to the Base"*) if quoted standalone.
-   - **Resolution for Mandatory Customer RFP Requirements**: If a customer procurement contract mandates this 32Gb FC license, it CANNOT be fulfilled using `R3P67A`. It must be ordered as `R3P67AAE` (BTO Electronic License / E-LTU) placed in a completely separate standalone software quote (new UCID) where no `P51174-B21` chassis or Gen12 compute nodes exist, bypassing both Rule 81125904 and Rule 81410905.
-
-3. **[DELTA_SYNERGY_MULTI_ORDER_ADHOC_CONTAINER_PARTITIONING]** (Scope: FAMILY_GEN | Architecture Pattern):
-   - **Rule**: When a multi-frame Synergy deployment (e.g. 2 frames, 24 nodes) is partitioned into separate commercial orders (Option B):
-     1. **Order 2 (Frame 2)**: Structured as a clean hardware clone with zero loose cables, zero loose transceivers, and zero unpack services (`P1F64A` purged). Total List: $24,383,448.00.
-     2. **Order 1 (Frame 1)**: Hosts a dedicated Adhoc container (`Ad-Hoc #1 Ad-Hoc for 2frames #1`) carrying 100% of all loose physical connectivity for both frames: DAC cables (2× `487655-B21` 10G, 10× `845406-B21` 100G), AOC cables (8× `845410-B21` 100G), fiber cables (8× `QK734A` OM4), and optical transceivers (20× `455883-B21` 10G SFP+ SR, 12× `845398-B21` 25G SFP28 SR, 16× `841716-B21` 40G QSFP+ BiDi) totaling $96,236.00 list. Total List: $24,479,684.00.
-     3. **Embedded Switch Licenses (`Q2E58AAE`)**: Embedded switch expansion licenses must NEVER be placed in Adhoc—they must be split evenly inside the physical switch modules (4 in Frame 1, 4 in Frame 2) to preserve 1:1 hardware module licensing integrity.
-     4. **1:1 Support Parity (`HU4B2A3`)**: Pointnext Tech Care Basic support must be preserved 1:1 on both frames ($46,156.00 each) to satisfy CLIC Rules 99916598/99916599.
-     5. **Combined Solution Parity**: Combined solution achieves 100% buildability and exact penny parity at $48,863,132.00 USD.
+*No verified family/generation rules are registered for this product.*
 
 ## 🎯 3. Chassis & Solution-Type Gotchas (SY480_Gen12)
 
@@ -90,6 +75,18 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 9. **[DELTA_SYNERGY_STARTUP_PLACEMENT_HIERARCHY] SY480_Gen12** (Taxonomy: `Synergy/Gen12/SY480_Gen12` | Solution: `SY480_Gen12 CTO Server`):
    - **Rule**: Synergy startup services (HA124A1#5ZM First Frame Onsite, HA124A1#5ZQ Additional Frame Onsite) must be placed ONLY at the Icon #2 container level under Services → Deployment Services → Install-Install and Start Up. They must NEVER be placed locally under individual "Synergy 12000 Frame #N" child items. Duplicate placement between icon container and child frames causes CLIC Rule 81039677 to fire against the first line item (typically DL380) in the solution BOM.
    - **Affected SKU**: `HA124A1#5ZM` | **Required Dependency**: `HA124A1#5ZQ`
+
+10. **[DELTA_SYNERGY_GEN12_FC_LICENSE_PROHIBITION] SY480_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `SY480_Gen12 CTO Server`):
+   - **Rule**: On HPE Synergy 12000 Frames (P51174-B21) populated solely with SY480 Gen12 compute nodes (P68217-B21), selecting Virtual Connect Fibre Channel upgrade licenses (R3P67A FIO LTU or R3P67AAE BTO E-LTU) is strictly forbidden and triggers CLIC Rules 81410905 and 81314323 (UNBUILDABLE CONFIGURATION: OVERRIDE REQUIRES FACTORY APPROVAL). SY480 Gen12 compute nodes route dedicated SAN traffic via Mezzanine 1 (P68131-B21 64Gb FC HBA) directly to Brocade 64Gb FC Switch Modules (P77653-B21) in Bays 1 & 4. Fibre Channel port expansion must be licensed via Brocade 8-port upgrade E-LTU (Q2E58AAE). Virtual Connect SE 100Gb F32 modules (867796-B21) in Bays 3 & 6 are dedicated to 25G/50G/100G Ethernet (via P64724-B21 adapter in Mezzanine 3), with no FCoE path on Gen12.
+   - **Affected SKU**: `R3P67A` | **Required Dependency**: `Q2E58AAE`
+
+11. **[DELTA_SYNERGY_FIO_VS_ELTU_STANDALONE_ORDERING] SY480_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `SY480_Gen12 CTO Server`):
+   - **Rule**: R3P67A is a Factory Integrated Option (FIO LTU) ending in 'A', which strictly requires sub-iteming under a factory CTO chassis base (P51174-B21), triggering CLIC Rules 81013168 and 81125904 ('must be ordered as a sub-item to the Base') if quoted standalone. If a customer procurement contract mandates this 32Gb FC license, it CANNOT be fulfilled using R3P67A. It must be ordered as R3P67AAE (BTO Electronic License / E-LTU) placed in a completely separate standalone software quote (new UCID) where no P51174-B21 chassis or Gen12 compute nodes exist, bypassing both Rule 81125904 and Rule 81410905.
+   - **Affected SKU**: `R3P67A` | **Required Dependency**: `R3P67AAE`
+
+12. **[DELTA_SYNERGY_MULTI_ORDER_ADHOC_CONTAINER_PARTITIONING] SY480_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `SY480_Gen12 CTO Server`):
+   - **Rule**: When a multi-frame Synergy deployment (e.g. 2 frames, 24 nodes) is partitioned into separate commercial orders (Option B): (1) Order 2 (Frame 2) is structured as a clean hardware clone with zero loose cables, zero loose transceivers, and zero unpack services; (2) Order 1 (Frame 1) hosts a dedicated Adhoc container carrying 100% of all loose physical connectivity for both frames (DAC cables: 487655-B21 10G, 845406-B21 100G; AOC cables: 845410-B21 100G; fiber: QK734A OM4; transceivers: 455883-B21 10G SFP+ SR, 845398-B21 25G SFP28 SR, 841716-B21 40G QSFP+ BiDi) totaling $96,236.00 list; (3) Embedded switch licenses (Q2E58AAE Brocade 8-port upgrade E-LTU) must NEVER be lumped into Adhoc—they must be split evenly inside the physical switch modules (4 in Frame 1, 4 in Frame 2) to preserve 1:1 hardware module licensing integrity; (4) Tech Care Basic support (HU4B2A3) must be preserved 1:1 on both frames ($46,156 each) to satisfy CLIC Rules 99916598/99916599.
+   - **Affected SKU**: `P51174-B21` | **Required Dependency**: `Q2E58AAE`
 
 
 ## 🔒 3b. Physical & Architectural Gating Rules (DOM Unavailable Tables)

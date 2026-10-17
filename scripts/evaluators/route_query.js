@@ -302,6 +302,7 @@ function _classifyHeterogeneousAndCompetitor(text, context) {
     text.includes('competitor quote') ||
     (/convert|map|transform|migrate|translate/i.test(text) && /dell|cisco|lenovo|supermicro/i.test(text)) ||
     Boolean(context.crossVendor) ||
+    Boolean(context.sourceVendor) ||
     context.intent === 'CROSS_VENDOR_TRANSFORMATION'
   );
 
@@ -1238,18 +1239,52 @@ async function _handleCrossVendorTransformation(queryText, context) {
   const { transformCompetitorQuote } = require('../lib/boq/cross_vendor_transformer.js');
   const targetChassis = context.targetHpeChassis || context.chassisName || null;
   const qLower = (typeof queryText === 'string' ? queryText : '').toLowerCase();
-  const sourceVendor = context.sourceVendor || ['cisco', 'lenovo', 'supermicro', 'dell'].find(vendor => qLower.includes(vendor))?.toUpperCase() || null;
+  let sourceVendor = context.sourceVendor || ['cisco', 'lenovo', 'supermicro', 'dell'].find(vendor => qLower.includes(vendor))?.toUpperCase() || null;
   const nodeCount = context.nodeMultiplier ?? context.nodes ?? 1;
 
   let inputData = context.competitorSpec || queryText;
+  let ocrProvenance = null;
   if (context.filePath) {
     const extension = path.extname(context.filePath).toLowerCase();
-    if (!['.txt', '.md', '.json'].includes(extension)) return {
-      intent: 'CROSS_VENDOR_TRANSFORMATION', status: 'STRUCTURED_TENDER_REQUIRED',
-      message: 'Ingest spreadsheets and scanned quotes before transformation; binary files cannot be read as tender text.'
-    };
-    const contents = fs.readFileSync(context.filePath, 'utf8');
-    inputData = extension === '.json' ? JSON.parse(contents) : contents;
+    if (['.png', '.jpg', '.jpeg', '.webp', '.tiff', '.bmp', '.pdf'].includes(extension)) {
+      if (!fs.existsSync(context.filePath)) {
+        return {
+          intent: 'CROSS_VENDOR_TRANSFORMATION',
+          status: 'FILE_NOT_FOUND',
+          error: `Target image file not found: ${context.filePath}`
+        };
+      }
+      const { performGeminiOcr } = require('../lib/ocr/ocr_service.js');
+      const ocrResult = await performGeminiOcr(context.filePath, context);
+      if (ocrResult && ocrResult.isOcrProcessed && ocrResult.ocrStatus === 'SUCCESS' && ocrResult.text) {
+        inputData = ocrResult.text;
+        ocrProvenance = {
+          sourceDocument: path.resolve(context.filePath),
+          modelUsed: ocrResult.modelUsed,
+          lineCount: ocrResult.lineCount,
+          detectedSkus: ocrResult.detectedSkus
+        };
+        if (!sourceVendor && typeof inputData === 'string') {
+          const inLower = inputData.toLowerCase();
+          sourceVendor = ['cisco', 'lenovo', 'supermicro', 'dell'].find(vendor => inLower.includes(vendor))?.toUpperCase() || null;
+        }
+      } else {
+        return {
+          intent: 'CROSS_VENDOR_TRANSFORMATION',
+          status: 'OCR_EXTRACTION_FAILED',
+          error: ocrResult?.rawError || ocrResult?.text || 'OCR processing failed for competitor image quote.',
+          remediationAction: ocrResult?.remediationAction || 'Check image clarity or provide structured text/JSON quote.'
+        };
+      }
+    } else if (!['.txt', '.md', '.json'].includes(extension)) {
+      return {
+        intent: 'CROSS_VENDOR_TRANSFORMATION', status: 'STRUCTURED_TENDER_REQUIRED',
+        message: 'Ingest spreadsheets and scanned quotes before transformation; binary files cannot be read as tender text.'
+      };
+    } else {
+      const contents = fs.readFileSync(context.filePath, 'utf8');
+      inputData = extension === '.json' ? JSON.parse(contents) : contents;
+    }
   }
 
   const candidateItems = context.targetBom || (Array.isArray(context.items) ? context.items : null);
@@ -1317,7 +1352,8 @@ async function _handleCrossVendorTransformation(queryText, context) {
     parityGaps,
     evaluatedSolution,
     strategyMatrix: transformResult.strategyMatrix,
-    recommendedBom: transformResult.recommendedBom
+    recommendedBom: transformResult.recommendedBom,
+    ...(ocrProvenance ? { ocrProvenance } : {})
   };
 }
 

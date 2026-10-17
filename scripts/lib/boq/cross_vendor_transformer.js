@@ -33,7 +33,7 @@ function parseCompetitorSpecification(input, sourceVendor = null) {
 
   const cpuCount = numberMatch(cpu, /(\d+)\s*[x*]\s*(?:intel|amd|xeon|epyc|processor)/i)
     ?? (/\bdual\b/i.test(cpu) ? 2 : /\bsingle\b/i.test(cpu) ? 1 : null);
-  const cpuCores = numberMatch(cpu, /(\d+)\s*(?:cores?\b|c\b|c\/)/i);
+  const cpuCores = numberMatch(cpu, /(\d+)[\s-]*(?:cores?\b|c\b|c\/)/i);
   const dimmCount = numberMatch(memory, /(\d+)\s*[x*]\s*\d+\s*gb/i);
   const dimmCapacityGb = numberMatch(memory, /(\d+)\s*gb/i);
 

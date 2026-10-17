@@ -20,7 +20,7 @@ const { evalSupportServices } = require('./support_services.js');
 
 // Explicit named checker adapters ensuring exact parameter matching and context propagation
 function adapterComputeThermal(items, catalogData, mandatorySkus, serverCount, ctx) {
-  const res = evalComputeThermal(items, catalogData, mandatorySkus, serverCount);
+  const res = evalComputeThermal(items, catalogData, mandatorySkus, serverCount, ctx?.options || {});
   if (ctx && typeof ctx === 'object') {
     ctx.cpuCount = res.cpuCount;
   }
@@ -47,8 +47,8 @@ function adapterNetworkingOcp(items, catalogData, mandatorySkus, serverCount, _c
   return evalNetworkingOcp(items, catalogData, mandatorySkus, serverCount);
 }
 
-function adapterPowerEnvironment(items, catalogData, mandatorySkus, serverCount, _ctx) {
-  return evalPowerEnvironment(items, catalogData, mandatorySkus, serverCount);
+function adapterPowerEnvironment(items, catalogData, mandatorySkus, serverCount, ctx) {
+  return evalPowerEnvironment(items, catalogData, mandatorySkus, serverCount, ctx?.options || {});
 }
 
 function adapterSupportManufacturing(items, catalogData, _mandatorySkus, serverCount, _ctx) {

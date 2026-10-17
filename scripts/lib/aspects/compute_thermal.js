@@ -6,7 +6,7 @@
 const { cleanBaseSKU, buildCatalogSkuIndex } = require('../catalog/sku.js');
 const { classifyComponentRole } = require('../catalog/product_meta.js');
 
-function evalComputeThermal(items, catalogData = null, mandatorySkus = {}, serverCount = 1) {
+function evalComputeThermal(items, catalogData = null, mandatorySkus = {}, serverCount = 1, options = {}) {
   let cpuCount = 0;
   let maxCpuTdpWatts = 0;
   let fanKitCount = 0;
@@ -95,9 +95,13 @@ function evalComputeThermal(items, catalogData = null, mandatorySkus = {}, serve
     isDl380aAccelerator,
     uniqueCpuSkus: Array.from(uniqueCpuSkus),
     hasMixedCpuModels: (serverCount === 1 || !serverCount) && uniqueCpuSkus.size > 1,
-    // High TDP (> 185W or theta threshold) mandates High-Performance Fan Kit
-    needsHighPerfCooling: maxCpuTdpWatts > 185 && !hasHighPerfFans,
-    thermalEquationFormula: `maxCpuTdpWatts (${maxCpuTdpWatts}W) > 185W => needsHighPerfCooling = ${maxCpuTdpWatts > 185 && !hasHighPerfFans}`
+    isElevatedAmbient: (Number(options?.ambientTemp ?? options?.ambientTemperature ?? 25) > 30) || Boolean(options?.ambientGate),
+    ambientTemp: Number(options?.ambientTemp ?? options?.ambientTemperature ?? 25),
+    // High TDP (> 185W or theta threshold) or elevated ambient temperature (> 30°C) mandates High-Performance Fan Kit
+    needsHighPerfCooling: (maxCpuTdpWatts > 185 || (Number(options?.ambientTemp ?? options?.ambientTemperature ?? 25) > 30) || Boolean(options?.ambientGate)) && !hasHighPerfFans,
+    thermalEquationFormula: (Number(options?.ambientTemp ?? options?.ambientTemperature ?? 25) > 30) || Boolean(options?.ambientGate)
+      ? `ambientTemp (${Number(options?.ambientTemp ?? options?.ambientTemperature ?? 25)}°C) > 30°C => needsHighPerfCooling = ${(maxCpuTdpWatts > 185 || (Number(options?.ambientTemp ?? options?.ambientTemperature ?? 25) > 30) || Boolean(options?.ambientGate)) && !hasHighPerfFans}`
+      : `maxCpuTdpWatts (${maxCpuTdpWatts}W) > 185W => needsHighPerfCooling = ${maxCpuTdpWatts > 185 && !hasHighPerfFans}`
   };
 }
 

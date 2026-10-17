@@ -29,6 +29,14 @@ const REGISTERED_DUAL_GPU_CABLE_SKUS = new Set([
   'P83526-B21'  // HPE ProLiant DL380a Gen12 GPU Dual Power Cable Kit
 ]);
 
+// Registered single-GPU auxiliary power cable kits across product lines
+const REGISTERED_SINGLE_GPU_CABLE_SKUS = new Set([
+  'P52410-B21', // HPE ProLiant DL380 Gen11/Gen12 GPU Power Cable Kit
+  'P52411-B21', // HPE ProLiant DL380 Gen11/Gen12 GPU Aux Cable Kit
+  'P76450-B21', // HPE ProLiant DL380 Gen12 GPU Auxiliary Power Cable Kit
+  'P48816-B21'  // HPE ProLiant DL380 Gen11 GPU Power Cable Kit
+]);
+
 function resolveGpuCableCapacity(sku, desc, mandatorySkus = {}) {
   const cleanSku = cleanBaseSKU(sku);
   // 1. Mandatory SKU configuration override (requires exact nonempty SKU match)
@@ -68,7 +76,7 @@ function isEvidencedGpuPowerCable(sku, desc, role, isDl380a, mandatorySkus = {})
   if (mandatorySkus?.GPU_POWER_CABLE_KIT?.sku && cleanSku === cleanBaseSKU(mandatorySkus.GPU_POWER_CABLE_KIT.sku)) {
     return true;
   }
-  if (REGISTERED_DUAL_GPU_CABLE_SKUS.has(cleanSku)) return true;
+  if (REGISTERED_DUAL_GPU_CABLE_SKUS.has(cleanSku) || REGISTERED_SINGLE_GPU_CABLE_SKUS.has(cleanSku)) return true;
 
   const d = String(desc || '').toLowerCase();
   const hasGpuToken = d.includes('gpu') || d.includes('12vhpwr') || (role === 'Power Cable' && d.includes('gpu'));
@@ -329,5 +337,6 @@ module.exports = {
   parseRiserSlotCount,
   resolveGpuCableCapacity,
   REGISTERED_DUAL_GPU_CABLE_SKUS,
+  REGISTERED_SINGLE_GPU_CABLE_SKUS,
   isEvidencedGpuPowerCable
 };

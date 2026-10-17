@@ -235,6 +235,9 @@ function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}, ser
   }
 
   const estimatedNodeWattage = totalHardwareWatts + 150;
+  const requiredWattageWithHeadroom = Math.ceil(estimatedNodeWattage * 1.20);
+  const hasPsuHeadroomDeficit = tally.psuCount > 0 && tally.maxPsuWattage < requiredWattageWithHeadroom;
+  const hasPsuWattageDeficit = tally.psuCount > 0 && tally.maxPsuWattage < estimatedNodeWattage;
   const needsHighLine220v = estimatedNodeWattage > 800 && tally.maxPsuWattage >= 1600;
   const needsCeRemovalKit = checkLot9CeRemovalNeeds(tally, estimatedNodeWattage);
   const hasSynergyRedundantPowerError = tally.isSynergy12000Frame && tally.synergyTitanium2650wCount !== 6;
@@ -254,6 +257,9 @@ function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}, ser
     psuCount: tally.psuCount,
     maxPsuWattage: tally.maxPsuWattage,
     estimatedNodeWattage,
+    requiredWattageWithHeadroom,
+    hasPsuHeadroomDeficit,
+    hasPsuWattageDeficit,
     needsHighLine220v,
     isSynergy12000Frame: tally.isSynergy12000Frame,
     synergyTitanium2650wCount: tally.synergyTitanium2650wCount,

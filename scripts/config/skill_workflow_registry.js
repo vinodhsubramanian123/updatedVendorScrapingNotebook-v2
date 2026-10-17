@@ -182,7 +182,14 @@ const registry = {
       vendorScope: ['NOT_APPLICABLE'], domainScope: ['CROSS_DOMAIN'], executionMode: 'LOCAL',
       entrypoints: [entry('scripts/lib/system/evidence_ledger.js', 'createEvidenceLedger')],
       completionEvidence: ['Terminal 9-phase evidence ledger and cryptographic audit trace'],
-      coverageLimits: ['Verifies epistemic contracts; does not generate hardware configurations.'] })
+      coverageLimits: ['Verifies epistemic contracts; does not generate hardware configurations.'] }),
+    capability({ capabilityId: 'codex-peer-review-skill', kind: 'ENGINEERING', intents: [],
+      triggers: ['Static peer reviews, git diff audits, and independent gap analysis via Codex CLI'],
+      applicability: ['Engineering git commit, branch or uncommitted review only; excluded from customer BOQ dispatch'],
+      vendorScope: ['NOT_APPLICABLE'], domainScope: ['ENGINEERING'], executionMode: 'CLI',
+      entrypoints: [entry('.agents/skills/codex-peer-review-skill/SKILL.md', null, 'CLI')],
+      completionEvidence: ['Static peer review report, gap analysis, and identified risks or approvals'],
+      coverageLimits: ['Codex is strictly an independent review layer; never part of live customer BOQ generation pipelines.'] })
   ],
   internalEngineeringObservations: [{
     ownerCapabilityId: 'presales-query-router', checkpoint: 'CP7b', activation: 'DEFAULT_DISABLED_PROPOSAL',

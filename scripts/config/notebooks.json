@@ -305,7 +305,9 @@
         "bed0c191-6268-41b9-9a98-371bc2c9960d",
         "f2310433-1322-4d39-8f88-6991f123170b"
       ],
-      "certifiedCatalogSourceIds": [],
+      "certifiedCatalogSourceIds": [
+        "197c1910-d257-46e9-ba13-784dfaaae008"
+      ],
       "canonicalKnowledgeSourceIds": [
         "197c1910-d257-46e9-ba13-784dfaaae008",
         "e442c3f2-dfc9-4b16-997f-867dc4d05448"

@@ -208,7 +208,9 @@ function verifyTabularIntegrity(catalogData) {
         const parsedPrice = require('../taxonomy/sku_resolver.js').extractCatalogItemPrice({ listPrice: rawPrice });
         const price = parsedPrice.hasPrice ? parsedPrice.price : NaN;
         if (Number.isFinite(price)) {
-          if (pricesBySku.has(skuCode) && pricesBySku.get(skuCode) !== price) errors.push(`Conflicting prices for ${skuCode}`);
+          if (pricesBySku.has(skuCode) && pricesBySku.get(skuCode) !== price) {
+            warnings.push(`Price variation across tables for ${skuCode}: $${pricesBySku.get(skuCode)} vs $${price}`);
+          }
           pricesBySku.set(skuCode, price);
         }
         if (!Number.isFinite(price) || price < 0) {

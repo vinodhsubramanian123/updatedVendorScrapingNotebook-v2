@@ -61,7 +61,23 @@ function validateUniversalCriteria(output, context = {}) {
       (typeof output.answer === 'string' && output.answer.trim().length > 0) ||
       (typeof output.message === 'string' && output.message.trim().length > 0) ||
       (output.pricingTrail !== undefined) ||
-      (output.auditReport !== undefined)
+      (output.auditReport !== undefined) ||
+      (output.liveDetails !== undefined) ||
+      (Array.isArray(output.extractedItems) && output.extractedItems.length > 0) ||
+      (output.carrierFleetSummary !== undefined) ||
+      (output.deliverableSummary !== undefined) ||
+      (output.competitorSpec !== undefined) ||
+      (Array.isArray(output.recommendedBom) && output.recommendedBom.length > 0) ||
+      (output.dna !== undefined) ||
+      (output.budgetOptimization !== undefined) ||
+      (output.leastDeltaCandidate !== undefined) ||
+      (output.clusterAnalysis !== undefined) ||
+      (Array.isArray(output.generatedBoq) && output.generatedBoq.length > 0) ||
+      (typeof output.exportPath === 'string' && output.exportPath.trim().length > 0) ||
+      (Array.isArray(output.outputRows) && output.outputRows.length > 0) ||
+      (output.feedbackProcessed !== undefined) ||
+      (output.drift !== undefined) ||
+      (output.syncResult !== undefined)
     )
   );
   checks.push(

@@ -19,7 +19,7 @@ const descriptor = capabilities => ({ vendorId: 'Vendor X', contractVersion: 1, 
 test('all repository skills have path/export-valid declarations, frozen and unused', () => {
   const result = validateRegistry(root);
   assert.equal(result.valid, true, JSON.stringify(result.issues));
-  assert.equal(result.summary.capabilities, 29);
+  assert.equal(result.summary.capabilities, 30);
   assert.equal(registry.activation, 'UNUSED');
   assert.ok(Object.isFrozen(registry.capabilities[0].entrypoints[0]));
   assert.throws(() => { registry.capabilities[0].intents.push('MUTATION'); }, TypeError);

@@ -86,6 +86,21 @@ assert(result.cpuCount === 2, `Counted 2 CPUs`);
 assert(result.maxCpuTdpWatts === 350, `Extracted 350W max TDP correctly from multiple SKUs`);
 assert(result.hasMixedCpuModels === true, `Flagged mixed CPU models on single node`);
 
+console.log(`\n🔹 Test Group 5: Elevated Ambient Temperature Gating (>30°C / ambientGate)`);
+items = [
+  { sku: 'P12345-B21', description: 'Intel Xeon Silver 4410Y 2.0GHz 12-core 150W Processor', quantity: 2 }
+];
+result = evalComputeThermal(items);
+assert(result.needsHighPerfCooling === false, `150W TDP at standard ambient does not mandate high-perf cooling`);
+
+result = evalComputeThermal(items, null, {}, 1, { ambientTemp: 35 });
+assert(result.isElevatedAmbient === true, `Ambient 35°C correctly flagged as elevated ambient`);
+assert(result.needsHighPerfCooling === true, `Elevated ambient mandates high-performance cooling`);
+
+result = evalComputeThermal(items, null, {}, 1, { ambientGate: true });
+assert(result.isElevatedAmbient === true, `ambientGate option flagged as elevated ambient`);
+assert(result.needsHighPerfCooling === true, `ambientGate mandates high-performance cooling`);
+
 console.log(`\n================================================================`);
 console.log(`📊 FINAL TEST SUMMARY: ${totalPasses} PASSED | ${totalFails} FAILED`);
 console.log(`================================================================\n`);

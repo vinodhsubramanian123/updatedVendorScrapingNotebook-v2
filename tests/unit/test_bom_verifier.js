@@ -209,9 +209,14 @@ describe('Pre-Presentation Acceptance Gate (bom_verifier.js)', () => {
     };
 
     for (const [track, payload] of Object.entries(validPayloads)) {
-      const gate = verifyPrePresentationAcceptance(payload, track, { catalogData: mockCatalog, executionTimeMs: 12 });
+      const gate = verifyPrePresentationAcceptance(payload, track, {
+        catalogData: mockCatalog,
+        chassisName: 'DL380_Gen12',
+        catalogDir: 'outputs/ProLiant/Gen12/DL380_Gen12',
+        executionTimeMs: 12
+      });
       assert.strictEqual(gate.checks.some(c => c.id === 'TRACK_PROFILE'), false, `${track} should not fall back to unimplemented TRACK_PROFILE`);
-      assert.strictEqual(gate.isValid, true, `${track} valid payload should pass acceptance: ${JSON.stringify(gate.blockers)}`);
+      assert.strictEqual(gate.isValid, true, `${track} valid payload should pass acceptance: ${JSON.stringify(gate.blockers)} (warnings: ${JSON.stringify(gate.warnings)})`);
     }
 
     const unknownGate = verifyPrePresentationAcceptance({ message: 'Unknown route' }, 'UNRECOGNIZED_FUTURE_TRACK', {});

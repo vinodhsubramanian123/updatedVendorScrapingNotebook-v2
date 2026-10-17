@@ -4,7 +4,7 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen11/DL145_Gen11`
 
-**Sync Timestamp**: 2026-10-13T11:05:25.728Z
+**Sync Timestamp**: 2026-10-17T09:43:27.295Z
 
 **Total Verified SKUs**: `624` (`413` Hardware + `211` Services)
 

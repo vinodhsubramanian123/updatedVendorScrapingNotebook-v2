@@ -46,3 +46,47 @@ test('routed transformation reports missing target and rejects binary text inges
   const binary = await executeRoutedQuery('Convert Dell to HPE', { filePath: 'quote.xlsx' });
   assert.equal(binary.result.status, 'STRUCTURED_TENDER_REQUIRED');
 });
+
+test('routed transformation auto-chains image-based quote through OCR to candidate BOM', async () => {
+  const fs = require('fs');
+  const path = require('path');
+  const ocrService = require('../../scripts/lib/ocr/ocr_service.js');
+  const dummyImg = path.join(__dirname, 'mock_dell_quote.png');
+  fs.writeFileSync(dummyImg, 'mock-png-data');
+
+  const origOcr = ocrService.performGeminiOcr;
+  ocrService.performGeminiOcr = async () => ({
+    isOcrProcessed: true,
+    ocrStatus: 'SUCCESS',
+    lineCount: 4,
+    detectedSkus: ['DELL-R760', 'INTEL-8480'],
+    modelUsed: 'gemini-3.6-flash',
+    text: 'Dell PowerEdge R760 Server Quote\n2x Intel Xeon Platinum 8480+ 56-core Processor\n16x 64GB DDR5-4800 RDIMM\n2x 1600W Titanium Power Supply'
+  });
+
+  try {
+    const res = await executeRoutedQuery('Convert Dell quote to HPE', {
+      filePath: dummyImg,
+      targetHpeChassis: 'DL380_Gen12'
+    });
+    assert.equal(res.result.intent, 'CROSS_VENDOR_TRANSFORMATION');
+    assert.equal(res.result.sourceVendor, 'DELL');
+    assert.ok(res.result.ocrProvenance);
+    assert.equal(res.result.ocrProvenance.modelUsed, 'gemini-3.6-flash');
+    assert.equal(res.result.competitorSpec.compute.totalCores, 112);
+    assert.equal(res.result.competitorSpec.memory.totalMemoryGb, 1024);
+  } finally {
+    ocrService.performGeminiOcr = origOcr;
+    if (fs.existsSync(dummyImg)) fs.unlinkSync(dummyImg);
+  }
+});
+
+test('routed transformation reports FILE_NOT_FOUND when image quote does not exist', async () => {
+  const res = await executeRoutedQuery('Convert Dell quote to HPE', {
+    filePath: 'nonexistent_quote.png',
+    targetHpeChassis: 'DL380_Gen12'
+  });
+  assert.equal(res.result.intent, 'CROSS_VENDOR_TRANSFORMATION');
+  assert.equal(res.result.status, 'FILE_NOT_FOUND');
+});
+

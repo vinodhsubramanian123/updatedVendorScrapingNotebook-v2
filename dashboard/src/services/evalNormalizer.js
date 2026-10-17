@@ -151,6 +151,46 @@ function extractProvenanceAndTrace(data, inner) {
   };
 }
 
+export function deriveDualBrainBadges(data = {}, inner = {}) {
+  const isMathClean = inner.isMathClean ?? data.isMathClean;
+  const isCloudGrounded = inner.isCloudGrounded ?? data.isCloudGrounded ?? inner.ragResult?.isCloudGrounded ?? data.ragResult?.isCloudGrounded;
+  const isDegraded = data.cloudSyncState === 'FAILED' || inner.cloudSyncState === 'FAILED' || Boolean(data.staleCatalogWarning || inner.staleCatalogWarning);
+
+  const badges = [];
+  if (isMathClean === true) {
+    badges.push({
+      id: 'LOCAL_DETERMINISTIC_PASS',
+      label: 'Local Deterministic: PASS',
+      variant: 'emerald',
+      tooltip: 'All 7 physical constraint aspects passed deterministic mathematical boundary checks.'
+    });
+  } else if (isMathClean === false) {
+    badges.push({
+      id: 'LOCAL_DETERMINISTIC_FAIL',
+      label: 'Local Deterministic: VIOLATIONS',
+      variant: 'rose',
+      tooltip: 'Physical constraint checkers caught mathematical or component violations.'
+    });
+  }
+
+  if (isCloudGrounded) {
+    badges.push({
+      id: 'CLOUD_GROUNDED_VERIFIED',
+      label: 'Cloud Grounded: VERIFIED',
+      variant: 'indigo',
+      tooltip: 'Verified word-for-word against official vendor QuickSpecs and master catalog in Gemini NotebookLM.'
+    });
+  } else if (isDegraded) {
+    badges.push({
+      id: 'DEGRADED_UNGROUNDED',
+      label: 'Degraded Mode: UNGROUNDED',
+      variant: 'amber',
+      tooltip: 'Operating in local offline/degraded mode. Cloud grounding channel is unavailable.'
+    });
+  }
+  return badges;
+}
+
 /**
  * Flatten a raw EVAL_RESULT SSE payload into the shape that all dashboard
  * components expect. This is the *single* data contract normalisation point —
@@ -205,6 +245,12 @@ export function normalizeEvalResult(payload) {
     // Architectural Narrative & Delivery Gate (INV-126 & INV-128)
     customerDisposition: inner.customerDisposition ?? data.customerDisposition ?? null,
     deliveryAuthorization: inner.deliveryAuthorization ?? data.deliveryAuthorization ?? null,
-    evaluationNarrative: inner.evaluationNarrative ?? data.evaluationNarrative ?? null
+    evaluationNarrative: inner.evaluationNarrative ?? data.evaluationNarrative ?? null,
+    // Clarification & HITL Disambiguation (GAP-16)
+    clarificationRequired: data.code === 'PLATFORM_CLARIFICATION_REQUIRED' || inner.code === 'PLATFORM_CLARIFICATION_REQUIRED' || (data.status === 'ACTION_REQUIRED' && Boolean(data.candidates?.length || inner.candidates?.length)),
+    clarificationCode: data.code || inner.code || null,
+    clarificationQuestion: data.question || inner.question || null,
+    clarificationCandidates: data.candidates || inner.candidates || (Array.isArray(data.question?.options) ? data.question.options : []),
+    dualBrainBadges: deriveDualBrainBadges(data, inner)
   };
 }
