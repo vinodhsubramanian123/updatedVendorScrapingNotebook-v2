@@ -202,6 +202,7 @@ export default function RankCard({
                 Least-Delta Cascade Pruning:
               </span>
               <button
+                aria-expanded={isLeastDeltaExpanded}
                 onClick={() => setIsLeastDeltaExpanded(!isLeastDeltaExpanded)}
                 className="text-[10px] font-semibold text-blue-700 hover:text-blue-900 flex items-center gap-0.5 cursor-pointer"
               >
@@ -274,6 +275,7 @@ export default function RankCard({
                 Thinking & Decision Chain:
               </span>
               <button
+                aria-expanded={isDecisionTraceExpanded}
                 onClick={() => setIsDecisionTraceExpanded(!isDecisionTraceExpanded)}
                 className="text-[10px] font-semibold text-slate-600 hover:text-slate-900 flex items-center gap-0.5 cursor-pointer"
               >
