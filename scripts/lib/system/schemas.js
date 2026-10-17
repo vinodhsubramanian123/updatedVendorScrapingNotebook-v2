@@ -70,7 +70,18 @@ const CatalogSkuItemSchema = z.object({
   'Component Role': z.string().optional(),
   'Start Date': z.string().optional(),
   'Discontinued Date': z.string().optional(),
-  'Price History Trail': z.string().optional()
+  'Price History Trail': z.string().optional(),
+  'Lead Time': z.union([z.string(), z.number()]).optional(),
+  leadTime: z.union([z.string(), z.number()]).optional(),
+  leadTimeDays: z.number().nullable().optional(),
+  'Lead Time Source': z.string().optional(),
+  'CLIC Status': z.string().optional(),
+  clicStatus: z.string().optional(),
+  'Availability': z.string().optional(),
+  availability: z.string().optional(),
+  allocationStatus: z.enum(['AVAILABLE', 'CONSTRAINED', 'ALLOCATION_HOLD', 'RESTRICTED', 'UNKNOWN']).optional(),
+  powerWatts: z.number().nullable().optional(),
+  weightKg: z.number().nullable().optional()
 }).passthrough().transform(data => {
   const resolvedSku = data.sku || data['Product #'] || '';
   return {

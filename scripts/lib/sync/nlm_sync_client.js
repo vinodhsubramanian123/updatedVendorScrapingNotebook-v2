@@ -21,8 +21,7 @@ const { acquireWorkflowLease } = require('../system/workflow_lease.js');
 // for idempotent reads (source list/content); the client retries reads via httpx
 // if CDP is unavailable. Override with NLM_SYNC_READ_TRANSPORT=httpx.
 function nlmReadEnv(extendedPath) {
-  const transport = process.env.NLM_SYNC_READ_TRANSPORT || 'cdp';
-  return { ...process.env, PATH: extendedPath, ...(transport === 'cdp' ? { NOTEBOOKLM_RPC_TRANSPORT: 'cdp' } : {}) };
+  return require('../notebook/nlm_transport.js').nlmEnvironment(extendedPath, true);
 }
 function protectedNotebookSources(config, notebookId) {
   return Object.values(config.notebooks || {}).filter(mapping => mapping.notebookId === notebookId).flatMap(mapping =>
@@ -81,7 +80,11 @@ function processSourceRecoveryQueue(notebookId, extendedPath = process.env.PATH,
     const config = JSON.parse(fs.readFileSync(options.configPath || path.join(PROJECT_ROOT, 'scripts/config/notebooks.json'), 'utf8'));
     const inventories = new Map();
     let purged = 0;
-    for (const item of queue.filter(entry => entry.notebookId === notebookId && ['PURGE_REQUIRED', 'AUDIT_TIMEOUT_REQUIRED', 'UPLOAD_IN_FLIGHT'].includes(entry.status))) {
+    for (const item of queue.filter(entry => entry.notebookId === notebookId && ['PURGE_REQUIRED', 'AUDIT_TIMEOUT_REQUIRED', 'UPLOAD_IN_FLIGHT', 'EPHEMERAL_IN_USE'].includes(entry.status))) {
+      if (item.ownerPid) {
+        try { process.kill(item.ownerPid, 0); continue; }
+        catch (error) { if (error.code !== 'ESRCH') continue; }
+      }
       const mapping = config.notebooks?.[item.chassisName];
       if (!mapping || mapping.notebookId !== notebookId) { item.lastPurgeError = 'Current product mapping mismatch'; continue; }
       const protectedIds = new Set(protectedNotebookSources(config, notebookId));
@@ -101,10 +104,7 @@ function processSourceRecoveryQueue(notebookId, extendedPath = process.env.PATH,
           };
           const candidates = inventory.filter(isCandidate);
           if (candidates.length === 0) {
-            item.status = 'PURGED';
-            item.purgedAt = new Date().toISOString();
-            item.lastPurgeError = null;
-            purged++;
+            item.lastPurgeError = 'Upload completion remains unknown; no candidate is visible yet';
             continue;
           }
           if (candidates.length > 1) throw new Error('Candidate discovery remains ambiguous');
@@ -119,7 +119,7 @@ function processSourceRecoveryQueue(notebookId, extendedPath = process.env.PATH,
         const freshConfig = JSON.parse(fs.readFileSync(options.configPath || path.join(PROJECT_ROOT, 'scripts/config/notebooks.json'), 'utf8'));
         if (freshConfig.notebooks?.[item.chassisName]?.notebookId !== notebookId || protectedNotebookSources(freshConfig, notebookId).includes(item.sourceId)) throw new Error('Current governance changed; deletion blocked');
         if (source) {
-          execFn('nlm', ['source', 'delete', item.sourceId, '--confirm'], { encoding: 'utf8', timeout: 600000, env: { ...process.env, PATH: extendedPath } });
+          execFn('nlm', ['source', 'delete', item.sourceId, '--confirm'], { encoding: 'utf8', timeout: 600000, env: require('../notebook/nlm_transport.js').nlmEnvironment(extendedPath) });
           const after = JSON.parse(execFn('nlm', ['source', 'list', notebookId, '--json'], { encoding: 'utf8', timeout: 600000, env: nlmReadEnv(extendedPath) }));
           if (!Array.isArray(after) || after.some(candidate => candidate.id === item.sourceId)) throw new Error('Source deletion readback is unverified');
           inventories.set(notebookId, after);
@@ -308,7 +308,7 @@ function uploadAndVerifyLegacyFileCandidate({
       encoding: 'utf-8',
       timeout: 600000,
       maxBuffer: 32 * 1024 * 1024,
-      env: nlmReadEnv(extendedPath)
+      env: require('../notebook/nlm_transport.js').nlmEnvironment(extendedPath)
     });
     try {
       const parsed = JSON.parse(stdout);
@@ -339,7 +339,7 @@ function uploadAndVerifyLegacyFileCandidate({
       const source = Array.isArray(inventory) && inventory.find(item => item.id === sourceId);
       if (!source || (source.title || source.filename) !== ownedTitle) throw new Error('Candidate ownership is not verified in live inventory');
       execFileSync('nlm', ['source', 'delete', sourceId, '--confirm'], {
-        encoding: 'utf-8', timeout: 600000, env: { ...process.env, PATH: extendedPath }
+        encoding: 'utf-8', timeout: 600000, env: require('../notebook/nlm_transport.js').nlmEnvironment(extendedPath)
       });
       const after = JSON.parse(execFileSync('nlm', ['source', 'list', effectiveNotebookId, '--json'], { encoding: 'utf8', timeout: 600000, env: nlmReadEnv(extendedPath) }));
       if (!Array.isArray(after) || after.some(item => item.id === sourceId)) throw new Error('Candidate deletion readback is unverified');
@@ -421,7 +421,7 @@ function syncAndVerifyCanonicalDriveWorkbook({
     const writerOutput = execFileSync(process.execPath, writerArgs, {
       encoding: 'utf-8',
       timeout: 600000,
-      env: { ...process.env, PATH: extendedPath }
+      env: require('../notebook/nlm_transport.js').nlmEnvironment(extendedPath)
     });
     const writerResult = JSON.parse(writerOutput);
     if (writerResult.success !== true || writerResult.readbackVerified !== true || !writerResult.fingerprints?.combined) {
@@ -453,7 +453,7 @@ function syncAndVerifyCanonicalDriveWorkbook({
       ], {
         encoding: 'utf-8',
         timeout: 600000,
-        env: { ...process.env, PATH: extendedPath }
+        env: require('../notebook/nlm_transport.js').nlmEnvironment(extendedPath)
       });
       const addedDrive = JSON.parse(addDriveOutput);
       sourceId = addedDrive.source_id || addedDrive.id || addedDrive.sourceId || addedDrive.source?.id || null;
@@ -472,14 +472,14 @@ function syncAndVerifyCanonicalDriveWorkbook({
       ], {
         encoding: 'utf-8',
         timeout: 600000,
-        env: { ...process.env, PATH: extendedPath }
+        env: require('../notebook/nlm_transport.js').nlmEnvironment(extendedPath)
       });
     }
 
     const staleOutput = execFileSync('nlm', ['source', 'stale', effectiveNotebookId, '--json'], {
       encoding: 'utf-8',
       timeout: 600000,
-      env: { ...process.env, PATH: extendedPath }
+      env: require('../notebook/nlm_transport.js').nlmEnvironment(extendedPath)
     });
     const quarantined = cfgEntry?.quarantinedSourceIds || [];
     if (!isTargetDriveSourceFresh(staleOutput, sourceId, quarantined)) {
@@ -496,7 +496,7 @@ function syncAndVerifyCanonicalDriveWorkbook({
     ], {
       encoding: 'utf-8',
       timeout: 600000,
-      env: { ...process.env, PATH: extendedPath }
+      env: require('../notebook/nlm_transport.js').nlmEnvironment(extendedPath)
     });
     const driveCanary = JSON.parse(driveCanaryOutput);
     if (!isGroundedCanary(driveCanary, sourceId, chassisName)) {
@@ -592,7 +592,7 @@ function retireStaleNotebookSources({
         execFileSync('nlm', ['source', 'delete', stale.id, '--confirm'], {
           encoding: 'utf-8',
           timeout: 600000,
-          env: { ...process.env, PATH: extendedPath }
+          env: require('../notebook/nlm_transport.js').nlmEnvironment(extendedPath)
         });
         retiredSourceIds.push(stale.id);
       } catch (error) { retirementErrors.push(error.message); }
@@ -687,7 +687,7 @@ function syncToNotebookLMWithinLease(notebookId, payloadPath, chassisName = 'Unk
         const authCheck = execFileSync('nlm', ['login', '--check'], {
           encoding: 'utf-8',
           timeout: 45000,
-          env: { ...process.env, PATH: extendedPath }
+          env: require('../notebook/nlm_transport.js').nlmEnvironment(extendedPath)
         });
         if (!authCheck.includes('Authentication valid')) {
           throw new Error('nlm login --check returned invalid authentication');
@@ -956,6 +956,7 @@ module.exports = {
   refreshMasterCatalogCsv,
   syncToNotebookLM,
   recordSourceRecoveryAction,
+  updateSourceRecoveryAction,
   processSourceRecoveryQueue,
   readRecoveryQueue,
   RECOVERY_QUEUE_PATH

@@ -20,6 +20,7 @@ function queryHarness() {
   const stats = { spawn: 0, fallback: 0 };
   const module = { exports: {} }, filename = path.join(root, 'scripts/lib/notebook/notebook_query_utils.js');
   const requireMock = dependency => {
+    if (dependency.includes('nlm_transport')) return require('../../scripts/lib/notebook/nlm_transport');
     if (dependency === 'child_process') return { execFile(executable, args, options, cb) { stats.spawn++; execution = { args, options }; callback = cb; return { pid: 77 }; } };
     if (dependency === 'fs') return { existsSync: () => false, readFileSync: () => JSON.stringify({ notebooks: { Demo: { notebookId: notebook, officialSourceIds: ['official'] } } }) };
     if (dependency.includes('execution_budget')) return budget;
@@ -183,11 +184,13 @@ test('running async query remains joined while active; restart helper leaves liv
   assert.equal(h.api.resumePendingJobs(() => assert.fail('restart duplicate')).length, 0);
 });
 
-test('source attachment and delete readback preserve cross-platform executable/PATH and45/20s operation budgets', () => {
+test('source attachment and delete readback preserve executable/PATH and heavy-notebook operation budgets', () => {
   for (const platform of ['win32', 'linux']) {
     const commands = [], filename = path.join(root, 'scripts/lib/sync/nlm_solution_source_validator.js'), module = { exports: {} };
-    const fakeFs = {existsSync: () => true};
+    const fakeFs = {existsSync: () => true, readFileSync: () => JSON.stringify({ notebooks: { Demo: { notebookId: notebook } } })};
     const requireMock = name => {
+      if (name.includes('nlm_transport')) return require('../../scripts/lib/notebook/nlm_transport');
+      if (name === './nlm_sync_client.js') return { processSourceRecoveryQueue() {}, recordSourceRecoveryAction: () => 'attempt', updateSourceRecoveryAction() {} };
       if (name === 'fs') return fakeFs;
       if (name === 'os') return {homedir: () => '/test-home'};
       if (name === 'child_process') return {execFileSync(executable, args, options) { commands.push({executable,args,options});
@@ -199,7 +202,7 @@ test('source attachment and delete readback preserve cross-platform executable/P
     vm.runInNewContext(fs.readFileSync(filename, 'utf8'), {require: requireMock,module,exports: module.exports,__dirname:path.dirname(filename),process:{platform,env:{PATH:'/existing'}},Date});
     assert.equal(module.exports.attachSolutionSource(notebook,'fixture.csv','title').sourceId,'run-owned-source');
     assert.equal(module.exports.detachSolutionSource(notebook,'run-owned-source'),true);
-    assert.equal(commands.length,3); assert.deepEqual(commands.map(command => command.options.timeout),[45000,20000,20000]);
+    assert.equal(commands.length,4); assert.deepEqual(commands.map(command => command.options.timeout),[600000,600000,600000,600000]);
     for (const command of commands) {assert.equal(command.executable,path.join('/test-home','.local','bin',platform === 'win32' ? 'nlm.exe':'nlm'));assert.equal(command.options.env.PATH.includes('/existing'),true);}
   }
 });

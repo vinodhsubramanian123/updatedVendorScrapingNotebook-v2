@@ -303,7 +303,7 @@ function _executeCloudQuery(nlmExecutable, targetNotebookId, sanitizedQuery, tim
       heartbeat.unref?.();
       dispatched = true;
       child = execFile(nlmExecutable, buildNotebookQueryArgs(targetNotebookId, sanitizedQuery, trustedSourceIds, currentTimeout), {
-        timeout: currentTimeout, signal: options.signal, env: { ...process.env, PATH: extendedPath }, maxBuffer: 10 * 1024 * 1024
+        timeout: currentTimeout, signal: options.signal, env: require('./nlm_transport.js').nlmEnvironment(extendedPath, true), maxBuffer: 10 * 1024 * 1024
       }, (error, stdout, stderr) => {
         const conversationId = returnedConversationId(stdout);
         if (conversationId) attemptRecord.update({ conversationId });

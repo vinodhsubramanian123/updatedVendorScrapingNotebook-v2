@@ -1864,9 +1864,21 @@ Read `docs/audits/2026-10-03-master-architectural-hardening.md` and `docs/audits
    - Configuration ownership (`configurationId`, `parentId`) isolates matching boundaries, preventing components from cross-matching across clusters.
    - Fail-closed quantity validation rejects booleans, arrays, negatives, and non-safe integers. Empty inputs strictly reject 100% verdict.
 
-6. **Multi-Vendor Precedence & Context-Gated SKU Validation (`INV-172`)**:
-   - Specific Lenovo 4-digit prefix (`1234ABC`) and ThinkSystem machine types (`7D14A00`) take precedence over generic 7-character fallback heuristics.
-   - Non-orderable tokens and model names (e.g. HPE `SN1610Q`, DOM selectors `cntr123`) must not bypass HPE exclusions via loose vendor fallbacks; Dell Option-IDs require Dell context or explicit Option-ID headers.
-   - PID headers (`PID`, `Product ID`) map to SKU and trigger Cisco vendor detection.
+7. **Supply Chain Lead Time Intelligence, Critical Path Pacing Items & Rank 1S Fast-Ship Baseline (`INV-177`)**:
+   - **Root Cause & Presales Discovery**: In customer BOQs (e.g. `OCA_Config_4_5157323840-01_unformatted.xlsx` and `DL380_Gen12_20N_2sets_5157325433-01.xlsx`), presales engineers removed the 2.4TB HDD (`P28352-B21`) because its massive lead time inflated the entire delivery estimate; removing it collapsed EDT to ~47 days. Similarly, market availability forced a CPU replacement that was unverified until a live CLIC check.
+   - **Mathematical Critical Path Model**: CTO server solutions cannot ship on average component lead times. The delivery date is strictly governed by the slowest pacing item on the critical path:
+     $$\text{Solution EDT} = \max_{s \in \text{BOM}}(\text{LeadTime}_s)$$
+   - **Outlier Detection**: Components with $\text{LeadTime} \ge 45\text{ days}$ or $>2\times\text{Cluster Median}$ are identified as `leadTimeOutliers` / `pacingItemSku`.
+   - **Rank 1S Fast-Ship Alternative Synthesis**: `strategy_synthesizer.js` automatically synthesizes Rank 1S by replacing delivery bottlenecks with in-stock certified enterprise options (e.g. fast-ship SSD `P40507-B21` at 7 days or in-stock processor `P73300-B21`) and revalidating candidate parts through the 8-pass physical validator (`physicalMathClean === true`), collapsing delivery schedules by weeks or months while preserving 100% buildability.
+
+8. **Dynamic OCA `#menu_tools` / `.gears` Discovery & Multi-Tier Schema Hardening (`INV-178`)**:
+   - **Interactive WebLogic Discovery**: Table option views in HPE OCA hide key presales columns by default. `navigate_oca.js:inspectAndEnableToolsMenu` uses CDP to probe `#menu_tools`, `.gears`, and column preference dropdowns, toggling on checkboxes for Lead Times, CLIC Status, Allocation Holds, and Technical Specs (Power Watts, Weight).
+   - **Schema Hardening**: `CatalogSkuItemSchema` in `schemas.js` supports optional typed `leadTime`, `leadTimeDays`, `clicStatus`, `allocationStatus`, `powerWatts`, `weightKg`, and `fioEligibility` with `.passthrough()` for forward compatibility.
+   - **Masterbook Sheet 27**: `generate_xlsx.js` maintains the 26 canonical sheets and appends **Sheet 27: Supply Chain & Lead Times**, sorting SKUs into delivery speed tiers (Fast-Ship $\le 7$d, Standard 8–30d, Extended 31–45d, Constrained $>45$d).
+   - **Semantic AI Grounding Payload**: `sync_payload_builder.js` appends Section 10 (`⏱️ Supply Chain & Delivery Lead Time Intelligence`) to `notebook_sync_payload_*.md` so Gemini NotebookLM can cite delivery constraints and fast-ship alternatives.
+
+9. **Codex Astra Peer-Review Verification & Hardening**:
+   - Verified and integrated boundary fixes: centralized `nlm_transport.js` (read via CDP HTTP/3 Brotli, mutate via httpx), dynamic source upload timeouts (`sourceOperationTimeout`), PID-aware recovery queue skipping sources owned by active queries, fail-closed 8-pass physical revalidation loop, and strict postflight receipt gate (`cloudVerified === true` required for `pass: true`).
+
 
 

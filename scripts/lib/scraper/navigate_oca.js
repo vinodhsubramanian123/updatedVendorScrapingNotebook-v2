@@ -1263,6 +1263,98 @@ async function recoverAndLaunchFreshOCA(chassisQuery = 'DL380 Gen12', options = 
   return handlePartnerPortalLaunch(reloadedPartner, query, { ...options, forceFreshSession: true });
 }
 
+/**
+ * Inspects and enables OCA WebLogic Tools / Gears Menu (#menu_tools / .gears)
+ * to uncover hidden attribute columns (e.g. Lead Times, CLIC Status, Technical Specs).
+ * @param {WebSocket} ws CDP WebSocket connection to active OCA tab
+ * @returns {Promise<{ found: boolean, probed: string[], error?: string }>}
+ */
+async function inspectAndEnableToolsMenu(ws) {
+  if (!ws) return { found: false, enabled: false, probed: [], toggledCount: 0, reason: 'NO_CDP_SESSION' };
+  try {
+    if (typeof ws.evaluate === 'function') {
+      const val = await ws.evaluate(`(() => {
+        const probed = [];
+        const toolsIcon = document.querySelector('#menu_tools, .gears, [id*="tools" i], [class*="gear" i], [title*="Tools" i], [title*="Settings" i], [title*="Preferences" i]');
+        if (!toolsIcon) return { found: false, enabled: false, probed, toggledCount: 0 };
+        try { toolsIcon.click(); } catch (_) {}
+        const candidates = Array.from(document.querySelectorAll(
+          '.tools-dropdown input[type="checkbox"], .menu_tools_dropdown input, [id*="col_chooser"] input, .table-preferences input, .column-picker input'
+        ));
+        for (const input of candidates) {
+          const label = input.closest('label')?.innerText || input.parentElement?.innerText || input.getAttribute('name') || '';
+          if (/lead\\s*time|availability|clic|status|discontinued|power|weight/i.test(label)) {
+            if (!input.checked) {
+              try { input.click(); probed.push(label.trim()); } catch (_) {}
+            } else {
+              probed.push(label.trim() + ' (already checked)');
+            }
+          }
+        }
+        try {
+          const closeBtn = document.querySelector('.tools-dropdown .close, [id*="tools"] .close-btn');
+          if (closeBtn) closeBtn.click();
+          else toolsIcon.click();
+        } catch (_) {}
+        return { found: true, enabled: true, probed, toggledCount: probed.length };
+      })()`);
+      const list = val?.columnsToggled || val?.probed || [];
+      return {
+        found: Boolean(val?.found),
+        enabled: Boolean(val?.enabled || list.length > 0),
+        probed: list,
+        columnsToggled: list,
+        toggledCount: val?.toggledCount !== undefined ? val.toggledCount : list.length
+      };
+    }
+
+    const res = await sendCommand(ws, 'Runtime.evaluate', {
+      expression: `(() => {
+        const probed = [];
+        const toolsIcon = document.querySelector('#menu_tools, .gears, [id*="tools" i], [class*="gear" i], [title*="Tools" i], [title*="Settings" i], [title*="Preferences" i]');
+        if (!toolsIcon) return { found: false, enabled: false, probed, toggledCount: 0 };
+
+        try { toolsIcon.click(); } catch (_) {}
+
+        const candidates = Array.from(document.querySelectorAll(
+          '.tools-dropdown input[type="checkbox"], .menu_tools_dropdown input, [id*="col_chooser"] input, .table-preferences input, .column-picker input'
+        ));
+
+        for (const input of candidates) {
+          const label = input.closest('label')?.innerText || input.parentElement?.innerText || input.getAttribute('name') || '';
+          if (/lead\\s*time|availability|clic|status|discontinued|power|weight/i.test(label)) {
+            if (!input.checked) {
+              try { input.click(); probed.push(label.trim()); } catch (_) {}
+            } else {
+              probed.push(label.trim() + ' (already checked)');
+            }
+          }
+        }
+
+        try {
+          const closeBtn = document.querySelector('.tools-dropdown .close, [id*="tools"] .close-btn');
+          if (closeBtn) closeBtn.click();
+          else toolsIcon.click();
+        } catch (_) {}
+
+        return { found: true, enabled: true, probed, toggledCount: probed.length };
+      })()`,
+      returnByValue: true
+    }, 15000);
+    const val = res?.result?.value || { found: false, enabled: false, probed: [], toggledCount: 0 };
+    const list = val.columnsToggled || val.probed || [];
+    return {
+      found: Boolean(val.found),
+      enabled: Boolean(val.enabled || list.length > 0),
+      probed: list,
+      columnsToggled: list,
+      toggledCount: val.toggledCount !== undefined ? val.toggledCount : list.length
+    };
+  } catch (err) {
+    return { found: false, enabled: false, probed: [], toggledCount: 0, error: err.message };
+  }
+}
+
 // CLI runner support
 if (require.main === module) {
   const chassisArg = process.argv[2] || 'DL380 Gen12';
@@ -1288,5 +1380,6 @@ module.exports = {
   extractModelGeneration,
   isExactProductCandidate,
   isDefaultChassisCandidate,
-  waitForDOMPredicate
+  waitForDOMPredicate,
+  inspectAndEnableToolsMenu
 };

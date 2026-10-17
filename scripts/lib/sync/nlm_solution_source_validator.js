@@ -31,12 +31,10 @@ function getNlmExecutable() {
   return binName;
 }
 
-function getNlmEnv() {
+function getNlmEnv(readOnly = false) {
   const homeBin = path.join(os.homedir(), '.local', 'bin');
-  return {
-    ...process.env,
-    PATH: [homeBin, process.env.PATH || ''].filter(Boolean).join(path.delimiter)
-  };
+  return require('../notebook/nlm_transport.js').nlmEnvironment(
+    [homeBin, process.env.PATH || ''].filter(Boolean).join(path.delimiter), readOnly);
 }
 const { generateMultiRankSolutionWorkbook, generateMultiRankSolutionCsv } = require('../boq/generate_boq_xlsx.js');
 const { extractKnowledgeFromRagAnswer } = require('../notebook/knowledge_extractor.js');
@@ -118,21 +116,42 @@ function attachSolutionSource(notebookId, filePath, title, options = {}) {
     return { success: true, sourceId: mockId, title, isMock: true };
   }
 
+  let recoveryAttemptId = null;
   try {
     const nlmExe = getNlmExecutable();
+    const recovery = require('./nlm_sync_client.js');
+    const config = JSON.parse(fs.readFileSync(CONFIG_NOTEBOOKS, 'utf8'));
+    const chassisName = Object.keys(config.notebooks || {}).find(key => config.notebooks[key].notebookId === notebookId);
+    if (!chassisName) throw new Error('Cannot record source ownership for an unmapped notebook');
+    recovery.processSourceRecoveryQueue(notebookId, getNlmEnv().PATH);
+    const before = JSON.parse(execFileSync(nlmExe, ['source', 'list', notebookId, '--json'], {
+      encoding: 'utf8', timeout: require('../notebook/nlm_transport.js').sourceOperationTimeout(options),
+      maxBuffer: 32 * 1024 * 1024, env: getNlmEnv(true)
+    }));
+    const sources = Array.isArray(before) ? before : before.sources;
+    if (!Array.isArray(sources)) throw new Error('Cannot establish source inventory before attachment');
+    recoveryAttemptId = recovery.recordSourceRecoveryAction({
+      notebookId, chassisName, ownedTitle: title, payloadFilename: path.basename(filePath),
+      previousSourceIds: sources.map(source => source.id || source.source_id),
+      sourceId: 'TIMEOUT_UNKNOWN_ID', status: 'UPLOAD_IN_FLIGHT', ownerPid: process.pid
+    });
     const out = execFileSync(nlmExe, ['source', 'add', notebookId, '--file', filePath, '--title', title, '--wait', '--json'], {
       encoding: 'utf-8',
-      timeout: 45000,
+      timeout: require('../notebook/nlm_transport.js').sourceOperationTimeout(options),
+      maxBuffer: 32 * 1024 * 1024,
       env: getNlmEnv()
     });
     const parsed = JSON.parse(out);
     const sourceId = parsed.source_id || parsed.id || parsed.sourceId;
     if (!sourceId) throw new Error('Source attachment returned no source ID; cannot verify or clean up the attachment');
+    if (sources.some(source => (source.id || source.source_id) === sourceId)) throw new Error('Attachment returned a pre-existing source');
+    recovery.updateSourceRecoveryAction(recoveryAttemptId, { sourceId, createdThisRun: true, status: 'EPHEMERAL_IN_USE' });
     logger.info('NLM_SOURCE_VALIDATOR', `Successfully attached ephemeral solution source "${title}" (${sourceId})`);
-    return { success: true, sourceId, title, isMock: false };
+    return { success: true, sourceId, title, isMock: false, recoveryAttemptId };
   } catch (err) {
+    if (recoveryAttemptId) require('./nlm_sync_client.js').updateSourceRecoveryAction(recoveryAttemptId, { status: 'AUDIT_TIMEOUT_REQUIRED', ownerPid: null, reason: err.message });
     logger.error('NLM_SOURCE_VALIDATOR', `Failed to attach ephemeral solution source "${title}": ${err.message}`);
-    return { success: false, sourceId: null, title, isMock: false, error: err.message };
+    return { success: false, sourceId: null, title, isMock: false, error: err.message, recoveryAttemptId };
   }
 }
 
@@ -159,13 +178,15 @@ function detachSolutionSource(notebookId, sourceId, options = {}) {
     // Note: nlm source delete accepts source_ids, not notebook UUID
     execFileSync(nlmExe, ['source', 'delete', sourceId, '--confirm'], {
       encoding: 'utf-8',
-      timeout: 20000,
+      timeout: require('../notebook/nlm_transport.js').sourceOperationTimeout(),
+      maxBuffer: 32 * 1024 * 1024,
       env: nlmEnv
     });
     const listed = JSON.parse(execFileSync(nlmExe, ['source', 'list', notebookId, '--json'], {
       encoding: 'utf-8',
-      timeout: 20000,
-      env: nlmEnv
+      timeout: require('../notebook/nlm_transport.js').sourceOperationTimeout(),
+      maxBuffer: 32 * 1024 * 1024,
+      env: getNlmEnv(true)
     }));
     const sources = Array.isArray(listed) ? listed : listed.sources;
     if (!Array.isArray(sources) || sources.some(source => (source.id || source.source_id) === sourceId)) {
@@ -386,6 +407,12 @@ async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
     // Step 6: Guaranteed detach of ephemeral solution source (INV-24 Compliance)
     if (sourceId) {
       sourceDetached = detachSolutionSource(notebookId, sourceId, options);
+      if (attachRes.recoveryAttemptId) {
+        require('./nlm_sync_client.js').updateSourceRecoveryAction(attachRes.recoveryAttemptId, {
+          status: sourceDetached ? 'PURGED' : 'PURGE_REQUIRED', ownerPid: null,
+          ...(sourceDetached ? { purgedAt: new Date().toISOString() } : {})
+        });
+      }
     }
   }
 

@@ -329,6 +329,36 @@ function _buildSmartChassisAndRecommendedSection(catalogData) {
     }
   }
 
+  // Section 10: Supply Chain & Channel Lead Time Intel
+  const leadTimeItems = [];
+  for (const entry of catalogData?.entries || []) {
+    for (const sku of entry.skus || []) {
+      const lt = sku['Lead Time'] || sku.leadTime || '';
+      if (lt && lt !== 'Not published by OCA' && lt !== 'Standard') {
+        leadTimeItems.push({
+          sku: sku['Product #'] || sku.sku,
+          description: sku.Description || sku.description || '',
+          category: entry.parentCategory || '',
+          leadTime: lt,
+          availability: sku.Availability || sku.availability || 'Available'
+        });
+      }
+    }
+  }
+
+  if (leadTimeItems.length > 0) {
+    md += `## ⏱️ 10. Supply Chain & Delivery Lead Time Intelligence\n\n`;
+    md += `| Product # | Description | Category | Lead Time | Channel Status |\n`;
+    md += `|---|---|---|---:|---|\n`;
+    leadTimeItems.slice(0, 30).forEach(s => {
+      md += `| \`${s.sku}\` | ${s.description} | ${s.category} | ${s.leadTime} | ${s.availability} |\n`;
+    });
+    if (leadTimeItems.length > 30) {
+      md += `*... [${leadTimeItems.length - 30} additional supply chain records omitted for brevity]*\n`;
+    }
+    md += `\n`;
+  }
+
   return md;
 }
 

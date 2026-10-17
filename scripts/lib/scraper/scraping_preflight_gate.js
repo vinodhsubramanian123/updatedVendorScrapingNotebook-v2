@@ -223,10 +223,13 @@ function runScrapingPostflightVerification({
   console.log('\n--- STEP 10B: Post-Flight Completeness & Catalog Delta Verification ---');
   const diffSummaryMdPath = path.join(liveOutputDir, `${meta.cleanName}_Catalog_Diff_Summary.md`);
   const diffMetrics = summarizeCatalogDiffState(liveCatalogJson);
+  let diffSummaryError = null;
   try {
     writeCatalogDiffSummaryMarkdown(diffSummaryMdPath, meta, diffMetrics, hwSkuCount, serviceSkuCount);
-  } catch (_) {}
-  const hasDiffSummaryMd = fs.existsSync(diffSummaryMdPath);
+  } catch (error) { diffSummaryError = error.message; }
+  const hasDiffSummaryMd = !diffSummaryError && fs.existsSync(diffSummaryMdPath);
+  const cloudVerified = postFlowSyncResult?.success === true && postFlowSyncResult?.syncStatus === 'CLOUD_VERIFIED';
+  const postflightPassed = preflightReport?.pass === true && hasDiffSummaryMd && cloudVerified;
 
   const receipt = {
     verifiedAt: new Date().toISOString(),
@@ -235,7 +238,9 @@ function runScrapingPostflightVerification({
     generation: meta.gen,
     preflight: preflightReport || null,
     postflight: {
-      pass: true,
+      pass: postflightPassed,
+      status: postflightPassed ? 'VERIFIED' : 'ACTION_REQUIRED',
+      diffSummaryError,
       hwSkuCount,
       serviceSkuCount,
       totalSkuCount,
@@ -243,7 +248,7 @@ function runScrapingPostflightVerification({
       unavailableRulesCount: diffMetrics.unavailableRulesCount,
       diffSummaryPresent: hasDiffSummaryMd,
       diffCounts: diffMetrics.diffCounts,
-      cloudSyncState: postFlowSyncResult?.syncStatus || (postFlowSyncResult?.success ? 'CLOUD_VERIFIED' : 'CLOUD_SYNC_PENDING')
+      cloudSyncState: postFlowSyncResult?.syncStatus || 'CLOUD_SYNC_PENDING'
     }
   };
 
@@ -252,8 +257,8 @@ function runScrapingPostflightVerification({
 
   console.log(`  ✅ Catalog Delta Summary : Added=${diffMetrics.diffCounts.ADDED}, Modified=${diffMetrics.diffCounts.MODIFIED}, Removed=${diffMetrics.diffCounts.REMOVED + diffMetrics.diffCounts.DISCONTINUED}, Unchanged=${diffMetrics.diffCounts.UNCHANGED}`);
   console.log(`  ✅ Explicit Rules & Gates: ${diffMetrics.unavailableRulesCount} Unavailable Rules | ${conditionalSkusCount || 0} Conditional SKUs`);
-  console.log(`  ✅ Diff Summary Report   : ${diffSummaryMdPath}`);
-  console.log(`  ✅ Verification Receipt  : ${receiptPath}`);
+  console.log(`  ${hasDiffSummaryMd ? '✅' : '⚠️'} Diff Summary Report   : ${diffSummaryError || diffSummaryMdPath}`);
+  console.log(`  ${postflightPassed ? '✅' : '⚠️'} Verification Receipt  : ${receiptPath} (${receipt.postflight.status})`);
 
   return receipt;
 }

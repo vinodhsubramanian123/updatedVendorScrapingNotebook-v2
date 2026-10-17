@@ -658,7 +658,9 @@ function normalizeHeaderName(header) {
   if (/^start(?: date)?$/.test(nh)) return 'Start Date';
   if (/^(?:discontinued|obsolete|end)(?: date)?$/.test(nh)) return 'Discontinued Date';
   if (/^(?:availability|available|supply status)$/.test(nh)) return 'Availability';
-  if (/^(?:lead time|estimated delivery|delivery estimate|edt)$/.test(nh)) return 'Lead Time';
+  if (/^(?:estimated\s*(?:availability\s*)?)?lead\s*time|estimated\s*delivery|delivery\s*estimate|edt$/i.test(nh)) return 'Lead Time';
+  if (/^(?:clic\s*status|validation\s*status)$/i.test(nh)) return 'CLIC Status';
+  if (/^(?:allocation\s*status|supply\s*status|market\s*availability)$/i.test(nh)) return 'Allocation Status';
   if (/^(?:hpe\s*)?recommended$/.test(nh)) return 'HPE Recommended';
   if (/^(?:qty\s*)?drive\s*cages?$/.test(nh)) return 'Qty Drive Cages';
   if (/^(?:qty\s*)?bays?$/.test(nh)) return 'Qty Bays';

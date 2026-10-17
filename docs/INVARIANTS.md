@@ -911,10 +911,18 @@ To ensure that future AI agents (Antigravity, Codex, Claude, or subagents) never
     4. Vendor Portal Session Policies: Enforces vendor-specific session handling rules (`VENDOR_PORTAL_POLICIES` in `vendor_portal_router.js`).
   - Step 10B Post-Flight Verification: Enforces that active hardware SKUs, support services, unavailable rules, and conditional SKUs meet integrity thresholds, generates `<Product>_Catalog_Diff_Summary.md` detailing added/modified/removed SKUs with price deltas, and persists `scraping_verification_receipt.json`.
 
-- **INV-176: High-Density NotebookLM Payload Compression & Transport Failover Architecture**:
-  - Large catalog notebooks (e.g. DL380 Gen12 with 1100+ SKUs and 26 sheets) generate multi-megabyte payloads. Full `RPC_GET_NOTEBOOK` calls over uncompressed HTTP/1.1 transport (`httpx`) take upwards of 400 seconds, triggering false timeout aborts.
-  - Enforcement: Read operations (`source list`, `source content`, `notebook query`) execute through Chrome's in-page CDP transport (`nlmReadEnv`) utilizing HTTP/3 QUIC and Brotli compression, shrinking responses by ~96% and finishing in <45 seconds.
-  - Failover: If CDP port 9223 or Chrome is unreachable, mutating operations and queries safely catch `ConnectionError` and fall back to `httpx` rather than crashing.
-  - Recovery Queue Resolution: `outputs/history/source_recovery_queue.json` matches orphans by both `ownedTitle` and `payloadFilename`. If a target notebook inventory contains 0 candidates, the recovery state transitions immediately to `PURGED`, eliminating phantom recovery stalls.
+- **INV-177: Critical Path Delivery Lead Time & Bottleneck Pacing Item Protocol**:
+  - In manufacturing and configure-to-order (CTO) server deliveries, a cluster of servers cannot ship as an average of individual component lead times. The solution's Estimated Delivery Time (EDT) is strictly governed by the slowest pacing item on the critical path: $\text{Solution EDT} = \max_{s \in \text{BOM}}(\text{LeadTime}_s)$.
+  - Outlier Detection: Any component with $\text{LeadTime} \ge 45\text{ days}$ or $>2\times\text{Cluster Median Lead Time}$ is flagged as a `Lead Time Outlier / Pacing Item` (e.g. 2.4TB 10K SAS HDD `P28352-B21` taking 90 days, or market-constrained processors).
+  - Fast-Ship Synthesis (Rank 1S): The evaluator automatically formulates a 100% buildable Fast-Ship Delivery-Optimized alternative (`Rank 1S`), substituting pacing bottlenecks with in-stock certified enterprise options (e.g. fast-ship SSD `P40507-B21` at 7 days) and revalidating through the 8-pass physical validator to quantify exact delivery days saved (e.g. collapsing lead time from 90 days down to 7 days).
+  - Presales Value Pitch: The deliverable highlights pacing items to presales teams so negotiations can address delivery schedule bottlenecks before customer quote submission.
+
+- **INV-178: Dynamic OCA Tools Menu (`#menu_tools` / `.gears`) Discovery & BOM Settings Activation**:
+  - HPE OCA WebLogic tables hide key presales attributes by default (e.g. Estimated Availability Lead Times, CLIC Validation Warnings, Allocation Status, Power Watts, Weight Kg).
+  - Scrapers and CDP navigators must actively probe `#menu_tools`, `.gears`, and BOM preference dropdowns to toggle on hidden column checkboxes before harvesting options or solution BOM tables.
+  - Multi-Tier Architecture Alignment:
+    1. Schema: `schemas.js` supports optional typed `leadTime`, `leadTimeDays`, `clicStatus`, `allocationStatus`, `powerWatts`, `weightKg`, and `fioEligibility` with Zod `.passthrough()` for forward compatibility.
+    2. Masterbook: `_OCA_Catalog.xlsx` maintains 26 primary sheets and appends **Sheet 27: Supply Chain & Lead Times**, categorizing SKUs into delivery speed tiers (Fast-Ship $\le 7$d, Standard 8–30d, Extended 31–45d, Constrained $>45$d).
+    3. Grounding Payload: `sync_payload_builder.js` appends Section 10 (`⏱️ Supply Chain & Delivery Lead Time Intelligence`) to `notebook_sync_payload_*.md` for Gemini NotebookLM citation.
 
 

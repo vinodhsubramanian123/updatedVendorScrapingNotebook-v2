@@ -229,9 +229,9 @@ function normalizeRowsForExcel(rows) {
           out[k] = isNaN(num) ? sVal : num;
         }
       }
-      // Quantity / Count fields
-      else if (k.includes('Qty') || k.includes('Count') || k.includes('Unique SKUs') || k.includes('Total SKUs') || k === 'Days Active') {
-        if (sVal === 'Unlimited' || sVal === 'Required' || sVal === 'N/A' || sVal === '-') {
+      // Quantity / Count / Lead Time fields
+      else if (k.includes('Qty') || k.includes('Count') || k.includes('Unique SKUs') || k.includes('Total SKUs') || k === 'Days Active' || k === 'Lead Time') {
+        if (sVal === 'Unlimited' || sVal === 'Required' || sVal === 'N/A' || sVal === '-' || sVal === 'Standard') {
           out[k] = sVal;
         } else {
           const cleanInt = sVal.replace(/[^0-9-]/g, '');
@@ -567,6 +567,59 @@ if (discontinuedRows.length > 0) {
   }
   XLSX.utils.book_append_sheet(wb, discWS, 'Discontinued SKUs');
   console.log(`  ✅ Sheet 'Discontinued SKUs' — ${discontinuedRows.length} entries (${discontinuedRows.filter(r => r['Status'] === 'DISCONTINUED' || r['Status'] === 'REMOVED').length} discontinued, ${discontinuedRows.filter(r => r['Status'] === 'REINSTATED').length} reinstated).`);
+}
+
+// ── Sheet: Supply Chain & Lead Times ─────────────────────────────────────────
+const supplyChainRows = allCombinedData
+  .filter(r => r['Lead Time'] || r['Availability'] || r['Vendor Attributes (JSON)'])
+  .map(r => {
+    const rawLt = r['Lead Time'] || '';
+    let ltDays = null;
+    const range = String(rawLt).match(/(\d+)\s*(?:-|to)\s*(\d+)/);
+    if (range) {
+      ltDays = (Number(range[1]) + Number(range[2])) / 2;
+    } else {
+      const single = String(rawLt).match(/(\d+)/);
+      if (single) ltDays = Number(single[1]);
+    }
+
+    let speedTier = 'Standard Delivery (14-30d)';
+    if (ltDays !== null) {
+      if (ltDays <= 7) speedTier = 'Fast-Ship Certified (<=7d)';
+      else if (ltDays <= 30) speedTier = 'Standard Delivery (14-30d)';
+      else if (ltDays <= 45) speedTier = 'Extended Schedule (31-45d)';
+      else speedTier = 'Constrained / Long Lead Time (>45d)';
+    } else if (/unavailable|out of stock|allocation hold/i.test(r['Availability'] || '')) {
+      speedTier = 'Constrained / Allocation Hold';
+    }
+
+    return {
+      'Product #': r['Product #'] || '',
+      'Description': r['Description'] || '',
+      'Main Category': r['Main Category'] || 'General Hardware',
+      'Sub-Category': r['Sub-Category'] || '',
+      'Availability': r['Availability'] || 'Available',
+      'Lead Time': rawLt || 'Standard',
+      'Lead Time Days': ltDays !== null ? ltDays : '',
+      'Speed Tier': speedTier,
+      'List Price (USD)': r['Unit Price (USD)'] || r['Price'] || '',
+      'HPE Recommended': r['HPE Recommended'] || 'No'
+    };
+  });
+
+if (supplyChainRows.length > 0) {
+  supplyChainRows.sort((a, b) => {
+    const aDays = typeof a['Lead Time Days'] === 'number' ? a['Lead Time Days'] : 999;
+    const bDays = typeof b['Lead Time Days'] === 'number' ? b['Lead Time Days'] : 999;
+    return aDays - bDays;
+  });
+  const scWS = createStyledSheet(supplyChainRows, [
+    { wch: 16 }, { wch: 70 }, { wch: 25 }, { wch: 25 },
+    { wch: 20 }, { wch: 16 }, { wch: 16 }, { wch: 30 },
+    { wch: 16 }, { wch: 16 }
+  ]);
+  XLSX.utils.book_append_sheet(wb, scWS, 'Supply Chain & Lead Times');
+  console.log(`  ✅ Sheet 'Supply Chain & Lead Times' — ${supplyChainRows.length} entries.`);
 }
 
 // Sheet: Metadata — all values derived dynamically

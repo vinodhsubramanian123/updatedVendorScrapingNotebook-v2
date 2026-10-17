@@ -206,6 +206,12 @@ function detectHeaderColumnMap(line, delimiter) {
     if (col.includes('confirmed zero') || col === 'is_confirmed_zero' || col === 'price provenance' || col.includes('provenance')) {
       map.confirmedZero = idx;
     }
+    if (col.includes('lead time') || col.includes('estimated delivery') || col.includes('edt')) {
+      map.leadTime = idx;
+    }
+    if (col.includes('clic status') || col.includes('validation status')) {
+      map.clicStatus = idx;
+    }
     const ownershipColumns = { 'configuration id': 'configurationId', 'parent id': 'parentId', 'sub-parent id': 'subParentId', 'quantity scope': 'quantityScope', 'quantity basis': 'quantityBasis' };
     if (ownershipColumns[col]) map[ownershipColumns[col]] = idx;
     if (/^(?:purpose|allocation|notes|status\s*\/\s*notes)$/.test(col)) map.purpose = idx;
@@ -354,6 +360,13 @@ function extractStructuredSkuRow(parts, activeColumnMap) {
     : null;
   const optionId = rawOptionId || (/^[A-Z0-9]{7}$/i.test(cleanSku) && /[A-Z]/.test(cleanSku) && /\d/.test(cleanSku) ? cleanSku : null);
 
+  const rawLeadTime = activeColumnMap?.leadTime !== undefined && activeColumnMap.leadTime !== -1
+    ? String(parts[activeColumnMap.leadTime] || '').trim()
+    : null;
+  const rawClicStatus = activeColumnMap?.clicStatus !== undefined && activeColumnMap.clicStatus !== -1
+    ? String(parts[activeColumnMap.clicStatus] || '').trim()
+    : null;
+
   return {
     ...Object.fromEntries(['configurationId', 'parentId', 'subParentId', 'quantityScope', 'quantityBasis']
       .filter(key => activeColumnMap?.[key] !== undefined)
@@ -364,6 +377,8 @@ function extractStructuredSkuRow(parts, activeColumnMap) {
     purpose: activeColumnMap?.purpose !== undefined ? parts[activeColumnMap.purpose] : '',
     quantity: lineQty,
     unitPriceUsd,
+    leadTime: rawLeadTime || null,
+    clicStatus: rawClicStatus || null,
     isConfirmedZeroPrice,
     isFactoryIntegrated: isFioLine
   };
