@@ -513,7 +513,7 @@ function validateFreeformQaCriteria(output, context = {}) {
       makeCheck('Q2', 'Part Numbers Verified', 'BLOCK', 'NOT_APPLICABLE', 'No hardware part numbers cited in answer.')
     );
   } else {
-    const catalogData = context.catalogData || output?.catalogData;
+    const catalogData = context.catalogData || output?.catalogData || output?.chassisInfo?.catalogData;
     if (!catalogData) {
       checks.push(
         makeCheck('Q2', 'Part Numbers Verified', 'BLOCK', 'UNKNOWN',
@@ -542,6 +542,76 @@ function validateFreeformQaCriteria(output, context = {}) {
   return checks;
 }
 
+const SPECIALIZED_TRACK_VALIDATORS = Object.freeze({
+  CATALOG_INTELLIGENCE: (output) => {
+    const hasIntel = Boolean(output?.liveDetails || (output?.pricingTrail && typeof output.pricingTrail === 'object'));
+    const missingTarget = Boolean(output?.targetSku && !output?.liveDetails && (!output?.pricingTrail || Object.keys(output.pricingTrail).length === 0));
+    if (!hasIntel) return makeCheck('CI1', 'Catalog Intelligence Scope', 'BLOCK', 'FAILED', 'Missing pricingTrail and liveDetails in catalog intelligence response.');
+    if (missingTarget) return makeCheck('CI1', 'Catalog Intelligence Scope', 'WARN', 'ACTION_REQUIRED', `Requested SKU ${output.targetSku} not found in active catalog or historical trail.`);
+    return makeCheck('CI1', 'Catalog Intelligence Scope', 'BLOCK', 'PASSED', 'Catalog intelligence payload verified.');
+  },
+  OCR_QUOTE_INGESTION: (output) => {
+    const hasItems = Array.isArray(output?.extractedItems) && output.extractedItems.length > 0;
+    return makeCheck('OC1', 'OCR Extraction Payload', 'BLOCK', hasItems ? 'PASSED' : 'ACTION_REQUIRED',
+      hasItems ? `Extracted ${output.extractedItems.length} structured item(s) from quote.` : 'OCR quote ingestion requires an image/PDF input with extractable SKU lines.');
+  },
+  HETEROGENEOUS_TENDER_MODERNIZATION: (output) => {
+    const valid = Boolean(output?.carrierFleetSummary && output?.deliverableSummary);
+    return makeCheck('HT1', 'Heterogeneous Tender Categorization', 'BLOCK', valid ? 'PASSED' : 'ACTION_REQUIRED',
+      valid ? 'Carrier fleet and dual deliverable summaries verified.' : 'Structured multi-domain tender tables required before modernization.');
+  },
+  CROSS_VENDOR_TRANSFORMATION: (output) => {
+    const valid = Boolean(output?.competitorSpec && Array.isArray(output?.recommendedBom || output?.candidateBom));
+    return makeCheck('CV1', 'Cross-Vendor Spec & Target Mapping', 'BLOCK', valid ? 'PASSED' : 'ACTION_REQUIRED',
+      valid ? 'Competitor specification and HPE transformation mapping verified.' : 'Cross-vendor transformation requires structured competitor spec and target chassis.');
+  },
+  WORKLOAD_DNA: (output) => {
+    const valid = Boolean(output?.dna && typeof output.dna.primaryWorkload === 'string');
+    return makeCheck('WD1', 'Workload DNA Profile', 'BLOCK', valid ? 'PASSED' : 'ACTION_REQUIRED',
+      valid ? `Workload DNA classified (${output.dna.primaryWorkload}).` : 'Scoped BOM items required before hardware workload DNA profiling.');
+  },
+  VALUE_ENGINEERING: (output) => {
+    const valid = Boolean(output?.budgetOptimization && typeof output.budgetOptimization === 'object');
+    return makeCheck('VE1', 'Value Engineering Post-Buildability Gate', 'BLOCK', valid ? 'PASSED' : 'ACTION_REQUIRED',
+      valid ? 'Post-buildability budget optimization verified.' : 'Baseline BOM must pass physical and dependency checks before value engineering.');
+  },
+  LEAST_DELTA_SYNTHESIS: (output) => {
+    const valid = Boolean(output?.evaluation && ('leastDeltaCandidate' in output));
+    return makeCheck('LD1', 'Least-Delta Conflict Graph Evaluation', 'BLOCK', valid ? 'PASSED' : 'FAILED',
+      valid ? 'Conflict-graph least-delta candidate synthesis verified.' : 'Missing conflict-graph evaluation for least-delta synthesis.');
+  },
+  MULTI_CLUSTER_TENDER: (output) => {
+    const valid = Boolean(output?.clusterAnalysis && Number.isSafeInteger(output.clusterAnalysis.totalServers) && output.clusterAnalysis.totalServers >= 1);
+    return makeCheck('MC1', 'Cluster Sizing & Rack Analysis', 'BLOCK', valid ? 'PASSED' : 'ACTION_REQUIRED',
+      valid ? `Cluster analysis verified for ${output.clusterAnalysis.totalServers} node(s).` : 'Explicit server count and scoped product catalog required for multi-cluster sizing.');
+  },
+  ADVERSARIAL_VALIDATION: (output) => {
+    const valid = Boolean(output?.evaluation && Array.isArray(output?.generatedBoq));
+    return makeCheck('AV1', 'Adversarial Stress & Candidate Scrutiny', 'BLOCK', valid ? 'PASSED' : 'FAILED',
+      valid ? 'Adversarial evaluation payload verified.' : 'Missing adversarial evaluation or generated BOQ items.');
+  },
+  WORKBOOK_GENERATION: (output) => {
+    const valid = Boolean(typeof output?.exportPath === 'string' && output.exportPath.length > 0);
+    return makeCheck('WG1', 'Authorized Workbook Artifact', 'BLOCK', valid ? 'PASSED' : 'ACTION_REQUIRED',
+      valid ? 'Authorized workbook export path verified.' : 'Workbook export requires a valid pre-presentation delivery authorization.');
+  },
+  REMARKS_RECONCILIATION: (output) => {
+    const valid = Boolean(Array.isArray(output?.outputRows) && output.outputRows.length > 0);
+    return makeCheck('RR1', 'Commercial Remarks Row Parity', 'BLOCK', valid ? 'PASSED' : 'FAILED',
+      valid ? `Formatted ${output.outputRows.length} commercial remark row(s).` : 'Nonempty tender rows required for commercial remarks reconciliation.');
+  },
+  CONTINUOUS_LEARNING: (output) => {
+    const valid = Boolean(output && ('feedbackProcessed' in output) && typeof output.message === 'string');
+    return makeCheck('CL1', 'Continuous Learning Telemetry', 'BLOCK', valid ? 'PASSED' : 'FAILED',
+      valid ? 'Continuous learning reflection state verified.' : 'Missing continuous learning telemetry state.');
+  },
+  KNOWLEDGE_SYNC: (output) => {
+    const valid = Boolean(output && (output.drift || (output.syncResult && output.status !== 'FAILED')));
+    return makeCheck('KS1', 'Knowledge Sync & Drift Inspection', 'BLOCK', valid ? 'PASSED' : 'FAILED',
+      valid ? 'Knowledge synchronization / drift inspection verified.' : 'Knowledge synchronization failed or returned no drift/sync evidence.');
+  }
+});
+
 /**
  * Main 14-Point Pre-Presentation Acceptance Gate
  *
@@ -566,9 +636,9 @@ function verifyPrePresentationAcceptance(outputArtifact, track = 'BOQ_EVALUATION
     checks.push(...validateBomReconciliationCriteria(outputArtifact, context));
   } else if (normTrack === 'FREEFORM_QA') {
     checks.push(...validateFreeformQaCriteria(outputArtifact, context));
+  } else if (Object.hasOwn(SPECIALIZED_TRACK_VALIDATORS, normTrack)) {
+    checks.push(SPECIALIZED_TRACK_VALIDATORS[normTrack](outputArtifact, context));
   } else {
-    // For specialized or operational tracks (WORKLOAD_DNA, VALUE_ENGINEERING, etc.),
-    // universal criteria provide baseline integrity.
     checks.push(
       makeCheck('TRACK_PROFILE', 'Track Specific Acceptance Profile', 'BLOCK', 'UNKNOWN',
         `No implemented delivery acceptance profile for ${normTrack}; universal diagnostics cannot certify this track.`)

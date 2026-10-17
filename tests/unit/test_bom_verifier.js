@@ -161,4 +161,61 @@ describe('Pre-Presentation Acceptance Gate (bom_verifier.js)', () => {
     assert.strictEqual(res.status, 'INCOMPLETE', 'Gate status must be INCOMPLETE when blockers are UNKNOWN and none FAILED');
     assert.ok(res.blockersCount > 0);
   });
+
+  test('Q2: Resolves catalogData from output.catalogData or output.chassisInfo.catalogData to verify SKUs in FREEFORM_QA answers', () => {
+    const mockCatalog = {
+      entries: [
+        { skus: [{ 'Product #': 'P73282-B21', Description: 'HPE DL380 Gen12 8SFF CTO Server' }] }
+      ]
+    };
+    const validOutput = {
+      answer: 'Use base chassis P73282-B21 for this deployment.',
+      citations: ['QuickSpecs p.4'],
+      chassisInfo: { catalogData: mockCatalog }
+    };
+    const validChecks = validateFreeformQaCriteria(validOutput, {});
+    const q2Pass = validChecks.find(c => c.id === 'Q2');
+    assert.strictEqual(q2Pass.status, 'PASSED');
+
+    const hallucinatedOutput = {
+      answer: 'Use base chassis P99999-B21 for this deployment.',
+      citations: ['QuickSpecs p.4'],
+      chassisInfo: { catalogData: mockCatalog }
+    };
+    const failChecks = validateFreeformQaCriteria(hallucinatedOutput, {});
+    const q2Fail = failChecks.find(c => c.id === 'Q2');
+    assert.strictEqual(q2Fail.status, 'FAILED');
+    assert.ok(q2Fail.detail.includes('P99999-B21'));
+  });
+
+  test('Specialized Tracks: All 13 specialized canonical tracks evaluate track-specific acceptance rules while unknown tracks fail closed', () => {
+    const validPayloads = {
+      CATALOG_INTELLIGENCE: { liveDetails: { sku: 'P73282-B21' }, pricingTrail: {} },
+      OCR_QUOTE_INGESTION: { extractedItems: [{ sku: 'P73282-B21', quantity: 1 }] },
+      HETEROGENEOUS_TENDER_MODERNIZATION: { carrierFleetSummary: { totalPools: 1 }, deliverableSummary: { productionSystemsCount: 1 } },
+      CROSS_VENDOR_TRANSFORMATION: { competitorSpec: { compute: {} }, recommendedBom: [{ sku: 'P73282-B21', quantity: 1 }] },
+      WORKLOAD_DNA: { dna: { primaryWorkload: 'Database' } },
+      VALUE_ENGINEERING: { budgetOptimization: { isBudgetExceeded: false } },
+      LEAST_DELTA_SYNTHESIS: { evaluation: {}, leastDeltaCandidate: { rank: '1L' } },
+      MULTI_CLUSTER_TENDER: { clusterAnalysis: { totalServers: 4 } },
+      ADVERSARIAL_VALIDATION: { evaluation: { totalIssuesCaught: 2 }, generatedBoq: [{ sku: 'P73282-B21', quantity: 1 }] },
+      WORKBOOK_GENERATION: { exportPath: 'outputs/test.xlsx' },
+      REMARKS_RECONCILIATION: { outputRows: [['Header'], ['Row 1']] },
+      CONTINUOUS_LEARNING: { feedbackProcessed: { status: 'ACTIVE' }, message: 'Processed' },
+      KNOWLEDGE_SYNC: { drift: { inSync: true }, status: 'INSPECTED' }
+    };
+    const mockCatalog = {
+      entries: [{ skus: [{ 'Product #': 'P73282-B21', Description: 'Base' }] }]
+    };
+
+    for (const [track, payload] of Object.entries(validPayloads)) {
+      const gate = verifyPrePresentationAcceptance(payload, track, { catalogData: mockCatalog, executionTimeMs: 12 });
+      assert.strictEqual(gate.checks.some(c => c.id === 'TRACK_PROFILE'), false, `${track} should not fall back to unimplemented TRACK_PROFILE`);
+      assert.strictEqual(gate.isValid, true, `${track} valid payload should pass acceptance: ${JSON.stringify(gate.blockers)}`);
+    }
+
+    const unknownGate = verifyPrePresentationAcceptance({ message: 'Unknown route' }, 'UNRECOGNIZED_FUTURE_TRACK', {});
+    assert.strictEqual(unknownGate.isValid, false);
+    assert.ok(unknownGate.checks.some(c => c.id === 'TRACK_PROFILE' && c.status === 'UNKNOWN'));
+  });
 });

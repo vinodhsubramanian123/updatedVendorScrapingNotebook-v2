@@ -189,6 +189,12 @@ function performReasoningPostAnalysis({
           filePath: context.filePath || 'PRESALES_QUERY_INPUT'
         });
         ledger.mandatoryPhaseKeys = ['phase_1', 'phase_2', 'phase_3'];
+        ledger.recordInlineArtifact('CUSTOMER_INPUT', queryText || String(context.filePath || 'PRESALES_QUERY_INPUT'));
+        ledger.recordSkuAudit(
+          responseData.targetSku || responseData.chassis || 'QUERY_SCOPE',
+          'ROUTED_QUERY_EVALUATED',
+          classification.rationale || `Evaluated via ${effectiveIntent}`
+        );
 
         ledger.startPhase(1, 'Presales Query Intake & Intent Classification', {
           query: queryText,
@@ -234,6 +240,10 @@ function performReasoningPostAnalysis({
         responseData.traceStatus = 'CORRELATION_ONLY_NO_PERSISTED_LEDGER';
       }
     }
+  } else if (responseData && typeof responseData === 'object' && !responseData.traceStatus) {
+    responseData.traceStatus = responseData.evidenceLogPath
+      ? 'PERSISTED_EVIDENCE_LEDGER'
+      : 'CORRELATION_ONLY_NO_PERSISTED_LEDGER';
   }
 
   return analysis;

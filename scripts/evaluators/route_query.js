@@ -200,8 +200,28 @@ function getChassisCatalog(queryText = '', context = {}) {
     catalogDir: matchedCatalog.catalogDir,
     catalogPath: matchedCatalog.catalogJsonPath,
     catalogData,
+    catalogAudit: _auditCatalogHealth(catalogData),
     isAmbiguous: false
   };
+}
+
+function _auditCatalogHealth(catalogData) {
+  if (!catalogData || !Array.isArray(catalogData.entries)) return null;
+  try {
+    const { auditCatalogFreshness, verifyTabularIntegrity } = require('../lib/catalog/catalog_freshness_guard.js');
+    if (typeof auditCatalogFreshness !== 'function') return null;
+    const freshness = auditCatalogFreshness(catalogData);
+    const integrity = typeof verifyTabularIntegrity === 'function' ? verifyTabularIntegrity(catalogData) : null;
+    return {
+      isFresh: freshness.isFresh,
+      ageHours: freshness.ageHours,
+      reason: freshness.reason,
+      tabularIntegrityValid: integrity ? integrity.isValid : null,
+      totalPriceableSkus: integrity ? integrity.totalPriceableSkus : null
+    };
+  } catch {
+    return null;
+  }
 }
 
 /**
@@ -577,6 +597,45 @@ function classifyQueryIntent(queryText = '', context = {}) {
   return _classifyCatalogSizingOrQa(text, filePath, context);
 }
 
+function _buildFreeformFeasibilityCheck(queryText, chassisInfo, answerText) {
+  const combined = `${queryText || ''} ${answerText || ''}`;
+  const skuMatches = Array.from(new Set(
+    (combined.match(/\b([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6}|[A-Z0-9]{5,8}AAE|[HURS][A-Z0-9]{4,11})\b/g) || [])
+      .filter(isValidHpeSKU)
+      .map(cleanBaseSKU)
+  ));
+  const isBuildabilityQuery = /\b(?:can\s+i\s+(?:install|mix|combine|use|fit)|compatible|compatibility|support(?:ed)?\s+with|buildable|requires?\s+what\s+cables?|enablement\s+kit)\b/i.test(queryText || '');
+  if (!chassisInfo?.catalogData || (skuMatches.length === 0 && !isBuildabilityQuery)) {
+    return { evaluated: false, buildabilityRelevant: isBuildabilityQuery, verifiedSkus: [], absentSkus: [] };
+  }
+  const catalogSkus = new Set();
+  for (const entry of (chassisInfo.catalogData.entries || [])) {
+    for (const s of (entry.skus || [])) {
+      const code = cleanBaseSKU(s.sku || s['Product #'] || '');
+      if (code) catalogSkus.add(code);
+    }
+  }
+  const verifiedSkus = skuMatches.filter(s => catalogSkus.has(s));
+  const absentSkus = skuMatches.filter(s => !catalogSkus.has(s));
+  let activeRulesCount = 0;
+  if (chassisInfo.catalogDir) {
+    try {
+      const { loadActiveKnowledgeRules } = require('../lib/feedback/feedback_loop.js');
+      if (typeof loadActiveKnowledgeRules === 'function') {
+        activeRulesCount = loadActiveKnowledgeRules(chassisInfo.catalogDir).length;
+      }
+    } catch { /* ignore */ }
+  }
+  return {
+    evaluated: true,
+    buildabilityRelevant: isBuildabilityQuery || skuMatches.length > 1,
+    verifiedSkus,
+    absentSkus,
+    activeRulesCount,
+    requiresFullBoqEvaluation: isBuildabilityQuery && skuMatches.length >= 2
+  };
+}
+
 /**
  * Modular Handlers for Presales Query Tracks
  */
@@ -588,6 +647,7 @@ async function _handleFreeformQa(queryText, context) {
   let cloudSource = null;
 
   const isOffline = Boolean(context.offlineMode || process.env.OFFLINE_MODE === 'true');
+  const ragTimeoutMs = parseInt(process.env.RAG_TIMEOUT_MS || '120000', 10);
   if (!isOffline && chassisName && chassisName !== 'UNKNOWN_PRODUCT') {
     try {
       const { resolveProductNotebookId } = require('../lib/sync/nlm_solution_source_validator.js');
@@ -596,7 +656,7 @@ async function _handleFreeformQa(queryText, context) {
       if (notebookId) {
         const queryRes = await executeNotebookQuery(notebookId, queryText, {
           context: { chassis: chassisName },
-          timeout: 15000
+          timeout: ragTimeoutMs
         });
         if (queryRes && queryRes.answer && !queryRes.isFallback) {
           ragResult = queryRes;
@@ -613,14 +673,24 @@ async function _handleFreeformQa(queryText, context) {
     ragResult = queryLocalKnowledgeBase(queryText, chassisName);
   }
 
-  return {
+  const qaPayload = {
     chassis: chassisName,
     catalogDir: chassisInfo.catalogDir,
+    catalogAudit: chassisInfo.catalogAudit || null,
     answer: ragResult.answer,
     citations: ragResult.citations || [],
     source: cloudSource || 'Local RAG Dual-Layer Search & Master Knowledge Registry',
-    isCloudGrounded: Boolean(isCloudGrounded)
+    isCloudGrounded: Boolean(isCloudGrounded),
+    feasibilityCheck: _buildFreeformFeasibilityCheck(queryText, chassisInfo, ragResult.answer)
   };
+  if (chassisInfo.catalogData) {
+    Object.defineProperty(qaPayload, 'catalogData', {
+      value: chassisInfo.catalogData,
+      enumerable: false,
+      configurable: true
+    });
+  }
+  return qaPayload;
 }
 
 function _boqPipelineFailure(error, context) {
@@ -945,7 +1015,7 @@ async function _handleRfpSizing(queryText, context) {
         inputItems: candidateItems,
         chassisDir: chassisInfo.catalogDir,
         serverCount,
-        OFFLINE_MODE: true,
+        OFFLINE_MODE: context.offlineMode !== false && !context.enableCloudValidation,
         JSON_MODE: true,
         traceId
       });
@@ -1554,20 +1624,6 @@ async function _handleMultiClusterTender(queryText, context) {
     message: 'Rack and power estimates use explicit product height and supplied site/power inputs. Blade enclosure and multi-tier relationships require separate sizing.' };
 }
 
-// CP7b report-only proposal. Disabled until independently verified CP0/CP6r parity.
-async function executeRoutedQuery(queryText = '', context = {}) {
-  return observeRouterEntry(__filename, queryText, () => _executeRoutedQueryWithShadow(queryText, context));
-}
-
-async function _executeRoutedQueryWithShadow(queryText = '', context = {}) {
-  if (process.env.PRESALES_QUERY_SHADOW !== '1') return _executeLegacyRoutedQuery(queryText, context);
-  let observe;
-  try { observe = require('../lib/boq/presales_query_shadow.js').executeWithQueryShadow; }
-  catch { return _executeLegacyRoutedQuery(queryText, context); }
-  if (typeof observe !== 'function') return _executeLegacyRoutedQuery(queryText, context);
-  return observe(queryText, context, _executeLegacyRoutedQuery);
-}
-
 function _deriveClassificationConfidence(queryText, context, classification, chassisInfoForConf) {
   if (context.chassisName && chassisInfoForConf && !chassisInfoForConf.isAmbiguous) {
     return { confidence: 1.0, classificationBasis: 'CHASSIS_EXPLICIT_ID_MATCH' };
@@ -1662,6 +1718,20 @@ async function _dispatchIntentHandler(classification, queryText, context) {
   }
 }
 
+// CP7b report-only proposal. Disabled until independently verified CP0/CP6r parity.
+async function executeRoutedQuery(queryText = '', context = {}) {
+  return observeRouterEntry(__filename, queryText, () => _executeRoutedQueryWithShadow(queryText, context));
+}
+
+async function _executeRoutedQueryWithShadow(queryText = '', context = {}) {
+  if (process.env.PRESALES_QUERY_SHADOW !== '1') return _executeLegacyRoutedQuery(queryText, context);
+  let observe;
+  try { observe = require('../lib/boq/presales_query_shadow.js').executeWithQueryShadow; }
+  catch { return _executeLegacyRoutedQuery(queryText, context); }
+  if (typeof observe !== 'function') return _executeLegacyRoutedQuery(queryText, context);
+  return observe(queryText, context, _executeLegacyRoutedQuery);
+}
+
 /**
  * Execute routed presales query based on classified intent
  * @param {string} queryText 
@@ -1750,8 +1820,8 @@ async function _executeLegacyRoutedQuery(queryText = '', context = {}) {
     const { verifyPrePresentationAcceptance } = require('../lib/boq/bom_verifier.js');
     const evalContext = {
       ...context,
-      catalogData: context.catalogData || responseData?.catalogData || responseData?.chassisInfo?.catalogData,
-      catalogDir: context.catalogDir || responseData?.catalogDir || responseData?.chassisInfo?.catalogDir
+      catalogData: context.catalogData || responseData?.catalogData || responseData?.chassisInfo?.catalogData || chassisInfoForConf?.catalogData,
+      catalogDir: context.catalogDir || responseData?.catalogDir || responseData?.chassisInfo?.catalogDir || chassisInfoForConf?.catalogDir
     };
     const acceptance = responseData?.acceptanceGate || verifyPrePresentationAcceptance(responseData, classification.intent, evalContext);
     if (responseData && typeof responseData === 'object') {
@@ -1771,14 +1841,14 @@ async function _executeLegacyRoutedQuery(queryText = '', context = {}) {
     };
   }
 
-  // Automated Reasoning Post-Analysis, Feedback Reflection Hook & Default Ledger Persistence
+  // Automated Reasoning Post-Analysis, Feedback Reflection Hook & Opt-In Ledger Persistence
   const executionTimeMs = Date.now() - startTime;
   let reasoningAnalysis = null;
   try {
     const { performReasoningPostAnalysis } = require('../lib/system/reasoning_post_analyzer.js');
     reasoningAnalysis = performReasoningPostAnalysis({
       queryText,
-      context,
+      context: { ...context, persistLedger: Boolean(context.persistLedger) },
       classification,
       responseData,
       traceId,
@@ -1790,7 +1860,7 @@ async function _executeLegacyRoutedQuery(queryText = '', context = {}) {
     }
   }
 
-  return {
+  const envelope = {
     query: queryText,
     classification,
     result: responseData,
@@ -1808,6 +1878,20 @@ async function _executeLegacyRoutedQuery(queryText = '', context = {}) {
     } : null,
     classificationBasis
   };
+
+  try {
+    const { planPresalesQuery } = require('../lib/boq/presales_query_planner.js');
+    if (typeof planPresalesQuery === 'function') {
+      const plan = planPresalesQuery(queryText, context);
+      Object.defineProperty(envelope, 'queryPlan', {
+        value: plan,
+        enumerable: Boolean(context.includeQueryPlan),
+        configurable: true
+      });
+    }
+  } catch { /* ignore planner errors on malformed inputs */ }
+
+  return envelope;
 }
 
 // ── CLI Runner ─────────────────────────────────────────────────────────────

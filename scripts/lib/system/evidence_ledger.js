@@ -278,8 +278,10 @@ class EvidenceLedger {
 
   getHealth() {
     const gaps = [];
+    const abortedInPhase1 = this.phases?.phase_1?.status === 'FAILED'
+      && this.phases?.phase_2?.status === 'NOT_REACHED';
     if (!this.customerInput.filePath) gaps.push('INPUT_NOT_IDENTIFIED');
-    if (!this.chassis || this.chassis === 'UNKNOWN_CHASSIS') gaps.push('CHASSIS_NOT_IDENTIFIED');
+    if ((!this.chassis || this.chassis === 'UNKNOWN_CHASSIS') && !abortedInPhase1) gaps.push('CHASSIS_NOT_IDENTIFIED');
 
     // Dynamic vs Default Phases validation:
     // If specific mandatory phases are registered on the ledger instance, validate them;
@@ -291,7 +293,7 @@ class EvidenceLedger {
       if (!phase) gaps.push(`PHASE_${nStr}_MISSING`);
       else if (phase.status === 'RUNNING') gaps.push(`PHASE_${nStr}_UNFINISHED`);
     }
-    if (!this.skuAuditLedger.length) gaps.push('SKU_DECISIONS_MISSING');
+    if (!this.skuAuditLedger.length && !abortedInPhase1) gaps.push('SKU_DECISIONS_MISSING');
     if (!this.artifacts.some(a => a.role === 'CUSTOMER_INPUT' && a.sha256)) gaps.push('INPUT_FINGERPRINT_MISSING');
     const outcomes = Object.values(this.phases).map(p => p.status === 'ACTION_REQUIRED' &&
       this.phaseResolutions.some(resolution => resolution.phaseNum === p.phaseNumber) ? 'RESOLVED' : p.status);
@@ -339,6 +341,7 @@ class EvidenceLedger {
       customerInput: this.customerInput,
       sharedState: this.sharedState,
       phases: this.phases,
+      ...(Array.isArray(this.mandatoryPhaseKeys) ? { mandatoryPhaseKeys: this.mandatoryPhaseKeys } : {}),
       activeRulesReached: this.activeRulesReached,
       arbitrationDecisions: this.arbitrationDecisions,
       modernizationDecisions: this.modernizationDecisions,

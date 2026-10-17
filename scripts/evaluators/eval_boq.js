@@ -286,23 +286,28 @@ async function _resolveChassisSelection(items, explicitChassisDir, JSON_MODE) {
         };
       }
     }
-  }
 
-  if (!chassisDir && (chassisDetection.unknown || chassisDetection.requiresUserConfirmation)) {
-    console.error('❌ ERROR: [ERR_UNKNOWN_CHASSIS] Could not auto-detect chassis variant from BOQ items, and no --chassis flag was provided.');
-    console.error('💡 Please select the correct catalog in the UI dropdown or use the --chassis <dir> flag.');
+    if (!chassisDir) {
+      console.error('❌ ERROR: [ERR_UNKNOWN_CHASSIS] Could not auto-detect chassis variant from BOQ items, and no --chassis flag was provided.');
+      console.error('💡 Please select the correct catalog in the UI dropdown or use the --chassis <dir> flag.');
 
-    const errPayload = {
-      status: 'ERROR',
-      chassisDetection,
-      error: 'ERR_UNKNOWN_CHASSIS',
-      message: 'Could not auto-detect chassis. Please confirm the chassis variant.'
-    };
+      const errPayload = {
+        status: 'ERROR',
+        code: 'PLATFORM_CLARIFICATION_REQUIRED',
+        chassisDetection,
+        candidates: Array.isArray(availableCatalogs) ? availableCatalogs.map(c => c.id) : [],
+        error: 'ERR_UNKNOWN_CHASSIS',
+        message: 'Could not auto-detect chassis. Please confirm the chassis variant.'
+      };
 
-    if (process.env.STRUCTURED_PROGRESS) {
-      process.stdout.write('\n\n' + JSON.stringify(errPayload) + '\n');
+      if (process.env.STRUCTURED_PROGRESS) {
+        process.stdout.write('\n\n' + JSON.stringify(errPayload) + '\n');
+      }
+      const err = new Error(errPayload.message);
+      err.code = 'ERR_UNKNOWN_CHASSIS';
+      err.payload = errPayload;
+      throw err;
     }
-    throw new Error(errPayload.message);
   }
 
   return { chassisDir, chassisDetection };
@@ -710,10 +715,12 @@ async function _executeAgenticGuardrailReview(items, chassisDir, inputFile, eval
 
   const MAX_GUARDRAIL_RETRIES = 1;
   let guardrailRetries = 0;
-  if (guardrailResult.activatedDeltaCount > 0 && guardrailRetries < MAX_GUARDRAIL_RETRIES) {
+  const hasNewGuardrailRules = guardrailResult.activatedDeltaCount > 0
+    || (Array.isArray(guardrailResult.proposedSubstitutions) && guardrailResult.proposedSubstitutions.length > 0);
+  if (hasNewGuardrailRules && guardrailRetries < MAX_GUARDRAIL_RETRIES) {
     guardrailRetries++;
     evalResults.guardrailRetries = guardrailRetries;
-    if (!JSON_MODE) console.log(`\n🔄 Auto-retrying physical evaluation after autonomously learning ${guardrailResult.activatedDeltaCount} new rule(s) (attempt ${guardrailRetries}/${MAX_GUARDRAIL_RETRIES})...`);
+    if (!JSON_MODE) console.log(`\n🔄 Auto-retrying physical evaluation after autonomously learning ${guardrailResult.activatedDeltaCount || 0} new rule(s) (attempt ${guardrailRetries}/${MAX_GUARDRAIL_RETRIES})...`);
 
     const { evaluateBOQMultiAspect } = require('../lib/boq/boq_evaluator.js');
     const retryResults = evaluateBOQMultiAspect(items, { filePath: inputFile || '', catalogData, targetDir: chassisDir });

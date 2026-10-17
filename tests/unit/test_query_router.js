@@ -147,3 +147,17 @@ test('QueryRouter — Correctly classifies all specialized and operational presa
     assert.strictEqual(c.skillTarget, target, `Query "${query}" should target skill ${target}`);
   }
 });
+
+test('QueryRouter — FREEFORM_QA attaches catalogAudit, feasibilityCheck, non-enumerable catalogData for Q2, and queryPlan', async () => {
+  const res = await executeRoutedQuery(
+    'Can I install P73282-B21 on DL380 Gen12 and what cables are required?',
+    { chassisName: 'DL380_Gen12', offlineMode: true }
+  );
+  assert.strictEqual(res.classification.intent, 'FREEFORM_QA');
+  assert.ok(res.result.catalogAudit, 'catalogAudit must be attached when catalog is loaded');
+  assert.strictEqual(typeof res.result.catalogAudit.isFresh, 'boolean');
+  assert.ok(res.result.feasibilityCheck, 'feasibilityCheck must be attached on FREEFORM_QA');
+  assert.strictEqual(res.result.feasibilityCheck.buildabilityRelevant, true);
+  assert.ok(res.queryPlan, 'queryPlan must be attached on router envelope');
+  assert.strictEqual(res.queryPlan.objective, 'FREEFORM_QA');
+});
