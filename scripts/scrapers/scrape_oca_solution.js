@@ -269,6 +269,19 @@ async function auditAndPromoteStaging({
     stepTelemetry
   });
 
+  const { runScrapingPostflightVerification } = require('../lib/scraper/scraping_preflight_gate.js');
+  runScrapingPostflightVerification({
+    liveOutputDir,
+    liveCatalogJson,
+    meta,
+    hwSkuCount,
+    serviceSkuCount,
+    totalSkuCount,
+    conditionalSkusCount: finalConditionalSkusCount,
+    postFlowSyncResult,
+    preflightReport: stepTelemetry[0] || null
+  });
+
   // GAP-08: emit PARTIAL_SUCCESS when NLM sync is pending, not SUCCESS
   const pipelineStatus = nlmSyncPending ? 'PARTIAL_SUCCESS' : 'SUCCESS';
   const completionLabel = nlmSyncPending
@@ -411,27 +424,27 @@ async function resolvePageTargetAndChassis({ navQuery, targetChassisQuery, isRec
 }
 
 async function expandAndVerifyDomSections(ws, scrollThreshold, targetTabsRegex) {
+  console.log('  [PAGE_EXPAND] Expanding active product menu...');
   await expandSections(ws);
   await sleep(3000);
-  const menuTables = await extractTablesAsRows(ws);
+  console.log('  [PAGE_EXPAND] Capturing expanded menu tables and text...');
+  const rawMenuTables = await extractTablesAsRows(ws);
   const menuText = (await extractChunkedText(ws, 50000)).fullText;
 
-  await sendCommand(ws, 'Runtime.evaluate', {
-    expression: `(async () => {
-      const tabsToClick = Array.from(document.querySelectorAll('a, button, div.tab_header')).filter(el => 
-        /${targetTabsRegex}/i.test((el.innerText || '').trim()) && 
-        el.getClientRects().length && el.classList.contains('ui-tabs-anchor') && !el.href?.includes('menu') && !el.classList.contains('active')
-      );
-      for (const tab of tabsToClick) {
-        tab.click();
-        await new Promise(resolve => setTimeout(resolve, 1500));
-      }
-      return tabsToClick.length;
-    })()`,
-    returnByValue: true,
-    awaitPromise: true
-  });
-  await sleep(2500);
+  console.log('  [PAGE_EXPAND] Revealing service and BOM tabs...');
+  const supplemental = await require('../lib/scraper/catalog_tab_capture.js').captureSupplementalCatalogTabs(ws, targetTabsRegex);
+  const tableKey = table => JSON.stringify({ id: table.tableId || '', rows: table.rows });
+  const seenKeys = new Set();
+  const menuTables = [];
+  for (const t of [...rawMenuTables, ...(supplemental.tables || [])]) {
+    const k = tableKey(t);
+    if (!seenKeys.has(k)) {
+      seenKeys.add(k);
+      menuTables.push(t);
+    }
+  }
+  const supplementalText = supplemental.fullText || '';
+  console.log('  [PAGE_EXPAND] Menu restored; refreshing expanded sections...');
   await expandSections(ws);
   await sleep(2000);
 
@@ -466,7 +479,7 @@ async function expandAndVerifyDomSections(ws, scrollThreshold, targetTabsRegex) 
     }
   }
 
-  return { metrics, menuTables, menuText };
+  return { metrics, menuTables, menuText, supplementalText };
 }
 
 function downloadQuickSpecsPdfSafely(qsLink, outputDir, cleanName) {
@@ -530,8 +543,7 @@ async function sweepUnavailableDomRules(ws, sendCommand) {
     console.log(`  🔍 Extracted ${rules.length} explicit portal rule(s) & ${skus.length} conditional SKU(s) from DOM unavailable tables.`);
     return { unavailableRules: rules, unavailableSkus: skus };
   } catch (err) {
-    console.warn(`  ⚠️ Could not extract unavailable DOM rules: ${err.message}`);
-    return { unavailableRules: [], unavailableSkus: [] };
+    throw new Error(`Unavailable rule discovery failed; staging cannot be promoted: ${err.message}`, { cause: err });
   }
 }
 
@@ -790,7 +802,7 @@ async function extractPageDomPayload(ws, meta, profile) {
     stage: 'PAGE_EXPAND', percent: 45, category: meta.cleanName
   });
 
-  const { metrics, menuTables, menuText } = await expandAndVerifyDomSections(ws, scrollThreshold, targetTabsRegex);
+  const { metrics, menuTables, menuText, supplementalText } = await expandAndVerifyDomSections(ws, scrollThreshold, targetTabsRegex);
   console.log(`✅ Expansion verified: ${metrics.tablesCount} tables, ${metrics.totalRows} rows — Rule #19 passed.`);
 
   const { verifyScrapingStep, AtomicStepAnomalyError } = require('../lib/scraper/scraping_verifiability.js');
@@ -808,14 +820,36 @@ async function extractPageDomPayload(ws, meta, profile) {
   const extractedText = await extractChunkedText(ws, 50000);
   let totalLen = extractedText.totalLen;
   let fullText = extractedText.fullText;
+  if (menuText && menuText.length > fullText.length) {
+    fullText = menuText;
+    totalLen = fullText.length;
+  }
+  if (supplementalText) {
+    const existingLines = new Set(fullText.split('\n').map(l => l.trim()).filter(Boolean));
+    const novelLines = supplementalText.split('\n').filter(l => {
+      const t = l.trim();
+      return t && !existingLines.has(t);
+    });
+    if (novelLines.length > 0) {
+      fullText = `${fullText}\n${novelLines.join('\n')}`;
+      totalLen = fullText.length;
+    }
+  }
   console.log(`Extracted text: ${totalLen.toLocaleString()} chars`);
 
   console.log('Extracting tables (row arrays)...');
   let tables = await extractTablesAsRows(ws);
-  const tableKey = table => table.tableId || JSON.stringify((table.rows || []).map(row => row.slice(0, 3)));
-  const menuKeys = new Set(menuTables.map(tableKey));
-  tables = [...menuTables, ...tables.filter(table => !menuKeys.has(tableKey(table)))];
-  fullText = `${menuText}\n${fullText}`;
+  const tableKey = table => JSON.stringify({ id: table.tableId || '', rows: table.rows });
+  const seenTableKeys = new Set();
+  const mergedTables = [];
+  for (const t of [...menuTables, ...tables]) {
+    const k = tableKey(t);
+    if (!seenTableKeys.has(k)) {
+      seenTableKeys.add(k);
+      mergedTables.push(t);
+    }
+  }
+  tables = mergedTables;
   console.log(`Extracted ${tables.length} tables.`);
 
   const tableDerivedText = deriveTextFromTables(tables);
@@ -1152,11 +1186,21 @@ async function main() {
   cleanupOrphanedStaging(path.join(OUTPUTS_ROOT, 'temp'), logger);
 
   const { targetChassisQuery, isRecoverMode, navQuery } = _parseCliArgs();
+  const skipCloudCheck = process.argv.includes('--skip-cloud-check') || process.argv.includes('--offline');
+  const { runScrapingPreflightGate } = require('../lib/scraper/scraping_preflight_gate.js');
+  const preflightReport = await runScrapingPreflightGate({
+    targetChassisQuery,
+    navQuery,
+    skipCloudCheck,
+    vendor: 'HPE'
+  });
+
   const { ensureChromeBrowserRunning } = require('../lib/scraper/browser_launcher.js');
   await ensureChromeBrowserRunning(9222);
 
   const { ws, pageTarget, chassisDiscovery: initDiscovery, stepTelemetry, networkSniffer } =
     await initCdpAndSession({ navQuery, targetChassisQuery, isRecoverMode });
+  stepTelemetry[0] = preflightReport;
 
   let chassisDiscovery = initDiscovery;
   let outputDir = '';

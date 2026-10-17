@@ -349,4 +349,48 @@ test('CDP Navigator Resilience Test Suite', async (t) => {
     assert.strictEqual(mockTargets.some(t => t.id === 'stale-logged-out-oca'), false, 'Logged out tab should have been closed via CDP /json/close');
     assert.strictEqual(freshTabSpawned, true, 'Fresh session should have been triggered from Tab 1 Quick Links');
   });
+
+  await t.test('Test 5: INV-89 Hard Guard blocks direct Page.navigate to OCAInternalLogin and in-place Page.reload on OCA tabs', async () => {
+    const fakeOcaWs = { _isOcaTarget: true };
+    await assert.rejects(
+      cdp.sendCommand(fakeOcaWs, 'Page.navigate', { url: 'https://oca.ext.hpe.com/oca/OCAInternalLogin' }),
+      /INV-89 HARD GUARD.*Direct Page\.navigate.*strictly forbidden/
+    );
+    await assert.rejects(
+      cdp.sendCommand(fakeOcaWs, 'Page.navigate', { url: 'https://partner.hpe.com/group/prp/tools-catalog?eServiceId=187402' }),
+      /INV-89 HARD GUARD.*Direct Page\.navigate.*strictly forbidden/
+    );
+    await assert.rejects(
+      cdp.sendCommand(fakeOcaWs, 'Page.reload', {}),
+      /INV-89 HARD GUARD.*In-place Page\.reload.*strictly forbidden/
+    );
+    await assert.rejects(
+      cdp.sendCommand(fakeOcaWs, 'Runtime.evaluate', { expression: 'window.location.reload()' }),
+      /INV-89 HARD GUARD.*In-place location\.reload\(\).*strictly forbidden/
+    );
+  });
+
+  await t.test('Test 6: Multi-pillar preflight product/notebook verification and vendor session policies', async () => {
+    const { verifyTargetProductAndNotebookConfig } = require('../../scripts/lib/scraper/scraping_preflight_gate.js');
+    const { getVendorPortalPolicy } = require('../../scripts/lib/scraper/vendor_portal_router.js');
+
+    const serverCheck = verifyTargetProductAndNotebookConfig('DL380a Gen12');
+    assert.strictEqual(serverCheck.productId, 'DL380a_Gen12');
+    assert.strictEqual(serverCheck.expectedWorkbookSheets, 27);
+    assert.ok(serverCheck.notebookId.length > 10);
+
+    const storageCheck = verifyTargetProductAndNotebookConfig('Alletra_Storage_System');
+    assert.strictEqual(storageCheck.productId, 'Alletra_Storage_System');
+    assert.ok(storageCheck.notebookId.length > 10);
+
+    const sanCheck = verifyTargetProductAndNotebookConfig('SN3600B_FC');
+    assert.strictEqual(sanCheck.productId, 'SN3600B_FC');
+    assert.ok(sanCheck.notebookId.length > 10);
+
+    const hpePolicy = getVendorPortalPolicy('HPE');
+    assert.strictEqual(hpePolicy.allowInPlaceReload, false);
+    assert.strictEqual(hpePolicy.anchorTabUrl, 'https://partner.hpe.com/group/prp');
+    assert.ok(hpePolicy.forbiddenDirectNavigatePatterns.includes('OCAInternalLogin'));
+  });
 });
+

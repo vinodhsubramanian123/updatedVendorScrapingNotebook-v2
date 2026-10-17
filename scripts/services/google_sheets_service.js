@@ -167,12 +167,9 @@ async function ensureGoogleAuthValid(options = {}) {
     }
 
     try {
-      const CLIENT_SECRET_PATH = path.join(os.homedir(), '.config', 'gcloud', 'client_secret.json');
-      if (fs.existsSync(CLIENT_SECRET_PATH)) {
-        const { startOAuthFlow } = require('./autonomous_oauth_flow.js');
-        if (typeof startOAuthFlow === 'function') {
-          // Autonomous flow available
-        }
+      const { startOAuthFlow, CLIENT_SECRET_PATH } = require('./autonomous_oauth_flow.js');
+      if (fs.existsSync(CLIENT_SECRET_PATH) && typeof startOAuthFlow === 'function') {
+        await startOAuthFlow(8085, 90000, { expectedAccount: status.activeAccount || process.env.GOOGLE_ACCOUNT_EMAIL });
       }
     } catch (err) {
       if (verbose) console.warn(`[AUTH_PRECHECK] Self-healing note: ${err.message}`);

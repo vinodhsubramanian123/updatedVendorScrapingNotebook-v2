@@ -133,7 +133,71 @@ function getVendorCredentials(vendor = 'HPE') {
   }
 }
 
+/**
+ * Canonical Vendor Portal Session & Navigation Policies (INV-89 / Multi-Vendor Isolation)
+ * Defines how each vendor configurator initiates sessions, which URLs/commands are forbidden,
+ * and how stale sessions recover across Server, Storage, Networking, and Composite pillars.
+ */
+const VENDOR_PORTAL_POLICIES = Object.freeze({
+  HPE: Object.freeze({
+    vendor: 'HPE',
+    configuratorName: 'One Config Advanced (OCA / WebLogic)',
+    supportedPillars: ['Server', 'Storage', 'Networking', 'Composite'],
+    anchorTabUrl: 'https://partner.hpe.com/group/prp',
+    launchSelector: '#quick-links-807 a, a[href*="eServiceId=187402"]',
+    handoffMechanism: 'SAML_POST_NEW_TAB',
+    allowInPlaceReload: false,
+    forbiddenDirectNavigatePatterns: [
+      'oca.ext.hpe.com',
+      'oca.hpe.com',
+      'OCAInternalLogin',
+      'eServiceId=187402'
+    ],
+    recoveryProtocol: 'CLOSE_CONFIG_TAB_RETURN_TO_TAB1_CLICK_QUICK_LINK'
+  }),
+  Dell: Object.freeze({
+    vendor: 'Dell',
+    configuratorName: 'Dell Premier / Online Solutions Configurator (OSC)',
+    supportedPillars: ['Server', 'Storage', 'Networking'],
+    anchorTabUrl: 'https://www.dell.com/premier',
+    launchSelector: 'a[href*="configurator"], a[href*="osc"]',
+    handoffMechanism: 'SPA_REST_SESSION',
+    allowInPlaceReload: true,
+    forbiddenDirectNavigatePatterns: [],
+    recoveryProtocol: 'REAUTHENTICATE_PREMIER_PORTAL'
+  }),
+  Cisco: Object.freeze({
+    vendor: 'Cisco',
+    configuratorName: 'Cisco Commerce Workspace (CCW)',
+    supportedPillars: ['Server', 'Storage', 'Networking'],
+    anchorTabUrl: 'https://apps.cisco.com/Commerce/',
+    launchSelector: 'a[href*="estimate"], a[href*="config"]',
+    handoffMechanism: 'OAUTH_SSO_REDIRECT',
+    allowInPlaceReload: true,
+    forbiddenDirectNavigatePatterns: [],
+    recoveryProtocol: 'REAUTHENTICATE_CCW_PORTAL'
+  }),
+  Lenovo: Object.freeze({
+    vendor: 'Lenovo',
+    configuratorName: 'Lenovo Data Center Solution Configurator (DCSC)',
+    supportedPillars: ['Server', 'Storage', 'Networking'],
+    anchorTabUrl: 'https://dcsc.lenovo.com/',
+    launchSelector: 'a[href*="configure"]',
+    handoffMechanism: 'PUBLIC_OR_PARTNER_SPA',
+    allowInPlaceReload: true,
+    forbiddenDirectNavigatePatterns: [],
+    recoveryProtocol: 'NAVIGATE_DCSC_HOME'
+  })
+});
+
+function getVendorPortalPolicy(vendor = 'HPE') {
+  const norm = inferVendor('', vendor);
+  return VENDOR_PORTAL_POLICIES[norm] || VENDOR_PORTAL_POLICIES.HPE;
+}
+
 module.exports = {
+  VENDOR_PORTAL_POLICIES,
+  getVendorPortalPolicy,
   inferVendor,
   getVendorCredentials,
   routeDiscoverCandidates,

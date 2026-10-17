@@ -132,3 +132,9 @@ Read `docs/audits/2026-10-01-vendor-scraping-and-grounding-remediation.md` for f
 - When credentials expire, the remediation command `nlm login --force --storage file` overwrites stale tokens and completely bypasses the interactive OS keystore `[y/N]` prompt.
 - Following re-authentication, `call_mcp_tool('gemini-notebook-mcp', 'refresh_auth')` reloads fresh tokens into memory without restarting processes.
 
+**INV-171 to INV-173 — `OCAInternalLogin` Transport Block, Sub-Tab Disambiguation & 4-Point Pre-Flight/Post-Flight Gate:**
+- **Never Hit or Reload `OCAInternalLogin` (`INV-171`)**: `https://oca.ext.hpe.com/oca/OCAInternalLogin` is a one-time SAML POST endpoint. `cdp.js:assertSafeCdpNavigationGuard` physically blocks any `Page.navigate` to `oca.ext.hpe.com`, `OCAInternalLogin`, or `eServiceId=187402`, and blocks `Page.reload` / `location.reload()` on active OCA tabs. Always recover by closing the OCA tab, returning to Tab 1 (`https://partner.hpe.com/group/prp`), and clicking `#quick-links-807 a` ("One Config Advanced").
+- **Sub-Tab Restoration vs. Session Timeout (`INV-172`)**: `navigate_oca.js:checkActiveMenuTab` restores `a[href="#extended_overview_menu"]` before checking product identity so leaving `Services` or `BOM` active is never misclassified as a broken session. `catalog_tab_capture.js:selectCatalogTab` waits for WebLogic AJAX spinners (`.loading_div`) to clear and retries `tab.click()` if an overlay swallowed the initial click.
+- **Unified Pre-Flight & Post-Flight Verification (`INV-173`)**: `scraping_preflight_gate.js` validates Product/Pillar identity, NotebookLM auth (`45s` timeout) + `notebooks.json` mapping, Google Drive/Sheets OAuth scopes (`spreadsheets`, `drive`, `documents`), and `VENDOR_PORTAL_POLICIES` in Step 0 before scraping, and emits `scraping_verification_receipt.json` with catalog diff delta counts (`ADDED`, `MODIFIED`, `REMOVED`) in Step 10B.
+
+

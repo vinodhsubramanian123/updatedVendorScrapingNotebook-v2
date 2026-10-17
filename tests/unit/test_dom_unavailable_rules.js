@@ -13,12 +13,29 @@ const { JSDOM } = require('jsdom');
 
 const {
   classifyDomRuleReason,
-  parseUnavailableDomRules
+  parseUnavailableDomRules,
+  UNAVAILABLE_DOM_EXPRESSION,
+  extractUnavailableDomRules
 } = require('../../scripts/lib/scraper/dom_unavailable_rules.js');
 
 const {
   applyUnavailableDomRulesAndSkus
 } = require('../../scripts/lib/catalog/conditional_discovery.js');
+
+test('The actual CDP expression compiles and preserves whitespace, SKU badges and rule punctuation', () => {
+  const dom = new JSDOM(`<table class="UavailableTable"><tr><td class="choice_header1" style="color:red">Requires   controller P53255-B21; slots &lt;= 2.</td></tr>
+    <tr class="item_tr unavailable"><td class="item_prod"><span class="_pid">CS\n P76700-B21 PVT</span></td><td class="item_desc">SAS Cable</td><td class="item_price">12.50</td></tr></table>`, { runScripts: 'outside-only' });
+  const browserResult = JSON.parse(dom.window.eval(UNAVAILABLE_DOM_EXPRESSION));
+  const localResult = parseUnavailableDomRules(dom.window.document);
+  assert.deepEqual(browserResult.unavailableRules, localResult.unavailableRules);
+  assert.equal(browserResult.unavailableSkus[0].sku, 'P76700-B21');
+  assert.equal(browserResult.unavailableSkus[0].listPrice, 12.5);
+  assert.equal(browserResult.unavailableRules[0].reason, 'Requires controller P53255-B21; slots <= 2.');
+});
+
+test('A failed CDP rule extraction cannot masquerade as zero rules', async () => {
+  await assert.rejects(extractUnavailableDomRules({}, async () => { throw new SyntaxError('invalid expression'); }), /UNAVAILABLE_DOM_EXTRACTION_FAILED/);
+});
 
 test('classifyDomRuleReason accurately categorizes portal gating phrases', () => {
   assert.equal(classifyDomRuleReason('RTX Pro 6000 and 30C Ambient Temperature cannot be selected together.'), 'AMBIENT_GATE');

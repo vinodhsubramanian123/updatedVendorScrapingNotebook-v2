@@ -108,6 +108,7 @@ const SUBCAT_KEYWORD_PARENT_MAP = Object.freeze([
   { keywords: ['drive cage', 'drive enclosure', 'drive blank', 'solid state drive', 'nvme', 'sata', 'sas'], parent: 'Drive Enclosures / Drives' },
   { keywords: ['networking', 'ethernet', 'ocp3', 'infiniband', 'transceiver', 'fibre channel'], parent: 'Networking' },
   { keywords: ['cable kit', 'cables', 'power cord', 'jumper cord', 'jumper cable'], parent: 'Cables & Enablement Kits' },
+  { keywords: ['compute ops', 'cloud management server fio'], parent: 'HPE Compute Ops Management' },
   { keywords: ['software', 'license', 'operating system', 'windows server', 'windows cal', 'cal pack', 'red hat', 'suse', 'vmware', 'ilo', 'oneview'], parent: 'Software & Licenses' },
   { keywords: ['support', 'pointnext', 'tech care', 'service'], parent: 'Support Services' },
   { keywords: ['chassis infrastructure', 'smart chassis', 'rail', 'bezel', 'blank', 'enablement', 'options'], parent: 'Accessories & Infrastructure' },
@@ -573,7 +574,10 @@ function extractSubcategoriesAndParents(fullText, rawData, IS_VERBOSE) {
       while (true) {
         const idx = fullText.indexOf(p, searchPos);
         if (idx === -1) break;
-        if (idx > NAV_MENU_END) { bestIdx = idx; break; }
+        if (idx > NAV_MENU_END) {
+          if (bestIdx === -1 || idx < bestIdx) bestIdx = idx;
+          break;
+        }
         searchPos = Math.max(searchPos + 1, idx + p.length);
       }
     }

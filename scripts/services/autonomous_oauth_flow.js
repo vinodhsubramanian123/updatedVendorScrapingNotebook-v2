@@ -9,11 +9,11 @@
  */
 
 const http = require('http');
-const url = require('url');
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const { OAuth2Client } = require('google-auth-library');
+const { safeWriteJsonAtomic } = require('../lib/system/fs_compat.js');
 
 function resolveGooglePath(fileName) {
   if (fileName === 'application_default_credentials.json' && process.env.GOOGLE_APPLICATION_CREDENTIALS) {
@@ -30,36 +30,108 @@ const CLIENT_SECRET_PATH = resolveGooglePath('client_secret.json');
 const ADC_PATH = resolveGooglePath('application_default_credentials.json');
 
 const SCOPES = [
-  'https://www.googleapis.com/auth/cloud-platform',
+  'https://www.googleapis.com/auth/userinfo.email',
   'https://www.googleapis.com/auth/spreadsheets',
   'https://www.googleapis.com/auth/documents',
   'https://www.googleapis.com/auth/drive'
 ];
 
-function openUrlInBrowser(targetUrl) {
+async function tryAutomateConsentViaCdp(targetUrl, port = 8085) {
   try {
-    if (process.platform === 'win32') {
-      const { spawn } = require('child_process');
-      const ps = spawn('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', `Start-Process '${targetUrl.replace(/'/g, "''")}'`], {
-        windowsHide: true,
-        stdio: 'ignore',
-        detached: true
+    const { connectWS, sendCommand, CDP_PORT } = require('../lib/scraper/cdp.js');
+    const cdpPort = CDP_PORT || 9222;
+    const newTabRes = await fetch(`http://localhost:${cdpPort}/json/new`, { method: 'PUT' });
+    if (!newTabRes.ok) return false;
+    const newTab = await newTabRes.json();
+    const ws = await connectWS(newTab.webSocketDebuggerUrl);
+    await sendCommand(ws, 'Page.navigate', { url: targetUrl });
+
+    for (let step = 1; step <= 8; step++) {
+      await new Promise(r => setTimeout(r, 3200));
+      const stepRes = await sendCommand(ws, 'Runtime.evaluate', {
+        expression: `(() => {
+          const currentUrl = location.href || '';
+          if (currentUrl.includes('localhost:${port}')) return JSON.stringify({ done: true });
+          const checkboxes = Array.from(document.querySelectorAll('input[type="checkbox"]'));
+          for (const cb of checkboxes) {
+            if (!cb.checked) cb.click();
+          }
+          const spans = Array.from(document.querySelectorAll('span, button, a'));
+          const continueEl = spans.find(el => {
+            const t = Array.from(el.childNodes).filter(n => n.nodeType === 3).map(n => n.nodeValue.trim()).join(' ');
+            return /^(continue|allow|next)$/i.test(t);
+          });
+          if (continueEl) {
+            const btn = continueEl.closest('button, [role="button"], a') || continueEl;
+            btn.click();
+          }
+          return JSON.stringify({ done: false });
+        })()`,
+        returnByValue: true,
+        userGesture: true
       });
-      ps.unref();
-    } else if (process.platform === 'darwin') {
-      const { spawn } = require('child_process');
-      spawn('open', [targetUrl], { stdio: 'ignore', detached: true }).unref();
-    } else {
-      const { spawn } = require('child_process');
-      spawn('xdg-open', [targetUrl], { stdio: 'ignore', detached: true }).unref();
+      const parsed = JSON.parse(stepRes?.result?.value || '{}');
+      if (parsed.done) break;
     }
-    console.log('[AUTONOMOUS_OAUTH] Auto-launched browser with Google authorization URL.');
-  } catch (err) {
-    console.warn('[AUTONOMOUS_OAUTH] Note: Could not auto-launch browser:', err.message);
+
+    try { ws.close(); } catch { /* ignore */ }
+    try { await fetch(`http://localhost:${cdpPort}/json/close/${newTab.id}`); } catch { /* ignore */ }
+    return true;
+  } catch {
+    return false;
   }
 }
 
-async function startOAuthFlow(port = 8085, timeoutMs = 300000) {
+function openUrlInBrowser(targetUrl, port = 8085) {
+  tryAutomateConsentViaCdp(targetUrl, port).then(handledByCdp => {
+    if (handledByCdp) return;
+    try {
+      if (process.platform === 'win32') {
+        const { spawn } = require('child_process');
+        const ps = spawn('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', `Start-Process '${targetUrl.replace(/'/g, "''")}'`], {
+          windowsHide: true,
+          stdio: 'ignore',
+          detached: true
+        });
+        ps.unref();
+      } else if (process.platform === 'darwin') {
+        const { spawn } = require('child_process');
+        spawn('open', [targetUrl], { stdio: 'ignore', detached: true }).unref();
+      } else {
+        const { spawn } = require('child_process');
+        spawn('xdg-open', [targetUrl], { stdio: 'ignore', detached: true }).unref();
+      }
+      console.log('[AUTONOMOUS_OAUTH] Auto-launched browser with Google authorization URL.');
+    } catch (err) {
+      console.warn('[AUTONOMOUS_OAUTH] Note: Could not auto-launch browser:', err.message);
+    }
+  });
+}
+
+async function verifyOAuthIdentity(tokens, expectedAccount, request = fetch) {
+  if (!tokens.access_token || !tokens.refresh_token) {
+    throw new Error('OAuth did not return complete offline credentials; previous credentials retained.');
+  }
+  const infoRes = await request('https://www.googleapis.com/oauth2/v2/userinfo', {
+    headers: { Authorization: `Bearer ${tokens.access_token}` }
+  });
+  if (!infoRes.ok) throw new Error('OAuth account identity verification failed; previous credentials retained.');
+  const info = await infoRes.json();
+  const userEmail = info.verified_email === true && typeof info.email === 'string' ? info.email.trim() : '';
+  if (!userEmail) throw new Error('OAuth returned no verified email; previous credentials retained.');
+  if (expectedAccount && userEmail.toLowerCase() !== expectedAccount.toLowerCase()) {
+    throw new Error('OAuth account does not match the requested account; previous credentials retained.');
+  }
+  return userEmail;
+}
+
+function assertOAuthScopes(grantedScopes) {
+  const granted = new Set(Array.isArray(grantedScopes) ? grantedScopes : String(grantedScopes || '').split(/\s+/));
+  const missing = SCOPES.filter(scope => !granted.has(scope));
+  if (missing.length) throw new Error(`OAuth consent is incomplete; missing scopes: ${missing.join(', ')}. Previous credentials retained.`);
+}
+
+async function startOAuthFlow(port = 8085, timeoutMs = 300000, options = {}) {
   if (!fs.existsSync(CLIENT_SECRET_PATH)) {
     throw new Error(`Client secret file not found at ${CLIENT_SECRET_PATH}`);
   }
@@ -77,6 +149,7 @@ async function startOAuthFlow(port = 8085, timeoutMs = 300000) {
   const authUrl = oauth2Client.generateAuthUrl({
     access_type: 'offline',
     scope: SCOPES,
+    login_hint: options.expectedAccount || process.env.GOOGLE_ACCOUNT_EMAIL,
     prompt: 'consent' // Forces Google to return a new refresh token
   });
 
@@ -85,10 +158,10 @@ async function startOAuthFlow(port = 8085, timeoutMs = 300000) {
 
     const server = http.createServer(async (req, res) => {
       try {
-        const reqUrl = url.parse(req.url, true);
+        const reqUrl = new URL(req.url, `http://localhost:${port}`);
         if (reqUrl.pathname === '/' || reqUrl.pathname === '/oauth2callback') {
-          const code = reqUrl.query.code;
-          const error = reqUrl.query.error;
+          const code = reqUrl.searchParams.get('code');
+          const error = reqUrl.searchParams.get('error');
 
           if (error) {
             res.writeHead(400, { 'Content-Type': 'text/html' });
@@ -99,6 +172,26 @@ async function startOAuthFlow(port = 8085, timeoutMs = 300000) {
           }
 
           if (code) {
+            // Verify identity and persist credentials before reporting success.
+            const { tokens } = await oauth2Client.getToken(code);
+            const expectedAccount = options.expectedAccount || process.env.GOOGLE_ACCOUNT_EMAIL;
+            const userEmail = await verifyOAuthIdentity(tokens, expectedAccount);
+            const tokenInfo = await oauth2Client.getTokenInfo(tokens.access_token);
+            assertOAuthScopes(tokenInfo.scopes);
+            const adcPayload = {
+              account: userEmail,
+              client_id: creds.client_id,
+              client_secret: creds.client_secret,
+              quota_project_id: creds.project_id || 'bom-assistant',
+              refresh_token: tokens.refresh_token,
+              type: 'authorized_user',
+              universe_domain: 'googleapis.com'
+            };
+            const targetPaths = new Set([ADC_PATH]);
+            targetPaths.add(process.platform === 'win32'
+              ? path.join(os.homedir(), '.config', 'gcloud', 'application_default_credentials.json')
+              : path.join(process.env.APPDATA || path.join(os.homedir(), 'AppData', 'Roaming'), 'gcloud', 'application_default_credentials.json'));
+            for (const p of targetPaths) safeWriteJsonAtomic(p, adcPayload);
             res.writeHead(200, { 'Content-Type': 'text/html' });
             res.end(`
               <!DOCTYPE html>
@@ -114,58 +207,13 @@ async function startOAuthFlow(port = 8085, timeoutMs = 300000) {
               </html>
             `);
 
-            // Exchange code for tokens
-            const { tokens } = await oauth2Client.getToken(code);
-
-            // Fetch user info for account email
-            let userEmail = null;
-            if (tokens.access_token) {
-              try {
-                const infoRes = await fetch(`https://oauth2.googleapis.com/tokeninfo?access_token=${tokens.access_token}`);
-                if (infoRes.ok) {
-                  const info = await infoRes.json();
-                  userEmail = info.email;
-                }
-              } catch {
-                // Non-fatal if tokeninfo fails
-              }
-            }
-
-            const adcPayload = {
-              account: userEmail || 'vinodhsubramanian123@gmail.com',
-              client_id: creds.client_id,
-              client_secret: creds.client_secret,
-              quota_project_id: creds.project_id || 'bom-assistant',
-              refresh_token: tokens.refresh_token,
-              type: 'authorized_user',
-              universe_domain: 'googleapis.com'
-            };
-
-            // Atomically write ADC to primary and secondary locations if applicable
-            const targetPaths = new Set([ADC_PATH]);
-            const altPath = process.platform === 'win32'
-              ? path.join(os.homedir(), '.config', 'gcloud', 'application_default_credentials.json')
-              : path.join(process.env.APPDATA || path.join(os.homedir(), 'AppData', 'Roaming'), 'gcloud', 'application_default_credentials.json');
-            targetPaths.add(altPath);
-
-            for (const p of targetPaths) {
-              const adcDir = path.dirname(p);
-              if (!fs.existsSync(adcDir)) {
-                fs.mkdirSync(adcDir, { recursive: true });
-              }
-              const tmpAdc = `${p}.tmp.${Date.now()}`;
-              fs.writeFileSync(tmpAdc, JSON.stringify(adcPayload, null, 2), 'utf8');
-              fs.renameSync(tmpAdc, p);
-            }
-
             clearTimeout(timer);
             server.close();
             return resolve({
               success: true,
               account: adcPayload.account,
               projectId: adcPayload.quota_project_id,
-              adcPath: ADC_PATH,
-              tokens
+              adcPath: ADC_PATH
             });
           }
         }
@@ -173,6 +221,8 @@ async function startOAuthFlow(port = 8085, timeoutMs = 300000) {
         res.writeHead(404, { 'Content-Type': 'text/plain' });
         res.end('Not Found');
       } catch (err) {
+        if (!res.headersSent) res.writeHead(400, { 'Content-Type': 'text/plain' });
+        if (!res.writableEnded) res.end('Authentication failed. Previous credentials retained; see local diagnostics.');
         clearTimeout(timer);
         server.close();
         reject(err);
@@ -212,6 +262,8 @@ if (require.main === module) {
 
 module.exports = {
   startOAuthFlow,
+  verifyOAuthIdentity,
+  assertOAuthScopes,
   CLIENT_SECRET_PATH,
   ADC_PATH,
   SCOPES

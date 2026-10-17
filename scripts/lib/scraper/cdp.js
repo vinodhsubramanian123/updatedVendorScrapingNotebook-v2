@@ -17,6 +17,46 @@ const DEFAULT_TIMEOUT = 45000;   // ms — generous for slow OCA pages
 let _nextMsgId = 1;
 
 /**
+ * Transport-layer guard (INV-89) preventing direct URL navigation to HPE OCA SAML endpoints
+ * or in-place reloads of active WebLogic OCA tabs.
+ */
+function assertSafeCdpNavigationGuard(ws, method, params = {}) {
+  if (method === 'Page.navigate' && typeof params?.url === 'string') {
+    const url = params.url.trim();
+    if (/oca\.ext\.hpe\.com|oca\.hpe\.com|OCAInternalLogin|eServiceId=187402/i.test(url)) {
+      const err = new Error(
+        `[INV-89 HARD GUARD] Direct Page.navigate to "${url}" is strictly forbidden. ` +
+        `HPE OCA (OCAInternalLogin) requires a live SAML POST handoff initiated by clicking the ` +
+        `One Config Advanced Quick Link (#quick-links-807 a) on Partner Portal Tab 1 (https://partner.hpe.com/group/prp).`
+      );
+      err.code = 'INV89_FORBIDDEN_DIRECT_OCA_NAVIGATION';
+      throw err;
+    }
+  }
+
+  if (method === 'Page.reload' && ws?._isOcaTarget) {
+    const err = new Error(
+      `[INV-89 HARD GUARD] In-place Page.reload on an active HPE OCA tab is strictly forbidden because it destroys ` +
+      `stateful WebLogic SAML session memory. Close the OCA tab and recover via Partner Portal Tab 1 (/group/prp).`
+    );
+    err.code = 'INV89_FORBIDDEN_OCA_RELOAD';
+    throw err;
+  }
+
+  if (method === 'Runtime.evaluate' && typeof params?.expression === 'string') {
+    const expr = params.expression;
+    if (ws?._isOcaTarget && /\blocation\.reload\s*\(/i.test(expr)) {
+      const err = new Error(
+        `[INV-89 HARD GUARD] In-place location.reload() on an active HPE OCA tab is strictly forbidden. ` +
+        `Close the OCA tab and recover via Partner Portal Tab 1 (/group/prp).`
+      );
+      err.code = 'INV89_FORBIDDEN_OCA_RELOAD';
+      throw err;
+    }
+  }
+}
+
+/**
  * Send one CDP command on an open WebSocket and await its response.
  * @param {WebSocket} ws
  * @param {string}    method  e.g. 'Runtime.evaluate'
@@ -26,6 +66,12 @@ let _nextMsgId = 1;
  */
 function sendCommand(ws, method, params = {}, timeoutMs = DEFAULT_TIMEOUT) {
   return new Promise((resolve, reject) => {
+    try {
+      assertSafeCdpNavigationGuard(ws, method, params);
+    } catch (guardErr) {
+      return reject(guardErr);
+    }
+
     const id = _nextMsgId++;
     let timer = null;
 
@@ -103,7 +149,10 @@ function getOCATarget() {
                  (t.title && (t.title.includes('External OCA') || t.title.includes('Online Config') || (t.title.includes('OCA') && !t.title.includes('Engine'))))
             )
           );
-          if (ocaPage) return resolve(ocaPage);
+          if (ocaPage) {
+            ocaPage._isOcaTarget = true;
+            return resolve(ocaPage);
+          }
 
           // Secondary diagnostic: check if HPE Partner Portal is open
           const partnerPage = pages.find(t => t.url && t.url.includes('partner.hpe.com') && !t.url.includes('seismic.com'));
@@ -298,11 +347,15 @@ async function expandSections(ws) {
       const rec = document.querySelector('#view_recommended_only, [id*="recommended_only"]');
       if (rec && visible(rec) && rec.checked) rec.click();
 
-      // INV-20: Trigger showmore inputs with both native events and jQuery change dispatch
+      // INV-20: Trigger showmore inputs inside #extended_overview_menu (or visible on page) with both native events and jQuery change dispatch
+      const menuRoot = document.getElementById('extended_overview_menu') || document;
+      const inMenuOrVisible = el => {
+        const label = el.id ? document.querySelector('label[for="' + el.id + '"]') : null;
+        return (menuRoot !== document && menuRoot.contains(el)) || visible(el) || Boolean(label && visible(label));
+      };
       const showmoreInputs = Array.from(document.querySelectorAll('input[type="checkbox"][id*="showmore"], input[id*="showmore"], [id*="show_more"]'));
       for (const el of showmoreInputs) {
-        const label = document.querySelector('label[for="' + el.id + '"]');
-        if (!el.checked && (visible(el) || (label && visible(label)))) {
+        if (!el.checked && inMenuOrVisible(el)) {
           el.click();
           el.dispatchEvent(new Event('change', { bubbles: true }));
         }
@@ -310,7 +363,9 @@ async function expandSections(ws) {
 
       if (typeof jQuery !== 'undefined') {
         try {
-          jQuery('input[id*="showmore"]:not(:checked)').prop('checked', true).trigger('change');
+          jQuery('input[type="checkbox"][id*="showmore"]:not(:checked), input[id*="showmore"]:not(:checked)').filter(function () {
+            return inMenuOrVisible(this);
+          }).prop('checked', true).trigger('change');
         } catch (_) {}
       }
       // Expansion must not select hardware modes, service levels, or controls
@@ -596,6 +651,7 @@ async function setupNetworkSniffer(ws, options = {}) {
 }
 
 module.exports = {
+  assertSafeCdpNavigationGuard,
   sendCommand,
   getOCATarget,
   getAnyPageTarget,

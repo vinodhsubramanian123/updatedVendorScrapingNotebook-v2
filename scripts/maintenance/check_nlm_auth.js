@@ -35,7 +35,7 @@ function checkAuthHealth() {
   try {
     const stdout = execFileSync('nlm', ['login', '--check'], {
       encoding: 'utf-8',
-      timeout: 15000,
+      timeout: 45000,
       env: { ...process.env, PATH: extendedPath }
     });
 

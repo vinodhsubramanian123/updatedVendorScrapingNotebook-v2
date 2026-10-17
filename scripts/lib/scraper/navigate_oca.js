@@ -111,13 +111,22 @@ async function closePageTarget(targetId) {
 
 /**
  * Checks whether the active OCA tab is already on the target configuration menu.
+ * Automatically restores the #extended_overview_menu sub-tab if another sub-tab (Services/BOM/Summary)
+ * was left active, preventing false-negative session resets.
  */
 async function checkActiveMenuTab(ocaTarget, query, options) {
   const ws = await connectWS(ocaTarget.webSocketDebuggerUrl);
+  ws._isOcaTarget = true;
   const checkState = await sendCommand(ws, 'Runtime.evaluate', {
     expression: `(() => {
-      const pageText = (document.body?.innerText || '').slice(0, 25000);
-      const isLoggedOut = /you are logged out|logged out successfully|session (?:has )?expired|session (?:is )?invalid|session timed out|please sign in again/i.test(pageText);
+      const menuTabAnchor = Array.from(document.querySelectorAll('a.ui-tabs-anchor')).find(el => el.getAttribute('href') === '#extended_overview_menu');
+      if (menuTabAnchor && menuTabAnchor.getAttribute('aria-selected') !== 'true' && !menuTabAnchor.closest('li')?.classList.contains('ui-tabs-active')) {
+        try { menuTabAnchor.click(); } catch (_) {}
+      }
+      const bodyText = (document.body?.innerText || '').slice(0, 25000);
+      const menuText = (document.getElementById('extended_overview_menu')?.textContent || '').slice(0, 25000);
+      const pageText = (bodyText + '\\n' + menuText).slice(0, 35000);
+      const isLoggedOut = /you are logged out|logged out successfully|session (?:has )?expired|session (?:is )?invalid|session timed out|please sign in again/i.test(bodyText);
       const visible = el => {
         if (!el) return false;
         const s = window.getComputedStyle(el);
@@ -126,7 +135,7 @@ async function checkActiveMenuTab(ocaTarget, query, options) {
       const exceptionBox = Array.from(document.querySelectorAll('.ui-dialog, .modal, [role="dialog"], .dqe-error, .modal-error, [class*="error-dialog"], [class*="exception-dialog"]'))
         .find(el => visible(el) && /an unexpected error|encountered a problem|exception occurred|internal server error|weblogic bridge message/i.test(el.innerText || ''));
       const hasException = Boolean(exceptionBox);
-      const exceptionDetail = exceptionBox ? (exceptionBox.innerText || '').slice(0, 300).replace(/s+/g, ' ') : '';
+      const exceptionDetail = exceptionBox ? (exceptionBox.innerText || '').slice(0, 300).replace(/\\s+/g, ' ') : '';
       const hasMenu = Boolean(
         document.querySelector('#extended_overview_menu, .menu_label, .eo_nav_div, a[href*="extended_overview_menu"]') ||
         document.querySelectorAll('table').length > 20 ||
@@ -208,20 +217,27 @@ function buildDiscoveryExpression(query) {
         await new Promise(r => setTimeout(r, 600));
       }
 
-      // Find search input
+      // Find search input and wait for initial OCA loading overlays to clear
       let searchInput = null;
       for (let readinessAttempt = 0; readinessAttempt < 60 && !searchInput; readinessAttempt++) {
-        searchInput = document.querySelector('#searchProductInput') ||
-                      document.querySelector('#search-config') ||
-                      document.querySelector('textarea[name="search-config"]') ||
-                      document.querySelector('input[type="search"]') ||
-                      document.querySelector('input[placeholder*="Search"]');
+        const isLoading = Array.from(document.querySelectorAll('.loading_div, .maui-loading-div, .toolbar_loading, .dqe-loading'))
+          .some(el => el.getClientRects().length && window.getComputedStyle(el).visibility !== 'hidden' && window.getComputedStyle(el).display !== 'none');
+        if (!isLoading) {
+          searchInput = document.querySelector('#searchProductInput') ||
+                        document.querySelector('#search-config') ||
+                        document.querySelector('textarea[name="search-config"]') ||
+                        document.querySelector('input[type="search"]') ||
+                        document.querySelector('input[placeholder*="Search"]');
+        }
         if (!searchInput) await new Promise(r => setTimeout(r, 500));
       }
       if (!searchInput) return { success: false, candidates: [], action: 'SEARCH_INPUT_NOT_READY' };
 
       async function runSearch(q) {
         searchInput.focus();
+        searchInput.value = '';
+        searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+        await new Promise(r => setTimeout(r, 150));
         searchInput.value = q;
         searchInput.dispatchEvent(new InputEvent('input', { bubbles: true, data: q, inputType: 'insertText' }));
         searchInput.dispatchEvent(new Event('change', { bubbles: true }));
@@ -229,8 +245,17 @@ function buildDiscoveryExpression(query) {
         if (window.jQuery) {
           const kd = window.jQuery.Event('keydown', { key: 'Enter', code: 'Enter', which: 13, keyCode: 13 });
           window.jQuery(searchInput).trigger(kd);
+          const kp = window.jQuery.Event('keypress', { key: 'Enter', code: 'Enter', which: 13, keyCode: 13 });
+          window.jQuery(searchInput).trigger(kp);
+          const ku = window.jQuery.Event('keyup', { key: 'Enter', code: 'Enter', which: 13, keyCode: 13 });
+          window.jQuery(searchInput).trigger(ku);
         } else {
           searchInput.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', code: 'Enter', which: 13, keyCode: 13, bubbles: true }));
+          searchInput.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter', code: 'Enter', which: 13, keyCode: 13, bubbles: true }));
+        }
+        const searchBtn = document.querySelector('#searchProductBtn, .dqe-search-btn, button[id*="search" i], .search-icon, [onclick*="searchProduct" i]');
+        if (searchBtn && searchBtn.getClientRects().length) {
+          try { searchBtn.click(); } catch (_) {}
         }
         await new Promise(r => setTimeout(r, 6000));
       }
@@ -314,14 +339,21 @@ function buildDiscoveryExpression(query) {
         await runSearch(${JSON.stringify(query)});
         candidates = extractCandidates();
       }
-      for (let attempt = 0; !candidates.length && attempt < 60; attempt++) {
-        await new Promise(r => setTimeout(r, 1000));
+      for (let attempt = 0; !candidates.length && attempt < 45; attempt++) {
+        if (attempt === 10 || attempt === 25) {
+          await runSearch(${JSON.stringify(query)});
+        } else {
+          await new Promise(r => setTimeout(r, 1000));
+        }
         candidates = extractCandidates();
       }
       if (!candidates.length && ${JSON.stringify(query)}.includes(' ')) {
         const fallbackQuery = ${JSON.stringify(query)}.split(/\s+/)[0];
         await runSearch(fallbackQuery);
-        candidates = extractCandidates();
+        for (let fAttempt = 0; !candidates.length && fAttempt < 15; fAttempt++) {
+          await new Promise(r => setTimeout(r, 1000));
+          candidates = extractCandidates();
+        }
       }
 
       return {
@@ -900,15 +932,34 @@ async function handlePartnerPortalLaunch(partnerTarget, query, options) {
 
   try {
     const partnerWs = await connectWS(targetToUse.webSocketDebuggerUrl);
-    const launchResult = await sendCommand(partnerWs, 'Runtime.evaluate', {
-      expression: `(() => {
-        const link = Array.from(document.querySelectorAll('a')).find(a =>
+    await sendCommand(partnerWs, 'Page.bringToFront');
+    // Partner Portal renders its tool links after the authenticated shell.
+    // Wait until the Quick Links One Config Advanced anchor is present in the DOM.
+    try {
+      await waitForDOMPredicate(partnerWs, `Boolean(
+        document.querySelector('#quick-links-807 a, a[href*="eServiceId=187402"], [onclick*="187402"]') ||
+        Array.from(document.querySelectorAll('a')).some(a =>
           (a.href || '').includes('eServiceId=187402') ||
           (a.innerText || '').toLowerCase().includes('one config advanced')
-        );
+        )
+      )`, 20000, 500);
+    } catch (_) {}
+
+    const launchResult = await sendCommand(partnerWs, 'Runtime.evaluate', {
+      expression: `(() => {
+        const link = document.querySelector('#quick-links-807 a, a[href*="eServiceId=187402"], [onclick*="187402"]') ||
+          Array.from(document.querySelectorAll('a')).find(a =>
+            (a.href || '').includes('eServiceId=187402') ||
+            (a.innerText || '').toLowerCase().includes('one config advanced')
+          );
         if (link) {
+          link.scrollIntoView({ block: 'center' });
           link.click();
-          return { clicked: true, text: link.innerText };
+          return { clicked: true, text: (link.innerText || 'One Config Advanced').trim() };
+        }
+        if (typeof window.updateToolActivity === 'function') {
+          window.updateToolActivity('187402');
+          return { clicked: true, text: 'updateToolActivity(187402)' };
         }
         return { clicked: false };
       })()`,
@@ -917,33 +968,79 @@ async function handlePartnerPortalLaunch(partnerTarget, query, options) {
     });
 
     if (launchResult?.result?.value?.clicked) {
-      console.log(`🚀 Clicked One Config Advanced link: ${launchResult.result.value.text}`);
+      console.log(`🚀 Clicked One Config Advanced link on Tab 1: ${launchResult.result.value.text}`);
     } else {
-      console.log(`🧭 Navigating directly to tools-catalog?eServiceId=187402...`);
+      console.log(`🔄 Quick link not yet rendered on Tab 1; navigating Tab 1 to Partner Portal home (/group/prp) and clicking One Config Advanced...`);
       await sendCommand(partnerWs, 'Page.navigate', {
-        url: 'https://partner.hpe.com/group/prp/tools-catalog?eServiceId=187402'
+        url: 'https://partner.hpe.com/group/prp'
       });
+      try {
+        await waitForDOMPredicate(partnerWs, `Boolean(
+          document.querySelector('#quick-links-807 a, a[href*="eServiceId=187402"]') ||
+          Array.from(document.querySelectorAll('a')).some(a =>
+            (a.href || '').includes('eServiceId=187402') ||
+            (a.innerText || '').toLowerCase().includes('one config advanced')
+          )
+        )`, 20000, 500);
+        await sendCommand(partnerWs, 'Runtime.evaluate', {
+          expression: `(() => {
+            const link = document.querySelector('#quick-links-807 a, a[href*="eServiceId=187402"]') ||
+              Array.from(document.querySelectorAll('a')).find(a =>
+                (a.href || '').includes('eServiceId=187402') ||
+                (a.innerText || '').toLowerCase().includes('one config advanced')
+              );
+            if (link) { link.scrollIntoView({ block: 'center' }); link.click(); return true; }
+            return false;
+          })()`,
+          userGesture: true,
+          returnByValue: true
+        });
+      } catch (_) {}
     }
     partnerWs.close();
   } catch (err) {
     console.warn(`⚠️ Warning launching OCA: ${err.message}`);
   }
 
-  console.log(`⏳ Waiting for newly created OCA tab to initialize with fresh SAML tokens...`);
+  console.log(`⏳ Waiting for newly created OCA tab (Tab 2) to initialize with fresh SAML tokens...`);
   const waitStart = Date.now();
-  while (Date.now() - waitStart < 30000) {
+  let freshOca = null;
+  while (Date.now() - waitStart < 45000) {
     await sleep(1000);
     try {
       const currentTargets = await getPageTargets();
-      const freshOca = currentTargets.find(t => !isSeismicTarget(t) && t.url && t.url.includes('oca.ext.hpe.com'));
+      freshOca = currentTargets.find(t => !isSeismicTarget(t) && t.url && t.url.includes('oca.ext.hpe.com'));
       if (freshOca) break;
     } catch (_) {}
+  }
+
+  if (!freshOca) {
+    const launchError = new Error('OCA_LAUNCH_PENDING: Partner Portal did not open One Config Advanced; retain the portal tab and inspect the tool launcher before retrying.');
+    launchError.code = 'OCA_LAUNCH_PENDING';
+    throw launchError;
   }
 
   // Strip forceFreshSession before recursive navigation to allow menu resolution on the new tab
   const nextOptions = { ...options };
   delete nextOptions.forceFreshSession;
   return navigateToOCAChassis(query, nextOptions);
+}
+
+async function openPartnerPortalAnchorTab(errorMessage) {
+  const portalHomeUrl = 'https://partner.hpe.com/group/prp';
+  const response = await fetch(`http://localhost:${CDP_PORT}/json/new?${encodeURIComponent(portalHomeUrl)}`, { method: 'PUT' });
+  if (!response.ok) throw new Error(errorMessage || `Unable to open Partner Portal tab: HTTP ${response.status}`);
+  if (typeof response.json === 'function') {
+    try {
+      const createdTab = await response.json();
+      if (createdTab && createdTab.webSocketDebuggerUrl && (!createdTab.url || createdTab.url === 'about:blank')) {
+        const tabWs = await connectWS(createdTab.webSocketDebuggerUrl);
+        await sendCommand(tabWs, 'Page.navigate', { url: portalHomeUrl });
+        tabWs.close();
+        await sleep(2000);
+      }
+    } catch (_) {}
+  }
 }
 
 /**
@@ -959,8 +1056,7 @@ async function waitForBrowserSession(query, options) {
   if (!initialPages.some(t => /(?:partner|oca\.ext)\.hpe\.com/.test(t.url || ''))) {
     // Chrome may already be running after an OCA handoff consumed Tab 1.
     // The launcher intentionally does nothing in that case; create Tab 1 here.
-    const response = await fetch(`http://localhost:${CDP_PORT}/json/new?${encodeURIComponent('https://partner.hpe.com/group/prp')}`, { method: 'PUT' });
-    if (!response.ok) throw new Error(`Unable to reopen Partner Portal tab: HTTP ${response.status}`);
+    await openPartnerPortalAnchorTab('Unable to reopen Partner Portal tab');
   }
   while (waitAttempts < 60) {
     await new Promise(r => setTimeout(r, 3000));
@@ -1021,8 +1117,7 @@ async function navigateToOCAChassis(chassisQuery, options = {}) {
   // OCA may reuse the Partner Portal tab. Keep a portal tab alive before
   // closing OCA; closing Chrome's last tab terminates the CDP browser.
   if (!pages.some(page => /^https:\/\/partner\.hpe\.com\//i.test(page.url || ''))) {
-    const response = await fetch(`http://localhost:${CDP_PORT}/json/new?${encodeURIComponent('https://partner.hpe.com/group/prp')}`, { method: 'PUT' });
-    if (!response.ok) throw new Error('Unable to open Partner Portal for session recovery.');
+    await openPartnerPortalAnchorTab('Unable to open Partner Portal for session recovery.');
   }
 
   const ocaTarget = !options.forceFreshSession ? pages.find(t => !isSeismicTarget(t) && t.url && t.url.includes('oca.ext.hpe.com')) : null;
@@ -1042,6 +1137,7 @@ async function navigateToOCAChassis(chassisQuery, options = {}) {
     try {
       if (ocaUrlLower.includes('ocainternallogin')) {
         const handoffWs = await connectWS(ocaTarget.webSocketDebuggerUrl);
+        handoffWs._isOcaTarget = true;
         try {
           await waitForDOMPredicate(handoffWs, `Boolean(document.querySelector('#searchProductInput, #search-config, #extended_overview_menu')) || /you are logged out|session expired|login failed/i.test(document.body?.innerText || '')`, 90000, 1000);
         } finally { handoffWs.close(); }
@@ -1102,8 +1198,7 @@ async function recoverAndLaunchFreshOCA(chassisQuery = 'DL380 Gen12', options = 
   const pages = await getPageTargets();
   await pruneSeismicTabs(pages);
   if (!pages.some(page => /^https:\/\/partner\.hpe\.com\//i.test(page.url || ''))) {
-    const response = await fetch(`http://localhost:${CDP_PORT}/json/new?${encodeURIComponent('https://partner.hpe.com/group/prp')}`, { method: 'PUT' });
-    if (!response.ok) throw new Error('Unable to keep Partner Portal alive during recovery.');
+    await openPartnerPortalAnchorTab('Unable to keep Partner Portal alive during recovery.');
   }
   for (const t of pages) {
     if (t.url && t.url.includes('oca.ext.hpe.com')) {
@@ -1138,18 +1233,21 @@ async function recoverAndLaunchFreshOCA(chassisQuery = 'DL380 Gen12', options = 
     }
   }
 
-  // 3. Refresh Tab 1 to refresh OCA links and SAML endpoints
-  console.log(`🔄 Refreshing Tab 1 (Partner Portal) to regenerate fresh SAML session tokens...`);
+  // 3. Ensure Tab 1 is on Partner Portal home (/group/prp) so Quick Links are live
+  console.log(`🔄 Navigating Tab 1 to Partner Portal main page (/group/prp) to access One Config Advanced Quick Link...`);
   try {
     const ws = await connectWS(partnerTarget.webSocketDebuggerUrl);
-    await sendCommand(ws, 'Page.reload');
+    await sendCommand(ws, 'Page.navigate', { url: 'https://partner.hpe.com/group/prp' });
     await waitForDOMPredicate(ws, `Boolean(
-      document.querySelector('.hpe-quicklinks__item a, a.hpe-quicklinks__link, #quick-links-807 a') ||
-      document.readyState === 'complete'
-    )`, 15000, 500);
+      document.querySelector('#quick-links-807 a, a[href*="eServiceId=187402"], .hpe-quicklinks__item a, a.hpe-quicklinks__link') ||
+      Array.from(document.querySelectorAll('a')).some(a =>
+        (a.href || '').includes('eServiceId=187402') ||
+        (a.innerText || '').toLowerCase().includes('one config advanced')
+      )
+    )`, 20000, 500);
     ws.close();
   } catch (reloadErr) {
-    console.warn(`⚠️ Warning reloading Partner Portal: ${reloadErr.message}`);
+    console.warn(`⚠️ Warning navigating Partner Portal main page: ${reloadErr.message}`);
   }
 
   // 4. Re-acquire fresh Partner Portal target and click One Config Advanced
