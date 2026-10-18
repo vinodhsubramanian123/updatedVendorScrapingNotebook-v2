@@ -135,7 +135,7 @@ function calculateSupplyMetrics(parts, resolveSupply) {
     estimatedAverageLeadTimeDays: knownLeadTimes.length
       ? Number((knownLeadTimes.reduce((sum, days) => sum + days, 0) / knownLeadTimes.length).toFixed(1))
       : null,
-    solutionEdtDays: maxLeadTimeDays,
+    solutionEdtDays: knownLeadTimes.length === attributes.length ? maxLeadTimeDays : null,
     rankingPolicy: 'Technical validity and BOQ closeness first; lead time breaks otherwise-equal alternatives'
   };
 }
@@ -754,15 +754,10 @@ function findFastShipDriveReplacement(catalogIndex) {
       };
     }
   }
-  return {
-    sku: 'P40507-B21',
-    description: 'HPE 1.92TB SAS 12G Read Intensive SFF BC Multi Vendor SSD (Fast-Ship Certified)',
-    leadTimeDays: 7,
-    leadTime: '7 days'
-  };
+  return null;
 }
 
-function findFastShipCpuReplacement(catalogIndex, chassisInfo) {
+function findFastShipCpuReplacement(catalogIndex) {
   for (const [s, item] of catalogIndex.entries()) {
     if (item.lifecycleStatus === 'OB' || item.lifecycleStatus === 'EOL') continue;
     const sDesc = (item.skuData?.Description || item.entry?.description || '').toLowerCase();
@@ -777,10 +772,7 @@ function findFastShipCpuReplacement(catalogIndex, chassisInfo) {
       };
     }
   }
-  const isGen12 = (chassisInfo?.gen || '').includes('12') || (chassisInfo?.model || '').includes('Gen12');
-  return isGen12
-    ? { sku: 'P73300-B21', description: 'Intel Xeon-Gold 6530 2.1GHz 32-core Processor for HPE (In-Stock Fast-Ship)', leadTimeDays: 7, leadTime: '7 days' }
-    : { sku: 'P49610-B21', description: 'Intel Xeon-Silver 4410Y 2.0GHz 12-core Processor for HPE (In-Stock Fast-Ship)', leadTimeDays: 7, leadTime: '7 days' };
+  return null;
 }
 
 function synthesizeFastShipAlternative(v1Parts, v1SupplyMetrics, loadedCatalog, chassisInfo, getPrice, revalidateCached, resolveSupply) {
@@ -807,13 +799,13 @@ function synthesizeFastShipAlternative(v1Parts, v1SupplyMetrics, loadedCatalog, 
     let reason = '';
     if (cat.includes('storage') || cat.includes('drive') || cat.includes('disk') || desc.includes('hdd') || desc.includes('ssd') || desc.includes('hard drive')) {
       replacement = findFastShipDriveReplacement(catalogIndex);
-      reason = 'Eliminated pacing delivery bottleneck (replaces long lead-time HDD/drive with fast-ship certified enterprise SSD)';
+      reason = 'Eliminated pacing delivery bottleneck (replaces long lead-time HDD/drive with catalog-listed SSD candidate)';
     } else if (cat.includes('processor') || cat.includes('cpu') || desc.includes('xeon') || desc.includes('epyc') || desc.includes('processor')) {
       replacement = findFastShipCpuReplacement(catalogIndex, chassisInfo);
-      reason = 'Replaced constrained processor pacing item with available in-stock factory option';
+      reason = 'Replaced constrained processor pacing item with catalog-listed processor candidate';
     }
 
-    if (!replacement) return { ...part };
+    if (!replacement || cleanBaseSKU(replacement.sku) === cleanSku) return { ...part };
 
     const replPrice = getPrice(replacement.sku);
     substitutedItems.push({
@@ -842,14 +834,17 @@ function synthesizeFastShipAlternative(v1Parts, v1SupplyMetrics, loadedCatalog, 
   if (substitutedItems.length === 0) return null;
 
   const revalidated = revalidateCached(candidateParts);
+  if (revalidated.physicalMathClean !== true || revalidated.aspectErrors?.length) return null;
   const newSupplyMetrics = calculateSupplyMetrics(revalidated.parts, resolveSupply);
-  const originalEdt = v1SupplyMetrics.maxLeadTimeDays || 0;
-  const newEdt = newSupplyMetrics.maxLeadTimeDays || 0;
-  const deliveryDaysSaved = Math.max(0, originalEdt - newEdt);
+  const originalEdt = v1SupplyMetrics.unknownLeadTimeCount === 0 ? v1SupplyMetrics.maxLeadTimeDays : null;
+  const newEdt = newSupplyMetrics.unknownLeadTimeCount === 0 ? newSupplyMetrics.maxLeadTimeDays : null;
+  const deliveryDaysSaved = originalEdt !== null && newEdt !== null ? Math.max(0, originalEdt - newEdt) : null;
 
   return {
     rank: '1S',
     subRank: '1S',
+    validationStatus: 'DOCUMENT_AND_PORTAL_VALIDATION_PENDING',
+    requiresRequirementReview: true,
     name: 'Rank 1S: Fast-Ship Delivery-Optimized Baseline',
     tierTitle: 'Fast-Ship Delivery-Optimized Baseline (Pacing Items Substituted)',
     skuPartsList: revalidated.parts,
@@ -871,11 +866,11 @@ function synthesizeFastShipAlternative(v1Parts, v1SupplyMetrics, loadedCatalog, 
     fastShipEdtDays: newEdt,
     substitutedPacingItems: substitutedItems,
     tradeoffMetrics: {
-      intentAlignment: `${Math.max(75, 95 - substitutedItems.length * 5)}% (Fast-Ship Optimized)`,
-      deliveryImpact: `Delivery schedule collapsed by ${deliveryDaysSaved} days (from ${originalEdt}d down to ${newEdt}d)`,
+      intentAlignment: 'UNVERIFIED: substitutions require customer-requirement and grounded review',
+      deliveryImpact: deliveryDaysSaved === null ? 'Delivery estimate incomplete: one or more lead times are unknown' : `Catalog lead-time estimate improves by ${deliveryDaysSaved} days; current vendor availability remains unverified`,
       skuModifications: `${substitutedItems.length} bottleneck substitution(s)`
     },
-    reasoning: `Delivery EDT collapsed by ${deliveryDaysSaved} days (from ${originalEdt}d to ${newEdt}d) by substituting pacing bottleneck(s): ${substitutedItems.map(s => `${s.originalSku} (${s.originalLeadTimeDays}d) -> ${s.replacementSku} (${s.replacementLeadTimeDays}d)`).join(', ')}. 100% buildable and verified against all physical constraints.`
+    reasoning: 'Catalog-derived substitution proposal passed local physical checks only. Capacity, performance, customer requirements, current availability, grounded document review and exact portal acceptance still require validation.'
   };
 }
 

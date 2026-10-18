@@ -913,13 +913,18 @@ To ensure that future AI agents (Antigravity, Codex, Claude, or subagents) never
 
 - **INV-177: Critical Path Delivery Lead Time & Bottleneck Pacing Item Protocol**:
   - In manufacturing and configure-to-order (CTO) server deliveries, a cluster of servers cannot ship as an average of individual component lead times. The solution's Estimated Delivery Time (EDT) is strictly governed by the slowest pacing item on the critical path: $\text{Solution EDT} = \max_{s \in \text{BOM}}(\text{LeadTime}_s)$.
+  - Missing-Lead-Time Nullability: If any component lead time is missing or unknown, whole-solution delivery EDT is explicitly kept `null` (`solutionEdtDays: knownLeadTimes.length === attributes.length ? maxLeadTimeDays : null`); `maxLeadTimeDays` remains available separately as the maximum of known components.
   - Outlier Detection: Any component with $\text{LeadTime} \ge 45\text{ days}$ or $>2\times\text{Cluster Median Lead Time}$ is flagged as a `Lead Time Outlier / Pacing Item` (e.g. 2.4TB 10K SAS HDD `P28352-B21` taking 90 days, or market-constrained processors).
-  - Fast-Ship Synthesis (Rank 1S): The evaluator automatically formulates a 100% buildable Fast-Ship Delivery-Optimized alternative (`Rank 1S`), substituting pacing bottlenecks with in-stock certified enterprise options (e.g. fast-ship SSD `P40507-B21` at 7 days) and revalidating through the 8-pass physical validator to quantify exact delivery days saved (e.g. collapsing lead time from 90 days down to 7 days).
+  - Fast-Ship Synthesis (Rank 1S) & Epistemic Safeguards:
+    1. Zero Invented Fallbacks: Fast-Ship substitution queries the verified catalog; if no certified replacement is found in `loadedCatalog`, synthesis cleanly returns `null` (never hallucinates fallback SKUs or fabricated 7-day availability).
+    2. Physical Math Gate: If 8-pass physical revalidation fails (`physicalMathClean !== true` or `aspectErrors.length > 0`), Rank 1S synthesis is strictly blocked.
+    3. Epistemic Disclosure: The synthesized candidate emits `validationStatus: 'DOCUMENT_AND_PORTAL_VALIDATION_PENDING'` and `requiresRequirementReview: true`. Passing local physical math does not prove capacity parity, customer workload fit, or Tier 3 live CLIC vendor acceptance.
   - Presales Value Pitch: The deliverable highlights pacing items to presales teams so negotiations can address delivery schedule bottlenecks before customer quote submission.
 
 - **INV-178: Dynamic OCA Tools Menu (`#menu_tools` / `.gears`) Discovery & BOM Settings Activation**:
   - HPE OCA WebLogic tables hide key presales attributes by default (e.g. Estimated Availability Lead Times, CLIC Validation Warnings, Allocation Status, Power Watts, Weight Kg).
   - Scrapers and CDP navigators must actively probe `#menu_tools`, `.gears`, and BOM preference dropdowns to toggle on hidden column checkboxes before harvesting options or solution BOM tables.
+  - Production Pipeline Wiring: `scrape_oca_solution.js:expandAndVerifyDomSections` executes `inspectAndEnableToolsMenu(ws)` non-blockingly in Step 4 before expanding sections, allowing WebLogic table columns to re-render.
   - Multi-Tier Architecture Alignment:
     1. Schema: `schemas.js` supports optional typed `leadTime`, `leadTimeDays`, `clicStatus`, `allocationStatus`, `powerWatts`, `weightKg`, and `fioEligibility` with Zod `.passthrough()` for forward compatibility.
     2. Masterbook: `_OCA_Catalog.xlsx` maintains 26 primary sheets and appends **Sheet 27: Supply Chain & Lead Times**, categorizing SKUs into delivery speed tiers (Fast-Ship $\le 7$d, Standard 8–30d, Extended 31–45d, Constrained $>45$d).

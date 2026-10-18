@@ -424,6 +424,17 @@ async function resolvePageTargetAndChassis({ navQuery, targetChassisQuery, isRec
 }
 
 async function expandAndVerifyDomSections(ws, scrollThreshold, targetTabsRegex) {
+  try {
+    const { inspectAndEnableToolsMenu } = require('../lib/scraper/navigate_oca.js');
+    const toolsProbe = await inspectAndEnableToolsMenu(ws);
+    if (toolsProbe?.enabled) {
+      console.log(`  [TOOLS_MENU] Discovered & enabled ${toolsProbe.toggledCount} column attributes:`, toolsProbe.probed);
+      await sleep(1500);
+    }
+  } catch (toolsErr) {
+    console.log(`  [TOOLS_MENU] Non-blocking tools menu probe note: ${toolsErr.message}`);
+  }
+
   console.log('  [PAGE_EXPAND] Expanding active product menu...');
   await expandSections(ws);
   await sleep(3000);

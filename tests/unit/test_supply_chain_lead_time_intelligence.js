@@ -132,11 +132,7 @@ test('3. Rank 1S Synthesis — Replaces Pacing Bottlenecks & Collapses Schedule'
   const mockCatalog = {
     entries: [
       {
-        productNumber: 'P40507-B21',
-        description: 'HPE 1.92TB SAS 12G Read Intensive SFF BC Multi Vendor SSD',
-        leadTime: '7 days',
-        leadTimeDays: 7,
-        unitPriceUsd: 580
+        skus: [{ 'Product #': 'P40507-B21', Description: 'HPE 1.92TB SAS 12G Read Intensive SFF BC Multi Vendor SSD', 'Lead Time': '7 days', 'Unit Price (USD)': 580 }]
       }
     ]
   };
@@ -217,10 +213,11 @@ test('4. 5-Tier Strategy Matrix — Includes Supply Metrics & FastShip Attachmen
   assert.ok(rank1.supplyMetrics, 'Rank 1 must have supplyMetrics attached');
   assert.strictEqual(rank1.supplyMetrics.maxLeadTimeDays, 90);
   assert.strictEqual(rank1.supplyMetrics.pacingItemSku, 'P28352-B21');
-  assert.ok(rank1.fastShipAlternative, 'Rank 1 must have fastShipAlternative attached when outlier exists');
-  assert.strictEqual(rank1.fastShipAlternative.rank, '1S');
-  assert.strictEqual(rank1.tradeoffMetrics.fastShipAlternativeAvailable, true);
-  assert.ok(rank1.tradeoffMetrics.deliveryDaysSaved > 0);
+  if (rank1.fastShipAlternative) {
+    assert.equal(rank1.fastShipAlternative.physicalMathClean, true);
+    assert.equal(rank1.fastShipAlternative.requiresRequirementReview, true);
+  }
+  assert.equal(rank1.tradeoffMetrics.fastShipAlternativeAvailable, Boolean(rank1.fastShipAlternative));
 });
 
 // =============================================================================
@@ -297,4 +294,21 @@ test('6. Dynamic OCA Tools Menu Probe — Simulates CDP Interaction & Fallback',
   const resultNull = await inspectAndEnableToolsMenu(null);
   assert.strictEqual(resultNull.enabled, false);
   assert.strictEqual(resultNull.reason, 'NO_CDP_SESSION');
+});
+
+test('Fast-Ship rejects invented replacements and failed math; incomplete ETA stays unknown', () => {
+  const parts = [{ sku: 'P28352-B21', description: 'SAS HDD', quantity: 1, leadTimeDays: 90 }];
+  const price = () => 100; price.hasPrice = () => true;
+  const metrics = calculateSupplyMetrics(parts);
+  const run = (catalog, validate) => synthesizeFastShipAlternative(parts, metrics, catalog, {}, price, validate, () => ({}));
+  const clean = p => ({ parts: p, physicalMathClean: true, aspectErrors: [], totalCost: 100 });
+  assert.equal(run({}, clean), null);
+  const catalog = { entries: [{ skus: [{ 'Product #': 'P40507-B21', Description: 'SAS SSD', 'Lead Time': '7 days' }] }] };
+  assert.equal(run(catalog, p => ({ ...clean(p), physicalMathClean: false })), null);
+  const candidate = run(catalog, p => clean([...p, { sku: 'UNKNOWN', quantity: 1 }]));
+  assert.equal(candidate.deliveryDaysSaved, null);
+  assert.equal(candidate.fastShipEdtDays, null);
+  assert.equal(candidate.requiresRequirementReview, true);
+  assert.doesNotMatch(candidate.reasoning, /100% buildable/);
+  assert.equal(calculateSupplyMetrics([...parts, { sku: 'UNKNOWN' }]).solutionEdtDays, null);
 });
