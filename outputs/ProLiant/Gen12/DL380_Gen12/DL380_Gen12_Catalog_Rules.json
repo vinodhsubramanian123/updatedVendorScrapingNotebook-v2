@@ -8,7 +8,7 @@
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
     "scrapeDate": "2026-10-17",
     "scrapeTimestamp": "2026-10-17T12:26:31.307Z",
-    "builtAt": "2026-10-17T12:26:33.920Z",
+    "builtAt": "2026-10-18T08:13:14.398Z",
     "totalSubcategories": 68,
     "totalUniqueSKUs": 602,
     "totalTables": 148,
@@ -16,10 +16,10 @@
       "added": 3,
       "removed": 2,
       "categoryMigrated": 0,
-      "priceChanged": 66,
-      "attributeChanged": 47,
-      "priceAndAttributeChanged": 0,
-      "unchanged": 1056,
+      "priceChanged": 0,
+      "attributeChanged": 1103,
+      "priceAndAttributeChanged": 66,
+      "unchanged": 0,
       "reinstated": 0,
       "discontinuedTotal": 18
     },
@@ -148,8 +148,8 @@
           "avgPrice": 31450.333333333332
         },
         "Drive Enclosures / Drives": {
-          "totalSKUs": 24,
-          "totalPrice": 3956,
+          "totalSKUs": 25,
+          "totalPrice": 4180,
           "minPrice": 1,
           "maxPrice": 714,
           "subcategories": {
@@ -157,6 +157,11 @@
               "totalSKUs": 16,
               "totalPrice": 3463,
               "avgPrice": 216.4375
+            },
+            "SFF Drive Cages & Enablement": {
+              "totalSKUs": 1,
+              "totalPrice": 224,
+              "avgPrice": 224
             },
             "Optical Drive": {
               "totalSKUs": 3,
@@ -174,26 +179,7 @@
               "avgPrice": 1
             }
           },
-          "avgPrice": 164.83333333333334
-        },
-        "HPE Compute Ops Management": {
-          "totalSKUs": 5,
-          "totalPrice": 332,
-          "minPrice": 1,
-          "maxPrice": 224,
-          "subcategories": {
-            "Compute Ops Management Enablement SKUs": {
-              "totalSKUs": 2,
-              "totalPrice": 329,
-              "avgPrice": 164.5
-            },
-            "Compute Ops Management SKUs": {
-              "totalSKUs": 3,
-              "totalPrice": 3,
-              "avgPrice": 1
-            }
-          },
-          "avgPrice": 66.4
+          "avgPrice": 167.2
         },
         "Networking": {
           "totalSKUs": 77,
@@ -308,8 +294,8 @@
           "avgPrice": 982.3269230769231
         },
         "Cables & Enablement Kits": {
-          "totalSKUs": 93,
-          "totalPrice": 46068,
+          "totalSKUs": 94,
+          "totalPrice": 46173,
           "minPrice": 1,
           "maxPrice": 14299,
           "subcategories": {
@@ -332,6 +318,11 @@
               "totalSKUs": 1,
               "totalPrice": 55,
               "avgPrice": 55
+            },
+            "Cables & Enablement Kits Options": {
+              "totalSKUs": 1,
+              "totalPrice": 105,
+              "avgPrice": 105
             },
             "Factory Configuration Settings": {
               "totalSKUs": 1,
@@ -369,11 +360,11 @@
               "avgPrice": 67.81481481481481
             }
           },
-          "avgPrice": 495.35483870967744
+          "avgPrice": 491.20212765957444
         },
         "Software & Licenses": {
-          "totalSKUs": 698,
-          "totalPrice": 17224169,
+          "totalSKUs": 701,
+          "totalPrice": 17224172,
           "minPrice": 1,
           "maxPrice": 543984,
           "subcategories": {
@@ -411,6 +402,11 @@
               "totalSKUs": 18,
               "totalPrice": 80888,
               "avgPrice": 4493.777777777777
+            },
+            "Compute Ops Management SKUs": {
+              "totalSKUs": 3,
+              "totalPrice": 3,
+              "avgPrice": 1
             },
             "OEM Software": {
               "totalSKUs": 18,
@@ -463,7 +459,7 @@
               "avgPrice": 5902.833333333333
             }
           },
-          "avgPrice": 24676.45988538682
+          "avgPrice": 24570.85877318117
         },
         "Graphics & GPU": {
           "totalSKUs": 29,
@@ -520,8 +516,17 @@
         }
       }
     },
+    "incrementalStats": {
+      "totalScrapedSkus": 602,
+      "unchangedSkusCount": 597,
+      "modifiedSkusCount": 5,
+      "addedSkusCount": 0,
+      "removedSkusCount": 0,
+      "estimatedTokensSaved": 0,
+      "estimatedProcessingTimeSavedMs": 0
+    },
     "chassisVariantCount": 6,
-    "rulesGeneratedAt": "2026-10-17T12:26:34.863Z"
+    "rulesGeneratedAt": "2026-10-18T08:13:15.299Z"
   },
   "chassisVariants": [
     {
@@ -537,8 +542,8 @@
       "discontinuedDate": "2026-09-09",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "UNCHANGED",
-      "priceHistoryTrail": "2026-08-12: $5584.00 → 2026-08-13: $5584.00 → 2026-08-14: $5584.00 → 2026-08-16: $5584.00 → 2026-08-19: $5584.00 → 2026-08-22: $5584.00 (✕ REMOVED) → 2026-09-09: $5584.00 (✕ REMOVED) → 2026-09-10: $5584.00 → 2026-09-30: $5584.00"
+      "diffStatus": "ATTRIBUTE_CHANGED",
+      "priceHistoryTrail": "2026-08-12: $5584.00 → 2026-08-13: $5584.00 → 2026-08-14: $5584.00 → 2026-08-16: $5584.00 → 2026-08-19: $5584.00 → 2026-08-22: $5584.00 (✕ REMOVED) → 2026-09-09: $5584.00 (✕ REMOVED) → 2026-09-10: $5584.00 → 2026-09-30: $5584.00 → 2026-10-17: $5584.00"
     },
     {
       "sku": "P73283-B21",
@@ -553,8 +558,8 @@
       "discontinuedDate": "2026-09-09",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "UNCHANGED",
-      "priceHistoryTrail": "2026-08-12: $5980.00 → 2026-08-13: $5980.00 → 2026-08-14: $5980.00 → 2026-08-16: $5980.00 → 2026-08-19: $5980.00 → 2026-08-22: $5980.00 (✕ REMOVED) → 2026-08-24: $5980.00 (✕ REMOVED) → 2026-09-09: $5980.00 (✕ REMOVED) → 2026-09-10: $5980.00 → 2026-09-30: $5980.00"
+      "diffStatus": "ATTRIBUTE_CHANGED",
+      "priceHistoryTrail": "2026-08-12: $5980.00 → 2026-08-13: $5980.00 → 2026-08-14: $5980.00 → 2026-08-16: $5980.00 → 2026-08-19: $5980.00 → 2026-08-22: $5980.00 (✕ REMOVED) → 2026-08-24: $5980.00 (✕ REMOVED) → 2026-09-09: $5980.00 (✕ REMOVED) → 2026-09-10: $5980.00 → 2026-09-30: $5980.00 → 2026-10-17: $5980.00"
     },
     {
       "sku": "P73284-B21",
@@ -569,8 +574,8 @@
       "discontinuedDate": "2026-09-09",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "UNCHANGED",
-      "priceHistoryTrail": "2026-08-12: $6350.00 → 2026-08-13: $6350.00 → 2026-08-14: $6350.00 → 2026-08-16: $6350.00 → 2026-08-19: $6350.00 → 2026-08-22: $6350.00 (✕ REMOVED) → 2026-08-24: $6350.00 (✕ REMOVED) → 2026-09-09: $6350.00 (✕ REMOVED) → 2026-09-10: $6350.00 → 2026-09-30: $6350.00"
+      "diffStatus": "ATTRIBUTE_CHANGED",
+      "priceHistoryTrail": "2026-08-12: $6350.00 → 2026-08-13: $6350.00 → 2026-08-14: $6350.00 → 2026-08-16: $6350.00 → 2026-08-19: $6350.00 → 2026-08-22: $6350.00 (✕ REMOVED) → 2026-08-24: $6350.00 (✕ REMOVED) → 2026-09-09: $6350.00 (✕ REMOVED) → 2026-09-10: $6350.00 → 2026-09-30: $6350.00 → 2026-10-17: $6350.00"
     },
     {
       "sku": "P73285-B21",
@@ -585,8 +590,8 @@
       "discontinuedDate": "2026-09-09",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "UNCHANGED",
-      "priceHistoryTrail": "2026-08-12: $6890.00 → 2026-08-13: $6890.00 → 2026-08-14: $6890.00 → 2026-08-16: $6890.00 → 2026-08-19: $6890.00 → 2026-08-22: $6890.00 (✕ REMOVED) → 2026-08-24: $6890.00 (✕ REMOVED) → 2026-09-09: $6890.00 (✕ REMOVED) → 2026-09-10: $6890.00 → 2026-09-30: $6890.00"
+      "diffStatus": "ATTRIBUTE_CHANGED",
+      "priceHistoryTrail": "2026-08-12: $6890.00 → 2026-08-13: $6890.00 → 2026-08-14: $6890.00 → 2026-08-16: $6890.00 → 2026-08-19: $6890.00 → 2026-08-22: $6890.00 (✕ REMOVED) → 2026-08-24: $6890.00 (✕ REMOVED) → 2026-09-09: $6890.00 (✕ REMOVED) → 2026-09-10: $6890.00 → 2026-09-30: $6890.00 → 2026-10-17: $6890.00"
     },
     {
       "sku": "P73286-B21",
@@ -601,8 +606,8 @@
       "discontinuedDate": "2026-09-09",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "UNCHANGED",
-      "priceHistoryTrail": "2026-08-12: $7120.00 → 2026-08-13: $7120.00 → 2026-08-14: $7120.00 → 2026-08-16: $7120.00 → 2026-08-19: $7120.00 → 2026-08-22: $7120.00 (✕ REMOVED) → 2026-08-24: $7120.00 (✕ REMOVED) → 2026-09-09: $7120.00 (✕ REMOVED) → 2026-09-10: $7120.00 → 2026-09-30: $7120.00"
+      "diffStatus": "ATTRIBUTE_CHANGED",
+      "priceHistoryTrail": "2026-08-12: $7120.00 → 2026-08-13: $7120.00 → 2026-08-14: $7120.00 → 2026-08-16: $7120.00 → 2026-08-19: $7120.00 → 2026-08-22: $7120.00 (✕ REMOVED) → 2026-08-24: $7120.00 (✕ REMOVED) → 2026-09-09: $7120.00 (✕ REMOVED) → 2026-09-10: $7120.00 → 2026-09-30: $7120.00 → 2026-10-17: $7120.00"
     },
     {
       "sku": "P73287-B21",
@@ -634,8 +639,8 @@
       "discontinuedDate": "2026-09-09",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "UNCHANGED",
-      "priceHistoryTrail": "2026-08-12: $5584.00 → 2026-08-13: $5584.00 → 2026-08-14: $5584.00 → 2026-08-16: $5584.00 → 2026-08-19: $5584.00 → 2026-08-22: $5584.00 (✕ REMOVED) → 2026-09-09: $5584.00 (✕ REMOVED) → 2026-09-10: $5584.00 → 2026-09-30: $5584.00"
+      "diffStatus": "ATTRIBUTE_CHANGED",
+      "priceHistoryTrail": "2026-08-12: $5584.00 → 2026-08-13: $5584.00 → 2026-08-14: $5584.00 → 2026-08-16: $5584.00 → 2026-08-19: $5584.00 → 2026-08-22: $5584.00 (✕ REMOVED) → 2026-09-09: $5584.00 (✕ REMOVED) → 2026-09-10: $5584.00 → 2026-09-30: $5584.00 → 2026-10-17: $5584.00"
     },
     "P73283-B21": {
       "sku": "P73283-B21",
@@ -650,8 +655,8 @@
       "discontinuedDate": "2026-09-09",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "UNCHANGED",
-      "priceHistoryTrail": "2026-08-12: $5980.00 → 2026-08-13: $5980.00 → 2026-08-14: $5980.00 → 2026-08-16: $5980.00 → 2026-08-19: $5980.00 → 2026-08-22: $5980.00 (✕ REMOVED) → 2026-08-24: $5980.00 (✕ REMOVED) → 2026-09-09: $5980.00 (✕ REMOVED) → 2026-09-10: $5980.00 → 2026-09-30: $5980.00"
+      "diffStatus": "ATTRIBUTE_CHANGED",
+      "priceHistoryTrail": "2026-08-12: $5980.00 → 2026-08-13: $5980.00 → 2026-08-14: $5980.00 → 2026-08-16: $5980.00 → 2026-08-19: $5980.00 → 2026-08-22: $5980.00 (✕ REMOVED) → 2026-08-24: $5980.00 (✕ REMOVED) → 2026-09-09: $5980.00 (✕ REMOVED) → 2026-09-10: $5980.00 → 2026-09-30: $5980.00 → 2026-10-17: $5980.00"
     },
     "P73284-B21": {
       "sku": "P73284-B21",
@@ -666,8 +671,8 @@
       "discontinuedDate": "2026-09-09",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "UNCHANGED",
-      "priceHistoryTrail": "2026-08-12: $6350.00 → 2026-08-13: $6350.00 → 2026-08-14: $6350.00 → 2026-08-16: $6350.00 → 2026-08-19: $6350.00 → 2026-08-22: $6350.00 (✕ REMOVED) → 2026-08-24: $6350.00 (✕ REMOVED) → 2026-09-09: $6350.00 (✕ REMOVED) → 2026-09-10: $6350.00 → 2026-09-30: $6350.00"
+      "diffStatus": "ATTRIBUTE_CHANGED",
+      "priceHistoryTrail": "2026-08-12: $6350.00 → 2026-08-13: $6350.00 → 2026-08-14: $6350.00 → 2026-08-16: $6350.00 → 2026-08-19: $6350.00 → 2026-08-22: $6350.00 (✕ REMOVED) → 2026-08-24: $6350.00 (✕ REMOVED) → 2026-09-09: $6350.00 (✕ REMOVED) → 2026-09-10: $6350.00 → 2026-09-30: $6350.00 → 2026-10-17: $6350.00"
     },
     "P73285-B21": {
       "sku": "P73285-B21",
@@ -682,8 +687,8 @@
       "discontinuedDate": "2026-09-09",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "UNCHANGED",
-      "priceHistoryTrail": "2026-08-12: $6890.00 → 2026-08-13: $6890.00 → 2026-08-14: $6890.00 → 2026-08-16: $6890.00 → 2026-08-19: $6890.00 → 2026-08-22: $6890.00 (✕ REMOVED) → 2026-08-24: $6890.00 (✕ REMOVED) → 2026-09-09: $6890.00 (✕ REMOVED) → 2026-09-10: $6890.00 → 2026-09-30: $6890.00"
+      "diffStatus": "ATTRIBUTE_CHANGED",
+      "priceHistoryTrail": "2026-08-12: $6890.00 → 2026-08-13: $6890.00 → 2026-08-14: $6890.00 → 2026-08-16: $6890.00 → 2026-08-19: $6890.00 → 2026-08-22: $6890.00 (✕ REMOVED) → 2026-08-24: $6890.00 (✕ REMOVED) → 2026-09-09: $6890.00 (✕ REMOVED) → 2026-09-10: $6890.00 → 2026-09-30: $6890.00 → 2026-10-17: $6890.00"
     },
     "P73286-B21": {
       "sku": "P73286-B21",
@@ -698,8 +703,8 @@
       "discontinuedDate": "2026-09-09",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "UNCHANGED",
-      "priceHistoryTrail": "2026-08-12: $7120.00 → 2026-08-13: $7120.00 → 2026-08-14: $7120.00 → 2026-08-16: $7120.00 → 2026-08-19: $7120.00 → 2026-08-22: $7120.00 (✕ REMOVED) → 2026-08-24: $7120.00 (✕ REMOVED) → 2026-09-09: $7120.00 (✕ REMOVED) → 2026-09-10: $7120.00 → 2026-09-30: $7120.00"
+      "diffStatus": "ATTRIBUTE_CHANGED",
+      "priceHistoryTrail": "2026-08-12: $7120.00 → 2026-08-13: $7120.00 → 2026-08-14: $7120.00 → 2026-08-16: $7120.00 → 2026-08-19: $7120.00 → 2026-08-22: $7120.00 (✕ REMOVED) → 2026-08-24: $7120.00 (✕ REMOVED) → 2026-09-09: $7120.00 (✕ REMOVED) → 2026-09-10: $7120.00 → 2026-09-30: $7120.00 → 2026-10-17: $7120.00"
     },
     "P73287-B21": {
       "sku": "P73287-B21",
@@ -1405,20 +1410,6 @@
       "constraint": "max 2",
       "minQty": 0,
       "maxQty": 2
-    },
-    {
-      "parentCategory": "HPE Compute Ops Management",
-      "name": "Compute Ops Management SKUs",
-      "constraint": "required",
-      "minQty": 1,
-      "maxQty": -2
-    },
-    {
-      "parentCategory": "HPE Compute Ops Management",
-      "name": "Compute Ops Management Enablement SKUs",
-      "constraint": "max 1",
-      "minQty": 0,
-      "maxQty": 1
     }
   ],
   "rules": [
@@ -1774,8 +1765,8 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "P74744-B21 conditional visibility: portal selector activation required (Supported with 8LFF CTO Server only.); PORTAL_CONDITIONAL",
-      "parentCategory": "HPE Compute Ops Management",
-      "subCategory": "Compute Ops Management Enablement SKUs",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SFF Drive Cages & Enablement",
       "constraint": "",
       "maxQty": ""
     },
@@ -2284,8 +2275,8 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "P74752-B21 conditional visibility: portal selector activation required (Supported with 8LFF CTO Server only.); PORTAL_CONDITIONAL",
-      "parentCategory": "HPE Compute Ops Management",
-      "subCategory": "Compute Ops Management Enablement SKUs",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "Cables & Enablement Kits Options",
       "constraint": "",
       "maxQty": ""
     },
@@ -10848,8 +10839,8 @@
       "rule": "Supported with 8LFF and 12LFF CTO Server only."
     },
     {
-      "parentCategory": "HPE Compute Ops Management",
-      "subCategory": "Compute Ops Management Enablement SKUs",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SFF Drive Cages & Enablement",
       "constraint": "max 1",
       "maxQty": 1,
       "rule": "Supported with 8LFF CTO Server only."
@@ -10965,6 +10956,13 @@
       "constraint": "max 2",
       "maxQty": 2,
       "rule": "Selection constraint for Optical Drive Accessories: max 2"
+    },
+    {
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "Cables & Enablement Kits Options",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Supported with 8LFF CTO Server only."
     },
     {
       "parentCategory": "Memory",
@@ -11331,7 +11329,7 @@
       "rule": "Selection constraint for Partner Software - Operating System: no max"
     },
     {
-      "parentCategory": "HPE Compute Ops Management",
+      "parentCategory": "Software & Licenses",
       "subCategory": "Compute Ops Management SKUs",
       "constraint": "required",
       "maxQty": -2,
@@ -11464,7 +11462,7 @@
       "rule": "Selection constraint for NVIDIA GPU SW: no max"
     },
     {
-      "parentCategory": "HPE Compute Ops Management",
+      "parentCategory": "Software & Licenses",
       "subCategory": "Compute Ops Management Enablement SKUs",
       "constraint": "max 1",
       "maxQty": 1,

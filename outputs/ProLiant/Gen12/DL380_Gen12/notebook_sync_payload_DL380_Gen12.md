@@ -4,7 +4,7 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen12/DL380_Gen12`
 
-**Sync Timestamp**: 2026-10-18T07:08:53.613Z
+**Sync Timestamp**: 2026-10-18T08:23:15.903Z
 
 **Total Verified SKUs**: `1124` (`602` Hardware + `522` Services)
 
@@ -18,9 +18,9 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Reinstated | Status |
 |----------|------------|---------------------|---------------|-------------------|------------|--------|
-| **Hardware Components** | 602 | 3 | 66 | 47 | 0 | **CERTIFIED** |
-| **Support Services & SLAs** | 522 | 3 | 35 | 20 | 0 | **CERTIFIED** |
-| **Total Portfolio** | **1124** | **6** | **101** | **67** | **0** | **ACTIVE** |
+| **Hardware Components** | 602 | 3 | 0 | 1103 | 0 | **CERTIFIED** |
+| **Support Services & SLAs** | 522 | 3 | 0 | 484 | 0 | **CERTIFIED** |
+| **Total Portfolio** | **1124** | **6** | **0** | **1587** | **0** | **ACTIVE** |
 
 ## 🌐 1. Universal Vendor Rules (HPE)
 
@@ -458,21 +458,21 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Timestamp | SKU | Attribute | Old Value | New Value |
 |-----------|-----|-----------|-----------|-----------|
-| 2026-10-17 | `AF567A` | Discontinued Date | 09/30/2028 | **06/30/2029** |
-| 2026-10-17 | `AF569A` | Discontinued Date | 09/30/2028 | **06/30/2029** |
-| 2026-10-17 | `AF570A` | Discontinued Date | 09/30/2028 | **06/30/2029** |
-| 2026-10-17 | `AF572A` | Discontinued Date | 09/30/2028 | **06/30/2029** |
-| 2026-10-17 | `E6U59ABE` | Start Date | 09/10/2013 | **09/28/2013** |
-| 2026-10-17 | `E6U64ABE` | Start Date | 09/10/2013 | **09/28/2013** |
-| 2026-10-17 | `E5Y44A` | Start Date | 11/01/2013 | **11/02/2013** |
-| 2026-10-17 | `E5Y43A` | Start Date | 11/01/2013 | **11/02/2013** |
-| 2026-10-17 | `E5Y36A` | Start Date | 11/01/2013 | **11/02/2013** |
-| 2026-10-17 | `P79555-B21` | Vendor Attributes | {"Extended Price (USD)":"1.00","Price Delta (USD)":"+0.00"} | **{"Extended Price (USD)":"1.00","Price Delta (USD)":"Selected"}** |
-| 2026-10-17 | `P79552-B21` | Vendor Attributes | {"Extended Price (USD)":"1.00","Price Delta (USD)":"Selected"} | **{"Extended Price (USD)":"1.00","Price Delta (USD)":"+0.00"}** |
-| 2026-10-17 | `S3U30C` | Availability | Not published by OCA | **Available** |
-| 2026-10-17 | `S6A73C` | Availability | Not published by OCA | **Available** |
-| 2026-10-17 | `S6W21C` | Availability | Not published by OCA | **Available** |
-| 2026-10-17 | `P79558-B21` | Vendor Attributes | {"Extended Price (USD)":"1.00","Price Delta (USD)":"+0.00"} | **{"Extended Price (USD)":"1.00","Price Delta (USD)":"Selected"}** |
+| 2026-10-17 | `P79555-B21` | Price Delta (USD) | +0.00 | **Selected** |
+| 2026-10-17 | `P79552-B21` | Price Delta (USD) | Selected | **+0.00** |
+| 2026-10-17 | `S3U30C` | CLIC Status | Active | **Unpublished** |
+| 2026-10-17 | `S3U30C` | Lead Time |  | **Unpublished** |
+| 2026-10-17 | `S3U30C` | Lead Time Source | Not published by OCA | **Unpublished** |
+| 2026-10-17 | `S3U30C` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **{"listPrice":112579}** |
+| 2026-10-17 | `S6A73C` | CLIC Status | Active | **Unpublished** |
+| 2026-10-17 | `S6A73C` | Lead Time |  | **Unpublished** |
+| 2026-10-17 | `S6A73C` | Lead Time Source | Not published by OCA | **Unpublished** |
+| 2026-10-17 | `S6A73C` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **{"listPrice":57002}** |
+| 2026-10-17 | `S6W21C` | CLIC Status | Active | **Unpublished** |
+| 2026-10-17 | `S6W21C` | Lead Time |  | **Unpublished** |
+| 2026-10-17 | `S6W21C` | Lead Time Source | Not published by OCA | **Unpublished** |
+| 2026-10-17 | `S6W21C` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **{"listPrice":37899}** |
+| 2026-10-17 | `P79558-B21` | Price Delta (USD) | +0.00 | **Selected** |
 
 ## 🧩 6. Same-Product CTO Variant Matrix
 
@@ -505,9 +505,9 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Product # | Description | Category | List Price (USD) | Lead Time |
 |---|---|---|---:|---|
-| `P01366-B21` | HPE 96W Smart Storage Lithium-ion Battery with 145mm Cable Kit | Storage Controllers | $110 | Standard |
-| `P03178-B21` | HPE 1000W Flex Slot Titanium Hot Plug Power Supply Kit | Power Supplies | $926 | Standard |
-| `P03178-B21` | HPE 1000W Flex Slot Titanium Hot Plug Power Supply Kit | Power Supplies | $926 | Standard |
+| `P01366-B21` | HPE 96W Smart Storage Lithium-ion Battery with 145mm Cable Kit | Storage Controllers | $110 | Unpublished |
+| `P03178-B21` | HPE 1000W Flex Slot Titanium Hot Plug Power Supply Kit | Power Supplies | $926 | Unpublished |
+| `P03178-B21` | HPE 1000W Flex Slot Titanium Hot Plug Power Supply Kit | Power Supplies | $926 | Unpublished |
 
 ## 📦 9. Solution Manifest, EDT & Commercial Baseline
 

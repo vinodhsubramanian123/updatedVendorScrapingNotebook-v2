@@ -99,8 +99,8 @@ Drive Enclosures / Drives	Drive Cage	max 9	Configuration Rule	P74741-B21 conditi
 Drive Enclosures / Drives	Drive Cage	max 9	Configuration Rule	P74746-B21 conditional visibility: portal selector activation required (Supported with 8LFF and 12LFF CTO Server only.); PORTAL_CONDITIONAL
 Drive Enclosures / Drives	Drive Cage	max 9	Configuration Rule	P75411-B21 conditional visibility: portal selector activation required (Supported with 8LFF and 12LFF CTO Server only.); PORTAL_CONDITIONAL
 Drive Enclosures / Drives	Drive Cage	max 9	Configuration Rule	P76875-B21 conditional visibility: portal selector activation required (Supported with 8LFF and 12LFF CTO Server only.); PORTAL_CONDITIONAL
-HPE Compute Ops Management	Compute Ops Management Enablement SKUs	max 1	Configuration Rule	Supported with 8LFF CTO Server only.
-HPE Compute Ops Management	Compute Ops Management Enablement SKUs	max 1	Configuration Rule	P74744-B21 conditional visibility: portal selector activation required (Supported with 8LFF CTO Server only.); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	SFF Drive Cages & Enablement	max 1	Configuration Rule	Supported with 8LFF CTO Server only.
+Drive Enclosures / Drives	SFF Drive Cages & Enablement	max 1	Configuration Rule	P74744-B21 conditional visibility: portal selector activation required (Supported with 8LFF CTO Server only.); PORTAL_CONDITIONAL
 Networking	Tertiary PCIe Risers	no max	Configuration Rule	Define connection for 8SFF x4 Cage only needed if cage is selected.
 Networking	Tertiary PCIe Risers	no max	Configuration Rule	P77955-B21 conditional visibility: portal selector activation required (Define connection for 8SFF x4 Cage only needed if cage is selected.); PORTAL_CONDITIONAL
 Networking	Tertiary PCIe Risers	no max	Configuration Rule	P77958-B21 conditional visibility: portal selector activation required (Define connection for 8SFF x4 Cage only needed if cage is selected.); PORTAL_CONDITIONAL
@@ -146,7 +146,8 @@ Drive Enclosures / Drives	Optical Drive	max 1	Configuration Rule	Selection const
 Drive Enclosures / Drives	Optical Drive	max 1	Configuration Rule	BTO products are not allowed in CTO Base Model.
 Drive Enclosures / Drives	Optical Drive	max 1	Configuration Rule	701498-B21 conditional visibility: portal selector activation required (BTO products are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Optical Drive Accessories	max 2	Configuration Rule	Selection constraint for Optical Drive Accessories: max 2
-HPE Compute Ops Management	Compute Ops Management Enablement SKUs	max 1	Configuration Rule	P74752-B21 conditional visibility: portal selector activation required (Supported with 8LFF CTO Server only.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Cables & Enablement Kits Options	max 1	Configuration Rule	Supported with 8LFF CTO Server only.
+Cables & Enablement Kits	Cables & Enablement Kits Options	max 1	Configuration Rule	P74752-B21 conditional visibility: portal selector activation required (Supported with 8LFF CTO Server only.); PORTAL_CONDITIONAL
 Memory	Memory Blank Kit	max 1	Configuration Rule	BTO products are not allowed in CTO Base Model.
 Memory	Memory Blank Kit	max 1	Configuration Rule	807878-B21 conditional visibility: portal selector activation required (BTO products are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
 Memory	Memory Blank Kit	max 1	Configuration Rule	666987-B21 conditional visibility: portal selector activation required (BTO products are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
@@ -296,7 +297,7 @@ Software & Licenses	HPC Software Products	no max	Configuration Rule	S2M63A condi
 Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	Selection constraint for High Availability Computing - Cluster Software: no max
 Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	R8V48A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
 Software & Licenses	Partner Software - Operating System	no max	Configuration Rule	Selection constraint for Partner Software - Operating System: no max
-HPE Compute Ops Management	Compute Ops Management SKUs	required	Configuration Rule	Selection constraint for Compute Ops Management SKUs: required
+Software & Licenses	Compute Ops Management SKUs	required	Configuration Rule	Selection constraint for Compute Ops Management SKUs: required
 Software & Licenses	OEM Software	no max	Configuration Rule	Selection constraint for OEM Software: no max
 Software & Licenses	OEM Software	no max	Configuration Rule	N0U73A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Software & Licenses	OEM Software	no max	Configuration Rule	N0U75A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
@@ -582,7 +583,7 @@ Software & Licenses	High Availability Computing - Cluster Software	no max	Config
 Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W29AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
 Software & Licenses	Partner Software - Interconnect Management Array	no max	Configuration Rule	Selection constraint for Partner Software - Interconnect Management Array: no max
 Graphics & GPU	NVIDIA GPU SW	no max	Configuration Rule	Selection constraint for NVIDIA GPU SW: no max
-HPE Compute Ops Management	Compute Ops Management Enablement SKUs	max 1	Configuration Rule	Selection constraint for Compute Ops Management Enablement SKUs: max 1
+Software & Licenses	Compute Ops Management Enablement SKUs	max 1	Configuration Rule	Selection constraint for Compute Ops Management Enablement SKUs: max 1
 Software & Licenses	OEM Software	no max	Configuration Rule	R2U47AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Software & Licenses	Server Management & Operating System Licenses	no max	Configuration Rule	R1D43AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
 Software & Licenses	Server Management & Operating System Licenses	no max	Configuration Rule	R1D46AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL

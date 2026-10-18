@@ -79,6 +79,18 @@ The multi-cluster decomposition engine operates generically across all enterpris
    - **Fibre Channel SAN Fabric Redundancy**: Validates dual-fabric SAN redundancy (Fabric A + Fabric B), detecting single points of failure (`sanSwitchCount === 1` when FC HBAs are present).
    - **Synergy Composable Fabrics**: Validates mezzanine-to-interconnect bay mapping: Bay 1/4 (Mezz 1), Bay 2/5 (Mezz 2), Bay 3/6 (Mezz 3), preventing Ethernet-to-FC fabric cross-talk.
 
+### 5. The "Atomic Icon" Principle & Proportional License/Service Partitioning (INV-179)
+- **The Cross-Icon Pooling Trap**: In HPE OCA/CLIC solutions with multiple server icons, CLIC permits software licenses (e.g. 40x `E5Y35AAE` OneView) to be pooled under a single icon because order-level validation tallies $40 \ge 40$. However, cloning, splitting, or quoting Icon #1 independently leaves it with 0 licenses, triggering fatal Process Control block:
+  `Product#: P73282-B21 Rule#: 81322276 Item/Subitem: 0100/01 PROCESS CONTROL CONFIGURATION: OVERRIDE REQUIRES APPROVAL ... requires at least 1 COM SKU to be quoted as well.`
+- **Atomic Icon Invariant**: Every configured server icon or cluster in a multi-node/multi-cluster tender MUST be an independently buildable atomic unit in complete isolation.
+- **Proportional Allocation Formulations**:
+  1. *Mandatory Management Software (CLIC Rule 81322276)*: Every ProLiant Gen11 and Gen12 CTO chassis (`P73282-B21`, `P76706-B21`, `P52534-B21`, `P52560-B21`) requires exactly $1$ qualifying COM or OneView license per server allocated directly inside its own icon manifest:
+     $$\text{Licenses}_{\text{Icon } i} = N_i \quad (\text{Eligible: Base } R7A11AAE, \text{Ext } R7A12AAE / S2E10AAE / S5E59AAE-S5E61AAE, \text{OV } E5Y43A / P8B31A / E5Y35AAE, \text{Track } P8B25A / E5Y36A / E5Y44A)$$
+  2. *On-Box BMC Licenses*: Allocate $N_i$ units of `BD505A` (iLO Advanced) per icon. Note that iLO Advanced is an on-box BMC license and does NOT satisfy the COM/OneView fleet management mandate (orthogonal layers).
+  3. *Pointnext Hardware Support*: Tech Care Basic (`HU4B2A3` parent + $N_i$ child support e.g. `HU4B2A30C4V`) must be allocated directly to each icon.
+  4. *Service Credits*: Proportionally partitioned ($N_i / \sum N \times \text{Credits}$) or isolated in a dedicated solution-level Services container; never lumped arbitrarily into a single compute icon.
+- **Automated Partitioning Enforcement**: `multi_cluster_splitter.js:applyClusterManagementAndSupportPolicy` automatically inspects partitioned clusters and injects or tags mandatory Base COM SKU `R7A11AAE` (1 per server) and parent/child Tech Care support if missing from the icon manifest.
+
 ---
 
 ## 💻 CLI Commands & Direct Execution

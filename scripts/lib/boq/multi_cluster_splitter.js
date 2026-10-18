@@ -550,6 +550,88 @@ function applyClusterEnablementKits(cluster, mult, enablementKits) {
   }
 }
 
+const QUALIFYING_COM_ONEVIEW_SKUS = new Set([
+  'R7A11AAE', // Base SKU: COM 3yr Enhanced Upfront
+  'R7A12AAE', // 5-Year Enhanced, Upfront
+  'S2E10AAE', // 7-Year Enhanced, Upfront
+  'S5E59AAE', // HPE COM Adv 3yr Up ProLiant SaaS
+  'S5E60AAE', // HPE COM Adv 5yr Up ProLiant SaaS
+  'S5E61AAE', // HPE COM Adv 7yr Up ProLiant SaaS
+  'E5Y43A',   // OneView Advanced FIO SKU (with iLO)
+  'P8B31A',   // OneView Advanced w/o iLO FIO SKU
+  'E5Y35AAE', // HPE OneView including 3yr 24x7 Support Flexible Quantity E-LTU
+  'P8B25A',   // HPE OV w/o iLO 3yr 24x7 Track 1Svr LTU
+  'E5Y36A',   // HPE OV 3yr 24x7 Supp Track 1 Svr Lic
+  'E5Y44A'    // HPE OV for DL 3y 24x7 Bdl Track 1Svr Lic
+]);
+
+/**
+ * Enforce the "Atomic Icon" Principle (INV-179):
+ * Guarantees that each partitioned server cluster is an independently buildable atomic unit in CLIC.
+ * Specifically verifies and injects:
+ * 1. CLIC Rule 81322276: Mandatory Compute Ops Management (COM) or OneView license attached 1:1 per server
+ *    for all compatible NPI CTO models on Gen11 and Gen12 ProLiant platforms.
+ * 2. Dedicated per-cluster hardware support line items (Tech Care Basic) and proportional service credits.
+ */
+function applyClusterManagementAndSupportPolicy(cluster, mult, rawItems, detectedChassis) {
+  const isGen11Or12 = detectedChassis && (
+    detectedChassis.gen === 'Gen11' ||
+    detectedChassis.gen === 'Gen12' ||
+    /Gen11|Gen12/i.test(detectedChassis.model || '')
+  );
+
+  if (!isGen11Or12) return;
+
+  // 1. Mandatory Management License (CLIC Rule 81322276)
+  const hasQualifyingManagementLicense = (cluster.items || []).some(ci => {
+    const clean = cleanBaseSKU(ci.sku);
+    return QUALIFYING_COM_ONEVIEW_SKUS.has(clean) ||
+           /compute ops management|oneview/i.test(ci.description || '');
+  });
+
+  if (!hasQualifyingManagementLicense) {
+    cluster.items.push({
+      sku: 'R7A11AAE',
+      description: 'HPE GreenLake for Compute Ops Management Enhanced 3-year Upfront SaaS (CLIC Rule 81322276 Mandatory Policy)',
+      quantity: 1,
+      totalQuantity: mult,
+      category: 'Software & Licenses',
+      policyMandated: true,
+      ruleId: '81322276',
+      notes: 'Mandatory COM Base SKU injected to guarantee independent cluster buildability (Atomic Icon Invariant INV-179)'
+    });
+    if (!cluster.policyAdvisories) cluster.policyAdvisories = [];
+    cluster.policyAdvisories.push('CLIC Rule 81322276: Injected R7A11AAE (1 per server) to avoid Process Control override block upon standalone quote export.');
+  }
+
+  // 2. Hardware Support Check (INV-179 Proportional Support)
+  const hasSupportService = (cluster.items || []).some(ci =>
+    /^HU4B2A3/i.test(cleanBaseSKU(ci.sku)) ||
+    ci.category === 'Support Services' ||
+    /tech care/i.test(ci.description || '')
+  );
+
+  const rawSupportItem = (rawItems || []).find(r => /^HU4B2A3/i.test(cleanBaseSKU(r.sku)) || /tech care/i.test(r.description || ''));
+  if (rawSupportItem && !hasSupportService) {
+    cluster.items.push({
+      sku: rawSupportItem.sku || 'HU4B2A3',
+      description: rawSupportItem.description || 'HPE 3Y Tech Care Basic Service',
+      quantity: 1,
+      totalQuantity: 1,
+      category: 'Support Services',
+      policyMandated: true
+    });
+    cluster.items.push({
+      sku: 'HU4B2A30C4V',
+      description: `HPE ${detectedChassis.model || 'ProLiant'} Support`,
+      quantity: 1,
+      totalQuantity: mult,
+      category: 'Support Services',
+      policyMandated: true
+    });
+  }
+}
+
 /**
  * Identify clusters and compute partition multipliers from raw items.
  * @param {Array<object>} rawItems 
@@ -670,6 +752,7 @@ function analyzeAndPartitionClusters(rawItems, boqName = '') {
     });
 
     applyClusterEnablementKits(cluster, mult, enablementKits);
+    applyClusterManagementAndSupportPolicy(cluster, mult, rawItems, detectedChassis);
     cluster.clusterSizing = computeClusterSizing(mult, cluster.items, uHeight, railKitSku, railKitDesc);
   });
 
@@ -745,7 +828,9 @@ module.exports = {
   findValidSkuInText,
   extractRawItemsFromWorkbook,
   analyzeAndPartitionClusters,
-  splitAndWriteClusterWorkbooks
+  splitAndWriteClusterWorkbooks,
+  applyClusterManagementAndSupportPolicy,
+  QUALIFYING_COM_ONEVIEW_SKUS
 };
 
 // ── CLI Runner ─────────────────────────────────────────────────────────────

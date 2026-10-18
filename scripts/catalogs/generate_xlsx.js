@@ -114,13 +114,17 @@ const SKU_COL_WIDTHS = [
   { wch: 70 }, // Description
   { wch: 12 }, // Current Qty
   { wch: 16 }, // Unit Price (USD)
+  { wch: 16 }, // Cost (USD)
   { wch: 16 }, // Price Delta (USD)
   { wch: 18 }, // Extended Price (USD)
   { wch: 15 }, // Price per GB (USD)
   { wch: 14 }, // HPE Recommended
   { wch: 24 }, // Availability
   { wch: 18 }, // Lead Time
+  { wch: 16 }, // Lead Time Days
+  { wch: 30 }, // Speed Tier
   { wch: 24 }, // Lead Time Source
+  { wch: 18 }, // CLIC Status
   { wch: 20 }, // Lifecycle Status
   { wch: 12 }, // Start Date
   { wch: 16 }, // Discontinued Date
@@ -571,9 +575,9 @@ if (discontinuedRows.length > 0) {
 
 // ── Sheet: Supply Chain & Lead Times ─────────────────────────────────────────
 const supplyChainRows = allCombinedData
-  .filter(r => r['Lead Time'] || r['Availability'] || r['Vendor Attributes (JSON)'])
+  .filter(r => (r['Lead Time'] && r['Lead Time'] !== 'Unpublished') || r['Availability'] || r['Vendor Attributes (JSON)'])
   .map(r => {
-    const rawLt = r['Lead Time'] || '';
+    const rawLt = (r['Lead Time'] && r['Lead Time'] !== 'Unpublished') ? r['Lead Time'] : '';
     let ltDays = null;
     const range = String(rawLt).match(/(\d+)\s*(?:-|to)\s*(\d+)/);
     if (range) {
@@ -583,10 +587,10 @@ const supplyChainRows = allCombinedData
       if (single) ltDays = Number(single[1]);
     }
 
-    let speedTier = 'Standard Delivery (14-30d)';
+    let speedTier = 'Unpublished';
     if (ltDays !== null) {
       if (ltDays <= 7) speedTier = 'Fast-Ship Certified (<=7d)';
-      else if (ltDays <= 30) speedTier = 'Standard Delivery (14-30d)';
+      else if (ltDays <= 30) speedTier = 'Standard Delivery (8-30d)';
       else if (ltDays <= 45) speedTier = 'Extended Schedule (31-45d)';
       else speedTier = 'Constrained / Long Lead Time (>45d)';
     } else if (/unavailable|out of stock|allocation hold/i.test(r['Availability'] || '')) {
@@ -599,10 +603,11 @@ const supplyChainRows = allCombinedData
       'Main Category': r['Main Category'] || 'General Hardware',
       'Sub-Category': r['Sub-Category'] || '',
       'Availability': r['Availability'] || 'Available',
-      'Lead Time': rawLt || 'Standard',
+      'Lead Time': rawLt || 'Unpublished',
       'Lead Time Days': ltDays !== null ? ltDays : '',
       'Speed Tier': speedTier,
       'List Price (USD)': r['Unit Price (USD)'] || r['Price'] || '',
+      'Cost (USD)': r['Cost (USD)'] || '',
       'HPE Recommended': r['HPE Recommended'] || 'No'
     };
   });
@@ -616,7 +621,7 @@ if (supplyChainRows.length > 0) {
   const scWS = createStyledSheet(supplyChainRows, [
     { wch: 16 }, { wch: 70 }, { wch: 25 }, { wch: 25 },
     { wch: 20 }, { wch: 16 }, { wch: 16 }, { wch: 30 },
-    { wch: 16 }, { wch: 16 }
+    { wch: 16 }, { wch: 16 }, { wch: 16 }
   ]);
   XLSX.utils.book_append_sheet(wb, scWS, 'Supply Chain & Lead Times');
   console.log(`  ✅ Sheet 'Supply Chain & Lead Times' — ${supplyChainRows.length} entries.`);

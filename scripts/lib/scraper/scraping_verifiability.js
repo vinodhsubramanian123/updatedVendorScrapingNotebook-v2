@@ -138,6 +138,18 @@ const SCRAPING_VERIFIABILITY_MATRIX = Object.freeze({
         description: 'HPE Recommended column preserves observed Yes/No or explicit Unknown',
         verify: ctx => ctx.recommendedColumnVerified === true,
         remediation: 'Ensure parseSingleTableRow populates HPE Recommended field.'
+      },
+      {
+        id: 'CLIC_LIFECYCLE_SEPARATED',
+        description: 'CLIC Status and Lifecycle Status are independently classified and not blindly mirrored',
+        verify: ctx => ctx.clicLifecycleSeparated !== false,
+        remediation: 'Ensure CLIC Status retains orderability/validation and Lifecycle Status retains commercial lifecycle.'
+      },
+      {
+        id: 'ZERO_HALLUCINATED_LEAD_TIMES',
+        description: 'Missing lead times are marked Unpublished, not defaulted to Standard Delivery (14-30d)',
+        verify: ctx => ctx.leadTimeHonestyVerified !== false,
+        remediation: 'Supply chain rows must not hallucinate default 14-30d delivery for empty lead times.'
       }
     ]
   },

@@ -45,6 +45,49 @@ function extractCatalogItemPrice(skuData) {
 }
 
 /**
+ * Extract numerical partner cost from catalog SKU row
+ * @param {object} skuData - Catalog SKU data object
+ * @returns {{ cost: number|null, hasCost: boolean }}
+ */
+function extractCatalogItemCost(skuData) {
+  if (!skuData) return { cost: null, hasCost: false };
+  const rawCost = skuData.costPrice ?? skuData['Cost (USD)'];
+  if (rawCost === undefined || rawCost === null || rawCost === '') {
+    return { cost: null, hasCost: false };
+  }
+  const cleaned = String(rawCost).trim().replace(/^\$\s*/, '').replace(/,/g, '');
+  const num = /^(?:\d+(?:\.\d*)?|\.\d+)$/.test(cleaned) ? Number(cleaned) : NaN;
+  if (!Number.isFinite(num) || num < 0) {
+    return { cost: null, hasCost: false };
+  }
+  return { cost: num, hasCost: true };
+}
+
+/**
+ * Extract supply chain lead time metrics while strictly preventing ungrounded defaults
+ * @param {object} skuData - Catalog SKU data object
+ * @returns {{ raw: string, days: number|null, speedTier: string, isPublished: boolean }}
+ */
+function extractCatalogItemLeadTime(skuData) {
+  if (!skuData) return { raw: 'Unpublished', days: null, speedTier: 'Unpublished', isPublished: false };
+  const raw = String(skuData['Lead Time'] || skuData.leadTime || '').trim();
+  if (!raw || raw === 'Unpublished' || raw === 'Not published by OCA' || raw === 'Standard') {
+    return { raw: raw || 'Unpublished', days: null, speedTier: 'Unpublished', isPublished: false };
+  }
+  let days = skuData.leadTimeDays !== undefined && skuData.leadTimeDays !== null && skuData.leadTimeDays !== '' ? Number(skuData.leadTimeDays) : null;
+  if (days === null || !Number.isFinite(days)) {
+    const range = raw.match(/(\d+)\s*(?:-|to)\s*(\d+)/);
+    if (range) days = Math.round((Number(range[1]) + Number(range[2])) / 2);
+    else {
+      const single = raw.match(/(\d+)/);
+      if (single) days = Number(single[1]);
+    }
+  }
+  const speedTier = skuData['Speed Tier'] || (days !== null ? (days <= 7 ? 'Fast-Ship Certified (<=7d)' : days <= 30 ? 'Standard Delivery (8-30d)' : days <= 45 ? 'Extended Schedule (31-45d)' : 'Constrained / Long Lead Time (>45d)') : 'Unpublished');
+  return { raw, days, speedTier, isPublished: days !== null };
+}
+
+/**
  * Validate a candidate catalog SKU against role, specification, and keyword requirements
  * @param {object} skuData
  * @param {string} parentCat
@@ -377,6 +420,8 @@ module.exports = {
   DEFAULT_CHASSIS_PARAMETERS,
   getChassisEquationParameters,
   extractCatalogItemPrice,
+  extractCatalogItemCost,
+  extractCatalogItemLeadTime,
   resolveComponentByRole,
   evaluateThermalCoolingEquation,
   evaluateDcPowerEquation,

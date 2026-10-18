@@ -390,6 +390,49 @@ function _checkNotebookGrounding(output, context = {}) {
     { status: 'UNVERIFIED_GROUNDING' });
 }
 
+const QUALIFYING_COM_ONEVIEW_SKUS = new Set([
+  'R7A11AAE', 'R7A12AAE', 'S2E10AAE', 'S5E59AAE', 'S5E60AAE', 'S5E61AAE',
+  'E5Y43A', 'P8B31A', 'E5Y35AAE', 'P8B25A', 'E5Y36A', 'E5Y44A'
+]);
+
+function _checkMandatoryComPolicy(output, _context = {}) {
+  const chassis = String(output?.chassis || output?.targetChassis || output?.detectedChassis?.model || '').toLowerCase();
+  const isGen11Or12ProLiant = /gen11|gen12/i.test(chassis) && /dl|ml/i.test(chassis);
+
+  if (!isGen11Or12ProLiant) {
+    return makeCheck('B14', 'Mandatory COM / OneView Policy (Rule 81322276)', 'WARN', 'NOT_APPLICABLE', 'Not an NPI ProLiant Gen11/Gen12 CTO server; COM attach policy not mandated.');
+  }
+
+  const isUnbuildable = output?.isMathClean === false || output?.isWholeSolutionValid === false || output?.status === 'UNBUILDABLE';
+  if (isUnbuildable) {
+    return makeCheck('B14', 'Mandatory COM / OneView Policy (Rule 81322276)', 'WARN', 'NOT_APPLICABLE', 'Unbuildable BOM does not require policy compliance check.');
+  }
+
+  const rankedSolutions = output?.conflictGraph?.rankedSolutions || output?.rankedSolutions || [];
+  const parts = rankedSolutions.length > 0
+    ? (rankedSolutions[0].skuPartsList || rankedSolutions[0].skuList || [])
+    : (output?.items || []);
+
+  if (parts.length === 0) {
+    return makeCheck('B14', 'Mandatory COM / OneView Policy (Rule 81322276)', 'WARN', 'UNKNOWN', 'Cannot verify COM policy compliance without candidate BOM items.');
+  }
+
+  const hasQualifyingComOrOneView = parts.some(p => {
+    const sku = cleanBaseSKU(p.sku || p['Product #']);
+    const desc = (p.description || p.Description || '').toLowerCase();
+    return QUALIFYING_COM_ONEVIEW_SKUS.has(sku) ||
+           desc.includes('compute ops management') ||
+           (desc.includes('oneview') && !desc.includes('without oneview'));
+  });
+
+  return hasQualifyingComOrOneView
+    ? makeCheck('B14', 'Mandatory COM / OneView Policy (Rule 81322276)', 'WARN', 'PASSED', 'Mandatory COM or OneView management software policy satisfied per CLIC Rule 81322276.')
+    : makeCheck('B14', 'Mandatory COM / OneView Policy (Rule 81322276)', 'WARN', 'ACTION_REQUIRED',
+        'ProLiant Gen11/Gen12 CTO configuration lacks mandatory HPE GreenLake for Compute Ops Management (COM) or OneView license (CLIC Rule 81322276). Add R7A11AAE (or approved replacement E5Y35AAE/E5Y43A) or submit an exception via https://solutionsdeliveryhpe.com/clicsmartform to avoid CLIC Process Control block.',
+        { ruleId: '81322276', targetChassis: chassis }
+      );
+}
+
 /**
  * BOQ Evaluation Criteria (B1–B16)
  */
@@ -400,7 +443,8 @@ function validateBoqEvaluationCriteria(output, context = {}) {
     ..._checkFinancialPricing(output),
     _checkUnsolicitedServices(output, context),
     _checkMandatoryAccessories(output),
-    _checkNotebookGrounding(output, context)
+    _checkNotebookGrounding(output, context),
+    _checkMandatoryComPolicy(output, context)
   ];
 }
 

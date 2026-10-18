@@ -1,6 +1,100 @@
 [
   {
     "summary": {
+      "runId": "run_DL380_Gen12_1792311193531",
+      "sessionName": "DL380_Gen12",
+      "startTime": "2026-10-18T08:13:13.517Z",
+      "endTime": "2026-10-18T08:13:15.435Z",
+      "durationMs": 1918,
+      "durationSec": "1.92",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 1172,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 602,
+      "validationStats": {
+        "totalEntries": 148,
+        "totalSKUs": 1172,
+        "validSKUs": 1172,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 5,
+        "zeroPriceSKUs": 76,
+        "priceErrors": 0,
+        "ruleCount": 769,
+        "categoryCount": 13
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-10-18T08:13:13.531Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "outputs/ProLiant/Gen12/DL380_Gen12/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/ProLiant/Gen12/DL380_Gen12/DL380_Gen12_Catalog.json",
+          "chassisLabel": "DL380 Gen12"
+        }
+      },
+      {
+        "timestamp": "2026-10-18T08:13:15.037Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 68,
+          "totalUniqueSKUs": 602,
+          "incrementalStats": {
+            "totalScrapedSkus": 602,
+            "unchangedSkusCount": 597,
+            "modifiedSkusCount": 5,
+            "addedSkusCount": 0,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-10-18T08:13:15.053Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 148,
+            "totalSKUs": 1172,
+            "validSKUs": 1172,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 5,
+            "zeroPriceSKUs": 76,
+            "priceErrors": 0,
+            "ruleCount": 769,
+            "categoryCount": 13
+          }
+        }
+      },
+      {
+        "timestamp": "2026-10-18T08:13:15.435Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "outputs/ProLiant/Gen12/DL380_Gen12/DL380_Gen12_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 1172,
+      "classified": 1172,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
       "runId": "run_DL380_Gen12_1792239991752",
       "sessionName": "DL380_Gen12",
       "startTime": "2026-10-17T12:26:31.749Z",
@@ -4708,112 +4802,6 @@
       },
       {
         "timestamp": "2026-08-14T12:32:53.970Z",
-        "message": "Base Chassis Variant SKU [P78061-B21] has $0 list price. Verify if CTO chassis price was scraped correctly."
-      }
-    ],
-    "errors": [],
-    "skuSummary": {
-      "total": 284,
-      "classified": 284,
-      "ambiguous": 0,
-      "failed": 0
-    }
-  },
-  {
-    "summary": {
-      "runId": "run_DL380_Gen12_SFF_1786710717184",
-      "sessionName": "DL380_Gen12_SFF",
-      "startTime": "2026-08-14T12:31:57.183Z",
-      "endTime": "2026-08-14T12:31:57.566Z",
-      "durationMs": 383,
-      "durationSec": "0.38",
-      "overallStatus": "COMPLETED",
-      "totalSteps": 4,
-      "totalSKUsProcessed": 284,
-      "warningCount": 3,
-      "errorCount": 0,
-      "totalUniqueSKUs": 284,
-      "validationStats": {
-        "totalEntries": 70,
-        "totalSKUs": 284,
-        "validSKUs": 284,
-        "invalidSKUs": 0,
-        "baseVariantsCount": 13,
-        "zeroPriceSKUs": 8,
-        "priceErrors": 0,
-        "ruleCount": 27,
-        "categoryCount": 9
-      }
-    },
-    "steps": [
-      {
-        "timestamp": "2026-08-14T12:31:57.184Z",
-        "stepName": "Initialize Classification Engine",
-        "status": "SUCCESS",
-        "details": {
-          "rawInputPath": "outputs/ProLiant/Gen12/DL380_Gen12_SFF/raw_data/oca_raw_data_full.json",
-          "jsonOutputPath": "outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog.json"
-        }
-      },
-      {
-        "timestamp": "2026-08-14T12:31:57.493Z",
-        "stepName": "Step 5: Catalog Diff Engine",
-        "status": "SUCCESS",
-        "details": {
-          "totalSubcategories": 1,
-          "totalUniqueSKUs": 284,
-          "incrementalStats": {
-            "totalScrapedSkus": 284,
-            "unchangedSkusCount": 284,
-            "modifiedSkusCount": 0,
-            "addedSkusCount": 0,
-            "removedSkusCount": 0,
-            "estimatedTokensSaved": 42600,
-            "estimatedProcessingTimeSavedMs": 56800
-          }
-        }
-      },
-      {
-        "timestamp": "2026-08-14T12:31:57.498Z",
-        "stepName": "Pre-Commit Data Integrity Validation",
-        "status": "SUCCESS",
-        "details": {
-          "isValid": true,
-          "errorCount": 0,
-          "warningCount": 3,
-          "stats": {
-            "totalEntries": 70,
-            "totalSKUs": 284,
-            "validSKUs": 284,
-            "invalidSKUs": 0,
-            "baseVariantsCount": 13,
-            "zeroPriceSKUs": 8,
-            "priceErrors": 0,
-            "ruleCount": 27,
-            "categoryCount": 9
-          }
-        }
-      },
-      {
-        "timestamp": "2026-08-14T12:31:57.566Z",
-        "stepName": "Step 6: Atomic Save Output JSON",
-        "status": "SUCCESS",
-        "details": {
-          "path": "outputs/ProLiant/Gen12/DL380_Gen12_SFF/DL380_Gen12_SFF_Catalog.json"
-        }
-      }
-    ],
-    "warnings": [
-      {
-        "timestamp": "2026-08-14T12:31:57.497Z",
-        "message": "Base Chassis Variant SKU [P78064-B21] has $0 list price. Verify if CTO chassis price was scraped correctly."
-      },
-      {
-        "timestamp": "2026-08-14T12:31:57.498Z",
-        "message": "Base Chassis Variant SKU [P78058-B21] has $0 list price. Verify if CTO chassis price was scraped correctly."
-      },
-      {
-        "timestamp": "2026-08-14T12:31:57.498Z",
         "message": "Base Chassis Variant SKU [P78061-B21] has $0 list price. Verify if CTO chassis price was scraped correctly."
       }
     ],

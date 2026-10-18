@@ -19,9 +19,9 @@ function generateMainSheet(entries, chassisRoot, profile = null) {
   const rows = [[
     'Main Category', 'Sub-Category', 'Hierarchy Path', 'Component Role', 'Constraint Text',
     'Subcategory Min Qty', 'Subcategory Max Qty', 'Table Rule/Note', 'Product #', 'Option Type', 'Description', 'Current Qty',
-    'Unit Price (USD)', 'Price Delta (USD)', 'Extended Price (USD)', 'Price per GB (USD)',
-    'HPE Recommended', 'Availability', 'Lead Time', 'Lead Time Source', 'Lifecycle Status',
-    'Start Date', 'Discontinued Date', 'Vendor Attributes (JSON)',
+    'Unit Price (USD)', 'Cost (USD)', 'Price Delta (USD)', 'Extended Price (USD)', 'Price per GB (USD)',
+    'HPE Recommended', 'Availability', 'Lead Time', 'Lead Time Days', 'Speed Tier', 'Lead Time Source',
+    'CLIC Status', 'Lifecycle Status', 'Start Date', 'Discontinued Date', 'Vendor Attributes (JSON)',
     'Diff Status', 'Previous List Price (USD)', 'Price Change (USD)', 'Price Change (%)', 'Price History Trail'
   ].join('\t')];
 
@@ -48,6 +48,7 @@ function generateMainSheet(entries, chassisRoot, profile = null) {
       const cleanQty = /^\d+$/.test(rawQty) ? rawQty : '0';
       const role     = sku['Component Role'] || classifyComponentRole(entry.parentCategory, sku['Description'] || sku.description, profile);
       const priceVal = sku['Unit Price (USD)'] || sku['Price (USD)'] || sku['List Price (USD)'] || sku['List Price'] || sku['Price'] || sku.listPriceFormatted || (sku.listPrice !== undefined && sku.listPrice !== null ? String(sku.listPrice) : '');
+      const costVal  = sku['Cost (USD)'] || (sku.costPrice !== undefined && sku.costPrice !== null ? String(sku.costPrice) : '') || '';
       // Rule #20: HPE OCA > Chassis [BaseSKU] > Category > Subcategory
       const hierarchyPath = `HPE OCA > ${chassisRoot} > ${entry.parentCategory} > ${entry.subCategory}`;
 
@@ -63,10 +64,14 @@ function generateMainSheet(entries, chassisRoot, profile = null) {
       rows.push([
         entry.parentCategory, entry.subCategory, hierarchyPath, role, constraintStr, minQtyVal, maxQtyVal,
         (entry.rules || []).join(' | '), sku['Product #'] || sku.sku || '', sku['Option Type'] || sku.optionType || 'Standard', sku['Description'] || sku.description || '', cleanQty,
-        priceVal, sku['Price Delta (USD)'] || '', sku['Extended Price (USD)'] || '',
+        priceVal, costVal, sku['Price Delta (USD)'] || '', sku['Extended Price (USD)'] || '',
         sku['Price per GB (USD)'] || '', isRecommended,
-        sku.Availability || sku['Supply Status'] || '', sku['Lead Time'] || sku.estimatedDelivery || '',
-        sku['Lead Time Source'] || '', sku['Lifecycle Status'] || sku['CLIC Status'] || sku.lifecycleStatus || '',
+        sku.Availability || sku['Supply Status'] || '', sku['Lead Time'] || 'Unpublished',
+        sku['Lead Time Days'] !== undefined ? String(sku['Lead Time Days']) : (sku.leadTimeDays !== undefined && sku.leadTimeDays !== null ? String(sku.leadTimeDays) : ''),
+        sku['Speed Tier'] || 'Unpublished',
+        sku['Lead Time Source'] || 'Unpublished',
+        sku['CLIC Status'] || sku.clicStatus || 'Unpublished',
+        sku['Lifecycle Status'] || sku.lifecycleStatus || '',
         sku['Start Date'] || sku['Start'] || '', sku['Discontinued Date'] || sku['Discontinued'] || '', vendorAttributes,
         sku['Diff Status'] || 'UNCHANGED', sku['Previous List Price (USD)'] || 'N/A', sku['Price Change (USD)'] || '$0.00', sku['Price Change (%)'] || '0.00%', sku['Price History Trail'] || ''
       ].map(safeCell).join('\t'));

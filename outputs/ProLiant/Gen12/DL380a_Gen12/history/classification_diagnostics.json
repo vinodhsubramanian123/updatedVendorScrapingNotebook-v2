@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
   "chassis": "DL380a_Gen12",
-  "generatedAt": "2026-10-17T12:16:10.336Z",
-  "executionDurationMs": 793,
+  "generatedAt": "2026-10-18T08:14:25.447Z",
+  "executionDurationMs": 1097,
   "summary": {
     "totalRawTables": 84,
     "validProductTables": 75,
@@ -571,7 +571,7 @@
     {
       "tableIndex": 58,
       "subCategory": "Compute Ops Management SKUs (required)",
-      "parentCategory": "HPE Compute Ops Management",
+      "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
       "detectedRole": "Operating System / License",
       "constraint": "max 1",
@@ -703,7 +703,7 @@
     {
       "tableIndex": 69,
       "subCategory": "Compute Ops Management SKUs",
-      "parentCategory": "HPE Compute Ops Management",
+      "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
       "detectedRole": "Option Component",
       "constraint": "required",
@@ -715,7 +715,7 @@
     {
       "tableIndex": 70,
       "subCategory": "Compute Ops Management Enablement SKUs",
-      "parentCategory": "HPE Compute Ops Management",
+      "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
       "detectedRole": "Option Component",
       "constraint": "max 1",
@@ -1069,12 +1069,11 @@
     "Graphics & GPU": 9,
     "Storage Controllers": 19,
     "Drive Enclosures / Drives": 55,
-    "Software & Licenses": 216,
+    "Software & Licenses": 218,
     "PCIe Risers": 6,
     "Cables & Enablement Kits": 12,
     "Networking": 60,
     "Power Supplies": 5,
-    "HPE Compute Ops Management": 2,
     "Accessories & Infrastructure": 4,
     "OS Boot Device": 5
   },
@@ -1083,7 +1082,7 @@
       "description": "HPE ProLiant Compute DL380a Gen12 8 Double Wide/16 Single Wide Configure-to-order Server",
       "formFactor": "Unknown",
       "listPrice": 21407,
-      "diffStatus": "UNCHANGED"
+      "diffStatus": "ATTRIBUTE_CHANGED"
     }
   },
   "dataAnomalies": {
@@ -1091,5 +1090,21 @@
     "unparseablePrices": [],
     "filteredPhantomSKUs": [],
     "duplicateSKUs": []
+  },
+  "attributeFidelity": {
+    "skusWithLeadTime": 0,
+    "skusWithCost": 0,
+    "skusWithPriceDelta": 67,
+    "skusWithPricePerGb": 59,
+    "clicStatusDistribution": {
+      "Valid": 1,
+      "Unpublished": 442
+    },
+    "lifecycleStatusDistribution": {
+      "Active": 373,
+      "EOL Warning (90-Day)": 3,
+      "Obsolete (OB)": 63,
+      "Direct Ship (DS)": 4
+    }
   }
 }

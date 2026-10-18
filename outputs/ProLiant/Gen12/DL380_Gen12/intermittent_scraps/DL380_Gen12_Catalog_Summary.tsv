@@ -51,8 +51,8 @@ HPC Software Products	Partner Software - Interconnect Management Array	no max	0	
 HPC Software Products	NVIDIA GPU SW	no max	0	Unlimited	0	No	0
 HPC Software Products	Partner Software - Operating System	no max	0	Unlimited	0	No	0
 HPE Compute Ops Management	Compute Ops Management SKUs (required)	max 1	0	1	0	No	0
-HPE Compute Ops Management	Compute Ops Management SKUs	required	1	Required	9	Yes	4
-HPE Compute Ops Management	Compute Ops Management Enablement SKUs	max 1	0	1	4	Yes	5
+HPE Compute Ops Management	Compute Ops Management SKUs	required	1	Required	0	No	0
+HPE Compute Ops Management	Compute Ops Management Enablement SKUs	max 1	0	1	0	No	0
 HPE Compute Ops Management	OEM Software	no max	0	Unlimited	0	No	0
 HPE Compute Ops Management	Proliant Software Media Kits	no max	0	Unlimited	0	No	0
 HPE Compute Ops Management	Red Hat (add-ons)	no max	0	Unlimited	0	No	0
@@ -76,6 +76,7 @@ Accessories & Infrastructure	Energy Star Configuration Presets	max 1	0	1	1	Yes	1
 Cooling / Thermal	Heatsink Kit	max 2	0	2	1	Yes	1
 Cooling / Thermal	Standard & Performance Heat Sinks	max 1	0	1	5	Yes	6
 Drive Enclosures / Drives	Drive Cage	max 9	0	9	16	Yes	12
+Drive Enclosures / Drives	SFF Drive Cages & Enablement	max 1	0	1	1	Yes	2
 Networking	Tertiary PCIe Risers	no max	0	Unlimited	13	Yes	14
 PCIe Risers	Riser Cards	required	1	Required	4	Yes	1
 PCIe Risers	Tertiary PCIe Risers	max 1	0	1	1	Yes	2
@@ -91,6 +92,7 @@ Cables & Enablement Kits	Energy Star	max 1	0	1	11	Yes	14
 Storage Controllers	Storage Controllers Options	max 1	0	1	4	Yes	1
 Drive Enclosures / Drives	Optical Drive	max 1	0	1	3	Yes	3
 Cables & Enablement Kits	Optical Drive Accessories	max 2	0	2	1	Yes	1
+Cables & Enablement Kits	Cables & Enablement Kits Options	max 1	0	1	1	Yes	2
 Accessories & Infrastructure	Chassis Infrastructure & Rail Kits	max 3	0	3	8	Yes	2
 Cables & Enablement Kits	Factory Configuration Settings	max 1	0	1	1	Yes	1
 Accessories & Infrastructure	Trusted Supply Chain	max 1	0	1	1	Yes	1
@@ -121,6 +123,7 @@ Software & Licenses	Proliant Software Media Kits	no max	0	Unlimited	8	Yes	7
 Software & Licenses	HPC Software Products	no max	0	Unlimited	167	Yes	158
 Software & Licenses	High Availability Computing - Cluster Software	no max	0	Unlimited	27	Yes	20
 Software & Licenses	Partner Software - Operating System	no max	0	Unlimited	39	Yes	3
+Software & Licenses	Compute Ops Management SKUs	required	1	Required	9	Yes	4
 Software & Licenses	OEM Software	no max	0	Unlimited	19	Yes	11
 Software & Licenses	Red Hat (add-ons)	no max	0	Unlimited	60	Yes	5
 Software & Licenses	SUSE Add-ons	no max	0	Unlimited	4	Yes	4
@@ -135,6 +138,7 @@ Software & Licenses	Red Hat Enterprise Linux Server-Virtualization	no max	0	Unli
 Support Services	RAID Settings	max 1	0	1	2	Yes	1
 Support Services	Manufacturing Services	max 3	0	3	1	Yes	1
 Software & Licenses	Partner Software - Interconnect Management Array	no max	0	Unlimited	3	Yes	1
+Software & Licenses	Compute Ops Management Enablement SKUs	max 1	0	1	2	Yes	1
 Software & Licenses	Red Hat OpenShift Platform Container	no max	0	Unlimited	13	Yes	8
 Software & Licenses	SUSE containers	no max	0	Unlimited	3	Yes	1
 Support Services	Energy Star	max 1	0	1	24	Yes	9

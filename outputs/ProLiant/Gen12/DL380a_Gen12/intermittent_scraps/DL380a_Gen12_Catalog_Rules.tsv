@@ -149,8 +149,8 @@ Power Supplies	Power Supplies	max 8	Configuration Rule	Supports C19/ C19-C20 Pow
 Power Supplies	Power Supplies	max 8	Configuration Rule	J6X00A conditional visibility: portal selector activation required (Supports C19/ C19-C20 Power Cords only.); PORTAL_CONDITIONAL
 Power Supplies	Power Supplies	max 8	Configuration Rule	S4X23A conditional visibility: portal selector activation required (Supports C19/ C19-C20 Power Cords only.); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Management Hardware	max 2	Configuration Rule	Selection constraint for Management Hardware: max 2
-HPE Compute Ops Management	Compute Ops Management SKUs (required)	max 1	Configuration Rule	Cannot be selected with HPE DL380a Gen12 8DW/16SW CTO Svr (P76706-B21).
-HPE Compute Ops Management	Compute Ops Management SKUs (required)	max 1	Configuration Rule	P74726-B21 conditional visibility: portal selector activation required (Cannot be selected with HPE DL380a Gen12 8DW/16SW CTO Svr (P76706-B21).); PORTAL_CONDITIONAL
+Software & Licenses	Server Management & Operating System Licenses	max 1	Configuration Rule	Cannot be selected with HPE DL380a Gen12 8DW/16SW CTO Svr (P76706-B21).
+Software & Licenses	Server Management & Operating System Licenses	max 1	Configuration Rule	P74726-B21 conditional visibility: portal selector activation required (Cannot be selected with HPE DL380a Gen12 8DW/16SW CTO Svr (P76706-B21).); PORTAL_CONDITIONAL
 Accessories & Infrastructure	Chassis Infrastructure & Rail Kits	max 1	Configuration Rule	Selection constraint for Chassis Infrastructure & Rail Kits: max 1
 Accessories & Infrastructure	Chassis Infrastructure & Rail Kits	max 2	Configuration Rule	Selection constraint for Chassis Infrastructure & Rail Kits: max 2
 OS Boot Device	Solid State Drives (NVMe/SAS/SATA)	max 2	Configuration Rule	Selection constraint for Solid State Drives (NVMe/SAS/SATA): max 2
@@ -162,7 +162,7 @@ Cables & Enablement Kits	Power Cords	max 8	Configuration Rule	469774-409 conditi
 Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	Selection constraint for High Availability Computing - Cluster Software: no max
 Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	R8V48A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
 Software & Licenses	Partner Software - Operating System	no max	Configuration Rule	Selection constraint for Partner Software - Operating System: no max
-HPE Compute Ops Management	Compute Ops Management SKUs	required	Configuration Rule	Selection constraint for Compute Ops Management SKUs: required
+Software & Licenses	Compute Ops Management SKUs	required	Configuration Rule	Selection constraint for Compute Ops Management SKUs: required
 Software & Licenses	OEM Software	no max	Configuration Rule	Selection constraint for OEM Software: no max
 Software & Licenses	Red Hat (add-ons)	no max	Configuration Rule	Selection constraint for Red Hat (add-ons): no max
 Software & Licenses	iLO	no max	Configuration Rule	Selection constraint for iLO: no max
@@ -300,7 +300,7 @@ Software & Licenses	High Availability Computing - Cluster Software	no max	Config
 Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W28AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
 Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W29AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
 Graphics & GPU	NVIDIA GPU SW	no max	Configuration Rule	Selection constraint for NVIDIA GPU SW: no max
-HPE Compute Ops Management	Compute Ops Management Enablement SKUs	max 1	Configuration Rule	Selection constraint for Compute Ops Management Enablement SKUs: max 1
+Software & Licenses	Compute Ops Management Enablement SKUs	max 1	Configuration Rule	Selection constraint for Compute Ops Management Enablement SKUs: max 1
 Software & Licenses	Supported Operating System	no max	Configuration Rule	Q0D30AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Software & Licenses	Supported Operating System	no max	Configuration Rule	Q5W19AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Software & Licenses	Supported Operating System	no max	Configuration Rule	Q5W20AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL

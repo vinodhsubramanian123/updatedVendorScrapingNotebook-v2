@@ -210,7 +210,11 @@ const TRACKED_ATTRIBUTES = [
   { keys: ['HPE Recommended'], label: 'HPE Recommended' },
   { keys: ['Start Date'], label: 'Start Date' },
   { keys: ['Discontinued Date'], label: 'Discontinued Date' },
-  { keys: ['Lifecycle Status', 'CLIC Status', 'lifecycleStatus'], label: 'Lifecycle Status' },
+  { keys: ['Lifecycle Status', 'lifecycleStatus'], label: 'Lifecycle Status' },
+  { keys: ['CLIC Status', 'clicStatus'], label: 'CLIC Status' },
+  { keys: ['Cost (USD)', 'costPrice'], label: 'Cost (USD)' },
+  { keys: ['Price Delta (USD)'], label: 'Price Delta (USD)' },
+  { keys: ['Price per GB (USD)'], label: 'Price per GB (USD)' },
   { keys: ['Lifecycle Badge', 'lifecycleBadge'], label: 'Lifecycle Badge' },
   { keys: ['Availability', 'Supply Status'], label: 'Availability' },
   { keys: ['Lead Time', 'estimatedDelivery'], label: 'Lead Time' },
@@ -473,7 +477,7 @@ function diffRemovedCatalogEntries(catalogData, prevSkuMap, currSkuMap, companio
     diffSummary.removed++;
 
     const trailStr = buildTrailString(priceHistory[pn]);
-    const prevLifecycle = firstAttributeValue(prevSku, ['Lifecycle Status', 'CLIC Status', 'lifecycleStatus']) || '';
+    const prevLifecycle = firstAttributeValue(prevSku, ['Lifecycle Status', 'lifecycleStatus']) || '';
     const vendorDiscontinuedDate = firstAttributeValue(prevSku, ['Discontinued Date']);
     let removalReason = 'ABSENT_FROM_CATALOG';
     if (/OB|Obsolete|EOL|Discontinued/i.test(prevLifecycle)) {

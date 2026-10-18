@@ -930,4 +930,18 @@ To ensure that future AI agents (Antigravity, Codex, Claude, or subagents) never
     2. Masterbook: `_OCA_Catalog.xlsx` maintains 26 primary sheets and appends **Sheet 27: Supply Chain & Lead Times**, categorizing SKUs into delivery speed tiers (Fast-Ship $\le 7$d, Standard 8–30d, Extended 31–45d, Constrained $>45$d).
     3. Grounding Payload: `sync_payload_builder.js` appends Section 10 (`⏱️ Supply Chain & Delivery Lead Time Intelligence`) to `notebook_sync_payload_*.md` for Gemini NotebookLM citation.
 
+- **INV-179: Atomic Icon Principle & Proportional Management License/Service Partitioning Invariant (CLIC Rule 81322276)**:
+  - **Cross-Icon Pooling Trap**: In HPE OCA/CLIC solutions with multiple server icons (e.g. 20x DL380 Gen12 in Icon #1 and 20x DL380 Gen12 in Icon #2), CLIC allows software licenses (e.g. 40x `E5Y35AAE` OneView) to be pooled under a single icon. While the combined solution-level quote passes validation ($40 \ge 40$), extracting, cloning, or separately quoting Icon #1 leaves it with 0 licenses, triggering fatal Process Control block:
+    `Product#: P73282-B21 Rule#: 81322276 Item/Subitem: 0100/01 PROCESS CONTROL CONFIGURATION: OVERRIDE REQUIRES APPROVAL ... requires at least 1 COM SKU to be quoted as well.`
+  - **Atomic Icon Invariant**: Every configured server icon or cluster in a multi-node/multi-cluster tender MUST be an independently buildable atomic unit in complete isolation.
+  - **Proportional Allocation Formulations**:
+    1. *Mandatory Management Software (CLIC Rule 81322276)*: Every ProLiant Gen11 and Gen12 CTO chassis (`P73282-B21`, `P76706-B21`, `P52534-B21`, `P52560-B21`) requires exactly $1$ qualifying COM or OneView license per server allocated directly inside its own icon manifest:
+       $$\text{Licenses}_{\text{Icon } i} = N_i \quad (\text{Eligible: Base } R7A11AAE, \text{Ext } R7A12AAE / S2E10AAE / S5E59AAE-S5E61AAE, \text{OV } E5Y43A / P8B31A / E5Y35AAE, \text{Track } P8B25A / E5Y36A / E5Y44A)$$
+    2. *On-Box BMC Licenses*: $N_i$ units of `BD505A` (iLO Advanced) per icon. Note that iLO Advanced is an on-box BMC license and does NOT satisfy the COM/OneView fleet management mandate (orthogonal layers).
+    3. *Pointnext Hardware Support*: Tech Care Basic (`HU4B2A3` parent + $N_i$ child support e.g. `HU4B2A30C4V`) must be allocated directly to each icon.
+    4. *Service Credits*: Proportionally partitioned ($N_i / \sum N \times \text{Credits}$) or isolated in a dedicated solution-level Services container; never lumped arbitrarily into a single compute icon.
+  - **Pipeline Enforcement**:
+    1. `multi_cluster_splitter.js:applyClusterManagementAndSupportPolicy` automatically inspects partitioned clusters and injects or tags mandatory Base COM SKU `R7A11AAE` (1 per server) and parent/child Tech Care support if missing from the icon manifest.
+    2. `bom_verifier.js:validateBoqEvaluationCriteria` runs check `B14` (`Mandatory COM / OneView Policy (Rule 81322276)`), emitting `ACTION_REQUIRED` on any Gen11/Gen12 ProLiant BOM lacking qualifying COM/OneView software before portal submission.
+
 

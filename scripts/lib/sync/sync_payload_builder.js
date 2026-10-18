@@ -285,7 +285,7 @@ function _buildSmartChassisAndRecommendedSection(catalogData) {
           description: sku.Description || sku.description || '',
           category: entry.parentCategory || '',
           price: sku.listPrice || sku['Unit Price (USD)'] || '0.00',
-          leadTime: sku['Lead Time'] || 'Standard'
+          leadTime: (sku['Lead Time'] && sku['Lead Time'] !== 'Unpublished') ? sku['Lead Time'] : 'Unpublished'
         });
       }
     }
@@ -334,7 +334,7 @@ function _buildSmartChassisAndRecommendedSection(catalogData) {
   for (const entry of catalogData?.entries || []) {
     for (const sku of entry.skus || []) {
       const lt = sku['Lead Time'] || sku.leadTime || '';
-      if (lt && lt !== 'Not published by OCA' && lt !== 'Standard') {
+      if (lt && lt !== 'Not published by OCA' && lt !== 'Standard' && lt !== 'Unpublished') {
         leadTimeItems.push({
           sku: sku['Product #'] || sku.sku,
           description: sku.Description || sku.description || '',

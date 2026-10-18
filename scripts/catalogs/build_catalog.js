@@ -652,7 +652,8 @@ function expandTableSections(sourceTables) {
 function normalizeHeaderName(header) {
   if (!header) return '';
   const nh = String(header).trim().toLowerCase();
-  if (nh === 'list price' || nh === 'list price (usd)' || nh === 'price' || nh === 'price (usd)' || nh === 'cost' || nh === 'cost (usd)') return 'Unit Price (USD)';
+  if (nh === 'cost' || nh === 'cost (usd)' || nh === 'unit cost' || nh === 'purchase cost') return 'Cost (USD)';
+  if (nh === 'list price' || nh === 'list price (usd)' || nh === 'price' || nh === 'price (usd)' || nh === 'unit price' || nh === 'unit price (usd)') return 'Unit Price (USD)';
   if (nh === 'product description') return 'Description';
   if (nh === 'qty' || nh === 'quantity') return 'Current Qty';
   if (/^start(?: date)?$/.test(nh)) return 'Start Date';
@@ -660,8 +661,12 @@ function normalizeHeaderName(header) {
   if (/^(?:availability|available|supply status)$/.test(nh)) return 'Availability';
   if (/^(?:estimated\s*(?:availability\s*)?)?lead\s*time|estimated\s*delivery|delivery\s*estimate|edt$/i.test(nh)) return 'Lead Time';
   if (/^(?:clic\s*status|validation\s*status)$/i.test(nh)) return 'CLIC Status';
+  if (/^(?:lifecycle\s*status|sku\s*status)$/i.test(nh)) return 'Lifecycle Status';
   if (/^(?:allocation\s*status|supply\s*status|market\s*availability)$/i.test(nh)) return 'Allocation Status';
   if (/^(?:hpe\s*)?recommended$/.test(nh)) return 'HPE Recommended';
+  if (/^price\s*delta(?:\s*\(usd\))?$/i.test(nh)) return 'Price Delta (USD)';
+  if (/^ext(?:ended)?\s*price(?:\s*\(usd\))?$/i.test(nh)) return 'Extended Price (USD)';
+  if (/^price\s*per\s*gb(?:\s*\(usd\))?$/i.test(nh)) return 'Price per GB (USD)';
   if (/^(?:qty\s*)?drive\s*cages?$/.test(nh)) return 'Qty Drive Cages';
   if (/^(?:qty\s*)?bays?$/.test(nh)) return 'Qty Bays';
   if (/^(?:qty\s*)?pci(?:e)?\s*slots?$/.test(nh)) return 'Qty PCI Slots';
@@ -735,10 +740,10 @@ function resolveRowRecommendation(obj, headers, pn) {
 }
 
 function resolveRowPrice(row, headers, obj, pn, historyPriceMap) {
-  let priceStr = String(obj['Unit Price (USD)'] || obj['Price (USD)'] || obj['Price'] || '').replace(/[$,]/g, '').trim();
+  let priceStr = String(obj['Unit Price (USD)'] || obj['List Price (USD)'] || obj['Price (USD)'] || obj['Price'] || '').replace(/[$,]/g, '').trim();
   const hasPriceHeader = headers.some(h => {
     const nh = String(h).trim().toLowerCase();
-    return nh === 'unit price (usd)' || nh === 'price (usd)' || nh === 'list price (usd)' || nh === 'list price' || nh === 'price' || nh === 'cost' || nh === 'cost (usd)';
+    return nh === 'unit price (usd)' || nh === 'price (usd)' || nh === 'list price (usd)' || nh === 'list price' || nh === 'price';
   });
   if (!/^\d+(?:\.\d{1,2})?$/.test(priceStr) || priceStr === pn) {
     if (hasPriceHeader) {
@@ -768,7 +773,7 @@ function parseSingleTableRow(row, headers, offset, historyPriceMap) {
     if (headers[hi] && cellIdx < row.length) {
       const header = normalizeHeaderName(headers[hi]);
       let val = row[cellIdx].replace(/\n/g, ' ').trim();
-      if (header === 'Unit Price (USD)') {
+      if (header === 'Unit Price (USD)' || header === 'Cost (USD)' || header === 'List Price (USD)') {
         val = val.replace(/[$,]/g, '').trim();
       }
       obj[header] = val;
@@ -782,13 +787,40 @@ function parseSingleTableRow(row, headers, offset, historyPriceMap) {
   obj['Product #'] = pn;
   obj.sku = pn;
   obj['Option Type'] = isClearlyPhysicalSkuRow(obj) && classifyOptionType(pn) === 'Service' ? 'Standard' : classifyOptionType(pn);
-  obj['CLIC Status'] = lifecycleStatus;
+
+  const explicitClic = obj['CLIC Status'] || '';
+  obj['CLIC Status'] = explicitClic || 'Unpublished';
+  obj.clicStatus = obj['CLIC Status'];
   obj['Lifecycle Status'] = lifecycleStatus;
   obj.lifecycleStatus = lifecycleStatus;
   obj.lifecycleBadge = lifecycleBadge;
   obj.Availability = String(obj.Availability || '').trim() || (lifecycleStatus === 'Active' ? 'Not published by OCA' : lifecycleStatus);
-  obj['Lead Time'] = String(obj['Lead Time'] || '').trim();
-  obj['Lead Time Source'] = obj['Lead Time'] ? 'OCA row attribute' : 'Not published by OCA';
+
+  const rawLt = String(obj['Lead Time'] || '').trim();
+  obj['Lead Time'] = rawLt || 'Unpublished';
+  obj['Lead Time Source'] = rawLt ? 'OCA row attribute' : 'Unpublished';
+  let ltDays = null;
+  if (rawLt && rawLt !== 'Unpublished') {
+    const range = rawLt.match(/(\d+)\s*(?:-|to)\s*(\d+)/);
+    if (range) {
+      ltDays = Math.round((Number(range[1]) + Number(range[2])) / 2);
+    } else {
+      const single = rawLt.match(/(\d+)/);
+      if (single) ltDays = Number(single[1]);
+    }
+  }
+  obj.leadTimeDays = ltDays;
+  obj['Lead Time Days'] = ltDays !== null ? String(ltDays) : '';
+  let speedTier = 'Unpublished';
+  if (ltDays !== null) {
+    if (ltDays <= 7) speedTier = 'Fast-Ship Certified (<=7d)';
+    else if (ltDays <= 30) speedTier = 'Standard Delivery (8-30d)';
+    else if (ltDays <= 45) speedTier = 'Extended Schedule (31-45d)';
+    else speedTier = 'Constrained / Long Lead Time (>45d)';
+  } else if (/unavailable|out of stock|allocation hold/i.test(obj.Availability || '')) {
+    speedTier = 'Constrained / Allocation Hold';
+  }
+  obj['Speed Tier'] = speedTier;
 
   const dateMatches = row.filter(c => /^\d{2}\/\d{2}\/\d{4}$/.test(c.trim()));
   if (dateMatches.length >= 1 && !obj['Start Date']) obj['Start Date'] = dateMatches[0].trim();
@@ -804,22 +836,33 @@ function parseSingleTableRow(row, headers, offset, historyPriceMap) {
   if (obj['Qty PCI Slots']) obj.qtyPciSlots = parseInt(obj['Qty PCI Slots'], 10) || obj['Qty PCI Slots'];
   if (obj['Controllers']) obj.controllers = obj['Controllers'];
 
-  const canonicalKeys = new Set([
-    'Product #', 'Description', 'Current Qty', 'Unit Price (USD)', 'Price (USD)', 'Price',
-    'Option Type', 'CLIC Status', 'Lifecycle Status', 'Start Date', 'Discontinued Date',
-    'Availability', 'Lead Time', 'Lead Time Source', 'HPE Recommended'
-  ]);
-  obj.vendorAttributes = Object.fromEntries(Object.entries(obj).filter(([key, value]) =>
-    !canonicalKeys.has(key) && !['sku', 'lifecycleStatus', 'lifecycleBadge', 'vendorRecommended', 'qtyDriveCages', 'qtyBays', 'qtyPciSlots', 'controllers'].includes(key) && String(value ?? '').trim()
-  ));
-
   const rawQty = String(obj['Current Qty'] || obj['Quantity'] || '0').replace(/\s+/g, '').trim();
   obj['Current Qty'] = /^\d+$/.test(rawQty) ? rawQty : '0';
   delete obj['Quantity'];
 
   const priceStr = resolveRowPrice(row, headers, obj, pn, historyPriceMap);
   obj['Unit Price (USD)'] = priceStr;
+  obj['List Price (USD)'] = priceStr;
   obj.listPrice = parseFloat(priceStr) || 0;
+
+  const rawCost = obj['Cost (USD)'] ? String(obj['Cost (USD)']).replace(/[$,]/g, '').trim() : '';
+  if (rawCost && /^\d+(?:\.\d{1,2})?$/.test(rawCost)) {
+    obj['Cost (USD)'] = rawCost;
+    obj.costPrice = parseFloat(rawCost);
+  } else {
+    obj['Cost (USD)'] = '';
+    obj.costPrice = null;
+  }
+
+  const canonicalKeys = new Set([
+    'Product #', 'Description', 'Current Qty', 'Unit Price (USD)', 'List Price (USD)', 'Cost (USD)', 'Price (USD)', 'Price',
+    'Price Delta (USD)', 'Extended Price (USD)', 'Price per GB (USD)',
+    'Option Type', 'CLIC Status', 'Lifecycle Status', 'Start Date', 'Discontinued Date',
+    'Availability', 'Lead Time', 'Lead Time Days', 'Speed Tier', 'Lead Time Source', 'HPE Recommended'
+  ]);
+  obj.vendorAttributes = Object.fromEntries(Object.entries(obj).filter(([key, value]) =>
+    !canonicalKeys.has(key) && !['sku', 'lifecycleStatus', 'lifecycleBadge', 'clicStatus', 'costPrice', 'leadTimeDays', 'vendorRecommended', 'qtyDriveCages', 'qtyBays', 'qtyPciSlots', 'controllers'].includes(key) && String(value ?? '').trim()
+  ));
 
   if (/\bTAA\b|TAA Compliant|\bGTA\b|#GTA/i.test(pn) || /\bTAA\b|TAA Compliant|\bGTA\b|#GTA/i.test(descText)) {
     return null;
@@ -995,10 +1038,57 @@ function _detectTableHeadersAndRules(table, ti, diagnostics) {
     }
   }
 
+function synthesizeHeaderFromSampleRow(sampleRow) {
+  if (!Array.isArray(sampleRow) || sampleRow.length === 0) {
+    return ['Product #', 'Description', 'Quantity', 'Price (USD)', 'Price Delta (USD)', 'Extended Price (USD)', 'HPE Recommended', 'Start', 'Discontinued'];
+  }
+  const headers = [];
+  let foundSku = false;
+  let foundDesc = false;
+  let foundPrice = false;
+  let dateCount = 0;
+
+  for (let ci = 0; ci < sampleRow.length; ci++) {
+    const val = String(sampleRow[ci] || '').trim();
+    if (!foundSku && isValidHpeSKU(cleanBaseSKU(val))) {
+      headers.push('Product #');
+      foundSku = true;
+    } else if (foundSku && !foundDesc && val.length > 8 && !/^\d+$/.test(val) && !/^\$?[\d,]+(?:\.\d{2})?$/.test(val)) {
+      headers.push('Description');
+      foundDesc = true;
+    } else if (/^\d{1,4}$/.test(val) && headers.includes('Description') && !headers.includes('Quantity')) {
+      headers.push('Quantity');
+    } else if (/^[+-]\$?[\d,]+(?:\.\d{2})?$/.test(val)) {
+      headers.push('Price Delta (USD)');
+    } else if (/^\$?[\d,]+(?:\.\d{2})?$/.test(val) || val === 'NA' || val === 'N/A') {
+      if (!foundPrice) {
+        headers.push('Price (USD)');
+        foundPrice = true;
+      } else if (!headers.includes('Extended Price (USD)')) {
+        headers.push('Extended Price (USD)');
+      } else if (!headers.includes('Price per GB (USD)')) {
+        headers.push('Price per GB (USD)');
+      } else {
+        headers.push(`Column_${ci}`);
+      }
+    } else if (/^\d{2}\/\d{2}\/\d{4}$/.test(val)) {
+      dateCount++;
+      if (dateCount === 1) headers.push('Start Date');
+      else if (dateCount === 2) headers.push('Discontinued Date');
+      else headers.push(`Date_${dateCount}`);
+    } else if (/^(?:yes|no|selected)$/i.test(val)) {
+      headers.push('HPE Recommended');
+    } else {
+      headers.push(ci === 0 && val === '' ? '' : `Column_${ci}`);
+    }
+  }
+  return headers.length >= 4 ? headers : ['Product #', 'Description', 'Quantity', 'Price (USD)', 'Price Delta (USD)', 'Extended Price (USD)', 'HPE Recommended', 'Start', 'Discontinued'];
+}
+
   if (headerIdx === -1) {
-    const hasAnySku = table.rows.some(r => r.some(c => isValidHpeSKU(cleanBaseSKU(c.trim()))));
-    if (hasAnySku) {
-      headers = ['Product #', 'Description', 'Quantity', 'Price (USD)', 'Price Delta (USD)', 'Extended Price (USD)', 'HPE Recommended', 'Start', 'Discontinued'];
+    const skuRow = table.rows.find(r => r.some(c => isValidHpeSKU(cleanBaseSKU(c.trim()))));
+    if (skuRow) {
+      headers = synthesizeHeaderFromSampleRow(skuRow);
       headerIdx = -1;
     } else {
       diagnostics.recordSkippedTable(ti, 'No valid SKU or headers detected');
@@ -1547,13 +1637,19 @@ async function extractDiscoveredChassisVariants(targetDir, chassisLabel, chassis
       Description: description || `${chassisLabel} Configure-to-order Server`,
       'Current Qty': '1',
       'Unit Price (USD)': price > 0 ? price.toFixed(2) : '0.00',
+      'List Price (USD)': price > 0 ? price.toFixed(2) : '0.00',
+      'Cost (USD)': '',
+      costPrice: null,
       listPrice: price,
-      'CLIC Status': candidate.status || 'Active',
+      'CLIC Status': candidate.clicStatus || 'Valid',
+      clicStatus: candidate.clicStatus || 'Valid',
       'Lifecycle Status': candidate.status || 'Active',
       lifecycleStatus: candidate.status || 'Active',
       'HPE Recommended': previous['HPE Recommended'] === 'Yes' ? 'Yes' : 'No',
       Availability: candidate.availability || 'Available in OCA product catalog',
       'Lead Time': leadTime,
+      'Lead Time Days': '',
+      'Speed Tier': leadTime ? 'Standard Delivery (8-30d)' : 'Unpublished',
       'Lead Time Source': leadTime ? (candidate.leadTime ? 'OCA candidate estimate' : 'OCA configuration estimate') : 'Not published by OCA',
       'Start Date': candidate.startDate || previous['Start Date'] || '',
       'Discontinued Date': candidate.discontinuedDate || previous['Discontinued Date'] || '',

@@ -88,12 +88,37 @@ class ClassificationDiagnostics {
     this.trace.summary.totalRulesExtracted = (rulesObj.rules || []).length;
     this.trace.summary.chassisVariantsCount = (rulesObj.chassisVariants || []).length;
 
-    // Calculate category distribution
+    // Calculate category distribution and attribute fidelity
     const dist = {};
+    const clicDist = {};
+    const lifeDist = {};
+    let skusWithLeadTime = 0;
+    let skusWithCost = 0;
+    let skusWithPriceDelta = 0;
+    let skusWithPricePerGb = 0;
+
     (finalCatalog.entries || []).forEach(e => {
       dist[e.parentCategory] = (dist[e.parentCategory] || 0) + (e.skuCount || (e.skus || []).length);
+      (e.skus || []).forEach(s => {
+        const cs = s['CLIC Status'] || 'Unpublished';
+        const ls = s['Lifecycle Status'] || 'Active';
+        clicDist[cs] = (clicDist[cs] || 0) + 1;
+        lifeDist[ls] = (lifeDist[ls] || 0) + 1;
+        if (s['Lead Time'] && s['Lead Time'] !== 'Unpublished') skusWithLeadTime++;
+        if (s['Cost (USD)'] && s['Cost (USD)'] !== '') skusWithCost++;
+        if (s['Price Delta (USD)'] && s['Price Delta (USD)'] !== '') skusWithPriceDelta++;
+        if (s['Price per GB (USD)'] && s['Price per GB (USD)'] !== '') skusWithPricePerGb++;
+      });
     });
     this.trace.categoryDistribution = dist;
+    this.trace.attributeFidelity = {
+      skusWithLeadTime,
+      skusWithCost,
+      skusWithPriceDelta,
+      skusWithPricePerGb,
+      clicStatusDistribution: clicDist,
+      lifecycleStatusDistribution: lifeDist
+    };
 
     // Record variants matrix summary
     this.trace.chassisVariantsMatrix = Object.keys(rulesObj.chassisVariantMatrix || {}).reduce((acc, sku) => {

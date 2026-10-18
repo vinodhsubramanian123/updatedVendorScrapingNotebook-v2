@@ -8,18 +8,18 @@
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
     "scrapeDate": "2026-10-17",
     "scrapeTimestamp": "2026-10-17T12:16:10.114Z",
-    "builtAt": "2026-10-17T12:16:10.791Z",
-    "totalSubcategories": 45,
+    "builtAt": "2026-10-18T08:14:25.925Z",
+    "totalSubcategories": 44,
     "totalUniqueSKUs": 443,
     "totalTables": 58,
     "diffSummary": {
       "added": 9,
       "removed": 6,
       "categoryMigrated": 0,
-      "priceChanged": 22,
-      "attributeChanged": 9,
-      "priceAndAttributeChanged": 7,
-      "unchanged": 396,
+      "priceChanged": 0,
+      "attributeChanged": 405,
+      "priceAndAttributeChanged": 29,
+      "unchanged": 0,
       "reinstated": 0,
       "discontinuedTotal": 14
     },
@@ -166,8 +166,8 @@
           "avgPrice": 52756.490909090906
         },
         "Software & Licenses": {
-          "totalSKUs": 195,
-          "totalPrice": 2546065,
+          "totalSKUs": 197,
+          "totalPrice": 2546705,
           "minPrice": 1,
           "maxPrice": 99999,
           "subcategories": {
@@ -175,6 +175,11 @@
               "totalSKUs": 1,
               "totalPrice": 1,
               "avgPrice": 1
+            },
+            "Server Management & Operating System Licenses": {
+              "totalSKUs": 23,
+              "totalPrice": 756427,
+              "avgPrice": 32888.13043478261
             },
             "High Availability Computing - Cluster Software": {
               "totalSKUs": 1,
@@ -185,6 +190,11 @@
               "totalSKUs": 9,
               "totalPrice": 40444,
               "avgPrice": 4493.777777777777
+            },
+            "Compute Ops Management SKUs": {
+              "totalSKUs": 1,
+              "totalPrice": 1,
+              "avgPrice": 1
             },
             "OEM Software": {
               "totalSKUs": 4,
@@ -216,11 +226,6 @@
               "totalPrice": 741532,
               "avgPrice": 13732.074074074075
             },
-            "Server Management & Operating System Licenses": {
-              "totalSKUs": 22,
-              "totalPrice": 755788,
-              "avgPrice": 34354
-            },
             "SUSE Linux Enterprise Server": {
               "totalSKUs": 8,
               "totalPrice": 43037,
@@ -237,7 +242,7 @@
               "avgPrice": 5902.833333333333
             }
           },
-          "avgPrice": 13056.74358974359
+          "avgPrice": 12927.43654822335
         },
         "PCIe Risers": {
           "totalSKUs": 5,
@@ -335,25 +340,6 @@
           },
           "avgPrice": 1607
         },
-        "HPE Compute Ops Management": {
-          "totalSKUs": 2,
-          "totalPrice": 640,
-          "minPrice": 1,
-          "maxPrice": 639,
-          "subcategories": {
-            "Compute Ops Management SKUs (required)": {
-              "totalSKUs": 1,
-              "totalPrice": 639,
-              "avgPrice": 639
-            },
-            "Compute Ops Management SKUs": {
-              "totalSKUs": 1,
-              "totalPrice": 1,
-              "avgPrice": 1
-            }
-          },
-          "avgPrice": 320
-        },
         "Accessories & Infrastructure": {
           "totalSKUs": 4,
           "totalPrice": 1275,
@@ -394,8 +380,17 @@
         }
       }
     },
+    "incrementalStats": {
+      "totalScrapedSkus": 443,
+      "unchangedSkusCount": 443,
+      "modifiedSkusCount": 0,
+      "addedSkusCount": 0,
+      "removedSkusCount": 0,
+      "estimatedTokensSaved": 0,
+      "estimatedProcessingTimeSavedMs": 0
+    },
     "chassisVariantCount": 1,
-    "rulesGeneratedAt": "2026-10-17T12:16:11.072Z"
+    "rulesGeneratedAt": "2026-10-18T08:14:26.451Z"
   },
   "chassisVariants": [
     {
@@ -411,8 +406,8 @@
       "discontinuedDate": "2026-09-09",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "UNCHANGED",
-      "priceHistoryTrail": "2026-09-06: $21407.00 → 2026-09-09: $21407.00 (✕ REMOVED) → 2026-09-10: $21407.00 → 2026-09-30: $21407.00"
+      "diffStatus": "ATTRIBUTE_CHANGED",
+      "priceHistoryTrail": "2026-09-06: $21407.00 → 2026-09-09: $21407.00 (✕ REMOVED) → 2026-09-10: $21407.00 → 2026-09-30: $21407.00 → 2026-10-17: $21407.00"
     }
   ],
   "chassisVariantMatrix": {
@@ -429,8 +424,8 @@
       "discontinuedDate": "2026-09-09",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "UNCHANGED",
-      "priceHistoryTrail": "2026-09-06: $21407.00 → 2026-09-09: $21407.00 (✕ REMOVED) → 2026-09-10: $21407.00 → 2026-09-30: $21407.00"
+      "diffStatus": "ATTRIBUTE_CHANGED",
+      "priceHistoryTrail": "2026-09-06: $21407.00 → 2026-09-09: $21407.00 (✕ REMOVED) → 2026-09-10: $21407.00 → 2026-09-30: $21407.00 → 2026-10-17: $21407.00"
     }
   },
   "smartChassisCombinations": [],
@@ -886,20 +881,6 @@
       "constraint": "max 2",
       "minQty": 0,
       "maxQty": 2
-    },
-    {
-      "parentCategory": "HPE Compute Ops Management",
-      "name": "Compute Ops Management SKUs (required)",
-      "constraint": "max 1",
-      "minQty": 0,
-      "maxQty": 1
-    },
-    {
-      "parentCategory": "HPE Compute Ops Management",
-      "name": "Compute Ops Management SKUs",
-      "constraint": "required",
-      "minQty": 1,
-      "maxQty": -2
     }
   ],
   "rules": [
@@ -2054,8 +2035,8 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "P74726-B21 conditional visibility: portal selector activation required (Cannot be selected with HPE DL380a Gen12 8DW/16SW CTO Svr (P76706-B21).); PORTAL_CONDITIONAL",
-      "parentCategory": "HPE Compute Ops Management",
-      "subCategory": "Compute Ops Management SKUs (required)",
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Server Management & Operating System Licenses",
       "constraint": "",
       "maxQty": ""
     },
@@ -5401,8 +5382,8 @@
       "rule": "Selection constraint for Management Hardware: max 2"
     },
     {
-      "parentCategory": "HPE Compute Ops Management",
-      "subCategory": "Compute Ops Management SKUs (required)",
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Server Management & Operating System Licenses",
       "constraint": "max 1",
       "maxQty": 1,
       "rule": "Cannot be selected with HPE DL380a Gen12 8DW/16SW CTO Svr (P76706-B21)."
@@ -5464,7 +5445,7 @@
       "rule": "Selection constraint for Partner Software - Operating System: no max"
     },
     {
-      "parentCategory": "HPE Compute Ops Management",
+      "parentCategory": "Software & Licenses",
       "subCategory": "Compute Ops Management SKUs",
       "constraint": "required",
       "maxQty": -2,
@@ -5576,7 +5557,7 @@
       "rule": "Selection constraint for NVIDIA GPU SW: no max"
     },
     {
-      "parentCategory": "HPE Compute Ops Management",
+      "parentCategory": "Software & Licenses",
       "subCategory": "Compute Ops Management Enablement SKUs",
       "constraint": "max 1",
       "maxQty": 1,

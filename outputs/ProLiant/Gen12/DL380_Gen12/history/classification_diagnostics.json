@@ -1,15 +1,15 @@
 {
   "version": "1.0.0",
   "chassis": "DL380_Gen12",
-  "generatedAt": "2026-10-17T12:26:31.753Z",
-  "executionDurationMs": 3292,
+  "generatedAt": "2026-10-18T08:13:13.531Z",
+  "executionDurationMs": 1925,
   "summary": {
     "totalRawTables": 212,
     "validProductTables": 197,
     "skippedTablesCount": 65,
     "totalExtractedSKUs": 1172,
     "totalUniqueSKUs": 602,
-    "totalRulesExtracted": 649,
+    "totalRulesExtracted": 650,
     "chassisVariantsCount": 6
   },
   "skippedTables": [
@@ -499,7 +499,7 @@
     {
       "tableIndex": 44,
       "subCategory": "Compute Ops Management Enablement SKUs",
-      "parentCategory": "HPE Compute Ops Management",
+      "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
       "detectedRole": "Drive Cage / Drive",
       "constraint": "max 1",
@@ -715,7 +715,7 @@
     {
       "tableIndex": 63,
       "subCategory": "Compute Ops Management Enablement SKUs",
-      "parentCategory": "HPE Compute Ops Management",
+      "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
       "detectedRole": "Cable Kit",
       "constraint": "max 1",
@@ -1303,7 +1303,7 @@
     {
       "tableIndex": 112,
       "subCategory": "Compute Ops Management SKUs",
-      "parentCategory": "HPE Compute Ops Management",
+      "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
       "detectedRole": "Option Component",
       "constraint": "required",
@@ -1315,7 +1315,7 @@
     {
       "tableIndex": 113,
       "subCategory": "Compute Ops Management Enablement SKUs",
-      "parentCategory": "HPE Compute Ops Management",
+      "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
       "detectedRole": "Option Component",
       "constraint": "max 1",
@@ -2119,7 +2119,7 @@
     {
       "tableIndex": 221,
       "subCategory": "Compute Ops Management SKUs",
-      "parentCategory": "HPE Compute Ops Management",
+      "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
       "detectedRole": "Option Component",
       "constraint": "required",
@@ -2131,7 +2131,7 @@
     {
       "tableIndex": 222,
       "subCategory": "Compute Ops Management SKUs",
-      "parentCategory": "HPE Compute Ops Management",
+      "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
       "detectedRole": "Option Component",
       "constraint": "required",
@@ -2143,7 +2143,7 @@
     {
       "tableIndex": 223,
       "subCategory": "Compute Ops Management SKUs",
-      "parentCategory": "HPE Compute Ops Management",
+      "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
       "detectedRole": "Option Component",
       "constraint": "required",
@@ -2155,7 +2155,7 @@
     {
       "tableIndex": 224,
       "subCategory": "Compute Ops Management Enablement SKUs",
-      "parentCategory": "HPE Compute Ops Management",
+      "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
       "detectedRole": "Option Component",
       "constraint": "max 1",
@@ -2419,7 +2419,7 @@
     {
       "tableIndex": 246,
       "subCategory": "Compute Ops Management SKUs",
-      "parentCategory": "HPE Compute Ops Management",
+      "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
       "detectedRole": "Option Component",
       "constraint": "required",
@@ -2431,7 +2431,7 @@
     {
       "tableIndex": 247,
       "subCategory": "Compute Ops Management SKUs",
-      "parentCategory": "HPE Compute Ops Management",
+      "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
       "detectedRole": "Option Component",
       "constraint": "required",
@@ -2443,7 +2443,7 @@
     {
       "tableIndex": 248,
       "subCategory": "Compute Ops Management SKUs",
-      "parentCategory": "HPE Compute Ops Management",
+      "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
       "detectedRole": "Option Component",
       "constraint": "required",
@@ -2455,7 +2455,7 @@
     {
       "tableIndex": 249,
       "subCategory": "Compute Ops Management Enablement SKUs",
-      "parentCategory": "HPE Compute Ops Management",
+      "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
       "detectedRole": "Option Component",
       "constraint": "max 1",
@@ -2711,13 +2711,12 @@
     "Processor": 34,
     "Cooling / Thermal": 16,
     "Memory": 9,
-    "Drive Enclosures / Drives": 24,
-    "HPE Compute Ops Management": 5,
+    "Drive Enclosures / Drives": 25,
     "Networking": 80,
     "PCIe Risers": 10,
     "Storage Controllers": 52,
-    "Cables & Enablement Kits": 95,
-    "Software & Licenses": 767,
+    "Cables & Enablement Kits": 96,
+    "Software & Licenses": 770,
     "Graphics & GPU": 31,
     "Power Supplies": 10
   },
@@ -2726,31 +2725,31 @@
       "description": "HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-order Server",
       "formFactor": "Small Form Factor (8-Bay SFF)",
       "listPrice": 5584,
-      "diffStatus": "UNCHANGED"
+      "diffStatus": "ATTRIBUTE_CHANGED"
     },
     "P73283-B21": {
       "description": "HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-order Server",
       "formFactor": "Small Form Factor (24-Bay SFF)",
       "listPrice": 5980,
-      "diffStatus": "UNCHANGED"
+      "diffStatus": "ATTRIBUTE_CHANGED"
     },
     "P73284-B21": {
       "description": "HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-order Server",
       "formFactor": "Large Form Factor (12-Bay LFF)",
       "listPrice": 6350,
-      "diffStatus": "UNCHANGED"
+      "diffStatus": "ATTRIBUTE_CHANGED"
     },
     "P73285-B21": {
       "description": "HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-order Server",
       "formFactor": "Large Form Factor (8-Bay LFF)",
       "listPrice": 6890,
-      "diffStatus": "UNCHANGED"
+      "diffStatus": "ATTRIBUTE_CHANGED"
     },
     "P73286-B21": {
       "description": "HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-order Server",
       "formFactor": "eDesign SFF (16-Bay EDSFF)",
       "listPrice": 7120,
-      "diffStatus": "UNCHANGED"
+      "diffStatus": "ATTRIBUTE_CHANGED"
     },
     "P73287-B21": {
       "description": "[REMOVED SKU] HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server",
@@ -2764,5 +2763,19 @@
     "unparseablePrices": [],
     "filteredPhantomSKUs": [],
     "duplicateSKUs": []
+  },
+  "attributeFidelity": {
+    "skusWithLeadTime": 0,
+    "skusWithCost": 0,
+    "skusWithPriceDelta": 171,
+    "skusWithPricePerGb": 6,
+    "clicStatusDistribution": {
+      "Valid": 5,
+      "Unpublished": 1167
+    },
+    "lifecycleStatusDistribution": {
+      "Active": 904,
+      "Obsolete (OB)": 268
+    }
   }
 }
