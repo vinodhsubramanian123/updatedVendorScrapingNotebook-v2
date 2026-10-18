@@ -23,8 +23,9 @@ try {
 }
 
 const { cleanBaseSKU, isValidHpeSKU } = require('../catalog/sku.js');
-const { detectChassisVariant, getChassisMap } = require('../catalog/catalog_discovery.js');
+const { detectChassisVariant, getChassisMap, autoDetectChassisDir } = require('../catalog/catalog_discovery.js');
 const { isNonBomSheet } = require('./boq_parser.js');
+const { analyzeDeliveryPacing } = require('./delivery_pacing_analyzer.js');
 
 /**
  * Robustly find a valid HPE SKU within text with multiple tokens.
@@ -632,13 +633,29 @@ function applyClusterManagementAndSupportPolicy(cluster, mult, rawItems, detecte
   }
 }
 
+function resolveCatalogDataForItems(rawItems, options = {}) {
+  if (options && options.catalogData) return options.catalogData;
+  try {
+    const chassisDir = autoDetectChassisDir(rawItems);
+    if (chassisDir && fs.existsSync(chassisDir)) {
+      const catFiles = fs.readdirSync(chassisDir).filter(f => f.endsWith('_Catalog.json'));
+      if (catFiles.length > 0) {
+        return JSON.parse(fs.readFileSync(path.join(chassisDir, catFiles[0]), 'utf8'));
+      }
+    }
+  } catch (_) {}
+  return null;
+}
+
 /**
  * Identify clusters and compute partition multipliers from raw items.
  * @param {Array<object>} rawItems 
  * @param {string} [boqName='']
+ * @param {object} [options={}]
  * @returns {object} { isMultiCluster, totalChassis, clusters: [] }
  */
-function analyzeAndPartitionClusters(rawItems, boqName = '') {
+function analyzeAndPartitionClusters(rawItems, boqName = '', options = {}) {
+  const catalogData = resolveCatalogDataForItems(rawItems, options);
   const chassisMap = getChassisMap();
   const allBaseSkus = new Set(Object.values(chassisMap).map(c => c.baseSku).filter(Boolean));
   const chassisItem = rawItems.find(i =>
@@ -675,6 +692,7 @@ function analyzeAndPartitionClusters(rawItems, boqName = '') {
 
   if (cpuItems.length <= 1) {
     const singleCpu = cpuItems[0];
+    const singlePacing = analyzeDeliveryPacing(rawItems, { catalogData });
     return {
       isMultiCluster: false,
       totalChassis,
@@ -685,8 +703,11 @@ function analyzeAndPartitionClusters(rawItems, boqName = '') {
         cpuSku: singleCpu?.sku || null,
         cpuDesc: singleCpu?.description || null,
         items: rawItems,
-        clusterSizing: computeClusterSizing(totalChassis, rawItems, uHeight, railKitSku, railKitDesc)
-      }]
+        clusterSizing: computeClusterSizing(totalChassis, rawItems, uHeight, railKitSku, railKitDesc),
+        deliveryPacing: singlePacing
+      }],
+      deliveryPacing: singlePacing,
+      recommendedUcidSplit: false
     };
   }
 
@@ -754,13 +775,19 @@ function analyzeAndPartitionClusters(rawItems, boqName = '') {
     applyClusterEnablementKits(cluster, mult, enablementKits);
     applyClusterManagementAndSupportPolicy(cluster, mult, rawItems, detectedChassis);
     cluster.clusterSizing = computeClusterSizing(mult, cluster.items, uHeight, railKitSku, railKitDesc);
+    cluster.deliveryPacing = analyzeDeliveryPacing(cluster.items, { catalogData });
   });
+
+  const overallPacing = analyzeDeliveryPacing(rawItems, { catalogData });
 
   return {
     isMultiCluster: true,
     totalChassis,
     detectedChassis,
-    clusters
+    clusters,
+    deliveryPacing: overallPacing,
+    recommendedUcidSplit: overallPacing.recommendedUcidSplit,
+    ucidSplitReason: overallPacing.ucidSplitReason
   };
 }
 

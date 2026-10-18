@@ -944,4 +944,16 @@ To ensure that future AI agents (Antigravity, Codex, Claude, or subagents) never
     1. `multi_cluster_splitter.js:applyClusterManagementAndSupportPolicy` automatically inspects partitioned clusters and injects or tags mandatory Base COM SKU `R7A11AAE` (1 per server) and parent/child Tech Care support if missing from the icon manifest.
     2. `bom_verifier.js:validateBoqEvaluationCriteria` runs check `B14` (`Mandatory COM / OneView Policy (Rule 81322276)`), emitting `ACTION_REQUIRED` on any Gen11/Gen12 ProLiant BOM lacking qualifying COM/OneView software before portal submission.
 
+- **INV-180: Delivery Pacing & Release Wave Disparity Protocol**:
+  - **The Release Wave Principle**: Hardware options within a product generation launch across staggered production waves (e.g. DL380 Gen12 Processors: Wave 1 [11/04/2024], Wave 2 [02/24/2025: 6740P/6737P], Wave 3 [06/02/2025: 6748P]). In CTO manufacturing, solution dispatch is subject to Factory Assembly Lock: $\text{Dispatch Date} = \max_{s \in \text{BOM}}(\text{GA Date}_s) + \max_{s \in \text{BOM}}(\text{Lead Time}_s)$.
+  - **Release Wave Disparity Detection**: When a candidate BOM or multi-cluster tender contains components whose General Availability Start Dates differ by $\ge 30$ days (e.g. 98-day gap between 6740P and 6748P):
+    - The engine emits `RELEASE_WAVE_DISPARITY` and proactively recommends partitioning into separate UCIDs / Order Icons (`recommendedUcidSplit: true`).
+    - Software licenses (E-LTUs) and service contracts are excluded from physical hardware wave calculations.
+  - **Pacing Item Bottleneck Identification**: When physical components exhibit extended factory lead times ($\ge 21$ days, e.g. 30 days for Fibre Channel HBA `R2E09A` vs 4 days standard server), the engine isolates the pacing item and flags the overall solution delivery envelope.
+  - **Pipeline Enforcement**:
+    1. `delivery_pacing_analyzer.js:analyzeDeliveryPacing` computes date gaps, isolates bottleneck SKUs, and issues presales advisories.
+    2. `multi_cluster_splitter.js:analyzeAndPartitionClusters` enriches partitioned clusters with `deliveryPacing` and emits `recommendedUcidSplit: true` with `ucidSplitReason` on wave gaps.
+    3. `bom_verifier.js:validateBoqEvaluationCriteria` runs check `B15` (`Pacing Item & Delivery Bottleneck Feasibility`), surfacing actionable delivery intelligence without blocking mathematically valid builds.
+
+
 

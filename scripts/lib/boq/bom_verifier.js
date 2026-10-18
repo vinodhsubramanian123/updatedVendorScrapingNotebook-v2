@@ -20,6 +20,7 @@
 
 const { isValidHpeSKU, cleanBaseSKU, buildCatalogSkuIndex } = require('../catalog/sku.js');
 const { candidateReviewCurrent } = require('./solution_evidence.js');
+const { analyzeDeliveryPacing } = require('./delivery_pacing_analyzer.js');
 
 /**
  * Construct an epistemic check result conforming to INV-105.
@@ -433,6 +434,51 @@ function _checkMandatoryComPolicy(output, _context = {}) {
       );
 }
 
+function _checkDeliveryFeasibility(output, context = {}) {
+  const rankedSolutions = output?.conflictGraph?.rankedSolutions || output?.rankedSolutions || [];
+  const parts = rankedSolutions.length > 0
+    ? (rankedSolutions[0].skuPartsList || rankedSolutions[0].skuList || [])
+    : (output?.items || []);
+
+  if (!Array.isArray(parts) || parts.length === 0) {
+    return makeCheck('B15', 'Pacing Item & Delivery Bottleneck Feasibility (INV-177 / INV-180)', 'WARN', 'NOT_APPLICABLE', 'No BOM parts available to assess delivery pacing.');
+  }
+
+  const catalogData = context.catalogData || output?.catalogData || output?.chassisInfo?.catalogData || null;
+  const pacing = analyzeDeliveryPacing(parts, { catalogData });
+
+  if (pacing.hasReleaseWaveGap) {
+    return makeCheck(
+      'B15',
+      'Pacing Item & Delivery Bottleneck Feasibility (INV-177 / INV-180)',
+      'WARN',
+      'ACTION_REQUIRED',
+      `Configuration mixes components across different General Availability waves (${pacing.releaseWaveGapDays}-day gap: ${pacing.earliestStartDate} vs ${pacing.latestStartDate}). Pacing items: ${pacing.wavePacingItems.map(w => w.sku).join(', ')}. Recommend partitioning into separate UCIDs to avoid factory assembly hold.`,
+      { pacing }
+    );
+  }
+
+  if (pacing.leadTimeBottleneckItem && pacing.maxLeadTimeDays >= 21) {
+    return makeCheck(
+      'B15',
+      'Pacing Item & Delivery Bottleneck Feasibility (INV-177 / INV-180)',
+      'WARN',
+      'ACTION_REQUIRED',
+      `Configuration is paced by ${pacing.leadTimeBottleneckItem.sku} with a factory lead time of ${pacing.maxLeadTimeDays} days, governing the entire solution delivery envelope.`,
+      { pacing }
+    );
+  }
+
+  return makeCheck(
+    'B15',
+    'Pacing Item & Delivery Bottleneck Feasibility (INV-177 / INV-180)',
+    'WARN',
+    'PASSED',
+    `Delivery timeline feasible. No major release wave gaps or pacing item bottlenecks detected (max lead time: ${pacing.maxLeadTimeDays || 'standard'} days).`,
+    { pacing }
+  );
+}
+
 /**
  * BOQ Evaluation Criteria (B1–B16)
  */
@@ -444,7 +490,8 @@ function validateBoqEvaluationCriteria(output, context = {}) {
     _checkUnsolicitedServices(output, context),
     _checkMandatoryAccessories(output),
     _checkNotebookGrounding(output, context),
-    _checkMandatoryComPolicy(output, context)
+    _checkMandatoryComPolicy(output, context),
+    _checkDeliveryFeasibility(output, context)
   ];
 }
 
