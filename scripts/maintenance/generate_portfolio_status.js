@@ -24,7 +24,7 @@ function generateMarkdown() {
 
   let md = `# Portfolio State of Health (Auto-Generated: ${nowStr})\n\n`;
   md += `This document is dynamically generated from on-disk catalog metadata by \`scripts/maintenance/generate_portfolio_status.js\`.\n\n`;
-  md += `### 📊 Certified Products & Portfolio Status\n\n`;
+  md += `### 📊 Discovered Catalogs & Portfolio Status\n\n`;
   md += `| Product Chassis | Relative Directory | SKUs on Disk | Excel Workbook | QuickSpecs PDF | Diff History | Status |\n`;
   md += `| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n`;
 
@@ -32,12 +32,12 @@ function generateMarkdown() {
     const excelStatus = c.hasExcel ? '✅ Present' : '❌ Missing';
     const pdfStatus = c.pdf ? `✅ ${c.pdf.sizeMb} MB` : '⚠️ Advisory (No PDF)';
     const diffStatus = c.hasDiffHistory ? '✅ Active' : 'Baseline';
-    const evalStatus = c.skuCount > 50 ? '✅ 100% Certified (Full Scrape)' : '✅ Baseline Pass';
+    const evalStatus = 'Catalog discovered; coverage and solution validation require separate evidence';
 
     md += `| \`${c.chassis}\` | \`${c.relativeDir}\` | **${c.skuCount}** | ${excelStatus} | ${pdfStatus} | ${diffStatus} | ${evalStatus} |\n`;
   });
 
-  md += `\n**Total Verified Portfolio Intelligence**: **${totalSKUs} unique SKUs** across **${catalogs.length} product lines**.\n\n`;
+  md += `\n**Catalog SKU Count (summed per product)**: **${totalSKUs}** across **${catalogs.length} product lines**. Shared SKUs may occur in multiple products.\n\n`;
   md += `### 🧠 Learned KnowledgeDeltas\n\n`;
   md += `- Total Closed-Loop Knowledge Deltas on Disk: **${deltas.length}**\n\n`;
   md += `### 🚀 Quick Commands\n\n`;

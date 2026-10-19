@@ -124,16 +124,15 @@ function getNotebookConfigEntry(notebookId, context = {}) {
       return { key: resolvedProduct.productId, entry: cfg.notebooks[resolvedProduct.productId] };
     }
 
-    // 2. Strict DL380a vs DL380 separation
+    // Preserve explicit generation and require a unique fallback product.
     const isDl380a = /\bdl\s*380\s*a\b/i.test(contextText) || normalizedContext.includes('380a') || normalizedContext.includes('dl380a');
-    if (isDl380a && cfg.notebooks['DL380a_Gen12']) {
-      return { key: 'DL380a_Gen12', entry: cfg.notebooks['DL380a_Gen12'] };
-    }
+    const requestedGeneration = normalizedContext.match(/gen\d+/)?.[0];
 
     // 3. Normalized key containment with strict firewall
     const matches = entries
       .map(([key, entry]) => ({ key, entry, normalizedKey: key.toLowerCase().replace(/[^a-z0-9]/g, '') }))
       .filter(item => {
+        if (requestedGeneration && item.normalizedKey.match(/gen\d+/)?.[0] !== requestedGeneration) return false;
         if (isDl380a) return item.normalizedKey.includes('380a');
         if (normalizedContext.includes('380') && !isDl380a && item.normalizedKey.includes('380a')) {
           return false; // Prevent DL380 from matching DL380a
@@ -143,7 +142,7 @@ function getNotebookConfigEntry(notebookId, context = {}) {
       })
       .sort((a, b) => b.normalizedKey.length - a.normalizedKey.length);
 
-    return matches[0] || null;
+    return matches.length === 1 ? matches[0] : null;
   } catch {
     return null;
   }

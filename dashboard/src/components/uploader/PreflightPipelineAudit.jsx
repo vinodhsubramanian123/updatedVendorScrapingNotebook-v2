@@ -88,7 +88,7 @@ export default function PreflightPipelineAudit({
           disabled={isEvaluating}
           className="btn-primary text-xs flex items-center gap-1.5"
         >
-          <span>Proceed to Full 6-Aspect Evaluation</span>
+          <span>Proceed to Full 7-Aspect Evaluation</span>
           <ArrowRight className="w-3.5 h-3.5" />
         </button>
       </div>

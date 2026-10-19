@@ -23,7 +23,7 @@
 
 const { chromium } = require('playwright');
 const path = require('path');
-const fs = require('fs');
+const { safeWriteJsonAtomic } = require('../lib/system/fs_compat');
 const http = require('http');
 const { spawn } = require('child_process');
 const { launchPlaywrightChromium } = require('../lib/scraper/browser_launcher.js');
@@ -274,7 +274,7 @@ async function auditAllFlows() {
       }
 
       // Test Proceed to Full 6-Aspect Evaluation
-      const evalBtn = page.locator('button:has-text("Proceed to Full 6-Aspect Evaluation"), button:has-text("Run 6-Aspect Evaluation")').first();
+      const evalBtn = page.locator('button:has-text("Proceed to Full 7-Aspect Evaluation"), button:has-text("Run 7-Aspect Evaluation")').first();
       if (await evalBtn.count() > 0) {
         await evalBtn.click();
         console.log('  ... Waiting for 6-Aspect Evaluation SSE stream to complete ...');
@@ -286,7 +286,7 @@ async function auditAllFlows() {
           .or(page.locator('text=Ambiguity Inbox'))
           .first();
         await evalFinished.waitFor({ state: 'visible', timeout: 60000 });
-        report.successes.push('Full 6-Aspect Evaluation executed via live SSE stream and completed');
+        report.successes.push('Full 7-Aspect Evaluation executed via live SSE stream and completed');
 
         // Verify Ambiguity Inbox
         const ambiguityCard = page.locator('text=Ambiguity Inbox').first();
@@ -299,6 +299,8 @@ async function auditAllFlows() {
         if (await dnaCard.count() > 0) {
           report.successes.push('Workload DNA card rendered on evaluated BOQ');
         }
+      } else {
+        report.logicalGaps.push('Required seven-aspect evaluation action was not found; evaluation was not executed');
       }
 
       // Close modal
@@ -526,6 +528,7 @@ async function auditAllFlows() {
     await page.waitForTimeout(500);
 
     const telemetryHeading = page.locator('h2:has-text("Agentic Insights"), h2:has-text("Telemetry")').first();
+    try { await telemetryHeading.waitFor({ state: 'visible', timeout: 15000 }); } catch (_) {}
     if (await telemetryHeading.isVisible()) {
       report.successes.push('Telemetry & Agentic Insights tab loaded');
 
@@ -620,8 +623,9 @@ auditAllFlows().then(report => {
 
   // Save report to disk
   const reportPath = path.join(PROJECT_ROOT, 'outputs', 'history', 'dashboard_flow_audit.json');
-  fs.writeFileSync(reportPath, JSON.stringify(report, null, 2));
+  safeWriteJsonAtomic(reportPath, report);
   console.log(`Detailed audit report written to: ${reportPath}`);
+  if (report.logicalGaps.length || report.consoleErrors.length || report.networkFailures.length || report.flowsTested === 0) process.exitCode = 1;
 }).catch(err => {
   console.error('Fatal Flow Audit Failure:', err);
   process.exit(1);

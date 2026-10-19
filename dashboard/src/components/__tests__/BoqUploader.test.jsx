@@ -29,7 +29,7 @@ describe('BoqUploader', () => {
     fireEvent.click(screen.getByText(/Sample Standard BOM/i));
     
     // Submit
-    const submitBtn = screen.getByText(/Run 6-Aspect Evaluation/i);
+    const submitBtn = screen.getByText(/Run 7-Aspect Evaluation/i);
     fireEvent.click(submitBtn);
     
     expect(mockOnEvaluateBoq).toHaveBeenCalledWith(

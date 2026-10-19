@@ -134,6 +134,9 @@ function auditRegistry(root) {
   const unexpectedConsumers = productionConsumers.filter(m => m.path !== 'scripts/maintenance/validate_skill_workflow_registry.js');
   for (const m of unexpectedConsumers) validation.issues.push({ code: 'UNEXPECTED_REGISTRY_CONSUMER', path: m.path, message: 'CP4 must remain unused by runtime paths' });
   validation.valid = validation.valid && unexpectedConsumers.length === 0;
+  const missingEntrypoints = coverage.entrypoints.filter(e => !e.exists);
+  for (const entry of missingEntrypoints) validation.issues.push({ code: 'MISSING_PACKAGE_ENTRYPOINT', path: entry.path, message: entry.name });
+  validation.valid = validation.valid && missingEntrypoints.length === 0;
   const sources = [registryPath, 'scripts/lib/system/schemas.js', 'scripts/lib/contracts/vendor_adapter_contract.js', 'scripts/maintenance/validate_skill_workflow_registry.js', 'tests/unit/test_skill_workflow_registry_contracts.js'];
   return {
     checkpoint: 'CP4', mode: 'MAINTENANCE_ONLY', generatedAt: new Date().toISOString(), validation,
@@ -142,7 +145,7 @@ function auditRegistry(root) {
     routerIntents,
     moduleOwnership: coverage.modules.map(m => ({ path: m.path, classification: m.classification, exports: m.exports, callers: m.callers, publicEntrypointChain: m.entrypointReachability, capabilityCandidates: ownership.get(m.path), disposition: ownership.get(m.path).length ? 'STATIC_CAPABILITY_CANDIDATE' : 'UNOWNED_REQUIRES_CLASSIFICATION_NOT_PROVEN_ORPHAN' })),
     publicContracts: { packageAndCliEntrypoints: coverage.entrypoints, bindings: inspectPublicBindings(root, coverage.modules), dynamicEdges: coverage.modules.filter(m => m.dynamicEdges.length).map(m => ({ path: m.path, edges: m.dynamicEdges })) },
-    limits: ['Registry unused; handoff schemas do not validate legacy call signatures/results.', 'Declared next/requires DAG is not a runtime workflow completion claim.', 'Static ownership/caller chains do not prove skill invocation or host loading.', 'Missing package.main is preserved; facade choice and consumer compatibility remain pending.', 'Adapter contract has no migrated vendor implementations or live conformance.', 'Tests and isolated import verification remain assigned to Antigravity/Gemini.']
+    limits: ['Registry unused; handoff schemas do not validate legacy call signatures/results.', 'Declared next/requires DAG is not a runtime workflow completion claim.', 'Static ownership/caller chains do not prove skill invocation or host loading.', 'Entrypoint existence does not prove import safety or consumer compatibility.', 'Adapter contract has no migrated vendor implementations or live conformance.']
   };
 }
 

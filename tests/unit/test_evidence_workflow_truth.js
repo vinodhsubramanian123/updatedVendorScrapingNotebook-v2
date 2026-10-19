@@ -13,6 +13,14 @@ const { solutionFingerprint, candidateReviewCurrent } = require('../../scripts/l
 const { refreshSharedKnowledgeSources } = require('../../scripts/lib/sync/shared_knowledge_refresh');
 const { generateUniversalCharterMarkdown } = require('../../scripts/services/running_knowledge_sync');
 
+test('notebook fallback preserves explicit generations', () => {
+  const { getNotebookConfigEntry } = require('../../scripts/lib/notebook/notebook_query_utils');
+  assert.equal(getNotebookConfigEntry(null, { chassis: 'DL380a Gen11' }), null);
+  assert.equal(getNotebookConfigEntry(null, { chassis: 'DL380a Gen13' }), null);
+  assert.equal(getNotebookConfigEntry(null, { chassis: 'DL380a Gen12' })?.key, 'DL380a_Gen12');
+  assert.equal(getNotebookConfigEntry(null, { chassis: 'DL380 Gen12' })?.key, 'DL380_Gen12');
+});
+
 test('saved ledger preserves terminal failures, full query and content fingerprints', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'evidence-truth-'));
   try {

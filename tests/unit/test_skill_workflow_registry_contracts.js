@@ -142,6 +142,7 @@ test('all current router branches are declared while registry stays unused by ru
   assert.equal(report.summary.unmappedRouterIntents, 0);
   assert.equal(report.summary.runtimeRegistryConsumers, 0);
   assert.ok(report.moduleOwnership.length > 0);
-  assert.ok(report.publicContracts.packageAndCliEntrypoints.some(e => e.kind === 'package-main' && e.exists === false));
+  assert.ok(report.publicContracts.packageAndCliEntrypoints.some(e => e.kind === 'package-main' && e.exists === true));
+  assert.equal(report.summary.missingPackageEntrypoints, 0);
   assert.ok(report.publicContracts.bindings.some(b => b.kind === 'MCP_DECLARED_TOOL'));
 });

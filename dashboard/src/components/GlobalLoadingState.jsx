@@ -47,7 +47,7 @@ export default function GlobalLoadingState({
     subtitle = activeProgress?.action || 'Connecting to Chrome CDP session and extracting live catalog SKUs...';
     IconComponent = Server;
   } else if (activeProgress?.task?.includes('EVAL') || operationName.includes('BOQ')) {
-    title = 'Executing 6-Aspect Hardware Rule Engine';
+    title = 'Executing 7-Aspect Hardware Rule Engine';
     subtitle = activeProgress?.action || 'Auditing thermal TDP, memory channel math, and -48VDC power rules...';
     IconComponent = Zap;
   } else if (activeProgress?.task?.includes('REBUILD')) {

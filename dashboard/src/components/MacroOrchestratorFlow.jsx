@@ -279,7 +279,7 @@ export default function MacroOrchestratorFlow({
                       <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full border ${
                         auditReport.is100PercentMatch ? 'bg-emerald-100 text-emerald-800 border-emerald-300' : 'bg-amber-100 text-amber-800 border-amber-300'
                       }`}>
-                        {auditReport.is100PercentMatch ? '100% Certified Match' : 'Deltas Logged'}
+                        {auditReport.is100PercentMatch ? 'Rows Matched' : 'Deltas Logged'}
                       </span>
                     )}
                   </div>

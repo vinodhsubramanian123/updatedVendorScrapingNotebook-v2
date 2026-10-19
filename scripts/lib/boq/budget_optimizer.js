@@ -10,6 +10,7 @@
 const fs = require('fs');
 const path = require('path');
 const { cleanBaseSKU } = require('../catalog/sku.js');
+const { parseObservedUnitPrice } = require('./pricing_presence');
 
 /**
  * Get unit list price for a SKU (USD) by looking it up in the parsed catalog.
@@ -24,11 +25,9 @@ function getSkuListPrice(skuStr, catalogData = null, chassisDir = null) {
       if (Array.isArray(sub.skus)) {
         const match = sub.skus.find(s => s['Product #'] && cleanBaseSKU(s['Product #']) === clean);
         if (match) {
-          const rawPrice = match['Unit Price (USD)'] || match['Price (USD)'] || match['Price'] || match.priceUsd;
-          if (rawPrice) {
-            const parsed = parseFloat(String(rawPrice).replace(/[^0-9.]/g, ''));
-            if (!isNaN(parsed) && parsed > 0) return parsed;
-          }
+          const rawPrice = match['Unit Price (USD)'] ?? match['Price (USD)'] ?? match['Price'] ?? match.priceUsd;
+          const parsed = parseObservedUnitPrice(rawPrice);
+          if (parsed !== null && parsed > 0) return parsed;
         }
       }
     }
@@ -111,12 +110,13 @@ function optimizeForBudget(consolidatedItems, evalResults, targetBudgetUsd = 0, 
     }
     it.catalogListPriceUsd = catalogEstimatePrice;
 
-    const hasQuotedPrice = it.inputUnitPriceUsd !== null && it.inputUnitPriceUsd !== undefined;
+    const observedQuote = parseObservedUnitPrice(it.inputUnitPriceUsd);
+    const hasQuotedPrice = observedQuote !== null && (observedQuote > 0 || isFree || it.isConfirmedZeroPrice === true) && it.priceConflict !== true;
     const lineQty = outputQuantities(it, multiplier).totalQty;
 
     if (hasQuotedPrice) {
-      it.quotedUnitPriceUsd = it.inputUnitPriceUsd;
-      it.unitPriceUsd = it.inputUnitPriceUsd;
+      it.quotedUnitPriceUsd = observedQuote;
+      it.unitPriceUsd = observedQuote;
       it.extendedPriceUsd = it.unitPriceUsd * it.quantity;
       it.priceSource = it.priceSource || (receiptRow ? `Live OCA BOM ${portalReceipt.capturedAt}` : 'CUSTOMER_QUOTE');
       if (it.unitPriceUsd === 0 && !isFree && !it.isConfirmedZeroPrice) zeroPriceCount++;
@@ -171,13 +171,16 @@ function optimizeForBudget(consolidatedItems, evalResults, targetBudgetUsd = 0, 
   }
 
   const hasBudgetConstraint = targetBudgetUsd > 0;
-  const isBudgetExceeded = hasBudgetConstraint && mandatoryBomCost > targetBudgetUsd;
-  const budgetOverrunUsd = isBudgetExceeded ? (mandatoryBomCost - targetBudgetUsd) : 0;
-  const remainingBudgetUsd = (!isBudgetExceeded && hasBudgetConstraint) ? (targetBudgetUsd - mandatoryBomCost) : 0;
+  const budgetAssessmentComplete = consolidatedItems.length > 0 && zeroPriceCount === 0 &&
+    Number.isFinite(mandatoryBomCost);
+  const knownCostExceedsBudget = hasBudgetConstraint && Number.isFinite(mandatoryBomCost) && mandatoryBomCost > targetBudgetUsd;
+  const isBudgetExceeded = knownCostExceedsBudget ? true : budgetAssessmentComplete ? false : null;
+  const budgetOverrunUsd = isBudgetExceeded ? (mandatoryBomCost - targetBudgetUsd) : !budgetAssessmentComplete ? null : 0;
+  const remainingBudgetUsd = !budgetAssessmentComplete ? null : (!isBudgetExceeded && hasBudgetConstraint) ? (targetBudgetUsd - mandatoryBomCost) : 0;
 
   // Dynamic upgrade recommendations based on remaining surplus budget and family templates
   const recommendedUpgrades = [];
-  if (remainingBudgetUsd > 0) {
+  if (_buildabilityConfirmed && budgetAssessmentComplete && remainingBudgetUsd > 0) {
     const family = (catalogData && catalogData.metadata && catalogData.metadata.family) ? catalogData.metadata.family : 'ProLiant';
     const templates = loadUpgradeTemplates(family);
 
@@ -186,11 +189,14 @@ function optimizeForBudget(consolidatedItems, evalResults, targetBudgetUsd = 0, 
         // Retrieve dynamic price from catalog if available, fallback to estimated
         const catalogPrice = getSkuListPrice(tpl.sku, catalogData, resolvedChassisDir);
         const finalPrice = catalogPrice > 0 ? catalogPrice : tpl.estimatedCostUsd;
+        const qty = tpl.qty || 1;
+        const orderCost = finalPrice * qty * multiplier;
+        if (!Number.isFinite(orderCost) || orderCost <= 0 || orderCost > remainingBudgetUsd) return;
         recommendedUpgrades.push({
           upgrade: tpl.upgrade,
           sku: tpl.sku,
-          qty: tpl.qty || 1,
-          costUsd: finalPrice,
+          qty: qty * multiplier,
+          costUsd: orderCost,
           benefit: tpl.benefit
         });
       }
@@ -198,11 +204,13 @@ function optimizeForBudget(consolidatedItems, evalResults, targetBudgetUsd = 0, 
   }
 
   const hasZeroPriceSkus = zeroPriceCount > 0;
-  const goldenRuleSummary = !hasBudgetConstraint
+  const goldenRuleSummary = !budgetAssessmentComplete
+    ? `PRICING INCOMPLETE: Complete cost and surplus are unknown.${knownCostExceedsBudget ? ' The known-price subtotal already exceeds the target budget.' : ' Budget compliance cannot be determined from the known-price subtotal.'}`
+    : !hasBudgetConstraint
     ? `ℹ️ No budget constraint provided — showing mandatory buildable cost only.`
     : (isBudgetExceeded
       ? `⚠️ GOLDEN RULE MANDATE: Target budget of $${targetBudgetUsd.toLocaleString('en-US')} is exceeded by +$${budgetOverrunUsd.toLocaleString('en-US')}. Mandatory buildable cost is $${mandatoryBomCost.toLocaleString('en-US')} to eliminate unbuildable errors.`
-      : `✅ GOLDEN RULE COMPLIANT: Mandatory buildable cost $${mandatoryBomCost.toLocaleString('en-US')} fits within target budget of $${targetBudgetUsd.toLocaleString('en-US')} (Surplus: $${remainingBudgetUsd.toLocaleString('en-US')}).`);
+      : `${_buildabilityConfirmed ? 'BUDGET ESTIMATE WITHIN TARGET' : 'BASELINE VALIDATION REQUIRED'}: Estimated component cost $${mandatoryBomCost.toLocaleString('en-US')} fits within target budget of $${targetBudgetUsd.toLocaleString('en-US')} (Surplus: $${remainingBudgetUsd.toLocaleString('en-US')}).`);
 
   return {
     targetBudgetUsd,
@@ -218,6 +226,7 @@ function optimizeForBudget(consolidatedItems, evalResults, targetBudgetUsd = 0, 
     pricingComplete: !hasUnquotedCustomerItems,
     injectedSkus,
     hasBudgetConstraint,
+    budgetAssessmentComplete,
     isBudgetExceeded,
     budgetOverrunUsd,
     remainingBudgetUsd,

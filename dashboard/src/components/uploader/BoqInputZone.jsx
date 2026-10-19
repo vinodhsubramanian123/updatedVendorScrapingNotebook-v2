@@ -117,7 +117,7 @@ export default function BoqInputZone({
           className="btn-primary text-xs flex items-center gap-1.5 shadow-sm"
         >
           {isEvaluating ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Calculator className="w-3.5 h-3.5" />}
-          {isEvaluating ? 'Evaluating Solution...' : 'Run 6-Aspect Evaluation'}
+          {isEvaluating ? 'Evaluating Solution...' : 'Run 7-Aspect Evaluation'}
         </button>
       </div>
     </div>

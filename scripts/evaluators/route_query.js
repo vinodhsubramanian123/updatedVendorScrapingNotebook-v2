@@ -1466,7 +1466,7 @@ async function _handleValueEngineering(queryText, context) {
   const result = require('../lib/boq/budget_optimizer').optimizeForBudget(items, evaluation, Number(budget), scope.catalogData, scope.catalogDir);
   return { intent: 'VALUE_ENGINEERING', status: 'ADVISORY', chassis: scope.chassisKey,
     budgetOptimization: result, targetBudgetUsd: Number(budget),
-    goldenRuleCompliant: result.hasBudgetConstraint && !result.isBudgetExceeded && !result.hasZeroPriceSkus,
+    goldenRuleCompliant: result.hasBudgetConstraint && result.budgetAssessmentComplete === true && result.isBudgetExceeded === false && !result.hasZeroPriceSkus,
     message: result.goldenRuleSummary };
 }
 

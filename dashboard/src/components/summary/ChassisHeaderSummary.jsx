@@ -8,14 +8,14 @@ export default function ChassisHeaderSummary({ summary, onTriggerSyncKnowledge, 
     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
       <div className="bg-white border border-slate-200/80 rounded-xl p-4 shadow-sm">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Certified Portfolio</span>
+          <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Catalog Portfolio</span>
           <Server className="w-5 h-5 text-emerald-600" />
         </div>
         <div className="flex items-baseline gap-2">
           <span className="text-2xl font-black text-slate-800 tracking-tight">{summary.totalProducts || 0}</span>
-          <span className="text-xs text-emerald-600 font-medium">100% Certified</span>
+          <span className="text-xs text-slate-500 font-medium">Products discovered</span>
         </div>
-        <div className="text-[11px] text-slate-400 mt-1">Across 5 Product Families</div>
+        <div className="text-[11px] text-slate-400 mt-1">Coverage and validation vary by product</div>
       </div>
 
       <div className="bg-white border border-slate-200/80 rounded-xl p-4 shadow-sm">
@@ -25,7 +25,7 @@ export default function ChassisHeaderSummary({ summary, onTriggerSyncKnowledge, 
         </div>
         <div className="flex items-baseline gap-2">
           <span className="text-2xl font-black text-slate-800 tracking-tight">{(summary.totalSKUs || 0).toLocaleString()}</span>
-          <span className="text-xs text-blue-600 font-medium">Live Catalog</span>
+          <span className="text-xs text-blue-600 font-medium">Stored Catalog</span>
         </div>
         <div className="text-[11px] text-slate-400 mt-1">Hardware + Service SKUs</div>
       </div>

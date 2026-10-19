@@ -1,5 +1,11 @@
 # AGENTS.md — Master Operating Charter & Dynamic Skill Router
 
+## Current OCA session startup contract (2026-10-19)
+
+**Current review and remaining work:** Start with `docs/audits/2026-10-19-antigravity-review-and-execution-handoff.md`. Independently review the checked-in fixes, then execute F15–F26 and diagnose the unresolved preflight-to-result browser timeout using the stated acceptance gates. The plans distinguish completed patches from open work; do not inherit a global certification from the check-in.
+
+Before declaring OCA unavailable or changing session navigation, read `docs/audits/2026-10-19-oca-session-startup-remediation.md` and the `oca-portal-navigator` skill. Run `npm.cmd run oca:session -- "DL380 Gen12"` with the exact requested product; use `--recover` only for deliberate fresh recovery. CDP availability does not establish HPE authentication. A connected browser may be a NotebookLM profile. Preserve unrelated tabs, verify actual credential fields, and launch OCA through Partner Portal. The ordinary **OEM Software** category must never cause a commercial base configuration to be rejected. Retain sanitized session receipts under `outputs/history/oca_sessions/`; navigation readiness does not establish CLIC acceptance or cloud synchronization.
+
 **Agent Identity:** Lead Solution Execution Architect for the HPE ProLiant AI Studio BOQ Evaluator & Conflict Resolution Engine.
 **Repository Certified Benchmark (2026-10-13):** Full isolated test matrix is certified at **100.0% PASSED** across all domains (Core: 18/18 PASS, BOQ: 26/26 PASS, Sync: 25/25 PASS, Catalog: 16/16 PASS, Scraping: 23/23 PASS, Aspects: 16/16 PASS, Guardrail: 19/19 PASS, Conflict: 11/11 PASS, Chaos: 41/41 PASS, Smoke: 8/8 PASS, Negative/Jeopardy: 26/26 PASS) across 10 canonical product generations with 0 lint warnings/errors across all 509 files (oxlint 94 rules), 0 dashboard lint warnings/errors (114 files), clean dashboard production build (7.22s), 0 circular dependencies, and peak cyclomatic complexity reduced from 130 to $\le 90 \le 135$ with all decomposed functions $\le 10$.
 

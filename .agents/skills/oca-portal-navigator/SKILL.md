@@ -5,7 +5,7 @@ description: Lightweight CDP port 9222 auto-navigator for passing through HPE Pa
 
 # HPE Partner Portal & OCA Auto-Navigator Skill (`oca-portal-navigator`)
 
-This skill provides 100% hands-free, zero-touch automated navigation through the HPE Partner Portal (`https://partner.hpe.com`) SSO authentication, Quick Links launcher, chassis search, base CTO price extraction, and entering the WebLogic OCA configuration Menu tab using native Chrome DevTools Protocol (CDP) on port 9222.
+This skill automates HPE Partner Portal (`https://partner.hpe.com`) authentication, Quick Links launch, chassis search and configuration-menu entry using CDP on port 9222. Browser connectivity, portal authentication and OCA configuration readiness are separate checks. Authentication can require current credentials or a vendor-controlled challenge.
 
 Critically, this skill formalizes the **Stale-Session Self-Healing Recovery Protocol (INV-89)**, which recovers from WebLogic timeouts, silent freezes, and unhandled exceptions by returning to Tab 1 (Partner Portal) to refresh tokens rather than breaking state via in-place OCA page reloads.
 
@@ -16,16 +16,31 @@ Critically, this skill formalizes the **Stale-Session Self-Healing Recovery Prot
 | Metric | Playwright / Selenium | CDP Port 9222 with `.chrome_sso_profile` |
 |---|---|---|
 | **Dependency Weight** | > 300 MB browser binaries | **0 MB (Uses system Chrome WS)** |
-| **SSO Credential Persistence** | Lost on each clean context | **100% Retained in `--user-data-dir=.chrome_sso_profile`** |
-| **Bypass SSO MFA / Login Prompts** | Stalls on interactive login | **Auto-submits pre-filled Okta & Onepass credentials** |
+| **SSO Credential Persistence** | Depends on context/profile | Reuses the browser currently bound to the port; a new launcher-owned browser uses `.chrome_sso_profile` |
+| **Authentication** | Depends on session and identity provider | Submits configured or saved credentials; MFA/CAPTCHA is not bypassed |
 | **WebLogic Popup & Window Handling** | Traps on `window.open` tabs | **Dynamic CDP page target discovery across all tabs** |
 | **Recovery from Frozen State** | Requires restarting browser | **Recovers in seconds via Tab 1 Quick Links reload** |
 
 ### Vendor Credential Resolution Hierarchy
-Autonomous navigators resolve portal credentials via `vendor_portal_router.getVendorCredentials(vendor)`:
+The HPE navigator reads its credential environment after loading the repository `.env`. The multi-vendor credential helper follows the same HPE environment convention:
 1. **Environment Override**: `HPE_PORTAL_USER` and `HPE_PORTAL_PASS` in `.env`.
 2. **Default Partner Identity**: Defaults to `hpeconfig@swiftline-uae.com` if `HPE_PORTAL_USER` is unspecified.
-3. **Chrome Profile Session**: When `HPE_PORTAL_PASS` is omitted, Chrome's persistent profile (`--user-data-dir=.chrome_sso_profile`) automatically loads saved passwords and session cookies, eliminating human MFA / interactive prompts entirely.
+3. **Chrome Profile Session**: Without a configured password, saved credentials/cookies may be used if they exist in the connected profile. A responsive port does not guarantee HPE authentication. NotebookLM may already own port 9222 with its own profile; preserve that browser and its unrelated tabs. Never print credentials or copy credential databases between profiles.
+
+### Verified session startup and recovery contract (2026-10-19)
+
+Read [the current session startup and recovery runbook](../../../docs/audits/2026-10-19-oca-session-startup-remediation.md). Use the canonical command:
+
+```powershell
+npm.cmd run oca:session -- "DL380 Gen12"
+npm.cmd run oca:session -- --recover "DL380 Gen12"
+```
+
+The first command reuses an exact active commercial configuration. The second deliberately replaces OCA via Partner Portal. Both write sanitized receipts under `outputs/history/oca_sessions/`. `READY_AT_MENU_TAB` / `NAVIGATED_TO_CONFIG_PAGE` proves navigation only; it does not prove scrape coverage, customer buildability, CLIC acceptance or cloud synchronization.
+
+Do not classify a commercial configuration as OEM because it contains the **OEM Software** category. OEM eligibility and target SKU must be checked against the base-product identity. Verify the actual password field after CDP input and dispatch input/change events; background focus and delayed Onepass dialogs can otherwise leave an empty form. Do not treat `/group/prp` alone as proof of authentication while a password dialog remains visible.
+
+Authentication failures must retain their stage: `HPE_AUTH_CREDENTIALS_REQUIRED`, `HPE_AUTH_REJECTED`, `HPE_AUTH_INTERACTION_REQUIRED`, or `HPE_AUTH_TIMEOUT`. They must not be swallowed and followed by a misleading launcher attempt. The connected profile may require a vendor-controlled challenge; report that exact blocker instead of claiming automatic MFA bypass.
 
 ---
 

@@ -170,7 +170,7 @@ function _buildBudgetSection(budgetOpt, targetBudgetUsd) {
   if (budgetOpt.isBudgetExceeded) {
     md += `- **Minimum Budget Overrun Delta**: \`+$${budgetOpt.budgetOverrunUsd.toLocaleString()} USD\`\n`;
     md += `> **Engineering Rationale**: The Golden Rule mandates that solution validation must eliminate 100% of unbuildable errors. Budget caps cannot override mandatory thermal cooling, power terminal safety, or write-cache lithium-ion battery requirements.\n\n`;
-  } else if (targetBudgetUsd > 0) {
+  } else if (targetBudgetUsd > 0 && Number.isFinite(budgetOpt.remainingBudgetUsd)) {
     md += `- **Remaining Budget Surplus**: \`$${budgetOpt.remainingBudgetUsd.toLocaleString()} USD\`\n\n`;
     if (budgetOpt.recommendedUpgrades && budgetOpt.recommendedUpgrades.length > 0) {
       md += `### 🌟 Recommended Surplus Budget Performance Upgrades\n\n`;

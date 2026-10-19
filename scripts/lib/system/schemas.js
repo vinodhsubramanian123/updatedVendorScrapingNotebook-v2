@@ -11,6 +11,7 @@
  */
 
 const { z } = require('zod');
+const { parseObservedUnitPrice } = require('../boq/pricing_presence');
 
 // ==========================================
 // 1. Centralized Helper Validators
@@ -35,22 +36,8 @@ const CoercedNumber = z.union([z.number(), z.string()]).transform((val, ctx) => 
   return num;
 });
 
-const NullablePriceNumber = z.union([z.number(), z.string(), z.null(), z.undefined()]).optional().nullable().transform((val) => {
-  if (val === null || val === undefined) return null;
-  if (typeof val === 'number') {
-    if (isNaN(val) || !isFinite(val) || val < 0) return null;
-    return val;
-  }
-  const clean = String(val).replace(/[$,\s]/g, '').trim().toUpperCase();
-  if (!clean || clean === 'N/A' || clean === 'NA' || clean === '-' || clean === 'NONE' || clean === 'NULL' || clean === 'UNKNOWN') {
-    return null;
-  }
-  const num = Number(clean);
-  if (isNaN(num) || !isFinite(num) || num < 0) {
-    return null;
-  }
-  return num;
-});
+const NullablePriceNumber = z.union([z.number(), z.string(), z.null(), z.undefined()])
+  .optional().nullable().transform(parseObservedUnitPrice);
 
 // ==========================================
 // 2. Catalog Master Schema
@@ -138,7 +125,9 @@ const CatalogMasterSchema = z.object({
 const BOQItemSchema = z.object({
   sku: SkuString,
   description: z.string().default(''),
-  quantity: z.union([z.number(), z.string()]).transform(v => Math.max(0, parseInt(String(v), 10) || 0)).default(1),
+  quantity: z.union([z.number(), z.string().trim().min(1)])
+    .transform(v => Number(v))
+    .pipe(z.number().int().positive().max(Number.MAX_SAFE_INTEGER)).default(1),
   unitPriceUsd: NullablePriceNumber.default(null),
   inputUnitPriceUsd: NullablePriceNumber.optional(),
   quotedUnitPriceUsd: NullablePriceNumber.optional(),

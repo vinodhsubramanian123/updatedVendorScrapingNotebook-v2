@@ -39,6 +39,10 @@ const sampleBOQ = {
 const parsedBoq = safeParseBOQ(sampleBOQ);
 assert.strictEqual(parsedBoq.success, true, 'BOQ validation failed');
 assert.strictEqual(parsedBoq.data.items[0].quantity, 2, 'Quantity was not coerced to number');
+for (const quantity of [0, -1, 1.5, '2.5', '3 units', '', ' ', Infinity, Number.MAX_SAFE_INTEGER + 1, true, []]) {
+  assert.strictEqual(BOQItemSchema.safeParse({ sku: 'P64706-B21', quantity }).success, false,
+    `Invalid hardware quantity must be rejected: ${String(quantity)}`);
+}
 assert.strictEqual(parsedBoq.data.items[0].unitPriceUsd, 2700, 'Unit price currency string was not coerced');
 
 // Test honest nullable pricing contracts in BOQItemSchema (INV-158)
@@ -56,6 +60,10 @@ assert.strictEqual(zeroItem.unitPriceUsd, 0, 'Confirmed zero price must be prese
 
 const negativeItem = BOQItemSchema.parse({ sku: 'P64706-B21', unitPriceUsd: -50 });
 assert.strictEqual(negativeItem.unitPriceUsd, null, 'Negative price must evaluate to null');
+for (const unitPriceUsd of ['0x10', '1,2', '1 2']) {
+  assert.strictEqual(BOQItemSchema.parse({ sku: 'P64706-B21', unitPriceUsd }).unitPriceUsd, null,
+    'Schema and canonical observed-price parser must reject the same malformed currency');
+}
 
 console.log('✅ [2/5] BOQItemSchema properly coerces quantity, currency strings, and preserves honest nullable pricing.');
 

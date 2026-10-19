@@ -467,7 +467,7 @@ export const PHASE_2_STAGES = [
     },
     deriveMetrics(state) {
       return {
-        'Quote Match': hasAudit(state) ? (state.auditReport.is100PercentMatch ? '100% Certified' : 'Deltas Detected') : 'Pending Upload',
+        'Quote Match': hasAudit(state) ? (state.auditReport.is100PercentMatch ? 'Rows Matched' : 'Deltas Detected') : 'Pending Upload',
         'Variance Count': hasAudit(state) ? (state.auditReport.discrepancies?.addedByVendor?.length || 0) : 0,
         'Audit Ledger': hasAudit(state) ? 'Synthesized' : 'Waiting',
       };
@@ -569,7 +569,7 @@ export const PHASE_2_STAGES = [
       return {
         'Sync Status': isSyncing(state) ? 'Syncing...' : (hasAudit(state) ? 'Synchronized' : 'Ready'),
         'Chassis Target': state.selectedChassis || 'Unknown Chassis',
-        'Registry Health': '100% Certified',
+        'Registry Health': 'Not verified',
       };
     },
     deriveDurationMs() {

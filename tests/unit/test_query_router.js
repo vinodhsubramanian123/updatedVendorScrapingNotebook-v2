@@ -5,6 +5,8 @@ const assert = require('node:assert');
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
+// Unit routing checks must not depend on live NotebookLM authentication or latency.
+process.env.OFFLINE_MODE = 'true';
 const { classifyQueryIntent, executeRoutedQuery } = require('../../scripts/evaluators/route_query.js');
 
 test('QueryRouter — workbook handoff uses canonical pipeline and rejects unsigned or mutated delivery', async t => {

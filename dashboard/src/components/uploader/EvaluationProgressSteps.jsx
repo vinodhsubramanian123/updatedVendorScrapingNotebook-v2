@@ -5,7 +5,7 @@ export const EVAL_PIPELINE_STEPS = [
   { id: 1, title: 'Workload DNA & Intake', subtitle: 'Extract hardware SKU lines, multi-sheet BOM & CTO multipliers' },
   { id: 2, title: 'Chassis Auto-Detection', subtitle: 'Identify target chassis variant, generation & form factor' },
   { id: 3, title: 'Catalog Rules Engine', subtitle: 'Load multi-tiered scraped rules & mandatory dependencies' },
-  { id: 4, title: '6-Aspect Physical Math', subtitle: 'Compute/Thermal, Memory, Storage, PCIe, Power, Support checks' },
+  { id: 4, title: '7-Aspect Physical Math', subtitle: 'Compute/Thermal, Memory, Storage, Networking/OCP, PCIe, Power, Support checks' },
   { id: 5, title: '5-Tier Strategy Matrix', subtitle: 'Synthesize Rank 1 (Intent) through Rank 5 (Budget Minimized)' },
   { id: 6, title: 'Quantitative Confidence', subtitle: 'Calculate deterministic reliability & conflict graph score' },
   { id: 7, title: 'CapEx Budget Optimizer', subtitle: 'Evaluate budget limits, upgrade paths & pricing baseline' },

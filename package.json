@@ -2,7 +2,7 @@
   "name": "booktoskill-hpe-oca-scraper",
   "version": "1.1.0",
   "description": "HPE OCA Solution & Product Catalog Intelligence Pipeline",
-  "main": "scripts/scrape_oca_solution.js",
+  "main": "scripts/scrapers/scrape_oca_solution.js",
   "engines": {
     "node": ">=20.19.0"
   },
@@ -62,6 +62,7 @@
     "audit:notebooks": "node scripts/maintenance/notebook_health_audit.js",
     "status": "node scripts/maintenance/observability_status.js",
     "inspect:session": "node scripts/scrapers/inspect_oca_session.js",
+    "oca:session": "node scripts/lib/scraper/navigate_oca.js",
     "inspect:clic": "node scripts/scrapers/visual_clic_inspector.js",
     "parse:clic": "node scripts/scrapers/parse_clic_modal.js",
     "test:smoke": "node scripts/maintenance/run_test_matrix.js --domain smoke",

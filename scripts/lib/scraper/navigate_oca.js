@@ -38,6 +38,19 @@ function isDefaultChassisCandidate(query, candidate) {
   return /\boem\b/i.test(query) || !/\boem\b/i.test(candidate.text || '');
 }
 
+function activeConfigurationMatches(query, pageText, options = {}) {
+  const expected = extractModelGeneration(query);
+  const lines = String(pageText || '').split(/[\r\n]+/).map(line => line.trim()).filter(Boolean);
+  const identityLines = lines.filter(line => extractModelGeneration(line).model);
+  // OEM Software is a category on ordinary commercial systems. Inspect only
+  // the identified base product, never the complete option catalog, for OEM.
+  const baseText = identityLines.find(line => /configure.to.order|smart\s+cto|base\s+(?:module|chassis)|scalable\s+base/i.test(line)) || identityLines[0];
+  const observed = extractModelGeneration(baseText);
+  return Boolean(baseText && observed.model === expected.model &&
+    (!expected.generation || observed.generation === expected.generation) && isDefaultChassisCandidate(query, { text: baseText }) &&
+    (!options.targetSku || baseText.toUpperCase().includes(String(options.targetSku).toUpperCase())));
+}
+
 function isExactProductCandidate(query, candidate) {
   // Fixed SAN switches are configurable products without a server CTO label.
   // Require the explicit orderable SKU so 24/8 and 24/24 bundles cannot swap.
@@ -163,13 +176,7 @@ async function checkActiveMenuTab(ocaTarget, query, options) {
 
   const hasMenu = typeof activeState === 'object' ? Boolean(activeState?.hasMenu) : Boolean(activeState);
   const pageText = typeof activeState === 'object' ? (activeState?.pageText || '') : '';
-  const activeIdentity = pageText ? extractModelGeneration(pageText) : null;
-  const requestedIdentity = extractModelGeneration(query);
-  const activeMatchesRequest = Boolean(activeIdentity?.model && requestedIdentity.model &&
-    activeIdentity.model === requestedIdentity.model &&
-    (!requestedIdentity.generation || activeIdentity.generation === requestedIdentity.generation) &&
-    isDefaultChassisCandidate(query, { text: pageText }) &&
-    (!options.targetSku || pageText.toUpperCase().includes(String(options.targetSku).toUpperCase())));
+  const activeMatchesRequest = activeConfigurationMatches(query, pageText, options);
 
   if (hasMenu && activeMatchesRequest && !options.forceDiscovery) {
     console.log(`⚡ [ACTIVE SESSION] Already inside target OCA configuration page! Ready for scraping.`);
@@ -666,7 +673,7 @@ async function searchAndConfigureChassis(ws, query, ocaTarget, options = {}) {
   return {
     targetUrl: activeOca ? activeOca.url : ocaTarget.url,
     pageId: activeOca ? activeOca.id : ocaTarget.id,
-    baseChassisPriceUsd: selected.listPriceUsd || 0,
+    baseChassisPriceUsd: Number.isFinite(selected.listPriceUsd) && selected.listPriceUsd > 0 ? selected.listPriceUsd : null,
     selectedCandidate: selected,
     chassisDiscovery: {
       query,
@@ -758,13 +765,15 @@ async function performAutomatedSignIn(partnerTarget) {
 
     // 2. Wait for credential / password page and submit password
     let passwordSubmitted = false;
-    for (let passAttempt = 0; passAttempt < 30 && !passwordSubmitted; passAttempt++) {
+    // The Onepass modal may mount after a slow redirect; do not switch to
+    // passive redirect polling after only 30 seconds with an unfilled form.
+    for (let passAttempt = 0; passAttempt < 90 && !passwordSubmitted; passAttempt++) {
       try {
         const passState = await sendCommand(ws, 'Runtime.evaluate', {
           expression: `(() => {
-            if (location.pathname.includes('/group/prp')) return { authenticated: true };
             const passInput = Array.from(document.querySelectorAll('#password-sign-in, input[type="password"], #okta-signin-password, #onepass-password')).find(el => el.getClientRects().length);
             if (!passInput) {
+              if (location.pathname.includes('/group/prp') && document.querySelector('#quick-links-807 a, a[href*="eServiceId=187402"]')) return { authenticated: true };
               // If we are on /login and email input was cleared, re-fill email
               const emailAgain = document.querySelector('#oktaEmailInput');
               if (emailAgain && emailAgain.getClientRects().length && (!emailAgain.value || ${passAttempt > 0 && passAttempt % 15 === 0})) {
@@ -776,13 +785,19 @@ async function performAutomatedSignIn(partnerTarget) {
             }
             passInput.focus();
             if (${JSON.stringify(Boolean(portalPass))}) passInput.value = '';
-            return { found: Boolean(${JSON.stringify(Boolean(portalPass))} || passInput.value) };
+            return { found: Boolean(${JSON.stringify(Boolean(portalPass))} || passInput.value),
+              credentialMissing: !${JSON.stringify(Boolean(portalPass))} && !passInput.value };
           })()`,
           returnByValue: true
         });
 
         const stateVal = passState?.result?.value;
         if (stateVal?.authenticated) break;
+        if (stateVal?.credentialMissing) {
+          const error = new Error('HPE_AUTH_CREDENTIALS_REQUIRED: Password form is visible, but neither a configured password nor an autofilled password is available in the connected Chrome profile.');
+          error.code = 'HPE_AUTH_CREDENTIALS_REQUIRED';
+          throw error;
+        }
         if (stateVal?.needsEmail) {
           await sendCommand(ws, 'Input.insertText', { text: portalUser });
           await sendCommand(ws, 'Runtime.evaluate', {
@@ -797,20 +812,16 @@ async function performAutomatedSignIn(partnerTarget) {
           });
         } else if (stateVal?.found) {
           if (portalPass) await sendCommand(ws, 'Input.insertText', { text: portalPass });
-          await sendCommand(ws, 'Runtime.evaluate', {
-            expression: `(() => {
-              const passInput = Array.from(document.querySelectorAll('#password-sign-in, input[type="password"], #okta-signin-password, #onepass-password')).find(el => el.getClientRects().length);
-              if (passInput) {
-                passInput.dispatchEvent(new Event('input', { bubbles: true }));
-                passInput.dispatchEvent(new Event('change', { bubbles: true }));
-              }
-            })()`
+          const verifiedFields = await sendCommand(ws, 'Runtime.evaluate', {
+            expression: buildPasswordFieldVerification(portalUser, portalPass),
+            returnByValue: true
           });
+          if (!verifiedFields?.result?.value?.passwordReady) continue;
 
           const submitResult = await sendCommand(ws, 'Runtime.evaluate', {
             expression: `(() => {
               const btn = Array.from(document.querySelectorAll('#onepass-submit-btn, button.submit-btn, #okta-signin-submit')).find(el => el.getClientRects().length);
-              if (!btn) return false;
+              if (!btn || btn.disabled) return false;
               btn.scrollIntoView({ block: 'center', inline: 'center' });
               btn.focus();
               btn.click();
@@ -826,6 +837,8 @@ async function performAutomatedSignIn(partnerTarget) {
           }
         }
       } catch (err) {
+        if (err.code?.startsWith('HPE_AUTH_')) throw err;
+        console.warn(`   [AUTH_RETRY] Password stage CDP operation failed; reconnecting to the portal target (${err.code || 'CDP_OPERATION_FAILED'}).`);
         // Re-acquire target and reconnect ws if page navigated
         try {
           const freshPages = await getPageTargets();
@@ -842,6 +855,31 @@ async function performAutomatedSignIn(partnerTarget) {
     try { ws.close(); } catch (_) {}
   }
 
+  return waitForAuthenticatedPartnerTarget();
+}
+
+function buildPasswordFieldVerification(portalUser, portalPass) {
+  return `(() => {
+              const passInput = Array.from(document.querySelectorAll('#password-sign-in, input[type="password"], #okta-signin-password, #onepass-password')).find(el => el.getClientRects().length);
+              if (passInput) {
+                const configuredPassword = ${JSON.stringify(portalPass)};
+                if (configuredPassword && passInput.value !== configuredPassword) {
+                  Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(passInput, configuredPassword);
+                }
+                passInput.dispatchEvent(new Event('input', { bubbles: true }));
+                passInput.dispatchEvent(new Event('change', { bubbles: true }));
+              }
+              const userInput = document.querySelector('#email-sign-in-with-input');
+              if (userInput && userInput.value !== ${JSON.stringify(portalUser)}) {
+                Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(userInput, ${JSON.stringify(portalUser)});
+                userInput.dispatchEvent(new Event('input', { bubbles: true }));
+                userInput.dispatchEvent(new Event('change', { bubbles: true }));
+              }
+              return { passwordReady: Boolean(passInput?.value) };
+            })()`;
+}
+
+async function waitForAuthenticatedPartnerTarget() {
   // 3. Wait for authentication redirect to settle on partner.hpe.com/group/prp or direct OCA tab
   console.log(`⏳ Authenticating account and loading Partner Portal (waiting up to 180s)...`);
   const authStart = Date.now();
@@ -869,9 +907,38 @@ async function performAutomatedSignIn(partnerTarget) {
       console.log(`🎉 [AUTH_SUCCESS] Successfully authenticated into HPE Partner Portal at: ${safeNavigationLabel(homeTarget.url)}`);
       return homeTarget;
     }
+    const loginTarget = pages.find(t => /^https:\/\/partner\.hpe\.com\//i.test(t.url || ''));
+    if (loginTarget) {
+      let probeWs;
+      let state;
+      try {
+        probeWs = await connectWS(loginTarget.webSocketDebuggerUrl);
+        const probe = await sendCommand(probeWs, 'Runtime.evaluate', {
+          expression: `(() => {
+            const text = document.body?.innerText || '';
+            const errorText = Array.from(document.querySelectorAll('[role="alert"], .error, .error-msg, .error-message, .okta-form-infobox-error'))
+              .filter(el => el.getClientRects().length).map(el => el.innerText || '').join(' ');
+            if (/incorrect password|invalid credentials|unable to sign in|authentication failed|user name or password is incorrect|sign.in attempt was unsuccessful/i.test(errorText)) return 'HPE_AUTH_REJECTED';
+            if (/verify your identity|enter (?:the )?(?:verification|security) code|multi.factor authentication|complete the captcha/i.test(text)) return 'HPE_AUTH_INTERACTION_REQUIRED';
+            return null;
+          })()`, returnByValue: true
+        });
+        state = probe?.result?.value;
+      } catch (_) {
+        // Redirects can detach the execution context; keep the bounded auth
+        // poll alive rather than treating a transport race as rejected login.
+      } finally { if (probeWs) probeWs.close(); }
+      if (state) {
+        const error = new Error(`${state}: Partner Portal requires authentication recovery; no OCA session was established.`);
+        error.code = state;
+        throw error;
+      }
+    }
   }
 
-  throw new Error('Automated sign-in timed out waiting for redirect to Partner Portal home page.');
+  const error = new Error('HPE_AUTH_TIMEOUT: Authentication did not settle on Partner Portal home within 180 seconds.');
+  error.code = 'HPE_AUTH_TIMEOUT';
+  throw error;
 }
 
 /**
@@ -905,6 +972,7 @@ async function handlePartnerPortalLaunch(partnerTarget, query, options) {
       activePortalTarget = await performAutomatedSignIn(partnerTarget);
     } catch (loginErr) {
       console.warn(`⚠️ [AUTO_LOGIN] Automated sign-in notice: ${loginErr.message}`);
+      throw loginErr;
     }
   }
 
@@ -1112,12 +1180,13 @@ async function navigateToOCAChassis(chassisQuery, options = {}) {
   const { ensureChromeBrowserRunning } = require('./browser_launcher.js');
   await ensureChromeBrowserRunning(CDP_PORT, 'https://partner.hpe.com/web/prp');
 
-  const pages = await getPageTargets();
+  let pages = await getPageTargets();
   await pruneSeismicTabs(pages);
   // OCA may reuse the Partner Portal tab. Keep a portal tab alive before
   // closing OCA; closing Chrome's last tab terminates the CDP browser.
   if (!pages.some(page => /^https:\/\/partner\.hpe\.com\//i.test(page.url || ''))) {
     await openPartnerPortalAnchorTab('Unable to open Partner Portal for session recovery.');
+    pages = await getPageTargets();
   }
 
   const ocaTarget = !options.forceFreshSession ? pages.find(t => !isSeismicTarget(t) && t.url && t.url.includes('oca.ext.hpe.com')) : null;
@@ -1188,6 +1257,12 @@ async function recoverAndLaunchFreshOCA(chassisQuery = 'DL380 Gen12', options = 
   const recoveryAttempt = (options.recoveryAttempt || 0) + 1;
   if (recoveryAttempt > 2) throw new Error('OCA_RECOVERY_EXHAUSTED: two fresh Partner Portal sessions failed; retain pending vendor validation.');
   options = { ...options, recoveryAttempt };
+  const browser = await require('./browser_launcher').ensureChromeBrowserRunning(CDP_PORT, 'https://partner.hpe.com/web/prp');
+  if (!browser.ok) {
+    const error = new Error('CDP_UNAVAILABLE: Chrome remote debugging did not become ready.');
+    error.code = 'CDP_UNAVAILABLE';
+    throw error;
+  }
   const query = String(chassisQuery || 'DL380 Gen12').trim();
   console.log(`\n===============================================================`);
   console.log(`🔄 [INV-89] TAB 1 STALE-SESSION SELF-HEALING RECOVERY`);
@@ -1389,15 +1464,29 @@ async function inspectAndEnableToolsMenu(ws) {
 
 // CLI runner support
 if (require.main === module) {
-  const chassisArg = process.argv[2] || 'DL380 Gen12';
+  const { safeWriteJsonAtomic } = require('../system/fs_compat');
+  const startedAt = new Date().toISOString();
+  const receiptPath = path.join(PROJECT_ROOT, 'outputs', 'history', 'oca_sessions', `navigation-${Date.now()}.json`);
+  const saveReceipt = fields => {
+    safeWriteJsonAtomic(receiptPath, { schemaVersion: 1, startedAt, finishedAt: new Date().toISOString(),
+      navigatorSha256: require('crypto').createHash('sha256').update(require('fs').readFileSync(__filename)).digest('hex'),
+      query: chassisArg, cdpPort: CDP_PORT, ...fields });
+    console.log(`Session receipt: ${path.relative(PROJECT_ROOT, receiptPath)}`);
+  };
+  const chassisArg = process.argv.slice(2).find(arg => !arg.startsWith('--')) || 'DL380 Gen12';
   const isRecover = process.argv.includes('--recover') || process.argv.includes('--fresh');
   const runner = isRecover ? recoverAndLaunchFreshOCA(chassisArg) : navigateToOCAChassis(chassisArg);
   runner
     .then(res => {
+      saveReceipt({ status: res.status, pageId: res.pageId || null, targetUrl: safeNavigationLabel(res.targetUrl),
+        selectedBaseSku: res.selectedCandidate?.sku || null,
+        vendorAcceptance: 'NOT_EVALUATED', cloudSync: 'NOT_EVALUATED' });
       console.log('🎉 OCA Navigation Complete:', res);
       process.exit(0);
     })
     .catch(err => {
+      saveReceipt({ status: 'FAILED', code: err.code || 'OCA_NAVIGATION_FAILED', error: safeNavigationLabel(err.message),
+        vendorAcceptance: 'NOT_EVALUATED', cloudSync: 'NOT_EVALUATED' });
       console.error('❌ OCA Navigation Error:', err.message);
       process.exit(1);
     });
@@ -1412,6 +1501,8 @@ module.exports = {
   extractModelGeneration,
   isExactProductCandidate,
   isDefaultChassisCandidate,
+  buildPasswordFieldVerification,
+  activeConfigurationMatches,
   waitForDOMPredicate,
   inspectAndEnableToolsMenu
 };

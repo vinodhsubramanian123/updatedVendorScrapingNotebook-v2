@@ -96,7 +96,7 @@ async function runTests() {
     await sampleBtn.click();
     await page.waitForTimeout(500);
 
-    const runEvalBtn = await page.waitForSelector('button:has-text("Run 6-Aspect Evaluation")');
+    const runEvalBtn = await page.waitForSelector('button:has-text("Run 7-Aspect Evaluation")');
     await runEvalBtn.click();
 
     // Wait for SSE logs / evaluation to finish
@@ -130,7 +130,7 @@ async function runTests() {
     console.log('\n✅ All Tests Passed Successfully!');
   } catch (err) {
     console.error(`\n❌ E2E Error:`, err.message);
-    process.exit(1);
+    process.exitCode = 1;
   } finally {
     await browser.close();
     if (serverProc) {

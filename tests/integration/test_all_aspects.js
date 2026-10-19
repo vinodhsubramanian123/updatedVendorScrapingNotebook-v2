@@ -145,9 +145,10 @@ assert(budgetExceededRes.isBudgetExceeded === true, `Identified budget overrun w
 assert(budgetExceededRes.budgetOverrunUsd > 0, `Calculated minimum budget overrun delta (+$${budgetExceededRes.budgetOverrunUsd.toLocaleString()})`);
 
 const budgetSurplusRes = optimizeForBudget(items, evalResults, 600000.00, mockCatalogData);
-assert(budgetSurplusRes.isBudgetExceeded === false, `Identified budget surplus when target budget ($600,000) >= mandatory cost ($${budgetSurplusRes.mandatoryBomCostUsd})`);
-assert(budgetSurplusRes.remainingBudgetUsd > 0, `Calculated remaining budget surplus ($${budgetSurplusRes.remainingBudgetUsd.toLocaleString()})`);
-assert(budgetSurplusRes.recommendedUpgrades.length > 0, `Generated surplus budget performance upgrade recommendations`);
+assert(budgetSurplusRes.budgetAssessmentComplete === false, 'Incomplete mock catalog leaves missing component prices unresolved');
+assert(budgetSurplusRes.isBudgetExceeded === null, 'Known subtotal below budget cannot establish compliance with incomplete pricing');
+assert(budgetSurplusRes.remainingBudgetUsd === null, 'Incomplete pricing cannot establish remaining surplus');
+assert(budgetSurplusRes.recommendedUpgrades.length === 0, 'No upgrade recommendations without complete pricing and validated buildability');
 
 // -------------------------------------------------------------------
 // Test Group 8: Zero Hardcoding & Dynamic Category Classification

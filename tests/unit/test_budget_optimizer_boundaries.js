@@ -18,13 +18,44 @@ test('Budget Optimizer — Empty & Single Item Edge Cases', () => {
   const emptyRes = optimizeForBudget([], {}, 10000, mockCatalog);
   assert.ok(emptyRes, 'Empty input should return structured object');
   assert.strictEqual(emptyRes.mandatoryBomCostUsd, 0);
-  assert.strictEqual(emptyRes.isBudgetExceeded, false);
+  assert.strictEqual(emptyRes.isBudgetExceeded, null);
+  assert.strictEqual(emptyRes.budgetAssessmentComplete, false);
 
   const singleItem = [{ sku: 'P73282-B21', quantity: 1, category: 'Base Server' }];
   const singleRes = optimizeForBudget(singleItem, {}, 5000, mockCatalog);
   assert.ok(singleRes, 'Single item input should succeed');
   assert.strictEqual(singleRes.isBudgetExceeded, true, 'Budget of 5000 should be exceeded by 5584 BOM');
   assert.strictEqual(singleRes.budgetOverrunUsd, 584);
+});
+
+test('Budget optimizer blocks upgrades before validation and with incomplete prices', () => {
+  const priced = [{ sku: 'BASE', quantity: 1, unitPriceUsd: 100 }];
+  const unvalidated = optimizeForBudget(priced, {}, 100000);
+  assert.deepStrictEqual(unvalidated.recommendedUpgrades, []);
+  assert.ok(!unvalidated.goldenRuleSummary.includes('GOLDEN RULE COMPLIANT'));
+  const incomplete = optimizeForBudget([{ sku: 'UNKNOWN', quantity: 1 }],
+    { isMathClean: true, isGraphClean: true }, 100000);
+  assert.strictEqual(incomplete.budgetAssessmentComplete, false);
+  assert.strictEqual(incomplete.isBudgetExceeded, null);
+  assert.strictEqual(incomplete.remainingBudgetUsd, null);
+  assert.deepStrictEqual(incomplete.recommendedUpgrades, []);
+});
+
+test('Budget optimizer prices order upgrades against actual surplus', () => {
+  const result = optimizeForBudget([{ sku: 'BASE', quantity: 1, unitPriceUsd: 100 }],
+    { isMathClean: true, isGraphClean: true, configurationContext: { multiplier: 3 } }, 2000);
+  // Networking template threshold is $1500, but its actual order cost exceeds $1700 surplus.
+  assert.deepStrictEqual(result.recommendedUpgrades, []);
+});
+
+test('Budget optimizer rejects negative and malformed catalog prices', () => {
+  for (const value of ['-$100', '1,2', 'USD -25', '100 dollars extra']) {
+    assert.strictEqual(getSkuListPrice('BASE', { entries: [{ skus: [{ 'Product #': 'BASE', Price: value }] }] }), 0);
+  }
+  const items = [{ sku: 'BASE', quantity: 1, unitPriceUsd: 0 }];
+  const result = optimizeForBudget(items, {}, 1000);
+  assert.strictEqual(items[0].quotedUnitPriceUsd, null);
+  assert.strictEqual(result.pricingComplete, false);
 });
 
 test('Budget Optimizer — List Price Resolution', () => {
