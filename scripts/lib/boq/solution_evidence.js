@@ -26,8 +26,12 @@ function solutionManifest(evaluation) {
 }
 
 function canonicalJson(value) {
-  return JSON.stringify(value, (_key, entry) => entry && typeof entry === 'object' && !Array.isArray(entry)
-    ? Object.fromEntries(Object.keys(entry).sort().map(key => [key, entry[key]])) : entry);
+  return JSON.stringify(value, (key, entry) => {
+    if (key.startsWith('_')) return undefined;
+    return entry && typeof entry === 'object' && !Array.isArray(entry)
+      ? Object.fromEntries(Object.keys(entry).filter(k => !k.startsWith('_')).sort().map(k => [k, entry[k]]))
+      : entry;
+  });
 }
 
 function canonicalReviewEnvelope(evaluation, catalogData = null) {

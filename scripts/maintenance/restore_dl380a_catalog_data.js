@@ -144,6 +144,8 @@ function runRemediation() {
   }
   console.log(`✅ Restored active DDR5 memory entries under Memory category.`);
 
+
+
   // Recount Unique SKUs
   const allSkus = new Set(liveCat.entries.flatMap(e => e.skus || []).map(s => (s['Product #'] || s.sku || '').trim()).filter(Boolean));
   liveCat.metadata.totalUniqueSKUs = allSkus.size;

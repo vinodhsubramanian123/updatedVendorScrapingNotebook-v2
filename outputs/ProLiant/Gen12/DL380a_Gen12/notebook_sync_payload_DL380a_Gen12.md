@@ -4,9 +4,9 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen12/DL380a_Gen12`
 
-**Sync Timestamp**: 2026-10-17T12:18:10.241Z
+**Sync Timestamp**: 2026-10-19T17:28:21.062Z
 
-**Total Verified SKUs**: `764` (`443` Hardware + `321` Services)
+**Total Verified SKUs**: `773` (`452` Hardware + `321` Services)
 
 **Total Synced KnowledgeDeltas**: `18`
 
@@ -18,9 +18,9 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Reinstated | Status |
 |----------|------------|---------------------|---------------|-------------------|------------|--------|
-| **Hardware Components** | 443 | 9 | 22 | 9 | 0 | **CERTIFIED** |
-| **Support Services & SLAs** | 321 | 101 | 8 | 7 | 0 | **CERTIFIED** |
-| **Total Portfolio** | **764** | **110** | **30** | **16** | **0** | **ACTIVE** |
+| **Hardware Components** | 452 | 9 | 0 | 405 | 0 | **CERTIFIED** |
+| **Support Services & SLAs** | 321 | 101 | 0 | 212 | 0 | **CERTIFIED** |
+| **Total Portfolio** | **773** | **110** | **0** | **617** | **0** | **ACTIVE** |
 
 ## 🌐 1. Universal Vendor Rules (HPE)
 
@@ -161,21 +161,21 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Timestamp | SKU | Attribute | Old Value | New Value |
 |-----------|-----|-----------|-----------|-----------|
-| 2026-10-17 | `P50222-B21` | Vendor Attributes | {"Extended Price (USD)":"NA","Price per GB (USD)":"9.66"} | **{"Extended Price (USD)":"NA","Price per GB (USD)":"6.18"}** |
-| 2026-10-17 | `P50224-B21` | Vendor Attributes | {"Extended Price (USD)":"NA","Price per GB (USD)":"9.66"} | **{"Extended Price (USD)":"NA","Price per GB (USD)":"5.60"}** |
-| 2026-10-17 | `P50216-B21` | Lifecycle Status | Active | **EOL Warning (90-Day)** |
-| 2026-10-17 | `P50216-B21` | Lifecycle Badge |  | **90** |
-| 2026-10-17 | `P50216-B21` | Availability | Available | **EOL Warning (90-Day)** |
-| 2026-10-17 | `P50230-B21` | Lifecycle Status | Active | **EOL Warning (90-Day)** |
-| 2026-10-17 | `P50230-B21` | Lifecycle Badge |  | **90** |
-| 2026-10-17 | `P50230-B21` | Availability | Available | **EOL Warning (90-Day)** |
-| 2026-10-17 | `P45641-H23` | Discontinued Date | 12/31/2026 | **01/31/2028** |
-| 2026-10-17 | `P74726-B21` | Component Role | Operating System / License | **** |
-| 2026-10-17 | `E6U59ABE` | Start Date | 09/10/2013 | **09/28/2013** |
-| 2026-10-17 | `E6U64ABE` | Start Date | 09/10/2013 | **09/28/2013** |
-| 2026-10-17 | `E5Y44A` | Start Date | 11/01/2013 | **11/02/2013** |
-| 2026-10-17 | `E5Y43A` | Start Date | 11/01/2013 | **11/02/2013** |
-| 2026-10-17 | `E5Y36A` | Start Date | 11/01/2013 | **11/02/2013** |
+| 2026-10-17 | `S4R45A` | Lead Time |  | **Unpublished** |
+| 2026-10-17 | `S4R45A` | Lead Time Source | Not published by OCA | **Unpublished** |
+| 2026-10-17 | `S4R45A` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **{"listPrice":2144}** |
+| 2026-10-17 | `S4R46A` | CLIC Status | Active | **Unpublished** |
+| 2026-10-17 | `S4R46A` | Lead Time |  | **Unpublished** |
+| 2026-10-17 | `S4R46A` | Lead Time Source | Not published by OCA | **Unpublished** |
+| 2026-10-17 | `S4R46A` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **{"listPrice":1319}** |
+| 2026-10-17 | `S4R47A` | CLIC Status | Active | **Unpublished** |
+| 2026-10-17 | `S4R47A` | Lead Time |  | **Unpublished** |
+| 2026-10-17 | `S4R47A` | Lead Time Source | Not published by OCA | **Unpublished** |
+| 2026-10-17 | `S4R47A` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **{"listPrice":6110}** |
+| 2026-10-17 | `S4R48A` | CLIC Status | Active | **Unpublished** |
+| 2026-10-17 | `S4R48A` | Lead Time |  | **Unpublished** |
+| 2026-10-17 | `S4R48A` | Lead Time Source | Not published by OCA | **Unpublished** |
+| 2026-10-17 | `S4R48A` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **{"listPrice":3759}** |
 
 ## 🧩 6. Same-Product CTO Variant Matrix
 

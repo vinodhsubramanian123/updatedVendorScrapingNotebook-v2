@@ -90,6 +90,24 @@ assert(result.sffDriveCount === 4, `Counted 4 SFF drives`);
 assert(result.lffDriveCount === 2, `Counted 2 LFF drives`);
 assert(result.hasLffDrivesInSffChassis === true, `Flagged LFF drives in non-LFF chassis`);
 
+console.log(`\n🔹 Test Group 6: Intel VROC and Boot Device Battery Exemption (INV-0, INV-72)`);
+items = [
+  { sku: 'R7J57A', description: 'Intel Virtual RAID on CPU Premium FIO Software for HPE', quantity: 1 },
+  { sku: 'P84244-B21', description: 'HPE 3.84TB NVMe Gen4 Read Intensive SFF BC U.3 SSD', quantity: 4 }
+];
+result = evalStorageTriMode(items);
+assert(result.hasVroc === true, `Identified Intel VROC software RAID`);
+assert(result.hasStorageController === false, `VROC is not marked as hardware storage controller`);
+assert(result.needsSmartStorageBattery === false, `Intel VROC direct-attach does not require Smart Storage Battery`);
+
+items = [
+  { sku: 'P78279-B21', description: 'HPE NS204i-u v2 480GB NVMe Hot Plug Boot Optimized Storage Device', quantity: 1 }
+];
+result = evalStorageTriMode(items);
+assert(result.hasBootController === true, `Identified NS204i-u boot controller`);
+assert(result.hasStorageController === false, `Boot controller is not marked as hardware storage controller`);
+assert(result.needsSmartStorageBattery === false, `NS204i-u does not require Smart Storage Battery`);
+
 console.log(`\n================================================================`);
 console.log(`📊 FINAL TEST SUMMARY: ${totalPasses} PASSED | ${totalFails} FAILED`);
 console.log(`================================================================\n`);
@@ -99,3 +117,4 @@ if (totalFails > 0) {
 } else {
   process.exit(0);
 }
+

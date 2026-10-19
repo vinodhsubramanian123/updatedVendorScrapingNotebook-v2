@@ -62,8 +62,25 @@ function tallyCagesAndDrives(tally, desc, sku, qty, role, mandatorySkus = {}) {
 }
 
 function tallyRaidControllers(tally, desc, sku) {
-  if (desc.includes('controller') || desc.includes('mr416i') || desc.includes('sr932i') || 
-      desc.includes('mr408i') || desc.includes('mr216i') || desc.includes('raid') || /\b(mr|sr)\d{3}i/i.test(desc)) {
+  const isVroc = desc.includes('vroc') || desc.includes('virtual raid on cpu') || sku === 'R7J57A';
+  const isBootController = desc.includes('ns204i') || desc.includes('boot optimized') || desc.includes('nvme boot');
+
+  if (isVroc) {
+    tally.hasVroc = true;
+  }
+  if (isBootController) {
+    tally.hasBootController = true;
+  }
+
+  // Only physical Tri-Mode / SmartRAID / MegaRAID hardware storage controllers require write-back battery and direct controller-to-cage cabling
+  const isHardwareStorageController = ((desc.includes('controller') || /\b(mr|sr)\d{3}i/i.test(desc) || desc.includes('smart array')) &&
+    !isBootController &&
+    !isVroc &&
+    !desc.includes('node controller') &&
+    !desc.includes('network controller') &&
+    !desc.includes('ethernet controller'));
+
+  if (isHardwareStorageController) {
     tally.hasStorageController = true;
     if (desc.includes('416i') || desc.includes('216i') || desc.includes('932i') || 
         desc.includes('16-port') || desc.includes('16 port') || desc.includes('32-port')) {
@@ -191,7 +208,9 @@ function tallyStorageItems(items, skuCategoryMap, batterySku, noDriveSku, mandat
     has4SffCage: false,
     has4EdsffCage: false,
     hasMr216iO: false,
-    isLffChassis: false
+    isLffChassis: false,
+    hasVroc: false,
+    hasBootController: false
   };
 
   for (const it of items) {
@@ -319,7 +338,9 @@ function evalStorageTriMode(items, catalogData = null, mandatorySkus = {}, serve
     sffDriveCount: t.sffDriveCount,
     hasLffDrivesInSffChassis: compat.hasLffDrivesInSffChassis,
     hasDriveCageMixingConflict: compat.hasDriveCageMixingConflict,
-    hasMr216iORaid56Risk: compat.hasMr216iORaid56Risk
+    hasMr216iORaid56Risk: compat.hasMr216iORaid56Risk,
+    hasVroc: t.hasVroc,
+    hasBootController: t.hasBootController
   };
 }
 

@@ -2,8 +2,8 @@
 
 **Document Classification:** Canonical Ground-Truth Architecture & Validation Charter<br>
 **Maintained By:** HPE ProLiant AI Studio Autonomous Knowledge Engine (Antigravity AI)<br>
-**Last Synchronized:** 2026-10-17T17:53:03.822Z<br>
-**Total Deduplicated Learned Rules:** 100<br>
+**Last Synchronized:** 2026-10-19T18:01:43.480Z<br>
+**Total Deduplicated Learned Rules:** 102<br>
 **Universal Invariant Compliance:** INV-1 through INV-38 Certified<br>
 **Google Drive Destination:** `shared_folder_id: 1YR0lBh-gg00amKHRxuOqp5Aea3iL5O7-`
 
@@ -160,7 +160,7 @@ The Catalog Vendor Solution provides modular, AI-assisted catalog ingestion, nor
 
 ## 5. Deduplicated Learned Rule Ledger & Verification Provenance
 
-Total verified rules indexed in this build: **100**.
+Total verified rules indexed in this build: **102**.
 
 | Scope | Target Chassis | Category | Affected SKU | Dependency SKU | Rule Summary / Validation Directive | Verifications |
 | :--- | :--- | :--- | :--- | :--- | :--- | :---: |
@@ -206,6 +206,8 @@ Total verified rules indexed in this build: **100**.
 | 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `S4A91C` | `—` | Observed price drift on S4A91C (drive) | 1x |
 | 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `HA113A1` | `—` | Observed price drift on HA113A1 (support) | 1x |
 | 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `HU4B2A30C4W` | `—` | Observed price drift on HU4B2A30C4W (service) | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `SKU_SUBSTITUTION` | `P70436-B21` | `P91249-B21` | When customer quotes specify P70436-B21, substitute with active Multi Vendor SKU P91249-B21 (same High Performance U.3 s | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `BATTERY_EXEMPTION` | `R7J57A` | `—` | Exempt Intel VROC and NS204i-u boot devices from Smart Storage Battery P01367-B21 requirement. Battery is exclusively re | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `undefined` | `P76453-B21` | `—` | Portal validation flagged restriction on P76453-B21. | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `undefined` | `P73282-B21` | `P73282-B21` | If P73282-B21 is present, P73282-B21 is mandatory. | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `undefined` | `P74573-B21` | `P74573-B21` | If P74573-B21 is present, P74573-B21 is mandatory. | 1x |

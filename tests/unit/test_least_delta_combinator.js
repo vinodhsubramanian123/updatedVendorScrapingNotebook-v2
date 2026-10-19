@@ -390,3 +390,62 @@ test('Least-Delta — Modernizes 8480+ to 8570 and DDR5-4800 to DDR5-5600 for Co
   assert.strictEqual(memTrouble.alternativeSku, 'P69976-F21');
   assert.ok(memTrouble.alternativeDesc.includes('5600'), 'Must upgrade to 128GB DDR5-5600 FIO');
 });
+
+test('Least-Delta — Detects DISCONTINUED_SKU_SUPERSEDED and anchors historical price (P70436-B21 -> P91249-B21)', () => {
+  const cat = require('../../outputs/ProLiant/Gen12/DL380a_Gen12/DL380a_Gen12_Catalog.json');
+  const items = [
+    mkItem('P70436-B21', 'HPE 15.36TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 PS1010 SSD', 2)
+  ];
+  const evalResults = mkEval();
+  const chassisInfo = { chassisDir: 'outputs/ProLiant/Gen12/DL380a_Gen12', model: 'DL380a_Gen12', gen: 'Gen12' };
+
+  const troublesome = identifyTroublesomeSkus(items, evalResults, cat, chassisInfo);
+  assert.ok(troublesome.length >= 1, 'Must detect at least 1 troublesome SKU');
+
+  const discTrouble = troublesome.find(t => t.type === 'DISCONTINUED_SKU_SUPERSEDED');
+  assert.ok(discTrouble, 'Must identify DISCONTINUED_SKU_SUPERSEDED');
+  assert.strictEqual(discTrouble.originalSku, 'P70436-B21');
+  assert.strictEqual(discTrouble.alternativeSku, 'P91249-B21');
+  assert.strictEqual(discTrouble.action, 'SUBSTITUTE_DISCONTINUED_SKU');
+
+  // Verify Epistemic Budget Anchor
+  const anchor = discTrouble.historicalBudgetAnchor;
+  assert.ok(anchor, 'Must attach historical budget anchor');
+  assert.strictEqual(anchor.originalListPriceUsd, 131585, 'Must reflect original list price ($131,585)');
+  assert.strictEqual(anchor.replacementPriceUsd, 131541, 'Must reflect replacement price ($131,541)');
+  assert.strictEqual(anchor.deltaUsd, -44, 'Price delta must be -$44');
+  assert.strictEqual(anchor.priceParityPercent, 99.97, 'Price parity must be 99.97%');
+  assert.ok(discTrouble.presalesValuePitch.includes('P91249-B21'), 'Pitch must explain replacement');
+});
+
+test('Least-Delta — buildLeastDeltaCandidate substitutes discontinued SKU and preserves historical budget anchor', () => {
+  const cat = require('../../outputs/ProLiant/Gen12/DL380a_Gen12/DL380a_Gen12_Catalog.json');
+  const items = [
+    { sku: 'P76706-B21', description: 'DL380a Gen12 CTO Server', quantity: 1, unitPriceUsd: 10000, extendedPriceUsd: 10000 },
+    { sku: 'P70436-B21', description: 'HPE 15.36TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 PS1010 SSD', quantity: 2, unitPriceUsd: 131585, extendedPriceUsd: 263170 }
+  ];
+  const evalResults = mkEval();
+  const chassisInfo = { chassisDir: 'outputs/ProLiant/Gen12/DL380a_Gen12', model: 'DL380a_Gen12', gen: 'Gen12' };
+
+  const troublesome = identifyTroublesomeSkus(items, evalResults, cat, chassisInfo);
+  const candidate = buildLeastDeltaCandidate(items, [], troublesome, evalResults, cat, chassisInfo, sku => sku === 'P91249-B21' ? 131541 : 10000);
+
+  assert.ok(candidate, 'Must generate least-delta candidate');
+  assert.strictEqual(candidate.strategyName, 'MODERNIZED_ACTIVE_BASELINE');
+  assert.ok(candidate.tierTitle.includes('Modernized Active Baseline'));
+
+  // Ensure P70436-B21 was replaced by P91249-B21
+  assert.ok(!candidate.parts.some(p => p.sku === 'P70436-B21'), 'Delisted P70436-B21 must be replaced');
+  const replacedPart = candidate.parts.find(p => p.sku === 'P91249-B21');
+  assert.ok(replacedPart, 'P91249-B21 must be present in parts');
+  assert.strictEqual(replacedPart.quantity, 2);
+  assert.strictEqual(replacedPart.unitPriceUsd, 131541);
+  assert.strictEqual(replacedPart.extendedPriceUsd, 263082);
+
+  // Check historical budget anchors
+  assert.ok(Array.isArray(candidate.historicalBudgetAnchors));
+  assert.strictEqual(candidate.historicalBudgetAnchors.length, 1);
+  assert.strictEqual(candidate.historicalBudgetAnchors[0].sku, 'P70436-B21');
+  assert.strictEqual(candidate.historicalBudgetAnchors[0].replacementSku, 'P91249-B21');
+  assert.strictEqual(candidate.historicalBudgetAnchors[0].deltaUsd, -44);
+});

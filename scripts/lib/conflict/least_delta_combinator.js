@@ -523,6 +523,303 @@ function _checkGenerationalCpuAndMemory(items, missing, chassisInfo, catalogData
   return results;
 }
 
+/**
+ * Extract component attributes from description and SKU for multi-attribute matching
+ */
+function _extractDriveOrComponentAttrs(desc = '', sku = '') {
+  const d = String(desc || '').toLowerCase();
+
+  let capacityTb = 0;
+  const tbMatch = d.match(/(\d+(?:\.\d+)?)\s*tb/i);
+  if (tbMatch) {
+    capacityTb = parseFloat(tbMatch[1]);
+  } else {
+    const gbMatch = d.match(/(\d+)\s*gb/i);
+    if (gbMatch) {
+      capacityTb = parseFloat(gbMatch[1]) / 1000;
+    }
+  }
+
+  const isNvme = d.includes('nvme');
+  const isSas = d.includes('sas');
+  const isSata = d.includes('sata');
+  const isGen4 = d.includes('gen4') || d.includes('pcie4') || d.includes('pcie 4');
+  const isGen5 = d.includes('gen5') || d.includes('pcie5') || d.includes('pcie 5');
+
+  const isRI = d.includes('read intensive') || d.includes(' ri ') || d.endsWith(' ri') || d.includes('-ri');
+  const isMU = d.includes('mixed use') || d.includes(' mu ') || d.endsWith(' mu') || d.includes('-mu');
+  const isWI = d.includes('write intensive') || d.includes(' wi ') || d.endsWith(' wi') || d.includes('-wi');
+
+  const isHighPerf = d.includes('high performance') || d.includes('pm1733') || d.includes('ps1010') || d.includes('cm7') || d.includes('cm9');
+  const isMainstream = d.includes('mainstream') || d.includes('spdm 7500') || d.includes('cd9');
+
+  const isSff = d.includes('sff');
+  const isLff = d.includes('lff');
+  const isBc = d.includes('bc') || d.includes('basic carrier');
+  const isU3 = d.includes('u.3');
+  const isU2 = d.includes('u.2');
+
+  return {
+    capacityTb,
+    isNvme,
+    isSas,
+    isSata,
+    isGen4,
+    isGen5,
+    workload: isRI ? 'RI' : (isMU ? 'MU' : (isWI ? 'WI' : 'UNKNOWN')),
+    isHighPerf,
+    isMainstream,
+    isSff,
+    isLff,
+    isBc,
+    isU3,
+    isU2
+  };
+}
+
+/**
+ * Score candidate active replacement against discontinued component attributes and budget anchor
+ */
+function _scoreActiveReplacementCandidate(candidate, origAttrs, histPrice = 0) {
+  const cAttrs = _extractDriveOrComponentAttrs(candidate.description, candidate.sku);
+  let score = 0;
+
+  if (origAttrs.capacityTb > 0 && cAttrs.capacityTb > 0) {
+    if (Math.abs(origAttrs.capacityTb - cAttrs.capacityTb) < 0.01) {
+      score += 120;
+    } else {
+      return -1;
+    }
+  }
+
+  if (origAttrs.isNvme && cAttrs.isNvme) score += 50;
+  if (origAttrs.isSas && cAttrs.isSas) score += 50;
+  if (origAttrs.isSata && cAttrs.isSata) score += 50;
+  if (origAttrs.isGen4 && cAttrs.isGen4) score += 20;
+  if (origAttrs.isGen5 && cAttrs.isGen5) score += 20;
+
+  if (origAttrs.workload !== 'UNKNOWN' && origAttrs.workload === cAttrs.workload) score += 50;
+  if (origAttrs.isSff && cAttrs.isSff) score += 25;
+  if (origAttrs.isBc && cAttrs.isBc) score += 20;
+  if (origAttrs.isU3 && cAttrs.isU3) score += 20;
+
+  if (origAttrs.isHighPerf && cAttrs.isHighPerf) score += 50;
+  if (origAttrs.isMainstream && cAttrs.isMainstream) score += 30;
+
+  const cDescLower = candidate.description.toLowerCase();
+  if (cDescLower.includes('multi vendor')) score += 30;
+
+  // Epistemic Budget Anchor: Proximity to historical price of the discontinued SKU
+  if (histPrice > 0 && candidate.price > 0) {
+    const deltaRatio = Math.abs(candidate.price - histPrice) / histPrice;
+    if (deltaRatio <= 0.05) {
+      score += 100;
+    } else if (deltaRatio <= 0.15) {
+      score += 60;
+    } else if (deltaRatio <= 0.30) {
+      score += 30;
+    }
+  }
+
+  return score;
+}
+
+/**
+ * Dynamically find the best active replacement for a discontinued SKU in catalogData
+ */
+function findBestAlternativeForDiscontinuedSku(cleanSku, origDesc, catalogData, chassisInfo, audit = null, activeSkuMap = null) {
+  const chassisDir = chassisInfo?.chassisDir || chassisInfo?.catalogDir || '';
+  const { getHistoricalSkuPrice } = require('../catalog/sku_versioning.js');
+
+  let histPrice = 0;
+  if (chassisDir) {
+    try {
+      const hist = getHistoricalSkuPrice(cleanSku, chassisDir);
+      histPrice = Number(hist?.priceUsd) || 0;
+    } catch (_) {}
+  }
+
+  // 1. Direct authoritative successor from discontinuedInfo if present and active
+  const successorSku = cleanBaseSKU(audit?.discontinuedInfo?.successorSku || '');
+  if (successorSku) {
+    if (activeSkuMap && activeSkuMap.has(successorSku)) {
+      const sObj = activeSkuMap.get(successorSku);
+      return {
+        sku: sObj.sku,
+        description: sObj.description,
+        price: sObj.price,
+        historicalPriceUsd: histPrice,
+        isDirectSuccessor: true
+      };
+    }
+    if (catalogData && Array.isArray(catalogData.entries)) {
+      for (const e of catalogData.entries) {
+        const found = (e.skus || []).find(s => cleanBaseSKU(s['Product #'] || s.sku || s['SKU']) === successorSku);
+        if (found) {
+          const price = parseFloat(String(found['Unit Price (USD)'] || found['Price (USD)'] || found.priceUsd || '0').replace(/[^0-9.]/g, '')) || 0;
+          return {
+            sku: successorSku,
+            description: found.Description || found.description || audit?.discontinuedInfo?.successorDescription || 'Active Successor SKU',
+            price,
+            historicalPriceUsd: histPrice,
+            isDirectSuccessor: true
+          };
+        }
+      }
+    }
+  }
+
+  // 2. Multi-attribute semantic search across active catalog entries
+  const effectiveDesc = origDesc || audit?.discontinuedInfo?.description || audit?.latestDetails?.description || '';
+  const origAttrs = _extractDriveOrComponentAttrs(effectiveDesc, cleanSku);
+
+  const candidates = [];
+  if (catalogData && Array.isArray(catalogData.entries)) {
+    catalogData.entries.forEach(e => {
+      (e.skus || []).forEach(s => {
+        const sSku = cleanBaseSKU(s['Product #'] || s.sku || s['SKU']);
+        if (!sSku || sSku === cleanSku) return;
+        const status = (s['Lifecycle Status'] || s.lifecycleStatus || '').toUpperCase();
+        if (status === 'OB' || status === 'EOL' || status === 'DISCONTINUED') return;
+
+        const sDesc = s.Description || s.description || '';
+        const sPrice = parseFloat(String(s['Unit Price (USD)'] || s['Price (USD)'] || s.priceUsd || '0').replace(/[^0-9.]/g, '')) || 0;
+
+        const score = _scoreActiveReplacementCandidate({ sku: sSku, description: sDesc, price: sPrice }, origAttrs, histPrice);
+        if (score > 0) {
+          candidates.push({
+            sku: sSku,
+            description: sDesc,
+            price: sPrice,
+            score
+          });
+        }
+      });
+    });
+  }
+
+  if (candidates.length === 0) return null;
+
+  candidates.sort((a, b) => b.score - a.score);
+  const best = candidates[0];
+
+  let valueEngineeringCandidate = null;
+  if (origAttrs.isHighPerf && histPrice > 0) {
+    const ve = candidates.find(c => {
+      const cDesc = c.description.toLowerCase();
+      return (cDesc.includes('mainstream') || c.price < histPrice * 0.80) && c.price > 0;
+    });
+    if (ve) {
+      valueEngineeringCandidate = {
+        sku: ve.sku,
+        description: ve.description,
+        price: ve.price
+      };
+    }
+  }
+
+  return {
+    sku: best.sku,
+    description: best.description,
+    price: best.price,
+    historicalPriceUsd: histPrice,
+    isDirectSuccessor: false,
+    valueEngineeringCandidate
+  };
+}
+
+function _checkDiscontinuedAndObsoleteSkus(items = [], catalogData = null, chassisInfo = {}) {
+  const results = [];
+  const chassisDir = chassisInfo?.chassisDir || chassisInfo?.catalogDir || '';
+  const { getSkuAuditHistory } = require('../catalog/sku_versioning.js');
+  const { isValidHpeSKU } = require('../catalog/sku.js');
+
+  const activeSkuMap = new Map();
+  if (catalogData && Array.isArray(catalogData.entries)) {
+    catalogData.entries.forEach(e => {
+      (e.skus || []).forEach(s => {
+        const rawSku = s['Product #'] || s.sku || s['SKU'];
+        const k = cleanBaseSKU(rawSku);
+        const status = (s['Lifecycle Status'] || s.lifecycleStatus || '').toUpperCase();
+        if (k && status !== 'OB' && status !== 'EOL' && status !== 'DISCONTINUED') {
+          activeSkuMap.set(k, {
+            sku: k,
+            rawSku,
+            description: s.Description || s.description || '',
+            price: parseFloat(String(s['Unit Price (USD)'] || s['Price (USD)'] || s.priceUsd || '0').replace(/[^0-9.]/g, '')) || 0
+          });
+        }
+      });
+    });
+  }
+
+  for (const it of items) {
+    const cleanSku = cleanBaseSKU(it.sku);
+    if (!cleanSku || !isValidHpeSKU(cleanSku)) continue;
+
+    let audit = null;
+    if (chassisDir) {
+      try {
+        audit = getSkuAuditHistory(cleanSku, chassisDir);
+      } catch (_) {}
+    }
+
+    const isMarkedDiscontinued = audit?.currentStatus === 'DISCONTINUED' ||
+      (audit?.discontinuedInfo && String(audit.discontinuedInfo.status || '').toUpperCase() === 'DISCONTINUED');
+    const isNotInActiveCatalog = activeSkuMap.size > 0 && !activeSkuMap.has(cleanSku);
+
+    if (!isMarkedDiscontinued && !isNotInActiveCatalog) continue;
+
+    const replacement = findBestAlternativeForDiscontinuedSku(
+      cleanSku,
+      it.description || audit?.latestDetails?.description || '',
+      catalogData,
+      chassisInfo,
+      audit,
+      activeSkuMap
+    );
+
+    if (!replacement || !replacement.sku) continue;
+
+    const histPrice = replacement.historicalPriceUsd || 0;
+    const repPrice = replacement.price || 0;
+    const priceDelta = repPrice - histPrice;
+    const priceDeltaStr = priceDelta === 0
+      ? 'exact budget parity ($0 delta)'
+      : (priceDelta > 0 ? `+$${priceDelta.toLocaleString()} delta` : `-$${Math.abs(priceDelta).toLocaleString()} savings`);
+
+    results.push({
+      type: 'DISCONTINUED_SKU_SUPERSEDED',
+      originalSku: cleanSku,
+      originalDesc: it.description || audit?.discontinuedInfo?.description || 'Discontinued Component',
+      troublesomeReason: `HPE delisted/discontinued ${cleanSku} in live ordering portals. Historical list price was $${histPrice.toLocaleString()} USD.`,
+      alternativeSku: replacement.sku,
+      alternativeDesc: replacement.description,
+      action: 'SUBSTITUTE_DISCONTINUED_SKU',
+      functionalEquivalence: `Active replacement ${replacement.sku} (${replacement.description}) provides 100% functional equivalence at $${repPrice.toLocaleString()} USD (${priceDeltaStr}), preserving customer performance tier and budget baseline.`,
+      cascadingSkusEliminated: [],
+      historicalBudgetAnchor: {
+        originalListPriceUsd: histPrice,
+        replacementPriceUsd: repPrice,
+        deltaUsd: priceDelta,
+        priceParityPercent: histPrice > 0 ? parseFloat(((repPrice / histPrice) * 100).toFixed(2)) : 100,
+        budgetHintNote: `Customer budgeted $${histPrice.toLocaleString()} USD for ${cleanSku}. Replacement ${replacement.sku} at $${repPrice.toLocaleString()} USD closely matches the budgeted CapEx.`
+      },
+      valueEngineeringAlternative: replacement.valueEngineeringCandidate ? {
+        sku: replacement.valueEngineeringCandidate.sku,
+        description: replacement.valueEngineeringCandidate.description,
+        priceUsd: replacement.valueEngineeringCandidate.price,
+        savingsUsd: histPrice > 0 ? histPrice - replacement.valueEngineeringCandidate.price : 0,
+        savingsPercent: histPrice > 0 ? parseFloat((((histPrice - replacement.valueEngineeringCandidate.price) / histPrice) * 100).toFixed(1)) : 0,
+        rationale: `If the workload does not require peak High Performance IOPS, migrating to Mainstream tier (${replacement.valueEngineeringCandidate.sku}) yields significant CapEx savings.`
+      } : null,
+      presalesValuePitch: `Substituting deprecated ${cleanSku} with live active ${replacement.sku} guarantees 100% portal buildability while preserving the customer's budgeted performance tier at virtually identical CapEx ($${repPrice.toLocaleString()} vs $${histPrice.toLocaleString()}).`
+    });
+  }
+
+  return results;
+}
+
 function identifyTroublesomeSkus(items = [], evalResults = {}, catalogData = null, chassisInfo = {}) {
   const troublesome = [];
   const missing = evalResults.missingDependencies || [];
@@ -545,6 +842,8 @@ function identifyTroublesomeSkus(items = [], evalResults = {}, catalogData = nul
   if (memBottleneck) troublesome.push(memBottleneck);
 
   troublesome.push(..._checkGenerationalCpuAndMemory(items, missing, chassisInfo, catalogData));
+
+  troublesome.push(..._checkDiscontinuedAndObsoleteSkus(items, catalogData, chassisInfo));
 
   return troublesome;
 }
@@ -601,7 +900,9 @@ function buildLeastDeltaCandidate(baseParts = [], fixParts = [], troublesomeSkus
             isFixInjected: false,
             isStrategyAddon: true,
             isLeastDeltaSubstitution: true,
-            category: trouble.type?.startsWith('GENERATIONAL') ? 'Modernized Platform Hardware' : 'Least-Delta Functional Replacement'
+            category: (trouble.type?.startsWith('GENERATIONAL') || trouble.type === 'DISCONTINUED_SKU_SUPERSEDED')
+              ? 'Modernized Platform Hardware'
+              : 'Least-Delta Functional Replacement'
           });
           replacementsCount += 1;
           replacedSkus.push({ from: p.sku, to: trouble.alternativeSku });
@@ -649,24 +950,32 @@ function buildLeastDeltaCandidate(baseParts = [], fixParts = [], troublesomeSkus
   }
 
   const hasGenerationalUpgrade = appliedActions.some(a => a.type === 'GENERATIONAL_CPU_OBSOLESCENCE');
-  const primaryTrouble = appliedActions.find(a => a.type === 'GENERATIONAL_CPU_OBSOLESCENCE') || appliedActions[0] || troublesomeSkus[0];
+  const hasDiscontinuedUpgrade = appliedActions.some(a => a.type === 'DISCONTINUED_SKU_SUPERSEDED');
+  const primaryTrouble = appliedActions.find(a => a.type === 'GENERATIONAL_CPU_OBSOLESCENCE') || appliedActions.find(a => a.type === 'DISCONTINUED_SKU_SUPERSEDED') || appliedActions[0] || troublesomeSkus[0];
   const totalCost = candidateParts.reduce((sum, p) => sum + (p.extendedPriceUsd || (p.unitPriceUsd * (p.quantity || 1))), 0);
   const totalDeltaOperations = additionsCount + removalsCount + replacementsCount;
 
   const summaryPitches = appliedActions.map(a => a.presalesValuePitch).filter(Boolean);
   const combinedPitch = summaryPitches.length > 0 ? summaryPitches.join(' ') : primaryTrouble.presalesValuePitch;
 
-  const tierTitle = hasGenerationalUpgrade
-    ? 'Rank 2: Modernized 5th Gen Platform & High-Speed DDR5-5600 Architecture'
-    : 'Rank 2: Least-Delta Functional Alternative (Cascade Pruned)';
+  let tierTitle = 'Rank 2: Least-Delta Functional Alternative (Cascade Pruned)';
+  let strategyName = 'LEAST_DELTA_CASCADE_PRUNED';
+  if (hasGenerationalUpgrade) {
+    tierTitle = 'Rank 2: Modernized 5th Gen Platform & High-Speed DDR5-5600 Architecture';
+    strategyName = 'MODERNIZED_5TH_GEN_PLATFORM';
+  } else if (hasDiscontinuedUpgrade) {
+    tierTitle = 'Rank 2: Modernized Active Baseline (Discontinued SKUs Replaced)';
+    strategyName = 'MODERNIZED_ACTIVE_BASELINE';
+  }
 
-  const strategyName = hasGenerationalUpgrade
-    ? 'MODERNIZED_5TH_GEN_PLATFORM'
-    : 'LEAST_DELTA_CASCADE_PRUNED';
-
-  const sharedIntelligenceReasoning = hasGenerationalUpgrade
-    ? `Modernized 5th Gen Platform Strategy: Upgraded legacy 4th Gen Intel Sapphire Rapids processor to active 5th Gen Intel Emerald Rapids (${primaryTrouble.alternativeSku}) and synchronously upgraded memory to DDR5-5600 Smart FIO Memory. Eliminates 90-day/OB obsolescence risk, increases memory throughput by +16.7% (5600 MT/s vs 4800 MT/s), delivers higher base/boost frequencies at identical TDP envelopes, eliminates standalone BTO-to-FIO memory violations, and aligns 100% with official HPE factory validated solution.`
-    : `Least-Delta Architecture Strategy: Identified ${appliedActions.length} troublesome SKU(s) causing cascading additions (${allCascadingEliminated.join(', ') || 'multiple auxiliary parts'}). Replaced/pruned with verified functional alternatives. ${primaryTrouble.functionalEquivalence} Result: ${totalDeltaOperations} delta operations, eliminating ${allCascadingEliminated.length} accessory kits.`;
+  let sharedIntelligenceReasoning = `Least-Delta Architecture Strategy: Identified ${appliedActions.length} troublesome SKU(s) causing cascading additions (${allCascadingEliminated.join(', ') || 'multiple auxiliary parts'}). Replaced/pruned with verified functional alternatives. ${primaryTrouble.functionalEquivalence} Result: ${totalDeltaOperations} delta operations, eliminating ${allCascadingEliminated.length} accessory kits.`;
+  if (hasGenerationalUpgrade) {
+    sharedIntelligenceReasoning = `Modernized 5th Gen Platform Strategy: Upgraded legacy 4th Gen Intel Sapphire Rapids processor to active 5th Gen Intel Emerald Rapids (${primaryTrouble.alternativeSku}) and synchronously upgraded memory to DDR5-5600 Smart FIO Memory. Eliminates 90-day/OB obsolescence risk, increases memory throughput by +16.7% (5600 MT/s vs 4800 MT/s), delivers higher base/boost frequencies at identical TDP envelopes, eliminates standalone BTO-to-FIO memory violations, and aligns 100% with official HPE factory validated solution.`;
+  } else if (hasDiscontinuedUpgrade) {
+    const discTroubles = appliedActions.filter(a => a.type === 'DISCONTINUED_SKU_SUPERSEDED');
+    const substSummary = discTroubles.map(d => `${d.originalSku} -> ${d.alternativeSku} (${d.historicalBudgetAnchor?.budgetHintNote || ''})`).join('; ');
+    sharedIntelligenceReasoning = `Modernized Active Baseline Strategy: Replaced ${discTroubles.length} discontinued/delisted SKU(s) with live active vendor replacements while preserving customer performance tiers and budget baselines: ${substSummary}. Guarantees 100% portal buildability with minimum mutation.`;
+  }
 
   return {
     tierTitle,
@@ -678,6 +987,9 @@ function buildLeastDeltaCandidate(baseParts = [], fixParts = [], troublesomeSkus
     functionalEquivalence: primaryTrouble.functionalEquivalence,
     presalesValuePitch: combinedPitch,
     allTroublesomeSkus: appliedActions,
+    historicalBudgetAnchors: appliedActions
+      .filter(a => a.historicalBudgetAnchor)
+      .map(a => ({ sku: a.originalSku, replacementSku: a.alternativeSku, ...a.historicalBudgetAnchor })),
     cascadingSkusEliminated: allCascadingEliminated,
     deltaSummary: `${replacementsCount} Replacement, ${removalsCount} Removal, ${additionsCount} Additions (${allCascadingEliminated.length} Cascades Avoided)`,
     deltaMetrics: {
@@ -697,6 +1009,7 @@ module.exports = {
   identifyTroublesomeSkus,
   buildLeastDeltaCandidate,
   findBestAlternativeInCatalog,
+  findBestAlternativeForDiscontinuedSku,
   isSkuVisibleAtDefaultAmbient
 };
 

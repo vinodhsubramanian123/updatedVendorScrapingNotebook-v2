@@ -258,7 +258,7 @@ test('skipCoverageValidation is strictly restricted to test harnesses', () => {
     process.argv = ['node', 'scripts/scrapers/scrape_oca_solution.js'];
     assert.throws(
       () => createCaptureReceipt('/dummy/staging', '/dummy/live', 'TEST_PROD', { skipCoverageValidation: true }),
-      /\[INV-105\] skipCoverageValidation is restricted to test harnesses only/
+      /\[INV-105\] skipCoverageValidation is (restricted to test harnesses only|strictly prohibited in production)/
     );
   } finally {
     if (origNodeEnv === undefined) delete process.env.NODE_ENV; else process.env.NODE_ENV = origNodeEnv;

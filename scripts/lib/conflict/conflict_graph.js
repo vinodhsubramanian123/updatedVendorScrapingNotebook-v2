@@ -262,7 +262,7 @@ function _isDeltaApplicableToTarget(delta, targetChassis) {
   return true;
 }
 
-function _evaluateLearnedDeltas(fullBomMap, fullBomList, learnedDeltas, targetChassis, recordAudit, conflicts) {
+function _evaluateLearnedDeltas(fullBomMap, fullBomList, learnedDeltas, targetChassis, recordAudit, conflicts, learnedSubstitutions = []) {
   const dependencyEdges = new Set();
 
   learnedDeltas.forEach(delta => {
@@ -290,6 +290,14 @@ function _evaluateLearnedDeltas(fullBomMap, fullBomList, learnedDeltas, targetCh
       const isSubstOrModernize = delta.ruleType === 'SKU_SUBSTITUTION' || delta.ruleType === 'OPTION_TYPE_SUBSTITUTION' || delta.ruleType === 'GENERATIONAL_MODERNIZATION';
       if (isSubstOrModernize) {
         recordAudit('LEARNED_DELTA', `Learned Modernization/Substitution: ${affectedSku} -> ${requiredSku}`, 'INFO', msg, affectedSku);
+        learnedSubstitutions.push({
+          affectedSku,
+          requiredSku,
+          ruleType: delta.ruleType,
+          deltaId: delta.deltaId,
+          ruleUpdate: delta.ruleUpdate || msg,
+          provenance: delta.provenance || 'CLIC_VERIFIED_HISTORICAL_RECORD'
+        });
         return;
       }
 
@@ -520,7 +528,8 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
   // 1. LEARNED KNOWLEDGE DELTAS VALIDATION
   const learnedDeltas = loadLearnedKnowledgeDeltas(resolvedTargetDir);
   const targetChassis = (chassisVariantOverride || (resolvedTargetDir ? path.basename(resolvedTargetDir) : '')).toLowerCase();
-  _evaluateLearnedDeltas(fullBomMap, fullBomList, learnedDeltas, targetChassis, recordAudit, conflicts);
+  const learnedSubstitutions = [];
+  _evaluateLearnedDeltas(fullBomMap, fullBomList, learnedDeltas, targetChassis, recordAudit, conflicts, learnedSubstitutions);
 
   // 2. CHASSIS LEVEL VALIDATION (Form Factor Gates: SFF vs LFF vs EDSFF)
   _evaluateChassisFormFactorRules(catalogData, chassisInfo, fullBomList, rulesEvaluated, recordAudit, conflicts);
@@ -553,7 +562,7 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
   // 6. Synthesize 5-Tier Ranked Solutions with Cross-Subsystem Arbitration Branches
   const rankedSolutions = options.skipSynthesis ? [] : synthesize5TierRankedSolutions(
     boqItems,
-    { missingDependencies: depsList, arbitrationResults },
+    { missingDependencies: depsList, arbitrationResults, learnedSubstitutions },
     { isWholeSolutionValid, conflicts },
     chassisInfo,
     targetDir
@@ -579,6 +588,7 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
     conflicts,
     resolvedFixes,
     unresolvedConflicts,
+    learnedSubstitutions,
     arbitrationResults,
     rankedSolutions,
     recommendedSolutions,

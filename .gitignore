@@ -114,3 +114,9 @@ outputs/history/notebook_sync_payload_edge-test-*.md
 outputs/history/notebook_sync_payload_Unknown_Chassis.md
 outputs/history/notebook_sync_payload_tmp_*.md
 outputs/history/notebook_sync_payload_outputs.md
+
+# ── Microsoft Office Temporary Lock Files ────────────────────────────
+~$*
+outputs/**/HPE_*_1Unit_Partner_Portal_Import.*
+
+

@@ -591,14 +591,6 @@
     "firstSeenDate": "2026-09-06",
     "status": "ACTIVE"
   },
-  "P70436-B21": {
-    "productNumber": "P70436-B21",
-    "description": "HPE 15.36TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 PS1010 SSD",
-    "mainCategory": "Drive Enclosures / Drives",
-    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
-    "firstSeenDate": "2026-09-06",
-    "status": "ACTIVE"
-  },
   "P78808-B21": {
     "productNumber": "P78808-B21",
     "description": "HPE 7.68TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 Static PM1753 SSD",
@@ -3854,5 +3846,17 @@
     "subCategory": "MS Windows Server",
     "firstSeenDate": "2026-10-17",
     "status": "ACTIVE"
+  },
+  "P70436-B21": {
+    "productNumber": "P70436-B21",
+    "description": "HPE 15.36TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 PS1010 SSD",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "firstSeenDate": "2026-09-06",
+    "discontinuedDate": "2026-10-17",
+    "status": "DISCONTINUED",
+    "successorSku": "P91249-B21",
+    "successorDescription": "HPE 15.36TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 Multi Vendor SSD",
+    "replacementReason": "Vendor delisted single-vendor PS1010 in live OCA; superseded by Multi Vendor P91249-B21 (,541.00)."
   }
 }
