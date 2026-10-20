@@ -1880,5 +1880,27 @@ Read `docs/audits/2026-10-03-master-architectural-hardening.md` and `docs/audits
 9. **Codex Astra Peer-Review Verification & Hardening**:
    - Verified and integrated boundary fixes: centralized `nlm_transport.js` (read via CDP HTTP/3 Brotli, mutate via httpx), dynamic source upload timeouts (`sourceOperationTimeout`), PID-aware recovery queue skipping sources owned by active queries, fail-closed 8-pass physical revalidation loop, and strict postflight receipt gate (`cloudVerified === true` required for `pass: true`).
 
+---
+
+## 2026-10-20 — Presales SKU Lifecycle Intelligence, 90-Day Clearance vs. Production Dual-Track Recommendations & Live OCA WebLogic Validation (`INV-179`)
+
+1. **Live WebLogic DOM Extraction & In-Configurator Verification (DL380a Gen12)**:
+   - **Delisting of `P70436-B21`**: Confirmed delisted/absent from the live configurable DOM of DL380a Gen12 (`P76706-B21`). Recorded as `DISCONTINUED` in `discontinued_skus.json` with active replacements `P91249-B21` (High Perf Multi Vendor) and `P84236-B21` (Mainstream Diamond Preferred).
+   - **Active Diamond Preferred Status (`P84236-B21`)**: Live extraction confirmed `P84236-B21` (HPE 15.36TB NVMe Gen4 Mainstream RI SFF BC U.3 CD9 SSD) is active at \$77,706.00, carries `hpe_recommended diamond` (Diamond Preferred), and provides a confirmed **3-day green SLA lead time**.
+   - **Unpublished Lead Time Delivery Risk (`P91249-B21`)**: `P91249-B21` is active at \$131,541.00, but OCA renders its lead time indicator with `display: none` / white status. Under invariant F15, this is preserved honestly as `leadTimeDays: null` / `Unpublished by OCA`, triggering a presales delivery risk warning rather than a fabricated fast-ship estimate.
+
+2. **Presales Strategy: Dual-Track 90-Day Clearance vs. Production Baseline**:
+   - **No Binary Discard of 90-Day EOL SKUs**: Rigid rule engines often discard 90-day impending obsolescence SKUs. In enterprise presales, SKUs entering obsolescence like `P50224-B21` (PM1733a 15.36TB, EOL `2027-01-31`) carry massive clearance discounts (**-42.01%**, \$86,062.00 vs \$148,401.00 list price).
+   - **Immediate Procurement / Fast-Track Deployment**: If a customer project deploys immediately and can commit distributor or channel buffer stock before the January 31, 2027 cutoff, selecting the clearance SKU provides dramatic CapEx savings without operational compromise.
+   - **Dual-Track Presentation with Explicit Commercial Remarks**:
+     - *Option A (Long-Term Production Standard)*: Active lifecycle, Diamond Preferred (e.g. `P84236-B21`, 3-day green SLA). Remark: `[RECOMMENDED PRODUCTION BASELINE] Active lifecycle, guaranteed multi-year expansion, 3-day channel fulfillment.`
+     - *Option B (Fast-Track / Value-Engineered Clearance Tier)*: 90-day remaining window until Jan 31, 2027 (`P50224-B21`), \$86,062 clearance pricing. Remark: `[FAST-TRACK / CLEARANCE OPTION] Valid for immediate procurement; must be ordered before 31-Jan-2027. High CapEx savings if hardware is stocked now. Not recommended for phased rollouts expanding past Q1 2027.`
+     - *Option C (High-Performance Direct Multi-Vendor)*: `P91249-B21`, \$131,541. Remark: `[DELIVERY RISK WARNING] Lead time unpublished in OCA. Verify distributor buffer inventory before quoting committed delivery SLAs.`
+
+3. **Closed-Loop Grounding & Google NotebookLM Synchronization**:
+   - `sync_payload_builder.js` structures Section 4 (Discontinued & Obsolete SKUs Registry with exact EOL dates), Section 5 (Recent Attribute & Specification Modifications Log with -42% clearance price trail), Section 8 (Vendor Recommended & Preferred Options with Diamond badges), and Section 10 (Supply Chain & Delivery Lead Time Intelligence).
+   - This ensures Gemini NotebookLM RAG queries provide nuanced, commercially astute presales guidance that avoids false binary rejections while protecting customers from unexpected EOL boundaries.
+
+
 
 
