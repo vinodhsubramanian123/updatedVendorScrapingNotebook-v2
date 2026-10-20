@@ -159,7 +159,7 @@ function _buildChassisSpecificRulesSection(chassisName, chassisSpecificRules = [
   return md;
 }
 
-function _buildDiscontinuedSection(chassisName, discontinuedRegistry = {}, servicesDiscontinuedRegistry = {}, cfg) {
+function _buildDiscontinuedSection(chassisName, discontinuedRegistry = {}, servicesDiscontinuedRegistry = {}, cfg, catalogData = null) {
   let md = `## ⚠️ 4. Discontinued & Obsolete SKUs Registry\n\n`;
   const discontinuedList = [
     ...Object.values(discontinuedRegistry),
@@ -169,8 +169,9 @@ function _buildDiscontinuedSection(chassisName, discontinuedRegistry = {}, servi
   if (discontinuedList.length === 0) {
     md += `*No discontinued or reinstated SKUs detected for ${chassisName}. All cataloged SKUs are active.*\n\n`;
   } else {
-    md += `| SKU | Description | Status | Discontinued Date | Last Known Price | Tracking | Retention |\n`;
-    md += `|-----|-------------|--------|-------------------|------------------|----------|-----------|\n`;
+    md += `### Fully Discontinued & Delisted SKUs\n\n`;
+    md += `| SKU | Description | Status | Discontinued Date | Last Known Price | Successor SKU | Tracking |\n`;
+    md += `|-----|-------------|--------|-------------------|------------------|---------------|----------|\n`;
     discontinuedList.forEach(d => {
       const skuPn = d.productNumber || d.sku || d['Product #'] || 'N/A';
       const description = d.description || 'N/A';
@@ -182,10 +183,149 @@ function _buildDiscontinuedSection(chassisName, discontinuedRegistry = {}, servi
           sharedEvidence = `[SHARED_ACCESSORY_VERIFIED target=${chassisName}] ${description} (Class: ${accessoryClass}; Evidence: CERTIFIED_OCA_CATALOG; Sources: ${chassisName}_Master_Catalog)`;
         }
       }
-      md += `| \`${skuPn}\` | ${sharedEvidence} | **${d.status}** | ${d.discontinuedDate || 'N/A'} | ${d.lastKnownPrice ? `$${d.lastKnownPrice}` : 'N/A'} | ${d.trackingState || 'LIFECYCLE_RETAINED'} | ${d.retentionClass || 'COMPACT_LIFECYCLE_TOMBSTONE'} |\n`;
+      const successor = d.successorSku ? `\`${d.successorSku}\`` : 'None';
+      md += `| \`${skuPn}\` | ${sharedEvidence} | **${d.status}** | ${d.discontinuedDate || 'N/A'} | ${d.lastKnownPrice ? `$${d.lastKnownPrice}` : 'N/A'} | ${successor} | ${d.trackingState || 'LIFECYCLE_RETAINED'} |\n`;
     });
     md += `\n`;
   }
+
+  // Impending Obsolescence & Clearance SKUs (90-day to 180-day window)
+  const impendingList = [];
+  if (catalogData && Array.isArray(catalogData.entries)) {
+    const scrapeDate = catalogData.metadata?.scrapeDate || new Date().toISOString().split('T')[0];
+    const cutoffDate = new Date(new Date(scrapeDate).getTime() + 180 * 24 * 60 * 60 * 1000);
+
+    for (const entry of catalogData.entries) {
+      for (const sku of entry.skus || []) {
+        const pn = sku['Product #'] || sku.sku;
+        if (!pn) continue;
+        const endDateStr = sku['Discontinued Date'];
+        const badge = sku['Lifecycle Badge'] || sku.lifecycleBadge;
+        const status = sku['Lifecycle Status'] || sku.lifecycleStatus || '';
+
+        let isImpending = badge === '90' || /90|EOL/i.test(status);
+        if (endDateStr && endDateStr !== 'None' && endDateStr !== 'NA') {
+          const d = new Date(endDateStr);
+          if (!isNaN(d.getTime()) && d <= cutoffDate && d >= new Date('2026-09-01')) {
+            isImpending = true;
+          }
+        }
+
+        if (isImpending) {
+          const price = sku['Unit Price (USD)'] || sku.listPrice || '0.00';
+          const priceChange = sku['Price Change (%)'] || '0.00%';
+          const desc = sku.Description || sku.description || '';
+          const isClearance = parseFloat(String(priceChange).replace('%', '')) <= -10;
+          impendingList.push({
+            sku: pn,
+            description: desc,
+            category: entry.parentCategory || 'Components',
+            price,
+            endDate: endDateStr || 'Impending (90-Day)',
+            priceChange,
+            isClearance
+          });
+        }
+      }
+    }
+  }
+
+  if (impendingList.length > 0) {
+    md += `### ⏳ Impending Obsolescence & Clearance Hardware (90-Day to 180-Day Window)\n\n`;
+    md += `*These components remain orderable in live configurators today but have published vendor end dates. They represent high-value clearance opportunities for immediate deployments, but require explicit procurement cutoff remarks before quotation:*\n\n`;
+    md += `| Product # | Description | Category | List Price (USD) | Discontinued Date | Price Trend | Presales Strategy Guidance |\n`;
+    md += `|---|---|---|---:|---|:---:|---|\n`;
+    impendingList.slice(0, 25).forEach(item => {
+      const strategyNote = item.isClearance
+        ? `🔥 **Clearance Opportunity** (${item.priceChange} CapEx savings). Procure before ${item.endDate}.`
+        : `⚠️ Approaching EOL (${item.endDate}). Valid for immediate builds; verify multi-year roadmaps.`;
+      md += `| \`${item.sku}\` | ${item.description} | ${item.category} | $${Number(item.price).toLocaleString()} | ${item.endDate} | ${item.priceChange} | ${strategyNote} |\n`;
+    });
+    if (impendingList.length > 25) {
+      md += `*... [${impendingList.length - 25} additional impending EOL records omitted for brevity]*\n`;
+    }
+    md += `\n`;
+  }
+
+  return md;
+}
+
+function _buildCategoryTrendsAndPriceMovesSection(catalogData) {
+  if (!catalogData || !Array.isArray(catalogData.entries)) return '';
+
+  let md = `## 📊 5b. Category-Level Trends & Significant Price Adjustments\n\n`;
+
+  const catMap = new Map();
+  const majorMoves = [];
+
+  for (const entry of catalogData.entries) {
+    const catName = entry.parentCategory || 'Uncategorized';
+    if (!catMap.has(catName)) {
+      catMap.set(catName, { total: 0, added: 0, modified: 0, unchanged: 0, priceDrops: 0, priceIncreases: 0 });
+    }
+    const rec = catMap.get(catName);
+
+    for (const sku of entry.skus || []) {
+      rec.total++;
+      const diffStatus = sku['Diff Status'] || 'UNCHANGED';
+      if (diffStatus === 'ADDED') rec.added++;
+      else if (diffStatus.includes('CHANGED')) rec.modified++;
+      else rec.unchanged++;
+
+      const pctStr = String(sku['Price Change (%)'] || '0').replace('%', '');
+      const pct = parseFloat(pctStr);
+      const deltaStr = String(sku['Price Change (USD)'] || '$0.00').replace(/[^0-9.-]/g, '');
+      const delta = parseFloat(deltaStr);
+
+      if (pct <= -10) rec.priceDrops++;
+      else if (pct >= 10 && delta > 50) rec.priceIncreases++;
+
+      if (Math.abs(pct) >= 10 && Math.abs(delta) >= 50) {
+        majorMoves.push({
+          sku: sku['Product #'] || sku.sku,
+          description: sku.Description || sku.description || '',
+          category: catName,
+          prevPrice: sku['Previous List Price (USD)'] || 'N/A',
+          currPrice: sku['Unit Price (USD)'] || sku.listPrice || '0.00',
+          delta,
+          pct,
+          isDrop: pct < 0
+        });
+      }
+    }
+  }
+
+  md += `### Category Portfolio Delta & Planning Intelligence\n\n`;
+  md += `| Category | Total SKUs | Added | Modified | Unchanged | Clearance / Drops | Category Planning Insight |\n`;
+  md += `|---|---:|---:|---:|---:|---:|---|\n`;
+
+  for (const [catName, stats] of catMap.entries()) {
+    let insight = 'Stable portfolio';
+    if (stats.priceDrops > 0) insight = `⚠️ Active price drops / clearance (${stats.priceDrops} SKUs discounted)`;
+    else if (stats.added > 0) insight = `✨ Portfolio expanding (+${stats.added} new options)`;
+    else if (stats.modified > 0) insight = `🔄 Attributes/specifications updated (${stats.modified} SKUs)`;
+
+    md += `| **${catName}** | ${stats.total} | ${stats.added} | ${stats.modified} | ${stats.unchanged} | ${stats.priceDrops} | ${insight} |\n`;
+  }
+  md += `\n`;
+
+  if (majorMoves.length > 0) {
+    majorMoves.sort((a, b) => a.delta - b.delta);
+    md += `### High-Impact Price Adjustments (Drops $\\ge 10\\%$ and Major Moves)\n\n`;
+    md += `| Product # | Description | Category | Previous Price | Current Price | Delta (USD) | Change (%) | Movement Type |\n`;
+    md += `|---|---|---|---:|---:|---:|---:|---|\n`;
+
+    majorMoves.slice(0, 20).forEach(m => {
+      const type = m.isDrop ? '📉 CLEARANCE_DROP' : (m.prevPrice === 'N/A' || isNaN(Number(m.prevPrice)) ? '✨ NEW_OPTION' : '📈 PRICE_INCREASE');
+      const prevPriceStr = m.prevPrice === 'N/A' || isNaN(Number(m.prevPrice)) ? 'New Addition' : `$${Number(m.prevPrice).toLocaleString()}`;
+      md += `| \`${m.sku}\` | ${m.description} | ${m.category} | ${prevPriceStr} | $${Number(m.currPrice || 0).toLocaleString()} | $${Number(m.delta || 0).toLocaleString()} | **${m.pct > 0 ? '+' : ''}${m.pct.toFixed(1)}%** | ${type} |\n`;
+    });
+    if (majorMoves.length > 20) {
+      md += `*... [${majorMoves.length - 20} additional price movements omitted for brevity]*\n`;
+    }
+    md += `\n`;
+  }
+
   return md;
 }
 
@@ -194,9 +334,16 @@ function _buildAttributeHistorySection(attributeHistory = []) {
   if (attributeHistory.length === 0) {
     md += `*No attribute or specification changes recorded across catalog snapshots.*\n\n`;
   } else {
+    // Filter out trivial transitions and select meaningful ones
+    const meaningful = attributeHistory.filter(a => {
+      const field = a.field || a.attribute || '';
+      if (field === 'HPE Recommended' && (!a.oldValue || a.oldValue === 'No') && a.newValue === 'No') return false;
+      return true;
+    });
+
     md += `| Timestamp | SKU | Attribute | Old Value | New Value |\n`;
     md += `|-----------|-----|-----------|-----------|-----------|\n`;
-    attributeHistory.slice(-15).forEach(a => {
+    meaningful.slice(-25).forEach(a => {
       const aSku = a.productNumber || a.sku || a['Product #'] || 'N/A';
       const aDate = a.date || a.timestamp?.split('T')[0] || 'N/A';
       const aField = a.field || a.attribute || 'Specification';
@@ -280,11 +427,18 @@ function _buildSmartChassisAndRecommendedSection(catalogData) {
   const recSkus = [];
   for (const entry of catalogData?.entries || []) {
     for (const sku of entry.skus || []) {
-      if (sku['HPE Recommended'] === 'Yes' || sku.vendorRecommended === true) {
+      const recVal = String(sku['HPE Recommended'] || sku.hpe_recommended || '').toLowerCase();
+      const isVendorRec = sku.vendorRecommended === true;
+      if (sku['HPE Recommended'] === 'Yes' || isVendorRec || recVal.includes('diamond') || recVal.includes('mainstream') || recVal.includes('gold')) {
+        let badgeType = 'Recommended';
+        if (recVal.includes('diamond')) badgeType = 'Diamond Preferred';
+        else if (recVal.includes('mainstream') || recVal.includes('gold')) badgeType = 'Mainstream';
+
         recSkus.push({
           sku: sku['Product #'] || sku.sku,
           description: sku.Description || sku.description || '',
           category: entry.parentCategory || '',
+          badge: badgeType,
           price: sku.listPrice || sku['Unit Price (USD)'] || '0.00',
           leadTime: (sku['Lead Time'] && sku['Lead Time'] !== 'Unpublished') ? sku['Lead Time'] : 'Unpublished'
         });
@@ -294,10 +448,10 @@ function _buildSmartChassisAndRecommendedSection(catalogData) {
 
   if (recSkus.length > 0) {
     md += `## ⭐ 8. Vendor Recommended & Preferred Hardware Options\n\n`;
-    md += `| Product # | Description | Category | List Price (USD) | Lead Time |\n`;
-    md += `|---|---|---|---:|---|\n`;
+    md += `| Product # | Description | Category | Recommendation Badge | List Price (USD) | Lead Time |\n`;
+    md += `|---|---|---|:---:|---:|---|\n`;
     recSkus.forEach(s => {
-      md += `| \`${s.sku}\` | ${s.description} | ${s.category} | $${Number(s.price).toLocaleString()} | ${s.leadTime} |\n`;
+      md += `| \`${s.sku}\` | ${s.description} | ${s.category} | **${s.badge}** | $${Number(s.price).toLocaleString()} | ${s.leadTime} |\n`;
     });
     md += `\n`;
   }
@@ -332,32 +486,61 @@ function _buildSmartChassisAndRecommendedSection(catalogData) {
 
   // Section 10: Supply Chain & Channel Lead Time Intel
   const leadTimeItems = [];
+  const unpubDeliveryRisk = [];
   for (const entry of catalogData?.entries || []) {
     for (const sku of entry.skus || []) {
       const lt = sku['Lead Time'] || sku.leadTime || '';
+      const pn = sku['Product #'] || sku.sku;
+      if (!pn) continue;
       if (lt && lt !== 'Not published by OCA' && lt !== 'Standard' && lt !== 'Unpublished') {
         leadTimeItems.push({
-          sku: sku['Product #'] || sku.sku,
+          sku: pn,
           description: sku.Description || sku.description || '',
           category: entry.parentCategory || '',
           leadTime: lt,
           availability: sku.Availability || sku.availability || 'Available'
         });
+      } else if (lt === 'Unpublished' || sku.leadTimeDays === null) {
+        const price = parseFloat(sku['Unit Price (USD)'] || sku.listPrice || '0');
+        if (price > 5000) {
+          unpubDeliveryRisk.push({
+            sku: pn,
+            description: sku.Description || sku.description || '',
+            category: entry.parentCategory || ''
+          });
+        }
       }
     }
   }
 
-  if (leadTimeItems.length > 0) {
+  if (leadTimeItems.length > 0 || unpubDeliveryRisk.length > 0) {
     md += `## ⏱️ 10. Supply Chain & Delivery Lead Time Intelligence\n\n`;
-    md += `| Product # | Description | Category | Lead Time | Channel Status |\n`;
-    md += `|---|---|---|---:|---|\n`;
-    leadTimeItems.slice(0, 30).forEach(s => {
-      md += `| \`${s.sku}\` | ${s.description} | ${s.category} | ${s.leadTime} | ${s.availability} |\n`;
-    });
-    if (leadTimeItems.length > 30) {
-      md += `*... [${leadTimeItems.length - 30} additional supply chain records omitted for brevity]*\n`;
+    if (leadTimeItems.length > 0) {
+      md += `### Confirmed Component Delivery SLAs\n\n`;
+      md += `| Product # | Description | Category | Lead Time | Channel Status |\n`;
+      md += `|---|---|---|---:|---|\n`;
+      leadTimeItems.slice(0, 30).forEach(s => {
+        md += `| \`${s.sku}\` | ${s.description} | ${s.category} | ${s.leadTime} | ${s.availability} |\n`;
+      });
+      if (leadTimeItems.length > 30) {
+        md += `*... [${leadTimeItems.length - 30} additional supply chain records omitted for brevity]*\n`;
+      }
+      md += `\n`;
     }
-    md += `\n`;
+
+    if (unpubDeliveryRisk.length > 0) {
+      md += `### ⚠️ Supply Chain Verification Advisory (Unpublished Delivery Lead Times)\n\n`;
+      md += `*The following high-value active components have unpublished delivery estimates in live OCA. Presales engineers must verify distributor buffer stock before quoting committed deployment timelines:*\n\n`;
+      md += `| Product # | Description | Category | Lead Time Status | Presales Action |\n`;
+      md += `|---|---|---|:---:|---|\n`;
+      unpubDeliveryRisk.slice(0, 15).forEach(s => {
+        md += `| \`${s.sku}\` | ${s.description} | ${s.category} | **Unpublished** | Verify distributor inventory prior to SLA commitment |\n`;
+      });
+      if (unpubDeliveryRisk.length > 15) {
+        md += `*... [${unpubDeliveryRisk.length - 15} additional unpublished items omitted for brevity]*\n`;
+      }
+      md += `\n`;
+    }
   }
 
   return md;
@@ -490,7 +673,8 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
   md += _buildUniversalAndFamilyRulesSection(targetIdentity, scopedRegistry.universalRules, scopedRegistry.familyGenRules);
   md += _buildChassisSpecificRulesSection(chassisName, scopedRegistry.chassisSpecificRules, targetIdentity);
   md += _buildUnavailableDomGatingRulesSection(unavailableRules);
-  md += _buildDiscontinuedSection(chassisName, discontinuedRegistry, servicesDiscontinuedRegistry, cfg);
+  md += _buildDiscontinuedSection(chassisName, discontinuedRegistry, servicesDiscontinuedRegistry, cfg, catalogData);
+  md += _buildCategoryTrendsAndPriceMovesSection(catalogData);
   md += _buildAttributeHistorySection(attributeHistory);
   md += _buildSameProductVariantSection(chassisName, targetIdentity);
   md += _buildSmartChassisAndRecommendedSection(catalogData);

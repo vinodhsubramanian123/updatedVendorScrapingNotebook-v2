@@ -219,6 +219,11 @@ const TRACKED_ATTRIBUTES = [
   { keys: ['Availability', 'Supply Status'], label: 'Availability' },
   { keys: ['Lead Time', 'estimatedDelivery'], label: 'Lead Time' },
   { keys: ['Lead Time Source'], label: 'Lead Time Source' },
+  { keys: ['leadTimeDays'], label: 'Lead Time Days' },
+  { keys: ['Speed Tier', 'speedTier'], label: 'Speed Tier' },
+  { keys: ['visibilityState'], label: 'Portal Visibility' },
+  { keys: ['conditionType'], label: 'Condition Type' },
+  { keys: ['vendorRecommended'], label: 'Vendor Recommended' },
   { keys: ['vendorAttributes', 'Vendor Attributes'], label: 'Vendor Attributes' }
 ];
 
@@ -228,6 +233,19 @@ function recordAttributeDeltas(sku, prevSku, context, attributeHistory) {
     const currVal = firstAttributeValue(sku, attr.keys);
     const prevVal = firstAttributeValue(prevSku, attr.keys);
     if (currVal === prevVal || (!currVal && !prevVal)) continue;
+
+    // Suppress noisy default transitions (e.g. empty string to 'No' or '(None)' to 'No' for HPE Recommended)
+    if (attr.label === 'HPE Recommended') {
+      const isPrevNo = !prevVal || prevVal === 'No' || prevVal === '(None)' || prevVal === 'Unknown';
+      const isCurrNo = !currVal || currVal === 'No' || currVal === '(None)' || currVal === 'Unknown';
+      if (isPrevNo && isCurrNo) continue;
+    }
+    if (attr.label === 'Lead Time') {
+      const isPrevEmpty = !prevVal || prevVal === '(None)';
+      const isCurrEmpty = !currVal || currVal === '(None)';
+      if (isPrevEmpty && isCurrEmpty) continue;
+    }
+
     deltas.push({ field: attr.label, oldValue: prevVal || '(None)', newValue: currVal || '(None)' });
     attributeHistory.push({
       date: context.scrapeDate,
