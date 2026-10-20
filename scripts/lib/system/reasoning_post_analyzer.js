@@ -109,8 +109,9 @@ function performReasoningPostAnalysis({
   };
 
   try {
+    const shouldEnableFeedback = Boolean(context.enableFeedback === true && process.env.NODE_ENV !== 'test' && !context.isolatedMode);
     const chassisDir = context.chassisDir || context.targetDir || responseData.chassisDir || responseData.catalogDir;
-    if (chassisDir && fs.existsSync(chassisDir) && Array.isArray(missingDeps) && missingDeps.length > 0) {
+    if (shouldEnableFeedback && chassisDir && fs.existsSync(chassisDir) && Array.isArray(missingDeps) && missingDeps.length > 0) {
       const { processPortalFeedback } = require('../feedback/feedback_loop.js');
       let proposed = 0;
       for (const dep of missingDeps) {

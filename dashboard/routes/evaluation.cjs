@@ -162,7 +162,10 @@ router.post('/eval-boq', (req, res) => {
   const evalScript = path.join(PROJECT_ROOT, 'scripts', 'evaluators', 'eval_boq.js');
   const args = [evalScript, targetPath, '--json', '--defer-rag'];
   if (safeChassisDir) args.push('--chassis', safeChassisDir);
-  if (process.env.OFFLINE_MODE === '1' || process.env.NODE_ENV === 'test') args.push('--offline');
+  const isOffline = ['1', 'true'].includes(String(process.env.OFFLINE_MODE || '').trim().toLowerCase()) ||
+    ['1', 'true'].includes(String(process.env.LOCAL_EVAL_ONLY || '').trim().toLowerCase()) ||
+    process.env.NODE_ENV === 'test';
+  if (isOffline) args.push('--offline');
 
   const ownedCli = process.env.PRESALES_TERMINAL_OWNER === '1';
   const proc = spawnObservedChild('eval_boq', __filename, (extraEnv) =>
@@ -269,7 +272,7 @@ router.post('/eval-boq', (req, res) => {
     if (!fs.existsSync(traceDir)) fs.mkdirSync(traceDir, { recursive: true });
     try {
       const { safeWriteJsonAtomic } = require('../../scripts/lib/system/fs_compat.js');
-      safeWriteJsonAtomic(path.join(traceDir, `${runId}.json`), { runId, taskType: 'EVAL_BOQ', startTime: new Date(evalStartTime).toISOString(), durationMs: 0, exitCode: code, logs });
+      safeWriteJsonAtomic(path.join(traceDir, `${runId}.json`), { runId, taskType: 'EVAL_BOQ', startTime: new Date(evalStartTime).toISOString(), durationMs, exitCode: code, logs });
     } catch (e) {
       console.error(`[evaluation.cjs] Failed to persist trace ${runId}:`, e.message);
     }
@@ -303,8 +306,30 @@ router.post('/eval-boq', (req, res) => {
       }
       if (parsedData?.data && parsedData.status !== 'CANCELLED' && (['SUCCESS', 'ACTION_REQUIRED'].includes(parsedData.status) || parsedData.data.items || parsedData.data.evalResults)) {
         const validated = safeParseEvalResult(parsedData.data);
-        const broadcastPayload = validated.success ? validated.data : parsedData.data;
-        broadcastSSE({ type: 'EVAL_RESULT', data: broadcastPayload, runId });
+        if (validated.success) {
+          broadcastSSE({ type: 'EVAL_RESULT', data: validated.data, runId });
+        } else {
+          broadcastSSE({
+            type: 'EVAL_RESULT',
+            status: 'SCHEMA_INVALID',
+            customerDisposition: 'DELIVERY_BLOCKED_UNBUILDABLE',
+            error: {
+              code: 'SCHEMA_VALIDATION_FAILED',
+              message: 'Evaluator output failed runtime schema contract validation',
+              issues: validated.errors || validated.error?.issues,
+              runId
+            },
+            data: {
+              ...parsedData.data,
+              isContractInvalid: true,
+              schemaErrors: validated.errors || validated.error?.issues,
+              customerDisposition: 'DELIVERY_BLOCKED_UNBUILDABLE'
+            },
+            runId
+          });
+          return;
+        }
+
       } else if (parsedData) {
         broadcastSSE({ type: 'EVAL_RESULT', error: parsedData, runId });
       } else {
@@ -321,6 +346,9 @@ router.post(['/export-boq', '/export-boq-xlsx'], (req, res) => {
   const { evalResults, chassisId, rankTier, diagnostic } = req.body;
   if (!evalResults) return sendErrorResponse(res, 400, 'evalResults payload is required', { source: 'EVALUATION_ROUTER' });
   const actualEvalResults = evalResults.evalResults || evalResults.data?.evalResults || evalResults;
+  if (actualEvalResults.isContractInvalid === true || actualEvalResults.customerDisposition === 'DELIVERY_BLOCKED_UNBUILDABLE' || evalResults.status === 'SCHEMA_INVALID') {
+    return sendErrorResponse(res, 422, 'Cannot export BOQ: Evaluator output failed schema contract validation or delivery authorization', { source: 'EVALUATION_ROUTER' });
+  }
   const tier = rankTier || 1;
   const timestamp = Date.now();
   const exportDir = path.join(OUTPUTS_DIR, 'temp', 'exports');

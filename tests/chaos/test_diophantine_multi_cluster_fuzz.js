@@ -39,7 +39,7 @@ test('Diophantine Multi-Cluster Fuzzing Suite (INV-39)', async (t) => {
         });
       }
       
-      const result = analyzeAndPartitionClusters(rawItems);
+      const result = analyzeAndPartitionClusters(rawItems, '', { catalogData: {} });
       const sumMultipliers = result.clusters.reduce((sum, cluster) => sum + cluster.multiplier, 0);
       
       if (sumMultipliers !== totalChassis) {

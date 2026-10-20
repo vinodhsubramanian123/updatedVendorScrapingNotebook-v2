@@ -339,7 +339,7 @@ function runSingleTest(testFile, rootDir, timeoutMs, verbose) {
 
     const child = spawn(process.execPath, args, {
       cwd: rootDir,
-      env: { ...process.env, FORCE_COLOR: '1' }
+      env: { NODE_ENV: 'test', ...process.env, FORCE_COLOR: '1' }
     });
 
     const timer = setTimeout(() => {

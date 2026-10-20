@@ -66,16 +66,19 @@ function triggerPostFlowSync(chassisName = 'Unknown_Chassis', flowType = 'EVALUA
     logger.info('POST_FLOW_SYNC', `Triggering post-flow knowledge sync for ${chassisName} (Flow: ${flowType})`);
     
     // 1. Build / Update Master Knowledge Registry
-    const registry = buildMasterKnowledgeRegistry();
+    const shouldPersist = opts.persist !== false && process.env.NODE_ENV !== 'test';
+    const registry = buildMasterKnowledgeRegistry({ persist: shouldPersist });
     
     // 2. Generate updated sync payload for target chassis
     const autoUpload = opts.autoUploadNLM === undefined ? process.env.AUTO_UPLOAD_NLM === '1' : opts.autoUploadNLM === true;
-    const payload = generateNotebookSyncPayload(chassisName, autoUpload, {
-      confirmSourceRetirement: opts.confirmSourceRetirement !== undefined
-        ? opts.confirmSourceRetirement === true
-        : (flowType === 'SCRAPE' || process.env.AUTO_RETIRE_STALE_SOURCES === '1'),
-      targetDir: opts.targetDir
-    });
+    const payload = shouldPersist
+      ? generateNotebookSyncPayload(chassisName, autoUpload, {
+          confirmSourceRetirement: opts.confirmSourceRetirement !== undefined
+            ? opts.confirmSourceRetirement === true
+            : (flowType === 'SCRAPE' || process.env.AUTO_RETIRE_STALE_SOURCES === '1'),
+          targetDir: opts.targetDir
+        })
+      : { success: true, localPayloadPath: null, skipped: true };
     
     // 3. Inspect drift metrics
     const drift = inspectKnowledgeDrift(chassisName);

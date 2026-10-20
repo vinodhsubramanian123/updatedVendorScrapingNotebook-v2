@@ -353,8 +353,9 @@ function buildMasterKnowledgeRegistry(options = {}) {
 }
 
 function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload = false, syncOptions = {}) {
-  const registry = buildMasterKnowledgeRegistry();
-  return buildPayload(chassisName, autoUpload, registry, syncOptions);
+  const persist = syncOptions.persist !== undefined ? syncOptions.persist : (process.env.NODE_ENV !== 'test');
+  const registry = buildMasterKnowledgeRegistry({ persist });
+  return buildPayload(chassisName, autoUpload, registry, { ...syncOptions, persist });
 }
 
 function inspectKnowledgeDrift(chassisName = 'Unknown_Chassis') {

@@ -65,7 +65,10 @@ function _buildItemsSection(items, budgetOpt) {
     const priced = it.unitPriceUsd > 0 || (it.unitPriceUsd === 0 && it.isConfirmedZeroPrice === true);
     md += `| ${idx + 1} | \`${it.sku}\` | ${totalQty} | ${it.description} | \$${priced ? it.unitPriceUsd.toLocaleString() : 'UNRESOLVED'} | \$${priced ? (totalQty * it.unitPriceUsd).toLocaleString() : 'UNRESOLVED'} |\n`;
   });
-  md += `\n**Current Baseline ${budgetOpt?.hasZeroPriceSkus ? 'Known-price Subtotal (INCOMPLETE)' : 'BOM Total'}**: \`$${(budgetOpt?.currentBomCostUsd || 0).toLocaleString()} USD\`\n\n`;
+  const baselineTotalDisplay = (budgetOpt?.currentBomCostUsd !== null && budgetOpt?.currentBomCostUsd !== undefined)
+    ? `$${budgetOpt.currentBomCostUsd.toLocaleString()} USD`
+    : `$${(budgetOpt?.knownCurrentBomCostUsd ?? budgetOpt?.knownOrderSubtotalUsd ?? 0).toLocaleString()} USD (Incomplete)`;
+  md += `\n**Current Baseline ${budgetOpt?.hasZeroPriceSkus ? 'Known-price Subtotal (INCOMPLETE)' : 'BOM Total'}**: \`${baselineTotalDisplay}\`\n\n`;
   md += `---\n\n`;
   return md;
 }
@@ -165,7 +168,10 @@ function _buildBudgetSection(budgetOpt, targetBudgetUsd) {
   md += `## 💰 3. Budget-Constrained Optimization & Golden Rule Assurance\n\n`;
   md += `${budgetOpt.goldenRuleSummary || ''}\n\n`;
   if (budgetOpt.hasZeroPriceSkus) md += `**PRICING INCOMPLETE — ${budgetOpt.zeroPriceCount} SKU(s) unresolved or zero price unconfirmed. Totals are known-price subtotals, not complete quotations.**\n\n`;
-  md += `- **${budgetOpt.hasZeroPriceSkus ? 'Known-price Subtotal (INCOMPLETE)' : 'Mandatory Component Cost'}**: \`$${(budgetOpt.mandatoryBomCostUsd || 0).toLocaleString()} USD\` (Includes all direct SKU fixes)\n`;
+  const mandatoryCostDisplay = (budgetOpt.mandatoryBomCostUsd !== null && budgetOpt.mandatoryBomCostUsd !== undefined)
+    ? `$${budgetOpt.mandatoryBomCostUsd.toLocaleString()} USD`
+    : `$${(budgetOpt.knownMandatorySubtotalUsd ?? budgetOpt.knownOrderSubtotalUsd ?? 0).toLocaleString()} USD (Incomplete)`;
+  md += `- **${budgetOpt.hasZeroPriceSkus ? 'Known-price Subtotal (INCOMPLETE)' : 'Mandatory Component Cost'}**: \`${mandatoryCostDisplay}\` (Includes all direct SKU fixes)\n`;
 
   if (budgetOpt.isBudgetExceeded) {
     md += `- **Minimum Budget Overrun Delta**: \`+$${budgetOpt.budgetOverrunUsd.toLocaleString()} USD\`\n`;
@@ -532,7 +538,12 @@ async function _executePostFlowSync(ctx, evalResults) {
   const { chassisPrefix, JSON_MODE } = ctx;
   try {
     const autoUpload = !ctx.OFFLINE_MODE && !ctx.DEFER_RAG;
-    const syncResult = await triggerPostFlowSyncAsync(chassisPrefix, 'EVALUATION', { autoUploadNLM: autoUpload, syncRunningKnowledge: autoUpload });
+    const shouldPersist = !ctx.OFFLINE_MODE && process.env.NODE_ENV !== 'test' && !ctx.DEFER_RAG;
+    const syncResult = await triggerPostFlowSyncAsync(chassisPrefix, 'EVALUATION', {
+      autoUploadNLM: autoUpload,
+      syncRunningKnowledge: autoUpload,
+      persist: shouldPersist
+    });
     evalResults.postFlowSync = syncResult;
     if (!syncResult.success) {
       const syncWarning = `⚠️ Post-flow knowledge sync failed: ${syncResult.error || 'Unknown error'}. NotebookLM may have stale data.`;

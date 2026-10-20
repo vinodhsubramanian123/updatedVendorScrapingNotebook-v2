@@ -43,7 +43,7 @@ function getSkuListPrice(skuStr, catalogData = null, chassisDir = null) {
     } catch {}
   }
 
-  return 0.00; // Zero Hardcoding Rule: Return 0 if not found
+  return null; // Nullable observed pricing contract (F16): Return null if not found
 }
 
 /**
@@ -83,10 +83,20 @@ function optimizeForBudget(consolidatedItems, evalResults, targetBudgetUsd = 0, 
   const { outputQuantities } = require('./configuration_context');
   const resolvedChassisDir = chassisDir || evalResults?.chassisDir || evalResults?.sourceDirectory || null;
   const multiplier = evalResults?.configurationContext?.multiplier || 1;
-  let currentBomCost = 0;
+  let knownCurrentBomCost = 0;
   let zeroPriceCount = 0;
-  const { readPortalReceipt, normalizeSku } = require('./portal_receipt');
+  const { readPortalReceipt, receiptMatches, normalizeSku } = require('./portal_receipt');
   const portalReceipt = resolvedChassisDir ? readPortalReceipt(resolvedChassisDir) : null;
+  const isReceiptValidForBOM = Boolean(
+    portalReceipt &&
+    receiptMatches(portalReceipt, evalResults?.candidate || evalResults, {
+      chassisKey: evalResults?.chassisKey || evalResults?.chassisInfo?.model || evalResults?.model,
+      baseSku: evalResults?.baseSku || evalResults?.chassisInfo?.baseSku,
+      configurationName: evalResults?.configurationName || evalResults?.configName,
+      selectors: evalResults?.selectors,
+      serverCount: multiplier
+    })
+  );
 
   // GAP-10: Buildability gate — upgrades MUST NOT run on unbuildable configurations
   const _buildabilityConfirmed = evalResults?.isMathClean === true && evalResults?.isGraphClean === true;
@@ -94,6 +104,8 @@ function optimizeForBudget(consolidatedItems, evalResults, targetBudgetUsd = 0, 
   // Calculate current baseline BOM cost (preserving quoted vs. catalog estimate provenance, INV-158)
   const { isConfirmedFreeSku } = require('../catalog/sku_versioning.js');
   let hasUnquotedCustomerItems = false;
+  let hasUnpricedCustomerItems = false;
+  const unavailableSkus = [];
   let quotedSubtotal = 0;
   let catalogEstimatedSubtotal = 0;
 
@@ -101,7 +113,7 @@ function optimizeForBudget(consolidatedItems, evalResults, targetBudgetUsd = 0, 
     if (it.inputUnitPriceUsd === undefined) {
       it.inputUnitPriceUsd = (typeof it.unitPriceUsd === 'number' && Number.isFinite(it.unitPriceUsd)) ? it.unitPriceUsd : null;
     }
-    const receiptRow = portalReceipt?.rows.find(row => row.sku === normalizeSku(it.sku) && row.quantity === outputQuantities(it, multiplier).totalQty);
+    const receiptRow = isReceiptValidForBOM ? portalReceipt?.rows.find(row => row.sku === normalizeSku(it.sku) && row.quantity === outputQuantities(it, multiplier).totalQty) : null;
     const catalogEstimatePrice = receiptRow ? receiptRow.unitPriceUsd : getSkuListPrice(it.sku, catalogData, resolvedChassisDir);
     const isFree = receiptRow ? catalogEstimatePrice === 0 : isConfirmedFreeSku(it.sku, it.description);
     if (receiptRow) {
@@ -118,10 +130,10 @@ function optimizeForBudget(consolidatedItems, evalResults, targetBudgetUsd = 0, 
       it.quotedUnitPriceUsd = observedQuote;
       it.unitPriceUsd = observedQuote;
       it.extendedPriceUsd = it.unitPriceUsd * it.quantity;
-      it.priceSource = it.priceSource || (receiptRow ? `Live OCA BOM ${portalReceipt.capturedAt}` : 'CUSTOMER_QUOTE');
+      it.priceSource = it.priceSource || 'CUSTOMER_QUOTE';
       if (it.unitPriceUsd === 0 && !isFree && !it.isConfirmedZeroPrice) zeroPriceCount++;
       quotedSubtotal += it.unitPriceUsd * lineQty;
-      currentBomCost += it.unitPriceUsd * lineQty;
+      knownCurrentBomCost += it.unitPriceUsd * lineQty;
       catalogEstimatedSubtotal += it.unitPriceUsd * lineQty;
     } else {
       hasUnquotedCustomerItems = true;
@@ -129,15 +141,28 @@ function optimizeForBudget(consolidatedItems, evalResults, targetBudgetUsd = 0, 
       it.unitPriceUsd = null;
       it.extendedPriceUsd = null;
       it.estimatedUnitPriceUsd = catalogEstimatePrice;
-      it.priceSource = receiptRow ? `Live OCA BOM ${portalReceipt.capturedAt}` : 'CATALOG_ESTIMATE';
-      if (catalogEstimatePrice === 0 && !isFree) zeroPriceCount++;
-      currentBomCost += catalogEstimatePrice * lineQty;
-      catalogEstimatedSubtotal += catalogEstimatePrice * lineQty;
+      if (receiptRow) {
+        it.priceSource = `Live OCA BOM ${portalReceipt.capturedAt}`;
+      } else if (catalogEstimatePrice !== null) {
+        it.priceSource = 'CATALOG_ESTIMATE';
+      } else {
+        it.priceSource = 'UNPRICED';
+        unavailableSkus.push(it.sku);
+        hasUnpricedCustomerItems = true;
+      }
+      if (catalogEstimatePrice === null) {
+        // Unpriced SKU
+      } else if (catalogEstimatePrice === 0 && !isFree) {
+        zeroPriceCount++;
+      } else {
+        knownCurrentBomCost += catalogEstimatePrice * lineQty;
+        catalogEstimatedSubtotal += catalogEstimatePrice * lineQty;
+      }
     }
   });
 
   // Calculate mandatory buildable BOM cost (Injecting direct SKU fixes)
-  let mandatoryBomCost = currentBomCost;
+  let knownMandatoryBomCost = knownCurrentBomCost;
   const injectedSkus = [];
 
   if (evalResults && evalResults.missingDependencies) {
@@ -154,29 +179,44 @@ function optimizeForBudget(consolidatedItems, evalResults, targetBudgetUsd = 0, 
     });
 
     dedupedDeps.forEach(dep => {
-      const unitPrice = getSkuListPrice(dep.sku, catalogData, resolvedChassisDir);
-      const isFree = isConfirmedFreeSku(dep.sku, dep.description);
-      if (unitPrice === 0 && !isFree) zeroPriceCount++;
-      const extPrice = unitPrice * outputQuantities(dep, multiplier).totalQty;
-      mandatoryBomCost += extPrice;
+      const receiptDepRow = isReceiptValidForBOM ? portalReceipt?.rows.find(row => row.sku === normalizeSku(dep.sku) && row.quantity === outputQuantities(dep, multiplier).totalQty) : null;
+      const unitPrice = receiptDepRow ? receiptDepRow.unitPriceUsd : getSkuListPrice(dep.sku, catalogData, resolvedChassisDir);
+      const isFree = receiptDepRow ? unitPrice === 0 : isConfirmedFreeSku(dep.sku, dep.description);
+      if (unitPrice === null) {
+        unavailableSkus.push(dep.sku);
+      } else if (unitPrice === 0 && !isFree) {
+        zeroPriceCount++;
+      }
+      const knownExtPrice = unitPrice !== null ? unitPrice * outputQuantities(dep, multiplier).totalQty : null;
+      if (knownExtPrice !== null) {
+        knownMandatoryBomCost += knownExtPrice;
+      }
       injectedSkus.push({
         sku: dep.sku,
         description: dep.description,
         quantity: dep.quantity,
         unitPriceUsd: unitPrice,
-        extendedPriceUsd: extPrice,
+        extendedPriceUsd: knownExtPrice,
         rule: dep.rule
       });
     });
   }
 
+  const hasUnavailableSkus = unavailableSkus.length > 0;
+  const budgetAssessmentComplete = consolidatedItems.length > 0 &&
+    zeroPriceCount === 0 &&
+    !hasUnavailableSkus &&
+    Number.isFinite(knownMandatoryBomCost);
+
+  const currentBomCostUsd = (!hasUnpricedCustomerItems && consolidatedItems.length > 0) ? knownCurrentBomCost : (consolidatedItems.length === 0 ? 0 : null);
+  const mandatoryBomCostUsd = budgetAssessmentComplete ? knownMandatoryBomCost : (consolidatedItems.length === 0 ? 0 : null);
+  const totalOrderCostUsd = mandatoryBomCostUsd;
+
   const hasBudgetConstraint = targetBudgetUsd > 0;
-  const budgetAssessmentComplete = consolidatedItems.length > 0 && zeroPriceCount === 0 &&
-    Number.isFinite(mandatoryBomCost);
-  const knownCostExceedsBudget = hasBudgetConstraint && Number.isFinite(mandatoryBomCost) && mandatoryBomCost > targetBudgetUsd;
+  const knownCostExceedsBudget = hasBudgetConstraint && Number.isFinite(knownMandatoryBomCost) && knownMandatoryBomCost > targetBudgetUsd;
   const isBudgetExceeded = knownCostExceedsBudget ? true : budgetAssessmentComplete ? false : null;
-  const budgetOverrunUsd = isBudgetExceeded ? (mandatoryBomCost - targetBudgetUsd) : !budgetAssessmentComplete ? null : 0;
-  const remainingBudgetUsd = !budgetAssessmentComplete ? null : (!isBudgetExceeded && hasBudgetConstraint) ? (targetBudgetUsd - mandatoryBomCost) : 0;
+  const budgetOverrunUsd = isBudgetExceeded ? (knownMandatoryBomCost - targetBudgetUsd) : !budgetAssessmentComplete ? null : 0;
+  const remainingBudgetUsd = !budgetAssessmentComplete ? null : (!isBudgetExceeded && hasBudgetConstraint) ? (targetBudgetUsd - knownMandatoryBomCost) : 0;
 
   // Dynamic upgrade recommendations based on remaining surplus budget and family templates
   const recommendedUpgrades = [];
@@ -203,27 +243,33 @@ function optimizeForBudget(consolidatedItems, evalResults, targetBudgetUsd = 0, 
     });
   }
 
-  const hasZeroPriceSkus = zeroPriceCount > 0;
+  const hasZeroPriceSkus = zeroPriceCount > 0 || hasUnavailableSkus;
   const goldenRuleSummary = !budgetAssessmentComplete
     ? `PRICING INCOMPLETE: Complete cost and surplus are unknown.${knownCostExceedsBudget ? ' The known-price subtotal already exceeds the target budget.' : ' Budget compliance cannot be determined from the known-price subtotal.'}`
     : !hasBudgetConstraint
     ? `ℹ️ No budget constraint provided — showing mandatory buildable cost only.`
     : (isBudgetExceeded
-      ? `⚠️ GOLDEN RULE MANDATE: Target budget of $${targetBudgetUsd.toLocaleString('en-US')} is exceeded by +$${budgetOverrunUsd.toLocaleString('en-US')}. Mandatory buildable cost is $${mandatoryBomCost.toLocaleString('en-US')} to eliminate unbuildable errors.`
-      : `${_buildabilityConfirmed ? 'BUDGET ESTIMATE WITHIN TARGET' : 'BASELINE VALIDATION REQUIRED'}: Estimated component cost $${mandatoryBomCost.toLocaleString('en-US')} fits within target budget of $${targetBudgetUsd.toLocaleString('en-US')} (Surplus: $${remainingBudgetUsd.toLocaleString('en-US')}).`);
+      ? `⚠️ GOLDEN RULE MANDATE: Target budget of $${targetBudgetUsd.toLocaleString('en-US')} is exceeded by +$${budgetOverrunUsd.toLocaleString('en-US')}. Mandatory buildable cost is $${mandatoryBomCostUsd.toLocaleString('en-US')} to eliminate unbuildable errors.`
+      : `${_buildabilityConfirmed ? 'BUDGET ESTIMATE WITHIN TARGET' : 'BASELINE VALIDATION REQUIRED'}: Estimated component cost $${mandatoryBomCostUsd.toLocaleString('en-US')} fits within target budget of $${targetBudgetUsd.toLocaleString('en-US')} (Surplus: $${remainingBudgetUsd.toLocaleString('en-US')}).`);
 
   return {
     targetBudgetUsd,
-    currentBomCostUsd: currentBomCost,
-    mandatoryBomCostUsd: mandatoryBomCost,
+    currentBomCostUsd,
+    mandatoryBomCostUsd,
+    totalOrderCostUsd,
+    knownCurrentBomCostUsd: knownCurrentBomCost,
+    knownMandatorySubtotalUsd: knownMandatoryBomCost,
+    knownOrderSubtotalUsd: knownMandatoryBomCost,
     quotedBomCostUsd: hasUnquotedCustomerItems ? null : quotedSubtotal,
     knownQuotedSubtotalUsd: quotedSubtotal,
     catalogEstimatedSubtotalUsd: catalogEstimatedSubtotal,
     hasUnquotedCustomerItems,
-    pricingBasis: (!hasUnquotedCustomerItems && consolidatedItems.length > 0)
+    unavailableSkus,
+    priceUnavailableSkus: unavailableSkus,
+    pricingBasis: (!hasUnquotedCustomerItems && consolidatedItems.length > 0 && !hasUnavailableSkus)
       ? 'CUSTOMER_QUOTE'
       : (quotedSubtotal > 0 ? 'HYBRID_QUOTE_ESTIMATE' : 'CATALOG_ESTIMATE'),
-    pricingComplete: !hasUnquotedCustomerItems,
+    pricingComplete: !hasUnquotedCustomerItems && !hasUnavailableSkus,
     injectedSkus,
     hasBudgetConstraint,
     budgetAssessmentComplete,

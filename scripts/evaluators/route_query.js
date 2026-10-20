@@ -637,6 +637,21 @@ function _buildFreeformFeasibilityCheck(queryText, chassisInfo, answerText) {
   };
 }
 
+function _isOfflineContext(context = {}) {
+  if (context.offlineMode !== undefined) {
+    if (typeof context.offlineMode === 'boolean') return context.offlineMode;
+    const str = String(context.offlineMode).trim().toLowerCase();
+    if (['true', '1'].includes(str)) return true;
+    if (['false', '0'].includes(str)) return false;
+  }
+  const envOffline = process.env.OFFLINE_MODE ?? process.env.LOCAL_EVAL_ONLY;
+  if (envOffline !== undefined) {
+    const str = String(envOffline).trim().toLowerCase();
+    return ['true', '1'].includes(str);
+  }
+  return false;
+}
+
 /**
  * Modular Handlers for Presales Query Tracks
  */
@@ -647,7 +662,7 @@ async function _handleFreeformQa(queryText, context) {
   let isCloudGrounded = false;
   let cloudSource = null;
 
-  const isOffline = Boolean(context.offlineMode || process.env.OFFLINE_MODE === 'true');
+  const isOffline = _isOfflineContext(context);
   const ragTimeoutMs = parseInt(process.env.RAG_TIMEOUT_MS || '120000', 10);
   if (!isOffline && chassisName && chassisName !== 'UNKNOWN_PRODUCT') {
     try {
@@ -712,7 +727,7 @@ async function _handleBoqEvaluation(queryText, context) {
         targetSheetName: context.targetSheet || undefined,
         signal: context.signal,
         JSON_MODE: true,
-        OFFLINE_MODE: Boolean(context.offlineMode || process.env.OFFLINE_MODE === 'true')
+        OFFLINE_MODE: _isOfflineContext(context)
       });
     } catch (pipeErr) {
       return _boqPipelineFailure(pipeErr, context);
@@ -726,7 +741,7 @@ async function _handleBoqEvaluation(queryText, context) {
         targetSheetName: context.targetSheet || undefined,
         signal: context.signal,
         JSON_MODE: true,
-        OFFLINE_MODE: Boolean(context.offlineMode || process.env.OFFLINE_MODE === 'true')
+        OFFLINE_MODE: _isOfflineContext(context)
       });
     } catch (pipeErr) {
       return _boqPipelineFailure(pipeErr, context);
@@ -1809,6 +1824,10 @@ async function _executeLegacyRoutedQuery(queryText = '', context = {}) {
   const unresolvedAmbiguity = ['AMBIGUOUS_QUERY', 'AMBIGUOUS_PRODUCT', 'GENERATION_MISMATCH'].includes(chassisInfoForConf?.chassisKey) || classification.intent === 'AMBIGUOUS_QUERY';
   let responseData = null;
 
+  const crypto = require('crypto');
+  let traceId = context.traceId || resolveEntryTraceId(() => `TRC-${Date.now()}-${crypto.randomBytes(3).toString('hex').toUpperCase()}`);
+  context.traceId = traceId;
+
   if (unresolvedAmbiguity) {
     confidence = 0.40;
     classificationBasis = 'AMBIGUOUS_QUERY';
@@ -1830,25 +1849,38 @@ async function _executeLegacyRoutedQuery(queryText = '', context = {}) {
       reason: chassisInfoForConf?.error || 'Ambiguous platform target requiring human clarification',
       message: chassisInfoForConf?.error || 'Ambiguous platform target requiring human clarification',
       nextAction: 'PRESENT_DISAMBIGUATION_CHOICE_TO_USER',
-      question
+      question,
+      traceId
     };
   } else {
     const scored = _deriveClassificationConfidence(queryText, context, classification, chassisInfoForConf);
     confidence = scored.confidence;
     classificationBasis = scored.classificationBasis;
 
-    responseData = await _dispatchIntentHandler(classification, queryText, context);
+    try {
+      responseData = await _dispatchIntentHandler(classification, queryText, context);
+    } catch (dispatchErr) {
+      responseData = {
+        status: 'FAILED',
+        error: {
+          code: dispatchErr.code || 'HANDLER_EXECUTION_FAILED',
+          message: dispatchErr.message,
+          stack: process.env.NODE_ENV === 'test' ? undefined : dispatchErr.stack
+        },
+        message: `Intent handler failed: ${dispatchErr.message}`,
+        classification,
+        customerDisposition: 'DELIVERY_BLOCKED_UNBUILDABLE',
+        traceId
+      };
+    }
   }
 
   // Ensure universal trace ID & execution provenance across all routed tracks (GAP-33 / INV-111)
-  const crypto = require('crypto');
-  let traceId = responseData?.traceId;
-
   if (!traceId) {
-    traceId = resolveEntryTraceId(() => `TRC-${Date.now()}-${crypto.randomBytes(3).toString('hex').toUpperCase()}`);
-    if (responseData && typeof responseData === 'object') {
-      responseData.traceId = traceId;
-    }
+    traceId = responseData?.traceId || resolveEntryTraceId(() => `TRC-${Date.now()}-${crypto.randomBytes(3).toString('hex').toUpperCase()}`);
+  }
+  if (responseData && typeof responseData === 'object' && !responseData.traceId) {
+    responseData.traceId = traceId;
   }
 
   // 14-Point Pre-Presentation Acceptance Gate (GAP-24, GAP-36, output-validation-skill)

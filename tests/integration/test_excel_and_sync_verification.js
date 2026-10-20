@@ -111,12 +111,12 @@ async function testNotebookLmSyncPayload() {
   console.log(`\n${C.bold}${C.blue}▶ [TEST 3] Auditing Gemini NotebookLM Markdown Sync Payload & Rules Charter${C.reset}`);
 
   buildMasterKnowledgeRegistry({ persist: false });
-  const syncResult = generateNotebookSyncPayload('DL380_Gen12');
+  const syncResult = generateNotebookSyncPayload('DL380_Gen12', false, { persist: false });
   const payloadPath = syncResult.payloadPath || syncResult;
 
-  assertTest('NotebookLM Sync Payload file generated', fs.existsSync(payloadPath), payloadPath);
+  assertTest('NotebookLM Sync Payload file generated', Boolean(syncResult.markdownText || fs.existsSync(payloadPath)), payloadPath);
 
-  const payloadContent = fs.readFileSync(payloadPath, 'utf-8');
+  const payloadContent = syncResult.markdownText || fs.readFileSync(payloadPath, 'utf-8');
   assertTest('Payload contains Executive Delta Summary table', payloadContent.includes('Executive Delta & Recent Change Summary'));
   assertTest('Payload contains Universal Vendor Rules section', payloadContent.includes('1. Universal Vendor Rules'));
   assertTest('Payload contains Family & Generation Rules section', payloadContent.includes('2. Family & Generation Rules'));

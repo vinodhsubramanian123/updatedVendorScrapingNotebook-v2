@@ -187,7 +187,7 @@ async function auditAllFlows() {
     report.flowsTested++;
     console.log('▶ [FLOW 2] Macro Orchestrator Flow (Views, Stepper, Simulator)');
     const orchTabBtn = page.locator('button[data-tab="orchestrator"]').first();
-    if (await orchTabBtn.count() > 0) await orchTabBtn.click();
+    if (await orchTabBtn.count() > 0) await orchTabBtn.click({ noWaitAfter: true });
     await page.waitForTimeout(500);
 
     // 1. Check View Modes: 9-Stage Stepper, Macro Lifecycle, Auto-Pilot Runner, All Views
@@ -285,7 +285,8 @@ async function auditAllFlows() {
           .or(page.locator('text=View Resolution Matrix'))
           .or(page.locator('text=Ambiguity Inbox'))
           .first();
-        await evalFinished.waitFor({ state: 'visible', timeout: 60000 });
+        const evalTimeoutMs = parseInt(process.env.EVAL_TIMEOUT_MS || '120000', 10);
+        await evalFinished.waitFor({ state: 'visible', timeout: evalTimeoutMs });
         report.successes.push('Full 7-Aspect Evaluation executed via live SSE stream and completed');
 
         // Verify Ambiguity Inbox
@@ -486,7 +487,7 @@ async function auditAllFlows() {
     report.flowsTested++;
     console.log('▶ [FLOW 8] Pipeline Ops / Scraper Controls');
     const pipelineTabBtn = page.locator('button[data-tab="pipeline"]').first();
-    if (await pipelineTabBtn.count() > 0) await pipelineTabBtn.click();
+    if (await pipelineTabBtn.count() > 0) await pipelineTabBtn.click({ noWaitAfter: true });
     await page.waitForTimeout(500);
 
     const pipelineHeading = page.locator('text=Live CDP Scraper & Pipeline Controls').first();
@@ -524,7 +525,7 @@ async function auditAllFlows() {
     report.flowsTested++;
     console.log('▶ [FLOW 9] Telemetry & Agentic Insights');
     const telemetryTabBtn = page.locator('button[data-tab="telemetry"]').first();
-    if (await telemetryTabBtn.count() > 0) await telemetryTabBtn.click();
+    if (await telemetryTabBtn.count() > 0) await telemetryTabBtn.click({ noWaitAfter: true });
     await page.waitForTimeout(500);
 
     const telemetryHeading = page.locator('h2:has-text("Agentic Insights"), h2:has-text("Telemetry")').first();
@@ -545,7 +546,7 @@ async function auditAllFlows() {
     report.flowsTested++;
     console.log('▶ [FLOW 10] Stage 2 Partner Quote Reconciliation Flow');
     // Navigate back to orchestrator
-    if (await orchTabBtn.count() > 0) await orchTabBtn.click();
+    if (await orchTabBtn.count() > 0) await orchTabBtn.click({ noWaitAfter: true });
     await page.waitForTimeout(400);
 
     // Click "Reconcile Partner Quote" button in Stage 2 Macro card

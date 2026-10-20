@@ -512,21 +512,24 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
   const safeFilename = `notebook_sync_payload_${chassisName}.md`;
   const payloadPath = path.join(targetDir, safeFilename);
   const tmpPayloadPath = `${payloadPath}.${Date.now()}.tmp`;
+  const shouldPersist = syncOptions.persist !== false && (isTestChassis || process.env.NODE_ENV !== 'test' || syncOptions.persist === true);
 
-  try {
-    fs.writeFileSync(tmpPayloadPath, md, 'utf-8');
+  if (shouldPersist) {
     try {
-      if (fs.existsSync(payloadPath)) fs.unlinkSync(payloadPath);
-    } catch (_) {}
-    try {
-      fs.renameSync(tmpPayloadPath, payloadPath);
-    } catch (_) {
-      fs.copyFileSync(tmpPayloadPath, payloadPath);
-      try { fs.unlinkSync(tmpPayloadPath); } catch (__) {}
+      fs.writeFileSync(tmpPayloadPath, md, 'utf-8');
+      try {
+        if (fs.existsSync(payloadPath)) fs.unlinkSync(payloadPath);
+      } catch (_) {}
+      try {
+        fs.renameSync(tmpPayloadPath, payloadPath);
+      } catch (_) {
+        fs.copyFileSync(tmpPayloadPath, payloadPath);
+        try { fs.unlinkSync(tmpPayloadPath); } catch (__) {}
+      }
+    } catch (err) {
+      try { if (fs.existsSync(tmpPayloadPath)) fs.unlinkSync(tmpPayloadPath); } catch (_) {}
+      logger.warn('KNOWLEDGE_SYNC', `Failed to write payload to ${payloadPath}`, err);
     }
-  } catch (err) {
-    try { if (fs.existsSync(tmpPayloadPath)) fs.unlinkSync(tmpPayloadPath); } catch (_) {}
-    logger.warn('KNOWLEDGE_SYNC', `Failed to write payload to ${payloadPath}`, err);
   }
 
   let contentFingerprints = null;

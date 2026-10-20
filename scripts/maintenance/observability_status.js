@@ -37,7 +37,7 @@ async function main() {
   let knowledgeSyncState = null;
   try {
     const { buildMasterKnowledgeRegistry } = require('../lib/sync/knowledge_sync.js');
-    knowledgeSyncState = buildMasterKnowledgeRegistry();
+    knowledgeSyncState = buildMasterKnowledgeRegistry({ persist: false });
   } catch (_) { const _logger = require('../lib/system/pipeline_logger.js'); _logger.warn('ERROR', 'observability_status.js', _); }
 
   // 3.5 Telemetry & Audit Observability
