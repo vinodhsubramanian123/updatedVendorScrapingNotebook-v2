@@ -9,6 +9,30 @@ const os = require('os');
 process.env.OFFLINE_MODE = 'true';
 const { classifyQueryIntent, executeRoutedQuery } = require('../../scripts/evaluators/route_query.js');
 
+test('router preserves pipeline trace identity without mutating caller context', async t => {
+  const pipeline = require('../../scripts/evaluators/eval_boq');
+  const invoke = t.mock.method(pipeline, 'runEvaluationPipeline', async () => ({ status: 'ACTION_REQUIRED', traceId: 'PERSISTED-PIPELINE-TRACE', evidenceLogPath: 'fixture-ledger' }));
+  const context = Object.freeze({ intent: 'BOQ_EVALUATION', chassisName: 'DL380_Gen12', offlineMode: true,
+    traceId: 'ENTRY-TRACE', items: [{ sku: 'P73282-B21', quantity: 1 }] });
+  const result = await executeRoutedQuery('Evaluate this BOQ for DL380 Gen12', context);
+  assert.equal(invoke.mock.calls[0].arguments[0].traceId, 'ENTRY-TRACE');
+  assert.equal(result.traceId, result.result.traceId);
+  assert.equal(result.traceId, 'PERSISTED-PIPELINE-TRACE');
+  assert.equal(context.traceId, 'ENTRY-TRACE');
+});
+
+test('local-only environment cannot be overridden by a false OFFLINE_MODE environment flag', async t => {
+  const previousOffline = process.env.OFFLINE_MODE, previousLocal = process.env.LOCAL_EVAL_ONLY;
+  process.env.OFFLINE_MODE = 'false'; process.env.LOCAL_EVAL_ONLY = '1';
+  t.after(() => {
+    if (previousOffline === undefined) delete process.env.OFFLINE_MODE; else process.env.OFFLINE_MODE = previousOffline;
+    if (previousLocal === undefined) delete process.env.LOCAL_EVAL_ONLY; else process.env.LOCAL_EVAL_ONLY = previousLocal;
+  });
+  const invoke = t.mock.method(require('../../scripts/evaluators/eval_boq'), 'runEvaluationPipeline', async () => ({ status: 'ACTION_REQUIRED' }));
+  await executeRoutedQuery('Evaluate BOQ DL380 Gen12', { intent: 'BOQ_EVALUATION', chassisName: 'DL380_Gen12', items: [{ sku: 'P73282-B21', quantity: 1 }] });
+  assert.equal(invoke.mock.calls[0].arguments[0].OFFLINE_MODE, true);
+});
+
 test('QueryRouter — workbook handoff uses canonical pipeline and rejects unsigned or mutated delivery', async t => {
   const pipeline = require('../../scripts/evaluators/eval_boq.js');
   const { deliveryFingerprint } = require('../../scripts/lib/boq/solution_evidence');

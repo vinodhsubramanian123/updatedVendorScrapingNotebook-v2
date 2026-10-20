@@ -255,7 +255,7 @@ const ConflictGraphSchema = z.object({
 }).passthrough();
 
 const BOQEvaluationResultSchema = z.object({
-  status: z.enum(['PASS', 'FAIL', 'WARN']).default('PASS'),
+  status: z.enum(['PASS', 'FAIL', 'WARN', 'SUCCESS', 'ACTION_REQUIRED', 'ERROR', 'CANCELLED']).default('WARN'),
   confidenceScore: z.number().min(0).max(1).default(1.0),
   boqName: z.string().default('Customer_BOQ'),
   chassisInfo: z.object({

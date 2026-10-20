@@ -1,5 +1,7 @@
 # Antigravity review and execution handoff — 19 October 2026
 
+**Latest independent review (20 October):** Read `2026-10-20-antigravity-followup-review.md` before treating Antigravity commit `3ebc3f9` as closure. It records reproduced regressions, follow-up fixes, validation, and the remaining boundaries of F18/F21/F23–F26.
+
 The user requested that the code, tests, skills and plans be checked in so Antigravity can independently review the fixes, identify omissions, and finish the remaining remediation. This document is the continuation checklist for that check-in. It is not a declaration that the remaining plan is complete.
 
 ## Start here

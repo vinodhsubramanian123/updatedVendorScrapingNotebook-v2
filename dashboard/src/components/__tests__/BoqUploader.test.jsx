@@ -4,6 +4,12 @@ import { describe, it, expect, vi } from 'vitest';
 import BoqUploader from '../BoqUploader';
 
 describe('BoqUploader', () => {
+  it('shows invalid-contract diagnostics without candidate action buttons', () => {
+    render(<BoqUploader onEvaluateBoq={vi.fn()} evalResults={{ status: 'ERROR', isContractInvalid: true, error: 'Invalid quantity' }} />);
+    expect(screen.getByRole('alert')).toHaveTextContent('Invalid quantity');
+    expect(screen.queryByText('Visual BOQ Topology')).not.toBeInTheDocument();
+    expect(screen.queryByText('Corrected Candidate Verified')).not.toBeInTheDocument();
+  });
   it('renders upload area and text area', () => {
     render(<BoqUploader onEvaluateBoq={vi.fn()} evalResults={null} logStream={[]} chassisDir="DL380_Gen12_SFF" />);
     

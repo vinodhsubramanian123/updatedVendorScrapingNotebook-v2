@@ -62,6 +62,11 @@ function cleanTestPayloads() {
  */
 function triggerPostFlowSync(chassisName = 'Unknown_Chassis', flowType = 'EVALUATION', options = {}) {
   const opts = typeof options === 'string' ? { targetDir: options } : (options || {});
+  if (opts.persist === false || process.env.NODE_ENV === 'test') return {
+    success: true, skipped: true, syncStatus: 'SKIPPED', flowType, chassisName,
+    payloadPath: null, cloudUploaded: false, runningKnowledgeSynced: false,
+    uploadResult: null, reason: 'Persistence and publishing disabled for this invocation'
+  };
   try {
     logger.info('POST_FLOW_SYNC', `Triggering post-flow knowledge sync for ${chassisName} (Flow: ${flowType})`);
     
@@ -99,7 +104,7 @@ function triggerPostFlowSync(chassisName = 'Unknown_Chassis', flowType = 'EVALUA
 
     // 5. Optionally trigger running knowledge charter sync if requested
     let runningKnowledgePromise = null;
-    if (options.syncRunningKnowledge) {
+    if (opts.syncRunningKnowledge) {
       try {
         const { syncRunningKnowledge } = require('../../services/running_knowledge_sync.js');
         runningKnowledgePromise = syncRunningKnowledge({ dryRun: false });

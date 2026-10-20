@@ -359,9 +359,10 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
 }
 
 function inspectKnowledgeDrift(chassisName = 'Unknown_Chassis') {
-  const registry = buildMasterKnowledgeRegistry();
+  const registry = buildMasterKnowledgeRegistry({ persist: false });
   const cfg = loadNotebookConfig();
-  return runDriftInspection(chassisName, registry, cfg, generateNotebookSyncPayload);
+  return runDriftInspection(chassisName, registry, cfg,
+    name => buildPayload(name, false, registry, { persist: false }));
 }
 
 async function main() {

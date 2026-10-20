@@ -307,7 +307,10 @@ router.post('/eval-boq', (req, res) => {
       if (parsedData?.data && parsedData.status !== 'CANCELLED' && (['SUCCESS', 'ACTION_REQUIRED'].includes(parsedData.status) || parsedData.data.items || parsedData.data.evalResults)) {
         const validated = safeParseEvalResult(parsedData.data);
         if (validated.success) {
-          broadcastSSE({ type: 'EVAL_RESULT', data: validated.data, runId });
+          const blocked = validated.data.customerDisposition === 'DELIVERY_BLOCKED_UNBUILDABLE' ||
+            validated.data.evalResults?.customerDisposition === 'DELIVERY_BLOCKED_UNBUILDABLE';
+          const resultStatus = blocked && parsedData.status !== 'ERROR' ? 'ACTION_REQUIRED' : parsedData.status || validated.data.status;
+          broadcastSSE({ type: 'EVAL_RESULT', data: { ...validated.data, status: resultStatus }, runId });
         } else {
           broadcastSSE({
             type: 'EVAL_RESULT',
@@ -346,7 +349,7 @@ router.post(['/export-boq', '/export-boq-xlsx'], (req, res) => {
   const { evalResults, chassisId, rankTier, diagnostic } = req.body;
   if (!evalResults) return sendErrorResponse(res, 400, 'evalResults payload is required', { source: 'EVALUATION_ROUTER' });
   const actualEvalResults = evalResults.evalResults || evalResults.data?.evalResults || evalResults;
-  if (actualEvalResults.isContractInvalid === true || actualEvalResults.customerDisposition === 'DELIVERY_BLOCKED_UNBUILDABLE' || evalResults.status === 'SCHEMA_INVALID') {
+  if (evalResults.isContractInvalid === true || evalResults.data?.isContractInvalid === true || actualEvalResults.isContractInvalid === true || actualEvalResults.customerDisposition === 'DELIVERY_BLOCKED_UNBUILDABLE' || evalResults.status === 'SCHEMA_INVALID') {
     return sendErrorResponse(res, 422, 'Cannot export BOQ: Evaluator output failed schema contract validation or delivery authorization', { source: 'EVALUATION_ROUTER' });
   }
   const tier = rankTier || 1;

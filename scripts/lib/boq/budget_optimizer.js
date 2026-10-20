@@ -28,6 +28,8 @@ function getSkuListPrice(skuStr, catalogData = null, chassisDir = null) {
           const rawPrice = match['Unit Price (USD)'] ?? match['Price (USD)'] ?? match['Price'] ?? match.priceUsd;
           const parsed = parseObservedUnitPrice(rawPrice);
           if (parsed !== null && parsed > 0) return parsed;
+          if (parsed === 0 && (match.isConfirmedZeroPrice === true ||
+            require('../catalog/sku_versioning').isConfirmedFreeSku(skuStr, match.Description || match.description))) return 0;
         }
       }
     }
@@ -87,13 +89,15 @@ function optimizeForBudget(consolidatedItems, evalResults, targetBudgetUsd = 0, 
   let zeroPriceCount = 0;
   const { readPortalReceipt, receiptMatches, normalizeSku } = require('./portal_receipt');
   const portalReceipt = resolvedChassisDir ? readPortalReceipt(resolvedChassisDir) : null;
+  const receiptScope = evalResults?.candidate || evalResults || {};
   const isReceiptValidForBOM = Boolean(
     portalReceipt &&
-    receiptMatches(portalReceipt, evalResults?.candidate || evalResults, {
-      chassisKey: evalResults?.chassisKey || evalResults?.chassisInfo?.model || evalResults?.model,
-      baseSku: evalResults?.baseSku || evalResults?.chassisInfo?.baseSku,
-      configurationName: evalResults?.configurationName || evalResults?.configName,
-      selectors: evalResults?.selectors,
+    receiptMatches(portalReceipt, consolidatedItems, {
+      chassisKey: receiptScope.chassisKey || receiptScope.chassisInfo?.model || receiptScope.model || receiptScope.chassis,
+      baseSku: receiptScope.baseSku || receiptScope.chassisInfo?.baseSku,
+      configurationName: receiptScope.configurationName || receiptScope.configName,
+      configurationId: receiptScope.configurationId,
+      selectors: receiptScope.selectors,
       serverCount: multiplier
     })
   );
@@ -110,12 +114,18 @@ function optimizeForBudget(consolidatedItems, evalResults, targetBudgetUsd = 0, 
   let catalogEstimatedSubtotal = 0;
 
   consolidatedItems.forEach(it => {
+    const previousReceiptSource = it.receiptPriceSource;
+    if (previousReceiptSource) {
+      delete it.receiptPriceSource;
+      delete it.isConfirmedZeroPrice;
+      if (it.priceSource === previousReceiptSource) delete it.priceSource;
+    }
     if (it.inputUnitPriceUsd === undefined) {
       it.inputUnitPriceUsd = (typeof it.unitPriceUsd === 'number' && Number.isFinite(it.unitPriceUsd)) ? it.unitPriceUsd : null;
     }
     const receiptRow = isReceiptValidForBOM ? portalReceipt?.rows.find(row => row.sku === normalizeSku(it.sku) && row.quantity === outputQuantities(it, multiplier).totalQty) : null;
     const catalogEstimatePrice = receiptRow ? receiptRow.unitPriceUsd : getSkuListPrice(it.sku, catalogData, resolvedChassisDir);
-    const isFree = receiptRow ? catalogEstimatePrice === 0 : isConfirmedFreeSku(it.sku, it.description);
+    const isFree = catalogEstimatePrice === 0 || isConfirmedFreeSku(it.sku, it.description);
     if (receiptRow) {
       it.receiptPriceSource = `Live OCA BOM ${portalReceipt.capturedAt}`;
       it.isConfirmedZeroPrice = isFree;
@@ -181,7 +191,7 @@ function optimizeForBudget(consolidatedItems, evalResults, targetBudgetUsd = 0, 
     dedupedDeps.forEach(dep => {
       const receiptDepRow = isReceiptValidForBOM ? portalReceipt?.rows.find(row => row.sku === normalizeSku(dep.sku) && row.quantity === outputQuantities(dep, multiplier).totalQty) : null;
       const unitPrice = receiptDepRow ? receiptDepRow.unitPriceUsd : getSkuListPrice(dep.sku, catalogData, resolvedChassisDir);
-      const isFree = receiptDepRow ? unitPrice === 0 : isConfirmedFreeSku(dep.sku, dep.description);
+      const isFree = unitPrice === 0 || isConfirmedFreeSku(dep.sku, dep.description);
       if (unitPrice === null) {
         unavailableSkus.push(dep.sku);
       } else if (unitPrice === 0 && !isFree) {

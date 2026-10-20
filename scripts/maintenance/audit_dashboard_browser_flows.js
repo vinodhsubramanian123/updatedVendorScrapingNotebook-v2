@@ -94,6 +94,21 @@ async function auditAllFlows() {
     report.flowsTested++;
     console.log('▶ [FLOW 1] Header, Navigation, Global Drawers & Chassis Switcher');
     await page.goto(SERVER_URL, { waitUntil: 'domcontentloaded', timeout: 20000 });
+    await page.evaluate(() => {
+      window.__auditEvaluationEvents = [];
+      const monitor = new EventSource('/api/stream-logs');
+      monitor.onmessage = event => {
+        try {
+          const payload = JSON.parse(event.data);
+          if (payload.type === 'EVAL_RESULT') window.__auditEvaluationEvents.push({
+            runId: payload.runId, hasData: Boolean(payload.data), hasError: Boolean(payload.error),
+            status: payload.status || payload.data?.status || payload.error?.status || null,
+            traceId: payload.data?.traceId || null, evidenceLogPath: payload.data?.evidenceLogPath || null
+          });
+        } catch (_) {}
+      };
+      window.__auditEventMonitor = monitor;
+    });
     await page.waitForTimeout(1000);
 
     // Verify Title & Header
@@ -286,6 +301,11 @@ async function auditAllFlows() {
           .or(page.locator('text=Ambiguity Inbox'))
           .first();
         const evalTimeoutMs = parseInt(process.env.EVAL_TIMEOUT_MS || '120000', 10);
+        await page.waitForFunction(() => window.__auditEvaluationEvents?.length > 0, null, { timeout: evalTimeoutMs });
+        report.evaluationTerminal = await page.evaluate(() => window.__auditEvaluationEvents[0]);
+        if (report.evaluationTerminal.hasError || !report.evaluationTerminal.hasData) {
+          throw new Error(`Evaluator returned a terminal failure for run ${report.evaluationTerminal.runId}: ${report.evaluationTerminal.status || 'ERROR'}`);
+        }
         await evalFinished.waitFor({ state: 'visible', timeout: evalTimeoutMs });
         report.successes.push('Full 7-Aspect Evaluation executed via live SSE stream and completed');
 
@@ -561,9 +581,11 @@ async function auditAllFlows() {
         if (await reconModalTitle.isVisible()) {
           report.successes.push('Partner Quote Reconciliation modal opened');
 
-          // Check upload dropzones in Reconciliation view
-          const reconDropzones = await page.$$('input[type="file"], .dropzone');
-          report.successes.push(`Partner Reconciliation view provides quote dropzones (${reconDropzones.length} dropzone/file inputs)`);
+          const quoteInput = page.locator('textarea[placeholder*="P47777-B21"]').first();
+          await quoteInput.waitFor({ state: 'visible', timeout: 10000 });
+          await quoteInput.fill('P47777-B21, 1, Fixture controller quote');
+          if (!(await quoteInput.inputValue()).includes('P47777-B21')) throw new Error('Reconciliation quote input did not retain pasted content');
+          report.successes.push('Partner reconciliation quote textarea accepts pasted SKU content');
 
           // Close modal
           await page.keyboard.press('Escape');

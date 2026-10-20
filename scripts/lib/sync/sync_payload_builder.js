@@ -55,7 +55,7 @@ function inferAccessoryClass(desc, cat = '') {
   return null;
 }
 
-function _resolveSyncTargetDirectory(chassisName, catalogPath) {
+function _resolveSyncTargetDirectory(chassisName, catalogPath, persistRequested) {
   const TEST_CHASSIS_PATTERNS = [
     /^edge-test-/i,
     /^hpe-chaos-test-/i,
@@ -65,21 +65,22 @@ function _resolveSyncTargetDirectory(chassisName, catalogPath) {
     /_test$/i
   ];
   const isTestChassis = TEST_CHASSIS_PATTERNS.some(p => p.test(chassisName));
+  const persist = persistRequested !== false && (isTestChassis || process.env.NODE_ENV !== 'test' || persistRequested === true);
 
   if (isTestChassis) {
     const testDir = path.join(PROJECT_ROOT, 'outputs', 'temp', 'test_payloads');
-    if (!fs.existsSync(testDir)) fs.mkdirSync(testDir, { recursive: true });
+    if (persist && !fs.existsSync(testDir)) fs.mkdirSync(testDir, { recursive: true });
     return { targetDir: testDir, isTestChassis: true };
   }
 
   if (catalogPath && fs.existsSync(catalogPath)) {
     const dir = path.dirname(catalogPath);
-    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    if (persist && !fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
     return { targetDir: dir, isTestChassis: false };
   }
 
   const histDir = path.join(OUTPUTS_ROOT, 'history');
-  if (!fs.existsSync(histDir)) fs.mkdirSync(histDir, { recursive: true });
+  if (persist && !fs.existsSync(histDir)) fs.mkdirSync(histDir, { recursive: true });
   return { targetDir: histDir, isTestChassis: false };
 }
 
@@ -375,7 +376,7 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
   let registry = null;
   let syncOptions = {};
   if (registryOrOptions && typeof registryOrOptions === 'object') {
-    if ('confirmSourceRetirement' in registryOrOptions || 'autoUpload' in registryOrOptions || 'syncOptions' in registryOrOptions) {
+    if ('confirmSourceRetirement' in registryOrOptions || 'autoUpload' in registryOrOptions || 'syncOptions' in registryOrOptions || 'persist' in registryOrOptions) {
       syncOptions = registryOrOptions;
     } else {
       registry = registryOrOptions;
@@ -401,7 +402,7 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
   const baseChassisName = chassisName.replace(/_(SFF|LFF|EDSFF)$/i, '');
   const catalogPath = allCatalogFiles.find(f => path.basename(f).startsWith(chassisName) || path.basename(f).startsWith(baseChassisName)) || null;
 
-  const { targetDir, isTestChassis } = _resolveSyncTargetDirectory(chassisName, catalogPath);
+  const { targetDir, isTestChassis } = _resolveSyncTargetDirectory(chassisName, catalogPath, syncOptions.persist);
 
   let catalogData = null;
   if (catalogPath && fs.existsSync(catalogPath)) {
@@ -513,6 +514,11 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
   const payloadPath = path.join(targetDir, safeFilename);
   const tmpPayloadPath = `${payloadPath}.${Date.now()}.tmp`;
   const shouldPersist = syncOptions.persist !== false && (isTestChassis || process.env.NODE_ENV !== 'test' || syncOptions.persist === true);
+  if (!shouldPersist) return {
+    payloadPath: null, markdownText: md, deltaCount: totalRules,
+    payloadPersisted: false, contentFingerprints: null,
+    uploadResult: autoUpload ? { success: false, error: 'PERSISTENCE_DISABLED' } : null
+  };
 
   if (shouldPersist) {
     try {
@@ -529,6 +535,7 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
     } catch (err) {
       try { if (fs.existsSync(tmpPayloadPath)) fs.unlinkSync(tmpPayloadPath); } catch (_) {}
       logger.warn('KNOWLEDGE_SYNC', `Failed to write payload to ${payloadPath}`, err);
+      throw new Error(`KNOWLEDGE_PAYLOAD_WRITE_FAILED: ${err.code || 'WRITE_ERROR'}`, { cause: err });
     }
   }
 

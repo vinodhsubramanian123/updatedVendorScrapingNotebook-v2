@@ -2,6 +2,19 @@ import { describe, it, expect } from 'vitest';
 import { normalizeEvalResult, buildAspectChecksFromEval } from '../evalNormalizer.js';
 
 describe('evalNormalizer', () => {
+  it('keeps invalid contract diagnostics blocked despite a successful nested result', () => {
+    const result = normalizeEvalResult({ status: 'SCHEMA_INVALID', error: { message: 'Invalid quantity', issues: ['quantity'] },
+      data: { status: 'SUCCESS', isContractInvalid: true, items: [{ sku: 'TEST', quantity: 1.5 }],
+        evalResults: { status: 'SUCCESS', customerDisposition: 'DELIVERY_AUTHORIZED', deliveryAuthorization: { token: 'fixture' } } } });
+    expect(result.status).toBe('ERROR');
+    expect(result.contractStatus).toBe('SCHEMA_INVALID');
+    expect(result.error).toBe('Invalid quantity');
+    expect(result.items[0].quantity).toBe(1.5);
+    expect(result.customerDisposition).toBe('DELIVERY_BLOCKED_UNBUILDABLE');
+    expect(result.deliveryAuthorization).toBeNull();
+    expect(result.evalResults.deliveryAuthorization).toBeNull();
+    expect(result.evalResults.acceptanceGate.isValid).toBe(false);
+  });
   describe('normalizeEvalResult', () => {
     it('handles error payloads', () => {
       const payload = {

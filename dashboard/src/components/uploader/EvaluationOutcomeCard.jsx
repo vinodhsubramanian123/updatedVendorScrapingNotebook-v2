@@ -11,6 +11,13 @@ export default function EvaluationOutcomeCard({
   onOpenMatrix
 }) {
   if (!evalResults) return null;
+  if (evalResults.status === 'ERROR' || evalResults.isContractInvalid) return (
+    <div ref={outcomeRef} role="alert" className="glass-card p-6 border border-red-200 rounded-xl space-y-2">
+      <h3 className="font-bold text-red-900">Evaluation could not be validated</h3>
+      <p className="text-sm text-red-800">{typeof evalResults.error === 'string' ? evalResults.error : evalResults.error?.message || 'Review the input and evaluator diagnostics before retrying.'}</p>
+      <p className="text-xs text-red-700">Customer export is blocked. Correct the reported errors and run the evaluation again.</p>
+    </div>
+  );
 
   const isCertified = Boolean(evalResults)
     && !evalResults.requirementResolution?.requiresHumanClarification

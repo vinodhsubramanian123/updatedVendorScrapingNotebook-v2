@@ -644,12 +644,8 @@ function _isOfflineContext(context = {}) {
     if (['true', '1'].includes(str)) return true;
     if (['false', '0'].includes(str)) return false;
   }
-  const envOffline = process.env.OFFLINE_MODE ?? process.env.LOCAL_EVAL_ONLY;
-  if (envOffline !== undefined) {
-    const str = String(envOffline).trim().toLowerCase();
-    return ['true', '1'].includes(str);
-  }
-  return false;
+  return [process.env.OFFLINE_MODE, process.env.LOCAL_EVAL_ONLY]
+    .some(value => ['true', '1'].includes(String(value || '').trim().toLowerCase()));
 }
 
 /**
@@ -726,6 +722,7 @@ async function _handleBoqEvaluation(queryText, context) {
         chassisDir: context.chassisDir || (chassisInfo?.catalogDir || undefined),
         targetSheetName: context.targetSheet || undefined,
         signal: context.signal,
+        traceId: context.traceId,
         JSON_MODE: true,
         OFFLINE_MODE: _isOfflineContext(context)
       });
@@ -740,6 +737,7 @@ async function _handleBoqEvaluation(queryText, context) {
         chassisDir: context.chassisDir || (chassisInfo?.catalogDir || undefined),
         targetSheetName: context.targetSheet || undefined,
         signal: context.signal,
+        traceId: context.traceId,
         JSON_MODE: true,
         OFFLINE_MODE: _isOfflineContext(context)
       });
@@ -1790,6 +1788,7 @@ async function _executeRoutedQueryWithShadow(queryText = '', context = {}) {
  * @returns {Promise<object>} Execution result
  */
 async function _executeLegacyRoutedQuery(queryText = '', context = {}) {
+  context = { ...context };
   const classification = classifyQueryIntent(queryText, context);
   const startTime = Date.now();
   const initialPlatform = getChassisCatalog(queryText, context);
@@ -1860,8 +1859,9 @@ async function _executeLegacyRoutedQuery(queryText = '', context = {}) {
     try {
       responseData = await _dispatchIntentHandler(classification, queryText, context);
     } catch (dispatchErr) {
+      const cancelled = context.signal?.aborted && Object.is(dispatchErr, context.signal.reason);
       responseData = {
-        status: 'FAILED',
+        status: cancelled || dispatchErr.name === 'AbortError' ? 'CANCELLED' : 'FAILED',
         error: {
           code: dispatchErr.code || 'HANDLER_EXECUTION_FAILED',
           message: dispatchErr.message,
@@ -1876,9 +1876,7 @@ async function _executeLegacyRoutedQuery(queryText = '', context = {}) {
   }
 
   // Ensure universal trace ID & execution provenance across all routed tracks (GAP-33 / INV-111)
-  if (!traceId) {
-    traceId = responseData?.traceId || resolveEntryTraceId(() => `TRC-${Date.now()}-${crypto.randomBytes(3).toString('hex').toUpperCase()}`);
-  }
+  traceId = responseData?.traceId || traceId;
   if (responseData && typeof responseData === 'object' && !responseData.traceId) {
     responseData.traceId = traceId;
   }

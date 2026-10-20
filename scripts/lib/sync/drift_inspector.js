@@ -46,7 +46,9 @@ function inspectKnowledgeDrift(chassisName = 'Unknown_Chassis', registry = {}, c
   const payload = generatePayloadFn ? generatePayloadFn(chassisName, false) : { payloadPath: null };
 
   let payloadChecksum = null;
-  if (payload && payload.payloadPath && fs.existsSync(payload.payloadPath)) {
+  if (typeof payload?.markdownText === 'string') {
+    payloadChecksum = crypto.createHash('sha256').update(normalizeLearningText(payload.markdownText)).digest('hex');
+  } else if (payload && payload.payloadPath && fs.existsSync(payload.payloadPath)) {
     try {
       const normalizedPayload = normalizeLearningText(fs.readFileSync(payload.payloadPath, 'utf8'));
       payloadChecksum = crypto.createHash('sha256').update(normalizedPayload).digest('hex');

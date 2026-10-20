@@ -200,6 +200,17 @@ export function deriveDualBrainBadges(data = {}, inner = {}) {
  * @returns {object}        Normalised evalResults object
  */
 export function normalizeEvalResult(payload) {
+  if (payload.status === 'SCHEMA_INVALID' || payload.data?.isContractInvalid === true || payload.data?.evalResults?.isContractInvalid === true) {
+    const diagnostic = payload.data || {};
+    return { ...diagnostic, status: 'ERROR', contractStatus: 'SCHEMA_INVALID', isContractInvalid: true,
+      error: payload.error?.message || 'Evaluator output failed schema validation',
+      schemaErrors: payload.error?.issues || diagnostic.schemaErrors || [],
+      customerDisposition: 'DELIVERY_BLOCKED_UNBUILDABLE', deliveryAuthorization: null,
+      acceptanceGate: { status: 'FAILED', isValid: false },
+      evalResults: { ...diagnostic.evalResults, status: 'SCHEMA_INVALID', isContractInvalid: true,
+        customerDisposition: 'DELIVERY_BLOCKED_UNBUILDABLE', deliveryAuthorization: null,
+        acceptanceGate: { status: 'FAILED', isValid: false } } };
+  }
   if (!payload.data && payload.error && typeof payload.error === 'object' &&
       !Array.isArray(payload.error) && payload.error.status === 'CANCELLED') {
     const cancellation = payload.error;

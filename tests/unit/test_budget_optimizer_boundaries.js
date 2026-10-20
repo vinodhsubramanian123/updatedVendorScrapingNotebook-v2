@@ -80,6 +80,18 @@ test('Budget Optimizer — List Price Resolution', () => {
   assert.strictEqual(pUnknown, null);
 });
 
+test('catalog zero requires explicit free-item evidence and remains distinct from unknown', () => {
+  const catalog = { entries: [{ skus: [
+    { 'Product #': 'FREE-OPTION', Price: 0, isConfirmedZeroPrice: true },
+    { 'Product #': 'UNKNOWN-OPTION', Price: 0 }
+  ] }] };
+  assert.equal(getSkuListPrice('FREE-OPTION', catalog), 0);
+  assert.equal(getSkuListPrice('UNKNOWN-OPTION', catalog), null);
+  const result = optimizeForBudget([{ sku: 'FREE-OPTION', quantity: 1 }], {}, 1000, catalog);
+  assert.equal(result.budgetAssessmentComplete, true);
+  assert.equal(result.mandatoryBomCostUsd, 0);
+});
+
 test('Budget Optimizer — Quoted vs Catalog List Provenance (INV-158)', () => {
   const mockCatalog = {
     entries: [
@@ -214,6 +226,17 @@ test('Budget Optimizer — F17: Receipt Scope Binding Verification', () => {
     const resMatching = optimizeForBudget(matchingItems, matchingCandidate, 10000, null, tmpDir);
     assert.strictEqual(matchingItems[0].receiptPriceSource, `Live OCA BOM ${nowIso}`);
     assert.strictEqual(resMatching.mandatoryBomCostUsd, 5584);
+
+    const changedItems = [{ sku: 'P73282-B21', quantity: 1 }, { sku: 'ADDED-OPTION', quantity: 1 }];
+    optimizeForBudget(changedItems, matchingCandidate, 10000, null, tmpDir);
+    assert.strictEqual(changedItems[0].receiptPriceSource, undefined,
+      'An old evaluation manifest cannot authorize receipt pricing for a changed supplied BOM');
+
+    optimizeForBudget(matchingItems, mismatchedScope(), 10000, null, tmpDir);
+    assert.strictEqual(matchingItems[0].receiptPriceSource, undefined,
+      'Reusing a row object must clear prior receipt provenance when scope changes');
+
+    function mismatchedScope() { return { ...matchingCandidate, configurationName: 'Other' }; }
 
     // When candidate does NOT match scope (e.g. chassis mismatch), receipt is NOT bound
     const mismatchedCandidate = {
