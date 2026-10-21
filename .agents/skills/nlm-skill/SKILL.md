@@ -42,22 +42,24 @@ nlm --version           # Check installed version
 
 ## Critical Rules (Read First!)
 
-1. **Authenticate when needed & verify proactively**: Verify credentials headlessly using `npm run auth:nlm:check` or `nlm login --check` before long operations. If stale or expired, run `nlm login --force --storage file` in PowerShell (bypasses keystore prompts and overwrites stale cookies cleanly) and hot-reload via the MCP `refresh_auth` tool. Saved cookies remain usable for 7–14 days.
-2. **Do not confuse network failures with expired auth**: `auth_status="unverified"` means the probe was inconclusive. Check connectivity or try an API call before asking the user to log in again.
-3. **Auto-Authentication Recovery**: The CLI includes automatic 3-layer auth recovery (CSRF refresh -> Token reload -> Headless Auth) and 3x server error retries. Most errors are handled automatically. You only need to manually run `nlm login` if all recovery layers fail.
-4. **⚠️ ALWAYS ASK USER BEFORE DELETE**: Before executing ANY delete command, ask the user for explicit confirmation. Deletions are **irreversible**. Show what will be deleted and warn about permanent data loss.
-5. **Always obtain approval before generation or deletion**: Direct
+1. **Authenticate when needed & verify proactively (`INV-181`)**: Verify credentials headlessly using `npm run auth:nlm:check` or `nlm login --check` before long operations. If stale or expired, run `npm run auth:nlm:heal` (or `npm run auth:nlm:fix` / `node scripts/maintenance/check_nlm_auth.js --heal`). This automatically kills any orphaned headless Chrome processes holding port 9222, wipes stale lockfiles (`lockfile`, `SingletonLock`), and executes non-interactive `nlm login --force --storage file` (completely bypassing OS keystore `[y/N]` prompts). Follow with the MCP `refresh_auth` tool. Saved cookies remain usable for 7–14 days.
+2. **Headless Chrome Zombie Hazard & Port 9222 Reclamation (`INV-181`)**: When automated scripts run Chrome with `--headless=new`, process timeouts or abrupt exits can leave Chrome running invisibly in the background. Because it holds port 9222 and locks the profile directory, subsequent interactive `nlm login` commands cannot bind port 9222 or open Chrome UI windows. **Closing the desktop Chrome GUI does NOT terminate background headless processes.** Always run `npm run auth:nlm:heal` to clean zombie processes and release locks.
+3. **Google Cloud OAuth 7-Day Refresh Token Cliff**: When the GCP project's OAuth Consent Screen is in "Testing" mode, Google Cloud automatically expires OAuth 2.0 refresh tokens after exactly 7 days (168 hours). Setting Publishing Status to "In Production" in Google Cloud Console eliminates the 7-day cliff permanently. For routine Google Drive/Sheets token re-authorization, run `npm run auth:heal`.
+4. **Do not confuse network failures with expired auth**: `auth_status="unverified"` means the probe was inconclusive. Check connectivity or try an API call before asking the user to log in again.
+5. **Auto-Authentication Recovery**: The CLI includes automatic 3-layer auth recovery (CSRF refresh -> Token reload -> Headless Auth) and 3x server error retries. Most errors are handled automatically. You only need to run `npm run auth:nlm:heal` if all recovery layers fail.
+6. **⚠️ ALWAYS ASK USER BEFORE DELETE**: Before executing ANY delete command, ask the user for explicit confirmation. Deletions are **irreversible**. Show what will be deleted and warn about permanent data loss.
+7. **Always obtain approval before generation or deletion**: Direct
    `studio_create` and delete operations enforce `--confirm` / `confirm=True`.
    The current MCP batch Studio path does not enforce its confirm parameter,
    so the agent must preserve the approval gate.
-6. **Research needs a destination**: Pass `--notebook-id <id>` for an existing notebook or `--title <title>` to create one.
-7. **Capture IDs from output**: Create/start commands return IDs needed for subsequent operations
-8. **Use aliases**: Simplify long UUIDs with `nlm alias set <name> <uuid>`
-9. **Check aliases before creating**: Run `nlm alias list` before creating a new alias to avoid conflicts with existing names.
-10. **DO NOT launch REPL**: Never use `nlm chat start` - it opens an interactive REPL that AI tools cannot control. Use `nlm notebook query` for one-shot Q&A instead.
-11. **Choose output format wisely**: Default output (no flags) is compact and token-efficient—use it for status checks. Use `--quiet` to capture IDs for piping. Only use `--json` when you need to parse specific fields programmatically.
-12. **Use `--help` when unsure**: Run `nlm <command> --help` to see available options and flags for any command.
-13. **Studio: fast track by default**: Infer format/style/prompt silently—one compact line, then `studio_create(confirm=True)`. No intake questionnaires. Fast track reduces clarifying questions, not the confirm gate. **Cinematic video is always guided** (quota-limited). Full preview only when vague, high-stakes, cinematic, or user asks. See **[references/studio-prompting-guide.md](references/studio-prompting-guide.md)**.
+8. **Research needs a destination**: Pass `--notebook-id <id>` for an existing notebook or `--title <title>` to create one.
+9. **Capture IDs from output**: Create/start commands return IDs needed for subsequent operations
+10. **Use aliases**: Simplify long UUIDs with `nlm alias set <name> <uuid>`
+11. **Check aliases before creating**: Run `nlm alias list` before creating a new alias to avoid conflicts with existing names.
+12. **DO NOT launch REPL**: Never use `nlm chat start` - it opens an interactive REPL that AI tools cannot control. Use `nlm notebook query` for one-shot Q&A instead.
+13. **Choose output format wisely**: Default output (no flags) is compact and token-efficient—use it for status checks. Use `--quiet` to capture IDs for piping. Only use `--json` when you need to parse specific fields programmatically.
+14. **Use `--help` when unsure**: Run `nlm <command> --help` to see available options and flags for any command.
+15. **Studio: fast track by default**: Infer format/style/prompt silently—one compact line, then `studio_create(confirm=True)`. No intake questionnaires. Fast track reduces clarifying questions, not the confirm gate. **Cinematic video is always guided** (quota-limited). Full preview only when vague, high-stakes, cinematic, or user asks. See **[references/studio-prompting-guide.md](references/studio-prompting-guide.md)**.
 
 **Current MCP surface:** 43 tools. Consolidated action tools include `note`,
 `label`, `studio_status`, `batch`, `pipeline`, and `tag`. Consolidated type
@@ -113,18 +115,31 @@ User wants to...
 
 ### 1. Authentication
 
+#### Zero-Hassle Auto-Healing & Verification (`INV-181`)
+
+```bash
+# Proactive headless health check
+npm run auth:nlm:check              # Exits 0 if valid, 1 if stale/expired
+
+# Automated one-shot healing (kills zombie headless Chrome on 9222, removes lockfiles, re-logs in non-interactively)
+npm run auth:nlm:heal               # or: npm run auth:nlm:fix
+
+# Google Cloud Drive / Sheets ADC re-authorization
+npm run auth:heal
+```
+
 #### MCP Authentication
 
 If using MCP tools and encountering authentication errors:
 
 ```bash
-# Run the CLI authentication (works for both CLI and MCP)
-nlm login
+# Auto-heal CLI session and clean locks
+npm run auth:nlm:heal
 
-# Then reload tokens in MCP
+# Then hot-reload tokens in memory for MCP without process restart
 mcp__gemini-notebook-mcp__refresh_auth()
-# Returns status: "success" (valid), "expired" (tokens dead, run `nlm login`),
-# or "error". `nlm login` is the only recovery path for "expired".
+# Returns status: "success" (valid), "expired" (tokens dead, run `npm run auth:nlm:heal`),
+# or "error".
 ```
 
 Or manually save cookies via MCP (fallback):
@@ -132,13 +147,14 @@ Or manually save cookies via MCP (fallback):
 # Extract cookies from Chrome DevTools and save
 mcp__gemini-notebook-mcp__save_auth_tokens(cookies="<cookie_header>")
 ```
-```
 
 #### CLI Authentication
 
 ```bash
-nlm login                           # Launch browser, extract cookies (primary method)
+npm run auth:nlm:heal               # Recommended: Heals locks & runs nlm login --force --storage file
+nlm login                           # Launch browser, extract cookies (interactive method)
 nlm login --check                   # Validate current session
+nlm login --force --storage file    # Non-interactive force overwrite, bypasses keystore prompt
 nlm login --profile work            # Use named profile for multiple accounts
 nlm login --provider openclaw --cdp-url http://127.0.0.1:18800  # External CDP provider
 nlm login switch <profile>          # Switch the default profile

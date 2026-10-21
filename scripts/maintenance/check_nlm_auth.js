@@ -22,12 +22,15 @@ const fs = require('fs');
 
 function cleanStaleNlmChromeAndLocks() {
   const profileDir = path.join(os.homedir(), '.notebooklm-mcp-cli', 'chrome-profiles', 'default');
-  const lockPath = path.join(profileDir, 'lockfile');
-  try {
-    if (fs.existsSync(lockPath)) {
-      fs.unlinkSync(lockPath);
-    }
-  } catch { /* ignore */ }
+  const locks = ['lockfile', 'SingletonLock', 'SingletonCookie', 'SingletonSocket'];
+  for (const lock of locks) {
+    const lockPath = path.join(profileDir, lock);
+    try {
+      if (fs.existsSync(lockPath)) {
+        fs.unlinkSync(lockPath);
+      }
+    } catch { /* ignore */ }
+  }
 
   if (process.platform === 'win32') {
     try {

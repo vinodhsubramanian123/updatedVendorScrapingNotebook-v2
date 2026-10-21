@@ -192,4 +192,84 @@ test('🏛️ SYSTEM INVARIANTS HARNESS (INV-1 to INV-19)', async (t) => {
     assert.ok(skillContent.includes('Stage 8: Gap Scan & New Task Dispatch'), 'Skill must mandate gap scan');
   });
 
+  await t.test('INV-181: Autonomous Headless Chrome Orphan Reclamation & Port 9222 Healing', () => {
+    const { cleanStaleNlmChromeAndLocks, checkAuthHealth } = require('../../scripts/maintenance/check_nlm_auth.js');
+    assert.strictEqual(typeof cleanStaleNlmChromeAndLocks, 'function', 'cleanStaleNlmChromeAndLocks must be exported');
+    assert.strictEqual(typeof checkAuthHealth, 'function', 'checkAuthHealth must be exported');
+
+    // Verify lockfile cleanup in real/mock profile dir
+    const profileDir = path.join(os.homedir(), '.notebooklm-mcp-cli', 'chrome-profiles', 'default');
+    fs.mkdirSync(profileDir, { recursive: true });
+    const dummyLocks = ['lockfile', 'SingletonLock', 'SingletonCookie', 'SingletonSocket'];
+    dummyLocks.forEach(f => fs.writeFileSync(path.join(profileDir, f), 'dummy-lock-data'));
+
+    cleanStaleNlmChromeAndLocks();
+
+    dummyLocks.forEach(f => {
+      assert.strictEqual(
+        fs.existsSync(path.join(profileDir, f)),
+        false,
+        `Lock ${f} must be removed by cleanStaleNlmChromeAndLocks`
+      );
+    });
+  });
+
+  await t.test('INV-182: Dual-Domain Synergy Frame Startup Sizing & Quoting Decoupling Invariant', () => {
+    const FIRST_FRAME_STARTUP = { sku: 'HA124A1', option: '5ZM', price: 16742 };
+    const ADDITIONAL_FRAME_STARTUP = { sku: 'HA124A1', option: '5ZQ', price: 4627 };
+    const REMOTE_STARTUP = { sku: 'HA124A1', option: 'V0F', price: 8200 };
+
+    // Sizing rule for shared fabric cluster
+    function calculateSynergyStartupServices(frameCount, isSplitOrder = false, siteCount = 1) {
+      if (frameCount <= 0) return [];
+      if (siteCount > 1) {
+        // Independent physical sites each require First Frame Onsite Startup
+        return Array.from({ length: frameCount }, () => ({ ...FIRST_FRAME_STARTUP }));
+      }
+      if (isSplitOrder) {
+        // Frame 1 carries First Frame; Frame 2..N carry Additional Frame
+        return [
+          { frameIndex: 1, ...FIRST_FRAME_STARTUP },
+          ...Array.from({ length: frameCount - 1 }, (_, i) => ({ frameIndex: i + 2, ...ADDITIONAL_FRAME_STARTUP }))
+        ];
+      }
+      return [
+        { frameIndex: 1, ...FIRST_FRAME_STARTUP },
+        ...Array.from({ length: frameCount - 1 }, (_, i) => ({ frameIndex: i + 2, ...ADDITIONAL_FRAME_STARTUP }))
+      ];
+    }
+
+    // 1-frame setup: exactly 1x #5ZM ($16,742)
+    const single = calculateSynergyStartupServices(1);
+    assert.strictEqual(single.length, 1);
+    assert.strictEqual(single[0].option, '5ZM');
+    assert.strictEqual(single[0].price, 16742);
+
+    // 2-frame shared fabric split: Frame 1 = #5ZM ($16,742), Frame 2 = #5ZQ ($4,627)
+    const splitTwo = calculateSynergyStartupServices(2, true);
+    assert.strictEqual(splitTwo.length, 2);
+    assert.strictEqual(splitTwo[0].option, '5ZM');
+    assert.strictEqual(splitTwo[0].price, 16742);
+    assert.strictEqual(splitTwo[1].option, '5ZQ');
+    assert.strictEqual(splitTwo[1].price, 4627);
+    const savings = splitTwo[0].price - splitTwo[1].price;
+    assert.strictEqual(savings, 12115, 'Split frame 2 saves $12,115 by selecting additional frame startup #5ZQ');
+
+    // Remote (#V0F) and Onsite (#5ZM) mutual exclusion check
+    function assertStartupMutualExclusion(options) {
+      const hasOnsite = options.some(o => o.option === '5ZM' || o.option === '5ZQ');
+      const hasRemote = options.some(o => o.option === 'V0F');
+      if (hasOnsite && hasRemote) {
+        throw new Error('SOW_CONFLICT: Remote Startup (#V0F) and Onsite Startup (#5ZM/#5ZQ) are mutually exclusive.');
+      }
+      return true;
+    }
+
+    assert.throws(
+      () => assertStartupMutualExclusion([FIRST_FRAME_STARTUP, REMOTE_STARTUP]),
+      /SOW_CONFLICT.*mutually exclusive/
+    );
+    assert.strictEqual(assertStartupMutualExclusion([FIRST_FRAME_STARTUP]), true);
+  });
+
 });

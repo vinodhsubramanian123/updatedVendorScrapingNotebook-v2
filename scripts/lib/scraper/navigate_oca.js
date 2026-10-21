@@ -132,28 +132,54 @@ async function checkActiveMenuTab(ocaTarget, query, options) {
   ws._isOcaTarget = true;
   const checkState = await sendCommand(ws, 'Runtime.evaluate', {
     expression: `(() => {
-      const menuTabAnchor = Array.from(document.querySelectorAll('a.ui-tabs-anchor')).find(el => el.getAttribute('href') === '#extended_overview_menu');
-      if (menuTabAnchor && menuTabAnchor.getAttribute('aria-selected') !== 'true' && !menuTabAnchor.closest('li')?.classList.contains('ui-tabs-active')) {
-        try { menuTabAnchor.click(); } catch (_) {}
+      const documents = [document];
+      try {
+        const iframes = document.querySelectorAll('iframe');
+        iframes.forEach(f => {
+          try {
+            if (f.contentDocument && !documents.includes(f.contentDocument)) {
+              documents.push(f.contentDocument);
+            }
+          } catch (_) {}
+        });
+      } catch (_) {}
+
+      // If active sub-tab was left on Services/BOM, restore Menu tab across documents
+      for (const doc of documents) {
+        const menuTabAnchor = Array.from(doc.querySelectorAll('a.ui-tabs-anchor, a[href*="extended_overview_menu"]'))
+          .find(el => el.getAttribute('href') === '#extended_overview_menu');
+        if (menuTabAnchor && menuTabAnchor.getAttribute('aria-selected') !== 'true' && !menuTabAnchor.closest('li')?.classList.contains('ui-tabs-active')) {
+          try { menuTabAnchor.click(); } catch (_) {}
+        }
       }
-      const bodyText = (document.body?.innerText || '').slice(0, 25000);
-      const menuText = (document.getElementById('extended_overview_menu')?.textContent || '').slice(0, 25000);
+
+      const bodyText = documents.map(d => (d.body?.innerText || '').slice(0, 25000)).join('\\n');
+      const menuText = documents.map(d => (d.getElementById('extended_overview_menu')?.textContent || '').slice(0, 25000)).join('\\n');
       const pageText = (bodyText + '\\n' + menuText).slice(0, 35000);
       const isLoggedOut = /you are logged out|logged out successfully|session (?:has )?expired|session (?:is )?invalid|session timed out|please sign in again/i.test(bodyText);
+
       const visible = el => {
         if (!el) return false;
         const s = window.getComputedStyle(el);
         return el.offsetWidth > 0 && el.offsetHeight > 0 && s.display !== 'none' && s.visibility !== 'hidden';
       };
-      const exceptionBox = Array.from(document.querySelectorAll('.ui-dialog, .modal, [role="dialog"], .dqe-error, .modal-error, [class*="error-dialog"], [class*="exception-dialog"]'))
-        .find(el => visible(el) && /an unexpected error|encountered a problem|exception occurred|internal server error|weblogic bridge message/i.test(el.innerText || ''));
+
+      // Check for true fatal WebLogic exceptions, strictly excluding benign modals (CLIC advice, notifications)
+      let exceptionBox = null;
+      for (const doc of documents) {
+        const found = Array.from(doc.querySelectorAll('.ui-dialog, .modal, [role="dialog"], .dqe-error, .modal-error, [class*="error-dialog"], [class*="exception-dialog"]'))
+          .find(el => visible(el) && /an unexpected error|encountered a problem|exception occurred|internal server error|weblogic bridge message/i.test(el.innerText || ''));
+        if (found) { exceptionBox = found; break; }
+      }
+
       const hasException = Boolean(exceptionBox);
       const exceptionDetail = exceptionBox ? (exceptionBox.innerText || '').slice(0, 300).replace(/\\s+/g, ' ') : '';
-      const hasMenu = Boolean(
-        document.querySelector('#extended_overview_menu, .menu_label, .eo_nav_div, a[href*="extended_overview_menu"]') ||
-        document.querySelectorAll('table').length > 20 ||
-        Array.from(document.querySelectorAll('a, button, div, span')).some(e => ['Menu', 'Components', 'Summary', 'BOM'].includes((e.innerText || '').trim()))
-      );
+      const hasMenu = documents.some(doc => Boolean(
+        doc.querySelector('#extended_overview_menu, .menu_label, .eo_nav_div, a[href*="extended_overview_menu"]') ||
+        doc.querySelectorAll('table').length > 20 ||
+        Array.from(doc.querySelectorAll('a, button, div, span')).some(e => ['Menu', 'Components', 'Summary', 'BOM'].includes((e.innerText || '').trim()))
+      ));
+
       return { hasMenu, isLoggedOut, hasException, exceptionDetail, pageText };
     })()`,
     returnByValue: true
@@ -576,24 +602,48 @@ async function _verifyConfigWorkspaceReady(activeOca) {
       const s = window.getComputedStyle(el);
       return el.offsetWidth > 0 && el.offsetHeight > 0 && s.display !== 'none' && s.visibility !== 'hidden';
     };
-    const isLoading = Array.from(document.querySelectorAll('.loading_div, .maui-loading-div, .toolbar_loading, [class*="loading-div"]')).some(visible);
+
+    const documents = [document];
+    try {
+      const iframes = document.querySelectorAll('iframe');
+      iframes.forEach(f => {
+        try {
+          if (f.contentDocument && !documents.includes(f.contentDocument)) {
+            documents.push(f.contentDocument);
+          }
+        } catch (_) {}
+      });
+    } catch (_) {}
+
+    const isLoading = documents.some(doc =>
+      Array.from(doc.querySelectorAll('.loading_div, .maui-loading-div, .toolbar_loading, [class*="loading-div"]')).some(visible)
+    );
     if (isLoading) return false;
 
-    // Check for big modal exception dialogs
-    const exceptionBox = Array.from(document.querySelectorAll('.ui-dialog, .modal, [role="dialog"], div[class*="exception"], div[class*="error-dialog"]'))
-      .find(el => visible(el) && /an unexpected error|encountered a problem|exception occurred|internal server error|weblogic bridge message/i.test(el.innerText || ''));
+    // Check for fatal WebLogic modal exception dialogs across documents
+    let exceptionBox = null;
+    for (const doc of documents) {
+      const found = Array.from(doc.querySelectorAll('.ui-dialog, .modal, [role="dialog"], div[class*="exception"], div[class*="error-dialog"]'))
+        .find(el => visible(el) && /an unexpected error|encountered a problem|exception occurred|internal server error|weblogic bridge message/i.test(el.innerText || ''));
+      if (found) { exceptionBox = found; break; }
+    }
     if (exceptionBox) {
       window.__lastOcaException = (exceptionBox.innerText || '').slice(0, 500).replace(/\\s+/g, ' ');
     }
 
-    const hasMenuOrComp = Array.from(document.querySelectorAll('a, button, div, span')).some(e => {
-      const txt = (e.innerText || '').trim();
-      return txt === 'Menu' || txt === 'Components' || txt === 'Summary' || txt === 'BOM' || txt === 'Services';
-    });
-    const hasTables = document.querySelectorAll('table').length >= 10;
-    const hasLegacyMenu = Boolean(document.querySelector('#extended_overview_menu, .menu_label, .eo_nav_div, table.eo_category_table, a[href*="extended_overview_menu"]'));
+    const hasMenuOrComp = documents.some(doc =>
+      Array.from(doc.querySelectorAll('a, button, div, span')).some(e => {
+        const txt = (e.innerText || '').trim();
+        return txt === 'Menu' || txt === 'Components' || txt === 'Summary' || txt === 'BOM' || txt === 'Services';
+      })
+    );
+    const hasTables = documents.some(doc => doc.querySelectorAll('table').length >= 10);
+    const hasLegacyMenu = documents.some(doc =>
+      Boolean(doc.querySelector('#extended_overview_menu, .menu_label, .eo_nav_div, table.eo_category_table, a[href*="extended_overview_menu"]'))
+    );
+    const hasConfigStatus = documents.some(doc => (doc.body?.innerText || '').includes('Config Status'));
 
-    return (hasMenuOrComp && hasTables) || hasLegacyMenu || (hasTables && (document.body?.innerText || '').includes('Config Status'));
+    return (hasMenuOrComp && hasTables) || hasLegacyMenu || (hasTables && hasConfigStatus);
   })()`, 60000, 1000);
 
   let capturedException = null;

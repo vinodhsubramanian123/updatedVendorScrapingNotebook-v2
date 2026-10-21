@@ -59,6 +59,10 @@ Learnings captured from HPE OCA portal rejections (`KnowledgeDeltas`) are automa
 ## 4. Synchronization Execution Commands
 
 ```bash
+# Pre-Flight Auth Check & Zombie Port Reclamation (INV-181)
+npm run auth:nlm:check          # Headless verification
+npm run auth:nlm:heal           # Automated zombie process kill & lock cleanup
+
 # Run Master Knowledge Sync Across All Registered Portfolios
 npm run sync:knowledge
 

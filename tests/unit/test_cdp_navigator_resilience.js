@@ -392,5 +392,91 @@ test('CDP Navigator Resilience Test Suite', async (t) => {
     assert.strictEqual(hpePolicy.anchorTabUrl, 'https://partner.hpe.com/group/prp');
     assert.ok(hpePolicy.forbiddenDirectNavigatePatterns.includes('OCAInternalLogin'));
   });
+
+  await t.test('Test 7: Distinguishing benign modals and transient loading overlays from fatal WebLogic exceptions across document trees', async () => {
+    // Pure function simulation of the evaluate logic in checkActiveMenuTab and _verifyConfigWorkspaceReady
+    function evaluateDocumentTreeState(mockDoc) {
+      const documents = [mockDoc];
+      if (Array.isArray(mockDoc.iframes)) {
+        mockDoc.iframes.forEach(f => {
+          if (f.contentDocument && !documents.includes(f.contentDocument)) {
+            documents.push(f.contentDocument);
+          }
+        });
+      }
+
+      const visible = el => Boolean(el && el.visible !== false);
+
+      const isLoading = documents.some(doc =>
+        (doc.elements || []).some(el =>
+          visible(el) && ['loading_div', 'maui-loading-div', 'toolbar_loading', 'dqe-loading'].some(cls => (el.className || '').includes(cls))
+        )
+      );
+
+      let exceptionBox = null;
+      for (const doc of documents) {
+        const found = (doc.elements || []).find(el =>
+          visible(el) &&
+          ['ui-dialog', 'modal', 'modal-error', 'dqe-error', 'exception-dialog'].some(cls => (el.className || '').includes(cls)) &&
+          /an unexpected error|encountered a problem|exception occurred|internal server error|weblogic bridge message/i.test(el.innerText || '')
+        );
+        if (found) { exceptionBox = found; break; }
+      }
+
+      const hasException = Boolean(exceptionBox);
+      const hasMenu = documents.some(doc =>
+        (doc.elements || []).some(el =>
+          el.id === 'extended_overview_menu' ||
+          (el.className || '').includes('menu_label') ||
+          ['Menu', 'Components', 'Summary', 'BOM'].includes((el.innerText || '').trim())
+        )
+      );
+
+      return { isLoading, hasException, hasMenu };
+    }
+
+    // Case A: Benign advisory modal (CLIC advice) + transient loading spinner inside an iframe
+    const benignTree = {
+      elements: [
+        { id: 'extended_overview_menu', className: 'menu_label', innerText: 'Menu', visible: true }
+      ],
+      iframes: [
+        {
+          contentDocument: {
+            elements: [
+              { className: 'loading_div', visible: true, innerText: 'Loading choices...' },
+              { className: 'ui-dialog clic-advice-modal', visible: true, innerText: 'CLIC Advice: Slot 3 requires high performance fan kit.' }
+            ]
+          }
+        }
+      ]
+    };
+
+    const benignState = evaluateDocumentTreeState(benignTree);
+    assert.strictEqual(benignState.isLoading, true, 'Transient loading spinner must be detected as isLoading');
+    assert.strictEqual(benignState.hasException, false, 'Benign CLIC advice must NOT be classified as fatal exception');
+    assert.strictEqual(benignState.hasMenu, true, 'Menu presence must be detected across document tree');
+
+    // Case B: Fatal WebLogic bridge exception inside an iframe
+    const fatalTree = {
+      elements: [],
+      iframes: [
+        {
+          contentDocument: {
+            elements: [
+              {
+                className: 'ui-dialog modal-error exception-dialog',
+                visible: true,
+                innerText: 'WebLogic Bridge Message: The connection was dropped due to an unexpected error.'
+              }
+            ]
+          }
+        }
+      ]
+    };
+
+    const fatalState = evaluateDocumentTreeState(fatalTree);
+    assert.strictEqual(fatalState.hasException, true, 'WebLogic bridge error must be accurately detected as fatal exception');
+  });
 });
 

@@ -100,38 +100,58 @@ sequenceDiagram
 
 ## 3. Stale-Session Self-Healing Recovery Protocol (`INV-89`)
 
-### Why Direct OCA Page Reload (`location.reload()`) Breaks Flow
-WebLogic OCA is an enterprise Java application where session state is held in server memory, validated against temporary SAML tokens issued during the Partner Portal redirect. 
+### 3.1 Transient DOM Overlays & Iframes vs. Fatal WebLogic Exceptions
+A major challenge when interacting with enterprise WebLogic OCA is distinguishing between **transient rendering states** (which must be waited on or dismissed) and **fatal session crashes** (which require immediate Tab 1 self-healing recovery).
 
-Attempting to refresh an OCA page in-place (`location.reload()` or clicking browser reload):
-- **Invalidates WebLogic server state** $\rightarrow$ produces unrecoverable 403 Forbidden or blank white screens.
-- **Drops POST/SAML parameters** $\rightarrow$ redirects to broken generic login pages.
-- **Fails on silent hangs** $\rightarrow$ WebLogic frequently encounters internal JavaScript exceptions, frozen AJAX overlays (`.dqe-loading`), or table rendering aborts without showing an explicit timeout message.
+| Condition Category | DOM Signatures & Indicators | Nature | Correct Action |
+|:---|:---|:---|:---|
+| **Transient AJAX Overlays** | `.loading_div`, `.maui-loading-div`, `.toolbar_loading`, `.dqe-loading`, `#loading_indicator` | Normal asynchronous WebLogic AJAX round-trip | **WAIT**: Never reload or abort. Wait for overlay elements to reach `display: none` or zero layout width/height (timeout: 45–60s). |
+| **Dynamic Embedded Iframes** | `<iframe>` elements (e.g. Maui UI, dialogs, sub-panels) | WebLogic uses embedded frames for specific catalog trees and modal controls | **TRAVERSE**: Inspect `iframe.contentDocument` recursively (`documents = [document, ...iframes]`). Iframe rendering is normal—never treat frame presence as an error. |
+| **Benign & Advisory Modals** | `#clic_advice_modal`, `.ui-dialog` without error text, `.modal` warnings, informational alerts | Normal CLIC advisories, rule notes, or soft prompt dialogs | **INSPECT & DISMISS**: Click OK, Dismiss, or Close (`.ui-dialog-titlebar-close`). Do NOT abort or trigger session resets. |
+| **Sub-Tab Context Switches** | Leaving `Services`, `BOM`, or `Summary` sub-tabs active | Normal user/scraping navigation between configuration sections | **RESTORE SUB-TAB**: Click `a.ui-tabs-anchor[href="#extended_overview_menu"]` to re-focus the configuration workspace (`INV-174`). |
+| **Fatal Session Expiration** | "You are logged out successfully!", "session expired", "session invalid", "please sign in again", or URLs with `/logout` or `session_expired` | Short-lived SAML token expired or server invalidated cookie | **FATAL**: Close OCA tab via CDP `/json/close` $\rightarrow$ execute Tab 1 Self-Healing Recovery Loop. |
+| **Fatal WebLogic Server Crash** | Modals containing: "an unexpected error", "encountered a problem", "exception occurred", "internal server error", "weblogic bridge message" | Java WebLogic unhandled exception or broken state | **FATAL**: Close OCA tab via CDP `/json/close` $\rightarrow$ execute Tab 1 Self-Healing Recovery Loop. |
+| **Socket Freeze / Hang** | CDP WebSocket times out (>45s) or HTTP 9222 drops | Browser or server thread deadlocked | **FATAL**: Reconnect WS or trigger Tab 1 Self-Healing Recovery Loop. |
 
-### The 6-Step Tab 1 Self-Healing Loop
+---
 
-When a timeout, silent freeze, or unhandled exception is detected:
+### 3.2 The Golden Invariant: NEVER Directly Reload an Active OCA Tab (`INV-89`, `INV-173`)
+
+> [!CAUTION]
+> **Fatal In-Place OCA Reload Prohibition (`INV-89` / `INV-173`)**:
+> WebLogic OCA is an enterprise Java WebLogic application where all user configuration state is maintained in server-side session memory, authenticated exclusively via short-lived SAML assertions issued during the initial redirect from Partner Portal.
+> 
+> **Attempting to refresh an active OCA page in-place (`location.reload()`, `Page.reload`, or direct navigation to `https://oca.ext.hpe.com/oca/OCAInternalLogin` or `tools-catalog?eServiceId=187402`) is strictly forbidden:**
+> 1. **Destroys Server-Side State**: Invalidates Java session memory on the WebLogic cluster $\rightarrow$ immediately produces HTTP 403 Forbidden, blank white screens, or fatal generic error screens.
+> 2. **Drops Ephemeral SAML POST Data**: Direct GET requests to `OCAInternalLogin` fail because they lack the required cryptographic SAML response payload.
+> 3. **CDP Transport-Layer Guard**: `scripts/lib/scraper/cdp.js:assertSafeCdpNavigationGuard` enforces this invariant at the WebSocket transport layer, throwing `INV89_FORBIDDEN_OCA_RELOAD` or `INV89_FORBIDDEN_DIRECT_OCA_NAVIGATION` if an agent or script attempts to reload an active OCA tab.
+
+---
+
+### 3.3 The Permanent 6-Step Tab 1 Self-Healing Recovery Protocol
+
+**Partner Portal Tab 1 (`https://partner.hpe.com/group/prp`) is the ONLY safe refresh anchor.** Unlike OCA, Partner Portal is a stateless portal gateway. Refreshing Tab 1 safely regenerates fresh SAML session tokens and re-binds the One Config Advanced launcher. OCA only works when spawned fresh from this link.
 
 ```
-[Stale / Frozen OCA Tab Detected]
-               │
-               ▼
-[Step 1: Close Stale OCA Tab via CDP (/json/close)]
-               │
-               ▼
-[Step 2: Switch Focus to Tab 1 (partner.hpe.com/group/prp)]
-               │
-               ▼
-[Step 3: If Expired -> Auto-Sign In via #oktaSignInBtn & #onepass-submit-btn]
-               │
-               ▼
-[Step 4: Reload Tab 1 via Page.reload -> Refreshes Quick Links & Tokens]
-               │
-               ▼
-[Step 5: Click "One Config Advanced" in Quick Links (#quick-links-807 a)]
-               │
-               ▼
-[Step 6: Fresh OCA Tab Created -> Search Chassis & Land on Menu Tab]
+[Fatal Exception / Session Expiration / Timeout Detected]
+                           │
+                           ▼
+[Step 1: Close Broken OCA Tab via CDP (/json/close/{targetId})]
+                           │
+                           ▼
+[Step 2: Switch Focus to Tab 1 (https://partner.hpe.com/group/prp)]
+                           │
+                           ▼
+[Step 3: Check Authentication -> If Login Screen: Re-Submit #oktaSignInBtn & #onepass-submit-btn]
+                           │
+                           ▼
+[Step 4: Reload Tab 1 via Page.reload -> Refreshes SAML Tokens & Quick Links]
+                           │
+                           ▼
+[Step 5: Click "One Config Advanced" Link (#quick-links-807 a / eServiceId=187402)]
+                           │
+                           ▼
+[Step 6: Fresh OCA Tab Created in Tab 2 -> Query Chassis & Land on Configuration Menu]
 ```
 
 ```javascript
@@ -163,7 +183,7 @@ async function recoverAndLaunchFreshOCA(query, options = {}) {
   
   // 4. Refresh Tab 1 to reload fresh SAML tokens and Quick Links
   const partnerWs = await connectWS(partnerTarget.webSocketDebuggerUrl);
-  await sendCommand(partnerWs, 'Page.reload');
+  await sendCommand(partnerWs, 'Page.navigate', { url: 'https://partner.hpe.com/group/prp' });
   await waitForDOMPredicate(partnerWs, `Boolean(
     document.querySelector('.hpe-quicklinks__item a, a.hpe-quicklinks__link, #quick-links-807 a') ||
     document.readyState === 'complete'
