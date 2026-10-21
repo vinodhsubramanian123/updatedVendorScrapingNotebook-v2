@@ -24,7 +24,8 @@ const config1Items = [
   { sku: 'P78145-B21', perNodeQty: 2, nodeMult: 9, description: 'HPE C13 - C14 250V 10Amp 2m FIO Power Cord', unitPrice: 11, role: 'Power Cord', status: 'MANDATORY FIO Power Cord' },
   { sku: 'P79558-B21', perNodeQty: 1, nodeMult: 9, description: 'HPE ProLiant Compute 25C Maximum Recommended Ambient Temp Tracking', unitPrice: 1, role: 'Environmental', status: 'MANDATORY Ambient Tracking' },
   { sku: 'P73325-B21', perNodeQty: 1, nodeMult: 9, description: 'HPE ProLiant Compute Localization FIO Kit', unitPrice: 4, role: 'Localization', status: 'MANDATORY Regional FIO Kit' },
-  { sku: 'HU4B2A3', perNodeQty: 1, nodeMult: 9, description: 'HPE 3 Year Tech Care Basic Service', unitPrice: 2420, role: 'Support Service', status: 'STANDARD 3Y Tech Care Support' }
+  { sku: 'HU4B2A3', perNodeQty: 1, nodeMult: 9, description: 'HPE 3 Year Tech Care Basic Service', unitPrice: 2420, role: 'Support Service', status: 'STANDARD 3Y Tech Care Support' },
+  { sku: 'R7A11AAE', perNodeQty: 1, nodeMult: 9, description: 'HPE Compute Ops Management Standard 3-year Upfront ProLiant SaaS', unitPrice: 450, role: 'Software License', status: 'MANDATORY CLIC Rule 81322276' }
 ];
 
 const config2Items = [
@@ -39,7 +40,8 @@ const config2Items = [
   { sku: 'P03178-B21', perNodeQty: 2, nodeMult: 10, description: 'HPE 1000W Flex Slot Titanium Hot Plug Power Supply Kit', unitPrice: 926, role: 'Power Supply', status: 'CLIC VALIDATED (1+1 Redundant Titanium)' },
   { sku: 'AF573A', perNodeQty: 2, nodeMult: 10, description: 'HPE C13 - C14 WW 250V 10Amp Flint Gray 2.0m Jumper Cord', unitPrice: 38, role: 'Power Cord', status: 'Power Cords' },
   { sku: 'P57886-B21', perNodeQty: 1, nodeMult: 10, description: 'HPE ProLiant DL385 Gen11 2U Standard/Performance FIO Air Baffle Kit', unitPrice: 41, role: 'Air Baffle', status: 'MANDATORY Air Baffle FIO' },
-  { sku: 'HU4B2A3', perNodeQty: 1, nodeMult: 10, description: 'HPE 3 Year Tech Care Basic Service', unitPrice: 2380, role: 'Support Service', status: 'STANDARD 3Y Tech Care Support' }
+  { sku: 'HU4B2A3', perNodeQty: 1, nodeMult: 10, description: 'HPE 3 Year Tech Care Basic Service', unitPrice: 2380, role: 'Support Service', status: 'STANDARD 3Y Tech Care Support' },
+  { sku: 'R7A11AAE', perNodeQty: 1, nodeMult: 10, description: 'HPE Compute Ops Management Standard 3-year Upfront ProLiant SaaS', unitPrice: 450, role: 'Software License', status: 'MANDATORY CLIC Rule 81322276' }
 ];
 
 const wb = XLSX.utils.book_new();
@@ -297,7 +299,18 @@ Object.keys(wsReq2).forEach(cellKey => {
 });
 XLSX.utils.book_append_sheet(wb, wsReq2, 'Req 2 - DL385 Gen11 (10 Units)');
 
-// Write final workbook
-XLSX.writeFile(wb, exportPath);
-console.log('SUCCESS: Generated export workbook at:', exportPath);
-console.log('File size:', fs.statSync(exportPath).size, 'bytes');
+// Write final workbook with EBUSY fallback
+let targetPath = exportPath;
+try {
+  XLSX.writeFile(wb, targetPath);
+} catch (err) {
+  if (err.code === 'EBUSY') {
+    targetPath = path.join(downloadsDir, 'HPE_ProLiant_Partner_BOM_Req1_Req2_Validated_COM.xlsx');
+    console.warn(`⚠️ Target file ${exportPath} is locked by Excel. Saving to ${targetPath}...`);
+    XLSX.writeFile(wb, targetPath);
+  } else {
+    throw err;
+  }
+}
+console.log('SUCCESS: Generated export workbook at:', targetPath);
+console.log('File size:', fs.statSync(targetPath).size, 'bytes');
