@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { MessageSquare, X, Send, CheckCircle2 } from 'lucide-react';
+import { MessageSquare, X, Send, CheckCircle2, RefreshCw } from 'lucide-react';
 
 export default function UserFeedbackDrawer({ isOpen, onClose }) {
   const [feedbackText, setFeedbackText] = useState('');
   const [category, setCategory] = useState('feature_request');
   const [queueItems, setQueueItems] = useState([]);
   const [copiedPrompt, setCopiedPrompt] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isResolving, setIsResolving] = useState(false);
 
   const fetchQueue = async () => {
     try {
@@ -31,7 +33,8 @@ export default function UserFeedbackDrawer({ isOpen, onClose }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!feedbackText.trim()) return;
+    if (!feedbackText.trim() || isSubmitting) return;
+    setIsSubmitting(true);
 
     try {
       const res = await fetch('/api/feedback-submit', {
@@ -43,14 +46,16 @@ export default function UserFeedbackDrawer({ isOpen, onClose }) {
       setCopiedPrompt(data.agentPrompt);
       setFeedbackText('');
       fetchQueue();
-    } catch (err) { console.error('Failed to mark feedback completed:', err); }
+    } catch (err) { console.error('Failed to mark feedback completed:', err); } finally { setIsSubmitting(false); }
   };
 
   const handleMarkAllCompleted = async () => {
+    if (isResolving) return;
+    setIsResolving(true);
     try {
       await fetch('/api/feedback-mark-completed', { method: 'POST' });
       fetchQueue();
-    } catch (err) { console.error('Failed to mark feedback completed:', err); }
+    } catch (err) { console.error('Failed to mark feedback completed:', err); } finally { setIsResolving(false); }
   };
 
   if (!isOpen) return null;
@@ -97,8 +102,9 @@ export default function UserFeedbackDrawer({ isOpen, onClose }) {
           />
         </div>
 
-        <button type="submit" className="w-full btn-primary justify-center text-xs">
-          <Send className="w-3.5 h-3.5" /> Submit to Feedback Queue
+        <button type="submit" disabled={isSubmitting || !feedbackText.trim()} className="w-full btn-primary justify-center text-xs disabled:opacity-50 disabled:cursor-not-allowed">
+          {isSubmitting ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Send className="w-3.5 h-3.5" />}
+          {isSubmitting ? 'Submitting...' : 'Submit to Feedback Queue'}
         </button>
       </form>
 
@@ -120,9 +126,11 @@ export default function UserFeedbackDrawer({ isOpen, onClose }) {
           {queueItems.length > 0 && (
             <button
               onClick={handleMarkAllCompleted}
-              className="text-[10px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-1 rounded-md hover:bg-emerald-100 font-bold flex items-center gap-1 transition-colors"
+              disabled={isResolving}
+              className="text-[10px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-1 rounded-md hover:bg-emerald-100 font-bold flex items-center gap-1 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <CheckCircle2 className="w-3 h-3" /> Resolve All
+              {isResolving ? <RefreshCw className="w-3 h-3 animate-spin" /> : <CheckCircle2 className="w-3 h-3" />}
+              {isResolving ? 'Resolving...' : 'Resolve All'}
             </button>
           )}
         </div>
