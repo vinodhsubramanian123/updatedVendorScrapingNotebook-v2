@@ -35,7 +35,7 @@ const config2Items = [
   { sku: 'R2E09A', perNodeQty: 1, nodeMult: 10, description: 'HPE SN1610Q 32Gb 2-port Fibre Channel Host Bus Adapter', unitPrice: 7410, role: 'FC HBA', status: 'CLIC VALIDATED (QLogic 32Gb Dual Port)' },
   { sku: 'P08443-B21', perNodeQty: 1, nodeMult: 10, description: 'Intel E810-XXVDA2 Ethernet 10/25Gb 2-port SFP28 Adapter for HPE', unitPrice: 1680, role: 'Network Adapter', status: 'CLIC VALIDATED (Intel E810 SFP28)' },
   { sku: 'P58459-B21', perNodeQty: 2, nodeMult: 10, description: 'HPE ProLiant DL3X5 Gen11 2U Performance Heat Sink Kit', unitPrice: 256, role: 'Thermal / Cooling', status: 'MANDATORY (2x for 2P 210W CPUs)' },
-  { sku: 'P58465-B21', perNodeQty: 1, nodeMult: 10, description: 'HPE ProLiant DL3X5 Gen11 2U Performance Fan Kit', unitPrice: 160, role: 'Thermal / Cooling', status: 'MANDATORY Perf Fan Kit' },
+  { sku: 'P58464-B21', perNodeQty: 6, nodeMult: 10, description: 'HPE ProLiant DL3X5 Gen11 2U Standard Fan Kit', unitPrice: 157, role: 'Thermal / Cooling', status: 'CLIC VALIDATED (6 Fans for 2P Layout)' },
   { sku: 'P57890-B21', perNodeQty: 1, nodeMult: 10, description: 'HPE ProLiant DL385 Gen11 x16/x16 Primary FIO Upgrade Riser Kit', unitPrice: 772, role: 'PCIe Riser', status: 'MANDATORY Primary Riser' },
   { sku: 'P03178-B21', perNodeQty: 2, nodeMult: 10, description: 'HPE 1000W Flex Slot Titanium Hot Plug Power Supply Kit', unitPrice: 926, role: 'Power Supply', status: 'CLIC VALIDATED (1+1 Redundant Titanium)' },
   { sku: 'AF573A', perNodeQty: 2, nodeMult: 10, description: 'HPE C13 - C14 WW 250V 10Amp Flint Gray 2.0m Jumper Cord', unitPrice: 38, role: 'Power Cord', status: 'Power Cords' },

@@ -975,6 +975,18 @@ To ensure that future AI agents (Antigravity, Codex, Claude, or subagents) never
   - **Break-Fix Warranty vs Implementation Decoupling**: Ongoing hardware maintenance (`HU4B2A3` 3Y Tech Care Basic, \$46,156.00 per 12-node frame decomposed across Frame, Composers, Interconnects, and Compute) and one-time Day-1 implementation (`HA124A1`) are independent operational tiers. Quoting both does not duplicate coverage.
   - **Remote vs Onsite Delivery Mutual Exclusion**: Remote Startup (`HA124A1#V0F`) and Onsite Startup (`HA124A1#5ZM`) are mutually exclusive. Quoting both on the same frame cluster produces a Statement of Work (SOW) delivery scope conflict and triggers CLIC rejection.
 
+- **INV-183: AMD DL3X5 Gen11 Individual Fan Module Granularity & Thermal Envelope Invariant**:
+  - **Platform Packaging Granularity (Intel vs AMD)**:
+    - On Intel ProLiant platforms (DL380 Gen11/Gen12), cooling fans are packaged as a single pre-bundled box kit SKU (`P48820-B21` High Performance Fan Kit) ordered with Quantity 1, which physically delivers all 6 dual-rotor fan modules for the 2U chassis.
+    - On AMD ProLiant platforms (DL385 Gen11 / DL3X5 Gen11), the fan SKUs (`P58464-B21` Standard Fan Kit and `P58465-B21` Performance Fan Kit) are ordered as **individual fan modules** (\$157.00 USD each).
+  - **Socket-Based Fan Scaling**:
+    - Single-socket (1P) DL385 Gen11 configurations require exactly 4 fans ($4\times \$157.00 = \$628.00$).
+    - Dual-socket (2P) DL385 Gen11 configurations require exactly **6 fans** ($6\times \$157.00 = \$942.00$). In live OCA, selecting a dual-processor configuration automatically populates `P58464-B21` with Quantity 6.
+  - **AMD Thermal Dissipation Envelopes**:
+    - For standard 8SFF chassis configurations with dual AMD EPYC 9334 (210W) and standard PCIe networking/HBAs, OCA and CLIC validate $6\times$ `P58464-B21` (Standard Fan Kit) paired with $2\times$ `P58459-B21` (Performance Heat Sinks) and $1\times$ `P57886-B21` (Air Baffle) with **zero thermal errors**.
+    - Performance Fan Kit (`P58465-B21`) is reserved for ultra-high TDP CPUs (>240W/280W/360W), 24SFF/48SFF high-density drive arrays, or PCIe accelerators/GPUs.
+  - **Presales Guardrail**: Never transpose Intel 185W fan bundling rules onto AMD DL3X5 platforms. Always quote $6\times$ `P58464-B21` for 2P AMD configurations within the standard thermal envelope.
+
 
 
 
