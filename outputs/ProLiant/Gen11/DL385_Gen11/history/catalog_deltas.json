@@ -52,5 +52,23 @@
     "provenance": "OCA baseline solution manifest and DL385 Gen11 QuickSpecs",
     "scopeTaxonomy": "CHASSIS_SPECIFIC",
     "status": "APPLIED_TO_PRECHECKS_AND_RAG"
+  },
+  {
+    "deltaId": "DELTA_DL385_GEN11_L3_CACHE_TRADE_OFF_STRATEGY",
+    "timestamp": "2026-10-21T16:07:09.714Z",
+    "chassis": "DL385_Gen11",
+    "vendor": "HPE",
+    "pillar": "SERVER",
+    "family": "ProLiant",
+    "generation": "Gen11",
+    "productId": "DL385_Gen11",
+    "affectedSku": "P53712-B21",
+    "requiredDependencySku": "P53701-B21",
+    "ruleType": "PROCESSOR_CACHE_TRADE_OFF_STRATEGY",
+    "ruleUpdate": "When modernizing AMD EPYC 7543 (32c, 2.8GHz, 256MB L3, 225W), EPYC 9334 (32c, 2.7GHz, 128MB L3, 210W, ,170 USD) saves CapEx but halves L3 cache from 256MB to 128MB due to 4-CCD topology. For memory-latency and database workloads, EPYC 9354 (32c, 3.25GHz, 256MB L3, 280W, ,861 USD) restores full 256MB L3 cache and exceeds base clock (+0.45GHz) for +,820 USD list price across 10 servers. Chassis cooling (60x P58465-B21 performance fans + 20x P58459-B21 performance heatsinks) is already 100% qualified for 280W. Dual-track options must be presented to facilitate commercial negotiations (INV-184).",
+    "rawMessage": "DL385 Gen11 L3 Cache Trade-Off & Dual-Track EPYC 9334 vs 9354 Modernization Strategy (INV-184).",
+    "provenance": "INV-184 and AMD EPYC 9004 Architecture Whitepaper",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "status": "APPLIED_TO_PRECHECKS_AND_RAG"
   }
 ]

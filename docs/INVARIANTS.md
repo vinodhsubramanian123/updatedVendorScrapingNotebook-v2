@@ -994,6 +994,30 @@ To ensure that future AI agents (Antigravity, Codex, Claude, or subagents) never
   - **CLIC Rule 81322276 Mandate (NPI CTO COM SaaS Attachment)**:
     - All Gen11/Gen12 NPI CTO base chassis (`P53921-B21`, `P73282-B21`) strictly require at least 1 Compute Ops Management SaaS license (base SKU `R7A11AAE` 3Y Upfront SaaS, \$450.00 USD) per server. Omitting it triggers CLIC Rule 81322276 `PROCESS CONTROL CONFIGURATION: OVERRIDE REQUIRES APPROVAL` and blocks quote export.
 
+- **INV-184: Multi-Attribute CPU/Memory Vector Parity & Dual-Track Modernization Strategy Invariant**:
+  - **4-Attribute Processor Evaluation Vector**:
+    - Legacy-to-modern processor transitions cannot be evaluated purely on core counts. The engine must compute and compare the complete 4-attribute vector:
+      $$\mathbf{V}_{\text{CPU}} = \langle \text{Cores}, \text{Base Frequency}, \text{L3 Cache}, \text{TDP} \rangle$$
+    - *Base Frequency & IPC Compensation*: When a modern replacement features a lower published base clock ($\Delta f_{\text{base}} < 0$, e.g. Xeon 6530P at 2.3 GHz vs. Xeon 6258R at 2.7 GHz), the engine must:
+      1. Calculate architectural IPC throughput multiplier (e.g. $\sim 1.20\times$ for Granite Rapids Redwood Cove vs. Cascade Lake), verifying that effective per-core throughput meets or exceeds legacy baseline.
+      2. Identify Intel Speed Select (SST-CP) / AMD cTDP profiles (e.g. 6530P Compute Mode profile operating at 2.8 GHz base clock @ 225W).
+      3. Identify strict-parity alternatives (e.g. Xeon 6738P `P74577-B21` at 2.9 GHz base, 144MB L3, 270W) and calculate the financial delta (+\$188,550 USD list price across 9 servers).
+    - *L3 Cache Preservation Gate*: In AMD EPYC platforms, transitioning from full-CCD Milan (EPYC 7543, 8 CCDs, 256MB L3) to half-CCD Genoa (EPYC 9334, 4 CCDs, 128MB L3) cuts L3 cache by 50%. This attribute reduction directly affects memory-latency and database workloads. The engine must flag this trade-off explicitly and propose the full-cache equivalent (EPYC 9354 `P53701-B21`, 8 CCDs, 256MB L3, 3.25 GHz base, 280W) with its commercial delta (+\$33,820 USD across 10 servers).
+  - **Memory Channel Symmetry & Interleaving Invariant**:
+    - On 8-channel processor platforms (Intel Xeon 6 Birch Stream, AMD EPYC 9004 Genoa/Bergamo), dual-socket architectures contain 16 physical memory channels.
+    - Symmetrical memory population strictly mandates $N_{\text{DIMM}} \in \{8, 16\}$ per socket ($16$ or $32$ per dual-socket server).
+    - Legacy 6-channel capacities (such as 1,152 GB achieved via 12x 64GB + 12x 32GB on Gen10) cannot be populated with 12 DIMMs on Gen11/Gen12 without leaving 2 channels empty per socket, causing an asymmetric memory channel imbalance and a ~25% throughput penalty.
+    - The engine must reject asymmetric populations and present symmetrical alternatives:
+      - *Option A (Recommended 1DPC Performance)*: $16 \times 96\text{GB} = 1,536\text{ GB}$ (1.5 TB) using `P69729-F21` at full 6400 MT/s bus clock, leaving 16 slots open.
+      - *Option B (2DPC Density)*: $32 \times 64\text{GB} = 2,048\text{ GB}$ (2.0 TB) using `P69728-F21` at 6000 MT/s.
+      - *Option C (CapEx Optimized Baseline)*: $16 \times 64\text{GB} = 1,024\text{ GB}$ (1.0 TB) using `P69728-F21` at 6400 MT/s, documenting the 128GB delta against workload footprint.
+  - **Dual-Track Presales Strategy & Transparent Trade-Off Disclosure**:
+    - Whenever a modernization involves cost versus attribute trade-offs, the engine must never make silent compromises. It must synthesize two transparent commercial tracks:
+      - **Track 1 (Value-Engineered Modernization)**: CapEx-optimized, modern architecture with generational IPC gains (e.g. 6530P with SST-CP + EPYC 9334 + 1,024GB RAM). Explicitly highlights compromises (128MB L3 cache, 1,024GB RAM) and the CapEx savings.
+      - **Track 2 (Strict Specification Parity / Max Performance)**: Guarantees zero attribute regressions (e.g. 6738P + EPYC 9354 + 1,536GB RAM).
+    - Highlighting these trade-offs arms presales architects with clear technical and financial reasoning to lead transparent negotiations with customer stakeholders.
+
+
 
 
 

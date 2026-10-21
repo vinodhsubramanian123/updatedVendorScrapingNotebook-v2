@@ -13,35 +13,37 @@ const exportPath = path.join(downloadsDir, 'HPE_ProLiant_Partner_BOM_Req1_Req2.x
 
 const config1Items = [
   { sku: 'P73282-B21', perNodeQty: 1, nodeMult: 9, description: 'HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-order Server', unitPrice: 5584, role: 'Base Chassis', status: 'CLIC VALIDATED' },
-  { sku: 'P74571-B21', perNodeQty: 2, nodeMult: 9, description: 'Intel Xeon 6530P 2.3GHz 32-core 225W Processor for HPE', unitPrice: 6830, role: 'Processor', status: 'CLIC VALIDATED (Exceeds 28c 6258R)' },
-  { sku: 'P69728-F21', perNodeQty: 16, nodeMult: 9, description: 'HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 CAS-52 Registered Smart FIO Kit', unitPrice: 28532, role: 'Memory', status: 'CLIC VALIDATED (1,024 GB 1DPC)' },
-  { sku: 'R2E09A', perNodeQty: 1, nodeMult: 9, description: 'HPE SN1610Q 32Gb 2-port Fibre Channel Host Bus Adapter', unitPrice: 7410, role: 'FC HBA', status: 'CLIC VALIDATED (QLogic 32Gb Dual Port)' },
+  { sku: 'P74571-B21', perNodeQty: 2, nodeMult: 9, description: 'Intel Xeon 6530P 2.3GHz 32-core 225W Processor for HPE', unitPrice: 6830, role: 'Processor', status: 'CLIC VALIDATED (Exceeds 28c 6258R via +22% IPC)' },
+  { sku: 'P69728-F21', perNodeQty: 16, nodeMult: 9, description: 'HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 CAS-52 Registered Smart FIO Kit', unitPrice: 28532, role: 'Memory', status: 'CLIC VALIDATED (1,024 GB 1DPC 6400 MT/s)' },
   { sku: 'P08443-B21', perNodeQty: 1, nodeMult: 9, description: 'Intel E810-XXVDA2 Ethernet 10/25Gb 2-port SFP28 Adapter for HPE', unitPrice: 1680, role: 'Network Adapter', status: 'CLIC VALIDATED (Intel E810 SFP28)' },
-  { sku: '873763-B21', perNodeQty: 1, nodeMult: 9, description: 'HPE ProLiant Compute DL380 No Drive Configuration FIO Kit', unitPrice: 14, role: 'Storage Bypass', status: 'CLIC VALIDATED (SAN Boot FIO Kit)' },
-  { sku: 'P74794-B21', perNodeQty: 1, nodeMult: 9, description: 'HPE ProLiant Compute DL380 Gen12 2U Max Performance Heat Sink Kit', unitPrice: 624, role: 'Thermal / Cooling', status: 'MANDATORY (2-pack for 2P >185W CPUs)' },
-  { sku: 'P48820-B21', perNodeQty: 1, nodeMult: 9, description: 'HPE ProLiant DL380/DL560 Gen11 2U High Performance Fan Kit', unitPrice: 972, role: 'Thermal / Cooling', status: 'MANDATORY (6 High-Perf Fans)' },
+  { sku: 'R2E09A', perNodeQty: 1, nodeMult: 9, description: 'HPE SN1610Q 32Gb 2-port Fibre Channel Host Bus Adapter', unitPrice: 7410, role: 'FC HBA', status: 'CLIC VALIDATED (QLogic 32Gb Dual Port)' },
   { sku: 'P03178-B21', perNodeQty: 2, nodeMult: 9, description: 'HPE 1000W Flex Slot Titanium Hot Plug Power Supply Kit', unitPrice: 926, role: 'Power Supply', status: 'CLIC VALIDATED (1+1 Redundant Titanium)' },
   { sku: 'P78145-B21', perNodeQty: 2, nodeMult: 9, description: 'HPE C13 - C14 250V 10Amp 2m FIO Power Cord', unitPrice: 11, role: 'Power Cord', status: 'MANDATORY FIO Power Cord' },
-  { sku: 'P79558-B21', perNodeQty: 1, nodeMult: 9, description: 'HPE ProLiant Compute 25C Maximum Recommended Ambient Temp Tracking', unitPrice: 1, role: 'Environmental', status: 'MANDATORY Ambient Tracking' },
+  { sku: 'P48820-B21', perNodeQty: 1, nodeMult: 9, description: 'HPE ProLiant DL380/DL560 Gen11 2U High Performance Fan Kit', unitPrice: 972, role: 'Thermal / Cooling', status: 'MANDATORY (6 High-Perf Fans)' },
+  { sku: '873763-B21', perNodeQty: 1, nodeMult: 9, description: 'HPE ProLiant Compute DL380 No Drive Configuration FIO Kit', unitPrice: 14, role: 'Storage Bypass', status: 'CLIC VALIDATED (SAN Boot FIO Kit)' },
+  { sku: 'P52341-B21', perNodeQty: 1, nodeMult: 9, description: 'HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit', unitPrice: 164, role: 'Rack Rails', status: 'CLIC VALIDATED Rail Kit' },
   { sku: 'P73325-B21', perNodeQty: 1, nodeMult: 9, description: 'HPE ProLiant Compute Localization FIO Kit', unitPrice: 4, role: 'Localization', status: 'MANDATORY Regional FIO Kit' },
-  { sku: 'HU4B2A3', perNodeQty: 1, nodeMult: 9, description: 'HPE 3 Year Tech Care Basic Service', unitPrice: 2420, role: 'Support Service', status: 'STANDARD 3Y Tech Care Support' },
-  { sku: 'R7A11AAE', perNodeQty: 1, nodeMult: 9, description: 'HPE Compute Ops Management Standard 3-year Upfront ProLiant SaaS', unitPrice: 450, role: 'Software License', status: 'MANDATORY CLIC Rule 81322276' }
+  { sku: 'P74794-B21', perNodeQty: 1, nodeMult: 9, description: 'HPE ProLiant Compute DL380 Gen12 2U Max Performance Heat Sink Kit', unitPrice: 624, role: 'Thermal / Cooling', status: 'MANDATORY (2-pack for 2P >185W CPUs)' },
+  { sku: 'P79558-B21', perNodeQty: 1, nodeMult: 9, description: 'HPE ProLiant Compute 25C Maximum Recommended Ambient Temp Tracking', unitPrice: 1, role: 'Environmental', status: 'MANDATORY Ambient Tracking' },
+  { sku: 'R7A11AAE', perNodeQty: 1, nodeMult: 9, description: 'HPE Compute Ops Management Standard 3-year Upfront ProLiant SaaS', unitPrice: 450, role: 'Software License', status: 'MANDATORY CLIC Rule 81322276' },
+  { sku: 'HU4B2A3', perNodeQty: 1, nodeMult: 9, description: 'HPE 3 Year Tech Care Basic Service (HU4B2A30C4V)', unitPrice: 5509, role: 'Support Service', status: 'CLIC VALIDATED 3Y Tech Care Basic' }
 ];
 
 const config2Items = [
-  { sku: 'P53921-B21', perNodeQty: 1, nodeMult: 10, description: 'HPE ProLiant DL385 Gen11 8SFF Configure-to-order Server', unitPrice: 2450, role: 'Base Chassis', status: 'CLIC VALIDATED' },
-  { sku: 'P53712-B21', perNodeQty: 2, nodeMult: 10, description: 'AMD EPYC 9334 2.7GHz 32-core 210W Processor for HPE', unitPrice: 7170, role: 'Processor', status: 'CLIC VALIDATED (Exceeds 32c EPYC 7543)' },
+  { sku: 'P53921-B21', perNodeQty: 1, nodeMult: 10, description: 'HPE ProLiant DL385 Gen11 8SFF Configure-to-order Server', unitPrice: 4403, role: 'Base Chassis', status: 'CLIC VALIDATED' },
+  { sku: 'P53712-B21', perNodeQty: 2, nodeMult: 10, description: 'AMD EPYC 9334 2.7GHz 32-core 210W Processor for HPE', unitPrice: 7170, role: 'Processor', status: 'CLIC VALIDATED (Zen 4 Architecture)' },
   { sku: 'P50312-F21', perNodeQty: 16, nodeMult: 10, description: 'HPE 64GB (1x64GB) Dual Rank x4 DDR5-4800 CAS-40 Registered Smart FIO Kit', unitPrice: 28532, role: 'Memory', status: 'CLIC VALIDATED (1,024 GB Exact Match)' },
+  { sku: 'P57890-B21', perNodeQty: 1, nodeMult: 10, description: 'HPE ProLiant DL385 Gen11 x16/x16 Primary FIO Upgrade Riser Kit', unitPrice: 772, role: 'PCIe Riser', status: 'MANDATORY Primary Riser' },
   { sku: 'R2E09A', perNodeQty: 1, nodeMult: 10, description: 'HPE SN1610Q 32Gb 2-port Fibre Channel Host Bus Adapter', unitPrice: 7410, role: 'FC HBA', status: 'CLIC VALIDATED (QLogic 32Gb Dual Port)' },
   { sku: 'P08443-B21', perNodeQty: 1, nodeMult: 10, description: 'Intel E810-XXVDA2 Ethernet 10/25Gb 2-port SFP28 Adapter for HPE', unitPrice: 1680, role: 'Network Adapter', status: 'CLIC VALIDATED (Intel E810 SFP28)' },
-  { sku: 'P58459-B21', perNodeQty: 2, nodeMult: 10, description: 'HPE ProLiant DL3X5 Gen11 2U Performance Heat Sink Kit', unitPrice: 256, role: 'Thermal / Cooling', status: 'MANDATORY (2x for 2P 210W CPUs)' },
-  { sku: 'P58465-B21', perNodeQty: 1, nodeMult: 10, description: 'HPE ProLiant DL3X5 Gen11 2U Performance Fan Kit', unitPrice: 160, role: 'Thermal / Cooling', status: 'CLIC VALIDATED (Performance Fan Kit, Future-Proof for NVMe/Cages)' },
-  { sku: 'P57890-B21', perNodeQty: 1, nodeMult: 10, description: 'HPE ProLiant DL385 Gen11 x16/x16 Primary FIO Upgrade Riser Kit', unitPrice: 772, role: 'PCIe Riser', status: 'MANDATORY Primary Riser' },
   { sku: 'P03178-B21', perNodeQty: 2, nodeMult: 10, description: 'HPE 1000W Flex Slot Titanium Hot Plug Power Supply Kit', unitPrice: 926, role: 'Power Supply', status: 'CLIC VALIDATED (1+1 Redundant Titanium)' },
   { sku: 'AF573A', perNodeQty: 2, nodeMult: 10, description: 'HPE C13 - C14 WW 250V 10Amp Flint Gray 2.0m Jumper Cord', unitPrice: 38, role: 'Power Cord', status: 'Power Cords' },
   { sku: 'P57886-B21', perNodeQty: 1, nodeMult: 10, description: 'HPE ProLiant DL385 Gen11 2U Standard/Performance FIO Air Baffle Kit', unitPrice: 41, role: 'Air Baffle', status: 'MANDATORY Air Baffle FIO' },
-  { sku: 'HU4B2A3', perNodeQty: 1, nodeMult: 10, description: 'HPE 3 Year Tech Care Basic Service', unitPrice: 2380, role: 'Support Service', status: 'STANDARD 3Y Tech Care Support' },
-  { sku: 'R7A11AAE', perNodeQty: 1, nodeMult: 10, description: 'HPE Compute Ops Management Standard 3-year Upfront ProLiant SaaS', unitPrice: 450, role: 'Software License', status: 'MANDATORY CLIC Rule 81322276' }
+  { sku: 'P58465-B21', perNodeQty: 6, nodeMult: 10, description: 'HPE ProLiant DL3X5 Gen11 2U Performance Fan Kit', unitPrice: 160, role: 'Thermal / Cooling', status: 'CLIC VALIDATED (6 Modules per 2P Node)' },
+  { sku: 'P52351-B21', perNodeQty: 1, nodeMult: 10, description: 'HPE DL3XX Gen11 Easy Install Rail 2 Kit', unitPrice: 141, role: 'Rack Rails', status: 'CLIC VALIDATED Rail Kit' },
+  { sku: 'P58459-B21', perNodeQty: 2, nodeMult: 10, description: 'HPE ProLiant DL3X5 Gen11 2U Performance Heat Sink Kit', unitPrice: 256, role: 'Thermal / Cooling', status: 'MANDATORY (2x for 2P 210W CPUs)' },
+  { sku: 'R7A11AAE', perNodeQty: 1, nodeMult: 10, description: 'HPE Compute Ops Management Standard 3-year Upfront ProLiant SaaS', unitPrice: 450, role: 'Software License', status: 'MANDATORY CLIC Rule 81322276' },
+  { sku: 'HU4B2A3', perNodeQty: 1, nodeMult: 10, description: 'HPE 3 Year Tech Care Basic Service (HU4B2A300DH)', unitPrice: 3863, role: 'Support Service', status: 'CLIC VALIDATED 3Y Tech Care Basic' }
 ];
 
 const wb = XLSX.utils.book_new();
@@ -184,7 +186,15 @@ const summaryRows = [
   ['GEMINI NOTEBOOKLM GROUNDED KNOWLEDGE VERIFICATION'],
   ['Verification Target', 'DL380 Gen12 (Notebook ID: 1d190853-4e9c-48df-aa70-eae66c6f2c1f)', 'DL385 Gen11 (Notebook ID: 52364fcf-acc3-442f-b4ff-f911053d45d2)'],
   ['Grounded Verdict', 'VERIFIED & BUILDABLE WITH CO-REQUISITES', 'VERIFIED & BUILDABLE WITH CO-REQUISITES'],
-  ['Citations', 'QuickSpecs Doc 6eb52606; Catalog Rules 62e5d153', 'QuickSpecs Doc c5a15ab8; Catalog Rules c9e240aa']
+  ['Citations', 'QuickSpecs Doc 6eb52606; Catalog Rules 62e5d153', 'QuickSpecs Doc c5a15ab8; Catalog Rules c9e240aa'],
+  [],
+  ['DUAL-TRACK PRESALES MODERNIZATION & NEGOTIATION MATRIX (INV-184)'],
+  ['Platform / Dimension', 'Track 1: Value-Engineered Modernization (Proposed)', 'Track 2: Strict Parity / Max Performance (Alternative)', 'Negotiation Talking Points & Strategic Rationale'],
+  ['Req 1: Intel CPU', '2x Xeon 6530P (32c, 2.3GHz base / 4.1GHz turbo, 144MB L3, 225W)', '2x Xeon 6738P (32c, 2.9GHz base / 4.2GHz turbo, 144MB L3, 270W)', '+22% IPC on 6530P exceeds 6258R throughput; Intel SST-CP unlocks 2.8GHz Compute Mode. Upgrading to 6738P costs +$188,550 list across 9 nodes.'],
+  ['Req 1: Intel RAM', '1,024 GB (16x 64GB DDR5-6400 1DPC @ 6400 MT/s)', '1,536 GB (16x 96GB DDR5-6400 1DPC @ 6400 MT/s)', '12x 96GB (1,152GB) is invalid on 8-channel bus (leaves 2 channels empty/CPU). 1,024GB is CapEx sweetspot (-128GB delta); 1,536GB provides full 1.5TB capacity (+384GB).'],
+  ['Req 2: AMD CPU', '2x EPYC 9334 (32c, 2.7GHz base / 3.9GHz boost, 128MB L3, 210W)', '2x EPYC 9354 (32c, 3.25GHz base / 3.8GHz boost, 256MB L3, 280W)', '9334 halves L3 to 128MB to minimize CapEx. EPYC 9354 restores full 256MB L3 + 3.25GHz base for +$33,820 list across 10 nodes (chassis cooling already qualified for 280W).'],
+  ['Req 2: AMD RAM', '1,024 GB (16x 64GB DDR5-4800 1DPC balanced)', '1,024 GB (16x 64GB DDR5-4800 1DPC balanced)', 'Exact match with customer specification. Symmetrical 8-channel interleave per socket.'],
+  ['Commercial Delta', 'Total Solution: $9,380,242.00 USD (Current Cleaned Baseline)', 'Total Solution: $9,602,612.00 USD (+$222,370 USD list)', 'Highlighting attribute trade-offs allows transparent customer negotiation between acquisition CapEx and strict physical parity.']
 ];
 
 const wsSummary = XLSX.utils.aoa_to_sheet(summaryRows);

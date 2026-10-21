@@ -666,5 +666,41 @@
     "source": "docs/audits/2026-09-30-scraping-independent-review.md",
     "procedure": "docs/RUNTIME_CONDITIONAL_DISCOVERY.md",
     "hardwareCompatibilityCertified": false
+  },
+  {
+    "deltaId": "DELTA_DL380_GEN12_CPU_PARITY_AND_SST_CP_LEARNING",
+    "timestamp": "2026-10-21T16:06:49.756Z",
+    "chassis": "DL380_Gen12",
+    "vendor": "HPE",
+    "pillar": "SERVER",
+    "family": "ProLiant",
+    "generation": "Gen12",
+    "productId": "DL380_Gen12",
+    "affectedSku": "P74571-B21",
+    "requiredDependencySku": "P74577-B21",
+    "ruleType": "PROCESSOR_ARCHITECTURAL_MATCH_STRATEGY",
+    "ruleUpdate": "When modernizing Cascade Lake Xeon Gold 6258R (28c, 2.7GHz, 38.5MB L3, 205W), Xeon 6530P (32c, 2.3GHz, 144MB L3, 225W, ,830 USD) provides superior per-core IPC (+22%) and total throughput, with Intel Speed Select (SST-CP) supporting 2.8GHz Compute Mode. If customer mandates strict base clock >=2.7GHz without BIOS profile dependencies, Xeon 6738P (32c, 2.9GHz, 144MB L3, 270W, ,305 USD) provides strict numerical parity (+188.5k USD delta across 9 servers). Evaluator must present both tracks with transparent trade-offs for customer negotiation (INV-184).",
+    "rawMessage": "DL380 Gen12 CPU Parity & Intel Speed Select (SST-CP) Compute Mode Dual-Track Strategy (INV-184).",
+    "provenance": "INV-184 and Intel Xeon 6 Processor Specification",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "status": "APPLIED_TO_PRECHECKS_AND_RAG"
+  },
+  {
+    "deltaId": "DELTA_DL380_GEN12_MEMORY_SYMMETRICAL_CHANNEL_LEARNING",
+    "timestamp": "2026-10-21T16:06:49.773Z",
+    "chassis": "DL380_Gen12",
+    "vendor": "HPE",
+    "pillar": "SERVER",
+    "family": "ProLiant",
+    "generation": "Gen12",
+    "productId": "DL380_Gen12",
+    "affectedSku": "P69728-F21",
+    "requiredDependencySku": "P69729-F21",
+    "ruleType": "MEMORY_CHANNEL_POPULATION_STRATEGY",
+    "ruleUpdate": "On Intel Xeon 6 (8 memory channels per CPU, 16 channels dual socket), legacy 6-channel memory capacities (such as 1,152 GB achieved via 12x 64GB + 12x 32GB on Gen10) cannot be satisfied with 12 DIMMs without leaving 2 channels unpopulated per CPU and suffering a 25% throughput penalty. Symmetrical population mandates 16 DIMMs (1DPC) or 32 DIMMs (2DPC). Present 1,536 GB (16x 96GB P69729-F21 @ 6400 MT/s) for full 1DPC capacity surplus, or 1,024 GB (16x 64GB P69728-F21 @ 6400 MT/s) for CapEx optimization with documented 128GB delta (INV-184).",
+    "rawMessage": "DL380 Gen12 8-Channel Symmetrical Memory Interleaving Invariant (INV-184). Rejects 12-DIMM asymmetric populations and proposes 16x 96GB (1,536GB 1DPC) or 16x 64GB (1,024GB 1DPC).",
+    "provenance": "INV-184 and DL380 Gen12 QuickSpecs",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "status": "APPLIED_TO_PRECHECKS_AND_RAG"
   }
 ]
