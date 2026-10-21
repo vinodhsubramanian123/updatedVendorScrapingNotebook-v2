@@ -975,17 +975,25 @@ To ensure that future AI agents (Antigravity, Codex, Claude, or subagents) never
   - **Break-Fix Warranty vs Implementation Decoupling**: Ongoing hardware maintenance (`HU4B2A3` 3Y Tech Care Basic, \$46,156.00 per 12-node frame decomposed across Frame, Composers, Interconnects, and Compute) and one-time Day-1 implementation (`HA124A1`) are independent operational tiers. Quoting both does not duplicate coverage.
   - **Remote vs Onsite Delivery Mutual Exclusion**: Remote Startup (`HA124A1#V0F`) and Onsite Startup (`HA124A1#5ZM`) are mutually exclusive. Quoting both on the same frame cluster produces a Statement of Work (SOW) delivery scope conflict and triggers CLIC rejection.
 
-- **INV-183: AMD DL3X5 Gen11 Individual Fan Module Granularity & Thermal Envelope Invariant**:
-  - **Platform Packaging Granularity (Intel vs AMD)**:
-    - On Intel ProLiant platforms (DL380 Gen11/Gen12), cooling fans are packaged as a single pre-bundled box kit SKU (`P48820-B21` High Performance Fan Kit) ordered with Quantity 1, which physically delivers all 6 dual-rotor fan modules for the 2U chassis.
-    - On AMD ProLiant platforms (DL385 Gen11 / DL3X5 Gen11), the fan SKUs (`P58464-B21` Standard Fan Kit and `P58465-B21` Performance Fan Kit) are ordered as **individual fan modules** (\$157.00 USD each).
-  - **Socket-Based Fan Scaling**:
-    - Single-socket (1P) DL385 Gen11 configurations require exactly 4 fans ($4\times \$157.00 = \$628.00$).
-    - Dual-socket (2P) DL385 Gen11 configurations require exactly **6 fans** ($6\times \$157.00 = \$942.00$). In live OCA, selecting a dual-processor configuration automatically populates `P58464-B21` with Quantity 6.
-  - **AMD Thermal Dissipation Envelopes**:
-    - For standard 8SFF chassis configurations with dual AMD EPYC 9334 (210W) and standard PCIe networking/HBAs, OCA and CLIC validate $6\times$ `P58464-B21` (Standard Fan Kit) paired with $2\times$ `P58459-B21` (Performance Heat Sinks) and $1\times$ `P57886-B21` (Air Baffle) with **zero thermal errors**.
-    - Performance Fan Kit (`P58465-B21`) is reserved for ultra-high TDP CPUs (>240W/280W/360W), 24SFF/48SFF high-density drive arrays, or PCIe accelerators/GPUs.
-  - **Presales Guardrail**: Never transpose Intel 185W fan bundling rules onto AMD DL3X5 platforms. Always quote $6\times$ `P58464-B21` for 2P AMD configurations within the standard thermal envelope.
+- **INV-183: AMD DL3X5 Gen11 Fan Packaging, Thermal Envelope & Presales Best Practice Invariant**:
+  - **Platform Packaging Granularity (Standard vs Performance Kits)**:
+    - On AMD ProLiant platforms (DL385 Gen11 / DL3X5 Gen11), the fan options exhibit differing catalog packaging structures:
+      - `P58464-B21` (*Standard Fan Kit*, \$157.00 USD) is ordered as **individual fan modules** (4 fans for 1P = \$628.00; 6 fans for 2P = \$942.00). In live OCA, selecting a dual-processor configuration with standard fans automatically populates `P58464-B21` with Quantity 6.
+      - `P58465-B21` (*Performance Fan Kit*, \$160.00 USD) is packaged under the `High Performance & Standard Fan Kits` category as a **complete chassis kit** containing all 6 high-CFM dual-rotor fan modules, enforced by OCA gating rule `RULE_25` / `TEXT_63` with constraint `maxQty: 1` per server model.
+    - **Mutual Exclusion (`RULE_25` / `TEXT_63`)**: Standard and Performance fans cannot be mixed in the same chassis. Selecting `P58465-B21` automatically replaces `P58464-B21`.
+  - **Mandatory Air Baffle Kit (`P57886-B21`)**:
+    - `P57886-B21` (*HPE ProLiant DL385 Gen11 2U Standard/Performance FIO Air Baffle Kit*, \$41.00 USD, Qty 1) is physically and logically mandatory for all air-cooled CTO builds. It seals the compartment between the fan wall and rear I/O, routing high-velocity airflow over the dual CPU heatsinks and memory DIMMs. Removing it causes thermal hotspots and triggers CLIC buildability rejection.
+  - **Thermal Dissipation Envelopes & OCA Ground Truth**:
+    - In standard 8SFF chassis configurations with dual AMD EPYC 9334 (210W) and standard PCIe networking/HBAs, pairing with $2\times$ `P58459-B21` (Performance Heat Sinks) and $1\times$ `P57886-B21` (Air Baffle) allows $6\times$ `P58464-B21` (Standard Fans) to validate in live OCA with zero errors because the performance heatsinks expand heat dissipation surface area.
+  - **Presales Strategy & Customer BYOD Best Practice**:
+    - Whenever a customer's specific drive media (e.g. Bring-Your-Own-Disk NVMe U.2/U.3 SSDs), cage expansions (expanding from 8SFF to 16SFF/24SFF), or higher ambient operating temperatures ($\ge 30^\circ\text{C}$) are unspecified or ambiguous, quoting **`1x P58465-B21` (Performance Fan Kit)** is the mandatory architectural best practice.
+    - **Key Rationale**:
+      1. *NVMe Thermal Demands*: NVMe SSDs dissipate 14W–25W each and require high static pressure to prevent controller thermal throttling. Standard fans will quickly reach their thermal ceiling.
+      2. *Commercial Efficiency*: In OCA, `P58465-B21` lists at \$160.00 total for the complete kit, compared to \$942.00 for 6x individual `P58464-B21` modules, saving \$782.00 list price per server while providing superior cooling.
+      3. *Zero Field Downtime*: Upgrading fan modules post-shipment requires ordering option kits, field dispatch, and maintenance downtime. Including Performance Fans factory-integrated eliminates future field retrofit friction.
+  - **CLIC Rule 81322276 Mandate (NPI CTO COM SaaS Attachment)**:
+    - All Gen11/Gen12 NPI CTO base chassis (`P53921-B21`, `P73282-B21`) strictly require at least 1 Compute Ops Management SaaS license (base SKU `R7A11AAE` 3Y Upfront SaaS, \$450.00 USD) per server. Omitting it triggers CLIC Rule 81322276 `PROCESS CONTROL CONFIGURATION: OVERRIDE REQUIRES APPROVAL` and blocks quote export.
+
 
 
 

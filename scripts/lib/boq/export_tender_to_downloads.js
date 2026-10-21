@@ -35,7 +35,7 @@ const config2Items = [
   { sku: 'R2E09A', perNodeQty: 1, nodeMult: 10, description: 'HPE SN1610Q 32Gb 2-port Fibre Channel Host Bus Adapter', unitPrice: 7410, role: 'FC HBA', status: 'CLIC VALIDATED (QLogic 32Gb Dual Port)' },
   { sku: 'P08443-B21', perNodeQty: 1, nodeMult: 10, description: 'Intel E810-XXVDA2 Ethernet 10/25Gb 2-port SFP28 Adapter for HPE', unitPrice: 1680, role: 'Network Adapter', status: 'CLIC VALIDATED (Intel E810 SFP28)' },
   { sku: 'P58459-B21', perNodeQty: 2, nodeMult: 10, description: 'HPE ProLiant DL3X5 Gen11 2U Performance Heat Sink Kit', unitPrice: 256, role: 'Thermal / Cooling', status: 'MANDATORY (2x for 2P 210W CPUs)' },
-  { sku: 'P58464-B21', perNodeQty: 6, nodeMult: 10, description: 'HPE ProLiant DL3X5 Gen11 2U Standard Fan Kit', unitPrice: 157, role: 'Thermal / Cooling', status: 'CLIC VALIDATED (6 Fans for 2P Layout)' },
+  { sku: 'P58465-B21', perNodeQty: 1, nodeMult: 10, description: 'HPE ProLiant DL3X5 Gen11 2U Performance Fan Kit', unitPrice: 160, role: 'Thermal / Cooling', status: 'CLIC VALIDATED (Performance Fan Kit, Future-Proof for NVMe/Cages)' },
   { sku: 'P57890-B21', perNodeQty: 1, nodeMult: 10, description: 'HPE ProLiant DL385 Gen11 x16/x16 Primary FIO Upgrade Riser Kit', unitPrice: 772, role: 'PCIe Riser', status: 'MANDATORY Primary Riser' },
   { sku: 'P03178-B21', perNodeQty: 2, nodeMult: 10, description: 'HPE 1000W Flex Slot Titanium Hot Plug Power Supply Kit', unitPrice: 926, role: 'Power Supply', status: 'CLIC VALIDATED (1+1 Redundant Titanium)' },
   { sku: 'AF573A', perNodeQty: 2, nodeMult: 10, description: 'HPE C13 - C14 WW 250V 10Amp Flint Gray 2.0m Jumper Cord', unitPrice: 38, role: 'Power Cord', status: 'Power Cords' },
@@ -314,3 +314,32 @@ try {
 }
 console.log('SUCCESS: Generated export workbook at:', targetPath);
 console.log('File size:', fs.statSync(targetPath).size, 'bytes');
+
+// Synchronize customer tender sheet 9N_Dl380_Dl385_10N.xlsx with P58465-B21 and R7A11AAE
+const tenderPath = path.join(downloadsDir, '9N_Dl380_Dl385_10N.xlsx');
+if (fs.existsSync(tenderPath)) {
+  try {
+    const tenderWb = XLSX.readFile(tenderPath);
+    const ws = tenderWb.Sheets['Sheet1'] || tenderWb.Sheets[tenderWb.SheetNames[0]];
+    const rows = XLSX.utils.sheet_to_json(ws, { header: 1 });
+    
+    // Find DL385 fan row and replace with P58465-B21 Qty 1
+    let fanUpdated = false;
+    for (let i = 0; i < rows.length; i++) {
+      if (rows[i] && (rows[i][1] === 'P58464-B21' || rows[i][1] === 'P58465-B21')) {
+        rows[i] = [1, 'P58465-B21', 'HPE ProLiant DL3X5 Gen11 2U Performance Fan Kit'];
+        fanUpdated = true;
+        break;
+      }
+    }
+    if (fanUpdated) {
+      const updatedWs = XLSX.utils.aoa_to_sheet(rows);
+      tenderWb.Sheets['Sheet1'] = updatedWs;
+      XLSX.writeFile(tenderWb, tenderPath);
+      console.log(`✅ Synchronized ${tenderPath} with 1x P58465-B21 Performance Fan Kit.`);
+    }
+  } catch (err) {
+    console.warn(`⚠️ Note: Could not update ${tenderPath} directly: ${err.message}`);
+  }
+}
+

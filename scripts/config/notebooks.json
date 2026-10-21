@@ -588,14 +588,13 @@
       "queryEnabled": true,
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
-      "lastSyncedAt": "2026-10-21T09:30:00.458Z",
-      "lastSyncDeltaCount": 9,
+      "lastSyncedAt": "2026-10-21T12:30:11.328Z",
+      "lastSyncDeltaCount": 12,
       "cloudSyncState": "VERIFIED",
       "lastSyncError": null,
       "lastSyncedSourceName": "DL385_Gen11_OCA_Catalog_2026-10-21",
       "trustedSourceIds": [
-        "c9e240aa-9030-44cc-b463-f68862d71463",
-        "7ab0fa77-e619-4956-9a39-deff777e34d0"
+        "348e2d0a-da0f-49c5-811b-9b7beca8cf77"
       ],
       "lastCatalogSha256": "d72d63ad04e901fbd97aeb217596a06d227145d05f463913ea5a2066c9baf6a2",
       "lastArtifactHashes": {
@@ -605,14 +604,13 @@
         "OCA_Catalog.xlsx": "9ff2d60527ec4a04cdf176356e1907502d95bb76c15919e379e9dd07600a3e61"
       },
       "canonicalKnowledgeSourceIds": [
-        "c9e240aa-9030-44cc-b463-f68862d71463",
-        "7ab0fa77-e619-4956-9a39-deff777e34d0"
+        "348e2d0a-da0f-49c5-811b-9b7beca8cf77"
       ],
       "certifiedCatalogSourceIds": [
-        "c9e240aa-9030-44cc-b463-f68862d71463"
+        "348e2d0a-da0f-49c5-811b-9b7beca8cf77"
       ],
-      "lastPayloadChecksum": "918746ba9fc7127b3d6148a72c7e33a0e4f37575f0d838de5fdbb851d928020b",
-      "lastSyncedSourceId": "c9e240aa-9030-44cc-b463-f68862d71463",
+      "lastPayloadChecksum": "1ef4eb67db1bba611b54e768b5cbd11eefad66d9d26e10c0b59c6cea1f833999",
+      "lastSyncedSourceId": "348e2d0a-da0f-49c5-811b-9b7beca8cf77",
       "runningKnowledgeSourceId": "7ab0fa77-e619-4956-9a39-deff777e34d0",
       "runningKnowledgeVerifiedRevision": "af53da2fed206d08cdf117ffea898d49a6987062a6bb952e26b87dd5ec795aa3",
       "runningKnowledgeVerifiedAt": "2026-10-21T09:31:14.628Z",
@@ -622,7 +620,8 @@
         "changes": "3330bd5516c15b3f642bcd8cfa798a1aa77fd5668d7aa39f4d7730870e85a6bc",
         "workbook": "c56a143b655f8eef28b4bce4217664036a78688a8cdab2e1953b84cce70ab7ef",
         "combined": "15b188447153c6feb52d2970e50c1392307f2ae2e911b38f56fd2367ff16232e"
-      }
+      },
+      "lastSyncAttemptAt": "2026-10-21T12:27:13.855Z"
     }
   },
   "runningKnowledgeDoc": {
