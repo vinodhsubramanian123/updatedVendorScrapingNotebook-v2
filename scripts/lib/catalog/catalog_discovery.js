@@ -36,6 +36,7 @@ function getChassisMap() {
     "DL380a_Gen12": { "family": "ProLiant", "gen": "Gen12", "formFactor": "8DW/16SW", "uHeight": 4, "baseSku": "P76706-B21", "model": "DL380a Gen12" },
     "DL360_Gen11": { "family": "ProLiant", "gen": "Gen11", "formFactor": "8SFF", "uHeight": 1, "baseSku": "P52499-B21", "model": "DL360 Gen11 8SFF" },
     "DL145_Gen11": { "family": "ProLiant", "gen": "Gen11", "formFactor": "4EDSFF", "uHeight": 2, "baseSku": "P71964-B21", "model": "DL145 Gen11" },
+    "DL385_Gen11": { "family": "ProLiant", "gen": "Gen11", "formFactor": "8SFF", "uHeight": 2, "baseSku": "P53921-B21", "model": "DL385 Gen11" },
     "DL580_Gen12": { "family": "ProLiant", "gen": "Gen12", "formFactor": "SFF", "uHeight": 4, "baseSku": "P75399-B21", "model": "DL580 Gen12" },
     "SN3600B_FC": { "family": "SAN", "gen": "FC", "formFactor": "Switch", "uHeight": 1, "baseSku": "R7R97A", "model": "SN3600B FC Switch" },
     "SY480_Gen12": { "family": "Synergy", "gen": "Gen12", "formFactor": "Compute Module", "uHeight": 0, "baseSku": "P68217-B21", "model": "SY480 Gen12" }

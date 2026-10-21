@@ -4,7 +4,7 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen11/DL145_Gen11`
 
-**Sync Timestamp**: 2026-10-17T10:03:37.215Z
+**Sync Timestamp**: 2026-10-21T11:15:32.789Z
 
 **Total Verified SKUs**: `624` (`413` Hardware + `211` Services)
 
@@ -65,10 +65,75 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 *No discontinued or reinstated SKUs detected for DL145_Gen11. All cataloged SKUs are active.*
 
+### ⏳ Impending Obsolescence & Clearance Hardware (90-Day to 180-Day Window)
+
+*These components remain orderable in live configurators today but have published vendor end dates. They represent high-value clearance opportunities for immediate deployments, but require explicit procurement cutoff remarks before quotation:*
+
+| Product # | Description | Category | List Price (USD) | Discontinued Date | Price Trend | Presales Strategy Guidance |
+|---|---|---|---:|---|:---:|---|
+| `P61191-B21` | HPE 3.2TB NVMe Gen5 High Performance Mixed Use E3S EC1 EDSFF SPDM CM7 SSD | Drive Enclosures / Drives | $42,682 | 12/31/2026 | 0.00% | ⚠️ Approaching EOL (12/31/2026). Valid for immediate builds; verify multi-year roadmaps. |
+| `P69237-B21` | HPE 3.84TB NVMe Gen5 Mainstream Performance Read Intensive E3S EC1 CD8P SSD | Drive Enclosures / Drives | $30,682 | 11/30/2026 | 0.00% | ⚠️ Approaching EOL (11/30/2026). Valid for immediate builds; verify multi-year roadmaps. |
+| `P61179-B21` | HPE 3.84TB NVMe Gen5 High Performance Read Intensive E3S EC1 EDSFF SPDM CM7 SSD | Drive Enclosures / Drives | $47,029 | 12/31/2026 | 0.00% | ⚠️ Approaching EOL (12/31/2026). Valid for immediate builds; verify multi-year roadmaps. |
+| `P61183-B21` | HPE 7.68TB NVMe Gen5 High Performance Read Intensive E3S EC1 EDSFF SPDM CM7 SSD | Drive Enclosures / Drives | $75,784 | 12/31/2026 | 0.00% | ⚠️ Approaching EOL (12/31/2026). Valid for immediate builds; verify multi-year roadmaps. |
+| `P63930-B21` | HPE 3.84TB NVMe Gen4 Mainstream Performance Very Read Optimized E3S EC1 EDSFF P5430 SSD | Drive Enclosures / Drives | $29,188 | 12/31/2026 | 0.00% | ⚠️ Approaching EOL (12/31/2026). Valid for immediate builds; verify multi-year roadmaps. |
+| `P63934-B21` | HPE 7.68TB NVMe Gen4 Mainstream Performance Very Read Optimized E3S EC1 EDSFF P5430 SSD | Drive Enclosures / Drives | $49,219 | 12/31/2026 | 0.00% | ⚠️ Approaching EOL (12/31/2026). Valid for immediate builds; verify multi-year roadmaps. |
+| `P69234-B21` | HPE 1.92TB NVMe Gen5 Mainstream Performance Read Intensive E3S EC1 CD8P SSD | Drive Enclosures / Drives | $19,743 | 11/30/2026 | 0.00% | ⚠️ Approaching EOL (11/30/2026). Valid for immediate builds; verify multi-year roadmaps. |
+| `P69239-B21` | HPE 7.68TB NVMe Gen5 Mainstream Performance Read Intensive E3S EC1 CD8P SSD | Drive Enclosures / Drives | $44,109 | 11/30/2026 | 0.00% | ⚠️ Approaching EOL (11/30/2026). Valid for immediate builds; verify multi-year roadmaps. |
+| `P61187-B21` | HPE 15.36TB NVMe Gen5 High Performance Read Intensive E3S EC1 EDSFF SPDM CM7 SSD | Drive Enclosures / Drives | $1,18,842 | 12/31/2026 | 0.00% | ⚠️ Approaching EOL (12/31/2026). Valid for immediate builds; verify multi-year roadmaps. |
+| `P61195-B21` | HPE 6.4TB NVMe Gen5 High Performance Mixed Use E3S EC1 EDSFF SPDM CM7 SSD | Drive Enclosures / Drives | $60,093 | 12/31/2026 | 0.00% | ⚠️ Approaching EOL (12/31/2026). Valid for immediate builds; verify multi-year roadmaps. |
+| `P63938-B21` | HPE 15.36TB NVMe Gen4 Mainstream Performance Very Read Optimized E3S EC1 EDSFF P5430 SSD | Drive Enclosures / Drives | $96,543 | 12/31/2026 | 0.00% | ⚠️ Approaching EOL (12/31/2026). Valid for immediate builds; verify multi-year roadmaps. |
+| `P69241-B21` | HPE 1.6TB NVMe Gen5 Mainstream Performance Mixed Use E3S EC1 CD8P SSD | Drive Enclosures / Drives | $20,109 | 11/30/2026 | 0.00% | ⚠️ Approaching EOL (11/30/2026). Valid for immediate builds; verify multi-year roadmaps. |
+| `P69243-B21` | HPE 3.2TB NVMe Gen5 Mainstream Performance Mixed Use E3S EC1 CD8P SSD | Drive Enclosures / Drives | $27,452 | 11/30/2026 | 0.00% | ⚠️ Approaching EOL (11/30/2026). Valid for immediate builds; verify multi-year roadmaps. |
+| `P69245-B21` | HPE 6.4TB NVMe Gen5 Mainstream Performance Mixed Use E3S EC1 CD8P SSD | Drive Enclosures / Drives | $44,109 | 11/30/2026 | 0.00% | ⚠️ Approaching EOL (11/30/2026). Valid for immediate builds; verify multi-year roadmaps. |
+| `P69546-B21` | HPE 15.36TB NVMe Gen5 Mainstream Performance Read Intensive E3S EC1 CD8P SSD | Drive Enclosures / Drives | $75,476 | 11/30/2026 | 0.00% | ⚠️ Approaching EOL (11/30/2026). Valid for immediate builds; verify multi-year roadmaps. |
+| `P79065-B21` | HPE 30.72TB NVMe Gen4 Mainstream Performance Very Read Optimized E3S EC1 EDSFF P5430 SSD | Drive Enclosures / Drives | $1,80,169 | 12/31/2026 | 0.00% | ⚠️ Approaching EOL (12/31/2026). Valid for immediate builds; verify multi-year roadmaps. |
+| `P79615-B21` | HPE 30.72TB NVMe Gen5 Mainstream Performance Very Read Optimized E3.S EC1 EDSFF 6550 SSD | Drive Enclosures / Drives | $1,40,919 | 12/31/2026 | 0.00% | ⚠️ Approaching EOL (12/31/2026). Valid for immediate builds; verify multi-year roadmaps. |
+| `P79618-B21` | HPE 61.44TB NVMe Gen5 Mainstream Performance Very Read Optimized E3.S EC1 EDSFF 6550 SSD | Drive Enclosures / Drives | $2,84,757 | 12/31/2026 | 0.00% | ⚠️ Approaching EOL (12/31/2026). Valid for immediate builds; verify multi-year roadmaps. |
+| `P79620-B21` | HPE 30.72TB NVMe Gen5 Mainstream Performance Very Read Optimized EC1 EDSFF Self-encrypting 6550 SSD | Drive Enclosures / Drives | $1,40,919 | 12/31/2026 | 0.00% | ⚠️ Approaching EOL (12/31/2026). Valid for immediate builds; verify multi-year roadmaps. |
+| `P79623-B21` | HPE 61.44TB NVMe Gen5 Mainstream Performance Very Read Optimized EC1 EDSFF Self-encrypting 6550 SSD | Drive Enclosures / Drives | $2,55,131 | 12/31/2026 | 0.00% | ⚠️ Approaching EOL (12/31/2026). Valid for immediate builds; verify multi-year roadmaps. |
+| `R8V76A` | SUSE Linux Enterprise Server 1-2 Sockets Unlimited VM w/Live Patching 1-year 24x7 Flexible LTU | Software & Licenses | $0 | 01/04/2027 | 0.00% | ⚠️ Approaching EOL (01/04/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `R8V74A` | SUSE Linux Enterprise Server 1-2 Sockets Unlimited VM w/Live Patching 1-year 9x5 Flexible LTU | Software & Licenses | $0 | 01/04/2027 | 0.00% | ⚠️ Approaching EOL (01/04/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `R8V77A` | SUSE Linux Enterprise Server 1-2 Sockets Unlimited VM w/Live Patching 3-year 24x7 Flexible LTU | Software & Licenses | $0 | 01/04/2027 | 0.00% | ⚠️ Approaching EOL (01/04/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `R8V75A` | SUSE Linux Enterprise Server 1-2 Sockets Unlimited VM w/Live Patching 3-year 9x5 Flexible LTU | Software & Licenses | $0 | 01/04/2027 | 0.00% | ⚠️ Approaching EOL (01/04/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `R8V78A` | SUSE Linux Enterprise Server 1-2 Sockets Unlimited VM w/Live Patching 5-year 24x7 Flexible LTU | Software & Licenses | $0 | 01/04/2027 | 0.00% | ⚠️ Approaching EOL (01/04/2027). Valid for immediate builds; verify multi-year roadmaps. |
+*... [46 additional impending EOL records omitted for brevity]*
+
+## 📊 5b. Category-Level Trends & Significant Price Adjustments
+
+### Category Portfolio Delta & Planning Intelligence
+
+| Category | Total SKUs | Added | Modified | Unchanged | Clearance / Drops | Category Planning Insight |
+|---|---:|---:|---:|---:|---:|---|
+| **Chassis** | 1 | 0 | 1 | 0 | 0 | 🔄 Attributes/specifications updated (1 SKUs) |
+| **Accessories & Infrastructure** | 10 | 0 | 10 | 0 | 0 | 🔄 Attributes/specifications updated (10 SKUs) |
+| **Processor** | 19 | 0 | 19 | 0 | 0 | 🔄 Attributes/specifications updated (19 SKUs) |
+| **Cooling / Thermal** | 2 | 0 | 2 | 0 | 0 | 🔄 Attributes/specifications updated (2 SKUs) |
+| **Memory** | 20 | 0 | 20 | 0 | 0 | 🔄 Attributes/specifications updated (20 SKUs) |
+| **Storage Controllers** | 13 | 0 | 13 | 0 | 0 | 🔄 Attributes/specifications updated (13 SKUs) |
+| **Cables & Enablement Kits** | 31 | 1 | 30 | 0 | 0 | ✨ Portfolio expanding (+1 new options) |
+| **Drive Enclosures / Drives** | 108 | 0 | 108 | 0 | 0 | 🔄 Attributes/specifications updated (108 SKUs) |
+| **Factory Configuration Settings** | 1 | 0 | 1 | 0 | 0 | 🔄 Attributes/specifications updated (1 SKUs) |
+| **Software & Licenses** | 175 | 51 | 124 | 0 | 0 | ✨ Portfolio expanding (+51 new options) |
+| **PCIe Risers** | 2 | 0 | 2 | 0 | 0 | 🔄 Attributes/specifications updated (2 SKUs) |
+| **Networking** | 22 | 0 | 22 | 0 | 0 | 🔄 Attributes/specifications updated (22 SKUs) |
+| **Graphics & GPU** | 5 | 3 | 2 | 0 | 0 | ✨ Portfolio expanding (+3 new options) |
+| **Power Supplies** | 3 | 0 | 3 | 0 | 0 | 🔄 Attributes/specifications updated (3 SKUs) |
+| **HPE Compute Ops Management** | 1 | 1 | 0 | 0 | 0 | ✨ Portfolio expanding (+1 new options) |
+
 ## 🔄 5. Recent Attribute & Specification Modifications Log
 
 | Timestamp | SKU | Attribute | Old Value | New Value |
 |-----------|-----|-----------|-----------|-----------|
+| 2026-09-13 | `P46171-AA1` | Component Role |  | **Operating System / License** |
+| 2026-09-13 | `P46171-AB1` | Component Role |  | **Operating System / License** |
+| 2026-09-13 | `P46171-371` | Component Role |  | **Operating System / License** |
+| 2026-09-13 | `P46171-021` | Component Role |  | **Operating System / License** |
+| 2026-09-13 | `P46171-A21` | Component Role |  | **Operating System / License** |
+| 2026-09-13 | `P77103-AA1` | Component Role |  | **Operating System / License** |
+| 2026-09-13 | `P77103-AB1` | Component Role |  | **Operating System / License** |
+| 2026-09-13 | `P77103-291` | Component Role |  | **Operating System / License** |
+| 2026-09-13 | `P77103-021` | Component Role |  | **Operating System / License** |
+| 2026-09-13 | `P77103-A21` | Component Role |  | **Operating System / License** |
 | 2026-09-13 | `P77103-371` | Component Role |  | **Operating System / License** |
 | 2026-09-13 | `P77102-291` | Component Role |  | **Operating System / License** |
 | 2026-09-13 | `P77102-B21` | Component Role |  | **Operating System / License** |
@@ -90,4 +155,12 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 | Chassis Identifier | Product Family | Generation | Form Factor | CTO Base SKU |
 |--------------------|----------------|------------|-------------|--------------|
 | **DL145_Gen11** | ProLiant | Gen11 | 4EDSFF | `P71964-B21` |
+
+## ⏱️ 10. Supply Chain & Delivery Lead Time Intelligence
+
+### Confirmed Component Delivery SLAs
+
+| Product # | Description | Category | Lead Time | Channel Status |
+|---|---|---|---:|---|
+| `P71964-B21` | HPE ProLiant DL145 Gen11 Configure-to-order Server | Chassis | EDT 22 - 28 days | Available in OCA product catalog |
 

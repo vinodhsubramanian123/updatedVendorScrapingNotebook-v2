@@ -84,6 +84,7 @@ function getChassisCatalog(queryText = '', context = {}) {
   const PLATFORM_SIGNATURES = [
     { key: 'dl380a', pattern: /\b(?:dl\s*380a|dl380a)\b/i, prefix: 'dl380a_' },
     { key: 'dl380', pattern: /\b(?:dl\s*380|dl380)\b(?!a\b)/i, prefix: 'dl380_' },
+    { key: 'dl385', pattern: /\b(?:dl\s*385|dl385)\b/i, prefix: 'dl385_' },
     { key: 'dl360', pattern: /\b(?:dl\s*360|dl360)\b/i, prefix: 'dl360_' },
     { key: 'dl145', pattern: /\b(?:dl\s*145|dl145)\b/i, prefix: 'dl145_' },
     { key: 'dl580', pattern: /\b(?:dl\s*580|dl580)\b/i, prefix: 'dl580_' },

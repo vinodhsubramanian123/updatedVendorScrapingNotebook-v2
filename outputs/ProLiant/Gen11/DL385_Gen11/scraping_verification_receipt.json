@@ -1,0 +1,58 @@
+{
+  "verifiedAt": "2026-10-21T09:26:44.337Z",
+  "productId": "DL385_Gen11",
+  "family": "ProLiant",
+  "generation": "Gen11",
+  "preflight": {
+    "recordedAt": "2026-10-21T09:22:05.449Z",
+    "pass": true,
+    "product": {
+      "pass": true,
+      "productId": "DL385_Gen11",
+      "family": "ProLiant",
+      "generation": "Gen11",
+      "pillar": "SERVER",
+      "notebookId": "52364fcf-acc3-442f-b4ff-f911053d45d2",
+      "canonicalDriveEnabled": false,
+      "expectedWorkbookSheets": 24,
+      "requiredSheetsCount": 0
+    },
+    "notebookLm": {
+      "pass": true,
+      "status": "VERIFIED_HEALTHY"
+    },
+    "googleWorkspace": {
+      "pass": true,
+      "status": "VERIFIED_SCOPES",
+      "account": "vinodhsubramanian@gmail.com",
+      "hasSheetsScope": true,
+      "hasDriveScope": true
+    },
+    "vendorPolicy": {
+      "vendor": "HPE",
+      "anchorTabUrl": "https://partner.hpe.com/group/prp",
+      "handoffMechanism": "SAML_POST_NEW_TAB",
+      "allowInPlaceReload": false,
+      "recoveryProtocol": "CLOSE_CONFIG_TAB_RETURN_TO_TAB1_CLICK_QUICK_LINK"
+    }
+  },
+  "postflight": {
+    "pass": true,
+    "status": "VERIFIED",
+    "diffSummaryError": null,
+    "hwSkuCount": 667,
+    "serviceSkuCount": 734,
+    "totalSkuCount": 1401,
+    "conditionalSkusCount": 883,
+    "unavailableRulesCount": 33,
+    "diffSummaryPresent": true,
+    "diffCounts": {
+      "ADDED": 0,
+      "MODIFIED": 0,
+      "REMOVED": 0,
+      "DISCONTINUED": 0,
+      "UNCHANGED": 667
+    },
+    "cloudSyncState": "CLOUD_VERIFIED"
+  }
+}

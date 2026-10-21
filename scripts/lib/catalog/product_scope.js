@@ -48,6 +48,8 @@ const PRODUCT_ALIASES = {
   'dl380agen12': 'DL380a_Gen12',
   'dl145': 'DL145_Gen11',
   'dl145gen11': 'DL145_Gen11',
+  'dl385': 'DL385_Gen11',
+  'dl385gen11': 'DL385_Gen11',
   'dl580': 'DL580_Gen12',
   'dl580gen12': 'DL580_Gen12',
   'sy480': 'SY480_Gen12',

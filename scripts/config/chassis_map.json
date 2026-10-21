@@ -197,6 +197,22 @@
         }
       }
     },
+    "ProLiant_DL385_Gen11": {
+      "family": "ProLiant",
+      "gen": "Gen11",
+      "modelFamily": "DL385 Gen11",
+      "skus": {
+        "P53921-B21": {
+          "model": "DL385 Gen11 8SFF",
+          "formFactor": "8SFF",
+          "family": "ProLiant",
+          "gen": "Gen11",
+          "description": "HPE ProLiant DL385 Gen11 8SFF Configure-to-order Server",
+          "listPrice": 2450,
+          "optionType": "CTO"
+        }
+      }
+    },
     "Alletra_Storage": {
       "family": "Alletra",
       "gen": "Storage",
@@ -517,6 +533,15 @@
       "gen": "Gen11",
       "description": "HPE ProLiant DL145 Gen11 Configure-to-order Server",
       "listPrice": 2375,
+      "optionType": "CTO"
+    },
+    "P53921-B21": {
+      "model": "DL385 Gen11 8SFF",
+      "formFactor": "8SFF",
+      "family": "ProLiant",
+      "gen": "Gen11",
+      "description": "HPE ProLiant DL385 Gen11 8SFF Configure-to-order Server",
+      "listPrice": 2450,
       "optionType": "CTO"
     },
     "R0Q35A": {

@@ -4,7 +4,7 @@
 
 **Scope Identity**: `HPE/STORAGE/StoreEver/Tape/MSL3040_Tape`
 
-**Sync Timestamp**: 2026-10-17T10:03:42.923Z
+**Sync Timestamp**: 2026-10-21T11:15:50.030Z
 
 **Total Verified SKUs**: `232` (`141` Hardware + `91` Services)
 
@@ -48,50 +48,137 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 ## ⚠️ 4. Discontinued & Obsolete SKUs Registry
 
-| SKU | Description | Status | Discontinued Date | Last Known Price | Tracking | Retention |
-|-----|-------------|--------|-------------------|------------------|----------|-----------|
-| `C0H28A` | HPE StoreEver MSL LTO-6 Ultrium 6250 Fibre Channel Drive Upgrade Kit | **REINSTATED** | 2026-09-09 | $5300.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `C0H27A` | HPE StoreEver MSL LTO-6 Ultrium 6250 SAS Drive Upgrade Kit | **REINSTATED** | 2026-09-09 | $5100.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `N7P36A` | HPE StoreEver MSL LTO-7 Ultrium 15000 FC Drive Upgrade Kit | **REINSTATED** | 2026-09-09 | $9362.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `N7P37A` | HPE StoreEver MSL LTO-7 Ultrium 15000 SAS Drive Upgrade Kit | **REINSTATED** | 2026-09-09 | $9010.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `Q6Q67A` | HPE StoreEver MSL LTO-8 Ultrium 30750 FC Drive Upgrade Kit | **REINSTATED** | 2026-09-09 | $21600.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `Q6Q68A` | HPE StoreEver MSL LTO-8 Ultrium 30750 SAS Drive Upgrade Kit | **REINSTATED** | 2026-09-09 | $16800.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `R6Q74A` | HPE StoreEver MSL LTO-9 Ultrium 45000 Fibre Channel Drive Upgrade Kit | **REINSTATED** | 2026-09-09 | $33000.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `R6Q75A` | HPE StoreEver MSL LTO-9 Ultrium 45000 SAS Drive Upgrade Kit | **REINSTATED** | 2026-09-09 | $24000.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `AF570A` | HPE C13 - BS-1363A UK/HK/SG 250V 10Amp 1.83m Power Cord | **REINSTATED** | 2026-09-09 | $55.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `AF568A` | HPE C13 - CEE-VII EU 250V 10Amp 1.83m Power Cord | **REINSTATED** | 2026-09-09 | $71.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `AF557A` | HPE C13 - GB-1002 CN 250V 10Amp 1.83m Power Cord | **REINSTATED** | 2026-09-09 | $156.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `AF556A` | HPE C13 - Nema 5-15P US/CA 110V 10Amp 1.83m Power Cord | **REINSTATED** | 2026-09-09 | $55.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `AF569A` | HPE C13 - AS3112-3 AU 250V 10Amp 2.5m Power Cord | **REINSTATED** | 2026-09-09 | $65.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `142257-002` | HPE C13 - C14 WW 250V 10Amp 2.5m Jumper Cord | **REINSTATED** | 2026-09-09 | $34.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `AF561A` | HPE C13 - CNS-690 TW 110V 13Amp 1.83m Power Cord | **REINSTATED** | 2026-09-09 | $55.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `AF566A` | HPE C13 - DK-2.5A DK 250V 10Amp 1.83m Power Cord | **REINSTATED** | 2026-09-09 | $55.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `AF558A` | HPE C13 - IRAM -2073 AR 250V 10A 2.5m Power Cord | **REINSTATED** | 2026-09-09 | $65.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `AF562A` | HPE C13 - IS-1293 IN 240V 6Amp LV 2.0m Power Cord | **REINSTATED** | 2026-09-09 | $194.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `SG579A` | HPE C13 - IS-1293 IN 250V 10Amp HV 2.5m Power Cord | **REINSTATED** | 2026-09-09 | $142.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `AF572A` | HPE C13 - JIS C8303 JP 100V 12Amp 2.0m Power Cord | **REINSTATED** | 2026-09-09 | $60.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `AF560A` | HPE C13 - KSC- 8305 KR 250V 10Amp 1.83m Power Cord | **REINSTATED** | 2026-09-09 | $55.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `AF559A` | HPE C13 - Nema 5-15P TH/PH 250V 10Amp 1.83m Power Cord | **REINSTATED** | 2026-09-09 | $55.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `AF567A` | HPE C13 - SABS-164 ZA 250V 10Amp 2.5m Power Cord | **REINSTATED** | 2026-09-09 | $65.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `AF565A` | HPE C13 - SEV 1011 CH 250V 10Amp 1.83m Power Cord | **REINSTATED** | 2026-09-09 | $55.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `AF564A` | HPE C13 - SI-32 IL 250V 10Amp 1.83m Power Cord | **REINSTATED** | 2026-09-09 | $55.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `TC406A` | HPE StoreEver MSL Command View for Tape Libraries - TapeAssure Advanced LTU | **REINSTATED** | 2026-09-09 | $2500.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `Q8K96A` | HPE StoreEver MSL3040 High Availability LTO-6 Control Path Failover LTU | **REINSTATED** | 2026-09-09 | $3000.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `Q8K97A` | HPE StoreEver MSL3040 High Availability LTO-6 Data Path Failover LTU | **REINSTATED** | 2026-09-09 | $3000.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `Q8K98A` | HPE StoreEver MSL3040 KMIP Key Manager LTU | **REINSTATED** | 2026-09-09 | $6000.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `Q8L00A` | HPE StoreEver MSL3040 LTO-7+ Path Failover LTU | **REINSTATED** | 2026-09-09 | $6000.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `Q8K99A` | HPE StoreEver MSL3040 Secure Manager LTU | **REINSTATED** | 2026-09-09 | $2000.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `469776-715` | HPE Add Generic Packaging Kit | **REINSTATED** | 2026-09-09 | $1.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `HA453A1-001` | HPE FE Proliant Svr Pkg 3 SVC | **REINSTATED** | 2026-09-09 | $205.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `HA453A1-003` | HPE FE Multi-node Svr Pkg 3 SVC | **REINSTATED** | 2026-09-09 | $315.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `HA453A1-023` | HPE FE High End Storage Pkg 3 SVC | **REINSTATED** | 2026-09-09 | $384.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `ZU706A` | HPE Server Customization Package | **REINSTATED** | 2026-09-09 | $149.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `ZU723A` | HPE Customization Service | **REINSTATED** | 2026-09-09 | $110.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+### Fully Discontinued & Delisted SKUs
+
+| SKU | Description | Status | Discontinued Date | Last Known Price | Successor SKU | Tracking |
+|-----|-------------|--------|-------------------|------------------|---------------|----------|
+| `C0H28A` | HPE StoreEver MSL LTO-6 Ultrium 6250 Fibre Channel Drive Upgrade Kit | **REINSTATED** | 2026-09-09 | $5300.00 | None | STOPPED_AFTER_REMOVAL |
+| `C0H27A` | HPE StoreEver MSL LTO-6 Ultrium 6250 SAS Drive Upgrade Kit | **REINSTATED** | 2026-09-09 | $5100.00 | None | STOPPED_AFTER_REMOVAL |
+| `N7P36A` | HPE StoreEver MSL LTO-7 Ultrium 15000 FC Drive Upgrade Kit | **REINSTATED** | 2026-09-09 | $9362.00 | None | STOPPED_AFTER_REMOVAL |
+| `N7P37A` | HPE StoreEver MSL LTO-7 Ultrium 15000 SAS Drive Upgrade Kit | **REINSTATED** | 2026-09-09 | $9010.00 | None | STOPPED_AFTER_REMOVAL |
+| `Q6Q67A` | HPE StoreEver MSL LTO-8 Ultrium 30750 FC Drive Upgrade Kit | **REINSTATED** | 2026-09-09 | $21600.00 | None | STOPPED_AFTER_REMOVAL |
+| `Q6Q68A` | HPE StoreEver MSL LTO-8 Ultrium 30750 SAS Drive Upgrade Kit | **REINSTATED** | 2026-09-09 | $16800.00 | None | STOPPED_AFTER_REMOVAL |
+| `R6Q74A` | HPE StoreEver MSL LTO-9 Ultrium 45000 Fibre Channel Drive Upgrade Kit | **REINSTATED** | 2026-09-09 | $33000.00 | None | STOPPED_AFTER_REMOVAL |
+| `R6Q75A` | HPE StoreEver MSL LTO-9 Ultrium 45000 SAS Drive Upgrade Kit | **REINSTATED** | 2026-09-09 | $24000.00 | None | STOPPED_AFTER_REMOVAL |
+| `AF570A` | HPE C13 - BS-1363A UK/HK/SG 250V 10Amp 1.83m Power Cord | **REINSTATED** | 2026-09-09 | $55.00 | None | STOPPED_AFTER_REMOVAL |
+| `AF568A` | HPE C13 - CEE-VII EU 250V 10Amp 1.83m Power Cord | **REINSTATED** | 2026-09-09 | $71.00 | None | STOPPED_AFTER_REMOVAL |
+| `AF557A` | HPE C13 - GB-1002 CN 250V 10Amp 1.83m Power Cord | **REINSTATED** | 2026-09-09 | $156.00 | None | STOPPED_AFTER_REMOVAL |
+| `AF556A` | HPE C13 - Nema 5-15P US/CA 110V 10Amp 1.83m Power Cord | **REINSTATED** | 2026-09-09 | $55.00 | None | STOPPED_AFTER_REMOVAL |
+| `AF569A` | HPE C13 - AS3112-3 AU 250V 10Amp 2.5m Power Cord | **REINSTATED** | 2026-09-09 | $65.00 | None | STOPPED_AFTER_REMOVAL |
+| `142257-002` | HPE C13 - C14 WW 250V 10Amp 2.5m Jumper Cord | **REINSTATED** | 2026-09-09 | $34.00 | None | STOPPED_AFTER_REMOVAL |
+| `AF561A` | HPE C13 - CNS-690 TW 110V 13Amp 1.83m Power Cord | **REINSTATED** | 2026-09-09 | $55.00 | None | STOPPED_AFTER_REMOVAL |
+| `AF566A` | HPE C13 - DK-2.5A DK 250V 10Amp 1.83m Power Cord | **REINSTATED** | 2026-09-09 | $55.00 | None | STOPPED_AFTER_REMOVAL |
+| `AF558A` | HPE C13 - IRAM -2073 AR 250V 10A 2.5m Power Cord | **REINSTATED** | 2026-09-09 | $65.00 | None | STOPPED_AFTER_REMOVAL |
+| `AF562A` | HPE C13 - IS-1293 IN 240V 6Amp LV 2.0m Power Cord | **REINSTATED** | 2026-09-09 | $194.00 | None | STOPPED_AFTER_REMOVAL |
+| `SG579A` | HPE C13 - IS-1293 IN 250V 10Amp HV 2.5m Power Cord | **REINSTATED** | 2026-09-09 | $142.00 | None | STOPPED_AFTER_REMOVAL |
+| `AF572A` | HPE C13 - JIS C8303 JP 100V 12Amp 2.0m Power Cord | **REINSTATED** | 2026-09-09 | $60.00 | None | STOPPED_AFTER_REMOVAL |
+| `AF560A` | HPE C13 - KSC- 8305 KR 250V 10Amp 1.83m Power Cord | **REINSTATED** | 2026-09-09 | $55.00 | None | STOPPED_AFTER_REMOVAL |
+| `AF559A` | HPE C13 - Nema 5-15P TH/PH 250V 10Amp 1.83m Power Cord | **REINSTATED** | 2026-09-09 | $55.00 | None | STOPPED_AFTER_REMOVAL |
+| `AF567A` | HPE C13 - SABS-164 ZA 250V 10Amp 2.5m Power Cord | **REINSTATED** | 2026-09-09 | $65.00 | None | STOPPED_AFTER_REMOVAL |
+| `AF565A` | HPE C13 - SEV 1011 CH 250V 10Amp 1.83m Power Cord | **REINSTATED** | 2026-09-09 | $55.00 | None | STOPPED_AFTER_REMOVAL |
+| `AF564A` | HPE C13 - SI-32 IL 250V 10Amp 1.83m Power Cord | **REINSTATED** | 2026-09-09 | $55.00 | None | STOPPED_AFTER_REMOVAL |
+| `TC406A` | HPE StoreEver MSL Command View for Tape Libraries - TapeAssure Advanced LTU | **REINSTATED** | 2026-09-09 | $2500.00 | None | STOPPED_AFTER_REMOVAL |
+| `Q8K96A` | HPE StoreEver MSL3040 High Availability LTO-6 Control Path Failover LTU | **REINSTATED** | 2026-09-09 | $3000.00 | None | STOPPED_AFTER_REMOVAL |
+| `Q8K97A` | HPE StoreEver MSL3040 High Availability LTO-6 Data Path Failover LTU | **REINSTATED** | 2026-09-09 | $3000.00 | None | STOPPED_AFTER_REMOVAL |
+| `Q8K98A` | HPE StoreEver MSL3040 KMIP Key Manager LTU | **REINSTATED** | 2026-09-09 | $6000.00 | None | STOPPED_AFTER_REMOVAL |
+| `Q8L00A` | HPE StoreEver MSL3040 LTO-7+ Path Failover LTU | **REINSTATED** | 2026-09-09 | $6000.00 | None | STOPPED_AFTER_REMOVAL |
+| `Q8K99A` | HPE StoreEver MSL3040 Secure Manager LTU | **REINSTATED** | 2026-09-09 | $2000.00 | None | STOPPED_AFTER_REMOVAL |
+| `469776-715` | HPE Add Generic Packaging Kit | **REINSTATED** | 2026-09-09 | $1.00 | None | STOPPED_AFTER_REMOVAL |
+| `HA453A1-001` | HPE FE Proliant Svr Pkg 3 SVC | **REINSTATED** | 2026-09-09 | $205.00 | None | STOPPED_AFTER_REMOVAL |
+| `HA453A1-003` | HPE FE Multi-node Svr Pkg 3 SVC | **REINSTATED** | 2026-09-09 | $315.00 | None | STOPPED_AFTER_REMOVAL |
+| `HA453A1-023` | HPE FE High End Storage Pkg 3 SVC | **REINSTATED** | 2026-09-09 | $384.00 | None | STOPPED_AFTER_REMOVAL |
+| `ZU706A` | HPE Server Customization Package | **REINSTATED** | 2026-09-09 | $149.00 | None | STOPPED_AFTER_REMOVAL |
+| `ZU723A` | HPE Customization Service | **REINSTATED** | 2026-09-09 | $110.00 | None | STOPPED_AFTER_REMOVAL |
+
+### ⏳ Impending Obsolescence & Clearance Hardware (90-Day to 180-Day Window)
+
+*These components remain orderable in live configurators today but have published vendor end dates. They represent high-value clearance opportunities for immediate deployments, but require explicit procurement cutoff remarks before quotation:*
+
+| Product # | Description | Category | List Price (USD) | Discontinued Date | Price Trend | Presales Strategy Guidance |
+|---|---|---|---:|---|:---:|---|
+| `469776-715` | [REMOVED SKU] HPE Add Generic Packaging Kit | Accessories & Infrastructure | $1 | 2026-09-09 | 0.00% | ⚠️ Approaching EOL (2026-09-09). Valid for immediate builds; verify multi-year roadmaps. |
+| `HA453A1-001` | [REMOVED SKU] HPE FE Proliant Svr Pkg 3 SVC | Accessories & Infrastructure | $205 | 2026-09-09 | 0.00% | ⚠️ Approaching EOL (2026-09-09). Valid for immediate builds; verify multi-year roadmaps. |
+| `HA453A1-003` | [REMOVED SKU] HPE FE Multi-node Svr Pkg 3 SVC | Accessories & Infrastructure | $315 | 2026-09-09 | 0.00% | ⚠️ Approaching EOL (2026-09-09). Valid for immediate builds; verify multi-year roadmaps. |
+| `HA453A1-023` | [REMOVED SKU] HPE FE High End Storage Pkg 3 SVC | Accessories & Infrastructure | $384 | 2026-09-09 | 0.00% | ⚠️ Approaching EOL (2026-09-09). Valid for immediate builds; verify multi-year roadmaps. |
+| `ZU706A` | [REMOVED SKU] HPE Server Customization Package | Accessories & Infrastructure | $149 | 2026-09-09 | 0.00% | ⚠️ Approaching EOL (2026-09-09). Valid for immediate builds; verify multi-year roadmaps. |
+| `ZU723A` | [REMOVED SKU] HPE Customization Service | Accessories & Infrastructure | $110 | 2026-09-09 | 0.00% | ⚠️ Approaching EOL (2026-09-09). Valid for immediate builds; verify multi-year roadmaps. |
+| `AF570A` | [REMOVED SKU] HPE C13 - BS-1363A UK/HK/SG 250V 10Amp 1.83m Power Cord | Cables & Enablement Kits | $55 | 2026-09-09 | 0.00% | ⚠️ Approaching EOL (2026-09-09). Valid for immediate builds; verify multi-year roadmaps. |
+| `AF568A` | [REMOVED SKU] HPE C13 - CEE-VII EU 250V 10Amp 1.83m Power Cord | Cables & Enablement Kits | $71 | 2026-09-09 | 0.00% | ⚠️ Approaching EOL (2026-09-09). Valid for immediate builds; verify multi-year roadmaps. |
+| `AF557A` | [REMOVED SKU] HPE C13 - GB-1002 CN 250V 10Amp 1.83m Power Cord | Cables & Enablement Kits | $156 | 2026-09-09 | 0.00% | ⚠️ Approaching EOL (2026-09-09). Valid for immediate builds; verify multi-year roadmaps. |
+| `AF556A` | [REMOVED SKU] HPE C13 - Nema 5-15P US/CA 110V 10Amp 1.83m Power Cord | Cables & Enablement Kits | $55 | 2026-09-09 | 0.00% | ⚠️ Approaching EOL (2026-09-09). Valid for immediate builds; verify multi-year roadmaps. |
+| `AF569A` | [REMOVED SKU] HPE C13 - AS3112-3 AU 250V 10Amp 2.5m Power Cord | Cables & Enablement Kits | $65 | 2026-09-09 | 0.00% | ⚠️ Approaching EOL (2026-09-09). Valid for immediate builds; verify multi-year roadmaps. |
+| `142257-002` | [REMOVED SKU] HPE C13 - C14 WW 250V 10Amp 2.5m Jumper Cord | Cables & Enablement Kits | $34 | 2026-09-09 | 0.00% | ⚠️ Approaching EOL (2026-09-09). Valid for immediate builds; verify multi-year roadmaps. |
+| `AF561A` | [REMOVED SKU] HPE C13 - CNS-690 TW 110V 13Amp 1.83m Power Cord | Cables & Enablement Kits | $55 | 2026-09-09 | 0.00% | ⚠️ Approaching EOL (2026-09-09). Valid for immediate builds; verify multi-year roadmaps. |
+| `AF566A` | [REMOVED SKU] HPE C13 - DK-2.5A DK 250V 10Amp 1.83m Power Cord | Cables & Enablement Kits | $55 | 2026-09-09 | 0.00% | ⚠️ Approaching EOL (2026-09-09). Valid for immediate builds; verify multi-year roadmaps. |
+| `AF558A` | [REMOVED SKU] HPE C13 - IRAM -2073 AR 250V 10A 2.5m Power Cord | Cables & Enablement Kits | $65 | 2026-09-09 | 0.00% | ⚠️ Approaching EOL (2026-09-09). Valid for immediate builds; verify multi-year roadmaps. |
+| `AF562A` | [REMOVED SKU] HPE C13 - IS-1293 IN 240V 6Amp LV 2.0m Power Cord | Cables & Enablement Kits | $194 | 2026-09-09 | 0.00% | ⚠️ Approaching EOL (2026-09-09). Valid for immediate builds; verify multi-year roadmaps. |
+| `SG579A` | [REMOVED SKU] HPE C13 - IS-1293 IN 250V 10Amp HV 2.5m Power Cord | Cables & Enablement Kits | $142 | 2026-09-09 | 0.00% | ⚠️ Approaching EOL (2026-09-09). Valid for immediate builds; verify multi-year roadmaps. |
+| `AF572A` | [REMOVED SKU] HPE C13 - JIS C8303 JP 100V 12Amp 2.0m Power Cord | Cables & Enablement Kits | $60 | 2026-09-09 | 0.00% | ⚠️ Approaching EOL (2026-09-09). Valid for immediate builds; verify multi-year roadmaps. |
+| `AF560A` | [REMOVED SKU] HPE C13 - KSC- 8305 KR 250V 10Amp 1.83m Power Cord | Cables & Enablement Kits | $55 | 2026-09-09 | 0.00% | ⚠️ Approaching EOL (2026-09-09). Valid for immediate builds; verify multi-year roadmaps. |
+| `AF559A` | [REMOVED SKU] HPE C13 - Nema 5-15P TH/PH 250V 10Amp 1.83m Power Cord | Cables & Enablement Kits | $55 | 2026-09-09 | 0.00% | ⚠️ Approaching EOL (2026-09-09). Valid for immediate builds; verify multi-year roadmaps. |
+| `AF567A` | [REMOVED SKU] HPE C13 - SABS-164 ZA 250V 10Amp 2.5m Power Cord | Cables & Enablement Kits | $65 | 2026-09-09 | 0.00% | ⚠️ Approaching EOL (2026-09-09). Valid for immediate builds; verify multi-year roadmaps. |
+| `AF565A` | [REMOVED SKU] HPE C13 - SEV 1011 CH 250V 10Amp 1.83m Power Cord | Cables & Enablement Kits | $55 | 2026-09-09 | 0.00% | ⚠️ Approaching EOL (2026-09-09). Valid for immediate builds; verify multi-year roadmaps. |
+| `AF564A` | [REMOVED SKU] HPE C13 - SI-32 IL 250V 10Amp 1.83m Power Cord | Cables & Enablement Kits | $55 | 2026-09-09 | 0.00% | ⚠️ Approaching EOL (2026-09-09). Valid for immediate builds; verify multi-year roadmaps. |
+| `TC406A` | [REMOVED SKU] HPE StoreEver MSL Command View for Tape Libraries - TapeAssure Advanced LTU | Software & Licenses | $2,500 | 2026-09-09 | 0.00% | ⚠️ Approaching EOL (2026-09-09). Valid for immediate builds; verify multi-year roadmaps. |
+| `Q8K96A` | [REMOVED SKU] HPE StoreEver MSL3040 High Availability LTO-6 Control Path Failover LTU | Software & Licenses | $3,000 | 2026-09-09 | 0.00% | ⚠️ Approaching EOL (2026-09-09). Valid for immediate builds; verify multi-year roadmaps. |
+*... [12 additional impending EOL records omitted for brevity]*
+
+## 📊 5b. Category-Level Trends & Significant Price Adjustments
+
+### Category Portfolio Delta & Planning Intelligence
+
+| Category | Total SKUs | Added | Modified | Unchanged | Clearance / Drops | Category Planning Insight |
+|---|---:|---:|---:|---:|---:|---|
+| **Chassis** | 1 | 0 | 1 | 0 | 0 | 🔄 Attributes/specifications updated (1 SKUs) |
+| **Accessories & Infrastructure** | 73 | 0 | 67 | 6 | 0 | 🔄 Attributes/specifications updated (67 SKUs) |
+| **Power Supplies** | 2 | 0 | 2 | 0 | 0 | 🔄 Attributes/specifications updated (2 SKUs) |
+| **Cables & Enablement Kits** | 38 | 1 | 20 | 17 | 10 | ⚠️ Active price drops / clearance (10 SKUs discounted) |
+| **Drive Enclosures / Drives** | 25 | 0 | 25 | 0 | 12 | ⚠️ Active price drops / clearance (12 SKUs discounted) |
+| **Storage Controllers** | 64 | 0 | 64 | 0 | 0 | 🔄 Attributes/specifications updated (64 SKUs) |
+| **Software & Licenses** | 19 | 13 | 0 | 6 | 0 | ✨ Portfolio expanding (+13 new options) |
+| **Networking** | 8 | 0 | 0 | 8 | 0 | Stable portfolio |
+
+### High-Impact Price Adjustments (Drops $\ge 10\%$ and Major Moves)
+
+| Product # | Description | Category | Previous Price | Current Price | Delta (USD) | Change (%) | Movement Type |
+|---|---|---|---:|---:|---:|---:|---|
+| `K2R10A` | 501.00 | Drive Enclosures / Drives | $501 | $0 | $-501 | **-100.0%** | 📉 CLEARANCE_DROP |
+| `QK737A` | 415.00 | Cables & Enablement Kits | $415 | $0 | $-415 | **-100.0%** | 📉 CLEARANCE_DROP |
+| `AN976A` | 410.00 | Drive Enclosures / Drives | $410 | $0 | $-410 | **-100.0%** | 📉 CLEARANCE_DROP |
+| `P35175-B21` | 369.00 | Drive Enclosures / Drives | $369 | $0 | $-369 | **-100.0%** | 📉 CLEARANCE_DROP |
+| `K2R09A` | 358.00 | Drive Enclosures / Drives | $358 | $0 | $-358 | **-100.0%** | 📉 CLEARANCE_DROP |
+| `716193-B21` | 324.00 | Drive Enclosures / Drives | $324 | $0 | $-324 | **-100.0%** | 📉 CLEARANCE_DROP |
+| `716199-B21` | 287.00 | Drive Enclosures / Drives | $287 | $0 | $-287 | **-100.0%** | 📉 CLEARANCE_DROP |
+| `AN975A` | 264.00 | Drive Enclosures / Drives | $264 | $0 | $-264 | **-100.0%** | 📉 CLEARANCE_DROP |
+| `AJ839A` | 253.00 | Cables & Enablement Kits | $253 | $0 | $-253 | **-100.0%** | 📉 CLEARANCE_DROP |
+| `QK736A` | 239.00 | Cables & Enablement Kits | $239 | $0 | $-239 | **-100.0%** | 📉 CLEARANCE_DROP |
+| `716191-B21` | 221.00 | Drive Enclosures / Drives | $221 | $0 | $-221 | **-100.0%** | 📉 CLEARANCE_DROP |
+| `AJ838A` | 208.00 | Cables & Enablement Kits | $208 | $0 | $-208 | **-100.0%** | 📉 CLEARANCE_DROP |
+| `P35176-B21` | 206.00 | Drive Enclosures / Drives | $206 | $0 | $-206 | **-100.0%** | 📉 CLEARANCE_DROP |
+| `QK735A` | 195.00 | Cables & Enablement Kits | $195 | $0 | $-195 | **-100.0%** | 📉 CLEARANCE_DROP |
+| `716197-B21` | Description | Drive Enclosures / Drives | $177 | $0 | $-177 | **-100.0%** | 📉 CLEARANCE_DROP |
+| `AJ837A` | 162.00 | Cables & Enablement Kits | $162 | $0 | $-162 | **-100.0%** | 📉 CLEARANCE_DROP |
+| `QK734A` | 147.00 | Cables & Enablement Kits | $147 | $0 | $-147 | **-100.0%** | 📉 CLEARANCE_DROP |
+| `QK733A` | 130.00 | Cables & Enablement Kits | $130 | $0 | $-130 | **-100.0%** | 📉 CLEARANCE_DROP |
+| `AJ836A` | 115.00 | Cables & Enablement Kits | $115 | $0 | $-115 | **-100.0%** | 📉 CLEARANCE_DROP |
+| `QK732A` | 115.00 | Cables & Enablement Kits | $115 | $0 | $-115 | **-100.0%** | 📉 CLEARANCE_DROP |
+*... [69 additional price movements omitted for brevity]*
 
 ## 🔄 5. Recent Attribute & Specification Modifications Log
 
 | Timestamp | SKU | Attribute | Old Value | New Value |
 |-----------|-----|-----------|-----------|-----------|
+| 2026-09-09 | `Q6Q68A` | Discontinued Date | 05/31/2030 | **2026-09-09** |
+| 2026-09-09 | `Q6Q68A` | Lifecycle Status | Active | **** |
+| 2026-09-09 | `Q6Q68A` | Availability | Available | **** |
+| 2026-09-09 | `Q6Q68A` | Lead Time Source | Not published by OCA | **** |
+| 2026-09-09 | `Q6Q68A` | Vendor Attributes | {"Extended Price (USD)":"NA"} | **** |
+| 2026-09-09 | `R6Q74A` | Description | HPE StoreEver MSL LTO-9 Ultrium 45000 Fibre Channel Drive Upgrade Kit | **[REMOVED SKU] HPE StoreEver MSL LTO-9 Ultrium 45000 Fibre Channel Drive Upgrade Kit** |
+| 2026-09-09 | `R6Q74A` | Constraint |  | **Discontinued** |
+| 2026-09-09 | `R6Q74A` | Rule/Note |  | **[DISCONTINUED] SKU removed from latest HPE OCA portal catalog** |
+| 2026-09-09 | `R6Q74A` | Max Qty |  | **0** |
+| 2026-09-09 | `R6Q74A` | Component Role |  | **Discontinued Hardware** |
+| 2026-09-09 | `R6Q74A` | Discontinued Date | 05/31/2030 | **2026-09-09** |
 | 2026-09-09 | `R6Q74A` | Lifecycle Status | Active | **** |
 | 2026-09-09 | `R6Q74A` | Availability | Available | **** |
 | 2026-09-09 | `R6Q74A` | Lead Time Source | Not published by OCA | **** |
@@ -101,7 +188,6 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 | 2026-09-09 | `R6Q75A` | Rule/Note |  | **[DISCONTINUED] SKU removed from latest HPE OCA portal catalog** |
 | 2026-09-09 | `R6Q75A` | Max Qty |  | **0** |
 | 2026-09-09 | `R6Q75A` | Component Role |  | **Discontinued Hardware** |
-| 2026-09-09 | `R6Q75A` | HPE Recommended |  | **No** |
 | 2026-09-09 | `R6Q75A` | Discontinued Date | 05/31/2030 | **2026-09-09** |
 | 2026-09-09 | `R6Q75A` | Lifecycle Status | Active | **** |
 | 2026-09-09 | `R6Q75A` | Availability | Available | **** |

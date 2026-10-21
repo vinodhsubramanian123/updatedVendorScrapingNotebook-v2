@@ -1,0 +1,14 @@
+{
+  "product": "DL385_Gen11",
+  "notebookId": "52364fcf-acc3-442f-b4ff-f911053d45d2",
+  "replacementSourceId": "c5a15ab8-ad32-431a-a746-891ca303450c",
+  "verifiedAt": "2026-10-21T09:25:17.142Z",
+  "contentFingerprints": null,
+  "legacyFingerprint": "15b188447153c6feb52d2970e50c1392307f2ae2e911b38f56fd2367ff16232e",
+  "retirementRequested": true,
+  "plannedRetirementIds": [],
+  "status": "CONSOLIDATED",
+  "retiredSourceIds": [],
+  "remainingSourceIds": [],
+  "retirementErrors": []
+}

@@ -1,8 +1,8 @@
 {
   "registryVersion": "2.0.0",
   "schemaVersion": "1.0",
-  "generatedAt": "2026-10-19T18:01:43.465Z",
-  "lastUpdated": "2026-10-21T08:52:21.641Z",
+  "generatedAt": "2026-10-21T11:15:52.127Z",
+  "lastUpdated": "2026-10-21T11:15:52.127Z",
   "totalLearnedRules": 104,
   "totalDeduplicatedRules": 104,
   "productFamiliesSynced": [
@@ -14,9 +14,9 @@
     "SY480"
   ],
   "counts": {
-    "universal": 10,
+    "universal": 9,
     "familyGen": 0,
-    "chassisSpecific": 94
+    "chassisSpecific": 95
   },
   "universalRules": [
     {
@@ -201,37 +201,32 @@
       "family": "",
       "generation": "",
       "solutionType": "GLOBAL CTO Server"
-    },
-    {
-      "deltaId": "DELTA_NLM_HEADLESS_CHROME_ORPHAN_RECLAMATION",
-      "timestamp": "2026-10-21T08:52:21.641Z",
-      "chassis": "GLOBAL",
-      "scopeTaxonomy": "Universal",
-      "affectedSku": "NLM_MCP_AUTH",
-      "requiredDependencySku": "",
-      "ruleType": "ENVIRONMENT_HEALING_PROTOCOL",
-      "ruleUpdate": "Headless Chrome instances (--headless=new) spawned during background pre-flights can become orphaned zombies on port 9222, locking ~/.notebooklm-mcp-cli/chrome-profiles/default/lockfile and blocking interactive nlm login from opening visible UI windows. check_nlm_auth.js:cleanStaleNlmChromeAndLocks pre-emptively kills orphaned headless Chrome processes on port 9222 and unlinks lockfiles. Wired via npm run auth:nlm:heal and scraping_preflight_gate.js auto-healing.",
-      "rawMessage": "Autonomous headless Chrome orphan reclamation and lockfile purge protocol (INV-181). Fixes wedged CDP port 9222 and enables frictionless nlm login --force --storage file recovery.",
-      "status": "VERIFIED",
-      "governanceStatus": "ACTIVE",
-      "verificationCount": 1,
-      "firstLearnedAt": "2026-10-21T08:52:21.641Z",
-      "lastVerifiedAt": "2026-10-21T08:52:21.641Z",
-      "provenanceSources": [
-        "scripts/maintenance/check_nlm_auth.js",
-        "scripts/lib/scraper/scraping_preflight_gate.js",
-        "INV-181"
-      ],
-      "vendor": "HPE",
-      "pillar": "UNKNOWN",
-      "family": "",
-      "generation": "",
-      "productId": "GLOBAL",
-      "solutionType": "GLOBAL Tooling"
     }
   ],
   "familyGenRules": [],
   "chassisSpecificRules": [
+    {
+      "deltaId": "DELTA_NLM_HEADLESS_CHROME_ORPHAN_RECLAMATION",
+      "timestamp": "2026-10-21T08:52:21.641Z",
+      "chassis": "GLOBAL",
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "affectedSku": "NLM_MCP_AUTH",
+      "requiredDependencySku": null,
+      "ruleType": "ENVIRONMENT_HEALING_PROTOCOL",
+      "ruleUpdate": "Headless Chrome instances (--headless=new) spawned during background pre-flights can become orphaned zombies on port 9222, locking ~/.notebooklm-mcp-cli/chrome-profiles/default/lockfile and blocking interactive nlm login from opening visible UI windows. check_nlm_auth.js:cleanStaleNlmChromeAndLocks pre-emptively kills orphaned headless Chrome processes on port 9222 and unlinks lockfiles. Wired via npm run auth:nlm:heal and scraping_preflight_gate.js auto-healing.",
+      "rawMessage": "Autonomous headless Chrome orphan reclamation and lockfile purge protocol (INV-181). Fixes wedged CDP port 9222 and enables frictionless nlm login --force --storage file recovery.",
+      "vendorWideVerified": true,
+      "scopeEvidence": "Universal tool environment across all vendor pipelines.",
+      "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+      "provenance": "INV-181",
+      "vendor": "HPE",
+      "pillar": "SERVER",
+      "family": "",
+      "generation": "",
+      "productId": "GLOBAL",
+      "scopeCorrection": "CONSERVATIVE_PRODUCT_FIREWALL",
+      "solutionType": "GLOBAL CTO Server"
+    },
     {
       "deltaId": "DELTA_DL380A_GEN12_DRIVE_CAGE_EXCLUSIVITY",
       "timestamp": "2026-09-03T18:30:00.000Z",
@@ -2433,8 +2428,8 @@
       "status": "VERIFIED",
       "governanceStatus": "ACTIVE",
       "verificationCount": 1,
-      "firstLearnedAt": "2026-10-21T08:52:21.641Z",
-      "lastVerifiedAt": "2026-10-21T08:52:21.641Z",
+      "firstLearnedAt": "2026-10-21T08:52:21.629Z",
+      "lastVerifiedAt": "2026-10-21T08:52:21.629Z",
       "provenanceSources": [
         "Synergy_12000-2Frame_5156667291-02.xlsx",
         "Synergy_1f_12N_NoAccessories_5157071497-02.xlsx",
@@ -2445,7 +2440,6 @@
       "family": "Synergy",
       "generation": "Gen12",
       "productId": "SY480_Gen12",
-      "scopeCorrection": "CONSERVATIVE_PRODUCT_FIREWALL",
       "solutionType": "SY480_Gen12 CTO Server"
     }
   ]

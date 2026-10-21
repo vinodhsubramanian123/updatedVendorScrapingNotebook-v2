@@ -4,7 +4,7 @@
 
 **Scope Identity**: `HPE/SERVER/Cray/General/GX5000_General`
 
-**Sync Timestamp**: 2026-10-17T10:03:36.892Z
+**Sync Timestamp**: 2026-10-21T11:15:32.505Z
 
 **Total Verified SKUs**: `2` (`2` Hardware + `0` Services)
 
@@ -49,6 +49,14 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 ## ⚠️ 4. Discontinued & Obsolete SKUs Registry
 
 *No discontinued or reinstated SKUs detected for GX5000_General_RACK. All cataloged SKUs are active.*
+
+## 📊 5b. Category-Level Trends & Significant Price Adjustments
+
+### Category Portfolio Delta & Planning Intelligence
+
+| Category | Total SKUs | Added | Modified | Unchanged | Clearance / Drops | Category Planning Insight |
+|---|---:|---:|---:|---:|---:|---|
+| **Chassis** | 2 | 0 | 0 | 2 | 0 | Stable portfolio |
 
 ## 🔄 5. Recent Attribute & Specification Modifications Log
 

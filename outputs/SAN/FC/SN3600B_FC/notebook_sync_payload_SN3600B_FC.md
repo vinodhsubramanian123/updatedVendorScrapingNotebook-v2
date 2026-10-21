@@ -4,7 +4,7 @@
 
 **Scope Identity**: `HPE/NETWORKING/SAN/FC/SN3600B_FC`
 
-**Sync Timestamp**: 2026-10-17T10:03:42.547Z
+**Sync Timestamp**: 2026-10-21T11:15:49.156Z
 
 **Total Verified SKUs**: `158` (`58` Hardware + `100` Services)
 
@@ -50,10 +50,46 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 *No discontinued or reinstated SKUs detected for SN3600B_FC. All cataloged SKUs are active.*
 
+### ⏳ Impending Obsolescence & Clearance Hardware (90-Day to 180-Day Window)
+
+*These components remain orderable in live configurators today but have published vendor end dates. They represent high-value clearance opportunities for immediate deployments, but require explicit procurement cutoff remarks before quotation:*
+
+| Product # | Description | Category | List Price (USD) | Discontinued Date | Price Trend | Presales Strategy Guidance |
+|---|---|---|---:|---|:---:|---|
+| `142257-002` | HPE C13 - C14 WW 250V 10Amp 2.5m Jumper Cord | Cables & Enablement Kits | $34 | 11/30/2026 | 0.00% | ⚠️ Approaching EOL (11/30/2026). Valid for immediate builds; verify multi-year roadmaps. |
+
+## 📊 5b. Category-Level Trends & Significant Price Adjustments
+
+### Category Portfolio Delta & Planning Intelligence
+
+| Category | Total SKUs | Added | Modified | Unchanged | Clearance / Drops | Category Planning Insight |
+|---|---:|---:|---:|---:|---:|---|
+| **Chassis** | 1 | 0 | 1 | 0 | 0 | 🔄 Attributes/specifications updated (1 SKUs) |
+| **Networking** | 16 | 1 | 15 | 0 | 0 | ✨ Portfolio expanding (+1 new options) |
+| **Drive Enclosures / Drives** | 1 | 0 | 1 | 0 | 0 | 🔄 Attributes/specifications updated (1 SKUs) |
+| **Cables & Enablement Kits** | 39 | 0 | 39 | 0 | 0 | 🔄 Attributes/specifications updated (39 SKUs) |
+| **Software & Licenses** | 1 | 0 | 1 | 0 | 0 | 🔄 Attributes/specifications updated (1 SKUs) |
+
+### High-Impact Price Adjustments (Drops $\ge 10\%$ and Major Moves)
+
+| Product # | Description | Category | Previous Price | Current Price | Delta (USD) | Change (%) | Movement Type |
+|---|---|---|---:|---:|---:|---:|---|
+| `H6Z29A` | HPE B-series 16Gb LW 25km FC SFP 1-pack Transceiver | Networking | New Addition | $7,071 | $7,071 | **+100.0%** | ✨ NEW_OPTION |
+
 ## 🔄 5. Recent Attribute & Specification Modifications Log
 
 | Timestamp | SKU | Attribute | Old Value | New Value |
 |-----------|-----|-----------|-----------|-----------|
+| 2026-09-22 | `AF566A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** |
+| 2026-09-22 | `AF567A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** |
+| 2026-09-22 | `AF569A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** |
+| 2026-09-22 | `AF571A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** |
+| 2026-09-22 | `AF572A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** |
+| 2026-09-22 | `AF591A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** |
+| 2026-09-22 | `R1C65A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** |
+| 2026-09-22 | `SG579A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** |
+| 2026-09-22 | `SK792A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** |
+| 2026-09-22 | `AJ833A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** |
 | 2026-09-22 | `AJ835A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** |
 | 2026-09-22 | `AJ836A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** |
 | 2026-09-22 | `AJ838A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **{"Extended Price (USD)":"NA"}** |

@@ -67,5 +67,25 @@
     "family": "",
     "generation": "",
     "productId": "GLOBAL"
+  },
+  {
+    "deltaId": "DELTA_NLM_HEADLESS_CHROME_ORPHAN_RECLAMATION",
+    "timestamp": "2026-10-21T08:52:21.641Z",
+    "chassis": "GLOBAL",
+    "scopeTaxonomy": "UNIVERSAL_VENDOR",
+    "affectedSku": "NLM_MCP_AUTH",
+    "requiredDependencySku": null,
+    "ruleType": "ENVIRONMENT_HEALING_PROTOCOL",
+    "ruleUpdate": "Headless Chrome instances (--headless=new) spawned during background pre-flights can become orphaned zombies on port 9222, locking ~/.notebooklm-mcp-cli/chrome-profiles/default/lockfile and blocking interactive nlm login from opening visible UI windows. check_nlm_auth.js:cleanStaleNlmChromeAndLocks pre-emptively kills orphaned headless Chrome processes on port 9222 and unlinks lockfiles. Wired via npm run auth:nlm:heal and scraping_preflight_gate.js auto-healing.",
+    "rawMessage": "Autonomous headless Chrome orphan reclamation and lockfile purge protocol (INV-181). Fixes wedged CDP port 9222 and enables frictionless nlm login --force --storage file recovery.",
+    "vendorWideVerified": true,
+    "scopeEvidence": "Universal tool environment across all vendor pipelines.",
+    "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+    "provenance": "INV-181",
+    "vendor": "HPE",
+    "pillar": "SERVER",
+    "family": "",
+    "generation": "",
+    "productId": "GLOBAL"
   }
 ]

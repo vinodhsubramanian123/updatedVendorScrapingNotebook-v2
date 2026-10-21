@@ -4,11 +4,11 @@
 
 **Scope Identity**: `HPE/SERVER/Synergy/Gen12/SY480_Gen12`
 
-**Sync Timestamp**: 2026-10-17T10:03:43.373Z
+**Sync Timestamp**: 2026-10-21T11:15:51.184Z
 
 **Total Verified SKUs**: `581` (`178` Hardware + `403` Services)
 
-**Total Synced KnowledgeDeltas**: `21`
+**Total Synced KnowledgeDeltas**: `22`
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -88,6 +88,10 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
    - **Rule**: When a multi-frame Synergy deployment (e.g. 2 frames, 24 nodes) is partitioned into separate commercial orders (Option B): (1) Order 2 (Frame 2) is structured as a clean hardware clone with zero loose cables, zero loose transceivers, and zero unpack services; (2) Order 1 (Frame 1) hosts a dedicated Adhoc container carrying 100% of all loose physical connectivity for both frames (DAC cables: 487655-B21 10G, 845406-B21 100G; AOC cables: 845410-B21 100G; fiber: QK734A OM4; transceivers: 455883-B21 10G SFP+ SR, 845398-B21 25G SFP28 SR, 841716-B21 40G QSFP+ BiDi) totaling $96,236.00 list; (3) Embedded switch licenses (Q2E58AAE Brocade 8-port upgrade E-LTU) must NEVER be lumped into Adhoc—they must be split evenly inside the physical switch modules (4 in Frame 1, 4 in Frame 2) to preserve 1:1 hardware module licensing integrity; (4) Tech Care Basic support (HU4B2A3) must be preserved 1:1 on both frames ($46,156 each) to satisfy CLIC Rules 99916598/99916599.
    - **Affected SKU**: `P51174-B21` | **Required Dependency**: `Q2E58AAE`
 
+13. **[DELTA_SYNERGY_MULTI_FRAME_SPLIT_STARTUP_SIZING] SY480_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `SY480_Gen12 CTO Server`):
+   - **Rule**: When a multi-frame Synergy deployment (e.g. 2 frames, 24 nodes) is partitioned into separate commercial quotes/orders: (1) Frame 1 carries 1x HA124A1#5ZM (First Frame Onsite Startup, $16,742 USD); (2) Frame 2 carries 1x HA124A1#5ZQ (Additional Frame Onsite Startup, $4,627 USD), saving $12,115 USD vs duplicating First Frame; (3) Order 2 remarks must cross-reference Order 1's UCID (e.g. 5157071497-02) to satisfy automated CLIC Rule 81039677 order acceptance; (4) If frames are deployed as independent standalone islands (separate sites or unlinked OneView domains), both frames require HA124A1#5ZM; (5) Remote Startup (HA124A1#V0F) and Onsite Startup (HA124A1#5ZM) are strictly mutually exclusive and must never be combined.
+   - **Affected SKU**: `HA124A1` | **Required Dependency**: `HA124A1#5ZM`
+
 
 ## 🔒 3b. Physical & Architectural Gating Rules (DOM Unavailable Tables)
 
@@ -95,32 +99,112 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 ## ⚠️ 4. Discontinued & Obsolete SKUs Registry
 
-| SKU | Description | Status | Discontinued Date | Last Known Price | Tracking | Retention |
-|-----|-------------|--------|-------------------|------------------|----------|-----------|
-| `Q0D22A` | Red Hat Enterprise Linux Server 2 Sockets 4 Guests 5yr Subscription 24x7 Support Flexible LTU | **DISCONTINUED** | 2026-09-11 | $10183.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `Q0D23A` | Red Hat Enterprise Linux Server 2 Sockets 4 Guests 5yr Subscription 9x5 Support Flexible LTU | **DISCONTINUED** | 2026-09-11 | $6264.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `Q5W20A` | Red Hat Enterprise Linux for SAP (Physical/Virtual Nodes) 3yr Subscription 24x7 Support Flex LTU | **DISCONTINUED** | 2026-09-11 | $4072.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `Q5W19A` | Red Hat Enterprise Linux for SAP (Physical/Virtual Nodes) 3yr Subscription 9x5 Support Flex LTU | **DISCONTINUED** | 2026-09-11 | $2505.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `Q5W22A` | Red Hat Enterprise Linux for SAP (Physical/Virtual Nodes) 5yr Subscription 24x7 Support Flex LTU | **DISCONTINUED** | 2026-09-11 | $6787.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `Q5W21A` | Red Hat Enterprise Linux for SAP (Physical/Virtual Nodes) 5yr Subscription 9x5 Support Flex LTU | **DISCONTINUED** | 2026-09-11 | $4175.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `Q8U19A` | Red Hat Enterprise Linux for SAP Solutions for Physical Nodes 3yr Subscription 24x7 Support LTU | **DISCONTINUED** | 2026-09-11 | $6737.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `Q8U21A` | Red Hat Enterprise Linux for SAP Solutions for Physical Nodes 3yr Subscription 9x5 Support LTU | **DISCONTINUED** | 2026-09-11 | $5483.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `Q8U20A` | Red Hat Enterprise Linux for SAP Solutions for Physical Nodes 5yr Subscription 24x7 Support LTU | **DISCONTINUED** | 2026-09-11 | $11229.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `Q8U22A` | Red Hat Enterprise Linux for SAP Solutions for Physical Nodes 5yr Subscription 9x5 Support LTU | **DISCONTINUED** | 2026-09-11 | $9139.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `Q8U15A` | Red Hat Enterprise Linux for SAP Solutions for Virtual DC 3yr Subscription 24x7 Support LTU | **DISCONTINUED** | 2026-09-11 | $24680.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `Q8U17A` | Red Hat Enterprise Linux for SAP Solutions for Virtual DC 3yr Subscription 9x5 Support LTU | **DISCONTINUED** | 2026-09-11 | $20325.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `Q8U16A` | Red Hat Enterprise Linux for SAP Solutions for Virtual DC 5yr Subscription 24x7 Support LTU | **DISCONTINUED** | 2026-09-11 | $41134.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `Q8U18A` | Red Hat Enterprise Linux for SAP Solutions for Virtual DC 5yr Subscription 9x5 Support LTU | **DISCONTINUED** | 2026-09-11 | $33874.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `Q5W24A` | Red Hat Enterprise Linux for SAP for Virtual Datacenters 3yr Subscription 24x7 Support Flex LTU | **DISCONTINUED** | 2026-09-11 | $14516.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `Q5W23A` | Red Hat Enterprise Linux for SAP for Virtual Datacenters 3yr Subscription 9x5 Support Flex LTU | **DISCONTINUED** | 2026-09-11 | $9072.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `Q5W26A` | Red Hat Enterprise Linux for SAP for Virtual Datacenters 5yr Subscription 24x7 Support Flex LTU | **DISCONTINUED** | 2026-09-11 | $24194.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `Q5W25A` | Red Hat Enterprise Linux for SAP for Virtual Datacenters 5yr Subscription 9x5 Support Flex LTU | **DISCONTINUED** | 2026-09-11 | $15119.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `Q0D26A` | Red Hat High Availability 2 Sockets Unlimited Guests 5yr Subscription Flexible LTU | **DISCONTINUED** | 2026-09-11 | $7532.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `Q0D25A` | Red Hat High Availability 2 Sockets or 2 Guests 5yr Subscription Flexible LTU | **DISCONTINUED** | 2026-09-11 | $2085.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `Q0D30A` | Red Hat Resilient Storage 2 Sockets Unlimited Guests 5yr Subscription Flexible LTU | **DISCONTINUED** | 2026-09-11 | $15095.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `Q0D29A` | Red Hat Resilient Storage 2 Sockets or 2 Guests 5yr Subscription Flexible LTU | **DISCONTINUED** | 2026-09-11 | $4395.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `N0U73A` | SUSE Linux Enterprise Server SAP 1-2 Sockets or 1-2 VM 3-year Subscription 24x7 Support Flexible LTU | **DISCONTINUED** | 2026-09-11 | $7803.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
-| `N0U75A` | SUSE Linux Enterprise Server SAP 1-2 Sockets or 1-2 VM 5-year Subscription 24x7 Support Flexible LTU | **DISCONTINUED** | 2026-09-11 | $13005.00 | STOPPED_AFTER_REMOVAL | COMPACT_LIFECYCLE_TOMBSTONE |
+### Fully Discontinued & Delisted SKUs
+
+| SKU | Description | Status | Discontinued Date | Last Known Price | Successor SKU | Tracking |
+|-----|-------------|--------|-------------------|------------------|---------------|----------|
+| `Q0D22A` | Red Hat Enterprise Linux Server 2 Sockets 4 Guests 5yr Subscription 24x7 Support Flexible LTU | **DISCONTINUED** | 2026-09-11 | $10183.00 | None | STOPPED_AFTER_REMOVAL |
+| `Q0D23A` | Red Hat Enterprise Linux Server 2 Sockets 4 Guests 5yr Subscription 9x5 Support Flexible LTU | **DISCONTINUED** | 2026-09-11 | $6264.00 | None | STOPPED_AFTER_REMOVAL |
+| `Q5W20A` | Red Hat Enterprise Linux for SAP (Physical/Virtual Nodes) 3yr Subscription 24x7 Support Flex LTU | **DISCONTINUED** | 2026-09-11 | $4072.00 | None | STOPPED_AFTER_REMOVAL |
+| `Q5W19A` | Red Hat Enterprise Linux for SAP (Physical/Virtual Nodes) 3yr Subscription 9x5 Support Flex LTU | **DISCONTINUED** | 2026-09-11 | $2505.00 | None | STOPPED_AFTER_REMOVAL |
+| `Q5W22A` | Red Hat Enterprise Linux for SAP (Physical/Virtual Nodes) 5yr Subscription 24x7 Support Flex LTU | **DISCONTINUED** | 2026-09-11 | $6787.00 | None | STOPPED_AFTER_REMOVAL |
+| `Q5W21A` | Red Hat Enterprise Linux for SAP (Physical/Virtual Nodes) 5yr Subscription 9x5 Support Flex LTU | **DISCONTINUED** | 2026-09-11 | $4175.00 | None | STOPPED_AFTER_REMOVAL |
+| `Q8U19A` | Red Hat Enterprise Linux for SAP Solutions for Physical Nodes 3yr Subscription 24x7 Support LTU | **DISCONTINUED** | 2026-09-11 | $6737.00 | None | STOPPED_AFTER_REMOVAL |
+| `Q8U21A` | Red Hat Enterprise Linux for SAP Solutions for Physical Nodes 3yr Subscription 9x5 Support LTU | **DISCONTINUED** | 2026-09-11 | $5483.00 | None | STOPPED_AFTER_REMOVAL |
+| `Q8U20A` | Red Hat Enterprise Linux for SAP Solutions for Physical Nodes 5yr Subscription 24x7 Support LTU | **DISCONTINUED** | 2026-09-11 | $11229.00 | None | STOPPED_AFTER_REMOVAL |
+| `Q8U22A` | Red Hat Enterprise Linux for SAP Solutions for Physical Nodes 5yr Subscription 9x5 Support LTU | **DISCONTINUED** | 2026-09-11 | $9139.00 | None | STOPPED_AFTER_REMOVAL |
+| `Q8U15A` | Red Hat Enterprise Linux for SAP Solutions for Virtual DC 3yr Subscription 24x7 Support LTU | **DISCONTINUED** | 2026-09-11 | $24680.00 | None | STOPPED_AFTER_REMOVAL |
+| `Q8U17A` | Red Hat Enterprise Linux for SAP Solutions for Virtual DC 3yr Subscription 9x5 Support LTU | **DISCONTINUED** | 2026-09-11 | $20325.00 | None | STOPPED_AFTER_REMOVAL |
+| `Q8U16A` | Red Hat Enterprise Linux for SAP Solutions for Virtual DC 5yr Subscription 24x7 Support LTU | **DISCONTINUED** | 2026-09-11 | $41134.00 | None | STOPPED_AFTER_REMOVAL |
+| `Q8U18A` | Red Hat Enterprise Linux for SAP Solutions for Virtual DC 5yr Subscription 9x5 Support LTU | **DISCONTINUED** | 2026-09-11 | $33874.00 | None | STOPPED_AFTER_REMOVAL |
+| `Q5W24A` | Red Hat Enterprise Linux for SAP for Virtual Datacenters 3yr Subscription 24x7 Support Flex LTU | **DISCONTINUED** | 2026-09-11 | $14516.00 | None | STOPPED_AFTER_REMOVAL |
+| `Q5W23A` | Red Hat Enterprise Linux for SAP for Virtual Datacenters 3yr Subscription 9x5 Support Flex LTU | **DISCONTINUED** | 2026-09-11 | $9072.00 | None | STOPPED_AFTER_REMOVAL |
+| `Q5W26A` | Red Hat Enterprise Linux for SAP for Virtual Datacenters 5yr Subscription 24x7 Support Flex LTU | **DISCONTINUED** | 2026-09-11 | $24194.00 | None | STOPPED_AFTER_REMOVAL |
+| `Q5W25A` | Red Hat Enterprise Linux for SAP for Virtual Datacenters 5yr Subscription 9x5 Support Flex LTU | **DISCONTINUED** | 2026-09-11 | $15119.00 | None | STOPPED_AFTER_REMOVAL |
+| `Q0D26A` | Red Hat High Availability 2 Sockets Unlimited Guests 5yr Subscription Flexible LTU | **DISCONTINUED** | 2026-09-11 | $7532.00 | None | STOPPED_AFTER_REMOVAL |
+| `Q0D25A` | Red Hat High Availability 2 Sockets or 2 Guests 5yr Subscription Flexible LTU | **DISCONTINUED** | 2026-09-11 | $2085.00 | None | STOPPED_AFTER_REMOVAL |
+| `Q0D30A` | Red Hat Resilient Storage 2 Sockets Unlimited Guests 5yr Subscription Flexible LTU | **DISCONTINUED** | 2026-09-11 | $15095.00 | None | STOPPED_AFTER_REMOVAL |
+| `Q0D29A` | Red Hat Resilient Storage 2 Sockets or 2 Guests 5yr Subscription Flexible LTU | **DISCONTINUED** | 2026-09-11 | $4395.00 | None | STOPPED_AFTER_REMOVAL |
+| `N0U73A` | SUSE Linux Enterprise Server SAP 1-2 Sockets or 1-2 VM 3-year Subscription 24x7 Support Flexible LTU | **DISCONTINUED** | 2026-09-11 | $7803.00 | None | STOPPED_AFTER_REMOVAL |
+| `N0U75A` | SUSE Linux Enterprise Server SAP 1-2 Sockets or 1-2 VM 5-year Subscription 24x7 Support Flexible LTU | **DISCONTINUED** | 2026-09-11 | $13005.00 | None | STOPPED_AFTER_REMOVAL |
+
+### ⏳ Impending Obsolescence & Clearance Hardware (90-Day to 180-Day Window)
+
+*These components remain orderable in live configurators today but have published vendor end dates. They represent high-value clearance opportunities for immediate deployments, but require explicit procurement cutoff remarks before quotation:*
+
+| Product # | Description | Category | List Price (USD) | Discontinued Date | Price Trend | Presales Strategy Guidance |
+|---|---|---|---:|---|:---:|---|
+| `P77096-291` | Microsoft Windows Server 2025 16-core Standard FIO Pre-installed UEFI Japanese SW | Software & Licenses | $0 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P77096-B21` | Microsoft Windows Server 2025 16-core Standard FIO Pre-installed UEFI en/fr/de/es/it/pt/nl SW | Software & Licenses | $1,147 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P45879-B21` | Microsoft Windows Server 2019 16-core Downgrade Datacenter FIO Not Pre-installed English SW | Software & Licenses | $28 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P45879-051` | Microsoft Windows Server 2019 16-core Downgrade Datacenter FIO Not Pre-installed French SW | Software & Licenses | $28 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P45879-041` | Microsoft Windows Server 2019 16-core Downgrade Datacenter FIO Not Pre-installed German SW | Software & Licenses | $28 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P45879-061` | Microsoft Windows Server 2019 16-core Downgrade Datacenter FIO Not Pre-installed Italian SW | Software & Licenses | $28 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P45879-291` | Microsoft Windows Server 2019 16-core Downgrade Datacenter FIO Not Pre-installed Japanese SW | Software & Licenses | $99,999 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P45879-071` | Microsoft Windows Server 2019 16-core Downgrade Datacenter FIO Not Pre-installed Spanish SW | Software & Licenses | $28 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P45862-B21` | Microsoft Windows Server 2019 16-core Downgrade Standard FIO Not Pre-installed English SW | Software & Licenses | $28 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P45862-051` | Microsoft Windows Server 2019 16-core Downgrade Standard FIO Not Pre-installed French SW | Software & Licenses | $28 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P45862-041` | Microsoft Windows Server 2019 16-core Downgrade Standard FIO Not Pre-installed German SW | Software & Licenses | $20 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P45862-061` | Microsoft Windows Server 2019 16-core Downgrade Standard FIO Not Pre-installed Italian SW | Software & Licenses | $28 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P45862-291` | Microsoft Windows Server 2019 16-core Downgrade Standard FIO Not Pre-installed Japanese SW | Software & Licenses | $99,999 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P45862-071` | Microsoft Windows Server 2019 16-core Downgrade Standard FIO Not Pre-installed Spanish SW | Software & Licenses | $28 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P77125-291` | Microsoft Windows Server 2022 Downgrade Datacenter FIO Not Pre-installed Japanese SW | Software & Licenses | $0 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P77125-B21` | Microsoft Windows Server 2022 Downgrade Datacenter FIO Not Pre-installed WW SW | Software & Licenses | $33 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P77124-291` | Microsoft Windows Server 2022 Downgrade Standard FIO Not Pre-installed Japanese SW | Software & Licenses | $0 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P77124-B21` | Microsoft Windows Server 2022 Downgrade Standard FIO Not Pre-installed WW SW | Software & Licenses | $33 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P77102-291` | Microsoft Windows Server 2025 16-core Datacenter Reassignment Reseller Option Kit Japanese SW | Software & Licenses | $0 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P77102-B21` | Microsoft Windows Server 2025 16-core Datacenter Reassignment Reseller Option Kit en/fr/de/es SW | Software & Licenses | $7,733 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P77101-AA1` | Microsoft Windows Server 2025 16-core Datacenter Reseller Option Kit Chinese Simplified SW | Software & Licenses | $0 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P77101-AB1` | Microsoft Windows Server 2025 16-core Datacenter Reseller Option Kit Chinese Traditional SW | Software & Licenses | $0 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P77101-291` | Microsoft Windows Server 2025 16-core Datacenter Reseller Option Kit Japanese SW | Software & Licenses | $0 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P77101-021` | Microsoft Windows Server 2025 16-core Datacenter Reseller Option Kit en/cs/pl/ru/sv SW | Software & Licenses | $5,712 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P77101-A21` | Microsoft Windows Server 2025 16-core Datacenter Reseller Option Kit en/fr/de/es/it/pt/nl SW | Software & Licenses | $5,712 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
+*... [31 additional impending EOL records omitted for brevity]*
+
+## 📊 5b. Category-Level Trends & Significant Price Adjustments
+
+### Category Portfolio Delta & Planning Intelligence
+
+| Category | Total SKUs | Added | Modified | Unchanged | Clearance / Drops | Category Planning Insight |
+|---|---:|---:|---:|---:|---:|---|
+| **Chassis** | 1 | 0 | 1 | 0 | 0 | 🔄 Attributes/specifications updated (1 SKUs) |
+| **OS Boot Device** | 1 | 0 | 1 | 0 | 0 | 🔄 Attributes/specifications updated (1 SKUs) |
+| **PCIe Risers** | 4 | 0 | 4 | 0 | 0 | 🔄 Attributes/specifications updated (4 SKUs) |
+| **Processor** | 20 | 0 | 20 | 0 | 0 | 🔄 Attributes/specifications updated (20 SKUs) |
+| **Cooling / Thermal** | 2 | 0 | 2 | 0 | 0 | 🔄 Attributes/specifications updated (2 SKUs) |
+| **Memory** | 14 | 0 | 14 | 0 | 0 | 🔄 Attributes/specifications updated (14 SKUs) |
+| **Drive Enclosures / Drives** | 5 | 0 | 5 | 0 | 0 | 🔄 Attributes/specifications updated (5 SKUs) |
+| **Accessories & Infrastructure** | 7 | 0 | 7 | 0 | 0 | 🔄 Attributes/specifications updated (7 SKUs) |
+| **Software & Licenses** | 110 | 0 | 86 | 24 | 24 | ⚠️ Active price drops / clearance (24 SKUs discounted) |
+| **Storage Controllers** | 9 | 0 | 9 | 0 | 0 | 🔄 Attributes/specifications updated (9 SKUs) |
+| **Networking** | 3 | 0 | 3 | 0 | 0 | 🔄 Attributes/specifications updated (3 SKUs) |
+| **Cables & Enablement Kits** | 2 | 0 | 2 | 0 | 0 | 🔄 Attributes/specifications updated (2 SKUs) |
+
+### High-Impact Price Adjustments (Drops $\ge 10\%$ and Major Moves)
+
+| Product # | Description | Category | Previous Price | Current Price | Delta (USD) | Change (%) | Movement Type |
+|---|---|---|---:|---:|---:|---:|---|
+| `Q8U16A` | [REMOVED SKU] Red Hat Enterprise Linux for SAP Solutions for Virtual DC 5yr Subscription 24x7 Support LTU | Software & Licenses | $41,134 | $41,134 | $-41,134 | **-100.0%** | 📉 CLEARANCE_DROP |
+| `Q8U18A` | [REMOVED SKU] Red Hat Enterprise Linux for SAP Solutions for Virtual DC 5yr Subscription 9x5 Support LTU | Software & Licenses | $33,874 | $33,874 | $-33,874 | **-100.0%** | 📉 CLEARANCE_DROP |
+| `Q8U15A` | [REMOVED SKU] Red Hat Enterprise Linux for SAP Solutions for Virtual DC 3yr Subscription 24x7 Support LTU | Software & Licenses | $24,680 | $24,680 | $-24,680 | **-100.0%** | 📉 CLEARANCE_DROP |
+| `Q5W26A` | [REMOVED SKU] Red Hat Enterprise Linux for SAP for Virtual Datacenters 5yr Subscription 24x7 Support Flex LTU | Software & Licenses | $24,194 | $24,194 | $-24,194 | **-100.0%** | 📉 CLEARANCE_DROP |
+| `Q8U17A` | [REMOVED SKU] Red Hat Enterprise Linux for SAP Solutions for Virtual DC 3yr Subscription 9x5 Support LTU | Software & Licenses | $20,325 | $20,325 | $-20,325 | **-100.0%** | 📉 CLEARANCE_DROP |
+| `Q5W25A` | [REMOVED SKU] Red Hat Enterprise Linux for SAP for Virtual Datacenters 5yr Subscription 9x5 Support Flex LTU | Software & Licenses | $15,119 | $15,119 | $-15,119 | **-100.0%** | 📉 CLEARANCE_DROP |
+| `Q0D30A` | [REMOVED SKU] Red Hat Resilient Storage 2 Sockets Unlimited Guests 5yr Subscription Flexible LTU | Software & Licenses | $15,095 | $15,095 | $-15,095 | **-100.0%** | 📉 CLEARANCE_DROP |
+| `Q5W24A` | [REMOVED SKU] Red Hat Enterprise Linux for SAP for Virtual Datacenters 3yr Subscription 24x7 Support Flex LTU | Software & Licenses | $14,516 | $14,516 | $-14,516 | **-100.0%** | 📉 CLEARANCE_DROP |
+| `N0U75A` | [REMOVED SKU] SUSE Linux Enterprise Server SAP 1-2 Sockets or 1-2 VM 5-year Subscription 24x7 Support Flexible LTU | Software & Licenses | $13,005 | $13,005 | $-13,005 | **-100.0%** | 📉 CLEARANCE_DROP |
+| `Q8U20A` | [REMOVED SKU] Red Hat Enterprise Linux for SAP Solutions for Physical Nodes 5yr Subscription 24x7 Support LTU | Software & Licenses | $11,229 | $11,229 | $-11,229 | **-100.0%** | 📉 CLEARANCE_DROP |
+| `Q0D22A` | [REMOVED SKU] Red Hat Enterprise Linux Server 2 Sockets 4 Guests 5yr Subscription 24x7 Support Flexible LTU | Software & Licenses | $10,183 | $10,183 | $-10,183 | **-100.0%** | 📉 CLEARANCE_DROP |
+| `Q8U22A` | [REMOVED SKU] Red Hat Enterprise Linux for SAP Solutions for Physical Nodes 5yr Subscription 9x5 Support LTU | Software & Licenses | $9,139 | $9,139 | $-9,139 | **-100.0%** | 📉 CLEARANCE_DROP |
+| `Q5W23A` | [REMOVED SKU] Red Hat Enterprise Linux for SAP for Virtual Datacenters 3yr Subscription 9x5 Support Flex LTU | Software & Licenses | $9,072 | $9,072 | $-9,072 | **-100.0%** | 📉 CLEARANCE_DROP |
+| `N0U73A` | [REMOVED SKU] SUSE Linux Enterprise Server SAP 1-2 Sockets or 1-2 VM 3-year Subscription 24x7 Support Flexible LTU | Software & Licenses | $7,803 | $7,803 | $-7,803 | **-100.0%** | 📉 CLEARANCE_DROP |
+| `Q0D26A` | [REMOVED SKU] Red Hat High Availability 2 Sockets Unlimited Guests 5yr Subscription Flexible LTU | Software & Licenses | $7,532 | $7,532 | $-7,532 | **-100.0%** | 📉 CLEARANCE_DROP |
+| `Q5W22A` | [REMOVED SKU] Red Hat Enterprise Linux for SAP (Physical/Virtual Nodes) 5yr Subscription 24x7 Support Flex LTU | Software & Licenses | $6,787 | $6,787 | $-6,787 | **-100.0%** | 📉 CLEARANCE_DROP |
+| `Q8U19A` | [REMOVED SKU] Red Hat Enterprise Linux for SAP Solutions for Physical Nodes 3yr Subscription 24x7 Support LTU | Software & Licenses | $6,737 | $6,737 | $-6,737 | **-100.0%** | 📉 CLEARANCE_DROP |
+| `Q0D23A` | [REMOVED SKU] Red Hat Enterprise Linux Server 2 Sockets 4 Guests 5yr Subscription 9x5 Support Flexible LTU | Software & Licenses | $6,264 | $6,264 | $-6,264 | **-100.0%** | 📉 CLEARANCE_DROP |
+| `Q8U21A` | [REMOVED SKU] Red Hat Enterprise Linux for SAP Solutions for Physical Nodes 3yr Subscription 9x5 Support LTU | Software & Licenses | $5,483 | $5,483 | $-5,483 | **-100.0%** | 📉 CLEARANCE_DROP |
+| `Q0D29A` | [REMOVED SKU] Red Hat Resilient Storage 2 Sockets or 2 Guests 5yr Subscription Flexible LTU | Software & Licenses | $4,395 | $4,395 | $-4,395 | **-100.0%** | 📉 CLEARANCE_DROP |
+*... [4 additional price movements omitted for brevity]*
 
 ## 🔄 5. Recent Attribute & Specification Modifications Log
 
@@ -138,4 +222,12 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 | Chassis Identifier | Product Family | Generation | Form Factor | CTO Base SKU |
 |--------------------|----------------|------------|-------------|--------------|
 | **SY480_Gen12** | Synergy | Gen12 | Compute Module | `P68217-B21` |
+
+## ⏱️ 10. Supply Chain & Delivery Lead Time Intelligence
+
+### Confirmed Component Delivery SLAs
+
+| Product # | Description | Category | Lead Time | Channel Status |
+|---|---|---|---:|---|
+| `P68217-B21` | HPE Synergy 480 Gen12 Configure-to-order Compute Module | Chassis | EDT 17 - 21 days | Available in OCA product catalog |
 

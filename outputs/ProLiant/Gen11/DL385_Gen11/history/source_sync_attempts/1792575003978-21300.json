@@ -1,0 +1,24 @@
+{
+  "product": "DL385_Gen11",
+  "notebookId": "52364fcf-acc3-442f-b4ff-f911053d45d2",
+  "replacementSourceId": "c9e240aa-9030-44cc-b463-f68862d71463",
+  "verifiedAt": "2026-10-21T09:30:03.978Z",
+  "contentFingerprints": {
+    "catalog": "bf24c26e69c9e4dd6c6f2acd288176ed262b4b334a17739db548d4c72f636feb",
+    "learnings": "fb8e4cb7b042c31ed10ea4e9bf517af387af9d6c18559fac8782a5119bcad09a",
+    "changes": "3330bd5516c15b3f642bcd8cfa798a1aa77fd5668d7aa39f4d7730870e85a6bc",
+    "workbook": "c56a143b655f8eef28b4bce4217664036a78688a8cdab2e1953b84cce70ab7ef",
+    "combined": "15b188447153c6feb52d2970e50c1392307f2ae2e911b38f56fd2367ff16232e"
+  },
+  "legacyFingerprint": "15b188447153c6feb52d2970e50c1392307f2ae2e911b38f56fd2367ff16232e",
+  "retirementRequested": false,
+  "plannedRetirementIds": [
+    "c5a15ab8-ad32-431a-a746-891ca303450c"
+  ],
+  "status": "RETIREMENT_PENDING",
+  "retiredSourceIds": [],
+  "remainingSourceIds": [
+    "c5a15ab8-ad32-431a-a746-891ca303450c"
+  ],
+  "retirementErrors": []
+}

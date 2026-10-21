@@ -4,7 +4,7 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen11/DL360_Gen11`
 
-**Sync Timestamp**: 2026-10-17T10:03:37.892Z
+**Sync Timestamp**: 2026-10-21T11:15:33.576Z
 
 **Total Verified SKUs**: `1429` (`695` Hardware + `734` Services)
 
@@ -50,6 +50,54 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 *No discontinued or reinstated SKUs detected for DL360_Gen11. All cataloged SKUs are active.*
 
+### ⏳ Impending Obsolescence & Clearance Hardware (90-Day to 180-Day Window)
+
+*These components remain orderable in live configurators today but have published vendor end dates. They represent high-value clearance opportunities for immediate deployments, but require explicit procurement cutoff remarks before quotation:*
+
+| Product # | Description | Category | List Price (USD) | Discontinued Date | Price Trend | Presales Strategy Guidance |
+|---|---|---|---:|---|:---:|---|
+| `P49605-B21` | Intel Xeon-Platinum 8468 2.1GHz 48-core 350W Processor for HPE | Processor | $15,149 | Impending (90-Day) | 0.00% | ⚠️ Approaching EOL (Impending (90-Day)). Valid for immediate builds; verify multi-year roadmaps. |
+| `P49607-B21` | Intel Xeon-Platinum 8480+ 2.0GHz 56-core 350W Processor for HPE | Processor | $20,242 | Impending (90-Day) | 0.00% | ⚠️ Approaching EOL (Impending (90-Day)). Valid for immediate builds; verify multi-year roadmaps. |
+| `P49615-B21` | Intel Xeon-Gold 6438Y+ 2.0GHz 32-core 205W Processor for HPE | Processor | $11,104 | Impending (90-Day) | 0.00% | ⚠️ Approaching EOL (Impending (90-Day)). Valid for immediate builds; verify multi-year roadmaps. |
+| `P49616-B21` | Intel Xeon-Platinum 8452Y 2.0GHz 36-core 300W Processor for HPE | Processor | $8,390 | Impending (90-Day) | 0.00% | ⚠️ Approaching EOL (Impending (90-Day)). Valid for immediate builds; verify multi-year roadmaps. |
+| `P49597-B21` | Intel Xeon-Gold 5415+ 2.9GHz 8-core 150W Processor for HPE | Processor | $4,164 | Impending (90-Day) | 0.00% | ⚠️ Approaching EOL (Impending (90-Day)). Valid for immediate builds; verify multi-year roadmaps. |
+| `P49598-B21` | Intel Xeon-Gold 6426Y 2.5GHz 16-core 185W Processor for HPE | Processor | $5,789 | Impending (90-Day) | 0.00% | ⚠️ Approaching EOL (Impending (90-Day)). Valid for immediate builds; verify multi-year roadmaps. |
+| `P49599-B21` | Intel Xeon-Gold 6442Y 2.6GHz 24-core 225W Processor for HPE | Processor | $9,811 | Impending (90-Day) | 0.00% | ⚠️ Approaching EOL (Impending (90-Day)). Valid for immediate builds; verify multi-year roadmaps. |
+| `P49601-B21` | Intel Xeon-Gold 6434 3.7GHz 8-core 195W Processor for HPE | Processor | $8,463 | Impending (90-Day) | 0.00% | ⚠️ Approaching EOL (Impending (90-Day)). Valid for immediate builds; verify multi-year roadmaps. |
+| `P49602-B21` | Intel Xeon-Gold 6444Y 3.6GHz 16-core 270W Processor for HPE | Processor | $12,574 | Impending (90-Day) | 0.00% | ⚠️ Approaching EOL (Impending (90-Day)). Valid for immediate builds; verify multi-year roadmaps. |
+| `P49603-B21` | Intel Xeon-Platinum 8462Y+ 2.8GHz 32-core 300W Processor for HPE | Processor | $12,584 | Impending (90-Day) | 0.00% | ⚠️ Approaching EOL (Impending (90-Day)). Valid for immediate builds; verify multi-year roadmaps. |
+| `P49611-B21` | Intel Xeon-Silver 4416+ 2.0GHz 20-core 165W Processor for HPE | Processor | $4,593 | Impending (90-Day) | 0.00% | ⚠️ Approaching EOL (Impending (90-Day)). Valid for immediate builds; verify multi-year roadmaps. |
+| `P49639-B21` | Intel Xeon-Gold 5411N 1.9GHz 24-core 165W Processor for HPE | Processor | $4,736 | Impending (90-Day) | 0.00% | ⚠️ Approaching EOL (Impending (90-Day)). Valid for immediate builds; verify multi-year roadmaps. |
+| `P49641-B21` | Intel Xeon-Gold 6421N 1.8GHz 32-core 185W Processor for HPE | Processor | $7,241 | Impending (90-Day) | 0.00% | ⚠️ Approaching EOL (Impending (90-Day)). Valid for immediate builds; verify multi-year roadmaps. |
+| `P49645-B21` | Intel Xeon-Platinum 9462 2.7GHz 32-core 350W Processor for HPE | Processor | $24,445 | Impending (90-Day) | 0.00% | ⚠️ Approaching EOL (Impending (90-Day)). Valid for immediate builds; verify multi-year roadmaps. |
+| `P46857-B21` | INT X710 10GbE 4p BASE-T OCP3 Spl Adapterr | Networking | $0 | Impending (90-Day) | 0.00% | ⚠️ Approaching EOL (Impending (90-Day)). Valid for immediate builds; verify multi-year roadmaps. |
+| `P71812-B21` | BCM 957508-N2 100Gb/s 2p Spl OCP3 Adapter | Networking | $0 | Impending (90-Day) | 0.00% | ⚠️ Approaching EOL (Impending (90-Day)). Valid for immediate builds; verify multi-year roadmaps. |
+
+## 📊 5b. Category-Level Trends & Significant Price Adjustments
+
+### Category Portfolio Delta & Planning Intelligence
+
+| Category | Total SKUs | Added | Modified | Unchanged | Clearance / Drops | Category Planning Insight |
+|---|---:|---:|---:|---:|---:|---|
+| **Chassis** | 3 | 0 | 0 | 3 | 0 | Stable portfolio |
+| **Accessories & Infrastructure** | 17 | 0 | 0 | 17 | 0 | Stable portfolio |
+| **Processor** | 74 | 0 | 0 | 74 | 0 | Stable portfolio |
+| **Cooling / Thermal** | 10 | 0 | 0 | 10 | 0 | Stable portfolio |
+| **Memory** | 34 | 0 | 0 | 34 | 0 | Stable portfolio |
+| **Storage Controllers** | 32 | 0 | 0 | 32 | 0 | Stable portfolio |
+| **Drive Enclosures / Drives** | 8 | 0 | 0 | 8 | 0 | Stable portfolio |
+| **Software & Licenses** | 393 | 0 | 0 | 393 | 0 | Stable portfolio |
+| **Cables & Enablement Kits** | 35 | 0 | 0 | 35 | 0 | Stable portfolio |
+| **Factory Configuration Settings** | 1 | 0 | 0 | 1 | 0 | Stable portfolio |
+| **PCIe Risers** | 3 | 0 | 0 | 3 | 0 | Stable portfolio |
+| **OS Boot Device** | 1 | 0 | 0 | 1 | 0 | Stable portfolio |
+| **Networking** | 78 | 0 | 0 | 78 | 0 | Stable portfolio |
+| **Power Supplies** | 6 | 0 | 0 | 6 | 0 | Stable portfolio |
+| **Security Options** | 1 | 0 | 0 | 1 | 0 | Stable portfolio |
+| **Graphics & GPU** | 6 | 0 | 0 | 6 | 0 | Stable portfolio |
+| **HPE Compute Ops Management** | 1 | 0 | 0 | 1 | 0 | Stable portfolio |
+| **Support Services** | 1 | 0 | 0 | 1 | 0 | Stable portfolio |
+
 ## 🔄 5. Recent Attribute & Specification Modifications Log
 
 *No attribute or specification changes recorded across catalog snapshots.*
@@ -62,10 +110,10 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 ## ⭐ 8. Vendor Recommended & Preferred Hardware Options
 
-| Product # | Description | Category | List Price (USD) | Lead Time |
-|---|---|---|---:|---|
-| `P01366-B21` | HPE 96W Smart Storage Lithium-ion Battery with 145mm Cable Kit | Storage Controllers | $110 | Standard |
-| `P03178-B21` | HPE 1000W Flex Slot Titanium Hot Plug Power Supply Kit | Power Supplies | $926 | Standard |
+| Product # | Description | Category | Recommendation Badge | List Price (USD) | Lead Time |
+|---|---|---|:---:|---:|---|
+| `P01366-B21` | HPE 96W Smart Storage Lithium-ion Battery with 145mm Cable Kit | Storage Controllers | **Recommended** | $110 | Unpublished |
+| `P03178-B21` | HPE 1000W Flex Slot Titanium Hot Plug Power Supply Kit | Power Supplies | **Recommended** | $926 | Unpublished |
 
 ## 📦 9. Solution Manifest, EDT & Commercial Baseline
 

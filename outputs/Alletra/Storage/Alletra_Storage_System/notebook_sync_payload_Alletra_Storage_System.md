@@ -4,7 +4,7 @@
 
 **Scope Identity**: `HPE/STORAGE/Alletra/Storage/Alletra_Storage_System`
 
-**Sync Timestamp**: 2026-10-18T08:24:10.308Z
+**Sync Timestamp**: 2026-10-21T11:15:32.131Z
 
 **Total Verified SKUs**: `3` (`3` Hardware + `0` Services)
 
@@ -49,6 +49,14 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 ## ⚠️ 4. Discontinued & Obsolete SKUs Registry
 
 *No discontinued or reinstated SKUs detected for Alletra_Storage_System. All cataloged SKUs are active.*
+
+## 📊 5b. Category-Level Trends & Significant Price Adjustments
+
+### Category Portfolio Delta & Planning Intelligence
+
+| Category | Total SKUs | Added | Modified | Unchanged | Clearance / Drops | Category Planning Insight |
+|---|---:|---:|---:|---:|---:|---|
+| **Chassis** | 3 | 0 | 3 | 0 | 0 | 🔄 Attributes/specifications updated (3 SKUs) |
 
 ## 🔄 5. Recent Attribute & Specification Modifications Log
 

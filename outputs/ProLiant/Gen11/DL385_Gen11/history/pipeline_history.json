@@ -1,0 +1,96 @@
+[
+  {
+    "summary": {
+      "runId": "run_DL385_Gen11_1792574601376",
+      "sessionName": "DL385_Gen11",
+      "startTime": "2026-10-21T09:23:21.371Z",
+      "endTime": "2026-10-21T09:23:24.267Z",
+      "durationMs": 2896,
+      "durationSec": "2.90",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 667,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 667,
+      "validationStats": {
+        "totalEntries": 98,
+        "totalSKUs": 667,
+        "validSKUs": 667,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 5,
+        "zeroPriceSKUs": 25,
+        "priceErrors": 0,
+        "ruleCount": 497,
+        "categoryCount": 15
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-10-21T09:23:21.377Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_DL385_Gen11_1792574600640\\raw_data\\oca_raw_data_full.json",
+          "jsonOutputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_DL385_Gen11_1792574600640\\DL385_Gen11_Catalog.json",
+          "chassisLabel": "DL385 Gen11"
+        }
+      },
+      {
+        "timestamp": "2026-10-21T09:23:23.696Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 72,
+          "totalUniqueSKUs": 667,
+          "incrementalStats": {
+            "totalScrapedSkus": 667,
+            "unchangedSkusCount": 0,
+            "modifiedSkusCount": 0,
+            "addedSkusCount": 667,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-10-21T09:23:23.714Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 98,
+            "totalSKUs": 667,
+            "validSKUs": 667,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 5,
+            "zeroPriceSKUs": 25,
+            "priceErrors": 0,
+            "ruleCount": 497,
+            "categoryCount": 15
+          }
+        }
+      },
+      {
+        "timestamp": "2026-10-21T09:23:24.266Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_DL385_Gen11_1792574600640\\DL385_Gen11_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 667,
+      "classified": 667,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  }
+]

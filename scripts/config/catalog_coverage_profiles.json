@@ -74,6 +74,26 @@
         "Compute Ops Management"
       ]
     },
+    "DL385_Gen11": {
+      "product": "DL385 Gen11",
+      "pillar": "SERVER",
+      "family": "ProLiant",
+      "generation": "Gen11",
+      "expectedWorkbookSheets": 24,
+      "minHardwareSKUs": 300,
+      "minServicesSKUs": 100,
+      "mandatoryCategories": [
+        "Processor",
+        "Memory",
+        "Drive Cage",
+        "SAS Controller",
+        "Riser Cards",
+        "Power Supplies"
+      ],
+      "mandatoryServicesCategories": [
+        "Compute Ops Management"
+      ]
+    },
     "Alletra_Storage_System": {
       "product": "Alletra Storage System",
       "pillar": "STORAGE",
