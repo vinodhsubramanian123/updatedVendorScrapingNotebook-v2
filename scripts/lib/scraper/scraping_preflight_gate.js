@@ -72,7 +72,7 @@ function verifyNotebookLmPreflight(skipCloudCheck) {
   }
   const { checkAuthHealth } = require('../../maintenance/check_nlm_auth.js');
   const nlmOk = checkAuthHealth({ autoHeal: true });
-  if (!nlmOk) {
+  if (!nlmOk || (typeof nlmOk === 'object' && nlmOk.valid === false)) {
     throw new Error('[PREFLIGHT_NLM_AUTH_FAILED] NotebookLM authentication check and auto-heal failed. Run `npm run auth:nlm:fix` before scraping.');
   }
   return { pass: true, status: 'VERIFIED_HEALTHY' };

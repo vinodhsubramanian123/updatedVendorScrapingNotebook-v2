@@ -2,9 +2,9 @@
   "registryVersion": "2.0.0",
   "schemaVersion": "1.0",
   "generatedAt": "2026-10-19T18:01:43.465Z",
-  "lastUpdated": "2026-10-19T18:01:43.465Z",
-  "totalLearnedRules": 102,
-  "totalDeduplicatedRules": 102,
+  "lastUpdated": "2026-10-21T08:52:21.641Z",
+  "totalLearnedRules": 104,
+  "totalDeduplicatedRules": 104,
   "productFamiliesSynced": [
     "DL380a",
     "DL380",
@@ -14,9 +14,9 @@
     "SY480"
   ],
   "counts": {
-    "universal": 9,
+    "universal": 10,
     "familyGen": 0,
-    "chassisSpecific": 93
+    "chassisSpecific": 94
   },
   "universalRules": [
     {
@@ -201,6 +201,33 @@
       "family": "",
       "generation": "",
       "solutionType": "GLOBAL CTO Server"
+    },
+    {
+      "deltaId": "DELTA_NLM_HEADLESS_CHROME_ORPHAN_RECLAMATION",
+      "timestamp": "2026-10-21T08:52:21.641Z",
+      "chassis": "GLOBAL",
+      "scopeTaxonomy": "Universal",
+      "affectedSku": "NLM_MCP_AUTH",
+      "requiredDependencySku": "",
+      "ruleType": "ENVIRONMENT_HEALING_PROTOCOL",
+      "ruleUpdate": "Headless Chrome instances (--headless=new) spawned during background pre-flights can become orphaned zombies on port 9222, locking ~/.notebooklm-mcp-cli/chrome-profiles/default/lockfile and blocking interactive nlm login from opening visible UI windows. check_nlm_auth.js:cleanStaleNlmChromeAndLocks pre-emptively kills orphaned headless Chrome processes on port 9222 and unlinks lockfiles. Wired via npm run auth:nlm:heal and scraping_preflight_gate.js auto-healing.",
+      "rawMessage": "Autonomous headless Chrome orphan reclamation and lockfile purge protocol (INV-181). Fixes wedged CDP port 9222 and enables frictionless nlm login --force --storage file recovery.",
+      "status": "VERIFIED",
+      "governanceStatus": "ACTIVE",
+      "verificationCount": 1,
+      "firstLearnedAt": "2026-10-21T08:52:21.641Z",
+      "lastVerifiedAt": "2026-10-21T08:52:21.641Z",
+      "provenanceSources": [
+        "scripts/maintenance/check_nlm_auth.js",
+        "scripts/lib/scraper/scraping_preflight_gate.js",
+        "INV-181"
+      ],
+      "vendor": "HPE",
+      "pillar": "UNKNOWN",
+      "family": "",
+      "generation": "",
+      "productId": "GLOBAL",
+      "solutionType": "GLOBAL Tooling"
     }
   ],
   "familyGenRules": [],
@@ -2381,6 +2408,37 @@
         "OCA_Config_3_5156661720-01_CF_Remarks.xlsx",
         "Synergy_1f_12N_Adhoc_5157030036-06 (1).xlsx",
         "Synergy_1f_12N_NoAccessories_5157071497-01 (1).xlsx"
+      ],
+      "vendor": "HPE",
+      "pillar": "SERVER",
+      "family": "Synergy",
+      "generation": "Gen12",
+      "productId": "SY480_Gen12",
+      "scopeCorrection": "CONSERVATIVE_PRODUCT_FIREWALL",
+      "solutionType": "SY480_Gen12 CTO Server"
+    },
+    {
+      "deltaId": "DELTA_SYNERGY_MULTI_FRAME_SPLIT_STARTUP_SIZING",
+      "timestamp": "2026-10-21T08:52:21.629Z",
+      "chassis": "SY480_Gen12",
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "affectedSku": "HA124A1",
+      "requiredDependencySku": "HA124A1#5ZM",
+      "ruleType": "MULTI_FRAME_SPLIT_STARTUP_FORMULA",
+      "ruleUpdate": "When a multi-frame Synergy deployment (e.g. 2 frames, 24 nodes) is partitioned into separate commercial quotes/orders: (1) Frame 1 carries 1x HA124A1#5ZM (First Frame Onsite Startup, $16,742 USD); (2) Frame 2 carries 1x HA124A1#5ZQ (Additional Frame Onsite Startup, $4,627 USD), saving $12,115 USD vs duplicating First Frame; (3) Order 2 remarks must cross-reference Order 1's UCID (e.g. 5157071497-02) to satisfy automated CLIC Rule 81039677 order acceptance; (4) If frames are deployed as independent standalone islands (separate sites or unlinked OneView domains), both frames require HA124A1#5ZM; (5) Remote Startup (HA124A1#V0F) and Onsite Startup (HA124A1#5ZM) are strictly mutually exclusive and must never be combined.",
+      "rawMessage": "Synergy 2-frame split startup rule: Frame 1 carries First Frame Onsite (HA124A1#5ZM, $16,742), Frame 2 carries Additional Frame Onsite (HA124A1#5ZQ, $4,627), saving $12,115. Frame 2 must cross-reference Frame 1's UCID in order remarks. Independent unlinked frames require #5ZM on both.",
+      "clicRuleNumbers": [
+        "81039677"
+      ],
+      "status": "VERIFIED",
+      "governanceStatus": "ACTIVE",
+      "verificationCount": 1,
+      "firstLearnedAt": "2026-10-21T08:52:21.641Z",
+      "lastVerifiedAt": "2026-10-21T08:52:21.641Z",
+      "provenanceSources": [
+        "Synergy_12000-2Frame_5156667291-02.xlsx",
+        "Synergy_1f_12N_NoAccessories_5157071497-02.xlsx",
+        "CLIC Rule 81039677"
       ],
       "vendor": "HPE",
       "pillar": "SERVER",

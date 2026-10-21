@@ -955,5 +955,26 @@ To ensure that future AI agents (Antigravity, Codex, Claude, or subagents) never
     2. `multi_cluster_splitter.js:analyzeAndPartitionClusters` enriches partitioned clusters with `deliveryPacing` and emits `recommendedUcidSplit: true` with `ucidSplitReason` on wave gaps.
     3. `bom_verifier.js:validateBoqEvaluationCriteria` runs check `B15` (`Pacing Item & Delivery Bottleneck Feasibility`), surfacing actionable delivery intelligence without blocking mathematically valid builds.
 
+- **INV-181: Autonomous Headless Chrome Orphan Reclamation & Port 9222 Healing Protocol**:
+  - **The Headless Zombie Hazard**: When headless browser automation (`--headless=new`) is invoked during background health audits, unexpected exits or timeouts can leave Chrome processes orphaned in the background. Because Chrome binds TCP port 9222 and creates `lockfile` inside the profile directory (`~/.notebooklm-mcp-cli/chrome-profiles/default`), subsequent interactive login attempts (`nlm login`) fail silently—closing GUI Chrome windows does not terminate the invisible background process.
+  - **Pre-Emptive Port & Lock Reclamation**:
+    - `check_nlm_auth.js:cleanStaleNlmChromeAndLocks` scans port 9222 prior to any auth check or browser launch. If an orphaned process matching `--headless` or `notebooklm-mcp-cli` is detected, it is immediately terminated with `Stop-Process -Force`.
+    - Stale lockfiles in the profile directory are removed before launching new CDP sessions.
+  - **Frictionless Non-Interactive Recovery**:
+    - The non-interactive command `nlm login --force --storage file` completely bypasses interactive OS keystore prompts and re-extracts session cookies directly into disk cache.
+    - Post-login memory synchronization (`gemini-notebook-mcp:refresh_auth`) reloads active credentials without restarting background daemon services.
+  - **Pipeline Wiring**:
+    - Wired via `npm run auth:nlm:heal` and `npm run auth:nlm:fix`.
+    - `scraping_preflight_gate.js` strictly inspects `nlmOk.valid` during Step 0 pre-flight, auto-healing stale sessions prior to DOM exploration.
+
+- **INV-182: Dual-Domain Synergy Frame Startup Sizing & Quoting Decoupling Invariant**:
+  - **Composable Enclosure Startup Rule (CLIC 81039677)**: Installation & Startup must be quoted for all frames in an order. A single-frame configuration mandates exactly $1\times$ `HA124A1#5ZM` (First Frame Onsite Startup, \$16,742.00 USD). Standard rack server installation SKUs (`HA114A1` / `HA113A1`) are invalid for Synergy frames.
+  - **Multi-Frame Split Quoting Formula**: When a multi-frame fabric is partitioned into separate commercial orders (e.g. Frame 1 in Order A, Frame 2 in Order B):
+    - *Shared Fabric / Single Datacenter Cluster*: Order 1 carries $1\times$ `HA124A1#5ZM` (First Frame Onsite). Order 2 carries $1\times$ `HA124A1#5ZQ` (Additional Frame Onsite, \$4,627.00 USD), saving \$12,115.00 USD vs duplicating First Frame. Order 2 configuration remarks must cross-reference Order 1's UCID to satisfy automated order desk validation.
+    - *Independent Standalone Clusters*: If frames are deployed at separate physical sites or separate unlinked OneView domains, both frames require $1\times$ `HA124A1#5ZM`.
+  - **Break-Fix Warranty vs Implementation Decoupling**: Ongoing hardware maintenance (`HU4B2A3` 3Y Tech Care Basic, \$46,156.00 per 12-node frame decomposed across Frame, Composers, Interconnects, and Compute) and one-time Day-1 implementation (`HA124A1`) are independent operational tiers. Quoting both does not duplicate coverage.
+  - **Remote vs Onsite Delivery Mutual Exclusion**: Remote Startup (`HA124A1#V0F`) and Onsite Startup (`HA124A1#5ZM`) are mutually exclusive. Quoting both on the same frame cluster produces a Statement of Work (SOW) delivery scope conflict and triggers CLIC rejection.
+
+
 
 

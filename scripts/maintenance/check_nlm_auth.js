@@ -2,15 +2,17 @@
 /**
  * scripts/maintenance/check_nlm_auth.js
  *
- * Proactive NotebookLM Authentication Health Check.
+ * Proactive NotebookLM Authentication Health Check & Auto-Healing.
  *
  * Validates NotebookLM credentials headlessly via `nlm login --check`.
  * When authentication is valid, exits 0.
- * When stale or expired, exits 1 and emits the non-interactive recovery command:
- *   nlm login --force --storage file
+ * When stale or expired, and autoHeal is requested (--heal), it automatically:
+ *   1. Terminates any orphaned headless Chrome processes holding port 9222.
+ *   2. Removes stale lockfiles in the profile directory.
+ *   3. Re-authenticates via non-interactive `nlm login --force --storage file`.
  *
  * Usage:
- *   node scripts/maintenance/check_nlm_auth.js [--json]
+ *   node scripts/maintenance/check_nlm_auth.js [--json] [--heal]
  */
 
 const { execFileSync } = require('child_process');
@@ -18,7 +20,37 @@ const path = require('path');
 const os = require('os');
 const fs = require('fs');
 
-function checkAuthHealth() {
+function cleanStaleNlmChromeAndLocks() {
+  const profileDir = path.join(os.homedir(), '.notebooklm-mcp-cli', 'chrome-profiles', 'default');
+  const lockPath = path.join(profileDir, 'lockfile');
+  try {
+    if (fs.existsSync(lockPath)) {
+      fs.unlinkSync(lockPath);
+    }
+  } catch { /* ignore */ }
+
+  if (process.platform === 'win32') {
+    try {
+      const psCmd = `
+        $conns = Get-NetTCPConnection -LocalPort 9222 -ErrorAction SilentlyContinue
+        foreach ($c in $conns) {
+          $proc = Get-CimInstance Win32_Process -Filter "ProcessId = $($c.OwningProcess)" -ErrorAction SilentlyContinue
+          if ($proc -and ($proc.CommandLine -like "*--headless*" -or $proc.CommandLine -like "*notebooklm-mcp-cli*")) {
+            Stop-Process -Id $proc.ProcessId -Force -ErrorAction SilentlyContinue
+          }
+        }
+      `;
+      execFileSync('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', psCmd], {
+        windowsHide: true,
+        timeout: 10000,
+        encoding: 'utf-8'
+      });
+    } catch { /* ignore */ }
+  }
+}
+
+function checkAuthHealth(options = {}) {
+  const autoHeal = options.autoHeal === true;
   const profileDir = path.join(os.homedir(), '.notebooklm-mcp-cli', 'profiles', 'default');
   const metadataPath = path.join(profileDir, 'metadata.json');
   let metadata = null;
@@ -31,6 +63,9 @@ function checkAuthHealth() {
   const envPath = process.env.PATH || '';
   const homeBin = path.join(os.homedir(), '.local', 'bin');
   const extendedPath = [homeBin, envPath].filter(Boolean).join(path.delimiter);
+
+  // Pre-emptively clear stale locks so check never hangs
+  cleanStaleNlmChromeAndLocks();
 
   try {
     const stdout = execFileSync('nlm', ['login', '--check'], {
@@ -52,6 +87,39 @@ function checkAuthHealth() {
       rawOutput: stdout.trim()
     };
   } catch (error) {
+    if (autoHeal) {
+      try {
+        cleanStaleNlmChromeAndLocks();
+        execFileSync('nlm', ['login', '--force', '--storage', 'file'], {
+          encoding: 'utf-8',
+          timeout: 60000,
+          env: { ...process.env, PATH: extendedPath }
+        });
+
+        const retryStdout = execFileSync('nlm', ['login', '--check'], {
+          encoding: 'utf-8',
+          timeout: 45000,
+          env: { ...process.env, PATH: extendedPath }
+        });
+
+        const isValid = retryStdout.includes('Authentication valid');
+        const notebooksMatch = retryStdout.match(/Notebooks found:\s*(\d+)/);
+        const accountMatch = retryStdout.match(/Account:\s*([^\r\n]+)/);
+
+        return {
+          status: isValid ? 'HEALED' : 'EXPIRED',
+          valid: isValid,
+          healed: isValid,
+          account: accountMatch ? accountMatch[1].trim() : (metadata?.email || 'unknown'),
+          notebooksFound: notebooksMatch ? parseInt(notebooksMatch[1], 10) : null,
+          lastValidated: new Date().toISOString(),
+          rawOutput: retryStdout.trim()
+        };
+      } catch {
+        // Fall through to error response
+      }
+    }
+
     return {
       status: 'EXPIRED',
       valid: false,
@@ -64,7 +132,8 @@ function checkAuthHealth() {
 
 function main() {
   const asJson = process.argv.includes('--json');
-  const health = checkAuthHealth();
+  const shouldHeal = process.argv.includes('--heal') || process.argv.includes('--fix');
+  const health = checkAuthHealth({ autoHeal: shouldHeal });
 
   if (asJson) {
     console.log(JSON.stringify(health, null, 2));
@@ -76,6 +145,7 @@ function main() {
     console.log(`  Account:   ${health.account}`);
     console.log(`  Notebooks: ${health.notebooksFound !== null ? health.notebooksFound : 'available'}`);
     console.log(`  Validated: ${health.lastValidated}`);
+    console.log(`  Status:    ${health.status}`);
     console.log('  Mode:      Non-blocking (Proactive pre-flight check passed)');
     process.exit(0);
   } else {
@@ -92,4 +162,4 @@ if (require.main === module) {
   main();
 }
 
-module.exports = { checkAuthHealth };
+module.exports = { checkAuthHealth, cleanStaleNlmChromeAndLocks };
