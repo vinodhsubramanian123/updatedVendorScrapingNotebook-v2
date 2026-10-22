@@ -23,6 +23,11 @@ function isServerRunning(url) {
 }
 
 async function runTest() {
+  const isSkipE2E = ['true', '1'].includes(String(process.env.ALLOW_E2E_SKIP || '').trim().toLowerCase());
+  if (isSkipE2E) {
+    console.log('⚠️ [TEST_STATUS: SKIPPED] ALLOW_E2E_SKIP enabled: skipping Playwright UI browser test.');
+    process.exit(0);
+  }
   console.log('================================================================');
   console.log('🧪 RUNNING PLAYWRIGHT BROWSER E2E TEST WITH HP OPPORTUNITY BOQ');
   console.log('================================================================\n');

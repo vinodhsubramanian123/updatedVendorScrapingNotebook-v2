@@ -170,6 +170,42 @@ function parseAndConsolidateBOQ(rawInput, filePath = '', targetSheet = null) {
  * @returns {object} Evaluation results
  */
 
+/**
+ * Platform & Generation Awareness Helpers
+ */
+function isServerPlatform(chassisInfo, topology) {
+  const family = String(chassisInfo?.family || '').toLowerCase();
+  const formFactor = String(chassisInfo?.formFactor || '').toLowerCase();
+  const domain = String(topology?.domain || '').toLowerCase();
+
+  if (domain && domain !== 'server' && domain !== 'ai_cluster' && domain !== 'unknown') {
+    return false;
+  }
+  if (family === 'storeever' || family === 'san' || family === 'alletra') {
+    return false;
+  }
+  if (formFactor.includes('switch') || formFactor.includes('array')) {
+    return false;
+  }
+  return true;
+}
+
+function resolveGenerationProfile(chassisInfo, items = []) {
+  const genStr = String(chassisInfo?.gen || '').toLowerCase();
+  const modelStr = String(chassisInfo?.model || '').toLowerCase();
+  const idStr = String(chassisInfo?.id || '').toLowerCase();
+  const itemsText = items.map(it => String(it.description || '')).join(' ').toLowerCase();
+
+  const isGen12 = genStr.includes('gen12') || genStr.includes('12') ||
+    modelStr.includes('gen12') || idStr.includes('gen12') || itemsText.includes('gen12');
+  const isGen11 = genStr.includes('gen11') || genStr.includes('11') ||
+    modelStr.includes('gen11') || idStr.includes('gen11') || itemsText.includes('gen11');
+  const isGen10 = genStr.includes('gen10') || genStr.includes('10') ||
+    modelStr.includes('gen10') || idStr.includes('gen10') || itemsText.includes('gen10');
+
+  return { isGen12, isGen11, isGen10 };
+}
+
 function validateNetworkingRules(ctx) {
   const { network, serverCount, mandatorySkus, errors, mathDeductions, warnings, missingDependencies } = ctx;
   const ocpSlotsClusterMax = network.maxOcpSlots * serverCount;
@@ -375,7 +411,11 @@ function validateStorageRules(ctx) {
     mathDeductions.push(reason);
   }
 
-  if (storage.driveCount === 0 && !storage.hasNoDriveKit && !storage.hasStorageController && !storage.hasDriveCage) {
+  const isServer = isServerPlatform(ctx.chassisInfo, ctx.topology);
+  const genProfile = resolveGenerationProfile(ctx.chassisInfo, items);
+  const isGen12 = genProfile.isGen12;
+
+  if (isServer && storage.driveCount === 0 && !storage.hasNoDriveKit && !storage.hasStorageController && !storage.hasDriveCage) {
     const reason = `Storage Math Failed: 0 drives detected. Requires HPE No Drive Configuration FIO Kit.`;
     warnings.push(reason);
     mathDeductions.push(reason);
@@ -394,9 +434,8 @@ function validateStorageRules(ctx) {
   const is1UChassis = ctx.chassisInfo?.model?.includes('DL360') ||
     items?.some(it => (it.description || '').toLowerCase().includes('dl360') || it.sku === 'P52499-B21' || it.sku === 'P52498-B21' || it.sku === 'P52497-B21');
   const hasBackplaneKit = items?.some(it => (it.description || '').toLowerCase().includes('backplane') || it.sku === 'P48895-B21');
-  if (!storage.isLffChassis && !isTapeLibrary && !is1UChassis && !hasBackplaneKit && (storage.needsDriveCageForController || storage.hasControllerNoDriveConflict)) {
+  if (isServer && !storage.isLffChassis && !isTapeLibrary && !is1UChassis && !hasBackplaneKit && (storage.needsDriveCageForController || storage.hasControllerNoDriveConflict)) {
     const isDl380a = power?.isDl380aGpuChassis || items.some(it => (it.description || '').toLowerCase().includes('dl380a'));
-    const isGen12 = items.some(it => (it.description || '').toLowerCase().includes('gen12'));
     const cageSku = mandatorySkus.GENERIC_CAGE?.sku || (isDl380a ? 'P74710-B21' : (isGen12 ? 'P75741-B21' : 'P48813-B21'));
     const cageDesc = mandatorySkus.GENERIC_CAGE?.name || (isDl380a ? 'HPE ProLiant Compute DL380a Gen12 4SFF U.3 FIO Drive Cage Kit' : (isGen12 ? 'HPE ProLiant Compute DL3XX Gen12 8SFF x4 U.3 Tri-Mode Drive Cage Kit' : 'HPE ProLiant DL380 Gen11 8SFF Tri-Mode Drive Cage Kit'));
     const cableSku = mandatorySkus.CONTROLLER_CABLE_KIT?.sku || (isGen12 ? 'P76456-B21' : 'P48918-B21');
@@ -434,7 +473,6 @@ function validateStorageRules(ctx) {
       (mandatorySkus?.BOOT_DEVICE_ENABLEMENT?.sku && clean === ctx.cleanBaseSKU(mandatorySkus.BOOT_DEVICE_ENABLEMENT.sku));
   });
   if (hasNs204BootDevice && !hasNs204Enablement) {
-    const isGen12 = items.some(it => (it.description || '').toLowerCase().includes('gen12'));
     const enablementSku = mandatorySkus.BOOT_DEVICE_ENABLEMENT?.sku || (isGen12 ? 'P74755-B21' : 'P54442-B21');
     const enablementDesc = mandatorySkus.BOOT_DEVICE_ENABLEMENT?.name || 'HPE ProLiant NS204i-u Rear Mount Enablement Kit';
     const reason = `INV-87: NS204i-u Boot Storage Device requires physical Rear Mount Enablement Kit (${enablementSku}).`;
@@ -566,7 +604,7 @@ function validatePowerRules(ctx) {
   }
 
   if (pcie.needsGpuPowerCableKit) {
-    const isGen12 = Boolean(chassisInfo?.gen?.includes('12') || chassisInfo?.model?.includes('Gen12'));
+    const isGen12 = resolveGenerationProfile(chassisInfo, items).isGen12;
     const gpuCableSku = mandatorySkus?.GPU_POWER_CABLE_KIT?.sku || (power.isDl380aGpuChassis ? 'P74700-B21' : (isGen12 ? 'P76450-B21' : 'P48816-B21'));
     const gpuCableDesc = mandatorySkus?.GPU_POWER_CABLE_KIT?.name || (power.isDl380aGpuChassis ? 'HPE ProLiant Compute DL380a Gen12 GPU 16-pin FIO Cable Kit' : (isGen12 ? 'HPE ProLiant DL380 Gen12 GPU Auxiliary Power Cable Kit' : 'HPE ProLiant DL380 Gen11 GPU Power Cable Kit'));
     const cableCapacity = resolveGpuCableCapacity(gpuCableSku, gpuCableDesc, mandatorySkus);
@@ -707,6 +745,8 @@ function validateSupportRules(ctx) {
 
 function validateBaseChassisRules(ctx) {
   const { items, serverCount, compute, memory, storage, power, mandatorySkus, errors, mathDeductions, missingDependencies, CTO_BASE_SKUS, chassisInfo, cleanBaseSKU } = ctx;
+  const isServer = isServerPlatform(chassisInfo, ctx.topology);
+  if (!isServer) return;
   const hasBaseChassis = items.some(it => {
     const clean = cleanBaseSKU(it.sku);
     return clean === chassisInfo.baseSku || CTO_BASE_SKUS.has(clean);
@@ -909,11 +949,15 @@ function collectChassisDefaultAdvisories(items, chassisInfo, warnings, skipGraph
 }
 
 function _buildAspect1Compute(ctx, _computePresent) {
-  const { compute, mandatorySkus, hasBaseChassis, cpusPerServer, HIGH_TDP_THRESHOLD_WATTS, pcie } = ctx;
-  const status = (hasBaseChassis && compute.cpuCount === 0) ? 'FAIL'
+  const { compute, mandatorySkus, hasBaseChassis, cpusPerServer, HIGH_TDP_THRESHOLD_WATTS, pcie, chassisInfo, topology } = ctx;
+  const isServer = isServerPlatform(chassisInfo, topology);
+  const status = (isServer && hasBaseChassis && compute.cpuCount === 0) ? 'FAIL'
+    : !isServer ? 'PASS'
     : !_computePresent ? 'UNKNOWN'
     : ((compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS || (pcie.gpuCount > 0 && !compute.isDl380aAccelerator)) && !compute.hasHighPerfFans) || compute.fanKitExceedsMax ? 'FAIL' : 'PASS';
-  const detail = (hasBaseChassis && compute.cpuCount === 0)
+  const detail = !isServer
+    ? `Domain profile verified (${chassisInfo?.family || 'Appliance'} ${chassisInfo?.model || ''}); server host processor rules not applicable.`
+    : (hasBaseChassis && compute.cpuCount === 0)
     ? 'INV-105: No processor detected in configuration (at least 1 CPU required for server chassis).'
     : !_computePresent
     ? 'INV-105: Compute subsystem data absent — cannot evaluate thermal envelope.'
@@ -938,11 +982,15 @@ function _buildAspect1Compute(ctx, _computePresent) {
 }
 
 function _buildAspect2Memory(ctx, _memoryPresent) {
-  const { compute, memory, serverCount, hasBaseChassis } = ctx;
-  const status = (hasBaseChassis && memory.memoryCount === 0) ? 'FAIL'
+  const { compute, memory, serverCount, hasBaseChassis, chassisInfo, topology } = ctx;
+  const isServer = isServerPlatform(chassisInfo, topology);
+  const status = (isServer && hasBaseChassis && memory.memoryCount === 0) ? 'FAIL'
+    : !isServer ? 'PASS'
     : !_memoryPresent ? 'UNKNOWN'
     : (memory.memoryCount > 0 && !memory.isSupportedPopulation) || memory.hasBtoMemoryInCto ? 'FAIL' : 'PASS';
-  const detail = (hasBaseChassis && memory.memoryCount === 0)
+  const detail = !isServer
+    ? `Domain profile verified (${chassisInfo?.family || 'Appliance'} ${chassisInfo?.model || ''}); server host memory rules not applicable.`
+    : (hasBaseChassis && memory.memoryCount === 0)
     ? 'INV-105: No memory modules detected in configuration (memory required for server chassis).'
     : !_memoryPresent
     ? 'INV-105: Memory subsystem data absent — cannot evaluate channel balance.'
@@ -967,12 +1015,16 @@ function _buildAspect2Memory(ctx, _memoryPresent) {
 }
 
 function _buildAspect3Storage(ctx, _storagePresent) {
-  const { storage, mandatorySkus, serverCount, hasDriveCageKit, hasBaseChassis } = ctx;
-  const status = (hasBaseChassis && storage.driveCount === 0 && !storage.hasNoDriveKit && !hasDriveCageKit) ? 'FAIL'
+  const { storage, mandatorySkus, serverCount, hasDriveCageKit, hasBaseChassis, chassisInfo, topology } = ctx;
+  const isServer = isServerPlatform(chassisInfo, topology);
+  const status = (isServer && hasBaseChassis && storage.driveCount === 0 && !storage.hasNoDriveKit && !hasDriveCageKit) ? 'FAIL'
+    : !isServer ? (storage.hasIncompatibleYCable ? 'FAIL' : 'PASS')
     : !_storagePresent ? 'UNKNOWN'
     : storage.hasIncompatibleYCable || (storage.driveCount === 0 && !storage.hasNoDriveKit && !hasDriveCageKit) || (storage.hasStorageController && !storage.hasSmartBattery) ? 'FAIL' : 'PASS';
-  const detail = (hasBaseChassis && storage.driveCount === 0 && !storage.hasNoDriveKit && !hasDriveCageKit)
+  const detail = (isServer && hasBaseChassis && storage.driveCount === 0 && !storage.hasNoDriveKit && !hasDriveCageKit)
     ? 'Storage Math Failed: 0 drives requires No Drive Configuration FIO Kit.'
+    : !isServer
+    ? `Domain profile verified (${chassisInfo?.family || 'Appliance'} ${chassisInfo?.model || ''}); storage/media evaluated.`
     : !_storagePresent
     ? 'INV-105: Storage subsystem data absent — cannot evaluate controller/drive configuration.'
     : storage.hasIncompatibleYCable
@@ -1472,7 +1524,7 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
     errors, warnings, mathDeductions, missingDependencies, cleanBaseSKU,
     hasDriveCageKit, hasBaseChassis, ocpSlotsClusterMax, pcieSlotsClusterMax, activePcieSlotsClusterMax,
     isExceedingOcp, isExceedingPcie, isExceedingActivePcie,
-    psuPerServer, cpusPerServer, options
+    psuPerServer, cpusPerServer, options, topology
   };
 
   validateNetworkingRules(ctx);

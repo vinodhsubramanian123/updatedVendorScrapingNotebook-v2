@@ -133,9 +133,43 @@ describe('🧪 Multi-Cluster Splitter & Partitioning Engine Fuzz Suite', () => {
       });
     }
 
+    // ADD-1: Quantity conservation counterexamples (450 DIMMs / 60 nodes with strict non-rounding)
+    const { solveDiophantineMultiCluster } = require('../../scripts/lib/boq/multi_cluster_splitter.js');
+    const clusters60 = [{ multiplier: 20 }, { multiplier: 40 }];
+    const dimmAlloc = solveDiophantineMultiCluster(clusters60, 450, { allowRounding: false });
+    const totalDimmAlloc = clusters60[0].multiplier * dimmAlloc[0] + clusters60[1].multiplier * dimmAlloc[1];
+    assert.ok(totalDimmAlloc <= 450, `Allocation must never exceed source quantity: got ${totalDimmAlloc}`);
+    assert.notStrictEqual(dimmAlloc[0], 8, 'Must not round up to 8 per server (480 total)');
+
+    // ADD-1: requireEven parity enforcement
+    const evenClusters = [{ multiplier: 2 }, { multiplier: 2 }];
+    const evenAlloc = solveDiophantineMultiCluster(evenClusters, 4, { requireEven: true });
+    evenAlloc.forEach(q => assert.strictEqual(q % 2, 0, `Allocated quantity ${q} must be even`));
+
     try {
       fs.rmSync(tempDir, { recursive: true, force: true });
     } catch (_) {}
+  });
+
+  test('6. Quantity Conservation Ledger tracks line-by-line item conservation across clusters (INV-192)', () => {
+    const rawItems = [
+      { sku: 'P52534-B21', category: 'Chassis', description: 'HPE DL380 Gen11 8SFF CTO Server', quantity: 60 },
+      { sku: 'P67088-B21', category: 'Processor', description: 'Intel Xeon Platinum 8580 (60C)', quantity: 40 },
+      { sku: 'P67095-B21', category: 'Processor', description: 'Intel Xeon Gold 6530 (32C)', quantity: 80 },
+      { sku: 'P64707-F21', category: 'Memory', description: '64GB DDR5-5600 RAM', quantity: 480 }
+    ];
+
+    const partition = analyzeAndPartitionClusters(rawItems);
+    assert.ok(partition.quantityConservation, 'Must emit quantityConservation object');
+    assert.strictEqual(partition.quantityConservation.isFullyConserved, true);
+    assert.strictEqual(partition.quantityConservation.totalDiscrepancies, 0);
+
+    const memEntry = partition.quantityConservation.ledger.find(l => l.cleanSku === 'P64707-F21');
+    assert.ok(memEntry, 'Must find memory entry in conservation ledger');
+    assert.strictEqual(memEntry.requestedQuantity, 480);
+    assert.strictEqual(memEntry.allocatedTotal, 480);
+    assert.strictEqual(memEntry.status, 'CONSERVED_EXACT');
+    assert.strictEqual(memEntry.residualQuantity, 0);
   });
 
 });

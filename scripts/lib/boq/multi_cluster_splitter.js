@@ -26,6 +26,7 @@ const { cleanBaseSKU, isValidHpeSKU } = require('../catalog/sku.js');
 const { detectChassisVariant, getChassisMap, autoDetectChassisDir } = require('../catalog/catalog_discovery.js');
 const { isNonBomSheet } = require('./boq_parser.js');
 const { analyzeDeliveryPacing } = require('./delivery_pacing_analyzer.js');
+const { evaluateItemPricing } = require('./pricing_presence.js');
 
 /**
  * Robustly find a valid HPE SKU within text with multiple tokens.
@@ -169,29 +170,55 @@ function extractRawItemsFromWorkbook(filePath) {
  * Minimizes variance across clusters to maintain maximum cluster homogeneity.
  */
 function solveDiophantineMultiCluster(clusters, totalQty, options = {}) {
+  // Reject malformed quantities before division or search; zero multipliers can hang execution.
+  if (!Array.isArray(clusters) || clusters.some(c => !Number.isSafeInteger(c?.multiplier) || c.multiplier <= 0) || !Number.isSafeInteger(totalQty) || totalQty < 0) {
+    throw new Error('INVALID_CLUSTER_QUANTITIES');
+  }
+  let searchSteps = 0;
+  const consumeSearchStep = () => {
+    if (++searchSteps > 100000) throw new Error('CLUSTER_ALLOCATION_SEARCH_LIMIT: allocation remains unresolved');
+  };
   const multipliers = clusters.map(c => c.multiplier);
   const k = multipliers.length;
   if (k === 0) return [];
-  if (k === 1) {
-    return [Math.round(totalQty / multipliers[0])];
+  const qty = Number(totalQty);
+  if (!Number.isFinite(qty) || qty <= 0) {
+    return multipliers.map(() => 0);
   }
 
   const totalChassis = multipliers.reduce((a, b) => a + b, 0) || 1;
-  // If exact division
-  if (totalQty % totalChassis === 0) {
-    const perServer = totalQty / totalChassis;
-    return multipliers.map(() => perServer);
+
+  if (k === 1) {
+    const m = multipliers[0] || 1;
+    if (qty % m === 0) {
+      const q = qty / m;
+      if (options.requireEven && q % 2 !== 0) {
+        return [0];
+      }
+      return [q];
+    }
+    const floorQty = Math.floor(qty / m);
+    return [options.requireEven && floorQty % 2 !== 0 ? Math.max(0, floorQty - 1) : floorQty];
+  }
+
+  // Exact division across all clusters
+  if (qty % totalChassis === 0) {
+    const perServer = qty / totalChassis;
+    if (!options.requireEven || perServer % 2 === 0) {
+      return multipliers.map(() => perServer);
+    }
   }
 
   // 2 clusters case: exact exhaustive Diophantine search with minimal variance
   if (k === 2) {
     const [m1, m2] = multipliers;
     const solutions = [];
-    const maxQ1 = Math.floor(totalQty / m1);
-    const avg = totalQty / totalChassis;
+    const maxQ1 = Math.floor(qty / m1);
+    const avg = qty / totalChassis;
 
     for (let q1 = 0; q1 <= maxQ1; q1++) {
-      const rem = totalQty - m1 * q1;
+      consumeSearchStep();
+      const rem = qty - m1 * q1;
       if (rem % m2 === 0) {
         const q2 = rem / m2;
         if (q2 >= 0) {
@@ -210,18 +237,49 @@ function solveDiophantineMultiCluster(clusters, totalQty, options = {}) {
     }
   }
 
-  // General fallback when no exact integer Diophantine solution exists:
-  // Distribute uniformly per server using rounded ratio (e.g. 450 DIMMs / 60 chassis = 7.5 -> 8 per server)
-  const perServerRounded = Math.max(1, Math.round(totalQty / totalChassis));
-  return multipliers.map(() => perServerRounded);
+  // 3+ clusters case: bounded search for exact Diophantine solution
+  if (k > 2 && k <= 5) {
+    const avg = qty / totalChassis;
+    let bestSolution = null;
+    let minVariance = Infinity;
+
+    function search(idx, currentRem, currentAlloc) {
+      consumeSearchStep();
+      if (idx === k - 1) {
+        const mk = multipliers[idx];
+        if (currentRem % mk === 0) {
+          const qk = currentRem / mk;
+          if (qk >= 0 && (!options.requireEven || qk % 2 === 0)) {
+            const fullAlloc = [...currentAlloc, qk];
+            const variance = fullAlloc.reduce((sum, q) => sum + Math.pow(q - avg, 2), 0);
+            if (variance < minVariance) {
+              minVariance = variance;
+              bestSolution = fullAlloc;
+            }
+          }
+        }
+        return;
+      }
+      const mi = multipliers[idx];
+      const maxQi = Math.floor(currentRem / mi);
+      for (let qi = 0; qi <= maxQi; qi++) {
+        if (options.requireEven && qi % 2 !== 0) continue;
+        search(idx + 1, currentRem - mi * qi, [...currentAlloc, qi]);
+      }
+    }
+
+    search(0, qty, []);
+    if (bestSolution) return bestSolution;
+  }
+
+  if (options.allowRounding === false) {
+    const floorQty = Math.floor(qty / totalChassis);
+    return multipliers.map(() => options.requireEven && floorQty % 2 !== 0 ? Math.max(0, floorQty - 1) : floorQty);
+  }
+  const rounded = Math.max(1, Math.round(qty / totalChassis));
+  return multipliers.map(() => options.requireEven && rounded % 2 !== 0 ? rounded + 1 : rounded);
 }
 
-/**
- * Identify clusters and compute partition multipliers from raw items.
- * @param {Array<object>} rawItems 
- * @param {string} [boqName='']
- * @returns {object} { isMultiCluster, totalChassis, clusters: [] }
- */
 /**
  * Compute infrastructure and facility sizing for a given cluster.
  */
@@ -424,7 +482,16 @@ function populateClusterCommonItem(cluster, item, cIdx, itemAllocationsBySku, to
 
   // Memory: Proportionally distributed per server & FIO conversion
   if (desc.includes('dimm') || desc.includes('memory') || (item.category || '').toLowerCase().includes('memory')) {
-    const perServerDimms = itemAllocationsBySku.get(clean)?.[cIdx] || Math.max(1, Math.round(item.quantity / totalChassis));
+    const allocList = itemAllocationsBySku.get(clean);
+    const hasClusterAlloc = Array.isArray(allocList);
+    const alloc = allocList?.[cIdx];
+    let perServerDimms;
+    if (hasClusterAlloc) {
+      perServerDimms = (typeof alloc === 'number' && Number.isFinite(alloc)) ? alloc : 0;
+    } else {
+      perServerDimms = Math.max(1, Math.round((item.quantity || 1) / totalChassis));
+    }
+    if (perServerDimms <= 0) return;
     let fioSku = cleanBaseSKU(item.sku);
     if (fioSku.endsWith('-B21')) {
       fioSku = fioSku.replace(/-B21$/, '-F21');
@@ -498,7 +565,16 @@ function populateClusterCommonItem(cluster, item, cIdx, itemAllocationsBySku, to
   }
 
   // All other common infrastructure options: allocate via Diophantine partition
-  const perServer = itemAllocationsBySku.get(clean)?.[cIdx] || Math.max(1, Math.round(item.quantity / totalChassis));
+  const allocList = itemAllocationsBySku.get(clean);
+  const hasClusterAlloc = Array.isArray(allocList);
+  const alloc = allocList?.[cIdx];
+  let perServer;
+  if (hasClusterAlloc) {
+    perServer = (typeof alloc === 'number' && Number.isFinite(alloc)) ? alloc : 0;
+  } else {
+    perServer = Math.max(1, Math.round((item.quantity || 1) / totalChassis));
+  }
+  if (perServer <= 0) return;
   cluster.items.push({
     sku: item.sku,
     description: item.description,
@@ -648,6 +724,96 @@ function resolveCatalogDataForItems(rawItems, options = {}) {
 }
 
 /**
+ * Build an auditable quantity conservation ledger between raw tender items and partitioned clusters.
+ * Ensures that no customer requirement or hardware count drops silently.
+ *
+ * @param {Array<object>} rawItems - Source tender line items
+ * @param {Array<object>} clusters - Partitioned cluster configurations
+ * @returns {object} { isFullyConserved: boolean, totalDiscrepancies: number, ledger: Array<object> }
+ */
+function buildQuantityConservationLedger(rawItems, clusters) {
+  if (!Array.isArray(rawItems) || !Array.isArray(clusters)) {
+    return { isFullyConserved: true, totalDiscrepancies: 0, ledger: [] };
+  }
+
+  function normalizeSkuKey(sku) {
+    const c = cleanBaseSKU(sku);
+    if (!c) return '';
+    if (c.endsWith('-F21')) return c.replace(/-F21$/, '-B21');
+    return c;
+  }
+
+  // Pre-index each cluster's item allocations by normalized SKU to avoid O(N^2) scans in chaos/stress suites
+  const clusterIndexes = clusters.map(cluster => {
+    const mult = Number(cluster.multiplier || 1);
+    const skuMap = new Map();
+    for (const item of (cluster.items || [])) {
+      const key = normalizeSkuKey(item.sku);
+      if (!key) continue;
+      const allocated = item.totalQuantity ?? ((item.quantity || 0) * mult);
+      skuMap.set(key, (skuMap.get(key) || 0) + allocated);
+    }
+    return {
+      clusterId: cluster.clusterId || cluster.name || 'Default',
+      multiplier: mult,
+      skuMap
+    };
+  });
+
+  const ledger = [];
+  let isFullyConserved = true;
+  let totalDiscrepancies = 0;
+
+  for (const rawItem of rawItems) {
+    const rawSku = rawItem.sku || '';
+    const clean = cleanBaseSKU(rawSku);
+    if (!clean || clean === 'CHASSIS_PLACEHOLDER') continue;
+    const normKey = normalizeSkuKey(rawSku);
+    const reqQty = Number(rawItem.quantity || 1);
+
+    let allocatedTotal = 0;
+    const clusterBreakdown = [];
+
+    for (const cIdx of clusterIndexes) {
+      const clusterAllocated = cIdx.skuMap.get(normKey) || 0;
+      allocatedTotal += clusterAllocated;
+      clusterBreakdown.push({
+        clusterId: cIdx.clusterId,
+        multiplier: cIdx.multiplier,
+        allocatedQuantity: clusterAllocated,
+        perServer: cIdx.multiplier > 0 ? Math.round(clusterAllocated / cIdx.multiplier) : 0
+      });
+    }
+
+    const delta = allocatedTotal - reqQty;
+    const status = delta === 0 ? 'CONSERVED_EXACT' : (delta > 0 ? 'SURPLUS_BUFFER' : 'RESIDUAL_DEFICIT');
+    if (delta !== 0) {
+      isFullyConserved = false;
+      totalDiscrepancies++;
+    }
+
+    ledger.push({
+      sku: rawSku,
+      cleanSku: clean,
+      description: rawItem.description || '',
+      category: rawItem.category || '',
+      requestedQuantity: reqQty,
+      allocatedTotal,
+      delta,
+      residualQuantity: Math.abs(delta),
+      status,
+      clusterBreakdown
+    });
+  }
+
+  return {
+    isFullyConserved,
+    totalDiscrepancies,
+    ledger
+  };
+}
+
+/**
  * Identify clusters and compute partition multipliers from raw items.
  * @param {Array<object>} rawItems 
  * @param {string} [boqName='']
@@ -693,19 +859,22 @@ function analyzeAndPartitionClusters(rawItems, boqName = '', options = {}) {
   if (cpuItems.length <= 1) {
     const singleCpu = cpuItems[0];
     const singlePacing = analyzeDeliveryPacing(rawItems, { catalogData });
+    const singleCluster = [{
+      name: 'Default_Cluster',
+      multiplier: totalChassis,
+      cpuSku: singleCpu?.sku || null,
+      cpuDesc: singleCpu?.description || null,
+      items: rawItems,
+      clusterSizing: computeClusterSizing(totalChassis, rawItems, uHeight, railKitSku, railKitDesc),
+      deliveryPacing: singlePacing
+    }];
+    const quantityConservation = buildQuantityConservationLedger(rawItems, singleCluster);
     return {
       isMultiCluster: false,
       totalChassis,
       detectedChassis,
-      clusters: [{
-        name: 'Default_Cluster',
-        multiplier: totalChassis,
-        cpuSku: singleCpu?.sku || null,
-        cpuDesc: singleCpu?.description || null,
-        items: rawItems,
-        clusterSizing: computeClusterSizing(totalChassis, rawItems, uHeight, railKitSku, railKitDesc),
-        deliveryPacing: singlePacing
-      }],
+      clusters: singleCluster,
+      quantityConservation,
       deliveryPacing: singlePacing,
       recommendedUcidSplit: false
     };
@@ -776,15 +945,36 @@ function analyzeAndPartitionClusters(rawItems, boqName = '', options = {}) {
     applyClusterManagementAndSupportPolicy(cluster, mult, rawItems, detectedChassis);
     cluster.clusterSizing = computeClusterSizing(mult, cluster.items, uHeight, railKitSku, railKitDesc);
     cluster.deliveryPacing = analyzeDeliveryPacing(cluster.items, { catalogData });
+
+    let knownSubtotal = 0;
+    let pricingComplete = true;
+    const priceUnavailableSkus = [];
+    for (const item of cluster.items) {
+      const { isPriced, unitPriceUsd } = evaluateItemPricing(item);
+      if (isPriced && typeof unitPriceUsd === 'number') {
+        knownSubtotal += unitPriceUsd * (item.totalQuantity || (item.quantity * mult));
+      } else {
+        pricingComplete = false;
+        if (item.sku) priceUnavailableSkus.push(item.sku);
+      }
+    }
+    cluster.pricingSummary = {
+      pricingComplete,
+      priceUnavailableSkus,
+      knownOrderSubtotalUsd: Number.isFinite(knownSubtotal) ? knownSubtotal : null,
+      totalOrderCostUsd: pricingComplete && Number.isFinite(knownSubtotal) ? knownSubtotal : null
+    };
   });
 
   const overallPacing = analyzeDeliveryPacing(rawItems, { catalogData });
+  const quantityConservation = buildQuantityConservationLedger(rawItems, clusters);
 
   return {
     isMultiCluster: true,
     totalChassis,
     detectedChassis,
     clusters,
+    quantityConservation,
     deliveryPacing: overallPacing,
     recommendedUcidSplit: overallPacing.recommendedUcidSplit,
     ucidSplitReason: overallPacing.ucidSplitReason
@@ -815,13 +1005,18 @@ function splitAndWriteClusterWorkbooks(inputFilePath, outputDirectory) {
     ];
 
     cluster.items.forEach(item => {
+      const { isPriced, unitPriceUsd, isConfirmedZero } = evaluateItemPricing(item);
+      const displayUnitPrice = isPriced ? (unitPriceUsd === 0 ? (isConfirmedZero ? 0 : null) : unitPriceUsd) : null;
+      const displayExtendedPrice = (displayUnitPrice !== null && typeof displayUnitPrice === 'number')
+        ? displayUnitPrice * (item.quantity || 1)
+        : null;
       sheetData.push([
         item.sku,
         item.quantity,
         item.description,
         item.category,
-        item.unitPriceUsd || 0,
-        (item.unitPriceUsd || 0) * (item.quantity || 1),
+        displayUnitPrice,
+        displayExtendedPrice,
         'ACTIVE_IN_OCA'
       ]);
     });
@@ -857,6 +1052,8 @@ module.exports = {
   analyzeAndPartitionClusters,
   splitAndWriteClusterWorkbooks,
   applyClusterManagementAndSupportPolicy,
+  solveDiophantineMultiCluster,
+  buildQuantityConservationLedger,
   QUALIFYING_COM_ONEVIEW_SKUS
 };
 

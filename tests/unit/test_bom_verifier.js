@@ -223,4 +223,77 @@ describe('Pre-Presentation Acceptance Gate (bom_verifier.js)', () => {
     assert.strictEqual(unknownGate.isValid, false);
     assert.ok(unknownGate.checks.some(c => c.id === 'TRACK_PROFILE' && c.status === 'UNKNOWN'));
   });
+
+  test('B16: Zero Unmatched Customer SKUs (FP-1) blocks acceptance when unmatched SKUs are present', () => {
+    const payload = {
+      items: [{ sku: 'P73282-B21', quantity: 1, unitPriceUsd: 5000 }],
+      unmatchedSkus: [{ rawSku: 'P99999-B21', reason: 'NO_CATALOG_MATCH' }],
+      aspectChecks: [
+        { id: 1, name: 'Compute Thermal', status: 'PASS' },
+        { id: 2, name: 'Memory Channel', status: 'PASS' },
+        { id: 3, name: 'Storage Tri-Mode', status: 'PASS' },
+        { id: 4, name: 'PCIe Riser', status: 'PASS' },
+        { id: 5, name: 'Networking OCP', status: 'PASS' },
+        { id: 6, name: 'Power Environment', status: 'PASS' },
+        { id: 7, name: 'Support Manufacturing', status: 'PASS' }
+      ],
+      rankedSolutions: [{ rank: 1, skuPartsList: [{ sku: 'P73282-B21', quantity: 1, unitPriceUsd: 5000 }] }],
+      chassis: 'DL380_Gen12'
+    };
+    const gate = verifyPrePresentationAcceptance(payload, 'BOQ_EVALUATION', {
+      catalogData: { entries: [{ skus: [{ 'Product #': 'P73282-B21' }] }] }
+    });
+    const b16 = gate.checks.find(c => c.id === 'B16');
+    assert.ok(b16, 'B16 check must exist');
+    assert.strictEqual(b16.status, 'FAILED', 'B16 must be FAILED when unmatchedSkus is non-empty');
+    assert.strictEqual(gate.isValid, false, 'Delivery must be blocked when unmatched SKUs exist');
+  });
+
+  test('B1: Domain aspect identity verification fails when dummy aspects are passed for networking (INV-194)', () => {
+    const output = {
+      solutionTopology: { domain: 'networking' },
+      chassis: 'SN3600B_Switch',
+      aspectChecks: [
+        { id: 'DUMMY_1', name: 'Dummy Check 1', status: 'PASS' },
+        { id: 'DUMMY_2', name: 'Dummy Check 2', status: 'PASS' },
+        { id: 'DUMMY_3', name: 'Dummy Check 3', status: 'PASS' }
+      ]
+    };
+    const checks = validateBoqEvaluationCriteria(output, {});
+    const b1 = checks.find(c => c.id === 'B1');
+    assert.strictEqual(b1.status, 'FAILED');
+    assert.ok(b1.detail.includes('Missing required networking domain aspect'));
+  });
+
+  test('B1: Domain aspect identity verification passes when registered networking aspects are present (INV-194)', () => {
+    const output = {
+      solutionTopology: { domain: 'networking' },
+      chassis: 'SN3600B_Switch',
+      aspectChecks: [
+        { id: 'SWITCH_FABRIC_PORTS', name: 'Switch Fabric & Port Protocol Alignment', status: 'PASS' },
+        { id: 'POWER_ENVIRONMENT', name: 'Switch Redundant Power & Airflow Aspect', status: 'PASS' },
+        { id: 'SUPPORT_SERVICES', name: 'Network Tech Care & Support Services Aspect', status: 'PASS' },
+        { id: 'SAN_OPTICS_TRANSCEIVER', name: 'SAN Optical Transceiver Matching', status: 'PASS' }
+      ]
+    };
+    const checks = validateBoqEvaluationCriteria(output, {});
+    const b1 = checks.find(c => c.id === 'B1');
+    assert.strictEqual(b1.status, 'PASSED');
+  });
+
+  test('B1: Domain aspect identity verification fails when storage array is missing controller pair (INV-194)', () => {
+    const output = {
+      solutionTopology: { domain: 'storage' },
+      chassis: 'Alletra_9000',
+      aspectChecks: [
+        { id: 'STORAGE_TRI_MODE', name: 'Drive Enclosure Aspect', status: 'PASS' },
+        { id: 'POWER_ENVIRONMENT', name: 'Storage Power Aspect', status: 'PASS' },
+        { id: 'SUPPORT_SERVICES', name: 'Storage Support Services', status: 'PASS' }
+      ]
+    };
+    const checks = validateBoqEvaluationCriteria(output, {});
+    const b1 = checks.find(c => c.id === 'B1');
+    assert.strictEqual(b1.status, 'FAILED');
+    assert.ok(b1.detail.includes('STORAGE_CONTROLLER_PAIR'));
+  });
 });

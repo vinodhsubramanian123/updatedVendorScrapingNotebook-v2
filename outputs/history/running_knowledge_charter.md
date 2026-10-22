@@ -2,8 +2,8 @@
 
 **Document Classification:** Canonical Ground-Truth Architecture & Validation Charter<br>
 **Maintained By:** HPE ProLiant AI Studio Autonomous Knowledge Engine (Antigravity AI)<br>
-**Last Synchronized:** 2026-10-21T09:30:09.799Z<br>
-**Total Deduplicated Learned Rules:** 102<br>
+**Last Synchronized:** 2026-10-22T11:12:40.433Z<br>
+**Total Deduplicated Learned Rules:** 110<br>
 **Universal Invariant Compliance:** INV-1 through INV-38 Certified<br>
 **Google Drive Destination:** `shared_folder_id: 1YR0lBh-gg00amKHRxuOqp5Aea3iL5O7-`
 
@@ -160,7 +160,7 @@ The Catalog Vendor Solution provides modular, AI-assisted catalog ingestion, nor
 
 ## 5. Deduplicated Learned Rule Ledger & Verification Provenance
 
-Total verified rules indexed in this build: **102**.
+Total verified rules indexed in this build: **110**.
 
 | Scope | Target Chassis | Category | Affected SKU | Dependency SKU | Rule Summary / Validation Directive | Verifications |
 | :--- | :--- | :--- | :--- | :--- | :--- | :---: |
@@ -173,6 +173,7 @@ Total verified rules indexed in this build: **102**.
 | 🌐 UNIVERSAL | `GLOBAL` | `CUSTOMER_INTENT_POLICY` | `undefined` | `—` | Closest rank preserves customer requirements and makes only necessary compatibility/buildability changes. Budget alterna | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `COMPONENT_DOMAIN_ROUTING` | `undefined` | `—` | Route by component role and exact product, never vendor or family alone. Synergy compute, fabric and frame use separate  | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `GUARDRAIL_RECOVERY_POLICY` | `undefined` | `—` | Gemini guardrail API sends must retain systemInstruction and function declarations when overriding SDK send config. Enfo | 1x |
+| 📦 CHASSIS | `GLOBAL` | `ENVIRONMENT_HEALING_PROTOCOL` | `NLM_MCP_AUTH` | `—` | Headless Chrome instances (--headless=new) spawned during background pre-flights can become orphaned zombies on port 922 | 1x |
 | 📦 CHASSIS | `DL380a_Gen12` | `STORAGE_COLLISION` | `P74710-B21` | `—` | DL380a prohibits mixing 4SFF cage P74710-B21 and 4EDSFF cage P74712-B21. | 1x |
 | 📦 CHASSIS | `DL380a_Gen12` | `PROCESSOR_POPULATION` | `P76706-B21` | `—` | DL380a Gen12 requires two identical processor models; single-processor and mixed-processor configurations are unsupporte | 1x |
 | 📦 CHASSIS | `DL380a_Gen12` | `POWER_REDUNDANCY` | `P76706-B21` | `—` | Requires a minimum of five power supplies for 2DW/4DW GPU configurations (up to eight for N+N grid redundancy or pre-pop | 1x |
@@ -202,6 +203,10 @@ Total verified rules indexed in this build: **102**.
 | 📦 CHASSIS | `DL380_Gen11` | `DEPENDENCY_CHAIN` | `P02377-B21` | `P48918-B21` | P02377-B21` or `P01366-B21` **mandates the inclusion of `P48918-B21 | 1x |
 | 📦 CHASSIS | `DL380_Gen11` | `DEPENDENCY_CHAIN` | `P58335-B21` | `P48918-B21` | P58335-B21`)** with the **Smart Storage Hybrid Capacitor (`P02377-B21`)** strictly requires `P48918-B21 | 1x |
 | 📦 CHASSIS | `DL380_Gen11` | `DEPENDENCY_CHAIN` | `write-cach` | `P48918-B21` | write-cache backup for `P58335-B21`; requires enablement cable **`P48918-B21 | 1x |
+| 📦 CHASSIS | `DL385_Gen11` | `MANDATORY_SOFTWARE_ATTACH` | `P53921-B21` | `R7A11AAE` | All compatible NPI CTO base models for Gen11 DL and ML platforms (such as DL385 Gen11 P53921-B21) strictly mandate at le | 1x |
+| 📦 CHASSIS | `DL385_Gen11` | `THERMAL_COOLING_PACKAGING_RULE` | `P58464-B21` | `P58465-B21` | On AMD DL3X5 Gen11 platforms, Standard Fan Kit (P58464-B21, $157) is ordered as individual fan modules (4 for 1P = $628, | 1x |
+| 📦 CHASSIS | `DL385_Gen11` | `MANDATORY_THERMAL_AIR_BAFFLE` | `P53921-B21` | `P57886-B21` | P57886-B21 (HPE ProLiant DL385 Gen11 2U Standard/Performance FIO Air Baffle Kit, $41.00 USD, Qty 1) is physically and lo | 1x |
+| 📦 CHASSIS | `DL385_Gen11` | `PROCESSOR_CACHE_TRADE_OFF_STRATEGY` | `P53712-B21` | `P53701-B21` | When modernizing AMD EPYC 7543 (32c, 2.8GHz, 256MB L3, 225W), EPYC 9334 (32c, 2.7GHz, 128MB L3, 210W, ,170 USD) saves Ca | 1x |
 | 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `P74700-B21` | `—` | Observed price drift on P74700-B21 (memory) | 1x |
 | 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `S4A91C` | `—` | Observed price drift on S4A91C (drive) | 1x |
 | 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `HA113A1` | `—` | Observed price drift on HA113A1 (support) | 1x |
@@ -252,6 +257,8 @@ Total verified rules indexed in this build: **102**.
 | 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_CHASSIS_CLASSIFICATION_ADVISORY` | `undefined` | `—` | Specialty hardware categories (SAN switches like SN3600B, fabric interconnect modules like SY100Gb, and tape libraries l | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_SCOPE_ISOLATION_ADVISORY` | `P36877-B21` | `—` | Passive accessories such as DC lug terminal kits (P36877-B21), power cords, and rail kits are architecture-invariant and | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_DOM_EXTRACTION_ADVISORY` | `undefined` | `—` | WebLogic OCA table expansion in cdp.js must explicitly toggle show_cost alongside show_price and trigger change events o | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `PROCESSOR_ARCHITECTURAL_MATCH_STRATEGY` | `P74571-B21` | `P74577-B21` | When modernizing Cascade Lake Xeon Gold 6258R (28c, 2.7GHz, 38.5MB L3, 205W), Xeon 6530P (32c, 2.3GHz, 144MB L3, 225W, , | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `MEMORY_CHANNEL_POPULATION_STRATEGY` | `P69728-F21` | `P69729-F21` | On Intel Xeon 6 (8 memory channels per CPU, 16 channels dual socket), legacy 6-channel memory capacities (such as 1,152  | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `STARTUP_SERVICE_FORMULA` | `HA124A1` | `HA124A1#5ZM` | Onsite Frame Startup requires exactly 1x HA124A1#5ZM + (TotalFrames - 1)x HA124A1#5ZQ. Purge all HA124A1#V0F lines when  | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `HARDWARE_SUPPORT_1TO1` | `867796-B21` | `HU4B2A3#Z1R` | Qty of HU4B2A3#Z1R must exactly equal qty of 867796-B21 (VC SE 100Gb F32 Module). | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `HARDWARE_SUPPORT_1TO1` | `872957-B21` | `HU4B2A3#Z1Q` | Qty of HU4B2A3#Z1Q must exactly equal qty of 872957-B21 (Synergy Composer2 Management Appliance). | 1x |
@@ -266,6 +273,7 @@ Total verified rules indexed in this build: **102**.
 | 📦 CHASSIS | `SY480_Gen12` | `EXCLUSION_UNBUILDABLE` | `R3P67A` | `Q2E58AAE` | On HPE Synergy 12000 Frames (P51174-B21) populated solely with SY480 Gen12 compute nodes (P68217-B21), selecting Virtual | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `STANDALONE_ORDERING_TAXONOMY` | `R3P67A` | `R3P67AAE` | R3P67A is a Factory Integrated Option (FIO LTU) ending in 'A', which strictly requires sub-iteming under a factory CTO c | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `MULTI_ORDER_PARTITIONING_PATTERN` | `P51174-B21` | `Q2E58AAE` | When a multi-frame Synergy deployment (e.g. 2 frames, 24 nodes) is partitioned into separate commercial orders (Option B | 1x |
+| 📦 CHASSIS | `SY480_Gen12` | `MULTI_FRAME_SPLIT_STARTUP_FORMULA` | `HA124A1` | `HA124A1#5ZM` | When a multi-frame Synergy deployment (e.g. 2 frames, 24 nodes) is partitioned into separate commercial quotes/orders: ( | 1x |
 
 ---
 *End of Master Running Knowledge & Learnings Charter. Auto-generated and synchronized by Antigravity AI.*

@@ -397,23 +397,76 @@ function buildRank3PcieStorageBranchParts(ctx) {
 // -----------------------------------------------------------------------------
 // Scoring and Normalization Helpers
 // -----------------------------------------------------------------------------
+function computeArchitecturalDelta(requestedQuantities, candidateQuantities, partCategoryMap = new Map()) {
+  const allSkus = new Set([...requestedQuantities.keys(), ...candidateQuantities.keys()]);
+  let totalWeightedDelta = 0;
+
+  for (const sku of allSkus) {
+    const qReq = requestedQuantities.get(sku) || 0;
+    const qCand = candidateQuantities.get(sku) || 0;
+    const diff = Math.abs(qReq - qCand);
+    if (diff === 0) continue;
+
+    const cat = String(partCategoryMap.get(sku) || '').toLowerCase();
+    let weight = 0.5;
+
+    if (cat.includes('chassis') || cat.includes('base')) {
+      weight = 10.0;
+    } else if (cat.includes('processor') || cat.includes('cpu') || cat.includes('xeon') || cat.includes('epyc')) {
+      weight = 8.0;
+    } else if (cat.includes('memory') || cat.includes('dimm') || cat.includes('ram')) {
+      weight = 5.0;
+    } else if (cat.includes('controller') || cat.includes('storage') || cat.includes('ssd') || cat.includes('hdd') || cat.includes('nvme')) {
+      weight = 4.0;
+    } else if (cat.includes('network') || cat.includes('adapter') || cat.includes('ocp') || cat.includes('nic') || cat.includes('hba')) {
+      weight = 3.0;
+    } else if (cat.includes('power') || cat.includes('psu')) {
+      weight = 2.0;
+    } else if (cat.includes('cable') || cat.includes('bracket') || cat.includes('enablement') || cat.includes('kit') || cat.includes('fan') || cat.includes('heatsink')) {
+      weight = 0.2;
+    }
+
+    totalWeightedDelta += diff * weight;
+  }
+
+  return parseFloat(totalWeightedDelta.toFixed(2));
+}
+
 function scoreAndSortCandidates(rawCandidates, items, resolveSupply = () => ({ leadTimeDays: null, availability: 'Unknown' })) {
-  const requestedSkuSet = new Set(items.map(it => cleanBaseSKU(it.sku)).filter(Boolean));
-  const requestedQuantities = new Map(items.map(it => [cleanBaseSKU(it.sku), Number(it.quantity || 1)]));
+  const requestedSkuSet = new Set((items || []).map(it => cleanBaseSKU(it.sku)).filter(Boolean));
+  const requestedQuantities = new Map();
+  const partCategoryMap = new Map();
+
+  for (const it of (items || [])) {
+    const k = cleanBaseSKU(it.sku);
+    if (!k) continue;
+    requestedQuantities.set(k, (requestedQuantities.get(k) || 0) + Number(it.quantity || 1));
+    if (it.category) partCategoryMap.set(k, it.category);
+  }
 
   rawCandidates.forEach(cand => {
-    const matchedCount = cand.skuPartsList.filter(p => requestedSkuSet.has(cleanBaseSKU(p.sku))).length;
+    const matchedCount = (cand.skuPartsList || []).filter(p => requestedSkuSet.has(cleanBaseSKU(p.sku))).length;
     const matchRatio = requestedSkuSet.size > 0 ? (matchedCount / requestedSkuSet.size) : 1.0;
     cand.intentMatchRatio = parseFloat(matchRatio.toFixed(2));
     cand.dynamicScore = parseFloat(((matchRatio * 0.6) + (cand.score * 0.4)).toFixed(2));
     cand.supplyMetrics = calculateSupplyMetrics(cand.skuPartsList, resolveSupply);
-    const candidateQuantities = new Map(cand.skuPartsList.map(it => [cleanBaseSKU(it.sku), Number(it.quantity || 1)]));
+    const candidateQuantities = new Map();
+    for (const it of (cand.skuPartsList || [])) {
+      const k = cleanBaseSKU(it.sku);
+      if (!k) continue;
+      candidateQuantities.set(k, (candidateQuantities.get(k) || 0) + Number(it.quantity || 1));
+      if (it.category && !partCategoryMap.has(k)) {
+        partCategoryMap.set(k, it.category);
+      }
+    }
     cand.quantityDelta = [...new Set([...requestedQuantities.keys(), ...candidateQuantities.keys()])]
       .reduce((sum, sku) => sum + Math.abs((requestedQuantities.get(sku) || 0) - (candidateQuantities.get(sku) || 0)), 0);
+    cand.architecturalDelta = computeArchitecturalDelta(requestedQuantities, candidateQuantities, partCategoryMap);
   });
 
   rawCandidates.sort((a, b) => {
     if (Boolean(a.physicalMathClean) !== Boolean(b.physicalMathClean)) return a.physicalMathClean ? -1 : 1;
+    if (a.architecturalDelta !== b.architecturalDelta) return a.architecturalDelta - b.architecturalDelta;
     if (a.quantityDelta !== b.quantityDelta) return a.quantityDelta - b.quantityDelta;
     if (b.dynamicScore !== a.dynamicScore) return b.dynamicScore - a.dynamicScore;
     if (a.supplyMetrics.unavailableCount !== b.supplyMetrics.unavailableCount) {
@@ -506,6 +559,7 @@ function normalizeCandidates(rawCandidates, requestedSkuSet, baselineCost, optio
       omittedSkus: omittedSkus.slice(0, 5),
       weightedEditDistance,
       quantityDelta: cand.quantityDelta || 0,
+      architecturalDelta: cand.architecturalDelta ?? 0,
       riskScore,
       disruptionScore: Math.min(100, Math.round(weightedEditDistance * 20)),
       isClosestRoute: idx <= 2,
@@ -514,6 +568,12 @@ function normalizeCandidates(rawCandidates, requestedSkuSet, baselineCost, optio
         : (costDeltaPct === null
             ? 'Customer-distance ranked; certified pricing incomplete'
             : (Math.abs(costDeltaPct) < 8 ? 'Very Close Alternative (<8% cost variance)' : 'Differentiated Architecture (>8% cost variance)'))
+    };
+
+    cand.configurationParity = {
+      architecturalDelta: cand.architecturalDelta ?? 0,
+      addedSkuCount: addedSkus.length,
+      omittedSkuCount: omittedSkus.length
     };
 
     if (cand.name.toLowerCase().includes('intent preserved')) {
@@ -1328,5 +1388,7 @@ module.exports = {
   calculateSupplyMetrics,
   setPhysicalMathValidator,
   getPhysicalMathValidator,
+  computeArchitecturalDelta,
+  scoreAndSortCandidates,
   _clearStrategyAddonsCache
 };

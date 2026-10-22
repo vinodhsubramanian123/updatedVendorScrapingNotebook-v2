@@ -2099,9 +2099,16 @@ async function exportCatalogArtifacts(ctx) {
     enrichedCatalog.solutionManifest = ctx.solutionManifest;
   }
 
+  const crypto = require('crypto');
+  const snapshotFingerprint = crypto.createHash('sha256')
+    .update(JSON.stringify(enrichedCatalog.entries || []))
+    .digest('hex');
+  enrichedCatalog.metadata.snapshotFingerprint = snapshotFingerprint;
+
   const rulesJsonData = {
     metadata: {
       ...enrichedCatalog.metadata,
+      snapshotFingerprint,
       chassisVariantCount: Object.keys(chassisVariantMatrix).length,
       rulesGeneratedAt: new Date().toISOString()
     },
@@ -2112,9 +2119,11 @@ async function exportCatalogArtifacts(ctx) {
     subcategories: enrichedCatalog.subcategories,
     rules: Array.from(dedupeMap.values())
   };
-  safeWriteJsonAtomic(rulesJsonPath, rulesJsonData);
 
+  // Commit Catalog.json first with strict schema validation
   safeWriteJsonAtomic(jsonOutputPath, enrichedCatalog, { validateSchema: true, rejectInvalid: true });
+  // Once catalog passes schema validation gate, commit rules companion with matching snapshot fingerprint
+  safeWriteJsonAtomic(rulesJsonPath, rulesJsonData);
 
   const servicesJsonOutputPath = jsonOutputPath.replace('_Catalog.json', '_Services.json');
   if (enrichedServicesCatalog.metadata.totalUniqueSKUs > 0) {

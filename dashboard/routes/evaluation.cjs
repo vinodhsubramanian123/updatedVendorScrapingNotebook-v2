@@ -65,9 +65,16 @@ const { safeParseEvalResult } = require('../../scripts/lib/system/schemas.js');
 const { spawnObservedChild } = require('../../scripts/lib/system/observed_child_process.js');
 
 // ── Upload BOQ ────────────────────────────────────────────────────────────────
-router.post('/upload-boq', upload.single('boqFile'), (req, res) => {
-  if (!req.file) return sendErrorResponse(res, 400, 'No BOQ file uploaded', { source: 'EVALUATION_ROUTER' });
-  res.json({ message: 'BOQ uploaded successfully', filepath: req.file.path, filename: req.file.originalname });
+router.post('/upload-boq', (req, res) => {
+  upload.single('boqFile')(req, res, err => {
+    if (err) return sendErrorResponse(res, 400, err.message || 'File upload failed', { source: 'EVALUATION_ROUTER' });
+    if (!req.file) return sendErrorResponse(res, 400, 'No BOQ file uploaded', { source: 'EVALUATION_ROUTER' });
+    if (isImageFile(req.file.path) && req.file.size > 25 * 1024 * 1024) {
+      try { fs.unlinkSync(req.file.path); } catch (_) {}
+      return sendErrorResponse(res, 400, `Image/PDF file exceeds maximum allowed OCR size of 25MB. Please upload a file under 25MB or provide CSV/XLSX text.`, { source: 'EVALUATION_ROUTER' });
+    }
+    res.json({ message: 'BOQ uploaded successfully', filepath: req.file.path, filename: req.file.originalname });
+  });
 });
 
 // ── Preprocess BOQ ────────────────────────────────────────────────────────────
@@ -151,7 +158,7 @@ router.post('/eval-boq', (req, res) => {
       const { safeWriteJsonAtomic } = require('../../scripts/lib/system/fs_compat.js');
       safeWriteJsonAtomic(path.join(traceDir, `${runId}.json`), { runId, taskType: 'EVAL_BOQ', startTime: new Date().toISOString(), durationMs: 0, exitCode: 1, logs });
     } catch (_) {
-      fs.writeFileSync(path.join(traceDir, `${runId}.json`), JSON.stringify({ runId, taskType: 'EVAL_BOQ', startTime: new Date().toISOString(), durationMs: 0, exitCode: 1, logs }, null, 2));
+      console.warn(`[EVALUATION_ROUTER] Failed to persist error run trace ${runId}:`, _?.message);
     }
     broadcastSSE({ type: 'TASK_STARTED', task: 'EVAL_BOQ', runId });
     broadcastSSE({ type: 'LOG', text: errorMsg, stream: 'stderr' });
@@ -378,7 +385,7 @@ router.post(['/export-boq', '/export-boq-xlsx'], (req, res) => {
     const { safeWriteJsonAtomic } = require('../../scripts/lib/system/fs_compat.js');
     safeWriteJsonAtomic(path.join(historyExportsDir, `${timestamp}-${tier}.json`), metadata);
   } catch (_) {
-    fs.writeFileSync(path.join(historyExportsDir, `${timestamp}-${tier}.json`), JSON.stringify(metadata, null, 2));
+    console.warn('[EVALUATION_ROUTER] Failed to persist export metadata:', _?.message);
   }
   try { telemetryLib.recordExportTelemetry(metadata); } catch (_) {}
   res.json({ success: true, message: `Rank ${tier} corrected BOQ Excel exported`, filename: exportFilename, downloadPath: metadata.downloadPath, exportedAt: metadata.exportedAt });

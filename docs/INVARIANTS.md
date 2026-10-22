@@ -1017,6 +1017,80 @@ To ensure that future AI agents (Antigravity, Codex, Claude, or subagents) never
       - **Track 2 (Strict Specification Parity / Max Performance)**: Guarantees zero attribute regressions (e.g. 6738P + EPYC 9354 + 1,536GB RAM).
     - Highlighting these trade-offs arms presales architects with clear technical and financial reasoning to lead transparent negotiations with customer stakeholders.
 
+- **INV-185: Cumulative SKU Allocation in Candidate Scoring Invariant**:
+  - In `scoreAndSortCandidates` and candidate evaluation pipelines, when converting BOM SKU lists into quantity lookups, the scoring engine MUST accumulate quantities for duplicate SKUs rather than overwriting existing map entries:
+    $$\text{Quantity}(S) = \sum_{p \in \text{BOM}, \text{sku}(p) = S} \text{quantity}(p)$$
+  - Prevents subtle hardware matching regressions where multi-line additions of identical part numbers (e.g. factory base + field upgrade memory) are falsely collapsed into single-item counts.
+
+- **INV-186: Atomic Catalog-Rules Snapshot Consistency & Fingerprint Linking Invariant**:
+  - The catalog build pipeline (`build_catalog.js`) MUST link the master catalog JSON and its companion rules JSON with an identical SHA-256 `snapshotFingerprint` computed across catalog entries:
+    $$\text{snapshotFingerprint} = \text{SHA-256}(\text{JSON.stringify}(\text{enrichedCatalog.entries}))$$
+  - Catalog JSON MUST be validated and committed to disk *prior* to writing the companion rules JSON. If catalog schema validation fails, rules writing is aborted immediately, guaranteeing zero uncoordinated or orphaned rule dictionaries on disk.
+
+- **INV-187: Uncertified Deliverable Watermarking & Quarantine Invariant**:
+  - Whenever delivery authorization verification fails (`verifyDeliveryAuthorization === false`) or pre-presentation acceptance evaluates to `isValid: false`, the evaluation serializer MUST:
+    1. Mark the markdown evaluation report header with a prominent `> [!CAUTION] DELIVERY BLOCKED: ...` banner disclosing exact failure blockers.
+    2. Quarantine a copy of the uncertified deliverable into `.unbuildable_reports/`.
+    3. Block all customer spreadsheet exports (multi-rank matrix, proposal workbook, partner portal sheet).
+
+- **INV-188: Nullable Financial Propagation in Multi-Cluster Partitioning Invariant**:
+  - Multi-cluster tender splitters and workbook generators (`multi_cluster_splitter.js`) MUST NOT coerce unpriced or missing item unit prices to zero (`$0.00`).
+  - Nullable prices MUST propagate through line totals and cluster subtotals as `null` / unpriced. Exported standard 7-column workbooks must preserve empty/null pricing cells without falsely certifying unpriced items as free.
+
+- **INV-189: Dynamic Platform Domain & Generation Scoping Invariant**:
+  - The physical evaluation engine (`boq_evaluator.js`) and aspect checkers (`compute_thermal.js`, `storage_tri_mode.js`, etc.) MUST dynamically determine the platform domain (`server`, `storage`, `networking`, `archive`, `composite_rack`) and target generation (`Gen12`, `Gen11`, etc.) from chassis metadata and item context rather than hardcoding ProLiant DL380 server rules.
+  - Server-specific rules (CPU count $\ge 1$, memory DIMMs $\ge 1$, No-Drive Configuration FIO Kits like `873763-B21`, Gen-specific drive cages, cable kits, and boot kits) MUST NOT be applied to non-server infrastructure (e.g. Alletra storage arrays, StoreEver tape libraries, SAN switches, rack frames).
+  - Generation detection MUST examine `chassisInfo.gen`, `chassisInfo.model`, and option overrides in addition to item descriptions, preventing false-negative generation classification on SKU-only BOQs.
+  - Aspect checkers for non-server platforms MUST evaluate their respective domain boundaries (e.g. 3-4 networking aspects for switches, storage/controller aspects for SAN arrays) and emit informative domain rationale instead of failing with server compute/thermal/memory violations.
+
+- **INV-190: Intelligent Ingress Vendor Routing & Competitor BOM Transpilation Invariant**:
+  - Ingress query classification (`route_query.js`) and BOQ evaluation ingress (`eval_boq.js`) MUST dynamically inspect candidate BOM items and descriptions using vendor-agnostic heuristics (`detectVendor`).
+  - When non-HPE competitor hardware (e.g. Dell PowerEdge, Cisco UCS, Lenovo ThinkSystem, Supermicro) is detected in incoming customer spreadsheets or tender files, the pipeline MUST automatically classify the intent as `CROSS_VENDOR_TRANSFORMATION` (routing to `cross-vendor-transformation-skill`) with high confidence and explicit reasoning.
+  - In direct BOQ evaluation (`eval_boq.js`), if chassis auto-detection fails and competitor SKUs/models are identified, the evaluator MUST emit actionable diagnostic guidance explaining how to invoke the cross-vendor transpiler (`npm run route -- "Convert this <vendor> quote to HPE" --file <path>`) rather than failing silently or with a generic `ERR_UNKNOWN_CHASSIS`.
+
+- **INV-191: Autonomous Post-Analysis Reasoning Narrative & Evidence Ledger Phase Reflection Invariant**:
+  - Every evaluation run MUST generate an auditable 5-step numbered reasoning narrative (`performReasoningPostAnalysis`) encapsulating:
+    1. Ingress classification and detected platform domain/generation.
+    2. Physical aspect constraints evaluated and domain-specific rules scoped.
+    3. Grounded NotebookLM verification and official citations.
+    4. Multi-rank buildability synthesis and strategy matrix derivation.
+    5. Final delivery authorization disposition.
+  - The reasoning narrative MUST be persisted into the serialized evaluation output (`evalResult.reasoningNarrative` and `evalResult.contextClassification`) and recorded in the 9-phase evidence ledger, transitioning Phase 9 (`FEEDBACK_AND_KNOWLEDGE_ABSORPTION`) into a clean terminal state (`PASSED` or `ACTION_REQUIRED`) alongside Phase 8 deliverables.
+
+- **INV-192: Strict Quantity Conservation Ledger in Multi-Cluster Partitioning**:
+  - In `multi_cluster_splitter.js`, when customer tenders are partitioned across clusters (or analyzed as single clusters), the splitter MUST construct an exact line-by-line `quantityConservation` ledger tracking:
+    - `requestedQuantity`: Raw requested quantity from the customer tender.
+    - `allocatedTotal`: Sum of allocated quantities across all cluster partitions:
+      $$\text{allocatedTotal} = \sum_{c \in \text{clusters}} \left(\text{quantity}_{c, i} \times \text{multiplier}_c\right)$$
+    - `residualQuantity`: $|\text{allocatedTotal} - \text{requestedQuantity}|$.
+    - `delta`: $\text{allocatedTotal} - \text{requestedQuantity}$.
+    - `status`: `CONSERVED_EXACT` ($\Delta = 0$), `SURPLUS_BUFFER` ($\Delta > 0$), or `RESIDUAL_DEFICIT` ($\Delta < 0$).
+  - Fast $O(1)$ normalized SKU indexing (`normalizeSkuKey`) MUST be utilized to prevent $O(N^2)$ stress/chaos performance bottlenecks during boundary evaluation.
+  - Overall `isFullyConserved` and `totalDiscrepancies` metrics MUST be surfaced to callers and serializers so pre-presentation gates can detect and verify tender quantity conservation.
+
+- **INV-193: Configuration-Aware Architectural Candidate Ranking**:
+  - In candidate strategy evaluation (`strategy_synthesizer.js`), candidate BOM scoring MUST NOT evaluate candidates purely on flat scalar metrics (price delta, raw quantity delta).
+  - The scoring engine MUST evaluate configuration-aware architectural parity (`computeArchitecturalDelta`) with component-tier weighted penalties:
+    - Base Chassis: $10\times$ mutation weight.
+    - Processors (CPU): $8\times$ mutation weight.
+    - Memory: $5\times$ mutation weight.
+    - Storage Drives / Controllers: $4\times$ mutation weight.
+    - Networking: $3\times$ mutation weight.
+    - Power Supplies: $2\times$ mutation weight.
+    - Enablement Kits / Auxiliary Cables: $0.2\times$ mutation weight.
+  - Candidates with lower architectural mutation distance MUST rank higher than candidates that achieve scalar parity by substituting critical architectural components (e.g., swapping CPUs or storage form factors to compensate for minor cable differences).
+  - `cand.proximityMetrics.configurationParity` (`architecturalDelta`, `categoryBreakdown`, `score`) MUST be attached to normalized candidate objects for downstream audit and UI inspection.
+
+- **INV-194: Domain Aspect Identity Verification in Acceptance Gates**:
+  - In Gate B1 of `bom_verifier.js`, validating aspect compliance MUST NOT rely solely on an integer count of completed checks ($\ge 7$).
+  - The verification gate MUST resolve the canonical aspect identities registered for the target platform domain via `aspect_registry.js:getRegisteredAspectsForDomain(domain)`:
+    - `server`: 7 canonical physical aspects (`compute_thermal`, `memory_channel`, `pcie_rules`, `power_envelope`, `storage_tri_mode`, `chassis_backplane`, `enablement_cables`).
+    - `storage`: storage controller pair, Tri-Mode storage, power envelope, management.
+    - `networking`: switch fabric ports, optics/transceivers, redundant power, uplink/stacking.
+  - All mandatory domain aspect identities MUST be present and verified. If any mandatory aspect is missing or unregistered, Gate B1 MUST fail with an explicit diagnostic violation disclosing missing aspect keys.
+
+
+
 
 
 

@@ -44,12 +44,19 @@ function evalComputeThermal(items, catalogData = null, mandatorySkus = {}, serve
     }
   }
 
-  const isGen11 = items.some(it => {
-    const d = (it.description || '').toLowerCase();
-    if (d.includes('gen11')) return true;
-    const catItem = skuIndex.get(cleanBaseSKU(it.sku));
-    return (catItem?.skuData?.Description || '').toLowerCase().includes('gen11');
-  });
+  const isGen11 = Boolean(
+    options?.chassisInfo?.gen?.toLowerCase().includes('gen11') ||
+    options?.chassisInfo?.gen?.includes('11') ||
+    options?.chassisInfo?.model?.toLowerCase().includes('gen11') ||
+    options?.gen?.toLowerCase().includes('gen11') ||
+    options?.model?.toLowerCase().includes('gen11') ||
+    items.some(it => {
+      const d = (it.description || '').toLowerCase();
+      if (d.includes('gen11')) return true;
+      const catItem = skuIndex.get(cleanBaseSKU(it.sku));
+      return (catItem?.skuData?.Description || '').toLowerCase().includes('gen11');
+    })
+  );
 
   const highPerfFanSku = mandatorySkus.HIGH_PERF_FAN_KIT?.sku || '';
   const highPerfHeatsinkSku = mandatorySkus.HIGH_PERF_HEATSINK?.sku || '';

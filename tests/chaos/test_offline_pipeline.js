@@ -107,7 +107,8 @@ if (fs.existsSync(XLSX_OUTPUT)) {
     failed++;
   }
 } else {
-  console.log('  ⏭️ Skipping — Excel file was not created in Step 2');
+  console.error('  ❌ Step 3 blocked: Excel file was not created in Step 2 (missing prerequisite)');
+  failed++;
 }
 
 // Cleanup

@@ -288,16 +288,30 @@ async function _resolveChassisSelection(items, explicitChassisDir, JSON_MODE) {
     }
 
     if (!chassisDir) {
+      const { detectVendor } = require('../lib/taxonomy/vendor_agnostic_schema.js');
+      const sampleText = (items || []).slice(0, 10).map(i => `${i.sku || ''} ${i.description || ''}`).join(' ');
+      const detectedVendor = detectVendor(sampleText, items?.[0]?.sku || '', {});
+      const isCompetitor = detectedVendor !== 'HPE' && detectedVendor !== 'Generic';
+
       console.error('❌ ERROR: [ERR_UNKNOWN_CHASSIS] Could not auto-detect chassis variant from BOQ items, and no --chassis flag was provided.');
-      console.error('💡 Please select the correct catalog in the UI dropdown or use the --chassis <dir> flag.');
+      if (isCompetitor) {
+        console.error(`💡 Detected ${detectedVendor} competitor BOM items. Customer BOQ evaluation requires HPE catalogs.`);
+        console.error(`💡 To transform this ${detectedVendor} quote into an equivalent HPE BOM, run: npm run route -- "Convert this ${detectedVendor} quote to HPE" --file <path>`);
+      } else {
+        console.error('💡 Please select the correct catalog in the UI dropdown or use the --chassis <dir> flag.');
+      }
 
       const errPayload = {
         status: 'ERROR',
-        code: 'PLATFORM_CLARIFICATION_REQUIRED',
+        code: isCompetitor ? 'COMPETITOR_BOM_TRANSFORMATION_REQUIRED' : 'PLATFORM_CLARIFICATION_REQUIRED',
+        detectedVendor: isCompetitor ? detectedVendor : null,
+        suggestedCommand: isCompetitor ? `npm run route -- "Convert this ${detectedVendor} quote to HPE" --file <path>` : null,
         chassisDetection,
         candidates: Array.isArray(availableCatalogs) ? availableCatalogs.map(c => c.id) : [],
         error: 'ERR_UNKNOWN_CHASSIS',
-        message: 'Could not auto-detect chassis. Please confirm the chassis variant.'
+        message: isCompetitor
+          ? `Could not auto-detect HPE chassis. Detected ${detectedVendor} competitor hardware. Use the Cross-Vendor Transpiler to transform to HPE.`
+          : 'Could not auto-detect chassis. Please confirm the chassis variant.'
       };
 
       if (process.env.STRUCTURED_PROGRESS) {
@@ -495,6 +509,8 @@ async function ingestAndConsolidateBoq(options) {
     outputPath,
     catalogData,
     requirementResolution,
+    unmatchedSkus: parsedBoq.unmatchedSkus || [],
+    unresolvedRequirements: parsedBoq.unresolvedRequirements || [],
     ocrMetadata,
     catalogAudit,
     stage1ParsingMs
@@ -1517,7 +1533,9 @@ async function _handleBoqReflectionPhase(ctx) {
     });
     ctx.evalResults.reasoningAnalysis = reasoningAnalysis;
   } catch (err) {
-    logger.debug('EVAL_BOQ', `Post-evaluation reasoning analysis non-blocking note: ${err?.message || err}`);
+    if (typeof logger.debug === 'function') {
+      logger.debug('EVAL_BOQ', `Post-evaluation reasoning analysis non-blocking note: ${err?.message || err}`);
+    }
   }
 
   return {

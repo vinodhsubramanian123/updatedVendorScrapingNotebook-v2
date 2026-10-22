@@ -30,7 +30,8 @@ async function main() {
     if (!target) {
       console.error(`❌ Live CLIC test requires an active authenticated HPE OCA target on port 9222.`);
       console.error(`   Please ensure Chrome is launched with: --remote-debugging-port=9222`);
-      if (process.env.ALLOW_E2E_SKIP === 'true') {
+      const isSkipE2E = ['true', '1'].includes(String(process.env.ALLOW_E2E_SKIP || '').trim().toLowerCase());
+      if (isSkipE2E) {
         console.log(`⚠️ [TEST_STATUS: SKIPPED] ALLOW_E2E_SKIP enabled: skipping live browser check without active OCA target.`);
         process.exit(0);
       }
@@ -65,7 +66,8 @@ async function main() {
     process.exit(0);
   } catch (err) {
     console.error(`❌ Live CDP CLIC Validation failed: ${err.message}`);
-    if (process.env.ALLOW_E2E_SKIP === 'true' && (err.code === 'ECONNREFUSED' || err.message.includes('ECONNREFUSED'))) {
+    const isSkipE2E = ['true', '1'].includes(String(process.env.ALLOW_E2E_SKIP || '').trim().toLowerCase());
+    if (isSkipE2E && (err.code === 'ECONNREFUSED' || err.message.includes('ECONNREFUSED'))) {
       console.log(`⚠️ [TEST_STATUS: SKIPPED] ALLOW_E2E_SKIP enabled: ignoring connection failure on offline environment.`);
       process.exit(0);
     }

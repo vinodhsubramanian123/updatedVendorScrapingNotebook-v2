@@ -52,6 +52,14 @@ function _buildHeaderSection(ctx) {
     md += `\n> ${msg}\n`;
   }
 
+  const isAuthBlocked = evalResults?.acceptanceGate?.isValid === false || ctx.isAuthValid === false;
+  const isDeliveryBlocked = evalResults?.customerDisposition === 'DELIVERY_BLOCKED_UNBUILDABLE' || evalResults?.customerDisposition === 'ACTION_REQUIRED' || isAuthBlocked;
+  if (isDeliveryBlocked) {
+    const disposition = evalResults?.customerDisposition || (evalResults?.isMathClean === false ? 'DELIVERY_BLOCKED_UNBUILDABLE' : 'ACTION_REQUIRED');
+    const reason = evalResults?.deliveryError || 'Cryptographic DeliveryAuthorization is invalid or missing for this candidate manifest.';
+    md += `\n> [!CAUTION]\n> **DELIVERY BLOCKED: ${disposition}**  \n> This evaluation report is uncertified and blocked from presentation export.  \n> Reason: ${reason}\n`;
+  }
+
   md += `\n---\n\n`;
   return md;
 }
@@ -920,6 +928,8 @@ async function serializeAndExportResults(ctx) {
     profile: 'BOQ_EVALUATION'
   });
 
+  ctx.isAuthValid = isAuthValid;
+
   if (evalResults.acceptanceGate && evalResults.acceptanceGate.isValid === false) {
     evalResults.deliveryError = `Presentation export blocked: Pre-presentation acceptance failed (${evalResults.acceptanceGate.blockersCount} blocker(s): ${evalResults.acceptanceGate.blockers.map(b => b.name || b.id).join(', ')}).`;
     evalResults.customerDisposition = evalResults.isMathClean === false ? 'DELIVERY_BLOCKED_UNBUILDABLE' : 'ACTION_REQUIRED';
@@ -956,6 +966,18 @@ async function serializeAndExportResults(ctx) {
   const reportContent = generateMarkdownReport(ctx) + '\n\n' +
     require('./runtime_discovery_plan').formatRuntimeDiscoveryPlan(evalResults.runtimeDiscoveryPlan);
   fs.writeFileSync(outputPath, reportContent, 'utf-8');
+
+  if (!isAuthValid) {
+    const unbuildableDir = path.join(reportDir, '.unbuildable_reports');
+    try {
+      if (!fs.existsSync(unbuildableDir)) fs.mkdirSync(unbuildableDir, { recursive: true });
+      const blockedPath = path.join(unbuildableDir, path.basename(outputPath));
+      fs.writeFileSync(blockedPath, reportContent, 'utf-8');
+      evalResults.quarantinedReportPath = blockedPath;
+    } catch (_err) {
+      // safe fallback
+    }
+  }
 
   _recordLedgerDeliverableArtifacts(evalResults.evidenceLedger, ctx, evalResults, outputPath);
 

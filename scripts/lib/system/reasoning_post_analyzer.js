@@ -12,6 +12,7 @@
 const fs = require('fs');
 const { createEvidenceLedger } = require('./evidence_ledger.js');
 const logger = require('./pipeline_logger.js');
+const { detectVendor, detectHardwareDomain } = require('../taxonomy/vendor_agnostic_schema.js');
 
 /**
  * Determine the Epistemic Tier of the completed solution
@@ -143,6 +144,35 @@ function performReasoningPostAnalysis({
     };
   }
 
+  // 4.5. Dynamic Context & Platform Classification
+  const sampleContextText = `${queryText || ''} ${responseData.chassis || ''} ${context.chassisName || ''} ${context.chassisDir ? require('path').basename(context.chassisDir) : ''}`;
+  const detectedVendor = detectVendor(sampleContextText, responseData.targetSku || '', context);
+  const detectedDomain = responseData.solutionTopology?.domain ||
+    (responseData.productType ? String(responseData.productType).toLowerCase() : null) ||
+    detectHardwareDomain(sampleContextText, '', context);
+  const platformName = responseData.chassis || context.chassisName || responseData.chassisInfo?.model || (context.chassisDir ? require('path').basename(context.chassisDir) : 'GENERAL_INFRASTRUCTURE');
+  const genMatch = String(platformName).match(/Gen(\d+)/i) || String(sampleContextText).match(/Gen(\d+)/i);
+  const generation = genMatch ? `Gen${genMatch[1]}` : (responseData.chassisInfo?.gen || 'N/A');
+  const formFactor = responseData.chassisInfo?.formFactor || (responseData.is1U ? '1U' : responseData.is4U ? '4U' : '2U');
+
+  const contextClassification = {
+    detectedVendor,
+    solutionDomain: detectedDomain,
+    platform: platformName,
+    generation,
+    formFactor
+  };
+
+  const reasoningNarrative = [
+    `1. Intake Classification: Intent identified as ${effectiveIntent} (${((classification.confidence ?? 1.0) * 100).toFixed(0)}% confidence). Hardware Vendor: ${detectedVendor}, Solution Domain: ${detectedDomain}.`,
+    `2. Platform & Generation Scoping: Evaluated against target platform ${platformName} (${generation}, ${formFactor}). Applied scoped physical rules without blind cross-domain leakage.`,
+    `3. Physical Math & Constraint Verification: ${conflictsCount} conflict(s) detected, ${missingDeps.length} missing dependency/enablement item(s) identified across ${responseData.aspectChecks?.length || 0} aspect check(s).`,
+    `4. Epistemic Grounding: Ranked at ${epistemic.label}. Document Grounding: ${responseData.notebookLmStatus?.isCloudGrounded ? 'VERIFIED' : 'PENDING'}. Portal Verification: ${epistemic.vendorAcceptancePending ? 'PORTAL VALIDATION PENDING' : 'ACCEPTED_BY_VENDOR'}.`,
+    `5. Continuous Learning: Reflection hook status: ${feedbackResult.hookStatus} (${feedbackResult.deltasProposed} candidate delta(s) proposed to quarantine).`
+  ];
+
+  logger.info('REASONING_ANALYZER', `[REASONING] Trace ${effectiveTraceId} | Vendor: ${detectedVendor} | Domain: ${detectedDomain} | Platform: ${platformName} (${generation}) | Epistemic: ${epistemic.tier} | Blocker(s): ${acceptance.blockersCount} | Status: ${acceptance.status}`);
+
   // 5. Build Comprehensive Reasoning Analysis Payload
   const analysis = {
     analyzedAt: new Date().toISOString(),
@@ -151,6 +181,8 @@ function performReasoningPostAnalysis({
     intent: effectiveIntent,
     confidence: classification.confidence ?? 1.0,
     intentRationale: classification.rationale || 'Canonical execution dispatched.',
+    contextClassification,
+    reasoningNarrative,
     epistemicIntegrity: {
       ...epistemic,
       isMathClean: responseData.isMathClean ?? (rawErrors.length === 0),
@@ -219,9 +251,22 @@ function performReasoningPostAnalysis({
         });
       }
 
-      if (!ledger.phases.phase_3) {
+      if (ledger.phases.phase_8 && !ledger.phases.phase_9) {
+        ledger.startPhase(9, 'Continuous Learning Reflection & Shared State Export', {
+          epistemicTier: epistemic.tier,
+          contextClassification
+        });
+        ledger.completePhase(9, 'PASSED', {
+          epistemicTier: epistemic.tier,
+          acceptanceGateValid: acceptance.isValid,
+          conflictsCaught: conflictsCount,
+          diagnosticHintsCount: diagnosticHints.length,
+          feedbackHookStatus: feedbackResult.hookStatus
+        });
+      } else if (!ledger.phases.phase_3) {
         ledger.startPhase(3, 'Reasoning Post-Analysis & Continuous Learning Reflection', {
-          epistemicTier: epistemic.tier
+          epistemicTier: epistemic.tier,
+          contextClassification
         });
         ledger.completePhase(3, 'PASSED', {
           epistemicTier: epistemic.tier,

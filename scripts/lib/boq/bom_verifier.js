@@ -21,6 +21,7 @@
 const { isValidHpeSKU, cleanBaseSKU, buildCatalogSkuIndex } = require('../catalog/sku.js');
 const { candidateReviewCurrent } = require('./solution_evidence.js');
 const { analyzeDeliveryPacing } = require('./delivery_pacing_analyzer.js');
+const { getRegisteredAspectsForDomain } = require('../aspects/aspect_registry.js');
 
 /**
  * Construct an epistemic check result conforming to INV-105.
@@ -213,10 +214,50 @@ function _checkPhysicalAspects(output) {
     ['COMPUTE', 'MEMORY', 'STORAGE', 'POWER', 'NETWORKING', 'PCIE', 'SUPPORT'].every(k => normalizedTokens.has(k)) ||
     ['THERMAL', 'MEMORY', 'STORAGE', 'PCIE', 'NETWORKING', 'POWER', 'SUPPORT'].every(k => normalizedTokens.has(k));
 
-  if (aspectChecks.length < 7 || uniqueAspects.size < 7 || !knownIdentitySet) {
+  const domain = String(output?.solutionTopology?.domain || output?.productType || output?.chassisInfo?.family || '').toLowerCase();
+  const chassisName = String(output?.chassis || output?.targetChassis || output?.detectedChassis?.model || '').toLowerCase();
+  const isSanSwitch = domain === 'san' || domain === 'san_switch' || /sn3600b|switch/i.test(chassisName);
+  const isNetworkingDomain = domain === 'networking' || isSanSwitch;
+  const isStorageDomain = domain === 'storage' || /alletra|nimble|storeonce/i.test(chassisName);
+  const isArchiveDomain = domain === 'archive' || /msl|storeever|tape/i.test(chassisName);
+  const isAiCluster = domain === 'ai_cluster';
+
+  const targetDomain = isNetworkingDomain ? 'networking'
+    : isStorageDomain ? 'storage'
+    : isArchiveDomain ? 'archive'
+    : isAiCluster ? 'ai_cluster'
+    : 'server';
+
+  const registeredAspects = getRegisteredAspectsForDomain(targetDomain);
+  const requiredAspectIds = registeredAspects.map(a => a.id.toUpperCase());
+
+  // Strict domain aspect identity checking:
+  // Every mandatory aspect required for targetDomain MUST have a matching token in normalizedTokens
+  const missingDomainAspects = requiredAspectIds.filter(id => {
+    if (normalizedTokens.has(id)) return false;
+    const stripped = id.replace(/^(ASPECT_|SWITCH_|STORAGE_|SUPPORT_)/, '');
+    if (normalizedTokens.has(stripped)) return false;
+    if (id === 'STORAGE_CONTROLLER_PAIR') {
+      return !(normalizedTokens.has('CONTROLLER') || normalizedTokens.has('CONTROLLER_PAIR') || normalizedTokens.has('CONTROLLER_NODE') || normalizedTokens.has('STORAGE_CONTROLLER'));
+    }
+    if (id === 'SWITCH_FABRIC_PORTS') {
+      return !(normalizedTokens.has('SWITCH') || normalizedTokens.has('FABRIC') || normalizedTokens.has('PORTS') || normalizedTokens.has('SWITCH_PORTS'));
+    }
+    const firstWord = id.split('_')[0];
+    if (normalizedTokens.has(firstWord)) return false;
+    return true;
+  });
+
+  const minRequiredAspects = Math.min(requiredAspectIds.length, isSanSwitch ? 4 : (isNetworkingDomain || isStorageDomain ? 3 : 7));
+  const requiresFullServerAspects = !isNetworkingDomain && !isStorageDomain && !isArchiveDomain && !isAiCluster;
+
+  if (aspectChecks.length < minRequiredAspects || uniqueAspects.size < minRequiredAspects || missingDomainAspects.length > 0 || (requiresFullServerAspects && !knownIdentitySet)) {
+    const reason = missingDomainAspects.length > 0
+      ? `Missing required ${targetDomain} domain aspect(s): ${missingDomainAspects.join(', ')} (${uniqueAspects.size} distinct identities).`
+      : `Incomplete physical checks: expected at least ${minRequiredAspects} registered ${requiresFullServerAspects ? 'server physical' : targetDomain} aspects, found ${aspectChecks.length} checks (${uniqueAspects.size} distinct identities; known set=${knownIdentitySet}).`;
     return makeCheck('B1', 'Scoped Physical Checks Completed', 'BLOCK', 'FAILED',
-      `Incomplete physical checks: expected the 7 registered physical aspects, found ${aspectChecks.length} checks (${uniqueAspects.size} distinct identities; known set=${knownIdentitySet}).`,
-      { aspectCount: aspectChecks.length, uniqueCount: uniqueAspects.size });
+      reason,
+      { aspectCount: aspectChecks.length, uniqueCount: uniqueAspects.size, targetDomain, missingDomainAspects, requiredAspects: requiredAspectIds });
   }
 
   const failedAspects = aspectChecks.filter(a => a.status === 'FAIL' || a.status === 'FAILED');
@@ -479,6 +520,22 @@ function _checkDeliveryFeasibility(output, context = {}) {
   );
 }
 
+function _checkUnmatchedSkus(output, context = {}) {
+  const unmatched = output?.unmatchedSkus || context?.unmatchedSkus || [];
+  const hasUnmatched = Array.isArray(unmatched) && unmatched.length > 0;
+
+  if (hasUnmatched) {
+    const skuNames = unmatched.map(u => u.rawSku || u.sku || (typeof u === 'string' ? u : JSON.stringify(u))).join(', ');
+    return makeCheck('B16', 'Zero Unmatched Customer SKUs (FP-1)', 'BLOCK', 'FAILED',
+      `Unmatched customer SKU(s) failed parsing/catalog validation: ${skuNames}. Delivery blocked per INV-105/FP-1.`,
+      { unmatchedCount: unmatched.length, unmatchedSkus: unmatched });
+  }
+
+  return makeCheck('B16', 'Zero Unmatched Customer SKUs (FP-1)', 'BLOCK', 'PASSED',
+    'All customer SKU-like tokens affirmatively matched in catalog or cleanly resolved.',
+    { unmatchedCount: 0 });
+}
+
 /**
  * BOQ Evaluation Criteria (B1–B16)
  */
@@ -491,7 +548,8 @@ function validateBoqEvaluationCriteria(output, context = {}) {
     _checkMandatoryAccessories(output),
     _checkNotebookGrounding(output, context),
     _checkMandatoryComPolicy(output, context),
-    _checkDeliveryFeasibility(output, context)
+    _checkDeliveryFeasibility(output, context),
+    _checkUnmatchedSkus(output, context)
   ];
 }
 

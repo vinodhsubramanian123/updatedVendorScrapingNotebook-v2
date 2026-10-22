@@ -161,6 +161,13 @@ When completing a multi-cluster tender evaluation, the agent MUST present:
    ```
 3. **Discrete 7-Aspect Certification for EACH Cluster**:
    Confirm that every individual cluster passes 100% buildability with 0 errors before presenting the overall tender solution.
+4. **Exact Tender Quantity Conservation Ledger (`INV-192`)**:
+   Every multi-cluster partition output must present the quantity conservation ledger verifying line-by-line item allocations:
+   - Customer Requested Quantity ($Q_{\text{req}}$)
+   - Partitioned Allocated Total ($\sum_c Q_c \times M_c$)
+   - Delta ($\Delta = Q_{\text{alloc}} - Q_{\text{req}}$)
+   - Status: `CONSERVED_EXACT` ($\Delta = 0$), `SURPLUS_BUFFER` ($\Delta > 0$), or `RESIDUAL_DEFICIT` ($\Delta < 0$).
+   - Disclose any unallocated residuals or channel-width symmetry buffers transparently to the customer before presentation.
 
 
 ### Icon-owned SLA selection (owner learning, 2026-09-22)

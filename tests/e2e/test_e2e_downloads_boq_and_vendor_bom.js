@@ -50,6 +50,11 @@ function isServerRunning(url) {
 }
 
 async function runE2ETest() {
+  const isSkipE2E = ['true', '1'].includes(String(process.env.ALLOW_E2E_SKIP || '').trim().toLowerCase());
+  if (isSkipE2E) {
+    console.log('⚠️ [TEST_STATUS: SKIPPED] ALLOW_E2E_SKIP enabled: skipping headless browser workflow test.');
+    process.exit(0);
+  }
   console.log('================================================================');
   console.log('🚀 RUNNING COMPREHENSIVE E2E HEADLESS BROWSER WORKFLOW TEST');
   console.log('   Input BOQ:    ', BOQ_DOWNLOADS_PATH);

@@ -109,7 +109,7 @@ function attachSolutionSource(notebookId, filePath, title, options = {}) {
     return { success: false, sourceId: null, error: 'Invalid notebookId or missing solution file' };
   }
 
-  const isTestEnv = options.isMock || options.offlineTest || process.env.NODE_ENV === 'test' || process.env.NLM_MOCK_MODE === 'true';
+  const isTestEnv = Boolean(options.isMock || options.offlineTest || (process.env.NLM_MOCK_MODE === 'true' && options.isMock !== false));
   if (isTestEnv) {
     const mockId = `mock-src-${Date.now().toString(36)}`;
     logger.info('NLM_SOURCE_VALIDATOR', `[MOCK] Attached ephemeral solution source "${title}" (${mockId})`);

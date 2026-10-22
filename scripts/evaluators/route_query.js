@@ -340,6 +340,17 @@ function _classifyFileBased(text, filePath, context) {
         rationale: 'Input contains spreadsheet files designated for multi-workbook reconciliation.'
       };
     }
+    const { detectVendor } = require('../lib/taxonomy/vendor_agnostic_schema.js');
+    const detectedVendor = detectVendor(text + ' ' + detectedPath, '', context);
+    if (detectedVendor !== 'HPE' && detectedVendor !== 'Generic') {
+      return {
+        intent: 'CROSS_VENDOR_TRANSFORMATION',
+        confidence: 0.95,
+        skillTarget: 'cross-vendor-transformation-skill',
+        sourceVendor: detectedVendor,
+        rationale: `Input file '${path.basename(detectedPath)}' contains ${detectedVendor} competitor hardware designated for cross-vendor architectural transformation.`
+      };
+    }
     return {
       intent: 'BOQ_EVALUATION',
       confidence: 0.98,
