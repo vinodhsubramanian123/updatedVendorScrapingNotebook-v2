@@ -34,7 +34,7 @@ This rule document governs all AI agents (Antigravity, Codex, Claude, subagents,
 
 ---
 
-## 2. The 9 Past Anti-Patterns & Permanent Architectural Invariants
+## 2. The 22 Past Anti-Patterns & Permanent Architectural Invariants
 
 ### Anti-Pattern 1: The "Default Success" Trap (Loose Truthiness)
 - **The Mistake**: Code like `val !== false ? 'PASS' : 'FAIL'` or `if (aspectResult) passCount++`. When an aspect check was missing, undefined, or failed to run, the loose truthiness check evaluated it as `'PASS'`, turning absent checks into unearned 7/7 success badges.
@@ -111,6 +111,18 @@ This rule document governs all AI agents (Antigravity, Codex, Claude, subagents,
 ### Anti-Pattern 19: The "Destructive Process Abort" Lifecycle Trap (Orphaned Windows Locks)
 - **The Mistake**: Abruptly force-killing worker processes on evaluation cancellation, throwing unhandled rejections, leaving `.lock` files orphaned on Windows, and dropping intermediate evidence logs.
 - **The Invariant (`INV-162`)**: Cancellation must be cooperative and terminal. Aborted evaluations must return `status: 'CANCELLED'` (not fatal `'ERROR'`), bring the 9-phase ledger to a clean terminal state (`CANCELLED` / `SKIPPED`), and release all filesystem locks in unconditional `finally` blocks.
+
+### Anti-Pattern 20: The "Observational-Only Conservation" Trap (Passive Ledger)
+- **The Mistake**: Computing a quantity conservation ledger for diagnostic display, but allowing the export wrapper (`splitAndWriteClusterWorkbooks`) and acceptance gates to ignore the ledger. The customer asks for 60 servers with 480 DIMMs, the splitter outputs 450 DIMMs, and the system stamps the BOM as "100% buildable".
+- **The Invariant (`INV-196`)**: Quantity conservation is an active mathematical delivery gate, never an informational observation. If $\Delta < 0$, delivery authorization is strictly blocked with Gate `B18: FAILED` and `customerDisposition = 'DELIVERY_BLOCKED_UNBUILDABLE'`.
+
+### Anti-Pattern 21: The "Shared Mutable State in Candidate Ranking" Trap
+- **The Mistake**: Traversing candidate solutions while mutating a shared `partCategoryMap`, allowing early candidates to inject categories that alter the scoring and penalty calculations of subsequent candidates. Dividing candidate rows by a unique SKU denominator allowing $\text{matchRatio} > 1.0$.
+- **The Invariant (`INV-193`)**: Authoritative component categories must derive from immutable catalogs before scoring. `matchRatio` is strictly the cardinality of the unique SKU intersection over requested SKUs, bounded in $[0, 1]$. Candidate permutations MUST yield identical scores and deterministic rankings.
+
+### Anti-Pattern 22: The "Loose Token / First-Word Aspect Identity" Trap
+- **The Mistake**: Matching aspect checks by stripping IDs or checking `rawId.startsWith('STORAGE')`. A generic check named `STORAGE_STATUS` satisfies `STORAGE_CONTROLLER_PAIR`, or a numeric check `1` satisfies `COMPUTE_THERMAL`.
+- **The Invariant (`INV-194`, `INV-199`)**: Aspect validation must match exact canonical IDs or explicit 1:1 alias mappings. Duplicate tokens cannot satisfy distinct required checks, and non-server appliances (SAN switches, tape libraries) must be governed by typed domain profiles.
 
 ---
 

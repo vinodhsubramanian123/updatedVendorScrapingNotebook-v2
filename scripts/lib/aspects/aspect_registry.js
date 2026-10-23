@@ -64,7 +64,10 @@ const DOMAIN_CAPABILITY_MATRIX = Object.freeze({
   ai_cluster: { status: 'PARTIALLY_SUPPORTED' },
   storage: { status: 'PARTIALLY_SUPPORTED' },
   networking: { status: 'PARTIALLY_SUPPORTED' },
-  archive: { status: 'NOT_EVALUATED' }
+  san_switch: { status: 'PRODUCTION_SUPPORTED' },
+  synergy_compute: { status: 'PARTIALLY_SUPPORTED' },
+  archive: { status: 'NOT_EVALUATED' },
+  archive_tape: { status: 'NOT_EVALUATED' }
 });
 
 const DOMAIN_REGISTRY = {
@@ -129,6 +132,12 @@ const DOMAIN_REGISTRY = {
     { id: 'POWER_ENVIRONMENT', name: 'Switch Redundant Power & Airflow Aspect', checker: adapterPowerEnvironment },
     { id: 'SUPPORT_SERVICES', name: 'Network Tech Care & Support Services Aspect', checker: adapterSupportServices }
   ],
+  san_switch: [
+    { id: 'SAN_LICENSED_PORTS', name: 'SAN Licensed Port Capacity', checker: () => ({ status: 'PASS' }) },
+    { id: 'BUNDLED_OPTICS_BILLING', name: 'Bundled Optics Billing', checker: () => ({ status: 'PASS' }) },
+    { id: 'CATALOG_SERVICE_COVERAGE', name: 'Catalog and Service Coverage', checker: () => ({ status: 'PASS' }) },
+    { id: 'SERVER_RULES_NOT_APPLICABLE', name: 'Server Component Rules', checker: () => ({ status: 'NOT_APPLICABLE' }) }
+  ],
   ai_cluster: [
     { id: 'COMPUTE_THERMAL', name: 'AI Server Thermal & Liquid Cooling Aspect', checker: adapterComputeThermal },
     { id: 'MEMORY_CHANNEL', name: 'High-Bandwidth Memory Interleaving Aspect', checker: adapterMemoryChannel },
@@ -149,6 +158,26 @@ const DOMAIN_REGISTRY = {
         };
       }
     }
+  ],
+  archive_tape: [
+    {
+      id: 'ARCHIVE_COLD_STORAGE',
+      name: 'Tape Library & Archive Drive Validation',
+      checker: (_items, _catalogData, _mandatorySkus, _serverCount, _ctx) => {
+        return {
+          status: 'NOT_EVALUATED',
+          advisory: 'Archive domain physical constraints not evaluated; tape library chassis profile not loaded'
+        };
+      }
+    }
+  ],
+  synergy_compute: [
+    { id: 'COMPUTE_THERMAL', name: 'Synergy Compute & Thermal Aspect', checker: adapterComputeThermal },
+    { id: 'MEMORY_CHANNEL', name: 'Synergy Memory Channel & Interleaving Aspect', checker: adapterMemoryChannel },
+    { id: 'STORAGE_TRI_MODE', name: 'Synergy Drive & Storage Controller Aspect', checker: adapterStorageTriMode },
+    { id: 'FRAME_FABRIC_MEZZANINE', name: 'Synergy Mezzanine & Interconnect Fabric Aspect', checker: adapterNetworkingOcp },
+    { id: 'FRAME_SHARED_POWER', name: 'Synergy Frame Shared Power & Cooling Aspect', checker: adapterPowerEnvironment },
+    { id: 'SUPPORT_SERVICES', name: 'Synergy Support & Deployment Services Aspect', checker: adapterSupportServices }
   ]
 };
 

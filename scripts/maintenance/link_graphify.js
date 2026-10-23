@@ -69,6 +69,12 @@ function linkGraphify() {
 
 if (require.main === module) {
   linkGraphify();
+  try {
+    const { verifyGraphIntegrity } = require('./verify_graph_integrity.js');
+    verifyGraphIntegrity();
+  } catch (err) {
+    console.warn(`[WARN] Graph integrity verification note: ${err.message}`);
+  }
 }
 
 module.exports = { linkGraphify };

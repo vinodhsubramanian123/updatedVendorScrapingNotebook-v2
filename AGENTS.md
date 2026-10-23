@@ -7,7 +7,7 @@
 Before declaring OCA unavailable or changing session navigation, read `docs/audits/2026-10-19-oca-session-startup-remediation.md` and the `oca-portal-navigator` skill. Run `npm.cmd run oca:session -- "DL380 Gen12"` with the exact requested product; use `--recover` only for deliberate fresh recovery. CDP availability does not establish HPE authentication. A connected browser may be a NotebookLM profile. Preserve unrelated tabs, verify actual credential fields, and launch OCA through Partner Portal. The ordinary **OEM Software** category must never cause a commercial base configuration to be rejected. Retain sanitized session receipts under `outputs/history/oca_sessions/`; navigation readiness does not establish CLIC acceptance or cloud synchronization.
 
 **Agent Identity:** Lead Solution Execution Architect for the HPE ProLiant AI Studio BOQ Evaluator & Conflict Resolution Engine.
-**Repository Certified Benchmark (2026-10-13):** Full isolated test matrix is certified at **100.0% PASSED** across all domains (Core: 18/18 PASS, BOQ: 26/26 PASS, Sync: 25/25 PASS, Catalog: 16/16 PASS, Scraping: 23/23 PASS, Aspects: 16/16 PASS, Guardrail: 19/19 PASS, Conflict: 11/11 PASS, Chaos: 41/41 PASS, Smoke: 8/8 PASS, Negative/Jeopardy: 26/26 PASS) across 10 canonical product generations with 0 lint warnings/errors across all 509 files (oxlint 94 rules), 0 dashboard lint warnings/errors (114 files), clean dashboard production build (7.22s), 0 circular dependencies, and peak cyclomatic complexity reduced from 130 to $\le 90 \le 135$ with all decomposed functions $\le 10$.
+**Repository Certified Benchmark (2026-10-13):** Full isolated test matrix is certified at **100.0% PASSED** across all domains (Core: 18/18 PASS, BOQ: 26/26 PASS, Sync: 25/25 PASS, Catalog: 16/16 PASS, Scraping: 23/23 PASS, Aspects: 16/16 PASS, Guardrail: 19/19 PASS, Conflict: 11/11 PASS, Chaos: 41/41 PASS, Smoke: 8/8 PASS, Negative/Jeopardy: 26/26 PASS) across 10 canonical product generations with 0 lint warnings/errors across all 526 files (oxlint 95 rules), 0 dashboard lint warnings/errors (114 files), clean dashboard production build (7.22s), 0 circular dependencies, and peak cyclomatic complexity reduced from 130 to $\le 90 \le 135$ with all decomposed functions $\le 10$.
 
 **Validation scope:** This is a historical benchmark, not certification of later edits. The final combined 2026-09-17 remediation requires Antigravity/Gemini validation; the user explicitly assigned testing away from Codex. See `docs/audits/2026-09-17-evidence-workflow-remediation.md`.
 
@@ -66,7 +66,7 @@ When a task arrives, dynamically load and read the corresponding `SKILL.md` from
 | **Live WebLogic OCA Portal Scraping** | [`oca-catalog-scraper`](file:///.agents/skills/oca-catalog-scraper/SKILL.md) | `scripts/scrapers/scrape_oca_solution.js` |
 | **Partner Portal SSO & Hands-Free CDP** | [`oca-portal-navigator`](file:///.agents/skills/oca-portal-navigator/SKILL.md) | `scripts/lib/scraper/navigate_oca.js` |
 | **Auditable Trace & 9-Phase Ledger** | [`execution-trace-skill`](file:///.agents/skills/execution-trace-skill/SKILL.md) | `scripts/lib/system/evidence_ledger.js` |
-| **14-Point Pre-Presentation Acceptance Gate** | [`output-validation-skill`](file:///.agents/skills/output-validation-skill/SKILL.md) | `scripts/lib/boq/bom_verifier.js` |
+| **18-Point Pre-Presentation Acceptance Gate** | [`output-validation-skill`](file:///.agents/skills/output-validation-skill/SKILL.md) | `scripts/lib/boq/bom_verifier.js` |
 | **Adversarial Chaos & Red-Teaming (10 Modes)** | [`adversarial-validation-skill`](file:///.agents/skills/adversarial-validation-skill/SKILL.md) | `scripts/evaluators/adversarial_agent.js` |
 | **Continuous Learning Reflection & Quarantine** | [`continuous-learning-skill`](file:///.agents/skills/continuous-learning-skill/SKILL.md) | `scripts/lib/feedback/feedback_loop.js` |
 | **Commercial Remarks & Reconciliation Hierarchy** | [`boq-remarks-reconciliation-skill`](file:///.agents/skills/boq-remarks-reconciliation-skill/SKILL.md) | `scripts/lib/boq/commercial_remarks.js` |
@@ -97,8 +97,8 @@ When a task arrives, dynamically load and read the corresponding `SKILL.md` from
 
 ## 5. Technical Invariants & Epistemic Rules Reference
 To conserve context tokens, detailed specifications and negative-path implementations are modularized:
-- **Complete Invariant Catalog (INV-1 through INV-184)**: Consult [`docs/INVARIANTS.md`](file:///docs/INVARIANTS.md) for full technical definitions and history.
-- **Deep Cognitive Reasoning & Anti-Pattern Prevention (Anti-Patterns 1 to 14)**: Consult [`.agents/rules/epistemic_truth_and_deep_reasoning.md`](file:///.agents/rules/epistemic_truth_and_deep_reasoning.md).
+- **Complete Invariant Catalog (INV-1 through INV-200)**: Consult [`docs/INVARIANTS.md`](file:///docs/INVARIANTS.md) for full technical definitions and history.
+- **Deep Cognitive Reasoning & Anti-Pattern Prevention (Anti-Patterns 1 to 22)**: Consult [`.agents/rules/epistemic_truth_and_deep_reasoning.md`](file:///.agents/rules/epistemic_truth_and_deep_reasoning.md).
 - **Consolidated Documentation**:
   - [`docs/DIRECTORY_STRUCTURE.md`](file:///docs/DIRECTORY_STRUCTURE.md): Canonical repository directory mapping.
   - [`docs/ARCHITECTURE_AND_DESIGN.md`](file:///docs/ARCHITECTURE_AND_DESIGN.md): Core Dual-Brain architecture and data contracts.

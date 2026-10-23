@@ -478,7 +478,7 @@ To ensure that neither humans nor autonomous agents repeat the blind spots ident
    - Tier 3: Live OCA/CLIC Portal Response = Official Vendor Acceptance Receipt.
    Never conflate Tier 1 or Tier 2 with Tier 3. Deliverables must label `PORTAL VALIDATION PENDING` until a live CLIC transaction occurs.
 4. **Zero Optimistic Falsification**: When an external service (LLM, RAG, API) is unavailable or offline, mark the stage as `ACTION_REQUIRED` or `INCOMPLETE`. Never fabricate a synthetic pass.
-5. **No Blind Checkins Without Full Matrix & Linter Certification**: Never commit code without certifying `npm test` (165+ suites), `npm run lint` (0 warnings on 110 files), and complexity gates ($CC \le 135$).
+5. **No Blind Checkins Without Full Matrix & Linter Certification**: Never commit code without certifying `npm test` (249 suites), `npm run lint:core` (0 warnings on 526 files with 95 rules), complexity gates ($CC \le 135$), and the 18-point pre-presentation acceptance gate (B1–B18, including Gate B17 Zero Unresolved Requirements and Gate B18 Tender Quantity Conservation).
 
 
 

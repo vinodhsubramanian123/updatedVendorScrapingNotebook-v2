@@ -42,6 +42,9 @@ Do not classify a commercial configuration as OEM because it contains the **OEM 
 
 Authentication failures must retain their stage: `HPE_AUTH_CREDENTIALS_REQUIRED`, `HPE_AUTH_REJECTED`, `HPE_AUTH_INTERACTION_REQUIRED`, or `HPE_AUTH_TIMEOUT`. They must not be swallowed and followed by a misleading launcher attempt. The connected profile may require a vendor-controlled challenge; report that exact blocker instead of claiming automatic MFA bypass.
 
+### Implementation Engine & Entry Points
+The autonomous navigation engine ([`navigate_oca.js`](../../../scripts/lib/scraper/navigate_oca.js)) executes `navigateToOCAChassis()` and `searchAndConfigureChassis()` via pure Chrome DevTools Protocol ([`cdp.js`](../../../scripts/lib/scraper/cdp.js)).
+
 ---
 
 ## 2. The 12-Step Autonomous Navigation Lifecycle

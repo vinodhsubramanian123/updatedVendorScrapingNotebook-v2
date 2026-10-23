@@ -435,33 +435,46 @@ function computeArchitecturalDelta(requestedQuantities, candidateQuantities, par
 function scoreAndSortCandidates(rawCandidates, items, resolveSupply = () => ({ leadTimeDays: null, availability: 'Unknown' })) {
   const requestedSkuSet = new Set((items || []).map(it => cleanBaseSKU(it.sku)).filter(Boolean));
   const requestedQuantities = new Map();
-  const partCategoryMap = new Map();
+  const baseCategoryMap = new Map();
 
   for (const it of (items || [])) {
     const k = cleanBaseSKU(it.sku);
     if (!k) continue;
-    requestedQuantities.set(k, (requestedQuantities.get(k) || 0) + Number(it.quantity || 1));
-    if (it.category) partCategoryMap.set(k, it.category);
+    const q = (typeof it.quantity === 'number' && Number.isFinite(it.quantity)) ? it.quantity : (Number(it.quantity) || 1);
+    requestedQuantities.set(k, (requestedQuantities.get(k) || 0) + q);
+    if (it.category) baseCategoryMap.set(k, it.category);
   }
 
   rawCandidates.forEach(cand => {
-    const matchedCount = (cand.skuPartsList || []).filter(p => requestedSkuSet.has(cleanBaseSKU(p.sku))).length;
-    const matchRatio = requestedSkuSet.size > 0 ? (matchedCount / requestedSkuSet.size) : 1.0;
-    cand.intentMatchRatio = parseFloat(matchRatio.toFixed(2));
-    cand.dynamicScore = parseFloat(((matchRatio * 0.6) + (cand.score * 0.4)).toFixed(2));
+    // Preserve intrinsic strategy identity prior to any rank mutation
+    cand.strategyIdentity = cand.strategyIdentity || cand.name;
+
+    // Unique intersection count prevents ratio inflation above 1.0
+    const candSkuSet = new Set((cand.skuPartsList || []).map(p => cleanBaseSKU(p.sku)).filter(Boolean));
+    let matchedUniqueCount = 0;
+    for (const sku of requestedSkuSet) {
+      if (candSkuSet.has(sku)) matchedUniqueCount++;
+    }
+    const matchRatio = requestedSkuSet.size > 0 ? (matchedUniqueCount / requestedSkuSet.size) : 1.0;
+    cand.intentMatchRatio = parseFloat(Math.min(1.0, Math.max(0.0, matchRatio)).toFixed(2));
+    cand.dynamicScore = parseFloat(((cand.intentMatchRatio * 0.6) + (cand.score * 0.4)).toFixed(2));
     cand.supplyMetrics = calculateSupplyMetrics(cand.skuPartsList, resolveSupply);
+
+    // Scoped category map prevents category leakage across candidate permutations
+    const candidateCategoryMap = new Map(baseCategoryMap);
     const candidateQuantities = new Map();
     for (const it of (cand.skuPartsList || [])) {
       const k = cleanBaseSKU(it.sku);
       if (!k) continue;
-      candidateQuantities.set(k, (candidateQuantities.get(k) || 0) + Number(it.quantity || 1));
-      if (it.category && !partCategoryMap.has(k)) {
-        partCategoryMap.set(k, it.category);
+      const q = (typeof it.quantity === 'number' && Number.isFinite(it.quantity)) ? it.quantity : (Number(it.quantity) || 1);
+      candidateQuantities.set(k, (candidateQuantities.get(k) || 0) + q);
+      if (it.category && !candidateCategoryMap.has(k)) {
+        candidateCategoryMap.set(k, it.category);
       }
     }
     cand.quantityDelta = [...new Set([...requestedQuantities.keys(), ...candidateQuantities.keys()])]
       .reduce((sum, sku) => sum + Math.abs((requestedQuantities.get(sku) || 0) - (candidateQuantities.get(sku) || 0)), 0);
-    cand.architecturalDelta = computeArchitecturalDelta(requestedQuantities, candidateQuantities, partCategoryMap);
+    cand.architecturalDelta = computeArchitecturalDelta(requestedQuantities, candidateQuantities, candidateCategoryMap);
   });
 
   rawCandidates.sort((a, b) => {
@@ -474,7 +487,17 @@ function scoreAndSortCandidates(rawCandidates, items, resolveSupply = () => ({ l
     }
     const leadA = a.supplyMetrics.estimatedAverageLeadTimeDays ?? Number.POSITIVE_INFINITY;
     const leadB = b.supplyMetrics.estimatedAverageLeadTimeDays ?? Number.POSITIVE_INFINITY;
-    return leadA - leadB;
+    if (leadA !== leadB) return leadA - leadB;
+
+    // Deterministic tie-breakers (INV-193 / G02)
+    const nameA = a.strategyIdentity || a.name || '';
+    const nameB = b.strategyIdentity || b.name || '';
+    const nameDiff = nameA.localeCompare(nameB);
+    if (nameDiff !== 0) return nameDiff;
+
+    const fpA = a.bomFingerprint || '';
+    const fpB = b.bomFingerprint || '';
+    return fpA.localeCompare(fpB);
   });
   return requestedSkuSet;
 }
@@ -499,6 +522,7 @@ function normalizeCandidates(rawCandidates, requestedSkuSet, baselineCost, optio
     });
     cand.priceUnavailableSkus = Array.from(new Set(unavailable.filter(Boolean)));
     cand.pricingComplete = cand.priceUnavailableSkus.length === 0;
+    cand.strategyIdentity = cand.strategyIdentity || cand.name;
     cand.rank = idx + 1;
     if (!cand.name.startsWith(`Rank ${cand.rank}:`)) {
       cand.name = cand.name.replace(/^Rank \d+:/, `Rank ${cand.rank}:`);

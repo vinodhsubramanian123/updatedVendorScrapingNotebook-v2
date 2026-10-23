@@ -5,21 +5,23 @@ This document provides the complete, authoritative mapping of the entire `vendor
 ```
 vendorNotebookSolution/
 ├── .agents/                               ← Agent rules, schemas, and specialized workflow skills
-│   ├── AGENTS.md                          ← Core system architecture & agent directives (INV-1 to INV-156)
+│   ├── AGENTS.md                          ← Core system architecture & agent directives (INV-1 to INV-200)
 │   ├── DATA_DICTIONARY.md                 ← JSON schemas & pipeline contracts
 │   ├── PORTFOLIO_STATUS.md                ← Live portfolio intelligence state of health (10 canonical products)
-│   └── skills/                            ← 28 Specialized workflow skills
+│   └── skills/                            ← 30 Specialized workflow skills
 │       ├── adversarial-validation-skill/  ← Enterprise chaos red-teaming & 10 failure mode checks
 │       ├── bom-reconciliation-skill/      ← Customer tender vs partner quote reconciler
 │       ├── boq-eval-skill/                ← 7-aspect physical math & pre-flight BOQ validation
 │       ├── boq-remarks-reconciliation-skill/ ← Commercial remarks annotation & quantity bridging
 │       ├── catalog-intelligence-skill/    ← Pricing trends & lifecycle state tracking
 │       ├── clic-portal-validation-skill/  ← Scoped portal conditions & final acceptance verification
+│       ├── codex-peer-review-skill/       ← Independent Codex peer review & static gap audit
 │       ├── conditional-sku-discovery-skill/ ← Hidden & selector-dependent SKU discovery
 │       ├── continuous-learning-skill/     ← Closed-loop continuous learning & reachability
 │       ├── cross-vendor-transformation-skill/ ← Cisco/Dell/Lenovo tender to HPE translation
 │       ├── degraded-mode-skill/           ← Stale catalog & degraded NotebookLM recovery
 │       ├── design-taste-frontend/         ← Anti-slop UI design system
+│       ├── epistemic-verification-skill/  ← Popperian falsification & terminal evidence verification
 │       ├── execution-trace-skill/         ← Auditable execution trace ledger & delta report
 │       ├── heterogeneous-tender-modernizer/ ← Mixed-domain tender planning & carrier allocation
 │       ├── jules-autonomous-protocol/     ← Google Jules multi-agent protocol & task manager
@@ -31,7 +33,7 @@ vendorNotebookSolution/
 │       ├── oca-portal-navigator/          ← Partner portal auto-navigator
 │       ├── ocr-quote-ingestion-skill/     ← Multimodal Gemini Vision OCR for quotes
 │       ├── orchestrator-workflow-skill/   ← Macro continuous learning lifecycle
-│       ├── output-validation-skill/       ← Pre-presentation 14-point acceptance criteria gate
+│       ├── output-validation-skill/       ← Pre-presentation 18-point acceptance criteria gate (B1–B18)
 │       ├── presales-query-router/         ← 5-track presales intent query classifier
 │       ├── rfp-sizing-synthesizer/        ← Unstructured sizing specs to starting BOM
 │       ├── value-engineering-skill/       ← Post-buildability CapEx/OpEx deal optimizer
@@ -48,7 +50,7 @@ vendorNotebookSolution/
 │   ├── config/                            ← Chassis maps, JSON profiles, category configs, catalog_coverage_profiles.json
 │   ├── lib/                               ← Domain library subsystems
 │   │   ├── aspects/                       ← 7 Physical hardware aspect math checkers
-│   │   ├── boq/                           ← Preprocessor, parser, math engine, acceptance_gate.js, vendor_quote_reconciler.js & Excel exporter
+│   │   ├── boq/                           ← Preprocessor, parser, math engine, bom_verifier.js, quantity_conservation.js, vendor_quote_reconciler.js & Excel exporter
 │   │   ├── catalog/                       ← Rules extractor, discovery, diffing, catalog_coverage.js & versioning
 │   │   ├── conflict/                      ← Conflict graph, least_delta_combinator.js, decision_trace.js & strategy synthesis
 │   │   ├── contracts/                     ← Typed workflow schemas, delivery authorization & signing secrets
@@ -67,10 +69,10 @@ vendorNotebookSolution/
 │   │   └── index.js                       ← Master barrel re-export
 │   └── README.md                          ← Scripts directory guide
 │
-├── tests/                                 ← 200+ isolated test suites across 4 tiers (100% PASS)
-│   ├── unit/                              ← 128+ suites: aspect registry, schemas, sku resolver, lifecycle engine, boundary review, failure recovery
+├── tests/                                 ← 249 isolated test suites across 4 tiers (100% PASS)
+│   ├── unit/                              ← 179 suites: aspect registry, schemas, sku resolver, lifecycle engine, boundary review, failure recovery
 │   ├── chaos/                             ← 41 suites: chaos failure modes, memory fuzz, mutex tests, offline pipeline resilience
-│   ├── integration/                       ← 27 suites: multi-chassis BOM audits, portfolio Excel, 15-scenario BOQ benchmarks
+│   ├── integration/                       ← 26 suites: multi-chassis BOM audits, portfolio Excel, 15-scenario BOQ benchmarks
 │   ├── e2e/                               ← 3 suites: headless browser UI automation, downloads & live CLIC flows
 │   ├── fixtures/                          ← 15 Benchmark CSVs (BENCH-01 to BENCH-15), sample quotes & raw DOM snapshots
 │   └── README.md                          ← Test execution & benchmark index
@@ -112,7 +114,7 @@ vendorNotebookSolution/
 │   └── README.md                          ← Outputs lifecycle guide
 │
 ├── docs/                                  ← Consolidated project documentation
-│   ├── INVARIANTS.md                      ← Canonical catalog of all 116 Technical Invariants (INV-1 to INV-116)
+│   ├── INVARIANTS.md                      ← Canonical catalog of all 200 Technical Invariants (INV-1 to INV-200)
 │   ├── ARCHITECTURE_AND_DESIGN.md         ← Core architecture, Dual-Brain paradigm & diagrams
 │   ├── WORKFLOWS_AND_LEARNINGS.md         ← E2E pipelines, agentic guardrails & 80 comprehensive learnings
 │   ├── DEVELOPER_GUIDE.md                 ← Local dev, testing tiers, debugging playbook, and API guide

@@ -8,6 +8,7 @@
 
 const fs   = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 /**
  * Move a file cross-platform. Handles EXDEV error when moving across drive boundaries on Windows.
@@ -325,11 +326,59 @@ function promoteStagingDirectory(stagingDir, liveTargetDir) {
   }
 }
 
+/**
+ * Safe atomic text write guardrail.
+ * Writes text/markdown to a temporary buffer file first, then atomically replaces target.
+ * Handles Windows EXDEV/EPERM file locks via moveFile fallback.
+ * @param {string} destPath Target file path
+ * @param {string} textContent String content to write
+ * @returns {boolean} True if successfully written
+ */
+function safeWriteTextAtomic(destPath, textContent) {
+  if (typeof textContent !== 'string') {
+    throw new Error(`safeWriteTextAtomic aborted: content is not a string for ${destPath}`);
+  }
+
+  const dir = path.dirname(destPath);
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+
+  const tmpPath = `${destPath}.${Date.now()}.${Math.random().toString(36).slice(2, 6)}.tmp`;
+  fs.writeFileSync(tmpPath, textContent, 'utf-8');
+
+  moveFile(tmpPath, destPath);
+  return true;
+}
+
+/**
+ * Execute a critical file read-modify-write transaction under a workflow lease.
+ * Guarantees cross-process mutual exclusion to prevent lost updates across parallel runners.
+ * @param {string} targetFilePath
+ * @param {Function} fn
+ * @param {object} [options={}]
+ * @returns {*} Result of fn()
+ */
+function withFileLock(targetFilePath, fn, options = {}) {
+  const resolved = path.resolve(targetFilePath);
+  const lockDir = path.join(path.dirname(resolved), '.file-locks');
+  const name = 'lock-' + crypto.createHash('sha256').update(resolved.toLowerCase()).digest('hex').slice(0, 24);
+  const { acquireWorkflowLease } = require('./workflow_lease.js');
+  const release = acquireWorkflowLease(name, lockDir, options);
+  try {
+    return fn();
+  } finally {
+    release();
+  }
+}
+
 module.exports = {
   moveFile,
   toForwardSlash,
   cleanStrayPDFs,
   safeWriteJsonAtomic,
+  safeWriteTextAtomic,
+  withFileLock,
   copyDirRecursive,
   mergeDirRecursive,
   promoteStagingDirectory,

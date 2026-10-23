@@ -723,94 +723,20 @@ function resolveCatalogDataForItems(rawItems, options = {}) {
   return null;
 }
 
+const { buildUniversalQuantityConservationLedger } = require('./quantity_conservation.js');
+
 /**
  * Build an auditable quantity conservation ledger between raw tender items and partitioned clusters.
  * Ensures that no customer requirement or hardware count drops silently.
+ * Delegated to canonical universal quantity conservation engine (INV-192 / G01 / G09).
  *
  * @param {Array<object>} rawItems - Source tender line items
  * @param {Array<object>} clusters - Partitioned cluster configurations
+ * @param {object} [options={}] - Options { strict: boolean }
  * @returns {object} { isFullyConserved: boolean, totalDiscrepancies: number, ledger: Array<object> }
  */
-function buildQuantityConservationLedger(rawItems, clusters) {
-  if (!Array.isArray(rawItems) || !Array.isArray(clusters)) {
-    return { isFullyConserved: true, totalDiscrepancies: 0, ledger: [] };
-  }
-
-  function normalizeSkuKey(sku) {
-    const c = cleanBaseSKU(sku);
-    if (!c) return '';
-    if (c.endsWith('-F21')) return c.replace(/-F21$/, '-B21');
-    return c;
-  }
-
-  // Pre-index each cluster's item allocations by normalized SKU to avoid O(N^2) scans in chaos/stress suites
-  const clusterIndexes = clusters.map(cluster => {
-    const mult = Number(cluster.multiplier || 1);
-    const skuMap = new Map();
-    for (const item of (cluster.items || [])) {
-      const key = normalizeSkuKey(item.sku);
-      if (!key) continue;
-      const allocated = item.totalQuantity ?? ((item.quantity || 0) * mult);
-      skuMap.set(key, (skuMap.get(key) || 0) + allocated);
-    }
-    return {
-      clusterId: cluster.clusterId || cluster.name || 'Default',
-      multiplier: mult,
-      skuMap
-    };
-  });
-
-  const ledger = [];
-  let isFullyConserved = true;
-  let totalDiscrepancies = 0;
-
-  for (const rawItem of rawItems) {
-    const rawSku = rawItem.sku || '';
-    const clean = cleanBaseSKU(rawSku);
-    if (!clean || clean === 'CHASSIS_PLACEHOLDER') continue;
-    const normKey = normalizeSkuKey(rawSku);
-    const reqQty = Number(rawItem.quantity || 1);
-
-    let allocatedTotal = 0;
-    const clusterBreakdown = [];
-
-    for (const cIdx of clusterIndexes) {
-      const clusterAllocated = cIdx.skuMap.get(normKey) || 0;
-      allocatedTotal += clusterAllocated;
-      clusterBreakdown.push({
-        clusterId: cIdx.clusterId,
-        multiplier: cIdx.multiplier,
-        allocatedQuantity: clusterAllocated,
-        perServer: cIdx.multiplier > 0 ? Math.round(clusterAllocated / cIdx.multiplier) : 0
-      });
-    }
-
-    const delta = allocatedTotal - reqQty;
-    const status = delta === 0 ? 'CONSERVED_EXACT' : (delta > 0 ? 'SURPLUS_BUFFER' : 'RESIDUAL_DEFICIT');
-    if (delta !== 0) {
-      isFullyConserved = false;
-      totalDiscrepancies++;
-    }
-
-    ledger.push({
-      sku: rawSku,
-      cleanSku: clean,
-      description: rawItem.description || '',
-      category: rawItem.category || '',
-      requestedQuantity: reqQty,
-      allocatedTotal,
-      delta,
-      residualQuantity: Math.abs(delta),
-      status,
-      clusterBreakdown
-    });
-  }
-
-  return {
-    isFullyConserved,
-    totalDiscrepancies,
-    ledger
-  };
+function buildQuantityConservationLedger(rawItems, clusters, options = {}) {
+  return buildUniversalQuantityConservationLedger(rawItems, clusters, options);
 }
 
 /**
@@ -987,7 +913,16 @@ function analyzeAndPartitionClusters(rawItems, boqName = '', options = {}) {
  * @param {string} outputDirectory 
  * @returns {Array<object>} Generated cluster workbooks metadata
  */
-function splitAndWriteClusterWorkbooks(inputFilePath, outputDirectory) {
+/**
+ * Generate separate Excel workbooks for each partitioned cluster.
+ * @param {string|Array<object>} inputFilePath 
+ * @param {string} outputDirectory 
+ * @param {object|string} [options={}]
+ * @returns {Array<object>} Generated cluster workbooks metadata
+ */
+function splitAndWriteClusterWorkbooks(inputFilePath, outputDirectory, options = {}) {
+  const opts = typeof options === 'string' ? { chassis: options } : (options || {});
+
   if (!fs.existsSync(outputDirectory)) {
     fs.mkdirSync(outputDirectory, { recursive: true });
   }
@@ -995,6 +930,21 @@ function splitAndWriteClusterWorkbooks(inputFilePath, outputDirectory) {
   const rawItems = Array.isArray(inputFilePath) ? inputFilePath : extractRawItemsFromWorkbook(inputFilePath);
   const partitionResult = analyzeAndPartitionClusters(rawItems);
   const detectedChassis = partitionResult.detectedChassis || detectChassisVariant(rawItems);
+
+  // DeliveryAuthorization Enforcement (INV-128 / G07)
+  const isDiagnostic = opts.diagnostic === true || opts.allowUncertified === true;
+  const auth = opts.deliveryAuthorization || partitionResult.deliveryAuthorization;
+  if (auth) {
+    const { assertDeliveryAuthorization } = require('../contracts/workflow_contract.js');
+    const crypto = require('crypto');
+    const manifestFingerprint = crypto.createHash('sha256').update(JSON.stringify(rawItems)).digest('hex');
+    assertDeliveryAuthorization(auth, manifestFingerprint, {
+      chassisKey: detectedChassis?.model || 'MULTI_CLUSTER_TENDER',
+      profile: 'MULTI_CLUSTER_TENDER'
+    });
+  } else if (!isDiagnostic && (opts.strictDeliveryAuth || process.env.STRICT_DELIVERY_AUTH === 'true')) {
+    throw new Error('Presentation export blocked: Raw clusters have no DeliveryAuthorization. Use the canonical evaluated manifest or explicit diagnostic mode.');
+  }
 
   const generatedWorkbooks = [];
 
@@ -1017,7 +967,7 @@ function splitAndWriteClusterWorkbooks(inputFilePath, outputDirectory) {
         item.category,
         displayUnitPrice,
         displayExtendedPrice,
-        'ACTIVE_IN_OCA'
+        item.portalStatus || (item.policyMandated ? 'POLICY_MANDATED_LOCAL' : 'PORTAL_VALIDATION_PENDING')
       ]);
     });
 
@@ -1042,7 +992,8 @@ function splitAndWriteClusterWorkbooks(inputFilePath, outputDirectory) {
   return {
     totalChassis: partitionResult.totalChassis,
     clusterCount: partitionResult.clusters.length,
-    workbooks: generatedWorkbooks
+    workbooks: generatedWorkbooks,
+    quantityConservation: partitionResult.quantityConservation
   };
 }
 

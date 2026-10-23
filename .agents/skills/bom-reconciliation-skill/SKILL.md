@@ -158,6 +158,14 @@ When BOM reconciliation runs through the agent harness, it records these steps i
 
 ## Dynamic headers and commercial remarks
 
-Use [boq-remarks-reconciliation-skill](../boq-remarks-reconciliation-skill/SKILL.md) and scripts/lib/boq/commercial_remarks.js for header resolution, action tags and source/destination quantity bridges. Preserve all original customer columns, including notes; append analysis dynamically. Reject ambiguous headers rather than selecting the last match.
+Use [`boq-remarks-reconciliation-skill`](../boq-remarks-reconciliation-skill/SKILL.md) and [`commercial_remarks.js`](../../../scripts/lib/boq/commercial_remarks.js) for header resolution, action tags and source/destination quantity bridges. Preserve all original customer columns, including notes; append analysis dynamically. Reject ambiguous headers rather than selecting the last match.
 
 Exact matches require actual row-level equality; unresolved rows must say NOT EVALUATED. Reconcile SKU, ownership and quantity basis, not just aggregate totals. Explicit spares and local-drive requirements remain customer requirements. Do not silently remove them or assume fixed table numbers, pool names, support levels or column positions.
+
+---
+
+## 💻 Implementation Engine & Direct Execution
+- **Core Verifier**: [`vendor_bom_verifier.js`](../../../scripts/lib/boq/vendor_bom_verifier.js)
+- **Remarks Annotator**: [`commercial_remarks.js`](../../../scripts/lib/boq/commercial_remarks.js)
+- **Workbook Generator**: [`generate_boq_xlsx.js`](../../../scripts/lib/boq/generate_boq_xlsx.js)
+- **Presales Router**: [`route_query.js`](../../../scripts/evaluators/route_query.js) (`_handleBomReconciliation`)

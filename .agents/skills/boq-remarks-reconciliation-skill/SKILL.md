@@ -11,7 +11,15 @@ description: >-
 
 # Commercial remarks and reconciliation
 
-Use `scripts/lib/boq/commercial_remarks.js` for header resolution and action formatting. It is a pure data helper, not a workbook editor or a live Google Sheets publisher. Use the appropriate spreadsheet skill and canonical workbook generator for actual artifacts. Do not run a historical scratch script against a new customer file.
+Use [`commercial_remarks.js`](../../../scripts/lib/boq/commercial_remarks.js) for header resolution and action formatting. It is a pure data helper, not a workbook editor or a live Google Sheets publisher. Use [`workbook-generator-skill`](../workbook-generator-skill/SKILL.md) and [`generate_boq_xlsx.js`](../../../scripts/lib/boq/generate_boq_xlsx.js) for actual artifacts. Do not run a historical scratch script against a new customer file.
+
+---
+
+## 💻 Implementation Engine & Direct Execution
+- **Core Engine**: [`commercial_remarks.js`](../../../scripts/lib/boq/commercial_remarks.js) via `appendCommercialRemarks()` and `formatCommercialRemark()`
+- **Reconciliation Engine**: [`vendor_bom_verifier.js`](../../../scripts/lib/boq/vendor_bom_verifier.js) via `verifyVendorBOM()`
+- **Workbook Exporter**: [`generate_boq_xlsx.js`](../../../scripts/lib/boq/generate_boq_xlsx.js)
+- **Output Gate**: [`bom_verifier.js`](../../../scripts/lib/boq/bom_verifier.js) via [`output-validation-skill`](../output-validation-skill/SKILL.md)
 
 
 ## ⛔ Pre-Gate: Baseline Integrity Check

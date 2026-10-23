@@ -195,74 +195,120 @@ function validateUniversalCriteria(output, context = {}) {
   return checks;
 }
 
+const CANONICAL_ASPECT_MAP = {
+  COMPUTE_THERMAL: ['COMPUTE_THERMAL', 'ASPECT_1', 'COMPUTE & THERMAL ASPECT', 'COMPUTE THERMAL', 'COMPUTE', 'THERMAL'],
+  MEMORY_CHANNEL: ['MEMORY_CHANNEL', 'ASPECT_2', 'MEMORY CHANNEL & INTERLEAVING ASPECT', 'MEMORY CHANNEL', 'MEMORY'],
+  STORAGE_TRI_MODE: ['STORAGE_TRI_MODE', 'ASPECT_3', 'STORAGE CONTROLLER & TRI-MODE ASPECT', 'DRIVE CAGE & STORAGE ENCLOSURE ASPECT', 'STORAGE TRI-MODE', 'STORAGE'],
+  PCIE_RISER: ['PCIE_RISER', 'ASPECT_4', 'PCIE SLOT & RISER ASPECT', 'SXM / PCIE HIGH-POWER GPU BUS ASPECT', 'PCIE RISER', 'PCIE'],
+  NETWORKING_OCP: ['NETWORKING_OCP', 'ASPECT_5', 'NETWORKING & OCP ADAPTER ASPECT', 'IB / ROCE HIGH-SPEED FABRIC ASPECT', 'INFINIBAND / ROCE HIGH-SPEED FABRIC ASPECT', 'NETWORKING OCP', 'NETWORKING'],
+  POWER_ENVIRONMENT: ['POWER_ENVIRONMENT', 'ASPECT_6', 'POWER SUPPLY & ENVIRONMENTAL ASPECT', 'STORAGE ENCLOSURE POWER & ENVIRONMENTAL ASPECT', 'SWITCH REDUNDANT POWER & AIRFLOW ASPECT', 'HIGH-WATTAGE POWER ENVELOPE & BUSBAR ASPECT', 'POWER ENVIRONMENT', 'POWER'],
+  SUPPORT_MANUFACTURING: ['SUPPORT_MANUFACTURING', 'ASPECT_7', 'FACTORY INTEGRATION & MANUFACTURING ASPECT', 'FACTORY INTEGRATION & MANUFACTURING', 'SUPPORT MANUFACTURING', 'MANUFACTURING'],
+  SUPPORT_SERVICES: ['SUPPORT_SERVICES', 'ASPECT_8', 'SUPPORT & DEPLOYMENT SERVICES ASPECT', 'POINTNEXT & STORAGE SUPPORT SERVICES ASPECT', 'NETWORK TECH CARE & SUPPORT SERVICES ASPECT', 'MISSION-CRITICAL AI CLUSTER SUPPORT SERVICES ASPECT', 'SUPPORT SERVICES', 'SERVICES'],
+  STORAGE_CONTROLLER_PAIR: ['STORAGE_CONTROLLER_PAIR', 'STORAGE ARRAY ACTIVE-ACTIVE CONTROLLER PAIR', 'CONTROLLER_PAIR', 'CONTROLLER_NODE', 'STORAGE CONTROLLER PAIR'],
+  SWITCH_FABRIC_PORTS: ['SWITCH_FABRIC_PORTS', 'SWITCH FABRIC & PORT PROTOCOL ALIGNMENT', 'FABRIC_PORTS', 'SWITCH_PORTS', 'SWITCH FABRIC'],
+  SAN_LICENSED_PORTS: ['SAN_LICENSED_PORTS', 'SAN LICENSED PORT CAPACITY', 'SAN_PORTS'],
+  BUNDLED_OPTICS_BILLING: ['BUNDLED_OPTICS_BILLING', 'BUNDLED OPTICS BILLING', 'BUNDLED_OPTICS'],
+  CATALOG_SERVICE_COVERAGE: ['CATALOG_SERVICE_COVERAGE', 'CATALOG AND SERVICE COVERAGE'],
+  SERVER_RULES_NOT_APPLICABLE: ['SERVER_RULES_NOT_APPLICABLE', 'SERVER COMPONENT RULES'],
+  FRAME_FABRIC_MEZZANINE: ['FRAME_FABRIC_MEZZANINE', 'SYNERGY MEZZANINE & INTERCONNECT FABRIC ASPECT', 'MEZZANINE_FABRIC', 'FABRIC_MEZZANINE', 'MEZZANINE'],
+  FRAME_SHARED_POWER: ['FRAME_SHARED_POWER', 'SYNERGY FRAME SHARED POWER & COOLING ASPECT', 'FRAME_POWER', 'SHARED_POWER'],
+  ARCHIVE_COLD_STORAGE: ['ARCHIVE_COLD_STORAGE', 'TAPE LIBRARY & ARCHIVE DRIVE VALIDATION', 'COLD_STORAGE', 'TAPE_VALIDATION']
+};
+
+function _resolveCanonicalAspectId(check) {
+  if (!check || typeof check !== 'object') return null;
+  const rawId = String(check.id || check.code || '').trim().toUpperCase();
+  const rawName = String(check.name || '').trim().toUpperCase();
+
+  // If rawId is already an exact canonical ID, return it
+  if (CANONICAL_ASPECT_MAP[rawId]) return rawId;
+
+  // Next, match by specific name keywords (more specific than generic aspect numbers)
+  if (rawName.includes('MEZZANINE') || rawName.includes('FABRIC MEZZANINE')) return 'FRAME_FABRIC_MEZZANINE';
+  if (rawName.includes('FRAME SHARED POWER') || rawName.includes('SHARED POWER')) return 'FRAME_SHARED_POWER';
+  if (rawName.includes('COLD STORAGE') || rawName.includes('TAPE LIBRARY') || rawName.includes('ARCHIVE DRIVE')) return 'ARCHIVE_COLD_STORAGE';
+  if (rawName.includes('COMPUTE') || rawName.includes('THERMAL')) return 'COMPUTE_THERMAL';
+  if (rawName.includes('MEMORY') || rawName.includes('INTERLEAVING')) return 'MEMORY_CHANNEL';
+  if (rawName.includes('CONTROLLER PAIR') || rawName.includes('STORAGE CONTROLLER')) return 'STORAGE_CONTROLLER_PAIR';
+  if (rawName.includes('TRI-MODE') || rawName.includes('DRIVE CAGE') || rawName.includes('STORAGE')) return 'STORAGE_TRI_MODE';
+  if (rawName.includes('PCIE') || rawName.includes('RISER') || rawName.includes('BUS')) return 'PCIE_RISER';
+  if (rawName.includes('SWITCH') || rawName.includes('PORT PROTOCOL') || rawName.includes('FABRIC')) return 'SWITCH_FABRIC_PORTS';
+  if (rawName.includes('OCP') || rawName.includes('NETWORKING')) return 'NETWORKING_OCP';
+  if (rawName.includes('POWER') || rawName.includes('ENVIRONMENT') || rawName.includes('AIRFLOW') || rawName.includes('BUSBAR')) return 'POWER_ENVIRONMENT';
+  if (rawName.includes('MANUFACTURING') || rawName.includes('FACTORY') || rawName === 'SUPPORT') return 'SUPPORT_MANUFACTURING';
+  if (rawName.includes('TECH CARE') || rawName.includes('POINTNEXT') || rawName.includes('SERVICES') || rawName.includes('DEPLOYMENT')) return 'SUPPORT_SERVICES';
+  if (rawName.includes('LICENSED PORT') || rawName.includes('SAN LICENSED')) return 'SAN_LICENSED_PORTS';
+  if (rawName.includes('BUNDLED OPTICS')) return 'BUNDLED_OPTICS_BILLING';
+  if (rawName.includes('CATALOG AND SERVICE') || rawName.includes('SERVICE COVERAGE')) return 'CATALOG_SERVICE_COVERAGE';
+  if (rawName.includes('SERVER COMPONENT RULES') || rawName.includes('FIXED SAN')) return 'SERVER_RULES_NOT_APPLICABLE';
+
+  for (const [canonicalId, aliases] of Object.entries(CANONICAL_ASPECT_MAP)) {
+    if (aliases.some(alias => rawId === alias || rawName === alias)) {
+      return canonicalId;
+    }
+  }
+  const strippedId = rawId.replace(/^(ASPECT_|SWITCH_|STORAGE_|SUPPORT_|FRAME_|ARCHIVE_)/, '');
+  for (const [canonicalId, aliases] of Object.entries(CANONICAL_ASPECT_MAP)) {
+    if (strippedId === canonicalId || aliases.includes(strippedId)) return canonicalId;
+  }
+  return rawId || rawName || null;
+}
+
 function _checkPhysicalAspects(output) {
   const aspectChecks = output?.aspectChecks || output?.evalSummary?.aspectChecks || output?.evaluation?.aspectChecks || null;
   if (!Array.isArray(aspectChecks) || aspectChecks.length === 0) {
     return makeCheck('B1', 'Scoped Physical Checks Completed', 'BLOCK', 'UNKNOWN', 'Physical aspect checks were not evaluated or missing from output.', { evaluated: false });
   }
 
-  const uniqueAspects = new Set(aspectChecks.map(a => String(a.id || a.name || '').toUpperCase()).filter(Boolean));
-  const normalizedTokens = new Set(aspectChecks.flatMap(a => [
-    String(a.id || '').toUpperCase(),
-    String(a.id || '').replace(/^ASPECT[_\s-]?/i, ''),
-    String(a.name || '').toUpperCase(),
-    String(a.name || '').split(/[\s&_,]+/)[0].toUpperCase()
-  ]).filter(Boolean));
   const registeredPhysical = ['COMPUTE_THERMAL', 'MEMORY_CHANNEL', 'STORAGE_TRI_MODE', 'PCIE_RISER', 'NETWORKING_OCP', 'POWER_ENVIRONMENT', 'SUPPORT_MANUFACTURING'];
-  const knownIdentitySet = registeredPhysical.every(id => normalizedTokens.has(id)) ||
-    [1, 2, 3, 4, 5, 6, 7].every(id => normalizedTokens.has(String(id))) ||
-    ['COMPUTE', 'MEMORY', 'STORAGE', 'POWER', 'NETWORKING', 'PCIE', 'SUPPORT'].every(k => normalizedTokens.has(k)) ||
-    ['THERMAL', 'MEMORY', 'STORAGE', 'PCIE', 'NETWORKING', 'POWER', 'SUPPORT'].every(k => normalizedTokens.has(k));
 
-  const domain = String(output?.solutionTopology?.domain || output?.productType || output?.chassisInfo?.family || '').toLowerCase();
+  const rawDomain = String(output?.solutionTopology?.domain || output?.productType || output?.chassisInfo?.family || '').toLowerCase();
   const chassisName = String(output?.chassis || output?.targetChassis || output?.detectedChassis?.model || '').toLowerCase();
-  const isSanSwitch = domain === 'san' || domain === 'san_switch' || /sn3600b|switch/i.test(chassisName);
-  const isNetworkingDomain = domain === 'networking' || isSanSwitch;
-  const isStorageDomain = domain === 'storage' || /alletra|nimble|storeonce/i.test(chassisName);
-  const isArchiveDomain = domain === 'archive' || /msl|storeever|tape/i.test(chassisName);
-  const isAiCluster = domain === 'ai_cluster';
 
-  const targetDomain = isNetworkingDomain ? 'networking'
+  const isExplicitSan = rawDomain === 'san' || rawDomain === 'san_switch';
+  const isChassisSan = !rawDomain && (/sn3600b/i.test(chassisName) || (/\b(?:brocade|fibre\s*channel\s*switch)\b/i.test(chassisName)));
+  const isSanSwitch = isExplicitSan || isChassisSan;
+
+  const isNetworkingDomain = rawDomain === 'networking' || (!rawDomain && !isSanSwitch && /switch|fabric/i.test(chassisName));
+  const isStorageDomain = rawDomain === 'storage' || (!rawDomain && /alletra|nimble|storeonce/i.test(chassisName));
+  const isArchiveDomain = rawDomain === 'archive' || rawDomain === 'archive_tape' || (!rawDomain && /msl|storeever|tape/i.test(chassisName));
+  const isSynergyCompute = rawDomain === 'synergy_compute' || rawDomain === 'synergy' || (!rawDomain && /synergy|sy480|sy660/i.test(chassisName));
+  const isAiCluster = rawDomain === 'ai_cluster';
+
+  const targetDomain = isSanSwitch ? 'san_switch'
+    : isNetworkingDomain ? 'networking'
     : isStorageDomain ? 'storage'
     : isArchiveDomain ? 'archive'
+    : isSynergyCompute ? 'synergy_compute'
     : isAiCluster ? 'ai_cluster'
     : 'server';
 
   const registeredAspects = getRegisteredAspectsForDomain(targetDomain);
-  const requiredAspectIds = registeredAspects.map(a => a.id.toUpperCase());
+  const requiredAspectIds = targetDomain === 'server' ? registeredPhysical : registeredAspects.map(a => a.id.toUpperCase());
 
-  // Strict domain aspect identity checking:
-  // Every mandatory aspect required for targetDomain MUST have a matching token in normalizedTokens
-  const missingDomainAspects = requiredAspectIds.filter(id => {
-    if (normalizedTokens.has(id)) return false;
-    const stripped = id.replace(/^(ASPECT_|SWITCH_|STORAGE_|SUPPORT_)/, '');
-    if (normalizedTokens.has(stripped)) return false;
-    if (id === 'STORAGE_CONTROLLER_PAIR') {
-      return !(normalizedTokens.has('CONTROLLER') || normalizedTokens.has('CONTROLLER_PAIR') || normalizedTokens.has('CONTROLLER_NODE') || normalizedTokens.has('STORAGE_CONTROLLER'));
-    }
-    if (id === 'SWITCH_FABRIC_PORTS') {
-      return !(normalizedTokens.has('SWITCH') || normalizedTokens.has('FABRIC') || normalizedTokens.has('PORTS') || normalizedTokens.has('SWITCH_PORTS'));
-    }
-    const firstWord = id.split('_')[0];
-    if (normalizedTokens.has(firstWord)) return false;
-    return true;
-  });
+  const resolvedPresentIds = new Set();
+  for (const a of aspectChecks) {
+    const cId = _resolveCanonicalAspectId(a);
+    if (cId) resolvedPresentIds.add(cId);
+  }
 
-  const minRequiredAspects = Math.min(requiredAspectIds.length, isSanSwitch ? 4 : (isNetworkingDomain || isStorageDomain ? 3 : 7));
-  const requiresFullServerAspects = !isNetworkingDomain && !isStorageDomain && !isArchiveDomain && !isAiCluster;
+  const missingDomainAspects = requiredAspectIds.filter(id => !resolvedPresentIds.has(id));
 
-  if (aspectChecks.length < minRequiredAspects || uniqueAspects.size < minRequiredAspects || missingDomainAspects.length > 0 || (requiresFullServerAspects && !knownIdentitySet)) {
+  const minRequiredAspects = Math.min(requiredAspectIds.length, isSanSwitch ? 4 : (isNetworkingDomain || isStorageDomain ? 3 : (isSynergyCompute ? 6 : (isArchiveDomain ? 1 : 7))));
+  const requiresFullServerAspects = targetDomain === 'server';
+
+  if (aspectChecks.length < minRequiredAspects || resolvedPresentIds.size < minRequiredAspects || missingDomainAspects.length > 0) {
     const reason = missingDomainAspects.length > 0
-      ? `Missing required ${targetDomain} domain aspect(s): ${missingDomainAspects.join(', ')} (${uniqueAspects.size} distinct identities).`
-      : `Incomplete physical checks: expected at least ${minRequiredAspects} registered ${requiresFullServerAspects ? 'server physical' : targetDomain} aspects, found ${aspectChecks.length} checks (${uniqueAspects.size} distinct identities; known set=${knownIdentitySet}).`;
+      ? `Missing required ${targetDomain} domain aspect(s): ${missingDomainAspects.join(', ')} (${resolvedPresentIds.size} distinct identities verified).`
+      : `Incomplete physical checks: expected at least ${minRequiredAspects} registered ${requiresFullServerAspects ? 'server physical' : targetDomain} aspects, found ${aspectChecks.length} checks (${resolvedPresentIds.size} distinct identities).`;
     return makeCheck('B1', 'Scoped Physical Checks Completed', 'BLOCK', 'FAILED',
       reason,
-      { aspectCount: aspectChecks.length, uniqueCount: uniqueAspects.size, targetDomain, missingDomainAspects, requiredAspects: requiredAspectIds });
+      { aspectCount: aspectChecks.length, uniqueCount: resolvedPresentIds.size, targetDomain, missingDomainAspects, requiredAspects: requiredAspectIds });
   }
 
   const failedAspects = aspectChecks.filter(a => a.status === 'FAIL' || a.status === 'FAILED');
   const unknownAspects = aspectChecks.filter(a => a.status === 'UNKNOWN' || a.status === 'NOT_EVALUATED');
-  const actionRequiredAspects = aspectChecks.filter(a => a.status === 'ACTION_REQUIRED' || (!['PASS', 'PASSED'].includes(a.status) && !failedAspects.includes(a) && !unknownAspects.includes(a)));
+  const actionRequiredAspects = aspectChecks.filter(a => a.status === 'ACTION_REQUIRED' || (!['PASS', 'PASSED', 'NOT_APPLICABLE', 'SKIPPED'].includes(a.status) && !failedAspects.includes(a) && !unknownAspects.includes(a)));
 
   if (failedAspects.length > 0) {
     return makeCheck('B1', 'Scoped Physical Checks Completed', 'BLOCK', 'FAILED',
@@ -520,15 +566,52 @@ function _checkDeliveryFeasibility(output, context = {}) {
   );
 }
 
+function _collectUnmatchedSkus(output, context = {}) {
+  const rawList = [];
+  if (Array.isArray(output?.unmatchedSkus)) rawList.push(...output.unmatchedSkus);
+  else if (output?.unmatchedSkus) rawList.push(output.unmatchedSkus);
+
+  if (Array.isArray(context?.unmatchedSkus)) rawList.push(...context.unmatchedSkus);
+  else if (context?.unmatchedSkus) rawList.push(context.unmatchedSkus);
+
+  const seen = new Set();
+  const normalized = [];
+  for (const item of rawList) {
+    if (!item) continue;
+    const sku = typeof item === 'string' ? item.trim() : (item.rawSku || item.sku || '');
+    const line = typeof item === 'object' && item.rawLine ? item.rawLine.trim() : '';
+    const key = `${sku}:${line}`;
+    if (key !== ':' && !seen.has(key)) {
+      seen.add(key);
+      normalized.push(typeof item === 'object' ? item : { rawSku: sku, reason: 'NO_CATALOG_MATCH' });
+    }
+  }
+  return normalized;
+}
+
 function _checkUnmatchedSkus(output, context = {}) {
-  const unmatched = output?.unmatchedSkus || context?.unmatchedSkus || [];
-  const hasUnmatched = Array.isArray(unmatched) && unmatched.length > 0;
+  const unmatched = _collectUnmatchedSkus(output, context);
+  const hasUnmatched = unmatched.length > 0;
 
   if (hasUnmatched) {
-    const skuNames = unmatched.map(u => u.rawSku || u.sku || (typeof u === 'string' ? u : JSON.stringify(u))).join(', ');
+    const skuNames = unmatched.map(u => {
+      if (!u) return 'UNKNOWN_SKU';
+      if (typeof u === 'string') return u;
+      return u.rawSku || u.sku || u.rawLine || JSON.stringify(u);
+    }).join(', ');
     return makeCheck('B16', 'Zero Unmatched Customer SKUs (FP-1)', 'BLOCK', 'FAILED',
       `Unmatched customer SKU(s) failed parsing/catalog validation: ${skuNames}. Delivery blocked per INV-105/FP-1.`,
       { unmatchedCount: unmatched.length, unmatchedSkus: unmatched });
+  }
+
+  const hasIntakeEvidence = Array.isArray(output?.items) || Array.isArray(output?.rawItems) ||
+    Array.isArray(context?.items) || Array.isArray(context?.rawItems) ||
+    output?.unmatchedSkus !== undefined || context?.unmatchedSkus !== undefined;
+
+  if (!hasIntakeEvidence) {
+    return makeCheck('B16', 'Zero Unmatched Customer SKUs (FP-1)', 'BLOCK', 'ACTION_REQUIRED',
+      'Intake SKU validation data missing from output and context; affirmative catalog coverage unverified.',
+      { unmatchedCount: 0, intakeVerified: false });
   }
 
   return makeCheck('B16', 'Zero Unmatched Customer SKUs (FP-1)', 'BLOCK', 'PASSED',
@@ -536,8 +619,75 @@ function _checkUnmatchedSkus(output, context = {}) {
     { unmatchedCount: 0 });
 }
 
+function _checkUnresolvedRequirements(output, context = {}) {
+  const rawList = [];
+  if (Array.isArray(output?.unresolvedRequirements)) rawList.push(...output.unresolvedRequirements);
+  else if (output?.unresolvedRequirements) rawList.push(output.unresolvedRequirements);
+
+  if (Array.isArray(context?.unresolvedRequirements)) rawList.push(...context.unresolvedRequirements);
+  else if (context?.unresolvedRequirements) rawList.push(context.unresolvedRequirements);
+
+  const seen = new Set();
+  const unresolved = [];
+  for (const item of rawList) {
+    if (!item) continue;
+    const text = typeof item === 'string' ? item.trim() : (item.line || item.requirement || item.description || JSON.stringify(item));
+    if (text && !seen.has(text)) {
+      seen.add(text);
+      unresolved.push(item);
+    }
+  }
+
+  if (unresolved.length > 0) {
+    const formatted = unresolved.map(u => {
+      if (!u) return 'UNKNOWN_REQUIREMENT';
+      if (typeof u === 'string') return u;
+      return u.line || u.requirement || u.description || JSON.stringify(u);
+    }).join('; ');
+
+    return makeCheck('B17', 'Zero Unresolved Customer Requirements', 'BLOCK', 'FAILED',
+      `Customer tender contains ${unresolved.length} unresolved requirement(s) lacking physical SKU mapping: ${formatted}. Delivery blocked per INV-105/INV-194.`,
+      { unresolvedCount: unresolved.length, unresolvedRequirements: unresolved });
+  }
+
+  return makeCheck('B17', 'Zero Unresolved Customer Requirements', 'BLOCK', 'PASSED',
+    'All customer descriptive requirements affirmatively resolved into validated hardware components or services.',
+    { unresolvedCount: 0 });
+}
+
+function _checkQuantityConservation(output, context = {}) {
+  const qc = output?.quantityConservation || context?.quantityConservation || null;
+  if (!qc) {
+    return makeCheck('B18', 'Tender Quantity Conservation (INV-192)', 'BLOCK', 'PASSED',
+      'Quantity conservation check not applicable to single-item or non-partitioned evaluations.',
+      { evaluated: false });
+  }
+
+  if (qc.error) {
+    return makeCheck('B18', 'Tender Quantity Conservation (INV-192)', 'BLOCK', 'FAILED',
+      `Quantity conservation ledger error: ${qc.error}.`,
+      { error: qc.error });
+  }
+
+  if (qc.isFullyConserved === false && (qc.deficitCount > 0 || qc.totalDiscrepancies > 0)) {
+    const hasDeficit = (qc.deficitCount || 0) > 0;
+    const hasUnrequested = (qc.unrequestedAdditionsCount || 0) > 0;
+    const hasSurplus = (qc.surplusCount || 0) > 0;
+
+    if (hasDeficit || hasUnrequested || hasSurplus) {
+      return makeCheck('B18', 'Tender Quantity Conservation (INV-192)', 'BLOCK', 'FAILED',
+        `Tender quantity conservation failed: ${qc.totalDiscrepancies} discrepancy/discrepancies found (${qc.deficitCount || 0} deficit, ${qc.surplusCount || 0} surplus, ${qc.unrequestedAdditionsCount || 0} unrequested). Delivery blocked per INV-192.`,
+        { quantityConservation: qc });
+    }
+  }
+
+  return makeCheck('B18', 'Tender Quantity Conservation (INV-192)', 'BLOCK', 'PASSED',
+    `All ${qc.summary?.totalRequestedUnits || 0} requested tender units mathematically conserved (${qc.exactConservedCount || 0} conserved exact, ${qc.policyAdditionsCount || 0} approved policy additions).`,
+    { quantityConservation: qc });
+}
+
 /**
- * BOQ Evaluation Criteria (B1–B16)
+ * BOQ Evaluation Criteria (B1–B18)
  */
 function validateBoqEvaluationCriteria(output, context = {}) {
   return [
@@ -549,7 +699,9 @@ function validateBoqEvaluationCriteria(output, context = {}) {
     _checkNotebookGrounding(output, context),
     _checkMandatoryComPolicy(output, context),
     _checkDeliveryFeasibility(output, context),
-    _checkUnmatchedSkus(output, context)
+    _checkUnmatchedSkus(output, context),
+    _checkUnresolvedRequirements(output, context),
+    _checkQuantityConservation(output, context)
   ];
 }
 

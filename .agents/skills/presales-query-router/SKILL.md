@@ -27,6 +27,12 @@ Whenever the user submits a message, file, or quote, classify the input into the
 | **Explicit competitor conversion / equivalence request** | Cross-Vendor Requirement Extraction & Candidate Handoff | `cross-vendor-transformation-skill` | `route_query.js` → `cross_vendor_transformer.js` |
 | **Customer-facing reconciliation remarks** | Commercial Actions & Quantity Bridges | `boq-remarks-reconciliation-skill` | `scripts/lib/boq/commercial_remarks.js` |
 | **Heterogeneous Multi-Domain / Ad-Hoc Tender**<br>*(e.g., mixed servers + storage + switch + tape, or loose unbuildable DIMMs/NICs/drives)* | Heterogeneous Tender Modernization & Carrier Sizing | `heterogeneous-tender-modernizer` | `route_query.js` $\rightarrow$ `heterogeneous_tender_modernizer.js` |
+| **Post-Buildability CapEx/OpEx Optimization**<br>*(e.g., "Optimize deal cost", "Suggest cheaper CPUs/NICs/memory")* | Deal CapEx/OpEx Budget Optimization | `value-engineering-skill` | `route_query.js` $\rightarrow$ `budget_optimizer.js` |
+| **Least-Delta Alternative Synthesis**<br>*(e.g., "Minimal changes to make buildable", "Rank 1L alternative")* | Conflict Pruning & Least-Delta Alternative | `least-delta-combinator-skill` | `route_query.js` $\rightarrow$ `least_delta_combinator.js` |
+| **Deliverables & Workbook Export**<br>*(e.g., "Generate 7-column upload workbook", "Export Partner BOM")* | Standardized Workbook & Delivery Export | `workbook-generator-skill` | `route_query.js` $\rightarrow$ `generate_boq_xlsx.js` |
+| **Adversarial Red-Teaming Validation**<br>*(e.g., "Stress-test candidate", "Run adversarial audit")* | Boundary Fuzzing & Red-Teaming Gate | `adversarial-validation-skill` | `route_query.js` $\rightarrow$ `adversarial_agent.js` |
+| **Closed-Loop Feedback Reflection**<br>*(e.g., "Record portal error", "Reflect on evaluation feedback")* | Feedback Processing & Knowledge Learning | `continuous-learning-skill` | `route_query.js` $\rightarrow$ `feedback_loop.js` |
+| **Knowledge Sync & Drift Inspection**<br>*(e.g., "Inspect catalog drift", "Sync master catalog to NotebookLM")* | Dynamic RAG Knowledge Synchronization | `knowledge-sync-skill` | `route_query.js` $\rightarrow$ `knowledge_sync.js` |
 
 ---
 

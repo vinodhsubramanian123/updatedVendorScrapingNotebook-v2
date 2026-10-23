@@ -14,6 +14,19 @@ Implements deterministic physical math evaluation across the 7 server hardware d
 | `networking_ocp.js` | `evalNetworkingOcp(items, catalog, profile)` | OCP 3.0 slot limits, dual OCP enablement, secondary riser lane allocation. |
 | `support_manufacturing.js` | `evalSupportManufacturing(items, catalog, profile)` | Factory Integrated (FIO) vs Field-installable BTO rules, standard HPE Pointnext support warranty packages. |
 
+## 2.1 Multi-Domain Aspect Registry & Platform Profiles (`INV-194`, `INV-199`)
+`aspect_registry.js` manages platform-aware aspect profiles via `DOMAIN_REGISTRY` and capability states via `DOMAIN_CAPABILITY_MATRIX`:
+
+| Domain | Capability Status | Registered Aspect Checkers | Specialized Verification Focus |
+|---|---|---|---|
+| `server` | `PRODUCTION_SUPPORTED` | 7 Physical Aspects (`COMPUTE_THERMAL` .. `SUPPORT_MANUFACTURING`) | General enterprise 1U/2U/4U ProLiant servers. |
+| `san_switch` | `PRODUCTION_SUPPORTED` | 4 Specialized Checks (`SAN_LICENSED_PORTS`, `BUNDLED_OPTICS_BILLING`, `CATALOG_SERVICE_COVERAGE`, `SERVER_RULES_NOT_APPLICABLE`) | Fibre Channel SAN switches (Brocade SN3600B/SN6600B); server component rules marked `NOT_APPLICABLE`. |
+| `synergy_compute` | `PARTIALLY_SUPPORTED` | 6 Aspects (`COMPUTE_THERMAL`, `MEMORY_CHANNEL`, `STORAGE_TRI_MODE`, `FRAME_FABRIC_MEZZANINE`, `FRAME_SHARED_POWER`, `SUPPORT_SERVICES`) | Synergy 480/660 compute blades; verifies mezzanine fabric mapping and frame-shared 12000 power allocation. |
+| `archive_tape` / `archive` | `NOT_EVALUATED` | `ARCHIVE_COLD_STORAGE` | StoreEver MSL tape libraries and archive drives; emits transparent `ACTION_REQUIRED` under INV-105 until chassis profile loaded. |
+| `storage` | `PARTIALLY_SUPPORTED` | 4 Aspects (`STORAGE_CONTROLLER_PAIR`, `STORAGE_TRI_MODE`, `POWER_ENVIRONMENT`, `SUPPORT_SERVICES`) | Active-Active controller node pairs and drive enclosure power. |
+| `networking` | `PARTIALLY_SUPPORTED` | 3 Aspects (`SWITCH_FABRIC_PORTS`, `POWER_ENVIRONMENT`, `SUPPORT_SERVICES`) | Switch fabric protocols, airflow direction, and redundant power. |
+| `ai_cluster` | `PARTIALLY_SUPPORTED` | 7 Aspects (`COMPUTE_THERMAL`, `MEMORY_CHANNEL`, `PCIE_RISER`, `POWER_ENVIRONMENT`, `NETWORKING_OCP`, `STORAGE_TRI_MODE`, `SUPPORT_SERVICES`) | Direct liquid cooling, SXM GPU buses, busbar power draw, and InfiniBand fabrics. |
+
 ## 3. Standard Return Contract
 Every aspect checker returns an object conforming to:
 ```javascript

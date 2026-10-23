@@ -96,8 +96,9 @@ npm run dev
 | `npm run dashboard` | Start Express backend, Vite frontend dev server, and feedback listener concurrently |
 | `npm run build` | Build production dashboard assets via Vite |
 | `npm run lint` | Run `oxlint` on dashboard source files (0-warning, 0-error gate) |
+| `npm run lint:core` | Run `oxlint` across all 526 scripts and test files with 95 rules (0-warning gate) |
 | `npm run lint:complexity` | Verify cyclomatic complexity gate ($CC \le 135$) across all functions |
-| `npm test` | Run complete isolated test matrix (193+ suites across Unit, Chaos, Integration tiers) |
+| `npm test` | Run complete isolated test matrix (249 suites across Unit, Chaos, Integration tiers) |
 | `npm run test:portfolio` | Run portfolio verification audit (`verify_all.js`) across 8 canonical products |
 | `npm run status` | Display unified observability dashboard overview (`observability_status.js`) |
 | `npm run status:sync` | Re-sync live portfolio state and generate `.agents/PORTFOLIO_STATUS.md` |
@@ -181,7 +182,7 @@ The OCA scraping engine relies on dynamic JSON profiles to dictate product-speci
 |---|---|---|---|
 | Aspect Math | `npm run test:aspect_units` | 34 | 7 physical hardware math checkers (compute, memory, storage, pcie, power, chassis, support) |
 | BOQ Benchmarks | `npm run test:benchmarks` | 15 scenarios | Comprehensive BOQ evaluation with 100% recall/precision across all real-world edge cases |
-| Full Test Matrix | `npm test` | 193+ suites | Full automated regression across Unit (126+), Chaos (41), and Integration (26+) tiers (100% PASS) |
+| Full Test Matrix | `npm test` | 249 suites | Full automated regression across Unit (179), Chaos (41), Integration (26), and E2E (3) tiers (100% PASS) |
 | Portfolio Audit | `npm run test:portfolio` | 8 product lines | Validates all catalog outputs across 5 families on disk against 7 guardrails |
 | Least-Delta Combinator | `node tests/unit/test_least_delta_combinator.js` | 10 tests | Validates troublesome SKU identification, cascade pruning, and dynamic catalog alternatives |
 | Decision Trace Ledger | `node tests/unit/test_decision_trace_ledger.js` | 10 tests | Validates structured reasoning chain, persistence, and 4-brain attribution |

@@ -97,7 +97,7 @@ Retries preserve the pre-send conversation and completed tool results; they neve
 ## Guardrail System Prompt v3 & Macro Conditional Sweeping (2026-09-27)
 
 - **System Prompt v3 Active**: `guardrail_prompt.js` v3 enforces that LLM reviews verify `AMBIENT_GATE` and `TDP_GATE` constraints, mark gated SKUs as `PORTAL_CONDITIONAL`, disclose degraded/ungrounded notebook states, and audit composite solution containment (bay capacity, adapter-to-fabric speed matching, shared frame power).
-- **Domain-Segregated Test Matrix**: Use `npm run test:smoke` for quick ~3s regression during agent development. Use `npm run test:domain <name>` for focused testing. Never execute the monolithic 168-suite run when testing a single subsystem.
+- **Domain-Segregated Test Matrix**: Use `npm run test:smoke` for quick ~3s regression during agent development. Use `npm run test:domain <name>` for focused testing. Never execute the monolithic 249-suite run when testing a single subsystem.
 
 
 ### Runtime conditional discovery contract (2026-09-30)

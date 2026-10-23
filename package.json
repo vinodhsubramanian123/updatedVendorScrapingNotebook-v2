@@ -184,7 +184,8 @@
     "sheets:create": "node scripts/services/google_sheets_service.js create",
     "sheets:upload": "node scripts/services/google_sheets_service.js upload",
     "docs:create": "node scripts/services/google_sheets_service.js doc",
-    "update:graph": "graphify update . && node scripts/maintenance/link_graphify.js"
+    "update:graph": "graphify update . && node scripts/maintenance/link_graphify.js",
+    "verify:graph": "node scripts/maintenance/verify_graph_integrity.js"
   },
   "dependencies": {
     "@google/genai": "^2.16.0",

@@ -506,6 +506,50 @@ function purgeExpiredRagCache() {
   return evicted;
 }
 
+/**
+ * Evict a single cached RAG result by key.
+ * @param {string} cacheKey
+ * @returns {boolean} Whether an entry was evicted
+ */
+function evictCachedRagResult(cacheKey) {
+  if (!cacheKey) return false;
+  const existed = queryCache.delete(cacheKey);
+  if (existed) persistRagCache();
+  return existed;
+}
+
+/**
+ * Invalidate cached RAG results matching a filter predicate.
+ * @param {Function} predicate - (key, entry) => boolean
+ * @returns {number} Evicted entry count
+ */
+function invalidateRagCache(predicate) {
+  if (typeof predicate !== 'function') return 0;
+  let evicted = 0;
+  for (const [k, entry] of queryCache.entries()) {
+    if (predicate(k, entry)) {
+      queryCache.delete(k);
+      evicted++;
+    }
+  }
+  if (evicted > 0) persistRagCache();
+  return evicted;
+}
+
+/**
+ * Clear all cached RAG results from memory and disk.
+ * @returns {number} Number of evicted entries
+ */
+function clearAllCachedRagResults() {
+  const count = queryCache.size;
+  queryCache.clear();
+  try {
+    const { safeWriteJsonAtomic } = require('../system/fs_compat.js');
+    safeWriteJsonAtomic(RAG_CACHE_FILE, {});
+  } catch {}
+  return count;
+}
+
 const RAG_TIMEOUT_MS = 600000;
 
 module.exports = {
@@ -530,6 +574,9 @@ module.exports = {
   getCachedRagResult,
   setCachedRagResult,
   purgeExpiredRagCache,
+  evictCachedRagResult,
+  invalidateRagCache,
+  clearAllCachedRagResults,
   queryCache,
   RAG_CACHE_TTL_MS,
   RAG_TIMEOUT_MS,

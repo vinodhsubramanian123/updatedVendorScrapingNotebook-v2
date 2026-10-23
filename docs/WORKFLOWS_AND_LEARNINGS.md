@@ -1901,6 +1901,40 @@ Read `docs/audits/2026-10-03-master-architectural-hardening.md` and `docs/audits
    - `sync_payload_builder.js` structures Section 4 (Discontinued & Obsolete SKUs Registry with exact EOL dates), Section 5 (Recent Attribute & Specification Modifications Log with -42% clearance price trail), Section 8 (Vendor Recommended & Preferred Options with Diamond badges), and Section 10 (Supply Chain & Delivery Lead Time Intelligence).
    - This ensures Gemini NotebookLM RAG queries provide nuanced, commercially astute presales guidance that avoids false binary rejections while protecting customers from unexpected EOL boundaries.
 
+---
+
+## 2026-10-23 — Priority Intelligence Gaps, Quantity Conservation, Domain Profiles & Graphify AST Knowledge Graph Remediation (`INV-191` through `INV-200`)
+
+Read `docs/audits/2026-10-23-priority-intelligence-and-graph-architecture-audit.md` before modifying evaluators, ranking, or graph synchronization:
+
+1. **Universal Tender Quantity Conservation Ledger & Gate B18 (`INV-192`, `INV-196`)**:
+   - *Past Blindspot (G01 & G09)*: Quantity reconciliation in multi-cluster tenders previously operated in an observational mode. Residual deficits ($\Delta < 0$) were reported in JSON/Excel logs but did not block final export authorization. Additionally, repeated source SKU rows could cause false duplicate-row discrepancies.
+   - *Durable Solution*: Implemented [`quantity_conservation.js`](file:///scripts/lib/boq/quantity_conservation.js). Every source line item's requested quantity ($Q_{\text{req}}$) is mathematically conserved across cluster multipliers: $\Delta = \sum (Q_c \times M_c) - Q_{\text{req}}$. Any negative delta ($\Delta < 0$) or non-integer scalar triggers a hard **BLOCK / FAILED** on Gate **B18** in `bom_verifier.js`, strictly halting deliverable issuance with `DELIVERY_BLOCKED_UNBUILDABLE`. Repeated source rows are aggregated with source-row share attribution, preventing false duplicate-row discrepancies.
+
+2. **Ownership-Aware Configuration Ranking & Permutation Stability (`INV-193`)**:
+   - *Past Blindspot (G02)*: Strategy rankers previously shared mutable candidate state during proximity sorting. Permuting the candidate array produced non-deterministic ranking orders, and redundant line-item occurrences could artificially inflate the match ratio above $1.0$.
+   - *Durable Solution*: In `strategy_synthesizer.js`, candidate proximity evaluation now deep-clones state and applies strict clamped match ratio bounds $[0.0, 1.0]$. Ranks are sorted by a deterministic composite tuple `(score DESC, deltaPrice ASC, candidateId ASC)`. Architectural tiers (Tier 1 Baseline, Tier 2 High-Density, Tier 3 Budget) apply fixed tier distance penalties so scalar match cannot promote an architecturally divergent candidate.
+
+3. **Mandatory Domain Aspect Identity Profiles (`INV-194`, `INV-199`)**:
+   - *Past Blindspot (G03 & G10)*: Gate B1 previously evaluated aspect compliance using a scalar integer check ($\ge 7$). Non-server specialized appliances (SAN switches, Synergy frame modules, tape storage) either were evaluated against server physics (causing false thermal/cabling failures) or could pass with arbitrary check counts.
+   - *Durable Solution*: Codified domain-specific physical aspect profiles in [`aspect_registry.js`](file:///scripts/lib/aspects/aspect_registry.js): `server` (7 physical aspects), `san_switch` (4 FC checks), `synergy_compute` (6 fabric/mezzanine checks), `archive_tape` (tape validation), `storage`, `networking`, and `ai_cluster`. Gate B1 resolves canonical aspect IDs for the target platform and verifies that all registered domain aspects are affirmatively satisfied.
+
+4. **Zero Unresolved Customer Requirements Gate B17 (`INV-195`)**:
+   - *Past Blindspot (G04 & G08)*: Output objects with empty `unmatchedSkus` could mask non-empty unmatched requirements in the evaluation context. Customer descriptive requirements lacking part numbers could be omitted silently.
+   - *Durable Solution*: Gate B16 evaluates both `output.unmatchedSkus` and `context.unmatchedSkus`. Gate B17 (`_checkUnresolvedRequirements`) blocks delivery if any descriptive customer requirement could not be physically resolved into a certified catalog SKU.
+
+5. **Cross-Process File Mutex & Safe Advisory Persistence (`INV-197`)**:
+   - *Past Blindspot (G05)*: Concurrent evaluations and background scrapers writing to `catalog_deltas.json` or `master_knowledge_registry.json` risked lost updates or Windows `EPERM` collisions.
+   - *Durable Solution*: Codified `withFileLock` in `fs_compat.js`. All mutations to learning ledgers acquire an exclusive filesystem lease with a 5000ms timeout and automatic stale lock reclamation.
+
+6. **Durable Knowledge Decision Revocation & RAG Invalidation (`INV-198`)**:
+   - *Past Blindspot (G06)*: When an advisory or feedback delta was rejected by human presales architects, the rejected rule could linger in active RAG search caches.
+   - *Durable Solution*: `loadActiveKnowledgeRules` inspects `knowledge_decisions.json` and excludes any revoked deltaId or fingerprint. `notebook_query_utils.js` provides `evictCachedRagResult` and `invalidateRagCache`, guaranteeing that rejected rules are purged immediately from in-memory and disk RAG caches.
+
+7. **Graphify Semantic AST Knowledge Graph Integrity & Zero Isolated Skills (`INV-200`)**:
+   - *Past Blindspot*: Skills and code were treated as separate documentation artifacts, leading to isolated skills in AST extractions, unreferenced ad-hoc scripts (`export_tender_to_downloads.js`), and missing code links.
+   - *Durable Solution*: Unified all 30 skills into a single interconnected AST graph with zero isolated skills. Hooked [`verify_graph_integrity.js`](file:///scripts/maintenance/verify_graph_integrity.js) into `npm run update:graph` and `npm run verify:graph`, ensuring automated continuous graph verification.
+
 
 
 

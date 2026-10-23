@@ -34,9 +34,9 @@ Each failure mode has a mandatory automated fix baked into the lifecycle stages 
 
 ## 2. Tool Priority: MCP-First, CLI-Fallback
 
-**ALWAYS prefer the Jules MCP tools over the Node.js CLI.** The MCP tools return richer structured data (e.g. `pendingPlan`, `lastAgentMessage`, `status: busy|stable|failed`) that the CLI cannot surface.
+**ALWAYS prefer the Jules MCP tools over the Node.js CLI.** The MCP tools return richer structured data (e.g. `pendingPlan`, `lastAgentMessage`, `status: busy|stable|failed`) that the CLI cannot surface. Implementation service: [`jules_task_manager.js`](../../../scripts/services/jules_task_manager.js) via `createSession()`, `listSessions()`, and `auditSession()`.
 
-| Action | MCP Tool (PRIMARY) | CLI Fallback |
+| Action | MCP Tool (PRIMARY) | CLI Fallback ([`jules_task_manager.js`](../../../scripts/services/jules_task_manager.js)) |
 |--------|--------------------|--------------|
 | List sessions | `jules/list_sessions` | `node scripts/services/jules_task_manager.js list` |
 | Get session state | `jules/get_session_state {sessionId}` | `node scripts/services/jules_task_manager.js status <id>` |

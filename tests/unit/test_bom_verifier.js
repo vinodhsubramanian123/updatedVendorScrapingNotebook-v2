@@ -296,4 +296,36 @@ describe('Pre-Presentation Acceptance Gate (bom_verifier.js)', () => {
     assert.strictEqual(b1.status, 'FAILED');
     assert.ok(b1.detail.includes('STORAGE_CONTROLLER_PAIR'));
   });
+
+  test('B17: Zero Unresolved Customer Requirements blocks delivery when unresolved lines exist', () => {
+    const output = {
+      items: [{ sku: 'P73282-B21', quantity: 1, unitPriceUsd: 5000 }],
+      unresolvedRequirements: ['Redundant Titanium Power Supplies']
+    };
+    const checks = validateBoqEvaluationCriteria(output, {});
+    const b17 = checks.find(c => c.id === 'B17');
+    assert.ok(b17);
+    assert.strictEqual(b17.status, 'FAILED');
+    assert.strictEqual(b17.severity, 'BLOCK');
+    assert.ok(b17.detail.includes('Redundant Titanium Power Supplies'));
+  });
+
+  test('B18: Tender Quantity Conservation blocks delivery when items are in deficit', () => {
+    const output = {
+      items: [{ sku: 'P73282-B21', quantity: 1, unitPriceUsd: 5000 }],
+      quantityConservation: {
+        isFullyConserved: false,
+        totalDiscrepancies: 1,
+        deficitCount: 1,
+        surplusCount: 0,
+        unrequestedAdditionsCount: 0
+      }
+    };
+    const checks = validateBoqEvaluationCriteria(output, {});
+    const b18 = checks.find(c => c.id === 'B18');
+    assert.ok(b18);
+    assert.strictEqual(b18.status, 'FAILED');
+    assert.strictEqual(b18.severity, 'BLOCK');
+    assert.ok(b18.detail.includes('Tender quantity conservation failed'));
+  });
 });

@@ -34,7 +34,7 @@ Activate this skill whenever:
 
 ## 🔬 The 6 Enterprise Workload DNA Profiles
 
-The profiling engine (`workload_dna.js`) classifies workloads into 6 distinct profiles:
+The profiling engine ([`workload_dna.js`](../../../scripts/lib/conflict/workload_dna.js)) invokes `extractWorkloadDna()` to classify workloads into 6 distinct profiles:
 
 | Workload Profile | Primary Constraint | Optimal Hardware Topology | Key Rules Enforced |
 |:---|:---|:---|:---|

@@ -1089,6 +1089,47 @@ To ensure that future AI agents (Antigravity, Codex, Claude, or subagents) never
     - `networking`: switch fabric ports, optics/transceivers, redundant power, uplink/stacking.
   - All mandatory domain aspect identities MUST be present and verified. If any mandatory aspect is missing or unregistered, Gate B1 MUST fail with an explicit diagnostic violation disclosing missing aspect keys.
 
+- **INV-195: Zero Unresolved Customer Requirements Gate (Gate B17)**:
+  - In `bom_verifier.js:_checkUnresolvedRequirements`, every descriptive line item in a customer tender that lacks an explicit part number (e.g., "Dual 100GbE QSFP28 Uplink Ports", "High-Performance Redundant Cooling Fans") MUST be resolved into an authoritative physical SKU or service.
+  - Any unresolved requirement present in `output.unresolvedRequirements` or `context.unresolvedRequirements` triggers a hard **BLOCK / FAILED** on Gate **B17**.
+  - Customer deliverables cannot be issued or certified as buildable while descriptive requirements remain unmapped or silently omitted.
+
+- **INV-196: Universal Tender Quantity Conservation & Delivery Gate (Gate B18)**:
+  - In `scripts/lib/boq/quantity_conservation.js:buildUniversalQuantityConservationLedger`, every source item's requested quantity ($Q_{\text{req}}$) must be mathematically conserved against the total allocated quantity ($\sum Q_{\text{alloc}}$) across all nodes and partitions:
+    $$\Delta = \sum_{c} \left( Q_{c, i} \times M_c \right) - Q_{\text{req}, i}$$
+    - $\Delta = 0 \implies \text{CONSERVED\_EXACT}$.
+    - $\Delta > 0 \implies \text{SURPLUS\_BUFFER}$ (symmetry buffer or policy addition).
+    - $\Delta < 0 \implies \text{RESIDUAL\_DEFICIT}$ (**Strict Delivery Blocker**).
+  - Gate **B18** in `bom_verifier.js` evaluates tender quantity conservation. If any SKU exhibits a deficit ($\Delta < 0$) or malformed non-integer quantity, Gate B18 evaluates to **BLOCK / FAILED**, blocking deliverable issuance with `customerDisposition = 'DELIVERY_BLOCKED_UNBUILDABLE'`.
+  - Enablement kits and policy additions (e.g. primary riser cable kits, licensing) are tracked transparently as `MANDATORY_POLICY_ADDITION`. Repeated source rows are aggregated with source-row share attribution, preventing false duplicate-row discrepancies.
+
+- **INV-197: Cross-Process File Mutex & Safe Advisory Persistence**:
+  - All mutations to continuous learning ledgers (`catalog_deltas.json`, `quarantined_deltas.json`, `master_knowledge_registry.json`) must execute within an exclusive file lease via `withFileLock(targetPath, async () => { ... })` in `scripts/lib/system/fs_compat.js`.
+  - The lease engine provides a deterministic 5000ms timeout with stale lock recovery, preventing lost updates and dirty reads across concurrent Node processes during parallel evaluations and CI/CD pipelines.
+
+- **INV-198: Durable Rule Revocation & Epistemic Cache Invalidation**:
+  - `active_knowledge_router.js:loadActiveKnowledgeRules` MUST inspect `knowledge_decisions.json` and `quarantined_deltas.json` via `_loadRevokedIdentifiers`. Any delta whose `deltaId`, `ruleId`, or `knowledgeFingerprint` has a decision of `REJECTED`, `REVOKED`, `AUTO_REJECTED`, or `EXPIRED` is strictly excluded from `categorized.allRules`.
+  - `notebook_query_utils.js` provides `evictCachedRagResult(key)`, `invalidateRagCache(predicate)`, and `clearAllCachedRagResults()`, guaranteeing that rule mutations and evidence withdrawals immediately invalidate stale RAG cache entries across workflow steps.
+
+- **INV-199: Domain-Specific Physical Aspect Profiles for Specialized Appliances**:
+  - `aspect_registry.js` maintains explicit, typed domain profiles in `DOMAIN_REGISTRY` and capability states in `DOMAIN_CAPABILITY_MATRIX`:
+    - `server`: 7 physical aspects (`COMPUTE_THERMAL`, `MEMORY_CHANNEL`, `STORAGE_TRI_MODE`, `PCIE_RISER`, `NETWORKING_OCP`, `POWER_ENVIRONMENT`, `SUPPORT_MANUFACTURING`).
+    - `san_switch`: 4 dedicated FC checks (`SAN_LICENSED_PORTS`, `BUNDLED_OPTICS_BILLING`, `CATALOG_SERVICE_COVERAGE`, `SERVER_RULES_NOT_APPLICABLE`).
+    - `synergy_compute`: 6 aspects (`COMPUTE_THERMAL`, `MEMORY_CHANNEL`, `STORAGE_TRI_MODE`, `FRAME_FABRIC_MEZZANINE`, `FRAME_SHARED_POWER`, `SUPPORT_SERVICES`).
+    - `archive_tape`: `ARCHIVE_COLD_STORAGE` tape library validation.
+    - `storage`: `STORAGE_CONTROLLER_PAIR`, `STORAGE_TRI_MODE`, `POWER_ENVIRONMENT`, `SUPPORT_SERVICES`.
+    - `networking`: `SWITCH_FABRIC_PORTS`, `POWER_ENVIRONMENT`, `SUPPORT_SERVICES`.
+    - `ai_cluster`: 7 AI cluster aspects.
+  - In `bom_verifier.js:_checkPhysicalAspects`, Gate B1 resolves canonical aspect IDs and verifies that all registered domain aspects are affirmatively satisfied without defaulting to generic server rules.
+
+- **INV-200: Graphify Semantic AST Knowledge Graph Integrity & Zero Isolated Skills Architecture**:
+  - The repository enforces 100% graph integrity verified programmatically by `scripts/maintenance/verify_graph_integrity.js`.
+  - All 30 skills in `.agents/skills/` must be present with $\ge 1$ peer-skill edge in `graphify-out/graph.json` (zero isolated skills allowed).
+  - All 30 skills must link to their underlying implementation code via AST-indexed function symbols, ensuring 100% code grounding across the knowledge graph.
+  - Ad-hoc throwaway scripts in `scripts/lib/` are strictly banned; all customer exports and deliverables must route through canonical pipelines (`scripts/evaluators/eval_boq.js` or `scripts/evaluators/route_query.js`).
+  - Automated graph verification is hooked directly into `npm run update:graph` via `link_graphify.js` and callable independently via `npm run verify:graph`.
+
+
 
 
 

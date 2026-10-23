@@ -424,5 +424,20 @@ flowchart TD
 8. **Dynamic Discovery & Sub-Choice Expansion (`INV-88`)**: Zero-hardcoding DOM expansion via jQuery triggers for all deferred AJAX subchoice panels.
 9. **Zero-Touch Auto-Launch & Tab 1 Stale-Session Self-Healing Recovery (`INV-89`)**: Automated Chrome launch on port 9222 with `.chrome_sso_profile` and Okta auto-sign-in. Eliminates in-place OCA page reloads (`location.reload()`) which destroy WebLogic session state. Recovers from silent freezes and timeouts by closing the stale OCA tab, returning to Tab 1 (`partner.hpe.com/group/prp`), reloading the portal page to refresh SAML links, clicking "One Config Advanced" in Quick links, and navigating the fresh session seamlessly.
 
+## 13. Grounding, Ephemeral Isolation & Evidence Ledger Architecture (`INV-90` to `INV-124`)
+- **Dual-Brain Epistemic Discipline (`INV-104` to `INV-106`)**: Truth is anchored strictly on disk verified by SHA-256 fingerprints, never in transient memory flags. Ephemeral candidate BOMs attached to NotebookLM are strictly isolated query inputs; self-citations evaluate to `UNKNOWN`. Loose truthiness (`!== false ? 'PASS' : 'FAIL'`) is strictly banned; missing checks evaluate to `UNKNOWN` or `ACTION_REQUIRED`.
+- **9-Phase Terminal Evidence Ledger (`INV-104`, `INV-131`)**: Every presales pipeline execution brings all 9 phases of the `EvidenceLedger` to a clean terminal status (`PASSED`, `FAILED`, `ACTION_REQUIRED`, `SKIPPED`). Phase 8 seals deliverables and Phase 9 records reflection and feedback absorption.
+
+## 14. Dual-Brain Grounding & Cryptographic Pre-Presentation Gate (`INV-125` to `INV-175`)
+- **Two-Tier Architecture (`INV-132` to `INV-134`)**: Scraping and knowledge pipelines produce two distinct, complementary tiers: (1) Deterministic physical core (26-sheet master `.xlsx`, `.csv`, `Catalog.json`, `Catalog_Rules.json`) for humans and presales engineers; (2) Semantic AI grounding payload (`notebook_sync_payload_*.md`) curated with architectural rules and inventory tables for Gemini RAG citations.
+- **Pre-Presentation Cryptographic Delivery Gate (`INV-128`)**: Customer deliverables require an issued `DeliveryAuthorization` certificate. If any blocker criterion fails in `bom_verifier.js`, export is strictly halted with `customerDisposition = 'DELIVERY_BLOCKED_UNBUILDABLE'`.
+
+## 15. Universal Quantity Conservation, Exact Aspect Identity & Deterministic Architecture (`INV-176` to `INV-199`)
+- **Universal Tender Quantity Conservation (`INV-192`, `INV-196`)**: Implemented via `quantity_conservation.js`. Reconciles source tender line items against allocated cluster and candidate parts line by line with safe integer validation. Discrepancies and deficits ($\Delta < 0$) trigger hard failure on Gate **B18**, preventing unbuildable order exports. Enablement kits are tracked as `MANDATORY_POLICY_ADDITION`.
+- **Configuration-Aware Architectural Ranking (`INV-193`)**: Component-tier weighted penalties (chassis $10\times$, CPU $8\times$, memory $5\times$, storage $4\times$, network $3\times$, power $2\times$, cables $0.2\times$) prevent scalar parity substitutions. Candidate scoring operates on immutable catalog categories with match ratio strictly bounded in $[0, 1]$ via unique SKU set intersection, ensuring deterministic permutations.
+- **Exact Domain Aspect Identity Verification (`INV-194`, `INV-199`)**: Gate B1 resolves canonical aspect IDs registered in `aspect_registry.js` across 7 platform domains (`server`, `san_switch`, `synergy_compute`, `archive_tape`, `storage`, `networking`, `ai_cluster`). First-word and loose prefix matches are strictly eliminated.
+- **Cross-Process Mutexes & Revocation Governance (`INV-197`, `INV-198`)**: Learning ledger mutations are protected by `withFileLock` exclusive leases. `active_knowledge_router.js` filters out revoked deltas recorded in `knowledge_decisions.json`, and `notebook_query_utils.js` provides targeted RAG cache eviction (`evictCachedRagResult`, `invalidateRagCache`).
+
+
 
 

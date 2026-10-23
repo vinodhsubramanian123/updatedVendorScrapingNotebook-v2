@@ -1681,7 +1681,8 @@ async function _handleMultiClusterTender(queryText, context) {
       rackCount: totalRackUnits != null && rackUnits != null ? Math.ceil(totalRackUnits / rackUnits) : null,
       powerEnvelopeKw: watts != null ? count * watts / 1000 : null,
       discoveredClusters: partitionResult?.clusters || null,
-      clusterCount: partitionResult?.clusters?.length || 1 },
+      clusterCount: partitionResult?.clusters?.length || 1,
+      quantityConservation: partitionResult?.quantityConservation || null },
     message: 'Rack and power estimates use explicit product height and supplied site/power inputs. Blade enclosure and multi-tier relationships require separate sizing.' };
 }
 

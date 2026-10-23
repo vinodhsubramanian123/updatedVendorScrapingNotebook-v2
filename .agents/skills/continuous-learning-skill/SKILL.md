@@ -64,7 +64,7 @@ description: Closed-loop continuous learning, evidence log reflection, and autom
 
 ### 4. Ephemeral Scratchpad Isolation vs Sealed Master State (`INV-24`, `INV-128`)
 - **Zero Premature Master Writes**: Candidate evaluations, exploratory tests, and draft syntheses MUST execute against in-memory state or temporary scratchpads (`os.tmpdir()`).
-- Master files (`master_knowledge_registry.json`, `Catalog_Rules.json`, `notebook_sync_payload_*.md`) may **ONLY** be modified via `safeWriteJsonAtomic` after an evaluation passes the 14-Point Delivery Gate (`DeliveryAuthorization`) or receives explicit human approval. This prevents unverified candidate errors from permanently poisoning ground truth.
+- Master files (`master_knowledge_registry.json`, `Catalog_Rules.json`, `notebook_sync_payload_*.md`) may **ONLY** be modified via `safeWriteJsonAtomic` after an evaluation passes the 18-Point Delivery Gate (`DeliveryAuthorization`) or receives explicit human approval. This prevents unverified candidate errors from permanently poisoning ground truth.
 
 ### 5. Up-Front Disambiguation to Autonomous Promotion Protocol (`INV-73`, `INV-111`)
 - When a customer inquiry exhibits ambiguity (confidence $< 0.95$, multiple matching chassis, or ambiguous cluster counts):
@@ -72,6 +72,11 @@ description: Closed-loop continuous learning, evidence log reflection, and autom
   2. **Ingestion**: Ingest the human decision into `feedback_loop.js` (`processPortalFeedback()`) with explicit scope taxonomy and reasoning.
   3. **Loop Testing**: Automatically run a targeted regression check asserting that the previously ambiguous input now resolves with confidence $\ge 0.95$.
   4. **Autonomous Promotion**: Commit the certified rule to `master_knowledge_registry.json`. Future queries matching this pattern resolve autonomously without human prompts!
+
+### 6. Cross-Process File Mutexes, Composite Identity & Revocation Governance (`INV-197`, `INV-198`)
+- **Exclusive Process Leases (`INV-197`)**: All mutations to `catalog_deltas.json`, `quarantined_deltas.json`, and `master_knowledge_registry.json` must execute inside `withFileLock(targetPath, ...)` from `scripts/lib/system/fs_compat.js` to eliminate race conditions and corrupted writes across parallel processes.
+- **Composite Semantic Deduplication**: Rule uniqueness and deduplication in `continuous_learning_verifier.js` must verify the complete tuple `(chassis, affectedSku, ruleType, conditionKey, conditionOperator, thresholdValue, selector)`. Coarse deduplication on SKU and ruleType alone is strictly prohibited.
+- **Revocation Ledger Filtering (`INV-198`)**: `active_knowledge_router.js` dynamically checks `knowledge_decisions.json` and `quarantined_deltas.json`. Deltas marked `REJECTED`, `REVOKED`, or `EXPIRED` are filtered out and prevented from entering active rule sets. Rule mutations immediately evict cached RAG citations via `evictCachedRagResult()`.
 
 ---
 

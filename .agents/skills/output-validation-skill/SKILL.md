@@ -3,9 +3,9 @@ name: output-validation-skill
 description: Use this skill to validate the completeness, correctness, and quality of any presales output (BOQ evaluation, RFP sizing, BOM reconciliation, Q&A answer) before presenting it to the user. Catches missing badges, incomplete financial totals, unresolved SKUs, and structural defects.
 ---
 
-# Output Validation & Acceptance Criteria Skill (`output-validation-skill`)
+# 18-Point Output Validation & Acceptance Criteria Skill (`output-validation-skill`)
 
-**Purpose**: After the agent completes any presales pipeline execution, this skill mandates a structured self-check against acceptance criteria before presenting results. This prevents incomplete, inaccurate, or structurally deficient outputs from reaching the user.
+**Purpose**: After the agent completes any presales pipeline execution, this skill mandates a structured self-check against the 18 programmatic criteria before presenting results. This prevents incomplete, inaccurate, or structurally deficient outputs from reaching the user.
 
 ---
 
@@ -26,11 +26,11 @@ Every output, regardless of track, MUST pass these universal checks:
 
 ## 📋 Track-Specific Acceptance Criteria
 
-### Track: BOQ Evaluation
+### Track: BOQ Evaluation (18-Point Acceptance Gate)
 
 | # | Criterion | Validation Rule | Severity | Enforcement |
 |---|-----------|----------------|----------|-------------|
-| B1 | **All 7 Aspects Evaluated** | Output contains results from: Compute & Thermal, Memory Channel, Storage Tri-Mode, Networking & OCP, PCIe Riser, Power & Environmental, Support & Manufacturing | 🔴 BLOCK | Programmatic (`bom_verifier.js`) |
+| B1 | **Scoped Domain Aspects Evaluated** | All registered domain aspect identities verified (`INV-194`, `INV-199`): Server (7 physical), SAN Switch (4 FC checks), Synergy (6 frame/mezz checks), Storage, Networking | 🔴 BLOCK | Programmatic (`bom_verifier.js`) |
 | B2 | **At Least 1 Ranked Solution** | Output contains at least Rank 1 (or explicit `UNBUILDABLE` determination with rationale) | 🔴 BLOCK | Programmatic (`bom_verifier.js`) |
 | B3 | **No Duplicate Ranks** | Each rank number appears at most once (sub-paths like 1A/1B are allowed) | 🟡 WARN | Programmatic (`bom_verifier.js`) |
 | B4 | **Financial Table Present** | Every solution includes: SKU, Description, Qty, Unit List Price (USD), Extended Price (USD) | 🔴 BLOCK | Programmatic (`bom_verifier.js`) |
@@ -43,10 +43,13 @@ Every output, regardless of track, MUST pass these universal checks:
 | B11 | **Delta Report Present** | Output contains "Customer Asked → We Produced" delta comparison showing additions, removals, and substitutions | 🟡 WARN | Presales Presentation Gate |
 | B12 | **Mandatory Accessories Injected** | Secondary heatsink, fan kits, controller cables, and enablement kits are present where required by INV-26 through INV-31 | 🔴 BLOCK | Programmatic (`bom_verifier.js`) |
 | B13 | **NotebookLM Grounding & Degraded State Gate** | Ephemeral source validation and product notebook health verified (`INV-105`/`INV-140`). Cannot claim grounded certification if degraded or unverified | 🔴 BLOCK | Programmatic (`bom_verifier.js`) |
-| B14 | **HITL Escalation on Uncertainty** | Any low-confidence RAG answer, conflicting source, or unmapped SKU was escalated to human operator with options | 🔴 BLOCK | Presales Review Gate |
-| B15 | **Proactive Presales Consultation Gate** | Output proactively presents key qualifying questions (workload type, electrical facility, networking fabric) and next-step actions without waiting for user prompts | 🟡 WARN | Presales Presentation Gate |
-| B16 | **Google Drive & ADC Health Gate** | If cloud deliverable or Google Drive upload requested, verify token validity and lifespan via `ensureGoogleAuthValid({ autoHeal: true })` before presentation. If expired or expiring within 48h, auto-heal autonomously (`npm run auth:heal` / `npm run auth:drive`) without human in loop (`INV-90`) | 🔴 BLOCK | Cloud Export Gate |
-| B17 | **Delivery Authorization Gate** | Verify cryptographic `DeliveryAuthorization` certificate via `verifyDeliveryAuthorization()`. If unbuildable or unverified, deliverable generation and export are strictly blocked with `DELIVERY_BLOCKED_UNBUILDABLE` (`INV-128`) | 🔴 BLOCK | Cryptographic Gate (`acceptance_gate.js` / `workflow_contract.js`) |
+| B14 | **Single-Chassis Focus** | Output addresses exactly one primary target chassis platform per evaluation unit | 🟡 WARN | Programmatic (`bom_verifier.js`) |
+| B15 | **Delivery Bottleneck Feasibility** | Identifies component General Availability wave gaps and factory lead-time bottlenecks $\ge 21$ days (`INV-177`, `INV-180`) | 🟡 WARN | Programmatic (`bom_verifier.js`) |
+| B16 | **Zero Unmatched Customer SKUs** | All customer SKU-like tokens affirmatively matched in catalog or cleanly resolved; unmatched SKUs block delivery (`FP-1`) | 🔴 BLOCK | Programmatic (`bom_verifier.js`) |
+| B17 | **Zero Unresolved Customer Requirements** | Descriptive tender requirements lacking physical SKU resolution trigger hard delivery block (`INV-195`) | 🔴 BLOCK | Programmatic (`bom_verifier.js`) |
+| B18 | **Tender Quantity Conservation** | Mathematical line-by-line conservation ledger; residual deficits ($\Delta < 0$) block deliverable export (`INV-192`, `INV-196`) | 🔴 BLOCK | Programmatic (`bom_verifier.js`) |
+
+> 🔒 **Cryptographic Delivery Authorization Gate (`INV-128`)**: Customer deliverables (Excel workbooks, serialized JSON, and Drive uploads) require an issued `DeliveryAuthorization` certificate. If any BLOCK criterion fails, deliverable export is strictly halted with `customerDisposition = 'DELIVERY_BLOCKED_UNBUILDABLE'`.
 
 ### Track: RFP Sizing-to-BOM
 
@@ -137,16 +140,25 @@ When a BLOCK criterion fails, the agent SHOULD attempt these remediation strateg
 After validation completes, emit a summary badge in the output:
 
 ```
-✅ [OUTPUT VALIDATION: 12/12 criteria PASSED — Full confidence]
+✅ [OUTPUT VALIDATION: 18/18 criteria PASSED — Full confidence]
 ```
 or
 ```
-⚠️ [OUTPUT VALIDATION: 10/12 criteria PASSED, 2 WARNINGS — B9: FIO tags not annotated, B11: Delta report omitted]
+⚠️ [OUTPUT VALIDATION: 16/18 criteria PASSED, 2 WARNINGS — B9: FIO tags not annotated, B11: Delta report omitted]
 ```
 or
 ```
-⛔ [OUTPUT VALIDATION: 9/12 criteria PASSED, 1 BLOCKED — B5: Financial total mismatch ($45,230 vs $44,890 line item sum). Self-heal attempted: re-resolved 2 SKU prices. Re-validation: PASSED]
+⛔ [OUTPUT VALIDATION: 15/18 criteria PASSED, 1 BLOCKED — B5: Financial total mismatch ($45,230 vs $44,890 line item sum). Self-heal attempted: re-resolved 2 SKU prices. Re-validation: PASSED]
 ```
+
+---
+
+## 🛡️ Multi-Agent Peer Review & Popperian Falsification Integration
+
+Before customer presentation or delivery sign-off:
+- **Epistemic Falsification Audit**: Consult [`epistemic-verification-skill`](../epistemic-verification-skill/SKILL.md) to execute rigorous Popperian falsification, negative-path counterexamples, and terminal 9-phase evidence ledger verification ([`evidence_ledger.js`](../../../scripts/lib/system/evidence_ledger.js)).
+- **Independent Codex Peer Review**: Consult [`codex-peer-review-skill`](../codex-peer-review-skill/SKILL.md) for asynchronous static peer review and architectural gap analysis.
+- **Macro Lifecycle Orchestration**: Consult [`orchestrator-workflow-skill`](../orchestrator-workflow-skill/SKILL.md) to integrate validation outcomes with the continuous learning loop.
 
 
 ### Portable deliverables (2026-09-22)

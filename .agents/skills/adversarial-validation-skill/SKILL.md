@@ -53,6 +53,10 @@ Every candidate BOM is audited against these 11 failure injection patterns:
 
 ## 💻 CLI Commands & Direct Execution
 
+- **Implementation Engine**: [`adversarial_agent.js`](../../../scripts/evaluators/adversarial_agent.js) via `runAdversarialAgent()`, `evaluateAdversarialInjection()`, and `scrutinizeCandidateBOM()`
+- **Chaos Verification Suite**: [`test_failure_modes_and_chaos.js`](../../../tests/chaos/test_failure_modes_and_chaos.js)
+- **Evaluator Integration**: [`boq_evaluator.js`](../../../scripts/lib/boq/boq_evaluator.js)
+
 ### 1. Run Automated Chaos & Adversarial Sanity Suite
 ```bash
 # Runs full failure modes chaos test suite

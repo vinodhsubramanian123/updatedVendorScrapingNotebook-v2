@@ -92,3 +92,12 @@ When a Codex review returns:
    - Check if the same pattern or blindspot exists in sibling subsystems (e.g. if Option-ID was missed in `boq_parser.js`, check `boq_evaluator.js` and `vendor_bom_verifier.js`).
 5. **Feed Closed-Loop Learning**:
    - Register any new rule or invariant in the feedback loop (`feedback_loop.js`) and AST graph (`npm run update:graph`).
+
+---
+
+## 5. Peer Skills & Orchestration Matrix
+
+- **Macro Orchestration**: Consult [`orchestrator-workflow-skill`](../orchestrator-workflow-skill/SKILL.md) to integrate review results into the macro continuous learning lifecycle.
+- **Output Validation Gate**: Feeds into [`output-validation-skill`](../output-validation-skill/SKILL.md) prior to customer deliverable generation.
+- **Epistemic Falsification**: Complements [`epistemic-verification-skill`](../epistemic-verification-skill/SKILL.md) by providing human-level static peer review alongside Popperian automated fuzzing.
+- **Codebase Integrity**: Audits pipeline dispatching in [`route_query.js`](../../../scripts/evaluators/route_query.js) via `classifyQueryIntent()` and graph health in [`verify_graph_integrity.js`](../../../scripts/maintenance/verify_graph_integrity.js).

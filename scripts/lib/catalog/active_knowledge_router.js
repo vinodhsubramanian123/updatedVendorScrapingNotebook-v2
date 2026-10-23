@@ -11,7 +11,7 @@
 const fs = require('fs');
 const path = require('path');
 const { cleanBaseSKU, isValidHpeSKU } = require('./sku.js');
-const { SKU_BLACKLIST } = require('../feedback/quarantined_deltas.js');
+const { SKU_BLACKLIST, buildKnowledgeFingerprint } = require('../feedback/quarantined_deltas.js');
 const logger = require('../system/pipeline_logger.js');
 const { resolveProductIdentity, ruleAppliesToProduct } = require('./product_scope');
 const notebookConfig = require('../../config/notebooks.json');
@@ -65,13 +65,94 @@ function _loadRawDeltasFromDisk(chassisDir) {
 }
 
 /**
+ * Load revoked or rejected identifiers and fingerprints from decision ledgers & quarantine files
+ */
+function _loadRevokedIdentifiers(chassisDir) {
+  const decisionPaths = [
+    path.join(PROJECT_ROOT, 'outputs', 'history', 'knowledge_decisions.json')
+  ];
+  const quarantinePaths = [
+    path.join(PROJECT_ROOT, 'outputs', 'history', 'quarantined_deltas.json')
+  ];
+
+  if (chassisDir && typeof chassisDir === 'string' && fs.existsSync(chassisDir)) {
+    decisionPaths.push(path.join(chassisDir, 'history', 'knowledge_decisions.json'));
+    quarantinePaths.push(path.join(chassisDir, 'history', 'quarantined_deltas.json'));
+  }
+
+  const revokedSet = new Set();
+  const REVOKED_DECISION_TYPES = new Set(['REJECTED', 'REVOKED', 'AUTO_REJECTED', 'EXPIRED', 'SUPERSEDED']);
+
+  // 1. Process decision logs
+  for (const dp of decisionPaths) {
+    if (!fs.existsSync(dp)) continue;
+    try {
+      const records = JSON.parse(fs.readFileSync(dp, 'utf-8'));
+      if (Array.isArray(records)) {
+        for (const rec of records) {
+          const dec = String(rec.decision || '').toUpperCase();
+          if (REVOKED_DECISION_TYPES.has(dec)) {
+            if (rec.deltaId) revokedSet.add(rec.deltaId);
+            if (rec.quarantineId) revokedSet.add(rec.quarantineId);
+            if (rec.ruleId) revokedSet.add(rec.ruleId);
+            if (rec.knowledgeFingerprint) revokedSet.add(rec.knowledgeFingerprint);
+          } else if (dec === 'PROMOTED') {
+            if (rec.deltaId) revokedSet.delete(rec.deltaId);
+            if (rec.quarantineId) revokedSet.delete(rec.quarantineId);
+            if (rec.ruleId) revokedSet.delete(rec.ruleId);
+            if (rec.knowledgeFingerprint) revokedSet.delete(rec.knowledgeFingerprint);
+          }
+        }
+      }
+    } catch (e) {
+      logger.warn('ACTIVE_KNOWLEDGE_ROUTER', `Failed to read decisions file: ${dp}`, e);
+    }
+  }
+
+  // 2. Process active quarantined deltas (anything currently quarantined is not active)
+  for (const qp of quarantinePaths) {
+    if (!fs.existsSync(qp)) continue;
+    try {
+      const quarantined = JSON.parse(fs.readFileSync(qp, 'utf-8'));
+      if (Array.isArray(quarantined)) {
+        for (const item of quarantined) {
+          if (item.deltaId) revokedSet.add(item.deltaId);
+          if (item.quarantineId) revokedSet.add(item.quarantineId);
+          if (item.ruleId) revokedSet.add(item.ruleId);
+          if (item.knowledgeFingerprint) revokedSet.add(item.knowledgeFingerprint);
+          try {
+            const fp = buildKnowledgeFingerprint(item);
+            if (fp) revokedSet.add(fp);
+          } catch {}
+        }
+      }
+    } catch (e) {
+      logger.warn('ACTIVE_KNOWLEDGE_ROUTER', `Failed to read quarantine file: ${qp}`, e);
+    }
+  }
+
+  return revokedSet;
+}
+
+/**
  * Filter and categorize knowledge rules for a specific chassis variant
  * @param {string} chassisVariant - Target chassis string (e.g. 'DL380_Gen11', 'DL380_Gen12')
  * @param {string} [chassisDir] - Directory path to chassis outputs
+ * @param {object} [options] - Options (rawDeltas, revokedIdentifiers)
  * @returns {object} Categorized active rules
  */
 function loadActiveKnowledgeRules(chassisVariant = '', chassisDir = '', options = {}) {
   const rawDeltas = Array.isArray(options?.rawDeltas) ? options.rawDeltas : _loadRawDeltasFromDisk(chassisDir);
+  const revokedSet = _loadRevokedIdentifiers(chassisDir);
+  if (options?.revokedIdentifiers) {
+    const customRevoked = Array.isArray(options.revokedIdentifiers)
+      ? options.revokedIdentifiers
+      : (options.revokedIdentifiers instanceof Set ? Array.from(options.revokedIdentifiers) : []);
+    for (const rId of customRevoked) {
+      if (rId) revokedSet.add(String(rId));
+    }
+  }
+
   const targetChassis = String(chassisVariant || (chassisDir ? path.basename(chassisDir) : '')).toLowerCase();
 
   const targetIdentity = resolveProductIdentity(chassisDir ? path.basename(chassisDir) : targetChassis, notebookConfig);
@@ -96,9 +177,24 @@ function loadActiveKnowledgeRules(chassisVariant = '', chassisDir = '', options 
     const msg = delta.rawMessage || delta.reasoning || delta.ruleUpdate || '';
     const scope = (delta.scopeTaxonomy || delta.scope || 'CHASSIS_SPECIFIC').toUpperCase();
 
-    // Gate 0: Governance & Approval status check
+    // Gate 0: Revocation & Governance check
+    const deltaId = delta.deltaId || delta.ruleId;
+    let deltaFp = delta.knowledgeFingerprint;
+    if (!deltaFp) {
+      try { deltaFp = buildKnowledgeFingerprint(delta); } catch {}
+    }
+    if (
+      (deltaId && revokedSet.has(deltaId)) ||
+      (deltaFp && revokedSet.has(deltaFp)) ||
+      (delta.quarantineId && revokedSet.has(delta.quarantineId)) ||
+      delta.revoked === true ||
+      delta.isRevoked === true
+    ) {
+      continue;
+    }
+
     const status = String(delta.governanceStatus || delta.status || 'ACTIVE').toUpperCase();
-    if (status === 'PENDING' || status === 'QUARANTINED' || status === 'REJECTED' || status === 'DRAFT') {
+    if (status === 'PENDING' || status === 'QUARANTINED' || status === 'REJECTED' || status === 'DRAFT' || status === 'REVOKED' || status === 'EXPIRED' || status === 'DEPRECATED') {
       continue;
     }
 
@@ -176,7 +272,8 @@ function loadActiveKnowledgeRules(chassisVariant = '', chassisDir = '', options 
 
 module.exports = {
   loadActiveKnowledgeRules,
-  filterDeltaRules: (rawDeltas, chassisVariant = '', chassisDir = '') => loadActiveKnowledgeRules(chassisVariant, chassisDir, { rawDeltas }),
+  filterDeltaRules: (rawDeltas, chassisVariant = '', chassisDir = '', options = {}) => loadActiveKnowledgeRules(chassisVariant, chassisDir, { rawDeltas, ...options }),
+  _loadRevokedIdentifiers,
   MASTER_REGISTRY_PATH,
   GLOBAL_DELTAS_PATH
 };

@@ -41,10 +41,10 @@ function evaluateSanSwitch(items, catalogData, targetDir, chassisInfo, rules, op
   if (unknownSkus.length) warnings.push(`Exact catalog/service qualification remains pending for: ${unknownSkus.join(', ')}. Service base codes and product-specific suffixes must remain linked.`);
   const bundle = bundles[0];
   const aspectChecks = [
-    { id: 1, name: 'SAN Licensed Port Capacity', status: !bundle ? 'UNVERIFIED' : errors.length ? 'FAIL' : 'PASS', detail: bundle ? `${bundle.activePorts} licensed ports / ${bundle.physicalPorts} physical ports.` : 'No verified composition rule.' },
-    { id: 2, name: 'Bundled Optics Billing', status: !bundle ? 'UNVERIFIED' : bundle.excessOptics ? 'WARN' : 'PASS', detail: bundle ? `${bundle.bundledOptics} included optics + ${bundle.separatelyOrderedOptics} separately ordered optics; ${bundle.excessOptics} beyond switch port demand. Spares and remote endpoints require separate allocation.` : 'No verified bundle evidence.' },
-    { id: 3, name: 'Catalog and Service Coverage', status: unknownSkus.length ? 'UNVERIFIED' : 'PASS', detail: unknownSkus.length ? unknownSkus.join(', ') : 'Hardware in scoped catalog; service parent/suffix associations observed in selected OCA BOM. Exact proposed service acceptance remains pending.' },
-    { id: 4, name: 'Server Component Rules', status: 'NOT_APPLICABLE', detail: 'Fixed SAN switch: no server CPU, DIMM, diskless kit, PCIe riser or redundant server PSU additions.' }
+    { id: 'SAN_LICENSED_PORTS', legacyId: 1, name: 'SAN Licensed Port Capacity', status: !bundle ? 'UNVERIFIED' : errors.length ? 'FAIL' : 'PASS', detail: bundle ? `${bundle.activePorts} licensed ports / ${bundle.physicalPorts} physical ports.` : 'No verified composition rule.' },
+    { id: 'BUNDLED_OPTICS_BILLING', legacyId: 2, name: 'Bundled Optics Billing', status: !bundle ? 'UNVERIFIED' : bundle.excessOptics ? 'WARN' : 'PASS', detail: bundle ? `${bundle.bundledOptics} included optics + ${bundle.separatelyOrderedOptics} separately ordered optics; ${bundle.excessOptics} beyond switch port demand. Spares and remote endpoints require separate allocation.` : 'No verified bundle evidence.' },
+    { id: 'CATALOG_SERVICE_COVERAGE', legacyId: 3, name: 'Catalog and Service Coverage', status: unknownSkus.length ? 'UNVERIFIED' : 'PASS', detail: unknownSkus.length ? unknownSkus.join(', ') : 'Hardware in scoped catalog; service parent/suffix associations observed in selected OCA BOM. Exact proposed service acceptance remains pending.' },
+    { id: 'SERVER_RULES_NOT_APPLICABLE', legacyId: 4, name: 'Server Component Rules', status: 'NOT_APPLICABLE', detail: 'Fixed SAN switch: no server CPU, DIMM, diskless kit, PCIe riser or redundant server PSU additions.' }
   ];
   const excluded = new Set();
   if (bundle) {

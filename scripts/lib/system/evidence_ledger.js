@@ -12,7 +12,7 @@ const path = require('path');
 const crypto = require('crypto');
 const { getTraceId } = require('./trace_context.js');
 const { execFileSync } = require('child_process');
-const { safeWriteJsonAtomic } = require('./fs_compat.js');
+const { safeWriteJsonAtomic, safeWriteTextAtomic } = require('./fs_compat.js');
 const logger = require('./pipeline_logger.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
@@ -352,10 +352,10 @@ class EvidenceLedger {
     const jsonPath = path.join(exportDir, `evidence_log_${this.traceId}.json`);
     safeWriteJsonAtomic(jsonPath, payload);
 
-    // Also generate markdown summary for human audit
+    // Also generate markdown summary for human audit atomically to prevent Windows EPERM crashes
     const mdSummary = this._renderMarkdownSummary();
     const mdPath = path.join(exportDir, `evidence_summary_${this.traceId}.md`);
-    fs.writeFileSync(mdPath, mdSummary, 'utf-8');
+    safeWriteTextAtomic(mdPath, mdSummary);
 
     return { jsonPath, mdPath, payload };
   }

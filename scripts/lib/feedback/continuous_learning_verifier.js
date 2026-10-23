@@ -13,7 +13,7 @@ const fs = require('fs');
 const path = require('path');
 const { loadActiveKnowledgeRules } = require('../catalog/active_knowledge_router.js');
 const { validateConflictGraph } = require('../conflict/conflict_graph.js');
-const { safeWriteJsonAtomic } = require('../system/fs_compat.js');
+const { safeWriteJsonAtomic, withFileLock } = require('../system/fs_compat.js');
 const logger = require('../system/pipeline_logger.js');
 
 /**
@@ -34,8 +34,10 @@ function verifyKnowledgeRuleReachability(rule, chassisVariant, sampleBom = [], c
 
   // Step 1: Reachability in categorized registry
   const matchedInRegistry = activeRules.allRules.find(r => 
-    (targetRuleId && r.ruleId === targetRuleId) ||
-    (affectedSku && r.affectedSku === affectedSku && r.ruleType === (rule.ruleType || rule.errorType))
+    targetRuleId
+      ? (r.ruleId === targetRuleId || r.deltaId === targetRuleId)
+      : (affectedSku && r.affectedSku === affectedSku && r.ruleType === (rule.ruleType || rule.errorType) &&
+        (r.requiredDependencySku || r.targetSku || null) === (rule.requiredDependencySku || rule.targetSku || null))
   );
 
   if (!matchedInRegistry) {
@@ -50,7 +52,7 @@ function verifyKnowledgeRuleReachability(rule, chassisVariant, sampleBom = [], c
   let simulationResult = null;
   if (Array.isArray(sampleBom) && sampleBom.length > 0) {
     try {
-      const graph = validateConflictGraph(sampleBom, [], '', chassisVariant);
+      const graph = validateConflictGraph(sampleBom, [], chassisDir, chassisVariant, { skipSynthesis: true });
       const auditLog = graph.auditLog || [];
       const deltaAudits = auditLog.filter(a => a.category === 'LEARNED_DELTA');
 
@@ -58,7 +60,12 @@ function verifyKnowledgeRuleReachability(rule, chassisVariant, sampleBom = [], c
         evaluated: true,
         conflictsCount: graph.conflicts?.length || 0,
         ranksProduced: graph.rankedSolutions?.length || 0,
-        deltaAuditRecorded: deltaAudits.length > 0
+        deltaAuditRecorded: deltaAudits.length > 0,
+        // Legacy audit entries lack stable rule identity. An unrelated learned
+        // rule firing cannot certify consumption of the rule being inspected.
+        targetRuleApplied: targetRuleId
+          ? deltaAudits.some(a => a.ruleId === targetRuleId || a.deltaId === targetRuleId)
+          : null
       };
     } catch (simErr) {
       simulationResult = {
@@ -87,9 +94,15 @@ function verifyKnowledgeRuleReachability(rule, chassisVariant, sampleBom = [], c
  * @param {Array<object>} [testBom]
  * @returns {object} Certification result
  */
-function recordAndCertifyLearnedRule(delta, chassisDir, testBom = []) {
+function recordAndCertifyLearnedRule(delta, chassisDir, testBom = [], options = {}) {
   if (!chassisDir || !fs.existsSync(chassisDir)) {
     throw new Error(`Invalid chassis directory for rule certification: ${chassisDir}`);
+  }
+
+  // Governance Status Guard (INV-105 / G05)
+  const status = String(delta?.status || delta?.governanceStatus || 'ACTIVE').toUpperCase();
+  if (status === 'REJECTED' || (options.strictGovernance && status !== 'ACTIVE' && status !== 'APPROVED')) {
+    throw new Error(`LEARNED_RULE_GOVERNANCE_BLOCKED: Rule status "${status}" cannot be certified or added to active history.`);
   }
 
   const historyDir = path.join(chassisDir, 'history');
@@ -98,40 +111,52 @@ function recordAndCertifyLearnedRule(delta, chassisDir, testBom = []) {
   }
 
   const deltaFile = path.join(historyDir, 'catalog_deltas.json');
-  let existing = [];
-  if (fs.existsSync(deltaFile)) {
-    try {
-      existing = JSON.parse(fs.readFileSync(deltaFile, 'utf-8'));
-      if (!Array.isArray(existing)) existing = [];
-    } catch {
-      existing = [];
-    }
-  }
-
   const deltaId = delta.deltaId || `DELTA_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
   const fullDelta = {
+    ...delta,
     deltaId,
     timestamp: new Date().toISOString(),
-    chassis: path.basename(chassisDir),
-    ...delta
+    chassis: path.basename(chassisDir)
   };
 
-  // Deduplicate in place on composite identity (deltaId OR affectedSku + ruleType + dependencySku)
-  const fullDepSku = fullDelta.requiredDependencySku || fullDelta.targetSku || null;
-  const existingIdx = existing.findIndex(e =>
-    e.deltaId === deltaId ||
-    (e.affectedSku === fullDelta.affectedSku &&
-     e.ruleType === fullDelta.ruleType &&
-     (e.requiredDependencySku || e.targetSku || null) === fullDepSku)
-  );
-  if (existingIdx >= 0) {
-    existing[existingIdx] = fullDelta;
-  } else {
-    existing.push(fullDelta);
-  }
+  // Execute read-modify-write inside cross-process file lock (G05 / G11)
+  withFileLock(deltaFile, () => {
+    let existing = [];
+    if (fs.existsSync(deltaFile)) {
+      try {
+        existing = JSON.parse(fs.readFileSync(deltaFile, 'utf-8'));
+        if (!Array.isArray(existing)) throw new Error('Learning history must be an array');
+      } catch (error) {
+        throw new Error(`LEARNING_HISTORY_RECOVERY_REQUIRED: ${deltaFile}`, { cause: error });
+      }
+    }
 
-  safeWriteJsonAtomic(deltaFile, existing);
-  logger.info('CONTINUOUS_LEARNING', `Persisted delta ${deltaId} to ${deltaFile}`);
+    // Expand semantic deduplication to include selectors, conditions, and thresholds (INV-125 / G05)
+    const fullDepSku = fullDelta.requiredDependencySku || fullDelta.targetSku || null;
+    const fullCondKey = fullDelta.conditionKey || null;
+    const fullCondOp = fullDelta.conditionOperator || null;
+    const fullThreshold = fullDelta.thresholdValue ?? null;
+    const fullSelector = fullDelta.selector || null;
+
+    const existingIdx = existing.findIndex(e =>
+      e.deltaId === deltaId ||
+      (e.affectedSku === fullDelta.affectedSku &&
+       e.ruleType === fullDelta.ruleType &&
+       (e.requiredDependencySku || e.targetSku || null) === fullDepSku &&
+       (e.conditionKey || null) === fullCondKey &&
+       (e.conditionOperator || null) === fullCondOp &&
+       (e.thresholdValue ?? null) === fullThreshold &&
+       (e.selector || null) === fullSelector)
+    );
+    if (existingIdx >= 0) {
+      existing[existingIdx] = fullDelta;
+    } else {
+      existing.push(fullDelta);
+    }
+
+    safeWriteJsonAtomic(deltaFile, existing);
+    logger.info('CONTINUOUS_LEARNING', `Persisted delta ${deltaId} to ${deltaFile}`);
+  });
 
   // Immediate reachability certification
   const chassisVariant = path.basename(chassisDir);

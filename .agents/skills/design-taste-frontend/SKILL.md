@@ -22,6 +22,12 @@ description: Anti-slop frontend skill for landing pages, portfolios, and redesig
 | Accessibility & responsive bounds | **§7 Accessibility & Pre-Flight** |
 | Anti-patterns & generic templates | **§8 Anti-Patterns to Ban** |
 
+### Workspace Frontend Architecture Links
+- Application Shell: [`App.jsx`](../../../dashboard/src/App.jsx) via `App()`
+- Server Backend: [`server.cjs`](../../../dashboard/server.cjs)
+- Component Registry: [`components/index.js`](../../../dashboard/src/components/index.js)
+- Macro Lifecycle Orchestration: [`orchestrator-workflow-skill`](../orchestrator-workflow-skill/SKILL.md)
+
 ---
 
 

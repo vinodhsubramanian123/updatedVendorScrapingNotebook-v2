@@ -73,3 +73,13 @@ node scripts/maintenance/analyze_complexity.js
 # 5. Offline targeted linter
 npx oxlint <modified_files>
 ```
+
+---
+
+## 3. Peer Skills & Implementation Engines
+
+- **Output Validation Gate**: Directly reinforces [`output-validation-skill`](../output-validation-skill/SKILL.md) and [`bom_verifier.js`](../../../scripts/lib/boq/bom_verifier.js) by providing falsification proofs for B1–B18 criteria.
+- **Evidence Ledger**: Enforces terminal phase verification via [`evidence_ledger.js`](../../../scripts/lib/system/evidence_ledger.js) and [`audit_evidence_health.js`](../../../scripts/maintenance/audit_evidence_health.js).
+- **Macro Lifecycle Integration**: Orchestrated under [`orchestrator-workflow-skill`](../orchestrator-workflow-skill/SKILL.md) as the Phase 9 terminal reflection falsifier.
+- **Continuous Learning Falsifier**: Validates learning reachability and consumption without prompt priming via [`continuous-learning-skill`](../continuous-learning-skill/SKILL.md) and [`continuous_learning_verifier.js`](../../../scripts/lib/feedback/continuous_learning_verifier.js).
+- **Independent Peer Review**: Works in tandem with [`codex-peer-review-skill`](../codex-peer-review-skill/SKILL.md) for independent red-teaming.

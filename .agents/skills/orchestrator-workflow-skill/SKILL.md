@@ -126,13 +126,13 @@ graph TD
 | **Continuous Learning Verifier** | [`continuous-learning-skill`](../continuous-learning-skill/SKILL.md) | Zero-repetition certification: [`continuous_learning_verifier.js`](../../../scripts/lib/feedback/continuous_learning_verifier.js). |
 | **Execution Trace & Shared State** | [`execution-trace-skill`](../execution-trace-skill/SKILL.md) | 9-phase evidence ledger: [`evidence_ledger.js`](../../../scripts/lib/system/evidence_ledger.js). |
 | **Multi-Cluster Tender Splitting** | [`multi-cluster-tender-skill`](../multi-cluster-tender-skill/SKILL.md) | Multi-node cluster partitioning & 42U sizing: [`multi_cluster_splitter.js`](../../../scripts/lib/boq/multi_cluster_splitter.js). |
-| **RFP Sizing-to-BOM** | [`rfp-sizing-synthesizer`](../rfp-sizing-synthesizer/SKILL.md) | Natural language sizing requirements to starting BOM. |
+| **RFP Sizing-to-BOM** | [`rfp-sizing-synthesizer`](../rfp-sizing-synthesizer/SKILL.md) | Natural language sizing requirements to starting BOM: [`requirement_intent_resolver.js`](../../../scripts/lib/boq/requirement_intent_resolver.js). |
 | **BOM Reconciliation** | [`bom-reconciliation-skill`](../bom-reconciliation-skill/SKILL.md) | Tender vs vendor quote verification: [`vendor_bom_verifier.js`](../../../scripts/lib/boq/vendor_bom_verifier.js). |
 | **Value Engineering & CapEx** | [`value-engineering-skill`](../value-engineering-skill/SKILL.md) | Post-buildability CapEx/OpEx deal optimizer: [`deal_optimizer.js`](../../../scripts/lib/boq/deal_optimizer.js). |
 | **Adversarial Chaos Validation** | [`adversarial-validation-skill`](../adversarial-validation-skill/SKILL.md) | Enterprise chaos red-teaming: [`adversarial_agent.js`](../../../scripts/evaluators/adversarial_agent.js). |
 | **Multimodal Vision OCR** | [`ocr-quote-ingestion-skill`](../ocr-quote-ingestion-skill/SKILL.md) | Vision OCR for PDF/image quotes: [`ocr_service.js`](../../../scripts/lib/ocr/ocr_service.js). |
 | **Deliverables & Workbook Export** | [`workbook-generator-skill`](../workbook-generator-skill/SKILL.md) | 12-column workbooks & CSV companions: [`generate_boq_xlsx.js`](../../../scripts/lib/boq/generate_boq_xlsx.js). |
-| **Output Acceptance Gate** | [`output-validation-skill`](../output-validation-skill/SKILL.md) | Pre-presentation 14-point acceptance criteria check. |
+| **Output Acceptance Gate** | [`output-validation-skill`](../output-validation-skill/SKILL.md) | Pre-presentation 18-point acceptance criteria check (B1–B18): [`bom_verifier.js`](../../../scripts/lib/boq/bom_verifier.js). |
 | **Dual-Brain RAG & Grounding** | [`nlm-skill`](../nlm-skill/SKILL.md) | Gemini NotebookLM RAG verification: [`agentic_guardrail.js`](../../../scripts/lib/rag/agentic_guardrail.js). |
 | **Multi-Agent Jules Delegation** | [`jules-autonomous-protocol`](../jules-autonomous-protocol/SKILL.md) | Autonomous PR review: [`jules_task_manager.js`](../../../scripts/services/jules_task_manager.js). |
 | **Frontend UI/UX & Aesthetics** | [`design-taste-frontend`](../design-taste-frontend/SKILL.md) | Anti-slop UI aesthetics: [`App.jsx`](../../../dashboard/src/App.jsx). |
@@ -140,6 +140,11 @@ graph TD
 | **Catalog Freshness & Degraded Mode Recovery** | [`degraded-mode-skill`](../degraded-mode-skill/SKILL.md) | Per-product-gen metadata freshness, BOQ-triggered resync, atomic commit contract: [`product_metadata_manager.js`](../../../scripts/lib/catalog/product_metadata_manager.js). |
 | **Live CLIC Portal Validation & Receipt Binding** | [`clic-portal-validation-skill`](../clic-portal-validation-skill/SKILL.md) | CLIC Advice parsing, divergent path resolution (Rank 1A/1B), SHA-256 receipt binding (INV-107): [`bom_verifier.js`](../../../scripts/lib/boq/bom_verifier.js). |
 | **Scraping-Time Conditional SKU Discovery** | [`conditional-sku-discovery-skill`](../conditional-sku-discovery-skill/SKILL.md) | Full DOM walk, 8-sweep macro selector, `Catalog_Rules.json` compilation, PORTAL_CONDITIONAL flagging (INV-118/119): [`scrape_oca_solution.js`](../../../scripts/scrapers/scrape_oca_solution.js). |
+| **Cross-Vendor Architectural Transpiler** | [`cross-vendor-transformation-skill`](../cross-vendor-transformation-skill/SKILL.md) | Competitor quote translation to HPE equivalents: [`cross_vendor_transformer.js`](../../../scripts/lib/boq/cross_vendor_transformer.js). |
+| **Heterogeneous Multi-Domain Modernization** | [`heterogeneous-tender-modernizer`](../heterogeneous-tender-modernizer/SKILL.md) | Mixed-domain tender planning & carrier allocation: [`heterogeneous_tender_modernizer.js`](../../../scripts/lib/boq/heterogeneous_tender_modernizer.js). |
+| **Commercial Remarks & Reconciliation Hierarchy** | [`boq-remarks-reconciliation-skill`](../boq-remarks-reconciliation-skill/SKILL.md) | Auditable commercial remarks & quantity bridges: [`commercial_remarks.js`](../../../scripts/lib/boq/commercial_remarks.js). |
+| **Popperian Falsification & Epistemic Audit** | [`epistemic-verification-skill`](../epistemic-verification-skill/SKILL.md) | Negative-path falsification & terminal 9-phase evidence ledger: [`evidence_ledger.js`](../../../scripts/lib/system/evidence_ledger.js). |
+| **Codex Autonomous Peer Review** | [`codex-peer-review-skill`](../codex-peer-review-skill/SKILL.md) | Independent static peer review, commit audits, and gap analysis: [`SKILL.md`](../codex-peer-review-skill/SKILL.md). |
 
 ---
 
