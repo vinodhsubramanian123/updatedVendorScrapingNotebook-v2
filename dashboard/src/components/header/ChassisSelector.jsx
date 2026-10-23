@@ -31,6 +31,7 @@ export default function ChassisSelector({
     <div className="relative" ref={chassisDropdownRef}>
       <button
         onClick={() => setIsChassisOpen(!isChassisOpen)}
+        aria-expanded={isChassisOpen}
         className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-100/80 hover:bg-slate-200/80 border border-slate-200 transition-colors text-xs font-semibold text-slate-800"
       >
         <Server className="w-4 h-4 text-emerald-600 shrink-0" />
