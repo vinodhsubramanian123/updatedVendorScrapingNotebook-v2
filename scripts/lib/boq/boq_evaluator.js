@@ -1626,6 +1626,7 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
     aspectChecks,
     genericDomainAudit,
     bundleComposition,
+    selfCorrectionTrail: conflictGraphResults?.arbitrationResults?.selfCorrectionTrail || [],
     conflictGraph: conflictGraphResults
   };
 }

@@ -994,3 +994,17 @@ When using Gemini NotebookLM for HPE server architecture, QuickSpecs grounding, 
 ### Structured candidate grounding (SN3600B remediation, 2026-09-22)
 
 Use the canonical ephemeral validator. Internal candidate prompts must set structuredValidation context so JSON schemas, manifests and allocation notes survive sanitation. Apply product-specific checks; fixed SAN switches do not need server CPU/DIMM/riser rules. Request cited prose outside code blocks followed by one fenced JSON verdict. A model PASS with source names alone remains UNVERIFIED. A real unverified response is not MOCK_VERIFIED. Always detach the temporary source. Source identity from the vetted allow-list takes precedence over customer/quote keywords inside official vendor passages; unknown customer sources remain forbidden authority.
+
+---
+
+## 🔗 Peer Skills & Code Implementation Links
+
+- **Peer Skills**:
+  - [`knowledge-sync-skill`](../knowledge-sync-skill/SKILL.md) — Bi-directional catalog and knowledge delta synchronization with Gemini NotebookLM.
+  - [`degraded-mode-skill`](../degraded-mode-skill/SKILL.md) — Staleness detection, health asserts, and local RAG fallback.
+  - [`boq-eval-skill`](../boq-eval-skill/SKILL.md) — Core Dual-Brain BOQ evaluation with NotebookLM RAG grounding.
+- **Code Implementations**:
+  - [`executeNotebookQuery()`](../../../scripts/lib/notebook/notebook_query_utils.js) — Centralized NotebookLM cloud query coordinator with in-flight auto-healing (`INV-157`).
+  - [`checkAuthHealth()`](../../../scripts/maintenance/check_nlm_auth.js) — Headless NotebookLM authentication verification and non-interactive auto-healing.
+  - [`validateSolutionWithEphemeralSource()`](../../../scripts/lib/sync/nlm_solution_source_validator.js) — Ephemeral candidate validation and source cleanup (`INV-24`).
+  - [`triggerPostFlowSync()`](../../../scripts/lib/sync/post_flow_sync.js) — Post-evaluation delta synchronization into authoritative NotebookLM sources.

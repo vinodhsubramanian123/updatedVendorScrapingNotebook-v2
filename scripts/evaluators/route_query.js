@@ -1469,6 +1469,7 @@ async function _handleWorkloadDna(queryText, context) {
     hasContentions: arbitration.hasContentions,
     contentionsCount: arbitration.contentionsCount,
     contentions: arbitration.contentions,
+    selfCorrectionTrail: arbitration.selfCorrectionTrail || [],
     arbitrationBranches: evaluatedBranches.length > 0 ? evaluatedBranches : arbitration.branches,
     message: arbitration.hasContentions
       ? `Workload DNA analyzed (${dna.primaryWorkload}). Detected ${arbitration.contentionsCount} physical resource contention(s); synthesized ${arbitration.branchesCount} arbitration branch(es) with 7-aspect evaluation.`

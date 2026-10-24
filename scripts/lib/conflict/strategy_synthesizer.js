@@ -397,6 +397,82 @@ function buildRank3PcieStorageBranchParts(ctx) {
 // -----------------------------------------------------------------------------
 // Scoring and Normalization Helpers
 // -----------------------------------------------------------------------------
+function _checkCacheDowngrade(reqDesc, candDescriptions) {
+  if (reqDesc.includes('8gb') && reqDesc.includes('cache')) {
+    const has8GbInCand = candDescriptions.some(d => d.includes('8gb') && d.includes('cache'));
+    const has4GbInCand = candDescriptions.some(d => d.includes('4gb') && d.includes('cache'));
+    if (!has8GbInCand && has4GbInCand) return 2.5;
+  }
+  return 0;
+}
+
+function _checkNetworkDowngrade(reqDesc, candDescriptions) {
+  if (reqDesc.includes('100gb') || reqDesc.includes('100gbe')) {
+    const has100InCand = candDescriptions.some(d => d.includes('100gb') || d.includes('100gbe'));
+    const hasLowerInCand = candDescriptions.some(d => (d.includes('25gb') || d.includes('10gb')) && d.includes('adapter'));
+    if (!has100InCand && hasLowerInCand) return 4.0;
+  }
+  return 0;
+}
+
+function _checkPsuDowngrade(reqDesc, candDescriptions) {
+  if (reqDesc.includes('titanium') && reqDesc.includes('psu')) {
+    const hasTitn = candDescriptions.some(d => d.includes('titanium'));
+    const hasPlat = candDescriptions.some(d => d.includes('platinum'));
+    if (!hasTitn && hasPlat) return 1.5;
+  }
+  return 0;
+}
+
+function _checkCpuDowngrade(reqDesc, candDescriptions) {
+  const isCpu = reqDesc.includes('intel') || reqDesc.includes('xeon') || reqDesc.includes('epyc') || reqDesc.includes('processor');
+  if (reqDesc.includes('platinum') && isCpu) {
+    const hasPlat = candDescriptions.some(d => d.includes('platinum'));
+    const hasLower = candDescriptions.some(d => (d.includes('gold') || d.includes('silver') || d.includes('bronze')) && d.includes('processor'));
+    if (!hasPlat && hasLower) return 5.0;
+  } else if (reqDesc.includes('gold') && isCpu) {
+    const hasGoldOrHigher = candDescriptions.some(d => (d.includes('gold') || d.includes('platinum')) && d.includes('processor'));
+    const hasLower = candDescriptions.some(d => (d.includes('silver') || d.includes('bronze')) && d.includes('processor'));
+    if (!hasGoldOrHigher && hasLower) return 3.5;
+  }
+  return 0;
+}
+
+function _checkMemoryDowngrade(reqDesc, candDescriptions) {
+  if (reqDesc.includes('ddr5')) {
+    const hasDdr5 = candDescriptions.some(d => d.includes('ddr5'));
+    const hasDdr4 = candDescriptions.some(d => d.includes('ddr4'));
+    if (!hasDdr5 && hasDdr4) return 6.0;
+  }
+  return 0;
+}
+
+function _checkGpuDowngrade(reqDesc, candDescriptions) {
+  if (reqDesc.includes('h100') || reqDesc.includes('h200') || reqDesc.includes('a100')) {
+    const hasHighTier = candDescriptions.some(d => d.includes('h100') || d.includes('h200') || d.includes('a100'));
+    const hasLowerTier = candDescriptions.some(d => (d.includes('l4') || d.includes('t4') || d.includes('l40')) && d.includes('accelerator'));
+    if (!hasHighTier && hasLowerTier) return 5.0;
+  }
+  return 0;
+}
+
+function computeCapabilityDowngradePenalty(cand, items) {
+  let penalty = 0;
+  const candDescriptions = (cand.skuPartsList || []).map(p => (p.description || '').toLowerCase());
+
+  for (const it of (items || [])) {
+    const reqDesc = (it.description || '').toLowerCase();
+    penalty += _checkCacheDowngrade(reqDesc, candDescriptions);
+    penalty += _checkNetworkDowngrade(reqDesc, candDescriptions);
+    penalty += _checkPsuDowngrade(reqDesc, candDescriptions);
+    penalty += _checkCpuDowngrade(reqDesc, candDescriptions);
+    penalty += _checkMemoryDowngrade(reqDesc, candDescriptions);
+    penalty += _checkGpuDowngrade(reqDesc, candDescriptions);
+  }
+
+  return parseFloat(penalty.toFixed(2));
+}
+
 function computeArchitecturalDelta(requestedQuantities, candidateQuantities, partCategoryMap = new Map()) {
   const allSkus = new Set([...requestedQuantities.keys(), ...candidateQuantities.keys()]);
   let totalWeightedDelta = 0;
@@ -475,10 +551,12 @@ function scoreAndSortCandidates(rawCandidates, items, resolveSupply = () => ({ l
     cand.quantityDelta = [...new Set([...requestedQuantities.keys(), ...candidateQuantities.keys()])]
       .reduce((sum, sku) => sum + Math.abs((requestedQuantities.get(sku) || 0) - (candidateQuantities.get(sku) || 0)), 0);
     cand.architecturalDelta = computeArchitecturalDelta(requestedQuantities, candidateQuantities, candidateCategoryMap);
+    cand.capabilityDowngradePenalty = computeCapabilityDowngradePenalty(cand, items);
   });
 
   rawCandidates.sort((a, b) => {
     if (Boolean(a.physicalMathClean) !== Boolean(b.physicalMathClean)) return a.physicalMathClean ? -1 : 1;
+    if (a.capabilityDowngradePenalty !== b.capabilityDowngradePenalty) return a.capabilityDowngradePenalty - b.capabilityDowngradePenalty;
     if (a.architecturalDelta !== b.architecturalDelta) return a.architecturalDelta - b.architecturalDelta;
     if (a.quantityDelta !== b.quantityDelta) return a.quantityDelta - b.quantityDelta;
     if (b.dynamicScore !== a.dynamicScore) return b.dynamicScore - a.dynamicScore;
@@ -1413,6 +1491,7 @@ module.exports = {
   setPhysicalMathValidator,
   getPhysicalMathValidator,
   computeArchitecturalDelta,
+  computeCapabilityDowngradePenalty,
   scoreAndSortCandidates,
   _clearStrategyAddonsCache
 };

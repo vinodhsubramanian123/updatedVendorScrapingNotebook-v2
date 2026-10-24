@@ -70,11 +70,19 @@ function normalizeAllocatedClusters(clustersOrBom) {
   }
   if (typeof clustersOrBom === 'object') {
     if (Array.isArray(clustersOrBom.clusters)) {
-      return clustersOrBom.clusters.map((c, idx) => ({
+      const list = clustersOrBom.clusters.map((c, idx) => ({
         clusterId: c.clusterId || c.name || `Cluster_${idx + 1}`,
         multiplier: parseSafeQuantity(c.multiplier) ?? 1,
         items: Array.isArray(c.items) ? c.items : []
       }));
+      if (Array.isArray(clustersOrBom.sharedInfrastructure) && clustersOrBom.sharedInfrastructure.length > 0) {
+        list.push({
+          clusterId: 'Shared_Infrastructure',
+          multiplier: 1,
+          items: clustersOrBom.sharedInfrastructure
+        });
+      }
+      return list;
     }
     if (Array.isArray(clustersOrBom.items)) {
       return [{

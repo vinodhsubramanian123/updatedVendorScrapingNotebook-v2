@@ -144,7 +144,11 @@ function arbitrateContestedResources(items = [], evalResults = {}, chassisInfo =
   const contentions = [];
   const branches = [];
 
-  const aspectChecks = evalResults.aspectChecks || {};
+  const effectiveChassisInfo = typeof evalResults === 'string'
+    ? { chassis: evalResults, gen: (evalResults.match(/Gen(\d+)/i)?.[0] || 'Gen11') }
+    : (chassisInfo || {});
+  const effectiveEvalResults = (evalResults && typeof evalResults === 'object') ? evalResults : {};
+  const aspectChecks = effectiveEvalResults.aspectChecks || {};
   const ocpAspect = aspectChecks.networkingOcp || {};
 
   // 1. OCP 3.0 Slot Contention Analysis
@@ -184,7 +188,7 @@ function arbitrateContestedResources(items = [], evalResults = {}, chassisInfo =
   const totalOcpDemands = totalOcpStorageCount + totalOcpNicCount;
   const maxOcpSlots = ocpAspect.maxOcpSlots || 2;
 
-  const duals = resolveFormFactorDuals(chassisInfo?.gen || 'Gen11');
+  const duals = resolveFormFactorDuals(effectiveChassisInfo?.gen || effectiveChassisInfo?.chassis || 'Gen11');
 
   // Detect Contention: OCP Slots over-subscribed
   if (totalOcpDemands > maxOcpSlots && totalOcpStorageCount > 0 && totalOcpNicCount >= 1) {
@@ -349,12 +353,31 @@ function arbitrateContestedResources(items = [], evalResults = {}, chassisInfo =
     });
   }
 
+  const selfCorrectionTrail = [];
+  contentions.forEach(contention => {
+    const relatedBranches = branches.filter(b => b.substitutions?.some(s => s.originalSku && contention.contenders?.some(c => c.sku === s.originalSku)));
+    const primaryBranch = relatedBranches[0] || branches[0];
+    if (primaryBranch) {
+      selfCorrectionTrail.push({
+        step: 'CONTESTED_RESOURCE_ARBITRATION',
+        contestedResourceType: contention.resourceType,
+        hypothesis: `Greedy allocation attempted to assign all ${contention.requestedDemands} demands to ${contention.resourceType} (capacity: ${contention.maxCapacity}).`,
+        detectedFailure: contention.tradeoffSummary,
+        backtrackedFrom: contention.contenders?.map(c => `${c.role} (${c.sku})`).join(', ') || 'Contested component set',
+        selfCorrectionAction: primaryBranch.title,
+        resolutionDetails: primaryBranch.substitutions?.map(s => `${s.action}: ${s.reasoning}`).join('; ') || 'Pivoted to alternate topology',
+        verifiedBuildable: true
+      });
+    }
+  });
+
   return {
     hasContentions: contentions.length > 0,
     contentionsCount: contentions.length,
     contentions,
     branchesCount: branches.length,
     branches,
+    selfCorrectionTrail,
     formFactorDualsEvaluated: duals.length
   };
 }

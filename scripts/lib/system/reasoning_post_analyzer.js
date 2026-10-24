@@ -163,6 +163,14 @@ function performReasoningPostAnalysis({
     formFactor
   };
 
+  const selfCorrectionTrail = responseData.selfCorrectionTrail ||
+    responseData.conflictGraph?.arbitrationResults?.selfCorrectionTrail ||
+    responseData.conflictArbitration?.selfCorrectionTrail ||
+    responseData.arbitrationResults?.selfCorrectionTrail ||
+    responseData.evaluation?.conflictGraph?.arbitrationResults?.selfCorrectionTrail ||
+    responseData.evaluation?.arbitrationResults?.selfCorrectionTrail ||
+    [];
+
   const reasoningNarrative = [
     `1. Intake Classification: Intent identified as ${effectiveIntent} (${((classification.confidence ?? 1.0) * 100).toFixed(0)}% confidence). Hardware Vendor: ${detectedVendor}, Solution Domain: ${detectedDomain}.`,
     `2. Platform & Generation Scoping: Evaluated against target platform ${platformName} (${generation}, ${formFactor}). Applied scoped physical rules without blind cross-domain leakage.`,
@@ -171,7 +179,13 @@ function performReasoningPostAnalysis({
     `5. Continuous Learning: Reflection hook status: ${feedbackResult.hookStatus} (${feedbackResult.deltasProposed} candidate delta(s) proposed to quarantine).`
   ];
 
-  logger.info('REASONING_ANALYZER', `[REASONING] Trace ${effectiveTraceId} | Vendor: ${detectedVendor} | Domain: ${detectedDomain} | Platform: ${platformName} (${generation}) | Epistemic: ${epistemic.tier} | Blocker(s): ${acceptance.blockersCount} | Status: ${acceptance.status}`);
+  if (selfCorrectionTrail.length > 0) {
+    reasoningNarrative.push(
+      `6. Autonomous Self-Correction & Backtracking: Resolved ${selfCorrectionTrail.length} physical contention(s) via automated topological pivots (${selfCorrectionTrail.map(t => t.selfCorrectionAction).join('; ')}).`
+    );
+  }
+
+  logger.info('REASONING_ANALYZER', `[REASONING] Trace ${effectiveTraceId} | Vendor: ${detectedVendor} | Domain: ${detectedDomain} | Platform: ${platformName} (${generation}) | Epistemic: ${epistemic.tier} | Blocker(s): ${acceptance.blockersCount} | Status: ${acceptance.status} | SelfCorrections: ${selfCorrectionTrail.length}`);
 
   // 5. Build Comprehensive Reasoning Analysis Payload
   const analysis = {
@@ -183,6 +197,7 @@ function performReasoningPostAnalysis({
     intentRationale: classification.rationale || 'Canonical execution dispatched.',
     contextClassification,
     reasoningNarrative,
+    selfCorrectionTrail,
     epistemicIntegrity: {
       ...epistemic,
       isMathClean: responseData.isMathClean ?? (rawErrors.length === 0),
@@ -251,12 +266,21 @@ function performReasoningPostAnalysis({
         });
       }
 
+      const isAcceptanceValid = acceptance.isValid === true && (acceptance.status === 'PASSED' || acceptance.status === 'PASS') && (acceptance.blockersCount || 0) === 0;
+      const isFeedbackClean = feedbackResult.hookStatus !== 'HOOK_ERROR';
+      let terminalReflectionStatus = 'PASSED';
+      if (acceptance.status === 'FAILED' || responseData.status === 'FAILED') {
+        terminalReflectionStatus = 'FAILED';
+      } else if (!isAcceptanceValid || !isFeedbackClean) {
+        terminalReflectionStatus = 'ACTION_REQUIRED';
+      }
+
       if (ledger.phases.phase_8 && !ledger.phases.phase_9) {
         ledger.startPhase(9, 'Continuous Learning Reflection & Shared State Export', {
           epistemicTier: epistemic.tier,
           contextClassification
         });
-        ledger.completePhase(9, 'PASSED', {
+        ledger.completePhase(9, terminalReflectionStatus, {
           epistemicTier: epistemic.tier,
           acceptanceGateValid: acceptance.isValid,
           conflictsCaught: conflictsCount,
@@ -268,7 +292,7 @@ function performReasoningPostAnalysis({
           epistemicTier: epistemic.tier,
           contextClassification
         });
-        ledger.completePhase(3, 'PASSED', {
+        ledger.completePhase(3, terminalReflectionStatus, {
           epistemicTier: epistemic.tier,
           acceptanceGateValid: acceptance.isValid,
           conflictsCaught: conflictsCount,

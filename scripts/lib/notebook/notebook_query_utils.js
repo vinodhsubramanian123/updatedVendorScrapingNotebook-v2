@@ -456,6 +456,24 @@ async function executeNotebookQuery(notebookId, rawQuery, options = {}) {
     diagnostic.latencyMs = failure?.latencyMs || 0;
     logger.warn('NOTEBOOK_QUERY', `Live NotebookLM Cloud query failed after ${failure?.attempts || 1} attempts and ${timeTaken} (${diagnostic.rootCause}).`, { diagnostic, stderr: failure?.stderr });
 
+    // In-Flight Auto-Healing for Expired Credentials (INV-157)
+    if (diagnostic.errorType === 'AUTH_EXPIRED' && !options._retriedAuth && !options.offlineMode && !options.useLocalRagOnly) {
+      try {
+        const { checkAuthHealth } = require('../../maintenance/check_nlm_auth.js');
+        logger.info('NOTEBOOK_QUERY', 'NotebookLM authentication expired. Attempting in-flight headless auto-healing (INV-157)...');
+        const heal = checkAuthHealth({ autoHeal: true });
+        if (heal && heal.valid) {
+          logger.info('NOTEBOOK_QUERY', `In-flight auto-healing successful for account: ${heal.account}. Retrying cloud query.`);
+          if (typeof options.onAuthHealed === 'function') {
+            options.onAuthHealed(heal);
+          }
+          return await executeNotebookQuery(notebookId, rawQuery, { ...options, _retriedAuth: true });
+        }
+      } catch (healError) {
+        logger.warn('NOTEBOOK_QUERY', `In-flight auto-healing encountered an exception: ${healError.message}`);
+      }
+    }
+
     if (isStrictCloud) {
       return {
         query: sanitizedQuery,

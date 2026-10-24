@@ -72,8 +72,8 @@ function verifyGraphIntegrity(options = {}) {
   const skillNetwork = {};
 
   for (const skillName of diskSkills) {
-    const expectedPrefix = `.agents/skills/${skillName}`;
-    const skillFileKey = Array.from(fileNodes.keys()).find(k => k && k.startsWith(expectedPrefix));
+    const expectedSkillPath = `.agents/skills/${skillName}/SKILL.md`;
+    const skillFileKey = Array.from(fileNodes.keys()).find(k => k && (k === expectedSkillPath || k.replace(/\\/g, '/') === expectedSkillPath));
 
     if (!skillFileKey) {
       issues.push(`Skill [${skillName}] has no nodes in graphify-out/graph.json`);

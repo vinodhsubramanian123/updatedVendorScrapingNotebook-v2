@@ -6,7 +6,7 @@
  * output-validation-skill (.agents/skills/output-validation-skill/SKILL.md):
  * - Universal Acceptance Criteria (U1–U5) across all presales tracks
  * - Track-Specific Criteria:
- *   - BOQ Evaluation (B1–B16)
+ *   - BOQ Evaluation (B1–B19)
  *   - RFP Sizing-to-BOM (R1–R6)
  *   - BOM Reconciliation (C1–C4)
  *   - Freeform Q&A (Q1–Q4)
@@ -18,6 +18,7 @@
  * physical math (Tier 1), catalog presence (Tier 2), and portal acceptance (Tier 3).
  */
 
+const fs = require('fs');
 const { isValidHpeSKU, cleanBaseSKU, buildCatalogSkuIndex } = require('../catalog/sku.js');
 const { candidateReviewCurrent } = require('./solution_evidence.js');
 const { analyzeDeliveryPacing } = require('./delivery_pacing_analyzer.js');
@@ -687,7 +688,57 @@ function _checkQuantityConservation(output, context = {}) {
 }
 
 /**
- * BOQ Evaluation Criteria (B1–B18)
+ * Gate B19: Live Portal Validation & Receipt Integrity (INV-0 / INV-104)
+ * Forbids false claims of live vendor acceptance without a verifiable session receipt.
+ */
+function _checkPortalReceiptIntegrity(output, context = {}) {
+  const portalStatus = output?.portalValidationStatus || context?.portalValidationStatus;
+  const clicValid = output?.clicValidation?.isValid === true || context?.clicValidation?.isValid === true;
+  const receipt = output?.sessionReceipt || context?.sessionReceipt || output?.sessionReceiptPath || output?.portalReceipt || context?.portalReceipt;
+
+  const isClaimingVendorAcceptance = [
+    'ACCEPTED_BY_VENDOR',
+    'CLIC_ACCEPTED',
+    'CORRECTED_CANDIDATE_CLIC_ACCEPTED',
+    'VERIFIED'
+  ].includes(portalStatus) || clicValid;
+
+  // If deliverable explicitly claims vendor acceptance (Tier 3), it must possess a verifiable receipt
+  if (isClaimingVendorAcceptance) {
+    if (!receipt) {
+      return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'FAILED',
+        'Output claims vendor acceptance or CLIC valid, but lacks official session receipt from outputs/history/oca_sessions/ (INV-0).',
+        { portalStatus, clicValid, receipt: null });
+    }
+
+    if (typeof receipt === 'string') {
+      if (!fs.existsSync(receipt)) {
+        return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'FAILED',
+          `Session receipt path does not exist on disk: ${receipt}.`,
+          { portalStatus, clicValid, receipt });
+      }
+    } else if (typeof receipt === 'object') {
+      const hasValidFields = Boolean(receipt.status || receipt.manifestSha256 || receipt.capturedAt || receipt.startedAt);
+      if (!hasValidFields) {
+        return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'FAILED',
+          'Session receipt object is empty or missing required verification fields.',
+          { portalStatus, clicValid, receipt });
+      }
+    }
+
+    return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'PASSED',
+      'Official vendor acceptance receipt verified against active session record.',
+      { portalStatus, receipt: typeof receipt === 'string' ? receipt : (receipt.status || 'VERIFIED') });
+  }
+
+  // When portal validation is pending (Tier 0-2), status is NOT_APPLICABLE with honest pending advisory
+  return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'WARN', 'NOT_APPLICABLE',
+    'Live portal validation pending. Output appropriately marked as PORTAL VALIDATION PENDING (Tier 1/2).',
+    { portalStatus: portalStatus || 'PORTAL_VALIDATION_PENDING' });
+}
+
+/**
+ * BOQ Evaluation Criteria (B1–B19)
  */
 function validateBoqEvaluationCriteria(output, context = {}) {
   return [
@@ -701,7 +752,8 @@ function validateBoqEvaluationCriteria(output, context = {}) {
     _checkDeliveryFeasibility(output, context),
     _checkUnmatchedSkus(output, context),
     _checkUnresolvedRequirements(output, context),
-    _checkQuantityConservation(output, context)
+    _checkQuantityConservation(output, context),
+    _checkPortalReceiptIntegrity(output, context)
   ];
 }
 

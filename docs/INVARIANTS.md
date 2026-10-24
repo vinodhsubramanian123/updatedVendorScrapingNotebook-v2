@@ -1129,11 +1129,23 @@ To ensure that future AI agents (Antigravity, Codex, Claude, or subagents) never
   - Ad-hoc throwaway scripts in `scripts/lib/` are strictly banned; all customer exports and deliverables must route through canonical pipelines (`scripts/evaluators/eval_boq.js` or `scripts/evaluators/route_query.js`).
   - Automated graph verification is hooked directly into `npm run update:graph` via `link_graphify.js` and callable independently via `npm run verify:graph`.
 
+## 13. Invariants Catalog Extension (2026-10-24) — Deep Intelligence, Live Web Verifiability & Self-Correction
+- **INV-201: Live Portal Validation & Cryptographic Receipt Binding Gate (Gate B19)**:
+  - In `bom_verifier.js:_checkPortalReceiptIntegrity`, any evaluation output claiming Tier 3 live vendor acceptance (`ACCEPTED_BY_VENDOR`, `CLIC_ACCEPTED`, `CORRECTED_CANDIDATE_CLIC_ACCEPTED`, `VERIFIED`, or `clicValidation.isValid === true`) MUST possess an authentic, verifiable session receipt (`sessionReceipt`, `sessionReceiptPath`, or `portalReceipt`).
+  - File path receipts must exist on disk (`fs.existsSync(receipt)`), and object receipts must contain non-empty verification attributes (`status`, `manifestSha256`, `capturedAt`, or `startedAt`). Missing or malformed receipts fail Gate B19 (`BLOCK / FAILED`).
+  - Non-live evaluations must remain honestly flagged as `PORTAL_VALIDATION_PENDING` (`NOT_APPLICABLE` / `WARN`).
 
+- **INV-202: Autonomous Self-Correction & Counterfactual Backtracking Trail**:
+  - In `resource_arbitrator.js` and `reasoning_post_analyzer.js`, whenever physical slot contention (e.g., OCP 3.0 slot collision between storage controllers and high-speed NICs) or architectural conflict requires backtracking from a greedy initial placement, the engine MUST emit a structured `selfCorrectionTrail` recording `initialHypothesis`, `detectedFailure`, `selfCorrectionAction`, `resolutionDetails`, and `verifiedBuildable`.
+  - `performReasoningPostAnalysis` attaches `selfCorrectionTrail` to `reasoningAnalysis` and emits numbered narrative Step 6 (`"6. Autonomous Self-Correction & Backtracking: Resolved N physical contention(s)..."`).
 
+- **INV-203: Shared Datacenter Infrastructure Partitioning in Multi-Cluster Tenders**:
+  - In `multi_cluster_splitter.js`, datacenter-wide infrastructure items (42U/48U enterprise racks, rack-level PDUs, KVM consoles/switches) must be classified via `isSharedInfrastructureItem()` into a dedicated `sharedInfrastructure` partition with multiplier 1 (`Shared_Infrastructure_Datacenter.xlsx`), never divided fractionally across server node clusters or duplicated per cluster.
+  - `quantity_conservation.js` conserves `sharedInfrastructure` items at multiplier 1 alongside multiplied node clusters, while tagging mandatory CLIC enablement kits (`primaryCableSku`, `ceRemovalSku`) with `policyMandated: true`.
 
+- **INV-204: Architectural Capability Downgrade Penalties in Strategy Ranking**:
+  - In `strategy_synthesizer.js:computeCapabilityDowngradePenalty`, candidate solutions that downgrade customer-requested hardware capabilities (CPU Platinum $\rightarrow$ Gold/Silver/Bronze, Memory DDR5 $\rightarrow$ DDR4, GPU H100/H200/A100 $\rightarrow$ L4/T4/L40, Network 100GbE $\rightarrow$ 25GbE/10GbE, RAID Cache 8GB $\rightarrow$ 4GB, or Titanium $\rightarrow$ Platinum PSU efficiency) incur explicit deterministic penalties during `scoreAndSortCandidates`, ensuring Rank 1 strictly preserves customer performance intent.
 
-
-
-
+- **INV-205: In-Flight NotebookLM Authentication Auto-Healing**:
+  - In `notebook_query_utils.js:executeNotebookQuery`, if a live cloud query fails with `AUTH_EXPIRED` (HTTP 401 / UNAUTHENTICATED) and has not yet retried (`!options._retriedAuth`), the engine automatically invokes `checkAuthHealth({ autoHeal: true })` (`nlm login --force --storage file`) and retries the cloud query once before falling back to local deterministic RAG.
 

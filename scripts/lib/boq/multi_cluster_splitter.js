@@ -606,7 +606,8 @@ function applyClusterEnablementKits(cluster, mult, enablementKits) {
       description: primaryCableDesc,
       quantity: 1,
       totalQuantity: mult,
-      category: 'PCI-Express Slot'
+      category: 'PCI-Express Slot',
+      policyMandated: true
     });
   }
 
@@ -622,7 +623,8 @@ function applyClusterEnablementKits(cluster, mult, enablementKits) {
       description: ceRemovalDesc,
       quantity: 1,
       totalQuantity: mult,
-      category: 'Factory Configuration Setting'
+      category: 'Factory Configuration Setting',
+      policyMandated: true
     });
   }
 }
@@ -740,6 +742,30 @@ function buildQuantityConservationLedger(rawItems, clusters, options = {}) {
 }
 
 /**
+ * Classify whole-datacenter infrastructure items (Racks, PDUs, KVM consoles)
+ * that should not be divided or multiplied per server node.
+ * @param {object} item
+ * @returns {boolean}
+ */
+function isSharedInfrastructureItem(item) {
+  if (!item) return false;
+  const desc = (item.description || '').toLowerCase();
+  const cat = (item.category || '').toLowerCase();
+  const clean = cleanBaseSKU(item.sku || '');
+
+  const isRack = (desc.includes('rack') && (desc.includes('42u') || desc.includes('48u') || desc.includes('g2') || desc.includes('shock') || desc.includes('pallet') || desc.includes('enterprise'))) ||
+    cat === 'rack' || cat === 'racks' || clean.startsWith('BW90') || clean.startsWith('P9K0');
+
+  const isPdu = (desc.includes('pdu') || desc.includes('power distribution unit') || desc.includes('modular pdu') || desc.includes('monitored pdu')) ||
+    clean.startsWith('P9Q') || clean.startsWith('P9R');
+
+  const isKvm = (desc.includes('kvm') || desc.includes('rackmount console') || desc.includes('console switch') || desc.includes('tft7600')) ||
+    clean.startsWith('AF65') || clean.startsWith('Q2S');
+
+  return Boolean(isRack || isPdu || isKvm);
+}
+
+/**
  * Identify clusters and compute partition multipliers from raw items.
  * @param {Array<object>} rawItems 
  * @param {string} [boqName='']
@@ -813,9 +839,11 @@ function analyzeAndPartitionClusters(rawItems, boqName = '', options = {}) {
   clusters.sort((a, b) => b.cpuTdp - a.cpuTdp);
 
   const psuItems = rawItems.filter(i => {
+    if (isSharedInfrastructureItem(i)) return false;
     const d = i.description.toLowerCase();
     const c = i.category.toLowerCase();
-    return d.includes('power supply') || d.includes('flex slot') || c.includes('power');
+    return (d.includes('power supply') || d.includes('flex slot') || d.includes('psu') || c.includes('power')) &&
+      !d.includes('pdu') && !d.includes('power distribution unit');
   });
   const totalPsus = psuItems.reduce((sum, p) => sum + (p.quantity || 1), 0);
   const defaultPsusPerServer = Math.max(1, Math.round(totalPsus / totalChassis)) || 2;
@@ -827,7 +855,8 @@ function analyzeAndPartitionClusters(rawItems, boqName = '', options = {}) {
     item.category === 'Base Chassis' ||
     clean === resolvedBaseSku ||
     item.sku === 'CHASSIS_PLACEHOLDER' ||
-    allBaseSkus.has(clean);
+    allBaseSkus.has(clean) ||
+    isSharedInfrastructureItem(item);
 
   const itemAllocationsBySku = precomputeCommonItemAllocations(rawItems, clusters, totalChassis, isExcludedItem, enablementKits);
 
@@ -892,14 +921,24 @@ function analyzeAndPartitionClusters(rawItems, boqName = '', options = {}) {
     };
   });
 
+  const sharedInfrastructure = rawItems.filter(isSharedInfrastructureItem).map(it => ({
+    sku: it.sku,
+    description: it.description,
+    quantity: it.quantity || 1,
+    totalQuantity: it.quantity || 1,
+    category: it.category || 'Shared Infrastructure',
+    isSharedInfrastructure: true
+  }));
+
   const overallPacing = analyzeDeliveryPacing(rawItems, { catalogData });
-  const quantityConservation = buildQuantityConservationLedger(rawItems, clusters);
+  const quantityConservation = buildQuantityConservationLedger(rawItems, { clusters, sharedInfrastructure });
 
   return {
     isMultiCluster: true,
     totalChassis,
     detectedChassis,
     clusters,
+    sharedInfrastructure,
     quantityConservation,
     deliveryPacing: overallPacing,
     recommendedUcidSplit: overallPacing.recommendedUcidSplit,
@@ -989,10 +1028,47 @@ function splitAndWriteClusterWorkbooks(inputFilePath, outputDirectory, options =
     });
   });
 
+  if (Array.isArray(partitionResult.sharedInfrastructure) && partitionResult.sharedInfrastructure.length > 0) {
+    const wb = XLSX.utils.book_new();
+    const sheetData = [
+      ['Part No', 'Qty', 'Description', 'Category', 'Unit List Price (USD)', 'Extended Price (USD)', 'Portal / CLIC Status']
+    ];
+    partitionResult.sharedInfrastructure.forEach(item => {
+      const { isPriced, unitPriceUsd, isConfirmedZero } = evaluateItemPricing(item);
+      const displayUnitPrice = isPriced ? (unitPriceUsd === 0 ? (isConfirmedZero ? 0 : null) : unitPriceUsd) : null;
+      const displayExtendedPrice = (displayUnitPrice !== null && typeof displayUnitPrice === 'number')
+        ? displayUnitPrice * (item.quantity || 1)
+        : null;
+      sheetData.push([
+        item.sku,
+        item.quantity,
+        item.description,
+        item.category,
+        displayUnitPrice,
+        displayExtendedPrice,
+        'PORTAL_VALIDATION_PENDING'
+      ]);
+    });
+    const ws = XLSX.utils.aoa_to_sheet(sheetData);
+    XLSX.utils.book_append_sheet(wb, ws, 'Shared Infrastructure');
+    const outPath = path.join(outputDirectory, 'Shared_Infrastructure_Datacenter.xlsx');
+    XLSX.writeFile(wb, outPath);
+
+    generatedWorkbooks.push({
+      clusterName: 'Shared_Infrastructure',
+      multiplier: 1,
+      isSharedInfrastructure: true,
+      filePath: outPath,
+      itemCount: partitionResult.sharedInfrastructure.length,
+      items: partitionResult.sharedInfrastructure
+    });
+  }
+
   return {
     totalChassis: partitionResult.totalChassis,
     clusterCount: partitionResult.clusters.length,
     workbooks: generatedWorkbooks,
+    sharedInfrastructure: partitionResult.sharedInfrastructure || [],
     quantityConservation: partitionResult.quantityConservation
   };
 }
@@ -1005,6 +1081,7 @@ module.exports = {
   applyClusterManagementAndSupportPolicy,
   solveDiophantineMultiCluster,
   buildQuantityConservationLedger,
+  isSharedInfrastructureItem,
   QUALIFYING_COM_ONEVIEW_SKUS
 };
 
