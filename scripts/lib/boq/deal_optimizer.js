@@ -271,6 +271,56 @@ function analyzeDealValueEngineering(items, evalResults = {}, catalogData = null
     }
   }
 
+  // 6. Heatsink Tier Right-Sizing & Lead-Time Bottleneck Elimination (INV-208)
+  const maxPerfHeatsinkItems = items.filter(it => {
+    const raw = String(it.sku || '').trim().toUpperCase();
+    const d = (it.description || '').toLowerCase();
+    if (/(?:\s+|#)(?:0D1|OD1|B19)\b/i.test(raw) || d === 'factory integrated') return false;
+    return raw.startsWith('P74794-B21') || d.includes('max performance heat sink');
+  });
+
+  if (maxPerfHeatsinkItems.length > 0 && (workload.gpuCount || 0) === 0) {
+    let detectedMaxTdp = compute.maxCpuTdpWatts || 0;
+    if (!detectedMaxTdp) {
+      for (const it of items) {
+        const d = (it.description || '').toLowerCase();
+        if (d.includes('processor') || d.includes('xeon') || d.includes('epyc')) {
+          const m = d.match(/(\d{2,3})\s*w/i);
+          if (m) detectedMaxTdp = Math.max(detectedMaxTdp, parseInt(m[1], 10));
+        }
+      }
+    }
+    if (detectedMaxTdp === 0 || detectedMaxTdp <= 270) {
+      let totalMaxHsQty = 0;
+      let totalMaxHsCost = 0;
+      const altUnitPrice = getSkuListPrice('P74792-B21', catalogData, chassisDir) || 316.0;
+      for (const it of maxPerfHeatsinkItems) {
+        const q = it.quantity || 1;
+        totalMaxHsQty += q;
+        const p = it.unitListPrice || getSkuListPrice(it.sku, catalogData, chassisDir) || 624.0;
+        totalMaxHsCost += (p * q);
+      }
+      // P74794-B21 has OCA constraint max 1 per 2P server ($624/server), whereas P74792-B21 requires 1 per CPU socket (2 per 2P server = $632/server).
+      const totalCpuQty = compute.cpuCount || (totalMaxHsQty * 2);
+      const targetHighPerfQty = Math.max(totalCpuQty, totalMaxHsQty);
+      const altTotalCost = targetHighPerfQty * altUnitPrice;
+      const hsSavings = Math.max(0, totalMaxHsCost - altTotalCost);
+      potentialSavingsUsd += hsSavings;
+      opportunities.push({
+        id: 'VE-OPT-HEATSINK-TIER-RIGHT-SIZING',
+        component: 'Cooling & Thermal Envelope',
+        title: 'Right-Size Max Performance Heatsink (45d Lead Time) to High Performance Heatsink (4d Lead Time) (INV-208)',
+        severity: 'OPPORTUNITY',
+        currentSelection: `P74794-B21 Max Performance Heat Sink Kit (${totalMaxHsQty} kit(s) @ $624/kit, max 1/server, 45-day lead time)`,
+        recommendedAlternative: `HPE ProLiant Compute DL380 Gen12 2U High Performance Heat Sink Kit (P74792-B21, ${targetHighPerfQty} kit(s) @ $316/kit, 1/socket, 4-day lead time)`,
+        estimatedSavingsUsd: hsSavings,
+        leadTimeSavedDays: 41,
+        rationale: `Processors <= 270W TDP (${detectedMaxTdp || 225}W detected) are 100% thermally certified with the High Performance Heat Sink (P74792-B21, rated 185W-270W, 1 kit per socket = $632 per 2P server). Max Performance (P74794-B21, 1 kit per 2P server = $624/server) is only required for 275W-350W+ extreme TDP CPUs and imposes a 45-day lead-time bottleneck.`,
+        presalesPitch: 'Switching from 1x P74794-B21/server ($624) to 2x P74792-B21/server ($632) slashes cooling lead time by 41 days (from 45 days down to 4 days) at virtually identical per-server cost ($8/server delta).'
+      });
+    }
+  }
+
   // Compute metrics
   const optimizedTotalUsd = Math.max(0, baselineTotalUsd - potentialSavingsUsd);
   const capexSavingsPercent = baselineTotalUsd > 0 ? ((potentialSavingsUsd / baselineTotalUsd) * 100) : 0;

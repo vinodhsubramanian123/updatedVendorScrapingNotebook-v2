@@ -3,7 +3,7 @@
  * scripts/lib/aspects/memory_channel.js — Memory & Channel Symmetry Aspect Pre-Check
  */
 
-const { cleanBaseSKU, buildCatalogSkuIndex } = require('../catalog/sku.js');
+const { cleanBaseSKU, buildCatalogSkuIndex, isOcaModifierTrackingRow } = require('../catalog/sku.js');
 const { classifyComponentRole } = require('../catalog/product_meta.js');
 
 function evalMemoryChannel(items, passedCpuCount = 0, catalogData = null, isCtoChassis = false, channelWidth = 8) {
@@ -30,6 +30,7 @@ function evalMemoryChannel(items, passedCpuCount = 0, catalogData = null, isCtoC
   });
 
   for (const it of items) {
+    if (isOcaModifierTrackingRow(it.sku, it.description)) continue;
     const desc = (it.description || '').toLowerCase();
     const rawSku = (it.sku || '').toUpperCase().trim();
     const cleanSku = cleanBaseSKU(it.sku);

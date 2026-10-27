@@ -3,7 +3,7 @@
  * scripts/lib/aspects/pcie_riser.js — PCIe Slot Capacity & Riser Aspect Pre-Check
  */
 
-const { cleanBaseSKU, buildCatalogSkuIndex } = require('../catalog/sku.js');
+const { cleanBaseSKU, buildCatalogSkuIndex, isOcaModifierTrackingRow } = require('../catalog/sku.js');
 const { classifyComponentRole } = require('../catalog/product_meta.js');
 
 function isGpuComponent(role, desc) {
@@ -208,6 +208,7 @@ function tallyPcieItems(items, catalogData, mandatorySkus = {}) {
   tally.isDl380a = isDl380a;
 
   for (const it of items) {
+    if (isOcaModifierTrackingRow(it.sku, it.description)) continue;
     let desc = (it.description || '').toLowerCase();
     const sku = cleanBaseSKU(it.sku);
     const qty = it.quantity || 1;

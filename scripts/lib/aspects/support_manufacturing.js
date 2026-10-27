@@ -3,13 +3,12 @@
  * scripts/lib/aspects/support_manufacturing.js — Support & Manufacturing Aspect Pre-Check
  */
 
-const { cleanBaseSKU, buildCatalogSkuIndex } = require('../catalog/sku.js');
+const { cleanBaseSKU, buildCatalogSkuIndex, isOcaModifierTrackingRow } = require('../catalog/sku.js');
 const { classifyComponentRole } = require('../catalog/product_meta.js');
 
-// Recognized customer-selectable management license SKUs. Presence is tracked,
-// but none is injected or treated as mandatory (INV-32).
+// Recognized management license SKUs that satisfy HPE CLIC Rule 81322276 on ProLiant Gen11/Gen12 CTO servers (INV-207).
 const VALID_MANAGEMENT_SKUS = new Set([
-  'R7A11AAE', // Base COM 3yr SaaS
+  'R7A11AAE', // Base COM 3yr SaaS (Satisfies CLIC Rule 81322276)
   'R7A12AAE', // COM 5yr
   'S2E10AAE', // COM 7yr
   'S5E59AAE', // COM Adv 3yr
@@ -19,9 +18,11 @@ const VALID_MANAGEMENT_SKUS = new Set([
   'P8B31A'    // OneView Advanced w/o iLO FIO
 ]);
 
-// Unsolicited Optional Services & Software (INV-32: Never inject unless explicitly requested)
+// Unsolicited Optional Services & FIO Pre-Claiming Tokens (INV-32 & INV-207: Never inject unless explicitly requested)
+// Note: S1A05A (HPE Compute Cloud Management Server FIO Enablement, $1) is an optional factory pre-claiming token
+// that is NOT required to pass CLIC Rule 81322276 when R7A11AAE is present, even though OCA scrapes its subcategory as constraint="required".
 const UNSOLICITED_OPTIONAL_SERVICE_SKUS = new Set([
-  'S1A05A',    // Optional SaaS / Software add-on
+  'S1A05A',    // Optional FIO GreenLake cloud pre-claim token (not required when R7A11AAE is present)
   'HA114A1',   // HPE Installation and Startup Service
   'HA114A1 5A6', // HPE ProLiant DL/ML ONS Startup SVC
   'HA124A1',   // HPE Premier Installation Service
@@ -121,6 +122,7 @@ function tallySupportItems(items, catalogData) {
   };
 
   for (const it of items) {
+    if (isOcaModifierTrackingRow(it.sku, it.description)) continue;
     const desc = (it.description || '').toLowerCase();
     const sku = cleanBaseSKU(it.sku);
     const qty = it.quantity || 1;
@@ -144,13 +146,16 @@ function tallySupportItems(items, catalogData) {
       const uPrice = parseFloat(String(it.unitPrice || it.price || it['Unit Price (USD)'] || '0').replace(/[^0-9.]/g, '')) || 0;
       const extPrice = uPrice * qty;
       tally.totalUnsolicitedCostUsd += extPrice;
+      const isFioCloudToken = sku === 'S1A05A';
       tally.unsolicitedOptionalItems.push({
         sku: it.sku,
         description: it.description,
         quantity: qty,
         unitPriceUsd: uPrice,
         extendedPriceUsd: extPrice,
-        reason: 'Optional software / startup service not requested by customer (INV-32)'
+        reason: isFioCloudToken
+          ? 'Optional FIO GreenLake cloud pre-claim token (INV-32 / INV-207): Not required by CLIC Rule 81322276 when R7A11AAE is present; safe to remove unless customer explicitly requests factory GreenLake workspace binding.'
+          : 'Optional software / startup service not requested by customer (INV-32)'
       });
     }
 

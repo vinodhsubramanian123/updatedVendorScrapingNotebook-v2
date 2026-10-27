@@ -351,6 +351,7 @@ function validateThermalRules(ctx) {
   if (isTapeLibrary) return;
 
   const hasTriModeCage = storage?.hasDriveCage || storage?.needsDriveCageForController || (mandatorySkus?.GENERIC_CAGE?.sku && items?.some(it => ctx.cleanBaseSKU(it.sku) === ctx.cleanBaseSKU(mandatorySkus.GENERIC_CAGE.sku)));
+  const fanQtyPerServer = compute.isModularFan ? (compute.maxFanKitsAllowed || 6) : 1;
   const needsFansForStorage = hasTriModeCage && storage?.hasStorageController && !compute.hasHighPerfFans;
   if (needsFansForStorage && !missingDependencies.some(d => d.key === 'HIGH_PERF_FAN_KIT')) {
     const reason = `INV-87: Tri-Mode Drive Cage with Storage Controller alters chassis airflow impedance, mandating High-Performance Fan Kit (${mandatorySkus.HIGH_PERF_FAN_KIT.sku}).`;
@@ -360,7 +361,7 @@ function validateThermalRules(ctx) {
       rule: 'INV-87: Storage Thermal Escalation Rule',
       sku: mandatorySkus.HIGH_PERF_FAN_KIT.sku,
       description: mandatorySkus.HIGH_PERF_FAN_KIT.name,
-      quantity: serverCount,
+      quantity: serverCount * fanQtyPerServer,
       reasoning: reason
     });
   }
@@ -377,15 +378,22 @@ function validateThermalRules(ctx) {
       rule: 'High TDP Thermal Cooling Rule',
       sku: mandatorySkus.HIGH_PERF_FAN_KIT.sku,
       description: mandatorySkus.HIGH_PERF_FAN_KIT.name,
-      quantity: serverCount,
+      quantity: serverCount * fanQtyPerServer,
       reasoning: reason
     });
   }
 
   if (compute.fanKitExceedsMax) {
-    const reason = `CLIC Rule 81354654 Failed: High Performance Fan Kit (${mandatorySkus.HIGH_PERF_FAN_KIT.sku}) contains all 6 chassis fans. Maximum 1 kit allowed per server (${compute.fanKitCount} kits ordered for ${serverCount} servers). Normalize to 1 kit per server.`;
+    const maxKits = compute.maxFanKitsAllowed || 1;
+    const reason = compute.isModularFan
+      ? `CLIC Rule 81354654 / INV-206 Failed: Modular Fan Kit (${mandatorySkus.HIGH_PERF_FAN_KIT.sku}) is packaged as 1 individual fan rotor per kit. Maximum ${maxKits} kits allowed per server (${compute.fanKitCount} kits ordered for ${serverCount} servers). Normalize to ${maxKits} kits per server.`
+      : `CLIC Rule 81354654 Failed: High Performance Fan Kit (${mandatorySkus.HIGH_PERF_FAN_KIT.sku}) contains all 6 chassis fans. Maximum 1 kit allowed per server (${compute.fanKitCount} kits ordered for ${serverCount} servers). Normalize to 1 kit per server.`;
     errors.push(reason);
     mathDeductions.push(reason);
+  }
+
+  if (compute.hasOverprovisionedMaxHeatsink) {
+    warnings.push(`INV-208 Heatsink Right-Sizing & Lead-Time Advisory: Max Performance Heat Sink Kit (P74794-B21, $624/kit, max 1 per 2P server, 45-day lead time) is over-provisioned for ${compute.maxCpuTdpWatts}W TDP processors (<= 270W). Substitute with High Performance Heat Sink Kit (P74792-B21, $316/kit, 2 per 2P server = $632/server, 4-day lead time) to slash cooling lead time by 41 days (45 days -> 4 days) at virtually identical cost ($8/server delta).`);
   }
 
   const isHeatsinkMandated = (compute.isGen11 && compute.maxCpuTdpWatts >= 270) || (compute.maxCpuTdpWatts >= 300);
@@ -962,7 +970,9 @@ function _buildAspect1Compute(ctx, _computePresent) {
     : !_computePresent
     ? 'INV-105: Compute subsystem data absent — cannot evaluate thermal envelope.'
     : compute.fanKitExceedsMax
-    ? `CLIC Rule 81354654 Failed: High Performance Fan Kit (${mandatorySkus.HIGH_PERF_FAN_KIT.sku}) contains all 6 chassis fans. Maximum 1 kit allowed per server (${compute.fanKitCount} kits ordered).`
+    ? (compute.isModularFan
+        ? `CLIC Rule 81354654 / INV-206 Failed: Modular Fan Kit (${mandatorySkus.HIGH_PERF_FAN_KIT.sku}) is packaged as 1 individual fan rotor per kit. Maximum ${compute.maxFanKitsAllowed || 6} kits allowed per server (${compute.fanKitCount} kits ordered).`
+        : `CLIC Rule 81354654 Failed: High Performance Fan Kit (${mandatorySkus.HIGH_PERF_FAN_KIT.sku}) contains all 6 chassis fans. Maximum 1 kit allowed per server (${compute.fanKitCount} kits ordered).`)
     : ((compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS || (pcie.gpuCount > 0 && !compute.isDl380aAccelerator)) && !compute.hasHighPerfFans)
     ? `High TDP Thermal Math Failed: ${compute.maxCpuTdpWatts}W processor exceeds ${HIGH_TDP_THRESHOLD_WATTS}W limit without High-Performance Fan Kit.`
     : compute.isDl380aAccelerator

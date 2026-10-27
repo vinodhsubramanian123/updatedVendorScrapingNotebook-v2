@@ -4,11 +4,11 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen11/DL385_Gen11`
 
-**Sync Timestamp**: 2026-10-21T16:07:27.773Z
+**Sync Timestamp**: 2026-10-27T09:01:18.767Z
 
 **Total Verified SKUs**: `1401` (`667` Hardware + `734` Services)
 
-**Total Synced KnowledgeDeltas**: `13`
+**Total Synced KnowledgeDeltas**: `15`
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -55,6 +55,14 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 4. **[DELTA_DL385_GEN11_L3_CACHE_TRADE_OFF_STRATEGY] DL385_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL385_Gen11 CTO Server`):
    - **Rule**: When modernizing AMD EPYC 7543 (32c, 2.8GHz, 256MB L3, 225W), EPYC 9334 (32c, 2.7GHz, 128MB L3, 210W, ,170 USD) saves CapEx but halves L3 cache from 256MB to 128MB due to 4-CCD topology. For memory-latency and database workloads, EPYC 9354 (32c, 3.25GHz, 256MB L3, 280W, ,861 USD) restores full 256MB L3 cache and exceeds base clock (+0.45GHz) for +,820 USD list price across 10 servers. Chassis cooling (60x P58465-B21 performance fans + 20x P58459-B21 performance heatsinks) is already 100% qualified for 280W. Dual-track options must be presented to facilitate commercial negotiations (INV-184).
    - **Affected SKU**: `P53712-B21` | **Required Dependency**: `P53701-B21`
+
+5. **[DELTA_DL385_GEN11_MODULAR_FAN_PACKAGING_MODALITY_INV206] DL385_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL385_Gen11 CTO Server`):
+   - **Rule**: On HPE ProLiant DL385 Gen11 (and DL3X5 AMD platforms), P58465-B21 (HPE ProLiant DL3X5 Gen11 2U Performance Fan Kit, .00 USD list) is packaged as 1 individual fan rotor per kit (MODULAR_PER_ROTOR), with discrete OCA dropdown options [0, 4, 6] per server (4 kits for 1-CPU, 6 kits for 2-CPU; 60 kits for 10 dual-socket servers). Never apply the Intel DL380 bundled 6-fan kit rule (1 kit/server) to DL385 Gen11 (INV-206).
+   - **Affected SKU**: `P58465-B21` | **Required Dependency**: `P53921-B21`
+
+6. **[DELTA_DL385_GEN11_COM_R7A11AAE_VS_S1A05A_SEPARATION_INV207] DL385_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL385_Gen11 CTO Server`):
+   - **Rule**: On DL385 Gen11 CTO builds (P53921-B21), R7A11AAE (HPE Compute Ops Management Standard 3-year Upfront SaaS, .00 USD) satisfies CLIC Rule 81322276 for portal orderability. Its companion FIO SKU S1A05A (HPE Compute Cloud Management Server FIO Enablement, .00 USD) is an optional factory GreenLake pre-claiming token that is NOT required to pass CLIC Rule 81322276 even though OCA scrapes its subcategory as constraint=required. Remove S1A05A unless the customer explicitly requests factory GreenLake workspace binding (INV-207).
+   - **Affected SKU**: `S1A05A` | **Required Dependency**: `R7A11AAE`
 
 
 ## 🔒 3b. Physical & Architectural Gating Rules (DOM Unavailable Tables)

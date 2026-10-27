@@ -3,7 +3,7 @@
  * scripts/lib/aspects/power_environment.js — Power & Environmental Aspect Pre-Check
  */
 
-const { cleanBaseSKU, buildCatalogSkuIndex } = require('../catalog/sku.js');
+const { cleanBaseSKU, buildCatalogSkuIndex, isOcaModifierTrackingRow } = require('../catalog/sku.js');
 const { classifyComponentRole } = require('../catalog/product_meta.js');
 
 // GPU TDP lookup by description keyword (watts). Ordered by most-specific first.
@@ -173,6 +173,7 @@ function checkMixedWattagePsus(tally, items, serverCount) {
     return tally.psuWattages.size > 1;
   }
   return items.filter(it => {
+    if (isOcaModifierTrackingRow(it.sku, it.description)) return false;
     const d = (it.description || '').toLowerCase();
     return d.includes('power supply') || d.includes('flex slot') || d.includes('platinum') || d.includes('titanium');
   }).some(it => ((it.quantity || it.qty || 1) % 2) !== 0);
@@ -219,6 +220,7 @@ function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}, ser
   const skuIndex = buildCatalogSkuIndex(catalogData);
 
   for (const it of items) {
+    if (isOcaModifierTrackingRow(it.sku, it.description)) continue;
     const desc = (it.description || '').toLowerCase();
     const sku = cleanBaseSKU(it.sku);
 

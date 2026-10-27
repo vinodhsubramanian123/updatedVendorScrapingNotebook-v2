@@ -802,13 +802,18 @@ function revalidateCandidateParts(parts, chassisInfo, getPrice, catalogData = nu
     });
 
   if ((highTdpCpu || hasGpu) && !hasHighPerfFan) {
+    const isModularFan = mandatory.HIGH_PERF_FAN_KIT?.packagingModality === 'MODULAR_PER_ROTOR' ||
+      ['P58465-B21', 'P58464-B21', 'P58466-B21'].includes(cleanBaseSKU(fanSku));
+    const cpuPart = updatedParts.find(p => /\b(processor|xeon|epyc)\b/i.test(p.description || '') && !/\b(heatsink|heat sink|fan)\b/i.test(p.description || ''));
+    const cpuQty = cpuPart ? (cpuPart.quantity || 2) : 2;
+    const fanQty = isModularFan ? (cpuQty === 1 ? 4 : 6) : 1;
     const fanPrice = getPrice(fanSku);
     const fanPart = {
       sku: fanSku,
       description: fanName,
-      quantity: 1,
+      quantity: fanQty,
       unitPriceUsd: fanPrice,
-      extendedPriceUsd: fanPrice,
+      extendedPriceUsd: fanPrice !== null ? fanPrice * fanQty : null,
       isFixInjected: true,
       isCascadingFix: true,
       category: 'Thermal Protection'

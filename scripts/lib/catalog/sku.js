@@ -119,6 +119,23 @@ function classifyOptionType(skuStr) {
 }
 
 /**
+ * Identify whether a BOM line item is a companion OCA modifier / tracking row
+ * (e.g. "P74571-B21  0D1" with description "Factory Integrated", or "P73282-B21  B19" regional code).
+ * Such rows share the base SKU of their parent hardware item and MUST NOT be double-counted
+ * as physical components during aspect evaluation (INV-209).
+ * @param {string} skuStr
+ * @param {string} [description='']
+ * @returns {boolean}
+ */
+function isOcaModifierTrackingRow(skuStr, description = '') {
+  const raw = String(skuStr || '').replace(/[\r\n\t]+/g, ' ').trim();
+  const desc = String(description || '').trim().toLowerCase();
+  if (/(?:\s+|#)(?:0D1|OD1|B19|#0D1|#B19)\b/i.test(raw)) return true;
+  if (desc === 'factory integrated') return true;
+  return false;
+}
+
+/**
  * Identify if SKU is a Service or Support SKU
  * @param {string} skuStr 
  * @returns {boolean}
@@ -241,6 +258,7 @@ module.exports = {
   isValidHpeSKU,
   cleanBaseSKU,
   classifyOptionType,
+  isOcaModifierTrackingRow,
   isServiceSku,
   buildCatalogSkuIndex,
   classifySkuValidation,

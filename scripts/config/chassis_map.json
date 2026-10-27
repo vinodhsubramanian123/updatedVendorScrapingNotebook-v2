@@ -1446,11 +1446,31 @@
     "ProLiant_Gen12": {
       "highPerfFanKit": {
         "sku": "P48820-B21",
-        "name": "HPE ProLiant DL380 Gen12 High Performance Fan Kit"
+        "name": "HPE ProLiant DL380 Gen12 High Performance Fan Kit",
+        "packagingModality": "BUNDLED_CHASSIS_KIT",
+        "qtyPerServer": 1
       },
       "highPerfHeatsink": {
         "sku": "P48818-B21",
-        "name": "HPE ProLiant DL380 Gen12 High Performance Heatsink"
+        "alternateSkus": ["P74792-B21"],
+        "canonicalGen12Sku": "P74792-B21",
+        "name": "HPE ProLiant DL380 Gen12 High Performance Heatsink",
+        "packagingModality": "PER_SOCKET_KIT",
+        "qtyPerCpu": 1,
+        "maxQtyPerServer": 2,
+        "unitListPrice": 316,
+        "maxTdpWatts": 270,
+        "leadTimeDays": 4
+      },
+      "maxPerfHeatsink": {
+        "sku": "P74794-B21",
+        "name": "HPE ProLiant Compute DL380 Gen12 2U Max Performance Heat Sink Kit",
+        "packagingModality": "DUAL_SOCKET_CHASSIS_KIT",
+        "qtyPerServer": 1,
+        "maxQtyPerServer": 1,
+        "unitListPrice": 624,
+        "minTdpWatts": 275,
+        "leadTimeDays": 45
       },
       "noDriveFioKit": {
         "sku": "873763-B21",
@@ -1657,6 +1677,26 @@
         "name": "HPE CE Mark Removal FIO Enablement Kit"
       }
     },
+    "ProLiant_DL385_Gen11": {
+      "highPerfFanKit": {
+        "sku": "P58465-B21",
+        "name": "HPE ProLiant DL3X5 Gen11 2U Performance Fan Kit",
+        "packagingModality": "MODULAR_PER_ROTOR",
+        "qtyPerCpu": { "1": 4, "2": 6 }
+      },
+      "highPerfHeatsink": {
+        "sku": "P58459-B21",
+        "name": "HPE ProLiant DL3X5 Gen11 2U Performance Heat Sink Kit"
+      },
+      "airBaffleKit": {
+        "sku": "P57886-B21",
+        "name": "HPE ProLiant DL385 Gen11 2U Standard/Performance FIO Air Baffle Kit"
+      },
+      "primaryRiser": {
+        "sku": "P57890-B21",
+        "name": "HPE ProLiant DL385 Gen11 x16/x16 Primary FIO Upgrade Riser Kit"
+      }
+    },
     "Alletra_Storage": {
       "noDriveFioKit": {
         "sku": "R0Q21A",
@@ -1744,6 +1784,7 @@
       { "familyPattern": "proliant", "genPattern": "gen12", "modelPattern": "dl380a", "kitKey": "ProLiant_DL380a_Gen12" },
       { "familyPattern": "proliant", "genPattern": "gen11", "modelPattern": "dl145", "kitKey": "ProLiant_DL145_Gen11" },
       { "familyPattern": "proliant", "genPattern": "gen11", "modelPattern": "dl360", "kitKey": "ProLiant_DL360_Gen11" },
+      { "familyPattern": "proliant", "genPattern": "gen11", "modelPattern": "dl385", "kitKey": "ProLiant_DL385_Gen11" },
       { "familyPattern": "proliant", "genPattern": "gen12", "modelPattern": "dl580", "kitKey": "ProLiant_DL580_Gen12" },
       { "familyPattern": "synergy", "genPattern": "gen12", "modelPattern": "*", "kitKey": "Synergy_Gen12" },
       { "familyPattern": "synergy", "genPattern": "*", "modelPattern": "*", "kitKey": "Synergy_General" },

@@ -702,5 +702,41 @@
     "provenance": "INV-184 and DL380 Gen12 QuickSpecs",
     "scopeTaxonomy": "CHASSIS_SPECIFIC",
     "status": "APPLIED_TO_PRECHECKS_AND_RAG"
+  },
+  {
+    "deltaId": "DELTA_DL380_GEN12_HEATSINK_TIER_RIGHT_SIZING_INV208",
+    "timestamp": "2026-10-27T08:30:02.000Z",
+    "chassis": "DL380_Gen12",
+    "vendor": "HPE",
+    "pillar": "SERVER",
+    "family": "ProLiant",
+    "generation": "Gen12",
+    "productId": "DL380_Gen12",
+    "affectedSku": "P74794-B21",
+    "requiredDependencySku": "P74792-B21",
+    "ruleType": "THERMAL_HEATSINK_RIGHT_SIZING_RULE",
+    "ruleUpdate": "On HPE ProLiant DL380 Gen12 (P73282-B21), processors with 185W < TDP <= 270W (such as Intel Xeon 6530P 225W P74571-B21) are 100% thermally certified with P74792-B21 (HPE ProLiant Compute DL380 Gen12 2U High Performance Heat Sink Kit, 316.00 USD list per socket, max 2 per 2P server = 632.00 USD/server, 4-day lead time). Do not over-provision P74794-B21 (2U Max Performance Heat Sink Kit, 624.00 USD list per dual-socket server, max 1 per server, 45-day lead time), which is only required for >270W extreme TDP processors (275W-350W+) or dense GPU workloads. Substituting 1x P74794-B21/server (624.00 USD) with 2x P74792-B21/server (632.00 USD) has virtually identical cost (+8.00 USD/server or +72.00 USD across 9 servers) while slashing cooling lead time by 41 days from 45 days down to 4 days (INV-208).",
+    "rawMessage": "DL380 Gen12 Heatsink Right-Sizing & Packaging (INV-208): 2x P74792-B21 (632 USD/server, max 2, 4d lead time) vs 1x P74794-B21 (624 USD/server, max 1, 45d lead time) for 185W-270W CPUs.",
+    "provenance": "Live HPE OCA Configurator UCID 5157494931-02 and INV-208",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "status": "APPLIED_TO_PRECHECKS_AND_RAG"
+  },
+  {
+    "deltaId": "DELTA_DL380_GEN12_COM_R7A11AAE_VS_S1A05A_SEPARATION_INV207",
+    "timestamp": "2026-10-27T08:30:03.000Z",
+    "chassis": "DL380_Gen12",
+    "vendor": "HPE",
+    "pillar": "SERVER",
+    "family": "ProLiant",
+    "generation": "Gen12",
+    "productId": "DL380_Gen12",
+    "affectedSku": "S1A05A",
+    "requiredDependencySku": "R7A11AAE",
+    "ruleType": "MANAGEMENT_LICENSE_VS_FIO_TOKEN_SEPARATION",
+    "ruleUpdate": "On DL380 Gen12 CTO builds (P73282-B21), R7A11AAE (HPE Compute Ops Management Standard 3-year Upfront SaaS, .00 USD) satisfies CLIC Rule 81322276 for portal orderability, whereas S1A05A (.00 USD FIO cloud pre-claim token) is optional and safe to omit (INV-207).",
+    "rawMessage": "DL380 Gen12 R7A11AAE vs S1A05A Separation (INV-207): Keep R7A11AAE for CLIC Rule 81322276; omit S1A05A.",
+    "provenance": "Live HPE OCA Configurator UCID 5157494931-02, CLIC Rule 81322276, and INV-207",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "status": "APPLIED_TO_PRECHECKS_AND_RAG"
   }
 ]

@@ -3,7 +3,7 @@
  * scripts/lib/aspects/networking_ocp.js — Networking & OCP 3.0 Interconnect Aspect Pre-Check
  */
 
-const { cleanBaseSKU, buildCatalogSkuIndex } = require('../catalog/sku.js');
+const { cleanBaseSKU, buildCatalogSkuIndex, isOcaModifierTrackingRow } = require('../catalog/sku.js');
 const { classifyComponentRole } = require('../catalog/product_meta.js');
 
 function buildSkuCategoryMap(catalogData) {
@@ -166,6 +166,7 @@ function tallyNetworkingItems(items, skuCategoryMap, mandatorySkus = {}) {
   };
 
   for (const it of items) {
+    if (isOcaModifierTrackingRow(it.sku, it.description)) continue;
     const desc = (it.description || '').toLowerCase();
     const sku = cleanBaseSKU(it.sku);
     const qty = it.quantity || 1;

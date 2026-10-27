@@ -70,5 +70,41 @@
     "provenance": "INV-184 and AMD EPYC 9004 Architecture Whitepaper",
     "scopeTaxonomy": "CHASSIS_SPECIFIC",
     "status": "APPLIED_TO_PRECHECKS_AND_RAG"
+  },
+  {
+    "deltaId": "DELTA_DL385_GEN11_MODULAR_FAN_PACKAGING_MODALITY_INV206",
+    "timestamp": "2026-10-27T08:30:00.000Z",
+    "chassis": "DL385_Gen11",
+    "vendor": "HPE",
+    "pillar": "SERVER",
+    "family": "ProLiant",
+    "generation": "Gen11",
+    "productId": "DL385_Gen11",
+    "affectedSku": "P58465-B21",
+    "requiredDependencySku": "P53921-B21",
+    "ruleType": "FAN_PACKAGING_MODALITY_RULE",
+    "ruleUpdate": "On HPE ProLiant DL385 Gen11 (and DL3X5 AMD platforms), P58465-B21 (HPE ProLiant DL3X5 Gen11 2U Performance Fan Kit, .00 USD list) is packaged as 1 individual fan rotor per kit (MODULAR_PER_ROTOR), with discrete OCA dropdown options [0, 4, 6] per server (4 kits for 1-CPU, 6 kits for 2-CPU; 60 kits for 10 dual-socket servers). Never apply the Intel DL380 bundled 6-fan kit rule (1 kit/server) to DL385 Gen11 (INV-206).",
+    "rawMessage": "DL385 Gen11 Modular Fan Kit Modality (INV-206): P58465-B21 is 1 fan rotor per kit (), requiring 4 kits (1P) or 6 kits (2P) per server (60 kits for 10 2P servers).",
+    "provenance": "Live HPE OCA Configurator UCID 5157776172-01 and INV-206",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "status": "APPLIED_TO_PRECHECKS_AND_RAG"
+  },
+  {
+    "deltaId": "DELTA_DL385_GEN11_COM_R7A11AAE_VS_S1A05A_SEPARATION_INV207",
+    "timestamp": "2026-10-27T08:30:01.000Z",
+    "chassis": "DL385_Gen11",
+    "vendor": "HPE",
+    "pillar": "SERVER",
+    "family": "ProLiant",
+    "generation": "Gen11",
+    "productId": "DL385_Gen11",
+    "affectedSku": "S1A05A",
+    "requiredDependencySku": "R7A11AAE",
+    "ruleType": "MANAGEMENT_LICENSE_VS_FIO_TOKEN_SEPARATION",
+    "ruleUpdate": "On DL385 Gen11 CTO builds (P53921-B21), R7A11AAE (HPE Compute Ops Management Standard 3-year Upfront SaaS, .00 USD) satisfies CLIC Rule 81322276 for portal orderability. Its companion FIO SKU S1A05A (HPE Compute Cloud Management Server FIO Enablement, .00 USD) is an optional factory GreenLake pre-claiming token that is NOT required to pass CLIC Rule 81322276 even though OCA scrapes its subcategory as constraint=required. Remove S1A05A unless the customer explicitly requests factory GreenLake workspace binding (INV-207).",
+    "rawMessage": "DL385 Gen11 R7A11AAE vs S1A05A Separation (INV-207): Keep R7A11AAE for CLIC Rule 81322276; remove S1A05A ( FIO cloud pre-claim token) as unsolicited unless requested.",
+    "provenance": "Live HPE OCA Configurator UCID 5157776172-01, CLIC Rule 81322276, and INV-207",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "status": "APPLIED_TO_PRECHECKS_AND_RAG"
   }
 ]

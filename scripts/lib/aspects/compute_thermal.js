@@ -3,7 +3,7 @@
  * scripts/lib/aspects/compute_thermal.js — Compute & Thermal Aspect Pre-Check
  */
 
-const { cleanBaseSKU, buildCatalogSkuIndex } = require('../catalog/sku.js');
+const { cleanBaseSKU, buildCatalogSkuIndex, isOcaModifierTrackingRow } = require('../catalog/sku.js');
 const { classifyComponentRole } = require('../catalog/product_meta.js');
 
 function evalComputeThermal(items, catalogData = null, mandatorySkus = {}, serverCount = 1, options = {}) {
@@ -14,6 +14,7 @@ function evalComputeThermal(items, catalogData = null, mandatorySkus = {}, serve
   const skuIndex = buildCatalogSkuIndex(catalogData);
 
   for (const it of items) {
+    if (isOcaModifierTrackingRow(it.sku, it.description)) continue;
     const desc = (it.description || '').toLowerCase();
     const sku = cleanBaseSKU(it.sku);
 
@@ -60,25 +61,62 @@ function evalComputeThermal(items, catalogData = null, mandatorySkus = {}, serve
 
   const highPerfFanSku = mandatorySkus.HIGH_PERF_FAN_KIT?.sku || '';
   const highPerfHeatsinkSku = mandatorySkus.HIGH_PERF_HEATSINK?.sku || '';
-  const hasHighPerfFans = fanKitCount > 0 || (highPerfFanSku ? items.some(it => cleanBaseSKU(it.sku) === cleanBaseSKU(highPerfFanSku)) : false);
+  const hasHighPerfFans = fanKitCount > 0 || (highPerfFanSku ? items.some(it => !isOcaModifierTrackingRow(it.sku, it.description) && cleanBaseSKU(it.sku) === cleanBaseSKU(highPerfFanSku)) : false);
   const isHeatsinkItem = it => {
+    if (isOcaModifierTrackingRow(it.sku, it.description)) return false;
     const sku = cleanBaseSKU(it.sku);
     const d = (it.description || '').toLowerCase();
     if (d.includes('power supply') || d.includes('flex slot') || d.includes('platinum')) return false;
     if (highPerfHeatsinkSku && sku === cleanBaseSKU(highPerfHeatsinkSku)) return true;
+    if (['P74792-B21', 'P74794-B21', 'P48818-B21', 'P58459-B21'].includes(sku)) return true;
     if (d.includes('heat sink') || d.includes('heatsink') || classifyComponentRole('', d) === 'Heatsink') return true;
     const catItem = skuIndex.get(sku);
-    if (catItem && (catItem.skuData?.['Component Role'] === 'Heatsink' || (catItem.skuData?.Description || '').toLowerCase().includes('heatsink'))) return true;
+    if (catItem && (catItem.skuData?.['Component Role'] === 'Heatsink' || (catItem.skuData?.Description || '').toLowerCase().includes('heatsink') || (catItem.skuData?.Description || '').toLowerCase().includes('heat sink'))) return true;
     return false;
   };
   const hasHeatsinks = highPerfHeatsinkSku ? items.some(isHeatsinkItem) : true;
 
-  // CLIC Rule 81354654: Fan kit contains all 6 fans; maximum 1 fan kit allowed per base chassis
+  // INV-208: Heatsink Tier Right-Sizing & Lead-Time Bottleneck Prevention
+  // On DL380 Gen12, P74794-B21 (Max Performance Heat Sink Kit, $624, 45-day lead time) is only required for > 270W TDP CPUs
+  // or dense GPU workloads. For 185W-270W CPUs (e.g., Xeon 6530P 225W), P74792-B21 (High Performance Heat Sink Kit, $316, 4-day lead time)
+  // is thermally certified and avoids the 45-day lead-time bottleneck.
+  const hasMaxPerfHeatsink = items.some(it => {
+    if (isOcaModifierTrackingRow(it.sku, it.description)) return false;
+    const sku = cleanBaseSKU(it.sku);
+    const d = (it.description || '').toLowerCase();
+    return sku === 'P74794-B21' || d.includes('max performance heat sink');
+  });
+  const hasGpuInItems = items.some(it => {
+    if (isOcaModifierTrackingRow(it.sku, it.description)) return false;
+    const d = (it.description || '').toLowerCase();
+    return /\b(nvidia|h100|h200|l40s|a100|gpu accelerator)\b/i.test(d);
+  });
+  const hasOverprovisionedMaxHeatsink = hasMaxPerfHeatsink && maxCpuTdpWatts > 0 && maxCpuTdpWatts <= 270 && !hasGpuInItems;
+
+  // CLIC Rule 81354654 & INV-206 Fan Packaging Modality:
+  // 1. Modular Fan Kits (1 individual fan rotor per kit, e.g. AMD DL3X5 P58465-B21 / P58464-B21):
+  //    Requires 4 kits for 1-socket, 6 kits for 2-socket (max 6 fans per 2U server).
+  // 2. Bundled Fan Kits (6 fans per kit, e.g. Intel DL380 P48820-B21):
+  //    Requires exactly 1 kit per server.
+  const isModularFan = items.some(it => {
+    if (isOcaModifierTrackingRow(it.sku, it.description)) return false;
+    const d = (it.description || '').toLowerCase();
+    const sku = cleanBaseSKU(it.sku);
+    return d.includes('dl3x5') || d.includes('dl385') || d.includes('dl365') || d.includes('dl325') ||
+      ['P58465-B21', 'P58464-B21', 'P58466-B21'].includes(sku) ||
+      (options?.model && /dl3[268]5/i.test(options.model));
+  }) || Boolean(mandatorySkus.HIGH_PERF_FAN_KIT?.packagingModality === 'MODULAR_PER_ROTOR');
+
+  const cpusPerServer = (serverCount > 0 && cpuCount > 0) ? Math.max(1, Math.round(cpuCount / serverCount)) : (cpuCount || 2);
   // Use Math.floor to avoid fractional ratios (e.g. 3 kits for 2 servers = 1.5) giving a false pass
   const fanKitsPerServer = serverCount > 0 ? Math.floor(fanKitCount / serverCount) : fanKitCount;
-  const fanKitExceedsMax = fanKitsPerServer > 1;
+  const maxFanKitsAllowed = isModularFan ? (cpusPerServer === 1 ? 4 : 6) : 1;
+  const minFanKitsRequired = isModularFan ? (cpusPerServer === 1 ? 4 : 6) : 1;
+  const fanKitExceedsMax = fanKitsPerServer > maxFanKitsAllowed;
+  const fanKitUnderPopulated = isModularFan && fanKitCount > 0 && fanKitsPerServer < minFanKitsRequired;
 
   const isDl380aAccelerator = items.some(it => {
+    if (isOcaModifierTrackingRow(it.sku, it.description)) return false;
     const d = (it.description || '').toLowerCase();
     if (d.includes('dl380a')) return true;
     const catItem = skuIndex.get(cleanBaseSKU(it.sku));
@@ -87,12 +125,20 @@ function evalComputeThermal(items, catalogData = null, mandatorySkus = {}, serve
 
   return {
     cpuCount,
+    cpusPerServer,
     maxCpuTdpWatts,
     hasHighPerfFans,
     hasHeatsinks,
+    hasMaxPerfHeatsink,
+    hasOverprovisionedMaxHeatsink,
+    recommendedHeatsinkSku: hasOverprovisionedMaxHeatsink ? 'P74792-B21' : null,
     fanKitCount,
     fanKitsPerServer,
+    maxFanKitsAllowed,
+    minFanKitsRequired,
+    isModularFan,
     fanKitExceedsMax,
+    fanKitUnderPopulated,
     highPerfFanSku,
     highPerfHeatsinkSku,
     isGen11,

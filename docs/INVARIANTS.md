@@ -1149,3 +1149,25 @@ To ensure that future AI agents (Antigravity, Codex, Claude, or subagents) never
 - **INV-205: In-Flight NotebookLM Authentication Auto-Healing**:
   - In `notebook_query_utils.js:executeNotebookQuery`, if a live cloud query fails with `AUTH_EXPIRED` (HTTP 401 / UNAUTHENTICATED) and has not yet retried (`!options._retriedAuth`), the engine automatically invokes `checkAuthHealth({ autoHeal: true })` (`nlm login --force --storage file`) and retries the cloud query once before falling back to local deterministic RAG.
 
+- **INV-206: Fan Packaging Modality Invariant (Modular Individual Fan Rotors vs. Bundled Chassis Fan Kits)**:
+  - In `compute_thermal.js:evalComputeThermal`, `boq_evaluator.js`, and `strategy_synthesizer.js`, fan kits are evaluated and synthesized according to platform packaging modality rather than assuming all kits contain a full chassis 6-pack.
+  - Bundled fan kits (`BUNDLED_CHASSIS_KIT`, e.g. Intel DL380 `P48820-B21`, \$972 list) contain all 6 physical fans in a single kit (`maxFanKitsAllowed = 1` per server).
+  - Modular fan kits (`MODULAR_PER_ROTOR`, e.g. AMD DL385/DL365/DL325 `P58465-B21` / `P58464-B21`, \$160 list) package 1 individual fan rotor per kit (`maxFanKitsAllowed = cpusPerServer === 1 ? 4 : 6`, matching HPE OCA dropdown choices `[0, 4, 6]`). Evaluators must never flag modular fan quantities $\le 6\text{/server}$ (e.g. 60 kits for 10 dual-socket servers) as over-provisioned, and dependency injection must scale modular kits by `serverCount * (cpusPerServer === 1 ? 4 : 6)`.
+
+- **INV-207: Management License Portal Mandate (`R7A11AAE`) vs. Optional Cloud FIO Pre-Claim Token (`S1A05A`) Separation**:
+  - In HPE OCA for ProLiant Gen11 and Gen12 CTO servers, **CLIC Rule 81322276** requires a qualifying server management software license (`R7A11AAE` Compute Ops Management 3Y SaaS or HPE OneView `E5Y43A`) so configurations build and export without triggering a Process Control override block.
+  - Conversely, `S1A05A` (`HPE Compute Cloud Management Server FIO Enablement`, \$1.00 list) is strictly an **optional Factory Integrated Option (FIO) pre-claiming token** that binds the server's iLO serial to a GreenLake workspace at the factory. Even though OCA scrapes its subcategory as `constraint: "required"`, CLIC Rule 81322276 is 100% satisfied by `R7A11AAE` alone.
+  - In `support_manufacturing.js`, `S1A05A` is flagged as an unsolicited optional item safe to remove unless the customer explicitly requests factory GreenLake workspace binding, while `R7A11AAE` is recognized as the portal-mandated management license.
+
+- **INV-208: Thermal Heatsink Tier Right-Sizing, Packaging Modality & Lead-Time Bottleneck Prevention**:
+  - On HPE ProLiant DL380 Gen12, heatsink tiers map strictly to processor TDP envelopes and have distinct packaging modalities in HPE OCA:
+    - Standard Heat Sink (`P49145-B21`, \$133 list, `max 2` / 1 per socket): $\le 185\text{W}$ TDP.
+    - High Performance Heat Sink (`P74792-B21`, \$316 list, `max 2` / **1 kit per CPU socket = \$632 per 2P server**, **4-day lead time**): $185\text{W} < \text{TDP} \le 270\text{W}$ (e.g. Intel Xeon 6530P 225W `P74571-B21`, Xeon 8558 250W).
+    - Max Performance Heat Sink (`P74794-B21`, \$624 list, `max 1` / **1 dual-socket kit per 2P server = \$624 per 2P server**, **45-day lead time**): Required only for extreme $> 270\text{W}$ TDP processors (275W–350W+) or dense GPU configurations.
+  - Because `1x P74794-B21` (\$624/server) and `2x P74792-B21` (\$632/server) have virtually identical per-server cost (\$8/server or \$72 across 9 servers), whenever `P74794-B21` is paired with $\le 270\text{W}$ TDP processors and zero GPUs, `compute_thermal.js` (`hasOverprovisionedMaxHeatsink`) and `deal_optimizer.js` (`VE-OPT-HEATSINK-TIER-RIGHT-SIZING`) flag the over-provisioning and recommend substituting `2x P74792-B21` per 2P server to slash the cooling lead-time bottleneck by **41 days (from 45 days down to 4 days)** at negligible price difference.
+
+- **INV-209: OCA Export Modifier & Tracking Row Deduplication (`0D1` / `B19` Guard)**:
+  - Raw HPE OCA exported Excel workbooks include companion modifier/tracking rows (e.g. `P74571-B21  0D1` with description `"Factory Integrated"` and `P73282-B21  B19` regional localization) that share the base SKU of their parent hardware item.
+  - All 7 physical aspect checkers (`compute_thermal.js`, `memory_channel.js`, `pcie_riser.js`, `networking_ocp.js`, `storage_tri_mode.js`, `power_environment.js`, `support_manufacturing.js`) enforce `isOcaModifierTrackingRow(it.sku, it.description)` from `scripts/lib/catalog/sku.js` so modifier rows are never double-counted as physical CPUs, DIMMs, PCIe adapters, fans, or power supplies when catalog descriptions are resolved via `skuIndex`.
+
+

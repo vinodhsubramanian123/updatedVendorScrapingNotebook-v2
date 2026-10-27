@@ -3,7 +3,7 @@
  * scripts/lib/aspects/storage_tri_mode.js — Storage & Tri-Mode Controller Aspect Pre-Check
  */
 
-const { cleanBaseSKU, buildCatalogSkuIndex } = require('../catalog/sku.js');
+const { cleanBaseSKU, buildCatalogSkuIndex, isOcaModifierTrackingRow } = require('../catalog/sku.js');
 const { classifyComponentRole } = require('../catalog/product_meta.js');
 
 function buildSkuCategoryMap(catalogData) {
@@ -214,6 +214,7 @@ function tallyStorageItems(items, skuCategoryMap, batterySku, noDriveSku, mandat
   };
 
   for (const it of items) {
+    if (isOcaModifierTrackingRow(it.sku, it.description)) continue;
     const desc = (it.description || '').toLowerCase();
     const sku = cleanBaseSKU(it.sku);
     const qty = it.quantity || 1;

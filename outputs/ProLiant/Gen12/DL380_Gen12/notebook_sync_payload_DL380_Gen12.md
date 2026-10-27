@@ -4,11 +4,11 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen12/DL380_Gen12`
 
-**Sync Timestamp**: 2026-10-21T16:07:24.090Z
+**Sync Timestamp**: 2026-10-27T09:01:20.575Z
 
 **Total Verified SKUs**: `1124` (`602` Hardware + `522` Services)
 
-**Total Synced KnowledgeDeltas**: `62`
+**Total Synced KnowledgeDeltas**: `64`
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -254,6 +254,14 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 53. **[DELTA_DL380_GEN12_MEMORY_SYMMETRICAL_CHANNEL_LEARNING] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
    - **Rule**: On Intel Xeon 6 (8 memory channels per CPU, 16 channels dual socket), legacy 6-channel memory capacities (such as 1,152 GB achieved via 12x 64GB + 12x 32GB on Gen10) cannot be satisfied with 12 DIMMs without leaving 2 channels unpopulated per CPU and suffering a 25% throughput penalty. Symmetrical population mandates 16 DIMMs (1DPC) or 32 DIMMs (2DPC). Present 1,536 GB (16x 96GB P69729-F21 @ 6400 MT/s) for full 1DPC capacity surplus, or 1,024 GB (16x 64GB P69728-F21 @ 6400 MT/s) for CapEx optimization with documented 128GB delta (INV-184).
    - **Affected SKU**: `P69728-F21` | **Required Dependency**: `P69729-F21`
+
+54. **[DELTA_DL380_GEN12_HEATSINK_TIER_RIGHT_SIZING_INV208] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: On HPE ProLiant DL380 Gen12 (P73282-B21), processors with 185W < TDP <= 270W (such as Intel Xeon 6530P 225W P74571-B21) are 100% thermally certified with P74792-B21 (HPE ProLiant Compute DL380 Gen12 2U High Performance Heat Sink Kit, 316.00 USD list per socket, max 2 per 2P server = 632.00 USD/server, 4-day lead time). Do not over-provision P74794-B21 (2U Max Performance Heat Sink Kit, 624.00 USD list per dual-socket server, max 1 per server, 45-day lead time), which is only required for >270W extreme TDP processors (275W-350W+) or dense GPU workloads. Substituting 1x P74794-B21/server (624.00 USD) with 2x P74792-B21/server (632.00 USD) has virtually identical cost (+8.00 USD/server or +72.00 USD across 9 servers) while slashing cooling lead time by 41 days from 45 days down to 4 days (INV-208).
+   - **Affected SKU**: `P74794-B21` | **Required Dependency**: `P74792-B21`
+
+55. **[DELTA_DL380_GEN12_COM_R7A11AAE_VS_S1A05A_SEPARATION_INV207] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: On DL380 Gen12 CTO builds (P73282-B21), R7A11AAE (HPE Compute Ops Management Standard 3-year Upfront SaaS, .00 USD) satisfies CLIC Rule 81322276 for portal orderability, whereas S1A05A (.00 USD FIO cloud pre-claim token) is optional and safe to omit (INV-207).
+   - **Affected SKU**: `S1A05A` | **Required Dependency**: `R7A11AAE`
 
 
 ## 🔒 3b. Physical & Architectural Gating Rules (DOM Unavailable Tables)
