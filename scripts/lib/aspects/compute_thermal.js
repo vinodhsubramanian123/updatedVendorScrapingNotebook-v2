@@ -68,7 +68,7 @@ function evalComputeThermal(items, catalogData = null, mandatorySkus = {}, serve
     const d = (it.description || '').toLowerCase();
     if (d.includes('power supply') || d.includes('flex slot') || d.includes('platinum')) return false;
     if (highPerfHeatsinkSku && sku === cleanBaseSKU(highPerfHeatsinkSku)) return true;
-    if (['P74792-B21', 'P74794-B21', 'P48818-B21', 'P58459-B21'].includes(sku)) return true;
+    if (['P74792-B21', 'P74794-B21', 'P49145-B21', 'P48818-B21', 'P58459-B21'].includes(sku)) return true;
     if (d.includes('heat sink') || d.includes('heatsink') || classifyComponentRole('', d) === 'Heatsink') return true;
     const catItem = skuIndex.get(sku);
     if (catItem && (catItem.skuData?.['Component Role'] === 'Heatsink' || (catItem.skuData?.Description || '').toLowerCase().includes('heatsink') || (catItem.skuData?.Description || '').toLowerCase().includes('heat sink'))) return true;

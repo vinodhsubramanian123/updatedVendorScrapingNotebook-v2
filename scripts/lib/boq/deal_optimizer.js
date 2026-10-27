@@ -134,11 +134,14 @@ function analyzeDealValueEngineering(items, evalResults = {}, catalogData = null
       opportunities.push({
         id: 'VE-OPT-MEMORY-BUS-ALIGNMENT',
         component: 'Memory Architecture',
+        type: 'Memory Architecture',
         title: 'Align DIMM Speed to CPU Memory Controller Limit',
+        headline: 'Align DIMM Speed to CPU Memory Controller Limit',
         severity: 'OPPORTUNITY',
         currentSelection: `DDR5-5600 DIMMs (${totalDdr5600Qty} units)`,
         recommendedAlternative: 'HPE 32GB 2Rx8 DDR5-4800 Smart Memory (P43328-B21)',
         estimatedSavingsUsd: recSavings,
+        potentialSavingsUsd: recSavings,
         rationale: 'Intel Xeon Silver CPUs cap memory bus frequency at 4000-4400 MT/s. Deploying DDR5-5600 yields identical effective bandwidth as DDR5-4800 at a higher acquisition cost.',
         presalesPitch: 'Switching to DDR5-4800 preserves 100% of memory bandwidth and performance while reducing server BOM cost.'
       });
@@ -156,11 +159,14 @@ function analyzeDealValueEngineering(items, evalResults = {}, catalogData = null
     opportunities.push({
       id: 'VE-OPT-PSU-RIGHT-SIZING',
       component: 'Power Distribution',
+      type: 'Power Distribution',
       title: 'Right-Size Power Supply Capacity for Node Draw',
+      headline: 'Right-Size Power Supply Capacity for Node Draw',
       severity: 'OPPORTUNITY',
       currentSelection: `${psuWattage}W Power Supplies (${psuCount} units)`,
-      recommendedAlternative: 'HPE 800W Flex Slot Platinum Power Supply (P48818-B21)',
+      recommendedAlternative: 'HPE 800W Flex Slot Platinum Hot Plug Power Supply (P38995-B21)',
       estimatedSavingsUsd: psuSavings,
+      potentialSavingsUsd: psuSavings,
       rationale: `Total estimated node draw is ${estimatedWatts}W. 800W power supplies provide full N+1 redundancy while operating closer to the optimal 50% efficiency sweet-spot.`,
       presalesPitch: 'Right-sizing to 800W Platinum PSUs reduces upfront CapEx and optimizes data center electrical efficiency.'
     });
@@ -181,11 +187,14 @@ function analyzeDealValueEngineering(items, evalResults = {}, catalogData = null
     opportunities.push({
       id: 'VE-OPT-UNSOLICITED-SERVICES',
       component: 'Commercial Services & Add-Ons',
+      type: 'Commercial Services & Add-Ons',
       title: 'Unbundle Unrequested Startup Services & Add-On Software',
+      headline: 'Unbundle Unrequested Startup Services & Add-On Software',
       severity: 'RECOMMENDATION',
       currentSelection: itemNames.join(', '),
       recommendedAlternative: 'Offer as optional a-la-carte lines rather than embedded mandatory BOM items',
       estimatedSavingsUsd: serviceCost,
+      potentialSavingsUsd: serviceCost,
       rationale: 'Unsolicited services inflate headline quotation figures and weaken bid competitiveness in price-sensitive customer tenders.',
       presalesPitch: 'Presenting core hardware independently and offering implementation as optional a-la-carte ensures a more competitive bid price.'
     });
@@ -221,11 +230,14 @@ function analyzeDealValueEngineering(items, evalResults = {}, catalogData = null
       opportunities.push({
         id: 'VE-OPT-CPU-TIER-ALIGNMENT',
         component: 'Compute Architecture',
+        type: 'Compute Architecture',
         title: 'Right-Size Processor Tier to Real Workload Bottleneck',
+        headline: 'Right-Size Processor Tier to Real Workload Bottleneck',
         severity: 'OPPORTUNITY',
         currentSelection: `${cpuNames.join(', ')} (${totalCpuQty} units)`,
         recommendedAlternative: 'Intel Xeon Gold 6530 2.1GHz 32-core 185W Processor (P67096-B21)',
         estimatedSavingsUsd: cpuSavings,
+        potentialSavingsUsd: cpuSavings,
         rationale: 'Workload DNA is storage/balanced rather than compute-bound. High-frequency Platinum/high-TDP processors operate under-utilized while driving up initial CapEx and power consumption.',
         presalesPitch: 'Switching to Intel Xeon Gold reduces server cost by up to $1,800 per socket while preserving 100% of storage throughput and application response.'
       });
@@ -260,11 +272,14 @@ function analyzeDealValueEngineering(items, evalResults = {}, catalogData = null
       opportunities.push({
         id: 'VE-OPT-NIC-TIER-ALIGNMENT',
         component: 'Network Fabric',
+        type: 'Network Fabric',
         title: 'Optimize Network Interface Tier for Core Infrastructure Fabric',
+        headline: 'Optimize Network Interface Tier for Core Infrastructure Fabric',
         severity: 'OPPORTUNITY',
         currentSelection: `${nicNames.join(', ')} (${totalNicQty} units)`,
         recommendedAlternative: 'Broadcom BCM57414 Ethernet 10/25Gb 2-port SFP28 Adapter (P26262-B21)',
         estimatedSavingsUsd: nicSavings,
+        potentialSavingsUsd: nicSavings,
         rationale: '100GbE/200GbE interfaces require expensive 100G leaf switching and specialized optics. Dual 25GbE provides ample bandwidth for storage and enterprise virtualization at 60% lower CapEx.',
         presalesPitch: 'Aligning NICs to dual 25GbE provides high throughput and redundancy while saving significant budget on adapters and transceivers.'
       });
@@ -290,32 +305,35 @@ function analyzeDealValueEngineering(items, evalResults = {}, catalogData = null
         }
       }
     }
-    if (detectedMaxTdp === 0 || detectedMaxTdp <= 270) {
+    if (detectedMaxTdp > 0 && detectedMaxTdp <= 270) {
       let totalMaxHsQty = 0;
       let totalMaxHsCost = 0;
-      const altUnitPrice = getSkuListPrice('P74792-B21', catalogData, chassisDir) || 316.0;
+      const altUnitPrice = getSkuListPrice('P74792-B21', catalogData, chassisDir);
       for (const it of maxPerfHeatsinkItems) {
         const q = it.quantity || 1;
         totalMaxHsQty += q;
-        const p = it.unitListPrice || getSkuListPrice(it.sku, catalogData, chassisDir) || 624.0;
-        totalMaxHsCost += (p * q);
+        const p = it.unitListPrice || getSkuListPrice(it.sku, catalogData, chassisDir);
+        if (p) totalMaxHsCost += (p * q);
       }
       // P74794-B21 has OCA constraint max 1 per 2P server ($624/server), whereas P74792-B21 requires 1 per CPU socket (2 per 2P server = $632/server).
       const totalCpuQty = compute.cpuCount || (totalMaxHsQty * 2);
       const targetHighPerfQty = Math.max(totalCpuQty, totalMaxHsQty);
-      const altTotalCost = targetHighPerfQty * altUnitPrice;
-      const hsSavings = Math.max(0, totalMaxHsCost - altTotalCost);
+      const altTotalCost = altUnitPrice ? targetHighPerfQty * altUnitPrice : null;
+      const hsSavings = (totalMaxHsCost > 0 && altTotalCost !== null) ? Math.max(0, totalMaxHsCost - altTotalCost) : 0;
       potentialSavingsUsd += hsSavings;
       opportunities.push({
         id: 'VE-OPT-HEATSINK-TIER-RIGHT-SIZING',
         component: 'Cooling & Thermal Envelope',
+        type: 'Cooling & Thermal Envelope',
         title: 'Right-Size Max Performance Heatsink (45d Lead Time) to High Performance Heatsink (4d Lead Time) (INV-208)',
+        headline: 'Right-Size Max Performance Heatsink (45d Lead Time) to High Performance Heatsink (4d Lead Time) (INV-208)',
         severity: 'OPPORTUNITY',
         currentSelection: `P74794-B21 Max Performance Heat Sink Kit (${totalMaxHsQty} kit(s) @ $624/kit, max 1/server, 45-day lead time)`,
         recommendedAlternative: `HPE ProLiant Compute DL380 Gen12 2U High Performance Heat Sink Kit (P74792-B21, ${targetHighPerfQty} kit(s) @ $316/kit, 1/socket, 4-day lead time)`,
         estimatedSavingsUsd: hsSavings,
+        potentialSavingsUsd: hsSavings,
         leadTimeSavedDays: 41,
-        rationale: `Processors <= 270W TDP (${detectedMaxTdp || 225}W detected) are 100% thermally certified with the High Performance Heat Sink (P74792-B21, rated 185W-270W, 1 kit per socket = $632 per 2P server). Max Performance (P74794-B21, 1 kit per 2P server = $624/server) is only required for 275W-350W+ extreme TDP CPUs and imposes a 45-day lead-time bottleneck.`,
+        rationale: `Processors <= 270W TDP (${detectedMaxTdp}W detected) are thermally certified with the High Performance Heat Sink (P74792-B21, rated 185W-270W, 1 kit per socket = $632 per 2P server). Max Performance (P74794-B21, 1 kit per 2P server = $624/server) is only required for 275W-350W+ extreme TDP CPUs and imposes a 45-day lead-time bottleneck.`,
         presalesPitch: 'Switching from 1x P74794-B21/server ($624) to 2x P74792-B21/server ($632) slashes cooling lead time by 41 days (from 45 days down to 4 days) at virtually identical per-server cost ($8/server delta).'
       });
     }
@@ -325,14 +343,25 @@ function analyzeDealValueEngineering(items, evalResults = {}, catalogData = null
   const optimizedTotalUsd = Math.max(0, baselineTotalUsd - potentialSavingsUsd);
   const capexSavingsPercent = baselineTotalUsd > 0 ? ((potentialSavingsUsd / baselineTotalUsd) * 100) : 0;
 
+  const profileName = workload.profile;
+  const rationale = (workload.traits && workload.traits.length > 0)
+    ? workload.traits.join('; ')
+    : (workload.isUnknown ? 'No workload telemetry available' : 'Standard enterprise profile');
+
   return {
-    workloadProfile: workload.profile,
+    profile: profileName,
+    workloadProfile: {
+      profileName,
+      rationale,
+      toString() { return profileName; }
+    },
     workloadTraits: workload.traits,
     workloadDna: workload.workloadDna || null,
     hasQuotedPricing: items.some(it => typeof it.unitListPrice === 'number'),
     baselineCapExUsd: baselineTotalUsd,
     optimizedCapExUsd: optimizedTotalUsd,
     potentialSavingsUsd,
+    totalEstimatedSavingsUsd: potentialSavingsUsd,
     capexSavingsPercent,
     opportunitiesCount: opportunities.length,
     opportunities,

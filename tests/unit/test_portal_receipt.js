@@ -19,6 +19,7 @@ const {
   readPortalReceipt,
   receiptMatches
 } = require('../../scripts/lib/boq/portal_receipt.js');
+const { validateBoqEvaluationCriteria } = require('../../scripts/lib/boq/bom_verifier.js');
 
 function createMockPortalEvidenceDir(tmpDir, overrides = {}) {
   const evidenceDir = path.join(tmpDir, 'evidence');
@@ -212,4 +213,59 @@ test('Portal Receipt — rejects incomplete selectors, invalid quantities, alter
     moved.items[0].parentId = 'unproved-owner';
     assert.equal(receiptMatches(receipt, moved), false);
   } finally { fs.rmSync(tmpDir, { recursive: true, force: true }); }
+});
+
+test('Gate B19 Hardened Verification — rejects readiness, truthy scalars, timestamp-only and stale receipts', () => {
+  // 1. Truthy scalar rejected
+  const resScalar = validateBoqEvaluationCriteria({
+    portalValidationStatus: 'ACCEPTED_BY_VENDOR',
+    sessionReceipt: true,
+    items: [{ sku: 'P73282-B21', quantity: 1 }]
+  });
+  const b19Scalar = resScalar.find(c => c.id === 'B19');
+  assert.equal(b19Scalar.status, 'FAILED');
+  assert.ok(b19Scalar.detail.includes('lacks official session receipt'));
+
+  // 2. Readiness receipt rejected
+  const resReady = validateBoqEvaluationCriteria({
+    portalValidationStatus: 'CLIC_ACCEPTED',
+    sessionReceipt: { status: 'READY', sessionId: 'sess-123' },
+    items: [{ sku: 'P73282-B21', quantity: 1 }]
+  });
+  const b19Ready = resReady.find(c => c.id === 'B19');
+  assert.equal(b19Ready.status, 'FAILED');
+  assert.ok(b19Ready.detail.includes('Session readiness receipt'));
+
+  // 3. Timestamp-only object without status/manifest rejected
+  const resTimestampOnly = validateBoqEvaluationCriteria({
+    portalValidationStatus: 'ACCEPTED_BY_VENDOR',
+    sessionReceipt: { startedAt: new Date().toISOString() },
+    items: [{ sku: 'P73282-B21', quantity: 1 }]
+  });
+  const b19TimestampOnly = resTimestampOnly.find(c => c.id === 'B19');
+  assert.equal(b19TimestampOnly.status, 'FAILED');
+  assert.ok(b19TimestampOnly.detail.includes('missing required verification fields'));
+
+  // 4. Conflicting output vs context validation statuses fail closed
+  const resConflict = validateBoqEvaluationCriteria(
+    { portalValidationStatus: 'ACCEPTED_BY_VENDOR', items: [{ sku: 'P73282-B21', quantity: 1 }] },
+    { portalValidationStatus: 'PORTAL_VALIDATION_PENDING' }
+  );
+  const b19Conflict = resConflict.find(c => c.id === 'B19');
+  assert.equal(b19Conflict.status, 'FAILED');
+  assert.ok(b19Conflict.detail.includes('Conflicting portal validation claims'));
+
+  // 5. Future capture timestamp rejected
+  const resFuture = validateBoqEvaluationCriteria({
+    portalValidationStatus: 'CLIC_ACCEPTED',
+    sessionReceipt: {
+      status: 'CLIC_ACCEPTED',
+      capturedAt: new Date(Date.now() + 10 * 60000).toISOString(),
+      manifestSha256: 'a'.repeat(64)
+    },
+    items: [{ sku: 'P73282-B21', quantity: 1 }]
+  });
+  const b19Future = resFuture.find(c => c.id === 'B19');
+  assert.equal(b19Future.status, 'FAILED');
+  assert.ok(b19Future.detail.includes('future'));
 });

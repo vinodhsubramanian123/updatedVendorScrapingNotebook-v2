@@ -24,10 +24,14 @@ function resultEnvelope(group, status, fields) {
   return { sheetName: group.displayLabel || group.sheetName, status, ...fields };
 }
 
-function childOutcome(group, stdout, stderr, exitCode, signal) {
+function childOutcome(group, stdout, stderr, exitCode, signal, ipcPayload = null) {
   let result;
-  try { result = parseChildPayload(stdout); }
-  catch (error) { return resultEnvelope(group, 'ERROR', { error: error.message, stderr, process: { exitCode, signal } }); }
+  if (ipcPayload) {
+    result = ipcPayload;
+  } else {
+    try { result = parseChildPayload(stdout); }
+    catch (error) { return resultEnvelope(group, 'ERROR', { error: error.message, stderr, process: { exitCode, signal } }); }
+  }
   const process = { exitCode, signal };
   if (exitCode !== 0 || signal) return resultEnvelope(group, 'ERROR', { error: 'Canonical evaluator did not exit successfully', result, stderr, process });
   if (!result || typeof result !== 'object' || Array.isArray(result) || typeof result.status !== 'string') return resultEnvelope(group, 'ERROR', { error: 'Invalid canonical evaluation payload', result, stderr, process });
@@ -106,6 +110,7 @@ function executeGroupChild(group, options = {}) {
     let primaryReason = null;
     let stdout = '';
     let stderr = '';
+    let ipcChildPayload = null;
     let bytes = 0;
     let actualClosed = false;
     let finalExitCode = null;
@@ -249,7 +254,7 @@ function executeGroupChild(group, options = {}) {
       }
 
       if (terminating) return;
-      settle(childOutcome(group, stdout, stderr, finalExitCode, finalSignal));
+      settle(childOutcome(group, stdout, stderr, finalExitCode, finalSignal, ipcChildPayload));
     };
 
     try {
@@ -258,6 +263,14 @@ function executeGroupChild(group, options = {}) {
           env: { ...process.env, ...extraEnv, STRUCTURED_PROGRESS: '0' },
           ...(ownedCli ? { stdio: ['pipe', 'pipe', 'pipe', 'ipc'] } : {})
         }));
+
+      if (child.on && typeof child.on === 'function') {
+        child.on('message', (msg) => {
+          if (msg?.type === 'EVAL_RESULT_PAYLOAD') {
+            ipcChildPayload = msg;
+          }
+        });
+      }
 
       if (child.stdout && typeof child.stdout.on === 'function') child.stdout.on('data', d => append(d, 'stdout'));
       if (child.stderr && typeof child.stderr.on === 'function') child.stderr.on('data', d => append(d, 'stderr'));

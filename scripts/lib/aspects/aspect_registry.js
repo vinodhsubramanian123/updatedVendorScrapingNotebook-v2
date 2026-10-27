@@ -59,6 +59,32 @@ function adapterSupportServices(items, catalogData, _mandatorySkus, _serverCount
   return evalSupportServices(items, catalogData, ctx?.options?.lifecycle || {});
 }
 
+function adapterSanSwitchAspect(aspectId) {
+  return function(items, catalogData, mandatorySkus, serverCount, ctx) {
+    if (!ctx || !ctx.chassisDir) {
+      return { status: 'NOT_EVALUATED', advisory: 'SAN switch aspect validation requires explicit chassis directory context.' };
+    }
+    try {
+      const { evaluateSanSwitch } = require('../boq/san_switch_evaluator.js');
+      const rules = ctx.rules || ctx.catalogRules || [];
+      const chassisInfo = ctx.chassisInfo || { productId: require('path').basename(ctx.chassisDir) };
+      const sanRes = evaluateSanSwitch(items, catalogData, ctx.chassisDir, chassisInfo, rules, ctx.options || {});
+      const check = (sanRes.aspectChecks || []).find(c => c.id === aspectId);
+      if (check) {
+        return {
+          status: check.status === 'UNVERIFIED' ? 'UNKNOWN' : check.status,
+          errors: check.status === 'FAIL' ? [check.detail] : [],
+          warnings: check.status === 'WARN' ? [check.detail] : [],
+          advisory: check.detail
+        };
+      }
+      return { status: 'NOT_EVALUATED', advisory: `SAN aspect ${aspectId} was not resolved.` };
+    } catch (err) {
+      return { status: 'NOT_EVALUATED', advisory: `SAN switch evaluation advisory: ${err.message}` };
+    }
+  };
+}
+
 const DOMAIN_CAPABILITY_MATRIX = Object.freeze({
   server: { status: 'PRODUCTION_SUPPORTED' },
   ai_cluster: { status: 'PARTIALLY_SUPPORTED' },
@@ -133,10 +159,10 @@ const DOMAIN_REGISTRY = {
     { id: 'SUPPORT_SERVICES', name: 'Network Tech Care & Support Services Aspect', checker: adapterSupportServices }
   ],
   san_switch: [
-    { id: 'SAN_LICENSED_PORTS', name: 'SAN Licensed Port Capacity', checker: () => ({ status: 'PASS' }) },
-    { id: 'BUNDLED_OPTICS_BILLING', name: 'Bundled Optics Billing', checker: () => ({ status: 'PASS' }) },
-    { id: 'CATALOG_SERVICE_COVERAGE', name: 'Catalog and Service Coverage', checker: () => ({ status: 'PASS' }) },
-    { id: 'SERVER_RULES_NOT_APPLICABLE', name: 'Server Component Rules', checker: () => ({ status: 'NOT_APPLICABLE' }) }
+    { id: 'SAN_LICENSED_PORTS', name: 'SAN Licensed Port Capacity', checker: adapterSanSwitchAspect('SAN_LICENSED_PORTS') },
+    { id: 'BUNDLED_OPTICS_BILLING', name: 'Bundled Optics Billing', checker: adapterSanSwitchAspect('BUNDLED_OPTICS_BILLING') },
+    { id: 'CATALOG_SERVICE_COVERAGE', name: 'Catalog and Service Coverage', checker: adapterSanSwitchAspect('CATALOG_SERVICE_COVERAGE') },
+    { id: 'SERVER_RULES_NOT_APPLICABLE', name: 'Server Component Rules', checker: () => ({ status: 'NOT_APPLICABLE', advisory: 'Fixed SAN switch: no server CPU, DIMM, diskless kit, PCIe riser or redundant server PSU additions.' }) }
   ],
   ai_cluster: [
     { id: 'COMPUTE_THERMAL', name: 'AI Server Thermal & Liquid Cooling Aspect', checker: adapterComputeThermal },

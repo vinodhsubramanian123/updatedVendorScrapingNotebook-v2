@@ -31,8 +31,9 @@ function _buildHeaderSection(ctx) {
   const chassisLabel = (catalogData && catalogData.metadata && catalogData.metadata.chassis) || 'HPE ProLiant BOQ';
   const notebookLabel = notebookId ? `${chassisLabel} Notebook (\`${notebookId}\`)` : `${chassisLabel} — Local Catalog Rules (no Notebook configured)`;
 
+  const boqFileName = inputFile || ctx.inputPath || 'N/A';
   let md = `# HPE Pre-Flight BOQ Evaluation & Validation Report\n\n`;
-  md += `**Target BOQ File**: \`${inputFile}\`  \n`;
+  md += `**Target BOQ File**: \`${boqFileName}\`  \n`;
   md += `**Target Gemini Notebook**: ${notebookLabel}  \n`;
   md += `**Evaluation Date**: ${new Date().toISOString()}  \n`;
   md += `**Quantity basis**: Physical validation and category figures describe 1 base configuration; requested configurations: ${evalResults.configurationContext?.multiplier || 1}. Order-level rows retain their own quantities. PORTAL VALIDATION PENDING.\n`;
@@ -64,11 +65,12 @@ function _buildHeaderSection(ctx) {
   return md;
 }
 
-function _buildItemsSection(items, budgetOpt) {
-  let md = `## 📋 1. Consolidated BOQ Hardware Items (${items.length})\n\n`;
+function _buildItemsSection(items = [], budgetOpt) {
+  const safeItems = Array.isArray(items) ? items : [];
+  let md = `## 📋 1. Consolidated BOQ Hardware Items (${safeItems.length})\n\n`;
   md += `| # | Product # (SKU) | Total Order Qty | Description | Est. Unit Price (USD) | Extended Price (USD) |\n`;
   md += `|---|---|---|---|---|---|\n`;
-  items.forEach((it, idx) => {
+  safeItems.forEach((it, idx) => {
     const { totalQty } = outputQuantities(it);
     const priced = it.unitPriceUsd > 0 || (it.unitPriceUsd === 0 && it.isConfirmedZeroPrice === true);
     md += `| ${idx + 1} | \`${it.sku}\` | ${totalQty} | ${it.description} | \$${priced ? it.unitPriceUsd.toLocaleString() : 'UNRESOLVED'} | \$${priced ? (totalQty * it.unitPriceUsd).toLocaleString() : 'UNRESOLVED'} |\n`;
@@ -114,6 +116,7 @@ function _buildAspectsSection(evalResults) {
 }
 
 function _buildWorkloadSection(graph, chassisDir, chassisDetection) {
+  if (!graph) return '';
   if (graph?.chassisInfo?.family === 'SAN') return `## SAN Configuration Scope\n\nFixed Fibre Channel switch; server CPU, memory, drive and riser rules do not apply. Bundle composition is verified against retained official evidence. Live exact-configuration acceptance remains pending.\n\n`;
   let md = `## 1. Workload Fingerprint & Intent Analysis  \n`;
   const fallbackModel = (typeof chassisDir === 'string' && chassisDir.length > 0)
@@ -204,15 +207,21 @@ function _buildValueEngineeringSection(evalResults) {
   const ve = evalResults.valueEngineering;
   let md = `---\n\n`;
   md += `## 💡 3.5 Value Engineering & Deal Optimization Analysis\n\n`;
-  md += `- **Workload Classification**: \`${ve.workloadProfile?.profileName || 'General Enterprise'}\`\n`;
-  md += `- **Workload Rationale**: ${ve.workloadProfile?.rationale || 'Standard enterprise profile'}\n`;
-  md += `- **Total Identified Savings**: \`$${(ve.totalEstimatedSavingsUsd || 0).toLocaleString()} USD\`\n\n`;
+  const workloadName = ve.workloadProfile?.profileName || (typeof ve.workloadProfile === 'string' ? ve.workloadProfile : null) || ve.profile || 'General Enterprise';
+  const workloadRationale = ve.workloadProfile?.rationale || (Array.isArray(ve.workloadTraits) && ve.workloadTraits.length > 0 ? ve.workloadTraits.join('; ') : 'Standard enterprise profile');
+  const totalSavings = ve.totalEstimatedSavingsUsd ?? ve.potentialSavingsUsd ?? 0;
+  md += `- **Workload Classification**: \`${workloadName}\`\n`;
+  md += `- **Workload Rationale**: ${workloadRationale}\n`;
+  md += `- **Total Identified Savings**: \`$${totalSavings.toLocaleString()} USD\`\n\n`;
 
   if (ve.opportunities && ve.opportunities.length > 0) {
     md += `| Optimization Category | Opportunity Headline | Est. Savings (USD) | Presales Value Pitch |\n`;
     md += `|---|---|---|---|\n`;
     ve.opportunities.forEach(opp => {
-      md += `| **${opp.type}** | ${opp.headline} | \$${(opp.potentialSavingsUsd || 0).toLocaleString()} | ${opp.presalesPitch} |\n`;
+      const cat = opp.type || opp.component || 'General';
+      const headline = opp.headline || opp.title || 'Optimization Opportunity';
+      const savings = opp.potentialSavingsUsd ?? opp.estimatedSavingsUsd ?? 0;
+      md += `| **${cat}** | ${headline} | \$${savings.toLocaleString()} | ${opp.presalesPitch || opp.rationale || ''} |\n`;
     });
     md += `\n`;
   }
@@ -312,7 +321,7 @@ function generateMarkdownReport(ctx) {
     if (change) report += `User-requested support change: ${change.removedServices.map(row => row.sku).join(', ')} replaced by product-qualified 3-year Basic support and the requested installation service. Retention is ${change.retention || 'as labelled by OCA'}. Each service remains scoped to its owning icon; both apply-to-all controls were off.\n\n`;
     report += `Receipt artifacts: [CLIC response](evidence/clic_corrected_configuration.json), [complete solution BOM](evidence/clic_corrected_bom.json).\n\n`;
   }
-  report += _buildItemsSection(ctx.items, ctx.budgetOpt);
+  report += _buildItemsSection(ctx.items || ctx.evalResults?.items || [], ctx.budgetOpt);
   report += _buildAspectsSection(ctx.evalResults);
   report += _buildWorkloadSection(ctx.graph, ctx.chassisDir, ctx.chassisDetection);
   report += _buildBudgetSection(ctx.budgetOpt, ctx.targetBudgetUsd);
@@ -880,6 +889,18 @@ function _emitSerializedJsonResponse(ctx, evalResults, graph, budgetOpt, queryPa
     }
   };
   emitProgress(10, 10, 'Evaluation Finished', 'completed', `Analysis status: ${jsonResult.status}. Consult evidence health for outstanding gates.`);
+  if (process.send && process.connected) {
+    try {
+      process.send({
+        type: 'EVAL_RESULT_PAYLOAD',
+        version: '1.0.0',
+        traceId,
+        status: jsonResult.status,
+        data: jsonResult.data,
+        error: jsonResult.error
+      });
+    } catch (_) {}
+  }
   process.stdout.write('\n__EVAL_RESULT_JSON__' + JSON.stringify(jsonResult) + '__EVAL_RESULT_JSON__\n');
 }
 

@@ -108,15 +108,32 @@ function getChassisCatalog(queryText = '', context = {}) {
     }
   }
 
+  // Parse migration/upgrade pattern (e.g. "Migrate DL380 Gen10 to Gen12", "Gen10 to Gen12")
+  const migrationMatch = text.match(/\b(?:migrate|modernize|upgrade|transition|move|replace|from)\b.*?\bgen\s*(\d+)\b.*?\b(?:to|into|->|with|target)\b.*?\bgen\s*(\d+)\b/i) ||
+                         text.match(/\bgen\s*(\d+)\b\s*(?:to|->)\s*.*?\bgen\s*(\d+)\b/i);
+
+  let targetGen = null;
+  let sourceGen = null;
+  if (migrationMatch) {
+    sourceGen = `Gen${migrationMatch[1]}`;
+    targetGen = `Gen${migrationMatch[2]}`;
+    if (context && typeof context === 'object') {
+      context.migrationSourceGen = sourceGen;
+      context.migrationTargetGen = targetGen;
+    }
+  }
+
   // Parse explicit generation from text (e.g. Gen11, Gen 11, Gen12, Gen 12)
-  const explicitGenMatch = text.match(/\bgen\s*(\d+)\b/i);
-  const explicitGen = explicitGenMatch ? `Gen${explicitGenMatch[1]}` : null;
+  const explicitGenMatch = targetGen ? null : text.match(/\bgen\s*(\d+)\b/i);
+  const explicitGen = targetGen || (explicitGenMatch ? `Gen${explicitGenMatch[1]}` : null);
 
   if (matchedCatalog && explicitGen && !matchedCatalog.id.toLowerCase().includes(explicitGen.toLowerCase())) {
     return { chassisKey: 'GENERATION_MISMATCH', catalogDir: null, catalogPath: null, catalogData: null, isAmbiguous: true, error: 'Explicit product and requested generation disagree.' };
   }
   const requestedGenerations = new Set([...text.matchAll(/\bgen\s*(\d+)\b/gi)].map(match => match[1]));
-  if (requestedGenerations.size > 1) return { chassisKey: 'AMBIGUOUS_QUERY', catalogDir: null, catalogPath: null, catalogData: null, isAmbiguous: true, error: 'Multiple generations require separate configurations.' };
+  if (!targetGen && requestedGenerations.size > 1) {
+    return { chassisKey: 'AMBIGUOUS_QUERY', catalogDir: null, catalogPath: null, catalogData: null, isAmbiguous: true, error: 'Multiple generations require separate configurations.' };
+  }
 
   if (!matchedCatalog) {
     const matchedPlatforms = PLATFORM_SIGNATURES.filter(p => p.pattern.test(text));
@@ -1034,7 +1051,8 @@ async function _handleRfpSizing(queryText, context) {
   }
 
   let evaluatedSolution = null;
-  if (context.continueEvaluation && candidateItems.length > 0) {
+  const shouldContinue = Boolean(context.continueEvaluation || context.evaluateImmediately || context.evaluate);
+  if (shouldContinue && candidateItems.length > 0) {
     try {
       const { runEvaluationPipeline } = require('./eval_boq.js');
       evaluatedSolution = await runEvaluationPipeline({
@@ -1043,7 +1061,10 @@ async function _handleRfpSizing(queryText, context) {
         serverCount,
         OFFLINE_MODE: context.offlineMode !== false && !context.enableCloudValidation,
         JSON_MODE: true,
-        traceId
+        traceId,
+        deadline: context.deadline || null,
+        cancellationToken: context.cancellationToken || null,
+        options: context.options || {}
       });
     } catch (evalErr) {
       evaluatedSolution = { status: 'ERROR', error: evalErr.message };
@@ -1065,6 +1086,8 @@ async function _handleRfpSizing(queryText, context) {
     constructionPlan: sizingResult?.constructionPlan || [],
     requiresHumanClarification: sizingResult?.requiresHumanClarification ?? true,
     candidateBOM: candidateItems,
+    isStartingBomDraft: !evaluatedSolution,
+    isEvaluationComplete: Boolean(evaluatedSolution),
     evaluation,
     evaluatedSolution,
     traceId,

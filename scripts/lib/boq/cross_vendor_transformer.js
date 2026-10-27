@@ -91,18 +91,200 @@ function parseCompetitorSpecification(input, sourceVendor = null) {
 }
 
 function audit12PointPhysicalParity(competitorSpec, targetBom = [], targetChassis = null) {
-  const auditItems = AUDIT_SUBSYSTEMS.map(subsystem => ({
-    subsystem, status: 'NOT_EVALUATED',
-    details: 'Requires exact source requirements, target catalog facts and scoped physical evaluation.'
-  }));
+  const bom = Array.isArray(targetBom) ? targetBom : [];
+  const spec = competitorSpec || {};
+
+  const auditItems = AUDIT_SUBSYSTEMS.map(subsystem => {
+    if (bom.length === 0) {
+      return {
+        subsystem,
+        status: 'NOT_EVALUATED',
+        details: 'Requires exact source requirements, target catalog facts and scoped physical evaluation.'
+      };
+    }
+
+    switch (subsystem) {
+      case 'COMPUTE_PROCESSORS': {
+        const reqCores = spec.compute?.totalCores;
+        const reqCpuCount = spec.compute?.cpuCount;
+        if (reqCores === null && reqCpuCount === null) {
+          return { subsystem, status: 'NOT_EVALUATED', details: 'No competitor compute/processor requirements specified.' };
+        }
+        let targetCpus = 0;
+        let targetCores = 0;
+        for (const item of bom) {
+          const desc = (item.description || item.sku || '').toLowerCase();
+          if (/\b(processor|xeon|epyc)\b/i.test(desc) && !/\b(heatsink|heat sink|fan|cage)\b/i.test(desc)) {
+            const q = item.quantity || 1;
+            targetCpus += q;
+            const coreMatch = desc.match(/(\d+)[\s-]*(?:cores?\b|c\b|c\/)/i);
+            const coresPerCpu = coreMatch ? parseInt(coreMatch[1], 10) : 16;
+            targetCores += (coresPerCpu * q);
+          }
+        }
+        if (targetCpus === 0) {
+          return { subsystem, status: 'DEFICIT', details: `Target BOM contains 0 processors; competitor specified ${reqCpuCount || 'CPUs'}.` };
+        }
+        if (reqCores != null) {
+          if (targetCores >= reqCores) {
+            return { subsystem, status: targetCores > reqCores ? 'EXCEEDS' : 'MATCHED', details: `Target provides ${targetCores} cores (${targetCpus} CPUs) vs competitor ${reqCores} cores.` };
+          }
+          return { subsystem, status: 'DEFICIT', details: `Target provides ${targetCores} cores vs competitor ${reqCores} cores (Deficit: ${reqCores - targetCores} cores).` };
+        }
+        if (reqCpuCount != null) {
+          if (targetCpus >= reqCpuCount) {
+            return { subsystem, status: targetCpus > reqCpuCount ? 'EXCEEDS' : 'MATCHED', details: `Target provides ${targetCpus} CPU sockets vs competitor ${reqCpuCount} sockets.` };
+          }
+          return { subsystem, status: 'DEFICIT', details: `Target provides ${targetCpus} CPU sockets vs competitor ${reqCpuCount} sockets.` };
+        }
+        return { subsystem, status: 'NOT_EVALUATED', details: 'Insufficient processor specification.' };
+      }
+
+      case 'MEMORY_TOPOLOGY': {
+        const reqMemGb = spec.memory?.totalMemoryGb;
+        if (reqMemGb === null || reqMemGb === undefined) {
+          return { subsystem, status: 'NOT_EVALUATED', details: 'No competitor memory capacity specified.' };
+        }
+        let targetMemGb = 0;
+        for (const item of bom) {
+          const desc = (item.description || item.sku || '').toLowerCase();
+          if (/\b(dimm|rdimm|smart memory|memory)\b/i.test(desc) && !/\b(battery|controller)\b/i.test(desc)) {
+            const capMatch = desc.match(/(\d+)\s*gb/i);
+            const cap = capMatch ? parseInt(capMatch[1], 10) : 32;
+            targetMemGb += cap * (item.quantity || 1);
+          }
+        }
+        if (targetMemGb >= reqMemGb) {
+          return { subsystem, status: targetMemGb > reqMemGb ? 'EXCEEDS' : 'MATCHED', details: `Target provides ${targetMemGb} GB RAM vs competitor requirement of ${reqMemGb} GB.` };
+        }
+        return { subsystem, status: 'DEFICIT', details: `Target provides ${targetMemGb} GB RAM vs competitor requirement of ${reqMemGb} GB (Deficit: ${reqMemGb - targetMemGb} GB).` };
+      }
+
+      case 'ACCELERATORS_GPU': {
+        const reqGpu = spec.accelerators?.gpuCount;
+        if (reqGpu === null || reqGpu === undefined || reqGpu === 0) {
+          return { subsystem, status: 'NOT_EVALUATED', details: 'No competitor GPU accelerators specified.' };
+        }
+        let targetGpu = 0;
+        for (const item of bom) {
+          const desc = (item.description || item.sku || '').toLowerCase();
+          if (/\b(gpu|accelerator|nvidia|h100|h200|l40|l4)\b/i.test(desc)) {
+            targetGpu += (item.quantity || 1);
+          }
+        }
+        if (targetGpu >= reqGpu) {
+          return { subsystem, status: targetGpu > reqGpu ? 'EXCEEDS' : 'MATCHED', details: `Target provides ${targetGpu} GPU accelerator(s) vs competitor ${reqGpu}.` };
+        }
+        return { subsystem, status: 'DEFICIT', details: `Target provides ${targetGpu} GPU accelerator(s) vs competitor ${reqGpu} (Deficit: ${reqGpu - targetGpu}).` };
+      }
+
+      case 'DATA_STORAGE_DRIVES': {
+        const reqDrives = spec.localDrives?.count;
+        if (reqDrives === null || reqDrives === undefined || reqDrives === 0) {
+          return { subsystem, status: 'NOT_EVALUATED', details: 'No competitor drive count specified.' };
+        }
+        let targetDrives = 0;
+        for (const item of bom) {
+          const desc = (item.description || item.sku || '').toLowerCase();
+          if (/\b(ssd|hdd|nvme|drive)\b/i.test(desc) && !/\b(cage|backplane|cable|controller|power)\b/i.test(desc)) {
+            targetDrives += (item.quantity || 1);
+          }
+        }
+        if (targetDrives >= reqDrives) {
+          return { subsystem, status: targetDrives > reqDrives ? 'EXCEEDS' : 'MATCHED', details: `Target provides ${targetDrives} drive(s) vs competitor ${reqDrives}.` };
+        }
+        return { subsystem, status: 'DEFICIT', details: `Target provides ${targetDrives} drive(s) vs competitor ${reqDrives} (Deficit: ${reqDrives - targetDrives}).` };
+      }
+
+      case 'OCP_NETWORKING_FABRIC': {
+        const reqSpeed = spec.networking?.speedGb;
+        const reqPorts = spec.networking?.portsCount;
+        if (reqSpeed === null && reqPorts === null) {
+          return { subsystem, status: 'NOT_EVALUATED', details: 'No competitor network fabric specification provided.' };
+        }
+        let targetPorts = 0;
+        let maxSpeed = 0;
+        for (const item of bom) {
+          const desc = (item.description || item.sku || '').toLowerCase();
+          if (/\b(nic|adapter|ethernet|ocp3?|sfp\d*|bcm\d*)\b/i.test(desc) && !/\b(power|chassis|cable)\b/i.test(desc)) {
+            const portMatch = desc.match(/(\d+)\s*[-]?port/i);
+            const speedMatch = desc.match(/(\d+)\s*(?:gb|gbe)/i);
+            const p = portMatch ? parseInt(portMatch[1], 10) : 2;
+            const s = speedMatch ? parseInt(speedMatch[1], 10) : 10;
+            targetPorts += p * (item.quantity || 1);
+            maxSpeed = Math.max(maxSpeed, s);
+          }
+        }
+        if (reqSpeed && maxSpeed < reqSpeed) {
+          return { subsystem, status: 'DEFICIT', details: `Target network adapter speed (${maxSpeed}GbE) is lower than competitor (${reqSpeed}GbE).` };
+        }
+        if (reqPorts && targetPorts < reqPorts) {
+          return { subsystem, status: 'DEFICIT', details: `Target network ports (${targetPorts}) are fewer than competitor (${reqPorts}).` };
+        }
+        return { subsystem, status: 'MATCHED', details: `Target network fabric (${targetPorts} ports, max ${maxSpeed}GbE) satisfies competitor requirements.` };
+      }
+
+      case 'POWER_AND_REDUNDANCY': {
+        const reqPsu = spec.power?.psuCount;
+        if (reqPsu === null || reqPsu === undefined) {
+          return { subsystem, status: 'NOT_EVALUATED', details: 'No competitor power redundancy requirements specified.' };
+        }
+        let targetPsu = 0;
+        for (const item of bom) {
+          const desc = (item.description || item.sku || '').toLowerCase();
+          if (/\b(power supply|psu|flex slot)\b/i.test(desc)) {
+            targetPsu += (item.quantity || 1);
+          }
+        }
+        if (targetPsu >= reqPsu) {
+          return { subsystem, status: targetPsu > reqPsu ? 'EXCEEDS' : 'MATCHED', details: `Target provides ${targetPsu} power supplies vs competitor ${reqPsu}.` };
+        }
+        return { subsystem, status: 'DEFICIT', details: `Target provides ${targetPsu} power supplies vs competitor ${reqPsu}.` };
+      }
+
+      case 'INFRASTRUCTURE_MANAGEMENT': {
+        const reqMgmt = spec.management?.tier;
+        if (!reqMgmt) {
+          return { subsystem, status: 'NOT_EVALUATED', details: 'No competitor remote management tier specified.' };
+        }
+        const hasIlo = bom.some(item => /\b(ilo|compute ops|idrac|xcc)\b/i.test(item.description || item.sku || ''));
+        return {
+          subsystem,
+          status: hasIlo ? 'MATCHED' : 'DEFICIT',
+          details: hasIlo ? `Target includes HPE iLO management license matching ${reqMgmt} tier.` : `Target lacks explicit iLO management license for ${reqMgmt} tier.`
+        };
+      }
+
+      default:
+        return {
+          subsystem,
+          status: 'NOT_EVALUATED',
+          details: 'Requires target chassis physical aspect evaluation and QuickSpecs verification.'
+        };
+    }
+  });
+
+  const passedSubsystems = auditItems.filter(i => i.status === 'MATCHED' || i.status === 'EXCEEDS').length;
+  const actionRequiredSubsystems = auditItems.filter(i => i.status === 'DEFICIT').length;
+  const unresolvedSubsystems = auditItems.filter(i => i.status === 'NOT_EVALUATED').length;
+  const totalAudited = passedSubsystems + actionRequiredSubsystems;
+  const is100PercentCompliant = totalAudited > 0 && actionRequiredSubsystems === 0 && unresolvedSubsystems === 0;
+
   return {
-    status: 'NOT_EVALUATED', targetChassis, is100PercentCompliant: false,
+    status: totalAudited === 0 ? 'NOT_EVALUATED' : (actionRequiredSubsystems > 0 ? 'ACTION_REQUIRED' : 'PASSED'),
+    targetChassis,
+    is100PercentCompliant,
     portalValidationStatus: 'PORTAL VALIDATION PENDING',
-    auditItems, missingEnablementKits: [], engineeringTradeoffs: [],
-    totalSubsystemsAudited: 0, passedSubsystems: 0,
-    actionRequiredSubsystems: 0, warningSubsystems: 0,
-    unresolvedSubsystems: auditItems.length,
-    sourceRequirements: competitorSpec, candidateItemCount: targetBom.length
+    auditItems,
+    missingEnablementKits: [],
+    engineeringTradeoffs: [],
+    totalSubsystemsAudited: totalAudited,
+    passedSubsystems,
+    actionRequiredSubsystems,
+    warningSubsystems: 0,
+    unresolvedSubsystems,
+    sourceRequirements: competitorSpec,
+    candidateItemCount: bom.length
   };
 }
 

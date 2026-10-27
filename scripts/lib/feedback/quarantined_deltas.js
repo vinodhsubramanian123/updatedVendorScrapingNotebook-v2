@@ -365,12 +365,18 @@ function promoteQuarantinedDelta(quarantineIdOrDeltaId, approver = 'ADMIN_HITL',
 
   let humanReview = normalizeHumanReview({ humanReview: options.humanReview });
   if (!humanReview && SINGLE_USER_MODE) {
+    const evidenceId = item.evidenceId || item.traceId || (Array.isArray(item.citations) && item.citations[0]?.id) || item.deltaId;
+    const isAuthenticSource = TRUSTED_AUTOMATED_SOURCES.has(normalizeText(item.source)) || item.source === 'OFFICIAL_VENDOR_PORTAL_OBSERVATION';
+    if (!isAuthenticSource || !evidenceId) {
+      logger.warn('QUARANTINE', 'Promotion denied: unverified or ungrounded proposal lacks verifiable evidence provenance.');
+      return null;
+    }
     humanReview = {
-      reviewer: approver || 'SINGLE_USER_LEAD_ARCHITECT',
-      reasoning: 'Lead architect approved rule directly from verified portal trial',
+      reviewer: approver || 'AUTONOMOUS_LEAD_ARCHITECT',
+      reasoning: options.reasoning || item.humanReasoning || `Autonomous verified portal evidence: ${item.ruleUpdate || item.rawMessage || evidenceId}`,
       decision: 'APPROVE',
       verified: true,
-      evidence: [{ type: 'OFFICIAL_VENDOR_PORTAL', id: 'OCA_CONFIG_TRIAL' }]
+      evidence: Array.isArray(item.evidence) && item.evidence.length > 0 ? item.evidence : [{ type: 'OFFICIAL_VENDOR_PORTAL', id: evidenceId }]
     };
   } else if (!humanReview || humanReview.reviewer !== approver) {
     logger.warn('QUARANTINE', 'Promotion denied: complete evidence-backed human review is required and reviewer must match approver.');

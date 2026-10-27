@@ -188,17 +188,49 @@ test('DealOptimizer — Detects NIC tier alignment for 100GbE on standard enterp
   assert.ok(nicOpp.recommendedAlternative.includes('25Gb'));
 });
 
-test('DealOptimizer — Report structure includes required fields', () => {
-  const report = analyzeDealValueEngineering([], { aspects: mkAspects() }, null, null);
+test('DealOptimizer — Report structure includes required fields and serializes cleanly without undefined tokens', () => {
+  const items = [
+    mkItem('4410Y', 'Intel Xeon Silver 4410Y Processor', 2, 500),
+    mkItem('P73300-B21', 'HPE 32GB DDR5-5600 RDIMM', 8, 200)
+  ];
+  const evalResults = { aspects: mkAspects({ compute: { cpuCount: 2, maxCpuTdpWatts: 150 } }) };
+  const report = analyzeDealValueEngineering(items, evalResults, null, null);
 
   assert.ok('workloadProfile' in report);
   assert.ok('workloadTraits' in report);
   assert.ok('baselineCapExUsd' in report);
   assert.ok('optimizedCapExUsd' in report);
   assert.ok('potentialSavingsUsd' in report);
+  assert.strictEqual(report.totalEstimatedSavingsUsd, report.potentialSavingsUsd, 'totalEstimatedSavingsUsd must match potentialSavingsUsd');
   assert.ok('capexSavingsPercent' in report);
   assert.ok('opportunitiesCount' in report);
   assert.ok('opportunities' in report);
   assert.ok('generatedAt' in report);
   assert.ok(Array.isArray(report.opportunities));
+
+  // Check opportunity field dual-support
+  const opp = report.opportunities[0];
+  assert.ok(opp.type, 'Opportunity must have type');
+  assert.ok(opp.headline, 'Opportunity must have headline');
+  assert.strictEqual(opp.potentialSavingsUsd, opp.estimatedSavingsUsd, 'potentialSavingsUsd must match estimatedSavingsUsd');
+
+  // Verify eval_output_serializer renders section without undefined tokens
+  const { generateMarkdownReport } = require('../../scripts/lib/boq/eval_output_serializer.js');
+  const mockCtx = {
+    evalResults: {
+      ...evalResults,
+      items,
+      valueEngineering: report,
+      buildable: true,
+      skuValidation: { valid: true, skus: [] },
+      aspects: evalResults.aspects
+    },
+    inputPath: 'test_input.xlsx',
+    outputPath: 'test_output.json',
+    catalogFreshness: {}
+  };
+  const serialized = generateMarkdownReport(mockCtx);
+  assert.ok(serialized.includes('3.5 Value Engineering & Deal Optimization Analysis'), 'Must contain VE section heading');
+  assert.ok(!serialized.includes('undefined'), 'Serialized output must NOT contain undefined tokens');
+  assert.ok(serialized.includes('Memory Architecture'), 'Serialized table must contain opportunity category');
 });

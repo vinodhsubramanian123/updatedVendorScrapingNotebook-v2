@@ -179,7 +179,7 @@ router.post('/eval-boq', (req, res) => {
     spawn('node', args, {
       cwd: PROJECT_ROOT,
       env: { ...process.env, STRUCTURED_PROGRESS: '1', ...extraEnv },
-      ...(ownedCli ? { stdio: ['pipe', 'pipe', 'pipe', 'ipc'] } : {})
+      stdio: ['pipe', 'pipe', 'pipe', 'ipc']
     })
   );
   if (ownedCli) proc._presalesCooperativeCancellation = true;
@@ -187,6 +187,7 @@ router.post('/eval-boq', (req, res) => {
   res.status(202).json({ status: 'ACCEPTED', runId, message: 'Evaluation job started in background' });
 
   let stdoutBuffer = '';
+  let ipcResultPayload = null;
   const lineBuffers = { stdout: '', stderr: '' };
   const evalStartTime = Date.now();
   let completed = false;
@@ -194,6 +195,14 @@ router.post('/eval-boq', (req, res) => {
 
   // Mark activeTask manually for mutex guard compatibility
   require('../services/taskManager.cjs')._setActiveTask({ type: 'EVAL_BOQ', runId, pid: proc.pid, process: proc, startTime: evalStartTime });
+
+  if (proc.on && typeof proc.on === 'function') {
+    proc.on('message', (msg) => {
+      if (msg?.type === 'EVAL_RESULT_PAYLOAD') {
+        ipcResultPayload = msg;
+      }
+    });
+  }
 
   const handleData = (data, streamType) => {
     const chunkStr = data.toString();
@@ -203,6 +212,7 @@ router.post('/eval-boq', (req, res) => {
     lineBuffers[streamType] = lines.pop() || '';
     lines.forEach(line => {
       if (!line.trim()) return;
+      if (logs.length >= 5000) logs.shift();
       logs.push({ timestamp: new Date().toISOString(), stream: streamType, text: line });
       try {
         const parsed = JSON.parse(line);
@@ -284,14 +294,16 @@ router.post('/eval-boq', (req, res) => {
       console.error(`[evaluation.cjs] Failed to persist trace ${runId}:`, e.message);
     }
 
-    // Extract and broadcast EVAL_RESULT from stdout
+    // Extract and broadcast EVAL_RESULT from IPC payload (primary) or stdout (fallback)
     try {
-      let parsedData = null;
-      const markerTag = '__EVAL_RESULT_JSON__';
-      const firstMarker = stdoutBuffer.indexOf(markerTag);
-      const lastMarker = stdoutBuffer.lastIndexOf(markerTag);
-      if (firstMarker !== -1 && lastMarker !== -1 && lastMarker > firstMarker) {
-        try { parsedData = JSON.parse(stdoutBuffer.substring(firstMarker + markerTag.length, lastMarker).trim()); } catch (_) {}
+      let parsedData = ipcResultPayload;
+      if (!parsedData) {
+        const markerTag = '__EVAL_RESULT_JSON__';
+        const firstMarker = stdoutBuffer.indexOf(markerTag);
+        const lastMarker = stdoutBuffer.lastIndexOf(markerTag);
+        if (firstMarker !== -1 && lastMarker !== -1 && lastMarker > firstMarker) {
+          try { parsedData = JSON.parse(stdoutBuffer.substring(firstMarker + markerTag.length, lastMarker).trim()); } catch (_) {}
+        }
       }
       if (!parsedData) {
         const statusIdx = Math.max(

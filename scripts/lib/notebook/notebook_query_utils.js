@@ -465,7 +465,7 @@ async function executeNotebookQuery(notebookId, rawQuery, options = {}) {
         if (heal && heal.valid) {
           logger.info('NOTEBOOK_QUERY', `In-flight auto-healing successful for account: ${heal.account}. Retrying cloud query.`);
           if (typeof options.onAuthHealed === 'function') {
-            options.onAuthHealed(heal);
+            await Promise.resolve(options.onAuthHealed(heal));
           }
           return await executeNotebookQuery(notebookId, rawQuery, { ...options, _retriedAuth: true });
         }

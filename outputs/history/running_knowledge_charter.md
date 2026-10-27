@@ -2,8 +2,8 @@
 
 **Document Classification:** Canonical Ground-Truth Architecture & Validation Charter<br>
 **Maintained By:** HPE ProLiant AI Studio Autonomous Knowledge Engine (Antigravity AI)<br>
-**Last Synchronized:** 2026-10-24T18:03:11.327Z<br>
-**Total Deduplicated Learned Rules:** 110<br>
+**Last Synchronized:** 2026-10-27T12:43:02.044Z<br>
+**Total Deduplicated Learned Rules:** 114<br>
 **Universal Invariant Compliance:** INV-1 through INV-38 Certified<br>
 **Google Drive Destination:** `shared_folder_id: 1YR0lBh-gg00amKHRxuOqp5Aea3iL5O7-`
 
@@ -160,7 +160,7 @@ The Catalog Vendor Solution provides modular, AI-assisted catalog ingestion, nor
 
 ## 5. Deduplicated Learned Rule Ledger & Verification Provenance
 
-Total verified rules indexed in this build: **110**.
+Total verified rules indexed in this build: **114**.
 
 | Scope | Target Chassis | Category | Affected SKU | Dependency SKU | Rule Summary / Validation Directive | Verifications |
 | :--- | :--- | :--- | :--- | :--- | :--- | :---: |
@@ -207,6 +207,8 @@ Total verified rules indexed in this build: **110**.
 | 📦 CHASSIS | `DL385_Gen11` | `THERMAL_COOLING_PACKAGING_RULE` | `P58464-B21` | `P58465-B21` | On AMD DL3X5 Gen11 platforms, Standard Fan Kit (P58464-B21, $157) is ordered as individual fan modules (4 for 1P = $628, | 1x |
 | 📦 CHASSIS | `DL385_Gen11` | `MANDATORY_THERMAL_AIR_BAFFLE` | `P53921-B21` | `P57886-B21` | P57886-B21 (HPE ProLiant DL385 Gen11 2U Standard/Performance FIO Air Baffle Kit, $41.00 USD, Qty 1) is physically and lo | 1x |
 | 📦 CHASSIS | `DL385_Gen11` | `PROCESSOR_CACHE_TRADE_OFF_STRATEGY` | `P53712-B21` | `P53701-B21` | When modernizing AMD EPYC 7543 (32c, 2.8GHz, 256MB L3, 225W), EPYC 9334 (32c, 2.7GHz, 128MB L3, 210W, ,170 USD) saves Ca | 1x |
+| 📦 CHASSIS | `DL385_Gen11` | `FAN_PACKAGING_MODALITY_RULE` | `P58465-B21` | `P53921-B21` | On HPE ProLiant DL385 Gen11 (and DL3X5 AMD platforms), P58465-B21 (HPE ProLiant DL3X5 Gen11 2U Performance Fan Kit, .00  | 1x |
+| 📦 CHASSIS | `DL385_Gen11` | `MANAGEMENT_LICENSE_VS_FIO_TOKEN_SEPARATION` | `S1A05A` | `R7A11AAE` | On DL385 Gen11 CTO builds (P53921-B21), R7A11AAE (HPE Compute Ops Management Standard 3-year Upfront SaaS, .00 USD) sati | 1x |
 | 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `P74700-B21` | `—` | Observed price drift on P74700-B21 (memory) | 1x |
 | 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `S4A91C` | `—` | Observed price drift on S4A91C (drive) | 1x |
 | 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `HA113A1` | `—` | Observed price drift on HA113A1 (support) | 1x |
@@ -259,6 +261,8 @@ Total verified rules indexed in this build: **110**.
 | 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_DOM_EXTRACTION_ADVISORY` | `undefined` | `—` | WebLogic OCA table expansion in cdp.js must explicitly toggle show_cost alongside show_price and trigger change events o | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `PROCESSOR_ARCHITECTURAL_MATCH_STRATEGY` | `P74571-B21` | `P74577-B21` | When modernizing Cascade Lake Xeon Gold 6258R (28c, 2.7GHz, 38.5MB L3, 205W), Xeon 6530P (32c, 2.3GHz, 144MB L3, 225W, , | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `MEMORY_CHANNEL_POPULATION_STRATEGY` | `P69728-F21` | `P69729-F21` | On Intel Xeon 6 (8 memory channels per CPU, 16 channels dual socket), legacy 6-channel memory capacities (such as 1,152  | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `THERMAL_HEATSINK_RIGHT_SIZING_RULE` | `P74794-B21` | `P74792-B21` | On HPE ProLiant DL380 Gen12 (P73282-B21), processors with 185W < TDP <= 270W (such as Intel Xeon 6530P 225W P74571-B21)  | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `MANAGEMENT_LICENSE_VS_FIO_TOKEN_SEPARATION` | `S1A05A` | `R7A11AAE` | On DL380 Gen12 CTO builds (P73282-B21), R7A11AAE (HPE Compute Ops Management Standard 3-year Upfront SaaS, .00 USD) sati | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `STARTUP_SERVICE_FORMULA` | `HA124A1` | `HA124A1#5ZM` | Onsite Frame Startup requires exactly 1x HA124A1#5ZM + (TotalFrames - 1)x HA124A1#5ZQ. Purge all HA124A1#V0F lines when  | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `HARDWARE_SUPPORT_1TO1` | `867796-B21` | `HU4B2A3#Z1R` | Qty of HU4B2A3#Z1R must exactly equal qty of 867796-B21 (VC SE 100Gb F32 Module). | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `HARDWARE_SUPPORT_1TO1` | `872957-B21` | `HU4B2A3#Z1Q` | Qty of HU4B2A3#Z1Q must exactly equal qty of 872957-B21 (Synergy Composer2 Management Appliance). | 1x |

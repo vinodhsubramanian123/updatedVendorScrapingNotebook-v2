@@ -600,7 +600,8 @@ function normalizeCandidates(rawCandidates, requestedSkuSet, baselineCost, optio
     });
     cand.priceUnavailableSkus = Array.from(new Set(unavailable.filter(Boolean)));
     cand.pricingComplete = cand.priceUnavailableSkus.length === 0;
-    cand.strategyIdentity = cand.strategyIdentity || cand.name;
+    cand.strategyId = cand.strategyId || cand.strategyIdentity || cand.name;
+    cand.strategyIdentity = cand.strategyId;
     cand.rank = idx + 1;
     if (!cand.name.startsWith(`Rank ${cand.rank}:`)) {
       cand.name = cand.name.replace(/^Rank \d+:/, `Rank ${cand.rank}:`);
@@ -1041,6 +1042,260 @@ function synthesizeFastShipAlternative(v1Parts, v1SupplyMetrics, loadedCatalog, 
   };
 }
 
+function _tryBudgetMemorySubstitution(parts, aspectCompute, getPrice) {
+  const isSilverOrLowTdp = (aspectCompute.maxCpuTdpWatts && aspectCompute.maxCpuTdpWatts <= 165) ||
+    parts.some(p => {
+      const d = (p.description || '').toLowerCase();
+      return (d.includes('silver') || d.includes('4410') || d.includes('4510')) && (d.includes('processor') || d.includes('xeon'));
+    });
+  if (!isSilverOrLowTdp) return false;
+
+  let changed = false;
+  for (let i = 0; i < parts.length; i++) {
+    const p = parts[i];
+    const d = (p.description || '').toLowerCase();
+    if ((d.includes('5600') || p.sku === 'P73300-B21' || p.sku === 'P64707-B21') && (d.includes('memory') || d.includes('rdimm'))) {
+      const altSku = 'P43328-B21';
+      const altPrice = getPrice(altSku) || 145.0;
+      const curPrice = p.unitPriceUsd || getPrice(p.sku) || 200.0;
+      if (altPrice < curPrice) {
+        parts[i] = {
+          ...p,
+          sku: altSku,
+          description: 'HPE 32GB 2Rx8 DDR5-4800 Smart Memory',
+          unitPriceUsd: altPrice,
+          extendedPriceUsd: altPrice * (p.quantity || 1),
+          isStrategyAddon: true,
+          category: 'Budget Optimized Memory'
+        };
+        changed = true;
+      }
+    }
+  }
+  return changed;
+}
+
+function _tryBudgetPowerSubstitution(parts, aspectPower, getPrice) {
+  const estimatedWatts = aspectPower.estimatedNodeWattage || 350;
+  const psuWattage = aspectPower.maxPsuWattage || 800;
+  if (estimatedWatts >= 450 || psuWattage < 1600) return false;
+
+  let changed = false;
+  for (let i = 0; i < parts.length; i++) {
+    const p = parts[i];
+    const d = (p.description || '').toLowerCase();
+    if ((d.includes('power supply') || d.includes('psu') || p.category === 'Power Supply') && (d.includes('1600w') || d.includes('1800w') || d.includes('2200w'))) {
+      const altSku = 'P38995-B21';
+      const altPrice = getPrice(altSku) || 280.0;
+      const curPrice = p.unitPriceUsd || getPrice(p.sku) || 450.0;
+      if (altPrice < curPrice) {
+        parts[i] = {
+          ...p,
+          sku: altSku,
+          description: 'HPE 800W Flex Slot Platinum Hot Plug Power Supply',
+          unitPriceUsd: altPrice,
+          extendedPriceUsd: altPrice * (p.quantity || 1),
+          isStrategyAddon: true,
+          category: 'Budget Optimized Power'
+        };
+        changed = true;
+      }
+    }
+  }
+  return changed;
+}
+
+function _tryBudgetThermalSubstitution(parts, aspectCompute, aspectPcie, getPrice) {
+  const maxCpuTdp = aspectCompute.maxCpuTdpWatts || 0;
+  const gpuCount = aspectPcie?.gpuCount || 0;
+  if (gpuCount > 0 || maxCpuTdp <= 0 || maxCpuTdp > 270) return false;
+
+  let changed = false;
+  for (let i = 0; i < parts.length; i++) {
+    const p = parts[i];
+    const raw = String(p.sku || '').trim().toUpperCase();
+    const d = (p.description || '').toLowerCase();
+    if (raw.startsWith('P74794-B21') || d.includes('max performance heat sink')) {
+      const altSku = 'P74792-B21';
+      const altPrice = getPrice(altSku) || 316.0;
+      parts[i] = {
+        ...p,
+        sku: altSku,
+        description: 'HPE ProLiant Compute DL380 Gen12 2U High Performance Heat Sink Kit',
+        unitPriceUsd: altPrice,
+        extendedPriceUsd: altPrice * (p.quantity || 1),
+        isStrategyAddon: true,
+        category: 'Budget Optimized Thermal'
+      };
+      changed = true;
+    }
+  }
+  return changed;
+}
+
+function synthesizeBudgetMinimizationCandidate(v1, evalResults, loadedCatalog, chassisInfo, getPrice, revalidateCached) {
+  const parts = v1.parts.map(p => ({ ...p }));
+  const aspectCompute = evalResults.aspects?.compute || {};
+  const aspectPower = evalResults.aspects?.power || {};
+  const aspectPcie = evalResults.aspects?.pcie || {};
+
+  const mChanged = _tryBudgetMemorySubstitution(parts, aspectCompute, getPrice);
+  const pChanged = _tryBudgetPowerSubstitution(parts, aspectPower, getPrice);
+  const tChanged = _tryBudgetThermalSubstitution(parts, aspectCompute, aspectPcie, getPrice);
+
+  if (mChanged || pChanged || tChanged) {
+    const reval = revalidateCached(parts);
+    if (reval.physicalMathClean && reval.totalCost < v1.totalCost) {
+      return {
+        parts: reval.parts,
+        totalCost: reval.totalCost,
+        injectedFixes: reval.injectedFixes,
+        physicalMathClean: true,
+        aspectErrors: reval.aspectErrors,
+        isAlternativeAvailable: true,
+        deltaUsd: v1.totalCost - reval.totalCost
+      };
+    }
+  }
+
+  return {
+    parts: v1.parts.map(p => ({ ...p, category: p.isFixInjected ? 'Aspect Rule Fix' : 'Minimal CapEx Baseline' })),
+    totalCost: v1.totalCost,
+    injectedFixes: v1.injectedFixes,
+    physicalMathClean: v1.physicalMathClean,
+    aspectErrors: v1.aspectErrors,
+    isAlternativeAvailable: false,
+    deltaUsd: 0
+  };
+}
+
+function _buildRank2PartsAndMetadata({ leastDeltaCandidate, tierConfig, dynamicDiscoveredAddons, rank1Parts, rank1Cost, baseCost, getPrice, fixes }) {
+  if (leastDeltaCandidate) {
+    const rank2Parts = leastDeltaCandidate.parts;
+    const rank2Cost = leastDeltaCandidate.estimatedCapex;
+    return {
+      rank2Parts,
+      rank2Cost,
+      rank2AddonCost: Math.max(0, rank2Cost - baseCost),
+      rank2Name: leastDeltaCandidate.tierTitle,
+      rank2Reasoning: leastDeltaCandidate.sharedIntelligenceReasoning,
+      rank2IntentAlignment: `100% Functional Match (${leastDeltaCandidate.deltaSummary})`,
+      rank2LeastDelta: leastDeltaCandidate
+    };
+  }
+  const rank2ConfigAddons = tierConfig.rank2 || [];
+  const rank2RawList = rank2ConfigAddons.length > 0 ? rank2ConfigAddons : dynamicDiscoveredAddons.rank2Addons;
+  const rank2Addons = rank2RawList.map(a => {
+    const price = getPrice(a.sku);
+    return {
+      sku: cleanBaseSKU(a.sku),
+      description: a.description || a.name || `Factory Accessory (${a.sku})`,
+      quantity: a.quantity || 1,
+      unitPriceUsd: price,
+      extendedPriceUsd: price * (a.quantity || 1),
+      isFixInjected: false,
+      isStrategyAddon: true,
+      category: a.category || 'Factory Baseline Accessory'
+    };
+  });
+  const rank2Parts = [...rank1Parts, ...rank2Addons];
+  const rank2AddonCost = rank2Addons.reduce((acc, a) => acc + a.extendedPriceUsd, 0);
+  return {
+    rank2Parts,
+    rank2Cost: rank1Cost + rank2AddonCost,
+    rank2AddonCost,
+    rank2Name: 'Rank 2: Standardized CTO Baseline & Factory Default Accessories',
+    rank2Reasoning: 'Standardizes baseline options with factory default cable and rail accessories for maximum factory assembly stability.',
+    rank2IntentAlignment: `${Math.max(80, 95 - fixes.length * 3)}% (Standardized)`,
+    rank2LeastDelta: null
+  };
+}
+
+function _buildRank3PartsAndMetadata({ arbitrationBranches, tierConfig, dynamicDiscoveredAddons, leastDeltaCandidate, rank1Parts, rank2Parts, baseParts, fixParts, getPrice, loadedCatalog, chassisInfo, items, rank1Cost, dna, fixes }) {
+  const pcieStorageBranch = arbitrationBranches.find(b => b.branchId === 'branch_pcie_storage_ocp_nic');
+  if (pcieStorageBranch) {
+    const pcieRes = buildRank3PcieStorageBranchParts({
+      pcieStorageBranch, baseParts, fixParts, getPrice, loadedCatalog, chassisInfo, items, rank1Cost
+    });
+    return {
+      rank3Parts: pcieRes.rank3Parts,
+      rank3AddonCost: pcieRes.rank3AddonCost,
+      rank3Addons: [],
+      rank3Name: 'Rank 3: High-IOPS & Contested Form-Factor Optimized (PCIe Storage + OCP NIC Retention)',
+      rank3Reasoning: 'Pivoted storage controller to PCIe (MR416i-p 8GB Cache) to free OCP Slot 1 for customer\'s P10115-B21 10/25Gb OCP3 adapter, validating original P48832-B21 cable choice.',
+      rank3IntentAlignment: '100% Exact Part Number Match (Fulfills P10115-B21 & P48832-B21)',
+      rank3CascadingImpact: pcieRes.rank3CascadingImpact,
+      pcieStorageBranch
+    };
+  }
+  const rank3ConfigAddons = tierConfig.rank3 || [];
+  const rank3RawList = rank3ConfigAddons.length > 0 ? rank3ConfigAddons : dynamicDiscoveredAddons.rank3Addons;
+  const rank3Addons = rank3RawList.map(a => {
+    const price = getPrice(a.sku);
+    return {
+      sku: cleanBaseSKU(a.sku),
+      description: a.description || a.name || `Performance Component (${a.sku})`,
+      quantity: a.quantity || 1,
+      unitPriceUsd: price,
+      extendedPriceUsd: price * (a.quantity || 1),
+      isFixInjected: false,
+      isStrategyAddon: true,
+      category: a.category || 'Performance Acceleration'
+    };
+  });
+  const isModernizedGen5 = leastDeltaCandidate?.strategyName === 'MODERNIZED_5TH_GEN_PLATFORM';
+  const rank3BaseParts = isModernizedGen5 ? rank2Parts : rank1Parts;
+  const rank3Parts = [...rank3BaseParts, ...rank3Addons];
+  const rank3AddonCost = rank3Addons.reduce((acc, a) => acc + a.extendedPriceUsd, 0);
+  const rank3Name = isModernizedGen5
+    ? 'Rank 3: High-IOPS & Storage Performance Optimized (Modernized 5th Gen Platform)'
+    : 'Rank 3: High-IOPS & Storage Performance Optimized';
+  const rank3Reasoning = isModernizedGen5
+    ? 'Upgrades storage write-cache and smart hybrid battery protection on the modernized 5th Gen platform for enhanced transactional database read/write IOPS.'
+    : 'Upgrades storage write-cache and smart hybrid battery protection for enhanced transactional database read/write IOPS.';
+  return {
+    rank3Parts,
+    rank3AddonCost,
+    rank3Addons,
+    rank3Name,
+    rank3Reasoning,
+    rank3IntentAlignment: `${Math.max(75, 90 - fixes.length * 3)}% (Storage Heavy)`,
+    rank3CascadingImpact: null,
+    pcieStorageBranch: null
+  };
+}
+
+function _buildRank4PartsAndMetadata({ tierConfig, dynamicDiscoveredAddons, leastDeltaCandidate, rank1Parts, rank2Parts, getPrice }) {
+  const isModernizedGen5 = leastDeltaCandidate?.strategyName === 'MODERNIZED_5TH_GEN_PLATFORM';
+  const rank4BaseParts = isModernizedGen5 ? rank2Parts : rank1Parts;
+  const rank4ConfigAddons = tierConfig.rank4 || [];
+  const rank4RawList = rank4ConfigAddons.length > 0 ? rank4ConfigAddons : dynamicDiscoveredAddons.rank4Addons;
+  const rank4Addons = rank4RawList.map(a => {
+    const price = getPrice(a.sku);
+    return {
+      sku: cleanBaseSKU(a.sku),
+      description: a.description || a.name || `Expansion Riser / Fan (${a.sku})`,
+      quantity: a.quantity || 1,
+      unitPriceUsd: price,
+      extendedPriceUsd: price * (a.quantity || 1),
+      isFixInjected: false,
+      isStrategyAddon: true,
+      category: a.category || 'Expansion Infrastructure'
+    };
+  });
+  const rank4Parts = [...rank4BaseParts, ...rank4Addons];
+  const rank4AddonCost = rank4Addons.reduce((acc, a) => acc + a.extendedPriceUsd, 0);
+  const rank4Name = isModernizedGen5
+    ? 'Rank 4: Maximum Density & Future Scalability Expansion (Modernized 5th Gen Platform)'
+    : 'Rank 4: Maximum Density & Future Scalability Expansion';
+  return {
+    rank4Parts,
+    rank4AddonCost,
+    rank4Addons,
+    rank4Name
+  };
+}
+
 /**
  * Synthesize 5-Tier Strategic Resolution Matrix based on Workload DNA and Multi-Metric Tradeoffs.
  */
@@ -1138,121 +1393,42 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
     : 'Preserves the exact customer configuration with mandatory aspect fixes applied to satisfy physical buildability.';
 
   // Rank 2: Least-Delta Alternative Path (when troublesome SKU causes cascades) or Standardized CTO Baseline
-  let rank2Parts = [];
-  let rank2Cost = 0;
-  let rank2AddonCost = 0;
-  let rank2Name = 'Rank 2: Standardized CTO Baseline & Factory Default Accessories';
-  let rank2Reasoning = 'Standardizes baseline options with factory default cable and rail accessories for maximum factory assembly stability.';
-  let rank2IntentAlignment = `${Math.max(80, 95 - fixes.length * 3)}% (Standardized)`;
-  let rank2LeastDelta = null;
-
-  if (leastDeltaCandidate) {
-    rank2Parts = leastDeltaCandidate.parts;
-    rank2Cost = leastDeltaCandidate.estimatedCapex;
-    rank2AddonCost = Math.max(0, rank2Cost - baseCost);
-    rank2Name = leastDeltaCandidate.tierTitle;
-    rank2Reasoning = leastDeltaCandidate.sharedIntelligenceReasoning;
-    rank2IntentAlignment = `100% Functional Match (${leastDeltaCandidate.deltaSummary})`;
-    rank2LeastDelta = leastDeltaCandidate;
-  } else {
-    const rank2ConfigAddons = tierConfig.rank2 || [];
-    const rank2RawList = rank2ConfigAddons.length > 0
-      ? rank2ConfigAddons
-      : dynamicDiscoveredAddons.rank2Addons;
-    const rank2Addons = rank2RawList.map(a => {
-      const price = getPrice(a.sku);
-      return {
-        sku: cleanBaseSKU(a.sku),
-        description: a.description || a.name || `Factory Accessory (${a.sku})`,
-        quantity: a.quantity || 1,
-        unitPriceUsd: price,
-        extendedPriceUsd: price * (a.quantity || 1),
-        isFixInjected: false,
-        isStrategyAddon: true,
-        category: a.category || 'Factory Baseline Accessory'
-      };
-    });
-    rank2Parts = [...rank1Parts, ...rank2Addons];
-    rank2AddonCost = rank2Addons.reduce((acc, a) => acc + a.extendedPriceUsd, 0);
-    rank2Cost = rank1Cost + rank2AddonCost;
-  }
+  const {
+    rank2Parts,
+    rank2AddonCost,
+    rank2Name,
+    rank2Reasoning,
+    rank2IntentAlignment,
+    rank2LeastDelta
+  } = _buildRank2PartsAndMetadata({
+    leastDeltaCandidate, tierConfig, dynamicDiscoveredAddons, rank1Parts, rank1Cost, baseCost, getPrice, fixes
+  });
 
   // Rank 3
   const arbitrationBranches = (evalResults.arbitrationResults || {}).branches || [];
-  const pcieStorageBranch = arbitrationBranches.find(b => b.branchId === 'branch_pcie_storage_ocp_nic');
-
-  let rank3Parts = [];
-  let rank3AddonCost = 0;
-  let rank3Addons = [];
-  let rank3Name = 'Rank 3: High-IOPS & Storage Performance Optimized';
-  let rank3Reasoning = 'Upgrades storage write-cache and smart hybrid battery protection for enhanced transactional database read/write IOPS.';
-  let rank3IntentAlignment = `${Math.max(75, 90 - fixes.length * 3)}% (Storage Heavy)`;
-  let rank3CascadingImpact = null;
-
-  if (pcieStorageBranch) {
-    rank3Name = 'Rank 3: High-IOPS & Contested Form-Factor Optimized (PCIe Storage + OCP NIC Retention)';
-    rank3Reasoning = 'Pivoted storage controller to PCIe (MR416i-p 8GB Cache) to free OCP Slot 1 for customer\'s P10115-B21 10/25Gb OCP3 adapter, validating original P48832-B21 cable choice.';
-    rank3IntentAlignment = '100% Exact Part Number Match (Fulfills P10115-B21 & P48832-B21)';
-
-    const pcieRes = buildRank3PcieStorageBranchParts({
-      pcieStorageBranch, baseParts, fixParts, getPrice, loadedCatalog, chassisInfo, items, rank1Cost
-    });
-    rank3Parts = pcieRes.rank3Parts;
-    rank3AddonCost = pcieRes.rank3AddonCost;
-    rank3CascadingImpact = pcieRes.rank3CascadingImpact;
-  } else {
-    const rank3ConfigAddons = tierConfig.rank3 || [];
-    const rank3RawList = rank3ConfigAddons.length > 0
-      ? rank3ConfigAddons
-      : dynamicDiscoveredAddons.rank3Addons;
-    rank3Addons = rank3RawList.map(a => {
-      const price = getPrice(a.sku);
-      return {
-        sku: cleanBaseSKU(a.sku),
-        description: a.description || a.name || `Performance Component (${a.sku})`,
-        quantity: a.quantity || 1,
-        unitPriceUsd: price,
-        extendedPriceUsd: price * (a.quantity || 1),
-        isFixInjected: false,
-        isStrategyAddon: true,
-        category: a.category || 'Performance Acceleration'
-      };
-    });
-    const isModernizedGen5 = leastDeltaCandidate?.strategyName === 'MODERNIZED_5TH_GEN_PLATFORM';
-    const rank3BaseParts = isModernizedGen5 ? rank2Parts : rank1Parts;
-    rank3Parts = [...rank3BaseParts, ...rank3Addons];
-    rank3AddonCost = rank3Addons.reduce((acc, a) => acc + a.extendedPriceUsd, 0);
-    if (isModernizedGen5) {
-      rank3Name = 'Rank 3: High-IOPS & Storage Performance Optimized (Modernized 5th Gen Platform)';
-      rank3Reasoning = 'Upgrades storage write-cache and smart hybrid battery protection on the modernized 5th Gen platform for enhanced transactional database read/write IOPS.';
-    }
-  }
+  const {
+    rank3Parts,
+    rank3AddonCost,
+    rank3Addons,
+    rank3Name,
+    rank3Reasoning,
+    rank3IntentAlignment,
+    rank3CascadingImpact,
+    pcieStorageBranch
+  } = _buildRank3PartsAndMetadata({
+    arbitrationBranches, tierConfig, dynamicDiscoveredAddons, leastDeltaCandidate, rank1Parts, rank2Parts,
+    baseParts, fixParts, getPrice, loadedCatalog, chassisInfo, items, rank1Cost, dna, fixes
+  });
 
   // Rank 4
-  const isModernizedGen5 = leastDeltaCandidate?.strategyName === 'MODERNIZED_5TH_GEN_PLATFORM';
-  const rank4BaseParts = isModernizedGen5 ? rank2Parts : rank1Parts;
-  const rank4ConfigAddons = tierConfig.rank4 || [];
-  const rank4RawList = rank4ConfigAddons.length > 0
-    ? rank4ConfigAddons
-    : dynamicDiscoveredAddons.rank4Addons;
-  const rank4Addons = rank4RawList.map(a => {
-    const price = getPrice(a.sku);
-    return {
-      sku: cleanBaseSKU(a.sku),
-      description: a.description || a.name || `Expansion Riser / Fan (${a.sku})`,
-      quantity: a.quantity || 1,
-      unitPriceUsd: price,
-      extendedPriceUsd: price * (a.quantity || 1),
-      isFixInjected: false,
-      isStrategyAddon: true,
-      category: a.category || 'Expansion Infrastructure'
-    };
+  const {
+    rank4Parts,
+    rank4AddonCost,
+    rank4Addons,
+    rank4Name
+  } = _buildRank4PartsAndMetadata({
+    tierConfig, dynamicDiscoveredAddons, leastDeltaCandidate, rank1Parts, rank2Parts, getPrice
   });
-  const rank4Parts = [...rank4BaseParts, ...rank4Addons];
-  const rank4AddonCost = rank4Addons.reduce((acc, a) => acc + a.extendedPriceUsd, 0);
-  const rank4Name = isModernizedGen5
-    ? 'Rank 4: Maximum Density & Future Scalability Expansion (Modernized 5th Gen Platform)'
-    : 'Rank 4: Maximum Density & Future Scalability Expansion';
 
   // Re-validate each candidate tier through 7 physical aspects with fingerprint memoization
   const revalidateMemo = new Map();
@@ -1272,12 +1448,8 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
   const v3 = revalidateCached(rank3Parts);
   const v4 = revalidateCached(rank4Parts);
 
-  // Rank 5: Budget & CapEx Minimized Buildable Baseline (derived from revalidated v1.parts)
-  const rank5Parts = v1.parts.map(p => ({
-    ...p,
-    category: p.isFixInjected ? 'Aspect Rule Fix' : 'Minimal CapEx Baseline'
-  }));
-  const v5 = { parts: rank5Parts, injectedFixes: v1.injectedFixes, totalCost: v1.totalCost, physicalMathClean: v1.physicalMathClean, aspectErrors: v1.aspectErrors };
+  // Rank 5: Budget & CapEx Minimized Candidate (derived via certified component down-tiering or honest baseline preservation)
+  const v5 = synthesizeBudgetMinimizationCandidate(v1, evalResults, loadedCatalog, chassisInfo, getPrice, revalidateCached);
 
   const v1SupplyMetrics = calculateSupplyMetrics(v1.parts, resolveSupply);
   const fastShipAlternative = synthesizeFastShipAlternative(
@@ -1294,7 +1466,15 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
   const rawCandidates = [
     {
       rank: 1,
+      strategyId: 'STRATEGY_CLOSEST_INTENT',
+      strategyIdentity: 'STRATEGY_CLOSEST_INTENT',
       name: rank1Name,
+      leastDeltaAlternative: leastDeltaCandidate ? {
+        ...leastDeltaCandidate,
+        strategyId: 'STRATEGY_LEAST_DELTA',
+        strategyIdentity: 'STRATEGY_LEAST_DELTA',
+        rank: '1L'
+      } : null,
       score: parseFloat(Math.max(0.70, 1.0 - (fixes.length * 0.02)).toFixed(2)),
       estimatedCostUsd: v1.totalCost,
       budgetBreakdown: {
@@ -1331,6 +1511,8 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
     },
     {
       rank: 2,
+      strategyId: rank2LeastDelta ? 'STRATEGY_LEAST_DELTA' : 'STRATEGY_CTO_BASELINE',
+      strategyIdentity: rank2LeastDelta ? 'STRATEGY_LEAST_DELTA' : 'STRATEGY_CTO_BASELINE',
       name: (options && options.prioritizeFastShipAsRank2 && fastShipAlternative) ? fastShipAlternative.name : rank2Name,
       score: parseFloat(Math.max(0.65, 0.92 - (fixes.length * 0.02)).toFixed(2)),
       estimatedCostUsd: (options && options.prioritizeFastShipAsRank2 && fastShipAlternative) ? fastShipAlternative.estimatedCostUsd : v2.totalCost,
@@ -1380,6 +1562,8 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
     },
     {
       rank: 3,
+      strategyId: 'STRATEGY_PERFORMANCE',
+      strategyIdentity: 'STRATEGY_PERFORMANCE',
       name: rank3Name,
       score: parseFloat(Math.max(0.60, 0.88 - (fixes.length * 0.02)).toFixed(2)),
       estimatedCostUsd: v3.totalCost,
@@ -1413,6 +1597,8 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
     },
     {
       rank: 4,
+      strategyId: 'STRATEGY_EXPANSION',
+      strategyIdentity: 'STRATEGY_EXPANSION',
       name: rank4Name,
       score: parseFloat(Math.max(0.55, 0.82 - (fixes.length * 0.02)).toFixed(2)),
       estimatedCostUsd: v4.totalCost,
@@ -1445,7 +1631,12 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
     },
     {
       rank: 5,
-      name: 'Rank 5: Budget & CapEx Minimized Buildable Baseline',
+      strategyId: 'STRATEGY_BUDGET',
+      strategyIdentity: 'STRATEGY_BUDGET',
+      isAlternativeAvailable: v5.isAlternativeAvailable,
+      name: v5.isAlternativeAvailable
+        ? 'Rank 5: Budget & CapEx Minimized Buildable Alternative'
+        : 'Rank 5: Baseline Preserved (No Further Safe CapEx Reductions Available)',
       score: parseFloat(Math.max(0.50, 0.75 - (fixes.length * 0.02)).toFixed(2)),
       estimatedCostUsd: v5.totalCost,
       budgetBreakdown: {
@@ -1454,7 +1645,9 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
         strategyAddonCost: 0,
         totalBudgetUsd: v5.totalCost
       },
-      workloadDnaMatch: 'Strict Minimum CapEx (100% Buildable Baseline)',
+      workloadDnaMatch: v5.isAlternativeAvailable
+        ? 'Budget Optimized (Certified Down-Tiering)'
+        : 'Strict Minimum CapEx (100% Buildable Baseline)',
       changesCount: fixes.length + v5.injectedFixes.length,
       skuPartsList: v5.parts,
       bomFingerprint: computeBomFingerprint(v5.parts),
@@ -1463,17 +1656,25 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
       aspectErrors: v5.aspectErrors || [],
       injectedCascadingFixes: v5.injectedFixes,
       tradeoffMetrics: {
-        intentAlignment: `${Math.max(65, 80 - fixes.length * 3)}% (Minimal Baseline)`,
-        skuModifications: `${fixes.length + v5.injectedFixes.length} mandatory fixes only`,
-        costDeltaUsd: '$0 Surplus Added',
+        intentAlignment: v5.isAlternativeAvailable
+          ? `${Math.max(65, 80 - fixes.length * 3)}% (Budget Optimized)`
+          : `${Math.max(65, 80 - fixes.length * 3)}% (Minimal Baseline)`,
+        skuModifications: `${fixes.length + v5.injectedFixes.length} fixes & modifications`,
+        costDeltaUsd: v5.isAlternativeAvailable
+          ? `-$${v5.deltaUsd.toLocaleString()} (CapEx Down-Tiering)`
+          : '$0 (Baseline is already CapEx minimal)',
         capacityExpansion: 'Baseline Only'
       },
       ragSecondOpinion: getLiveRagGrounding(
-        'Minimal CapEx Baseline',
+        v5.isAlternativeAvailable ? 'Budget CapEx Down-Tiering' : 'Minimal CapEx Baseline',
         ['minimal', 'baseline', 'chassis'],
-        `✅ Local Rule Engine Validated: 100% buildable certified baseline without unrequested add-ons (${v5.parts.length} essential parts).`
+        v5.isAlternativeAvailable
+          ? `✅ Local Rule Engine Validated: Certified budget alternative down-tiering over-provisioned components (-$${v5.deltaUsd.toLocaleString()}).`
+          : `✅ Local Rule Engine Validated: 100% buildable certified baseline without unrequested add-ons (${v5.parts.length} essential parts).`
       ),
-      reasoning: `Strict baseline buildable tier eliminating all optional add-ons to minimize total CapEx expenditure while remaining 100% buildable.`
+      reasoning: v5.isAlternativeAvailable
+        ? `Certified budget alternative down-tiering over-provisioned components to deliver lower CapEx while remaining 100% physically buildable.`
+        : `Strict baseline buildable tier eliminating all optional add-ons to minimize total CapEx expenditure while remaining 100% buildable. Rank 1 already represents the minimal certified spend; no further component down-tiering is safely applicable without violating physical constraints.`
     }
   ];
 

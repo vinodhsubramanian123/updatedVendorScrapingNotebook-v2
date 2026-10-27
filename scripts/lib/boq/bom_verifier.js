@@ -23,6 +23,7 @@ const { isValidHpeSKU, cleanBaseSKU, buildCatalogSkuIndex } = require('../catalo
 const { candidateReviewCurrent } = require('./solution_evidence.js');
 const { analyzeDeliveryPacing } = require('./delivery_pacing_analyzer.js');
 const { getRegisteredAspectsForDomain } = require('../aspects/aspect_registry.js');
+const { readPortalReceipt, receiptMatches } = require('./portal_receipt.js');
 
 /**
  * Construct an epistemic check result conforming to INV-105.
@@ -692,49 +693,141 @@ function _checkQuantityConservation(output, context = {}) {
  * Forbids false claims of live vendor acceptance without a verifiable session receipt.
  */
 function _checkPortalReceiptIntegrity(output, context = {}) {
-  const portalStatus = output?.portalValidationStatus || context?.portalValidationStatus;
-  const clicValid = output?.clicValidation?.isValid === true || context?.clicValidation?.isValid === true;
-  const receipt = output?.sessionReceipt || context?.sessionReceipt || output?.sessionReceiptPath || output?.portalReceipt || context?.portalReceipt;
+  const outStatus = output?.portalValidationStatus;
+  const ctxStatus = context?.portalValidationStatus;
 
-  const isClaimingVendorAcceptance = [
+  // Normalized acceptance statuses
+  const ACCEPTANCE_STATUSES = new Set([
     'ACCEPTED_BY_VENDOR',
     'CLIC_ACCEPTED',
     'CORRECTED_CANDIDATE_CLIC_ACCEPTED',
-    'VERIFIED'
-  ].includes(portalStatus) || clicValid;
+    'VERIFIED',
+    'VENDOR_ACCEPTED'
+  ]);
 
-  // If deliverable explicitly claims vendor acceptance (Tier 3), it must possess a verifiable receipt
-  if (isClaimingVendorAcceptance) {
-    if (!receipt) {
-      return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'FAILED',
-        'Output claims vendor acceptance or CLIC valid, but lacks official session receipt from outputs/history/oca_sessions/ (INV-0).',
-        { portalStatus, clicValid, receipt: null });
-    }
+  const outClaiming = Boolean(outStatus && ACCEPTANCE_STATUSES.has(outStatus));
+  const ctxClaiming = Boolean(ctxStatus && ACCEPTANCE_STATUSES.has(ctxStatus));
+  const clicValid = output?.clicValidation?.isValid === true || context?.clicValidation?.isValid === true;
 
-    if (typeof receipt === 'string') {
-      if (!fs.existsSync(receipt)) {
-        return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'FAILED',
-          `Session receipt path does not exist on disk: ${receipt}.`,
-          { portalStatus, clicValid, receipt });
-      }
-    } else if (typeof receipt === 'object') {
-      const hasValidFields = Boolean(receipt.status || receipt.manifestSha256 || receipt.capturedAt || receipt.startedAt);
-      if (!hasValidFields) {
-        return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'FAILED',
-          'Session receipt object is empty or missing required verification fields.',
-          { portalStatus, clicValid, receipt });
-      }
-    }
-
-    return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'PASSED',
-      'Official vendor acceptance receipt verified against active session record.',
-      { portalStatus, receipt: typeof receipt === 'string' ? receipt : (receipt.status || 'VERIFIED') });
+  // Conflict detection: If output and context disagree on acceptance claim, fail closed
+  if (outStatus && ctxStatus && outClaiming !== ctxClaiming) {
+    return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'FAILED',
+      `Conflicting portal validation claims between output (${outStatus}) and context (${ctxStatus}). Evidence verification fails closed.`,
+      { outStatus, ctxStatus });
   }
 
+  const isClaimingVendorAcceptance = outClaiming || ctxClaiming || clicValid;
+  const portalStatus = outStatus || ctxStatus || (clicValid ? 'CLIC_ACCEPTED' : 'PORTAL_VALIDATION_PENDING');
+
   // When portal validation is pending (Tier 0-2), status is NOT_APPLICABLE with honest pending advisory
-  return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'WARN', 'NOT_APPLICABLE',
-    'Live portal validation pending. Output appropriately marked as PORTAL VALIDATION PENDING (Tier 1/2).',
-    { portalStatus: portalStatus || 'PORTAL_VALIDATION_PENDING' });
+  if (!isClaimingVendorAcceptance) {
+    return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'WARN', 'NOT_APPLICABLE',
+      'Live portal validation pending. Output appropriately marked as PORTAL VALIDATION PENDING (Tier 1/2).',
+      { portalStatus });
+  }
+
+  const rawReceipt = output?.sessionReceipt || context?.sessionReceipt || output?.sessionReceiptPath || output?.portalReceipt || context?.portalReceipt;
+
+  // Reject missing or scalar truthy values (booleans, numbers, etc.)
+  if (!rawReceipt || typeof rawReceipt === 'boolean' || typeof rawReceipt === 'number') {
+    return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'FAILED',
+      'Output claims vendor acceptance or CLIC valid, but lacks official session receipt from outputs/history/oca_sessions/ (INV-0).',
+      { portalStatus, clicValid, receipt: null });
+  }
+
+  let receiptObj = null;
+
+  if (typeof rawReceipt === 'string') {
+    const receiptPath = rawReceipt.trim();
+    if (!receiptPath || receiptPath.includes('\0')) {
+      return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'FAILED',
+        'Invalid session receipt path.', { portalStatus, receipt: receiptPath });
+    }
+    if (!fs.existsSync(receiptPath)) {
+      return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'FAILED',
+        `Session receipt path does not exist on disk: ${receiptPath}.`,
+        { portalStatus, clicValid, receipt: receiptPath });
+    }
+
+    try {
+      const stats = fs.statSync(receiptPath);
+      if (stats.isDirectory()) {
+        receiptObj = readPortalReceipt(receiptPath);
+        if (!receiptObj) {
+          return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'FAILED',
+            `Receipt directory does not contain complete, fresh, verified CLIC evidence: ${receiptPath}.`,
+            { portalStatus, receipt: receiptPath });
+        }
+      } else {
+        const fileContent = fs.readFileSync(receiptPath, 'utf-8');
+        receiptObj = JSON.parse(fileContent);
+      }
+    } catch (parseErr) {
+      return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'FAILED',
+        `Failed to parse session receipt evidence: ${parseErr.message}.`,
+        { portalStatus, receipt: receiptPath });
+    }
+  } else if (typeof rawReceipt === 'object') {
+    receiptObj = rawReceipt;
+  }
+
+  if (!receiptObj || typeof receiptObj !== 'object' || Array.isArray(receiptObj) || Object.keys(receiptObj).length === 0) {
+    return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'FAILED',
+      'Session receipt object is empty or missing required verification fields.',
+      { portalStatus, clicValid, receipt: rawReceipt });
+  }
+
+  // Reject readiness-only receipts (INV-89: navigation readiness != vendor acceptance)
+  const statusStr = String(receiptObj.status || '').toUpperCase();
+  if (statusStr === 'READY' || statusStr === 'SESSION_READY' || statusStr === 'NAVIGATED' || receiptObj.isReadinessOnly === true) {
+    return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'FAILED',
+      `Session readiness receipt ({status: "${receiptObj.status}"}) does not constitute final vendor configuration acceptance.`,
+      { portalStatus, receiptStatus: receiptObj.status });
+  }
+
+  // Object must possess verified status or manifest fingerprint
+  const hasAcceptanceEvidence = Boolean(
+    ACCEPTANCE_STATUSES.has(statusStr) ||
+    receiptObj.manifestSha256 ||
+    (Array.isArray(receiptObj.rows) && receiptObj.rows.length > 0)
+  );
+
+  if (!hasAcceptanceEvidence) {
+    return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'FAILED',
+      'Session receipt object is missing required verification fields (status or manifestSha256).',
+      { portalStatus, clicValid, receipt: receiptObj });
+  }
+
+  // Timestamp sanity check: reject future captures and stale captures (>24h) when capturedAt is present
+  const captureTime = receiptObj.capturedAt || receiptObj.validatedAt;
+  if (captureTime) {
+    const parsedTs = Date.parse(captureTime);
+    if (!Number.isFinite(parsedTs) || parsedTs > Date.now() + 60000) {
+      return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'FAILED',
+        'Session receipt timestamp is invalid or recorded in the future.',
+        { portalStatus, captureTime });
+    }
+    if (statusStr === 'CLIC_ACCEPTED' && Date.now() - parsedTs > 24 * 3600000 && !context.allowHistoricalReceipt) {
+      return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'FAILED',
+        'Session receipt is stale (>24h since live vendor capture). Fresh portal validation required.',
+        { portalStatus, captureTime });
+    }
+  }
+
+  // Candidate manifest binding check (if receipt has parsed rows and candidate BOM items exist)
+  const candidateItems = output?.items || context?.items || output?.skuPartsList || context?.skuPartsList;
+  if (receiptObj.rows && Array.isArray(candidateItems) && candidateItems.length > 0) {
+    const isMatched = receiptMatches(receiptObj, candidateItems, context);
+    if (!isMatched) {
+      return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'FAILED',
+        'Captured portal receipt does not match candidate BOM manifest, scope, or chassis identity.',
+        { portalStatus, candidateCount: candidateItems.length });
+    }
+  }
+
+  return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'PASSED',
+    'Official vendor acceptance receipt verified against active session record.',
+    { portalStatus, receipt: receiptObj.status || 'VERIFIED', manifestSha256: receiptObj.manifestSha256 || null });
 }
 
 /**

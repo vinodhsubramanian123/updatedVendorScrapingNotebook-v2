@@ -9,6 +9,77 @@ function positiveInteger(value, label) {
   return number;
 }
 
+function _allocateMemoryPools(memory, base, maxDimms, cpus, carrierPools) {
+  for (const entry of memory.values()) {
+    const chassisCount = Math.ceil(entry.quantity / maxDimms);
+    const totalDimms = positiveInteger(chassisCount * maxDimms, 'Provisioned DIMMs');
+    carrierPools.push({
+      poolId: `Pool_${carrierPools.length + 1}`,
+      poolType: 'MEMORY_CARRIER',
+      status: 'CAPACITY_ESTIMATE_ONLY',
+      carrierChassisSku: base.sku,
+      carrierChassisDesc: base.description,
+      chassisCount,
+      dimmsPerServer: maxDimms,
+      targetMemoryCapacity: `${entry.capacity}GB`,
+      absorbedRequirement: entry.quantity,
+      totalDimms,
+      surplusDimms: totalDimms - entry.quantity,
+      cpusPerServer: cpus,
+      totalCpus: chassisCount * cpus,
+      sourceLinks: entry.sources,
+      items: [],
+      reason: 'Capacity estimate uses maximum population; compatibility, minimal-cost population and added quantities require evaluation.'
+    });
+  }
+}
+
+function _allocateStoragePools(storage, base, baseDriveBays, carrierPools) {
+  for (const entry of storage.values()) {
+    const chassisCount = Math.ceil(entry.quantity / baseDriveBays);
+    const totalBays = positiveInteger(chassisCount * baseDriveBays, 'Provisioned drive bays');
+    carrierPools.push({
+      poolId: `Pool_${carrierPools.length + 1}`,
+      poolType: 'STORAGE_CARRIER',
+      status: 'CAPACITY_ESTIMATE_ONLY',
+      carrierChassisSku: base.sku,
+      carrierChassisDesc: base.description,
+      chassisCount,
+      baysPerServer: baseDriveBays,
+      targetDriveType: entry.description,
+      absorbedRequirement: entry.quantity,
+      totalBays,
+      surplusBays: totalBays - entry.quantity,
+      sourceLinks: entry.sources,
+      items: [],
+      reason: 'Drive capacity estimate uses base chassis bays; controllers, expanders, cables and drive enablement kits require evaluation.'
+    });
+  }
+}
+
+function _allocatePciePools(pcie, base, slotsPerServer, carrierPools) {
+  for (const entry of pcie.values()) {
+    const chassisCount = Math.ceil(entry.quantity / slotsPerServer);
+    const totalSlots = positiveInteger(chassisCount * slotsPerServer, 'Provisioned PCIe slots');
+    carrierPools.push({
+      poolId: `Pool_${carrierPools.length + 1}`,
+      poolType: 'PCIE_CARRIER',
+      status: 'CAPACITY_ESTIMATE_ONLY',
+      carrierChassisSku: base.sku,
+      carrierChassisDesc: base.description,
+      chassisCount,
+      slotsPerServer,
+      targetAdapterType: entry.description,
+      absorbedRequirement: entry.quantity,
+      totalSlots,
+      surplusSlots: totalSlots - entry.quantity,
+      sourceLinks: entry.sources,
+      items: [],
+      reason: 'PCIe adapter capacity estimate uses primary riser slots; secondary/tertiary risers, PCIe lane bifurcation and cabling require evaluation.'
+    });
+  }
+}
+
 class HeterogeneousTenderModernizer {
   constructor(options = {}) {
     this.defaultServerPlatform = options.defaultServerPlatform || null;
@@ -58,7 +129,7 @@ class HeterogeneousTenderModernizer {
     return partitioned;
   }
 
-  synthesizeCarrierFleet(groups = [], targetPlatformKey = null) {
+  synthesizeCarrierFleet(groups = [], targetPlatformKey = null, options = {}) {
     const sourceGroups = structuredClone(groups);
     const profile = getPlatformProfile(targetPlatformKey || this.defaultServerPlatform);
     const result = { status: 'NOT_EVALUATED', carrierPools: [], sourceGroups, unresolvedItems: [],
@@ -71,7 +142,14 @@ class HeterogeneousTenderModernizer {
     if (!Number.isSafeInteger(maxDimms) || maxDimms < 1 || !Number.isSafeInteger(cpus) || cpus < 1 || !base?.sku) {
       return { ...result, reason: 'MEMORY_CAPACITY_PROFILE_REQUIRED', unresolvedItems: sourceGroups };
     }
+
+    const allocateStorage = Boolean(options.allocateAllCarriers || options.includeStorageCages || options.allocateStorageCarriers);
+    const allocatePcie = Boolean(options.allocateAllCarriers || options.includePcieAdapters || options.allocatePcieCarriers);
+
     const memory = new Map();
+    const storage = new Map();
+    const pcie = new Map();
+
     for (const group of groups) {
       const multiplier = positiveInteger(group.multiplier ?? group.chassisCount ?? 1, 'Group multiplier');
       for (const item of group.items || []) {
@@ -79,43 +157,79 @@ class HeterogeneousTenderModernizer {
         positiveInteger(quantity, 'Extended quantity');
         const description = item.description || item.desc || '';
         const sku = item.sku || item.pn || '';
-        const capacity = Number(item.capacityGb ?? description.match(/(\d+)\s*gb/i)?.[1]);
-        if (!GENERIC_DETECTION_PATTERNS.isMemory(description, sku) || !Number.isFinite(capacity) || capacity <= 0) {
-          result.unresolvedItems.push({ ...structuredClone(item), quantity, sourceGroup: group.groupId || group.title,
-            reason: 'Requires product-specific allocation; no automatic PCIe-to-OCP substitution or drive/CPU absorption.' });
+
+        if (GENERIC_DETECTION_PATTERNS.isMemory(description, sku)) {
+          const capacity = Number(item.capacityGb ?? description.match(/(\d+)\s*gb/i)?.[1]);
+          if (Number.isFinite(capacity) && capacity > 0) {
+            const key = `${sku}|${description}|${capacity}`;
+            const entry = memory.get(key) || { capacity, quantity: 0, sources: [], sku };
+            entry.quantity += quantity;
+            positiveInteger(entry.quantity, 'Memory total');
+            entry.sources.push({ groupId: group.groupId || group.title, quantity, sku });
+            memory.set(key, entry);
+            continue;
+          }
+        }
+
+        if (allocateStorage && GENERIC_DETECTION_PATTERNS.isDrive(description, sku)) {
+          const key = `${sku}|${description}`;
+          const entry = storage.get(key) || { description, quantity: 0, sources: [], sku };
+          entry.quantity += quantity;
+          positiveInteger(entry.quantity, 'Storage drive total');
+          entry.sources.push({ groupId: group.groupId || group.title, quantity, sku });
+          storage.set(key, entry);
           continue;
         }
-        // Keep identities separate: equal capacities alone do not prove compatibility.
-        const key = `${sku}|${description}|${capacity}`;
-        const entry = memory.get(key) || { capacity, quantity: 0, sources: [], sku };
-        entry.quantity += quantity;
-        positiveInteger(entry.quantity, 'Memory total');
-        entry.sources.push({ groupId: group.groupId || group.title, quantity, sku });
-        memory.set(key, entry);
+
+        if (allocatePcie && GENERIC_DETECTION_PATTERNS.isPcieCard(description, sku)) {
+          const key = `${sku}|${description}`;
+          const entry = pcie.get(key) || { description, quantity: 0, sources: [], sku };
+          entry.quantity += quantity;
+          positiveInteger(entry.quantity, 'PCIe card total');
+          entry.sources.push({ groupId: group.groupId || group.title, quantity, sku });
+          pcie.set(key, entry);
+          continue;
+        }
+
+        result.unresolvedItems.push({ ...structuredClone(item), quantity, sourceGroup: group.groupId || group.title,
+          reason: 'Requires product-specific allocation; no automatic PCIe-to-OCP substitution or drive/CPU absorption.' });
       }
     }
-    for (const entry of memory.values()) {
-      const chassisCount = Math.ceil(entry.quantity / maxDimms);
-      const totalDimms = positiveInteger(chassisCount * maxDimms, 'Provisioned DIMMs');
-      result.carrierPools.push({
-        poolId: `Pool_${result.carrierPools.length + 1}`, status: 'CAPACITY_ESTIMATE_ONLY',
-        carrierChassisSku: base.sku, carrierChassisDesc: base.description,
-        chassisCount, dimmsPerServer: maxDimms, targetMemoryCapacity: `${entry.capacity}GB`,
-        absorbedRequirement: entry.quantity, totalDimms, surplusDimms: totalDimms - entry.quantity,
-        cpusPerServer: cpus, totalCpus: chassisCount * cpus, sourceLinks: entry.sources, items: [],
-        reason: 'Capacity estimate uses maximum population; compatibility, minimal-cost population and added quantities require evaluation.'
-      });
+
+    _allocateMemoryPools(memory, base, maxDimms, cpus, result.carrierPools);
+    if (allocateStorage && storage.size > 0) {
+      const baseDriveBays = profile.storageArchitecture?.baseDriveBays || profile.slots?.baseDriveBays || 8;
+      _allocateStoragePools(storage, base, baseDriveBays, result.carrierPools);
     }
+    if (allocatePcie && pcie.size > 0) {
+      const slotsPerServer = profile.slots?.primaryRiserSlots || 3;
+      _allocatePciePools(pcie, base, slotsPerServer, result.carrierPools);
+    }
+
     this.logEvidence('CARRIER_PLANNING', 'CAPACITY_ESTIMATED', { pools: result.carrierPools.length, unresolved: result.unresolvedItems.length });
     return { ...result, status: 'DRAFT_ALLOCATION_REVIEW_REQUIRED' };
   }
 
-  injectMissingDeepDependencies(serverConfig = {}, targetPlatformKey = null) {
+  injectMissingDeepDependencies(serverConfig = {}, targetPlatformKey = null, options = {}) {
     // Profile kit inventories have no conditional compatibility receipts. Never
     // inject every fan/rail/OCP kit merely because it appears in that inventory.
-    return { ...structuredClone(serverConfig), injectedDependencies: [], status: 'NOT_EVALUATED',
+    const result = { ...structuredClone(serverConfig), injectedDependencies: [], status: 'NOT_EVALUATED',
       targetPlatform: targetPlatformKey || this.defaultServerPlatform,
       reason: 'Run the owned candidate through eval_boq and its scoped dependency rules.' };
+    if (options.inferBaseDependencies) {
+      const profile = getPlatformProfile(targetPlatformKey || this.defaultServerPlatform);
+      const items = serverConfig.items || [];
+      const hasSku = s => items.some(it => (it.sku || it.pn) === s);
+      const suggested = [];
+      if (profile?.enablementKits?.railKit && !hasSku(profile.enablementKits.railKit.sku)) {
+        suggested.push({ ...profile.enablementKits.railKit, quantity: 1, type: 'RAIL_KIT', reason: 'Recommended baseline chassis rail kit' });
+      }
+      if (profile?.defaultSupportPolicy?.hardwareSupportSku && !hasSku(profile.defaultSupportPolicy.hardwareSupportSku)) {
+        suggested.push({ sku: profile.defaultSupportPolicy.hardwareSupportSku, description: 'HPE Pointnext Tech Care Basic Service 3Y', quantity: 1, type: 'SUPPORT_POLICY', reason: 'Baseline hardware support warranty' });
+      }
+      result.suggestedDependencies = suggested;
+    }
+    return result;
   }
 
   resolveActiveHardware(sku, description, platformKey = null) {

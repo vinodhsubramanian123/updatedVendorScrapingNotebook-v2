@@ -419,22 +419,32 @@ async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
   // Step 5: Extract learnings into KnowledgeDelta records
   let targetChassisDir = options.targetDir;
   if (!targetChassisDir) {
-    const outputsDir = path.join(PROJECT_ROOT, 'outputs');
-    for (const fam of ['ProLiant', 'Synergy', 'StoreEver', 'Cray', 'Alletra']) {
-      const famDir = path.join(outputsDir, fam);
-      if (!fs.existsSync(famDir)) continue;
-      for (const gen of fs.readdirSync(famDir)) {
-        const genDir = path.join(famDir, gen);
-        if (!fs.existsSync(genDir) || !fs.statSync(genDir).isDirectory()) continue;
-        for (const mod of fs.readdirSync(genDir)) {
-          if (mod.toLowerCase().includes(chassisName.toLowerCase()) || chassisName.toLowerCase().includes(mod.toLowerCase())) {
-            targetChassisDir = path.join(genDir, mod);
-            break;
-          }
-        }
-        if (targetChassisDir) break;
+    try {
+      const { listAllCatalogs } = require('../catalog/catalog_discovery.js');
+      const catalogs = listAllCatalogs(path.join(PROJECT_ROOT, 'outputs'));
+      const matched = catalogs.find(c =>
+        c.id?.toLowerCase() === chassisName.toLowerCase() ||
+        c.chassis?.toLowerCase() === chassisName.toLowerCase() ||
+        path.basename(c.catalogDir || '').toLowerCase() === chassisName.toLowerCase() ||
+        c.id?.toLowerCase().includes(chassisName.toLowerCase()) ||
+        chassisName.toLowerCase().includes(c.id?.toLowerCase() || '')
+      );
+      if (matched && matched.catalogDir && fs.existsSync(matched.catalogDir)) {
+        targetChassisDir = matched.catalogDir;
       }
-      if (targetChassisDir) break;
+    } catch (_) {
+      // Fallback below
+    }
+  }
+  if (!targetChassisDir) {
+    try {
+      const { resolveChassisDirectory } = require('../catalog/sku_versioning.js');
+      const resolved = resolveChassisDirectory(chassisName);
+      if (resolved && fs.existsSync(resolved)) {
+        targetChassisDir = resolved;
+      }
+    } catch (_) {
+      // Fallback below
     }
   }
   if (!targetChassisDir) {

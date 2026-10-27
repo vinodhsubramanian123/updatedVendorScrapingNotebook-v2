@@ -1677,6 +1677,20 @@ async function main() {
 if (require.main === module) {
   main().catch(err => {
     const JSON_MODE = process.argv.includes('--json');
+    if (process.send && process.connected) {
+      try {
+        process.send({
+          type: 'EVAL_RESULT_PAYLOAD',
+          version: '1.0.0',
+          status: 'ERROR',
+          error: err.message,
+          data: {
+            traceId: err.traceId || null,
+            evidenceLogPath: err.evidenceLogPath || null
+          }
+        });
+      } catch (_) {}
+    }
     terminalOwner.reportCliFailure(err, JSON_MODE, () => {
     if (JSON_MODE) {
       process.stdout.write('\n__EVAL_RESULT_JSON__' + JSON.stringify({
