@@ -108,7 +108,15 @@ async function runScrapingPreflightGate({ targetChassisQuery, navQuery, skipClou
   const productCheck = verifyTargetProductAndNotebookConfig(query);
   const vendorPolicy = getVendorPortalPolicy(vendor);
   const nlmCheck = verifyNotebookLmPreflight(skipCloudCheck);
-  const googleCheck = await verifyGoogleDriveSheetsPreflight(skipCloudCheck);
+  const googleCheck = productCheck.canonicalDriveEnabled
+    ? await verifyGoogleDriveSheetsPreflight(skipCloudCheck)
+    : {
+        pass: true,
+        status: 'SKIPPED_DRIVE_DISABLED',
+        account: 'N/A (Markdown payload mode)',
+        hasSheetsScope: null,
+        hasDriveScope: null
+      };
 
   console.log(`  ✅ [1/4] Product & Pillar Resolved : ${productCheck.productId} (${productCheck.family} / ${productCheck.generation} / Pillar: ${productCheck.pillar})`);
   console.log(`  ✅ [2/4] NotebookLM Target & Auth  : ${nlmCheck.status} (Notebook ID: ${productCheck.notebookId}, canonicalDrive=${productCheck.canonicalDriveEnabled})`);

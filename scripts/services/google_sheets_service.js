@@ -64,7 +64,11 @@ async function checkGoogleAuth() {
     adcStat = fs.statSync(ADC_PATH);
     if (adcStat) {
       result.tokenAgeDays = Math.floor((Date.now() - adcStat.mtimeMs) / (1000 * 60 * 60 * 24));
+      // NOTE: The 7-day expiry cliff ONLY applies to GCP OAuth apps in "Testing" mode.
+      // Apps published to "In Production" generate long-lived refresh tokens that do not
+      // expire after 7 days. daysRemaining is retained for diagnostic age visibility only.
       result.daysRemaining = Math.max(0, 7 - result.tokenAgeDays);
+      // isExpiringSoon is informational only when the GCP app is In Production.
       result.isExpiringSoon = result.tokenAgeDays >= 5;
     }
   } catch {

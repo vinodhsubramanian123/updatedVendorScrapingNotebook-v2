@@ -35,13 +35,13 @@ To prevent build or test failures in automated CI/CD pipelines (such as GitHub A
 
 1. **Tier 1: Cloud `nlm` CLI & MCP Tool Synchronization**:
    - Executes when `nlm` CLI is installed and authenticated, or via Universal MCP Tool `gemini-notebook-mcp:source_add`.
-   - **Upload-Before-Retire Sequence (`INV-121`, `INV-132`)**:
-     1. Generates the lossless displayed-cell Markdown projection (`notebook_sync_payload_{chassis}.md`).
+   - **Upload-Before-Retire Sequence (`INV-121`, `INV-132`, `INV-219`)**:
+     1. Generates the lossless displayed-cell Markdown projection (`notebook_sync_payload_{chassis}.md`) with embedded line-by-line diff tracking (`Diff Status`, `Previous Price`, `Unit Price`, `Price Delta`).
      2. Uploads candidate source under canonical name `{chassis}_OCA_Catalog_{YYYY-MM-DD}`.
-     3. Verifies indexed readback via `verifySemanticProjectionReadback()` with operator/punctuation preservation and sequential cursor consumption.
-     4. Executes source-restricted canary grounding query.
+     3. Verifies indexed readback via `verifySemanticProjectionReadback()` with entity/typographical normalization and sequential cursor consumption.
+     4. Executes source-restricted canary grounding query (`isGroundedCanary()`) to confirm Gemini NotebookLM has fully indexed and grounded the new catalog.
      5. On passing verification, updates `scripts/config/notebooks.json` with the new verified `sourceId`.
-     6. Transactionally retires the predecessor stale catalog source (never deletes beforehand).
+     6. Transactionally retires all predecessor catalog snapshots (`${chassisName}_OCA_Catalog_*`) matching managed titles or registered IDs, preventing zombie duplicate catalogs from confusing RAG queries with superseded prices.
 3. **Tier 3: CI/CD & Offline Safety Net (`CI_OFFLINE_VERIFIED`)**:
    - Validates generated Markdown payloads, updates `notebooks.json`, and records sync timestamps without throwing unhandled process exceptions.
 
@@ -226,6 +226,11 @@ for (const p of products) {
 2. **Transactional Duplicate Sheet & Stale Catalog Retirement**:
    - `isManagedTitle` identifies all catalog source variants (`_OCA_Catalog_`, `Canonical Knowledge`, `Master Catalog`).
    - Duplicate detection matches `s.drive_id === canonicalDriveSheetId || s.doc_id === canonicalDriveSheetId`.
+   - **`isCatalogSnapshotTitle` expanded zombie matcher (`INV-219`)**: In addition to `ownedIds` (registered sourceId references), the retirement pass also matches unregistered zombie sources by title:
+     - `title.startsWith(`${chassisName}_OCA_Catalog_`)` — catches all dated snapshot variants (`DL380_Gen12_OCA_Catalog_2026-10-28`, etc.)
+     - `title === `notebook_sync_payload_${chassisName}.md`` — catches stale filename-based uploads
+     - `title === `${chassisName} Canonical Knowledge`` — catches legacy canonical knowledge source titles
+   - This dual-path retirement (owned IDs + managed snapshot titles) prevents unreferenced zombie catalogs from accumulating across scraping sessions.
    - Stale predecessor sources are retired transactionally only after candidate readback and Canary verification succeed ($\ge 0.95$ confidence).
    - **Protected Sources**: Official QuickSpecs PDFs (`officialSourceIds`), verified learning documents (`verifiedLearningSourceIds`), and the shared running knowledge doc (`runningKnowledgeDocId`) are strictly excluded from retirement.
 

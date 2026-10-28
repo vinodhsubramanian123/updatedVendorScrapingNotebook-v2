@@ -713,9 +713,9 @@ To ensure that future AI agents (Antigravity, Codex, Claude, or subagents) never
     2. **Semantic AI Grounding Payload** (audience: LLM/RAG engine): A curated `notebook_sync_payload_*.md` uploaded to Google NotebookLM structured as semantic markdown tables plus architectural rule prose, which Gemini can cite word-for-word. Never replace with raw CSV or raw JSON dumps.
   - These two tiers serve different audiences. Both are mandatory and complementary. Never treat them as duplicates or choose one over the other. See `docs/audits/2026-10-01-vendor-scraping-and-grounding-remediation.md` for full rationale.
 
-- **INV-134: Google Sheets Cannot Be a NotebookLM Source — `canonicalDriveEnabled: false` for Server Products**:
-  - Google NotebookLM's Drive RPC (`RPC_SYNC_DRIVE`) only accepts `application/vnd.google-apps.document` (Google Docs). Attempting to sync Google Sheets (`application/vnd.google-apps.spreadsheet`) raises `INVALID_ARGUMENT (code 3)` from Google's backend.
-  - All server products (`DL380_Gen12`, `DL380a_Gen12`) MUST have `"canonicalDriveEnabled": false` in `scripts/config/notebooks.json`. This routes knowledge sync through the fingerprint-verified Markdown payload path (`uploadAndVerifyLegacyFileCandidate`).
+- **INV-134: Google Sheets NotebookLM Boundary — In-Place RPC Limitations & Server Markdown Scoping**:
+  - Google Sheets CAN be added as native NotebookLM sources via the web UI or `nlm source add --drive <id> --type sheets`. However, NotebookLM's backend in-place batch synchronization RPC (`RPC_SYNC_DRIVE` / `nlm source sync`) raises `INVALID_ARGUMENT (code 3)` on spreadsheets.
+  - Multi-sheet enterprise server catalogs (`DL380_Gen12`, `DL380a_Gen12`, `DL385_Gen11`) span 26 distinct categories; flattening them into a single Google Sheet creates schema collisions and strips prerequisite rule prose. Server products MUST use `"canonicalDriveEnabled": false` in `scripts/config/notebooks.json` to route sync through structured Markdown projections. Simpler products (`DL360_Gen11`, `DL380_Gen11`, `SY480_Gen12`, `MSL3040_Tape`) continue using Google Sheets (`canonicalDriveEnabled: true`).
   - Setting `canonicalDriveEnabled: false` does NOT remove the Google Sheet from Drive. The full multi-sheet workbook remains fully intact for human use on Drive. Only the NotebookLM source attachment method is changed.
 
 - **INV-135: Markdown Payload Is Not Data Loss Versus Excel — Structured Semantic Projection**:
@@ -1203,6 +1203,11 @@ To ensure that future AI agents (Antigravity, Codex, Claude, or subagents) never
 - **INV-218: Clean Test Matrix Discoverability & Substring Runner Isolation**:
   - In `run_test_matrix.js`, domain filtering uses negative lookaheads (e.g. `!/storage|drive_cage/i` in sync) to prevent substring collisions (`sto-RAG-e` matching `rag`), ensuring zero cross-domain test contamination.
   - Invariant INV-129 non-empty test discovery is strictly enforced: test execution fails fast if pattern filtering matches 0 suites unless `--allow-empty` is explicitly supplied.
+
+- **INV-219: Grounded Canary Pre-Confirmation & Predecessor Catalog Pruning**:
+  - Before retiring any superseded catalog source in NotebookLM, the sync engine MUST execute a source-restricted canary query (`isGroundedCanary()`) to confirm that Gemini NotebookLM has fully indexed and grounded the new replacement source.
+  - Upon grounded confirmation, all predecessor catalog snapshots (`${chassisName}_OCA_Catalog_*`) are transactionally retired. The `isCatalogSnapshotTitle()` function in `nlm_sync_client.js` implements a three-pattern zombie matcher: (1) `title.startsWith(`${chassisName}_OCA_Catalog_`)` — catches all dated snapshot variants regardless of registration state; (2) `title === `notebook_sync_payload_${chassisName}.md`` — catches stale filename-based legacy uploads; (3) `title === `${chassisName} Canonical Knowledge`` — catches legacy canonical knowledge source titles. The `candidatesToRetire` set merges both registered `ownedIds` (tracked sourceId references) and `isCatalogSnapshotTitle()` title matches, preventing unreferenced zombie catalogs from lingering across sessions.
+  - Because the replacement catalog projection encapsulates full line-by-line diff tracking (`Diff Status: ADDED / MODIFIED / REMOVED`, `Previous Price (USD)`, `Unit Price (USD)`, `Price Delta (USD)`), historical price trends are preserved in a single authoritative source, eliminating conflicting multi-snapshot RAG retrievals.
 
 
 

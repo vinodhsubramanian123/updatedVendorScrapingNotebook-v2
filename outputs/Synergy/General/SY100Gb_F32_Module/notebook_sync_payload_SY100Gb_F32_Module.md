@@ -4,7 +4,7 @@
 
 **Scope Identity**: `HPE/NETWORKING/Synergy/General/SY100Gb_F32`
 
-**Sync Timestamp**: 2026-10-21T11:15:52.285Z
+**Sync Timestamp**: 2026-10-28T09:49:20.287Z
 
 **Total Verified SKUs**: `3` (`3` Hardware + `0` Services)
 

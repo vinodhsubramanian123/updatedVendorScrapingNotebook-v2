@@ -393,3 +393,14 @@ const results = await searchLocalRAG({
 - `orchestrator-workflow-skill` — Stage 1 (knowledge discovery) freshness gate
 - `knowledge-sync-skill` — pre-sync health gate
 - Any skill that reads from `outputs/{Family}/{Gen}/{Model}/` catalogs
+
+---
+
+## §11 — Google OAuth "In Production" Requirement
+
+> [!IMPORTANT]
+> **GCP OAuth App Must Be Published to "In Production"** (`INV-90`): Google imposes a 7-day refresh token expiry on OAuth apps that are in "Testing" mode in the GCP Console. This causes `invalid_grant` errors after 7 days, silently blocking Drive uploads, Google Sheets sync, and NotebookLM payload delivery.
+>
+> **Resolution**: Publish the GCP OAuth app to **"In Production"** under *APIs & Services → OAuth consent screen → Publishing status*. In Production apps receive long-lived refresh tokens that do not expire after 7 days. A one-time `npm run auth:drive` relogin after publication generates the permanent token.
+>
+> **Verification**: Run `npm run auth:status` to audit all 5 authentication surfaces including Google Drive/Sheets ADC token age and scope validity before initiating any scraping or sync session.

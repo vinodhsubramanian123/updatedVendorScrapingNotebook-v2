@@ -62,11 +62,17 @@ function verifySemanticProjectionReadback(payload, indexedContent) {
   if (typeof body !== 'string' || !body.trim()) throw new Error('SEMANTIC_PROJECTION_READBACK_EMPTY');
   const normalize = value => String(value)
     .replace(/<br\s*\/?\s*>/gi, ' ')
-    .replace(/&(?:amp|lt|gt|#124);/g, entity => ({ '&amp;': '&', '&lt;': '<', '&gt;': '>', '&#124;': '|' })[entity])
+    .replace(/&(?:amp|lt|gt|#124|quot|#39|nbsp);/g, entity => ({
+      '&amp;': '&', '&lt;': '<', '&gt;': '>', '&#124;': '|', '&quot;': '"', '&#39;': "'", '&nbsp;': ' '
+    })[entity] || '')
     .replace(/^\s*\|(?:\s*:?-+:?\s*\|)+\s*$/gm, '')
     .replace(/^\s*#{1,6}\s+/gm, '')
     .replace(/\[(TEXT_\d+)\]/g, '$1')
     .replace(/\\/g, '/')
+    .replace(/[\u2013\u2014]/g, '-')
+    .replace(/[\u2018\u2019]/g, "'")
+    .replace(/[\u201c\u201d]/g, '"')
+    .replace(/[\u00a0\u200b\u00ad]/g, '')
     .replace(/\|/g, '').replace(/\s/g, '');
   const actual = normalize(body);
   const expectedLines = projection.split('\n').map(normalize).filter(Boolean);

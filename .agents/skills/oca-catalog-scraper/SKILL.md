@@ -153,7 +153,13 @@ npm run rebuild
 
 # Full Portfolio Certification Audit
 npm test
+
+# Run universal auth health check before any scraping session (recommended)
+npm run auth:status
 ```
+
+> [!NOTE]
+> **Preflight Gate Drive Auth Decoupling**: Server products with `"canonicalDriveEnabled": false` in `scripts/config/notebooks.json` (e.g. `DL380_Gen12`, `DL380a_Gen12`, `DL385_Gen11`) route knowledge sync through the Markdown payload path rather than Google Drive/Sheets. For these products, `runScrapingPreflightGate()` automatically skips the Google Drive/Sheets OAuth scope verification step (`Step [3/4]`) and emits `SKIPPED_DRIVE_DISABLED`. This prevents false preflight failures when Drive auth is not required for the target chassis.
 
 
 

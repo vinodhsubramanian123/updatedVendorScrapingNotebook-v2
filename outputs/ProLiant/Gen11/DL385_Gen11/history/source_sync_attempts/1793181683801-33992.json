@@ -1,0 +1,28 @@
+{
+  "product": "DL385_Gen11",
+  "notebookId": "52364fcf-acc3-442f-b4ff-f911053d45d2",
+  "replacementSourceId": "24773006-8001-419a-a06b-29bcce275ae7",
+  "verifiedAt": "2026-10-28T10:01:23.801Z",
+  "contentFingerprints": {
+    "catalog": "bf24c26e69c9e4dd6c6f2acd288176ed262b4b334a17739db548d4c72f636feb",
+    "learnings": "22babd782fc5080b92cde20a5084610947f7b97c5848de432ade02d161563281",
+    "changes": "06e358aef60108b4ad8094bd21f19498cfc09323cfbc5dc14c6923711bb42290",
+    "workbook": "c56a143b655f8eef28b4bce4217664036a78688a8cdab2e1953b84cce70ab7ef",
+    "combined": "9d5f2f2a1007786ba09eefdcb10b1b6369abe0dceb21f3af94536fee53a1fbde"
+  },
+  "legacyFingerprint": "9d5f2f2a1007786ba09eefdcb10b1b6369abe0dceb21f3af94536fee53a1fbde",
+  "retirementRequested": false,
+  "plannedRetirementIds": [
+    "c9e240aa-9030-44cc-b463-f68862d71463",
+    "c5a15ab8-ad32-431a-a746-891ca303450c",
+    "348e2d0a-da0f-49c5-811b-9b7beca8cf77"
+  ],
+  "status": "RETIREMENT_PENDING",
+  "retiredSourceIds": [],
+  "remainingSourceIds": [
+    "c9e240aa-9030-44cc-b463-f68862d71463",
+    "c5a15ab8-ad32-431a-a746-891ca303450c",
+    "348e2d0a-da0f-49c5-811b-9b7beca8cf77"
+  ],
+  "retirementErrors": []
+}

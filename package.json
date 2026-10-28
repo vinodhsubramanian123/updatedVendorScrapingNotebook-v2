@@ -28,6 +28,7 @@
     "guardrail:check": "node scripts/maintenance/guardrail_health_check.js",
     "auth:drive": "node scripts/services/google_sheets_service.js login",
     "auth:check": "node scripts/services/google_sheets_service.js check-health",
+    "auth:status": "node scripts/maintenance/check_all_auth.js",
     "auth:nlm:check": "node scripts/maintenance/check_nlm_auth.js",
     "auth:nlm:heal": "node scripts/maintenance/check_nlm_auth.js --heal",
     "auth:nlm:fix": "node scripts/maintenance/check_nlm_auth.js --heal",

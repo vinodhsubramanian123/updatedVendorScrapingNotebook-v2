@@ -586,8 +586,15 @@ function retireStaleNotebookSources({
 
     const ownedIds = new Set([previousSourceId, cfgEntry?.lastSyncedSourceId, cfgEntry?.driveSourceId,
       ...(cfgEntry?.certifiedCatalogSourceIds || []), ...(cfgEntry?.canonicalKnowledgeSourceIds || [])].filter(Boolean));
-    // A familiar title is a discovery hint, not authority to delete that source.
-    for (const stale of allowSourceDeletion ? staleSources.filter(source => ownedIds.has(source.id)) : []) {
+    const isCatalogSnapshotTitle = title => String(title || '').startsWith(`${chassisName}_OCA_Catalog_`)
+      || String(title || '') === `notebook_sync_payload_${chassisName}.md`
+      || String(title || '') === `${chassisName} Canonical Knowledge`;
+
+    const candidatesToRetire = allowSourceDeletion
+      ? staleSources.filter(source => ownedIds.has(source.id) || isCatalogSnapshotTitle(source.title || source.filename))
+      : [];
+
+    for (const stale of candidatesToRetire) {
       try {
         execFileSync('nlm', ['source', 'delete', stale.id, '--confirm'], {
           encoding: 'utf-8',
