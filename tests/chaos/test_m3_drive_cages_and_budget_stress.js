@@ -499,6 +499,16 @@ describe('Milestone 3 Empirical Challenger Stress Suite (Features 11 & 12)', () 
       );
     });
 
+    it('CHALLENGE FINDING 6: REDIS_AOF, CASSANDRA_COMMITLOG, and KAFKA_JOURNAL must block down-tiering', () => {
+      const testCases = ['REDIS_AOF', 'CASSANDRA_COMMITLOG', 'KAFKA_JOURNAL'];
+      for (const id of testCases) {
+        const items = [{ sku: 'P40548-B21', description: 'HPE 1.92TB NVMe Mixed Use SFF BC SSD', quantity: 4, unitPriceUsd: 750 }];
+        const changed = _tryBudgetStorageSubstitution(items, { primaryWorkload: id }, null, () => 450);
+        assert.equal(changed, false, `Identifier ${id} must block down-tiering`);
+        assert.equal(items[0].sku, 'P40548-B21');
+      }
+    });
+
   });
 
 });

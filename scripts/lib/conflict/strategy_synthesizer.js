@@ -1155,7 +1155,7 @@ function _tryBudgetStorageSubstitution(parts, workloadDna, loadedCatalog, getPri
   const dna = workloadDna || extractWorkloadDna(parts);
   const normalizedWorkloadDesc = (dna?.workloadDescription || '').replace(/_/g, ' ');
   const normalizedPrimaryWorkload = (dna?.primaryWorkload || '').replace(/_/g, ' ');
-  const writeIntensiveRegex = /\b(write intensive|write-intensive|db logging|transaction log|write-heavy|wal|redo log|sap hana|hana|oltp)\b/i;
+  const writeIntensiveRegex = /\b(write intensive|write-intensive|db logging|transaction log|write-heavy|wal|redo log|sap hana|hana|oltp|redis|aof|cassandra|commitlog|commit log|kafka|journal)\b/i;
   const isWriteIntensive =
     dna?.storageWorkload === 'WRITE_INTENSIVE' ||
     dna?.isWriteIntensive === true ||

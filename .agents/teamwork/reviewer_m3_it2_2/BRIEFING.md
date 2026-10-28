@@ -1,4 +1,4 @@
-# BRIEFING — 2026-10-28T04:33:07Z
+# BRIEFING — 2026-10-28T04:45:00Z
 
 ## Mission
 Perform independent code review, adversarial stress-testing, and automated test verification of Milestone 3 Iteration 2 remediations for Drive Cages, Rank 5 NVMe budget down-tiering protections, and DL380a Gen12 platform profile registration.
@@ -19,13 +19,13 @@ Perform independent code review, adversarial stress-testing, and automated test 
 
 ## Current Parent
 - Conversation ID: 06cb5c88-e2a4-407d-9438-e05cab02c2f3
-- Updated: 2026-10-28T04:33:07Z
+- Updated: 2026-10-28T04:45:00Z
 
 ## Review Scope
-- **Files to review**:
-  - `scripts/lib/conflict/strategy_synthesizer.js`
-  - `scripts/lib/rules/platform_profiles.js`
-  - `scripts/lib/boq/heterogeneous_tender_modernizer.js`
+- **Files reviewed**:
+  - `scripts/lib/conflict/strategy_synthesizer.js` (lines 1151-1247)
+  - `scripts/lib/rules/platform_profiles.js` (lines 165-257, 428-436)
+  - `scripts/lib/boq/heterogeneous_tender_modernizer.js` (lines 58-123, 231-325, 399-477)
   - `tests/chaos/test_m3_drive_cages_and_budget_stress.js`
   - `tests/unit/test_chassis_drive_cage_packing.js`
   - `tests/unit/test_rank5_nvme_down_tiering.js`
@@ -34,22 +34,29 @@ Perform independent code review, adversarial stress-testing, and automated test 
 - **Review criteria**: Correctness, completeness, anti-regression, boundary handling, epistemic truth, adversarial robustness
 
 ## Review Checklist
-- **Items reviewed**: Pending initial review
-- **Verdict**: Pending
-- **Unverified claims**:
-  - `_tryBudgetStorageSubstitution` non-empty array guard on `parts`
-  - Safe fallback when `getPrice` is omitted
-  - SAP HANA protection (`sap hana|hana|oltp`)
-  - Word boundary protection for UPPER_SNAKE_CASE identifiers via pre-normalization of `_` to ` `
-  - `HPE_PROLIANT_DL380A_GEN12` registration in `platform_profiles.js` resolving correctly for `synthesizeCarrierFleet`
+- **Items reviewed**:
+  - `_tryBudgetStorageSubstitution`: Non-empty array guard on `parts` verified.
+  - `_tryBudgetStorageSubstitution`: Safe fallback when `getPrice` is omitted verified.
+  - `_tryBudgetStorageSubstitution`: SAP HANA protection (`sap hana|hana|oltp`) verified.
+  - `_tryBudgetStorageSubstitution`: Word boundary protection for UPPER_SNAKE_CASE identifiers via `replace(/_/g, ' ')` verified.
+  - `HPE_PROLIANT_DL380A_GEN12` registration in `scripts/lib/rules/platform_profiles.js` verified.
+  - `synthesizeCarrierFleet`: Successful resolution of `HPE_PROLIANT_DL380A_GEN12` without `SERVER_PLATFORM_PROFILE_REQUIRED` verified.
+- **Verdict**: APPROVE
+- **Unverified claims**: None. All core claims verified empirically and dynamically.
 
 ## Attack Surface
-- **Hypotheses tested**: TBD
-- **Vulnerabilities found**: TBD
-- **Untested angles**: Boundary inputs, null/undefined inputs, adversarial regex collision, price fallback edge cases
+- **Hypotheses tested**:
+  - Null/undefined/empty array/string inputs to `_tryBudgetStorageSubstitution` -> Safe, returns `false`.
+  - Missing/numeric `getPrice` parameter -> Safely defaults to `safeGetPrice = () => null` and falls back to certified reference price.
+  - Adversarial workload strings (`SAP_HANA`, `DATABASE_TRANSACTION_LOG`, `SQL_REDO_LOG`, `POSTGRESQL_WAL`, `oltp`) -> All safely blocked from down-tiering.
+  - Case and separator variation for platform profile lookup (`DL380A_GEN12`, `dl380a gen12`, etc.) -> All safely resolve to `HPE_PROLIANT_DL380A_GEN12`.
+  - Carrier synthesis for DL380a Gen12 with EDSFF and SFF drive quantities -> Allocates correct Gen12 cages, cables, batteries, controllers, and switches without ghost servers.
+- **Vulnerabilities found**: 0 unmitigated vulnerabilities found.
+- **Untested angles**: None within Milestone 3 scope.
 
 ## Key Decisions Made
-- Initialized independent review and adversarial evaluation
+- Confirmed full compliance with all acceptance criteria, zero integrity violations, 0 oxlint warnings/errors across 546 files, and peak CC = 115 <= 135.
+- Issued APPROVE verdict.
 
 ## Artifact Index
 - `.agents/teamwork/reviewer_m3_it2_2/DISPATCH.md` — Ingress task instructions

@@ -47,3 +47,15 @@ Gate Result: **PASS** (Milestone 2 Autonomous Counterfactual Self-Correction & A
 | auditor_m3_1 | teamwork_preview_auditor | CLEAN | handoff.md | 0 hardcoding/facades; authentic physical math; 80/80 tests pass; 0 oxlint; peak CC 115 <= 135 |
 
 Gate Result: **FAIL** (Challenger M3_1 REQUEST_CHANGES; Challenger M3_2 REQUEST_CHANGES)
+
+## Gate — Iteration 2 (Milestone 3: Advanced Agentic Skills Polish & Parity Depth)
+| Agent | Role | Verdict | Source | Notes |
+|-------|------|---------|--------|-------|
+| worker_m3_it2 | teamwork_preview_worker | DONE | handoff.md | Implemented 9 Challenger fixes; 22/22 chaos tests pass; 52/52 chaos tests pass; 0 oxlint; CC <= 115 |
+| reviewer_m3_it2_1 | teamwork_preview_reviewer | APPROVE | handoff.md | 52/52 chaos, 11/11 fabric, 7/7 numa pass; 0 oxlint; CC 115 <= 135; clean integrity |
+| reviewer_m3_it2_2 | teamwork_preview_reviewer | APPROVE | handoff.md | 22/22 chaos, 9/9 drive cages, 7/7 rank 5 pass; DL380a Gen12 profile verified; 0 oxlint |
+| challenger_m3_it2_1 | teamwork_preview_challenger | APPROVE | handoff.md | 52/52 chaos + 41/41 new chaos pass; null-safety, extreme channel widths, fabric hierarchy verified |
+| challenger_m3_it2_2 | teamwork_preview_challenger | REQUEST_CHANGES | handoff.md | 22/22 chaos pass; DL380a Gen12 profile verified; writeIntensiveRegex omitted redis|aof|cassandra|commitlog|kafka|journal |
+| auditor_m3_it2_1 | teamwork_preview_auditor | CLEAN | handoff.md | 0 hardcoding, authentic physics, genuine DL380a Gen12 profile; 0 oxlint; CC <= 115; 100% test pass |
+
+Gate Result: **FAIL** (Challenger M3_It2_2 REQUEST_CHANGES)
