@@ -65,6 +65,8 @@ export default function EvaluationNarrativeCard({ narrative, _chassis }) {
           </button>
           <button
             type="button"
+            onClick={() => setIsExpanded(!isExpanded)}
+            aria-expanded={isExpanded}
             className="p-1 rounded-lg text-slate-400 hover:text-slate-600"
             aria-label={isExpanded ? 'Collapse' : 'Expand'}
           >
