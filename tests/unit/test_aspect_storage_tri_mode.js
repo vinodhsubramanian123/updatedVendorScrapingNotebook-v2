@@ -108,6 +108,28 @@ assert(result.hasBootController === true, `Identified NS204i-u boot controller`)
 assert(result.hasStorageController === false, `Boot controller is not marked as hardware storage controller`);
 assert(result.needsSmartStorageBattery === false, `NS204i-u does not require Smart Storage Battery`);
 
+// Test: Battery cables decoupled from hasOcpCable
+items = [
+  { sku: 'P73282-B21', description: 'DL380 Gen12 8SFF Server', quantity: 1 },
+  { sku: 'P01366-B21', description: 'HPE 96W Smart Storage Battery with 145mm Cable Kit', quantity: 1 },
+  { sku: 'P06367-B21', description: 'HPE MR416i-o Gen11 Controller', quantity: 1 },
+  { sku: 'P40498-B21', description: '960GB SAS SSD', quantity: 4 }
+];
+result = evalStorageTriMode(items);
+assert(result.hasOcpCable === false, 'Battery kit with 145mm cable does not satisfy hasOcpCable');
+assert(result.needsCableKit === true, 'needsCableKit is true when controller enablement cable is missing');
+assert(result.needsCapacitorCable === true, 'needsCapacitorCable is true when controller enablement cable is missing');
+
+// Test: Alletra Controller Node Pair does not trigger server battery error
+items = [
+  { sku: 'R0Q35A', description: 'HPE Alletra 6000 24SFF Storage Array Base', quantity: 1 },
+  { sku: 'R0Q36A', description: 'HPE Alletra 6000 Controller Node Pair', quantity: 2 },
+  { sku: 'R0Q37A', description: 'HPE 1.92TB NVMe SSD', quantity: 8 }
+];
+result = evalStorageTriMode(items);
+assert(result.hasStorageController === false, 'Alletra controller node pair is not a server storage controller');
+assert(result.needsSmartStorageBattery === false, 'Alletra storage array does not need Smart Storage Battery');
+
 console.log(`\n================================================================`);
 console.log(`📊 FINAL TEST SUMMARY: ${totalPasses} PASSED | ${totalFails} FAILED`);
 console.log(`================================================================\n`);

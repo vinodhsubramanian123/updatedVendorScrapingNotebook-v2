@@ -21,7 +21,8 @@ test('Physical Aspect Checkers Comprehensive Suite', async (t) => {
       assert.strictEqual(result.cpuCount, 2);
       assert.strictEqual(result.maxCpuTdpWatts, 125);
       assert.strictEqual(result.hasHighPerfFans, false);
-      assert.strictEqual(result.hasHeatsinks, true); // True by default if mandatory SKU not provided
+      assert.strictEqual(result.hasHeatsinks, false);
+      assert.strictEqual(result.needsHeatsink, true);
     });
 
     await t2.test('Identifies high TDP CPUs and cooling kits', () => {
@@ -47,7 +48,8 @@ test('Physical Aspect Checkers Comprehensive Suite', async (t) => {
       assert.strictEqual(result.cpuCount, 0);
       assert.strictEqual(result.maxCpuTdpWatts, 0);
       assert.strictEqual(result.hasHighPerfFans, false);
-      assert.strictEqual(result.hasHeatsinks, true);
+      assert.strictEqual(result.hasHeatsinks, false);
+      assert.strictEqual(result.needsHeatsink, false);
     });
 
     await t2.test('Detects mixed processor models on single-node build', () => {

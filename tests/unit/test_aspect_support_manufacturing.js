@@ -177,6 +177,32 @@ assert(result.hasSaasSubscription === true, 'Detected SaaS subscription');
 assert(result.hasHardwareSupport === true, 'Detected hardware support');
 assert(result.hasSaasWithoutHardwareSupport === false, 'No deficit when hardware support is present');
 
+console.log(`\n🔹 Test Group 10: Regex 32C Core Parsing & CLIC Rule 81322276 Management License`);
+items = [
+  { sku: 'P73282-B21', description: 'HPE ProLiant DL380 Gen12 8SFF CTO Server', quantity: 1 },
+  { sku: 'P73299-B21', description: 'Intel Xeon Gold 6548Y 2.8GHz 32C 280W Processor', quantity: 2 },
+  { sku: 'VMW-01', description: 'VMware vSphere Foundation 64-Core License', quantity: 1 }
+];
+result = evalSupportManufacturing(items, null, 0, 1);
+assert(result.detectedCpuCores === 64, `Parsed 32C per socket to 64 physical cores`);
+assert(result.hasManagementLicense === false, `CTO Server without COM or OneView license flags hasManagementLicense=false`);
+assert(result.hasCtoServer === true, `Detected CTO Server chassis`);
+
+items = [
+  { sku: 'P73282-B21', description: 'HPE ProLiant DL380 Gen12 8SFF CTO Server', quantity: 1 },
+  { sku: 'P73299-B21', description: 'Intel Xeon Gold 6548Y 2.8GHz 32C 280W Processor', quantity: 2 },
+  { sku: 'R7A11AAE', description: 'HPE Compute Ops Management Enhanced 3-year E-LTU', quantity: 1 }
+];
+result = evalSupportManufacturing(items, null, 0, 1);
+assert(result.hasManagementLicense === true, `R7A11AAE satisfies CLIC Rule 81322276`);
+assert(result.hasCtoServer === true, `Detected CTO Server chassis with COM license`);
+
+items = [
+  { sku: 'P12345-B21', description: 'Intel Xeon Gold 6330 205W Processor', quantity: 2 }
+];
+result = evalSupportManufacturing(items);
+assert(result.hasCtoServer === false, `Loose CPU is not marked as CTO server`);
+
 console.log(`\n================================================================`);
 console.log(`📊 FINAL TEST SUMMARY: ${totalPasses} PASSED | ${totalFails} FAILED`);
 console.log(`================================================================\n`);

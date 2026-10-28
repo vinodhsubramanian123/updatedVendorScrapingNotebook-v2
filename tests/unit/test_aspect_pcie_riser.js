@@ -95,9 +95,32 @@ items = [
 ];
 result = evalPcieRiserSlots(items);
 assert(result.requiredPcieCards === 3, `Counted 3 required PCIe cards`);
-assert(result.activeSlotsAvailable === 3, `Default primary riser provides 3 active slots without additional riser cable kit`);
-assert(result.isExceedingActiveSlots === false, `3 cards do not exceed active slots on default primary riser`);
-assert(result.needsPrimaryCableKit === false, `No primary cable kit required for 3 PCIe cards on default primary riser`);
+assert(result.activeSlotsAvailable === 0, `Without primary riser kit, 0 active slots available`);
+assert(result.isExceedingActiveSlots === true, `3 cards exceed 0 active slots without primary riser kit`);
+assert(result.needsPrimaryRiser === true, `Primary riser required for 3 PCIe cards when no riser is present`);
+
+items = [
+  { sku: 'P47777-B21', description: 'HPE MR416i-p Gen11 x16 Lanes 8GB Cache PCI SPDM Plug-in Storage Controller', quantity: 1 },
+  { sku: 'R2J63A', description: 'HPE SN1610E 32Gb 2-port Fibre Channel Host Bus Adapter', quantity: 1 },
+  { sku: 'P08443-B21', description: 'Intel E810-XXVDA2 Ethernet 10/25Gb 2-port SFP28 Adapter for HPE', quantity: 1 },
+  { sku: 'P48803-B21', description: 'HPE ProLiant DL380 Gen11 x16/x8/x8 Primary Riser Kit', quantity: 1 },
+  { sku: 'P56073-B21', description: 'HPE ProLiant DL380 Gen11 Primary Riser Cable Kit', quantity: 1 }
+];
+result = evalPcieRiserSlots(items);
+assert(result.requiredPcieCards === 3, `Counted 3 required PCIe cards`);
+assert(result.activeSlotsAvailable === 3, `Primary riser kit provides 3 active slots`);
+assert(result.isExceedingActiveSlots === false, `3 cards do not exceed 3 active slots with primary riser kit`);
+assert(result.needsPrimaryRiser === false, `No primary riser needed when already included`);
+assert(result.needsPrimaryCableKit === false, `No primary cable kit required when P56073-B21 is present`);
+
+items = [
+  { sku: 'P08443-B21', description: 'Intel E810-XXVDA2 Ethernet 10/25Gb 2-port SFP28 Adapter for HPE', quantity: 1 },
+  { sku: 'P56073-B21', description: 'HPE ProLiant DL380 Gen11 Primary Riser Cable Kit', quantity: 1 }
+];
+result = evalPcieRiserSlots(items);
+assert(result.primaryRiserCount === 0, 'Riser Cable Kit is not tallied as physical primary riser');
+assert(result.activeSlotsAvailable === 0, 'Riser Cable Kit alone provides 0 physical slots');
+assert(result.needsPrimaryRiser === true, 'Needs primary riser is true when only cable kit is present');
 
 console.log(`\n🔹 Test Group 5: GPU Auxiliary Power Cable Recognition`);
 items = [

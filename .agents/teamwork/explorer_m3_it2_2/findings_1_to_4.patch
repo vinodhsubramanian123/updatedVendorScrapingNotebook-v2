@@ -1,0 +1,42 @@
+--- a/scripts/lib/conflict/strategy_synthesizer.js
++++ b/scripts/lib/conflict/strategy_synthesizer.js
+@@ -1151,11 +1151,16 @@ const CERTIFIED_STORAGE_DOWNTIER_MAP = {
+ function _tryBudgetStorageSubstitution(parts, workloadDna, loadedCatalog, getPrice) {
++  if (!Array.isArray(parts) || parts.length === 0) return false;
++
++  const safeGetPrice = typeof getPrice === 'function' ? getPrice : () => null;
+   const dna = workloadDna || extractWorkloadDna(parts);
++  const normalizedWorkloadDesc = (dna?.workloadDescription || '').replace(/_/g, ' ');
++  const normalizedPrimaryWorkload = (dna?.primaryWorkload || '').replace(/_/g, ' ');
++  const writeIntensiveRegex = /\b(write intensive|write-intensive|db logging|transaction log|write-heavy|wal|redo log|sap hana|hana|oltp)\b/i;
+   const isWriteIntensive =
+     dna?.storageWorkload === 'WRITE_INTENSIVE' ||
+     dna?.isWriteIntensive === true ||
+-    /\b(write intensive|write-intensive|db logging|transaction log|write-heavy|wal|redo log)\b/i.test(dna?.workloadDescription || '') ||
+-    /\b(write intensive|write-intensive|db logging|transaction log|write-heavy|wal|redo log)\b/i.test(dna?.primaryWorkload || '') ||
+-    parts.some(p => /\b(write intensive|write-intensive|db logging|transaction log|write-heavy|wal|redo log)\b/i.test(p.description || ''));
++    writeIntensiveRegex.test(normalizedWorkloadDesc) ||
++    writeIntensiveRegex.test(normalizedPrimaryWorkload) ||
++    parts.some(p => writeIntensiveRegex.test((p.description || '').replace(/_/g, ' ')));
+ 
+   if (isWriteIntensive) {
+     return false; // Invariant: Never down-tier write-intensive workloads
+@@ -1195,8 +1200,8 @@ function _tryBudgetStorageSubstitution(parts, workloadDna, loadedCatalog, getPri
+         if (candCapGb >= origCapGb && candCapGb <= Math.round(origCapGb * 1.5)) {
+-          const candPrice = getPrice(candSku);
+-          const curPrice = p.unitPriceUsd || getPrice(p.sku) || 999999;
++          const candPrice = safeGetPrice(candSku);
++          const curPrice = p.unitPriceUsd || safeGetPrice(p.sku) || 999999;
+           if (candPrice !== null && candPrice > 0 && candPrice < curPrice) {
+             replacement = { sku: candSku, desc: item.skuData?.Description || item.entry?.description, price: candPrice };
+             break;
+           }
+@@ -1218,8 +1223,8 @@ function _tryBudgetStorageSubstitution(parts, workloadDna, loadedCatalog, getPri
+       if (mapping) {
+-        const candPrice = getPrice(mapping.sku) || mapping.refPrice;
+-        const curPrice = p.unitPriceUsd || getPrice(p.sku) || (mapping.refPrice * 1.6);
++        const candPrice = safeGetPrice(mapping.sku) || mapping.refPrice;
++        const curPrice = p.unitPriceUsd || safeGetPrice(p.sku) || (mapping.refPrice * 1.6);
+         if (candPrice < curPrice) {
+           replacement = { sku: mapping.sku, desc: mapping.desc, price: candPrice };
+         }

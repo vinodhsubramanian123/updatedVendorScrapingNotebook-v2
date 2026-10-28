@@ -105,6 +105,32 @@ result = evalNetworkingOcp(items, mockCatalog);
 assert(result.isExceedingOcpSlots === true, `2 OCP adapters exceeds dynamic limit of 1`);
 assert(result.maxOcpSlots === 1, `Parsed max OCP slots from catalog`);
 
+console.log(`\n🔹 Test Group 4: needsOcpEnablementCable and Cable Conflict Gating`);
+// Test 4A: 2 OCP adapters without CPU2 enablement cable -> needsOcpEnablementCable = true
+items = [
+  { sku: 'P54321-B21', description: 'HPE Ethernet 10/25Gb 2-port SFP28 OCP3 Adapter', quantity: 2 }
+];
+result = evalNetworkingOcp(items);
+assert(result.needsOcpEnablementCable === true, `2 OCP adapters without CPU2 cable flags needsOcpEnablementCable`);
+
+// Test 4B: 2 OCP adapters with CPU2 enablement cable (P48831-B21) -> needsOcpEnablementCable = false
+items = [
+  { sku: 'P54321-B21', description: 'HPE Ethernet 10/25Gb 2-port SFP28 OCP3 Adapter', quantity: 2 },
+  { sku: 'P48831-B21', description: 'HPE ProLiant DL380 Gen11 CPU2 to OCP2 x8 Enablement Cable Kit', quantity: 1 }
+];
+result = evalNetworkingOcp(items);
+assert(result.needsOcpEnablementCable === false, `P48831-B21 clears needsOcpEnablementCable`);
+assert(result.hasCpu2Ocp2Cable === true, `CPU2 OCP2 cable recognized as present`);
+
+// Test 4C: Conflicting CPU1 and CPU2 cables on single node
+items = [
+  { sku: 'P54321-B21', description: 'HPE Ethernet 10/25Gb 2-port SFP28 OCP3 Adapter', quantity: 2 },
+  { sku: 'P48830-B21', description: 'HPE ProLiant DL380 Gen11 CPU1 to OCP2 x8 Enablement Cable Kit', quantity: 1 },
+  { sku: 'P48831-B21', description: 'HPE ProLiant DL380 Gen11 CPU2 to OCP2 x8 Enablement Cable Kit', quantity: 1 }
+];
+result = evalNetworkingOcp(items);
+assert(result.hasConflictingOcpCables === true, `Conflicting CPU1 and CPU2 OCP cables detected`);
+
 console.log(`\n================================================================`);
 console.log(`📊 FINAL TEST SUMMARY: ${totalPasses} PASSED | ${totalFails} FAILED`);
 console.log(`================================================================\n`);

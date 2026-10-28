@@ -1,0 +1,496 @@
+--- a/scripts/lib/feedback/quarantined_deltas.js
++++ b/scripts/lib/feedback/quarantined_deltas.js
+@@ -19,6 +19,29 @@
+ const logger = require('../system/pipeline_logger.js');
+ 
++const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
++const DEFAULT_OCA_SESSIONS_DIR = path.join(PROJECT_ROOT, 'outputs', 'history', 'oca_sessions');
++
++const SYNTHETIC_MOCK_PATTERN = /\b(test_evidence|local_mock|mock_evidence|mock_session|fake_evidence|synthetic_evidence|dummy_evidence|local_test)\b/i;
++const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
++const DELTA_ID_PATTERN = /^DELTA-\d+-[a-z0-9]+$/i;
++
++const ACCEPTED_PORTAL_STATUSES = new Set([
++  'ACCEPTED_BY_VENDOR',
++  'CLIC_ACCEPTED',
++  'CORRECTED_CANDIDATE_CLIC_ACCEPTED'
++]);
++
++const KNOWN_QUICKSPECS_SECTIONS = [
++  'Processors',
++  'Memory',
++  'Storage',
++  'Storage Controllers',
++  'Power Supplies',
++  'System Fans',
++  'Networking',
++  'Core Options',
++  'Additional Options',
++  'Configuration Rules',
++  'Standard Features',
++  'Technical Specifications',
++  'Chassis Options',
++  'FlexibleLOM'
++];
++
+ let currentQuarantineFile = path.join(__dirname, '..', '..', '..', 'outputs', 'history', 'quarantined_deltas.json');
+ 
+ function getQuarantineFilePath() {
+@@ -92,8 +115,10 @@
+   const decision = String(review.decision || '').trim().toUpperCase();
+   const evidence = Array.isArray(review.evidence) ? review.evidence : [];
+   const trustedEvidence = evidence.filter(item => {
+     if (!item || typeof item !== 'object') return false;
+-    return TRUSTED_EVIDENCE_TYPES.has(String(item.type || '').toUpperCase()) && String(item.id || item.url || '').trim();
++    const itemType = String(item.type || '').toUpperCase();
++    const itemId = String(item.id || item.documentId || item.url || '').trim();
++    if (isSyntheticOrMockToken(itemId)) return false;
++    return TRUSTED_EVIDENCE_TYPES.has(itemType) && itemId;
+   });
+   if (review.verified !== true || decision !== 'APPROVE' || reviewer.length < 2 || reasoning.length < 20 || trustedEvidence.length === 0) {
+     return null;
+@@ -101,6 +126,227 @@
+   return { ...review, reviewer, reasoning, decision, evidence: trustedEvidence };
+ }
+ 
++/**
++ * Returns true if the given value matches synthetic mock or UUID patterns.
++ * @param {string} value
++ * @returns {boolean}
++ */
++function isSyntheticOrMockToken(value) {
++  if (!value || typeof value !== 'string') return false;
++  const trimmed = value.trim();
++  if (SYNTHETIC_MOCK_PATTERN.test(trimmed)) return true;
++  if (UUID_PATTERN.test(trimmed)) return true;
++  if (DELTA_ID_PATTERN.test(trimmed)) return true;
++  return false;
++}
++
++/**
++ * Resolve an authentic session file under outputs/history/oca_sessions/.
++ * Guarded against path traversal.
++ * @param {string} evidenceRef
++ * @param {string} sessionsDir
++ * @returns {string|null}
++ */
++function resolveSessionFile(evidenceRef, sessionsDir) {
++  if (!evidenceRef || typeof evidenceRef !== 'string') return null;
++  const trimmed = evidenceRef.trim();
++  if (!trimmed || trimmed.includes('\0') || isSyntheticOrMockToken(trimmed)) return null;
++
++  const targetSessionsDir = sessionsDir || DEFAULT_OCA_SESSIONS_DIR;
++  const normSessions = path.normalize(targetSessionsDir);
++
++  const resolved = path.isAbsolute(trimmed)
++    ? path.resolve(trimmed)
++    : path.resolve(targetSessionsDir, trimmed);
++
++  const normResolved = path.normalize(resolved);
++  if (!normResolved.startsWith(normSessions)) {
++    const altResolved = path.resolve(PROJECT_ROOT, trimmed);
++    if (!path.normalize(altResolved).startsWith(normSessions)) return null;
++    if (fs.existsSync(altResolved) && fs.statSync(altResolved).isFile()) return altResolved;
++  }
++
++  if (fs.existsSync(normResolved) && fs.statSync(normResolved).isFile()) return normResolved;
++
++  if (!normResolved.endsWith('.json')) {
++    const withExt = `${normResolved}.json`;
++    if (fs.existsSync(withExt) && fs.statSync(withExt).isFile()) return withExt;
++  }
++
++  // Scan sessions directory for matching sessionId or id property
++  if (fs.existsSync(targetSessionsDir)) {
++    try {
++      const entries = fs.readdirSync(targetSessionsDir, { withFileTypes: true });
++      for (const entry of entries) {
++        if (!entry.isFile() || !entry.name.endsWith('.json')) continue;
++        const candidatePath = path.join(targetSessionsDir, entry.name);
++        try {
++          const content = JSON.parse(fs.readFileSync(candidatePath, 'utf-8'));
++          if (content.sessionId === trimmed || content.id === trimmed) {
++            return candidatePath;
++          }
++        } catch (_) {}
++      }
++    } catch (_) {}
++  }
++
++  return null;
++}
++
++/**
++ * Pathway A: Verify authentic OCA session receipt on disk under outputs/history/oca_sessions/.
++ * Enforces status === 'ACCEPTED_BY_VENDOR' and valid computed SHA-256 fingerprint.
++ * @param {string} evidenceRef
++ * @param {object} evidenceObj
++ * @param {object} options
++ * @returns {object} Verification result
++ */
++function verifyOcaSessionReceipt(evidenceRef, evidenceObj = {}, options = {}) {
++  const sessionsDir = options.sessionsDir || options.sessionDirectory || DEFAULT_OCA_SESSIONS_DIR;
++  const filePath = resolveSessionFile(evidenceRef, sessionsDir);
++
++  if (!filePath) {
++    return {
++      valid: false,
++      code: 'EVIDENCE_UNVERIFIABLE',
++      reason: `Session receipt not found on disk under outputs/history/oca_sessions/: ${evidenceRef}`
++    };
++  }
++
++  let sessionData = null;
++  let fileBuffer = null;
++  try {
++    fileBuffer = fs.readFileSync(filePath);
++    sessionData = JSON.parse(fileBuffer.toString('utf-8'));
++  } catch (err) {
++    return {
++      valid: false,
++      code: 'EVIDENCE_UNVERIFIABLE',
++      reason: `Corrupted session receipt JSON at ${path.basename(filePath)}: ${err.message}`
++    };
++  }
++
++  if (!sessionData || typeof sessionData !== 'object' || Array.isArray(sessionData)) {
++    return {
++      valid: false,
++      code: 'EVIDENCE_UNVERIFIABLE',
++      reason: `Invalid session receipt format at ${path.basename(filePath)}`
++    };
++  }
++
++  const statusStr = String(sessionData.status || sessionData.vendorAcceptance || '').trim().toUpperCase();
++  if (!ACCEPTED_PORTAL_STATUSES.has(statusStr)) {
++    return {
++      valid: false,
++      code: 'EVIDENCE_UNVERIFIABLE',
++      reason: `Session receipt status '${sessionData.status || 'UNKNOWN'}' is not accepted by vendor (status must be ACCEPTED_BY_VENDOR or CLIC_ACCEPTED)`
++    };
++  }
++
++  const computedSha256 = crypto.createHash('sha256').update(fileBuffer).digest('hex');
++  const declaredSha = sessionData.manifestSha256 || sessionData.sessionSha256 || sessionData.fingerprint || sessionData.artifactSha256;
++  if (declaredSha && !/^[a-f0-9]{64}$/i.test(declaredSha)) {
++    return {
++      valid: false,
++      code: 'EVIDENCE_UNVERIFIABLE',
++      reason: `Session receipt declared fingerprint is not a valid 64-char hex SHA-256: ${declaredSha}`
++    };
++  }
++
++  if (evidenceObj.sha256 && evidenceObj.sha256 !== computedSha256 && evidenceObj.sha256 !== declaredSha) {
++    return {
++      valid: false,
++      code: 'EVIDENCE_UNVERIFIABLE',
++      reason: `Evidence SHA-256 mismatch: expected ${computedSha256}, got ${evidenceObj.sha256}`
++    };
++  }
++
++  return {
++    valid: true,
++    type: 'OFFICIAL_VENDOR_PORTAL',
++    filePath,
++    sha256: computedSha256,
++    manifestSha256: declaredSha || computedSha256,
++    status: statusStr,
++    id: path.basename(filePath),
++    sessionId: sessionData.sessionId || path.basename(filePath, '.json'),
++    summary: `Authentic OCA session receipt verified (${path.basename(filePath)}, status: ${statusStr}, sha256: ${computedSha256.slice(0, 12)}...)`
++  };
++}
++
++/**
++ * Pathway B: Verify official QuickSpecs citation with document ID and section.
++ * @param {string} evidenceRef
++ * @param {object} evidenceObj
++ * @param {object} context
++ * @returns {object} Verification result
++ */
++function verifyQuickSpecsCitation(evidenceRef, evidenceObj = {}, context = {}) {
++  const refStr = typeof evidenceRef === 'string' ? evidenceRef.trim() : '';
++
++  if (isSyntheticOrMockToken(refStr) || isSyntheticOrMockToken(evidenceObj.id) || isSyntheticOrMockToken(evidenceObj.documentId)) {
++    return {
++      valid: false,
++      code: 'EVIDENCE_UNVERIFIABLE',
++      reason: `QuickSpecs citation contains prohibited mock or synthetic token: ${refStr || evidenceObj.id}`
++    };
++  }
++
++  let docId = String(evidenceObj.documentId || evidenceObj.docId || evidenceObj.id || refStr).trim();
++  let section = String(evidenceObj.section || evidenceObj.sectionName || evidenceObj.docSection || '').trim();
++
++  docId = docId.replace(/^(?:QS:|QuickSpecs[:\s]*|HPE QuickSpecs source\s*)/i, '').trim();
++
++  if (!section && docId.includes('#')) {
++    const parts = docId.split('#');
++    docId = parts[0].trim();
++    section = parts.slice(1).join('#').trim();
++  } else if (!section && docId.includes(', Section:')) {
++    const parts = docId.split(', Section:');
++    docId = parts[0].trim();
++    section = parts.slice(1).join(', Section:').trim();
++  } else if (!section && docId.includes(', section:')) {
++    const parts = docId.split(', section:');
++    docId = parts[0].trim();
++    section = parts.slice(1).join(', section:').trim();
++  } else if (!section && docId.includes(':') && !docId.startsWith('http')) {
++    const parts = docId.split(':');
++    docId = parts[0].trim();
++    section = parts.slice(1).join(':').trim();
++  }
++
++  const isDocNum = /^[a-z]\d{7,9}(?:[a-z0-9_-]+)?$/i.test(docId);
++  const isQsSeries = /^(?:HPE-)?QS-[A-Za-z0-9_-]{2,}$/i.test(docId);
++  const isHpQs = /^HP-QS-[A-Za-z0-9_-]{2,}$/i.test(docId);
++  const isNumericDoc = /^\d{8,12}(?:-\d{2})?$/.test(docId);
++
++  if (!docId || (!isDocNum && !isQsSeries && !isHpQs && !isNumericDoc)) {
++    return {
++      valid: false,
++      code: 'EVIDENCE_UNVERIFIABLE',
++      reason: `Invalid QuickSpecs document ID syntax: '${docId || 'EMPTY'}'. Must match official QuickSpecs format (e.g. c04111535, QS-DL380-GEN12).`
++    };
++  }
++
++  if (!section && context) {
++    const corpus = `${context.reasoning || ''} ${context.ruleUpdate || ''} ${context.rawMessage || ''}`;
++    for (const knownSec of KNOWN_QUICKSPECS_SECTIONS) {
++      if (new RegExp(`\\b${knownSec}\\b`, 'i').test(corpus)) {
++        section = knownSec;
++        break;
++      }
++    }
++  }
++
++  if (!section || section.length < 3 || /^(?:test|mock|none|null|undefined|tbd|n\/a|na)$/i.test(section)) {
++    return {
++      valid: false,
++      code: 'EVIDENCE_UNVERIFIABLE',
++      reason: `QuickSpecs citation requires a valid document ID AND section name (section was: '${section || 'MISSING'}')`
++    };
++  }
++
++  return {
++    valid: true,
++    type: 'OFFICIAL_QUICKSPECS',
++    documentId: docId,
++    section,
++    id: `${docId}#${section}`,
++    summary: `Official QuickSpecs citation verified (${docId}, Section: ${section})`
++  };
++}
++
++/**
++ * Master Evidence Verification Function (Requirement R2 / Feature 7, INV-0 / INV-104).
++ * Evaluates candidate evidence against Pathway A (on-disk session receipt) and Pathway B (QuickSpecs citation).
++ * @param {object|string|Array} evidenceInput
++ * @param {object} [options]
++ * @returns {object} { valid: boolean, code?: string, reason?: string, verifiedEvidence?: object, summary?: string }
++ */
++function verifyAuthenticEvidence(evidenceInput, options = {}) {
++  if (!evidenceInput) {
++    return {
++      valid: false,
++      code: 'EVIDENCE_UNVERIFIABLE',
++      reason: 'No evidence provided for verification'
++    };
++  }
++
++  if (Array.isArray(evidenceInput)) {
++    if (evidenceInput.length === 0) {
++      return {
++        valid: false,
++        code: 'EVIDENCE_UNVERIFIABLE',
++        reason: 'Empty evidence array'
++      };
++    }
++
++    for (const item of evidenceInput) {
++      const idStr = typeof item === 'string' ? item : (item?.id || item?.documentId || '');
++      if (isSyntheticOrMockToken(idStr)) {
++        return {
++          valid: false,
++          code: 'EVIDENCE_UNVERIFIABLE',
++          reason: `Rejected prohibited synthetic mock evidence token: '${idStr}'`
++        };
++      }
++    }
++
++    let lastFailure = null;
++    for (const item of evidenceInput) {
++      const res = verifyAuthenticEvidence(item, options);
++      if (res.valid) return res;
++      lastFailure = res;
++    }
++    return lastFailure || {
++      valid: false,
++      code: 'EVIDENCE_UNVERIFIABLE',
++      reason: 'None of the provided evidence items could be verified'
++    };
++  }
++
++  const rawType = typeof evidenceInput === 'object' ? String(evidenceInput?.type || '').toUpperCase() : '';
++  const refStr = typeof evidenceInput === 'string'
++    ? evidenceInput
++    : String(evidenceInput?.id || evidenceInput?.documentId || evidenceInput?.url || evidenceInput?.filePath || '');
++
++  if (isSyntheticOrMockToken(refStr)) {
++    return {
++      valid: false,
++      code: 'EVIDENCE_UNVERIFIABLE',
++      reason: `Rejected synthetic mock or UUID evidence: '${refStr}'`
++    };
++  }
++
++  if (rawType === 'OFFICIAL_QUICKSPECS' || rawType === 'QUICKSPECS') {
++    return verifyQuickSpecsCitation(refStr, typeof evidenceInput === 'object' ? evidenceInput : {}, options);
++  }
++
++  if (rawType === 'OFFICIAL_VENDOR_PORTAL' || rawType === 'SESSION_RECEIPT') {
++    const ocaRes = verifyOcaSessionReceipt(refStr, typeof evidenceInput === 'object' ? evidenceInput : {}, options);
++    if (ocaRes.valid) return ocaRes;
++    const qsRes = verifyQuickSpecsCitation(refStr, typeof evidenceInput === 'object' ? evidenceInput : {}, options);
++    if (qsRes.valid) return qsRes;
++    return ocaRes;
++  }
++
++  const ocaRes = verifyOcaSessionReceipt(refStr, typeof evidenceInput === 'object' ? evidenceInput : {}, options);
++  if (ocaRes.valid) return ocaRes;
++
++  const qsRes = verifyQuickSpecsCitation(refStr, typeof evidenceInput === 'object' ? evidenceInput : {}, options);
++  if (qsRes.valid) return qsRes;
++
++  return {
++    valid: false,
++    code: 'EVIDENCE_UNVERIFIABLE',
++    reason: `Evidence '${refStr}' lacks verifiable authentic evidence: not a valid OCA session receipt (status ACCEPTED_BY_VENDOR) nor official QuickSpecs citation with document ID and section.`
++  };
++}
++
+ function readJsonArray(filePath) {
+@@ -362,25 +608,68 @@
+   const idx = list.findIndex(d => d.quarantineId === quarantineIdOrDeltaId || d.deltaId === quarantineIdOrDeltaId);
+   if (idx < 0) return null;
+   const item = list[idx];
+ 
++  // 1. Gather candidate evidence references from options and item
++  const candidateEvidence = [];
++  if (options.humanReview && Array.isArray(options.humanReview.evidence)) {
++    candidateEvidence.push(...options.humanReview.evidence);
++  }
++  if (options.evidence) {
++    if (Array.isArray(options.evidence)) candidateEvidence.push(...options.evidence);
++    else candidateEvidence.push(options.evidence);
++  }
++  if (options.evidenceId) candidateEvidence.push(options.evidenceId);
++  if (options.sessionReceiptPath) candidateEvidence.push(options.sessionReceiptPath);
++  if (Array.isArray(item.evidence) && item.evidence.length > 0) candidateEvidence.push(...item.evidence);
++  if (item.evidenceId) candidateEvidence.push(item.evidenceId);
++  if (Array.isArray(item.citations) && item.citations.length > 0) candidateEvidence.push(...item.citations);
++
++  // 2. Strictly verify authentic evidence (Requirement R2 / Feature 7)
++  const verification = verifyAuthenticEvidence(
++    candidateEvidence.length > 0 ? candidateEvidence : (item.traceId || item.deltaId),
++    {
++      sessionsDir: options.sessionsDir || options.sessionDirectory,
++      reasoning: options.reasoning || item.humanReasoning || item.ruleUpdate || item.rawMessage,
++      ruleUpdate: item.ruleUpdate || item.rawMessage,
++      filePath: quarantineFile
++    }
++  );
++
++  if (!verification.valid) {
++    const reasonMsg = verification.reason || 'Evidence unverifiable';
++    logger.warn('QUARANTINE', `Promotion blocked with EVIDENCE_UNVERIFIABLE: ${reasonMsg}`);
++
++    const blockReason = `EVIDENCE_UNVERIFIABLE: ${reasonMsg}`;
++    item.quarantineReasons = [...new Set([...(item.quarantineReasons || []), blockReason])];
++    item.lastPromotionAttempt = {
++      attemptedAt: new Date().toISOString(),
++      attemptedBy: approver,
++      status: 'BLOCKED',
++      code: 'EVIDENCE_UNVERIFIABLE',
++      reason: reasonMsg
++    };
++    safeWriteJsonAtomic(quarantineFile, list);
++
++    appendDecision({
++      decisionId: `DECISION_${Date.now()}_${(item.knowledgeFingerprint || buildKnowledgeFingerprint(item)).slice(0, 10)}_BLOCKED`,
++      quarantineId: item.quarantineId,
++      deltaId: item.deltaId,
++      knowledgeFingerprint: item.knowledgeFingerprint || buildKnowledgeFingerprint(item),
++      decision: 'PROMOTION_BLOCKED',
++      status: 'EVIDENCE_UNVERIFIABLE',
++      decidedAt: new Date().toISOString(),
++      reviewer: approver,
++      reasoning: `Promotion blocked with EVIDENCE_UNVERIFIABLE: ${reasonMsg}`,
++      candidateEvidence
++    }, quarantineFile);
++
++    if (typeof options === 'object') {
++      options.error = 'EVIDENCE_UNVERIFIABLE';
++      options.rejectionReason = reasonMsg;
++      options.verification = verification;
++    }
++    return null;
++  }
++
+   let humanReview = normalizeHumanReview({ humanReview: options.humanReview });
+   if (!humanReview && SINGLE_USER_MODE) {
+-    const evidenceId = item.evidenceId || item.traceId || (Array.isArray(item.citations) && item.citations[0]?.id) || item.deltaId;
+-    const isAuthenticSource = TRUSTED_AUTOMATED_SOURCES.has(normalizeText(item.source)) || item.source === 'OFFICIAL_VENDOR_PORTAL_OBSERVATION';
+-    if (!isAuthenticSource || !evidenceId) {
+-      logger.warn('QUARANTINE', 'Promotion denied: unverified or ungrounded proposal lacks verifiable evidence provenance.');
+-      return null;
+-    }
+     humanReview = {
+       reviewer: approver || 'AUTONOMOUS_LEAD_ARCHITECT',
+-      reasoning: options.reasoning || item.humanReasoning || `Autonomous verified portal evidence: ${item.ruleUpdate || item.rawMessage || evidenceId}`,
++      reasoning: options.reasoning || item.humanReasoning || `Autonomous verified evidence: ${verification.summary || item.ruleUpdate || item.rawMessage}`,
+       decision: 'APPROVE',
+       verified: true,
+-      evidence: Array.isArray(item.evidence) && item.evidence.length > 0 ? item.evidence : [{ type: 'OFFICIAL_VENDOR_PORTAL', id: evidenceId }]
++      evidence: [verification.verifiedEvidence]
+     };
+   } else if (!humanReview || humanReview.reviewer !== approver) {
+     logger.warn('QUARANTINE', 'Promotion denied: complete evidence-backed human review is required and reviewer must match approver.');
+     return null;
++  } else {
++    humanReview.evidence = [verification.verifiedEvidence];
+   }
+@@ -578,4 +867,8 @@
+   buildKnowledgeFingerprint,
+   logAutonomousRejection,
++  verifyAuthenticEvidence,
++  verifyOcaSessionReceipt,
++  verifyQuickSpecsCitation,
++  isSyntheticOrMockToken,
+   QUARANTINE_FILE: currentQuarantineFile
+ };
+--- a/scripts/lib/feedback/feedback_loop.js
++++ b/scripts/lib/feedback/feedback_loop.js
+@@ -184,17 +184,20 @@
+   const pending = saveQuarantinedDelta(candidate, ['Evidence-backed decision awaiting atomic promotion'], { filePath: quarantineFile });
+   const reviewer = options.humanReview?.reviewer || 'autonomous-lead-architect';
+-  const humanReview = options.humanReview || (candidate.source === 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' && (candidate.traceId || candidate.deltaId) ? {
++  const authenticEvidenceId = options.evidenceId || options.sessionReceiptPath || options.sessionReceipt?.receiptPath || options.sessionReceipt?.sessionId;
++  const humanReview = options.humanReview || (candidate.source === 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' && authenticEvidenceId ? {
+     reviewer,
+     reasoning: `Autonomous verified portal evidence for ${candidate.chassis}`,
+     decision: 'APPROVE',
+     verified: true,
+-    evidence: [{ type: 'OFFICIAL_VENDOR_PORTAL', id: candidate.traceId || candidate.deltaId }]
++    evidence: [{ type: 'OFFICIAL_VENDOR_PORTAL', id: authenticEvidenceId }]
+   } : null);
+   const activated = promoteQuarantinedDelta(pending.quarantineId, reviewer, {
+     filePath: quarantineFile,
+     activationDirectory: outputDir,
+     catalogData,
+-    humanReview
++    humanReview,
++    evidenceId: authenticEvidenceId
+   });
+   if (!activated) return pending;

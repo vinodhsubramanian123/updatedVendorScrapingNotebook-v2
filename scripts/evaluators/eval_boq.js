@@ -1486,6 +1486,17 @@ async function _handleBoqDeliverablesPhase(ctx, options, evidenceLedger, startTi
     if (!ctx.evalResults.deliveryAuthError && acceptance.blockersCount > 0) {
       ctx.evalResults.deliveryAuthError = `Pre-presentation acceptance failed with ${acceptance.blockersCount} blocker(s): ${acceptance.blockers.map(b => b.name || b.id).join(', ')}`;
     }
+    if (ctx.evalResults.customerDisposition === 'DELIVERY_BLOCKED_UNBUILDABLE') {
+      try {
+        const { generateCounterfactualRepairProofs } = require('../lib/system/counterfactual_repair.js');
+        ctx.evalResults.counterfactualRepairProofs = generateCounterfactualRepairProofs(
+          ctx.evalResults,
+          { ...options, ...ctx.ingestCtx }
+        );
+      } catch (_cfErr) {
+        ctx.evalResults.counterfactualRepairProofs = [];
+      }
+    }
   }
 
   await serializeAndExportResults(terminalOwner.serializerContext(ctx, {

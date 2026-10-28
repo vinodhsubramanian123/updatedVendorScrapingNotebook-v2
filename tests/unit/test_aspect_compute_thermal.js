@@ -185,6 +185,54 @@ const suppRes = evalSupportManufacturing(pcieItems, null, {}, 9);
 assert(suppRes.hasManagementLicense === true, `INV-207: R7A11AAE recognized as valid management license`);
 assert(suppRes.unsolicitedOptionalItems.length === 1 && suppRes.unsolicitedOptionalItems[0].sku === 'S1A05A', `INV-207: S1A05A flagged as unsolicited optional FIO pre-claim token while R7A11AAE is kept`);
 
+console.log(`\n🔹 Test Group 8: Mandatory Heatsink Detection & Direct Liquid Cooling (DLC) Gating`);
+items = [
+  { sku: 'P12345-B21', description: 'Intel Xeon Gold 6330 2.0GHz 28-core 205W Processor', quantity: 2 }
+];
+result = evalComputeThermal(items);
+assert(result.needsHeatsink === true, `CPUs present without heatsink flags needsHeatsink`);
+assert(result.hasHeatsinks === false, `hasHeatsinks is false when no heatsink item present`);
+
+items = [
+  { sku: 'P12345-B21', description: 'Intel Xeon Gold 6330 2.0GHz 28-core 205W Processor', quantity: 2 },
+  { sku: 'P48809-B21', description: 'HPE ProLiant DL380 2U High Performance Heat Sink', quantity: 2 }
+];
+result = evalComputeThermal(items);
+assert(result.needsHeatsink === false, `Heatsinks provided clears needsHeatsink`);
+assert(result.hasHeatsinks === true, `P48809-B21 recognized as valid heatsink`);
+
+items = [
+  { sku: 'P99999-B21', description: 'AMD EPYC 9654 360W Processor', quantity: 2 }
+];
+result = evalComputeThermal(items);
+assert(result.needsDirectLiquidCooling === true, `360W TDP mandates Direct Liquid Cooling`);
+assert(result.hasDirectLiquidCooling === false, `Missing DLC cooling kit flagged`);
+
+items = [
+  { sku: 'P99999-B21', description: 'AMD EPYC 9654 360W Processor', quantity: 2 },
+  { sku: 'P56000-B21', description: 'HPE Direct Liquid Cooling Module Kit', quantity: 1 }
+];
+result = evalComputeThermal(items);
+assert(result.needsDirectLiquidCooling === false, `DLC module clears needsDirectLiquidCooling`);
+assert(result.hasDirectLiquidCooling === true, `DLC module recognized as present`);
+assert(result.needsHeatsink === false, 'DLC module satisfies cooling and clears needsHeatsink');
+
+// Test Air Baffle rejection:
+items = [
+  { sku: 'P12345-B21', description: 'Intel Xeon Gold 6330 Processor', quantity: 1 },
+  { sku: 'P99999-B21', description: 'HPE DL380 Gen11 Standard Air Baffle for Heatsink', quantity: 1 }
+];
+result = evalComputeThermal(items);
+assert(result.hasHeatsinks === false, 'Air Baffle not classified as thermal heatsink');
+assert(result.needsHeatsink === true, 'Air baffle with 0 heatsinks flags needsHeatsink');
+
+items = [
+  { sku: 'P53712-B21', description: 'AMD EPYC 9334 32-core Processor for HPE', quantity: 2 },
+  { sku: 'P58465-B21', description: 'HPE ProLiant DL3X5 Gen11 2U Performance Fan Kit', quantity: 3 }
+];
+result = evalComputeThermal(items, null, {}, 1);
+assert(result.fanKitUnderPopulated === true, `3 modular fan kits on 2P server flagged as underpopulated (needs 6)`);
+
 console.log(`\n================================================================`);
 console.log(`📊 FINAL TEST SUMMARY: ${totalPasses} PASSED | ${totalFails} FAILED`);
 console.log(`================================================================\n`);

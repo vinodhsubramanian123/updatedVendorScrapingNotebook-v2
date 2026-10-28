@@ -162,6 +162,100 @@ const PLATFORM_PROFILES = {
     }
   },
 
+  'HPE_PROLIANT_DL380A_GEN12': {
+    domain: 'server',
+    vendor: 'HPE',
+    family: 'ProLiant DL',
+    generation: 'Gen12',
+    formFactor: '2U Rack',
+    maxSockets: 2,
+    baseChassis: { sku: 'P74700-B21', description: 'HPE ProLiant DL380a Gen12 4EDSFF CTO Server' },
+    baseChassisGpu: { sku: 'P76706-B21', description: 'HPE ProLiant Compute DL380a Gen12 8DW/16SW CTO Server' },
+    detection: GENERIC_DETECTION_PATTERNS,
+    memoryArchitecture: {
+      generation: 'DDR5',
+      channelsPerSocket: 8,
+      dimmsPerChannel: 2,
+      maxDimmsPerSocket: 16,
+      maxDimmsPerChassis: 32,
+      minCpuForMaxDimms: 2,
+      speedMt: 6400,
+      allowMixedCapacities: false,
+      validBalancedCountsPerSocket: [1, 2, 4, 6, 8, 12, 16],
+      skus: {
+        '32GB': { bto: 'P74878-B21', fio: 'P74878-F21', desc: 'HPE 32GB 2Rx8 DDR5-6400 Smart FIO Memory Kit' },
+        '64GB': { bto: 'P74879-B21', fio: 'P74879-F21', desc: 'HPE 64GB 2Rx4 DDR5-6400 Smart FIO Memory Kit' },
+        '96GB': { bto: 'P74880-B21', fio: 'P74880-F21', desc: 'HPE 96GB 2Rx4 DDR5-6400 Smart FIO Memory Kit' },
+        '128GB': { bto: 'P74881-B21', fio: 'P74881-F21', desc: 'HPE 128GB 2Rx4 DDR5-6400 Smart FIO Memory Kit' }
+      }
+    },
+    slots: {
+      primaryRiserSlots: 4,
+      secondaryRiserSlots: 0,
+      tertiaryRiserSlots: 0,
+      maxPcieEthernetPerChassis: 4,
+      ocpSlots: 2,
+      maxCentralizedCacheBattery: 1
+    },
+    storageArchitecture: {
+      sff: {
+        baseBays: 8,
+        baysPerCage: 8,
+        maxCages: 3,
+        maxFrontBays: 24,
+        cageSku: 'P74710-B21',
+        cageDesc: 'HPE ProLiant DL380a Gen12 4SFF Front Drive Cage Kit'
+      },
+      lff: {
+        baseBays: 4,
+        baysPerCage: 4,
+        maxCages: 3,
+        maxFrontBays: 12,
+        cageSku: 'P75743-B21',
+        cageDesc: 'HPE ProLiant DL380 Gen12 4LFF Drive Cage Kit'
+      },
+      edsff: {
+        baseBays: 4,
+        baysPerCage: 4,
+        maxCages: 2,
+        maxFrontBays: 8,
+        cageSku: 'P74712-B21',
+        cageDesc: 'HPE ProLiant DL380a Gen12 4EDSFF Front Drive Cage Kit'
+      },
+      enablement: {
+        directControllerLimit: 8,
+        expanderSku: 'P55806-B21',
+        expanderDesc: 'HPE ProLiant Tri-Mode Switch Card',
+        controllerCableSku: 'P76700-B21',
+        controllerCableDesc: 'HPE ProLiant Compute DL380a Gen12 NVMe to Tri-Mode PCIe FIO Cable Kit',
+        defaultStorageController: {
+          sku: 'P76458-B21',
+          desc: 'HPE MR408i-o Gen12 Storage Controller'
+        },
+        smartStorageBattery: {
+          sku: 'P01367-B21',
+          desc: 'HPE 96W Smart Storage Lithium-ion Battery with 260mm Cable Kit'
+        }
+      }
+    },
+    enablementKits: {
+      frontCageSff: { sku: 'P74710-B21', description: 'HPE ProLiant DL380a Gen12 4SFF Front Drive Cage Kit' },
+      frontCageEdsff: { sku: 'P74712-B21', description: 'HPE ProLiant DL380a Gen12 4EDSFF Front Drive Cage Kit' },
+      storageControllerCable: { sku: 'P76700-B21', description: 'HPE ProLiant Compute DL380a Gen12 NVMe to Tri-Mode PCIe FIO Cable Kit' },
+      storageBattery: { sku: 'P01367-B21', description: 'HPE 96W Smart Storage Lithium-ion Battery with 260mm Cable Kit' },
+      defaultStorageController: { sku: 'P76458-B21', description: 'HPE MR408i-o Gen12 Storage Controller' },
+      fanKit: { sku: 'P74780-B21', description: 'HPE ProLiant DL380 Gen12 High Performance Fan Kit', fansPerKit: 6 },
+      heatsinkKit: { sku: 'P48818-B21', description: 'HPE ProLiant DL380 Gen12 High Performance Heat Sink Kit', minSockets: 2 },
+      railKit: { sku: 'P52341-B21', description: 'HPE ProLiant DL3XX Gen12 Easy Install Rail 3 Kit' }
+    },
+    defaultSupportPolicy: {
+      hardwareSupportSku: 'HU4B2A30C4V',
+      cloudManagementSaaS: 'R7A11AAE',
+      cloudManagementFio: 'S1A05A',
+      powerJumperCord: 'R1C65A'
+    }
+  },
+
   'HPE_PROLIANT_DL360_GEN11': {
     domain: 'server',
     vendor: 'HPE',

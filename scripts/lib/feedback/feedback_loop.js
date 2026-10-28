@@ -182,18 +182,20 @@ function processPortalFeedback(portalError, outputDir, options = {}) {
   const quarantineFile = path.join(historyDir, 'quarantined_deltas.json');
   const pending = saveQuarantinedDelta(candidate, ['Evidence-backed decision awaiting atomic promotion'], { filePath: quarantineFile });
   const reviewer = options.humanReview?.reviewer || 'autonomous-lead-architect';
-  const humanReview = options.humanReview || (candidate.source === 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' && (candidate.traceId || candidate.deltaId) ? {
+  const authenticEvidenceId = options.evidenceId || options.sessionReceiptPath || options.sessionReceipt?.receiptPath || options.sessionReceipt?.sessionId;
+  const humanReview = options.humanReview || (candidate.source === 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' && authenticEvidenceId ? {
     reviewer,
     reasoning: `Autonomous verified portal evidence for ${candidate.chassis}`,
     decision: 'APPROVE',
     verified: true,
-    evidence: [{ type: 'OFFICIAL_VENDOR_PORTAL', id: candidate.traceId || candidate.deltaId }]
+    evidence: [{ type: 'OFFICIAL_VENDOR_PORTAL', id: authenticEvidenceId }]
   } : null);
   const activated = promoteQuarantinedDelta(pending.quarantineId, reviewer, {
     filePath: quarantineFile,
     activationDirectory: outputDir,
     catalogData,
-    humanReview
+    humanReview,
+    evidenceId: authenticEvidenceId
   });
   if (!activated) return pending;
   updateCatalogRulesFile(outputDir, activated);

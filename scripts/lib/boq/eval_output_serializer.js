@@ -59,6 +59,17 @@ function _buildHeaderSection(ctx) {
     const disposition = evalResults?.customerDisposition || (evalResults?.isMathClean === false ? 'DELIVERY_BLOCKED_UNBUILDABLE' : 'ACTION_REQUIRED');
     const reason = evalResults?.deliveryError || 'Cryptographic DeliveryAuthorization is invalid or missing for this candidate manifest.';
     md += `\n> [!CAUTION]\n> **DELIVERY BLOCKED: ${disposition}**  \n> This evaluation report is uncertified and blocked from presentation export.  \n> Reason: ${reason}\n`;
+
+    if (Array.isArray(evalResults?.counterfactualRepairProofs) && evalResults.counterfactualRepairProofs.length > 0) {
+      md += `\n### 🔧 Deterministic Counterfactual Repair Proofs (Path to 100% Buildability)\n\n`;
+      md += `| Issue Type | Root Cause | Required Hardware Deltas | Mathematical Proof | Resulting Status |\n`;
+      md += `|---|---|---|---|---|\n`;
+      for (const proof of evalResults.counterfactualRepairProofs) {
+        const deltasStr = (proof.requiredHardwareDeltas || []).map(d => `**${d.action}** ${d.quantity}x \`${d.sku || 'N/A'}\` (${d.description})`).join('<br>');
+        md += `| \`${proof.issueType}\` | ${proof.rootCause} | ${deltasStr} | ${proof.mathematicalProof} | **${proof.resultingStatus}** |\n`;
+      }
+      md += `\n`;
+    }
   }
 
   md += `\n---\n\n`;
@@ -812,6 +823,7 @@ function _emitSerializedJsonResponse(ctx, evalResults, graph, budgetOpt, queryPa
       deliveryAuthError: evalResults.deliveryAuthError || null,
       deliveryAuthorization: evalResults.deliveryAuthorization || null,
       customerDisposition: evalResults.customerDisposition || (hasUnbuildableDisposition ? 'DELIVERY_BLOCKED_UNBUILDABLE' : 'DELIVERY_AUTHORIZED'),
+      ...(evalResults.counterfactualRepairProofs ? { counterfactualRepairProofs: evalResults.counterfactualRepairProofs } : {}),
       evaluationNarrative: narrative,
       tracePayloads,
       outputReportPath: outputPath,

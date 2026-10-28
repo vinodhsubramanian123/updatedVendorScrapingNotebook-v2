@@ -40,24 +40,34 @@ function tallyCagesAndDrives(tally, desc, sku, qty, role, mandatorySkus = {}) {
       (mandatorySkus?.GENERIC_CAGE?.sku && sku === cleanBaseSKU(mandatorySkus.GENERIC_CAGE.sku));
   if (isGenericCage && !desc.includes('premium') && !desc.includes('u.3 prem')) {
     tally.hasDriveCage = true;
+    tally.cageCapacity = (tally.cageCapacity || 0) + (8 * qty);
   }
   if (desc.includes('u.3 prem') || desc.includes('premium kit') || desc.includes('premium cage') || 
       (mandatorySkus?.PREMIUM_CAGE?.sku && sku === cleanBaseSKU(mandatorySkus.PREMIUM_CAGE.sku))) {
     tally.hasDriveCage = true;
     tally.hasPremiumCage = true;
+    tally.cageCapacity = (tally.cageCapacity || 0) + (8 * qty);
   }
   // DL380a drive cage tracking (Rule 81016788)
   if ((desc.includes('4sff') && desc.includes('dl380a')) || (mandatorySkus?.GENERIC_CAGE?.sku && sku === cleanBaseSKU(mandatorySkus.GENERIC_CAGE.sku) && desc.includes('4sff'))) {
     tally.has4SffCage = true;
     tally.hasDriveCage = true;
+    tally.cageCapacity = (tally.cageCapacity || 0) + (4 * qty);
   }
   if ((desc.includes('4edsff') && desc.includes('dl380a')) || (mandatorySkus?.PREMIUM_CAGE?.sku && sku === cleanBaseSKU(mandatorySkus.PREMIUM_CAGE.sku) && desc.includes('4edsff'))) {
     tally.has4EdsffCage = true;
     tally.hasDriveCage = true;
+    tally.cageCapacity = (tally.cageCapacity || 0) + (4 * qty);
   }
   if (desc.includes('12lff') || desc.includes('4lff') || desc.includes('8lff') || (role === 'Chassis' && desc.includes('lff'))) {
     tally.isLffChassis = true;
     tally.hasDriveCage = true;
+    const lffBays = desc.includes('12lff') ? 12 : (desc.includes('8lff') ? 8 : 4);
+    tally.cageCapacity = (tally.cageCapacity || 0) + (lffBays * qty);
+  }
+  if ((role === 'Chassis' || desc.includes('cto server') || desc.includes('base system') || desc.includes('chassis')) && desc.includes('8sff')) {
+    tally.hasDriveCage = true;
+    tally.cageCapacity = (tally.cageCapacity || 0) + (8 * qty);
   }
 }
 
@@ -77,6 +87,9 @@ function tallyRaidControllers(tally, desc, sku) {
     !isBootController &&
     !isVroc &&
     !desc.includes('node controller') &&
+    !desc.includes('controller node') &&
+    !desc.includes('node pair') &&
+    !desc.includes('alletra') &&
     !desc.includes('network controller') &&
     !desc.includes('ethernet controller'));
 
@@ -105,7 +118,7 @@ function tallyStorageCablingAndBatteries(tally, it, desc, sku, role, batterySku,
     tally.conflictingCableItems.push(it);
   }
   if (desc.includes('storage controller enablement cable') || desc.includes('controller enablement cable') || desc.includes('controller enablement kit') ||
-      desc.includes('tri-mode pcie fio cable kit') || desc.includes('nvme to tri-mode') || sku === 'P76700-B21' || sku === 'P01367-B21' || desc.includes('with 260mm cable') ||
+      desc.includes('tri-mode pcie fio cable kit') || desc.includes('nvme to tri-mode') || sku === 'P76700-B21' || sku === 'P48918-B21' ||
       (mandatorySkus?.CONTROLLER_CABLE_KIT?.sku && sku === cleanBaseSKU(mandatorySkus.CONTROLLER_CABLE_KIT.sku))) {
     tally.hasOcpCable = true;
   }
@@ -252,18 +265,46 @@ function validateStoreEverStorage(t) {
   };
 }
 
+function calculateBackplaneCapacity(t, serverCount = 1) {
+  const nodes = Math.max(1, serverCount || 1);
+  if (t.isAlletraArray) {
+    return (24 + (t.expansionShelfCount * 24)) * nodes;
+  }
+  if (t.has4SffCage || t.has4EdsffCage) {
+    return 4 * nodes;
+  }
+  if (t.isLffChassis) {
+    return (t.cageCapacity > 0 ? t.cageCapacity : 12) * nodes;
+  }
+  if (t.cageCapacity > 0) {
+    return t.cageCapacity;
+  }
+  return 8 * nodes;
+}
+
 function validateStorageCablingAndBackplane(t, serverCount = 1) {
   const nodes = Math.max(1, serverCount || 1);
   const perNodeDrives = t.driveCount / nodes;
   const controllerDirectCapacity = t.hasStorageController ? (t.has16PortController ? 16 : 8) : 0;
   const isServerChassis = !t.isAlletraArray && !t.ltoSasDriveCount && !t.ltoFcDriveCount && !t.msl3040BaseModuleCount;
+  const backplaneCapacity = calculateBackplaneCapacity(t, nodes);
+  const perNodeBackplaneCapacity = backplaneCapacity / nodes;
+
+  const hasControllerCable = t.hasOcpCable || (t.hasYCable && !t.hasIncompatibleYCable);
+  const needsCableKit = Boolean(isServerChassis && t.hasStorageController && !hasControllerCable);
+  const isBackplaneCapacityExceeded = Boolean(isServerChassis && perNodeDrives > perNodeBackplaneCapacity);
+
   return {
     controllerDirectCapacity,
     needsSasExpander: t.hasStorageController && perNodeDrives > controllerDirectCapacity && !t.hasSasExpander && !t.hasTriModeSwitch,
     hasIncompatibleYCable: t.hasYCable && (!t.hasPcieController || !t.hasPremiumCage),
-    needsCapacitorCable: t.hasSmartBattery && !t.hasOcpCable,
+    needsCapacitorCable: Boolean(isServerChassis && t.hasSmartBattery && !t.hasOcpCable),
     needsDriveCageForController: isServerChassis && !t.isLffChassis && t.hasStorageController && !t.hasDriveCage && !t.has4SffCage && !t.has4EdsffCage,
-    hasControllerNoDriveConflict: isServerChassis && t.hasStorageController && t.hasNoDriveKit
+    hasControllerNoDriveConflict: isServerChassis && t.hasStorageController && t.hasNoDriveKit,
+    needsCableKit,
+    isBackplaneCapacityExceeded,
+    backplaneCapacity,
+    isServerChassis
   };
 }
 
@@ -310,8 +351,11 @@ function evalStorageTriMode(items, catalogData = null, mandatorySkus = {}, serve
     needsSasExpander: cabling.needsSasExpander,
     needsDriveCageForController: cabling.needsDriveCageForController,
     hasControllerNoDriveConflict: cabling.hasControllerNoDriveConflict,
-    needsSmartStorageBattery: t.hasStorageController && !t.hasSmartBattery,
+    needsSmartStorageBattery: Boolean(cabling.isServerChassis && t.hasStorageController && !t.hasSmartBattery),
     needsCapacitorCable: cabling.needsCapacitorCable,
+    needsCableKit: cabling.needsCableKit,
+    isBackplaneCapacityExceeded: cabling.isBackplaneCapacityExceeded,
+    backplaneCapacity: cabling.backplaneCapacity,
     controllerDirectCapacity: cabling.controllerDirectCapacity,
     conflictingCableItems: t.conflictingCableItems,
     isAlletraArray: t.isAlletraArray,

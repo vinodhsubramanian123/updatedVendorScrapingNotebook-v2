@@ -6,6 +6,33 @@
 const { cleanBaseSKU, buildCatalogSkuIndex, isOcaModifierTrackingRow } = require('../catalog/sku.js');
 const { classifyComponentRole } = require('../catalog/product_meta.js');
 
+function isHeatsinkItem(it, skuIndex = null, highPerfHeatsinkSku = '') {
+  if (isOcaModifierTrackingRow(it.sku, it.description)) return false;
+  const sku = cleanBaseSKU(it.sku);
+  const d = (it.description || '').toLowerCase();
+  if (d.includes('power supply') || d.includes('flex slot') || d.includes('platinum')) return false;
+  // Exclude plastic air baffles, cable guides, blanks, brackets, ducting, and cable kits
+  if (d.includes('baffle') || d.includes('guide') || d.includes('blank') || d.includes('bracket') || d.includes('duct') || d.includes('cable') || d.includes('cbl')) return false;
+  if (highPerfHeatsinkSku && sku === cleanBaseSKU(highPerfHeatsinkSku)) return true;
+  if (['P74792-B21', 'P74794-B21', 'P49145-B21', 'P48818-B21', 'P58459-B21', 'P48809-B21', 'P74787-B21', 'P48817-B21', 'P48905-B21', 'P58458-B21', 'P58460-B21'].includes(sku)) return true;
+  if (d.includes('heat sink') || d.includes('heatsink') || classifyComponentRole('', d) === 'Heatsink') return true;
+  const catItem = skuIndex ? skuIndex.get(sku) : null;
+  if (catItem) {
+    const catDesc = (catItem.skuData?.Description || '').toLowerCase();
+    if (catDesc.includes('baffle') || catDesc.includes('guide') || catDesc.includes('blank') || catDesc.includes('bracket') || catDesc.includes('duct') || catDesc.includes('cable') || catDesc.includes('cbl')) return false;
+    if (catItem.skuData?.['Component Role'] === 'Heatsink' || catDesc.includes('heatsink') || catDesc.includes('heat sink')) return true;
+  }
+  return false;
+}
+
+function isDirectLiquidCoolingItem(it) {
+  if (isOcaModifierTrackingRow(it.sku, it.description)) return false;
+  const d = (it.description || '').toLowerCase();
+  const sku = cleanBaseSKU(it.sku);
+  return d.includes('liquid cooling') || d.includes('direct liquid') || d.includes('dlc') ||
+    d.includes('cold plate') || d.includes('coolant') || ['P74796-B21', 'P60000-B21'].includes(sku);
+}
+
 function evalComputeThermal(items, catalogData = null, mandatorySkus = {}, serverCount = 1, options = {}) {
   let cpuCount = 0;
   let maxCpuTdpWatts = 0;
@@ -62,19 +89,13 @@ function evalComputeThermal(items, catalogData = null, mandatorySkus = {}, serve
   const highPerfFanSku = mandatorySkus.HIGH_PERF_FAN_KIT?.sku || '';
   const highPerfHeatsinkSku = mandatorySkus.HIGH_PERF_HEATSINK?.sku || '';
   const hasHighPerfFans = fanKitCount > 0 || (highPerfFanSku ? items.some(it => !isOcaModifierTrackingRow(it.sku, it.description) && cleanBaseSKU(it.sku) === cleanBaseSKU(highPerfFanSku)) : false);
-  const isHeatsinkItem = it => {
-    if (isOcaModifierTrackingRow(it.sku, it.description)) return false;
-    const sku = cleanBaseSKU(it.sku);
-    const d = (it.description || '').toLowerCase();
-    if (d.includes('power supply') || d.includes('flex slot') || d.includes('platinum')) return false;
-    if (highPerfHeatsinkSku && sku === cleanBaseSKU(highPerfHeatsinkSku)) return true;
-    if (['P74792-B21', 'P74794-B21', 'P49145-B21', 'P48818-B21', 'P58459-B21'].includes(sku)) return true;
-    if (d.includes('heat sink') || d.includes('heatsink') || classifyComponentRole('', d) === 'Heatsink') return true;
-    const catItem = skuIndex.get(sku);
-    if (catItem && (catItem.skuData?.['Component Role'] === 'Heatsink' || (catItem.skuData?.Description || '').toLowerCase().includes('heatsink') || (catItem.skuData?.Description || '').toLowerCase().includes('heat sink'))) return true;
-    return false;
-  };
-  const hasHeatsinks = highPerfHeatsinkSku ? items.some(isHeatsinkItem) : true;
+  const hasDirectLiquidCooling = items.some(isDirectLiquidCoolingItem) || Boolean(options?.hasDirectLiquidCooling);
+  const hasHeatsinks = items.some(it => isHeatsinkItem(it, skuIndex, highPerfHeatsinkSku));
+  const needsHeatsink = cpuCount > 0 && !hasHeatsinks && !hasDirectLiquidCooling;
+
+  // Processors > 350W TDP exceed air-cooling thermal envelope in standard enterprise servers and require Direct Liquid Cooling (DLC)
+  const isDlcMandated = maxCpuTdpWatts > 350 || Boolean(options?.requiresDlc);
+  const needsDirectLiquidCooling = isDlcMandated && !hasDirectLiquidCooling;
 
   // INV-208: Heatsink Tier Right-Sizing & Lead-Time Bottleneck Prevention
   // On DL380 Gen12, P74794-B21 (Max Performance Heat Sink Kit, $624, 45-day lead time) is only required for > 270W TDP CPUs
@@ -129,6 +150,9 @@ function evalComputeThermal(items, catalogData = null, mandatorySkus = {}, serve
     maxCpuTdpWatts,
     hasHighPerfFans,
     hasHeatsinks,
+    needsHeatsink,
+    hasDirectLiquidCooling,
+    needsDirectLiquidCooling,
     hasMaxPerfHeatsink,
     hasOverprovisionedMaxHeatsink,
     recommendedHeatsinkSku: hasOverprovisionedMaxHeatsink ? 'P74792-B21' : null,

@@ -241,6 +241,8 @@ function evalNetworkingOcp(items, catalogData = null, mandatorySkus = {}, server
   const san = validateSanTransceivers(t);
   const synergy = validateSynergyFabrics(t.synergyInterconnects, t.synergyMezzCards);
   const nodes = Math.max(1, serverCount || 1);
+  const perNodeOcp = t.ocpAdapterCount / nodes;
+  const needsOcpEnablementCable = perNodeOcp >= 2 && !t.hasCpu1Ocp2Cable && !t.hasCpu2Ocp2Cable;
 
   return {
     fcHbaCount: t.fcHbaCount,
@@ -261,6 +263,7 @@ function evalNetworkingOcp(items, catalogData = null, mandatorySkus = {}, server
     ocpAdapterCount: t.ocpAdapterCount,
     maxOcpSlots,
     isExceedingOcpSlots: t.ocpAdapterCount > (maxOcpSlots * nodes),
+    needsOcpEnablementCable,
     hasCpu1Ocp2Cable: t.hasCpu1Ocp2Cable,
     hasCpu2Ocp2Cable: t.hasCpu2Ocp2Cable,
     hasConflictingOcpCables: t.hasCpu1Ocp2Cable && t.hasCpu2Ocp2Cable,

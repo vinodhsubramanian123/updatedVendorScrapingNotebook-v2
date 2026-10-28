@@ -27,10 +27,13 @@
  * }}
  */
 function extractWorkloadDna(items = []) {
+  const safeItems = Array.isArray(items) ? items : [];
   let totalCores = 0;
   let maxFreqGhz = 0;
+  let cpuCount = 0;
   let totalMemoryGb = 0;
   let memoryCount = 0;
+  let detectedChannelWidth = 8;
   let hasGpu = false;
   let gpuModels = [];
   let totalGpuCount = 0;
@@ -38,12 +41,20 @@ function extractWorkloadDna(items = []) {
   let storageType = 'NONE';
   let storageWorkload = 'READ_INTENSIVE';
 
-  items.forEach(it => {
+  safeItems.forEach(it => {
     const desc = (it.description || '').toLowerCase();
     const qty = it.quantity || 1;
 
     // CPU Profile
     if (desc.includes('processor') || desc.includes('xeon') || desc.includes('epyc')) {
+      if (!desc.includes('heatsink') && !desc.includes('heat sink') && !desc.includes('fan') && !desc.includes('cage') && !desc.includes('cable')) {
+        cpuCount += qty;
+      }
+      if (desc.includes('epyc') && (desc.includes('9004') || desc.includes('9005') || desc.includes('genoa') || desc.includes('bergamo') || desc.includes('turin'))) {
+        detectedChannelWidth = 12;
+      } else if (desc.includes('xeon') && (desc.includes('4200') || desc.includes('5200') || desc.includes('6200') || desc.includes('8200') || desc.includes('cascade lake') || desc.includes('skylake'))) {
+        detectedChannelWidth = 6;
+      }
       const coreMatch = desc.match(/(\d+)\s*-?\s*core/i);
       if (coreMatch) totalCores += (parseInt(coreMatch[1], 10) * qty);
       const ghzMatch = desc.match(/(\d+\.\d+)\s*ghz/i);
@@ -54,7 +65,8 @@ function extractWorkloadDna(items = []) {
     }
 
     // Memory Profile
-    if (desc.includes('memory') || desc.includes('rdimm') || desc.includes('ddr5')) {
+    const isDriveOrStorage = desc.includes('ssd') || desc.includes('nvme') || desc.includes('hdd') || desc.includes('drive') || desc.includes('battery');
+    if (!isDriveOrStorage && (desc.includes('memory') || desc.includes('rdimm') || desc.includes('ddr5') || desc.includes('ddr4') || desc.includes('dimm'))) {
       memoryCount += qty;
       const gbMatch = desc.match(/(\d+)\s*gb/i);
       if (gbMatch) totalMemoryGb += (parseInt(gbMatch[1], 10) * qty);
@@ -107,12 +119,39 @@ function extractWorkloadDna(items = []) {
     workloadDescription = `Dense Virtualization & Cloud Host (${totalCores} Total CPU Cores)`;
   }
 
+  // NUMA & Memory Channel Interleaving Profile
+  const sockets = Math.max(1, cpuCount || 1);
+  const dimmsPerSocket = memoryCount > 0 ? (memoryCount / sockets) : 0;
+  const isSocketSymmetric = memoryCount > 0 && cpuCount > 0 && (memoryCount % cpuCount === 0);
+  const is1DpcBalanced = isSocketSymmetric && (dimmsPerSocket === detectedChannelWidth);
+  const is2DpcBalanced = isSocketSymmetric && (dimmsPerSocket === detectedChannelWidth * 2);
+  const isBalancedInterleaving = is1DpcBalanced || is2DpcBalanced;
+  const isSupportedPopulation = isSocketSymmetric && [1, 2, 4, detectedChannelWidth, detectedChannelWidth * 2].includes(dimmsPerSocket);
+  const numaTopology = {
+    cpuSockets: cpuCount,
+    memoryDimmCount: memoryCount,
+    totalMemoryGb,
+    dimmsPerSocket,
+    channelWidth: detectedChannelWidth,
+    isSocketSymmetric,
+    isBalancedInterleaving,
+    is1DpcBalanced,
+    is2DpcBalanced,
+    isSupportedPopulation,
+    interleavingMode: is1DpcBalanced
+      ? '1DPC_BALANCED_OPTIMAL'
+      : (is2DpcBalanced ? '2DPC_BALANCED_MAX_CAPACITY' : (isSupportedPopulation ? 'PARTIAL_INTERLEAVED' : 'UNBALANCED_CHANNEL_POPULATION'))
+  };
+
   return {
     primaryWorkload,
     workloadDescription,
     totalCores,
     maxFreqGhz,
+    cpuCount,
     totalMemoryGb,
+    memoryDimmCount: memoryCount,
+    numaTopology,
     gbPerCore,
     hasGpu,
     gpuModel: gpuModelStr,
@@ -124,8 +163,59 @@ function extractWorkloadDna(items = []) {
   };
 }
 
+/**
+ * Validate NUMA memory topology and channel interleaving balance.
+ *
+ * @param {Array<object>|object} items - Hardware items or existing DNA/topology
+ * @param {object} options - Optional overrides { channelWidth, cpuSockets, dimmCount, totalMemoryGb }
+ * @returns {object} Validation result
+ */
+function validateNumaMemoryTopology(items = [], options = {}) {
+  const safeOpts = options || {};
+  const dna = Array.isArray(items) ? extractWorkloadDna(items) : (items?.numaTopology ? items : extractWorkloadDna([]));
+  const channelWidth = safeOpts.channelWidth || dna.numaTopology?.channelWidth || 8;
+  const cpuSockets = safeOpts.cpuSockets !== undefined ? safeOpts.cpuSockets : (dna.numaTopology?.cpuSockets || dna.cpuCount || 1);
+  const dimmCount = safeOpts.dimmCount !== undefined ? safeOpts.dimmCount : (dna.numaTopology?.memoryDimmCount || 0);
+  const totalMemoryGb = safeOpts.totalMemoryGb !== undefined ? safeOpts.totalMemoryGb : (dna.totalMemoryGb || 0);
+
+  const dimmsPerSocket = cpuSockets > 0 ? (dimmCount / cpuSockets) : 0;
+  const isSocketSymmetric = cpuSockets > 0 && dimmCount > 0 && (dimmCount % cpuSockets === 0);
+  const is1DpcBalanced = isSocketSymmetric && dimmsPerSocket === channelWidth;
+  const is2DpcBalanced = isSocketSymmetric && dimmsPerSocket === (channelWidth * 2);
+  const isBalancedInterleaving = is1DpcBalanced || is2DpcBalanced;
+  const isSupportedPopulation = isSocketSymmetric && [1, 2, 4, channelWidth, channelWidth * 2].includes(dimmsPerSocket);
+
+  const errors = [];
+  if (dimmCount === 0 && cpuSockets > 0) {
+    errors.push('No memory DIMMs detected for installed processors.');
+  } else if (!isSocketSymmetric) {
+    errors.push(`Unbalanced socket symmetry: ${dimmCount} DIMMs cannot be evenly distributed across ${cpuSockets} CPU sockets.`);
+  } else if (!isSupportedPopulation) {
+    errors.push(`Unbalanced channel population: ${dimmsPerSocket} DIMMs/socket violates ${channelWidth}-channel interleaving guidelines.`);
+  }
+
+  return {
+    isValid: errors.length === 0,
+    isSocketSymmetric,
+    isBalancedInterleaving,
+    is1DpcBalanced,
+    is2DpcBalanced,
+    isSupportedPopulation,
+    cpuSockets,
+    dimmCount,
+    dimmsPerSocket,
+    channelWidth,
+    totalMemoryGb,
+    interleavingMode: is1DpcBalanced
+      ? '1DPC_BALANCED_OPTIMAL'
+      : (is2DpcBalanced ? '2DPC_BALANCED_MAX_CAPACITY' : (isSupportedPopulation ? 'PARTIAL_INTERLEAVED' : 'UNBALANCED')),
+    errors
+  };
+}
+
 module.exports = {
-  extractWorkloadDna
+  extractWorkloadDna,
+  validateNumaMemoryTopology
 };
 
 // ── CLI Runner ─────────────────────────────────────────────────────────────

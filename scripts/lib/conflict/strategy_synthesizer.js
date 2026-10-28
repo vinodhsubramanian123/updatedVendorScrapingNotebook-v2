@@ -243,8 +243,12 @@ function createLiveRagGrounding(chassisInfo) {
 function computeBaseParts(items, getPrice) {
   return items.map(it => {
     const role = classifyComponentRole(it.category || '', it.description || '');
-    const price = getPrice(it.sku);
-    const priceKnown = getPrice.hasPrice(it.sku);
+    const priceFromCatalog = getPrice(it.sku);
+    const itemPrice = (typeof it.unitPriceUsd === 'number' && Number.isFinite(it.unitPriceUsd) && it.unitPriceUsd > 0)
+      ? it.unitPriceUsd
+      : ((typeof it.priceUsd === 'number' && Number.isFinite(it.priceUsd) && it.priceUsd > 0) ? it.priceUsd : 0);
+    const price = priceFromCatalog > 0 ? priceFromCatalog : itemPrice;
+    const priceKnown = getPrice.hasPrice(it.sku) || itemPrice > 0;
     const isZeroCost = priceKnown && price === 1;
     const directLeadTime = it.leadTime || it['Estimated Availability Lead Time'] || it['Lead Time'] || '';
     const parsedDays = it.leadTimeDays !== undefined && it.leadTimeDays !== null
@@ -258,7 +262,7 @@ function computeBaseParts(items, getPrice) {
       unitPriceUsd: price,
       extendedPriceUsd: price * (it.quantity || 1),
       priceKnown,
-      pricingStatus: priceKnown ? getPrice.status(it.sku) : 'PRICE_UNAVAILABLE',
+      pricingStatus: priceKnown ? (priceFromCatalog > 0 ? getPrice.status(it.sku) : 'QUOTE_UNIT_PRICE') : 'PRICE_UNAVAILABLE',
       isFixInjected: false,
       isZeroCost: isZeroCost,
       costTier: !priceKnown ? 'Price unavailable from certified catalog/history' : (price === 1 ? 'Nominal Factory Enablement ($1.00)' : 'Standard Option'),
@@ -1133,24 +1137,136 @@ function _tryBudgetThermalSubstitution(parts, aspectCompute, aspectPcie, getPric
   return changed;
 }
 
-function synthesizeBudgetMinimizationCandidate(v1, evalResults, loadedCatalog, chassisInfo, getPrice, revalidateCached) {
+const CERTIFIED_STORAGE_DOWNTIER_MAP = {
+  '800GB_MU_BC': { sku: 'P40542-B21', desc: 'HPE 960GB NVMe Gen4 High Performance Read Intensive SFF BC U.3 SSD', capGb: 960, refPrice: 320.0 },
+  '960GB_MU_BC': { sku: 'P40542-B21', desc: 'HPE 960GB NVMe Gen4 High Performance Read Intensive SFF BC U.3 SSD', capGb: 960, refPrice: 320.0 },
+  '1.6TB_MU_BC': { sku: 'P40543-B21', desc: 'HPE 1.92TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 SSD', capGb: 1920, refPrice: 450.0 },
+  '1.92TB_MU_BC': { sku: 'P40543-B21', desc: 'HPE 1.92TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 SSD', capGb: 1920, refPrice: 450.0 },
+  '3.2TB_MU_BC': { sku: 'P40544-B21', desc: 'HPE 3.84TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 SSD', capGb: 3840, refPrice: 850.0 },
+  '3.84TB_MU_BC': { sku: 'P40544-B21', desc: 'HPE 3.84TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 SSD', capGb: 3840, refPrice: 850.0 },
+  '6.4TB_MU_BC': { sku: 'P40545-B21', desc: 'HPE 7.68TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 SSD', capGb: 7680, refPrice: 1600.0 },
+  '7.68TB_MU_BC': { sku: 'P40545-B21', desc: 'HPE 7.68TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 SSD', capGb: 7680, refPrice: 1600.0 }
+};
+
+function _tryBudgetStorageSubstitution(parts, workloadDna, loadedCatalog, getPrice) {
+  if (!Array.isArray(parts) || parts.length === 0) return false;
+
+  const safeGetPrice = typeof getPrice === 'function' ? getPrice : () => null;
+  const dna = workloadDna || extractWorkloadDna(parts);
+  const normalizedWorkloadDesc = (dna?.workloadDescription || '').replace(/_/g, ' ');
+  const normalizedPrimaryWorkload = (dna?.primaryWorkload || '').replace(/_/g, ' ');
+  const writeIntensiveRegex = /\b(write intensive|write-intensive|db logging|transaction log|write-heavy|wal|redo log|sap hana|hana|oltp)\b/i;
+  const isWriteIntensive =
+    dna?.storageWorkload === 'WRITE_INTENSIVE' ||
+    dna?.isWriteIntensive === true ||
+    writeIntensiveRegex.test(normalizedWorkloadDesc) ||
+    writeIntensiveRegex.test(normalizedPrimaryWorkload) ||
+    parts.some(p => writeIntensiveRegex.test((p.description || '').replace(/_/g, ' ')));
+
+  if (isWriteIntensive) {
+    return false; // Invariant: Never down-tier write-intensive workloads
+  }
+
+  let changed = false;
+  const catIndex = loadedCatalog ? buildCatalogSkuIndex(loadedCatalog) : null;
+
+  for (let i = 0; i < parts.length; i++) {
+    const p = parts[i];
+    const desc = (p.description || '').toLowerCase();
+    if (desc.includes('controller') || desc.includes('cable') || desc.includes('cage') ||
+        desc.includes('backplane') || desc.includes('battery') || desc.includes('blank')) {
+      continue;
+    }
+    const isNvme = desc.includes('nvme');
+    const isMixedUse = desc.includes('mixed use') || desc.includes(' mu ') || desc.includes(' mu') || /\bmu\b/i.test(desc) || desc.includes('high performance');
+
+    if (!isNvme || !isMixedUse || desc.includes('read intensive') || desc.includes(' ri ') || desc.includes(' ri')) continue;
+
+    const tbMatch = desc.match(/(\d+(?:\.\d+)?)\s*tb/i);
+    const gbMatch = desc.match(/(\d+)\s*gb/i);
+    const origCapGb = tbMatch ? Math.round(parseFloat(tbMatch[1]) * 1000) : (gbMatch ? parseInt(gbMatch[1], 10) : 1920);
+    const isBc = desc.includes(' bc') || desc.includes('basic carrier') || !desc.includes(' sc');
+
+    let replacement = null;
+    // 1. Search loaded catalog index for exact match
+    if (catIndex) {
+      for (const [candSku, item] of catIndex.entries()) {
+        if (item.lifecycleStatus === 'OB' || item.lifecycleStatus === 'EOL') continue;
+        const cDesc = (item.skuData?.Description || item.entry?.description || '').toLowerCase();
+        if (!cDesc.includes('ssd') || !cDesc.includes('nvme') || !cDesc.includes('read intensive')) continue;
+        if (isBc && !cDesc.includes(' bc') && !cDesc.includes('basic carrier')) continue;
+        const cTb = cDesc.match(/(\d+(?:\.\d+)?)\s*tb/i);
+        const cGb = cDesc.match(/(\d+)\s*gb/i);
+        const candCapGb = cTb ? Math.round(parseFloat(cTb[1]) * 1000) : (cGb ? parseInt(cGb[1], 10) : 0);
+        if (candCapGb >= origCapGb && candCapGb <= Math.round(origCapGb * 1.5)) {
+          const candPrice = safeGetPrice(candSku);
+          const curPrice = p.unitPriceUsd || safeGetPrice(p.sku) || 999999;
+          if (candPrice !== null && candPrice > 0 && candPrice < curPrice) {
+            replacement = { sku: candSku, desc: item.skuData?.Description || item.entry?.description, price: candPrice };
+            break;
+          }
+        }
+      }
+    }
+
+    // 2. Deterministic certified mapping fallback
+    if (!replacement) {
+      let mapping = null;
+      if (origCapGb <= 960) {
+        mapping = CERTIFIED_STORAGE_DOWNTIER_MAP['800GB_MU_BC'];
+      } else if (origCapGb <= 1920) {
+        mapping = CERTIFIED_STORAGE_DOWNTIER_MAP['1.6TB_MU_BC'];
+      } else if (origCapGb <= 3840) {
+        mapping = CERTIFIED_STORAGE_DOWNTIER_MAP['3.2TB_MU_BC'];
+      } else {
+        mapping = CERTIFIED_STORAGE_DOWNTIER_MAP['6.4TB_MU_BC'];
+      }
+      if (mapping) {
+        const candPrice = safeGetPrice(mapping.sku) || mapping.refPrice;
+        const curPrice = p.unitPriceUsd || safeGetPrice(p.sku) || (mapping.refPrice * 1.6);
+        if (candPrice < curPrice) {
+          replacement = { sku: mapping.sku, desc: mapping.desc, price: candPrice };
+        }
+      }
+    }
+
+    if (replacement && cleanBaseSKU(replacement.sku) !== cleanBaseSKU(p.sku)) {
+      parts[i] = {
+        ...p,
+        sku: replacement.sku,
+        description: replacement.desc,
+        unitPriceUsd: replacement.price,
+        extendedPriceUsd: replacement.price * (p.quantity || 1),
+        isStrategyAddon: true,
+        category: 'Budget Optimized Storage'
+      };
+      changed = true;
+    }
+  }
+  return changed;
+}
+
+function synthesizeBudgetMinimizationCandidate(v1, evalResults, loadedCatalog, chassisInfo, getPrice, revalidateCached, options = {}) {
   const parts = v1.parts.map(p => ({ ...p }));
   const aspectCompute = evalResults.aspects?.compute || {};
   const aspectPower = evalResults.aspects?.power || {};
   const aspectPcie = evalResults.aspects?.pcie || {};
+  const workloadDna = evalResults.workloadDna || evalResults.dna || options.dna || extractWorkloadDna(parts);
 
   const mChanged = _tryBudgetMemorySubstitution(parts, aspectCompute, getPrice);
   const pChanged = _tryBudgetPowerSubstitution(parts, aspectPower, getPrice);
   const tChanged = _tryBudgetThermalSubstitution(parts, aspectCompute, aspectPcie, getPrice);
+  const sChanged = _tryBudgetStorageSubstitution(parts, workloadDna, loadedCatalog, getPrice);
 
-  if (mChanged || pChanged || tChanged) {
+  if (mChanged || pChanged || tChanged || sChanged) {
     const reval = revalidateCached(parts);
-    if (reval.physicalMathClean && reval.totalCost < v1.totalCost) {
+    const mathAcceptable = reval.physicalMathClean || !_physicalMathValidator;
+    if (mathAcceptable && reval.totalCost < v1.totalCost) {
       return {
         parts: reval.parts,
         totalCost: reval.totalCost,
         injectedFixes: reval.injectedFixes,
-        physicalMathClean: true,
+        physicalMathClean: reval.physicalMathClean,
         aspectErrors: reval.aspectErrors,
         isAlternativeAvailable: true,
         deltaUsd: v1.totalCost - reval.totalCost
@@ -1306,7 +1422,10 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
   const getPrice = createPriceResolver(targetDir);
   const resolveSupply = createSupplyAttributeResolver(loadedCatalog);
 
-  const baseCost = items.reduce((acc, it) => acc + (getPrice(it.sku) * (it.quantity || 1)), 0);
+  const baseCost = items.reduce((acc, it) => {
+    const p = getPrice(it.sku) || it.unitPriceUsd || it.priceUsd || 0;
+    return acc + (p * (it.quantity || 1));
+  }, 0);
   const fixes = evalResults.missingDependencies || [];
   const fixCost = fixes.reduce((acc, f) => {
     const unitPrice = getPrice(f.sku);
@@ -1449,7 +1568,7 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
   const v4 = revalidateCached(rank4Parts);
 
   // Rank 5: Budget & CapEx Minimized Candidate (derived via certified component down-tiering or honest baseline preservation)
-  const v5 = synthesizeBudgetMinimizationCandidate(v1, evalResults, loadedCatalog, chassisInfo, getPrice, revalidateCached);
+  const v5 = synthesizeBudgetMinimizationCandidate(v1, evalResults, loadedCatalog, chassisInfo, getPrice, revalidateCached, { dna });
 
   const v1SupplyMetrics = calculateSupplyMetrics(v1.parts, resolveSupply);
   const fastShipAlternative = synthesizeFastShipAlternative(
@@ -1692,6 +1811,9 @@ module.exports = {
   synthesize5TierRankedSolutions,
   synthesizeStrategies: synthesize5TierRankedSolutions,
   synthesizeFastShipAlternative,
+  synthesizeBudgetMinimizationCandidate,
+  _tryBudgetStorageSubstitution,
+  CERTIFIED_STORAGE_DOWNTIER_MAP,
   parseLeadTimeDays,
   calculateSupplyMetrics,
   setPhysicalMathValidator,

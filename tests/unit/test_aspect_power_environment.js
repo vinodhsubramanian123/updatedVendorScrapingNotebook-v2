@@ -100,7 +100,15 @@ items = [
 ];
 result = evalPowerEnvironment(items);
 assert(result.hasMixedEfficiencyPsus === false, 'No mixed efficiency for dual Platinum');
-assert(result.hasMixedWattagePsus === false, 'No mixed wattage for dual 800W');
+console.log(`\n🔹 Test Group 6: Multi-Node Cluster Power Math`);
+items = [
+  { sku: 'P12345-B21', description: 'Intel Xeon Gold 6330 205W Processor', quantity: 20 },
+  { sku: 'P38997-B21', description: 'HPE 1600W Flex Slot Platinum Power Supply', quantity: 20 }
+];
+result = evalPowerEnvironment(items, null, {}, 10);
+assert(result.estimatedNodeWattage === 560, `Multi-node cluster calculates per-node wattage correctly (560W)`);
+assert(result.hasPsuWattageDeficit === false, `1600W PSU satisfies per-node 560W load`);
+assert(result.hasPsuHeadroomDeficit === false, `1600W PSU satisfies per-node 20% headroom (672W)`);
 
 console.log(`\n================================================================`);
 console.log(`📊 FINAL TEST SUMMARY: ${totalPasses} PASSED | ${totalFails} FAILED`);

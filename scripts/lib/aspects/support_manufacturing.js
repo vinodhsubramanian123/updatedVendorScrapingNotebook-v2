@@ -4,7 +4,33 @@
  */
 
 const { cleanBaseSKU, buildCatalogSkuIndex, isOcaModifierTrackingRow } = require('../catalog/sku.js');
-const { classifyComponentRole } = require('../catalog/product_meta.js');
+const { classifyComponentRole, isBaseChassis } = require('../catalog/product_meta.js');
+
+function isCtoServerItem(it, skuIndex = null) {
+  if (isOcaModifierTrackingRow(it.sku, it.description)) return false;
+  const desc = String(it.description || '').toLowerCase();
+  const catDesc = skuIndex ? String(skuIndex.get(cleanBaseSKU(it.sku))?.skuData?.Description || '').toLowerCase() : '';
+  const fullDesc = `${desc} ${catDesc}`.trim();
+  const rawCat = String(it.category || '').toLowerCase();
+  const opt = String(it.optionType || '').toUpperCase();
+
+  if (/\b(?:kit|cable|cooling|baffle|heatsink|heat sink|bracket|bezel|blank)\b/i.test(desc) && !/\b(?:server|chassis)\b/i.test(desc)) {
+    return false;
+  }
+  if (isBaseChassis(desc) || (catDesc && isBaseChassis(catDesc)) || isBaseChassis(fullDesc)) {
+    return true;
+  }
+  if (rawCat.includes('base server chassis') || rawCat.includes('chassis')) {
+    if (fullDesc.includes('cto') || fullDesc.includes('configure-to-order') || opt === 'CTO' || fullDesc.includes('server')) {
+      return true;
+    }
+  }
+  if ((fullDesc.includes('server') || fullDesc.includes('compute module')) &&
+      (fullDesc.includes('cto') || fullDesc.includes('configure-to-order') || opt === 'CTO')) {
+    return true;
+  }
+  return false;
+}
 
 // Recognized management license SKUs that satisfy HPE CLIC Rule 81322276 on ProLiant Gen11/Gen12 CTO servers (INV-207).
 const VALID_MANAGEMENT_SKUS = new Set([
@@ -82,7 +108,7 @@ function isHardwareBreakFixSupport(sku, description = '') {
 
 function parseCpuInfo(desc, qty) {
   let coresPerCpu = 16;
-  const coreMatch = desc.match(/(\d+)\s*-?\s*core/i);
+  const coreMatch = desc.match(/(\d+)\s*-?\s*core/i) || desc.match(/\b(\d+)\s*c(?:ores?)?\b/i);
   if (coreMatch) {
     coresPerCpu = parseInt(coreMatch[1], 10) || 16;
   }
@@ -98,6 +124,7 @@ function tallySupportItems(items, catalogData) {
   const tally = {
     hasSupportService: false,
     hasManagementLicense: false,
+    hasCtoServer: false,
     hasWindowsServer: false,
     windowsBaseLicenses: 0,
     windowsAddonCores: 0,
@@ -126,6 +153,10 @@ function tallySupportItems(items, catalogData) {
     const desc = (it.description || '').toLowerCase();
     const sku = cleanBaseSKU(it.sku);
     const qty = it.quantity || 1;
+
+    if (isCtoServerItem(it, skuIndex)) {
+      tally.hasCtoServer = true;
+    }
 
     if (isOnsiteInstallationService(it.sku, it.description)) {
       tally.hasOnsiteInstallService = true;
@@ -283,9 +314,10 @@ function computeTapeAutomationMath(dataCartridgeCount, cleaningCartridgeCount, b
   };
 }
 
-function evalSupportManufacturing(items, catalogData = null, totalSocketCores = 0, serverCount = 1) {
+function evalSupportManufacturing(items, catalogData = null, totalSocketCores = 0, serverCount = 1, options = {}) {
   const nodes = Math.max(1, parseInt(serverCount, 10) || 1);
   const t = tallySupportItems(items, catalogData);
+  const hasCtoServer = t.hasCtoServer || Boolean(options && (options.isCtoChassis || options.hasCtoServer));
 
   const effectiveCores = (typeof totalSocketCores === 'number' && !isNaN(totalSocketCores) && totalSocketCores > 0) ? totalSocketCores : 0;
   const detectedCpuCores = t.parsedCpuCores > 0 ? t.parsedCpuCores : effectiveCores;
@@ -297,6 +329,7 @@ function evalSupportManufacturing(items, catalogData = null, totalSocketCores = 
   return {
     hasSupportService: t.hasSupportService,
     hasManagementLicense: t.hasManagementLicense,
+    hasCtoServer,
     hasWindowsServer: t.hasWindowsServer,
     windowsBaseLicenses: t.windowsBaseLicenses,
     windowsAddonCores: t.windowsAddonCores,
@@ -362,6 +395,7 @@ module.exports = {
   isRemoteInstallationService,
   isSaasSoftwareSubscription,
   isHardwareBreakFixSupport,
+  isCtoServerItem,
   VALID_MANAGEMENT_SKUS,
   UNSOLICITED_OPTIONAL_SERVICE_SKUS
 };

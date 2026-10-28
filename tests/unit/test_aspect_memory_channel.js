@@ -139,6 +139,16 @@ assert(result.hasDdr4Memory === true, `Detected DDR4 memory`);
 assert(result.hasDdr5Memory === true, `Detected DDR5 memory`);
 assert(result.hasMixedDdrGeneration === true, `Flagged hasMixedDdrGeneration conflict`);
 
+// JEDEC PC4 / PC5 mixing without explicit 'ddr4'/'ddr5' tokens:
+items = [
+  { sku: 'P54321-B21', description: 'HPE 32GB 2Rx4 PC4-3200AA-R Smart Memory Kit', quantity: 4 },
+  { sku: 'P54322-B21', description: 'HPE 32GB 2Rx4 PC5-4800B-R Smart Memory Kit', quantity: 4 }
+];
+result = evalMemoryChannel(items, 2);
+assert(result.hasDdr4Memory === true, `PC4 recognized as DDR4`);
+assert(result.hasDdr5Memory === true, `PC5 recognized as DDR5`);
+assert(result.hasMixedDdrGeneration === true, `JEDEC PC4 and PC5 mixing flags hasMixedDdrGeneration`);
+
 items = [
   { sku: 'P69728-B21', description: '64GB Dual Rank x4 DDR5-6400 Registered Smart Memory Kit', quantity: 8 },
   { sku: 'P69730-B21', description: '128GB Quad Rank x4 DDR5-6400 Load-Reduced Smart Memory Kit', quantity: 8 }
@@ -147,6 +157,41 @@ result = evalMemoryChannel(items, 2);
 assert(result.hasRdimm === true, `Detected RDIMM memory`);
 assert(result.hasLrdimm === true, `Detected LRDIMM memory`);
 assert(result.hasMixedMemoryTypes === true, `Flagged hasMixedMemoryTypes conflict`);
+
+console.log(`\n🔹 Test Group 7: needsMemory, Honest CPU Counting and Channel Configuration`);
+items = [
+  { sku: 'P12345-B21', description: 'Intel Xeon Gold 6330 2.0GHz 28-core 205W Processor', quantity: 1 }
+];
+result = evalMemoryChannel(items);
+assert(result.cpuCount === 1, `Honest single CPU counting without cpuCount=2 heuristic`);
+assert(result.memoryCount === 0, `0 memory modules counted`);
+assert(result.needsMemory === true, `CPUs present without memory flags needsMemory`);
+
+// Flash memory NVMe storage drive exclusion:
+items = [
+  { sku: 'P12345-B21', description: 'Intel Xeon Gold 6330 2.0GHz 28-core 205W Processor', quantity: 1 },
+  { sku: 'P13662-B21', description: 'HPE 800GB NVMe High Performance Mixed Use Flash Memory Storage Drive', quantity: 2 }
+];
+result = evalMemoryChannel(items);
+assert(result.memoryCount === 0, 'Flash Memory NVMe drive not counted as RAM DIMM');
+assert(result.totalMemoryGb === 0, 'Flash Memory NVMe drive does not contribute to totalMemoryGb');
+assert(result.needsMemory === true, 'Server with CPU and 0 RAM flags needsMemory');
+
+items = [
+  { sku: 'P12345-B21', description: 'Intel Xeon Gold 6330 2.0GHz 28-core 205W Processor', quantity: 1 },
+  { sku: 'P54321-B21', description: 'HPE 32GB 2Rx4 PC4-3200AA-R Smart Memory Kit', quantity: 8 }
+];
+result = evalMemoryChannel(items);
+assert(result.needsMemory === false, `Memory present clears needsMemory`);
+assert(result.isBalancedChannel === true, `8 DIMMs on 1 CPU (8-channel) is balanced`);
+assert(result.isInvalidChannelConfiguration === false, `Valid 8-channel configuration`);
+
+items = [
+  { sku: 'P12345-B21', description: 'Intel Xeon Gold 6330 2.0GHz 28-core 205W Processor', quantity: 1 },
+  { sku: 'P54321-B21', description: 'HPE 32GB 2Rx4 PC4-3200AA-R Smart Memory Kit', quantity: 5 }
+];
+result = evalMemoryChannel(items);
+assert(result.isInvalidChannelConfiguration === true, `5 DIMMs on 1 CPU flags isInvalidChannelConfiguration`);
 
 console.log(`\n================================================================`);
 console.log(`📊 FINAL TEST SUMMARY: ${totalPasses} PASSED | ${totalFails} FAILED`);

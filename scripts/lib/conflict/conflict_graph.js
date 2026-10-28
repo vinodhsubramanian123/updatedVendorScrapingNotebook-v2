@@ -543,7 +543,16 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
   // 5. CONTESTED RESOURCE ARBITRATION (Cross-Subsystem Shared Slots & Form Factor Duals)
   const arbitrationResults = arbitrateContestedResources(
     boqItems,
-    { missingDependencies: depsList },
+    {
+      missingDependencies: depsList,
+      conflicts,
+      auditLog,
+      options,
+      aspectChecks: options.aspectChecks,
+      errors: options.errors,
+      warnings: options.warnings,
+      useNumericStep: options.useNumericStep
+    },
     chassisInfo,
     catalogData
   );

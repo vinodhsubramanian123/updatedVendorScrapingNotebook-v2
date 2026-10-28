@@ -34,25 +34,292 @@ function _allocateMemoryPools(memory, base, maxDimms, cpus, carrierPools) {
   }
 }
 
-function _allocateStoragePools(storage, base, baseDriveBays, carrierPools) {
+/**
+ * Detect drive physical form factor from description and SKU nomenclature.
+ * @param {string} desc
+ * @param {string} sku
+ * @returns {'edsff'|'lff'|'sff'}
+ */
+function detectDriveFormFactor(desc = '', sku = '') {
+  const d = String(desc || '').toLowerCase();
+  const s = String(sku || '').toUpperCase();
+  if (/\b(edsff|e3\.s|e1\.s|e3\.l)\b/i.test(d) || /\b(edsff)\b/i.test(s)) {
+    return 'edsff';
+  }
+  if (/\b(lff|3\.5\s*in|3\.5"|3\.5-inch|low profile carrier|lpc)\b/i.test(d)) {
+    return 'lff';
+  }
+  if (/\b(sff|2\.5\s*in|2\.5"|2\.5-inch|basic carrier|smart carrier|u\.3|u\.2|bc\b|sc\b)\b/i.test(d)) {
+    return 'sff';
+  }
+  return 'sff';
+}
+
+/**
+ * Resolve storage architecture and progressive cage limits for platform profile.
+ * @param {object} profile
+ * @param {string} targetPlatformKey
+ * @returns {object}
+ */
+function resolveStorageArchitecture(profile, targetPlatformKey) {
+  if (profile?.storageArchitecture) return profile.storageArchitecture;
+
+  const key = String(targetPlatformKey || profile?.modelFamily || profile?.model || profile?.family || '').toUpperCase();
+  const isGen12 = profile?.generation === 'Gen12' || key.includes('GEN12') || key.includes('G12');
+  const isDl380a = key.includes('DL380A');
+  const is1U = profile?.formFactor === '1U Rack' || key.includes('DL360') || key.includes('DL145');
+
+  return {
+    sff: {
+      baseBays: 8,
+      baysPerCage: 8,
+      maxCages: is1U ? 1 : 3,
+      maxFrontBays: is1U ? 8 : 24,
+      cageSku: isDl380a ? 'P74710-B21' : (isGen12 ? 'P75741-B21' : 'P48813-B21'),
+      cageDesc: isDl380a
+        ? 'HPE ProLiant DL380a Gen12 4SFF Front Drive Cage Kit'
+        : (isGen12 ? 'HPE ProLiant DL380 Gen12 8SFF Drive Cage Kit' : 'HPE ProLiant DL380 Gen11 2U 8SFF x1 Tri-Mode U.3 Drive Cage Kit')
+    },
+    lff: {
+      baseBays: 4,
+      baysPerCage: 4,
+      maxCages: is1U ? 1 : 3,
+      maxFrontBays: is1U ? 4 : 12,
+      cageSku: isGen12 ? 'P75743-B21' : 'P48809-B21',
+      cageDesc: isGen12
+        ? 'HPE ProLiant DL380 Gen12 4LFF Drive Cage Kit'
+        : 'HPE ProLiant DL380 Gen11 4LFF SAS/SATA 12G LP Midplane Drive Cage Kit'
+    },
+    edsff: {
+      baseBays: isDl380a ? 4 : 12,
+      baysPerCage: isDl380a ? 4 : 12,
+      maxCages: isDl380a ? 2 : 3,
+      maxFrontBays: isDl380a ? 8 : 36,
+      cageSku: isDl380a ? 'P74712-B21' : (isGen12 ? 'P74712-B21' : 'P48808-B21'),
+      cageDesc: isDl380a
+        ? 'HPE ProLiant DL380a Gen12 4EDSFF Front Drive Cage Kit'
+        : (isGen12 ? 'HPE ProLiant Compute DL380 Gen12 12EDSFF Drive Cage Kit' : 'HPE ProLiant DL380 Gen11 12EDSFF Drive Cage Kit')
+    },
+    enablement: {
+      directControllerLimit: 8,
+      expanderSku: isGen12 ? 'P55806-B21' : 'P48835-B21',
+      expanderDesc: isGen12 ? 'HPE ProLiant Tri-Mode Switch Card' : 'HPE ProLiant 24G SAS Expander Card with Cables',
+      controllerCableSku: isDl380a ? 'P76700-B21' : (isGen12 ? 'P76456-B21' : 'P48918-B21'),
+      controllerCableDesc: isDl380a
+        ? 'HPE ProLiant Compute DL380a Gen12 NVMe to Tri-Mode PCIe FIO Cable Kit'
+        : (isGen12 ? 'HPE ProLiant DL380 Gen12 Controller Cable Kit' : 'HPE ProLiant Storage Controller Enablement Cable Kit'),
+      defaultStorageController: {
+        sku: isGen12 ? 'P76458-B21' : 'P43022-B21',
+        desc: isGen12 ? 'HPE MR408i-o Gen12 Storage Controller' : 'HPE MR408i-o Gen11 x8 Lanes 4GB Flash Tri-Mode Controller'
+      },
+      smartStorageBattery: {
+        sku: isDl380a ? 'P01367-B21' : 'P01366-B21',
+        desc: isDl380a
+          ? 'HPE 96W Smart Storage Lithium-ion Battery with 260mm Cable Kit'
+          : 'HPE 96W Smart Storage Battery (up to 20 Devices) with 145mm Cable Kit'
+      }
+    }
+  };
+}
+
+/**
+ * Build physical hardware items for storage carrier pool.
+ */
+function _buildStorageEnablementItems(chassisCount, drivesPerServer, additionalCagesPerServer, ff, arch, enablement, base, entry, options) {
+  const items = [];
+  const enable = enablement || arch?.enablement || {};
+  const directLimit = Number.isInteger(enable.directControllerLimit) ? enable.directControllerLimit : 8;
+  const controller = enable.defaultStorageController || {
+    sku: 'P43022-B21',
+    desc: 'HPE MR408i-o Gen11 x8 Lanes 4GB Flash Tri-Mode Controller'
+  };
+  const expanderSku = enable.expanderSku || 'P48835-B21';
+  const expanderDesc = enable.expanderDesc || 'HPE ProLiant 24G SAS Expander Card with Cables';
+  const cableSku = enable.controllerCableSku || 'P48918-B21';
+  const cableDesc = enable.controllerCableDesc || 'HPE ProLiant Storage Controller Enablement Cable Kit';
+  const battery = enable.smartStorageBattery || {
+    sku: 'P01366-B21',
+    desc: 'HPE 96W Smart Storage Battery (up to 20 Devices) with 145mm Cable Kit'
+  };
+
+  items.push({
+    sku: base.sku,
+    description: base.description,
+    quantity: 1,
+    totalQuantity: chassisCount,
+    role: 'Chassis',
+    policyMandated: true,
+    reason: 'Carrier chassis hosting storage drive pool'
+  });
+
+  if (additionalCagesPerServer > 0) {
+    items.push({
+      sku: arch.cageSku,
+      description: arch.cageDesc,
+      quantity: additionalCagesPerServer,
+      totalQuantity: positiveInteger(additionalCagesPerServer * chassisCount, 'Total cage kits'),
+      role: 'Drive Cage',
+      category: 'Drive Enclosures / Drives',
+      policyMandated: true,
+      reason: `Progressive drive cage expansion: added ${additionalCagesPerServer}x ${ff.toUpperCase()} cage(s)`
+    });
+  }
+
+  if (!options?.omitStorageController) {
+    items.push({
+      sku: controller.sku,
+      description: controller.desc,
+      quantity: 1,
+      totalQuantity: chassisCount,
+      role: 'Storage Controller',
+      category: 'Storage Controllers',
+      policyMandated: true,
+      reason: 'Tri-Mode storage controller for drive cage pool'
+    });
+  }
+
+  const needsExpander = drivesPerServer > directLimit;
+  if (needsExpander) {
+    items.push({
+      sku: expanderSku,
+      description: expanderDesc,
+      quantity: 1,
+      totalQuantity: chassisCount,
+      role: 'Storage Expander',
+      category: 'Storage Controllers',
+      policyMandated: true,
+      reason: `Expander card required: ${drivesPerServer} drives exceed direct controller capacity (${directLimit})`
+    });
+  }
+
+  items.push({
+    sku: cableSku,
+    description: cableDesc,
+    quantity: 1,
+    totalQuantity: chassisCount,
+    role: 'Storage Cabling',
+    category: 'Internal Cables',
+    policyMandated: true,
+    reason: 'Controller-to-backplane enablement cable kit'
+  });
+
+  items.push({
+    sku: battery.sku,
+    description: battery.desc,
+    quantity: 1,
+    totalQuantity: chassisCount,
+    role: 'Storage Battery',
+    category: 'Power and Cooling',
+    policyMandated: true,
+    reason: 'Write-back cache power protection battery'
+  });
+
+  items.push({
+    sku: entry.sku,
+    description: entry.description,
+    quantity: drivesPerServer,
+    totalQuantity: entry.quantity,
+    role: 'Drive Cage / Drive',
+    category: 'Drive Enclosures / Drives',
+    policyMandated: false,
+    reason: 'Customer tender storage drive housed in carrier'
+  });
+
+  return items;
+}
+
+function _allocateStoragePools(storage, base, profile, targetPlatformKey, carrierPools, options = {}) {
+  const isProgressive = Boolean(
+    options.progressiveCageExpansion ??
+    options.packDriveCages ??
+    options.expandDriveCages ??
+    false
+  );
+
+  const storageArch = resolveStorageArchitecture(profile, targetPlatformKey);
+
   for (const entry of storage.values()) {
-    const chassisCount = Math.ceil(entry.quantity / baseDriveBays);
-    const totalBays = positiveInteger(chassisCount * baseDriveBays, 'Provisioned drive bays');
+    const ff = detectDriveFormFactor(entry.description, entry.sku);
+    const arch = storageArch[ff] || storageArch.sff;
+
+    if (!isProgressive) {
+      const baseDriveBays = profile.storageArchitecture?.baseDriveBays || profile.slots?.baseDriveBays || arch.baseBays || 8;
+      const chassisCount = Math.ceil(entry.quantity / baseDriveBays);
+      const totalBays = positiveInteger(chassisCount * baseDriveBays, 'Provisioned drive bays');
+      carrierPools.push({
+        poolId: `Pool_${carrierPools.length + 1}`,
+        poolType: 'STORAGE_CARRIER',
+        status: 'CAPACITY_ESTIMATE_ONLY',
+        carrierChassisSku: base.sku,
+        carrierChassisDesc: base.description,
+        formFactor: ff,
+        chassisCount,
+        baysPerServer: baseDriveBays,
+        targetDriveType: entry.description,
+        absorbedRequirement: entry.quantity,
+        totalBays,
+        surplusBays: totalBays - entry.quantity,
+        sourceLinks: entry.sources,
+        items: [],
+        reason: 'Drive capacity estimate uses base chassis bays; controllers, expanders, cables and drive enablement kits require evaluation.'
+      });
+      continue;
+    }
+
+    const maxServerBays = arch.maxFrontBays;
+    const chassisCount = Math.max(1, Math.ceil(entry.quantity / maxServerBays));
+    const drivesPerServer = Math.ceil(entry.quantity / chassisCount);
+
+    let additionalCagesPerServer = 0;
+    let baysPerServer = arch.baseBays;
+
+    if (drivesPerServer > arch.baseBays) {
+      const extraDrives = drivesPerServer - arch.baseBays;
+      additionalCagesPerServer = Math.min(arch.maxCages - 1, Math.ceil(extraDrives / arch.baysPerCage));
+      baysPerServer = arch.baseBays + (additionalCagesPerServer * arch.baysPerCage);
+    }
+
+    const totalBays = positiveInteger(chassisCount * baysPerServer, 'Provisioned drive bays');
+    const surplusBays = totalBays - entry.quantity;
+    const needsExpander = drivesPerServer > storageArch.enablement.directControllerLimit;
+
+    const items = _buildStorageEnablementItems(
+      chassisCount,
+      drivesPerServer,
+      additionalCagesPerServer,
+      ff,
+      arch,
+      storageArch.enablement,
+      base,
+      entry,
+      options
+    );
+
     carrierPools.push({
       poolId: `Pool_${carrierPools.length + 1}`,
       poolType: 'STORAGE_CARRIER',
-      status: 'CAPACITY_ESTIMATE_ONLY',
+      status: 'EXPANDED_CARRIER_PACKED',
       carrierChassisSku: base.sku,
       carrierChassisDesc: base.description,
+      formFactor: ff,
       chassisCount,
-      baysPerServer: baseDriveBays,
+      serverCount: chassisCount,
+      multiplier: chassisCount,
+      drivesPerServer,
+      baysPerServer,
+      baseBays: arch.baseBays,
+      additionalCagesPerServer,
+      driveCageSku: additionalCagesPerServer > 0 ? arch.cageSku : null,
+      needsExpander,
+      expanderSku: needsExpander ? storageArch.enablement.expanderSku : null,
+      cableKitSku: storageArch.enablement.controllerCableSku,
       targetDriveType: entry.description,
       absorbedRequirement: entry.quantity,
       totalBays,
-      surplusBays: totalBays - entry.quantity,
+      surplusBays,
       sourceLinks: entry.sources,
-      items: [],
-      reason: 'Drive capacity estimate uses base chassis bays; controllers, expanders, cables and drive enablement kits require evaluation.'
+      items,
+      reason: `Progressive cage expansion packed ${entry.quantity} ${ff.toUpperCase()} drives into ${chassisCount} server(s) (${baysPerServer} bays/srv) with ${additionalCagesPerServer} extra cage kit(s) and backplane enablement hardware.`
     });
   }
 }
@@ -198,8 +465,7 @@ class HeterogeneousTenderModernizer {
 
     _allocateMemoryPools(memory, base, maxDimms, cpus, result.carrierPools);
     if (allocateStorage && storage.size > 0) {
-      const baseDriveBays = profile.storageArchitecture?.baseDriveBays || profile.slots?.baseDriveBays || 8;
-      _allocateStoragePools(storage, base, baseDriveBays, result.carrierPools);
+      _allocateStoragePools(storage, base, profile, targetPlatformKey || this.defaultServerPlatform, result.carrierPools, options);
     }
     if (allocatePcie && pcie.size > 0) {
       const slotsPerServer = profile.slots?.primaryRiserSlots || 3;
@@ -277,8 +543,32 @@ class HeterogeneousTenderModernizer {
 
   buildDualDeliverables(categorizedData, carrierFleet) {
     const productionTables = ['servers', 'storage', 'sanFabric', 'tapeBackup'].flatMap(key => categorizedData[key] || []);
+
+    let conservationLedger = null;
+    try {
+      const { buildUniversalQuantityConservationLedger } = require('./quantity_conservation.js');
+      const rawCustomerItems = (carrierFleet.sourceGroups || []).flatMap(g => {
+        const mult = g.multiplier || 1;
+        return (g.items || []).map(it => ({
+          ...it,
+          quantity: (it.quantity || it.qty || 1) * mult
+        }));
+      });
+      if (rawCustomerItems.length > 0 && carrierFleet.carrierPools?.length > 0) {
+        conservationLedger = buildUniversalQuantityConservationLedger(rawCustomerItems, carrierFleet.carrierPools);
+        this.logEvidence('CONSERVATION', 'TENDER_QUANTITY_AUDITED', {
+          isFullyConserved: conservationLedger.isFullyConserved,
+          discrepancies: conservationLedger.totalDiscrepancies
+        });
+      }
+    } catch (err) {
+      this.logEvidence('CONSERVATION', 'AUDIT_ERROR', { error: err.message });
+    }
+
     return {
       status: 'DRAFT', portalValidationStatus: 'PORTAL VALIDATION PENDING',
+      isQuantityConserved: conservationLedger ? conservationLedger.isFullyConserved : true,
+      quantityConservationLedger: conservationLedger,
       internalProductionManifest: structuredClone(categorizedData),
       internalCarrierManifest: structuredClone(carrierFleet),
       clientMatrix: { title: 'Tender Reconciliation Draft', rulesEnforced: ['Source rows retained', 'Positive integer quantities'],
