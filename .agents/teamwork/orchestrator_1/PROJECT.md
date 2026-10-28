@@ -31,8 +31,8 @@ The system employs a Dual-Brain Paradigm combining a deterministic physical rule
 |---|------|-------|-------------|--------|
 | 1 | M1: Physical Aspect Verification & Epistemic Normalization (R1) | Features 1, 2, 3, 4 (`scripts/lib/aspects/`) | none | DONE |
 | 2 | M2: Autonomous Counterfactual Self-Correction & Authentic Evidence (R2) | Features 5, 6, 7, 8 (`scripts/lib/conflict/`, `scripts/lib/system/`, `scripts/lib/feedback/`) | M1 | DONE |
-| 3 | M3: Advanced Agentic Skills Polish & Parity Depth (R3) | Features 9, 10, 11, 12 (`scripts/lib/boq/`, `scripts/lib/conflict/`) | M1, M2 | PLANNED |
-| 4 | M4: Automated Verification, Telemetry Invariants & Regression Proof (R4) | Features 13, 14, 15, 16 (`tests/`, `scripts/tests/`) | M1, M2, M3 | PLANNED |
+| 3 | M3: Advanced Agentic Skills Polish & Parity Depth (R3) | Features 9, 10, 11, 12 (`scripts/lib/boq/`, `scripts/lib/conflict/`) | M1, M2 | DONE |
+| 4 | M4: Automated Verification, Telemetry Invariants & Regression Proof (R4) | Features 13, 14, 15, 16 (`tests/`, `scripts/tests/`) | M1, M2, M3 | IN_PROGRESS |
 
 ## Interface Contracts
 ### `scripts/lib/aspects/compute_*.js` ↔ `aspect_registry.js`

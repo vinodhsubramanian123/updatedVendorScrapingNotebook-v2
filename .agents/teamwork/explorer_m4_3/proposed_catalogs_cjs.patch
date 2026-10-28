@@ -1,0 +1,16 @@
+--- a/dashboard/routes/catalogs.cjs
++++ b/dashboard/routes/catalogs.cjs
+@@ -32,7 +32,7 @@
+-const { assertSafePath, tryResolveSafePath, OUTPUTS_DIR } = require('../services/pathGuard.cjs');
++const { assertSafePath, OUTPUTS_DIR } = require('../services/pathGuard.cjs');
+ const { sendErrorResponse } = require('../services/errorHandler.cjs');
+ 
+ const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
+-const CONFIG_DIR = path.join(PROJECT_ROOT, 'scripts', 'config');
+-const HISTORY_DIR = path.join(OUTPUTS_DIR, 'history');
+ 
+ // ── Catalog Registry Cache (GAP-L5) ──────────────────────────────────────────
+@@ -377,3 +375,3 @@
+-  if (!/^[a-zA-Z0-9_\-]+$/.test(id)) return res.status(400).json({ error: 'Invalid trace ID format' });
++  if (!/^[a-zA-Z0-9_-]+$/.test(id)) return res.status(400).json({ error: 'Invalid trace ID format' });
+   const runFile = path.join(OUTPUTS_DIR, 'history', 'runs', `${id}.json`);

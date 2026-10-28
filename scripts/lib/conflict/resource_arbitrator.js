@@ -510,19 +510,20 @@ function _arbitrateSupportLicensingAspect(items, evalResults, _chassisInfo, cont
   const safeItems = Array.isArray(items) ? items : [];
   const aspectChecks = evalResults.aspectChecks || {};
   const support = aspectChecks.supportManufacturing || {};
-  const isCtoServer = support.hasCtoServer || safeItems.some(it => {
-    const d = (it.description || '').toLowerCase();
-    const s = cleanBaseSKU(it.sku);
-    return d.includes('cto') || ['P52534-B21', 'P52533-B21', 'P52532-B21', 'P74700-B21', 'P75741-B21'].includes(s);
-  });
-  const hasMgmtLicense = support.hasManagementLicense === true || (support.hasManagementLicense !== false && safeItems.some(it => {
+  const missingDeps = evalResults.missingDependencies || [];
+
+  const isExplicitLicenseDeficit = support.hasManagementLicense === false ||
+    missingDeps.some(d => d.key === 'MANDATORY_CTO_MANAGEMENT_LICENSE' || d.key === 'MANAGEMENT_LICENSE');
+
+  const isCtoServer = Boolean(support.hasCtoServer);
+  const hasMgmtLicense = support.hasManagementLicense === true || safeItems.some(it => {
     const s = cleanBaseSKU(it.sku);
     const d = (it.description || '').toLowerCase();
     return ['R7A11AAE', 'E5Y43A', 'E5Y43AAE', 'R7A12AAE', 'S2E10AAE', 'S5E59AAE', 'S1A05A'].includes(s) ||
       d.includes('compute ops management') || d.includes('oneview');
-  }));
+  });
 
-  if (isCtoServer && !hasMgmtLicense) {
+  if (isExplicitLicenseDeficit || (isCtoServer && !hasMgmtLicense)) {
     contentions.push({
       resourceType: 'MANDATORY_CTO_MANAGEMENT_LICENSE',
       maxCapacity: 1,

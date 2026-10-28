@@ -206,8 +206,8 @@ async function runE2ETest() {
     console.log('\n▶ [STEP 3] Executing 6-Aspect Physical Math Evaluation...');
     const step3Start = Date.now();
 
-    // Click Proceed to Full 6-Aspect Evaluation or Run 6-Aspect Evaluation
-    const evalBtn = await page.$('button:has-text("Proceed to Full 6-Aspect Evaluation"), button:has-text("Run 6-Aspect Evaluation")');
+    // Click Proceed to Full 7-Aspect / 6-Aspect Evaluation or Run Evaluation
+    const evalBtn = await page.$('button:has-text("Proceed to Full 7-Aspect Evaluation"), button:has-text("Proceed to Full 6-Aspect Evaluation"), button:has-text("Run 6-Aspect Evaluation"), button:has-text("Run 7-Aspect Evaluation")');
     if (!evalBtn) {
       throw new Error('Could not find Evaluation button');
     }
@@ -577,7 +577,7 @@ async function runE2ETest() {
         })
       });
       return await res.json();
-    }, vendorEval);
+    }, JSON.parse(JSON.stringify(vendorEval)));
 
     const exportOk = Boolean(exportRes.filename || exportRes.downloadPath);
     testResults.push({

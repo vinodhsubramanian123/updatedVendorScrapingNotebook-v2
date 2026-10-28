@@ -1,0 +1,34 @@
+diff --git a/scripts/lib/conflict/strategy_synthesizer.js b/scripts/lib/conflict/strategy_synthesizer.js
+index 0e05b29..0fb3ff9 100644
+--- a/scripts/lib/conflict/strategy_synthesizer.js
++++ b/scripts/lib/conflict/strategy_synthesizer.js
+@@ -1155,7 +1155,7 @@ function _tryBudgetStorageSubstitution(parts, workloadDna, loadedCatalog, getPri
+   const dna = workloadDna || extractWorkloadDna(parts);
+   const normalizedWorkloadDesc = (dna?.workloadDescription || '').replace(/_/g, ' ');
+   const normalizedPrimaryWorkload = (dna?.primaryWorkload || '').replace(/_/g, ' ');
+-  const writeIntensiveRegex = /\b(write intensive|write-intensive|db logging|transaction log|write-heavy|wal|redo log|sap hana|hana|oltp)\b/i;
++  const writeIntensiveRegex = /\b(write intensive|write-intensive|db logging|transaction log|write-heavy|wal|redo log|sap hana|hana|oltp|redis|aof|cassandra|commitlog|commit log|kafka|journal)\b/i;
+   const isWriteIntensive =
+     dna?.storageWorkload === 'WRITE_INTENSIVE' ||
+     dna?.isWriteIntensive === true ||
+diff --git a/tests/chaos/test_m3_drive_cages_and_budget_stress.js b/tests/chaos/test_m3_drive_cages_and_budget_stress.js
+index ef4943d..a64d483 100644
+--- a/tests/chaos/test_m3_drive_cages_and_budget_stress.js
++++ b/tests/chaos/test_m3_drive_cages_and_budget_stress.js
+@@ -499,6 +499,16 @@ describe('Milestone 3 Empirical Challenger Stress Suite (Features 11 & 12)', ()
+       );
+     });
+ 
++    it('CHALLENGE FINDING 6: REDIS_AOF, CASSANDRA_COMMITLOG, and KAFKA_JOURNAL must block down-tiering', () => {
++      const testCases = ['REDIS_AOF', 'CASSANDRA_COMMITLOG', 'KAFKA_JOURNAL'];
++      for (const id of testCases) {
++        const items = [{ sku: 'P40548-B21', description: 'HPE 1.92TB NVMe Mixed Use SFF BC SSD', quantity: 4, unitPriceUsd: 750 }];
++        const changed = _tryBudgetStorageSubstitution(items, { primaryWorkload: id }, null, () => 450);
++        assert.equal(changed, false, `Identifier ${id} must block down-tiering`);
++        assert.equal(items[0].sku, 'P40548-B21');
++      }
++    });
++
+   });
+ 
+ });

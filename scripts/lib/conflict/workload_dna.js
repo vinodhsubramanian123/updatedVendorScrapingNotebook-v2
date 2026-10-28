@@ -42,6 +42,7 @@ function extractWorkloadDna(items = []) {
   let storageWorkload = 'READ_INTENSIVE';
 
   safeItems.forEach(it => {
+    if (!it || typeof it !== 'object') return;
     const desc = (it.description || '').toLowerCase();
     const qty = it.quantity || 1;
 

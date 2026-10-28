@@ -488,7 +488,7 @@ describe('Adversarial Challenger M3_It2_1: Fabric & NUMA Chaos Suite', () => {
       assert.match(res.details, /Target BOM contains 0 network adapters/);
     });
 
-    it('4.15 Competitor spec with null networking specification returns NOT_EVALUATED', () => {
+    it('4.15 Competitor spec with null or unspecified networking returns NOT_EVALUATED', () => {
       const explicitNullSpec = { networking: { speedGb: null, portsCount: null, fabricProtocol: null } };
       const res = _evaluateNetworkingFabricParity(explicitNullSpec, [
         { description: 'HPE 10/25Gb 2-port Ethernet Adapter', quantity: 1 }
@@ -496,11 +496,17 @@ describe('Adversarial Challenger M3_It2_1: Fabric & NUMA Chaos Suite', () => {
       assert.equal(res.status, 'NOT_EVALUATED');
       assert.match(res.details, /No competitor network fabric specification provided/);
 
-      // And when parsed from text without networking, default Ethernet is assumed and matched:
+      // When parsed from text without networking, returns NOT_EVALUATED (no false assumption of Ethernet):
       const defaultParsedRes = testFabricParity('2x Intel Xeon Gold 6430, 256GB RAM', [
         { description: 'HPE 10/25Gb 2-port Ethernet Adapter', quantity: 1 }
       ]);
-      assert.equal(defaultParsedRes.status, 'MATCHED');
+      assert.equal(defaultParsedRes.status, 'NOT_EVALUATED');
+      assert.match(defaultParsedRes.details, /No competitor network fabric specification provided/);
+
+      // When target BOM has 0 network adapters, it also returns NOT_EVALUATED without false DEFICIT:
+      const zeroAdapterRes = testFabricParity('2x Intel Xeon Gold 6430, 256GB RAM', []);
+      assert.equal(zeroAdapterRes.status, 'NOT_EVALUATED');
+      assert.match(zeroAdapterRes.details, /No competitor network fabric specification provided/);
     });
 
   });

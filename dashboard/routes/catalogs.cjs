@@ -29,12 +29,10 @@ const path = require('path');
 const fs = require('fs');
 const { execFile } = require('child_process');
 
-const { assertSafePath, tryResolveSafePath, OUTPUTS_DIR } = require('../services/pathGuard.cjs');
+const { assertSafePath, OUTPUTS_DIR } = require('../services/pathGuard.cjs');
 const { sendErrorResponse } = require('../services/errorHandler.cjs');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
-const CONFIG_DIR = path.join(PROJECT_ROOT, 'scripts', 'config');
-const HISTORY_DIR = path.join(OUTPUTS_DIR, 'history');
 
 // ── Catalog Registry Cache (GAP-L5) ──────────────────────────────────────────
 let _catalogCache = null;
@@ -374,7 +372,7 @@ router.get('/history/runs', (req, res) => {
 
 router.get('/history/runs/:id', (req, res) => {
   const { id } = req.params;
-  if (!/^[a-zA-Z0-9_\-]+$/.test(id)) return res.status(400).json({ error: 'Invalid trace ID format' });
+  if (!/^[a-zA-Z0-9_-]+$/.test(id)) return res.status(400).json({ error: 'Invalid trace ID format' });
   const runFile = path.join(OUTPUTS_DIR, 'history', 'runs', `${id}.json`);
   if (!fs.existsSync(runFile)) return res.status(404).json({ error: 'Run trace not found' });
   try { res.json(JSON.parse(fs.readFileSync(runFile, 'utf-8'))); } catch (err) { res.status(500).json({ error: err.message }); }

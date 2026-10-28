@@ -274,3 +274,23 @@ test('End-to-End transformCompetitorQuote: 12-point audit achieves 100% complian
   assert.equal(directAudit.is100PercentCompliant, true);
   assert.equal(directAudit.passedSubsystems, 12);
 });
+test('Networking Fabric Parity: Unspecified competitor networking evaluates to NOT_EVALUATED without false DEFICIT', () => {
+  const unspecifiedSpec = parseCompetitorSpecification('2x Intel Xeon Platinum 8480+; 512GB RAM');
+  assert.equal(unspecifiedSpec.networking.fabricProtocol, null);
+  assert.equal(unspecifiedSpec.networking.speedGb, null);
+  assert.equal(unspecifiedSpec.networking.portsCount, null);
+  assert.equal(unspecifiedSpec.networking.adapterCount, null);
+
+  // Target BOM with 0 network adapters (e.g. compute sled / storage shelf)
+  const emptyBomResult = _evaluateNetworkingFabricParity(unspecifiedSpec, []);
+  assert.equal(emptyBomResult.status, 'NOT_EVALUATED');
+  assert.match(emptyBomResult.details, /No competitor network fabric specification provided/);
+
+  // Target BOM with network adapters
+  const nicBom = [
+    { sku: 'P26262-B21', quantity: 1, description: 'Broadcom BCM57414 Ethernet 10/25Gb 2-port SFP28 Adapter for HPE' }
+  ];
+  const nicBomResult = _evaluateNetworkingFabricParity(unspecifiedSpec, nicBom);
+  assert.equal(nicBomResult.status, 'NOT_EVALUATED');
+  assert.match(nicBomResult.details, /No competitor network fabric specification provided/);
+});

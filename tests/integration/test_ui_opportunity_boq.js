@@ -186,8 +186,8 @@ async function runTest() {
             successes.push('Pre-flight Variation Analysis succeeded and rendered');
           }
 
-          // Click Run 6-Aspect Evaluation button
-          const evalBtn = page.locator('button:has-text("Proceed to Full 6-Aspect Evaluation"), button:has-text("Run 6-Aspect Evaluation")').first();
+          // Click Run 6/7-Aspect Evaluation button
+          const evalBtn = page.locator('button:has-text("Proceed to Full 7-Aspect Evaluation"), button:has-text("Proceed to Full 6-Aspect Evaluation"), button:has-text("Run 7-Aspect Evaluation"), button:has-text("Run 6-Aspect Evaluation")').first();
           if (await evalBtn.count() > 0) {
             console.log('6. Running evaluation on customer BOQ workbook...');
             await evalBtn.click();
@@ -212,12 +212,20 @@ async function runTest() {
               await page.waitForTimeout(400);
             }
             successes.push('Modal closed cleanly');
+          } else {
+            // Dismiss upload modal if evaluation button is not reached
+            await page.keyboard.press('Escape');
+            await page.waitForTimeout(400);
           }
         }
       } else {
         gaps.push('Upload BOQ trigger button not found');
       }
     }
+
+    // Ensure any open backdrop modals are dismissed before testing tab navigation
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(400);
 
     // 7. Test Navigation Across Core Tabs
     console.log('7. Verifying Tab Navigation...');

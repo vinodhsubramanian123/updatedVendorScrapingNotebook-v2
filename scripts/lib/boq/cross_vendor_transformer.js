@@ -23,7 +23,7 @@ const FABRIC_PROTOCOL_RANKS = {
 };
 
 function numberMatch(text, pattern) {
-  const match = text.match(pattern);
+  const match = typeof text === 'string' ? text.match(pattern) : null;
   return match ? Number(match[1]) : null;
 }
 
@@ -107,24 +107,27 @@ function _parseMemorySpec(memory, cpuText = '', targetChassis = null, cpuCount =
 }
 
 function _parseNetworkSpec(net) {
+  const hasNet = Boolean(net && typeof net === 'string' && net.trim().length > 0);
   let netSpeed = numberMatch(net, /(\d+)\s*(?:gb|gbe|gb\/s|gbps)/i);
-  if (!netSpeed) {
+  if (!netSpeed && hasNet) {
     if (/\b400\s*(?:gbe|gb\/s|gbps|gb|g)\b/i.test(net) || /\bndr\b/i.test(net)) netSpeed = 400;
     else if (/\b200\s*(?:gbe|gb\/s|gbps|gb|g)\b/i.test(net) || /\b(hdr|ndr200)\b/i.test(net)) netSpeed = 200;
     else if (/\b100\s*(?:gbe|gb\/s|gbps|gb|g)\b/i.test(net) || /\bhdr100\b/i.test(net)) netSpeed = 100;
     else if (/\b25\s*(?:gbe|gb\/s|gbps|gb|g)\b/i.test(net)) netSpeed = 25;
     else if (/\b10\s*(?:gbe|gb\/s|gbps|gb|g)\b/i.test(net)) netSpeed = 10;
   }
-  const adapterCount = numberMatch(net, /(\d+)\s*[x*]/i) ?? 1;
-  const netPorts = numberMatch(net, /(\d+)\s*(?:port|ports|-port)/i)
-    ?? (/\bdual\b/i.test(net) ? 2 : /\bquad\b/i.test(net) ? 4 : /\bsingle\b/i.test(net) ? 1 : null);
-  const fabricProtocol = net ? detectFabricProtocol(net) : 'ETHERNET';
+  const adapterCount = hasNet ? (numberMatch(net, /(\d+)\s*[x*]/i) ?? 1) : null;
+  const netPorts = hasNet
+    ? (numberMatch(net, /(\d+)\s*(?:port|ports|-port)/i)
+      ?? (/\bdual\b/i.test(net) ? 2 : /\bquad\b/i.test(net) ? 4 : /\bsingle\b/i.test(net) ? 1 : null))
+    : null;
+  const fabricProtocol = hasNet ? detectFabricProtocol(net) : null;
   return {
     adapterCount,
     portsCount: netPorts,
-    totalPorts: netPorts !== null ? adapterCount * netPorts : null,
+    totalPorts: netPorts !== null ? (adapterCount || 1) * netPorts : null,
     speedGb: netSpeed,
-    isOcp: /\bocp\b/i.test(net),
+    isOcp: Boolean(hasNet && /\bocp\b/i.test(net)),
     fabricProtocol
   };
 }
@@ -641,13 +644,15 @@ function _evaluatePcieRisersParity(spec, bom) {
 }
 
 function _evaluateNetworkingFabricParity(spec, bom) {
-  const reqSpeed = spec.networking?.speedGb;
-  const reqPorts = spec.networking?.portsCount;
-  const reqProtocol = spec.networking?.fabricProtocol || 'ETHERNET';
+  const reqSpeed = spec.networking?.speedGb ?? null;
+  const reqPorts = spec.networking?.portsCount ?? null;
+  const rawProtocol = spec.networking?.fabricProtocol ?? null;
 
-  if (reqSpeed === null && reqPorts === null && !spec.networking?.fabricProtocol) {
+  if (reqSpeed === null && reqPorts === null && !rawProtocol) {
     return { subsystem: 'OCP_NETWORKING_FABRIC', status: 'NOT_EVALUATED', details: 'No competitor network fabric specification provided.' };
   }
+
+  const reqProtocol = rawProtocol || 'ETHERNET';
 
   let targetPorts = 0;
   let maxSpeed = 0;

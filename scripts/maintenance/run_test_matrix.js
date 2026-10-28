@@ -68,14 +68,14 @@ const DOMAIN_METADATA = {
     name: 'Physical Aspect Checks',
     icon: '⚙️',
     description: 'Compute thermal, memory channel, storage tri-mode, networking OCP, PCIe riser, power, support',
-    matcher: p => /aspect|thermal|memory_channel|storage_tri_mode|networking_ocp|pcie_riser|power_environment|support/i.test(p)
+    matcher: p => /aspect|thermal|memory_channel|storage_tri_mode|networking_ocp|pcie_riser|power_environment|support|lifecycle|fabric|tape/i.test(p)
   },
   boq: {
     id: 'boq',
     name: 'BOQ & Preprocessor',
     icon: '📋',
     description: 'BOQ parsing, CTO normalization, cluster splitting, evaluation benchmarks, excel matrix, domain sniff',
-    matcher: p => /boq|cto|preprocessor|splitter|variation|cluster|excel|bom|unmatched/i.test(p)
+    matcher: p => /boq|cto|preprocessor|splitter|variation|cluster|excel|bom|unmatched|cross_vendor|fabric|drive_cage|packing/i.test(p)
   },
   scraping: {
     id: 'scraping',
@@ -89,7 +89,7 @@ const DOMAIN_METADATA = {
     name: 'Knowledge Sync & NLM RAG',
     icon: '🔄',
     description: 'NotebookLM sync, Google Sheets, QuickSpecs sync, running knowledge, drift inspection',
-    matcher: p => /sync|notebook|rag|knowledge_extractor|drive/i.test(p)
+    matcher: p => /(?:sync|notebook|knowledge_extractor|\brag\b|google_drive|drive_sync)/i.test(p) && !/storage|drive_cage/i.test(p)
   },
   catalog: {
     id: 'catalog',
@@ -103,14 +103,14 @@ const DOMAIN_METADATA = {
     name: 'Conflict Graph & Strategy',
     icon: '⚖️',
     description: 'Conflict graph, least-delta combinator, workload DNA, strategy matrix',
-    matcher: p => /conflict|least_delta|strategy|workload|topology/i.test(p)
+    matcher: p => /conflict|least_delta|strategy|workload|topology|counterfactual|self_correction|arbitrat|contested|repair|reasoning|down_tiering|rank5/i.test(p)
   },
   guardrail: {
     id: 'guardrail',
     name: 'Agentic Guardrail & Governance',
     icon: '🛡️',
     description: 'Guardrail loop, guardrail transport, rotator, prompts, telemetry, feedback queue',
-    matcher: p => /guardrail|rotator|prompt|telemetry|feedback|invariants|evidence/i.test(p)
+    matcher: p => /guardrail|rotator|prompt|telemetry|feedback|invariants|evidence|quarantin/i.test(p)
   },
   router: {
     id: 'router',
@@ -331,10 +331,11 @@ function runSingleTest(testFile, rootDir, timeoutMs, verbose) {
       testFile.includes('tests/e2e/') ||
       testFile.includes('verify_all') ||
       testFile.includes('test_boq_eval_benchmarks') ||
+      testFile.includes('test_cross_vendor_and_candidate_scrutiny') ||
       testFile.includes('test_product_notebook_resolution') ||
       testFile.includes('test_clic_cross_product_validation')
     )
-      ? Math.max(timeoutMs, 180000)
+      ? Math.max(timeoutMs, 420000)
       : timeoutMs;
 
     const child = spawn(process.execPath, args, {

@@ -1,0 +1,3 @@
+# Adversarial Red-Teaming & Boundary Validation Skill (`adversarial-validation-skill`)
+
+**Purpose**: A configuration can look clean on paper or in simple checks, but fail catastrophic physical deployment constraints in enterprise datacenter environments. This skill enforces a mandatory adversarial stress-testing pass against enterprise hardware failure modes discovered in real-world deployments. It acts as an automated "devil's advocate" to challenge the candidate BOM and guarantee that Rank 1 is truly 100% buildable with zero surprises. Real candidate scrutiny is strictly separated from synthetic chaos stress testing.

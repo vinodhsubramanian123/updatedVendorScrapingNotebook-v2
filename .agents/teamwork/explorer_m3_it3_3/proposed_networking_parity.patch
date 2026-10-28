@@ -1,0 +1,130 @@
+diff --git a/scripts/lib/boq/cross_vendor_transformer.js b/scripts/lib/boq/cross_vendor_transformer.js
+index 5eb3147..76af705 100644
+--- a/scripts/lib/boq/cross_vendor_transformer.js
++++ b/scripts/lib/boq/cross_vendor_transformer.js
+@@ -23,7 +23,7 @@ const FABRIC_PROTOCOL_RANKS = {
+ };
+ 
+ function numberMatch(text, pattern) {
+-  const match = text.match(pattern);
++  const match = typeof text === 'string' ? text.match(pattern) : null;
+   return match ? Number(match[1]) : null;
+ }
+ 
+@@ -107,24 +107,27 @@ function _parseMemorySpec(memory, cpuText = '', targetChassis = null, cpuCount =
+ }
+ 
+ function _parseNetworkSpec(net) {
++  const hasNet = Boolean(net && typeof net === 'string' && net.trim().length > 0);
+   let netSpeed = numberMatch(net, /(\d+)\s*(?:gb|gbe|gb\/s|gbps)/i);
+-  if (!netSpeed) {
++  if (!netSpeed && hasNet) {
+     if (/\b400\s*(?:gbe|gb\/s|gbps|gb|g)\b/i.test(net) || /\bndr\b/i.test(net)) netSpeed = 400;
+     else if (/\b200\s*(?:gbe|gb\/s|gbps|gb|g)\b/i.test(net) || /\b(hdr|ndr200)\b/i.test(net)) netSpeed = 200;
+     else if (/\b100\s*(?:gbe|gb\/s|gbps|gb|g)\b/i.test(net) || /\bhdr100\b/i.test(net)) netSpeed = 100;
+     else if (/\b25\s*(?:gbe|gb\/s|gbps|gb|g)\b/i.test(net)) netSpeed = 25;
+     else if (/\b10\s*(?:gbe|gb\/s|gbps|gb|g)\b/i.test(net)) netSpeed = 10;
+   }
+-  const adapterCount = numberMatch(net, /(\d+)\s*[x*]/i) ?? 1;
+-  const netPorts = numberMatch(net, /(\d+)\s*(?:port|ports|-port)/i)
+-    ?? (/\bdual\b/i.test(net) ? 2 : /\bquad\b/i.test(net) ? 4 : /\bsingle\b/i.test(net) ? 1 : null);
+-  const fabricProtocol = net ? detectFabricProtocol(net) : 'ETHERNET';
++  const adapterCount = hasNet ? (numberMatch(net, /(\d+)\s*[x*]/i) ?? 1) : null;
++  const netPorts = hasNet
++    ? (numberMatch(net, /(\d+)\s*(?:port|ports|-port)/i)
++      ?? (/\bdual\b/i.test(net) ? 2 : /\bquad\b/i.test(net) ? 4 : /\bsingle\b/i.test(net) ? 1 : null))
++    : null;
++  const fabricProtocol = hasNet ? detectFabricProtocol(net) : null;
+   return {
+     adapterCount,
+     portsCount: netPorts,
+-    totalPorts: netPorts !== null ? adapterCount * netPorts : null,
++    totalPorts: netPorts !== null ? (adapterCount || 1) * netPorts : null,
+     speedGb: netSpeed,
+-    isOcp: /\bocp\b/i.test(net),
++    isOcp: Boolean(hasNet && /\bocp\b/i.test(net)),
+     fabricProtocol
+   };
+ }
+@@ -641,14 +644,16 @@ function _evaluatePcieRisersParity(spec, bom) {
+ }
+ 
+ function _evaluateNetworkingFabricParity(spec, bom) {
+-  const reqSpeed = spec.networking?.speedGb;
+-  const reqPorts = spec.networking?.portsCount;
+-  const reqProtocol = spec.networking?.fabricProtocol || 'ETHERNET';
++  const reqSpeed = spec.networking?.speedGb ?? null;
++  const reqPorts = spec.networking?.portsCount ?? null;
++  const rawProtocol = spec.networking?.fabricProtocol ?? null;
+ 
+-  if (reqSpeed === null && reqPorts === null && !spec.networking?.fabricProtocol) {
++  if (reqSpeed === null && reqPorts === null && !rawProtocol) {
+     return { subsystem: 'OCP_NETWORKING_FABRIC', status: 'NOT_EVALUATED', details: 'No competitor network fabric specification provided.' };
+   }
+ 
++  const reqProtocol = rawProtocol || 'ETHERNET';
++
+   let targetPorts = 0;
+   let maxSpeed = 0;
+   let targetProtocol = 'ETHERNET';
+diff --git a/tests/chaos/test_m3_it2_adversarial_challenger_audit.js b/tests/chaos/test_m3_it2_adversarial_challenger_audit.js
+index f2677d6..10f8100 100644
+--- a/tests/chaos/test_m3_it2_adversarial_challenger_audit.js
++++ b/tests/chaos/test_m3_it2_adversarial_challenger_audit.js
+@@ -488,7 +488,7 @@ describe('Adversarial Challenger M3_It2_1: Fabric & NUMA Chaos Suite', () => {
+       assert.match(res.details, /Target BOM contains 0 network adapters/);
+     });
+ 
+-    it('4.15 Competitor spec with null networking specification returns NOT_EVALUATED', () => {
++    it('4.15 Competitor spec with null or unspecified networking returns NOT_EVALUATED', () => {
+       const explicitNullSpec = { networking: { speedGb: null, portsCount: null, fabricProtocol: null } };
+       const res = _evaluateNetworkingFabricParity(explicitNullSpec, [
+         { description: 'HPE 10/25Gb 2-port Ethernet Adapter', quantity: 1 }
+@@ -496,11 +496,17 @@ describe('Adversarial Challenger M3_It2_1: Fabric & NUMA Chaos Suite', () => {
+       assert.equal(res.status, 'NOT_EVALUATED');
+       assert.match(res.details, /No competitor network fabric specification provided/);
+ 
+-      // And when parsed from text without networking, default Ethernet is assumed and matched:
++      // When parsed from text without networking, returns NOT_EVALUATED (no false assumption of Ethernet):
+       const defaultParsedRes = testFabricParity('2x Intel Xeon Gold 6430, 256GB RAM', [
+         { description: 'HPE 10/25Gb 2-port Ethernet Adapter', quantity: 1 }
+       ]);
+-      assert.equal(defaultParsedRes.status, 'MATCHED');
++      assert.equal(defaultParsedRes.status, 'NOT_EVALUATED');
++      assert.match(defaultParsedRes.details, /No competitor network fabric specification provided/);
++
++      // When target BOM has 0 network adapters, it also returns NOT_EVALUATED without false DEFICIT:
++      const zeroAdapterRes = testFabricParity('2x Intel Xeon Gold 6430, 256GB RAM', []);
++      assert.equal(zeroAdapterRes.status, 'NOT_EVALUATED');
++      assert.match(zeroAdapterRes.details, /No competitor network fabric specification provided/);
+     });
+ 
+   });
+diff --git a/tests/unit/test_cross_vendor_fabric_and_parity_stubs.js b/tests/unit/test_cross_vendor_fabric_and_parity_stubs.js
+index bede50e..d5c9cb4 100644
+--- a/tests/unit/test_cross_vendor_fabric_and_parity_stubs.js
++++ b/tests/unit/test_cross_vendor_fabric_and_parity_stubs.js
+@@ -274,3 +274,23 @@ test('End-to-End transformCompetitorQuote: 12-point audit achieves 100% complian
+   assert.equal(directAudit.is100PercentCompliant, true);
+   assert.equal(directAudit.passedSubsystems, 12);
+ });
++test('Networking Fabric Parity: Unspecified competitor networking evaluates to NOT_EVALUATED without false DEFICIT', () => {
++  const unspecifiedSpec = parseCompetitorSpecification('2x Intel Xeon Platinum 8480+; 512GB RAM');
++  assert.equal(unspecifiedSpec.networking.fabricProtocol, null);
++  assert.equal(unspecifiedSpec.networking.speedGb, null);
++  assert.equal(unspecifiedSpec.networking.portsCount, null);
++  assert.equal(unspecifiedSpec.networking.adapterCount, null);
++
++  // Target BOM with 0 network adapters (e.g. compute sled / storage shelf)
++  const emptyBomResult = _evaluateNetworkingFabricParity(unspecifiedSpec, []);
++  assert.equal(emptyBomResult.status, 'NOT_EVALUATED');
++  assert.match(emptyBomResult.details, /No competitor network fabric specification provided/);
++
++  // Target BOM with network adapters
++  const nicBom = [
++    { sku: 'P26262-B21', quantity: 1, description: 'Broadcom BCM57414 Ethernet 10/25Gb 2-port SFP28 Adapter for HPE' }
++  ];
++  const nicBomResult = _evaluateNetworkingFabricParity(unspecifiedSpec, nicBom);
++  assert.equal(nicBomResult.status, 'NOT_EVALUATED');
++  assert.match(nicBomResult.details, /No competitor network fabric specification provided/);
++});

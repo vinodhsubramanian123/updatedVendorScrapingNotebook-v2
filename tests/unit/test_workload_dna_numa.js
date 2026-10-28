@@ -85,4 +85,30 @@ test('Feature 10: Multi-Socket NUMA Channel Interleaving Topology', async (t) =>
     assert.equal(dna.numaTopology.channelWidth, 8);
     assert.equal(dna.numaTopology.is1DpcBalanced, true);
   });
+
+  await t.test('7. extractWorkloadDna safely handles null, undefined, and non-object array elements', () => {
+    const sparseItems = [
+      null,
+      undefined,
+      123,
+      'invalid-item',
+      false,
+      { sku: 'P40548-B21' },
+      { sku: 'P49610-B21', quantity: 2, description: 'Intel Xeon-Gold 6430 32-core Processor' },
+      null,
+      { sku: 'P43328-B21', quantity: 16, description: 'HPE 32GB 2Rx8 DDR5-4800 Registered Smart Memory Kit' },
+      undefined
+    ];
+    const dna = extractWorkloadDna(sparseItems);
+    assert.equal(dna.cpuCount, 2);
+    assert.equal(dna.totalCores, 64);
+    assert.equal(dna.memoryDimmCount, 16);
+    assert.equal(dna.totalMemoryGb, 512);
+    assert.equal(dna.numaTopology.is1DpcBalanced, true);
+
+    const topo = validateNumaMemoryTopology(sparseItems);
+    assert.equal(topo.isValid, true);
+    assert.equal(topo.is1DpcBalanced, true);
+  });
 });
+
