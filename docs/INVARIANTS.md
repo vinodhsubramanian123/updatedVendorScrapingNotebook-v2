@@ -1170,4 +1170,39 @@ To ensure that future AI agents (Antigravity, Codex, Claude, or subagents) never
   - Raw HPE OCA exported Excel workbooks include companion modifier/tracking rows (e.g. `P74571-B21  0D1` with description `"Factory Integrated"` and `P73282-B21  B19` regional localization) that share the base SKU of their parent hardware item.
   - All 7 physical aspect checkers (`compute_thermal.js`, `memory_channel.js`, `pcie_riser.js`, `networking_ocp.js`, `storage_tri_mode.js`, `power_environment.js`, `support_manufacturing.js`) enforce `isOcaModifierTrackingRow(it.sku, it.description)` from `scripts/lib/catalog/sku.js` so modifier rows are never double-counted as physical CPUs, DIMMs, PCIe adapters, fans, or power supplies when catalog descriptions are resolved via `skuIndex`.
 
+## 14. Invariants Catalog Extension (2026-10-28) — Teamwork Swarm Certification & Epistemic Depth
+- **INV-210: DLC Cold-Plate Thermal Dissipation & Plastic Air Baffle Segregation**:
+  - In `compute_thermal.js`, Direct Liquid Cooling (DLC) cold plates (`P74797-B21`) are actively recognized as primary heat dissipation devices satisfying thermal dissipation requirements for high-TDP liquid-cooled nodes, preventing spurious `MISSING_HEATSINK` errors.
+  - Plastic air baffles (`P49145-B21`) and air redirection shrouds are strictly classified as airflow management accessories and never credited as physical processor heat sinks.
+
+- **INV-211: JEDEC Token Normalization & Non-Memory Storage Isolation**:
+  - In `memory_channel.js`, JEDEC token normalization strictly maps DDR4/DDR5 speeds (PC4/PC5 at 3200 MT/s, 4800 MT/s, 5600 MT/s, 6400 MT/s) to valid memory ranks and channels.
+  - High-throughput NVMe SSD storage devices (e.g. `P26934-B21`, U.3 / EDSFF NVMe) and Flash Cache controller modules are strictly isolated via negative lookaheads and never misclassified as system RAM.
+
+- **INV-212: Multi-Node Cluster Power Normalization & Per-Node Envelope Enforcement**:
+  - In `power_environment.js`, multi-node tender wattages are evaluated on a normalized per-node basis (`clusterWatts / nodeCount`) rather than comparing total cluster power against a single server's chassis envelope. Single chassis with multiple independent server nodes or cluster tenders evaluate power compliance per physical chassis/enclosure.
+
+- **INV-213: CTO Rule 81322276 Licensing Scoping (BTO Isolation)**:
+  - In `support_manufacturing.js`, Rule 81322276 mandatory factory CTO management license enforcement is strictly scoped to Configure-To-Order (`CTO`) base chassis configurations. Build-To-Order (`BTO`) pre-configured models and standalone component quotes are isolated, preventing invalid mandatory management license injection where factory integration does not apply.
+
+- **INV-214: Decoupled Riser Boards vs. Riser Cable Kits & Battery Isolation**:
+  - In `pcie_riser.js`, secondary PCIe riser cable kits (e.g. `P49156-B21`) are strictly decoupled from riser board slot providers; cable kit line items do not provide PCIe slots without the underlying physical riser board.
+  - In `storage_tri_mode.js`, smart storage battery cable kits are isolated from Tri-Mode controller data cables, and dedicated external storage appliances (Alletra controller nodes) are partitioned from internal server RAID controllers.
+
+- **INV-215: Deterministic Counterfactual Self-Correction & Phase 9 Narrative Derivations**:
+  - In `counterfactual_repair.js` and `reasoning_post_analyzer.js`, whenever physical deficits or slot contentions cause a baseline to fail local physical math, the engine emits deterministic mathematical repair proofs across 11 physical deficit dimensions (heatsinks, memory balance, OCP slots, PCIe lanes, PSU wattage, Tri-Mode cables, SAS expanders, fans, batteries, secondary risers, drive cages).
+  - Phase 9 post-analysis narratives emit step-by-step mathematical repair derivations showing exact formulas, preserving honest diagnostic traceability without defaulting to ungrounded claims.
+
+- **INV-216: Cross-Vendor Protocol Parity & InfiniBand vs. RoCEv2 Divergence Protection**:
+  - In `cross_vendor_transformer.js`, network fabric parity checks strictly verify physical interconnect protocols. InfiniBand (HDR/NDR) and Ethernet/RoCEv2 are treated as distinct protocol layers and cannot be substituted as functional equivalents without disclosing the fabric mismatch. Parity audits must evaluate 5 distinct protocol dimensions before asserting network parity.
+
+- **INV-217: NUMA Memory Interleaving & Write-Intensive Flash Tiering Protection**:
+  - In `workload_dna.js`, memory architecture rules enforce balanced channel distribution across 1DPC and 2DPC topologies, maintaining memory throughput without channel skew.
+  - In `strategy_synthesizer.js`, Rank 5 budget down-tiering preserves storage capacity and strictly blocks down-tiering to Read-Intensive flash for write-intensive workloads (SAP HANA, Redis AOF, Cassandra CommitLog, Kafka Journal).
+
+- **INV-218: Clean Test Matrix Discoverability & Substring Runner Isolation**:
+  - In `run_test_matrix.js`, domain filtering uses negative lookaheads (e.g. `!/storage|drive_cage/i` in sync) to prevent substring collisions (`sto-RAG-e` matching `rag`), ensuring zero cross-domain test contamination.
+  - Invariant INV-129 non-empty test discovery is strictly enforced: test execution fails fast if pattern filtering matches 0 suites unless `--allow-empty` is explicitly supplied.
+
+
 
