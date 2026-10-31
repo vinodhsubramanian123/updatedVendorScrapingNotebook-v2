@@ -22128,5 +22128,15 @@
     "field": "Vendor Attributes",
     "oldValue": "{\"Extended Price (USD)\":\"NA\"}",
     "newValue": "{\"listPrice\":519}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "389692-B21",
+    "chassis": "DL380a Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}"
   }
 ]

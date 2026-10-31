@@ -2,7 +2,7 @@
   "query": "DL380a Gen12",
   "selectedSku": "P76706-B21",
   "source": "HPE OCA Product Search via authenticated CDP session",
-  "capturedAt": "2026-10-17T12:15:48.645Z",
+  "capturedAt": "2026-10-29T06:13:27.994Z",
   "deliveryEstimate": "",
   "candidates": [
     {
@@ -425,7 +425,7 @@
     {
       "type": "direct-button",
       "cardSelector": "[data-cand-idx=\"7\"]",
-      "text": "DL380a Gen12 Enterprise AI - Small Solution Secure Storage Data Center Density RTX PRO 6000 BSE Accelerate AI, visualization, and analytics workloads with the HPE ProLiant DL380a Gen12 server, featuring dual Intel Xeon 6527P 24-core processors, 384GB high-speed DDR5 memory, and 15.36TB Gen4 NVMe read-intensive, FIPS-certified storage. Two NVIDIA RTX PRO 6000 Blackwell 96GB GPUs deliver advanced graphics and AI acceleration. Enjoy ultra-fast 100Gb networking and simplified management with HPE Compute Ops Management SaaS. - 2x 3.0GHz 24-core - 384GB - 7.68TB NVMe Gen4 Mainstream Performance Read Intensive SFF BC U.3 Static V2 Multi Vendor SSD i Unlocked Compare STs USD 83,258.20 Estimated Net Price Customize Quote",
+      "text": "DL380a Gen12 Enterprise AI - Small Solution Secure Storage Data Center Density RTX PRO 6000 BSE Accelerate AI, visualization, and analytics workloads with the HPE ProLiant DL380a Gen12 server, featuring dual Intel Xeon 6527P 24-core processors, 384GB high-speed DDR5 memory, and 15.36TB Gen4 NVMe read-intensive, FIPS-certified storage. Two NVIDIA RTX PRO 6000 Blackwell 96GB GPUs deliver advanced graphics and AI acceleration. Enjoy ultra-fast 100Gb networking and simplified management with HPE Compute Ops Management SaaS. - 2x 3.0GHz 24-core - 384GB - 7.68TB NVMe Gen4 Mainstream Performance Read Intensive SFF BC U.3 Static V2 Multi Vendor SSD i Unlocked Compare STs USD 82,750.42 Estimated Net Price Customize Quote",
       "sku": "DL380A",
       "listPriceUsd": 0,
       "availability": "Available in OCA product catalog",

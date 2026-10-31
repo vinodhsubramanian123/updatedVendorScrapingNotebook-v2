@@ -4,6 +4,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 371,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S3Q39AAE": [
@@ -11,6 +17,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 229,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R7J57A": [
@@ -46,6 +58,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 44,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "P46191-AA1": [
@@ -53,6 +71,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 99999,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "P46191-B21": [
@@ -60,6 +84,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 55,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "P46218-B21": [
@@ -67,6 +97,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 429,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "P46217-B21": [
@@ -74,6 +110,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 539,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "P46216-B21": [
@@ -81,6 +123,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 216,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "P46215-AA1": [
@@ -88,6 +136,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 99999,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "P46215-AB1": [
@@ -95,6 +149,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 99999,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "P46215-B21": [
@@ -102,6 +162,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 271,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "P46220-B21": [
@@ -109,6 +175,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 2145,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "P46219-B21": [
@@ -116,6 +188,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 2695,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "P46222-B21": [
@@ -123,6 +201,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 880,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "P46221-B21": [
@@ -130,6 +214,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 935,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "P77111-B21": [
@@ -137,6 +227,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 52,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "P77110-AA1": [
@@ -144,6 +240,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "P77110-B21": [
@@ -151,6 +253,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 72,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "P77115-B21": [
@@ -158,6 +266,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 444,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "P77114-B21": [
@@ -165,6 +279,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 636,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "P77113-B21": [
@@ -172,6 +292,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 226,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "P77112-AA1": [
@@ -179,6 +305,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "P77112-AB1": [
@@ -186,6 +318,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "P77112-B21": [
@@ -193,6 +331,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 322,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "P77117-B21": [
@@ -200,6 +344,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 2184,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "P77116-B21": [
@@ -207,6 +357,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 3143,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "P77119-B21": [
@@ -214,6 +370,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 201,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "P77118-B21": [
@@ -221,6 +383,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 280,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "P77121-B21": [
@@ -228,6 +396,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 974,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "P77120-B21": [
@@ -235,6 +409,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1364,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "P77123-B21": [
@@ -242,6 +422,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 9666,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "P77122-B21": [
@@ -249,6 +435,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 13566,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "P45916-291": [
@@ -256,6 +448,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 99999,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "P45916-B21": [
@@ -263,6 +461,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 4946,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "P46005-291": [
@@ -270,6 +474,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 99999,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "P46005-B21": [
@@ -277,6 +487,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 988,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S6L28B": [
@@ -284,6 +500,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 445,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "P77097-291": [
@@ -291,6 +513,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "P77097-B21": [
@@ -298,6 +526,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 5712,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "P77095-291": [
@@ -305,6 +539,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "P77095-B21": [
@@ -312,6 +552,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1147,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "M6K34AAE": [
@@ -319,6 +565,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 2040,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "M6K34A": [
@@ -326,6 +578,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 2040,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S0E93AAE": [
@@ -333,6 +591,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 322,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S0E94AAE": [
@@ -340,6 +604,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 870,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S0E95AAE": [
@@ -347,6 +617,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1451,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S7N98AAE": [
@@ -354,6 +630,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 699,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S7N99AAE": [
@@ -361,6 +643,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1887,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S7P00AAE": [
@@ -368,6 +656,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 3146,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S3R58AAE": [
@@ -375,6 +669,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 699,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S3R57AAE": [
@@ -382,6 +682,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1887,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S3R59AAE": [
@@ -389,6 +695,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 3146,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S3R56AAE": [
@@ -396,6 +708,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1299,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S7N95AAE": [
@@ -403,6 +721,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1299,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S3R55AAE": [
@@ -410,6 +734,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 3507,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S7N96AAE": [
@@ -417,6 +747,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 3507,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S3R60AAE": [
@@ -424,6 +760,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 5846,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S7N97AAE": [
@@ -431,6 +773,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 5846,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "M6K35A": [
@@ -438,6 +786,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "M6K36A": [
@@ -445,6 +799,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "Q1X75AAE": [
@@ -452,6 +812,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 2040,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "M6K30AAE": [
@@ -459,6 +825,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 7803,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "M6K30A": [
@@ -466,6 +838,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 7803,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "M6K32AAE": [
@@ -473,6 +851,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 13005,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "M6K32A": [
@@ -480,6 +864,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 13005,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S7N75AAE": [
@@ -487,6 +877,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 7803,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S7N85A": [
@@ -494,6 +890,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 7803,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S7N76AAE": [
@@ -501,6 +903,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 13005,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S7N86A": [
@@ -508,6 +916,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 13005,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S3R50AAE": [
@@ -515,6 +929,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1599,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S3R50A": [
@@ -522,6 +942,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1599,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S3R51AAE": [
@@ -529,6 +955,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1099,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S3R51A": [
@@ -536,6 +968,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1099,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S3R49AAE": [
@@ -543,6 +981,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 4399,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S3R49A": [
@@ -550,6 +994,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 4399,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S3R53AAE": [
@@ -557,6 +1007,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 2990,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S3R53A": [
@@ -564,6 +1020,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 2990,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S3R52AAE": [
@@ -571,6 +1033,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 7196,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S3R52A": [
@@ -578,6 +1046,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 7196,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S3R54AAE": [
@@ -585,6 +1059,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 4946,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S3R54A": [
@@ -592,6 +1072,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 4946,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S7N79AAE": [
@@ -599,6 +1085,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1599,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S7N89A": [
@@ -606,6 +1098,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1599,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S7N80AAE": [
@@ -613,6 +1111,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1099,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S7N90A": [
@@ -620,6 +1124,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1099,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S7N81AAE": [
@@ -627,6 +1137,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 4399,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S7N91A": [
@@ -634,6 +1150,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 4399,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S7N82AAE": [
@@ -641,6 +1163,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 2990,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S7N92A": [
@@ -648,6 +1176,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 2990,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S7N83AAE": [
@@ -655,6 +1189,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 7196,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S7N93A": [
@@ -662,6 +1202,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 7196,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "S7N84AAE": [
@@ -669,6 +1215,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 4946,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S7N94A": [
@@ -676,6 +1228,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 4946,
+      "status": "CATEGORY_MIGRATED",
+      "targetCategory": "Software & Licenses"
     }
   ],
   "G3J32AAE": [
@@ -683,6 +1241,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 7145,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R6J26AAE": [
@@ -690,6 +1254,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 21544,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R6J29AAE": [
@@ -697,6 +1267,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 86513,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "J8J36AAE": [
@@ -704,6 +1280,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1429,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "J8J35AAE": [
@@ -711,6 +1293,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 879,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S4R43A": [
@@ -732,6 +1320,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 2144,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "G5J63AAE": [
@@ -739,6 +1333,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1319,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S4R45A": [
@@ -760,6 +1360,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 6432,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "G5J65AAE": [
@@ -767,6 +1373,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 3957,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S4R47A": [
@@ -788,6 +1400,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 10183,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "Q0D23AAE": [
@@ -795,6 +1413,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 6264,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "G3J28AAE": [
@@ -802,6 +1426,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1429,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "G3J29AAE": [
@@ -809,6 +1439,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 879,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S4R37A": [
@@ -830,6 +1466,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 4287,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "G3J31AAE": [
@@ -837,6 +1479,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 2637,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S4R38A": [
@@ -872,6 +1520,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 4395,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S4R31A": [
@@ -921,6 +1575,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 4072,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "Q5W19AAE": [
@@ -928,6 +1588,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 2505,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "Q5W22AAE": [
@@ -935,6 +1601,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 6787,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "Q5W21AAE": [
@@ -942,6 +1614,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 4175,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "Q8U19AAE": [
@@ -949,6 +1627,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 6737,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "Q8U21AAE": [
@@ -956,6 +1640,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 5483,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "Q8U20AAE": [
@@ -963,6 +1653,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 11229,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "Q8U22AAE": [
@@ -970,6 +1666,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 9139,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "Q8U15AAE": [
@@ -977,6 +1679,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 24680,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "Q8U17AAE": [
@@ -984,6 +1692,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 20325,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "Q8U16AAE": [
@@ -991,6 +1705,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 41134,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "Q8U18AAE": [
@@ -998,6 +1718,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 33874,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "Q5W24AAE": [
@@ -1005,6 +1731,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 14516,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "Q5W23AAE": [
@@ -1012,6 +1744,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 9072,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "Q5W26AAE": [
@@ -1019,6 +1757,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 24194,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "Q5W25AAE": [
@@ -1026,6 +1770,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 15119,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "G3J22AAE": [
@@ -1033,6 +1783,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 4839,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "G3J23AAE": [
@@ -1040,6 +1796,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 3024,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "G3J24AAE": [
@@ -1047,6 +1809,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 14516,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "G3J25AAE": [
@@ -1054,6 +1822,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 9072,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "G3J26AAE": [
@@ -1061,6 +1835,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 24194,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "G3J27AAE": [
@@ -1068,6 +1848,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 15119,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "Q0D26AAE": [
@@ -1075,6 +1861,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 7532,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "Q0D25AAE": [
@@ -1082,6 +1874,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 2085,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R6J33AAE": [
@@ -1089,6 +1887,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 4475,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R6J34AAE": [
@@ -1096,6 +1900,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 26642,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R6J35AAE": [
@@ -1103,6 +1913,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 17987,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "Q0D30AAE": [
@@ -1110,6 +1926,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 15095,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "Q0D29AAE": [
@@ -1117,6 +1939,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 4395,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S5Q81AAE": [
@@ -1124,6 +1952,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 600,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S5Q82AAE": [
@@ -1131,6 +1965,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1800,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S5Q83AAE": [
@@ -1138,6 +1978,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 3000,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S2G27AAE": [
@@ -1145,6 +1991,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1948,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S2G28AAE": [
@@ -1152,6 +2004,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 2449,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S4R76AAE": [
@@ -1159,6 +2017,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 519,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S4F94AAE": [
@@ -1166,6 +2030,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1568,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S4G00AAE": [
@@ -1173,6 +2043,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 2637,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R8V76AAE": [
@@ -1180,6 +2056,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 3980,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R8V76A": [
@@ -1194,6 +2076,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 2260,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R8V74A": [
@@ -1208,6 +2096,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 10800,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R8V77A": [
@@ -1222,6 +2116,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 6110,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R8V75A": [
@@ -1236,6 +2136,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 18000,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R8V78A": [
@@ -1250,6 +2156,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 10200,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R8V79A": [
@@ -1264,6 +2176,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 18873,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R8V72A": [
@@ -1278,6 +2196,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 31455,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R8V73A": [
@@ -1292,6 +2216,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 18873,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S7N87A": [
@@ -1313,6 +2243,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 31455,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S7P11A": [
@@ -1334,6 +2270,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 806,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R8V87AAE": [
@@ -1341,6 +2283,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 806,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S0F28AAE": [
@@ -1348,6 +2296,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 2180,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R8V89AAE": [
@@ -1355,6 +2309,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 2180,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S0F30AAE": [
@@ -1362,6 +2322,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 3630,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S0F22AAE": [
@@ -1369,6 +2335,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 3630,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S0F25AAE": [
@@ -1376,6 +2348,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 268,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R8V86AAE": [
@@ -1383,6 +2361,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 268,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S0F27AAE": [
@@ -1390,6 +2374,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 724,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R8V88AAE": [
@@ -1397,6 +2387,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 724,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S0F21AAE": [
@@ -1404,6 +2400,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1210,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S0F29AAE": [
@@ -1411,6 +2413,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1210,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S6L47A": [
@@ -1467,6 +2475,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1506,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S4T26A": [
@@ -1481,6 +2495,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 4519,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S4T27A": [
@@ -1495,6 +2515,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 439,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S4T22A": [
@@ -1509,6 +2535,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1317,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S4T23A": [
@@ -1523,6 +2555,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 3019,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "G5J69AAE": [
@@ -1530,6 +2568,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 9057,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "G3J36AAE": [
@@ -1537,6 +2581,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 879,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S4T24A": [
@@ -1551,6 +2601,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 2637,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S4T25A": [
@@ -1565,6 +2621,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1482,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R2A03A": [
@@ -1579,6 +2641,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 4447,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R2A04A": [
@@ -1593,6 +2661,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 7411,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R2A05A": [
@@ -1607,6 +2681,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 385,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R2A00A": [
@@ -1621,6 +2701,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1097,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R2A01A": [
@@ -1635,6 +2721,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1828,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R2A02A": [
@@ -1649,6 +2741,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1074,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R1T31AAE": [
@@ -1656,6 +2754,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1511,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R1T32AAE": [
@@ -1663,6 +2767,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1984,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R1T36AAE": [
@@ -1670,6 +2780,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1984,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R8V45AAE": [
@@ -1677,6 +2793,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 4725,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R8V48A": [
@@ -1691,6 +2813,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 69,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S0W15AAE": [
@@ -1698,6 +2826,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 124,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S0W18AAE": [
@@ -1705,6 +2839,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 42,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S0W21AAE": [
@@ -1712,6 +2852,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 150,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S0W24AAE": [
@@ -1719,6 +2865,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 57,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "S0W27AAE": [
@@ -1726,6 +2878,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 25,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R1P40AAE": [
@@ -1733,6 +2891,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 87,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R1P40A": [
@@ -1747,6 +2911,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 248,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R1P41A": [
@@ -1761,6 +2931,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 413,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R1P42A": [
@@ -1775,6 +2951,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 138,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R2Z52AAE": [
@@ -1782,6 +2964,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 392,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R2Z53AAE": [
@@ -1789,6 +2977,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 653,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R1P34AAE": [
@@ -1796,6 +2990,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 2858,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R1P34A": [
@@ -1810,6 +3010,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1758,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R1P37A": [
@@ -1824,6 +3030,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 8145,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R1P35A": [
@@ -1838,6 +3050,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 5010,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R1P38A": [
@@ -1852,6 +3070,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 13575,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R1P36A": [
@@ -1866,6 +3090,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 8350,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R1P39A": [
@@ -1880,6 +3110,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 3243,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R2Z46AAE": [
@@ -1887,6 +3123,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 9242,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R2Z47AAE": [
@@ -1894,6 +3136,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 15403,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "Q9S73AAE": [
@@ -1901,6 +3149,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 108,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "Q9S76AAE": [
@@ -1908,6 +3162,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 151,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "Q9S74AAE": [
@@ -1915,6 +3175,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 292,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "Q9S77AAE": [
@@ -1922,6 +3188,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 408,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "Q9S75AAE": [
@@ -1929,6 +3201,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 486,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "Q9S78AAE": [
@@ -1936,6 +3214,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 680,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R7P98AAE": [
@@ -1943,6 +3227,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 2630,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R2U47AAE": [
@@ -1950,6 +3240,12 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 3390,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 0
     }
   ],
   "R8V84A": [
@@ -2097,7 +3393,13 @@
     {
       "date": "2026-09-11",
       "price": 100,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 100,
+      "status": "REMOVED"
     }
   ],
   "HR2L5A1": [
@@ -2111,7 +3413,13 @@
     {
       "date": "2026-09-11",
       "price": 9398,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 9398,
+      "status": "REMOVED"
     }
   ],
   "HA545A1": [
@@ -2125,266 +3433,506 @@
     {
       "date": "2026-09-11",
       "price": 100,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 100,
+      "status": "REMOVED"
     }
   ],
   "H33XSA1": [
     {
       "date": "2026-09-11",
       "price": 100,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 100
     }
   ],
   "H33XVA3": [
     {
       "date": "2026-09-11",
       "price": 100,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 100
     }
   ],
   "H33XWA4": [
     {
       "date": "2026-09-11",
       "price": 100,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 100
     }
   ],
   "H33XXA5": [
     {
       "date": "2026-09-11",
       "price": 100,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 100
     }
   ],
   "HA0Z0A1": [
     {
       "date": "2026-09-11",
       "price": 1620,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1620,
+      "status": "REMOVED"
     }
   ],
   "H33XTA2": [
     {
       "date": "2026-09-11",
       "price": 100,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 100
     }
   ],
   "HR2R4A1": [
     {
       "date": "2026-09-11",
       "price": 4000,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 4000,
+      "status": "REMOVED"
     }
   ],
   "HR2R5A1": [
     {
       "date": "2026-09-11",
       "price": 5000,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 5000,
+      "status": "REMOVED"
     }
   ],
   "HR2R6A1": [
     {
       "date": "2026-09-11",
       "price": 8000,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 8000,
+      "status": "REMOVED"
     }
   ],
   "HV9V8A1": [
     {
       "date": "2026-09-11",
       "price": 1300,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1300,
+      "status": "REMOVED"
     }
   ],
   "H36VWA1": [
     {
       "date": "2026-09-11",
       "price": 17520,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 17520,
+      "status": "REMOVED"
     }
   ],
   "H36VXA1": [
     {
       "date": "2026-09-11",
       "price": 29760,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 29760,
+      "status": "REMOVED"
     }
   ],
   "H36WBA1": [
     {
       "date": "2026-09-11",
       "price": 7140,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 7140,
+      "status": "REMOVED"
     }
   ],
   "H36WNA1": [
     {
       "date": "2026-09-11",
       "price": 13800,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 13800,
+      "status": "REMOVED"
     }
   ],
   "H36WMA1": [
     {
       "date": "2026-09-11",
       "price": 23400,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 23400,
+      "status": "REMOVED"
     }
   ],
   "H36WQA1": [
     {
       "date": "2026-09-11",
       "price": 2760,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 2760,
+      "status": "REMOVED"
     }
   ],
   "H46RMA1": [
     {
       "date": "2026-09-11",
       "price": 9000,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 9000,
+      "status": "REMOVED"
     }
   ],
   "H46RNA1": [
     {
       "date": "2026-09-11",
       "price": 18540,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 18540,
+      "status": "REMOVED"
     }
   ],
   "H46RLA1": [
     {
       "date": "2026-09-11",
       "price": 2640,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 2640,
+      "status": "REMOVED"
     }
   ],
   "H57FDA1": [
     {
       "date": "2026-09-11",
       "price": 13800,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 13800,
+      "status": "REMOVED"
     }
   ],
   "H4F41A1": [
     {
       "date": "2026-09-11",
       "price": 19,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 19,
+      "status": "REMOVED"
     }
   ],
   "H4F42A1": [
     {
       "date": "2026-09-11",
       "price": 1850,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1850,
+      "status": "REMOVED"
     }
   ],
   "HA838A1": [
     {
       "date": "2026-09-11",
       "price": 29,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 29
     }
   ],
   "HA839A1": [
     {
       "date": "2026-09-11",
       "price": 35,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 35
     }
   ],
   "HA840A1": [
     {
       "date": "2026-09-11",
       "price": 15,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 15,
+      "status": "REMOVED"
     }
   ],
   "HA841A1": [
     {
       "date": "2026-09-11",
       "price": 26,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 26,
+      "status": "REMOVED"
     }
   ],
   "HA843A1": [
     {
       "date": "2026-09-11",
       "price": 118,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 118
     }
   ],
   "HA844A1": [
     {
       "date": "2026-09-11",
       "price": 28,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 28,
+      "status": "REMOVED"
     }
   ],
   "HA846A1": [
     {
       "date": "2026-09-11",
       "price": 275,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 275
     }
   ],
   "HA848A1": [
     {
       "date": "2026-09-11",
       "price": 26,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 26
     }
   ],
   "HA849A1": [
     {
       "date": "2026-09-11",
       "price": 25,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 25
     }
   ],
   "HA851A1": [
     {
       "date": "2026-09-11",
       "price": 94,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 94
     }
   ],
   "HA854A1": [
     {
       "date": "2026-09-11",
       "price": 2134,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 2134,
+      "status": "REMOVED"
     }
   ],
   "HA861A1": [
     {
       "date": "2026-09-11",
       "price": 2105,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 2105,
+      "status": "REMOVED"
     }
   ],
   "HA867A1": [
     {
       "date": "2026-09-11",
       "price": 13,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 13,
+      "status": "REMOVED"
     }
   ],
   "HA868A1": [
     {
       "date": "2026-09-11",
       "price": 38,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 38,
+      "status": "REMOVED"
     }
   ],
   "HA875A1": [
     {
       "date": "2026-09-11",
       "price": 1,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1,
+      "status": "REMOVED"
     }
   ],
   "HC790A": [
@@ -2405,154 +3953,293 @@
     {
       "date": "2026-09-11",
       "price": 65,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 65,
+      "status": "REMOVED"
     }
   ],
   "AC120A": [
     {
       "date": "2026-09-11",
       "price": 7,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 7,
+      "status": "REMOVED"
     }
   ],
   "AC129A": [
     {
       "date": "2026-09-11",
       "price": 26,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 26,
+      "status": "REMOVED"
     }
   ],
   "P1F69A": [
     {
       "date": "2026-09-11",
       "price": 289,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 289,
+      "status": "REMOVED"
     }
   ],
   "P1F70A": [
     {
       "date": "2026-09-11",
       "price": 1399,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1399,
+      "status": "REMOVED"
     }
   ],
   "P1F71A": [
     {
       "date": "2026-09-11",
       "price": 292,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 292,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P1F72A": [
     {
       "date": "2026-09-11",
       "price": 466,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 466,
+      "status": "REMOVED"
     }
   ],
   "P1F73A": [
     {
       "date": "2026-09-11",
       "price": 104,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 104,
+      "status": "REMOVED"
     }
   ],
   "P1F74A": [
     {
       "date": "2026-09-11",
       "price": 350,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 350,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P1F75A": [
     {
       "date": "2026-09-11",
       "price": 466,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 466,
+      "status": "REMOVED"
     }
   ],
   "P1F76A": [
     {
       "date": "2026-09-11",
       "price": 758,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 758,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "AC123A": [
     {
       "date": "2026-09-11",
       "price": 816,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 816
     }
   ],
   "BQ335A": [
     {
       "date": "2026-09-11",
       "price": 44,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 44,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "BQ337A": [
     {
       "date": "2026-09-11",
       "price": 100,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 100,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "AC068A": [
     {
       "date": "2026-09-11",
       "price": 4601,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 4601
     }
   ],
   "AC069A": [
     {
       "date": "2026-09-11",
       "price": 92,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 92,
+      "status": "REMOVED"
     }
   ],
   "HB480A1": [
     {
       "date": "2026-09-11",
       "price": 1616,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 1616
     }
   ],
   "HB481A1": [
     {
       "date": "2026-09-11",
       "price": 4074,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 4074
     }
   ],
   "HB482A1": [
     {
       "date": "2026-09-11",
       "price": 9769,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 9769
     }
   ],
   "HB483A1": [
     {
       "date": "2026-09-11",
       "price": 18463,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 18463
     }
   ],
   "HB484A1": [
     {
       "date": "2026-09-11",
       "price": 31831,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 31831
     }
   ],
   "HB485A1": [
     {
       "date": "2026-09-11",
       "price": 57508,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 57508,
+      "status": "REMOVED"
     }
   ],
   "S1J77A": [
@@ -2560,6 +4247,11 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S1J78A": [
@@ -2580,7 +4272,13 @@
     {
       "date": "2026-09-11",
       "price": 1,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 1,
+      "status": "REMOVED"
     }
   ],
   "SB228DL": [
@@ -2602,6 +4300,11 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "H29BRA1": [
@@ -2609,6 +4312,11 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "H29BSA1": [
@@ -2616,6 +4324,11 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "H36NLA1": [
@@ -2623,6 +4336,11 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "H36NMA1": [
@@ -2630,6 +4348,11 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "H36NNA1": [
@@ -2637,6 +4360,11 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "H36NPA1": [
@@ -2644,6 +4372,11 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "H36NQA1": [
@@ -2651,6 +4384,11 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "H36NQA3": [
@@ -2658,6 +4396,11 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "H0JD4A1008E": [
@@ -2665,6 +4408,11 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "H0JD4A10BK5": [
@@ -2672,160 +4420,187 @@
       "date": "2026-09-11",
       "price": 0,
       "status": "BASELINE"
+    },
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "Q0D22A": [
     {
       "date": "2026-09-11",
       "price": 10183,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "Q0D23A": [
     {
       "date": "2026-09-11",
       "price": 6264,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "Q5W20A": [
     {
       "date": "2026-09-11",
       "price": 4072,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "Q5W19A": [
     {
       "date": "2026-09-11",
       "price": 2505,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "Q5W22A": [
     {
       "date": "2026-09-11",
       "price": 6787,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "Q5W21A": [
     {
       "date": "2026-09-11",
       "price": 4175,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "Q8U19A": [
     {
       "date": "2026-09-11",
       "price": 6737,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "Q8U21A": [
     {
       "date": "2026-09-11",
       "price": 5483,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "Q8U20A": [
     {
       "date": "2026-09-11",
       "price": 11229,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "Q8U22A": [
     {
       "date": "2026-09-11",
       "price": 9139,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "Q8U15A": [
     {
       "date": "2026-09-11",
       "price": 24680,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "Q8U17A": [
     {
       "date": "2026-09-11",
       "price": 20325,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "Q8U16A": [
     {
       "date": "2026-09-11",
       "price": 41134,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "Q8U18A": [
     {
       "date": "2026-09-11",
       "price": 33874,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "Q5W24A": [
     {
       "date": "2026-09-11",
       "price": 14516,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "Q5W23A": [
     {
       "date": "2026-09-11",
       "price": 9072,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "Q5W26A": [
     {
       "date": "2026-09-11",
       "price": 24194,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "Q5W25A": [
     {
       "date": "2026-09-11",
       "price": 15119,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "Q0D26A": [
     {
       "date": "2026-09-11",
       "price": 7532,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "Q0D25A": [
     {
       "date": "2026-09-11",
       "price": 2085,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "Q0D30A": [
     {
       "date": "2026-09-11",
       "price": 15095,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "Q0D29A": [
     {
       "date": "2026-09-11",
       "price": 4395,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "BC351A": [
@@ -2874,14 +4649,492 @@
     {
       "date": "2026-09-11",
       "price": 7803,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
     }
   ],
   "N0U75A": [
     {
       "date": "2026-09-11",
       "price": 13005,
-      "status": "BASELINE"
+      "status": "BASELINE",
+      "validationState": "VALIDATED"
+    }
+  ],
+  "389692-B21": [
+    {
+      "date": "2026-10-29",
+      "price": 1,
+      "status": "ADDED"
+    }
+  ],
+  "339781-B21": [
+    {
+      "date": "2026-10-29",
+      "price": 1,
+      "status": "ADDED"
+    }
+  ],
+  "R8V46AAE": [
+    {
+      "date": "2026-10-29",
+      "price": 12474,
+      "status": "ADDED"
+    }
+  ],
+  "S0W13AAE": [
+    {
+      "date": "2026-10-29",
+      "price": 182,
+      "status": "ADDED"
+    }
+  ],
+  "S0W16AAE": [
+    {
+      "date": "2026-10-29",
+      "price": 327,
+      "status": "ADDED"
+    }
+  ],
+  "S0W19AAE": [
+    {
+      "date": "2026-10-29",
+      "price": 111,
+      "status": "ADDED"
+    }
+  ],
+  "S0W22AAE": [
+    {
+      "date": "2026-10-29",
+      "price": 396,
+      "status": "ADDED"
+    }
+  ],
+  "S0W25AAE": [
+    {
+      "date": "2026-10-29",
+      "price": 150,
+      "status": "ADDED"
+    }
+  ],
+  "S0W28AAE": [
+    {
+      "date": "2026-10-29",
+      "price": 66,
+      "status": "ADDED"
+    }
+  ],
+  "TD378A": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "TD377A": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "BD571A": [
+    {
+      "date": "2026-10-29",
+      "price": 183,
+      "status": "ADDED"
+    }
+  ],
+  "BD572A": [
+    {
+      "date": "2026-10-29",
+      "price": 235,
+      "status": "ADDED"
+    }
+  ],
+  "ZU723A": [
+    {
+      "date": "2026-10-29",
+      "price": 110,
+      "status": "ADDED"
+    }
+  ],
+  "H29BWA1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H29BXA1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H0JD0A1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H0JT1A1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H36NRA4": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H36NRA5": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H36NSA1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H36NTA1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H42ZHA1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H42ZJA1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H42ZKA1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "R3J78A": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P1F78A": [
+    {
+      "date": "2026-10-29",
+      "price": 350,
+      "status": "ADDED"
+    }
+  ],
+  "R2D12A": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "R2D20A": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "R2D10A": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "R2D04A": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "P1F81A": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "G1H96A1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "G1H97A1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "G1H98A1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "G1H99A1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H0JD1A1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H0JD7A1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H30RYA1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H30SDA1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H36NVA1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H57GHA1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H57GJA1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H57GKA1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H0JD9A1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H1WU9A1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H1WV0A1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H1XF9A1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H1XG0A1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H1XG7A1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H2S79A1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H2S81A1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H29BQA1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H30SBA1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H30SCA1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H30SLA1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H30SMA1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H30SNA1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H36NRA3": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H36PBA1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H36PCA1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H36PDA1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H42ZQA1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H42ZRA1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H43BCA1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H44MDA1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "H44NJA1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
+    }
+  ],
+  "HU7D2A1": [
+    {
+      "date": "2026-10-29",
+      "price": 0,
+      "status": "ADDED"
     }
   ]
 }

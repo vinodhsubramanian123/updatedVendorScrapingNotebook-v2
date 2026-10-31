@@ -1,0 +1,693 @@
+HPE ProLiant Compute DL380a Gen12: Comprehensive Configuration Learnings & Engineering Rules (v3)
+
+This document serves as an exhaustive, single-source-of-truth pre-sales engineering manual for the 
+
+HPE ProLiant Compute DL380a Gen12
+
+ platform. It compiles all architectural reconciliation findings, mechanical dependencies, slot-allocation rules, live configurator validations, portal-upload constraints, and customer-mandated configuration integrity guidelines across all GPU architectures (NVIDIA H200 NVL, RTX PRO 6000, L40S, and L4).
+
+
+--------------------------------------------------------------------------------
+
+
+1. System Foundation & Processor Rules
+
+1.1 Dual-Socket Mandatory Population
+
+Motherboard Architecture:
+
+ The DL380a Gen12 platform strictly enforces dual-processor configuration. Single-socket operation is physically and logically unsupported by the motherboard signal routing and the factory configuration engine. [11]
+
+Model Match Rule:
+
+ Both populated processors must be identical SKUs (matching clock speeds, cache structures, and core counts). [9]
+
+Factory Heatsink Assembly:
+
+ In Configure-To-Order (CTO) builds (
+
+P76706-B21
+
+), second CPU socket hardware, high-performance air heatsinks, and thermal interface materials are automatically bundled under factory routing flag 
+
+0D1
+
+. No separate heatsink SKU is required unless specifying CPU Direct Liquid Cooling (DLC, 
+
+P82520-B21
+
+).
+
+1.2 Base CTO Chassis Selection: iLO 6 vs. iLO 7 P-Core Mandate
+
+Base CTO Chassis 
+
+P74461-B21
+
+ (with iLO 6):
+
+ Limited. Intel® Xeon® 6 processors with Performance-Cores (P-Cores) and high-tier GPUs (e.g., RTX PRO 6000 
+
+S6A73C
+
+) are 
+
+not
+
+ supported on this chassis. [11]
+
+Base CTO Chassis 
+
+P76706-B21
+
+ (with iLO 7):
+
+ Required. Any configuration utilizing Xeon 6 P-Core processors or enterprise AI GPUs 
+
+must
+
+ select 
+
+P76706-B21
+
+. [11]
+
+1.3 Scalable Processor Sizing
+
+Intel Xeon 6505P (12-Core, 150W TDP) — SKU: 
+
+P74503-B21
+
+:
+
+ Lowest-cost 150W scalable P-Core processor for entry/stateless nodes. [11]
+
+Intel Xeon 6530P (32-Core, 225W TDP) — SKU: 
+
+P74571-B21
+
+:
+
+ Mid-tier performance P-Core processor for 20-node cluster builds.
+
+Intel Xeon 6747P (48-Core, 330W TDP) — SKU: 
+
+P73831-B21
+
+:
+
+ High-frequency 330W P-Core processor for intensive compute & AI pipelines.
+
+
+--------------------------------------------------------------------------------
+
+
+2. Storage Subsystem & Drive Cage Constraints
+
+2.1 Prohibited Drive Cage Mixing (Rule 81016788)
+
+The Trap:
+
+ The DL380a Gen12 has a single front-loading storage bay. Attempting to select both a 4SFF FIO Drive Cage Kit (
+
+P74710-B21
+
+) and a 4EDSFF FIO Drive Cage Kit (
+
+P74712-B21
+
+) in the same build triggers a critical unbuildable conflict. [11]
+
+The Resolution:
+
+ Select exactly 
+
+one
+
+ drive cage style (4SFF 
+
+P74710-B21
+
+ or 4EDSFF 
+
+P74712-B21
+
+). [11]
+
+2.2 Mandatory Storage Cabling (Rule 81016790)
+
+4SFF Cage (
+
+P74710-B21
+
+):
+
+ Requires direct-attach data cable kit 
+
+P74702-B21
+
+ or 
+
+P74708-B21
+
+.
+
+4EDSFF Cage (
+
+P74712-B21
+
+):
+
+ Requires direct-attach cable kit 
+
+P74704-B21
+
+. [11]
+
+2.3 Storage Controllers & OCP Slot Over-Limit Conflicts
+
+OCP vs. Stand-Up Slot Limits:
+
+ The DL380a motherboard possesses 
+
+exactly two physical OCP3 slots
+
+ (Slot A and Slot B). Populating an MR416i-o OCP storage controller (
+
+P47781-B21
+
+) alongside two OCP3 NICs (
+
+P10115-B21
+
+) creates a 
+
+3-OCP card over-limit conflict
+
+.
+
+The Resolution:
+
+ Swap the storage controller to the stand-up PCIe form factor 
+
+P47777-B21
+
+ (MR416i-p Gen11 PCIe Controller) with cable 
+
+P76700-B21
+
+ (Tri-Mode PCIe FIO Cable). This frees OCP Slot A and Slot B for dual OCP NICs.
+
+Cable Disambiguation:
+
+ Do not mix 
+
+P74696-B21
+
+ (OCPB Cable) when a storage controller cable is attached to the 4SFF cage.
+
+Direct-Attach VROC Alternative:
+
+ For pure NVMe flash without hardware RAID requirements, use Intel VROC with direct-attach cables to save $12k+ per node.
+
+
+--------------------------------------------------------------------------------
+
+
+3. Host Networking, Transceivers & Rear PCIe Slot Allocations
+
+3.1 Base Chassis Networking Reality
+
+No Default Transceivers or LOM Ports:
+
+ The base 
+
+P76706-B21
+
+ chassis contains zero networking ports or transceivers out of the box (except the 1Gb RJ-45 dedicated iLO management port).
+
+3.2 Transceiver Ratios for SFP28 Cards
+
+Port-to-Transceiver Ratio:
+
+ Every dual-port 25Gb SFP28 card (
+
+P26262-B21
+
+ or 
+
+P10115-B21
+
+) has 2 physical SFP28 cages.
+
+Optics Requirement:
+
+ Populating 1 dual-port card requires 
+
+2x 
+
+845398-B21
+
+ (HPE 25Gb SFP28 SR 100m Transceivers). Populating 2 cards requires 
+
+4x 
+
+845398-B21
+
+.
+
+3.3 Fitting Dual 25GbE Cards in 8-GPU Mode (The Hybrid Option)
+
+The Constraint:
+
+ In 8-GPU mode (
+
+P75008-B21
+
+), only 1 rear PCIe expansion slot is available for stand-up cards. You cannot populate 2x stand-up PCIe NICs (
+
+P26262-B21
+
+).
+
+The Optimal Hybrid Solution:
+
+1x 
+
+P26262-B21
+
+ (PCIe 25GbE 2-port NIC in rear Slot 3/6)
+
+1x 
+
+P10115-B21
+
+ (OCP3 25GbE 2-port NIC in OCP Slot A)
+
+1x 
+
+P74694-B21
+
+ (OCPA Cable Kit)
+
+4x 
+
+845398-B21
+
+ (25Gb SR Transceivers)
+
+Financial Advantage:
+
+ This hybrid combination provides 4x 25GbE ports, avoids slot conflicts, and saves 
+
+$209.00 list price per node
+
+ compared to buying 2x OCP3 cards.
+
+3.4 Optical Transceivers vs. Direct Attach Copper (DAC) Cables
+
+Optical Standard (
+
+845398-B21
+
+):
+
+ Required whenever structured multimode fiber (OM3/OM4) or customer tender specifications mandate transceivers.
+
+DAC Alternative (
+
+845970-B21
+
+):
+
+ For in-rack connections to Top-of-Rack (ToR) switches (<5m), swapping 4x optics for 2x SFP28 DAC cables saves **~
+
+7,986.00 list per server** (~
+
+160k across 20 nodes).
+
+
+--------------------------------------------------------------------------------
+
+
+4. GPU Architecture, Density Limits & OCA Sequencing Rules
+
+4.1 OCA GUI Sequencing Rule (The "Unhide" Step)
+
+The Rule:
+
+ In One Config Advanced (OCA), double-wide GPUs (H200 NVL 
+
+S3U30C
+
+, RTX PRO 6000 
+
+S6A73C
+
+, L40S 
+
+S2L70C
+
+) are 
+
+hidden by default
+
+.
+
+Sequencing:
+
+ You 
+
+must
+
+ select the GPU Mode Flag (e.g., 
+
+P75008-B21
+
+ for 8DW mode) 
+
+before
+
+ the double-wide GPUs become visible in the configurator tree.
+
+4.2 Maximum Technical GPU Density Limits
+
+Single-Wide (SW) GPUs (e.g., NVIDIA L4 
+
+S0K89C
+
+):
+
+Max Quantity: 16 GPUs.
+
+Configured via 8DW/16SW mode 
+
+P75008-B21
+
+ + 2x Switchboards 
+
+P74714-B21
+
+. Provides 384GB VRAM per 4U node.
+
+General Double-Wide (DW) GPUs (e.g., NVIDIA H200 NVL 
+
+S3U30C
+
+):
+
+Max Quantity (PCIe-Only): 10 GPUs
+
+ (using 10DW mode 
+
+P75005-B21
+
+ + 10DW Riser 
+
+P76929-B21
+
+). No NVLink support.
+
+Max Quantity (with NVLink): 8 GPUs
+
+ (using 8DW mode 
+
+P75008-B21
+
+ + 2x 4-way NVLink Bridges 
+
+S4A91C
+
+).
+
+NVIDIA RTX PRO 6000 96GB (
+
+S6A73C
+
+):
+
+Max Quantity: 8 GPUs.
+
+Exclusivity Rule:
+
+ Explicitly 
+
+prohibited from 10DW mode 
+
+P75005-B21
+
+.
+
+Requires 8DW mode 
+
+P75008-B21
+
+, 2x Switchboards 
+
+P74714-B21
+
+, 4x 16-pin Cable Kits 
+
+P74700-B21
+
+, Front Fan Kit 
+
+P79656-B21
+
+, Front Panel Kit 
+
+P79660-B21
+
+, and 8x 2400W Titanium PSUs 
+
+P67252-B21
+
+.
+
+Minimum Buildable 8x RTX PRO 6000 List Price:
+
+ 
+
+$590,253.00
+
+.
+
+4.3 GPU Auxiliary Power Cabling
+
+16-Pin FIO Cable Kit (
+
+P74700-B21
+
+ @ $114):
+
+ Powers 2 double-wide GPUs per kit.
+
+2 GPUs = 2 Cable Kits (
+
+P74700-B21
+
+).
+
+8 GPUs = 4 Cable Kits (
+
+P74700-B21
+
+).
+
+
+--------------------------------------------------------------------------------
+
+
+5. Thermal Cooling, Power Grid & Redundancy
+
+5.1 Thermal Fan & Front Panel Coupling
+
+Mandatory Pairing:
+
+ Selecting the Front Chassis Fan Module Kit (
+
+P79656-B21
+
+) enforces the 
+
+Front Panel Kit (
+
+P79660-B21
+
+)
+
+ for baffle airflow management.
+
+Enforced on all 8DW/10DW high-TDP GPU configurations.
+
+5.2 Power Supply Scaling Matrix
+
+1 to 4 GPUs (2DW/4DW Mode 
+
+P75002-B21
+
+):
+
+ Exactly 
+
+5x Titanium PSUs
+
+ (e.g., 2400W 
+
+P67252-B21
+
+) + 5x C19-C20 Power Cords (
+
+P78384-B21
+
+).
+
+5 to 8 GPUs (8DW Mode 
+
+P75008-B21
+
+):
+
+ Exactly 
+
+8x Titanium PSUs
+
+ (
+
+P67252-B21
+
+) + 8x C19-C20 Power Cords (
+
+P78384-B21
+
+).
+
+
+--------------------------------------------------------------------------------
+
+
+6. Software, Management & Customer Compliance Rules
+
+6.1 
+
+S1A05A
+
+ Cloud Management FIO Enablement SKU Rule
+
+Mandatory Pairing:
+
+ Whenever 
+
+R7A11AAE
+
+ (HPE Compute Ops Management SaaS 3yr) is included, the companion 
+
+S1A05A
+
+ (
+
+HPE Compute Cloud Management Server FIO Enablement
+
+, $0.00) 
+
+MUST
+
+ be populated to instruct the factory to enable cloud onboarding.
+
+Customer Compliance Rule:
+
+ If a customer explicitly requests a SKU in their BOQ requirement—including $0.00 FIO flags—we must 
+
+always retain and honor the requested line item
+
+. Never silently drop requested SKUs.
+
+6.2 iLO Advanced (
+
+BD505A
+
+) vs. Compute Ops Management (
+
+R7A11AAE
+
+)
+
+Complementary Tiers:
+
+ 
+
+R7A11AAE
+
+ provides cloud-native GreenLake fleet monitoring and firmware updates. 
+
+BD505A
+
+ provides on-premise Virtual KVM / graphical remote console access. Both co-exist cleanly on the same BOQ.
+
+6.3 Support Contract Parent-Child Hierarchy
+
+Parent Envelope Line (
+
+HU4B2A3
+
+):
+
+ 
+
+HPE 3Y Tech Care Basic Service
+
+ @ $0.00.
+
+Child Feature Line (
+
+HU4B2A30C4W
+
+):
+
+ 
+
+HPE DL380a Gen12 Support
+
+ carrying physical pricing ($11,306.00).
+
+
+--------------------------------------------------------------------------------
+
+
+7. Canary Live Quote Pricing Baselines
+
+Live quote alignment SKU: 
+
+DELTA_DL380A_GEN12_LIVE_OCA_PRICING_ALIGNMENT_5155756524-01
+
+Pointnext Support (
+
+HU4B2A30C4W
+
+):
+
+ $11,306.00
+
+Installation Services (
+
+HA113A1 5A6
+
+):
+
+ $450.00 / $507.00
+
+4-Way NVLink Bridge (
+
+S4A91C
+
+):
+
+ $1,250.00 / $2,170.00 catalog tier
+
+16-Pin GPU FIO Cable (
+
+P74700-B21
+
+):
+
+ $114.00

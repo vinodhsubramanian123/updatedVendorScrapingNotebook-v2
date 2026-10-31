@@ -1,0 +1,156 @@
+{
+  "timestamp": "2026-10-29T06:34:24.564Z",
+  "chassisName": "SY480_Gen12",
+  "totalUnavailableRules": 3,
+  "totalUnavailableSkus": 7,
+  "rules": [
+    {
+      "ruleId": "RULE_1",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "section": "Processors",
+      "reason": "The total qty of heat sink selected should match with the qty of processor selected.",
+      "affectedSkusCount": 2,
+      "affectedSkus": [
+        "P68225-B21",
+        "P68226-B21"
+      ]
+    },
+    {
+      "ruleId": "RULE_2",
+      "ruleType": "CHASSIS_GATE",
+      "section": "Hybrid RAID",
+      "reason": "The VROC SKUs could be selected only if the NVMe drives are selected with either 4SFF Dir Conn Kit (P68219-B21) or 8EDSFF Kit (P68220-B21)",
+      "affectedSkusCount": 2,
+      "affectedSkus": [
+        "R7J57A",
+        "S3Q19A"
+      ]
+    },
+    {
+      "ruleId": "RULE_3",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "section": "Virtualization",
+      "reason": "Private Product is not valid for current customer account",
+      "affectedSkusCount": 3,
+      "affectedSkus": [
+        "S4R76AAE",
+        "S4F94AAE",
+        "S4G00AAE"
+      ]
+    }
+  ],
+  "skus": [
+    {
+      "sku": "P68225-B21",
+      "rawSku": "P68225-B21",
+      "isPrivateSku": false,
+      "description": "HPE Synergy 480 Gen12 CPU Front Heat Sink Kit",
+      "listPrice": 399,
+      "startDate": "05/05/2025",
+      "discontinuedDate": "06/30/2029",
+      "section": "Processors",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "The total qty of heat sink selected should match with the qty of processor selected.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P68226-B21",
+      "rawSku": "P68226-B21",
+      "isPrivateSku": false,
+      "description": "HPE Synergy 480 Gen12 CPU Rear Heat Sink Kit",
+      "listPrice": 399,
+      "startDate": "05/05/2025",
+      "discontinuedDate": "06/30/2029",
+      "section": "Processors",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "The total qty of heat sink selected should match with the qty of processor selected.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "R7J57A",
+      "rawSku": "R7J57A",
+      "isPrivateSku": false,
+      "description": "Intel Virtual RAID on CPU Premium FIO Software for HPE",
+      "listPrice": 371,
+      "startDate": "04/06/2021",
+      "discontinuedDate": "02/29/2028",
+      "section": "Hybrid RAID",
+      "ruleType": "CHASSIS_GATE",
+      "ineligibilityReason": "The VROC SKUs could be selected only if the NVMe drives are selected with either 4SFF Dir Conn Kit (P68219-B21) or 8EDSFF Kit (P68220-B21)",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "S3Q19A",
+      "rawSku": "S3Q19A",
+      "isPrivateSku": false,
+      "description": "Intel Virtual RAID on CPU RAID 1 FIO Software for HPE",
+      "listPrice": 229,
+      "startDate": "04/01/2024",
+      "discontinuedDate": "02/29/2028",
+      "section": "Hybrid RAID",
+      "ruleType": "CHASSIS_GATE",
+      "ineligibilityReason": "The VROC SKUs could be selected only if the NVMe drives are selected with either 4SFF Dir Conn Kit (P68219-B21) or 8EDSFF Kit (P68220-B21)",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "S4R76AAE",
+      "rawSku": "S4R76AAE\n\n    PVT",
+      "isPrivateSku": true,
+      "description": "VMware Cloud Foundation Term per Core 1-year 24x7 E-RTU",
+      "listPrice": 519,
+      "startDate": "08/05/2024",
+      "discontinuedDate": "09/06/2028",
+      "section": "Virtualization",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Private Product is not valid for current customer account",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "S4F94AAE",
+      "rawSku": "OB\n         S4F94AAE\n\n    PVT",
+      "isPrivateSku": true,
+      "description": "VMware Cloud Foundation Term per Core 3-year Subscription 24x7 Support E-RTU\n        \n             Product is obsolete: S4F94AAEProduct is obsolete: S4F94AAE",
+      "listPrice": 1568,
+      "startDate": "07/01/2024",
+      "discontinuedDate": "11/04/2025",
+      "section": "Virtualization",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Private Product is not valid for current customer account",
+      "supplyBadge": "OB",
+      "supplyTitle": "Product is obsolete",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "S4G00AAE",
+      "rawSku": "OB\n         S4G00AAE\n\n    PVT",
+      "isPrivateSku": true,
+      "description": "VMware Cloud Foundation Term per Core 5-year Subscription 24x7 Support E-RTU\n        \n             Product is obsolete: S4G00AAEProduct is obsolete: S4G00AAE",
+      "listPrice": 2637,
+      "startDate": "07/01/2024",
+      "discontinuedDate": "11/04/2025",
+      "section": "Virtualization",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Private Product is not valid for current customer account",
+      "supplyBadge": "OB",
+      "supplyTitle": "Product is obsolete",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    }
+  ]
+}

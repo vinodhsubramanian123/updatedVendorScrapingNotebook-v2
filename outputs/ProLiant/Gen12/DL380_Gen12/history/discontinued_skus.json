@@ -889,14 +889,15 @@
     "daysActive": 49,
     "lastKnownPrice": "1775.00",
     "fullPriceTrail": "2026-08-12: $1775.00 → 2026-08-13: $1775.00 → 2026-08-14: $1775.00 → 2026-08-16: $1775.00 → 2026-08-19: $1775.00 → 2026-08-22: $1775.00 → 2026-08-24: (no price) → 2026-09-09: $1775.00 → 2026-09-10: $1775.00 → 2026-09-30: $1775.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "04/30/2029",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-10-29"
   },
   "P79567-B21": {
     "productNumber": "P79567-B21",
@@ -7726,6 +7727,30 @@
     "mainCategory": "Software & Licenses",
     "subCategory": "MS Windows Server",
     "firstSeenDate": "2026-10-17",
+    "status": "ACTIVE"
+  },
+  "S6L28B": {
+    "productNumber": "S6L28B",
+    "description": "Microsoft Windows Server 2025 10-core Essentials FIO Not Pre-installed WW ESD LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "MS Windows Server - Essentials",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P69726-B21": {
+    "productNumber": "P69726-B21",
+    "description": "HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P69726-F21": {
+    "productNumber": "P69726-F21",
+    "description": "HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "firstSeenDate": "2026-10-29",
     "status": "ACTIVE"
   }
 }

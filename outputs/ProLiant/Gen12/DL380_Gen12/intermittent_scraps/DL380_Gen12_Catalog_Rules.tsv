@@ -63,6 +63,7 @@ HPE Compute Ops Management	Data Management Framework (SGI DMF)	Unlimited	Quantit
 HPE Compute Ops Management	INTEL VROC Products	max 1	Quantity Constraint	Quantity: max 1
 HPE Compute Ops Management	Supported Operating System	Unlimited	Quantity Constraint	Quantity: Unlimited
 HPE Compute Ops Management	MS Windows Server	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPE Compute Ops Management	MS Windows Server - Essentials	Unlimited	Quantity Constraint	Quantity: Unlimited
 HPE Compute Ops Management	Red Hat OpenShift Platform Container	Unlimited	Quantity Constraint	Quantity: Unlimited
 HPE Compute Ops Management	Resale Option Kit	Unlimited	Quantity Constraint	Quantity: Unlimited
 HPE Compute Ops Management	SUSE containers	Unlimited	Quantity Constraint	Quantity: Unlimited
@@ -74,6 +75,30 @@ HPE Compute Ops Management	VMware vCloud Products	Unlimited	Quantity Constraint	
 Chassis	Variants	min 1, max 1 — Active OCA CTO chassis	Configuration Rule	Select exactly one currently discoverable, non-TAA/non-GTA CTO base chassis
 Accessories & Infrastructure	Energy Star Configuration Presets	max 1	Configuration Rule	Selection constraint for Energy Star Configuration Presets: max 1
 Processor	Processor	max 2	Configuration Rule	Selection constraint for Processor: max 2
+Processor	Processor	max 2	Configuration Rule	P74576-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
+Processor	Processor	max 2	Configuration Rule	P71118-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
+Processor	Processor	max 2	Configuration Rule	P71119-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
+Processor	Processor	max 2	Configuration Rule	P71120-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
+Processor	Processor	max 2	Configuration Rule	P71121-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
+Processor	Processor	max 2	Configuration Rule	P71122-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
+Processor	Processor	max 2	Configuration Rule	P71124-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
+Processor	Processor	max 2	Configuration Rule	P73829-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
+Processor	Processor	max 2	Configuration Rule	P73831-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
+Processor	Processor	max 2	Configuration Rule	P73832-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
+Processor	Processor	max 2	Configuration Rule	P73835-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
+Processor	Processor	max 2	Configuration Rule	P73837-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
+Processor	Processor	max 2	Configuration Rule	P73838-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
+Processor	Processor	max 2	Configuration Rule	P74504-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
+Processor	Processor	max 2	Configuration Rule	P74507-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
+Processor	Processor	max 2	Configuration Rule	P74572-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
+Processor	Processor	max 2	Configuration Rule	P74575-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
+Processor	Processor	max 2	Configuration Rule	P74577-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
+Processor	Processor	max 2	Configuration Rule	P74578-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
+Processor	Processor	max 2	Configuration Rule	P74579-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
+Processor	Processor	max 2	Configuration Rule	P81591-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
+Processor	Processor	max 2	Configuration Rule	P87302-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
+Processor	Processor	max 2	Configuration Rule	P90157-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
+Processor	Processor	max 2	Configuration Rule	P94926-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
 Cooling / Thermal	Heatsink Kit	max 2	Configuration Rule	Selection constraint for Heatsink Kit: max 2
 Cooling / Thermal	Standard & Performance Heat Sinks	max 1	Configuration Rule	Mixing of Heat sink is not allowed.
 Cooling / Thermal	Standard & Performance Heat Sinks	max 1	Configuration Rule	P49145-B21 conditional visibility: portal selector activation required (Mixing of Heat sink is not allowed.); PORTAL_CONDITIONAL
@@ -101,20 +126,22 @@ Drive Enclosures / Drives	Drive Cage	max 9	Configuration Rule	P75411-B21 conditi
 Drive Enclosures / Drives	Drive Cage	max 9	Configuration Rule	P76875-B21 conditional visibility: portal selector activation required (Supported with 8LFF and 12LFF CTO Server only.); PORTAL_CONDITIONAL
 Drive Enclosures / Drives	SFF Drive Cages & Enablement	max 1	Configuration Rule	Supported with 8LFF CTO Server only.
 Drive Enclosures / Drives	SFF Drive Cages & Enablement	max 1	Configuration Rule	P74744-B21 conditional visibility: portal selector activation required (Supported with 8LFF CTO Server only.); PORTAL_CONDITIONAL
-Networking	Tertiary PCIe Risers	no max	Configuration Rule	Define connection for 8SFF x4 Cage only needed if cage is selected.
-Networking	Tertiary PCIe Risers	no max	Configuration Rule	P77955-B21 conditional visibility: portal selector activation required (Define connection for 8SFF x4 Cage only needed if cage is selected.); PORTAL_CONDITIONAL
-Networking	Tertiary PCIe Risers	no max	Configuration Rule	P77958-B21 conditional visibility: portal selector activation required (Define connection for 8SFF x4 Cage only needed if cage is selected.); PORTAL_CONDITIONAL
-Networking	Tertiary PCIe Risers	no max	Configuration Rule	P77931-B21 conditional visibility: portal selector activation required (Define connection for 8SFF x4 Cage only needed if cage is selected.); PORTAL_CONDITIONAL
-Networking	Tertiary PCIe Risers	no max	Configuration Rule	P78064-B21 conditional visibility: portal selector activation required (Define connection for 8SFF x4 Cage only needed if cage is selected.); PORTAL_CONDITIONAL
-Networking	Tertiary PCIe Risers	no max	Configuration Rule	P77934-B21 conditional visibility: portal selector activation required (Define connection for 8SFF x4 Cage only needed if cage is selected.); PORTAL_CONDITIONAL
-Networking	Tertiary PCIe Risers	no max	Configuration Rule	P77937-B21 conditional visibility: portal selector activation required (Define connection for 8SFF x4 Cage only needed if cage is selected.); PORTAL_CONDITIONAL
-Networking	Tertiary PCIe Risers	no max	Configuration Rule	P77940-B21 conditional visibility: portal selector activation required (Define connection for 8SFF x4 Cage only needed if cage is selected.); PORTAL_CONDITIONAL
-Networking	Tertiary PCIe Risers	no max	Configuration Rule	P77961-B21 conditional visibility: portal selector activation required (Define connection for 8SFF x4 Cage only needed if cage is selected.); PORTAL_CONDITIONAL
-Networking	Tertiary PCIe Risers	no max	Configuration Rule	P78070-B21 conditional visibility: portal selector activation required (Define connection for 8SFF x4 Cage only needed if cage is selected.); PORTAL_CONDITIONAL
-Networking	Tertiary PCIe Risers	no max	Configuration Rule	P78047-B21 conditional visibility: portal selector activation required (Define connection for 8SFF x4 Cage only needed if cage is selected.); PORTAL_CONDITIONAL
-Networking	Tertiary PCIe Risers	no max	Configuration Rule	P78058-B21 conditional visibility: portal selector activation required (Define connection for 8SFF x4 Cage only needed if cage is selected.); PORTAL_CONDITIONAL
-Networking	Tertiary PCIe Risers	no max	Configuration Rule	P78061-B21 conditional visibility: portal selector activation required (Define connection for 8SFF x4 Cage only needed if cage is selected.); PORTAL_CONDITIONAL
-Networking	Tertiary PCIe Risers	no max	Configuration Rule	P77943-B21 conditional visibility: portal selector activation required (Define connection for 8SFF x4 Cage only needed if cage is selected.); PORTAL_CONDITIONAL
+Networking	SFF Drive Cages & Enablement	no max	Configuration Rule	Nvme option not available with 8sff smart chassis choice.
+Networking	SFF Drive Cages & Enablement	no max	Configuration Rule	P77955-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL
+Networking	SFF Drive Cages & Enablement	no max	Configuration Rule	P77958-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL
+Networking	SFF Drive Cages & Enablement	no max	Configuration Rule	P77931-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL
+Networking	SFF Drive Cages & Enablement	no max	Configuration Rule	P78064-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL
+Networking	SFF Drive Cages & Enablement	no max	Configuration Rule	P77934-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL
+Networking	SFF Drive Cages & Enablement	no max	Configuration Rule	P77961-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL
+Networking	SFF Drive Cages & Enablement	no max	Configuration Rule	P78070-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL
+Networking	SFF Drive Cages & Enablement	no max	Configuration Rule	P78047-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL
+Networking	SFF Drive Cages & Enablement	no max	Configuration Rule	P78058-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL
+Networking	SFF Drive Cages & Enablement	no max	Configuration Rule	P78061-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	SFF Drive Cages & Enablement	no max	Configuration Rule	Nvme option not available with 8sff smart chassis choice.
+Drive Enclosures / Drives	SFF Drive Cages & Enablement	no max	Configuration Rule	P77937-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	SFF Drive Cages & Enablement	no max	Configuration Rule	P77940-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Tertiary PCIe Risers	no max	Configuration Rule	Nvme option not available with 8sff smart chassis choice.
+Drive Enclosures / Drives	Tertiary PCIe Risers	no max	Configuration Rule	P77943-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL
 PCIe Risers	Riser Cards	required	Configuration Rule	Selection constraint for Riser Cards: required
 PCIe Risers	Tertiary PCIe Risers	max 1	Configuration Rule	Tertiary x8x16 Riser and OCPA x16/ CPU1 OCPB x8 cannot be selected together.
 PCIe Risers	Tertiary PCIe Risers	max 1	Configuration Rule	P74737-B21 conditional visibility: portal selector activation required (Tertiary x8x16 Riser and OCPA x16/ CPU1 OCPB x8 cannot be selected together.); PORTAL_CONDITIONAL
@@ -361,32 +388,33 @@ Software & Licenses	MS Windows Server	no max	Configuration Rule	P77109-B21 condi
 Software & Licenses	MS Windows Server	no max	Configuration Rule	S6K30A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Software & Licenses	MS Windows Server	no max	Configuration Rule	S6K30B conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Software & Licenses	MS Windows Server	no max	Configuration Rule	S6L35B conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	Server Management & Operating System Licenses	no max	Configuration Rule	Selection constraint for MS Windows Server: no max
+Software & Licenses	MS Windows Server - Essentials	no max	Configuration Rule	Selection constraint for MS Windows Server - Essentials: no max
+Software & Licenses	Server Management & Operating System Licenses	no max	Configuration Rule	Selection constraint for MS Windows Server - Essentials: no max
 Software & Licenses	Server Management & Operating System Licenses	no max	Configuration Rule	P11085-291 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Software & Licenses	Server Management & Operating System Licenses	no max	Configuration Rule	P11084-291 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Software & Licenses	Server Management & Operating System Licenses	no max	Configuration Rule	S6L45A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	MS Windows Server	no max	Configuration Rule	P11086-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	MS Windows Server	no max	Configuration Rule	P11086-051 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	MS Windows Server	no max	Configuration Rule	P11086-041 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	MS Windows Server	no max	Configuration Rule	P11086-061 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	MS Windows Server	no max	Configuration Rule	P11086-291 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	MS Windows Server	no max	Configuration Rule	P11086-071 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	MS Windows Server	no max	Configuration Rule	P11083-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	MS Windows Server	no max	Configuration Rule	P11083-051 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	MS Windows Server	no max	Configuration Rule	P11083-041 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	MS Windows Server	no max	Configuration Rule	P11083-061 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	MS Windows Server	no max	Configuration Rule	P11083-291 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	MS Windows Server	no max	Configuration Rule	P11083-071 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	MS Windows Server	no max	Configuration Rule	P45862-291 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	MS Windows Server	no max	Configuration Rule	P45862-071 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	MS Windows Server	no max	Configuration Rule	S6L47A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	MS Windows Server	no max	Configuration Rule	S6L46A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	MS Windows Server	no max	Configuration Rule	P77125-291 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	MS Windows Server	no max	Configuration Rule	S6L48A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	MS Windows Server	no max	Configuration Rule	P77125-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	MS Windows Server	no max	Configuration Rule	P77124-291 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	MS Windows Server	no max	Configuration Rule	S6L43A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	MS Windows Server	no max	Configuration Rule	P77124-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	MS Windows Server - Essentials	no max	Configuration Rule	P11086-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	MS Windows Server - Essentials	no max	Configuration Rule	P11086-051 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	MS Windows Server - Essentials	no max	Configuration Rule	P11086-041 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	MS Windows Server - Essentials	no max	Configuration Rule	P11086-061 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	MS Windows Server - Essentials	no max	Configuration Rule	P11086-291 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	MS Windows Server - Essentials	no max	Configuration Rule	P11086-071 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	MS Windows Server - Essentials	no max	Configuration Rule	P11083-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	MS Windows Server - Essentials	no max	Configuration Rule	P11083-051 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	MS Windows Server - Essentials	no max	Configuration Rule	P11083-041 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	MS Windows Server - Essentials	no max	Configuration Rule	P11083-061 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	MS Windows Server - Essentials	no max	Configuration Rule	P11083-291 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	MS Windows Server - Essentials	no max	Configuration Rule	P11083-071 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	MS Windows Server - Essentials	no max	Configuration Rule	P45862-291 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	MS Windows Server - Essentials	no max	Configuration Rule	P45862-071 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	MS Windows Server - Essentials	no max	Configuration Rule	S6L47A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	MS Windows Server - Essentials	no max	Configuration Rule	S6L46A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	MS Windows Server - Essentials	no max	Configuration Rule	P77125-291 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	MS Windows Server - Essentials	no max	Configuration Rule	S6L48A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	MS Windows Server - Essentials	no max	Configuration Rule	P77125-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	MS Windows Server - Essentials	no max	Configuration Rule	P77124-291 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	MS Windows Server - Essentials	no max	Configuration Rule	S6L43A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	MS Windows Server - Essentials	no max	Configuration Rule	P77124-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Software & Licenses	Server Management & Operating System Licenses	no max	Configuration Rule	Selection constraint for Server Management & Operating System Licenses: no max
 Software & Licenses	Server Management & Operating System Licenses	no max	Configuration Rule	P46123-AA1 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Software & Licenses	Server Management & Operating System Licenses	no max	Configuration Rule	P46123-AB1 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
@@ -699,7 +727,7 @@ Memory	Configuration Rules	Mixing of 3DS and non 3DS memory is not allowed.	Lear
 Smart Chassis	Configuration Rules	Supported with EDSFF CTO Server only.	Learned Feedback Rule	[CHASSIS_GATE] Supported with EDSFF CTO Server only.
 Smart Chassis	Configuration Rules	Supported with 8LFF and 12LFF CTO Server only.	Learned Feedback Rule	[CHASSIS_GATE] Supported with 8LFF and 12LFF CTO Server only.
 Smart Chassis	Configuration Rules	Supported with 8LFF CTO Server only.	Learned Feedback Rule	[CHASSIS_GATE] Supported with 8LFF CTO Server only.
-Smart Chassis	Configuration Rules	Define connection for 8SFF x4 Cage only needed if cage is selected.	Learned Feedback Rule	[MUTUAL_EXCLUSION] Define connection for 8SFF x4 Cage only needed if cage is selected.
+Smart Chassis	Configuration Rules	Nvme option not available with 8sff smart chassis choice.	Learned Feedback Rule	[CHASSIS_GATE] Nvme option not available with 8sff smart chassis choice.
 Smart Chassis	Configuration Rules	Tertiary x8x16 Riser and OCPA x16/ CPU1 OCPB x8 cannot be selected together.	Learned Feedback Rule	[SLOT_COLLISION] Tertiary x8x16 Riser and OCPA x16/ CPU1 OCPB x8 cannot be selected together.
 Smart Chassis	Configuration Rules	Selected Smart Chassis Configuration is not valid	Learned Feedback Rule	[CHASSIS_GATE] Selected Smart Chassis Configuration is not valid
 Storage Devices	Configuration Rules	Supported with 8LFF and 12LFF CTO Server only.	Learned Feedback Rule	[CHASSIS_GATE] Supported with 8LFF and 12LFF CTO Server only.

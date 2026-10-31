@@ -1,0 +1,509 @@
+HPE Synergy 12000 & SY480 Gen12 — OCA Configuration & Architecture Master Charter
+
+1. Executive Overview & System Topology
+
+This document serves as the permanent canonical reference for the 2-frame 
+
+HPE Synergy 12000
+
+ infrastructure deployment featuring 
+
+24x HPE Synergy 480 Gen12 Compute Modules
+
+ (
+
+P68217-B21
+
+). It consolidates all architectural rules, One Config Advanced (OCA) validation resolutions, physical faceplate limits, and component mapping logic developed during system engineering and quotation.
+
+Core System Specifications
+
+Chassis Infrastructure:
+
+ 2x HPE Synergy 12000 CTO Frames (
+
+P51174-B21
+
+) configured in a Primary/Satellite fabric arrangement.
+
+Compute Density:
+
+ 24x SY480 Gen12 Compute Modules (12 per frame max physical density) populated with dual Intel Xeon 6 processors.
+
+Ethernet Composable Fabric:
+
+ 2x redundant pairs of HPE Virtual Connect SE 100Gb F32 Modules (
+
+867796-B21
+
+) in Interconnect Bays 3 & 6 of Frame #1 and Frame #2.
+
+Fibre Channel SAN Fabric:
+
+ 2x redundant pairs of Brocade 64Gb FC Switch Modules (
+
+P77653-B21
+
+) in Interconnect Bays 1 & 4 of Frame #1 and Frame #2.
+
+Management Architecture:
+
+ 4-port Frame Link Modules (
+
+876852-B21
+
+) forming a 10GbE management ring with active HPE Synergy Composer2 appliances (
+
+872957-B21
+
+).
+
+
+--------------------------------------------------------------------------------
+
+
+2. Virtual Connect 100Gb F32 Port Architecture & Optics Validation
+
+Physical Port Breakdown per Module
+
+Each physical HPE Virtual Connect SE 100Gb F32 Module (
+
+867796-B21
+
+) faceplate provides 
+
+8 external uplink ports
+
+:
+
+6x QSFP28 Uplink Ports (
+
+Q1
+
+ through 
+
+Q6
+
+):
+
+ Native 100Gb/40Gb ports.
+
+2x SFP+ Uplink Ports (
+
+X1
+
+, 
+
+X2
+
+):
+
+ Native 1Gb/10Gb SFP+ ports.
+
+ 
+
+(Note: Ports 
+
+Q7
+
+ & 
+
+Q8
+
+ are reserved for stacking/clustering; ports 
+
+L1
+
+–
+
+L4
+
+ are CXP28 300Gb satellite interconnect link ports).
+
+Container Multiplier Logic (
+
+Qty: 2
+
+) & Port Math
+
+In OCA, a Virtual Connect container (e.g., 
+
+100Gb Virtual #1
+
+) represents a 
+
+redundant pair of 2 physical modules
+
+ (in Bays 3 & 6).
+
+1 VC Container = 2 Physical Modules = 16 Physical Faceplate Ports
+
+ (12x QSFP28 + 4x SFP+).
+
+2 VC Containers (2 Frames) = 4 Physical Modules = 32 Physical Faceplate Ports
+
+ (24x QSFP28 + 8x SFP+).
+
+Why 24 Transceivers/Cables per Container Pass Validation
+
+When child transceivers/cables are assigned under a container with 
+
+Qty: 2
+
+ base hardware, OCA divides the child optics equally across both physical modules:
+
+ 
+
+\frac{24 \text{ Transceivers/Cables in Container \#1}}{2 \text{ Physical VC Modules}} = 12 \text{ Transceivers/Cables per Physical Module}
+
+Breakout & Logical Channel Capacity
+
+QSFP28 ports (
+
+Q1
+
+–
+
+Q6
+
+) support 4-lane breakout (e.g., 4x25Gb) via breakout cables or QSA28 adapters (
+
+845970-B21
+
+), providing up to 
+
+26 logical connection channels per physical module
+
+ (24 breakout channels + 2 native SFP+ ports).
+
+Therefore, assigning 
+
+12 optics/cables per physical module
+
+ (24 per container / 48 across both frames) sits comfortably within physical faceplate and logical channel limits, clearing all port capacity validation blocks.
+
+Cable Types & Adapter Requirements
+
+Direct 1:1 Cables (
+
+845406-B21
+
+ 100Gb 3m DAC / 
+
+845410-B21
+
+ 100Gb 7m AOC):
+
+ These are point-to-point 1:1 100Gb QSFP28 cables. They plug directly into native QSFP28 ports 
+
+Q1
+
+–
+
+Q6
+
+ without requiring QSA28 adapters or breakout splitters.
+
+25Gb Optics (
+
+845398-B21
+
+):
+
+ Require QSFP28-to-SFP28 (QSA28) adapters (
+
+845970-B21
+
+) when inserted into QSFP28 ports 
+
+Q1
+
+–
+
+Q6
+
+.
+
+Strict Container Mapping Rule:
+
+ Ethernet transceivers/cables must belong strictly to 
+
+100Gb Virtual #1
+
+ and 
+
+100Gb Virtual #2
+
+. Placing Ethernet optics under Brocade FC switches or Frame Link Modules triggers 
+
+CLIC Rule 
+
+81125982
+
+ (
+
+Invalid Sub-Iteming under FLM
+
+). Any optics exceeding physical module ports must be designated as standalone loose spares.
+
+
+--------------------------------------------------------------------------------
+
+
+3. OCA Validation Errors & Resolution Log
+
+A. CLIC Rules 
+
+81314323
+
+ & 
+
+81410905
+
+ (FC License Conflict)
+
+Error Description:
+
+ 
+
+R3P67A
+
+ / 
+
+R3P67AAE
+
+ (HPE Synergy 32Gb FC Upgrade FIO/E-LTU) flagged as UNBUILDABLE on 
+
+P51174-B21
+
+ frames containing only Gen12 compute nodes.
+
+Technical Root Cause:
+
+ On SY480 Gen12 compute nodes (
+
+P68217-B21
+
+), the mezzanine Ethernet adapter (
+
+P64724-B21
+
+) in Mezzanine 3 routes to Bays 3 & 6 (Virtual Connect 100Gb) running 
+
+pure Ethernet
+
+. Dedicated Fibre Channel SAN connectivity is handled by FC HBAs (
+
+P68131-B21
+
+) in Mezzanine 1 routing to Bays 1 & 4 (Brocade 64Gb FC switches 
+
+P77653-B21
+
+). CLIC strictly forbids attaching FC licenses to pure Ethernet VC modules on Gen12 frames.
+
+Resolution:
+
+ Purged all 
+
+R3P67A
+
+ / 
+
+R3P67AAE
+
+ licenses completely. Fibre Channel SAN functionality is fully delivered by the Brocade 64Gb FC switch modules (
+
+P77653-B21
+
+) and their 8-port upgrade licenses (
+
+Q2E58AAE
+
+).
+
+B. CLIC Rule 
+
+91001677
+
+ (CPU Inventory Constraint)
+
+Error Description:
+
+ Intel Xeon 6747P 48-core 330W CPU (
+
+P73831-B21
+
+) in Frame #2 blocked due to global inventory constraints.
+
+Resolution:
+
+ Standardized Frame #2 compute nodes on 
+
+P74573-B21
+
+ (Intel Xeon 6730P 2.5GHz 32-core 250W Processor)
+
+ to match Frame #1. Standardizing on 
+
+P74573-B21
+
+ across all 24 nodes ensures 100% CPU homogeneity, uniform power/thermal profiles, and seamless vMotion live migration without CPU instruction mask conflicts. 
+
+(Alternative: 
+
+P73829-B21
+
+ Xeon 6740P 48-core if 48 cores/node is required).
+
+C. Rule 
+
+91001659
+
+ & RAM Population Architecture
+
+Memory Selection:
+
+ Substituted 128GB DIMMs (
+
+P69730-F21
+
+) with 
+
+64GB DDR5-6400 Smart FIO DIMMs (
+
+P69728-F21
+
+)
+
+ populated at 32 DIMMs per node (384 per frame / 768 total across 24 nodes).
+
+Technical Impact on Bandwidth:
+
+ Populating all 32 DIMM slots per node (2 DPC) fully engages all 16 memory channels (8 per socket) running at 
+
+5200 MT/s
+
+. Aggregate memory throughput/bandwidth is 100% identical between 32x 64GB and 32x 128GB DIMMs. Total memory capacity per node is 2,048 GB (2 TB per node / 48 TB solution total).
+
+Physical Density Expansion Limit:
+
+ Each SY480 Gen12 node has a hard limit of 32 DIMM slots. Each Synergy 12000 Frame has a hard limit of 12 half-height device bays (12 nodes/frame max). To expand beyond 24 compute nodes, a 3rd Synergy 12000 Frame must be added into the FLM management ring.
+
+D. Startup Services & Part Number Syntax (
+
+DELTA_SYNERGY_FRAME_STARTUP_MATH
+
+)
+
+Service Alignment:
+
+ Purged Remote Startup (
+
+HA124A1#V0F
+
+) as Remote and Onsite options are mutually exclusive. Retained Onsite Startup Services: 
+
+HA124A1#5ZM
+
+ (First Frame Onsite) and 
+
+HA124A1#5ZQ
+
+ (Additional Frame Onsite).
+
+Syntax Clarification:
+
+ Discrepancies between 
+
+HA124A1 #5ZM
+
+ (space in BOQ) and 
+
+HA124A1#5ZM
+
+ (hash in BOM) represent a purely visual text convention gap between quote exports and OCA syntax; physical entitlements are identical.
+
+
+--------------------------------------------------------------------------------
+
+
+4. Multi-Frame Topology & Management Architecture
+
+Primary / Satellite Fabric Topology
+
+OCA automatically designates 
+
+Frame 1 as Primary
+
+ and 
+
+Frame 2 as Satellite
+
+.
+
+Primary Virtual Connect 100Gb modules in Frame 1 contain the network intelligence and physical core uplinks. Frame 2 VC modules connect back to Frame 1 via CXP28 Interconnect Link Cables (
+
+876680-B21
+
+ 2.1m DAC / 
+
+876689-B21
+
+ 3m AOC) on ports 
+
+L1
+
+–
+
+L4
+
+.
+
+This forms a single software-defined 
+
+Logical Interconnect Enclosure (LIE)
+
+ managed under one HPE OneView domain.
+
+Composer2 Appliance Redundancy (
+
+872957-B21
+
+)
+
+Chassis Capacity:
+
+ Each Synergy 12000 Frame physically contains 2 Appliance Bays. OCA accepts 2 Composers per frame container cleanly (4 total across solution).
+
+Cross-Chassis Best Practice:
+
+ For multi-frame FLM management rings, deploying 
+
+1 Composer2 in Frame #1 (Bay 1)
+
+ and 
+
+1 Composer2 in Frame #2 (Bay 1)
+
+ provides true cross-chassis Active/Standby HA redundancy. If Frame #1 experiences a total chassis power failure, the standby Composer in Frame #2 maintains management continuity. Open Appliance Bay 2 in each frame is fitted with an 
+
+Appliance Bay Blank Kit (
+
+813562-001
+
+)
+
+ for thermal airflow.
+
+Management Ring Links:
+
+ Frame Link Modules are interconnected using 10GbE SFP+ 3m DAC cables (
+
+487655-B21
+
+) under 
+
+4-port Frame Link Module #2
+
+.

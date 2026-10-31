@@ -58198,5 +58198,4345 @@
     "field": "Price Delta (USD)",
     "oldValue": "+0.00",
     "newValue": "Selected"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P73282-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": ""
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P73282-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "Not published by OCA"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P73283-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": ""
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P73283-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "Not published by OCA"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P73284-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": ""
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P73284-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "Not published by OCA"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P73285-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": ""
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P73285-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "Not published by OCA"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P73286-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": ""
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P73286-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "Not published by OCA"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P68503-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Energy Star Configuration Presets",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P71117-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":6096}",
+    "newValue": "{\"Est. Lead Time\":\"10\",\"listPrice\":6096}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P73834-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":22485}",
+    "newValue": "{\"Est. Lead Time\":\"10\",\"listPrice\":22485}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74506-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":2457}",
+    "newValue": "{\"Est. Lead Time\":\"10\",\"listPrice\":2457}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74508-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":8941}",
+    "newValue": "{\"Est. Lead Time\":\"10\",\"listPrice\":8941}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74509-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":11074}",
+    "newValue": "{\"Est. Lead Time\":\"10\",\"listPrice\":11074}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74570-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":8123}",
+    "newValue": "{\"Est. Lead Time\":\"10\",\"listPrice\":8123}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74571-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":6830}",
+    "newValue": "{\"Est. Lead Time\":\"10\",\"listPrice\":6830}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74503-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1756}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":1756}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74568-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":4242}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":4242}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74573-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":10516}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":10516}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74576-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74576-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Condition Type",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL_VIEW"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74576-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":14682}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":14682}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P71124-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P71124-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Condition Type",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL_VIEW"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P71124-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":16019}",
+    "newValue": "{\"Est. Lead Time\":\"14\",\"listPrice\":16019}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P73829-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P73829-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Condition Type",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL_VIEW"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P73829-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":13124}",
+    "newValue": "{\"Est. Lead Time\":\"10\",\"listPrice\":13124}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P73831-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P73831-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Condition Type",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL_VIEW"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P73831-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":16595}",
+    "newValue": "{\"Est. Lead Time\":\"120\",\"listPrice\":16595}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P73832-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P73832-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Condition Type",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL_VIEW"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P73832-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":16517}",
+    "newValue": "{\"Est. Lead Time\":\"120\",\"listPrice\":16517}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P73837-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P73837-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Condition Type",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL_VIEW"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P73837-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":23285}",
+    "newValue": "{\"Est. Lead Time\":\"10\",\"listPrice\":23285}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74504-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74504-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Condition Type",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL_VIEW"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74504-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":2293}",
+    "newValue": "{\"Est. Lead Time\":\"10\",\"listPrice\":2293}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74507-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74507-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Condition Type",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL_VIEW"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74507-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":3734}",
+    "newValue": "{\"Est. Lead Time\":\"10\",\"listPrice\":3734}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74572-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74572-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Condition Type",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL_VIEW"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74572-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":7493}",
+    "newValue": "{\"Est. Lead Time\":\"10\",\"listPrice\":7493}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74575-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74575-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Condition Type",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL_VIEW"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74575-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":10247}",
+    "newValue": "{\"Est. Lead Time\":\"10\",\"listPrice\":10247}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74577-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74577-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Condition Type",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL_VIEW"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74577-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":17305}",
+    "newValue": "{\"Est. Lead Time\":\"10\",\"listPrice\":17305}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74578-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74578-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Condition Type",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL_VIEW"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74578-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":13581}",
+    "newValue": "{\"Est. Lead Time\":\"120\",\"listPrice\":13581}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74579-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74579-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Condition Type",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL_VIEW"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74579-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":38913}",
+    "newValue": "{\"Est. Lead Time\":\"120\",\"listPrice\":38913}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P81591-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P81591-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Condition Type",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL_VIEW"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P81591-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":14818}",
+    "newValue": "{\"Est. Lead Time\":\"60\",\"listPrice\":14818}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P87302-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P87302-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Condition Type",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL_VIEW"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P87302-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":12209}",
+    "newValue": "{\"Est. Lead Time\":\"120\",\"listPrice\":12209}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P90157-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P90157-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Condition Type",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL_VIEW"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P90157-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":46351}",
+    "newValue": "{\"Est. Lead Time\":\"120\",\"listPrice\":46351}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P94926-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P94926-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Condition Type",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL_VIEW"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74792-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cooling / Thermal",
+    "subCategory": "Heatsink Kit",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":316}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":316}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P49145-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cooling / Thermal",
+    "subCategory": "Standard & Performance Heat Sinks",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":133}",
+    "newValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":133}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74204-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cooling / Thermal",
+    "subCategory": "Standard & Performance Heat Sinks",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":2027}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":2027}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74208-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cooling / Thermal",
+    "subCategory": "Standard & Performance Heat Sinks",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1996}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":1996}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74787-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cooling / Thermal",
+    "subCategory": "Standard & Performance Heat Sinks",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":293}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":293}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74794-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cooling / Thermal",
+    "subCategory": "Standard & Performance Heat Sinks",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":624}",
+    "newValue": "{\"Est. Lead Time\":\"14\",\"listPrice\":624}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P69727-F21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "field": "Discontinued Date",
+    "oldValue": "03/31/2028",
+    "newValue": "06/30/2030"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P69727-F21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":13909}",
+    "newValue": "{\"Est. Lead Time\":\"10\",\"listPrice\":13909}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P69728-F21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "field": "Discontinued Date",
+    "oldValue": "03/31/2028",
+    "newValue": "06/30/2030"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P69728-F21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":28532}",
+    "newValue": "{\"Est. Lead Time\":\"10\",\"listPrice\":28532}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P69729-F21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "field": "Discontinued Date",
+    "oldValue": "03/31/2028",
+    "newValue": "06/30/2030"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P69729-F21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":47056}",
+    "newValue": "{\"Est. Lead Time\":\"10\",\"listPrice\":47056}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P69730-F21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "field": "Discontinued Date",
+    "oldValue": "03/31/2028",
+    "newValue": "06/30/2030"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P69730-F21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":60190}",
+    "newValue": "{\"Est. Lead Time\":\"10\",\"listPrice\":60190}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P73447-F21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "field": "Discontinued Date",
+    "oldValue": "03/31/2028",
+    "newValue": "06/30/2030"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P73447-F21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":133186}",
+    "newValue": "{\"Est. Lead Time\":\"10\",\"listPrice\":133186}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P07818-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Memory",
+    "subCategory": "Memory Blank Kit",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":129}",
+    "newValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":129}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74734-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Drive Cage",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":233}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":233}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74743-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Drive Cage",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":198}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":198}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74749-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Drive Cage",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":152}",
+    "newValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":152}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P75740-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Drive Cage",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":260}",
+    "newValue": "{\"Est. Lead Time\":\"14\",\"listPrice\":260}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P75741-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Drive Cage",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":355}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":355}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P75807-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Drive Cage",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":179}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":179}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P76449-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Drive Cage",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":73}",
+    "newValue": "{\"Est. Lead Time\":\"14\",\"listPrice\":73}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P76450-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Drive Cage",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":169}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":169}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74738-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Drive Cage",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":488}",
+    "newValue": "{\"Est. Lead Time\":\"14\",\"listPrice\":488}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74741-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Drive Cage",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":262}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":262}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74746-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Drive Cage",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":182}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":182}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P75411-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Drive Cage",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":714}",
+    "newValue": "{\"Est. Lead Time\":\"14\",\"listPrice\":714}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P76875-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Drive Cage",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":182}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":182}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74744-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":224}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":224}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77955-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77955-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Transceiver"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77955-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77958-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach Universal Media Bay FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 16SFF x2 1P Direct Attach Universal Media Bay FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77958-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Transceiver"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77958-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77931-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Balanced FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77931-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Transceiver"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77931-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P78064-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P78064-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Transceiver"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P78064-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":0}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77934-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Universal Media Bay FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 16SFF x4 Direct Attach Universal Media Bay FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77934-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Transceiver"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77934-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77961-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 24SFF x2 Direct Attach x16/x16/x16 OCP FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 24SFF x2 Direct Attach x16/x16/x16 OCP FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77961-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Transceiver"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77961-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P78070-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 1P Direct Attach FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 1P Direct Attach FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P78070-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Transceiver"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P78070-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P78047-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Balanced FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P78047-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Transceiver"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P78047-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P78058-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Multiple Purpose Cage FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P78058-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Transceiver"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P78058-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":0}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P78061-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach UMB Multiple Purpose Cage FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach UMB Multiple Purpose Cage FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P78061-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Transceiver"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P78061-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":0}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77937-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77937-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Drive Cage / Drive"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77937-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77940-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Gen4 Retimer Card FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 24SFF x16/x16/x16 OCP Gen4 Retimer Card FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77940-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Drive Cage / Drive"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77940-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77943-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Description",
+    "oldValue": "HPE ProLiant Compute DL380 Gen12 Tertiary Riser 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Nvme option not available with 8sff smart chassis choice.",
+    "newValue": "HPE ProLiant Compute DL380 Gen12 Tertiary Riser 24SFF x16/x16/x16 OCP Balanced FIO Bundle Kit                       Define connection for 8SFF x4 Cage only needed if cage is selected."
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77943-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Component Role",
+    "oldValue": "",
+    "newValue": "Drive Cage / Drive"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77943-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "873763-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Drive Cage",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":14}",
+    "newValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":14}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P48802-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "PCIe Risers",
+    "subCategory": "Riser Cards",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":265}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":265}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P48803-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "PCIe Risers",
+    "subCategory": "Riser Cards",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":262}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":262}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P51083-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "PCIe Risers",
+    "subCategory": "Riser Cards",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":343}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":343}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P76451-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "PCIe Risers",
+    "subCategory": "Riser Cards",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":619}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":619}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74737-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "PCIe Risers",
+    "subCategory": "Tertiary PCIe Risers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":506}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":506}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P80997-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "PCIe Risers",
+    "subCategory": "Primary PCIe Risers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":625}",
+    "newValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":625}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P83356-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "PCIe Risers",
+    "subCategory": "Primary PCIe Risers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":590}",
+    "newValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":590}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P76471-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "PCIe Risers",
+    "subCategory": "Riser Accessories",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":89}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":89}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P78117-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "PCIe Risers",
+    "subCategory": "Riser Accessories",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P78120-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "PCIe Risers",
+    "subCategory": "Riser Accessories",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P75697-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "SAS Controller",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":11399}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":11399}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P47777-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "SAS Controller",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":5999}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":5999}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P47789-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "SAS Controller",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":3449}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":3449}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74775-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "SAS Controller",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":4699}",
+    "newValue": "{\"Est. Lead Time\":\"60\",\"listPrice\":4699}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P25527-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "SAS Controller",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":633}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":633}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P47781-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "SAS Controller",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":5699}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":5699}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P47785-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "SAS Controller",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":3499}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":3499}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P58335-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "SAS Controller",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":4599}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":4599}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P79567-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "AmbientTemperature",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P79564-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "AmbientTemperature",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P79561-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "AmbientTemperature",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P79558-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "AmbientTemperature",
+    "field": "Price Delta (USD)",
+    "oldValue": "Selected",
+    "newValue": "+0.00"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P79558-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "AmbientTemperature",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P79555-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "AmbientTemperature",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P79552-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "AmbientTemperature",
+    "field": "Price Delta (USD)",
+    "oldValue": "+0.00",
+    "newValue": "Selected"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P79552-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "AmbientTemperature",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P01366-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Smart Storage Batteries",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":110}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":110}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P02377-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Smart Storage Batteries",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":397}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":397}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P48918-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Smart Storage Batteries",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":38}",
+    "newValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":38}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P65038-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Smart Storage Batteries",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":397}",
+    "newValue": "{\"Est. Lead Time\":\"14\",\"listPrice\":397}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P76453-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Internal Storage Controller Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":96}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":96}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P76454-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Internal Storage Controller Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":212}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":212}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P76456-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Internal Storage Controller Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":215}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":215}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P76461-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Internal Storage Controller Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":243}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":243}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P76464-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Internal Storage Controller Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":925}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":925}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P76465-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Internal Storage Controller Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":414}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":414}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P76467-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Internal Storage Controller Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":296}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":296}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P76468-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Internal Storage Controller Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":230}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":230}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P76475-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Internal Storage Controller Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":97}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":97}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77476-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Internal Storage Controller Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":173}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":173}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77477-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Internal Storage Controller Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":71}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":71}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77478-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Internal Storage Controller Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":73}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":73}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77482-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Internal Storage Controller Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":165}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":165}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77483-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Internal Storage Controller Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":70}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":70}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77486-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Internal Storage Controller Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":169}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":169}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77488-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Internal Storage Controller Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":347}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":347}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77489-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Internal Storage Controller Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":246}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":246}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77490-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Internal Storage Controller Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":165}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":165}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77491-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Internal Storage Controller Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":167}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":167}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77493-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Internal Storage Controller Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":67}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":67}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P83800-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Internal Storage Controller Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":237}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":237}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P83801-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Internal Storage Controller Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":183}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":183}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P84481-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Internal Storage Controller Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":68}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":68}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P87235-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Internal Storage Controller Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":64}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":64}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P87236-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Internal Storage Controller Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":64}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":64}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P76452-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Internal Storage Controller Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":60}",
+    "newValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":60}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P76462-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Internal Storage Controller Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":238}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":238}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P76463-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Internal Storage Controller Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":603}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":603}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77492-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Internal Storage Controller Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":626}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":626}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P76473-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Storage Controller Cable Kits",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":56}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":56}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77474-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Storage Controller Cable Kits",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":55}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":55}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77475-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Storage Controller Cable Kits",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":61}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":61}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77484-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Storage Controller Cable Kits",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":80}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":80}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77485-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Storage Controller Cable Kits",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":97}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":97}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P76474-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Storage Controller Cable Kits",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":60}",
+    "newValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":60}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P76476-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":102}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":102}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77481-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":73}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":73}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77480-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "SFF Drive Cages & Enablement",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":67}",
+    "newValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":67}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P83798-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Energy Star",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":198}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":198}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P83799-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Energy Star",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":123}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":123}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P87968-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Energy Star",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":20}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":20}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "339777-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Controllers Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "339778-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Controllers Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "339779-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Controllers Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "339780-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "Storage Controllers Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "726536-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Optical Drive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":124}",
+    "newValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":124}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "726537-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Optical Drive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":161}",
+    "newValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":161}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "701498-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Optical Drive",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":203}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":203}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P72199-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Optical Drive Accessories",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":55}",
+    "newValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":55}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74752-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables & Enablement Kits Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":105}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":105}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "807878-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Memory",
+    "subCategory": "Memory Blank Kit",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":32}",
+    "newValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":32}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "666987-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Memory",
+    "subCategory": "Memory Blank Kit",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":18}",
+    "newValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":18}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "875519-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":89}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":89}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P48922-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":38}",
+    "newValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":38}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P50400-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":88}",
+    "newValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":88}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "S6B45A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":88}",
+    "newValue": "{\"Est. Lead Time\":\"14\",\"listPrice\":88}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P35876-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Factory Configuration Settings",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P36394-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Trusted Supply Chain",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1839}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1839}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P79376-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Drive Configuration Settings",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P79379-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Drive Configuration Settings",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P79308-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Storage Controller Cable Kits",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P79311-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Storage Controller Cable Kits",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P79314-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Storage Controller Cable Kits",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P87692-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Drive Enclosures / Drives",
+    "subCategory": "Drive Cage",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P42104-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P63226-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "vSAN Tracking SKUs",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":1}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P08040-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "iLO Common Password",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "S2A69A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1650}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":1650}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P08443-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1680}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":1680}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P25960-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":4373}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":4373}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P26253-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1105}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":1105}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P26259-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":940}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":940}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P26262-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1184}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":1184}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P42044-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1500}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":1500}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P51178-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":485}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":485}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P21112-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":3600}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":3600}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P08458-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":3770}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":3770}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P21109-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":8495}",
+    "newValue": "{\"Est. Lead Time\":\"10\",\"listPrice\":8495}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P26264-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":2598}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":2598}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P73111-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":4855}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":4855}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P87940-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Ethernet PCIe",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":11755}",
+    "newValue": "{\"Est. Lead Time\":\"10\",\"listPrice\":11755}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74383-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":15334}",
+    "newValue": "{\"Est. Lead Time\":\"180\",\"listPrice\":15334}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P45641-H23",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "InfiniBand PCIe",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":6377}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":6377}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P45642-H23",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "InfiniBand PCIe",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":4904}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":4904}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P66386-H21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "InfiniBand PCIe",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":15334}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":15334}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P79115-H21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "InfiniBand PCIe",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":8910}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":8910}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P45641-B23",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "InfiniBand PCIe",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":6377}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":6377}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P45641-H24",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "InfiniBand PCIe",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":6517}",
+    "newValue": "{\"Est. Lead Time\":\"14\",\"listPrice\":6517}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P45642-B22",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "InfiniBand PCIe",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":4568}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":4568}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P65333-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "InfiniBand PCIe",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":7331}",
+    "newValue": "{\"Est. Lead Time\":\"30\",\"listPrice\":7331}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P65333-H21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "InfiniBand PCIe",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":7331}",
+    "newValue": "{\"Est. Lead Time\":\"30\",\"listPrice\":5425}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P66387-H21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "InfiniBand PCIe",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":14399}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":14399}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P79114-H21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "InfiniBand PCIe",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":8910}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":8910}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P81264-H21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "InfiniBand PCIe",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":734}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":734}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P49764-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1866}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":1866}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "Q8J73A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":3495}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":3495}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "Q9S71A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1899}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":1899}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "453151-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":427}",
+    "newValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":427}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "453154-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":426}",
+    "newValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":426}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "455883-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":842}",
+    "newValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":842}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "455886-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1751}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":1751}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "845398-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":2110}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":2110}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "845966-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":4252}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":4252}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "845970-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":227}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":227}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "845972-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":2585}",
+    "newValue": "{\"Est. Lead Time\":\"60\",\"listPrice\":2585}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P65334-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":3875}",
+    "newValue": "{\"Est. Lead Time\":\"60\",\"listPrice\":3875}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P79829-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":4259}",
+    "newValue": "{\"Est. Lead Time\":\"112\",\"listPrice\":4259}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P82314-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":4939}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":4939}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P86377-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":3682}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":3682}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P87585-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":7359}",
+    "newValue": "{\"Est. Lead Time\":\"60\",\"listPrice\":7359}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P89422-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":2400}",
+    "newValue": "{\"Est. Lead Time\":\"84\",\"listPrice\":2400}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P89423-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":2428}",
+    "newValue": "{\"Est. Lead Time\":\"60\",\"listPrice\":2428}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "Q2F19A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Transceivers",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":2425}",
+    "newValue": "{\"Est. Lead Time\":\"14\",\"listPrice\":2425}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "S4T09A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":9999}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":9999}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "S4S01A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":5499}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":5499}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "R2E08A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":4675}",
+    "newValue": "{\"Est. Lead Time\":\"30\",\"listPrice\":4675}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "R2E09A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":7410}",
+    "newValue": "{\"Est. Lead Time\":\"30\",\"listPrice\":7410}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "R7N86A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":9688}",
+    "newValue": "{\"Est. Lead Time\":\"30\",\"listPrice\":9688}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "R7N87A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "Fibre Channel HBA",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":12800}",
+    "newValue": "{\"Est. Lead Time\":\"30\",\"listPrice\":12800}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P10115-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "OCP Ethernet",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1231}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":1231}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P42041-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "OCP Ethernet",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1398}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":1398}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P51181-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "OCP Ethernet",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":485}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":485}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P22767-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "OCP Ethernet",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":3600}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":3600}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P26256-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "OCP Ethernet",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":940}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":940}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P79833-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "OCP Ethernet",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1580}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":1580}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P10097-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "OCP Ethernet",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1105}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":1105}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P10106-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "OCP Ethernet",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1680}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":1680}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P26269-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "OCP Ethernet",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":2598}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":2598}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P41614-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "OCP Ethernet",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":3770}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":3770}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P73114-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Networking",
+    "subCategory": "OCP Ethernet",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":4855}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":4855}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "AJ833A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Energy Star",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":65}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":65}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "AJ836A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Energy Star",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":115}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":115}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "AJ837A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Energy Star",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":162}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":162}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "AJ838A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Energy Star",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":208}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":208}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "AJ839A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Energy Star",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":253}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":253}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "AJ834A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Energy Star",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":70}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":70}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P72201-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OCP3 Networking Adapters",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":84}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":84}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P72203-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OCP3 Networking Adapters",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":77}",
+    "newValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":77}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P72205-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OCP3 Networking Adapters",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":84}",
+    "newValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":84}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P72207-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OCP3 Networking Adapters",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":164}",
+    "newValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":164}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74757-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OCP3 Networking Adapters",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0}",
+    "newValue": "{\"Est. Lead Time\":\"60\",\"listPrice\":0}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74758-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "OCP3 Networking Adapters",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0}",
+    "newValue": "{\"Est. Lead Time\":\"60\",\"listPrice\":0}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74606-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Energy Star",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":12}",
+    "newValue": "{\"Est. Lead Time\":\"21\",\"listPrice\":12}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P48824-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Management Hardware",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":28}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":28}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "875293-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Memory",
+    "subCategory": "Memory Setting",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P78279-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":9199}",
+    "newValue": "{\"Est. Lead Time\":\"10\",\"listPrice\":9199}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74755-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":82}",
+    "newValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":82}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74759-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":108}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":108}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77928-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P81160-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":14299}",
+    "newValue": "{\"Est. Lead Time\":\"10\",\"listPrice\":14299}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P81162-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":14299}",
+    "newValue": "{\"Est. Lead Time\":\"10\",\"listPrice\":14299}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P60283-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Accessories & Infrastructure Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":99}",
+    "newValue": "{\"Est. Lead Time\":\"21\",\"listPrice\":99}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P73325-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Accessories & Infrastructure Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":4}",
+    "newValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":4}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P22020-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":89}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":89}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P52341-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":164}",
+    "newValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":164}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P70744-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":172}",
+    "newValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":172}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P74748-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "Chassis Infrastructure & Rail Kits",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":117}",
+    "newValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":117}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "S6W30C",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":18882}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":18882}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "S0K89C",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":10589}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":10589}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "S2L70C",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":32212}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":32212}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "S5T74C",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1687}",
+    "newValue": "{\"Est. Lead Time\":\"14\",\"listPrice\":1687}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "S3U30C",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": "Not published by OCA"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "S3U30C",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":112579}",
+    "newValue": "{\"Est. Lead Time\":\"168\",\"listPrice\":112579}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "S6A73C",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": "Not published by OCA"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "S6A73C",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":57002}",
+    "newValue": "{\"Est. Lead Time\":\"14\",\"listPrice\":57002}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "S6W21C",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": "Not published by OCA"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "S6W21C",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":37899}",
+    "newValue": "{\"Est. Lead Time\":\"112\",\"listPrice\":37899}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "S7J51C",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0}",
+    "newValue": "{\"Est. Lead Time\":\"84\",\"listPrice\":0}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P56072-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics Accessories",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":84}",
+    "newValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":84}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P77896-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics Accessories",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":115}",
+    "newValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":115}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P03178-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Power Supplies",
+    "subCategory": "Power Supplies",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":926}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":926}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P38995-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Power Supplies",
+    "subCategory": "Flex Slot Power Supplies",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":524}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":524}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P38997-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Power Supplies",
+    "subCategory": "Flex Slot Power Supplies",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":890}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":890}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P44712-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Power Supplies",
+    "subCategory": "Flex Slot Power Supplies",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1588}",
+    "newValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":1588}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P17023-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Power Supplies",
+    "subCategory": "-48VDC Power Supplies & Cable Kits",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1561}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":1561}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P48820-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cooling / Thermal",
+    "subCategory": "Power Cooling Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":972}",
+    "newValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":972}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P49146-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cooling / Thermal",
+    "subCategory": "Power Cooling Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":115}",
+    "newValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":115}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P62038-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cooling / Thermal",
+    "subCategory": "Power Cooling Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1200}",
+    "newValue": "{\"Est. Lead Time\":\"56\",\"listPrice\":1200}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P62042-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cooling / Thermal",
+    "subCategory": "Power Cooling Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1213}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":1213}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P81130-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cooling / Thermal",
+    "subCategory": "Power Cooling Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":559}",
+    "newValue": "{\"Est. Lead Time\":\"14\",\"listPrice\":559}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P36877-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "-48VDC Power Supplies & Cable Kits",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":135}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":135}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P78145-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":11}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":11}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "A0N33A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":78}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":78}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "A0K02A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":34}",
+    "newValue": "{\"Est. Lead Time\":\"21\",\"listPrice\":34}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "AF556A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":55}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":55}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "AF557A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":156}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":156}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "AF568A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":71}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":71}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "AF573A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":38}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":38}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P78130-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":10}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":10}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P78156-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":14}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":14}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "AF558A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":65}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":65}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "AF559A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":55}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":55}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "AF560A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":55}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":55}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "AF561A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":55}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":55}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "AF562A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":194}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":194}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "AF564A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":55}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":55}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "AF565A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":55}",
+    "newValue": "{\"Est. Lead Time\":\"14\",\"listPrice\":55}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "AF566A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":55}",
+    "newValue": "{\"Est. Lead Time\":\"14\",\"listPrice\":55}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "AF567A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":65}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":65}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "AF569A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":65}",
+    "newValue": "{\"Est. Lead Time\":\"14\",\"listPrice\":65}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "AF570A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":55}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":55}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "AF572A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":60}",
+    "newValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":60}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "AF591A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":49}",
+    "newValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":49}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P78131-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":10}",
+    "newValue": "{\"Est. Lead Time\":\"21\",\"listPrice\":10}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P78144-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":46}",
+    "newValue": "{\"Est. Lead Time\":\"21\",\"listPrice\":46}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P78147-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":77}",
+    "newValue": "{\"Est. Lead Time\":\"21\",\"listPrice\":77}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P78940-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":130}",
+    "newValue": "{\"Est. Lead Time\":\"21\",\"listPrice\":130}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P78941-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":110}",
+    "newValue": "{\"Est. Lead Time\":\"21\",\"listPrice\":110}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "R1C65A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Power Cords & Jumper Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":119}",
+    "newValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":119}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P22173-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "-48VDC Power Supplies & Cable Kits",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":818}",
+    "newValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":818}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P46199-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "MS Windows Server",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":141}",
+    "newValue": "{\"listPrice\":136}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P46214-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "MS Windows Server",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":644}",
+    "newValue": "{\"listPrice\":619}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P11086-051",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "MS Windows Server - Essentials",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":28}",
+    "newValue": "{\"listPrice\":20}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P11083-061",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "MS Windows Server - Essentials",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":28}",
+    "newValue": "{\"listPrice\":20}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P11083-071",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "MS Windows Server - Essentials",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":28}",
+    "newValue": "{\"listPrice\":20}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P45879-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "MS Windows Server - Essentials",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":28}",
+    "newValue": "{\"listPrice\":20}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P45879-051",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "MS Windows Server - Essentials",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":28}",
+    "newValue": "{\"listPrice\":20}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P45879-041",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "MS Windows Server - Essentials",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":28}",
+    "newValue": "{\"listPrice\":20}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P45879-071",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "MS Windows Server - Essentials",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":28}",
+    "newValue": "{\"listPrice\":20}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P45862-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "MS Windows Server - Essentials",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":28}",
+    "newValue": "{\"listPrice\":20}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P45862-051",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "MS Windows Server - Essentials",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":28}",
+    "newValue": "{\"listPrice\":20}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P45862-041",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "MS Windows Server - Essentials",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":28}",
+    "newValue": "{\"listPrice\":20}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P45862-061",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "MS Windows Server - Essentials",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":28}",
+    "newValue": "{\"listPrice\":20}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P45862-071",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "MS Windows Server - Essentials",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":28}",
+    "newValue": "{\"listPrice\":20}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P46123-021",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":5105}",
+    "newValue": "{\"listPrice\":4946}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P46191-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Microsoft Windows CAL Packs",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":51}",
+    "newValue": "{\"listPrice\":55}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P46194-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Microsoft Windows CAL Packs",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":41}",
+    "newValue": "{\"listPrice\":44}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P46215-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Microsoft Windows CAL Packs",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":232}",
+    "newValue": "{\"listPrice\":271}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P46218-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Microsoft Windows CAL Packs",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":342}",
+    "newValue": "{\"listPrice\":429}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P46222-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Microsoft Windows CAL Packs",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":691}",
+    "newValue": "{\"listPrice\":880}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P79555-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "AmbientTemperature",
+    "field": "Price Delta (USD)",
+    "oldValue": "+0.00",
+    "newValue": "Selected"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "S3U30C",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":112579}",
+    "newValue": "{\"Est. Lead Time\":\"168\",\"listPrice\":112579}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "S6A73C",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":57002}",
+    "newValue": "{\"Est. Lead Time\":\"14\",\"listPrice\":57002}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "S6W21C",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "Graphics",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":37899}",
+    "newValue": "{\"Est. Lead Time\":\"112\",\"listPrice\":37899}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P71118-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": "CS (vendor status; meaning unverified)"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P71118-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P71118-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Condition Type",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL_VIEW"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P71118-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":7062}",
+    "newValue": "{\"listPrice\":7062,\"Vendor Status Badge\":\"CS\"}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P71119-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": "CS (vendor status; meaning unverified)"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P71119-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P71119-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Condition Type",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL_VIEW"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P71119-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":8459}",
+    "newValue": "{\"listPrice\":8459,\"Vendor Status Badge\":\"CS\"}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P71120-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": "CS (vendor status; meaning unverified)"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P71120-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P71120-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Condition Type",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL_VIEW"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P71120-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":8965}",
+    "newValue": "{\"listPrice\":8965,\"Vendor Status Badge\":\"CS\"}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P71121-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": "CS (vendor status; meaning unverified)"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P71121-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P71121-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Condition Type",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL_VIEW"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P71121-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":11891}",
+    "newValue": "{\"listPrice\":11891,\"Vendor Status Badge\":\"CS\"}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P71122-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": "CS (vendor status; meaning unverified)"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P71122-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P71122-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Condition Type",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL_VIEW"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P71122-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":14473}",
+    "newValue": "{\"listPrice\":14473,\"Vendor Status Badge\":\"CS\"}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P73835-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": "CS (vendor status; meaning unverified)"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P73835-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P73835-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Condition Type",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL_VIEW"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P73835-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":48922}",
+    "newValue": "{\"listPrice\":48922,\"Vendor Status Badge\":\"CS\"}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P73838-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": "CS (vendor status; meaning unverified)"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P73838-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Portal Visibility",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P73838-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Condition Type",
+    "oldValue": "",
+    "newValue": "PORTAL_CONDITIONAL_VIEW"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "P73838-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Processor",
+    "subCategory": "Processor",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":58094}",
+    "newValue": "{\"listPrice\":58094,\"Vendor Status Badge\":\"CS\"}"
   }
 ]

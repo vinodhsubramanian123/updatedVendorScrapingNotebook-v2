@@ -886,5 +886,21 @@
     "subCategory": "System Options",
     "firstSeenDate": "2026-10-17",
     "status": "ACTIVE"
+  },
+  "H30RYA1": {
+    "productNumber": "H30RYA1",
+    "description": "HPE Container Adopt Ph2 Redht Onsite SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Data Management Framework (SGI DMF)",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "H30SDA1": {
+    "productNumber": "H30SDA1",
+    "description": "HPE Container Adopt Ph1 Anths Onsite SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Data Management Framework (SGI DMF)",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
   }
 }

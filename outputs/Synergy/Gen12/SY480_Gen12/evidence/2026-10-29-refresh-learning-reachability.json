@@ -1,0 +1,50 @@
+{
+  "product": "SY480_Gen12",
+  "recordedAt": "2026-10-29T06:13:40.919Z",
+  "results": [
+    {
+      "deltaId": "LEARN_SY480_GEN12_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_SY480_GEN12_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029",
+        "ruleType": "WORKFLOW_DUAL_PUBLICATION_ADVISORY",
+        "affectedSku": "",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-10-29T06:13:40.855Z"
+      }
+    },
+    {
+      "deltaId": "LEARN_SY480_GEN12_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_SY480_GEN12_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029",
+        "ruleType": "WORKFLOW_SOURCE_RETIREMENT_ADVISORY",
+        "affectedSku": "",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-10-29T06:13:40.885Z"
+      }
+    },
+    {
+      "deltaId": "LEARN_SY480_GEN12_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_SY480_GEN12_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029",
+        "ruleType": "WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY",
+        "affectedSku": "",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-10-29T06:13:40.919Z"
+      }
+    }
+  ],
+  "allReachable": true,
+  "hardwareCompatibilityCertified": false
+}

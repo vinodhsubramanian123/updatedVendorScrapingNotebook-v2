@@ -1,0 +1,53 @@
+[
+  {
+    "deltaId": "LEARN_SY100GB_F32_MODULE_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029",
+    "ruleType": "WORKFLOW_DUAL_PUBLICATION_ADVISORY",
+    "rawMessage": "Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Google Sheets is not a supported NotebookLM Drive source. A recent upload timestamp does not refresh old vendor observations.",
+    "productId": "SY100Gb_F32_Module",
+    "vendor": "HPE",
+    "family": "Synergy",
+    "generation": "General",
+    "pillar": "NETWORKING",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "governanceStatus": "ACTIVE",
+    "evidenceType": "WORKFLOW_REVIEW",
+    "source": "docs/audits/2026-10-29-catalog-refresh-and-knowledge-sync.md",
+    "hardwareCompatibilityCertified": false,
+    "timestamp": "2026-10-29T06:13:40.942Z",
+    "chassis": "SY100Gb_F32_Module"
+  },
+  {
+    "deltaId": "LEARN_SY100GB_F32_MODULE_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029",
+    "ruleType": "WORKFLOW_SOURCE_RETIREMENT_ADVISORY",
+    "rawMessage": "Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata before removing only managed stale catalog snapshots. Preserve QuickSpecs, separate learnings, shared enclosure/fabric sources and unrelated documents. Inventory absence is not authority to remove another product source.",
+    "productId": "SY100Gb_F32_Module",
+    "vendor": "HPE",
+    "family": "Synergy",
+    "generation": "General",
+    "pillar": "NETWORKING",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "governanceStatus": "ACTIVE",
+    "evidenceType": "WORKFLOW_REVIEW",
+    "source": "docs/audits/2026-10-29-catalog-refresh-and-knowledge-sync.md",
+    "hardwareCompatibilityCertified": false,
+    "timestamp": "2026-10-29T06:13:40.972Z",
+    "chassis": "SY100Gb_F32_Module"
+  },
+  {
+    "deltaId": "LEARN_SY100GB_F32_MODULE_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029",
+    "ruleType": "WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY",
+    "rawMessage": "Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending dated vendor evidence; resolve contradictions before promoting hardware dependencies. Conflicting quantity claims require dated evidence for this exact product and selector state.",
+    "productId": "SY100Gb_F32_Module",
+    "vendor": "HPE",
+    "family": "Synergy",
+    "generation": "General",
+    "pillar": "NETWORKING",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "governanceStatus": "ACTIVE",
+    "evidenceType": "WORKFLOW_REVIEW",
+    "source": "docs/audits/2026-10-29-catalog-refresh-and-knowledge-sync.md",
+    "hardwareCompatibilityCertified": false,
+    "timestamp": "2026-10-29T06:13:41.001Z",
+    "chassis": "SY100Gb_F32_Module"
+  }
+]

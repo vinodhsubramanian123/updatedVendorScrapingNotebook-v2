@@ -1,15 +1,15 @@
 {
   "version": "1.0.0",
   "chassis": "DL380a_Gen12",
-  "generatedAt": "2026-10-18T08:14:25.447Z",
-  "executionDurationMs": 1097,
+  "generatedAt": "2026-10-29T06:29:28.670Z",
+  "executionDurationMs": 1480,
   "summary": {
-    "totalRawTables": 84,
-    "validProductTables": 75,
+    "totalRawTables": 85,
+    "validProductTables": 76,
     "skippedTablesCount": 29,
-    "totalExtractedSKUs": 443,
-    "totalUniqueSKUs": 443,
-    "totalRulesExtracted": 312,
+    "totalExtractedSKUs": 451,
+    "totalUniqueSKUs": 451,
+    "totalRulesExtracted": 335,
     "chassisVariantsCount": 1
   },
   "skippedTables": [
@@ -129,32 +129,32 @@
       "sampleSnippet": null
     },
     {
-      "tableIndex": 86,
+      "tableIndex": 87,
       "reason": "No valid SKU or headers detected",
       "sampleSnippet": null
     },
     {
-      "tableIndex": 94,
+      "tableIndex": 95,
       "reason": "Table rows < 2 or empty",
-      "sampleSnippet": null
-    },
-    {
-      "tableIndex": 103,
-      "reason": "No valid SKU or headers detected",
       "sampleSnippet": null
     },
     {
       "tableIndex": 104,
-      "reason": "Table rows < 2 or empty",
+      "reason": "No valid SKU or headers detected",
       "sampleSnippet": null
     },
     {
       "tableIndex": 105,
-      "reason": "Solution hierarchy BOM summary table",
+      "reason": "Table rows < 2 or empty",
       "sampleSnippet": null
     },
     {
       "tableIndex": 106,
+      "reason": "Solution hierarchy BOM summary table",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 107,
       "reason": "No valid SKU or headers detected",
       "sampleSnippet": null
     }
@@ -193,7 +193,7 @@
       "constraint": "max 32",
       "minQty": 0,
       "maxQty": 32,
-      "skuCount": 1,
+      "skuCount": 8,
       "rulesCount": 1
     },
     {
@@ -810,7 +810,19 @@
     },
     {
       "tableIndex": 78,
-      "subCategory": "MS Windows Server",
+      "subCategory": "MS Windows Server - Essentials",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Operating System / License",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 79,
+      "subCategory": "MS Windows Server - Essentials",
       "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
       "detectedRole": "Operating System / License",
@@ -821,7 +833,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 79,
+      "tableIndex": 80,
       "subCategory": "Red Hat OpenShift Platform Container",
       "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
@@ -833,7 +845,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 80,
+      "tableIndex": 81,
       "subCategory": "Server Management & Operating System Licenses",
       "parentCategory": "Software & Licenses",
       "matchedVia": "role_classifier",
@@ -845,7 +857,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 81,
+      "tableIndex": 82,
       "subCategory": "SUSE Linux Enterprise Server",
       "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
@@ -857,7 +869,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 82,
+      "tableIndex": 83,
       "subCategory": "Microsoft Windows CAL Packs",
       "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
@@ -869,7 +881,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 83,
+      "tableIndex": 84,
       "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
       "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
@@ -881,7 +893,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 84,
+      "tableIndex": 85,
       "subCategory": "System Options",
       "parentCategory": "Support Services",
       "matchedVia": "role_classifier",
@@ -893,7 +905,7 @@
       "rulesCount": 0
     },
     {
-      "tableIndex": 85,
+      "tableIndex": 86,
       "subCategory": "System Options",
       "parentCategory": "Support Services",
       "matchedVia": "role_classifier",
@@ -905,18 +917,6 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 87,
-      "subCategory": "System Options",
-      "parentCategory": "Support Services",
-      "matchedVia": "role_classifier",
-      "detectedRole": "Service & Support",
-      "constraint": "N/A",
-      "minQty": 0,
-      "maxQty": "",
-      "skuCount": 10,
-      "rulesCount": 0
-    },
-    {
       "tableIndex": 88,
       "subCategory": "System Options",
       "parentCategory": "Support Services",
@@ -925,7 +925,7 @@
       "constraint": "N/A",
       "minQty": 0,
       "maxQty": "",
-      "skuCount": 7,
+      "skuCount": 10,
       "rulesCount": 0
     },
     {
@@ -937,7 +937,7 @@
       "constraint": "N/A",
       "minQty": 0,
       "maxQty": "",
-      "skuCount": 9,
+      "skuCount": 7,
       "rulesCount": 0
     },
     {
@@ -949,11 +949,23 @@
       "constraint": "N/A",
       "minQty": 0,
       "maxQty": "",
-      "skuCount": 10,
+      "skuCount": 9,
       "rulesCount": 0
     },
     {
       "tableIndex": 91,
+      "subCategory": "System Options",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "N/A",
+      "minQty": 0,
+      "maxQty": "",
+      "skuCount": 10,
+      "rulesCount": 0
+    },
+    {
+      "tableIndex": 92,
       "subCategory": "Rack Options",
       "parentCategory": "Support Services",
       "matchedVia": "role_classifier",
@@ -965,7 +977,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 92,
+      "tableIndex": 93,
       "subCategory": "System Options",
       "parentCategory": "Support Services",
       "matchedVia": "role_classifier",
@@ -977,7 +989,7 @@
       "rulesCount": 0
     },
     {
-      "tableIndex": 93,
+      "tableIndex": 94,
       "subCategory": "Management Hardware",
       "parentCategory": "Support Services",
       "matchedVia": "role_classifier",
@@ -985,11 +997,11 @@
       "constraint": "max 2",
       "minQty": 0,
       "maxQty": 2,
-      "skuCount": 7,
+      "skuCount": 8,
       "rulesCount": 1
     },
     {
-      "tableIndex": 95,
+      "tableIndex": 96,
       "subCategory": "System Options",
       "parentCategory": "Support Services",
       "matchedVia": "role_classifier",
@@ -1001,7 +1013,7 @@
       "rulesCount": 0
     },
     {
-      "tableIndex": 96,
+      "tableIndex": 97,
       "subCategory": "System Options",
       "parentCategory": "Support Services",
       "matchedVia": "role_classifier",
@@ -1013,7 +1025,7 @@
       "rulesCount": 0
     },
     {
-      "tableIndex": 97,
+      "tableIndex": 98,
       "subCategory": "Red Hat (add-ons)",
       "parentCategory": "Software & Licenses",
       "matchedVia": "direct_taxonomy_keyword",
@@ -1025,7 +1037,7 @@
       "rulesCount": 1
     },
     {
-      "tableIndex": 99,
+      "tableIndex": 100,
       "subCategory": "System Options",
       "parentCategory": "Support Services",
       "matchedVia": "role_classifier",
@@ -1037,7 +1049,7 @@
       "rulesCount": 0
     },
     {
-      "tableIndex": 100,
+      "tableIndex": 101,
       "subCategory": "System Options",
       "parentCategory": "Support Services",
       "matchedVia": "role_classifier",
@@ -1049,7 +1061,7 @@
       "rulesCount": 0
     },
     {
-      "tableIndex": 102,
+      "tableIndex": 103,
       "subCategory": "System Options",
       "parentCategory": "Support Services",
       "matchedVia": "role_classifier",
@@ -1065,11 +1077,11 @@
     "Chassis": 1,
     "Processor": 32,
     "Cooling / Thermal": 11,
-    "Memory": 6,
+    "Memory": 13,
     "Graphics & GPU": 9,
     "Storage Controllers": 19,
     "Drive Enclosures / Drives": 55,
-    "Software & Licenses": 218,
+    "Software & Licenses": 219,
     "PCIe Risers": 6,
     "Cables & Enablement Kits": 12,
     "Networking": 60,
@@ -1095,13 +1107,13 @@
     "skusWithLeadTime": 0,
     "skusWithCost": 0,
     "skusWithPriceDelta": 67,
-    "skusWithPricePerGb": 59,
+    "skusWithPricePerGb": 66,
     "clicStatusDistribution": {
       "Valid": 1,
-      "Unpublished": 442
+      "Unpublished": 450
     },
     "lifecycleStatusDistribution": {
-      "Active": 373,
+      "Active": 381,
       "EOL Warning (90-Day)": 3,
       "Obsolete (OB)": 63,
       "Direct Ship (DS)": 4

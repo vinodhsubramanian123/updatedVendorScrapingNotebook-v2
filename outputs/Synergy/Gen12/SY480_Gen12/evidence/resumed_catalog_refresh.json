@@ -1,0 +1,43 @@
+{
+  "product": "SY480_Gen12",
+  "observedAt": "2026-10-29T06:34:24.500Z",
+  "resumedAt": "2026-10-29T09:06:20.450Z",
+  "promoted": {
+    "success": true,
+    "liveTargetDir": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\Synergy\\Gen12\\SY480_Gen12",
+    "backupDir": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\Synergy\\Gen12\\.SY480_Gen12.promotion.5f02d6f6-1805-4511-96cd-b78a2dbbb535.previous",
+    "journalPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\Synergy\\Gen12\\.SY480_Gen12.promotion.5f02d6f6-1805-4511-96cd-b78a2dbbb535.json"
+  },
+  "sync": {
+    "success": true,
+    "syncStatus": "CLOUD_VERIFIED",
+    "cloudUploaded": true,
+    "flowType": "SCRAPE",
+    "chassisName": "SY480_Gen12",
+    "masterRegistryRulesCount": 126,
+    "payloadPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\Synergy\\Gen12\\SY480_Gen12\\notebook_sync_payload_SY480_Gen12.md",
+    "driftStatus": "DRIFT_DETECTED",
+    "unSyncedDeltasCount": 0,
+    "uploadResult": {
+      "success": true,
+      "cloudVerified": true,
+      "mode": "CLI",
+      "newSourceId": "ffddc101-14e0-4612-9daf-15e7299553bd",
+      "newSourceName": "SY480_Gen12_OCA_Catalog_2026-10-29",
+      "driveSyncStatus": "HUMAN_WORKBOOK_WRITTEN_AND_READBACK_VERIFIED",
+      "consolidationVerified": true,
+      "retiredSourceIds": [
+        "fbef4c8a-9ee6-48a4-99e3-b0e1af4f5fe6"
+      ],
+      "retirementErrors": [],
+      "contentFingerprints": null,
+      "canonicalDriveSheetId": "1ukT4-pUQukZ9FUnzl5KJI-BVSk5zPye_1yvvS4nK3iY",
+      "canonicalDriveSheetUrl": "https://docs.google.com/spreadsheets/d/1ukT4-pUQukZ9FUnzl5KJI-BVSk5zPye_1yvvS4nK3iY/edit",
+      "canonicalDriveSourceId": "fbef4c8a-9ee6-48a4-99e3-b0e1af4f5fe6",
+      "staleSourceIds": [],
+      "message": "Uploaded and canary-verified \"SY480_Gen12_OCA_Catalog_2026-10-29\" in NotebookLM (49a3c69e-115f-4332-9454-c5d4f2941327). Existing sources were preserved unless explicit retirement was confirmed."
+    },
+    "runningKnowledgeSynced": false
+  },
+  "success": true
+}

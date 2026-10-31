@@ -7,7 +7,7 @@ RULE_5	CONDITIONAL_VISIBILITY	Memory	Mixing of 3DS and non 3DS memory is not all
 RULE_6	CONDITIONAL_VISIBILITY	Smart Chassis	Supported with EDSFF CTO Server only.	1	P74738-B21
 RULE_7	CONDITIONAL_VISIBILITY	Smart Chassis	Supported with 8LFF and 12LFF CTO Server only.	4	P74741-B21, P74746-B21, P75411-B21, P76875-B21
 RULE_8	CONDITIONAL_VISIBILITY	Smart Chassis	Supported with 8LFF CTO Server only.	1	P74744-B21
-RULE_9	CONDITIONAL_VISIBILITY	Smart Chassis	Define connection for 8SFF x4 Cage only needed if cage is selected.	17	cntr8sffx2, cntr8sffx4, da8sffx2, da8sffx4, P77955-B21, P77958-B21, P77931-B21, P78064-B21, P77934-B21, P77937-B21, P77940-B21, P77961-B21, P78070-B21, P78047-B21, P78058-B21, P78061-B21, P77943-B21
+RULE_9	CONDITIONAL_VISIBILITY	Smart Chassis	Nvme option not available with 8sff smart chassis choice.	17	cntr8sffx2, cntr8sffx4, da8sffx2, da8sffx4, P77955-B21, P77958-B21, P77931-B21, P78064-B21, P77934-B21, P77937-B21, P77940-B21, P77961-B21, P78070-B21, P78047-B21, P78058-B21, P78061-B21, P77943-B21
 RULE_10	CONDITIONAL_VISIBILITY	Smart Chassis	Tertiary x8x16 Riser and OCPA x16/ CPU1 OCPB x8 cannot be selected together.	1	P74737-B21
 RULE_11	CONDITIONAL_VISIBILITY	Smart Chassis	Supported with EDSFF CTO Server only.	2	P80997-B21, P83356-B21
 RULE_12	CONDITIONAL_VISIBILITY	Smart Chassis	Selected Smart Chassis Configuration is not valid	3	dl380smtch_1-0, dl380smtch_1-1, dl380smtch_1-2

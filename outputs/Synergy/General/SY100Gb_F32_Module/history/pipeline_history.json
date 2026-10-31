@@ -1,0 +1,284 @@
+[
+  {
+    "summary": {
+      "runId": "run_SY100Gb_F32_Module_1793381240060",
+      "sessionName": "SY100Gb_F32_Module",
+      "startTime": "2026-10-30T17:27:20.057Z",
+      "endTime": "2026-10-30T17:27:21.376Z",
+      "durationMs": 1319,
+      "durationSec": "1.32",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 142,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 142,
+      "validationStats": {
+        "totalEntries": 8,
+        "totalSKUs": 142,
+        "validSKUs": 142,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 2,
+        "zeroPriceSKUs": 25,
+        "priceErrors": 0,
+        "ruleCount": 117,
+        "categoryCount": 5
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-10-30T17:27:20.060Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "outputs/temp/failed_staging_SY100Gb_F32_Module_1793361452633/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/temp/failed_staging_SY100Gb_F32_Module_1793361452633/SY100Gb_F32_Module_Catalog.json",
+          "chassisLabel": "SY100Gb F32 Module"
+        }
+      },
+      {
+        "timestamp": "2026-10-30T17:27:21.204Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 5,
+          "totalUniqueSKUs": 142,
+          "incrementalStats": {
+            "totalScrapedSkus": 142,
+            "unchangedSkusCount": 117,
+            "modifiedSkusCount": 25,
+            "addedSkusCount": 0,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-10-30T17:27:21.209Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 8,
+            "totalSKUs": 142,
+            "validSKUs": 142,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 2,
+            "zeroPriceSKUs": 25,
+            "priceErrors": 0,
+            "ruleCount": 117,
+            "categoryCount": 5
+          }
+        }
+      },
+      {
+        "timestamp": "2026-10-30T17:27:21.376Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "outputs/temp/failed_staging_SY100Gb_F32_Module_1793361452633/SY100Gb_F32_Module_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 142,
+      "classified": 142,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
+      "runId": "run_SY100Gb_F32_Module_1793381158902",
+      "sessionName": "SY100Gb_F32_Module",
+      "startTime": "2026-10-30T17:25:58.879Z",
+      "endTime": "2026-10-30T17:26:00.938Z",
+      "durationMs": 2059,
+      "durationSec": "2.06",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 142,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 142,
+      "validationStats": {
+        "totalEntries": 8,
+        "totalSKUs": 142,
+        "validSKUs": 142,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 2,
+        "zeroPriceSKUs": 25,
+        "priceErrors": 0,
+        "ruleCount": 117,
+        "categoryCount": 5
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-10-30T17:25:58.903Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "outputs/temp/failed_staging_SY100Gb_F32_Module_1793361452633/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/temp/failed_staging_SY100Gb_F32_Module_1793361452633/SY100Gb_F32_Module_Catalog.json",
+          "chassisLabel": "SY100Gb F32 Module"
+        }
+      },
+      {
+        "timestamp": "2026-10-30T17:26:00.747Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 5,
+          "totalUniqueSKUs": 142,
+          "incrementalStats": {
+            "totalScrapedSkus": 142,
+            "unchangedSkusCount": 141,
+            "modifiedSkusCount": 0,
+            "addedSkusCount": 1,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-10-30T17:26:00.752Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 8,
+            "totalSKUs": 142,
+            "validSKUs": 142,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 2,
+            "zeroPriceSKUs": 25,
+            "priceErrors": 0,
+            "ruleCount": 117,
+            "categoryCount": 5
+          }
+        }
+      },
+      {
+        "timestamp": "2026-10-30T17:26:00.938Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "outputs/temp/failed_staging_SY100Gb_F32_Module_1793361452633/SY100Gb_F32_Module_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 142,
+      "classified": 142,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
+      "runId": "run_SY100Gb_F32_Module_1793361449236",
+      "sessionName": "SY100Gb_F32_Module",
+      "startTime": "2026-10-30T11:57:29.234Z",
+      "endTime": "2026-10-30T11:57:30.488Z",
+      "durationMs": 1254,
+      "durationSec": "1.25",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 141,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 141,
+      "validationStats": {
+        "totalEntries": 8,
+        "totalSKUs": 141,
+        "validSKUs": 141,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 1,
+        "zeroPriceSKUs": 25,
+        "priceErrors": 0,
+        "ruleCount": 117,
+        "categoryCount": 5
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-10-30T11:57:29.236Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_SY100Gb_F32_Module_1793361433831\\raw_data\\oca_raw_data_full.json",
+          "jsonOutputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_SY100Gb_F32_Module_1793361433831\\SY100Gb_F32_Module_Catalog.json",
+          "chassisLabel": "SY100Gb F32 Module"
+        }
+      },
+      {
+        "timestamp": "2026-10-30T11:57:30.387Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 5,
+          "totalUniqueSKUs": 141,
+          "incrementalStats": {
+            "totalScrapedSkus": 141,
+            "unchangedSkusCount": 0,
+            "modifiedSkusCount": 0,
+            "addedSkusCount": 141,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-10-30T11:57:30.392Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 8,
+            "totalSKUs": 141,
+            "validSKUs": 141,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 1,
+            "zeroPriceSKUs": 25,
+            "priceErrors": 0,
+            "ruleCount": 117,
+            "categoryCount": 5
+          }
+        }
+      },
+      {
+        "timestamp": "2026-10-30T11:57:30.488Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_SY100Gb_F32_Module_1793361433831\\SY100Gb_F32_Module_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 141,
+      "classified": 141,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  }
+]

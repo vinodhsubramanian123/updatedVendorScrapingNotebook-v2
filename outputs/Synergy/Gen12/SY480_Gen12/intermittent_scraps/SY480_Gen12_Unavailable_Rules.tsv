@@ -1,0 +1,4 @@
+Rule ID	Rule Type	Section	Constraint / Reason	Affected SKU Count	Affected SKUs
+RULE_1	CONDITIONAL_VISIBILITY	Processors	The total qty of heat sink selected should match with the qty of processor selected.	2	P68225-B21, P68226-B21
+RULE_2	CONDITIONAL_VISIBILITY	Hybrid RAID	The VROC SKUs could be selected only if the NVMe drives are selected with either 4SFF Dir Conn Kit (P68219-B21) or 8EDSFF Kit (P68220-B21)	2	R7J57A, S3Q19A
+RULE_3	CONDITIONAL_VISIBILITY	Virtualization	Private Product is not valid for current customer account	3	S4R76AAE, S4F94AAE, S4G00AAE

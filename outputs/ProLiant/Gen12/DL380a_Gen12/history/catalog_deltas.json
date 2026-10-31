@@ -295,5 +295,56 @@
       "sourceId": "HPE DL380a Gen12 QuickSpecs Citation 26 (734fcb3d-d3a3-4ea2-9070-395c7193e2c9)",
       "confidenceScore": 1
     }
+  },
+  {
+    "deltaId": "LEARN_DL380A_GEN12_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029",
+    "ruleType": "WORKFLOW_DUAL_PUBLICATION_ADVISORY",
+    "rawMessage": "Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Google Sheets is not a supported NotebookLM Drive source. A recent upload timestamp does not refresh old vendor observations.",
+    "productId": "DL380a_Gen12",
+    "vendor": "HPE",
+    "family": "ProLiant",
+    "generation": "Gen12",
+    "pillar": "SERVER",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "governanceStatus": "ACTIVE",
+    "evidenceType": "WORKFLOW_REVIEW",
+    "source": "docs/audits/2026-10-29-catalog-refresh-and-knowledge-sync.md",
+    "hardwareCompatibilityCertified": false,
+    "timestamp": "2026-10-29T06:13:40.403Z",
+    "chassis": "DL380a_Gen12"
+  },
+  {
+    "deltaId": "LEARN_DL380A_GEN12_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029",
+    "ruleType": "WORKFLOW_SOURCE_RETIREMENT_ADVISORY",
+    "rawMessage": "Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata before removing only managed stale catalog snapshots. Preserve QuickSpecs, separate learnings, shared enclosure/fabric sources and unrelated documents. Inventory absence is not authority to remove another product source.",
+    "productId": "DL380a_Gen12",
+    "vendor": "HPE",
+    "family": "ProLiant",
+    "generation": "Gen12",
+    "pillar": "SERVER",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "governanceStatus": "ACTIVE",
+    "evidenceType": "WORKFLOW_REVIEW",
+    "source": "docs/audits/2026-10-29-catalog-refresh-and-knowledge-sync.md",
+    "hardwareCompatibilityCertified": false,
+    "timestamp": "2026-10-29T06:13:40.451Z",
+    "chassis": "DL380a_Gen12"
+  },
+  {
+    "deltaId": "LEARN_DL380A_GEN12_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029",
+    "ruleType": "WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY",
+    "rawMessage": "Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending dated vendor evidence; resolve contradictions before promoting hardware dependencies. Conflicting quantity claims require dated evidence for this exact product and selector state.",
+    "productId": "DL380a_Gen12",
+    "vendor": "HPE",
+    "family": "ProLiant",
+    "generation": "Gen12",
+    "pillar": "SERVER",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "governanceStatus": "ACTIVE",
+    "evidenceType": "WORKFLOW_REVIEW",
+    "source": "docs/audits/2026-10-29-catalog-refresh-and-knowledge-sync.md",
+    "hardwareCompatibilityCertified": false,
+    "timestamp": "2026-10-29T06:13:40.486Z",
+    "chassis": "DL380a_Gen12"
   }
 ]

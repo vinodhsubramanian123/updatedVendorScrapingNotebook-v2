@@ -1,0 +1,173 @@
+{
+  "success": true,
+  "spreadsheetId": "1ileDbsJXAFo59rRG9hsTuTNrjOFTnCXSiGyTLFGXb54",
+  "backupFile": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\history\\drive_backups\\drive_backup_039a72f8-3050-4a92-9a74-c7dff79f6a30.json",
+  "tabsWritten": [
+    {
+      "title": "Certified Catalog",
+      "rows": 452
+    },
+    {
+      "title": "Verified Learnings",
+      "rows": 347
+    },
+    {
+      "title": "Change Log",
+      "rows": 6324
+    },
+    {
+      "title": "Sync Metadata",
+      "rows": 10
+    },
+    {
+      "title": "Category Summary",
+      "rows": 97
+    },
+    {
+      "title": "All SKUs",
+      "rows": 452
+    },
+    {
+      "title": "Chassis Variants",
+      "rows": 2
+    },
+    {
+      "title": "Chassis Options Matrix",
+      "rows": 2
+    },
+    {
+      "title": "Rules & Constraints",
+      "rows": 406
+    },
+    {
+      "title": "Unavailable Rules & Gates",
+      "rows": 13
+    },
+    {
+      "title": "Hardware Accessories",
+      "rows": 3
+    },
+    {
+      "title": "Software & Licenses",
+      "rows": 442
+    },
+    {
+      "title": "Support Services",
+      "rows": 99
+    },
+    {
+      "title": "Catalog Diffs",
+      "rows": 229
+    },
+    {
+      "title": "Price History Timeline",
+      "rows": 774
+    },
+    {
+      "title": "Processor",
+      "rows": 33
+    },
+    {
+      "title": "Memory",
+      "rows": 14
+    },
+    {
+      "title": "Networking",
+      "rows": 61
+    },
+    {
+      "title": "Power Supplies",
+      "rows": 6
+    },
+    {
+      "title": "Chassis",
+      "rows": 2
+    },
+    {
+      "title": "Cooling  Thermal",
+      "rows": 12
+    },
+    {
+      "title": "Graphics & GPU",
+      "rows": 10
+    },
+    {
+      "title": "Storage Controllers",
+      "rows": 20
+    },
+    {
+      "title": "Drive Enclosures  Drives",
+      "rows": 56
+    },
+    {
+      "title": "PCIe Risers",
+      "rows": 7
+    },
+    {
+      "title": "Cables & Enablement Kits",
+      "rows": 13
+    },
+    {
+      "title": "Accessories & Infrastructure",
+      "rows": 5
+    },
+    {
+      "title": "OS Boot Device",
+      "rows": 6
+    },
+    {
+      "title": "Discontinued SKUs",
+      "rows": 472
+    },
+    {
+      "title": "Supply Chain & Lead Times",
+      "rows": 774
+    },
+    {
+      "title": "Metadata",
+      "rows": 22
+    }
+  ],
+  "readbackVerified": true,
+  "readbackFingerprints": {
+    "Certified Catalog": "019bff7076697bc5aa1ceb5daa14eb474a4e9b7637b00d0bec0962208c17ef66",
+    "Verified Learnings": "6627402ea8c6bba091aba0de2d136f30557a5e1819ded37aabba387a178ea6aa",
+    "Change Log": "229d93b860d157702e80807946c68f7bf790f974b67d02ad0c460cce4d70db6c",
+    "Sync Metadata": "9c1b8db00e51ce0351ea044264062087787df2dc2212ca700f0b373254460609",
+    "Category Summary": "a0fbc1fe99dc1a0772f0143c00e4736e176245442b035de49ba6ae0241c93f86",
+    "All SKUs": "92cb80b90e470d1da2b9fce58f601e2b1faa3bc15f30c215d24d2f7a4db57414",
+    "Chassis Variants": "4f65a11fc2ff1e4978a7be3a2cdefd994ac95b40039d13c25b25915e16447769",
+    "Chassis Options Matrix": "12a8d88e3b82eac938fdd8d6d94b45f7c80019efad6ba501415499dfac01f223",
+    "Rules & Constraints": "ac9bbcc494f83be6bd3557f12da1a28c6cf1b53b710e6ddd2f5b956ef983b1d2",
+    "Unavailable Rules & Gates": "a8ddaf28af98f8c9e3fcb1fcfa9b319e916be7ca1f7862841ffbfe4c33c65333",
+    "Hardware Accessories": "6ffae2bd61dfd8b7d12deb52ae250e4b040859c25289ef834c5179e070291aa1",
+    "Software & Licenses": "e6c8f79e4dfb24d492d4b71fc85f751e59d9ea59ff5af01aa96c8aac1439142c",
+    "Support Services": "b11a5c661e4982e1b505d10ee1be69212409b63acd4910b015030c0ab0421c77",
+    "Catalog Diffs": "a7327f5704bfbd15f48f72d2331aa3a5fdd96b5b19c1a58cb531b494a25104ef",
+    "Price History Timeline": "a34ac30e096e2adeaf1902a1610d121f4e433e1d04452b73104f3d492ca7dfa9",
+    "Processor": "9b492c1fa3c0851c644498df97a6e00d0f666598b6203ef589cb241ab887ff10",
+    "Memory": "7fa024ca0d55f4b66def38b93e94edd1ed9926cc9b460ed388024dac43529184",
+    "Networking": "49b77de303b2e396ab87ed14e5cc83bd49e33b103fbe752533d500c3480064b2",
+    "Power Supplies": "0adcecb121d177192284204c39f39c08e4c4f18d305611373fc658e7ce5f8bc9",
+    "Chassis": "bd90073ec798d7db53df98f8390c991df2fb7d9d9ffe85f3dece6146e1ebc684",
+    "Cooling  Thermal": "3215d1bcbaed66dfd694c4dca346aa7b55f5669e6ee85d0e8a2e3a4e80727c25",
+    "Graphics & GPU": "e99065051c55a3dde01b515a6d1d0471bbc611c71a5678c21b459c271929883b",
+    "Storage Controllers": "1fa3fcbfe99e655c9ae32702309efd8470a5fbdeb398fa300712e88b1d4e2eea",
+    "Drive Enclosures  Drives": "5fc5ef0c825c38ffc699c3c3f8e5703247c18ef30de2378f067de4b04771c839",
+    "PCIe Risers": "8bf2599cb1e74d2bb354ae7608714fea9c724943d0110a18b29a1f13dd2b30ba",
+    "Cables & Enablement Kits": "017066167574e45c36ace686827d14fa02b552197583d8c2ab159f2bf4173668",
+    "Accessories & Infrastructure": "08dadcf3f0b15121e600d86e96ff0a22c213052f1a07a74739fb87bed36aada9",
+    "OS Boot Device": "22e588f90aa92797161dfa01f69cbb2fdd7b38626aefc656f7cf69052f2e14b0",
+    "Discontinued SKUs": "e21c48392d3a3f9890a2fd9941a6c02e717a51cf792f1849a075d7021adb743a",
+    "Supply Chain & Lead Times": "d3f23ad1df154b2cc31001b0e6a7622a00ee860f3de2761b7aae6d08c7f50625",
+    "Metadata": "76dbf12052b64ec4306212afa9d67835143be5ad5405fd912edfe30bf1d7251a"
+  },
+  "verifiedAt": "2026-10-29T08:53:19.590Z",
+  "fingerprints": {
+    "catalog": "019bff7076697bc5aa1ceb5daa14eb474a4e9b7637b00d0bec0962208c17ef66",
+    "learnings": "7258d5a31957e6f66998482bd7836b2eae45f9175c3da6e90b9dcc8e7a6665ef",
+    "changes": "229d93b860d157702e80807946c68f7bf790f974b67d02ad0c460cce4d70db6c",
+    "workbook": "697d38a731d73ec1deb62b0b109aa3fce39c6ace8d75a07997eeae94b089c84d",
+    "combined": "457d61f329b71cf494ca11c816efee7d0aa0a33ea39c7e54113656bbc414d789"
+  }
+}

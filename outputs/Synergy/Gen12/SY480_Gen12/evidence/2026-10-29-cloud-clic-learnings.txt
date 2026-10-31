@@ -1,0 +1,173 @@
+HPE Synergy 12000 Gen12 — CLIC Rules 81410905, 81013168, 81125904 & Multi-Order Adhoc Partitioning Learnings
+
+Target Architecture:
+
+ HPE Synergy 12000 Composable Frame (P51174-B21), SY480 Gen12 Compute Modules (P68217-B21), Virtual Connect SE 100Gb F32 (867796-B21), Brocade 64Gb FC Modules (P77653-B21)
+
+
+
+
+Learnings Certified Date:
+
+ 2026-10-13
+
+
+
+
+Verified Invariant Status:
+
+ ACTIVE & PERMANENT
+
+
+--------------------------------------------------------------------------------
+
+
+1. CLIC Rules 81410905 & 81314323 — Virtual Connect Fibre Channel Upgrade License Prohibition on Gen12
+
+Official HPE CLIC Error Message
+
+Product#: P51174-B21 Rule#: 81410905 Item/Subitem: 0100/01
+UNBUILDABLE CONFIGURATION: OVERRIDE REQUIRES FACTORY APPROVAL
+
+We've identified an error in this configuration as it includes
+P51174-B21 - HPE Synergy 12000 Configure-to-order Frame
+with below listed FC License SKU must not be allowed for selection
+if the Synergy 12000 Frame includes only Synergy 480 Gen12 compute nodes
+selected as an integrated option:
+
+ProLiant Software:
+- R3P67A   FIO HPE Synergy 32Gb FC Upgrade FIO LTU
+- R3P67AAE BTO HPE Synergy 32Gb FC Upgrade E-LTU
+
+
+text
+
+Architectural Grounding & Root Cause
+
+Dedicated Fabric Routing on Gen12:
+
+ On HPE Synergy 480 Gen12 compute nodes (P68217-B21), Fibre Channel SAN traffic is physically and logically routed via Mezzanine Slot 1 using dedicated 64Gb Fibre Channel HBAs (P68131-B21 / P76653-B21) directly to Interconnect Bays 1 & 4, where the dedicated Brocade 64Gb FC Switch Modules (P77653-B21) reside.
+
+Virtual Connect is Pure Ethernet:
+
+ Mezzanine Slot 3 houses the HPE Synergy 6310C 25/50Gb Ethernet Adapter (P64724-B21), which connects to Bays 3 & 6 where the HPE Virtual Connect SE 100Gb F32 Modules (867796-B21) reside. Unlike older Gen10 CNAs, there is NO FCoE or Fibre Channel traffic passing from Gen12 compute blades into Virtual Connect.
+
+FC Port Licensing:
+
+ Fibre Channel port expansion is handled natively on the Brocade switches using Brocade 32Gb/64Gb 8-port upgrade E-LTUs (Q2E58AAE).
+
+Resolution:
+
+ All R3P67A and R3P67AAE licenses must be completely purged from configurations where a Synergy 12000 Frame houses only Gen12 compute nodes.
+
+
+--------------------------------------------------------------------------------
+
+
+2. CLIC Rules 81013168 & 81125904 — FIO vs. BTO E-LTU Standalone Ordering Taxonomy
+
+Official HPE CLIC Error Message
+
+Product#: R3P67A Rule#: 81013168 Item/Subitem: 0100/01
+UNBUILDABLE CONFIGURATION: OVERRIDE REQUIRES FACTORY APPROVAL
+The R3P67A - HPE Synergy 32Gb Fibre Channel Upgrade F, must be ordered with the appropriate server.
+Supported Servers: M0S68B, M0S66A, Synergy 12000
+
+Product#: R3P67A Rule#: 81125904 Item/Subitem: 0100/01
+UNBUILDABLE CONFIGURATION: OVERRIDE REQUIRES FACTORY APPROVAL
+We've identified an error in this configuration as it includes
+R3P67A - HPE Synergy 32Gb Fibre Channel Upgrade F that must be ordered as a sub-item to the Base.
+Your action is required: please order this product as a sub-item of the base product instead.
+
+
+text
+
+The FIO Catch-22 and BTO E-LTU Resolution
+
+R3P67A (FIO LTU):
+
+ Ending in 'A', this is a Factory Integrated Option. By HPE supply chain rules, FIO SKUs cannot exist standalone on an order. However, sub-iteming it under a Synergy Frame with Gen12 triggers Rule 81410905. Thus, R3P67A can NEVER be ordered on a Gen12 solution.
+
+R3P67AAE (BTO E-LTU):
+
+ Ending in 'AAE', this is an Electronic Software License. As a BTO software SKU, it does NOT require sub-iteming under a server base and is exempt from Rules 81013168 and 81125904.
+
+Cross-Container CLIC Validation:
+
+ When placed in an Adhoc container inside the same quote as a Gen12 frame, CLIC Rule 81410905 fires across containers.
+
+Standalone Order Resolution:
+
+ If a customer RFP contractually mandates procuring this 32Gb FC license (e.g. for pre-existing Gen10 frames in their environment), it MUST be ordered as R3P67AAE on a completely independent Software Quote / Order (UCID 3) with zero hardware chassis attached.
+
+
+--------------------------------------------------------------------------------
+
+
+3. Multi-Order Composable Fabric Partitioning (Option B Adhoc Carrier Pattern)
+
+When a multi-frame Synergy solution (e.g. 2 Frames, 24 SY480 Gen12 Compute Nodes) is split across separate commercial purchase orders / UCIDs:
+
+Order 2 (Frame 2): Clean Hardware Clone
+
+Houses the physical chassis (P51174-B21), 12× Gen12 nodes (P68217-B21), 24× 6787P CPUs, 384× 128GB RAM, 24× 960GB SSDs, 2× VC 100Gb F32, 2× Brocade 64G FC.
+
+Houses exactly 4× Q2E58AAE Brocade 8-port upgrade E-LTUs inside the Brocade switch module ($34,344.00).
+
+Houses 1:1 3Y Tech Care Basic support (HU4B2A3, $46,156.00).
+
+Contains ZERO loose cables, ZERO loose transceivers, and ZERO unpack services (P1F64A purged). Total List: $24,383,448.00.
+
+Order 1 (Frame 1): Management Frame + Consolidated Adhoc Container
+
+Houses the identical base compute and fabric hardware ($24,383,448.00).
+
+Hosts a dedicated Adhoc carrier container (
+
+Ad-Hoc #1 Ad-Hoc for 2frames #1
+
+) carrying 100% of physical loose connectivity for BOTH frames ($96,236.00 List total):
+
+487655-B21
+
+ (10GbE SFP+ to SFP+ 3m DAC Cable): Qty 2 ($570.00)
+
+845406-B21
+
+ (100Gb QSFP28 to QSFP28 3m DAC Cable): Qty 10 ($6,850.00)
+
+845410-B21
+
+ (100Gb QSFP28 to QSFP28 7m AOC Cable): Qty 8 ($22,888.00)
+
+QK734A
+
+ (HPE Premier Flex OM4 LC/LC 5m Fiber Cable): Qty 8 ($1,176.00)
+
+845398-B21
+
+ (HPE 25Gb SFP28 SR 100m Transceiver): Qty 12 ($25,320.00)
+
+455883-B21
+
+ (HPE BladeSystem 10Gb SFP+ SR Transceiver): Qty 20 ($16,840.00)
+
+841716-B21
+
+ (HPE 40Gb QSFP+ BiDi Transceiver): Qty 16 ($22,592.00)
+
+Total List for Order 1: $24,479,684.00.
+
+Golden Rules for Composable Multi-Order Splitting
+
+Never Put Switch Expansion LTUs in Adhoc:
+
+ Brocade licenses (Q2E58AAE) must be split evenly inside physical switch modules (4 in Frame 1, 4 in Frame 2), not dumped into Adhoc, to ensure factory CLIC module validation passes.
+
+Preserve 1:1 Support Parity:
+
+ Pointnext Tech Care Basic (HU4B2A3) must remain identical on both frames ($46,156.00 each) to comply with CLIC Rules 99916598/99916599.
+
+Combined Parity:
+
+ Combined solution achieves 100.0% buildability, CLIC 0 errors, and penny parity at $48,863,132.00 USD.

@@ -6,26 +6,26 @@
     "generation": "Gen12",
     "pillar": "SERVER",
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
-    "scrapeDate": "2026-10-17",
-    "scrapeTimestamp": "2026-10-17T12:26:31.307Z",
-    "builtAt": "2026-10-18T08:13:14.398Z",
-    "totalSubcategories": 68,
-    "totalUniqueSKUs": 602,
-    "totalTables": 148,
+    "scrapeDate": "2026-10-29",
+    "scrapeTimestamp": "2026-10-29T06:27:15.927Z",
+    "builtAt": "2026-10-29T06:29:34.477Z",
+    "totalSubcategories": 69,
+    "totalUniqueSKUs": 605,
+    "totalTables": 153,
     "diffSummary": {
-      "added": 3,
-      "removed": 2,
+      "added": 6,
+      "removed": 1,
       "categoryMigrated": 0,
       "priceChanged": 0,
-      "attributeChanged": 1103,
-      "priceAndAttributeChanged": 66,
-      "unchanged": 0,
-      "reinstated": 0,
-      "discontinuedTotal": 18
+      "attributeChanged": 376,
+      "priceAndAttributeChanged": 61,
+      "unchanged": 734,
+      "reinstated": 1,
+      "discontinuedTotal": 17
     },
-    "historySnapshot": "catalog_2026-10-17.json",
+    "historySnapshot": "catalog_2026-10-29.json",
     "priceAnalytics": {
-      "scrapeDate": "2026-10-17",
+      "scrapeDate": "2026-10-29",
       "categoryBreakdown": {
         "Chassis": {
           "totalSKUs": 5,
@@ -124,15 +124,15 @@
           "avgPrice": 844.1875
         },
         "Memory": {
-          "totalSKUs": 9,
-          "totalPrice": 283053,
+          "totalSKUs": 11,
+          "totalPrice": 297931,
           "minPrice": 1,
           "maxPrice": 133186,
           "subcategories": {
             "Memory": {
-              "totalSKUs": 5,
-              "totalPrice": 282873,
-              "avgPrice": 56574.6
+              "totalSKUs": 7,
+              "totalPrice": 297751,
+              "avgPrice": 42535.857142857145
             },
             "Memory Blank Kit": {
               "totalSKUs": 3,
@@ -145,11 +145,11 @@
               "avgPrice": 1
             }
           },
-          "avgPrice": 31450.333333333332
+          "avgPrice": 27084.636363636364
         },
         "Drive Enclosures / Drives": {
-          "totalSKUs": 25,
-          "totalPrice": 4180,
+          "totalSKUs": 28,
+          "totalPrice": 4183,
           "minPrice": 1,
           "maxPrice": 714,
           "subcategories": {
@@ -159,9 +159,14 @@
               "avgPrice": 216.4375
             },
             "SFF Drive Cages & Enablement": {
+              "totalSKUs": 3,
+              "totalPrice": 226,
+              "avgPrice": 75.33333333333333
+            },
+            "Tertiary PCIe Risers": {
               "totalSKUs": 1,
-              "totalPrice": 224,
-              "avgPrice": 224
+              "totalPrice": 1,
+              "avgPrice": 1
             },
             "Optical Drive": {
               "totalSKUs": 3,
@@ -179,28 +184,28 @@
               "avgPrice": 1
             }
           },
-          "avgPrice": 167.2
+          "avgPrice": 149.39285714285714
         },
         "Networking": {
-          "totalSKUs": 77,
-          "totalPrice": 289822,
+          "totalSKUs": 73,
+          "totalPrice": 283914,
           "minPrice": 1,
           "maxPrice": 15334,
           "subcategories": {
-            "Tertiary PCIe Risers": {
-              "totalSKUs": 10,
-              "totalPrice": 10,
+            "SFF Drive Cages & Enablement": {
+              "totalSKUs": 7,
+              "totalPrice": 7,
               "avgPrice": 1
             },
             "Ethernet PCIe": {
-              "totalSKUs": 15,
-              "totalPrice": 51989,
-              "avgPrice": 3465.9333333333334
+              "totalSKUs": 14,
+              "totalPrice": 47990,
+              "avgPrice": 3427.8571428571427
             },
             "InfiniBand PCIe": {
               "totalSKUs": 14,
-              "totalPrice": 105497,
-              "avgPrice": 7535.5
+              "totalPrice": 103591,
+              "avgPrice": 7399.357142857143
             },
             "Transceivers": {
               "totalSKUs": 19,
@@ -228,7 +233,7 @@
               "avgPrice": 17
             }
           },
-          "avgPrice": 3763.9220779220777
+          "avgPrice": 3889.2328767123286
         },
         "PCIe Risers": {
           "totalSKUs": 10,
@@ -260,15 +265,15 @@
           "avgPrice": 330.1
         },
         "Storage Controllers": {
-          "totalSKUs": 52,
-          "totalPrice": 51081,
+          "totalSKUs": 53,
+          "totalPrice": 52856,
           "minPrice": 1,
           "maxPrice": 11399,
           "subcategories": {
             "SAS Controller": {
-              "totalSKUs": 9,
-              "totalPrice": 41751,
-              "avgPrice": 4639
+              "totalSKUs": 10,
+              "totalPrice": 43526,
+              "avgPrice": 4352.6
             },
             "Smart Storage Batteries": {
               "totalSKUs": 4,
@@ -291,7 +296,7 @@
               "avgPrice": 300
             }
           },
-          "avgPrice": 982.3269230769231
+          "avgPrice": 997.2830188679245
         },
         "Cables & Enablement Kits": {
           "totalSKUs": 94,
@@ -363,15 +368,15 @@
           "avgPrice": 491.20212765957444
         },
         "Software & Licenses": {
-          "totalSKUs": 701,
-          "totalPrice": 17224172,
+          "totalSKUs": 704,
+          "totalPrice": 17225618,
           "minPrice": 1,
           "maxPrice": 543984,
           "subcategories": {
             "Server Management & Operating System Licenses": {
               "totalSKUs": 67,
-              "totalPrice": 2267365,
-              "avgPrice": 33841.26865671642
+              "totalPrice": 2266888,
+              "avgPrice": 33834.149253731346
             },
             "vSAN Tracking SKUs": {
               "totalSKUs": 1,
@@ -439,9 +444,14 @@
               "avgPrice": 14528.026315789473
             },
             "MS Windows Server": {
-              "totalSKUs": 156,
-              "totalPrice": 1921635,
-              "avgPrice": 12318.173076923076
+              "totalSKUs": 72,
+              "totalPrice": 1319547,
+              "avgPrice": 18327.041666666668
+            },
+            "MS Windows Server - Essentials": {
+              "totalSKUs": 87,
+              "totalPrice": 603045,
+              "avgPrice": 6931.551724137931
             },
             "SUSE Linux Enterprise Server": {
               "totalSKUs": 48,
@@ -450,8 +460,8 @@
             },
             "Microsoft Windows CAL Packs": {
               "totalSKUs": 81,
-              "totalPrice": 1023042,
-              "avgPrice": 12630.148148148148
+              "totalPrice": 1024008,
+              "avgPrice": 12642.074074074075
             },
             "Red Hat Enterprise Linux Server-Virtualization": {
               "totalSKUs": 54,
@@ -459,7 +469,7 @@
               "avgPrice": 5902.833333333333
             }
           },
-          "avgPrice": 24570.85877318117
+          "avgPrice": 24468.207386363636
         },
         "Graphics & GPU": {
           "totalSKUs": 29,
@@ -517,16 +527,17 @@
       }
     },
     "incrementalStats": {
-      "totalScrapedSkus": 602,
-      "unchangedSkusCount": 597,
+      "totalScrapedSkus": 605,
+      "unchangedSkusCount": 590,
       "modifiedSkusCount": 5,
-      "addedSkusCount": 0,
+      "addedSkusCount": 10,
       "removedSkusCount": 0,
       "estimatedTokensSaved": 0,
       "estimatedProcessingTimeSavedMs": 0
     },
+    "snapshotFingerprint": "bdd358be1bdbe25e726e017a29fe5a27bb999eeac95b569b72470fab29251823",
     "chassisVariantCount": 6,
-    "rulesGeneratedAt": "2026-10-18T08:13:15.299Z"
+    "rulesGeneratedAt": "2026-10-29T06:29:35.658Z"
   },
   "chassisVariants": [
     {
@@ -543,7 +554,7 @@
       "constraint": "min 1, max 1",
       "maxQty": "1",
       "diffStatus": "ATTRIBUTE_CHANGED",
-      "priceHistoryTrail": "2026-08-12: $5584.00 → 2026-08-13: $5584.00 → 2026-08-14: $5584.00 → 2026-08-16: $5584.00 → 2026-08-19: $5584.00 → 2026-08-22: $5584.00 (✕ REMOVED) → 2026-09-09: $5584.00 (✕ REMOVED) → 2026-09-10: $5584.00 → 2026-09-30: $5584.00 → 2026-10-17: $5584.00"
+      "priceHistoryTrail": "2026-08-12: $5584.00 → 2026-08-13: $5584.00 → 2026-08-14: $5584.00 → 2026-08-16: $5584.00 → 2026-08-19: $5584.00 → 2026-08-22: $5584.00 (✕ REMOVED) → 2026-09-09: $5584.00 (✕ REMOVED) → 2026-09-10: $5584.00 → 2026-09-30: $5584.00 → 2026-10-17: $5584.00 → 2026-10-29: $5584.00"
     },
     {
       "sku": "P73283-B21",
@@ -559,7 +570,7 @@
       "constraint": "min 1, max 1",
       "maxQty": "1",
       "diffStatus": "ATTRIBUTE_CHANGED",
-      "priceHistoryTrail": "2026-08-12: $5980.00 → 2026-08-13: $5980.00 → 2026-08-14: $5980.00 → 2026-08-16: $5980.00 → 2026-08-19: $5980.00 → 2026-08-22: $5980.00 (✕ REMOVED) → 2026-08-24: $5980.00 (✕ REMOVED) → 2026-09-09: $5980.00 (✕ REMOVED) → 2026-09-10: $5980.00 → 2026-09-30: $5980.00 → 2026-10-17: $5980.00"
+      "priceHistoryTrail": "2026-08-12: $5980.00 → 2026-08-13: $5980.00 → 2026-08-14: $5980.00 → 2026-08-16: $5980.00 → 2026-08-19: $5980.00 → 2026-08-22: $5980.00 (✕ REMOVED) → 2026-08-24: $5980.00 (✕ REMOVED) → 2026-09-09: $5980.00 (✕ REMOVED) → 2026-09-10: $5980.00 → 2026-09-30: $5980.00 → 2026-10-17: $5980.00 → 2026-10-29: $5980.00"
     },
     {
       "sku": "P73284-B21",
@@ -575,7 +586,7 @@
       "constraint": "min 1, max 1",
       "maxQty": "1",
       "diffStatus": "ATTRIBUTE_CHANGED",
-      "priceHistoryTrail": "2026-08-12: $6350.00 → 2026-08-13: $6350.00 → 2026-08-14: $6350.00 → 2026-08-16: $6350.00 → 2026-08-19: $6350.00 → 2026-08-22: $6350.00 (✕ REMOVED) → 2026-08-24: $6350.00 (✕ REMOVED) → 2026-09-09: $6350.00 (✕ REMOVED) → 2026-09-10: $6350.00 → 2026-09-30: $6350.00 → 2026-10-17: $6350.00"
+      "priceHistoryTrail": "2026-08-12: $6350.00 → 2026-08-13: $6350.00 → 2026-08-14: $6350.00 → 2026-08-16: $6350.00 → 2026-08-19: $6350.00 → 2026-08-22: $6350.00 (✕ REMOVED) → 2026-08-24: $6350.00 (✕ REMOVED) → 2026-09-09: $6350.00 (✕ REMOVED) → 2026-09-10: $6350.00 → 2026-09-30: $6350.00 → 2026-10-17: $6350.00 → 2026-10-29: $6350.00"
     },
     {
       "sku": "P73285-B21",
@@ -591,7 +602,7 @@
       "constraint": "min 1, max 1",
       "maxQty": "1",
       "diffStatus": "ATTRIBUTE_CHANGED",
-      "priceHistoryTrail": "2026-08-12: $6890.00 → 2026-08-13: $6890.00 → 2026-08-14: $6890.00 → 2026-08-16: $6890.00 → 2026-08-19: $6890.00 → 2026-08-22: $6890.00 (✕ REMOVED) → 2026-08-24: $6890.00 (✕ REMOVED) → 2026-09-09: $6890.00 (✕ REMOVED) → 2026-09-10: $6890.00 → 2026-09-30: $6890.00 → 2026-10-17: $6890.00"
+      "priceHistoryTrail": "2026-08-12: $6890.00 → 2026-08-13: $6890.00 → 2026-08-14: $6890.00 → 2026-08-16: $6890.00 → 2026-08-19: $6890.00 → 2026-08-22: $6890.00 (✕ REMOVED) → 2026-08-24: $6890.00 (✕ REMOVED) → 2026-09-09: $6890.00 (✕ REMOVED) → 2026-09-10: $6890.00 → 2026-09-30: $6890.00 → 2026-10-17: $6890.00 → 2026-10-29: $6890.00"
     },
     {
       "sku": "P73286-B21",
@@ -607,7 +618,7 @@
       "constraint": "min 1, max 1",
       "maxQty": "1",
       "diffStatus": "ATTRIBUTE_CHANGED",
-      "priceHistoryTrail": "2026-08-12: $7120.00 → 2026-08-13: $7120.00 → 2026-08-14: $7120.00 → 2026-08-16: $7120.00 → 2026-08-19: $7120.00 → 2026-08-22: $7120.00 (✕ REMOVED) → 2026-08-24: $7120.00 (✕ REMOVED) → 2026-09-09: $7120.00 (✕ REMOVED) → 2026-09-10: $7120.00 → 2026-09-30: $7120.00 → 2026-10-17: $7120.00"
+      "priceHistoryTrail": "2026-08-12: $7120.00 → 2026-08-13: $7120.00 → 2026-08-14: $7120.00 → 2026-08-16: $7120.00 → 2026-08-19: $7120.00 → 2026-08-22: $7120.00 (✕ REMOVED) → 2026-08-24: $7120.00 (✕ REMOVED) → 2026-09-09: $7120.00 (✕ REMOVED) → 2026-09-10: $7120.00 → 2026-09-30: $7120.00 → 2026-10-17: $7120.00 → 2026-10-29: $7120.00"
     },
     {
       "sku": "P73287-B21",
@@ -640,7 +651,7 @@
       "constraint": "min 1, max 1",
       "maxQty": "1",
       "diffStatus": "ATTRIBUTE_CHANGED",
-      "priceHistoryTrail": "2026-08-12: $5584.00 → 2026-08-13: $5584.00 → 2026-08-14: $5584.00 → 2026-08-16: $5584.00 → 2026-08-19: $5584.00 → 2026-08-22: $5584.00 (✕ REMOVED) → 2026-09-09: $5584.00 (✕ REMOVED) → 2026-09-10: $5584.00 → 2026-09-30: $5584.00 → 2026-10-17: $5584.00"
+      "priceHistoryTrail": "2026-08-12: $5584.00 → 2026-08-13: $5584.00 → 2026-08-14: $5584.00 → 2026-08-16: $5584.00 → 2026-08-19: $5584.00 → 2026-08-22: $5584.00 (✕ REMOVED) → 2026-09-09: $5584.00 (✕ REMOVED) → 2026-09-10: $5584.00 → 2026-09-30: $5584.00 → 2026-10-17: $5584.00 → 2026-10-29: $5584.00"
     },
     "P73283-B21": {
       "sku": "P73283-B21",
@@ -656,7 +667,7 @@
       "constraint": "min 1, max 1",
       "maxQty": "1",
       "diffStatus": "ATTRIBUTE_CHANGED",
-      "priceHistoryTrail": "2026-08-12: $5980.00 → 2026-08-13: $5980.00 → 2026-08-14: $5980.00 → 2026-08-16: $5980.00 → 2026-08-19: $5980.00 → 2026-08-22: $5980.00 (✕ REMOVED) → 2026-08-24: $5980.00 (✕ REMOVED) → 2026-09-09: $5980.00 (✕ REMOVED) → 2026-09-10: $5980.00 → 2026-09-30: $5980.00 → 2026-10-17: $5980.00"
+      "priceHistoryTrail": "2026-08-12: $5980.00 → 2026-08-13: $5980.00 → 2026-08-14: $5980.00 → 2026-08-16: $5980.00 → 2026-08-19: $5980.00 → 2026-08-22: $5980.00 (✕ REMOVED) → 2026-08-24: $5980.00 (✕ REMOVED) → 2026-09-09: $5980.00 (✕ REMOVED) → 2026-09-10: $5980.00 → 2026-09-30: $5980.00 → 2026-10-17: $5980.00 → 2026-10-29: $5980.00"
     },
     "P73284-B21": {
       "sku": "P73284-B21",
@@ -672,7 +683,7 @@
       "constraint": "min 1, max 1",
       "maxQty": "1",
       "diffStatus": "ATTRIBUTE_CHANGED",
-      "priceHistoryTrail": "2026-08-12: $6350.00 → 2026-08-13: $6350.00 → 2026-08-14: $6350.00 → 2026-08-16: $6350.00 → 2026-08-19: $6350.00 → 2026-08-22: $6350.00 (✕ REMOVED) → 2026-08-24: $6350.00 (✕ REMOVED) → 2026-09-09: $6350.00 (✕ REMOVED) → 2026-09-10: $6350.00 → 2026-09-30: $6350.00 → 2026-10-17: $6350.00"
+      "priceHistoryTrail": "2026-08-12: $6350.00 → 2026-08-13: $6350.00 → 2026-08-14: $6350.00 → 2026-08-16: $6350.00 → 2026-08-19: $6350.00 → 2026-08-22: $6350.00 (✕ REMOVED) → 2026-08-24: $6350.00 (✕ REMOVED) → 2026-09-09: $6350.00 (✕ REMOVED) → 2026-09-10: $6350.00 → 2026-09-30: $6350.00 → 2026-10-17: $6350.00 → 2026-10-29: $6350.00"
     },
     "P73285-B21": {
       "sku": "P73285-B21",
@@ -688,7 +699,7 @@
       "constraint": "min 1, max 1",
       "maxQty": "1",
       "diffStatus": "ATTRIBUTE_CHANGED",
-      "priceHistoryTrail": "2026-08-12: $6890.00 → 2026-08-13: $6890.00 → 2026-08-14: $6890.00 → 2026-08-16: $6890.00 → 2026-08-19: $6890.00 → 2026-08-22: $6890.00 (✕ REMOVED) → 2026-08-24: $6890.00 (✕ REMOVED) → 2026-09-09: $6890.00 (✕ REMOVED) → 2026-09-10: $6890.00 → 2026-09-30: $6890.00 → 2026-10-17: $6890.00"
+      "priceHistoryTrail": "2026-08-12: $6890.00 → 2026-08-13: $6890.00 → 2026-08-14: $6890.00 → 2026-08-16: $6890.00 → 2026-08-19: $6890.00 → 2026-08-22: $6890.00 (✕ REMOVED) → 2026-08-24: $6890.00 (✕ REMOVED) → 2026-09-09: $6890.00 (✕ REMOVED) → 2026-09-10: $6890.00 → 2026-09-30: $6890.00 → 2026-10-17: $6890.00 → 2026-10-29: $6890.00"
     },
     "P73286-B21": {
       "sku": "P73286-B21",
@@ -704,7 +715,7 @@
       "constraint": "min 1, max 1",
       "maxQty": "1",
       "diffStatus": "ATTRIBUTE_CHANGED",
-      "priceHistoryTrail": "2026-08-12: $7120.00 → 2026-08-13: $7120.00 → 2026-08-14: $7120.00 → 2026-08-16: $7120.00 → 2026-08-19: $7120.00 → 2026-08-22: $7120.00 (✕ REMOVED) → 2026-08-24: $7120.00 (✕ REMOVED) → 2026-09-09: $7120.00 (✕ REMOVED) → 2026-09-10: $7120.00 → 2026-09-30: $7120.00 → 2026-10-17: $7120.00"
+      "priceHistoryTrail": "2026-08-12: $7120.00 → 2026-08-13: $7120.00 → 2026-08-14: $7120.00 → 2026-08-16: $7120.00 → 2026-08-19: $7120.00 → 2026-08-22: $7120.00 (✕ REMOVED) → 2026-08-24: $7120.00 (✕ REMOVED) → 2026-09-09: $7120.00 (✕ REMOVED) → 2026-09-10: $7120.00 → 2026-09-30: $7120.00 → 2026-10-17: $7120.00 → 2026-10-29: $7120.00"
     },
     "P73287-B21": {
       "sku": "P73287-B21",
@@ -893,8 +904,8 @@
       "total": 84465
     },
     "deliveryAndSupport": {
-      "iconId": "I157323295-01",
-      "edt": "18 - 23 days",
+      "iconId": "I157947987-01",
+      "edt": "24 - 30 days",
       "configName": "OCA Config 2",
       "attachedServices": [
         {
@@ -1012,7 +1023,7 @@
         "unitPrice": 13909,
         "extPrice": 27818,
         "startDate": "04/06/2026",
-        "discDate": "03/31/2028"
+        "discDate": "06/30/2030"
       },
       {
         "hierarchyLevel": "(2)",
@@ -1519,6 +1530,414 @@
       "level": "CHASSIS",
       "ruleType": "CONDITIONAL_VISIBILITY",
       "affectedSkus": [
+        "P74576-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P74576-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+      "parentCategory": "Processor",
+      "subCategory": "Processor",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P71118-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P71118-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+      "parentCategory": "Processor",
+      "subCategory": "Processor",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P71119-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P71119-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+      "parentCategory": "Processor",
+      "subCategory": "Processor",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P71120-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P71120-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+      "parentCategory": "Processor",
+      "subCategory": "Processor",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P71121-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P71121-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+      "parentCategory": "Processor",
+      "subCategory": "Processor",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P71122-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P71122-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+      "parentCategory": "Processor",
+      "subCategory": "Processor",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P71124-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P71124-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+      "parentCategory": "Processor",
+      "subCategory": "Processor",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P73829-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P73829-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+      "parentCategory": "Processor",
+      "subCategory": "Processor",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P73831-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P73831-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+      "parentCategory": "Processor",
+      "subCategory": "Processor",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P73832-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P73832-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+      "parentCategory": "Processor",
+      "subCategory": "Processor",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P73835-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P73835-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+      "parentCategory": "Processor",
+      "subCategory": "Processor",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P73837-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P73837-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+      "parentCategory": "Processor",
+      "subCategory": "Processor",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P73838-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P73838-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+      "parentCategory": "Processor",
+      "subCategory": "Processor",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P74504-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P74504-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+      "parentCategory": "Processor",
+      "subCategory": "Processor",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P74507-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P74507-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+      "parentCategory": "Processor",
+      "subCategory": "Processor",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P74572-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P74572-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+      "parentCategory": "Processor",
+      "subCategory": "Processor",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P74575-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P74575-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+      "parentCategory": "Processor",
+      "subCategory": "Processor",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P74577-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P74577-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+      "parentCategory": "Processor",
+      "subCategory": "Processor",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P74578-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P74578-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+      "parentCategory": "Processor",
+      "subCategory": "Processor",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P74579-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P74579-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+      "parentCategory": "Processor",
+      "subCategory": "Processor",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P81591-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P81591-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+      "parentCategory": "Processor",
+      "subCategory": "Processor",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P87302-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P87302-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+      "parentCategory": "Processor",
+      "subCategory": "Processor",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P90157-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P90157-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+      "parentCategory": "Processor",
+      "subCategory": "Processor",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P94926-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P94926-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+      "parentCategory": "Processor",
+      "subCategory": "Processor",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
         "P49145-B21"
       ],
       "conditionType": "PORTAL_CONDITIONAL_VIEW",
@@ -1781,9 +2200,9 @@
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "P77955-B21 conditional visibility: portal selector activation required (Define connection for 8SFF x4 Cage only needed if cage is selected.); PORTAL_CONDITIONAL",
+      "rule": "P77955-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL",
       "parentCategory": "Networking",
-      "subCategory": "Tertiary PCIe Risers",
+      "subCategory": "SFF Drive Cages & Enablement",
       "constraint": "",
       "maxQty": ""
     },
@@ -1798,9 +2217,9 @@
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "P77958-B21 conditional visibility: portal selector activation required (Define connection for 8SFF x4 Cage only needed if cage is selected.); PORTAL_CONDITIONAL",
+      "rule": "P77958-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL",
       "parentCategory": "Networking",
-      "subCategory": "Tertiary PCIe Risers",
+      "subCategory": "SFF Drive Cages & Enablement",
       "constraint": "",
       "maxQty": ""
     },
@@ -1815,9 +2234,9 @@
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "P77931-B21 conditional visibility: portal selector activation required (Define connection for 8SFF x4 Cage only needed if cage is selected.); PORTAL_CONDITIONAL",
+      "rule": "P77931-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL",
       "parentCategory": "Networking",
-      "subCategory": "Tertiary PCIe Risers",
+      "subCategory": "SFF Drive Cages & Enablement",
       "constraint": "",
       "maxQty": ""
     },
@@ -1832,9 +2251,9 @@
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "P78064-B21 conditional visibility: portal selector activation required (Define connection for 8SFF x4 Cage only needed if cage is selected.); PORTAL_CONDITIONAL",
+      "rule": "P78064-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL",
       "parentCategory": "Networking",
-      "subCategory": "Tertiary PCIe Risers",
+      "subCategory": "SFF Drive Cages & Enablement",
       "constraint": "",
       "maxQty": ""
     },
@@ -1849,9 +2268,9 @@
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "P77934-B21 conditional visibility: portal selector activation required (Define connection for 8SFF x4 Cage only needed if cage is selected.); PORTAL_CONDITIONAL",
+      "rule": "P77934-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL",
       "parentCategory": "Networking",
-      "subCategory": "Tertiary PCIe Risers",
+      "subCategory": "SFF Drive Cages & Enablement",
       "constraint": "",
       "maxQty": ""
     },
@@ -1866,9 +2285,9 @@
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "P77937-B21 conditional visibility: portal selector activation required (Define connection for 8SFF x4 Cage only needed if cage is selected.); PORTAL_CONDITIONAL",
-      "parentCategory": "Networking",
-      "subCategory": "Tertiary PCIe Risers",
+      "rule": "P77937-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SFF Drive Cages & Enablement",
       "constraint": "",
       "maxQty": ""
     },
@@ -1883,9 +2302,9 @@
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "P77940-B21 conditional visibility: portal selector activation required (Define connection for 8SFF x4 Cage only needed if cage is selected.); PORTAL_CONDITIONAL",
-      "parentCategory": "Networking",
-      "subCategory": "Tertiary PCIe Risers",
+      "rule": "P77940-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SFF Drive Cages & Enablement",
       "constraint": "",
       "maxQty": ""
     },
@@ -1900,9 +2319,9 @@
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "P77961-B21 conditional visibility: portal selector activation required (Define connection for 8SFF x4 Cage only needed if cage is selected.); PORTAL_CONDITIONAL",
+      "rule": "P77961-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL",
       "parentCategory": "Networking",
-      "subCategory": "Tertiary PCIe Risers",
+      "subCategory": "SFF Drive Cages & Enablement",
       "constraint": "",
       "maxQty": ""
     },
@@ -1917,9 +2336,9 @@
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "P78070-B21 conditional visibility: portal selector activation required (Define connection for 8SFF x4 Cage only needed if cage is selected.); PORTAL_CONDITIONAL",
+      "rule": "P78070-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL",
       "parentCategory": "Networking",
-      "subCategory": "Tertiary PCIe Risers",
+      "subCategory": "SFF Drive Cages & Enablement",
       "constraint": "",
       "maxQty": ""
     },
@@ -1934,9 +2353,9 @@
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "P78047-B21 conditional visibility: portal selector activation required (Define connection for 8SFF x4 Cage only needed if cage is selected.); PORTAL_CONDITIONAL",
+      "rule": "P78047-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL",
       "parentCategory": "Networking",
-      "subCategory": "Tertiary PCIe Risers",
+      "subCategory": "SFF Drive Cages & Enablement",
       "constraint": "",
       "maxQty": ""
     },
@@ -1951,9 +2370,9 @@
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "P78058-B21 conditional visibility: portal selector activation required (Define connection for 8SFF x4 Cage only needed if cage is selected.); PORTAL_CONDITIONAL",
+      "rule": "P78058-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL",
       "parentCategory": "Networking",
-      "subCategory": "Tertiary PCIe Risers",
+      "subCategory": "SFF Drive Cages & Enablement",
       "constraint": "",
       "maxQty": ""
     },
@@ -1968,9 +2387,9 @@
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "P78061-B21 conditional visibility: portal selector activation required (Define connection for 8SFF x4 Cage only needed if cage is selected.); PORTAL_CONDITIONAL",
+      "rule": "P78061-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL",
       "parentCategory": "Networking",
-      "subCategory": "Tertiary PCIe Risers",
+      "subCategory": "SFF Drive Cages & Enablement",
       "constraint": "",
       "maxQty": ""
     },
@@ -1985,8 +2404,8 @@
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "P77943-B21 conditional visibility: portal selector activation required (Define connection for 8SFF x4 Cage only needed if cage is selected.); PORTAL_CONDITIONAL",
-      "parentCategory": "Networking",
+      "rule": "P77943-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Tertiary PCIe Risers",
       "constraint": "",
       "maxQty": ""
@@ -8192,7 +8611,7 @@
       "portalVerificationRequired": true,
       "rule": "P11086-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
+      "subCategory": "MS Windows Server - Essentials",
       "constraint": "",
       "maxQty": ""
     },
@@ -8209,7 +8628,7 @@
       "portalVerificationRequired": true,
       "rule": "P11086-051 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
+      "subCategory": "MS Windows Server - Essentials",
       "constraint": "",
       "maxQty": ""
     },
@@ -8226,7 +8645,7 @@
       "portalVerificationRequired": true,
       "rule": "P11086-041 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
+      "subCategory": "MS Windows Server - Essentials",
       "constraint": "",
       "maxQty": ""
     },
@@ -8243,7 +8662,7 @@
       "portalVerificationRequired": true,
       "rule": "P11086-061 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
+      "subCategory": "MS Windows Server - Essentials",
       "constraint": "",
       "maxQty": ""
     },
@@ -8260,7 +8679,7 @@
       "portalVerificationRequired": true,
       "rule": "P11086-291 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
+      "subCategory": "MS Windows Server - Essentials",
       "constraint": "",
       "maxQty": ""
     },
@@ -8277,7 +8696,7 @@
       "portalVerificationRequired": true,
       "rule": "P11086-071 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
+      "subCategory": "MS Windows Server - Essentials",
       "constraint": "",
       "maxQty": ""
     },
@@ -8311,7 +8730,7 @@
       "portalVerificationRequired": true,
       "rule": "P11083-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
+      "subCategory": "MS Windows Server - Essentials",
       "constraint": "",
       "maxQty": ""
     },
@@ -8328,7 +8747,7 @@
       "portalVerificationRequired": true,
       "rule": "P11083-051 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
+      "subCategory": "MS Windows Server - Essentials",
       "constraint": "",
       "maxQty": ""
     },
@@ -8345,7 +8764,7 @@
       "portalVerificationRequired": true,
       "rule": "P11083-041 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
+      "subCategory": "MS Windows Server - Essentials",
       "constraint": "",
       "maxQty": ""
     },
@@ -8362,7 +8781,7 @@
       "portalVerificationRequired": true,
       "rule": "P11083-061 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
+      "subCategory": "MS Windows Server - Essentials",
       "constraint": "",
       "maxQty": ""
     },
@@ -8379,7 +8798,7 @@
       "portalVerificationRequired": true,
       "rule": "P11083-291 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
+      "subCategory": "MS Windows Server - Essentials",
       "constraint": "",
       "maxQty": ""
     },
@@ -8396,7 +8815,7 @@
       "portalVerificationRequired": true,
       "rule": "P11083-071 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
+      "subCategory": "MS Windows Server - Essentials",
       "constraint": "",
       "maxQty": ""
     },
@@ -8430,7 +8849,7 @@
       "portalVerificationRequired": true,
       "rule": "P45862-291 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
+      "subCategory": "MS Windows Server - Essentials",
       "constraint": "",
       "maxQty": ""
     },
@@ -8447,7 +8866,7 @@
       "portalVerificationRequired": true,
       "rule": "P45862-071 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
+      "subCategory": "MS Windows Server - Essentials",
       "constraint": "",
       "maxQty": ""
     },
@@ -8464,7 +8883,7 @@
       "portalVerificationRequired": true,
       "rule": "S6L47A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
+      "subCategory": "MS Windows Server - Essentials",
       "constraint": "",
       "maxQty": ""
     },
@@ -8498,7 +8917,7 @@
       "portalVerificationRequired": true,
       "rule": "S6L46A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
+      "subCategory": "MS Windows Server - Essentials",
       "constraint": "",
       "maxQty": ""
     },
@@ -8515,7 +8934,7 @@
       "portalVerificationRequired": true,
       "rule": "P77125-291 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
+      "subCategory": "MS Windows Server - Essentials",
       "constraint": "",
       "maxQty": ""
     },
@@ -8532,7 +8951,7 @@
       "portalVerificationRequired": true,
       "rule": "S6L48A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
+      "subCategory": "MS Windows Server - Essentials",
       "constraint": "",
       "maxQty": ""
     },
@@ -8549,7 +8968,7 @@
       "portalVerificationRequired": true,
       "rule": "P77125-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
+      "subCategory": "MS Windows Server - Essentials",
       "constraint": "",
       "maxQty": ""
     },
@@ -8566,7 +8985,7 @@
       "portalVerificationRequired": true,
       "rule": "P77124-291 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
+      "subCategory": "MS Windows Server - Essentials",
       "constraint": "",
       "maxQty": ""
     },
@@ -8583,7 +9002,7 @@
       "portalVerificationRequired": true,
       "rule": "S6L43A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
+      "subCategory": "MS Windows Server - Essentials",
       "constraint": "",
       "maxQty": ""
     },
@@ -8600,7 +9019,7 @@
       "portalVerificationRequired": true,
       "rule": "P77124-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
-      "subCategory": "MS Windows Server",
+      "subCategory": "MS Windows Server - Essentials",
       "constraint": "",
       "maxQty": ""
     },
@@ -10236,13 +10655,13 @@
     {
       "level": "CHASSIS",
       "ruleType": "CONDITIONAL_VISIBILITY",
-      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "vendorRuleClassification": "CHASSIS_GATE",
       "parentCategory": "Smart Chassis",
       "subCategory": "Configuration Rules",
-      "constraint": "Define connection for 8SFF x4 Cage only needed if cage is selected.",
+      "constraint": "Nvme option not available with 8sff smart chassis choice.",
       "maxQty": "",
-      "rule": "[MUTUAL_EXCLUSION] Define connection for 8SFF x4 Cage only needed if cage is selected.",
-      "conditionKey": "portalSelection",
+      "rule": "[CHASSIS_GATE] Nvme option not available with 8sff smart chassis choice.",
+      "conditionKey": "chassisModel",
       "conditionOperator": "unknown",
       "thresholdValue": null,
       "observedTemperatureC": null,
@@ -10265,7 +10684,7 @@
         "P78061-B21",
         "P77943-B21"
       ],
-      "ineligibilityReason": "Define connection for 8SFF x4 Cage only needed if cage is selected.",
+      "ineligibilityReason": "Nvme option not available with 8sff smart chassis choice.",
       "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
       "portalVerificationRequired": true
     },
@@ -10847,10 +11266,24 @@
     },
     {
       "parentCategory": "Networking",
+      "subCategory": "SFF Drive Cages & Enablement",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Nvme option not available with 8sff smart chassis choice."
+    },
+    {
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "SFF Drive Cages & Enablement",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Nvme option not available with 8sff smart chassis choice."
+    },
+    {
+      "parentCategory": "Drive Enclosures / Drives",
       "subCategory": "Tertiary PCIe Risers",
       "constraint": "no max",
       "maxQty": -1,
-      "rule": "Define connection for 8SFF x4 Cage only needed if cage is selected."
+      "rule": "Nvme option not available with 8sff smart chassis choice."
     },
     {
       "parentCategory": "PCIe Risers",
@@ -11400,10 +11833,17 @@
     },
     {
       "parentCategory": "Software & Licenses",
+      "subCategory": "MS Windows Server - Essentials",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for MS Windows Server - Essentials: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
       "subCategory": "Server Management & Operating System Licenses",
       "constraint": "no max",
       "maxQty": -1,
-      "rule": "Selection constraint for MS Windows Server: no max"
+      "rule": "Selection constraint for MS Windows Server - Essentials: no max"
     },
     {
       "parentCategory": "Software & Licenses",

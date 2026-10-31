@@ -1,6 +1,194 @@
 [
   {
     "summary": {
+      "runId": "run_DL380a_Gen12_1793255368670",
+      "sessionName": "DL380a_Gen12",
+      "startTime": "2026-10-29T06:29:28.659Z",
+      "endTime": "2026-10-29T06:29:30.127Z",
+      "durationMs": 1468,
+      "durationSec": "1.47",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 451,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 451,
+      "validationStats": {
+        "totalEntries": 59,
+        "totalSKUs": 451,
+        "validSKUs": 451,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 1,
+        "zeroPriceSKUs": 24,
+        "priceErrors": 0,
+        "ruleCount": 259,
+        "categoryCount": 14
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-10-29T06:29:28.670Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "outputs/temp/staging_DL380a_Gen12_1793254439486/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/temp/staging_DL380a_Gen12_1793254439486/DL380a_Gen12_Catalog.json",
+          "chassisLabel": "DL380a Gen12"
+        }
+      },
+      {
+        "timestamp": "2026-10-29T06:29:29.912Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 45,
+          "totalUniqueSKUs": 451,
+          "incrementalStats": {
+            "totalScrapedSkus": 451,
+            "unchangedSkusCount": 438,
+            "modifiedSkusCount": 0,
+            "addedSkusCount": 13,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-10-29T06:29:29.918Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 59,
+            "totalSKUs": 451,
+            "validSKUs": 451,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 1,
+            "zeroPriceSKUs": 24,
+            "priceErrors": 0,
+            "ruleCount": 259,
+            "categoryCount": 14
+          }
+        }
+      },
+      {
+        "timestamp": "2026-10-29T06:29:30.126Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "outputs/temp/staging_DL380a_Gen12_1793254439486/DL380a_Gen12_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 451,
+      "classified": 451,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
+      "runId": "run_DL380a_Gen12_1793254439834",
+      "sessionName": "DL380a_Gen12",
+      "startTime": "2026-10-29T06:13:59.832Z",
+      "endTime": "2026-10-29T06:14:01.666Z",
+      "durationMs": 1834,
+      "durationSec": "1.83",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 438,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 438,
+      "validationStats": {
+        "totalEntries": 59,
+        "totalSKUs": 438,
+        "validSKUs": 438,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 1,
+        "zeroPriceSKUs": 24,
+        "priceErrors": 0,
+        "ruleCount": 253,
+        "categoryCount": 14
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-10-29T06:13:59.834Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_DL380a_Gen12_1793254439486\\raw_data\\oca_raw_data_full.json",
+          "jsonOutputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_DL380a_Gen12_1793254439486\\DL380a_Gen12_Catalog.json",
+          "chassisLabel": "DL380a Gen12"
+        }
+      },
+      {
+        "timestamp": "2026-10-29T06:14:01.318Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 45,
+          "totalUniqueSKUs": 438,
+          "incrementalStats": {
+            "totalScrapedSkus": 438,
+            "unchangedSkusCount": 0,
+            "modifiedSkusCount": 0,
+            "addedSkusCount": 438,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-10-29T06:14:01.326Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 59,
+            "totalSKUs": 438,
+            "validSKUs": 438,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 1,
+            "zeroPriceSKUs": 24,
+            "priceErrors": 0,
+            "ruleCount": 253,
+            "categoryCount": 14
+          }
+        }
+      },
+      {
+        "timestamp": "2026-10-29T06:14:01.666Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_DL380a_Gen12_1793254439486\\DL380a_Gen12_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 438,
+      "classified": 438,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
       "runId": "run_DL380a_Gen12_1792311265443",
       "sessionName": "DL380a_Gen12",
       "startTime": "2026-10-18T08:14:25.428Z",

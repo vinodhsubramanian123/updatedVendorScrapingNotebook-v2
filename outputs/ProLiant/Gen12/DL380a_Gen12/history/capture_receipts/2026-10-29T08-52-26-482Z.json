@@ -1,0 +1,243 @@
+{
+  "schemaVersion": 1,
+  "product": "DL380a_Gen12",
+  "vendor": "HPE",
+  "capturedAt": "2026-10-29T06:13:59.488Z",
+  "auditedAt": "2026-10-29T08:52:26.482Z",
+  "mode": "REFRESH",
+  "status": "LOCAL_PROMOTED",
+  "provenance": {
+    "baseSku": "P76706-B21",
+    "ownerConfiguration": "DL380a Gen12 #1",
+    "solutionDomain": "SERVER",
+    "observedUrl": "https://oca.ext.hpe.com/oca/OCAInternalLogin"
+  },
+  "coverage": {
+    "textExtractionMode": "FULL_BODY_TEXT",
+    "outsideTableNotesCaptured": true,
+    "conditionalDiscovery": "HIDDEN_DOM_AND_AMBIENT_ONLY_OTHER_MACROS_UNVERIFIED",
+    "baseSku": "P76706-B21",
+    "ownerConfiguration": "DL380a Gen12 #1",
+    "solutionDomain": "SERVER",
+    "observedSelectors": [
+      {
+        "selector": "#extended_overview_menu",
+        "value": "EXPANDED"
+      },
+      {
+        "selector": "ambientTemperature",
+        "value": "DEFAULT_AND_SWEEP_RESTORED"
+      }
+    ],
+    "missingProvenance": [],
+    "completeness": "CAPTURED_STATES_ONLY",
+    "policy": {
+      "valid": true,
+      "reason": "",
+      "profileProduct": "DL380a_Gen12",
+      "scope": "PROFILE_MINIMUM_CAPTURE"
+    }
+  },
+  "counts": {
+    "hardware": 451,
+    "services": 322,
+    "rules": 335,
+    "categories": 14,
+    "retainedHardware": 451,
+    "hardwareTombstones": 0
+  },
+  "previousCounts": {
+    "hardware": 452,
+    "services": 321,
+    "rules": 312,
+    "categories": 14
+  },
+  "hashes": {
+    "Catalog.json": "aa116ca3ff5716adfcf4ad3cf93712d3bee657fdfbda6c7877bf0be8e1ed646d",
+    "Services.json": "1c3dff98380718ea7139a20b37efa352376350109f64b34b49bb7cc40b16313e",
+    "Catalog_Rules.json": "6453e049a786b9b801ee4244cd7b10788a6c426f481defa8dfbe8720e4a63cfe",
+    "OCA_Catalog.xlsx": "eae2c399e17acee44575c55ed2af41d4058e7198e8ce17db175fce0c0958340c"
+  },
+  "rawSha256": "ff49b8d7c2d8f8c6e81755f35a0776c72ead36e9a0c32bb13953502141a1e439",
+  "sheets": [
+    {
+      "name": "Category Summary",
+      "rows": 97
+    },
+    {
+      "name": "All SKUs",
+      "rows": 452
+    },
+    {
+      "name": "Chassis Variants",
+      "rows": 2
+    },
+    {
+      "name": "Chassis Options Matrix",
+      "rows": 2
+    },
+    {
+      "name": "Rules & Constraints",
+      "rows": 406
+    },
+    {
+      "name": "Unavailable Rules & Gates",
+      "rows": 13
+    },
+    {
+      "name": "Hardware Accessories",
+      "rows": 3
+    },
+    {
+      "name": "Software & Licenses",
+      "rows": 442
+    },
+    {
+      "name": "Support Services",
+      "rows": 99
+    },
+    {
+      "name": "Catalog Diffs",
+      "rows": 229
+    },
+    {
+      "name": "Price History Timeline",
+      "rows": 774
+    },
+    {
+      "name": "Processor",
+      "rows": 33
+    },
+    {
+      "name": "Memory",
+      "rows": 14
+    },
+    {
+      "name": "Networking",
+      "rows": 61
+    },
+    {
+      "name": "Power Supplies",
+      "rows": 6
+    },
+    {
+      "name": "Chassis",
+      "rows": 2
+    },
+    {
+      "name": "Cooling  Thermal",
+      "rows": 12
+    },
+    {
+      "name": "Graphics & GPU",
+      "rows": 10
+    },
+    {
+      "name": "Storage Controllers",
+      "rows": 20
+    },
+    {
+      "name": "Drive Enclosures  Drives",
+      "rows": 56
+    },
+    {
+      "name": "PCIe Risers",
+      "rows": 7
+    },
+    {
+      "name": "Cables & Enablement Kits",
+      "rows": 13
+    },
+    {
+      "name": "Accessories & Infrastructure",
+      "rows": 5
+    },
+    {
+      "name": "OS Boot Device",
+      "rows": 6
+    },
+    {
+      "name": "Discontinued SKUs",
+      "rows": 472
+    },
+    {
+      "name": "Supply Chain & Lead Times",
+      "rows": 774
+    },
+    {
+      "name": "Metadata",
+      "rows": 22
+    }
+  ],
+  "deltas": {
+    "hardware": {
+      "added": [
+        "P69726-B21",
+        "P69726-F21",
+        "P69727-B21",
+        "P69728-B21",
+        "P69729-B21",
+        "P69730-B21",
+        "P73447-B21",
+        "S6L28B"
+      ],
+      "removed": [
+        "P70436-B21",
+        "S2L70C",
+        "S6W30C",
+        "S0K89C",
+        "S2D86C",
+        "S5T74C",
+        "S3U30C",
+        "S6A73C",
+        "S6W21C"
+      ]
+    },
+    "services": {
+      "added": [
+        "H30RYA1",
+        "H30SDA1",
+        "H57GHA1",
+        "H57GJA1",
+        "H57GKA1"
+      ],
+      "removed": [
+        "H30RVA1",
+        "HA0Z0A1",
+        "HR2R4A1",
+        "HR2R5A1"
+      ]
+    },
+    "rulesChanged": true,
+    "hardwareChanges": {
+      "added": 8,
+      "removed": 0,
+      "categoryMigrated": 0,
+      "priceChanged": 0,
+      "attributeChanged": 193,
+      "priceAndAttributeChanged": 21,
+      "unchanged": 229,
+      "reinstated": 0,
+      "discontinuedTotal": 15
+    },
+    "serviceChanges": {
+      "added": 5,
+      "removed": 0,
+      "categoryMigrated": 0,
+      "priceChanged": 0,
+      "attributeChanged": 1,
+      "priceAndAttributeChanged": 0,
+      "unchanged": 316,
+      "reinstated": 0,
+      "discontinuedTotal": 0
+    }
+  },
+  "cloud": {
+    "status": "CLOUD_VERIFIED",
+    "success": true,
+    "sourceId": "96acd6c8-3537-4296-a18f-1ec0619bc649",
+    "consolidationVerified": true,
+    "error": "Uploaded and canary-verified \"DL380a_Gen12_OCA_Catalog_2026-10-29\" in NotebookLM (b233ec88-4682-4164-a801-3ee6ca649dc1). Existing sources were preserved unless explicit retirement was confirmed."
+  },
+  "promotedAt": "2026-10-29T08:54:47.686Z"
+}

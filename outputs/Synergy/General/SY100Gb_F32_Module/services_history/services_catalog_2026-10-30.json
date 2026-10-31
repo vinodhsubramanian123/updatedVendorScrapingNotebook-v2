@@ -1,0 +1,135 @@
+{
+  "metadata": {
+    "chassis": "SY100Gb F32 Module",
+    "model": "SY100Gb_F32_Module",
+    "family": "Synergy",
+    "generation": "General",
+    "pillar": "NETWORKING",
+    "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
+    "scrapeDate": "2026-10-30",
+    "scrapeTimestamp": "2026-10-30T11:57:13.837Z",
+    "builtAt": "2026-10-30T17:27:20.950Z",
+    "totalSubcategories": 2,
+    "totalUniqueSKUs": 2,
+    "totalTables": 2
+  },
+  "subcategories": [],
+  "entries": [
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "License Upgrade",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "rules": [
+        "Selection constraint for License Upgrade: max 1"
+      ],
+      "headers": [
+        "Product #",
+        "Description",
+        "Quantity",
+        "Price (USD)",
+        "Extended Price (USD)",
+        "Est. Lead Time",
+        "Start",
+        "Discontinued"
+      ],
+      "skuCount": 1,
+      "skus": [
+        {
+          "Product #": "R3P67AAE",
+          "Description": "HPE Synergy 32Gb Fibre Channel Upgrade E-LTU",
+          "Current Qty": "0",
+          "Unit Price (USD)": "2999.00",
+          "Extended Price (USD)": "NA",
+          "Est. Lead Time": "",
+          "Start Date": "09/03/2019",
+          "Discontinued Date": "09/30/2027",
+          "sku": "R3P67AAE",
+          "Option Type": "Service",
+          "CLIC Status": "Unpublished",
+          "clicStatus": "Unpublished",
+          "Lifecycle Status": "Active",
+          "lifecycleStatus": "Active",
+          "lifecycleBadge": "",
+          "Availability": "Available",
+          "Lead Time": "Unpublished",
+          "Lead Time Source": "Unpublished",
+          "leadTimeDays": null,
+          "Lead Time Days": "",
+          "Speed Tier": "Unpublished",
+          "HPE Recommended": "No",
+          "vendorRecommended": false,
+          "List Price (USD)": "2999.00",
+          "listPrice": 2999,
+          "Cost (USD)": "",
+          "costPrice": null,
+          "vendorAttributes": {
+            "listPrice": 2999
+          },
+          "Diff Status": "BASELINE",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
+          "Attribute Deltas": "None",
+          "Price History Trail": "2026-10-30: $2999.00"
+        }
+      ]
+    },
+    {
+      "parentCategory": "Support Services",
+      "subCategory": "System Options",
+      "constraint": "",
+      "minQty": 0,
+      "maxQty": "",
+      "rules": [],
+      "headers": [
+        "Product #",
+        "Description",
+        "Price (USD)",
+        "Owner Configuration",
+        "Evidence Scope"
+      ],
+      "skuCount": 1,
+      "skus": [
+        {
+          "Product #": "HU4D5A5#Z1R",
+          "Description": "HPE 5Y Complete Care Addon Essential Service",
+          "Unit Price (USD)": "",
+          "Owner Configuration": "CE45087D126BB28FD3A232EBB77B29B2",
+          "Evidence Scope": "Observed selected service; alternatives not enumerated",
+          "sku": "HU4D5A5#Z1R",
+          "Option Type": "Service",
+          "CLIC Status": "Unpublished",
+          "clicStatus": "Unpublished",
+          "Lifecycle Status": "Active",
+          "lifecycleStatus": "Active",
+          "lifecycleBadge": "",
+          "Availability": "Not published by OCA",
+          "Lead Time": "Unpublished",
+          "Lead Time Source": "Unpublished",
+          "leadTimeDays": null,
+          "Lead Time Days": "",
+          "Speed Tier": "Unpublished",
+          "HPE Recommended": "No",
+          "vendorRecommended": false,
+          "Current Qty": "0",
+          "List Price (USD)": "",
+          "listPrice": null,
+          "Cost (USD)": "",
+          "costPrice": null,
+          "vendorAttributes": {
+            "Owner Configuration": "CE45087D126BB28FD3A232EBB77B29B2",
+            "Evidence Scope": "Observed selected service; alternatives not enumerated"
+          },
+          "Diff Status": "BASELINE",
+          "Previous List Price (USD)": "N/A",
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
+          "Attribute Deltas": "None",
+          "Price History Trail": "2026-10-30: (no price)"
+        }
+      ]
+    }
+  ]
+}

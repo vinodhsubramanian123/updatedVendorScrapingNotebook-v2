@@ -1,0 +1,50 @@
+{
+  "product": "SY100Gb_F32_Module",
+  "recordedAt": "2026-10-29T06:13:41.032Z",
+  "results": [
+    {
+      "deltaId": "LEARN_SY100GB_F32_MODULE_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_SY100GB_F32_MODULE_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029",
+        "ruleType": "WORKFLOW_DUAL_PUBLICATION_ADVISORY",
+        "affectedSku": "",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-10-29T06:13:40.972Z"
+      }
+    },
+    {
+      "deltaId": "LEARN_SY100GB_F32_MODULE_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_SY100GB_F32_MODULE_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029",
+        "ruleType": "WORKFLOW_SOURCE_RETIREMENT_ADVISORY",
+        "affectedSku": "",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-10-29T06:13:41.001Z"
+      }
+    },
+    {
+      "deltaId": "LEARN_SY100GB_F32_MODULE_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_SY100GB_F32_MODULE_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029",
+        "ruleType": "WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY",
+        "affectedSku": "",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-10-29T06:13:41.032Z"
+      }
+    }
+  ],
+  "allReachable": true,
+  "hardwareCompatibilityCertified": false
+}

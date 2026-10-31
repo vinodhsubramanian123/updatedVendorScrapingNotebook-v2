@@ -1,1 +1,1149 @@
-{}
+{
+  "867796-B21": {
+    "productNumber": "867796-B21",
+    "description": "HPE Virtual Connect SE 100Gb F32 Module for Synergy [867796-B21]",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "720187-B21": {
+    "productNumber": "720187-B21",
+    "description": "HPE BladeSystem c-Class 40Gb QSFP+ MPO SR4 100m Transceiver",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "841716-B21": {
+    "productNumber": "841716-B21",
+    "description": "HPE 40Gb QSFP+ Bidirectional Transceiver",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "882251-B21": {
+    "productNumber": "882251-B21",
+    "description": "HPE Synergy 100GbE/4x25GbE/4x32GbFC QSFP28 Transceiver",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "817040-B21": {
+    "productNumber": "817040-B21",
+    "description": "HPE Synergy 40GbE/4x10GbE/4x8Gb FC QSFP+ Transceiver",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "845966-B21": {
+    "productNumber": "845966-B21",
+    "description": "HPE 100Gb QSFP28 MPO SR4 100m Transceiver",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "845970-B21": {
+    "productNumber": "845970-B21",
+    "description": "HPE QSFP28 to SFP28 Adapter",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "845972-B21": {
+    "productNumber": "845972-B21",
+    "description": "HPE 100Gb QSFP28 Bidirectional Transceiver",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "JG661A": {
+    "productNumber": "JG661A",
+    "description": "HPE Networking X140 40G QSFP+ LC LR4 SM 10km 1310nm Transceiver",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "JH234A": {
+    "productNumber": "JH234A",
+    "description": "HPE Networking X242 40G QSFP+ to QSFP+ 1m Direct Attach Copper Cable",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "JH235A": {
+    "productNumber": "JH235A",
+    "description": "HPE Networking X242 40G QSFP+ to QSFP+ 3m Direct Attach Copper Cable",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "JH236A": {
+    "productNumber": "JH236A",
+    "description": "HPE Networking X242 40G QSFP+ to QSFP+ 5m Direct Attach Copper Cable",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "JH419A": {
+    "productNumber": "JH419A",
+    "description": "HPE Networking X150 100G QSFP28 LC SWDM4 100m MM Transceiver",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "JH420A": {
+    "productNumber": "JH420A",
+    "description": "HPE Networking X150 100G QSFP28 PSM4 500m SM Transceiver",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "JH673A": {
+    "productNumber": "JH673A",
+    "description": "HPE Networking X150 100G QSFP28 CWDM4 2km SM Transceiver",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "JL307A": {
+    "productNumber": "JL307A",
+    "description": "HPE Aruba Networking 100G QSFP28 to QSFP28 3m Direct Attach Copper Cable",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "JL310A": {
+    "productNumber": "JL310A",
+    "description": "HPE Aruba Networking 100G QSFP28 LC LR4 10km SMF 2-strand Transceiver",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "P90358-B21": {
+    "productNumber": "P90358-B21",
+    "description": "HPE 100Gb QSFP28 SR1.2 LC MMF 100m Bidirectional Transceiver",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "R0Z25A": {
+    "productNumber": "R0Z25A",
+    "description": "HPE Aruba Networking 100G QSFP28 to QSFP28 1m Direct Attach Copper Cable",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "R0Z26A": {
+    "productNumber": "R0Z26A",
+    "description": "HPE Aruba Networking 100G QSFP28 to QSFP28 5m Direct Attach Copper Cable",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "813874-B21": {
+    "productNumber": "813874-B21",
+    "description": "HPE 10GBase-T SFP+ Transceiver",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "844483-B21": {
+    "productNumber": "844483-B21",
+    "description": "HPE 25Gb SFP28 to SFP28 7m Active Optical Cable",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "AJ718A": {
+    "productNumber": "AJ718A",
+    "description": "HPE 8Gb Short Wave Fibre Channel SFP+ 1 Pack Transceiver",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "E7Y09A": {
+    "productNumber": "E7Y09A",
+    "description": "HPE 16Gb SFP+ Short Wave 1-pack Industrial Extended Transceiver",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "E7Y10A": {
+    "productNumber": "E7Y10A",
+    "description": "HPE 16Gb SFP+ Short Wave 1-pack Commercial Transceiver",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "455883-B21": {
+    "productNumber": "455883-B21",
+    "description": "HPE BladeSystem c-Class 10Gb SFP+ SR Transceiver",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "455886-B21": {
+    "productNumber": "455886-B21",
+    "description": "HPE BladeSystem c-Class 10Gb SFP+ LR Transceiver",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "845398-B21": {
+    "productNumber": "845398-B21",
+    "description": "HPE 25Gb SFP28 SR 100m Transceiver",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "JG234A": {
+    "productNumber": "JG234A",
+    "description": "HPE Networking X130 10G SFP+ LC ER 40km Transceiver",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "P9H30A": {
+    "productNumber": "P9H30A",
+    "description": "HPE 32Gb SFP28 Short Wave Commercial Temperature Transceiver",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "P9H32A": {
+    "productNumber": "P9H32A",
+    "description": "HPE B-series 32Gb SFP28 Short Wave 1-pack Transceiver",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "537963-B21": {
+    "productNumber": "537963-B21",
+    "description": "HPE BladeSystem c-Class 10GbE SFP+ to SFP+ 5m Direct Attach Copper Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "720211-B21": {
+    "productNumber": "720211-B21",
+    "description": "HPE BladeSystem c-Class 40G QSFP+ to QSFP+ 15m Active Optical Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "721064-B21": {
+    "productNumber": "721064-B21",
+    "description": "HPE BladeSystem c-Class 40G QSFP+ to 4x10G SFP+ 3m Direct Attach Copper Splitter Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "721076-B21": {
+    "productNumber": "721076-B21",
+    "description": "HPE BladeSystem c-Class QSFP+ to 4x10G SFP+ 15m Active Optical Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "845406-B21": {
+    "productNumber": "845406-B21",
+    "description": "HPE 100Gb QSFP28 to QSFP28 3m Direct Attach Copper Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "845408-B21": {
+    "productNumber": "845408-B21",
+    "description": "HPE 100Gb QSFP28 to QSFP28 5m Direct Attach Copper Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "845410-B21": {
+    "productNumber": "845410-B21",
+    "description": "HPE 100Gb QSFP28 to QSFP28 7m Active Optical Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "845414-B21": {
+    "productNumber": "845414-B21",
+    "description": "HPE 100Gb QSFP28 to QSFP28 15m Active Optical Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "845416-B21": {
+    "productNumber": "845416-B21",
+    "description": "HPE 100Gb QSFP28 to 4x25Gb SFP28 3m Direct Attach Copper Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "845420-B21": {
+    "productNumber": "845420-B21",
+    "description": "HPE QSFP28 to 4x25Gb SFP28 7m Active Optical Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "876680-B21": {
+    "productNumber": "876680-B21",
+    "description": "HPE Synergy 300Gb Interconnect Link 2.1m Direct Attach Copper Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "876689-B21": {
+    "productNumber": "876689-B21",
+    "description": "HPE Synergy 300Gb Interconnect Link 3m Active Optical Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "876692-B21": {
+    "productNumber": "876692-B21",
+    "description": "HPE Synergy 300Gb Interconnect Link 5m Active Optical Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "876698-B21": {
+    "productNumber": "876698-B21",
+    "description": "HPE Synergy 300Gb Interconnect Link 15m Active Optical Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "AJ833A": {
+    "productNumber": "AJ833A",
+    "description": "HPE LC to LC Multi-mode OM3 2-Fiber 0.5m 1-Pack Fiber Optic Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "AJ836A": {
+    "productNumber": "AJ836A",
+    "description": "HPE LC to LC Multi-mode OM3 2-Fiber 5.0m 1-Pack Fiber Optic Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "AJ837A": {
+    "productNumber": "AJ837A",
+    "description": "HPE LC to LC Multi-mode OM3 2-Fiber 15.0m 1-Pack Fiber Optic Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "AJ838A": {
+    "productNumber": "AJ838A",
+    "description": "HPE LC to LC Multi-mode OM3 2-Fiber 30.0m 1-Pack Fiber Optic Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "AJ839A": {
+    "productNumber": "AJ839A",
+    "description": "HPE LC to LC Multi-mode OM3 2-Fiber 50.0m 1-Pack Fiber Optic Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "H6Z30A": {
+    "productNumber": "H6Z30A",
+    "description": "HPE Premier Flex MPO12/MPO12 Multi-mode OM4 100m Fiber Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "P64635-B21": {
+    "productNumber": "P64635-B21",
+    "description": "HPE Synergy 300Gb Interconnect Link 3m Plenum Rated Active Optical Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "P64638-B21": {
+    "productNumber": "P64638-B21",
+    "description": "HPE Synergy 300Gb Interconnect Link 5m Plenum Rated Active Optical Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "P64641-B21": {
+    "productNumber": "P64641-B21",
+    "description": "HPE Synergy 300Gb Interconnect Link 15m Plenum Rated Active Optical Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "Q1H65A": {
+    "productNumber": "Q1H65A",
+    "description": "HPE Premier Flex MPO12/MPO12 Multi-mode OM4 5m Fiber Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "QK731A": {
+    "productNumber": "QK731A",
+    "description": "HPE Premier Flex MPO12/MPO12 Multi-mode OM4 50m Fiber Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "QK732A": {
+    "productNumber": "QK732A",
+    "description": "HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 1m Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "QK737A": {
+    "productNumber": "QK737A",
+    "description": "HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 50m Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "720199-B21": {
+    "productNumber": "720199-B21",
+    "description": "HPE BladeSystem c-Class 40G QSFP+ to QSFP+ 3m Direct Attach Copper Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "720202-B21": {
+    "productNumber": "720202-B21",
+    "description": "HPE BladeSystem c-Class 40G QSFP+ to QSFP+ 5m Direct Attach Copper Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "845424-B21": {
+    "productNumber": "845424-B21",
+    "description": "HPE QSFP28 to 4x25Gb SFP28 15m Active Optical Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "AJ834A": {
+    "productNumber": "AJ834A",
+    "description": "HPE LC to LC Multi-mode OM3 2-Fiber 1.0m 1-Pack Fiber Optic Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "AJ835A": {
+    "productNumber": "AJ835A",
+    "description": "HPE LC to LC Multi-mode OM3 2-Fiber 2.0m 1-Pack Fiber Optic Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "AP818A": {
+    "productNumber": "AP818A",
+    "description": "HPE B-series SFP+ to SFP+ Active Copper 1.0m Direct Attach Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "AP819A": {
+    "productNumber": "AP819A",
+    "description": "HPE B-series SFP+ to SFP+ Active Copper 3.0m Direct Attach Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "AP820A": {
+    "productNumber": "AP820A",
+    "description": "HPE B-series SFP+ to SFP+ Active Copper 5.0m Direct Attach Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "K2Q21A": {
+    "productNumber": "K2Q21A",
+    "description": "HPE C-series 3M Passive Copper SFP+ Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "K2Q22A": {
+    "productNumber": "K2Q22A",
+    "description": "HPE C-series 5M Passive Copper SFP+ Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "K2Q46A": {
+    "productNumber": "K2Q46A",
+    "description": "HPE Premier Flex MPO8 to 4xLC Multi-mode OM4 5m Fiber Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "K2Q47A": {
+    "productNumber": "K2Q47A",
+    "description": "HPE Premier Flex MPO8 to 4xLC Multi-mode OM4 15m Fiber Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "QK701A": {
+    "productNumber": "QK701A",
+    "description": "HPE C-series SFP+ to SFP+ Active Copper 7.0m Direct Attach Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "QK729A": {
+    "productNumber": "QK729A",
+    "description": "HPE Premier Flex MPO12/MPO12 Multi-mode OM4 10m Fiber Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "QK733A": {
+    "productNumber": "QK733A",
+    "description": "HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 2m Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "QK734A": {
+    "productNumber": "QK734A",
+    "description": "HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 5m Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "QK735A": {
+    "productNumber": "QK735A",
+    "description": "HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 15m Cable",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "487655-B21": {
+    "productNumber": "487655-B21",
+    "description": "HPE BladeSystem c-Class 10GbE SFP+ to SFP+ 3m Direct Attach Copper Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "C7533A": {
+    "productNumber": "C7533A",
+    "description": "HPE 1.2m/4ft CAT5 RJ45 M/M Ethernet Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "C7535A": {
+    "productNumber": "C7535A",
+    "description": "HPE RJ45 to RJ45 Cat5e Black M/M 7.6ft 1-pack Data Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "C7536A": {
+    "productNumber": "C7536A",
+    "description": "HPE 4.3m/14ft CAT5 RJ45 M/M Ethernet Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "C7537A": {
+    "productNumber": "C7537A",
+    "description": "HPE 7.6m/25ft CAT5 RJ45 M/M Ethernet Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "487649-B21": {
+    "productNumber": "487649-B21",
+    "description": "HPE BladeSystem c-Class 10GbE SFP+ to SFP+ 0.5m Direct Attach Copper Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "487652-B21": {
+    "productNumber": "487652-B21",
+    "description": "HPE BladeSystem c-Class 10GbE SFP+ to SFP+ 1m Direct Attach Copper Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "498385-B21": {
+    "productNumber": "498385-B21",
+    "description": "HPE 1M 4X DDR/QDR Quad Small Form Factor Pluggable InfiniBand Copper Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "498385-B22": {
+    "productNumber": "498385-B22",
+    "description": "HPE 2M 4X DDR/QDR Quad Small Form Factor Pluggable InfiniBand Copper Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "498385-B23": {
+    "productNumber": "498385-B23",
+    "description": "HPE 3M 4X DDR/QDR Quad Small Form Factor Pluggable InfiniBand Copper Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "498385-B24": {
+    "productNumber": "498385-B24",
+    "description": "HPE 5M 4X DDR/QDR Quad Small Form Factor Pluggable InfiniBand Copper Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "498385-B25": {
+    "productNumber": "498385-B25",
+    "description": "HPE 7M 4X DDR/QDR Quad Small Form Factor Pluggable InfiniBand Copper Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "538272-B21": {
+    "productNumber": "538272-B21",
+    "description": "QLogic InfiniBand Cable Management Kit for c-Class BladeSystem",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "670759-B21": {
+    "productNumber": "670759-B21",
+    "description": "HPE 0.5M FDR Quad Small Form Factor Pluggable InfiniBand Copper Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "670759-B22": {
+    "productNumber": "670759-B22",
+    "description": "HPE 1M FDR Quad Small Form Factor Pluggable InfiniBand Copper Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "670759-B23": {
+    "productNumber": "670759-B23",
+    "description": "HPE 1.5M FDR Quad Small Form Factor Pluggable InfiniBand Copper Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "670759-B24": {
+    "productNumber": "670759-B24",
+    "description": "HPE 2M FDR Quad Small Form Factor Pluggable InfiniBand Copper Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "670759-B25": {
+    "productNumber": "670759-B25",
+    "description": "HPE 3M FDR Quad Small Form Factor Pluggable InfiniBand Copper Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "712495-B21": {
+    "productNumber": "712495-B21",
+    "description": "Mellanox InfiniBand QDR/FDR10 36P Switch",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "712497-B21": {
+    "productNumber": "712497-B21",
+    "description": "Mellanox InfiniBand QDR/FDR10 36P Managed Switch",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "720196-B21": {
+    "productNumber": "720196-B21",
+    "description": "HPE BladeSystem c-Class 40G QSFP+ to QSFP+ 1m Direct Attach Copper Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "720205-B21": {
+    "productNumber": "720205-B21",
+    "description": "HPE BladeSystem c-Class 40G QSFP+ to QSFP+ 7m Active Optical Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "720208-B21": {
+    "productNumber": "720208-B21",
+    "description": "HPE BladeSystem c-Class 40G QSFP+ to QSFP+ 10m Active Optical Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "721067-B21": {
+    "productNumber": "721067-B21",
+    "description": "HPE BladeSystem c-Class 40G QSFP+ to 4x10G SFP+ 5m Direct Attach Copper Splitter Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "721070-B21": {
+    "productNumber": "721070-B21",
+    "description": "HPE BladeSystem c-Class QSFP+ to 4x10G SFP+ 7m Active Optical Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "721073-B21": {
+    "productNumber": "721073-B21",
+    "description": "HPE BladeSystem c-Class QSFP+ to 4x10G SFP+ 10m Active Optical Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "730907-B21": {
+    "productNumber": "730907-B21",
+    "description": "HPE BladeSystem c-Class 40G QSFP+ to QSFP+ .35m Direct Attach Copper Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "804095-B21": {
+    "productNumber": "804095-B21",
+    "description": "HPE Synergy Interconnect Link 1.1m Direct Attach Copper Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "804098-B21": {
+    "productNumber": "804098-B21",
+    "description": "HPE Synergy Interconnect Link 1.6m Direct Attach Copper Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "804101-B21": {
+    "productNumber": "804101-B21",
+    "description": "HPE Synergy Interconnect Link 3m Active Optical Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "804104-B21": {
+    "productNumber": "804104-B21",
+    "description": "HPE Synergy Interconnect Link 5m Active Optical Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "804107-B21": {
+    "productNumber": "804107-B21",
+    "description": "HPE Synergy Interconnect Link 10m Active Optical Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "804110-B21": {
+    "productNumber": "804110-B21",
+    "description": "HPE Synergy Interconnect Link 15m Active Optical Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "804155-B21": {
+    "productNumber": "804155-B21",
+    "description": "HPE Synergy Interconnect Link 2.1m Direct Attach Copper Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "808722-B21": {
+    "productNumber": "808722-B21",
+    "description": "HPE 3 Meter InfiniBand FDR QSFP V-series Optical Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "808722-B22": {
+    "productNumber": "808722-B22",
+    "description": "HPE 5 Meter InfiniBand FDR QSFP V-series Optical Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "808722-B23": {
+    "productNumber": "808722-B23",
+    "description": "HPE 7 Meter InfiniBand FDR QSFP V-series Optical Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "808722-B24": {
+    "productNumber": "808722-B24",
+    "description": "HPE 10 Meter InfiniBand FDR QSFP V-series Optical Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "808722-B25": {
+    "productNumber": "808722-B25",
+    "description": "HPE 12 Meter InfiniBand FDR QSFP V-series Optical Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "808722-B26": {
+    "productNumber": "808722-B26",
+    "description": "HPE 15 Meter InfiniBand FDR QSFP V-series Optical Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "808722-B27": {
+    "productNumber": "808722-B27",
+    "description": "HPE 20 Meter InfiniBand FDR QSFP V-series Optical Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "808722-B28": {
+    "productNumber": "808722-B28",
+    "description": "HPE 30 Meter InfiniBand FDR QSFP V-series Optical Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "845412-B21": {
+    "productNumber": "845412-B21",
+    "description": "HPE 100Gb QSFP28 to QSFP28 10m Active Optical Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "861412-B21": {
+    "productNumber": "861412-B21",
+    "description": "HPE Synergy Frame Link Module CAT6A 1.2m Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "861413-B21": {
+    "productNumber": "861413-B21",
+    "description": "HPE Synergy Frame Link Module CAT6A 3m Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "861414-B21": {
+    "productNumber": "861414-B21",
+    "description": "HPE Synergy Frame Link Module CAT6A 6.4m Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "C7542A": {
+    "productNumber": "C7542A",
+    "description": "HPE 15.2m/50ft CAT5 RJ45 M/M Ethernet Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "G9Q68A": {
+    "productNumber": "G9Q68A",
+    "description": "HPE NonStop Category 6A 21 Foot Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "J9283B": {
+    "productNumber": "J9283B",
+    "description": "HPE X242 10G SFP+ to SFP+ 3m Direct Attach Copper Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "JC784C": {
+    "productNumber": "JC784C",
+    "description": "HPE Networking X240 10G SFP+ 7m DAC Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "JD095C": {
+    "productNumber": "JD095C",
+    "description": "HPE Networking X240 10G SFP+ SFP+ 0.65m DAC Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "JD096C": {
+    "productNumber": "JD096C",
+    "description": "HPE Networking X240 10G SFP+ SFP+ 1.2m DAC Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "JD097C": {
+    "productNumber": "JD097C",
+    "description": "HPE Networking X240 10G SFP+ SFP+ 3m DAC Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "JG081C": {
+    "productNumber": "JG081C",
+    "description": "HPE Networking X240 10G SFP+ SFP+ 5m DAC Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "JG326A": {
+    "productNumber": "JG326A",
+    "description": "HPE Networking Comware X240 40G QSFP+ QSFP+ 1m Direct Attach Copper Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "JG327A": {
+    "productNumber": "JG327A",
+    "description": "HPE Networking Comware X240 40G QSFP+ QSFP+ 3m Direct Attach Copper Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "JG328A": {
+    "productNumber": "JG328A",
+    "description": "HPE Networking Comware X240 40G QSFP+ QSFP+ 5m Direct Attach Copper Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "JG329A": {
+    "productNumber": "JG329A",
+    "description": "HPE Networking Comware X240 40G QSFP+ to 4x10G SFP+ 1m Direct Attach Copper Splitter Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "JG330A": {
+    "productNumber": "JG330A",
+    "description": "HPE Networking Comware X240 40G QSFP+ to 4x10G SFP+ 3m Direct Attach Copper Splitter Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "JG331A": {
+    "productNumber": "JG331A",
+    "description": "HPE Networking Comware X240 40G QSFP+ to 4x10G SFP+ 5m Direct Attach Copper Splitter Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "QK702A": {
+    "productNumber": "QK702A",
+    "description": "HPE C-series SFP+ to SFP+ Active Copper 10.0m Direct Attach Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "QK736A": {
+    "productNumber": "QK736A",
+    "description": "HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 30m Cable",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "AP784A": {
+    "productNumber": "AP784A",
+    "description": "HP C-Series SFP+ to SFP+ Copper 3.0m Direct Attach Cable                       Product is obsolete: AP784A ($c)",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "AP785A": {
+    "productNumber": "AP785A",
+    "description": "HP C-Series SFP+ to SFP+ Copper 5.0m Direct Attach Cable                       Product is obsolete: AP785A ($c)",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "R3P67A": {
+    "productNumber": "R3P67A",
+    "description": "HPE Synergy 32Gb Fibre Channel Upgrade FIO LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "License Upgrade",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "N3R43A": {
+    "productNumber": "N3R43A",
+    "description": "HPE Synergy 8Gb FC License Upgrade",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "License Upgrade",
+    "firstSeenDate": "2026-10-30",
+    "status": "ACTIVE"
+  },
+  "P06584-B21": {
+    "productNumber": "P06584-B21",
+    "description": "HPE Synergy VC 100Gb F32 Interconnect CTO Module",
+    "mainCategory": "Chassis",
+    "subCategory": "Variants",
+    "firstSeenDate": "2026-10-30",
+    "discontinuedDate": "2026-10-30",
+    "daysActive": 0,
+    "lastKnownPrice": "5400.00",
+    "fullPriceTrail": "2026-10-30: $5400.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "removalReason": "ABSENT_FROM_CATALOG",
+    "previousLifecycleStatus": "Active",
+    "vendorDiscontinuedDate": "",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Removed from active HPE OCA portal catalog"
+  }
+}

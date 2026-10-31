@@ -3858,5 +3858,69 @@
     "successorSku": "P91249-B21",
     "successorDescription": "HPE 15.36TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 Multi Vendor SSD",
     "replacementReason": "Vendor delisted single-vendor PS1010 in live OCA; superseded by Multi Vendor P91249-B21 (,541.00)."
+  },
+  "S6L28B": {
+    "productNumber": "S6L28B",
+    "description": "Microsoft Windows Server 2025 10-core Essentials FIO Not Pre-installed WW ESD LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "MS Windows Server - Essentials",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P69726-B21": {
+    "productNumber": "P69726-B21",
+    "description": "HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P69726-F21": {
+    "productNumber": "P69726-F21",
+    "description": "HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P69727-B21": {
+    "productNumber": "P69727-B21",
+    "description": "HPE 32GB (1x32GB) Dual Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P69728-B21": {
+    "productNumber": "P69728-B21",
+    "description": "HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P69729-B21": {
+    "productNumber": "P69729-B21",
+    "description": "HPE 96GB (1x96GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P69730-B21": {
+    "productNumber": "P69730-B21",
+    "description": "HPE 128GB (1x128GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P73447-B21": {
+    "productNumber": "P73447-B21",
+    "description": "HPE 256GB (1x256GB) Quad Rank x4 DDR5-6400 CAS-60-52-52 EC8 Registered 3DS Smart Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
   }
 }

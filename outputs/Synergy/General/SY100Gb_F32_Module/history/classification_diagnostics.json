@@ -1,0 +1,163 @@
+{
+  "version": "1.0.0",
+  "chassis": "SY100Gb_F32_Module",
+  "generatedAt": "2026-10-30T17:27:20.061Z",
+  "executionDurationMs": 1390,
+  "summary": {
+    "totalRawTables": 9,
+    "validProductTables": 8,
+    "skippedTablesCount": 1,
+    "totalExtractedSKUs": 142,
+    "totalUniqueSKUs": 142,
+    "totalRulesExtracted": 120,
+    "chassisVariantsCount": 2
+  },
+  "skippedTables": [
+    {
+      "tableIndex": 0,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    }
+  ],
+  "tableDecisions": [
+    {
+      "tableIndex": 1,
+      "subCategory": "Optical Transceivers & DAC Cables",
+      "parentCategory": "Networking",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Transceiver",
+      "constraint": "max 8",
+      "minQty": 0,
+      "maxQty": 8,
+      "skuCount": 19,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 2,
+      "subCategory": "Optical Transceivers & DAC Cables",
+      "parentCategory": "Networking",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Transceiver",
+      "constraint": "max 16",
+      "minQty": 0,
+      "maxQty": 16,
+      "skuCount": 11,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 3,
+      "subCategory": "Cables",
+      "parentCategory": "Cables & Enablement Kits",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Transceiver",
+      "constraint": "max 8",
+      "minQty": 0,
+      "maxQty": 8,
+      "skuCount": 44,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 4,
+      "subCategory": "PCIe Networking Adapters",
+      "parentCategory": "Accessories & Infrastructure",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Chassis Infrastructure",
+      "constraint": "max 16",
+      "minQty": 0,
+      "maxQty": 16,
+      "skuCount": 62,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 5,
+      "subCategory": "Optical Transceivers & DAC Cables",
+      "parentCategory": "Networking",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Transceiver",
+      "constraint": "max 16",
+      "minQty": 0,
+      "maxQty": 16,
+      "skuCount": 2,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 6,
+      "subCategory": "License Upgrade",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Fibre Channel HBA",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 2,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 7,
+      "subCategory": "License Upgrade",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Operating System / License",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 8,
+      "subCategory": "System Options",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "N/A",
+      "minQty": 0,
+      "maxQty": "",
+      "skuCount": 1,
+      "rulesCount": 0
+    }
+  ],
+  "categoryDistribution": {
+    "Chassis": 2,
+    "Networking": 32,
+    "Cables & Enablement Kits": 44,
+    "Accessories & Infrastructure": 62,
+    "Software & Licenses": 2
+  },
+  "chassisVariantsMatrix": {
+    "867796-B21": {
+      "description": "HPE Virtual Connect SE 100Gb F32 Module for Synergy [867796-B21]",
+      "formFactor": "Unknown",
+      "listPrice": 3200,
+      "diffStatus": "ADDED"
+    },
+    "P06584-B21": {
+      "description": "[REMOVED SKU] HPE Synergy VC 100Gb F32 Interconnect CTO Module",
+      "formFactor": "Unknown",
+      "listPrice": 5400,
+      "diffStatus": "REMOVED"
+    }
+  },
+  "dataAnomalies": {
+    "priceInconsistencies": [],
+    "unparseablePrices": [],
+    "filteredPhantomSKUs": [],
+    "duplicateSKUs": []
+  },
+  "attributeFidelity": {
+    "skusWithLeadTime": 1,
+    "skusWithCost": 0,
+    "skusWithPriceDelta": 1,
+    "skusWithPricePerGb": 1,
+    "clicStatusDistribution": {
+      "Valid": 1,
+      "Unpublished": 141
+    },
+    "lifecycleStatusDistribution": {
+      "Active": 85,
+      "Discontinued": 1,
+      "Obsolete (OB)": 55,
+      "EOL Warning (90-Day)": 1
+    }
+  }
+}

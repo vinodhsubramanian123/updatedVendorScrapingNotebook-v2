@@ -870,5 +870,45 @@
     "subCategory": "System Options",
     "firstSeenDate": "2026-10-17",
     "status": "ACTIVE"
+  },
+  "H30RYA1": {
+    "productNumber": "H30RYA1",
+    "description": "HPE Container Adopt Ph2 Redht Onsite SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Management Hardware",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "H30SDA1": {
+    "productNumber": "H30SDA1",
+    "description": "HPE Container Adopt Ph1 Anths Onsite SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Management Hardware",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "H57GHA1": {
+    "productNumber": "H57GHA1",
+    "description": "HPE Education 5 Day Remote SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "H57GJA1": {
+    "productNumber": "H57GJA1",
+    "description": "HPE Education 5 Day Onsite SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "H57GKA1": {
+    "productNumber": "H57GKA1",
+    "description": "HPE Education 1 Day Remote SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
   }
 }

@@ -1,0 +1,29 @@
+{
+  "success": true,
+  "syncStatus": "CLOUD_VERIFIED",
+  "cloudUploaded": true,
+  "flowType": "SCRAPE",
+  "chassisName": "SY100Gb_F32_Module",
+  "masterRegistryRulesCount": 126,
+  "payloadPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\Synergy\\General\\SY100Gb_F32_Module\\notebook_sync_payload_SY100Gb_F32_Module.md",
+  "driftStatus": "DRIFT_DETECTED",
+  "unSyncedDeltasCount": 3,
+  "uploadResult": {
+    "success": true,
+    "cloudVerified": true,
+    "mode": "CLI",
+    "newSourceId": "2e822c3e-19ba-40d5-836e-acb06c2c0bd0",
+    "newSourceName": "SY100Gb_F32_Module_OCA_Catalog_2026-10-31",
+    "driveSyncStatus": "HUMAN_WORKBOOK_WRITTEN_AND_READBACK_VERIFIED",
+    "consolidationVerified": true,
+    "retiredSourceIds": [],
+    "retirementErrors": [],
+    "contentFingerprints": null,
+    "canonicalDriveSheetId": "1U6GAUs69k8JnI_CGZ6_MkaWQ9oN7Ik_LgrWlesjMZpA",
+    "canonicalDriveSheetUrl": "https://docs.google.com/spreadsheets/d/1U6GAUs69k8JnI_CGZ6_MkaWQ9oN7Ik_LgrWlesjMZpA/edit",
+    "canonicalDriveSourceId": null,
+    "staleSourceIds": [],
+    "message": "Uploaded and canary-verified \"SY100Gb_F32_Module_OCA_Catalog_2026-10-31\" in NotebookLM (c6390834-ff1e-4602-9391-8415f673afa3). Existing sources were preserved unless explicit retirement was confirmed."
+  },
+  "runningKnowledgeSynced": false
+}

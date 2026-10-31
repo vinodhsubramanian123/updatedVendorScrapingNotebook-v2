@@ -1,0 +1,50 @@
+{
+  "product": "DL380a_Gen12",
+  "recordedAt": "2026-10-29T06:13:40.521Z",
+  "results": [
+    {
+      "deltaId": "LEARN_DL380A_GEN12_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_DL380A_GEN12_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029",
+        "ruleType": "WORKFLOW_DUAL_PUBLICATION_ADVISORY",
+        "affectedSku": "",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-10-29T06:13:40.450Z"
+      }
+    },
+    {
+      "deltaId": "LEARN_DL380A_GEN12_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_DL380A_GEN12_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029",
+        "ruleType": "WORKFLOW_SOURCE_RETIREMENT_ADVISORY",
+        "affectedSku": "",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-10-29T06:13:40.485Z"
+      }
+    },
+    {
+      "deltaId": "LEARN_DL380A_GEN12_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_DL380A_GEN12_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029",
+        "ruleType": "WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY",
+        "affectedSku": "",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-10-29T06:13:40.521Z"
+      }
+    }
+  ],
+  "allReachable": true,
+  "hardwareCompatibilityCertified": false
+}

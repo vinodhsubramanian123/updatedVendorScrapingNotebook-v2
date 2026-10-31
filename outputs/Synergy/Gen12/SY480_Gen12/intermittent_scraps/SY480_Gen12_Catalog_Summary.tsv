@@ -1,23 +1,67 @@
 Main Category	Sub-Category	Constraint	Min Qty	Max Qty	Total SKUs	Has Rules	Rule Count
+Software	HP CMU Software	no max	0	Unlimited	0	No	0
+Software	Partner Software - Interconnect Management Array	max 999	0	999	0	No	0
+Processor	Processors	required	1	Required	0	No	0
+Unknown	Drive Cage	required	1	Required	0	No	0
+Unknown	Riser	max 1	0	1	0	No	0
+Unknown	SSD Drive	max 2	0	2	0	No	0
+Processor	Processors (required)	max 2	0	2	17	Yes	1
+Memory	Memory	max 32	0	32	12	Yes	3
 Memory	Memory Blank Kit	max 1	0	1	1	Yes	1
-Networking	Mezzanine Cards	max 3	0	3	1	Yes	1
+Memory	Drive Cage (required)	max 1	0	1	0	No	0
+Factory Configuration Settings	Energy Star	max 1	0	1	0	No	0
+Factory Configuration Settings	Memory Setting	max 1	0	1	0	No	0
+Factory Configuration Settings	RAID Settings	max 1	0	1	0	No	0
+Networking	Mezzanine Cards	max 3	0	3	0	No	0
+Networking	Controllers	max 1	0	1	0	No	0
+Networking	Cable	max 1	0	1	0	No	0
+Networking	Fibre Channel	max 2	0	2	2	Yes	1
+Networking	SAS	max 1	0	1	0	No	0
+Networking	Upgrade	max 1	0	1	0	No	0
+Operating Environment	MS Windows Server Additional License	no max	0	Unlimited	0	No	0
+Operating Environment	Supported License Operating System Pack	no max	0	Unlimited	0	No	0
+Operating Environment	Non Preinstalled Operating System	no max	0	Unlimited	0	No	0
+Operating Environment	Red Hat Enterprise Linux Server	no max	0	Unlimited	0	No	0
+Virtualization	HPE Virtualization	no max	0	Unlimited	0	No	0
+Virtualization	VMWare VCloud Products	no max	0	Unlimited	0	No	0
+Virtualization	VMWare Core Editions	no max	0	Unlimited	0	No	0
+Virtualization	Proliant Software Media Kits	no max	0	Unlimited	0	No	0
+Virtualization	Linux Value Added Software	no max	0	Unlimited	0	No	0
+Virtualization	High Availability Computing - Cluster Software	no max	0	Unlimited	0	No	0
+Virtualization	Partner Software - Operating System 8pks	no max	0	Unlimited	0	No	0
+Virtualization	OEM Software	no max	0	Unlimited	0	No	0
+Virtualization	Reseller Option Kit	no max	0	Unlimited	0	No	0
 Chassis	Variants	min 1, max 1 — Active OCA CTO chassis	1	1	1	Yes	1
-OS Boot Device	Riser	max 1	0	1	1	Yes	1
-PCIe Risers	Riser	max 1	0	1	4	Yes	1
-Processor	Intel Xeon 6th Gen Scalable Processors	required	1	Required	16	Yes	1
-Cooling / Thermal	Standard & Performance Heat Sinks	max 6	0	6	2	Yes	1
-Memory	DDR5 Registered Smart Memory	max 32	0	32	13	Yes	3
-Drive Enclosures / Drives	Drive Cage	required	1	Required	5	Yes	1
-Accessories & Infrastructure	Energy Star	max 1	0	1	1	Yes	1
-Software & Licenses	Server Management & Operating System Licenses	max 1	0	1	83	Yes	7
-Storage Controllers	RAID Settings	max 1	0	1	7	Yes	2
+PCIe Risers	Riser	max 1	0	1	1	Yes	1
+Drive Enclosures / Drives	Solid State Drives (NVMe/SAS/SATA)	max 2	0	2	4	Yes	3
+Cooling / Thermal	Standard & Performance Heat Sinks	max 6	0	6	2	Yes	3
+Drive Enclosures / Drives	Drive Cage (required)	max 1	0	1	5	Yes	1
+Accessories & Infrastructure	Energy Star Configuration Presets	max 1	0	1	1	Yes	1
+Software & Licenses	Server Management & Operating System Licenses	max 1	0	1	41	Yes	32
+Memory	Memory Setting	max 1	0	1	1	Yes	1
+Storage Controllers	Storage Controllers Options	max 1	0	1	4	Yes	1
+Storage Controllers	RAID Settings	max 1	0	1	3	Yes	2
+Software & Licenses	HP CMU Software	no max	0	Unlimited	2	Yes	3
+Networking	PCIe Networking Adapters	max 3	0	3	1	Yes	1
 Storage Controllers	OCP3 Networking Adapters	max 1	0	1	1	Yes	1
-Cables & Enablement Kits	Cable	max 1	0	1	1	Yes	1
-Networking	PCIe Networking Adapters	max 2	0	2	2	Yes	1
-Storage Controllers	Tri-Mode MegaRAID Storage Controllers	max 1	0	1	1	Yes	1
+Cables & Enablement Kits	Tri-Mode MegaRAID Storage Controllers	max 1	0	1	1	Yes	1
+Drive Enclosures / Drives	SAS	max 1	0	1	1	Yes	1
 Cables & Enablement Kits	Upgrade	max 1	0	1	1	Yes	1
-Software & Licenses	System Options	no max	0	Unlimited	3	Yes	1
-Processor	PCIe Networking Adapters	min 1, max 2	1	2	4	Yes	1
-Accessories & Infrastructure	System Options	optional	0	Optional	6	Yes	1
-Software & Licenses	Red Hat Enterprise Linux Server	Discontinued	0	Discontinued	22	Yes	1
-Software & Licenses	OEM Software	Discontinued	0	Discontinued	2	Yes	1
+Software & Licenses	MS Windows Server Additional License	no max	0	Unlimited	19	Yes	10
+Software & Licenses	Supported License Operating System Pack	no max	0	Unlimited	34	Yes	24
+Software & Licenses	Non Preinstalled Operating System	no max	0	Unlimited	61	Yes	53
+Software & Licenses	Red Hat Enterprise Linux Server	no max	0	Unlimited	85	Yes	77
+Software & Licenses	VMWare Core Editions	no max	0	Unlimited	69	Yes	53
+Software & Licenses	Proliant Software Media Kits	no max	0	Unlimited	2	Yes	1
+Software & Licenses	Linux Value Added Software	no max	0	Unlimited	26	Yes	2
+Software & Licenses	High Availability Computing - Cluster Software	no max	0	Unlimited	19	Yes	11
+Software & Licenses	System Options	no max	0	Unlimited	3	Yes	4
+Software & Licenses	Partner Software - Operating System 8pks	no max	0	Unlimited	36	Yes	28
+Software & Licenses	OEM Software	no max	0	Unlimited	8	Yes	7
+Support Services	RAID Settings	max 1	0	1	2	Yes	1
+Support Services	Energy Star	max 1	0	1	11	Yes	4
+Support Services	PCIe Networking Adapters	max 1	0	1	4	Yes	5
+Support Services	System Options		0	N/A	51	No	0
+Support Services	HPE Virtualization	no max	0	Unlimited	54	Yes	5
+Support Services	Reseller Option Kit	no max	0	Unlimited	11	Yes	2
+Processor	Intel Xeon Scalable Processors	Discontinued	0	Discontinued	5	Yes	1

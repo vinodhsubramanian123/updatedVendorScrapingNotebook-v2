@@ -1,0 +1,16 @@
+{
+  "query": "SY100Gb F32 Module",
+  "selectedSku": "867796-B21",
+  "source": "Authenticated OCA owned component menu",
+  "capturedAt": "2026-10-30T11:56:59.252Z",
+  "ownerConfiguration": "100Gb Virtual #1",
+  "parentConfiguration": "Synergy 12000 Frame #1",
+  "candidates": [
+    {
+      "sku": "867796-B21",
+      "text": "HPE Virtual Connect SE 100Gb F32 Module for Synergy [867796-B21]",
+      "visited": true
+    }
+  ],
+  "excludedCandidates": []
+}

@@ -40998,5 +40998,35 @@
     "field": "Vendor Attributes",
     "oldValue": "{\"Product Number\":\"H46SKA3\"}",
     "newValue": "{\"listPrice\":0,\"Product Number\":\"H46SKA3\"}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "339781-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "389692-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}"
+  },
+  {
+    "date": "2026-10-29",
+    "productNumber": "469774-409",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Manufacturing Services",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":1}",
+    "newValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":1}"
   }
 ]

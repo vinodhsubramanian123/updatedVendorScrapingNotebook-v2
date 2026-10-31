@@ -1,0 +1,273 @@
+HPE ProLiant Compute DL380 Gen12 — 32x 64GB Memory Sourcing & Minimum Buildable BOM Master Learnings (2026-10-28)
+
+Executive Overview & Sourcing Strategy
+
+This document records the fully validated, 100% buildable Configure-to-Order (CTO) baseline for sourcing 32x 64GB DDR5-6400 CAS-52 Registered Smart FIO Kits (
+
+P69728-F21
+
+) on the HPE ProLiant Compute DL380 Gen12 server. This workaround is used when standalone (adhoc) memory module purchases are blocked or restricted by partner portal rules and supply chain constraints.
+
+Core Architectural & Buildability Rules
+
+1. Dual Processor (2P) Requirement for 32 Memory Slots
+
+Each Intel Xeon 6 socket features 8 memory channels with 2 DIMM slots per channel (16 DIMM slots per CPU, 32 DIMM slots total across a 2P motherboard).
+
+Populating 32 DIMM slots strictly mandates a dual-processor (2P) system because Socket 1 controls channels 1–8 (slots 1–16) and Socket 2 controls channels 9–16 (slots 17–32).
+
+Populating 16 DIMMs per socket fills all 8 channels in a balanced 2DPC layout, running at 6000 MT/s.
+
+To minimize base compute cost, two low-TDP Intel Xeon 6505P 12-core 150W processors (
+
+P74503-B21
+
+) with standard heatsinks (
+
+P49145-B21
+
+) are selected.
+
+2. Fan Kit Nuance (
+
+P48820-B21
+
+ vs. 
+
+P49146-B21
+
+)
+
+High-Performance Fan Kit (
+
+P48820-B21
+
+, $972.00) EXEMPTION:
+
+ High-Performance Fans are required only for processors >185W/240W TDP, GPU setups, or cabled NVMe setups. Using 150W TDP processors operating with drive bay blanks allows this $972.00 kit to be safely removed.
+
+Standard Fan Kit (
+
+P49146-B21
+
+, $115.00) MANDATE:
+
+ The base 8SFF NC CTO chassis (
+
+P73282-B21
+
+) includes 4 Standard Fans out of the box (enough for 1 CPU). Adding a second processor increases chassis cooling requirements to 6 fans total. Adding the 
+
+2U Standard Fan Kit (
+
+P49146-B21
+
+)
+
+ supplies the 2 missing standard fans needed for a 2P build at minimal cost.
+
+3. Storage & Controller Cost Bypass (
+
+873763-B21
+
+)
+
+Selecting the HPE No Drive Configuration FIO Kit (
+
+873763-B21
+
+, $14.00) installs front bay blanks.
+
+This overrides minimum requirements for physical drive cages, RAID storage controllers, Smart Storage Batteries, and storage cabling, significantly reducing baseline server cost.
+
+4. Mandatory Portal Enablement Gates
+
+To pass automated HPE One Configurator (OCA) validation without process control errors or "Unbuildable Chassis" flags:
+
+P73325-B21
+
+ (Localization FIO Kit - $4.00):
+
+ Mandatory to define regional defaults and clear physical CTO validation errors.
+
+R7A11AAE
+
+ (HPE Compute Ops Management Standard 3-Year Upfront SaaS - $450.00):
+
+ Enforces the Gen12 portal requirement of exactly 1 management license per physical node (Min 1 / Max 1). 
+
+S1A05A
+
+ is an FIO token that requires a COM parent; selecting 
+
+R7A11AAE
+
+ directly satisfies this gate.
+
+P79558-B21
+
+ (25C Ambient Temp Tracking - $1.00):
+
+ Required baseline tracking SKU to pass OCA Smart Chassis thermal validation.
+
+HU4B2A30C4V
+
+ (HPE 3Y Tech Care Basic Support - $2,509.00):
+
+ Mandatory hardware maintenance contract to avoid BOQ validation blocks.
+
+Streamlined 13-Line Master Sourcing Bill of Materials (BOM)
+
+Qty
+
+Description
+
+Product Number
+
+Unit Price (USD)
+
+Extended Price (USD)
+
+1
+
+HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-order Server
+
+P73282-B21
+
+$5,584.00
+
+$5,584.00
+
+2
+
+Intel Xeon 6505P 2.2GHz 12-core 150W Processor for HPE
+
+P74503-B21
+
+$1,756.00
+
+$3,512.00
+
+2
+
+HPE ProLiant DL380 Gen11 Standard Heat Sink Kit
+
+P49145-B21
+
+$133.00
+
+$266.00
+
+32
+
+HPE 64GB Dual Rank x4 DDR5-6400 CAS-52 Registered Smart FIO Kit
+
+P69728-F21
+
+$28,532.00
+
+$913,024.00
+
+1
+
+HPE ProLiant Compute No Drive Configuration FIO Kit
+
+873763-B21
+
+$14.00
+
+$14.00
+
+2
+
+HPE 800W Flex Slot Platinum Hot Plug Power Supply Kit
+
+P38995-B21
+
+$524.00
+
+$1,048.00
+
+2
+
+HPE C13 - C14 250V 10Amp 2m FIO Power Cord
+
+P78145-B21
+
+$11.00
+
+$22.00
+
+1
+
+Broadcom BCM5719 Ethernet 1Gb 4-port BASE-T Adapter for HPE
+
+P51178-B21
+
+$485.00
+
+$485.00
+
+1
+
+HPE ProLiant Compute DL380 2U Standard Fan Kit
+
+P49146-B21
+
+$115.00
+
+$115.00
+
+1
+
+HPE ProLiant Compute Localization FIO Kit
+
+P73325-B21
+
+$4.00
+
+$4.00
+
+1
+
+HPE Compute Ops Management Standard 3-year Upfront ProLiant SaaS
+
+R7A11AAE
+
+$450.00
+
+$450.00
+
+1
+
+HPE ProLiant Compute 25C Maximum Recommended Ambient Temperature Configuration Tracking
+
+P79558-B21
+
+$1.00
+
+$1.00
+
+1
+
+HPE 3Y Tech Care Basic Hardware Only Support DL380 Gen12
+
+HU4B2A30C4V
+
+$2,509.00
+
+$2,509.00
+
+Lifecycle & Lead Time Status
+
+All 13 SKUs are 
+
+ACTIVE
+
+ and verified in current OCA catalogs.
+
+Estimated Delivery Time (EDT): 
+
+18 to 23 days
+
+ (Standard CTO factory build window).

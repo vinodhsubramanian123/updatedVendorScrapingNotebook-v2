@@ -1,6 +1,100 @@
 [
   {
     "summary": {
+      "runId": "run_SY480_Gen12_1793255664973",
+      "sessionName": "SY480_Gen12",
+      "startTime": "2026-10-29T06:34:24.963Z",
+      "endTime": "2026-10-29T06:34:27.429Z",
+      "durationMs": 2466,
+      "durationSec": "2.47",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 301,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 301,
+      "validationStats": {
+        "totalEntries": 36,
+        "totalSKUs": 301,
+        "validSKUs": 301,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 1,
+        "zeroPriceSKUs": 32,
+        "priceErrors": 0,
+        "ruleCount": 209,
+        "categoryCount": 11
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-10-29T06:34:24.974Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_SY480_Gen12_1793255664496\\raw_data\\oca_raw_data_full.json",
+          "jsonOutputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_SY480_Gen12_1793255664496\\SY480_Gen12_Catalog.json",
+          "chassisLabel": "SY480 Gen12"
+        }
+      },
+      {
+        "timestamp": "2026-10-29T06:34:26.817Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 31,
+          "totalUniqueSKUs": 301,
+          "incrementalStats": {
+            "totalScrapedSkus": 301,
+            "unchangedSkusCount": 0,
+            "modifiedSkusCount": 0,
+            "addedSkusCount": 301,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-10-29T06:34:26.830Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 36,
+            "totalSKUs": 301,
+            "validSKUs": 301,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 1,
+            "zeroPriceSKUs": 32,
+            "priceErrors": 0,
+            "ruleCount": 209,
+            "categoryCount": 11
+          }
+        }
+      },
+      {
+        "timestamp": "2026-10-29T06:34:27.428Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\temp\\staging_SY480_Gen12_1793255664496\\SY480_Gen12_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 301,
+      "classified": 301,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
       "runId": "run_SY480_Gen12_1789143031893",
       "sessionName": "SY480_Gen12",
       "startTime": "2026-09-11T16:10:31.886Z",

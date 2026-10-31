@@ -1,0 +1,14 @@
+{
+  "product": "SY100Gb_F32_Module",
+  "notebookId": "c6390834-ff1e-4602-9391-8415f673afa3",
+  "replacementSourceId": "2e822c3e-19ba-40d5-836e-acb06c2c0bd0",
+  "verifiedAt": "2026-10-31T06:27:07.082Z",
+  "contentFingerprints": null,
+  "legacyFingerprint": "21fe51ac70ec88d1cd4ff55b8feee4f718f65dc51d0d4476704f5cd8403b61e6",
+  "retirementRequested": true,
+  "plannedRetirementIds": [],
+  "status": "CONSOLIDATED",
+  "retiredSourceIds": [],
+  "remainingSourceIds": [],
+  "retirementErrors": []
+}

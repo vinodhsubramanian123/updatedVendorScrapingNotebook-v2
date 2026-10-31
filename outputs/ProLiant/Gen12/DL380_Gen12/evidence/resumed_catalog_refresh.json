@@ -1,0 +1,43 @@
+{
+  "product": "DL380_Gen12",
+  "observedAt": "2026-10-29T06:27:15.927Z",
+  "resumedAt": "2026-10-29T09:01:09.810Z",
+  "promoted": {
+    "success": true,
+    "liveTargetDir": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\ProLiant\\Gen12\\DL380_Gen12",
+    "backupDir": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\ProLiant\\Gen12\\.DL380_Gen12.promotion.d02ccd43-5423-4688-aa49-8f86f88c791f.previous",
+    "journalPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\ProLiant\\Gen12\\.DL380_Gen12.promotion.d02ccd43-5423-4688-aa49-8f86f88c791f.json"
+  },
+  "sync": {
+    "success": true,
+    "syncStatus": "CLOUD_VERIFIED",
+    "cloudUploaded": true,
+    "flowType": "SCRAPE",
+    "chassisName": "DL380_Gen12",
+    "masterRegistryRulesCount": 126,
+    "payloadPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\ProLiant\\Gen12\\DL380_Gen12\\notebook_sync_payload_DL380_Gen12.md",
+    "driftStatus": "DRIFT_DETECTED",
+    "unSyncedDeltasCount": 0,
+    "uploadResult": {
+      "success": true,
+      "cloudVerified": true,
+      "mode": "CLI",
+      "newSourceId": "177800cf-4bf4-4db7-bf14-ba59a9cab3d1",
+      "newSourceName": "DL380_Gen12_OCA_Catalog_2026-10-29",
+      "driveSyncStatus": "HUMAN_WORKBOOK_WRITTEN_AND_READBACK_VERIFIED",
+      "consolidationVerified": true,
+      "retiredSourceIds": [
+        "33014459-8836-4fc8-bfb2-29e1c31f1670"
+      ],
+      "retirementErrors": [],
+      "contentFingerprints": null,
+      "canonicalDriveSheetId": "1ODabKd0jVBFJU0ga4hfZOs5TtzNIuCXJWb4oXr88ocY",
+      "canonicalDriveSheetUrl": "https://docs.google.com/spreadsheets/d/1ODabKd0jVBFJU0ga4hfZOs5TtzNIuCXJWb4oXr88ocY/edit",
+      "canonicalDriveSourceId": "00cb0c3d-6d19-4a49-9cfa-aea446f08338",
+      "staleSourceIds": [],
+      "message": "Uploaded and canary-verified \"DL380_Gen12_OCA_Catalog_2026-10-29\" in NotebookLM (1d190853-4e9c-48df-aa70-eae66c6f2c1f). Existing sources were preserved unless explicit retirement was confirmed."
+    },
+    "runningKnowledgeSynced": false
+  },
+  "success": true
+}

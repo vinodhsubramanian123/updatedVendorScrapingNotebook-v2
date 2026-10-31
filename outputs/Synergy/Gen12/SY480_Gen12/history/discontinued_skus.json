@@ -9,14 +9,15 @@
     "daysActive": 0,
     "lastKnownPrice": "10183.00",
     "fullPriceTrail": "2026-09-11: $10183.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "09/30/2028",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-10-29"
   },
   "Q0D23A": {
     "productNumber": "Q0D23A",
@@ -28,14 +29,15 @@
     "daysActive": 0,
     "lastKnownPrice": "6264.00",
     "fullPriceTrail": "2026-09-11: $6264.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "09/30/2028",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-10-29"
   },
   "Q5W20A": {
     "productNumber": "Q5W20A",
@@ -47,14 +49,15 @@
     "daysActive": 0,
     "lastKnownPrice": "4072.00",
     "fullPriceTrail": "2026-09-11: $4072.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "09/30/2028",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-10-29"
   },
   "Q5W19A": {
     "productNumber": "Q5W19A",
@@ -66,14 +69,15 @@
     "daysActive": 0,
     "lastKnownPrice": "2505.00",
     "fullPriceTrail": "2026-09-11: $2505.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "09/30/2028",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-10-29"
   },
   "Q5W22A": {
     "productNumber": "Q5W22A",
@@ -85,14 +89,15 @@
     "daysActive": 0,
     "lastKnownPrice": "6787.00",
     "fullPriceTrail": "2026-09-11: $6787.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "09/30/2028",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-10-29"
   },
   "Q5W21A": {
     "productNumber": "Q5W21A",
@@ -104,14 +109,15 @@
     "daysActive": 0,
     "lastKnownPrice": "4175.00",
     "fullPriceTrail": "2026-09-11: $4175.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "09/30/2028",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-10-29"
   },
   "Q8U19A": {
     "productNumber": "Q8U19A",
@@ -123,14 +129,15 @@
     "daysActive": 0,
     "lastKnownPrice": "6737.00",
     "fullPriceTrail": "2026-09-11: $6737.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "11/30/2027",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-10-29"
   },
   "Q8U21A": {
     "productNumber": "Q8U21A",
@@ -142,14 +149,15 @@
     "daysActive": 0,
     "lastKnownPrice": "5483.00",
     "fullPriceTrail": "2026-09-11: $5483.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "11/30/2027",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-10-29"
   },
   "Q8U20A": {
     "productNumber": "Q8U20A",
@@ -161,14 +169,15 @@
     "daysActive": 0,
     "lastKnownPrice": "11229.00",
     "fullPriceTrail": "2026-09-11: $11229.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "11/30/2027",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-10-29"
   },
   "Q8U22A": {
     "productNumber": "Q8U22A",
@@ -180,14 +189,15 @@
     "daysActive": 0,
     "lastKnownPrice": "9139.00",
     "fullPriceTrail": "2026-09-11: $9139.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "11/30/2027",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-10-29"
   },
   "Q8U15A": {
     "productNumber": "Q8U15A",
@@ -199,14 +209,15 @@
     "daysActive": 0,
     "lastKnownPrice": "24680.00",
     "fullPriceTrail": "2026-09-11: $24680.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "11/30/2027",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-10-29"
   },
   "Q8U17A": {
     "productNumber": "Q8U17A",
@@ -218,14 +229,15 @@
     "daysActive": 0,
     "lastKnownPrice": "20325.00",
     "fullPriceTrail": "2026-09-11: $20325.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "11/30/2027",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-10-29"
   },
   "Q8U16A": {
     "productNumber": "Q8U16A",
@@ -237,14 +249,15 @@
     "daysActive": 0,
     "lastKnownPrice": "41134.00",
     "fullPriceTrail": "2026-09-11: $41134.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "11/30/2027",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-10-29"
   },
   "Q8U18A": {
     "productNumber": "Q8U18A",
@@ -256,14 +269,15 @@
     "daysActive": 0,
     "lastKnownPrice": "33874.00",
     "fullPriceTrail": "2026-09-11: $33874.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "11/30/2027",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-10-29"
   },
   "Q5W24A": {
     "productNumber": "Q5W24A",
@@ -275,14 +289,15 @@
     "daysActive": 0,
     "lastKnownPrice": "14516.00",
     "fullPriceTrail": "2026-09-11: $14516.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "09/30/2028",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-10-29"
   },
   "Q5W23A": {
     "productNumber": "Q5W23A",
@@ -294,14 +309,15 @@
     "daysActive": 0,
     "lastKnownPrice": "9072.00",
     "fullPriceTrail": "2026-09-11: $9072.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "09/30/2028",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-10-29"
   },
   "Q5W26A": {
     "productNumber": "Q5W26A",
@@ -313,14 +329,15 @@
     "daysActive": 0,
     "lastKnownPrice": "24194.00",
     "fullPriceTrail": "2026-09-11: $24194.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "09/30/2028",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-10-29"
   },
   "Q5W25A": {
     "productNumber": "Q5W25A",
@@ -332,14 +349,15 @@
     "daysActive": 0,
     "lastKnownPrice": "15119.00",
     "fullPriceTrail": "2026-09-11: $15119.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "09/30/2028",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-10-29"
   },
   "Q0D26A": {
     "productNumber": "Q0D26A",
@@ -351,14 +369,15 @@
     "daysActive": 0,
     "lastKnownPrice": "7532.00",
     "fullPriceTrail": "2026-09-11: $7532.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "11/30/2027",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-10-29"
   },
   "Q0D25A": {
     "productNumber": "Q0D25A",
@@ -370,14 +389,15 @@
     "daysActive": 0,
     "lastKnownPrice": "2085.00",
     "fullPriceTrail": "2026-09-11: $2085.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "11/30/2027",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-10-29"
   },
   "Q0D30A": {
     "productNumber": "Q0D30A",
@@ -389,14 +409,15 @@
     "daysActive": 0,
     "lastKnownPrice": "15095.00",
     "fullPriceTrail": "2026-09-11: $15095.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "11/30/2027",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-10-29"
   },
   "Q0D29A": {
     "productNumber": "Q0D29A",
@@ -408,14 +429,15 @@
     "daysActive": 0,
     "lastKnownPrice": "4395.00",
     "fullPriceTrail": "2026-09-11: $4395.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "ABSENT_FROM_CATALOG",
     "previousLifecycleStatus": "Active",
     "vendorDiscontinuedDate": "11/30/2027",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Removed from active HPE OCA portal catalog"
+    "reason": "Removed from active HPE OCA portal catalog",
+    "reinstatedDate": "2026-10-29"
   },
   "N0U73A": {
     "productNumber": "N0U73A",
@@ -427,14 +449,15 @@
     "daysActive": 0,
     "lastKnownPrice": "7803.00",
     "fullPriceTrail": "2026-09-11: $7803.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "VENDOR_OBSOLETE",
     "previousLifecycleStatus": "Obsolete (OB)",
     "vendorDiscontinuedDate": "03/02/2026",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Vendor marked obsolete/EOL in portal"
+    "reason": "Vendor marked obsolete/EOL in portal",
+    "reinstatedDate": "2026-10-29"
   },
   "N0U75A": {
     "productNumber": "N0U75A",
@@ -446,13 +469,494 @@
     "daysActive": 0,
     "lastKnownPrice": "13005.00",
     "fullPriceTrail": "2026-09-11: $13005.00 (✕ REMOVED)",
-    "status": "DISCONTINUED",
+    "status": "REINSTATED",
     "removalReason": "VENDOR_OBSOLETE",
     "previousLifecycleStatus": "Obsolete (OB)",
     "vendorDiscontinuedDate": "03/02/2026",
     "trackingState": "STOPPED_AFTER_REMOVAL",
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
-    "reason": "Vendor marked obsolete/EOL in portal"
+    "reason": "Vendor marked obsolete/EOL in portal",
+    "reinstatedDate": "2026-10-29"
+  },
+  "P94926-B21": {
+    "productNumber": "P94926-B21",
+    "description": "Intel Xeon 6503P 2.8GHz 8-core 135W Processor for HPE",
+    "mainCategory": "Processor",
+    "subCategory": "Processors (required)",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "S6K30A": {
+    "productNumber": "S6K30A",
+    "description": "Microsoft Windows Server 2025 16-core Standard FIO Pre-installed UEFI WW ESD LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "MS Windows Server Additional License",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P46194-B21": {
+    "productNumber": "P46194-B21",
+    "description": "Microsoft Windows Server 2022 1 Device CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported License Operating System Pack",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P46191-AA1": {
+    "productNumber": "P46191-AA1",
+    "description": "Microsoft Windows Server 2022 1 User CAL Chinese Simplified LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported License Operating System Pack",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P46191-B21": {
+    "productNumber": "P46191-B21",
+    "description": "Microsoft Windows Server 2022 1 User CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported License Operating System Pack",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P46218-B21": {
+    "productNumber": "P46218-B21",
+    "description": "Microsoft Windows Server 2022 10 Devices CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported License Operating System Pack",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P46217-B21": {
+    "productNumber": "P46217-B21",
+    "description": "Microsoft Windows Server 2022 10 Users CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported License Operating System Pack",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P46216-B21": {
+    "productNumber": "P46216-B21",
+    "description": "Microsoft Windows Server 2022 5 Devices CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported License Operating System Pack",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P46215-AA1": {
+    "productNumber": "P46215-AA1",
+    "description": "Microsoft Windows Server 2022 5 Users CAL Chinese Simplified LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported License Operating System Pack",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P46215-AB1": {
+    "productNumber": "P46215-AB1",
+    "description": "Microsoft Windows Server 2022 5 Users CAL Chinese Traditional LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported License Operating System Pack",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P46215-B21": {
+    "productNumber": "P46215-B21",
+    "description": "Microsoft Windows Server 2022 5 Users CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported License Operating System Pack",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P46220-B21": {
+    "productNumber": "P46220-B21",
+    "description": "Microsoft Windows Server 2022 50 Devices CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported License Operating System Pack",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P46219-B21": {
+    "productNumber": "P46219-B21",
+    "description": "Microsoft Windows Server 2022 50 Users CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported License Operating System Pack",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P46222-B21": {
+    "productNumber": "P46222-B21",
+    "description": "Microsoft Windows Server 2022 RDS 5 Devices CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported License Operating System Pack",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P46221-B21": {
+    "productNumber": "P46221-B21",
+    "description": "Microsoft Windows Server 2022 RDS 5 Users CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported License Operating System Pack",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P77111-B21": {
+    "productNumber": "P77111-B21",
+    "description": "Microsoft Windows Server 2025 1 Device CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported License Operating System Pack",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P77110-AA1": {
+    "productNumber": "P77110-AA1",
+    "description": "Microsoft Windows Server 2025 1 User CAL Chinese Simplified LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported License Operating System Pack",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P77110-B21": {
+    "productNumber": "P77110-B21",
+    "description": "Microsoft Windows Server 2025 1 User CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported License Operating System Pack",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P77115-B21": {
+    "productNumber": "P77115-B21",
+    "description": "Microsoft Windows Server 2025 10 Devices CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported License Operating System Pack",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P77114-B21": {
+    "productNumber": "P77114-B21",
+    "description": "Microsoft Windows Server 2025 10 Users CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported License Operating System Pack",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P77113-B21": {
+    "productNumber": "P77113-B21",
+    "description": "Microsoft Windows Server 2025 5 Devices CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported License Operating System Pack",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P77112-AA1": {
+    "productNumber": "P77112-AA1",
+    "description": "Microsoft Windows Server 2025 5 Users CAL Chinese Simplified LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported License Operating System Pack",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P77112-AB1": {
+    "productNumber": "P77112-AB1",
+    "description": "Microsoft Windows Server 2025 5 Users CAL Chinese Traditional LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported License Operating System Pack",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P77112-B21": {
+    "productNumber": "P77112-B21",
+    "description": "Microsoft Windows Server 2025 5 Users CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported License Operating System Pack",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P77117-B21": {
+    "productNumber": "P77117-B21",
+    "description": "Microsoft Windows Server 2025 50 Devices CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported License Operating System Pack",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P77116-B21": {
+    "productNumber": "P77116-B21",
+    "description": "Microsoft Windows Server 2025 50 Users CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported License Operating System Pack",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P77119-B21": {
+    "productNumber": "P77119-B21",
+    "description": "Microsoft Windows Server 2025 Remote Desktop Service 1 Device CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported License Operating System Pack",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P77118-B21": {
+    "productNumber": "P77118-B21",
+    "description": "Microsoft Windows Server 2025 Remote Desktop Service 1 User CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported License Operating System Pack",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P77121-B21": {
+    "productNumber": "P77121-B21",
+    "description": "Microsoft Windows Server 2025 Remote Desktop Service 5 Devices CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported License Operating System Pack",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P77120-B21": {
+    "productNumber": "P77120-B21",
+    "description": "Microsoft Windows Server 2025 Remote Desktop Service 5 Users CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported License Operating System Pack",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P77123-B21": {
+    "productNumber": "P77123-B21",
+    "description": "Microsoft Windows Server 2025 Remote Desktop Service 50 Devices CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported License Operating System Pack",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P77122-B21": {
+    "productNumber": "P77122-B21",
+    "description": "Microsoft Windows Server 2025 Remote Desktop Service 50 Users CAL WW LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported License Operating System Pack",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P45916-291": {
+    "productNumber": "P45916-291",
+    "description": "Microsoft Windows Server 2022 16-core Datacenter FIO Not Pre-installed Japanese SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P45916-B21": {
+    "productNumber": "P45916-B21",
+    "description": "Microsoft Windows Server 2022 16-core Datacenter FIO Not Pre-installed en/fr/it/de/es/nl/pt SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P46005-291": {
+    "productNumber": "P46005-291",
+    "description": "Microsoft Windows Server 2022 16-core Standard FIO Not Pre-installed Japanese SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P46005-B21": {
+    "productNumber": "P46005-B21",
+    "description": "Microsoft Windows Server 2022 16-core Standard FIO Not Pre-installed en/fr/it/de/es/nl/pt SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "S6L28B": {
+    "productNumber": "S6L28B",
+    "description": "Microsoft Windows Server 2025 10-core Essentials FIO Not Pre-installed WW ESD LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P77097-291": {
+    "productNumber": "P77097-291",
+    "description": "Microsoft Windows Server 2025 16-core Datacenter FIO Not Pre-installed Japanese SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P77097-B21": {
+    "productNumber": "P77097-B21",
+    "description": "Microsoft Windows Server 2025 16-core Datacenter FIO Not Pre-installed en/fr/de/es/it/pt/nl SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P77095-291": {
+    "productNumber": "P77095-291",
+    "description": "Microsoft Windows Server 2025 16-core Standard FIO Not Pre-installed Japanese SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "P77095-B21": {
+    "productNumber": "P77095-B21",
+    "description": "Microsoft Windows Server 2025 16-core Standard FIO Not Pre-installed en/fr/de/es/it/pt/nl SW",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "M6K34A": {
+    "productNumber": "M6K34A",
+    "description": "SUSE Linux Enterprise High Availability Extension 1-2 Sockets 3 Year Subscription Flx LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "M6K35A": {
+    "productNumber": "M6K35A",
+    "description": "SUSE Linux Enterprise Server HPC Compute Node 1-2 Sockets 3 Year Subscription Flx LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "M6K36A": {
+    "productNumber": "M6K36A",
+    "description": "SUSE Linux Enterprise Server HPC Head Node 1-2 Sockets 3 Year Subscription 24x7 Support Flx LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "M6K30A": {
+    "productNumber": "M6K30A",
+    "description": "SUSE Linux Enterprise Server SAP 1-2 Sockets or 1-2 VM 3 Year Subscription 24x7 Support Flx LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "M6K32A": {
+    "productNumber": "M6K32A",
+    "description": "SUSE Linux Enterprise Server SAP 1-2 Sockets or 1-2 VM 5 Year Subscription 24x7 Support Flx LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "S7N85A": {
+    "productNumber": "S7N85A",
+    "description": "SUSE Linux Enterprise Server for SAP Applications 1-2 Sockets or 1-2 VM 3-year Sub 24x7 Support LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "S7N86A": {
+    "productNumber": "S7N86A",
+    "description": "SUSE Linux Enterprise Server for SAP Applications 1-2 Sockets or 1-2 VM 5-year Sub 24x7 Support LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "S3R50A": {
+    "productNumber": "S3R50A",
+    "description": "SUSE Linux Enterprise Server w/SUSE Manager Lifecycle Management+ 1-2 Sockets/1-2 VM 1yr 24x7 LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "S3R51A": {
+    "productNumber": "S3R51A",
+    "description": "SUSE Linux Enterprise Server w/SUSE Manager Lifecycle Management+ 1-2 Sockets/1-2 VM 1yr 9x5 LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "S3R49A": {
+    "productNumber": "S3R49A",
+    "description": "SUSE Linux Enterprise Server w/SUSE Manager Lifecycle Management+ 1-2 Sockets/1-2 VM 3yr 24x7 LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "S3R53A": {
+    "productNumber": "S3R53A",
+    "description": "SUSE Linux Enterprise Server w/SUSE Manager Lifecycle Management+ 1-2 Sockets/1-2 VM 3yr 9x5 LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "S3R52A": {
+    "productNumber": "S3R52A",
+    "description": "SUSE Linux Enterprise Server w/SUSE Manager Lifecycle Management+ 1-2 Sockets/1-2 VM 5yr 24x7 LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "S3R54A": {
+    "productNumber": "S3R54A",
+    "description": "SUSE Linux Enterprise Server w/SUSE Manager Lifecycle Management+ 1-2 Sockets/1-2 VM 5yr 9x5 LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "S7N89A": {
+    "productNumber": "S7N89A",
+    "description": "SUSE Linux Enterprise Server w/SUSE Multi-Linux Mgr Lifecycle Mgmt+ 1-2 Skts/1-2 VM 1yr 24x7 LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "S7N90A": {
+    "productNumber": "S7N90A",
+    "description": "SUSE Linux Enterprise Server w/SUSE Multi-Linux Mgr Lifecycle Mgmt+ 1-2 Skts/1-2 VM 1yr 9x5 LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "S7N91A": {
+    "productNumber": "S7N91A",
+    "description": "SUSE Linux Enterprise Server w/SUSE Multi-Linux Mgr Lifecycle Mgmt+ 1-2 Skts/1-2 VM 3yr 24x7 LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "S7N92A": {
+    "productNumber": "S7N92A",
+    "description": "SUSE Linux Enterprise Server w/SUSE Multi-Linux Mgr Lifecycle Mgmt+ 1-2 Skts/1-2 VM 3yr 9x5 LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "S7N93A": {
+    "productNumber": "S7N93A",
+    "description": "SUSE Linux Enterprise Server w/SUSE Multi-Linux Mgr Lifecycle Mgmt+ 1-2 Skts/1-2 VM 5yr 24x7 LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
+  },
+  "S7N94A": {
+    "productNumber": "S7N94A",
+    "description": "SUSE Linux Enterprise Server w/SUSE Multi-Linux Mgr Lifecycle Mgmt+ 1-2 Skts/1-2 VM 5yr 9x5 LTU",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "firstSeenDate": "2026-10-29",
+    "status": "ACTIVE"
   }
 }
