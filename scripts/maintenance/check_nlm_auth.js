@@ -35,11 +35,20 @@ function cleanStaleNlmChromeAndLocks() {
   if (process.platform === 'win32') {
     try {
       const psCmd = `
-        $conns = Get-NetTCPConnection -LocalPort 9222 -ErrorAction SilentlyContinue
-        foreach ($c in $conns) {
-          $proc = Get-CimInstance Win32_Process -Filter "ProcessId = $($c.OwningProcess)" -ErrorAction SilentlyContinue
-          if ($proc -and ($proc.CommandLine -like "*--headless*" -or $proc.CommandLine -like "*notebooklm-mcp-cli*")) {
-            Stop-Process -Id $proc.ProcessId -Force -ErrorAction SilentlyContinue
+        $hasActiveOca = $false
+        try {
+          $tabs = Invoke-RestMethod -Uri "http://127.0.0.1:9222/json/list" -TimeoutSec 2 -ErrorAction Stop
+          foreach ($t in $tabs) {
+            if ($t.url -match "partner\\.hpe\\.com|oca\\.ext\\.hpe\\.com") { $hasActiveOca = $true }
+          }
+        } catch {}
+        if (-not $hasActiveOca) {
+          $conns = Get-NetTCPConnection -LocalPort 9222 -ErrorAction SilentlyContinue
+          foreach ($c in $conns) {
+            $proc = Get-CimInstance Win32_Process -Filter "ProcessId = $($c.OwningProcess)" -ErrorAction SilentlyContinue
+            if ($proc -and ($proc.CommandLine -like "*--headless*" -or $proc.CommandLine -like "*notebooklm-mcp-cli*") -and ($proc.CommandLine -notlike "*.chrome_sso_profile*")) {
+              Stop-Process -Id $proc.ProcessId -Force -ErrorAction SilentlyContinue
+            }
           }
         }
       `;

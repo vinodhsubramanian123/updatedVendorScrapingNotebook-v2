@@ -120,13 +120,14 @@ function findChromeExecutable() {
  * @param {string} initialUrl - Initial URL to load (default Partner Portal)
  * @returns {Promise<{ ok: boolean, wasLaunched: boolean, port: number }>}
  */
-async function ensureChromeBrowserRunning(port = 9222, initialUrl = 'https://partner.hpe.com/web/prp') {
+async function ensureChromeBrowserRunning(port = 9222, initialUrl = 'https://partner.hpe.com/web/prp', options = {}) {
   const alreadyRunning = await isCdpAlive(port);
   if (alreadyRunning) {
     return { ok: true, wasLaunched: false, port };
   }
 
-  console.log(`🌐 Chrome CDP port ${port} is not active. Auto-launching Chrome with persistent profile...`);
+  const useHeadless = Boolean(options.headless || process.env.OCA_HEADLESS_MODE === '1' || process.argv.includes('--headless'));
+  console.log(`🌐 Chrome CDP port ${port} is not active. Auto-launching Chrome (${useHeadless ? 'headless' : 'visible'} persistent profile)...`);
 
   if (!fs.existsSync(PROFILE_DIR)) {
     fs.mkdirSync(PROFILE_DIR, { recursive: true });
@@ -139,12 +140,13 @@ async function ensureChromeBrowserRunning(port = 9222, initialUrl = 'https://par
     '--remote-allow-origins=*',
     '--no-first-run',
     '--no-default-browser-check',
+    ...(useHeadless ? ['--headless=new', '--window-size=1920,1080'] : []),
     initialUrl
   ];
 
   try {
     let proc;
-    if (process.platform === 'win32') {
+    if (process.platform === 'win32' && !useHeadless) {
       proc = spawn('cmd.exe', ['/c', 'start', '""', chromeBin, ...chromeArgs], {
         detached: true,
         stdio: 'ignore',
@@ -154,7 +156,7 @@ async function ensureChromeBrowserRunning(port = 9222, initialUrl = 'https://par
       proc = spawn(chromeBin, chromeArgs, {
         detached: true,
         stdio: 'ignore',
-        windowsHide: false
+        windowsHide: useHeadless
       });
     }
     proc.unref();

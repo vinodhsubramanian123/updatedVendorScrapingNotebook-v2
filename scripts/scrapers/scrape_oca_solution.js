@@ -592,10 +592,15 @@ async function navigateProductNode(ws, targetHint, options = {}) {
         if (menuTabs.length > 0) menuTabs[0].click();
 
         if (typeof jQuery !== 'undefined') {
+          const targetTokens = (target || '').split(/\\s+/).filter(tok => tok.length >= 3);
           const titleSpan = jQuery('.fancytree-title, span[id*="node_title"]').filter((i, el) => {
             const t = jQuery(el).text().toLowerCase();
             if (target && t.includes(target)) return true;
-            return t.includes('gen11') || t.includes('gen12') || t.includes('#1');
+            if (targetTokens.length > 0 && targetTokens.some(tok => t.includes(tok))) return true;
+            return t.includes('gen11') || t.includes('gen12') || t.includes('#1') ||
+                   t.includes('alletra') || t.includes('msl') || t.includes('sn3600') ||
+                   t.includes('synergy') || t.includes('f32') || t.includes('cray') ||
+                   t.includes('storeever') || t.includes('switch') || t.includes('storage');
           });
           if (titleSpan.length > 0) titleSpan.first().trigger('click').trigger('dblclick');
           const lastVal = jQuery('#selectNavTreeOption option').last().val();
@@ -1252,7 +1257,7 @@ async function main() {
   let liveOutputDir = '';
 
   try {
-    const targetHint = (targetChassisQuery || 'DL380 Gen11').toLowerCase();
+    const targetHint = (navQuery || targetChassisQuery || 'DL380 Gen12').toLowerCase();
     const treeData = await discoverSolutionTreeAndMenu(ws, targetHint);
     treeInfo = treeData.treeInfo;
     stepTelemetry[2] = treeData.step2Result;

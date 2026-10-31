@@ -1209,5 +1209,34 @@ To ensure that future AI agents (Antigravity, Codex, Claude, or subagents) never
   - Upon grounded confirmation, all predecessor catalog snapshots (`${chassisName}_OCA_Catalog_*`) are transactionally retired. The `isCatalogSnapshotTitle()` function in `nlm_sync_client.js` implements a three-pattern zombie matcher: (1) `title.startsWith(`${chassisName}_OCA_Catalog_`)` — catches all dated snapshot variants regardless of registration state; (2) `title === `notebook_sync_payload_${chassisName}.md`` — catches stale filename-based legacy uploads; (3) `title === `${chassisName} Canonical Knowledge`` — catches legacy canonical knowledge source titles. The `candidatesToRetire` set merges both registered `ownedIds` (tracked sourceId references) and `isCatalogSnapshotTitle()` title matches, preventing unreferenced zombie catalogs from lingering across sessions.
   - Because the replacement catalog projection encapsulates full line-by-line diff tracking (`Diff Status: ADDED / MODIFIED / REMOVED`, `Previous Price (USD)`, `Unit Price (USD)`, `Price Delta (USD)`), historical price trends are preserved in a single authoritative source, eliminating conflicting multi-snapshot RAG retrievals.
 
+## 15. Invariants Catalog Extension (2026-10-31) — End-to-End Autonomous Self-Healing & Multi-Pillar Pipeline Harmony
+- **INV-220: Permanent Google OAuth Production Mode & CommonMark Backslash Readback Normalization**:
+  - Because the Google Cloud OAuth Consent Screen is published **In Production**, refresh tokens in `google_sheets_service.js` do not expire after 7 days. `ensureGoogleAuthValid()` must only trigger browser OAuth self-healing when live token validation fails (`!status.authenticated || !status.tokenValid || Boolean(status.isExpired)`), never on local file `mtimeMs` age (unless `GCP_OAUTH_TESTING_MODE=1` or `enforceTestingExpiry: true`).
+  - `SCOPES` in `google_sheets_service.js` includes `https://www.googleapis.com/auth/drive` alongside `spreadsheets` and `documents`.
+  - In `semantic_workbook_projection.js`, Windows file paths containing backslashes followed by punctuation (e.g. `\.gemini`) are normalized to forward slashes (`/.gemini`) before projection and during `verifySemanticProjectionReadback` so CommonMark backslash-escape stripping in NotebookLM never causes false line-522 readback verification failures.
+
+- **INV-221: Pre-Submission NotebookLM Auth Auto-Healing Disambiguation & 15s SSE Progress Heartbeats**:
+  - In `notebook_query_utils.js:_executeCloudQuery`, pre-submission CLI authentication rejections (`_isPreSubmissionAuthError`: `AUTH_EXPIRED`, `401`, `UNAUTHENTICATED`, `invalid_grant`, `not logged in`) prove the query never executed remotely (`status: 'AUTH_FAILED_BEFORE_SUBMISSION', remoteState: 'NOT_SUBMITTED'`) and must not be marked `REMOTE_STATE_UNKNOWN`. This unblocks `INV-157` / `INV-205` in-flight `checkAuthHealth({ autoHeal: true })` and single-retry recovery while preserving strict `REMOTE_STATE_UNKNOWN` protection on post-submission network/503/timeout failures.
+  - Long-running cloud queries emit 15-second `onHeartbeat` progress callbacks so SSE streams and UI clients never appear frozen during 60s–600s NotebookLM synthesis waits.
+
+- **INV-222: Automated Official QuickSpecs Attachment & Quarantined/Superseded Source Detachment**:
+  - In `nlm_sync_client.js:retireStaleNotebookSources`, any remote source ID listed in `cfgEntry.quarantinedSourceIds` is automatically included in `candidatesToRetire` alongside superseded catalog snapshots when `confirmSourceRetirement` is enabled, and removed from `quarantinedSourceIds` in `scripts/config/notebooks.json` once post-deletion inventory readback confirms removal.
+  - In `post_flow_sync.js` and `quickspecs_sync.js:verifyNotebookQuickSpecs`, `SCRAPE` flows (or `syncQuickSpecs: true`) automatically upload missing local QuickSpecs PDFs and persist verified QuickSpecs source IDs into `officialSourceIds` and `trustedSourceIds` in `notebooks.json`.
+  - In `feedback_loop.js:activateLearnedRule`, promoted learned rules honor `AUTO_UPLOAD_NLM=1` / `options.autoUploadNLM` to synchronize updated knowledge payloads to NotebookLM.
+
+- **INV-223: Multi-Pillar OCA Tree Navigation, Headless Mode, Active OCA Tab Protection & Dynamic Backend Rule Sniffing**:
+  - In `scrape_oca_solution.js:navigateProductNode`, jQuery fancytree node selection dynamically matches target query tokens and multi-pillar product keywords (`gen11`, `gen12`, `alletra`, `msl`, `sn3600`, `synergy`, `f32`, `cray`, `storeever`, `switch`, `storage`) rather than assuming server-only generation strings.
+  - `browser_launcher.js:ensureChromeBrowserRunning` supports `--headless` / `OCA_HEADLESS_MODE=1` (`--headless=new --window-size=1920,1080`) for background warm-SSO scraping.
+  - `check_nlm_auth.js:cleanStaleNlmChromeAndLocks` inspects `http://127.0.0.1:9222/json/list` before terminating headless Chrome processes on port 9222, guaranteeing that an active `partner.hpe.com` or `oca.ext.hpe.com` scraping session is never killed mid-run.
+  - `cdp.js:extractRulesFromNetworkPayload` infers `REQUIRED_DEPENDENCY` and `MUTUAL_EXCLUSION` types from backend REST/AJAX rule payloads, and `build_catalog.js:resolveNetworkSniffedRawData` loads standalone `raw_data/network_sniffed_rules.json` files during catalog compilation.
+
+- **INV-224: Stage 4 Self-Healing Catalog Classification & Multi-Observation Reinforcement Learning**:
+  - In `build_catalog.js:_selfHealUnclassifiedEntries` and `classification_diagnostics.js:recordSelfHealedTable`, any catalog table remaining in `Unknown`, `(Sub-table)`, or `Accessories & Infrastructure -> Other Options` after sub-table inheritance undergoes a per-SKU role-voting and domain-keyword self-healing pass (`Networking`, `Storage`, `Power & Cooling`, `Software & Licenses`), recording `selfHealedTablesCount` and `selfHealedSkusCount` in `classification_diagnostics.json`.
+  - In `eval_boq.js:_extractVerifiedKnowledgeDeltas`, verified cloud-grounded NotebookLM responses (`groundingVerification === 'VERIFIED_GROUNDED'` with trusted citations) pass `confidenceScore: 0.90` to `extractAndPersistLearnedDeltas`. In `quarantined_deltas.js:saveQuarantinedDelta`, cited deltas held solely for confidence reinforce across $\ge 3$ independent observations to cross `0.85` (`autoPromotable: true`).
+
+- **INV-225: Self-Healing Telemetry Observability Ledger**:
+  - `telemetry.js:recordSelfHealingEvent(eventType, details)` records structured self-healing events in `outputs/history/pipeline_telemetry.json` under `selfHealingEvents` (with FIFO cap 50) and increments `totalSelfHealingEvents`.
+
+
 
 

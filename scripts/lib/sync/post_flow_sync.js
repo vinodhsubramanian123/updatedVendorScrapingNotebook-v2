@@ -113,6 +113,18 @@ function triggerPostFlowSync(chassisName = 'Unknown_Chassis', flowType = 'EVALUA
       }
     }
 
+    // 6. Auto-verify and attach new official QuickSpecs PDF sources on SCRAPE or explicit syncQuickSpecs
+    let quickSpecsSyncPromise = null;
+    if (shouldPersist && (autoUpload || opts.syncQuickSpecs === true) && (flowType === 'SCRAPE' || opts.syncQuickSpecs === true)) {
+      try {
+        const { verifyNotebookQuickSpecs } = require('./quickspecs_sync.js');
+        quickSpecsSyncPromise = verifyNotebookQuickSpecs(chassisName, { autoUpload: true, persistOfficialSource: true })
+          .catch(qsErr => logger.warn('POST_FLOW_SYNC', `QuickSpecs sync advisory: ${qsErr.message}`));
+      } catch (qsErr) {
+        logger.warn('POST_FLOW_SYNC', `QuickSpecs sync advisory: ${qsErr.message}`);
+      }
+    }
+
     const result = {
       success: syncStatus !== 'CLOUD_FAILED',
       syncStatus,
@@ -125,7 +137,8 @@ function triggerPostFlowSync(chassisName = 'Unknown_Chassis', flowType = 'EVALUA
       unSyncedDeltasCount: drift.unSyncedDeltasCount,
       uploadResult: payload.uploadResult || null,
       runningKnowledgeSynced: false,
-      runningKnowledgePromise
+      runningKnowledgePromise,
+      quickSpecsSyncPromise
     };
 
     if (runningKnowledgePromise) {

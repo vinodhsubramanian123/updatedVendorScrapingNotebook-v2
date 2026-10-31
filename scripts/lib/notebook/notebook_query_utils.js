@@ -257,6 +257,11 @@ function attemptGatewaySessionRecovery(_nlmExecutable, _notebookId, _wholeQuesti
   return null;
 }
 
+function _isPreSubmissionAuthError(error, stdout, stderr) {
+  const combined = `${error?.message || ''} ${stderr || ''} ${stdout || ''}`;
+  return /(?:auth(?:entication)?\s+(?:expired|invalid|failed|required)|not\s+logged\s+in|please\s+run\s+nlm\s+login|invalid_grant|401\s+unauthorized|unauthenticated|session\s+expired|credentials?\s+(?:are\s+)?(?:stale|expired))/i.test(combined);
+}
+
 function _executeCloudQuery(nlmExecutable, targetNotebookId, sanitizedQuery, timeoutMs, extendedPath, options = {}) {
   const logger = require('../system/pipeline_logger.js');
   const { createAttempt, markRemoteUnknown, returnedConversationId } = require('./query_attempt_record.js');
@@ -298,7 +303,14 @@ function _executeCloudQuery(nlmExecutable, targetNotebookId, sanitizedQuery, tim
       throwIfQueryStopped(options);
       const startTime = Date.now();
       logger.info('NOTEBOOK_QUERY', 'Dispatching one logical NotebookLM query. Ambiguous failure never triggers automatic resubmission.');
-      heartbeat = setInterval(() => logger.info('NOTEBOOK_QUERY', 'NotebookLM local CLI pending; elapsed ' + formatQueryDuration(Date.now() - startTime)), 15000);
+      heartbeat = setInterval(() => {
+        const elapsedMs = Date.now() - startTime;
+        const elapsedStr = formatQueryDuration(elapsedMs);
+        logger.info('NOTEBOOK_QUERY', 'NotebookLM local CLI pending; elapsed ' + elapsedStr);
+        if (typeof options.onHeartbeat === 'function') {
+          try { options.onHeartbeat({ notebookId: targetNotebookId, elapsedMs, elapsedFormatted: elapsedStr, timeoutMs: currentTimeout }); } catch (_) {}
+        }
+      }, 15000);
       heartbeat.unref?.();
       dispatched = true;
       child = execFile(nlmExecutable, buildNotebookQueryArgs(targetNotebookId, sanitizedQuery, trustedSourceIds, currentTimeout), {
@@ -313,6 +325,11 @@ function _executeCloudQuery(nlmExecutable, targetNotebookId, sanitizedQuery, tim
             // It still does not merit an automatic new-conversation retry.
             if (error.code === 'ENOENT' && String(error.syscall || '').startsWith('spawn') && !child?.pid) {
               return finish(reject, error, { status: 'SPAWN_FAILED_BEFORE_SUBMISSION', remoteState: 'NOT_SUBMITTED', verification: 'NOT_VERIFIED' });
+            }
+            // Pre-submission authentication rejection (INV-157) proves the query was rejected at the auth gate.
+            if (_isPreSubmissionAuthError(error, stdout, stderr)) {
+              try { error.stderr = stderr; error.stdout = stdout; } catch (_) {}
+              return finish(reject, error, { status: 'AUTH_FAILED_BEFORE_SUBMISSION', remoteState: 'NOT_SUBMITTED', verification: 'NOT_VERIFIED' });
             }
             return failUnknown(error);
           }
@@ -449,8 +466,11 @@ async function executeNotebookQuery(notebookId, rawQuery, options = {}) {
     return cloudResult;
   } catch (failure) {
     if ((options.signal?.aborted && Object.is(failure, options.signal.reason)) || failure?.code === 'NOTEBOOK_QUERY_DEADLINE_EXCEEDED') throw failure;
-    if (require('./query_attempt_record.js').isRemoteUnknown(failure)) throw failure;
+    const { isRemoteUnknown, getNotebookQueryRecovery } = require('./query_attempt_record.js');
+    if (isRemoteUnknown(failure) && (isStrictCloud || !options.allowLocalFallback)) throw failure;
     const diagnostic = diagnoseNotebookFailure(targetNotebookId, failure?.err || failure);
+    const recoveryDiagnostic = isRemoteUnknown(failure) ? getNotebookQueryRecovery(failure, options.signal) : null;
+    if (recoveryDiagnostic) diagnostic.queryRecovery = recoveryDiagnostic;
     const timeTaken = failure?.timeTaken || (failure?.latencyMs ? `${Math.floor(failure.latencyMs / 1000)}s` : 'unknown');
     diagnostic.timeTaken = timeTaken;
     diagnostic.latencyMs = failure?.latencyMs || 0;
@@ -602,5 +622,6 @@ module.exports = {
   getNotebookConfigEntry,
   resolveQuerySourceScope,
   findMatchingChatTurn,
-  attemptGatewaySessionRecovery
+  attemptGatewaySessionRecovery,
+  _isPreSubmissionAuthError
 };

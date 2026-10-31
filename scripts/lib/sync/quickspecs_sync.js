@@ -16,6 +16,7 @@ const os = require('os');
 const crypto = require('crypto');
 const { execFileSync } = require('child_process');
 const logger = require('../system/pipeline_logger.js');
+const { safeWriteJsonAtomic } = require('../system/fs_compat.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
 const OUTPUTS_ROOT = path.join(PROJECT_ROOT, 'outputs');
@@ -261,6 +262,24 @@ async function verifyNotebookQuickSpecs(chassisName = 'DL380_Gen11', options = {
     timestamp: new Date().toISOString()
   };
 
+  // Persist verified official QuickSpecs source ID into notebooks.json when requested
+  if ((options.autoUpload || options.persistOfficialSource) && primarySource?.id && isDocIdMatched !== false && fs.existsSync(CONFIG_NOTEBOOKS)) {
+    try {
+      const cfg = JSON.parse(fs.readFileSync(CONFIG_NOTEBOOKS, 'utf-8'));
+      const entry = cfg.notebooks?.[chassisName];
+      if (entry && typeof entry === 'object') {
+        const officialIds = Array.from(new Set([...(entry.officialSourceIds || []), primarySource.id]));
+        const trustedIds = Array.from(new Set([...(entry.trustedSourceIds || []), primarySource.id]));
+        if (officialIds.length !== (entry.officialSourceIds || []).length || trustedIds.length !== (entry.trustedSourceIds || []).length) {
+          entry.officialSourceIds = officialIds;
+          entry.trustedSourceIds = trustedIds;
+          safeWriteJsonAtomic(CONFIG_NOTEBOOKS, cfg);
+          result.officialSourceRegistered = true;
+        }
+      }
+    } catch (_) { /* ignore */ }
+  }
+
   // Auto-Upload if requested and source is missing
   if (options.autoUpload && !sourceFound && localPdfPath && fs.existsSync(localPdfPath)) {
     try {
@@ -285,7 +304,7 @@ async function verifyNotebookQuickSpecs(chassisName = 'DL380_Gen11', options = {
         stdout,
         message: `Successfully uploaded ${canonicalTitle} to Notebook ${notebookId}`
       };
-      const verified = await verifyNotebookQuickSpecs(chassisName, { ...options, autoUpload: false });
+      const verified = await verifyNotebookQuickSpecs(chassisName, { ...options, autoUpload: false, persistOfficialSource: true });
       return { ...verified, uploadResult: result.uploadResult };
     } catch (uploadErr) {
       result.uploadResult = {

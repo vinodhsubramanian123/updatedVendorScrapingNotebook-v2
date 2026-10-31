@@ -23,7 +23,8 @@ const MAX_TELEMETRY_ENTRIES = {
   ocrAuditLogs: 50,
   exportHistory: 100,
   reconciliationHistory: 100,
-  guardrailHistory: 50
+  guardrailHistory: 50,
+  selfHealingEvents: 50
 };
 
 /**
@@ -556,6 +557,29 @@ function summarizeTelemetryPopulation(entries, selection) {
   return require('./telemetry_populations.js').summarizeTelemetryPopulation(entries, selection);
 }
 
+function recordSelfHealingEvent(eventType, details = {}) {
+  const telemetryDir = path.dirname(TELEMETRY_FILE);
+  if (!fs.existsSync(telemetryDir)) {
+    fs.mkdirSync(telemetryDir, { recursive: true });
+  }
+  const data = loadTelemetry();
+  if (!Array.isArray(data.selfHealingEvents)) data.selfHealingEvents = [];
+  const entry = {
+    timestamp: new Date().toISOString(),
+    traceId: getTraceId(),
+    eventType: String(eventType || 'UNKNOWN_SELF_HEAL'),
+    ...details
+  };
+  data.selfHealingEvents.unshift(entry);
+  if (data.selfHealingEvents.length > MAX_TELEMETRY_ENTRIES.selfHealingEvents) {
+    data.selfHealingEvents.pop();
+  }
+  data.totalSelfHealingEvents = (data.totalSelfHealingEvents || 0) + 1;
+  data.lastUpdated = new Date().toISOString();
+  safeWriteJsonAtomic(TELEMETRY_FILE, data);
+  return entry;
+}
+
 module.exports = {
   normalizeTelemetryMeasurement,
   migrateLegacyTelemetry,
@@ -570,5 +594,6 @@ module.exports = {
   recordOcrTelemetry,
   recordExportTelemetry,
   recordReconciliationTelemetry,
-  recordGuardrailTelemetry
+  recordGuardrailTelemetry,
+  recordSelfHealingEvent
 };

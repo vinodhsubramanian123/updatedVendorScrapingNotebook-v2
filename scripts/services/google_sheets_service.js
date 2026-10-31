@@ -18,6 +18,7 @@ const xlsx = require('xlsx-js-style');
 const SCOPES = [
   'https://www.googleapis.com/auth/spreadsheets',
   'https://www.googleapis.com/auth/documents',
+  'https://www.googleapis.com/auth/drive',
   'https://www.googleapis.com/auth/drive.file'
 ];
 
@@ -68,8 +69,9 @@ async function checkGoogleAuth() {
       // Apps published to "In Production" generate long-lived refresh tokens that do not
       // expire after 7 days. daysRemaining is retained for diagnostic age visibility only.
       result.daysRemaining = Math.max(0, 7 - result.tokenAgeDays);
-      // isExpiringSoon is informational only when the GCP app is In Production.
-      result.isExpiringSoon = result.tokenAgeDays >= 5;
+      result.productionMode = process.env.GCP_OAUTH_TESTING_MODE !== '1';
+      // isExpiringSoon is only true if explicitly running in GCP Testing Mode.
+      result.isExpiringSoon = !result.productionMode && result.tokenAgeDays >= 5;
     }
   } catch {
     // ADC absence/corruption is reported by token acquisition below.
@@ -163,7 +165,12 @@ async function ensureGoogleAuthValid(options = {}) {
     console.log(`[AUTH_PRECHECK] Account: ${status.activeAccount || 'None'}, Valid: ${status.tokenValid ? 'YES ✅' : 'NO ❌'}, Days Remaining: ${status.daysRemaining !== undefined ? status.daysRemaining : 'N/A'}`);
   }
 
-  const needsHealing = !status.authenticated || !status.tokenValid || status.isExpired || (status.daysRemaining !== undefined && status.daysRemaining <= 1);
+  // In Production mode, refresh tokens are permanent and do not expire based on file mtimeMs.
+  // Only trigger self-healing when the token is actually unauthenticated, invalid, or expired,
+  // or when explicitly running in GCP_OAUTH_TESTING_MODE=1 with <= 1 day remaining.
+  const testingCliffReached = options.enforceTestingExpiry === true &&
+    status.daysRemaining !== undefined && status.daysRemaining <= 1;
+  const needsHealing = !status.authenticated || !status.tokenValid || Boolean(status.isExpired) || testingCliffReached;
 
   if (needsHealing && autoHeal) {
     if (verbose) {

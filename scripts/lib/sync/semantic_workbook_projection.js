@@ -4,7 +4,7 @@ const crypto = require('crypto');
 // Preserve displayed cell contents and column positions. A fingerprint proves
 // identity only; it cannot replace the inventory/rules an LLM must retrieve.
 function projectWorkbookToMarkdown(tabs, options = {}) {
-  const cell = value => String(value ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;')
+  const cell = value => String(value ?? '').replace(/\\/g, '/').replace(/&/g, '&amp;').replace(/</g, '&lt;')
     .replace(/>/g, '&gt;').replace(/\|/g, '&#124;').replace(/\r?\n/g, '<br>');
   const seen = new Map();
   const frequencies = new Map();
@@ -68,6 +68,8 @@ function verifySemanticProjectionReadback(payload, indexedContent) {
     .replace(/^\s*\|(?:\s*:?-+:?\s*\|)+\s*$/gm, '')
     .replace(/^\s*#{1,6}\s+/gm, '')
     .replace(/\[(TEXT_\d+)\]/g, '$1')
+    .replace(/\\([!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~])/g, '$1')
+    .replace(/\/([.])/g, '$1')
     .replace(/\\/g, '/')
     .replace(/[\u2013\u2014]/g, '-')
     .replace(/[\u2018\u2019]/g, "'")

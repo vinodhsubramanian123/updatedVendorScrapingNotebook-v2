@@ -89,7 +89,7 @@ const DOMAIN_METADATA = {
     name: 'Knowledge Sync & NLM RAG',
     icon: '🔄',
     description: 'NotebookLM sync, Google Sheets, QuickSpecs sync, running knowledge, drift inspection',
-    matcher: p => /(?:sync|notebook|knowledge_extractor|\brag\b|google_drive|drive_sync)/i.test(p) && !/storage|drive_cage/i.test(p)
+    matcher: p => /(?:sync|notebook|knowledge_extractor|\brag\b|google_drive|drive_sync|whole_manifest_cancellation)/i.test(p) && !/storage|drive_cage/i.test(p)
   },
   catalog: {
     id: 'catalog',

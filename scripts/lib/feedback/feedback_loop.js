@@ -211,7 +211,8 @@ function processPortalFeedback(portalError, outputDir, options = {}) {
     recordFeedbackTelemetry(activated);
     const { buildMasterKnowledgeRegistry, generateNotebookSyncPayload } = require('../sync/knowledge_sync.js');
     buildMasterKnowledgeRegistry();
-    generateNotebookSyncPayload(activated.chassis);
+    const autoUpload = options.autoUploadNLM === undefined ? process.env.AUTO_UPLOAD_NLM === '1' : Boolean(options.autoUploadNLM);
+    generateNotebookSyncPayload(activated.chassis, autoUpload, { targetDir: options.targetDir || undefined });
   } catch (err) {
     console.warn('⚠️ Verified knowledge sync advisory:', err.message);
   }

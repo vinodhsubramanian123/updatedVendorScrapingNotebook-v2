@@ -72,3 +72,11 @@ test('executeNotebookQuery in offline mode falls back to local RAG without invok
   assert.equal(res.source, 'LOCAL_RAG_FALLBACK');
   assert.equal(res.isCloudGrounded, false);
 });
+
+test('_isPreSubmissionAuthError identifies auth gate rejections vs post-submission network errors', () => {
+  const { _isPreSubmissionAuthError } = require('../../scripts/lib/notebook/notebook_query_utils.js');
+  assert.equal(_isPreSubmissionAuthError(new Error('Authentication expired'), '', 'Please run nlm login'), true);
+  assert.equal(_isPreSubmissionAuthError(new Error('Command failed'), '', '401 Unauthorized: invalid_grant'), true);
+  assert.equal(_isPreSubmissionAuthError(new Error('socket timeout'), '', ''), false);
+  assert.equal(_isPreSubmissionAuthError(new Error('503 Service Unavailable'), '', ''), false);
+});

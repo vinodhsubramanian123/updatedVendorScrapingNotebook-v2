@@ -510,9 +510,18 @@ function extractRulesFromNetworkPayload(data, capturedRules, sourceUrl) {
         if (!affectedSkus.includes(s)) affectedSkus.push(s);
       }
 
+      let inferredType = item.ruleType || item.type || 'UNCLASSIFIED_OBSERVATION';
+      if (inferredType === 'UNCLASSIFIED_OBSERVATION') {
+        if (/\b(requires?|must be selected|prerequisite|mandatory)\b/i.test(ruleText)) {
+          inferredType = 'REQUIRED_DEPENDENCY';
+        } else if (/\b(conflicts?|mutually exclusive|cannot be mixed|incompatible|not supported with)\b/i.test(ruleText)) {
+          inferredType = 'MUTUAL_EXCLUSION';
+        }
+      }
+
       capturedRules.push({
         level: item.level || 'CHASSIS',
-        ruleType: item.ruleType || item.type || 'UNCLASSIFIED_OBSERVATION',
+        ruleType: inferredType,
         affectedSkus,
         constraint: item.constraint || ruleText,
         rule: ruleText,

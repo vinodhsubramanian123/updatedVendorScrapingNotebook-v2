@@ -1191,6 +1191,46 @@ function _mergeSubtableInheritance(tableEntries) {
   return orderedEntries;
 }
 
+function _selfHealUnclassifiedEntries(orderedEntries, profile, diagnostics) {
+  for (const entry of orderedEntries) {
+    const isFallback = entry.parentCategory === 'Unknown' ||
+      entry.subCategory === 'Unknown' ||
+      entry.subCategory === '(Sub-table)' ||
+      (entry.parentCategory === 'Accessories & Infrastructure' && /^(other options|\(sub-table\)|unknown)$/i.test(entry.subCategory || ''));
+    if (!isFallback || !Array.isArray(entry.skus) || entry.skus.length === 0) continue;
+
+    const parentVotes = {};
+    for (const sku of entry.skus) {
+      const desc = String(sku['Description'] || '');
+      const role = classifyComponentRole('', desc, profile);
+      let inferredParent = (role && role !== 'Option Component' && ROLE_TO_PARENT_MAP[role]) ? ROLE_TO_PARENT_MAP[role] : null;
+      if (!inferredParent) {
+        if (/\b(transceiver|sfp\+|qsfp|fc\s+switch|fabric\s+vision|isl\s+kit|optic|gbic)\b/i.test(desc)) inferredParent = 'Networking';
+        else if (/\b(lto-\d|tape\s+drive|data\s+cartridge|cleaning\s+cartridge|nvme|ssd|hdd|sff\s+sc|lff\s+lp)\b/i.test(desc)) inferredParent = 'Storage';
+        else if (/\b(power\s+supply|hot\s+plug\s+psu|power\s+cord|pdu|heatsink|fan\s+kit)\b/i.test(desc)) inferredParent = 'Power & Cooling';
+        else if (/\b(license|e-ltu|ltu|subscription|compute\s+ops|ilo\s+advanced)\b/i.test(desc)) inferredParent = 'Software & Licenses';
+      }
+      if (inferredParent) {
+        parentVotes[inferredParent] = (parentVotes[inferredParent] || 0) + 1;
+      }
+    }
+
+    const bestParent = Object.entries(parentVotes).sort((a, b) => b[1] - a[1])[0]?.[0];
+    if (bestParent) {
+      const sampleDesc = entry.skus.map(s => s['Description'] || '').join(' ');
+      const healedSubcat = synthesizeSubcategoryName(bestParent, sampleDesc, entry.rules || []);
+      entry.parentCategory = bestParent;
+      if (healedSubcat && healedSubcat !== '(Sub-table)') entry.subCategory = healedSubcat;
+      entry.skus.forEach(s => {
+        s.parentCategory = entry.parentCategory;
+        s.subCategory = entry.subCategory;
+      });
+      diagnostics?.recordSelfHealedTable?.(entry.tableIndex, entry.parentCategory, entry.subCategory, entry.skus.length);
+    }
+  }
+  return orderedEntries;
+}
+
 function _partitionAndDeduplicateServices(orderedEntries) {
   const { hardwareEntries, servicesEntries } = partitionCatalogEntries(orderedEntries);
 
@@ -1328,9 +1368,9 @@ function synthesizeCatalogEntries(tables, fullText, subcatList, historyPriceMap,
   allSKURows.push(...allSKUMap.values());
   console.log(`Extracted ${processedPNs.size} unique SKUs.`);
 
-  // Step 4: Merging sub-tables
+  // Step 4: Merging sub-tables & self-healing fallback classifications
   console.log('\n--- Step 4: Merging Sub-Tables & Subcategory Inheritance ---');
-  const orderedEntries = _mergeSubtableInheritance(tableEntries);
+  const orderedEntries = _selfHealUnclassifiedEntries(_mergeSubtableInheritance(tableEntries), profile, diagnostics);
   const { hardwareEntries, cleanServicesEntries } = _partitionAndDeduplicateServices(orderedEntries);
 
   return {
@@ -2185,10 +2225,28 @@ function resolveUnavailableRawData(rawData, rawInputPath) {
   return { rules, skus };
 }
 
-function _formatNetworkSniffedRules(rawData) {
-  const rules = rawData?.networkSniffedRules || [];
+function resolveNetworkSniffedRawData(rawData, rawInputPath) {
+  const rules = [...(rawData?.networkSniffedRules || [])];
+  if (rules.length === 0 && rawInputPath) {
+    try {
+      const rawDir = path.dirname(rawInputPath);
+      const sniffedPath = path.join(rawDir, 'network_sniffed_rules.json');
+      if (fs.existsSync(sniffedPath)) {
+        const parsed = JSON.parse(fs.readFileSync(sniffedPath, 'utf8'));
+        const loaded = Array.isArray(parsed) ? parsed : (parsed.rules || parsed.capturedRules || []);
+        rules.push(...loaded);
+      }
+    } catch (err) {
+      PipelineLogger.warn('BUILD_CATALOG', `Failed reading network_sniffed_rules.json from ${rawInputPath}: ${err.message}`);
+    }
+  }
+  return rules;
+}
+
+function _formatNetworkSniffedRules(rawData, rawInputPath = null) {
+  const rules = resolveNetworkSniffedRawData(rawData, rawInputPath);
   return rules
-    .filter(r => ['REQUIRED_DEPENDENCY', 'MUTUAL_EXCLUSION'].includes(r.ruleType))
+    .filter(r => ['REQUIRED_DEPENDENCY', 'MUTUAL_EXCLUSION', 'CAPACITY_CONSTRAINT', 'THERMAL_CONSTRAINT', 'DYNAMIC_RULE'].includes(r.ruleType))
     .map(r => ({
       parentCategory: r.parentCategory || 'System Options',
       subCategory: r.subCategory || 'Configuration Rules',
@@ -2221,7 +2279,7 @@ async function main(rawInputPath = process.argv[2], jsonOutputPath = process.arg
   const unavail = resolveUnavailableRawData(ctx.rawData, rawInputPath);
   ctx.unavailableRules = applyUnavailableDomRulesAndSkus(
     hardwareEntries, cleanServicesEntries, unavail.rules, unavail.skus);
-  ctx.networkRules = _formatNetworkSniffedRules(ctx.rawData);
+  ctx.networkRules = _formatNetworkSniffedRules(ctx.rawData, rawInputPath);
 
   const { enrichedCatalog, enrichedServicesCatalog, validationResult } = await reconcilePriceAndLifecycleHistory(
     hardwareEntries, cleanServicesEntries, subcatList, ctx.targetDir, ctx.filePrefix, ctx.meta, ctx.chassisLabel, ctx.pipelineLogger, ctx.baseSKU, ctx.tables, ctx.chassisDiscovery

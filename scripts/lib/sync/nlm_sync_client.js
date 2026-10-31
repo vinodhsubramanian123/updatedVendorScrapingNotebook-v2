@@ -539,7 +539,8 @@ function retireStaleNotebookSources({
   extendedPath,
   payloadPath,
   contentFingerprints,
-  legacyFingerprint
+  legacyFingerprint,
+  configPath
 }) {
   const isManagedTitle = title => String(title || '').startsWith(`${chassisName}_OCA_Catalog_`)
     || String(title || '') === `notebook_sync_payload_${chassisName}.md`
@@ -561,10 +562,11 @@ function retireStaleNotebookSources({
     });
     const sources = JSON.parse(listOutput);
     const protectedIds = new Set([...(cfgEntry?.officialSourceIds || []), ...(cfgEntry?.verifiedLearningSourceIds || []), cfgEntry?.runningKnowledgeSourceId].filter(Boolean));
+    const quarantinedIds = new Set(Array.isArray(cfgEntry?.quarantinedSourceIds) ? cfgEntry.quarantinedSourceIds.filter(Boolean) : []);
     const staleSources = Array.isArray(sources) ? sources.filter(s => {
       const title = String(s.title || s.filename || '');
       const isDriveDuplicate = canonicalDriveSheetId && (s.drive_id === canonicalDriveSheetId || s.doc_id === canonicalDriveSheetId);
-      const isManagedSource = isManagedTitle(title) || isDriveDuplicate;
+      const isManagedSource = isManagedTitle(title) || isDriveDuplicate || quarantinedIds.has(s.id);
       return (
         isManagedSource &&
         s.id !== undefined &&
@@ -588,7 +590,8 @@ function retireStaleNotebookSources({
     safeWriteJsonAtomic(attemptPath, attempt);
 
     const ownedIds = new Set([previousSourceId, cfgEntry?.lastSyncedSourceId, cfgEntry?.driveSourceId,
-      ...(cfgEntry?.certifiedCatalogSourceIds || []), ...(cfgEntry?.canonicalKnowledgeSourceIds || [])].filter(Boolean));
+      ...(cfgEntry?.certifiedCatalogSourceIds || []), ...(cfgEntry?.canonicalKnowledgeSourceIds || []),
+      ...quarantinedIds].filter(Boolean));
     const isCatalogSnapshotTitle = title => String(title || '').startsWith(`${chassisName}_OCA_Catalog_`)
       || String(title || '') === `notebook_sync_payload_${chassisName}.md`
       || String(title || '') === `${chassisName} Canonical Knowledge`;
@@ -616,7 +619,18 @@ function retireStaleNotebookSources({
         throw new Error('Replacement source missing from post-retirement inventory');
       }
       remainingSourceIds = after.filter(source => source.id !== newSourceId &&
-        !protectedIds.has(source.id) && isManagedTitle(source.title || source.filename)).map(source => source.id);
+        !protectedIds.has(source.id) && (isManagedTitle(source.title || source.filename) || quarantinedIds.has(source.id))).map(source => source.id);
+
+      if (configPath && fs.existsSync(configPath) && retiredSourceIds.some(id => quarantinedIds.has(id))) {
+        try {
+          const cfg = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+          const entry = cfg.notebooks?.[chassisName];
+          if (entry && typeof entry === 'object' && Array.isArray(entry.quarantinedSourceIds)) {
+            entry.quarantinedSourceIds = entry.quarantinedSourceIds.filter(id => !retiredSourceIds.includes(id));
+            safeWriteJsonAtomic(configPath, cfg);
+          }
+        } catch (_) {}
+      }
     }
 
     safeWriteJsonAtomic(attemptPath, {
@@ -817,7 +831,8 @@ function syncToNotebookLMWithinLease(notebookId, payloadPath, chassisName = 'Unk
       extendedPath,
       payloadPath,
       contentFingerprints,
-      legacyFingerprint
+      legacyFingerprint,
+      configPath: CONFIG_NOTEBOOKS
     };
     const retiredSourceIds = [], retirementErrors = [];
     const remainingSourceIds = [previousSourceId].filter(id => id && id !== newSourceId);

@@ -667,6 +667,7 @@ function _extractVerifiedKnowledgeDeltas(evalResults, ragResult, chassisDir, cat
         source: ragResult.source,
         groundingVerification: ragResult.groundingVerification,
         citations: ragResult.citations || [],
+        confidenceScore: ragResult.groundingVerification === 'VERIFIED_GROUNDED' ? 0.90 : 0.70,
         catalogData
       });
       evalResults.learnedDeltasCount = learnedResult.count;
@@ -885,7 +886,8 @@ async function executeEphemeralSourceValidation(options, ingestCtx, evalResults)
       targetDir: ingestCtx.chassisDir,
       isMock: options.OFFLINE_MODE,
       signal: options.signal,
-      queryTimeoutMs: options.queryTimeoutMs,
+      timeoutMs: options.timeoutMs ?? options.queryTimeoutMs,
+      queryTimeoutMs: options.queryTimeoutMs ?? options.timeoutMs,
       deadlineAt: options.deadlineAt
     });
     if (result) {
@@ -900,7 +902,7 @@ async function executeEphemeralSourceValidation(options, ingestCtx, evalResults)
     }
     return result;
   } catch (ephErr) {
-    const recovery = require('../lib/notebook/query_attempt_record.js').getNotebookQueryRecovery(ephErr, options.signal);
+    const recovery = require('../lib/notebook/query_attempt_record.js').getNotebookQueryRecovery?.(ephErr, options.signal);
     if (recovery) { evalResults.notebookQueryRecovery = recovery; throw ephErr; }
     if ((options.signal?.aborted && Object.is(ephErr, options.signal.reason)) || ephErr?.code === 'NOTEBOOK_QUERY_DEADLINE_EXCEEDED') throw ephErr;
     const _logger = require('../lib/system/pipeline_logger.js');

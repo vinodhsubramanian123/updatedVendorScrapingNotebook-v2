@@ -714,8 +714,11 @@ function saveQuarantinedDelta(delta, reasons = [], options = {}) {
     const existing = list[existingIdx];
     const newCount = (Number(existing.observationCount) || 1) + 1;
     const baseScore = Number(existing.confidenceScore || delta.confidenceScore || 0.70);
-    // Reinforce confidence slightly with repeated observations while respecting citation ceiling (< 0.85)
-    const reinforcedScore = Math.min(0.84, Number((baseScore + 0.01 * Math.log2(newCount)).toFixed(2)));
+    const hasTrustedCitations = Array.isArray(record.citations) && record.citations.length > 0;
+    const onlyConfidenceHeld = reasons.length > 0 && reasons.every(r => r.includes('below automatic promotion threshold'));
+    const cap = (hasTrustedCitations && onlyConfidenceHeld && newCount >= 3) ? 0.88 : 0.84;
+    const step = (hasTrustedCitations && onlyConfidenceHeld) ? 0.06 : 0.01;
+    const reinforcedScore = Math.min(cap, Number((baseScore + step * Math.log2(newCount)).toFixed(2)));
 
     list[existingIdx] = {
       ...existing,
@@ -725,7 +728,8 @@ function saveQuarantinedDelta(delta, reasons = [], options = {}) {
       lastSeenAt: now,
       observationCount: newCount,
       confidenceScore: reinforcedScore,
-      candidateForReview: newCount >= 5,
+      candidateForReview: newCount >= 5 || reinforcedScore >= 0.85,
+      autoPromotable: Boolean(hasTrustedCitations && onlyConfidenceHeld && reinforcedScore >= 0.85),
       quarantineReasons: [...new Set([...(existing.quarantineReasons || []), ...reasons])]
     };
   } else {

@@ -28,12 +28,15 @@ class ClassificationDiagnostics {
         totalRawTables: 0,
         validProductTables: 0,
         skippedTablesCount: 0,
+        selfHealedTablesCount: 0,
+        selfHealedSkusCount: 0,
         totalExtractedSKUs: 0,
         totalUniqueSKUs: 0,
         totalRulesExtracted: 0,
         chassisVariantsCount: 0,
       },
       skippedTables: [],
+      selfHealedTables: [],
       tableDecisions: [],
       categoryDistribution: {},
       chassisVariantsMatrix: {},
@@ -78,6 +81,17 @@ class ClassificationDiagnostics {
     if (this.trace.dataAnomalies[type]) {
       this.trace.dataAnomalies[type].push(detail);
     }
+  }
+
+  recordSelfHealedTable(tableIndex, parentCategory, subCategory, skuCount = 0) {
+    this.trace.selfHealedTables.push({
+      tableIndex,
+      parentCategory,
+      subCategory,
+      skuCount
+    });
+    this.trace.summary.selfHealedTablesCount = (this.trace.summary.selfHealedTablesCount || 0) + 1;
+    this.trace.summary.selfHealedSkusCount = (this.trace.summary.selfHealedSkusCount || 0) + skuCount;
   }
 
   finalize(finalCatalog, rulesObj) {
