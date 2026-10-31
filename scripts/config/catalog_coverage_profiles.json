@@ -119,6 +119,46 @@
         "Power Supplies",
         "Transceivers"
       ]
+    },
+    "SY480_Gen12": {
+      "product": "Synergy 480 Gen12",
+      "pillar": "SERVER",
+      "family": "Synergy",
+      "generation": "Gen12",
+      "expectedWorkbookSheets": 24,
+      "minHardwareSKUs": 250,
+      "minServicesSKUs": 100,
+      "mandatoryCategories": [
+        "Processor",
+        "Memory",
+        "Drive Cage",
+        "Storage Controllers",
+        "Riser",
+        "Heat Sinks"
+      ],
+      "mandatoryServicesCategories": [
+        "System Options"
+      ]
+    },
+    "SY100Gb_F32_Module": {
+      "product": "Virtual Connect SE 100Gb F32 Module for Synergy",
+      "pillar": "NETWORKING",
+      "family": "Synergy",
+      "generation": "General",
+      "expectedWorkbookSheets": 16,
+      "minHardwareSKUs": 120,
+      "minServicesSKUs": 2,
+      "mandatoryCategories": [
+        "Variants",
+        "Optical Transceivers",
+        "Cables",
+        "License Upgrade"
+      ],
+      "mandatoryServicesCategories": [
+        "System Options"
+      ],
+      "scope": "Observed module menu under Synergy 12000; selected owned service only; alternative service branches unexecuted",
+      "evidence": "2026-10-30 owned capture of 867796-B21 under P51174-B21"
     }
   }
 }

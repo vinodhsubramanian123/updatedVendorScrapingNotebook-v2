@@ -81,7 +81,9 @@ function createCaptureReceipt(stagingDir, liveDir, product, options = {}) {
   if ([...expected].some(sku => !actual.has(sku))) throw new Error('Workbook is missing catalog SKUs');
   const previousFile = path.join(liveDir, `${product}_Catalog.json`);
   let previous = null;
-  if (fs.existsSync(previousFile)) previous = summarizeCatalog(liveDir, product);
+  const previousComplete = ['Catalog.json', 'Services.json', 'Catalog_Rules.json', 'OCA_Catalog.xlsx']
+    .every(suffix => fs.existsSync(path.join(liveDir, `${product}_${suffix}`)));
+  if (fs.existsSync(previousFile) && previousComplete) previous = summarizeCatalog(liveDir, product);
 
   const selectedBase = raw.selectedBaseSku || raw.baseSku || null;
   const ownerConfig = raw.ownerConfiguration || null;
@@ -96,6 +98,7 @@ function createCaptureReceipt(stagingDir, liveDir, product, options = {}) {
 
   const receipt = {
     schemaVersion: 1, product, vendor: 'HPE', capturedAt: capture, auditedAt: new Date().toISOString(),
+    incompleteLegacyBaselinePreserved: fs.existsSync(previousFile) && !previousComplete,
     mode: previous ? 'REFRESH' : 'FIRST_CAPTURE', status: options.skipCoverageValidation ? 'DIAGNOSTIC_CAPTURE' : 'STAGING_AUDITED',
     provenance: {
       baseSku: selectedBase,

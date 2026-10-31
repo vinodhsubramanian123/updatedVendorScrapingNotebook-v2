@@ -39,3 +39,19 @@ test('A service extraction failure still restores Menu and fails capture', async
   await assert.rejects(captureSupplementalCatalogTabs({}, 'services|bom', api), /services capture failed/);
   assert.equal(visited.at(-1), '#extended_overview_menu');
 });
+
+test('component capture retains unscoped service evidence without mixing it into its catalog', async () => {
+  const { api } = fixture();
+  const original = api.sendCommand;
+  api.sendCommand = async (ws, method, params) => params.expression.includes('data?.ucid')
+    ? { result: { value: [{ owner: 'child-1', support: 'HU4D5A5#Z1R HPE 5Y Complete Care Service', install: 'N/A' }] } }
+    : original(ws, method, params);
+  const ws = { _captureComponentSku: '867796-B21' };
+  const capture = await captureSupplementalCatalogTabs(ws, 'services|bom', api);
+  assert.equal(capture.tables.length, 2);
+  assert.equal(capture.tables[1].tableId, 'component_owned_services');
+  assert.equal(capture.tables[1].rows[1][0], 'HU4D5A5#Z1R');
+  assert.equal(capture.tables[1].rows[1][2], '', 'unpublished price remains unknown');
+  assert.equal(ws._unscopedServiceTables.length, 1);
+  assert.equal(ws._componentServiceEvidence.scope, 'OBSERVED_SELECTED_SERVICES_ONLY');
+});

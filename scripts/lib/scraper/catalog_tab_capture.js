@@ -17,6 +17,30 @@ async function captureSupplementalCatalogTabs(ws, pattern, api = cdp) {
   try {
     for (const href of new Set(discovery.result?.value || [])) {
       await selectCatalogTab(ws, href, api);
+      if (ws._captureComponentSku && href === '#extended_overview_suisvc') {
+        ws._unscopedServiceTables = await api.extractTablesAsRows(ws, href);
+        const scoped = await api.sendCommand(ws, 'Runtime.evaluate', {
+          expression: `(() => {
+            const rows = Array.from(document.querySelectorAll('#sui-components-tree tr'));
+            return rows.map(row => window.jQuery?.ui?.fancytree?.getNode(row)?.data)
+              .filter(data => data?.ucid === ${JSON.stringify(ws._captureComponentSku)})
+              .map(data => ({ owner: data.subConfId, support: data.reactiveSupport, install: data.installService }));
+          })()`, returnByValue: true
+        });
+        const owners = scoped.result?.value || [];
+        if (!owners.length) throw new Error('COMPONENT_SERVICE_OWNER_NOT_FOUND');
+        ws._componentServiceEvidence = { scope: 'OBSERVED_SELECTED_SERVICES_ONLY', owners,
+          unexecuted: ['alternative service types, terms and tiers', 'parent-level support changes'] };
+        const rows = [['Product #', 'Description', 'Price (USD)', 'Owner Configuration', 'Evidence Scope']];
+        for (const owner of owners) for (const value of [owner.support, owner.install]) {
+          const match = String(value || '').match(/^([A-Z0-9]+(?:#[A-Z0-9]+)?)\s+(.+)$/);
+          if (match) rows.push([match[1], match[2], '', owner.owner, 'Observed selected service; alternatives not enumerated']);
+        }
+        if (rows.length < 2) throw new Error('COMPONENT_SERVICE_SELECTION_UNAVAILABLE');
+        tables.push({ tableId: 'component_owned_services', rows, rowCount: rows.length });
+        texts.push('Support Services: observed component-owned selections only. Alternative service branches remain unexecuted.');
+        continue;
+      }
       tables.push(...await api.extractTablesAsRows(ws, href));
       const paneTextRes = await api.sendCommand(ws, 'Runtime.evaluate', {
         expression: `(() => {
@@ -61,7 +85,7 @@ async function selectCatalogTab(ws, href, api) {
       return false;
     }
     return true;
-  })()`, 30000, 500);
+  })()`, 90000, 500);
   if (!ready) throw new Error(`CATALOG_TAB_NOT_READY: ${href}`);
 }
 

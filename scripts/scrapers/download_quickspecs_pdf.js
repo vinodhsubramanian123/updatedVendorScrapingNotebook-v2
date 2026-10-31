@@ -15,7 +15,8 @@ if (!process.argv[2] || !process.argv[3]) {
 }
 
 const arg1          = process.argv[2];
-const docId         = arg1.replace(/.*\/doc\//, '').replace(/\.pdf.*/, '').trim();
+const docId         = arg1.replace(/.*\/doc\//, '').split(/[?#]/)[0].replace(/\.pdf$/i, '').trim();
+if (!/^[a-z0-9_-]+$/i.test(docId)) throw new Error('INVALID_QUICKSPECS_DOCUMENT_ID');
 const rawOut        = process.argv[3];
 const forceDownload = process.argv.includes('--force');
 

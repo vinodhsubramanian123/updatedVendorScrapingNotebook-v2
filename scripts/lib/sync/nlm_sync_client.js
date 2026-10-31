@@ -29,9 +29,9 @@ function protectedNotebookSources(config, notebookId) {
       ...(mapping.officialSourceIds || []), ...(mapping.certifiedCatalogSourceIds || []),
       ...(mapping.canonicalKnowledgeSourceIds || []), ...(mapping.verifiedLearningSourceIds || []), ...(mapping.trustedSourceIds || [])]).filter(Boolean);
 }
-function readRecoveryQueue() {
+function readRecoveryQueue(queuePath = RECOVERY_QUEUE_PATH) {
   const legacy = path.join(PROJECT_ROOT, 'history', 'source_recovery_queue.json');
-  if (!fs.existsSync(RECOVERY_QUEUE_PATH) && fs.existsSync(legacy)) {
+  if (queuePath === RECOVERY_QUEUE_PATH && !fs.existsSync(queuePath) && fs.existsSync(legacy)) {
     let queue;
     try {
       queue = JSON.parse(fs.readFileSync(legacy, 'utf8'));
@@ -40,25 +40,26 @@ function readRecoveryQueue() {
       fs.renameSync(legacy, legacy + '.corrupt-' + require('crypto').randomUUID());
       throw new Error('Legacy recovery queue quarantined: ' + error.message);
     }
-    safeWriteJsonAtomic(RECOVERY_QUEUE_PATH, queue);
+    safeWriteJsonAtomic(queuePath, queue);
   }
-  if (!fs.existsSync(RECOVERY_QUEUE_PATH)) return [];
+  if (!fs.existsSync(queuePath)) return [];
   try {
-    const queue = JSON.parse(fs.readFileSync(RECOVERY_QUEUE_PATH, 'utf8'));
+    const queue = JSON.parse(fs.readFileSync(queuePath, 'utf8'));
     if (!Array.isArray(queue)) throw new Error('Recovery queue is not an array');
     return queue;
   } catch (error) {
-    fs.renameSync(RECOVERY_QUEUE_PATH, RECOVERY_QUEUE_PATH + '.corrupt-' + require('crypto').randomUUID());
+    fs.renameSync(queuePath, queuePath + '.corrupt-' + require('crypto').randomUUID());
     throw new Error('Recovery queue quarantined: ' + error.message);
   }
 }
-function recordSourceRecoveryAction(entry) {
+function recordSourceRecoveryAction(entry, options = {}) {
+  const queuePath = options.queuePath || RECOVERY_QUEUE_PATH;
   const release = acquireWorkflowLease('source-recovery-queue');
   try {
-    const queue = readRecoveryQueue();
+    const queue = readRecoveryQueue(queuePath);
     const item = { ...entry, id: require('crypto').randomUUID(), timestamp: new Date().toISOString() };
     queue.push(item);
-    safeWriteJsonAtomic(RECOVERY_QUEUE_PATH, queue);
+    safeWriteJsonAtomic(queuePath, queue);
     return item.id;
   } finally { release(); }
 }
@@ -76,7 +77,8 @@ function processSourceRecoveryQueue(notebookId, extendedPath = process.env.PATH,
   if (!notebookId) throw new Error('Scoped notebook identity is required for recovery');
   const release = acquireWorkflowLease('source-recovery-queue');
   try {
-    const queue = readRecoveryQueue();
+    const queuePath = options.queuePath || RECOVERY_QUEUE_PATH;
+    const queue = readRecoveryQueue(queuePath);
     const config = JSON.parse(fs.readFileSync(options.configPath || path.join(PROJECT_ROOT, 'scripts/config/notebooks.json'), 'utf8'));
     const inventories = new Map();
     let purged = 0;
@@ -113,6 +115,7 @@ function processSourceRecoveryQueue(notebookId, extendedPath = process.env.PATH,
           item.matchedTitle = candidates[0].title || candidates[0].filename;
         }
         const source = inventory.find(source => source.id === item.sourceId);
+        if (item.previousSourceIds?.includes(item.sourceId)) throw new Error('Pre-existing source cannot be purged as an upload candidate');
         if (protectedIds.has(item.sourceId)) throw new Error('Candidate is currently protected or active; deletion blocked');
         const expectedTitles = new Set([item.ownedTitle, item.matchedTitle, item.payloadFilename, `notebook_sync_payload_${item.chassisName}.md`].filter(Boolean));
         if (item.createdThisRun !== true || !item.ownedTitle || (source && !expectedTitles.has(source.title || source.filename))) throw new Error('Candidate ownership is unverified');
@@ -127,7 +130,7 @@ function processSourceRecoveryQueue(notebookId, extendedPath = process.env.PATH,
         item.status = 'PURGED'; item.purgedAt = new Date().toISOString(); purged++;
       } catch (error) { item.lastPurgeError = error.message; }
     }
-    safeWriteJsonAtomic(RECOVERY_QUEUE_PATH, queue);
+    safeWriteJsonAtomic(queuePath, queue);
     return { processed: queue.length, purged, pending: queue.filter(item => item.notebookId === notebookId && item.status !== 'PURGED' && item.status !== 'VERIFIED').length };
   } finally { release(); }
 }
@@ -734,6 +737,16 @@ function syncToNotebookLMWithinLease(notebookId, payloadPath, chassisName = 'Unk
     let legacyFingerprint = null;
     if (!useCanonicalDrive) {
       const csv = refreshMasterCatalogCsv(payloadPath, chassisName);
+      const humanWorkbook = require('./human_workbook_sync.js').publishHumanWorkbook({
+        cfgEntry, chassisName, csvPath: csv, payloadPath, run: execFileSync,
+        env: require('../notebook/nlm_transport.js').nlmEnvironment(extendedPath)
+      });
+      if (humanWorkbook) {
+        driveSyncStatus = 'HUMAN_WORKBOOK_WRITTEN_AND_READBACK_VERIFIED';
+        canonicalDriveSheetId = humanWorkbook.spreadsheetId;
+        canonicalDriveSheetUrl = humanWorkbook.spreadsheetUrl || `https://docs.google.com/spreadsheets/d/${humanWorkbook.spreadsheetId}/edit`;
+        safeWriteJsonAtomic(path.join(payloadDir, 'history', 'human_workbook_sync.json'), humanWorkbook);
+      }
       const datasets = require('./google_sheets_writer.js').buildKnowledgeWorkbookDatasets(csv, payloadPath, { chassisName });
       legacyFingerprint = datasets.fingerprints.combined;
       const baseText = fs.readFileSync(payloadPath, 'utf8').split('\n<!-- MANAGED_FULL_CATALOG -->')[0];

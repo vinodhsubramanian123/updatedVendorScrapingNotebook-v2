@@ -25,8 +25,16 @@ function normalizeProductText(value) {
     .replace(/\s+/g, ' ');
 }
 
+function normalizePortalSearchQuery(value) {
+  const query = String(value || 'DL380 Gen12').replace(/_/g, ' ').trim();
+  if (/^SY480\s+Gen12$/i.test(query)) return 'Synergy 480 Gen12';
+  if (/^SY100Gb\s+F32\s+Module$/i.test(query)) return 'Synergy Virtual Connect SE 100Gb F32';
+  return query;
+}
+
 function extractModelGeneration(value) {
   const normalized = normalizeProductText(value);
+  if (/\b100\s*gb\s*f32\b/.test(normalized)) return { model: 'sy100gbf32', generation: '' };
   const withSy = normalized.replace(/\bsynergy\b/g, 'sy');
   const model = withSy.match(/\b(?:dl|ml|rl|sy|gx|msl|alletra|sn)\s*\d+[a-z]?\b/)?.[0]?.replace(/\s+/g, '') || '';
   const generation = withSy.match(/\bgen\s*\d+\b/)?.[0]?.replace(/\s+/g, '') || '';
@@ -65,6 +73,11 @@ function isExactProductCandidate(query, candidate) {
   const observed = extractModelGeneration(candidate.text);
   const exactIdentity = Boolean(expected.model && observed.model && expected.model === observed.model &&
     (!expected.generation || expected.generation === observed.generation));
+  if (expected.model === 'sy100gbf32') {
+    return exactIdentity && /\b(?:module|interconnect)\b/i.test(candidate.text || '') &&
+      !/\b(?:support|service|license|cable|transceiver|kit|taa)\b|#gta\b/i.test(candidate.text || '') &&
+      !candidate.isTaa && !candidate.isGta;
+  }
   const isCto = candidate.isCto || /configure[\s-]+to[\s-]+order|\bcto\b|smart\s+cto|base\s+module|scalable\s+base|base\s+chassis/i.test(candidate.text || '');
   
   // Appliance exclusion: do not match Aruba, SimpliVity, or networking central appliances unless requested
@@ -1220,7 +1233,7 @@ async function pruneSeismicTabs(pages) {
  * @returns {object} { targetUrl, pageId, baseChassisPriceUsd }
  */
 async function navigateToOCAChassis(chassisQuery, options = {}) {
-  const query = String(chassisQuery || 'DL380 Gen12').trim();
+  const query = normalizePortalSearchQuery(chassisQuery);
   console.log(`\n===============================================================`);
   console.log(`🧭 SMART HPE OCA PORTAL AUTO-NAVIGATOR`);
   console.log(`   Target Chassis Query: "${query}"`);
@@ -1313,7 +1326,7 @@ async function recoverAndLaunchFreshOCA(chassisQuery = 'DL380 Gen12', options = 
     error.code = 'CDP_UNAVAILABLE';
     throw error;
   }
-  const query = String(chassisQuery || 'DL380 Gen12').trim();
+  const query = normalizePortalSearchQuery(chassisQuery);
   console.log(`\n===============================================================`);
   console.log(`🔄 [INV-89] TAB 1 STALE-SESSION SELF-HEALING RECOVERY`);
   console.log(`   Target Chassis Query: "${query}"`);
@@ -1548,6 +1561,7 @@ module.exports = {
   searchAndConfigureChassis,
   discoverChassisCandidates,
   normalizeProductText,
+  normalizePortalSearchQuery,
   extractModelGeneration,
   isExactProductCandidate,
   isDefaultChassisCandidate,

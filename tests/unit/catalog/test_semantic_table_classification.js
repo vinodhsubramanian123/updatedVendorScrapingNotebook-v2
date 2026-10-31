@@ -128,6 +128,15 @@ test('row parser retains lifecycle, availability, delivery, and unmodeled vendor
   assert.equal(row.vendorAttributes['Custom Attribute'], 'Vendor label');
 });
 
+test('CS-tagged portal SKUs remain in the catalog with the raw status preserved', () => {
+  const result = parseSingleTableRow(['P71119-B21 [CS]', 'Intel Xeon 6740E Processor for HPE', '0', '8459.00'],
+    ['Product #', 'Description', 'Quantity', 'Price (USD)'], 0, new Map());
+  assert.equal(result.obj.sku, 'P71119-B21');
+  assert.equal(result.obj['Unit Price (USD)'], '8459.00');
+  assert.equal(result.obj.vendorAttributes['Vendor Status Badge'], 'CS');
+  assert.match(result.obj.Availability, /meaning unverified/);
+});
+
 test('nested OCA table constraints survive flattened body text', () => {
   const rawData = {
     sections: [],

@@ -12,7 +12,7 @@
 // 2. 6-character hardware SKUs: C0H28A, Q2R32A, BC002A, N9X06A, TC480A, R2E09A
 // 3. Software / E-LTU SKUs: E5Y35AAE, E5Y43AAE, BD505A
 // 4. Service / Support SKUs: H7J34A3, HA114A1, HU4A6E, U4391E, R4H12A, S2S05A, HU4B2A3, HU4B2A30C4V
-const HPE_SKU_REGEX = /^([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6}|[A-Z0-9]{5,8}(?:AAE)?|[HURS][A-Z0-9]{4,11})$/i;
+const HPE_SKU_REGEX = /^([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6}|[A-Z0-9]{5,8}(?:AAE)?|[HURS][A-Z0-9]{4,11}|[HU][A-Z0-9]{4,11}#[A-Z0-9]{3})$/i;
 
 // Match SKU within text with optional CTO/BTO/FIO suffix
 const HPE_SKU_EXTRACT_REGEX = /\b([A-Z0-9]{3,8}-[A-Z0-9]{3,4}(?:CTO|BTO|FIO)?|[A-Z0-9]{6}(?:CTO|BTO|FIO)?|[A-Z0-9]{5,8}AAE|[HURS][A-Z0-9]{4,11}(?:CTO|BTO|FIO)?)\b/i;
@@ -86,8 +86,8 @@ function cleanBaseSKU(skuStr) {
   if (!skuStr) return '';
   let str = String(skuStr).replace(/[\r\n\t]+/g, ' ').trim();
   // Strip bracketed badges like [OB], [DS], [90], [EOL] at start or end
-  str = str.replace(/\s*\[(?:OB|DS|90|EOL|NA|N\/A)\]\s*$/i, '').trim();
-  str = str.replace(/^\s*\[(?:OB|DS|90|EOL|NA|N\/A)\]\s*/i, '').trim();
+  str = str.replace(/\s*\[(?:OB|DS|90|EOL|NA|N\/A|CS)\]\s*$/i, '').trim();
+  str = str.replace(/^\s*\[(?:OB|DS|90|EOL|NA|N\/A|CS)\]\s*/i, '').trim();
   // Strip leading lifecycle / status badges (e.g. "OB\n P49631-B21", "DS P49632-B21", "90\n P49639-B21", "EOL P49654-B21")
   str = str.replace(/^(?:OB|DS|90|EOL|NA|N\/A|BTO|CTO|FIO)\s+/i, '').trim();
   // Strip trailing PVT / Private badge
@@ -146,7 +146,7 @@ function isServiceSku(skuStr) {
   // Service SKUs typically start with H (Care Packs: HA114A1, HU4B2A3, H7J34A3),
   // U (legacy Care Packs: U4391E), or end with AAE (software E-LTU: R7A11AAE, E5Y35AAE).
   // Standard 6-char hardware SKUs like S3U30C (H200 GPU), S2L70C (L40S GPU), R2E09A (FC HBA) are physical hardware.
-  return /^[HU][A-Z0-9]{4,11}$/i.test(clean) || /^[A-Z0-9]{5,8}AAE$/i.test(clean);
+  return /^[HU][A-Z0-9]{4,11}(?:#[A-Z0-9]{3})?$/i.test(clean) || /^[A-Z0-9]{5,8}AAE$/i.test(clean);
 }
 
 /**

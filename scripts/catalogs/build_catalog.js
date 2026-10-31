@@ -739,31 +739,12 @@ function resolveRowRecommendation(obj, headers, pn) {
   return hpeRecommended;
 }
 
-function resolveRowPrice(row, headers, obj, pn, historyPriceMap) {
-  let priceStr = String(obj['Unit Price (USD)'] || obj['List Price (USD)'] || obj['Price (USD)'] || obj['Price'] || '').replace(/[$,]/g, '').trim();
-  const hasPriceHeader = headers.some(h => {
-    const nh = String(h).trim().toLowerCase();
-    return nh === 'unit price (usd)' || nh === 'price (usd)' || nh === 'list price (usd)' || nh === 'list price' || nh === 'price';
-  });
-  if (!/^\d+(?:\.\d{1,2})?$/.test(priceStr) || priceStr === pn) {
-    if (hasPriceHeader) {
-      const qtyVal = String(obj['Current Qty'] || obj['Quantity'] || '').trim();
-      const numCell = row.find(c => {
-        const raw = c.trim();
-        const p = raw.replace(/[$,]/g, '').trim();
-        const looksLikePrice = raw.includes('$') || raw.includes(',') || /^\d+\.\d{2}$/.test(p);
-        return p && looksLikePrice && /^\d+(?:\.\d{1,2})?$/.test(p) && c !== pn
-          && p !== qtyVal && !/^[A-Z]\d{5}/.test(raw);
-      });
-      priceStr = numCell ? numCell.replace(/[$,]/g, '').trim() : '0.00';
-    } else {
-      priceStr = '0.00';
-    }
-  }
-  if ((!priceStr || parseFloat(priceStr) === 0) && historyPriceMap.has(pn)) {
-    priceStr = historyPriceMap.get(pn);
-  }
-  return priceStr;
+function resolveRowPrice(_row, _headers, obj) {
+  // Only the named current price field establishes a price. Quantity,
+  // extended totals and old catalog prices must not fill an unpublished cell.
+  const raw = obj['Unit Price (USD)'] ?? obj['List Price (USD)'] ?? obj['Price (USD)'] ?? obj.Price;
+  const price = String(raw ?? '').replace(/[$,]/g, '').trim();
+  return /^\d+(?:\.\d{1,2})?$/.test(price) ? price : '';
 }
 
 function parseSingleTableRow(row, headers, offset, historyPriceMap) {
@@ -783,6 +764,11 @@ function parseSingleTableRow(row, headers, offset, historyPriceMap) {
   const skuInfo = extractRowSkuAndLifecycle(row, obj);
   if (!skuInfo) return null;
   const { pn, lifecycleStatus, lifecycleBadge } = skuInfo;
+
+  if (row.some(value => /\[CS\]/i.test(value) && cleanBaseSKU(value).toUpperCase() === pn)) {
+    obj['Vendor Status Badge'] = 'CS';
+    obj.Availability = obj.Availability || 'CS (vendor status; meaning unverified)';
+  }
 
   obj['Product #'] = pn;
   obj.sku = pn;
@@ -843,7 +829,7 @@ function parseSingleTableRow(row, headers, offset, historyPriceMap) {
   const priceStr = resolveRowPrice(row, headers, obj, pn, historyPriceMap);
   obj['Unit Price (USD)'] = priceStr;
   obj['List Price (USD)'] = priceStr;
-  obj.listPrice = parseFloat(priceStr) || 0;
+  obj.listPrice = priceStr === '' ? null : Number(priceStr);
 
   const rawCost = obj['Cost (USD)'] ? String(obj['Cost (USD)']).replace(/[$,]/g, '').trim() : '';
   if (rawCost && /^\d+(?:\.\d{1,2})?$/.test(rawCost)) {
@@ -1578,8 +1564,10 @@ function isCanonicalCtoChassisCandidate(candidate, chassisLabel) {
   if (candidate?.isBto || candidate?.isTaa || candidate?.isGta || /\b(?:TAA|GTA|BTO)\b|#GTA/i.test(text)) return false;
   const expected = parseProductMeta(chassisLabel).cleanName;
   const observed = parseProductMeta(text).cleanName;
+  const isFabricBase = expected === 'SY100Gb_F32_Module' && observed === expected &&
+    /\bmodule\b/i.test(text) && !/\b(support|service|license|cable|transceiver|kit)\b/i.test(text);
   const isSanBase = parseProductMeta(text).family === 'SAN' && /\bswitch\b/i.test(text) && !/\b(upgrade|license|support|service|kit)\b/i.test(text);
-  if (expected !== observed || (!isSanBase && !/configure[\s-]+to[\s-]+order|\bcto\b/i.test(text))) return false;
+  if (expected !== observed || (!isSanBase && !isFabricBase && !/configure[\s-]+to[\s-]+order|\bcto\b/i.test(text))) return false;
   return !/\b(?:OEM|solutions?|Commvault|Cohesity|Veeam|vSAN|template)\b/i.test(text);
 }
 

@@ -141,6 +141,10 @@ sequenceDiagram
 
 ## 7. Execution Commands
 
+### Owned components inside a parent configuration
+
+If exact standalone discovery has no matching product, inspect the parent solution's Components view. Select the observed component and open its Menu. Use `--active-component-sku <observed SKU>` with the exact registered `--chassis` identifier; the canonical scraper verifies the live menu heading, SKU, owner and parent before capture. Never relabel a frame catalog as an interconnect catalog. On 30 October 2026, F32 was reached under Synergy 12000 frame P51174-B21 as module 867796-B21. This is dated discovery, not a universal SKU substitution. Preserve per-owner services and conditional options, and keep missing coverage policies blocking publication. See `docs/audits/2026-10-29-catalog-refresh-and-knowledge-sync.md`.
+
 ```bash
 # E2E Server/Solution Scrape (DL380 Gen11 / Gen12 / Synergy / Cray)
 node scripts/scrapers/scrape_oca_solution.js --chassis DL380_Gen12

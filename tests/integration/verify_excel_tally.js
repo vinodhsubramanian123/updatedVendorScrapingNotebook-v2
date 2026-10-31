@@ -208,7 +208,7 @@ async function main() {
     requiredAttributeColumns.forEach(column => assert(excelColumns.has(column), `Lossless attribute column '${column}' is present`));
   }
 
-  const physicalHardwareRows = currentHardwareRows.filter(({ entry }) => entry.parentCategory !== 'Software & Licenses');
+  const physicalHardwareRows = currentHardwareRows.filter(({ entry, sku }) => entry.parentCategory !== 'Software & Licenses' && !/obsolete|end of life/i.test(sku['Lifecycle Status'] || ''));
   const activeSoftwareRows = currentHardwareRows.filter(({ entry, sku }) =>
     entry.parentCategory === 'Software & Licenses' &&
     !/obsolete|end of life/i.test(String(sku['Lifecycle Status'] || sku['CLIC Status'] || ''))
@@ -372,7 +372,9 @@ async function main() {
     const discovery = JSON.parse(fs.readFileSync(discoveryPath, 'utf8'));
     const isPrePromotion = PRE_PROMOTION || targetDir.includes('staging_') || targetDir.includes('intermittent_scraps');
     if (isPrePromotion) {
-      const discoveryAgeMs = Date.now() - Date.parse(discovery.capturedAt || '');
+      // Bind discovery to the immutable vendor observation, so a retained
+      // audited stage can be checked again after a publication failure.
+      const discoveryAgeMs = Date.parse(catalogData.metadata?.scrapeTimestamp || '') - Date.parse(discovery.capturedAt || '');
       assert(Number.isFinite(discoveryAgeMs) && discoveryAgeMs >= 0 && discoveryAgeMs <= 5 * 60 * 1000,
         `OCA chassis discovery is contemporaneous with this scrape (${Math.round(discoveryAgeMs / 1000)}s old, maximum 300s)`);
     } else {
@@ -418,6 +420,7 @@ async function main() {
   });
 
   // GAP FIX / INV-22: Minimum Category Cardinality Assertions for Dual-Socket Flagship Servers
+  const isAiServer = filePrefix.toLowerCase().includes('dl380a') || filePrefix.toLowerCase().includes('accelerator');
   const isFlagshipServer = filePrefix.toLowerCase().includes('dl380') || filePrefix.toLowerCase().includes('dl360');
   if (isFlagshipServer) {
     const procSheet = wb.Sheets['Processor'];
@@ -428,7 +431,6 @@ async function main() {
   }
 
   // AI Accelerator Server Archetype Cardinality Gate (INV-22)
-  const isAiServer = filePrefix.toLowerCase().includes('dl380a') || filePrefix.toLowerCase().includes('accelerator');
   if (isAiServer && !auditResults.isDegraded) {
     const gpuSheet = wb.Sheets['Graphics & GPU'] || wb.Sheets['GPU Accelerators'] || wb.Sheets['Graphics Options'] || wb.Sheets['Accelerators'];
     assert(gpuSheet !== undefined, `AI Accelerator Server (INV-22): Specialized server '${filePrefix}' must contain GPU Accelerators / Graphics sheet`);

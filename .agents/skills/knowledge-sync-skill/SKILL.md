@@ -6,6 +6,10 @@ description: Bi-directional knowledge synchronization skill between Antigravity 
 # Knowledge Sync Skill — Bi-Directional Agent & Gemini NotebookLM Alignment Protocol
 
 ## 1. Overview
+
+### Separate Drive and NotebookLM publication (2026-10-29)
+
+For DL380a Gen12, DL380 Gen12 and the registered Synergy products, use `canonicalDriveEnabled: false` for the complete semantic Markdown source and `publishDriveWorkbook: true` to independently publish/read-verify the human Drive workbook. Do not attach Google Sheets as a NotebookLM source. Read [the refresh and recovery record](../../../docs/audits/2026-10-29-catalog-refresh-and-knowledge-sync.md) before retrying retained captures or importing cloud learning prose. Preserve independent learning sources; contradictory claims require evidence before becoming active hardware rules.
 This skill ensures that the **Antigravity AI local evaluation engines** and **Gemini NotebookLM RAG notebooks** maintain 100% synchronization regarding HPE server configuration rules, physical constraints, chassis variants, pricing, and vendor portal rejection feedback.
 
 > **New Architectural Mandates (Phase 3 & 4):**

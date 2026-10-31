@@ -670,6 +670,14 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
   }
 
   let md = _buildHeaderAndSummarySection(targetIdentity, chassisName, totalActiveHwSKUs, totalActiveSrvSKUs, totalRules, hwDiff, srvDiff);
+  const rawCapturePath = path.join(targetDir, 'raw_data', 'oca_raw_data_full.json');
+  if (fs.existsSync(rawCapturePath)) {
+    const rawCapture = JSON.parse(fs.readFileSync(rawCapturePath, 'utf8'));
+    if (rawCapture.parentConfiguration) {
+      md += `\n## Owned component capture scope\n\nObserved ${rawCapture.timestamp}; base ${rawCapture.selectedBaseSku}; owner ${rawCapture.ownerConfiguration}; parent ${rawCapture.parentConfiguration}. This is the component catalog, not certification of its parent solution.\n\n`;
+      if (rawCapture.componentServiceEvidence) md += `Service scope: ${rawCapture.componentServiceEvidence.scope}. Unexecuted: ${(rawCapture.componentServiceEvidence.unexecuted || []).join('; ')}. Missing prices remain unknown.\n\n`;
+    }
+  }
   md += _buildUniversalAndFamilyRulesSection(targetIdentity, scopedRegistry.universalRules, scopedRegistry.familyGenRules);
   md += _buildChassisSpecificRulesSection(chassisName, scopedRegistry.chassisSpecificRules, targetIdentity);
   md += _buildUnavailableDomGatingRulesSection(unavailableRules);

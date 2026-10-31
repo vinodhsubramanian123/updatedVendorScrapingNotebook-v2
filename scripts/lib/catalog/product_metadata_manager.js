@@ -246,7 +246,8 @@ function commitSuccessfulResyncMetadata(params, options = {}) {
         || (scrapeTimestamp && Date.parse(scrapeTimestamp) !== Date.parse(capture))) {
       throw new Error('[ATOMIC_GUARD] Invalid or mismatched vendor capture timestamp');
     }
-    const actualCount = require('./catalog_capture_receipt.js').skuSet(catalog).size;
+    const actualCount = new Set((catalog.entries || []).flatMap(entry => entry.skus || [])
+      .map(row => String(row.sku || row['Product #'] || '').trim()).filter(Boolean)).size;
     if (!actualCount || actualCount !== Number(catalog.metadata.totalUniqueSKUs)
         || (uniqueSKUs !== undefined && uniqueSKUs !== actualCount)) {
       throw new Error('[ATOMIC_GUARD] Catalog SKU count does not match promoted content');

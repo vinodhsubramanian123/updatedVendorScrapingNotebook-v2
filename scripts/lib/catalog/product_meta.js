@@ -8,7 +8,7 @@
 
 const FAMILY_PATTERNS = [
   { family: 'SAN', pattern: /\bsn\s*\d{4}[a-z]\b|fibre\s+channel\s+switch/i },
-  { family: 'ProLiant', pattern: /proliant|\b[DMR]L\s*\d{3}\b/i },
+  { family: 'ProLiant', pattern: /proliant|\b[DMR]L\s*\d{3}a?\b/i },
   { family: 'Synergy', pattern: /synergy|\bSY\d{3}\b/i },
   { family: 'Alletra', pattern: /alletra/i },
   { family: 'Nimble', pattern: /nimble/i },
@@ -39,6 +39,9 @@ function detectProductFamily(fullText) {
 
 function parseProductMeta(rawText, pageTitle = '') {
   const fullText = `${rawText || ''} ${pageTitle || ''}`.replace(/_/g, ' ');
+  if (/\b(?:SY100Gb|100Gb)\s+F32\b/i.test(fullText)) {
+    return { family: 'Synergy', gen: 'General', cleanName: 'SY100Gb_F32_Module' };
+  }
 
   // 1. Generation Detection
   const genMatch = fullText.match(/Gen\d+(?:Plus)?/i);
@@ -256,7 +259,7 @@ const SUBCATEGORY_SYNTHESIS_RULES = [
   { name: 'LFF Drive Cages & Enablement', match: t => t.includes('lff') && (t.includes('cage') || t.includes('bay') || t.includes('enclosure') || t.includes('drive')) },
   { name: 'EDSFF Drive Cages & Enablement', match: t => t.includes('edsff') && (t.includes('cage') || t.includes('bay') || t.includes('enclosure') || t.includes('drive')) },
   { name: 'Solid State Drives (NVMe/SAS/SATA)', match: t => t.includes('ssd') || t.includes('nvme') || t.includes('read intensive') || t.includes('mixed use') || t.includes('write intensive') },
-  { name: 'Hard Disk Drives (SAS/SATA)', match: t => t.includes('hdd') || t.includes('hard drive') || t.includes('10k') || t.includes('7.2k') || t.includes('15k') },
+  { name: 'Hard Disk Drives (SAS/SATA)', match: t => t.includes('hdd') || t.includes('hard drive') || /\b(?:10k|7\.2k|15k)\b/.test(t) },
 
   // 8. Networking & Fabrics
   { name: 'OCP3 Networking Adapters', match: t => t.includes('ocp3') || t.includes('ocp') },
@@ -286,6 +289,9 @@ function synthesizeSubcategoryName(parentCategory = '', itemDescriptions = [], t
   const descsText = Array.isArray(itemDescriptions) ? itemDescriptions.join(' ') : String(itemDescriptions || '');
   const rulesText = Array.isArray(tableRules) ? tableRules.join(' ') : String(tableRules || '');
   const text = `${descsText} ${rulesText}`.toLowerCase();
+
+  if (/network|interconnect/i.test(parentCategory) && /transceiver|qsfp|sfp\+|sfp28|direct attach|optical cable/.test(text)
+      && !/pcie|ocp3|ethernet adapter/.test(text)) return 'Optical Transceivers & DAC Cables';
 
   for (const rule of SUBCATEGORY_SYNTHESIS_RULES) {
     if (rule.match(text)) {

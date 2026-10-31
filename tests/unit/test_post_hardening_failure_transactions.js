@@ -252,8 +252,10 @@ test('promotion recovery handles first-capture rollback when no baseline existed
 });
 
 test('source recovery queue handles protected sources, ambiguous candidate timeout discoveries, and queue quarantine on corruption', t => {
-  const { recordSourceRecoveryAction, processSourceRecoveryQueue, readRecoveryQueue, RECOVERY_QUEUE_PATH } = require('../../scripts/lib/sync/nlm_sync_client');
+  const { recordSourceRecoveryAction, processSourceRecoveryQueue, readRecoveryQueue } = require('../../scripts/lib/sync/nlm_sync_client');
   const dir = temporary(t), configPath = path.join(dir, 'config.json');
+  const RECOVERY_QUEUE_PATH = path.join(dir, 'source_recovery_queue.json');
+  const queueOptions = { queuePath: RECOVERY_QUEUE_PATH };
   const prior = fs.existsSync(RECOVERY_QUEUE_PATH) ? fs.readFileSync(RECOVERY_QUEUE_PATH, 'utf8') : null;
   t.after(() => {
     if (prior !== null) safeWriteJsonAtomic(RECOVERY_QUEUE_PATH, JSON.parse(prior));
@@ -262,7 +264,7 @@ test('source recovery queue handles protected sources, ambiguous candidate timeo
 
   safeWriteJsonAtomic(RECOVERY_QUEUE_PATH, []);
   fs.writeFileSync(RECOVERY_QUEUE_PATH, '{ not an array or valid json', 'utf8');
-  assert.throws(() => readRecoveryQueue(), /Recovery queue quarantined/);
+  assert.throws(() => readRecoveryQueue(RECOVERY_QUEUE_PATH), /Recovery queue quarantined/);
   const files = fs.readdirSync(path.dirname(RECOVERY_QUEUE_PATH));
   assert.ok(files.some(f => f.startsWith('source_recovery_queue.json.corrupt-')));
   for (const f of files.filter(f => f.startsWith('source_recovery_queue.json.corrupt-'))) {
@@ -272,7 +274,7 @@ test('source recovery queue handles protected sources, ambiguous candidate timeo
   safeWriteJsonAtomic(RECOVERY_QUEUE_PATH, []);
   safeWriteJsonAtomic(configPath, { notebooks: { PRODUCT: { notebookId: 'review-notebook', lastSyncedSourceId: 'active-source' } } });
   const common = { notebookId: 'review-notebook', chassisName: 'PRODUCT', previousSourceIds: [], createdThisRun: true, status: 'PURGE_REQUIRED' };
-  recordSourceRecoveryAction({ ...common, sourceId: 'TIMEOUT_UNKNOWN_ID', ownedTitle: 'ambiguous-title' });
+  recordSourceRecoveryAction({ ...common, sourceId: 'TIMEOUT_UNKNOWN_ID', ownedTitle: 'ambiguous-title' }, queueOptions);
   const ambiguousSources = [
     { id: 'source-1', title: 'ambiguous-title' },
     { id: 'source-2', title: 'ambiguous-title' }
@@ -283,31 +285,31 @@ test('source recovery queue handles protected sources, ambiguous candidate timeo
     if (args[1] === 'delete') { deleted.push(args[2]); return ''; }
     throw new Error('Unexpected');
   };
-  const ambiguousResult = processSourceRecoveryQueue('review-notebook', process.env.PATH, exec, { configPath });
+  const ambiguousResult = processSourceRecoveryQueue('review-notebook', process.env.PATH, exec, { configPath, ...queueOptions });
   assert.equal(deleted.length, 0);
   assert.equal(ambiguousResult.pending, 1);
   const queueAfterAmbiguous = JSON.parse(fs.readFileSync(RECOVERY_QUEUE_PATH, 'utf8'));
   assert.ok(/ambiguous/i.test(queueAfterAmbiguous[0].lastPurgeError));
 
   safeWriteJsonAtomic(RECOVERY_QUEUE_PATH, []);
-  recordSourceRecoveryAction({ ...common, sourceId: 'active-source', ownedTitle: 'active-source-title' });
+  recordSourceRecoveryAction({ ...common, sourceId: 'active-source', ownedTitle: 'active-source-title' }, queueOptions);
   const protectedSources = [{ id: 'active-source', title: 'active-source-title' }];
   const protectedResult = processSourceRecoveryQueue('review-notebook', process.env.PATH, (cmd, args) => {
     if (args[1] === 'list') return JSON.stringify(protectedSources);
     if (args[1] === 'delete') throw new Error('Should not delete protected source');
     return '';
-  }, { configPath });
+  }, { configPath, ...queueOptions });
   assert.equal(protectedResult.purged, 0);
   const queueAfterProtected = JSON.parse(fs.readFileSync(RECOVERY_QUEUE_PATH, 'utf8'));
   assert.ok(/protected|active/i.test(queueAfterProtected[0].lastPurgeError));
 
   safeWriteJsonAtomic(RECOVERY_QUEUE_PATH, []);
-  recordSourceRecoveryAction({ ...common, sourceId: 'old-source-id', previousSourceIds: ['old-source-id'], ownedTitle: 'old-title' });
+  recordSourceRecoveryAction({ ...common, sourceId: 'old-source-id', previousSourceIds: ['old-source-id'], ownedTitle: 'old-title' }, queueOptions);
   const preexistingSources = [{ id: 'old-source-id', title: 'old-title' }];
   const preResult = processSourceRecoveryQueue('review-notebook', process.env.PATH, (cmd, args) => {
     if (args[1] === 'list') return JSON.stringify(preexistingSources);
     return '';
-  }, { configPath });
+  }, { configPath, ...queueOptions });
   assert.equal(preResult.purged, 0);
   const queueAfterPre = JSON.parse(fs.readFileSync(RECOVERY_QUEUE_PATH, 'utf8'));
   assert.ok(/Pre-existing/i.test(queueAfterPre[0].lastPurgeError));

@@ -110,7 +110,9 @@ function resolveProductIdentity(identifier, config = {}) {
     pillar: entry.pillar || inferPillar(family, productId),
     family,
     generation,
-    productId: baseProductId(productId)
+    // The registry key is canonical. Suffix stripping is for matching aliases,
+    // not for changing registered module/frame identities after resolution.
+    productId
   };
 }
 

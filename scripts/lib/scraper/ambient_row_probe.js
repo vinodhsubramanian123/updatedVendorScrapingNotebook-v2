@@ -34,7 +34,8 @@ async function selectAmbientRow(ws, sendCommand, row, options = {}) {
       return { success: false, reason: 'AMBIENT_ROW_UNAVAILABLE' };
     }
     if (!el.classList.contains('selected_item')) {
-      const control = el.querySelector('.item_qty, input[type="radio"], input[type="checkbox"], td.td_qty');
+      const control = el.querySelector('input[type="radio"], input[type="checkbox"], .item_qty_div')
+        || el.querySelector('.item_qty, td.td_qty');
       if (!control) return { success: false, reason: 'AMBIENT_CONTROL_MISSING' };
       control.scrollIntoView({ block: 'center', inline: 'center' });
       control.click();
@@ -50,7 +51,7 @@ async function selectAmbientRow(ws, sendCommand, row, options = {}) {
     throw new Error(`AMBIENT_ROW_SELECTION_FAILED: ${val?.reason || 'unknown'}`);
   }
 
-  const timeoutMs = options.timeoutMs || 45000;
+  const timeoutMs = options.timeoutMs || 90000;
   const pause = options.pause || (ms => new Promise(resolve => setTimeout(resolve, ms)));
   const start = Date.now();
   let previous = null;

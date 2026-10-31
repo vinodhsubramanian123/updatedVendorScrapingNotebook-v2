@@ -381,6 +381,11 @@ function resolveBaseSkuForProduct(meta, chassisDiscovery, profile) {
 }
 
 async function resolvePageTargetAndChassis({ navQuery, targetChassisQuery, isRecoverMode }) {
+  const componentFlag = process.argv.indexOf('--active-component-sku');
+  if (componentFlag !== -1) {
+    if (isRecoverMode) throw new Error('ACTIVE_COMPONENT_REQUIRES_EXISTING_PARENT_SESSION');
+    return require('../lib/scraper/active_component_capture').discoverActiveComponent(targetChassisQuery, process.argv[componentFlag + 1]);
+  }
   let pageTarget;
   let chassisDiscovery = null;
 
@@ -439,7 +444,7 @@ async function expandAndVerifyDomSections(ws, scrollThreshold, targetTabsRegex) 
   await expandSections(ws);
   await sleep(3000);
   console.log('  [PAGE_EXPAND] Capturing expanded menu tables and text...');
-  const rawMenuTables = await extractTablesAsRows(ws);
+  const rawMenuTables = await extractTablesAsRows(ws, ws._captureComponentSku ? '#extended_overview_menu' : null);
   const menuText = (await extractChunkedText(ws, 50000)).fullText;
 
   console.log('  [PAGE_EXPAND] Revealing service and BOM tabs...');
@@ -645,6 +650,7 @@ async function initCdpAndSession({ navQuery, targetChassisQuery, isRecoverMode }
   }
 
   await setupDialogAutoHandler(ws);
+  ws._captureComponentSku = chassisDiscovery?.parentConfiguration ? chassisDiscovery.selectedSku : null;
 
   let networkSniffer = null;
   try {
@@ -736,10 +742,14 @@ async function resolveActiveProductAndProfile(ws, targetChassisQuery, pageTarget
         'strong, td'
       ];
 
-      let foundHeading = '';
+      // A nested component's breadcrumb contains its parent. Prefer the
+      // actual menu product heading so the parent cannot become its identity.
+      let foundHeading = (document.querySelector('.menu_info')?.innerText || '').split('\\n')
+        .map(line => line.trim()).find(line => /\\[[A-Z0-9-]+\\]$/.test(line)) || '';
       const pattern = /(?:DL|ML|RL|SY|GX)\\d{3}|ProLiant|Alletra|StoreEver|StoreOnce|MSL\\d+|Synergy|Cray|Gen\\d+/i;
 
       for (const sel of targetedSelectors) {
+        if (foundHeading) break;
         const els = Array.from(document.querySelectorAll(sel));
         for (const el of els) {
           const t = (el.innerText || '').trim();
@@ -849,7 +859,7 @@ async function extractPageDomPayload(ws, meta, profile) {
   console.log(`Extracted text: ${totalLen.toLocaleString()} chars`);
 
   console.log('Extracting tables (row arrays)...');
-  let tables = await extractTablesAsRows(ws);
+  let tables = await extractTablesAsRows(ws, ws._captureComponentSku ? '#extended_overview_menu' : null);
   const tableKey = table => JSON.stringify({ id: table.tableId || '', rows: table.rows });
   const seenTableKeys = new Set();
   const mergedTables = [];
@@ -884,7 +894,7 @@ async function extractPageDomPayload(ws, meta, profile) {
     const hidden = await extractHiddenElements(ws, sendCommand);
     const seenTables = new Set(tables.map(table => JSON.stringify(table)));
     conditionalSkus = await probeConditionalSkuVisibility(ws, sendCommand, undefined, async () => {
-      const stateTables = await extractTablesAsRows(ws);
+      const stateTables = await extractTablesAsRows(ws, ws._captureComponentSku ? '#extended_overview_menu' : null);
       for (const table of stateTables) {
         const key = JSON.stringify(table);
         if (!seenTables.has(key)) { tables.push(table); seenTables.add(key); }
@@ -925,6 +935,8 @@ async function extractPageDomPayload(ws, meta, profile) {
 
   return {
     metrics,
+    componentServiceEvidence: ws._componentServiceEvidence || null,
+    unscopedServiceTables: ws._unscopedServiceTables || [],
     totalLen,
     fullText,
     tables,
@@ -1047,7 +1059,10 @@ async function setupStagingAndPersistRawData({
     qsLink,
     selectedBaseSku: resolvedBaseSku,
     baseSku: resolvedBaseSku,
-    ownerConfiguration: pageHeading || meta.cleanName,
+    ownerConfiguration: chassisDiscovery?.ownerConfiguration || pageHeading || meta.cleanName,
+    parentConfiguration: chassisDiscovery?.parentConfiguration || null,
+    componentServiceEvidence: domPayload.componentServiceEvidence,
+    unscopedServiceTables: domPayload.unscopedServiceTables,
     solutionDomain: inferPillar(meta.family, meta.cleanName),
     observedSelectors: [
       { selector: '#extended_overview_menu', value: 'EXPANDED' },

@@ -61,6 +61,7 @@ function verifyTargetProductAndNotebookConfig(query) {
     pillar,
     notebookId: nbEntry.notebookId,
     canonicalDriveEnabled: Boolean(nbEntry.canonicalDriveEnabled),
+    publishDriveWorkbook: nbEntry.publishDriveWorkbook === true,
     expectedWorkbookSheets: coverageProfile?.expectedWorkbookSheets || null,
     requiredSheetsCount: Array.isArray(coverageProfile?.requiredSheets) ? coverageProfile.requiredSheets.length : 0
   };
@@ -108,7 +109,7 @@ async function runScrapingPreflightGate({ targetChassisQuery, navQuery, skipClou
   const productCheck = verifyTargetProductAndNotebookConfig(query);
   const vendorPolicy = getVendorPortalPolicy(vendor);
   const nlmCheck = verifyNotebookLmPreflight(skipCloudCheck);
-  const googleCheck = productCheck.canonicalDriveEnabled
+  const googleCheck = productCheck.canonicalDriveEnabled || productCheck.publishDriveWorkbook
     ? await verifyGoogleDriveSheetsPreflight(skipCloudCheck)
     : {
         pass: true,

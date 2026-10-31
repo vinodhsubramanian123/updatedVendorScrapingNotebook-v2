@@ -428,7 +428,7 @@ function assertScrapedCatalogQuality(catalogDirOrData, options = {}) {
   const hasPower = [...parentCategories, ...allSubcategories].some(c => c.includes('power') || c.includes('psu') || c.includes('supply'));
 
   const isNonServerOrSpecialty = /^(msl|alletra|nimble|storeever|san|switch|sn\d|sy100gb)/i.test(chassisName);
-  const isSynergyCompute = /^sy\d/i.test(chassisName);
+  const isSynergyCompute = !isNonServerOrSpecialty && /^sy\d/i.test(chassisName);
   if (!isNonServerOrSpecialty && !isSynergyCompute && entries.length > 5) {
     if (!hasCpu) errors.push(`Missing mandatory server category: Processor / CPU options not found.`);
     if (!hasMemory) errors.push(`Missing mandatory server category: Memory options not found.`);
