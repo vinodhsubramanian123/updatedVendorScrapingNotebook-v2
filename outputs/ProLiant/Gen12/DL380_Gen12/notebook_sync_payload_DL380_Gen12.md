@@ -4,11 +4,11 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen12/DL380_Gen12`
 
-**Sync Timestamp**: 2026-10-29T08:56:32.618Z
+**Sync Timestamp**: 2026-11-02T14:46:29.777Z
 
 **Total Verified SKUs**: `1128` (`605` Hardware + `523` Services)
 
-**Total Synced KnowledgeDeltas**: `67`
+**Total Synced KnowledgeDeltas**: `70`
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -274,6 +274,18 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 58. **[LEARN_DL380_GEN12_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
    - **Rule**: undefined
    - **Affected SKU**: `N/A` | **Required Dependency**: `N/A`
+
+59. **[LEARN_DL380_GEN12_SUPPORT_PRICING_UPDATE_20261102] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: undefined
+   - **Affected SKU**: `HU4B2A30C4V` | **Required Dependency**: `P73282-B21`
+
+60. **[LEARN_DL380_GEN12_CLIC_STATUS_CLEARANCE_20261102] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: undefined
+   - **Affected SKU**: `P73282-B21` | **Required Dependency**: `N/A`
+
+61. **[LEARN_DL380_GEN12_LEAD_TIME_AND_LIFECYCLE_20261102] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: undefined
+   - **Affected SKU**: `P73282-B21` | **Required Dependency**: `N/A`
 
 
 ## 🔒 3b. Physical & Architectural Gating Rules (DOM Unavailable Tables)
@@ -681,7 +693,7 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 
 <!-- MANAGED_FULL_CATALOG -->
-Content fingerprint: 29d7777bea4a6c4f9636c80a75fd1ee32e8355efaa77a3fa0edeaef8d6996f68
+Content fingerprint: c32dbef117203092d2928c0467e224dea0ad22e5dcaa9f1d01a8fa8f6c2b8501
 
 ## Complete workbook text projection
 

@@ -4,11 +4,11 @@
 
 **Scope Identity**: `HPE/SERVER/Synergy/Gen12/SY480_Gen12`
 
-**Sync Timestamp**: 2026-10-29T09:03:44.817Z
+**Sync Timestamp**: 2026-11-02T15:08:44.091Z
 
 **Total Verified SKUs**: `602` (`301` Hardware + `301` Services)
 
-**Total Synced KnowledgeDeltas**: `25`
+**Total Synced KnowledgeDeltas**: `28`
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -93,16 +93,28 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
    - **Affected SKU**: `HA124A1` | **Required Dependency**: `HA124A1#5ZM`
 
 14. **[LEARN_SY480_GEN12_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029] SY480_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `SY480_Gen12 CTO Server`):
-   - **Rule**: undefined
+   - **Rule**: Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Google Sheets is not a supported NotebookLM Drive source. A recent upload timestamp does not refresh old vendor observations.
    - **Affected SKU**: `N/A` | **Required Dependency**: `N/A`
 
 15. **[LEARN_SY480_GEN12_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029] SY480_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `SY480_Gen12 CTO Server`):
-   - **Rule**: undefined
+   - **Rule**: Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata before removing only managed stale catalog snapshots. Preserve QuickSpecs, separate learnings, shared enclosure/fabric sources and unrelated documents. Inventory absence is not authority to remove another product source.
    - **Affected SKU**: `N/A` | **Required Dependency**: `N/A`
 
 16. **[LEARN_SY480_GEN12_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029] SY480_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `SY480_Gen12 CTO Server`):
-   - **Rule**: undefined
+   - **Rule**: Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending dated vendor evidence; resolve contradictions before promoting hardware dependencies. Conflicting quantity claims require dated evidence for this exact product and selector state.
    - **Affected SKU**: `N/A` | **Required Dependency**: `N/A`
+
+17. **[LEARN_SY480_GEN12_128GB_MEMORY_ERROR_CLEARED_20261102] SY480_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `SY480_Gen12 CTO Server`):
+   - **Rule**: CRITICAL BUILDABILITY BREAKTHROUGH: HPE 128GB (1x128GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 Smart FIO Memory Kit (P69730-F21) previously triggered a blocking validation Error in CLIC on SY480 Gen12 compute modules. In November 2026 OCA release, this validation Error is fully resolved and cleared to clean/pass. High-density 128GB memory configurations (up to 384 kits per frame across 12 nodes, 49.15TB total RAM) are now 100% certified buildable. Discontinued date extended to 2030-06-30.
+   - **Affected SKU**: `P69730-F21` | **Required Dependency**: `P51174-B21`
+
+18. **[LEARN_SYNERGY_SUPPORT_PRICING_UPDATE_20261102] SY480_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `SY480_Gen12 CTO Server`):
+   - **Rule**: Synergy stack 3Y Tech Care Basic support rates adjusted by ~5%: Synergy 12000 Frame Support (HU4B2A3 WJN) updated to $779.00 (+$37.00); VC SE 100Gb F32 Module Support (HU4B2A3 Z1R) updated to $813.00 (+$39.00/unit); SY480 Gen12 Compute Node Support (HU4B2A30BT7) updated to $3,497.00 (+$167.00/node). Overall 12-node solution services list price adjusted from $62,898.00 to $65,017.00 USD (+$2,119.00).
+   - **Affected SKU**: `HU4B2A30BT7` | **Required Dependency**: `N/A`
+
+19. **[LEARN_SYNERGY_LEAD_TIME_AND_VALIDATION_20261102] SY480_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `SY480_Gen12 CTO Server`):
+   - **Rule**: HPE 960GB NVMe M.2 2280 PE9010 SSD (P80321-B21) factory lead time extended from 11 days to 30 days (+19 days). Synergy 12000 CTO Frame (P51174-B21) lead time is 13 days, and CLIC validation warnings have cleared to clean/pass.
+   - **Affected SKU**: `P80321-B21` | **Required Dependency**: `N/A`
 
 
 ## 🔒 3b. Physical & Architectural Gating Rules (DOM Unavailable Tables)
@@ -361,7 +373,7 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 
 <!-- MANAGED_FULL_CATALOG -->
-Content fingerprint: 36313fd64e95a4ba728c933de7a400ff738bcded57bd41112265bf73fe1400fa
+Content fingerprint: 9e280e0881b7298f76aa73729197a979bb5943b2bd50c70f07dc63c53a3b57b6
 
 ## Complete workbook text projection
 

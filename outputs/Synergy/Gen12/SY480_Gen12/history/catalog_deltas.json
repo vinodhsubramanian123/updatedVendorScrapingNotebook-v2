@@ -135,7 +135,8 @@
     "source": "docs/audits/2026-10-29-catalog-refresh-and-knowledge-sync.md",
     "hardwareCompatibilityCertified": false,
     "timestamp": "2026-10-29T06:13:40.819Z",
-    "chassis": "SY480_Gen12"
+    "chassis": "SY480_Gen12",
+    "ruleUpdate": "Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Google Sheets is not a supported NotebookLM Drive source. A recent upload timestamp does not refresh old vendor observations."
   },
   {
     "deltaId": "LEARN_SY480_GEN12_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029",
@@ -152,7 +153,8 @@
     "source": "docs/audits/2026-10-29-catalog-refresh-and-knowledge-sync.md",
     "hardwareCompatibilityCertified": false,
     "timestamp": "2026-10-29T06:13:40.855Z",
-    "chassis": "SY480_Gen12"
+    "chassis": "SY480_Gen12",
+    "ruleUpdate": "Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata before removing only managed stale catalog snapshots. Preserve QuickSpecs, separate learnings, shared enclosure/fabric sources and unrelated documents. Inventory absence is not authority to remove another product source."
   },
   {
     "deltaId": "LEARN_SY480_GEN12_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029",
@@ -169,6 +171,63 @@
     "source": "docs/audits/2026-10-29-catalog-refresh-and-knowledge-sync.md",
     "hardwareCompatibilityCertified": false,
     "timestamp": "2026-10-29T06:13:40.886Z",
-    "chassis": "SY480_Gen12"
+    "chassis": "SY480_Gen12",
+    "ruleUpdate": "Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending dated vendor evidence; resolve contradictions before promoting hardware dependencies. Conflicting quantity claims require dated evidence for this exact product and selector state."
+  },
+  {
+    "deltaId": "LEARN_SY480_GEN12_128GB_MEMORY_ERROR_CLEARED_20261102",
+    "ruleType": "CLIC_ERROR_RESOLUTION_CERTIFIED",
+    "affectedSku": "P69730-F21",
+    "requiredDependencySku": "P51174-B21",
+    "rawMessage": "CRITICAL BUILDABILITY BREAKTHROUGH: HPE 128GB (1x128GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 Smart FIO Memory Kit (P69730-F21) previously triggered a blocking validation Error in CLIC on SY480 Gen12 compute modules. In November 2026 OCA release, this validation Error is fully resolved and cleared to clean/pass. High-density 128GB memory configurations (up to 384 kits per frame across 12 nodes, 49.15TB total RAM) are now 100% certified buildable. Discontinued date extended to 2030-06-30.",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "governanceStatus": "ACTIVE",
+    "evidenceType": "PORTAL_VALIDATION_RECEIPT",
+    "source": "Synergy_1f_12N_128GB_NoAccessories_5157488894-01 (1).xlsx",
+    "hardwareCompatibilityCertified": true,
+    "timestamp": "2026-11-02T14:14:51.000Z",
+    "chassis": "SY480_Gen12",
+    "vendor": "HPE",
+    "family": "Synergy",
+    "generation": "Gen12",
+    "pillar": "SERVER",
+    "ruleUpdate": "CRITICAL BUILDABILITY BREAKTHROUGH: HPE 128GB (1x128GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 Smart FIO Memory Kit (P69730-F21) previously triggered a blocking validation Error in CLIC on SY480 Gen12 compute modules. In November 2026 OCA release, this validation Error is fully resolved and cleared to clean/pass. High-density 128GB memory configurations (up to 384 kits per frame across 12 nodes, 49.15TB total RAM) are now 100% certified buildable. Discontinued date extended to 2030-06-30."
+  },
+  {
+    "deltaId": "LEARN_SYNERGY_SUPPORT_PRICING_UPDATE_20261102",
+    "ruleType": "SUPPORT_PRICING_UPDATE",
+    "affectedSku": "HU4B2A30BT7",
+    "secondarySku": "HU4B2A3 WJN, HU4B2A3 Z1R",
+    "rawMessage": "Synergy stack 3Y Tech Care Basic support rates adjusted by ~5%: Synergy 12000 Frame Support (HU4B2A3 WJN) updated to $779.00 (+$37.00); VC SE 100Gb F32 Module Support (HU4B2A3 Z1R) updated to $813.00 (+$39.00/unit); SY480 Gen12 Compute Node Support (HU4B2A30BT7) updated to $3,497.00 (+$167.00/node). Overall 12-node solution services list price adjusted from $62,898.00 to $65,017.00 USD (+$2,119.00).",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "governanceStatus": "ACTIVE",
+    "evidenceType": "PORTAL_PRICING_OBSERVATION",
+    "source": "Synergy_1f_12N_128GB_NoAccessories_5157488894-01 (1).xlsx",
+    "hardwareCompatibilityCertified": false,
+    "timestamp": "2026-11-02T14:14:51.000Z",
+    "chassis": "SY480_Gen12",
+    "vendor": "HPE",
+    "family": "Synergy",
+    "generation": "Gen12",
+    "pillar": "SERVER",
+    "ruleUpdate": "Synergy stack 3Y Tech Care Basic support rates adjusted by ~5%: Synergy 12000 Frame Support (HU4B2A3 WJN) updated to $779.00 (+$37.00); VC SE 100Gb F32 Module Support (HU4B2A3 Z1R) updated to $813.00 (+$39.00/unit); SY480 Gen12 Compute Node Support (HU4B2A30BT7) updated to $3,497.00 (+$167.00/node). Overall 12-node solution services list price adjusted from $62,898.00 to $65,017.00 USD (+$2,119.00)."
+  },
+  {
+    "deltaId": "LEARN_SYNERGY_LEAD_TIME_AND_VALIDATION_20261102",
+    "ruleType": "LEAD_TIME_AND_VALIDATION",
+    "affectedSku": "P80321-B21",
+    "rawMessage": "HPE 960GB NVMe M.2 2280 PE9010 SSD (P80321-B21) factory lead time extended from 11 days to 30 days (+19 days). Synergy 12000 CTO Frame (P51174-B21) lead time is 13 days, and CLIC validation warnings have cleared to clean/pass.",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "governanceStatus": "ACTIVE",
+    "evidenceType": "PORTAL_METADATA_OBSERVATION",
+    "source": "Synergy_1f_12N_128GB_NoAccessories_5157488894-01 (1).xlsx",
+    "hardwareCompatibilityCertified": true,
+    "timestamp": "2026-11-02T14:14:51.000Z",
+    "chassis": "SY480_Gen12",
+    "vendor": "HPE",
+    "family": "Synergy",
+    "generation": "Gen12",
+    "pillar": "SERVER",
+    "ruleUpdate": "HPE 960GB NVMe M.2 2280 PE9010 SSD (P80321-B21) factory lead time extended from 11 days to 30 days (+19 days). Synergy 12000 CTO Frame (P51174-B21) lead time is 13 days, and CLIC validation warnings have cleared to clean/pass."
   }
 ]

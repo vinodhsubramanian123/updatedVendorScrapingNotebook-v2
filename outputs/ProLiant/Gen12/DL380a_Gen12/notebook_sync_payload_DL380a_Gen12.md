@@ -4,11 +4,11 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen12/DL380a_Gen12`
 
-**Sync Timestamp**: 2026-10-29T08:52:30.365Z
+**Sync Timestamp**: 2026-11-02T15:04:52.959Z
 
 **Total Verified SKUs**: `773` (`451` Hardware + `322` Services)
 
-**Total Synced KnowledgeDeltas**: `23`
+**Total Synced KnowledgeDeltas**: `26`
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -69,15 +69,15 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
    - **Affected SKU**: `R7J57A` | **Required Dependency**: `N/A`
 
 7. **[LEARN_DL380A_GEN12_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029] DL380a_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380a_Gen12 CTO Server`):
-   - **Rule**: undefined
+   - **Rule**: Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Google Sheets is not a supported NotebookLM Drive source. A recent upload timestamp does not refresh old vendor observations.
    - **Affected SKU**: `N/A` | **Required Dependency**: `N/A`
 
 8. **[LEARN_DL380A_GEN12_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029] DL380a_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380a_Gen12 CTO Server`):
-   - **Rule**: undefined
+   - **Rule**: Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata before removing only managed stale catalog snapshots. Preserve QuickSpecs, separate learnings, shared enclosure/fabric sources and unrelated documents. Inventory absence is not authority to remove another product source.
    - **Affected SKU**: `N/A` | **Required Dependency**: `N/A`
 
 9. **[LEARN_DL380A_GEN12_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029] DL380a_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380a_Gen12 CTO Server`):
-   - **Rule**: undefined
+   - **Rule**: Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending dated vendor evidence; resolve contradictions before promoting hardware dependencies. Conflicting quantity claims require dated evidence for this exact product and selector state.
    - **Affected SKU**: `N/A` | **Required Dependency**: `N/A`
 
 10. **[DELTA_DL380A_GEN12_DRIVE_CAGE_EXCLUSIVITY] DL380a_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380a Gen12 GPU Server`):
@@ -99,6 +99,18 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 14. **[DELTA_UNIVERSAL_CLOUD_MANAGEMENT_OPTIONAL] DL380a_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
    - **Rule**: Cloud Management FIO Enablement (S1A05A) and Compute Ops Management SaaS (R7A11AAE) are strictly optional services/licenses. They are not required for hardware buildability, power-on, or vendor portal acceptance.
    - **Affected SKU**: `S1A05A` | **Required Dependency**: `N/A`
+
+15. **[LEARN_DL380A_GEN12_SUPPORT_PRICING_UPDATE_20261102] DL380a_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380a_Gen12 CTO Server`):
+   - **Rule**: HPE DL380a Gen12 Support (HU4B2A30C4W, under HU4B2A3 3Y Tech Care Basic) list price updated in November 2026 OCA catalog from $11,306.00 to $11,871.00 USD (+$565.00 / +5.00% per node). Total server list price adjusted from $1,656,550.00 to $1,657,115.00 USD.
+   - **Affected SKU**: `HU4B2A30C4W` | **Required Dependency**: `P76706-B21`
+
+16. **[LEARN_DL380A_GEN12_H200_LEAD_TIME_BOTTLENECK_20261102] DL380a_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380a_Gen12 CTO Server`):
+   - **Rule**: CRITICAL PRESALES CONSTRAINT: NVIDIA H200 NVL 141GB PCIe Accelerator (S3U30C) carries an estimated availability factory lead time of 168 business days (~24 weeks / 5.5 months), establishing it as the primary supply chain gating factor for DL380a Gen12 AI accelerator deployments. FC HBA (R2E09A) is 30 days; Base chassis (P76706-B21) is 14 days; CPU (P74571-B21) and DDR5 memory (P69728-F21) are 10 days.
+   - **Affected SKU**: `S3U30C` | **Required Dependency**: `N/A`
+
+17. **[LEARN_DL380A_GEN12_CLIC_STATUS_CLEARANCE_20261102] DL380a_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380a_Gen12 CTO Server`):
+   - **Rule**: Portal validation warnings on HPE ProLiant Compute DL380a Gen12 8DW/16SW CTO Server (P76706-B21) and HPE Compute Ops Management Standard 3-year SaaS (R7A11AAE) have cleared to clean/pass in latest OCA release. 64GB DDR5-6400 memory (P69728-F21) discontinuation date extended to 2030-06-30.
+   - **Affected SKU**: `P76706-B21` | **Required Dependency**: `N/A`
 
 
 ## 🔒 3b. Physical & Architectural Gating Rules (DOM Unavailable Tables)
@@ -347,7 +359,7 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 
 <!-- MANAGED_FULL_CATALOG -->
-Content fingerprint: 457d61f329b71cf494ca11c816efee7d0aa0a33ea39c7e54113656bbc414d789
+Content fingerprint: 136784534a0738e5ec8a63f6e3cca0a51b01d8f0341e2efb58c7ac097b2f9746
 
 ## Complete workbook text projection
 

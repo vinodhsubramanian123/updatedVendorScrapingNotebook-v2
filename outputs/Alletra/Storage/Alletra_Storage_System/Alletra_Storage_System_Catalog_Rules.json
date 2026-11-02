@@ -1,0 +1,27 @@
+{
+  "metadata": {
+    "chassis": "HPE Alletra Storage System",
+    "family": "Alletra",
+    "gen": "Storage",
+    "pillar": "STORAGE",
+    "rulesCount": 3
+  },
+  "rules": [
+    {
+      "ruleId": "RULE_ALLETRA_MP_B10000_CTO_CHASSIS",
+      "description": "HPE Alletra Storage MP B10000 base storage controller chassis is R0Q37A (,200.00). Disaggregated dual-node active-active controllers.",
+      "affectedSku": "R0Q37A",
+      "type": "BASE_CHASSIS_SELECTION"
+    },
+    {
+      "ruleId": "RULE_ALLETRA_STORAGE_DOMAIN_ISOLATION",
+      "description": "Storage domain isolation (INV-194): Alletra storage components cannot inherit ProLiant server rules or Tech Care server defaults.",
+      "type": "DOMAIN_SEPARATION"
+    },
+    {
+      "ruleId": "RULE_ALLETRA_QUARANTINE_UNVERIFIED_BOQS",
+      "description": "Per INV-24, unverified customer BOQs are strictly quarantined from ground truth.",
+      "type": "GROUNDING_GOVERNANCE"
+    }
+  ]
+}

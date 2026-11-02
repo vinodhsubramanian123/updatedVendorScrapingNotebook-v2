@@ -135,7 +135,8 @@
     "ruleType": "PREPROCESSING_SPLIT_CONFIRMED",
     "ruleUpdate": "Confirmed configuration variation reason 'WORKLOAD_NODE_PURPOSE' for config_1",
     "notes": "Confirmed by analyst in Pre-flight preview.",
-    "scopeTaxonomy": "CHASSIS_SPECIFIC"
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "rawMessage": "Confirmed configuration variation reason 'WORKLOAD_NODE_PURPOSE' for config_1"
   },
   {
     "deltaId": "DELTA-1786880389958",
@@ -229,7 +230,8 @@
     "rawMessage": "| **`P69728-B21`** | HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 Smart Memory Kit | Memory / RDIMM (BTO) | **❌ BLOCKED in CTO (CLIC Suffix Violation)** | Standalone retail Build-to-Order (BTO) SKU [9, 15, 16]. Factory Configure-to-Order sessions enforce the rule: *\"BTO products are not allowed in CTO B",
     "scopeTaxonomy": "FAMILY_GEN",
     "source": "NOTEBOOKLM_GROUNDING",
-    "timestamp": "2026-08-31T03:06:58.089Z"
+    "timestamp": "2026-08-31T03:06:58.089Z",
+    "ruleUpdate": "| **`P69728-B21`** | HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 Smart Memory Kit | Memory / RDIMM (BTO) | **❌ BLOCKED in CTO (CLIC Suffix Violation)** | Standalone retail Build-to-Order (BTO) SKU [9, 15, 16]. Factory Configure-to-Order sessions enforce the rule: *\"BTO products are not allowed in CTO B"
   },
   {
     "deltaId": "DELTA_RAG_DEP_P75740-B21_873763-B21_1788145618089",
@@ -242,7 +244,8 @@
     "rawMessage": "| **`P75740-B21`** | HPE DL3XX Gen12 8SFF x1 U.3 Tri-Mode Drive Cage Kit | Smart Chassis / Drive Cage | **✅ Valid Front Cage** | Installs an 8-bay SFF x1 U.3 Tri-Mode backplane into Box 1, 2, or 3 [19-23]. Installing this cage **clears the factory unbuildable drive-less chassis block** (which otherw",
     "scopeTaxonomy": "FAMILY_GEN",
     "source": "NOTEBOOKLM_GROUNDING",
-    "timestamp": "2026-08-31T03:06:58.089Z"
+    "timestamp": "2026-08-31T03:06:58.089Z",
+    "ruleUpdate": "| **`P75740-B21`** | HPE DL3XX Gen12 8SFF x1 U.3 Tri-Mode Drive Cage Kit | Smart Chassis / Drive Cage | **✅ Valid Front Cage** | Installs an 8-bay SFF x1 U.3 Tri-Mode backplane into Box 1, 2, or 3 [19-23]. Installing this cage **clears the factory unbuildable drive-less chassis block** (which otherw"
   },
   {
     "deltaId": "DELTA_RAG_DEP_P28586-B21_P75740-B21_1788145618089",
@@ -255,7 +258,8 @@
     "rawMessage": "| **`P28586-B21`** | HPE 1.2TB SAS 12G 10K SFF BC 3yr Wty HDD | Storage / SFF SAS HDD | **✅ Valid SAS HDD** | 12G SAS 10K RPM Basic Carrier (BC) drive [21, 28]. Supported inside the `P75740-B21` drive cage [21, 22]. Requires a dedicated hardware storage controller (`P47777-B21`) as the system board",
     "scopeTaxonomy": "CHASSIS_SPECIFIC",
     "source": "NOTEBOOKLM_GROUNDING",
-    "timestamp": "2026-08-31T03:06:58.089Z"
+    "timestamp": "2026-08-31T03:06:58.089Z",
+    "ruleUpdate": "| **`P28586-B21`** | HPE 1.2TB SAS 12G 10K SFF BC 3yr Wty HDD | Storage / SFF SAS HDD | **✅ Valid SAS HDD** | 12G SAS 10K RPM Basic Carrier (BC) drive [21, 28]. Supported inside the `P75740-B21` drive cage [21, 22]. Requires a dedicated hardware storage controller (`P47777-B21`) as the system board"
   },
   {
     "deltaId": "DELTA_RAG_DEP_P51083-B21_P74573-B21_1788145618091",
@@ -268,7 +272,8 @@
     "rawMessage": "| **`P51083-B21`** | HPE ProLiant DL380 Gen11 2U x16/x16/x16 Secondary Riser Kit | PCIe Expansion / Secondary Riser | **⚠️ BLOCKED if Single CPU (CPU 2 Dependency)** | Adds Slots 4, 5, and 6 (PCIe Gen5 x16) [35-37]. **QuickSpecs Mandate:** *\"If Secondary OR Tertiary Riser is selected, then Second Pr",
     "scopeTaxonomy": "CHASSIS_SPECIFIC",
     "source": "NOTEBOOKLM_GROUNDING",
-    "timestamp": "2026-08-31T03:06:58.091Z"
+    "timestamp": "2026-08-31T03:06:58.091Z",
+    "ruleUpdate": "| **`P51083-B21`** | HPE ProLiant DL380 Gen11 2U x16/x16/x16 Secondary Riser Kit | PCIe Expansion / Secondary Riser | **⚠️ BLOCKED if Single CPU (CPU 2 Dependency)** | Adds Slots 4, 5, and 6 (PCIe Gen5 x16) [35-37]. **QuickSpecs Mandate:** *\"If Secondary OR Tertiary Riser is selected, then Second Pr"
   },
   {
     "deltaId": "DELTA_RAG_DEP_P47777-B21_P01366-B21_1788145618091",
@@ -281,7 +286,8 @@
     "rawMessage": "| **`P47777-B21`** | HPE MR416i-p Gen11 x16 Lanes 8GB Cache PCI SPDM Storage Controller | Storage Controller / Tri-Mode | **⚠️ Conditional Pass (Requires 3 Co-Dependencies)** | Stand-up PCIe card (-p) installed into a PCIe riser slot [30, 36, 39-41]. Requires **`P01366-B21`** (battery), **`P48918-B2",
     "scopeTaxonomy": "FAMILY_GEN",
     "source": "NOTEBOOKLM_GROUNDING",
-    "timestamp": "2026-08-31T03:06:58.091Z"
+    "timestamp": "2026-08-31T03:06:58.091Z",
+    "ruleUpdate": "| **`P47777-B21`** | HPE MR416i-p Gen11 x16 Lanes 8GB Cache PCI SPDM Storage Controller | Storage Controller / Tri-Mode | **⚠️ Conditional Pass (Requires 3 Co-Dependencies)** | Stand-up PCIe card (-p) installed into a PCIe riser slot [30, 36, 39-41]. Requires **`P01366-B21`** (battery), **`P48918-B2"
   },
   {
     "deltaId": "DELTA_RAG_DEP_P28586-B21_P40430-B21_1788145618092",
@@ -294,7 +300,8 @@
     "rawMessage": "Connecting SAS hard drives (`P28586-B21` and `P40430-B21`) in the 8SFF drive cage (`P75740-B21`) to the MR416i-p storage controller (`P47777-B21`) requires the following physical and logical connections [60–65, 97–102, 129–134]:",
     "scopeTaxonomy": "FAMILY_GEN",
     "source": "NOTEBOOKLM_GROUNDING",
-    "timestamp": "2026-08-31T03:06:58.092Z"
+    "timestamp": "2026-08-31T03:06:58.092Z",
+    "ruleUpdate": "Connecting SAS hard drives (`P28586-B21` and `P40430-B21`) in the 8SFF drive cage (`P75740-B21`) to the MR416i-p storage controller (`P47777-B21`) requires the following physical and logical connections [60–65, 97–102, 129–134]:"
   },
   {
     "deltaId": "DELTA_RAG_DEP_P76453-B21_P75740-B21_1788145618092",
@@ -307,7 +314,8 @@
     "rawMessage": "4.  **High-Speed Backplane Data Cable (`P76453-B21`):** Routing SAS/SATA/NVMe data lanes from Box 1 or Box 2 backplanes of the `P75740-B21` drive cage to the stand-up MR416i-p requires the **HPE ProLiant Compute DL380 Gen12 8SFF/2SFF UMB PCIe Cable Kit (`P76453-B21`)** [76, 80–85, 113, 117–122, 145,",
     "scopeTaxonomy": "FAMILY_GEN",
     "source": "NOTEBOOKLM_GROUNDING",
-    "timestamp": "2026-08-31T03:06:58.092Z"
+    "timestamp": "2026-08-31T03:06:58.092Z",
+    "ruleUpdate": "4.  **High-Speed Backplane Data Cable (`P76453-B21`):** Routing SAS/SATA/NVMe data lanes from Box 1 or Box 2 backplanes of the `P75740-B21` drive cage to the stand-up MR416i-p requires the **HPE ProLiant Compute DL380 Gen12 8SFF/2SFF UMB PCIe Cable Kit (`P76453-B21`)** [76, 80–85, 113, 117–122, 145,"
   },
   {
     "deltaId": "DELTA_RAG_FIO_P64707-B21_P69728-F21_1788148383105",
@@ -320,7 +328,8 @@
     "rawMessage": "| **`P64707-B21`** | HPE 64GB 2Rx4 DDR5-5600 Registered Memory | Memory / RDIMM | **❌ Incompatible Gen11 Memory** | Gen12 strictly mandates **DDR5-6400 Smart Memory** [200, 208–209, 240, 270]. DDR5-5600 is blocked. Factory CTO builds also mandate the **`-F21`** suffix (**`P69728-F21`**) [8-12]. |",
     "scopeTaxonomy": "FAMILY_GEN",
     "source": "NOTEBOOKLM_GROUNDING",
-    "timestamp": "2026-08-31T03:53:03.105Z"
+    "timestamp": "2026-08-31T03:53:03.105Z",
+    "ruleUpdate": "| **`P64707-B21`** | HPE 64GB 2Rx4 DDR5-5600 Registered Memory | Memory / RDIMM | **❌ Incompatible Gen11 Memory** | Gen12 strictly mandates **DDR5-6400 Smart Memory** [200, 208–209, 240, 270]. DDR5-5600 is blocked. Factory CTO builds also mandate the **`-F21`** suffix (**`P69728-F21`**) [8-12]. |"
   },
   {
     "deltaId": "DELTA_RAG_DEP_P48818-B21_P38995-B21_1788148383108",
@@ -333,7 +342,8 @@
     "rawMessage": "| **`P48818-B21`** | HPE 800W Flex Slot Platinum Hot Plug Power Supply | Power Supplies | **❌ Invalid SKU & Lack of Redundancy** | The valid 800W Platinum SKU is **`P38995-B21`** [23, 24]. A single PSU provides no 1+1 redundancy [25]. (EU ErP Lot 9 requires 96% Titanium `P03178-B21`) [25, 26]. |",
     "scopeTaxonomy": "CHASSIS_SPECIFIC",
     "source": "NOTEBOOKLM_GROUNDING",
-    "timestamp": "2026-08-31T03:53:03.109Z"
+    "timestamp": "2026-08-31T03:53:03.109Z",
+    "ruleUpdate": "| **`P48818-B21`** | HPE 800W Flex Slot Platinum Hot Plug Power Supply | Power Supplies | **❌ Invalid SKU & Lack of Redundancy** | The valid 800W Platinum SKU is **`P38995-B21`** [23, 24]. A single PSU provides no 1+1 redundancy [25]. (EU ErP Lot 9 requires 96% Titanium `P03178-B21`) [25, 26]. |"
   },
   {
     "deltaId": "DELTA_RAG_DEP_P75740-B21_P75741-B21_1788148383112",
@@ -346,7 +356,8 @@
     "rawMessage": "2.  **Drive Cage Required:** You must add an **8SFF x1 U.3 Tri-Mode Drive Cage Kit (`P75740-B21`)** or an **8SFF x4 U.3 Drive Cage Kit (`P75741-B21`)** to Box 3 to physically mount the SSD [245–246, 256].",
     "scopeTaxonomy": "FAMILY_GEN",
     "source": "NOTEBOOKLM_GROUNDING",
-    "timestamp": "2026-08-31T03:53:03.112Z"
+    "timestamp": "2026-08-31T03:53:03.112Z",
+    "ruleUpdate": "2.  **Drive Cage Required:** You must add an **8SFF x1 U.3 Tri-Mode Drive Cage Kit (`P75740-B21`)** or an **8SFF x4 U.3 Drive Cage Kit (`P75741-B21`)** to Box 3 to physically mount the SSD [245–246, 256]."
   },
   {
     "deltaId": "DELTA_RAG_CARRYOVER_P47777-B21_1788459469422",
@@ -359,7 +370,8 @@
     "rawMessage": "| **P47777-B21** | HPE MR416i-p Gen11 Storage Controller | **✅ VALID** | This PCIe plug-in controller is fully supported on Gen12 as a carry-forward option [16]. However, it **requires the P48918-B21 enablement cable kit** to bridge SPDM security and sideband power to the Gen12 motherboard [16]. | *",
     "scopeTaxonomy": "CHASSIS_SPECIFIC",
     "source": "NOTEBOOKLM_GROUNDING",
-    "timestamp": "2026-09-03T18:17:49.422Z"
+    "timestamp": "2026-09-03T18:17:49.422Z",
+    "ruleUpdate": "| **P47777-B21** | HPE MR416i-p Gen11 Storage Controller | **✅ VALID** | This PCIe plug-in controller is fully supported on Gen12 as a carry-forward option [16]. However, it **requires the P48918-B21 enablement cable kit** to bridge SPDM security and sideband power to the Gen12 motherboard [16]. | *"
   },
   {
     "deltaId": "DELTA_RAG_DEP_P01366-B21_P48918-B21_1788459469423",
@@ -372,7 +384,8 @@
     "rawMessage": "| **P01366-B21** | HPE 96W Smart Storage Battery | **✅ VALID** | Fully compatible battery to protect the MR416i-p's volatile write cache [16]. It **requires the P48918-B21 enablement cable** to physically connect to the controller's cache module [16]. | **P01366-B21** *(Keep)* |",
     "scopeTaxonomy": "FAMILY_GEN",
     "source": "NOTEBOOKLM_GROUNDING",
-    "timestamp": "2026-09-03T18:17:49.423Z"
+    "timestamp": "2026-09-03T18:17:49.423Z",
+    "ruleUpdate": "| **P01366-B21** | HPE 96W Smart Storage Battery | **✅ VALID** | Fully compatible battery to protect the MR416i-p's volatile write cache [16]. It **requires the P48918-B21 enablement cable** to physically connect to the controller's cache module [16]. | **P01366-B21** *(Keep)* |"
   },
   {
     "deltaId": "DELTA_RAG_DEP_P10180-B21_P72203-B21_1788459469424",
@@ -385,7 +398,8 @@
     "rawMessage": "| **P10180-B21** | Broadcom BCM5719 1Gb 4p BASE-T OCP3 NIC | **❌ OBSOLETE** | Legacy Gen11 part number [8]. It also **requires OCP enablement cable P72203-B21** to route high-speed PCIe lanes from CPU1 to rear OCP Slot B [25]. | **P51181-B21** (BCM5719 OCP3 NIC) and **P72203-B21** (OCP rear cable ki",
     "scopeTaxonomy": "CHASSIS_SPECIFIC",
     "source": "NOTEBOOKLM_GROUNDING",
-    "timestamp": "2026-09-03T18:17:49.424Z"
+    "timestamp": "2026-09-03T18:17:49.424Z",
+    "ruleUpdate": "| **P10180-B21** | Broadcom BCM5719 1Gb 4p BASE-T OCP3 NIC | **❌ OBSOLETE** | Legacy Gen11 part number [8]. It also **requires OCP enablement cable P72203-B21** to route high-speed PCIe lanes from CPU1 to rear OCP Slot B [25]. | **P51181-B21** (BCM5719 OCP3 NIC) and **P72203-B21** (OCP rear cable ki"
   },
   {
     "deltaId": "DELTA_RAG_DEP_P74573-B21_P48820-B21_1788461136463",
@@ -398,7 +412,8 @@
     "rawMessage": "• [DL380_Gen12 Catalog Rule] Category: Learned Feedback Rules > P74573-B21 | Constraint: learned (Intel Xeon 6730P 250W CPU requires HPE ProLiant High Performance Fan Kit (P48820-B21) because it exceeds the 240W system limit for standard chassis fans.)",
     "scopeTaxonomy": "FAMILY_GEN",
     "source": "NOTEBOOKLM_GROUNDING",
-    "timestamp": "2026-09-03T18:45:36.463Z"
+    "timestamp": "2026-09-03T18:45:36.463Z",
+    "ruleUpdate": "• [DL380_Gen12 Catalog Rule] Category: Learned Feedback Rules > P74573-B21 | Constraint: learned (Intel Xeon 6730P 250W CPU requires HPE ProLiant High Performance Fan Kit (P48820-B21) because it exceeds the 240W system limit for standard chassis fans.)"
   },
   {
     "deltaId": "DELTA_RAG_DEP_P74573-B21_P74792-B21_1788461136464",
@@ -411,7 +426,8 @@
     "rawMessage": "• [DL380_Gen12 Catalog Rule] Category: Learned Feedback Rules > P74573-B21 | Constraint: learned (Intel Xeon 6730P 250W CPU requires HPE ProLiant Compute DL380 Gen12 Performance Heat Sink Kit (P74792-B21) due to exceeding the 185W standard thermal envelope.)",
     "scopeTaxonomy": "CHASSIS_SPECIFIC",
     "source": "NOTEBOOKLM_GROUNDING",
-    "timestamp": "2026-09-03T18:45:36.464Z"
+    "timestamp": "2026-09-03T18:45:36.464Z",
+    "ruleUpdate": "• [DL380_Gen12 Catalog Rule] Category: Learned Feedback Rules > P74573-B21 | Constraint: learned (Intel Xeon 6730P 250W CPU requires HPE ProLiant Compute DL380 Gen12 Performance Heat Sink Kit (P74792-B21) due to exceeding the 185W standard thermal envelope.)"
   },
   {
     "deltaId": "DELTA-1788462981839",
@@ -443,7 +459,8 @@
     "rawMessage": "3.  **Storage Cable Integration:** The inclusion of `P76453-B21` is correct for routing PCIe lanes from SFF drive cages back to the PCIe slot [16]. However, the configurator will throw an error unless it sees the **Storage Controller Enablement Cable Kit (`P48918-B21`)** which is physically required",
     "scopeTaxonomy": "CHASSIS_SPECIFIC",
     "source": "NOTEBOOKLM_GROUNDING",
-    "timestamp": "2026-09-03T19:27:45.182Z"
+    "timestamp": "2026-09-03T19:27:45.182Z",
+    "ruleUpdate": "3.  **Storage Cable Integration:** The inclusion of `P76453-B21` is correct for routing PCIe lanes from SFF drive cages back to the PCIe slot [16]. However, the configurator will throw an error unless it sees the **Storage Controller Enablement Cable Kit (`P48918-B21`)** which is physically required"
   },
   {
     "deltaId": "DELTA_RAG_DEP_P81130-B21_P74787-B21_1790182000001",
@@ -456,7 +473,8 @@
     "rawMessage": "When HPE ProLiant Compute DL380 Gen12 Cooling Upgrade Enablement Kit (P81130-B21) is selected, the only supported heatsink is HPE ProLiant Compute DL3XX Gen12 High Performance Heat Sink Kit (P74787-B21).",
     "scopeTaxonomy": "FAMILY_GEN",
     "source": "NOTEBOOKLM_GROUNDING",
-    "timestamp": "2026-09-23T22:15:00.000Z"
+    "timestamp": "2026-09-23T22:15:00.000Z",
+    "ruleUpdate": "When HPE ProLiant Compute DL380 Gen12 Cooling Upgrade Enablement Kit (P81130-B21) is selected, the only supported heatsink is HPE ProLiant Compute DL3XX Gen12 High Performance Heat Sink Kit (P74787-B21)."
   },
   {
     "deltaId": "DELTA_RAG_DEP_P81130-B21_P79555-B21_1790182000002",
@@ -469,7 +487,8 @@
     "rawMessage": "HPE ProLiant Compute DL380 Gen12 Cooling Upgrade Enablement Kit (P81130-B21) supports processors up to 270W at 30C or up to 350W at 27C (P79555-B21).",
     "scopeTaxonomy": "FAMILY_GEN",
     "source": "NOTEBOOKLM_GROUNDING",
-    "timestamp": "2026-09-23T22:15:00.000Z"
+    "timestamp": "2026-09-23T22:15:00.000Z",
+    "ruleUpdate": "HPE ProLiant Compute DL380 Gen12 Cooling Upgrade Enablement Kit (P81130-B21) supports processors up to 270W at 30C or up to 350W at 27C (P79555-B21)."
   },
   {
     "deltaId": "DELTA_RAG_DEP_P10115-B21_P72203-B21_1790182000003",
@@ -482,7 +501,8 @@
     "rawMessage": "Rear OCP Slot B on DL380 Gen12 NC chassis is unpowered and logically disconnected by default; configuring an OCP NIC requires P72203-B21 cable kit to route PCIe lanes from CPU 1.",
     "scopeTaxonomy": "FAMILY_GEN",
     "source": "NOTEBOOKLM_GROUNDING",
-    "timestamp": "2026-09-23T22:15:00.000Z"
+    "timestamp": "2026-09-23T22:15:00.000Z",
+    "ruleUpdate": "Rear OCP Slot B on DL380 Gen12 NC chassis is unpowered and logically disconnected by default; configuring an OCP NIC requires P72203-B21 cable kit to route PCIe lanes from CPU 1."
   },
   {
     "deltaId": "DELTA_RAG_DEP_P78279-B21_P74755-B21_1790182000004",
@@ -495,7 +515,8 @@
     "rawMessage": "HPE NS204i-u v2 480GB NVMe Hot Plug Boot Storage Device (P78279-B21) requires HPE ProLiant Compute DL380 Gen12 NS204i-u Rear Boot Device Enablement Kit (P74755-B21).",
     "scopeTaxonomy": "FAMILY_GEN",
     "source": "NOTEBOOKLM_GROUNDING",
-    "timestamp": "2026-09-23T22:15:00.000Z"
+    "timestamp": "2026-09-23T22:15:00.000Z",
+    "ruleUpdate": "HPE NS204i-u v2 480GB NVMe Hot Plug Boot Storage Device (P78279-B21) requires HPE ProLiant Compute DL380 Gen12 NS204i-u Rear Boot Device Enablement Kit (P74755-B21)."
   },
   {
     "deltaId": "DELTA_CLIC_RULE_81392332_H200_16PIN_P93055-B21",
@@ -509,7 +530,8 @@
     "scopeTaxonomy": "CHASSIS_SPECIFIC",
     "source": "OFFICIAL_VENDOR_PORTAL_OBSERVATION",
     "status": "APPLIED_TO_PRECHECKS_AND_RAG",
-    "timestamp": "2026-09-23T22:30:00.000Z"
+    "timestamp": "2026-09-23T22:30:00.000Z",
+    "ruleUpdate": "Rule 81392332: P56072-B21 requires to be ordered with supported 8-pin GPUs. H200 NVL mandates P93055-B21 HPE GPU 16-pin Power Cable Kit."
   },
   {
     "deltaId": "DELTA_CLIC_RULE_81394885_SECONDARY_RISER_25C_AMBIENT",
@@ -523,7 +545,8 @@
     "scopeTaxonomy": "CHASSIS_SPECIFIC",
     "source": "OFFICIAL_VENDOR_PORTAL_OBSERVATION",
     "status": "APPLIED_TO_PRECHECKS_AND_RAG",
-    "timestamp": "2026-09-23T22:30:00.000Z"
+    "timestamp": "2026-09-23T22:30:00.000Z",
+    "ruleUpdate": "Rule 81394885: 1 qty 8SFF Cage + Processor above 270W + Air Cooled: H200 NVL (S3U30C) is not supported on Primary Riser (20C-30C) or Tertiary Riser (20C-30C). Supported on Secondary Riser only with <= 25C ambient temperature."
   },
   {
     "deltaId": "DELTA_CLIC_RULE_81393803_STORAGE_CABLE_P76453-B21",
@@ -536,7 +559,8 @@
     "rawMessage": "Rule 81393803: P73282-B21 with 8SFF x1 Cage (P75740-B21) and 1 qty MR416i-p (P47777-B21) requires 1 qty of P76453-B21 (2SFF B1/ 8SFF x1 PCIe Cable).",
     "scopeTaxonomy": "CHASSIS_SPECIFIC",
     "source": "OFFICIAL_VENDOR_PORTAL_OBSERVATION",
-    "status": "APPLIED_TO_PRECHECKS_AND_RAG"
+    "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+    "ruleUpdate": "Rule 81393803: P73282-B21 with 8SFF x1 Cage (P75740-B21) and 1 qty MR416i-p (P47777-B21) requires 1 qty of P76453-B21 (2SFF B1/ 8SFF x1 PCIe Cable)."
   },
   {
     "deltaId": "LEARN_DL380_GEN12_OEM_DEFAULT_20260930",
@@ -555,7 +579,8 @@
     "evidenceType": "WORKFLOW_REVIEW",
     "source": "docs/audits/2026-09-30-scraping-independent-review.md",
     "procedure": "docs/RUNTIME_CONDITIONAL_DISCOVERY.md",
-    "hardwareCompatibilityCertified": false
+    "hardwareCompatibilityCertified": false,
+    "ruleUpdate": "OCA observed P77819-B21 as OEM DL380 Gen12 CTO. Preserve it in scoped discovery; a generic commercial DL380 Gen12 request must not automatically choose OEM. P73282-B21 was observed as commercial CTO, not certified as a permanent substitute or live-price guarantee."
   },
   {
     "deltaId": "LEARN_DL380_GEN12_RUNTIME_DISCOVERY_20260930",
@@ -573,7 +598,8 @@
     "evidenceType": "WORKFLOW_REVIEW",
     "source": "docs/audits/2026-09-30-scraping-independent-review.md",
     "procedure": "docs/RUNTIME_CONDITIONAL_DISCOVERY.md",
-    "hardwareCompatibilityCertified": false
+    "hardwareCompatibilityCertified": false,
+    "ruleUpdate": "Catalog absence is not proof of unsupported hardware. Investigate missing and conditional BOQ SKUs on the exact base and owning configuration, with the requested quantities and environmental state. Hidden presence establishes observation only. Revalidate each changed manifest in CLIC; a runtime plan does not establish acceptance."
   },
   {
     "deltaId": "LEARN_DL380_GEN12_COVERAGE_BOUNDARY_20260930",
@@ -591,7 +617,8 @@
     "evidenceType": "WORKFLOW_REVIEW",
     "source": "docs/audits/2026-09-30-scraping-independent-review.md",
     "procedure": "docs/RUNTIME_CONDITIONAL_DISCOVERY.md",
-    "hardwareCompatibilityCertified": false
+    "hardwareCompatibilityCertified": false,
+    "ruleUpdate": "Chassis discovery does not establish traversal. Current automated conditional capture covers hidden DOM and ambient probes; other selector combinations and all-base coverage remain unverified. Unknown recommendation, price and variant capability stay unknown. Do not retire prior NotebookLM sources before replacement verification."
   },
   {
     "deltaId": "LEARN_DL380_GEN12_H200_OBSERVED_STATES_20261001",
@@ -610,7 +637,8 @@
     "evidenceType": "WORKFLOW_REVIEW",
     "source": "docs/audits/2026-09-30-scraping-independent-review.md",
     "procedure": "docs/RUNTIME_CONDITIONAL_DISCOVERY.md",
-    "hardwareCompatibilityCertified": false
+    "hardwareCompatibilityCertified": false,
+    "ruleUpdate": "Live OCA evidence on commercial DL380 Gen12 base P73282-B21: S3U30C NVIDIA H200 NVL 141GB was already present in the DOM at selected 30C tracking SKU P79552-B21, but hidden and marked unavailable. Vendor text says H200 NVL and 30C cannot be selected together. At selected 27C tracking SKU P79555-B21 the unavailable flag and restriction disappeared; the collapsed section still hid the row visually. Original 30C was restored. This is two observed selector states, not proof of every lower temperature or final CLIC build acceptance. Evidence: evidence/scraping_review/h200_at_30c_before.json and h200_at_27c.json. Do not compile the 30C prohibition as an allowed <=30C gate."
   },
   {
     "deltaId": "LEARN_CHASSIS_THREE_TIER_DOMAIN_CLASSIFICATION_20261012",
@@ -628,7 +656,8 @@
     "evidenceType": "WORKFLOW_REVIEW",
     "source": "docs/audits/2026-09-30-scraping-independent-review.md",
     "procedure": "docs/RUNTIME_CONDITIONAL_DISCOVERY.md",
-    "hardwareCompatibilityCertified": false
+    "hardwareCompatibilityCertified": false,
+    "ruleUpdate": "Specialty hardware categories (SAN switches like SN3600B, fabric interconnect modules like SY100Gb, and tape libraries like MSL) do not contain server compute components (CPU, Memory, Power). Synergy compute blades (SY480 Gen12) require CPU and Memory, but Power supplies are governed at the Synergy 12000 enclosure frame level. Freshness guards must evaluate compliance using a three-tier domain discriminator rather than enforcing server categories on all products (INV-158)."
   },
   {
     "deltaId": "LEARN_UNIVERSAL_ACCESSORY_SCOPE_ISOLATION_20261012",
@@ -647,7 +676,8 @@
     "evidenceType": "WORKFLOW_REVIEW",
     "source": "docs/audits/2026-09-30-scraping-independent-review.md",
     "procedure": "docs/RUNTIME_CONDITIONAL_DISCOVERY.md",
-    "hardwareCompatibilityCertified": false
+    "hardwareCompatibilityCertified": false,
+    "ruleUpdate": "Passive accessories such as DC lug terminal kits (P36877-B21), power cords, and rail kits are architecture-invariant and span multiple product generations. They must be registered in APPROVED_UNIVERSAL_POLICY_SKUS in product_scope.js to prevent false-positive cross-generation isolation quarantines by the drift engine (INV-159)."
   },
   {
     "deltaId": "LEARN_WEBLOGIC_EXPAND_SECTIONS_COST_CAPTURE_20261012",
@@ -665,7 +695,8 @@
     "evidenceType": "WORKFLOW_REVIEW",
     "source": "docs/audits/2026-09-30-scraping-independent-review.md",
     "procedure": "docs/RUNTIME_CONDITIONAL_DISCOVERY.md",
-    "hardwareCompatibilityCertified": false
+    "hardwareCompatibilityCertified": false,
+    "ruleUpdate": "WebLogic OCA table expansion in cdp.js must explicitly toggle show_cost alongside show_price and trigger change events on all discovered showmore inputs. Omitting show_cost prevents cost column rendering, leaving tabular price-breakdown structures incomplete (INV-161)."
   },
   {
     "deltaId": "DELTA_DL380_GEN12_CPU_PARITY_AND_SST_CP_LEARNING",
@@ -754,7 +785,8 @@
     "source": "docs/audits/2026-10-29-catalog-refresh-and-knowledge-sync.md",
     "hardwareCompatibilityCertified": false,
     "timestamp": "2026-10-29T06:13:40.642Z",
-    "chassis": "DL380_Gen12"
+    "chassis": "DL380_Gen12",
+    "ruleUpdate": "Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Google Sheets is not a supported NotebookLM Drive source. A recent upload timestamp does not refresh old vendor observations."
   },
   {
     "deltaId": "LEARN_DL380_GEN12_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029",
@@ -771,7 +803,8 @@
     "source": "docs/audits/2026-10-29-catalog-refresh-and-knowledge-sync.md",
     "hardwareCompatibilityCertified": false,
     "timestamp": "2026-10-29T06:13:40.692Z",
-    "chassis": "DL380_Gen12"
+    "chassis": "DL380_Gen12",
+    "ruleUpdate": "Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata before removing only managed stale catalog snapshots. Preserve QuickSpecs, separate learnings, shared enclosure/fabric sources and unrelated documents. Inventory absence is not authority to remove another product source."
   },
   {
     "deltaId": "LEARN_DL380_GEN12_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029",
@@ -788,6 +821,63 @@
     "source": "docs/audits/2026-10-29-catalog-refresh-and-knowledge-sync.md",
     "hardwareCompatibilityCertified": false,
     "timestamp": "2026-10-29T06:13:40.740Z",
-    "chassis": "DL380_Gen12"
+    "chassis": "DL380_Gen12",
+    "ruleUpdate": "Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending dated vendor evidence; resolve contradictions before promoting hardware dependencies. Conflicting quantity claims require dated evidence for this exact product and selector state."
+  },
+  {
+    "deltaId": "LEARN_DL380_GEN12_SUPPORT_PRICING_UPDATE_20261102",
+    "ruleType": "SUPPORT_PRICING_UPDATE",
+    "affectedSku": "HU4B2A30C4V",
+    "requiredDependencySku": "P73282-B21",
+    "rawMessage": "HPE DL380 Gen12 Support (HU4B2A30C4V, under HU4B2A3 3Y Tech Care Basic) list price updated in November 2026 OCA catalog from $5,509.00 to $5,784.00 USD (+$275.00 / +4.99% per server node). 12-node cluster extended price increases from $66,108.00 to $69,408.00 USD (+$3,300.00).",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "governanceStatus": "ACTIVE",
+    "evidenceType": "PORTAL_PRICING_OBSERVATION",
+    "source": "DL380_G12_12N_6787P_5157692310-01 (1).xlsx",
+    "hardwareCompatibilityCertified": false,
+    "timestamp": "2026-11-02T14:04:55.000Z",
+    "chassis": "DL380_Gen12",
+    "vendor": "HPE",
+    "family": "ProLiant",
+    "generation": "Gen12",
+    "pillar": "SERVER",
+    "ruleUpdate": "HPE DL380 Gen12 Support (HU4B2A30C4V, under HU4B2A3 3Y Tech Care Basic) list price updated in November 2026 OCA catalog from $5,509.00 to $5,784.00 USD (+$275.00 / +4.99% per server node). 12-node cluster extended price increases from $66,108.00 to $69,408.00 USD (+$3,300.00)."
+  },
+  {
+    "deltaId": "LEARN_DL380_GEN12_CLIC_STATUS_CLEARANCE_20261102",
+    "ruleType": "CLIC_STATUS_CLEARANCE",
+    "affectedSku": "P73282-B21",
+    "secondarySku": "R7A11AAE",
+    "rawMessage": "Portal validation warnings on HPE ProLiant DL380 Gen12 SFF NC CTO Server (P73282-B21) and HPE Compute Ops Management Standard 3-year SaaS (R7A11AAE) have cleared to clean/pass in latest OCA engine release.",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "governanceStatus": "ACTIVE",
+    "evidenceType": "PORTAL_VALIDATION_RECEIPT",
+    "source": "DL380_G12_12N_6787P_5157692310-01 (1).xlsx",
+    "hardwareCompatibilityCertified": true,
+    "timestamp": "2026-11-02T14:04:55.000Z",
+    "chassis": "DL380_Gen12",
+    "vendor": "HPE",
+    "family": "ProLiant",
+    "generation": "Gen12",
+    "pillar": "SERVER",
+    "ruleUpdate": "Portal validation warnings on HPE ProLiant DL380 Gen12 SFF NC CTO Server (P73282-B21) and HPE Compute Ops Management Standard 3-year SaaS (R7A11AAE) have cleared to clean/pass in latest OCA engine release."
+  },
+  {
+    "deltaId": "LEARN_DL380_GEN12_LEAD_TIME_AND_LIFECYCLE_20261102",
+    "ruleType": "LEAD_TIME_AND_LIFECYCLE",
+    "affectedSku": "P73282-B21",
+    "rawMessage": "DL380 Gen12 CTO base chassis (P73282-B21) availability lead time improved to 14 days (down from 30 days). Xeon 6787P CPU (P73837-B21) is 10 days; 8SFF drive cage (P75740-B21) is 14 days. 64GB DDR5-6400 Smart FIO memory (P69728-F21) discontinuation date extended to 2030-06-30 (+27 months).",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "governanceStatus": "ACTIVE",
+    "evidenceType": "PORTAL_METADATA_OBSERVATION",
+    "source": "DL380_G12_12N_6787P_5157692310-01 (1).xlsx",
+    "hardwareCompatibilityCertified": true,
+    "timestamp": "2026-11-02T14:04:55.000Z",
+    "chassis": "DL380_Gen12",
+    "vendor": "HPE",
+    "family": "ProLiant",
+    "generation": "Gen12",
+    "pillar": "SERVER",
+    "ruleUpdate": "DL380 Gen12 CTO base chassis (P73282-B21) availability lead time improved to 14 days (down from 30 days). Xeon 6787P CPU (P73837-B21) is 10 days; 8SFF drive cage (P75740-B21) is 14 days. 64GB DDR5-6400 Smart FIO memory (P69728-F21) discontinuation date extended to 2030-06-30 (+27 months)."
   }
 ]

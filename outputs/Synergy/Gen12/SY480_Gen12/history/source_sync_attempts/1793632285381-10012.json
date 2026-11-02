@@ -1,0 +1,24 @@
+{
+  "product": "SY480_Gen12",
+  "notebookId": "49a3c69e-115f-4332-9454-c5d4f2941327",
+  "replacementSourceId": "b1cbd8c2-80c6-4458-b5ad-14ee1402f723",
+  "verifiedAt": "2026-11-02T15:11:25.381Z",
+  "contentFingerprints": {
+    "catalog": "24748d8a21c20b50fda492ebcc170df754270cc2fe6d5d8aa5318abdfe3f92bf",
+    "learnings": "a31082b2906090fe84a24c68e14d8b924a3a2069f135d8e2655754424aa9b151",
+    "changes": "35f3bee0f4e1e87496e99162f8054ad5680dd4a71641bd6476b5afa661884b38",
+    "workbook": "f294cb7741d8ddea53de02559befbd9f4f1fc9ab089378e9cbe3afc55ba81816",
+    "combined": "9e280e0881b7298f76aa73729197a979bb5943b2bd50c70f07dc63c53a3b57b6"
+  },
+  "legacyFingerprint": "9e280e0881b7298f76aa73729197a979bb5943b2bd50c70f07dc63c53a3b57b6",
+  "retirementRequested": true,
+  "plannedRetirementIds": [
+    "ffddc101-14e0-4612-9daf-15e7299553bd"
+  ],
+  "status": "CONSOLIDATED",
+  "retiredSourceIds": [
+    "ffddc101-14e0-4612-9daf-15e7299553bd"
+  ],
+  "remainingSourceIds": [],
+  "retirementErrors": []
+}

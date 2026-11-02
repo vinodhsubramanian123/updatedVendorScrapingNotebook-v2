@@ -1237,6 +1237,11 @@ To ensure that future AI agents (Antigravity, Codex, Claude, or subagents) never
 - **INV-225: Self-Healing Telemetry Observability Ledger**:
   - `telemetry.js:recordSelfHealingEvent(eventType, details)` records structured self-healing events in `outputs/history/pipeline_telemetry.json` under `selfHealingEvents` (with FIFO cap 50) and increments `totalSelfHealingEvents`.
 
+- **INV-226: Non-Null Markdown Payload Rule Rendering & Multi-Artifact Persistence Parity**:
+  - In `scripts/lib/sync/sync_payload_builder.js`, rules rendered into semantic Markdown sync payloads (`notebook_sync_payload_*.md`) must dynamically fall back across `r.ruleUpdate || r.rawMessage || r.rule || r.description || ''`. Rules without an explicit `ruleUpdate` property must never render `- **Rule**: undefined` into NotebookLM knowledge sources.
+  - In `scripts/lib/sync/nlm_sync_client.js`, companion artifact hashing (`Catalog.json`, `Services.json`, `Catalog_Rules.json`, `OCA_Catalog.xlsx`) must check `fs.existsSync(artPath)` before reading files on disk. Specialized or storage product directories that do not feature all 4 companion files must never fail metadata activation or throw `ENOENT` during cloud sync.
+
+
 
 
 

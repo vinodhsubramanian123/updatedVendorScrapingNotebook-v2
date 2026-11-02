@@ -109,7 +109,8 @@ function _buildUniversalAndFamilyRulesSection(targetIdentity, universalRules = [
     md += `*No verified universal vendor rules are registered for this product.*\n\n`;
   } else {
     universalRules.forEach((r, idx) => {
-      md += `${idx + 1}. **[${r.deltaId}]**: ${r.ruleUpdate} *(Type: ${r.ruleType || r.errorType || 'ADVISORY'})*\n`;
+      const ruleText = r.ruleUpdate || r.rawMessage || r.rule || r.description || '';
+      md += `${idx + 1}. **[${r.deltaId}]**: ${ruleText} *(Type: ${r.ruleType || r.errorType || 'ADVISORY'})*\n`;
     });
     md += `\n`;
   }
@@ -119,7 +120,8 @@ function _buildUniversalAndFamilyRulesSection(targetIdentity, universalRules = [
     md += `*No verified family/generation rules are registered for this product.*\n\n`;
   } else {
     familyGenRules.forEach((r, idx) => {
-      md += `${idx + 1}. **[${r.deltaId}] ${r.chassis}**: ${r.ruleUpdate} *(Affected SKU: ${r.affectedSku})*\n`;
+      const ruleText = r.ruleUpdate || r.rawMessage || r.rule || r.description || '';
+      md += `${idx + 1}. **[${r.deltaId}] ${r.chassis}**: ${ruleText} *(Affected SKU: ${r.affectedSku})*\n`;
     });
     md += `\n`;
   }
@@ -139,15 +141,16 @@ function _buildChassisSpecificRulesSection(chassisName, chassisSpecificRules = [
     md += `*No specific gotchas logged for ${chassisName}. Baseline chassis layout rules active.*\n\n`;
   } else {
     relevantChassisRules.forEach((r, idx) => {
+      const ruleBody = r.ruleUpdate || r.rawMessage || r.rule || r.description || '';
       if (isVerifiedSharedAccessoryRule(r, targetIdentity)) {
         const compatible = (r.compatibleProductIds || []).map(baseProductId).join(',');
-        const ruleText = String(r.ruleUpdate || '').replace(/\s+/g, ' ').trim();
+        const ruleText = String(ruleBody || '').replace(/\s+/g, ' ').trim();
         const evidenceIds = (r.verificationSourceIds || []).map(id => String(id).replace(/[^A-Za-z0-9_.:-]/g, '')).filter(Boolean).join(',');
         md += `${idx + 1}. [SHARED_ACCESSORY_VERIFIED target=${compatible}] **[${r.deltaId}] ${r.affectedSku}**: ${ruleText} (Class: ${r.accessoryClass}; Evidence: ${r.compatibilityEvidenceType}; Sources: ${evidenceIds})\n\n`;
         return;
       }
       md += `${idx + 1}. **[${r.deltaId}] ${r.chassis}** (Taxonomy: \`${r.scopeTaxonomy || 'CHASSIS_SPECIFIC'}\` | Solution: \`${r.solutionType || 'General Server'}\`):\n`;
-      md += `   - **Rule**: ${r.ruleUpdate}\n`;
+      md += `   - **Rule**: ${ruleBody}\n`;
       md += `   - **Affected SKU**: \`${r.affectedSku || 'N/A'}\` | **Required Dependency**: \`${r.requiredDependencySku || 'N/A'}\`\n`;
       if (r.humanReasoning) {
         md += `   - 💡 **Human Engineer Rationale**: *"${r.humanReasoning}"*\n`;

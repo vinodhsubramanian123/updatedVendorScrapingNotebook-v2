@@ -14,7 +14,8 @@
     "source": "docs/audits/2026-10-29-catalog-refresh-and-knowledge-sync.md",
     "hardwareCompatibilityCertified": false,
     "timestamp": "2026-10-29T06:13:40.942Z",
-    "chassis": "SY100Gb_F32_Module"
+    "chassis": "SY100Gb_F32_Module",
+    "ruleUpdate": "Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Google Sheets is not a supported NotebookLM Drive source. A recent upload timestamp does not refresh old vendor observations."
   },
   {
     "deltaId": "LEARN_SY100GB_F32_MODULE_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029",
@@ -31,7 +32,8 @@
     "source": "docs/audits/2026-10-29-catalog-refresh-and-knowledge-sync.md",
     "hardwareCompatibilityCertified": false,
     "timestamp": "2026-10-29T06:13:40.972Z",
-    "chassis": "SY100Gb_F32_Module"
+    "chassis": "SY100Gb_F32_Module",
+    "ruleUpdate": "Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata before removing only managed stale catalog snapshots. Preserve QuickSpecs, separate learnings, shared enclosure/fabric sources and unrelated documents. Inventory absence is not authority to remove another product source."
   },
   {
     "deltaId": "LEARN_SY100GB_F32_MODULE_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029",
@@ -48,6 +50,25 @@
     "source": "docs/audits/2026-10-29-catalog-refresh-and-knowledge-sync.md",
     "hardwareCompatibilityCertified": false,
     "timestamp": "2026-10-29T06:13:41.001Z",
-    "chassis": "SY100Gb_F32_Module"
+    "chassis": "SY100Gb_F32_Module",
+    "ruleUpdate": "Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending dated vendor evidence; resolve contradictions before promoting hardware dependencies. Conflicting quantity claims require dated evidence for this exact product and selector state."
+  },
+  {
+    "deltaId": "LEARN_SY100GB_F32_MODULE_SUPPORT_PRICING_UPDATE_20261102",
+    "ruleType": "SUPPORT_PRICING_UPDATE",
+    "affectedSku": "HU4B2A3 Z1R",
+    "rawMessage": "HPE Virtual Connect SE 100Gb F32 Module for Synergy Support (HU4B2A3 Z1R, under HU4B2A3 3Y Tech Care Basic) list price updated in November 2026 OCA catalog from .00 to .00 USD (+.00 / +5.04% per module).",
+    "ruleUpdate": "HPE Virtual Connect SE 100Gb F32 Module for Synergy Support (HU4B2A3 Z1R, under HU4B2A3 3Y Tech Care Basic) list price updated in November 2026 OCA catalog from .00 to .00 USD (+.00 / +5.04% per module).",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "governanceStatus": "ACTIVE",
+    "evidenceType": "PORTAL_PRICING_OBSERVATION",
+    "source": "Synergy_1f_12N_128GB_NoAccessories_5157488894-01 (1).xlsx",
+    "hardwareCompatibilityCertified": false,
+    "timestamp": "2026-11-02T14:14:51.000Z",
+    "chassis": "SY100Gb_F32_Module",
+    "vendor": "HPE",
+    "family": "Synergy",
+    "generation": "General",
+    "pillar": "NETWORKING"
   }
 ]

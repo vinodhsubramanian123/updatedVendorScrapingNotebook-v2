@@ -311,7 +311,8 @@
     "source": "docs/audits/2026-10-29-catalog-refresh-and-knowledge-sync.md",
     "hardwareCompatibilityCertified": false,
     "timestamp": "2026-10-29T06:13:40.403Z",
-    "chassis": "DL380a_Gen12"
+    "chassis": "DL380a_Gen12",
+    "ruleUpdate": "Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Google Sheets is not a supported NotebookLM Drive source. A recent upload timestamp does not refresh old vendor observations."
   },
   {
     "deltaId": "LEARN_DL380A_GEN12_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029",
@@ -328,7 +329,8 @@
     "source": "docs/audits/2026-10-29-catalog-refresh-and-knowledge-sync.md",
     "hardwareCompatibilityCertified": false,
     "timestamp": "2026-10-29T06:13:40.451Z",
-    "chassis": "DL380a_Gen12"
+    "chassis": "DL380a_Gen12",
+    "ruleUpdate": "Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata before removing only managed stale catalog snapshots. Preserve QuickSpecs, separate learnings, shared enclosure/fabric sources and unrelated documents. Inventory absence is not authority to remove another product source."
   },
   {
     "deltaId": "LEARN_DL380A_GEN12_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029",
@@ -345,6 +347,63 @@
     "source": "docs/audits/2026-10-29-catalog-refresh-and-knowledge-sync.md",
     "hardwareCompatibilityCertified": false,
     "timestamp": "2026-10-29T06:13:40.486Z",
-    "chassis": "DL380a_Gen12"
+    "chassis": "DL380a_Gen12",
+    "ruleUpdate": "Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending dated vendor evidence; resolve contradictions before promoting hardware dependencies. Conflicting quantity claims require dated evidence for this exact product and selector state."
+  },
+  {
+    "deltaId": "LEARN_DL380A_GEN12_SUPPORT_PRICING_UPDATE_20261102",
+    "ruleType": "SUPPORT_PRICING_UPDATE",
+    "affectedSku": "HU4B2A30C4W",
+    "requiredDependencySku": "P76706-B21",
+    "rawMessage": "HPE DL380a Gen12 Support (HU4B2A30C4W, under HU4B2A3 3Y Tech Care Basic) list price updated in November 2026 OCA catalog from $11,306.00 to $11,871.00 USD (+$565.00 / +5.00% per node). Total server list price adjusted from $1,656,550.00 to $1,657,115.00 USD.",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "governanceStatus": "ACTIVE",
+    "evidenceType": "PORTAL_PRICING_OBSERVATION",
+    "source": "DL380a_G12_1U_6530P_5157385712-01 (2).xlsx",
+    "hardwareCompatibilityCertified": false,
+    "timestamp": "2026-11-02T14:12:53.000Z",
+    "chassis": "DL380a_Gen12",
+    "vendor": "HPE",
+    "family": "ProLiant",
+    "generation": "Gen12",
+    "pillar": "SERVER",
+    "ruleUpdate": "HPE DL380a Gen12 Support (HU4B2A30C4W, under HU4B2A3 3Y Tech Care Basic) list price updated in November 2026 OCA catalog from $11,306.00 to $11,871.00 USD (+$565.00 / +5.00% per node). Total server list price adjusted from $1,656,550.00 to $1,657,115.00 USD."
+  },
+  {
+    "deltaId": "LEARN_DL380A_GEN12_H200_LEAD_TIME_BOTTLENECK_20261102",
+    "ruleType": "SUPPLY_CHAIN_LEAD_TIME_BOTTLENECK",
+    "affectedSku": "S3U30C",
+    "rawMessage": "CRITICAL PRESALES CONSTRAINT: NVIDIA H200 NVL 141GB PCIe Accelerator (S3U30C) carries an estimated availability factory lead time of 168 business days (~24 weeks / 5.5 months), establishing it as the primary supply chain gating factor for DL380a Gen12 AI accelerator deployments. FC HBA (R2E09A) is 30 days; Base chassis (P76706-B21) is 14 days; CPU (P74571-B21) and DDR5 memory (P69728-F21) are 10 days.",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "governanceStatus": "ACTIVE",
+    "evidenceType": "PORTAL_LEAD_TIME_OBSERVATION",
+    "source": "DL380a_G12_1U_6530P_5157385712-01 (2).xlsx",
+    "hardwareCompatibilityCertified": true,
+    "timestamp": "2026-11-02T14:12:53.000Z",
+    "chassis": "DL380a_Gen12",
+    "vendor": "HPE",
+    "family": "ProLiant",
+    "generation": "Gen12",
+    "pillar": "SERVER",
+    "ruleUpdate": "CRITICAL PRESALES CONSTRAINT: NVIDIA H200 NVL 141GB PCIe Accelerator (S3U30C) carries an estimated availability factory lead time of 168 business days (~24 weeks / 5.5 months), establishing it as the primary supply chain gating factor for DL380a Gen12 AI accelerator deployments. FC HBA (R2E09A) is 30 days; Base chassis (P76706-B21) is 14 days; CPU (P74571-B21) and DDR5 memory (P69728-F21) are 10 days."
+  },
+  {
+    "deltaId": "LEARN_DL380A_GEN12_CLIC_STATUS_CLEARANCE_20261102",
+    "ruleType": "CLIC_STATUS_CLEARANCE",
+    "affectedSku": "P76706-B21",
+    "secondarySku": "R7A11AAE",
+    "rawMessage": "Portal validation warnings on HPE ProLiant Compute DL380a Gen12 8DW/16SW CTO Server (P76706-B21) and HPE Compute Ops Management Standard 3-year SaaS (R7A11AAE) have cleared to clean/pass in latest OCA release. 64GB DDR5-6400 memory (P69728-F21) discontinuation date extended to 2030-06-30.",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "governanceStatus": "ACTIVE",
+    "evidenceType": "PORTAL_VALIDATION_RECEIPT",
+    "source": "DL380a_G12_1U_6530P_5157385712-01 (2).xlsx",
+    "hardwareCompatibilityCertified": true,
+    "timestamp": "2026-11-02T14:12:53.000Z",
+    "chassis": "DL380a_Gen12",
+    "vendor": "HPE",
+    "family": "ProLiant",
+    "generation": "Gen12",
+    "pillar": "SERVER",
+    "ruleUpdate": "Portal validation warnings on HPE ProLiant Compute DL380a Gen12 8DW/16SW CTO Server (P76706-B21) and HPE Compute Ops Management Standard 3-year SaaS (R7A11AAE) have cleared to clean/pass in latest OCA release. 64GB DDR5-6400 memory (P69728-F21) discontinuation date extended to 2030-06-30."
   }
 ]

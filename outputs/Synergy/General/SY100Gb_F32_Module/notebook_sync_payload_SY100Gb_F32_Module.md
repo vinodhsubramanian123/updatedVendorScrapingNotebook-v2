@@ -4,7 +4,7 @@
 
 **Scope Identity**: `HPE/NETWORKING/Synergy/General/SY100Gb_F32_Module`
 
-**Sync Timestamp**: 2026-10-31T06:25:10.400Z
+**Sync Timestamp**: 2026-11-02T15:13:00.037Z
 
 **Total Verified SKUs**: `144` (`142` Hardware + `2` Services)
 
@@ -162,7 +162,7 @@ Service scope: OBSERVED_SELECTED_SERVICES_ONLY. Unexecuted: alternative service 
 
 
 <!-- MANAGED_FULL_CATALOG -->
-Content fingerprint: 21fe51ac70ec88d1cd4ff55b8feee4f718f65dc51d0d4476704f5cd8403b61e6
+Content fingerprint: bbe588fab4abe44270c74b7ff68c718a91da5b15a3e7bcfde55602d55a62557d
 
 ## Complete workbook text projection
 

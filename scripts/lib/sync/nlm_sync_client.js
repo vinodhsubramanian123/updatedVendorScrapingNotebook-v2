@@ -921,10 +921,14 @@ function syncToNotebookLMWithinLease(notebookId, payloadPath, chassisName = 'Unk
           isolationLevel: 'CHASSIS_SPECIFIC',
           lastSyncedSourceName: result.newSourceName,
           trustedSourceIds: buildTrustedSourceIds({ ...existing, certifiedCatalogSourceIds: [] }, result.newSourceId, driveSourceVerified),
-          lastCatalogSha256: require('crypto').createHash('sha256').update(fs.readFileSync(
-            path.join(path.dirname(payloadPath), `${chassisName}_Catalog.json`))).digest('hex'),
-          lastArtifactHashes: Object.fromEntries(['Catalog.json', 'Services.json', 'Catalog_Rules.json', 'OCA_Catalog.xlsx'].map(suffix => [suffix,
-            require('crypto').createHash('sha256').update(fs.readFileSync(path.join(path.dirname(payloadPath), `${chassisName}_${suffix}`))).digest('hex')])),
+          lastCatalogSha256: (() => {
+            const catPath = path.join(path.dirname(payloadPath), `${chassisName}_Catalog.json`);
+            return fs.existsSync(catPath) ? require('crypto').createHash('sha256').update(fs.readFileSync(catPath)).digest('hex') : null;
+          })(),
+          lastArtifactHashes: Object.fromEntries(['Catalog.json', 'Services.json', 'Catalog_Rules.json', 'OCA_Catalog.xlsx'].map(suffix => {
+            const artPath = path.join(path.dirname(payloadPath), `${chassisName}_${suffix}`);
+            return [suffix, fs.existsSync(artPath) ? require('crypto').createHash('sha256').update(fs.readFileSync(artPath)).digest('hex') : null];
+          })),
           canonicalKnowledgeSourceIds: Array.from(new Set([
             result.newSourceId,
             driveSourceVerified

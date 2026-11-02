@@ -1,7 +1,7 @@
 {
   "success": true,
   "spreadsheetId": "1ileDbsJXAFo59rRG9hsTuTNrjOFTnCXSiGyTLFGXb54",
-  "backupFile": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\history\\drive_backups\\drive_backup_039a72f8-3050-4a92-9a74-c7dff79f6a30.json",
+  "backupFile": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\history\\drive_backups\\drive_backup_8a9f9a97-7fdb-4f5e-81ad-e2d98359cdde.json",
   "tabsWritten": [
     {
       "title": "Certified Catalog",
@@ -9,11 +9,11 @@
     },
     {
       "title": "Verified Learnings",
-      "rows": 347
+      "rows": 359
     },
     {
       "title": "Change Log",
-      "rows": 6324
+      "rows": 6327
     },
     {
       "title": "Sync Metadata",
@@ -131,9 +131,9 @@
   "readbackVerified": true,
   "readbackFingerprints": {
     "Certified Catalog": "019bff7076697bc5aa1ceb5daa14eb474a4e9b7637b00d0bec0962208c17ef66",
-    "Verified Learnings": "6627402ea8c6bba091aba0de2d136f30557a5e1819ded37aabba387a178ea6aa",
-    "Change Log": "229d93b860d157702e80807946c68f7bf790f974b67d02ad0c460cce4d70db6c",
-    "Sync Metadata": "9c1b8db00e51ce0351ea044264062087787df2dc2212ca700f0b373254460609",
+    "Verified Learnings": "bcb54fba89b5c5eed7f6ca8d0f6cb11c16284b71d4f2c0997d9b73b23b8793e3",
+    "Change Log": "81b526c082ec23ae37c62b1f7a4d110b1de0f0045ec3c23c72d9ecd2a32ef65b",
+    "Sync Metadata": "1a8ebb863638351e3ae796bf7934d38ce648748d88fbd9ca52a9e05ab9260bb1",
     "Category Summary": "a0fbc1fe99dc1a0772f0143c00e4736e176245442b035de49ba6ae0241c93f86",
     "All SKUs": "92cb80b90e470d1da2b9fce58f601e2b1faa3bc15f30c215d24d2f7a4db57414",
     "Chassis Variants": "4f65a11fc2ff1e4978a7be3a2cdefd994ac95b40039d13c25b25915e16447769",
@@ -162,12 +162,12 @@
     "Supply Chain & Lead Times": "d3f23ad1df154b2cc31001b0e6a7622a00ee860f3de2761b7aae6d08c7f50625",
     "Metadata": "76dbf12052b64ec4306212afa9d67835143be5ad5405fd912edfe30bf1d7251a"
   },
-  "verifiedAt": "2026-10-29T08:53:19.590Z",
+  "verifiedAt": "2026-11-02T15:05:46.132Z",
   "fingerprints": {
     "catalog": "019bff7076697bc5aa1ceb5daa14eb474a4e9b7637b00d0bec0962208c17ef66",
-    "learnings": "7258d5a31957e6f66998482bd7836b2eae45f9175c3da6e90b9dcc8e7a6665ef",
-    "changes": "229d93b860d157702e80807946c68f7bf790f974b67d02ad0c460cce4d70db6c",
+    "learnings": "654feefcc7210a1826de5fedc9cd7ba3cb3f386d7f3a658b11c6aa5b64ed0bab",
+    "changes": "81b526c082ec23ae37c62b1f7a4d110b1de0f0045ec3c23c72d9ecd2a32ef65b",
     "workbook": "697d38a731d73ec1deb62b0b109aa3fce39c6ace8d75a07997eeae94b089c84d",
-    "combined": "457d61f329b71cf494ca11c816efee7d0aa0a33ea39c7e54113656bbc414d789"
+    "combined": "136784534a0738e5ec8a63f6e3cca0a51b01d8f0341e2efb58c7ac097b2f9746"
   }
 }
