@@ -76,13 +76,17 @@ function checkAuthHealth(options = {}) {
   const homeBin = path.join(os.homedir(), '.local', 'bin');
   const extendedPath = [homeBin, envPath].filter(Boolean).join(path.delimiter);
 
-  // Pre-emptively clear stale locks so check never hangs
   cleanStaleNlmChromeAndLocks();
+  try {
+    const { cleanStaleProfileLocks } = require('./nlm_interactive_auth.js');
+    cleanStaleProfileLocks();
+  } catch { /* ignore */ }
 
   try {
     const stdout = execFileSync('nlm', ['login', '--check'], {
       encoding: 'utf-8',
       timeout: 45000,
+      stdio: ['ignore', 'pipe', 'pipe'],
       env: { ...process.env, PATH: extendedPath }
     });
 
@@ -102,30 +106,25 @@ function checkAuthHealth(options = {}) {
     if (autoHeal) {
       try {
         cleanStaleNlmChromeAndLocks();
-        execFileSync('nlm', ['login', '--force', '--storage', 'file'], {
+        const interactiveScript = path.join(__dirname, 'nlm_interactive_auth.js');
+        const healStdout = execFileSync(process.execPath, [interactiveScript, '--json'], {
           encoding: 'utf-8',
           timeout: 60000,
+          stdio: ['ignore', 'pipe', 'pipe'],
           env: { ...process.env, PATH: extendedPath }
         });
 
-        const retryStdout = execFileSync('nlm', ['login', '--check'], {
-          encoding: 'utf-8',
-          timeout: 45000,
-          env: { ...process.env, PATH: extendedPath }
-        });
-
-        const isValid = retryStdout.includes('Authentication valid');
-        const notebooksMatch = retryStdout.match(/Notebooks found:\s*(\d+)/);
-        const accountMatch = retryStdout.match(/Account:\s*([^\r\n]+)/);
+        const parsed = JSON.parse(healStdout);
+        const isValid = Boolean(parsed.ok || parsed.valid);
 
         return {
           status: isValid ? 'HEALED' : 'EXPIRED',
           valid: isValid,
           healed: isValid,
-          account: accountMatch ? accountMatch[1].trim() : (metadata?.email || 'unknown'),
-          notebooksFound: notebooksMatch ? parseInt(notebooksMatch[1], 10) : null,
+          account: parsed.account || (metadata?.email || 'unknown'),
+          notebooksFound: parsed.notebooksFound ?? null,
           lastValidated: new Date().toISOString(),
-          rawOutput: retryStdout.trim()
+          rawOutput: (parsed.rawOutput || '').trim()
         };
       } catch {
         // Fall through to error response
@@ -137,7 +136,7 @@ function checkAuthHealth(options = {}) {
       valid: false,
       account: metadata?.email || 'unknown',
       error: error.message.trim(),
-      remediationCommand: 'nlm login --force --storage file'
+      remediationCommand: 'npm run auth:nlm:heal'
     };
   }
 }

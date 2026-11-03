@@ -1241,6 +1241,15 @@ To ensure that future AI agents (Antigravity, Codex, Claude, or subagents) never
   - In `scripts/lib/sync/sync_payload_builder.js`, rules rendered into semantic Markdown sync payloads (`notebook_sync_payload_*.md`) must dynamically fall back across `r.ruleUpdate || r.rawMessage || r.rule || r.description || ''`. Rules without an explicit `ruleUpdate` property must never render `- **Rule**: undefined` into NotebookLM knowledge sources.
   - In `scripts/lib/sync/nlm_sync_client.js`, companion artifact hashing (`Catalog.json`, `Services.json`, `Catalog_Rules.json`, `OCA_Catalog.xlsx`) must check `fs.existsSync(artPath)` before reading files on disk. Specialized or storage product directories that do not feature all 4 companion files must never fail metadata activation or throw `ENOENT` during cloud sync.
 
+- **INV-227: Dedicated OpenClaw Interactive Chrome Profile & Port 18801 External CDP Protocol**:
+  - Interactive Google NotebookLM authentication is permanently decoupled from the builtin CLI subprocess launcher to prevent Windows Chrome process handoff failures, `SingletonLock` traps, and Google OAuth "browser or app may not be secure" bot blocks.
+  - Chrome runs in a dedicated persistent directory (`%LOCALAPPDATA%\NlmInteractiveChrome` on Windows, `~/Library/Application Support/NlmInteractiveChrome` on macOS, `~/.config/NlmInteractiveChrome` on Linux) with remote debugging strictly bound to port `18801`.
+  - Port `18801` is segregated from HPE OCA Partner Portal scraping (port `9222`) and default CLI internal ports (`18800`).
+  - Authentication extraction must run via `nlm login --profile default --provider openclaw --cdp-url http://127.0.0.1:18801 --storage file --force` with `stdio: ['ignore', 'pipe', 'pipe']`.
+  - Stale `SingletonLock` and `lockfile` entries in both the OpenClaw profile and `~/.notebooklm-mcp-cli/chrome-profiles/default` are pre-emptively cleaned whenever port 18801 is inactive.
+  - Automated one-shot healing is unified through `npm run auth:nlm:heal` (`scripts/maintenance/nlm_interactive_auth.js`), fully deprecating ungrounded calls to `nlm login --force --storage file`.
+
+
 
 
 

@@ -719,7 +719,7 @@ function syncToNotebookLMWithinLease(notebookId, payloadPath, chassisName = 'Unk
       } catch (authErr) {
         throw new Error(
           `NotebookLM credentials are stale or expired (${authErr.message.trim()}). ` +
-          `Please re-authenticate proactively by running in PowerShell: nlm login --force --storage file`
+          `Please re-authenticate proactively by running in PowerShell: npm run auth:nlm:heal`
         );
       }
     }

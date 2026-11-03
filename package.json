@@ -32,6 +32,8 @@
     "auth:nlm:check": "node scripts/maintenance/check_nlm_auth.js",
     "auth:nlm:heal": "node scripts/maintenance/check_nlm_auth.js --heal",
     "auth:nlm:fix": "node scripts/maintenance/check_nlm_auth.js --heal",
+    "auth:nlm:login": "node scripts/maintenance/nlm_interactive_auth.js",
+    "auth:nlm:open": "node scripts/maintenance/nlm_interactive_auth.js --open-only",
     "auth:heal": "node scripts/services/autonomous_oauth_flow.js",
     "build": "npm run build --workspace=dashboard",
     "lint": "npx -y oxlint dashboard/",

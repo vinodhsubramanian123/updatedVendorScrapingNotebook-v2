@@ -151,12 +151,12 @@ mcp__gemini-notebook-mcp__save_auth_tokens(cookies="<cookie_header>")
 #### CLI Authentication
 
 ```bash
-npm run auth:nlm:heal               # Recommended: Heals locks & runs nlm login --force --storage file
-nlm login                           # Launch browser, extract cookies (interactive method)
+npm run auth:nlm:heal               # Recommended: Launches dedicated Chrome on 18801 & logs in via openclaw CDP
+npm run auth:nlm:open               # Launches persistent NlmInteractiveChrome window on port 18801
+npm run auth:nlm:login              # Re-authenticates via openclaw CDP on port 18801
 nlm login --check                   # Validate current session
-nlm login --force --storage file    # Non-interactive force overwrite, bypasses keystore prompt
+nlm login --profile default --provider openclaw --cdp-url http://127.0.0.1:18801  # Direct external CDP provider
 nlm login --profile work            # Use named profile for multiple accounts
-nlm login --provider openclaw --cdp-url http://127.0.0.1:18800  # External CDP provider
 nlm login switch <profile>          # Switch the default profile
 nlm login profile list              # List all profiles with email addresses
 nlm login profile delete <name>     # Delete a profile
