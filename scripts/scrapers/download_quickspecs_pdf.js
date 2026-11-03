@@ -7,6 +7,7 @@ const fs      = require('fs');
 const path    = require('path');
 const crypto  = require('crypto');
 const { sendCommand, getAnyPageTarget, connectWS, sleep, CDP_PORT } = require('../lib/scraper/cdp.js');
+const { ensureChromeBrowserRunning } = require('../lib/scraper/browser_launcher.js');
 const { moveFile, cleanStrayPDFs } = require('../lib/system/fs_compat.js');
 
 if (!process.argv[2] || !process.argv[3]) {
@@ -49,6 +50,9 @@ async function main() {
 
   // Ensure the destination directory exists
   fs.mkdirSync(downloadDir, { recursive: true });
+
+  // Ensure Chrome is running with CDP enabled
+  await ensureChromeBrowserRunning(CDP_PORT, 'about:blank', { headless: true });
 
   // Snapshot existing PDFs before download starts (for file-diff detection)
   const filesBefore = new Set(
