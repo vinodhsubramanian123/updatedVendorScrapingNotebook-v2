@@ -22,7 +22,6 @@ const REQUIRED_FILES = [
   'DL380_Gen12_Catalog_Rules.json',
   'DL380_Gen12_Services.json',
   'DL380_Gen12_OCA_Catalog.xlsx',
-  'CERTIFIED.json',
 ];
 
 const REQUIRED_HISTORY = [

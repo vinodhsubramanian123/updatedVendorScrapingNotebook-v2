@@ -27,6 +27,15 @@ jobs:
       - name: Install dependencies
         run: npm install --include=optional
 
+      - name: Setup NotebookLM CLI mock
+        run: |
+          mkdir -p ~/.local/bin ~/.notebooklm-mcp-cli/profiles
+          echo '#!/bin/bash' > ~/.local/bin/nlm
+          echo 'echo "Mock NotebookLM output"' >> ~/.local/bin/nlm
+          chmod +x ~/.local/bin/nlm
+          echo '{"active": true}' > ~/.notebooklm-mcp-cli/profiles/default
+        shell: bash
+
       - name: Syntax check eval_boq.js
         run: node --check scripts/evaluators/eval_boq.js
 
