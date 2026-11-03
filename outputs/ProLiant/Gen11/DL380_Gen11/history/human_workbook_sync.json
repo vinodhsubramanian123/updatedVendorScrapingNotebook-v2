@@ -1,0 +1,168 @@
+{
+  "success": true,
+  "spreadsheetId": "1PAMB27QkjYXTSViEjNKcnZteZ9rvvObnSBBkZAGfF3w",
+  "backupFile": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\history\\drive_backups\\drive_backup_7974baea-3156-4e8c-b842-a237137d2ae9.json",
+  "tabsWritten": [
+    {
+      "title": "Certified Catalog",
+      "rows": 754
+    },
+    {
+      "title": "Verified Learnings",
+      "rows": 282
+    },
+    {
+      "title": "Change Log",
+      "rows": 5572
+    },
+    {
+      "title": "Sync Metadata",
+      "rows": 10
+    },
+    {
+      "title": "Category Summary",
+      "rows": 77
+    },
+    {
+      "title": "All SKUs",
+      "rows": 754
+    },
+    {
+      "title": "Chassis Variants",
+      "rows": 6
+    },
+    {
+      "title": "Chassis Options Matrix",
+      "rows": 6
+    },
+    {
+      "title": "Rules & Constraints",
+      "rows": 111
+    },
+    {
+      "title": "Hardware Accessories",
+      "rows": 10
+    },
+    {
+      "title": "Software & Licenses",
+      "rows": 996
+    },
+    {
+      "title": "Support Services",
+      "rows": 8
+    },
+    {
+      "title": "Catalog Diffs",
+      "rows": 170
+    },
+    {
+      "title": "Price History Timeline",
+      "rows": 1409
+    },
+    {
+      "title": "Processor",
+      "rows": 71
+    },
+    {
+      "title": "Memory",
+      "rows": 34
+    },
+    {
+      "title": "Networking",
+      "rows": 79
+    },
+    {
+      "title": "Power Supplies",
+      "rows": 3
+    },
+    {
+      "title": "Chassis",
+      "rows": 6
+    },
+    {
+      "title": "Accessories & Infrastructure",
+      "rows": 38
+    },
+    {
+      "title": "Cooling  Thermal",
+      "rows": 11
+    },
+    {
+      "title": "Cables & Enablement Kits",
+      "rows": 48
+    },
+    {
+      "title": "Drive Enclosures  Drives",
+      "rows": 63
+    },
+    {
+      "title": "Storage Controllers",
+      "rows": 21
+    },
+    {
+      "title": "PCIe Risers",
+      "rows": 15
+    },
+    {
+      "title": "OS Boot Device",
+      "rows": 4
+    },
+    {
+      "title": "Graphics & GPU",
+      "rows": 16
+    },
+    {
+      "title": "HPE Compute Ops Management",
+      "rows": 2
+    },
+    {
+      "title": "Discontinued SKUs",
+      "rows": 952
+    },
+    {
+      "title": "Metadata",
+      "rows": 22
+    }
+  ],
+  "readbackVerified": true,
+  "readbackFingerprints": {
+    "Certified Catalog": "e83018cd9cbfe9cec285b4f3617b448e705dac3df54f17e2a37f461af5ffba56",
+    "Verified Learnings": "4ed21682bd175ff8449cc0e1807d51a9797ec55109cb650cbe6ca3c30b3a5792",
+    "Change Log": "393729741374fccaaa53ea4963e0275b75237486e4e24c58892a93db5fe6e94c",
+    "Sync Metadata": "e7a0c9ea365d1be6c5287e071a33954b25f4c3390924579e42ebd93c12f9e1fc",
+    "Category Summary": "08d2554e4608d7687a7d50d2bf937450567afa0aab352fedc4f7e4d43fe59b4c",
+    "All SKUs": "bdb13cf2880c4579dae94141eed5e26e09bf4fa00e5630718fad6a9307dc6dc0",
+    "Chassis Variants": "1e6656cd68c7f3cc9d52ce36a8d282c288ebd72594b2b965567b7d2d9e1a54ea",
+    "Chassis Options Matrix": "f5e3011711677d720e9727f37b74b7f4fe21412c67dfae487603d26c77142241",
+    "Rules & Constraints": "e17c5418ef109e8244a6b6ce248134570febe22d9681f07fae7b7b5078f10a28",
+    "Hardware Accessories": "d4d563d5627b52cce383f26fa1cafaf16c9a87b3884967be1486be7aca636b93",
+    "Software & Licenses": "9f9402690f0c1cbc22294445ffa0fde9da7ec8c9c42dcec82f5d77a0d7281350",
+    "Support Services": "930f2f6b0d032bd8ba69627f38a085985ef25f2e1d84f981eb11720c6b962717",
+    "Catalog Diffs": "929adc66cdbd622ef83391b8dc87ecac52c75a581abcf358a4d8d9f950475a4e",
+    "Price History Timeline": "de61282e9dcce3c9b6ea41a44bb469ba0eb4a76aaf8fb32e03dadc7f72736f3e",
+    "Processor": "64261a3dee6232c7b6d8ed868c9f80f7d5b0c1f944fa02acea2a9cf1e35e11a7",
+    "Memory": "99b4ecd17edd71adee12abb7fb3a36d897b3ba8d3f57049bf3ecdf72f9dff4c3",
+    "Networking": "87463c7a2a9049c36339027fade4dd2a3f2131e386811a05d3b06626bb629c5c",
+    "Power Supplies": "0c2039b2ddc1a880168531462599979c4ee97f2c9884934a64c6fb5faf5cf70e",
+    "Chassis": "611adfd90f8b8cb1459dac556628e52b23407ea2047ed04cb378ae2a0752b533",
+    "Accessories & Infrastructure": "9bac014c0edb41a563d5436f84a513abdfb4b34eff0a0ec421c5c100df7f43d4",
+    "Cooling  Thermal": "1fad5c201a9eeca7ed56b9c8c88b005ab4e70ff1e03d023a53cf656ded847807",
+    "Cables & Enablement Kits": "599df83b7bb187b86050670d235db264bd0d14a8d5a794acfb46508b865ccd44",
+    "Drive Enclosures  Drives": "3203f149ab1c6218da8e14ae342856c42903922536435e59055f1a59126e6a9c",
+    "Storage Controllers": "93827d81695c312ddfd6b90b94d52c54b03b36e49bd4e65b338496d9cb53ce54",
+    "PCIe Risers": "7143a18cfcfe9acb12c76f417972d41babf1e8b3f2a7a2631a780a2575daaf1a",
+    "OS Boot Device": "f9282589f2f8536cb6fdf3d529bde9f2748ac8d6012056818346390025ee808d",
+    "Graphics & GPU": "c86b323905c16355ceb9680556dfa1d9019f88fdf1ea2a90afd3ef0a3900c60f",
+    "HPE Compute Ops Management": "3c17e623b51ba8a060049c45ed3b2f57b3c358a3df016ae59a8896ddf46fed8b",
+    "Discontinued SKUs": "e62c0d0872115f4b9485ed9db2ff40cbfd262462d589a828e1423719d932f663",
+    "Metadata": "3c587cebd20df28c7c1dd90638f62a5d852f1fcf45e72b07e9ce2b589fcb39f8"
+  },
+  "verifiedAt": "2026-11-03T08:07:07.966Z",
+  "fingerprints": {
+    "catalog": "e83018cd9cbfe9cec285b4f3617b448e705dac3df54f17e2a37f461af5ffba56",
+    "learnings": "7749321b9d12c0eb1f186031643b7d3b32a4435d01079d72c8724823c04fd27a",
+    "changes": "393729741374fccaaa53ea4963e0275b75237486e4e24c58892a93db5fe6e94c",
+    "workbook": "079a971c64567ea14423c4b622fe8bf4fe6e9c6330e9119385c9800e9ba41265",
+    "combined": "d8e25b2294ac673ef29dc9f6edbc0dab72605170cff639e65bbd3f5b72027501"
+  }
+}

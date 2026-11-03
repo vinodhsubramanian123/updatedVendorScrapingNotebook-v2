@@ -4,7 +4,7 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen12/DL580_Gen12`
 
-**Sync Timestamp**: 2026-10-28T09:49:11.140Z
+**Sync Timestamp**: 2026-11-03T08:19:44.524Z
 
 **Total Verified SKUs**: `868` (`485` Hardware + `383` Services)
 

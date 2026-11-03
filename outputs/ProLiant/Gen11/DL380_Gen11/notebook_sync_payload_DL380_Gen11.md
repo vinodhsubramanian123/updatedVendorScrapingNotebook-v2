@@ -4,7 +4,7 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen11/DL380_Gen11`
 
-**Sync Timestamp**: 2026-10-28T09:48:52.160Z
+**Sync Timestamp**: 2026-11-03T08:08:19.833Z
 
 **Total Verified SKUs**: `1408` (`753` Hardware + `655` Services)
 
@@ -57,7 +57,7 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
    - **Affected SKU**: `PORTAL` | **Required Dependency**: `P58335-B21`
 
 5. **[DELTA_RAG_CARRYOVER_P48183-B21_1787856180158] DL380_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen11 CTO Server`):
-   - **Rule**: undefined
+   - **Rule**: P48183-B21`)** [cite: 250] is fully supported
    - **Affected SKU**: `P48183-B21` | **Required Dependency**: `N/A`
 
 6. **[DELTA_CLIC_81354632_DL380_GEN11] DL380_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen11 CTO Server`):
@@ -81,15 +81,15 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
    - **Affected SKU**: `P38997-B21` | **Required Dependency**: `P35876-B21`
 
 11. **[DELTA_RAG_DEP_P02377-B21_P48918-B21_1787913302880] DL380_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen11 CTO Server`):
-   - **Rule**: undefined
+   - **Rule**: P02377-B21` or `P01366-B21` **mandates the inclusion of `P48918-B21
    - **Affected SKU**: `P02377-B21` | **Required Dependency**: `P48918-B21`
 
 12. **[DELTA_RAG_DEP_P58335-B21_P48918-B21_1787913632019] DL380_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen11 CTO Server`):
-   - **Rule**: undefined
+   - **Rule**: P58335-B21`)** with the **Smart Storage Hybrid Capacitor (`P02377-B21`)** strictly requires `P48918-B21
    - **Affected SKU**: `P58335-B21` | **Required Dependency**: `P48918-B21`
 
 13. **[DELTA_RAG_DEP_write-cach_P48918-B21_1787915281069] DL380_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen11 CTO Server`):
-   - **Rule**: undefined
+   - **Rule**: write-cache backup for `P58335-B21`; requires enablement cable **`P48918-B21
    - **Affected SKU**: `write-cach` | **Required Dependency**: `P48918-B21`
 
 
