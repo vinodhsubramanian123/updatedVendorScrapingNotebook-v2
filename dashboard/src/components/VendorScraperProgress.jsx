@@ -250,6 +250,8 @@ export default function VendorScraperProgress({
             onClick={() => setShowDetails(!showDetails)}
             className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-colors"
             title={showDetails ? 'Hide details' : 'Show details'}
+            aria-label={showDetails ? 'Hide details' : 'Show details'}
+            aria-expanded={showDetails}
           >
             {showDetails ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
           </button>
