@@ -1,3 +1,6 @@
 ## 2026-08-27 - [Disabled Button States]
 **Learning:** Found that custom buttons (`btn-primary` and `btn-secondary`) had no specific styling for their `disabled` state, causing them to appear active despite being unclickable. This degrades UX and accessibility, especially in forms or loading operations where visual feedback is crucial.
 **Action:** Always verify that custom buttons have an explicit `:disabled` pseudo-class (e.g., `opacity: 0.5; cursor: not-allowed;`) to ensure users instantly recognize when an action is unavailable.
+## 2024-05-18 - [Accessibility] Custom Toggle Switches Need Standard Attributes
+**Learning:** Custom toggle buttons implemented as `div` or `<button>` need explicit `role="switch"` and `aria-checked` bindings to be identifiable as toggles by screen readers. Furthermore, adding explicit `focus` and `focus-visible` classes is needed since they use custom tailwind background changes rather than native controls. Missing `aria-expanded` attributes on expandable content buttons also hides the interaction context from assistive technologies.
+**Action:** When implementing new custom switches, always include `role="switch"`, `aria-checked={stateVariable}`, `aria-labelledby` / `aria-label`, and `focus:ring` states. Add `aria-expanded={stateVariable}` to trigger elements of expandable panels.
