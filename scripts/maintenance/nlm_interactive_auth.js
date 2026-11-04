@@ -130,7 +130,8 @@ async function ensureNlmChromeRunning(options = {}) {
   }
 
   const profileDir = options.profileDir || getNlmProfileDir();
-  cleanStaleProfileLocks(profileDir);
+  // An unavailable CDP port does not prove that the profile is unused.
+  // Let Chrome enforce profile ownership instead of deleting live locks.
   if (!fs.existsSync(profileDir)) {
     fs.mkdirSync(profileDir, { recursive: true });
   }
@@ -148,12 +149,20 @@ async function ensureNlmChromeRunning(options = {}) {
 
   try {
     const proc = spawnChromeDetached(chromeBin, chromeArgs);
+    let launchError = null;
+    let exitCode = null;
+    proc.once('error', (err) => { launchError = err; });
+    proc.once('exit', (code) => { exitCode = code; });
     proc.unref();
 
     const start = Date.now();
     const timeoutMs = options.timeoutMs || 20000;
     while (Date.now() - start < timeoutMs) {
       await new Promise(r => setTimeout(r, 600));
+      if (launchError) return { ok: false, error: launchError.message, port };
+      if (exitCode !== null && exitCode !== 0) {
+        return { ok: false, error: `Chrome process exited with code ${exitCode}`, port };
+      }
       if (await isCdpAlive(port)) {
         return { ok: true, launched: true, port };
       }
@@ -178,9 +187,9 @@ function parseCheckOutput(stdout) {
   };
 }
 
-function verifyNlmCheck(extendedPath) {
+function verifyNlmCheck(extendedPath, profile = 'default') {
   try {
-    const checkStdout = execFileSync('nlm', ['login', '--profile', 'default', '--check'], {
+    const checkStdout = execFileSync('nlm', ['login', '--profile', profile, '--check'], {
       encoding: 'utf-8',
       timeout: 25000,
       stdio: ['ignore', 'pipe', 'pipe'],
@@ -194,6 +203,7 @@ function verifyNlmCheck(extendedPath) {
 
 async function loginViaOpenClaw(options = {}) {
   const port = options.port || NLM_CDP_PORT;
+  const profile = options.profile || 'default';
   const extendedPath = getExtendedPath();
 
   const chromeRes = await ensureNlmChromeRunning({ port });
@@ -208,7 +218,7 @@ async function loginViaOpenClaw(options = {}) {
   try {
     const loginArgs = [
       'login',
-      '--profile', 'default',
+      '--profile', profile,
       '--provider', 'openclaw',
       '--cdp-url', `http://127.0.0.1:${port}`,
       '--storage', 'file',
@@ -230,7 +240,7 @@ async function loginViaOpenClaw(options = {}) {
     };
   }
 
-  const checkRes = verifyNlmCheck(extendedPath);
+  const checkRes = verifyNlmCheck(extendedPath, profile);
   return {
     ok: checkRes.valid,
     ...checkRes
@@ -239,10 +249,11 @@ async function loginViaOpenClaw(options = {}) {
 
 async function healNlmAuth(options = {}) {
   const force = options.force === true;
+  const profile = options.profile || 'default';
   const extendedPath = getExtendedPath();
 
   if (!force) {
-    const checkRes = verifyNlmCheck(extendedPath);
+    const checkRes = verifyNlmCheck(extendedPath, profile);
     if (checkRes.valid) {
       return {
         ok: true,
@@ -259,6 +270,8 @@ async function main() {
   const asJson = process.argv.includes('--json');
   const openOnly = process.argv.includes('--open-only');
   const force = process.argv.includes('--force');
+  const profileIdx = process.argv.indexOf('--profile');
+  const profile = profileIdx !== -1 && process.argv[profileIdx + 1] ? process.argv[profileIdx + 1] : 'default';
 
   if (openOnly) {
     const res = await ensureNlmChromeRunning();
@@ -270,7 +283,7 @@ async function main() {
     process.exit(res.ok ? 0 : 1);
   }
 
-  const result = await healNlmAuth({ force });
+  const result = await healNlmAuth({ force, profile });
 
   if (asJson) {
     console.log(JSON.stringify(result, null, 2));

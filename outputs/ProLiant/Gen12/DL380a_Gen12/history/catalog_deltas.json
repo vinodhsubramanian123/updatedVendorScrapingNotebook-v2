@@ -405,5 +405,53 @@
     "generation": "Gen12",
     "pillar": "SERVER",
     "ruleUpdate": "Portal validation warnings on HPE ProLiant Compute DL380a Gen12 8DW/16SW CTO Server (P76706-B21) and HPE Compute Ops Management Standard 3-year SaaS (R7A11AAE) have cleared to clean/pass in latest OCA release. 64GB DDR5-6400 memory (P69728-F21) discontinuation date extended to 2030-06-30."
+  },
+  {
+    "deltaId": "LEARN_DL380A_GEN12_RAID1_MULTI_DRIVE_20261104",
+    "ruleType": "WORKFLOW_VENDOR_OBSERVATION_ADVISORY",
+    "affectedSku": "339778-B21",
+    "vendor": "HPE",
+    "pillar": "SERVER",
+    "family": "ProLiant",
+    "generation": "Gen12",
+    "productId": "DL380a_Gen12",
+    "chassis": "DL380a_Gen12",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "governanceStatus": "ACTIVE",
+    "evidenceType": "WORKFLOW_REVIEW",
+    "rawMessage": "In HPE OCA / CLIC on DL380a Gen12, 339778-B21 (HPE RAID 1 Drive 1 FIO Setting) strictly enforces Drive Count == 2. When >2 drives (e.g. 4x NVMe SSDs) are configured without a full-cage RAID 5/10 setting, CLIC rejects 339778-B21 with array geometry mismatch and suggests 389692-B21 (HPE Customer Defined RAID Setting Service, max 1) or omitting FIO settings when dedicated NS204i-u boot device P78279-B21 is present.",
+    "timestamp": "2026-11-04T18:38:13.047Z"
+  },
+  {
+    "deltaId": "LEARN_DL380A_GEN12_BOOT_DATA_DECOUPLING_20261104",
+    "ruleType": "WORKFLOW_VENDOR_OBSERVATION_ADVISORY",
+    "affectedSku": "P78279-B21",
+    "vendor": "HPE",
+    "pillar": "SERVER",
+    "family": "ProLiant",
+    "generation": "Gen12",
+    "productId": "DL380a_Gen12",
+    "chassis": "DL380a_Gen12",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "governanceStatus": "ACTIVE",
+    "evidenceType": "WORKFLOW_REVIEW",
+    "rawMessage": "HPE NS204i-u v2 480GB Boot Device (P78279-B21) and front boot cage (P75284-B21) have zero hardware, cage, or bus dependency on SFF data drives (P63833-B21 / P50219-B21 / P50216-B21), 4SFF drive cage (P74710-B21), or direct-attach cables (P74702-B21). Boot tier and data tier can be configured independently or together.",
+    "timestamp": "2026-11-04T18:38:34.785Z"
+  },
+  {
+    "deltaId": "LEARN_DL380A_GEN12_TURNKEY_RACKING_CABLING_20261104",
+    "ruleType": "WORKFLOW_VENDOR_OBSERVATION_ADVISORY",
+    "affectedSku": "P69770-B21",
+    "vendor": "HPE",
+    "pillar": "SERVER",
+    "family": "ProLiant",
+    "generation": "Gen12",
+    "productId": "DL380a_Gen12",
+    "chassis": "DL380a_Gen12",
+    "scopeTaxonomy": "CHASSIS_SPECIFIC",
+    "governanceStatus": "ACTIVE",
+    "evidenceType": "WORKFLOW_REVIEW",
+    "rawMessage": "DL380a Gen12 base CTO chassis P76706-B21 does not bundle rack rails. When customer tender requests installation, racking, and cabling, P69770-B21 (Ball Bearing Rail Kit) is mandatory to mount the 4U chassis. Furthermore, SFP28 networking adapters (P10115-B21) require 2x 845398-B21 (25Gb SFP28 SR Transceivers) or DAC cables to prevent site cabling failure.",
+    "timestamp": "2026-11-04T18:38:34.868Z"
   }
 ]

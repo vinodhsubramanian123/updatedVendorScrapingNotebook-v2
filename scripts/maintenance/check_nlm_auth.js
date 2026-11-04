@@ -7,9 +7,8 @@
  * Validates NotebookLM credentials headlessly via `nlm login --check`.
  * When authentication is valid, exits 0.
  * When stale or expired, and autoHeal is requested (--heal), it automatically:
- *   1. Terminates any orphaned headless Chrome processes holding port 9222.
- *   2. Removes stale lockfiles in the profile directory.
- *   3. Re-authenticates via non-interactive `nlm login --force --storage file`.
+ *   Re-authenticates through the dedicated interactive Chrome on port 18801.
+ * Health probes never remove browser locks or terminate browser processes.
  *
  * Usage:
  *   node scripts/maintenance/check_nlm_auth.js [--json] [--heal]
@@ -63,7 +62,8 @@ function cleanStaleNlmChromeAndLocks() {
 
 function checkAuthHealth(options = {}) {
   const autoHeal = options.autoHeal === true;
-  const profileDir = path.join(os.homedir(), '.notebooklm-mcp-cli', 'profiles', 'default');
+  const profile = options.profile || 'default';
+  const profileDir = path.join(os.homedir(), '.notebooklm-mcp-cli', 'profiles', profile);
   const metadataPath = path.join(profileDir, 'metadata.json');
   let metadata = null;
   if (fs.existsSync(metadataPath)) {
@@ -76,14 +76,8 @@ function checkAuthHealth(options = {}) {
   const homeBin = path.join(os.homedir(), '.local', 'bin');
   const extendedPath = [homeBin, envPath].filter(Boolean).join(path.delimiter);
 
-  cleanStaleNlmChromeAndLocks();
   try {
-    const { cleanStaleProfileLocks } = require('./nlm_interactive_auth.js');
-    cleanStaleProfileLocks();
-  } catch { /* ignore */ }
-
-  try {
-    const stdout = execFileSync('nlm', ['login', '--check'], {
+    const stdout = execFileSync('nlm', ['login', '--profile', profile, '--check'], {
       encoding: 'utf-8',
       timeout: 45000,
       stdio: ['ignore', 'pipe', 'pipe'],
@@ -91,6 +85,7 @@ function checkAuthHealth(options = {}) {
     });
 
     const isValid = stdout.includes('Authentication valid');
+    if (!isValid && autoHeal) throw new Error('NotebookLM authentication check returned INVALID');
     const notebooksMatch = stdout.match(/Notebooks found:\s*(\d+)/);
     const accountMatch = stdout.match(/Account:\s*([^\r\n]+)/);
 
@@ -100,16 +95,20 @@ function checkAuthHealth(options = {}) {
       account: accountMatch ? accountMatch[1].trim() : (metadata?.email || 'unknown'),
       notebooksFound: notebooksMatch ? parseInt(notebooksMatch[1], 10) : null,
       lastValidated: metadata?.last_validated || new Date().toISOString(),
-      rawOutput: stdout.trim()
+      rawOutput: stdout.trim(),
+      ...(isValid ? {} : { remediationCommand: 'npm run auth:nlm:heal' })
     };
   } catch (error) {
     if (autoHeal) {
       try {
-        cleanStaleNlmChromeAndLocks();
         const interactiveScript = path.join(__dirname, 'nlm_interactive_auth.js');
-        const healStdout = execFileSync(process.execPath, [interactiveScript, '--json'], {
+        const healArgs = [interactiveScript, '--json'];
+        if (profile !== 'default') {
+          healArgs.push('--profile', profile);
+        }
+        const healStdout = execFileSync(process.execPath, healArgs, {
           encoding: 'utf-8',
-          timeout: 60000,
+          timeout: 120000,
           stdio: ['ignore', 'pipe', 'pipe'],
           env: { ...process.env, PATH: extendedPath }
         });

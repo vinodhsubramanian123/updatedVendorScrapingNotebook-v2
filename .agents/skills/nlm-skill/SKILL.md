@@ -42,8 +42,8 @@ nlm --version           # Check installed version
 
 ## Critical Rules (Read First!)
 
-1. **Authenticate when needed & verify proactively (`INV-181`)**: Verify credentials headlessly using `npm run auth:nlm:check` or `nlm login --check` before long operations. If stale or expired, run `npm run auth:nlm:heal` (or `npm run auth:nlm:fix` / `node scripts/maintenance/check_nlm_auth.js --heal`). This automatically kills any orphaned headless Chrome processes holding port 9222, wipes stale lockfiles (`lockfile`, `SingletonLock`), and executes non-interactive `nlm login --force --storage file` (completely bypassing OS keystore `[y/N]` prompts). Follow with the MCP `refresh_auth` tool. Saved cookies remain usable for 7–14 days.
-2. **Headless Chrome Zombie Hazard & Port 9222 Reclamation (`INV-181`)**: When automated scripts run Chrome with `--headless=new`, process timeouts or abrupt exits can leave Chrome running invisibly in the background. Because it holds port 9222 and locks the profile directory, subsequent interactive `nlm login` commands cannot bind port 9222 or open Chrome UI windows. **Closing the desktop Chrome GUI does NOT terminate background headless processes.** Always run `npm run auth:nlm:heal` to clean zombie processes and release locks.
+1. **Authenticate when needed & verify proactively (`INV-181`, `INV-227`)**: Verify credentials headlessly using `npm run auth:nlm:check` or `nlm login --profile default --check` before long operations. Probes are strictly read-only and non-destructive. If stale or expired (including exit-0 expiration messages), run `npm run auth:nlm:heal` (or `npm run auth:nlm:fix` / `node scripts/maintenance/check_nlm_auth.js --heal`). This launches dedicated NlmInteractiveChrome on port 18801 and executes non-interactive OpenClaw CDP login `nlm login --profile default --provider openclaw --cdp-url http://127.0.0.1:18801 --storage file --force` (completely bypassing OS keystore `[y/N]` prompts). Follow with the MCP `refresh_auth` tool. Saved cookies remain usable for 7–14 days.
+2. **Dedicated Port 18801 vs. OCA Port 9222 Isolation (`INV-227`)**: Port 9222 is reserved strictly for HPE OCA Partner Portal scraping (`INV-223`). NotebookLM interactive and headless authentication is segregated to port 18801 with dedicated profile `%LOCALAPPDATA%\NlmInteractiveChrome`. Health probes never terminate processes on port 9222 or unlink locks; dedicated browser startup preserves profile locks, and outer supervisor timeouts are leased at $\ge 120$s with asynchronous spawn error handling.
 3. **Google Cloud OAuth 7-Day Refresh Token Cliff**: When the GCP project's OAuth Consent Screen is in "Testing" mode, Google Cloud automatically expires OAuth 2.0 refresh tokens after exactly 7 days (168 hours). Setting Publishing Status to "In Production" in Google Cloud Console eliminates the 7-day cliff permanently. For routine Google Drive/Sheets token re-authorization, run `npm run auth:heal`.
 4. **Do not confuse network failures with expired auth**: `auth_status="unverified"` means the probe was inconclusive. Check connectivity or try an API call before asking the user to log in again.
 5. **Auto-Authentication Recovery**: The CLI includes automatic 3-layer auth recovery (CSRF refresh -> Token reload -> Headless Auth) and 3x server error retries. Most errors are handled automatically. You only need to run `npm run auth:nlm:heal` if all recovery layers fail.
@@ -121,7 +121,7 @@ User wants to...
 # Proactive headless health check
 npm run auth:nlm:check              # Exits 0 if valid, 1 if stale/expired
 
-# Automated one-shot healing (kills zombie headless Chrome on 9222, removes lockfiles, re-logs in non-interactively)
+# Automated one-shot healing (launches dedicated Chrome on 18801, logs in via openclaw CDP, verifies profile)
 npm run auth:nlm:heal               # or: npm run auth:nlm:fix
 
 # Google Cloud Drive / Sheets ADC re-authorization
