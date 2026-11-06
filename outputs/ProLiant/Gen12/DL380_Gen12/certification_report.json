@@ -1,0 +1,16 @@
+{
+  "chassis": "DL380_Gen12",
+  "certifiedAt": "2026-11-06T14:40:27.979Z",
+  "status": "FAIL",
+  "totalDurationMs": 81677,
+  "totalUniqueSKUs": 0,
+  "steps": [
+    {
+      "id": "pipeline_evals",
+      "label": "Post-flight pipeline guardrails",
+      "status": "FAIL",
+      "durationMs": 3278,
+      "error": "Command failed: node tests/integration/test_pipeline_evals.js --post-flight-only \"/app/outputs/ProLiant/Gen12/DL380_Gen12/DL380_Gen12_OCA_Catalog.xlsx\""
+    }
+  ]
+}
