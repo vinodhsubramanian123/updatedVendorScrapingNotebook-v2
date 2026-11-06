@@ -248,6 +248,8 @@ export default function VendorScraperProgress({
 
           <button
             onClick={() => setShowDetails(!showDetails)}
+            aria-expanded={showDetails}
+            aria-label={showDetails ? 'Hide details' : 'Show details'}
             className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-colors"
             title={showDetails ? 'Hide details' : 'Show details'}
           >
