@@ -747,6 +747,7 @@ function validateSupportRules(ctx) {
     support.unsolicitedOptionalItems.forEach(item => {
       const adv = `Unsolicited Optional Service / Software (INV-32): SKU ${item.sku} (${item.description}) detected (${item.extendedPriceUsd || 0}). Optional startup service or add-on software was not explicitly requested by customer.`;
       warnings.push(adv);
+      missingDependencies.push({ sku: "UNSOLICITED_OPTIONAL_SERVICE", key: "UNSOLICITED_OPTIONAL_SERVICE", type: "COMMERCIAL_SERVICE_EXCLUSION" });
     });
   }
 }
