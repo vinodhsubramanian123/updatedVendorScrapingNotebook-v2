@@ -2,8 +2,8 @@
 
 **Document Classification:** Canonical Ground-Truth Architecture & Validation Charter<br>
 **Maintained By:** HPE ProLiant AI Studio Autonomous Knowledge Engine (Antigravity AI)<br>
-**Last Synchronized:** 2026-11-02T15:23:12.048Z<br>
-**Total Deduplicated Learned Rules:** 139<br>
+**Last Synchronized:** 2026-11-06T14:49:55.380Z<br>
+**Total Deduplicated Learned Rules:** 119<br>
 **Universal Invariant Compliance:** INV-1 through INV-38 Certified<br>
 **Google Drive Destination:** `shared_folder_id: 1YR0lBh-gg00amKHRxuOqp5Aea3iL5O7-`
 
@@ -160,44 +160,22 @@ The Catalog Vendor Solution provides modular, AI-assisted catalog ingestion, nor
 
 ## 5. Deduplicated Learned Rule Ledger & Verification Provenance
 
-Total verified rules indexed in this build: **139**.
+Total verified rules indexed in this build: **119**.
 
 | Scope | Target Chassis | Category | Affected SKU | Dependency SKU | Rule Summary / Validation Directive | Verifications |
 | :--- | :--- | :--- | :--- | :--- | :--- | :---: |
-| 🌐 UNIVERSAL | `GLOBAL` | `ERROR_DIAGNOSTIC_ATTRIBUTION` | `SOLUTION_TREE_ITEM_0100_01` | `—` | When Rule 81039677 occurs on multi-icon tenders, trace errors to individual child icon containers instead of modifying t | 1x |
-| 🌐 UNIVERSAL | `GLOBAL` | `ICON_SUPPORT_ISOLATION` | `HU4B2A3` | `—` | Configure support services independently per icon container. Never broadcast support attributes across diverse product f | 1x |
-| 🌐 UNIVERSAL | `GLOBAL` | `SESSION_RECOVERY_PROTOCOL` | `HU4B2A3` | `—` | Historical service-selector workaround only: in an authenticated working OCA configuration with contradictory service se | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `SUPPORT_POLICY` | `undefined` | `—` | Preserve explicit customer support term and tier in the closest rank; use 3-year Tech Care Basic only when unspecified o | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `ICON_SUPPORT_ISOLATION` | `undefined` | `—` | Select Services from Components for the owning icon, edit its dropdowns, and leave both apply-to-all icons and apply-to- | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `SESSION_RECOVERY_PROTOCOL` | `undefined` | `—` | When OCA says it encountered a problem, restart from Partner Portal refresh/login and open One Config Advanced through Q | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `CUSTOMER_INTENT_POLICY` | `undefined` | `—` | Closest rank preserves customer requirements and makes only necessary compatibility/buildability changes. Budget alterna | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `COMPONENT_DOMAIN_ROUTING` | `undefined` | `—` | Route by component role and exact product, never vendor or family alone. Synergy compute, fabric and frame use separate  | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `GUARDRAIL_RECOVERY_POLICY` | `undefined` | `—` | Gemini guardrail API sends must retain systemInstruction and function declarations when overriding SDK send config. Enfo | 1x |
+| 🌐 UNIVERSAL | `GLOBAL` | `ERROR_DIAGNOSTIC_ATTRIBUTION` | `SOLUTION_TREE_ITEM_0100_01` | `—` | When Rule 81039677 occurs on multi-icon tenders, trace errors to individual child icon containers instead of modifying t | 1x |
+| 🌐 UNIVERSAL | `GLOBAL` | `ICON_SUPPORT_ISOLATION` | `HU4B2A3` | `—` | Configure support services independently per icon container. Never broadcast support attributes across diverse product f | 1x |
+| 🌐 UNIVERSAL | `GLOBAL` | `SESSION_RECOVERY_PROTOCOL` | `HU4B2A3` | `—` | Historical service-selector workaround only: in an authenticated working OCA configuration with contradictory service se | 1x |
 | 📦 CHASSIS | `Alletra_Storage_System` | `STORAGE_CHASSIS_SPECIFIC` | `R0Q37A` | `—` | HPE Alletra Storage MP B10000 base storage controller chassis is R0Q37A (HPE Alletra MP Dual-Node Storage Controller Bas | 1x |
 | 📦 CHASSIS | `Alletra_Storage_System` | `STORAGE_DOMAIN_FIREWALL` | `R0Q37A` | `—` | Storage domain separation (INV-194): Alletra storage controller bays, expansion JBOFs, FC/iSCSI target adapters, and sto | 1x |
 | 📦 CHASSIS | `Alletra_Storage_System` | `NOTEBOOK_PURITY_GOVERNANCE` | `undefined` | `—` | Per Invariant INV-24, customer BOQ spreadsheets and unverified tender documents (including Latest Alletra Requirement BO | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `P74700-B21` | `—` | Observed price drift on P74700-B21 (memory) | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `S4A91C` | `—` | Observed price drift on S4A91C (drive) | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `HA113A1` | `—` | Observed price drift on HA113A1 (support) | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `HU4B2A30C4W` | `—` | Observed price drift on HU4B2A30C4W (service) | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `SKU_SUBSTITUTION` | `P70436-B21` | `P91249-B21` | When customer quotes specify P70436-B21, substitute with active Multi Vendor SKU P91249-B21 (same High Performance U.3 s | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `BATTERY_EXEMPTION` | `R7J57A` | `—` | Exempt Intel VROC and NS204i-u boot devices from Smart Storage Battery P01367-B21 requirement. Battery is exclusively re | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `WORKFLOW_DUAL_PUBLICATION_ADVISORY` | `undefined` | `—` | Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Goog | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `WORKFLOW_SOURCE_RETIREMENT_ADVISORY` | `undefined` | `—` | Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata bef | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY` | `undefined` | `—` | Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending date | 1x |
-| 📦 CHASSIS | `GLOBAL` | `ENVIRONMENT_HEALING_PROTOCOL` | `NLM_MCP_AUTH` | `—` | Headless Chrome instances (--headless=new) spawned during background pre-flights can become orphaned zombies on port 922 | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `STORAGE_COLLISION` | `P74710-B21` | `—` | DL380a prohibits mixing 4SFF cage P74710-B21 and 4EDSFF cage P74712-B21. | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `PROCESSOR_POPULATION` | `P76706-B21` | `—` | DL380a Gen12 requires two identical processor models; single-processor and mixed-processor configurations are unsupporte | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `POWER_REDUNDANCY` | `P76706-B21` | `—` | Requires a minimum of five power supplies for 2DW/4DW GPU configurations (up to eight for N+N grid redundancy or pre-pop | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `LIVE_QUOTE_RECONCILIATION` | `HU4B2A30C4W` | `—` | Pointnext support on 8-GPU H200 DL380a scales to accelerator tier ($11,306), install scales to 4U GPU tier ($507), NVLin | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `SOFTWARE_OPTIONALITY` | `S1A05A` | `—` | Cloud Management FIO Enablement (S1A05A) and Compute Ops Management SaaS (R7A11AAE) are strictly optional services/licen | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `STORAGE_OVERRIDE` | `873763-B21` | `—` | When 873763-B21 is present, bypass physical drive cage, storage controller, and battery minimums. | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `LOCALIZATION_GATE` | `P73282-B21` | `P73325-B21` | If Gen12 CTO base chassis is selected, P73325-B21 is mandatory for portal buildability. | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `MANAGEMENT_LICENSING` | `P73282-B21` | `R7A11AAE` | Gen12 requires exactly 1 management SaaS license (R7A11AAE). Remove redundant BD505A when R7A11AAE is selected. | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `POWER_BYPASS` | `P38995-B21` | `P35876-B21` | If Platinum PSUs are selected on Gen12, P35876-B21 clears EU Lot 9 CE prompts. | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `THERMAL_TRACKING` | `P73282-B21` | `P79558-B21` | P79558-B21 tracks 25C ambient baseline for Gen12 chassis. | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `COOLING_MANDATE` | `P74507-B21` | `P48820-B21` | CPUs > 185W TDP mandate High-Performance Fan Kit P48820-B21 and High-Performance Heatsink P74792-B21. | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `DEPENDENCY` | `HU4B2A30C4V` | `P73282-B21` | Every HPE ProLiant DL380 Gen12 server (P73282-B21) requires a hardware maintenance support contract. Common customer err | 1x |
 | 📦 CHASSIS | `DL145_Gen11` | `PROCESSOR_FAMILY` | `P71964-B21` | `—` | DL145 Gen11 is single-socket AMD EPYC 8004 only. No dual-socket configurations supported. | 1x |
 | 📦 CHASSIS | `DL145_Gen11` | `DRIVE_CAGE_FORMAT` | `P71985-B21` | `P77271-B21` | DL145 Gen11 uses EDSFF E3.S form factor drives only. Standard SFF/LFF drives are incompatible. | 1x |
 | 📦 CHASSIS | `DL145_Gen11` | `PSU_WATTAGE_LIMIT` | `P71964-B21` | `P54290-B21` | DL145 Gen11 supports maximum 1000W PSUs. 1600W/2400W PSUs are physically incompatible. | 1x |
@@ -272,23 +250,24 @@ Total verified rules indexed in this build: **139**.
 | 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_DUAL_PUBLICATION_ADVISORY` | `undefined` | `—` | Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Goog | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_SOURCE_RETIREMENT_ADVISORY` | `undefined` | `—` | Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata bef | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY` | `undefined` | `—` | Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending date | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `SUPPORT_PRICING_UPDATE` | `HU4B2A30C4W` | `P76706-B21` | HPE DL380a Gen12 Support (HU4B2A30C4W, under HU4B2A3 3Y Tech Care Basic) list price updated in November 2026 OCA catalog | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `SUPPLY_CHAIN_LEAD_TIME_BOTTLENECK` | `S3U30C` | `—` | CRITICAL PRESALES CONSTRAINT: NVIDIA H200 NVL 141GB PCIe Accelerator (S3U30C) carries an estimated availability factory  | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `CLIC_STATUS_CLEARANCE` | `P76706-B21` | `—` | Portal validation warnings on HPE ProLiant Compute DL380a Gen12 8DW/16SW CTO Server (P76706-B21) and HPE Compute Ops Man | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `SUPPORT_PRICING_UPDATE` | `HU4B2A30C4V` | `P73282-B21` | HPE DL380 Gen12 Support (HU4B2A30C4V, under HU4B2A3 3Y Tech Care Basic) list price updated in November 2026 OCA catalog  | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `CLIC_STATUS_CLEARANCE` | `P73282-B21` | `—` | Portal validation warnings on HPE ProLiant DL380 Gen12 SFF NC CTO Server (P73282-B21) and HPE Compute Ops Management Sta | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `LEAD_TIME_AND_LIFECYCLE` | `P73282-B21` | `—` | DL380 Gen12 CTO base chassis (P73282-B21) availability lead time improved to 14 days (down from 30 days). Xeon 6787P CPU | 1x |
-| 📦 CHASSIS | `SY480_Gen12` | `STARTUP_SERVICE_FORMULA` | `HA124A1` | `HA124A1#5ZM` | Onsite Frame Startup requires exactly 1x HA124A1#5ZM + (TotalFrames - 1)x HA124A1#5ZQ. Purge all HA124A1#V0F lines when  | 1x |
-| 📦 CHASSIS | `SY480_Gen12` | `HARDWARE_SUPPORT_1TO1` | `867796-B21` | `HU4B2A3#Z1R` | Qty of HU4B2A3#Z1R must exactly equal qty of 867796-B21 (VC SE 100Gb F32 Module). | 1x |
-| 📦 CHASSIS | `SY480_Gen12` | `HARDWARE_SUPPORT_1TO1` | `872957-B21` | `HU4B2A3#Z1Q` | Qty of HU4B2A3#Z1Q must exactly equal qty of 872957-B21 (Synergy Composer2 Management Appliance). | 1x |
-| 📦 CHASSIS | `SY480_Gen12` | `HARDWARE_SUPPORT_1TO1` | `P77653-B21` | `HU4B2A30BU5` | Qty of HU4B2A30BU5 must exactly equal qty of P77653-B21 (Brocade 64Gb FC Switch Module). | 1x |
-| 📦 CHASSIS | `SY480_Gen12` | `HARDWARE_SUPPORT_1TO1` | `P68217-B21` | `HU4B2A30BT7` | Qty of HU4B2A30BT7 must exactly equal qty of P68217-B21 (HPE SY480 Gen12 Compute Module). | 1x |
-| 📦 CHASSIS | `SY480_Gen12` | `DECOUPLING` | `HA124A1` | `HU4B2A3` | HPE Synergy quoting requires strict decoupling of two independent service domains: (1) HU4B2A3 — ongoing Point-of-Sale h | 1x |
-| 📦 CHASSIS | `SY480_Gen12` | `EXCLUSION` | `HA124A1#V0F` | `HA124A1#5ZM` | Remote startup (HA124A1#V0F) and Onsite startup (HA124A1#5ZM) are mutually exclusive delivery models for Synergy frame d | 1x |
-| 📦 CHASSIS | `GLOBAL` | `DIAGNOSTIC` | `P73282-B21` | `HA124A1#5ZM` | In multi-icon OCA solutions (Icon Separation mode), CLIC Rule 81039677 ("Installation and Startup must be quoted for ALL | 1x |
-| 📦 CHASSIS | `SY480_Gen12` | `ISOLATION` | `HU4B2A3` | `—` | When applying support services in OCA multi-icon solutions, NEVER check "Apply displayed install/support to all icons in | 1x |
-| 📦 CHASSIS | `GLOBAL` | `PROCEDURE` | `HU4B2A3` | `—` | When OCA CLIC Rules 99916598/99916599 persist after correcting support quantities, the stale rules cache must be flushed | 1x |
-| 📦 CHASSIS | `SY480_Gen12` | `PLACEMENT` | `HA124A1#5ZM` | `HA124A1#5ZQ` | Synergy startup services (HA124A1#5ZM First Frame Onsite, HA124A1#5ZQ Additional Frame Onsite) must be placed ONLY at th | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `P74700-B21` | `—` | Observed price drift on P74700-B21 (memory) | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `S4A91C` | `—` | Observed price drift on S4A91C (drive) | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `HA113A1` | `—` | Observed price drift on HA113A1 (support) | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `HU4B2A30C4W` | `—` | Observed price drift on HU4B2A30C4W (service) | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `SKU_SUBSTITUTION` | `P70436-B21` | `P91249-B21` | When customer quotes specify P70436-B21, substitute with active Multi Vendor SKU P91249-B21 (same High Performance U.3 s | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `BATTERY_EXEMPTION` | `R7J57A` | `—` | Exempt Intel VROC and NS204i-u boot devices from Smart Storage Battery P01367-B21 requirement. Battery is exclusively re | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `WORKFLOW_DUAL_PUBLICATION_ADVISORY` | `undefined` | `—` | Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Goog | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `WORKFLOW_SOURCE_RETIREMENT_ADVISORY` | `undefined` | `—` | Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata bef | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY` | `undefined` | `—` | Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending date | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `SUPPORT_PRICING_UPDATE` | `HU4B2A30C4W` | `P76706-B21` | HPE DL380a Gen12 Support (HU4B2A30C4W, under HU4B2A3 3Y Tech Care Basic) list price updated in November 2026 OCA catalog | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `SUPPLY_CHAIN_LEAD_TIME_BOTTLENECK` | `S3U30C` | `—` | CRITICAL PRESALES CONSTRAINT: NVIDIA H200 NVL 141GB PCIe Accelerator (S3U30C) carries an estimated availability factory  | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `CLIC_STATUS_CLEARANCE` | `P76706-B21` | `—` | Portal validation warnings on HPE ProLiant Compute DL380a Gen12 8DW/16SW CTO Server (P76706-B21) and HPE Compute Ops Man | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `WORKFLOW_VENDOR_OBSERVATION_ADVISORY` | `339778-B21` | `—` | In HPE OCA / CLIC on DL380a Gen12, 339778-B21 (HPE RAID 1 Drive 1 FIO Setting) strictly enforces Drive Count == 2. When  | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `WORKFLOW_VENDOR_OBSERVATION_ADVISORY` | `P78279-B21` | `—` | HPE NS204i-u v2 480GB Boot Device (P78279-B21) and front boot cage (P75284-B21) have zero hardware, cage, or bus depende | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `WORKFLOW_VENDOR_OBSERVATION_ADVISORY` | `P69770-B21` | `—` | DL380a Gen12 base CTO chassis P76706-B21 does not bundle rack rails. When customer tender requests installation, racking | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `EXCLUSION_UNBUILDABLE` | `R3P67A` | `Q2E58AAE` | On HPE Synergy 12000 Frames (P51174-B21) populated solely with SY480 Gen12 compute nodes (P68217-B21), selecting Virtual | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `STANDALONE_ORDERING_TAXONOMY` | `R3P67A` | `R3P67AAE` | R3P67A is a Factory Integrated Option (FIO LTU) ending in 'A', which strictly requires sub-iteming under a factory CTO c | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `MULTI_ORDER_PARTITIONING_PATTERN` | `P51174-B21` | `Q2E58AAE` | When a multi-frame Synergy deployment (e.g. 2 frames, 24 nodes) is partitioned into separate commercial orders (Option B | 1x |
@@ -303,6 +282,7 @@ Total verified rules indexed in this build: **139**.
 | 📦 CHASSIS | `SY100Gb_F32_Module` | `WORKFLOW_SOURCE_RETIREMENT_ADVISORY` | `undefined` | `—` | Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata bef | 1x |
 | 📦 CHASSIS | `SY100Gb_F32_Module` | `WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY` | `undefined` | `—` | Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending date | 1x |
 | 📦 CHASSIS | `SY100Gb_F32_Module` | `SUPPORT_PRICING_UPDATE` | `HU4B2A3 Z1R` | `—` | HPE Virtual Connect SE 100Gb F32 Module for Synergy Support (HU4B2A3 Z1R, under HU4B2A3 3Y Tech Care Basic) list price u | 1x |
+| 📦 CHASSIS | `GLOBAL` | `ENVIRONMENT_HEALING_PROTOCOL` | `NLM_MCP_AUTH` | `—` | Headless Chrome instances (--headless=new) spawned during background pre-flights can become orphaned zombies on port 922 | 1x |
 
 ---
 *End of Master Running Knowledge & Learnings Charter. Auto-generated and synchronized by Antigravity AI.*
