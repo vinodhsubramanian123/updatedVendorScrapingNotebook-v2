@@ -113,6 +113,15 @@ export default function AmbiguityInbox({ evalResults, chassisContext, onReEvalua
       <div 
         className="bg-amber-100/70 p-4 border-b border-amber-300 flex justify-between items-center cursor-pointer"
         onClick={() => setIsOpen(!isOpen)}
+        role="button"
+        tabIndex={0}
+        aria-expanded={isOpen}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            setIsOpen(!isOpen);
+          }
+        }}
       >
         <div className="flex items-center gap-2 text-amber-950">
           <HelpCircle className="w-5 h-5 text-amber-900 stroke-[2.25px]" />
