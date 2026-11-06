@@ -200,6 +200,7 @@ export default function RuleLogicVisualizer({ selectedChassis, evalResults, chas
                   {/* Tree Header / Branch Parent Node */}
                   <div 
                     onClick={() => toggleNode(lvl)}
+                    aria-expanded={isExpanded}
                     className="p-3.5 flex items-center justify-between cursor-pointer select-none border-b border-slate-200/60"
                   >
                     <div className="flex items-center gap-2.5">
