@@ -62,147 +62,153 @@ function extractKnowledgeFromRagAnswer(ragAnswer, chassisDir, context = {}) {
     )];
     const pLower = unit.toLowerCase();
 
-    // 1. Extract BTO -> FIO Option Type Substitutions
-    const hasBtoContext = pLower.includes('bto') || pLower.includes('retail') || pLower.includes('not allowed') || pLower.includes('blocked') || pLower.includes('prohibited');
-    const hasFioContext = pLower.includes('fio') || pLower.includes('cto') || pLower.includes('factory') || pLower.includes('equivalent');
-
-    if (hasBtoContext && hasFioContext && validSkus.length >= 2) {
-      const btoSku = validSkus.find(s => s.endsWith('-B21'));
-      if (btoSku) {
-        const fioSku = validSkus.find(s => s !== btoSku && (s.endsWith('-F21') || s.endsWith('-0D1') || s.startsWith(btoSku.slice(0, 6))));
-        if (fioSku) {
-          addDelta({
-            deltaId: `DELTA_RAG_FIO_${btoSku}_${fioSku}_${Date.now()}`,
-            chassis: chassisName,
-            errorType: 'PERMANENT_PHYSICAL_DEPENDENCY',
-            ruleType: 'OPTION_TYPE_SUBSTITUTION',
-            affectedSku: btoSku,
-            requiredDependencySku: fioSku,
-            reasoning: `Grounding Verification: Standalone BTO option ${btoSku} is restricted in CTO base builds. Required Factory Integrated Option (FIO) replacement is ${fioSku}.`,
-            rawMessage: unit.slice(0, 300).trim(),
-            // A substitution observed for one CTO product is not automatically
-            // safe across its generation. Promotion requires separate evidence.
-            scopeTaxonomy: context.scopeTaxonomy || 'CHASSIS_SPECIFIC',
-            source: 'NOTEBOOKLM_GROUNDING',
-            timestamp: new Date().toISOString()
-          });
-          continue;
-        }
-      }
-    }
-
-    // 2. Extract Cross-Generation / Carry-Over Validations
-    if (pLower.includes('officially validated') || pLower.includes('fully supported') || pLower.includes('listed under') || pLower.includes('carry-over') || pLower.includes('carry over') || (pLower.includes('supported') && pLower.includes('validated'))) {
-      if (validSkus.length >= 1) {
-        const primarySku = validSkus[0];
-        addDelta({
-          deltaId: `DELTA_RAG_CARRYOVER_${primarySku}_${Date.now()}`,
-          chassis: chassisName,
-          errorType: 'PERMANENT_PHYSICAL_DEPENDENCY',
-          ruleType: 'CARRY_OVER_VALIDATED',
-          affectedSku: primarySku,
-          requiredDependencySku: null,
-          reasoning: `Grounding Verification: Part ${primarySku} is officially validated as a supported carry-over component in ${chassisName} QuickSpecs.`,
-          rawMessage: unit.slice(0, 300).trim(),
-          scopeTaxonomy: 'CHASSIS_SPECIFIC',
-          source: 'NOTEBOOKLM_GROUNDING',
-          timestamp: new Date().toISOString()
-        });
-        continue;
-      }
-    }
-
-    // 3. Hardware Dependency Chains (Cables, Triggers, Accessories)
-    const isSubstitution = pLower.includes('instead of') || pLower.includes('replaced by') || pLower.includes('superseded by');
-    const isNegativeOrAdvisory = isSubstitution || pLower.includes('capped at') || pLower.includes('capped') || pLower.includes('cannot be used') || pLower.includes('not supported') || pLower.includes('incompatible') || pLower.includes('while acceptable') || pLower.includes('optional');
-    
-    if (isSubstitution && validSkus.length >= 2) {
-      // Capture substitution knowledge with accurate direction:
-      // "X replaced by Y" / "X superseded by Y" -> X is obsolete (affectedSku), Y is target (requiredDependencySku)
-      // "Use Y instead of X" -> Y is target replacement, X is obsolete
-      let targetSku;
-      let obsoleteSku;
-      if (pLower.includes('replaced by') || pLower.includes('superseded by')) {
-        obsoleteSku = validSkus[0];
-        targetSku = validSkus[1];
-      } else {
-        targetSku = validSkus[0];
-        obsoleteSku = validSkus[1];
-      }
-
-      addDelta({
-        deltaId: `DELTA_RAG_SUBST_${obsoleteSku}_${targetSku}_${Date.now()}`,
-        chassis: chassisName,
-        errorType: 'SKU_SUBSTITUTION',
-        ruleType: 'SKU_SUBSTITUTION',
-        affectedSku: obsoleteSku,
-        requiredDependencySku: targetSku,
-        reasoning: `Grounding Verification: Component ${obsoleteSku} is superseded by ${targetSku} in ${chassisName}.`,
-        rawMessage: unit.slice(0, 300).trim(),
-        scopeTaxonomy: classifyKnowledgeScope(unit),
-        source: 'NOTEBOOKLM_GROUNDING',
-        timestamp: new Date().toISOString()
-      });
-      continue;
-    }
-
-    if (!isNegativeOrAdvisory && (pLower.includes('require') || pLower.includes('mandate') || pLower.includes('must configure') || pLower.includes('must be selected'))) {
-      if (validSkus.length >= 2) {
-        const parentSku = validSkus[0];
-        const childSku = validSkus[1];
-        if (parentSku !== childSku) {
-          // Check for generic domain capability mention (INV-56)
-          let capabilityTag = null;
-          if (pLower.includes('fan') || pLower.includes('cooling')) capabilityTag = 'HIGH_PERFORMANCE_COOLING';
-          else if (pLower.includes('expander') || pLower.includes('switch')) capabilityTag = 'STORAGE_EXPANDER_OR_SWITCH';
-          else if (pLower.includes('auxiliary') || pLower.includes('gpu power')) capabilityTag = 'GPU_AUXILIARY_POWER_AND_TITANIUM_PSU';
-          else if (pLower.includes('drive blank') || pLower.includes('no drive')) capabilityTag = 'NO_DRIVE_BLANK_OR_FIO_BYPASS';
-
-          addDelta({
-            deltaId: `DELTA_RAG_DEP_${parentSku}_${childSku}_${Date.now()}`,
-            chassis: chassisName,
-            errorType: 'PERMANENT_PHYSICAL_DEPENDENCY',
-            ruleType: 'DEPENDENCY_CHAIN',
-            affectedSku: parentSku,
-            requiredDependencySku: childSku,
-            requiredCapability: capabilityTag,
-            reasoning: `Grounding Verification: Selecting ${parentSku} requires auxiliary component ${childSku} to satisfy physical/telemetry routing.`,
-            rawMessage: unit.slice(0, 300).trim(),
-            scopeTaxonomy: classifyKnowledgeScope(unit),
-            source: 'NOTEBOOKLM_GROUNDING',
-            timestamp: new Date().toISOString()
-          });
-          continue;
-        }
-      }
-    }
-
-    // 4. Extract Discrepancy & Differing Opinion Flags (Presales Human Review Trigger)
-    const isBaselineOmission = /(?:unverified|untrusted)\s+(?:baseline|input|proposal|quote|request|customer)|(?:correctly|properly)\s+omitted|omitted\s+(?:the\s+)?unverified/i.test(unit);
-    const hasUnverifiedConstraint = (/(?:remains?|is|are)\s+unverified\b/i.test(unit) || /\bunverified\s+(?:constraint|specification|compatibility|support|rule|option|part)\b/i.test(unit)) && !isBaselineOmission;
-    const hasExplicitDiscrepancy = (pLower.includes('discrepancy') || pLower.includes('contradiction') || pLower.includes('conflict') || pLower.includes('differs from') || pLower.includes('human review')) && !isBaselineOmission;
-
-    if (hasExplicitDiscrepancy || hasUnverifiedConstraint) {
-      if (validSkus.length >= 1) {
-        const flaggedSku = validSkus[0];
-        addDelta({
-          deltaId: `DELTA_RAG_DISCREPANCY_${flaggedSku}_${Date.now()}`,
-          chassis: chassisName,
-          errorType: 'OPINION_DISCREPANCY_FLAG',
-          ruleType: 'HUMAN_REVIEW_REQUIRED',
-          affectedSku: flaggedSku,
-          requiredDependencySku: null,
-          reasoning: `Presales Discrepancy Alert: Grounding identified a potential divergence or unverified constraint regarding SKU ${flaggedSku}. Human presales review recommended.`,
-          rawMessage: unit.slice(0, 300).trim(),
-          scopeTaxonomy: 'CHASSIS_SPECIFIC',
-          source: 'NOTEBOOKLM_GROUNDING',
-          timestamp: new Date().toISOString()
-        });
-      }
-    }
+    if (_extractFioSubstitution(unit, pLower, validSkus, chassisName, context, addDelta)) continue;
+    if (_extractCarryOverValidation(unit, pLower, validSkus, chassisName, addDelta)) continue;
+    if (_extractSkuSubstitution(unit, pLower, validSkus, chassisName, addDelta)) continue;
+    if (_extractDependencyChain(unit, pLower, validSkus, chassisName, addDelta)) continue;
+    _extractDiscrepancyFlag(unit, pLower, validSkus, chassisName, addDelta);
   }
 
   return deltas;
+}
+
+function _inferCapabilityTag(pLower) {
+  if (pLower.includes('fan') || pLower.includes('cooling')) return 'HIGH_PERFORMANCE_COOLING';
+  if (pLower.includes('expander') || pLower.includes('switch')) return 'STORAGE_EXPANDER_OR_SWITCH';
+  if (pLower.includes('auxiliary') || pLower.includes('gpu power')) return 'GPU_AUXILIARY_POWER_AND_TITANIUM_PSU';
+  if (pLower.includes('drive blank') || pLower.includes('no drive')) return 'NO_DRIVE_BLANK_OR_FIO_BYPASS';
+  return null;
+}
+
+function _extractFioSubstitution(unit, pLower, validSkus, chassisName, context, addDelta) {
+  const hasBtoContext = pLower.includes('bto') || pLower.includes('retail') || pLower.includes('not allowed') || pLower.includes('blocked') || pLower.includes('prohibited');
+  const hasFioContext = pLower.includes('fio') || pLower.includes('cto') || pLower.includes('factory') || pLower.includes('equivalent');
+
+  if (!hasBtoContext || !hasFioContext || validSkus.length < 2) return false;
+  const btoSku = validSkus.find(s => s.endsWith('-B21'));
+  if (!btoSku) return false;
+  const fioSku = validSkus.find(s => s !== btoSku && (s.endsWith('-F21') || s.endsWith('-0D1') || s.startsWith(btoSku.slice(0, 6))));
+  if (!fioSku) return false;
+
+  addDelta({
+    deltaId: `DELTA_RAG_FIO_${btoSku}_${fioSku}_${Date.now()}`,
+    chassis: chassisName,
+    errorType: 'PERMANENT_PHYSICAL_DEPENDENCY',
+    ruleType: 'OPTION_TYPE_SUBSTITUTION',
+    affectedSku: btoSku,
+    requiredDependencySku: fioSku,
+    reasoning: `Grounding Verification: Standalone BTO option ${btoSku} is restricted in CTO base builds. Required Factory Integrated Option (FIO) replacement is ${fioSku}.`,
+    rawMessage: unit.slice(0, 300).trim(),
+    scopeTaxonomy: context.scopeTaxonomy || 'CHASSIS_SPECIFIC',
+    source: 'NOTEBOOKLM_GROUNDING',
+    timestamp: new Date().toISOString()
+  });
+  return true;
+}
+
+function _extractCarryOverValidation(unit, pLower, validSkus, chassisName, addDelta) {
+  const isCarryOverMatch = pLower.includes('officially validated') || pLower.includes('fully supported') || pLower.includes('listed under') || pLower.includes('carry-over') || pLower.includes('carry over') || (pLower.includes('supported') && pLower.includes('validated'));
+  if (!isCarryOverMatch || validSkus.length < 1) return false;
+
+  const primarySku = validSkus[0];
+  addDelta({
+    deltaId: `DELTA_RAG_CARRYOVER_${primarySku}_${Date.now()}`,
+    chassis: chassisName,
+    errorType: 'PERMANENT_PHYSICAL_DEPENDENCY',
+    ruleType: 'CARRY_OVER_VALIDATED',
+    affectedSku: primarySku,
+    requiredDependencySku: null,
+    reasoning: `Grounding Verification: Part ${primarySku} is officially validated as a supported carry-over component in ${chassisName} QuickSpecs.`,
+    rawMessage: unit.slice(0, 300).trim(),
+    scopeTaxonomy: 'CHASSIS_SPECIFIC',
+    source: 'NOTEBOOKLM_GROUNDING',
+    timestamp: new Date().toISOString()
+  });
+  return true;
+}
+
+function _extractSkuSubstitution(unit, pLower, validSkus, chassisName, addDelta) {
+  const isSubstitution = pLower.includes('instead of') || pLower.includes('replaced by') || pLower.includes('superseded by');
+  if (!isSubstitution || validSkus.length < 2) return false;
+
+  let targetSku;
+  let obsoleteSku;
+  if (pLower.includes('replaced by') || pLower.includes('superseded by')) {
+    obsoleteSku = validSkus[0];
+    targetSku = validSkus[1];
+  } else {
+    targetSku = validSkus[0];
+    obsoleteSku = validSkus[1];
+  }
+
+  addDelta({
+    deltaId: `DELTA_RAG_SUBST_${obsoleteSku}_${targetSku}_${Date.now()}`,
+    chassis: chassisName,
+    errorType: 'SKU_SUBSTITUTION',
+    ruleType: 'SKU_SUBSTITUTION',
+    affectedSku: obsoleteSku,
+    requiredDependencySku: targetSku,
+    reasoning: `Grounding Verification: Component ${obsoleteSku} is superseded by ${targetSku} in ${chassisName}.`,
+    rawMessage: unit.slice(0, 300).trim(),
+    scopeTaxonomy: classifyKnowledgeScope(unit),
+    source: 'NOTEBOOKLM_GROUNDING',
+    timestamp: new Date().toISOString()
+  });
+  return true;
+}
+
+function _extractDependencyChain(unit, pLower, validSkus, chassisName, addDelta) {
+  const isSubstitution = pLower.includes('instead of') || pLower.includes('replaced by') || pLower.includes('superseded by');
+  const isNegativeOrAdvisory = isSubstitution || pLower.includes('capped at') || pLower.includes('capped') || pLower.includes('cannot be used') || pLower.includes('not supported') || pLower.includes('incompatible') || pLower.includes('while acceptable') || pLower.includes('optional');
+  if (isNegativeOrAdvisory) return false;
+
+  const hasRequirement = pLower.includes('require') || pLower.includes('mandate') || pLower.includes('must configure') || pLower.includes('must be selected');
+  if (!hasRequirement || validSkus.length < 2) return false;
+
+  const parentSku = validSkus[0];
+  const childSku = validSkus[1];
+  if (parentSku === childSku) return false;
+
+  const capabilityTag = _inferCapabilityTag(pLower);
+  addDelta({
+    deltaId: `DELTA_RAG_DEP_${parentSku}_${childSku}_${Date.now()}`,
+    chassis: chassisName,
+    errorType: 'PERMANENT_PHYSICAL_DEPENDENCY',
+    ruleType: 'DEPENDENCY_CHAIN',
+    affectedSku: parentSku,
+    requiredDependencySku: childSku,
+    requiredCapability: capabilityTag,
+    reasoning: `Grounding Verification: Selecting ${parentSku} requires auxiliary component ${childSku} to satisfy physical/telemetry routing.`,
+    rawMessage: unit.slice(0, 300).trim(),
+    scopeTaxonomy: classifyKnowledgeScope(unit),
+    source: 'NOTEBOOKLM_GROUNDING',
+    timestamp: new Date().toISOString()
+  });
+  return true;
+}
+
+function _extractDiscrepancyFlag(unit, pLower, validSkus, chassisName, addDelta) {
+  const isBaselineOmission = /(?:unverified|untrusted)\s+(?:baseline|input|proposal|quote|request|customer)|(?:correctly|properly)\s+omitted|omitted\s+(?:the\s+)?unverified/i.test(unit);
+  const hasUnverifiedConstraint = (/(?:remains?|is|are)\s+unverified\b/i.test(unit) || /\bunverified\s+(?:constraint|specification|compatibility|support|rule|option|part)\b/i.test(unit)) && !isBaselineOmission;
+  const hasExplicitDiscrepancy = (pLower.includes('discrepancy') || pLower.includes('contradiction') || pLower.includes('conflict') || pLower.includes('differs from') || pLower.includes('human review')) && !isBaselineOmission;
+
+  if ((!hasExplicitDiscrepancy && !hasUnverifiedConstraint) || validSkus.length < 1) return false;
+
+  const flaggedSku = validSkus[0];
+  addDelta({
+    deltaId: `DELTA_RAG_DISCREPANCY_${flaggedSku}_${Date.now()}`,
+    chassis: chassisName,
+    errorType: 'OPINION_DISCREPANCY_FLAG',
+    ruleType: 'HUMAN_REVIEW_REQUIRED',
+    affectedSku: flaggedSku,
+    requiredDependencySku: null,
+    reasoning: `Presales Discrepancy Alert: Grounding identified a potential divergence or unverified constraint regarding SKU ${flaggedSku}. Human presales review recommended.`,
+    rawMessage: unit.slice(0, 300).trim(),
+    scopeTaxonomy: 'CHASSIS_SPECIFIC',
+    source: 'NOTEBOOKLM_GROUNDING',
+    timestamp: new Date().toISOString()
+  });
+  return true;
 }
 
 /**

@@ -52,38 +52,109 @@ function makeCheck(id, name, severity, status, detail, evidence = {}) {
 /**
  * Universal Acceptance Criteria (U1–U5)
  */
+function _checkU1NonEmpty(output) {
+  if (!output) return false;
+  if (typeof output === 'string') return output.trim().length > 0;
+  if (Array.isArray(output.items) && output.items.length > 0) return true;
+  if (Array.isArray(output.rankedSolutions) && output.rankedSolutions.length > 0) return true;
+  if (output.result && typeof output.result === 'object' && Object.keys(output.result).length > 0) return true;
+  if (typeof output.answer === 'string' && output.answer.trim().length > 0) return true;
+  if (typeof output.message === 'string' && output.message.trim().length > 0) return true;
+  if (Array.isArray(output.extractedItems) && output.extractedItems.length > 0) return true;
+  if (Array.isArray(output.recommendedBom) && output.recommendedBom.length > 0) return true;
+  if (Array.isArray(output.generatedBoq) && output.generatedBoq.length > 0) return true;
+  if (typeof output.exportPath === 'string' && output.exportPath.trim().length > 0) return true;
+  if (Array.isArray(output.outputRows) && output.outputRows.length > 0) return true;
+
+  const objectFields = [
+    'pricingTrail', 'auditReport', 'liveDetails', 'carrierFleetSummary',
+    'deliverableSummary', 'competitorSpec', 'dna', 'budgetOptimization',
+    'leastDeltaCandidate', 'clusterAnalysis', 'feedbackProcessed', 'drift', 'syncResult'
+  ];
+  return objectFields.some(field => output[field] !== undefined);
+}
+
+function _extractAllOutputSkus(output) {
+  const extractedSkus = [];
+  if (Array.isArray(output?.items)) {
+    extractedSkus.push(...output.items.map(it => it.sku || it['Product #']).filter(Boolean));
+  }
+  const ranked = output?.rankedSolutions || output?.conflictGraph?.rankedSolutions;
+  if (Array.isArray(ranked)) {
+    ranked.forEach(r => {
+      const parts = r.skuPartsList || r.skuList || [];
+      extractedSkus.push(...parts.map(p => p.sku || p['Product #']).filter(Boolean));
+    });
+  }
+  if (Array.isArray(output?.synthesizedBom)) {
+    extractedSkus.push(...output.synthesizedBom.map(it => it.sku || it['Product #']).filter(Boolean));
+  }
+  if (typeof output?.answer === 'string') {
+    const rawMatches = output.answer.match(/\b([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6}|[A-Z0-9]{5,8}AAE|[HURS][A-Z0-9]{4,11})\b/g) || [];
+    extractedSkus.push(...rawMatches);
+  }
+  return [...new Set(extractedSkus.map(cleanBaseSKU).filter(Boolean))];
+}
+
+function _checkU3SkusPresent(uniqueSkus, catalogData) {
+  if (uniqueSkus.length === 0) {
+    return makeCheck('U3', 'Referenced SKUs Present in Scoped Catalog', 'BLOCK', 'NOT_APPLICABLE', 'No hardware part numbers referenced in response.');
+  }
+
+  const invalidSyntaxSkus = uniqueSkus.filter(s => !isValidHpeSKU(s));
+  if (invalidSyntaxSkus.length > 0) {
+    return makeCheck('U3', 'Referenced SKUs Present in Scoped Catalog', 'BLOCK', 'FAILED',
+      `SKU syntax check failed: ${invalidSyntaxSkus.length} invalid part number(s) [${invalidSyntaxSkus.join(', ')}].`,
+      { invalidSyntaxSkus });
+  }
+
+  if (!catalogData) {
+    return makeCheck('U3', 'Referenced SKUs Present in Scoped Catalog', 'BLOCK', 'UNKNOWN',
+      `All ${uniqueSkus.length} SKU(s) have valid HPE syntax, but scoped catalog data was not provided to verify catalog presence and lifecycle status.`,
+      { uniqueSkusCount: uniqueSkus.length, catalogSupplied: false });
+  }
+
+  const catalogIndex = buildCatalogSkuIndex(catalogData);
+  const unverifiedSkus = uniqueSkus.filter(s => !catalogIndex.has(s));
+  if (unverifiedSkus.length > 0) {
+    return makeCheck('U3', 'Referenced SKUs Present in Scoped Catalog', 'BLOCK', 'FAILED',
+      `SKU catalog check failed: ${unverifiedSkus.length} SKU(s) absent from scoped catalog [${unverifiedSkus.join(', ')}].`,
+      { unverifiedSkus, totalReferenced: uniqueSkus.length });
+  }
+
+  return makeCheck('U3', 'Referenced SKUs Present in Scoped Catalog', 'BLOCK', 'PASSED',
+    `All ${uniqueSkus.length} referenced SKU(s) verified present in scoped catalog; live orderability remains separate.`,
+    { verifiedCount: uniqueSkus.length });
+}
+
+function _checkU5HonestUncertainty(output) {
+  const isAmbiguous = Boolean(output?.isAmbiguous || output?.requiresUserConfirmation);
+  const honestReported = !isAmbiguous ||
+    (typeof output?.message === 'string' && output.message.toLowerCase().includes('ambiguous')) ||
+    (output?.confidence && output.confidence.score < 0.95);
+  return honestReported
+    ? makeCheck('U5', 'Honest Uncertainty', 'BLOCK', 'PASSED', 'Uncertainties, ambiguities, or gaps are transparently surfaced.')
+    : makeCheck('U5', 'Honest Uncertainty', 'BLOCK', 'FAILED', 'Output has unresolved ambiguities that were not explicitly reported to the user.', { isAmbiguous });
+}
+
+function _checkU6ConditionalDiscovery(output, context, catalogData, chassis) {
+  const runtimePlan = require('./runtime_discovery_plan').buildRuntimeDiscoveryPlan(output || {}, {
+    catalogData, targetDir: context.catalogDir || context.targetDir || output?.catalogDir,
+    productId: context.chassisName || chassis
+  });
+  if (runtimePlan.configurations.some(config => config.probes.length || config.blockers.length)) {
+    return makeCheck('U6', 'BOQ-scoped Conditional Discovery', 'BLOCK', 'UNKNOWN',
+      'Investigate absent/conditional SKUs in the exact live configuration; a catalog miss is not proof of incompatibility. Runtime plan is not vendor acceptance.',
+      { runtimeDiscoveryPlan: runtimePlan });
+  }
+  return null;
+}
+
 function validateUniversalCriteria(output, context = {}) {
   const checks = [];
 
   // U1: Non-Empty Response (BLOCK)
-  const hasContent = Boolean(
-    output && (
-      (typeof output === 'string' && output.trim().length > 0) ||
-      (Array.isArray(output.items) && output.items.length > 0) ||
-      (Array.isArray(output.rankedSolutions) && output.rankedSolutions.length > 0) ||
-      (output.result && typeof output.result === 'object' && Object.keys(output.result).length > 0) ||
-      (typeof output.answer === 'string' && output.answer.trim().length > 0) ||
-      (typeof output.message === 'string' && output.message.trim().length > 0) ||
-      (output.pricingTrail !== undefined) ||
-      (output.auditReport !== undefined) ||
-      (output.liveDetails !== undefined) ||
-      (Array.isArray(output.extractedItems) && output.extractedItems.length > 0) ||
-      (output.carrierFleetSummary !== undefined) ||
-      (output.deliverableSummary !== undefined) ||
-      (output.competitorSpec !== undefined) ||
-      (Array.isArray(output.recommendedBom) && output.recommendedBom.length > 0) ||
-      (output.dna !== undefined) ||
-      (output.budgetOptimization !== undefined) ||
-      (output.leastDeltaCandidate !== undefined) ||
-      (output.clusterAnalysis !== undefined) ||
-      (Array.isArray(output.generatedBoq) && output.generatedBoq.length > 0) ||
-      (typeof output.exportPath === 'string' && output.exportPath.trim().length > 0) ||
-      (Array.isArray(output.outputRows) && output.outputRows.length > 0) ||
-      (output.feedbackProcessed !== undefined) ||
-      (output.drift !== undefined) ||
-      (output.syncResult !== undefined)
-    )
-  );
+  const hasContent = _checkU1NonEmpty(output);
   checks.push(
     hasContent
       ? makeCheck('U1', 'Non-Empty Response', 'BLOCK', 'PASSED', 'Response contains actionable recommendations, data, or findings.')
@@ -100,72 +171,14 @@ function validateUniversalCriteria(output, context = {}) {
   );
 
   // U3: Referenced SKUs Present in Scoped Catalog (BLOCK)
-  let extractedSkus = [];
-  if (Array.isArray(output?.items)) {
-    extractedSkus.push(...output.items.map(it => it.sku || it['Product #']).filter(Boolean));
-  }
-  if (Array.isArray(output?.rankedSolutions || output?.conflictGraph?.rankedSolutions)) {
-    (output.rankedSolutions || output.conflictGraph.rankedSolutions).forEach(r => {
-      const parts = r.skuPartsList || r.skuList || [];
-      extractedSkus.push(...parts.map(p => p.sku || p['Product #']).filter(Boolean));
-    });
-  }
-  if (Array.isArray(output?.synthesizedBom)) {
-    extractedSkus.push(...output.synthesizedBom.map(it => it.sku || it['Product #']).filter(Boolean));
-  }
-  if (typeof output?.answer === 'string') {
-    const rawMatches = output.answer.match(/\b([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6}|[A-Z0-9]{5,8}AAE|[HURS][A-Z0-9]{4,11})\b/g) || [];
-    extractedSkus.push(...rawMatches);
-  }
-
-  const uniqueSkus = [...new Set(extractedSkus.map(cleanBaseSKU).filter(Boolean))];
+  const uniqueSkus = _extractAllOutputSkus(output);
   const catalogData = context.catalogData || output?.catalogData || output?.chassisInfo?.catalogData;
-
-  if (uniqueSkus.length === 0) {
-    checks.push(
-      makeCheck('U3', 'Referenced SKUs Present in Scoped Catalog', 'BLOCK', 'NOT_APPLICABLE', 'No hardware part numbers referenced in response.')
-    );
-  } else {
-    const invalidSyntaxSkus = uniqueSkus.filter(s => !isValidHpeSKU(s));
-    if (invalidSyntaxSkus.length > 0) {
-      checks.push(
-        makeCheck('U3', 'Referenced SKUs Present in Scoped Catalog', 'BLOCK', 'FAILED',
-          `SKU syntax check failed: ${invalidSyntaxSkus.length} invalid part number(s) [${invalidSyntaxSkus.join(', ')}].`,
-          { invalidSyntaxSkus })
-      );
-    } else if (!catalogData) {
-      checks.push(
-        makeCheck('U3', 'Referenced SKUs Present in Scoped Catalog', 'BLOCK', 'UNKNOWN',
-          `All ${uniqueSkus.length} SKU(s) have valid HPE syntax, but scoped catalog data was not provided to verify catalog presence and lifecycle status.`,
-          { uniqueSkusCount: uniqueSkus.length, catalogSupplied: false })
-      );
-    } else {
-      const catalogIndex = buildCatalogSkuIndex(catalogData);
-      const unverifiedSkus = uniqueSkus.filter(s => !catalogIndex.has(s));
-      if (unverifiedSkus.length > 0) {
-        checks.push(
-          makeCheck('U3', 'Referenced SKUs Present in Scoped Catalog', 'BLOCK', 'FAILED',
-            `SKU catalog check failed: ${unverifiedSkus.length} SKU(s) absent from scoped catalog [${unverifiedSkus.join(', ')}].`,
-            { unverifiedSkus, totalReferenced: uniqueSkus.length })
-        );
-      } else {
-        checks.push(
-          makeCheck('U3', 'Referenced SKUs Present in Scoped Catalog', 'BLOCK', 'PASSED',
-            `All ${uniqueSkus.length} referenced SKU(s) verified present in scoped catalog; live orderability remains separate.`,
-            { verifiedCount: uniqueSkus.length })
-        );
-      }
-    }
-  }
+  checks.push(_checkU3SkusPresent(uniqueSkus, catalogData));
 
   // U4: Timestamp & Provenance (WARN)
   const hasProvenance = Boolean(
-    output?.timestamp ||
-    output?.provenance ||
-    output?.traceId ||
-    output?.catalogDir ||
-    context?.catalogDir ||
-    output?.source
+    output?.timestamp || output?.provenance || output?.traceId ||
+    output?.catalogDir || context?.catalogDir || output?.source
   );
   checks.push(
     hasProvenance
@@ -174,25 +187,12 @@ function validateUniversalCriteria(output, context = {}) {
   );
 
   // U5: Honest Uncertainty (BLOCK)
-  const isAmbiguous = Boolean(output?.isAmbiguous || output?.requiresUserConfirmation);
-  const honestReported = !isAmbiguous ||
-    (typeof output?.message === 'string' && output.message.toLowerCase().includes('ambiguous')) ||
-    (output?.confidence && output.confidence.score < 0.95);
-  checks.push(
-    honestReported
-      ? makeCheck('U5', 'Honest Uncertainty', 'BLOCK', 'PASSED', 'Uncertainties, ambiguities, or gaps are transparently surfaced.')
-      : makeCheck('U5', 'Honest Uncertainty', 'BLOCK', 'FAILED', 'Output has unresolved ambiguities that were not explicitly reported to the user.', { isAmbiguous })
-  );
+  checks.push(_checkU5HonestUncertainty(output));
 
-  // A complete catalog is not evidence that this exact option combination was checked.
-  const runtimePlan = require('./runtime_discovery_plan').buildRuntimeDiscoveryPlan(output || {}, {
-    catalogData, targetDir: context.catalogDir || context.targetDir || output?.catalogDir,
-    productId: context.chassisName || chassis
-  });
-  if (runtimePlan.configurations.some(config => config.probes.length || config.blockers.length)) {
-    checks.push(makeCheck('U6', 'BOQ-scoped Conditional Discovery', 'BLOCK', 'UNKNOWN',
-      'Investigate absent/conditional SKUs in the exact live configuration; a catalog miss is not proof of incompatibility. Runtime plan is not vendor acceptance.',
-      { runtimeDiscoveryPlan: runtimePlan }));
+  // U6: BOQ-scoped Conditional Discovery
+  const u6Check = _checkU6ConditionalDiscovery(output, context, catalogData, chassis);
+  if (u6Check) {
+    checks.push(u6Check);
   }
   return checks;
 }
@@ -204,7 +204,7 @@ const CANONICAL_ASPECT_MAP = {
   PCIE_RISER: ['PCIE_RISER', 'ASPECT_4', 'PCIE SLOT & RISER ASPECT', 'SXM / PCIE HIGH-POWER GPU BUS ASPECT', 'PCIE RISER', 'PCIE'],
   NETWORKING_OCP: ['NETWORKING_OCP', 'ASPECT_5', 'NETWORKING & OCP ADAPTER ASPECT', 'IB / ROCE HIGH-SPEED FABRIC ASPECT', 'INFINIBAND / ROCE HIGH-SPEED FABRIC ASPECT', 'NETWORKING OCP', 'NETWORKING'],
   POWER_ENVIRONMENT: ['POWER_ENVIRONMENT', 'ASPECT_6', 'POWER SUPPLY & ENVIRONMENTAL ASPECT', 'STORAGE ENCLOSURE POWER & ENVIRONMENTAL ASPECT', 'SWITCH REDUNDANT POWER & AIRFLOW ASPECT', 'HIGH-WATTAGE POWER ENVELOPE & BUSBAR ASPECT', 'POWER ENVIRONMENT', 'POWER'],
-  SUPPORT_MANUFACTURING: ['SUPPORT_MANUFACTURING', 'ASPECT_7', 'FACTORY INTEGRATION & MANUFACTURING ASPECT', 'FACTORY INTEGRATION & MANUFACTURING', 'SUPPORT MANUFACTURING', 'MANUFACTURING'],
+  SUPPORT_MANUFACTURING: ['SUPPORT_MANUFACTURING', 'ASPECT_7', '7', 'VENDOR SUPPORT TAXONOMY & LICENSING', 'SUPPORT TAXONOMY', 'VENDOR SUPPORT', 'FACTORY INTEGRATION & MANUFACTURING ASPECT', 'FACTORY INTEGRATION & MANUFACTURING', 'SUPPORT MANUFACTURING', 'MANUFACTURING'],
   SUPPORT_SERVICES: ['SUPPORT_SERVICES', 'ASPECT_8', 'SUPPORT & DEPLOYMENT SERVICES ASPECT', 'POINTNEXT & STORAGE SUPPORT SERVICES ASPECT', 'NETWORK TECH CARE & SUPPORT SERVICES ASPECT', 'MISSION-CRITICAL AI CLUSTER SUPPORT SERVICES ASPECT', 'SUPPORT SERVICES', 'SERVICES'],
   STORAGE_CONTROLLER_PAIR: ['STORAGE_CONTROLLER_PAIR', 'STORAGE ARRAY ACTIVE-ACTIVE CONTROLLER PAIR', 'CONTROLLER_PAIR', 'CONTROLLER_NODE', 'STORAGE CONTROLLER PAIR'],
   SWITCH_FABRIC_PORTS: ['SWITCH_FABRIC_PORTS', 'SWITCH FABRIC & PORT PROTOCOL ALIGNMENT', 'FABRIC_PORTS', 'SWITCH_PORTS', 'SWITCH FABRIC'],
@@ -217,6 +217,26 @@ const CANONICAL_ASPECT_MAP = {
   ARCHIVE_COLD_STORAGE: ['ARCHIVE_COLD_STORAGE', 'TAPE LIBRARY & ARCHIVE DRIVE VALIDATION', 'COLD_STORAGE', 'TAPE_VALIDATION']
 };
 
+const ASPECT_NAME_MATCHERS = [
+  [['MEZZANINE', 'FABRIC MEZZANINE'], 'FRAME_FABRIC_MEZZANINE'],
+  [['FRAME SHARED POWER', 'SHARED POWER'], 'FRAME_SHARED_POWER'],
+  [['COLD STORAGE', 'TAPE LIBRARY', 'ARCHIVE DRIVE'], 'ARCHIVE_COLD_STORAGE'],
+  [['COMPUTE', 'THERMAL'], 'COMPUTE_THERMAL'],
+  [['MEMORY', 'INTERLEAVING'], 'MEMORY_CHANNEL'],
+  [['CONTROLLER PAIR', 'STORAGE CONTROLLER'], 'STORAGE_CONTROLLER_PAIR'],
+  [['TRI-MODE', 'DRIVE CAGE', 'STORAGE'], 'STORAGE_TRI_MODE'],
+  [['PCIE', 'RISER', 'BUS'], 'PCIE_RISER'],
+  [['SWITCH', 'PORT PROTOCOL', 'FABRIC'], 'SWITCH_FABRIC_PORTS'],
+  [['OCP', 'NETWORKING'], 'NETWORKING_OCP'],
+  [['POWER', 'ENVIRONMENT', 'AIRFLOW', 'BUSBAR'], 'POWER_ENVIRONMENT'],
+  [['MANUFACTURING', 'FACTORY', 'TAXONOMY', 'LICENSING'], 'SUPPORT_MANUFACTURING'],
+  [['TECH CARE', 'POINTNEXT', 'SERVICES', 'DEPLOYMENT'], 'SUPPORT_SERVICES'],
+  [['LICENSED PORT', 'SAN LICENSED'], 'SAN_LICENSED_PORTS'],
+  [['BUNDLED OPTICS'], 'BUNDLED_OPTICS_BILLING'],
+  [['CATALOG AND SERVICE', 'SERVICE COVERAGE'], 'CATALOG_SERVICE_COVERAGE'],
+  [['SERVER COMPONENT RULES', 'FIXED SAN'], 'SERVER_RULES_NOT_APPLICABLE']
+];
+
 function _resolveCanonicalAspectId(check) {
   if (!check || typeof check !== 'object') return null;
   const rawId = String(check.id || check.code || '').trim().toUpperCase();
@@ -226,26 +246,13 @@ function _resolveCanonicalAspectId(check) {
   if (CANONICAL_ASPECT_MAP[rawId]) return rawId;
 
   // Next, match by specific name keywords (more specific than generic aspect numbers)
-  if (rawName.includes('MEZZANINE') || rawName.includes('FABRIC MEZZANINE')) return 'FRAME_FABRIC_MEZZANINE';
-  if (rawName.includes('FRAME SHARED POWER') || rawName.includes('SHARED POWER')) return 'FRAME_SHARED_POWER';
-  if (rawName.includes('COLD STORAGE') || rawName.includes('TAPE LIBRARY') || rawName.includes('ARCHIVE DRIVE')) return 'ARCHIVE_COLD_STORAGE';
-  if (rawName.includes('COMPUTE') || rawName.includes('THERMAL')) return 'COMPUTE_THERMAL';
-  if (rawName.includes('MEMORY') || rawName.includes('INTERLEAVING')) return 'MEMORY_CHANNEL';
-  if (rawName.includes('CONTROLLER PAIR') || rawName.includes('STORAGE CONTROLLER')) return 'STORAGE_CONTROLLER_PAIR';
-  if (rawName.includes('TRI-MODE') || rawName.includes('DRIVE CAGE') || rawName.includes('STORAGE')) return 'STORAGE_TRI_MODE';
-  if (rawName.includes('PCIE') || rawName.includes('RISER') || rawName.includes('BUS')) return 'PCIE_RISER';
-  if (rawName.includes('SWITCH') || rawName.includes('PORT PROTOCOL') || rawName.includes('FABRIC')) return 'SWITCH_FABRIC_PORTS';
-  if (rawName.includes('OCP') || rawName.includes('NETWORKING')) return 'NETWORKING_OCP';
-  if (rawName.includes('POWER') || rawName.includes('ENVIRONMENT') || rawName.includes('AIRFLOW') || rawName.includes('BUSBAR')) return 'POWER_ENVIRONMENT';
-  if (rawName.includes('MANUFACTURING') || rawName.includes('FACTORY') || rawName === 'SUPPORT') return 'SUPPORT_MANUFACTURING';
-  if (rawName.includes('TECH CARE') || rawName.includes('POINTNEXT') || rawName.includes('SERVICES') || rawName.includes('DEPLOYMENT')) return 'SUPPORT_SERVICES';
-  if (rawName.includes('LICENSED PORT') || rawName.includes('SAN LICENSED')) return 'SAN_LICENSED_PORTS';
-  if (rawName.includes('BUNDLED OPTICS')) return 'BUNDLED_OPTICS_BILLING';
-  if (rawName.includes('CATALOG AND SERVICE') || rawName.includes('SERVICE COVERAGE')) return 'CATALOG_SERVICE_COVERAGE';
-  if (rawName.includes('SERVER COMPONENT RULES') || rawName.includes('FIXED SAN')) return 'SERVER_RULES_NOT_APPLICABLE';
+  if (rawName === 'SUPPORT') return 'SUPPORT_MANUFACTURING';
+  for (const [keywords, aspectId] of ASPECT_NAME_MATCHERS) {
+    if (keywords.some(k => rawName.includes(k))) return aspectId;
+  }
 
   for (const [canonicalId, aliases] of Object.entries(CANONICAL_ASPECT_MAP)) {
-    if (aliases.some(alias => rawId === alias || rawName === alias)) {
+    if (aliases.some(alias => rawId === alias || rawName === alias || `ASPECT_${rawId}` === alias)) {
       return canonicalId;
     }
   }
@@ -256,58 +263,39 @@ function _resolveCanonicalAspectId(check) {
   return rawId || rawName || null;
 }
 
-function _checkPhysicalAspects(output) {
-  const aspectChecks = output?.aspectChecks || output?.evalSummary?.aspectChecks || output?.evaluation?.aspectChecks || null;
-  if (!Array.isArray(aspectChecks) || aspectChecks.length === 0) {
-    return makeCheck('B1', 'Scoped Physical Checks Completed', 'BLOCK', 'UNKNOWN', 'Physical aspect checks were not evaluated or missing from output.', { evaluated: false });
-  }
-
-  const registeredPhysical = ['COMPUTE_THERMAL', 'MEMORY_CHANNEL', 'STORAGE_TRI_MODE', 'PCIE_RISER', 'NETWORKING_OCP', 'POWER_ENVIRONMENT', 'SUPPORT_MANUFACTURING'];
-
+function _detectTargetDomain(output) {
   const rawDomain = String(output?.solutionTopology?.domain || output?.productType || output?.chassisInfo?.family || '').toLowerCase();
   const chassisName = String(output?.chassis || output?.targetChassis || output?.detectedChassis?.model || '').toLowerCase();
 
   const isExplicitSan = rawDomain === 'san' || rawDomain === 'san_switch';
   const isChassisSan = !rawDomain && (/sn3600b/i.test(chassisName) || (/\b(?:brocade|fibre\s*channel\s*switch)\b/i.test(chassisName)));
-  const isSanSwitch = isExplicitSan || isChassisSan;
+  if (isExplicitSan || isChassisSan) return 'san_switch';
 
-  const isNetworkingDomain = rawDomain === 'networking' || (!rawDomain && !isSanSwitch && /switch|fabric/i.test(chassisName));
-  const isStorageDomain = rawDomain === 'storage' || (!rawDomain && /alletra|nimble|storeonce/i.test(chassisName));
-  const isArchiveDomain = rawDomain === 'archive' || rawDomain === 'archive_tape' || (!rawDomain && /msl|storeever|tape/i.test(chassisName));
-  const isSynergyCompute = rawDomain === 'synergy_compute' || rawDomain === 'synergy' || (!rawDomain && /synergy|sy480|sy660/i.test(chassisName));
-  const isAiCluster = rawDomain === 'ai_cluster';
+  if (rawDomain === 'networking' || (!rawDomain && /switch|fabric/i.test(chassisName))) return 'networking';
+  if (rawDomain === 'storage' || (!rawDomain && /alletra|nimble|storeonce/i.test(chassisName))) return 'storage';
+  if (rawDomain === 'archive' || rawDomain === 'archive_tape' || (!rawDomain && /msl|storeever|tape/i.test(chassisName))) return 'archive';
+  if (rawDomain === 'synergy_compute' || rawDomain === 'synergy' || (!rawDomain && /synergy|sy480|sy660/i.test(chassisName))) return 'synergy_compute';
+  if (rawDomain === 'ai_cluster') return 'ai_cluster';
+  return 'server';
+}
 
-  const targetDomain = isSanSwitch ? 'san_switch'
-    : isNetworkingDomain ? 'networking'
-    : isStorageDomain ? 'storage'
-    : isArchiveDomain ? 'archive'
-    : isSynergyCompute ? 'synergy_compute'
-    : isAiCluster ? 'ai_cluster'
-    : 'server';
-
+function _resolveRequiredAspects(targetDomain, registeredPhysical) {
   const registeredAspects = getRegisteredAspectsForDomain(targetDomain);
   const requiredAspectIds = targetDomain === 'server' ? registeredPhysical : registeredAspects.map(a => a.id.toUpperCase());
 
-  const resolvedPresentIds = new Set();
-  for (const a of aspectChecks) {
-    const cId = _resolveCanonicalAspectId(a);
-    if (cId) resolvedPresentIds.add(cId);
-  }
+  const minRequiredAspects = Math.min(
+    requiredAspectIds.length,
+    targetDomain === 'san_switch' ? 4 : (targetDomain === 'networking' || targetDomain === 'storage' ? 3 : (targetDomain === 'synergy_compute' ? 6 : (targetDomain === 'archive' ? 1 : 7)))
+  );
 
-  const missingDomainAspects = requiredAspectIds.filter(id => !resolvedPresentIds.has(id));
+  return {
+    requiredAspectIds,
+    minRequiredAspects,
+    requiresFullServerAspects: targetDomain === 'server'
+  };
+}
 
-  const minRequiredAspects = Math.min(requiredAspectIds.length, isSanSwitch ? 4 : (isNetworkingDomain || isStorageDomain ? 3 : (isSynergyCompute ? 6 : (isArchiveDomain ? 1 : 7))));
-  const requiresFullServerAspects = targetDomain === 'server';
-
-  if (aspectChecks.length < minRequiredAspects || resolvedPresentIds.size < minRequiredAspects || missingDomainAspects.length > 0) {
-    const reason = missingDomainAspects.length > 0
-      ? `Missing required ${targetDomain} domain aspect(s): ${missingDomainAspects.join(', ')} (${resolvedPresentIds.size} distinct identities verified).`
-      : `Incomplete physical checks: expected at least ${minRequiredAspects} registered ${requiresFullServerAspects ? 'server physical' : targetDomain} aspects, found ${aspectChecks.length} checks (${resolvedPresentIds.size} distinct identities).`;
-    return makeCheck('B1', 'Scoped Physical Checks Completed', 'BLOCK', 'FAILED',
-      reason,
-      { aspectCount: aspectChecks.length, uniqueCount: resolvedPresentIds.size, targetDomain, missingDomainAspects, requiredAspects: requiredAspectIds });
-  }
-
+function _evaluateAspectStatusBreakdown(aspectChecks) {
   const failedAspects = aspectChecks.filter(a => a.status === 'FAIL' || a.status === 'FAILED');
   const unknownAspects = aspectChecks.filter(a => a.status === 'UNKNOWN' || a.status === 'NOT_EVALUATED');
   const actionRequiredAspects = aspectChecks.filter(a => a.status === 'ACTION_REQUIRED' || (!['PASS', 'PASSED', 'NOT_APPLICABLE', 'SKIPPED'].includes(a.status) && !failedAspects.includes(a) && !unknownAspects.includes(a)));
@@ -327,6 +315,39 @@ function _checkPhysicalAspects(output) {
       `Physical checks require action on: ${actionRequiredAspects.map(a => a.name || a.id).join(', ')}.`,
       { actionRequiredAspects: actionRequiredAspects.map(a => a.id) });
   }
+  return null;
+}
+
+function _checkPhysicalAspects(output) {
+  const aspectChecks = output?.aspectChecks || output?.evalSummary?.aspectChecks || output?.evaluation?.aspectChecks || null;
+  if (!Array.isArray(aspectChecks) || aspectChecks.length === 0) {
+    return makeCheck('B1', 'Scoped Physical Checks Completed', 'BLOCK', 'UNKNOWN', 'Physical aspect checks were not evaluated or missing from output.', { evaluated: false });
+  }
+
+  const registeredPhysical = ['COMPUTE_THERMAL', 'MEMORY_CHANNEL', 'STORAGE_TRI_MODE', 'PCIE_RISER', 'NETWORKING_OCP', 'POWER_ENVIRONMENT', 'SUPPORT_MANUFACTURING'];
+  const targetDomain = _detectTargetDomain(output);
+  const { requiredAspectIds, minRequiredAspects, requiresFullServerAspects } = _resolveRequiredAspects(targetDomain, registeredPhysical);
+
+  const resolvedPresentIds = new Set();
+  for (const a of aspectChecks) {
+    const cId = _resolveCanonicalAspectId(a);
+    if (cId) resolvedPresentIds.add(cId);
+  }
+
+  const missingDomainAspects = requiredAspectIds.filter(id => !resolvedPresentIds.has(id));
+
+  if (aspectChecks.length < minRequiredAspects || resolvedPresentIds.size < minRequiredAspects || missingDomainAspects.length > 0) {
+    const reason = missingDomainAspects.length > 0
+      ? `Missing required ${targetDomain} domain aspect(s): ${missingDomainAspects.join(', ')} (${resolvedPresentIds.size} distinct identities verified).`
+      : `Incomplete physical checks: expected at least ${minRequiredAspects} registered ${requiresFullServerAspects ? 'server physical' : targetDomain} aspects, found ${aspectChecks.length} checks (${resolvedPresentIds.size} distinct identities).`;
+    return makeCheck('B1', 'Scoped Physical Checks Completed', 'BLOCK', 'FAILED',
+      reason,
+      { aspectCount: aspectChecks.length, uniqueCount: resolvedPresentIds.size, targetDomain, missingDomainAspects, requiredAspects: requiredAspectIds });
+  }
+
+  const statusError = _evaluateAspectStatusBreakdown(aspectChecks);
+  if (statusError) return statusError;
+
   return makeCheck('B1', 'Scoped Physical Checks Completed', 'BLOCK', 'PASSED', `All ${aspectChecks.length} physical aspect checks evaluated cleanly.`);
 }
 
@@ -359,11 +380,7 @@ function _checkRankedSolutions(output) {
   return checks;
 }
 
-function _checkFinancialPricing(output) {
-  const checks = [];
-  const rankedSolutions = output?.conflictGraph?.rankedSolutions || output?.rankedSolutions || [];
-  const isUnbuildable = output?.isMathClean === false || output?.isWholeSolutionValid === false || output?.status === 'UNBUILDABLE';
-
+function _calculateTotalBOMPrice(rankedSolutions, output) {
   let totalPrice = 0;
   let partsCount = 0;
   if (rankedSolutions.length > 0) {
@@ -377,33 +394,43 @@ function _checkFinancialPricing(output) {
     partsCount = output.items.length;
     totalPrice = output.items.reduce((sum, p) => sum + (p.extendedPriceUsd || (p.quantity || 1) * (p.unitPriceUsd || 0)), 0);
   }
-
-  // B4: Financial Table & Prices Present (BLOCK)
-  if (isUnbuildable) {
-    checks.push(makeCheck('B4', 'Financial Table Present', 'BLOCK', 'NOT_APPLICABLE', 'Unbuildable BOM does not require financial totals.'));
-  } else if (totalPrice > 0) {
-    checks.push(makeCheck('B4', 'Financial Table Present', 'BLOCK', 'PASSED', `Financial totals calculated ($${totalPrice.toLocaleString('en-US', { minimumFractionDigits: 2 })}).`, { totalPrice }));
-  } else if (partsCount === 0) {
-    checks.push(makeCheck('B4', 'Financial Table Present', 'BLOCK', 'UNKNOWN', 'Pricing cannot be evaluated without candidate BOM items.', { partsCount: 0 }));
-  } else {
-    checks.push(makeCheck('B4', 'Financial Table Present', 'BLOCK', 'FAILED', 'Pricing table missing or zero extended cost on buildable solution.', { totalPrice, partsCount }));
-  }
-
-  // B6: Unresolved Prices Flagged (INV-33) (BLOCK)
   const partsToCheck = (rankedSolutions.length > 0 ? (rankedSolutions[0].skuPartsList || rankedSolutions[0].skuList || []) : output?.items) || [];
+  return { totalPrice, partsCount, partsToCheck };
+}
+
+function _verifyFinancialTotalsCheck(isUnbuildable, totalPrice, partsCount) {
+  if (isUnbuildable) {
+    return makeCheck('B4', 'Financial Table Present', 'BLOCK', 'NOT_APPLICABLE', 'Unbuildable BOM does not require financial totals.');
+  }
+  if (totalPrice > 0) {
+    return makeCheck('B4', 'Financial Table Present', 'BLOCK', 'PASSED', `Financial totals calculated ($${totalPrice.toLocaleString('en-US', { minimumFractionDigits: 2 })}).`, { totalPrice });
+  }
+  if (partsCount === 0) {
+    return makeCheck('B4', 'Financial Table Present', 'BLOCK', 'UNKNOWN', 'Pricing cannot be evaluated without candidate BOM items.', { partsCount: 0 });
+  }
+  return makeCheck('B4', 'Financial Table Present', 'BLOCK', 'FAILED', 'Pricing table missing or zero extended cost on buildable solution.', { totalPrice, partsCount });
+}
+
+function _verifyUnresolvedPricesCheck(output, partsToCheck) {
   const zeroPriceParts = partsToCheck.filter(p => p && (!p.unitPriceUsd || p.unitPriceUsd === 0) && (!p.listPrice || p.listPrice === 0));
   if (zeroPriceParts.length > 0) {
     const isExplicitlyFlagged = Boolean(output?.hasUnresolvedPrices) && Array.isArray(output?.unresolvedPriceSkus) && output.unresolvedPriceSkus.length > 0;
-    checks.push(
-      isExplicitlyFlagged
-        ? makeCheck('B6', 'Unresolved Prices Flagged (INV-33)', 'BLOCK', 'PASSED', `Unresolved prices present for ${zeroPriceParts.length} SKU(s) and explicitly tagged per INV-33.`, { unpricedCount: zeroPriceParts.length })
-        : makeCheck('B6', 'Unresolved Prices Flagged (INV-33)', 'BLOCK', 'FAILED', `${zeroPriceParts.length} SKU(s) have zero/missing price without mandatory INV-33 incomplete pricing notice.`, { zeroPriceSkus: zeroPriceParts.map(p => p.sku || p['Product #']) })
-    );
-  } else {
-    checks.push(makeCheck('B6', 'Unresolved Prices Flagged (INV-33)', 'BLOCK', 'PASSED', 'All referenced SKU prices are confirmed with list pricing.'));
+    return isExplicitlyFlagged
+      ? makeCheck('B6', 'Unresolved Prices Flagged (INV-33)', 'BLOCK', 'PASSED', `Unresolved prices present for ${zeroPriceParts.length} SKU(s) and explicitly tagged per INV-33.`, { unpricedCount: zeroPriceParts.length })
+      : makeCheck('B6', 'Unresolved Prices Flagged (INV-33)', 'BLOCK', 'FAILED', `${zeroPriceParts.length} SKU(s) have zero/missing price without mandatory INV-33 incomplete pricing notice.`, { zeroPriceSkus: zeroPriceParts.map(p => p.sku || p['Product #']) });
   }
+  return makeCheck('B6', 'Unresolved Prices Flagged (INV-33)', 'BLOCK', 'PASSED', 'All referenced SKU prices are confirmed with list pricing.');
+}
 
-  return checks;
+function _checkFinancialPricing(output) {
+  const rankedSolutions = output?.conflictGraph?.rankedSolutions || output?.rankedSolutions || [];
+  const isUnbuildable = output?.isMathClean === false || output?.isWholeSolutionValid === false || output?.status === 'UNBUILDABLE';
+  const { totalPrice, partsCount, partsToCheck } = _calculateTotalBOMPrice(rankedSolutions, output);
+
+  return [
+    _verifyFinancialTotalsCheck(isUnbuildable, totalPrice, partsCount),
+    _verifyUnresolvedPricesCheck(output, partsToCheck)
+  ];
 }
 
 function _checkUnsolicitedServices(output, context = {}) {
@@ -435,24 +462,41 @@ function _checkMandatoryAccessories(output) {
     : makeCheck('B12', 'Mandatory Accessories Injected', 'BLOCK', 'FAILED', `Unresolved mandatory physical dependencies: ${missingDeps.map(m => m.reason || m.sku).join('; ')}.`, { missingDeps });
 }
 
+function _isGroundingRejected(solutionDoubleCheck) {
+  if (!solutionDoubleCheck) return false;
+  return solutionDoubleCheck.doubleCheckVerdict === 'DOUBLE_CHECK_REJECTED' ||
+    solutionDoubleCheck.verdict === 'DOUBLE_CHECK_REJECTED' ||
+    solutionDoubleCheck.status === 'DOUBLE_CHECK_REJECTED' ||
+    (Array.isArray(solutionDoubleCheck.rankVerdicts) && solutionDoubleCheck.rankVerdicts.some(row => row?.verdict === 'FAIL'));
+}
+
+function _isOfflineEvaluation(output, context) {
+  return Boolean(
+    output?.offlineMode ||
+    context?.offlineMode ||
+    context?.OFFLINE_MODE ||
+    process.env.OFFLINE_MODE === '1' ||
+    process.env.LOCAL_EVAL_ONLY === '1'
+  );
+}
+
+function _hasAnyGroundingEvidence(solutionDoubleCheck, notebookHealth, agenticReview, notebookLmStatus) {
+  return Boolean(solutionDoubleCheck || notebookHealth || agenticReview || notebookLmStatus);
+}
+
 function _checkNotebookGrounding(output, context = {}) {
   const notebookHealth = output?.notebookHealth || context?.notebookHealth || null;
   const solutionDoubleCheck = output?.ephemeralSourceValidation || output?.solutionDoubleCheck || null;
   const agenticReview = output?.agenticReview || context?.agenticReview || null;
   const notebookLmStatus = output?.notebookLmStatus || null;
-  const isOffline = Boolean(output?.offlineMode || context?.offlineMode || context?.OFFLINE_MODE || process.env.OFFLINE_MODE === '1' || process.env.LOCAL_EVAL_ONLY === '1');
+  const isOffline = _isOfflineEvaluation(output, context);
 
   if (notebookHealth && notebookHealth.isHealthy === false) {
     return makeCheck('B13', 'NotebookLM Grounding & Degraded State', 'BLOCK', 'ACTION_REQUIRED',
       `Product notebook is degraded (${output.notebookDegradedMode || notebookHealth.degradationMode || 'DEGRADED_UNGROUNDED'}). Presentation cannot claim fully grounded certification.`,
       { degradationMode: notebookHealth.degradationMode || output.notebookDegradedMode });
   }
-  if (solutionDoubleCheck && (
-    solutionDoubleCheck.doubleCheckVerdict === 'DOUBLE_CHECK_REJECTED' ||
-    solutionDoubleCheck.verdict === 'DOUBLE_CHECK_REJECTED' ||
-    solutionDoubleCheck.status === 'DOUBLE_CHECK_REJECTED' ||
-    (Array.isArray(solutionDoubleCheck.rankVerdicts) && solutionDoubleCheck.rankVerdicts.some(row => row?.verdict === 'FAIL'))
-  )) {
+  if (_isGroundingRejected(solutionDoubleCheck)) {
     return makeCheck('B13', 'NotebookLM Grounding & Degraded State', 'BLOCK', 'FAILED',
       'NotebookLM ephemeral source validation rejected candidate strategy ranks.',
       { verdict: solutionDoubleCheck.doubleCheckVerdict || solutionDoubleCheck.verdict || solutionDoubleCheck.status });
@@ -461,8 +505,8 @@ function _checkNotebookGrounding(output, context = {}) {
     return makeCheck('B13', 'NotebookLM Grounding & Degraded State', 'BLOCK', 'PASSED',
       'NotebookLM grounding verified with affirmative cloud candidate validation.',
       {
-        citationsCount: solutionDoubleCheck.citations?.length || 0,
-        isCloudGrounded: Boolean(solutionDoubleCheck.isCloudGrounded)
+        citationsCount: solutionDoubleCheck?.citations?.length || 0,
+        isCloudGrounded: Boolean(solutionDoubleCheck?.isCloudGrounded)
       });
   }
   if (isOffline) {
@@ -470,7 +514,7 @@ function _checkNotebookGrounding(output, context = {}) {
       'Grounding unverified in OFFLINE_MODE. Presentation cannot claim cloud-grounded certification.',
       { offline: true });
   }
-  if (!solutionDoubleCheck && !notebookHealth && !agenticReview && !notebookLmStatus) {
+  if (!_hasAnyGroundingEvidence(solutionDoubleCheck, notebookHealth, agenticReview, notebookLmStatus)) {
     return makeCheck('B13', 'NotebookLM Grounding & Degraded State', 'BLOCK', 'ACTION_REQUIRED',
       'Grounding evidence is absent. Presentation delivery requires a current candidate review with native authoritative citations.',
       { missingEvidence: true });
@@ -688,51 +732,35 @@ function _checkQuantityConservation(output, context = {}) {
     { quantityConservation: qc });
 }
 
-/**
- * Gate B19: Live Portal Validation & Receipt Integrity (INV-0 / INV-104)
- * Forbids false claims of live vendor acceptance without a verifiable session receipt.
- */
-function _checkPortalReceiptIntegrity(output, context = {}) {
+function _resolvePortalClaimStatus(output, context, ACCEPTANCE_STATUSES) {
   const outStatus = output?.portalValidationStatus;
   const ctxStatus = context?.portalValidationStatus;
-
-  // Normalized acceptance statuses
-  const ACCEPTANCE_STATUSES = new Set([
-    'ACCEPTED_BY_VENDOR',
-    'CLIC_ACCEPTED',
-    'CORRECTED_CANDIDATE_CLIC_ACCEPTED',
-    'VERIFIED',
-    'VENDOR_ACCEPTED'
-  ]);
-
   const outClaiming = Boolean(outStatus && ACCEPTANCE_STATUSES.has(outStatus));
   const ctxClaiming = Boolean(ctxStatus && ACCEPTANCE_STATUSES.has(ctxStatus));
   const clicValid = output?.clicValidation?.isValid === true || context?.clicValidation?.isValid === true;
-
-  // Conflict detection: If output and context disagree on acceptance claim, fail closed
-  if (outStatus && ctxStatus && outClaiming !== ctxClaiming) {
-    return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'FAILED',
-      `Conflicting portal validation claims between output (${outStatus}) and context (${ctxStatus}). Evidence verification fails closed.`,
-      { outStatus, ctxStatus });
-  }
-
+  const hasConflict = Boolean(outStatus && ctxStatus && outClaiming !== ctxClaiming);
   const isClaimingVendorAcceptance = outClaiming || ctxClaiming || clicValid;
   const portalStatus = outStatus || ctxStatus || (clicValid ? 'CLIC_ACCEPTED' : 'PORTAL_VALIDATION_PENDING');
 
-  // When portal validation is pending (Tier 0-2), status is NOT_APPLICABLE with honest pending advisory
-  if (!isClaimingVendorAcceptance) {
-    return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'WARN', 'NOT_APPLICABLE',
-      'Live portal validation pending. Output appropriately marked as PORTAL VALIDATION PENDING (Tier 1/2).',
-      { portalStatus });
-  }
+  return {
+    outStatus,
+    ctxStatus,
+    outClaiming,
+    ctxClaiming,
+    clicValid,
+    hasConflict,
+    isClaimingVendorAcceptance,
+    portalStatus
+  };
+}
 
-  const rawReceipt = output?.sessionReceipt || context?.sessionReceipt || output?.sessionReceiptPath || output?.portalReceipt || context?.portalReceipt;
-
-  // Reject missing or scalar truthy values (booleans, numbers, etc.)
+function _resolveReceiptObject(rawReceipt, portalStatus, clicValid) {
   if (!rawReceipt || typeof rawReceipt === 'boolean' || typeof rawReceipt === 'number') {
-    return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'FAILED',
-      'Output claims vendor acceptance or CLIC valid, but lacks official session receipt from outputs/history/oca_sessions/ (INV-0).',
-      { portalStatus, clicValid, receipt: null });
+    return {
+      errorCheck: makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'FAILED',
+        'Output claims vendor acceptance or CLIC valid, but lacks official session receipt from outputs/history/oca_sessions/ (INV-0).',
+        { portalStatus, clicValid, receipt: null })
+    };
   }
 
   let receiptObj = null;
@@ -740,13 +768,17 @@ function _checkPortalReceiptIntegrity(output, context = {}) {
   if (typeof rawReceipt === 'string') {
     const receiptPath = rawReceipt.trim();
     if (!receiptPath || receiptPath.includes('\0')) {
-      return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'FAILED',
-        'Invalid session receipt path.', { portalStatus, receipt: receiptPath });
+      return {
+        errorCheck: makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'FAILED',
+          'Invalid session receipt path.', { portalStatus, receipt: receiptPath })
+      };
     }
     if (!fs.existsSync(receiptPath)) {
-      return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'FAILED',
-        `Session receipt path does not exist on disk: ${receiptPath}.`,
-        { portalStatus, clicValid, receipt: receiptPath });
+      return {
+        errorCheck: makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'FAILED',
+          `Session receipt path does not exist on disk: ${receiptPath}.`,
+          { portalStatus, clicValid, receipt: receiptPath })
+      };
     }
 
     try {
@@ -754,29 +786,39 @@ function _checkPortalReceiptIntegrity(output, context = {}) {
       if (stats.isDirectory()) {
         receiptObj = readPortalReceipt(receiptPath);
         if (!receiptObj) {
-          return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'FAILED',
-            `Receipt directory does not contain complete, fresh, verified CLIC evidence: ${receiptPath}.`,
-            { portalStatus, receipt: receiptPath });
+          return {
+            errorCheck: makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'FAILED',
+              `Receipt directory does not contain complete, fresh, verified CLIC evidence: ${receiptPath}.`,
+              { portalStatus, receipt: receiptPath })
+          };
         }
       } else {
         const fileContent = fs.readFileSync(receiptPath, 'utf-8');
         receiptObj = JSON.parse(fileContent);
       }
     } catch (parseErr) {
-      return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'FAILED',
-        `Failed to parse session receipt evidence: ${parseErr.message}.`,
-        { portalStatus, receipt: receiptPath });
+      return {
+        errorCheck: makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'FAILED',
+          `Failed to parse session receipt evidence: ${parseErr.message}.`,
+          { portalStatus, receipt: receiptPath })
+      };
     }
   } else if (typeof rawReceipt === 'object') {
     receiptObj = rawReceipt;
   }
 
   if (!receiptObj || typeof receiptObj !== 'object' || Array.isArray(receiptObj) || Object.keys(receiptObj).length === 0) {
-    return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'FAILED',
-      'Session receipt object is empty or missing required verification fields.',
-      { portalStatus, clicValid, receipt: rawReceipt });
+    return {
+      errorCheck: makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'FAILED',
+        'Session receipt object is empty or missing required verification fields.',
+        { portalStatus, clicValid, receipt: rawReceipt })
+    };
   }
 
+  return { receiptObj };
+}
+
+function _validateReceiptContent(receiptObj, portalStatus, clicValid, ACCEPTANCE_STATUSES, context, output) {
   // Reject readiness-only receipts (INV-89: navigation readiness != vendor acceptance)
   const statusStr = String(receiptObj.status || '').toUpperCase();
   if (statusStr === 'READY' || statusStr === 'SESSION_READY' || statusStr === 'NAVIGATED' || receiptObj.isReadinessOnly === true) {
@@ -825,13 +867,142 @@ function _checkPortalReceiptIntegrity(output, context = {}) {
     }
   }
 
-  return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'PASSED',
-    'Official vendor acceptance receipt verified against active session record.',
-    { portalStatus, receipt: receiptObj.status || 'VERIFIED', manifestSha256: receiptObj.manifestSha256 || null });
+  return null;
 }
 
 /**
- * BOQ Evaluation Criteria (B1–B19)
+ * Gate B19: Live Portal Validation & Receipt Integrity (INV-0 / INV-104)
+ * Forbids false claims of live vendor acceptance without a verifiable session receipt.
+ */
+function _checkPortalReceiptIntegrity(output, context = {}) {
+  // Normalized acceptance statuses
+  const ACCEPTANCE_STATUSES = new Set([
+    'ACCEPTED_BY_VENDOR',
+    'CLIC_ACCEPTED',
+    'CORRECTED_CANDIDATE_CLIC_ACCEPTED',
+    'VERIFIED',
+    'VENDOR_ACCEPTED'
+  ]);
+
+  const claim = _resolvePortalClaimStatus(output, context, ACCEPTANCE_STATUSES);
+
+  // Conflict detection: If output and context disagree on acceptance claim, fail closed
+  if (claim.hasConflict) {
+    return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'FAILED',
+      `Conflicting portal validation claims between output (${claim.outStatus}) and context (${claim.ctxStatus}). Evidence verification fails closed.`,
+      { outStatus: claim.outStatus, ctxStatus: claim.ctxStatus });
+  }
+
+  // When portal validation is pending (Tier 0-2), status is NOT_APPLICABLE with honest pending advisory
+  if (!claim.isClaimingVendorAcceptance) {
+    return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'WARN', 'NOT_APPLICABLE',
+      'Live portal validation pending. Output appropriately marked as PORTAL VALIDATION PENDING (Tier 1/2).',
+      { portalStatus: claim.portalStatus });
+  }
+
+  const rawReceipt = output?.sessionReceipt || context?.sessionReceipt || output?.sessionReceiptPath || output?.portalReceipt || context?.portalReceipt;
+  const { receiptObj, errorCheck } = _resolveReceiptObject(rawReceipt, claim.portalStatus, claim.clicValid);
+  if (errorCheck) {
+    return errorCheck;
+  }
+
+  const contentError = _validateReceiptContent(receiptObj, claim.portalStatus, claim.clicValid, ACCEPTANCE_STATUSES, context, output);
+  if (contentError) {
+    return contentError;
+  }
+
+  return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'PASSED',
+    'Official vendor acceptance receipt verified against active session record.',
+    { portalStatus: claim.portalStatus, receipt: receiptObj.status || 'VERIFIED', manifestSha256: receiptObj.manifestSha256 || null });
+}
+
+const RAIL_KIT_SKUS = new Set(['P69770-B21', 'P52341-B21', 'P26485-B21']);
+const OPTICAL_TRANSCEIVER_SKUS = new Set(['845398-B21', '455883-B21']);
+
+function _hasTurnkeyRailKit(parts) {
+  return parts.some(p =>
+    RAIL_KIT_SKUS.has(p.sku) ||
+    p.desc.includes('rail kit') ||
+    p.desc.includes('ball bearing rail') ||
+    p.desc.includes('easy install rail')
+  );
+}
+
+function _findOpticalNics(parts) {
+  return parts.filter(p => {
+    const isOptSpeed = p.desc.includes('sfp28') || p.desc.includes('sfp+') || p.desc.includes('25gb') || p.desc.includes('10gb') || p.desc.includes('100gb');
+    const isCopper = p.desc.includes('base-t') || p.desc.includes('10gbase-t') || p.desc.includes('rj-45');
+    const isNic = p.desc.includes('adapter') || p.desc.includes('flr') || p.desc.includes('ocp3');
+    return isOptSpeed && !isCopper && isNic;
+  });
+}
+
+function _findOpticalTransceivers(parts) {
+  return parts.filter(p =>
+    OPTICAL_TRANSCEIVER_SKUS.has(p.sku) ||
+    p.desc.includes('transceiver') ||
+    p.desc.includes('optical') ||
+    p.desc.includes('dac') ||
+    p.desc.includes('direct attach copper')
+  );
+}
+
+function _checkTurnkeyDeploymentCompleteness(output, context = {}) {
+  const tenderText = String(context.tenderText || context.userPrompt || output?.userPrompt || output?.query || '').toLowerCase();
+  const requiresTurnkey = /\b(?:installation|racking|cabling|turnkey|rack and cable|mount in rack|deploy at site)\b/i.test(tenderText);
+
+  if (!requiresTurnkey) {
+    return makeCheck(
+      'B20',
+      'Turnkey Racking, Cabling & Optical Transceiver Completeness (INV-228)',
+      'BLOCK',
+      'NOT_APPLICABLE',
+      'Turnkey deployment/racking/cabling not explicitly requested in customer tender.'
+    );
+  }
+
+  const items = output?.items || output?.candidateBOM || output?.skuPartsList || [];
+  const parts = items.map(it => ({
+    sku: cleanBaseSKU(it.sku || it['Product #'] || ''),
+    desc: String(it.description || it.Description || '').toLowerCase(),
+    qty: it.quantity || it.qty || 1
+  }));
+
+  const hasRailKit = _hasTurnkeyRailKit(parts);
+  const opticalNics = _findOpticalNics(parts);
+  const opticalTransceivers = _findOpticalTransceivers(parts);
+
+  const missingTurnkeyItems = [];
+  if (!hasRailKit) {
+    missingTurnkeyItems.push('Rack Rail Kit (e.g. P69770-B21 Ball Bearing Rails)');
+  }
+  if (opticalNics.length > 0 && opticalTransceivers.length === 0) {
+    missingTurnkeyItems.push('Matching Optical Transceivers or DAC Cables (e.g. 845398-B21 25Gb SFP28 SR) for optical network adapters');
+  }
+
+  if (missingTurnkeyItems.length > 0) {
+    return makeCheck(
+      'B20',
+      'Turnkey Racking, Cabling & Optical Transceiver Completeness (INV-228)',
+      'BLOCK',
+      'ACTION_REQUIRED',
+      `Customer tender mandates turnkey deployment/installation, but physical infrastructure is incomplete: missing ${missingTurnkeyItems.join('; ')}. Site turn-up will fail without these physical components.`,
+      { missingTurnkeyItems }
+    );
+  }
+
+  return makeCheck(
+    'B20',
+    'Turnkey Racking, Cabling & Optical Transceiver Completeness (INV-228)',
+    'BLOCK',
+    'PASSED',
+    'Turnkey infrastructure verified: rack rails and network transceivers/cabling are present in candidate BOM.',
+    { hasRailKit, opticalNicsCount: opticalNics.length, transceiversCount: opticalTransceivers.length }
+  );
+}
+
+/**
+ * BOQ Evaluation Criteria (B1–B20)
  */
 function validateBoqEvaluationCriteria(output, context = {}) {
   return [
@@ -846,6 +1017,7 @@ function validateBoqEvaluationCriteria(output, context = {}) {
     _checkUnmatchedSkus(output, context),
     _checkUnresolvedRequirements(output, context),
     _checkQuantityConservation(output, context),
+    _checkTurnkeyDeploymentCompleteness(output, context),
     _checkPortalReceiptIntegrity(output, context)
   ];
 }

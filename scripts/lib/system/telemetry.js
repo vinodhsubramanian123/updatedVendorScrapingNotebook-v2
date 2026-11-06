@@ -80,17 +80,7 @@ function loadTelemetry() {
  * @param {string} boqFile 
  * @param {number} durationMs 
  */
-function recordEvaluationTelemetry(evalResults, boqFile = '', durationMs = 0) {
-  const telemetryDir = path.dirname(TELEMETRY_FILE);
-  if (!fs.existsSync(telemetryDir)) {
-    fs.mkdirSync(telemetryDir, { recursive: true });
-  }
-
-  const data = loadTelemetry();
-  const graph = evalResults.conflictGraph || {};
-  const score = evalResults.confidence ? evalResults.confidence.score : 1.0;
-
-  // Extract domain violations breakdown
+function _extractDomainMap(missingDependencies = []) {
   const domainMap = {
     THERMAL: 0,
     ELECTRICAL: 0,
@@ -100,7 +90,7 @@ function recordEvaluationTelemetry(evalResults, boqFile = '', durationMs = 0) {
     ACCESSORY_CABLE: 0
   };
 
-  (evalResults.missingDependencies || []).forEach(dep => {
+  (missingDependencies || []).forEach(dep => {
     const key = (dep.key || dep.sku || '').toUpperCase();
     if (key.includes('FAN') || key.includes('HEATSINK') || key.includes('TDP')) domainMap.THERMAL++;
     else if (key.includes('LUG') || key.includes('DC') || key.includes('VOLT')) domainMap.ELECTRICAL++;
@@ -109,6 +99,79 @@ function recordEvaluationTelemetry(evalResults, boqFile = '', durationMs = 0) {
     else if (key.includes('POWER') || key.includes('PSU')) domainMap.POWER_REDUNDANCY++;
     else domainMap.ACCESSORY_CABLE++;
   });
+
+  return domainMap;
+}
+
+function _deriveRootCauseAttribution(evalResults) {
+  const errors = evalResults.errors || [];
+  const warnings = evalResults.warnings || [];
+  const discrepancies = evalResults.opinionDiscrepancies || [];
+
+  if (evalResults.requirementResolution?.requiresHumanClarification) {
+    return 'INPUT_AMBIGUITY';
+  }
+  if (errors.some(e => /not found in.*catalog|uncataloged|invalid sku/i.test(e))) {
+    return 'CATALOG_GAP';
+  }
+  if (errors.length > 0) {
+    return 'PHYSICAL_VIOLATION';
+  }
+  if (discrepancies.length > 0) {
+    return 'RAG_DISCREPANCY';
+  }
+  if (evalResults.budgetOptimization?.isBudgetExceeded) {
+    return 'BUDGET_OVERRUN';
+  }
+  if (warnings.length > 0) {
+    return 'ADVISORY_WARNING';
+  }
+  return 'CLEAN_BUILD';
+}
+
+function _extractGroundingStatus(evalResults) {
+  const ragFallbackUsed = evalResults.ragFallbackUsed || false;
+  const notebookLmStatus = evalResults.notebookLmStatus || null;
+  const notebookLmMode = (notebookLmStatus && notebookLmStatus.source) || (ragFallbackUsed ? 'LOCAL_RAG_FALLBACK' : 'NOTEBOOK_LM_CLOUD');
+  const notebookLmSourcesUsed = (notebookLmStatus && notebookLmStatus.sourcesUsed) || [];
+  const notebookLmCitationsCount = (notebookLmStatus && notebookLmStatus.citationsCount) || 0;
+  const cloudGroundingConfirmed = Boolean(notebookLmStatus && notebookLmStatus.source === 'NOTEBOOK_LM_CLOUD' && !ragFallbackUsed);
+  const groundingIntegrity = notebookLmStatus?.isCloudGrounded ? '100%_CLOUD_GROUNDED' : (ragFallbackUsed ? 'LOCAL_SAFETY_NET' : 'DETERMINISTIC_RULES');
+  const silentFallbackDetected = Boolean(ragFallbackUsed && !notebookLmStatus?.diagnostic);
+
+  return {
+    ragFallbackUsed,
+    notebookLmMode,
+    notebookLmSourcesUsed,
+    notebookLmCitationsCount,
+    cloudGroundingConfirmed,
+    groundingIntegrity,
+    silentFallbackDetected
+  };
+}
+
+function _updateRollingStatistics(data) {
+  const totalScore = data.history.reduce((acc, curr) => acc + curr.confidenceScore, 0);
+  data.avgConfidenceScore = parseFloat((totalScore / data.history.length).toFixed(2));
+  
+  const fallbackRuns = data.history.filter(h => h.ragFallbackUsed || h.notebookLmMode === 'LOCAL_RAG_FALLBACK').length;
+  data.ragFallbackRatio = parseFloat(((fallbackRuns / data.history.length) * 100).toFixed(1));
+  data.cloudGroundingRatio = parseFloat((((data.history.length - fallbackRuns) / data.history.length) * 100).toFixed(1));
+
+  const highConfidenceRuns = data.history.filter(h => h.confidenceScore >= 0.85).length;
+  data.evalAccuracyScore = parseFloat(((highConfidenceRuns / data.history.length) * 100).toFixed(1));
+}
+
+function recordEvaluationTelemetry(evalResults, boqFile = '', durationMs = 0) {
+  const telemetryDir = path.dirname(TELEMETRY_FILE);
+  if (!fs.existsSync(telemetryDir)) {
+    fs.mkdirSync(telemetryDir, { recursive: true });
+  }
+
+  const data = loadTelemetry();
+  const graph = evalResults.conflictGraph || {};
+  const score = evalResults.confidence ? evalResults.confidence.score : 1.0;
+  const domainMap = _extractDomainMap(evalResults.missingDependencies);
 
   const stageBreakdown = evalResults.stageBreakdown || {
     stage1ParsingMs: Math.round(durationMs * 0.15),
@@ -121,26 +184,8 @@ function recordEvaluationTelemetry(evalResults, boqFile = '', durationMs = 0) {
   const activeTrace = getTraceId();
   const entryId = activeTrace !== 'NO_TRACE_CONTEXT' ? activeTrace : `EVAL-${Date.now()}`;
   const mem = process.memoryUsage ? process.memoryUsage() : { rss: 0, heapUsed: 0, heapTotal: 0 };
-
-  // Derive structured root-cause failure attribution
-  let rootCauseAttribution = 'CLEAN_BUILD';
-  const errors = evalResults.errors || [];
-  const warnings = evalResults.warnings || [];
-  const discrepancies = evalResults.opinionDiscrepancies || [];
-
-  if (evalResults.requirementResolution?.requiresHumanClarification) {
-    rootCauseAttribution = 'INPUT_AMBIGUITY';
-  } else if (errors.some(e => /not found in.*catalog|uncataloged|invalid sku/i.test(e))) {
-    rootCauseAttribution = 'CATALOG_GAP';
-  } else if (errors.length > 0) {
-    rootCauseAttribution = 'PHYSICAL_VIOLATION';
-  } else if (discrepancies.length > 0) {
-    rootCauseAttribution = 'RAG_DISCREPANCY';
-  } else if (evalResults.budgetOptimization?.isBudgetExceeded) {
-    rootCauseAttribution = 'BUDGET_OVERRUN';
-  } else if (warnings.length > 0) {
-    rootCauseAttribution = 'ADVISORY_WARNING';
-  }
+  const rootCauseAttribution = _deriveRootCauseAttribution(evalResults);
+  const grounding = _extractGroundingStatus(evalResults);
 
   const entry = {
     id: entryId,
@@ -157,14 +202,7 @@ function recordEvaluationTelemetry(evalResults, boqFile = '', durationMs = 0) {
     graphWholeSolutionValid: graph.isWholeSolutionValid === true,
     stageBreakdown,
     domainMap,
-    ragFallbackUsed: evalResults.ragFallbackUsed || false,
-    notebookLmMode: (evalResults.notebookLmStatus && evalResults.notebookLmStatus.source) || (evalResults.ragFallbackUsed ? 'LOCAL_RAG_FALLBACK' : 'NOTEBOOK_LM_CLOUD'),
-    notebookLmSourcesUsed: (evalResults.notebookLmStatus && evalResults.notebookLmStatus.sourcesUsed) || [],
-    notebookLmCitationsCount: (evalResults.notebookLmStatus && evalResults.notebookLmStatus.citationsCount) || 0,
-    cloudGroundingConfirmed: Boolean(evalResults.notebookLmStatus && evalResults.notebookLmStatus.source === 'NOTEBOOK_LM_CLOUD' && !evalResults.ragFallbackUsed),
-    groundingIntegrity: evalResults.notebookLmStatus?.isCloudGrounded ? '100%_CLOUD_GROUNDED' : (evalResults.ragFallbackUsed ? 'LOCAL_SAFETY_NET' : 'DETERMINISTIC_RULES'),
-    silentFallbackDetected: Boolean(evalResults.ragFallbackUsed && !evalResults.notebookLmStatus?.diagnostic),
-    // Learning loop sync status for this run
+    ...grounding,
     syncStatus: (evalResults.postFlowSync && evalResults.postFlowSync.driftStatus) || 'NOT_RUN',
     learnedDeltasThisRun: (evalResults.postFlowSync && evalResults.postFlowSync.masterRegistryRulesCount) || 0,
     clusterPartitionCount: evalResults.clusters ? evalResults.clusters.length : (evalResults.clusterSizing?.totalNodes ? 1 : 1),
@@ -181,24 +219,11 @@ function recordEvaluationTelemetry(evalResults, boqFile = '', durationMs = 0) {
     durationMs
   };
 
-
   data.evaluationsCount += 1;
   data.history.unshift(entry);
-  if (data.history.length > 100) data.history.pop(); // Keep last 100 runs
+  if (data.history.length > 100) data.history.pop();
 
-  // Recalculate average metrics
-  const totalScore = data.history.reduce((acc, curr) => acc + curr.confidenceScore, 0);
-  data.avgConfidenceScore = parseFloat((totalScore / data.history.length).toFixed(2));
-  
-  // Calculate RAG Fallback Frequency (%) & Cloud Grounding Frequency (%)
-  const fallbackRuns = data.history.filter(h => h.ragFallbackUsed || h.notebookLmMode === 'LOCAL_RAG_FALLBACK').length;
-  data.ragFallbackRatio = parseFloat(((fallbackRuns / data.history.length) * 100).toFixed(1));
-  data.cloudGroundingRatio = parseFloat((((data.history.length - fallbackRuns) / data.history.length) * 100).toFixed(1));
-
-  // Calculate Evaluation Accuracy Score (%)
-  const highConfidenceRuns = data.history.filter(h => h.confidenceScore >= 0.85).length;
-  data.evalAccuracyScore = parseFloat(((highConfidenceRuns / data.history.length) * 100).toFixed(1));
-
+  _updateRollingStatistics(data);
   data.lastUpdated = new Date().toISOString();
 
   safeWriteJsonAtomic(TELEMETRY_FILE, data);

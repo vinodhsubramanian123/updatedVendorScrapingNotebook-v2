@@ -121,63 +121,67 @@ function parseSwitchPortSpec(desc, qty) {
   return { access: access * qty, uplinks: uplinks * qty, maxSpeed };
 }
 
+function _isSwitchDevice(desc) {
+  return (desc.includes('switch') || desc.includes('cx ') || desc.includes('flexfabric')) &&
+         !desc.includes('switch card') && !desc.includes('power switch') &&
+         !desc.includes('interconnect') && !desc.includes('mezzanine') &&
+         !desc.includes('transceiver') && !desc.includes('cable');
+}
+
+function _tallyTransceiversAndCables(desc, qty, res) {
+  const isTransceiver = (desc.includes('transceiver') || desc.includes('sfp') || desc.includes('qsfp')) &&
+                        !desc.includes('switch') && !desc.includes('adapter');
+  if (isTransceiver) {
+    const packMatch = desc.match(/\b(\d+)\s*-?\s*pack\b/i);
+    const packSize = packMatch ? parseInt(packMatch[1], 10) : 1;
+    const count = qty * packSize;
+    res.transceiverCount += count;
+    if (desc.includes('sr') || desc.includes('lr') || desc.includes('optical') || desc.includes('sw') || desc.includes('lw')) {
+      res.opticalTransceiverCount += count;
+    }
+    if (desc.includes('100g') || desc.includes('qsfp28')) res.has100GTransceivers = true;
+    if (desc.includes('400g') || desc.includes('qsfp-dd') || desc.includes('osfp')) res.has400GTransceivers = true;
+  }
+
+  if (desc.includes('dac') || desc.includes('direct attach') || desc.includes('copper cable')) {
+    res.dacCableCount += qty;
+  }
+  if ((desc.includes('lc') && desc.includes('patch') && desc.includes('cable')) || (desc.includes('om4') && desc.includes('cable'))) {
+    res.opticalPatchCableCount += qty;
+  }
+}
+
 function tallySwitchPortsAndOptics(items) {
-  let switchCount = 0;
-  let totalAccessPorts = 0;
-  let totalUplinkPorts = 0;
-  let maxUplinkSpeedGb = 10;
-  let transceiverCount = 0;
-  let opticalTransceiverCount = 0;
-  let opticalPatchCableCount = 0;
-  let dacCableCount = 0;
-  let has100GTransceivers = false;
-  let has400GTransceivers = false;
+  const res = {
+    switchCount: 0,
+    totalAccessPorts: 0,
+    totalUplinkPorts: 0,
+    maxUplinkSpeedGb: 10,
+    transceiverCount: 0,
+    opticalTransceiverCount: 0,
+    opticalPatchCableCount: 0,
+    dacCableCount: 0,
+    has100GTransceivers: false,
+    has400GTransceivers: false
+  };
 
   for (const it of items) {
     if (isOcaModifierTrackingRow(it.sku, it.description)) continue;
     const desc = String(it.description || '').toLowerCase();
     const qty = it.quantity || 1;
 
-    const isSwitch = (desc.includes('switch') || desc.includes('cx ') || desc.includes('flexfabric')) &&
-                     !desc.includes('switch card') && !desc.includes('power switch') &&
-                     !desc.includes('interconnect') && !desc.includes('mezzanine') &&
-                     !desc.includes('transceiver') && !desc.includes('cable');
-
-    if (isSwitch) {
-      switchCount += qty;
+    if (_isSwitchDevice(desc)) {
+      res.switchCount += qty;
       const parsed = parseSwitchPortSpec(desc, qty);
-      totalAccessPorts += parsed.access;
-      totalUplinkPorts += parsed.uplinks;
-      maxUplinkSpeedGb = Math.max(maxUplinkSpeedGb, parsed.maxSpeed);
+      res.totalAccessPorts += parsed.access;
+      res.totalUplinkPorts += parsed.uplinks;
+      res.maxUplinkSpeedGb = Math.max(res.maxUplinkSpeedGb, parsed.maxSpeed);
     }
 
-    const isTransceiver = (desc.includes('transceiver') || desc.includes('sfp') || desc.includes('qsfp')) &&
-                          !desc.includes('switch') && !desc.includes('adapter');
-    if (isTransceiver) {
-      const packMatch = desc.match(/\b(\d+)\s*-?\s*pack\b/i);
-      const packSize = packMatch ? parseInt(packMatch[1], 10) : 1;
-      const count = qty * packSize;
-      transceiverCount += count;
-      if (desc.includes('sr') || desc.includes('lr') || desc.includes('optical') || desc.includes('sw') || desc.includes('lw')) {
-        opticalTransceiverCount += count;
-      }
-      if (desc.includes('100g') || desc.includes('qsfp28')) has100GTransceivers = true;
-      if (desc.includes('400g') || desc.includes('qsfp-dd') || desc.includes('osfp')) has400GTransceivers = true;
-    }
-
-    if (desc.includes('dac') || desc.includes('direct attach') || desc.includes('copper cable')) {
-      dacCableCount += qty;
-    }
-    if ((desc.includes('lc') && desc.includes('patch') && desc.includes('cable')) || (desc.includes('om4') && desc.includes('cable'))) {
-      opticalPatchCableCount += qty;
-    }
+    _tallyTransceiversAndCables(desc, qty, res);
   }
 
-  return {
-    switchCount, totalAccessPorts, totalUplinkPorts, maxUplinkSpeedGb,
-    transceiverCount, opticalTransceiverCount, opticalPatchCableCount, dacCableCount,
-    has100GTransceivers, has400GTransceivers
-  };
+  return res;
 }
 
 function evalSwitchFabricPorts(items, _catalogData, _mandatorySkus, _serverCount, _ctx) {
@@ -221,20 +225,55 @@ function evalSwitchFabricPorts(items, _catalogData, _mandatorySkus, _serverCount
   };
 }
 
+function _tallyTapeChassis(desc, qty, res) {
+  if (desc.includes('msl3040') || (desc.includes('msl') && desc.includes('3040'))) {
+    if (desc.includes('expansion')) res.msl3040ExpCount += qty;
+    else res.msl3040BaseCount += qty;
+  } else if (desc.includes('msl6480') || (desc.includes('msl') && desc.includes('6480'))) {
+    if (desc.includes('expansion')) res.msl6480ExpCount += qty;
+    else res.msl6480BaseCount += qty;
+  } else if (desc.includes('msl 1/8') || desc.includes('1/8 g2') || desc.includes('autoloader')) {
+    res.mslAutoloaderCount += qty;
+  }
+}
+
+function _tallyTapeDrives(desc, qty, res) {
+  if (desc.includes('label') || (!desc.includes('tape drive') && !desc.includes('ultrium 30750') && !desc.includes('lto-7') && !desc.includes('lto-8') && !desc.includes('lto-9'))) {
+    return;
+  }
+  if (desc.includes('cartridge') || desc.includes('cable') || desc.includes('transceiver') || desc.includes('cleaning')) {
+    return;
+  }
+  if (desc.includes('sas')) res.ltoSasDriveCount += qty;
+  else if (desc.includes('fc') || desc.includes('fibre channel')) res.ltoFcDriveCount += qty;
+  else res.standaloneDriveCount += qty;
+}
+
+function _tallyTapeCablesAndCartridges(desc, sku, qty, res) {
+  if (desc.includes('mini sas high density') || desc.includes('mini-sas hd') || desc.includes('mini sas hd') || sku === '716195-B21' || sku === '716197-B21') {
+    res.miniSasHdCableCount += qty;
+  }
+  if ((desc.includes('transceiver') && (desc.includes('fc') || desc.includes('short wave') || desc.includes('fibre channel'))) || sku === 'AJ716B' || sku === 'AJ717A') {
+    res.fcTransceiverCount += qty;
+  }
+
+  if (!desc.includes('label') && (desc.includes('lto-') || desc.includes('ultrium')) && (desc.includes('data cartridge') || desc.includes('rw data') || desc.includes('custom labeled') || desc.includes('non-custom'))) {
+    res.dataCartridgeCount += qty;
+  }
+  if (sku === 'C7978A' || desc.includes('universal cleaning') || desc.includes('cleaning cartridge')) {
+    res.cleaningCartridgeCount += qty;
+  }
+  if (desc.includes('bar code label') || desc.includes('barcode label') || desc.includes('label pack') || sku === 'Q2014A' || sku === 'Q2015A') {
+    res.barcodeLabelCount += qty;
+  }
+}
+
 function tallyTapeArchiveItems(items) {
-  let msl3040BaseCount = 0;
-  let msl3040ExpCount = 0;
-  let mslAutoloaderCount = 0;
-  let msl6480BaseCount = 0;
-  let msl6480ExpCount = 0;
-  let standaloneDriveCount = 0;
-  let ltoSasDriveCount = 0;
-  let ltoFcDriveCount = 0;
-  let miniSasHdCableCount = 0;
-  let fcTransceiverCount = 0;
-  let dataCartridgeCount = 0;
-  let cleaningCartridgeCount = 0;
-  let barcodeLabelCount = 0;
+  const res = {
+    msl3040BaseCount: 0, msl3040ExpCount: 0, mslAutoloaderCount: 0, msl6480BaseCount: 0, msl6480ExpCount: 0,
+    standaloneDriveCount: 0, ltoSasDriveCount: 0, ltoFcDriveCount: 0, miniSasHdCableCount: 0,
+    fcTransceiverCount: 0, dataCartridgeCount: 0, cleaningCartridgeCount: 0, barcodeLabelCount: 0
+  };
 
   for (const it of items) {
     if (isOcaModifierTrackingRow(it.sku, it.description)) continue;
@@ -242,47 +281,12 @@ function tallyTapeArchiveItems(items) {
     const sku = cleanBaseSKU(it.sku);
     const qty = it.quantity || 1;
 
-    if (desc.includes('msl3040') || (desc.includes('msl') && desc.includes('3040'))) {
-      if (desc.includes('expansion')) msl3040ExpCount += qty;
-      else msl3040BaseCount += qty;
-    } else if (desc.includes('msl6480') || (desc.includes('msl') && desc.includes('6480'))) {
-      if (desc.includes('expansion')) msl6480ExpCount += qty;
-      else msl6480BaseCount += qty;
-    } else if (desc.includes('msl 1/8') || desc.includes('1/8 g2') || desc.includes('autoloader')) {
-      mslAutoloaderCount += qty;
-    }
-
-    if (!desc.includes('label') && (desc.includes('tape drive') || desc.includes('ultrium 30750') || desc.includes('lto-7') || desc.includes('lto-8') || desc.includes('lto-9'))) {
-      if (!desc.includes('cartridge') && !desc.includes('cable') && !desc.includes('transceiver') && !desc.includes('cleaning')) {
-        if (desc.includes('sas')) ltoSasDriveCount += qty;
-        else if (desc.includes('fc') || desc.includes('fibre channel')) ltoFcDriveCount += qty;
-        else standaloneDriveCount += qty;
-      }
-    }
-
-    if (desc.includes('mini sas high density') || desc.includes('mini-sas hd') || desc.includes('mini sas hd') || sku === '716195-B21' || sku === '716197-B21') {
-      miniSasHdCableCount += qty;
-    }
-    if ((desc.includes('transceiver') && (desc.includes('fc') || desc.includes('short wave') || desc.includes('fibre channel'))) || sku === 'AJ716B' || sku === 'AJ717A') {
-      fcTransceiverCount += qty;
-    }
-
-    if (!desc.includes('label') && (desc.includes('lto-') || desc.includes('ultrium')) && (desc.includes('data cartridge') || desc.includes('rw data') || desc.includes('custom labeled') || desc.includes('non-custom'))) {
-      dataCartridgeCount += qty;
-    }
-    if (sku === 'C7978A' || desc.includes('universal cleaning') || desc.includes('cleaning cartridge')) {
-      cleaningCartridgeCount += qty;
-    }
-    if (desc.includes('bar code label') || desc.includes('barcode label') || desc.includes('label pack') || sku === 'Q2014A' || sku === 'Q2015A') {
-      barcodeLabelCount += qty;
-    }
+    _tallyTapeChassis(desc, qty, res);
+    _tallyTapeDrives(desc, qty, res);
+    _tallyTapeCablesAndCartridges(desc, sku, qty, res);
   }
 
-  return {
-    msl3040BaseCount, msl3040ExpCount, mslAutoloaderCount, msl6480BaseCount, msl6480ExpCount,
-    standaloneDriveCount, ltoSasDriveCount, ltoFcDriveCount, miniSasHdCableCount,
-    fcTransceiverCount, dataCartridgeCount, cleaningCartridgeCount, barcodeLabelCount
-  };
+  return res;
 }
 
 function calculateTapeCapacities(t, errors) {

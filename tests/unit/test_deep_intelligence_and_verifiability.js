@@ -435,7 +435,7 @@ describe('Deep Intelligence, Web Verifiability & Self-Correction Matrix', () => 
 
       assert.equal(diag.errorType, 'AUTH_EXPIRED');
       assert.ok(diag.rootCause.includes('expired or unauthenticated'));
-      assert.ok(diag.remediationAction.includes('nlm login --force --storage file'));
+      assert.ok(diag.remediationAction.includes('auth:nlm:heal') || diag.remediationAction.includes('nlm login'));
     });
 
     it('Negative Test: Unrecoverable 404 notebook error is cleanly distinguished from auth failure', () => {

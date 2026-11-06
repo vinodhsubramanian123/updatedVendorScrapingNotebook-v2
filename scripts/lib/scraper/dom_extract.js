@@ -73,6 +73,70 @@ async function extractChunkedText(ws, sendCommand, chunkSize = 50000, maxRetries
   return { fullText, totalLen };
 }
 
+const EXTRACT_TABLES_SCRIPT_TEMPLATE = `(() => {
+  const root = __SCOPE_EXPR__ || document;
+  let tables = Array.from(root.querySelectorAll('table'));
+  try {
+    const iframes = root.querySelectorAll('iframe');
+    iframes.forEach(f => {
+      try {
+        if (f.contentDocument) {
+          tables = tables.concat(Array.from(f.contentDocument.querySelectorAll('table')));
+        }
+      } catch (_) {}
+    });
+  } catch (_) {}
+
+  const result = [];
+  tables.forEach((table, idx) => {
+    const rows = [];
+    table.querySelectorAll('tr').forEach(tr => {
+      if (tr.closest('table') !== table) return;
+      const cells = [];
+      const badgeSpan = tr.querySelector('.td_prod');
+      const badge = badgeSpan ? (badgeSpan.innerText || badgeSpan.textContent || '').trim() : '';
+      tr.querySelectorAll('td, th').forEach(cell => {
+        if (cell.parentElement !== tr || cell.querySelector('table')) return;
+        const pidSpan = cell.querySelector('._pid, .item_prod span._pid');
+        if (pidSpan) {
+          const pid = (pidSpan.innerText || pidSpan.textContent || '').trim();
+          cells.push(badge ? (pid + ' [' + badge + ']') : pid);
+        } else {
+          let cellText = (cell.innerText || cell.textContent || '').trim();
+          if (!cellText) {
+            const hasCheckImg = cell.querySelector('img[src*="check" i], img[src*="tick" i], img[src*="rec" i]');
+            // An empty hpe_recommended span or arbitrary SVG is not a positive flag.
+            const hasCheckIcon = cell.querySelector('.icon-check, .fa-check, .glyphicon-ok, [data-icon="check"], [data-icon="tick"]');
+            const hasCheckedInput = cell.querySelector('input[type="checkbox"]:checked, input[type="radio"]:checked');
+            // GAP-04 FIX: OCA WebLogic uses inline SVG checkmarks (not img or class names).
+            // Detect a single visible <svg> child element as a positive recommendation signal.
+            const svgEls = Array.from(cell.querySelectorAll('svg'));
+            const hasVisibleSvg = svgEls.length > 0 && svgEls.some(svg => svg.getClientRects().length > 0);
+            const ariaOrTitle = cell.getAttribute('aria-label') || cell.getAttribute('title') ||
+              cell.querySelector('[aria-label*="recommend" i], [title*="recommend" i]')?.getAttribute('title') ||
+              cell.querySelector('[aria-label*="recommend" i], [title*="recommend" i]')?.getAttribute('aria-label') || '';
+            // GAP-04 FIX: Widen negative pattern to catch 'Not HPE recommended' (HPE between Not and recommended)
+            if (/nots+(?:hpes+)?recommended|non[s-]+recommended/i.test(ariaOrTitle)) {
+              cellText = 'No';
+            } else if (hasCheckImg || hasCheckIcon || hasVisibleSvg || /recommend/i.test(ariaOrTitle)) {
+              cellText = 'Yes';
+            } else if (hasCheckedInput) {
+              cellText = 'Selected';
+            }
+          } else if (/[✓✔√\u2713\u2714]/.test(cellText)) {
+            cellText = 'Yes';
+          }
+
+          cells.push(cellText);
+        }
+      });
+      if (cells.length > 0 && cells.some(c => c.length > 0)) rows.push(cells);
+    });
+    if (rows.length > 0) result.push({ tableIndex: idx, tableId: table.id || '', rowCount: rows.length, rows });
+  });
+  return JSON.stringify(result);
+})()`;
+
 /**
  * Extract DOM tables as ROW ARRAYS (for build_catalog.js classification engine).
  * @param {WebSocket} ws
@@ -83,69 +147,7 @@ async function extractChunkedText(ws, sendCommand, chunkSize = 50000, maxRetries
 async function extractTablesAsRows(ws, sendCommand, scopeSelector = null) {
   const scopeExpr = scopeSelector ? `document.querySelector(${JSON.stringify(scopeSelector)})` : 'document';
   const tableResult = await sendCommand(ws, 'Runtime.evaluate', {
-    expression: `(() => {
-      const root = ${scopeExpr} || document;
-      let tables = Array.from(root.querySelectorAll('table'));
-      try {
-        const iframes = root.querySelectorAll('iframe');
-        iframes.forEach(f => {
-          try {
-            if (f.contentDocument) {
-              tables = tables.concat(Array.from(f.contentDocument.querySelectorAll('table')));
-            }
-          } catch (_) {}
-        });
-      } catch (_) {}
-
-      const result = [];
-      tables.forEach((table, idx) => {
-        const rows = [];
-        table.querySelectorAll('tr').forEach(tr => {
-          if (tr.closest('table') !== table) return;
-          const cells = [];
-          const badgeSpan = tr.querySelector('.td_prod');
-          const badge = badgeSpan ? (badgeSpan.innerText || badgeSpan.textContent || '').trim() : '';
-          tr.querySelectorAll('td, th').forEach(cell => {
-            if (cell.parentElement !== tr || cell.querySelector('table')) return;
-            const pidSpan = cell.querySelector('._pid, .item_prod span._pid');
-            if (pidSpan) {
-              const pid = (pidSpan.innerText || pidSpan.textContent || '').trim();
-              cells.push(badge ? (pid + ' [' + badge + ']') : pid);
-            } else {
-              let cellText = (cell.innerText || cell.textContent || '').trim();
-              if (!cellText) {
-                const hasCheckImg = cell.querySelector('img[src*="check" i], img[src*="tick" i], img[src*="rec" i]');
-                // An empty hpe_recommended span or arbitrary SVG is not a positive flag.
-                const hasCheckIcon = cell.querySelector('.icon-check, .fa-check, .glyphicon-ok, [data-icon="check"], [data-icon="tick"]');
-                const hasCheckedInput = cell.querySelector('input[type="checkbox"]:checked, input[type="radio"]:checked');
-                // GAP-04 FIX: OCA WebLogic uses inline SVG checkmarks (not img or class names).
-                // Detect a single visible <svg> child element as a positive recommendation signal.
-                const svgEls = Array.from(cell.querySelectorAll('svg'));
-                const hasVisibleSvg = svgEls.length > 0 && svgEls.some(svg => svg.getClientRects().length > 0);
-                const ariaOrTitle = cell.getAttribute('aria-label') || cell.getAttribute('title') ||
-                  cell.querySelector('[aria-label*="recommend" i], [title*="recommend" i]')?.getAttribute('title') ||
-                  cell.querySelector('[aria-label*="recommend" i], [title*="recommend" i]')?.getAttribute('aria-label') || '';
-                // GAP-04 FIX: Widen negative pattern to catch 'Not HPE recommended' (HPE between Not and recommended)
-                if (/nots+(?:hpes+)?recommended|non[s-]+recommended/i.test(ariaOrTitle)) {
-                  cellText = 'No';
-                } else if (hasCheckImg || hasCheckIcon || hasVisibleSvg || /recommend/i.test(ariaOrTitle)) {
-                  cellText = 'Yes';
-                } else if (hasCheckedInput) {
-                  cellText = 'Selected';
-                }
-              } else if (/[✓✔√\u2713\u2714]/.test(cellText)) {
-                cellText = 'Yes';
-              }
-
-              cells.push(cellText);
-            }
-          });
-          if (cells.length > 0 && cells.some(c => c.length > 0)) rows.push(cells);
-        });
-        if (rows.length > 0) result.push({ tableIndex: idx, tableId: table.id || '', rowCount: rows.length, rows });
-      });
-      return JSON.stringify(result);
-    })()`,
+    expression: EXTRACT_TABLES_SCRIPT_TEMPLATE.replace('__SCOPE_EXPR__', scopeExpr),
     returnByValue: true
   });
 
@@ -201,6 +203,66 @@ async function extractSectionHeaders(ws, sendCommand) {
   }
 }
 
+const EXTRACT_HIDDEN_ELEMENTS_SCRIPT = String.raw`(() => {
+  const hidden = [];
+  const seen = new Set();
+  const allPidEls = Array.from(document.querySelectorAll('._pid, [class*="_pid"]'));
+  for (const el of allPidEls) {
+    let rawSku = (el.innerText || el.textContent || '').replace(/[\r\n\t]+/g, ' ').trim();
+    rawSku = rawSku.replace(/^(?:OB|CS|90)\s+/i, '').trim();
+    const sku = rawSku.replace(/\s+PVT$/i, '').trim();
+    if (!sku || sku === 'Product #' || /^(?:OB|CS|90|DS|PVT|NA|N\/A)$/i.test(sku) || /^(?:dl\d+pat|cntr\d+|da\d+|dl\d+smtch)/i.test(sku) || seen.has(sku)) continue;
+    let isHidden = false;
+    let ancestor = el;
+    let hiddenAncestor = null;
+    while (ancestor && ancestor !== document.body) {
+      try {
+        const style = window.getComputedStyle(ancestor);
+        if (style.display === 'none' || style.visibility === 'hidden' || parseFloat(style.opacity) === 0) {
+          isHidden = true;
+          hiddenAncestor = ancestor;
+          break;
+        }
+      } catch (_) {}
+      ancestor = ancestor.parentElement;
+    }
+    if (isHidden) {
+      const row = el.closest('tr, .item_row, [data-item-id]');
+      const table = row?.closest('table');
+      const isUnavailableTable = Boolean(table?.closest('.UavailableTable, .uavailableTable_tr, [class*="uavailable"]'));
+      const redHeader = table?.querySelector('.choice_header1[style*="red"], .choice_header1.unavailable, [style*="color: red"], [style*="color:red"]');
+      let ruleContext = (redHeader?.innerText || redHeader?.textContent || '').replace(/[\r\n\t]+/g, ' ').trim();
+
+      if (!isUnavailableTable && !ruleContext) {
+        continue;
+      }
+
+      seen.add(sku);
+      const badge = row ? (row.querySelector('.td_prod')?.innerText || '').trim() : '';
+      hidden.push({
+        sku,
+        badge,
+        ruleContext: ruleContext || 'Gated by configuration choice',
+        visibilityReason: 'HIDDEN_IN_DEFAULT_DOM_STATE',
+        hiddenAncestorClass: hiddenAncestor?.className || '',
+        parentClass: el.parentElement?.className || ''
+      });
+    }
+  }
+  return JSON.stringify(hidden);
+})()`;
+
+const AMBIENT_SELECTOR_DETECT_SCRIPT = `(() => {
+  const el = document.querySelector('select[name*="ambient"], select[id*="ambient"], select[aria-label*="ambient" i], select[title*="ambient" i]');
+  if (!el) return JSON.stringify({ found: false, id: null, currentValue: null, options: [] });
+  return JSON.stringify({
+    found: true,
+    id: el.id || el.name || '',
+    currentValue: el.value,
+    options: Array.from(el.options).map(o => ({ value: o.value, text: o.text.trim() }))
+  });
+})()`;
+
 /**
  * Extract DOM elements that are currently hidden (display:none / visibility:hidden) but contain product IDs.
  * Captures SKUs that are conditionally visible (e.g. under ≤27°C ambient or high-TDP CPU trigger).
@@ -210,57 +272,7 @@ async function extractSectionHeaders(ws, sendCommand) {
  */
 async function extractHiddenElements(ws, sendCommand) {
   const result = await sendCommand(ws, 'Runtime.evaluate', {
-    expression: String.raw`(() => {
-      const hidden = [];
-      const seen = new Set();
-      // All elements tagged with product ID classes
-      const allPidEls = Array.from(document.querySelectorAll('._pid, [class*="_pid"]'));
-      for (const el of allPidEls) {
-        let rawSku = (el.innerText || el.textContent || '').replace(/[\r\n\t]+/g, ' ').trim();
-        rawSku = rawSku.replace(/^(?:OB|CS|90)\s+/i, '').trim();
-        const sku = rawSku.replace(/\s+PVT$/i, '').trim();
-        if (!sku || sku === 'Product #' || /^(?:OB|CS|90|DS|PVT|NA|N\/A)$/i.test(sku) || /^(?:dl\d+pat|cntr\d+|da\d+|dl\d+smtch)/i.test(sku) || seen.has(sku)) continue;
-        // Walk up the DOM to determine if this element or any ancestor is hidden
-        let isHidden = false;
-        let ancestor = el;
-        let hiddenAncestor = null;
-        while (ancestor && ancestor !== document.body) {
-          try {
-            const style = window.getComputedStyle(ancestor);
-            if (style.display === 'none' || style.visibility === 'hidden' || parseFloat(style.opacity) === 0) {
-              isHidden = true;
-              hiddenAncestor = ancestor;
-              break;
-            }
-          } catch (_) {}
-          ancestor = ancestor.parentElement;
-        }
-        if (isHidden) {
-          const row = el.closest('tr, .item_row, [data-item-id]');
-          const table = row?.closest('table');
-          const isUnavailableTable = Boolean(table?.closest('.UavailableTable, .uavailableTable_tr, [class*="uavailable"]'));
-          const redHeader = table?.querySelector('.choice_header1[style*="red"], .choice_header1.unavailable, [style*="color: red"], [style*="color:red"]');
-          let ruleContext = (redHeader?.innerText || redHeader?.textContent || '').replace(/[\r\n\t]+/g, ' ').trim();
-
-          // Only treat as conditional if inside an unavailable table or with an explicit constraint header
-          if (!isUnavailableTable && !ruleContext) {
-            continue;
-          }
-
-          seen.add(sku);
-          const badge = row ? (row.querySelector('.td_prod')?.innerText || '').trim() : '';
-          hidden.push({
-            sku,
-            badge,
-            ruleContext: ruleContext || 'Gated by configuration choice',
-            visibilityReason: 'HIDDEN_IN_DEFAULT_DOM_STATE',
-            hiddenAncestorClass: hiddenAncestor?.className || '',
-            parentClass: el.parentElement?.className || ''
-          });
-        }
-      }
-      return JSON.stringify(hidden);
-    })()`,
+    expression: EXTRACT_HIDDEN_ELEMENTS_SCRIPT,
     returnByValue: true
   });
   try {
@@ -268,6 +280,100 @@ async function extractHiddenElements(ws, sendCommand) {
   } catch (e) {
     console.warn(`[WARN] [DOM_EXTRACT] Failed to parse hidden elements: ${e.message}`);
     return [];
+  }
+}
+
+async function _handleMissingAmbientSelector(ws, sendCommand, thresholds, captureState, seen) {
+  const rowResults = await require('./ambient_row_probe').probeAmbientRows(ws, sendCommand, thresholds, captureState);
+  if (rowResults !== null) return rowResults;
+  const conditionalSkus = [];
+  const hiddenAtDefault = await extractHiddenElements(ws, sendCommand);
+  for (const item of hiddenAtDefault) {
+    if (!seen.has(item.sku)) {
+      seen.add(item.sku);
+      conditionalSkus.push({
+        ...item,
+        conditionType: 'PORTAL_CONDITIONAL_VIEW',
+        operator: 'requires_selection',
+        thresholdDegC: null,
+        visibleAtDefaultC: false,
+        evidence: item.ruleContext ? `Gated/conditional: ${item.ruleContext}` : 'SKU hidden in default DOM state (requires selector activation)'
+      });
+    }
+  }
+  return conditionalSkus;
+}
+
+async function _fetchVisibleSkus(ws, sendCommand) {
+  const res = await sendCommand(ws, 'Runtime.evaluate', {
+    expression: `JSON.stringify(Array.from(document.querySelectorAll('._pid')).filter(e => e.getClientRects().length && getComputedStyle(e).visibility !== 'hidden' && !e.closest('.unavailable')).map(e => (e.textContent || '').trim()).filter(Boolean))`,
+    returnByValue: true
+  });
+  try {
+    return new Set(JSON.parse(res.result?.value || '[]'));
+  } catch (_) {
+    return new Set();
+  }
+}
+
+async function _probeSingleAmbientThreshold(ws, sendCommand, threshold, selectorInfo, defaultVisible, seen, defaultTemp, captureState, conditionalSkus) {
+  if (parseFloat(threshold) === defaultTemp) return;
+
+  const matchingOption = (selectorInfo.options || []).find(o =>
+    parseFloat(o.value) === threshold || o.text.includes(String(threshold)));
+  if (!matchingOption) return;
+
+  const setRes = await sendCommand(ws, 'Runtime.evaluate', {
+    expression: `(() => {
+      const el = ${selectorInfo.id ? `document.getElementById(${JSON.stringify(selectorInfo.id)}) || ` : ''}document.querySelector('select[name*="ambient"], select[id*="ambient"], select[aria-label*="ambient" i], select[title*="ambient" i]');
+      if (!el) return { success: false, error: 'Ambient selector disappeared' };
+      el.value = ${JSON.stringify(matchingOption.value)};
+      el.dispatchEvent(new Event('change', { bubbles: true }));
+      return { success: true };
+    })()`,
+    returnByValue: true
+  });
+  if (!setRes?.result?.value?.success) {
+    console.warn('⚠️  Ambient selector could not be set to threshold:', setRes?.result?.value?.error);
+    return;
+  }
+
+  await new Promise(resolve => setTimeout(resolve, 2500));
+  if (captureState) await captureState({ conditionKey: 'ambient_temp', thresholdValue: threshold });
+
+  const probeVisible = await _fetchVisibleSkus(ws, sendCommand);
+  for (const sku of probeVisible) {
+    if (!defaultVisible.has(sku) && !seen.has(`${sku}:${threshold}`)) {
+      seen.add(`${sku}:${threshold}`);
+      conditionalSkus.push({
+        sku,
+        conditionType: 'AMBIENT_GATE',
+        operator: 'eq',
+        thresholdDegC: threshold,
+        visibleAtDefaultC: false,
+        visibleAt27C: threshold === 27,
+        evidence: `HPE OCA DOM — SKU observed visible at tested ambient ${threshold}C (default: ${defaultTemp}C); no untested temperature range inferred`,
+        portalVerificationRequired: true
+      });
+    }
+  }
+}
+
+async function _restoreAmbientSelector(ws, sendCommand, selectorInfo, originalValue) {
+  try {
+    await sendCommand(ws, 'Runtime.evaluate', {
+      expression: `(() => {
+        const el = ${selectorInfo.id ? `document.getElementById(${JSON.stringify(selectorInfo.id)}) || ` : ''}document.querySelector('select[name*="ambient"], select[id*="ambient"], select[aria-label*="ambient" i], select[title*="ambient" i]');
+        if (el) {
+          el.value = ${JSON.stringify(originalValue)};
+          el.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+      })()`,
+      returnByValue: true
+    });
+    await new Promise(resolve => setTimeout(resolve, 1500));
+  } catch (restoreErr) {
+    console.warn('⚠️  Could not restore ambient selector:', restoreErr.message);
   }
 }
 
@@ -287,18 +393,8 @@ async function probeConditionalSkuVisibility(ws, sendCommand, thresholds = [35, 
   const conditionalSkus = [];
   const seen = new Set();
 
-  // Detect the ambient selector
   const selectorRes = await sendCommand(ws, 'Runtime.evaluate', {
-    expression: `(() => {
-      const el = document.querySelector('select[name*="ambient"], select[id*="ambient"], select[aria-label*="ambient" i], select[title*="ambient" i]');
-      if (!el) return JSON.stringify({ found: false, id: null, currentValue: null, options: [] });
-      return JSON.stringify({
-        found: true,
-        id: el.id || el.name || '',
-        currentValue: el.value,
-        options: Array.from(el.options).map(o => ({ value: o.value, text: o.text.trim() }))
-      });
-    })()`,
+    expression: AMBIENT_SELECTOR_DETECT_SCRIPT,
     returnByValue: true
   });
 
@@ -306,110 +402,23 @@ async function probeConditionalSkuVisibility(ws, sendCommand, thresholds = [35, 
   try { selectorInfo = JSON.parse(selectorRes.result?.value || '{}'); } catch (_) {}
 
   if (!selectorInfo.found) {
-    const rowResults = await require('./ambient_row_probe').probeAmbientRows(ws, sendCommand, thresholds, captureState);
-    if (rowResults !== null) return rowResults;
-    // No ambient selector found — still capture hidden elements as PORTAL_CONDITIONAL_VIEW
-    const hiddenAtDefault = await extractHiddenElements(ws, sendCommand);
-    for (const item of hiddenAtDefault) {
-      if (!seen.has(item.sku)) {
-        seen.add(item.sku);
-        conditionalSkus.push({
-          ...item,
-          conditionType: 'PORTAL_CONDITIONAL_VIEW',
-          operator: 'requires_selection',
-          thresholdDegC: null,
-          visibleAtDefaultC: false,
-          evidence: item.ruleContext ? `Gated/conditional: ${item.ruleContext}` : 'SKU hidden in default DOM state (requires selector activation)'
-        });
-      }
-    }
-    return conditionalSkus;
+    return await _handleMissingAmbientSelector(ws, sendCommand, thresholds, captureState, seen);
   }
 
   const originalValue = selectorInfo.currentValue;
   const selectedText = selectorInfo.options.find(option => option.value === originalValue)?.text || '';
   const defaultTemp = Number(selectedText.match(/\d+(?:\.\d+)?/)?.[0] || originalValue);
 
-  // Snapshot the default-visible SKU set
-  const defaultVisibleRes = await sendCommand(ws, 'Runtime.evaluate', {
-    expression: `JSON.stringify(Array.from(document.querySelectorAll('._pid')).filter(e => e.getClientRects().length && getComputedStyle(e).visibility !== 'hidden' && !e.closest('.unavailable')).map(e => (e.textContent || '').trim()).filter(Boolean))`,
-    returnByValue: true
-  });
-  let defaultVisible = new Set();
-  try { defaultVisible = new Set(JSON.parse(defaultVisibleRes.result?.value || '[]')); } catch (_) {}
+  const defaultVisible = await _fetchVisibleSkus(ws, sendCommand);
 
   try {
-  for (const threshold of thresholds) {
-    if (parseFloat(threshold) === defaultTemp) continue; // skip default
-
-    // Find the matching option value for this threshold
-    const matchingOption = (selectorInfo.options || []).find(o =>
-      parseFloat(o.value) === threshold || o.text.includes(String(threshold)));
-    if (!matchingOption) continue;
-
-    // Set ambient to threshold
-    const setRes = await sendCommand(ws, 'Runtime.evaluate', {
-      expression: `(() => {
-        const el = ${selectorInfo.id ? `document.getElementById(${JSON.stringify(selectorInfo.id)}) || ` : ''}document.querySelector('select[name*="ambient"], select[id*="ambient"], select[aria-label*="ambient" i], select[title*="ambient" i]');
-        if (!el) return { success: false, error: 'Ambient selector disappeared' };
-        el.value = ${JSON.stringify(matchingOption.value)};
-        el.dispatchEvent(new Event('change', { bubbles: true }));
-        return { success: true };
-      })()`,
-      returnByValue: true
-    });
-    if (!setRes?.result?.value?.success) {
-      console.warn('⚠️  Ambient selector could not be set to threshold:', setRes?.result?.value?.error);
-      continue;
+    for (const threshold of thresholds) {
+      await _probeSingleAmbientThreshold(
+        ws, sendCommand, threshold, selectorInfo, defaultVisible, seen, defaultTemp, captureState, conditionalSkus
+      );
     }
-
-    // Wait for WebLogic re-render
-    await new Promise(resolve => setTimeout(resolve, 2500));
-    if (captureState) await captureState({ conditionKey: 'ambient_temp', thresholdValue: threshold });
-
-    // Snapshot newly visible SKUs
-    const probeRes = await sendCommand(ws, 'Runtime.evaluate', {
-      expression: `JSON.stringify(Array.from(document.querySelectorAll('._pid')).filter(e => e.getClientRects().length && getComputedStyle(e).visibility !== 'hidden' && !e.closest('.unavailable')).map(e => (e.textContent || '').trim()).filter(Boolean))`,
-      returnByValue: true
-    });
-    let probeVisible = new Set();
-    try { probeVisible = new Set(JSON.parse(probeRes.result?.value || '[]')); } catch (_) {}
-
-    // SKUs that appear at this threshold but NOT at default = conditional SKUs
-    for (const sku of probeVisible) {
-      if (!defaultVisible.has(sku) && !seen.has(`${sku}:${threshold}`)) {
-        seen.add(`${sku}:${threshold}`);
-        conditionalSkus.push({
-          sku,
-          conditionType: 'AMBIENT_GATE',
-          operator: 'eq',
-          thresholdDegC: threshold,
-          visibleAtDefaultC: false,
-          visibleAt27C: threshold === 27,
-          evidence: `HPE OCA DOM — SKU observed visible at tested ambient ${threshold}C (default: ${defaultTemp}C); no untested temperature range inferred`,
-          portalVerificationRequired: true
-        });
-      }
-    }
-  }
-
   } finally {
-    // Restore original ambient value safely
-    try {
-      await sendCommand(ws, 'Runtime.evaluate', {
-        expression: `(() => {
-          const el = ${selectorInfo.id ? `document.getElementById(${JSON.stringify(selectorInfo.id)}) || ` : ''}document.querySelector('select[name*="ambient"], select[id*="ambient"], select[aria-label*="ambient" i], select[title*="ambient" i]');
-          if (el) {
-            el.value = ${JSON.stringify(originalValue)};
-            el.dispatchEvent(new Event('change', { bubbles: true }));
-          }
-        })()`,
-        returnByValue: true
-      });
-      await new Promise(resolve => setTimeout(resolve, 1500));
-    } catch (restoreErr) {
-      console.warn('⚠️  Could not restore ambient selector:', restoreErr.message);
-    }
+    await _restoreAmbientSelector(ws, sendCommand, selectorInfo, originalValue);
   }
 
   return conditionalSkus;

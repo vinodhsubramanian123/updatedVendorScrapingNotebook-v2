@@ -126,6 +126,32 @@ function _buildAspectsSection(evalResults) {
   return md;
 }
 
+function _buildAuditLogTable(auditLog) {
+  if (!auditLog || auditLog.length === 0) return '';
+  let md = `| Hierarchy Level | Evaluated Rule Text | Status | Technical Audit Details |\n`;
+  md += `|---|---|---|---|\n`;
+  auditLog.forEach(al => {
+    const statusIcon = al.status === 'PASS' ? '✅ PASS'
+      : al.status === 'FAIL' ? '❌ FAIL'
+      : al.status === 'UNEVALUATED' ? '🔲 UNEVALUATED'
+      : al.status === 'UNKNOWN' ? '❓ UNKNOWN'
+      : '⚠️ WARNING';
+    md += `| **${al.level}** | ${al.ruleText} | ${statusIcon} | ${al.details} |\n`;
+  });
+  md += `\n`;
+  return md;
+}
+
+function _formatDnaSummary(workloadDna) {
+  const dna = workloadDna || {};
+  let md = `### 🏆 2.6 Workload DNA Profile & Top 5 Strategic Resolution Matrix\n\n`;
+  md += `- **Inferred Workload DNA Profile**: \`${dna.workloadDescription || 'Balanced Enterprise'}\`  \n`;
+  md += `- **CPU / Core Density**: \`${dna.totalCores || 0} Total Cores\` (Max Freq: \`${dna.maxFreqGhz || 0} GHz\`)  \n`;
+  md += `- **Memory Density Ratio**: \`${dna.totalMemoryGb || 0} GB Total RAM\` (\`${dna.gbPerCore || 0} GB/Core\`)  \n`;
+  md += `- **Storage I/O Profile**: \`${dna.storageWorkload || 'READ_INTENSIVE'} (${dna.storageType || 'SATA/NVMe'})\`  \n\n`;
+  return md;
+}
+
 function _buildWorkloadSection(graph, chassisDir, chassisDetection) {
   if (!graph) return '';
   if (graph?.chassisInfo?.family === 'SAN') return `## SAN Configuration Scope\n\nFixed Fibre Channel switch; server CPU, memory, drive and riser rules do not apply. Bundle composition is verified against retained official evidence. Live exact-configuration acceptance remains pending.\n\n`;
@@ -144,26 +170,13 @@ function _buildWorkloadSection(graph, chassisDir, chassisDetection) {
     : 'Unknown_Catalog.json';
   md += `- **Rules Loaded Source**: \`${graph?.rulesSource || rulesSrcName}\` ${graph?.isFallbackSource ? '(Fallback Safety Net)' : '(Dual Safety Net)'}  \n\n`;
 
-  if (graph.auditLog && graph.auditLog.length > 0) {
-    md += `| Hierarchy Level | Evaluated Rule Text | Status | Technical Audit Details |\n`;
-    md += `|---|---|---|---|\n`;
-    graph.auditLog.forEach(al => {
-      const statusIcon = al.status === 'PASS' ? '✅ PASS'
-        : al.status === 'FAIL' ? '❌ FAIL'
-        : al.status === 'UNEVALUATED' ? '🔲 UNEVALUATED'
-        : al.status === 'UNKNOWN' ? '❓ UNKNOWN'
-        : '⚠️ WARNING';
-      md += `| **${al.level}** | ${al.ruleText} | ${statusIcon} | ${al.details} |\n`;
-    });
-    md += `\n`;
+  if (typeof _buildAuditLogTable === 'function') {
+    md += _buildAuditLogTable(graph.auditLog);
   }
 
-  md += `### 🏆 2.6 Workload DNA Profile & Top 5 Strategic Resolution Matrix\n\n`;
-  const dna = graph.workloadDna || {};
-  md += `- **Inferred Workload DNA Profile**: \`${dna.workloadDescription || 'Balanced Enterprise'}\`  \n`;
-  md += `- **CPU / Core Density**: \`${dna.totalCores || 0} Total Cores\` (Max Freq: \`${dna.maxFreqGhz || 0} GHz\`)  \n`;
-  md += `- **Memory Density Ratio**: \`${dna.totalMemoryGb || 0} GB Total RAM\` (\`${dna.gbPerCore || 0} GB/Core\`)  \n`;
-  md += `- **Storage I/O Profile**: \`${dna.storageWorkload || 'READ_INTENSIVE'} (${dna.storageType || 'SATA/NVMe'})\`  \n\n`;
+  if (typeof _formatDnaSummary === 'function') {
+    md += _formatDnaSummary(graph.workloadDna);
+  }
 
   if (graph.recommendedSolutions && graph.recommendedSolutions.length > 0) {
     md += `| Rank | Solution Tier Name | Score | Est. Cost (USD) | Workload Match | SKU Mods | Technical Tradeoff Rationale |\n`;
@@ -357,65 +370,126 @@ function generateMarkdownReport(ctx) {
   return report;
 }
 
+function _buildStep1Parsing(ctx) {
+  const { items, inputFile } = ctx;
+  const fileName = inputFile || 'Pasted Text BOM';
+  return {
+    stepId: 1,
+    title: 'BOQ Pre-cleaning & Parsing',
+    subtitle: 'Excel Multi-Sheet & Raw BOM Cleaning',
+    status: 'COMPLETED',
+    durationMs: ctx.stage1ParsingMs ?? null,
+    details: `Parsed ${items.length} hardware SKU lines from ${fileName}. Cleaned formatting and tokenized quantities.`,
+    metrics: { totalSkus: items.length, sheetsParsed: 1 }
+  };
+}
+
+function _buildStep2AspectMath(ctx) {
+  const { graph, evalResults } = ctx;
+  const errCount = evalResults.errors?.length || 0;
+  const fixCount = evalResults.missingDependencies?.length || 0;
+  const rulesCount = graph.totalRulesEvaluated || 18;
+  return {
+    stepId: 2,
+    title: 'Aspect Math & Rule Engine Validation',
+    subtitle: 'Local Hardware Constraints Validation',
+    status: errCount > 0 ? 'WARNING' : 'COMPLETED',
+    durationMs: ctx.stage2AspectMathMs ?? null,
+    details: `Evaluated ${rulesCount} hardware rules. Detected ${errCount} physical conflicts & ${fixCount} missing accessories.`,
+    metrics: { rulesEvaluated: rulesCount, physicalConflicts: errCount, fixesInjected: fixCount }
+  };
+}
+
+function _buildStep3RAG(ctx) {
+  const { evalResults, stage3RAGMs, notebookId, chassisPrefix } = ctx;
+  const ragStatus = evalResults.cloudGroundingStatus;
+  let status = 'SKIPPED';
+  if (ragStatus === 'CLOUD_VERIFIED') {
+    status = 'COMPLETED';
+  } else if (ragStatus === 'CLOUD_PENDING') {
+    status = 'PENDING';
+  }
+
+  let details;
+  if (ragStatus === 'CLOUD_PENDING') {
+    details = `Cloud grounding is pending and will be owned by the dashboard worker for Notebook ${notebookId}.`;
+  } else if (notebookId) {
+    details = `NotebookLM grounding status: ${ragStatus}.`;
+  } else {
+    details = `No dedicated Notebook ID mapped for ${chassisPrefix}; local rules remain available.`;
+  }
+
+  return {
+    stepId: 3,
+    title: 'NotebookLM RAG Consultation',
+    subtitle: 'HPE QuickSpecs Knowledge Grounding',
+    status,
+    durationMs: stage3RAGMs,
+    details,
+    metrics: { notebookId: notebookId || 'UNMAPPED', ragStatus: ragStatus || 'LOCAL_FALLBACK' }
+  };
+}
+
+function _buildStep4Agentic(ctx) {
+  const { graph, evalResults, stage4GuardrailMs } = ctx;
+  const revStatus = evalResults.agenticReviewStatus;
+  let status = 'NOT_RUN';
+  let details = 'Agentic guardrail was not run during the provisional local phase.';
+  if (revStatus === 'ADVISORY_RETURNED') {
+    status = 'COMPLETED';
+    details = 'Agentic advisory returned.';
+  } else if (revStatus === 'UNAVAILABLE') {
+    status = 'WARNING';
+    details = 'Independent model review is unavailable or incomplete; other evidence remains separate.';
+  }
+
+  return {
+    stepId: 4,
+    title: 'Agentic AI Cross-Verification',
+    subtitle: 'Gemini LLM Dual-Brain Verification',
+    status,
+    durationMs: stage4GuardrailMs,
+    details,
+    metrics: { workloadMatch: graph.workloadDna?.workloadDescription || 'Standard', confidenceScore: evalResults.confidence?.score ?? null }
+  };
+}
+
+function _buildStep5Matrix(ctx) {
+  const { graph } = ctx;
+  const rankedCount = graph.rankedSolutions?.length || 0;
+  const recCount = graph.recommendedSolutions?.length || 0;
+  const topScore = graph.recommendedSolutions?.[0]?.score || null;
+  return {
+    stepId: 5,
+    title: 'Ranked Solutions & Vertical Parts Itemization',
+    subtitle: '5-Tier Strategic Resolution Matrix',
+    status: 'COMPLETED',
+    durationMs: ctx.stage5MatrixMs ?? null,
+    details: `Synthesized ${rankedCount} compatibility tiers; ${recCount} passed the buildability, Pareto, uniqueness, and closeness publication gates.`,
+    metrics: { rankedTiers: rankedCount, recommendedSolutions: recCount, topRankScore: topScore }
+  };
+}
+
+function _buildStep6Learning() {
+  return {
+    stepId: 6,
+    title: 'Partner Portal Post-BOM Learning Loop',
+    subtitle: 'Bi-Directional Quote Verification',
+    status: 'READY',
+    durationMs: 0,
+    details: 'Ready for official HPE Partner Portal quote verification and self-learning KnowledgeDelta recording.',
+    metrics: { deltaStatus: 'LISTENING_FOR_FEEDBACK' }
+  };
+}
+
 function _buildWorkflowSteps(ctx) {
-  const { items, inputFile, graph, evalResults, stage3RAGMs, stage4GuardrailMs, notebookId, chassisPrefix } = ctx;
   return [
-    {
-      stepId: 1,
-      title: 'BOQ Pre-cleaning & Parsing',
-      subtitle: 'Excel Multi-Sheet & Raw BOM Cleaning',
-      status: 'COMPLETED',
-      durationMs: ctx.stage1ParsingMs ?? null,
-      details: `Parsed ${items.length} hardware SKU lines from ${inputFile || 'Pasted Text BOM'}. Cleaned formatting and tokenized quantities.`,
-      metrics: { totalSkus: items.length, sheetsParsed: 1 }
-    },
-    {
-      stepId: 2,
-      title: 'Aspect Math & Rule Engine Validation',
-      subtitle: 'Local Hardware Constraints Validation',
-      status: evalResults.errors?.length > 0 ? 'WARNING' : 'COMPLETED',
-      durationMs: ctx.stage2AspectMathMs ?? null,
-      details: `Evaluated ${graph.totalRulesEvaluated || 18} hardware rules. Detected ${evalResults.errors?.length || 0} physical conflicts & ${evalResults.missingDependencies?.length || 0} missing accessories.`,
-      metrics: { rulesEvaluated: graph.totalRulesEvaluated || 18, physicalConflicts: evalResults.errors?.length || 0, fixesInjected: evalResults.missingDependencies?.length || 0 }
-    },
-    {
-      stepId: 3,
-      title: 'NotebookLM RAG Consultation',
-      subtitle: 'HPE QuickSpecs Knowledge Grounding',
-      status: evalResults.cloudGroundingStatus === 'CLOUD_VERIFIED' ? 'COMPLETED' : (evalResults.cloudGroundingStatus === 'CLOUD_PENDING' ? 'PENDING' : 'SKIPPED'),
-      durationMs: stage3RAGMs,
-      details: evalResults.cloudGroundingStatus === 'CLOUD_PENDING'
-        ? `Cloud grounding is pending and will be owned by the dashboard worker for Notebook ${notebookId}.`
-        : (notebookId ? `NotebookLM grounding status: ${evalResults.cloudGroundingStatus}.` : `No dedicated Notebook ID mapped for ${chassisPrefix}; local rules remain available.`),
-      metrics: { notebookId: notebookId || 'UNMAPPED', ragStatus: evalResults.cloudGroundingStatus || 'LOCAL_FALLBACK' }
-    },
-    {
-      stepId: 4,
-      title: 'Agentic AI Cross-Verification',
-      subtitle: 'Gemini LLM Dual-Brain Verification',
-      status: evalResults.agenticReviewStatus === 'ADVISORY_RETURNED' ? 'COMPLETED' : evalResults.agenticReviewStatus === 'UNAVAILABLE' ? 'WARNING' : 'NOT_RUN',
-      durationMs: stage4GuardrailMs,
-      details: evalResults.agenticReviewStatus === 'ADVISORY_RETURNED' ? 'Agentic advisory returned.' : evalResults.agenticReviewStatus === 'UNAVAILABLE' ? 'Independent model review is unavailable or incomplete; other evidence remains separate.' : 'Agentic guardrail was not run during the provisional local phase.',
-      metrics: { workloadMatch: graph.workloadDna?.workloadDescription || 'Standard', confidenceScore: evalResults.confidence?.score ?? null }
-    },
-    {
-      stepId: 5,
-      title: 'Ranked Solutions & Vertical Parts Itemization',
-      subtitle: '5-Tier Strategic Resolution Matrix',
-      status: 'COMPLETED',
-      durationMs: ctx.stage5MatrixMs ?? null,
-      details: `Synthesized ${graph.rankedSolutions?.length || 0} compatibility tiers; ${graph.recommendedSolutions?.length || 0} passed the buildability, Pareto, uniqueness, and closeness publication gates.`,
-      metrics: { rankedTiers: graph.rankedSolutions?.length || 0, recommendedSolutions: graph.recommendedSolutions?.length || 0, topRankScore: graph.recommendedSolutions?.[0]?.score || null }
-    },
-    {
-      stepId: 6,
-      title: 'Partner Portal Post-BOM Learning Loop',
-      subtitle: 'Bi-Directional Quote Verification',
-      status: 'READY',
-      durationMs: 0,
-      details: 'Ready for official HPE Partner Portal quote verification and self-learning KnowledgeDelta recording.',
-      metrics: { deltaStatus: 'LISTENING_FOR_FEEDBACK' }
-    }
+    _buildStep1Parsing(ctx),
+    _buildStep2AspectMath(ctx),
+    _buildStep3RAG(ctx),
+    _buildStep4Agentic(ctx),
+    _buildStep5Matrix(ctx),
+    _buildStep6Learning()
   ];
 }
 
@@ -793,113 +867,135 @@ function _recordLedgerDeliverableArtifacts(ledger, ctx, evalResults, outputPath)
   });
 }
 
-function _emitSerializedJsonResponse(ctx, evalResults, graph, budgetOpt, queryPayload, safeStartTime, outputPath, workflowSteps, ledger) {
-  const {
-    inputFile, chassisDir, chassisPrefix, chassisDetection, notebookId, items,
-    stage1ParsingMs, stage2AspectMathMs, stage3RAGMs, stage4GuardrailMs, stage5MatrixMs
-  } = ctx;
-  const traceId = ledger?.traceId || `TRACE-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
-  const provenanceTrace = _buildProvenanceTrace(ctx, traceId);
-  const tracePayloads = _buildTracePayloads(ctx);
-
-  const isMathClean = evalResults.isMathClean === true && (!evalResults.missingDependencies || evalResults.missingDependencies.length === 0);
-  const hasUnbuildableDisposition = evalResults.customerDisposition === 'DELIVERY_BLOCKED_UNBUILDABLE' || evalResults.acceptanceGate?.isValid === false;
-  const isFatalDeliveryError = evalResults.deliveryError && !hasUnbuildableDisposition;
-  const narrative = generateEvaluationNarrative(evalResults, graph?.chassisInfo || { model: chassisPrefix });
-
-  const jsonResult = {
-    status: isFatalDeliveryError ? 'ERROR' : (evalResults.evidenceHealth?.workflowStatus === 'COMPLETE' ? 'SUCCESS' : 'ACTION_REQUIRED'),
-    error: isFatalDeliveryError ? evalResults.deliveryError : undefined,
-    data: {
-      traceId,
-      provenanceTrace,
-      inputFile,
-      chassisDir,
-      chassisPrefix,
-      chassisDetection,
-      notebookId,
-      notebookDegradedMode: ctx.notebookDegradedMode || null,
-      deliveryError: evalResults.deliveryError || null,
-      deliveryAuthError: evalResults.deliveryAuthError || null,
-      deliveryAuthorization: evalResults.deliveryAuthorization || null,
-      customerDisposition: evalResults.customerDisposition || (hasUnbuildableDisposition ? 'DELIVERY_BLOCKED_UNBUILDABLE' : 'DELIVERY_AUTHORIZED'),
-      ...(evalResults.counterfactualRepairProofs ? { counterfactualRepairProofs: evalResults.counterfactualRepairProofs } : {}),
-      evaluationNarrative: narrative,
-      tracePayloads,
-      outputReportPath: outputPath,
-      evidenceLogPath: evalResults.evidenceLogPath || null,
-      evidenceSummaryPath: evalResults.evidenceSummaryPath || null,
-      googleDriveDeliverable: evalResults.googleDriveDeliverable || null,
-      buildStatus: isMathClean ? 'LOCAL_RULE_CHECKED' : 'ACTION_REQUIRED',
-      itemCount: items.length,
-      items,
-      workflowSteps,
-      parsedSheets: [
-        { sheetName: 'BOQ_Main_Quote', itemCount: items.length, status: 'PARSED' }
-      ],
-      telemetry: {
-        parsingTimeMs: stage1ParsingMs,
-        aspectMathTimeMs: stage2AspectMathMs,
-        ragTimeMs: stage3RAGMs,
-        guardrailTimeMs: stage4GuardrailMs,
-        matrixTimeMs: stage5MatrixMs,
-        totalEvalTimeMs: Date.now() - safeStartTime
-      },
-      ragAnswer: evalResults.ragAnswer || null,
-      ragResult: evalResults.ragResult || null,
-      notebookLmStatus: evalResults.notebookLmStatus || null,
-      agenticReviewStatus: evalResults.agenticReviewStatus || 'NOT_RUN',
-      agenticReview: evalResults.agenticReview || null,
-      postFlowSync: evalResults.postFlowSync || null,
-      needsActions: evalResults.evalSummary?.needsActions || [],
-      requirementResolution: evalResults.requirementResolution || null,
-      pcieTopology: evalResults.evalSummary?.pcie?.slotLayout || null,
-      unsolicitedOptionalItems: evalResults.unsolicitedOptionalItems || [],
-      totalUnsolicitedCostUsd: evalResults.totalUnsolicitedCostUsd || 0,
-      aspectChecks: evalResults.aspectChecks || [],
-      solutionTopology: evalResults.solutionTopology || null,
-      stageBreakdown: evalResults.stageBreakdown || {},
-      evalResults: {
-        ...evalResults,
-        notebookLmStatus: evalResults.notebookLmStatus || null,
-        postFlowSync: evalResults.postFlowSync || null,
-        needsActions: evalResults.evalSummary?.needsActions || [],
-        unsolicitedOptionalItems: evalResults.unsolicitedOptionalItems || [],
-        totalUnsolicitedCostUsd: evalResults.totalUnsolicitedCostUsd || 0,
-        aspectChecks: evalResults.aspectChecks || [],
-        stageBreakdown: evalResults.stageBreakdown || {},
-        provenanceTrace,
-        evaluationNarrative: narrative
-      },
-      clusterSizing: evalResults.clusterSizing || null,
-      chassisDefaults: evalResults.chassisDefaults || [],
-      redundantDefaults: evalResults.redundantDefaults || [],
-      opinionDiscrepancies: evalResults.opinionDiscrepancies || [],
-      conflictGraph: {
-        chassisInfo: graph.chassisInfo,
-        workloadDna: graph.workloadDna,
-        isWholeSolutionValid: graph.isWholeSolutionValid,
-        totalRulesEvaluated: graph.totalRulesEvaluated,
-        rulesApplicable: graph.rulesApplicable ?? null,
-        rulesUnevaluated: graph.rulesUnevaluated ?? null,
-        conflicts: graph.conflicts,
-        resolvedFixes: graph.resolvedFixes,
-        rankedSolutions: graph.rankedSolutions,
-        recommendedSolutions: evalResults.conflictGraph?.recommendedSolutions || [],
-        auditLog: graph.auditLog,
-        rulesSource: graph.rulesSource,
-        isFallbackSource: graph.isFallbackSource
-      },
-      budgetOptimization: budgetOpt,
-      notebookPayload: queryPayload,
-      ragVerified: evalResults.ragVerified ?? null,
-      ragViolationDetected: evalResults.ragViolationDetected ?? null,
-      multiRankWorkbookPath: evalResults.multiRankWorkbookPath || null,
-      multiRankCsvPath: evalResults.multiRankCsvPath || null,
-      ephemeralSourceValidation: evalResults.ephemeralSourceValidation || null,
-      durationMs: Date.now() - safeStartTime
-    }
+function _buildConflictGraphData(graph, evalResults) {
+  return {
+    chassisInfo: graph.chassisInfo,
+    workloadDna: graph.workloadDna,
+    isWholeSolutionValid: graph.isWholeSolutionValid,
+    totalRulesEvaluated: graph.totalRulesEvaluated,
+    rulesApplicable: graph.rulesApplicable ?? null,
+    rulesUnevaluated: graph.rulesUnevaluated ?? null,
+    conflicts: graph.conflicts,
+    resolvedFixes: graph.resolvedFixes,
+    rankedSolutions: graph.rankedSolutions,
+    recommendedSolutions: evalResults.conflictGraph?.recommendedSolutions || [],
+    auditLog: graph.auditLog,
+    rulesSource: graph.rulesSource,
+    isFallbackSource: graph.isFallbackSource
   };
+}
+
+function _buildTelemetryData(ctx, safeStartTime) {
+  return {
+    parsingTimeMs: ctx.stage1ParsingMs,
+    aspectMathTimeMs: ctx.stage2AspectMathMs,
+    ragTimeMs: ctx.stage3RAGMs,
+    guardrailTimeMs: ctx.stage4GuardrailMs,
+    matrixTimeMs: ctx.stage5MatrixMs,
+    totalEvalTimeMs: Date.now() - safeStartTime
+  };
+}
+
+function _buildNestedEvalResults(evalResults, provenanceTrace, narrative) {
+  return {
+    ...evalResults,
+    notebookLmStatus: evalResults.notebookLmStatus || null,
+    postFlowSync: evalResults.postFlowSync || null,
+    needsActions: evalResults.evalSummary?.needsActions || [],
+    unsolicitedOptionalItems: evalResults.unsolicitedOptionalItems || [],
+    totalUnsolicitedCostUsd: evalResults.totalUnsolicitedCostUsd || 0,
+    aspectChecks: evalResults.aspectChecks || [],
+    stageBreakdown: evalResults.stageBreakdown || {},
+    provenanceTrace,
+    evaluationNarrative: narrative
+  };
+}
+
+function _resolveSerializedDeliveryStatus(evalResults, hasUnbuildableDisposition) {
+  const isFatalDeliveryError = Boolean(evalResults.deliveryError && !hasUnbuildableDisposition);
+  if (isFatalDeliveryError) {
+    return { status: 'ERROR', error: evalResults.deliveryError, isFatalDeliveryError };
+  }
+  const status = evalResults.evidenceHealth?.workflowStatus === 'COMPLETE' ? 'SUCCESS' : 'ACTION_REQUIRED';
+  return { status, error: undefined, isFatalDeliveryError };
+}
+
+function _resolveSerializedDisposition(evalResults, hasUnbuildableDisposition) {
+  if (evalResults.customerDisposition) return evalResults.customerDisposition;
+  return hasUnbuildableDisposition ? 'DELIVERY_BLOCKED_UNBUILDABLE' : 'DELIVERY_AUTHORIZED';
+}
+
+function _buildCoreSerializedData(ctx, evalResults, traceId, provenanceTrace, narrative, tracePayloads, outputPath, workflowSteps, safeStartTime, hasUnbuildableDisposition) {
+  const {
+    inputFile, chassisDir, chassisPrefix, chassisDetection, notebookId, items
+  } = ctx;
+  const isMathClean = evalResults.isMathClean === true && (!evalResults.missingDependencies || evalResults.missingDependencies.length === 0);
+
+  return {
+    traceId,
+    provenanceTrace,
+    inputFile,
+    chassisDir,
+    chassisPrefix,
+    chassisDetection,
+    notebookId,
+    notebookDegradedMode: ctx.notebookDegradedMode || null,
+    deliveryError: evalResults.deliveryError || null,
+    deliveryAuthError: evalResults.deliveryAuthError || null,
+    deliveryAuthorization: evalResults.deliveryAuthorization || null,
+    customerDisposition: _resolveSerializedDisposition(evalResults, hasUnbuildableDisposition),
+    ...(evalResults.counterfactualRepairProofs ? { counterfactualRepairProofs: evalResults.counterfactualRepairProofs } : {}),
+    evaluationNarrative: narrative,
+    tracePayloads,
+    outputReportPath: outputPath,
+    evidenceLogPath: evalResults.evidenceLogPath || null,
+    evidenceSummaryPath: evalResults.evidenceSummaryPath || null,
+    googleDriveDeliverable: evalResults.googleDriveDeliverable || null,
+    buildStatus: isMathClean ? 'LOCAL_RULE_CHECKED' : 'ACTION_REQUIRED',
+    itemCount: items.length,
+    items,
+    workflowSteps,
+    parsedSheets: [
+      { sheetName: 'BOQ_Main_Quote', itemCount: items.length, status: 'PARSED' }
+    ],
+    telemetry: _buildTelemetryData(ctx, safeStartTime)
+  };
+}
+
+function _buildExtendedSerializedData(evalResults, graph, budgetOpt, queryPayload, provenanceTrace, narrative, safeStartTime) {
+  return {
+    ragAnswer: evalResults.ragAnswer || null,
+    ragResult: evalResults.ragResult || null,
+    notebookLmStatus: evalResults.notebookLmStatus || null,
+    agenticReviewStatus: evalResults.agenticReviewStatus || 'NOT_RUN',
+    agenticReview: evalResults.agenticReview || null,
+    postFlowSync: evalResults.postFlowSync || null,
+    needsActions: evalResults.evalSummary?.needsActions || [],
+    requirementResolution: evalResults.requirementResolution || null,
+    pcieTopology: evalResults.evalSummary?.pcie?.slotLayout || null,
+    unsolicitedOptionalItems: evalResults.unsolicitedOptionalItems || [],
+    totalUnsolicitedCostUsd: evalResults.totalUnsolicitedCostUsd || 0,
+    aspectChecks: evalResults.aspectChecks || [],
+    solutionTopology: evalResults.solutionTopology || null,
+    stageBreakdown: evalResults.stageBreakdown || {},
+    evalResults: _buildNestedEvalResults(evalResults, provenanceTrace, narrative),
+    clusterSizing: evalResults.clusterSizing || null,
+    chassisDefaults: evalResults.chassisDefaults || [],
+    redundantDefaults: evalResults.redundantDefaults || [],
+    opinionDiscrepancies: evalResults.opinionDiscrepancies || [],
+    conflictGraph: _buildConflictGraphData(graph, evalResults),
+    budgetOptimization: budgetOpt,
+    notebookPayload: queryPayload,
+    ragVerified: evalResults.ragVerified ?? null,
+    ragViolationDetected: evalResults.ragViolationDetected ?? null,
+    multiRankWorkbookPath: evalResults.multiRankWorkbookPath || null,
+    multiRankCsvPath: evalResults.multiRankCsvPath || null,
+    ephemeralSourceValidation: evalResults.ephemeralSourceValidation || null,
+    durationMs: Date.now() - safeStartTime
+  };
+}
+
+function _dispatchSerializedOutput(jsonResult, traceId) {
   emitProgress(10, 10, 'Evaluation Finished', 'completed', `Analysis status: ${jsonResult.status}. Consult evidence health for outstanding gates.`);
   if (process.send && process.connected) {
     try {
@@ -914,6 +1010,101 @@ function _emitSerializedJsonResponse(ctx, evalResults, graph, budgetOpt, queryPa
     } catch (_) {}
   }
   process.stdout.write('\n__EVAL_RESULT_JSON__' + JSON.stringify(jsonResult) + '__EVAL_RESULT_JSON__\n');
+}
+
+function _emitSerializedJsonResponse(ctx, evalResults, graph, budgetOpt, queryPayload, safeStartTime, outputPath, workflowSteps, ledger) {
+  const { chassisPrefix } = ctx;
+  const traceId = ledger?.traceId || `TRACE-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+  const provenanceTrace = _buildProvenanceTrace(ctx, traceId);
+  const tracePayloads = _buildTracePayloads(ctx);
+
+  const hasUnbuildableDisposition = evalResults.customerDisposition === 'DELIVERY_BLOCKED_UNBUILDABLE' || evalResults.acceptanceGate?.isValid === false;
+  const narrative = generateEvaluationNarrative(evalResults, graph?.chassisInfo || { model: chassisPrefix });
+  const deliveryStatus = _resolveSerializedDeliveryStatus(evalResults, hasUnbuildableDisposition);
+
+  const coreData = _buildCoreSerializedData(ctx, evalResults, traceId, provenanceTrace, narrative, tracePayloads, outputPath, workflowSteps, safeStartTime, hasUnbuildableDisposition);
+  const extData = _buildExtendedSerializedData(evalResults, graph, budgetOpt, queryPayload, provenanceTrace, narrative, safeStartTime);
+
+  const jsonResult = {
+    status: deliveryStatus.status,
+    error: deliveryStatus.error,
+    data: {
+      ...coreData,
+      ...extData
+    }
+  };
+
+  _dispatchSerializedOutput(jsonResult, traceId);
+}
+
+function _checkDeliveryAuthorizationAndExport({
+  evalResults,
+  reportDir,
+  paths,
+  targetChassisName,
+  graph,
+  candidateFingerprint,
+  isAuthValid
+}) {
+  if (evalResults.acceptanceGate && evalResults.acceptanceGate.isValid === false) {
+    evalResults.deliveryError = `Presentation export blocked: Pre-presentation acceptance failed (${evalResults.acceptanceGate.blockersCount} blocker(s): ${evalResults.acceptanceGate.blockers.map(b => b.name || b.id).join(', ')}).`;
+    evalResults.customerDisposition = evalResults.isMathClean === false ? 'DELIVERY_BLOCKED_UNBUILDABLE' : 'ACTION_REQUIRED';
+    logger.warn('EVAL_OUTPUT_SERIALIZER', evalResults.deliveryError);
+    return false;
+  }
+  if (!isAuthValid) {
+    evalResults.deliveryError = evalResults.deliveryAuthError
+      ? `Presentation export blocked: Cryptographic DeliveryAuthorization failed: ${evalResults.deliveryAuthError}`
+      : 'Presentation export blocked: Valid cryptographic DeliveryAuthorization is missing or invalid for this candidate manifest.';
+    evalResults.customerDisposition = 'ACTION_REQUIRED';
+    logger.warn('EVAL_OUTPUT_SERIALIZER', evalResults.deliveryError);
+    return false;
+  }
+  return _exportStagedDeliverables({
+    evalResults,
+    reportDir,
+    paths,
+    targetChassisName,
+    graph,
+    candidateFingerprint
+  });
+}
+
+function _writeReportAndQuarantine(outputPath, reportDir, reportContent, isAuthValid, evalResults) {
+  fs.writeFileSync(outputPath, reportContent, 'utf-8');
+  if (!isAuthValid) {
+    const unbuildableDir = path.join(reportDir, '.unbuildable_reports');
+    try {
+      if (!fs.existsSync(unbuildableDir)) fs.mkdirSync(unbuildableDir, { recursive: true });
+      const blockedPath = path.join(unbuildableDir, path.basename(outputPath));
+      fs.writeFileSync(blockedPath, reportContent, 'utf-8');
+      evalResults.quarantinedReportPath = blockedPath;
+    } catch (_err) {
+      // safe fallback
+    }
+  }
+}
+
+function _printDeliverablesSummary(outputPath, evalResults) {
+  console.log(`\n===============================================================`);
+  console.log(`✅ EVALUATION COMPLETE! Deliverables generated:`);
+  console.log(`📄 Markdown Report:              ${toClickableFileUri(outputPath)}`);
+  if (evalResults.multiRankWorkbookPath) {
+    console.log(`📊 Multi-Rank Solution Matrix:   ${toClickableFileUri(evalResults.multiRankWorkbookPath)}`);
+  }
+  if (evalResults.multiRankCsvPath) {
+    console.log(`📄 Token-Dense Solution CSV:     ${toClickableFileUri(evalResults.multiRankCsvPath)}`);
+  }
+  if (evalResults.proposalWorkbookPath) {
+    console.log(`💼 Customer Proposal Sheet:      ${toClickableFileUri(evalResults.proposalWorkbookPath)}`);
+  }
+  if (evalResults.portalWorkbookPath) {
+    console.log(`🏢 Partner Portal Upload Sheet:  ${toClickableFileUri(evalResults.portalWorkbookPath)}`);
+  }
+  if (evalResults.evidenceSummaryPath) {
+    console.log(`🛡️ Evidence Ledger Summary:      ${toClickableFileUri(evalResults.evidenceSummaryPath)}`);
+  }
+  console.log(`===============================================================\n`);
 }
 
 /**
@@ -948,7 +1139,6 @@ async function serializeAndExportResults(ctx) {
   for (const key of ['multiRankWorkbookPath', 'multiRankCsvPath', 'proposalWorkbookPath', 'portalWorkbookPath', 'googleDriveDeliverable', 'artifactIntegrityManifest', 'deliveryError']) {
     delete evalResults[key];
   }
-  let exportsCompleted = false;
 
   if (!evalResults.items && items) {
     evalResults.items = items;
@@ -963,26 +1153,15 @@ async function serializeAndExportResults(ctx) {
 
   ctx.isAuthValid = isAuthValid;
 
-  if (evalResults.acceptanceGate && evalResults.acceptanceGate.isValid === false) {
-    evalResults.deliveryError = `Presentation export blocked: Pre-presentation acceptance failed (${evalResults.acceptanceGate.blockersCount} blocker(s): ${evalResults.acceptanceGate.blockers.map(b => b.name || b.id).join(', ')}).`;
-    evalResults.customerDisposition = evalResults.isMathClean === false ? 'DELIVERY_BLOCKED_UNBUILDABLE' : 'ACTION_REQUIRED';
-    logger.warn('EVAL_OUTPUT_SERIALIZER', evalResults.deliveryError);
-  } else if (!isAuthValid) {
-    evalResults.deliveryError = evalResults.deliveryAuthError
-      ? `Presentation export blocked: Cryptographic DeliveryAuthorization failed: ${evalResults.deliveryAuthError}`
-      : 'Presentation export blocked: Valid cryptographic DeliveryAuthorization is missing or invalid for this candidate manifest.';
-    evalResults.customerDisposition = 'ACTION_REQUIRED';
-    logger.warn('EVAL_OUTPUT_SERIALIZER', evalResults.deliveryError);
-  } else {
-    exportsCompleted = _exportStagedDeliverables({
-      evalResults,
-      reportDir,
-      paths,
-      targetChassisName,
-      graph,
-      candidateFingerprint
-    });
-  }
+  const exportsCompleted = _checkDeliveryAuthorizationAndExport({
+    evalResults,
+    reportDir,
+    paths,
+    targetChassisName,
+    graph,
+    candidateFingerprint,
+    isAuthValid
+  });
 
   evalResults.stageBreakdown = {
     stage1ParsingMs,
@@ -998,48 +1177,17 @@ async function serializeAndExportResults(ctx) {
 
   const reportContent = generateMarkdownReport(ctx) + '\n\n' +
     require('./runtime_discovery_plan').formatRuntimeDiscoveryPlan(evalResults.runtimeDiscoveryPlan);
-  fs.writeFileSync(outputPath, reportContent, 'utf-8');
-
-  if (!isAuthValid) {
-    const unbuildableDir = path.join(reportDir, '.unbuildable_reports');
-    try {
-      if (!fs.existsSync(unbuildableDir)) fs.mkdirSync(unbuildableDir, { recursive: true });
-      const blockedPath = path.join(unbuildableDir, path.basename(outputPath));
-      fs.writeFileSync(blockedPath, reportContent, 'utf-8');
-      evalResults.quarantinedReportPath = blockedPath;
-    } catch (_err) {
-      // safe fallback
-    }
-  }
+  _writeReportAndQuarantine(outputPath, reportDir, reportContent, isAuthValid, evalResults);
 
   _recordLedgerDeliverableArtifacts(evalResults.evidenceLedger, ctx, evalResults, outputPath);
 
   return terminalOwner.serializerEmission(ctx, () => {
-  const workflowSteps = _buildWorkflowSteps(ctx);
-
-  if (JSON_MODE) {
-    _emitSerializedJsonResponse(ctx, evalResults, graph, budgetOpt, queryPayload, safeStartTime, outputPath, workflowSteps, evalResults.evidenceLedger);
-  } else {
-    console.log(`\n===============================================================`);
-    console.log(`✅ EVALUATION COMPLETE! Deliverables generated:`);
-    console.log(`📄 Markdown Report:              ${toClickableFileUri(outputPath)}`);
-    if (evalResults.multiRankWorkbookPath) {
-      console.log(`📊 Multi-Rank Solution Matrix:   ${toClickableFileUri(evalResults.multiRankWorkbookPath)}`);
+    const workflowSteps = _buildWorkflowSteps(ctx);
+    if (JSON_MODE) {
+      _emitSerializedJsonResponse(ctx, evalResults, graph, budgetOpt, queryPayload, safeStartTime, outputPath, workflowSteps, evalResults.evidenceLedger);
+    } else {
+      _printDeliverablesSummary(outputPath, evalResults);
     }
-    if (evalResults.multiRankCsvPath) {
-      console.log(`📄 Token-Dense Solution CSV:     ${toClickableFileUri(evalResults.multiRankCsvPath)}`);
-    }
-    if (evalResults.proposalWorkbookPath) {
-      console.log(`💼 Customer Proposal Sheet:      ${toClickableFileUri(evalResults.proposalWorkbookPath)}`);
-    }
-    if (evalResults.portalWorkbookPath) {
-      console.log(`🏢 Partner Portal Upload Sheet:  ${toClickableFileUri(evalResults.portalWorkbookPath)}`);
-    }
-    if (evalResults.evidenceSummaryPath) {
-      console.log(`🛡️ Evidence Ledger Summary:      ${toClickableFileUri(evalResults.evidenceSummaryPath)}`);
-    }
-    console.log(`===============================================================\n`);
-  }
   });
 }
 
@@ -1053,17 +1201,8 @@ async function serializeAndExportResults(ctx) {
  * @param {object} [options]
  * @returns {string} Multi-line markdown narrative
  */
-function generateEvaluationNarrative(evalResult, chassisInfo, _options = {}) {
-  const lines = [];
-  const model = chassisInfo?.cleanName || chassisInfo?.model || 'Unknown Chassis';
-  const now = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
-
-  lines.push(`## Evaluation Reasoning Trace — ${model}`);
-  lines.push(`_Generated: ${now} IST | Evidence-Grounded | Anti-Hallucination Audit Trail_\n`);
-
-  // Step 1: What was detected
-  lines.push('### Step 1 — BOM Detection Summary');
-  const items = evalResult.items || [];
+function _renderNarrativeStep1BomDetection(items = []) {
+  const lines = ['### Step 1 — BOM Detection Summary'];
   const byRole = {};
   for (const item of items) {
     const role = item.role || item.componentRole || 'Unknown';
@@ -1076,10 +1215,11 @@ function generateEvaluationNarrative(evalResult, chassisInfo, _options = {}) {
   } else {
     lines.push('- No component roles detected in BOM.');
   }
+  return lines;
+}
 
-  // Step 2: Physical aspect check results
-  lines.push('\n### Step 2 — Physical Aspect Check Results (7 Checks)');
-  const aspects = evalResult.evalSummary?.aspectChecks || evalResult.aspectChecks || [];
+function _renderNarrativeStep2AspectChecks(aspects = []) {
+  const lines = ['\n### Step 2 — Physical Aspect Check Results (7 Checks)'];
   if (aspects.length) {
     for (const check of aspects) {
       const icon = check.status === 'PASS' ? '✅' : check.status === 'FAIL' ? '❌' : check.status === 'WARN' ? '⚠️' : '🔲';
@@ -1090,11 +1230,11 @@ function generateEvaluationNarrative(evalResult, chassisInfo, _options = {}) {
   } else {
     lines.push('- No aspect checks recorded.');
   }
+  return lines;
+}
 
-  // Step 3: Conflicts and catalog rules that fired
-  lines.push('\n### Step 3 — Conflicts & Catalog Rules Triggered');
-  const conflicts = evalResult.conflictGraph?.conflicts || evalResult.conflicts || [];
-  const fixes = evalResult.conflictGraph?.resolvedFixes || evalResult.resolvedFixes || [];
+function _renderNarrativeStep3ConflictsAndFixes(conflicts = [], fixes = []) {
+  const lines = ['\n### Step 3 — Conflicts & Catalog Rules Triggered'];
   if (conflicts.length) {
     for (const c of conflicts) {
       lines.push(`- ⚠️ **${c.type || 'CONFLICT'}**: ${c.message || c.detail || String(c).substring(0, 200)}`);
@@ -1109,10 +1249,11 @@ function generateEvaluationNarrative(evalResult, chassisInfo, _options = {}) {
       lines.push(`- 🔧 ${f.action || f.type}: ${f.detail || f.message || ''}`);
     }
   }
+  return lines;
+}
 
-  // Step 4: Ranking and evidence
-  lines.push('\n### Step 4 — Ranked Strategy Matrix & Supporting Evidence');
-  const rankedSolutions = evalResult.conflictGraph?.rankedSolutions || evalResult.rankedSolutions || [];
+function _renderNarrativeStep4RankedStrategies(rankedSolutions = []) {
+  const lines = ['\n### Step 4 — Ranked Strategy Matrix & Supporting Evidence'];
   if (rankedSolutions.length) {
     for (const rank of rankedSolutions) {
       const verified = rank.nlmCitationVerified ? '🟢 NLM-Grounded' : '🟡 Local-Rule-Only';
@@ -1129,14 +1270,11 @@ function generateEvaluationNarrative(evalResult, chassisInfo, _options = {}) {
   } else {
     lines.push('- No ranked solutions generated.');
   }
+  return lines;
+}
 
-  // Step 5: Next actions
-  lines.push('\n### Step 5 — Required Customer Actions Before Quoting');
-  const warnings = evalResult.evalSummary?.warnings || evalResult.warnings || [];
-  const errors = evalResult.evalSummary?.errors || evalResult.errors || [];
-  const missing = evalResult.evalSummary?.missingDependencies || evalResult.missingDependencies || [];
-  const portalStatus = evalResult.portalValidationStatus || 'PENDING';
-
+function _renderNarrativeStep5RequiredActions(warnings = [], errors = [], missing = [], portalStatus = 'PENDING') {
+  const lines = ['\n### Step 5 — Required Customer Actions Before Quoting'];
   if (portalStatus !== 'VERIFIED') {
     lines.push(`- 🔴 **Portal Validation Required**: Live OCA/CLIC verification is ${portalStatus}. Do not quote until VERIFIED.`);
   }
@@ -1153,8 +1291,31 @@ function generateEvaluationNarrative(evalResult, chassisInfo, _options = {}) {
   if (warnings.length === 0 && errors.length === 0 && missing.length === 0 && portalStatus === 'VERIFIED') {
     lines.push('- ✅ No open actions. This evaluation is complete and portal-verified.');
   }
+  return lines;
+}
 
-  lines.push(`\n---\n_Trace generated by Antigravity Evaluation Engine | Catalog: ${evalResult.catalogVersion || 'unknown'} | NOT a vendor configurator receipt_`);
+function generateEvaluationNarrative(evalResult, chassisInfo, _options = {}) {
+  const model = chassisInfo?.cleanName || chassisInfo?.model || 'Unknown Chassis';
+  const now = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+
+  const lines = [
+    `## Evaluation Reasoning Trace — ${model}`,
+    `_Generated: ${now} IST | Evidence-Grounded | Anti-Hallucination Audit Trail_\n`,
+    ..._renderNarrativeStep1BomDetection(evalResult.items),
+    ..._renderNarrativeStep2AspectChecks(evalResult.evalSummary?.aspectChecks || evalResult.aspectChecks),
+    ..._renderNarrativeStep3ConflictsAndFixes(
+      evalResult.conflictGraph?.conflicts || evalResult.conflicts,
+      evalResult.conflictGraph?.resolvedFixes || evalResult.resolvedFixes
+    ),
+    ..._renderNarrativeStep4RankedStrategies(evalResult.conflictGraph?.rankedSolutions || evalResult.rankedSolutions),
+    ..._renderNarrativeStep5RequiredActions(
+      evalResult.evalSummary?.warnings || evalResult.warnings,
+      evalResult.evalSummary?.errors || evalResult.errors,
+      evalResult.evalSummary?.missingDependencies || evalResult.missingDependencies,
+      evalResult.portalValidationStatus
+    ),
+    `\n---\n_Trace generated by Antigravity Evaluation Engine | Catalog: ${evalResult.catalogVersion || 'unknown'} | NOT a vendor configurator receipt_`
+  ];
 
   return lines.join('\n');
 }

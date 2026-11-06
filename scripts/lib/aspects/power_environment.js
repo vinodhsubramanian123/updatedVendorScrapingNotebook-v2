@@ -105,35 +105,41 @@ function tallyChassisFormFactor(tally, it, desc, sku, role, skuIndex = null) {
   }
 }
 
-function tallyPsuAndCabling(tally, it, desc, sku, role, dcLugSku, mandatorySkus = {}) {
-  if (role === 'Power Supply' || desc.includes('power supply') || desc.includes('flex slot') || desc.includes('psu')) {
-    tally.psuCount += (it.quantity || it.qty || 1);
-    const psuWMatch = desc.match(/(\d{3,4})\s*w/i);
-    if (psuWMatch) {
-      const w = parseInt(psuWMatch[1], 10);
-      if (w > tally.maxPsuWattage) tally.maxPsuWattage = w;
-      tally.psuWattages.add(w);
-    }
-    const isDc = desc.includes('-48vdc') || desc.includes('dc power') || desc.includes('48v dc') || desc.includes('48vdc') || desc.includes('hvdc');
-    if (isDc) {
-      tally.hasDcPowerSupply = true;
-      tally.dcPsuCount = (tally.dcPsuCount || 0) + (it.quantity || it.qty || 1);
-    } else {
-      tally.hasAcPowerSupply = true;
-      tally.acPsuCount = (tally.acPsuCount || 0) + (it.quantity || it.qty || 1);
-    }
-    if (desc.includes('platinum') || desc.includes('plat psu')) {
-      tally.hasPlatinumPsu = true;
-      tally.platinumPsuCount = (tally.platinumPsuCount || 0) + (it.quantity || it.qty || 1);
-    }
-    if (desc.includes('titanium') || desc.includes('titn psu')) {
-      tally.hasTitaniumPsu = true;
-      tally.titaniumPsuCount = (tally.titaniumPsuCount || 0) + (it.quantity || it.qty || 1);
-    }
-    if (desc.includes('2650w') && desc.includes('titanium')) {
-      tally.synergyTitanium2650wCount += (it.quantity || it.qty || 1);
-    }
+function _tallyPsuWattageAndCurrent(tally, desc, it) {
+  const qty = it.quantity || it.qty || 1;
+  tally.psuCount += qty;
+  const psuWMatch = desc.match(/(\d{3,4})\s*w/i);
+  if (psuWMatch) {
+    const w = parseInt(psuWMatch[1], 10);
+    if (w > tally.maxPsuWattage) tally.maxPsuWattage = w;
+    tally.psuWattages.add(w);
   }
+  const isDc = desc.includes('-48vdc') || desc.includes('dc power') || desc.includes('48v dc') || desc.includes('48vdc') || desc.includes('hvdc');
+  if (isDc) {
+    tally.hasDcPowerSupply = true;
+    tally.dcPsuCount = (tally.dcPsuCount || 0) + qty;
+  } else {
+    tally.hasAcPowerSupply = true;
+    tally.acPsuCount = (tally.acPsuCount || 0) + qty;
+  }
+}
+
+function _tallyPsuEfficiency(tally, desc, it) {
+  const qty = it.quantity || it.qty || 1;
+  if (desc.includes('platinum') || desc.includes('plat psu')) {
+    tally.hasPlatinumPsu = true;
+    tally.platinumPsuCount = (tally.platinumPsuCount || 0) + qty;
+  }
+  if (desc.includes('titanium') || desc.includes('titn psu')) {
+    tally.hasTitaniumPsu = true;
+    tally.titaniumPsuCount = (tally.titaniumPsuCount || 0) + qty;
+  }
+  if (desc.includes('2650w') && desc.includes('titanium')) {
+    tally.synergyTitanium2650wCount += qty;
+  }
+}
+
+function _tallyPowerKits(tally, desc, sku, dcLugSku, mandatorySkus = {}) {
   if ((dcLugSku && sku === dcLugSku) || desc.includes('lug kit') || desc.includes('cable lug') ||
       (mandatorySkus?.DC_LUG_KIT?.sku && sku === cleanBaseSKU(mandatorySkus.DC_LUG_KIT.sku))) {
     tally.hasDcLugKit = true;
@@ -142,6 +148,14 @@ function tallyPsuAndCabling(tally, it, desc, sku, role, dcLugSku, mandatorySkus 
       (mandatorySkus?.CE_REMOVAL_KIT?.sku && sku === cleanBaseSKU(mandatorySkus.CE_REMOVAL_KIT.sku))) {
     tally.hasCeRemovalKit = true;
   }
+}
+
+function tallyPsuAndCabling(tally, it, desc, sku, role, dcLugSku, mandatorySkus = {}) {
+  if (role === 'Power Supply' || desc.includes('power supply') || desc.includes('flex slot') || desc.includes('psu')) {
+    _tallyPsuWattageAndCurrent(tally, desc, it);
+    _tallyPsuEfficiency(tally, desc, it);
+  }
+  _tallyPowerKits(tally, desc, sku, dcLugSku, mandatorySkus);
 }
 
 function tallyPowerHardware(tally, it, desc, sku, role, dcLugSku, skuIndex = null, mandatorySkus = {}) {
@@ -199,16 +213,77 @@ function checkDl145PsuOversizing(tally) {
   return tally.isDl145EdgeChassis && tally.maxPsuWattage > 1000;
 }
 
-function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}, serverCount = 1) {
-  let effectiveNodes = 1;
+function _resolveEffectiveServerCount(serverCount, catalogData) {
   if (typeof serverCount === 'number' && serverCount > 0) {
-    effectiveNodes = serverCount;
-  } else if (typeof serverCount === 'object' && serverCount && typeof serverCount.serverCount === 'number') {
-    effectiveNodes = serverCount.serverCount;
-  } else if (typeof catalogData === 'object' && catalogData && typeof catalogData.serverCount === 'number') {
-    effectiveNodes = catalogData.serverCount;
+    return serverCount;
   }
-  const effectiveServerCount = Math.max(1, effectiveNodes || 1);
+  if (typeof serverCount === 'object' && serverCount && typeof serverCount.serverCount === 'number') {
+    return serverCount.serverCount;
+  }
+  if (typeof catalogData === 'object' && catalogData && typeof catalogData.serverCount === 'number') {
+    return catalogData.serverCount;
+  }
+  return 1;
+}
+
+function _buildPowerEvaluationResult(tally, items, effectiveServerCount, totalHardwareWatts) {
+  if (tally.psuCount > 0 && tally.maxPsuWattage === 0) {
+    tally.maxPsuWattage = 800;
+  }
+
+  const estimatedHardwareWattsPerNode = Math.round(totalHardwareWatts / effectiveServerCount);
+  const estimatedNodeWattage = estimatedHardwareWattsPerNode + 150;
+  const requiredWattageWithHeadroom = Math.ceil(estimatedNodeWattage * 1.20);
+  const hasPsuHeadroomDeficit = tally.psuCount > 0 && tally.maxPsuWattage < requiredWattageWithHeadroom;
+  const hasPsuWattageDeficit = tally.psuCount > 0 && tally.maxPsuWattage < estimatedNodeWattage;
+  const needsHighLine220v = estimatedNodeWattage > 800 && tally.maxPsuWattage >= 1600;
+  const needsCeRemovalKit = checkLot9CeRemovalNeeds(tally, estimatedNodeWattage);
+  const hasSynergyRedundantPowerError = tally.isSynergy12000Frame && tally.synergyTitanium2650wCount !== 6;
+  const dl380aPsu = checkDl380aPsuCompliance(tally);
+
+  const hasIntegratedPower = Boolean(tally.isAlletraStorage || tally.isStoreEverTape || tally.isNetworkSwitch);
+  return {
+    hasAcPowerSupply: tally.hasAcPowerSupply,
+    hasDcPowerSupply: tally.hasDcPowerSupply,
+    hasMixedAcDcPower: tally.hasAcPowerSupply && tally.hasDcPowerSupply,
+    acPsuCount: tally.acPsuCount,
+    dcPsuCount: tally.dcPsuCount,
+    hasDcLugKit: tally.hasDcLugKit,
+    hasPlatinumPsu: tally.hasPlatinumPsu,
+    hasTitaniumPsu: tally.hasTitaniumPsu,
+    hasCeRemovalKit: tally.hasCeRemovalKit,
+    needsCeRemovalKit,
+    psuCount: tally.psuCount,
+    maxPsuWattage: tally.maxPsuWattage,
+    estimatedNodeWattage,
+    requiredWattageWithHeadroom,
+    hasPsuHeadroomDeficit,
+    hasPsuWattageDeficit,
+    needsHighLine220v,
+    isSynergy12000Frame: tally.isSynergy12000Frame,
+    synergyTitanium2650wCount: tally.synergyTitanium2650wCount,
+    hasSynergyRedundantPowerError,
+    isDl380aGpuChassis: tally.isDl380aGpuChassis,
+    dl380aGpuModeCapacity: dl380aPsu.modeCapacity,
+    requiredDl380aPsuCountPerServer: dl380aPsu.requiredCountPerServer,
+    requiredDl380aPsuCount: dl380aPsu.requiredCount,
+    hasMixedPsuWattages: dl380aPsu.hasMixedWattages,
+    hasMixedWattagePsus: checkMixedWattagePsus(tally, items, effectiveServerCount),
+    hasMixedEfficiencyPsus: checkMixedEfficiencyPsus(tally, effectiveServerCount),
+    platinumPsuCount: tally.platinumPsuCount || 0,
+    titaniumPsuCount: tally.titaniumPsuCount || 0,
+    hasSupportedDl380aPsuWattage: dl380aPsu.hasSupportedWattage,
+    hasDl380aGpuPsuShortage: dl380aPsu.hasShortage,
+    isDl145EdgeChassis: tally.isDl145EdgeChassis,
+    hasDl145PsuOversizing: checkDl145PsuOversizing(tally),
+    hasIntegratedPower,
+    minPsusRequired: hasIntegratedPower ? 0 : effectiveServerCount,
+    hasZeroPsus: tally.psuCount === 0 && !hasIntegratedPower
+  };
+}
+
+function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}, serverCount = 1) {
+  const effectiveServerCount = Math.max(1, _resolveEffectiveServerCount(serverCount, catalogData));
 
   const tally = {
     hasAcPowerSupply: false,
@@ -255,59 +330,7 @@ function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}, ser
     tallyPowerHardware(tally, it, desc, sku, role, dcLugSku, skuIndex, mandatorySkus);
   }
 
-  if (tally.psuCount > 0 && tally.maxPsuWattage === 0) {
-    tally.maxPsuWattage = 800;
-  }
-
-  const estimatedHardwareWattsPerNode = Math.round(totalHardwareWatts / effectiveServerCount);
-  const estimatedNodeWattage = estimatedHardwareWattsPerNode + 150;
-  const requiredWattageWithHeadroom = Math.ceil(estimatedNodeWattage * 1.20);
-  const hasPsuHeadroomDeficit = tally.psuCount > 0 && tally.maxPsuWattage < requiredWattageWithHeadroom;
-  const hasPsuWattageDeficit = tally.psuCount > 0 && tally.maxPsuWattage < estimatedNodeWattage;
-  const needsHighLine220v = estimatedNodeWattage > 800 && tally.maxPsuWattage >= 1600;
-  const needsCeRemovalKit = checkLot9CeRemovalNeeds(tally, estimatedNodeWattage);
-  const hasSynergyRedundantPowerError = tally.isSynergy12000Frame && tally.synergyTitanium2650wCount !== 6;
-  const dl380aPsu = checkDl380aPsuCompliance(tally);
-
-    const hasIntegratedPower = Boolean(tally.isAlletraStorage || tally.isStoreEverTape || tally.isNetworkSwitch);
-    return {
-      hasAcPowerSupply: tally.hasAcPowerSupply,
-      hasDcPowerSupply: tally.hasDcPowerSupply,
-      hasMixedAcDcPower: tally.hasAcPowerSupply && tally.hasDcPowerSupply,
-      acPsuCount: tally.acPsuCount,
-      dcPsuCount: tally.dcPsuCount,
-      hasDcLugKit: tally.hasDcLugKit,
-      hasPlatinumPsu: tally.hasPlatinumPsu,
-      hasTitaniumPsu: tally.hasTitaniumPsu,
-      hasCeRemovalKit: tally.hasCeRemovalKit,
-      needsCeRemovalKit,
-      psuCount: tally.psuCount,
-      maxPsuWattage: tally.maxPsuWattage,
-      estimatedNodeWattage,
-      requiredWattageWithHeadroom,
-      hasPsuHeadroomDeficit,
-      hasPsuWattageDeficit,
-      needsHighLine220v,
-      isSynergy12000Frame: tally.isSynergy12000Frame,
-      synergyTitanium2650wCount: tally.synergyTitanium2650wCount,
-      hasSynergyRedundantPowerError,
-      isDl380aGpuChassis: tally.isDl380aGpuChassis,
-      dl380aGpuModeCapacity: dl380aPsu.modeCapacity,
-      requiredDl380aPsuCountPerServer: dl380aPsu.requiredCountPerServer,
-      requiredDl380aPsuCount: dl380aPsu.requiredCount,
-      hasMixedPsuWattages: dl380aPsu.hasMixedWattages,
-      hasMixedWattagePsus: checkMixedWattagePsus(tally, items, effectiveServerCount),
-      hasMixedEfficiencyPsus: checkMixedEfficiencyPsus(tally, effectiveServerCount),
-      platinumPsuCount: tally.platinumPsuCount || 0,
-      titaniumPsuCount: tally.titaniumPsuCount || 0,
-      hasSupportedDl380aPsuWattage: dl380aPsu.hasSupportedWattage,
-      hasDl380aGpuPsuShortage: dl380aPsu.hasShortage,
-      isDl145EdgeChassis: tally.isDl145EdgeChassis,
-      hasDl145PsuOversizing: checkDl145PsuOversizing(tally),
-      hasIntegratedPower,
-      minPsusRequired: hasIntegratedPower ? 0 : effectiveServerCount,
-      hasZeroPsus: tally.psuCount === 0 && !hasIntegratedPower
-    };
+  return _buildPowerEvaluationResult(tally, items, effectiveServerCount, totalHardwareWatts);
 }
 
 module.exports = {

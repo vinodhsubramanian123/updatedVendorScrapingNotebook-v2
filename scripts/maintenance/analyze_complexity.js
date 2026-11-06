@@ -124,12 +124,36 @@ function runAnalysis() {
   console.log('🔍 CYCLOMATIC COMPLEXITY & CODE QUALITY PROFILER');
   console.log('================================================================\n');
 
-  const targets = [
-    path.join(PROJECT_ROOT, 'scripts'),
-    path.join(PROJECT_ROOT, 'dashboard', 'src'),
-    path.join(PROJECT_ROOT, 'dashboard', 'routes'),
-    path.join(PROJECT_ROOT, 'dashboard', 'services')
-  ];
+  const args = process.argv.slice(2);
+  const failOnBreach = args.includes('--fail-on-breach');
+  const maxCcArg = args.find(a => a.startsWith('--max-cc=') || a.startsWith('--threshold='));
+  const maxCcThreshold = maxCcArg ? parseInt(maxCcArg.split('=')[1], 10) : 105;
+
+  const tierArg = args.find(a => a.startsWith('--tier='));
+  const tier = tierArg ? tierArg.split('=')[1].toLowerCase() : 'all';
+
+  const topArg = args.find(a => a.startsWith('--top='));
+  const topCount = topArg ? parseInt(topArg.split('=')[1], 10) : 10;
+
+  let targets = [];
+  if (tier === 'aspects') {
+    targets = [path.join(PROJECT_ROOT, 'scripts', 'lib', 'aspects')];
+  } else if (tier === 'core') {
+    targets = [path.join(PROJECT_ROOT, 'scripts', 'lib')];
+  } else if (tier === 'dashboard') {
+    targets = [
+      path.join(PROJECT_ROOT, 'dashboard', 'src'),
+      path.join(PROJECT_ROOT, 'dashboard', 'routes'),
+      path.join(PROJECT_ROOT, 'dashboard', 'services')
+    ];
+  } else {
+    targets = [
+      path.join(PROJECT_ROOT, 'scripts'),
+      path.join(PROJECT_ROOT, 'dashboard', 'src'),
+      path.join(PROJECT_ROOT, 'dashboard', 'routes'),
+      path.join(PROJECT_ROOT, 'dashboard', 'services')
+    ];
+  }
 
   const allFiles = targets.flatMap(t => walkDir(t));
   const results = allFiles.map(f => analyzeFile(f));
@@ -150,30 +174,27 @@ function runAnalysis() {
 
   const highComplexity = allFunctions.filter(f => f.complexity > 15);
   const criticalComplexity = allFunctions.filter(f => f.complexity > 25);
+  const target30Breaches = allFunctions.filter(f => f.complexity > 30);
   const moderateComplexity = allFunctions.filter(f => f.complexity >= 10 && f.complexity <= 15);
   const lowComplexity = allFunctions.filter(f => f.complexity < 10);
 
-  console.log(`📊 Scanned: ${results.length} files | ${allFunctions.length} total functions\n`);
-  console.log(`🟢 Low Complexity (1-9 CC)      : ${lowComplexity.length} functions (${((lowComplexity.length / allFunctions.length) * 100).toFixed(1)}%)`);
-  console.log(`🟡 Moderate Complexity (10-15 CC): ${moderateComplexity.length} functions (${((moderateComplexity.length / allFunctions.length) * 100).toFixed(1)}%)`);
-  console.log(`🟠 High Complexity (16-25 CC)    : ${highComplexity.length - criticalComplexity.length} functions`);
-  console.log(`🔴 Critical Complexity (>25 CC)  : ${criticalComplexity.length} functions\n`);
+  console.log(`📊 Scanned Tier: [${tier.toUpperCase()}] | ${results.length} files | ${allFunctions.length} total functions\n`);
+  console.log(`🟢 Low Complexity (1-9 CC)        : ${lowComplexity.length} functions (${((lowComplexity.length / allFunctions.length) * 100).toFixed(1)}%)`);
+  console.log(`🟡 Moderate Complexity (10-15 CC)  : ${moderateComplexity.length} functions (${((moderateComplexity.length / allFunctions.length) * 100).toFixed(1)}%)`);
+  console.log(`🟠 High Complexity (16-25 CC)      : ${highComplexity.length - criticalComplexity.length} functions`);
+  console.log(`🔴 Critical Complexity (26-30 CC)  : ${criticalComplexity.length - target30Breaches.length} functions`);
+  console.log(`🚨 Functions Exceeding Target (>30): ${target30Breaches.length} functions (${((target30Breaches.length / allFunctions.length) * 100).toFixed(1)}%)\n`);
 
   console.log('----------------------------------------------------------------');
-  console.log('📌 TOP 10 HIGHEST CYCLOMATIC COMPLEXITY FUNCTIONS');
+  console.log(`📌 TOP ${topCount} HIGHEST CYCLOMATIC COMPLEXITY FUNCTIONS`);
   console.log('----------------------------------------------------------------');
-  allFunctions.slice(0, 10).forEach((fn, idx) => {
-    const badge = fn.complexity > 25 ? '🔴 CRITICAL' : (fn.complexity > 15 ? '🟠 HIGH' : '🟡 MODERATE');
+  allFunctions.slice(0, topCount).forEach((fn, idx) => {
+    const badge = fn.complexity > 30 ? '🚨 >30 TARGET' : (fn.complexity > 25 ? '🔴 CRITICAL' : (fn.complexity > 15 ? '🟠 HIGH' : '🟡 MODERATE'));
     console.log(`${idx + 1}. [CC: ${String(fn.complexity).padStart(2)}] [LOC: ${String(fn.loc).padStart(3)}] ${badge} ${fn.name}()`);
     console.log(`   File: ${fn.file}:${fn.startLine}`);
   });
 
   console.log('\n================================================================');
-
-  const args = process.argv.slice(2);
-  const failOnBreach = args.includes('--fail-on-breach');
-  const maxCcArg = args.find(a => a.startsWith('--max-cc=') || a.startsWith('--threshold='));
-  const maxCcThreshold = maxCcArg ? parseInt(maxCcArg.split('=')[1], 10) : 135;
 
   const breaches = allFunctions.filter(f => f.complexity > maxCcThreshold);
   if (breaches.length > 0) {
@@ -187,11 +208,11 @@ function runAnalysis() {
     console.log(`✅ All scanned functions within acceptable CC threshold (<= ${maxCcThreshold}).`);
   }
 
-  return { results, allFunctions, highComplexity, criticalComplexity, breaches };
+  return { results, allFunctions, highComplexity, criticalComplexity, target30Breaches, breaches };
 }
 
 if (require.main === module) {
   runAnalysis();
 }
 
-module.exports = { runAnalysis, analyzeFile };
+module.exports = { runAnalysis, analyzeFile, walkDir };

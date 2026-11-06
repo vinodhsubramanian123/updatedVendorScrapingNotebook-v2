@@ -92,22 +92,7 @@ function classifyPortalError(errorMessage) {
   };
 }
 
-/**
- * Process a portal unbuildable error and persist KnowledgeDelta.
- * @param {string} portalError 
- * @param {string} outputDir E.g. "outputs/ProLiant/Gen12/DL380_Gen12"
- * @param {object} options Optional parameters { humanReasoning, scopeTaxonomy, ruleUpdate, solutionType }
- * @returns {object} Generated KnowledgeDelta
- */
-function processPortalFeedback(portalError, outputDir, options = {}) {
-  if (!outputDir || typeof outputDir !== 'string') {
-    throw new Error('processPortalFeedback requires an explicit string outputDir parameter (no hardcoded default).');
-  }
-  const errorText = typeof portalError === 'string' 
-    ? portalError 
-    : ((portalError && (portalError.reason || portalError.rawMessage || portalError.errorType)) || JSON.stringify(portalError || ''));
-  const classification = classifyPortalError(errorText);
-
+function _handleSpecialIncidentFeedback(classification) {
   if (classification.category === 'OPERATIONAL_INCIDENT') {
     return {
       status: 'OPERATIONAL_INCIDENT_RECORDED',
@@ -118,7 +103,6 @@ function processPortalFeedback(portalError, outputDir, options = {}) {
       message: 'Operational incident (network/auth/CDP error) quarantined from hardware knowledge base.'
     };
   }
-
   if (classification.category === 'WORKFLOW_ADVISORY') {
     return {
       status: 'WORKFLOW_ADVISORY_RECORDED',
@@ -129,12 +113,10 @@ function processPortalFeedback(portalError, outputDir, options = {}) {
       message: 'Workflow advisory (UI/DOM change) recorded; hardware knowledge base unaffected.'
     };
   }
+  return null;
+}
 
-  const historyDir = path.join(outputDir, 'history');
-  if (!fs.existsSync(historyDir)) {
-    fs.mkdirSync(historyDir, { recursive: true });
-  }
-
+function _buildInitialFeedbackDelta(classification, outputDir, options) {
   const delta = {
     deltaId: `DELTA-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
     traceId: getTraceId() !== 'NO_TRACE_CONTEXT' ? getTraceId() : null,
@@ -156,14 +138,82 @@ function processPortalFeedback(portalError, outputDir, options = {}) {
     solutionType: options.solutionType || 'General Server',
     status: 'PENDING_HUMAN_REVIEW'
   };
-
-  // Mirror scopeTaxonomy → scope so both fields are always populated and canonical
   delta.scope = delta.scopeTaxonomy;
+  return delta;
+}
 
+function _loadCatalogDataSafe(outputDir) {
   const catalogPath = fs.readdirSync(outputDir, { withFileTypes: true })
     .find(entry => entry.isFile() && entry.name.endsWith('_Catalog.json'));
-  let catalogData = null;
-  if (catalogPath) catalogData = JSON.parse(fs.readFileSync(path.join(outputDir, catalogPath.name), 'utf-8'));
+  if (catalogPath) {
+    return JSON.parse(fs.readFileSync(path.join(outputDir, catalogPath.name), 'utf-8'));
+  }
+  return null;
+}
+
+function _buildAutonomousHumanReview(candidate, options) {
+  if (options.humanReview) return options.humanReview;
+  const authenticEvidenceId = options.evidenceId || options.sessionReceiptPath || options.sessionReceipt?.receiptPath || options.sessionReceipt?.sessionId;
+  if (candidate.source === 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' && authenticEvidenceId) {
+    const reviewer = options.humanReview?.reviewer || 'autonomous-lead-architect';
+    return {
+      reviewer,
+      reasoning: `Autonomous verified portal evidence for ${candidate.chassis}`,
+      decision: 'APPROVE',
+      verified: true,
+      evidence: [{ type: 'OFFICIAL_VENDOR_PORTAL', id: authenticEvidenceId }]
+    };
+  }
+  return null;
+}
+
+function _dispatchFeedbackSideEffects(activated, outputDir, options) {
+  updateCatalogRulesFile(outputDir, activated);
+  try {
+    recordAndCertifyLearnedRule(activated, outputDir);
+  } catch (err) {
+    const logger = require('../system/pipeline_logger.js');
+    logger.warn('FEEDBACK_LOOP', `Reachability certification failed: ${err.message}`);
+  }
+  try {
+    if (options.skipPostPromotionSideEffects === true) return;
+    const { recordFeedbackTelemetry } = require('../system/telemetry.js');
+    recordFeedbackTelemetry(activated);
+    const { buildMasterKnowledgeRegistry, generateNotebookSyncPayload } = require('../sync/knowledge_sync.js');
+    buildMasterKnowledgeRegistry();
+    const autoUpload = options.autoUploadNLM === undefined ? process.env.AUTO_UPLOAD_NLM === '1' : Boolean(options.autoUploadNLM);
+    generateNotebookSyncPayload(activated.chassis, autoUpload, { targetDir: options.targetDir || undefined });
+  } catch (err) {
+    console.warn('⚠️ Verified knowledge sync advisory:', err.message);
+  }
+}
+
+/**
+ * Process a portal unbuildable error and persist KnowledgeDelta.
+ * @param {string} portalError 
+ * @param {string} outputDir E.g. "outputs/ProLiant/Gen12/DL380_Gen12"
+ * @param {object} options Optional parameters { humanReasoning, scopeTaxonomy, ruleUpdate, solutionType }
+ * @returns {object} Generated KnowledgeDelta
+ */
+function processPortalFeedback(portalError, outputDir, options = {}) {
+  if (!outputDir || typeof outputDir !== 'string') {
+    throw new Error('processPortalFeedback requires an explicit string outputDir parameter (no hardcoded default).');
+  }
+  const errorText = typeof portalError === 'string' 
+    ? portalError 
+    : ((portalError && (portalError.reason || portalError.rawMessage || portalError.errorType)) || JSON.stringify(portalError || ''));
+  const classification = classifyPortalError(errorText);
+
+  const specialIncident = _handleSpecialIncidentFeedback(classification);
+  if (specialIncident) return specialIncident;
+
+  const historyDir = path.join(outputDir, 'history');
+  if (!fs.existsSync(historyDir)) {
+    fs.mkdirSync(historyDir, { recursive: true });
+  }
+
+  const delta = _buildInitialFeedbackDelta(classification, outputDir, options);
+  const catalogData = _loadCatalogDataSafe(outputDir);
 
   const validation = validateKnowledgeDelta(delta, { catalogData, humanReview: options.humanReview });
   if (!validation.valid || validation.status === 'REJECTED') {
@@ -183,13 +233,8 @@ function processPortalFeedback(portalError, outputDir, options = {}) {
   const pending = saveQuarantinedDelta(candidate, ['Evidence-backed decision awaiting atomic promotion'], { filePath: quarantineFile });
   const reviewer = options.humanReview?.reviewer || 'autonomous-lead-architect';
   const authenticEvidenceId = options.evidenceId || options.sessionReceiptPath || options.sessionReceipt?.receiptPath || options.sessionReceipt?.sessionId;
-  const humanReview = options.humanReview || (candidate.source === 'OFFICIAL_VENDOR_PORTAL_OBSERVATION' && authenticEvidenceId ? {
-    reviewer,
-    reasoning: `Autonomous verified portal evidence for ${candidate.chassis}`,
-    decision: 'APPROVE',
-    verified: true,
-    evidence: [{ type: 'OFFICIAL_VENDOR_PORTAL', id: authenticEvidenceId }]
-  } : null);
+  const humanReview = _buildAutonomousHumanReview(candidate, options);
+
   const activated = promoteQuarantinedDelta(pending.quarantineId, reviewer, {
     filePath: quarantineFile,
     activationDirectory: outputDir,
@@ -198,24 +243,8 @@ function processPortalFeedback(portalError, outputDir, options = {}) {
     evidenceId: authenticEvidenceId
   });
   if (!activated) return pending;
-  updateCatalogRulesFile(outputDir, activated);
-  try {
-    recordAndCertifyLearnedRule(activated, outputDir);
-  } catch (err) {
-    const logger = require('../system/pipeline_logger.js');
-    logger.warn('FEEDBACK_LOOP', `Reachability certification failed: ${err.message}`);
-  }
-  try {
-    if (options.skipPostPromotionSideEffects === true) return activated;
-    const { recordFeedbackTelemetry } = require('../system/telemetry.js');
-    recordFeedbackTelemetry(activated);
-    const { buildMasterKnowledgeRegistry, generateNotebookSyncPayload } = require('../sync/knowledge_sync.js');
-    buildMasterKnowledgeRegistry();
-    const autoUpload = options.autoUploadNLM === undefined ? process.env.AUTO_UPLOAD_NLM === '1' : Boolean(options.autoUploadNLM);
-    generateNotebookSyncPayload(activated.chassis, autoUpload, { targetDir: options.targetDir || undefined });
-  } catch (err) {
-    console.warn('⚠️ Verified knowledge sync advisory:', err.message);
-  }
+
+  _dispatchFeedbackSideEffects(activated, outputDir, options);
   return activated;
 }
 
@@ -364,6 +393,92 @@ function calculateConfidenceScore(boqItems, evalResults) {
  * @param {object} [metadata={}] Optional run-level metadata { quoteId, quoteSha256, catalogVersion, humanReview }
  * @returns {object} Structured promotion and quarantine receipts
  */
+function _buildPriceDriftDeltaOptions(item, metadata) {
+  const quoteId = item.quoteId || metadata.quoteId || 'UNKNOWN_QUOTE';
+  const quoteSha256 = item.sourceArtifactHash || metadata.quoteSha256 || null;
+  const currency = item.currency || metadata.currency || null;
+  const region = item.region || metadata.region || null;
+  const catalogVersion = item.catalogVersion || metadata.catalogVersion || 'UNKNOWN';
+  const humanReview = metadata.humanReview || item.humanReview || null;
+
+  return {
+    quoteId,
+    currency,
+    options: {
+      affectedSku: item.sku,
+      requiredDependencySku: null,
+      ruleUpdate: `Pricing aligned from vendor quote ${quoteId} for SKU ${item.sku} ($${item.priceUsd} ${currency})`,
+      humanReasoning: item.reasoning || `Vendor quote price observation for ${item.sku}`,
+      sourceAgent: 'PRICING_ALIGNMENT_ENGINE',
+      source: 'OFFICIAL_VENDOR_PORTAL_OBSERVATION',
+      citations: quoteSha256 ? [`sha256:${quoteSha256}`] : [],
+      preConfidenceScore: 0.95,
+      scopeTaxonomy: 'CHASSIS_SPECIFIC',
+      pricingObservation: { quoteId, sourceArtifactHash: quoteSha256, currency, region, catalogVersion, price: item.priceUsd },
+      catalogVersion,
+      region,
+      currency,
+      humanReview,
+      autonomousReview: !humanReview ? {
+        agent: 'PRICING_ALIGNMENT_ENGINE',
+        quoteId,
+        quoteSha256,
+        timestamp: new Date().toISOString()
+      } : null
+    }
+  };
+}
+
+function _processSinglePriceDriftItem(item, chassisDir, metadata) {
+  if (!item?.sku || !Number.isFinite(item.priceUsd) || item.priceUsd < 0) {
+    return { receipt: { sku: item?.sku || null, governanceStatus: 'REJECTED', error: 'SKU and finite nonnegative quote price are required' }, isRejected: true };
+  }
+
+  const { quoteId, currency, options } = _buildPriceDriftDeltaOptions(item, metadata);
+
+  try {
+    const delta = processPortalFeedback(
+      `Pricing alignment: SKU ${item.sku} quote price $${item.priceUsd} ${currency} (Quote: ${quoteId})`,
+      chassisDir,
+      options
+    );
+
+    const status = delta?.governanceStatus || delta?.status || 'UNKNOWN';
+    const receipt = {
+      sku: item.sku,
+      priceUsd: item.priceUsd,
+      currency,
+      quoteId,
+      governanceStatus: status,
+      quarantineId: delta?.quarantineId || null,
+      knowledgeFingerprint: delta?.knowledgeFingerprint || null,
+      timestamp: new Date().toISOString()
+    };
+
+    return { receipt, status };
+  } catch (e) {
+    const logger = require('../system/pipeline_logger.js');
+    logger.warn('FEEDBACK_LOOP', `Failed to process price drift for SKU ${item.sku}: ${e.message}`);
+    return { receipt: { sku: item.sku, governanceStatus: 'FAILED', error: e.message }, isRejected: true };
+  }
+}
+
+function _resolveOverallDriftStatus(activatedCount, quarantinedCount, rejectedCount, totalProcessed) {
+  if (totalProcessed === 0) return 'NO_DELTAS';
+  let status = 'NO_DELTAS';
+  if (activatedCount > 0 && quarantinedCount === 0) {
+    status = 'ACTIVATED';
+  } else if (activatedCount > 0 && quarantinedCount > 0) {
+    status = 'PARTIAL';
+  } else if (quarantinedCount > 0) {
+    status = 'QUARANTINED';
+  }
+  if (rejectedCount) {
+    status = (activatedCount || quarantinedCount) ? 'PARTIAL' : 'REJECTED';
+  }
+  return status;
+}
+
 function promotePriceDriftDeltas(chassisDir, driftItems = [], metadata = {}) {
   const emptyRes = {
     promotedCount: 0,
@@ -383,96 +498,26 @@ function promotePriceDriftDeltas(chassisDir, driftItems = [], metadata = {}) {
   const receipts = [];
 
   for (const item of driftItems) {
-    if (!item?.sku || !Number.isFinite(item.priceUsd) || item.priceUsd < 0) {
+    const res = _processSinglePriceDriftItem(item, chassisDir, metadata);
+    receipts.push(res.receipt);
+    if (res.isRejected) {
       rejectedCount++;
-      receipts.push({ sku: item?.sku || null, governanceStatus: 'REJECTED', error: 'SKU and finite nonnegative quote price are required' });
-      continue;
-    }
-
-    const quoteId = item.quoteId || metadata.quoteId || 'UNKNOWN_QUOTE';
-    const quoteSha256 = item.sourceArtifactHash || metadata.quoteSha256 || null;
-    const currency = item.currency || metadata.currency || null;
-    const region = item.region || metadata.region || null;
-    const catalogVersion = item.catalogVersion || metadata.catalogVersion || 'UNKNOWN';
-
-    // Governance: only label as humanReview if explicit human reviewer metadata is supplied
-    const humanReview = metadata.humanReview || item.humanReview || null;
-
-    try {
-      const delta = processPortalFeedback(
-        `Pricing alignment: SKU ${item.sku} quote price $${item.priceUsd} ${currency} (Quote: ${quoteId})`,
-        chassisDir,
-        {
-          affectedSku: item.sku,
-          requiredDependencySku: null,
-          ruleUpdate: `Pricing aligned from vendor quote ${quoteId} for SKU ${item.sku} ($${item.priceUsd} ${currency})`,
-          humanReasoning: item.reasoning || `Vendor quote price observation for ${item.sku}`,
-          sourceAgent: 'PRICING_ALIGNMENT_ENGINE',
-          source: 'OFFICIAL_VENDOR_PORTAL_OBSERVATION',
-          citations: quoteSha256 ? [`sha256:${quoteSha256}`] : [],
-          preConfidenceScore: 0.95,
-          scopeTaxonomy: 'CHASSIS_SPECIFIC',
-          pricingObservation: { quoteId, sourceArtifactHash: quoteSha256, currency, region, catalogVersion, price: item.priceUsd },
-          catalogVersion,
-          region,
-          currency,
-          humanReview: humanReview,
-          autonomousReview: !humanReview ? {
-            agent: 'PRICING_ALIGNMENT_ENGINE',
-            quoteId,
-            quoteSha256,
-            timestamp: new Date().toISOString()
-          } : null
-        }
-      );
-
-      const status = delta?.governanceStatus || delta?.status || 'UNKNOWN';
-      const receipt = {
-        sku: item.sku,
-        priceUsd: item.priceUsd,
-        currency,
-        quoteId,
-        governanceStatus: status,
-        quarantineId: delta?.quarantineId || null,
-        knowledgeFingerprint: delta?.knowledgeFingerprint || null,
-        timestamp: new Date().toISOString()
-      };
-
-      receipts.push(receipt);
-
-      if (status === 'ACTIVE') {
-        activatedCount++;
-      } else if (status === 'QUARANTINED' || status === 'PENDING_HUMAN_REVIEW') {
-        quarantinedCount++;
-      } else {
-        rejectedCount++;
-      }
-    } catch (e) {
-      const logger = require('../system/pipeline_logger.js');
-      logger.warn('FEEDBACK_LOOP', `Failed to process price drift for SKU ${item.sku}: ${e.message}`);
+    } else if (res.status === 'ACTIVE') {
+      activatedCount++;
+    } else if (res.status === 'QUARANTINED' || res.status === 'PENDING_HUMAN_REVIEW') {
+      quarantinedCount++;
+    } else {
       rejectedCount++;
-      receipts.push({ sku: item.sku, governanceStatus: 'FAILED', error: e.message });
     }
   }
 
-  const totalProcessed = receipts.length;
-  let status = 'NO_DELTAS';
-  if (activatedCount > 0 && quarantinedCount === 0) {
-    status = 'ACTIVATED';
-  } else if (activatedCount > 0 && quarantinedCount > 0) {
-    status = 'PARTIAL';
-  } else if (quarantinedCount > 0) {
-    status = 'QUARANTINED';
-  }
-
-  if (rejectedCount) status = activatedCount || quarantinedCount ? 'PARTIAL' : 'REJECTED';
   return {
     rejectedCount,
     promotedCount: activatedCount,
     quarantinedCount,
-    totalProcessed,
+    totalProcessed: receipts.length,
     receipts,
-    status
+    status: _resolveOverallDriftStatus(activatedCount, quarantinedCount, rejectedCount, receipts.length)
   };
 }
 

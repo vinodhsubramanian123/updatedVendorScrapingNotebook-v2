@@ -1,7 +1,7 @@
 {
   "success": true,
   "spreadsheetId": "1PAMB27QkjYXTSViEjNKcnZteZ9rvvObnSBBkZAGfF3w",
-  "backupFile": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\history\\drive_backups\\drive_backup_7974baea-3156-4e8c-b842-a237137d2ae9.json",
+  "backupFile": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\history\\drive_backups\\drive_backup_22c963b5-dc80-4b1d-822c-789b4d0184a6.json",
   "tabsWritten": [
     {
       "title": "Certified Catalog",
@@ -127,9 +127,9 @@
   "readbackVerified": true,
   "readbackFingerprints": {
     "Certified Catalog": "e83018cd9cbfe9cec285b4f3617b448e705dac3df54f17e2a37f461af5ffba56",
-    "Verified Learnings": "4ed21682bd175ff8449cc0e1807d51a9797ec55109cb650cbe6ca3c30b3a5792",
-    "Change Log": "393729741374fccaaa53ea4963e0275b75237486e4e24c58892a93db5fe6e94c",
-    "Sync Metadata": "e7a0c9ea365d1be6c5287e071a33954b25f4c3390924579e42ebd93c12f9e1fc",
+    "Verified Learnings": "5bf6813f2be09e9e4166d3dd0fff2933502f7c6ab928280f30336dcdb81ff132",
+    "Change Log": "11cfd3238634bb66d31e69390a449de964410f3555ea2c344c2c08447486d902",
+    "Sync Metadata": "292168f8c59055027b830067a144628df74db43c1da944ed8628ab23e336e609",
     "Category Summary": "08d2554e4608d7687a7d50d2bf937450567afa0aab352fedc4f7e4d43fe59b4c",
     "All SKUs": "bdb13cf2880c4579dae94141eed5e26e09bf4fa00e5630718fad6a9307dc6dc0",
     "Chassis Variants": "1e6656cd68c7f3cc9d52ce36a8d282c288ebd72594b2b965567b7d2d9e1a54ea",
@@ -157,12 +157,12 @@
     "Discontinued SKUs": "e62c0d0872115f4b9485ed9db2ff40cbfd262462d589a828e1423719d932f663",
     "Metadata": "3c587cebd20df28c7c1dd90638f62a5d852f1fcf45e72b07e9ce2b589fcb39f8"
   },
-  "verifiedAt": "2026-11-03T08:07:07.966Z",
+  "verifiedAt": "2026-11-06T08:25:25.898Z",
   "fingerprints": {
     "catalog": "e83018cd9cbfe9cec285b4f3617b448e705dac3df54f17e2a37f461af5ffba56",
-    "learnings": "7749321b9d12c0eb1f186031643b7d3b32a4435d01079d72c8724823c04fd27a",
-    "changes": "393729741374fccaaa53ea4963e0275b75237486e4e24c58892a93db5fe6e94c",
+    "learnings": "017e4d2ad0f9b3e1dcb351be00b08327dda286608b7482a32162a43c26c12d76",
+    "changes": "11cfd3238634bb66d31e69390a449de964410f3555ea2c344c2c08447486d902",
     "workbook": "079a971c64567ea14423c4b622fe8bf4fe6e9c6330e9119385c9800e9ba41265",
-    "combined": "d8e25b2294ac673ef29dc9f6edbc0dab72605170cff639e65bbd3f5b72027501"
+    "combined": "0714b9ae89a68afb4e80b09286deca5d6ea474850f8d8d203b5cbe550023efe0"
   }
 }

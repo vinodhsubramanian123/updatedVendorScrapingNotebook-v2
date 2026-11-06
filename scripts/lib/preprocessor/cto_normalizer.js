@@ -61,7 +61,7 @@ function isCtoBaseChassis(it) {
  *   ctoAnomalies: Array<object>
  * }}
  */
-function detectAndNormalizeAtomicCto(items, options = {}) {
+function _findBaseChassisAndMultiplier(items, options) {
   let baseChassisItem = null;
   let baseChassisQty = 1;
 
@@ -76,19 +76,56 @@ function detectAndNormalizeAtomicCto(items, options = {}) {
     }
   }
 
-  // If base chassis quantity is 1 but an explicit section/header multiplier was detected
   const explicitMult = parseInt(options.explicitMultiplier || options.multiplier, 10);
   const effectiveMultiplier = baseChassisQty > 1 ? baseChassisQty : (explicitMult > 1 ? explicitMult : 1);
+  return { baseChassisItem, baseChassisQty, effectiveMultiplier };
+}
 
-  const ctoAnomalies = [];
-  let hasNonIntegerDivisor = false;
-
-  // Determine if child line items are already batch-multiplied in input
+function _checkItemsAlreadyMultiplied(items, effectiveMultiplier, baseChassisItem) {
+  if (effectiveMultiplier <= 1) return false;
   const nonServiceItems = items.filter(it => !isServiceSku(it.sku) && (!baseChassisItem || it.sku !== baseChassisItem.sku));
-  const areItemsAlreadyMultiplied = effectiveMultiplier > 1 && nonServiceItems.length > 0 && nonServiceItems.every(it => {
+  if (nonServiceItems.length === 0) return false;
+
+  return nonServiceItems.every(it => {
     const q = parseInt(it.quantity, 10) || 1;
     return q >= effectiveMultiplier && Number.isInteger(q / effectiveMultiplier);
   });
+}
+
+function _normalizeMultipliedBatchChild(it, totalQ, effectiveMultiplier, isService, collector) {
+  const atomicQtyRaw = totalQ / effectiveMultiplier;
+  const isInteger = Number.isInteger(atomicQtyRaw);
+
+  if (!isInteger && !isService) {
+    collector.hasNonIntegerDivisor = true;
+    collector.ctoAnomalies.push({
+      type: 'CONFIGURATION_OWNERSHIP_AMBIGUOUS',
+      sku: it.sku,
+      description: it.description,
+      totalQty: totalQ,
+      baseChassisQty: effectiveMultiplier,
+      perUnitQty: parseFloat(atomicQtyRaw.toFixed(2)),
+      message: `SKU ${it.sku} total quantity (${totalQ}) is not an even multiple of base chassis quantity (${effectiveMultiplier}). Calculated per-unit quantity: ${atomicQtyRaw.toFixed(2)}.`
+    });
+  }
+
+  return {
+    ...it,
+    atomicQuantity: isInteger ? atomicQtyRaw : (isService ? totalQ : parseFloat(atomicQtyRaw.toFixed(2))),
+    totalQuantity: totalQ,
+    perNodeQuantity: isInteger ? atomicQtyRaw : totalQ,
+    isMultipliedByCto: true,
+    isIntegerDivisor: isInteger || isService,
+    quantityBasis: isInteger ? 'base' : 'total',
+    configurationMultiplier: effectiveMultiplier
+  };
+}
+
+function detectAndNormalizeAtomicCto(items, options = {}) {
+  const { baseChassisItem, baseChassisQty, effectiveMultiplier } = _findBaseChassisAndMultiplier(items, options);
+  const areItemsAlreadyMultiplied = _checkItemsAlreadyMultiplied(items, effectiveMultiplier, baseChassisItem);
+
+  const collector = { ctoAnomalies: [], hasNonIntegerDivisor: false };
 
   const normalizedItems = items.map(it => {
     if (baseChassisItem && it.sku === baseChassisItem.sku) {
@@ -109,61 +146,33 @@ function detectAndNormalizeAtomicCto(items, options = {}) {
 
     if (effectiveMultiplier > 1) {
       if (areItemsAlreadyMultiplied || baseChassisQty > 1) {
-        // Child item quantity in input is the total batch quantity -> compute per-chassis atomic qty
-        const atomicQtyRaw = totalQ / effectiveMultiplier;
-        const isInteger = Number.isInteger(atomicQtyRaw);
-
-        if (!isInteger && !isService) {
-          hasNonIntegerDivisor = true;
-          ctoAnomalies.push({
-            type: 'CONFIGURATION_OWNERSHIP_AMBIGUOUS',
-            sku: it.sku,
-            description: it.description,
-            totalQty: totalQ,
-            baseChassisQty: effectiveMultiplier,
-            perUnitQty: parseFloat(atomicQtyRaw.toFixed(2)),
-            message: `SKU ${it.sku} total quantity (${totalQ}) is not an even multiple of base chassis quantity (${effectiveMultiplier}). Calculated per-unit quantity: ${atomicQtyRaw.toFixed(2)}.`
-          });
-        }
-
-        return {
-          ...it,
-          atomicQuantity: isInteger ? atomicQtyRaw : (isService ? totalQ : parseFloat(atomicQtyRaw.toFixed(2))),
-          totalQuantity: totalQ,
-          perNodeQuantity: isInteger ? atomicQtyRaw : totalQ,
-          isMultipliedByCto: true,
-          isIntegerDivisor: isInteger || isService,
-          quantityBasis: isInteger ? 'base' : 'total',
-          configurationMultiplier: effectiveMultiplier
-        };
-      } else {
-        // Child item quantity in input is per-unit atomic -> compute total batch quantity
-        return {
-          ...it,
-          atomicQuantity: totalQ,
-          totalQuantity: totalQ * effectiveMultiplier,
-          perNodeQuantity: totalQ,
-          isMultipliedByCto: true,
-          isIntegerDivisor: true,
-          quantityBasis: 'base',
-          configurationMultiplier: effectiveMultiplier
-        };
+        return _normalizeMultipliedBatchChild(it, totalQ, effectiveMultiplier, isService, collector);
       }
-    } else {
       return {
         ...it,
         atomicQuantity: totalQ,
-        totalQuantity: totalQ,
+        totalQuantity: totalQ * effectiveMultiplier,
         perNodeQuantity: totalQ,
-        isMultipliedByCto: false,
+        isMultipliedByCto: true,
         isIntegerDivisor: true,
         quantityBasis: 'base',
-        configurationMultiplier: 1
+        configurationMultiplier: effectiveMultiplier
       };
     }
+
+    return {
+      ...it,
+      atomicQuantity: totalQ,
+      totalQuantity: totalQ,
+      perNodeQuantity: totalQ,
+      isMultipliedByCto: false,
+      isIntegerDivisor: true,
+      quantityBasis: 'base',
+      configurationMultiplier: 1
+    };
   });
 
-  const finalItems = hasNonIntegerDivisor ? items : normalizedItems;
+  const finalItems = collector.hasNonIntegerDivisor ? items : normalizedItems;
 
   return {
     items: finalItems,
@@ -175,8 +184,8 @@ function detectAndNormalizeAtomicCto(items, options = {}) {
     baseChassisSku: baseChassisItem ? baseChassisItem.sku : null,
     baseChassisQty: effectiveMultiplier,
     isMultipliedOrder: effectiveMultiplier > 1,
-    hasNonIntegerDivisor,
-    ctoAnomalies
+    hasNonIntegerDivisor: collector.hasNonIntegerDivisor,
+    ctoAnomalies: collector.ctoAnomalies
   };
 }
 

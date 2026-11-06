@@ -48,11 +48,15 @@ function sniffDomainComposition(parsedLines) {
   const domainBuckets = { server: [], storage: [], networking: [], archive: [], unknown: [] };
 
   for (const line of (parsedLines || [])) {
-    const desc = String(line.description || line.desc || line.partName || '').toLowerCase();
+    const isStr = typeof line === 'string';
+    const desc = isStr ? line.toLowerCase() : String(line.description || line.desc || line.partName || '').toLowerCase();
     const role = topologyRole(desc);
+    const sku = isStr
+      ? (line.match(/\b([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6}|[A-Z0-9]{5,8}AAE|[HURS][A-Z0-9]{4,11})\b/i)?.[0] || '')
+      : (line.sku || line.partNumber || '');
     const bucket = role || 'unknown';
-    if (domainBuckets[bucket]) domainBuckets[bucket].push(line.sku || line.partNumber || '');
-    else domainBuckets.unknown.push(line.sku || '');
+    if (domainBuckets[bucket]) domainBuckets[bucket].push(sku);
+    else domainBuckets.unknown.push(sku);
   }
 
   const activeDomains = Object.entries(domainBuckets)
@@ -71,6 +75,13 @@ function sniffDomainComposition(parsedLines) {
 }
 
 function resolveBoqInputs(filePathOrRaw, rawTextOrFilePath) {
+  if (Array.isArray(filePathOrRaw)) {
+    return {
+      filePath: '',
+      rawText: filePathOrRaw.map(i => `${i.sku || ''}, ${i.description || ''}, ${i.quantity || 1}`).join('\n')
+    };
+  }
+
   const firstIsFile = typeof filePathOrRaw === 'string'
     && INPUT_FILE_PATTERN.test(filePathOrRaw)
     && fs.existsSync(filePathOrRaw);
@@ -281,55 +292,78 @@ function _detectIntraListCpuVariants(rawVariations, addStep) {
   }
 }
 
+function _matchStorageChassis(allDescs, allSkus) {
+  if (allDescs.includes('alletra')) {
+    return { chassisName: 'Alletra Storage System', solutionType: 'STORAGE', family: 'Alletra', gen: 'Storage' };
+  }
+  if (allSkus.some(s => s.startsWith('R0Q') || s.startsWith('R7G') || s.startsWith('P764'))) {
+    return { chassisName: 'Alletra Storage System', solutionType: 'STORAGE', family: 'Alletra', gen: 'Storage' };
+  }
+  return null;
+}
+
+function _matchNetworkingChassis(allDescs, allSkus) {
+  if (allDescs.includes('synergy') || allDescs.includes('vc 100gb') || allDescs.includes('sy')) {
+    return { chassisName: 'SY100Gb F32 Module', solutionType: 'NETWORKING', family: 'Synergy', gen: 'General' };
+  }
+  if (allSkus.some(s => s.startsWith('Q8D') || s.startsWith('Q6F'))) {
+    return { chassisName: 'SY100Gb F32 Module', solutionType: 'NETWORKING', family: 'Synergy', gen: 'General' };
+  }
+  return null;
+}
+
+function _matchHpcChassis(allDescs, allSkus) {
+  if (allDescs.includes('gx5000') || allDescs.includes('cray') || allDescs.includes('supercomputing')) {
+    return { chassisName: 'GX5000 General RACK', solutionType: 'HPC', family: 'Cray', gen: 'General' };
+  }
+  if (allSkus.some(s => s.startsWith('P57'))) {
+    return { chassisName: 'GX5000 General RACK', solutionType: 'HPC', family: 'Cray', gen: 'General' };
+  }
+  return null;
+}
+
+function _matchTapeChassis(allDescs, allSkus) {
+  if (allDescs.includes('msl3040') || allDescs.includes('tape library') || allDescs.includes('storeever')) {
+    return { chassisName: 'MSL3040 Tape', solutionType: 'TAPE', family: 'StoreEver', gen: 'Tape' };
+  }
+  if (allSkus.some(s => s.startsWith('Q6Q') || s.startsWith('Q6L'))) {
+    return { chassisName: 'MSL3040 Tape', solutionType: 'TAPE', family: 'StoreEver', gen: 'Tape' };
+  }
+  return null;
+}
+
+function _matchServerChassis(allDescs, allSkus) {
+  const isProliantOrDl380 = allDescs.includes('dl380') || allDescs.includes('proliant');
+  if (isProliantOrDl380 && allDescs.includes('gen11')) {
+    return { chassisName: 'DL380 Gen11', solutionType: 'SERVER', family: 'ProLiant', gen: 'Gen11' };
+  }
+  const hasGen12Skus = allSkus.some(s => s.startsWith('P732') || s.startsWith('P767'));
+  if (isProliantOrDl380 && (allDescs.includes('gen12') || hasGen12Skus)) {
+    return { chassisName: 'DL380 Gen12 SFF', solutionType: 'SERVER', family: 'ProLiant', gen: 'Gen12' };
+  }
+  return null;
+}
+
 /**
  * Infer chassis identity and solution domain from parsed items.
  * @private
  */
 function _inferChassisIdentity(items, options = {}) {
-  let chassisName = 'DL380 Gen12 SFF';
-  let solutionType = 'SERVER';
-  let vendor = 'HPE';
-  let family = 'ProLiant';
-  let gen = 'Gen12';
-
   const allSkus = items.map(i => cleanBaseSKU(i.sku || '').toUpperCase());
   const allDescs = items.map(i => (i.description || '').toLowerCase()).join(' ');
 
-  if (allDescs.includes('alletra') || allSkus.some(s => s.startsWith('R0Q') || s.startsWith('R7G') || s.startsWith('P764'))) {
-    chassisName = 'Alletra Storage System';
-    solutionType = 'STORAGE';
-    family = 'Alletra';
-    gen = 'Storage';
-  } else if (allDescs.includes('synergy') || allDescs.includes('vc 100gb') || allDescs.includes('sy') || allSkus.some(s => s.startsWith('Q8D') || s.startsWith('Q6F'))) {
-    chassisName = 'SY100Gb F32 Module';
-    solutionType = 'NETWORKING';
-    family = 'Synergy';
-    gen = 'General';
-  } else if (allDescs.includes('gx5000') || allDescs.includes('cray') || allDescs.includes('supercomputing') || allSkus.some(s => s.startsWith('P57'))) {
-    chassisName = 'GX5000 General RACK';
-    solutionType = 'HPC';
-    family = 'Cray';
-    gen = 'General';
-  } else if (allDescs.includes('msl3040') || allDescs.includes('tape library') || allDescs.includes('storeever') || allSkus.some(s => s.startsWith('Q6Q') || s.startsWith('Q6L'))) {
-    chassisName = 'MSL3040 Tape';
-    solutionType = 'TAPE';
-    family = 'StoreEver';
-    gen = 'Tape';
-  } else if ((allDescs.includes('dl380') || allDescs.includes('proliant')) && allDescs.includes('gen11')) {
-    chassisName = 'DL380 Gen11';
-    solutionType = 'SERVER';
-    family = 'ProLiant';
-    gen = 'Gen11';
-  } else if ((allDescs.includes('dl380') || allDescs.includes('proliant')) && (allDescs.includes('gen12') || allSkus.some(s => s.startsWith('P732') || s.startsWith('P767')))) {
-    chassisName = 'DL380 Gen12 SFF';
-    solutionType = 'SERVER';
-    family = 'ProLiant';
-    gen = 'Gen12';
-  } else if (options && options.chassisHint) {
-    chassisName = options.chassisHint;
+  const match = _matchStorageChassis(allDescs, allSkus)
+    || _matchNetworkingChassis(allDescs, allSkus)
+    || _matchHpcChassis(allDescs, allSkus)
+    || _matchTapeChassis(allDescs, allSkus)
+    || _matchServerChassis(allDescs, allSkus);
+
+  if (match) {
+    return { ...match, vendor: 'HPE' };
   }
 
-  return { chassisName, solutionType, vendor, family, gen };
+  const chassisName = (options && options.chassisHint) ? options.chassisHint : 'DL380 Gen12 SFF';
+  return { chassisName, solutionType: 'SERVER', vendor: 'HPE', family: 'ProLiant', gen: 'Gen12' };
 }
 
 /**
@@ -564,6 +598,9 @@ function preprocessAndGroupBOQ(filePathOrRaw = null, rawTextOrFilePath = null, o
     requiresHumanReview: preflightPipeline.isHitlRequired || (overallConfidence < 0.75),
     confidenceReasons,
     preflightPipeline,
+    isMixedDomain: Boolean(domainSniff?.isMixedDomain),
+    domainSniff: domainSniff || null,
+    requiresHeterogeneousRouter: Boolean(domainSniff?.isMixedDomain),
     activeConfigId: processedVariations[0]?.configId || 'config_1'
   };
 }
@@ -577,5 +614,6 @@ module.exports = {
   detectAndNormalizeAtomicCto,
   calculateImprobabilityMetrics,
   isCtoBaseChassis,
-  KNOWN_CTO_SKU_PREFIXES
+  KNOWN_CTO_SKU_PREFIXES,
+  sniffDomainComposition
 };

@@ -37,99 +37,92 @@ function isDdr5Token(desc) {
   return desc.includes('ddr5') || /\bpc5\b/i.test(desc) || desc.includes('pc5-') || desc.includes('pc5_');
 }
 
-function evalMemoryChannel(items, passedCpuCount = 0, catalogData = null, isCtoChassis = false, channelWidth = 8) {
-  const chWidth = Math.max(1, parseInt(channelWidth, 10) || 8);
-  let memoryCount = 0;
-  let totalMemoryGb = 0;
-  const hasExplicitCpuCount = (typeof passedCpuCount === 'number' && passedCpuCount > 0);
-  let cpuCount = hasExplicitCpuCount ? passedCpuCount : 0;
-  const activeCatalog = (typeof passedCpuCount === 'object' && passedCpuCount !== null) ? passedCpuCount : catalogData;
-  let hasDdr4Memory = false;
-  let hasDdr5Memory = false;
-  let hasRdimm = false;
-  let hasLrdimm = false;
-  let hasMrdimm = false;
-  const btoMemoryViolations = [];
-  const memoryItems = [];
-  const skuIndex = buildCatalogSkuIndex(activeCatalog);
-
-  // Check if chassis in items is CTO if not explicitly passed
-  const isCto = isCtoChassis || items.some(it => {
+function _isCtoChassis(items, isCtoChassis) {
+  if (isCtoChassis) return true;
+  return items.some(it => {
     const desc = (it.description || '').toLowerCase();
     const opt = (it.optionType || '').toUpperCase();
     return desc.includes('configure-to-order') || desc.includes('cto') || opt === 'CTO';
   });
+}
 
-  for (const it of items) {
-    if (isOcaModifierTrackingRow(it.sku, it.description)) continue;
-    const desc = (it.description || '').toLowerCase();
-    const rawSku = (it.sku || '').toUpperCase().trim();
-    const cleanSku = cleanBaseSKU(it.sku);
-    let role = classifyComponentRole('', desc);
-    const catalogItem = skuIndex.get(cleanSku);
-    if (catalogItem) {
-      role = classifyComponentRole(catalogItem.parentCategory, desc);
-    }
-    const catRole = catalogItem?.skuData?.['Component Role'] || '';
+function _processMemoryLine(it, desc, rawSku, isDdr4, isDdr5, isCto, ctx) {
+  const qty = it.quantity || 1;
+  ctx.memoryCount += qty;
+  ctx.memoryItems.push(it);
 
-    // Guard: Prevent NVMe storage drives, SSDs, batteries, blanks, or controller accessories from matching as RAM DIMMs
-    const isDriveOrStorage = isDriveOrStorageItem(desc, role, catRole);
-    const isDdr4 = !isDriveOrStorage && isDdr4Token(desc);
-    const isDdr5 = !isDriveOrStorage && isDdr5Token(desc);
+  if (isDdr4) ctx.hasDdr4Memory = true;
+  if (isDdr5) ctx.hasDdr5Memory = true;
 
-    const isMemoryItem = !isDriveOrStorage && (
-      role === 'Memory' ||
-      desc.includes('memory') ||
-      desc.includes('rdimm') ||
-      desc.includes('lrdimm') ||
-      desc.includes('mrdimm') ||
-      desc.includes('smart kit') ||
-      isDdr4 ||
-      isDdr5
-    );
+  const isLrdimm = desc.includes('lrdimm') || desc.includes('load-reduced') || desc.includes('load reduced');
+  const isMrdimm = desc.includes('mrdimm') || desc.includes('multiplexed');
+  const isRdimm = (desc.includes('rdimm') || desc.includes('registered')) && !isLrdimm && !isMrdimm;
 
-    if (isMemoryItem) {
-      const qty = (it.quantity || 1);
-      memoryCount += qty;
-      memoryItems.push(it);
+  if (isRdimm) ctx.hasRdimm = true;
+  if (isLrdimm) ctx.hasLrdimm = true;
+  if (isMrdimm) ctx.hasMrdimm = true;
 
-      if (isDdr4) hasDdr4Memory = true;
-      if (isDdr5) hasDdr5Memory = true;
-
-      const isLrdimm = desc.includes('lrdimm') || desc.includes('load-reduced') || desc.includes('load reduced');
-      const isMrdimm = desc.includes('mrdimm') || desc.includes('multiplexed');
-      const isRdimm = (desc.includes('rdimm') || desc.includes('registered')) && !isLrdimm && !isMrdimm;
-      if (isRdimm) hasRdimm = true;
-      if (isLrdimm) hasLrdimm = true;
-      if (isMrdimm) hasMrdimm = true;
-
-      const gbMatch = desc.match(/(\d+)\s*gb/i);
-      if (gbMatch) {
-        totalMemoryGb += (parseInt(gbMatch[1], 10) * qty);
-      }
-
-      // Check BTO (-B21) vs FIO (-F21) within CTO base models
-      if (isCto && rawSku.endsWith('-B21') && !desc.includes('fio') && !desc.includes('factory integrated')) {
-        const fioSku = rawSku.replace(/-B21$/i, '-F21');
-        btoMemoryViolations.push({
-          btoSku: rawSku,
-          fioSku,
-          description: it.description || 'HPE Smart Memory Kit',
-          quantity: qty,
-          reason: `CLIC Violation: Standalone BTO Memory SKU ${rawSku} is not allowed in a CTO Base Model. Must use Factory Integrated Option (FIO) SKU ${fioSku}.`
-        });
-      }
-    }
-    if (!hasExplicitCpuCount && (desc.includes('processor') || desc.includes('xeon') || desc.includes('epyc') || desc.includes('cpu'))) {
-      if (!desc.includes('heatsink') && !desc.includes('heat sink') && !desc.includes('fan') && !desc.includes('cable') && !desc.includes('baffle')) {
-        cpuCount += (it.quantity || 1);
-      }
-    }
+  const gbMatch = desc.match(/(\d+)\s*gb/i);
+  if (gbMatch) {
+    ctx.totalMemoryGb += (parseInt(gbMatch[1], 10) * qty);
   }
 
-  // Strictly match installed or detected CPU count (remove hardcoded cpuCount = 2)
+  // Check BTO (-B21) vs FIO (-F21) within CTO base models
+  if (isCto && rawSku.endsWith('-B21') && !desc.includes('fio') && !desc.includes('factory integrated')) {
+    const fioSku = rawSku.replace(/-B21$/i, '-F21');
+    ctx.btoMemoryViolations.push({
+      btoSku: rawSku,
+      fioSku,
+      description: it.description || 'HPE Smart Memory Kit',
+      quantity: qty,
+      reason: `CLIC Violation: Standalone BTO Memory SKU ${rawSku} is not allowed in a CTO Base Model. Must use Factory Integrated Option (FIO) SKU ${fioSku}.`
+    });
+  }
+}
+
+function _inspectMemoryOrCpuItem(it, skuIndex, isCto, hasExplicitCpuCount, ctx) {
+  const desc = (it.description || '').toLowerCase();
+  const rawSku = (it.sku || '').toUpperCase().trim();
+  const cleanSku = cleanBaseSKU(it.sku);
+  let role = classifyComponentRole('', desc);
+  const catalogItem = skuIndex.get(cleanSku);
+  if (catalogItem) {
+    role = classifyComponentRole(catalogItem.parentCategory, desc);
+  }
+  const catRole = catalogItem?.skuData?.['Component Role'] || '';
+
+  const isDriveOrStorage = isDriveOrStorageItem(desc, role, catRole);
+  const isDdr4 = !isDriveOrStorage && isDdr4Token(desc);
+  const isDdr5 = !isDriveOrStorage && isDdr5Token(desc);
+
+  const isMemoryItem = !isDriveOrStorage && (
+    role === 'Memory' ||
+    desc.includes('memory') ||
+    desc.includes('rdimm') ||
+    desc.includes('lrdimm') ||
+    desc.includes('mrdimm') ||
+    desc.includes('smart kit') ||
+    isDdr4 ||
+    isDdr5
+  );
+
+  if (isMemoryItem) {
+    _processMemoryLine(it, desc, rawSku, isDdr4, isDdr5, isCto, ctx);
+    return 0;
+  }
+
+  const CPU_EXCLUSIONS = /heatsink|heat sink|fan|cable|baffle/i;
+  const CPU_KEYWORDS = /processor|xeon|epyc|cpu/i;
+  if (!hasExplicitCpuCount && CPU_KEYWORDS.test(desc) && !CPU_EXCLUSIONS.test(desc)) {
+    return (it.quantity || 1);
+  }
+  return 0;
+}
+
+function _buildMemoryMetrics(ctx, cpuCount, chWidth) {
+  const { memoryCount, totalMemoryGb, hasDdr4Memory, hasDdr5Memory, hasRdimm, hasLrdimm, hasMrdimm, btoMemoryViolations, memoryItems } = ctx;
+
   const dimmsPerCpu = cpuCount > 0 ? (memoryCount / cpuCount) : 0;
-  // Supported per-socket DIMM populations per Intel Xeon / AMD EPYC QuickSpecs: 1, 2, 4, 6, 8, 12, 16
   const isSupportedPopulation = cpuCount > 0 && memoryCount > 0 && (memoryCount % cpuCount === 0) && [1, 2, 4, 6, 8, 12, 16].includes(dimmsPerCpu);
   const isBalancedChannel = cpuCount > 0 && memoryCount > 0 && (memoryCount % cpuCount === 0) && ((memoryCount / cpuCount) % chWidth === 0);
   const hasMixedDdrGeneration = hasDdr4Memory && hasDdr5Memory;
@@ -159,6 +152,34 @@ function evalMemoryChannel(items, passedCpuCount = 0, catalogData = null, isCtoC
     hasMixedMemoryTypes,
     memoryItems
   };
+}
+
+function evalMemoryChannel(items, passedCpuCount = 0, catalogData = null, isCtoChassis = false, channelWidth = 8) {
+  const chWidth = Math.max(1, parseInt(channelWidth, 10) || 8);
+  const hasExplicitCpuCount = (typeof passedCpuCount === 'number' && passedCpuCount > 0);
+  let cpuCount = hasExplicitCpuCount ? passedCpuCount : 0;
+  const activeCatalog = (typeof passedCpuCount === 'object' && passedCpuCount !== null) ? passedCpuCount : catalogData;
+  const skuIndex = buildCatalogSkuIndex(activeCatalog);
+  const isCto = _isCtoChassis(items, isCtoChassis);
+
+  const ctx = {
+    memoryCount: 0,
+    totalMemoryGb: 0,
+    hasDdr4Memory: false,
+    hasDdr5Memory: false,
+    hasRdimm: false,
+    hasLrdimm: false,
+    hasMrdimm: false,
+    btoMemoryViolations: [],
+    memoryItems: []
+  };
+
+  for (const it of items) {
+    if (isOcaModifierTrackingRow(it.sku, it.description)) continue;
+    cpuCount += _inspectMemoryOrCpuItem(it, skuIndex, isCto, hasExplicitCpuCount, ctx);
+  }
+
+  return _buildMemoryMetrics(ctx, cpuCount, chWidth);
 }
 
 module.exports = {

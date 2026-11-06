@@ -105,7 +105,7 @@ test('Notebook Job Manager, Diagnostics, Drift & Feedback Tests', async (t) => {
     const dl380a = await resolveNotebookIdAsync(null, { chassis: 'HPE ProLiant DL380a Gen12' });
     assert.strictEqual(dl380a, 'b233ec88-4682-4164-a801-3ee6ca649dc1');
     const unrelatedGen12 = await resolveNotebookIdAsync(null, { chassis: 'HPE ProLiant DL360 Gen12' });
-    const emptyCray = await resolveNotebookIdAsync(null, { chassis: 'GX5000_General_RACK' });
+    const emptyCray = await resolveNotebookIdAsync(null, { chassis: 'UNMAPPED_Cray_RACK' });
     assert.strictEqual(emptyCray, null, 'An empty/unready notebook mapping must fail closed');
     const certifiedStoreEver = await resolveNotebookIdAsync(null, { chassis: 'MSL3040_Tape' });
     assert.strictEqual(certifiedStoreEver, '644020e5-42f9-4c4b-95cc-fcf82122685c', 'Certified MSL3040 notebook must resolve');

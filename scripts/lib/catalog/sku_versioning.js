@@ -10,6 +10,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { safeWriteJsonAtomic } = require('../system/fs_compat.js');
+const { cleanBaseSKU } = require('./sku.js');
 
 const catalogPriceCache = new Map();
 
@@ -66,6 +67,165 @@ function resolveChassisDirectory(dir) {
  * @param {string} chassisDir - Relative or absolute path to chassis folder
  * @returns {object} Audit trail with price history, attribute changes, snapshots, and current status
  */
+function _findInSkuMap(histObj, cleanSku, rawSku, rawSkuWithHash) {
+  if (!histObj || typeof histObj !== 'object') return null;
+  return histObj[cleanSku] || histObj[rawSku] || histObj[rawSkuWithHash] || null;
+}
+
+function _loadPeerPriceTimeline(resolvedChassisDir, cleanSku, rawSku, rawSkuWithHash) {
+  try {
+    const parentDir = path.dirname(resolvedChassisDir);
+    if (!fs.existsSync(parentDir)) return null;
+    const peerDirs = fs.readdirSync(parentDir, { withFileTypes: true })
+      .filter(d => d.isDirectory() && path.join(parentDir, d.name) !== resolvedChassisDir)
+      .map(d => path.join(parentDir, d.name));
+
+    for (const peer of peerDirs) {
+      const peerPriceHistoryPath = path.join(peer, 'history', 'price_history.json');
+      if (fs.existsSync(peerPriceHistoryPath)) {
+        try {
+          const pHist = JSON.parse(fs.readFileSync(peerPriceHistoryPath, 'utf-8'));
+          const pFound = _findInSkuMap(pHist, cleanSku, rawSku, rawSkuWithHash);
+          if (pFound && pFound.some(e => Number(e.price) > 0)) return pFound;
+        } catch (_) {}
+      }
+      const peerServicesPath = path.join(peer, 'services_history', 'services_price_history.json');
+      if (fs.existsSync(peerServicesPath)) {
+        try {
+          const spHist = JSON.parse(fs.readFileSync(peerServicesPath, 'utf-8'));
+          const spFound = _findInSkuMap(spHist, cleanSku, rawSku, rawSkuWithHash);
+          if (spFound && spFound.some(e => Number(e.price) > 0)) return spFound;
+        } catch (_) {}
+      }
+    }
+  } catch (_) {}
+  return null;
+}
+
+function _loadPriceTimeline(historyDir, resolvedChassisDir, cleanSku, rawSku, rawSkuWithHash) {
+  let priceTimeline = [];
+
+  // 1. Read price history
+  const priceHistoryPath = path.join(historyDir, 'price_history.json');
+  if (fs.existsSync(priceHistoryPath)) {
+    try {
+      const priceHistory = JSON.parse(fs.readFileSync(priceHistoryPath, 'utf-8'));
+      const found = _findInSkuMap(priceHistory, cleanSku, rawSku, rawSkuWithHash);
+      if (found) priceTimeline = found;
+    } catch (err) {
+      console.warn(`[sku_versioning] Error reading price_history.json: ${err.message}`);
+    }
+  }
+
+  // 1b. Read services price history
+  const servicesPriceHistoryPath = path.join(resolvedChassisDir, 'services_history', 'services_price_history.json');
+  if (fs.existsSync(servicesPriceHistoryPath)) {
+    try {
+      const sPriceHistory = JSON.parse(fs.readFileSync(servicesPriceHistoryPath, 'utf-8'));
+      const sFound = _findInSkuMap(sPriceHistory, cleanSku, rawSku, rawSkuWithHash);
+      if (sFound && priceTimeline.every(e => !e.price || e.price <= 0)) {
+        priceTimeline = sFound;
+      }
+    } catch (err) {
+      console.warn(`[sku_versioning] Error reading services_price_history.json: ${err.message}`);
+    }
+  }
+
+  // 1c. Cross-chassis fallback within same product generation
+  if (resolvedChassisDir && priceTimeline.every(e => !e.price || e.price <= 0)) {
+    priceTimeline = _loadPeerPriceTimeline(resolvedChassisDir, cleanSku, rawSku, rawSkuWithHash) || priceTimeline;
+  }
+
+  return priceTimeline;
+}
+
+function _loadAttributeMutations(historyDir, cleanSku) {
+  const attrHistoryPath = path.join(historyDir, 'attribute_history.json');
+  if (!fs.existsSync(attrHistoryPath)) return [];
+  try {
+    const attrHistory = JSON.parse(fs.readFileSync(attrHistoryPath, 'utf-8'));
+    if (Array.isArray(attrHistory)) {
+      return attrHistory.filter(item => item.productNumber === cleanSku || item.sku === cleanSku);
+    }
+  } catch (err) {
+    console.warn(`[sku_versioning] Error reading attribute_history.json: ${err.message}`);
+  }
+  return [];
+}
+
+function _loadDiscontinuedInfo(historyDir, cleanSku) {
+  const discontinuedPath = path.join(historyDir, 'discontinued_skus.json');
+  if (!fs.existsSync(discontinuedPath)) return { discontinuedInfo: null, currentStatus: 'UNKNOWN' };
+  try {
+    const discontinuedList = JSON.parse(fs.readFileSync(discontinuedPath, 'utf-8'));
+    const candidates = Array.isArray(discontinuedList) ? discontinuedList : Object.values(discontinuedList || {});
+    const match = candidates.find(d => d.productNumber === cleanSku || d.sku === cleanSku);
+    if (match) {
+      const currentStatus = String(match.status || '').toUpperCase() === 'REINSTATED' ? 'ACTIVE' : 'DISCONTINUED';
+      return { discontinuedInfo: match, currentStatus };
+    }
+  } catch (err) {
+    console.warn(`[sku_versioning] Error reading discontinued_skus.json: ${err.message}`);
+  }
+  return { discontinuedInfo: null, currentStatus: 'UNKNOWN' };
+}
+
+function _findSkuInSnapshotEntries(content, cleanSku) {
+  const entriesList = Array.isArray(content?.entries) ? content.entries : [];
+  for (const entry of entriesList) {
+    const skusList = Array.isArray(entry.skus) ? entry.skus : [];
+    for (const s of skusList) {
+      const skuCode = s.sku || s['Product #'] || s['SKU'];
+      if (skuCode === cleanSku) {
+        return {
+          parentCategory: entry.parentCategory,
+          subCategory: entry.subCategory,
+          description: s.description || s['Description'] || '',
+          priceUsd: s.priceUsd || s['Unit Price (USD)'] || '0.00',
+          optionType: s.optionType || s['Option Type'] || ''
+        };
+      }
+    }
+  }
+  return null;
+}
+
+function _scanSnapshotOccurrences(historyDir, cleanSku, initialStatus) {
+  const snapshots = fs.readdirSync(historyDir)
+    .filter(f => f.startsWith('catalog_') && f.endsWith('.json') && f !== 'catalog_deltas.json')
+    .sort();
+
+  const snapshotOccurrences = [];
+  let latestDetails = null;
+  let currentStatus = initialStatus;
+
+  for (const file of snapshots) {
+    const snapshotPath = path.join(historyDir, file);
+    try {
+      const content = JSON.parse(fs.readFileSync(snapshotPath, 'utf-8'));
+      if (!content || typeof content !== 'object') continue;
+      const scrapeDate = content.metadata?.scrapeDate || file.replace('catalog_', '').replace('.json', '');
+      const checksum = calculateChecksum(content);
+
+      const skuDetails = _findSkuInSnapshotEntries(content, cleanSku);
+      if (skuDetails) {
+        if (currentStatus !== 'DISCONTINUED') currentStatus = 'ACTIVE';
+        latestDetails = skuDetails;
+        snapshotOccurrences.push({
+          snapshotFile: file,
+          scrapeDate,
+          snapshotChecksum: checksum,
+          skuDetails
+        });
+      }
+    } catch (err) {
+      console.warn(`[sku_versioning] Error reading snapshot ${file}: ${err.message}`);
+    }
+  }
+
+  return { snapshotOccurrences, latestDetails, currentStatus };
+}
+
 function getSkuAuditHistory(targetSku, chassisDir) {
   if (!targetSku) throw new Error('Target SKU is required for version audit');
   
@@ -73,6 +233,9 @@ function getSkuAuditHistory(targetSku, chassisDir) {
   const cleanSku = String(targetSku).replace(/[^a-zA-Z0-9-]/g, '').trim();
   const historyDir = path.join(resolvedChassisDir, 'history');
   
+  const rawSku = String(targetSku || '').trim();
+  const rawSkuWithHash = rawSku.replace(/\s+/g, '#');
+
   const auditResult = {
     sku: cleanSku,
     chassisDir: resolvedChassisDir,
@@ -85,165 +248,21 @@ function getSkuAuditHistory(targetSku, chassisDir) {
     snapshotOccurrences: []
   };
 
-  const rawSku = String(targetSku || '').trim();
-  const rawSkuWithHash = rawSku.replace(/\s+/g, '#');
-  const findInMap = (histObj) => {
-    if (!histObj || typeof histObj !== 'object') return null;
-    return histObj[cleanSku] || histObj[rawSku] || histObj[rawSkuWithHash] || null;
-  };
-
   if (!fs.existsSync(historyDir)) {
     return auditResult;
   }
 
-  // 1. Read price history
-  const priceHistoryPath = path.join(historyDir, 'price_history.json');
-  if (fs.existsSync(priceHistoryPath)) {
-    try {
-      const priceHistory = JSON.parse(fs.readFileSync(priceHistoryPath, 'utf-8'));
-      const found = findInMap(priceHistory);
-      if (found) {
-        auditResult.priceTimeline = found;
-      }
-    } catch (err) {
-      console.warn(`[sku_versioning] Error reading price_history.json: ${err.message}`);
-    }
-  }
+  auditResult.priceTimeline = _loadPriceTimeline(historyDir, resolvedChassisDir, cleanSku, rawSku, rawSkuWithHash);
+  auditResult.attributeMutations = _loadAttributeMutations(historyDir, cleanSku);
 
-  // 1b. Read services price history
-  const servicesHistoryDir = path.join(resolvedChassisDir, 'services_history');
-  const servicesPriceHistoryPath = path.join(servicesHistoryDir, 'services_price_history.json');
-  if (fs.existsSync(servicesPriceHistoryPath)) {
-    try {
-      const sPriceHistory = JSON.parse(fs.readFileSync(servicesPriceHistoryPath, 'utf-8'));
-      const sFound = findInMap(sPriceHistory);
-      if (sFound && (auditResult.priceTimeline.length === 0 || auditResult.priceTimeline.every(e => !e.price || e.price <= 0))) {
-        auditResult.priceTimeline = sFound;
-      }
-    } catch (err) {
-      console.warn(`[sku_versioning] Error reading services_price_history.json: ${err.message}`);
-    }
-  }
+  const disc = _loadDiscontinuedInfo(historyDir, cleanSku);
+  auditResult.discontinuedInfo = disc.discontinuedInfo;
+  auditResult.currentStatus = disc.currentStatus;
 
-  // 1c. Cross-chassis fallback within same product generation (e.g. DL380_Gen12 <-> DL380a_Gen12 <-> DL580_Gen12)
-  if (resolvedChassisDir && (auditResult.priceTimeline.length === 0 || auditResult.priceTimeline.every(e => !e.price || e.price <= 0))) {
-    try {
-      const parentDir = path.dirname(resolvedChassisDir);
-      if (fs.existsSync(parentDir)) {
-        const peerDirs = fs.readdirSync(parentDir, { withFileTypes: true })
-          .filter(d => d.isDirectory() && path.join(parentDir, d.name) !== resolvedChassisDir)
-          .map(d => path.join(parentDir, d.name));
-        for (const peer of peerDirs) {
-          const peerPriceHistoryPath = path.join(peer, 'history', 'price_history.json');
-          if (fs.existsSync(peerPriceHistoryPath)) {
-            try {
-              const pHist = JSON.parse(fs.readFileSync(peerPriceHistoryPath, 'utf-8'));
-              const pFound = findInMap(pHist);
-              if (pFound && pFound.some(e => Number(e.price) > 0)) {
-                auditResult.priceTimeline = pFound;
-                break;
-              }
-            } catch (_) {}
-          }
-          const peerServicesPath = path.join(peer, 'services_history', 'services_price_history.json');
-          if (fs.existsSync(peerServicesPath)) {
-            try {
-              const spHist = JSON.parse(fs.readFileSync(peerServicesPath, 'utf-8'));
-              const spFound = findInMap(spHist);
-              if (spFound && spFound.some(e => Number(e.price) > 0)) {
-                auditResult.priceTimeline = spFound;
-                break;
-              }
-            } catch (_) {}
-          }
-        }
-      }
-    } catch (_) {}
-  }
-
-  // 2. Read attribute mutations
-  const attrHistoryPath = path.join(historyDir, 'attribute_history.json');
-  if (fs.existsSync(attrHistoryPath)) {
-    try {
-      const attrHistory = JSON.parse(fs.readFileSync(attrHistoryPath, 'utf-8'));
-      if (Array.isArray(attrHistory)) {
-        auditResult.attributeMutations = attrHistory.filter(item => 
-          item.productNumber === cleanSku || item.sku === cleanSku
-        );
-      }
-    } catch (err) {
-      console.warn(`[sku_versioning] Error reading attribute_history.json: ${err.message}`);
-    }
-  }
-
-  // 3. Read discontinued SKUs log
-  const discontinuedPath = path.join(historyDir, 'discontinued_skus.json');
-  if (fs.existsSync(discontinuedPath)) {
-    try {
-      const discontinuedList = JSON.parse(fs.readFileSync(discontinuedPath, 'utf-8'));
-      const candidates = Array.isArray(discontinuedList) ? discontinuedList : Object.values(discontinuedList || {});
-      const match = candidates.find(d => d.productNumber === cleanSku || d.sku === cleanSku);
-      if (match) {
-        auditResult.discontinuedInfo = match;
-        auditResult.currentStatus = String(match.status || '').toUpperCase() === 'REINSTATED' ? 'ACTIVE' : 'DISCONTINUED';
-      }
-    } catch (err) {
-      console.warn(`[sku_versioning] Error reading discontinued_skus.json: ${err.message}`);
-    }
-  }
-
-  // 4. Scan catalog snapshots
-  const snapshots = fs.readdirSync(historyDir)
-    .filter(f => f.startsWith('catalog_') && f.endsWith('.json') && f !== 'catalog_deltas.json')
-    .sort();
-
-  for (const file of snapshots) {
-    const snapshotPath = path.join(historyDir, file);
-    try {
-      const content = JSON.parse(fs.readFileSync(snapshotPath, 'utf-8'));
-      if (!content || typeof content !== 'object') continue;
-      const scrapeDate = content.metadata?.scrapeDate || file.replace('catalog_', '').replace('.json', '');
-      const checksum = calculateChecksum(content);
-
-      let foundInSnapshot = false;
-      let skuDetails = null;
-
-      const entriesList = Array.isArray(content.entries) ? content.entries : [];
-      for (const entry of entriesList) {
-        const skusList = Array.isArray(entry.skus) ? entry.skus : [];
-        for (const s of skusList) {
-          const skuCode = s.sku || s['Product #'] || s['SKU'];
-          if (skuCode === cleanSku) {
-            foundInSnapshot = true;
-            skuDetails = {
-              parentCategory: entry.parentCategory,
-              subCategory: entry.subCategory,
-              description: s.description || s['Description'] || '',
-              priceUsd: s.priceUsd || s['Unit Price (USD)'] || '0.00',
-              optionType: s.optionType || s['Option Type'] || ''
-            };
-            break;
-          }
-        }
-        if (foundInSnapshot) break;
-      }
-
-      if (foundInSnapshot) {
-        if (auditResult.currentStatus !== 'DISCONTINUED') {
-          auditResult.currentStatus = 'ACTIVE';
-        }
-        auditResult.latestDetails = skuDetails;
-        auditResult.snapshotOccurrences.push({
-          snapshotFile: file,
-          scrapeDate,
-          snapshotChecksum: checksum,
-          skuDetails
-        });
-      }
-    } catch (err) {
-      console.warn(`[sku_versioning] Error reading snapshot ${file}: ${err.message}`);
-    }
-  }
+  const snaps = _scanSnapshotOccurrences(historyDir, cleanSku, auditResult.currentStatus);
+  auditResult.snapshotOccurrences = snaps.snapshotOccurrences;
+  auditResult.latestDetails = snaps.latestDetails;
+  auditResult.currentStatus = snaps.currentStatus;
 
   return auditResult;
 }
@@ -328,84 +347,190 @@ function isConfirmedFreeSku(sku, description) {
  * @param {string} chassisDir - Path to chassis folder (defaults to DL380 Gen12 SFF)
  * @returns {object} Historical price details on that date
  */
-function getHistoricalSkuPrice(targetSku, targetDateOrDir, maybeChassisDir) {
-  let normalizedDate;
-  let dir = '';
+function _checkFileForSkuPrice(filePath, cleanSku) {
+  if (!filePath || !fs.existsSync(filePath)) return 0;
+  try {
+    if (!catalogPriceCache.has(filePath)) {
+      const cat = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+      const map = new Map();
+      const parsePrice = (s) => parseFloat(String(s.priceUsd || s['Unit Price (USD)'] || s['Unit List Price (USD)'] || s.price || 0).replace(/[^0-9.]/g, '')) || 0;
+      const entries = Array.isArray(cat.entries) ? cat.entries : [];
+      entries.forEach(e => {
+        const skus = Array.isArray(e.skus) ? e.skus : [];
+        skus.forEach(s => {
+          const k = (s.sku || s['Product #'] || s['SKU'] || '').replace(/[^a-zA-Z0-9-]/g, '').trim();
+          if (k) map.set(k, parsePrice(s));
+        });
+      });
+      if (Array.isArray(cat.skus)) {
+        cat.skus.forEach(s => {
+          const k = (s.sku || s['Product #'] || s['SKU'] || '').replace(/[^a-zA-Z0-9-]/g, '').trim();
+          if (k) map.set(k, parsePrice(s));
+        });
+      }
+      catalogPriceCache.set(filePath, map);
+    }
+    const match = catalogPriceCache.get(filePath).get(cleanSku);
+    if (typeof match === 'number') return match;
+    if (match) {
+      return parseFloat(String(match.priceUsd || match['Unit Price (USD)'] || match['Unit List Price (USD)'] || match.price || 0).replace(/[^0-9.]/g, '')) || 0;
+    }
+  } catch (_) {}
+  return 0;
+}
 
-  if (maybeChassisDir !== undefined) {
-    normalizedDate = normalizeTargetDate(targetDateOrDir);
-    dir = maybeChassisDir || '';
-  } else if (typeof targetDateOrDir === 'string' && (targetDateOrDir.includes('/') || targetDateOrDir.includes('\\') || !targetDateOrDir.includes('-'))) {
-    // 2-arg signature: (targetSku, chassisDir)
-    dir = targetDateOrDir;
-    normalizedDate = normalizeTargetDate(new Date().toISOString().split('T')[0]);
-  } else {
-    normalizedDate = normalizeTargetDate(targetDateOrDir);
-    dir = '';
+function _resolvePeerFallbackPrice(dir, cleanSku) {
+  if (!dir) return 0;
+  try {
+    const parentDir = path.dirname(dir);
+    if (!fs.existsSync(parentDir)) return 0;
+    const peers = fs.readdirSync(parentDir, { withFileTypes: true })
+      .filter(d => d.isDirectory() && path.join(parentDir, d.name) !== dir)
+      .map(d => path.join(parentDir, d.name));
+    for (const peer of peers) {
+      let p = _checkFileForSkuPrice(path.join(peer, `${path.basename(peer)}_Catalog.json`), cleanSku);
+      if (p > 0) return p;
+      p = _checkFileForSkuPrice(path.join(peer, `${path.basename(peer)}_Services.json`), cleanSku);
+      if (p > 0) return p;
+    }
+  } catch (_) {}
+  return 0;
+}
+
+function _resolveFallbackCatalogPrice(dir, cleanSku) {
+  let fallbackPrice = _checkFileForSkuPrice(path.join(dir, `${path.basename(dir)}_Catalog.json`), cleanSku);
+  if (fallbackPrice <= 0) {
+    fallbackPrice = _checkFileForSkuPrice(path.join(dir, `${path.basename(dir)}_Services.json`), cleanSku);
+  }
+  if (fallbackPrice <= 0) {
+    fallbackPrice = _resolvePeerFallbackPrice(dir, cleanSku);
+  }
+  return fallbackPrice;
+}
+
+function _resolveEffectivePriceAndAnomaly(effectiveEvent, sorted, normalizedDate) {
+  let effectivePrice = effectiveEvent.price || 0;
+  let effectiveStatus = effectiveEvent.status || 'ACTIVE';
+  let rejectedAnomaly = null;
+
+  if (effectiveEvent.quarantined) {
+    rejectedAnomaly = {
+      rejectedPriceUsd: effectiveEvent.price,
+      preservedPriceUsd: effectiveEvent.effectivePrice || 0,
+      eventDate: effectiveEvent.date,
+      validationState: effectiveEvent.validationState,
+      provenance: effectiveEvent.anomalyProvenance
+    };
+    effectivePrice = effectiveEvent.effectivePrice || 0;
+    effectiveStatus = effectiveEvent.validationState || 'ANOMALOUS_PORTAL_PRICE_REJECTED';
+  } else if (effectivePrice === 0) {
+    const nonZeroEvents = sorted.filter(e => e.price && e.price > 0 && !e.quarantined && (e.date || '') <= normalizedDate);
+    if (nonZeroEvents.length > 0) {
+      effectivePrice = nonZeroEvents[nonZeroEvents.length - 1].price;
+      effectiveStatus = 'HISTORICAL_PRICE_PRESERVED_FROM_ZERO';
+    }
   }
 
-  dir = resolveChassisDirectory(dir);
+  return { effectivePrice, effectiveStatus, rejectedAnomaly };
+}
+
+function _detectPriceJumpAnomaly(eventsOnOrBefore, effectiveEvent, effectivePrice, rejectedAnomaly) {
+  if (rejectedAnomaly || effectivePrice <= 0) {
+    return { effectivePrice, effectiveStatus: null, rejectedAnomaly };
+  }
+  const priorNonZeroEvents = eventsOnOrBefore
+    .slice(0, -1)
+    .filter(e => Number(e.price) > 0 && !e.quarantined);
+  const priorPrice = Number(priorNonZeroEvents[priorNonZeroEvents.length - 1]?.price || 0);
+  if (priorPrice >= 20) {
+    const ratio = effectivePrice / priorPrice;
+    if (ratio > 20 || ratio < 0.05) {
+      return {
+        effectivePrice: priorPrice,
+        effectiveStatus: 'ANOMALOUS_PORTAL_PRICE_REJECTED',
+        rejectedAnomaly: {
+          rejectedPriceUsd: effectivePrice,
+          preservedPriceUsd: priorPrice,
+          eventDate: effectiveEvent.date,
+          ratio: parseFloat(ratio.toFixed(6))
+        }
+      };
+    }
+  }
+  return { effectivePrice, effectiveStatus: null, rejectedAnomaly };
+}
+
+function _classifyHistoricalConfidence(effectivePrice, effectiveStatus, effectiveEvent, cleanSku, description) {
+  if (effectivePrice > 0) {
+    const isFallback = effectiveStatus === 'HISTORICAL_PRICE_PRESERVED_FROM_ZERO' || 
+                       effectiveStatus.includes('ANOMALOUS') || 
+                       effectiveEvent.quarantined;
+    return {
+      pricingCategory: isFallback ? 'HISTORICAL_PRICE_FALLBACK' : 'OBSERVED_PORTAL_PRICE',
+      quoteConfidence: isFallback ? 'MEDIUM' : 'HIGH',
+      effectiveStatus
+    };
+  }
+
+  const isFree = isConfirmedFreeSku(cleanSku, description);
+  return {
+    pricingCategory: isFree ? 'CONFIRMED_ZERO_PRICE_TRIGGER' : 'UNRESOLVED_ZERO_PRICE',
+    quoteConfidence: isFree ? 'HIGH' : 'UNRESOLVED',
+    effectiveStatus: isFree ? effectiveStatus : 'UNRESOLVED_ZERO_PRICE'
+  };
+}
+
+function _buildEmptyPriceTimelineResult(cleanSku, normalizedDate, dir, audit) {
+  const isFree = isConfirmedFreeSku(cleanSku, audit.description);
+  const category = isFree ? 'CONFIRMED_ZERO_PRICE_TRIGGER' : 'NO_PRICE_RECORDED';
+  const confidence = isFree ? 'HIGH' : 'UNRESOLVED';
+  return {
+    sku: cleanSku,
+    targetDate: normalizedDate,
+    effectiveDate: normalizedDate,
+    priceUsd: 0,
+    currency: 'USD',
+    status: isFree ? 'CONFIRMED_ZERO_PRICE' : 'NO_PRICE_RECORDED',
+    pricingCategory: category,
+    quoteConfidence: confidence,
+    isResolved: confidence !== 'UNRESOLVED',
+    sourceDirectory: dir,
+    isDiscontinued: audit.currentStatus === 'DISCONTINUED',
+    priceTrail: audit.priceTimeline
+  };
+}
+
+function _normalizeHistoricalPriceArgs(targetDateOrDir, maybeChassisDir) {
+  if (maybeChassisDir !== undefined) {
+    return {
+      normalizedDate: normalizeTargetDate(targetDateOrDir),
+      dir: maybeChassisDir || ''
+    };
+  }
+  if (typeof targetDateOrDir === 'string' && (targetDateOrDir.includes('/') || targetDateOrDir.includes('\\') || !targetDateOrDir.includes('-'))) {
+    return {
+      dir: targetDateOrDir,
+      normalizedDate: normalizeTargetDate(new Date().toISOString().split('T')[0])
+    };
+  }
+  return {
+    normalizedDate: normalizeTargetDate(targetDateOrDir),
+    dir: ''
+  };
+}
+
+function getHistoricalSkuPrice(targetSku, targetDateOrDir, maybeChassisDir) {
+  const args = _normalizeHistoricalPriceArgs(targetDateOrDir, maybeChassisDir);
+  const normalizedDate = args.normalizedDate;
+  const dir = resolveChassisDirectory(args.dir);
   const audit = dir ? getSkuAuditHistory(targetSku, dir) : { priceTimeline: [] };
   const cleanSku = String(targetSku).replace(/[^a-zA-Z0-9-]/g, '').trim();
   const priceTimeline = Array.isArray(audit.priceTimeline) ? audit.priceTimeline : [];
 
-  const checkFileForSkuPrice = (filePath) => {
-    if (!filePath || !fs.existsSync(filePath)) return 0;
-    try {
-      if (!catalogPriceCache.has(filePath)) {
-        const cat = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-        const map = new Map();
-        const parsePrice = (s) => parseFloat(String(s.priceUsd || s['Unit Price (USD)'] || s['Unit List Price (USD)'] || s.price || 0).replace(/[^0-9.]/g, '')) || 0;
-        const entries = Array.isArray(cat.entries) ? cat.entries : [];
-        entries.forEach(e => {
-          const skus = Array.isArray(e.skus) ? e.skus : [];
-          skus.forEach(s => {
-            const k = (s.sku || s['Product #'] || s['SKU'] || '').replace(/[^a-zA-Z0-9-]/g, '').trim();
-            if (k) map.set(k, parsePrice(s));
-          });
-        });
-        if (Array.isArray(cat.skus)) {
-          cat.skus.forEach(s => {
-            const k = (s.sku || s['Product #'] || s['SKU'] || '').replace(/[^a-zA-Z0-9-]/g, '').trim();
-            if (k) map.set(k, parsePrice(s));
-          });
-        }
-        catalogPriceCache.set(filePath, map);
-      }
-      const match = catalogPriceCache.get(filePath).get(cleanSku);
-      if (typeof match === 'number') return match;
-      if (match) {
-        return parseFloat(String(match.priceUsd || match['Unit Price (USD)'] || match['Unit List Price (USD)'] || match.price || 0).replace(/[^0-9.]/g, '')) || 0;
-      }
-    } catch (_) {}
-    return 0;
-  };
-
   const hasTimelinePrice = priceTimeline.some(e => Number(e.price) > 0);
 
   if (!hasTimelinePrice) {
-    // If no positive price timeline in history, check current catalog, services, and peer fallback price
-    let fallbackPrice = checkFileForSkuPrice(path.join(dir, `${path.basename(dir)}_Catalog.json`));
-    if (fallbackPrice <= 0) {
-      fallbackPrice = checkFileForSkuPrice(path.join(dir, `${path.basename(dir)}_Services.json`));
-    }
-    if (fallbackPrice <= 0 && dir) {
-      try {
-        const parentDir = path.dirname(dir);
-        if (fs.existsSync(parentDir)) {
-          const peers = fs.readdirSync(parentDir, { withFileTypes: true })
-            .filter(d => d.isDirectory() && path.join(parentDir, d.name) !== dir)
-            .map(d => path.join(parentDir, d.name));
-          for (const peer of peers) {
-            fallbackPrice = checkFileForSkuPrice(path.join(peer, `${path.basename(peer)}_Catalog.json`));
-            if (fallbackPrice > 0) break;
-            fallbackPrice = checkFileForSkuPrice(path.join(peer, `${path.basename(peer)}_Services.json`));
-            if (fallbackPrice > 0) break;
-          }
-        }
-      } catch (_) {}
-    }
-
+    const fallbackPrice = _resolveFallbackCatalogPrice(dir, cleanSku);
     if (fallbackPrice > 0) {
       return {
         sku: cleanSku,
@@ -424,35 +549,15 @@ function getHistoricalSkuPrice(targetSku, targetDateOrDir, maybeChassisDir) {
     }
 
     if (priceTimeline.length === 0) {
-      const isFree = isConfirmedFreeSku(cleanSku, audit.description);
-      const category = isFree ? 'CONFIRMED_ZERO_PRICE_TRIGGER' : 'NO_PRICE_RECORDED';
-      const confidence = isFree ? 'HIGH' : 'UNRESOLVED';
-      return {
-        sku: cleanSku,
-        targetDate: normalizedDate,
-        effectiveDate: normalizedDate,
-        priceUsd: 0,
-        currency: 'USD',
-        status: isFree ? 'CONFIRMED_ZERO_PRICE' : 'NO_PRICE_RECORDED',
-        pricingCategory: category,
-        quoteConfidence: confidence,
-        isResolved: confidence !== 'UNRESOLVED',
-        sourceDirectory: dir,
-        isDiscontinued: audit.currentStatus === 'DISCONTINUED',
-        priceTrail: audit.priceTimeline
-      };
+      return _buildEmptyPriceTimelineResult(cleanSku, normalizedDate, dir, audit);
     }
   }
 
-  // Sort chronological ascending
   const sorted = [...priceTimeline].sort((a, b) => (a.date || '').localeCompare(b.date || ''));
   const baselinePrice = sorted[0]?.price || 0;
-
-  // Find latest recorded price event on or before normalizedDate
   const eventsOnOrBefore = sorted.filter(e => (e.date || '') <= normalizedDate);
 
   if (eventsOnOrBefore.length === 0) {
-    // Target date is before earliest recorded scrape
     const earliest = sorted[0];
     return {
       sku: cleanSku,
@@ -472,79 +577,21 @@ function getHistoricalSkuPrice(targetSku, targetDateOrDir, maybeChassisDir) {
   }
 
   const effectiveEvent = eventsOnOrBefore[eventsOnOrBefore.length - 1];
-  let effectivePrice = effectiveEvent.price || 0;
-  let effectiveStatus = effectiveEvent.status || 'ACTIVE';
-  let rejectedAnomaly = null;
+  const resolved = _resolveEffectivePriceAndAnomaly(effectiveEvent, sorted, normalizedDate);
+  let effectivePrice = resolved.effectivePrice;
+  let effectiveStatus = resolved.effectiveStatus;
+  let rejectedAnomaly = resolved.rejectedAnomaly;
 
-  // Handle quarantined anomalies from diff_catalog
-  if (effectiveEvent.quarantined) {
-    rejectedAnomaly = {
-      rejectedPriceUsd: effectiveEvent.price,
-      preservedPriceUsd: effectiveEvent.effectivePrice || 0,
-      eventDate: effectiveEvent.date,
-      validationState: effectiveEvent.validationState,
-      provenance: effectiveEvent.anomalyProvenance
-    };
-    effectivePrice = effectiveEvent.effectivePrice || 0;
-    effectiveStatus = effectiveEvent.validationState || 'ANOMALOUS_PORTAL_PRICE_REJECTED';
-  }
+  const jumpCheck = _detectPriceJumpAnomaly(eventsOnOrBefore, effectiveEvent, effectivePrice, rejectedAnomaly);
+  effectivePrice = jumpCheck.effectivePrice;
+  if (jumpCheck.effectiveStatus) effectiveStatus = jumpCheck.effectiveStatus;
+  if (jumpCheck.rejectedAnomaly) rejectedAnomaly = jumpCheck.rejectedAnomaly;
 
-  if (effectivePrice === 0) {
-    // Fall back to latest non-zero price recorded in trail on or before target date
-    const nonZeroEvents = sorted.filter(e => e.price && e.price > 0 && !e.quarantined && (e.date || '') <= normalizedDate);
-    if (nonZeroEvents.length > 0) {
-      effectivePrice = nonZeroEvents[nonZeroEvents.length - 1].price;
-      effectiveStatus = 'HISTORICAL_PRICE_PRESERVED_FROM_ZERO';
-    }
-  }
+  const classification = _classifyHistoricalConfidence(effectivePrice, effectiveStatus, effectiveEvent, cleanSku, audit.description);
+  const pricingCategory = classification.pricingCategory;
+  const quoteConfidence = classification.quoteConfidence;
+  effectiveStatus = classification.effectiveStatus;
 
-  // OCA may transiently emit $1 or malformed multi-million values while an
-  // unbundled view is repainting. Preserve the immediately preceding credible
-  // GPL when a single event jumps by more than 20x in either direction (INV-34).
-  const priorNonZeroEvents = eventsOnOrBefore
-    .slice(0, -1)
-    .filter(e => Number(e.price) > 0 && !e.quarantined);
-  const priorPrice = Number(priorNonZeroEvents[priorNonZeroEvents.length - 1]?.price || 0);
-  if (!rejectedAnomaly && priorPrice >= 20 && effectivePrice > 0) {
-    const ratio = effectivePrice / priorPrice;
-    if (ratio > 20 || ratio < 0.05) {
-      rejectedAnomaly = {
-        rejectedPriceUsd: effectivePrice,
-        preservedPriceUsd: priorPrice,
-        eventDate: effectiveEvent.date,
-        ratio: parseFloat(ratio.toFixed(6))
-      };
-      effectivePrice = priorPrice;
-      effectiveStatus = 'ANOMALOUS_PORTAL_PRICE_REJECTED';
-    }
-  }
-
-  // Determine pricing category & quote confidence
-  let pricingCategory = 'OBSERVED_PORTAL_PRICE';
-  let quoteConfidence = 'HIGH';
-
-  if (effectivePrice > 0) {
-    if (effectiveStatus === 'HISTORICAL_PRICE_PRESERVED_FROM_ZERO') {
-      pricingCategory = 'HISTORICAL_PRICE_FALLBACK';
-      quoteConfidence = 'MEDIUM';
-    } else if (effectiveStatus.includes('ANOMALOUS') || effectiveEvent.quarantined) {
-      pricingCategory = 'HISTORICAL_PRICE_FALLBACK';
-      quoteConfidence = 'MEDIUM';
-    } else {
-      pricingCategory = 'OBSERVED_PORTAL_PRICE';
-      quoteConfidence = 'HIGH';
-    }
-  } else {
-    // effectivePrice is 0
-    if (isConfirmedFreeSku(cleanSku, audit.description)) {
-      pricingCategory = 'CONFIRMED_ZERO_PRICE_TRIGGER';
-      quoteConfidence = 'HIGH';
-    } else {
-      pricingCategory = 'UNRESOLVED_ZERO_PRICE';
-      quoteConfidence = 'UNRESOLVED';
-      effectiveStatus = 'UNRESOLVED_ZERO_PRICE';
-    }
-  }
   const isResolved = quoteConfidence !== 'UNRESOLVED';
   const changePercent = baselinePrice > 0 ? parseFloat((((effectivePrice - baselinePrice) / baselinePrice) * 100).toFixed(2)) : 0;
 
@@ -744,6 +791,77 @@ function recordVersionSnapshot(catalogData, historyDir) {
   return { snapshotPath, checksum, scrapeDate };
 }
 
+/**
+ * Proactive Presales Lifecycle & Price Trend Advisories (G-EVD-02)
+ * Audits BOM line items against historical price trends and lifecycle milestones.
+ *
+ * @param {Array<object>} items - Evaluated hardware items
+ * @param {string} chassisDir - Product catalog directory containing history/
+ * @returns {Array<object>} Structured presales advisories
+ */
+function generatePresalesLifecycleAdvisories(items = [], chassisDir = '') {
+  if (!Array.isArray(items) || items.length === 0 || !chassisDir) return [];
+  const advisories = [];
+  const seenSkus = new Set();
+
+  for (const item of items) {
+    const rawSku = item.sku || item['Product #'] || '';
+    const sku = cleanBaseSKU(rawSku);
+    if (!sku || seenSkus.has(sku)) continue;
+    seenSkus.add(sku);
+
+    try {
+      const history = getSkuAuditHistory(sku, chassisDir);
+
+      // 1. EOL / Announced Discontinuation Risk
+      if (history.discontinuedInfo || history.currentStatus === '90-Day Warning' || history.currentStatus === 'EOL') {
+        const discDate = history.discontinuedInfo?.discontinuedAt || 'within 90 days';
+        const subst = history.discontinuedInfo?.replacementSku ? ` (Recommended replacement: ${history.discontinuedInfo.replacementSku})` : '';
+        advisories.push({
+          sku,
+          type: 'EOL_DISCONTINUATION_RISK',
+          severity: 'HIGH',
+          discontinuationDate: discDate,
+          message: `SKU ${sku} has an announced discontinuation ${discDate}.${subst} Advance migration recommended.`
+        });
+      }
+
+      // 2. Price Spike / Upward Trend Warning (>= 3% increase)
+      const timeline = history.priceTimeline || [];
+      if (timeline.length >= 2) {
+        const validTimeline = timeline
+          .map(e => ({ date: e.date || e.snapshotDate, price: typeof e.price === 'number' ? e.price : parseFloat(String(e.price || '0').replace(/[$,]/g, '')) }))
+          .filter(e => e.price > 0)
+          .sort((a, b) => new Date(a.date) - new Date(b.date));
+
+        if (validTimeline.length >= 2) {
+          const latest = validTimeline[validTimeline.length - 1];
+          const previous = validTimeline[validTimeline.length - 2];
+          if (latest.price > previous.price) {
+            const deltaUsd = latest.price - previous.price;
+            const percentIncrease = ((deltaUsd / previous.price) * 100);
+            if (percentIncrease >= 3.0) {
+              advisories.push({
+                sku,
+                type: 'PRICE_INCREASE_TREND',
+                severity: 'MEDIUM',
+                previousPrice: previous.price,
+                latestPrice: latest.price,
+                percentIncrease: parseFloat(percentIncrease.toFixed(1)),
+                message: `SKU ${sku} experienced a +${percentIncrease.toFixed(1)}% price increase from $${previous.price} to $${latest.price} (+$${deltaUsd.toFixed(2)}).`
+              });
+            }
+          }
+        }
+      }
+    } catch (_err) {
+      // Non-blocking per-SKU audit
+    }
+  }
+
+  return advisories;
+}
+
 module.exports = {
   calculateChecksum,
   resolveChassisDirectory,
@@ -756,5 +874,6 @@ module.exports = {
   recordVersionSnapshot,
   isConfirmedFreeSku,
   CONFIRMED_ZERO_PARENT_CONTRACTS,
+  generatePresalesLifecycleAdvisories,
   _clearCatalogPriceCache
 };

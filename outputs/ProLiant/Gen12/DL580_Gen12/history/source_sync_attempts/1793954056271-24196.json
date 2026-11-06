@@ -1,0 +1,24 @@
+{
+  "product": "DL580_Gen12",
+  "notebookId": "3f5344ce-da79-4f6d-a131-f303d1e43dc3",
+  "replacementSourceId": "b859bf5a-71fd-439d-9c8c-c2651bd6c509",
+  "verifiedAt": "2026-11-06T08:34:16.271Z",
+  "contentFingerprints": {
+    "catalog": "9616b94f67b899e85d6f75781c83f29faf85c22ea1bac58ae84b27461efd2556",
+    "learnings": "d9b01a30c2377d2bfc87c5d0b5b5b86d768fd10b549460f6dbe3b060491c5447",
+    "changes": "4ebcf6cb8fa47809ca84262e2ac944f5ab88dc2936c5d7bb064f6ecc4f8b1767",
+    "workbook": "5890ff8dceddbd69060533f6438ecb635485fbf3fb539d64df44aca7d40d6a36",
+    "combined": "a66e007dfeb1b124ce4fb0b69aa12bfd6c614d702a09d633220207faf85d81bf"
+  },
+  "legacyFingerprint": "a66e007dfeb1b124ce4fb0b69aa12bfd6c614d702a09d633220207faf85d81bf",
+  "retirementRequested": false,
+  "plannedRetirementIds": [
+    "dd0756e1-9d19-4f76-953e-4fef83269433"
+  ],
+  "status": "RETIREMENT_PENDING",
+  "retiredSourceIds": [],
+  "remainingSourceIds": [
+    "dd0756e1-9d19-4f76-953e-4fef83269433"
+  ],
+  "retirementErrors": []
+}

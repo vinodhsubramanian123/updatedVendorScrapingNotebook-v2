@@ -353,6 +353,79 @@ function collectKnowledgeDeltas(dir = OUTPUTS_ROOT) {
   return deltas;
 }
 
+function _findCatalogByBaseSku(catalogs, baseSku) {
+  if (!baseSku || baseSku === 'CUSTOM_OVERRIDE' || baseSku === 'UNKNOWN') {
+    return null;
+  }
+  for (const cat of catalogs) {
+    let containsBaseSku = false;
+    try {
+      const catalogData = JSON.parse(fs.readFileSync(cat.catalogJsonPath, 'utf8'));
+      containsBaseSku = (catalogData.entries || []).some(entry => (entry.skus || []).some(skuData =>
+        cleanBaseSKU(skuData['Product #'] || skuData.sku) === baseSku
+      ));
+    } catch { /* unreadable catalogs are ignored by discovery */ }
+    if (containsBaseSku) {
+      return cat.catalogDir;
+    }
+  }
+  return null;
+}
+
+function _findCatalogByModel(catalogs, variant, modelClean) {
+  const normalizedVariantModel = variant.model
+    .replace(/\b\d+SFF\b/i, 'SFF')
+    .replace(/\b\d+LFF\b/i, 'LFF')
+    .replace(/\b\d+EDSFF\b/i, 'EDSFF')
+    .replace(/\s+/g, '_')
+    .replace(/HPE_?/i, '');
+
+  for (const cat of catalogs) {
+    if (cat.id === modelClean || cat.id === normalizedVariantModel || cat.chassis.includes(variant.model)) {
+      return cat.catalogDir;
+    }
+  }
+  return null;
+}
+
+function _findCatalogByFamilyGen(catalogs, variant, baseFormFactor) {
+  if (!variant.family || !variant.gen) return null;
+
+  for (const cat of catalogs) {
+    const catPath = cat.catalogDir.toLowerCase();
+    const famMatch = catPath.includes(variant.family.toLowerCase());
+    const genMatch = catPath.includes(variant.gen.toLowerCase());
+    const ffMatch = baseFormFactor && (catPath.includes(baseFormFactor.toLowerCase()) || cat.id.toLowerCase().includes(baseFormFactor.toLowerCase()));
+    if (famMatch && genMatch && ffMatch) {
+      return { matchType: 'FAMILY_GEN_FF_MATCH', catalogDir: cat.catalogDir, confidenceScore: 0.95, requiresUserConfirmation: false };
+    }
+  }
+
+  const familyGenMatches = catalogs.filter(cat => {
+    const catPath = cat.catalogDir.toLowerCase();
+    return catPath.includes(variant.family.toLowerCase()) && catPath.includes(variant.gen.toLowerCase());
+  });
+  if (familyGenMatches.length === 1) {
+    return { matchType: 'UNIQUE_FAMILY_GEN_MATCH', catalogDir: familyGenMatches[0].catalogDir, confidenceScore: 0.8, requiresUserConfirmation: true, candidates: familyGenMatches.map(c => c.catalogDir) };
+  }
+  if (familyGenMatches.length > 1) {
+    return { matchType: 'AMBIGUOUS_FAMILY_GEN_MATCH', catalogDir: '', confidenceScore: 0.5, requiresUserConfirmation: true, candidates: familyGenMatches.map(c => c.catalogDir) };
+  }
+  return null;
+}
+
+function _findCatalogByFuzzy(catalogs, variant, baseFormFactor) {
+  for (const cat of catalogs) {
+    const catLower = cat.id.toLowerCase();
+    const formMatch = catLower.includes((variant.formFactor || '').toLowerCase()) || (baseFormFactor && catLower.includes(baseFormFactor.toLowerCase()));
+    const famMatch = catLower.includes((variant.family || '').toLowerCase().substring(0, 4));
+    if (formMatch && famMatch) {
+      return cat.catalogDir;
+    }
+  }
+  return null;
+}
+
 /**
  * Auto-detect the chassis output directory from BOQ items by matching base SKUs.
  * Returns detailed detection metadata including confidenceScore and user confirmation triggers.
@@ -362,7 +435,6 @@ function collectKnowledgeDeltas(dir = OUTPUTS_ROOT) {
 function autoDetectChassisDetailed(boqItems = []) {
   try {
     const variant = detectChassisVariant(boqItems);
-
     const catalogs = listAllCatalogs();
     const modelClean = variant.model.replace(/\s+/g, '_').replace(/HPE_?/i, '');
 
@@ -382,115 +454,60 @@ function autoDetectChassisDetailed(boqItems = []) {
     }
 
     // 1. A base SKU found inside a catalog is the strongest product boundary.
-    // Do not infer this from family/generation naming: multiple models share both.
-    if (variant.baseSku && variant.baseSku !== 'CUSTOM_OVERRIDE' && variant.baseSku !== 'UNKNOWN') {
-      for (const cat of catalogs) {
-        let containsBaseSku = false;
-        try {
-          const catalogData = JSON.parse(fs.readFileSync(cat.catalogJsonPath, 'utf8'));
-          containsBaseSku = (catalogData.entries || []).some(entry => (entry.skus || []).some(skuData =>
-            cleanBaseSKU(skuData['Product #'] || skuData.sku) === variant.baseSku
-          ));
-        } catch { /* unreadable catalogs are ignored by discovery */ }
-        if (containsBaseSku) {
-          return {
-            chassisDir: cat.catalogDir,
-            matchType: 'EXACT_BASE_SKU',
-            confidenceScore: 1.0,
-            requiresUserConfirmation: false,
-            detectedVariant: variant,
-            candidates: [cat.catalogDir]
-          };
-        }
-      }
+    const baseSkuDir = _findCatalogByBaseSku(catalogs, variant.baseSku);
+    if (baseSkuDir) {
+      return {
+        chassisDir: baseSkuDir,
+        matchType: 'EXACT_BASE_SKU',
+        confidenceScore: 1.0,
+        requiresUserConfirmation: false,
+        detectedVariant: variant,
+        candidates: [baseSkuDir]
+      };
     }
 
-    // 2. Try exact or normalized model match (e.g., DL380 Gen12 8SFF -> DL380_Gen12_SFF)
-    const baseFormFactor = (variant.formFactor || '').replace(/^\d+/, ''); // '8SFF' -> 'SFF', '12LFF' -> 'LFF'
-    const normalizedVariantModel = variant.model
-      .replace(/\b\d+SFF\b/i, 'SFF')
-      .replace(/\b\d+LFF\b/i, 'LFF')
-      .replace(/\b\d+EDSFF\b/i, 'EDSFF')
-      .replace(/\s+/g, '_')
-      .replace(/HPE_?/i, '');
-
-    for (const cat of catalogs) {
-      if (cat.id === modelClean || cat.id === normalizedVariantModel || cat.chassis.includes(variant.model)) {
-        return {
-          chassisDir: cat.catalogDir,
-          matchType: 'EXACT',
-          confidenceScore: 0.95,
-          requiresUserConfirmation: false,
-          detectedVariant: variant
-        };
-      }
+    // 2. Try exact or normalized model match
+    const modelDir = _findCatalogByModel(catalogs, variant, modelClean);
+    if (modelDir) {
+      return {
+        chassisDir: modelDir,
+        matchType: 'EXACT',
+        confidenceScore: 0.95,
+        requiresUserConfirmation: false,
+        detectedVariant: variant
+      };
     }
 
-    // 3. Match by family + gen + form factor (e.g. ProLiant + Gen12 + SFF)
-    if (variant.family && variant.gen) {
-      // First try strict family + gen + formFactor match
-      for (const cat of catalogs) {
-        const catPath = cat.catalogDir.toLowerCase();
-        const famMatch = catPath.includes(variant.family.toLowerCase());
-        const genMatch = catPath.includes(variant.gen.toLowerCase());
-        const ffMatch = baseFormFactor && (catPath.includes(baseFormFactor.toLowerCase()) || cat.id.toLowerCase().includes(baseFormFactor.toLowerCase()));
-        if (famMatch && genMatch && ffMatch) {
-          return {
-            chassisDir: cat.catalogDir,
-            matchType: 'FAMILY_GEN_FF_MATCH',
-            confidenceScore: 0.95,
-            requiresUserConfirmation: false,
-            detectedVariant: variant
-          };
-        }
-      }
-
-      // Family + generation alone is not a product identity. Return all matches
-      // and require a human/base-SKU choice instead of selecting the first one.
-      const familyGenMatches = catalogs.filter(cat => {
-        const catPath = cat.catalogDir.toLowerCase();
-        const famMatch = catPath.includes(variant.family.toLowerCase());
-        const genMatch = catPath.includes(variant.gen.toLowerCase());
-        return famMatch && genMatch;
-      });
-      if (familyGenMatches.length === 1) {
-        return {
-          chassisDir: familyGenMatches[0].catalogDir,
-          matchType: 'UNIQUE_FAMILY_GEN_MATCH',
-          confidenceScore: 0.8,
-          requiresUserConfirmation: true,
-          detectedVariant: variant,
-          candidates: familyGenMatches.map(cat => cat.catalogDir)
-        };
-      }
-      if (familyGenMatches.length > 1) {
-        return {
-          chassisDir: '',
-          matchType: 'AMBIGUOUS_FAMILY_GEN_MATCH',
-          confidenceScore: 0.5,
-          requiresUserConfirmation: true,
-          detectedVariant: variant,
-          candidates: familyGenMatches.map(cat => cat.catalogDir)
-        };
-      }
+    // 3. Match by family + gen + form factor
+    const baseFormFactor = (variant.formFactor || '').replace(/^\d+/, '');
+    const familyGenResult = _findCatalogByFamilyGen(catalogs, variant, baseFormFactor);
+    if (familyGenResult) {
+      return {
+        chassisDir: familyGenResult.catalogDir,
+        matchType: familyGenResult.matchType,
+        confidenceScore: familyGenResult.confidenceScore,
+        requiresUserConfirmation: familyGenResult.requiresUserConfirmation,
+        detectedVariant: variant,
+        ...(familyGenResult.candidates ? { candidates: familyGenResult.candidates } : {})
+      };
     }
 
     // 4. Try fuzzy match by family + form factor
-    for (const cat of catalogs) {
-      const catLower = cat.id.toLowerCase();
-      if ((catLower.includes((variant.formFactor || '').toLowerCase()) || (baseFormFactor && catLower.includes(baseFormFactor.toLowerCase()))) &&
-          catLower.includes((variant.family || '').toLowerCase().substring(0, 4))) {
-        return {
-          chassisDir: cat.catalogDir,
-          matchType: 'FUZZY',
-          confidenceScore: 0.6,
-          requiresUserConfirmation: true,
-          detectedVariant: variant,
-          candidates: [cat.catalogDir]
-        };
-      }
+    const fuzzyDir = _findCatalogByFuzzy(catalogs, variant, baseFormFactor);
+    if (fuzzyDir) {
+      return {
+        chassisDir: fuzzyDir,
+        matchType: 'FUZZY',
+        confidenceScore: 0.6,
+        requiresUserConfirmation: true,
+        detectedVariant: variant,
+        candidates: [fuzzyDir]
+      };
     }
-  } catch (e) { const _logger = require('../system/pipeline_logger.js'); _logger.warn('ERROR', 'catalog_discovery.js', e); }
+  } catch (e) {
+    const _logger = require('../system/pipeline_logger.js');
+    _logger.warn('ERROR', 'catalog_discovery.js', e);
+  }
 
   // 5. Ultimate fallback (triggers strict failure in eval_boq.js)
   return {
@@ -505,6 +522,145 @@ function autoDetectChassisDetailed(boqItems = []) {
 
 function autoDetectChassisDir(boqItems = []) {
   return autoDetectChassisDetailed(boqItems).chassisDir;
+}
+
+function _verifyCatalogFiles(matched, cleanId) {
+  if (!matched.catalogJsonPath || !fs.existsSync(matched.catalogJsonPath)) {
+    return {
+      certified: false,
+      catalogPath: matched.catalogJsonPath,
+      xlsxPath: matched.xlsxPath,
+      skuCount: 0,
+      reason: `Catalog JSON missing on disk for '${cleanId}' at ${matched.catalogJsonPath}`
+    };
+  }
+  if (!matched.xlsxPath || !fs.existsSync(matched.xlsxPath)) {
+    return {
+      certified: false,
+      catalogDir: matched.catalogDir,
+      catalogPath: matched.catalogJsonPath,
+      xlsxPath: matched.xlsxPath,
+      skuCount: matched.skuCount,
+      reason: `Master 22-sheet Excel catalog (.xlsx) missing on disk for '${cleanId}'. Scrape must be fully exported.`
+    };
+  }
+  if ((matched.skuCount || 0) <= 0) {
+    return {
+      certified: false,
+      catalogPath: matched.catalogJsonPath,
+      xlsxPath: matched.xlsxPath,
+      skuCount: 0,
+      reason: `Catalog for '${cleanId}' has 0 unique SKUs. Incomplete or empty scrape.`
+    };
+  }
+  return null;
+}
+
+function _readAndVerifyCatalogJson(matched, cleanId) {
+  let catalogContent = null;
+  try {
+    catalogContent = JSON.parse(fs.readFileSync(matched.catalogJsonPath, 'utf-8'));
+  } catch (err) {
+    return {
+      errorResult: {
+        certified: false,
+        catalogDir: matched.catalogDir,
+        catalogPath: matched.catalogJsonPath,
+        xlsxPath: matched.xlsxPath,
+        skuCount: 0,
+        reason: `Catalog JSON could not be parsed: ${err.message}`
+      }
+    };
+  }
+
+  const meta = catalogContent?.metadata || {};
+  const actualSkus = new Set((catalogContent.entries || []).flatMap(entry => entry.skus || []).map(row => String(row.sku || row['Product #'] || '').trim()).filter(Boolean));
+  if (actualSkus.size !== Number(meta.totalUniqueSKUs)) {
+    return {
+      errorResult: { certified: false, catalogPath: matched.catalogJsonPath, reason: `Catalog SKU tally mismatch: metadata=${meta.totalUniqueSKUs}, actual=${actualSkus.size}` }
+    };
+  }
+  return { catalogContent, meta };
+}
+
+function _readAndVerifyMasterWorkbook(matched) {
+  try {
+    const bytes = fs.readFileSync(matched.xlsxPath);
+    if (bytes[0] !== 0x50 || bytes[1] !== 0x4b) throw new Error('Not an XLSX ZIP container');
+    const workbook = require('xlsx-js-style').read(bytes, { type: 'buffer' });
+    if (!workbook.Sheets['All SKUs']) throw new Error('Missing All SKUs sheet');
+    return { workbook };
+  } catch (error) {
+    return {
+      errorResult: { certified: false, catalogPath: matched.catalogJsonPath, xlsxPath: matched.xlsxPath, reason: `Invalid master workbook: ${error.message}` }
+    };
+  }
+}
+
+function _verifyFlagshipServerConstraints(matched, cleanId, catalogContent) {
+  const isFlagshipRackServer = /dl380|dl360|dl580|sy480/i.test(cleanId);
+  if (!isFlagshipRackServer) return null;
+
+  if (matched.skuCount < 20) {
+    return {
+      certified: false,
+      catalogDir: matched.catalogDir,
+      catalogPath: matched.catalogJsonPath,
+      xlsxPath: matched.xlsxPath,
+      skuCount: matched.skuCount,
+      reason: `Flagship server '${cleanId}' has only ${matched.skuCount} SKUs, failing minimum cardinality threshold (>= 20). Incomplete catalog.`
+    };
+  }
+  const subcats = (catalogContent.entries || []).map(e => String(e.subCategory || '').toLowerCase());
+  const hasCompute = subcats.some(s => s.includes('processor') || s.includes('cpu') || s.includes('compute'));
+  const hasMemory = subcats.some(s => s.includes('memory') || s.includes('dimm') || s.includes('rdimm'));
+  if (!hasCompute || !hasMemory) {
+    return {
+      certified: false,
+      catalogDir: matched.catalogDir,
+      catalogPath: matched.catalogJsonPath,
+      xlsxPath: matched.xlsxPath,
+      skuCount: matched.skuCount,
+      reason: `Flagship server '${cleanId}' is missing mandatory subcategories (compute=${hasCompute}, memory=${hasMemory}). Incomplete catalog.`
+    };
+  }
+  return null;
+}
+
+function _verifyCoverageAndFreshness(matched, catalogContent, workbook) {
+  try {
+    const services = JSON.parse(fs.readFileSync(path.join(matched.catalogDir, `${matched.id}_Services.json`), 'utf8'));
+    const coverage = require('./catalog_coverage.js').validateCatalogCoverage(matched.id, catalogContent, services, workbook);
+    if (!coverage.valid) return { certified: false, catalogPath: matched.catalogJsonPath, reason: coverage.reason };
+  } catch (error) {
+    return { certified: false, catalogPath: matched.catalogJsonPath, reason: `Coverage evidence unavailable: ${error.message}` };
+  }
+
+  const { auditCatalogFreshness, verifyTabularIntegrity } = require('./catalog_freshness_guard.js');
+  const tabularCheck = verifyTabularIntegrity(catalogContent);
+  if (!tabularCheck.isValid) {
+    return {
+      certified: false,
+      catalogDir: matched.catalogDir,
+      catalogPath: matched.catalogJsonPath,
+      xlsxPath: matched.xlsxPath,
+      skuCount: matched.skuCount,
+      reason: `Tabular integrity failure: ${tabularCheck.errors.join('; ')}`
+    };
+  }
+
+  const freshness = auditCatalogFreshness(catalogContent);
+  if (['UNKNOWN', 'INVALID_FUTURE_DATE', 'CRITICAL_OUTDATED'].includes(freshness.freshnessStatus)) {
+    return {
+      certified: false,
+      catalogDir: matched.catalogDir,
+      catalogPath: matched.catalogJsonPath,
+      xlsxPath: matched.xlsxPath,
+      skuCount: matched.skuCount,
+      reason: `Catalog freshness ${freshness.freshnessStatus}: ${freshness.advisories.join('; ')}`
+    };
+  }
+  return { tabularCheck, freshness };
 }
 
 /**
@@ -542,65 +698,15 @@ function isCatalogCertified(chassisId, outputsRoot = OUTPUTS_ROOT) {
     };
   }
 
-  if (!matched.catalogJsonPath || !fs.existsSync(matched.catalogJsonPath)) {
-    return {
-      certified: false,
-      catalogPath: matched.catalogJsonPath,
-      xlsxPath: matched.xlsxPath,
-      skuCount: 0,
-      reason: `Catalog JSON missing on disk for '${cleanId}' at ${matched.catalogJsonPath}`
-    };
-  }
+  const fileError = _verifyCatalogFiles(matched, cleanId);
+  if (fileError) return fileError;
 
-  if (!matched.xlsxPath || !fs.existsSync(matched.xlsxPath)) {
-    return {
-      certified: false,
-      catalogDir: matched.catalogDir,
-      catalogPath: matched.catalogJsonPath,
-      xlsxPath: matched.xlsxPath,
-      skuCount: matched.skuCount,
-      reason: `Master 22-sheet Excel catalog (.xlsx) missing on disk for '${cleanId}'. Scrape must be fully exported.`
-    };
-  }
+  const { catalogContent, meta, errorResult: jsonError } = _readAndVerifyCatalogJson(matched, cleanId);
+  if (jsonError) return jsonError;
 
-  if ((matched.skuCount || 0) <= 0) {
-    return {
-      certified: false,
-      catalogPath: matched.catalogJsonPath,
-      xlsxPath: matched.xlsxPath,
-      skuCount: 0,
-      reason: `Catalog for '${cleanId}' has 0 unique SKUs. Incomplete or empty scrape.`
-    };
-  }
+  const { workbook, errorResult: wbError } = _readAndVerifyMasterWorkbook(matched);
+  if (wbError) return wbError;
 
-  let catalogContent = null;
-  try {
-    catalogContent = JSON.parse(fs.readFileSync(matched.catalogJsonPath, 'utf-8'));
-  } catch (err) {
-    return {
-      certified: false,
-      catalogDir: matched.catalogDir,
-      catalogPath: matched.catalogJsonPath,
-      xlsxPath: matched.xlsxPath,
-      skuCount: 0,
-      reason: `Catalog JSON could not be parsed: ${err.message}`
-    };
-  }
-
-  const meta = catalogContent?.metadata || {};
-  const actualSkus = new Set((catalogContent.entries || []).flatMap(entry => entry.skus || []).map(row => String(row.sku || row['Product #'] || '').trim()).filter(Boolean));
-  if (actualSkus.size !== Number(meta.totalUniqueSKUs)) {
-    return { certified: false, catalogPath: matched.catalogJsonPath, reason: `Catalog SKU tally mismatch: metadata=${meta.totalUniqueSKUs}, actual=${actualSkus.size}` };
-  }
-  let workbook;
-  try {
-    const bytes = fs.readFileSync(matched.xlsxPath);
-    if (bytes[0] !== 0x50 || bytes[1] !== 0x4b) throw new Error('Not an XLSX ZIP container');
-    workbook = require('xlsx-js-style').read(bytes, { type: 'buffer' });
-    if (!workbook.Sheets['All SKUs']) throw new Error('Missing All SKUs sheet');
-  } catch (error) {
-    return { certified: false, catalogPath: matched.catalogJsonPath, xlsxPath: matched.xlsxPath, reason: `Invalid master workbook: ${error.message}` };
-  }
   const normalizedMeta = require('./catalog_freshness_guard.js').normalizeCatalogMetadata(meta);
   if (!normalizedMeta.scrapeDate || !/^\d{4}-\d{2}-\d{2}$/.test(normalizedMeta.scrapeDate)) {
     return {
@@ -613,67 +719,11 @@ function isCatalogCertified(chassisId, outputsRoot = OUTPUTS_ROOT) {
     };
   }
 
-  // Minimum cardinality and essential subcategories check for flagship rack servers
-  const isFlagshipRackServer = /dl380|dl360|dl580|sy480/i.test(cleanId);
-  if (isFlagshipRackServer) {
-    if (matched.skuCount < 20) {
-      return {
-        certified: false,
-        catalogDir: matched.catalogDir,
-        catalogPath: matched.catalogJsonPath,
-        xlsxPath: matched.xlsxPath,
-        skuCount: matched.skuCount,
-        reason: `Flagship server '${cleanId}' has only ${matched.skuCount} SKUs, failing minimum cardinality threshold (>= 20). Incomplete catalog.`
-      };
-    }
-    const subcats = (catalogContent.entries || []).map(e => String(e.subCategory || '').toLowerCase());
-    const hasCompute = subcats.some(s => s.includes('processor') || s.includes('cpu') || s.includes('compute'));
-    const hasMemory = subcats.some(s => s.includes('memory') || s.includes('dimm') || s.includes('rdimm'));
-    if (!hasCompute || !hasMemory) {
-      return {
-        certified: false,
-        catalogDir: matched.catalogDir,
-        catalogPath: matched.catalogJsonPath,
-        xlsxPath: matched.xlsxPath,
-        skuCount: matched.skuCount,
-        reason: `Flagship server '${cleanId}' is missing mandatory subcategories (compute=${hasCompute}, memory=${hasMemory}). Incomplete catalog.`
-      };
-    }
-  }
+  const flagshipError = _verifyFlagshipServerConstraints(matched, cleanId, catalogContent);
+  if (flagshipError) return flagshipError;
 
-  // Coverage Profile Check (F07 / INV-125)
-  try {
-    const services = JSON.parse(fs.readFileSync(path.join(matched.catalogDir, `${matched.id}_Services.json`), 'utf8'));
-    const coverage = require('./catalog_coverage.js').validateCatalogCoverage(matched.id, catalogContent, services, workbook);
-    if (!coverage.valid) return { certified: false, catalogPath: matched.catalogJsonPath, reason: coverage.reason };
-  } catch (error) {
-    return { certified: false, catalogPath: matched.catalogJsonPath, reason: `Coverage evidence unavailable: ${error.message}` };
-  }
-
-  const { auditCatalogFreshness, verifyTabularIntegrity } = require('./catalog_freshness_guard.js');
-  const tabularCheck = verifyTabularIntegrity(catalogContent);
-  if (!tabularCheck.isValid) {
-    return {
-      certified: false,
-      catalogDir: matched.catalogDir,
-      catalogPath: matched.catalogJsonPath,
-      xlsxPath: matched.xlsxPath,
-      skuCount: matched.skuCount,
-      reason: `Tabular integrity failure: ${tabularCheck.errors.join('; ')}`
-    };
-  }
-
-  const freshness = auditCatalogFreshness(catalogContent);
-  if (['UNKNOWN', 'INVALID_FUTURE_DATE', 'CRITICAL_OUTDATED'].includes(freshness.freshnessStatus)) {
-    return {
-      certified: false,
-      catalogDir: matched.catalogDir,
-      catalogPath: matched.catalogJsonPath,
-      xlsxPath: matched.xlsxPath,
-      skuCount: matched.skuCount,
-      reason: `Catalog freshness ${freshness.freshnessStatus}: ${freshness.advisories.join('; ')}`
-    };
-  }
+  const coverageFreshness = _verifyCoverageAndFreshness(matched, catalogContent, workbook);
+  if (coverageFreshness.certified === false) return coverageFreshness;
 
   return {
     certified: true,
@@ -682,8 +732,8 @@ function isCatalogCertified(chassisId, outputsRoot = OUTPUTS_ROOT) {
     xlsxPath: matched.xlsxPath,
     skuCount: matched.skuCount,
     scrapeDate: meta.scrapeDate,
-    freshness,
-    integrity: tabularCheck
+    freshness: coverageFreshness.freshness,
+    integrity: coverageFreshness.tabularCheck
   };
 }
 

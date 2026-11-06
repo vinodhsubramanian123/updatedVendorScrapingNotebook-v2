@@ -6,121 +6,108 @@
  * to classify the customer's primary workload profile.
  */
 
-/**
- * Extract Workload DNA & Profile from BOQ hardware items.
- *
- * @param {Array<object>} items
- * @returns {{
- *   primaryWorkload: string,
- *   workloadDescription: string,
- *   totalCores: number,
- *   maxFreqGhz: number,
- *   totalMemoryGb: number,
- *   gbPerCore: number,
- *   hasGpu: boolean,
- *   gpuModel: string,
- *   gpuModels: Array<string>,
- *   totalGpuCount: number,
- *   driveCount: number,
- *   storageType: string,
- *   storageWorkload: string
- * }}
- */
-function extractWorkloadDna(items = []) {
-  const safeItems = Array.isArray(items) ? items : [];
-  let totalCores = 0;
-  let maxFreqGhz = 0;
-  let cpuCount = 0;
-  let totalMemoryGb = 0;
-  let memoryCount = 0;
-  let detectedChannelWidth = 8;
-  let hasGpu = false;
-  let gpuModels = [];
-  let totalGpuCount = 0;
-  let driveCount = 0;
-  let storageType = 'NONE';
-  let storageWorkload = 'READ_INTENSIVE';
+const GPU_EXCLUSION_PATTERN = /cable|bridge|enablement|riser|fan|heatsink|switchboard|configuration/i;
+const GPU_DETECTION_PATTERN = /nvidia|gpu|rtx|h200|l40s|l4|accelerator|h100|a100/i;
+const MEMORY_DETECTION_PATTERN = /memory|rdimm|ddr5|ddr4|dimm/i;
 
-  safeItems.forEach(it => {
-    if (!it || typeof it !== 'object') return;
-    const desc = (it.description || '').toLowerCase();
-    const qty = it.quantity || 1;
-
-    // CPU Profile
-    if (desc.includes('processor') || desc.includes('xeon') || desc.includes('epyc')) {
-      if (!desc.includes('heatsink') && !desc.includes('heat sink') && !desc.includes('fan') && !desc.includes('cage') && !desc.includes('cable')) {
-        cpuCount += qty;
-      }
-      if (desc.includes('epyc') && (desc.includes('9004') || desc.includes('9005') || desc.includes('genoa') || desc.includes('bergamo') || desc.includes('turin'))) {
-        detectedChannelWidth = 12;
-      } else if (desc.includes('xeon') && (desc.includes('4200') || desc.includes('5200') || desc.includes('6200') || desc.includes('8200') || desc.includes('cascade lake') || desc.includes('skylake'))) {
-        detectedChannelWidth = 6;
-      }
-      const coreMatch = desc.match(/(\d+)\s*-?\s*core/i);
-      if (coreMatch) totalCores += (parseInt(coreMatch[1], 10) * qty);
-      const ghzMatch = desc.match(/(\d+\.\d+)\s*ghz/i);
-      if (ghzMatch) {
-        const ghz = parseFloat(ghzMatch[1]);
-        if (ghz > maxFreqGhz) maxFreqGhz = ghz;
-      }
-    }
-
-    // Memory Profile
-    const isDriveOrStorage = desc.includes('ssd') || desc.includes('nvme') || desc.includes('hdd') || desc.includes('drive') || desc.includes('battery');
-    if (!isDriveOrStorage && (desc.includes('memory') || desc.includes('rdimm') || desc.includes('ddr5') || desc.includes('ddr4') || desc.includes('dimm'))) {
-      memoryCount += qty;
-      const gbMatch = desc.match(/(\d+)\s*gb/i);
-      if (gbMatch) totalMemoryGb += (parseInt(gbMatch[1], 10) * qty);
-    }
-
-    // GPU Profile
-    if (!/cable|bridge|enablement|riser|fan|heatsink|switchboard|configuration/.test(desc) &&
-      (desc.includes('nvidia') || desc.includes('gpu') || desc.includes('rtx') || desc.includes('h200') || desc.includes('l40s') || desc.includes('l4') || desc.includes('accelerator') || desc.includes('h100') || desc.includes('a100'))) {
-      hasGpu = true;
-      if (!gpuModels.includes(it.description)) {
-        gpuModels.push(it.description);
-      }
-      totalGpuCount += qty;
-    }
-
-    // Storage I/O Profile
-    if (desc.includes('ssd') || desc.includes('nvme') || desc.includes('hdd') || desc.includes('drive')) {
-      if (!desc.includes('controller') && !desc.includes('cage') && !desc.includes('no drive')) {
-        driveCount += qty;
-        if (desc.includes('write intensive') || desc.includes('wi')) storageWorkload = 'WRITE_INTENSIVE';
-        else if (desc.includes('mixed use') || desc.includes('mu')) storageWorkload = 'MIXED_USE';
-        else if (desc.includes('read intensive') || desc.includes('ri')) storageWorkload = 'READ_INTENSIVE';
-        else if (desc.includes('hdd') || desc.includes('sas 10k')) storageWorkload = 'CAPACITY_STORAGE';
-
-        if (desc.includes('nvme')) storageType = 'NVME_GEN4';
-        else if (desc.includes('sas')) storageType = 'SAS_12G';
-        else if (desc.includes('sata')) storageType = 'SATA_6G';
-      }
-    }
-  });
-
-  const gbPerCore = totalCores > 0 ? parseFloat((totalMemoryGb / totalCores).toFixed(1)) : 0;
-  const gpuModelStr = gpuModels.join(', ');
-
-  // Classify Primary Workload DNA
-  let primaryWorkload = 'BALANCED_ENTERPRISE';
-  let workloadDescription = 'General Enterprise Workload (Balanced Compute & Storage)';
-
-  if (hasGpu) {
-    primaryWorkload = 'VDI_AI_GRAPHICS';
-    workloadDescription = `VDI / AI Inference & Graphics Acceleration (${totalGpuCount}x ${gpuModelStr || 'NVIDIA GPU'})`;
-  } else if (gbPerCore >= 16 || totalMemoryGb >= 768) {
-    primaryWorkload = 'DATABASE_IN_MEMORY';
-    workloadDescription = `In-Memory Database & Analytics (High Memory Footprint: ${totalMemoryGb}GB RAM, ${gbPerCore}GB/Core)`;
-  } else if (storageWorkload === 'WRITE_INTENSIVE' || storageWorkload === 'MIXED_USE') {
-    primaryWorkload = 'STORAGE_HIGH_IOPS';
-    workloadDescription = `High-IOPS Transactional Storage (${storageWorkload} ${storageType} SSDs)`;
-  } else if (totalCores >= 64) {
-    primaryWorkload = 'VIRTUALIZATION_DENSE';
-    workloadDescription = `Dense Virtualization & Cloud Host (${totalCores} Total CPU Cores)`;
+function _inspectCpuItem(desc, qty, state) {
+  if (!desc.includes('processor') && !desc.includes('xeon') && !desc.includes('epyc')) return false;
+  if (!desc.includes('heatsink') && !desc.includes('heat sink') && !desc.includes('fan') && !desc.includes('cage') && !desc.includes('cable')) {
+    state.cpuCount += qty;
   }
+  if (desc.includes('epyc') && (desc.includes('9004') || desc.includes('9005') || desc.includes('genoa') || desc.includes('bergamo') || desc.includes('turin'))) {
+    state.detectedChannelWidth = 12;
+  } else if (desc.includes('xeon') && (desc.includes('4200') || desc.includes('5200') || desc.includes('6200') || desc.includes('8200') || desc.includes('cascade lake') || desc.includes('skylake'))) {
+    state.detectedChannelWidth = 6;
+  }
+  const coreMatch = desc.match(/(\d+)\s*-?\s*core/i);
+  if (coreMatch) state.totalCores += (parseInt(coreMatch[1], 10) * qty);
+  const ghzMatch = desc.match(/(\d+\.\d+)\s*ghz/i);
+  if (ghzMatch) {
+    const ghz = parseFloat(ghzMatch[1]);
+    if (ghz > state.maxFreqGhz) state.maxFreqGhz = ghz;
+  }
+  return true;
+}
 
-  // NUMA & Memory Channel Interleaving Profile
+function _inspectMemoryItem(desc, qty, state) {
+  const isDriveOrStorage = desc.includes('ssd') || desc.includes('nvme') || desc.includes('hdd') || desc.includes('drive') || desc.includes('battery');
+  if (isDriveOrStorage || !MEMORY_DETECTION_PATTERN.test(desc)) return false;
+  state.memoryCount += qty;
+  const gbMatch = desc.match(/(\d+)\s*gb/i);
+  if (gbMatch) state.totalMemoryGb += (parseInt(gbMatch[1], 10) * qty);
+  return true;
+}
+
+function _inspectGpuItem(it, desc, qty, state) {
+  if (GPU_EXCLUSION_PATTERN.test(desc) || !GPU_DETECTION_PATTERN.test(desc)) return false;
+  state.hasGpu = true;
+  if (!state.gpuModels.includes(it.description)) {
+    state.gpuModels.push(it.description);
+  }
+  state.totalGpuCount += qty;
+  return true;
+}
+
+function _inspectStorageItem(desc, qty, state) {
+  if (!desc.includes('ssd') && !desc.includes('nvme') && !desc.includes('hdd') && !desc.includes('drive')) return false;
+  if (desc.includes('controller') || desc.includes('cage') || desc.includes('no drive')) return false;
+
+  state.driveCount += qty;
+  if (desc.includes('write intensive') || desc.includes('wi')) state.storageWorkload = 'WRITE_INTENSIVE';
+  else if (desc.includes('mixed use') || desc.includes('mu')) state.storageWorkload = 'MIXED_USE';
+  else if (desc.includes('read intensive') || desc.includes('ri')) state.storageWorkload = 'READ_INTENSIVE';
+  else if (desc.includes('hdd') || desc.includes('sas 10k')) state.storageWorkload = 'CAPACITY_STORAGE';
+
+  if (desc.includes('nvme')) state.storageType = 'NVME_GEN4';
+  else if (desc.includes('sas')) state.storageType = 'SAS_12G';
+  else if (desc.includes('sata')) state.storageType = 'SATA_6G';
+  return true;
+}
+
+function _inspectDnaHardwareItem(it, state) {
+  if (!it || typeof it !== 'object') return;
+  const desc = (it.description || '').toLowerCase();
+  const qty = it.quantity || 1;
+
+  _inspectCpuItem(desc, qty, state);
+  _inspectMemoryItem(desc, qty, state);
+  _inspectGpuItem(it, desc, qty, state);
+  _inspectStorageItem(desc, qty, state);
+}
+
+function _classifyPrimaryWorkload({ hasGpu, totalGpuCount, gpuModelStr, totalCores, totalMemoryGb, gbPerCore, storageWorkload, storageType }) {
+  if (hasGpu) {
+    return {
+      primaryWorkload: 'VDI_AI_GRAPHICS',
+      workloadDescription: `VDI / AI Inference & Graphics Acceleration (${totalGpuCount}x ${gpuModelStr || 'NVIDIA GPU'})`
+    };
+  }
+  if (gbPerCore >= 16 || totalMemoryGb >= 768) {
+    return {
+      primaryWorkload: 'DATABASE_IN_MEMORY',
+      workloadDescription: `In-Memory Database & Analytics (High Memory Footprint: ${totalMemoryGb}GB RAM, ${gbPerCore}GB/Core)`
+    };
+  }
+  if (storageWorkload === 'WRITE_INTENSIVE' || storageWorkload === 'MIXED_USE') {
+    return {
+      primaryWorkload: 'STORAGE_HIGH_IOPS',
+      workloadDescription: `High-IOPS Transactional Storage (${storageWorkload} ${storageType} SSDs)`
+    };
+  }
+  if (totalCores >= 64) {
+    return {
+      primaryWorkload: 'VIRTUALIZATION_DENSE',
+      workloadDescription: `Dense Virtualization & Cloud Host (${totalCores} Total CPU Cores)`
+    };
+  }
+  return {
+    primaryWorkload: 'BALANCED_ENTERPRISE',
+    workloadDescription: 'General Enterprise Workload (Balanced Compute & Storage)'
+  };
+}
+
+function _computeNumaTopology({ cpuCount, memoryCount, totalMemoryGb, detectedChannelWidth }) {
   const sockets = Math.max(1, cpuCount || 1);
   const dimmsPerSocket = memoryCount > 0 ? (memoryCount / sockets) : 0;
   const isSocketSymmetric = memoryCount > 0 && cpuCount > 0 && (memoryCount % cpuCount === 0);
@@ -128,7 +115,17 @@ function extractWorkloadDna(items = []) {
   const is2DpcBalanced = isSocketSymmetric && (dimmsPerSocket === detectedChannelWidth * 2);
   const isBalancedInterleaving = is1DpcBalanced || is2DpcBalanced;
   const isSupportedPopulation = isSocketSymmetric && [1, 2, 4, detectedChannelWidth, detectedChannelWidth * 2].includes(dimmsPerSocket);
-  const numaTopology = {
+
+  let interleavingMode = 'UNBALANCED_CHANNEL_POPULATION';
+  if (is1DpcBalanced) {
+    interleavingMode = '1DPC_BALANCED_OPTIMAL';
+  } else if (is2DpcBalanced) {
+    interleavingMode = '2DPC_BALANCED_MAX_CAPACITY';
+  } else if (isSupportedPopulation) {
+    interleavingMode = 'PARTIAL_INTERLEAVED';
+  }
+
+  return {
     cpuSockets: cpuCount,
     memoryDimmCount: memoryCount,
     totalMemoryGb,
@@ -139,28 +136,70 @@ function extractWorkloadDna(items = []) {
     is1DpcBalanced,
     is2DpcBalanced,
     isSupportedPopulation,
-    interleavingMode: is1DpcBalanced
-      ? '1DPC_BALANCED_OPTIMAL'
-      : (is2DpcBalanced ? '2DPC_BALANCED_MAX_CAPACITY' : (isSupportedPopulation ? 'PARTIAL_INTERLEAVED' : 'UNBALANCED_CHANNEL_POPULATION'))
+    interleavingMode
   };
+}
+
+/**
+ * Extract Workload DNA & Profile from BOQ hardware items.
+ */
+function extractWorkloadDna(items = []) {
+  const safeItems = Array.isArray(items) ? items : [];
+  const state = {
+    totalCores: 0,
+    maxFreqGhz: 0,
+    cpuCount: 0,
+    totalMemoryGb: 0,
+    memoryCount: 0,
+    detectedChannelWidth: 8,
+    hasGpu: false,
+    gpuModels: [],
+    totalGpuCount: 0,
+    driveCount: 0,
+    storageType: 'NONE',
+    storageWorkload: 'READ_INTENSIVE'
+  };
+
+  safeItems.forEach(it => _inspectDnaHardwareItem(it, state));
+
+  const gbPerCore = state.totalCores > 0 ? parseFloat((state.totalMemoryGb / state.totalCores).toFixed(1)) : 0;
+  const gpuModelStr = state.gpuModels.join(', ');
+
+  const { primaryWorkload, workloadDescription } = _classifyPrimaryWorkload({
+    hasGpu: state.hasGpu,
+    totalGpuCount: state.totalGpuCount,
+    gpuModelStr,
+    totalCores: state.totalCores,
+    totalMemoryGb: state.totalMemoryGb,
+    gbPerCore,
+    storageWorkload: state.storageWorkload,
+    storageType: state.storageType
+  });
+
+  const numaTopology = _computeNumaTopology({
+    cpuCount: state.cpuCount,
+    memoryCount: state.memoryCount,
+    totalMemoryGb: state.totalMemoryGb,
+    detectedChannelWidth: state.detectedChannelWidth
+  });
 
   return {
     primaryWorkload,
     workloadDescription,
-    totalCores,
-    maxFreqGhz,
-    cpuCount,
-    totalMemoryGb,
-    memoryDimmCount: memoryCount,
+    totalCores: state.totalCores,
+    maxFreqGhz: state.maxFreqGhz,
+    cpuCount: state.cpuCount,
+    totalMemoryGb: state.totalMemoryGb,
+    memoryDimmCount: state.memoryCount,
     numaTopology,
     gbPerCore,
-    hasGpu,
+    hasGpu: state.hasGpu,
     gpuModel: gpuModelStr,
-    gpuModels,
-    totalGpuCount,
-    driveCount,
-    storageType,
-    storageWorkload
+    gpuModels: state.gpuModels,
+    totalGpuCount: state.totalGpuCount,
+    driveCount: state.driveCount,
+    storageType: state.storageType,
+    storageWorkload: state.storageWorkload
   };
 }
 
@@ -214,8 +253,94 @@ function validateNumaMemoryTopology(items = [], options = {}) {
   };
 }
 
+/**
+ * Infer Workload DNA from natural language query or RFP text.
+ *
+ * @param {string} text
+ * @returns {object|null}
+ */
+function inferWorkloadDnaFromText(text = '') {
+  const q = String(text || '').toLowerCase();
+  const WORKLOAD_SIGNATURES = [
+    {
+      type: 'SAP_HANA',
+      label: 'SAP HANA In-Memory Database',
+      pattern: /\b(?:sap\s*hana|s\/?4\s*hana|bw\/?4\s*hana|hana\s*(?:db|database|in-memory))\b/i,
+      recommendedGbPerCore: 16,
+      storageWorkload: 'WRITE_INTENSIVE',
+      confidence: 0.95
+    },
+    {
+      type: 'AI_INFERENCE_TRAINING',
+      label: 'AI/LLM Fine-Tuning & High-Throughput Inference',
+      pattern: /\b(?:ai\s*training|llm\s*training|model\s*training|deep\s*learning|ai\s*inference|llm\s*inference|vllm|genai|generative\s*ai|rag\s*pipeline)\b/i,
+      recommendedGbPerCore: 8,
+      storageWorkload: 'MIXED_USE',
+      hasGpu: true,
+      confidence: 0.95
+    },
+    {
+      type: 'VMWARE_VCF',
+      label: 'VMware Cloud Foundation & Virtualization',
+      pattern: /\b(?:vmware|vsphere|vcf|esxi|vsan|virtual\s*datacenter)\b/i,
+      recommendedGbPerCore: 8,
+      storageWorkload: 'MIXED_USE',
+      confidence: 0.90
+    },
+    {
+      type: 'MICROSOFT_SQL_OLTP',
+      label: 'Mission-Critical SQL & High-Concurrency OLTP',
+      pattern: /\b(?:microsoft\s*sql|ms\s*sql|sql\s*server|oracle\s*(?:db|database)|postgresql|oltp)\b/i,
+      recommendedGbPerCore: 8,
+      storageWorkload: 'WRITE_INTENSIVE',
+      confidence: 0.90
+    },
+    {
+      type: 'VDI_ENTERPRISE',
+      label: 'Enterprise Virtual Desktop Infrastructure (VDI)',
+      pattern: /\b(?:vdi|virtual\s*desktops?|horizon|citrix\s*(?:xen|virtual))\b/i,
+      recommendedGbPerCore: 4,
+      storageWorkload: 'READ_INTENSIVE',
+      confidence: 0.88
+    },
+    {
+      type: 'BIG_DATA_KAFKA',
+      label: 'Streaming Analytics & Distributed Message Queue',
+      pattern: /\b(?:kafka|spark|hadoop|cassandra|clickhouse|elasticsearch|opensearch)\b/i,
+      recommendedGbPerCore: 4,
+      storageWorkload: 'WRITE_INTENSIVE',
+      confidence: 0.88
+    },
+    {
+      type: 'HPC_COMPUTE',
+      label: 'High-Performance Technical Computing (HPC)',
+      pattern: /\b(?:hpc|supercomputing|fluid\s*dynamics|ansys|openfoam|molecular\s*dynamics)\b/i,
+      recommendedGbPerCore: 4,
+      storageWorkload: 'READ_INTENSIVE',
+      confidence: 0.85
+    }
+  ];
+
+  for (const sig of WORKLOAD_SIGNATURES) {
+    if (sig.pattern.test(q)) {
+      return {
+        workloadType: sig.type,
+        primaryWorkload: sig.label,
+        confidence: sig.confidence,
+        recommendedGbPerCore: sig.recommendedGbPerCore,
+        storageWorkload: sig.storageWorkload,
+        hasGpu: Boolean(sig.hasGpu),
+        matchedPattern: sig.type
+      };
+    }
+  }
+
+  return null;
+}
+
 module.exports = {
   extractWorkloadDna,
+  inferWorkloadDnaFromText,
   validateNumaMemoryTopology
 };
 

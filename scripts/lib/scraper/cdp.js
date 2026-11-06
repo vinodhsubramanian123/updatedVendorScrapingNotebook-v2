@@ -486,6 +486,76 @@ async function waitForDOMPredicate(ws, expression, maxTimeoutMs = 15000, interva
   return false;
 }
 
+function _inferRuleType(item, ruleText) {
+  let inferredType = item.ruleType || item.type || 'UNCLASSIFIED_OBSERVATION';
+  if (inferredType === 'UNCLASSIFIED_OBSERVATION') {
+    if (/\b(requires?|must be selected|prerequisite|mandatory)\b/i.test(ruleText)) {
+      return 'REQUIRED_DEPENDENCY';
+    }
+    if (/\b(conflicts?|mutually exclusive|cannot be mixed|incompatible|not supported with)\b/i.test(ruleText)) {
+      return 'MUTUAL_EXCLUSION';
+    }
+  }
+  return inferredType;
+}
+
+function _extractAffectedSkus(item, ruleText) {
+  const affectedSkus = [];
+  if (Array.isArray(item.affectedSkus)) affectedSkus.push(...item.affectedSkus);
+  if (item.sku || item.partNumber || item.itemId) affectedSkus.push(item.sku || item.partNumber || item.itemId);
+  const foundSkus = ruleText.match(/\b[A-Z0-9]{5,}-[A-Z0-9]{2,3}\b/g) || [];
+  for (const s of foundSkus) {
+    if (!affectedSkus.includes(s)) affectedSkus.push(s);
+  }
+  return affectedSkus;
+}
+
+function _extractSingleRuleItem(item, sourceUrl) {
+  if (!item || typeof item !== 'object') return null;
+  const ruleText = String(item.description || item.message || item.rule || item.text || '').trim();
+  if (!ruleText || ruleText.length < 5) return null;
+
+  const affectedSkus = _extractAffectedSkus(item, ruleText);
+  const ruleType = _inferRuleType(item, ruleText);
+
+  return {
+    level: item.level || 'CHASSIS',
+    ruleType,
+    affectedSkus,
+    constraint: item.constraint || ruleText,
+    rule: ruleText,
+    source: 'BACKEND_NETWORK_SNIFFER',
+    sourceUrl: sourceUrl ? sourceUrl.split(/[?#]/)[0] : 'REST_API'
+  };
+}
+
+function _extractItemDependencies(it) {
+  const pn = it.partNumber || it.sku;
+  if (!pn) return [];
+  const rules = [];
+  if (Array.isArray(it.exclusiveItems) && it.exclusiveItems.length > 0) {
+    rules.push({
+      level: 'CHASSIS',
+      ruleType: 'MUTUAL_EXCLUSION',
+      affectedSkus: [pn, ...it.exclusiveItems],
+      constraint: `${pn} is mutually exclusive with ${it.exclusiveItems.join(', ')}`,
+      rule: `${pn} conflicts with ${it.exclusiveItems.join(', ')}`,
+      source: 'BACKEND_NETWORK_SNIFFER'
+    });
+  }
+  if (Array.isArray(it.requiredItems) && it.requiredItems.length > 0) {
+    rules.push({
+      level: 'CHASSIS',
+      ruleType: 'REQUIRED_DEPENDENCY',
+      affectedSkus: [pn, ...it.requiredItems],
+      constraint: `${pn} requires ${it.requiredItems.join(', ')}`,
+      rule: `${pn} requires ${it.requiredItems.join(', ')}`,
+      source: 'BACKEND_NETWORK_SNIFFER'
+    });
+  }
+  return rules;
+}
+
 /**
  * Extract rules from captured WebLogic/CLIC network JSON payloads
  */
@@ -498,64 +568,54 @@ function extractRulesFromNetworkPayload(data, capturedRules, sourceUrl) {
 
   for (const arr of ruleArrays) {
     for (const item of arr) {
-      if (!item || typeof item !== 'object') continue;
-      const ruleText = String(item.description || item.message || item.rule || item.text || '').trim();
-      if (!ruleText || ruleText.length < 5) continue;
-
-      const affectedSkus = [];
-      if (Array.isArray(item.affectedSkus)) affectedSkus.push(...item.affectedSkus);
-      if (item.sku || item.partNumber || item.itemId) affectedSkus.push(item.sku || item.partNumber || item.itemId);
-      const foundSkus = ruleText.match(/\b[A-Z0-9]{5,}-[A-Z0-9]{2,3}\b/g) || [];
-      for (const s of foundSkus) {
-        if (!affectedSkus.includes(s)) affectedSkus.push(s);
-      }
-
-      let inferredType = item.ruleType || item.type || 'UNCLASSIFIED_OBSERVATION';
-      if (inferredType === 'UNCLASSIFIED_OBSERVATION') {
-        if (/\b(requires?|must be selected|prerequisite|mandatory)\b/i.test(ruleText)) {
-          inferredType = 'REQUIRED_DEPENDENCY';
-        } else if (/\b(conflicts?|mutually exclusive|cannot be mixed|incompatible|not supported with)\b/i.test(ruleText)) {
-          inferredType = 'MUTUAL_EXCLUSION';
-        }
-      }
-
-      capturedRules.push({
-        level: item.level || 'CHASSIS',
-        ruleType: inferredType,
-        affectedSkus,
-        constraint: item.constraint || ruleText,
-        rule: ruleText,
-        source: 'BACKEND_NETWORK_SNIFFER',
-        sourceUrl: sourceUrl ? sourceUrl.split(/[?#]/)[0] : 'REST_API'
-      });
+      const rule = _extractSingleRuleItem(item, sourceUrl);
+      if (rule) capturedRules.push(rule);
     }
   }
 
   if (Array.isArray(data.items)) {
     for (const it of data.items) {
-      const pn = it.partNumber || it.sku;
-      if (!pn) continue;
-      if (Array.isArray(it.exclusiveItems) && it.exclusiveItems.length > 0) {
-        capturedRules.push({
-          level: 'CHASSIS',
-          ruleType: 'MUTUAL_EXCLUSION',
-          affectedSkus: [pn, ...it.exclusiveItems],
-          constraint: `${pn} is mutually exclusive with ${it.exclusiveItems.join(', ')}`,
-          rule: `${pn} conflicts with ${it.exclusiveItems.join(', ')}`,
-          source: 'BACKEND_NETWORK_SNIFFER'
-        });
-      }
-      if (Array.isArray(it.requiredItems) && it.requiredItems.length > 0) {
-        capturedRules.push({
-          level: 'CHASSIS',
-          ruleType: 'REQUIRED_DEPENDENCY',
-          affectedSkus: [pn, ...it.requiredItems],
-          constraint: `${pn} requires ${it.requiredItems.join(', ')}`,
-          rule: `${pn} requires ${it.requiredItems.join(', ')}`,
-          source: 'BACKEND_NETWORK_SNIFFER'
-        });
-      }
+      const depRules = _extractItemDependencies(it);
+      for (const r of depRules) capturedRules.push(r);
     }
+  }
+}
+
+function _isSnifferRuleEndpoint(url, mimeType) {
+  const isRuleEndpoint = url.includes('/configurator/') ||
+                         url.includes('/clic/') ||
+                         url.includes('/rules/') ||
+                         url.includes('/advice/') ||
+                         url.includes('/solution/') ||
+                         url.includes('/item/');
+  const isJson = mimeType.includes('application/json') || mimeType.includes('text/x-json') || mimeType.includes('text/json');
+  return isRuleEndpoint || isJson;
+}
+
+function _handleSnifferResponseReceived(msg, allowedHosts, responses) {
+  const { requestId, response } = msg.params || {};
+  const parsedUrl = new URL(response?.url || 'about:blank');
+  if (!allowedHosts.has(parsedUrl.hostname)) return;
+  const url = parsedUrl.pathname.toLowerCase();
+  const mimeType = (response?.mimeType || '').toLowerCase();
+  if (_isSnifferRuleEndpoint(url, mimeType)) {
+    responses.set(requestId, response);
+  }
+}
+
+function _handleSnifferNetworkMessage(msg, allowedHosts, responses, captureBody, pending, failures) {
+  if (msg.method === 'Network.responseReceived') {
+    _handleSnifferResponseReceived(msg, allowedHosts, responses);
+  } else if (msg.method === 'Network.loadingFinished' && responses.has(msg.params?.requestId)) {
+    const requestId = msg.params.requestId;
+    const response = responses.get(requestId);
+    responses.delete(requestId);
+    const task = captureBody(requestId, response);
+    pending.add(task);
+    task.finally(() => pending.delete(task));
+  } else if (msg.method === 'Network.loadingFailed' && responses.has(msg.params?.requestId)) {
+    failures.push({ requestId: msg.params.requestId, reason: 'NETWORK_LOADING_FAILED' });
+    responses.delete(msg.params.requestId);
   }
 }
 
@@ -607,36 +667,7 @@ async function setupNetworkSniffer(ws, options = {}) {
   const messageHandler = async (raw) => {
     try {
       const msg = JSON.parse(raw.toString());
-      if (msg.method === 'Network.responseReceived') {
-        const { requestId, response } = msg.params || {};
-        const parsedUrl = new URL(response?.url || 'about:blank');
-        if (!allowedHosts.has(parsedUrl.hostname)) return;
-        const url = parsedUrl.pathname.toLowerCase();
-        const mimeType = (response?.mimeType || '').toLowerCase();
-
-        const isRuleEndpoint = url.includes('/configurator/') ||
-                               url.includes('/clic/') ||
-                               url.includes('/rules/') ||
-                               url.includes('/advice/') ||
-                               url.includes('/solution/') ||
-                               url.includes('/item/');
-
-        const isJson = mimeType.includes('application/json') || mimeType.includes('text/x-json') || mimeType.includes('text/json');
-
-        if (isRuleEndpoint || isJson) {
-          responses.set(requestId, response);
-        }
-      } else if (msg.method === 'Network.loadingFinished' && responses.has(msg.params.requestId)) {
-        const requestId = msg.params.requestId;
-        const response = responses.get(requestId);
-        responses.delete(requestId);
-        const task = captureBody(requestId, response);
-        pending.add(task);
-        task.finally(() => pending.delete(task));
-      } else if (msg.method === 'Network.loadingFailed' && responses.has(msg.params.requestId)) {
-        failures.push({ requestId: msg.params.requestId, reason: 'NETWORK_LOADING_FAILED' });
-        responses.delete(msg.params.requestId);
-      }
+      _handleSnifferNetworkMessage(msg, allowedHosts, responses, captureBody, pending, failures);
     } catch (_) {}
   };
 

@@ -68,79 +68,60 @@ function formatMsToDateStr(ms) {
  * @param {number} [options.leadTimeBottleneckDays=21] - Lead time (days) threshold to flag pacing bottleneck
  * @returns {object} Pacing analysis result
  */
-function analyzeDeliveryPacing(items = [], options = {}) {
-  const waveGapThreshold = options.waveGapThresholdDays ?? 30;
-  const leadTimeBottleneckThreshold = options.leadTimeBottleneckDays ?? 21;
-
-  let catalogIndex = null;
-  if (options.catalogData) {
-    catalogIndex = buildCatalogSkuIndex(options.catalogData);
+function _resolveLeadDays(it, skuData) {
+  const explicitDays = it.leadTimeDays ?? skuData.leadTimeDays ?? null;
+  if (explicitDays !== null) return explicitDays;
+  const rawLeadTime = it.leadTime || it['Lead Time'] || it['Estimated Availability Lead Time'] || skuData['Lead Time'] || '';
+  if (rawLeadTime) {
+    const match = String(rawLeadTime).match(/(\d+)/);
+    if (match) return parseInt(match[1], 10);
   }
+  return null;
+}
 
-  const enrichedItems = [];
-  const datedItems = [];
-  const leadTimeItems = [];
+function _enrichItemRecord(it, catalogIndex) {
+  const rawSku = it.sku || it['Product #'] || '';
+  const clean = cleanBaseSKU(rawSku);
+  const desc = it.description || it.Description || it['Product Description'] || '';
+  const catEntry = catalogIndex ? catalogIndex.get(clean) : null;
+  const skuData = catEntry?.skuData || {};
 
-  for (const it of items) {
-    const rawSku = it.sku || it['Product #'] || '';
-    const clean = cleanBaseSKU(rawSku);
-    const desc = it.description || it.Description || it['Product Description'] || '';
-    const catEntry = catalogIndex ? catalogIndex.get(clean) : null;
-    const skuData = catEntry?.skuData || {};
+  const rawStartDate = it.startDate || it['Start Date'] || skuData['Start Date'] || '';
+  const startMs = parseDateToMs(rawStartDate);
+  const leadDays = _resolveLeadDays(it, skuData);
 
-    const rawStartDate = it.startDate || it['Start Date'] || skuData['Start Date'] || '';
-    const startMs = parseDateToMs(rawStartDate);
+  return {
+    sku: rawSku,
+    cleanSku: clean,
+    description: desc || skuData.Description || '',
+    category: it.category || catEntry?.parentCategory || catEntry?.subCategory || '',
+    startDate: startMs ? formatMsToDateStr(startMs) : null,
+    startMs,
+    leadTimeDays: leadDays,
+    quantity: it.quantity || it.Qty || 1
+  };
+}
 
-    const rawLeadTime = it.leadTime || it['Lead Time'] || it['Estimated Availability Lead Time'] || skuData['Lead Time'] || '';
-    let leadDays = it.leadTimeDays ?? skuData.leadTimeDays ?? null;
+function _isHardwareDatedItem(d) {
+  const descLower = d.description.toLowerCase();
+  const clean = d.cleanSku || '';
+  const isSoftwareSku = clean.endsWith('AAE') || clean.startsWith('R7A') || clean.startsWith('E5Y') || clean.startsWith('S5E') || clean.startsWith('S2E');
+  const isServiceOrSoftware = isServiceSku(clean) || isSoftwareSku ||
+    descLower.includes('tech care') || descLower.includes('credit') ||
+    descLower.includes('service') || descLower.includes('license') || descLower.includes('e-ltu') ||
+    descLower.includes('compute ops') || descLower.includes('oneview') ||
+    d.category.toLowerCase().includes('software') || d.category.toLowerCase().includes('service');
+  return !isServiceOrSoftware;
+}
 
-    if (leadDays === null && rawLeadTime) {
-      const match = String(rawLeadTime).match(/(\d+)/);
-      if (match) {
-        leadDays = parseInt(match[1], 10);
-      }
-    }
-
-    const itemRecord = {
-      sku: rawSku,
-      cleanSku: clean,
-      description: desc || skuData.Description || '',
-      category: it.category || catEntry?.parentCategory || catEntry?.subCategory || '',
-      startDate: startMs ? formatMsToDateStr(startMs) : null,
-      startMs,
-      leadTimeDays: leadDays,
-      quantity: it.quantity || it.Qty || 1
-    };
-
-    enrichedItems.push(itemRecord);
-
-    if (startMs !== null) {
-      datedItems.push(itemRecord);
-    }
-    if (leadDays !== null && leadDays > 0) {
-      leadTimeItems.push(itemRecord);
-    }
-  }
-
-  // 1. Release Wave Gap Analysis
+function _analyzeReleaseWaveGap(datedItems, waveGapThreshold) {
   let hasReleaseWaveGap = false;
   let releaseWaveGapDays = 0;
   let earliestStart = null;
   let latestStart = null;
   const wavePacingItems = [];
 
-  // Filter dated items to focus on physical hardware (exclude software E-LTUs, subscriptions, and services)
-  const hardwareDated = datedItems.filter(d => {
-    const descLower = d.description.toLowerCase();
-    const clean = d.cleanSku || '';
-    const isSoftwareSku = clean.endsWith('AAE') || clean.startsWith('R7A') || clean.startsWith('E5Y') || clean.startsWith('S5E') || clean.startsWith('S2E');
-    const isServiceOrSoftware = isServiceSku(clean) || isSoftwareSku ||
-      descLower.includes('tech care') || descLower.includes('credit') ||
-      descLower.includes('service') || descLower.includes('license') || descLower.includes('e-ltu') ||
-      descLower.includes('compute ops') || descLower.includes('oneview') ||
-      d.category.toLowerCase().includes('software') || d.category.toLowerCase().includes('service');
-    return !isServiceOrSoftware;
-  });
+  const hardwareDated = datedItems.filter(_isHardwareDatedItem);
 
   if (hardwareDated.length >= 2) {
     hardwareDated.sort((a, b) => a.startMs - b.startMs);
@@ -152,7 +133,6 @@ function analyzeDeliveryPacing(items = [], options = {}) {
       hasReleaseWaveGap = true;
       releaseWaveGapDays = diffDays;
 
-      // Identify items that are in the later wave
       const cutoffMs = earliestStart.startMs + (waveGapThreshold * 24 * 60 * 60 * 1000);
       hardwareDated.filter(d => d.startMs >= cutoffMs).forEach(d => {
         if (!wavePacingItems.some(w => w.cleanSku === d.cleanSku)) {
@@ -162,7 +142,10 @@ function analyzeDeliveryPacing(items = [], options = {}) {
     }
   }
 
-  // 2. Lead Time Bottleneck Analysis
+  return { hasReleaseWaveGap, releaseWaveGapDays, earliestStart, latestStart, wavePacingItems };
+}
+
+function _analyzeLeadTimeBottlenecks(leadTimeItems, leadTimeBottleneckThreshold) {
   let maxLeadTimeDays = 0;
   let leadTimeBottleneckItem = null;
   const leadPacingItems = [];
@@ -179,7 +162,15 @@ function analyzeDeliveryPacing(items = [], options = {}) {
     });
   }
 
-  // 3. Synthesize Advisories & UCID Recommendation
+  return { maxLeadTimeDays, leadTimeBottleneckItem, leadPacingItems };
+}
+
+function _synthesizeDeliveryAdvisories(params) {
+  const {
+    hasReleaseWaveGap, latestStart, earliestStart, releaseWaveGapDays,
+    leadTimeBottleneckItem, maxLeadTimeDays, leadTimeBottleneckThreshold
+  } = params;
+
   const advisories = [];
   let recommendedUcidSplit = false;
   let ucidSplitReason = null;
@@ -198,19 +189,63 @@ function analyzeDeliveryPacing(items = [], options = {}) {
     );
   }
 
+  return { advisories, recommendedUcidSplit, ucidSplitReason };
+}
+
+/**
+ * Analyzes delivery pacing and release waves for a BOM.
+ * Detects whether mixing disparate GA start dates triggers factory lock (INV-177 / INV-180).
+ *
+ * @param {Array<object>} items - List of BOQ parts
+ * @param {object} options - Options including waveGapThresholdDays, leadTimeBottleneckDays, catalogData
+ * @returns {object} Delivery pacing evaluation
+ */
+function analyzeDeliveryPacing(items = [], options = {}) {
+  const waveGapThreshold = options.waveGapThresholdDays ?? 30;
+  const leadTimeBottleneckThreshold = options.leadTimeBottleneckDays ?? 21;
+
+  let catalogIndex = null;
+  if (options.catalogData) {
+    catalogIndex = buildCatalogSkuIndex(options.catalogData);
+  }
+
+  const enrichedItems = [];
+  const datedItems = [];
+  const leadTimeItems = [];
+
+  for (const it of items) {
+    const itemRecord = _enrichItemRecord(it, catalogIndex);
+    enrichedItems.push(itemRecord);
+    if (itemRecord.startMs !== null) datedItems.push(itemRecord);
+    if (itemRecord.leadTimeDays !== null && itemRecord.leadTimeDays > 0) leadTimeItems.push(itemRecord);
+  }
+
+  const waveGapResult = _analyzeReleaseWaveGap(datedItems, waveGapThreshold);
+  const leadBottleneckResult = _analyzeLeadTimeBottlenecks(leadTimeItems, leadTimeBottleneckThreshold);
+
+  const advisoryResult = _synthesizeDeliveryAdvisories({
+    hasReleaseWaveGap: waveGapResult.hasReleaseWaveGap,
+    latestStart: waveGapResult.latestStart,
+    earliestStart: waveGapResult.earliestStart,
+    releaseWaveGapDays: waveGapResult.releaseWaveGapDays,
+    leadTimeBottleneckItem: leadBottleneckResult.leadTimeBottleneckItem,
+    maxLeadTimeDays: leadBottleneckResult.maxLeadTimeDays,
+    leadTimeBottleneckThreshold
+  });
+
   return {
-    hasPacingBottleneck: hasReleaseWaveGap || leadPacingItems.length > 0,
-    hasReleaseWaveGap,
-    releaseWaveGapDays,
-    earliestStartDate: earliestStart?.startDate || null,
-    latestStartDate: latestStart?.startDate || null,
-    wavePacingItems,
-    maxLeadTimeDays,
-    leadTimeBottleneckItem,
-    leadPacingItems,
-    recommendedUcidSplit,
-    ucidSplitReason,
-    advisories,
+    hasPacingBottleneck: waveGapResult.hasReleaseWaveGap || leadBottleneckResult.leadPacingItems.length > 0,
+    hasReleaseWaveGap: waveGapResult.hasReleaseWaveGap,
+    releaseWaveGapDays: waveGapResult.releaseWaveGapDays,
+    earliestStartDate: waveGapResult.earliestStart?.startDate || null,
+    latestStartDate: waveGapResult.latestStart?.startDate || null,
+    wavePacingItems: waveGapResult.wavePacingItems,
+    maxLeadTimeDays: leadBottleneckResult.maxLeadTimeDays,
+    leadTimeBottleneckItem: leadBottleneckResult.leadTimeBottleneckItem,
+    leadPacingItems: leadBottleneckResult.leadPacingItems,
+    recommendedUcidSplit: advisoryResult.recommendedUcidSplit,
+    ucidSplitReason: advisoryResult.ucidSplitReason,
+    advisories: advisoryResult.advisories,
     enrichedItems
   };
 }

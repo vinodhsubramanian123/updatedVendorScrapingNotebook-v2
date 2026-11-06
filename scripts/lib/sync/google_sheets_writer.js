@@ -57,8 +57,83 @@ function readJsonIfPresent(filePath, fallback) {
   }
 }
 
+function _extractItemSku(item) {
+  return item?.productNumber || item?.sku || item?.['Product #'] || '';
+}
+
+function _isAllowedCatalogSku(sku, allowedSkus, discontinuedSkus) {
+  if (!sku || !allowedSkus) return true;
+  const upper = String(sku).toUpperCase();
+  return allowedSkus.has(upper) || discontinuedSkus.has(upper);
+}
+
+function _collectAttributeRows(allAttributes, isAllowedSkuFn, pushChange) {
+  for (const item of allAttributes) {
+    const sku = _extractItemSku(item);
+    if (!isAllowedSkuFn(sku)) continue;
+    pushChange([
+      'ATTRIBUTE', item.timestamp || item.date || '', sku,
+      item.field || item.attribute || '', item.oldValue ?? '', item.newValue ?? '', item.status || 'CHANGED',
+      item.source || item.evidence || 'certified scrape diff'
+    ]);
+  }
+}
+
+function _flattenPriceHistory(priceHistory, servicesPriceHistory) {
+  const mapPriceEntry = (sku, value) => (Array.isArray(value) ? value : [value]).filter(Boolean).map(item => ({ ...item, sku: item.sku || sku }));
+  const flatPrices = Array.isArray(priceHistory) ? priceHistory : Object.entries(priceHistory || {}).flatMap(([sku, val]) => mapPriceEntry(sku, val));
+  const flatServices = Array.isArray(servicesPriceHistory) ? servicesPriceHistory : Object.entries(servicesPriceHistory || {}).flatMap(([sku, val]) => mapPriceEntry(sku, val));
+  return [...flatPrices, ...flatServices].filter(Boolean);
+}
+
+function _collectPriceRows(rawPrices, isAllowedSkuFn, pushChange) {
+  for (const item of rawPrices) {
+    const sku = _extractItemSku(item);
+    if (!isAllowedSkuFn(sku)) continue;
+    const oldPrice = item.oldPrice ?? item.previousPrice ?? item.prevPrice ?? '';
+    const newPrice = item.newPrice ?? item.price ?? '';
+    pushChange([
+      'PRICE', item.timestamp || item.date || '', sku,
+      'List Price', oldPrice, newPrice, item.status || 'CHANGED',
+      item.source || 'certified price history'
+    ]);
+  }
+}
+
+function _collectLearningDeltaRows(catalogDeltas, pushChange) {
+  const allowedStatus = new Set(['ACTIVE', 'PROMOTED', 'VERIFIED', 'APPLIED_TO_PRECHECKS_AND_RAG']);
+  const deltaEntries = Array.isArray(catalogDeltas) ? catalogDeltas : (catalogDeltas.deltas || []);
+  for (const item of deltaEntries) {
+    const status = String(item.governanceStatus || item.status || '').toUpperCase();
+    if (!allowedStatus.has(status)) continue;
+    pushChange([
+      'VERIFIED_LEARNING', item.promotedAt || item.timestamp || item.createdAt || '', item.affectedSku || item.sku || '',
+      item.errorType || item.scopeTaxonomy || '', '', item.ruleUpdate || item.rawMessage || '', 'VERIFIED',
+      item.deltaId || item.source || 'verified KnowledgeDelta'
+    ]);
+  }
+}
+
+function _collectDiscontinuedRows(discontinued, isAllowedSkuFn, pushChange) {
+  for (const item of Object.values(discontinued || {})) {
+    const sku = _extractItemSku(item);
+    if (!isAllowedSkuFn(sku)) continue;
+    const prevStatus = item.previousLifecycleStatus || item.previousStatus || '';
+    const status = item.status || '';
+    const src = item.source || 'certified scrape diff';
+    const tracking = item.trackingState || 'LIFECYCLE_RETAINED';
+    const retention = item.retentionClass || 'COMPACT_LIFECYCLE_TOMBSTONE';
+    pushChange([
+      'LIFECYCLE', item.discontinuedDate || item.timestamp || '', sku,
+      'Lifecycle Status', prevStatus, status, status,
+      `${src} | ${tracking} | ${retention}`
+    ]);
+  }
+}
+
 function toChangeRows(targetDir, options = {}) {
   const historyDir = path.join(targetDir, 'history');
+  const servicesHistoryDir = path.join(targetDir, 'services_history');
   const rows = [['Change Type', 'Timestamp', 'SKU', 'Attribute', 'Previous Value', 'Current Value', 'Status', 'Evidence']];
   const seen = new Set();
   const pushChange = row => {
@@ -67,8 +142,8 @@ function toChangeRows(targetDir, options = {}) {
     seen.add(key);
     rows.push(row);
   };
+
   const attributeHistory = readJsonIfPresent(path.join(historyDir, 'attribute_history.json'), []);
-  const servicesHistoryDir = path.join(targetDir, 'services_history');
   const servicesAttributeHistory = readJsonIfPresent(path.join(servicesHistoryDir, 'services_attribute_history.json'),
     readJsonIfPresent(path.join(historyDir, 'services_attribute_history.json'), []));
   const allAttributes = [
@@ -81,62 +156,18 @@ function toChangeRows(targetDir, options = {}) {
     readJsonIfPresent(path.join(historyDir, 'services_price_history.json'), {}));
   const catalogDeltas = readJsonIfPresent(path.join(historyDir, 'catalog_deltas.json'), []);
   const discontinued = readJsonIfPresent(path.join(historyDir, 'discontinued_skus.json'), {});
+
   const allowedSkus = options.allowedSkus instanceof Set ? options.allowedSkus : null;
   const discontinuedSkus = new Set(Object.values(discontinued || {}).map(item =>
-    String(item?.productNumber || item?.sku || item?.['Product #'] || '').toUpperCase()
+    String(_extractItemSku(item)).toUpperCase()
   ).filter(Boolean));
-  const isAllowedCatalogSku = sku => !sku || !allowedSkus || allowedSkus.has(String(sku).toUpperCase()) ||
-    discontinuedSkus.has(String(sku).toUpperCase());
+  const isAllowedSkuFn = sku => _isAllowedCatalogSku(sku, allowedSkus, discontinuedSkus);
 
-  for (const item of allAttributes) {
-    const sku = item.sku || item.productNumber || item['Product #'] || '';
-    if (!isAllowedCatalogSku(sku)) continue;
-    pushChange([
-      'ATTRIBUTE', item.timestamp || item.date || '', sku,
-      item.field || item.attribute || '', item.oldValue ?? '', item.newValue ?? '', item.status || 'CHANGED',
-      item.source || item.evidence || 'certified scrape diff'
-    ]);
-  }
-
-  const rawPrices = [
-    ...(Array.isArray(priceHistory) ? priceHistory : Object.entries(priceHistory || {}).flatMap(([sku, value]) =>
-      (Array.isArray(value) ? value : [value]).filter(Boolean).map(item => ({ ...item, sku: item.sku || sku }))
-    )),
-    ...(Array.isArray(servicesPriceHistory) ? servicesPriceHistory : Object.entries(servicesPriceHistory || {}).flatMap(([sku, value]) =>
-      (Array.isArray(value) ? value : [value]).filter(Boolean).map(item => ({ ...item, sku: item.sku || sku }))
-    ))
-  ];
-
-  for (const item of rawPrices.filter(Boolean)) {
-    const sku = item.sku || item.productNumber || item['Product #'] || '';
-    if (!isAllowedCatalogSku(sku)) continue;
-    pushChange([
-      'PRICE', item.timestamp || item.date || '', sku,
-      'List Price', item.oldPrice ?? item.previousPrice ?? item.prevPrice ?? '', item.newPrice ?? item.price ?? '', item.status || 'CHANGED',
-      item.source || 'certified price history'
-    ]);
-  }
-
-  const deltaEntries = Array.isArray(catalogDeltas) ? catalogDeltas : (catalogDeltas.deltas || []);
-  for (const item of deltaEntries) {
-    if (!['ACTIVE', 'PROMOTED', 'VERIFIED', 'APPLIED_TO_PRECHECKS_AND_RAG'].includes(String(item.governanceStatus || item.status || '').toUpperCase())) continue;
-    pushChange([
-      'VERIFIED_LEARNING', item.promotedAt || item.timestamp || item.createdAt || '', item.affectedSku || item.sku || '',
-      item.errorType || item.scopeTaxonomy || '', '', item.ruleUpdate || item.rawMessage || '', 'VERIFIED',
-      item.deltaId || item.source || 'verified KnowledgeDelta'
-    ]);
-  }
-
-  for (const item of Object.values(discontinued || {})) {
-    const sku = item.productNumber || item.sku || item['Product #'] || '';
-    if (!isAllowedCatalogSku(sku)) continue;
-    pushChange([
-      'LIFECYCLE', item.discontinuedDate || item.timestamp || '', sku,
-      'Lifecycle Status', item.previousLifecycleStatus || item.previousStatus || '', item.status || '', item.status || '',
-      (item.source || 'certified scrape diff') +
-        ` | ${item.trackingState || 'LIFECYCLE_RETAINED'} | ${item.retentionClass || 'COMPACT_LIFECYCLE_TOMBSTONE'}`
-    ]);
-  }
+  _collectAttributeRows(allAttributes, isAllowedSkuFn, pushChange);
+  const rawPrices = _flattenPriceHistory(priceHistory, servicesPriceHistory);
+  _collectPriceRows(rawPrices, isAllowedSkuFn, pushChange);
+  _collectLearningDeltaRows(catalogDeltas, pushChange);
+  _collectDiscontinuedRows(discontinued, isAllowedSkuFn, pushChange);
 
   return rows;
 }
@@ -201,6 +232,130 @@ async function replaceGoogleSheetWorkbook(spreadsheetId, datasets, options = {})
   finally { release(); }
 }
 
+function _buildTabUpdateRequests(tabRows, properties) {
+  let nextId = Math.max(0, ...properties.map(p => p.sheetId)) + 1;
+  const requests = [];
+  for (const [title, values] of tabRows) {
+    const existing = properties.find(p => p.title === title);
+    const sheetId = existing?.sheetId ?? nextId++;
+    const gridProperties = {
+      rowCount: Math.max(existing?.gridProperties?.rowCount || 1000, values.length),
+      columnCount: Math.max(existing?.gridProperties?.columnCount || 26, ...values.map(row => row.length))
+    };
+    if (!existing) {
+      requests.push({ addSheet: { properties: { sheetId, title, gridProperties } } });
+    } else {
+      requests.push({ updateSheetProperties: { properties: { sheetId, gridProperties }, fields: 'gridProperties.rowCount,gridProperties.columnCount' } });
+    }
+    requests.push({
+      updateCells: {
+        range: { sheetId },
+        fields: 'userEnteredValue',
+        rows: values.map(row => ({
+          values: row.map(value => ({
+            userEnteredValue: typeof value === 'number' ? { numberValue: value } : typeof value === 'boolean' ? { boolValue: value } : { stringValue: String(value ?? '') }
+          }))
+        }))
+      }
+    });
+  }
+  return requests;
+}
+
+async function _createSheetBackup(client, baseUrl, snapshotUrl, properties, spreadsheetId, options) {
+  const backupData = await client.request({ url: snapshotUrl, method: 'GET' });
+  const originalSheets = backupData.data?.sheets;
+  if (!Array.isArray(originalSheets) || originalSheets.length !== properties.length || properties.some(p => !originalSheets.some(sheet => sheet.properties?.sheetId === p.sheetId && sheet.properties.title === p.title))) {
+    throw new Error('Complete sheet backup is unavailable; mutation blocked.');
+  }
+  const backupDir = options.backupDir || path.resolve(__dirname, '../../../outputs/history/drive_backups');
+  const backupFile = path.join(backupDir, 'drive_backup_' + crypto.randomUUID() + '.json');
+  safeWriteJsonAtomic(backupFile, { spreadsheetId, backedUpAt: new Date().toISOString(), sheets: originalSheets });
+  const persisted = JSON.parse(fs.readFileSync(backupFile, 'utf8'));
+  if (JSON.stringify(persisted.sheets) !== JSON.stringify(originalSheets)) {
+    throw new Error('Sheet backup persistence failed; mutation blocked.');
+  }
+  return { originalSheets, backupFile, persisted };
+}
+
+async function _verifyTabReadback(client, baseUrl, tabRows) {
+  const ranges = tabRows.map(([title]) => `ranges=${encodeURIComponent(quoteSheetTitle(title))}`).join('&');
+  const readback = await client.request({ url: `${baseUrl}/values:batchGet?${ranges}&valueRenderOption=UNFORMATTED_VALUE`, method: 'GET' });
+  const normalize = rows => {
+    const result = (rows || []).map(row => {
+      const cells = row.map(cell => cell ?? '');
+      while (cells.length && cells.at(-1) === '') cells.pop();
+      return cells;
+    });
+    while (result.length && result.at(-1).length === 0) result.pop();
+    return result;
+  };
+
+  const readbackFingerprints = {};
+  for (let index = 0; index < tabRows.length; index++) {
+    const [title, expected] = tabRows[index];
+    const actual = readback.data?.valueRanges?.[index]?.values;
+    if (!actual || stableRowsFingerprint(normalize(actual)) !== stableRowsFingerprint(normalize(expected))) {
+      throw new Error(`Google Sheet readback mismatch for ${title}; synchronization is not verified`);
+    }
+    readbackFingerprints[title] = stableRowsFingerprint(normalize(actual));
+  }
+  return readbackFingerprints;
+}
+
+async function _executeRollback(client, baseUrl, snapshotUrl, requests, originalSheets, persisted, backupFile, mutationError) {
+  const restoreRequests = [];
+  const managedIds = new Set(requests.filter(request => request.updateCells).map(request => request.updateCells.range.sheetId));
+  for (const request of requests) {
+    if (request.addSheet) restoreRequests.push({ deleteSheet: { sheetId: request.addSheet.properties.sheetId } });
+  }
+  for (const sheet of originalSheets) {
+    if (!managedIds.has(sheet.properties.sheetId)) continue;
+    const sheetId = sheet.properties.sheetId;
+    restoreRequests.push({ updateCells: { range: { sheetId }, fields: 'userEnteredValue', rows: [] } });
+    for (const data of sheet.data || []) {
+      restoreRequests.push({
+        updateCells: {
+          start: { sheetId, rowIndex: data.startRow || 0, columnIndex: data.startColumn || 0 },
+          fields: 'userEnteredValue', rows: data.rowData || []
+        }
+      });
+    }
+    if (sheet.properties.gridProperties) {
+      restoreRequests.push({
+        updateSheetProperties: {
+          properties: { sheetId, gridProperties: sheet.properties.gridProperties },
+          fields: 'gridProperties.rowCount,gridProperties.columnCount'
+        }
+      });
+    }
+  }
+  try {
+    const current = await client.request({ url: baseUrl + '?fields=sheets.properties', method: 'GET' });
+    const currentIds = new Set((current.data?.sheets || []).map(sheet => sheet.properties.sheetId));
+    const recoveryRequests = restoreRequests.filter(request => !request.deleteSheet || currentIds.has(request.deleteSheet.sheetId));
+    await client.request({ url: baseUrl + ':batchUpdate', method: 'POST', data: { requests: recoveryRequests } });
+    const restored = await client.request({ url: snapshotUrl, method: 'GET' });
+    if (sheetSnapshotFingerprint(restored.data?.sheets) !== sheetSnapshotFingerprint(originalSheets)) {
+      throw new Error('Rollback readback mismatch');
+    }
+    mutationError.rollbackVerified = true;
+  } catch (rollbackError) {
+    mutationError.rollbackVerified = false;
+    mutationError.rollbackError = rollbackError.message;
+    mutationError.message += '; rollback pending: ' + rollbackError.message;
+  }
+  safeWriteJsonAtomic(backupFile, {
+    ...persisted,
+    rollbackStatus: mutationError.rollbackVerified ? 'RESTORED' : 'RECOVERY_REQUIRED',
+    error: mutationError.message,
+    rollbackError: mutationError.rollbackError || null,
+    updatedAt: new Date().toISOString()
+  });
+  mutationError.backupFile = backupFile;
+  throw mutationError;
+}
+
 async function replaceGoogleSheetWorkbookWithinLease(spreadsheetId, datasets, options = {}) {
   if (!spreadsheetId) throw new Error('Google spreadsheet ID is required');
   const tabs = { ...DEFAULT_TABS, ...options.tabs };
@@ -211,89 +366,28 @@ async function replaceGoogleSheetWorkbookWithinLease(spreadsheetId, datasets, op
     [tabs.metadata, datasets.metadataRows],
     ...(datasets.workbookTabs || []).map(tab => [tab.title, tab.rows])
   ];
-  if (new Set(tabRows.map(([title]) => title)).size !== tabRows.length) throw new Error('Duplicate managed workbook tab titles');
+  if (new Set(tabRows.map(([title]) => title)).size !== tabRows.length) {
+    throw new Error('Duplicate managed workbook tab titles');
+  }
+
   const auth = options.auth || new GoogleAuth({ scopes: [SHEETS_SCOPE] });
   const client = options.client || await auth.getClient();
   const baseUrl = `https://sheets.googleapis.com/v4/spreadsheets/${encodeURIComponent(spreadsheetId)}`;
   const metadata = await client.request({ url: `${baseUrl}?fields=sheets.properties`, method: 'GET' });
   if (!Array.isArray(metadata.data?.sheets)) throw new Error('Sheet metadata is unavailable; mutation blocked.');
+
   const properties = metadata.data.sheets.map(sheet => sheet.properties);
-  let nextId = Math.max(0, ...properties.map(p => p.sheetId)) + 1;
-  const requests = [];
-  for (const [title, values] of tabRows) {
-    const existing = properties.find(p => p.title === title);
-    const sheetId = existing?.sheetId ?? nextId++;
-    const gridProperties = { rowCount: Math.max(existing?.gridProperties?.rowCount || 1000, values.length), columnCount: Math.max(existing?.gridProperties?.columnCount || 26, ...values.map(row => row.length)) };
-    if (!existing) requests.push({ addSheet: { properties: { sheetId, title, gridProperties } } });
-    else requests.push({ updateSheetProperties: { properties: { sheetId, gridProperties }, fields: 'gridProperties.rowCount,gridProperties.columnCount' } });
-    // One atomic batch replaces all values, including stale trailing cells.
-    requests.push({ updateCells: { range: { sheetId }, fields: 'userEnteredValue', rows: values.map(row => ({ values: row.map(value => ({ userEnteredValue: typeof value === 'number' ? { numberValue: value } : typeof value === 'boolean' ? { boolValue: value } : { stringValue: String(value ?? '') } })) })) } });
-  }
-  // The full entered-value snapshot preserves formulas and literal strings.
+  const requests = _buildTabUpdateRequests(tabRows, properties);
+
   const snapshotUrl = baseUrl + '?includeGridData=true&fields=sheets(properties,data(startRow,startColumn,rowData.values.userEnteredValue))';
-  const backupData = await client.request({ url: snapshotUrl, method: 'GET' });
-  const originalSheets = backupData.data?.sheets;
-  if (!Array.isArray(originalSheets) || originalSheets.length !== properties.length || properties.some(p => !originalSheets.some(sheet => sheet.properties?.sheetId === p.sheetId && sheet.properties.title === p.title))) {
-    throw new Error('Complete sheet backup is unavailable; mutation blocked.');
-  }
-  const backupDir = options.backupDir || path.resolve(__dirname, '../../../outputs/history/drive_backups');
-  const backupFile = path.join(backupDir, 'drive_backup_' + crypto.randomUUID() + '.json');
-  safeWriteJsonAtomic(backupFile, { spreadsheetId, backedUpAt: new Date().toISOString(), sheets: originalSheets });
-  const persisted = JSON.parse(fs.readFileSync(backupFile, 'utf8'));
-  if (JSON.stringify(persisted.sheets) !== JSON.stringify(originalSheets)) throw new Error('Sheet backup persistence failed; mutation blocked.');
+  const { originalSheets, backupFile, persisted } = await _createSheetBackup(client, baseUrl, snapshotUrl, properties, spreadsheetId, options);
+
   let readbackFingerprints;
   try {
     await client.request({ url: baseUrl + ':batchUpdate', method: 'POST', data: { requests } });
-  const ranges = tabRows.map(([title]) => `ranges=${encodeURIComponent(quoteSheetTitle(title))}`).join('&');
-  const readback = await client.request({ url: `${baseUrl}/values:batchGet?${ranges}&valueRenderOption=UNFORMATTED_VALUE`, method: 'GET' });
-  const normalize = rows => {
-    const result = (rows || []).map(row => { const cells = row.map(cell => cell ?? ''); while (cells.length && cells.at(-1) === '') cells.pop(); return cells; });
-    while (result.length && result.at(-1).length === 0) result.pop();
-    return result;
-  };
-  readbackFingerprints = {};
-  for (let index = 0; index < tabRows.length; index++) {
-    const [title, expected] = tabRows[index];
-    const actual = readback.data?.valueRanges?.[index]?.values;
-    if (!actual || stableRowsFingerprint(normalize(actual)) !== stableRowsFingerprint(normalize(expected))) throw new Error(`Google Sheet readback mismatch for ${title}; synchronization is not verified`);
-    readbackFingerprints[title] = stableRowsFingerprint(normalize(actual));
-  }
-
+    readbackFingerprints = await _verifyTabReadback(client, baseUrl, tabRows);
   } catch (mutationError) {
-    const restoreRequests = [];
-    const managedIds = new Set(requests.filter(request => request.updateCells).map(request => request.updateCells.range.sheetId));
-    for (const request of requests) {
-      if (request.addSheet) restoreRequests.push({ deleteSheet: { sheetId: request.addSheet.properties.sheetId } });
-    }
-    for (const sheet of originalSheets) {
-      if (!managedIds.has(sheet.properties.sheetId)) continue;
-      const sheetId = sheet.properties.sheetId;
-      restoreRequests.push({ updateCells: { range: { sheetId }, fields: 'userEnteredValue', rows: [] } });
-      for (const data of sheet.data || []) {
-        restoreRequests.push({ updateCells: { start: { sheetId, rowIndex: data.startRow || 0, columnIndex: data.startColumn || 0 },
-          fields: 'userEnteredValue', rows: data.rowData || [] } });
-      }
-      if (sheet.properties.gridProperties) restoreRequests.push({ updateSheetProperties: {
-        properties: { sheetId, gridProperties: sheet.properties.gridProperties }, fields: 'gridProperties.rowCount,gridProperties.columnCount' } });
-    }
-    try {
-      // Delete only newly added tabs that actually exist (the failed batch may not have committed).
-      const current = await client.request({ url: baseUrl + '?fields=sheets.properties', method: 'GET' });
-      const currentIds = new Set((current.data?.sheets || []).map(sheet => sheet.properties.sheetId));
-      const recoveryRequests = restoreRequests.filter(request => !request.deleteSheet || currentIds.has(request.deleteSheet.sheetId));
-      await client.request({ url: baseUrl + ':batchUpdate', method: 'POST', data: { requests: recoveryRequests } });
-      const restored = await client.request({ url: snapshotUrl, method: 'GET' });
-      if (sheetSnapshotFingerprint(restored.data?.sheets) !== sheetSnapshotFingerprint(originalSheets)) throw new Error('Rollback readback mismatch');
-      mutationError.rollbackVerified = true;
-    } catch (rollbackError) {
-      mutationError.rollbackVerified = false;
-      mutationError.rollbackError = rollbackError.message;
-      mutationError.message += '; rollback pending: ' + rollbackError.message;
-    }
-    safeWriteJsonAtomic(backupFile, { ...persisted, rollbackStatus: mutationError.rollbackVerified ? 'RESTORED' : 'RECOVERY_REQUIRED',
-      error: mutationError.message, rollbackError: mutationError.rollbackError || null, updatedAt: new Date().toISOString() });
-    mutationError.backupFile = backupFile;
-    throw mutationError;
+    await _executeRollback(client, baseUrl, snapshotUrl, requests, originalSheets, persisted, backupFile, mutationError);
   }
 
   return {

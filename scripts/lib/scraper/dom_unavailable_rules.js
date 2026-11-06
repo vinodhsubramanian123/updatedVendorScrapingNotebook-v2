@@ -53,6 +53,114 @@ function classifyDomRuleReason(reasonText) {
  * @param {Document|Element} doc
  * @returns {{ unavailableRules: Array<object>, unavailableSkus: Array<object> }}
  */
+function _extractTableReasonText(table) {
+  let reasonText = '';
+  const redHeader = table.querySelector(
+    '.choice_header1[style*="red"], .choice_header1.unavailable, [style*="color: red"], [style*="color:red"], .unavailable_header'
+  );
+  if (redHeader) {
+    reasonText = (redHeader.innerText || redHeader.textContent || '').trim();
+  }
+
+  if (!reasonText) {
+    const colTitle = table.querySelector('tr[id*="choice_column_titles_"]');
+    if (colTitle && colTitle.id) {
+      const parts = colTitle.id.split('-');
+      if (parts.length > 1) {
+        reasonText = parts.slice(1).join('-').trim();
+      }
+    }
+  }
+
+  return reasonText.replace(/[\n\r\t]+/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+function _resolveSectionName(table) {
+  let sectionName = 'General Options';
+  let ancestor = table.closest ? table.closest('tr') : null;
+  while (ancestor && ancestor.previousElementSibling) {
+    ancestor = ancestor.previousElementSibling;
+    if (ancestor.classList && (ancestor.classList.contains('section_header') || ancestor.className.includes('section_header'))) {
+      const raw = (ancestor.innerText || ancestor.textContent || '').trim();
+      sectionName = raw.split(/[\r\n]+/)[0].replace(/Show Subcategories|Collapse All|Expand All/gi, '').trim();
+      break;
+    }
+  }
+  return sectionName;
+}
+
+function _extractRowSupplyBadge(tr, rawSku, badgeEl) {
+  const badgeSpan = tr.querySelector('.td_badge, .badge, .item_badge, .badge_txt');
+  if (badgeSpan) {
+    return (badgeSpan.innerText || badgeSpan.textContent || '').trim();
+  }
+  const rawPrefixMatch = rawSku.match(/^(OB|CS|90)\b/i);
+  if (rawPrefixMatch) {
+    return rawPrefixMatch[1].toUpperCase();
+  }
+  if (badgeEl) {
+    const clone = badgeEl.cloneNode ? badgeEl.cloneNode(true) : null;
+    if (clone && clone.querySelectorAll) {
+      clone.querySelectorAll('._pid, [class*="_pid"]').forEach(p => p.remove());
+      return (clone.innerText || clone.textContent || '').trim();
+    }
+    return (badgeEl.innerText || badgeEl.textContent || '').trim();
+  }
+  return '';
+}
+
+function _parseUnavailableTableRow(tr, seenSkus, sectionName, ruleType, reasonText) {
+  const pidEl = tr.querySelector('._pid, .item_prod span._pid, .item_prod, [class*="_pid"]');
+  const rawSku = (pidEl ? (pidEl.innerText || pidEl.textContent || '') : '').trim();
+  let sku = rawSku.replace(/[\r\n\t]+/g, ' ').trim();
+  sku = sku.replace(/^(?:OB|CS|90)\s+/i, '').trim();
+  const isPrivateSku = /\bPVT\b/i.test(sku);
+  sku = sku.replace(/\s+PVT$/i, '').trim();
+  const cleanSku = cleanBaseSKU(sku);
+
+  if (!cleanSku || !isValidHpeSKU(cleanSku) || cleanSku === 'Product #' || seenSkus.has(cleanSku)) {
+    return null;
+  }
+
+  const descEl = tr.querySelector('.item_desc, [class*="item_desc"]');
+  const desc = (descEl ? (descEl.innerText || descEl.textContent || '') : '').trim();
+
+  const priceEl = tr.querySelector('.item_price, [class*="item_price"]');
+  const priceStr = (priceEl ? (priceEl.innerText || priceEl.textContent || '') : '0').replace(/[^0-9.]/g, '');
+  const price = parseFloat(priceStr) || 0;
+
+  const startEl = tr.querySelector('.item_start_date');
+  const endEl = tr.querySelector('.item_end_date');
+  const startDate = (startEl ? (startEl.innerText || startEl.textContent || '') : '').trim();
+  const endDate = (endEl ? (endEl.innerText || endEl.textContent || '') : '').trim();
+
+  const badgeEl = tr.querySelector('.td_prod');
+  const badge = _extractRowSupplyBadge(tr, rawSku, badgeEl);
+  const badgeTitle = badgeEl ? (badgeEl.getAttribute('title') || '') : '';
+
+  seenSkus.add(cleanSku);
+
+  return {
+    item: {
+      sku: cleanSku,
+      rawSku,
+      isPrivateSku,
+      description: desc,
+      listPrice: price,
+      startDate,
+      discontinuedDate: endDate || 'Active',
+      section: sectionName,
+      ruleType,
+      ineligibilityReason: reasonText,
+      supplyBadge: badge,
+      supplyTitle: badgeTitle,
+      isSelectable: false,
+      status: 'PORTAL_CONDITIONAL'
+    },
+    cleanSku
+  };
+}
+
 function parseUnavailableDomRules(doc) {
   const unavailableRules = [];
   const unavailableSkus = [];
@@ -68,110 +176,21 @@ function parseUnavailableDomRules(doc) {
   ));
 
   for (const table of tables) {
-    // 1. Extract reasoning text from red header or choice_column_titles id
-    let reasonText = '';
-    const redHeader = table.querySelector(
-      '.choice_header1[style*="red"], .choice_header1.unavailable, [style*="color: red"], [style*="color:red"], .unavailable_header'
-    );
-    if (redHeader) {
-      reasonText = (redHeader.innerText || redHeader.textContent || '').trim();
-    }
-
-    if (!reasonText) {
-      const colTitle = table.querySelector('tr[id*="choice_column_titles_"]');
-      if (colTitle && colTitle.id) {
-        const parts = colTitle.id.split('-');
-        if (parts.length > 1) {
-          reasonText = parts.slice(1).join('-').trim();
-        }
-      }
-    }
-
-    // Clean up whitespace and newlines
-    reasonText = reasonText.replace(/[\n\r\t]+/g, ' ').replace(/\s+/g, ' ').trim();
+    const reasonText = _extractTableReasonText(table);
     if (!reasonText || reasonText.length < 3) continue;
 
-    // 2. Classify rule type generically
     const ruleType = classifyDomRuleReason(reasonText);
-
-    // 3. Find parent Section / Category name by walking ancestors
-    let sectionName = 'General Options';
-    let ancestor = table.closest ? table.closest('tr') : null;
-    while (ancestor && ancestor.previousElementSibling) {
-      ancestor = ancestor.previousElementSibling;
-      if (ancestor.classList && (ancestor.classList.contains('section_header') || ancestor.className.includes('section_header'))) {
-        const raw = (ancestor.innerText || ancestor.textContent || '').trim();
-        sectionName = raw.split(/[\r\n]+/)[0].replace(/Show Subcategories|Collapse All|Expand All/gi, '').trim();
-        break;
-      }
-    }
+    const sectionName = _resolveSectionName(table);
 
     const affectedSkusInRule = [];
     const rows = Array.from(table.querySelectorAll('tr.item_tr.unavailable, tr.item_tr[class*="unavailable"], tr.unavailable'));
 
     for (const tr of rows) {
-      const pidEl = tr.querySelector('._pid, .item_prod span._pid, .item_prod, [class*="_pid"]');
-      const rawSku = (pidEl ? (pidEl.innerText || pidEl.textContent || '') : '').trim();
-      let sku = rawSku.replace(/[\r\n\t]+/g, ' ').trim();
-      // Clean embedded status prefixes like 'OB P45916-B21', 'CS P69726-B21', '90 S3Z84AAE'
-      sku = sku.replace(/^(?:OB|CS|90)\s+/i, '').trim();
-      const isPrivateSku = /\bPVT\b/i.test(sku);
-      sku = sku.replace(/\s+PVT$/i, '').trim();
-      const cleanSku = cleanBaseSKU(sku);
-      if (!cleanSku || !isValidHpeSKU(cleanSku) || cleanSku === 'Product #' || seenSkus.has(cleanSku)) continue;
-
-      const descEl = tr.querySelector('.item_desc, [class*="item_desc"]');
-      const desc = (descEl ? (descEl.innerText || descEl.textContent || '') : '').trim();
-
-      const priceEl = tr.querySelector('.item_price, [class*="item_price"]');
-      const priceStr = (priceEl ? (priceEl.innerText || priceEl.textContent || '') : '0').replace(/[^0-9.]/g, '');
-      const price = parseFloat(priceStr) || 0;
-
-      const startEl = tr.querySelector('.item_start_date');
-      const endEl = tr.querySelector('.item_end_date');
-      const startDate = (startEl ? (startEl.innerText || startEl.textContent || '') : '').trim();
-      const endDate = (endEl ? (endEl.innerText || endEl.textContent || '') : '').trim();
-
-      const badgeEl = tr.querySelector('.td_prod');
-      let badge = '';
-      const badgeSpan = tr.querySelector('.td_badge, .badge, .item_badge, .badge_txt');
-      if (badgeSpan) {
-        badge = (badgeSpan.innerText || badgeSpan.textContent || '').trim();
-      } else {
-        const rawPrefixMatch = rawSku.match(/^(OB|CS|90)\b/i);
-        if (rawPrefixMatch) {
-          badge = rawPrefixMatch[1].toUpperCase();
-        } else if (badgeEl) {
-          const clone = badgeEl.cloneNode ? badgeEl.cloneNode(true) : null;
-          if (clone && clone.querySelectorAll) {
-            clone.querySelectorAll('._pid, [class*="_pid"]').forEach(p => p.remove());
-            badge = (clone.innerText || clone.textContent || '').trim();
-          } else {
-            badge = (badgeEl.innerText || badgeEl.textContent || '').trim();
-          }
-        }
+      const parsed = _parseUnavailableTableRow(tr, seenSkus, sectionName, ruleType, reasonText);
+      if (parsed) {
+        affectedSkusInRule.push(parsed.cleanSku);
+        unavailableSkus.push(parsed.item);
       }
-      const badgeTitle = badgeEl ? (badgeEl.getAttribute('title') || '') : '';
-
-      seenSkus.add(cleanSku);
-      affectedSkusInRule.push(cleanSku);
-
-      unavailableSkus.push({
-        sku: cleanSku,
-        rawSku,
-        isPrivateSku,
-        description: desc,
-        listPrice: price,
-        startDate,
-        discontinuedDate: endDate || 'Active',
-        section: sectionName,
-        ruleType,
-        ineligibilityReason: reasonText,
-        supplyBadge: badge,
-        supplyTitle: badgeTitle,
-        isSelectable: false,
-        status: 'PORTAL_CONDITIONAL'
-      });
     }
 
     if (affectedSkusInRule.length > 0) {
@@ -189,18 +208,7 @@ function parseUnavailableDomRules(doc) {
   return { unavailableRules, unavailableSkus };
 }
 
-/**
- * Self-contained client-side expression executed in browser page context via CDP Runtime.evaluate.
- * GAP-10 FIX: The classifyReason inline lambda is now generated from classifyDomRuleReason.toString()
- * so that Node-side and browser-side logic are guaranteed to be identical — single source of truth.
- */
-function buildUnavailableDomExpression(classifyFn) {
-  // Serialize the canonical Node function into a browser-safe arrow function body
-  const fnBody = classifyFn.toString()
-    .replace(/^function classifyDomRuleReason\s*\(reasonText\)\s*\{/, '')
-    .replace(/\}$/, '')
-    .trim();
-  return String.raw`(() => {
+const CLIENT_UNAVAILABLE_DOM_TEMPLATE = String.raw`(() => {
   const documents = [document];
   try {
     const iframes = document.querySelectorAll('iframe');
@@ -213,7 +221,7 @@ function buildUnavailableDomExpression(classifyFn) {
     });
   } catch (_) {}
 
-  const classifyReason = (reasonText) => { ${fnBody} };
+  const classifyReason = (reasonText) => { __CLASSIFY_FN_BODY__ };
 
   const unavailableRules = [];
   const unavailableSkus = [];
@@ -341,6 +349,19 @@ function buildUnavailableDomExpression(classifyFn) {
 
   return JSON.stringify({ unavailableRules, unavailableSkus });
 })()`;
+
+/**
+ * Self-contained client-side expression executed in browser page context via CDP Runtime.evaluate.
+ * GAP-10 FIX: The classifyReason inline lambda is now generated from classifyDomRuleReason.toString()
+ * so that Node-side and browser-side logic are guaranteed to be identical — single source of truth.
+ */
+function buildUnavailableDomExpression(classifyFn) {
+  // Serialize the canonical Node function into a browser-safe arrow function body
+  const fnBody = classifyFn.toString()
+    .replace(/^function classifyDomRuleReason\s*\(reasonText\)\s*\{/, '')
+    .replace(/\}$/, '')
+    .trim();
+  return CLIENT_UNAVAILABLE_DOM_TEMPLATE.replace('__CLASSIFY_FN_BODY__', fnBody);
 }
 
 // Derive the browser expression from the canonical Node-side function (single source of truth)

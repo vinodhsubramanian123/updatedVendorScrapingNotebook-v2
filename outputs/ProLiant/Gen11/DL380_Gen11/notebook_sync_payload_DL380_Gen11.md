@@ -4,7 +4,7 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen11/DL380_Gen11`
 
-**Sync Timestamp**: 2026-11-03T08:08:19.833Z
+**Sync Timestamp**: 2026-11-06T15:19:24.502Z
 
 **Total Verified SKUs**: `1408` (`753` Hardware + `655` Services)
 
@@ -41,20 +41,20 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 ## 🎯 3. Chassis & Solution-Type Gotchas (DL380_Gen11)
 
 1. **[DELTA-1787856163365] DL380_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
-   - **Rule**: If PORTAL is present, P52534-B21 is mandatory.
-   - **Affected SKU**: `PORTAL` | **Required Dependency**: `P52534-B21`
+   - **Rule**: When ordering P52534-B21 (DL380 Gen11 8SFF NC CTO), minimum 1 and maximum 16 memory DIMMs must be ordered per processor.
+   - **Affected SKU**: `P52534-B21` | **Required Dependency**: `MEMORY_KIT_MIN1_MAX16`
 
 2. **[DELTA-1787856163549] DL380_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
-   - **Rule**: If PORTAL is present, P64707-B21 is mandatory.
-   - **Affected SKU**: `PORTAL` | **Required Dependency**: `P64707-B21`
+   - **Rule**: Standalone SKU P64707-B21 constrained; must substitute factory-integrated P64707-F21 for CTO factory build.
+   - **Affected SKU**: `P64707-B21` | **Required Dependency**: `P64707-F21`
 
 3. **[DELTA-1787856163672] DL380_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
-   - **Rule**: Portal validation flagged restriction on PORTAL.
-   - **Affected SKU**: `PORTAL` | **Required Dependency**: `N/A`
+   - **Rule**: Advisory: Selection of an Operating System is recommended for factory deployment.
+   - **Affected SKU**: `P52534-B21` | **Required Dependency**: `N/A`
 
 4. **[DELTA-1787856163759] DL380_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `General Server`):
-   - **Rule**: If PORTAL is present, P58335-B21 is mandatory.
-   - **Affected SKU**: `PORTAL` | **Required Dependency**: `P58335-B21`
+   - **Rule**: When ordering MegaRAID controller P58335-B21, MegaRAID Tools cannot be used to configure legacy SmartRAID arrays.
+   - **Affected SKU**: `P58335-B21` | **Required Dependency**: `P58335-B21`
 
 5. **[DELTA_RAG_CARRYOVER_P48183-B21_1787856180158] DL380_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen11 CTO Server`):
    - **Rule**: P48183-B21`)** [cite: 250] is fully supported
@@ -89,8 +89,8 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
    - **Affected SKU**: `P58335-B21` | **Required Dependency**: `P48918-B21`
 
 13. **[DELTA_RAG_DEP_write-cach_P48918-B21_1787915281069] DL380_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen11 CTO Server`):
-   - **Rule**: write-cache backup for `P58335-B21`; requires enablement cable **`P48918-B21
-   - **Affected SKU**: `write-cach` | **Required Dependency**: `P48918-B21`
+   - **Rule**: Selecting storage controller P58335-B21 write-cache backup requires enablement cable P48918-B21.
+   - **Affected SKU**: `P58335-B21` | **Required Dependency**: `P48918-B21`
 
 
 ## 🔒 3b. Physical & Architectural Gating Rules (DOM Unavailable Tables)

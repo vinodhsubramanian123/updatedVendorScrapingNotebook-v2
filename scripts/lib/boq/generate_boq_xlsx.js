@@ -32,6 +32,34 @@ function _enforceDeliveryAuthorization(evaluation, options = {}, targetChassis =
   });
 }
 
+function _appendCandidatePortalSheets(workbook, validCandidates, evaluation) {
+  const mult = evaluation?.clusterSizing?.serverCount || evaluation?.clusterSizing?.totalNodes || evaluation?.serverCount || 1;
+  for (const candidate of validCandidates) {
+    const candidateWorkbook = generatePartnerPortalUploadBOM([{
+      name: candidate.name,
+      multiplier: mult,
+      items: candidate.skuPartsList || candidate.skuList || []
+    }]);
+    const firstSheet = candidateWorkbook.SheetNames[0];
+    if (firstSheet && candidateWorkbook.Sheets[firstSheet]) {
+      XLSX.utils.book_append_sheet(workbook, candidateWorkbook.Sheets[firstSheet], `Rank ${candidate.rank}`);
+    }
+  }
+}
+
+function _appendFallbackPortalSheet(workbook, fallbackItems, evaluation) {
+  const mult = evaluation?.clusterSizing?.serverCount || evaluation?.clusterSizing?.totalNodes || evaluation?.serverCount || 1;
+  const candidateWorkbook = generatePartnerPortalUploadBOM([{
+    name: evaluation?.chassis || 'Base_Configuration',
+    multiplier: mult,
+    items: fallbackItems
+  }]);
+  const firstSheet = candidateWorkbook.SheetNames[0];
+  if (firstSheet && candidateWorkbook.Sheets[firstSheet]) {
+    XLSX.utils.book_append_sheet(workbook, candidateWorkbook.Sheets[firstSheet], 'BOM');
+  }
+}
+
 function generateRankedPortalWorkbook(evaluation, exportPath, options = {}) {
   _enforceDeliveryAuthorization(evaluation, options, options.chassisKey);
   const workbook = XLSX.utils.book_new();
@@ -40,27 +68,9 @@ function generateRankedPortalWorkbook(evaluation, exportPath, options = {}) {
   const fallbackItems = evaluation?.items || evaluation?.parsedItems || [];
 
   if (validCandidates.length > 0) {
-    for (const candidate of validCandidates) {
-      const candidateWorkbook = generatePartnerPortalUploadBOM([{
-        name: candidate.name,
-        multiplier: evaluation?.clusterSizing?.serverCount || evaluation?.clusterSizing?.totalNodes || evaluation?.serverCount || 1,
-        items: candidate.skuPartsList || candidate.skuList || []
-      }]);
-      const firstSheet = candidateWorkbook.SheetNames[0];
-      if (firstSheet && candidateWorkbook.Sheets[firstSheet]) {
-        XLSX.utils.book_append_sheet(workbook, candidateWorkbook.Sheets[firstSheet], `Rank ${candidate.rank}`);
-      }
-    }
+    _appendCandidatePortalSheets(workbook, validCandidates, evaluation);
   } else if (Array.isArray(fallbackItems) && fallbackItems.length > 0) {
-    const candidateWorkbook = generatePartnerPortalUploadBOM([{
-      name: evaluation?.chassis || 'Base_Configuration',
-      multiplier: evaluation?.clusterSizing?.serverCount || evaluation?.clusterSizing?.totalNodes || evaluation?.serverCount || 1,
-      items: fallbackItems
-    }]);
-    const firstSheet = candidateWorkbook.SheetNames[0];
-    if (firstSheet && candidateWorkbook.Sheets[firstSheet]) {
-      XLSX.utils.book_append_sheet(workbook, candidateWorkbook.Sheets[firstSheet], 'BOM');
-    }
+    _appendFallbackPortalSheet(workbook, fallbackItems, evaluation);
   } else {
     throw new Error('Cannot export a portal workbook without candidate BOM items.');
   }
@@ -72,11 +82,7 @@ function generateRankedPortalWorkbook(evaluation, exportPath, options = {}) {
   return workbook;
 }
 
-function generateProfessionalBOQ(evalResults, exportPath, chassisId, rankTier, options = {}) {
-  _enforceDeliveryAuthorization(evalResults, options, chassisId);
-  const wb = XLSX.utils.book_new();
-  const tier = rankTier || 1;
-  const rankedSolution = _getRankedSolutions(evalResults).find(s => s.rank === tier) || null;
+function _resolveAllSkusWithFixes(rankedSolution, evalResults) {
   let allSkus = rankedSolution?.skuList || rankedSolution?.skuPartsList || [];
 
   if (allSkus.length === 0 && evalResults.items) {
@@ -86,8 +92,10 @@ function generateProfessionalBOQ(evalResults, exportPath, chassisId, rankTier, o
       isFixInjected: true,
       category: 'Mandatory Aspect Fix'
     }));
-    allSkus = [...evalResults.items.map(it => ({ ...it, isFixInjected: false })), ...fixes];
-  } else if (!allSkus.some(s => s.isFixInjected || s.category === 'Mandatory Aspect Fix') && (evalResults.conflictGraph?.resolvedFixes?.length || evalResults.missingDependencies?.length)) {
+    return [...evalResults.items.map(it => ({ ...it, isFixInjected: false })), ...fixes];
+  }
+
+  if (!allSkus.some(s => s.isFixInjected || s.category === 'Mandatory Aspect Fix') && (evalResults.conflictGraph?.resolvedFixes?.length || evalResults.missingDependencies?.length)) {
     const fixes = (evalResults.conflictGraph?.resolvedFixes || evalResults.missingDependencies || []).map(f => ({
       ...f,
       sku: f.sku || f.key,
@@ -96,25 +104,13 @@ function generateProfessionalBOQ(evalResults, exportPath, chassisId, rankTier, o
     }));
     const existingSkus = new Set(allSkus.map(s => s.sku));
     const fixesToAdd = fixes.filter(f => !existingSkus.has(f.sku));
-    allSkus = [...allSkus.map(it => ({ ...it, isFixInjected: it.isFixInjected || false })), ...fixesToAdd];
+    return [...allSkus.map(it => ({ ...it, isFixInjected: it.isFixInjected || false })), ...fixesToAdd];
   }
 
-  // Data mapping
-  const baseSkus = allSkus.filter(s => !s.isFixInjected && s.category !== 'Strategy Add-on' && s.category !== 'Aspect Rule Fix' && s.category !== 'Mandatory Aspect Fix');
-  const missingDeps = allSkus.filter(s => s.isFixInjected || s.category === 'Aspect Rule Fix' || s.category === 'Mandatory Aspect Fix');
-  const strategyOptions = allSkus.filter(s => s.category === 'Strategy Add-on');
+  return allSkus;
+}
 
-  // Styles
-  const headerStyle = {
-    font: { name: 'Calibri', sz: 11, bold: true, color: { rgb: 'FFFFFF' } },
-    fill: { fgColor: { rgb: '0F172A' } }, // Slate 900
-    alignment: { vertical: 'center', horizontal: 'center' },
-    border: { top: {style:'thin', color: {auto: 1}}, bottom: {style:'thin', color: {auto: 1}} }
-  };
-  
-  const currencyStyle = { numFmt: '"$"#,##0.00' };
-
-  // --- SHEET 1: SUMMARY & RATIONALE ---
+function _buildSummarySheet(evalResults, chassisId, rankedSolution, tier, headerStyle, currencyStyle) {
   const summaryData = [
     ['HPE BOQ EVALUATION REPORT - STRATEGY RANK ' + tier],
     [],
@@ -132,9 +128,8 @@ function generateProfessionalBOQ(evalResults, exportPath, chassisId, rankTier, o
   ];
   summaryData.push(['Validation', portalLabel(rankedSolution)]);
   summaryData.push(['Pricing completeness', rankedSolution?.pricingComplete === false ? `INCOMPLETE — ${(rankedSolution.priceUnavailableSkus || rankedSolution.unresolvedPriceSkus)?.length || 0} SKU(s) unresolved` : 'Consult line pricing evidence']);
-  
+
   const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
-  // Apply formatting
   wsSummary['A1'].s = { font: { sz: 14, bold: true, color: { rgb: '0072C6' } } };
   wsSummary['A3'].s = headerStyle;
   wsSummary['B3'].s = headerStyle;
@@ -142,101 +137,119 @@ function generateProfessionalBOQ(evalResults, exportPath, chassisId, rankTier, o
   wsSummary['B7'].s = currencyStyle;
   wsSummary['B8'].s = currencyStyle;
   wsSummary['B9'].s = currencyStyle;
-  wsSummary['B10'].s = Object.assign({ font: { bold: true, color: {rgb: '15803D'} } }, currencyStyle);
-  
+  wsSummary['B10'].s = Object.assign({ font: { bold: true, color: { rgb: '15803D' } } }, currencyStyle);
+
   wsSummary['!cols'] = [{ wch: 25 }, { wch: 80 }];
-  XLSX.utils.book_append_sheet(wb, wsSummary, 'Summary');
+  return wsSummary;
+}
 
-  // --- Helper to build item sheets ---
-  function createSkusSheet(skus, sheetName, emptyMessage) {
-    const data = [['SKU', 'Quantity', 'Description', 'Category', 'Unit Price (USD)', 'Extended Price (USD)', 'Pricing Impact & Role']];
-    let rowNum = 2;
-    skus.forEach(s => {
-      const uPrice = s.unitPriceUsd || 0;
-      let pricingRole = 'Standard Option';
-      if (uPrice === 0) pricingRole = s.isConfirmedZeroPrice === true ? 'CONFIRMED ZERO-PRICE SERVICE PARENT' : 'PRICE UNAVAILABLE / ZERO PRICE UNCONFIRMED';
-      else if (uPrice <= 1) pricingRole = 'ℹ️ Nominal Factory Enablement ($1.00)';
-      else if (s.isFixInjected) pricingRole = '⚡ Mandatory Rule Fix';
-      
-      data.push([
-        s.sku,
-        outputQuantities(s, evalResults.clusterSizing?.serverCount || 1).totalQty,
-        s.description || '',
-        s.category || 'Standard',
-        uPrice > 0 || s.isConfirmedZeroPrice === true ? uPrice : 'UNRESOLVED',
-        uPrice > 0 || s.isConfirmedZeroPrice === true ? { t: 'n', f: `B${rowNum}*E${rowNum}`, v: outputQuantities(s, evalResults.clusterSizing?.serverCount || 1).totalQty * uPrice } : 'UNRESOLVED',
-        pricingRole
-      ]);
-      rowNum++;
-    });
-    
-    if (skus.length === 0) {
-      data.push([emptyMessage, '', '', '', '', '', '']);
-    } else {
-      // Add Total row
-      data.push([skus.some(item => !(item.unitPriceUsd > 0) && !item.isConfirmedZeroPrice) ? 'KNOWN-PRICE SUBTOTAL (INCOMPLETE)' : 'TOTAL', '', '', '', '', { t: 'n', f: `SUM(F2:F${rowNum-1})` }, '']);
-    }
+function _determinePricingRole(s, uPrice) {
+  if (uPrice === 0) return s.isConfirmedZeroPrice === true ? 'CONFIRMED ZERO-PRICE SERVICE PARENT' : 'PRICE UNAVAILABLE / ZERO PRICE UNCONFIRMED';
+  if (uPrice <= 1) return 'ℹ️ Nominal Factory Enablement ($1.00)';
+  if (s.isFixInjected) return '⚡ Mandatory Rule Fix';
+  return 'Standard Option';
+}
 
-    const ws = XLSX.utils.aoa_to_sheet(data);
-    ws['!cols'] = [
-      { wch: 20 }, // SKU
-      { wch: 10 }, // Qty
-      { wch: 75 }, // Desc
-      { wch: 20 }, // Cat
-      { wch: 15 }, // Unit
-      { wch: 20 }, // Ext
-      { wch: 32 }, // Pricing Impact
-    ];
+function _createSkusSheet(wb, skus, sheetName, emptyMessage, evalResults, headerStyle, currencyStyle) {
+  const data = [['SKU', 'Quantity', 'Description', 'Category', 'Unit Price (USD)', 'Extended Price (USD)', 'Pricing Impact & Role']];
+  let rowNum = 2;
+  const serverCount = evalResults.clusterSizing?.serverCount || 1;
 
-    // Style Headers
-    for (let c = 0; c < 7; c++) {
-      const cellRef = XLSX.utils.encode_cell({ r: 0, c });
-      if (ws[cellRef]) ws[cellRef].s = headerStyle;
-    }
-    
-    // Style Data Rows
-    for (let r = 1; r < rowNum - (skus.length === 0 ? 0 : 0); r++) {
-      const skuData = skus[r - 1];
-      let rowFill = null;
-      if (skuData && skuData.status === 'Discontinued') {
-        rowFill = { fgColor: { rgb: 'FFC000' } }; // Warning fill
-      }
+  skus.forEach(s => {
+    const uPrice = s.unitPriceUsd || 0;
+    const pricingRole = _determinePricingRole(s, uPrice);
+    const totalQty = outputQuantities(s, serverCount).totalQty;
+    const isPriceKnown = uPrice > 0 || s.isConfirmedZeroPrice === true;
 
-      if (ws[`A${r+1}`]) ws[`A${r+1}`].s = { font: { name: 'Courier New', bold: true }, locked: true, ...(rowFill ? { fill: rowFill } : {}) }; // SKU locked formatting
-      if (ws[`B${r+1}`]) ws[`B${r+1}`].s = { locked: false, ...(rowFill ? { fill: rowFill } : {}) }; // Quantities unlocked
-      if (ws[`C${r+1}`]) ws[`C${r+1}`].s = rowFill ? { fill: rowFill } : {};
-      if (ws[`D${r+1}`]) ws[`D${r+1}`].s = rowFill ? { fill: rowFill } : {};
-      if (ws[`E${r+1}`]) ws[`E${r+1}`].s = Object.assign({ locked: true, ...(rowFill ? { fill: rowFill } : {}) }, currencyStyle);
-      if (ws[`F${r+1}`]) ws[`F${r+1}`].s = Object.assign({ locked: true, ...(rowFill ? { fill: rowFill } : {}) }, currencyStyle);
-    }
-    
-    // Style Total Row
-    if (skus.length > 0) {
-      const totRow = rowNum;
-      ws[`A${totRow}`].s = { font: { bold: true }, locked: true };
-      ws[`F${totRow}`].s = Object.assign({ font: { bold: true }, locked: true }, currencyStyle);
-    }
-    
-    // Enable autofilter for data rows
-    if (skus.length > 0) {
-      ws['!autofilter'] = { ref: `A1:F${rowNum-1}` };
-    }
-    
-    // Lock cells: enable protection on the worksheet
-    ws['!protect'] = {
-      password: "hpe",
-      selectLockedCells: true,
-      selectUnlockedCells: true,
-      formatCells: false
-    };
+    data.push([
+      s.sku,
+      totalQty,
+      s.description || '',
+      s.category || 'Standard',
+      isPriceKnown ? uPrice : 'UNRESOLVED',
+      isPriceKnown ? { t: 'n', f: `B${rowNum}*E${rowNum}`, v: totalQty * uPrice } : 'UNRESOLVED',
+      pricingRole
+    ]);
+    rowNum++;
+  });
 
-    XLSX.utils.book_append_sheet(wb, ws, sheetName);
+  if (skus.length === 0) {
+    data.push([emptyMessage, '', '', '', '', '', '']);
+  } else {
+    data.push([skus.some(item => !(item.unitPriceUsd > 0) && !item.isConfirmedZeroPrice) ? 'KNOWN-PRICE SUBTOTAL (INCOMPLETE)' : 'TOTAL', '', '', '', '', { t: 'n', f: `SUM(F2:F${rowNum-1})` }, '']);
   }
 
-  // Generate the 3 sheets
-  createSkusSheet(baseSkus, 'Base BOM', 'No base SKUs found in this tier.');
-  createSkusSheet(missingDeps, 'Missing Dependencies', 'No missing physical dependencies injected.');
-  createSkusSheet(strategyOptions, 'Strategy Add-ons', 'No strategy up-sell add-ons for this tier.');
+  const ws = XLSX.utils.aoa_to_sheet(data);
+  ws['!cols'] = [
+    { wch: 20 },
+    { wch: 10 },
+    { wch: 75 },
+    { wch: 20 },
+    { wch: 15 },
+    { wch: 20 },
+    { wch: 32 }
+  ];
+
+  for (let c = 0; c < 7; c++) {
+    const cellRef = XLSX.utils.encode_cell({ r: 0, c });
+    if (ws[cellRef]) ws[cellRef].s = headerStyle;
+  }
+
+  for (let r = 1; r < rowNum; r++) {
+    const skuData = skus[r - 1];
+    const rowFill = (skuData && skuData.status === 'Discontinued') ? { fgColor: { rgb: 'FFC000' } } : null;
+
+    if (ws[`A${r+1}`]) ws[`A${r+1}`].s = { font: { name: 'Courier New', bold: true }, locked: true, ...(rowFill ? { fill: rowFill } : {}) };
+    if (ws[`B${r+1}`]) ws[`B${r+1}`].s = { locked: false, ...(rowFill ? { fill: rowFill } : {}) };
+    if (ws[`C${r+1}`]) ws[`C${r+1}`].s = rowFill ? { fill: rowFill } : {};
+    if (ws[`D${r+1}`]) ws[`D${r+1}`].s = rowFill ? { fill: rowFill } : {};
+    if (ws[`E${r+1}`]) ws[`E${r+1}`].s = Object.assign({ locked: true, ...(rowFill ? { fill: rowFill } : {}) }, currencyStyle);
+    if (ws[`F${r+1}`]) ws[`F${r+1}`].s = Object.assign({ locked: true, ...(rowFill ? { fill: rowFill } : {}) }, currencyStyle);
+  }
+
+  if (skus.length > 0) {
+    const totRow = rowNum;
+    ws[`A${totRow}`].s = { font: { bold: true }, locked: true };
+    ws[`F${totRow}`].s = Object.assign({ font: { bold: true }, locked: true }, currencyStyle);
+    ws['!autofilter'] = { ref: `A1:F${rowNum-1}` };
+  }
+
+  ws['!protect'] = {
+    password: 'hpe',
+    selectLockedCells: true,
+    selectUnlockedCells: true,
+    formatCells: false
+  };
+
+  XLSX.utils.book_append_sheet(wb, ws, sheetName);
+}
+
+function generateProfessionalBOQ(evalResults, exportPath, chassisId, rankTier, options = {}) {
+  _enforceDeliveryAuthorization(evalResults, options, chassisId);
+  const wb = XLSX.utils.book_new();
+  const tier = rankTier || 1;
+  const rankedSolution = _getRankedSolutions(evalResults).find(s => s.rank === tier) || null;
+  const allSkus = _resolveAllSkusWithFixes(rankedSolution, evalResults);
+
+  const baseSkus = allSkus.filter(s => !s.isFixInjected && s.category !== 'Strategy Add-on' && s.category !== 'Aspect Rule Fix' && s.category !== 'Mandatory Aspect Fix');
+  const missingDeps = allSkus.filter(s => s.isFixInjected || s.category === 'Aspect Rule Fix' || s.category === 'Mandatory Aspect Fix');
+  const strategyOptions = allSkus.filter(s => s.category === 'Strategy Add-on');
+
+  const headerStyle = {
+    font: { name: 'Calibri', sz: 11, bold: true, color: { rgb: 'FFFFFF' } },
+    fill: { fgColor: { rgb: '0F172A' } },
+    alignment: { vertical: 'center', horizontal: 'center' },
+    border: { top: { style: 'thin', color: { auto: 1 } }, bottom: { style: 'thin', color: { auto: 1 } } }
+  };
+
+  const currencyStyle = { numFmt: '"$"#,##0.00' };
+
+  const wsSummary = _buildSummarySheet(evalResults, chassisId, rankedSolution, tier, headerStyle, currencyStyle);
+  XLSX.utils.book_append_sheet(wb, wsSummary, 'Summary');
+
+  _createSkusSheet(wb, baseSkus, 'Base BOM', 'No base SKUs found in this tier.', evalResults, headerStyle, currencyStyle);
+  _createSkusSheet(wb, missingDeps, 'Missing Dependencies', 'No missing physical dependencies injected.', evalResults, headerStyle, currencyStyle);
+  _createSkusSheet(wb, strategyOptions, 'Strategy Add-ons', 'No strategy up-sell add-ons for this tier.', evalResults, headerStyle, currencyStyle);
 
   if (exportPath) XLSX.writeFile(wb, exportPath);
   return exportPath || wb;
@@ -269,6 +282,26 @@ function _normalizeClusterList(clusters) {
   return [{ name: 'Default_Cluster', multiplier: 1, items: [] }];
 }
 
+function _formatPortalItemRow(it, mult, cluster) {
+  const { perNodeQty: perServerQty, nodeMult: nodeMultiplier } = outputQuantities(it, mult);
+  const unitPrice = it.unitPriceUsd || it.price || it.unitPrice || 0;
+  const ext = perServerQty * nodeMultiplier * unitPrice;
+
+  const statusBase = it.portalStatus || it.clicStatus || (receiptMatches(cluster.portalReceipt, cluster) ? `CLIC ACCEPTED — ${cluster.portalReceipt.capturedAt}` : 'Ready for Portal Upload');
+  const portalStatus = statusBase + (it.priceKnown === false || (unitPrice === 0 && it.isConfirmedZeroPrice !== true) ? '; PRICE UNAVAILABLE / UNCONFIRMED' : '');
+
+  const row = [
+    it.sku || it['Product #'] || '',
+    perServerQty,
+    nodeMultiplier,
+    it.description || it.desc || '',
+    unitPrice > 0 || it.isConfirmedZeroPrice === true ? unitPrice : 'UNRESOLVED',
+    unitPrice > 0 || it.isConfirmedZeroPrice === true ? ext : 'UNRESOLVED',
+    portalStatus
+  ];
+  return { row, ext };
+}
+
 function _buildPortalRowsForClusters(clusterList) {
   const portalData = [];
   let grandTotal = 0;
@@ -277,40 +310,23 @@ function _buildPortalRowsForClusters(clusterList) {
   clusterList.forEach((cluster, cIdx) => {
     const mult = cluster.multiplier || cluster.nodeCount || 1;
     totalServerNodes += mult;
-
     const clusterTitle = cluster.name || cluster.clusterName || 'Server Node';
+
     if (cIdx > 0) {
-      // 2-line gap between configurations
       portalData.push([]);
       portalData.push([]);
       portalData.push([`CONFIGURATION #${cIdx + 1}: ${mult}x ${clusterTitle}`]);
       portalData.push([`Scope: ${mult} Servers | Portal validation receipt required`]);
-      portalData.push(['Part No', 'Qty', 'Set', ' Description', 'Unit List Price (USD)', 'Extended Price (USD)', 'Portal / CLIC Status']);
-    } else {
-      portalData.push(['Part No', 'Qty', 'Set', ' Description', 'Unit List Price (USD)', 'Extended Price (USD)', 'Portal / CLIC Status']);
     }
+    portalData.push(['Part No', 'Qty', 'Set', ' Description', 'Unit List Price (USD)', 'Extended Price (USD)', 'Portal / CLIC Status']);
 
     let configSubtotal = 0;
     const items = cluster.items || cluster.parts || cluster.skuPartsList || [];
 
     items.forEach(it => {
-      const { perNodeQty: perServerQty, nodeMult: nodeMultiplier } = outputQuantities(it, mult);
-      const unitPrice = it.unitPriceUsd || it.price || it.unitPrice || 0;
-      const ext = perServerQty * nodeMultiplier * unitPrice;
+      const { row, ext } = _formatPortalItemRow(it, mult, cluster);
       configSubtotal += ext;
-
-      const statusBase = it.portalStatus || it.clicStatus || (receiptMatches(cluster.portalReceipt, cluster) ? `CLIC ACCEPTED — ${cluster.portalReceipt.capturedAt}` : 'Ready for Portal Upload');
-      const portalStatus = statusBase + (it.priceKnown === false || (unitPrice === 0 && it.isConfirmedZeroPrice !== true) ? '; PRICE UNAVAILABLE / UNCONFIRMED' : '');
-
-      portalData.push([
-        it.sku || it['Product #'] || '',
-        perServerQty,
-        nodeMultiplier,
-        it.description || it.desc || '',
-        unitPrice > 0 || it.isConfirmedZeroPrice === true ? unitPrice : 'UNRESOLVED',
-        unitPrice > 0 || it.isConfirmedZeroPrice === true ? ext : 'UNRESOLVED',
-        portalStatus
-      ]);
+      portalData.push(row);
     });
 
     grandTotal += configSubtotal;
@@ -328,6 +344,30 @@ function _buildPortalRowsForClusters(clusterList) {
   }
 
   return { portalData, grandTotal, totalServerNodes };
+}
+
+function _formatPortalCell(ws, addr, c, r, rowMeta, styles) {
+  const { C_DARK, C_EMERALD, C_SLATE, C_ROW_ALT, C_WHITE, cellStyle, headerStyle } = styles;
+  const { isHeader, isSubtotal, isGrandTotal, isTitle, isScope } = rowMeta;
+
+  if (isHeader) {
+    ws[addr].s = headerStyle(C_DARK, C_WHITE, 10);
+  } else if (isSubtotal) {
+    ws[addr].s = cellStyle(C_EMERALD, true, (c === 4 || c === 5) ? 'right' : (c === 2 ? 'center' : 'left'), C_WHITE, 10);
+    if (c === 4 || c === 5) ws[addr].z = '$#,##0.00';
+  } else if (isGrandTotal) {
+    ws[addr].s = cellStyle(C_DARK, true, (c === 4 || c === 5) ? 'right' : (c === 2 ? 'center' : 'left'), C_WHITE, 11);
+    if (c === 4 || c === 5) ws[addr].z = '$#,##0.00';
+  } else if (isTitle) {
+    ws[addr].s = headerStyle(C_DARK, C_WHITE, 11);
+  } else if (isScope) {
+    ws[addr].s = cellStyle(C_SLATE, false, 'left', C_WHITE, 9);
+  } else {
+    const bg = (r % 2 === 0) ? C_ROW_ALT : C_WHITE;
+    const align = (c === 1 || c === 2) ? 'center' : (c === 4 || c === 5) ? 'right' : 'left';
+    ws[addr].s = cellStyle(bg, c === 0 || c === 5, align, '000000', 9);
+    if (c === 4 || c === 5) ws[addr].z = '$#,##0.00';
+  }
 }
 
 function _applyPortalSheetFormatting(ws, portalData) {
@@ -366,38 +406,25 @@ function _applyPortalSheetFormatting(ws, portalData) {
     border: borderThin
   });
 
+  const styles = { C_DARK, C_EMERALD, C_SLATE, C_ROW_ALT, C_WHITE, cellStyle, headerStyle };
+
   for (let r = 0; r < portalData.length; r++) {
     const row = portalData[r];
     if (!row || row.length === 0) continue;
 
     const firstCell = String(row[0] || '');
-    const isHeader = row[0] === 'Part No';
-    const isSubtotal = String(row[2] || '').includes('SUBTOTAL:');
-    const isGrandTotal = firstCell.startsWith('GRAND TOTAL');
-    const isTitle = firstCell.startsWith('CONFIGURATION #');
-    const isScope = firstCell.startsWith('Scope:');
+    const rowMeta = {
+      isHeader: row[0] === 'Part No',
+      isSubtotal: String(row[2] || '').includes('SUBTOTAL:'),
+      isGrandTotal: firstCell.startsWith('GRAND TOTAL'),
+      isTitle: firstCell.startsWith('CONFIGURATION #'),
+      isScope: firstCell.startsWith('Scope:')
+    };
 
     for (let c = 0; c < 7; c++) {
       const addr = XLSX.utils.encode_cell({ r, c });
-      if (!ws[addr]) continue;
-
-      if (isHeader) {
-        ws[addr].s = headerStyle(C_DARK, C_WHITE, 10);
-      } else if (isSubtotal) {
-        ws[addr].s = cellStyle(C_EMERALD, true, (c === 4 || c === 5) ? 'right' : (c === 2 ? 'center' : 'left'), C_WHITE, 10);
-        if (c === 4 || c === 5) ws[addr].z = '$#,##0.00';
-      } else if (isGrandTotal) {
-        ws[addr].s = cellStyle(C_DARK, true, (c === 4 || c === 5) ? 'right' : (c === 2 ? 'center' : 'left'), C_WHITE, 11);
-        if (c === 4 || c === 5) ws[addr].z = '$#,##0.00';
-      } else if (isTitle) {
-        ws[addr].s = headerStyle(C_DARK, C_WHITE, 11);
-      } else if (isScope) {
-        ws[addr].s = cellStyle(C_SLATE, false, 'left', C_WHITE, 9);
-      } else {
-        const bg = (r % 2 === 0) ? C_ROW_ALT : C_WHITE;
-        const align = (c === 1 || c === 2) ? 'center' : (c === 4 || c === 5) ? 'right' : 'left';
-        ws[addr].s = cellStyle(bg, c === 0 || c === 5, align, '000000', 9);
-        if (c === 4 || c === 5) ws[addr].z = '$#,##0.00';
+      if (ws[addr]) {
+        _formatPortalCell(ws, addr, c, r, rowMeta, styles);
       }
     }
   }
@@ -520,16 +547,8 @@ function _getRankedSolutions(evalResults) {
   return rankedSolutions;
 }
 
-function _buildSummaryData(evalResults, chassis = 'DL380_Gen12', serverCount = 1, rankedSolutions = []) {
-  if (Array.isArray(chassis) && (!Array.isArray(rankedSolutions) || !rankedSolutions.length)) {
-    rankedSolutions = chassis;
-    chassis = evalResults?.targetChassis || 'DL380_Gen12';
-    serverCount = 1;
-  }
-  if (!Array.isArray(rankedSolutions)) {
-    rankedSolutions = [];
-  }
-  const summaryData = [
+function _buildSummaryMetrics(evalResults, chassis, serverCount, rankedSolutions) {
+  return [
     ['HPE PROLIANT AI STUDIO - MULTI-RANK SOLUTION WORKBOOK'],
     [`Target Platform: ${chassis} | Scope: ${serverCount} Server Node(s) | Evaluation draft; consult individual validation gates`],
     [],
@@ -545,30 +564,35 @@ function _buildSummaryData(evalResults, chassis = 'DL380_Gen12', serverCount = 1
     ['STRATEGY RESOLUTION MATRIX COMPARISON (5 TIERS)'],
     ['Rank Tier', 'Strategy Name', 'Estimated CapEx (USD)', 'Fix Delta (USD)', 'Intent Alignment', 'Buildability Status']
   ];
+}
 
-  rankedSolutions.forEach(s => {
+function _buildSummaryStrategyRows(rankedSolutions, evalResults) {
+  return rankedSolutions.map(s => {
     const vendorStatus = portalLabel(s);
     const buildStatus = vendorStatus !== 'PORTAL VALIDATION PENDING' ? vendorStatus
       : s.physicalMathClean === false || evalResults.isMathClean === false ? '❌ UNRESOLVED PHYSICAL GAPS'
         : s.physicalMathClean === true ? 'LOCAL_RULE_CHECKED; PORTAL VALIDATION PENDING' : 'UNVERIFIED; PORTAL VALIDATION PENDING';
-    summaryData.push([
+    return [
       `Rank ${s.rank}`,
       s.name || `Strategy Rank ${s.rank}`,
       s.pricingComplete === false ? 'INCOMPLETE' : s.totalOrderCostUsd ?? s.estimatedCostUsd ?? 'UNRESOLVED',
       s.budgetBreakdown?.fixCost || 0,
       s.tradeoffMetrics?.intentAlignment || (evalResults.isMathClean === true ? '100%' : 'PENDING'),
       buildStatus + (s.pricingComplete === false ? `; INCOMPLETE — ${(s.priceUnavailableSkus || s.unresolvedPriceSkus)?.length || 0} SKU(s) unresolved` : '')
-    ]);
+    ];
   });
+}
 
-  summaryData.push([]);
-  summaryData.push(['7-ASPECT PHYSICAL INTEGRITY AUDIT']);
-  summaryData.push(['Aspect #', 'Aspect Domain', 'Validation Status', 'Key Technical Rule / Evaluation Finding']);
-
+function _buildSummaryAspectRows(evalResults) {
+  const rows = [
+    [],
+    ['7-ASPECT PHYSICAL INTEGRITY AUDIT'],
+    ['Aspect #', 'Aspect Domain', 'Validation Status', 'Key Technical Rule / Evaluation Finding']
+  ];
   const aspectChecks = evalResults.aspectChecks || [];
   if (aspectChecks.length > 0) {
     aspectChecks.forEach(a => {
-      summaryData.push([
+      rows.push([
         `Aspect ${a.id}`,
         a.name,
         a.status === 'PASS' ? '✅ PASS' : (a.status === 'WARN' ? '⚠️ WARN' : (a.status === 'UNKNOWN' ? '❓ UNKNOWN' : '❌ FAIL')),
@@ -578,17 +602,20 @@ function _buildSummaryData(evalResults, chassis = 'DL380_Gen12', serverCount = 1
   } else {
     const defaultStatus = evalResults.isMathClean === false ? '❌ FAIL' : '⚠️ UNCHECKED';
     const defaultMsg = evalResults.isMathClean === false ? 'Physical gaps or missing dependencies identified during evaluation.' : 'Detailed individual aspect breakdown was not populated.';
-    summaryData.push(['Aspect 1-7', 'Comprehensive Aspects', defaultStatus, defaultMsg]);
+    rows.push(['Aspect 1-7', 'Comprehensive Aspects', defaultStatus, defaultMsg]);
   }
+  return rows;
+}
 
-  summaryData.push([]);
-  summaryData.push(['DUAL-BRAIN & NOTEBOOKLM COMPREHENSIVE VERIFICATION AUDIT (ALL RANKS)']);
-  summaryData.push(['Rank Tier', 'Strategy Name', '7-Aspect Physical Math', 'Gemini NotebookLM Badge', 'Agentic Guardrail Trace', 'Multi-Agent / Codex Review', 'Citations & Grounding Reference', 'Knowledge Delta Sync Status']);
-
+function _buildSummaryAuditRows(rankedSolutions, evalResults) {
+  const rows = [
+    [],
+    ['DUAL-BRAIN & NOTEBOOKLM COMPREHENSIVE VERIFICATION AUDIT (ALL RANKS)'],
+    ['Rank Tier', 'Strategy Name', '7-Aspect Physical Math', 'Gemini NotebookLM Badge', 'Agentic Guardrail Trace', 'Multi-Agent / Codex Review', 'Citations & Grounding Reference', 'Knowledge Delta Sync Status']
+  ];
   rankedSolutions.forEach(s => {
     const aspectPass = s.physicalMathClean === true;
     const aspectBadge = aspectPass ? 'LOCAL PHYSICAL CHECK PASSED' : 'UNVERIFIED OR ASPECT ISSUES';
-
     const nlmBadge = rankReviewBadge(evalResults, s);
     const guardrailTrace = s.reasoning || 'No candidate decision rationale recorded';
     const citations = JSON.stringify(evalResults.ephemeralSourceValidation?.rankVerdicts?.find(r => r.rank === s.rank)?.citations || []);
@@ -596,7 +623,7 @@ function _buildSummaryData(evalResults, chassis = 'DL380_Gen12', serverCount = 1
       ? '✅ SYNCED (catalog_deltas & master_registry)'
       : (evalResults.postFlowSync?.syncStatus ? `⚠️ SYNC: ${evalResults.postFlowSync.syncStatus}` : 'SYNC PENDING');
 
-    summaryData.push([
+    rows.push([
       `Rank ${s.rank}`,
       s.name || `Strategy Rank ${s.rank}`,
       aspectBadge,
@@ -607,12 +634,67 @@ function _buildSummaryData(evalResults, chassis = 'DL380_Gen12', serverCount = 1
       syncBadge
     ]);
   });
+  return rows;
+}
 
-  return summaryData;
+function _buildSummaryData(evalResults, chassis = 'DL380_Gen12', serverCount = 1, rankedSolutions = []) {
+  if (Array.isArray(chassis) && (!Array.isArray(rankedSolutions) || !rankedSolutions.length)) {
+    rankedSolutions = chassis;
+    chassis = evalResults?.targetChassis || 'DL380_Gen12';
+    serverCount = 1;
+  }
+  if (!Array.isArray(rankedSolutions)) {
+    rankedSolutions = [];
+  }
+  return [
+    ..._buildSummaryMetrics(evalResults, chassis, serverCount, rankedSolutions),
+    ..._buildSummaryStrategyRows(rankedSolutions, evalResults),
+    ..._buildSummaryAspectRows(evalResults),
+    ..._buildSummaryAuditRows(rankedSolutions, evalResults)
+  ];
+}
+
+function _formatSummaryRow(wsSummary, row, r, firstCell, styles) {
+  const { C_DARK, C_SLATE, C_ROW_ALT, C_WHITE, cellStyle, headerStyle } = styles;
+  if (r === 0) {
+    const addr = XLSX.utils.encode_cell({ r, c: 0 });
+    if (wsSummary[addr]) wsSummary[addr].s = headerStyle(C_DARK, C_WHITE, 12);
+    return;
+  }
+  if (r === 1) {
+    const addr = XLSX.utils.encode_cell({ r, c: 0 });
+    if (wsSummary[addr]) wsSummary[addr].s = cellStyle(C_SLATE, true, 'left', C_WHITE, 10);
+    return;
+  }
+  const isSectionHeader = firstCell.endsWith('STATUS') || firstCell.endsWith('COMPARISON (5 TIERS)') || firstCell.endsWith('INTEGRITY AUDIT') || firstCell.endsWith('VERIFICATION AUDIT (ALL RANKS)');
+  if (isSectionHeader) {
+    const addr = XLSX.utils.encode_cell({ r, c: 0 });
+    if (wsSummary[addr]) wsSummary[addr].s = cellStyle(C_ROW_ALT, true, 'left', C_SLATE, 11);
+    return;
+  }
+  if (row[0] === 'Rank Tier' || row[0] === 'Aspect #') {
+    for (let c = 0; c < row.length; c++) {
+      const addr = XLSX.utils.encode_cell({ r, c });
+      if (wsSummary[addr]) wsSummary[addr].s = headerStyle(C_DARK, C_WHITE, 10);
+    }
+    return;
+  }
+  const isWideRank = firstCell.startsWith('Rank ') && row.length > 6;
+  const isStandardRank = firstCell.startsWith('Rank ');
+  const isAspect = firstCell.startsWith('Aspect ');
+  if (isWideRank || isStandardRank || isAspect) {
+    for (let c = 0; c < row.length; c++) {
+      const addr = XLSX.utils.encode_cell({ r, c });
+      if (!wsSummary[addr]) continue;
+      const isNum = isStandardRank && !isWideRank && (c === 2 || c === 3);
+      const fontSize = isWideRank ? 9 : 10;
+      wsSummary[addr].s = cellStyle(r % 2 === 0 ? C_ROW_ALT : C_WHITE, c === 0, isNum ? 'right' : 'left', '000000', fontSize);
+      if (isNum) wsSummary[addr].z = '$#,##0.00';
+    }
+  }
 }
 
 function _styleSummarySheet(wsSummary, summaryData, styles) {
-  const { C_DARK, C_SLATE, C_ROW_ALT, C_WHITE, cellStyle, headerStyle } = styles;
   wsSummary['!cols'] = [
     { wch: 15 }, { wch: 35 }, { wch: 24 }, { wch: 32 }, { wch: 45 }, { wch: 35 }, { wch: 35 }, { wch: 32 }
   ];
@@ -621,43 +703,35 @@ function _styleSummarySheet(wsSummary, summaryData, styles) {
     const row = summaryData[r];
     if (!row || row.length === 0) continue;
     const firstCell = String(row[0] || '');
-
-    if (r === 0) {
-      const addr = XLSX.utils.encode_cell({ r, c: 0 });
-      if (wsSummary[addr]) wsSummary[addr].s = headerStyle(C_DARK, C_WHITE, 12);
-    } else if (r === 1) {
-      const addr = XLSX.utils.encode_cell({ r, c: 0 });
-      if (wsSummary[addr]) wsSummary[addr].s = cellStyle(C_SLATE, true, 'left', C_WHITE, 10);
-    } else if (firstCell.endsWith('STATUS') || firstCell.endsWith('COMPARISON (5 TIERS)') || firstCell.endsWith('INTEGRITY AUDIT') || firstCell.endsWith('VERIFICATION AUDIT (ALL RANKS)')) {
-      const addr = XLSX.utils.encode_cell({ r, c: 0 });
-      if (wsSummary[addr]) wsSummary[addr].s = cellStyle(C_ROW_ALT, true, 'left', C_SLATE, 11);
-    } else if (row[0] === 'Rank Tier' || row[0] === 'Aspect #') {
-      for (let c = 0; c < row.length; c++) {
-        const addr = XLSX.utils.encode_cell({ r, c });
-        if (wsSummary[addr]) wsSummary[addr].s = headerStyle(C_DARK, C_WHITE, 10);
-      }
-    } else if (firstCell.startsWith('Rank ') && row.length > 6) {
-      for (let c = 0; c < row.length; c++) {
-        const addr = XLSX.utils.encode_cell({ r, c });
-        if (!wsSummary[addr]) continue;
-        wsSummary[addr].s = cellStyle(r % 2 === 0 ? C_ROW_ALT : C_WHITE, c === 0, 'left', '000000', 9);
-      }
-    } else if (firstCell.startsWith('Rank ')) {
-      for (let c = 0; c < row.length; c++) {
-        const addr = XLSX.utils.encode_cell({ r, c });
-        if (!wsSummary[addr]) continue;
-        const isNum = c === 2 || c === 3;
-        wsSummary[addr].s = cellStyle(r % 2 === 0 ? C_ROW_ALT : C_WHITE, c === 0, isNum ? 'right' : 'left', '000000', 10);
-        if (isNum) wsSummary[addr].z = '$#,##0.00';
-      }
-    } else if (firstCell.startsWith('Aspect ')) {
-      for (let c = 0; c < row.length; c++) {
-        const addr = XLSX.utils.encode_cell({ r, c });
-        if (!wsSummary[addr]) continue;
-        wsSummary[addr].s = cellStyle(r % 2 === 0 ? C_ROW_ALT : C_WHITE, c === 0, 'left', '000000', 10);
-      }
-    }
+    _formatSummaryRow(wsSummary, row, r, firstCell, styles);
   }
+}
+
+function _buildRankItemRow(it, rowNum, serverCount, s, evalResults) {
+  const { perNodeQty, nodeMult, totalQty } = outputQuantities(it, serverCount);
+  const unitPrice = it.unitPriceUsd || it.price || 0;
+  const extPrice = totalQty * unitPrice;
+
+  const isFix = Boolean(it.isFixInjected || it.category === 'Mandatory Aspect Fix' || it.category === 'Aspect Rule Fix');
+  const isModernized = Boolean(it.category === 'Modernized Platform Hardware' || it.role === 'Modernized Platform Hardware');
+  const role = it.role || it.category || 'Standard Option';
+  const rationale = it.reasoning || it.rationale || (isFix ? 'Mandatory physical dependency kit identified by 7-aspect rule engine' : (isModernized ? 'Modernized 5th Gen Emerald Rapids + DDR5-5600 Smart FIO architecture' : 'Customer specified baseline component'));
+
+  const row = [
+    it.sku || it['Product #'] || '',
+    perNodeQty,
+    nodeMult,
+    { t: 'n', f: `B${rowNum}*C${rowNum}`, v: totalQty },
+    it.description || it.desc || '',
+    role,
+    unitPrice > 0 || it.isConfirmedZeroPrice === true ? unitPrice : 'UNRESOLVED',
+    unitPrice > 0 || it.isConfirmedZeroPrice === true ? { t: 'n', f: `D${rowNum}*G${rowNum}`, v: extPrice } : 'UNRESOLVED',
+    rationale,
+    rankReviewBadge(evalResults, s),
+    it.reasoning || s.reasoning || 'No candidate validation evidence recorded',
+    s.physicalMathClean === true ? 'LOCAL_RULE_CHECKED; ' + portalLabel(s) : 'DRAFT; ' + portalLabel(s)
+  ];
+  return { row, extPrice };
 }
 
 function _buildRankSheetData(s, serverCount, evalResults = {}) {
@@ -685,30 +759,9 @@ function _buildRankSheetData(s, serverCount, evalResults = {}) {
   let rankSubtotal = 0;
 
   items.forEach((it) => {
-    const { perNodeQty, nodeMult, totalQty } = outputQuantities(it, serverCount);
-      const unitPrice = it.unitPriceUsd || it.price || 0;
-    const extPrice = totalQty * unitPrice;
+    const { row, extPrice } = _buildRankItemRow(it, rowNum, serverCount, s, evalResults);
     rankSubtotal += extPrice;
-
-    const isFix = Boolean(it.isFixInjected || it.category === 'Mandatory Aspect Fix' || it.category === 'Aspect Rule Fix');
-    const isModernized = Boolean(it.category === 'Modernized Platform Hardware' || it.role === 'Modernized Platform Hardware');
-    const role = it.role || it.category || 'Standard Option';
-    const rationale = it.reasoning || it.rationale || (isFix ? 'Mandatory physical dependency kit identified by 7-aspect rule engine' : (isModernized ? 'Modernized 5th Gen Emerald Rapids + DDR5-5600 Smart FIO architecture' : 'Customer specified baseline component'));
-
-    rankData.push([
-      it.sku || it['Product #'] || '',
-      perNodeQty,
-      nodeMult,
-      { t: 'n', f: `B${rowNum}*C${rowNum}`, v: totalQty },
-      it.description || it.desc || '',
-      role,
-      unitPrice > 0 || it.isConfirmedZeroPrice === true ? unitPrice : 'UNRESOLVED',
-      unitPrice > 0 || it.isConfirmedZeroPrice === true ? { t: 'n', f: `D${rowNum}*G${rowNum}`, v: extPrice } : 'UNRESOLVED',
-      rationale,
-      rankReviewBadge(evalResults, s),
-      it.reasoning || s.reasoning || 'No candidate validation evidence recorded',
-      s.physicalMathClean === true ? 'LOCAL_RULE_CHECKED; ' + portalLabel(s) : 'DRAFT; ' + portalLabel(s)
-    ]);
+    rankData.push(row);
     rowNum++;
   });
 
@@ -731,8 +784,24 @@ function _buildRankSheetData(s, serverCount, evalResults = {}) {
   return { rankData, items };
 }
 
+function _formatRankCell(wsRank, addr, c, r, isLastRow, it, styles) {
+  const { C_EMERALD, C_ROW_ALT, C_WHITE, C_SOFT_EMERALD, cellStyle } = styles;
+  if (isLastRow) {
+    wsRank[addr].s = cellStyle(C_EMERALD, true, (c === 6 || c === 7) ? 'right' : (c === 0 ? 'left' : 'center'), C_WHITE, 10);
+    if (c === 6 || c === 7) wsRank[addr].z = '$#,##0.00';
+    return;
+  }
+  const isFix = Boolean(it && (it.isFixInjected || it.category === 'Mandatory Aspect Fix' || it.category === 'Aspect Rule Fix'));
+  const bg = isFix ? C_SOFT_EMERALD : ((r % 2 === 0) ? C_ROW_ALT : C_WHITE);
+  const isNum = (c === 6 || c === 7);
+  const isCenter = (c === 1 || c === 2 || c === 3);
+  const align = isNum ? 'right' : (isCenter ? 'center' : 'left');
+  wsRank[addr].s = cellStyle(bg, c === 0 || isFix, align, isFix ? '065F46' : '000000', 9);
+  if (isNum) wsRank[addr].z = '$#,##0.00';
+}
+
 function _styleRankSheet(wsRank, rankData, items, styles) {
-  const { C_DARK, C_EMERALD, C_SLATE, C_ROW_ALT, C_WHITE, C_SOFT_EMERALD, cellStyle, headerStyle } = styles;
+  const { C_DARK, C_SLATE, C_WHITE, cellStyle, headerStyle } = styles;
   wsRank['!cols'] = [
     { wch: 18 }, { wch: 14 }, { wch: 15 }, { wch: 12 }, { wch: 45 },
     { wch: 22 }, { wch: 18 }, { wch: 20 }, { wch: 45 }, { wch: 35 },
@@ -754,26 +823,14 @@ function _styleRankSheet(wsRank, rankData, items, styles) {
         const addr = XLSX.utils.encode_cell({ r, c });
         if (wsRank[addr]) wsRank[addr].s = headerStyle(C_DARK, C_WHITE, 10);
       }
-    } else if (r === rankData.length - 1) {
-      for (let c = 0; c < 12; c++) {
-        const addr = XLSX.utils.encode_cell({ r, c });
-        if (!wsRank[addr]) continue;
-        wsRank[addr].s = cellStyle(C_EMERALD, true, (c === 6 || c === 7) ? 'right' : (c === 0 ? 'left' : 'center'), C_WHITE, 10);
-        if (c === 6 || c === 7) wsRank[addr].z = '$#,##0.00';
-      }
     } else {
+      const isLastRow = (r === rankData.length - 1);
       const it = items[r - 3];
-      const isFix = Boolean(it && (it.isFixInjected || it.category === 'Mandatory Aspect Fix' || it.category === 'Aspect Rule Fix'));
-      const bg = isFix ? C_SOFT_EMERALD : ((r % 2 === 0) ? C_ROW_ALT : C_WHITE);
-
       for (let c = 0; c < 12; c++) {
         const addr = XLSX.utils.encode_cell({ r, c });
-        if (!wsRank[addr]) continue;
-        const isNum = (c === 6 || c === 7);
-        const isCenter = (c === 1 || c === 2 || c === 3);
-        const align = isNum ? 'right' : (isCenter ? 'center' : 'left');
-        wsRank[addr].s = cellStyle(bg, c === 0 || isFix, align, isFix ? '065F46' : '000000', 9);
-        if (isNum) wsRank[addr].z = '$#,##0.00';
+        if (wsRank[addr]) {
+          _formatRankCell(wsRank, addr, c, r, isLastRow, it, styles);
+        }
       }
     }
   }
@@ -824,6 +881,42 @@ function generateMultiRankSolutionWorkbook(evalResults, exportPath = '', chassis
   return wb;
 }
 
+function _escapeCsvCell(val) {
+  if (val === null || val === undefined) return '""';
+  const str = String(val).trim();
+  if (str.includes(',') || str.includes('"') || str.includes('\n') || str.includes('\r')) {
+    return `"${str.replace(/"/g, '""')}"`;
+  }
+  return `"${str}"`;
+}
+
+function _formatCsvSolutionItem(it, s, serverCount, evalResults) {
+  const { perNodeQty, nodeMult, totalQty } = outputQuantities(it, serverCount);
+  const unitPrice = it.unitPriceUsd || it.price || 0;
+  const extPrice = totalQty * unitPrice;
+  const isFix = Boolean(it.isFixInjected || it.category === 'Mandatory Aspect Fix' || it.category === 'Aspect Rule Fix');
+  const isModernized = Boolean(it.category === 'Modernized Platform Hardware' || it.role === 'Modernized Platform Hardware');
+  const role = it.role || it.category || 'Standard Option';
+  const rationale = it.reasoning || it.rationale || (isFix ? 'Mandatory physical dependency kit identified by 7-aspect rule engine' : (isModernized ? 'Modernized 5th Gen Emerald Rapids + DDR5-5600 Smart FIO architecture' : 'Customer specified baseline component'));
+
+  return [
+    _escapeCsvCell(`Rank ${s.rank}`),
+    _escapeCsvCell(s.name || `Strategy Rank ${s.rank}`),
+    _escapeCsvCell(it.sku || it['Product #'] || ''),
+    _escapeCsvCell(perNodeQty),
+    _escapeCsvCell(nodeMult),
+    _escapeCsvCell(totalQty),
+    _escapeCsvCell(it.description || it.desc || ''),
+    _escapeCsvCell(role),
+    _escapeCsvCell(unitPrice),
+    _escapeCsvCell(extPrice),
+    _escapeCsvCell(rationale),
+    _escapeCsvCell(rankReviewBadge(evalResults, s)),
+    _escapeCsvCell(s.reasoning || 'No candidate validation evidence recorded'),
+    _escapeCsvCell(portalLabel(s))
+  ].join(',');
+}
+
 /**
  * Generate a flattened, token-efficient Multi-Rank Solution CSV companion
  * suitable for ephemeral source attachment to Gemini NotebookLM via source_add.
@@ -855,16 +948,7 @@ function generateMultiRankSolutionCsv(evalResults, exportPath = '', options = {}
     'CLIC Status / Rule Trace'
   ];
 
-  function escapeCsvCell(val) {
-    if (val === null || val === undefined) return '""';
-    const str = String(val).trim();
-    if (str.includes(',') || str.includes('"') || str.includes('\n') || str.includes('\r')) {
-      return `"${str.replace(/"/g, '""')}"`;
-    }
-    return `"${str}"`;
-  }
-
-  const rows = [headers.map(escapeCsvCell).join(',')];
+  const rows = [headers.map(_escapeCsvCell).join(',')];
 
   const solutions = rankedSolutions.length > 0 ? rankedSolutions : [{
     rank: 1,
@@ -875,30 +959,7 @@ function generateMultiRankSolutionCsv(evalResults, exportPath = '', options = {}
   solutions.forEach(s => {
     const items = s.skuPartsList || s.skuList || [];
     items.forEach(it => {
-      const { perNodeQty, nodeMult, totalQty } = outputQuantities(it, serverCount);
-      const unitPrice = it.unitPriceUsd || it.price || 0;
-      const extPrice = totalQty * unitPrice;
-      const isFix = Boolean(it.isFixInjected || it.category === 'Mandatory Aspect Fix' || it.category === 'Aspect Rule Fix');
-      const isModernized = Boolean(it.category === 'Modernized Platform Hardware' || it.role === 'Modernized Platform Hardware');
-      const role = it.role || it.category || 'Standard Option';
-      const rationale = it.reasoning || it.rationale || (isFix ? 'Mandatory physical dependency kit identified by 7-aspect rule engine' : (isModernized ? 'Modernized 5th Gen Emerald Rapids + DDR5-5600 Smart FIO architecture' : 'Customer specified baseline component'));
-
-        rows.push([
-        escapeCsvCell(`Rank ${s.rank}`),
-        escapeCsvCell(s.name || `Strategy Rank ${s.rank}`),
-        escapeCsvCell(it.sku || it['Product #'] || ''),
-        escapeCsvCell(perNodeQty),
-        escapeCsvCell(nodeMult),
-        escapeCsvCell(totalQty),
-        escapeCsvCell(it.description || it.desc || ''),
-        escapeCsvCell(role),
-        escapeCsvCell(unitPrice),
-        escapeCsvCell(extPrice),
-        escapeCsvCell(rationale),
-        escapeCsvCell(rankReviewBadge(evalResults, s)),
-        escapeCsvCell(s.reasoning || 'No candidate validation evidence recorded'),
-        escapeCsvCell(portalLabel(s)),
-      ].join(','));
+      rows.push(_formatCsvSolutionItem(it, s, serverCount, evalResults));
     });
   });
 

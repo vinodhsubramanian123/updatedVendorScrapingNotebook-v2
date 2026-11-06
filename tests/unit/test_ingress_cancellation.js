@@ -26,7 +26,7 @@ function loadMcp(overrides = {}) {
     '../lib/boq/boq_evaluator.js': evaluator,
     '../lib/notebook/notebook_query_utils.js': { executeNotebookQuery: overrides.query || (async () => ({ result: 'grounded' })) },
     '../lib/rag/local_rag_search.js': { queryLocalKnowledgeBase: () => ({ source: 'local' }) },
-    '../lib/sync/knowledge_sync.js': { loadNotebookConfig: () => ({}), getNotebookIdForChassis: () => 'notebook', getNotebookDegradedMode: () => ({}) },
+    '../lib/sync/knowledge_sync.js': { loadNotebookConfig: () => ({}), getNotebookIdForChassis: () => 'notebook', getNotebookDegradedMode: () => ({}), normalizeChassisName: name => name || 'fixture' },
     '../lib/feedback/feedback_loop.js': { processPortalFeedback: () => { calls.push({ name: 'write' }); return { persisted: true }; } },
     '../lib/catalog/catalog_discovery.js': { listAllCatalogs: () => [{ id: 'fixture', catalogDir: '/fixture' }] },
     '../lib/system/execution_trace_runtime.js': { observeActualInvocation: (name, source, callback) => {

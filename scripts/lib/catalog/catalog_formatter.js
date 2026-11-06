@@ -15,6 +15,116 @@ const { classifyComponentRole } = require('./product_meta.js');
  * @param {object} profile
  * @returns {string} TSV content string
  */
+function _formatEntryConstraint(entry) {
+  const minQty = entry.minQty || 0;
+  const constraintParts = [];
+  if (minQty > 0) constraintParts.push(`min ${minQty}`);
+  if (entry.maxQty === -1) constraintParts.push('Unlimited');
+  else if (entry.maxQty === -2) constraintParts.push('Required');
+  else if (entry.maxQty === -3) constraintParts.push('Optional');
+  else if (entry.maxQty > 0) constraintParts.push(`max ${entry.maxQty}`);
+  const constraintStr = constraintParts.length > 0 ? constraintParts.join(', ') : (entry.constraint || '');
+
+  const minQtyVal = minQty > 0 ? String(minQty) : '0';
+  const maxQtyVal = entry.maxQty === -1 ? 'Unlimited' :
+                    entry.maxQty === -2 ? 'Required' :
+                    entry.maxQty === -3 ? 'Optional' :
+                    entry.maxQty > 0 ? String(entry.maxQty) :
+                    (entry.constraint || '');
+
+  return { constraintStr, minQtyVal, maxQtyVal };
+}
+
+function _extractSkuPrice(sku) {
+  if (sku['Unit Price (USD)']) return sku['Unit Price (USD)'];
+  if (sku['Price (USD)']) return sku['Price (USD)'];
+  if (sku['List Price (USD)']) return sku['List Price (USD)'];
+  if (sku['List Price']) return sku['List Price'];
+  if (sku['Price']) return sku['Price'];
+  if (sku.listPriceFormatted) return sku.listPriceFormatted;
+  if (sku.listPrice !== undefined && sku.listPrice !== null) return String(sku.listPrice);
+  return '';
+}
+
+function _extractSkuCost(sku) {
+  if (sku['Cost (USD)']) return sku['Cost (USD)'];
+  if (sku.costPrice !== undefined && sku.costPrice !== null) return String(sku.costPrice);
+  return '';
+}
+
+function _extractSkuRecommendation(sku, parentCategory, subCategory) {
+  let isRecommended = sku['HPE Recommended'] || sku.hpeRecommended || '';
+  if (!isRecommended || isRecommended === 'Unknown') {
+    return (parentCategory === 'Chassis' || subCategory === 'Variants') ? 'Unknown' : 'No';
+  }
+  return isRecommended;
+}
+
+function _extractVendorAttributesJson(sku) {
+  if (sku.vendorAttributes && typeof sku.vendorAttributes === 'object') {
+    return JSON.stringify(sku.vendorAttributes);
+  }
+  return String(sku['Vendor Attributes (JSON)'] || '');
+}
+
+function _resolveSupplyAndLeadTime(sku) {
+  const availability = sku.Availability || sku['Supply Status'] || '';
+  const leadTime = sku['Lead Time'] || 'Unpublished';
+  const speedTier = sku['Speed Tier'] || 'Unpublished';
+  const source = sku['Lead Time Source'] || 'Unpublished';
+  const clic = sku['CLIC Status'] || sku.clicStatus || 'Unpublished';
+  return { availability, leadTime, speedTier, source, clic };
+}
+
+function _resolveLifecycleMetrics(sku) {
+  const status = sku['Lifecycle Status'] || sku.lifecycleStatus || '';
+  const start = sku['Start Date'] || sku['Start'] || '';
+  const disc = sku['Discontinued Date'] || sku['Discontinued'] || '';
+  return { status, start, disc };
+}
+
+function _resolveDiffMetrics(sku) {
+  const diffStatus = sku['Diff Status'] || 'UNCHANGED';
+  const prevPrice = sku['Previous List Price (USD)'] || 'N/A';
+  const priceChangeUsd = sku['Price Change (USD)'] || '$0.00';
+  const priceChangePct = sku['Price Change (%)'] || '0.00%';
+  const historyTrail = sku['Price History Trail'] || '';
+  return { diffStatus, prevPrice, priceChangeUsd, priceChangePct, historyTrail };
+}
+
+function _formatSkuRow(entry, sku, hierarchyPath, constraintInfo, profile) {
+  const rawQty   = String(sku['Current Qty'] || sku.qty || '0').replace(/\n/g, '').trim();
+  const cleanQty = /^\d+$/.test(rawQty) ? rawQty : '0';
+  const role     = sku['Component Role'] || classifyComponentRole(entry.parentCategory, sku['Description'] || sku.description, profile);
+  const priceVal = _extractSkuPrice(sku);
+  const costVal  = _extractSkuCost(sku);
+  const isRecommended = _extractSkuRecommendation(sku, entry.parentCategory, entry.subCategory);
+  const vendorAttributes = _extractVendorAttributesJson(sku);
+  const safeCell = value => String(value ?? '').replace(/[\t\r\n]+/g, ' ').trim();
+
+  const leadTimeDays = sku['Lead Time Days'] !== undefined ? String(sku['Lead Time Days'])
+    : (sku.leadTimeDays !== undefined && sku.leadTimeDays !== null ? String(sku.leadTimeDays) : '');
+
+  const supply = _resolveSupplyAndLeadTime(sku);
+  const lifecycle = _resolveLifecycleMetrics(sku);
+  const diff = _resolveDiffMetrics(sku);
+
+  return [
+    entry.parentCategory, entry.subCategory, hierarchyPath, role, constraintInfo.constraintStr, constraintInfo.minQtyVal, constraintInfo.maxQtyVal,
+    (entry.rules || []).join(' | '), sku['Product #'] || sku.sku || '', sku['Option Type'] || sku.optionType || 'Standard', sku['Description'] || sku.description || '', cleanQty,
+    priceVal, costVal, sku['Price Delta (USD)'] || '', sku['Extended Price (USD)'] || '',
+    sku['Price per GB (USD)'] || '', isRecommended,
+    supply.availability, supply.leadTime,
+    leadTimeDays,
+    supply.speedTier,
+    supply.source,
+    supply.clic,
+    lifecycle.status,
+    lifecycle.start, lifecycle.disc, vendorAttributes,
+    diff.diffStatus, diff.prevPrice, diff.priceChangeUsd, diff.priceChangePct, diff.historyTrail
+  ].map(safeCell).join('\t');
+}
+
 function generateMainSheet(entries, chassisRoot, profile = null) {
   const rows = [[
     'Main Category', 'Sub-Category', 'Hierarchy Path', 'Component Role', 'Constraint Text',
@@ -26,55 +136,11 @@ function generateMainSheet(entries, chassisRoot, profile = null) {
   ].join('\t')];
 
   for (const entry of entries) {
-    // GAP FIX #2 & #5: Format constraint string with both min and max, including optional sentinel
-    const minQty = entry.minQty || 0;
-    const constraintParts = [];
-    if (minQty > 0) constraintParts.push(`min ${minQty}`);
-    if (entry.maxQty === -1) constraintParts.push('Unlimited');
-    else if (entry.maxQty === -2) constraintParts.push('Required');
-    else if (entry.maxQty === -3) constraintParts.push('Optional');
-    else if (entry.maxQty > 0) constraintParts.push(`max ${entry.maxQty}`);
-    const constraintStr = constraintParts.length > 0 ? constraintParts.join(', ') : (entry.constraint || '');
-
-    const minQtyVal = minQty > 0 ? String(minQty) : '0';
-    const maxQtyVal = entry.maxQty === -1 ? 'Unlimited' :
-                      entry.maxQty === -2 ? 'Required' :
-                      entry.maxQty === -3 ? 'Optional' :
-                      entry.maxQty > 0 ? String(entry.maxQty) :
-                      (entry.constraint || '');
+    const constraintInfo = _formatEntryConstraint(entry);
+    const hierarchyPath = `HPE OCA > ${chassisRoot} > ${entry.parentCategory} > ${entry.subCategory}`;
 
     for (const sku of entry.skus) {
-      const rawQty   = String(sku['Current Qty'] || sku.qty || '0').replace(/\n/g, '').trim();
-      const cleanQty = /^\d+$/.test(rawQty) ? rawQty : '0';
-      const role     = sku['Component Role'] || classifyComponentRole(entry.parentCategory, sku['Description'] || sku.description, profile);
-      const priceVal = sku['Unit Price (USD)'] || sku['Price (USD)'] || sku['List Price (USD)'] || sku['List Price'] || sku['Price'] || sku.listPriceFormatted || (sku.listPrice !== undefined && sku.listPrice !== null ? String(sku.listPrice) : '');
-      const costVal  = sku['Cost (USD)'] || (sku.costPrice !== undefined && sku.costPrice !== null ? String(sku.costPrice) : '') || '';
-      // Rule #20: HPE OCA > Chassis [BaseSKU] > Category > Subcategory
-      const hierarchyPath = `HPE OCA > ${chassisRoot} > ${entry.parentCategory} > ${entry.subCategory}`;
-
-      let isRecommended = sku['HPE Recommended'] || sku.hpeRecommended || '';
-      if (!isRecommended || isRecommended === 'Unknown') {
-        isRecommended = (entry.parentCategory === 'Chassis' || entry.subCategory === 'Variants') ? 'Unknown' : 'No';
-      }
-
-      const vendorAttributes = sku.vendorAttributes && typeof sku.vendorAttributes === 'object'
-        ? JSON.stringify(sku.vendorAttributes)
-        : String(sku['Vendor Attributes (JSON)'] || '');
-      const safeCell = value => String(value ?? '').replace(/[\t\r\n]+/g, ' ').trim();
-      rows.push([
-        entry.parentCategory, entry.subCategory, hierarchyPath, role, constraintStr, minQtyVal, maxQtyVal,
-        (entry.rules || []).join(' | '), sku['Product #'] || sku.sku || '', sku['Option Type'] || sku.optionType || 'Standard', sku['Description'] || sku.description || '', cleanQty,
-        priceVal, costVal, sku['Price Delta (USD)'] || '', sku['Extended Price (USD)'] || '',
-        sku['Price per GB (USD)'] || '', isRecommended,
-        sku.Availability || sku['Supply Status'] || '', sku['Lead Time'] || 'Unpublished',
-        sku['Lead Time Days'] !== undefined ? String(sku['Lead Time Days']) : (sku.leadTimeDays !== undefined && sku.leadTimeDays !== null ? String(sku.leadTimeDays) : ''),
-        sku['Speed Tier'] || 'Unpublished',
-        sku['Lead Time Source'] || 'Unpublished',
-        sku['CLIC Status'] || sku.clicStatus || 'Unpublished',
-        sku['Lifecycle Status'] || sku.lifecycleStatus || '',
-        sku['Start Date'] || sku['Start'] || '', sku['Discontinued Date'] || sku['Discontinued'] || '', vendorAttributes,
-        sku['Diff Status'] || 'UNCHANGED', sku['Previous List Price (USD)'] || 'N/A', sku['Price Change (USD)'] || '$0.00', sku['Price Change (%)'] || '0.00%', sku['Price History Trail'] || ''
-      ].map(safeCell).join('\t'));
+      rows.push(_formatSkuRow(entry, sku, hierarchyPath, constraintInfo, profile));
     }
   }
   return rows.join('\n');
@@ -102,22 +168,7 @@ function generateRulesSheet(entries, subcatList = [], fullText = '', extraRules 
     rows.push([parentCat, subCat, constraint || '', ruleType, cleanText].join('\t'));
   };
 
-  // 1. Subcategory constraints (both min and max)
-  for (const sc of subcatList) {
-    const parts = [];
-    if (sc.minQty > 0) parts.push(`min ${sc.minQty}`);
-    if (sc.maxQty === -1) parts.push('Unlimited');
-    else if (sc.maxQty === -2) parts.push('Required');
-    else if (sc.maxQty === -3) parts.push('Optional');
-    else if (sc.maxQty > 0) parts.push(`max ${sc.maxQty}`);
-    const constraintStr = parts.length > 0 ? parts.join(', ') : sc.constraint;
-    if (constraintStr) {
-      const ruleText = sc.minQty > 0 && sc.maxQty > 0
-        ? `Quantity: min ${sc.minQty}, max ${sc.maxQty}`
-        : `Quantity: ${constraintStr}`;
-      addRuleRow(sc.parentCategory, sc.name, constraintStr, 'Quantity Constraint', ruleText);
-    }
-  }
+  _extractSubcatConstraintRules(subcatList, addRuleRow);
 
   // 2. Embedded configuration rules from entries (Hardware + Services)
   for (const entry of entries) {
@@ -134,8 +185,30 @@ function generateRulesSheet(entries, subcatList = [], fullText = '', extraRules 
     addRuleRow(parent, sub, r.constraint || '', 'Learned Feedback Rule', text);
   }
 
-  // 4. Text-extracted rules from QuickSpecs / DOM
-  // GAP FIX #7: Expanded pattern set to capture additional OCA constraint types
+  _extractFullTextRules(fullText, subcatList, addRuleRow);
+
+  return rows.join('\n');
+}
+
+function _extractSubcatConstraintRules(subcatList, addRuleRow) {
+  for (const sc of subcatList) {
+    const parts = [];
+    if (sc.minQty > 0) parts.push(`min ${sc.minQty}`);
+    if (sc.maxQty === -1) parts.push('Unlimited');
+    else if (sc.maxQty === -2) parts.push('Required');
+    else if (sc.maxQty === -3) parts.push('Optional');
+    else if (sc.maxQty > 0) parts.push(`max ${sc.maxQty}`);
+    const constraintStr = parts.length > 0 ? parts.join(', ') : sc.constraint;
+    if (constraintStr) {
+      const ruleText = sc.minQty > 0 && sc.maxQty > 0
+        ? `Quantity: min ${sc.minQty}, max ${sc.maxQty}`
+        : `Quantity: ${constraintStr}`;
+      addRuleRow(sc.parentCategory, sc.name, constraintStr, 'Quantity Constraint', ruleText);
+    }
+  }
+}
+
+function _extractFullTextRules(fullText, subcatList, addRuleRow) {
   const notePatterns = [
     { regex: /For [Mm]ore detail[s]? on .+?, please refer to: (.+)/g, type: 'Reference Link' },
     { regex: /Minimum \d+ of .+/g, type: 'Minimum Requirement' },
@@ -143,7 +216,6 @@ function generateRulesSheet(entries, subcatList = [], fullText = '', extraRules 
     { regex: /In order to select .+/g, type: 'Selection Guide' },
     { regex: /Mixing of .+ is not allowed/g, type: 'Mixing Rule' },
     { regex: /If .+ is selected.+/g, type: 'Conditional Rule' },
-    // GAP FIX #7: New patterns for chassis-gated, incompatibility, dependency, and co-selection rules
     { regex: /Supported with .+ (?:CTO Server |Server |chassis )?only/gi, type: 'Chassis Gate Rule' },
     { regex: /Not compatible with .+/gi, type: 'Incompatibility Rule' },
     { regex: /Cannot be (?:used|selected|mixed) with .+/gi, type: 'Incompatibility Rule' },
@@ -170,8 +242,6 @@ function generateRulesSheet(entries, subcatList = [], fullText = '', extraRules 
       }
     }
   }
-
-  return rows.join('\n');
 }
 
 /**

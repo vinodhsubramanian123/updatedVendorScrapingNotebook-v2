@@ -144,6 +144,48 @@ function runRemediation() {
   }
   console.log(`✅ Restored active DDR5 memory entries under Memory category.`);
 
+  // Restore 389692-B21 (HPE Customer Defined RAID Setting Service) under Storage Controllers > RAID Settings
+  let raidEntry = liveCat.entries.find(e => 
+    (e.parentCategory === 'Storage Controllers' || e.parentCategory === 'Support Services') && 
+    (e.subCategory === 'RAID Settings' || (e.rules && e.rules.some(r => r.includes('RAID Settings'))))
+  );
+  if (raidEntry) {
+    raidEntry.parentCategory = 'Storage Controllers';
+    raidEntry.subCategory = 'RAID Settings';
+    if (!raidEntry.skus.some(s => (s['Product #'] || s.sku) === '389692-B21')) {
+      raidEntry.skus.push({
+        'Product #': '389692-B21',
+        sku: '389692-B21',
+        Description: 'HPE Customer Defined RAID Setting Service',
+        'Current Qty': '0',
+        'Unit Price (USD)': '1.00',
+        'List Price (USD)': '1.00',
+        listPrice: 1,
+        'Extended Price (USD)': 'NA',
+        'Est. Lead Time': '1',
+        'Start Date': '02/02/2005',
+        'Discontinued Date': '12/31/2043',
+        'Option Type': 'Standard',
+        'Component Role': 'Storage Controller',
+        'CLIC Status': 'Valid',
+        clicStatus: 'Valid',
+        'Lifecycle Status': 'Active',
+        lifecycleStatus: 'Active',
+        Availability: 'Available in OCA product catalog',
+        'Lead Time': '1',
+        'Lead Time Days': '1',
+        'Speed Tier': 'Standard',
+        'Lead Time Source': 'OCA',
+        'HPE Recommended': 'No',
+        vendorRecommended: false,
+        'Diff Status': 'UNCHANGED',
+        'Hierarchy Path': 'HPE OCA > DL380a Gen12 [P76706-B21] > Storage Devices > RAID Settings'
+      });
+      raidEntry.skuCount = raidEntry.skus.length;
+      console.log('✅ Restored 389692-B21 under Storage Controllers > RAID Settings.');
+    }
+  }
+
 
 
   // Recount Unique SKUs

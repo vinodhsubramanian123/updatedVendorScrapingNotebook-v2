@@ -1,8 +1,8 @@
 # HPE Knowledge Registry — Local Audit Index
 
-**Document Version**: `2.0.0` | **Generated**: `2026-11-03T08:23:47.460Z`
+**Document Version**: `2.0.0` | **Generated**: `2026-11-06T15:44:12.644Z`
 **Scope**: Local governance index. This file is not a NotebookLM source; product notebooks receive independently scoped projections.
-**Total Verified Knowledge Deltas**: `139` (`9` Universal + `0` Family/Gen + `130` Chassis Specific)
+**Total Verified Knowledge Deltas**: `142` (`9` Universal + `0` Family/Gen + `133` Chassis Specific)
 
 ---
 
@@ -94,7 +94,7 @@
 - **Engineering Rationale**: *Manual price drift reconciliation from phase 15 audit*
 
 #### C8. [DELTA_P70436_DELISTED_REPLACED_BY_P91249] DL380a_Gen12 — SKU_SUBSTITUTION
-- **Scope**: `CHASSIS_SPECIFIC`
+- **Scope**: `PRODUCT_GENERATION`
 - **Rule**: When customer quotes specify P70436-B21, substitute with active Multi Vendor SKU P91249-B21 (same High Performance U.3 specification) or value-engineered P84236-B21.
 - **Affected SKU**: `P70436-B21`
 - **Required Dependency**: `P91249-B21`
@@ -182,7 +182,7 @@
 - **Required Dependency**: `P48820-B21`
 
 #### C25. [DELTA_DL380_MISSING_SUPPORT_CONTRACT] DL380_Gen12 — DEPENDENCY
-- **Scope**: `CHASSIS_SPECIFIC`
+- **Scope**: `ProLiant/Gen12/DL380_Gen12`
 - **Rule**: Every HPE ProLiant DL380 Gen12 server (P73282-B21) requires a hardware maintenance support contract. Common customer error: quoting software licenses (P8B31A OneView) while omitting hardware warranty (HU4B2A30C4V 3Y Tech Care Basic at ,509/unit). The BOQ evaluator must flag any DL380 Gen12 config that has 0 support units against N physical servers.
 - **Affected SKU**: `HU4B2A30C4V`
 - **Required Dependency**: `P73282-B21`
@@ -210,27 +210,27 @@
 - **Affected SKU**: `P71964-B21`
 - **Required Dependency**: `P73021-B21`
 
-#### C30. [DELTA-1787856163365] DL380_Gen11 — RULE
+#### C30. [DELTA-1787856163365] DL380_Gen11 — MEMORY_POPULATION_CONSTRAINT
 - **Scope**: `CHASSIS_SPECIFIC`
-- **Rule**: If PORTAL is present, P52534-B21 is mandatory.
-- **Affected SKU**: `PORTAL`
-- **Required Dependency**: `P52534-B21`
+- **Rule**: When ordering P52534-B21 (DL380 Gen11 8SFF NC CTO), minimum 1 and maximum 16 memory DIMMs must be ordered per processor.
+- **Affected SKU**: `P52534-B21`
+- **Required Dependency**: `MEMORY_KIT_MIN1_MAX16`
 
-#### C31. [DELTA-1787856163549] DL380_Gen11 — RULE
+#### C31. [DELTA-1787856163549] DL380_Gen11 — SUPPLY_CONSTRAINT_FIO_SUBSTITUTION
 - **Scope**: `CHASSIS_SPECIFIC`
-- **Rule**: If PORTAL is present, P64707-B21 is mandatory.
-- **Affected SKU**: `PORTAL`
-- **Required Dependency**: `P64707-B21`
+- **Rule**: Standalone SKU P64707-B21 constrained; must substitute factory-integrated P64707-F21 for CTO factory build.
+- **Affected SKU**: `P64707-B21`
+- **Required Dependency**: `P64707-F21`
 
-#### C32. [DELTA-1787856163672] DL380_Gen11 — RULE
+#### C32. [DELTA-1787856163672] DL380_Gen11 — OPERATING_SYSTEM_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
-- **Rule**: Portal validation flagged restriction on PORTAL.
-- **Affected SKU**: `PORTAL`
+- **Rule**: Advisory: Selection of an Operating System is recommended for factory deployment.
+- **Affected SKU**: `P52534-B21`
 
-#### C33. [DELTA-1787856163759] DL380_Gen11 — RULE
+#### C33. [DELTA-1787856163759] DL380_Gen11 — MANAGEMENT_UTILITY_COMPATIBILITY
 - **Scope**: `CHASSIS_SPECIFIC`
-- **Rule**: If PORTAL is present, P58335-B21 is mandatory.
-- **Affected SKU**: `PORTAL`
+- **Rule**: When ordering MegaRAID controller P58335-B21, MegaRAID Tools cannot be used to configure legacy SmartRAID arrays.
+- **Affected SKU**: `P58335-B21`
 - **Required Dependency**: `P58335-B21`
 
 #### C34. [DELTA_RAG_CARRYOVER_P48183-B21_1787856180158] DL380_Gen11 — CARRY_OVER_VALIDATED
@@ -280,10 +280,10 @@
 - **Affected SKU**: `P58335-B21`
 - **Required Dependency**: `P48918-B21`
 
-#### C42. [DELTA_RAG_DEP_write-cach_P48918-B21_1787915281069] DL380_Gen11 — DEPENDENCY_CHAIN
+#### C42. [DELTA_RAG_DEP_write-cach_P48918-B21_1787915281069] DL380_Gen11 — STORAGE_CACHE_CABLE_DEPENDENCY
 - **Scope**: `CHASSIS_SPECIFIC`
-- **Rule**: write-cache backup for `P58335-B21`; requires enablement cable **`P48918-B21
-- **Affected SKU**: `write-cach`
+- **Rule**: Selecting storage controller P58335-B21 write-cache backup requires enablement cable P48918-B21.
+- **Affected SKU**: `P58335-B21`
 - **Required Dependency**: `P48918-B21`
 
 #### C43. [DELTA-DL385-GEN11-COM-MANDATE-81322276] DL385_Gen11 — MANDATORY_SOFTWARE_ATTACH
@@ -626,151 +626,166 @@
 - **Rule**: Portal validation warnings on HPE ProLiant Compute DL380a Gen12 8DW/16SW CTO Server (P76706-B21) and HPE Compute Ops Management Standard 3-year SaaS (R7A11AAE) have cleared to clean/pass in latest OCA release. 64GB DDR5-6400 memory (P69728-F21) discontinuation date extended to 2030-06-30.
 - **Affected SKU**: `P76706-B21`
 
-#### C103. [LEARN_DL380_GEN12_SUPPORT_PRICING_UPDATE_20261102] DL380_Gen12 — SUPPORT_PRICING_UPDATE
+#### C103. [LEARN_DL380A_GEN12_RAID1_MULTI_DRIVE_20261104] DL380a_Gen12 — ARRAY_GEOMETRY_BUILD_BLOCKER
+- **Scope**: `CHASSIS_SPECIFIC`
+- **Rule**: In HPE OCA / CLIC on DL380a Gen12, 339778-B21 (HPE RAID 1 Drive 1 FIO Setting) strictly enforces Drive Count == 2. When >2 drives (e.g. 4x NVMe SSDs) are configured without a full-cage RAID 5/10 setting, CLIC marks the build as UNBUILDABLE (Action-Required) due to unassigned drive geometry mismatch and mandates 389692-B21 (HPE Customer Defined RAID Setting Service, max 1) or omitting FIO settings when dedicated NS204i-u boot device P78279-B21 is present.
+- **Affected SKU**: `339778-B21`
+
+#### C104. [LEARN_DL380A_GEN12_BOOT_DATA_DECOUPLING_20261104] DL380a_Gen12 — WORKFLOW_VENDOR_OBSERVATION_ADVISORY
+- **Scope**: `CHASSIS_SPECIFIC`
+- **Rule**: HPE NS204i-u v2 480GB Boot Device (P78279-B21) and front boot cage (P75284-B21) have zero hardware, cage, or bus dependency on SFF data drives (P63833-B21 / P50219-B21 / P50216-B21), 4SFF drive cage (P74710-B21), or direct-attach cables (P74702-B21). Boot tier and data tier can be configured independently or together.
+- **Affected SKU**: `P78279-B21`
+
+#### C105. [LEARN_DL380A_GEN12_TURNKEY_RACKING_CABLING_20261104] DL380a_Gen12 — WORKFLOW_VENDOR_OBSERVATION_ADVISORY
+- **Scope**: `CHASSIS_SPECIFIC`
+- **Rule**: DL380a Gen12 base CTO chassis P76706-B21 does not bundle rack rails. When customer tender requests installation, racking, and cabling, P69770-B21 (Ball Bearing Rail Kit) is mandatory to mount the 4U chassis. Furthermore, SFP28 networking adapters (P10115-B21) require 2x 845398-B21 (25Gb SFP28 SR Transceivers) or DAC cables to prevent site cabling failure.
+- **Affected SKU**: `P69770-B21`
+
+#### C106. [LEARN_DL380_GEN12_SUPPORT_PRICING_UPDATE_20261102] DL380_Gen12 — SUPPORT_PRICING_UPDATE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: HPE DL380 Gen12 Support (HU4B2A30C4V, under HU4B2A3 3Y Tech Care Basic) list price updated in November 2026 OCA catalog from $5,509.00 to $5,784.00 USD (+$275.00 / +4.99% per server node). 12-node cluster extended price increases from $66,108.00 to $69,408.00 USD (+$3,300.00).
 - **Affected SKU**: `HU4B2A30C4V`
 - **Required Dependency**: `P73282-B21`
 
-#### C104. [LEARN_DL380_GEN12_CLIC_STATUS_CLEARANCE_20261102] DL380_Gen12 — CLIC_STATUS_CLEARANCE
+#### C107. [LEARN_DL380_GEN12_CLIC_STATUS_CLEARANCE_20261102] DL380_Gen12 — CLIC_STATUS_CLEARANCE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Portal validation warnings on HPE ProLiant DL380 Gen12 SFF NC CTO Server (P73282-B21) and HPE Compute Ops Management Standard 3-year SaaS (R7A11AAE) have cleared to clean/pass in latest OCA engine release.
 - **Affected SKU**: `P73282-B21`
 
-#### C105. [LEARN_DL380_GEN12_LEAD_TIME_AND_LIFECYCLE_20261102] DL380_Gen12 — LEAD_TIME_AND_LIFECYCLE
+#### C108. [LEARN_DL380_GEN12_LEAD_TIME_AND_LIFECYCLE_20261102] DL380_Gen12 — LEAD_TIME_AND_LIFECYCLE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: DL380 Gen12 CTO base chassis (P73282-B21) availability lead time improved to 14 days (down from 30 days). Xeon 6787P CPU (P73837-B21) is 10 days; 8SFF drive cage (P75740-B21) is 14 days. 64GB DDR5-6400 Smart FIO memory (P69728-F21) discontinuation date extended to 2030-06-30 (+27 months).
 - **Affected SKU**: `P73282-B21`
 
-#### C106. [DELTA_SYNERGY_FRAME_STARTUP_MATH] SY480_Gen12 — STARTUP_SERVICE_FORMULA
+#### C109. [DELTA_SYNERGY_FRAME_STARTUP_MATH] SY480_Gen12 — STARTUP_SERVICE_FORMULA
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Onsite Frame Startup requires exactly 1x HA124A1#5ZM + (TotalFrames - 1)x HA124A1#5ZQ. Purge all HA124A1#V0F lines when onsite startup is selected.
 - **Affected SKU**: `HA124A1`
 - **Required Dependency**: `HA124A1#5ZM`
 
-#### C107. [DELTA_SYNERGY_VC_100GB_SUPPORT_ENTITLEMENT] SY480_Gen12 — HARDWARE_SUPPORT_1TO1
+#### C110. [DELTA_SYNERGY_VC_100GB_SUPPORT_ENTITLEMENT] SY480_Gen12 — HARDWARE_SUPPORT_1TO1
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Qty of HU4B2A3#Z1R must exactly equal qty of 867796-B21 (VC SE 100Gb F32 Module).
 - **Affected SKU**: `867796-B21`
 - **Required Dependency**: `HU4B2A3#Z1R`
 
-#### C108. [DELTA_SYNERGY_COMPOSER2_SUPPORT_ENTITLEMENT] SY480_Gen12 — HARDWARE_SUPPORT_1TO1
+#### C111. [DELTA_SYNERGY_COMPOSER2_SUPPORT_ENTITLEMENT] SY480_Gen12 — HARDWARE_SUPPORT_1TO1
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Qty of HU4B2A3#Z1Q must exactly equal qty of 872957-B21 (Synergy Composer2 Management Appliance).
 - **Affected SKU**: `872957-B21`
 - **Required Dependency**: `HU4B2A3#Z1Q`
 
-#### C109. [DELTA_SYNERGY_BROCADE_FC_SUPPORT_ENTITLEMENT] SY480_Gen12 — HARDWARE_SUPPORT_1TO1
+#### C112. [DELTA_SYNERGY_BROCADE_FC_SUPPORT_ENTITLEMENT] SY480_Gen12 — HARDWARE_SUPPORT_1TO1
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Qty of HU4B2A30BU5 must exactly equal qty of P77653-B21 (Brocade 64Gb FC Switch Module).
 - **Affected SKU**: `P77653-B21`
 - **Required Dependency**: `HU4B2A30BU5`
 
-#### C110. [DELTA_SYNERGY_COMPUTE_MODULE_SUPPORT_ENTITLEMENT] SY480_Gen12 — HARDWARE_SUPPORT_1TO1
+#### C113. [DELTA_SYNERGY_COMPUTE_MODULE_SUPPORT_ENTITLEMENT] SY480_Gen12 — HARDWARE_SUPPORT_1TO1
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Qty of HU4B2A30BT7 must exactly equal qty of P68217-B21 (HPE SY480 Gen12 Compute Module).
 - **Affected SKU**: `P68217-B21`
 - **Required Dependency**: `HU4B2A30BT7`
 
-#### C111. [DELTA_SYNERGY_WARRANTY_VS_STARTUP_DECOUPLING] SY480_Gen12 — DECOUPLING
-- **Scope**: `CHASSIS_SPECIFIC`
+#### C114. [DELTA_SYNERGY_WARRANTY_VS_STARTUP_DECOUPLING] SY480_Gen12 — DECOUPLING
+- **Scope**: `Synergy/Gen12/SY480_Gen12`
 - **Rule**: HPE Synergy quoting requires strict decoupling of two independent service domains: (1) HU4B2A3 — ongoing Point-of-Sale hardware maintenance (3Y Tech Care Basic, 9x5 NBD), decomposed per-subsystem (#WJN Frame, #Z1Q Composer2, #Z1R VC, 0BT7 Compute, 0BU5 Brocade); and (2) HA124A1 — one-time professional deployment/startup services (SOW-scoped). These are NOT interchangeable and must never be conflated in BOQ assembly.
 - **Affected SKU**: `HA124A1`
 - **Required Dependency**: `HU4B2A3`
 
-#### C112. [DELTA_SYNERGY_REMOTE_ONSITE_CONFLICT] SY480_Gen12 — EXCLUSION
-- **Scope**: `CHASSIS_SPECIFIC`
+#### C115. [DELTA_SYNERGY_REMOTE_ONSITE_CONFLICT] SY480_Gen12 — EXCLUSION
+- **Scope**: `Synergy/Gen12/SY480_Gen12`
 - **Rule**: Remote startup (HA124A1#V0F) and Onsite startup (HA124A1#5ZM) are mutually exclusive delivery models for Synergy frame deployment. When Onsite is selected, all Remote startup lines MUST be purged to zero. Quoting both simultaneously creates SOW delivery scope conflicts that trigger CLIC Rule 81039677.
 - **Affected SKU**: `HA124A1#V0F`
 - **Required Dependency**: `HA124A1#5ZM`
 
-#### C113. [DELTA_OCA_RULE_81039677_CROSS_ICON_ATTRIBUTION] GLOBAL — DIAGNOSTIC
-- **Scope**: `CHASSIS_SPECIFIC`
+#### C116. [DELTA_OCA_RULE_81039677_CROSS_ICON_ATTRIBUTION] GLOBAL — DIAGNOSTIC
+- **Scope**: `Universal`
 - **Rule**: In multi-icon OCA solutions (Icon Separation mode), CLIC Rule 81039677 ("Installation and Startup must be quoted for ALL frames") attaches its error to Item 0100/01 — the first physical line of the entire solution BOM — even when the root cause is in a completely different icon container (e.g. Synergy Icon #2). Engineers must NEVER modify DL380 server lines to fix this error. Instead, trace to the Synergy icon Services → Lifecycle and fix startup placement and quantities there.
 - **Affected SKU**: `P73282-B21`
 - **Required Dependency**: `HA124A1#5ZM`
 
-#### C114. [DELTA_SYNERGY_ICON_ISOLATION_GUARDRAIL] SY480_Gen12 — ISOLATION
-- **Scope**: `CHASSIS_SPECIFIC`
+#### C117. [DELTA_SYNERGY_ICON_ISOLATION_GUARDRAIL] SY480_Gen12 — ISOLATION
+- **Scope**: `Synergy/Gen12/SY480_Gen12`
 - **Rule**: When applying support services in OCA multi-icon solutions, NEVER check "Apply displayed install/support to all icons inside the solution". Always scope to "inside the Current Icon" only. This prevents Synergy frame support attributes from leaking into ProLiant rack server trees (or vice versa), which corrupts per-icon support decomposition and generates phantom entitlement mismatches.
 - **Affected SKU**: `HU4B2A3`
 
-#### C115. [DELTA_OCA_SUPPORT_CACHE_FLUSH_PROTOCOL] GLOBAL — PROCEDURE
-- **Scope**: `CHASSIS_SPECIFIC`
+#### C118. [DELTA_OCA_SUPPORT_CACHE_FLUSH_PROTOCOL] GLOBAL — PROCEDURE
+- **Scope**: `Universal`
 - **Rule**: When OCA CLIC Rules 99916598/99916599 persist after correcting support quantities, the stale rules cache must be flushed: (1) Navigate to Icon container level → Services → set Support to "No Support" with TS5 and "Apply to all nodes inside Current Icon" checked → Save; (2) Dismiss advisory warning about minimum service requirement; (3) Re-apply via "Select Your Own" → filter 3 Years → select HU4B2A3 Tech Care Basic; (4) Set Install Level to "No Installation"; (5) Check "Apply displayed Install/Support level to all nodes inside Current Icon" → OK → Save. This forces OCA to regenerate all child support entitlements from scratch.
 - **Affected SKU**: `HU4B2A3`
 
-#### C116. [DELTA_SYNERGY_STARTUP_PLACEMENT_HIERARCHY] SY480_Gen12 — PLACEMENT
-- **Scope**: `CHASSIS_SPECIFIC`
+#### C119. [DELTA_SYNERGY_STARTUP_PLACEMENT_HIERARCHY] SY480_Gen12 — PLACEMENT
+- **Scope**: `Synergy/Gen12/SY480_Gen12`
 - **Rule**: Synergy startup services (HA124A1#5ZM First Frame Onsite, HA124A1#5ZQ Additional Frame Onsite) must be placed ONLY at the Icon #2 container level under Services → Deployment Services → Install-Install and Start Up. They must NEVER be placed locally under individual "Synergy 12000 Frame #N" child items. Duplicate placement between icon container and child frames causes CLIC Rule 81039677 to fire against the first line item (typically DL380) in the solution BOM.
 - **Affected SKU**: `HA124A1#5ZM`
 - **Required Dependency**: `HA124A1#5ZQ`
 
-#### C117. [DELTA_SYNERGY_GEN12_FC_LICENSE_PROHIBITION] SY480_Gen12 — EXCLUSION_UNBUILDABLE
+#### C120. [DELTA_SYNERGY_GEN12_FC_LICENSE_PROHIBITION] SY480_Gen12 — EXCLUSION_UNBUILDABLE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: On HPE Synergy 12000 Frames (P51174-B21) populated solely with SY480 Gen12 compute nodes (P68217-B21), selecting Virtual Connect Fibre Channel upgrade licenses (R3P67A FIO LTU or R3P67AAE BTO E-LTU) is strictly forbidden and triggers CLIC Rules 81410905 and 81314323 (UNBUILDABLE CONFIGURATION: OVERRIDE REQUIRES FACTORY APPROVAL). SY480 Gen12 compute nodes route dedicated SAN traffic via Mezzanine 1 (P68131-B21 64Gb FC HBA) directly to Brocade 64Gb FC Switch Modules (P77653-B21) in Bays 1 & 4. Fibre Channel port expansion must be licensed via Brocade 8-port upgrade E-LTU (Q2E58AAE). Virtual Connect SE 100Gb F32 modules (867796-B21) in Bays 3 & 6 are dedicated to 25G/50G/100G Ethernet (via P64724-B21 adapter in Mezzanine 3), with no FCoE path on Gen12.
 - **Affected SKU**: `R3P67A`
 - **Required Dependency**: `Q2E58AAE`
 
-#### C118. [DELTA_SYNERGY_FIO_VS_ELTU_STANDALONE_ORDERING] SY480_Gen12 — STANDALONE_ORDERING_TAXONOMY
+#### C121. [DELTA_SYNERGY_FIO_VS_ELTU_STANDALONE_ORDERING] SY480_Gen12 — STANDALONE_ORDERING_TAXONOMY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: R3P67A is a Factory Integrated Option (FIO LTU) ending in 'A', which strictly requires sub-iteming under a factory CTO chassis base (P51174-B21), triggering CLIC Rules 81013168 and 81125904 ('must be ordered as a sub-item to the Base') if quoted standalone. If a customer procurement contract mandates this 32Gb FC license, it CANNOT be fulfilled using R3P67A. It must be ordered as R3P67AAE (BTO Electronic License / E-LTU) placed in a completely separate standalone software quote (new UCID) where no P51174-B21 chassis or Gen12 compute nodes exist, bypassing both Rule 81125904 and Rule 81410905.
 - **Affected SKU**: `R3P67A`
 - **Required Dependency**: `R3P67AAE`
 
-#### C119. [DELTA_SYNERGY_MULTI_ORDER_ADHOC_CONTAINER_PARTITIONING] SY480_Gen12 — MULTI_ORDER_PARTITIONING_PATTERN
+#### C122. [DELTA_SYNERGY_MULTI_ORDER_ADHOC_CONTAINER_PARTITIONING] SY480_Gen12 — MULTI_ORDER_PARTITIONING_PATTERN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: When a multi-frame Synergy deployment (e.g. 2 frames, 24 nodes) is partitioned into separate commercial orders (Option B): (1) Order 2 (Frame 2) is structured as a clean hardware clone with zero loose cables, zero loose transceivers, and zero unpack services; (2) Order 1 (Frame 1) hosts a dedicated Adhoc container carrying 100% of all loose physical connectivity for both frames (DAC cables: 487655-B21 10G, 845406-B21 100G; AOC cables: 845410-B21 100G; fiber: QK734A OM4; transceivers: 455883-B21 10G SFP+ SR, 845398-B21 25G SFP28 SR, 841716-B21 40G QSFP+ BiDi) totaling $96,236.00 list; (3) Embedded switch licenses (Q2E58AAE Brocade 8-port upgrade E-LTU) must NEVER be lumped into Adhoc—they must be split evenly inside the physical switch modules (4 in Frame 1, 4 in Frame 2) to preserve 1:1 hardware module licensing integrity; (4) Tech Care Basic support (HU4B2A3) must be preserved 1:1 on both frames ($46,156 each) to satisfy CLIC Rules 99916598/99916599.
 - **Affected SKU**: `P51174-B21`
 - **Required Dependency**: `Q2E58AAE`
 
-#### C120. [DELTA_SYNERGY_MULTI_FRAME_SPLIT_STARTUP_SIZING] SY480_Gen12 — MULTI_FRAME_SPLIT_STARTUP_FORMULA
+#### C123. [DELTA_SYNERGY_MULTI_FRAME_SPLIT_STARTUP_SIZING] SY480_Gen12 — MULTI_FRAME_SPLIT_STARTUP_FORMULA
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: When a multi-frame Synergy deployment (e.g. 2 frames, 24 nodes) is partitioned into separate commercial quotes/orders: (1) Frame 1 carries 1x HA124A1#5ZM (First Frame Onsite Startup, $16,742 USD); (2) Frame 2 carries 1x HA124A1#5ZQ (Additional Frame Onsite Startup, $4,627 USD), saving $12,115 USD vs duplicating First Frame; (3) Order 2 remarks must cross-reference Order 1's UCID (e.g. 5157071497-02) to satisfy automated CLIC Rule 81039677 order acceptance; (4) If frames are deployed as independent standalone islands (separate sites or unlinked OneView domains), both frames require HA124A1#5ZM; (5) Remote Startup (HA124A1#V0F) and Onsite Startup (HA124A1#5ZM) are strictly mutually exclusive and must never be combined.
 - **Affected SKU**: `HA124A1`
 - **Required Dependency**: `HA124A1#5ZM`
 
-#### C121. [LEARN_SY480_GEN12_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029] SY480_Gen12 — WORKFLOW_DUAL_PUBLICATION_ADVISORY
+#### C124. [LEARN_SY480_GEN12_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029] SY480_Gen12 — WORKFLOW_DUAL_PUBLICATION_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Google Sheets is not a supported NotebookLM Drive source. A recent upload timestamp does not refresh old vendor observations.
 
-#### C122. [LEARN_SY480_GEN12_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029] SY480_Gen12 — WORKFLOW_SOURCE_RETIREMENT_ADVISORY
+#### C125. [LEARN_SY480_GEN12_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029] SY480_Gen12 — WORKFLOW_SOURCE_RETIREMENT_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata before removing only managed stale catalog snapshots. Preserve QuickSpecs, separate learnings, shared enclosure/fabric sources and unrelated documents. Inventory absence is not authority to remove another product source.
 
-#### C123. [LEARN_SY480_GEN12_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029] SY480_Gen12 — WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY
+#### C126. [LEARN_SY480_GEN12_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029] SY480_Gen12 — WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending dated vendor evidence; resolve contradictions before promoting hardware dependencies. Conflicting quantity claims require dated evidence for this exact product and selector state.
 
-#### C124. [LEARN_SY480_GEN12_128GB_MEMORY_ERROR_CLEARED_20261102] SY480_Gen12 — CLIC_ERROR_RESOLUTION_CERTIFIED
+#### C127. [LEARN_SY480_GEN12_128GB_MEMORY_ERROR_CLEARED_20261102] SY480_Gen12 — CLIC_ERROR_RESOLUTION_CERTIFIED
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: CRITICAL BUILDABILITY BREAKTHROUGH: HPE 128GB (1x128GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 Smart FIO Memory Kit (P69730-F21) previously triggered a blocking validation Error in CLIC on SY480 Gen12 compute modules. In November 2026 OCA release, this validation Error is fully resolved and cleared to clean/pass. High-density 128GB memory configurations (up to 384 kits per frame across 12 nodes, 49.15TB total RAM) are now 100% certified buildable. Discontinued date extended to 2030-06-30.
 - **Affected SKU**: `P69730-F21`
 - **Required Dependency**: `P51174-B21`
 
-#### C125. [LEARN_SYNERGY_SUPPORT_PRICING_UPDATE_20261102] SY480_Gen12 — SUPPORT_PRICING_UPDATE
+#### C128. [LEARN_SYNERGY_SUPPORT_PRICING_UPDATE_20261102] SY480_Gen12 — SUPPORT_PRICING_UPDATE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Synergy stack 3Y Tech Care Basic support rates adjusted by ~5%: Synergy 12000 Frame Support (HU4B2A3 WJN) updated to $779.00 (+$37.00); VC SE 100Gb F32 Module Support (HU4B2A3 Z1R) updated to $813.00 (+$39.00/unit); SY480 Gen12 Compute Node Support (HU4B2A30BT7) updated to $3,497.00 (+$167.00/node). Overall 12-node solution services list price adjusted from $62,898.00 to $65,017.00 USD (+$2,119.00).
 - **Affected SKU**: `HU4B2A30BT7`
 
-#### C126. [LEARN_SYNERGY_LEAD_TIME_AND_VALIDATION_20261102] SY480_Gen12 — LEAD_TIME_AND_VALIDATION
+#### C129. [LEARN_SYNERGY_LEAD_TIME_AND_VALIDATION_20261102] SY480_Gen12 — LEAD_TIME_AND_VALIDATION
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: HPE 960GB NVMe M.2 2280 PE9010 SSD (P80321-B21) factory lead time extended from 11 days to 30 days (+19 days). Synergy 12000 CTO Frame (P51174-B21) lead time is 13 days, and CLIC validation warnings have cleared to clean/pass.
 - **Affected SKU**: `P80321-B21`
 
-#### C127. [LEARN_SY100GB_F32_MODULE_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029] SY100Gb_F32_Module — WORKFLOW_DUAL_PUBLICATION_ADVISORY
+#### C130. [LEARN_SY100GB_F32_MODULE_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029] SY100Gb_F32_Module — WORKFLOW_DUAL_PUBLICATION_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Google Sheets is not a supported NotebookLM Drive source. A recent upload timestamp does not refresh old vendor observations.
 
-#### C128. [LEARN_SY100GB_F32_MODULE_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029] SY100Gb_F32_Module — WORKFLOW_SOURCE_RETIREMENT_ADVISORY
+#### C131. [LEARN_SY100GB_F32_MODULE_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029] SY100Gb_F32_Module — WORKFLOW_SOURCE_RETIREMENT_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata before removing only managed stale catalog snapshots. Preserve QuickSpecs, separate learnings, shared enclosure/fabric sources and unrelated documents. Inventory absence is not authority to remove another product source.
 
-#### C129. [LEARN_SY100GB_F32_MODULE_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029] SY100Gb_F32_Module — WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY
+#### C132. [LEARN_SY100GB_F32_MODULE_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029] SY100Gb_F32_Module — WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending dated vendor evidence; resolve contradictions before promoting hardware dependencies. Conflicting quantity claims require dated evidence for this exact product and selector state.
 
-#### C130. [LEARN_SY100GB_F32_MODULE_SUPPORT_PRICING_UPDATE_20261102] SY100Gb_F32_Module — SUPPORT_PRICING_UPDATE
+#### C133. [LEARN_SY100GB_F32_MODULE_SUPPORT_PRICING_UPDATE_20261102] SY100Gb_F32_Module — SUPPORT_PRICING_UPDATE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: HPE Virtual Connect SE 100Gb F32 Module for Synergy Support (HU4B2A3 Z1R, under HU4B2A3 3Y Tech Care Basic) list price updated in November 2026 OCA catalog from .00 to .00 USD (+.00 / +5.04% per module).
 - **Affected SKU**: `HU4B2A3 Z1R`

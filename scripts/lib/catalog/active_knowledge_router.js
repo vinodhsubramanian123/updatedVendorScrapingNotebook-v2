@@ -64,6 +64,38 @@ function _loadRawDeltasFromDisk(chassisDir) {
   return rawDeltas;
 }
 
+const REVOKED_DECISION_TYPES = new Set(['REJECTED', 'REVOKED', 'AUTO_REJECTED', 'EXPIRED', 'SUPERSEDED']);
+
+function _applyDecisionRecords(revokedSet, records) {
+  if (!Array.isArray(records)) return;
+  for (const rec of records) {
+    const dec = String(rec.decision || '').toUpperCase();
+    const isRevoked = REVOKED_DECISION_TYPES.has(dec);
+    const isPromoted = dec === 'PROMOTED';
+    if (!isRevoked && !isPromoted) continue;
+
+    const op = isRevoked ? 'add' : 'delete';
+    if (rec.deltaId) revokedSet[op](rec.deltaId);
+    if (rec.quarantineId) revokedSet[op](rec.quarantineId);
+    if (rec.ruleId) revokedSet[op](rec.ruleId);
+    if (rec.knowledgeFingerprint) revokedSet[op](rec.knowledgeFingerprint);
+  }
+}
+
+function _applyQuarantineRecords(revokedSet, quarantined) {
+  if (!Array.isArray(quarantined)) return;
+  for (const item of quarantined) {
+    if (item.deltaId) revokedSet.add(item.deltaId);
+    if (item.quarantineId) revokedSet.add(item.quarantineId);
+    if (item.ruleId) revokedSet.add(item.ruleId);
+    if (item.knowledgeFingerprint) revokedSet.add(item.knowledgeFingerprint);
+    try {
+      const fp = buildKnowledgeFingerprint(item);
+      if (fp) revokedSet.add(fp);
+    } catch {}
+  }
+}
+
 /**
  * Load revoked or rejected identifiers and fingerprints from decision ledgers & quarantine files
  */
@@ -81,57 +113,120 @@ function _loadRevokedIdentifiers(chassisDir) {
   }
 
   const revokedSet = new Set();
-  const REVOKED_DECISION_TYPES = new Set(['REJECTED', 'REVOKED', 'AUTO_REJECTED', 'EXPIRED', 'SUPERSEDED']);
 
-  // 1. Process decision logs
   for (const dp of decisionPaths) {
     if (!fs.existsSync(dp)) continue;
     try {
-      const records = JSON.parse(fs.readFileSync(dp, 'utf-8'));
-      if (Array.isArray(records)) {
-        for (const rec of records) {
-          const dec = String(rec.decision || '').toUpperCase();
-          if (REVOKED_DECISION_TYPES.has(dec)) {
-            if (rec.deltaId) revokedSet.add(rec.deltaId);
-            if (rec.quarantineId) revokedSet.add(rec.quarantineId);
-            if (rec.ruleId) revokedSet.add(rec.ruleId);
-            if (rec.knowledgeFingerprint) revokedSet.add(rec.knowledgeFingerprint);
-          } else if (dec === 'PROMOTED') {
-            if (rec.deltaId) revokedSet.delete(rec.deltaId);
-            if (rec.quarantineId) revokedSet.delete(rec.quarantineId);
-            if (rec.ruleId) revokedSet.delete(rec.ruleId);
-            if (rec.knowledgeFingerprint) revokedSet.delete(rec.knowledgeFingerprint);
-          }
-        }
-      }
+      _applyDecisionRecords(revokedSet, JSON.parse(fs.readFileSync(dp, 'utf-8')));
     } catch (e) {
       logger.warn('ACTIVE_KNOWLEDGE_ROUTER', `Failed to read decisions file: ${dp}`, e);
     }
   }
 
-  // 2. Process active quarantined deltas (anything currently quarantined is not active)
   for (const qp of quarantinePaths) {
     if (!fs.existsSync(qp)) continue;
     try {
-      const quarantined = JSON.parse(fs.readFileSync(qp, 'utf-8'));
-      if (Array.isArray(quarantined)) {
-        for (const item of quarantined) {
-          if (item.deltaId) revokedSet.add(item.deltaId);
-          if (item.quarantineId) revokedSet.add(item.quarantineId);
-          if (item.ruleId) revokedSet.add(item.ruleId);
-          if (item.knowledgeFingerprint) revokedSet.add(item.knowledgeFingerprint);
-          try {
-            const fp = buildKnowledgeFingerprint(item);
-            if (fp) revokedSet.add(fp);
-          } catch {}
-        }
-      }
+      _applyQuarantineRecords(revokedSet, JSON.parse(fs.readFileSync(qp, 'utf-8')));
     } catch (e) {
       logger.warn('ACTIVE_KNOWLEDGE_ROUTER', `Failed to read quarantine file: ${qp}`, e);
     }
   }
 
   return revokedSet;
+}
+
+const INACTIVE_GOVERNANCE_STATUSES = new Set(['PENDING', 'QUARANTINED', 'REJECTED', 'DRAFT', 'REVOKED', 'EXPIRED', 'DEPRECATED']);
+
+function _isDeltaRevokedOrInactive(delta, revokedSet) {
+  const deltaId = delta.deltaId || delta.ruleId;
+  let deltaFp = delta.knowledgeFingerprint;
+  if (!deltaFp) {
+    try { deltaFp = buildKnowledgeFingerprint(delta); } catch {}
+  }
+  if (
+    (deltaId && revokedSet.has(deltaId)) ||
+    (deltaFp && revokedSet.has(deltaFp)) ||
+    (delta.quarantineId && revokedSet.has(delta.quarantineId)) ||
+    delta.revoked === true ||
+    delta.isRevoked === true
+  ) {
+    return true;
+  }
+  const status = String(delta.governanceStatus || delta.status || 'ACTIVE').toUpperCase();
+  return INACTIVE_GOVERNANCE_STATUSES.has(status);
+}
+
+function _inferFamilyName(chassis) {
+  if (chassis.includes('sy')) return 'synergy';
+  if (chassis.includes('msl')) return 'storeever';
+  if (chassis.includes('alletra')) return 'alletra';
+  if (chassis.includes('gx') || chassis.includes('cray')) return 'cray';
+  return 'proliant';
+}
+
+function _isDeltaScopePermitted(delta, targetIdentity, targetChassis, scope, isGen12Target, isGen11Target) {
+  if (targetIdentity) {
+    return ruleAppliesToProduct(delta, targetIdentity, notebookConfig);
+  }
+  if (scope === 'UNIVERSAL_VENDOR' || scope === 'UNIVERSAL') {
+    return true;
+  }
+  const deltaChassis = String(delta.chassis || '').toLowerCase();
+  const isGen12Delta = deltaChassis.includes('gen12') || deltaChassis.includes('g12');
+  const isGen11Delta = deltaChassis.includes('gen11') || deltaChassis.includes('g11');
+
+  if (isGen12Target && isGen11Delta) return false;
+  if (isGen11Target && isGen12Delta) return false;
+
+  const targetFamily = _inferFamilyName(targetChassis);
+  const deltaFamily = deltaChassis ? _inferFamilyName(deltaChassis) : '';
+  if (deltaFamily && targetFamily && deltaFamily !== targetFamily) {
+    return false;
+  }
+
+  if (scope === 'CHASSIS_SPECIFIC' && targetChassis && deltaChassis) {
+    if (!targetChassis.includes(deltaChassis) && !deltaChassis.includes(targetChassis)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function _categorizeActiveRule(ruleEntry, categorized) {
+  const { ruleType, reasoning, affectedSku } = ruleEntry;
+  categorized.allRules.push(ruleEntry);
+
+  if (affectedSku) {
+    if (!categorized.skuLookupMap.has(affectedSku)) {
+      categorized.skuLookupMap.set(affectedSku, []);
+    }
+    categorized.skuLookupMap.get(affectedSku).push(ruleEntry);
+  }
+
+  const lowerMsg = (reasoning || '').toLowerCase();
+  const isModernize = ruleType === 'GENERATIONAL_MODERNIZATION' || lowerMsg.includes('emerald rapids') || lowerMsg.includes('5th gen') || lowerMsg.includes('ddr5-5600');
+  const isSubst = ruleType === 'SKU_SUBSTITUTION' || ruleType === 'OPTION_TYPE_SUBSTITUTION' || lowerMsg.includes('fio replacement') || lowerMsg.includes('superseded by');
+  const isDep = ruleType === 'DEPENDENCY_CHAIN' || ruleType === 'PERMANENT_PHYSICAL_DEPENDENCY' || lowerMsg.includes('requires mandatory') || lowerMsg.includes('cable kit');
+
+  if (isModernize) {
+    categorized.generationalModernizations.push(ruleEntry);
+  } else if (isSubst) {
+    categorized.substitutions.push(ruleEntry);
+  } else if (isDep) {
+    categorized.mandatoryDependencies.push(ruleEntry);
+  } else {
+    categorized.advisories.push(ruleEntry);
+  }
+}
+
+function _mergeRevokedIdentifiers(revokedSet, customRevokedOpt) {
+  if (!customRevokedOpt) return;
+  const list = Array.isArray(customRevokedOpt)
+    ? customRevokedOpt
+    : (customRevokedOpt instanceof Set ? Array.from(customRevokedOpt) : []);
+  for (const rId of list) {
+    if (rId) revokedSet.add(String(rId));
+  }
 }
 
 /**
@@ -144,19 +239,10 @@ function _loadRevokedIdentifiers(chassisDir) {
 function loadActiveKnowledgeRules(chassisVariant = '', chassisDir = '', options = {}) {
   const rawDeltas = Array.isArray(options?.rawDeltas) ? options.rawDeltas : _loadRawDeltasFromDisk(chassisDir);
   const revokedSet = _loadRevokedIdentifiers(chassisDir);
-  if (options?.revokedIdentifiers) {
-    const customRevoked = Array.isArray(options.revokedIdentifiers)
-      ? options.revokedIdentifiers
-      : (options.revokedIdentifiers instanceof Set ? Array.from(options.revokedIdentifiers) : []);
-    for (const rId of customRevoked) {
-      if (rId) revokedSet.add(String(rId));
-    }
-  }
+  _mergeRevokedIdentifiers(revokedSet, options?.revokedIdentifiers);
 
   const targetChassis = String(chassisVariant || (chassisDir ? path.basename(chassisDir) : '')).toLowerCase();
-
   const targetIdentity = resolveProductIdentity(chassisDir ? path.basename(chassisDir) : targetChassis, notebookConfig);
-
   const isGen12Target = targetChassis.includes('gen12') || targetChassis.includes('g12');
   const isGen11Target = targetChassis.includes('gen11') || targetChassis.includes('g11');
 
@@ -178,23 +264,7 @@ function loadActiveKnowledgeRules(chassisVariant = '', chassisDir = '', options 
     const scope = (delta.scopeTaxonomy || delta.scope || 'CHASSIS_SPECIFIC').toUpperCase();
 
     // Gate 0: Revocation & Governance check
-    const deltaId = delta.deltaId || delta.ruleId;
-    let deltaFp = delta.knowledgeFingerprint;
-    if (!deltaFp) {
-      try { deltaFp = buildKnowledgeFingerprint(delta); } catch {}
-    }
-    if (
-      (deltaId && revokedSet.has(deltaId)) ||
-      (deltaFp && revokedSet.has(deltaFp)) ||
-      (delta.quarantineId && revokedSet.has(delta.quarantineId)) ||
-      delta.revoked === true ||
-      delta.isRevoked === true
-    ) {
-      continue;
-    }
-
-    const status = String(delta.governanceStatus || delta.status || 'ACTIVE').toUpperCase();
-    if (status === 'PENDING' || status === 'QUARANTINED' || status === 'REJECTED' || status === 'DRAFT' || status === 'REVOKED' || status === 'EXPIRED' || status === 'DEPRECATED') {
+    if (_isDeltaRevokedOrInactive(delta, revokedSet)) {
       continue;
     }
 
@@ -203,30 +273,9 @@ function loadActiveKnowledgeRules(chassisVariant = '', chassisDir = '', options 
       continue;
     }
 
-    // Apply the same product firewall used by notebook synchronization.
-    if (targetIdentity && !ruleAppliesToProduct(delta, targetIdentity, notebookConfig)) continue;
-
     // Gate 2: Generation & Family Isolation Firewall (INV-48)
-    if (!targetIdentity && scope !== 'UNIVERSAL_VENDOR' && scope !== 'UNIVERSAL') {
-      const deltaChassis = String(delta.chassis || '').toLowerCase();
-      const isGen12Delta = deltaChassis.includes('gen12') || deltaChassis.includes('g12');
-      const isGen11Delta = deltaChassis.includes('gen11') || deltaChassis.includes('g11');
-
-      if (isGen12Target && isGen11Delta) continue;
-      if (isGen11Target && isGen12Delta) continue;
-
-      // Family isolation check
-      const targetFamily = targetChassis.includes('sy') ? 'synergy' : (targetChassis.includes('msl') ? 'storeever' : (targetChassis.includes('alletra') ? 'alletra' : (targetChassis.includes('gx') || targetChassis.includes('cray') ? 'cray' : 'proliant')));
-      const deltaFamily = deltaChassis.includes('sy') ? 'synergy' : (deltaChassis.includes('msl') ? 'storeever' : (deltaChassis.includes('alletra') ? 'alletra' : (deltaChassis.includes('gx') || deltaChassis.includes('cray') ? 'cray' : (deltaChassis ? 'proliant' : ''))));
-      if (deltaFamily && targetFamily && deltaFamily !== targetFamily) {
-        continue;
-      }
-
-      if (scope === 'CHASSIS_SPECIFIC' && targetChassis && deltaChassis) {
-        if (!targetChassis.includes(deltaChassis) && !deltaChassis.includes(targetChassis)) {
-          continue;
-        }
-      }
+    if (!_isDeltaScopePermitted(delta, targetIdentity, targetChassis, scope, isGen12Target, isGen11Target)) {
+      continue;
     }
 
     const ruleEntry = {
@@ -240,31 +289,7 @@ function loadActiveKnowledgeRules(chassisVariant = '', chassisDir = '', options 
       rawDelta: delta
     };
 
-    categorized.allRules.push(ruleEntry);
-
-    // Index by affected SKU
-    if (affectedSku) {
-      if (!categorized.skuLookupMap.has(affectedSku)) {
-        categorized.skuLookupMap.set(affectedSku, []);
-      }
-      categorized.skuLookupMap.get(affectedSku).push(ruleEntry);
-    }
-
-    // Semantic categorization
-    const lowerMsg = msg.toLowerCase();
-    const isModernize = ruleType === 'GENERATIONAL_MODERNIZATION' || lowerMsg.includes('emerald rapids') || lowerMsg.includes('5th gen') || lowerMsg.includes('ddr5-5600');
-    const isSubst = ruleType === 'SKU_SUBSTITUTION' || ruleType === 'OPTION_TYPE_SUBSTITUTION' || lowerMsg.includes('fio replacement') || lowerMsg.includes('superseded by');
-    const isDep = ruleType === 'DEPENDENCY_CHAIN' || ruleType === 'PERMANENT_PHYSICAL_DEPENDENCY' || lowerMsg.includes('requires mandatory') || lowerMsg.includes('cable kit');
-
-    if (isModernize) {
-      categorized.generationalModernizations.push(ruleEntry);
-    } else if (isSubst) {
-      categorized.substitutions.push(ruleEntry);
-    } else if (isDep) {
-      categorized.mandatoryDependencies.push(ruleEntry);
-    } else {
-      categorized.advisories.push(ruleEntry);
-    }
+    _categorizeActiveRule(ruleEntry, categorized);
   }
 
   return categorized;

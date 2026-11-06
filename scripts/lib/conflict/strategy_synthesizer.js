@@ -176,42 +176,50 @@ function createPriceResolver(targetDir) {
 // -----------------------------------------------------------------------------
 // Helper: Load Strategy Config
 // -----------------------------------------------------------------------------
-function getStrategyConfig(chassisInfo) {
-  let strategyConfig = { default: { rank2: [], rank3: [], rank4: [] } };
-  if (_strategyAddonsCache) {
-    strategyConfig = _strategyAddonsCache;
-  } else {
-    try {
-      const configPath = path.join(__dirname, '..', '..', 'config', 'strategy_addons.json');
-      if (fs.existsSync(configPath)) {
-        strategyConfig = JSON.parse(fs.readFileSync(configPath, 'utf8'));
-        _strategyAddonsCache = strategyConfig;
-      }
-    } catch (err) {
-      const _logger = require('../system/pipeline_logger.js');
-      _logger.warn('STRATEGY_SYNTHESIZER', 'Failed to parse strategy_addons.json', err);
+function _loadStrategyAddonsJson() {
+  if (_strategyAddonsCache) return _strategyAddonsCache;
+  try {
+    const configPath = path.join(__dirname, '..', '..', 'config', 'strategy_addons.json');
+    if (fs.existsSync(configPath)) {
+      _strategyAddonsCache = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+      return _strategyAddonsCache;
     }
+  } catch (err) {
+    const _logger = require('../system/pipeline_logger.js');
+    _logger.warn('STRATEGY_SYNTHESIZER', 'Failed to parse strategy_addons.json', err);
   }
+  return { default: { rank2: [], rank3: [], rank4: [] } };
+}
 
+function _resolveStrategyKey(chassisInfo, strategyConfig) {
   const modelKey = (chassisInfo.model || '').toLowerCase();
   const familyKey = (chassisInfo.family || '').toLowerCase();
   const genKey = (chassisInfo.gen || '').toLowerCase();
 
-  let key = 'default';
   if (modelKey.includes('dl380a')) {
-    key = strategyConfig.dl380a_gen12 ? 'dl380a_gen12' : (strategyConfig.dl380_gen12 ? 'dl380_gen12' : 'dl380');
-  } else if (modelKey.includes('dl145')) {
-    key = strategyConfig.dl145_gen11 ? 'dl145_gen11' : (strategyConfig.dl380_gen11 ? 'dl380_gen11' : 'default');
-  } else if (modelKey.includes('dl380')) {
-    if (genKey.includes('12') || modelKey.includes('gen12')) key = 'dl380_gen12';
-    else if (genKey.includes('11') || modelKey.includes('gen11')) key = 'dl380_gen11';
-    else key = 'dl380';
-  } else if (familyKey.includes('alletra')) key = 'alletra';
-  else if (familyKey.includes('synergy')) key = 'synergy';
-  else if (familyKey.includes('cray')) key = 'cray';
-  else if (familyKey.includes('storeever')) key = 'storeever';
+    return strategyConfig.dl380a_gen12 ? 'dl380a_gen12' : (strategyConfig.dl380_gen12 ? 'dl380_gen12' : 'dl380');
+  }
+  if (modelKey.includes('dl145')) {
+    return strategyConfig.dl145_gen11 ? 'dl145_gen11' : (strategyConfig.dl380_gen11 ? 'dl380_gen11' : 'default');
+  }
+  if (modelKey.includes('dl380')) {
+    if (genKey.includes('12') || modelKey.includes('gen12')) return 'dl380_gen12';
+    if (genKey.includes('11') || modelKey.includes('gen11')) return 'dl380_gen11';
+    return 'dl380';
+  }
+  if (familyKey.includes('alletra')) return 'alletra';
+  if (familyKey.includes('synergy')) return 'synergy';
+  if (familyKey.includes('cray')) return 'cray';
+  if (familyKey.includes('storeever')) return 'storeever';
+  return 'default';
+}
 
+function getStrategyConfig(chassisInfo) {
+  const strategyConfig = _loadStrategyAddonsJson();
+  const key = _resolveStrategyKey(chassisInfo, strategyConfig);
   const tierConfig = strategyConfig[key] || strategyConfig.default;
+  const modelKey = (chassisInfo.model || '').toLowerCase();
+  const genKey = (chassisInfo.gen || '').toLowerCase();
   const isGen12 = genKey.includes('12') || modelKey.includes('gen12');
 
   return { tierConfig, isGen12 };
@@ -477,6 +485,17 @@ function computeCapabilityDowngradePenalty(cand, items) {
   return parseFloat(penalty.toFixed(2));
 }
 
+function _getCategoryArchitecturalWeight(cat = '') {
+  if (cat.includes('chassis') || cat.includes('base')) return 10.0;
+  if (cat.includes('processor') || cat.includes('cpu') || cat.includes('xeon') || cat.includes('epyc')) return 8.0;
+  if (cat.includes('memory') || cat.includes('dimm') || cat.includes('ram')) return 5.0;
+  if (cat.includes('controller') || cat.includes('storage') || cat.includes('ssd') || cat.includes('hdd') || cat.includes('nvme')) return 4.0;
+  if (cat.includes('network') || cat.includes('adapter') || cat.includes('ocp') || cat.includes('nic') || cat.includes('hba')) return 3.0;
+  if (cat.includes('power') || cat.includes('psu')) return 2.0;
+  if (cat.includes('cable') || cat.includes('bracket') || cat.includes('enablement') || cat.includes('kit') || cat.includes('fan') || cat.includes('heatsink')) return 0.2;
+  return 0.5;
+}
+
 function computeArchitecturalDelta(requestedQuantities, candidateQuantities, partCategoryMap = new Map()) {
   const allSkus = new Set([...requestedQuantities.keys(), ...candidateQuantities.keys()]);
   let totalWeightedDelta = 0;
@@ -488,31 +507,13 @@ function computeArchitecturalDelta(requestedQuantities, candidateQuantities, par
     if (diff === 0) continue;
 
     const cat = String(partCategoryMap.get(sku) || '').toLowerCase();
-    let weight = 0.5;
-
-    if (cat.includes('chassis') || cat.includes('base')) {
-      weight = 10.0;
-    } else if (cat.includes('processor') || cat.includes('cpu') || cat.includes('xeon') || cat.includes('epyc')) {
-      weight = 8.0;
-    } else if (cat.includes('memory') || cat.includes('dimm') || cat.includes('ram')) {
-      weight = 5.0;
-    } else if (cat.includes('controller') || cat.includes('storage') || cat.includes('ssd') || cat.includes('hdd') || cat.includes('nvme')) {
-      weight = 4.0;
-    } else if (cat.includes('network') || cat.includes('adapter') || cat.includes('ocp') || cat.includes('nic') || cat.includes('hba')) {
-      weight = 3.0;
-    } else if (cat.includes('power') || cat.includes('psu')) {
-      weight = 2.0;
-    } else if (cat.includes('cable') || cat.includes('bracket') || cat.includes('enablement') || cat.includes('kit') || cat.includes('fan') || cat.includes('heatsink')) {
-      weight = 0.2;
-    }
-
-    totalWeightedDelta += diff * weight;
+    totalWeightedDelta += diff * _getCategoryArchitecturalWeight(cat);
   }
 
   return parseFloat(totalWeightedDelta.toFixed(2));
 }
 
-function scoreAndSortCandidates(rawCandidates, items, resolveSupply = () => ({ leadTimeDays: null, availability: 'Unknown' })) {
+function _indexRequestedQuantities(items) {
   const requestedSkuSet = new Set((items || []).map(it => cleanBaseSKU(it.sku)).filter(Boolean));
   const requestedQuantities = new Map();
   const baseCategoryMap = new Map();
@@ -525,181 +526,180 @@ function scoreAndSortCandidates(rawCandidates, items, resolveSupply = () => ({ l
     if (it.category) baseCategoryMap.set(k, it.category);
   }
 
+  return { requestedSkuSet, requestedQuantities, baseCategoryMap };
+}
+
+function _scoreCandidateMetrics(cand, requestedSkuSet, requestedQuantities, baseCategoryMap, resolveSupply, items) {
+  cand.strategyIdentity = cand.strategyIdentity || cand.name;
+
+  const candSkuSet = new Set((cand.skuPartsList || []).map(p => cleanBaseSKU(p.sku)).filter(Boolean));
+  let matchedUniqueCount = 0;
+  for (const sku of requestedSkuSet) {
+    if (candSkuSet.has(sku)) matchedUniqueCount++;
+  }
+  const matchRatio = requestedSkuSet.size > 0 ? (matchedUniqueCount / requestedSkuSet.size) : 1.0;
+  cand.intentMatchRatio = parseFloat(Math.min(1.0, Math.max(0.0, matchRatio)).toFixed(2));
+  cand.dynamicScore = parseFloat(((cand.intentMatchRatio * 0.6) + (cand.score * 0.4)).toFixed(2));
+  cand.supplyMetrics = calculateSupplyMetrics(cand.skuPartsList, resolveSupply);
+
+  const candidateCategoryMap = new Map(baseCategoryMap);
+  const candidateQuantities = new Map();
+  for (const it of (cand.skuPartsList || [])) {
+    const k = cleanBaseSKU(it.sku);
+    if (!k) continue;
+    const q = (typeof it.quantity === 'number' && Number.isFinite(it.quantity)) ? it.quantity : (Number(it.quantity) || 1);
+    candidateQuantities.set(k, (candidateQuantities.get(k) || 0) + q);
+    if (it.category && !candidateCategoryMap.has(k)) {
+      candidateCategoryMap.set(k, it.category);
+    }
+  }
+  cand.quantityDelta = [...new Set([...requestedQuantities.keys(), ...candidateQuantities.keys()])]
+    .reduce((sum, sku) => sum + Math.abs((requestedQuantities.get(sku) || 0) - (candidateQuantities.get(sku) || 0)), 0);
+  cand.architecturalDelta = computeArchitecturalDelta(requestedQuantities, candidateQuantities, candidateCategoryMap);
+  cand.capabilityDowngradePenalty = computeCapabilityDowngradePenalty(cand, items);
+}
+
+function _compareCandidateRanks(a, b) {
+  if (Boolean(a.physicalMathClean) !== Boolean(b.physicalMathClean)) return a.physicalMathClean ? -1 : 1;
+  if (a.capabilityDowngradePenalty !== b.capabilityDowngradePenalty) return a.capabilityDowngradePenalty - b.capabilityDowngradePenalty;
+  if (a.architecturalDelta !== b.architecturalDelta) return a.architecturalDelta - b.architecturalDelta;
+  if (a.quantityDelta !== b.quantityDelta) return a.quantityDelta - b.quantityDelta;
+  if (b.dynamicScore !== a.dynamicScore) return b.dynamicScore - a.dynamicScore;
+  if (a.supplyMetrics.unavailableCount !== b.supplyMetrics.unavailableCount) {
+    return a.supplyMetrics.unavailableCount - b.supplyMetrics.unavailableCount;
+  }
+  const leadA = a.supplyMetrics.estimatedAverageLeadTimeDays ?? Number.POSITIVE_INFINITY;
+  const leadB = b.supplyMetrics.estimatedAverageLeadTimeDays ?? Number.POSITIVE_INFINITY;
+  if (leadA !== leadB) return leadA - leadB;
+
+  const nameA = a.strategyIdentity || a.name || '';
+  const nameB = b.strategyIdentity || b.name || '';
+  const nameDiff = nameA.localeCompare(nameB);
+  if (nameDiff !== 0) return nameDiff;
+
+  const fpA = a.bomFingerprint || '';
+  const fpB = b.bomFingerprint || '';
+  return fpA.localeCompare(fpB);
+}
+
+function scoreAndSortCandidates(rawCandidates, items, resolveSupply = () => ({ leadTimeDays: null, availability: 'Unknown' })) {
+  const { requestedSkuSet, requestedQuantities, baseCategoryMap } = _indexRequestedQuantities(items);
+
   rawCandidates.forEach(cand => {
-    // Preserve intrinsic strategy identity prior to any rank mutation
-    cand.strategyIdentity = cand.strategyIdentity || cand.name;
-
-    // Unique intersection count prevents ratio inflation above 1.0
-    const candSkuSet = new Set((cand.skuPartsList || []).map(p => cleanBaseSKU(p.sku)).filter(Boolean));
-    let matchedUniqueCount = 0;
-    for (const sku of requestedSkuSet) {
-      if (candSkuSet.has(sku)) matchedUniqueCount++;
-    }
-    const matchRatio = requestedSkuSet.size > 0 ? (matchedUniqueCount / requestedSkuSet.size) : 1.0;
-    cand.intentMatchRatio = parseFloat(Math.min(1.0, Math.max(0.0, matchRatio)).toFixed(2));
-    cand.dynamicScore = parseFloat(((cand.intentMatchRatio * 0.6) + (cand.score * 0.4)).toFixed(2));
-    cand.supplyMetrics = calculateSupplyMetrics(cand.skuPartsList, resolveSupply);
-
-    // Scoped category map prevents category leakage across candidate permutations
-    const candidateCategoryMap = new Map(baseCategoryMap);
-    const candidateQuantities = new Map();
-    for (const it of (cand.skuPartsList || [])) {
-      const k = cleanBaseSKU(it.sku);
-      if (!k) continue;
-      const q = (typeof it.quantity === 'number' && Number.isFinite(it.quantity)) ? it.quantity : (Number(it.quantity) || 1);
-      candidateQuantities.set(k, (candidateQuantities.get(k) || 0) + q);
-      if (it.category && !candidateCategoryMap.has(k)) {
-        candidateCategoryMap.set(k, it.category);
-      }
-    }
-    cand.quantityDelta = [...new Set([...requestedQuantities.keys(), ...candidateQuantities.keys()])]
-      .reduce((sum, sku) => sum + Math.abs((requestedQuantities.get(sku) || 0) - (candidateQuantities.get(sku) || 0)), 0);
-    cand.architecturalDelta = computeArchitecturalDelta(requestedQuantities, candidateQuantities, candidateCategoryMap);
-    cand.capabilityDowngradePenalty = computeCapabilityDowngradePenalty(cand, items);
+    _scoreCandidateMetrics(cand, requestedSkuSet, requestedQuantities, baseCategoryMap, resolveSupply, items);
   });
 
-  rawCandidates.sort((a, b) => {
-    if (Boolean(a.physicalMathClean) !== Boolean(b.physicalMathClean)) return a.physicalMathClean ? -1 : 1;
-    if (a.capabilityDowngradePenalty !== b.capabilityDowngradePenalty) return a.capabilityDowngradePenalty - b.capabilityDowngradePenalty;
-    if (a.architecturalDelta !== b.architecturalDelta) return a.architecturalDelta - b.architecturalDelta;
-    if (a.quantityDelta !== b.quantityDelta) return a.quantityDelta - b.quantityDelta;
-    if (b.dynamicScore !== a.dynamicScore) return b.dynamicScore - a.dynamicScore;
-    if (a.supplyMetrics.unavailableCount !== b.supplyMetrics.unavailableCount) {
-      return a.supplyMetrics.unavailableCount - b.supplyMetrics.unavailableCount;
-    }
-    const leadA = a.supplyMetrics.estimatedAverageLeadTimeDays ?? Number.POSITIVE_INFINITY;
-    const leadB = b.supplyMetrics.estimatedAverageLeadTimeDays ?? Number.POSITIVE_INFINITY;
-    if (leadA !== leadB) return leadA - leadB;
-
-    // Deterministic tie-breakers (INV-193 / G02)
-    const nameA = a.strategyIdentity || a.name || '';
-    const nameB = b.strategyIdentity || b.name || '';
-    const nameDiff = nameA.localeCompare(nameB);
-    if (nameDiff !== 0) return nameDiff;
-
-    const fpA = a.bomFingerprint || '';
-    const fpB = b.bomFingerprint || '';
-    return fpA.localeCompare(fpB);
-  });
+  rawCandidates.sort(_compareCandidateRanks);
   return requestedSkuSet;
 }
 
-function normalizeCandidates(rawCandidates, requestedSkuSet, baselineCost, options = {}) {
-  const priceResolver = options.priceResolver;
-  const seenFp = new Map();
-  const normalized = rawCandidates.map((cand, idx) => {
-    const unavailable = [];
-    cand.skuPartsList = cand.skuPartsList.map(part => {
-      const priceKnown = typeof priceResolver?.hasPrice === 'function'
-        ? priceResolver.hasPrice(part.sku)
-        : part.priceKnown !== false && Number(part.unitPriceUsd) > 0;
-      if (!priceKnown) unavailable.push(cleanBaseSKU(part.sku));
-      return {
-        ...part,
-        priceKnown,
-        pricingStatus: priceKnown
-          ? (typeof priceResolver?.status === 'function' ? priceResolver.status(part.sku) : (part.pricingStatus || 'CATALOG_PRICE'))
-          : 'PRICE_UNAVAILABLE'
-      };
-    });
-    cand.priceUnavailableSkus = Array.from(new Set(unavailable.filter(Boolean)));
-    cand.pricingComplete = cand.priceUnavailableSkus.length === 0;
-    cand.strategyId = cand.strategyId || cand.strategyIdentity || cand.name;
-    cand.strategyIdentity = cand.strategyId;
-    cand.rank = idx + 1;
-    if (!cand.name.startsWith(`Rank ${cand.rank}:`)) {
-      cand.name = cand.name.replace(/^Rank \d+:/, `Rank ${cand.rank}:`);
-    }
-
-    const fp = cand.bomFingerprint || computeBomFingerprint(cand.skuPartsList);
-    cand.bomFingerprint = fp;
-    if (seenFp.has(fp)) {
-      cand.isUniqueBom = false;
-      cand.duplicateOfRank = seenFp.get(fp);
-      cand.isParetoOptimal = false;
-    } else {
-      seenFp.set(fp, cand.rank);
-      cand.isUniqueBom = true;
-      cand.isParetoOptimal = true;
-    }
-
-    const candPartMap = new Map();
-    cand.skuPartsList.forEach(p => {
-      const clean = cleanBaseSKU(p.sku);
-      if (clean) candPartMap.set(clean, p);
-    });
-    const candSkuSet = new Set(candPartMap.keys());
-    const addedSkus = Array.from(candSkuSet).filter(s => !requestedSkuSet.has(s));
-    const omittedSkus = Array.from(requestedSkuSet).filter(s => !candSkuSet.has(s));
-    const costDeltaFromRank1 = cand.pricingComplete && baselineCost > 0
-      ? cand.estimatedCostUsd - baselineCost
-      : null;
-    const costDeltaPct = costDeltaFromRank1 !== null
-      ? parseFloat(((costDeltaFromRank1 / baselineCost) * 100).toFixed(2))
-      : null;
-
-    let weightedEditDistance = 0;
-    addedSkus.forEach(s => {
-      const part = candPartMap.get(s);
-      const cat = (part?.category || '').toLowerCase();
-      if (cat.includes('controller') || cat.includes('processor') || cat.includes('memory') || cat.includes('power supply')) {
-        weightedEditDistance += 1.0;
-      } else if (cat.includes('cable') || cat.includes('bracket') || cat.includes('enablement') || cat.includes('fix')) {
-        weightedEditDistance += 0.2;
-      } else {
-        weightedEditDistance += 0.1;
-      }
-    });
-    omittedSkus.forEach(() => {
-      weightedEditDistance += 0.8;
-    });
-    weightedEditDistance = parseFloat((weightedEditDistance + (cand.quantityDelta || 0)).toFixed(2));
-
-    const riskScore = (cand.aspectErrors?.length || 0) * 10 + (cand.changesCount || 0);
-
-    cand.proximityMetrics = {
-      costDeltaFromRank1Usd: costDeltaFromRank1,
-      costDeltaPct: costDeltaPct,
-      addedSkuCount: addedSkus.length,
-      omittedSkuCount: omittedSkus.length,
-      addedSkus: addedSkus.slice(0, 5),
-      omittedSkus: omittedSkus.slice(0, 5),
-      weightedEditDistance,
-      quantityDelta: cand.quantityDelta || 0,
-      architecturalDelta: cand.architecturalDelta ?? 0,
-      riskScore,
-      disruptionScore: Math.min(100, Math.round(weightedEditDistance * 20)),
-      isClosestRoute: idx <= 2,
-      closenessRating: idx === 0
-        ? 'Optimal Baseline'
-        : (costDeltaPct === null
-            ? 'Customer-distance ranked; certified pricing incomplete'
-            : (Math.abs(costDeltaPct) < 8 ? 'Very Close Alternative (<8% cost variance)' : 'Differentiated Architecture (>8% cost variance)'))
+function _normalizeCandidatePartsPricing(cand, priceResolver) {
+  const unavailable = [];
+  cand.skuPartsList = cand.skuPartsList.map(part => {
+    const priceKnown = typeof priceResolver?.hasPrice === 'function'
+      ? priceResolver.hasPrice(part.sku)
+      : part.priceKnown !== false && Number(part.unitPriceUsd) > 0;
+    if (!priceKnown) unavailable.push(cleanBaseSKU(part.sku));
+    return {
+      ...part,
+      priceKnown,
+      pricingStatus: priceKnown
+        ? (typeof priceResolver?.status === 'function' ? priceResolver.status(part.sku) : (part.pricingStatus || 'CATALOG_PRICE'))
+        : 'PRICE_UNAVAILABLE'
     };
-
-    cand.configurationParity = {
-      architecturalDelta: cand.architecturalDelta ?? 0,
-      addedSkuCount: addedSkus.length,
-      omittedSkuCount: omittedSkus.length
-    };
-
-    if (cand.name.toLowerCase().includes('intent preserved')) {
-      cand.decisionGuide = 'Choose this when maximum fidelity to the customer RFP is mandated and minimum SKU deviations are required.';
-    } else if (cand.name.toLowerCase().includes('high-iops') || cand.name.toLowerCase().includes('contested form-factor')) {
-      cand.decisionGuide = 'Choose this when write-cache performance (8GB PCIe) and retaining customer OCP NIC part numbers outweigh standard CapEx constraints.';
-    } else if (cand.name.toLowerCase().includes('budget') || cand.name.toLowerCase().includes('capex')) {
-      cand.decisionGuide = 'Choose this when lowest possible purchase price is required without violating HPE factory buildability.';
-    } else if (cand.name.toLowerCase().includes('standardized')) {
-      cand.decisionGuide = 'Choose this when factory standard cable management and tool-less rail kits are required for turnkey rack deployment.';
-    } else {
-      cand.decisionGuide = 'Choose this for maximum multi-GPU, multi-riser scalability and headroom expansion.';
-    }
-
-    return cand;
   });
+  cand.priceUnavailableSkus = Array.from(new Set(unavailable.filter(Boolean)));
+  cand.pricingComplete = cand.priceUnavailableSkus.length === 0;
+  cand.strategyId = cand.strategyId || cand.strategyIdentity || cand.name;
+  cand.strategyIdentity = cand.strategyId;
+}
 
-  // True Multi-Objective Pareto Dominance Check across Cost, Risk, Customer Distance
-  // Candidate A dominates Candidate B if A <= B on all 3 and A < B on at least one.
+function _assignBomFingerprintAndUniqueness(cand, seenFp) {
+  const fp = cand.bomFingerprint || computeBomFingerprint(cand.skuPartsList);
+  cand.bomFingerprint = fp;
+  if (seenFp.has(fp)) {
+    cand.isUniqueBom = false;
+    cand.duplicateOfRank = seenFp.get(fp);
+    cand.isParetoOptimal = false;
+  } else {
+    seenFp.set(fp, cand.rank);
+    cand.isUniqueBom = true;
+    cand.isParetoOptimal = true;
+  }
+}
+
+function _computeCandidateEditDistance(candPartMap, addedSkus, omittedSkus, quantityDelta) {
+  let weightedEditDistance = 0;
+  addedSkus.forEach(s => {
+    const part = candPartMap.get(s);
+    const cat = (part?.category || '').toLowerCase();
+    if (cat.includes('controller') || cat.includes('processor') || cat.includes('memory') || cat.includes('power supply')) {
+      weightedEditDistance += 1.0;
+    } else if (cat.includes('cable') || cat.includes('bracket') || cat.includes('enablement') || cat.includes('fix')) {
+      weightedEditDistance += 0.2;
+    } else {
+      weightedEditDistance += 0.1;
+    }
+  });
+  omittedSkus.forEach(() => {
+    weightedEditDistance += 0.8;
+  });
+  return parseFloat((weightedEditDistance + (quantityDelta || 0)).toFixed(2));
+}
+
+function _buildCandidateProximityMetrics(cand, idx, costDeltaFromRank1, costDeltaPct, addedSkus, omittedSkus, weightedEditDistance) {
+  const riskScore = (cand.aspectErrors?.length || 0) * 10 + (cand.changesCount || 0);
+
+  let closenessRating = 'Differentiated Architecture (>8% cost variance)';
+  if (idx === 0) {
+    closenessRating = 'Optimal Baseline';
+  } else if (costDeltaPct === null) {
+    closenessRating = 'Customer-distance ranked; certified pricing incomplete';
+  } else if (Math.abs(costDeltaPct) < 8) {
+    closenessRating = 'Very Close Alternative (<8% cost variance)';
+  }
+
+  cand.proximityMetrics = {
+    costDeltaFromRank1Usd: costDeltaFromRank1,
+    costDeltaPct,
+    addedSkuCount: addedSkus.length,
+    omittedSkuCount: omittedSkus.length,
+    addedSkus: addedSkus.slice(0, 5),
+    omittedSkus: omittedSkus.slice(0, 5),
+    weightedEditDistance,
+    quantityDelta: cand.quantityDelta || 0,
+    architecturalDelta: cand.architecturalDelta ?? 0,
+    riskScore,
+    disruptionScore: Math.min(100, Math.round(weightedEditDistance * 20)),
+    isClosestRoute: idx <= 2,
+    closenessRating
+  };
+
+  cand.configurationParity = {
+    architecturalDelta: cand.architecturalDelta ?? 0,
+    addedSkuCount: addedSkus.length,
+    omittedSkuCount: omittedSkus.length
+  };
+}
+
+function _resolveCandidateDecisionGuide(cand) {
+  const lowerName = cand.name.toLowerCase();
+  if (lowerName.includes('intent preserved')) {
+    return 'Choose this when maximum fidelity to the customer RFP is mandated and minimum SKU deviations are required.';
+  }
+  if (lowerName.includes('high-iops') || lowerName.includes('contested form-factor')) {
+    return 'Choose this when write-cache performance (8GB PCIe) and retaining customer OCP NIC part numbers outweigh standard CapEx constraints.';
+  }
+  if (lowerName.includes('budget') || lowerName.includes('capex')) {
+    return 'Choose this when lowest possible purchase price is required without violating HPE factory buildability.';
+  }
+  if (lowerName.includes('standardized')) {
+    return 'Choose this when factory standard cable management and tool-less rail kits are required for turnkey rack deployment.';
+  }
+  return 'Choose this for maximum multi-GPU, multi-riser scalability and headroom expansion.';
+}
+
+function _applyParetoDominance(normalized) {
   for (let i = 0; i < normalized.length; i++) {
     const a = normalized[i];
     if (!a.isUniqueBom) continue;
@@ -725,6 +725,45 @@ function normalizeCandidates(rawCandidates, requestedSkuSet, baselineCost, optio
       }
     }
   }
+}
+
+function normalizeCandidates(rawCandidates, requestedSkuSet, baselineCost, options = {}) {
+  const priceResolver = options.priceResolver;
+  const seenFp = new Map();
+  const normalized = rawCandidates.map((cand, idx) => {
+    _normalizeCandidatePartsPricing(cand, priceResolver);
+
+    cand.rank = idx + 1;
+    if (!cand.name.startsWith(`Rank ${cand.rank}:`)) {
+      cand.name = cand.name.replace(/^Rank \d+:/, `Rank ${cand.rank}:`);
+    }
+
+    _assignBomFingerprintAndUniqueness(cand, seenFp);
+
+    const candPartMap = new Map();
+    cand.skuPartsList.forEach(p => {
+      const clean = cleanBaseSKU(p.sku);
+      if (clean) candPartMap.set(clean, p);
+    });
+    const candSkuSet = new Set(candPartMap.keys());
+    const addedSkus = Array.from(candSkuSet).filter(s => !requestedSkuSet.has(s));
+    const omittedSkus = Array.from(requestedSkuSet).filter(s => !candSkuSet.has(s));
+    const costDeltaFromRank1 = cand.pricingComplete && baselineCost > 0
+      ? cand.estimatedCostUsd - baselineCost
+      : null;
+    const costDeltaPct = costDeltaFromRank1 !== null
+      ? parseFloat(((costDeltaFromRank1 / baselineCost) * 100).toFixed(2))
+      : null;
+
+    const weightedEditDistance = _computeCandidateEditDistance(candPartMap, addedSkus, omittedSkus, cand.quantityDelta);
+
+    _buildCandidateProximityMetrics(cand, idx, costDeltaFromRank1, costDeltaPct, addedSkus, omittedSkus, weightedEditDistance);
+    cand.decisionGuide = _resolveCandidateDecisionGuide(cand);
+
+    return cand;
+  });
+
+  _applyParetoDominance(normalized);
 
   const paretoSolutions = normalized.filter(c => c.isParetoOptimal && c.isUniqueBom);
   normalized.paretoSolutions = paretoSolutions;
@@ -758,13 +797,7 @@ function computeBomFingerprint(parts = []) {
     .join('|');
 }
 
-function revalidateCandidateParts(parts, chassisInfo, getPrice, catalogData = null, targetDir = '', options = {}) {
-  const mandatory = getMandatorySkusForChassis(chassisInfo);
-  const updatedParts = [...parts];
-  const injectedFixes = [];
-  const partSkus = new Set(updatedParts.map(p => cleanBaseSKU(p.sku)));
-
-  // 1. Controller write-cache battery check
+function _injectStorageBatteryIfMissing(updatedParts, partSkus, mandatory, getPrice, injectedFixes) {
   const hasControllerWithCache = updatedParts.some(p => {
     const desc = (p.description || '').toLowerCase();
     const sku = cleanBaseSKU(p.sku);
@@ -790,8 +823,9 @@ function revalidateCandidateParts(parts, chassisInfo, getPrice, catalogData = nu
     partSkus.add(cleanBaseSKU(batterySku));
     injectedFixes.push({ sku: batterySku, reason: 'Cascading controller battery injection for write cache protection' });
   }
+}
 
-  // 2. High TDP CPU / GPU Fan Check
+function _injectFanKitIfMissing(updatedParts, partSkus, mandatory, getPrice, injectedFixes) {
   const highTdpCpu = updatedParts.some(p => {
     const desc = (p.description || '').toLowerCase();
     const match = desc.match(/(\d+)\s*w/);
@@ -827,8 +861,9 @@ function revalidateCandidateParts(parts, chassisInfo, getPrice, catalogData = nu
     partSkus.add(cleanBaseSKU(fanSku));
     injectedFixes.push({ sku: fanSku, reason: 'Cascading fan kit injection for high TDP / accelerator cooling' });
   }
+}
 
-  // 3. Telco -48VDC PSU Lug Kit Check
+function _injectDcLugKitIfMissing(updatedParts, partSkus, mandatory, getPrice, injectedFixes) {
   const hasDcPsu = updatedParts.some(p => {
     const desc = (p.description || '').toLowerCase();
     return desc.includes('-48vdc') || (desc.includes('dc') && desc.includes('power supply'));
@@ -853,52 +888,105 @@ function revalidateCandidateParts(parts, chassisInfo, getPrice, catalogData = nu
     partSkus.add(cleanBaseSKU(lugSku));
     injectedFixes.push({ sku: lugSku, reason: 'Cascading DC terminal lug connector kit injection' });
   }
+}
 
-  // 4. True 7-Aspect Physical Math Revalidation
+function _runPhysicalAspectsValidationLoop(updatedParts, partSkus, catalogData, targetDir, validator, getPrice, injectedFixes) {
   let isClean = false;
   let aspectErrors = ['7-aspect candidate validation did not return evidence.'];
-  const validator = (options && typeof options.validateMath === 'function') ? options.validateMath : _physicalMathValidator;
-  if (typeof validator === 'function') {
-    try {
-      for (let pass = 0; pass < 8; pass++) {
-        const mathResult = validator(updatedParts, catalogData, targetDir, { skipGraphValidation: true, skipLifecycle: true });
-        if (!mathResult) { isClean = false; aspectErrors = ['Candidate validation returned no evidence.']; break; }
-        const beforeCount = updatedParts.length;
-        isClean = mathResult.isMathClean === true && !(mathResult.missingDependencies?.length);
-        aspectErrors = mathResult.errors || [];
 
-        // If missing dependencies discovered during physical math re-check, inject them
-        if (Array.isArray(mathResult.missingDependencies)) {
-          for (const dep of mathResult.missingDependencies) {
-            const cleanDep = cleanBaseSKU(dep.sku);
-            if (cleanDep && !partSkus.has(cleanDep)) {
-              const depPrice = getPrice(cleanDep);
-              updatedParts.push({
-                sku: cleanDep,
-                description: dep.description || `Required dependency (${cleanDep})`,
-                quantity: dep.quantity || 1,
-                unitPriceUsd: depPrice,
-                extendedPriceUsd: depPrice * (dep.quantity || 1),
-                isFixInjected: true,
-                isCascadingFix: true,
-                category: dep.category || 'Aspect Rule Fix'
-              });
-              partSkus.add(cleanDep);
-              injectedFixes.push({ sku: cleanDep, reason: dep.reason || 'Missing physical dependency from 7-aspect revalidation' });
-            }
+  if (typeof validator !== 'function') {
+    return { isClean, aspectErrors };
+  }
+
+  try {
+    for (let pass = 0; pass < 8; pass++) {
+      const mathResult = validator(updatedParts, catalogData, targetDir, { skipGraphValidation: true, skipLifecycle: true });
+      if (!mathResult) {
+        isClean = false;
+        aspectErrors = ['Candidate validation returned no evidence.'];
+        break;
+      }
+      const beforeCount = updatedParts.length;
+      isClean = mathResult.isMathClean === true && !(mathResult.missingDependencies?.length);
+      aspectErrors = mathResult.errors || [];
+
+      // If missing dependencies discovered during physical math re-check, inject them
+      if (Array.isArray(mathResult.missingDependencies)) {
+        for (const dep of mathResult.missingDependencies) {
+          const cleanDep = cleanBaseSKU(dep.sku);
+          if (cleanDep && !partSkus.has(cleanDep)) {
+            const depPrice = getPrice(cleanDep);
+            updatedParts.push({
+              sku: cleanDep,
+              description: dep.description || `Required dependency (${cleanDep})`,
+              quantity: dep.quantity || 1,
+              unitPriceUsd: depPrice,
+              extendedPriceUsd: depPrice * (dep.quantity || 1),
+              isFixInjected: true,
+              isCascadingFix: true,
+              category: dep.category || 'Aspect Rule Fix'
+            });
+            partSkus.add(cleanDep);
+            injectedFixes.push({ sku: cleanDep, reason: dep.reason || 'Missing physical dependency from 7-aspect revalidation' });
           }
         }
-
-        if (updatedParts.length === beforeCount) break;
-        // Every mutation needs a fresh pass, including the last permitted repair.
-        isClean = false;
-        aspectErrors = ['Candidate dependency repair requires further validation; iteration limit reached.'];
       }
-    } catch (error) {
+
+      if (updatedParts.length === beforeCount) break;
+      // Every mutation needs a fresh pass, including the last permitted repair.
       isClean = false;
-      aspectErrors = [`7-aspect candidate revalidation failed: ${error.message}`];
+      aspectErrors = ['Candidate dependency repair requires further validation; iteration limit reached.'];
     }
+  } catch (error) {
+    isClean = false;
+    aspectErrors = [`7-aspect candidate revalidation failed: ${error.message}`];
   }
+
+  return { isClean, aspectErrors };
+}
+
+function _injectManagementLicenseIfMissing(updatedParts, partSkus, getPrice, injectedFixes) {
+  const isCto = updatedParts.some(p => {
+    const d = (p.description || '').toLowerCase();
+    const s = cleanBaseSKU(p.sku);
+    return d.includes('cto') || ['P73282-B21', 'P52534-B21', 'P52533-B21', 'P52532-B21', 'P74700-B21', 'P75741-B21'].includes(s);
+  });
+  const hasMgmt = updatedParts.some(p => {
+    const s = cleanBaseSKU(p.sku);
+    const d = (p.description || '').toLowerCase();
+    return ['R7A11AAE', 'E5Y43A', 'E5Y43AAE', 'R7A12AAE', 'S2E10AAE', 'S5E59AAE', 'S1A05A'].includes(s) ||
+      d.includes('compute ops management') || d.includes('oneview');
+  });
+  if (isCto && !hasMgmt && !partSkus.has('R7A11AAE')) {
+    const mgmtSku = 'R7A11AAE';
+    const price = typeof getPrice === 'function' ? getPrice(mgmtSku) : 0;
+    updatedParts.push({
+      sku: mgmtSku,
+      description: 'HPE GreenLake for Compute Ops Management Enhanced 3-year Upfront SaaS (CLIC Rule 81322276)',
+      quantity: 1,
+      unitPriceUsd: price,
+      extendedPriceUsd: price,
+      isFixInjected: true,
+      category: 'Management Software'
+    });
+    partSkus.add(mgmtSku);
+    injectedFixes.push({ sku: mgmtSku, reason: 'Mandatory management license per CLIC Rule 81322276' });
+  }
+}
+
+function revalidateCandidateParts(parts, chassisInfo, getPrice, catalogData = null, targetDir = '', options = {}) {
+  const mandatory = getMandatorySkusForChassis(chassisInfo);
+  const updatedParts = [...parts];
+  const injectedFixes = [];
+  const partSkus = new Set(updatedParts.map(p => cleanBaseSKU(p.sku)));
+
+  _injectStorageBatteryIfMissing(updatedParts, partSkus, mandatory, getPrice, injectedFixes);
+  _injectFanKitIfMissing(updatedParts, partSkus, mandatory, getPrice, injectedFixes);
+  _injectDcLugKitIfMissing(updatedParts, partSkus, mandatory, getPrice, injectedFixes);
+  _injectManagementLicenseIfMissing(updatedParts, partSkus, getPrice, injectedFixes);
+
+  const validator = (options && typeof options.validateMath === 'function') ? options.validateMath : _physicalMathValidator;
+  const { isClean, aspectErrors } = _runPhysicalAspectsValidationLoop(updatedParts, partSkus, catalogData, targetDir, validator, getPrice, injectedFixes);
 
   const newTotalCost = updatedParts.reduce((sum, p) => sum + (p.extendedPriceUsd || (p.unitPriceUsd * (p.quantity || 1))), 0);
 
@@ -947,6 +1035,64 @@ function findFastShipCpuReplacement(catalogIndex) {
   return null;
 }
 
+function _isFastShipOutlier(part, outliers, v1SupplyMetrics) {
+  const cleanSku = cleanBaseSKU(part.sku);
+  return outliers.some(o => cleanBaseSKU(o.sku) === cleanSku) ||
+    (part.leadTimeDays && part.leadTimeDays >= 45) ||
+    (cleanSku === cleanBaseSKU(v1SupplyMetrics?.pacingItemSku) && (v1SupplyMetrics?.maxLeadTimeDays || 0) >= 45);
+}
+
+function _findFastShipReplacement(part, catalogIndex, chassisInfo) {
+  const desc = (part.description || '').toLowerCase();
+  const cat = (part.category || '').toLowerCase();
+
+  if (cat.includes('storage') || cat.includes('drive') || cat.includes('disk') || desc.includes('hdd') || desc.includes('ssd') || desc.includes('hard drive')) {
+    const replacement = findFastShipDriveReplacement(catalogIndex);
+    return {
+      replacement,
+      reason: 'Eliminated pacing delivery bottleneck (replaces long lead-time HDD/drive with catalog-listed SSD candidate)'
+    };
+  }
+  if (cat.includes('processor') || cat.includes('cpu') || desc.includes('xeon') || desc.includes('epyc') || desc.includes('processor')) {
+    const replacement = findFastShipCpuReplacement(catalogIndex, chassisInfo);
+    return {
+      replacement,
+      reason: 'Replaced constrained processor pacing item with catalog-listed processor candidate'
+    };
+  }
+  return { replacement: null, reason: '' };
+}
+
+function _substituteSingleFastShipPart(part, isOutlier, catalogIndex, chassisInfo, getPrice, v1SupplyMetrics, substitutedItems) {
+  if (!isOutlier) return { ...part };
+  const cleanSku = cleanBaseSKU(part.sku);
+  const { replacement, reason } = _findFastShipReplacement(part, catalogIndex, chassisInfo);
+  if (!replacement || cleanBaseSKU(replacement.sku) === cleanSku) return { ...part };
+
+  const replPrice = getPrice(replacement.sku);
+  substitutedItems.push({
+    originalSku: cleanSku,
+    originalDescription: part.description,
+    originalLeadTimeDays: part.leadTimeDays ?? v1SupplyMetrics.maxLeadTimeDays,
+    replacementSku: replacement.sku,
+    replacementDescription: replacement.description,
+    replacementLeadTimeDays: replacement.leadTimeDays,
+    reason
+  });
+
+  return {
+    ...part,
+    sku: replacement.sku,
+    description: replacement.description,
+    unitPriceUsd: replPrice,
+    extendedPriceUsd: replPrice * (part.quantity || 1),
+    priceKnown: getPrice.hasPrice(replacement.sku),
+    leadTime: replacement.leadTime,
+    leadTimeDays: replacement.leadTimeDays,
+    isFastShipSubstituted: true
+  };
+}
+
 function synthesizeFastShipAlternative(v1Parts, v1SupplyMetrics, loadedCatalog, chassisInfo, getPrice, revalidateCached, resolveSupply) {
   const outliers = v1SupplyMetrics?.leadTimeOutliers || [];
   if (outliers.length === 0 && (!v1SupplyMetrics?.maxLeadTimeDays || v1SupplyMetrics.maxLeadTimeDays < 45)) {
@@ -957,50 +1103,8 @@ function synthesizeFastShipAlternative(v1Parts, v1SupplyMetrics, loadedCatalog, 
   const substitutedItems = [];
 
   const candidateParts = v1Parts.map(part => {
-    const cleanSku = cleanBaseSKU(part.sku);
-    const isOutlier = outliers.some(o => cleanBaseSKU(o.sku) === cleanSku) ||
-      (part.leadTimeDays && part.leadTimeDays >= 45) ||
-      (cleanSku === cleanBaseSKU(v1SupplyMetrics.pacingItemSku) && (v1SupplyMetrics.maxLeadTimeDays || 0) >= 45);
-
-    if (!isOutlier) return { ...part };
-
-    const desc = (part.description || '').toLowerCase();
-    const cat = (part.category || '').toLowerCase();
-
-    let replacement = null;
-    let reason = '';
-    if (cat.includes('storage') || cat.includes('drive') || cat.includes('disk') || desc.includes('hdd') || desc.includes('ssd') || desc.includes('hard drive')) {
-      replacement = findFastShipDriveReplacement(catalogIndex);
-      reason = 'Eliminated pacing delivery bottleneck (replaces long lead-time HDD/drive with catalog-listed SSD candidate)';
-    } else if (cat.includes('processor') || cat.includes('cpu') || desc.includes('xeon') || desc.includes('epyc') || desc.includes('processor')) {
-      replacement = findFastShipCpuReplacement(catalogIndex, chassisInfo);
-      reason = 'Replaced constrained processor pacing item with catalog-listed processor candidate';
-    }
-
-    if (!replacement || cleanBaseSKU(replacement.sku) === cleanSku) return { ...part };
-
-    const replPrice = getPrice(replacement.sku);
-    substitutedItems.push({
-      originalSku: cleanSku,
-      originalDescription: part.description,
-      originalLeadTimeDays: part.leadTimeDays ?? v1SupplyMetrics.maxLeadTimeDays,
-      replacementSku: replacement.sku,
-      replacementDescription: replacement.description,
-      replacementLeadTimeDays: replacement.leadTimeDays,
-      reason
-    });
-
-    return {
-      ...part,
-      sku: replacement.sku,
-      description: replacement.description,
-      unitPriceUsd: replPrice,
-      extendedPriceUsd: replPrice * (part.quantity || 1),
-      priceKnown: getPrice.hasPrice(replacement.sku),
-      leadTime: replacement.leadTime,
-      leadTimeDays: replacement.leadTimeDays,
-      isFastShipSubstituted: true
-    };
+    const isOutlier = _isFastShipOutlier(part, outliers, v1SupplyMetrics);
+    return _substituteSingleFastShipPart(part, isOutlier, catalogIndex, chassisInfo, getPrice, v1SupplyMetrics, substitutedItems);
   });
 
   if (substitutedItems.length === 0) return null;
@@ -1148,22 +1252,81 @@ const CERTIFIED_STORAGE_DOWNTIER_MAP = {
   '7.68TB_MU_BC': { sku: 'P40545-B21', desc: 'HPE 7.68TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 SSD', capGb: 7680, refPrice: 1600.0 }
 };
 
+function _isWriteIntensiveStorageWorkload(dna, parts) {
+  const normalizedWorkloadDesc = (dna?.workloadDescription || '').replace(/_/g, ' ');
+  const normalizedPrimaryWorkload = (dna?.primaryWorkload || '').replace(/_/g, ' ');
+  const writeIntensiveRegex = /\b(write intensive|write-intensive|db logging|transaction log|write-heavy|wal|redo log|sap hana|hana|oltp|redis|aof|cassandra|commitlog|commit log|kafka|journal)\b/i;
+
+  return (
+    dna?.storageWorkload === 'WRITE_INTENSIVE' ||
+    dna?.isWriteIntensive === true ||
+    writeIntensiveRegex.test(normalizedWorkloadDesc) ||
+    writeIntensiveRegex.test(normalizedPrimaryWorkload) ||
+    parts.some(p => writeIntensiveRegex.test((p.description || '').replace(/_/g, ' ')))
+  );
+}
+
+function _isCandidateMixedUseNvme(p) {
+  const desc = (p.description || '').toLowerCase();
+  if (desc.includes('controller') || desc.includes('cable') || desc.includes('cage') ||
+      desc.includes('backplane') || desc.includes('battery') || desc.includes('blank')) {
+    return false;
+  }
+  const isNvme = desc.includes('nvme');
+  const isMixedUse = desc.includes('mixed use') || desc.includes(' mu ') || desc.includes(' mu') || /\bmu\b/i.test(desc) || desc.includes('high performance');
+  if (!isNvme || !isMixedUse || desc.includes('read intensive') || desc.includes(' ri ') || desc.includes(' ri')) {
+    return false;
+  }
+  return true;
+}
+
+function _findCatalogStorageReplacement(catIndex, origCapGb, isBc, curPrice, safeGetPrice) {
+  if (!catIndex) return null;
+  for (const [candSku, item] of catIndex.entries()) {
+    if (item.lifecycleStatus === 'OB' || item.lifecycleStatus === 'EOL') continue;
+    const cDesc = (item.skuData?.Description || item.entry?.description || '').toLowerCase();
+    if (!cDesc.includes('ssd') || !cDesc.includes('nvme') || !cDesc.includes('read intensive')) continue;
+    if (isBc && !cDesc.includes(' bc') && !cDesc.includes('basic carrier')) continue;
+    const cTb = cDesc.match(/(\d+(?:\.\d+)?)\s*tb/i);
+    const cGb = cDesc.match(/(\d+)\s*gb/i);
+    const candCapGb = cTb ? Math.round(parseFloat(cTb[1]) * 1000) : (cGb ? parseInt(cGb[1], 10) : 0);
+    if (candCapGb >= origCapGb && candCapGb <= Math.round(origCapGb * 1.5)) {
+      const candPrice = safeGetPrice(candSku);
+      if (candPrice !== null && candPrice > 0 && candPrice < curPrice) {
+        return { sku: candSku, desc: item.skuData?.Description || item.entry?.description, price: candPrice };
+      }
+    }
+  }
+  return null;
+}
+
+function _findFallbackStorageReplacement(origCapGb, curPrice, safeGetPrice) {
+  let mapping = null;
+  if (origCapGb <= 960) {
+    mapping = CERTIFIED_STORAGE_DOWNTIER_MAP['800GB_MU_BC'];
+  } else if (origCapGb <= 1920) {
+    mapping = CERTIFIED_STORAGE_DOWNTIER_MAP['1.6TB_MU_BC'];
+  } else if (origCapGb <= 3840) {
+    mapping = CERTIFIED_STORAGE_DOWNTIER_MAP['3.2TB_MU_BC'];
+  } else {
+    mapping = CERTIFIED_STORAGE_DOWNTIER_MAP['6.4TB_MU_BC'];
+  }
+  if (!mapping) return null;
+
+  const candPrice = safeGetPrice(mapping.sku) || mapping.refPrice;
+  if (candPrice < curPrice) {
+    return { sku: mapping.sku, desc: mapping.desc, price: candPrice };
+  }
+  return null;
+}
+
 function _tryBudgetStorageSubstitution(parts, workloadDna, loadedCatalog, getPrice) {
   if (!Array.isArray(parts) || parts.length === 0) return false;
 
   const safeGetPrice = typeof getPrice === 'function' ? getPrice : () => null;
   const dna = workloadDna || extractWorkloadDna(parts);
-  const normalizedWorkloadDesc = (dna?.workloadDescription || '').replace(/_/g, ' ');
-  const normalizedPrimaryWorkload = (dna?.primaryWorkload || '').replace(/_/g, ' ');
-  const writeIntensiveRegex = /\b(write intensive|write-intensive|db logging|transaction log|write-heavy|wal|redo log|sap hana|hana|oltp|redis|aof|cassandra|commitlog|commit log|kafka|journal)\b/i;
-  const isWriteIntensive =
-    dna?.storageWorkload === 'WRITE_INTENSIVE' ||
-    dna?.isWriteIntensive === true ||
-    writeIntensiveRegex.test(normalizedWorkloadDesc) ||
-    writeIntensiveRegex.test(normalizedPrimaryWorkload) ||
-    parts.some(p => writeIntensiveRegex.test((p.description || '').replace(/_/g, ' ')));
 
-  if (isWriteIntensive) {
+  if (_isWriteIntensiveStorageWorkload(dna, parts)) {
     return false; // Invariant: Never down-tier write-intensive workloads
   }
 
@@ -1172,62 +1335,19 @@ function _tryBudgetStorageSubstitution(parts, workloadDna, loadedCatalog, getPri
 
   for (let i = 0; i < parts.length; i++) {
     const p = parts[i];
+    if (!_isCandidateMixedUseNvme(p)) continue;
+
     const desc = (p.description || '').toLowerCase();
-    if (desc.includes('controller') || desc.includes('cable') || desc.includes('cage') ||
-        desc.includes('backplane') || desc.includes('battery') || desc.includes('blank')) {
-      continue;
-    }
-    const isNvme = desc.includes('nvme');
-    const isMixedUse = desc.includes('mixed use') || desc.includes(' mu ') || desc.includes(' mu') || /\bmu\b/i.test(desc) || desc.includes('high performance');
-
-    if (!isNvme || !isMixedUse || desc.includes('read intensive') || desc.includes(' ri ') || desc.includes(' ri')) continue;
-
     const tbMatch = desc.match(/(\d+(?:\.\d+)?)\s*tb/i);
     const gbMatch = desc.match(/(\d+)\s*gb/i);
     const origCapGb = tbMatch ? Math.round(parseFloat(tbMatch[1]) * 1000) : (gbMatch ? parseInt(gbMatch[1], 10) : 1920);
     const isBc = desc.includes(' bc') || desc.includes('basic carrier') || !desc.includes(' sc');
+    const curPrice = p.unitPriceUsd || safeGetPrice(p.sku) || 999999;
 
-    let replacement = null;
-    // 1. Search loaded catalog index for exact match
-    if (catIndex) {
-      for (const [candSku, item] of catIndex.entries()) {
-        if (item.lifecycleStatus === 'OB' || item.lifecycleStatus === 'EOL') continue;
-        const cDesc = (item.skuData?.Description || item.entry?.description || '').toLowerCase();
-        if (!cDesc.includes('ssd') || !cDesc.includes('nvme') || !cDesc.includes('read intensive')) continue;
-        if (isBc && !cDesc.includes(' bc') && !cDesc.includes('basic carrier')) continue;
-        const cTb = cDesc.match(/(\d+(?:\.\d+)?)\s*tb/i);
-        const cGb = cDesc.match(/(\d+)\s*gb/i);
-        const candCapGb = cTb ? Math.round(parseFloat(cTb[1]) * 1000) : (cGb ? parseInt(cGb[1], 10) : 0);
-        if (candCapGb >= origCapGb && candCapGb <= Math.round(origCapGb * 1.5)) {
-          const candPrice = safeGetPrice(candSku);
-          const curPrice = p.unitPriceUsd || safeGetPrice(p.sku) || 999999;
-          if (candPrice !== null && candPrice > 0 && candPrice < curPrice) {
-            replacement = { sku: candSku, desc: item.skuData?.Description || item.entry?.description, price: candPrice };
-            break;
-          }
-        }
-      }
-    }
-
-    // 2. Deterministic certified mapping fallback
+    let replacement = _findCatalogStorageReplacement(catIndex, origCapGb, isBc, curPrice, safeGetPrice);
     if (!replacement) {
-      let mapping = null;
-      if (origCapGb <= 960) {
-        mapping = CERTIFIED_STORAGE_DOWNTIER_MAP['800GB_MU_BC'];
-      } else if (origCapGb <= 1920) {
-        mapping = CERTIFIED_STORAGE_DOWNTIER_MAP['1.6TB_MU_BC'];
-      } else if (origCapGb <= 3840) {
-        mapping = CERTIFIED_STORAGE_DOWNTIER_MAP['3.2TB_MU_BC'];
-      } else {
-        mapping = CERTIFIED_STORAGE_DOWNTIER_MAP['6.4TB_MU_BC'];
-      }
-      if (mapping) {
-        const candPrice = safeGetPrice(mapping.sku) || mapping.refPrice;
-        const curPrice = p.unitPriceUsd || safeGetPrice(p.sku) || (mapping.refPrice * 1.6);
-        if (candPrice < curPrice) {
-          replacement = { sku: mapping.sku, desc: mapping.desc, price: candPrice };
-        }
-      }
+      const fallbackCurPrice = p.unitPriceUsd || safeGetPrice(p.sku) || (850 * 1.6);
+      replacement = _findFallbackStorageReplacement(origCapGb, fallbackCurPrice, safeGetPrice);
     }
 
     if (replacement && cleanBaseSKU(replacement.sku) !== cleanBaseSKU(p.sku)) {
@@ -1412,6 +1532,348 @@ function _buildRank4PartsAndMetadata({ tierConfig, dynamicDiscoveredAddons, leas
   };
 }
 
+function _recordMandatoryFixesDecision(decisionLedger, fixes, getPrice) {
+  if (!fixes || fixes.length === 0) return;
+  decisionLedger.recordDecision({
+    decisionPoint: 'MANDATORY_ASPECT_RULE_ENFORCEMENT',
+    trigger: `${fixes.length} physical aspect mismatch(es) detected in customer drafted BOQ`,
+    alternativesEvaluated: fixes.map(f => ({
+      id: f.sku,
+      description: f.description || `Required hardware kit (${f.sku})`,
+      pros: ['Guarantees 100% buildability in vendor configurator', 'Satisfies thermal/electrical safety'],
+      cons: [`Adds $${(getPrice(f.sku) * (f.quantity || 1)).toLocaleString()} CapEx`],
+      status: 'SELECTED'
+    })),
+    selectedAlternative: {
+      id: 'INJECT_ALL_MANDATORY_FIXES',
+      description: `${fixes.length} certified accessory kit(s)`,
+      selectionRationale: 'Golden Rule mandates 100% elimination of unbuildable errors before quote submission'
+    },
+    downstreamImpact: fixes.map(f => f.sku),
+    confidence: 0.99
+  });
+}
+
+function _recordLeastDeltaDecision(decisionLedger, leastDeltaCandidate) {
+  if (!leastDeltaCandidate) return;
+  decisionLedger.recordDecision({
+    decisionPoint: 'LEAST_DELTA_CASCADE_PRUNING',
+    trigger: leastDeltaCandidate.troublesomeReason,
+    alternativesEvaluated: [
+      {
+        id: 'DIRECT_ADDITIVE_FIXES',
+        description: `Retain ${leastDeltaCandidate.troublesomeRootSku} and append all cascading dependencies`,
+        pros: ['Preserves exact customer drafted SKU'],
+        cons: [`Forces ${leastDeltaCandidate.cascadingSkusEliminated.length} cascading accessories`, 'Higher complexity and CapEx'],
+        status: 'OFFERED_AS_RANK_1'
+      },
+      {
+        id: 'LEAST_DELTA_SUBSTITUTION',
+        description: `Substitute with ${leastDeltaCandidate.alternativeSku || 'pruned'} (${leastDeltaCandidate.presalesValuePitch})`,
+        pros: ['Eliminates cascading dependencies', 'Lowest delta operations to customer intent', '100% buildable and functionally equivalent'],
+        cons: ['Substitutes part number with modern alternative'],
+        status: 'OFFERED_AS_RANK_2'
+      }
+    ],
+    selectedAlternative: {
+      id: 'LEAST_DELTA_PATH',
+      description: leastDeltaCandidate.presalesValuePitch
+    },
+    downstreamImpact: leastDeltaCandidate.cascadingSkusEliminated,
+    confidence: 0.98
+  });
+}
+
+function _buildRank1Candidate({
+  rank1Name, rank1Reasoning, leastDeltaCandidate, fixes, v1, baseCost, fixCost, dna,
+  v1SupplyMetrics, fastShipAlternative, getLiveRagGrounding, decisionLedger
+}) {
+  return {
+    rank: 1,
+    strategyId: 'STRATEGY_CLOSEST_INTENT',
+    strategyIdentity: 'STRATEGY_CLOSEST_INTENT',
+    name: rank1Name,
+    leastDeltaAlternative: leastDeltaCandidate ? {
+      ...leastDeltaCandidate,
+      strategyId: 'STRATEGY_LEAST_DELTA',
+      strategyIdentity: 'STRATEGY_LEAST_DELTA',
+      rank: '1L'
+    } : null,
+    score: parseFloat(Math.max(0.70, 1.0 - (fixes.length * 0.02)).toFixed(2)),
+    estimatedCostUsd: v1.totalCost,
+    budgetBreakdown: {
+      baseBomCost: baseCost,
+      fixCost: fixCost,
+      strategyAddonCost: 0,
+      totalBudgetUsd: v1.totalCost
+    },
+    workloadDnaMatch: dna.workloadDescription || 'Balanced Enterprise',
+    changesCount: fixes.length + v1.injectedFixes.length,
+    skuPartsList: v1.parts,
+    bomFingerprint: computeBomFingerprint(v1.parts),
+    physicalMathClean: v1.physicalMathClean,
+    isMathClean: v1.physicalMathClean,
+    aspectErrors: v1.aspectErrors || [],
+    injectedCascadingFixes: v1.injectedFixes,
+    supplyMetrics: v1SupplyMetrics,
+    fastShipAlternative: fastShipAlternative || null,
+    tradeoffMetrics: {
+      intentAlignment: fixes.length === 0 ? '100% (Direct Match)' : `${Math.max(85, 100 - fixes.length * 3)}% (${fixes.length} Fixes)`,
+      skuModifications: `${fixes.length + v1.injectedFixes.length} physical fixes injected`,
+      costDeltaUsd: `+$${fixCost.toLocaleString()} (Mandatory Buildability)`,
+      capacityExpansion: 'Optimal (Zero over/under-provisioning)',
+      fastShipAlternativeAvailable: Boolean(fastShipAlternative),
+      deliveryDaysSaved: fastShipAlternative?.deliveryDaysSaved || 0
+    },
+    ragSecondOpinion: getLiveRagGrounding(
+      'Intent Preserved',
+      fixes.map(f => f.sku).concat(['chassis', 'processor', 'memory']),
+      '✅ Local Rule Engine Validated: Direct translation of customer requirements with mandatory buildability fixes.'
+    ),
+    reasoning: rank1Reasoning,
+    decisionTrace: decisionLedger.getDecisions()
+  };
+}
+
+function _buildRank2FastShipCandidate({
+  fastShipAlternative, fixes, baseCost, fixCost, decisionLedger
+}) {
+  return {
+    rank: 2,
+    strategyId: 'STRATEGY_CTO_BASELINE',
+    strategyIdentity: 'STRATEGY_CTO_BASELINE',
+    name: fastShipAlternative.name,
+    score: parseFloat(Math.max(0.65, 0.92 - (fixes.length * 0.02)).toFixed(2)),
+    estimatedCostUsd: fastShipAlternative.estimatedCostUsd,
+    budgetBreakdown: {
+      baseBomCost: baseCost,
+      fixCost: fixCost,
+      strategyAddonCost: Math.max(0, fastShipAlternative.estimatedCostUsd - baseCost),
+      totalBudgetUsd: fastShipAlternative.estimatedCostUsd
+    },
+    workloadDnaMatch: 'Fast-Ship Delivery Optimized',
+    changesCount: fastShipAlternative.substitutedPacingItems?.length || 1,
+    skuPartsList: fastShipAlternative.skuPartsList,
+    bomFingerprint: computeBomFingerprint(fastShipAlternative.skuPartsList),
+    physicalMathClean: fastShipAlternative.physicalMathClean,
+    isMathClean: fastShipAlternative.physicalMathClean,
+    isPortalConditional: false,
+    portalValidationStatus: 'PENDING',
+    portalConditionalSkus: [],
+    aspectErrors: fastShipAlternative.aspectErrors || [],
+    injectedCascadingFixes: fastShipAlternative.injectedCascadingFixes,
+    leastDeltaAnalysis: null,
+    tradeoffMetrics: fastShipAlternative.tradeoffMetrics,
+    ragSecondOpinion: `✅ Fast-Ship Alternative: ${fastShipAlternative.reasoning}`,
+    reasoning: fastShipAlternative.reasoning,
+    decisionTrace: decisionLedger.getDecisions()
+  };
+}
+
+function _buildRank2StandardCandidate({
+  rank2LeastDelta, rank2Name, fixes, v2, baseCost, fixCost, rank2AddonCost,
+  rank2Parts, rank1Parts, rank2IntentAlignment, rank2Reasoning, tierConfig,
+  getLiveRagGrounding, decisionLedger
+}) {
+  let dnaMatch = 'Factory Standard (Cable Management Arm & Tool-less Rail Kits)';
+  if (rank2LeastDelta) {
+    dnaMatch = rank2LeastDelta.strategyName === 'MODERNIZED_5TH_GEN_PLATFORM'
+      ? 'Modernized 5th Gen Platform (Emerald Rapids + DDR5-5600)'
+      : 'Least-Delta Optimization (Pruned Cascades)';
+  }
+
+  const changesCount = rank2LeastDelta
+    ? rank2LeastDelta.deltaMetrics.totalDeltaOperations
+    : fixes.length + (rank2Parts.length - rank1Parts.length) + v2.injectedFixes.length;
+
+  const tradeoffMetrics = {
+    intentAlignment: rank2IntentAlignment,
+    skuModifications: rank2LeastDelta ? rank2LeastDelta.deltaSummary : `${fixes.length} modifications`,
+    costDeltaUsd: `+$${rank2AddonCost.toLocaleString()}`,
+    capacityExpansion: rank2LeastDelta ? 'Cascade-Free Architecture' : 'Standard Factory Margins',
+    presalesPitch: rank2LeastDelta?.presalesValuePitch || 'Factory standard accessory kit inclusion'
+  };
+
+  const ragOpinion = getLiveRagGrounding(
+    rank2LeastDelta ? 'Least-Delta Alternative' : 'Standardized CTO Baseline',
+    (rank2LeastDelta?.cascadingSkusEliminated || []).concat(['cable', 'rail', 'chassis']),
+    rank2LeastDelta
+      ? `✅ Local Rule Engine Validated: ${rank2LeastDelta.presalesValuePitch}`
+      : `✅ Local Rule Engine Validated: CTO factory standardized baseline (${tierConfig.rank2?.[0]?.description || 'Factory Cable/Rail Kit'}) and routing verified.`
+  );
+
+  return {
+    rank: 2,
+    strategyId: rank2LeastDelta ? 'STRATEGY_LEAST_DELTA' : 'STRATEGY_CTO_BASELINE',
+    strategyIdentity: rank2LeastDelta ? 'STRATEGY_LEAST_DELTA' : 'STRATEGY_CTO_BASELINE',
+    name: rank2Name,
+    score: parseFloat(Math.max(0.65, 0.92 - (fixes.length * 0.02)).toFixed(2)),
+    estimatedCostUsd: v2.totalCost,
+    budgetBreakdown: {
+      baseBomCost: baseCost,
+      fixCost: fixCost,
+      strategyAddonCost: rank2AddonCost,
+      totalBudgetUsd: v2.totalCost
+    },
+    workloadDnaMatch: dnaMatch,
+    changesCount,
+    skuPartsList: v2.parts,
+    bomFingerprint: computeBomFingerprint(v2.parts),
+    physicalMathClean: v2.physicalMathClean,
+    isMathClean: v2.physicalMathClean,
+    isPortalConditional: Boolean(rank2LeastDelta?.isPortalConditional),
+    portalValidationStatus: rank2LeastDelta?.portalValidationStatus || 'PENDING',
+    portalConditionalSkus: rank2LeastDelta?.portalConditionalSkus || [],
+    aspectErrors: v2.aspectErrors || [],
+    injectedCascadingFixes: v2.injectedFixes,
+    leastDeltaAnalysis: rank2LeastDelta || null,
+    tradeoffMetrics,
+    ragSecondOpinion: ragOpinion,
+    reasoning: rank2Reasoning,
+    decisionTrace: decisionLedger.getDecisions()
+  };
+}
+
+function _buildRank2Candidate(ctx) {
+  if (ctx.options?.prioritizeFastShipAsRank2 && ctx.fastShipAlternative) {
+    return _buildRank2FastShipCandidate(ctx);
+  }
+  return _buildRank2StandardCandidate(ctx);
+}
+
+function _buildRank3Candidate({
+  rank3Name, rank3Reasoning, rank3AddonCost, rank3Addons, rank3IntentAlignment, rank3CascadingImpact,
+  pcieStorageBranch, dna, fixes, v3, baseCost, fixCost, getLiveRagGrounding
+}) {
+  return {
+    rank: 3,
+    strategyId: 'STRATEGY_PERFORMANCE',
+    strategyIdentity: 'STRATEGY_PERFORMANCE',
+    name: rank3Name,
+    score: parseFloat(Math.max(0.60, 0.88 - (fixes.length * 0.02)).toFixed(2)),
+    estimatedCostUsd: v3.totalCost,
+    budgetBreakdown: {
+      baseBomCost: baseCost,
+      fixCost: fixCost,
+      strategyAddonCost: rank3AddonCost,
+      totalBudgetUsd: v3.totalCost
+    },
+    workloadDnaMatch: pcieStorageBranch ? 'High-IOPS (PCIe x16 Controller, 8GB Cache & Dual OCP Retained)' : `Optimized for ${dna.storageWorkload || 'Database'} Performance`,
+    changesCount: fixes.length + (pcieStorageBranch ? pcieStorageBranch.substitutions.length : rank3Addons.length) + v3.injectedFixes.length,
+    skuPartsList: v3.parts,
+    bomFingerprint: computeBomFingerprint(v3.parts),
+    physicalMathClean: v3.physicalMathClean,
+    isMathClean: v3.physicalMathClean,
+    aspectErrors: v3.aspectErrors || [],
+    injectedCascadingFixes: v3.injectedFixes,
+    cascadingImpact: rank3CascadingImpact,
+    tradeoffMetrics: {
+      intentAlignment: rank3IntentAlignment,
+      skuModifications: `${fixes.length + (pcieStorageBranch ? pcieStorageBranch.substitutions.length : rank3Addons.length) + v3.injectedFixes.length} modifications`,
+      costDeltaUsd: `+$${(fixCost + rank3AddonCost).toLocaleString()}`,
+      capacityExpansion: pcieStorageBranch ? '2x Write Cache (8GB) + OCP Retention' : 'High Drive Controller Throughput'
+    },
+    ragSecondOpinion: getLiveRagGrounding(
+      'High-IOPS Storage Performance',
+      (pcieStorageBranch ? ['MR416i-p', 'P10115-B21', 'P48832-B21'] : rank3Addons.map(a => a.sku)).concat(['battery', 'cache', 'storage']),
+      pcieStorageBranch ? '✅ Local Rule Engine Validated: PCIe standup controller (x16 bus, 8GB cache) frees OCP Slot 1 for customer OCP adapter.' : `✅ Local Rule Engine Validated: Write-back cache acceleration & ${dna.storageWorkload || 'high-throughput controller'} IOPS optimization verified.`
+    ),
+    reasoning: rank3Reasoning
+  };
+}
+
+function _buildRank4Candidate({
+  rank4Name, rank4AddonCost, rank4Addons, fixes, v4, baseCost, fixCost, getLiveRagGrounding
+}) {
+  return {
+    rank: 4,
+    strategyId: 'STRATEGY_EXPANSION',
+    strategyIdentity: 'STRATEGY_EXPANSION',
+    name: rank4Name,
+    score: parseFloat(Math.max(0.55, 0.82 - (fixes.length * 0.02)).toFixed(2)),
+    estimatedCostUsd: v4.totalCost,
+    budgetBreakdown: {
+      baseBomCost: baseCost,
+      fixCost: fixCost,
+      strategyAddonCost: rank4AddonCost,
+      totalBudgetUsd: v4.totalCost
+    },
+    workloadDnaMatch: 'Max Headroom (Full PCIe Riser & High-Perf Thermal Expansion)',
+    changesCount: fixes.length + rank4Addons.length + v4.injectedFixes.length,
+    skuPartsList: v4.parts,
+    bomFingerprint: computeBomFingerprint(v4.parts),
+    physicalMathClean: v4.physicalMathClean,
+    isMathClean: v4.physicalMathClean,
+    aspectErrors: v4.aspectErrors || [],
+    injectedCascadingFixes: v4.injectedFixes,
+    tradeoffMetrics: {
+      intentAlignment: `${Math.max(70, 85 - fixes.length * 3)}% (Scalability Focused)`,
+      skuModifications: `${fixes.length + rank4Addons.length + v4.injectedFixes.length} modifications`,
+      costDeltaUsd: `+$${(fixCost + rank4AddonCost).toLocaleString()}`,
+      capacityExpansion: '100% Slot & Thermal Headroom'
+    },
+    ragSecondOpinion: getLiveRagGrounding(
+      'Future Scalability Expansion',
+      rank4Addons.map(a => a.sku).concat(['riser', 'fan', 'pcie']),
+      '✅ Local Rule Engine Validated: Secondary & tertiary riser lane allocation and cooling envelope verified.'
+    ),
+    reasoning: 'Populates full secondary PCIe riser slots and high-performance fan kits to support future GPU accelerator and 2nd CPU socket expansions.'
+  };
+}
+
+function _buildRank5Candidate({
+  v5, fixes, baseCost, fixCost, getLiveRagGrounding
+}) {
+  const isAvailable = Boolean(v5.isAlternativeAvailable);
+  return {
+    rank: 5,
+    strategyId: 'STRATEGY_BUDGET',
+    strategyIdentity: 'STRATEGY_BUDGET',
+    isAlternativeAvailable: isAvailable,
+    name: isAvailable
+      ? 'Rank 5: Budget & CapEx Minimized Buildable Alternative'
+      : 'Rank 5: Baseline Preserved (No Further Safe CapEx Reductions Available)',
+    score: parseFloat(Math.max(0.50, 0.75 - (fixes.length * 0.02)).toFixed(2)),
+    estimatedCostUsd: v5.totalCost,
+    budgetBreakdown: {
+      baseBomCost: baseCost,
+      fixCost: fixCost,
+      strategyAddonCost: 0,
+      totalBudgetUsd: v5.totalCost
+    },
+    workloadDnaMatch: isAvailable
+      ? 'Budget Optimized (Certified Down-Tiering)'
+      : 'Strict Minimum CapEx (100% Buildable Baseline)',
+    changesCount: fixes.length + v5.injectedFixes.length,
+    skuPartsList: v5.parts,
+    bomFingerprint: computeBomFingerprint(v5.parts),
+    physicalMathClean: v5.physicalMathClean,
+    isMathClean: v5.physicalMathClean,
+    aspectErrors: v5.aspectErrors || [],
+    injectedCascadingFixes: v5.injectedFixes,
+    tradeoffMetrics: {
+      intentAlignment: isAvailable
+        ? `${Math.max(65, 80 - fixes.length * 3)}% (Budget Optimized)`
+        : `${Math.max(65, 80 - fixes.length * 3)}% (Minimal Baseline)`,
+      skuModifications: `${fixes.length + v5.injectedFixes.length} fixes & modifications`,
+      costDeltaUsd: isAvailable
+        ? `-$${v5.deltaUsd.toLocaleString()} (CapEx Down-Tiering)`
+        : '$0 (Baseline is already CapEx minimal)',
+      capacityExpansion: 'Baseline Only'
+    },
+    ragSecondOpinion: getLiveRagGrounding(
+      isAvailable ? 'Budget CapEx Down-Tiering' : 'Minimal CapEx Baseline',
+      ['minimal', 'baseline', 'chassis'],
+      isAvailable
+        ? `✅ Local Rule Engine Validated: Certified budget alternative down-tiering over-provisioned components (-$${v5.deltaUsd.toLocaleString()}).`
+        : `✅ Local Rule Engine Validated: 100% buildable certified baseline without unrequested add-ons (${v5.parts.length} essential parts).`
+    ),
+    reasoning: isAvailable
+      ? 'Certified budget alternative down-tiering over-provisioned components to deliver lower CapEx while remaining 100% physically buildable.'
+      : 'Strict baseline buildable tier eliminating all optional add-ons to minimize total CapEx expenditure while remaining 100% buildable. Rank 1 already represents the minimal certified spend; no further component down-tiering is safely applicable without violating physical constraints.'
+  };
+}
+
 /**
  * Synthesize 5-Tier Strategic Resolution Matrix based on Workload DNA and Multi-Metric Tradeoffs.
  */
@@ -1436,26 +1898,7 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
   const fixParts = computeFixParts(fixes, getPrice);
 
   const decisionLedger = createDecisionTraceLedger();
-  if (fixes.length > 0) {
-    decisionLedger.recordDecision({
-      decisionPoint: 'MANDATORY_ASPECT_RULE_ENFORCEMENT',
-      trigger: `${fixes.length} physical aspect mismatch(es) detected in customer drafted BOQ`,
-      alternativesEvaluated: fixes.map(f => ({
-        id: f.sku,
-        description: f.description || `Required hardware kit (${f.sku})`,
-        pros: ['Guarantees 100% buildability in vendor configurator', 'Satisfies thermal/electrical safety'],
-        cons: [`Adds $${(getPrice(f.sku) * (f.quantity || 1)).toLocaleString()} CapEx`],
-        status: 'SELECTED'
-      })),
-      selectedAlternative: {
-        id: 'INJECT_ALL_MANDATORY_FIXES',
-        description: `${fixes.length} certified accessory kit(s)`,
-        selectionRationale: 'Golden Rule mandates 100% elimination of unbuildable errors before quote submission'
-      },
-      downstreamImpact: fixes.map(f => f.sku),
-      confidence: 0.99
-    });
-  }
+  _recordMandatoryFixesDecision(decisionLedger, fixes, getPrice);
 
   const rank1Parts = [...baseParts, ...fixParts];
   const rank1Cost = rank1Parts.reduce((acc, p) => acc + (p.extendedPriceUsd || (p.unitPriceUsd * p.quantity)), 0);
@@ -1464,43 +1907,12 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
   const dynamicDiscoveredAddons = discoverDynamicStrategyAddons(loadedCatalog, chassisInfo, dna);
   const getLiveRagGrounding = createLiveRagGrounding(chassisInfo);
 
-  // ---------------------------------------------------------------------------
-  // Build Ranks
-  // ---------------------------------------------------------------------------
-
   // Least-Delta Analysis: Detect troublesome SKUs that force cascading dependencies
   const { identifyTroublesomeSkus, buildLeastDeltaCandidate } = require('./least_delta_combinator.js');
   const troublesomeSkus = identifyTroublesomeSkus(items, evalResults, loadedCatalog, chassisInfo);
   const leastDeltaCandidate = buildLeastDeltaCandidate(baseParts, fixParts, troublesomeSkus, evalResults, loadedCatalog, chassisInfo, getPrice);
 
-  if (leastDeltaCandidate) {
-    decisionLedger.recordDecision({
-      decisionPoint: 'LEAST_DELTA_CASCADE_PRUNING',
-      trigger: leastDeltaCandidate.troublesomeReason,
-      alternativesEvaluated: [
-        {
-          id: 'DIRECT_ADDITIVE_FIXES',
-          description: `Retain ${leastDeltaCandidate.troublesomeRootSku} and append all cascading dependencies`,
-          pros: ['Preserves exact customer drafted SKU'],
-          cons: [`Forces ${leastDeltaCandidate.cascadingSkusEliminated.length} cascading accessories`, 'Higher complexity and CapEx'],
-          status: 'OFFERED_AS_RANK_1'
-        },
-        {
-          id: 'LEAST_DELTA_SUBSTITUTION',
-          description: `Substitute with ${leastDeltaCandidate.alternativeSku || 'pruned'} (${leastDeltaCandidate.presalesValuePitch})`,
-          pros: ['Eliminates cascading dependencies', 'Lowest delta operations to customer intent', '100% buildable and functionally equivalent'],
-          cons: ['Substitutes part number with modern alternative'],
-          status: 'OFFERED_AS_RANK_2'
-        }
-      ],
-      selectedAlternative: {
-        id: 'LEAST_DELTA_PATH',
-        description: leastDeltaCandidate.presalesValuePitch
-      },
-      downstreamImpact: leastDeltaCandidate.cascadingSkusEliminated,
-      confidence: 0.98
-    });
-  }
+  _recordLeastDeltaDecision(decisionLedger, leastDeltaCandidate);
 
   // Determine Rank 1 title and nature
   const isStraightforwardWinner = fixes.length === 0 && (!evalResults.errors || evalResults.errors.length === 0);
@@ -1511,14 +1923,9 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
     ? 'Normalized customer configuration passes local rules without additions, removals, or replacements. PORTAL VALIDATION PENDING.'
     : 'Preserves the exact customer configuration with mandatory aspect fixes applied to satisfy physical buildability.';
 
-  // Rank 2: Least-Delta Alternative Path (when troublesome SKU causes cascades) or Standardized CTO Baseline
+  // Rank 2: Least-Delta Alternative Path or Standardized CTO Baseline
   const {
-    rank2Parts,
-    rank2AddonCost,
-    rank2Name,
-    rank2Reasoning,
-    rank2IntentAlignment,
-    rank2LeastDelta
+    rank2Parts, rank2AddonCost, rank2Name, rank2Reasoning, rank2IntentAlignment, rank2LeastDelta
   } = _buildRank2PartsAndMetadata({
     leastDeltaCandidate, tierConfig, dynamicDiscoveredAddons, rank1Parts, rank1Cost, baseCost, getPrice, fixes
   });
@@ -1526,14 +1933,7 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
   // Rank 3
   const arbitrationBranches = (evalResults.arbitrationResults || {}).branches || [];
   const {
-    rank3Parts,
-    rank3AddonCost,
-    rank3Addons,
-    rank3Name,
-    rank3Reasoning,
-    rank3IntentAlignment,
-    rank3CascadingImpact,
-    pcieStorageBranch
+    rank3Parts, rank3AddonCost, rank3Addons, rank3Name, rank3Reasoning, rank3IntentAlignment, rank3CascadingImpact, pcieStorageBranch
   } = _buildRank3PartsAndMetadata({
     arbitrationBranches, tierConfig, dynamicDiscoveredAddons, leastDeltaCandidate, rank1Parts, rank2Parts,
     baseParts, fixParts, getPrice, loadedCatalog, chassisInfo, items, rank1Cost, dna, fixes
@@ -1541,10 +1941,7 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
 
   // Rank 4
   const {
-    rank4Parts,
-    rank4AddonCost,
-    rank4Addons,
-    rank4Name
+    rank4Parts, rank4AddonCost, rank4Addons, rank4Name
   } = _buildRank4PartsAndMetadata({
     tierConfig, dynamicDiscoveredAddons, leastDeltaCandidate, rank1Parts, rank2Parts, getPrice
   });
@@ -1567,234 +1964,35 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
   const v3 = revalidateCached(rank3Parts);
   const v4 = revalidateCached(rank4Parts);
 
-  // Rank 5: Budget & CapEx Minimized Candidate (derived via certified component down-tiering or honest baseline preservation)
+  // Rank 5: Budget & CapEx Minimized Candidate
   const v5 = synthesizeBudgetMinimizationCandidate(v1, evalResults, loadedCatalog, chassisInfo, getPrice, revalidateCached, { dna });
 
   const v1SupplyMetrics = calculateSupplyMetrics(v1.parts, resolveSupply);
   const fastShipAlternative = synthesizeFastShipAlternative(
-    v1.parts,
-    v1SupplyMetrics,
-    loadedCatalog,
-    chassisInfo,
-    getPrice,
-    revalidateCached,
-    resolveSupply
+    v1.parts, v1SupplyMetrics, loadedCatalog, chassisInfo, getPrice, revalidateCached, resolveSupply
   );
 
-  // Create Candidates Array
+  // Assemble 5 Candidates cleanly via modular builders
   const rawCandidates = [
-    {
-      rank: 1,
-      strategyId: 'STRATEGY_CLOSEST_INTENT',
-      strategyIdentity: 'STRATEGY_CLOSEST_INTENT',
-      name: rank1Name,
-      leastDeltaAlternative: leastDeltaCandidate ? {
-        ...leastDeltaCandidate,
-        strategyId: 'STRATEGY_LEAST_DELTA',
-        strategyIdentity: 'STRATEGY_LEAST_DELTA',
-        rank: '1L'
-      } : null,
-      score: parseFloat(Math.max(0.70, 1.0 - (fixes.length * 0.02)).toFixed(2)),
-      estimatedCostUsd: v1.totalCost,
-      budgetBreakdown: {
-        baseBomCost: baseCost,
-        fixCost: fixCost,
-        strategyAddonCost: 0,
-        totalBudgetUsd: v1.totalCost
-      },
-      workloadDnaMatch: dna.workloadDescription || 'Balanced Enterprise',
-      changesCount: fixes.length + v1.injectedFixes.length,
-      skuPartsList: v1.parts,
-      bomFingerprint: computeBomFingerprint(v1.parts),
-      physicalMathClean: v1.physicalMathClean,
-      isMathClean: v1.physicalMathClean,
-      aspectErrors: v1.aspectErrors || [],
-      injectedCascadingFixes: v1.injectedFixes,
-      supplyMetrics: v1SupplyMetrics,
-      fastShipAlternative: fastShipAlternative || null,
-      tradeoffMetrics: {
-        intentAlignment: fixes.length === 0 ? '100% (Direct Match)' : `${Math.max(85, 100 - fixes.length * 3)}% (${fixes.length} Fixes)`,
-        skuModifications: `${fixes.length + v1.injectedFixes.length} physical fixes injected`,
-        costDeltaUsd: `+$${fixCost.toLocaleString()} (Mandatory Buildability)`,
-        capacityExpansion: 'Optimal (Zero over/under-provisioning)',
-        fastShipAlternativeAvailable: Boolean(fastShipAlternative),
-        deliveryDaysSaved: fastShipAlternative?.deliveryDaysSaved || 0
-      },
-      ragSecondOpinion: getLiveRagGrounding(
-        'Intent Preserved',
-        fixes.map(f => f.sku).concat(['chassis', 'processor', 'memory']),
-        '✅ Local Rule Engine Validated: Direct translation of customer requirements with mandatory buildability fixes.'
-      ),
-      reasoning: rank1Reasoning,
-      decisionTrace: decisionLedger.getDecisions()
-    },
-    {
-      rank: 2,
-      strategyId: rank2LeastDelta ? 'STRATEGY_LEAST_DELTA' : 'STRATEGY_CTO_BASELINE',
-      strategyIdentity: rank2LeastDelta ? 'STRATEGY_LEAST_DELTA' : 'STRATEGY_CTO_BASELINE',
-      name: (options && options.prioritizeFastShipAsRank2 && fastShipAlternative) ? fastShipAlternative.name : rank2Name,
-      score: parseFloat(Math.max(0.65, 0.92 - (fixes.length * 0.02)).toFixed(2)),
-      estimatedCostUsd: (options && options.prioritizeFastShipAsRank2 && fastShipAlternative) ? fastShipAlternative.estimatedCostUsd : v2.totalCost,
-      budgetBreakdown: {
-        baseBomCost: baseCost,
-        fixCost: fixCost,
-        strategyAddonCost: (options && options.prioritizeFastShipAsRank2 && fastShipAlternative) ? Math.max(0, fastShipAlternative.estimatedCostUsd - baseCost) : rank2AddonCost,
-        totalBudgetUsd: (options && options.prioritizeFastShipAsRank2 && fastShipAlternative) ? fastShipAlternative.estimatedCostUsd : v2.totalCost
-      },
-      workloadDnaMatch: (options && options.prioritizeFastShipAsRank2 && fastShipAlternative)
-        ? 'Fast-Ship Delivery Optimized'
-        : (rank2LeastDelta
-          ? (rank2LeastDelta.strategyName === 'MODERNIZED_5TH_GEN_PLATFORM'
-              ? 'Modernized 5th Gen Platform (Emerald Rapids + DDR5-5600)'
-              : 'Least-Delta Optimization (Pruned Cascades)')
-          : 'Factory Standard (Cable Management Arm & Tool-less Rail Kits)'),
-      changesCount: (options && options.prioritizeFastShipAsRank2 && fastShipAlternative)
-        ? (fastShipAlternative.substitutedPacingItems?.length || 1)
-        : (rank2LeastDelta ? rank2LeastDelta.deltaMetrics.totalDeltaOperations : (fixes.length + (rank2Parts.length - rank1Parts.length) + v2.injectedFixes.length)),
-      skuPartsList: (options && options.prioritizeFastShipAsRank2 && fastShipAlternative) ? fastShipAlternative.skuPartsList : v2.parts,
-      bomFingerprint: computeBomFingerprint((options && options.prioritizeFastShipAsRank2 && fastShipAlternative) ? fastShipAlternative.skuPartsList : v2.parts),
-      physicalMathClean: (options && options.prioritizeFastShipAsRank2 && fastShipAlternative) ? fastShipAlternative.physicalMathClean : v2.physicalMathClean,
-      isMathClean: (options && options.prioritizeFastShipAsRank2 && fastShipAlternative) ? fastShipAlternative.physicalMathClean : v2.physicalMathClean,
-      aspectErrors: (options && options.prioritizeFastShipAsRank2 && fastShipAlternative) ? fastShipAlternative.aspectErrors : (v2.aspectErrors || []),
-      injectedCascadingFixes: (options && options.prioritizeFastShipAsRank2 && fastShipAlternative) ? fastShipAlternative.injectedCascadingFixes : v2.injectedFixes,
-      leastDeltaAnalysis: (options && options.prioritizeFastShipAsRank2 && fastShipAlternative) ? null : (rank2LeastDelta || null),
-      tradeoffMetrics: (options && options.prioritizeFastShipAsRank2 && fastShipAlternative)
-        ? fastShipAlternative.tradeoffMetrics
-        : {
-          intentAlignment: rank2IntentAlignment,
-          skuModifications: rank2LeastDelta ? rank2LeastDelta.deltaSummary : `${fixes.length} modifications`,
-          costDeltaUsd: `+$${rank2AddonCost.toLocaleString()}`,
-          capacityExpansion: rank2LeastDelta ? 'Cascade-Free Architecture' : 'Standard Factory Margins',
-          presalesPitch: rank2LeastDelta?.presalesValuePitch || 'Factory standard accessory kit inclusion'
-        },
-      ragSecondOpinion: (options && options.prioritizeFastShipAsRank2 && fastShipAlternative)
-        ? `✅ Fast-Ship Alternative: ${fastShipAlternative.reasoning}`
-        : getLiveRagGrounding(
-          rank2LeastDelta ? 'Least-Delta Alternative' : 'Standardized CTO Baseline',
-          (rank2LeastDelta?.cascadingSkusEliminated || []).concat(['cable', 'rail', 'chassis']),
-          rank2LeastDelta
-            ? `✅ Local Rule Engine Validated: ${rank2LeastDelta.presalesValuePitch}`
-            : `✅ Local Rule Engine Validated: CTO factory standardized baseline (${tierConfig.rank2?.[0]?.description || 'Factory Cable/Rail Kit'}) and routing verified.`
-        ),
-      reasoning: (options && options.prioritizeFastShipAsRank2 && fastShipAlternative) ? fastShipAlternative.reasoning : rank2Reasoning,
-      decisionTrace: decisionLedger.getDecisions()
-    },
-    {
-      rank: 3,
-      strategyId: 'STRATEGY_PERFORMANCE',
-      strategyIdentity: 'STRATEGY_PERFORMANCE',
-      name: rank3Name,
-      score: parseFloat(Math.max(0.60, 0.88 - (fixes.length * 0.02)).toFixed(2)),
-      estimatedCostUsd: v3.totalCost,
-      budgetBreakdown: {
-        baseBomCost: baseCost,
-        fixCost: fixCost,
-        strategyAddonCost: rank3AddonCost,
-        totalBudgetUsd: v3.totalCost
-      },
-      workloadDnaMatch: pcieStorageBranch ? 'High-IOPS (PCIe x16 Controller, 8GB Cache & Dual OCP Retained)' : `Optimized for ${dna.storageWorkload || 'Database'} Performance`,
-      changesCount: fixes.length + (pcieStorageBranch ? pcieStorageBranch.substitutions.length : rank3Addons.length) + v3.injectedFixes.length,
-      skuPartsList: v3.parts,
-      bomFingerprint: computeBomFingerprint(v3.parts),
-      physicalMathClean: v3.physicalMathClean,
-      isMathClean: v3.physicalMathClean,
-      aspectErrors: v3.aspectErrors || [],
-      injectedCascadingFixes: v3.injectedFixes,
-      cascadingImpact: rank3CascadingImpact,
-      tradeoffMetrics: {
-        intentAlignment: rank3IntentAlignment,
-        skuModifications: `${fixes.length + (pcieStorageBranch ? pcieStorageBranch.substitutions.length : rank3Addons.length) + v3.injectedFixes.length} modifications`,
-        costDeltaUsd: `+$${(fixCost + rank3AddonCost).toLocaleString()}`,
-        capacityExpansion: pcieStorageBranch ? '2x Write Cache (8GB) + OCP Retention' : 'High Drive Controller Throughput'
-      },
-      ragSecondOpinion: getLiveRagGrounding(
-        'High-IOPS Storage Performance',
-        (pcieStorageBranch ? ['MR416i-p', 'P10115-B21', 'P48832-B21'] : rank3Addons.map(a => a.sku)).concat(['battery', 'cache', 'storage']),
-        pcieStorageBranch ? '✅ Local Rule Engine Validated: PCIe standup controller (x16 bus, 8GB cache) frees OCP Slot 1 for customer OCP adapter.' : `✅ Local Rule Engine Validated: Write-back cache acceleration & ${dna.storageWorkload || 'high-throughput controller'} IOPS optimization verified.`
-      ),
-      reasoning: rank3Reasoning
-    },
-    {
-      rank: 4,
-      strategyId: 'STRATEGY_EXPANSION',
-      strategyIdentity: 'STRATEGY_EXPANSION',
-      name: rank4Name,
-      score: parseFloat(Math.max(0.55, 0.82 - (fixes.length * 0.02)).toFixed(2)),
-      estimatedCostUsd: v4.totalCost,
-      budgetBreakdown: {
-        baseBomCost: baseCost,
-        fixCost: fixCost,
-        strategyAddonCost: rank4AddonCost,
-        totalBudgetUsd: v4.totalCost
-      },
-      workloadDnaMatch: 'Max Headroom (Full PCIe Riser & High-Perf Thermal Expansion)',
-      changesCount: fixes.length + rank4Addons.length + v4.injectedFixes.length,
-      skuPartsList: v4.parts,
-      bomFingerprint: computeBomFingerprint(v4.parts),
-      physicalMathClean: v4.physicalMathClean,
-      isMathClean: v4.physicalMathClean,
-      aspectErrors: v4.aspectErrors || [],
-      injectedCascadingFixes: v4.injectedFixes,
-      tradeoffMetrics: {
-        intentAlignment: `${Math.max(70, 85 - fixes.length * 3)}% (Scalability Focused)`,
-        skuModifications: `${fixes.length + rank4Addons.length + v4.injectedFixes.length} modifications`,
-        costDeltaUsd: `+$${(fixCost + rank4AddonCost).toLocaleString()}`,
-        capacityExpansion: '100% Slot & Thermal Headroom'
-      },
-      ragSecondOpinion: getLiveRagGrounding(
-        'Future Scalability Expansion',
-        rank4Addons.map(a => a.sku).concat(['riser', 'fan', 'pcie']),
-        '✅ Local Rule Engine Validated: Secondary & tertiary riser lane allocation and cooling envelope verified.'
-      ),
-      reasoning: `Populates full secondary PCIe riser slots and high-performance fan kits to support future GPU accelerator and 2nd CPU socket expansions.`
-    },
-    {
-      rank: 5,
-      strategyId: 'STRATEGY_BUDGET',
-      strategyIdentity: 'STRATEGY_BUDGET',
-      isAlternativeAvailable: v5.isAlternativeAvailable,
-      name: v5.isAlternativeAvailable
-        ? 'Rank 5: Budget & CapEx Minimized Buildable Alternative'
-        : 'Rank 5: Baseline Preserved (No Further Safe CapEx Reductions Available)',
-      score: parseFloat(Math.max(0.50, 0.75 - (fixes.length * 0.02)).toFixed(2)),
-      estimatedCostUsd: v5.totalCost,
-      budgetBreakdown: {
-        baseBomCost: baseCost,
-        fixCost: fixCost,
-        strategyAddonCost: 0,
-        totalBudgetUsd: v5.totalCost
-      },
-      workloadDnaMatch: v5.isAlternativeAvailable
-        ? 'Budget Optimized (Certified Down-Tiering)'
-        : 'Strict Minimum CapEx (100% Buildable Baseline)',
-      changesCount: fixes.length + v5.injectedFixes.length,
-      skuPartsList: v5.parts,
-      bomFingerprint: computeBomFingerprint(v5.parts),
-      physicalMathClean: v5.physicalMathClean,
-      isMathClean: v5.physicalMathClean,
-      aspectErrors: v5.aspectErrors || [],
-      injectedCascadingFixes: v5.injectedFixes,
-      tradeoffMetrics: {
-        intentAlignment: v5.isAlternativeAvailable
-          ? `${Math.max(65, 80 - fixes.length * 3)}% (Budget Optimized)`
-          : `${Math.max(65, 80 - fixes.length * 3)}% (Minimal Baseline)`,
-        skuModifications: `${fixes.length + v5.injectedFixes.length} fixes & modifications`,
-        costDeltaUsd: v5.isAlternativeAvailable
-          ? `-$${v5.deltaUsd.toLocaleString()} (CapEx Down-Tiering)`
-          : '$0 (Baseline is already CapEx minimal)',
-        capacityExpansion: 'Baseline Only'
-      },
-      ragSecondOpinion: getLiveRagGrounding(
-        v5.isAlternativeAvailable ? 'Budget CapEx Down-Tiering' : 'Minimal CapEx Baseline',
-        ['minimal', 'baseline', 'chassis'],
-        v5.isAlternativeAvailable
-          ? `✅ Local Rule Engine Validated: Certified budget alternative down-tiering over-provisioned components (-$${v5.deltaUsd.toLocaleString()}).`
-          : `✅ Local Rule Engine Validated: 100% buildable certified baseline without unrequested add-ons (${v5.parts.length} essential parts).`
-      ),
-      reasoning: v5.isAlternativeAvailable
-        ? `Certified budget alternative down-tiering over-provisioned components to deliver lower CapEx while remaining 100% physically buildable.`
-        : `Strict baseline buildable tier eliminating all optional add-ons to minimize total CapEx expenditure while remaining 100% buildable. Rank 1 already represents the minimal certified spend; no further component down-tiering is safely applicable without violating physical constraints.`
-    }
+    _buildRank1Candidate({
+      rank1Name, rank1Reasoning, leastDeltaCandidate, fixes, v1, baseCost, fixCost, dna,
+      v1SupplyMetrics, fastShipAlternative, getLiveRagGrounding, decisionLedger
+    }),
+    _buildRank2Candidate({
+      options, fastShipAlternative, rank2LeastDelta, rank2Name, fixes, v2, baseCost, fixCost,
+      rank2AddonCost, rank2Parts, rank1Parts, rank2IntentAlignment, rank2Reasoning, tierConfig,
+      getLiveRagGrounding, decisionLedger
+    }),
+    _buildRank3Candidate({
+      rank3Name, rank3Reasoning, rank3AddonCost, rank3Addons, rank3IntentAlignment, rank3CascadingImpact,
+      pcieStorageBranch, dna, fixes, v3, baseCost, fixCost, getLiveRagGrounding
+    }),
+    _buildRank4Candidate({
+      rank4Name, rank4AddonCost, rank4Addons, fixes, v4, baseCost, fixCost, getLiveRagGrounding
+    }),
+    _buildRank5Candidate({
+      v5, fixes, baseCost, fixCost, getLiveRagGrounding
+    })
   ];
 
   const requestedSkuSet = scoreAndSortCandidates(rawCandidates, items, resolveSupply);

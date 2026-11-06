@@ -45,7 +45,7 @@ function isGlobalItem(it, multiplier = 1) {
   return false;
 }
 
-function normalizeConfiguration(items) {
+function _validateSingleConfigurationAnchors(items) {
   const anchors = items.filter(isCtoBaseChassis);
   const anchor = anchors[0];
   const multiplierValue = anchor?.configurationMultiplier ?? anchor?.quantity ?? 1;
@@ -59,42 +59,77 @@ function normalizeConfiguration(items) {
   }
   if (!Number.isInteger(multiplier) || multiplier < 1) throw ambiguity('Invalid configuration count.');
   const configurationId = anchor?.configurationId || [...owners][0] || 'configuration-1';
+  return { anchor, multiplier, configurationId };
+}
+
+function _normalizeGlobalConfigurationItem(it, raw, unitPriceUsd) {
+  const extendedPriceUsd = unitPriceUsd !== null ? raw * unitPriceUsd : null;
+  return {
+    ...it,
+    quantityScope: 'global',
+    quantityBasis: 'total',
+    configurationMultiplier: 1,
+    atomicQuantity: raw,
+    totalQuantity: raw,
+    isIntegerDivisor: true,
+    unitPriceUsd,
+    isConfirmedZeroPrice: it.isConfirmedZeroPrice || false,
+    extendedPriceUsd
+  };
+}
+
+function _normalizeLocalConfigurationItem(it, raw, unitPriceUsd, multiplier, configurationId) {
+  if (it.configurationId && it.configurationId !== configurationId) {
+    throw ambiguity(`Foreign owner for ${it.sku}.`);
+  }
+  const base = it.quantityBasis === 'base' ? raw : raw / multiplier;
+  if (!Number.isInteger(base) || base < 1) {
+    throw ambiguity(`${it.sku}: ${raw} cannot be assigned evenly to ${multiplier} configurations; mark global/spare or clarify ownership.`);
+  }
+  const extendedPriceUsd = unitPriceUsd !== null ? base * unitPriceUsd : null;
+  return {
+    ...it,
+    quantity: base,
+    atomicQuantity: base,
+    perNodeQuantity: base,
+    isIntegerDivisor: true,
+    quantityBasis: 'base',
+    quantityScope: 'configuration',
+    configurationId,
+    configurationMultiplier: multiplier,
+    totalQuantity: base * multiplier,
+    unitPriceUsd,
+    isConfirmedZeroPrice: it.isConfirmedZeroPrice || false,
+    extendedPriceUsd
+  };
+}
+
+function normalizeConfiguration(items) {
+  const { anchor, multiplier, configurationId } = _validateSingleConfigurationAnchors(items);
+
   const normalized = items.map(it => {
     const quantity = it.quantity ?? it.qty ?? 1;
     if (!validQuantity(quantity)) throw ambiguity(`Invalid quantity for ${it.sku}.`);
     const raw = Number(quantity);
     if (!Number.isInteger(raw) || raw < 1) throw ambiguity(`Invalid quantity for ${it.sku}.`);
+
     const rawUnitPrice = it.unitPriceUsd;
     const isPriced = typeof rawUnitPrice === 'number' && Number.isFinite(rawUnitPrice) && rawUnitPrice >= 0;
     const unitPriceUsd = isPriced ? rawUnitPrice : null;
-    const global = isGlobalItem(it, multiplier);
-    if (global) {
-      const extendedPriceUsd = unitPriceUsd !== null ? raw * unitPriceUsd : null;
-      return {
-        ...it,
-        quantityScope: 'global',
-        quantityBasis: 'total',
-        configurationMultiplier: 1,
-        atomicQuantity: raw,
-        totalQuantity: raw,
-        isIntegerDivisor: true,
-        unitPriceUsd,
-        isConfirmedZeroPrice: it.isConfirmedZeroPrice || false,
-        extendedPriceUsd
-      };
+
+    if (isGlobalItem(it, multiplier)) {
+      return _normalizeGlobalConfigurationItem(it, raw, unitPriceUsd);
     }
-    if (it.configurationId && it.configurationId !== configurationId) throw ambiguity(`Foreign owner for ${it.sku}.`);
-    const base = it.quantityBasis === 'base' ? raw : raw / multiplier;
-    if (!Number.isInteger(base) || base < 1) throw ambiguity(`${it.sku}: ${raw} cannot be assigned evenly to ${multiplier} configurations; mark global/spare or clarify ownership.`);
-    const extendedPriceUsd = unitPriceUsd !== null ? base * unitPriceUsd : null;
-    return { ...it, quantity: base, atomicQuantity: base, perNodeQuantity: base, isIntegerDivisor: true,
-      quantityBasis: 'base', quantityScope: 'configuration', configurationId,
-      configurationMultiplier: multiplier, totalQuantity: base * multiplier,
-      unitPriceUsd, isConfirmedZeroPrice: it.isConfirmedZeroPrice || false,
-      extendedPriceUsd };
+    return _normalizeLocalConfigurationItem(it, raw, unitPriceUsd, multiplier, configurationId);
   });
-  return { items: normalized, configurationId, multiplier, baseChassisQuantity: anchor ? 1 : null,
-    ownershipEvidence: anchor ? 'SINGLE_CTO_CONFIGURATION' : 'SINGLE_UNIT_INPUT' };
+
+  return {
+    items: normalized,
+    configurationId,
+    multiplier,
+    baseChassisQuantity: anchor ? 1 : null,
+    ownershipEvidence: anchor ? 'SINGLE_CTO_CONFIGURATION' : 'SINGLE_UNIT_INPUT'
+  };
 }
 
 function outputQuantities(item, multiplier = 1) {

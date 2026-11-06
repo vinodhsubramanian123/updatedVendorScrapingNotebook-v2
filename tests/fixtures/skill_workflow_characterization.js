@@ -23,14 +23,21 @@ function localFixture(root) {
   const catalogBytes = fs.readFileSync(path.join(root, relative)), catalog = JSON.parse(catalogBytes);
   const servicesRelative = relative.replace('_Catalog.json', '_Services.json');
   const serviceBytes = fs.readFileSync(path.join(root, servicesRelative)), services = JSON.parse(serviceBytes);
-  const deltaRelative = 'outputs/ProLiant/Gen12/DL380_Gen12/catalog_deltas.json';
-  const deltaBytes = fs.readFileSync(path.join(root, deltaRelative)), deltas = JSON.parse(deltaBytes);
+  const deltaRelative = fs.existsSync(path.join(root, 'outputs/history/master_knowledge_registry.json'))
+    ? 'outputs/history/master_knowledge_registry.json'
+    : (fs.existsSync(path.join(root, 'outputs/ProLiant/Gen12/DL380_Gen12/catalog_deltas.json'))
+      ? 'outputs/ProLiant/Gen12/DL380_Gen12/catalog_deltas.json'
+      : 'outputs/ProLiant/Gen12/DL380_Gen12/history/catalog_deltas.json');
+  const deltaBytes = fs.readFileSync(path.join(root, deltaRelative)), rawDeltas = JSON.parse(deltaBytes);
+  const deltas = Array.isArray(rawDeltas)
+    ? rawDeltas
+    : [...(rawDeltas.universalRules || []), ...(rawDeltas.familyGenRules || []), ...(rawDeltas.chassisSpecificRules || [])];
   const rows = [...catalog.entries, ...services.entries].flatMap(group => (group.skus || []).map(row => ({ ...row, parentCategory: group.parentCategory })));
   const selected = VALID_ROWS.map(([sku, quantity]) => {
     const row = rows.find(candidate => (candidate.sku || candidate['Product #']) === sku);
     if (!row || row.lifecycleStatus !== 'Active' || typeof row.Description !== 'string') throw new Error('CP0 fixture requires exact active catalog row: ' + sku);
     return { sku, quantity, description: row.Description, category: row.parentCategory,
-      prerequisiteRuleId: deltas.find(delta => delta.affectedSku === 'P73282-B21' && delta.requiredDependencySku === sku)?.deltaId || null,
+      prerequisiteRuleId: sku !== 'P73282-B21' ? (deltas.find(delta => delta.affectedSku === 'P73282-B21' && delta.requiredDependencySku === sku)?.deltaId || null) : null,
       visibilityState: row.visibilityState || 'CATALOG_VISIBLE', provenance: row.provenance || 'EXACT_ARCHIVED_CATALOG_ROW' };
   });
   const csv = 'Product #,Description,Qty\n' + selected.map(row => [row.sku, '"' + row.description.replaceAll('"','""') + '"', row.quantity].join(',')).join('\n') + '\n';

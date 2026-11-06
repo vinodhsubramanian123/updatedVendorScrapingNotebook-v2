@@ -15,8 +15,7 @@ function topologyRole(description = '') {
   return null;
 }
 
-function resolveSolutionTopology(items = [], chassisInfo = {}, catalogData = null) {
-  const map = require('../catalog/catalog_discovery').getChassisMap();
+function _resolveTopologyNodes(items, map) {
   const nodes = [];
   for (const item of items) {
     const sku = cleanBaseSKU(item.sku);
@@ -26,32 +25,73 @@ function resolveSolutionTopology(items = [], chassisInfo = {}, catalogData = nul
     const description = exact ? `${exact.model || ''} ${exact.productId || ''} ${exact.formFactor || ''}` : item.description || '';
     const pillar = exact ? require('../catalog/product_scope').inferPillar(exact.family, description) : null;
     const role = topologyRole(description) || ({ SERVER: 'server', STORAGE: 'storage', NETWORKING: 'networking', COMPOSITE: 'enclosure' }[pillar] || null);
-    if (role) nodes.push({ sku: item.sku, role, quantity: item.quantity, configurationId: item.configurationId || null,
-      parentId: item.parentId || item.subParentId || null, productId: exact?.productId || exact?.id || null });
+    if (role) {
+      nodes.push({
+        sku: item.sku,
+        role,
+        quantity: item.quantity,
+        configurationId: item.configurationId || null,
+        parentId: item.parentId || item.subParentId || null,
+        productId: exact?.productId || exact?.id || null
+      });
+    }
   }
-  const roles = [...new Set(nodes.map(node => node.role))];
-  const identityText = `${chassisInfo.model || ''} ${chassisInfo.id || ''} ${catalogData?.metadata?.chassis || ''}`;
+  return nodes;
+}
+
+function _resolveTopologyDomain(roles, nodes, chassisInfo, identityText) {
   const fallbackRole = topologyRole(identityText);
-  if (!roles.length && fallbackRole && !chassisInfo.unknown) roles.push(fallbackRole);
+  if (!roles.length && fallbackRole && !chassisInfo.unknown) {
+    roles.push(fallbackRole);
+  }
   const nonServerAppliances = nodes.filter(node => node.role !== 'server');
   const repeatedAppliances = nonServerAppliances.some(node => Number(node.quantity) > 1);
   const multipleNonServerAppliances = nonServerAppliances.length > 1;
-  const domain = roles.length > 1 || roles.includes('enclosure') || repeatedAppliances || multipleNonServerAppliances ? 'composite' : (roles[0] || (chassisInfo?.unknown ? 'server' : 'unknown'));
+  const isComposite = roles.length > 1 || roles.includes('enclosure') || repeatedAppliances || multipleNonServerAppliances;
+  return isComposite ? 'composite' : (roles[0] || (chassisInfo?.unknown ? 'server' : 'unknown'));
+}
+
+function _resolveCompositeRelationshipStatus(compositeChecks, relationshipChecks) {
+  if (!compositeChecks.length) {
+    return relationshipChecks.length ? 'NOT_EVALUATED' : 'NOT_APPLICABLE';
+  }
+  if (compositeChecks.every(c => ['PASS', 'NOT_APPLICABLE'].includes(c.status))) {
+    return 'EVALUATED_PASS';
+  }
+  if (compositeChecks.some(c => c.status === 'FAIL')) {
+    return 'EVALUATED_FAIL';
+  }
+  return 'EVALUATED_PARTIAL';
+}
+
+function resolveSolutionTopology(items = [], chassisInfo = {}, catalogData = null) {
+  const map = require('../catalog/catalog_discovery').getChassisMap();
+  const nodes = _resolveTopologyNodes(items, map);
+  const roles = [...new Set(nodes.map(node => node.role))];
+  const identityText = `${chassisInfo.model || ''} ${chassisInfo.id || ''} ${catalogData?.metadata?.chassis || ''}`;
+  const domain = _resolveTopologyDomain(roles, nodes, chassisInfo, identityText);
+
   const synergy = /synergy|\bSY(?:480|100Gb)/i.test(identityText) || items.some(item => /synergy/i.test(item.description || ''));
-  const relationshipChecks = domain === 'composite' || synergy
-    ? ['OWNERSHIP_AND_CONTAINMENT', 'ENCLOSURE_BAY_COMPATIBILITY', 'ADAPTER_TO_FABRIC_MAPPING', 'ENDPOINT_PROTOCOL_SPEED_OPTICS', 'SHARED_POWER_COOLING', 'PER_ICON_SUPPORT'] : [];
-  const compositeChecks = (domain === 'composite' || synergy)
+  const isCompositeSolution = domain === 'composite' || synergy;
+  const relationshipChecks = isCompositeSolution
+    ? ['OWNERSHIP_AND_CONTAINMENT', 'ENCLOSURE_BAY_COMPATIBILITY', 'ADAPTER_TO_FABRIC_MAPPING', 'ENDPOINT_PROTOCOL_SPEED_OPTICS', 'SHARED_POWER_COOLING', 'PER_ICON_SUPPORT']
+    : [];
+  const compositeChecks = isCompositeSolution
     ? evaluateCompositeRelationships(items, { domain, roles, nodes }, chassisInfo, catalogData)
     : [];
-  const compositeRelationshipStatus = compositeChecks.length
-    ? (compositeChecks.every(c => ['PASS', 'NOT_APPLICABLE'].includes(c.status)) ? 'EVALUATED_PASS'
-      : compositeChecks.some(c => c.status === 'FAIL') ? 'EVALUATED_FAIL'
-      : 'EVALUATED_PARTIAL')
-    : (relationshipChecks.length ? 'NOT_EVALUATED' : 'NOT_APPLICABLE');
-  return { domain, roles, nodes, relationshipChecks, compositeChecks, classificationBasis: 'BASE_PRODUCT_ROLE',
+  const compositeRelationshipStatus = _resolveCompositeRelationshipStatus(compositeChecks, relationshipChecks);
+
+  return {
+    domain,
+    roles,
+    nodes,
+    relationshipChecks,
+    compositeChecks,
+    classificationBasis: 'BASE_PRODUCT_ROLE',
     scope: domain === 'composite' ? 'MULTI_COMPONENT_SOLUTION' : 'SINGLE_PRODUCT',
     requiresScopedCatalogs: domain === 'composite',
-    relationshipStatus: compositeRelationshipStatus };
+    relationshipStatus: compositeRelationshipStatus
+  };
 }
 
 const DOMAIN_CHECKS = {
@@ -82,115 +122,92 @@ function evaluateUnprofiledTopology(items, topology, chassisInfo) {
       conflicts: [], resolvedFixes: [], unresolvedConflicts: [{ type: 'VALIDATION_PROFILE_REQUIRED', message: warning }], rankedSolutions: [] } };
 }
 
-/**
- * Evaluate composite solution cross-component relationships:
- * 1. ENCLOSURE_BAY_COMPATIBILITY
- * 2. ADAPTER_TO_FABRIC_MAPPING
- * 3. SHARED_POWER_COOLING
- */
-function evaluateCompositeRelationships(items = [], topology = {}, chassisInfo = {}, catalogData = null) {
-  const checks = [];
-
-  // Check A: ENCLOSURE_BAY_COMPATIBILITY
-  const serverItems = items.filter(i => {
-    const role = topologyRole(i.description || '');
-    return role === 'server';
-  });
+function _checkEnclosureBayCompatibility(items, topology, chassisInfo, catalogData) {
+  const serverItems = items.filter(i => topologyRole(i.description || '') === 'server');
   const bladeCount = serverItems.reduce((sum, i) => sum + (Number(i.quantity) || 1), 0);
-  const maxBays = catalogData?.metadata?.maxBays || chassisInfo?.maxBays || 12; // Synergy 12000 frame default is 12 half-height / 6 full-height bays
+  const maxBays = catalogData?.metadata?.maxBays || chassisInfo?.maxBays || 12;
 
   if (bladeCount > 0) {
     if (bladeCount <= maxBays) {
-      checks.push({
+      return {
         id: 'ENCLOSURE_BAY_COMPATIBILITY',
         name: 'Enclosure Bay Compatibility',
         status: 'PASS',
         detail: `Blade count (${bladeCount}) is within frame bay capacity (${maxBays} bays).`
-      });
-    } else {
-      checks.push({
-        id: 'ENCLOSURE_BAY_COMPATIBILITY',
-        name: 'Enclosure Bay Compatibility',
-        status: 'FAIL',
-        detail: `Blade count (${bladeCount}) exceeds maximum frame bay capacity (${maxBays} bays). Additional enclosure required.`
-      });
+      };
     }
-  } else if (topology.roles?.includes('enclosure')) {
-    checks.push({
+    return {
+      id: 'ENCLOSURE_BAY_COMPATIBILITY',
+      name: 'Enclosure Bay Compatibility',
+      status: 'FAIL',
+      detail: `Blade count (${bladeCount}) exceeds maximum frame bay capacity (${maxBays} bays). Additional enclosure required.`
+    };
+  }
+  if (topology.roles?.includes('enclosure')) {
+    return {
       id: 'ENCLOSURE_BAY_COMPATIBILITY',
       name: 'Enclosure Bay Compatibility',
       status: 'EVIDENCE_REQUIRED',
       detail: 'Enclosure frame detected but no compute blades found in BOM.'
-    });
-  } else {
-    checks.push({
-      id: 'ENCLOSURE_BAY_COMPATIBILITY',
-      name: 'Enclosure Bay Compatibility',
-      status: 'NOT_APPLICABLE',
-      detail: 'No composable enclosure or blade containment requirement.'
-    });
+    };
   }
+  return {
+    id: 'ENCLOSURE_BAY_COMPATIBILITY',
+    name: 'Enclosure Bay Compatibility',
+    status: 'NOT_APPLICABLE',
+    detail: 'No composable enclosure or blade containment requirement.'
+  };
+}
 
-  // Check B: ADAPTER_TO_FABRIC_MAPPING
-  const networkingItems = items.filter(i => {
-    const role = topologyRole(i.description || '');
-    return role === 'networking';
+function _extractLinkSpeeds(items, regex) {
+  const speeds = new Set();
+  items.forEach(i => {
+    const text = (i.description || '').toLowerCase();
+    if (regex && !regex.test(text)) return;
+    const match = text.match(/\b(100|50|25|10)\s*gb\b/i);
+    if (match) speeds.add(match[1]);
   });
+  return speeds;
+}
 
-  if (networkingItems.length > 0 && serverItems.length > 0) {
-    // Extract link speeds from networking items
-    const netSpeeds = new Set();
-    networkingItems.forEach(i => {
-      const text = (i.description || '').toLowerCase();
-      const match = text.match(/\b(100|50|25|10)\s*gb\b/i);
-      if (match) netSpeeds.add(match[1]);
-    });
-
-    // Extract adapter speeds from server items
-    const adapterSpeeds = new Set();
-    items.forEach(i => {
-      const text = (i.description || '').toLowerCase();
-      if (/adapter|mezzanine|ocp/i.test(text)) {
-        const match = text.match(/\b(100|50|25|10)\s*gb\b/i);
-        if (match) adapterSpeeds.add(match[1]);
-      }
-    });
-
-    if (netSpeeds.size > 0 && adapterSpeeds.size > 0) {
-      const common = [...netSpeeds].filter(s => adapterSpeeds.has(s));
-      if (common.length > 0) {
-        checks.push({
-          id: 'ADAPTER_TO_FABRIC_MAPPING',
-          name: 'Adapter To Fabric Mapping',
-          status: 'PASS',
-          detail: `Mezzanine/adapter link speed (${[...adapterSpeeds].join('/')}Gb) matches fabric interconnect speed (${[...netSpeeds].join('/')}Gb).`
-        });
-      } else {
-        checks.push({
-          id: 'ADAPTER_TO_FABRIC_MAPPING',
-          name: 'Adapter To Fabric Mapping',
-          status: 'FAIL',
-          detail: `Speed mismatch between mezzanine adapter (${[...adapterSpeeds].join('/')}Gb) and fabric interconnect module (${[...netSpeeds].join('/')}Gb).`
-        });
-      }
-    } else {
-      checks.push({
-        id: 'ADAPTER_TO_FABRIC_MAPPING',
-        name: 'Adapter To Fabric Mapping',
-        status: 'EVIDENCE_REQUIRED',
-        detail: 'Networking and compute nodes present but adapter or fabric link speeds cannot be verified from description.'
-      });
-    }
-  } else {
-    checks.push({
+function _checkAdapterToFabricMapping(items, serverItems, networkingItems) {
+  if (!networkingItems.length || !serverItems.length) {
+    return {
       id: 'ADAPTER_TO_FABRIC_MAPPING',
       name: 'Adapter To Fabric Mapping',
       status: 'NOT_APPLICABLE',
       detail: 'Solution does not contain concurrent compute and fabric interconnect modules.'
-    });
+    };
   }
+  const netSpeeds = _extractLinkSpeeds(networkingItems, null);
+  const adapterSpeeds = _extractLinkSpeeds(items, /adapter|mezzanine|ocp/i);
 
-  // Check C: SHARED_POWER_COOLING
+  if (!netSpeeds.size || !adapterSpeeds.size) {
+    return {
+      id: 'ADAPTER_TO_FABRIC_MAPPING',
+      name: 'Adapter To Fabric Mapping',
+      status: 'EVIDENCE_REQUIRED',
+      detail: 'Networking and compute nodes present but adapter or fabric link speeds cannot be verified from description.'
+    };
+  }
+  const common = [...netSpeeds].filter(s => adapterSpeeds.has(s));
+  if (common.length > 0) {
+    return {
+      id: 'ADAPTER_TO_FABRIC_MAPPING',
+      name: 'Adapter To Fabric Mapping',
+      status: 'PASS',
+      detail: `Mezzanine/adapter link speed (${[...adapterSpeeds].join('/')}Gb) matches fabric interconnect speed (${[...netSpeeds].join('/')}Gb).`
+    };
+  }
+  return {
+    id: 'ADAPTER_TO_FABRIC_MAPPING',
+    name: 'Adapter To Fabric Mapping',
+    status: 'FAIL',
+    detail: `Speed mismatch between mezzanine adapter (${[...adapterSpeeds].join('/')}Gb) and fabric interconnect module (${[...netSpeeds].join('/')}Gb).`
+  };
+}
+
+function _calculateComputeTdp(items) {
   let totalTdp = 0;
   let tdpCount = 0;
   items.forEach(i => {
@@ -205,34 +222,52 @@ function evaluateCompositeRelationships(items = [], topology = {}, chassisInfo =
       }
     }
   });
+  return { totalTdp, tdpCount };
+}
 
-  const maxPowerWatts = chassisInfo?.maxPowerWatts || 2650; // Conservative frame budget default
-  if (tdpCount > 0) {
-    if (totalTdp <= maxPowerWatts) {
-      checks.push({
-        id: 'SHARED_POWER_COOLING',
-        name: 'Shared Power Cooling',
-        status: 'PASS',
-        detail: `Total compute TDP (${totalTdp}W across ${tdpCount} CPUs) is within chassis power/thermal envelope (${maxPowerWatts}W).`
-      });
-    } else {
-      checks.push({
-        id: 'SHARED_POWER_COOLING',
-        name: 'Shared Power Cooling',
-        status: 'FAIL',
-        detail: `Total compute TDP (${totalTdp}W) exceeds enclosure power budget (${maxPowerWatts}W). Additional power supply kits required.`
-      });
-    }
-  } else {
-    checks.push({
+function _checkSharedPowerCooling(items, chassisInfo) {
+  const { totalTdp, tdpCount } = _calculateComputeTdp(items);
+  const maxPowerWatts = chassisInfo?.maxPowerWatts || 2650;
+
+  if (tdpCount === 0) {
+    return {
       id: 'SHARED_POWER_COOLING',
       name: 'Shared Power Cooling',
       status: 'EVIDENCE_REQUIRED',
       detail: 'CPU TDP specifications not explicitly stated in BOQ descriptions.'
-    });
+    };
   }
+  if (totalTdp <= maxPowerWatts) {
+    return {
+      id: 'SHARED_POWER_COOLING',
+      name: 'Shared Power Cooling',
+      status: 'PASS',
+      detail: `Total compute TDP (${totalTdp}W across ${tdpCount} CPUs) is within chassis power/thermal envelope (${maxPowerWatts}W).`
+    };
+  }
+  return {
+    id: 'SHARED_POWER_COOLING',
+    name: 'Shared Power Cooling',
+    status: 'FAIL',
+    detail: `Total compute TDP (${totalTdp}W) exceeds enclosure power budget (${maxPowerWatts}W). Additional power supply kits required.`
+  };
+}
 
-  return checks;
+/**
+ * Evaluate composite solution cross-component relationships:
+ * 1. ENCLOSURE_BAY_COMPATIBILITY
+ * 2. ADAPTER_TO_FABRIC_MAPPING
+ * 3. SHARED_POWER_COOLING
+ */
+function evaluateCompositeRelationships(items = [], topology = {}, chassisInfo = {}, catalogData = null) {
+  const serverItems = items.filter(i => topologyRole(i.description || '') === 'server');
+  const networkingItems = items.filter(i => topologyRole(i.description || '') === 'networking');
+
+  return [
+    _checkEnclosureBayCompatibility(items, topology, chassisInfo, catalogData),
+    _checkAdapterToFabricMapping(items, serverItems, networkingItems),
+    _checkSharedPowerCooling(items, chassisInfo)
+  ];
 }
 
 module.exports = { topologyRole, resolveSolutionTopology, evaluateUnprofiledTopology, evaluateCompositeRelationships };

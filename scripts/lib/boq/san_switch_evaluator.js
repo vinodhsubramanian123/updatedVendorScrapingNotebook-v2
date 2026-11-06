@@ -23,6 +23,90 @@ function selectedServiceEvidence(targetDir, baseSku) {
   return { selected, normalize };
 }
 
+function _buildSanAspectChecks(bundle, errors, unknownSkus) {
+  const aspectChecks = [
+    { id: 'SAN_LICENSED_PORTS', legacyId: 1, name: 'SAN Licensed Port Capacity', status: !bundle ? 'UNVERIFIED' : errors.length ? 'FAIL' : 'PASS', detail: bundle ? `${bundle.activePorts} licensed ports / ${bundle.physicalPorts} physical ports.` : 'No verified composition rule.' },
+    { id: 'BUNDLED_OPTICS_BILLING', legacyId: 2, name: 'Bundled Optics Billing', status: !bundle ? 'UNVERIFIED' : bundle.excessOptics ? 'WARN' : 'PASS', detail: bundle ? `${bundle.bundledOptics} included optics + ${bundle.separatelyOrderedOptics} separately ordered optics; ${bundle.excessOptics} beyond switch port demand. Spares and remote endpoints require separate allocation.` : 'No verified bundle evidence.' },
+    { id: 'CATALOG_SERVICE_COVERAGE', legacyId: 3, name: 'Catalog and Service Coverage', status: unknownSkus.length ? 'UNVERIFIED' : 'PASS', detail: unknownSkus.length ? unknownSkus.join(', ') : 'Hardware in scoped catalog; service parent/suffix associations observed in selected OCA BOM. Exact proposed service acceptance remains pending.' },
+    { id: 'SERVER_RULES_NOT_APPLICABLE', legacyId: 4, name: 'Server Component Rules', status: 'NOT_APPLICABLE', detail: 'Fixed SAN switch: no server CPU, DIMM, diskless kit, PCIe riser or redundant server PSU additions.' }
+  ];
+
+  if (bundle) {
+    aspectChecks[0].formula = 'activePorts <= physicalPorts';
+    aspectChecks[0].operands = { activePorts: bundle.activePorts, physicalPorts: bundle.physicalPorts };
+    aspectChecks[1].formula = 'max(0, bundledOptics + separatelyOrderedOptics - min(activePorts, physicalPorts)) = excessOptics';
+    aspectChecks[1].operands = { bundledOptics: bundle.bundledOptics, separatelyOrderedOptics: bundle.separatelyOrderedOptics, activePorts: bundle.activePorts, physicalPorts: bundle.physicalPorts, excessOptics: bundle.excessOptics };
+  }
+
+  return aspectChecks;
+}
+
+function _resolveExcludedOptics(bundles) {
+  const excluded = new Set();
+  for (const b of bundles) {
+    if (b.bundledOptics >= b.activePorts && b.activePorts <= b.physicalPorts) {
+      for (const item of b.standalone) {
+        if (item.switchPortAllocation && !item.spare && !item.remote) {
+          excluded.add(item.sku);
+        }
+      }
+    }
+  }
+  return excluded;
+}
+
+function _buildSanParts(retained, index, receipt, portalAccepted) {
+  return retained.map(item => {
+    const record = index.get(cleanBaseSKU(item.sku));
+    const acceptedRow = portalAccepted ? receipt.rows.find(row => row.sku === normalizeSku(item.sku)) : null;
+    const price = acceptedRow ? acceptedRow.unitPriceUsd : Number(record?.listPrice || record?.['Unit Price (USD)']);
+    const resolved = Number.isFinite(price) && (price > 0 || Boolean(acceptedRow));
+    return {
+      ...item,
+      inputUnitPriceUsd: item.inputUnitPriceUsd ?? item.unitPriceUsd ?? null,
+      unitPriceUsd: resolved ? price : null,
+      extendedPriceUsd: resolved ? price * item.quantity : null,
+      isConfirmedZeroPrice: Boolean(acceptedRow) && price === 0,
+      portalStatus: portalAccepted ? 'CLIC_ACCEPTED_EXACT_MANIFEST' : 'PORTAL VALIDATION PENDING',
+      priceStatus: resolved ? 'OCA_CAPTURED' : 'UNRESOLVED',
+      priceSource: acceptedRow ? `Live OCA BOM ${receipt.capturedAt}` : resolved ? 'Scoped OCA catalog' : 'OCA price unavailable or zero; not assumed free'
+    };
+  });
+}
+
+function _buildSanCandidate(params) {
+  const { productId, chassisInfo, bundle, options, parts, excluded, portalAccepted, receipt, errors } = params;
+  const unresolved = parts.filter(item => item.priceStatus === 'UNRESOLVED').map(item => item.sku);
+  const subtotal = parts.reduce((sum, item) => sum + (item.extendedPriceUsd || 0), 0);
+  return {
+    chassis: productId,
+    baseSku: chassisInfo.baseSku || bundle?.baseSku,
+    configurationName: options.configurationName,
+    selectors: options.selectors,
+    rank: 1,
+    name: 'SAN bundle reconciliation',
+    tierTitle: 'SAN bundle reconciliation',
+    skuPartsList: parts,
+    estimatedCostUsd: unresolved.length ? null : subtotal,
+    pricingComplete: unresolved.length === 0,
+    unresolvedPriceSkus: unresolved,
+    priceUnavailableSkus: unresolved,
+    knownPriceSubtotalUsd: subtotal,
+    changesCount: excluded.size,
+    removedSkus: [...excluded],
+    physicalMathClean: Boolean(bundle) && errors.length === 0,
+    isMathClean: Boolean(bundle) && errors.length === 0,
+    reasoning: excluded.size ? 'Remove standalone optics only where allocated to ports already supplied by base/upgrade bundles. Retain documented spares and remote-endpoint optics. Preserve the requested 24-port expansion.' : 'Preserve requested switch topology; no server-style upgrades apply.',
+    advisoryStatus: portalAccepted ? 'CLIC_ACCEPTED' : 'PORTAL_VALIDATION_PENDING',
+    portalValidationStatus: portalAccepted ? 'CLIC_ACCEPTED' : 'PENDING',
+    portalReceipt: portalAccepted ? receipt : null,
+    budgetBreakdown: { totalBudgetUsd: unresolved.length ? null : subtotal, unresolvedPriceSkus: unresolved },
+    aspectErrors: errors,
+    injectedCascadingFixes: [],
+    score: 0.74
+  };
+}
+
 /** Fixed SAN appliances do not have customer-populated server CPU, DIMM,
  * drive-cage or PCIe dependencies. Preserve missing evidence as unresolved. */
 function evaluateSanSwitch(items, catalogData, targetDir, chassisInfo, rules, options = {}) {
@@ -33,80 +117,63 @@ function evaluateSanSwitch(items, catalogData, targetDir, chassisInfo, rules, op
   const warnings = bundles.flatMap(bundle => bundle.warnings);
   if (!bundles.length) warnings.push('SAN composition evidence is unavailable; port and bundle checks remain unverified.');
   for (const bundle of bundles) {
-    if (bundle.activePorts > bundle.physicalPorts) errors.push(`Licensed ports ${bundle.activePorts} exceed physical capacity ${bundle.physicalPorts}.`);
+    if (bundle.activePorts > bundle.physicalPorts) {
+      errors.push(`Licensed ports ${bundle.activePorts} exceed physical capacity ${bundle.physicalPorts}.`);
+    }
   }
+
   const index = new Map((catalogData?.entries || []).flatMap(entry => (entry.skus || []).map(sku => [cleanBaseSKU(sku.sku || sku['Product #']), sku])));
   const services = selectedServiceEvidence(targetDir, chassisInfo.baseSku || bundles[0]?.baseSku);
   const unknownSkus = items.filter(item => !index.has(cleanBaseSKU(item.sku)) && !services.selected.has(services.normalize(item.sku)) && !receipt?.rows.some(row => row.sku === normalizeSku(item.sku))).map(item => item.sku);
-  if (unknownSkus.length) warnings.push(`Exact catalog/service qualification remains pending for: ${unknownSkus.join(', ')}. Service base codes and product-specific suffixes must remain linked.`);
+  if (unknownSkus.length) {
+    warnings.push(`Exact catalog/service qualification remains pending for: ${unknownSkus.join(', ')}. Service base codes and product-specific suffixes must remain linked.`);
+  }
+
   const bundle = bundles[0];
-  const aspectChecks = [
-    { id: 'SAN_LICENSED_PORTS', legacyId: 1, name: 'SAN Licensed Port Capacity', status: !bundle ? 'UNVERIFIED' : errors.length ? 'FAIL' : 'PASS', detail: bundle ? `${bundle.activePorts} licensed ports / ${bundle.physicalPorts} physical ports.` : 'No verified composition rule.' },
-    { id: 'BUNDLED_OPTICS_BILLING', legacyId: 2, name: 'Bundled Optics Billing', status: !bundle ? 'UNVERIFIED' : bundle.excessOptics ? 'WARN' : 'PASS', detail: bundle ? `${bundle.bundledOptics} included optics + ${bundle.separatelyOrderedOptics} separately ordered optics; ${bundle.excessOptics} beyond switch port demand. Spares and remote endpoints require separate allocation.` : 'No verified bundle evidence.' },
-    { id: 'CATALOG_SERVICE_COVERAGE', legacyId: 3, name: 'Catalog and Service Coverage', status: unknownSkus.length ? 'UNVERIFIED' : 'PASS', detail: unknownSkus.length ? unknownSkus.join(', ') : 'Hardware in scoped catalog; service parent/suffix associations observed in selected OCA BOM. Exact proposed service acceptance remains pending.' },
-    { id: 'SERVER_RULES_NOT_APPLICABLE', legacyId: 4, name: 'Server Component Rules', status: 'NOT_APPLICABLE', detail: 'Fixed SAN switch: no server CPU, DIMM, diskless kit, PCIe riser or redundant server PSU additions.' }
-  ];
-  const excluded = new Set();
-  if (bundle) {
-    aspectChecks[0].formula = 'activePorts <= physicalPorts';
-    aspectChecks[0].operands = { activePorts: bundle.activePorts, physicalPorts: bundle.physicalPorts };
-    aspectChecks[1].formula = 'max(0, bundledOptics + separatelyOrderedOptics - min(activePorts, physicalPorts)) = excessOptics';
-    aspectChecks[1].operands = { bundledOptics: bundle.bundledOptics, separatelyOrderedOptics: bundle.separatelyOrderedOptics, activePorts: bundle.activePorts, physicalPorts: bundle.physicalPorts, excessOptics: bundle.excessOptics };
-  }
-  for (const b of bundles) {
-    if (b.bundledOptics >= b.activePorts && b.activePorts <= b.physicalPorts) {
-      for (const item of b.standalone) if (item.switchPortAllocation && !item.spare && !item.remote) excluded.add(item.sku);
-    }
-  }
+  const aspectChecks = _buildSanAspectChecks(bundle, errors, unknownSkus);
+  const excluded = _resolveExcludedOptics(bundles);
   const retained = items.filter(item => !excluded.has(cleanBaseSKU(item.sku)));
+
   const portalAccepted = receiptMatches(receipt, retained, {
     chassisKey: productId,
     baseSku: chassisInfo.baseSku || bundle?.baseSku,
     configurationName: options.configurationName,
     selectors: options.selectors
   });
-  if (portalAccepted) aspectChecks[2].detail = 'Scoped hardware and product-qualified services verified; corrected candidate matches the complete live CLIC receipt.';
-  const parts = retained.map(item => {
-    const record = index.get(cleanBaseSKU(item.sku));
-    const acceptedRow = portalAccepted ? receipt.rows.find(row => row.sku === normalizeSku(item.sku)) : null;
-    const price = acceptedRow ? acceptedRow.unitPriceUsd : Number(record?.listPrice || record?.['Unit Price (USD)']);
-    const resolved = Number.isFinite(price) && (price > 0 || Boolean(acceptedRow));
-    return { ...item, inputUnitPriceUsd: item.inputUnitPriceUsd ?? item.unitPriceUsd ?? null,
-      unitPriceUsd: resolved ? price : null, extendedPriceUsd: resolved ? price * item.quantity : null,
-      isConfirmedZeroPrice: Boolean(acceptedRow) && price === 0,
-      portalStatus: portalAccepted ? 'CLIC_ACCEPTED_EXACT_MANIFEST' : 'PORTAL VALIDATION PENDING',
-      priceStatus: resolved ? 'OCA_CAPTURED' : 'UNRESOLVED', priceSource: acceptedRow ? `Live OCA BOM ${receipt.capturedAt}` : resolved ? 'Scoped OCA catalog' : 'OCA price unavailable or zero; not assumed free' };
-  });
-  const unresolved = parts.filter(item => item.priceStatus === 'UNRESOLVED').map(item => item.sku);
-  const subtotal = parts.reduce((sum, item) => sum + (item.extendedPriceUsd || 0), 0);
-  const candidate = {
-    chassis: productId, baseSku: chassisInfo.baseSku || bundle?.baseSku,
-    configurationName: options.configurationName, selectors: options.selectors,
-    rank: 1, name: 'SAN bundle reconciliation', tierTitle: 'SAN bundle reconciliation',
-    skuPartsList: parts, estimatedCostUsd: unresolved.length ? null : subtotal,
-    pricingComplete: unresolved.length === 0, unresolvedPriceSkus: unresolved,
-    priceUnavailableSkus: unresolved,
-    knownPriceSubtotalUsd: subtotal, changesCount: excluded.size,
-    removedSkus: [...excluded], physicalMathClean: Boolean(bundle) && errors.length === 0,
-    isMathClean: Boolean(bundle) && errors.length === 0,
-    reasoning: excluded.size ? 'Remove standalone optics only where allocated to ports already supplied by base/upgrade bundles. Retain documented spares and remote-endpoint optics. Preserve the requested 24-port expansion.' : 'Preserve requested switch topology; no server-style upgrades apply.',
-    advisoryStatus: portalAccepted ? 'CLIC_ACCEPTED' : 'PORTAL_VALIDATION_PENDING', portalValidationStatus: portalAccepted ? 'CLIC_ACCEPTED' : 'PENDING',
-    portalReceipt: portalAccepted ? receipt : null,
-    budgetBreakdown: { totalBudgetUsd: unresolved.length ? null : subtotal, unresolvedPriceSkus: unresolved },
-    aspectErrors: errors, injectedCascadingFixes: [], score: 0.74
-  };
+  if (portalAccepted) {
+    aspectChecks[2].detail = 'Scoped hardware and product-qualified services verified; corrected candidate matches the complete live CLIC receipt.';
+  }
+
+  const parts = _buildSanParts(retained, index, receipt, portalAccepted);
+  const candidate = _buildSanCandidate({ productId, chassisInfo, bundle, options, parts, excluded, portalAccepted, receipt, errors });
+
   return {
     items,
     supportPolicy: require('./support_policy').resolveSupportPolicy(items),
-    productType: 'SAN', isMathClean: Boolean(bundle) && errors.length === 0,
+    productType: 'SAN',
+    isMathClean: Boolean(bundle) && errors.length === 0,
     portalValidationStatus: portalAccepted ? 'CORRECTED_CANDIDATE_CLIC_ACCEPTED' : 'PENDING',
-    isGraphClean: portalAccepted, criticalViolationsCount: errors.length, errors, warnings,
-    missingDependencies: [], mathDeductions: [], aspectChecks, bundleComposition: bundles,
+    isGraphClean: portalAccepted,
+    criticalViolationsCount: errors.length,
+    errors,
+    warnings,
+    missingDependencies: [],
+    mathDeductions: [],
+    aspectChecks,
+    bundleComposition: bundles,
     evalSummary: { bundleComposition: bundles, errors, warnings, missingDependencies: [], aspectChecks },
     confidence: { score: 0.74, isHitlTriggered: !portalAccepted, confidenceReasons: [...errors, ...warnings, portalAccepted ? 'Exact corrected manifest accepted by captured live CLIC; model confidence is not a certification score.' : 'Live vendor acceptance and complete pricing remain pending.'] },
-    conflictGraph: { chassisInfo, rulesSource: 'VERIFIED_PRODUCT_COMPOSITION', isFallbackSource: false,
-      totalRulesEvaluated: bundles.length, isWholeSolutionValid: portalAccepted && !errors.length, conflicts: [],
-      resolvedFixes: [], unresolvedConflicts: [], rankedSolutions: options.skipSynthesis ? [] : [candidate] }
+    conflictGraph: {
+      chassisInfo,
+      rulesSource: 'VERIFIED_PRODUCT_COMPOSITION',
+      isFallbackSource: false,
+      totalRulesEvaluated: bundles.length,
+      isWholeSolutionValid: portalAccepted && !errors.length,
+      conflicts: [],
+      resolvedFixes: [],
+      unresolvedConflicts: [],
+      rankedSolutions: options.skipSynthesis ? [] : [candidate]
+    }
   };
 }
 

@@ -2,8 +2,8 @@
 
 **Document Classification:** Canonical Ground-Truth Architecture & Validation Charter<br>
 **Maintained By:** HPE ProLiant AI Studio Autonomous Knowledge Engine (Antigravity AI)<br>
-**Last Synchronized:** 2026-11-02T15:23:12.048Z<br>
-**Total Deduplicated Learned Rules:** 139<br>
+**Last Synchronized:** 2026-11-06T14:07:38.948Z<br>
+**Total Deduplicated Learned Rules:** 142<br>
 **Universal Invariant Compliance:** INV-1 through INV-38 Certified<br>
 **Google Drive Destination:** `shared_folder_id: 1YR0lBh-gg00amKHRxuOqp5Aea3iL5O7-`
 
@@ -160,7 +160,7 @@ The Catalog Vendor Solution provides modular, AI-assisted catalog ingestion, nor
 
 ## 5. Deduplicated Learned Rule Ledger & Verification Provenance
 
-Total verified rules indexed in this build: **139**.
+Total verified rules indexed in this build: **142**.
 
 | Scope | Target Chassis | Category | Affected SKU | Dependency SKU | Rule Summary / Validation Directive | Verifications |
 | :--- | :--- | :--- | :--- | :--- | :--- | :---: |
@@ -202,10 +202,10 @@ Total verified rules indexed in this build: **139**.
 | 📦 CHASSIS | `DL145_Gen11` | `DRIVE_CAGE_FORMAT` | `P71985-B21` | `P77271-B21` | DL145 Gen11 uses EDSFF E3.S form factor drives only. Standard SFF/LFF drives are incompatible. | 1x |
 | 📦 CHASSIS | `DL145_Gen11` | `PSU_WATTAGE_LIMIT` | `P71964-B21` | `P54290-B21` | DL145 Gen11 supports maximum 1000W PSUs. 1600W/2400W PSUs are physically incompatible. | 1x |
 | 📦 CHASSIS | `DL145_Gen11` | `EXTENDED_AMBIENT_TRACKING` | `P71964-B21` | `P73021-B21` | DL145 Gen11 edge deployments use P73021-B21 for extended -5C to 45C ambient temperature tracking. | 1x |
-| 📦 CHASSIS | `DL380_Gen11` | `undefined` | `PORTAL` | `P52534-B21` | If PORTAL is present, P52534-B21 is mandatory. | 1x |
-| 📦 CHASSIS | `DL380_Gen11` | `undefined` | `PORTAL` | `P64707-B21` | If PORTAL is present, P64707-B21 is mandatory. | 1x |
-| 📦 CHASSIS | `DL380_Gen11` | `undefined` | `PORTAL` | `—` | Portal validation flagged restriction on PORTAL. | 1x |
-| 📦 CHASSIS | `DL380_Gen11` | `undefined` | `PORTAL` | `P58335-B21` | If PORTAL is present, P58335-B21 is mandatory. | 1x |
+| 📦 CHASSIS | `DL380_Gen11` | `MEMORY_POPULATION_CONSTRAINT` | `P52534-B21` | `MEMORY_KIT_MIN1_MAX16` | When ordering P52534-B21 (DL380 Gen11 8SFF NC CTO), minimum 1 and maximum 16 memory DIMMs must be ordered per processor. | 1x |
+| 📦 CHASSIS | `DL380_Gen11` | `SUPPLY_CONSTRAINT_FIO_SUBSTITUTION` | `P64707-B21` | `P64707-F21` | Standalone SKU P64707-B21 constrained; must substitute factory-integrated P64707-F21 for CTO factory build. | 1x |
+| 📦 CHASSIS | `DL380_Gen11` | `OPERATING_SYSTEM_ADVISORY` | `P52534-B21` | `—` | Advisory: Selection of an Operating System is recommended for factory deployment. | 1x |
+| 📦 CHASSIS | `DL380_Gen11` | `MANAGEMENT_UTILITY_COMPATIBILITY` | `P58335-B21` | `P58335-B21` | When ordering MegaRAID controller P58335-B21, MegaRAID Tools cannot be used to configure legacy SmartRAID arrays. | 1x |
 | 📦 CHASSIS | `DL380_Gen11` | `CARRY_OVER_VALIDATED` | `P48183-B21` | `—` | P48183-B21`)** [cite: 250] is fully supported | 1x |
 | 📦 CHASSIS | `DL380_Gen11` | `PHYSICAL_ATTACH_REQUIREMENT` | `P48832-B21` | `P48814-B21` | If P48832-B21 (Tri-Mode Splitter Cable) is selected, P48814-B21 (8SFF U.3 Premium Cage) is mandatory. | 1x |
 | 📦 CHASSIS | `DL380_Gen11` | `PHYSICAL_POWER_ENABLEMENT` | `P02377-B21` | `P48918-B21` | If P02377-B21 / P01366-B21 (Capacitor/Battery) is selected, P48918-B21 (Storage Controller Enablement Cable Kit) is mand | 1x |
@@ -214,7 +214,7 @@ Total verified rules indexed in this build: **139**.
 | 📦 CHASSIS | `DL380_Gen11` | `REGULATORY_ENABLEMENT` | `P38997-B21` | `P35876-B21` | When ordering Platinum PSUs (P38997-B21) on high-draw dual-socket configurations, P35876-B21 (CE Mark Removal Kit) is re | 1x |
 | 📦 CHASSIS | `DL380_Gen11` | `DEPENDENCY_CHAIN` | `P02377-B21` | `P48918-B21` | P02377-B21` or `P01366-B21` **mandates the inclusion of `P48918-B21 | 1x |
 | 📦 CHASSIS | `DL380_Gen11` | `DEPENDENCY_CHAIN` | `P58335-B21` | `P48918-B21` | P58335-B21`)** with the **Smart Storage Hybrid Capacitor (`P02377-B21`)** strictly requires `P48918-B21 | 1x |
-| 📦 CHASSIS | `DL380_Gen11` | `DEPENDENCY_CHAIN` | `write-cach` | `P48918-B21` | write-cache backup for `P58335-B21`; requires enablement cable **`P48918-B21 | 1x |
+| 📦 CHASSIS | `DL380_Gen11` | `STORAGE_CACHE_CABLE_DEPENDENCY` | `P58335-B21` | `P48918-B21` | Selecting storage controller P58335-B21 write-cache backup requires enablement cable P48918-B21. | 1x |
 | 📦 CHASSIS | `DL385_Gen11` | `MANDATORY_SOFTWARE_ATTACH` | `P53921-B21` | `R7A11AAE` | All compatible NPI CTO base models for Gen11 DL and ML platforms (such as DL385 Gen11 P53921-B21) strictly mandate at le | 1x |
 | 📦 CHASSIS | `DL385_Gen11` | `THERMAL_COOLING_PACKAGING_RULE` | `P58464-B21` | `P58465-B21` | On AMD DL3X5 Gen11 platforms, Standard Fan Kit (P58464-B21, $157) is ordered as individual fan modules (4 for 1P = $628, | 1x |
 | 📦 CHASSIS | `DL385_Gen11` | `MANDATORY_THERMAL_AIR_BAFFLE` | `P53921-B21` | `P57886-B21` | P57886-B21 (HPE ProLiant DL385 Gen11 2U Standard/Performance FIO Air Baffle Kit, $41.00 USD, Qty 1) is physically and lo | 1x |
@@ -275,6 +275,9 @@ Total verified rules indexed in this build: **139**.
 | 📦 CHASSIS | `DL380a_Gen12` | `SUPPORT_PRICING_UPDATE` | `HU4B2A30C4W` | `P76706-B21` | HPE DL380a Gen12 Support (HU4B2A30C4W, under HU4B2A3 3Y Tech Care Basic) list price updated in November 2026 OCA catalog | 1x |
 | 📦 CHASSIS | `DL380a_Gen12` | `SUPPLY_CHAIN_LEAD_TIME_BOTTLENECK` | `S3U30C` | `—` | CRITICAL PRESALES CONSTRAINT: NVIDIA H200 NVL 141GB PCIe Accelerator (S3U30C) carries an estimated availability factory  | 1x |
 | 📦 CHASSIS | `DL380a_Gen12` | `CLIC_STATUS_CLEARANCE` | `P76706-B21` | `—` | Portal validation warnings on HPE ProLiant Compute DL380a Gen12 8DW/16SW CTO Server (P76706-B21) and HPE Compute Ops Man | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `ARRAY_GEOMETRY_BUILD_BLOCKER` | `339778-B21` | `—` | In HPE OCA / CLIC on DL380a Gen12, 339778-B21 (HPE RAID 1 Drive 1 FIO Setting) strictly enforces Drive Count == 2. When  | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `WORKFLOW_VENDOR_OBSERVATION_ADVISORY` | `P78279-B21` | `—` | HPE NS204i-u v2 480GB Boot Device (P78279-B21) and front boot cage (P75284-B21) have zero hardware, cage, or bus depende | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `WORKFLOW_VENDOR_OBSERVATION_ADVISORY` | `P69770-B21` | `—` | DL380a Gen12 base CTO chassis P76706-B21 does not bundle rack rails. When customer tender requests installation, racking | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `SUPPORT_PRICING_UPDATE` | `HU4B2A30C4V` | `P73282-B21` | HPE DL380 Gen12 Support (HU4B2A30C4V, under HU4B2A3 3Y Tech Care Basic) list price updated in November 2026 OCA catalog  | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `CLIC_STATUS_CLEARANCE` | `P73282-B21` | `—` | Portal validation warnings on HPE ProLiant DL380 Gen12 SFF NC CTO Server (P73282-B21) and HPE Compute Ops Management Sta | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `LEAD_TIME_AND_LIFECYCLE` | `P73282-B21` | `—` | DL380 Gen12 CTO base chassis (P73282-B21) availability lead time improved to 14 days (down from 30 days). Xeon 6787P CPU | 1x |

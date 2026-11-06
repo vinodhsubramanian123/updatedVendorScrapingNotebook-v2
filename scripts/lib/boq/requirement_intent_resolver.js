@@ -164,13 +164,9 @@ function extractRequirementIntent(rawLines) {
   };
 }
 
-function resolveRequirementIntent({ items = [], unresolvedRequirements = [], rawLines = [], catalogData = null, productConfirmed = false, vendorQualifiedServices = [] } = {}) {
-  const intent = extractRequirementIntent(rawLines);
-  const candidates = flattenCatalog(catalogData);
-  const skuIndex = buildCatalogSkuIndex(catalogData);
+function _collectCoveredRolesAndUnknownItems(items, skuIndex) {
   const coveredRoles = new Set();
   const unknownItems = [];
-
   for (const item of items) {
     const catalogItem = skuIndex.get(cleanBaseSKU(item.sku));
     if (!catalogItem) {
@@ -180,56 +176,80 @@ function resolveRequirementIntent({ items = [], unresolvedRequirements = [], raw
     const desc = catalogItem.skuData?.Description || catalogItem.skuData?.description || item.description || '';
     coveredRoles.add(catalogItem.skuData?.['Component Role'] || classifyComponentRole('', desc));
   }
+  return { coveredRoles, unknownItems };
+}
 
-  const targets = [
-    ...unknownItems.map(item => ({ line: `${item.sku} ${item.description || ''}`.trim(), suspectedPartTokens: [item.sku], sourceItem: item })),
-    ...unresolvedRequirements
-  ];
-  const resolutions = targets.map(target => {
+function _resolveTargetService(target, vendorQualifiedServices, suspectedSku) {
+  const qualified = vendorQualifiedServices.some(
+    row => row.sku === target.sourceItem.sku && Number(row.quantity) === Number(target.sourceItem.quantity)
+  );
+  return {
+    input: target.line,
+    suspectedSku,
+    expectedRole: 'Support / Service',
+    candidates: [],
+    confidence: qualified ? 1 : 0,
+    status: qualified ? 'AUTO_RESOLVED' : 'SERVICE_QUALIFICATION_PENDING',
+    evidenceSource: qualified ? 'EXACT_PRODUCT_LIVE_SERVICE_RECEIPT' : null,
+    appliedSku: null,
+    sourceItem: target.sourceItem
+  };
+}
+
+function _resolveTargetHardware(target, candidates, suspectedSku, intent, coveredRoles, productConfirmed) {
+  const roleInference = inferExpectedRole(target.line, intent.requestedRoles, coveredRoles);
+  const ranked = candidates
+    .map(candidate => scoreCandidate(candidate, target.line, suspectedSku, roleInference))
+    .filter(Boolean)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 3);
+  const best = ranked[0] || null;
+  const margin = best ? best.score - (ranked[1]?.score || 0) : 0;
+  const autoApply = Boolean(productConfirmed && best && best.score >= 0.9 && margin >= 0.08 && roleInference.certainty >= 0.9);
+  return {
+    input: target.line,
+    suspectedSku: suspectedSku || null,
+    expectedRole: roleInference.role,
+    categoryInference: roleInference,
+    candidates: ranked,
+    confidence: best?.score || 0,
+    margin: Number(margin.toFixed(4)),
+    status: autoApply ? 'AUTO_RESOLVED' : 'NEEDS_HUMAN_CLARIFICATION',
+    appliedSku: autoApply ? best.sku : null,
+    sourceItem: target.sourceItem || null
+  };
+}
+
+function _resolveTargets(targets, candidates, vendorQualifiedServices, intent, coveredRoles, productConfirmed) {
+  return targets.map(target => {
     const suspectedSku = target.suspectedPartTokens?.[0] || target.sourceItem?.sku || '';
     if (target.sourceItem && /\b(service|support|svc|inst(?:all(?:ation)?)?)\b/i.test(target.sourceItem.description || '')) {
-      const qualified = vendorQualifiedServices.some(row => row.sku === target.sourceItem.sku && Number(row.quantity) === Number(target.sourceItem.quantity));
-      return { input: target.line, suspectedSku, expectedRole: 'Support / Service',
-        candidates: [], confidence: qualified ? 1 : 0, status: qualified ? 'AUTO_RESOLVED' : 'SERVICE_QUALIFICATION_PENDING',
-        evidenceSource: qualified ? 'EXACT_PRODUCT_LIVE_SERVICE_RECEIPT' : null,
-        appliedSku: null, sourceItem: target.sourceItem };
+      return _resolveTargetService(target, vendorQualifiedServices, suspectedSku);
     }
-    const roleInference = inferExpectedRole(target.line, intent.requestedRoles, coveredRoles);
-    const ranked = candidates
-      .map(candidate => scoreCandidate(candidate, target.line, suspectedSku, roleInference))
-      .filter(Boolean)
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 3);
-    const best = ranked[0] || null;
-    const margin = best ? best.score - (ranked[1]?.score || 0) : 0;
-    const autoApply = Boolean(productConfirmed && best && best.score >= 0.9 && margin >= 0.08 && roleInference.certainty >= 0.9);
-    return {
-      input: target.line,
-      suspectedSku: suspectedSku || null,
-      expectedRole: roleInference.role,
-      categoryInference: roleInference,
-      candidates: ranked,
-      confidence: best?.score || 0,
-      margin: Number(margin.toFixed(4)),
-      status: autoApply ? 'AUTO_RESOLVED' : 'NEEDS_HUMAN_CLARIFICATION',
-      appliedSku: autoApply ? best.sku : null,
-      sourceItem: target.sourceItem || null
-    };
+    return _resolveTargetHardware(target, candidates, suspectedSku, intent, coveredRoles, productConfirmed);
   });
+}
 
+function _applyResolvedReplacements(items, resolutions, coveredRoles) {
   const replacements = new Map(resolutions.filter(r => r.appliedSku && r.sourceItem).map(r => [cleanBaseSKU(r.sourceItem.sku), r]));
   for (const resolution of resolutions) {
     if (resolution.status === 'AUTO_RESOLVED' && resolution.expectedRole) coveredRoles.add(resolution.expectedRole);
   }
-  const resolvedItems = items.map(item => {
+  return items.map(item => {
     const resolution = replacements.get(cleanBaseSKU(item.sku));
     if (!resolution) return item;
-    return { ...item, sku: resolution.appliedSku, description: resolution.candidates[0].description, correctedFromSku: item.sku, correctionConfidence: resolution.confidence };
+    return {
+      ...item,
+      sku: resolution.appliedSku,
+      description: resolution.candidates[0].description,
+      correctedFromSku: item.sku,
+      correctionConfidence: resolution.confidence
+    };
   });
+}
 
-  const missingRoles = intent.requestedRoles.filter(role => !coveredRoles.has(role));
-  const completeRequirement = rawLines.join(' ');
-  const constructionPlan = missingRoles.map(role => {
+function _buildConstructionPlan(missingRoles, candidates, completeRequirement) {
+  return missingRoles.map(role => {
     const inference = { role, certainty: 1, source: 'WHOLE_BOQ_REQUESTED_CATEGORY' };
     const ranked = candidates
       .map(candidate => scoreCandidate(candidate, completeRequirement, '', inference))
@@ -242,6 +262,24 @@ function resolveRequirementIntent({ items = [], unresolvedRequirements = [], raw
       candidates: ranked
     };
   });
+}
+
+function resolveRequirementIntent({ items = [], unresolvedRequirements = [], rawLines = [], catalogData = null, productConfirmed = false, vendorQualifiedServices = [] } = {}) {
+  const intent = extractRequirementIntent(rawLines);
+  const candidates = flattenCatalog(catalogData);
+  const skuIndex = buildCatalogSkuIndex(catalogData);
+  const { coveredRoles, unknownItems } = _collectCoveredRolesAndUnknownItems(items, skuIndex);
+
+  const targets = [
+    ...unknownItems.map(item => ({ line: `${item.sku} ${item.description || ''}`.trim(), suspectedPartTokens: [item.sku], sourceItem: item })),
+    ...unresolvedRequirements
+  ];
+  const resolutions = _resolveTargets(targets, candidates, vendorQualifiedServices, intent, coveredRoles, productConfirmed);
+  const resolvedItems = _applyResolvedReplacements(items, resolutions, coveredRoles);
+
+  const missingRoles = intent.requestedRoles.filter(role => !coveredRoles.has(role));
+  const completeRequirement = rawLines.join(' ');
+  const constructionPlan = _buildConstructionPlan(missingRoles, candidates, completeRequirement);
   const requiresHumanClarification = !productConfirmed || resolutions.some(r => r.status !== 'AUTO_RESOLVED') || (items.length === 0 && missingRoles.length > 0);
   return {
     intent,

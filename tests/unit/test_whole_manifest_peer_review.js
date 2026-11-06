@@ -21,7 +21,9 @@ function queryHarness(execute) {
     if (dependency.includes('job_manager') || dependency.includes('knowledge_extractor')) return {};
     if (dependency.includes('pipeline_logger')) return logger;
     if (dependency.includes('local_rag_search')) return { queryLocalKnowledgeBase() { stats.fallback++; return { answer: 'fallback' }; } };
+    if (dependency.includes('execution_budget')) return require(path.join(root, 'scripts/lib/system/execution_budget.js'));
     if (dependency.includes('fs_compat')) return { safeWriteJsonAtomic() {} };
+    if (dependency.startsWith('.')) return require(path.resolve(path.dirname(filename), dependency));
     return require(dependency);
   };
   vm.runInNewContext(fs.readFileSync(filename, 'utf8'), { module, exports: module.exports, require: mockRequire, __dirname: path.dirname(filename), process: { env: {}, platform: process.platform }, Date, setTimeout, clearTimeout, setInterval, clearInterval });
@@ -70,7 +72,8 @@ test('actual validator and extracted caller preserve NaN through ordinary owned-
   const validatorEnd = authored.indexOf("test('whole manifest", validatorStart);
   const callerStart = authored.indexOf('function caller(');
   const callerEnd = authored.indexOf("test('actual canonical", callerStart);
-  const context = { fs, path, vm, root, nb: notebook, log: logger, require, a: assert, AbortController };
+  const budget = require(path.join(root, 'scripts/lib/system/execution_budget.js'));
+  const context = { fs, path, vm, root, nb: notebook, log: logger, require, a: assert, AbortController, process, budget };
   const adapters = vm.runInNewContext(authored.slice(validatorStart, validatorEnd) + authored.slice(callerStart, callerEnd) + '\n({validator,caller,evaluation})', context);
   const controller = new AbortController();
   const validator = adapters.validator(async () => { controller.abort(NaN); throw NaN; }, () => {}, true);

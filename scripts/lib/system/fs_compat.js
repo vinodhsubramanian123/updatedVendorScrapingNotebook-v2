@@ -77,12 +77,7 @@ function cleanStrayPDFs(dir, destPath, maxAgeMs = 120000) {
  * @param {object} options { minEntriesKey, minCount = 1, validateSchema = false }
  * @returns {object} { success: boolean, backupCreated: boolean, validation: object }
  */
-function safeWriteJsonAtomic(destPath, data, options = {}) {
-  if (!data || typeof data !== 'object') {
-    throw new Error(`safeWriteJsonAtomic aborted: data is not a valid object for ${destPath}`);
-  }
-
-  // Schema Non-Emptiness Guardrail
+function _checkMinEntriesGuardrail(data, destPath, options) {
   if (options.minEntriesKey) {
     const arr = data[options.minEntriesKey];
     const minCount = options.minCount || 1;
@@ -90,26 +85,40 @@ function safeWriteJsonAtomic(destPath, data, options = {}) {
       throw new Error(`safeWriteJsonAtomic guardrail triggered: '${options.minEntriesKey}' has ${Array.isArray(arr) ? arr.length : 0} items, expected >= ${minCount}. Aborting overwrite of ${destPath}`);
     }
   }
+}
 
-  // Optional Schema Validation for Catalog JSON files
-  let validationResult = null;
+function _validateCatalogSchemaIfApplicable(data, destPath, options) {
   const isCatalogJson = destPath.endsWith('_Catalog.json') || options.validateSchema;
-  if (isCatalogJson && data.entries) {
-    try {
-      const { validateCatalogData } = require('./data_validator.js');
-      validationResult = validateCatalogData(data, { strictMode: options.strictMode !== false });
-      if (!validationResult.isValid && options.rejectInvalid !== false) {
-        throw new Error(`safeWriteJsonAtomic aborted: Schema integrity validation failed with ${validationResult.errors.length} error(s):\n  - ${validationResult.errors.join('\n  - ')}`);
-      }
-    } catch (valErr) {
-      if (valErr.message.includes('safeWriteJsonAtomic aborted')) {
-        throw valErr;
-      }
-      console.warn(`Warning: Could not run schema validator during safeWriteJsonAtomic for ${destPath}: ${valErr.message}`);
-    }
-  }
+  if (!isCatalogJson || !data.entries) return null;
 
-  const jsonString = JSON.stringify(data, null, 2);
+  try {
+    const { validateCatalogData } = require('./data_validator.js');
+    const validationResult = validateCatalogData(data, { strictMode: options.strictMode !== false });
+    if (!validationResult.isValid && options.rejectInvalid !== false) {
+      throw new Error(`safeWriteJsonAtomic aborted: Schema integrity validation failed with ${validationResult.errors.length} error(s):\n  - ${validationResult.errors.join('\n  - ')}`);
+    }
+    return validationResult;
+  } catch (valErr) {
+    if (valErr.message.includes('safeWriteJsonAtomic aborted')) {
+      throw valErr;
+    }
+    console.warn(`Warning: Could not run schema validator during safeWriteJsonAtomic for ${destPath}: ${valErr.message}`);
+    return null;
+  }
+}
+
+function _createFileBackup(destPath) {
+  if (!fs.existsSync(destPath)) return false;
+  try {
+    fs.copyFileSync(destPath, `${destPath}.bak`);
+    return true;
+  } catch (bakErr) {
+    console.warn(`Warning: Could not create backup file for ${destPath}: ${bakErr.message}`);
+    return false;
+  }
+}
+
+function _writeAndVerifyTmpFile(destPath, jsonString) {
   const trimmedJson = jsonString ? jsonString.trim() : '';
   if (!jsonString || (jsonString.length < 10 && trimmedJson !== '{}' && trimmedJson !== '[]')) {
     throw new Error(`safeWriteJsonAtomic aborted: generated JSON string is suspiciously small (${jsonString?.length || 0} bytes) for ${destPath}`);
@@ -120,23 +129,9 @@ function safeWriteJsonAtomic(destPath, data, options = {}) {
     fs.mkdirSync(dir, { recursive: true });
   }
 
-  // Backup existing file if present
-  let backupCreated = false;
-  if (fs.existsSync(destPath)) {
-    try {
-      const bakPath = `${destPath}.bak`;
-      fs.copyFileSync(destPath, bakPath);
-      backupCreated = true;
-    } catch (bakErr) {
-      console.warn(`Warning: Could not create backup file for ${destPath}: ${bakErr.message}`);
-    }
-  }
-
-  // Write to temporary buffer file first
   const tmpPath = `${destPath}.${Date.now()}.tmp`;
   fs.writeFileSync(tmpPath, jsonString, 'utf-8');
 
-  // Verify temporary file reads back cleanly
   try {
     const verifyRead = JSON.parse(fs.readFileSync(tmpPath, 'utf-8'));
     if (!verifyRead || typeof verifyRead !== 'object') {
@@ -146,16 +141,14 @@ function safeWriteJsonAtomic(destPath, data, options = {}) {
     if (fs.existsSync(tmpPath)) fs.unlinkSync(tmpPath);
     throw new Error(`safeWriteJsonAtomic verification failed for ${tmpPath}: ${verifyErr.message}`);
   }
+  return tmpPath;
+}
 
-  // Atomic move: .tmp → final destination
-  moveFile(tmpPath, destPath);
-
-  // Verify final file is valid JSON, then clean up .bak
+function _verifyFinalAndCleanup(destPath, backupCreated) {
   const bakPath = `${destPath}.bak`;
   try {
     const finalRead = JSON.parse(fs.readFileSync(destPath, 'utf-8'));
     if (!finalRead || typeof finalRead !== 'object') throw new Error('Final file is not a valid object');
-    // .bak verified no longer needed — clean it up
     if (backupCreated && fs.existsSync(bakPath)) {
       fs.unlinkSync(bakPath);
     }
@@ -167,6 +160,21 @@ function safeWriteJsonAtomic(destPath, data, options = {}) {
     }
     throw new Error(`safeWriteJsonAtomic: final verification failed, reverted from backup: ${finalVerifyErr.message}`);
   }
+}
+
+function safeWriteJsonAtomic(destPath, data, options = {}) {
+  if (!data || typeof data !== 'object') {
+    throw new Error(`safeWriteJsonAtomic aborted: data is not a valid object for ${destPath}`);
+  }
+
+  _checkMinEntriesGuardrail(data, destPath, options);
+  const validationResult = _validateCatalogSchemaIfApplicable(data, destPath, options);
+  const jsonString = JSON.stringify(data, null, 2);
+  const backupCreated = _createFileBackup(destPath);
+  const tmpPath = _writeAndVerifyTmpFile(destPath, jsonString);
+
+  moveFile(tmpPath, destPath);
+  _verifyFinalAndCleanup(destPath, backupCreated);
 
   return { success: true, backupCreated, validation: validationResult };
 }

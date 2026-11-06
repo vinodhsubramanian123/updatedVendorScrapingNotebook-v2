@@ -96,8 +96,17 @@ function cleanBaseSKU(skuStr) {
   if (/^[tT][PQR0-9][A-Z0-9]{4,6}(-[A-Z0-9]+)?$/i.test(str)) {
     str = str.substring(1);
   }
-  // Strip trailing option codes after spaces or CTO/BTO/FIO suffix (e.g. "P73282-B21  B19" -> "P73282-B21", "P73831-B21  0D1" -> "P73831-B21", "P73831-B21#0D1" -> "P73831-B21")
-  str = str.replace(/(?:\s+|#)(?:0D1|OD1|B19|B21|#0D1|#B19|#B21)\b/i, '').trim();
+  // Strip trailing option codes after spaces or CTO/BTO/FIO suffix (e.g. "P73282-B21  B19" -> "P73282-B21", "P73831-B21  0D1" -> "P73831-B21", "HU4B2A3 Z1R" -> "HU4B2A3")
+  str = str.replace(/(?:\s+|#)(?:0D1|OD1|B19|B21|#0D1|#B19|#B21|[A-Z0-9]{3,4})\b/i, (m, offset, full) => {
+    if (m.startsWith('#') && /^[HU][A-Z0-9]{4,11}#[A-Z0-9]{3}$/i.test(full)) {
+      return m;
+    }
+    const prefix = full.substring(0, offset).trim();
+    if (/^[A-Z0-9]{3,8}-[A-Z0-9]{3,4}$/i.test(prefix) || /^[HURS][A-Z0-9]{4,8}$/i.test(prefix)) {
+      return '';
+    }
+    return m;
+  }).trim();
   str = str.replace(/(CTO|BTO|FIO)$/i, '');
   // Strip leading option badges/prefixes and punctuation (e.g. "[P73282-B21]", "P49147-B21.")
   return str.replace(/^[[({"'`<]+|[\])}"'`,;.:!?/>]+$/g, '').trim();

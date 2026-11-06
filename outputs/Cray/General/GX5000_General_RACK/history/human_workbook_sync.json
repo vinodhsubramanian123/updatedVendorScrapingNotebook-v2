@@ -1,0 +1,80 @@
+{
+  "success": true,
+  "spreadsheetId": "1HPB_a9Wsf5onL3Iqa-Y9NAfeK9wTpm2yYkdWMI_KmYc",
+  "backupFile": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\history\\drive_backups\\drive_backup_0d51f2cc-e4e2-455a-bfc0-b9088cddf0fa.json",
+  "tabsWritten": [
+    {
+      "title": "Certified Catalog",
+      "rows": 3
+    },
+    {
+      "title": "Verified Learnings",
+      "rows": 70
+    },
+    {
+      "title": "Change Log",
+      "rows": 3
+    },
+    {
+      "title": "Sync Metadata",
+      "rows": 10
+    },
+    {
+      "title": "Category Summary",
+      "rows": 2
+    },
+    {
+      "title": "All SKUs",
+      "rows": 3
+    },
+    {
+      "title": "Chassis Variants",
+      "rows": 3
+    },
+    {
+      "title": "Chassis Options Matrix",
+      "rows": 3
+    },
+    {
+      "title": "Rules & Constraints",
+      "rows": 3
+    },
+    {
+      "title": "Price History Timeline",
+      "rows": 3
+    },
+    {
+      "title": "Chassis",
+      "rows": 3
+    },
+    {
+      "title": "Metadata",
+      "rows": 22
+    }
+  ],
+  "readbackVerified": true,
+  "readbackFingerprints": {
+    "Certified Catalog": "b7563c1490b0ef5a0c0354af7d93311ba6b94857eeb97847b0091cf962f0f824",
+    "Verified Learnings": "1f0779a3ccfbb19b453eef70c273da730fb898961ab69f4fce398c1c9cd49d59",
+    "Change Log": "d284350496fbeecb198edb97fbb0d6923a59f37a21822707a64390fef59bbfd9",
+    "Sync Metadata": "006aed86a76be1a0bdfa945a5074a1c27ee045050d5b7a14cf5aec73b5d747af",
+    "Category Summary": "a3e94563e5d89f36987b0909fb1013e3eafaea96325f3c0a0a4d6e7f60d0fc0b",
+    "All SKUs": "ec82ff118b444a58ac011eb6bb38d463b7874c2d1c5cc88864342efb4d0899e3",
+    "Chassis Variants": "3bd8ddbc164e416bfef1851b1b4305102211a83b9d3bf66defb137425dbeed3c",
+    "Chassis Options Matrix": "76a488c9e841b2e4498767ede07a9ab2f93846e37583fcdabbaa5f0f9375c705",
+    "Rules & Constraints": "b126e98a34b1af2deb19afb7077378b027076441751c7533e07faf682feacfab",
+    "Price History Timeline": "a30a18879049aa03837fb75a2c308e3c90c622949443cfd16992e261be5fffce",
+    "Chassis": "ec82ff118b444a58ac011eb6bb38d463b7874c2d1c5cc88864342efb4d0899e3",
+    "Metadata": "e6bfc90210bb77d6286f8b0269128447987cc63ade3c18441ea21528c3920d4d"
+  },
+  "verifiedAt": "2026-11-06T08:19:01.361Z",
+  "fingerprints": {
+    "catalog": "b7563c1490b0ef5a0c0354af7d93311ba6b94857eeb97847b0091cf962f0f824",
+    "learnings": "411657cedb9344b2fd1501714c0a1bd5a141e531969f567af579d25038aa7776",
+    "changes": "d284350496fbeecb198edb97fbb0d6923a59f37a21822707a64390fef59bbfd9",
+    "workbook": "c0f90f67096837f3b5443c1654c5106b9bf482be19792f4f796d648bc8f705ab",
+    "combined": "b87322ab6f06816338667446f462d46f706cc61e0ba4565a9d306a31023be0d3"
+  },
+  "created": true,
+  "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1HPB_a9Wsf5onL3Iqa-Y9NAfeK9wTpm2yYkdWMI_KmYc/edit"
+}

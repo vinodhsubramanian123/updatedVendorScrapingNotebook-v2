@@ -111,25 +111,44 @@ function _checkLifecycleEligibility(skuData, allowObsolete) {
   return true;
 }
 
+function _matchesCoolingRole(targetRole, itemRole, desc, cat) {
+  const isCoolingTarget = targetRole.includes('fan') || targetRole.includes('cooling');
+  if (!isCoolingTarget) return false;
+  return itemRole.includes('cooling') || desc.includes('fan') || cat.includes('fan');
+}
+
+function _matchesBatteryRole(targetRole, itemRole, desc, cat) {
+  const isBatteryTarget = targetRole.includes('battery') || targetRole.includes('capacitor');
+  if (!isBatteryTarget) return false;
+  return itemRole.includes('battery') || desc.includes('battery') || cat.includes('battery') || desc.includes('bbu');
+}
+
+function _matchesTransceiverRole(targetRole, itemRole, desc, cat) {
+  const isOpticTarget = targetRole.includes('transceiver') || targetRole.includes('optic');
+  if (!isOpticTarget) return false;
+  return itemRole.includes('transceiver') || desc.includes('transceiver') || desc.includes('sfp') || desc.includes('qsfp') || cat.includes('transceiver');
+}
+
+function _matchesCableRole(targetRole, itemRole, desc, cat) {
+  const isCableTarget = targetRole.includes('cable') || targetRole.includes('lug');
+  if (!isCableTarget) return false;
+  return itemRole.includes('cable') || desc.includes('cable') || desc.includes('lug kit') || cat.includes('cable');
+}
+
+function _matchesDriveRole(targetRole, itemRole, desc, cat) {
+  if (!targetRole.includes('drive')) return false;
+  return itemRole.includes('drive') || desc.includes('drive') || cat.includes('drive');
+}
+
 function _checkRoleCompatibility(targetRole, itemRole, desc, cat) {
   if (!targetRole) return true;
-  if (itemRole && (itemRole === targetRole)) return true;
-  if ((targetRole.includes('fan') || targetRole.includes('cooling')) && (itemRole.includes('cooling') || desc.includes('fan') || cat.includes('fan'))) {
-    return true;
-  }
-  if ((targetRole.includes('battery') || targetRole.includes('capacitor')) && (itemRole.includes('battery') || desc.includes('battery') || cat.includes('battery') || desc.includes('bbu'))) {
-    return true;
-  }
-  if ((targetRole.includes('transceiver') || targetRole.includes('optic')) && (itemRole.includes('transceiver') || desc.includes('transceiver') || desc.includes('sfp') || desc.includes('qsfp') || cat.includes('transceiver'))) {
-    return true;
-  }
-  if ((targetRole.includes('cable') || targetRole.includes('lug')) && (itemRole.includes('cable') || desc.includes('cable') || desc.includes('lug kit') || cat.includes('cable'))) {
-    return true;
-  }
-  if (targetRole.includes('drive') && (itemRole.includes('drive') || desc.includes('drive') || cat.includes('drive'))) {
-    return true;
-  }
-  return false;
+  if (itemRole && itemRole === targetRole) return true;
+
+  return _matchesCoolingRole(targetRole, itemRole, desc, cat)
+    || _matchesBatteryRole(targetRole, itemRole, desc, cat)
+    || _matchesTransceiverRole(targetRole, itemRole, desc, cat)
+    || _matchesCableRole(targetRole, itemRole, desc, cat)
+    || _matchesDriveRole(targetRole, itemRole, desc, cat);
 }
 
 function _checkKeywordFiltering(kwList, desc, cat, subcat) {

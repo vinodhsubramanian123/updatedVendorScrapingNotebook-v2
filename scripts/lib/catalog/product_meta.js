@@ -138,6 +138,58 @@ function isBaseChassis(desc) {
   return false;
 }
 
+function _classifyPrimaryInfrastructureRole(desc) {
+  if (/\b(service|support|svc|tech care)\b/i.test(desc)) return 'Service & Support';
+  if (/virtual\s*connect|\binterconnect\b|\bvc\s*\d+\s*gb\s*f32\b/i.test(desc) && !/\b(cable|transceiver|adapter|kit)\b/i.test(desc)) return 'Fabric Interconnect';
+  if (/\bswitch\b/i.test(desc) && !/fibre channel|\b(fc|kit|upgrade|license|cable|transceiver|adapter)\b/i.test(desc)) return 'Network Switch';
+  if (/synergy.*\b(frame|enclosure)\b/i.test(desc) && !/\b(kit|blank|rail|cable)\b/i.test(desc)) return 'Composable Enclosure';
+  if (/\b(?:fibre channel|fc)\s+switch\b/i.test(desc) && !/\b(support|service|upgrade|license|kit)\b/i.test(desc)) return 'SAN Switch';
+  if (/\bupgrade\s+license\s+with\s+transceiver\s+kit\b/i.test(desc)) return 'Port Upgrade Bundle';
+  if (isChassisInfrastructure(desc)) return 'Chassis Infrastructure';
+  if (isBaseChassis(desc)) return 'Base Chassis';
+  return null;
+}
+
+function _classifyAccessoryOrInterconnectRole(desc) {
+  if (desc.includes('smart storage battery') || (desc.includes('battery') && (desc.includes('storage') || desc.includes('controller') || desc.includes('bbu') || desc.includes('capacitor')))) {
+    return 'Storage Battery';
+  }
+  if (desc.includes('transceiver') || desc.includes('optical transceiver') || desc.includes('dac cable') || desc.includes('direct attach copper') || desc.includes('active optical cable')) {
+    return 'Transceiver';
+  }
+  if (/\b(?:cable\s*kit|internal\s*cable|power\s*cable|power\s*cord|jumper\s*cord|lug\s*kit|splitter\s*cable|y-cable|aux\s*cable|riser\s*cable|sas\s*cable|sata\s*cable|gpu\s*aux)\b/i.test(desc) ||
+      (desc.includes('cable') && (desc.includes('controller') || desc.includes('riser') || desc.includes('gpu') || desc.includes('storage')))) {
+    return 'Cable Kit';
+  }
+  return null;
+}
+
+function _isExcludedRoleForComponent(role, desc) {
+  if (role === 'Base Chassis') return true;
+  if (role === 'GPU / Accelerator' && (desc.includes('cable') || desc.includes('cord'))) return true;
+  if (role === 'Network Adapter' && (desc.includes('enablement') || desc.includes('cable') || desc.includes('cord') || desc.includes('transceiver'))) return true;
+  if (role === 'Storage Controller' && (desc.includes('cable') || desc.includes('cord') || desc.includes('battery'))) return true;
+  if (role === 'PCIe Riser' && (desc.includes('cable') || desc.includes('cord'))) return true;
+  return false;
+}
+
+function _isServiceSku(desc) {
+  return /^h[a-z0-9]{6}/i.test(desc) || /^hu4b/i.test(desc) || /^803-[a-z0-9]+/i.test(desc) || /^con-snt/i.test(desc) || desc.includes('prosupport') || desc.includes('smartnet') || desc.includes('pointnext');
+}
+
+function _resolveProfileMappings(profile) {
+  const profileMappings = profile && profile.component_mapping ? profile.component_mapping : {};
+  const knownRoles = new Set(DEFAULT_ROLE_MAPPINGS.map(({ role }) => role));
+  const mappings = DEFAULT_ROLE_MAPPINGS.map(({ role, keywords }) => ({
+    role,
+    keywords: Array.from(new Set([...keywords, ...(profileMappings[role] || [])]))
+  }));
+  for (const [role, keywords] of Object.entries(profileMappings)) {
+    if (!knownRoles.has(role)) mappings.push({ role, keywords });
+  }
+  return mappings;
+}
+
 /**
  * Dynamically classify component role from category name and item description.
  * Utilizes configuration profile for overrides, falls back to default logic.
@@ -150,67 +202,21 @@ function classifyComponentRole(categoryName = '', itemDescription = '', profile 
   const cat = String(categoryName).toLowerCase();
   const desc = String(itemDescription).toLowerCase();
 
-  if (/\b(service|support|svc|tech care)\b/i.test(desc)) return 'Service & Support';
-  if (/virtual\s*connect|\binterconnect\b|\bvc\s*\d+\s*gb\s*f32\b/i.test(desc) && !/\b(cable|transceiver|adapter|kit)\b/i.test(desc)) return 'Fabric Interconnect';
-  if (/\bswitch\b/i.test(desc) && !/fibre channel|\b(fc|kit|upgrade|license|cable|transceiver|adapter)\b/i.test(desc)) return 'Network Switch';
-  if (/synergy.*\b(frame|enclosure)\b/i.test(desc) && !/\b(kit|blank|rail|cable)\b/i.test(desc)) return 'Composable Enclosure';
+  const primaryRole = _classifyPrimaryInfrastructureRole(desc);
+  if (primaryRole) return primaryRole;
 
-  // Bundled optics in a switch description do not make the switch an optic.
-  if (/\b(?:fibre channel|fc)\s+switch\b/i.test(desc) && !/\b(support|service|upgrade|license|kit)\b/i.test(desc)) return 'SAN Switch';
-  if (/\bupgrade\s+license\s+with\s+transceiver\s+kit\b/i.test(desc)) return 'Port Upgrade Bundle';
+  const accessoryRole = _classifyAccessoryOrInterconnectRole(desc);
+  if (accessoryRole) return accessoryRole;
 
-  // Explicit guard: Infrastructure accessories
-  if (isChassisInfrastructure(desc)) {
-    return 'Chassis Infrastructure';
-  }
-
-  // Explicit guard: CTO Base Chassis
-  if (isBaseChassis(desc)) {
-    return 'Base Chassis';
-  }
-
-  // Explicit guard: Storage Battery (must precede Cable Kit and Controllers)
-  if (desc.includes('smart storage battery') || (desc.includes('battery') && (desc.includes('storage') || desc.includes('controller') || desc.includes('bbu') || desc.includes('capacitor')))) {
-    return 'Storage Battery';
-  }
-
-  // Explicit guard: Transceivers & Optical interconnects (must precede Network Adapters)
-  if (desc.includes('transceiver') || desc.includes('optical transceiver') || desc.includes('dac cable') || desc.includes('direct attach copper') || desc.includes('active optical cable')) {
-    return 'Transceiver';
-  }
-
-  // Explicit guard: Cable Kits (must not be swallowed by parent controllers, risers, GPUs)
-  if (/\b(?:cable\s*kit|internal\s*cable|power\s*cable|power\s*cord|jumper\s*cord|lug\s*kit|splitter\s*cable|y-cable|aux\s*cable|riser\s*cable|sas\s*cable|sata\s*cable|gpu\s*aux)\b/i.test(desc) ||
-      (desc.includes('cable') && (desc.includes('controller') || desc.includes('riser') || desc.includes('gpu') || desc.includes('storage')))) {
-    return 'Cable Kit';
-  }
-
-  // Product profiles are additive overrides.
-  const profileMappings = profile && profile.component_mapping
-    ? profile.component_mapping
-    : {};
-  const knownRoles = new Set(DEFAULT_ROLE_MAPPINGS.map(({ role }) => role));
-  const mappings = DEFAULT_ROLE_MAPPINGS.map(({ role, keywords }) => ({
-    role,
-    keywords: Array.from(new Set([...keywords, ...(profileMappings[role] || [])]))
-  }));
-  for (const [role, keywords] of Object.entries(profileMappings)) {
-    if (!knownRoles.has(role)) mappings.push({ role, keywords });
-  }
-
+  const mappings = _resolveProfileMappings(profile);
   for (const { role, keywords } of mappings) {
-    if (role === 'Base Chassis') continue; // Handled by explicit guard above
-    if (role === 'GPU / Accelerator' && (desc.includes('cable') || desc.includes('cord'))) continue;
-    if (role === 'Network Adapter' && (desc.includes('enablement') || desc.includes('cable') || desc.includes('cord') || desc.includes('transceiver'))) continue;
-    if (role === 'Storage Controller' && (desc.includes('cable') || desc.includes('cord') || desc.includes('battery'))) continue;
-    if (role === 'PCIe Riser' && (desc.includes('cable') || desc.includes('cord'))) continue;
+    if (_isExcludedRoleForComponent(role, desc)) continue;
     if (keywords.some(k => cat.includes(k) || desc.includes(k))) {
       return role;
     }
   }
 
-  // Regex check for service SKUs across vendors (HPE Pointnext, Dell ProSupport, Cisco SmartNet)
-  if (/^h[a-z0-9]{6}/i.test(desc) || /^hu4b/i.test(desc) || /^803-[a-z0-9]+/i.test(desc) || /^con-snt/i.test(desc) || desc.includes('prosupport') || desc.includes('smartnet') || desc.includes('pointnext')) {
+  if (_isServiceSku(desc)) {
     return 'Service & Support';
   }
 

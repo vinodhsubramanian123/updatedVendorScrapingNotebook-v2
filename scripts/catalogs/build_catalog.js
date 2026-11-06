@@ -211,6 +211,9 @@ function isServiceSkuRow(sku) {
 
 function isClearlyPhysicalSkuRow(sku) {
   const description = String(sku?.Description || sku?.description || '');
+  if (/\b(?:raid setting|fio setting|raid service|factory setting|custom defined raid|customer defined raid)\b/i.test(description)) {
+    return true;
+  }
   if (/\b(?:software|license|subscription|support|service|saas|e-ltu|care pack)\b/i.test(description)) return false;
   return /\b(?:adapter|card|cable|cord|kit|rail|drive|ssd|hdd|controller|processor|memory|dimm|transceiver|heatsink|heat sink|fan|riser|power supply|chassis|enclosure|accelerator|gpu|graphics|hba)\b/i.test(description);
 }

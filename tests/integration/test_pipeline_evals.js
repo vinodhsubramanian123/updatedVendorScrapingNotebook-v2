@@ -364,8 +364,9 @@ async function main() {
 
   // Verify NotebookLM payload generator & sync payload
   const { generateNotebookSyncPayload } = require('../../scripts/lib/sync/knowledge_sync.js');
-  const payloadResult = generateNotebookSyncPayload(filePrefix);
-  assert(fs.existsSync(payloadResult.payloadPath), `Post-flight: NotebookLM sync payload exists: ${path.basename(payloadResult.payloadPath)}`);
+  const payloadResult = generateNotebookSyncPayload(filePrefix, false, { persist: true });
+  const resolvedPayloadPath = payloadResult.payloadPath || path.join(targetDir, `notebook_sync_payload_${filePrefix}.md`);
+  assert(fs.existsSync(resolvedPayloadPath), `Post-flight: NotebookLM sync payload exists: ${path.basename(resolvedPayloadPath)}`);
   assert(payloadResult.markdownText.includes('Discontinued & Obsolete SKUs Registry'),
     'Post-flight: NotebookLM payload contains Discontinued SKUs section');
   assert(payloadResult.markdownText.includes('Recent Attribute & Specification Modifications Log'),

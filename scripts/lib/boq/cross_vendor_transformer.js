@@ -157,26 +157,110 @@ function _parseStorageSpec(drive, ctrl, boot) {
   return { localDrives, storageController, bootStorage };
 }
 
+function _extractCompetitorInputLines(input) {
+  if (Array.isArray(input)) {
+    return input.map(item => `${item.quantity ?? item.qty ?? ''}x ${item.description || item.name || item.sku || ''}`);
+  }
+  return String(input ?? '').split(/[;\n]+/);
+}
+
+function _findCompetitorSpecLine(lines, regex, excludeRegex = null) {
+  return lines.find(line => regex.test(line) && (!excludeRegex || !excludeRegex.test(line))) || '';
+}
+
+function _parseCompetitorAccelerators(gpu) {
+  return {
+    gpuCount: numberMatch(gpu, /(\d+)\s*[x*]/i),
+    gpuModel: gpu.match(/(?:nvidia\s*)?([hlatb]\d{1,3}s?|gh\d{3})/i)?.[1]?.toUpperCase() || (gpu ? 'GPU' : null),
+    gpuTdpWatts: numberMatch(gpu, /(\d+)\s*w\b/i)
+  };
+}
+
+function _parseCompetitorOptics(optics) {
+  let mediaType = null;
+  if (/dac|direct attach/i.test(optics)) {
+    mediaType = 'DAC';
+  } else if (/aoc/i.test(optics)) {
+    mediaType = 'AOC';
+  } else if (optics) {
+    mediaType = 'OPTICAL';
+  }
+
+  return {
+    count: numberMatch(optics, /(\d+)\s*[x*]/i) ?? numberMatch(optics, /(\d+)\s*(?:transceiver|sfp|qsfp)/i),
+    speedGb: numberMatch(optics, /(\d+)\s*(?:gb|g\b|gbe)/i),
+    formFactor: optics.match(/\b(osfp|qsfp112|qsfp56|qsfp28|sfp28|sfp\+)\b/i)?.[1]?.toUpperCase() || null,
+    mediaType
+  };
+}
+
+function _parseCompetitorPower(psu) {
+  let efficiency = null;
+  if (/titanium/i.test(psu)) {
+    efficiency = 'Titanium';
+  } else if (/platinum/i.test(psu)) {
+    efficiency = 'Platinum';
+  }
+
+  return {
+    psuCount: numberMatch(psu, /(\d+)\s*[x*]/i) ?? (/\b(redundant|dual)\b/i.test(psu) ? 2 : null),
+    psuWattage: numberMatch(psu, /(\d{3,4})\s*w\b/i),
+    efficiency
+  };
+}
+
+function _parseCompetitorManagement(mgmt) {
+  let tier = null;
+  if (/enterprise/i.test(mgmt)) {
+    tier = 'Enterprise';
+  } else if (/advanced/i.test(mgmt)) {
+    tier = 'Advanced';
+  } else if (mgmt) {
+    tier = 'Standard';
+  }
+  return { tier };
+}
+
+function _parseCompetitorThermal(thermal) {
+  let heatsinkType = null;
+  if (/standard/i.test(thermal)) {
+    heatsinkType = 'Standard';
+  } else if (/performance|high perf/i.test(thermal)) {
+    heatsinkType = 'High Performance';
+  }
+
+  return {
+    requiresHighPerfFans: /\b(high perf|high performance|performance fan)\b/i.test(thermal),
+    requiresLiquidCooling: /\b(liquid|dlc|direct liquid)\b/i.test(thermal),
+    heatsinkType
+  };
+}
+
+function _parseCompetitorRisers(riser) {
+  return {
+    riserCount: numberMatch(riser, /(\d+)\s*[x*]/i) ?? (riser ? 1 : null),
+    hasSecondaryRiser: /\b(secondary|tertiary|riser 2|riser 3)\b/i.test(riser)
+  };
+}
+
 function parseCompetitorSpecification(input, sourceVendor = null) {
   if (input && typeof input === 'object' && !Array.isArray(input)) {
     return { ...structuredClone(input), sourceVendor: sourceVendor || input.sourceVendor || null };
   }
-  const lines = Array.isArray(input)
-    ? input.map(item => `${item.quantity ?? item.qty ?? ''}x ${item.description || item.name || item.sku || ''}`)
-    : String(input ?? '').split(/[;\n]+/);
+  const lines = _extractCompetitorInputLines(input);
   const text = lines.join('; ');
-  const cpu = lines.find(line => /\b(xeon|epyc|processor)\b/i.test(line)) || '';
-  const memory = lines.find(line => /\b(rdimm|dimm|memory|ddr[45]|ram)\b/i.test(line)) || '';
-  const gpu = lines.find(line => /\b(gpu|accelerator|nvidia|h100|h200|l40|a100|l4\b|t4\b|gh200|b200)\b/i.test(line)) || '';
-  const drive = lines.find(line => /\b(ssd|hdd|nvme|drive)\b/i.test(line) && !/\b(tape|controller|transceiver|boot)\b/i.test(line)) || '';
-  const ctrl = lines.find(line => /\b(raid|controller|hba|smart array|megaraid|perc)\b/i.test(line)) || '';
-  const net = lines.find(line => /\b(nic|network|ethernet|ocp|sfp|base-t|\d+gbe|adapter|infiniband|\bib\b|hca|roce|mellanox|connectx|mcx\d+)\b/i.test(line)) || '';
-  const optics = lines.find(line => /\b(transceiver|sfp28|qsfp28|qsfp56|qsfp112|osfp|optical|dac|direct attach|aoc)\b/i.test(line) && !/\b(nic|adapter)\b/i.test(line)) || '';
-  const psu = lines.find(line => /\b(power supply|psu|flex slot|titanium|platinum)\b/i.test(line)) || '';
-  const mgmt = lines.find(line => /\b(idrac|ilo|xcc|ipmi|enterprise|advanced|intersight)\b/i.test(line)) || '';
-  const boot = lines.find(line => /\b(boss|ns204i|boot device|boot ssd|m\.2 nvme)\b/i.test(line)) || '';
-  const thermal = lines.find(line => /\b(heatsink|fan kit|high perf fan|liquid cooling|dlc)\b/i.test(line)) || '';
-  const riser = lines.find(line => /\b(riser|expansion card|pcie slot)\b/i.test(line)) || '';
+  const cpu = _findCompetitorSpecLine(lines, /\b(xeon|epyc|processor)\b/i);
+  const memory = _findCompetitorSpecLine(lines, /\b(rdimm|dimm|memory|ddr[45]|ram)\b/i);
+  const gpu = _findCompetitorSpecLine(lines, /\b(gpu|accelerator|nvidia|h100|h200|l40|a100|l4\b|t4\b|gh200|b200)\b/i);
+  const drive = _findCompetitorSpecLine(lines, /\b(ssd|hdd|nvme|drive)\b/i, /\b(tape|controller|transceiver|boot)\b/i);
+  const ctrl = _findCompetitorSpecLine(lines, /\b(raid|controller|hba|smart array|megaraid|perc)\b/i);
+  const net = _findCompetitorSpecLine(lines, /\b(nic|network|ethernet|ocp|sfp|base-t|\d+gbe|adapter|infiniband|\bib\b|hca|roce|mellanox|connectx|mcx\d+)\b/i);
+  const optics = _findCompetitorSpecLine(lines, /\b(transceiver|sfp28|qsfp28|qsfp56|qsfp112|osfp|optical|dac|direct attach|aoc)\b/i, /\b(nic|adapter)\b/i);
+  const psu = _findCompetitorSpecLine(lines, /\b(power supply|psu|flex slot|titanium|platinum)\b/i);
+  const mgmt = _findCompetitorSpecLine(lines, /\b(idrac|ilo|xcc|ipmi|enterprise|advanced|intersight)\b/i);
+  const boot = _findCompetitorSpecLine(lines, /\b(boss|ns204i|boot device|boot ssd|m\.2 nvme)\b/i);
+  const thermal = _findCompetitorSpecLine(lines, /\b(heatsink|fan kit|high perf fan|liquid cooling|dlc)\b/i);
+  const riser = _findCompetitorSpecLine(lines, /\b(riser|expansion card|pcie slot)\b/i);
 
   const compute = _parseComputeSpec(cpu);
   const { localDrives, storageController, bootStorage } = _parseStorageSpec(drive, ctrl, boot);
@@ -189,38 +273,16 @@ function parseCompetitorSpecification(input, sourceVendor = null) {
     extractionStatus: 'PARTIAL_REQUIREMENTS_REVIEW_REQUIRED',
     compute,
     memory: _parseMemorySpec(memory, cpu + ' ' + text, null, compute.cpuCount),
-    accelerators: {
-      gpuCount: numberMatch(gpu, /(\d+)\s*[x*]/i),
-      gpuModel: gpu.match(/(?:nvidia\s*)?([hlatb]\d{1,3}s?|gh\d{3})/i)?.[1]?.toUpperCase() || (gpu ? 'GPU' : null),
-      gpuTdpWatts: numberMatch(gpu, /(\d+)\s*w\b/i)
-    },
+    accelerators: _parseCompetitorAccelerators(gpu),
     localDrives,
     storageController,
     networking: _parseNetworkSpec(net),
-    opticalTransceivers: {
-      count: numberMatch(optics, /(\d+)\s*[x*]/i) ?? numberMatch(optics, /(\d+)\s*(?:transceiver|sfp|qsfp)/i),
-      speedGb: numberMatch(optics, /(\d+)\s*(?:gb|g\b|gbe)/i),
-      formFactor: optics.match(/\b(osfp|qsfp112|qsfp56|qsfp28|sfp28|sfp\+)\b/i)?.[1]?.toUpperCase() || null,
-      mediaType: /dac|direct attach/i.test(optics) ? 'DAC' : (/aoc/i.test(optics) ? 'AOC' : (optics ? 'OPTICAL' : null))
-    },
-    power: {
-      psuCount: numberMatch(psu, /(\d+)\s*[x*]/i) ?? (/\b(redundant|dual)\b/i.test(psu) ? 2 : null),
-      psuWattage: numberMatch(psu, /(\d{3,4})\s*w\b/i),
-      efficiency: /titanium/i.test(psu) ? 'Titanium' : (/platinum/i.test(psu) ? 'Platinum' : null)
-    },
-    management: {
-      tier: /enterprise/i.test(mgmt) ? 'Enterprise' : /advanced/i.test(mgmt) ? 'Advanced' : mgmt ? 'Standard' : null
-    },
-    thermal: {
-      requiresHighPerfFans: /\b(high perf|high performance|performance fan)\b/i.test(thermal),
-      requiresLiquidCooling: /\b(liquid|dlc|direct liquid)\b/i.test(thermal),
-      heatsinkType: /standard/i.test(thermal) ? 'Standard' : (/performance|high perf/i.test(thermal) ? 'High Performance' : null)
-    },
+    opticalTransceivers: _parseCompetitorOptics(optics),
+    power: _parseCompetitorPower(psu),
+    management: _parseCompetitorManagement(mgmt),
+    thermal: _parseCompetitorThermal(thermal),
     bootStorage,
-    pcieRisers: {
-      riserCount: numberMatch(riser, /(\d+)\s*[x*]/i) ?? (riser ? 1 : null),
-      hasSecondaryRiser: /\b(secondary|tertiary|riser 2|riser 3)\b/i.test(riser)
-    },
+    pcieRisers: _parseCompetitorRisers(riser),
     unresolvedRequirements: ['Review every source line, including storage, GPU, fabric, support and quantity basis.']
   };
 }
@@ -261,11 +323,7 @@ function _evaluateComputeProcessorsParity(spec, bom) {
   return { subsystem: 'COMPUTE_PROCESSORS', status: 'NOT_EVALUATED', details: 'Insufficient processor specification.' };
 }
 
-function _evaluateMemoryTopologyParity(spec, bom, targetChassis = null) {
-  const reqMemGb = spec.memory?.totalMemoryGb;
-  if (reqMemGb === null || reqMemGb === undefined) {
-    return { subsystem: 'MEMORY_TOPOLOGY', status: 'NOT_EVALUATED', details: 'No competitor memory capacity specified.' };
-  }
+function _extractTargetCpus(bom, spec) {
   let targetCpus = 0;
   let cpuDesc = '';
   for (const item of bom) {
@@ -278,8 +336,10 @@ function _evaluateMemoryTopologyParity(spec, bom, targetChassis = null) {
   if (targetCpus === 0) {
     targetCpus = spec.compute?.cpuCount || 2;
   }
-  const channelWidth = detectArchitectureChannelWidth((spec.rawInputText || '') + ' ' + cpuDesc, targetChassis);
+  return { targetCpus, cpuDesc };
+}
 
+function _extractTargetMemory(bom) {
   let targetMemGb = 0;
   let targetDimmCount = 0;
   for (const item of bom) {
@@ -292,26 +352,17 @@ function _evaluateMemoryTopologyParity(spec, bom, targetChassis = null) {
       targetMemGb += cap * q;
     }
   }
+  return { targetMemGb, targetDimmCount };
+}
 
-  const isAsymmetric = targetCpus > 1 && targetDimmCount > 0 && (targetDimmCount % targetCpus !== 0);
-
-  if (targetMemGb < reqMemGb) {
-    const asymmNote = isAsymmetric ? `; additionally, ${targetDimmCount} DIMMs is asymmetric across ${targetCpus} sockets, breaking NUMA channel interleaving` : '';
-    return {
-      subsystem: 'MEMORY_TOPOLOGY',
-      status: 'DEFICIT',
-      details: `Target provides ${targetMemGb} GB RAM vs competitor requirement of ${reqMemGb} GB (Deficit: ${reqMemGb - targetMemGb} GB)${asymmNote}.`
-    };
-  }
-
-  if (isAsymmetric) {
-    return {
-      subsystem: 'MEMORY_TOPOLOGY',
-      status: 'DEFICIT',
-      details: `Unbalanced socket memory symmetry: target memory topology (${targetDimmCount} DIMMs, ${targetMemGb} GB) is asymmetric across ${targetCpus} sockets, breaking NUMA channel interleaving. NUMA performance will be degraded (${(targetDimmCount / targetCpus).toFixed(1)} DIMMs/socket).`
-    };
-  }
-
+function _checkDimmPopulationAndBalance({
+  targetDimmCount,
+  targetCpus,
+  channelWidth,
+  spec,
+  targetMemGb,
+  reqMemGb
+}) {
   const dimmsPerCpu = targetCpus > 0 && targetDimmCount > 0 ? (targetDimmCount / targetCpus) : 0;
   const isSupportedPopulation = [1, 2, 4, channelWidth, channelWidth * 2].includes(dimmsPerCpu);
   const is1DpcBalanced = dimmsPerCpu === channelWidth;
@@ -340,6 +391,44 @@ function _evaluateMemoryTopologyParity(spec, bom, targetChassis = null) {
     status: isExceed ? 'EXCEEDS' : 'MATCHED',
     details: `Target provides ${targetMemGb} GB RAM (${targetDimmCount}x DIMMs, ${dimmsPerCpu} DIMMs/socket) with balanced ${channelWidth}-channel NUMA interleaving (${modeStr}): satisfies competitor requirement of ${reqMemGb} GB.`
   };
+}
+
+function _evaluateMemoryTopologyParity(spec, bom, targetChassis = null) {
+  const reqMemGb = spec.memory?.totalMemoryGb;
+  if (reqMemGb === null || reqMemGb === undefined) {
+    return { subsystem: 'MEMORY_TOPOLOGY', status: 'NOT_EVALUATED', details: 'No competitor memory capacity specified.' };
+  }
+  const { targetCpus, cpuDesc } = _extractTargetCpus(bom, spec);
+  const channelWidth = detectArchitectureChannelWidth((spec.rawInputText || '') + ' ' + cpuDesc, targetChassis);
+  const { targetMemGb, targetDimmCount } = _extractTargetMemory(bom);
+
+  const isAsymmetric = targetCpus > 1 && targetDimmCount > 0 && (targetDimmCount % targetCpus !== 0);
+
+  if (targetMemGb < reqMemGb) {
+    const asymmNote = isAsymmetric ? `; additionally, ${targetDimmCount} DIMMs is asymmetric across ${targetCpus} sockets, breaking NUMA channel interleaving` : '';
+    return {
+      subsystem: 'MEMORY_TOPOLOGY',
+      status: 'DEFICIT',
+      details: `Target provides ${targetMemGb} GB RAM vs competitor requirement of ${reqMemGb} GB (Deficit: ${reqMemGb - targetMemGb} GB)${asymmNote}.`
+    };
+  }
+
+  if (isAsymmetric) {
+    return {
+      subsystem: 'MEMORY_TOPOLOGY',
+      status: 'DEFICIT',
+      details: `Unbalanced socket memory symmetry: target memory topology (${targetDimmCount} DIMMs, ${targetMemGb} GB) is asymmetric across ${targetCpus} sockets, breaking NUMA channel interleaving. NUMA performance will be degraded (${(targetDimmCount / targetCpus).toFixed(1)} DIMMs/socket).`
+    };
+  }
+
+  return _checkDimmPopulationAndBalance({
+    targetDimmCount,
+    targetCpus,
+    channelWidth,
+    spec,
+    targetMemGb,
+    reqMemGb
+  });
 }
 
 function _getGpuTier(model) {
@@ -467,6 +556,40 @@ function _evaluateStorageControllerParity(spec, bom) {
   };
 }
 
+function _extractOpticsFormFactorAndSpeed(desc) {
+  let formFactor = '';
+  let maxSpeed = 0;
+  const speedMatch = desc.match(/(\d+)\s*(?:gb|g\b|gbe)/i);
+  if (speedMatch) maxSpeed = parseInt(speedMatch[1], 10);
+
+  if (/\bosfp\b/i.test(desc)) { formFactor = 'OSFP'; maxSpeed = Math.max(maxSpeed, 400); }
+  else if (/\bqsfp112\b/i.test(desc)) { formFactor = 'QSFP112'; maxSpeed = Math.max(maxSpeed, 400); }
+  else if (/\bqsfp56\b/i.test(desc)) { formFactor = 'QSFP56'; maxSpeed = Math.max(maxSpeed, 200); }
+  else if (/\bqsfp28\b/i.test(desc)) { formFactor = 'QSFP28'; maxSpeed = Math.max(maxSpeed, 100); }
+  else if (/\bsfp28\b/i.test(desc)) { formFactor = 'SFP28'; maxSpeed = Math.max(maxSpeed, 25); }
+  else if (/\bsfp\+\b/i.test(desc)) { formFactor = 'SFP+'; maxSpeed = Math.max(maxSpeed, 10); }
+
+  return { formFactor, maxSpeed };
+}
+
+function _extractTargetOptics(bom) {
+  let targetOpticsCount = 0;
+  let targetMaxSpeed = 0;
+  let targetFormFactor = '';
+
+  for (const item of bom) {
+    const desc = (item.description || item.sku || '').toLowerCase();
+    if (/\b(transceiver|sfp28|qsfp28|qsfp56|qsfp112|osfp|sfp\+|dac|optical|cable kit|direct attach)\b/i.test(desc) && !/\b(power|power supply)\b/i.test(desc)) {
+      const q = item.quantity || 1;
+      targetOpticsCount += q;
+      const { formFactor, maxSpeed } = _extractOpticsFormFactorAndSpeed(desc);
+      if (maxSpeed > targetMaxSpeed) targetMaxSpeed = maxSpeed;
+      if (formFactor) targetFormFactor = formFactor;
+    }
+  }
+  return { targetOpticsCount, targetMaxSpeed, targetFormFactor };
+}
+
 function _evaluateOpticalTransceiverParity(spec, bom) {
   const reqOptics = spec.opticalTransceivers;
   const reqCount = reqOptics?.count;
@@ -477,25 +600,7 @@ function _evaluateOpticalTransceiverParity(spec, bom) {
     return { subsystem: 'STORAGE_CABLING', status: 'NOT_EVALUATED', details: 'No competitor optical transceivers or interconnect cabling specified.' };
   }
 
-  let targetOpticsCount = 0;
-  let targetMaxSpeed = 0;
-  let targetFormFactor = '';
-
-  for (const item of bom) {
-    const desc = (item.description || item.sku || '').toLowerCase();
-    if (/\b(transceiver|sfp28|qsfp28|qsfp56|qsfp112|osfp|sfp\+|dac|optical|cable kit|direct attach)\b/i.test(desc) && !/\b(power|power supply)\b/i.test(desc)) {
-      const q = item.quantity || 1;
-      targetOpticsCount += q;
-      const speedMatch = desc.match(/(\d+)\s*(?:gb|g\b|gbe)/i);
-      if (speedMatch) targetMaxSpeed = Math.max(targetMaxSpeed, parseInt(speedMatch[1], 10));
-      if (/\bosfp\b/i.test(desc)) { targetFormFactor = 'OSFP'; targetMaxSpeed = Math.max(targetMaxSpeed, 400); }
-      else if (/\bqsfp112\b/i.test(desc)) { targetFormFactor = 'QSFP112'; targetMaxSpeed = Math.max(targetMaxSpeed, 400); }
-      else if (/\bqsfp56\b/i.test(desc)) { targetFormFactor = 'QSFP56'; targetMaxSpeed = Math.max(targetMaxSpeed, 200); }
-      else if (/\bqsfp28\b/i.test(desc)) { targetFormFactor = 'QSFP28'; targetMaxSpeed = Math.max(targetMaxSpeed, 100); }
-      else if (/\bsfp28\b/i.test(desc)) { targetFormFactor = 'SFP28'; targetMaxSpeed = Math.max(targetMaxSpeed, 25); }
-      else if (/\bsfp\+\b/i.test(desc)) { targetFormFactor = 'SFP+'; targetMaxSpeed = Math.max(targetMaxSpeed, 10); }
-    }
-  }
+  const { targetOpticsCount, targetMaxSpeed, targetFormFactor } = _extractTargetOptics(bom);
 
   if (targetOpticsCount === 0) {
     return {
@@ -643,6 +748,70 @@ function _evaluatePcieRisersParity(spec, bom) {
   };
 }
 
+function _isNetworkAdapterItem(desc) {
+  if (/\b(power|chassis|cable)\b/i.test(desc)) return false;
+  return /\b(nic|adapter|ethernet|ocp3?|sfp\d*|bcm\d*|infiniband|\bib\b|connectx|mcx\d+)\b/i.test(desc);
+}
+
+function _parseAdapterPortCount(desc) {
+  const portMatch = desc.match(/(\d+)\s*[-]?port/i);
+  if (portMatch) return parseInt(portMatch[1], 10);
+  if (/\bdual\b/i.test(desc)) return 2;
+  if (/\bquad\b/i.test(desc)) return 4;
+  return 1;
+}
+
+function _parseAdapterSpeedGb(desc) {
+  if (/\b400\s*(?:gb|gbe|g\b|gbps)/i.test(desc) || /\bndr\b/i.test(desc)) return 400;
+  if (/\b200\s*(?:gb|gbe|g\b|gbps)/i.test(desc) || /\bhdr\b/i.test(desc) || /\bndr200\b/i.test(desc)) return 200;
+  if (/\b100\s*(?:gb|gbe|g\b|gbps)/i.test(desc)) return 100;
+  if (/\b25\s*(?:gb|gbe|g\b|gbps)/i.test(desc)) return 25;
+  const speedMatch = desc.match(/(\d+)\s*(?:gb|gbe|gb\/s|gbps)/i);
+  return speedMatch ? parseInt(speedMatch[1], 10) : 10;
+}
+
+function _matchesProtocolRequirement(reqProtocol, itemProto) {
+  if (reqProtocol === 'INFINIBAND_NDR') {
+    return itemProto === 'INFINIBAND_NDR';
+  }
+  if (reqProtocol === 'INFINIBAND_HDR') {
+    return itemProto === 'INFINIBAND_HDR' || itemProto === 'INFINIBAND_NDR';
+  }
+  if (reqProtocol === 'ROCE_V2') {
+    return itemProto === 'ROCE_V2' || itemProto.startsWith('INFINIBAND');
+  }
+  return true;
+}
+
+function _aggregateTargetNetworkItems(bom, reqProtocol) {
+  let targetPorts = 0;
+  let maxSpeed = 0;
+  let targetProtocol = 'ETHERNET';
+  let hasMatchingProtocol = false;
+
+  for (const item of bom) {
+    const desc = (item.description || item.sku || '').toLowerCase();
+    if (!_isNetworkAdapterItem(desc)) continue;
+
+    const p = _parseAdapterPortCount(desc);
+    const s = _parseAdapterSpeedGb(desc);
+    const itemProto = detectFabricProtocol(desc);
+
+    targetPorts += p * (item.quantity || 1);
+    maxSpeed = Math.max(maxSpeed, s);
+
+    if ((FABRIC_PROTOCOL_RANKS[itemProto] || 0) > (FABRIC_PROTOCOL_RANKS[targetProtocol] || 0)) {
+      targetProtocol = itemProto;
+    }
+
+    if (_matchesProtocolRequirement(reqProtocol, itemProto)) {
+      hasMatchingProtocol = true;
+    }
+  }
+
+  return { targetPorts, maxSpeed, targetProtocol, hasMatchingProtocol };
+}
+
 function _evaluateNetworkingFabricParity(spec, bom) {
   const reqSpeed = spec.networking?.speedGb ?? null;
   const reqPorts = spec.networking?.portsCount ?? null;
@@ -653,50 +822,7 @@ function _evaluateNetworkingFabricParity(spec, bom) {
   }
 
   const reqProtocol = rawProtocol || 'ETHERNET';
-
-  let targetPorts = 0;
-  let maxSpeed = 0;
-  let targetProtocol = 'ETHERNET';
-  let hasMatchingProtocol = false;
-
-  for (const item of bom) {
-    const desc = (item.description || item.sku || '').toLowerCase();
-    if (/\b(nic|adapter|ethernet|ocp3?|sfp\d*|bcm\d*|infiniband|\bib\b|connectx|mcx\d+)\b/i.test(desc) && !/\b(power|chassis|cable)\b/i.test(desc)) {
-      const portMatch = desc.match(/(\d+)\s*[-]?port/i);
-      const speedMatch = desc.match(/(\d+)\s*(?:gb|gbe|gb\/s|gbps)/i);
-      const p = portMatch ? parseInt(portMatch[1], 10) : (/\bdual\b/i.test(desc) ? 2 : /\bquad\b/i.test(desc) ? 4 : 1);
-
-      let s = speedMatch ? parseInt(speedMatch[1], 10) : 10;
-      if (/\b400\s*(?:gb|gbe|g\b|gbps)/i.test(desc) || /\bndr\b/i.test(desc)) s = 400;
-      else if (/\b200\s*(?:gb|gbe|g\b|gbps)/i.test(desc) || /\bhdr\b/i.test(desc) || /\bndr200\b/i.test(desc)) s = 200;
-      else if (/\b100\s*(?:gb|gbe|g\b|gbps)/i.test(desc)) s = 100;
-      else if (/\b25\s*(?:gb|gbe|g\b|gbps)/i.test(desc)) s = 25;
-
-      const itemProto = detectFabricProtocol(desc);
-      targetPorts += p * (item.quantity || 1);
-      maxSpeed = Math.max(maxSpeed, s);
-
-      if ((FABRIC_PROTOCOL_RANKS[itemProto] || 0) > (FABRIC_PROTOCOL_RANKS[targetProtocol] || 0)) {
-        targetProtocol = itemProto;
-      }
-
-      if (reqProtocol === 'INFINIBAND_NDR') {
-        if (itemProto === 'INFINIBAND_NDR') {
-          hasMatchingProtocol = true;
-        }
-      } else if (reqProtocol === 'INFINIBAND_HDR') {
-        if (itemProto === 'INFINIBAND_HDR' || itemProto === 'INFINIBAND_NDR') {
-          hasMatchingProtocol = true;
-        }
-      } else if (reqProtocol === 'ROCE_V2') {
-        if (itemProto === 'ROCE_V2' || itemProto.startsWith('INFINIBAND')) {
-          hasMatchingProtocol = true;
-        }
-      } else {
-        hasMatchingProtocol = true;
-      }
-    }
-  }
+  const { targetPorts, maxSpeed, targetProtocol, hasMatchingProtocol } = _aggregateTargetNetworkItems(bom, reqProtocol);
 
   if (targetPorts === 0) {
     return { subsystem: 'OCP_NETWORKING_FABRIC', status: 'DEFICIT', details: `Target BOM contains 0 network adapters; competitor specified ${reqPorts || 'ports'} ${reqSpeed ? reqSpeed + 'Gb' : ''} ${reqProtocol}.` };

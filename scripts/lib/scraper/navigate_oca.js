@@ -59,25 +59,47 @@ function activeConfigurationMatches(query, pageText, options = {}) {
     (!options.targetSku || baseText.toUpperCase().includes(String(options.targetSku).toUpperCase())));
 }
 
-function isExactProductCandidate(query, candidate) {
-  // Fixed SAN switches are configurable products without a server CTO label.
-  // Require the explicit orderable SKU so 24/8 and 24/24 bundles cannot swap.
+function _matchesFixedSanSwitchCandidate(query, candidate) {
   const exactSku = String(query).trim().toUpperCase() === String(candidate.sku || '').trim().toUpperCase();
-  const fixedSanSwitch = /\bsn\s*\d{4}[a-z]\b/i.test(candidate.text || '') &&
-    /\bswitch\b/i.test(candidate.text || '') &&
-    !/\b(upgrade|license|transceiver\s+kit|support|service)\b/i.test(candidate.text || '');
+  const text = candidate.text || '';
+  const fixedSanSwitch = /\bsn\s*\d{4}[a-z]\b/i.test(text) &&
+    /\bswitch\b/i.test(text) &&
+    !/\b(upgrade|license|transceiver\s+kit|support|service)\b/i.test(text);
   if (exactSku && fixedSanSwitch) {
-    return !candidate.isTaa && !candidate.isGta && !/(?:\btaa\b|#gta\b)/i.test(candidate.text || '');
+    return !candidate.isTaa && !candidate.isGta && !/(?:\btaa\b|#gta\b)/i.test(text);
   }
-  const expected = extractModelGeneration(query);
-  const observed = extractModelGeneration(candidate.text);
+  return null;
+}
+
+function _matchesSynergyInterconnectCandidate(expected, observed, candidate) {
+  if (expected.model !== 'sy100gbf32') return null;
   const exactIdentity = Boolean(expected.model && observed.model && expected.model === observed.model &&
     (!expected.generation || expected.generation === observed.generation));
-  if (expected.model === 'sy100gbf32') {
-    return exactIdentity && /\b(?:module|interconnect)\b/i.test(candidate.text || '') &&
-      !/\b(?:support|service|license|cable|transceiver|kit|taa)\b|#gta\b/i.test(candidate.text || '') &&
-      !candidate.isTaa && !candidate.isGta;
-  }
+  const text = candidate.text || '';
+  return exactIdentity && /\b(?:module|interconnect)\b/i.test(text) &&
+    !/\b(?:support|service|license|cable|transceiver|kit|taa)\b|#gta\b/i.test(text) &&
+    !candidate.isTaa && !candidate.isGta;
+}
+
+function _isDisallowedCandidateVariant(candidate) {
+  const text = candidate.text || '';
+  const sku = candidate.sku || '';
+  return candidate.isBto || candidate.isTaa || candidate.isGta ||
+    /(?:\btaa\b|#gta\b)/i.test(text) || /#GTA$/i.test(sku);
+}
+
+function isExactProductCandidate(query, candidate) {
+  const sanMatch = _matchesFixedSanSwitchCandidate(query, candidate);
+  if (sanMatch !== null) return sanMatch;
+
+  const expected = extractModelGeneration(query);
+  const observed = extractModelGeneration(candidate.text);
+  const synMatch = _matchesSynergyInterconnectCandidate(expected, observed, candidate);
+  if (synMatch !== null) return synMatch;
+
+  const exactIdentity = Boolean(expected.model && observed.model && expected.model === observed.model &&
+    (!expected.generation || expected.generation === observed.generation));
+
   const isCto = candidate.isCto || /configure[\s-]+to[\s-]+order|\bcto\b|smart\s+cto|base\s+module|scalable\s+base|base\s+chassis/i.test(candidate.text || '');
   
   // Appliance exclusion: do not match Aruba, SimpliVity, or networking central appliances unless requested
@@ -85,9 +107,7 @@ function isExactProductCandidate(query, candidate) {
   const isAppliance = /(?:aruba|networking\s+central|hardware\s+appliance|backup\s+gateway)/i.test(candidate.text || '');
   if (!isArubaQuery && isAppliance) return false;
 
-  const disallowed = candidate.isBto || candidate.isTaa || candidate.isGta ||
-    /(?:\btaa\b|#gta\b)/i.test(candidate.text || '') || /#GTA$/i.test(candidate.sku || '');
-  return exactIdentity && isCto && !disallowed;
+  return exactIdentity && isCto && !_isDisallowedCandidateVariant(candidate);
 }
 
 /**
@@ -135,70 +155,59 @@ async function closePageTarget(targetId) {
   });
 }
 
-/**
- * Checks whether the active OCA tab is already on the target configuration menu.
- * Automatically restores the #extended_overview_menu sub-tab if another sub-tab (Services/BOM/Summary)
- * was left active, preventing false-negative session resets.
- */
-async function checkActiveMenuTab(ocaTarget, query, options) {
-  const ws = await connectWS(ocaTarget.webSocketDebuggerUrl);
-  ws._isOcaTarget = true;
-  const checkState = await sendCommand(ws, 'Runtime.evaluate', {
-    expression: `(() => {
-      const documents = [document];
+const CHECK_ACTIVE_MENU_TAB_SCRIPT = `(() => {
+  const documents = [document];
+  try {
+    const iframes = document.querySelectorAll('iframe');
+    iframes.forEach(f => {
       try {
-        const iframes = document.querySelectorAll('iframe');
-        iframes.forEach(f => {
-          try {
-            if (f.contentDocument && !documents.includes(f.contentDocument)) {
-              documents.push(f.contentDocument);
-            }
-          } catch (_) {}
-        });
-      } catch (_) {}
-
-      // If active sub-tab was left on Services/BOM, restore Menu tab across documents
-      for (const doc of documents) {
-        const menuTabAnchor = Array.from(doc.querySelectorAll('a.ui-tabs-anchor, a[href*="extended_overview_menu"]'))
-          .find(el => el.getAttribute('href') === '#extended_overview_menu');
-        if (menuTabAnchor && menuTabAnchor.getAttribute('aria-selected') !== 'true' && !menuTabAnchor.closest('li')?.classList.contains('ui-tabs-active')) {
-          try { menuTabAnchor.click(); } catch (_) {}
+        if (f.contentDocument && !documents.includes(f.contentDocument)) {
+          documents.push(f.contentDocument);
         }
-      }
+      } catch (_) {}
+    });
+  } catch (_) {}
 
-      const bodyText = documents.map(d => (d.body?.innerText || '').slice(0, 25000)).join('\\n');
-      const menuText = documents.map(d => (d.getElementById('extended_overview_menu')?.textContent || '').slice(0, 25000)).join('\\n');
-      const pageText = (bodyText + '\\n' + menuText).slice(0, 35000);
-      const isLoggedOut = /you are logged out|logged out successfully|session (?:has )?expired|session (?:is )?invalid|session timed out|please sign in again/i.test(bodyText);
+  // If active sub-tab was left on Services/BOM, restore Menu tab across documents
+  for (const doc of documents) {
+    const menuTabAnchor = Array.from(doc.querySelectorAll('a.ui-tabs-anchor, a[href*="extended_overview_menu"]'))
+      .find(el => el.getAttribute('href') === '#extended_overview_menu');
+    if (menuTabAnchor && menuTabAnchor.getAttribute('aria-selected') !== 'true' && !menuTabAnchor.closest('li')?.classList.contains('ui-tabs-active')) {
+      try { menuTabAnchor.click(); } catch (_) {}
+    }
+  }
 
-      const visible = el => {
-        if (!el) return false;
-        const s = window.getComputedStyle(el);
-        return el.offsetWidth > 0 && el.offsetHeight > 0 && s.display !== 'none' && s.visibility !== 'hidden';
-      };
+  const bodyText = documents.map(d => (d.body?.innerText || '').slice(0, 25000)).join('\\n');
+  const menuText = documents.map(d => (d.getElementById('extended_overview_menu')?.textContent || '').slice(0, 25000)).join('\\n');
+  const pageText = (bodyText + '\\n' + menuText).slice(0, 35000);
+  const isLoggedOut = /you are logged out|logged out successfully|session (?:has )?expired|session (?:is )?invalid|session timed out|please sign in again/i.test(bodyText);
 
-      // Check for true fatal WebLogic exceptions, strictly excluding benign modals (CLIC advice, notifications)
-      let exceptionBox = null;
-      for (const doc of documents) {
-        const found = Array.from(doc.querySelectorAll('.ui-dialog, .modal, [role="dialog"], .dqe-error, .modal-error, [class*="error-dialog"], [class*="exception-dialog"]'))
-          .find(el => visible(el) && /an unexpected error|encountered a problem|exception occurred|internal server error|weblogic bridge message/i.test(el.innerText || ''));
-        if (found) { exceptionBox = found; break; }
-      }
+  const visible = el => {
+    if (!el) return false;
+    const s = window.getComputedStyle(el);
+    return el.offsetWidth > 0 && el.offsetHeight > 0 && s.display !== 'none' && s.visibility !== 'hidden';
+  };
 
-      const hasException = Boolean(exceptionBox);
-      const exceptionDetail = exceptionBox ? (exceptionBox.innerText || '').slice(0, 300).replace(/\\s+/g, ' ') : '';
-      const hasMenu = documents.some(doc => Boolean(
-        doc.querySelector('#extended_overview_menu, .menu_label, .eo_nav_div, a[href*="extended_overview_menu"]') ||
-        doc.querySelectorAll('table').length > 20 ||
-        Array.from(doc.querySelectorAll('a, button, div, span')).some(e => ['Menu', 'Components', 'Summary', 'BOM'].includes((e.innerText || '').trim()))
-      ));
+  // Check for true fatal WebLogic exceptions, strictly excluding benign modals (CLIC advice, notifications)
+  let exceptionBox = null;
+  for (const doc of documents) {
+    const found = Array.from(doc.querySelectorAll('.ui-dialog, .modal, [role="dialog"], .dqe-error, .modal-error, [class*="error-dialog"], [class*="exception-dialog"]'))
+      .find(el => visible(el) && /an unexpected error|encountered a problem|exception occurred|internal server error|weblogic bridge message/i.test(el.innerText || ''));
+    if (found) { exceptionBox = found; break; }
+  }
 
-      return { hasMenu, isLoggedOut, hasException, exceptionDetail, pageText };
-    })()`,
-    returnByValue: true
-  });
+  const hasException = Boolean(exceptionBox);
+  const exceptionDetail = exceptionBox ? (exceptionBox.innerText || '').slice(0, 300).replace(/\\s+/g, ' ') : '';
+  const hasMenu = documents.some(doc => Boolean(
+    doc.querySelector('#extended_overview_menu, .menu_label, .eo_nav_div, a[href*="extended_overview_menu"]') ||
+    doc.querySelectorAll('table').length > 20 ||
+    Array.from(doc.querySelectorAll('a, button, div, span')).some(e => ['Menu', 'Components', 'Summary', 'BOM'].includes((e.innerText || '').trim()))
+  ));
 
-  const activeState = checkState?.result?.value;
+  return { hasMenu, isLoggedOut, hasException, exceptionDetail, pageText };
+})()`;
+
+async function _handleMenuTabStaleOrException(ocaTarget, ws, activeState) {
   const isLoggedOut = Boolean(activeState?.isLoggedOut);
   const hasException = Boolean(activeState?.hasException);
 
@@ -212,9 +221,10 @@ async function checkActiveMenuTab(ocaTarget, query, options) {
     await new Promise(r => setTimeout(r, 1000));
     return { handled: true, isStaleOrLoggedOut: true };
   }
+  return null;
+}
 
-  const hasMenu = typeof activeState === 'object' ? Boolean(activeState?.hasMenu) : Boolean(activeState);
-  const pageText = typeof activeState === 'object' ? (activeState?.pageText || '') : '';
+async function _handleActiveMatchesOrReopen(ocaTarget, ws, query, options, hasMenu, pageText) {
   const activeMatchesRequest = activeConfigurationMatches(query, pageText, options);
 
   if (hasMenu && activeMatchesRequest && !options.forceDiscovery) {
@@ -238,175 +248,242 @@ async function checkActiveMenuTab(ocaTarget, query, options) {
     return { handled: true, reopen: true };
   }
 
+  return null;
+}
+
+/**
+ * Checks whether the active OCA tab is already on the target configuration menu.
+ * Automatically restores the #extended_overview_menu sub-tab if another sub-tab (Services/BOM/Summary)
+ * was left active, preventing false-negative session resets.
+ */
+async function checkActiveMenuTab(ocaTarget, query, options) {
+  const ws = await connectWS(ocaTarget.webSocketDebuggerUrl);
+  ws._isOcaTarget = true;
+  const checkState = await sendCommand(ws, 'Runtime.evaluate', {
+    expression: CHECK_ACTIVE_MENU_TAB_SCRIPT,
+    returnByValue: true
+  });
+
+  const activeState = checkState?.result?.value;
+  const staleHandled = await _handleMenuTabStaleOrException(ocaTarget, ws, activeState);
+  if (staleHandled) {
+    return staleHandled;
+  }
+
+  const hasMenu = typeof activeState === 'object' ? Boolean(activeState?.hasMenu) : Boolean(activeState);
+  const pageText = typeof activeState === 'object' ? (activeState?.pageText || '') : '';
+
+  const activeHandled = await _handleActiveMatchesOrReopen(ocaTarget, ws, query, options, hasMenu, pageText);
+  if (activeHandled) {
+    return activeHandled;
+  }
+
   return { handled: false, ws };
 }
 
-function buildDiscoveryExpression(query) {
+function _clientEnsureCatalogSearchMode() {
+  return String.raw`
+    // Ensure "Product Catalog" search mode is selected if OCA landing shows scope menu
+    const aiTrigger = document.querySelector('#dqe_ai_mode_trigger');
+    if (aiTrigger) {
+      aiTrigger.click();
+      await new Promise(r => setTimeout(r, 400));
+    }
+    const prodCatOption = Array.from(document.querySelectorAll('.dqe-menu-item, .item-title')).find(el => (el.innerText || '').includes('Product Catalog'));
+    if (prodCatOption) {
+      prodCatOption.click();
+      await new Promise(r => setTimeout(r, 600));
+    }
+    // Product Catalog is also an AI data source; selecting it alone does
+    // not disable generative search. Exact SKU discovery needs classic mode.
+    const aiToggle = document.querySelector('#ai_toggle_switch');
+    if (aiToggle?.checked) {
+      aiToggle.click();
+      await new Promise(r => setTimeout(r, 600));
+    }
+  `;
+}
+
+function _clientWaitForSearchInput() {
   return String.raw`
     (async function() {
-      // Ensure "Product Catalog" search mode is selected if OCA landing shows scope menu
-      const aiTrigger = document.querySelector('#dqe_ai_mode_trigger');
-      if (aiTrigger) {
-        aiTrigger.click();
-        await new Promise(r => setTimeout(r, 400));
-      }
-      const prodCatOption = Array.from(document.querySelectorAll('.dqe-menu-item, .item-title')).find(el => (el.innerText || '').includes('Product Catalog'));
-      if (prodCatOption) {
-        prodCatOption.click();
-        await new Promise(r => setTimeout(r, 600));
-      }
-      // Product Catalog is also an AI data source; selecting it alone does
-      // not disable generative search. Exact SKU discovery needs classic mode.
-      const aiToggle = document.querySelector('#ai_toggle_switch');
-      if (aiToggle?.checked) {
-        aiToggle.click();
-        await new Promise(r => setTimeout(r, 600));
-      }
-
-      // Find search input and wait for initial OCA loading overlays to clear
-      let searchInput = null;
-      for (let readinessAttempt = 0; readinessAttempt < 60 && !searchInput; readinessAttempt++) {
+      let input = null;
+      for (let readinessAttempt = 0; readinessAttempt < 60 && !input; readinessAttempt++) {
         const isLoading = Array.from(document.querySelectorAll('.loading_div, .maui-loading-div, .toolbar_loading, .dqe-loading'))
           .some(el => el.getClientRects().length && window.getComputedStyle(el).visibility !== 'hidden' && window.getComputedStyle(el).display !== 'none');
         if (!isLoading) {
-          searchInput = document.querySelector('#searchProductInput') ||
-                        document.querySelector('#search-config') ||
-                        document.querySelector('textarea[name="search-config"]') ||
-                        document.querySelector('input[type="search"]') ||
-                        document.querySelector('input[placeholder*="Search"]');
+          input = document.querySelector('#searchProductInput') ||
+                  document.querySelector('#search-config') ||
+                  document.querySelector('textarea[name="search-config"]') ||
+                  document.querySelector('input[type="search"]') ||
+                  document.querySelector('input[placeholder*="Search"]');
         }
-        if (!searchInput) await new Promise(r => setTimeout(r, 500));
+        if (!input) await new Promise(r => setTimeout(r, 500));
       }
-      if (!searchInput) return { success: false, candidates: [], action: 'SEARCH_INPUT_NOT_READY' };
+      return input;
+    })()
+  `;
+}
 
-      async function runSearch(q) {
-        searchInput.focus();
-        searchInput.value = '';
-        searchInput.dispatchEvent(new Event('input', { bubbles: true }));
-        await new Promise(r => setTimeout(r, 150));
-        searchInput.value = q;
-        searchInput.dispatchEvent(new InputEvent('input', { bubbles: true, data: q, inputType: 'insertText' }));
-        searchInput.dispatchEvent(new Event('change', { bubbles: true }));
-        
-        if (window.jQuery) {
-          const kd = window.jQuery.Event('keydown', { key: 'Enter', code: 'Enter', which: 13, keyCode: 13 });
-          window.jQuery(searchInput).trigger(kd);
-          const kp = window.jQuery.Event('keypress', { key: 'Enter', code: 'Enter', which: 13, keyCode: 13 });
-          window.jQuery(searchInput).trigger(kp);
-          const ku = window.jQuery.Event('keyup', { key: 'Enter', code: 'Enter', which: 13, keyCode: 13 });
-          window.jQuery(searchInput).trigger(ku);
-        } else {
-          searchInput.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', code: 'Enter', which: 13, keyCode: 13, bubbles: true }));
-          searchInput.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter', code: 'Enter', which: 13, keyCode: 13, bubbles: true }));
-        }
-        const searchBtn = document.querySelector('#searchProductBtn, .dqe-search-btn, button[id*="search" i], .search-icon, [onclick*="searchProduct" i]');
-        if (searchBtn && searchBtn.getClientRects().length) {
-          try { searchBtn.click(); } catch (_) {}
-        }
-        await new Promise(r => setTimeout(r, 6000));
+function _clientRunSearchFunction() {
+  return String.raw`
+    async function runSearch(q) {
+      searchInput.focus();
+      searchInput.value = '';
+      searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+      await new Promise(r => setTimeout(r, 150));
+      searchInput.value = q;
+      searchInput.dispatchEvent(new InputEvent('input', { bubbles: true, data: q, inputType: 'insertText' }));
+      searchInput.dispatchEvent(new Event('change', { bubbles: true }));
+      
+      if (window.jQuery) {
+        const kd = window.jQuery.Event('keydown', { key: 'Enter', code: 'Enter', which: 13, keyCode: 13 });
+        window.jQuery(searchInput).trigger(kd);
+        const kp = window.jQuery.Event('keypress', { key: 'Enter', code: 'Enter', which: 13, keyCode: 13 });
+        window.jQuery(searchInput).trigger(kp);
+        const ku = window.jQuery.Event('keyup', { key: 'Enter', code: 'Enter', which: 13, keyCode: 13 });
+        window.jQuery(searchInput).trigger(ku);
+      } else {
+        searchInput.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', code: 'Enter', which: 13, keyCode: 13, bubbles: true }));
+        searchInput.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter', code: 'Enter', which: 13, keyCode: 13, bubbles: true }));
       }
+      const searchBtn = document.querySelector('#searchProductBtn, .dqe-search-btn, button[id*="search" i], .search-icon, [onclick*="searchProduct" i]');
+      if (searchBtn && searchBtn.getClientRects().length) {
+        try { searchBtn.click(); } catch (_) {}
+      }
+      await new Promise(r => setTimeout(r, 6000));
+    }
+  `;
+}
 
-      function extractCandidates() {
-        const result = [];
-        // 1. Inspect CTO cards with select.dqe-products dropdown
-        const ctoCards = Array.from(document.querySelectorAll('.dqe-card, .cto-card, .card-type-catalog, [class*="cto"]'))
-          .sort((a, b) => (b.classList.contains('cto-card') ? 1 : 0) - (a.classList.contains('cto-card') ? 1 : 0));
-        for (let cIdx = 0; cIdx < ctoCards.length; cIdx++) {
-          const card = ctoCards[cIdx];
-          card.setAttribute('data-cand-idx', String(cIdx));
-          const productSelect = card.querySelector('select.dqe-products, select[class*="product"], select');
-          const button = card.querySelector('.dqe-customize-btn, button, input[type="button"]');
-          if (productSelect && button) {
-            const isRealCtoCard = card.classList.contains('cto-card') || /—\s*CTO/i.test(card.innerText || '');
-            const cardText = (card.innerText || '').replace(/\s+/g, ' ').trim();
-            const deliveryLabel = cardText.match(/(?:EDT|estimated delivery|lead time)\s*[:\-]?\s*\d+\s*(?:-|to)\s*\d+\s*days?/i)?.[0] || '';
-            const availability = /not yet available|unavailable|out of stock/i.test(cardText)
-              ? 'Unavailable'
-              : (/available|select product/i.test(cardText) ? 'Available in OCA product catalog' : 'Not published by OCA');
-            const cardSel = '[data-cand-idx="' + cIdx + '"]';
-            const options = Array.from(productSelect.options || []).filter(o => o.value && o.value !== '-1');
-            for (let optIdx = 0; optIdx < options.length; optIdx++) {
-              const opt = options[optIdx];
-              const text = (opt.text || '').replace(/\s+/g, ' ').trim();
-              const sku = opt.value || text.match(/\b(?=[A-Z0-9-]{5,}(?:#GTA)?\b)(?=[A-Z0-9-]*\d)[A-Z0-9]{5,}(?:-[A-Z0-9]{2,3})?(?:#GTA)?\b/i)?.[0] || '';
-              const isOptionCto = isRealCtoCard || /configure[\s-]+to[\s-]+order|\bcto\b|base\s+module|scalable\s+base|base\s+chassis/i.test(text);
-              result.push({
-                type: 'dropdown-option',
-                cardSelector: cardSel,
-                optionValue: opt.value,
-                text,
-                sku: sku.toUpperCase(),
-                listPriceUsd: 0,
-                availability,
-                leadTime: deliveryLabel,
-                deliveryLabel: /faster[^.]*deliver(?:y|ies)/i.test(cardText) ? cardText.match(/[^.]*faster[^.]*deliver(?:y|ies)[^.]*/i)?.[0]?.trim() || '' : '',
-                isBto: !isOptionCto,
-                isTaa: /(?:\btaa\b)/i.test(text),
-                isGta: /#gta\b/i.test(text) || /#GTA$/i.test(sku),
-                isCto: isOptionCto
-              });
-            }
-            continue;
-          }
-
-          // 2. Direct catalog cards with a configure / customize button
-          const buttonDirect = card.querySelector('.dqe-customize-btn, button, input[type="button"], a.btn');
-          const title = (card.querySelector('.card-title, .product-title, h3, h4')?.innerText || card.innerText || '').replace(/\s+/g, ' ').trim();
-          const skuMatch = title.match(/\b(?=[A-Z0-9-]{5,}(?:#GTA)?\b)(?=[A-Z0-9-]*\d)[A-Z0-9]{5,}(?:-[A-Z0-9]{2,3})?(?:#GTA)?\b/i);
-          const priceMatch = (card.innerText || '').match(/\$\s*([\d,]+(?:\.\d{2})?)/);
-          const price = priceMatch ? parseFloat(priceMatch[1].replace(/,/g, '')) : 0;
-          const deliveryLabel = (card.innerText || '').match(/(?:EDT|estimated delivery|lead time)\s*[:\-]?\s*\d+\s*(?:-|to)\s*\d+\s*days?/i)?.[0] || '';
-          const availability = /not yet available|unavailable|out of stock/i.test(card.innerText || '')
-            ? 'Unavailable'
-            : (/available|customize|configure/i.test(card.innerText || '') ? 'Available in OCA product catalog' : 'Not published by OCA');
-          const isDirectCto = /configure[\s-]+to[\s-]+order|\bcto\b|base\s+module|scalable\s+base|base\s+chassis/i.test(title);
-          if (buttonDirect && title) {
-            result.push({
-              type: 'direct-button',
-              cardSelector: '[data-cand-idx="' + cIdx + '"]',
-              text: title,
-              sku: (skuMatch ? skuMatch[0] : '').toUpperCase(),
-              listPriceUsd: price,
-              availability,
-              leadTime: deliveryLabel,
-              deliveryLabel: /faster[^.]*deliver(?:y|ies)/i.test(card.innerText || '') ? (card.innerText || '').match(/[^.]*faster[^.]*deliver(?:y|ies)[^.]*/i)?.[0]?.trim() || '' : '',
-              isBto: !isDirectCto,
-              isTaa: /(?:\btaa\b)/i.test(title),
-              isGta: /#gta\b/i.test(title),
-              isCto: isDirectCto
-            });
-          }
-        }
-        return result;
-      }
-
-      let candidates = extractCandidates();
-      if (!candidates.some(candidate => candidate.sku === ${JSON.stringify(query.toUpperCase())})) {
-        await runSearch(${JSON.stringify(query)});
-        candidates = extractCandidates();
-      }
-      for (let attempt = 0; !candidates.length && attempt < 45; attempt++) {
-        if (attempt === 10 || attempt === 25) {
-          await runSearch(${JSON.stringify(query)});
-        } else {
-          await new Promise(r => setTimeout(r, 1000));
-        }
-        candidates = extractCandidates();
-      }
-      if (!candidates.length && ${JSON.stringify(query)}.includes(' ')) {
-        const fallbackQuery = ${JSON.stringify(query)}.split(/\s+/)[0];
-        await runSearch(fallbackQuery);
-        for (let fAttempt = 0; !candidates.length && fAttempt < 15; fAttempt++) {
-          await new Promise(r => setTimeout(r, 1000));
-          candidates = extractCandidates();
-        }
-      }
-
+const CLIENT_EXTRACT_CANDIDATES_SCRIPT = String.raw`
+    function _buildDropdownOptionCandidate(opt, cardSel, cardText, isRealCtoCard, deliveryLabel) {
+      const text = (opt.text || '').replace(/\s+/g, ' ').trim();
+      const sku = opt.value || text.match(/\b(?=[A-Z0-9-]{5,}(?:#GTA)?\b)(?=[A-Z0-9-]*\d)[A-Z0-9]{5,}(?:-[A-Z0-9]{2,3})?(?:#GTA)?\b/i)?.[0] || '';
+      const isOptionCto = isRealCtoCard || /configure[\s-]+to[\s-]+order|\bcto\b|base\s+module|scalable\s+base|base\s+chassis/i.test(text);
+      const availability = /not yet available|unavailable|out of stock/i.test(cardText)
+        ? 'Unavailable'
+        : (/available|select product/i.test(cardText) ? 'Available in OCA product catalog' : 'Not published by OCA');
       return {
-        success: true,
-        action: 'CANDIDATES_COLLECTED',
-        candidates
+        type: 'dropdown-option',
+        cardSelector: cardSel,
+        optionValue: opt.value,
+        text,
+        sku: sku.toUpperCase(),
+        listPriceUsd: 0,
+        availability,
+        leadTime: deliveryLabel,
+        deliveryLabel: /faster[^.]*deliver(?:y|ies)/i.test(cardText) ? cardText.match(/[^.]*faster[^.]*deliver(?:y|ies)[^.]*/i)?.[0]?.trim() || '' : '',
+        isBto: !isOptionCto,
+        isTaa: /(?:\btaa\b)/i.test(text),
+        isGta: /#gta\b/i.test(text) || /#GTA$/i.test(sku),
+        isCto: isOptionCto
       };
+    }
+
+    function _extractDropdownCandidates(card, cIdx, productSelect) {
+      const isRealCtoCard = card.classList.contains('cto-card') || /—\s*CTO/i.test(card.innerText || '');
+      const cardText = (card.innerText || '').replace(/\s+/g, ' ').trim();
+      const deliveryLabel = cardText.match(/(?:EDT|estimated delivery|lead time)\s*[:\-]?\s*\d+\s*(?:-|to)\s*\d+\s*days?/i)?.[0] || '';
+      const cardSel = '[data-cand-idx="' + cIdx + '"]';
+      const options = Array.from(productSelect.options || []).filter(o => o.value && o.value !== '-1');
+      return options.map(opt => _buildDropdownOptionCandidate(opt, cardSel, cardText, isRealCtoCard, deliveryLabel));
+    }
+
+    function _extractDirectButtonCandidate(card, cIdx, buttonDirect) {
+      const title = (card.querySelector('.card-title, .product-title, h3, h4')?.innerText || card.innerText || '').replace(/\s+/g, ' ').trim();
+      if (!buttonDirect || !title) return null;
+      const skuMatch = title.match(/\b(?=[A-Z0-9-]{5,}(?:#GTA)?\b)(?=[A-Z0-9-]*\d)[A-Z0-9]{5,}(?:-[A-Z0-9]{2,3})?(?:#GTA)?\b/i);
+      const priceMatch = (card.innerText || '').match(/\$\s*([\d,]+(?:\.\d{2})?)/);
+      const price = priceMatch ? parseFloat(priceMatch[1].replace(/,/g, '')) : 0;
+      const deliveryLabel = (card.innerText || '').match(/(?:EDT|estimated delivery|lead time)\s*[:\-]?\s*\d+\s*(?:-|to)\s*\d+\s*days?/i)?.[0] || '';
+      const availability = /not yet available|unavailable|out of stock/i.test(card.innerText || '')
+        ? 'Unavailable'
+        : (/available|customize|configure/i.test(card.innerText || '') ? 'Available in OCA product catalog' : 'Not published by OCA');
+      const isDirectCto = /configure[\s-]+to[\s-]+order|\bcto\b|base\s+module|scalable\s+base|base\s+chassis/i.test(title);
+      return {
+        type: 'direct-button',
+        cardSelector: '[data-cand-idx="' + cIdx + '"]',
+        text: title,
+        sku: (skuMatch ? skuMatch[0] : '').toUpperCase(),
+        listPriceUsd: price,
+        availability,
+        leadTime: deliveryLabel,
+        deliveryLabel: /faster[^.]*deliver(?:y|ies)/i.test(card.innerText || '') ? (card.innerText || '').match(/[^.]*faster[^.]*deliver(?:y|ies)[^.]*/i)?.[0]?.trim() || '' : '',
+        isBto: !isDirectCto,
+        isTaa: /(?:\btaa\b)/i.test(title),
+        isGta: /#gta\b/i.test(title),
+        isCto: isDirectCto
+      };
+    }
+
+    function extractCandidates() {
+      const result = [];
+      const ctoCards = Array.from(document.querySelectorAll('.dqe-card, .cto-card, .card-type-catalog, [class*="cto"]'))
+        .sort((a, b) => (b.classList.contains('cto-card') ? 1 : 0) - (a.classList.contains('cto-card') ? 1 : 0));
+      for (let cIdx = 0; cIdx < ctoCards.length; cIdx++) {
+        const card = ctoCards[cIdx];
+        card.setAttribute('data-cand-idx', String(cIdx));
+        const productSelect = card.querySelector('select.dqe-products, select[class*="product"], select');
+        const button = card.querySelector('.dqe-customize-btn, button, input[type="button"]');
+        if (productSelect && button) {
+          result.push(..._extractDropdownCandidates(card, cIdx, productSelect));
+          continue;
+        }
+        const directCand = _extractDirectButtonCandidate(card, cIdx, card.querySelector('.dqe-customize-btn, button, input[type="button"], a.btn'));
+        if (directCand) result.push(directCand);
+      }
+      return result;
+    }
+  `;
+
+function _clientExtractCandidatesFunction() {
+  return CLIENT_EXTRACT_CANDIDATES_SCRIPT;
+}
+
+function _clientDiscoveryLoop(queryJson, upperQueryJson) {
+  return `
+    let candidates = extractCandidates();
+    if (!candidates.some(candidate => candidate.sku === ${upperQueryJson})) {
+      await runSearch(${queryJson});
+      candidates = extractCandidates();
+    }
+    for (let attempt = 0; !candidates.length && attempt < 45; attempt++) {
+      if (attempt === 10 || attempt === 25) {
+        await runSearch(${queryJson});
+      } else {
+        await new Promise(r => setTimeout(r, 1000));
+      }
+      candidates = extractCandidates();
+    }
+    if (!candidates.length && ${queryJson}.includes(' ')) {
+      const fallbackQuery = ${queryJson}.split(/\\s+/)[0];
+      await runSearch(fallbackQuery);
+      for (let fAttempt = 0; !candidates.length && fAttempt < 15; fAttempt++) {
+        await new Promise(r => setTimeout(r, 1000));
+        candidates = extractCandidates();
+      }
+    }
+
+    return {
+      success: true,
+      action: 'CANDIDATES_COLLECTED',
+      candidates
+    };
+  `;
+}
+
+function buildDiscoveryExpression(query) {
+  const queryJson = JSON.stringify(query);
+  const upperQueryJson = JSON.stringify(query.toUpperCase());
+  return `
+    (async function() {
+      ${_clientEnsureCatalogSearchMode()}
+      const searchInput = await ${_clientWaitForSearchInput()};
+      if (!searchInput) return { success: false, candidates: [], action: 'SEARCH_INPUT_NOT_READY' };
+      ${_clientRunSearchFunction()}
+      ${_clientExtractCandidatesFunction()}
+      ${_clientDiscoveryLoop(queryJson, upperQueryJson)}
     })()
   `;
 }
@@ -596,11 +673,57 @@ async function _handleIntermediateGatewayPage(selectedSku) {
   intermediateWs.close();
 }
 
-async function _verifyConfigWorkspaceReady(activeOca) {
-  let deliveryEstimate = '';
-  if (!activeOca) return { deliveryEstimate };
+const CONFIG_WORKSPACE_READY_PREDICATE = `(() => {
+  const visible = el => {
+    if (!el) return false;
+    const s = window.getComputedStyle(el);
+    return el.offsetWidth > 0 && el.offsetHeight > 0 && s.display !== 'none' && s.visibility !== 'hidden';
+  };
 
-  const summaryWs = await connectWS(activeOca.webSocketDebuggerUrl);
+  const documents = [document];
+  try {
+    const iframes = document.querySelectorAll('iframe');
+    iframes.forEach(f => {
+      try {
+        if (f.contentDocument && !documents.includes(f.contentDocument)) {
+          documents.push(f.contentDocument);
+        }
+      } catch (_) {}
+    });
+  } catch (_) {}
+
+  const isLoading = documents.some(doc =>
+    Array.from(doc.querySelectorAll('.loading_div, .maui-loading-div, .toolbar_loading, [class*="loading-div"]')).some(visible)
+  );
+  if (isLoading) return false;
+
+  // Check for fatal WebLogic modal exception dialogs across documents
+  let exceptionBox = null;
+  for (const doc of documents) {
+    const found = Array.from(doc.querySelectorAll('.ui-dialog, .modal, [role="dialog"], div[class*="exception"], div[class*="error-dialog"]'))
+      .find(el => visible(el) && /an unexpected error|encountered a problem|exception occurred|internal server error|weblogic bridge message/i.test(el.innerText || ''));
+    if (found) { exceptionBox = found; break; }
+  }
+  if (exceptionBox) {
+    window.__lastOcaException = (exceptionBox.innerText || '').slice(0, 500).replace(/\\s+/g, ' ');
+  }
+
+  const hasMenuOrComp = documents.some(doc =>
+    Array.from(doc.querySelectorAll('a, button, div, span')).some(e => {
+      const txt = (e.innerText || '').trim();
+      return txt === 'Menu' || txt === 'Components' || txt === 'Summary' || txt === 'BOM' || txt === 'Services';
+    })
+  );
+  const hasTables = documents.some(doc => doc.querySelectorAll('table').length >= 10);
+  const hasLegacyMenu = documents.some(doc =>
+    Boolean(doc.querySelector('#extended_overview_menu, .menu_label, .eo_nav_div, table.eo_category_table, a[href*="extended_overview_menu"]'))
+  );
+  const hasConfigStatus = documents.some(doc => (doc.body?.innerText || '').includes('Config Status'));
+
+  return (hasMenuOrComp && hasTables) || hasLegacyMenu || (hasTables && hasConfigStatus);
+})()`;
+
+async function _queryOcaLeadTime(summaryWs) {
   const deliveryResult = await sendCommand(summaryWs, 'Runtime.evaluate', {
     expression: String.raw`(() => {
       const text = (document.body?.innerText || '').replace(/\s+/g, ' ');
@@ -608,56 +731,16 @@ async function _verifyConfigWorkspaceReady(activeOca) {
     })()`,
     returnByValue: true
   });
-  deliveryEstimate = deliveryResult?.result?.value || '';
-  const ready = await waitForDOMPredicate(summaryWs, `(() => {
-    const visible = el => {
-      if (!el) return false;
-      const s = window.getComputedStyle(el);
-      return el.offsetWidth > 0 && el.offsetHeight > 0 && s.display !== 'none' && s.visibility !== 'hidden';
-    };
+  return deliveryResult?.result?.value || '';
+}
 
-    const documents = [document];
-    try {
-      const iframes = document.querySelectorAll('iframe');
-      iframes.forEach(f => {
-        try {
-          if (f.contentDocument && !documents.includes(f.contentDocument)) {
-            documents.push(f.contentDocument);
-          }
-        } catch (_) {}
-      });
-    } catch (_) {}
+async function _verifyConfigWorkspaceReady(activeOca) {
+  let deliveryEstimate = '';
+  if (!activeOca) return { deliveryEstimate };
 
-    const isLoading = documents.some(doc =>
-      Array.from(doc.querySelectorAll('.loading_div, .maui-loading-div, .toolbar_loading, [class*="loading-div"]')).some(visible)
-    );
-    if (isLoading) return false;
-
-    // Check for fatal WebLogic modal exception dialogs across documents
-    let exceptionBox = null;
-    for (const doc of documents) {
-      const found = Array.from(doc.querySelectorAll('.ui-dialog, .modal, [role="dialog"], div[class*="exception"], div[class*="error-dialog"]'))
-        .find(el => visible(el) && /an unexpected error|encountered a problem|exception occurred|internal server error|weblogic bridge message/i.test(el.innerText || ''));
-      if (found) { exceptionBox = found; break; }
-    }
-    if (exceptionBox) {
-      window.__lastOcaException = (exceptionBox.innerText || '').slice(0, 500).replace(/\\s+/g, ' ');
-    }
-
-    const hasMenuOrComp = documents.some(doc =>
-      Array.from(doc.querySelectorAll('a, button, div, span')).some(e => {
-        const txt = (e.innerText || '').trim();
-        return txt === 'Menu' || txt === 'Components' || txt === 'Summary' || txt === 'BOM' || txt === 'Services';
-      })
-    );
-    const hasTables = documents.some(doc => doc.querySelectorAll('table').length >= 10);
-    const hasLegacyMenu = documents.some(doc =>
-      Boolean(doc.querySelector('#extended_overview_menu, .menu_label, .eo_nav_div, table.eo_category_table, a[href*="extended_overview_menu"]'))
-    );
-    const hasConfigStatus = documents.some(doc => (doc.body?.innerText || '').includes('Config Status'));
-
-    return (hasMenuOrComp && hasTables) || hasLegacyMenu || (hasTables && hasConfigStatus);
-  })()`, 60000, 1000);
+  const summaryWs = await connectWS(activeOca.webSocketDebuggerUrl);
+  deliveryEstimate = await _queryOcaLeadTime(summaryWs);
+  const ready = await waitForDOMPredicate(summaryWs, CONFIG_WORKSPACE_READY_PREDICATE, 60000, 1000);
 
   let capturedException = null;
   try {
@@ -751,6 +834,163 @@ async function searchAndConfigureChassis(ws, query, ocaTarget, options = {}) {
   };
 }
 
+async function _submitEmailStep(ws, portalUser) {
+  for (let emailAttempt = 0; emailAttempt < 15; emailAttempt++) {
+    try {
+      const emailState = await sendCommand(ws, 'Runtime.evaluate', {
+        expression: `(() => {
+          if (Array.from(document.querySelectorAll('input[type="password"]')).some(el => el.getClientRects().length)) return { passwordReady: true };
+          const cookieBtn = document.querySelector('#truste-consent-button, #truste-consent-close, .truste_popframe, #truste-consent-required');
+          if (cookieBtn) cookieBtn.click();
+
+          const emailInput = document.querySelector('#oktaEmailInput, input[name="email"], input[type="email"]');
+          if (!emailInput) return { found: false };
+
+          emailInput.focus();
+          emailInput.value = '';
+          return { found: true };
+        })()`,
+        returnByValue: true
+      });
+
+      if (emailState?.result?.value?.passwordReady) {
+        return true;
+      }
+      if (emailState?.result?.value?.found) {
+        await sendCommand(ws, 'Input.insertText', { text: portalUser });
+        await sendCommand(ws, 'Runtime.evaluate', {
+          expression: `(() => {
+            const emailInput = document.querySelector('#oktaEmailInput, input[name="email"], input[type="email"]');
+            if (emailInput) {
+              if (emailInput.value !== ${JSON.stringify(portalUser)}) {
+                Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(emailInput, ${JSON.stringify(portalUser)});
+              }
+              emailInput.dispatchEvent(new Event('input', { bubbles: true }));
+              emailInput.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+          })()`
+        });
+
+        const btnResult = await sendCommand(ws, 'Runtime.evaluate', {
+          expression: `(() => {
+            const btn = document.querySelector('#oktaSignInBtn, button.btn-sign-in');
+            if (!btn) return false;
+            btn.scrollIntoView({ block: 'center', inline: 'center' });
+            btn.focus();
+            btn.click();
+            return true;
+          })()`,
+          returnByValue: true
+        });
+
+        if (btnResult?.result?.value) {
+          console.log('   Submitted email via Sign in button.');
+          return true;
+        }
+      }
+    } catch (_) {}
+    await sleep(1000);
+  }
+  return false;
+}
+
+async function _handleFoundPasswordState(ws, portalUser, portalPass) {
+  if (portalPass) await sendCommand(ws, 'Input.insertText', { text: portalPass });
+  const verifiedFields = await sendCommand(ws, 'Runtime.evaluate', {
+    expression: buildPasswordFieldVerification(portalUser, portalPass),
+    returnByValue: true
+  });
+  if (!verifiedFields?.result?.value?.passwordReady) return false;
+
+  const submitResult = await sendCommand(ws, 'Runtime.evaluate', {
+    expression: `(() => {
+      const btn = Array.from(document.querySelectorAll('#onepass-submit-btn, button.submit-btn, #okta-signin-submit')).find(el => el.getClientRects().length);
+      if (!btn || btn.disabled) return false;
+      btn.scrollIntoView({ block: 'center', inline: 'center' });
+      btn.focus();
+      btn.click();
+      return true;
+    })()`,
+    returnByValue: true
+  });
+
+  if (submitResult?.result?.value) {
+    console.log('   Submitted password via onepass-submit-btn.');
+    return true;
+  }
+  return false;
+}
+
+async function _reconnectPortalTarget(oldWs) {
+  try {
+    const freshPages = await getPageTargets();
+    const pTarget = freshPages.find(t => !isSeismicTarget(t) && t.url && (t.url.includes('partner.hpe.com') || t.url.includes('login') || t.url.includes('sso')));
+    if (pTarget?.webSocketDebuggerUrl) {
+      try { oldWs.close(); } catch (_) {}
+      return await connectWS(pTarget.webSocketDebuggerUrl);
+    }
+  } catch (_) {}
+  return oldWs;
+}
+
+async function _submitPasswordStep(initialWs, portalUser, portalPass) {
+  let ws = initialWs;
+  for (let passAttempt = 0; passAttempt < 90; passAttempt++) {
+    try {
+      const passState = await sendCommand(ws, 'Runtime.evaluate', {
+        expression: `(() => {
+          const passInput = Array.from(document.querySelectorAll('#password-sign-in, input[type="password"], #okta-signin-password, #onepass-password')).find(el => el.getClientRects().length);
+          if (!passInput) {
+            if (location.pathname.includes('/group/prp') && document.querySelector('#quick-links-807 a, a[href*="eServiceId=187402"]')) return { authenticated: true };
+            const emailAgain = document.querySelector('#oktaEmailInput');
+            if (emailAgain && emailAgain.getClientRects().length && (!emailAgain.value || ${passAttempt > 0 && passAttempt % 15 === 0})) {
+              emailAgain.value = '';
+              emailAgain.focus();
+              return { needsEmail: true };
+            }
+            return { found: false };
+          }
+          passInput.focus();
+          if (${JSON.stringify(Boolean(portalPass))}) passInput.value = '';
+          return { found: Boolean(${JSON.stringify(Boolean(portalPass))} || passInput.value),
+            credentialMissing: !${JSON.stringify(Boolean(portalPass))} && !passInput.value };
+        })()`,
+        returnByValue: true
+      });
+
+      const stateVal = passState?.result?.value;
+      if (stateVal?.authenticated) break;
+      if (stateVal?.credentialMissing) {
+        const error = new Error('HPE_AUTH_CREDENTIALS_REQUIRED: Password form is visible, but neither a configured password nor an autofilled password is available in the connected Chrome profile.');
+        error.code = 'HPE_AUTH_CREDENTIALS_REQUIRED';
+        throw error;
+      }
+      if (stateVal?.needsEmail) {
+        await sendCommand(ws, 'Input.insertText', { text: portalUser });
+        await sendCommand(ws, 'Runtime.evaluate', {
+          expression: `(() => {
+            const btn = document.querySelector('#oktaSignInBtn, button.btn-sign-in');
+            if (btn) {
+              btn.scrollIntoView({ block: 'center', inline: 'center' });
+              btn.focus();
+              btn.click();
+            }
+          })()`
+        });
+      } else if (stateVal?.found) {
+        const passwordSubmitted = await _handleFoundPasswordState(ws, portalUser, portalPass);
+        if (passwordSubmitted) break;
+      }
+    } catch (err) {
+      if (err.code?.startsWith('HPE_AUTH_')) throw err;
+      console.warn(`   [AUTH_RETRY] Password stage CDP operation failed; reconnecting to the portal target (${err.code || 'CDP_OPERATION_FAILED'}).`);
+      ws = await _reconnectPortalTarget(ws);
+    }
+    await sleep(1000);
+  }
+  return ws;
+}
+
 /**
  * Automatically signs into HPE Partner Portal using auto-saved credentials in Chrome profile.
  */
@@ -763,159 +1003,10 @@ async function performAutomatedSignIn(partnerTarget) {
   const portalPass = process.env.HPE_PORTAL_PASS || '';
 
   try {
-    // 1. Fill email input & click #oktaSignInBtn
-    let emailSubmitted = false;
-    for (let emailAttempt = 0; emailAttempt < 15 && !emailSubmitted; emailAttempt++) {
-      try {
-        const emailState = await sendCommand(ws, 'Runtime.evaluate', {
-          expression: `(() => {
-            if (Array.from(document.querySelectorAll('input[type="password"]')).some(el => el.getClientRects().length)) return { passwordReady: true };
-            const cookieBtn = document.querySelector('#truste-consent-button, #truste-consent-close, .truste_popframe, #truste-consent-required');
-            if (cookieBtn) cookieBtn.click();
-
-            const emailInput = document.querySelector('#oktaEmailInput, input[name="email"], input[type="email"]');
-            if (!emailInput) return { found: false };
-
-            emailInput.focus();
-            emailInput.value = '';
-            return { found: true };
-          })()`,
-          returnByValue: true
-        });
-
-        if (emailState?.result?.value?.passwordReady) {
-          emailSubmitted = true;
-          break;
-        }
-        if (emailState?.result?.value?.found) {
-          await sendCommand(ws, 'Input.insertText', { text: portalUser });
-          await sendCommand(ws, 'Runtime.evaluate', {
-            expression: `(() => {
-              const emailInput = document.querySelector('#oktaEmailInput, input[name="email"], input[type="email"]');
-              if (emailInput) {
-                // Background tabs can lose focus between focus() and insertText.
-                // Verify the field itself before dispatching the form events.
-                if (emailInput.value !== ${JSON.stringify(portalUser)}) {
-                  Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(emailInput, ${JSON.stringify(portalUser)});
-                }
-                emailInput.dispatchEvent(new Event('input', { bubbles: true }));
-                emailInput.dispatchEvent(new Event('change', { bubbles: true }));
-              }
-            })()`
-          });
-
-          const btnResult = await sendCommand(ws, 'Runtime.evaluate', {
-            expression: `(() => {
-              const btn = document.querySelector('#oktaSignInBtn, button.btn-sign-in');
-              if (!btn) return false;
-              btn.scrollIntoView({ block: 'center', inline: 'center' });
-              btn.focus();
-              btn.click();
-              return true;
-            })()`,
-            returnByValue: true
-          });
-
-          if (btnResult?.result?.value) {
-            console.log('   Submitted email via Sign in button.');
-            emailSubmitted = true;
-            break;
-          }
-        }
-      } catch (_) {}
-      await sleep(1000);
-    }
-
-    // 2. Wait for credential / password page and submit password
-    let passwordSubmitted = false;
-    // The Onepass modal may mount after a slow redirect; do not switch to
-    // passive redirect polling after only 30 seconds with an unfilled form.
-    for (let passAttempt = 0; passAttempt < 90 && !passwordSubmitted; passAttempt++) {
-      try {
-        const passState = await sendCommand(ws, 'Runtime.evaluate', {
-          expression: `(() => {
-            const passInput = Array.from(document.querySelectorAll('#password-sign-in, input[type="password"], #okta-signin-password, #onepass-password')).find(el => el.getClientRects().length);
-            if (!passInput) {
-              if (location.pathname.includes('/group/prp') && document.querySelector('#quick-links-807 a, a[href*="eServiceId=187402"]')) return { authenticated: true };
-              // If we are on /login and email input was cleared, re-fill email
-              const emailAgain = document.querySelector('#oktaEmailInput');
-              if (emailAgain && emailAgain.getClientRects().length && (!emailAgain.value || ${passAttempt > 0 && passAttempt % 15 === 0})) {
-                emailAgain.value = '';
-                emailAgain.focus();
-                return { needsEmail: true };
-              }
-              return { found: false };
-            }
-            passInput.focus();
-            if (${JSON.stringify(Boolean(portalPass))}) passInput.value = '';
-            return { found: Boolean(${JSON.stringify(Boolean(portalPass))} || passInput.value),
-              credentialMissing: !${JSON.stringify(Boolean(portalPass))} && !passInput.value };
-          })()`,
-          returnByValue: true
-        });
-
-        const stateVal = passState?.result?.value;
-        if (stateVal?.authenticated) break;
-        if (stateVal?.credentialMissing) {
-          const error = new Error('HPE_AUTH_CREDENTIALS_REQUIRED: Password form is visible, but neither a configured password nor an autofilled password is available in the connected Chrome profile.');
-          error.code = 'HPE_AUTH_CREDENTIALS_REQUIRED';
-          throw error;
-        }
-        if (stateVal?.needsEmail) {
-          await sendCommand(ws, 'Input.insertText', { text: portalUser });
-          await sendCommand(ws, 'Runtime.evaluate', {
-            expression: `(() => {
-              const btn = document.querySelector('#oktaSignInBtn, button.btn-sign-in');
-              if (btn) {
-                btn.scrollIntoView({ block: 'center', inline: 'center' });
-                btn.focus();
-                btn.click();
-              }
-            })()`
-          });
-        } else if (stateVal?.found) {
-          if (portalPass) await sendCommand(ws, 'Input.insertText', { text: portalPass });
-          const verifiedFields = await sendCommand(ws, 'Runtime.evaluate', {
-            expression: buildPasswordFieldVerification(portalUser, portalPass),
-            returnByValue: true
-          });
-          if (!verifiedFields?.result?.value?.passwordReady) continue;
-
-          const submitResult = await sendCommand(ws, 'Runtime.evaluate', {
-            expression: `(() => {
-              const btn = Array.from(document.querySelectorAll('#onepass-submit-btn, button.submit-btn, #okta-signin-submit')).find(el => el.getClientRects().length);
-              if (!btn || btn.disabled) return false;
-              btn.scrollIntoView({ block: 'center', inline: 'center' });
-              btn.focus();
-              btn.click();
-              return true;
-            })()`,
-            returnByValue: true
-          });
-
-          if (submitResult?.result?.value) {
-            console.log(`   Submitted password via onepass-submit-btn.`);
-            passwordSubmitted = true;
-            break;
-          }
-        }
-      } catch (err) {
-        if (err.code?.startsWith('HPE_AUTH_')) throw err;
-        console.warn(`   [AUTH_RETRY] Password stage CDP operation failed; reconnecting to the portal target (${err.code || 'CDP_OPERATION_FAILED'}).`);
-        // Re-acquire target and reconnect ws if page navigated
-        try {
-          const freshPages = await getPageTargets();
-          const pTarget = freshPages.find(t => !isSeismicTarget(t) && t.url && (t.url.includes('partner.hpe.com') || t.url.includes('login') || t.url.includes('sso')));
-          if (pTarget && pTarget.webSocketDebuggerUrl) {
-            try { ws.close(); } catch (_) {}
-            ws = await connectWS(pTarget.webSocketDebuggerUrl);
-          }
-        } catch (_) {}
-      }
-      await sleep(1000);
-    }
+    await _submitEmailStep(ws, portalUser);
+    ws = await _submitPasswordStep(ws, portalUser, portalPass);
   } finally {
-    try { ws.close(); } catch (_) {}
+    try { ws?.close(); } catch (_) {}
   }
 
   return waitForAuthenticatedPartnerTarget();
@@ -1004,29 +1095,131 @@ async function waitForAuthenticatedPartnerTarget() {
   throw error;
 }
 
+function _isLoginPageTarget(partnerTarget) {
+  return partnerTarget.url.includes('/web/prp') ||
+    partnerTarget.url.includes('login') || 
+    partnerTarget.url.includes('sso') || 
+    partnerTarget.url.includes('auth') ||
+    Boolean(partnerTarget.title && /sign\s*in|login|log\s*in/i.test(partnerTarget.title)) ||
+    (!partnerTarget.url.includes('/group/prp') && !partnerTarget.url.includes('/home'));
+}
+
+async function _probeLoginPageDom(partnerTarget) {
+  try {
+    const probeWs = await connectWS(partnerTarget.webSocketDebuggerUrl);
+    const domCheck = await sendCommand(probeWs, 'Runtime.evaluate', {
+      expression: `Boolean(document.querySelector('#oktaEmailInput, #password-sign-in, #oktaSignInBtn, input[type="password"], form[data-se="o-form"]'))`,
+      returnByValue: true
+    });
+    probeWs.close();
+    return Boolean(domCheck?.result?.value);
+  } catch {
+    return false;
+  }
+}
+
+function _findPortalHomeTarget(currentPages) {
+  return currentPages.find(t =>
+    !isSeismicTarget(t) &&
+    t.url &&
+    t.url.includes('partner.hpe.com') &&
+    !t.url.includes('login') &&
+    !t.url.includes('sso') &&
+    !t.url.includes('auth') &&
+    !(t.title && /sign\s*in|login|log\s*in/i.test(t.title)) &&
+    (t.url.includes('/group/prp') || t.url.includes('/home') || t.title.toLowerCase().includes('home - hpe partner portal') || t.title.toLowerCase().includes('partner home'))
+  );
+}
+
+async function _triggerPortalQuickLink(partnerWs) {
+  try {
+    await waitForDOMPredicate(partnerWs, `Boolean(
+      document.querySelector('#quick-links-807 a, a[href*="eServiceId=187402"], [onclick*="187402"]') ||
+      Array.from(document.querySelectorAll('a')).some(a =>
+        (a.href || '').includes('eServiceId=187402') ||
+        (a.innerText || '').toLowerCase().includes('one config advanced')
+      )
+    )`, 20000, 500);
+  } catch { /* ignore */ }
+
+  const launchResult = await sendCommand(partnerWs, 'Runtime.evaluate', {
+    expression: `(() => {
+      const link = document.querySelector('#quick-links-807 a, a[href*="eServiceId=187402"], [onclick*="187402"]') ||
+        Array.from(document.querySelectorAll('a')).find(a =>
+          (a.href || '').includes('eServiceId=187402') ||
+          (a.innerText || '').toLowerCase().includes('one config advanced')
+        );
+      if (link) {
+        link.scrollIntoView({ block: 'center' });
+        link.click();
+        return { clicked: true, text: (link.innerText || 'One Config Advanced').trim() };
+      }
+      if (typeof window.updateToolActivity === 'function') {
+        window.updateToolActivity('187402');
+        return { clicked: true, text: 'updateToolActivity(187402)' };
+      }
+      return { clicked: false };
+    })()`,
+    userGesture: true,
+    returnByValue: true
+  });
+
+  if (launchResult?.result?.value?.clicked) {
+    console.log(`🚀 Clicked One Config Advanced link on Tab 1: ${launchResult.result.value.text}`);
+    return true;
+  }
+
+  console.log(`🔄 Quick link not yet rendered on Tab 1; navigating Tab 1 to Partner Portal home (/group/prp) and clicking One Config Advanced...`);
+  await sendCommand(partnerWs, 'Page.navigate', {
+    url: 'https://partner.hpe.com/group/prp'
+  });
+  try {
+    await waitForDOMPredicate(partnerWs, `Boolean(
+      document.querySelector('#quick-links-807 a, a[href*="eServiceId=187402"]') ||
+      Array.from(document.querySelectorAll('a')).some(a =>
+        (a.href || '').includes('eServiceId=187402') ||
+        (a.innerText || '').toLowerCase().includes('one config advanced')
+      )
+    )`, 20000, 500);
+    await sendCommand(partnerWs, 'Runtime.evaluate', {
+      expression: `(() => {
+        const link = document.querySelector('#quick-links-807 a, a[href*="eServiceId=187402"]') ||
+          Array.from(document.querySelectorAll('a')).find(a =>
+            (a.href || '').includes('eServiceId=187402') ||
+            (a.innerText || '').toLowerCase().includes('one config advanced')
+          );
+        if (link) { link.scrollIntoView({ block: 'center' }); link.click(); return true; }
+        return false;
+      })()`,
+      userGesture: true,
+      returnByValue: true
+    });
+  } catch { /* ignore */ }
+  return false;
+}
+
+async function _waitForFreshOcaTab(timeoutMs = 45000) {
+  const waitStart = Date.now();
+  while (Date.now() - waitStart < timeoutMs) {
+    await sleep(1000);
+    try {
+      const currentTargets = await getPageTargets();
+      const freshOca = currentTargets.find(t => !isSeismicTarget(t) && t.url && t.url.includes('oca.ext.hpe.com'));
+      if (freshOca) return freshOca;
+    } catch { /* ignore */ }
+  }
+  return null;
+}
+
 /**
  * Handles launching the OCA tool when browser is on Partner Portal tab.
  */
 async function handlePartnerPortalLaunch(partnerTarget, query, options) {
   console.log(`🌐 Found active HPE Partner Portal tab at: ${safeNavigationLabel(partnerTarget.url)} (title: "${safeNavigationLabel(partnerTarget.title)}")`);
 
-  let isLoginPage = partnerTarget.url.includes('/web/prp') ||
-                    partnerTarget.url.includes('login') || 
-                    partnerTarget.url.includes('sso') || 
-                    partnerTarget.url.includes('auth') ||
-                    Boolean(partnerTarget.title && /sign\s*in|login|log\s*in/i.test(partnerTarget.title)) ||
-                    (!partnerTarget.url.includes('/group/prp') && !partnerTarget.url.includes('/home'));
-
+  let isLoginPage = _isLoginPageTarget(partnerTarget);
   if (!isLoginPage) {
-    try {
-      const probeWs = await connectWS(partnerTarget.webSocketDebuggerUrl);
-      const domCheck = await sendCommand(probeWs, 'Runtime.evaluate', {
-        expression: `Boolean(document.querySelector('#oktaEmailInput, #password-sign-in, #oktaSignInBtn, input[type="password"], form[data-se="o-form"]'))`,
-        returnByValue: true
-      });
-      probeWs.close();
-      if (domCheck?.result?.value) isLoginPage = true;
-    } catch (_) {}
+    isLoginPage = await _probeLoginPageDom(partnerTarget);
   }
 
   let activePortalTarget = partnerTarget;
@@ -1042,16 +1235,7 @@ async function handlePartnerPortalLaunch(partnerTarget, query, options) {
   // Ensure we are using the authenticated portal home tab
   const currentPages = await getPageTargets();
   await pruneSeismicTabs(currentPages);
-  const homeTarget = currentPages.find(t =>
-    !isSeismicTarget(t) &&
-    t.url &&
-    t.url.includes('partner.hpe.com') &&
-    !t.url.includes('login') &&
-    !t.url.includes('sso') &&
-    !t.url.includes('auth') &&
-    !(t.title && /sign\s*in|login|log\s*in/i.test(t.title)) &&
-    (t.url.includes('/group/prp') || t.url.includes('/home') || t.title.toLowerCase().includes('home - hpe partner portal') || t.title.toLowerCase().includes('partner home'))
-  );
+  const homeTarget = _findPortalHomeTarget(currentPages);
 
   if (activePortalTarget && activePortalTarget.url && activePortalTarget.url.includes('oca.ext.hpe.com')) {
     console.log(`⚡ Direct OCA tab active at: ${safeNavigationLabel(activePortalTarget.url)}. Navigating directly to "${query}"...`);
@@ -1064,86 +1248,14 @@ async function handlePartnerPortalLaunch(partnerTarget, query, options) {
   try {
     const partnerWs = await connectWS(targetToUse.webSocketDebuggerUrl);
     await sendCommand(partnerWs, 'Page.bringToFront');
-    // Partner Portal renders its tool links after the authenticated shell.
-    // Wait until the Quick Links One Config Advanced anchor is present in the DOM.
-    try {
-      await waitForDOMPredicate(partnerWs, `Boolean(
-        document.querySelector('#quick-links-807 a, a[href*="eServiceId=187402"], [onclick*="187402"]') ||
-        Array.from(document.querySelectorAll('a')).some(a =>
-          (a.href || '').includes('eServiceId=187402') ||
-          (a.innerText || '').toLowerCase().includes('one config advanced')
-        )
-      )`, 20000, 500);
-    } catch (_) {}
-
-    const launchResult = await sendCommand(partnerWs, 'Runtime.evaluate', {
-      expression: `(() => {
-        const link = document.querySelector('#quick-links-807 a, a[href*="eServiceId=187402"], [onclick*="187402"]') ||
-          Array.from(document.querySelectorAll('a')).find(a =>
-            (a.href || '').includes('eServiceId=187402') ||
-            (a.innerText || '').toLowerCase().includes('one config advanced')
-          );
-        if (link) {
-          link.scrollIntoView({ block: 'center' });
-          link.click();
-          return { clicked: true, text: (link.innerText || 'One Config Advanced').trim() };
-        }
-        if (typeof window.updateToolActivity === 'function') {
-          window.updateToolActivity('187402');
-          return { clicked: true, text: 'updateToolActivity(187402)' };
-        }
-        return { clicked: false };
-      })()`,
-      userGesture: true,
-      returnByValue: true
-    });
-
-    if (launchResult?.result?.value?.clicked) {
-      console.log(`🚀 Clicked One Config Advanced link on Tab 1: ${launchResult.result.value.text}`);
-    } else {
-      console.log(`🔄 Quick link not yet rendered on Tab 1; navigating Tab 1 to Partner Portal home (/group/prp) and clicking One Config Advanced...`);
-      await sendCommand(partnerWs, 'Page.navigate', {
-        url: 'https://partner.hpe.com/group/prp'
-      });
-      try {
-        await waitForDOMPredicate(partnerWs, `Boolean(
-          document.querySelector('#quick-links-807 a, a[href*="eServiceId=187402"]') ||
-          Array.from(document.querySelectorAll('a')).some(a =>
-            (a.href || '').includes('eServiceId=187402') ||
-            (a.innerText || '').toLowerCase().includes('one config advanced')
-          )
-        )`, 20000, 500);
-        await sendCommand(partnerWs, 'Runtime.evaluate', {
-          expression: `(() => {
-            const link = document.querySelector('#quick-links-807 a, a[href*="eServiceId=187402"]') ||
-              Array.from(document.querySelectorAll('a')).find(a =>
-                (a.href || '').includes('eServiceId=187402') ||
-                (a.innerText || '').toLowerCase().includes('one config advanced')
-              );
-            if (link) { link.scrollIntoView({ block: 'center' }); link.click(); return true; }
-            return false;
-          })()`,
-          userGesture: true,
-          returnByValue: true
-        });
-      } catch (_) {}
-    }
+    await _triggerPortalQuickLink(partnerWs);
     partnerWs.close();
   } catch (err) {
     console.warn(`⚠️ Warning launching OCA: ${err.message}`);
   }
 
   console.log(`⏳ Waiting for newly created OCA tab (Tab 2) to initialize with fresh SAML tokens...`);
-  const waitStart = Date.now();
-  let freshOca = null;
-  while (Date.now() - waitStart < 45000) {
-    await sleep(1000);
-    try {
-      const currentTargets = await getPageTargets();
-      freshOca = currentTargets.find(t => !isSeismicTarget(t) && t.url && t.url.includes('oca.ext.hpe.com'));
-      if (freshOca) break;
-    } catch (_) {}
-  }
+  const freshOca = await _waitForFreshOcaTab(45000);
 
   if (!freshOca) {
     const launchError = new Error('OCA_LAUNCH_PENDING: Partner Portal did not open One Config Advanced; retain the portal tab and inspect the tool launcher before retrying.');
@@ -1310,6 +1422,62 @@ async function navigateToOCAChassis(chassisQuery, options = {}) {
   return waitForBrowserSession(query, options);
 }
 
+async function _closeStaleOcaTabs(pages) {
+  await pruneSeismicTabs(pages);
+  if (!pages.some(page => /^https:\/\/partner\.hpe\.com\//i.test(page.url || ''))) {
+    await openPartnerPortalAnchorTab('Unable to keep Partner Portal alive during recovery.');
+  }
+  for (const t of pages) {
+    if (t.url && t.url.includes('oca.ext.hpe.com')) {
+      console.log(`🧹 Closing stale/broken OCA tab: [${t.id}] ${safeNavigationLabel(t.title || t.url)}`);
+      try { await closePageTarget(t.id); } catch (_) {}
+    }
+  }
+  await new Promise(r => setTimeout(r, 2000));
+}
+
+async function _resolvePartnerPortalRecoveryTarget(freshPages, query, options) {
+  const partnerTarget = freshPages.find(t =>
+    !isSeismicTarget(t) &&
+    t.url &&
+    t.url.includes('partner.hpe.com') &&
+    !t.url.includes('login') &&
+    !t.url.includes('sso')
+  );
+  if (partnerTarget) return { partnerTarget };
+
+  const loginTarget = freshPages.find(t =>
+    !isSeismicTarget(t) &&
+    t.url &&
+    (t.url.includes('partner.hpe.com') || t.url.includes('login') || t.url.includes('sso'))
+  );
+  if (loginTarget) {
+    const signedIn = await performAutomatedSignIn(loginTarget);
+    return { partnerTarget: signedIn };
+  }
+  const { ensureChromeBrowserRunning } = require('./browser_launcher.js');
+  await ensureChromeBrowserRunning(CDP_PORT, 'https://partner.hpe.com/web/prp');
+  return { sessionPromise: waitForBrowserSession(query, options) };
+}
+
+async function _refreshPartnerPortalHome(partnerTarget) {
+  console.log(`🔄 Navigating Tab 1 to Partner Portal main page (/group/prp) to access One Config Advanced Quick Link...`);
+  try {
+    const ws = await connectWS(partnerTarget.webSocketDebuggerUrl);
+    await sendCommand(ws, 'Page.navigate', { url: 'https://partner.hpe.com/group/prp' });
+    await waitForDOMPredicate(ws, `Boolean(
+      document.querySelector('#quick-links-807 a, a[href*="eServiceId=187402"], .hpe-quicklinks__item a, a.hpe-quicklinks__link') ||
+      Array.from(document.querySelectorAll('a')).some(a =>
+        (a.href || '').includes('eServiceId=187402') ||
+        (a.innerText || '').toLowerCase().includes('one config advanced')
+      )
+    )`, 20000, 500);
+    ws.close();
+  } catch (reloadErr) {
+    console.warn(`⚠️ Warning navigating Partner Portal main page: ${reloadErr.message}`);
+  }
+}
+
 /**
  * Stale-Session Self-Healing Recovery Protocol (INV-89).
  * Recovers from WebLogic timeouts, silent hangs, or exceptions by returning to Tab 1 (Partner Portal),
@@ -1334,59 +1502,17 @@ async function recoverAndLaunchFreshOCA(chassisQuery = 'DL380 Gen12', options = 
 
   // 1. Close any stale, frozen, or broken OCA tabs
   const pages = await getPageTargets();
-  await pruneSeismicTabs(pages);
-  if (!pages.some(page => /^https:\/\/partner\.hpe\.com\//i.test(page.url || ''))) {
-    await openPartnerPortalAnchorTab('Unable to keep Partner Portal alive during recovery.');
-  }
-  for (const t of pages) {
-    if (t.url && t.url.includes('oca.ext.hpe.com')) {
-      console.log(`🧹 Closing stale/broken OCA tab: [${t.id}] ${safeNavigationLabel(t.title || t.url)}`);
-      try { await closePageTarget(t.id); } catch (_) {}
-    }
-  }
-  await new Promise(r => setTimeout(r, 2000));
+  await _closeStaleOcaTabs(pages);
 
   // 2. Locate Tab 1 (Partner Portal)
   let freshPages = await getPageTargets();
-  let partnerTarget = freshPages.find(t =>
-    !isSeismicTarget(t) &&
-    t.url &&
-    t.url.includes('partner.hpe.com') &&
-    !t.url.includes('login') &&
-    !t.url.includes('sso')
-  );
-
-  if (!partnerTarget) {
-    const loginTarget = freshPages.find(t =>
-      !isSeismicTarget(t) &&
-      t.url &&
-      (t.url.includes('partner.hpe.com') || t.url.includes('login') || t.url.includes('sso'))
-    );
-    if (loginTarget) {
-      partnerTarget = await performAutomatedSignIn(loginTarget);
-    } else {
-      const { ensureChromeBrowserRunning } = require('./browser_launcher.js');
-      await ensureChromeBrowserRunning(CDP_PORT, 'https://partner.hpe.com/web/prp');
-      return waitForBrowserSession(query, options);
-    }
+  const { partnerTarget, sessionPromise } = await _resolvePartnerPortalRecoveryTarget(freshPages, query, options);
+  if (sessionPromise) {
+    return sessionPromise;
   }
 
   // 3. Ensure Tab 1 is on Partner Portal home (/group/prp) so Quick Links are live
-  console.log(`🔄 Navigating Tab 1 to Partner Portal main page (/group/prp) to access One Config Advanced Quick Link...`);
-  try {
-    const ws = await connectWS(partnerTarget.webSocketDebuggerUrl);
-    await sendCommand(ws, 'Page.navigate', { url: 'https://partner.hpe.com/group/prp' });
-    await waitForDOMPredicate(ws, `Boolean(
-      document.querySelector('#quick-links-807 a, a[href*="eServiceId=187402"], .hpe-quicklinks__item a, a.hpe-quicklinks__link') ||
-      Array.from(document.querySelectorAll('a')).some(a =>
-        (a.href || '').includes('eServiceId=187402') ||
-        (a.innerText || '').toLowerCase().includes('one config advanced')
-      )
-    )`, 20000, 500);
-    ws.close();
-  } catch (reloadErr) {
-    console.warn(`⚠️ Warning navigating Partner Portal main page: ${reloadErr.message}`);
-  }
+  await _refreshPartnerPortalHome(partnerTarget);
 
   // 4. Re-acquire fresh Partner Portal target and click One Config Advanced
   freshPages = await getPageTargets();
@@ -1401,10 +1527,92 @@ async function recoverAndLaunchFreshOCA(chassisQuery = 'DL380 Gen12', options = 
   return handlePartnerPortalLaunch(reloadedPartner, query, { ...options, forceFreshSession: true });
 }
 
-/**
- * Inspects and enables OCA WebLogic Tools / Gears Menu (#menu_tools / .gears)
- * to uncover hidden attribute columns (e.g. Lead Times, CLIC Status, Technical Specs).
- * @param {WebSocket} ws CDP WebSocket connection to active OCA tab
+const BROWSER_PREFERENCES_EXPRESSION = `(() => {
+  const probed = [];
+  const verifiedChecked = [];
+  const alreadyChecked = [];
+  const failedToToggle = [];
+  const toolsIcon = document.querySelector('#menu_tools, .gears, [id*="tools" i], [class*="gear" i], [title*="Tools" i], [title*="Settings" i], [title*="Preferences" i]');
+  if (!toolsIcon) return { found: false, enabled: false, probed, verifiedChecked, alreadyChecked, failedToToggle, toggledCount: 0, applied: false };
+  try { toolsIcon.click(); } catch (_) {}
+
+  const candidates = Array.from(document.querySelectorAll(
+    '.tools-dropdown input[type="checkbox"], .menu_tools_dropdown input, [id*="col_chooser"] input, .table-preferences input, .column-picker input'
+  ));
+
+  const targetRegex = /lead\\s*time|availability|clic|validation|status|discontinued|obsolete|start\\s*date|end\\s*date|cost|price\\s*delta|ext\\w*\\s*price|price\\s*per|power|weight|dimension|factory\\s*integrated/i;
+
+  for (const input of candidates) {
+    const label = input.closest('label')?.innerText || input.parentElement?.innerText || input.getAttribute('name') || input.getAttribute('id') || '';
+    if (targetRegex.test(label)) {
+      const cleanLabel = label.replace(/[\\r\\n\\t]+/g, ' ').trim();
+      probed.push(cleanLabel);
+      if (!input.checked) {
+        try {
+          input.click();
+          if (!input.checked) {
+            const alt = input.closest('label') || input.parentElement;
+            if (alt) alt.click();
+          }
+          input.dispatchEvent(new Event('change', { bubbles: true }));
+          input.dispatchEvent(new Event('input', { bubbles: true }));
+          if (input.checked) {
+            verifiedChecked.push(cleanLabel);
+          } else {
+            failedToToggle.push(cleanLabel);
+          }
+        } catch (_) {
+          failedToToggle.push(cleanLabel);
+        }
+      } else {
+        alreadyChecked.push(cleanLabel);
+        verifiedChecked.push(cleanLabel);
+      }
+    }
+  }
+
+  let applied = false;
+  try {
+    const applyBtn = document.querySelector('.tools-dropdown [class*="apply" i], .tools-dropdown button[type="submit"], [id*="tools"] button[title*="Apply" i], .column-picker button.btn-primary');
+    if (applyBtn && applyBtn.getClientRects().length > 0) {
+      applyBtn.click();
+      applied = true;
+    }
+  } catch (_) {}
+
+  try {
+    const closeBtn = document.querySelector('.tools-dropdown .close, [id*="tools"] .close-btn');
+    if (closeBtn && closeBtn.getClientRects().length > 0) closeBtn.click();
+    else if (!applied) toolsIcon.click();
+  } catch (_) {}
+
+  return {
+    found: true,
+    enabled: verifiedChecked.length > 0,
+    probed,
+    verifiedChecked,
+    alreadyChecked,
+    failedToToggle,
+    applied,
+    toggledCount: verifiedChecked.length
+  };
+})()`;
+
+function _normalizePreferencesEvaluationResult(val) {
+  const list = val?.verifiedChecked || val?.columnsToggled || val?.probed || [];
+  return {
+    found: Boolean(val?.found),
+    enabled: Boolean(val?.enabled || list.length > 0),
+    probed: val?.probed || list,
+    verifiedChecked: val?.verifiedChecked || list,
+    alreadyChecked: val?.alreadyChecked || [],
+    failedToToggle: val?.failedToToggle || [],
+    applied: Boolean(val?.applied),
+    columnsToggled: list,
+    toggledCount: val?.toggledCount !== undefined ? val.toggledCount : list.length
+  };
+}
+
 /**
  * Inspects and enables OCA WebLogic Tools / Gears Menu (#menu_tools / .gears)
  * to uncover hidden attribute columns (e.g. Lead Times, CLIC Status, Technical Specs).
@@ -1415,111 +1623,17 @@ async function recoverAndLaunchFreshOCA(chassisQuery = 'DL380 Gen12', options = 
 async function inspectAndEnableToolsMenu(ws) {
   if (!ws) return { found: false, enabled: false, probed: [], verifiedChecked: [], alreadyChecked: [], failedToToggle: [], applied: false, toggledCount: 0, reason: 'NO_CDP_SESSION' };
 
-  const browserPreferencesExpression = `(() => {
-    const probed = [];
-    const verifiedChecked = [];
-    const alreadyChecked = [];
-    const failedToToggle = [];
-    const toolsIcon = document.querySelector('#menu_tools, .gears, [id*="tools" i], [class*="gear" i], [title*="Tools" i], [title*="Settings" i], [title*="Preferences" i]');
-    if (!toolsIcon) return { found: false, enabled: false, probed, verifiedChecked, alreadyChecked, failedToToggle, toggledCount: 0, applied: false };
-    try { toolsIcon.click(); } catch (_) {}
-
-    const candidates = Array.from(document.querySelectorAll(
-      '.tools-dropdown input[type="checkbox"], .menu_tools_dropdown input, [id*="col_chooser"] input, .table-preferences input, .column-picker input'
-    ));
-
-    const targetRegex = /lead\\s*time|availability|clic|validation|status|discontinued|obsolete|start\\s*date|end\\s*date|cost|price\\s*delta|ext\\w*\\s*price|price\\s*per|power|weight|dimension|factory\\s*integrated/i;
-
-    for (const input of candidates) {
-      const label = input.closest('label')?.innerText || input.parentElement?.innerText || input.getAttribute('name') || input.getAttribute('id') || '';
-      if (targetRegex.test(label)) {
-        const cleanLabel = label.replace(/[\\r\\n\\t]+/g, ' ').trim();
-        probed.push(cleanLabel);
-        if (!input.checked) {
-          try {
-            input.click();
-            if (!input.checked) {
-              const alt = input.closest('label') || input.parentElement;
-              if (alt) alt.click();
-            }
-            input.dispatchEvent(new Event('change', { bubbles: true }));
-            input.dispatchEvent(new Event('input', { bubbles: true }));
-            if (input.checked) {
-              verifiedChecked.push(cleanLabel);
-            } else {
-              failedToToggle.push(cleanLabel);
-            }
-          } catch (_) {
-            failedToToggle.push(cleanLabel);
-          }
-        } else {
-          alreadyChecked.push(cleanLabel);
-          verifiedChecked.push(cleanLabel);
-        }
-      }
-    }
-
-    let applied = false;
-    try {
-      const applyBtn = document.querySelector('.tools-dropdown [class*="apply" i], .tools-dropdown button[type="submit"], [id*="tools"] button[title*="Apply" i], .column-picker button.btn-primary');
-      if (applyBtn && applyBtn.getClientRects().length > 0) {
-        applyBtn.click();
-        applied = true;
-      }
-    } catch (_) {}
-
-    try {
-      const closeBtn = document.querySelector('.tools-dropdown .close, [id*="tools"] .close-btn');
-      if (closeBtn && closeBtn.getClientRects().length > 0) closeBtn.click();
-      else if (!applied) toolsIcon.click();
-    } catch (_) {}
-
-    return {
-      found: true,
-      enabled: verifiedChecked.length > 0,
-      probed,
-      verifiedChecked,
-      alreadyChecked,
-      failedToToggle,
-      applied,
-      toggledCount: verifiedChecked.length
-    };
-  })()`;
-
   try {
     if (typeof ws.evaluate === 'function') {
-      const val = await ws.evaluate(browserPreferencesExpression);
-      const list = val?.verifiedChecked || val?.columnsToggled || val?.probed || [];
-      return {
-        found: Boolean(val?.found),
-        enabled: Boolean(val?.enabled || list.length > 0),
-        probed: val?.probed || list,
-        verifiedChecked: val?.verifiedChecked || list,
-        alreadyChecked: val?.alreadyChecked || [],
-        failedToToggle: val?.failedToToggle || [],
-        applied: Boolean(val?.applied),
-        columnsToggled: list,
-        toggledCount: val?.toggledCount !== undefined ? val.toggledCount : list.length
-      };
+      const val = await ws.evaluate(BROWSER_PREFERENCES_EXPRESSION);
+      return _normalizePreferencesEvaluationResult(val);
     }
 
     const res = await sendCommand(ws, 'Runtime.evaluate', {
-      expression: browserPreferencesExpression,
+      expression: BROWSER_PREFERENCES_EXPRESSION,
       returnByValue: true
     }, 15000);
-    const val = res?.result?.value || { found: false, enabled: false, probed: [], verifiedChecked: [], alreadyChecked: [], failedToToggle: [], applied: false, toggledCount: 0 };
-    const list = val.verifiedChecked || val.columnsToggled || val.probed || [];
-    return {
-      found: Boolean(val.found),
-      enabled: Boolean(val.enabled || list.length > 0),
-      probed: val.probed || list,
-      verifiedChecked: val.verifiedChecked || list,
-      alreadyChecked: val.alreadyChecked || [],
-      failedToToggle: val.failedToToggle || [],
-      applied: Boolean(val.applied),
-      columnsToggled: list,
-      toggledCount: val.toggledCount !== undefined ? val.toggledCount : list.length
-    };
+    return _normalizePreferencesEvaluationResult(res?.result?.value);
   } catch (err) {
     return { found: false, enabled: false, probed: [], verifiedChecked: [], alreadyChecked: [], failedToToggle: [], applied: false, toggledCount: 0, error: err.message };
   }

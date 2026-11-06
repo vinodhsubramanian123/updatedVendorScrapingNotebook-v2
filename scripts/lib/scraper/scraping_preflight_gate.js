@@ -140,6 +140,58 @@ async function runScrapingPreflightGate({ targetChassisQuery, navQuery, skipClou
   };
 }
 
+function _updateDiffStatusCount(status, counts) {
+  if (counts[status] !== undefined) {
+    counts[status]++;
+  } else if (status.includes('PRICE') || status.includes('MOD')) {
+    counts.MODIFIED++;
+  } else {
+    counts.UNCHANGED++;
+  }
+}
+
+function _buildChangedRow(row, status) {
+  const unitPriceUsd = row['Unit Price (USD)'] != null ? row['Unit Price (USD)']
+    : (row.price != null ? row.price : '');
+  const previousPriceUsd = row['Previous Price (USD)'] != null ? row['Previous Price (USD)'] : '';
+  const priceDeltaUsd = row['Price Delta (USD)'] != null ? row['Price Delta (USD)'] : '';
+
+  return {
+    sku: row.sku || row['Product #'] || '',
+    description: row.description || row['Description'] || '',
+    category: row._category,
+    status,
+    unitPriceUsd,
+    previousPriceUsd,
+    priceDeltaUsd
+  };
+}
+
+function _processDiffRow(row, counts, changedRows) {
+  const status = String(row['Diff Status'] || 'UNCHANGED').toUpperCase();
+  _updateDiffStatusCount(status, counts);
+  if (status !== 'UNCHANGED') {
+    changedRows.push(_buildChangedRow(row, status));
+  }
+}
+
+function _resolveUnavailableRulesCount(catalog, liveCatalogJson) {
+  if (Array.isArray(catalog.unavailableRules)) {
+    return catalog.unavailableRules.length;
+  }
+  if (!liveCatalogJson) return 0;
+
+  try {
+    const unavailPath = path.join(path.dirname(liveCatalogJson), 'raw_data', 'unavailable_rules.json');
+    if (fs.existsSync(unavailPath)) {
+      const unavailData = JSON.parse(fs.readFileSync(unavailPath, 'utf8'));
+      if (unavailData.totalUnavailableRules != null) return unavailData.totalUnavailableRules;
+      if (Array.isArray(unavailData.rules)) return unavailData.rules.length;
+    }
+  } catch (_) {}
+  return 0;
+}
+
 function summarizeCatalogDiffState(liveCatalogJson) {
   const catalog = loadJsonFileSafe(liveCatalogJson, {});
   const allSkus = (catalog.entries || []).flatMap(entry => (entry.skus || []).map(row => ({
@@ -148,37 +200,13 @@ function summarizeCatalogDiffState(liveCatalogJson) {
   })));
   const counts = { ADDED: 0, MODIFIED: 0, REMOVED: 0, DISCONTINUED: 0, UNCHANGED: 0 };
   const changedRows = [];
+
   for (const row of allSkus) {
-    const status = String(row['Diff Status'] || 'UNCHANGED').toUpperCase();
-    if (counts[status] !== undefined) {
-      counts[status]++;
-    } else if (status.includes('PRICE') || status.includes('MOD')) {
-      counts.MODIFIED++;
-    } else {
-      counts.UNCHANGED++;
-    }
-    if (status !== 'UNCHANGED') {
-      changedRows.push({
-        sku: row.sku || row['Product #'] || '',
-        description: row.description || row['Description'] || '',
-        category: row._category,
-        status,
-        unitPriceUsd: row['Unit Price (USD)'] ?? row.price ?? '',
-        previousPriceUsd: row['Previous Price (USD)'] ?? '',
-        priceDeltaUsd: row['Price Delta (USD)'] ?? ''
-      });
-    }
+    _processDiffRow(row, counts, changedRows);
   }
-  let unavailableRulesCount = Array.isArray(catalog.unavailableRules) ? catalog.unavailableRules.length : 0;
-  if (!unavailableRulesCount && liveCatalogJson) {
-    try {
-      const unavailPath = path.join(path.dirname(liveCatalogJson), 'raw_data', 'unavailable_rules.json');
-      if (fs.existsSync(unavailPath)) {
-        const unavailData = JSON.parse(fs.readFileSync(unavailPath, 'utf8'));
-        unavailableRulesCount = unavailData.totalUnavailableRules || (Array.isArray(unavailData.rules) ? unavailData.rules.length : 0);
-      }
-    } catch (_) {}
-  }
+
+  const unavailableRulesCount = _resolveUnavailableRulesCount(catalog, liveCatalogJson);
+
   return {
     totalUniqueSKUs: catalog.metadata?.totalUniqueSKUs || 0,
     totalSubcategories: catalog.metadata?.totalSubcategories || 0,

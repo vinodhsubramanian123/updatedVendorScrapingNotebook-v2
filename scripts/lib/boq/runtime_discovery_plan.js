@@ -36,29 +36,29 @@ function loadEvidence(targetDir) {
   return result;
 }
 
-/** Cheap deterministic planning only: never mutate a portal or infer orderability.
- * Preserve configuration ownership, exact SKU suffixes and quantities in the hash.
- * Catalog base-SKU lookup is a discovery hint, never an acceptance receipt. */
-function buildRuntimeDiscoveryPlan(evaluation = {}, options = {}) {
-  const targetDir = options.targetDir || options.catalogDir || '';
+function _loadCatalogAndServices(targetDir, options, evaluation, evidence) {
   let catalog = options.catalogData || evaluation.catalogData;
   let catalogReadFailed = false;
   if (!catalog && targetDir) {
-    try { catalog = JSON.parse(fs.readFileSync(path.join(targetDir, `${path.basename(targetDir)}_Catalog.json`), 'utf8')); }
-    catch (_) { catalogReadFailed = true; }
+    try {
+      catalog = JSON.parse(fs.readFileSync(path.join(targetDir, `${path.basename(targetDir)}_Catalog.json`), 'utf8'));
+    } catch (_) {
+      catalogReadFailed = true;
+    }
   }
   catalog = catalog || {};
-  const product = options.productId || (targetDir ? path.basename(targetDir) : '') ||
-    catalog.metadata?.model || evaluation.chassis || evaluation.conflictGraph?.chassisInfo?.id || '';
-  const identity = resolveProductIdentity(product, notebooks);
-  const evidence = loadEvidence(targetDir);
   if (catalogReadFailed) evidence.gaps.push('SCOPED_CATALOG_UNAVAILABLE');
+
   let services = options.servicesData || {};
   const serviceFile = targetDir && path.join(targetDir, `${path.basename(targetDir)}_Services.json`);
   if (!options.servicesData && serviceFile && fs.existsSync(serviceFile)) {
-    try { services = JSON.parse(fs.readFileSync(serviceFile, 'utf8')); }
-    catch (_) { evidence.gaps.push('SCOPED_SERVICES_UNREADABLE'); }
+    try {
+      services = JSON.parse(fs.readFileSync(serviceFile, 'utf8'));
+    } catch (_) {
+      evidence.gaps.push('SCOPED_SERVICES_UNREADABLE');
+    }
   }
+
   const catalogRows = [...(catalog.entries || []), ...(services.entries || [])]
     .flatMap(entry => (entry.skus || []).map(row => ({ ...row, parentCategory: entry.parentCategory })));
   const index = new Map();
@@ -67,13 +67,107 @@ function buildRuntimeDiscoveryPlan(evaluation = {}, options = {}) {
     if (!index.has(key)) index.set(key, []);
     index.get(key).push(row);
   }
+
+  return { catalog, services, index };
+}
+
+function _inspectRowProbesAndGates(row, index, conditional, baseSkus, probes) {
+  const sku = skuOf(row);
+  const base = cleanBaseSKU(sku);
+  const matches = index.get(base) || [];
+  if (matches.some(item => item.parentCategory === 'Chassis' || item['Option Type'] === 'CTO') || /configure.to.order|\bcto\b/i.test(row.description || '')) {
+    baseSkus.push(sku);
+  }
+  const gates = conditional.filter(gate => cleanBaseSKU(gate.sku) === base || (gate.affectedSkus || []).some(affected => cleanBaseSKU(affected) === base));
+  const tagged = [...matches, row].filter(item => item.visibilityState === 'PORTAL_CONDITIONAL' || item.conditionalStatus === 'PORTAL_CONDITIONAL');
+  if (!matches.length) {
+    probes.push({ sku, reason: 'ABSENT_FROM_CAPTURE_NOT_PROOF_OF_UNSUPPORTED', conditions: [] });
+  }
+  if (gates.length || tagged.length) {
+    probes.push({
+      sku,
+      reason: 'PORTAL_CONDITIONAL',
+      conditions: [...gates, ...tagged].map(gate => ({
+        conditionKey: gate.conditionKey || gate.trigger?.conditionKey || (gate.conditionType === 'AMBIENT_GATE' ? 'ambientTempC' : 'UNKNOWN'),
+        conditionOperator: gate.conditionOperator || gate.operator || gate.trigger?.conditionOperator || 'unknown',
+        thresholdValue: gate.thresholdValue ?? gate.thresholdDegC ?? gate.trigger?.thresholdValue ?? null,
+        evidenceBaseSku: gate.baseSku || null
+      }))
+    });
+  }
+}
+
+function _buildSingleConfiguration(group, configurationId, rows, index, conditional, context) {
+  const { identity, product, catalogSha256, evidence, options } = context;
+  const manifest = rows.map(row => ({
+    sku: skuOf(row),
+    quantity: Number(row.quantity ?? row.qty ?? row['Current Qty']),
+    quantityScope: row.quantityScope || 'UNSPECIFIED',
+    configurationMultiplier: row.configurationMultiplier ?? null
+  })).sort((a, b) => a.sku.localeCompare(b.sku) || a.quantity - b.quantity);
+
+  const reasons = [];
+  const probes = [];
+  const baseSkus = [];
+
+  for (const row of rows) {
+    _inspectRowProbesAndGates(row, index, conditional, baseSkus, probes);
+  }
+
+  if (!identity) reasons.push('PRODUCT_IDENTITY_UNRESOLVED');
+  if (new Set(baseSkus).size !== 1) reasons.push('EXACT_BASE_SKU_UNRESOLVED');
+  if (manifest.some(row => !row.sku || !Number.isSafeInteger(row.quantity) || row.quantity <= 0)) {
+    reasons.push('MANIFEST_QUANTITY_UNRESOLVED');
+  }
+  reasons.push(...evidence.gaps);
+
+  const selectors = options.selectorsByConfiguration?.[configurationId] || {};
+  const scope = { identity, productId: product, configurationId, baseSkus: [...new Set(baseSkus)].sort(), manifest, selectors, catalogSha256 };
+
+  return {
+    rank: group.rank,
+    ...scope,
+    manifestSha256: digest(scope),
+    status: reasons.length ? 'DISCOVERY_INPUT_INCOMPLETE' : 'PORTAL_VALIDATION_PENDING',
+    blockers: reasons,
+    probes,
+    requiredChecks: [
+      'EXACT_VENDOR_PRODUCT_BASE_AND_OWNER',
+      'IMPORT_AND_READ_BACK_FULL_MANIFEST',
+      'BOQ_RELEVANT_SELECTOR_STATES_AND_HIDDEN_SKUS',
+      'COMPLETE_CLIC_DEPENDENCIES_CONFLICTS',
+      'OWNER_QUALIFIED_SUPPORT_AND_PRICES',
+      'RESTORE_REQUESTED_STATE_AND_REVALIDATE'
+    ]
+  };
+}
+
+/** Cheap deterministic planning only: never mutate a portal or infer orderability.
+ * Preserve configuration ownership, exact SKU suffixes and quantities in the hash.
+ * Catalog base-SKU lookup is a discovery hint, never an acceptance receipt. */
+function buildRuntimeDiscoveryPlan(evaluation = {}, options = {}) {
+  const targetDir = options.targetDir || options.catalogDir || '';
+  const evidence = loadEvidence(targetDir);
+  const { catalog, services, index } = _loadCatalogAndServices(targetDir, options, evaluation, evidence);
+
+  const product = options.productId || (targetDir ? path.basename(targetDir) : '') ||
+    catalog.metadata?.model || evaluation.chassis || evaluation.conflictGraph?.chassisInfo?.id || '';
+  const identity = resolveProductIdentity(product, notebooks);
+
   const catalogSha256 = digest({ catalog, services, observations: evidence.observations, rules: evidence.rules });
   const conditional = [...evidence.observations, ...evidence.rules.filter(rule => rule.ruleType === 'CONDITIONAL_VISIBILITY')];
-  const groups = [{ rank: 'BASELINE', parts: evaluation.items || [] },
+
+  const groups = [
+    { rank: 'BASELINE', parts: evaluation.items || [] },
     ...(evaluation.conflictGraph?.rankedSolutions || evaluation.rankedSolutions || []).map((rank, i) => ({
-      rank: String(rank.rank || rank.id || `CANDIDATE_${i + 1}`), parts: rank.skuPartsList || rank.skuList || []
-    }))];
+      rank: String(rank.rank || rank.id || `CANDIDATE_${i + 1}`),
+      parts: rank.skuPartsList || rank.skuList || []
+    }))
+  ];
+
+  const context = { identity, product, catalogSha256, evidence, options };
   const configurations = [];
+
   for (const group of groups) {
     const partitions = new Map();
     for (const row of group.parts) {
@@ -82,46 +176,19 @@ function buildRuntimeDiscoveryPlan(evaluation = {}, options = {}) {
       partitions.get(id).push(row);
     }
     for (const [configurationId, rows] of partitions) {
-      const manifest = rows.map(row => ({ sku: skuOf(row), quantity: Number(row.quantity ?? row.qty ?? row['Current Qty']),
-        quantityScope: row.quantityScope || 'UNSPECIFIED', configurationMultiplier: row.configurationMultiplier ?? null }))
-        .sort((a, b) => a.sku.localeCompare(b.sku) || a.quantity - b.quantity);
-      const reasons = [];
-      const probes = [];
-      const baseSkus = [];
-      for (const row of rows) {
-        const sku = skuOf(row);
-        const base = cleanBaseSKU(sku);
-        const matches = index.get(base) || [];
-        if (matches.some(item => item.parentCategory === 'Chassis' || item['Option Type'] === 'CTO') || /configure.to.order|\bcto\b/i.test(row.description || '')) baseSkus.push(sku);
-        const gates = conditional.filter(gate => cleanBaseSKU(gate.sku) === base || (gate.affectedSkus || []).some(affected => cleanBaseSKU(affected) === base));
-        const tagged = [...matches, row].filter(item => item.visibilityState === 'PORTAL_CONDITIONAL' || item.conditionalStatus === 'PORTAL_CONDITIONAL');
-        if (!matches.length) probes.push({ sku, reason: 'ABSENT_FROM_CAPTURE_NOT_PROOF_OF_UNSUPPORTED', conditions: [] });
-        if (gates.length || tagged.length) probes.push({ sku, reason: 'PORTAL_CONDITIONAL', conditions: [...gates, ...tagged].map(gate => ({
-          conditionKey: gate.conditionKey || gate.trigger?.conditionKey || (gate.conditionType === 'AMBIENT_GATE' ? 'ambientTempC' : 'UNKNOWN'),
-          conditionOperator: gate.conditionOperator || gate.operator || gate.trigger?.conditionOperator || 'unknown',
-          thresholdValue: gate.thresholdValue ?? gate.thresholdDegC ?? gate.trigger?.thresholdValue ?? null,
-          evidenceBaseSku: gate.baseSku || null
-        })) });
-      }
-      if (!identity) reasons.push('PRODUCT_IDENTITY_UNRESOLVED');
-      if (new Set(baseSkus).size !== 1) reasons.push('EXACT_BASE_SKU_UNRESOLVED');
-      if (manifest.some(row => !row.sku || !Number.isSafeInteger(row.quantity) || row.quantity <= 0)) reasons.push('MANIFEST_QUANTITY_UNRESOLVED');
-      reasons.push(...evidence.gaps);
-      const selectors = options.selectorsByConfiguration?.[configurationId] || {};
-      const scope = { identity, productId: product, configurationId, baseSkus: [...new Set(baseSkus)].sort(), manifest, selectors, catalogSha256 };
-      configurations.push({ rank: group.rank, ...scope, manifestSha256: digest(scope),
-        status: reasons.length ? 'DISCOVERY_INPUT_INCOMPLETE' : 'PORTAL_VALIDATION_PENDING',
-        blockers: reasons, probes,
-        requiredChecks: ['EXACT_VENDOR_PRODUCT_BASE_AND_OWNER', 'IMPORT_AND_READ_BACK_FULL_MANIFEST',
-          'BOQ_RELEVANT_SELECTOR_STATES_AND_HIDDEN_SKUS', 'COMPLETE_CLIC_DEPENDENCIES_CONFLICTS',
-          'OWNER_QUALIFIED_SUPPORT_AND_PRICES', 'RESTORE_REQUESTED_STATE_AND_REVALIDATE'] });
+      configurations.push(_buildSingleConfiguration(group, configurationId, rows, index, conditional, context));
     }
   }
-  return { schemaVersion: 1, status: configurations.length ? 'RUNTIME_DISCOVERY_REQUIRED' : 'NO_MANIFEST',
-    coverage: 'BOQ_SCOPED_ONLY_NOT_FULL_PRODUCT_COVERAGE', configurations,
+
+  return {
+    schemaVersion: 1,
+    status: configurations.length ? 'RUNTIME_DISCOVERY_REQUIRED' : 'NO_MANIFEST',
+    coverage: 'BOQ_SCOPED_ONLY_NOT_FULL_PRODUCT_COVERAGE',
+    configurations,
     uniqueProbeManifests: new Set(configurations.map(config => config.manifestSha256)).size,
     unattendedSelectorExecution: 'NOT_IMPLEMENTED_USE_LIVE_AGENT_WORKFLOW',
-    workflow: 'docs/RUNTIME_CONDITIONAL_DISCOVERY.md' };
+    workflow: 'docs/RUNTIME_CONDITIONAL_DISCOVERY.md'
+  };
 }
 
 function formatRuntimeDiscoveryPlan(plan) {

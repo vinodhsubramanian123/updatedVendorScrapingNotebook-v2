@@ -18,22 +18,37 @@ function buildSkuCategoryMap(catalogData) {
 function isDriveComponent(role, desc) {
   const isExcluded = desc.includes('no drive') || desc.includes('cage') || 
                      desc.includes('controller') || desc.includes('cable') || 
-                     desc.includes('tape drive');
+                     desc.includes('tape drive') || desc.includes('fio setting') ||
+                     desc.includes('raid setting') || desc.includes('raid service') ||
+                     desc.includes('fast fault tolerance');
   if (isExcluded) return false;
   return role === 'Drive Cage / Drive' || desc.includes('hdd') || 
          desc.includes('ssd') || desc.includes('drive') || desc.includes('nvme');
 }
 
-function tallyCagesAndDrives(tally, desc, sku, qty, role, mandatorySkus = {}) {
-  if (isDriveComponent(role, desc)) {
-    tally.driveCount += qty;
-    const isLff = (desc.includes('lff') || desc.includes('3.5in') || desc.includes('3.5"') || desc.includes('3.5 in')) && !desc.includes('cage');
-    const isSff = (desc.includes('sff') || desc.includes('2.5in') || desc.includes('2.5"') || desc.includes('2.5 in')) && !desc.includes('cage');
-    if (isLff) tally.lffDriveCount = (tally.lffDriveCount || 0) + qty;
-    if (isSff) tally.sffDriveCount = (tally.sffDriveCount || 0) + qty;
-  }
+function _tallyDriveCount(tally, desc, qty, role) {
+  if (!isDriveComponent(role, desc)) return;
+  tally.driveCount += qty;
+  const isLff = (desc.includes('lff') || desc.includes('3.5in') || desc.includes('3.5"') || desc.includes('3.5 in')) && !desc.includes('cage');
+  const isSff = (desc.includes('sff') || desc.includes('2.5in') || desc.includes('2.5"') || desc.includes('2.5 in')) && !desc.includes('cage');
+  if (isLff) tally.lffDriveCount = (tally.lffDriveCount || 0) + qty;
+  if (isSff) tally.sffDriveCount = (tally.sffDriveCount || 0) + qty;
+}
 
-  // Drive Cage & Backplane Kits
+function _tallyDl380aCageKits(tally, desc, sku, qty, mandatorySkus = {}) {
+  if ((desc.includes('4sff') && desc.includes('dl380a')) || (mandatorySkus?.GENERIC_CAGE?.sku && sku === cleanBaseSKU(mandatorySkus.GENERIC_CAGE.sku) && desc.includes('4sff'))) {
+    tally.has4SffCage = true;
+    tally.hasDriveCage = true;
+    tally.cageCapacity = (tally.cageCapacity || 0) + (4 * qty);
+  }
+  if ((desc.includes('4edsff') && desc.includes('dl380a')) || (mandatorySkus?.PREMIUM_CAGE?.sku && sku === cleanBaseSKU(mandatorySkus.PREMIUM_CAGE.sku) && desc.includes('4edsff'))) {
+    tally.has4EdsffCage = true;
+    tally.hasDriveCage = true;
+    tally.cageCapacity = (tally.cageCapacity || 0) + (4 * qty);
+  }
+}
+
+function _tallyCageKits(tally, desc, sku, qty, mandatorySkus = {}) {
   const isGenericCage = desc.includes('drive cage') || desc.includes('sff cage') || desc.includes('lff cage') || 
       desc.includes('cage kit') || desc.includes('box 1') || desc.includes('box 2') || 
       desc.includes('backplane') || desc.includes('backplane kit') ||
@@ -48,17 +63,10 @@ function tallyCagesAndDrives(tally, desc, sku, qty, role, mandatorySkus = {}) {
     tally.hasPremiumCage = true;
     tally.cageCapacity = (tally.cageCapacity || 0) + (8 * qty);
   }
-  // DL380a drive cage tracking (Rule 81016788)
-  if ((desc.includes('4sff') && desc.includes('dl380a')) || (mandatorySkus?.GENERIC_CAGE?.sku && sku === cleanBaseSKU(mandatorySkus.GENERIC_CAGE.sku) && desc.includes('4sff'))) {
-    tally.has4SffCage = true;
-    tally.hasDriveCage = true;
-    tally.cageCapacity = (tally.cageCapacity || 0) + (4 * qty);
-  }
-  if ((desc.includes('4edsff') && desc.includes('dl380a')) || (mandatorySkus?.PREMIUM_CAGE?.sku && sku === cleanBaseSKU(mandatorySkus.PREMIUM_CAGE.sku) && desc.includes('4edsff'))) {
-    tally.has4EdsffCage = true;
-    tally.hasDriveCage = true;
-    tally.cageCapacity = (tally.cageCapacity || 0) + (4 * qty);
-  }
+  _tallyDl380aCageKits(tally, desc, sku, qty, mandatorySkus);
+}
+
+function _tallyChassisBays(tally, desc, qty, role) {
   if (desc.includes('12lff') || desc.includes('4lff') || desc.includes('8lff') || (role === 'Chassis' && desc.includes('lff'))) {
     tally.isLffChassis = true;
     tally.hasDriveCage = true;
@@ -71,19 +79,38 @@ function tallyCagesAndDrives(tally, desc, sku, qty, role, mandatorySkus = {}) {
   }
 }
 
-function tallyRaidControllers(tally, desc, sku) {
-  const isVroc = desc.includes('vroc') || desc.includes('virtual raid on cpu') || sku === 'R7J57A';
-  const isBootController = desc.includes('ns204i') || desc.includes('boot optimized') || desc.includes('nvme boot');
+function tallyCagesAndDrives(tally, desc, sku, qty, role, mandatorySkus = {}) {
+  _tallyDriveCount(tally, desc, qty, role);
+  _tallyCageKits(tally, desc, sku, qty, mandatorySkus);
+  _tallyChassisBays(tally, desc, qty, role);
+}
 
-  if (isVroc) {
+function _tallyRaidFioSettings(tally, desc, sku) {
+  if (desc.includes('vroc') || desc.includes('virtual raid on cpu') || sku === 'R7J57A' || sku === 'S3Q19A') {
     tally.hasVroc = true;
   }
-  if (isBootController) {
+  if (desc.includes('ns204i') || desc.includes('boot optimized') || desc.includes('nvme boot') || sku === 'P78279-B21') {
     tally.hasBootController = true;
   }
+  if (sku === '339778-B21' || (desc.includes('raid 1') && (desc.includes('drive 1') || desc.includes('fio setting')))) {
+    tally.hasRaid1FioSetting = true;
+  }
+  if (sku === '389692-B21' || desc.includes('customer defined raid')) {
+    tally.hasCustomerDefinedRaidSetting = true;
+  }
+  if (sku === '339779-B21' || (desc.includes('raid 5') && desc.includes('drive 1'))) {
+    tally.hasRaid5FioSetting = true;
+  }
+  if (sku === '339780-B21' || (desc.includes('raid 5 w/sp') && desc.includes('drive 1'))) {
+    tally.hasRaid5SpFioSetting = true;
+  }
+}
 
-  // Only physical Tri-Mode / SmartRAID / MegaRAID hardware storage controllers require write-back battery and direct controller-to-cage cabling
-  const isHardwareStorageController = ((desc.includes('controller') || /\b(mr|sr)\d{3}i/i.test(desc) || desc.includes('smart array')) &&
+function _isHardwareStorageController(desc, sku, tally) {
+  const isBootController = tally.hasBootController || desc.includes('ns204i') || desc.includes('boot optimized') || desc.includes('nvme boot') || sku === 'P78279-B21';
+  const isVroc = tally.hasVroc || desc.includes('vroc') || desc.includes('virtual raid on cpu') || sku === 'R7J57A' || sku === 'S3Q19A';
+
+  return ((desc.includes('controller') || /\b(mr|sr)\d{3}i/i.test(desc) || desc.includes('smart array')) &&
     !isBootController &&
     !isVroc &&
     !desc.includes('node controller') &&
@@ -92,26 +119,33 @@ function tallyRaidControllers(tally, desc, sku) {
     !desc.includes('alletra') &&
     !desc.includes('network controller') &&
     !desc.includes('ethernet controller'));
+}
 
-  if (isHardwareStorageController) {
-    tally.hasStorageController = true;
-    if (desc.includes('416i') || desc.includes('216i') || desc.includes('932i') || 
-        desc.includes('16-port') || desc.includes('16 port') || desc.includes('32-port')) {
-      tally.has16PortController = true;
-    }
-    if (desc.includes('-o') || desc.includes('ocp') || /\b(mr|sr)\d{3}i-o\b/i.test(desc)) {
-      tally.hasOcpController = true;
-    }
-    if (desc.includes('-p') || /\b(mr|sr)\d{3}i-p\b/i.test(desc)) {
-      tally.hasPcieController = true;
-    }
-    if (/\bmr216i-o\b/i.test(desc)) {
-      tally.hasMr216iO = true;
-    }
+function _tallyHardwareStorageController(tally, desc, sku) {
+  if (!_isHardwareStorageController(desc, sku, tally)) return;
+
+  tally.hasStorageController = true;
+  if (desc.includes('416i') || desc.includes('216i') || desc.includes('932i') || 
+      desc.includes('16-port') || desc.includes('16 port') || desc.includes('32-port')) {
+    tally.has16PortController = true;
+  }
+  if (desc.includes('-o') || desc.includes('ocp') || /\b(mr|sr)\d{3}i-o\b/i.test(desc)) {
+    tally.hasOcpController = true;
+  }
+  if (desc.includes('-p') || /\b(mr|sr)\d{3}i-p\b/i.test(desc)) {
+    tally.hasPcieController = true;
+  }
+  if (/\bmr216i-o\b/i.test(desc)) {
+    tally.hasMr216iO = true;
   }
 }
 
-function tallyStorageCablingAndBatteries(tally, it, desc, sku, role, batterySku, noDriveSku, mandatorySkus = {}) {
+function tallyRaidControllers(tally, desc, sku) {
+  _tallyRaidFioSettings(tally, desc, sku);
+  _tallyHardwareStorageController(tally, desc, sku);
+}
+
+function _tallyStorageCabling(tally, it, desc, sku, mandatorySkus = {}) {
   if (desc.includes('splitter cable') || desc.includes('tm y-cbl') || desc.includes('tri-mode splitter') || desc.includes('y-cable') ||
       (mandatorySkus?.TRI_MODE_SPLITTER_CABLE?.sku && sku === cleanBaseSKU(mandatorySkus.TRI_MODE_SPLITTER_CABLE.sku))) {
     tally.hasYCable = true;
@@ -130,14 +164,22 @@ function tallyStorageCablingAndBatteries(tally, it, desc, sku, role, batterySku,
       (mandatorySkus?.TRI_MODE_SWITCH?.sku && sku === cleanBaseSKU(mandatorySkus.TRI_MODE_SWITCH.sku))) {
     tally.hasTriModeSwitch = true;
   }
+}
+
+function _tallyBatteryAndNoDrive(tally, desc, sku, role, batterySku, noDriveSku, mandatorySkus = {}) {
   if (role === 'Storage Battery' || (batterySku && sku === batterySku) || sku === 'P01367-B21' || sku === 'P01366-B21' || (desc.includes('smart storage') && desc.includes('battery')) || desc.includes('lithium-ion battery') || desc.includes('hybrid capacitor') || desc.includes('bbu') ||
       (mandatorySkus?.SMART_STORAGE_BATTERY?.sku && sku === cleanBaseSKU(mandatorySkus.SMART_STORAGE_BATTERY.sku))) {
     tally.hasSmartBattery = true;
   }
-  if ((noDriveSku && (noDriveSku && sku === noDriveSku)) || desc.includes('no drive') || desc.includes('diskless') ||
+  if ((noDriveSku && sku === noDriveSku) || desc.includes('no drive') || desc.includes('diskless') ||
       (mandatorySkus?.NO_DRIVE_FIO_KIT?.sku && sku === cleanBaseSKU(mandatorySkus.NO_DRIVE_FIO_KIT.sku))) {
     tally.hasNoDriveKit = true;
   }
+}
+
+function tallyStorageCablingAndBatteries(tally, it, desc, sku, role, batterySku, noDriveSku, mandatorySkus = {}) {
+  _tallyStorageCabling(tally, it, desc, sku, mandatorySkus);
+  _tallyBatteryAndNoDrive(tally, desc, sku, role, batterySku, noDriveSku, mandatorySkus);
 }
 
 function tallyAlletraStorage(tally, desc, sku, qty) {
@@ -223,7 +265,11 @@ function tallyStorageItems(items, skuCategoryMap, batterySku, noDriveSku, mandat
     hasMr216iO: false,
     isLffChassis: false,
     hasVroc: false,
-    hasBootController: false
+    hasBootController: false,
+    hasRaid1FioSetting: false,
+    hasCustomerDefinedRaidSetting: false,
+    hasRaid5FioSetting: false,
+    hasRaid5SpFioSetting: false
   };
 
   for (const it of items) {
@@ -308,12 +354,19 @@ function validateStorageCablingAndBackplane(t, serverCount = 1) {
   };
 }
 
-function checkChassisDriveCompatibility(t) {
+function checkChassisDriveCompatibility(t, perNodeDrives = 0) {
+  const hasRaid1MultiDriveConflict = Boolean(t.hasRaid1FioSetting && perNodeDrives > 2);
+  const needsRaid1FioPruning = Boolean(hasRaid1MultiDriveConflict && t.hasBootController);
+  const needsCustomerDefinedRaidTranspilation = Boolean(hasRaid1MultiDriveConflict && !t.hasBootController && !t.hasCustomerDefinedRaidSetting);
+
   return {
     hasD3940ConnectivityError: (t.hasD3940 && t.hasSynergyCompute) && (!t.hasSasMezzanine || !t.hasSasConnectionModule),
     hasLffDrivesInSffChassis: !t.isLffChassis && !t.isAlletraArray && !t.ltoSasDriveCount && !t.ltoFcDriveCount && t.lffDriveCount > 0,
     hasDriveCageMixingConflict: t.has4SffCage && t.has4EdsffCage,
-    hasMr216iORaid56Risk: t.hasMr216iO && (t.hasRaid6 || (t.driveCount > 2 && !t.hasSmartBattery))
+    hasMr216iORaid56Risk: t.hasMr216iO && (t.hasRaid6 || (t.driveCount > 2 && !t.hasSmartBattery)),
+    hasRaid1MultiDriveConflict,
+    needsRaid1FioPruning,
+    needsCustomerDefinedRaidTranspilation
   };
 }
 
@@ -326,12 +379,14 @@ function evalStorageTriMode(items, catalogData = null, mandatorySkus = {}, serve
   const skuCategoryMap = buildSkuCategoryMap(catalogData);
 
   const t = tallyStorageItems(items, skuCategoryMap, batterySku, noDriveSku, mandatorySkus);
+  const nodes = Math.max(1, serverCount || 1);
+  const perNodeDrives = t.driveCount / nodes;
 
   // Alletra, StoreEver, cabling, and compatibility sub-aspect validations
   const alletra = validateAlletraStorage(t);
   const storeEver = validateStoreEverStorage(t);
   const cabling = validateStorageCablingAndBackplane(t, serverCount);
-  const compat = checkChassisDriveCompatibility(t);
+  const compat = checkChassisDriveCompatibility(t, perNodeDrives);
 
   return {
     driveCount: t.driveCount,
@@ -385,7 +440,14 @@ function evalStorageTriMode(items, catalogData = null, mandatorySkus = {}, serve
     hasDriveCageMixingConflict: compat.hasDriveCageMixingConflict,
     hasMr216iORaid56Risk: compat.hasMr216iORaid56Risk,
     hasVroc: t.hasVroc,
-    hasBootController: t.hasBootController
+    hasBootController: t.hasBootController,
+    hasRaid1FioSetting: t.hasRaid1FioSetting,
+    hasCustomerDefinedRaidSetting: t.hasCustomerDefinedRaidSetting,
+    hasRaid5FioSetting: t.hasRaid5FioSetting,
+    hasRaid5SpFioSetting: t.hasRaid5SpFioSetting,
+    hasRaid1MultiDriveConflict: compat.hasRaid1MultiDriveConflict,
+    needsRaid1FioPruning: compat.needsRaid1FioPruning,
+    needsCustomerDefinedRaidTranspilation: compat.needsCustomerDefinedRaidTranspilation
   };
 }
 

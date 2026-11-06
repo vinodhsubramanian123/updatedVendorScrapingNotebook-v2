@@ -70,9 +70,10 @@ async function runCombinationsSuite() {
   fs.writeFileSync(csv1, `Product #,Description,Qty
 P73282-B21,HPE ProLiant DL380 Gen12 SFF CTO Server,1
 P73299-B21,Intel Xeon Gold 6548Y 2.8GHz 32-core 280W Processor for HPE,2
+P74794-B21,HPE ProLiant DL380 Gen12 2U Max Performance Heat Sink Kit,2
 P48820-B21,HPE ProLiant High Performance Fan Kit,1
 P73300-F21,HPE 32GB 2Rx8 DDR5-5600 Smart Memory FIO Kit,16
-P38995-B21,HPE 800W Flex Slot Platinum Hot Plug Low Halogen Power Supply,2
+P38999-B21,HPE 1600W Flex Slot Titanium Hot Plug Low Halogen Power Supply Kit,2
 P52019-B21,Broadcom BCM5719 Ethernet 1Gb 4-port BASE-T OCP3 Adapter,1
 P49048-B21,HPE 800GB SAS 12G Mixed Use SFF BC Multi Vendor SSD,2
 R7A11AAE,HPE Compute Ops Management Enhanced 3-year SaaS,1

@@ -55,6 +55,86 @@ function detectDriveFormFactor(desc = '', sku = '') {
   return 'sff';
 }
 
+function _resolveSffArch(is1U, isDl380a, isGen12) {
+  let cageSku = 'P48813-B21';
+  let cageDesc = 'HPE ProLiant DL380 Gen11 2U 8SFF x1 Tri-Mode U.3 Drive Cage Kit';
+  if (isDl380a) {
+    cageSku = 'P74710-B21';
+    cageDesc = 'HPE ProLiant DL380a Gen12 4SFF Front Drive Cage Kit';
+  } else if (isGen12) {
+    cageSku = 'P75741-B21';
+    cageDesc = 'HPE ProLiant DL380 Gen12 8SFF Drive Cage Kit';
+  }
+  return {
+    baseBays: 8,
+    baysPerCage: 8,
+    maxCages: is1U ? 1 : 3,
+    maxFrontBays: is1U ? 8 : 24,
+    cageSku,
+    cageDesc
+  };
+}
+
+function _resolveLffArch(is1U, isGen12) {
+  return {
+    baseBays: 4,
+    baysPerCage: 4,
+    maxCages: is1U ? 1 : 3,
+    maxFrontBays: is1U ? 4 : 12,
+    cageSku: isGen12 ? 'P75743-B21' : 'P48809-B21',
+    cageDesc: isGen12
+      ? 'HPE ProLiant DL380 Gen12 4LFF Drive Cage Kit'
+      : 'HPE ProLiant DL380 Gen11 4LFF SAS/SATA 12G LP Midplane Drive Cage Kit'
+  };
+}
+
+function _resolveEdsffArch(isDl380a, isGen12) {
+  let cageDesc = 'HPE ProLiant DL380 Gen11 12EDSFF Drive Cage Kit';
+  if (isDl380a) {
+    cageDesc = 'HPE ProLiant DL380a Gen12 4EDSFF Front Drive Cage Kit';
+  } else if (isGen12) {
+    cageDesc = 'HPE ProLiant Compute DL380 Gen12 12EDSFF Drive Cage Kit';
+  }
+  return {
+    baseBays: isDl380a ? 4 : 12,
+    baysPerCage: isDl380a ? 4 : 12,
+    maxCages: isDl380a ? 2 : 3,
+    maxFrontBays: isDl380a ? 8 : 36,
+    cageSku: isDl380a ? 'P74712-B21' : (isGen12 ? 'P74712-B21' : 'P48808-B21'),
+    cageDesc
+  };
+}
+
+function _resolveEnablementArch(isDl380a, isGen12) {
+  let controllerCableSku = 'P48918-B21';
+  let controllerCableDesc = 'HPE ProLiant Storage Controller Enablement Cable Kit';
+  if (isDl380a) {
+    controllerCableSku = 'P76700-B21';
+    controllerCableDesc = 'HPE ProLiant Compute DL380a Gen12 NVMe to Tri-Mode PCIe FIO Cable Kit';
+  } else if (isGen12) {
+    controllerCableSku = 'P76456-B21';
+    controllerCableDesc = 'HPE ProLiant DL380 Gen12 Controller Cable Kit';
+  }
+
+  return {
+    directControllerLimit: 8,
+    expanderSku: isGen12 ? 'P55806-B21' : 'P48835-B21',
+    expanderDesc: isGen12 ? 'HPE ProLiant Tri-Mode Switch Card' : 'HPE ProLiant 24G SAS Expander Card with Cables',
+    controllerCableSku,
+    controllerCableDesc,
+    defaultStorageController: {
+      sku: isGen12 ? 'P76458-B21' : 'P43022-B21',
+      desc: isGen12 ? 'HPE MR408i-o Gen12 Storage Controller' : 'HPE MR408i-o Gen11 x8 Lanes 4GB Flash Tri-Mode Controller'
+    },
+    smartStorageBattery: {
+      sku: isDl380a ? 'P01367-B21' : 'P01366-B21',
+      desc: isDl380a
+        ? 'HPE 96W Smart Storage Lithium-ion Battery with 260mm Cable Kit'
+        : 'HPE 96W Smart Storage Battery (up to 20 Devices) with 145mm Cable Kit'
+    }
+  };
+}
+
 /**
  * Resolve storage architecture and progressive cage limits for platform profile.
  * @param {object} profile
@@ -70,55 +150,10 @@ function resolveStorageArchitecture(profile, targetPlatformKey) {
   const is1U = profile?.formFactor === '1U Rack' || key.includes('DL360') || key.includes('DL145');
 
   return {
-    sff: {
-      baseBays: 8,
-      baysPerCage: 8,
-      maxCages: is1U ? 1 : 3,
-      maxFrontBays: is1U ? 8 : 24,
-      cageSku: isDl380a ? 'P74710-B21' : (isGen12 ? 'P75741-B21' : 'P48813-B21'),
-      cageDesc: isDl380a
-        ? 'HPE ProLiant DL380a Gen12 4SFF Front Drive Cage Kit'
-        : (isGen12 ? 'HPE ProLiant DL380 Gen12 8SFF Drive Cage Kit' : 'HPE ProLiant DL380 Gen11 2U 8SFF x1 Tri-Mode U.3 Drive Cage Kit')
-    },
-    lff: {
-      baseBays: 4,
-      baysPerCage: 4,
-      maxCages: is1U ? 1 : 3,
-      maxFrontBays: is1U ? 4 : 12,
-      cageSku: isGen12 ? 'P75743-B21' : 'P48809-B21',
-      cageDesc: isGen12
-        ? 'HPE ProLiant DL380 Gen12 4LFF Drive Cage Kit'
-        : 'HPE ProLiant DL380 Gen11 4LFF SAS/SATA 12G LP Midplane Drive Cage Kit'
-    },
-    edsff: {
-      baseBays: isDl380a ? 4 : 12,
-      baysPerCage: isDl380a ? 4 : 12,
-      maxCages: isDl380a ? 2 : 3,
-      maxFrontBays: isDl380a ? 8 : 36,
-      cageSku: isDl380a ? 'P74712-B21' : (isGen12 ? 'P74712-B21' : 'P48808-B21'),
-      cageDesc: isDl380a
-        ? 'HPE ProLiant DL380a Gen12 4EDSFF Front Drive Cage Kit'
-        : (isGen12 ? 'HPE ProLiant Compute DL380 Gen12 12EDSFF Drive Cage Kit' : 'HPE ProLiant DL380 Gen11 12EDSFF Drive Cage Kit')
-    },
-    enablement: {
-      directControllerLimit: 8,
-      expanderSku: isGen12 ? 'P55806-B21' : 'P48835-B21',
-      expanderDesc: isGen12 ? 'HPE ProLiant Tri-Mode Switch Card' : 'HPE ProLiant 24G SAS Expander Card with Cables',
-      controllerCableSku: isDl380a ? 'P76700-B21' : (isGen12 ? 'P76456-B21' : 'P48918-B21'),
-      controllerCableDesc: isDl380a
-        ? 'HPE ProLiant Compute DL380a Gen12 NVMe to Tri-Mode PCIe FIO Cable Kit'
-        : (isGen12 ? 'HPE ProLiant DL380 Gen12 Controller Cable Kit' : 'HPE ProLiant Storage Controller Enablement Cable Kit'),
-      defaultStorageController: {
-        sku: isGen12 ? 'P76458-B21' : 'P43022-B21',
-        desc: isGen12 ? 'HPE MR408i-o Gen12 Storage Controller' : 'HPE MR408i-o Gen11 x8 Lanes 4GB Flash Tri-Mode Controller'
-      },
-      smartStorageBattery: {
-        sku: isDl380a ? 'P01367-B21' : 'P01366-B21',
-        desc: isDl380a
-          ? 'HPE 96W Smart Storage Lithium-ion Battery with 260mm Cable Kit'
-          : 'HPE 96W Smart Storage Battery (up to 20 Devices) with 145mm Cable Kit'
-      }
-    }
+    sff: _resolveSffArch(is1U, isDl380a, isGen12),
+    lff: _resolveLffArch(is1U, isGen12),
+    edsff: _resolveEdsffArch(isDl380a, isGen12),
+    enablement: _resolveEnablementArch(isDl380a, isGen12)
   };
 }
 

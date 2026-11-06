@@ -171,22 +171,21 @@ test('Long-Running Grounding Jobs & Resilient Worker Integration', async (t) => 
     assert.strictEqual(recoveryResults.length, 2);
 
     const expiredResult = recoveryResults.find(r => r.jobId === 'JOB_EXPIRED_001');
-    assert.strictEqual(expiredResult.action, 'EXPIRED');
+    assert.strictEqual(expiredResult.action, 'EXPIRED_REMOTE_STATE_REVIEW_REQUIRED');
 
     const resumedResult = recoveryResults.find(r => r.jobId === 'JOB_ACTIVE_002');
-    assert.strictEqual(resumedResult.action, 'RESUMED');
+    assert.strictEqual(resumedResult.action, 'REMOTE_STATE_REVIEW_REQUIRED');
 
     // Check disk states
     const expiredDiskJob = getJob('JOB_EXPIRED_001');
     assert.strictEqual(expiredDiskJob.status, 'FAILED');
-    assert.ok(expiredDiskJob.error.includes('expired while service was offline'));
+    assert.ok(expiredDiskJob.error.includes('caller deadline expired'));
 
-    // Wait for resumed execution
-    await new Promise(resolve => setTimeout(resolve, 50));
-    assert.strictEqual(resumedExecutionCalled, true);
-    const resumedDiskJob = getJob('JOB_ACTIVE_002');
-    assert.strictEqual(resumedDiskJob.status, 'COMPLETED');
-    assert.strictEqual(resumedDiskJob.answer, 'Resumed answer after restart');
+    // Verify non-repetition: restart never blindly re-dispatches unverified queries
+    assert.strictEqual(resumedExecutionCalled, false, 'Restart must never automatically re-dispatch unconfirmed queries');
+    const activeDiskJob = getJob('JOB_ACTIVE_002');
+    assert.strictEqual(activeDiskJob.status, 'FAILED');
+    assert.strictEqual(activeDiskJob.diagnostic.remoteState, 'REMOTE_STATE_UNKNOWN');
   });
 
   await t.test('4. 15-minute deadline tracking (900s timeout)', () => {

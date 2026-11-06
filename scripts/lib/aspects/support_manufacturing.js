@@ -119,9 +119,8 @@ function parseCpuInfo(desc, qty) {
   };
 }
 
-function tallySupportItems(items, catalogData) {
-  const skuIndex = buildCatalogSkuIndex(catalogData);
-  const tally = {
+function _createEmptySupportTally() {
+  return {
     hasSupportService: false,
     hasManagementLicense: false,
     hasCtoServer: false,
@@ -147,6 +146,101 @@ function tallySupportItems(items, catalogData) {
     remoteInstallItems: [],
     unsolicitedOptionalItems: []
   };
+}
+
+function _tallyInstallationAndServices(it, tally) {
+  if (isOnsiteInstallationService(it.sku, it.description)) {
+    tally.hasOnsiteInstallService = true;
+    tally.onsiteInstallItems.push(it);
+  }
+  if (isRemoteInstallationService(it.sku, it.description)) {
+    tally.hasRemoteInstallService = true;
+    tally.remoteInstallItems.push(it);
+  }
+  if (isSaasSoftwareSubscription(it.sku, it.description)) {
+    tally.hasSaasSubscription = true;
+  }
+  if (isHardwareBreakFixSupport(it.sku, it.description)) {
+    tally.hasHardwareSupport = true;
+  }
+}
+
+function _tallyUnsolicitedOptional(it, sku, qty, tally) {
+  if (!isUnsolicitedOptionalService(it.sku, it.description)) return;
+  const uPrice = parseFloat(String(it.unitPrice || it.price || it['Unit Price (USD)'] || '0').replace(/[^0-9.]/g, '')) || 0;
+  const extPrice = uPrice * qty;
+  tally.totalUnsolicitedCostUsd += extPrice;
+  const isFioCloudToken = sku === 'S1A05A';
+  tally.unsolicitedOptionalItems.push({
+    sku: it.sku,
+    description: it.description,
+    quantity: qty,
+    unitPriceUsd: uPrice,
+    extendedPriceUsd: extPrice,
+    reason: isFioCloudToken
+      ? 'Optional FIO GreenLake cloud pre-claim token (INV-32 / INV-207): Not required by CLIC Rule 81322276 when R7A11AAE is present; safe to remove unless customer explicitly requests factory GreenLake workspace binding.'
+      : 'Optional software / startup service not requested by customer (INV-32)'
+  });
+}
+
+function _tallyProcessorMetrics(desc, qty, role, tally) {
+  if (role === 'Processor' || desc.includes('xeon') || desc.includes('epyc') || desc.includes('processor')) {
+    const cpu = parseCpuInfo(desc, qty);
+    tally.parsedCpuCores += cpu.cores;
+    tally.detectedCpuSockets += cpu.sockets;
+    tally.targetVmwareCores += cpu.vmwareTarget;
+  }
+}
+
+function _tallySupportAndManagement(sku, desc, role, tally) {
+  if (role === 'Service & Support' || desc.includes('tech care') || desc.includes('support') || desc.includes('warranty') || /^h[a-z0-9]{6}/i.test(sku)) {
+    tally.hasSupportService = true;
+  }
+  if (VALID_MANAGEMENT_SKUS.has(sku) || desc.includes('compute ops management') || desc.includes('oneview') || desc.includes('com adv')) {
+    tally.hasManagementLicense = true;
+  }
+}
+
+function _tallyOsHypervisorLicensing(desc, qty, tally) {
+  if (desc.includes('windows server') || desc.includes('win server') || desc.includes('ms ws') || /\bws20(19|22|25)\b/i.test(desc)) {
+    tally.hasWindowsServer = true;
+    if (desc.includes('16-core') || desc.includes('16 core') || desc.includes('base')) {
+      tally.windowsBaseLicenses += qty;
+    }
+    if (desc.includes('additional core') || desc.includes('add-on') || desc.includes('2-core') || desc.includes('4-core')) {
+      const addonMatch = desc.match(/(\d+)\s*-?\s*core/i);
+      const coresInPack = addonMatch ? parseInt(addonMatch[1], 10) : 16;
+      tally.windowsAddonCores += (coresInPack * qty);
+    }
+  }
+
+  if (desc.includes('vmware')) {
+    tally.hasVmware = true;
+    const vmwareCoreMatch = desc.match(/(\d+)\s*-?\s*core/i);
+    tally.vmwareLicensedCores += vmwareCoreMatch ? (parseInt(vmwareCoreMatch[1], 10) * qty) : (desc.includes('core') ? qty : 0);
+  }
+
+  if (desc.includes('rhel') || desc.includes('red hat') || desc.includes('sles') || desc.includes('suse')) {
+    tally.hasLinux = true;
+    tally.linuxSubscriptions += qty;
+  }
+}
+
+function _tallyTapeMedia(sku, desc, qty, tally) {
+  if ((desc.includes('lto-') || desc.includes('ultrium')) && (desc.includes('data cartridge') || desc.includes('rw data') || desc.includes('rw custom') || desc.includes('non custom'))) {
+    tally.dataCartridgeCount += qty;
+  }
+  if (sku === 'C7978A' || desc.includes('universal cleaning') || desc.includes('cleaning cartridge')) {
+    tally.cleaningCartridgeCount += qty;
+  }
+  if (desc.includes('bar code label') || desc.includes('barcode label') || desc.includes('label pack') || sku === 'Q2014A') {
+    tally.barcodeLabelCount += qty;
+  }
+}
+
+function tallySupportItems(items, catalogData) {
+  const skuIndex = buildCatalogSkuIndex(catalogData);
+  const tally = _createEmptySupportTally();
 
   for (const it of items) {
     if (isOcaModifierTrackingRow(it.sku, it.description)) continue;
@@ -158,37 +252,8 @@ function tallySupportItems(items, catalogData) {
       tally.hasCtoServer = true;
     }
 
-    if (isOnsiteInstallationService(it.sku, it.description)) {
-      tally.hasOnsiteInstallService = true;
-      tally.onsiteInstallItems.push(it);
-    }
-    if (isRemoteInstallationService(it.sku, it.description)) {
-      tally.hasRemoteInstallService = true;
-      tally.remoteInstallItems.push(it);
-    }
-    if (isSaasSoftwareSubscription(it.sku, it.description)) {
-      tally.hasSaasSubscription = true;
-    }
-    if (isHardwareBreakFixSupport(it.sku, it.description)) {
-      tally.hasHardwareSupport = true;
-    }
-
-    if (isUnsolicitedOptionalService(it.sku, it.description)) {
-      const uPrice = parseFloat(String(it.unitPrice || it.price || it['Unit Price (USD)'] || '0').replace(/[^0-9.]/g, '')) || 0;
-      const extPrice = uPrice * qty;
-      tally.totalUnsolicitedCostUsd += extPrice;
-      const isFioCloudToken = sku === 'S1A05A';
-      tally.unsolicitedOptionalItems.push({
-        sku: it.sku,
-        description: it.description,
-        quantity: qty,
-        unitPriceUsd: uPrice,
-        extendedPriceUsd: extPrice,
-        reason: isFioCloudToken
-          ? 'Optional FIO GreenLake cloud pre-claim token (INV-32 / INV-207): Not required by CLIC Rule 81322276 when R7A11AAE is present; safe to remove unless customer explicitly requests factory GreenLake workspace binding.'
-          : 'Optional software / startup service not requested by customer (INV-32)'
-      });
-    }
+    _tallyInstallationAndServices(it, tally);
+    _tallyUnsolicitedOptional(it, sku, qty, tally);
 
     let role = classifyComponentRole('', desc);
     const catalogItem = skuIndex.get(sku);
@@ -196,58 +261,10 @@ function tallySupportItems(items, catalogData) {
       role = classifyComponentRole(catalogItem.parentCategory, desc);
     }
 
-    // Processors
-    if (role === 'Processor' || desc.includes('xeon') || desc.includes('epyc') || desc.includes('processor')) {
-      const cpu = parseCpuInfo(desc, qty);
-      tally.parsedCpuCores += cpu.cores;
-      tally.detectedCpuSockets += cpu.sockets;
-      tally.targetVmwareCores += cpu.vmwareTarget;
-    }
-
-    // Support & Management
-    if (role === 'Service & Support' || desc.includes('tech care') || desc.includes('support') || desc.includes('warranty') || /^h[a-z0-9]{6}/i.test(sku)) {
-      tally.hasSupportService = true;
-    }
-    if (VALID_MANAGEMENT_SKUS.has(sku) || desc.includes('compute ops management') || desc.includes('oneview') || desc.includes('com adv')) {
-      tally.hasManagementLicense = true;
-    }
-
-    // Windows Server
-    if (desc.includes('windows server') || desc.includes('win server') || desc.includes('ms ws') || /\bws20(19|22|25)\b/i.test(desc)) {
-      tally.hasWindowsServer = true;
-      if (desc.includes('16-core') || desc.includes('16 core') || desc.includes('base')) {
-        tally.windowsBaseLicenses += qty;
-      }
-      if (desc.includes('additional core') || desc.includes('add-on') || desc.includes('2-core') || desc.includes('4-core')) {
-        const addonMatch = desc.match(/(\d+)\s*-?\s*core/i);
-        const coresInPack = addonMatch ? parseInt(addonMatch[1], 10) : 16;
-        tally.windowsAddonCores += (coresInPack * qty);
-      }
-    }
-
-    // VMware
-    if (desc.includes('vmware')) {
-      tally.hasVmware = true;
-      const vmwareCoreMatch = desc.match(/(\d+)\s*-?\s*core/i);
-      tally.vmwareLicensedCores += vmwareCoreMatch ? (parseInt(vmwareCoreMatch[1], 10) * qty) : (desc.includes('core') ? qty : 0);
-    }
-
-    // Linux
-    if (desc.includes('rhel') || desc.includes('red hat') || desc.includes('sles') || desc.includes('suse')) {
-      tally.hasLinux = true;
-      tally.linuxSubscriptions += qty;
-    }
-
-    // Tape Media
-    if ((desc.includes('lto-') || desc.includes('ultrium')) && (desc.includes('data cartridge') || desc.includes('rw data') || desc.includes('rw custom') || desc.includes('non custom'))) {
-      tally.dataCartridgeCount += qty;
-    }
-    if (sku === 'C7978A' || desc.includes('universal cleaning') || desc.includes('cleaning cartridge')) {
-      tally.cleaningCartridgeCount += qty;
-    }
-    if (desc.includes('bar code label') || desc.includes('barcode label') || desc.includes('label pack') || sku === 'Q2014A') {
-      tally.barcodeLabelCount += qty;
-    }
+    _tallyProcessorMetrics(desc, qty, role, tally);
+    _tallySupportAndManagement(sku, desc, role, tally);
+    _tallyOsHypervisorLicensing(desc, qty, tally);
+    _tallyTapeMedia(sku, desc, qty, tally);
   }
 
   return tally;

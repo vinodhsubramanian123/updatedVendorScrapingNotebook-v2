@@ -108,8 +108,8 @@ P43322-B21, 4, "HPE 16GB 1Rx8 PC5-4800B-R Smart Kit"
     assert(costRank4 >= costRank3, 'Rank 4 (Maximum Density) cost is greater than or equal to Rank 3');
     assert(costRank4 >= costRank5, 'Rank 4 cost is greater than or equal to Rank 5 (Budget Minimized)');
     
-    // Ensure all ranks include base SKUs and no unbuildable states
-    const allHaveBase = ranks.every(r => (r.skuPartsList || []).some(part => part.sku === 'P52562-B21'));
+    // Ensure all ranks include base SKUs (original or modernized) and no unbuildable states
+    const allHaveBase = ranks.every(r => (r.skuPartsList || []).some(part => part.sku === 'P52562-B21' || part.sku === 'P47808-B21'));
     assert(allHaveBase, 'All ranks maintain foundational chassis SKUs (no unbuildable partial lists)');
 
     // 4. Offline vs Live Fallback Nuances

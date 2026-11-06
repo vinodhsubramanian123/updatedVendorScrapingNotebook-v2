@@ -57,7 +57,7 @@ function getChassisCatalog(queryText = '', context = {}) {
   }
 
   // 2. Explicit unsupported check derived dynamically from portfolio presence
-  if ((text.includes('dl360') || text.includes('dl 360')) && (text.includes('gen12') || text.includes('gen 12'))) {
+  if (/\b(?:dl\s*360|dl360|360\s*g|360g)\b/i.test(text) && /\b(?:gen\s*12|gen12|g12)\b/i.test(text)) {
     const hasDl360Gen12 = catalogs.some(c => c.id.toLowerCase().includes('dl360') && c.id.toLowerCase().includes('gen12'));
     if (!hasDl360Gen12) {
       return {
@@ -82,13 +82,13 @@ function getChassisCatalog(queryText = '', context = {}) {
 
   // Model/Platform definition table with explicit tokens, boundary patterns, and catalog prefixes
   const PLATFORM_SIGNATURES = [
-    { key: 'dl380a', pattern: /\b(?:dl\s*380a|dl380a)\b/i, prefix: 'dl380a_' },
-    { key: 'dl380', pattern: /\b(?:dl\s*380|dl380)\b(?!a\b)/i, prefix: 'dl380_' },
-    { key: 'dl385', pattern: /\b(?:dl\s*385|dl385)\b/i, prefix: 'dl385_' },
-    { key: 'dl360', pattern: /\b(?:dl\s*360|dl360)\b/i, prefix: 'dl360_' },
-    { key: 'dl145', pattern: /\b(?:dl\s*145|dl145)\b/i, prefix: 'dl145_' },
-    { key: 'dl580', pattern: /\b(?:dl\s*580|dl580)\b/i, prefix: 'dl580_' },
-    { key: 'sy480', pattern: /\b(?:sy\s*480|sy480|synergy\s*480|synergy\s*compute)\b/i, prefix: 'sy480_' },
+    { key: 'dl380a', pattern: /\b(?:dl\s*380a|dl380a|380a\s*g\d+|380ag\d+|dl380a[-_]?(?:gen|g)\d+)\b/i, prefix: 'dl380a_' },
+    { key: 'dl380', pattern: /\b(?:dl\s*380|dl380|380\s*g\d+|380g\d+|dl380[-_]?(?:gen|g)\d+)\b(?!a\b)/i, prefix: 'dl380_' },
+    { key: 'dl385', pattern: /\b(?:dl\s*385|dl385|385\s*g\d+|385g\d+|dl385[-_]?(?:gen|g)\d+)\b/i, prefix: 'dl385_' },
+    { key: 'dl360', pattern: /\b(?:dl\s*360|dl360|360\s*g\d+|360g\d+|dl360[-_]?(?:gen|g)\d+)\b/i, prefix: 'dl360_' },
+    { key: 'dl145', pattern: /\b(?:dl\s*145|dl145|145\s*g\d+|145g\d+|dl145[-_]?(?:gen|g)\d+)\b/i, prefix: 'dl145_' },
+    { key: 'dl580', pattern: /\b(?:dl\s*580|dl580|580\s*g\d+|580g\d+|dl580[-_]?(?:gen|g)\d+)\b/i, prefix: 'dl580_' },
+    { key: 'sy480', pattern: /\b(?:sy\s*480|sy480|synergy\s*480|synergy\s*compute|480\s*g\d+|480g\d+|sy480[-_]?(?:gen|g)\d+)\b/i, prefix: 'sy480_' },
     { key: 'sy100gb', pattern: /\b(?:sy\s*100gb|sy100gb|f32\s*module|f32|synergy\s*100gb|synergy\s*fabric|synergy\s*switch)\b/i, prefix: 'sy100gb' },
     { key: 'alletra', pattern: /\b(?:alletra|alletra\s*9000|alletra\s*storage|alletra\s*mp)\b/i, prefix: 'alletra' },
     { key: 'msl3040', pattern: /\b(?:msl\s*3040|msl3040|storeever|tape\s*library|tape\s*automation)\b/i, prefix: 'msl3040' },
@@ -123,14 +123,22 @@ function getChassisCatalog(queryText = '', context = {}) {
     }
   }
 
-  // Parse explicit generation from text (e.g. Gen11, Gen 11, Gen12, Gen 12)
-  const explicitGenMatch = targetGen ? null : text.match(/\bgen\s*(\d+)\b/i);
+  // Parse explicit generation from text (e.g. Gen11, Gen 11, Gen12, Gen 12, G11, G12, 380G12)
+  const explicitGenMatch = targetGen ? null : (
+    text.match(/\bgen\s*(\d+)\b/i) ||
+    text.match(/(?:dl\s*\d+[a-z]?|sy\s*\d+|\b\d{3}[a-z]?)[-_]?(?:gen|g)(\d+)\b/i) ||
+    text.match(/\bg(\d+)\b/i)
+  );
   const explicitGen = targetGen || (explicitGenMatch ? `Gen${explicitGenMatch[1]}` : null);
 
   if (matchedCatalog && explicitGen && !matchedCatalog.id.toLowerCase().includes(explicitGen.toLowerCase())) {
     return { chassisKey: 'GENERATION_MISMATCH', catalogDir: null, catalogPath: null, catalogData: null, isAmbiguous: true, error: 'Explicit product and requested generation disagree.' };
   }
-  const requestedGenerations = new Set([...text.matchAll(/\bgen\s*(\d+)\b/gi)].map(match => match[1]));
+  const requestedGenerations = new Set([
+    ...[...text.matchAll(/\bgen\s*(\d+)\b/gi)].map(match => match[1]),
+    ...[...text.matchAll(/(?:dl\s*\d+[a-z]?|sy\s*\d+|\b\d{3}[a-z]?)[-_]?(?:gen|g)(\d+)\b/gi)].map(match => match[1]),
+    ...[...text.matchAll(/\bg(\d+)\b/gi)].map(match => match[1])
+  ]);
   if (!targetGen && requestedGenerations.size > 1) {
     return { chassisKey: 'AMBIGUOUS_QUERY', catalogDir: null, catalogPath: null, catalogData: null, isAmbiguous: true, error: 'Multiple generations require separate configurations.' };
   }
@@ -368,6 +376,27 @@ function _classifyFileBased(text, filePath, context) {
         rationale: `Input file '${path.basename(detectedPath)}' contains ${detectedVendor} competitor hardware designated for cross-vendor architectural transformation.`
       };
     }
+    // Check for mixed-domain tender composition (G-STR-03)
+    try {
+      const { readBoqLines } = require('../lib/boq/boq_evaluator.js');
+      const lines = readBoqLines(detectedPath);
+      if (Array.isArray(lines) && lines.length > 0) {
+        const { sniffDomainComposition } = require('../lib/boq/boq_preprocessor.js');
+        const sniff = sniffDomainComposition(lines);
+        if (sniff && sniff.isMixedDomain) {
+          return {
+            intent: 'HETEROGENEOUS_TENDER_MODERNIZATION',
+            confidence: 0.96,
+            skillTarget: 'heterogeneous-tender-modernizer',
+            domainSniff: sniff,
+            rationale: `Input file '${path.basename(detectedPath)}' contains mixed domains (${sniff.activeDomains.join(', ')}), automatically routing to heterogeneous tender modernizer.`
+          };
+        }
+      }
+    } catch {
+      // Non-blocking sniff fallback
+    }
+
     return {
       intent: 'BOQ_EVALUATION',
       confidence: 0.98,
@@ -395,7 +424,9 @@ function _classifyAdvancedPresalesTracks(text, context, detectedPath) {
   }
 
   const isWorkloadDna =
-    /\b(?:sap\s*hana|vmware|vcf|vsphere|vdi|ai\s*inference|llm\s*inference|machine\s*learning|hft|high[\s-]frequency\s*trading|oltp|sql\s*server|big\s*data|database\s*in[\s-]memory|workload\s*dna|numa\s*balanc|contested\s*resource|resource\s*arbitrat)\b/i.test(text) ||
+    (/\b(?:workload\s*dna|numa\s*balanc|contested\s*resource|resource\s*arbitrat)\b/i.test(text) ||
+     (/\b(?:sap\s*hana|vmware|vcf|vsphere|vdi|ai\s*inference|llm\s*inference|machine\s*learning|hft|high[\s-]frequency\s*trading|oltp|sql\s*server|big\s*data|database\s*in[\s-]memory)\b/i.test(text) &&
+      !/\b(?:size|sizing|configure|config|build|quote|cluster|nodes?|need|ram|tb|gb|cores?)\b/i.test(text))) ||
     context.intent === 'WORKLOAD_DNA';
 
   if (isWorkloadDna && !text.includes('reconcile')) {
@@ -564,6 +595,39 @@ function _classifyCatalogSizingOrQa(text, filePath, context) {
     text.includes('create a configuration') ||
     (text.includes('need') && (text.includes('cores') || text.includes('ram') || text.includes('tb storage')));
 
+  const detectedSkuTokens = (text.match(/\b([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6}|[A-Z0-9]{5,8}AAE|[HURS][A-Z0-9]{4,11})\b/gi) || []).filter(isValidHpeSKU);
+  const hasSkuTokens = detectedSkuTokens.length >= 2;
+  const hasBoqKeywords = text.includes('evaluate boq') || text.includes('verify bom') || text.includes('check buildability') || text.includes('validate boq');
+
+  if (hasSkuTokens || hasBoqKeywords) {
+    return {
+      intent: 'BOQ_EVALUATION',
+      confidence: 0.90,
+      skillTarget: 'boq-eval-skill',
+      rationale: 'Query contains specific SKU strings or requests physical validation of a drafted configuration.'
+    };
+  }
+
+  // Workload DNA upfront classification
+  let workloadDna = null;
+  try {
+    const { inferWorkloadDnaFromText } = require('../lib/conflict/workload_dna.js');
+    workloadDna = inferWorkloadDnaFromText(text);
+  } catch {
+    workloadDna = null;
+  }
+
+  if (workloadDna && workloadDna.confidence >= 0.70 && detectedSkuTokens.length === 0) {
+    const workloadLabel = workloadDna.primaryWorkload || workloadDna.workloadType;
+    return {
+      intent: 'RFP_SIZING_TO_BOM',
+      confidence: 0.95,
+      skillTarget: 'rfp-sizing-synthesizer',
+      workloadProfile: workloadDna,
+      rationale: `Query exhibits strong Workload DNA signature for ${workloadLabel} (Confidence: ${workloadDna.confidence}), requiring workload-optimized BOM synthesis.`
+    };
+  }
+
   if (hasSizingKeywords) {
     return {
       intent: 'RFP_SIZING_TO_BOM',
@@ -583,19 +647,6 @@ function _classifyCatalogSizingOrQa(text, filePath, context) {
       confidence: 0.92,
       skillTarget: 'presales-query-router',
       rationale: 'Freeform conversational inquiry regarding HPE server architecture, rules, or QuickSpecs.'
-    };
-  }
-
-  const detectedSkuTokens = (text.match(/\b([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6}|[A-Z0-9]{5,8}AAE|[HURS][A-Z0-9]{4,11})\b/gi) || []).filter(isValidHpeSKU);
-  const hasSkuTokens = detectedSkuTokens.length >= 2;
-  const hasBoqKeywords = text.includes('evaluate boq') || text.includes('verify bom') || text.includes('check buildability') || text.includes('validate boq');
-
-  if (hasSkuTokens || hasBoqKeywords) {
-    return {
-      intent: 'BOQ_EVALUATION',
-      confidence: 0.90,
-      skillTarget: 'boq-eval-skill',
-      rationale: 'Query contains specific SKU strings or requests physical validation of a drafted configuration.'
     };
   }
 
@@ -741,6 +792,17 @@ function _boqPipelineFailure(error, context) {
     traceId: error?.traceId || null, evidenceLogPath: error?.evidenceLogPath || null };
 }
 
+function _resolveBoqOfflineMode(context = {}) {
+  if (typeof _isOfflineContext === 'function') {
+    return _isOfflineContext(context);
+  }
+  if (context.offlineMode !== undefined) {
+    return Boolean(context.offlineMode);
+  }
+  return [process.env.OFFLINE_MODE, process.env.LOCAL_EVAL_ONLY]
+    .some(value => ['true', '1'].includes(String(value || '').trim().toLowerCase()));
+}
+
 async function _handleBoqEvaluation(queryText, context) {
   const chassisInfo = getChassisCatalog(queryText, context);
   if (context.filePath && fs.existsSync(context.filePath)) {
@@ -753,7 +815,7 @@ async function _handleBoqEvaluation(queryText, context) {
         signal: context.signal,
         traceId: context.traceId,
         JSON_MODE: true,
-        OFFLINE_MODE: _isOfflineContext(context)
+        OFFLINE_MODE: _resolveBoqOfflineMode(context)
       });
     } catch (pipeErr) {
       return _boqPipelineFailure(pipeErr, context);
@@ -768,7 +830,7 @@ async function _handleBoqEvaluation(queryText, context) {
         signal: context.signal,
         traceId: context.traceId,
         JSON_MODE: true,
-        OFFLINE_MODE: _isOfflineContext(context)
+        OFFLINE_MODE: _resolveBoqOfflineMode(context)
       });
     } catch (pipeErr) {
       return _boqPipelineFailure(pipeErr, context);
@@ -1721,6 +1783,12 @@ function _deriveClassificationConfidence(queryText, context, classification, cha
       classificationBasis: hasFile ? 'BOQ_EVALUATION_WITH_FILE' : 'BOQ_EVALUATION_KEYWORD'
     };
   }
+  if (classification.workloadProfile) {
+    return {
+      confidence: Math.max(classification.confidence || 0.90, classification.workloadProfile.confidence || 0.90),
+      classificationBasis: `WORKLOAD_DNA_${classification.workloadProfile.primaryWorkload || classification.workloadProfile.workloadType}`
+    };
+  }
   if (classification.intent === 'RFP_SIZING_TO_BOM') {
     const sizingKeywords = ['sizing', 'size a', 'build a bom', 'generate a bom', 'cores', 'ram', 'tb storage', 'need', 'memory', 'processor'];
     const kwCount = sizingKeywords.filter(kw => (queryText || '').toLowerCase().includes(kw)).length;
@@ -1971,7 +2039,7 @@ async function _executeLegacyRoutedQuery(queryText = '', context = {}) {
     traceId,
     executionTimeMs,
     classificationConfidence: confidence, // 0.0-1.0
-    hitlRequired: Boolean(chassisInfoForConf?.isAmbiguous) || unresolvedAmbiguity,
+    hitlRequired: Boolean(chassisInfoForConf?.isAmbiguous) || unresolvedAmbiguity || confidence < 0.75,
     platformSelectionMemory,
     resolvedPlatform: chassisInfoForConf && !chassisInfoForConf.isAmbiguous ? chassisInfoForConf.chassisKey : null,
     ambiguityDetails: (chassisInfoForConf?.isAmbiguous || unresolvedAmbiguity) ? {

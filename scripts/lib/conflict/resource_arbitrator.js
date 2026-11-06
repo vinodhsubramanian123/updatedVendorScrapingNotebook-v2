@@ -74,6 +74,53 @@ const DEFAULT_FORM_FACTOR_DUALS = [
   }
 ];
 
+function _buildDualStorageConfig(storageConfig = {}) {
+  const pcie = storageConfig.pcie || {};
+  const ocp = storageConfig.ocp || {};
+  return {
+    role: 'Storage Controller',
+    ocpRegex: /\b(mr|sr)\d{3}i-o\b/i,
+    pcieRegex: /\b(mr|sr)\d{3}i-p\b/i,
+    ocpCableRegex: /\b(storage controller enablement|controller enablement|cpu\d to ocp|direct attach)\b/i,
+    pcieCableRegex: /\b(tri-mode splitter|pcie box|riser to drive cage|splitter cable)\b/i,
+    cacheSwapReasoning: storageConfig.cacheSwapReasoning || '',
+    defaultPcieDual: {
+      sku: pcie.sku || 'P47777-B21',
+      description: pcie.description || 'HPE MR416i-p Gen11 x16 Lanes 8GB Cache PCI SPDM Storage Controller',
+      cacheGb: pcie.cacheGb || 8,
+      busWidth: pcie.busWidth || 'x16',
+      cableSku: pcie.cableSku || 'P48832-B21',
+      cableDescription: pcie.cableDescription || 'HPE ProLiant DL380 Gen11 Tri-Mode Splitter Cable Kit'
+    },
+    defaultOcpDual: {
+      sku: ocp.sku || 'P58335-B21',
+      description: ocp.description || 'HPE MR408i-o Gen11 x8 Lanes 4GB Cache OCP SPDM Storage Controller',
+      cacheGb: ocp.cacheGb || 4,
+      busWidth: ocp.busWidth || 'x8',
+      cableSku: ocp.cableSku || 'P48918-B21',
+      cableDescription: ocp.cableDescription || 'HPE ProLiant Storage Controller Enablement Cable Kit'
+    }
+  };
+}
+
+function _buildDualBootConfig(bootConfig = {}) {
+  const pcie = bootConfig.pcie || {};
+  const bay = bootConfig.bay || {};
+  return {
+    role: 'Boot Storage',
+    bayRegex: /\bns204i-u\b/i,
+    pcieRegex: /\bns204i-p\b/i,
+    defaultPcieDual: {
+      sku: pcie.sku || 'P12965-B21',
+      description: pcie.description || 'HPE NS204i-p NVMe PCIe3 x8 OS Boot Device'
+    },
+    defaultBayDual: {
+      sku: bay.sku || 'P48183-B21',
+      description: bay.description || 'HPE NS204i-u NVMe Hot Plug Boot Optimized Storage Device'
+    }
+  };
+}
+
 function resolveFormFactorDuals(genKey = 'Gen11') {
   const map = getChassisMapRaw();
   const dualsMap = map.form_factor_duals || {};
@@ -82,47 +129,9 @@ function resolveFormFactorDuals(genKey = 'Gen11') {
 
   if (!genConfig) return DEFAULT_FORM_FACTOR_DUALS;
 
-  const storageConfig = genConfig.storage_controller || {};
-  const bootConfig = genConfig.boot_device || {};
-
   return [
-    {
-      role: 'Storage Controller',
-      ocpRegex: /\b(mr|sr)\d{3}i-o\b/i,
-      pcieRegex: /\b(mr|sr)\d{3}i-p\b/i,
-      ocpCableRegex: /\b(storage controller enablement|controller enablement|cpu\d to ocp|direct attach)\b/i,
-      pcieCableRegex: /\b(tri-mode splitter|pcie box|riser to drive cage|splitter cable)\b/i,
-      cacheSwapReasoning: storageConfig.cacheSwapReasoning || '',
-      defaultPcieDual: {
-        sku: storageConfig.pcie?.sku || 'P47777-B21',
-        description: storageConfig.pcie?.description || 'HPE MR416i-p Gen11 x16 Lanes 8GB Cache PCI SPDM Storage Controller',
-        cacheGb: storageConfig.pcie?.cacheGb || 8,
-        busWidth: storageConfig.pcie?.busWidth || 'x16',
-        cableSku: storageConfig.pcie?.cableSku || 'P48832-B21',
-        cableDescription: storageConfig.pcie?.cableDescription || 'HPE ProLiant DL380 Gen11 Tri-Mode Splitter Cable Kit'
-      },
-      defaultOcpDual: {
-        sku: storageConfig.ocp?.sku || 'P58335-B21',
-        description: storageConfig.ocp?.description || 'HPE MR408i-o Gen11 x8 Lanes 4GB Cache OCP SPDM Storage Controller',
-        cacheGb: storageConfig.ocp?.cacheGb || 4,
-        busWidth: storageConfig.ocp?.busWidth || 'x8',
-        cableSku: storageConfig.ocp?.cableSku || 'P48918-B21',
-        cableDescription: storageConfig.ocp?.cableDescription || 'HPE ProLiant Storage Controller Enablement Cable Kit'
-      }
-    },
-    {
-      role: 'Boot Storage',
-      bayRegex: /\bns204i-u\b/i,
-      pcieRegex: /\bns204i-p\b/i,
-      defaultPcieDual: {
-        sku: bootConfig.pcie?.sku || 'P12965-B21',
-        description: bootConfig.pcie?.description || 'HPE NS204i-p NVMe PCIe3 x8 OS Boot Device'
-      },
-      defaultBayDual: {
-        sku: bootConfig.bay?.sku || 'P48183-B21',
-        description: bootConfig.bay?.description || 'HPE NS204i-u NVMe Hot Plug Boot Optimized Storage Device'
-      }
-    },
+    _buildDualStorageConfig(genConfig.storage_controller),
+    _buildDualBootConfig(genConfig.boot_device),
     {
       role: 'Network Adapter',
       ocpRegex: /\bocp3?\b/i,
@@ -131,86 +140,108 @@ function resolveFormFactorDuals(genKey = 'Gen11') {
   ];
 }
 
-/**
- * 1. Thermal Envelope Contention Arbitrator
- */
-function _arbitrateThermalAspect(items, evalResults, chassisInfo, contentions, branches) {
+function _detectThermalNeeds(items, evalResults) {
   const aspectChecks = evalResults.aspectChecks || {};
   const thermal = aspectChecks.computeThermal || {};
   const missingDeps = evalResults.missingDependencies || [];
-  const gen = chassisInfo?.gen || 'Gen11';
-  const isGen12 = gen.includes('12');
 
   const cpuItems = items.filter(it => {
     const d = (it.description || '').toLowerCase();
-    return (d.includes('processor') || d.includes('xeon') || d.includes('epyc')) && !d.includes('heatsink');
+    const isCpu = d.includes('processor') || d.includes('xeon') || d.includes('epyc');
+    return isCpu && !d.includes('heatsink');
   });
+
   const maxTdpMatch = cpuItems.map(it => {
     const match = (it.description || '').match(/(\d{2,3})\s*w\b/i);
     return match ? parseInt(match[1], 10) : 0;
   });
   const peakTdp = Math.max(0, ...maxTdpMatch);
-  const needsDlc = thermal.needsDirectLiquidCooling || peakTdp >= 350;
-  const needsHeatsink = thermal.needsHeatsink || missingDeps.some(d => d.key === 'HIGH_PERF_HEATSINK') || (peakTdp >= 270 && !items.some(it => (it.description || '').toLowerCase().includes('heatsink')));
-  const needsFans = thermal.needsHighPerfCooling || missingDeps.some(d => d.key === 'HIGH_PERF_FAN_KIT');
+  const needsDlc = Boolean(thermal.needsDirectLiquidCooling || peakTdp >= 350);
+  const hasHeatsinkItem = items.some(it => (it.description || '').toLowerCase().includes('heatsink'));
+  const isCtoServer = Boolean(evalResults.aspectChecks?.supportManufacturing?.hasCtoServer || items.some(it => (it.description || '').toLowerCase().includes('cto')));
+  const hasExplicitThermalDeficit = Boolean(thermal.needsHeatsink || missingDeps.some(d => d.key === 'HIGH_PERF_HEATSINK'));
+  const needsHeatsink = Boolean(hasExplicitThermalDeficit || (isCtoServer && peakTdp >= 270 && !hasHeatsinkItem));
+  const needsFans = Boolean(thermal.needsHighPerfCooling || missingDeps.some(d => d.key === 'HIGH_PERF_FAN_KIT'));
+
+  return { peakTdp, cpuItems, needsDlc, needsHeatsink, needsFans };
+}
+
+function _pushDlcThermalContention(contentions, branches, peakTdp, cpuDesc, isGen12) {
+  const tdpVal = peakTdp || 385;
+  contentions.push({
+    resourceType: 'THERMAL_COOLING_ENVELOPE',
+    maxCapacity: 350,
+    requestedDemands: tdpVal,
+    tradeoffSummary: `Processor TDP (${tdpVal}W) exceeds air cooling limits (>350W), mandating Direct Liquid Cooling (DLC).`,
+    hypothesis: `Initial configuration assumed standard chassis cooling was adequate for ${cpuDesc || 'installed processor'} (${tdpVal}W TDP).`,
+    detectedFailure: `Processor TDP (${tdpVal}W) exceeds air cooling limits (>350W), mandating Direct Liquid Cooling (DLC).`,
+    backtrackedFrom: 'Standard passive air cooling / heatsink baseline',
+    selfCorrectionAction: 'Branch DLC: Injected Direct Liquid Cooling Module (DLC) and High-Performance Fan Kit',
+    resolutionDetails: 'Allocated closed-loop liquid cooling manifold and normalized fan rotors to ensure junction temperature Tj < 85°C.',
+    branchId: 'branch_thermal_dlc'
+  });
+  branches.push({
+    branchId: 'branch_thermal_dlc',
+    title: 'Branch DLC: Direct Liquid Cooling & High-Performance Thermal Envelope',
+    targetRank: 1,
+    tradeoffType: 'THERMAL_OPTIMIZED',
+    substitutions: [
+      {
+        action: 'INJECT_DIRECT_LIQUID_COOLING',
+        injectedSku: isGen12 ? 'P74794-B21' : 'P48818-B21',
+        injectedDesc: isGen12 ? 'HPE ProLiant Compute DL380 Gen12 Direct Liquid Cooling Heat Sink Kit' : 'HPE ProLiant DL380 Gen11 High Performance Heat Sink Kit',
+        reasoning: 'Direct liquid cooling required for high-TDP processor exceeding air cooling threshold.'
+      }
+    ]
+  });
+}
+
+function _pushHeatsinkThermalContention(contentions, branches, peakTdp, isGen12) {
+  const heatsinkSku = isGen12 ? 'P74792-B21' : 'P48818-B21';
+  const heatsinkDesc = isGen12 ? 'HPE ProLiant Compute DL380 Gen12 High Performance Heat Sink Kit' : 'HPE ProLiant DL380 Gen11 High Performance Heat Sink Kit';
+  const fanSku = isGen12 ? 'P74795-B21' : 'P48820-B21';
+  const tdpVal = peakTdp || 270;
+
+  contentions.push({
+    resourceType: 'THERMAL_COOLING_ENVELOPE',
+    maxCapacity: 205,
+    requestedDemands: tdpVal,
+    tradeoffSummary: `High-TDP processor (${tdpVal}W) requires High-Performance Heatsink (${heatsinkSku}) and Fan Kit (${fanSku}).`,
+    hypothesis: `Initial configuration assumed standard cooling was adequate for ${tdpVal}W processor without dedicated thermal kits.`,
+    detectedFailure: `Missing required processor heatsink or fan kit for high-TDP processor (${tdpVal}W).`,
+    backtrackedFrom: 'Uncooled processor socket / standard fan baseline',
+    selfCorrectionAction: `Branch Thermal: Injected Performance Heatsink (${heatsinkSku}) and High-Performance Fan Kit (${fanSku})`,
+    resolutionDetails: `Injected Performance Heatsink (${heatsinkSku}) and High-Performance Fan Kit (${fanSku}) to fulfill chassis thermal envelope.`,
+    branchId: 'branch_thermal_heatsink'
+  });
+  branches.push({
+    branchId: 'branch_thermal_heatsink',
+    title: 'Branch Thermal: Performance Heatsink & High-Performance Fan Kit',
+    targetRank: 1,
+    tradeoffType: 'THERMAL_OPTIMIZED',
+    substitutions: [
+      {
+        action: 'INJECT_PERFORMANCE_HEATSINK',
+        injectedSku: heatsinkSku,
+        injectedDesc: heatsinkDesc,
+        reasoning: `High performance heatsink required for ${tdpVal}W processor.`
+      }
+    ]
+  });
+}
+
+/**
+ * 1. Thermal Envelope Contention Arbitrator
+ */
+function _arbitrateThermalAspect(items, evalResults, chassisInfo, contentions, branches) {
+  const gen = chassisInfo?.gen || 'Gen11';
+  const isGen12 = gen.includes('12');
+  const { peakTdp, cpuItems, needsDlc, needsHeatsink, needsFans } = _detectThermalNeeds(items, evalResults);
 
   if (needsDlc) {
-    contentions.push({
-      resourceType: 'THERMAL_COOLING_ENVELOPE',
-      maxCapacity: 350,
-      requestedDemands: peakTdp || 385,
-      tradeoffSummary: `Processor TDP (${peakTdp || 385}W) exceeds air cooling limits (>350W), mandating Direct Liquid Cooling (DLC).`,
-      hypothesis: `Initial configuration assumed standard chassis cooling was adequate for ${cpuItems[0]?.description || 'installed processor'} (${peakTdp || 385}W TDP).`,
-      detectedFailure: `Processor TDP (${peakTdp || 385}W) exceeds air cooling limits (>350W), mandating Direct Liquid Cooling (DLC).`,
-      backtrackedFrom: 'Standard passive air cooling / heatsink baseline',
-      selfCorrectionAction: 'Branch DLC: Injected Direct Liquid Cooling Module (DLC) and High-Performance Fan Kit',
-      resolutionDetails: 'Allocated closed-loop liquid cooling manifold and normalized fan rotors to ensure junction temperature Tj < 85°C.',
-      branchId: 'branch_thermal_dlc'
-    });
-    branches.push({
-      branchId: 'branch_thermal_dlc',
-      title: 'Branch DLC: Direct Liquid Cooling & High-Performance Thermal Envelope',
-      targetRank: 1,
-      tradeoffType: 'THERMAL_OPTIMIZED',
-      substitutions: [
-        {
-          action: 'INJECT_DIRECT_LIQUID_COOLING',
-          injectedSku: isGen12 ? 'P74794-B21' : 'P48818-B21',
-          injectedDesc: isGen12 ? 'HPE ProLiant Compute DL380 Gen12 Direct Liquid Cooling Heat Sink Kit' : 'HPE ProLiant DL380 Gen11 High Performance Heat Sink Kit',
-          reasoning: 'Direct liquid cooling required for high-TDP processor exceeding air cooling threshold.'
-        }
-      ]
-    });
+    _pushDlcThermalContention(contentions, branches, peakTdp, cpuItems[0]?.description, isGen12);
   } else if (needsHeatsink || needsFans) {
-    const heatsinkSku = isGen12 ? 'P74792-B21' : 'P48818-B21';
-    const heatsinkDesc = isGen12 ? 'HPE ProLiant Compute DL380 Gen12 High Performance Heat Sink Kit' : 'HPE ProLiant DL380 Gen11 High Performance Heat Sink Kit';
-    const fanSku = isGen12 ? 'P74795-B21' : 'P48820-B21';
-    contentions.push({
-      resourceType: 'THERMAL_COOLING_ENVELOPE',
-      maxCapacity: 205,
-      requestedDemands: peakTdp || 270,
-      tradeoffSummary: `High-TDP processor (${peakTdp || 270}W) requires High-Performance Heatsink (${heatsinkSku}) and Fan Kit (${fanSku}).`,
-      hypothesis: `Initial configuration assumed standard cooling was adequate for ${peakTdp || 270}W processor without dedicated thermal kits.`,
-      detectedFailure: `Missing required processor heatsink or fan kit for high-TDP processor (${peakTdp || 270}W).`,
-      backtrackedFrom: 'Uncooled processor socket / standard fan baseline',
-      selfCorrectionAction: `Branch Thermal: Injected Performance Heatsink (${heatsinkSku}) and High-Performance Fan Kit (${fanSku})`,
-      resolutionDetails: `Injected Performance Heatsink (${heatsinkSku}) and High-Performance Fan Kit (${fanSku}) to fulfill chassis thermal envelope.`,
-      branchId: 'branch_thermal_heatsink'
-    });
-    branches.push({
-      branchId: 'branch_thermal_heatsink',
-      title: 'Branch Thermal: Performance Heatsink & High-Performance Fan Kit',
-      targetRank: 1,
-      tradeoffType: 'THERMAL_OPTIMIZED',
-      substitutions: [
-        {
-          action: 'INJECT_PERFORMANCE_HEATSINK',
-          injectedSku: heatsinkSku,
-          injectedDesc: heatsinkDesc,
-          reasoning: `High performance heatsink required for ${peakTdp || 270}W processor.`
-        }
-      ]
-    });
+    _pushHeatsinkThermalContention(contentions, branches, peakTdp, isGen12);
   }
 }
 
@@ -302,7 +333,8 @@ function _arbitratePcieAspect(items, evalResults, chassisInfo, contentions, bran
   const missingDeps = evalResults.missingDependencies || [];
   const isExceedingActive = pcie.isExceedingActiveSlots || pcie.isExceedingTotalSlots;
   const needsPrimaryCable = pcie.needsPrimaryCableKit || missingDeps.some(d => d.key === 'PRIMARY_RISER_CABLE_KIT');
-  const needsSecondaryRiser = pcie.needsSecondaryRiser || pcie.needsSecondaryCableKit || missingDeps.some(d => d.key === 'SECONDARY_RISER_CABLE_KIT');
+  const needsSecondaryRiser = pcie.needsSecondaryRiser;
+  const needsSecondaryCable = pcie.needsSecondaryCableKit || missingDeps.some(d => d.key === 'SECONDARY_RISER_CABLE_KIT');
 
   if (isExceedingActive || needsSecondaryRiser) {
     contentions.push({
@@ -328,6 +360,33 @@ function _arbitratePcieAspect(items, evalResults, chassisInfo, contentions, bran
           injectedSku: 'P56074-B21',
           injectedDesc: 'HPE ProLiant DL380 Secondary Riser Cable Kit',
           reasoning: 'Activated secondary PCIe slots to accommodate all installed cards.'
+        }
+      ]
+    });
+  } else if (needsSecondaryCable) {
+    contentions.push({
+      resourceType: 'PCIE_EXPANSION_LANES',
+      maxCapacity: pcie.activeSlotsAvailable || 2,
+      requestedDemands: pcie.requiredPcieCards || 3,
+      tradeoffSummary: 'Secondary 3x16 Riser requires Secondary Cable Kit (P56074-B21) to enable Slot 4 (CLIC Rule 81170920).',
+      hypothesis: 'Initial configuration assumed secondary riser Slot 4 was electrically cabled by default.',
+      detectedFailure: 'Enabling Slot 4 on Secondary 3x16 Riser requires Secondary Cable Kit (CLIC Rule 81170920).',
+      backtrackedFrom: 'Uncabled Secondary Riser Slot 4',
+      selfCorrectionAction: 'Branch PCIe: Injected Secondary Riser Cable Kit (P56074-B21)',
+      resolutionDetails: 'Injected Secondary Cable Kit (P56074-B21) to route motherboard PCIe lanes to Slot 4 without bundling an unnecessary physical riser board.',
+      branchId: 'branch_pcie_secondary_cable'
+    });
+    branches.push({
+      branchId: 'branch_pcie_secondary_cable',
+      title: 'Branch PCIe: Secondary Riser Slot 4 Enablement Cable Kit',
+      targetRank: 1,
+      tradeoffType: 'SLOT_EXPANSION',
+      substitutions: [
+        {
+          action: 'INJECT_SECONDARY_RISER_CABLE',
+          injectedSku: 'P56074-B21',
+          injectedDesc: 'HPE ProLiant DL380 Secondary Riser Cable Kit',
+          reasoning: 'Cabled Slot 4 on Secondary 3x16 Riser without adding duplicate physical riser board.'
         }
       ]
     });
@@ -562,20 +621,7 @@ function _arbitrateSupportLicensingAspect(items, evalResults, _chassisInfo, cont
  * @param {object} catalogData - Catalog rules and SKU directory
  * @returns {object} Arbitration result containing detected contentions and multi-branch solutions
  */
-function arbitrateContestedResources(items = [], evalResults = {}, chassisInfo = {}, catalogData = null) {
-  const safeItems = Array.isArray(items) ? items : [];
-  const contentions = [];
-  const branches = [];
-
-  const effectiveChassisInfo = typeof evalResults === 'string'
-    ? { chassis: evalResults, gen: (evalResults.match(/Gen(\d+)/i)?.[0] || 'Gen11') }
-    : (chassisInfo || {});
-  const effectiveEvalResults = (evalResults && typeof evalResults === 'object') ? evalResults : {};
-  const aspectChecks = effectiveEvalResults.aspectChecks || {};
-  const ocpAspect = aspectChecks.networkingOcp || {};
-
-  // 1. OCP 3.0 Slot Contention Analysis
-  // Checks if storage controller and multiple OCP NICs exceed physical slot capacity (default: 2 slots)
+function _categorizeOcpAndPcieItems(safeItems) {
   const ocpStorageControllers = [];
   const pcieStorageControllers = [];
   const ocpNics = [];
@@ -584,7 +630,6 @@ function arbitrateContestedResources(items = [], evalResults = {}, chassisInfo =
 
   safeItems.forEach(it => {
     const desc = (it.description || '').toLowerCase();
-
     const isStorageCtrl = desc.includes('controller') || desc.includes('storage') || desc.includes('raid');
     const isNic = desc.includes('adapter') || desc.includes('ethernet') || desc.includes('sfp') || desc.includes('bcm57') || desc.includes('mcx6');
     const isCable = desc.includes('cable') || desc.includes('enablement');
@@ -606,200 +651,190 @@ function arbitrateContestedResources(items = [], evalResults = {}, chassisInfo =
     }
   });
 
+  return { ocpStorageControllers, pcieStorageControllers, ocpNics, pcieNics, storageCables };
+}
+
+function _buildBranchA(primaryOcpCtrl, fastOcpNic, adminOcpNic) {
+  const branchA_substitutions = [
+    {
+      action: 'OMIT_CONTESTED_OCP_NIC',
+      originalSku: cleanBaseSKU(fastOcpNic.sku),
+      originalDesc: fastOcpNic.description,
+      reasoning: 'Omitted from OCP Slot 1 because OCP storage controller takes precedence for CapEx efficiency; throughput delivered via PCIe NICs.'
+    },
+    {
+      action: 'ENFORCE_OCP_STORAGE_CABLE',
+      injectedSku: 'P48918-B21',
+      injectedDesc: 'HPE ProLiant Storage Controller Enablement Cable Kit',
+      quantity: 1,
+      reasoning: 'Direct enablement cable required for OCP -o controller to standard 8SFF drive cage.'
+    }
+  ];
+
+  return {
+    branchId: 'branch_ocp_storage_baseline',
+    title: 'Branch A: OCP Storage Controller Baseline (CapEx & Slot Efficient)',
+    targetRank: 1,
+    tradeoffType: 'CAPEX_AND_SLOT_OPTIMIZED',
+    storageController: {
+      formFactor: 'OCP_3_0',
+      sku: cleanBaseSKU(primaryOcpCtrl.sku),
+      desc: primaryOcpCtrl.description,
+      cacheSize: '4GB Flash-backed',
+      slotOccupied: 'OCP Slot 1'
+    },
+    networkingDistribution: {
+      ocpSlot1: `Storage Controller (${cleanBaseSKU(primaryOcpCtrl.sku)})`,
+      ocpSlot2: adminOcpNic ? `1Gb Admin NIC (${cleanBaseSKU(adminOcpNic.sku)})` : 'Empty',
+      pcieCardsCount: 2,
+      pcieCardsDesc: '10/25Gb Ethernet delivered via standard PCIe riser standup adapters'
+    },
+    cableKit: {
+      sku: 'P48918-B21',
+      description: 'HPE ProLiant Storage Controller Enablement Cable Kit'
+    },
+    substitutions: branchA_substitutions,
+    advantages: [
+      'Lowest CapEx buildable baseline',
+      'Leaves 2 PCIe expansion slots open for future GPU/storage expansion',
+      'Fully certified in HPE CLIC presales configurator'
+    ]
+  };
+}
+
+function _buildBranchB(primaryOcpCtrl, fastOcpNic, adminOcpNic, duals, effectiveChassisInfo) {
+  const pcieDualController = duals[0].defaultPcieDual;
+  const pcieDualCable = duals[0].defaultPcieDual.cableSku;
+  const pcieDualCableDesc = duals[0].defaultPcieDual.cableDescription;
+  const cacheSwapReasoning = duals[0].cacheSwapReasoning || `MR416i-p comes standard with 8GB cache on ${effectiveChassisInfo?.gen || 'Gen11'} (no 4GB variant exists for -p series), providing 2x write-cache headroom.`;
+
+  const branchB_substitutions = [
+    {
+      action: 'PIVOT_STORAGE_CONTROLLER_TO_PCIE',
+      originalSku: cleanBaseSKU(primaryOcpCtrl.sku),
+      injectedSku: pcieDualController.sku,
+      injectedDesc: pcieDualController.description,
+      quantity: primaryOcpCtrl.quantity || 1,
+      reasoning: `Pivoted storage controller from -o to -p (${pcieDualController.sku}) to free OCP Slot 1 for customer's requested ${cleanBaseSKU(fastOcpNic.sku)} adapter. ${cacheSwapReasoning}`
+    },
+    {
+      action: 'RETAIN_OCP_NIC_IN_FREED_SLOT',
+      retainedSku: cleanBaseSKU(fastOcpNic.sku),
+      retainedDesc: fastOcpNic.description,
+      slotLocation: 'OCP Slot 1',
+      reasoning: `Installed customer's exact requested OCP3 part number ${cleanBaseSKU(fastOcpNic.sku)} into freed OCP Slot 1.`
+    },
+    {
+      action: 'PIVOT_STORAGE_CABLE_TO_PCIE_SPLITTER',
+      originalSku: 'P48918-B21',
+      injectedSku: pcieDualCable,
+      injectedDesc: pcieDualCableDesc,
+      quantity: 1,
+      reasoning: `Tri-Mode Splitter Cable (${pcieDualCable}) connects PCIe standup controller to 8SFF drive cages, validating customer's original RFP cable choice.`
+    }
+  ];
+
+  return {
+    branchId: 'branch_pcie_storage_ocp_nic',
+    title: 'Branch B: PCIe Storage Controller + OCP NIC Retention (High-IOPS & Exact Part Match)',
+    targetRank: 3,
+    tradeoffType: 'HIGH_IOPS_AND_OCP_RETENTION',
+    storageController: {
+      formFactor: 'PCIE_STANDUP',
+      sku: pcieDualController.sku,
+      desc: pcieDualController.description,
+      cacheSize: `${pcieDualController.cacheGb || 8}GB Flash-backed (2x Cache, ${pcieDualController.busWidth || 'x16'} Bandwidth)`,
+      cacheSwapReasoning,
+      slotOccupied: 'PCIe Riser Slot 3'
+    },
+    networkingDistribution: {
+      ocpSlot1: `10/25Gb SFP28 Adapter (${cleanBaseSKU(fastOcpNic.sku)}) [Customer RFP Exact Match]`,
+      ocpSlot2: adminOcpNic ? `1Gb Admin NIC (${cleanBaseSKU(adminOcpNic.sku)})` : 'Empty',
+      pcieCardsCount: 1,
+      pcieCardsDesc: '1x 10/25Gb PCIe card + 1x OCP card delivers full required network bandwidth'
+    },
+    cableKit: {
+      sku: pcieDualCable,
+      description: pcieDualCableDesc
+    },
+    substitutions: branchB_substitutions,
+    advantages: [
+      'Fulfills 100% of customer requested part numbers including P10115-B21 OCP NIC',
+      'Validates customer\'s original P48832-B21 Tri-Mode Splitter cable choice',
+      `Doubles hardware write-back cache from 4GB to ${pcieDualController.cacheGb || 8}GB (${pcieDualController.busWidth || 'x16'} PCIe bus)`
+    ]
+  };
+}
+
+function _arbitrateOcpSlotContention(safeItems, ocpAspect, effectiveChassisInfo, duals, contentions, branches) {
+  const { ocpStorageControllers, ocpNics } = _categorizeOcpAndPcieItems(safeItems);
   const totalOcpStorageCount = ocpStorageControllers.reduce((acc, it) => acc + (it.quantity || 1), 0);
   const totalOcpNicCount = ocpNics.reduce((acc, it) => acc + (it.quantity || 1), 0);
   const totalOcpDemands = totalOcpStorageCount + totalOcpNicCount;
   const maxOcpSlots = ocpAspect.maxOcpSlots || 2;
 
-  const duals = resolveFormFactorDuals(effectiveChassisInfo?.gen || effectiveChassisInfo?.chassis || 'Gen11');
-
-  // Detect Contention: OCP Slots over-subscribed
-  if (totalOcpDemands > maxOcpSlots && totalOcpStorageCount > 0 && totalOcpNicCount >= 1) {
-    const primaryOcpCtrl = ocpStorageControllers[0];
-    const fastOcpNic = ocpNics.find(n => (n.description || '').toLowerCase().includes('10/25gb') || (n.description || '').toLowerCase().includes('25gb') || (n.description || '').toLowerCase().includes('100gb')) || ocpNics[0];
-    const adminOcpNic = ocpNics.find(n => (n.description || '').toLowerCase().includes('1gb') || (n.description || '').toLowerCase().includes('base-t')) || ocpNics[1];
-
-    contentions.push({
-      resourceType: 'OCP_3_0_SLOTS',
-      maxCapacity: maxOcpSlots,
-      requestedDemands: totalOcpDemands,
-      contenders: [
-        { subsystem: 'Storage', role: 'Storage Controller (-o)', sku: cleanBaseSKU(primaryOcpCtrl.sku), desc: primaryOcpCtrl.description },
-        { subsystem: 'Networking', role: 'High-Speed OCP NIC', sku: cleanBaseSKU(fastOcpNic.sku), desc: fastOcpNic.description },
-        { subsystem: 'Networking', role: 'Admin 1Gb OCP NIC', sku: cleanBaseSKU(adminOcpNic?.sku || ''), desc: adminOcpNic?.description || '' }
-      ],
-      tradeoffSummary: `OCP 3.0 capacity exceeded (${totalOcpDemands}/${maxOcpSlots} occupied). Contested between Storage Controller ${cleanBaseSKU(primaryOcpCtrl.sku)} and High-Speed OCP Adapter ${cleanBaseSKU(fastOcpNic.sku)}.`
-    });
-
-    // -------------------------------------------------------------
-    // Branch A: OCP Storage Controller Baseline (Rank 1 / CapEx Optimized)
-    // -------------------------------------------------------------
-    const branchA_substitutions = [
-      {
-        action: 'OMIT_CONTESTED_OCP_NIC',
-        originalSku: cleanBaseSKU(fastOcpNic.sku),
-        originalDesc: fastOcpNic.description,
-        reasoning: 'Omitted from OCP Slot 1 because OCP storage controller takes precedence for CapEx efficiency; throughput delivered via PCIe NICs.'
-      },
-      {
-        action: 'ENFORCE_OCP_STORAGE_CABLE',
-        injectedSku: 'P48918-B21',
-        injectedDesc: 'HPE ProLiant Storage Controller Enablement Cable Kit',
-        quantity: 1,
-        reasoning: 'Direct enablement cable required for OCP -o controller to standard 8SFF drive cage.'
-      }
-    ];
-
-    branches.push({
-      branchId: 'branch_ocp_storage_baseline',
-      title: 'Branch A: OCP Storage Controller Baseline (CapEx & Slot Efficient)',
-      targetRank: 1,
-      tradeoffType: 'CAPEX_AND_SLOT_OPTIMIZED',
-      storageController: {
-        formFactor: 'OCP_3_0',
-        sku: cleanBaseSKU(primaryOcpCtrl.sku),
-        desc: primaryOcpCtrl.description,
-        cacheSize: '4GB Flash-backed',
-        slotOccupied: 'OCP Slot 1'
-      },
-      networkingDistribution: {
-        ocpSlot1: `Storage Controller (${cleanBaseSKU(primaryOcpCtrl.sku)})`,
-        ocpSlot2: adminOcpNic ? `1Gb Admin NIC (${cleanBaseSKU(adminOcpNic.sku)})` : 'Empty',
-        pcieCardsCount: 2,
-        pcieCardsDesc: '10/25Gb Ethernet delivered via standard PCIe riser standup adapters'
-      },
-      cableKit: {
-        sku: 'P48918-B21',
-        description: 'HPE ProLiant Storage Controller Enablement Cable Kit'
-      },
-      substitutions: branchA_substitutions,
-      advantages: [
-        'Lowest CapEx buildable baseline',
-        'Leaves 2 PCIe expansion slots open for future GPU/storage expansion',
-        'Fully certified in HPE CLIC presales configurator'
-      ]
-    });
-
-    // -------------------------------------------------------------
-    // Branch B: Form-Factor Pivot to PCIe Storage + OCP NIC Retention (Rank 3 / High-IOPS)
-    // -------------------------------------------------------------
-    const pcieDualController = duals[0].defaultPcieDual;
-    const pcieDualCable = duals[0].defaultPcieDual.cableSku;
-    const pcieDualCableDesc = duals[0].defaultPcieDual.cableDescription;
-    const cacheSwapReasoning = duals[0].cacheSwapReasoning || `MR416i-p comes standard with 8GB cache on ${chassisInfo?.gen || 'Gen11'} (no 4GB variant exists for -p series), providing 2x write-cache headroom.`;
-
-    const branchB_substitutions = [
-      {
-        action: 'PIVOT_STORAGE_CONTROLLER_TO_PCIE',
-        originalSku: cleanBaseSKU(primaryOcpCtrl.sku),
-        injectedSku: pcieDualController.sku,
-        injectedDesc: pcieDualController.description,
-        quantity: primaryOcpCtrl.quantity || 1,
-        reasoning: `Pivoted storage controller from -o to -p (${pcieDualController.sku}) to free OCP Slot 1 for customer's requested ${cleanBaseSKU(fastOcpNic.sku)} adapter. ${cacheSwapReasoning}`
-      },
-      {
-        action: 'RETAIN_OCP_NIC_IN_FREED_SLOT',
-        retainedSku: cleanBaseSKU(fastOcpNic.sku),
-        retainedDesc: fastOcpNic.description,
-        slotLocation: 'OCP Slot 1',
-        reasoning: `Installed customer's exact requested OCP3 part number ${cleanBaseSKU(fastOcpNic.sku)} into freed OCP Slot 1.`
-      },
-      {
-        action: 'PIVOT_STORAGE_CABLE_TO_PCIE_SPLITTER',
-        originalSku: 'P48918-B21',
-        injectedSku: pcieDualCable,
-        injectedDesc: pcieDualCableDesc,
-        quantity: 1,
-        reasoning: `Tri-Mode Splitter Cable (${pcieDualCable}) connects PCIe standup controller to 8SFF drive cages, validating customer's original RFP cable choice.`
-      }
-    ];
-
-    branches.push({
-      branchId: 'branch_pcie_storage_ocp_nic',
-      title: 'Branch B: PCIe Storage Controller + OCP NIC Retention (High-IOPS & Exact Part Match)',
-      targetRank: 3,
-      tradeoffType: 'HIGH_IOPS_AND_OCP_RETENTION',
-      storageController: {
-        formFactor: 'PCIE_STANDUP',
-        sku: pcieDualController.sku,
-        desc: pcieDualController.description,
-        cacheSize: `${pcieDualController.cacheGb || 8}GB Flash-backed (2x Cache, ${pcieDualController.busWidth || 'x16'} Bandwidth)`,
-        cacheSwapReasoning,
-        slotOccupied: 'PCIe Riser Slot 3'
-      },
-      networkingDistribution: {
-        ocpSlot1: `10/25Gb SFP28 Adapter (${cleanBaseSKU(fastOcpNic.sku)}) [Customer RFP Exact Match]`,
-        ocpSlot2: adminOcpNic ? `1Gb Admin NIC (${cleanBaseSKU(adminOcpNic.sku)})` : 'Empty',
-        pcieCardsCount: 1,
-        pcieCardsDesc: '1x 10/25Gb PCIe card + 1x OCP card delivers full required network bandwidth'
-      },
-      cableKit: {
-        sku: pcieDualCable,
-        description: pcieDualCableDesc
-      },
-      substitutions: branchB_substitutions,
-      advantages: [
-        'Fulfills 100% of customer requested part numbers including P10115-B21 OCP NIC',
-        'Validates customer\'s original P48832-B21 Tri-Mode Splitter cable choice',
-        `Doubles hardware write-back cache from 4GB to ${pcieDualController.cacheGb || 8}GB (${pcieDualController.busWidth || 'x16'} PCIe bus)`
-      ]
-    });
+  if (totalOcpDemands <= maxOcpSlots || totalOcpStorageCount <= 0 || totalOcpNicCount < 1) {
+    return;
   }
 
-  // 2. Drive Bay vs. Rear Boot Device Contention
+  const primaryOcpCtrl = ocpStorageControllers[0];
+  const fastOcpNic = ocpNics.find(n => (n.description || '').toLowerCase().includes('10/25gb') || (n.description || '').toLowerCase().includes('25gb') || (n.description || '').toLowerCase().includes('100gb')) || ocpNics[0];
+  const adminOcpNic = ocpNics.find(n => (n.description || '').toLowerCase().includes('1gb') || (n.description || '').toLowerCase().includes('base-t')) || ocpNics[1];
+
+  contentions.push({
+    resourceType: 'OCP_3_0_SLOTS',
+    maxCapacity: maxOcpSlots,
+    requestedDemands: totalOcpDemands,
+    contenders: [
+      { subsystem: 'Storage', role: 'Storage Controller (-o)', sku: cleanBaseSKU(primaryOcpCtrl.sku), desc: primaryOcpCtrl.description },
+      { subsystem: 'Networking', role: 'High-Speed OCP NIC', sku: cleanBaseSKU(fastOcpNic.sku), desc: fastOcpNic.description },
+      { subsystem: 'Networking', role: 'Admin 1Gb OCP NIC', sku: cleanBaseSKU(adminOcpNic?.sku || ''), desc: adminOcpNic?.description || '' }
+    ],
+    tradeoffSummary: `OCP 3.0 capacity exceeded (${totalOcpDemands}/${maxOcpSlots} occupied). Contested between Storage Controller ${cleanBaseSKU(primaryOcpCtrl.sku)} and High-Speed OCP Adapter ${cleanBaseSKU(fastOcpNic.sku)}.`
+  });
+
+  branches.push(_buildBranchA(primaryOcpCtrl, fastOcpNic, adminOcpNic));
+  branches.push(_buildBranchB(primaryOcpCtrl, fastOcpNic, adminOcpNic, duals, effectiveChassisInfo));
+}
+
+function _arbitrateRearBootDeviceContention(safeItems, duals, contentions, branches) {
   const rearBootDevices = safeItems.filter(it => (it.description || '').toLowerCase().includes('ns204i-u'));
   const rearDriveCages = safeItems.filter(it => (it.description || '').toLowerCase().includes('rear') && ((it.description || '').toLowerCase().includes('cage') || (it.description || '').toLowerCase().includes('2sff')));
 
-  if (rearBootDevices.length > 0 && rearDriveCages.length > 0) {
-    contentions.push({
-      resourceType: 'REAR_CHASSIS_BAY_SPACE',
-      maxCapacity: 1,
-      requestedDemands: 2,
-      tradeoffSummary: 'Rear chassis bay is contested between NS204i-u Boot Device and 2SFF Rear Drive Cage.',
-      branchId: 'branch_pcie_boot_device',
-      hypothesis: 'Initial BOQ attempted to house both NS204i-u rear boot device and 2SFF rear drive cage in the same rear bay.',
-      detectedFailure: 'Rear chassis bay physical space exceeded: NS204i-u Boot Device and 2SFF Rear Drive Cage both contend for rear bay slot.',
-      backtrackedFrom: 'NS204i-u rear boot device in rear bay',
-      selfCorrectionAction: 'Branch C: Standup PCIe OS Boot Device (Rear Drive Capacity Expansion)',
-      resolutionDetails: 'Pivoted NS204i-u rear boot device to PCIe slot (NS204i-p) to accommodate rear 2SFF drive cage while preserving OS boot mirroring.'
-    });
+  if (rearBootDevices.length === 0 || rearDriveCages.length === 0) return;
 
-    const bootDual = duals[1].defaultPcieDual;
-    branches.push({
-      branchId: 'branch_pcie_boot_device',
-      title: 'Branch C: Standup PCIe OS Boot Device (Rear Drive Capacity Expansion)',
-      targetRank: 4,
-      tradeoffType: 'CAPACITY_EXPANSION',
-      substitutions: [
-        {
-          action: 'PIVOT_BOOT_DEVICE_TO_PCIE',
-          originalSku: cleanBaseSKU(rearBootDevices[0].sku),
-          injectedSku: bootDual.sku,
-          injectedDesc: bootDual.description,
-          reasoning: 'Pivoted NS204i-u rear boot device to PCIe slot (NS204i-p) to accommodate rear 2SFF drive cage.'
-        }
-      ]
-    });
-  }
+  contentions.push({
+    resourceType: 'REAR_CHASSIS_BAY_SPACE',
+    maxCapacity: 1,
+    requestedDemands: 2,
+    tradeoffSummary: 'Rear chassis bay is contested between NS204i-u Boot Device and 2SFF Rear Drive Cage.',
+    branchId: 'branch_pcie_boot_device',
+    hypothesis: 'Initial BOQ attempted to house both NS204i-u rear boot device and 2SFF rear drive cage in the same rear bay.',
+    detectedFailure: 'Rear chassis bay physical space exceeded: NS204i-u Boot Device and 2SFF Rear Drive Cage both contend for rear bay slot.',
+    backtrackedFrom: 'NS204i-u rear boot device in rear bay',
+    selfCorrectionAction: 'Branch C: Standup PCIe OS Boot Device (Rear Drive Capacity Expansion)',
+    resolutionDetails: 'Pivoted NS204i-u rear boot device to PCIe slot (NS204i-p) to accommodate rear 2SFF drive cage while preserving OS boot mirroring.'
+  });
 
-  // 3. Thermal Aspect Contention
-  _arbitrateThermalAspect(safeItems, effectiveEvalResults, effectiveChassisInfo, contentions, branches);
+  const bootDual = duals[1].defaultPcieDual;
+  branches.push({
+    branchId: 'branch_pcie_boot_device',
+    title: 'Branch C: Standup PCIe OS Boot Device (Rear Drive Capacity Expansion)',
+    targetRank: 4,
+    tradeoffType: 'CAPACITY_EXPANSION',
+    substitutions: [
+      {
+        action: 'PIVOT_BOOT_DEVICE_TO_PCIE',
+        originalSku: cleanBaseSKU(rearBootDevices[0].sku),
+        injectedSku: bootDual.sku,
+        injectedDesc: bootDual.description,
+        reasoning: 'Pivoted NS204i-u rear boot device to PCIe slot (NS204i-p) to accommodate rear 2SFF drive cage.'
+      }
+    ]
+  });
+}
 
-  // 4. Memory Aspect Contention
-  _arbitrateMemoryAspect(safeItems, effectiveEvalResults, effectiveChassisInfo, contentions, branches);
-
-  // 5. PCIe Aspect Contention
-  _arbitratePcieAspect(safeItems, effectiveEvalResults, effectiveChassisInfo, contentions, branches);
-
-  // 6. Power Aspect Contention
-  _arbitratePowerAspect(safeItems, effectiveEvalResults, effectiveChassisInfo, contentions, branches);
-
-  // 7. Storage Aspect Contention
-  _arbitrateStorageAspect(safeItems, effectiveEvalResults, effectiveChassisInfo, contentions, branches);
-
-  // 8. Support / Management Licensing Aspect Contention
-  _arbitrateSupportLicensingAspect(safeItems, effectiveEvalResults, effectiveChassisInfo, contentions, branches);
-
+function _buildArbitrationSelfCorrectionTrail(contentions, branches, effectiveEvalResults) {
   const selfCorrectionTrail = [];
   let stepNumber = 1;
   contentions.forEach(contention => {
@@ -819,6 +854,32 @@ function arbitrateContestedResources(items = [], evalResults = {}, chassisInfo =
       });
     }
   });
+  return selfCorrectionTrail;
+}
+
+function arbitrateContestedResources(items = [], evalResults = {}, chassisInfo = {}, catalogData = null) {
+  const safeItems = Array.isArray(items) ? items : [];
+  const contentions = [];
+  const branches = [];
+
+  const effectiveChassisInfo = typeof evalResults === 'string'
+    ? { chassis: evalResults, gen: (evalResults.match(/Gen(\d+)/i)?.[0] || 'Gen11') }
+    : (chassisInfo || {});
+  const effectiveEvalResults = (evalResults && typeof evalResults === 'object') ? evalResults : {};
+  const aspectChecks = effectiveEvalResults.aspectChecks || {};
+  const ocpAspect = aspectChecks.networkingOcp || {};
+  const duals = resolveFormFactorDuals(effectiveChassisInfo?.gen || effectiveChassisInfo?.chassis || 'Gen11');
+
+  _arbitrateOcpSlotContention(safeItems, ocpAspect, effectiveChassisInfo, duals, contentions, branches);
+  _arbitrateRearBootDeviceContention(safeItems, duals, contentions, branches);
+  _arbitrateThermalAspect(safeItems, effectiveEvalResults, effectiveChassisInfo, contentions, branches);
+  _arbitrateMemoryAspect(safeItems, effectiveEvalResults, effectiveChassisInfo, contentions, branches);
+  _arbitratePcieAspect(safeItems, effectiveEvalResults, effectiveChassisInfo, contentions, branches);
+  _arbitratePowerAspect(safeItems, effectiveEvalResults, effectiveChassisInfo, contentions, branches);
+  _arbitrateStorageAspect(safeItems, effectiveEvalResults, effectiveChassisInfo, contentions, branches);
+  _arbitrateSupportLicensingAspect(safeItems, effectiveEvalResults, effectiveChassisInfo, contentions, branches);
+
+  const selfCorrectionTrail = _buildArbitrationSelfCorrectionTrail(contentions, branches, effectiveEvalResults);
 
   return {
     hasContentions: contentions.length > 0,

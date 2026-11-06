@@ -123,13 +123,31 @@ function tallyPcieCablesAndGpus(tally, desc, sku, qty, role, mandatorySkus = {})
   }
 }
 
+function _isPcieExcluded(role, desc, isDl380a) {
+  if (isExcludedPcieRole(role)) return true;
+  if (desc.includes('fio configuration')) return true;
+  if (desc.includes('bridge') || desc.includes('nvlink')) return true;
+  if (desc.includes('rear fio kit') || desc.includes('pcie rear kit') || (desc.includes('rear') && desc.includes('fio kit'))) return true;
+  if (isDl380a && isGpuComponent(role, desc)) return true;
+  return false;
+}
+
+function _isInternalOrOcp(desc) {
+  return desc.includes('ocp') || desc.includes('embedded') || 
+         desc.includes('lom') || desc.includes('cable') || 
+         desc.includes('cage') || desc.includes('battery') || 
+         desc.includes('cache expansion') || desc.includes('cache module');
+}
+
+function _isX16PcieCard(role, desc) {
+  return role === 'GPU / Accelerator' || desc.includes('gpu') || 
+         desc.includes('200gb') || desc.includes('400gb') || 
+         desc.includes('infiniband') || desc.includes('mellanox') || 
+         desc.includes('nvidia');
+}
+
 function tallyPcieCardDemand(tally, desc, qty, role, isDl380a = false) {
-  if (isExcludedPcieRole(role)) return;
-  if (desc.includes('fio configuration')) return;
-  if (desc.includes('bridge') || desc.includes('nvlink')) return;
-  if (desc.includes('rear fio kit') || desc.includes('pcie rear kit') || (desc.includes('rear') && desc.includes('fio kit'))) return;
-  // DL380a front-bay accelerators sit on front switchboards / captive risers, not rear PCIe risers
-  if (isDl380a && isGpuComponent(role, desc)) return;
+  if (_isPcieExcluded(role, desc, isDl380a)) return;
 
   const isPcieCandidate = role === 'GPU / Accelerator' || role === 'Network Adapter' || 
                           role === 'Storage Controller' || role === 'Fibre Channel HBA' || 
@@ -137,20 +155,10 @@ function tallyPcieCardDemand(tally, desc, qty, role, isDl380a = false) {
                           desc.includes('hba') || desc.includes('nvidia') || 
                           desc.includes('pcie') || desc.includes('gpu');
 
-  if (isPcieCandidate) {
-    const isInternalOrOcp = desc.includes('ocp') || desc.includes('embedded') || 
-                            desc.includes('lom') || desc.includes('cable') || 
-                            desc.includes('cage') || desc.includes('battery') || 
-                            desc.includes('cache expansion') || desc.includes('cache module');
-    if (!isInternalOrOcp) {
-      tally.requiredPcieCards += qty;
-      const isX16 = role === 'GPU / Accelerator' || desc.includes('gpu') || 
-                    desc.includes('200gb') || desc.includes('400gb') || 
-                    desc.includes('infiniband') || desc.includes('mellanox') || 
-                    desc.includes('nvidia');
-      if (isX16) {
-        tally.x16RequiredCount += qty;
-      }
+  if (isPcieCandidate && !_isInternalOrOcp(desc)) {
+    tally.requiredPcieCards += qty;
+    if (_isX16PcieCard(role, desc)) {
+      tally.x16RequiredCount += qty;
     }
   }
 }

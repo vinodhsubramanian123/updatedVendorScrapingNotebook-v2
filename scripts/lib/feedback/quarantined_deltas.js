@@ -333,6 +333,23 @@ function _inferQuickSpecsSection(docId, initialSection, context = {}) {
   return '';
 }
 
+function _cleanQuickSpecsDocId(rawDocId) {
+  let docId = rawDocId.replace(/^(?:QS:|QuickSpecs[:\s]*|HPE QuickSpecs source\s*)/i, '').trim();
+  if (docId.includes('#')) docId = docId.split('#')[0].trim();
+  else if (/,\s*section:/i.test(docId)) docId = docId.split(/,\s*section:/i)[0].trim();
+  else if (docId.includes(':') && !docId.startsWith('http')) docId = docId.split(':')[0].trim();
+  return docId;
+}
+
+function _isValidQuickSpecsDocId(docId) {
+  if (!docId) return false;
+  const isDocNum = /^[a-z]\d{7,9}(?:[a-z0-9_-]+)?$/i.test(docId);
+  const isQsSeries = /^(?:HPE-)?QS-[A-Za-z0-9_-]{2,}$/i.test(docId);
+  const isHpQs = /^HP-QS-[A-Za-z0-9_-]{2,}$/i.test(docId);
+  const isNumericDoc = /^\d{8,12}(?:-\d{2})?$/.test(docId);
+  return isDocNum || isQsSeries || isHpQs || isNumericDoc;
+}
+
 /**
  * Pathway B: Verify official QuickSpecs citation with document ID and section.
  * @param {string} evidenceRef
@@ -351,23 +368,13 @@ function verifyQuickSpecsCitation(evidenceRef, evidenceObj = {}, context = {}) {
     };
   }
 
-  let docId = String(evidenceObj.documentId || evidenceObj.docId || evidenceObj.id || refStr).trim();
-  docId = docId.replace(/^(?:QS:|QuickSpecs[:\s]*|HPE QuickSpecs source\s*)/i, '').trim();
-
+  const rawDocId = String(evidenceObj.documentId || evidenceObj.docId || evidenceObj.id || refStr).trim();
   let section = String(evidenceObj.section || evidenceObj.sectionName || evidenceObj.docSection || '').trim();
-  section = _inferQuickSpecsSection(docId, section, context);
+  section = _inferQuickSpecsSection(rawDocId, section, context);
 
-  // Clean docId if section was part of it
-  if (docId.includes('#')) docId = docId.split('#')[0].trim();
-  else if (/,\s*section:/i.test(docId)) docId = docId.split(/,\s*section:/i)[0].trim();
-  else if (docId.includes(':') && !docId.startsWith('http')) docId = docId.split(':')[0].trim();
+  const docId = _cleanQuickSpecsDocId(rawDocId);
 
-  const isDocNum = /^[a-z]\d{7,9}(?:[a-z0-9_-]+)?$/i.test(docId);
-  const isQsSeries = /^(?:HPE-)?QS-[A-Za-z0-9_-]{2,}$/i.test(docId);
-  const isHpQs = /^HP-QS-[A-Za-z0-9_-]{2,}$/i.test(docId);
-  const isNumericDoc = /^\d{8,12}(?:-\d{2})?$/.test(docId);
-
-  if (!docId || (!isDocNum && !isQsSeries && !isHpQs && !isNumericDoc)) {
+  if (!_isValidQuickSpecsDocId(docId)) {
     return {
       valid: false,
       code: 'EVIDENCE_UNVERIFIABLE',
@@ -513,46 +520,33 @@ function appendDecision(record, quarantineFile = currentQuarantineFile) {
   safeWriteJsonAtomic(decisionFile, decisions);
 }
 
-/**
- * Validate a candidate KnowledgeDelta across all 5 governance gates.
- * @param {object} delta
- * @param {object} options { humanReview, catalogData }
- * @returns {object} { valid: boolean, status: 'PROMOTED' | 'QUARANTINED' | 'REJECTED', reasons: string[], sanitizedDelta: object|null }
- */
-function validateKnowledgeDelta(delta, options = {}) {
-  if (!delta || typeof delta !== 'object') {
-    return { valid: false, status: 'REJECTED', reasons: ['Delta must be a non-null object'], sanitizedDelta: null };
-  }
-
-  const reasons = [];
-  const rawMsg = String(delta.rawMessage || delta.reasoning || delta.ruleUpdate || '');
-  const affected = cleanBaseSKU(delta.affectedSku || delta.sku || '');
-  const required = cleanBaseSKU(delta.requiredDependencySku || delta.requiredSku || '');
-
-  // Gate 1: SKU Validation & Blacklist Check
+function _checkDeltaSkuValidity(affected, required) {
   if (!affected || affected === 'UNKNOWN_SKU') {
-    return { valid: false, status: 'REJECTED', reasons: ['Missing affectedSku'], sanitizedDelta: null };
+    return { valid: false, reasons: ['Missing affectedSku'] };
   }
   if (SKU_BLACKLIST.has(affected.toUpperCase())) {
-    return { valid: false, status: 'REJECTED', reasons: [`Blacklisted token rejected as SKU: ${affected}`], sanitizedDelta: null };
+    return { valid: false, reasons: [`Blacklisted token rejected as SKU: ${affected}`] };
   }
   if (!isValidHpeSKU(affected)) {
-    return { valid: false, status: 'REJECTED', reasons: [`Invalid HPE SKU syntax: ${affected}`], sanitizedDelta: null };
+    return { valid: false, reasons: [`Invalid HPE SKU syntax: ${affected}`] };
   }
   if (required) {
     if (SKU_BLACKLIST.has(required.toUpperCase())) {
-      return { valid: false, status: 'REJECTED', reasons: [`Blacklisted token rejected as required SKU: ${required}`], sanitizedDelta: null };
+      return { valid: false, reasons: [`Blacklisted token rejected as required SKU: ${required}`] };
     }
     if (!isValidHpeSKU(required)) {
-      return { valid: false, status: 'REJECTED', reasons: [`Invalid HPE SKU syntax for dependency: ${required}`], sanitizedDelta: null };
+      return { valid: false, reasons: [`Invalid HPE SKU syntax for dependency: ${required}`] };
     }
     if (affected === required) {
-      return { valid: false, status: 'REJECTED', reasons: [`Self-dependency cycle detected: ${affected} requires ${required}`], sanitizedDelta: null };
+      return { valid: false, reasons: [`Self-dependency cycle detected: ${affected} requires ${required}`] };
     }
   }
+  return { valid: true };
+}
 
-  // Gate 1b: Catalog SKU Existence Check (INV-24 & INV-48)
+function _checkCatalogSkuExistence(affected, required, options) {
   let catalogSkusExist = true;
+  const reasons = [];
   if (options.catalogData) {
     const skuIndex = buildCatalogSkuIndex(options.catalogData);
     if (skuIndex && skuIndex.size > 0) {
@@ -566,11 +560,10 @@ function validateKnowledgeDelta(delta, options = {}) {
       }
     }
   }
+  return { catalogSkusExist, reasons };
+}
 
-  // Gate 2: Source Evidence (INV-24 Customer Isolation)
-  const humanReview = normalizeHumanReview(options);
-  const isHuman = Boolean(humanReview);
-  const citations = Array.isArray(delta.citations) ? delta.citations : [];
+function _checkForbiddenSources(rawMsg, citations, delta) {
   const citationTexts = citations.map(c => typeof c === 'string' ? c : (c.url || c.title || c.text || '')).join(' ');
   const fullEvidenceText = `${rawMsg} ${citationTexts} ${delta.source || ''}`.toLowerCase();
 
@@ -579,12 +572,16 @@ function validateKnowledgeDelta(delta, options = {}) {
     if (rx.test(fullEvidenceText)) {
       return {
         valid: false,
-        status: 'REJECTED',
-        reasons: [`INV-24 Violation: Delta cites forbidden customer/quote source matching '${forbiddenPattern}'`],
-        sanitizedDelta: null
+        reasons: [`INV-24 Violation: Delta cites forbidden customer/quote source matching '${forbiddenPattern}'`]
       };
     }
   }
+  return { valid: true };
+}
+
+function _evaluateConfidenceAndEvidence(delta, isHuman, humanReview, citations, rawMsg, catalogSkusExist) {
+  const reasons = [];
+  let status = 'PROMOTED';
 
   if (!isHuman && citations.length === 0) {
     if (!SINGLE_USER_MODE || !TRUSTED_AUTOMATED_SOURCES.has(normalizeText(delta.source))) {
@@ -595,17 +592,13 @@ function validateKnowledgeDelta(delta, options = {}) {
     reasons.push(`Automated source '${delta.source || 'UNKNOWN'}' is not eligible for direct promotion`);
   }
 
-  // Gate 3: Confidence Score
   const rawScore = delta.confidenceScore ?? delta.preConfidenceScore ?? 0.70;
   const confidence = typeof rawScore === 'number' ? rawScore : parseFloat(rawScore) || 0.0;
-  let status = 'PROMOTED';
 
   if (!catalogSkusExist && !isHuman) {
     status = 'QUARANTINED';
-  }
-
-  if (!catalogSkusExist && isHuman) {
-    const hasOfficialEvidence = humanReview.evidence.some(item => ['OFFICIAL_VENDOR_PORTAL', 'OFFICIAL_QUICKSPECS', 'CERTIFIED_CATALOG'].includes(String(item.type).toUpperCase()));
+  } else if (!catalogSkusExist && isHuman) {
+    const hasOfficialEvidence = humanReview?.evidence?.some(item => ['OFFICIAL_VENDOR_PORTAL', 'OFFICIAL_QUICKSPECS', 'CERTIFIED_CATALOG'].includes(String(item.type).toUpperCase()));
     if (!hasOfficialEvidence) {
       status = 'QUARANTINED';
       reasons.push('SKU absence from the certified catalog requires official vendor evidence before promotion');
@@ -619,11 +612,81 @@ function validateKnowledgeDelta(delta, options = {}) {
   if (!isHuman && citations.length === 0) {
     status = 'QUARANTINED';
   }
-  if (!isHuman && !TRUSTED_AUTOMATED_SOURCES.has(normalizeText(delta.source))) status = 'QUARANTINED';
+  if (!isHuman && !TRUSTED_AUTOMATED_SOURCES.has(normalizeText(delta.source))) {
+    status = 'QUARANTINED';
+  }
   if (!isHuman && (/\b(may|maybe|possibly|unclear|ambiguous|conflicting|unverified)\b/i.test(rawMsg) || delta.ruleType === 'HUMAN_REVIEW_REQUIRED' || delta.errorType === 'OPINION_DISCREPANCY_FLAG')) {
     status = 'QUARANTINED';
     reasons.push('Ambiguous or conflicting language requires human reasoning; confidence cannot override ambiguity');
   }
+
+  return { status, confidence, reasons };
+}
+
+function _checkContradictionWithCatalog(delta, affected, required, rawMsg, isHuman, humanReview, options) {
+  const reasons = [];
+  let status = null;
+  if (!options.catalogData || !required) return { status, reasons };
+
+  const isExclusion = rawMsg.toLowerCase().includes('not compatible') || rawMsg.toLowerCase().includes('incompatible') || delta.errorType === 'MUTUAL_EXCLUSION';
+  if (!isExclusion) return { status, reasons };
+
+  const existingRules = options.catalogData.parsedRules || [];
+  const hasConflict = existingRules.some(r =>
+    (r.ruleText || '').includes(affected) && (r.ruleText || '').includes(required) && (r.ruleText || '').toLowerCase().includes('require')
+  );
+
+  if (hasConflict) {
+    const explicitlyResolved = isHuman && Array.isArray(humanReview?.supersedesRuleIds) && humanReview.supersedesRuleIds.length > 0;
+    if (explicitlyResolved) {
+      reasons.push(`Contradiction explicitly resolved by reviewer; supersedes ${humanReview.supersedesRuleIds.join(', ')}`);
+    } else {
+      status = 'QUARANTINED';
+      reasons.push(`Contradiction detected with established rule: ${affected} vs ${required}`);
+    }
+  }
+  return { status, reasons };
+}
+
+/**
+ * Validate a candidate KnowledgeDelta across all 5 governance gates.
+ * @param {object} delta
+ * @param {object} options { humanReview, catalogData }
+ * @returns {object} { valid: boolean, status: 'PROMOTED' | 'QUARANTINED' | 'REJECTED', reasons: string[], sanitizedDelta: object|null }
+ */
+function validateKnowledgeDelta(delta, options = {}) {
+  if (!delta || typeof delta !== 'object') {
+    return { valid: false, status: 'REJECTED', reasons: ['Delta must be a non-null object'], sanitizedDelta: null };
+  }
+
+  const rawMsg = String(delta.rawMessage || delta.reasoning || delta.ruleUpdate || '');
+  const affected = cleanBaseSKU(delta.affectedSku || delta.sku || '');
+  const required = cleanBaseSKU(delta.requiredDependencySku || delta.requiredSku || '');
+
+  // Gate 1: SKU Validation & Blacklist Check
+  const skuCheck = _checkDeltaSkuValidity(affected, required);
+  if (!skuCheck.valid) {
+    return { valid: false, status: 'REJECTED', reasons: skuCheck.reasons, sanitizedDelta: null };
+  }
+
+  // Gate 1b: Catalog SKU Existence Check (INV-24 & INV-48)
+  const { catalogSkusExist, reasons: catalogSkuReasons } = _checkCatalogSkuExistence(affected, required, options);
+  const reasons = [...catalogSkuReasons];
+
+  // Gate 2: Source Evidence (INV-24 Customer Isolation)
+  const humanReview = normalizeHumanReview(options);
+  const isHuman = Boolean(humanReview);
+  const citations = Array.isArray(delta.citations) ? delta.citations : [];
+  const sourceCheck = _checkForbiddenSources(rawMsg, citations, delta);
+  if (!sourceCheck.valid) {
+    return { valid: false, status: 'REJECTED', reasons: sourceCheck.reasons, sanitizedDelta: null };
+  }
+
+  // Gate 3: Confidence Score & Evidence Thresholds
+  const confResult = _evaluateConfidenceAndEvidence(delta, isHuman, humanReview, citations, rawMsg, catalogSkusExist);
+  let status = confResult.status;
+  const confidence = confResult.confidence;
+  reasons.push(...confResult.reasons);
 
   // Gate 4: Scope Taxonomy Validation
   let scope = String(delta.scopeTaxonomy || delta.scope || '').toUpperCase();
@@ -634,25 +697,9 @@ function validateKnowledgeDelta(delta, options = {}) {
   }
 
   // Gate 5: Contradiction Check
-  if (options.catalogData) {
-    const isExclusion = rawMsg.toLowerCase().includes('not compatible') || rawMsg.toLowerCase().includes('incompatible') || delta.errorType === 'MUTUAL_EXCLUSION';
-    if (isExclusion && required) {
-      // If rule says A requires B, but this delta says A excludes B
-      const existingRules = options.catalogData.parsedRules || [];
-      const hasConflict = existingRules.some(r =>
-        (r.ruleText || '').includes(affected) && (r.ruleText || '').includes(required) && (r.ruleText || '').toLowerCase().includes('require')
-      );
-      if (hasConflict) {
-        const explicitlyResolved = isHuman && Array.isArray(humanReview.supersedesRuleIds) && humanReview.supersedesRuleIds.length > 0;
-        if (explicitlyResolved) {
-          reasons.push(`Contradiction explicitly resolved by reviewer; supersedes ${humanReview.supersedesRuleIds.join(', ')}`);
-        } else {
-          status = 'QUARANTINED';
-          reasons.push(`Contradiction detected with established rule: ${affected} vs ${required}`);
-        }
-      }
-    }
-  }
+  const contraCheck = _checkContradictionWithCatalog(delta, affected, required, rawMsg, isHuman, humanReview, options);
+  if (contraCheck.status) status = contraCheck.status;
+  reasons.push(...contraCheck.reasons);
 
   const fingerprint = buildKnowledgeFingerprint({ ...delta, affectedSku: affected, requiredDependencySku: required || null, scopeTaxonomy: scope });
 
@@ -749,21 +796,7 @@ function getQuarantinedDeltas(options = {}) {
   return readJsonArray(options.filePath || currentQuarantineFile);
 }
 
-/**
- * Promote a quarantined delta with explicit human approval and activate it.
- * @param {string} quarantineIdOrDeltaId
- * @param {string} approver
- * @param {object} [options]
- * @returns {object|null} The promoted delta or null
- */
-function promoteQuarantinedDelta(quarantineIdOrDeltaId, approver = 'ADMIN_HITL', options = {}) {
-  const quarantineFile = options.filePath || currentQuarantineFile;
-  const list = getQuarantinedDeltas({ filePath: quarantineFile });
-  const idx = list.findIndex(d => d.quarantineId === quarantineIdOrDeltaId || d.deltaId === quarantineIdOrDeltaId);
-  if (idx < 0) return null;
-  const item = list[idx];
-
-  // 1. Gather candidate evidence references from options and item
+function _gatherCandidateEvidence(options, item) {
   const candidateEvidence = [];
   if (options.humanReview && Array.isArray(options.humanReview.evidence)) {
     candidateEvidence.push(...options.humanReview.evidence);
@@ -777,71 +810,97 @@ function promoteQuarantinedDelta(quarantineIdOrDeltaId, approver = 'ADMIN_HITL',
   if (Array.isArray(item.evidence) && item.evidence.length > 0) candidateEvidence.push(...item.evidence);
   if (item.evidenceId) candidateEvidence.push(item.evidenceId);
   if (Array.isArray(item.citations) && item.citations.length > 0) candidateEvidence.push(...item.citations);
+  return candidateEvidence;
+}
 
-  // 2. Strictly verify authentic evidence (Requirement R2 / Feature 7)
-  const verification = verifyAuthenticEvidence(
-    candidateEvidence.length > 0 ? candidateEvidence : (item.traceId || item.deltaId),
-    {
-      sessionsDir: options.sessionsDir || options.sessionDirectory,
-      reasoning: options.reasoning || options.humanReview?.reasoning || item.humanReasoning || item.ruleUpdate || item.rawMessage,
-      ruleUpdate: item.ruleUpdate || item.rawMessage,
-      filePath: quarantineFile
-    }
-  );
+function _handleBlockedPromotion(item, verification, candidateEvidence, approver, quarantineFile, list, options) {
+  const reasonMsg = verification.reason || 'Evidence unverifiable';
+  logger.warn('QUARANTINE', `Promotion blocked with EVIDENCE_UNVERIFIABLE: ${reasonMsg}`);
 
-  if (!verification.valid) {
-    const reasonMsg = verification.reason || 'Evidence unverifiable';
-    logger.warn('QUARANTINE', `Promotion blocked with EVIDENCE_UNVERIFIABLE: ${reasonMsg}`);
+  const blockReason = `EVIDENCE_UNVERIFIABLE: ${reasonMsg}`;
+  item.quarantineReasons = [...new Set([...(item.quarantineReasons || []), blockReason])];
+  item.lastPromotionAttempt = {
+    attemptedAt: new Date().toISOString(),
+    attemptedBy: approver,
+    status: 'BLOCKED',
+    code: 'EVIDENCE_UNVERIFIABLE',
+    reason: reasonMsg
+  };
+  safeWriteJsonAtomic(quarantineFile, list);
 
-    const blockReason = `EVIDENCE_UNVERIFIABLE: ${reasonMsg}`;
-    item.quarantineReasons = [...new Set([...(item.quarantineReasons || []), blockReason])];
-    item.lastPromotionAttempt = {
-      attemptedAt: new Date().toISOString(),
-      attemptedBy: approver,
-      status: 'BLOCKED',
-      code: 'EVIDENCE_UNVERIFIABLE',
-      reason: reasonMsg
-    };
-    safeWriteJsonAtomic(quarantineFile, list);
+  appendDecision({
+    decisionId: `DECISION_${Date.now()}_${(item.knowledgeFingerprint || buildKnowledgeFingerprint(item)).slice(0, 10)}_BLOCKED`,
+    quarantineId: item.quarantineId,
+    deltaId: item.deltaId,
+    knowledgeFingerprint: item.knowledgeFingerprint || buildKnowledgeFingerprint(item),
+    decision: 'PROMOTION_BLOCKED',
+    status: 'EVIDENCE_UNVERIFIABLE',
+    decidedAt: new Date().toISOString(),
+    reviewer: approver,
+    reasoning: `Promotion blocked with EVIDENCE_UNVERIFIABLE: ${reasonMsg}`,
+    candidateEvidence
+  }, quarantineFile);
 
-    appendDecision({
-      decisionId: `DECISION_${Date.now()}_${(item.knowledgeFingerprint || buildKnowledgeFingerprint(item)).slice(0, 10)}_BLOCKED`,
-      quarantineId: item.quarantineId,
-      deltaId: item.deltaId,
-      knowledgeFingerprint: item.knowledgeFingerprint || buildKnowledgeFingerprint(item),
-      decision: 'PROMOTION_BLOCKED',
-      status: 'EVIDENCE_UNVERIFIABLE',
-      decidedAt: new Date().toISOString(),
-      reviewer: approver,
-      reasoning: `Promotion blocked with EVIDENCE_UNVERIFIABLE: ${reasonMsg}`,
-      candidateEvidence
-    }, quarantineFile);
-
-    if (typeof options === 'object') {
-      options.error = 'EVIDENCE_UNVERIFIABLE';
-      options.rejectionReason = reasonMsg;
-      options.verification = verification;
-    }
-    return null;
+  if (typeof options === 'object') {
+    options.error = 'EVIDENCE_UNVERIFIABLE';
+    options.rejectionReason = reasonMsg;
+    options.verification = verification;
   }
+}
 
-  const verifiedEv = verification.verifiedEvidence || { type: verification.type, id: verification.id };
+function _activatePromotedDelta(item, resolvedChassisDir) {
+  const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
+  const MASTER_REGISTRY = path.join(PROJECT_ROOT, 'outputs', 'history', 'master_knowledge_registry.json');
+  const scope = item.scopeTaxonomy || 'CHASSIS_SPECIFIC';
 
+  if ((scope === 'UNIVERSAL_VENDOR' || scope === 'FAMILY_GEN') && fs.existsSync(MASTER_REGISTRY)) {
+    const reg = JSON.parse(fs.readFileSync(MASTER_REGISTRY, 'utf-8'));
+    const targetList = scope === 'UNIVERSAL_VENDOR' ? reg.universalRules : reg.familyGenRules;
+    if (Array.isArray(targetList)) {
+      const exists = targetList.some(delta => (delta.knowledgeFingerprint || buildKnowledgeFingerprint(delta)) === item.knowledgeFingerprint);
+      if (!exists) targetList.push(item);
+      safeWriteJsonAtomic(MASTER_REGISTRY, reg);
+    } else {
+      throw new Error(`Master registry does not contain ${scope} destination array`);
+    }
+  } else if (item.chassis) {
+    if (resolvedChassisDir) {
+      const deltaFile = path.join(resolvedChassisDir, 'history', 'catalog_deltas.json');
+      let deltas = [];
+      if (fs.existsSync(deltaFile)) {
+        deltas = JSON.parse(fs.readFileSync(deltaFile, 'utf-8'));
+      }
+      const exists = deltas.some(delta => (delta.knowledgeFingerprint || buildKnowledgeFingerprint(delta)) === item.knowledgeFingerprint);
+      if (!exists) deltas.push(item);
+      safeWriteJsonAtomic(deltaFile, deltas);
+    } else {
+      throw new Error(`No catalog directory resolved for chassis ${item.chassis}`);
+    }
+  } else {
+    throw new Error('Promoted delta has no resolvable activation scope or chassis');
+  }
+}
+
+function _buildHumanReviewForPromotion(options, approver, item, verification, verifiedEv) {
   let humanReview = normalizeHumanReview({ humanReview: options.humanReview });
   if (!humanReview && SINGLE_USER_MODE) {
-    humanReview = {
+    return {
       reviewer: approver || 'AUTONOMOUS_LEAD_ARCHITECT',
       reasoning: options.reasoning || item.humanReasoning || `Autonomous verified evidence: ${verification.summary || item.ruleUpdate || item.rawMessage}`,
       decision: 'APPROVE',
       verified: true,
       evidence: [verifiedEv]
     };
-  } else if (!humanReview || humanReview.reviewer !== approver) {
+  }
+  if (!humanReview || humanReview.reviewer !== approver) {
     logger.warn('QUARANTINE', 'Promotion denied: complete evidence-backed human review is required and reviewer must match approver.');
     return null;
-  } else {
-    humanReview.evidence = [verifiedEv];
   }
+  humanReview.evidence = [verifiedEv];
+  return humanReview;
+}
+
+function _resolveCatalogForPromotion(item, options) {
   let resolvedChassisDir = null;
   let catalogData = options.catalogData || null;
   if (item.chassis) {
@@ -853,11 +912,10 @@ function promoteQuarantinedDelta(quarantineIdOrDeltaId, approver = 'ADMIN_HITL',
       if (catalogEntry) catalogData = JSON.parse(fs.readFileSync(path.join(resolvedChassisDir, catalogEntry.name), 'utf-8'));
     }
   }
-  const revalidation = validateKnowledgeDelta(item, { catalogData, humanReview });
-  if (!revalidation.valid || revalidation.status !== 'PROMOTED') {
-    logger.warn('QUARANTINE', `Promotion denied by revalidation: ${revalidation.reasons.join('; ')}`);
-    return null;
-  }
+  return { resolvedChassisDir, catalogData };
+}
+
+function _updateItemPromotionMetadata(item, revalidation, humanReview, approver) {
   Object.assign(item, revalidation.sanitizedDelta);
   const preConfidenceScore = Number(item.confidenceScore ?? item.preConfidenceScore ?? 0.70);
   const postConfidenceScore = Math.min(0.99, Math.max(preConfidenceScore, 0.85 + Math.min(humanReview.evidence.length, 3) * 0.03));
@@ -876,10 +934,54 @@ function promoteQuarantinedDelta(quarantineIdOrDeltaId, approver = 'ADMIN_HITL',
     reason: humanReview.reasoning,
     evidenceIds: humanReview.evidence.map(entry => entry.id || entry.url)
   }];
+  return { preConfidenceScore, postConfidenceScore };
+}
 
-  // Durable two-phase decision trace: persist the validated approval before
-  // touching an active destination. If activation fails, quarantine remains
-  // and the pending decision explains exactly what was attempted.
+/**
+ * Promote a quarantined delta with explicit human approval and activate it.
+ * @param {string} quarantineIdOrDeltaId
+ * @param {string} approver
+ * @param {object} [options]
+ * @returns {object|null} The promoted delta or null
+ */
+function promoteQuarantinedDelta(quarantineIdOrDeltaId, approver = 'ADMIN_HITL', options = {}) {
+  const quarantineFile = options.filePath || currentQuarantineFile;
+  const list = getQuarantinedDeltas({ filePath: quarantineFile });
+  const idx = list.findIndex(d => d.quarantineId === quarantineIdOrDeltaId || d.deltaId === quarantineIdOrDeltaId);
+  if (idx < 0) return null;
+  const item = list[idx];
+
+  const candidateEvidence = _gatherCandidateEvidence(options, item);
+
+  // 2. Strictly verify authentic evidence (Requirement R2 / Feature 7)
+  const verification = verifyAuthenticEvidence(
+    candidateEvidence.length > 0 ? candidateEvidence : (item.traceId || item.deltaId),
+    {
+      sessionsDir: options.sessionsDir || options.sessionDirectory,
+      reasoning: options.reasoning || options.humanReview?.reasoning || item.humanReasoning || item.ruleUpdate || item.rawMessage,
+      ruleUpdate: item.ruleUpdate || item.rawMessage,
+      filePath: quarantineFile
+    }
+  );
+
+  if (!verification.valid) {
+    _handleBlockedPromotion(item, verification, candidateEvidence, approver, quarantineFile, list, options);
+    return null;
+  }
+
+  const verifiedEv = verification.verifiedEvidence || { type: verification.type, id: verification.id };
+  const humanReview = _buildHumanReviewForPromotion(options, approver, item, verification, verifiedEv);
+  if (!humanReview) return null;
+
+  const { resolvedChassisDir, catalogData } = _resolveCatalogForPromotion(item, options);
+  const revalidation = validateKnowledgeDelta(item, { catalogData, humanReview });
+  if (!revalidation.valid || revalidation.status !== 'PROMOTED') {
+    logger.warn('QUARANTINE', `Promotion denied by revalidation: ${revalidation.reasons.join('; ')}`);
+    return null;
+  }
+
+  const { preConfidenceScore, postConfidenceScore } = _updateItemPromotionMetadata(item, revalidation, humanReview, approver);
+
   appendDecision({
     decisionId: `DECISION_${Date.now()}_${item.knowledgeFingerprint.slice(0, 10)}_PENDING`,
     quarantineId: item.quarantineId,
@@ -894,41 +996,9 @@ function promoteQuarantinedDelta(quarantineIdOrDeltaId, approver = 'ADMIN_HITL',
     proposedPostConfidenceScore: postConfidenceScore
   }, quarantineFile);
 
-  // Activate after the pending decision trace. The quarantine record is removed
-  // only after destination and final decision writes both succeed.
   if (!options.skipActivation) {
     try {
-      const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
-      const MASTER_REGISTRY = path.join(PROJECT_ROOT, 'outputs', 'history', 'master_knowledge_registry.json');
-
-      const scope = item.scopeTaxonomy || 'CHASSIS_SPECIFIC';
-      if ((scope === 'UNIVERSAL_VENDOR' || scope === 'FAMILY_GEN') && fs.existsSync(MASTER_REGISTRY)) {
-        const reg = JSON.parse(fs.readFileSync(MASTER_REGISTRY, 'utf-8'));
-        const targetList = scope === 'UNIVERSAL_VENDOR' ? reg.universalRules : reg.familyGenRules;
-        if (Array.isArray(targetList)) {
-          const exists = targetList.some(delta => (delta.knowledgeFingerprint || buildKnowledgeFingerprint(delta)) === item.knowledgeFingerprint);
-          if (!exists) targetList.push(item);
-          safeWriteJsonAtomic(MASTER_REGISTRY, reg);
-        } else {
-          throw new Error(`Master registry does not contain ${scope} destination array`);
-        }
-      } else if (item.chassis) {
-        const chassisDir = resolvedChassisDir;
-        if (chassisDir) {
-          const deltaFile = path.join(chassisDir, 'history', 'catalog_deltas.json');
-          let deltas = [];
-          if (fs.existsSync(deltaFile)) {
-            deltas = JSON.parse(fs.readFileSync(deltaFile, 'utf-8'));
-          }
-          const exists = deltas.some(delta => (delta.knowledgeFingerprint || buildKnowledgeFingerprint(delta)) === item.knowledgeFingerprint);
-          if (!exists) deltas.push(item);
-          safeWriteJsonAtomic(deltaFile, deltas);
-        } else {
-          throw new Error(`No catalog directory resolved for chassis ${item.chassis}`);
-        }
-      } else {
-        throw new Error('Promoted delta has no resolvable activation scope or chassis');
-      }
+      _activatePromotedDelta(item, resolvedChassisDir);
     } catch (actErr) {
       logger.warn('QUARANTINE', `Promotion activation failed; delta remains quarantined: ${actErr.message}`);
       return null;

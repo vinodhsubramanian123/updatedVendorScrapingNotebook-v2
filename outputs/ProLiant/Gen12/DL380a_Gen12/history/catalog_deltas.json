@@ -408,7 +408,7 @@
   },
   {
     "deltaId": "LEARN_DL380A_GEN12_RAID1_MULTI_DRIVE_20261104",
-    "ruleType": "WORKFLOW_VENDOR_OBSERVATION_ADVISORY",
+    "ruleType": "ARRAY_GEOMETRY_BUILD_BLOCKER",
     "affectedSku": "339778-B21",
     "vendor": "HPE",
     "pillar": "SERVER",
@@ -418,8 +418,8 @@
     "chassis": "DL380a_Gen12",
     "scopeTaxonomy": "CHASSIS_SPECIFIC",
     "governanceStatus": "ACTIVE",
-    "evidenceType": "WORKFLOW_REVIEW",
-    "rawMessage": "In HPE OCA / CLIC on DL380a Gen12, 339778-B21 (HPE RAID 1 Drive 1 FIO Setting) strictly enforces Drive Count == 2. When >2 drives (e.g. 4x NVMe SSDs) are configured without a full-cage RAID 5/10 setting, CLIC rejects 339778-B21 with array geometry mismatch and suggests 389692-B21 (HPE Customer Defined RAID Setting Service, max 1) or omitting FIO settings when dedicated NS204i-u boot device P78279-B21 is present.",
+    "evidenceType": "CLIC_WEBLOGIC_VALIDATION",
+    "rawMessage": "In HPE OCA / CLIC on DL380a Gen12, 339778-B21 (HPE RAID 1 Drive 1 FIO Setting) strictly enforces Drive Count == 2. When >2 drives (e.g. 4x NVMe SSDs) are configured without a full-cage RAID 5/10 setting, CLIC marks the build as UNBUILDABLE (Action-Required) due to unassigned drive geometry mismatch and mandates 389692-B21 (HPE Customer Defined RAID Setting Service, max 1) or omitting FIO settings when dedicated NS204i-u boot device P78279-B21 is present.",
     "timestamp": "2026-11-04T18:38:13.047Z"
   },
   {

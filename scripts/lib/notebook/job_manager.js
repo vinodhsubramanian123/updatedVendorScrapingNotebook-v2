@@ -32,133 +32,169 @@ function isTerminalStatus(status) {
   return ['COMPLETED', 'CLOUD_VERIFIED', 'LOCAL_FALLBACK', 'FAILED', 'CANCELLED'].includes(status);
 }
 
+function _startJobHeartbeat(job, options) {
+  const interval = Math.max(1000, options.heartbeatIntervalMs || 10000);
+  const heartbeat = setInterval(() => {
+    const current = getJob(job.jobId);
+    if (!current || current.status !== 'PROCESSING') return;
+    updateJob(job.jobId, { lastHeartbeatAt: Date.now() });
+  }, interval);
+  if (typeof heartbeat.unref === 'function') heartbeat.unref();
+  return heartbeat;
+}
+
+function _cleanupJobResources(jobId, heartbeat) {
+  clearInterval(heartbeat);
+  activeAbortControllers.delete(jobId);
+}
+
+function _buildJobExecutionOptions(job, options, controller) {
+  return {
+    ...options,
+    context: job.context || { chassis: job.chassis },
+    queryTimeoutMs: job.timeoutMs,
+    deadlineAt: job.deadlineAt,
+    onAttempt: attempt => {
+      job.queryAttempt = attempt;
+      updateJob(job.jobId, { queryAttempt: attempt });
+    },
+    signal: controller.signal
+  };
+}
+
+function _resolveJobSuccessUpdates(job, res, endTime) {
+  const durationMs = endTime - job.startTime;
+  const source = String(res?.source || '');
+  const isFallback = source.includes('FALLBACK') || source.includes('LOCAL');
+  const isCloudGrounded = Boolean(
+    res?.isCloudGrounded &&
+    res?.groundingVerification === 'VERIFIED_GROUNDED' &&
+    (res?.citations || []).length > 0
+  );
+
+  const updates = {
+    status: isFallback ? 'LOCAL_FALLBACK' : 'COMPLETED',
+    cloudGroundingStatus: isCloudGrounded ? 'CLOUD_VERIFIED' : (isFallback ? 'LOCAL_FALLBACK' : 'CLOUD_FAILED'),
+    endTime,
+    durationMs,
+    timestamps: {
+      requestSentAt: new Date(job.startTime).toISOString(),
+      responseReceivedAt: new Date(endTime).toISOString()
+    },
+    answer: res?.answer || '',
+    citations: res?.citations || [],
+    source: res?.source,
+    ...(res?.queryAttempt ? { queryAttempt: res.queryAttempt } : {}),
+    isCloudGrounded,
+    groundingVerification: res?.groundingVerification || (isCloudGrounded ? 'VERIFIED_GROUNDED' : 'UNVERIFIED'),
+    groundingTier: isCloudGrounded ? 'TIER_1_LIVE_CLOUD_GROUNDED' : (res?.groundingTier || 'TIER_2_UNCITED_ADVISORY')
+  };
+
+  if (res?.source === 'FALLBACK_ERROR' || res?.source === 'NOTEBOOK_LM_FAILED') {
+    updates.status = 'FAILED';
+    updates.cloudGroundingStatus = 'CLOUD_FAILED';
+    updates.error = res.error || res.answer;
+    updates.diagnostic = diagnoseNotebookFailure(job.notebookId, new Error(res.error || res.answer));
+  }
+
+  return { updates, isCloudGrounded, isFallback };
+}
+
+function _recordJobLearningIfEligible(job, isCloudGrounded) {
+  if (!isCloudGrounded || !job.context?.learningEligible || !job.context?.chassisDir) return;
+  try {
+    const { extractAndPersistLearnedDeltas } = require('./knowledge_extractor.js');
+    const learned = extractAndPersistLearnedDeltas(job.answer, job.context.chassisDir, {
+      chassis: job.chassis,
+      source: job.source,
+      groundingVerification: job.groundingVerification,
+      citations: job.citations,
+      confidenceScore: 0.70
+    });
+    const learningUpdates = {
+      learnedDeltasCount: learned.count || 0,
+      quarantinedDeltasCount: learned.quarantinedCount || 0
+    };
+    Object.assign(job, learningUpdates);
+    updateJob(job.jobId, learningUpdates);
+  } catch (learningError) {
+    updateJob(job.jobId, { learningError: learningError.message });
+  }
+}
+
+function _recordJobTelemetry(job, isCloudGrounded, isFallback) {
+  try {
+    const telemetryLib = require('../system/telemetry.js');
+    telemetryLib.recordNotebookConsultationTelemetry({
+      query: job.query,
+      answer: job.answer,
+      citations: job.citations,
+      chassis: job.chassis,
+      durationMs: job.durationMs,
+      scenario: classifyQueryScenario(job.query),
+      agreementScore: isCloudGrounded ? 0.95 : (isFallback ? 0.70 : 0.50),
+      nextActionExecuted: isCloudGrounded ? 'ASYNC_RAG_CLOUD_VERIFIED' : (isFallback ? 'ASYNC_RAG_LOCAL_FALLBACK' : 'ASYNC_RAG_UNVERIFIED')
+    });
+  } catch (_) {}
+}
+
+function _handleJobSuccess(job, res) {
+  const persisted = getJob(job.jobId);
+  if (!persisted || isTerminalStatus(persisted.status)) return;
+
+  const endTime = Date.now();
+  const { updates, isCloudGrounded, isFallback } = _resolveJobSuccessUpdates(job, res, endTime);
+
+  Object.assign(job, updates);
+  updateJob(job.jobId, updates);
+  activeQueryJobs.set(job.jobId, job);
+
+  _recordJobLearningIfEligible(job, isCloudGrounded);
+  _recordJobTelemetry(job, isCloudGrounded, isFallback);
+}
+
+function _handleJobFailure(job, err, signal) {
+  const persisted = getJob(job.jobId);
+  if (!persisted || isTerminalStatus(persisted.status)) return;
+
+  const endTime = Date.now();
+  const updates = {
+    status: 'FAILED',
+    cloudGroundingStatus: 'CLOUD_FAILED',
+    endTime,
+    durationMs: endTime - job.startTime,
+    error: err?.message || 'NotebookLM query failed',
+    diagnostic: jobFailureDiagnostic(job, err, signal)
+  };
+  Object.assign(job, updates);
+  updateJob(job.jobId, updates);
+  activeQueryJobs.set(job.jobId, job);
+}
+
 function launchPersistedJob(job, executeQueryFn, options = {}) {
   if (typeof executeQueryFn !== 'function') return;
 
   const controller = new AbortController();
   activeAbortControllers.set(job.jobId, controller);
-  const heartbeat = setInterval(() => {
-    const current = getJob(job.jobId);
-    if (!current || current.status !== 'PROCESSING') return;
-    updateJob(job.jobId, { lastHeartbeatAt: Date.now() });
-  }, Math.max(1000, options.heartbeatIntervalMs || 10000));
-  if (typeof heartbeat.unref === 'function') heartbeat.unref();
+  const heartbeat = _startJobHeartbeat(job, options);
 
   const finalQueryPayload = `${job.query}\n\n[Signature: Request sent from Dashboard (IdempotencyKey: ${job.idempotencyKey.slice(0, 12)})]`;
-  const executionOptions = {
-    ...options,
-    context: job.context || { chassis: job.chassis },
-    queryTimeoutMs: job.timeoutMs,
-    deadlineAt: job.deadlineAt,
-    onAttempt: attempt => { job.queryAttempt = attempt; updateJob(job.jobId, { queryAttempt: attempt }); },
-    signal: controller.signal
-  };
+  const executionOptions = _buildJobExecutionOptions(job, options, controller);
 
-  setImmediate(() => {
+  setImmediate(async () => {
     const beforeStart = getJob(job.jobId);
     if (!beforeStart || isTerminalStatus(beforeStart.status) || controller.signal.aborted) {
-      clearInterval(heartbeat);
-      activeAbortControllers.delete(job.jobId);
+      _cleanupJobResources(job.jobId, heartbeat);
       return;
     }
-    Promise.resolve().then(() => executeQueryFn(job.notebookId, finalQueryPayload, executionOptions))
-      .then((res) => {
-        const persisted = getJob(job.jobId);
-        if (!persisted || isTerminalStatus(persisted.status)) return;
-
-        const endTime = Date.now();
-        const durationMs = endTime - job.startTime;
-        const source = String(res?.source || '');
-        const isFallback = source.includes('FALLBACK') || source.includes('LOCAL');
-        const isCloudGrounded = Boolean(
-          res?.isCloudGrounded &&
-          res?.groundingVerification === 'VERIFIED_GROUNDED' &&
-          (res?.citations || []).length > 0
-        );
-        const updates = {
-          status: isFallback ? 'LOCAL_FALLBACK' : 'COMPLETED',
-          cloudGroundingStatus: isCloudGrounded ? 'CLOUD_VERIFIED' : (isFallback ? 'LOCAL_FALLBACK' : 'CLOUD_FAILED'),
-          endTime,
-          durationMs,
-          timestamps: {
-            requestSentAt: new Date(job.startTime).toISOString(),
-            responseReceivedAt: new Date(endTime).toISOString()
-          },
-          answer: res?.answer || '',
-          citations: res?.citations || [],
-          source: res?.source,
-          ...(res?.queryAttempt ? { queryAttempt: res.queryAttempt } : {}),
-          isCloudGrounded,
-          groundingVerification: res?.groundingVerification || (isCloudGrounded ? 'VERIFIED_GROUNDED' : 'UNVERIFIED'),
-          groundingTier: isCloudGrounded ? 'TIER_1_LIVE_CLOUD_GROUNDED' : (res?.groundingTier || 'TIER_2_UNCITED_ADVISORY')
-        };
-
-        if (res?.source === 'FALLBACK_ERROR' || res?.source === 'NOTEBOOK_LM_FAILED') {
-          updates.status = 'FAILED';
-          updates.cloudGroundingStatus = 'CLOUD_FAILED';
-          updates.error = res.error || res.answer;
-          updates.diagnostic = diagnoseNotebookFailure(job.notebookId, new Error(res.error || res.answer));
-        }
-
-        Object.assign(job, updates);
-        updateJob(job.jobId, updates);
-        activeQueryJobs.set(job.jobId, job);
-
-        if (isCloudGrounded && job.context?.learningEligible && job.context?.chassisDir) {
-          try {
-            const { extractAndPersistLearnedDeltas } = require('./knowledge_extractor.js');
-            const learned = extractAndPersistLearnedDeltas(job.answer, job.context.chassisDir, {
-              chassis: job.chassis,
-              source: job.source,
-              groundingVerification: job.groundingVerification,
-              citations: job.citations,
-              confidenceScore: 0.70
-            });
-            const learningUpdates = {
-              learnedDeltasCount: learned.count || 0,
-              quarantinedDeltasCount: learned.quarantinedCount || 0
-            };
-            Object.assign(job, learningUpdates);
-            updateJob(job.jobId, learningUpdates);
-          } catch (learningError) {
-            updateJob(job.jobId, { learningError: learningError.message });
-          }
-        }
-
-        try {
-          const telemetryLib = require('../system/telemetry.js');
-          telemetryLib.recordNotebookConsultationTelemetry({
-            query: job.query,
-            answer: job.answer,
-            citations: job.citations,
-            chassis: job.chassis,
-            durationMs: job.durationMs,
-            scenario: classifyQueryScenario(job.query),
-            agreementScore: isCloudGrounded ? 0.95 : (isFallback ? 0.70 : 0.50),
-            nextActionExecuted: isCloudGrounded ? 'ASYNC_RAG_CLOUD_VERIFIED' : (isFallback ? 'ASYNC_RAG_LOCAL_FALLBACK' : 'ASYNC_RAG_UNVERIFIED')
-          });
-        } catch (_) {}
-      })
-      .catch((err) => {
-        const persisted = getJob(job.jobId);
-        if (!persisted || isTerminalStatus(persisted.status)) return;
-        const endTime = Date.now();
-        const updates = {
-          status: 'FAILED',
-          cloudGroundingStatus: 'CLOUD_FAILED',
-          endTime,
-          durationMs: endTime - job.startTime,
-          error: err?.message || 'NotebookLM query failed',
-          diagnostic: jobFailureDiagnostic(job, err, controller.signal)
-        };
-        Object.assign(job, updates);
-        updateJob(job.jobId, updates);
-        activeQueryJobs.set(job.jobId, job);
-      })
-      .finally(() => {
-        clearInterval(heartbeat);
-        activeAbortControllers.delete(job.jobId);
-      });
+    try {
+      const res = await executeQueryFn(job.notebookId, finalQueryPayload, executionOptions);
+      _handleJobSuccess(job, res);
+    } catch (err) {
+      _handleJobFailure(job, err, controller.signal);
+    } finally {
+      _cleanupJobResources(job.jobId, heartbeat);
+    }
   });
 }
 

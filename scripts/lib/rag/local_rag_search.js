@@ -138,35 +138,20 @@ function searchProcessorSkusInEntry(entry, folderName, catalogJson, minCores, se
   }
 }
 
-function searchCategorySkusInEntry(entry, folderName, catalogJson, activeTerms, rawMatches) {
-  if (activeTerms.length === 0) return;
-  const parentCat = (entry.parentCategory || '').toLowerCase();
-  const subCat = (entry.subCategory || '').toLowerCase();
-  const catStr = `${parentCat} ${subCat}`;
-
-  const isCatMatch = activeTerms.some(term => catStr.includes(term));
-  const matchedSkusInCat = [];
-  for (const s of (entry.skus || [])) {
-    const skuPn = s.sku || s['Product #'] || s['SKU'] || '';
-    const desc = s.description || s['Description'] || '';
-    const sLower = skuPn.toLowerCase();
-    const descLower = desc.toLowerCase();
-    if (activeTerms.some(term => {
-      if (term.length <= 2) {
-        try {
-          const escapedTerm = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-          const re = new RegExp(`\\b${escapedTerm}\\b`, 'i');
-          return re.test(descLower) || re.test(sLower);
-        } catch (_) {
-          return sLower.includes(term) || descLower.includes(term);
-        }
-      }
+function _skuMatchesActiveTerm(term, sLower, descLower) {
+  if (term.length <= 2) {
+    try {
+      const escapedTerm = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const re = new RegExp(`\\b${escapedTerm}\\b`, 'i');
+      return re.test(descLower) || re.test(sLower);
+    } catch (_) {
       return sLower.includes(term) || descLower.includes(term);
-    })) {
-      matchedSkusInCat.push(s);
     }
   }
+  return sLower.includes(term) || descLower.includes(term);
+}
 
+function _calculateCatScore(catStr, isCatMatch, activeTerms) {
   let catScore = isCatMatch ? 1 : 0;
   activeTerms.forEach(term => {
     if (term.length <= 2) {
@@ -180,16 +165,37 @@ function searchCategorySkusInEntry(entry, folderName, catalogJson, activeTerms, 
       catScore += 2;
     }
   });
+  return catScore;
+}
+
+function _formatCatSkuList(skusToDisplay) {
+  return skusToDisplay.slice(0, 4).map(s => {
+    const skuPn = s.sku || s['Product #'] || s['SKU'] || '';
+    const desc = s.description || s['Description'] || '';
+    const price = s.listPriceFormatted || (s['Unit Price (USD)'] ? `$${s['Unit Price (USD)']}` : (s.listPrice ? `$${s.listPrice}` : '$0.00'));
+    return `${skuPn} (${desc}) - ${price}`;
+  }).join('; ');
+}
+
+function searchCategorySkusInEntry(entry, folderName, catalogJson, activeTerms, rawMatches) {
+  if (activeTerms.length === 0) return;
+  const parentCat = (entry.parentCategory || '').toLowerCase();
+  const subCat = (entry.subCategory || '').toLowerCase();
+  const catStr = `${parentCat} ${subCat}`;
+
+  const isCatMatch = activeTerms.some(term => catStr.includes(term));
+  const matchedSkusInCat = (entry.skus || []).filter(s => {
+    const skuPn = (s.sku || s['Product #'] || s['SKU'] || '').toLowerCase();
+    const desc = (s.description || s['Description'] || '').toLowerCase();
+    return activeTerms.some(term => _skuMatchesActiveTerm(term, skuPn, desc));
+  });
+
+  const catScore = _calculateCatScore(catStr, isCatMatch, activeTerms);
 
   if (catScore > 0 || matchedSkusInCat.length > 0) {
     const finalScore = catScore + (matchedSkusInCat.length * 3);
     const skusToDisplay = matchedSkusInCat.length > 0 ? matchedSkusInCat : (entry.skus || []);
-    const skuList = skusToDisplay.slice(0, 4).map(s => {
-      const skuPn = s.sku || s['Product #'] || s['SKU'] || '';
-      const desc = s.description || s['Description'] || '';
-      const price = s.listPriceFormatted || (s['Unit Price (USD)'] ? `$${s['Unit Price (USD)']}` : (s.listPrice ? `$${s.listPrice}` : '$0.00'));
-      return `${skuPn} (${desc}) - ${price}`;
-    }).join('; ');
+    const skuList = _formatCatSkuList(skusToDisplay);
     if (skuList) {
       rawMatches.push({
         score: finalScore,
@@ -248,6 +254,81 @@ function searchCatalogSkusAndVariants(catData, folderName, catalogJson, isProces
   searchChassisBaseVariants(baseVariants, folderName, catalogJson, activeTerms, cleanQuery, rawMatches);
 }
 
+function _searchCatalogRulesFromJson(rulesJson, folderName, activeTerms, isRuleQuery, rawMatches) {
+  try {
+    const rulesData = JSON.parse(fs.readFileSync(rulesJson, 'utf-8'));
+    const rulesArray = Array.isArray(rulesData) ? rulesData : (rulesData.rules || rulesData.entries || []);
+
+    for (const rule of rulesArray) {
+      const mainCat = rule.category || rule.parentCategory || '';
+      const subCat = rule.subCategory || '';
+      const constraint = rule.constraint || rule.ruleType || '';
+      const ruleText = rule.description || rule.rule || rule.ruleText || JSON.stringify(rule);
+      const ruleStringLower = `${mainCat} ${subCat} ${constraint} ${ruleText}`.toLowerCase();
+
+      let ruleScore = 0;
+      if (activeTerms.length > 0) {
+        activeTerms.forEach(term => {
+          if (ruleStringLower.includes(term)) ruleScore += 2;
+        });
+      }
+      if (ruleScore > 0 && isRuleQuery) ruleScore += 10;
+
+      if (ruleScore > 0) {
+        rawMatches.push({
+          score: ruleScore,
+          text: `• [${folderName} Catalog Rule] Category: ${mainCat} > ${subCat} | Constraint: ${constraint} (${ruleText})`,
+          citation: {
+            title: `${folderName} Catalog Rules`,
+            snippet: `${mainCat} > ${subCat}: ${ruleText}`,
+            url: `/artifacts/${path.relative(OUTPUTS_DIR, rulesJson)}`
+          }
+        });
+      }
+    }
+  } catch (e) {
+    const _logger = require('../system/pipeline_logger.js');
+    _logger.warn('ERROR', 'local_rag_search.js processing rules.json', e);
+  }
+}
+
+function _searchCatalogRulesFromCsv(rulesCsv, folderName, activeTerms, isRuleQuery, rawMatches) {
+  try {
+    const csvLines = fs.readFileSync(rulesCsv, 'utf-8').split(/\r?\n/);
+    for (let i = 1; i < csvLines.length; i++) {
+      const line = csvLines[i];
+      if (!line) continue;
+      const lineLower = line.toLowerCase();
+
+      let ruleScore = 0;
+      if (activeTerms.length > 0) {
+        activeTerms.forEach(term => {
+          if (lineLower.includes(term)) ruleScore += 2;
+        });
+      }
+      if (ruleScore > 0 && isRuleQuery) ruleScore += 10;
+
+      if (ruleScore > 0) {
+        const parts = line.split(',');
+        const mainCat = parts[0] || '';
+        const subCat = parts[1] || '';
+        const constraint = parts[2] || '';
+        const ruleText = parts[4] || line;
+
+        rawMatches.push({
+          score: ruleScore,
+          text: `• [${folderName} Catalog Rule] Category: ${mainCat} > ${subCat} | Constraint: ${constraint} (${ruleText})`,
+          citation: {
+            title: `${folderName} Catalog Rules`,
+            snippet: `${mainCat} > ${subCat}: ${ruleText}`,
+            url: `/artifacts/${path.relative(OUTPUTS_DIR, rulesCsv)}`
+          }
+        });
+      }
+    }
+  } catch (_) {}
+}
+
 function searchCatalogRules(cDir, folderName, cleanQuery, activeTerms, isProcessorQuery, rawMatches) {
   if (isProcessorQuery) return;
   const rulesJson = path.join(cDir, `${folderName}_Catalog_Rules.json`);
@@ -255,76 +336,9 @@ function searchCatalogRules(cDir, folderName, cleanQuery, activeTerms, isProcess
   const isRuleQuery = cleanQuery.includes('rule') || cleanQuery.includes('constraint') || cleanQuery.includes('require') || cleanQuery.includes('compatibility');
 
   if (fs.existsSync(rulesJson)) {
-    try {
-      const rulesData = JSON.parse(fs.readFileSync(rulesJson, 'utf-8'));
-      const rulesArray = Array.isArray(rulesData) ? rulesData : (rulesData.rules || rulesData.entries || []);
-
-      for (const rule of rulesArray) {
-        const mainCat = rule.category || rule.parentCategory || '';
-        const subCat = rule.subCategory || '';
-        const constraint = rule.constraint || rule.ruleType || '';
-        const ruleText = rule.description || rule.rule || rule.ruleText || JSON.stringify(rule);
-        const ruleStringLower = `${mainCat} ${subCat} ${constraint} ${ruleText}`.toLowerCase();
-
-        let ruleScore = 0;
-        if (activeTerms.length > 0) {
-          activeTerms.forEach(term => {
-            if (ruleStringLower.includes(term)) ruleScore += 2;
-          });
-        }
-        if (ruleScore > 0 && isRuleQuery) ruleScore += 10;
-
-        if (ruleScore > 0) {
-          rawMatches.push({
-            score: ruleScore,
-            text: `• [${folderName} Catalog Rule] Category: ${mainCat} > ${subCat} | Constraint: ${constraint} (${ruleText})`,
-            citation: {
-              title: `${folderName} Catalog Rules`,
-              snippet: `${mainCat} > ${subCat}: ${ruleText}`,
-              url: `/artifacts/${path.relative(OUTPUTS_DIR, rulesJson)}`
-            }
-          });
-        }
-      }
-    } catch (e) {
-      const _logger = require('../system/pipeline_logger.js');
-      _logger.warn('ERROR', 'local_rag_search.js processing rules.json', e);
-    }
+    _searchCatalogRulesFromJson(rulesJson, folderName, activeTerms, isRuleQuery, rawMatches);
   } else if (fs.existsSync(rulesCsv)) {
-    try {
-      const csvLines = fs.readFileSync(rulesCsv, 'utf-8').split(/\r?\n/);
-      for (let i = 1; i < csvLines.length; i++) {
-        const line = csvLines[i];
-        if (!line) continue;
-        const lineLower = line.toLowerCase();
-
-        let ruleScore = 0;
-        if (activeTerms.length > 0) {
-          activeTerms.forEach(term => {
-            if (lineLower.includes(term)) ruleScore += 2;
-          });
-        }
-        if (ruleScore > 0 && isRuleQuery) ruleScore += 10;
-
-        if (ruleScore > 0) {
-          const parts = line.split(',');
-          const mainCat = parts[0] || '';
-          const subCat = parts[1] || '';
-          const constraint = parts[2] || '';
-          const ruleText = parts[4] || line;
-
-          rawMatches.push({
-            score: ruleScore,
-            text: `• [${folderName} Catalog Rule] Category: ${mainCat} > ${subCat} | Constraint: ${constraint} (${ruleText})`,
-            citation: {
-              title: `${folderName} Catalog Rules`,
-              snippet: `${mainCat} > ${subCat}: ${ruleText}`,
-              url: `/artifacts/${path.relative(OUTPUTS_DIR, rulesCsv)}`
-            }
-          });
-        }
-      }
-    } catch (_) {}
+    _searchCatalogRulesFromCsv(rulesCsv, folderName, activeTerms, isRuleQuery, rawMatches);
   }
 }
 

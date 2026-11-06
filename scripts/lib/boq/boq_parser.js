@@ -169,52 +169,85 @@ function isMetadataOrDisclaimerLine(lowerLine) {
   );
 }
 
+function _matchesSkuHeaderCandidate(c) {
+  return c.includes('product') || c.includes('part') || c.includes('sku') || c.includes('item #') || c.includes('pos') || c.includes('option id') || c === 'pid' || c.includes('pid');
+}
+
+function _matchesDescOrQtyCandidate(c) {
+  return c.includes('description') || c.includes('qty') || c.includes('quantity') || c.includes('price') || c.includes('units') || c.includes('option name');
+}
+
+function _isSkuHeader(col) {
+  return col.includes('product number') || col.includes('part number') || col.includes('product #') || col.includes('part #') || col.includes('sku') || col === 'pn' || col === 'p/n' || col === 'material' || col === 'pid' || col.includes('pid') || col.includes('product id');
+}
+
+function _isDescHeader(col) {
+  return col.includes('description') || col.includes('product name') || col.includes('item description') || col === 'bezeichnung' || col === 'text' || col.includes('option name');
+}
+
+function _isQtyHeader(col) {
+  if (col === 'quantity scope' || col === 'quantity basis') return false;
+  return col === 'qty' || col === 'quantity' || col === 'menge' || col === 'count' || col === 'units' || col.includes('quantity') || col.includes('qty');
+}
+
+function _isPriceHeader(col) {
+  return col.includes('unit price') || col.includes('einzelpreis') || col.includes('net price') || col.includes('list price') || col === 'price' || col === 'preis' || col.includes('option list price');
+}
+
+function _isConfirmedZeroHeader(col) {
+  return col.includes('confirmed zero') || col === 'is_confirmed_zero' || col === 'price provenance' || col.includes('provenance');
+}
+
+function _assignColumnRole(col, idx, map) {
+  if (_isSkuHeader(col)) {
+    map.sku = idx;
+  } else if (map.sku === -1 && (col === 'product' || col === 'part')) {
+    map.sku = idx;
+  }
+  if (col === 'option id' || col.includes('option id')) {
+    map.optionId = idx;
+    map.vendor = 'Dell';
+    if (map.sku === -1) map.sku = idx;
+  }
+  if (col.includes('cisco') || col.includes('smartnet') || col === 'pid' || col.includes('pid') || col === 'product id') {
+    map.vendor = 'Cisco';
+  }
+  if (_isDescHeader(col)) {
+    map.desc = idx;
+  }
+  if (_isQtyHeader(col)) {
+    map.qty = idx;
+  }
+  if (_isPriceHeader(col)) {
+    map.price = idx;
+  }
+  if (_isConfirmedZeroHeader(col)) {
+    map.confirmedZero = idx;
+  }
+  if (col.includes('lead time') || col.includes('estimated delivery') || col.includes('edt')) {
+    map.leadTime = idx;
+  }
+  if (col.includes('clic status') || col.includes('validation status')) {
+    map.clicStatus = idx;
+  }
+  const ownershipColumns = { 'configuration id': 'configurationId', 'parent id': 'parentId', 'sub-parent id': 'subParentId', 'quantity scope': 'quantityScope', 'quantity basis': 'quantityBasis' };
+  if (ownershipColumns[col]) map[ownershipColumns[col]] = idx;
+  if (/^(?:purpose|allocation|notes|status\s*\/\s*notes)$/.test(col)) map.purpose = idx;
+}
+
 /**
  * Detects whether a delimited line is a table header row and generates a column map.
  */
 function detectHeaderColumnMap(line, delimiter) {
   const headerCandidates = splitStructuredRow(line, delimiter).map(c => c.toLowerCase());
-  const hasSkuHeader = headerCandidates.some(c => c.includes('product') || c.includes('part') || c.includes('sku') || c.includes('item #') || c.includes('pos') || c.includes('option id') || c === 'pid' || c.includes('pid'));
-  const hasDescOrQtyHeader = headerCandidates.some(c => c.includes('description') || c.includes('qty') || c.includes('quantity') || c.includes('price') || c.includes('units') || c.includes('option name'));
+  const hasSkuHeader = headerCandidates.some(_matchesSkuHeaderCandidate);
+  const hasDescOrQtyHeader = headerCandidates.some(_matchesDescOrQtyCandidate);
 
   if (!hasSkuHeader || !hasDescOrQtyHeader) return null;
 
   const map = { sku: -1, desc: -1, qty: -1, price: -1, optionId: -1 };
   headerCandidates.forEach((col, idx) => {
-    if (col.includes('product number') || col.includes('part number') || col.includes('product #') || col.includes('part #') || col.includes('sku') || col === 'pn' || col === 'p/n' || col === 'material' || col === 'pid' || col.includes('pid') || col.includes('product id')) {
-      map.sku = idx;
-    } else if (map.sku === -1 && (col === 'product' || col === 'part')) {
-      map.sku = idx;
-    }
-    if (col === 'option id' || col.includes('option id')) {
-      map.optionId = idx;
-      map.vendor = 'Dell';
-      if (map.sku === -1) map.sku = idx;
-    }
-    if (col.includes('cisco') || col.includes('smartnet') || col === 'pid' || col.includes('pid') || col === 'product id') {
-      map.vendor = 'Cisco';
-    }
-    if (col.includes('description') || col.includes('product name') || col.includes('item description') || col === 'bezeichnung' || col === 'text' || col.includes('option name')) {
-      map.desc = idx;
-    }
-    if (!['quantity scope', 'quantity basis'].includes(col) && (col === 'qty' || col === 'quantity' || col === 'menge' || col === 'count' || col === 'units' || col.includes('quantity') || col.includes('qty'))) {
-      map.qty = idx;
-    }
-    if (col.includes('unit price') || col.includes('einzelpreis') || col.includes('net price') || col.includes('list price') || col === 'price' || col === 'preis' || col.includes('option list price')) {
-      map.price = idx;
-    }
-    if (col.includes('confirmed zero') || col === 'is_confirmed_zero' || col === 'price provenance' || col.includes('provenance')) {
-      map.confirmedZero = idx;
-    }
-    if (col.includes('lead time') || col.includes('estimated delivery') || col.includes('edt')) {
-      map.leadTime = idx;
-    }
-    if (col.includes('clic status') || col.includes('validation status')) {
-      map.clicStatus = idx;
-    }
-    const ownershipColumns = { 'configuration id': 'configurationId', 'parent id': 'parentId', 'sub-parent id': 'subParentId', 'quantity scope': 'quantityScope', 'quantity basis': 'quantityBasis' };
-    if (ownershipColumns[col]) map[ownershipColumns[col]] = idx;
-    if (/^(?:purpose|allocation|notes|status\s*\/\s*notes)$/.test(col)) map.purpose = idx;
+    _assignColumnRole(col, idx, map);
   });
 
   return (map.sku !== -1 || map.desc !== -1 || map.qty !== -1) ? map : null;
@@ -253,16 +286,8 @@ function isValidCandidateSku(rawStr, activeColumnMap = null) {
   return false;
 }
 
-/**
- * Extracts SKU, quantity, description, and price from a structured delimited row.
- */
-function extractStructuredSkuRow(parts, activeColumnMap) {
-  const lookupSku = value => cleanBaseSKU(String(value || '').replace(/^(H[A-Z0-9]+)\s+[A-Z0-9]{3,}$/i, '$1'));
+function _resolveSkuColumn(parts, activeColumnMap, lookupSku) {
   let skuIndex = activeColumnMap && activeColumnMap.sku !== -1 ? activeColumnMap.sku : -1;
-  const descIndex = activeColumnMap && activeColumnMap.desc !== -1 ? activeColumnMap.desc : -1;
-  const qtyIndex = activeColumnMap && activeColumnMap.qty !== -1 ? activeColumnMap.qty : -1;
-  const priceIndex = activeColumnMap && activeColumnMap.price !== -1 ? activeColumnMap.price : -1;
-
   if (skuIndex === -1 || !parts[skuIndex] || !isValidCandidateSku(lookupSku(parts[skuIndex]), activeColumnMap)) {
     for (let i = 0; i < parts.length; i++) {
       const clean = lookupSku(parts[i]);
@@ -272,58 +297,43 @@ function extractStructuredSkuRow(parts, activeColumnMap) {
       }
     }
   }
+  return skuIndex;
+}
 
-  if (skuIndex === -1) return null;
-
-  const rawSkuPart = parts[skuIndex];
-  const cleanSku = lookupSku(rawSkuPart);
-  if (!cleanSku || !isValidCandidateSku(cleanSku, activeColumnMap)) return null;
-
-  // Find Quantity
-  let lineQty = 1;
+function _resolveQuantityColumn(parts, qtyIndex, skuIndex, descIndex, priceIndex) {
   if (qtyIndex !== -1 && parts[qtyIndex]) {
     const parsedQ = parseInt(parts[qtyIndex].replace(/[^\d]/g, ''), 10);
-    if (!isNaN(parsedQ) && parsedQ > 0) lineQty = parsedQ;
-  } else {
-    for (let i = 0; i < parts.length; i++) {
-      if (i === skuIndex || i === descIndex || i === priceIndex) continue;
-      const p = parts[i];
-      if (/^\d+$/.test(p)) {
-        const q = parseInt(p, 10);
-        if (q > 0 && q < 100000) {
-          lineQty = q;
-          break;
-        }
-      }
+    if (!isNaN(parsedQ) && parsedQ > 0) return parsedQ;
+  }
+  for (let i = 0; i < parts.length; i++) {
+    if (i === skuIndex || i === descIndex || i === priceIndex) continue;
+    const p = parts[i];
+    if (/^\d+$/.test(p)) {
+      const q = parseInt(p, 10);
+      if (q > 0 && q < 100000) return q;
     }
   }
+  return 1;
+}
 
-  // Find Description
-  let rawDescPart = '';
+function _resolveDescriptionColumn(parts, descIndex, skuIndex) {
   if (descIndex !== -1 && parts[descIndex]) {
-    rawDescPart = parts[descIndex];
-  } else {
-    let longest = '';
-    for (let i = 0; i < parts.length; i++) {
-      if (i === skuIndex) continue;
-      const p = parts[i];
-      if (p.length > longest.length && !/^\$?[\d,.]+%?$/.test(p)) longest = p;
-    }
-    rawDescPart = longest;
+    return parts[descIndex];
   }
-
-  // Find Unit Price
-  let isConfirmedZeroPrice = false;
-  if (activeColumnMap && activeColumnMap.confirmedZero !== undefined && activeColumnMap.confirmedZero !== -1) {
-    const rawCz = String(parts[activeColumnMap.confirmedZero] || '').trim().toLowerCase();
-    if (rawCz === 'true' || rawCz === 'yes' || rawCz === 'confirmed_zero' || rawCz === '1') {
-      isConfirmedZeroPrice = true;
-    }
+  let longest = '';
+  for (let i = 0; i < parts.length; i++) {
+    if (i === skuIndex) continue;
+    const p = parts[i];
+    if (p.length > longest.length && !/^\$?[\d,.]+%?$/.test(p)) longest = p;
   }
+  return longest;
+}
 
+function _resolveUnitPriceColumn(parts, priceIndex, skuIndex, descIndex, qtyIndex, cleanSku, isConfirmedZero) {
   const { parseObservedUnitPrice, CONFIRMED_ZERO_PARENT_CONTRACTS } = require('./pricing_presence.js');
-
   let unitPriceUsd = null;
+  let isConfirmedZeroPrice = isConfirmedZero;
+
   if (priceIndex !== -1) {
     const rawVal = parts[priceIndex];
     if (rawVal !== undefined && rawVal !== null && String(rawVal).trim() !== '') {
@@ -331,9 +341,6 @@ function extractStructuredSkuRow(parts, activeColumnMap) {
       if (unitPriceUsd === 0 && (isConfirmedZeroPrice || CONFIRMED_ZERO_PARENT_CONTRACTS.has(cleanSku))) {
         isConfirmedZeroPrice = true;
       }
-    } else {
-      // With an explicit Unit Price column BLANK, do NOT infer price from other columns or stringify 0
-      unitPriceUsd = null;
     }
   } else {
     for (let i = 0; i < parts.length; i++) {
@@ -353,24 +360,76 @@ function extractStructuredSkuRow(parts, activeColumnMap) {
     isConfirmedZeroPrice = true;
   }
 
-  const isFioLine = rawSkuPart.includes('0D1') || rawSkuPart.includes('B19') || rawDescPart.toLowerCase().includes('factory integrated');
+  return { unitPriceUsd, isConfirmedZeroPrice };
+}
 
-  const rawOptionId = activeColumnMap?.optionId !== undefined && activeColumnMap.optionId !== -1
-    ? String(parts[activeColumnMap.optionId] || '').trim()
-    : null;
-  const optionId = rawOptionId || (/^[A-Z0-9]{7}$/i.test(cleanSku) && /[A-Z]/.test(cleanSku) && /\d/.test(cleanSku) ? cleanSku : null);
+/**
+ * Extracts SKU, quantity, description, and price from a structured delimited row.
+ */
+function _resolveConfirmedZero(parts, activeColumnMap) {
+  if (!activeColumnMap || activeColumnMap.confirmedZero === undefined || activeColumnMap.confirmedZero === -1) {
+    return false;
+  }
+  const rawCz = String(parts[activeColumnMap.confirmedZero] || '').trim().toLowerCase();
+  return rawCz === 'true' || rawCz === 'yes' || rawCz === 'confirmed_zero' || rawCz === '1';
+}
+
+function _resolveOptionId(parts, activeColumnMap, cleanSku) {
+  if (activeColumnMap?.optionId !== undefined && activeColumnMap.optionId !== -1) {
+    const raw = String(parts[activeColumnMap.optionId] || '').trim();
+    if (raw) return raw;
+  }
+  if (/^[A-Z0-9]{7}$/i.test(cleanSku) && /[A-Z]/.test(cleanSku) && /\d/.test(cleanSku)) {
+    return cleanSku;
+  }
+  return null;
+}
+
+function _extractOwnershipEntries(parts, activeColumnMap) {
+  const ownershipKeys = ['configurationId', 'parentId', 'subParentId', 'quantityScope', 'quantityBasis'];
+  const entries = [];
+  for (const key of ownershipKeys) {
+    if (activeColumnMap?.[key] !== undefined) {
+      entries.push([key, parts[activeColumnMap[key]]]);
+    }
+  }
+  return Object.fromEntries(entries);
+}
+
+/**
+ * Extracts SKU, quantity, description, and price from a structured delimited row.
+ */
+function extractStructuredSkuRow(parts, activeColumnMap) {
+  const lookupSku = value => cleanBaseSKU(String(value || '').replace(/^(H[A-Z0-9]+)\s+[A-Z0-9]{3,}$/i, '$1'));
+  const skuIndex = _resolveSkuColumn(parts, activeColumnMap, lookupSku);
+  if (skuIndex === -1) return null;
+
+  const rawSkuPart = parts[skuIndex];
+  const cleanSku = lookupSku(rawSkuPart);
+  if (!cleanSku || !isValidCandidateSku(cleanSku, activeColumnMap)) return null;
+
+  const descIndex = activeColumnMap?.desc !== undefined ? activeColumnMap.desc : -1;
+  const qtyIndex = activeColumnMap?.qty !== undefined ? activeColumnMap.qty : -1;
+  const priceIndex = activeColumnMap?.price !== undefined ? activeColumnMap.price : -1;
+
+  const lineQty = _resolveQuantityColumn(parts, qtyIndex, skuIndex, descIndex, priceIndex);
+  const rawDescPart = _resolveDescriptionColumn(parts, descIndex, skuIndex);
+
+  let isConfirmedZeroPrice = _resolveConfirmedZero(parts, activeColumnMap);
+  const priceResult = _resolveUnitPriceColumn(parts, priceIndex, skuIndex, descIndex, qtyIndex, cleanSku, isConfirmedZeroPrice);
+  const unitPriceUsd = priceResult.unitPriceUsd;
+  isConfirmedZeroPrice = priceResult.isConfirmedZeroPrice;
+
+  const isFioLine = rawSkuPart.includes('0D1') || rawSkuPart.includes('B19') || rawDescPart.toLowerCase().includes('factory integrated');
+  const optionId = _resolveOptionId(parts, activeColumnMap, cleanSku);
 
   const rawLeadTime = activeColumnMap?.leadTime !== undefined && activeColumnMap.leadTime !== -1
-    ? String(parts[activeColumnMap.leadTime] || '').trim()
-    : null;
+    ? String(parts[activeColumnMap.leadTime] || '').trim() : null;
   const rawClicStatus = activeColumnMap?.clicStatus !== undefined && activeColumnMap.clicStatus !== -1
-    ? String(parts[activeColumnMap.clicStatus] || '').trim()
-    : null;
+    ? String(parts[activeColumnMap.clicStatus] || '').trim() : null;
 
   return {
-    ...Object.fromEntries(['configurationId', 'parentId', 'subParentId', 'quantityScope', 'quantityBasis']
-      .filter(key => activeColumnMap?.[key] !== undefined)
-      .map(key => [key, parts[activeColumnMap[key]]])),
+    ..._extractOwnershipEntries(parts, activeColumnMap),
     sku: /^H[A-Z0-9]+\s+[A-Z0-9]{3,}$/i.test(rawSkuPart.trim()) ? rawSkuPart.trim() : cleanSku,
     optionId: optionId || null,
     description: rawDescPart && !rawDescPart.toLowerCase().includes('factory integrated') ? rawDescPart : cleanSku,
@@ -449,6 +508,111 @@ function extractSuspectedPartTokens(line) {
 /**
  * Main SKU parser: Iterates lines and aggregates extracted items.
  */
+function _isPriceKnown(price, isConfirmedZero) {
+  return typeof price === 'number' && Number.isFinite(price) && (price > 0 || (price === 0 && isConfirmedZero));
+}
+
+function _updateExistingItemPricing(existing, item, totalQty) {
+  if (item.isFactoryIntegrated) {
+    existing.isFactoryIntegrated = true;
+  } else {
+    existing.quantity += totalQty;
+  }
+
+  existing.priceObservations = existing.priceObservations || [existing.unitPriceUsd];
+  existing.priceObservations.push(item.unitPriceUsd);
+
+  const p1 = existing.unitPriceUsd;
+  const p2 = item.unitPriceUsd;
+
+  const p1Known = _isPriceKnown(p1, existing.isConfirmedZeroPrice);
+  const p2Known = _isPriceKnown(p2, item.isConfirmedZeroPrice);
+
+  if (!p1Known || !p2Known) {
+    if (p1Known !== p2Known) {
+      existing.priceConflict = 'MIXED_PRICING_EVIDENCE';
+      existing.unitPriceUsd = null;
+      existing.extendedPriceUsd = null;
+    }
+  } else if (p1 !== p2) {
+    existing.priceConflict = 'CONFLICTING_OBSERVED_PRICES';
+    existing.unitPriceUsd = null;
+    existing.extendedPriceUsd = null;
+  } else {
+    existing.unitPriceUsd = p1;
+    existing.extendedPriceUsd = existing.unitPriceUsd * existing.quantity;
+  }
+}
+
+function _mergeParsedItemIntoMap(item, itemMap, currentMultiplier, currentCluster) {
+  if (isGlobalItem(item, currentMultiplier)) item.quantityScope = 'global';
+  const totalQty = item.quantity * (item.quantityScope === 'global' ? 1 : currentMultiplier);
+  const configurationId = item.configurationId || (currentCluster ? `configuration-${currentCluster.configIndex}` : undefined);
+  const itemKey = `${configurationId || ''}:${item.parentId || ''}:${item.subParentId || ''}:${item.quantityScope || ''}:${item.optionId ? `${item.sku}#${item.optionId}` : item.sku}`;
+  if (currentCluster) {
+    currentCluster.items.push({ ...item });
+  }
+  if (itemMap.has(itemKey)) {
+    _updateExistingItemPricing(itemMap.get(itemKey), item, totalQty);
+  } else {
+    const isKnown = _isPriceKnown(item.unitPriceUsd, item.isConfirmedZeroPrice);
+    const finalUnitPrice = isKnown ? item.unitPriceUsd : null;
+    itemMap.set(itemKey, {
+      ...item,
+      sku: item.sku,
+      configurationId,
+      quantityBasis: item.quantityBasis || 'total',
+      description: item.description,
+      quantity: totalQty,
+      unitPriceUsd: finalUnitPrice,
+      isConfirmedZeroPrice: item.isConfirmedZeroPrice || false,
+      extendedPriceUsd: finalUnitPrice !== null ? finalUnitPrice * totalQty : null,
+      isFactoryIntegrated: item.isFactoryIntegrated,
+      priceObservations: [item.unitPriceUsd]
+    });
+  }
+}
+
+function _detectLineMultiplier(line) {
+  const multMatch = line.match(/^(\d+)\s*x\b/i) || line.match(/\b(\d+)\s*x\s*(?:node|server|chassis|system|unit|quote)\b/i) || line.match(/^(?:multiplier|qty|quantity)[:=\s]*(\d+)\b/i);
+  const lineSku = (line.match(HPE_SKU_EXTRACT_REGEX) || [])[1];
+  if (multMatch && (!lineSku || !isValidHpeSKU(lineSku))) {
+    return parseInt(multMatch[1], 10) || 1;
+  }
+  return null;
+}
+
+function _extractLineRows(line, delimiter, activeColumnMap, allLineSkus) {
+  let extractedRows = [];
+  if (delimiter && (activeColumnMap || allLineSkus.length <= 1)) {
+    const parts = splitStructuredRow(line, delimiter);
+    if (parts.length >= 2) {
+      const row = extractStructuredSkuRow(parts, activeColumnMap);
+      if (row) extractedRows.push(row);
+    }
+  }
+  if (extractedRows.length === 0) {
+    extractedRows = extractFreeFormSkuRows(line);
+  }
+  return extractedRows;
+}
+
+function _captureUnmatchedTokens(line, unmatchedSkus) {
+  const rawSkuTokens = (String(line).toUpperCase().match(/\b[A-Z][A-Z0-9]{3,8}(?:-[A-Z0-9]{2,4})?\b/g) || []);
+  for (const rawSkuToken of rawSkuTokens) {
+    const cleaned = cleanBaseSKU(rawSkuToken);
+    if (cleaned && /\d/.test(cleaned) && !isValidHpeSKU(cleaned)) {
+      unmatchedSkus.push({
+        rawLine: line,
+        rawSku: rawSkuToken,
+        reason: 'NO_CATALOG_MATCH',
+        confidence: 0.0
+      });
+      break;
+    }
+  }
+}
+
 function parseSkuLines(lines) {
   const itemMap = new Map();
   let currentMultiplier = 1;
@@ -504,116 +668,31 @@ function parseSkuLines(lines) {
     }
 
     // Detect chassis/node multiplier line
-    const multMatch = line.match(/^(\d+)\s*x\b/i) || line.match(/\b(\d+)\s*x\s*(?:node|server|chassis|system|unit|quote)\b/i) || line.match(/^(?:multiplier|qty|quantity)[:=\s]*(\d+)\b/i);
-    const lineSku = (line.match(HPE_SKU_EXTRACT_REGEX) || [])[1];
-    if (multMatch && (!lineSku || !isValidHpeSKU(lineSku))) {
-      currentMultiplier = parseInt(multMatch[1], 10) || 1;
+    const detectedMult = _detectLineMultiplier(line);
+    if (detectedMult !== null) {
+      currentMultiplier = detectedMult;
       if (currentCluster) currentCluster.multiplier = currentMultiplier;
       continue;
     }
 
     const allLineSkus = (line.match(new RegExp(HPE_SKU_EXTRACT_REGEX.source, 'gi')) || []).map(m => cleanBaseSKU(m)).filter(s => s && isValidHpeSKU(s));
+    const extractedRows = _extractLineRows(line, delimiter, activeColumnMap, allLineSkus);
 
-    // Try structured delimited parsing first
-    let extractedRows = [];
-    if (delimiter && (activeColumnMap || allLineSkus.length <= 1)) {
-      const parts = splitStructuredRow(line, delimiter);
-      if (parts.length >= 2) {
-        const row = extractStructuredSkuRow(parts, activeColumnMap);
-        if (row) extractedRows.push(row);
-      }
-    }
-
-    // Fallback to free-form parsing if no structured row was extracted
     if (extractedRows.length === 0) {
-      extractedRows = extractFreeFormSkuRows(line);
-    }
-
-    if (extractedRows.length === 0 && REQUIREMENT_SIGNAL_PATTERN.test(line)) {
-      unresolvedRequirements.push({
-        line,
-        suspectedPartTokens: extractSuspectedPartTokens(line),
-        reason: 'NO_VALID_CATALOG_PART_PARSED'
-      });
-    }
-
-    // P2-3: Capture raw lines whose SKU-like tokens failed catalog validation
-    if (extractedRows.length === 0) {
-      // Find all SKU-shaped tokens on this line regardless of validation outcome
-      const rawSkuTokens = (String(line).toUpperCase().match(/\b[A-Z][A-Z0-9]{3,8}(?:-[A-Z0-9]{2,4})?\b/g) || []);
-      for (const rawSkuToken of rawSkuTokens) {
-        const cleaned = cleanBaseSKU(rawSkuToken);
-        // Only record if it looks like it could be a part number (has digits) but didn't validate
-        if (cleaned && /\d/.test(cleaned) && !isValidHpeSKU(cleaned)) {
-          unmatchedSkus.push({
-            rawLine: line,
-            rawSku: rawSkuToken,
-            reason: 'NO_CATALOG_MATCH',
-            confidence: 0.0
-          });
-          break; // one entry per line to avoid flooding
-        }
+      if (REQUIREMENT_SIGNAL_PATTERN.test(line)) {
+        unresolvedRequirements.push({
+          line,
+          suspectedPartTokens: extractSuspectedPartTokens(line),
+          reason: 'NO_VALID_CATALOG_PART_PARSED'
+        });
       }
+      _captureUnmatchedTokens(line, unmatchedSkus);
+      continue;
     }
 
     // Accumulate items into itemMap
     for (const item of extractedRows) {
-      if (isGlobalItem(item, currentMultiplier)) item.quantityScope = 'global';
-      const totalQty = item.quantity * (item.quantityScope === 'global' ? 1 : currentMultiplier);
-      const configurationId = item.configurationId || (currentCluster ? `configuration-${currentCluster.configIndex}` : undefined);
-      const itemKey = `${configurationId || ''}:${item.parentId || ''}:${item.subParentId || ''}:${item.quantityScope || ''}:${item.optionId ? `${item.sku}#${item.optionId}` : item.sku}`;
-      if (currentCluster) {
-        currentCluster.items.push({ ...item });
-      }
-      if (itemMap.has(itemKey)) {
-        const existing = itemMap.get(itemKey);
-        if (item.isFactoryIntegrated) {
-          existing.isFactoryIntegrated = true;
-        } else {
-          existing.quantity += totalQty;
-        }
-
-        existing.priceObservations = existing.priceObservations || [existing.unitPriceUsd];
-        existing.priceObservations.push(item.unitPriceUsd);
-
-        const p1 = existing.unitPriceUsd;
-        const p2 = item.unitPriceUsd;
-
-        const p1Known = typeof p1 === 'number' && Number.isFinite(p1) && (p1 > 0 || (p1 === 0 && existing.isConfirmedZeroPrice));
-        const p2Known = typeof p2 === 'number' && Number.isFinite(p2) && (p2 > 0 || (p2 === 0 && item.isConfirmedZeroPrice));
-
-        if (!p1Known || !p2Known) {
-          // If either occurrence is unpriced/unconfirmed, do NOT silently price the line!
-          if (p1Known !== p2Known) {
-            existing.priceConflict = 'MIXED_PRICING_EVIDENCE';
-            existing.unitPriceUsd = null;
-            existing.extendedPriceUsd = null;
-          }
-        } else if (p1 !== p2) {
-          existing.priceConflict = 'CONFLICTING_OBSERVED_PRICES';
-          existing.unitPriceUsd = null;
-          existing.extendedPriceUsd = null;
-        } else {
-          existing.unitPriceUsd = p1;
-          existing.extendedPriceUsd = existing.unitPriceUsd * existing.quantity;
-        }
-      } else {
-        const isKnown = typeof item.unitPriceUsd === 'number' && Number.isFinite(item.unitPriceUsd) && (item.unitPriceUsd > 0 || (item.unitPriceUsd === 0 && item.isConfirmedZeroPrice));
-        const finalUnitPrice = isKnown ? item.unitPriceUsd : null;
-        itemMap.set(itemKey, {
-          ...item,
-          sku: item.sku,
-          configurationId,
-          quantityBasis: item.quantityBasis || 'total',
-          description: item.description,
-          quantity: totalQty,
-          unitPriceUsd: finalUnitPrice,
-          isConfirmedZeroPrice: item.isConfirmedZeroPrice || false,
-          extendedPriceUsd: finalUnitPrice !== null ? finalUnitPrice * totalQty : null,
-          isFactoryIntegrated: item.isFactoryIntegrated,
-          priceObservations: [item.unitPriceUsd]
-        });
-      }
+      _mergeParsedItemIntoMap(item, itemMap, currentMultiplier, currentCluster);
     }
   }
 

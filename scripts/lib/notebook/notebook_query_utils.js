@@ -262,118 +262,168 @@ function _isPreSubmissionAuthError(error, stdout, stderr) {
   return /(?:auth(?:entication)?\s+(?:expired|invalid|failed|required)|not\s+logged\s+in|please\s+run\s+nlm\s+login|invalid_grant|401\s+unauthorized|unauthenticated|session\s+expired|credentials?\s+(?:are\s+)?(?:stale|expired))/i.test(combined);
 }
 
+function _createCloudQueryLifecycle(options, getAttemptRecord, cleanup, settledRef, resolve, reject) {
+  const { markRemoteUnknown } = require('./query_attempt_record.js');
+  const finish = (callback, value, fields) => {
+    if (settledRef.value) return;
+    settledRef.value = true;
+    const attempt = getAttemptRecord();
+    attempt?.update({ finishedAt: Date.now(), ...fields });
+    if (value?.queryAttempt && attempt?.diagnostic().persistence) {
+      value.queryAttempt.persistence = attempt.diagnostic().persistence;
+    }
+    cleanup();
+    callback(value);
+  };
+  const failUnknown = error => {
+    const attempt = getAttemptRecord();
+    markRemoteUnknown(error, () => attempt?.diagnostic() || null, options.signal);
+    finish(reject, error, {
+      status: 'LOCAL_QUERY_FAILED',
+      verification: 'NOT_VERIFIED',
+      remoteState: 'REMOTE_STATE_UNKNOWN',
+      error: { name: error?.name || null, code: error?.code || null, message: error?.message || null }
+    });
+  };
+  const onAbort = () => {
+    const attempt = getAttemptRecord();
+    if (settledRef.dispatched) markRemoteUnknown(options.signal.reason, () => attempt?.diagnostic() || null, options.signal);
+    finish(reject, options.signal.reason, {
+      status: settledRef.dispatched ? 'LOCAL_ABORT_REQUESTED' : 'ABORTED_BEFORE_DISPATCH',
+      verification: 'NOT_VERIFIED',
+      remoteState: settledRef.dispatched ? 'REMOTE_STATE_UNKNOWN' : 'NOT_SUBMITTED'
+    });
+  };
+  return { finish, failUnknown, onAbort };
+}
+
+function _startCloudQueryHeartbeat(logger, targetNotebookId, currentTimeout, options, startTime) {
+  const heartbeat = setInterval(() => {
+    const elapsedMs = Date.now() - startTime;
+    const elapsedStr = formatQueryDuration(elapsedMs);
+    logger.info('NOTEBOOK_QUERY', 'NotebookLM local CLI pending; elapsed ' + elapsedStr);
+    if (typeof options.onHeartbeat === 'function') {
+      try {
+        options.onHeartbeat({ notebookId: targetNotebookId, elapsedMs, elapsedFormatted: elapsedStr, timeoutMs: currentTimeout });
+      } catch (_) {}
+    }
+  }, 15000);
+  heartbeat.unref?.();
+  return heartbeat;
+}
+
+function _handleChildSpawnOrAuthError(error, child, stdout, stderr, finish, reject, failUnknown) {
+  // Native spawn ENOENT plus absent local PID proves this local command never started.
+  if (error.code === 'ENOENT' && String(error.syscall || '').startsWith('spawn') && !child?.pid) {
+    return finish(reject, error, { status: 'SPAWN_FAILED_BEFORE_SUBMISSION', remoteState: 'NOT_SUBMITTED', verification: 'NOT_VERIFIED' });
+  }
+  // Pre-submission authentication rejection (INV-157) proves the query was rejected at the auth gate.
+  if (_isPreSubmissionAuthError(error, stdout, stderr)) {
+    try { error.stderr = stderr; error.stdout = stdout; } catch (_) {}
+    return finish(reject, error, { status: 'AUTH_FAILED_BEFORE_SUBMISSION', remoteState: 'NOT_SUBMITTED', verification: 'NOT_VERIFIED' });
+  }
+  return failUnknown(error);
+}
+
+function _processCloudQueryOutput(stdout, sanitizedQuery, options, targetNotebookId, startTime, attemptRecord, finish, resolve, failUnknown) {
+  const processed = postProcessNotebookResult(stdout, sanitizedQuery, options.context);
+  if (!processed?.answer || processed.answer.includes('No response returned')) {
+    const empty = new Error('NotebookLM returned no usable response; remote state is unknown. Do not automatically resubmit.');
+    empty.code = 'NOTEBOOK_QUERY_REMOTE_STATE_UNKNOWN';
+    return failUnknown(empty);
+  }
+  const latencyMs = Date.now() - startTime;
+  finish(resolve, {
+    ...processed,
+    source: 'NOTEBOOK_LM_CLOUD',
+    targetNotebookId,
+    latencyMs,
+    timeTaken: formatQueryDuration(latencyMs),
+    attempts: 1,
+    queryAttempt: {
+      ...attemptRecord.diagnostic(),
+      verification: processed.groundingVerification || 'NOT_VERIFIED',
+      remoteState: 'RESPONSE_RECEIVED'
+    }
+  }, {
+    status: 'LOCAL_RESPONSE_RECEIVED',
+    remoteState: 'RESPONSE_RECEIVED',
+    verification: processed.groundingVerification || 'NOT_VERIFIED'
+  });
+}
+
 function _executeCloudQuery(nlmExecutable, targetNotebookId, sanitizedQuery, timeoutMs, extendedPath, options = {}) {
   const logger = require('../system/pipeline_logger.js');
-  const { createAttempt, markRemoteUnknown, returnedConversationId } = require('./query_attempt_record.js');
+  const { createAttempt, returnedConversationId } = require('./query_attempt_record.js');
   return new Promise((resolve, reject) => {
-    let settled = false, heartbeat, attemptRecord, child, dispatched = false;
-    const cleanup = () => { clearInterval(heartbeat); options.signal?.removeEventListener('abort', onAbort); };
-    const finish = (callback, value, fields) => {
-      if (settled) return;
-      settled = true;
-      attemptRecord?.update({ finishedAt: Date.now(), ...fields });
-      if (value?.queryAttempt && attemptRecord?.diagnostic().persistence) value.queryAttempt.persistence = attemptRecord.diagnostic().persistence;
-      cleanup();
-      callback(value);
+    let heartbeat, attemptRecord, child;
+    const settledRef = { value: false, dispatched: false };
+    const cleanup = () => {
+      clearInterval(heartbeat);
+      options.signal?.removeEventListener('abort', onAbort);
     };
-    const failUnknown = error => {
-      markRemoteUnknown(error, () => attemptRecord?.diagnostic() || null, options.signal);
-      finish(reject, error, { status: 'LOCAL_QUERY_FAILED', verification: 'NOT_VERIFIED', remoteState: 'REMOTE_STATE_UNKNOWN',
-        error: { name: error?.name || null, code: error?.code || null, message: error?.message || null } });
-    };
-    const onAbort = () => {
-      if (dispatched) markRemoteUnknown(options.signal.reason, () => attemptRecord?.diagnostic() || null, options.signal);
-      finish(reject, options.signal.reason, { status: dispatched ? 'LOCAL_ABORT_REQUESTED' : 'ABORTED_BEFORE_DISPATCH',
-        verification: 'NOT_VERIFIED', remoteState: dispatched ? 'REMOTE_STATE_UNKNOWN' : 'NOT_SUBMITTED' });
-    };
+    const { finish, failUnknown, onAbort } = _createCloudQueryLifecycle(
+      options, () => attemptRecord, cleanup, settledRef, resolve, reject
+    );
     options.signal?.addEventListener('abort', onAbort, { once: true });
     try {
       throwIfQueryStopped(options);
       const currentTimeout = Math.max(1, Math.min(timeoutMs, options.deadlineAt - Date.now()));
       const trustedSourceIds = options.querySourceIds || [];
       if (!Array.isArray(trustedSourceIds) || trustedSourceIds.length === 0) {
-        return finish(resolve, { answer: 'Grounding query blocked: no authoritative or trusted sources configured for notebook (fail-closed).',
-          citations: [], isCloudGrounded: false, source: 'NOTEBOOK_LM_CLOUD', targetNotebookId,
-          fallbackReason: 'No trusted sources configured', attempts: 0 });
+        return finish(resolve, {
+          answer: 'Grounding query blocked: no authoritative or trusted sources configured for notebook (fail-closed).',
+          citations: [],
+          isCloudGrounded: false,
+          source: 'NOTEBOOK_LM_CLOUD',
+          targetNotebookId,
+          fallbackReason: 'No trusted sources configured',
+          attempts: 0
+        });
       }
-      attemptRecord = createAttempt({ notebookId: targetNotebookId, query: sanitizedQuery, sourceIds: trustedSourceIds,
-        startedAt: Date.now(), deadlineAt: options.deadlineAt, timeoutMs: currentTimeout });
-      if (settled) return;
+      attemptRecord = createAttempt({
+        notebookId: targetNotebookId,
+        query: sanitizedQuery,
+        sourceIds: trustedSourceIds,
+        startedAt: Date.now(),
+        deadlineAt: options.deadlineAt,
+        timeoutMs: currentTimeout
+      });
+      if (settledRef.value) return;
       if (typeof options.onAttempt === 'function') options.onAttempt(attemptRecord.diagnostic());
       throwIfQueryStopped(options);
       const startTime = Date.now();
       logger.info('NOTEBOOK_QUERY', 'Dispatching one logical NotebookLM query. Ambiguous failure never triggers automatic resubmission.');
-      heartbeat = setInterval(() => {
-        const elapsedMs = Date.now() - startTime;
-        const elapsedStr = formatQueryDuration(elapsedMs);
-        logger.info('NOTEBOOK_QUERY', 'NotebookLM local CLI pending; elapsed ' + elapsedStr);
-        if (typeof options.onHeartbeat === 'function') {
-          try { options.onHeartbeat({ notebookId: targetNotebookId, elapsedMs, elapsedFormatted: elapsedStr, timeoutMs: currentTimeout }); } catch (_) {}
-        }
-      }, 15000);
-      heartbeat.unref?.();
-      dispatched = true;
+      heartbeat = _startCloudQueryHeartbeat(logger, targetNotebookId, currentTimeout, options, startTime);
+      settledRef.dispatched = true;
       child = execFile(nlmExecutable, buildNotebookQueryArgs(targetNotebookId, sanitizedQuery, trustedSourceIds, currentTimeout), {
         timeout: currentTimeout, signal: options.signal, env: require('./nlm_transport.js').nlmEnvironment(extendedPath, true), maxBuffer: 10 * 1024 * 1024
       }, (error, stdout, stderr) => {
         const conversationId = returnedConversationId(stdout);
         if (conversationId) attemptRecord.update({ conversationId });
-        if (settled) return;
+        if (settledRef.value) return;
         try {
-          if (error) {
-            // Native spawn ENOENT plus absent local PID proves this local command never started.
-            // It still does not merit an automatic new-conversation retry.
-            if (error.code === 'ENOENT' && String(error.syscall || '').startsWith('spawn') && !child?.pid) {
-              return finish(reject, error, { status: 'SPAWN_FAILED_BEFORE_SUBMISSION', remoteState: 'NOT_SUBMITTED', verification: 'NOT_VERIFIED' });
-            }
-            // Pre-submission authentication rejection (INV-157) proves the query was rejected at the auth gate.
-            if (_isPreSubmissionAuthError(error, stdout, stderr)) {
-              try { error.stderr = stderr; error.stdout = stdout; } catch (_) {}
-              return finish(reject, error, { status: 'AUTH_FAILED_BEFORE_SUBMISSION', remoteState: 'NOT_SUBMITTED', verification: 'NOT_VERIFIED' });
-            }
-            return failUnknown(error);
-          }
           throwIfQueryStopped(options);
-          const processed = postProcessNotebookResult(stdout, sanitizedQuery, options.context);
-          if (!processed?.answer || processed.answer.includes('No response returned')) {
-            const empty = new Error('NotebookLM returned no usable response; remote state is unknown. Do not automatically resubmit.');
-            empty.code = 'NOTEBOOK_QUERY_REMOTE_STATE_UNKNOWN';
-            return failUnknown(empty);
+          if (error) {
+            return _handleChildSpawnOrAuthError(error, child, stdout, stderr, finish, reject, failUnknown);
           }
-          const latencyMs = Date.now() - startTime;
-          finish(resolve, { ...processed, source: 'NOTEBOOK_LM_CLOUD', targetNotebookId, latencyMs,
-            timeTaken: formatQueryDuration(latencyMs), attempts: 1,
-            queryAttempt: { ...attemptRecord.diagnostic(), verification: processed.groundingVerification || 'NOT_VERIFIED', remoteState: 'RESPONSE_RECEIVED' } },
-          { status: 'LOCAL_RESPONSE_RECEIVED', remoteState: 'RESPONSE_RECEIVED', verification: processed.groundingVerification || 'NOT_VERIFIED' });
-        } catch (failure) { failUnknown(failure); }
+          _processCloudQueryOutput(stdout, sanitizedQuery, options, targetNotebookId, startTime, attemptRecord, finish, resolve, failUnknown);
+        } catch (failure) {
+          if ((options.signal?.aborted && Object.is(failure, options.signal.reason)) || failure?.code === 'NOTEBOOK_QUERY_DEADLINE_EXCEEDED') {
+            return finish(reject, failure, { status: failure?.code || 'ABORTED', remoteState: 'REMOTE_STATE_UNKNOWN', verification: 'NOT_VERIFIED' });
+          }
+          failUnknown(failure);
+        }
       });
       if (child?.pid) attemptRecord.update({ localChildPid: child.pid });
     } catch (failure) {
-      // Synchronous executor validation/spawn throws cannot have submitted a remote query.
-      if (dispatched) return failUnknown(failure);
-      finish(reject, failure, { status: 'LOCAL_EXECUTOR_THROW', remoteState: dispatched ? 'REMOTE_STATE_UNKNOWN' : 'NOT_SUBMITTED', verification: 'NOT_VERIFIED' });
+      if (settledRef.dispatched) return failUnknown(failure);
+      finish(reject, failure, { status: 'LOCAL_EXECUTOR_THROW', remoteState: settledRef.dispatched ? 'REMOTE_STATE_UNKNOWN' : 'NOT_SUBMITTED', verification: 'NOT_VERIFIED' });
     }
   });
 }
 
-/**
- * Safely execute Gemini Notebook query via nlm CLI with full guardrails:
- * - Dynamic live notebook resolution
- * - One submission with durable remote-ambiguity provenance
- * - Strict Cloud Mode vs Verified Safety Net Dual-Brain Fallback
- * - Rich diagnostic provenance tracking
- *
- * @param {string} notebookId 
- * @param {string} rawQuery 
- * @param {object} [options] 
- * @returns {Promise<object>} Normalized result { query, answer, citations, source, isCloudGrounded }
- */
-async function executeNotebookQuery(notebookId, rawQuery, options = {}) {
-  throwIfQueryStopped(options);
-  options = require('../system/execution_budget.js').logicalQueryOptions(options, Date.now(), parseInt(process.env.RAG_TIMEOUT_MS || '600000', 10));
-  const { queryLocalKnowledgeBase } = require('../rag/local_rag_search.js');
-  const logger = require('../system/pipeline_logger.js');
-
+function _resolveNlmExecutableAndExtendedPath() {
   const envPath = process.env.PATH || '';
   const homeBin = path.join(os.homedir(), '.local', 'bin');
   const macPaths = process.platform === 'darwin' ? ['/opt/homebrew/bin', '/usr/local/bin'] : [];
@@ -387,21 +437,20 @@ async function executeNotebookQuery(notebookId, rawQuery, options = {}) {
     ? nlmUserPath
     : (fs.existsSync(macHomebrewPath) ? macHomebrewPath : (fs.existsSync(macUsrPath) ? macUsrPath : binName));
 
-  const targetNotebookId = await resolveNotebookIdAsync(notebookId, options.context, nlmExecutable, extendedPath);
-  throwIfQueryStopped(options);
-  const sanitizedQuery = sanitizeNotebookQuery(rawQuery, options.context);
-  const timeoutMs = options.queryTimeoutMs;
-  const isStrictCloud = options.strictCloud === true || process.env.STRICT_NOTEBOOKLM_MODE === '1';
+  return { extendedPath, nlmExecutable };
+}
 
-  // Fail-closed to Local RAG if no notebook mapped for this chassis
+function _resolveQueryTargetAndScope(targetNotebookId, rawQuery, options, queryLocalKnowledgeBase, logger) {
   if (!targetNotebookId) {
     logger.info('NOTEBOOK_QUERY', 'No dedicated Notebook ID configured for this product. Failing-closed to deterministic Local RAG.');
     const localRes = queryLocalKnowledgeBase(rawQuery, options.context ? options.context.chassis : '');
     return {
-      ...localRes,
-      source: 'LOCAL_RAG_FALLBACK',
-      isCloudGrounded: false,
-      fallbackReason: 'No dedicated Notebook ID configured for this product (fail-closed to local rules)'
+      earlyResult: {
+        ...localRes,
+        source: 'LOCAL_RAG_FALLBACK',
+        isCloudGrounded: false,
+        fallbackReason: 'No dedicated Notebook ID configured for this product (fail-closed to local rules)'
+      }
     };
   }
 
@@ -414,14 +463,19 @@ async function executeNotebookQuery(notebookId, rawQuery, options = {}) {
     logger.info('NOTEBOOK_QUERY', 'Notebook has no canary-verified trusted source allow-list (INV-24 fail-closed).');
     const localRes = queryLocalKnowledgeBase(rawQuery, options.context ? options.context.chassis : '');
     return {
-      ...localRes,
-      source: 'LOCAL_RAG_FALLBACK',
-      isCloudGrounded: false,
-      fallbackReason: scope.reason
+      earlyResult: {
+        ...localRes,
+        source: 'LOCAL_RAG_FALLBACK',
+        isCloudGrounded: false,
+        fallbackReason: scope.reason
+      }
     };
   }
 
-  const cacheKey = `trusted_query_v2:${targetNotebookId}:${sanitizedQuery.trim()}:${JSON.stringify(configuredEntry)}:${JSON.stringify(combinedSourceIds)}`;
+  return { configuredEntry, authoritativeSourceIds, combinedSourceIds };
+}
+
+function _checkCacheOrOfflineFallback(cacheKey, sanitizedQuery, rawQuery, options, authoritativeSourceIds, queryLocalKnowledgeBase, logger) {
   if (!options.bypassCache && !options.offlineMode && !options.useLocalRagOnly && process.env.USE_LOCAL_RAG_ONLY !== '1' && process.env.LOCAL_EVAL_ONLY !== '1') {
     const cached = getCachedRagResult(cacheKey);
     const verifiedCache = cached && postProcessNotebookResult(cached, sanitizedQuery, { ...options.context, authoritativeSourceIds });
@@ -444,6 +498,121 @@ async function executeNotebookQuery(notebookId, rawQuery, options = {}) {
     };
   }
 
+  return null;
+}
+
+function _checkQueryFatalAbortOrUnknown(failure, options, isStrictCloud) {
+  if ((options.signal?.aborted && Object.is(failure, options.signal.reason)) || failure?.code === 'NOTEBOOK_QUERY_DEADLINE_EXCEEDED') {
+    throw failure;
+  }
+  const { isRemoteUnknown } = require('./query_attempt_record.js');
+  if (isRemoteUnknown(failure) && (isStrictCloud || !options.allowLocalFallback)) {
+    throw failure;
+  }
+}
+
+async function _tryInFlightAuthHealing(diagnostic, options, notebookId, rawQuery, logger) {
+  if (diagnostic.errorType !== 'AUTH_EXPIRED' || options._retriedAuth || options.offlineMode || options.useLocalRagOnly) {
+    return null;
+  }
+  try {
+    const { checkAuthHealth } = require('../../maintenance/check_nlm_auth.js');
+    logger.info('NOTEBOOK_QUERY', 'NotebookLM authentication expired. Attempting in-flight headless auto-healing (INV-157)...');
+    const heal = checkAuthHealth({ autoHeal: true });
+    if (heal && heal.valid) {
+      logger.info('NOTEBOOK_QUERY', `In-flight auto-healing successful for account: ${heal.account}. Retrying cloud query.`);
+      if (typeof options.onAuthHealed === 'function') {
+        await Promise.resolve(options.onAuthHealed(heal));
+      }
+      return await executeNotebookQuery(notebookId, rawQuery, { ...options, _retriedAuth: true });
+    }
+  } catch (healError) {
+    logger.warn('NOTEBOOK_QUERY', `In-flight auto-healing encountered an exception: ${healError.message}`);
+  }
+  return null;
+}
+
+async function _handleCloudQueryFailure(failure, params) {
+  const {
+    options, isStrictCloud, targetNotebookId, sanitizedQuery, rawQuery,
+    notebookId, queryLocalKnowledgeBase, logger
+  } = params;
+
+  _checkQueryFatalAbortOrUnknown(failure, options, isStrictCloud);
+  const { isRemoteUnknown, getNotebookQueryRecovery } = require('./query_attempt_record.js');
+  const diagnostic = diagnoseNotebookFailure(targetNotebookId, failure?.err || failure);
+  const recoveryDiagnostic = isRemoteUnknown(failure) ? getNotebookQueryRecovery(failure, options.signal) : null;
+  if (recoveryDiagnostic) diagnostic.queryRecovery = recoveryDiagnostic;
+  const timeTaken = failure?.timeTaken || (failure?.latencyMs ? `${Math.floor(failure.latencyMs / 1000)}s` : 'unknown');
+  diagnostic.timeTaken = timeTaken;
+  diagnostic.latencyMs = failure?.latencyMs || 0;
+  logger.warn('NOTEBOOK_QUERY', `Live NotebookLM Cloud query failed after ${failure?.attempts || 1} attempts and ${timeTaken} (${diagnostic.rootCause}).`, { diagnostic, stderr: failure?.stderr });
+
+  const healedResult = await _tryInFlightAuthHealing(diagnostic, options, notebookId, rawQuery, logger);
+  if (healedResult) return healedResult;
+
+  if (isStrictCloud) {
+    return {
+      query: sanitizedQuery,
+      answer: `STRICT_CLOUD_ERROR: Live NotebookLM Cloud query failed (${diagnostic.rootCause}). Remediation: ${diagnostic.remediationAction}`,
+      citations: [],
+      source: 'NOTEBOOK_LM_FAILED',
+      isCloudGrounded: false,
+      diagnostic,
+      latencyMs: failure?.latencyMs || 0,
+      timeTaken,
+      error: failure?.err?.message || 'Strict Cloud Query Failure'
+    };
+  }
+
+  // Safety net fallback to Local Rule RAG with rich diagnostics
+  const localRes = queryLocalKnowledgeBase(rawQuery, options.context ? options.context.chassis : '');
+  return {
+    ...localRes,
+    source: 'LOCAL_RAG_FALLBACK',
+    isCloudGrounded: false,
+    groundingTier: 'TIER_2_VERIFIED_LOCAL_SAFETY_NET',
+    diagnostic,
+    latencyMs: failure?.latencyMs || 0,
+    timeTaken,
+    fallbackReason: `Live Cloud Query Error: ${diagnostic.rootCause} (Elapsed: ${timeTaken}, Attempts: ${failure?.attempts || 1})`
+  };
+}
+
+/**
+ * Safely execute Gemini Notebook query via nlm CLI with full guardrails:
+ * - Dynamic live notebook resolution
+ * - One submission with durable remote-ambiguity provenance
+ * - Strict Cloud Mode vs Verified Safety Net Dual-Brain Fallback
+ * - Rich diagnostic provenance tracking
+ *
+ * @param {string} notebookId 
+ * @param {string} rawQuery 
+ * @param {object} [options] 
+ * @returns {Promise<object>} Normalized result { query, answer, citations, source, isCloudGrounded }
+ */
+async function executeNotebookQuery(notebookId, rawQuery, options = {}) {
+  throwIfQueryStopped(options);
+  options = require('../system/execution_budget.js').logicalQueryOptions(options, Date.now(), parseInt(process.env.RAG_TIMEOUT_MS || '600000', 10));
+  const { queryLocalKnowledgeBase } = require('../rag/local_rag_search.js');
+  const logger = require('../system/pipeline_logger.js');
+
+  const { extendedPath, nlmExecutable } = _resolveNlmExecutableAndExtendedPath();
+  const targetNotebookId = await resolveNotebookIdAsync(notebookId, options.context, nlmExecutable, extendedPath);
+  throwIfQueryStopped(options);
+  const sanitizedQuery = sanitizeNotebookQuery(rawQuery, options.context);
+  const timeoutMs = options.queryTimeoutMs;
+  const isStrictCloud = options.strictCloud === true || process.env.STRICT_NOTEBOOKLM_MODE === '1';
+
+  const scopeResolution = _resolveQueryTargetAndScope(targetNotebookId, rawQuery, options, queryLocalKnowledgeBase, logger);
+  if (scopeResolution.earlyResult) return scopeResolution.earlyResult;
+
+  const { configuredEntry, authoritativeSourceIds, combinedSourceIds } = scopeResolution;
+  const cacheKey = `trusted_query_v2:${targetNotebookId}:${sanitizedQuery.trim()}:${JSON.stringify(configuredEntry)}:${JSON.stringify(combinedSourceIds)}`;
+  
+  const earlyFallback = _checkCacheOrOfflineFallback(cacheKey, sanitizedQuery, rawQuery, options, authoritativeSourceIds, queryLocalKnowledgeBase, logger);
+  if (earlyFallback) return earlyFallback;
+
   try {
     const queryOptions = {
       ...options,
@@ -457,7 +626,6 @@ async function executeNotebookQuery(notebookId, rawQuery, options = {}) {
       cloudResult.groundingTier = 'TIER_1_LIVE_CLOUD_GROUNDED';
     } else {
       cloudResult.isCloudGrounded = false;
-      // Preserve groundingTier and warning from validateGroundingCitations
     }
 
     if (cloudResult.isCloudGrounded && cloudResult.answer && !cloudResult.answer.includes('No response returned')) {
@@ -465,61 +633,16 @@ async function executeNotebookQuery(notebookId, rawQuery, options = {}) {
     }
     return cloudResult;
   } catch (failure) {
-    if ((options.signal?.aborted && Object.is(failure, options.signal.reason)) || failure?.code === 'NOTEBOOK_QUERY_DEADLINE_EXCEEDED') throw failure;
-    const { isRemoteUnknown, getNotebookQueryRecovery } = require('./query_attempt_record.js');
-    if (isRemoteUnknown(failure) && (isStrictCloud || !options.allowLocalFallback)) throw failure;
-    const diagnostic = diagnoseNotebookFailure(targetNotebookId, failure?.err || failure);
-    const recoveryDiagnostic = isRemoteUnknown(failure) ? getNotebookQueryRecovery(failure, options.signal) : null;
-    if (recoveryDiagnostic) diagnostic.queryRecovery = recoveryDiagnostic;
-    const timeTaken = failure?.timeTaken || (failure?.latencyMs ? `${Math.floor(failure.latencyMs / 1000)}s` : 'unknown');
-    diagnostic.timeTaken = timeTaken;
-    diagnostic.latencyMs = failure?.latencyMs || 0;
-    logger.warn('NOTEBOOK_QUERY', `Live NotebookLM Cloud query failed after ${failure?.attempts || 1} attempts and ${timeTaken} (${diagnostic.rootCause}).`, { diagnostic, stderr: failure?.stderr });
-
-    // In-Flight Auto-Healing for Expired Credentials (INV-157)
-    if (diagnostic.errorType === 'AUTH_EXPIRED' && !options._retriedAuth && !options.offlineMode && !options.useLocalRagOnly) {
-      try {
-        const { checkAuthHealth } = require('../../maintenance/check_nlm_auth.js');
-        logger.info('NOTEBOOK_QUERY', 'NotebookLM authentication expired. Attempting in-flight headless auto-healing (INV-157)...');
-        const heal = checkAuthHealth({ autoHeal: true });
-        if (heal && heal.valid) {
-          logger.info('NOTEBOOK_QUERY', `In-flight auto-healing successful for account: ${heal.account}. Retrying cloud query.`);
-          if (typeof options.onAuthHealed === 'function') {
-            await Promise.resolve(options.onAuthHealed(heal));
-          }
-          return await executeNotebookQuery(notebookId, rawQuery, { ...options, _retriedAuth: true });
-        }
-      } catch (healError) {
-        logger.warn('NOTEBOOK_QUERY', `In-flight auto-healing encountered an exception: ${healError.message}`);
-      }
-    }
-
-    if (isStrictCloud) {
-      return {
-        query: sanitizedQuery,
-        answer: `STRICT_CLOUD_ERROR: Live NotebookLM Cloud query failed (${diagnostic.rootCause}). Remediation: ${diagnostic.remediationAction}`,
-        citations: [],
-        source: 'NOTEBOOK_LM_FAILED',
-        isCloudGrounded: false,
-        diagnostic,
-        latencyMs: failure?.latencyMs || 0,
-        timeTaken,
-        error: failure?.err?.message || 'Strict Cloud Query Failure'
-      };
-    }
-
-    // Safety net fallback to Local Rule RAG with rich diagnostics
-    const localRes = queryLocalKnowledgeBase(rawQuery, options.context ? options.context.chassis : '');
-    return {
-      ...localRes,
-      source: 'LOCAL_RAG_FALLBACK',
-      isCloudGrounded: false,
-      groundingTier: 'TIER_2_VERIFIED_LOCAL_SAFETY_NET',
-      diagnostic,
-      latencyMs: failure?.latencyMs || 0,
-      timeTaken,
-      fallbackReason: `Live Cloud Query Error: ${diagnostic.rootCause} (Elapsed: ${timeTaken}, Attempts: ${failure?.attempts || 1})`
-    };
+    return await _handleCloudQueryFailure(failure, {
+      options,
+      isStrictCloud,
+      targetNotebookId,
+      sanitizedQuery,
+      rawQuery,
+      notebookId,
+      queryLocalKnowledgeBase,
+      logger
+    });
   }
 }
 

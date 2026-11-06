@@ -1,0 +1,24 @@
+{
+  "product": "GX5000_General_RACK",
+  "notebookId": "86c93203-6b76-439a-b7ab-33ad782e3178",
+  "replacementSourceId": "ca38fd03-a5da-4fd0-bed2-80001dd66a45",
+  "verifiedAt": "2026-11-06T08:19:57.400Z",
+  "contentFingerprints": {
+    "catalog": "b7563c1490b0ef5a0c0354af7d93311ba6b94857eeb97847b0091cf962f0f824",
+    "learnings": "411657cedb9344b2fd1501714c0a1bd5a141e531969f567af579d25038aa7776",
+    "changes": "d284350496fbeecb198edb97fbb0d6923a59f37a21822707a64390fef59bbfd9",
+    "workbook": "c0f90f67096837f3b5443c1654c5106b9bf482be19792f4f796d648bc8f705ab",
+    "combined": "b87322ab6f06816338667446f462d46f706cc61e0ba4565a9d306a31023be0d3"
+  },
+  "legacyFingerprint": "b87322ab6f06816338667446f462d46f706cc61e0ba4565a9d306a31023be0d3",
+  "retirementRequested": false,
+  "plannedRetirementIds": [
+    "ad1a8cfb-3715-42a3-9db9-96bb7eab7d92"
+  ],
+  "status": "RETIREMENT_PENDING",
+  "retiredSourceIds": [],
+  "remainingSourceIds": [
+    "ad1a8cfb-3715-42a3-9db9-96bb7eab7d92"
+  ],
+  "retirementErrors": []
+}

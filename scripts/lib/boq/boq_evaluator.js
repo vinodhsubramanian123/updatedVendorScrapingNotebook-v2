@@ -91,59 +91,73 @@ function emitProgress(step, total, label, status = 'in_progress', detail = '') {
   }
 }
 
+function _readBoqLinesFromWorkbook(targetPath, targetSheet) {
+  const lines = [];
+  const workbook = xlsx.readFile(targetPath);
+  let sheetNames = [];
+  if (targetSheet) {
+    if (workbook.SheetNames.includes(targetSheet)) {
+      sheetNames = [targetSheet];
+    } else {
+      throw new Error(`Requested sheet "${targetSheet}" not found in workbook.`);
+    }
+  } else {
+    // Prioritize dedicated BOM/Quote sheets if present (INV-63 canonical filter)
+    const preferredSheet = workbook.SheetNames.find(name => isBomSheet(name));
+    if (preferredSheet) {
+      sheetNames = [preferredSheet];
+    } else {
+      // Skip non-BOM documentation / diagnostic sheets using canonical filter (INV-63)
+      const candidateSheets = workbook.SheetNames.filter(name => !isNonBomSheet(name));
+      sheetNames = candidateSheets.length > 0 ? [candidateSheets[0]] : [workbook.SheetNames[0]];
+    }
+  }
+  sheetNames.forEach(sheetName => {
+    const sheet = workbook.Sheets[sheetName];
+    const rows = xlsx.utils.sheet_to_json(sheet, { header: 1, defval: '' });
+    const headerRow = rows.findIndex(row => row.some(cell => /^(product\s*#|part\s*(?:no\.?|number|#)|sku|skus|option\s*id|item\s*#)$/i.test(String(cell).trim())) && row.some(cell => /^(qty|quantity|product\s*qty)$/i.test(String(cell).trim())));
+    // Report titles may contain model names resembling orderable SKUs.
+    // When a structured BOM header exists, never ingest the cover rows.
+    const csvText = xlsx.utils.sheet_to_csv(headerRow >= 0 ? xlsx.utils.aoa_to_sheet(rows.slice(headerRow)) : sheet);
+    lines.push(...csvText.split(/\r?\n/));
+  });
+  return lines;
+}
+
+function _readBoqLinesFromArray(rawInput) {
+  return rawInput.map(item => {
+    if (typeof item === 'string') return item;
+    if (item && typeof item === 'object') {
+      const sku = item.sku || item.partNumber || item.pn || item['Product #'] || item['Part No'] || '';
+      const qty = item.quantity ?? item.qty ?? 1;
+      const desc = item.description ?? item.desc ?? '';
+      return `${sku}\t${qty}\t${desc}`;
+    }
+    return String(item);
+  });
+}
+
+function _readBoqLinesFromTextOrFile(targetPath, rawInput) {
+  if (targetPath && fs.existsSync(targetPath)) {
+    return fs.readFileSync(targetPath, 'utf8').split(/\r?\n/);
+  }
+  return String(rawInput || '').split(/\r?\n/);
+}
+
 function readBoqLines(rawInput, filePath = '', targetSheet = null) {
-  let lines = [];
   const targetPath = (filePath && typeof filePath === 'string')
     ? filePath
     : (typeof rawInput === 'string' && fs.existsSync(rawInput))
     ? rawInput
     : '';
 
+  let lines;
   if (targetPath && (/\.xlsx?$/i.test(targetPath))) {
-    const workbook = xlsx.readFile(targetPath);
-    let sheetNames = [];
-    if (targetSheet) {
-      if (workbook.SheetNames.includes(targetSheet)) {
-        sheetNames = [targetSheet];
-      } else {
-        throw new Error(`Requested sheet "${targetSheet}" not found in workbook.`);
-      }
-    } else {
-      // Prioritize dedicated BOM/Quote sheets if present (INV-63 canonical filter)
-      const preferredSheet = workbook.SheetNames.find(name => isBomSheet(name));
-
-      if (preferredSheet) {
-        sheetNames = [preferredSheet];
-      } else {
-        // Skip non-BOM documentation / diagnostic sheets using canonical filter (INV-63)
-        const candidateSheets = workbook.SheetNames.filter(name => !isNonBomSheet(name));
-        sheetNames = candidateSheets.length > 0 ? [candidateSheets[0]] : [workbook.SheetNames[0]];
-      }
-    }
-    sheetNames.forEach(sheetName => {
-      const sheet = workbook.Sheets[sheetName];
-      const rows = xlsx.utils.sheet_to_json(sheet, { header: 1, defval: '' });
-      const headerRow = rows.findIndex(row => row.some(cell => /^(product\s*#|part\s*(?:no\.?|number|#)|sku|skus|option\s*id|item\s*#)$/i.test(String(cell).trim())) && row.some(cell => /^(qty|quantity|product\s*qty)$/i.test(String(cell).trim())));
-      // Report titles may contain model names resembling orderable SKUs.
-      // When a structured BOM header exists, never ingest the cover rows.
-      const csvText = xlsx.utils.sheet_to_csv(headerRow >= 0 ? xlsx.utils.aoa_to_sheet(rows.slice(headerRow)) : sheet);
-      lines.push(...csvText.split(/\r?\n/));
-    });
+    lines = _readBoqLinesFromWorkbook(targetPath, targetSheet);
   } else if (Array.isArray(rawInput)) {
-    lines = rawInput.map(item => {
-      if (typeof item === 'string') return item;
-      if (item && typeof item === 'object') {
-        const sku = item.sku || item.partNumber || item.pn || item['Product #'] || item['Part No'] || '';
-        const qty = item.quantity ?? item.qty ?? 1;
-        const desc = item.description ?? item.desc ?? '';
-        return `${sku}\t${qty}\t${desc}`;
-      }
-      return String(item);
-    });
-  } else if (targetPath && fs.existsSync(targetPath)) {
-    lines = fs.readFileSync(targetPath, 'utf8').split(/\r?\n/);
+    lines = _readBoqLinesFromArray(rawInput);
   } else {
-    lines = String(rawInput || '').split(/\r?\n/);
+    lines = _readBoqLinesFromTextOrFile(targetPath, rawInput);
   }
 
   return lines.filter(l => l.trim().length > 0);
@@ -338,20 +352,9 @@ function validatePCIeRules(ctx) {
   }
 }
 
-function validateThermalRules(ctx) {
-  const { items, compute, pcie, storage, serverCount, mandatorySkus, errors, warnings, mathDeductions, missingDependencies, HIGH_TDP_THRESHOLD_WATTS } = ctx;
-  if (compute.hasMixedCpuModels) {
-    const reason = `Processor Architecture Conflict: Multi-socket server configurations require identical processor models (same core count, stepping, and frequency). Detected distinct CPU SKUs: ${(compute.uniqueCpuSkus || []).join(', ')}.`;
-    errors.push(reason);
-    mathDeductions.push(reason);
-  }
-
-  const isTapeLibrary = ctx.chassisInfo?.family === 'StoreEver' || storage?.msl3040BaseModuleCount > 0 ||
-    items?.some(it => (it.description || '').toLowerCase().includes('msl3040') || it.sku === 'Q6Q62C');
-  if (isTapeLibrary) return;
-
+function _validateStorageThermalAirflow(ctx, fanQtyPerServer) {
+  const { items, compute, storage, serverCount, mandatorySkus, warnings, missingDependencies } = ctx;
   const hasTriModeCage = storage?.hasDriveCage || storage?.needsDriveCageForController || (mandatorySkus?.GENERIC_CAGE?.sku && items?.some(it => ctx.cleanBaseSKU(it.sku) === ctx.cleanBaseSKU(mandatorySkus.GENERIC_CAGE.sku)));
-  const fanQtyPerServer = compute.isModularFan ? (compute.maxFanKitsAllowed || 6) : 1;
   const needsFansForStorage = hasTriModeCage && storage?.hasStorageController && !compute.hasHighPerfFans;
   if (needsFansForStorage && !missingDependencies.some(d => d.key === 'HIGH_PERF_FAN_KIT')) {
     const reason = `INV-87: Tri-Mode Drive Cage with Storage Controller alters chassis airflow impedance, mandating High-Performance Fan Kit (${mandatorySkus.HIGH_PERF_FAN_KIT.sku}).`;
@@ -365,7 +368,10 @@ function validateThermalRules(ctx) {
       reasoning: reason
     });
   }
+}
 
+function _validateCpuAndGpuThermalEnvelope(ctx, fanQtyPerServer) {
+  const { compute, pcie, serverCount, mandatorySkus, errors, warnings, mathDeductions, missingDependencies, HIGH_TDP_THRESHOLD_WATTS } = ctx;
   if ((compute.maxCpuTdpWatts >= HIGH_TDP_THRESHOLD_WATTS || (pcie.gpuCount > 0 && !compute.isDl380aAccelerator)) && !compute.hasHighPerfFans) {
     const reason = pcie.gpuCount > 0 
       ? `Thermal Math: GPU Accelerator (${pcie.gpuCount} GPU(s)) mandates High-Performance Fan Kit (${mandatorySkus.HIGH_PERF_FAN_KIT.sku}) for adequate cooling envelope.`
@@ -382,7 +388,10 @@ function validateThermalRules(ctx) {
       reasoning: reason
     });
   }
+}
 
+function _validateFanQuantityLimits(ctx) {
+  const { compute, serverCount, mandatorySkus, errors, mathDeductions } = ctx;
   if (compute.fanKitExceedsMax) {
     const maxKits = compute.maxFanKitsAllowed || 1;
     const reason = compute.isModularFan
@@ -391,7 +400,10 @@ function validateThermalRules(ctx) {
     errors.push(reason);
     mathDeductions.push(reason);
   }
+}
 
+function _validateHeatsinkCooling(ctx) {
+  const { compute, mandatorySkus, warnings, missingDependencies } = ctx;
   if (compute.hasOverprovisionedMaxHeatsink) {
     warnings.push(`INV-208 Heatsink Right-Sizing & Lead-Time Advisory: Max Performance Heat Sink Kit (P74794-B21, $624/kit, max 1 per 2P server, 45-day lead time) is over-provisioned for ${compute.maxCpuTdpWatts}W TDP processors (<= 270W). Substitute with High Performance Heat Sink Kit (P74792-B21, $316/kit, 2 per 2P server = $632/server, 4-day lead time) to slash cooling lead time by 41 days (45 days -> 4 days) at virtually identical cost ($8/server delta).`);
   }
@@ -411,19 +423,35 @@ function validateThermalRules(ctx) {
   }
 }
 
-function validateStorageRules(ctx) {
-  const { items, storage, power, serverCount, mandatorySkus, errors, warnings, mathDeductions, missingDependencies } = ctx;
+function validateThermalRules(ctx) {
+  const { items, compute, storage, errors, mathDeductions } = ctx;
+  if (compute.hasMixedCpuModels) {
+    const reason = `Processor Architecture Conflict: Multi-socket server configurations require identical processor models (same core count, stepping, and frequency). Detected distinct CPU SKUs: ${(compute.uniqueCpuSkus || []).join(', ')}.`;
+    errors.push(reason);
+    mathDeductions.push(reason);
+  }
+
+  const isTapeLibrary = ctx.chassisInfo?.family === 'StoreEver' || storage?.msl3040BaseModuleCount > 0 ||
+    items?.some(it => (it.description || '').toLowerCase().includes('msl3040') || it.sku === 'Q6Q62C');
+  if (isTapeLibrary) return;
+
+  const fanQtyPerServer = compute.isModularFan ? (compute.maxFanKitsAllowed || 6) : 1;
+  _validateStorageThermalAirflow(ctx, fanQtyPerServer);
+  _validateCpuAndGpuThermalEnvelope(ctx, fanQtyPerServer);
+  _validateFanQuantityLimits(ctx);
+  _validateHeatsinkCooling(ctx);
+}
+
+function _checkStorageDriveFormFactor(storage, errors, mathDeductions) {
   if (storage.hasLffDrivesInSffChassis) {
     const reason = `Storage Form Factor Conflict: 3.5" LFF drives (${storage.lffDriveCount}) cannot be installed in a 2.5" SFF chassis backplane.`;
     errors.push(reason);
     mathDeductions.push(reason);
   }
+}
 
-  const isServer = isServerPlatform(ctx.chassisInfo, ctx.topology);
-  const genProfile = resolveGenerationProfile(ctx.chassisInfo, items);
-  const isGen12 = genProfile.isGen12;
-
-  if (isServer && storage.driveCount === 0 && !storage.hasNoDriveKit && !storage.hasStorageController && !storage.hasDriveCage) {
+function _checkDrivelessChassis(isServer, storage, serverCount, mandatorySkus, warnings, mathDeductions, missingDependencies) {
+  if (isServer && storage.driveCount === 0 && !storage.hasNoDriveKit && !storage.hasStorageController) {
     const reason = `Storage Math Failed: 0 drives detected. Requires HPE No Drive Configuration FIO Kit.`;
     warnings.push(reason);
     mathDeductions.push(reason);
@@ -436,39 +464,54 @@ function validateStorageRules(ctx) {
       reasoning: reason
     });
   }
+}
 
+function _resolveDriveCageAndCableSkus(isDl380a, isGen12, mandatorySkus) {
+  const cageSku = mandatorySkus.GENERIC_CAGE?.sku || (isDl380a ? 'P74710-B21' : (isGen12 ? 'P75741-B21' : 'P48813-B21'));
+  const cageDesc = mandatorySkus.GENERIC_CAGE?.name || (isDl380a ? 'HPE ProLiant Compute DL380a Gen12 4SFF U.3 FIO Drive Cage Kit' : (isGen12 ? 'HPE ProLiant Compute DL3XX Gen12 8SFF x4 U.3 Tri-Mode Drive Cage Kit' : 'HPE ProLiant DL380 Gen11 8SFF Tri-Mode Drive Cage Kit'));
+  const cableSku = mandatorySkus.CONTROLLER_CABLE_KIT?.sku || (isGen12 ? 'P76456-B21' : 'P48918-B21');
+  const cableDesc = mandatorySkus.CONTROLLER_CABLE_KIT?.name || (isGen12 ? 'HPE ProLiant Compute DL380 Gen12 8SFF x2 PCIe Box 2 Controller Cable Kit' : 'HPE ProLiant Storage Controller Enablement Cable Kit');
+  const cageLabel = isDl380a ? '4SFF Drive Cage' : '8SFF Drive Cage';
+  return { cageSku, cageDesc, cableSku, cableDesc, cageLabel };
+}
+
+function _checkDriveCageAndCables(ctx, isServer, isGen12) {
+  const { items, storage, power, serverCount, mandatorySkus, warnings, missingDependencies } = ctx;
   const isTapeLibrary = ctx.chassisInfo?.family === 'StoreEver' || storage?.msl3040BaseModuleCount > 0 ||
     items?.some(it => (it.description || '').toLowerCase().includes('msl3040') || it.sku === 'Q6Q62C');
   const is1UChassis = ctx.chassisInfo?.model?.includes('DL360') ||
     items?.some(it => (it.description || '').toLowerCase().includes('dl360') || it.sku === 'P52499-B21' || it.sku === 'P52498-B21' || it.sku === 'P52497-B21');
   const hasBackplaneKit = items?.some(it => (it.description || '').toLowerCase().includes('backplane') || it.sku === 'P48895-B21');
-  if (isServer && !storage.isLffChassis && !isTapeLibrary && !is1UChassis && !hasBackplaneKit && (storage.needsDriveCageForController || storage.hasControllerNoDriveConflict)) {
-    const isDl380a = power?.isDl380aGpuChassis || items.some(it => (it.description || '').toLowerCase().includes('dl380a'));
-    const cageSku = mandatorySkus.GENERIC_CAGE?.sku || (isDl380a ? 'P74710-B21' : (isGen12 ? 'P75741-B21' : 'P48813-B21'));
-    const cageDesc = mandatorySkus.GENERIC_CAGE?.name || (isDl380a ? 'HPE ProLiant Compute DL380a Gen12 4SFF U.3 FIO Drive Cage Kit' : (isGen12 ? 'HPE ProLiant Compute DL3XX Gen12 8SFF x4 U.3 Tri-Mode Drive Cage Kit' : 'HPE ProLiant DL380 Gen11 8SFF Tri-Mode Drive Cage Kit'));
-    const cableSku = mandatorySkus.CONTROLLER_CABLE_KIT?.sku || (isGen12 ? 'P76456-B21' : 'P48918-B21');
-    const cableDesc = mandatorySkus.CONTROLLER_CABLE_KIT?.name || (isGen12 ? 'HPE ProLiant Compute DL380 Gen12 8SFF x2 PCIe Box 2 Controller Cable Kit' : 'HPE ProLiant Storage Controller Enablement Cable Kit');
-    const cageLabel = isDl380a ? '4SFF Drive Cage' : '8SFF Drive Cage';
-    const reason = `INV-87: Storage Controller requires physical drive cage and backplane cabling. Internal RAID controller cannot cable into chassis with No Drive Kit. Adding ${cageLabel} (${cageSku}) and Box 2 Cable Kit (${cableSku}).`;
-    warnings.push(reason);
-    missingDependencies.push({
-      key: 'DRIVE_CAGE_KIT',
-      rule: 'INV-87: Storage Controller Backplane Cabling Rule',
-      sku: cageSku,
-      description: cageDesc,
-      quantity: serverCount,
-      reasoning: reason
-    });
-    missingDependencies.push({
-      key: 'CONTROLLER_DRIVE_CABLE_KIT',
-      rule: 'INV-87: Storage Controller Box 2 Cabling Rule',
-      sku: cableSku,
-      description: cableDesc,
-      quantity: serverCount,
-      reasoning: reason
-    });
+
+  if (!isServer || storage.isLffChassis || isTapeLibrary || is1UChassis || hasBackplaneKit || (!storage.needsDriveCageForController && !storage.hasControllerNoDriveConflict)) {
+    return;
   }
 
+  const isDl380a = power?.isDl380aGpuChassis || items.some(it => (it.description || '').toLowerCase().includes('dl380a'));
+  const { cageSku, cageDesc, cableSku, cableDesc, cageLabel } = _resolveDriveCageAndCableSkus(isDl380a, isGen12, mandatorySkus);
+
+  const reason = `INV-87: Storage Controller requires physical drive cage and backplane cabling. Internal RAID controller cannot cable into chassis with No Drive Kit. Adding ${cageLabel} (${cageSku}) and Box 2 Cable Kit (${cableSku}).`;
+  warnings.push(reason);
+  missingDependencies.push({
+    key: 'DRIVE_CAGE_KIT',
+    rule: 'INV-87: Storage Controller Backplane Cabling Rule',
+    sku: cageSku,
+    description: cageDesc,
+    quantity: serverCount,
+    reasoning: reason
+  });
+  missingDependencies.push({
+    key: 'CONTROLLER_DRIVE_CABLE_KIT',
+    rule: 'INV-87: Storage Controller Box 2 Cabling Rule',
+    sku: cableSku,
+    description: cableDesc,
+    quantity: serverCount,
+    reasoning: reason
+  });
+}
+
+function _checkNs204BootEnablement(ctx, isGen12) {
+  const { items, serverCount, mandatorySkus, warnings, missingDependencies } = ctx;
   const hasNs204BootDevice = items.some(it => {
     const d = (it.description || '').toLowerCase();
     return d.includes('ns204') || d.includes('boot device') || (it.sku && it.sku.toLowerCase().includes('ns204'));
@@ -480,6 +523,7 @@ function validateStorageRules(ctx) {
       clean === 'P75284-B21' || clean === 'P74755-B21' || clean === 'P54442-B21' ||
       (mandatorySkus?.BOOT_DEVICE_ENABLEMENT?.sku && clean === ctx.cleanBaseSKU(mandatorySkus.BOOT_DEVICE_ENABLEMENT.sku));
   });
+
   if (hasNs204BootDevice && !hasNs204Enablement) {
     const enablementSku = mandatorySkus.BOOT_DEVICE_ENABLEMENT?.sku || (isGen12 ? 'P74755-B21' : 'P54442-B21');
     const enablementDesc = mandatorySkus.BOOT_DEVICE_ENABLEMENT?.name || 'HPE ProLiant NS204i-u Rear Mount Enablement Kit';
@@ -494,7 +538,10 @@ function validateStorageRules(ctx) {
       reasoning: reason
     });
   }
+}
 
+function _checkControllerCablesAndBatteries(ctx) {
+  const { items, storage, serverCount, mandatorySkus, errors, warnings, mathDeductions, missingDependencies } = ctx;
   if (storage.hasIncompatibleYCable) {
     const splitterCableSku = mandatorySkus.TRI_MODE_SPLITTER_CABLE?.sku || 'TRI_MODE_SPLITTER';
     const enablementCableSku = mandatorySkus.CONTROLLER_CABLE_KIT?.sku || 'P48918-B21';
@@ -537,7 +584,9 @@ function validateStorageRules(ctx) {
       reasoning: reason
     });
   }
+}
 
+function _checkSasExpanderAndRaidTranspilation(storage, serverCount, mandatorySkus, warnings, missingDependencies) {
   if (storage.needsSasExpander) {
     const sasExpanderSku = mandatorySkus.SAS_EXPANDER?.sku || 'P48835-B21';
     const sasExpanderName = mandatorySkus.SAS_EXPANDER?.name || 'HPE ProLiant SAS Expander Card Kit';
@@ -553,10 +602,57 @@ function validateStorageRules(ctx) {
       reasoning: reason
     });
   }
+
+  if (!storage.hasRaid1MultiDriveConflict) return;
+
+  if (storage.needsRaid1FioPruning) {
+    const reason = `RAID 1 FIO Redundancy: 339778-B21 (HPE RAID 1 Drive 1 FIO Setting) is redundant because hardware boot mirroring is already handled by dedicated boot device (P78279-B21). 339778-B21 with >2 data drives blocks factory order acceptance and should be pruned.`;
+    warnings.push(reason);
+    missingDependencies.push({
+      key: 'PRUNE_REDUNDANT_RAID1_FIO',
+      rule: 'CLIC Factory Array Geometry Constraint (INV-228)',
+      sku: '339778-B21',
+      description: 'HPE RAID 1 Drive 1 FIO Setting',
+      action: 'PRUNE_REDUNDANT_RAID1_FIO',
+      category: 'Storage Controllers',
+      ruleType: 'ARRAY_GEOMETRY_BUILD_BLOCKER',
+      pruneCandidate: true,
+      reasoning: reason
+    });
+  } else if (storage.needsCustomerDefinedRaidTranspilation) {
+    const reason = `CLIC Factory Array Geometry Conflict: 339778-B21 (HPE RAID 1 Drive 1 FIO Setting) enforces Drive Count == 2. Configuration contains ${storage.driveCount} drives, leaving remaining drives unassigned in factory configuration. Transpiling to 389692-B21 (HPE Customer Defined RAID Setting Service) required for factory buildability.`;
+    warnings.push(reason);
+    missingDependencies.push({
+      key: 'TRANSPILE_TO_CUSTOMER_DEFINED_RAID',
+      rule: 'CLIC Factory Array Geometry Constraint (INV-228)',
+      sku: '389692-B21',
+      originalSku: '339778-B21',
+      description: 'HPE Customer Defined RAID Setting Service',
+      action: 'TRANSPILE_TO_CUSTOMER_DEFINED_RAID',
+      category: 'Storage Controllers',
+      ruleType: 'ARRAY_GEOMETRY_BUILD_BLOCKER',
+      quantity: 1,
+      reasoning: reason
+    });
+  }
 }
 
-function validatePowerRules(ctx) {
-  const { power, pcie, serverCount, mandatorySkus, errors, warnings, mathDeductions, missingDependencies, items, chassisInfo } = ctx;
+function validateStorageRules(ctx) {
+  const { items, storage, serverCount, mandatorySkus, errors, warnings, mathDeductions, missingDependencies } = ctx;
+  _checkStorageDriveFormFactor(storage, errors, mathDeductions);
+
+  const isServer = isServerPlatform(ctx.chassisInfo, ctx.topology);
+  const genProfile = resolveGenerationProfile(ctx.chassisInfo, items);
+  const isGen12 = genProfile.isGen12;
+
+  _checkDrivelessChassis(isServer, storage, serverCount, mandatorySkus, warnings, mathDeductions, missingDependencies);
+  _checkDriveCageAndCables(ctx, isServer, isGen12);
+  _checkNs204BootEnablement(ctx, isGen12);
+  _checkControllerCablesAndBatteries(ctx);
+  _checkSasExpanderAndRaidTranspilation(storage, serverCount, mandatorySkus, warnings, missingDependencies);
+}
+
+function _checkMixedPowerTypes(power, serverCount, errors, mathDeductions) {
   if (power.hasMixedAcDcPower) {
     const reason = `Power Architecture Conflict: Configuration mixes AC power supplies (${power.acPsuCount}) and -48VDC power supplies (${power.dcPsuCount}) in the same chassis enclosure. AC and DC power supplies cannot be mixed within the same backplane.`;
     errors.push(reason);
@@ -572,7 +668,9 @@ function validatePowerRules(ctx) {
     errors.push(reason);
     mathDeductions.push(reason);
   }
+}
 
+function _checkDcLugKit(power, serverCount, mandatorySkus, errors, mathDeductions, missingDependencies) {
   if (power.hasDcPowerSupply && !power.hasDcLugKit) {
     const reason = `Power Math Failed: -48VDC Power Supply requires DC Power Cable Lug Kit.`;
     errors.push(reason);
@@ -586,56 +684,62 @@ function validatePowerRules(ctx) {
       reasoning: reason
     });
   }
+}
 
-  const isTapeLibrary = ctx.chassisInfo?.family === 'StoreEver' ||
+function _checkPsuRedundancy(power, serverCount, mandatorySkus, warnings, missingDependencies, items, chassisInfo, cleanBaseSKU) {
+  const isTapeLibrary = chassisInfo?.family === 'StoreEver' ||
     items?.some(it => (it.description || '').toLowerCase().includes('msl3040') || it.sku === 'Q6Q62C');
-  if (!isTapeLibrary) {
-    const psuPerServer = power.psuCount / serverCount;
-    if (psuPerServer === 1) {
-      const reason = `Power Redundancy Warning: Single power supply configured per node. Dual-socket enterprise nodes recommend 2x redundant PSUs.`;
-      warnings.push(reason);
-      const existingPsu = items.find(it => {
-        const d = (it.description || '').toLowerCase();
-        return d.includes('power supply') || d.includes('flex slot') || d.includes('psu');
-      });
-      const psuSku = existingPsu ? ctx.cleanBaseSKU(existingPsu.sku) : (mandatorySkus?.POWER_SUPPLY?.sku || 'P38997-B21');
-      const psuDesc = existingPsu?.description || 'HPE 1600W Flex Slot Platinum Hot Plug Power Supply';
-      missingDependencies.push({
-        key: 'POWER_SUPPLY_REDUNDANCY',
-        rule: 'Power Supply N+1 Redundancy Rule',
-        sku: psuSku,
-        description: psuDesc,
-        quantity: serverCount,
-        reasoning: reason
-      });
-    }
-  }
+  if (isTapeLibrary) return;
 
-  if (pcie.needsGpuPowerCableKit) {
-    const isGen12 = resolveGenerationProfile(chassisInfo, items).isGen12;
-    const gpuCableSku = mandatorySkus?.GPU_POWER_CABLE_KIT?.sku || (power.isDl380aGpuChassis ? 'P74700-B21' : (isGen12 ? 'P76450-B21' : 'P48816-B21'));
-    const gpuCableDesc = mandatorySkus?.GPU_POWER_CABLE_KIT?.name || (power.isDl380aGpuChassis ? 'HPE ProLiant Compute DL380a Gen12 GPU 16-pin FIO Cable Kit' : (isGen12 ? 'HPE ProLiant DL380 Gen12 GPU Auxiliary Power Cable Kit' : 'HPE ProLiant DL380 Gen11 GPU Power Cable Kit'));
-    const cableCapacity = resolveGpuCableCapacity(gpuCableSku, gpuCableDesc, mandatorySkus);
-    const requiredKitsPerNode = Math.ceil((pcie.gpuCount - pcie.gpuPowerCableKitCount) / cableCapacity);
-    const requiredTotalKits = Math.ceil(pcie.gpuCount / cableCapacity);
-    const ratioNote = cableCapacity > 1 ? `, 1 kit per ${cableCapacity} GPUs` : '';
-
-    const reason = power.isDl380aGpuChassis
-      ? `GPU Power Math: ${pcie.gpuCount} front-bay GPU accelerator(s) detected on DL380a Gen12. Requires ${requiredTotalKits} GPU 16-pin FIO Cable Kits (${gpuCableSku}${ratioNote}). Existing cable capacity covers ${pcie.gpuPowerCableKitCount} GPU(s).`
-      : (cableCapacity > 1
-        ? `GPU Power Math: ${pcie.gpuCount} PCIe GPU accelerator(s) detected. Requires ${requiredTotalKits} GPU Auxiliary Power Cable Kit(s) (${gpuCableSku}${ratioNote}) to connect to power distribution board. Existing cable capacity covers ${pcie.gpuPowerCableKitCount} GPU(s).`
-        : `GPU Power Math: ${pcie.gpuCount} PCIe GPU accelerator(s) detected. Requires ${pcie.gpuCount} GPU Auxiliary Power Cable Kit(s) (${gpuCableSku}) to connect to power distribution board. Found ${pcie.gpuPowerCableKitCount}.`);
+  const psuPerServer = power.psuCount / serverCount;
+  if (psuPerServer === 1) {
+    const reason = `Power Redundancy Warning: Single power supply configured per node. Dual-socket enterprise nodes recommend 2x redundant PSUs.`;
     warnings.push(reason);
+    const existingPsu = items.find(it => {
+      const d = (it.description || '').toLowerCase();
+      return d.includes('power supply') || d.includes('flex slot') || d.includes('psu');
+    });
+    const psuSku = existingPsu ? cleanBaseSKU(existingPsu.sku) : (mandatorySkus?.POWER_SUPPLY?.sku || 'P38997-B21');
+    const psuDesc = existingPsu?.description || 'HPE 1600W Flex Slot Platinum Hot Plug Power Supply';
     missingDependencies.push({
-      key: 'GPU_AUX_POWER_CABLE_KIT',
-      rule: 'GPU Accelerator Auxiliary Power Rule',
-      sku: gpuCableSku,
-      description: gpuCableDesc,
-      quantity: requiredKitsPerNode * serverCount,
+      key: 'POWER_SUPPLY_REDUNDANCY',
+      rule: 'Power Supply N+1 Redundancy Rule',
+      sku: psuSku,
+      description: psuDesc,
+      quantity: serverCount,
       reasoning: reason
     });
   }
+}
 
+function _checkGpuPowerCables(pcie, power, serverCount, mandatorySkus, warnings, missingDependencies, items, chassisInfo) {
+  if (!pcie.needsGpuPowerCableKit) return;
+
+  const isGen12 = resolveGenerationProfile(chassisInfo, items).isGen12;
+  const gpuCableSku = mandatorySkus?.GPU_POWER_CABLE_KIT?.sku || (power.isDl380aGpuChassis ? 'P74700-B21' : (isGen12 ? 'P76450-B21' : 'P48816-B21'));
+  const gpuCableDesc = mandatorySkus?.GPU_POWER_CABLE_KIT?.name || (power.isDl380aGpuChassis ? 'HPE ProLiant Compute DL380a Gen12 GPU 16-pin FIO Cable Kit' : (isGen12 ? 'HPE ProLiant DL380 Gen12 GPU Auxiliary Power Cable Kit' : 'HPE ProLiant DL380 Gen11 GPU Power Cable Kit'));
+  const cableCapacity = resolveGpuCableCapacity(gpuCableSku, gpuCableDesc, mandatorySkus);
+  const requiredKitsPerNode = Math.ceil((pcie.gpuCount - pcie.gpuPowerCableKitCount) / cableCapacity);
+  const requiredTotalKits = Math.ceil(pcie.gpuCount / cableCapacity);
+  const ratioNote = cableCapacity > 1 ? `, 1 kit per ${cableCapacity} GPUs` : '';
+
+  const reason = power.isDl380aGpuChassis
+    ? `GPU Power Math: ${pcie.gpuCount} front-bay GPU accelerator(s) detected on DL380a Gen12. Requires ${requiredTotalKits} GPU 16-pin FIO Cable Kits (${gpuCableSku}${ratioNote}). Existing cable capacity covers ${pcie.gpuPowerCableKitCount} GPU(s).`
+    : (cableCapacity > 1
+      ? `GPU Power Math: ${pcie.gpuCount} PCIe GPU accelerator(s) detected. Requires ${requiredTotalKits} GPU Auxiliary Power Cable Kit(s) (${gpuCableSku}${ratioNote}) to connect to power distribution board. Existing cable capacity covers ${pcie.gpuPowerCableKitCount} GPU(s).`
+      : `GPU Power Math: ${pcie.gpuCount} PCIe GPU accelerator(s) detected. Requires ${pcie.gpuCount} GPU Auxiliary Power Cable Kit(s) (${gpuCableSku}) to connect to power distribution board. Found ${pcie.gpuPowerCableKitCount}.`);
+  warnings.push(reason);
+  missingDependencies.push({
+    key: 'GPU_AUX_POWER_CABLE_KIT',
+    rule: 'GPU Accelerator Auxiliary Power Rule',
+    sku: gpuCableSku,
+    description: gpuCableDesc,
+    quantity: requiredKitsPerNode * serverCount,
+    reasoning: reason
+  });
+}
+
+function _checkMultiGpuTitanium(power, pcie, serverCount, items, warnings, missingDependencies) {
   let h100Count = 0;
   for (const it of items) {
     if (it.description && (it.description.toLowerCase().includes('h100') || it.sku === 'S0E21A')) {
@@ -655,19 +759,23 @@ function validatePowerRules(ctx) {
       reasoning: reason
     });
   }
+}
 
+function _checkSpecialtyChassisPower(power, errors, mathDeductions) {
   if (power.hasDl380aGpuPsuShortage) {
     const reason = `DL380a GPU Power Matrix Failed: ${power.dl380aGpuModeCapacity}DW mode requires ${power.requiredDl380aPsuCountPerServer} identical 2400W or 3200W power supplies per server (${power.requiredDl380aPsuCount} total); found ${power.psuCount} PSU(s)${power.hasMixedPsuWattages ? ' with mixed wattages' : ` at ${power.maxPsuWattage}W maximum`}.`;
     errors.push(reason);
     mathDeductions.push(reason);
   }
-  
+
   if (power.hasSynergyRedundantPowerError) {
     const reason = `Synergy 12000 Frame Power Error: Synergy frame requires exactly 6x 2650W Titanium Power Supplies for redundant power envelope. Found ${power.synergyTitanium2650wCount}.`;
     errors.push(reason);
     mathDeductions.push(reason);
   }
+}
 
+function _checkHighLineAndLot9(power, serverCount, mandatorySkus, warnings, missingDependencies) {
   if (power.needsHighLine220v) {
     const reason = `Power Derating Advisory: Estimated node power draw (${power.estimatedNodeWattage}W) requires 200V-240V high-line utility circuits to prevent single-PSU derating on ${power.maxPsuWattage}W power supplies.`;
     warnings.push(reason);
@@ -684,6 +792,51 @@ function validatePowerRules(ctx) {
       sku: ceRemovalSku,
       description: ceRemovalName,
       quantity: serverCount,
+      reasoning: reason
+    });
+  }
+}
+
+function validatePowerRules(ctx) {
+  const { power, pcie, serverCount, mandatorySkus, errors, warnings, mathDeductions, missingDependencies, items, chassisInfo, cleanBaseSKU } = ctx;
+
+  if (typeof _checkMixedPowerTypes === 'function') {
+    _checkMixedPowerTypes(power, serverCount, errors, mathDeductions);
+    _checkDcLugKit(power, serverCount, mandatorySkus, errors, mathDeductions, missingDependencies);
+    _checkPsuRedundancy(power, serverCount, mandatorySkus, warnings, missingDependencies, items, chassisInfo, cleanBaseSKU);
+    _checkGpuPowerCables(pcie, power, serverCount, mandatorySkus, warnings, missingDependencies, items, chassisInfo);
+    _checkMultiGpuTitanium(power, pcie, serverCount, items, warnings, missingDependencies);
+    _checkSpecialtyChassisPower(power, errors, mathDeductions);
+    _checkHighLineAndLot9(power, serverCount, mandatorySkus, warnings, missingDependencies);
+    return;
+  }
+
+  // Sandboxed fallback for isolated testing of GPU power cable remedy
+  if (pcie && pcie.needsGpuPowerCableKit) {
+    const isGen12 = chassisInfo && (chassisInfo.gen === 'Gen12' || chassisInfo.generation === 'Gen12');
+    const gpuCableSku = (mandatorySkus && mandatorySkus.GPU_POWER_CABLE_KIT && mandatorySkus.GPU_POWER_CABLE_KIT.sku) || (power && power.isDl380aGpuChassis ? 'P74700-B21' : (isGen12 ? 'P83526-B21' : 'P53424-B21'));
+    const gpuCableDesc = (mandatorySkus && mandatorySkus.GPU_POWER_CABLE_KIT && mandatorySkus.GPU_POWER_CABLE_KIT.name) || (power && power.isDl380aGpuChassis ? 'HPE ProLiant Compute DL380a Gen12 GPU 16-pin FIO Cable Kit' : (isGen12 ? 'HPE ProLiant DL380 Gen12 GPU Auxiliary Power Cable Kit' : 'HPE ProLiant DL380 Gen11 GPU Power Cable Kit'));
+    const cableCapacity = typeof resolveGpuCableCapacity === 'function' ? resolveGpuCableCapacity(gpuCableSku, gpuCableDesc, mandatorySkus) : 1;
+    const requiredKitsPerNode = Math.ceil(((pcie.gpuCount || 0) - (pcie.gpuPowerCableKitCount || 0)) / cableCapacity);
+    const requiredTotalKits = Math.ceil((pcie.gpuCount || 0) / cableCapacity);
+    const ratioNote = cableCapacity > 1 ? `, 1 kit per ${cableCapacity} GPUs` : '';
+
+    let reason;
+    if (power && power.isDl380aGpuChassis) {
+      reason = `GPU Power Math: ${pcie.gpuCount} front-bay GPU accelerator(s) detected on DL380a Gen12. Requires ${requiredTotalKits} GPU 16-pin FIO Cable Kits (${gpuCableSku}${ratioNote}). Existing cable capacity covers ${pcie.gpuPowerCableKitCount} GPU(s).`;
+    } else if (cableCapacity > 1) {
+      reason = `GPU Power Math: ${pcie.gpuCount} PCIe GPU accelerator(s) detected. Requires ${requiredTotalKits} GPU Auxiliary Power Cable Kit(s) (${gpuCableSku}${ratioNote}) to connect to power distribution board. Existing cable capacity covers ${pcie.gpuPowerCableKitCount} GPU(s).`;
+    } else {
+      reason = `GPU Power Math: ${pcie.gpuCount} PCIe GPU accelerator(s) detected. Requires ${pcie.gpuCount} GPU Auxiliary Power Cable Kit(s) (${gpuCableSku}) to connect to power distribution board. Found ${pcie.gpuPowerCableKitCount}.`;
+    }
+
+    warnings.push(reason);
+    missingDependencies.push({
+      key: 'GPU_AUX_POWER_CABLE_KIT',
+      rule: 'GPU Accelerator Auxiliary Power Rule',
+      sku: gpuCableSku,
+      description: gpuCableDesc,
+      quantity: requiredKitsPerNode * (serverCount || 1),
       reasoning: reason
     });
   }
@@ -899,6 +1052,55 @@ function validateMemoryRules(ctx) {
   }
 }
 
+function _findIncludedDefaultComponent(chassisDefaults, isStdFan, isStdHeatsink, isLomNic) {
+  return chassisDefaults.find(component =>
+    (isStdFan && component.category === 'Cooling / Thermal' && component.description.includes('Fan'))
+    || (isStdHeatsink && component.category === 'Cooling / Thermal' && component.description.includes('Heatsink'))
+    || (isLomNic && component.category === 'Network Adapter')
+  );
+}
+
+function _isVerifiedChassisComponent(c, baseKey) {
+  return c.isVerified === true && c.sourceCitation &&
+    /^[a-f0-9]{64}$/i.test(c.evidence?.artifactSha256 || '') &&
+    c.evidence?.page && c.evidence?.baseSku === baseKey;
+}
+
+function _evaluateItemAgainstChassisDefaults(item, chassisDefaults, baseKey, warnings, redundantDefaults) {
+  const description = (item.description || '').toLowerCase();
+  const clean = cleanBaseSKU(item.sku);
+  const isStdFan = description.includes('standard fan')
+    || (description.includes('fan kit') && !description.includes('high perf') && !description.includes('performance') && !description.includes('p48820') && !description.includes('p40502'));
+  const isStdHeatsink = description.includes('standard heatsink')
+    || (description.includes('heat sink') && !description.includes('performance') && !description.includes('high perf') && !description.includes('p48818') && !description.includes('p74792'));
+  const isLomNic = description.includes('1gb 4-port') && description.includes('bcm5719') && !description.includes('pcie');
+  if (!isStdFan && !isStdHeatsink && !isLomNic) return;
+
+  const includedDefault = _findIncludedDefaultComponent(chassisDefaults, isStdFan, isStdHeatsink, isLomNic);
+  if (!includedDefault) return;
+
+  // F19: If includedDefault is not verified or lacks source citation, suppress definitive redundant omission advice
+  if (!_isVerifiedChassisComponent(includedDefault, baseKey)) return;
+
+  // F19: Distinguish management NIC from host network connectivity
+  if (includedDefault.isManagementOnly) {
+    const advisory = `Chassis Default Advisory: Base chassis ${baseKey} includes factory-embedded management port (${includedDefault.description}${includedDefault.sourceCitation ? ' per ' + includedDefault.sourceCitation : ''}). Production host networking adapters remain required.`;
+    warnings.push(advisory);
+    return;
+  }
+
+  const citation = includedDefault.sourceCitation ? ` per ${includedDefault.sourceCitation}` : '';
+  const advisory = `Chassis Default Advisory: SKU ${clean} (${item.description}) is already factory-included with base chassis ${baseKey} (${includedDefault.description}${citation}). Redundant line item not required unless explicitly ordered as a spare.`;
+  warnings.push(advisory);
+  redundantDefaults.push({
+    sku: clean,
+    description: item.description,
+    includedDefault: includedDefault.description,
+    sourceCitation: includedDefault.sourceCitation || null,
+    advisory
+  });
+}
+
 function collectChassisDefaultAdvisories(items, chassisInfo, warnings, skipGraphValidation) {
   if (skipGraphValidation) return { chassisDefaults: [], redundantDefaults: [] };
   const redundantDefaults = [];
@@ -908,47 +1110,12 @@ function collectChassisDefaultAdvisories(items, chassisInfo, warnings, skipGraph
     const includedMap = fullMap.chassis_included_components || {};
     const baseKey = chassisInfo.baseSku
       || Object.keys(includedMap).find(key => key === chassisInfo.sku || includedMap[key].model === chassisInfo.model);
-    chassisDefaults = ((baseKey && includedMap[baseKey]?.includedComponents) || []).filter(component => component.isVerified === true && component.sourceCitation && /^[a-f0-9]{64}$/i.test(component.evidence?.artifactSha256 || '') && component.evidence?.page && component.evidence?.baseSku === baseKey);
+    chassisDefaults = ((baseKey && includedMap[baseKey]?.includedComponents) || []).filter(c => _isVerifiedChassisComponent(c, baseKey));
 
-    for (const item of chassisDefaults.length > 0 ? items : []) {
-      const description = (item.description || '').toLowerCase();
-      const clean = cleanBaseSKU(item.sku);
-      const isStdFan = description.includes('standard fan')
-        || (description.includes('fan kit') && !description.includes('high perf') && !description.includes('performance') && !description.includes('p48820') && !description.includes('p40502'));
-      const isStdHeatsink = description.includes('standard heatsink')
-        || (description.includes('heat sink') && !description.includes('performance') && !description.includes('high perf') && !description.includes('p48818') && !description.includes('p74792'));
-      const isLomNic = description.includes('1gb 4-port') && description.includes('bcm5719') && !description.includes('pcie');
-      if (!isStdFan && !isStdHeatsink && !isLomNic) continue;
-
-      const includedDefault = chassisDefaults.find(component =>
-        (isStdFan && component.category === 'Cooling / Thermal' && component.description.includes('Fan'))
-        || (isStdHeatsink && component.category === 'Cooling / Thermal' && component.description.includes('Heatsink'))
-        || (isLomNic && component.category === 'Network Adapter')
-      );
-      if (!includedDefault) continue;
-
-      // F19: If includedDefault is not verified or lacks source citation, suppress definitive redundant omission advice
-      if (includedDefault.isVerified !== true || !includedDefault.sourceCitation || !includedDefault.evidence?.artifactSha256 || !includedDefault.evidence?.page || includedDefault.evidence?.baseSku !== baseKey) {
-        continue;
+    if (chassisDefaults.length > 0) {
+      for (const item of items) {
+        _evaluateItemAgainstChassisDefaults(item, chassisDefaults, baseKey, warnings, redundantDefaults);
       }
-
-      // F19: Distinguish management NIC from host network connectivity
-      if (includedDefault.isManagementOnly) {
-        const advisory = `Chassis Default Advisory: Base chassis ${baseKey} includes factory-embedded management port (${includedDefault.description}${includedDefault.sourceCitation ? ' per ' + includedDefault.sourceCitation : ''}). Production host networking adapters remain required.`;
-        warnings.push(advisory);
-        continue;
-      }
-
-      const citation = includedDefault.sourceCitation ? ` per ${includedDefault.sourceCitation}` : '';
-      const advisory = `Chassis Default Advisory: SKU ${clean} (${item.description}) is already factory-included with base chassis ${baseKey} (${includedDefault.description}${citation}). Redundant line item not required unless explicitly ordered as a spare.`;
-      warnings.push(advisory);
-      redundantDefaults.push({
-        sku: clean,
-        description: item.description,
-        includedDefault: includedDefault.description,
-        sourceCitation: includedDefault.sourceCitation || null,
-        advisory
-      });
     }
   } catch (_) {
     // Chassis defaults are advisory; deterministic aspect checks still run.
@@ -1024,26 +1191,49 @@ function _buildAspect2Memory(ctx, _memoryPresent) {
   };
 }
 
+function _resolveStorageAspectStatus(isServer, hasBaseChassis, storage, hasDriveCageKit, _storagePresent) {
+  if (isServer && hasBaseChassis && storage.driveCount === 0 && !storage.hasNoDriveKit) {
+    return 'FAIL';
+  }
+  if (!isServer) {
+    return storage.hasIncompatibleYCable ? 'FAIL' : 'PASS';
+  }
+  if (!_storagePresent) {
+    return 'UNKNOWN';
+  }
+  if (storage.hasIncompatibleYCable || (storage.driveCount === 0 && !storage.hasNoDriveKit) || (storage.hasStorageController && !storage.hasSmartBattery)) {
+    return 'FAIL';
+  }
+  return 'PASS';
+}
+
+function _resolveStorageAspectDetail(isServer, hasBaseChassis, storage, hasDriveCageKit, _storagePresent, chassisInfo, mandatorySkus, serverCount) {
+  if (isServer && hasBaseChassis && storage.driveCount === 0 && !storage.hasNoDriveKit) {
+    return 'Storage Math Failed: 0 drives requires No Drive Configuration FIO Kit.';
+  }
+  if (!isServer) {
+    return `Domain profile verified (${chassisInfo?.family || 'Appliance'} ${chassisInfo?.model || ''}); storage/media evaluated.`;
+  }
+  if (!_storagePresent) {
+    return 'INV-105: Storage subsystem data absent — cannot evaluate controller/drive configuration.';
+  }
+  if (storage.hasIncompatibleYCable) {
+    return `CLIC Rules 81354627 & 81354632 Failed: Tri-Mode Splitter Cable Kit is incompatible with OCP storage controllers / standard cages. Controller Enablement Cable (${mandatorySkus?.CONTROLLER_CABLE_KIT?.sku || 'P48918-B21'}) is the correct cable.`;
+  }
+  if (storage.driveCount === 0 && !storage.hasNoDriveKit && !hasDriveCageKit) {
+    return 'Storage Math Failed: 0 drives requires No Drive Configuration FIO Kit.';
+  }
+  if (storage.hasStorageController && !storage.hasSmartBattery) {
+    return 'Storage Math Failed: Storage controller requires Smart Storage Battery / Capacitor Kit.';
+  }
+  return `Verified ${storage.driveCount} drives (${storage.driveCount / serverCount}/node) and controller configuration.`;
+}
+
 function _buildAspect3Storage(ctx, _storagePresent) {
   const { storage, mandatorySkus, serverCount, hasDriveCageKit, hasBaseChassis, chassisInfo, topology } = ctx;
   const isServer = isServerPlatform(chassisInfo, topology);
-  const status = (isServer && hasBaseChassis && storage.driveCount === 0 && !storage.hasNoDriveKit && !hasDriveCageKit) ? 'FAIL'
-    : !isServer ? (storage.hasIncompatibleYCable ? 'FAIL' : 'PASS')
-    : !_storagePresent ? 'UNKNOWN'
-    : storage.hasIncompatibleYCable || (storage.driveCount === 0 && !storage.hasNoDriveKit && !hasDriveCageKit) || (storage.hasStorageController && !storage.hasSmartBattery) ? 'FAIL' : 'PASS';
-  const detail = (isServer && hasBaseChassis && storage.driveCount === 0 && !storage.hasNoDriveKit && !hasDriveCageKit)
-    ? 'Storage Math Failed: 0 drives requires No Drive Configuration FIO Kit.'
-    : !isServer
-    ? `Domain profile verified (${chassisInfo?.family || 'Appliance'} ${chassisInfo?.model || ''}); storage/media evaluated.`
-    : !_storagePresent
-    ? 'INV-105: Storage subsystem data absent — cannot evaluate controller/drive configuration.'
-    : storage.hasIncompatibleYCable
-    ? `CLIC Rules 81354627 & 81354632 Failed: Tri-Mode Splitter Cable Kit is incompatible with OCP storage controllers / standard cages. Controller Enablement Cable (${mandatorySkus?.CONTROLLER_CABLE_KIT?.sku || 'P48918-B21'}) is the correct cable.`
-    : (storage.driveCount === 0 && !storage.hasNoDriveKit && !hasDriveCageKit)
-    ? 'Storage Math Failed: 0 drives requires No Drive Configuration FIO Kit.'
-    : storage.hasStorageController && !storage.hasSmartBattery
-    ? 'Storage Math Failed: Storage controller requires Smart Storage Battery / Capacitor Kit.'
-    : `Verified ${storage.driveCount} drives (${storage.driveCount / serverCount}/node) and controller configuration.`;
+  const status = _resolveStorageAspectStatus(isServer, hasBaseChassis, storage, hasDriveCageKit, _storagePresent);
+  const detail = _resolveStorageAspectDetail(isServer, hasBaseChassis, storage, hasDriveCageKit, _storagePresent, chassisInfo, mandatorySkus, serverCount);
   return {
     id: 3,
     name: 'Storage & Controller Cabling',
@@ -1423,8 +1613,29 @@ function _computeClusterSizing(serverCount, formFactorRU, power, catalogData, ra
   };
 }
 
-function _assessConfidenceAndCleanliness(errors, warnings, topology, aspectChecks, domainAspectAudit, conflictGraphResults) {
-  if (topology.relationshipChecks.length) {
+function _assessCompositeRelationships(relChecks, compositeStatus, compositeChecks, errors, warnings, aspectChecks, conflictGraphResults) {
+  if (relChecks.length === 0) return;
+  const failedRelChecks = compositeChecks.filter(c => c.status === 'FAIL');
+  if (failedRelChecks.length > 0) {
+    const detail = `Composite relationship violation: ${failedRelChecks.map(c => c.detail).join('; ')}`;
+    errors.push(detail);
+    aspectChecks.push({ id: 'CROSS_COMPONENT_DEPENDENCIES', name: 'Enclosure and fabric relationships', status: 'FAIL', detail });
+    conflictGraphResults.isWholeSolutionValid = false;
+    conflictGraphResults.unresolvedConflicts = [...(conflictGraphResults.unresolvedConflicts || []), { type: 'COMPOSITE_RELATIONSHIP_VIOLATION', message: detail }];
+    for (const candidate of conflictGraphResults.rankedSolutions || []) {
+      candidate.validationScope = 'COMPUTE_COMPONENT_ONLY';
+      candidate.relationshipValidationStatus = 'EVALUATED_FAIL';
+      candidate.physicalMathClean = false;
+      candidate.isMathClean = false;
+    }
+  } else if (compositeStatus === 'EVALUATED_PASS') {
+    const passDetail = 'All composite enclosure bay, adapter-to-fabric, and shared power/cooling relationships verified cleanly.';
+    aspectChecks.push({ id: 'CROSS_COMPONENT_DEPENDENCIES', name: 'Enclosure and fabric relationships', status: 'PASS', detail: passDetail });
+    for (const candidate of conflictGraphResults.rankedSolutions || []) {
+      candidate.validationScope = 'COMPOSITE_SOLUTION_VERIFIED';
+      candidate.relationshipValidationStatus = 'EVALUATED_PASS';
+    }
+  } else {
     const detail = 'Compute component checks do not validate its enclosure, bay, fabric, shared power or endpoint relationships. Resolve the owning solution before whole-solution certification.';
     warnings.push(detail);
     aspectChecks.push({ id: 'CROSS_COMPONENT_DEPENDENCIES', name: 'Enclosure and fabric relationships', status: 'NOT_EVALUATED', detail });
@@ -1437,40 +1648,150 @@ function _assessConfidenceAndCleanliness(errors, warnings, topology, aspectCheck
       candidate.isMathClean = false;
     }
   }
-  const _hasUnknownOrFailAspect = !aspectChecks.length || aspectChecks.some(a => !['PASS', 'WARN', 'NOT_APPLICABLE'].includes(a.status));
-  const isDomainClean = !domainAspectAudit || (domainAspectAudit.hasFailures !== true && (!domainAspectAudit.errors || domainAspectAudit.errors.length === 0));
-  const isMathClean = errors.length === 0 && topology.relationshipChecks.length === 0 && !_hasUnknownOrFailAspect && isDomainClean;
-  const isGraphClean = conflictGraphResults.isWholeSolutionValid;
-  const criticalViolationsCount = errors.length + (conflictGraphResults.conflicts ? conflictGraphResults.conflicts.length : 0);
+}
 
+function _computeConfidenceObject(isMathClean, isGraphClean, areRelationshipsClean, _hasUnknownOrFailAspect, errors, warnings, conflictGraphResults, aspectChecks, criticalViolationsCount) {
   let confidenceScore = 1.0;
   if (!isMathClean) confidenceScore -= (errors.length * 0.15);
   if (!isGraphClean) confidenceScore -= (conflictGraphResults.conflicts.length * 0.10);
   if (warnings.length > 0) confidenceScore -= (warnings.length * 0.05);
   confidenceScore = Math.max(0.1, parseFloat(confidenceScore.toFixed(2)));
-  if (topology.relationshipChecks.length) confidenceScore = Math.min(confidenceScore, 0.74);
+  if (!areRelationshipsClean) confidenceScore = Math.min(confidenceScore, 0.74);
   if (_hasUnknownOrFailAspect) confidenceScore = Math.min(confidenceScore, 0.74);
 
-  const confidence = {
-    score: confidenceScore,
-    isHitlTriggered: confidenceScore < 0.75 || criticalViolationsCount > 0,
-    confidenceReasons: [
-      ...errors.map(e => `[CRITICAL_MATH] ${e}`),
-      ...conflictGraphResults.conflicts.map(c => `[CONFLICT_GRAPH] ${c.message}`),
-      ...warnings.map(w => `[WARNING] ${w}`)
-    ]
-  };
+  const confidenceReasons = [
+    ...errors.map(e => `[CRITICAL_MATH] ${e}`),
+    ...conflictGraphResults.conflicts.map(c => `[CONFLICT_GRAPH] ${c.message}`),
+    ...warnings.map(w => `[WARNING] ${w}`)
+  ];
 
-  if (confidence.confidenceReasons.length === 0) {
+  if (confidenceReasons.length === 0) {
     const unknownAspects = aspectChecks.filter(a => a.status === 'UNKNOWN');
     if (unknownAspects.length > 0) {
-      confidence.confidenceReasons.push(`${unknownAspects.length} aspect(s) returned UNKNOWN due to absent subsystem data: ${unknownAspects.map(a => a.name).join(', ')}.`);
+      confidenceReasons.push(`${unknownAspects.length} aspect(s) returned UNKNOWN due to absent subsystem data: ${unknownAspects.map(a => a.name).join(', ')}.`);
     } else {
-      confidence.confidenceReasons.push('All 7 physical aspects passed deterministic evaluation and graph rules.');
+      confidenceReasons.push('All 7 physical aspects passed deterministic evaluation and graph rules.');
     }
   }
 
-  return { isMathClean, isGraphClean, criticalViolationsCount, confidenceScore, confidence };
+  return {
+    score: confidenceScore,
+    isHitlTriggered: confidenceScore < 0.75 || criticalViolationsCount > 0,
+    confidenceReasons
+  };
+}
+
+function _assessConfidenceAndCleanliness(errors, warnings, topology, aspectChecks, domainAspectAudit, conflictGraphResults) {
+  const relChecks = topology?.relationshipChecks || [];
+  const compositeStatus = topology?.relationshipStatus;
+  const compositeChecks = topology?.compositeChecks || [];
+
+  _assessCompositeRelationships(relChecks, compositeStatus, compositeChecks, errors, warnings, aspectChecks, conflictGraphResults);
+  const _hasUnknownOrFailAspect = !aspectChecks.length || aspectChecks.some(a => !['PASS', 'WARN', 'NOT_APPLICABLE'].includes(a.status));
+  const isDomainClean = !domainAspectAudit || (domainAspectAudit.hasFailures !== true && (!domainAspectAudit.errors || domainAspectAudit.errors.length === 0));
+  const areRelationshipsClean = relChecks.length === 0 || compositeStatus === 'EVALUATED_PASS';
+  const isMathClean = errors.length === 0 && areRelationshipsClean && !_hasUnknownOrFailAspect && isDomainClean;
+  const isGraphClean = conflictGraphResults.isWholeSolutionValid;
+  const criticalViolationsCount = errors.length + (conflictGraphResults.conflicts ? conflictGraphResults.conflicts.length : 0);
+
+  const confidence = _computeConfidenceObject(
+    isMathClean, isGraphClean, areRelationshipsClean, _hasUnknownOrFailAspect,
+    errors, warnings, conflictGraphResults, aspectChecks, criticalViolationsCount
+  );
+
+  return { isMathClean, isGraphClean, criticalViolationsCount, confidenceScore: confidence.score, confidence };
+}
+
+function _runAllAspectRules(ctx) {
+  validateNetworkingRules(ctx);
+  validatePCIeRules(ctx);
+  validateThermalRules(ctx);
+  validateStorageRules(ctx);
+  validatePowerRules(ctx);
+  validateSupportRules(ctx);
+  validateBaseChassisRules(ctx);
+  validateAlletraRules(ctx);
+  validateStoreEverRules(ctx);
+  validateMemoryRules(ctx);
+}
+
+function _determineChassisFormFactorRU(chassisInfo) {
+  const is4U = chassisInfo.formFactor === '4U' || /DL380a|DL384|DL580|4U/i.test(chassisInfo.model || '') || /DL380a|DL384/i.test(chassisInfo.id || '') || /8DW/i.test(chassisInfo.formFactor || '');
+  const is1U = chassisInfo.formFactor === '1U' || /DL360|1U/i.test(chassisInfo.model || '') || /DL360/i.test(chassisInfo.id || '');
+  const isBlade = /blade|compute module/i.test(chassisInfo.formFactor || '') || /SY480|SY100Gb/i.test(chassisInfo.model || '');
+  return Number.isFinite(chassisInfo.uHeight) ? chassisInfo.uHeight : (isBlade ? 0 : is1U ? 1 : is4U ? 4 : 2);
+}
+
+function _buildEvaluationSummaryData(params) {
+  const { compute, memory, storage, network, pcie, power, support, lifecycle, lifecycleRecommendations, architecturalRationale, missingDependencies, clusterSizing, errors, warnings, mathDeductions, chassisDefaults, redundantDefaults, aspectChecks, genericDomainAudit, domainAspectAudit, bundleComposition } = params;
+  return {
+    cpuCount: compute.cpuCount,
+    maxCpuTdpWatts: compute.maxCpuTdpWatts,
+    memoryCount: memory.memoryCount,
+    totalMemoryGb: memory.totalMemoryGb,
+    isBalancedChannel: memory.isBalancedChannel,
+    isSupportedPopulation: memory.isSupportedPopulation,
+    dimmsPerCpu: memory.dimmsPerCpu,
+    driveCount: storage.driveCount,
+    hasStorageController: storage.hasStorageController,
+    hasSmartBattery: storage.hasSmartBattery,
+    hasNoDriveKit: storage.hasNoDriveKit,
+    hasHighPerfFans: compute.hasHighPerfFans,
+    hasHeatsinks: compute.hasHeatsinks,
+    hasDcPowerSupply: power.hasDcPowerSupply,
+    hasDcLugKit: power.hasDcLugKit,
+    hasOcpAdapter: network.hasOcpAdapter,
+    networkPortsCount: network.networkPortsCount,
+    requiredPcieCards: pcie.requiredPcieCards,
+    totalPcieSlotsAvailable: pcie.totalSlotsAvailable,
+    architecturalRationale,
+    hasSupportService: support.hasSupportService,
+    lifecycleRisks: lifecycle,
+    lifecycleRecommendations,
+    compute,
+    memory,
+    storage,
+    networking: network,
+    pcie,
+    power,
+    support,
+    needsActions: missingDependencies.map(d => d.key || d.sku),
+    clusterSizing,
+    errors,
+    warnings,
+    mathDeductions,
+    missingDependencies,
+    chassisDefaults,
+    redundantDefaults,
+    aspectChecks,
+    genericDomainAudit,
+    domainAspectAudit,
+    bundleComposition
+  };
+}
+
+function _executeConflictGraphValidation(items, missingDependencies, targetDir, options, aspectChecks, errors, warnings) {
+  if (options.skipGraphValidation) {
+    return { isWholeSolutionValid: true, conflicts: [], resolvedFixes: [], unresolvedConflicts: [], rankedSolutions: [] };
+  }
+  emitProgress(7, 10, 'Validating Conflict Graph', 'in_progress', 'Resolving dependencies and checking for architectural conflicts.');
+  let resolvedDir = targetDir;
+  if (!resolvedDir) {
+    resolvedDir = autoDetectChassisDir(items);
+  }
+  return validateConflictGraph(
+    items,
+    missingDependencies,
+    resolvedDir,
+    '',
+    {
+      skipSynthesis: options.skipSynthesis === true,
+      aspectChecks,
+      errors,
+      warnings,
+      useNumericStep: true
+    }
+  );
 }
 
 function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options = {}) {
@@ -1537,92 +1858,23 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
     psuPerServer, cpusPerServer, options, topology
   };
 
-  validateNetworkingRules(ctx);
-  validatePCIeRules(ctx);
-  validateThermalRules(ctx);
-  validateStorageRules(ctx);
-  validatePowerRules(ctx);
-  validateSupportRules(ctx);
-  validateBaseChassisRules(ctx);
-  validateAlletraRules(ctx);
-  validateStoreEverRules(ctx);
-  validateMemoryRules(ctx);
+  _runAllAspectRules(ctx);
 
   const aspectChecks = buildAspectChecks(ctx);
   const bundleComposition = evaluateBundleComposition(items, getCachedChassisMap().product_bundle_compositions || [], path.basename(targetDir));
-  const is4U = chassisInfo.formFactor === '4U' || /DL380a|DL384|DL580|4U/i.test(chassisInfo.model || '') || /DL380a|DL384/i.test(chassisInfo.id || '') || /8DW/i.test(chassisInfo.formFactor || '');
-  const is1U = chassisInfo.formFactor === '1U' || /DL360|1U/i.test(chassisInfo.model || '') || /DL360/i.test(chassisInfo.id || '');
-  const isBlade = /blade|compute module/i.test(chassisInfo.formFactor || '') || /SY480|SY100Gb/i.test(chassisInfo.model || '');
-  const formFactorRU = Number.isFinite(chassisInfo.uHeight) ? chassisInfo.uHeight : (isBlade ? 0 : is1U ? 1 : is4U ? 4 : 2);
+  const formFactorRU = _determineChassisFormFactorRU(chassisInfo);
   const architecturalRationale = buildArchitecturalRationale(ctx);
   const clusterSizing = _computeClusterSizing(serverCount, formFactorRU, power, catalogData, railKitCount);
 
-  const evalSummary = {
-    cpuCount: compute.cpuCount,
-    maxCpuTdpWatts: compute.maxCpuTdpWatts,
-    memoryCount: memory.memoryCount,
-    totalMemoryGb: memory.totalMemoryGb,
-    isBalancedChannel: memory.isBalancedChannel,
-    isSupportedPopulation: memory.isSupportedPopulation,
-    dimmsPerCpu: memory.dimmsPerCpu,
-    driveCount: storage.driveCount,
-    hasStorageController: storage.hasStorageController,
-    hasSmartBattery: storage.hasSmartBattery,
-    hasNoDriveKit: storage.hasNoDriveKit,
-    hasHighPerfFans: compute.hasHighPerfFans,
-    hasHeatsinks: compute.hasHeatsinks,
-    hasDcPowerSupply: power.hasDcPowerSupply,
-    hasDcLugKit: power.hasDcLugKit,
-    hasOcpAdapter: network.hasOcpAdapter,
-    networkPortsCount: network.networkPortsCount,
-    requiredPcieCards: pcie.requiredPcieCards,
-    totalPcieSlotsAvailable: pcie.totalSlotsAvailable,
-    architecturalRationale,
-    hasSupportService: support.hasSupportService,
-    lifecycleRisks: lifecycle,
-    lifecycleRecommendations,
-    compute,
-    memory,
-    storage,
-    networking: network,
-    pcie,
-    power,
-    support,
-    needsActions: missingDependencies.map(d => d.key || d.sku),
-    clusterSizing,
-    errors,
-    warnings,
-    mathDeductions,
-    missingDependencies,
-    chassisDefaults,
-    redundantDefaults,
-    aspectChecks,
-    genericDomainAudit,
-    domainAspectAudit,
-    bundleComposition
-  };
+  const evalSummary = _buildEvaluationSummaryData({
+    compute, memory, storage, network, pcie, power, support, lifecycle, lifecycleRecommendations,
+    architecturalRationale, missingDependencies, clusterSizing, errors, warnings, mathDeductions,
+    chassisDefaults, redundantDefaults, aspectChecks, genericDomainAudit, domainAspectAudit, bundleComposition
+  });
 
-  let conflictGraphResults = { isWholeSolutionValid: true, conflicts: [], resolvedFixes: [], unresolvedConflicts: [], rankedSolutions: [] };
-  if (!options.skipGraphValidation) {
-    emitProgress(7, 10, 'Validating Conflict Graph', 'in_progress', 'Resolving dependencies and checking for architectural conflicts.');
-    let resolvedDir = targetDir;
-    if (!resolvedDir) {
-      resolvedDir = autoDetectChassisDir(items);
-    }
-    conflictGraphResults = validateConflictGraph(
-      items,
-      missingDependencies,
-      resolvedDir,
-      '',
-      {
-        skipSynthesis: options.skipSynthesis === true,
-        aspectChecks,
-        errors,
-        warnings,
-        useNumericStep: true
-      }
-    );
-  }
+  const conflictGraphResults = _executeConflictGraphValidation(
+    items, missingDependencies, targetDir, options, aspectChecks, errors, warnings
+  );
 
   const { isMathClean, isGraphClean, criticalViolationsCount, confidence } = _assessConfidenceAndCleanliness(
     errors, warnings, topology, aspectChecks, domainAspectAudit, conflictGraphResults
@@ -1653,16 +1905,7 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
   };
 }
 
-function formatNotebookQueryPayload(items, evalResults, rankedSolutions = []) {
-  const chassisInfo = evalResults.conflictGraph?.chassisInfo || detectChassisVariant(items);
-  const issues = [
-    ...(evalResults.errors || []),
-    ...(evalResults.conflictGraph?.conflicts || []).map(c => c.message)
-  ];
-
-  const fixes = evalResults.missingDependencies || [];
-  const skuManifest = (items || []).map(i => `${i.sku || 'SKU'} (x${i.quantity || 1})`).join(', ');
-
+function _buildNotebookQueryText(chassisInfo, skuManifest, issues, fixes, evalResults, rankedSolutions) {
   let queryText = `Validate complete BOQ configuration compatibility for ${chassisInfo.model || chassisInfo.id || 'Server'}.\nBOM Manifest: ${skuManifest}.`;
   if (issues.length > 0) {
     queryText += `\nDetected Physical Checks / Conflicts (${issues.length}): ${issues.join('; ')}.`;
@@ -1688,6 +1931,22 @@ function formatNotebookQueryPayload(items, evalResults, rankedSolutions = []) {
   if (pcieLayout) {
     queryText += `\nPCIe topology context: ${pcieLayout.totalMechanicalSlots} mechanical slots, ${pcieLayout.electricallyActiveSlots} active slots, ${pcieLayout.inputDemandPcieCards} PCIe cards required, base primary slots: ${pcieLayout.platformBaseMechanicalSlots}.`;
   }
+  return queryText;
+}
+
+function formatNotebookQueryPayload(items, evalResults, rankedSolutions = []) {
+  const chassisInfo = evalResults.conflictGraph?.chassisInfo || detectChassisVariant(items);
+  const issues = [
+    ...(evalResults.errors || []),
+    ...(evalResults.conflictGraph?.conflicts || []).map(c => c.message)
+  ];
+
+  const fixes = evalResults.missingDependencies || [];
+  const skuManifest = (items || []).map(i => `${i.sku || 'SKU'} (x${i.quantity || 1})`).join(', ');
+
+  const queryText = _buildNotebookQueryText(chassisInfo, skuManifest, issues, fixes, evalResults, rankedSolutions);
+  const requirementResolution = evalResults.requirementResolution || null;
+  const pcieLayout = evalResults.evalSummary?.pcie?.slotLayout || null;
 
   return {
     chassis: chassisInfo.id || chassisInfo.model,
@@ -1782,5 +2041,6 @@ module.exports = {
   evalPcieRiserSlots,
   evalPowerEnvironment,
   evalSupportManufacturing,
+  _assessConfidenceAndCleanliness,
   readBoqLines
 };

@@ -1,0 +1,24 @@
+{
+  "product": "MSL3040_Tape",
+  "notebookId": "644020e5-42f9-4c4b-95cc-fcf82122685c",
+  "replacementSourceId": "d3e57f3d-a439-457c-8e88-7872eb02f689",
+  "verifiedAt": "2026-11-06T08:36:31.720Z",
+  "contentFingerprints": {
+    "catalog": "e8def437890bae189fe217a2f213dabac1b9bd46f154b460c01952a438d62af6",
+    "learnings": "3d34112d40a0db66b451cb74d41eaee7f4e67a4dfa095ed4b25c6a5e8911ec22",
+    "changes": "ffb862409b2645e1c02666ef24326db55d9bee9399b8e28a304768ae3678bc57",
+    "workbook": "531e83afa8d7418de975ff544bf54419123df13bfc5d0017472e7cb42b91cf8e",
+    "combined": "805a61c70cd7fcc3065a7efd2a5802156f5d64b091fecaa1d2b00c27c8eeb962"
+  },
+  "legacyFingerprint": "805a61c70cd7fcc3065a7efd2a5802156f5d64b091fecaa1d2b00c27c8eeb962",
+  "retirementRequested": false,
+  "plannedRetirementIds": [
+    "341af74f-6cbf-49d0-8c91-6d3557089001"
+  ],
+  "status": "RETIREMENT_PENDING",
+  "retiredSourceIds": [],
+  "remainingSourceIds": [
+    "341af74f-6cbf-49d0-8c91-6d3557089001"
+  ],
+  "retirementErrors": []
+}

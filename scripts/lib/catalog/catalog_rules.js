@@ -56,6 +56,62 @@ const DEFAULT_MANDATORY_SKUS = {
   CPU2_OCP_CABLE: { sku: 'P48830-B21', name: 'HPE ProLiant DL380 Gen11 CPU2 to OCP2 x8 Enablement Kit' }
 };
 
+const MANDATORY_SKU_PROP_MAPPINGS = [
+  ['HIGH_PERF_FAN_KIT', 'highPerfFanKit'],
+  ['HIGH_PERF_HEATSINK', 'highPerfHeatsink'],
+  ['NO_DRIVE_FIO_KIT', 'noDriveFioKit'],
+  ['DC_LUG_KIT', 'dcLugKit'],
+  ['SMART_STORAGE_BATTERY', 'smartStorageBattery'],
+  ['CONTROLLER_CABLE_KIT', 'controllerCableKit'],
+  ['TRI_MODE_SPLITTER_CABLE', 'triModeSplitterCable'],
+  ['TRI_MODE_BOX12_CABLE', 'triModeBox12Cable'],
+  ['PRIMARY_CABLE_KIT', 'primaryRiserCableKit'],
+  ['SECONDARY_CABLE_KIT', 'secondaryRiserCableKit'],
+  ['GPU_POWER_CABLE_KIT', 'gpuPowerCableKit'],
+  ['CE_REMOVAL_KIT', 'ceRemovalKit'],
+  ['BOOT_DEVICE_ENABLEMENT', 'bootDeviceEnablement'],
+  ['SAS_EXPANDER', 'sasExpander'],
+  ['TRI_MODE_SWITCH', 'triModeSwitch'],
+  ['GENERIC_CAGE', 'genericCage'],
+  ['PREMIUM_CAGE', 'premiumCage'],
+  ['CPU1_OCP_CABLE', 'cpu1OcpCable'],
+  ['CPU2_OCP_CABLE', 'cpu2OcpCable']
+];
+
+function _resolveKitKeyFromMatchers(matchers, familyNorm, modelNorm, genNorm, normalizeStr) {
+  for (const m of matchers) {
+    const fMatch = !m.familyPattern || m.familyPattern === '*' || familyNorm.includes(normalizeStr(m.familyPattern));
+    const gMatch = !m.genPattern || m.genPattern === '*' || genNorm.includes(normalizeStr(m.genPattern));
+    const mMatch = !m.modelPattern || m.modelPattern === '*' || modelNorm.includes(normalizeStr(m.modelPattern));
+    if (fMatch && gMatch && mMatch) {
+      return m.kitKey;
+    }
+  }
+  return 'DEFAULT';
+}
+
+function _resolveKitKeyLegacy(familyNorm, modelNorm, genNorm) {
+  if (familyNorm.includes('alletra')) return 'Alletra_Storage';
+  if (modelNorm.includes('dl380a')) return 'ProLiant_DL380a_Gen12';
+  if (modelNorm.includes('dl145')) return 'ProLiant_DL145_Gen11';
+  if (modelNorm.includes('dl360')) return 'ProLiant_DL360_Gen11';
+  if (familyNorm.includes('synergy')) return genNorm.includes('12') ? 'Synergy_Gen12' : 'Synergy_General';
+  if (familyNorm.includes('storeever') || modelNorm.includes('msl')) return 'StoreEver_Tape';
+  if (familyNorm.includes('cray')) return 'Cray_General';
+  if (modelNorm.includes('dl580')) return 'ProLiant_DL580_Gen12';
+  if (genNorm.includes('12')) return 'ProLiant_Gen12';
+  if (genNorm.includes('11')) return 'ProLiant_Gen11';
+  return 'DEFAULT';
+}
+
+function _buildMandatorySkusResult(selectedKit) {
+  const result = {};
+  for (const [resKey, kitProp] of MANDATORY_SKU_PROP_MAPPINGS) {
+    result[resKey] = selectedKit[kitProp] || DEFAULT_MANDATORY_SKUS[resKey];
+  }
+  return result;
+}
+
 /**
  * Dynamically resolve mandatory SKUs for a given chassis from chassis_map.json enablement_kits
  * @param {object} chassisInfo 
@@ -73,57 +129,85 @@ function getMandatorySkusForChassis(chassisInfo) {
   const modelNorm = normalizeStr(model);
   const genNorm = normalizeStr(gen);
 
-  let kitKey = 'DEFAULT';
-
-  // Data-driven kit routing from chassis_map.json kit_routing.matchers (most-specific first)
   const matchers = cmap.kit_routing?.matchers || [];
-  for (const m of matchers) {
-    const fMatch = !m.familyPattern || m.familyPattern === '*' || familyNorm.includes(normalizeStr(m.familyPattern));
-    const gMatch = !m.genPattern || m.genPattern === '*' || genNorm.includes(normalizeStr(m.genPattern));
-    const mMatch = !m.modelPattern || m.modelPattern === '*' || modelNorm.includes(normalizeStr(m.modelPattern));
-    if (fMatch && gMatch && mMatch) {
-      kitKey = m.kitKey;
-      break;
-    }
-  }
+  let kitKey = _resolveKitKeyFromMatchers(matchers, familyNorm, modelNorm, genNorm, normalizeStr);
 
   // Legacy fallback if kit_routing matchers not present
   if (kitKey === 'DEFAULT' && matchers.length === 0) {
-    if (familyNorm.includes('alletra')) kitKey = 'Alletra_Storage';
-    else if (modelNorm.includes('dl380a')) kitKey = 'ProLiant_DL380a_Gen12';
-    else if (modelNorm.includes('dl145')) kitKey = 'ProLiant_DL145_Gen11';
-    else if (modelNorm.includes('dl360')) kitKey = 'ProLiant_DL360_Gen11';
-    else if (familyNorm.includes('synergy')) kitKey = genNorm.includes('12') ? 'Synergy_Gen12' : 'Synergy_General';
-    else if (familyNorm.includes('storeever') || modelNorm.includes('msl')) kitKey = 'StoreEver_Tape';
-    else if (familyNorm.includes('cray')) kitKey = 'Cray_General';
-    else if (modelNorm.includes('dl580')) kitKey = 'ProLiant_DL580_Gen12';
-    else if (genNorm.includes('12')) kitKey = 'ProLiant_Gen12';
-    else if (genNorm.includes('11')) kitKey = 'ProLiant_Gen11';
+    kitKey = _resolveKitKeyLegacy(familyNorm, modelNorm, genNorm);
   }
 
   const selectedKit = kits[kitKey] || kits.DEFAULT || {};
+  return _buildMandatorySkusResult(selectedKit);
+}
 
+function _checkAmbientGateRule(lower, text, parentCategory, subCategory) {
+  const ambientMatch = lower.match(/ambient\s*(?:temperature)?\s*(?:of|at|below|<=|≤|<|max)?\s*(\d+)\s*°?\s*c/i)
+    || lower.match(/(\d+)\s*°?\s*c\s*(?:ambient|temperature|datacenter)/i);
+  if (!ambientMatch && (!lower.includes('ambient temperature') || !lower.match(/(\d+)/))) {
+    return null;
+  }
+  const thresholdMatch = text.match(/(\d+)/);
+  const threshold = thresholdMatch ? parseInt(thresholdMatch[1], 10) : null;
+  const operator = lower.includes('below') || lower.includes('<=') || lower.includes('≤') || lower.includes('<') || lower.includes('up to') ? 'lte' : 'gte';
   return {
-    HIGH_PERF_FAN_KIT: selectedKit.highPerfFanKit || DEFAULT_MANDATORY_SKUS.HIGH_PERF_FAN_KIT,
-    HIGH_PERF_HEATSINK: selectedKit.highPerfHeatsink || DEFAULT_MANDATORY_SKUS.HIGH_PERF_HEATSINK,
-    NO_DRIVE_FIO_KIT: selectedKit.noDriveFioKit || DEFAULT_MANDATORY_SKUS.NO_DRIVE_FIO_KIT,
-    DC_LUG_KIT: selectedKit.dcLugKit || DEFAULT_MANDATORY_SKUS.DC_LUG_KIT,
-    SMART_STORAGE_BATTERY: selectedKit.smartStorageBattery || DEFAULT_MANDATORY_SKUS.SMART_STORAGE_BATTERY,
-    CONTROLLER_CABLE_KIT: selectedKit.controllerCableKit || DEFAULT_MANDATORY_SKUS.CONTROLLER_CABLE_KIT,
-    TRI_MODE_SPLITTER_CABLE: selectedKit.triModeSplitterCable || DEFAULT_MANDATORY_SKUS.TRI_MODE_SPLITTER_CABLE,
-    TRI_MODE_BOX12_CABLE: selectedKit.triModeBox12Cable || DEFAULT_MANDATORY_SKUS.TRI_MODE_BOX12_CABLE,
-    PRIMARY_CABLE_KIT: selectedKit.primaryRiserCableKit || DEFAULT_MANDATORY_SKUS.PRIMARY_CABLE_KIT,
-    SECONDARY_CABLE_KIT: selectedKit.secondaryRiserCableKit || DEFAULT_MANDATORY_SKUS.SECONDARY_CABLE_KIT,
-    GPU_POWER_CABLE_KIT: selectedKit.gpuPowerCableKit || DEFAULT_MANDATORY_SKUS.GPU_POWER_CABLE_KIT,
-    CE_REMOVAL_KIT: selectedKit.ceRemovalKit || DEFAULT_MANDATORY_SKUS.CE_REMOVAL_KIT,
-    BOOT_DEVICE_ENABLEMENT: selectedKit.bootDeviceEnablement || DEFAULT_MANDATORY_SKUS.BOOT_DEVICE_ENABLEMENT,
-    SAS_EXPANDER: selectedKit.sasExpander || DEFAULT_MANDATORY_SKUS.SAS_EXPANDER,
-    TRI_MODE_SWITCH: selectedKit.triModeSwitch || DEFAULT_MANDATORY_SKUS.TRI_MODE_SWITCH,
-    GENERIC_CAGE: selectedKit.genericCage || DEFAULT_MANDATORY_SKUS.GENERIC_CAGE,
-    PREMIUM_CAGE: selectedKit.premiumCage || DEFAULT_MANDATORY_SKUS.PREMIUM_CAGE,
-    CPU1_OCP_CABLE: selectedKit.cpu1OcpCable || DEFAULT_MANDATORY_SKUS.CPU1_OCP_CABLE,
-    CPU2_OCP_CABLE: selectedKit.cpu2OcpCable || DEFAULT_MANDATORY_SKUS.CPU2_OCP_CABLE
+    level: 'CHASSIS',
+    ruleType: 'CONDITIONAL_VISIBILITY',
+    conditionType: 'AMBIENT_GATE',
+    conditionKey: 'ambientTempC',
+    conditionOperator: operator,
+    thresholdValue: threshold,
+    parentCategory,
+    subCategory,
+    ruleText: text,
+    isStrict: true,
+    portalVerificationRequired: true,
+    affectedSkus: []
   };
+}
+
+function _checkTdpGateRule(lower, text, parentCategory, subCategory) {
+  const isTdp = lower.match(/tdp\s*(?:above|>=|>|over|exceeds)?\s*\d+\s*w/i) || (lower.includes('tdp') && lower.includes('watt'));
+  if (!isTdp) {
+    return null;
+  }
+  const tdpMatch = text.match(/(\d+)\s*(?:W|watt)/i);
+  return {
+    level: 'CHASSIS',
+    ruleType: 'CONDITIONAL_VISIBILITY',
+    conditionType: 'TDP_GATE',
+    conditionKey: 'cpuTdpWatts',
+    conditionOperator: 'gte',
+    thresholdValue: tdpMatch ? parseInt(tdpMatch[1], 10) : null,
+    parentCategory,
+    subCategory,
+    ruleText: text,
+    isStrict: true,
+    portalVerificationRequired: true,
+    affectedSkus: []
+  };
+}
+
+function _classifyStandardRuleLevel(lower, parentCategory, subCategory) {
+  if (lower.includes('bto') || lower.includes('cto base') || lower.includes('customer account') || lower.includes('supply constraints')) {
+    return {
+      level: 'VENDOR',
+      ruleType: lower.includes('supply') ? 'SUPPLY_CONSTRAINT' : 'MODE_EXCLUSION'
+    };
+  }
+  if (lower.includes('edsff') || lower.includes('8lff') || lower.includes('12lff') || lower.includes('8sff') || lower.includes('rack') || lower.includes('ambient temperature')) {
+    return { level: 'CHASSIS', ruleType: 'CHASSIS_GATE' };
+  }
+  if (lower.includes('mixing') || lower.includes('cannot be selected together') || lower.includes('mixed with')) {
+    return { level: 'CATEGORY', ruleType: 'MUTUAL_EXCLUSION' };
+  }
+  if (lower.includes('requires') || lower.includes('needed if') || lower.includes('supported only with')) {
+    return { level: 'SKU', ruleType: 'DEPENDENCY_CHAIN' };
+  }
+  if (parentCategory || subCategory) {
+    return { level: 'SUBCATEGORY', ruleType: 'SUBCATEGORY_RULE' };
+  }
+  return { level: 'CATEGORY', ruleType: 'MUTUAL_EXCLUSION' };
 }
 
 /**
@@ -137,70 +221,13 @@ function classifyRule(ruleText, parentCategory = '', subCategory = '') {
   const text = String(ruleText || '').trim();
   const lower = text.toLowerCase();
 
-  // Conditional visibility rules (AMBIENT_GATE, TDP_GATE, CONFIG_TRIGGER)
-  // These must be classified before other level checks as they carry explicit machine-parseable structure.
-  const ambientMatch = lower.match(/ambient\s*(?:temperature)?\s*(?:of|at|below|<=|≤|<|max)?\s*(\d+)\s*°?\s*c/i)
-    || lower.match(/(\d+)\s*°?\s*c\s*(?:ambient|temperature|datacenter)/i);
-  if (ambientMatch || lower.includes('ambient temperature') && lower.match(/(\d+)/)) {
-    const thresholdMatch = text.match(/(\d+)/);
-    const threshold = thresholdMatch ? parseInt(thresholdMatch[1], 10) : null;
-    const operator = lower.includes('below') || lower.includes('<=') || lower.includes('≤') || lower.includes('<') || lower.includes('up to') ? 'lte' : 'gte';
-    return {
-      level: 'CHASSIS',
-      ruleType: 'CONDITIONAL_VISIBILITY',
-      conditionType: 'AMBIENT_GATE',
-      conditionKey: 'ambientTempC',
-      conditionOperator: operator,
-      thresholdValue: threshold,
-      parentCategory,
-      subCategory,
-      ruleText: text,
-      isStrict: true,
-      portalVerificationRequired: true,
-      affectedSkus: [] // Populated by the caller from adjacent SKU context
-    };
-  }
+  const ambientRule = _checkAmbientGateRule(lower, text, parentCategory, subCategory);
+  if (ambientRule) return ambientRule;
 
-  // TDP-triggered conditional rules
-  if (lower.match(/tdp\s*(?:above|>=|>|over|exceeds)?\s*\d+\s*w/i) || (lower.includes('tdp') && lower.includes('watt'))) {
-    const tdpMatch = text.match(/(\d+)\s*(?:W|watt)/i);
-    return {
-      level: 'CHASSIS',
-      ruleType: 'CONDITIONAL_VISIBILITY',
-      conditionType: 'TDP_GATE',
-      conditionKey: 'cpuTdpWatts',
-      conditionOperator: 'gte',
-      thresholdValue: tdpMatch ? parseInt(tdpMatch[1], 10) : null,
-      parentCategory,
-      subCategory,
-      ruleText: text,
-      isStrict: true,
-      portalVerificationRequired: true,
-      affectedSkus: []
-    };
-  }
+  const tdpRule = _checkTdpGateRule(lower, text, parentCategory, subCategory);
+  if (tdpRule) return tdpRule;
 
-  let level = 'CATEGORY';
-  let ruleType = 'MUTUAL_EXCLUSION';
-
-  // Level classification
-  if (lower.includes('bto') || lower.includes('cto base') || lower.includes('customer account') || lower.includes('supply constraints')) {
-    level = 'VENDOR';
-    ruleType = lower.includes('supply') ? 'SUPPLY_CONSTRAINT' : 'MODE_EXCLUSION';
-  } else if (lower.includes('edsff') || lower.includes('8lff') || lower.includes('12lff') || lower.includes('8sff') || lower.includes('rack') || lower.includes('ambient temperature')) {
-    level = 'CHASSIS';
-    ruleType = 'CHASSIS_GATE';
-  } else if (lower.includes('mixing') || lower.includes('cannot be selected together') || lower.includes('mixed with')) {
-    level = 'CATEGORY';
-    ruleType = 'MUTUAL_EXCLUSION';
-  } else if (lower.includes('requires') || lower.includes('needed if') || lower.includes('supported only with')) {
-    level = 'SKU';
-    ruleType = 'DEPENDENCY_CHAIN';
-  } else if (parentCategory || subCategory) {
-    level = 'SUBCATEGORY';
-    ruleType = 'SUBCATEGORY_RULE';
-  }
-
+  const { level, ruleType } = _classifyStandardRuleLevel(lower, parentCategory, subCategory);
   return {
     level,
     ruleType,
@@ -211,12 +238,7 @@ function classifyRule(ruleText, parentCategory = '', subCategory = '') {
   };
 }
 
-/**
- * Load and parse all rules for a chassis directory using Dual Safety Net.
- * @param {string} targetDir E.g. "outputs/ProLiant/Gen12/DL380_Gen12_SFF"
- * @returns {object} { metadata, parsedRules: Array, subcategoryConstraints: Array, sourceFile, isFallback }
- */
-function loadCatalogRules(targetDir) {
+function _resolveRulesDirectory(targetDir) {
   let resolvedDir = '';
   if (typeof targetDir === 'string') {
     resolvedDir = targetDir;
@@ -224,94 +246,61 @@ function loadCatalogRules(targetDir) {
     resolvedDir = targetDir.targetDir || targetDir.chassisDir || targetDir.chassis || '';
   }
 
-  if (!resolvedDir) {
-    return {
-      metadata: {},
-      parsedRules: [],
-      subcategoryConstraints: [],
-      sourceFile: 'NONE',
-      isFallback: false
-    };
-  } else if (!fs.existsSync(resolvedDir)) {
-    // If it's a model name or chassis ID like 'DL380_Gen11' or 'DL380_Gen12_SFF'
+  if (!resolvedDir) return null;
+  if (!fs.existsSync(resolvedDir)) {
     try {
       const { findCatalogDirectory } = require('./catalog_discovery.js');
       const found = findCatalogDirectory(resolvedDir);
-      if (found) resolvedDir = found;
-      else {
-        return {
-          metadata: {},
-          parsedRules: [],
-          subcategoryConstraints: [],
-          sourceFile: 'NONE',
-          isFallback: false
-        };
-      }
+      return found || null;
     } catch (_) {
-      return {
-        metadata: {},
-        parsedRules: [],
-        subcategoryConstraints: [],
-        sourceFile: 'NONE',
-        isFallback: false
-      };
+      return null;
     }
   }
+  return resolvedDir;
+}
 
+function _readJsonFileSafe(filePath, logContext = 'CATALOG_RULES') {
+  if (!fs.existsSync(filePath)) return null;
+  try {
+    return JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+  } catch (err) {
+    const _logger = require('../system/pipeline_logger.js');
+    _logger.warn(logContext, `Failed to parse ${filePath}`, err);
+    return null;
+  }
+}
+
+function _loadRulesRawData(resolvedDir) {
   const prefix = path.basename(resolvedDir);
   const rulesJsonPath = path.join(resolvedDir, `${prefix}_Catalog_Rules.json`);
   const rulesBakPath = path.join(resolvedDir, `${prefix}_Catalog_Rules.json.bak`);
   const catalogJsonPath = path.join(resolvedDir, `${prefix}_Catalog.json`);
 
-  let rawData = null;
-  let sourceFile = '';
+  let rawData = _readJsonFileSafe(rulesJsonPath);
+  let sourceFile = rawData ? rulesJsonPath : '';
   let isFallback = false;
 
-  if (fs.existsSync(rulesJsonPath)) {
-    try {
-      rawData = JSON.parse(fs.readFileSync(rulesJsonPath, 'utf-8'));
-      sourceFile = rulesJsonPath;
-    } catch (err) {
-      const _logger = require('../system/pipeline_logger.js');
-      _logger.warn('CATALOG_RULES', `Failed to parse ${rulesJsonPath}`, err);
-    }
-  }
-
-  if (!rawData && fs.existsSync(rulesBakPath)) {
-    try {
-      rawData = JSON.parse(fs.readFileSync(rulesBakPath, 'utf-8'));
+  if (!rawData) {
+    rawData = _readJsonFileSafe(rulesBakPath);
+    if (rawData) {
       sourceFile = rulesBakPath;
       isFallback = true;
-    } catch (err) {
-      const _logger = require('../system/pipeline_logger.js');
-      _logger.warn('CATALOG_RULES', `Failed to parse ${rulesBakPath}`, err);
-    }
-  }
-
-  if (!rawData && fs.existsSync(catalogJsonPath)) {
-    try {
-      rawData = JSON.parse(fs.readFileSync(catalogJsonPath, 'utf-8'));
-      sourceFile = catalogJsonPath;
-      isFallback = true;
-    } catch (err) {
-      const _logger = require('../system/pipeline_logger.js');
-      _logger.warn('CATALOG_RULES', `Failed to parse ${catalogJsonPath}`, err);
     }
   }
 
   if (!rawData) {
-    return {
-      metadata: {},
-      parsedRules: [],
-      subcategoryConstraints: [],
-      sourceFile: 'NONE',
-      isFallback: false
-    };
+    rawData = _readJsonFileSafe(catalogJsonPath);
+    if (rawData) {
+      sourceFile = catalogJsonPath;
+      isFallback = true;
+    }
   }
 
-  let parsedRules = [];
+  return { rawData, sourceFile, isFallback, catalogJsonPath };
+}
 
-  // Extract from rules array if standalone Rules JSON
+function _parseRawRules(rawData) {
+  const parsedRules = [];
   if (Array.isArray(rawData)) {
     rawData.forEach(r => {
       if (r && typeof r === 'object') {
@@ -325,40 +314,74 @@ function loadCatalogRules(targetDir) {
         : classifyRule(r.rule || r.ruleText, r.parentCategory, r.subCategory));
     });
   } else if (Array.isArray(rawData.entries)) {
-    // Extract from entries array if catalog JSON
     rawData.entries.forEach(e => {
       (e.rules || []).forEach(r => {
         parsedRules.push(classifyRule(r, e.parentCategory, e.subCategory));
       });
     });
   }
+  return parsedRules;
+}
 
-  // Dual-Safety Net extension: Extract individual SKU quantity constraints as SKU-level rules
-  let companionCatalog = null;
-  if (fs.existsSync(catalogJsonPath)) {
-    try {
-      companionCatalog = JSON.parse(fs.readFileSync(catalogJsonPath, 'utf-8'));
-      if (companionCatalog && Array.isArray(companionCatalog.entries)) {
-        companionCatalog.entries.forEach(e => {
-          (e.skus || []).forEach(sku => {
-            const pn = sku['Product #'] || sku.sku;
-            const desc = sku['Description'] || sku.description || '';
-            const constraint = sku['Constraint Text'] || sku.constraint || '';
-            if (pn && constraint && constraint !== 'no max' && constraint !== 'Unlimited') {
-              parsedRules.push({
-                level: 'SKU',
-                ruleType: 'QUANTITY_CONSTRAINT',
-                parentCategory: e.parentCategory,
-                subCategory: e.subCategory,
-                ruleText: `SKU ${pn} (${desc.substring(0, 60)}${desc.length > 60 ? '...' : ''}) is limited to ${constraint}.`,
-                isStrict: true
-              });
-            }
-          });
+function _extractCompanionCatalogSkuConstraints(catalogJsonPath) {
+  const constraints = [];
+  const companionCatalog = _readJsonFileSafe(catalogJsonPath);
+  if (!companionCatalog || !Array.isArray(companionCatalog.entries)) {
+    return { constraints, companionCatalog };
+  }
+
+  companionCatalog.entries.forEach(e => {
+    (e.skus || []).forEach(sku => {
+      const pn = sku['Product #'] || sku.sku;
+      const desc = sku['Description'] || sku.description || '';
+      const constraint = sku['Constraint Text'] || sku.constraint || '';
+      if (pn && constraint && constraint !== 'no max' && constraint !== 'Unlimited') {
+        constraints.push({
+          level: 'SKU',
+          ruleType: 'QUANTITY_CONSTRAINT',
+          parentCategory: e.parentCategory,
+          subCategory: e.subCategory,
+          ruleText: `SKU ${pn} (${desc.substring(0, 60)}${desc.length > 60 ? '...' : ''}) is limited to ${constraint}.`,
+          isStrict: true
         });
       }
-    } catch (_) {}
+    });
+  });
+
+  return { constraints, companionCatalog };
+}
+
+/**
+ * Load and parse all rules for a chassis directory using Dual Safety Net.
+ * @param {string} targetDir E.g. "outputs/ProLiant/Gen12/DL380_Gen12_SFF"
+ * @returns {object} { metadata, parsedRules: Array, subcategoryConstraints: Array, sourceFile, isFallback }
+ */
+function loadCatalogRules(targetDir) {
+  const resolvedDir = _resolveRulesDirectory(targetDir);
+  if (!resolvedDir) {
+    return {
+      metadata: {},
+      parsedRules: [],
+      subcategoryConstraints: [],
+      sourceFile: 'NONE',
+      isFallback: false
+    };
   }
+
+  const { rawData, sourceFile, isFallback, catalogJsonPath } = _loadRulesRawData(resolvedDir);
+  if (!rawData) {
+    return {
+      metadata: {},
+      parsedRules: [],
+      subcategoryConstraints: [],
+      sourceFile: 'NONE',
+      isFallback: false
+    };
+  }
+
+  const parsedRules = _parseRawRules(rawData);
+  const { constraints: skuConstraints, companionCatalog } = _extractCompanionCatalogSkuConstraints(catalogJsonPath);
+  parsedRules.push(...skuConstraints);
 
   const subcategoryConstraints = (rawData.subcategories || []).map(sc => ({
     parentCategory: sc.parentCategory,
@@ -368,7 +391,9 @@ function loadCatalogRules(targetDir) {
     level: 'SUBCATEGORY'
   }));
 
-  const entries = Array.isArray(rawData.entries) ? rawData.entries : (companionCatalog && Array.isArray(companionCatalog.entries) ? companionCatalog.entries : []);
+  const entries = Array.isArray(rawData.entries)
+    ? rawData.entries
+    : (companionCatalog && Array.isArray(companionCatalog.entries) ? companionCatalog.entries : []);
 
   return {
     metadata: rawData.metadata || (companionCatalog ? companionCatalog.metadata : {}),

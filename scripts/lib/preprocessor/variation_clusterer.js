@@ -47,6 +47,68 @@ const SPLIT_REASONS = Object.freeze({
   }
 });
 
+function _inspectCpuItem(it, desc, q, acc) {
+  if ((desc.includes('processor') || desc.includes('xeon') || desc.includes('epyc')) &&
+      !desc.includes('cable') && !desc.includes('heatsink') && !desc.includes('fan')) {
+    acc.cpuCount += q;
+    const tdpMatch = desc.match(/(\d{2,3})\s*w/i);
+    const tdp = tdpMatch ? parseInt(tdpMatch[1], 10) : 0;
+    if (tdp > acc.maxTdp) acc.maxTdp = tdp;
+    acc.cpus.push(`${q}x ${it.description}`);
+  }
+}
+
+function _inspectRamItem(it, desc, q, acc) {
+  if (desc.includes('memory') || desc.includes('rdimm') || desc.includes('ddr5') || desc.includes('ram')) {
+    acc.dimmCount += q;
+    const gbMatch = desc.match(/(\d+)\s*gb/i);
+    if (gbMatch) {
+      acc.totalRamGb += parseInt(gbMatch[1], 10) * q;
+    }
+  }
+}
+
+function _inspectDriveItem(it, desc, q, acc) {
+  if (desc.includes('ssd') || desc.includes('hdd') || desc.includes('nvme') || desc.includes('drive')) {
+    if (!desc.includes('no drive') && !desc.includes('cage') && !desc.includes('controller') &&
+        !desc.includes('boot optimized') && !desc.includes('boot device') && !desc.includes('ns204i')) {
+      acc.driveCount += q;
+      if (desc.includes('nvme')) acc.driveTypes.add('NVMe SSD');
+      else if (desc.includes('sas')) acc.driveTypes.add('SAS');
+      else if (desc.includes('sata')) acc.driveTypes.add('SATA');
+      else acc.driveTypes.add('Storage Drive');
+    }
+  }
+}
+
+function _inspectPsuAndFanItem(it, desc, sku, q, acc) {
+  if (desc.includes('power supply') || desc.includes('psu') || desc.includes('power supply kit')) {
+    acc.psuCount += q;
+  }
+  if (desc.includes('high perf') || desc.includes('performance fan') || sku === 'P48820-B21') {
+    acc.hasHighPerfFans = true;
+  }
+  if (desc.includes('-48vdc') || desc.includes('dc power')) {
+    acc.psuType = '-48VDC Telco Power';
+  }
+  if (desc.includes('lug kit') || sku === 'P36877-B21') {
+    acc.hasDcLug = true;
+  }
+}
+
+function _inspectControllerAndPcieItem(it, desc, q, acc) {
+  if (desc.includes('controller') || desc.includes('mr416i') || desc.includes('sr932i')) {
+    acc.hasController = true;
+  }
+  if (desc.includes('adapter') || desc.includes('nvidia') || desc.includes('pcie') ||
+      desc.includes('gpu') || desc.includes('hba') || desc.includes('fibre channel')) {
+    if (!desc.includes('ocp') && !desc.includes('embedded') && !desc.includes('cable') &&
+        !desc.includes('transceiver') && !desc.includes('sfp28 sr')) {
+      acc.pcieCards += q;
+    }
+  }
+}
+
 /**
  * Extracts hardware profile attributes from a list of consolidated items.
  *
@@ -54,96 +116,143 @@ const SPLIT_REASONS = Object.freeze({
  * @returns {object} Hardware profile summary
  */
 function extractHardwareProfile(items) {
-  let cpus = [];
-  let maxTdp = 0;
-  let totalRamGb = 0;
-  let dimmCount = 0;
-  let driveCount = 0;
-  let driveTypes = new Set();
-  let hasController = false;
-  let pcieCards = 0;
-  let psuType = 'AC Power';
-  let hasDcLug = false;
-
-  let cpuCount = 0;
-  let psuCount = 0;
-  let hasHighPerfFans = false;
+  const acc = {
+    cpus: [],
+    cpuCount: 0,
+    maxTdp: 0,
+    totalRamGb: 0,
+    dimmCount: 0,
+    driveCount: 0,
+    driveTypes: new Set(),
+    hasController: false,
+    pcieCards: 0,
+    psuCount: 0,
+    psuType: 'AC Power',
+    hasDcLug: false,
+    hasHighPerfFans: false
+  };
 
   items.forEach(it => {
     const desc = (it.description || '').toLowerCase();
     const sku = cleanBaseSKU(it.sku);
+    const q = parseInt(it.atomicQuantity || it.quantity, 10) || 1;
 
-    // CPU detection
-    if ((desc.includes('processor') || desc.includes('xeon') || desc.includes('epyc')) && !desc.includes('cable') && !desc.includes('heatsink') && !desc.includes('fan')) {
-      const q = parseInt(it.atomicQuantity || it.quantity, 10) || 1;
-      cpuCount += q;
-      const tdpMatch = desc.match(/(\d{2,3})\s*w/i);
-      const tdp = tdpMatch ? parseInt(tdpMatch[1], 10) : 0;
-      if (tdp > maxTdp) maxTdp = tdp;
-      cpus.push(`${q}x ${it.description}`);
-    }
-
-    // RAM detection
-    if (desc.includes('memory') || desc.includes('rdimm') || desc.includes('ddr5') || desc.includes('ram')) {
-      dimmCount += (parseInt(it.atomicQuantity || it.quantity, 10) || 1);
-      const gbMatch = desc.match(/(\d+)\s*gb/i);
-      if (gbMatch) {
-        totalRamGb += parseInt(gbMatch[1], 10) * (parseInt(it.atomicQuantity || it.quantity, 10) || 1);
-      }
-    }
-
-    // Drive detection (Front cage media drives)
-    if (desc.includes('ssd') || desc.includes('hdd') || desc.includes('nvme') || desc.includes('drive')) {
-      if (!desc.includes('no drive') && !desc.includes('cage') && !desc.includes('controller') && !desc.includes('boot optimized') && !desc.includes('boot device') && !desc.includes('ns204i')) {
-        driveCount += (parseInt(it.atomicQuantity || it.quantity, 10) || 1);
-        if (desc.includes('nvme')) driveTypes.add('NVMe SSD');
-        else if (desc.includes('sas')) driveTypes.add('SAS');
-        else if (desc.includes('sata')) driveTypes.add('SATA');
-        else driveTypes.add('Storage Drive');
-      }
-    }
-
-    if (desc.includes('power supply') || desc.includes('psu') || desc.includes('power supply kit')) {
-      psuCount += (parseInt(it.atomicQuantity || it.quantity, 10) || 1);
-    }
-
-    if (desc.includes('high perf') || desc.includes('performance fan') || sku === 'P48820-B21') {
-      hasHighPerfFans = true;
-    }
-
-    if (desc.includes('controller') || desc.includes('mr416i') || desc.includes('sr932i')) {
-      hasController = true;
-    }
-
-    if (desc.includes('adapter') || desc.includes('nvidia') || desc.includes('pcie') || desc.includes('gpu') || desc.includes('hba') || desc.includes('fibre channel')) {
-      if (!desc.includes('ocp') && !desc.includes('embedded') && !desc.includes('cable') && !desc.includes('transceiver') && !desc.includes('sfp28 sr')) {
-        pcieCards += (parseInt(it.atomicQuantity || it.quantity, 10) || 1);
-      }
-    }
-
-    if (desc.includes('-48vdc') || desc.includes('dc power')) {
-      psuType = '-48VDC Telco Power';
-    }
-    if (desc.includes('lug kit') || sku === 'P36877-B21') {
-      hasDcLug = true;
-    }
+    _inspectCpuItem(it, desc, q, acc);
+    _inspectRamItem(it, desc, q, acc);
+    _inspectDriveItem(it, desc, q, acc);
+    _inspectPsuAndFanItem(it, desc, sku, q, acc);
+    _inspectControllerAndPcieItem(it, desc, q, acc);
   });
 
   return {
-    cpus: cpus.length > 0 ? cpus.join(', ') : 'Standard Processors',
-    cpuCount,
-    maxTdpWatts: maxTdp,
-    totalRamGb: totalRamGb || 0,
-    dimmCount: dimmCount || 0,
-    driveCount: driveCount || 0,
-    driveMedia: Array.from(driveTypes).join(' / ') || 'None / External',
-    hasStorageController: hasController,
-    pcieCardsCount: pcieCards,
-    psuCount,
-    psuType: psuType,
-    hasDcLugKit: hasDcLug,
-    hasHighPerfFans
+    cpus: acc.cpus.length > 0 ? acc.cpus.join(', ') : 'Standard Processors',
+    cpuCount: acc.cpuCount,
+    maxTdpWatts: acc.maxTdp,
+    totalRamGb: acc.totalRamGb || 0,
+    dimmCount: acc.dimmCount || 0,
+    driveCount: acc.driveCount || 0,
+    driveMedia: Array.from(acc.driveTypes).join(' / ') || 'None / External',
+    hasStorageController: acc.hasController,
+    pcieCardsCount: acc.pcieCards,
+    psuCount: acc.psuCount,
+    psuType: acc.psuType,
+    hasDcLugKit: acc.hasDcLug,
+    hasHighPerfFans: acc.hasHighPerfFans
   };
+}
+
+function _extractDynamicSubcategoryLimits(subcategoryConstraints) {
+  let maxCpus = 2;
+  let maxDimms = 32;
+  let maxPsus = 2;
+  const tdpThreshold = 240;
+
+  if (Array.isArray(subcategoryConstraints)) {
+    subcategoryConstraints.forEach(sc => {
+      const parent = (sc.parentCategory || '').toLowerCase();
+      const sub = (sc.subCategory || '').toLowerCase();
+      const maxQ = sc.maxQty || parseInt(sc.constraint, 10);
+      if (maxQ && !isNaN(maxQ)) {
+        if (parent.includes('processor') || sub.includes('processor') || sub.includes('cpu')) maxCpus = Math.max(maxCpus, maxQ);
+        if (parent.includes('memory') || sub.includes('memory') || sub.includes('dimm')) maxDimms = Math.max(maxDimms, maxQ);
+        if (parent.includes('power') || sub.includes('power') || sub.includes('psu')) maxPsus = Math.max(maxPsus, maxQ);
+      }
+    });
+  }
+  return { maxCpus, maxDimms, maxPsus, tdpThreshold };
+}
+
+function _checkHardwareBoundsAnomalies(profile, maxCpus, maxDimms, maxPsus) {
+  let indexDelta = 0.0;
+  const anomalies = [];
+
+  if (profile.cpuCount > maxCpus) {
+    indexDelta += 0.30;
+    anomalies.push({
+      type: 'SUBCATEGORY_CPU_LIMIT_EXCEEDED',
+      message: `Processor count (${profile.cpuCount}) exceeds dual-socket chassis capacity (Max ${maxCpus} processors per unit).`
+    });
+  }
+  if (profile.dimmCount > maxDimms) {
+    indexDelta += 0.30;
+    anomalies.push({
+      type: 'SUBCATEGORY_DIMM_LIMIT_EXCEEDED',
+      message: `RAM DIMM count (${profile.dimmCount}) exceeds motherboard ${maxDimms}-slot DIMM capacity.`
+    });
+  }
+  if (profile.psuCount > maxPsus) {
+    indexDelta += 0.25;
+    anomalies.push({
+      type: 'SUBCATEGORY_PSU_LIMIT_EXCEEDED',
+      message: `Power Supply count (${profile.psuCount}) exceeds ${maxPsus}-bay redundant power supply bay limit.`
+    });
+  }
+  return { indexDelta, anomalies };
+}
+
+function _checkArchitectureAndThermalAnomalies(profile, tdpThreshold) {
+  let indexDelta = 0.0;
+  const anomalies = [];
+
+  const isDualCpu = profile.cpus && (profile.cpus.includes('2x') || profile.cpuCount === 2);
+  if (profile.dimmCount > 0 && profile.dimmCount < 2 && isDualCpu) {
+    indexDelta += 0.25;
+    anomalies.push({
+      type: 'UNBALANCED_CPU_RAM_RATIO',
+      message: 'Dual-processor configuration ordered with only 1 RAM DIMM, creating memory channel imbalance.'
+    });
+  }
+
+  if (profile.maxTdpWatts >= tdpThreshold && !profile.hasHighPerfFans) {
+    indexDelta += 0.30;
+    anomalies.push({
+      type: 'HIGH_TDP_THERMAL_IMPROBABILITY',
+      message: `Processor TDP (${profile.maxTdpWatts}W) meets/exceeds ${tdpThreshold}W threshold without High-Performance Fan Kit.`
+    });
+  }
+
+  if (profile.psuType && profile.psuType.includes('-48VDC') && !profile.hasDcLugKit) {
+    indexDelta += 0.25;
+    anomalies.push({
+      type: 'POWER_LUG_KIT_IMPROBABILITY',
+      message: '-48VDC Telco Power Supply ordered without required DC Power Cable Lug Kit (P36877-B21).'
+    });
+  }
+  return { indexDelta, anomalies };
+}
+
+function _checkUnmappedSkusAnomaly(items) {
+  const unmappedCount = items.filter(i => !i.description || i.description === i.sku).length;
+  if (unmappedCount > 0) {
+    return {
+      indexDelta: Math.min(0.20, unmappedCount * 0.05),
+      anomalies: [{
+        type: 'RAW_UNMAPPED_SKU_ANOMALY',
+        message: `${unmappedCount} item(s) have unparsed descriptions or missing metadata.`
+      }]
+    };
+  }
+  return { indexDelta: 0.0, anomalies: [] };
 }
 
 /**
@@ -159,91 +268,23 @@ function calculateImprobabilityMetrics(v, subcategoryConstraints = []) {
   const anomalies = [...(v.ctoAnomalies || [])];
   let improbabilityIndex = 0.0;
 
-  // Extract dynamic constraints if present in scraped catalog rules
-  let maxCpus = 2;
-  let maxDimms = 32;
-  let maxPsus = 2;
-  let tdpThreshold = 240;
+  const { maxCpus, maxDimms, maxPsus, tdpThreshold } = _extractDynamicSubcategoryLimits(subcategoryConstraints);
 
-  if (Array.isArray(subcategoryConstraints)) {
-    subcategoryConstraints.forEach(sc => {
-      const parent = (sc.parentCategory || '').toLowerCase();
-      const sub = (sc.subCategory || '').toLowerCase();
-      const maxQ = sc.maxQty || parseInt(sc.constraint, 10);
-      if (maxQ && !isNaN(maxQ)) {
-        if (parent.includes('processor') || sub.includes('processor') || sub.includes('cpu')) maxCpus = Math.max(maxCpus, maxQ);
-        if (parent.includes('memory') || sub.includes('memory') || sub.includes('dimm')) maxDimms = Math.max(maxDimms, maxQ);
-        if (parent.includes('power') || sub.includes('power') || sub.includes('psu')) maxPsus = Math.max(maxPsus, maxQ);
-      }
-    });
-  }
-
-  // 1. CTO Fractional Multiplier Anomaly
   if (v.hasNonIntegerDivisor) {
     improbabilityIndex += 0.35;
   }
 
-  // 2. Subcategory Max Quantity & Hardware Bounds
-  if (profile.cpuCount > maxCpus) {
-    improbabilityIndex += 0.30;
-    anomalies.push({
-      type: 'SUBCATEGORY_CPU_LIMIT_EXCEEDED',
-      message: `Processor count (${profile.cpuCount}) exceeds dual-socket chassis capacity (Max ${maxCpus} processors per unit).`
-    });
-  }
+  const bounds = _checkHardwareBoundsAnomalies(profile, maxCpus, maxDimms, maxPsus);
+  improbabilityIndex += bounds.indexDelta;
+  anomalies.push(...bounds.anomalies);
 
-  if (profile.dimmCount > maxDimms) {
-    improbabilityIndex += 0.30;
-    anomalies.push({
-      type: 'SUBCATEGORY_DIMM_LIMIT_EXCEEDED',
-      message: `RAM DIMM count (${profile.dimmCount}) exceeds motherboard ${maxDimms}-slot DIMM capacity.`
-    });
-  }
+  const archThermal = _checkArchitectureAndThermalAnomalies(profile, tdpThreshold);
+  improbabilityIndex += archThermal.indexDelta;
+  anomalies.push(...archThermal.anomalies);
 
-  if (profile.psuCount > maxPsus) {
-    improbabilityIndex += 0.25;
-    anomalies.push({
-      type: 'SUBCATEGORY_PSU_LIMIT_EXCEEDED',
-      message: `Power Supply count (${profile.psuCount}) exceeds ${maxPsus}-bay redundant power supply bay limit.`
-    });
-  }
-
-  // 3. Dual-Processor Channel Imbalance
-  if (profile.dimmCount > 0 && profile.dimmCount < 2 && profile.cpus && (profile.cpus.includes('2x') || profile.cpuCount === 2)) {
-    improbabilityIndex += 0.25;
-    anomalies.push({
-      type: 'UNBALANCED_CPU_RAM_RATIO',
-      message: 'Dual-processor configuration ordered with only 1 RAM DIMM, creating memory channel imbalance.'
-    });
-  }
-
-  // 4. Thermal TDP & High-Performance Fan Requirement
-  if (profile.maxTdpWatts >= tdpThreshold && !profile.hasHighPerfFans) {
-    improbabilityIndex += 0.30;
-    anomalies.push({
-      type: 'HIGH_TDP_THERMAL_IMPROBABILITY',
-      message: `Processor TDP (${profile.maxTdpWatts}W) meets/exceeds ${tdpThreshold}W threshold without High-Performance Fan Kit.`
-    });
-  }
-
-  // 5. -48VDC Telco Power Supply Lug Kit Requirement
-  if (profile.psuType && profile.psuType.includes('-48VDC') && !profile.hasDcLugKit) {
-    improbabilityIndex += 0.25;
-    anomalies.push({
-      type: 'POWER_LUG_KIT_IMPROBABILITY',
-      message: '-48VDC Telco Power Supply ordered without required DC Power Cable Lug Kit (P36877-B21).'
-    });
-  }
-
-  // 6. Raw / Unmapped SKUs
-  const unmappedCount = items.filter(i => !i.description || i.description === i.sku).length;
-  if (unmappedCount > 0) {
-    improbabilityIndex += Math.min(0.20, unmappedCount * 0.05);
-    anomalies.push({
-      type: 'RAW_UNMAPPED_SKU_ANOMALY',
-      message: `${unmappedCount} item(s) have unparsed descriptions or missing metadata.`
-    });
-  }
+  const unmapped = _checkUnmappedSkusAnomaly(items);
+  improbabilityIndex += unmapped.indexDelta;
+  anomalies.push(...unmapped.anomalies);
 
   improbabilityIndex = Math.min(1.0, parseFloat(improbabilityIndex.toFixed(2)));
   const improbabilityScorePercent = Math.round(improbabilityIndex * 100);

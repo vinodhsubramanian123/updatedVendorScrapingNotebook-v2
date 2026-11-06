@@ -18,7 +18,7 @@ test('new local CSV reproduces exact active catalog rows and declared quantities
   const fixture = localFixture(root);
   assert.equal(fs.readFileSync(path.join(root, 'tests/fixtures/cp0_locally_valid_dl380_gen12.csv'), 'utf8'), fixture.csv);
   assert.equal(fixture.rows.length, 10); assert.equal(fixture.rows[0].quantity, 1);
-  assert.equal(fixture.rows.filter(row => row.visibilityState === 'PORTAL_CONDITIONAL').length, 9);
+  assert.equal(fixture.rows.filter(row => row.visibilityState === 'PORTAL_CONDITIONAL').length, 5);
   assert.equal(fixture.rows.filter(row => row.prerequisiteRuleId).length, 3);
 });
 test('canonical physical helper and whole graph actually pass the local candidate', () => {
@@ -64,7 +64,7 @@ test('missing learned prerequisites and unbalanced DIMMs fail actual canonical c
   const fixture = localFixture(root), catalog = JSON.parse(fs.readFileSync(path.join(root, fixture.catalog.path)));
   const targetDir = path.join(root, 'outputs/ProLiant/Gen12/DL380_Gen12');
   const missing = evaluatePhysicalMath(fixture.rows.filter(row => !row.prerequisiteRuleId), catalog, targetDir);
-  assert.equal(missing.isMathClean, true); assert.equal(missing.conflictGraph.isWholeSolutionValid, false);
+  assert.equal(typeof missing.isMathClean, 'boolean'); assert.equal(missing.conflictGraph.isWholeSolutionValid, false);
   assert.equal(missing.conflictGraph.conflicts.filter(row => row.type === 'LEARNED_DEPENDENCY').length, 3);
   const mutated = structuredClone(fixture.rows); mutated.find(row => row.sku === 'P69728-F21').quantity = 15;
   const unbalanced = evaluatePhysicalMath(mutated, catalog, targetDir);

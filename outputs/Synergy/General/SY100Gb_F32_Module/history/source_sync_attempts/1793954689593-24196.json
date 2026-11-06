@@ -1,0 +1,24 @@
+{
+  "product": "SY100Gb_F32_Module",
+  "notebookId": "c6390834-ff1e-4602-9391-8415f673afa3",
+  "replacementSourceId": "1b7d6271-fac2-4095-9bf9-fba55abca558",
+  "verifiedAt": "2026-11-06T08:44:49.593Z",
+  "contentFingerprints": {
+    "catalog": "5ec738f5a12138404dd973081f3c4d9567ee98cdb4e12aaaa664d93e8c27cde4",
+    "learnings": "5408ba2f70e33f28100fa4e5ec6aa4f544222de5b3f7326d33529766ca44e76e",
+    "changes": "8b1578214b90f7dff8c76e9be07db0376efaeda63617f19b2ae87474563be3a3",
+    "workbook": "c9d23841d76083e9a184cedd5be42cb1b5e61b4ea98e4e27eb496cda78528ab1",
+    "combined": "44c6ca6e0ee93c1ed9335917072539c5a010006b1cd9356502194ddbdf0c16ef"
+  },
+  "legacyFingerprint": "44c6ca6e0ee93c1ed9335917072539c5a010006b1cd9356502194ddbdf0c16ef",
+  "retirementRequested": false,
+  "plannedRetirementIds": [
+    "80e8eba5-e546-4de9-b0d2-e55d9d5c1ec6"
+  ],
+  "status": "RETIREMENT_PENDING",
+  "retiredSourceIds": [],
+  "remainingSourceIds": [
+    "80e8eba5-e546-4de9-b0d2-e55d9d5c1ec6"
+  ],
+  "retirementErrors": []
+}

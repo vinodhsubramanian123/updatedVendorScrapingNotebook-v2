@@ -53,6 +53,141 @@ function isChildAlreadyExited(child) {
          (child.signalCode !== null && child.signalCode !== undefined);
 }
 
+function _safeKill(child, signal, secondaryFaults) {
+  try {
+    if (typeof child.kill === 'function') {
+      child.kill(signal);
+    } else {
+      secondaryFaults.push(new TypeError('child.kill is not a function'));
+    }
+  } catch (err) {
+    secondaryFaults.push(err);
+  }
+}
+
+function _removeListeners(child, onClose, onError) {
+  if (typeof child.removeListener === 'function') {
+    child.removeListener('close', onClose);
+    child.removeListener('error', onError);
+  } else if (typeof child.off === 'function') {
+    child.off('close', onClose);
+    child.off('error', onError);
+  }
+}
+
+function _tryCooperativeSend(child, reason, secondaryFaults) {
+  try {
+    child.send({ type: 'PRESALES_CANCEL', reason }, error => {
+      if (error) secondaryFaults.push(error);
+    });
+  } catch (error) {
+    secondaryFaults.push(error);
+  }
+}
+
+function _createTerminationRunner(child, opts, graceMs, confirmationMs, reason, resolve) {
+  let completed = false;
+  let cooperativeTimer = null;
+  let graceTimer = null;
+  let confirmationTimer = null;
+  const secondaryFaults = [];
+
+  function cleanup() {
+    if (cooperativeTimer !== null) {
+      clearTimeout(cooperativeTimer);
+      cooperativeTimer = null;
+    }
+    if (graceTimer !== null) {
+      clearTimeout(graceTimer);
+      graceTimer = null;
+    }
+    if (confirmationTimer !== null) {
+      clearTimeout(confirmationTimer);
+      confirmationTimer = null;
+    }
+    _removeListeners(child, onClose, onError);
+  }
+
+  function complete(receipt) {
+    if (completed) {
+      return;
+    }
+    completed = true;
+    cleanup();
+    resolve(receipt);
+  }
+
+  function onClose(code, signal) {
+    const exitCode = (code !== undefined && code !== null) ? code : (child.exitCode ?? null);
+    const exitSignal = (signal !== undefined && signal !== null) ? signal : (child.signalCode ?? null);
+    complete({
+      exitConfirmed: true,
+      state: TERMINATION_STATES.EXIT_CONFIRMED,
+      terminationRequested: true,
+      exitCode,
+      signal: exitSignal,
+      reason,
+      secondaryFaults
+    });
+  }
+
+  function onError(err) {
+    secondaryFaults.push(err);
+  }
+
+  // Contract: attach close/error listeners BEFORE sending SIGTERM.
+  child.on('close', onClose);
+  child.on('error', onError);
+
+  function scheduleConfirmationTimer() {
+    confirmationTimer = setTimeout(() => {
+      confirmationTimer = null;
+      complete({
+        exitConfirmed: false,
+        state: TERMINATION_STATES.EXIT_UNCONFIRMED,
+        terminationRequested: true,
+        exitCode: null,
+        signal: null,
+        reason,
+        secondaryFaults
+      });
+    }, confirmationMs);
+  }
+
+  function beginSignalTermination() {
+    _safeKill(child, 'SIGTERM', secondaryFaults);
+    if (completed) {
+      return;
+    }
+
+    graceTimer = setTimeout(() => {
+      graceTimer = null;
+      if (completed) {
+        return;
+      }
+
+      _safeKill(child, 'SIGKILL', secondaryFaults);
+      if (completed) {
+        return;
+      }
+
+      scheduleConfirmationTimer();
+    }, graceMs);
+  }
+
+  if (opts.cooperative === true && child.connected && typeof child.send === 'function') {
+    _tryCooperativeSend(child, reason, secondaryFaults);
+    if (!completed) {
+      cooperativeTimer = setTimeout(() => {
+        cooperativeTimer = null;
+        if (!completed) beginSignalTermination();
+      }, graceMs);
+    }
+  } else {
+    beginSignalTermination();
+  }
+}
+
 /**
  * Request child process termination with SIGTERM and escalation to SIGKILL.
  *
@@ -111,134 +246,7 @@ function requestChildTermination(child, options = {}) {
   }
 
   return new Promise((resolve) => {
-    let completed = false;
-    let cooperativeTimer = null;
-    let graceTimer = null;
-    let confirmationTimer = null;
-    const secondaryFaults = [];
-
-    function cleanup() {
-      if (cooperativeTimer !== null) {
-        clearTimeout(cooperativeTimer);
-        cooperativeTimer = null;
-      }
-      if (graceTimer !== null) {
-        clearTimeout(graceTimer);
-        graceTimer = null;
-      }
-      if (confirmationTimer !== null) {
-        clearTimeout(confirmationTimer);
-        confirmationTimer = null;
-      }
-      if (typeof child.removeListener === 'function') {
-        child.removeListener('close', onClose);
-        child.removeListener('error', onError);
-      } else if (typeof child.off === 'function') {
-        child.off('close', onClose);
-        child.off('error', onError);
-      }
-    }
-
-    function complete(receipt) {
-      if (completed) {
-        return;
-      }
-      completed = true;
-      cleanup();
-      resolve(receipt);
-    }
-
-    function onClose(code, signal) {
-      const exitCode = (code !== undefined && code !== null) ? code : (child.exitCode ?? null);
-      const exitSignal = (signal !== undefined && signal !== null) ? signal : (child.signalCode ?? null);
-      complete({
-        exitConfirmed: true,
-        state: TERMINATION_STATES.EXIT_CONFIRMED,
-        terminationRequested: true,
-        exitCode,
-        signal: exitSignal,
-        reason,
-        secondaryFaults
-      });
-    }
-
-    function onError(err) {
-      secondaryFaults.push(err);
-    }
-
-    // Contract: attach close/error listeners BEFORE sending SIGTERM.
-    child.on('close', onClose);
-    child.on('error', onError);
-
-    function beginSignalTermination() {
-      // Send SIGTERM after any explicitly requested cooperative interval.
-      try {
-        if (typeof child.kill === 'function') {
-          child.kill('SIGTERM');
-        } else {
-          secondaryFaults.push(new TypeError('child.kill is not a function'));
-        }
-      } catch (err) {
-        secondaryFaults.push(err);
-      }
-
-      // If close fired synchronously during kill(), completion guard already handled it.
-      if (completed) {
-        return;
-      }
-
-      // Grace timer: if still open after graceMs, request SIGKILL once.
-      graceTimer = setTimeout(() => {
-        graceTimer = null;
-        if (completed) {
-          return;
-        }
-
-        try {
-          if (typeof child.kill === 'function') {
-            child.kill('SIGKILL');
-          } else {
-            secondaryFaults.push(new TypeError('child.kill is not a function'));
-          }
-        } catch (err) {
-          secondaryFaults.push(err);
-        }
-
-        if (completed) {
-          return;
-        }
-
-        // Confirmation timer: confirmationMs after escalation.
-        confirmationTimer = setTimeout(() => {
-          confirmationTimer = null;
-          complete({
-            exitConfirmed: false,
-            state: TERMINATION_STATES.EXIT_UNCONFIRMED,
-            terminationRequested: true,
-            exitCode: null,
-            signal: null,
-            reason,
-            secondaryFaults
-          });
-        }, confirmationMs);
-      }, graceMs);
-    }
-
-    if (opts.cooperative === true && child.connected && typeof child.send === 'function') {
-      try {
-        child.send({ type: 'PRESALES_CANCEL', reason }, error => {
-          if (error) secondaryFaults.push(error);
-        });
-      } catch (error) {
-        secondaryFaults.push(error);
-      }
-      if (!completed) cooperativeTimer = setTimeout(() => {
-        cooperativeTimer = null;
-        if (!completed) beginSignalTermination();
-      }, graceMs);
-    } else {
-      beginSignalTermination();
-    }
+    _createTerminationRunner(child, opts, graceMs, confirmationMs, reason, resolve);
   });
 }
 

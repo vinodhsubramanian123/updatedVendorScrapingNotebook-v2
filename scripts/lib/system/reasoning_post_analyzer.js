@@ -295,6 +295,89 @@ function _buildReasoningNarrative({
   return narrative;
 }
 
+function _initQueryEvidenceLedger({
+  effectiveTraceId,
+  responseData,
+  context,
+  queryText,
+  effectiveIntent,
+  classification,
+  executionTimeMs
+}) {
+  const ledger = createEvidenceLedger({
+    traceId: effectiveTraceId,
+    chassis: responseData.chassis || context.chassisName || 'PRESALES_QUERY_SOLUTION',
+    filePath: context.filePath || 'PRESALES_QUERY_INPUT'
+  });
+  ledger.mandatoryPhaseKeys = ['phase_1', 'phase_2', 'phase_3'];
+  ledger.recordInlineArtifact('CUSTOMER_INPUT', queryText || String(context.filePath || 'PRESALES_QUERY_INPUT'));
+  ledger.recordSkuAudit(
+    responseData.targetSku || responseData.chassis || 'QUERY_SCOPE',
+    'ROUTED_QUERY_EVALUATED',
+    classification.rationale || `Evaluated via ${effectiveIntent}`
+  );
+
+  ledger.startPhase(1, 'Presales Query Intake & Intent Classification', {
+    query: queryText,
+    intent: effectiveIntent
+  });
+  ledger.completePhase(1, effectiveIntent !== 'UNKNOWN' ? 'PASSED' : 'ACTION_REQUIRED', {
+    intent: effectiveIntent,
+    confidence: classification.confidence,
+    rationale: classification.rationale
+  });
+
+  ledger.startPhase(2, 'Router Dispatch & Solution Execution', {
+    skillTarget: classification.skillTarget || 'presales-query-router'
+  });
+  const execStatus = (responseData.status === 'ERROR' || responseData.status === 'FAILED')
+    ? 'FAILED'
+    : (responseData.status === 'ACTION_REQUIRED' ? 'ACTION_REQUIRED' : 'PASSED');
+  ledger.completePhase(2, execStatus, {
+    status: responseData.status || 'COMPLETED',
+    executionTimeMs
+  });
+  return ledger;
+}
+
+function _recordTerminalReflectionPhase(ledger, {
+  acceptance,
+  responseData,
+  feedbackResult,
+  epistemic,
+  contextClassification,
+  conflictsCount,
+  diagnosticHints
+}) {
+  const isAcceptanceValid = acceptance.isValid === true && (acceptance.status === 'PASSED' || acceptance.status === 'PASS') && (acceptance.blockersCount || 0) === 0;
+  const isFeedbackClean = feedbackResult.hookStatus !== 'HOOK_ERROR';
+  let terminalReflectionStatus = 'PASSED';
+  if (acceptance.status === 'FAILED' || responseData.status === 'FAILED') {
+    terminalReflectionStatus = 'FAILED';
+  } else if (!isAcceptanceValid || !isFeedbackClean) {
+    terminalReflectionStatus = 'ACTION_REQUIRED';
+  }
+
+  const phaseNum = (ledger.phases.phase_8 && !ledger.phases.phase_9) ? 9 : (!ledger.phases.phase_3 ? 3 : null);
+  if (!phaseNum) return;
+
+  const phaseName = phaseNum === 9
+    ? 'Continuous Learning Reflection & Shared State Export'
+    : 'Reasoning Post-Analysis & Continuous Learning Reflection';
+
+  ledger.startPhase(phaseNum, phaseName, {
+    epistemicTier: epistemic.tier,
+    contextClassification
+  });
+  ledger.completePhase(phaseNum, terminalReflectionStatus, {
+    epistemicTier: epistemic.tier,
+    acceptanceGateValid: acceptance.isValid,
+    conflictsCaught: conflictsCount,
+    diagnosticHintsCount: diagnosticHints.length,
+    feedbackHookStatus: feedbackResult.hookStatus
+  });
+}
+
 /**
  * Helper to persist evidence ledger records cleanly.
  */
@@ -325,77 +408,25 @@ function _persistEvidenceLedger({
   }
 
   try {
-    let ledger = evidenceLedger;
-    if (!ledger) {
-      ledger = createEvidenceLedger({
-        traceId: effectiveTraceId,
-        chassis: responseData.chassis || context.chassisName || 'PRESALES_QUERY_SOLUTION',
-        filePath: context.filePath || 'PRESALES_QUERY_INPUT'
-      });
-      ledger.mandatoryPhaseKeys = ['phase_1', 'phase_2', 'phase_3'];
-      ledger.recordInlineArtifact('CUSTOMER_INPUT', queryText || String(context.filePath || 'PRESALES_QUERY_INPUT'));
-      ledger.recordSkuAudit(
-        responseData.targetSku || responseData.chassis || 'QUERY_SCOPE',
-        'ROUTED_QUERY_EVALUATED',
-        classification.rationale || `Evaluated via ${effectiveIntent}`
-      );
+    const ledger = evidenceLedger || _initQueryEvidenceLedger({
+      effectiveTraceId,
+      responseData,
+      context,
+      queryText,
+      effectiveIntent,
+      classification,
+      executionTimeMs
+    });
 
-      ledger.startPhase(1, 'Presales Query Intake & Intent Classification', {
-        query: queryText,
-        intent: effectiveIntent
-      });
-      ledger.completePhase(1, effectiveIntent !== 'UNKNOWN' ? 'PASSED' : 'ACTION_REQUIRED', {
-        intent: effectiveIntent,
-        confidence: classification.confidence,
-        rationale: classification.rationale
-      });
-
-      ledger.startPhase(2, 'Router Dispatch & Solution Execution', {
-        skillTarget: classification.skillTarget || 'presales-query-router'
-      });
-      const execStatus = (responseData.status === 'ERROR' || responseData.status === 'FAILED')
-        ? 'FAILED'
-        : (responseData.status === 'ACTION_REQUIRED' ? 'ACTION_REQUIRED' : 'PASSED');
-      ledger.completePhase(2, execStatus, {
-        status: responseData.status || 'COMPLETED',
-        executionTimeMs
-      });
-    }
-
-    const isAcceptanceValid = acceptance.isValid === true && (acceptance.status === 'PASSED' || acceptance.status === 'PASS') && (acceptance.blockersCount || 0) === 0;
-    const isFeedbackClean = feedbackResult.hookStatus !== 'HOOK_ERROR';
-    let terminalReflectionStatus = 'PASSED';
-    if (acceptance.status === 'FAILED' || responseData.status === 'FAILED') {
-      terminalReflectionStatus = 'FAILED';
-    } else if (!isAcceptanceValid || !isFeedbackClean) {
-      terminalReflectionStatus = 'ACTION_REQUIRED';
-    }
-
-    if (ledger.phases.phase_8 && !ledger.phases.phase_9) {
-      ledger.startPhase(9, 'Continuous Learning Reflection & Shared State Export', {
-        epistemicTier: epistemic.tier,
-        contextClassification
-      });
-      ledger.completePhase(9, terminalReflectionStatus, {
-        epistemicTier: epistemic.tier,
-        acceptanceGateValid: acceptance.isValid,
-        conflictsCaught: conflictsCount,
-        diagnosticHintsCount: diagnosticHints.length,
-        feedbackHookStatus: feedbackResult.hookStatus
-      });
-    } else if (!ledger.phases.phase_3) {
-      ledger.startPhase(3, 'Reasoning Post-Analysis & Continuous Learning Reflection', {
-        epistemicTier: epistemic.tier,
-        contextClassification
-      });
-      ledger.completePhase(3, terminalReflectionStatus, {
-        epistemicTier: epistemic.tier,
-        acceptanceGateValid: acceptance.isValid,
-        conflictsCaught: conflictsCount,
-        diagnosticHintsCount: diagnosticHints.length,
-        feedbackHookStatus: feedbackResult.hookStatus
-      });
-    }
+    _recordTerminalReflectionPhase(ledger, {
+      acceptance,
+      responseData,
+      feedbackResult,
+      epistemic,
+      contextClassification,
+      conflictsCount,
+      diagnosticHints
+    });
 
     const exported = ledger.finalizeAndExport();
     responseData.evidenceLogPath = exported.jsonPath;
@@ -408,88 +439,50 @@ function _persistEvidenceLedger({
   }
 }
 
-/**
- * Perform automated post-analysis on the reasoning trace of a solved query or evaluation.
- *
- * @param {object} params
- * @param {string} params.queryText - Original user query or input description
- * @param {object} params.context - Query execution context
- * @param {object} params.classification - Intent classification object
- * @param {object} params.responseData - Result produced by the target skill/handler
- * @param {string} [params.traceId] - Active execution trace ID
- * @param {number} [params.executionTimeMs] - Milliseconds elapsed
- * @param {object} [params.evidenceLedger] - Active evidence ledger (if already created)
- * @returns {object} Reasoning analysis summary
- */
-function performReasoningPostAnalysis({
-  queryText = '',
-  context = {},
-  classification = {},
-  responseData = {},
-  traceId = null,
-  executionTimeMs = 0,
-  evidenceLedger = null
-}) {
-  const effectiveTraceId = traceId || responseData.traceId || `TRC-${Date.now()}`;
-  const effectiveIntent = classification.intent || responseData.intent || 'UNKNOWN';
-
-  // 1. Determine Epistemic Tier
-  const epistemic = determineEpistemicTier(responseData, classification);
-
-  // 2. Extract violations, warnings, conflicts, and diagnostic hints
+function _extractViolationStats(responseData) {
   const rawErrors = responseData.errors || responseData.evaluation?.errors || [];
   const rawWarnings = responseData.warnings || responseData.evaluation?.warnings || [];
   const missingDeps = responseData.missingDependencies || responseData.evaluation?.missingDependencies || [];
   const diagnosticHints = responseData.diagnosticHints || [];
   const conflictsCount = (responseData.conflicts?.length || 0) + (rawErrors.length > 0 ? rawErrors.length : 0);
+  return { rawErrors, rawWarnings, missingDeps, diagnosticHints, conflictsCount };
+}
 
-  // 3. Acceptance Gate State
-  const acceptance = responseData.acceptanceGate || {
-    isValid: responseData.status === 'PASSED',
-    status: responseData.status || 'UNKNOWN',
-    blockersCount: rawErrors.length
-  };
-
-  // 4. Automated Feedback & Continuous Learning Reflection Hook
-  const feedbackResult = _runContinuousLearningHook(context, responseData, missingDeps, effectiveTraceId);
-
-  // 5. Context & Platform Classification
-  const contextClassification = _determineContextClassification(queryText, responseData, context);
-
-  // 6. Extract Self-Correction Trail
-  const selfCorrectionTrail = _extractSelfCorrectionTrail(responseData);
-
-  // 7. Counterfactual Repair Proofs (Requirement R2 / Feature 6 & Feature 8)
-  let counterfactualRepairProofs = responseData.counterfactualRepairProofs || [];
+function _resolveCounterfactualRepairProofs(responseData, context, acceptance) {
+  let proofs = responseData.counterfactualRepairProofs || [];
   const isUnbuildable = responseData.customerDisposition === 'DELIVERY_BLOCKED_UNBUILDABLE' || responseData.isMathClean === false || acceptance.isValid === false;
-  if (counterfactualRepairProofs.length === 0 && isUnbuildable) {
+  if (proofs.length === 0 && isUnbuildable) {
     try {
       const { generateCounterfactualRepairProofs } = require('./counterfactual_repair.js');
-      counterfactualRepairProofs = generateCounterfactualRepairProofs(responseData, context);
-      responseData.counterfactualRepairProofs = counterfactualRepairProofs;
+      proofs = generateCounterfactualRepairProofs(responseData, context);
+      responseData.counterfactualRepairProofs = proofs;
     } catch (_err) {
-      counterfactualRepairProofs = [];
+      proofs = [];
     }
   }
+  return proofs;
+}
 
-  // 8. Build Reasoning Narrative
-  const reasoningNarrative = _buildReasoningNarrative({
-    effectiveIntent,
-    classification,
-    contextClassification,
-    conflictsCount,
-    missingDeps,
-    responseData,
-    epistemic,
-    feedbackResult,
-    selfCorrectionTrail,
-    counterfactualRepairProofs
-  });
-
-  logger.info('REASONING_ANALYZER', `[REASONING] Trace ${effectiveTraceId} | Vendor: ${contextClassification.detectedVendor} | Domain: ${contextClassification.solutionDomain} | Platform: ${contextClassification.platform} (${contextClassification.generation}) | Epistemic: ${epistemic.tier} | Blocker(s): ${acceptance.blockersCount} | Status: ${acceptance.status} | SelfCorrections: ${selfCorrectionTrail.length}`);
-
-  // 9. Build Comprehensive Reasoning Analysis Payload
-  const analysis = {
+function _buildAnalysisPayload({
+  effectiveTraceId,
+  executionTimeMs,
+  effectiveIntent,
+  classification,
+  contextClassification,
+  reasoningNarrative,
+  selfCorrectionTrail,
+  counterfactualRepairProofs,
+  epistemic,
+  rawErrors,
+  rawWarnings,
+  missingDeps,
+  conflictsCount,
+  diagnosticHints,
+  responseData,
+  acceptance,
+  feedbackResult
+}) {
+  return {
     analyzedAt: new Date().toISOString(),
     traceId: effectiveTraceId,
     executionTimeMs,
@@ -521,6 +514,94 @@ function performReasoningPostAnalysis({
     },
     continuousLearningHook: feedbackResult
   };
+}
+
+/**
+ * Perform automated post-analysis on the reasoning trace of a solved query or evaluation.
+ *
+ * @param {object} params
+ * @param {string} params.queryText - Original user query or input description
+ * @param {object} params.context - Query execution context
+ * @param {object} params.classification - Intent classification object
+ * @param {object} params.responseData - Result produced by the target skill/handler
+ * @param {string} [params.traceId] - Active execution trace ID
+ * @param {number} [params.executionTimeMs] - Milliseconds elapsed
+ * @param {object} [params.evidenceLedger] - Active evidence ledger (if already created)
+ * @returns {object} Reasoning analysis summary
+ */
+function performReasoningPostAnalysis({
+  queryText = '',
+  context = {},
+  classification = {},
+  responseData = {},
+  traceId = null,
+  executionTimeMs = 0,
+  evidenceLedger = null
+}) {
+  const effectiveTraceId = traceId || responseData.traceId || `TRC-${Date.now()}`;
+  const effectiveIntent = classification.intent || responseData.intent || 'UNKNOWN';
+
+  // 1. Determine Epistemic Tier
+  const epistemic = determineEpistemicTier(responseData, classification);
+
+  // 2. Extract violations, warnings, conflicts, and diagnostic hints
+  const { rawErrors, rawWarnings, missingDeps, diagnosticHints, conflictsCount } = _extractViolationStats(responseData);
+
+  // 3. Acceptance Gate State
+  const acceptance = responseData.acceptanceGate || {
+    isValid: responseData.status === 'PASSED',
+    status: responseData.status || 'UNKNOWN',
+    blockersCount: rawErrors.length
+  };
+
+  // 4. Automated Feedback & Continuous Learning Reflection Hook
+  const feedbackResult = _runContinuousLearningHook(context, responseData, missingDeps, effectiveTraceId);
+
+  // 5. Context & Platform Classification
+  const contextClassification = _determineContextClassification(queryText, responseData, context);
+
+  // 6. Extract Self-Correction Trail
+  const selfCorrectionTrail = _extractSelfCorrectionTrail(responseData);
+
+  // 7. Counterfactual Repair Proofs (Requirement R2 / Feature 6 & Feature 8)
+  const counterfactualRepairProofs = _resolveCounterfactualRepairProofs(responseData, context, acceptance);
+
+  // 8. Build Reasoning Narrative
+  const reasoningNarrative = _buildReasoningNarrative({
+    effectiveIntent,
+    classification,
+    contextClassification,
+    conflictsCount,
+    missingDeps,
+    responseData,
+    epistemic,
+    feedbackResult,
+    selfCorrectionTrail,
+    counterfactualRepairProofs
+  });
+
+  logger.info('REASONING_ANALYZER', `[REASONING] Trace ${effectiveTraceId} | Vendor: ${contextClassification.detectedVendor} | Domain: ${contextClassification.solutionDomain} | Platform: ${contextClassification.platform} (${contextClassification.generation}) | Epistemic: ${epistemic.tier} | Blocker(s): ${acceptance.blockersCount} | Status: ${acceptance.status} | SelfCorrections: ${selfCorrectionTrail.length}`);
+
+  // 9. Build Comprehensive Reasoning Analysis Payload
+  const analysis = _buildAnalysisPayload({
+    effectiveTraceId,
+    executionTimeMs,
+    effectiveIntent,
+    classification,
+    contextClassification,
+    reasoningNarrative,
+    selfCorrectionTrail,
+    counterfactualRepairProofs,
+    epistemic,
+    rawErrors,
+    rawWarnings,
+    missingDeps,
+    conflictsCount,
+    diagnosticHints,
+    responseData,
+    acceptance,
+    feedbackResult
+  });
 
   // Attach analysis transparently to responseData
   if (responseData && typeof responseData === 'object') {

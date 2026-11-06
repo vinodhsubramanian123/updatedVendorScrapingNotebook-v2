@@ -23,37 +23,41 @@ function safeDate(value) {
   return value !== null && value !== undefined && Number.isFinite(date.getTime()) ? date : null;
 }
 
+function _normalizeTimestamp(timestamp) {
+  if (typeof timestamp === 'number' && Number.isFinite(timestamp)) {
+    return safeDate(timestamp)?.toISOString() || null;
+  }
+  if (typeof timestamp === 'string' && /^\d+$/.test(timestamp)) {
+    const num = Number(timestamp);
+    if (Number.isFinite(num)) {
+      return safeDate(num)?.toISOString() || null;
+    }
+  }
+  return timestamp || null;
+}
+
+function _normalizeScrapeDate(rawDate, timestamp) {
+  if (typeof rawDate === 'number' && Number.isFinite(rawDate)) {
+    return safeDate(rawDate)?.toISOString().split('T')[0] || null;
+  }
+  if (!rawDate || rawDate === '—') {
+    if (timestamp) {
+      const parsed = new Date(timestamp);
+      return !isNaN(parsed.getTime()) ? parsed.toISOString().split('T')[0] : null;
+    }
+    return null;
+  }
+  return rawDate;
+}
+
 function normalizeCatalogMetadata(metadata = {}) {
   const meta = metadata || {};
   const gen = meta.generation || meta.gen || 'General';
   const family = meta.family || 'General';
   const chassis = meta.chassis || meta.model || 'Unknown';
 
-  let timestamp = meta.scrapeTimestamp;
-  if (typeof timestamp === 'number' && Number.isFinite(timestamp)) {
-    timestamp = safeDate(timestamp)?.toISOString() || null;
-  } else if (typeof timestamp === 'string' && /^\d+$/.test(timestamp)) {
-    const num = Number(timestamp);
-    if (Number.isFinite(num)) {
-      timestamp = safeDate(num)?.toISOString() || null;
-    }
-  }
-
-  let rawDate = meta.scrapeDate;
-  if (typeof rawDate === 'number' && Number.isFinite(rawDate)) {
-    rawDate = safeDate(rawDate)?.toISOString().split('T')[0] || null;
-  } else if (!rawDate || rawDate === '—') {
-    if (timestamp) {
-      const parsed = new Date(timestamp);
-      if (!isNaN(parsed.getTime())) {
-        rawDate = parsed.toISOString().split('T')[0];
-      } else {
-        rawDate = null;
-      }
-    } else {
-      rawDate = null;
-    }
-  }
+  let timestamp = _normalizeTimestamp(meta.scrapeTimestamp);
+  const rawDate = _normalizeScrapeDate(meta.scrapeDate, timestamp);
 
   if (!timestamp && rawDate && rawDate !== '—') {
     timestamp = `${rawDate}T00:00:00.000Z`;
@@ -132,6 +136,106 @@ function auditCatalogFreshness(catalogData, options = {}) {
   };
 }
 
+function _buildTabularReport(isValid, totalEntries, state, errors, warnings) {
+  return {
+    isValid,
+    totalEntries,
+    totalSkus: state.totalSkus,
+    emptyTablesCount: state.emptyTablesCount,
+    priceAnomaliesCount: state.priceAnomaliesCount,
+    errors,
+    warnings
+  };
+}
+
+function _validateSkuFormat(skuCode, label, errors, warnings, seenTableSkus) {
+  if (!skuCode || skuCode === 'UNKNOWN_SKU') {
+    errors.push(`Missing or empty SKU identifier in ${label}`);
+  } else if (!/^[A-Z0-9#._-]{3,30}$/i.test(skuCode) || /<[^>]+>/.test(skuCode)) {
+    errors.push(`Corrupted SKU identifier '${skuCode}' in ${label}`);
+  }
+
+  if (skuCode) {
+    const cleanKey = skuCode.toUpperCase();
+    if (seenTableSkus.has(cleanKey)) {
+      warnings.push(`Duplicate SKU '${skuCode}' detected in ${label}`);
+    } else {
+      seenTableSkus.add(cleanKey);
+    }
+  }
+}
+
+function _validateSkuPrice(sku, skuCode, label, pricesBySku, errors, warnings) {
+  const rawPrice = sku.listPrice ?? sku['Unit Price (USD)'] ?? sku.price;
+  if (rawPrice === null || rawPrice === undefined || rawPrice === '' || rawPrice === '—') {
+    warnings.push(`Missing list price for SKU ${skuCode || 'UNKNOWN'} in ${label}`);
+    return false;
+  }
+
+  const { extractCatalogItemPrice } = require('../taxonomy/sku_resolver.js');
+  const parsedPrice = extractCatalogItemPrice({ listPrice: rawPrice });
+  const price = parsedPrice.hasPrice ? parsedPrice.price : NaN;
+
+  if (Number.isFinite(price)) {
+    if (pricesBySku.has(skuCode) && pricesBySku.get(skuCode) !== price) {
+      warnings.push(`Price variation across tables for ${skuCode}: $${pricesBySku.get(skuCode)} vs $${price}`);
+    }
+    pricesBySku.set(skuCode, price);
+  }
+
+  if (!Number.isFinite(price) || price < 0) {
+    errors.push(`Invalid price for SKU ${skuCode || 'UNKNOWN'} in ${label}: ${rawPrice}`);
+    return true;
+  }
+
+  if (price === 1.00) {
+    const desc = String(sku.Description || sku.description || '').toLowerCase();
+    if (desc.includes('server') || desc.includes('xeon') || desc.includes('epyc') || desc.includes('cto server')) {
+      warnings.push(`Suspicious price anomaly for SKU ${skuCode} ($1.00 for server/CPU): possible quantity-as-price corruption.`);
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function _verifySingleTable(entry, i, state, errors, warnings) {
+  if (!entry || typeof entry !== 'object') {
+    errors.push(`Invalid table at index ${i}`);
+    return;
+  }
+  const parent = entry.parentCategory || 'Uncategorized';
+  const sub = entry.subCategory || 'General';
+  const label = `${parent} > ${sub} (Table #${i + 1})`;
+
+  if (!Array.isArray(entry.headers) || entry.headers.length === 0) {
+    warnings.push(`Missing table column headers in ${label}.`);
+  }
+
+  const skus = entry.skus || [];
+  if (!Array.isArray(skus) || skus.length === 0) {
+    state.emptyTablesCount++;
+    warnings.push(`Empty section table in ${label}.`);
+    return;
+  }
+
+  state.totalSkus += skus.length;
+  const seenTableSkus = new Set();
+  const { cleanBaseSKU } = require('./sku.js');
+
+  for (const sku of skus) {
+    if (!sku || typeof sku !== 'object') {
+      errors.push(`Invalid row in ${label}`);
+      continue;
+    }
+    const skuCode = cleanBaseSKU(sku.sku || sku['Product #'] || '');
+    _validateSkuFormat(skuCode, label, errors, warnings, seenTableSkus);
+    if (_validateSkuPrice(sku, skuCode, label, state.pricesBySku, errors, warnings)) {
+      state.priceAnomaliesCount++;
+    }
+  }
+}
+
 /**
  * Validate tabular integrity and check for scraping corruption before sheet generation
  * @param {object} catalogData - Catalog JSON
@@ -141,108 +245,28 @@ function verifyTabularIntegrity(catalogData) {
   const entries = catalogData?.entries || [];
   const errors = [];
   const warnings = [];
-  const pricesBySku = new Map();
-  let totalSkus = 0;
-  let emptyTablesCount = 0;
-  let priceAnomaliesCount = 0;
+  const state = {
+    pricesBySku: new Map(),
+    totalSkus: 0,
+    emptyTablesCount: 0,
+    priceAnomaliesCount: 0
+  };
 
   if (!Array.isArray(entries) || entries.length === 0) {
     errors.push('Catalog has 0 entries / section tables.');
-    return {
-      isValid: false,
-      totalEntries: 0,
-      totalSkus: 0,
-      emptyTablesCount: 0,
-      priceAnomaliesCount: 0,
-      errors,
-      warnings
-    };
+    return _buildTabularReport(false, 0, state, errors, warnings);
   }
 
   for (let i = 0; i < entries.length; i++) {
-    const entry = entries[i];
-    if (!entry || typeof entry !== 'object') { errors.push(`Invalid table at index ${i}`); continue; }
-    const parent = entry.parentCategory || 'Uncategorized';
-    const sub = entry.subCategory || 'General';
-    const label = `${parent} > ${sub} (Table #${i + 1})`;
-
-    if (!Array.isArray(entry.headers) || entry.headers.length === 0) {
-      warnings.push(`Missing table column headers in ${label}.`);
-    }
-
-    const skus = entry.skus || [];
-    if (!Array.isArray(skus) || skus.length === 0) {
-      emptyTablesCount++;
-      warnings.push(`Empty section table in ${label}.`);
-      continue;
-    }
-
-    totalSkus += skus.length;
-    const seenTableSkus = new Set();
-
-    for (const sku of skus) {
-      if (!sku || typeof sku !== 'object') { errors.push(`Invalid row in ${label}`); continue; }
-      const skuCode = require('./sku.js').cleanBaseSKU(sku.sku || sku['Product #'] || '');
-
-      // SKU code format validation
-      if (!skuCode || skuCode === 'UNKNOWN_SKU') {
-        errors.push(`Missing or empty SKU identifier in ${label}`);
-      } else if (!/^[A-Z0-9#._-]{3,30}$/i.test(skuCode) || /<[^>]+>/.test(skuCode)) {
-        errors.push(`Corrupted SKU identifier '${skuCode}' in ${label}`);
-      }
-
-      if (skuCode) {
-        const cleanKey = skuCode.toUpperCase();
-        if (seenTableSkus.has(cleanKey)) {
-          warnings.push(`Duplicate SKU '${skuCode}' detected in ${label}`);
-        } else {
-          seenTableSkus.add(cleanKey);
-        }
-      }
-
-      // Explicit zero vs missing price check
-      const rawPrice = sku.listPrice ?? sku['Unit Price (USD)'] ?? sku.price;
-      if (rawPrice === null || rawPrice === undefined || rawPrice === '' || rawPrice === '—') {
-        warnings.push(`Missing list price for SKU ${skuCode || 'UNKNOWN'} in ${label}`);
-      } else {
-        const parsedPrice = require('../taxonomy/sku_resolver.js').extractCatalogItemPrice({ listPrice: rawPrice });
-        const price = parsedPrice.hasPrice ? parsedPrice.price : NaN;
-        if (Number.isFinite(price)) {
-          if (pricesBySku.has(skuCode) && pricesBySku.get(skuCode) !== price) {
-            warnings.push(`Price variation across tables for ${skuCode}: $${pricesBySku.get(skuCode)} vs $${price}`);
-          }
-          pricesBySku.set(skuCode, price);
-        }
-        if (!Number.isFinite(price) || price < 0) {
-          priceAnomaliesCount++;
-          errors.push(`Invalid price for SKU ${skuCode || 'UNKNOWN'} in ${label}: ${rawPrice}`);
-        } else if (price === 1.00) {
-          // Quantity as price check: High value hardware (Processor, Server) cannot have list price of exactly $1.00
-          const desc = String(sku.Description || sku.description || '').toLowerCase();
-          if (desc.includes('server') || desc.includes('xeon') || desc.includes('epyc') || desc.includes('cto server')) {
-            priceAnomaliesCount++;
-            warnings.push(`Suspicious price anomaly for SKU ${skuCode} ($1.00 for server/CPU): possible quantity-as-price corruption.`);
-          }
-        }
-      }
-    }
+    _verifySingleTable(entries[i], i, state, errors, warnings);
   }
 
-  if (totalSkus === 0) {
+  if (state.totalSkus === 0) {
     errors.push('Catalog has 0 total SKUs across all tables.');
   }
 
   const isValid = errors.length === 0;
-
-  return {
-    isValid,
-    totalEntries: entries.length,
-    totalSkus,
-    emptyTablesCount,
-    priceAnomaliesCount,
-    errors,
-    warnings
-  };
+  return _buildTabularReport(isValid, entries.length, state, errors, warnings);
 }
 
 /**
@@ -364,9 +388,7 @@ function evaluateCatalogFreshness(catalogDir, options = {}) {
  * @param {object} [options={}] - { chassisName, throwOnError, isStaging, requireHumanConfirmation, humanConfirmed }
  * @returns {{ isValid: boolean, chassis: string, totalHardwareSkus: number, totalServiceSkus: number, categoriesCount: number, errors: string[], warnings: string[] }}
  */
-function assertScrapedCatalogQuality(catalogDirOrData, options = {}) {
-  const errors = [];
-  const warnings = [];
+function _resolveCatalogQualityInput(catalogDirOrData, options, errors) {
   let catalogData = null;
   let catalogDir = null;
   let chassisName = options.chassisName || null;
@@ -375,30 +397,118 @@ function assertScrapedCatalogQuality(catalogDirOrData, options = {}) {
     catalogDir = catalogDirOrData;
     if (!fs.existsSync(catalogDir)) {
       errors.push(`Catalog directory does not exist: "${catalogDir}"`);
-      return _buildQualityResult(false, chassisName || 'UNKNOWN', 0, 0, 0, errors, warnings, options);
+      return { catalogData: null, catalogDir, chassisName: chassisName || 'UNKNOWN' };
     }
     const prefix = chassisName || path.basename(catalogDir);
     const catalogPath = path.join(catalogDir, `${prefix}_Catalog.json`);
     if (!fs.existsSync(catalogPath)) {
       errors.push(`Master catalog JSON missing at "${catalogPath}"`);
-      return _buildQualityResult(false, prefix, 0, 0, 0, errors, warnings, options);
+      return { catalogData: null, catalogDir, chassisName: prefix };
     }
     try {
       catalogData = JSON.parse(fs.readFileSync(catalogPath, 'utf8'));
     } catch (err) {
       errors.push(`Master catalog JSON is corrupted: ${err.message}`);
-      return _buildQualityResult(false, prefix, 0, 0, 0, errors, warnings, options);
+      return { catalogData: null, catalogDir, chassisName: prefix };
     }
   } else if (catalogDirOrData && typeof catalogDirOrData === 'object') {
     catalogData = catalogDirOrData;
     chassisName = chassisName || catalogData?.metadata?.chassis || 'UNKNOWN';
   } else {
     errors.push('Invalid catalog input: expected directory path or catalog data object.');
-    return _buildQualityResult(false, 'UNKNOWN', 0, 0, 0, errors, warnings, options);
+    return { catalogData: null, catalogDir: null, chassisName: 'UNKNOWN' };
   }
 
   const normMeta = normalizeCatalogMetadata(catalogData.metadata);
   chassisName = chassisName || normMeta.chassis;
+  return { catalogData, catalogDir, chassisName };
+}
+
+function _checkCatalogSkuTally(catalogData, actualUniqueHwSkus, errors) {
+  const metaReportedSkus = Number(catalogData.metadata?.totalUniqueSKUs ?? -1);
+  if (metaReportedSkus <= 0) {
+    errors.push(`Invalid catalog metadata.totalUniqueSKUs: ${metaReportedSkus} (must be > 0).`);
+  } else if (metaReportedSkus !== actualUniqueHwSkus) {
+    errors.push(`Tally Invariant Violation (INV-139): metadata.totalUniqueSKUs (${metaReportedSkus}) does not match counted unique SKUs in entries (${actualUniqueHwSkus}).`);
+  }
+}
+
+function _checkEssentialSubsystems(catalogData, chassisName, errors) {
+  const entries = catalogData.entries || [];
+  const parentCategories = new Set(entries.map(e => String(e.parentCategory || '').toLowerCase()));
+  if (entries.length <= 5) return parentCategories;
+
+  const allSubcategories = new Set(entries.map(e => String(e.subCategory || '').toLowerCase()));
+  const allCats = [...parentCategories, ...allSubcategories];
+
+  const hasCpu = allCats.some(c => c.includes('processor') || c.includes('cpu'));
+  const hasMemory = allCats.some(c => c.includes('memory') || c.includes('dimm') || c.includes('ram'));
+  const hasPower = allCats.some(c => c.includes('power') || c.includes('psu') || c.includes('supply'));
+
+  const isNonServerOrSpecialty = /^(msl|alletra|nimble|storeever|san|switch|sn\d|sy100gb)/i.test(chassisName);
+  const isSynergyCompute = !isNonServerOrSpecialty && /^sy\d/i.test(chassisName);
+
+  if (!isNonServerOrSpecialty && !isSynergyCompute) {
+    if (!hasCpu) errors.push(`Missing mandatory server category: Processor / CPU options not found.`);
+    if (!hasMemory) errors.push(`Missing mandatory server category: Memory options not found.`);
+    if (!hasPower) errors.push(`Missing mandatory server category: Power Supply options not found.`);
+  } else if (isSynergyCompute) {
+    if (!hasCpu) errors.push(`Missing mandatory server category: Processor / CPU options not found.`);
+    if (!hasMemory) errors.push(`Missing mandatory server category: Memory options not found.`);
+  }
+
+  return parentCategories;
+}
+
+function _checkCompanionServices(catalogDir, chassisName, errors) {
+  if (!catalogDir) return 0;
+  const servicesPath = path.join(catalogDir, `${chassisName}_Services.json`);
+  if (!fs.existsSync(servicesPath)) return 0;
+
+  try {
+    const { getUniqueSkuCount } = require('./sku.js');
+    const servicesData = JSON.parse(fs.readFileSync(servicesPath, 'utf8'));
+    const actualSvcSkus = getUniqueSkuCount(servicesData.entries);
+    const metaSvcSkus = Number(servicesData.metadata?.totalUniqueSKUs ?? actualSvcSkus);
+    if (metaSvcSkus !== actualSvcSkus) {
+      errors.push(`Services Tally Invariant Violation: metadata.totalUniqueSKUs (${metaSvcSkus}) does not match counted unique services (${actualSvcSkus}).`);
+    }
+    return actualSvcSkus;
+  } catch (svcErr) {
+    errors.push(`Companion services file corrupt: ${svcErr.message}`);
+    return 0;
+  }
+}
+
+function _checkGovernanceConfirmation(catalogDir, chassisName, options, errors) {
+  const requireConfirmation = options.requireHumanConfirmation === true || options.isStaging === true;
+  if (!requireConfirmation || !catalogDir) return;
+
+  const receiptPath = path.join(catalogDir, `${chassisName}_catalog_capture_receipt.json`);
+  const genericReceiptPath = path.join(catalogDir, 'catalog_capture_receipt.json');
+  const targetReceipt = fs.existsSync(receiptPath) ? receiptPath : (fs.existsSync(genericReceiptPath) ? genericReceiptPath : null);
+
+  let receiptValid = false;
+  if (targetReceipt) {
+    try {
+      const receipt = JSON.parse(fs.readFileSync(targetReceipt, 'utf8'));
+      receiptValid = ['LOCAL_PROMOTED', 'STAGING_AUDITED', 'VERIFIED'].includes(receipt.status);
+    } catch (_) {}
+  }
+
+  if (!receiptValid && !options.humanConfirmed) {
+    errors.push(`Governance Confirmation Required: Catalog changes require verified capture receipt or explicit human confirmation before live sync.`);
+  }
+}
+
+function assertScrapedCatalogQuality(catalogDirOrData, options = {}) {
+  const errors = [];
+  const warnings = [];
+
+  const { catalogData, catalogDir, chassisName } = _resolveCatalogQualityInput(catalogDirOrData, options, errors);
+  if (!catalogData) {
+    return _buildQualityResult(false, chassisName, 0, 0, 0, errors, warnings, options);
+  }
 
   // 1. Tabular integrity check
   const tabReport = verifyTabularIntegrity(catalogData);
@@ -410,73 +520,16 @@ function assertScrapedCatalogQuality(catalogDirOrData, options = {}) {
   // 2. Strict SKU tally consistency check (INV-139)
   const { getUniqueSkuCount } = require('./sku.js');
   const actualUniqueHwSkus = getUniqueSkuCount(catalogData.entries);
-  const metaReportedSkus = Number(catalogData.metadata?.totalUniqueSKUs ?? -1);
-
-  if (metaReportedSkus <= 0) {
-    errors.push(`Invalid catalog metadata.totalUniqueSKUs: ${metaReportedSkus} (must be > 0).`);
-  } else if (metaReportedSkus !== actualUniqueHwSkus) {
-    errors.push(`Tally Invariant Violation (INV-139): metadata.totalUniqueSKUs (${metaReportedSkus}) does not match counted unique SKUs in entries (${actualUniqueHwSkus}).`);
-  }
+  _checkCatalogSkuTally(catalogData, actualUniqueHwSkus, errors);
 
   // 3. Category coverage & essential subsystems check
-  const entries = catalogData.entries || [];
-  const parentCategories = new Set(entries.map(e => String(e.parentCategory || '').toLowerCase()));
-  const allSubcategories = new Set(entries.map(e => String(e.subCategory || '').toLowerCase()));
-
-  const hasCpu = [...parentCategories, ...allSubcategories].some(c => c.includes('processor') || c.includes('cpu'));
-  const hasMemory = [...parentCategories, ...allSubcategories].some(c => c.includes('memory') || c.includes('dimm') || c.includes('ram'));
-  const hasPower = [...parentCategories, ...allSubcategories].some(c => c.includes('power') || c.includes('psu') || c.includes('supply'));
-
-  const isNonServerOrSpecialty = /^(msl|alletra|nimble|storeever|san|switch|sn\d|sy100gb)/i.test(chassisName);
-  const isSynergyCompute = !isNonServerOrSpecialty && /^sy\d/i.test(chassisName);
-  if (!isNonServerOrSpecialty && !isSynergyCompute && entries.length > 5) {
-    if (!hasCpu) errors.push(`Missing mandatory server category: Processor / CPU options not found.`);
-    if (!hasMemory) errors.push(`Missing mandatory server category: Memory options not found.`);
-    if (!hasPower) errors.push(`Missing mandatory server category: Power Supply options not found.`);
-  } else if (isSynergyCompute && entries.length > 5) {
-    if (!hasCpu) errors.push(`Missing mandatory server category: Processor / CPU options not found.`);
-    if (!hasMemory) errors.push(`Missing mandatory server category: Memory options not found.`);
-    // Synergy compute blades receive power from the shared Synergy 12000 frame
-  }
+  const parentCategories = _checkEssentialSubsystems(catalogData, chassisName, errors);
 
   // 4. Companion services audit
-  let totalServiceSkus = 0;
-  if (catalogDir) {
-    const servicesPath = path.join(catalogDir, `${chassisName}_Services.json`);
-    if (fs.existsSync(servicesPath)) {
-      try {
-        const servicesData = JSON.parse(fs.readFileSync(servicesPath, 'utf8'));
-        const actualSvcSkus = getUniqueSkuCount(servicesData.entries);
-        const metaSvcSkus = Number(servicesData.metadata?.totalUniqueSKUs ?? actualSvcSkus);
-        if (metaSvcSkus !== actualSvcSkus) {
-          errors.push(`Services Tally Invariant Violation: metadata.totalUniqueSKUs (${metaSvcSkus}) does not match counted unique services (${actualSvcSkus}).`);
-        }
-        totalServiceSkus = actualSvcSkus;
-      } catch (svcErr) {
-        errors.push(`Companion services file corrupt: ${svcErr.message}`);
-      }
-    }
-  }
+  const totalServiceSkus = _checkCompanionServices(catalogDir, chassisName, errors);
 
   // 5. Human / Governance confirmation gate before live sync
-  const requireConfirmation = options.requireHumanConfirmation === true || options.isStaging === true;
-  if (requireConfirmation && catalogDir) {
-    const receiptPath = path.join(catalogDir, `${chassisName}_catalog_capture_receipt.json`);
-    const genericReceiptPath = path.join(catalogDir, 'catalog_capture_receipt.json');
-    const hasReceipt = fs.existsSync(receiptPath) || fs.existsSync(genericReceiptPath);
-    let receiptValid = false;
-
-    if (hasReceipt) {
-      try {
-        const receipt = JSON.parse(fs.readFileSync(fs.existsSync(receiptPath) ? receiptPath : genericReceiptPath, 'utf8'));
-        receiptValid = ['LOCAL_PROMOTED', 'STAGING_AUDITED', 'VERIFIED'].includes(receipt.status);
-      } catch (_) {}
-    }
-
-    if (!receiptValid && !options.humanConfirmed) {
-      errors.push(`Governance Confirmation Required: Catalog changes require verified capture receipt or explicit human confirmation before live sync.`);
-    }
-  }
+  _checkGovernanceConfirmation(catalogDir, chassisName, options, errors);
 
   const isValid = errors.length === 0;
   return _buildQualityResult(isValid, chassisName, actualUniqueHwSkus, totalServiceSkus, parentCategories.size, errors, warnings, options);

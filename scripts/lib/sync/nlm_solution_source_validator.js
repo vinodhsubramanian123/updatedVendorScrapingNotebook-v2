@@ -87,10 +87,67 @@ function resolveProductNotebookId(chassisInfo) {
       }
     }
 
+    if (cfg.defaultNotebookId && cfg.defaultNotebookId.trim()) {
+      logger.warn('NLM_SOURCE_VALIDATOR', `No dedicated notebook mapped for "${name}". Falling back to generic family fallback notebook: ${cfg.defaultNotebookId}`);
+      return cfg.defaultNotebookId.trim();
+    }
+
     return null;
   } catch (err) {
     logger.warn('NLM_SOURCE_VALIDATOR', `Failed to read notebooks.json: ${err.message}`);
     return null;
+  }
+}
+
+/**
+ * Resolve product notebook mapping with rich fallback metadata and grounding scope.
+ * @param {object|string} chassisInfo 
+ * @returns {{ notebookId: string|null, isFallback: boolean, cloudGroundingScope: string, warning?: string, error?: string }}
+ */
+function getProductNotebookResolution(chassisInfo) {
+  const name = typeof chassisInfo === 'string' ? chassisInfo : (chassisInfo?.chassis || chassisInfo?.model || chassisInfo?.cleanName || null);
+  if (!name || !fs.existsSync(CONFIG_NOTEBOOKS)) {
+    return { notebookId: null, isFallback: false, cloudGroundingScope: 'NONE' };
+  }
+
+  try {
+    const cfg = JSON.parse(fs.readFileSync(CONFIG_NOTEBOOKS, 'utf-8'));
+    const notebooks = cfg.notebooks || {};
+
+    if (notebooks[name]?.notebookId && notebooks[name]?.queryEnabled !== false) {
+      return { notebookId: notebooks[name].notebookId, isFallback: false, cloudGroundingScope: 'PRODUCT_DEDICATED' };
+    }
+
+    const normalize = value => value.toLowerCase().replace(/[^a-z0-9]/g, '');
+    const lower = normalize(name);
+    for (const [key, val] of Object.entries(notebooks)) {
+      if (normalize(key) === lower && val.notebookId && val.queryEnabled !== false) {
+        return { notebookId: val.notebookId, isFallback: false, cloudGroundingScope: 'PRODUCT_DEDICATED' };
+      }
+    }
+
+    const FORM_FACTOR_SUFFIXES = /_(8SFF|24SFF|8LFF|12LFF|EDSFF|SFF|LFF|NHP|RACK|MODULE|FRAME|ENCLOSURE)$/i;
+    const strippedName = normalize(name.replace(FORM_FACTOR_SUFFIXES, ''));
+    if (strippedName !== lower) {
+      for (const [key, val] of Object.entries(notebooks)) {
+        if (normalize(key.replace(FORM_FACTOR_SUFFIXES, '')) === strippedName && val?.notebookId && val.queryEnabled !== false) {
+          return { notebookId: val.notebookId, isFallback: false, cloudGroundingScope: 'PRODUCT_DEDICATED' };
+        }
+      }
+    }
+
+    if (cfg.defaultNotebookId && cfg.defaultNotebookId.trim()) {
+      return {
+        notebookId: cfg.defaultNotebookId.trim(),
+        isFallback: true,
+        cloudGroundingScope: 'GENERIC_FAMILY_FALLBACK',
+        warning: `No chassis-specific notebook found for "${name}". Using general ProLiant family fallback notebook.`
+      };
+    }
+
+    return { notebookId: null, isFallback: false, cloudGroundingScope: 'NONE' };
+  } catch (err) {
+    return { notebookId: null, isFallback: false, cloudGroundingScope: 'NONE', error: err.message };
   }
 }
 
@@ -233,9 +290,8 @@ function isNegativeRagVerdict(answer) {
   return negativeSignals.some(s => text.includes(s));
 }
 
-function parseRankVerdicts(answer, evalResults) {
-  const candidates = evalResults.conflictGraph?.recommendedSolutions || evalResults.conflictGraph?.rankedSolutions || [];
-  let parsed;
+function _parseRankJsonRows(answer) {
+  let parsed = {};
   try {
     const raw = String(answer || '');
     const blocks = [...raw.matchAll(/```json\s*([\s\S]*?)```/gi)];
@@ -244,29 +300,45 @@ function parseRankVerdicts(answer, evalResults) {
   } catch { parsed = {}; }
   const rows = Array.isArray(parsed) ? parsed : (Array.isArray(parsed?.ranks) ? parsed.ranks : []);
   const isJsonFormat = Array.isArray(parsed) || Array.isArray(parsed?.ranks);
-  return candidates.map(candidate => {
-    const matches = rows.filter(r => r && typeof r === 'object' && !Array.isArray(r) && String(r.rank) === String(candidate.rank));
-    const row = matches.length === 1 ? matches[0] : {};
-    let verdict;
-    if (row.verdict === 'FAIL') {
-      verdict = 'FAIL';
-    } else if (row.verdict === 'PASS' && row.intentPreserved === true && row.mandatoryChangesOnly === true && Array.isArray(row.issues) && row.issues.length === 0 && Array.isArray(row.citations) && row.citations.length > 0) {
-      verdict = 'PASS';
-    } else if (!isJsonFormat && isNegativeRagVerdict(answer)) {
-      verdict = 'FAIL';
-    } else {
-      verdict = 'UNKNOWN';
-    }
-    return {
-      rank: candidate.rank,
-      verdict,
-      intentPreserved: row.intentPreserved === true,
-      mandatoryChangesOnly: row.mandatoryChangesOnly === true,
-      issues: row.issues || (!isJsonFormat && isNegativeRagVerdict(answer) ? ['Unstructured negative technical verdict detected in NotebookLM answer'] : []),
-      citations: row.citations || [],
-      rawCommentary: !isJsonFormat ? String(answer || '').slice(0, 500) : (row.notes || row.rationale || null)
-    };
-  });
+  return { rows, isJsonFormat };
+}
+
+function _isRowVerifiablyPassed(row) {
+  return row.verdict === 'PASS' &&
+    row.intentPreserved === true &&
+    row.mandatoryChangesOnly === true &&
+    Array.isArray(row.issues) &&
+    row.issues.length === 0 &&
+    Array.isArray(row.citations) &&
+    row.citations.length > 0;
+}
+
+function _buildCandidateRankVerdict(candidate, rows, isJsonFormat, answer) {
+  const matches = rows.filter(r => r && typeof r === 'object' && !Array.isArray(r) && String(r.rank) === String(candidate.rank));
+  const row = matches.length === 1 ? matches[0] : {};
+  let verdict = 'UNKNOWN';
+  if (row.verdict === 'FAIL') {
+    verdict = 'FAIL';
+  } else if (_isRowVerifiablyPassed(row)) {
+    verdict = 'PASS';
+  } else if (!isJsonFormat && isNegativeRagVerdict(answer)) {
+    verdict = 'FAIL';
+  }
+  return {
+    rank: candidate.rank,
+    verdict,
+    intentPreserved: row.intentPreserved === true,
+    mandatoryChangesOnly: row.mandatoryChangesOnly === true,
+    issues: row.issues || (!isJsonFormat && isNegativeRagVerdict(answer) ? ['Unstructured negative technical verdict detected in NotebookLM answer'] : []),
+    citations: row.citations || [],
+    rawCommentary: !isJsonFormat ? String(answer || '').slice(0, 500) : (row.notes || row.rationale || null)
+  };
+}
+
+function parseRankVerdicts(answer, evalResults) {
+  const candidates = evalResults.conflictGraph?.recommendedSolutions || evalResults.conflictGraph?.rankedSolutions || [];
+  const { rows, isJsonFormat } = _parseRankJsonRows(answer);
+  return candidates.map(candidate => _buildCandidateRankVerdict(candidate, rows, isJsonFormat, answer));
 }
 
 /**
@@ -309,7 +381,7 @@ function buildSolutionSourceValidationPrompt(sourceTitle, chassisName) {
  * @param {object} [options] - Execution options
  * @returns {Promise<object>} Validation report with workbook deliverable and learned deltas
  */
-async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
+function _checkValidationPreconditions(evalResults, options) {
   require('../system/execution_budget.js').assertCallerActive(options, Date.now());
   if (options.signal?.aborted) throw options.signal.reason;
   if (Number.isFinite(options.deadlineAt) && Date.now() >= options.deadlineAt) {
@@ -321,63 +393,48 @@ async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
   if (!chassisName) {
     throw new Error('[Guardrail INV-24] Missing target chassis identifier in evaluation results. Dynamic resolution required.');
   }
-  const timestamp = Date.now();
-  const manifest = solutionManifest(evalResults);
-  const manifestSha256 = solutionFingerprint(evalResults);
   const expectedNotebookId = resolveProductNotebookId(chassisName);
   if (options.notebookId && options.notebookId !== expectedNotebookId) {
     throw new Error('Candidate review notebook does not match the dedicated product mapping.');
   }
-  const notebookId = expectedNotebookId;
-  const trustEntry = getNotebookConfigEntry(notebookId, { chassis: chassisName })?.entry || {};
-  const authoritativeSourceIds = getAuthoritativeSourceIds(trustEntry).sort();
-  const isMock = Boolean(options.isMock || options.offlineTest || process.env.NODE_ENV === 'test' || process.env.NLM_MOCK_MODE === 'true');
-  const modeTag = isMock ? 'simulation' : 'live_cloud';
-  const cacheKey = `solution_validator:v2:${manifestSha256}:${notebookId}:${modeTag}:${JSON.stringify(trustEntry)}`;
+  return { chassisName, notebookId: expectedNotebookId };
+}
 
-  if (!options.bypassCache && manifestSha256) {
-    const cached = getCachedRagResult(cacheKey);
-    if (cached && cached.manifestSha256 === manifestSha256 && cached.notebookId === notebookId &&
-        cached.sourceDetached === true && (isMock ? cached.simulationPassed === true : candidateReviewCurrent({ ...evalResults, ephemeralSourceValidation: cached }))) {
-      logger.info('NLM_SOURCE_VALIDATOR', `Cache HIT for solution manifest ${manifestSha256.slice(0, 12)} (${chassisName}) — skipping duplicate NLM source query.`);
-      return { ...cached, isCached: true };
+function _resolveTargetChassisDirectory(options, chassisName) {
+  if (options.targetDir) return options.targetDir;
+  try {
+    const { listAllCatalogs } = require('../catalog/catalog_discovery.js');
+    const catalogs = listAllCatalogs(path.join(PROJECT_ROOT, 'outputs'));
+    const matched = catalogs.find(c =>
+      c.id?.toLowerCase() === chassisName.toLowerCase() ||
+      c.chassis?.toLowerCase() === chassisName.toLowerCase() ||
+      path.basename(c.catalogDir || '').toLowerCase() === chassisName.toLowerCase() ||
+      c.id?.toLowerCase().includes(chassisName.toLowerCase()) ||
+      chassisName.toLowerCase().includes(c.id?.toLowerCase() || '')
+    );
+    if (matched && matched.catalogDir && fs.existsSync(matched.catalogDir)) {
+      return matched.catalogDir;
     }
-  }
+  } catch (_) {}
 
-  const sourceTitle = `Solution_BOM_${chassisName}_${timestamp}`;
-  const queryPayload = `${buildSolutionSourceValidationPrompt(sourceTitle, chassisName)}\nUse NotebookLM native inline citation markers such as [1] inside the JSON citation strings, linked to official vendor sources. Plain source titles without native citations are insufficient. Do not cite the temporary candidate source as compatibility evidence.\nUnverified customer baseline (evaluation input, not authority): ${JSON.stringify((evalResults.items || []).map(item => ({ sku: item.sku, quantity: item.quantity, description: item.description, purpose: item.purpose })))}\nCandidate manifests: ${JSON.stringify(manifest)}\nExplicit support policy: ${JSON.stringify(evalResults.supportPolicy || null)}`;
+  try {
+    const { resolveChassisDirectory } = require('../catalog/sku_versioning.js');
+    const resolved = resolveChassisDirectory(chassisName);
+    if (resolved && fs.existsSync(resolved)) return resolved;
+  } catch (_) {}
 
-  if (!fs.existsSync(TEMP_SOURCES_DIR)) {
-    fs.mkdirSync(TEMP_SOURCES_DIR, { recursive: true });
-  }
+  return path.join(PROJECT_ROOT, 'outputs', 'temp', chassisName);
+}
 
-  // Step 1: Export multi-rank workbook (.xlsx) and companion CSV (.csv)
-  const workbookFilename = `${chassisName}_MultiRank_Solutions_${timestamp}.xlsx`;
-  const csvFilename = `${chassisName}_MultiRank_Solutions_${timestamp}.csv`;
-  const workbookPath = path.join(TEMP_SOURCES_DIR, workbookFilename);
-  const csvPath = path.join(TEMP_SOURCES_DIR, csvFilename);
-
-  generateMultiRankSolutionWorkbook(evalResults, workbookPath, chassisName, { ...options, diagnostic: true });
-  generateMultiRankSolutionCsv(evalResults, csvPath, { ...options, diagnostic: true });
-
-  // Step 2: Resolve target notebook UUID
+async function _dispatchEphemeralNotebookQuery(notebookId, prompt, attachRes, chassisName, evalResults, options) {
   const hasLiveNotebook = Boolean(notebookId);
-
-  // Step 3: Attach ephemeral source
-  const attachRes = attachSolutionSource(notebookId, csvPath, sourceTitle, options);
-  const sourceId = attachRes.sourceId;
-
   let ragAnswer = '';
-  let queryRecovery = null;
   let citations = [];
   let isCloudGrounded = false;
-  let sourceDetached = false;
+  let queryRecovery = null;
 
   try {
     if (options.signal?.aborted) throw options.signal.reason;
-    // Step 4: Dispatch focused solution validation query
-    const prompt = queryPayload;
-
     if (hasLiveNotebook && attachRes.success && !attachRes.isMock) {
       const queryRes = await executeNotebookQuery(notebookId, prompt, {
         context: { chassis: chassisName, structuredValidation: true },
@@ -387,7 +444,7 @@ async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
         onAttempt: attempt => { evalResults.notebookQueryAttempt = attempt; },
         bypassCache: true,
         sourceIds: options.sourceIds,
-        ephemeralSource: { notebookId, sourceId, createdThisRun: true }
+        ephemeralSource: { notebookId, sourceId: attachRes.sourceId, createdThisRun: true }
       });
       if (options.signal?.aborted) throw options.signal.reason;
       ragAnswer = queryRes.answer || '';
@@ -395,7 +452,6 @@ async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
       isCloudGrounded = queryRes.isCloudGrounded || false;
     } else {
       ragAnswer = 'Cloud candidate validation was not performed. No buildability verdict is available from this stage.';
-      isCloudGrounded = false;
     }
   } catch (queryErr) {
     queryRecovery = require('../notebook/query_attempt_record.js').getNotebookQueryRecovery(queryErr, options.signal);
@@ -403,88 +459,127 @@ async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
     if ((options.signal?.aborted && Object.is(queryErr, options.signal.reason)) || queryErr?.code === 'NOTEBOOK_QUERY_DEADLINE_EXCEEDED') throw queryErr;
     logger.warn('NLM_SOURCE_VALIDATOR', `NotebookLM query failed: ${queryErr.message}; preserving physical math certification.`);
     ragAnswer = `Cloud candidate validation failed: ${queryErr.message}. No buildability verdict is available from this stage.`;
-  } finally {
-    // Step 6: Guaranteed detach of ephemeral solution source (INV-24 Compliance)
-    if (sourceId) {
-      sourceDetached = detachSolutionSource(notebookId, sourceId, options);
-      if (attachRes.recoveryAttemptId) {
-        require('./nlm_sync_client.js').updateSourceRecoveryAction(attachRes.recoveryAttemptId, {
-          status: sourceDetached ? 'PURGED' : 'PURGE_REQUIRED', ownerPid: null,
-          ...(sourceDetached ? { purgedAt: new Date().toISOString() } : {})
-        });
-      }
-    }
   }
 
-  // Step 5: Extract learnings into KnowledgeDelta records
-  let targetChassisDir = options.targetDir;
-  if (!targetChassisDir) {
-    try {
-      const { listAllCatalogs } = require('../catalog/catalog_discovery.js');
-      const catalogs = listAllCatalogs(path.join(PROJECT_ROOT, 'outputs'));
-      const matched = catalogs.find(c =>
-        c.id?.toLowerCase() === chassisName.toLowerCase() ||
-        c.chassis?.toLowerCase() === chassisName.toLowerCase() ||
-        path.basename(c.catalogDir || '').toLowerCase() === chassisName.toLowerCase() ||
-        c.id?.toLowerCase().includes(chassisName.toLowerCase()) ||
-        chassisName.toLowerCase().includes(c.id?.toLowerCase() || '')
-      );
-      if (matched && matched.catalogDir && fs.existsSync(matched.catalogDir)) {
-        targetChassisDir = matched.catalogDir;
-      }
-    } catch (_) {
-      // Fallback below
-    }
+  return { ragAnswer, citations, isCloudGrounded, queryRecovery };
+}
+
+function _purgeEphemeralSourceSafely(notebookId, sourceId, attachRes, options) {
+  if (!sourceId) return false;
+  const sourceDetached = detachSolutionSource(notebookId, sourceId, options);
+  if (attachRes.recoveryAttemptId) {
+    require('./nlm_sync_client.js').updateSourceRecoveryAction(attachRes.recoveryAttemptId, {
+      status: sourceDetached ? 'PURGED' : 'PURGE_REQUIRED', ownerPid: null,
+      ...(sourceDetached ? { purgedAt: new Date().toISOString() } : {})
+    });
   }
-  if (!targetChassisDir) {
-    try {
-      const { resolveChassisDirectory } = require('../catalog/sku_versioning.js');
-      const resolved = resolveChassisDirectory(chassisName);
-      if (resolved && fs.existsSync(resolved)) {
-        targetChassisDir = resolved;
-      }
-    } catch (_) {
-      // Fallback below
-    }
+  return sourceDetached;
+}
+
+function _checkValidationCache(evalResults, options, manifestSha256, notebookId, chassisName, cacheKey, isMock) {
+  if (options.bypassCache || !manifestSha256) {
+    return null;
   }
-  if (!targetChassisDir) {
-    targetChassisDir = path.join(PROJECT_ROOT, 'outputs', 'temp', chassisName);
+  const cached = getCachedRagResult(cacheKey);
+  if (!cached || cached.manifestSha256 !== manifestSha256 || cached.notebookId !== notebookId || cached.sourceDetached !== true) {
+    return null;
   }
-  let extractedDeltas = [];
+  const isCurrent = isMock ? cached.simulationPassed === true : candidateReviewCurrent({ ...evalResults, ephemeralSourceValidation: cached });
+  if (isCurrent) {
+    logger.info('NLM_SOURCE_VALIDATOR', `Cache HIT for solution manifest ${manifestSha256.slice(0, 12)} (${chassisName}) — skipping duplicate NLM source query.`);
+    return { ...cached, isCached: true };
+  }
+  return null;
+}
+
+function _exportEphemeralSolutionArtifacts(evalResults, chassisName, timestamp, options) {
+  if (!fs.existsSync(TEMP_SOURCES_DIR)) {
+    fs.mkdirSync(TEMP_SOURCES_DIR, { recursive: true });
+  }
+  const workbookFilename = `${chassisName}_MultiRank_Solutions_${timestamp}.xlsx`;
+  const csvFilename = `${chassisName}_MultiRank_Solutions_${timestamp}.csv`;
+  const workbookPath = path.join(TEMP_SOURCES_DIR, workbookFilename);
+  const csvPath = path.join(TEMP_SOURCES_DIR, csvFilename);
+
+  generateMultiRankSolutionWorkbook(evalResults, workbookPath, chassisName, { ...options, diagnostic: true });
+  generateMultiRankSolutionCsv(evalResults, csvPath, { ...options, diagnostic: true });
+  return { workbookPath, csvPath };
+}
+
+function _extractEphemeralValidationDeltas(ragAnswer, isCloudGrounded, options, chassisName) {
+  if (!isCloudGrounded) {
+    return [];
+  }
+  const targetChassisDir = _resolveTargetChassisDirectory(options, chassisName);
   try {
-    extractedDeltas = isCloudGrounded ? extractKnowledgeFromRagAnswer(ragAnswer, targetChassisDir, {
+    return extractKnowledgeFromRagAnswer(ragAnswer, targetChassisDir, {
       chassis: chassisName,
-      confidenceScore: isCloudGrounded ? 0.95 : 0.80
-    }) : [];
+      confidenceScore: 0.95
+    });
   } catch (extErr) {
     logger.warn('NLM_SOURCE_VALIDATOR', `Knowledge extraction note: ${extErr.message}`);
+    return [];
   }
+}
 
-  // Step 7: Trigger post-flow sync to align local and master knowledge registries
-  let syncStatus = null;
-  try {
-    // Parsed learning proposals are not certified rules. The owning evaluation
-    // performs governed persistence and synchronization after review.
-    syncStatus = { status: 'DEFERRED_TO_EVALUATION', persistedLearnings: false };
-  } catch (syncErr) {
-    logger.warn('NLM_SOURCE_VALIDATOR', `Post-flow sync note: ${syncErr.message}`);
-  }
-
-  const rankVerdicts = parseRankVerdicts(ragAnswer, evalResults);
+function _determineEphemeralValidationStatus(rankVerdicts, isCloudGrounded, sourceDetached, attachRes) {
   const isRejected = rankVerdicts.some(r => r.verdict === 'FAIL');
   const allPassed = rankVerdicts.length > 0 && rankVerdicts.every(r => r.verdict === 'PASS');
   const doubleCheckVerdict = isRejected
     ? 'DOUBLE_CHECK_REJECTED'
     : (isCloudGrounded && allPassed && sourceDetached ? 'DOUBLE_CHECK_PASSED' : 'DOUBLE_CHECK_UNVERIFIED');
 
-  const isRealCloudCertified = attachRes.success && !attachRes.isMock && isCloudGrounded && allPassed && sourceDetached;
-  const isSimulationPassed = attachRes.success && attachRes.isMock === true && allPassed && sourceDetached;
+  const isRealCloudCertified = Boolean(attachRes.success && !attachRes.isMock && isCloudGrounded && allPassed && sourceDetached);
+  const isSimulationPassed = Boolean(attachRes.success && attachRes.isMock === true && allPassed && sourceDetached);
+  const operationalStatus = isRealCloudCertified ? 'CLOUD_CERTIFIED' : (isSimulationPassed ? 'MOCK_VERIFIED' : 'UNVERIFIED');
+
+  return { doubleCheckVerdict, isRealCloudCertified, isSimulationPassed, operationalStatus };
+}
+
+async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
+  const { chassisName, notebookId } = _checkValidationPreconditions(evalResults, options);
+  const timestamp = Date.now();
+  const manifest = solutionManifest(evalResults);
+  const manifestSha256 = solutionFingerprint(evalResults);
+  const trustEntry = getNotebookConfigEntry(notebookId, { chassis: chassisName })?.entry || {};
+  const authoritativeSourceIds = getAuthoritativeSourceIds(trustEntry).sort();
+  const isMock = Boolean(options.isMock || options.offlineTest || process.env.NODE_ENV === 'test' || process.env.NLM_MOCK_MODE === 'true');
+  const modeTag = isMock ? 'simulation' : 'live_cloud';
+  const cacheKey = `solution_validator:v2:${manifestSha256}:${notebookId}:${modeTag}:${JSON.stringify(trustEntry)}`;
+
+  const cachedHit = _checkValidationCache(evalResults, options, manifestSha256, notebookId, chassisName, cacheKey, isMock);
+  if (cachedHit) {
+    return cachedHit;
+  }
+
+  const sourceTitle = `Solution_BOM_${chassisName}_${timestamp}`;
+  const queryPayload = `${buildSolutionSourceValidationPrompt(sourceTitle, chassisName)}\nUse NotebookLM native inline citation markers such as [1] inside the JSON citation strings, linked to official vendor sources. Plain source titles without native citations are insufficient. Do not cite the temporary candidate source as compatibility evidence.\nUnverified customer baseline (evaluation input, not authority): ${JSON.stringify((evalResults.items || []).map(item => ({ sku: item.sku, quantity: item.quantity, description: item.description, purpose: item.purpose })))}\nCandidate manifests: ${JSON.stringify(manifest)}\nExplicit support policy: ${JSON.stringify(evalResults.supportPolicy || null)}`;
+
+  const { workbookPath, csvPath } = _exportEphemeralSolutionArtifacts(evalResults, chassisName, timestamp, options);
+  const attachRes = attachSolutionSource(notebookId, csvPath, sourceTitle, options);
+  const sourceId = attachRes.sourceId;
+
+  let queryOutcome = { ragAnswer: '', citations: [], isCloudGrounded: false, queryRecovery: null };
+  let sourceDetached = false;
+
+  try {
+    queryOutcome = await _dispatchEphemeralNotebookQuery(notebookId, queryPayload, attachRes, chassisName, evalResults, options);
+  } finally {
+    sourceDetached = _purgeEphemeralSourceSafely(notebookId, sourceId, attachRes, options);
+  }
+
+  const { ragAnswer, citations, isCloudGrounded, queryRecovery } = queryOutcome;
+  const extractedDeltas = _extractEphemeralValidationDeltas(ragAnswer, isCloudGrounded, options, chassisName);
+  const syncStatus = { status: 'DEFERRED_TO_EVALUATION', persistedLearnings: false };
+  const rankVerdicts = parseRankVerdicts(ragAnswer, evalResults);
+  const { doubleCheckVerdict, isRealCloudCertified, isSimulationPassed, operationalStatus } =
+    _determineEphemeralValidationStatus(rankVerdicts, isCloudGrounded, sourceDetached, attachRes);
 
   const result = {
     reviewedAt: new Date().toISOString(),
     success: isRealCloudCertified,
     simulationPassed: isSimulationPassed,
-    operationalStatus: isRealCloudCertified ? 'CLOUD_CERTIFIED' : (isSimulationPassed ? 'MOCK_VERIFIED' : 'UNVERIFIED'),
+    operationalStatus,
     manifest,
     manifestSha256,
     rankVerdicts,
@@ -525,6 +620,7 @@ async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
 module.exports = {
   parseRankVerdicts,
   resolveProductNotebookId,
+  getProductNotebookResolution,
   attachSolutionSource,
   detachSolutionSource,
   buildSolutionSourceValidationPrompt,

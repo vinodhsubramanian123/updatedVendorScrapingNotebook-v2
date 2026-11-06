@@ -31,41 +31,40 @@ function compareSkus(before, after) {
   return { added: [...current].filter(sku => !previous.has(sku)), removed: [...previous].filter(sku => !current.has(sku)) };
 }
 
-// Called after the existing workbook audit and before replacing the live folder.
-// A receipt describes captured coverage; it never certifies every portal state.
-function createCaptureReceipt(stagingDir, liveDir, product, options = {}) {
-  if (options.skipCoverageValidation) {
-    if (process.env.NODE_ENV === 'production') {
-      throw new Error('[INV-105] skipCoverageValidation is strictly prohibited in production.');
-    }
-    const testsRoot = path.resolve(__dirname, '../../../tests');
-    const entry = path.resolve(process.argv[1] || '.');
-    const relative = path.relative(testsRoot, entry);
-    const isEnclosedTest = !relative.startsWith('..') && !path.isAbsolute(relative) && /^test_.*\.js$/i.test(path.basename(entry));
-    const isTestEnv = Boolean(process.env.NODE_TEST_CONTEXT) || isEnclosedTest;
-    if (!isTestEnv) {
-      throw new Error('[INV-105] skipCoverageValidation is restricted to test harnesses only.');
-    }
+function _validateTestOnlySkipCoverage(options) {
+  if (!options.skipCoverageValidation) return;
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error('[INV-105] skipCoverageValidation is strictly prohibited in production.');
   }
-  const next = summarizeCatalog(stagingDir, product);
-  const raw = readJson(path.join(stagingDir, 'raw_data', 'oca_raw_data_full.json'));
+  const testsRoot = path.resolve(__dirname, '../../../tests');
+  const entry = path.resolve(process.argv[1] || '.');
+  const relative = path.relative(testsRoot, entry);
+  const isEnclosedTest = !relative.startsWith('..') && !path.isAbsolute(relative) && /^test_.*\.js$/i.test(path.basename(entry));
+  const isTestEnv = Boolean(process.env.NODE_TEST_CONTEXT) || isEnclosedTest;
+  if (!isTestEnv) {
+    throw new Error('[INV-105] skipCoverageValidation is restricted to test harnesses only.');
+  }
+}
+
+function _validateCaptureTimestampAndCounts(next, raw) {
   const capture = next.catalog.metadata?.scrapeTimestamp;
-  if (!capture || !Number.isFinite(Date.parse(capture)) || Date.parse(capture) > Date.now()
-      || Date.parse(capture) !== Date.parse(raw.timestamp)) throw new Error('Capture timestamp does not match raw vendor evidence');
+  if (!capture || !Number.isFinite(Date.parse(capture)) || Date.parse(capture) > Date.now() || Date.parse(capture) !== Date.parse(raw.timestamp)) {
+    throw new Error('Capture timestamp does not match raw vendor evidence');
+  }
+
   const retainedHardwareCount = new Set((next.catalog.entries || []).flatMap(entry => entry.skus || [])
     .map(row => String(row.sku || row['Product #'] || '').trim()).filter(Boolean)).size;
+
   if (!next.counts.hardware || retainedHardwareCount !== Number(next.catalog.metadata.totalUniqueSKUs)) {
     throw new Error('Hardware retained SKU count does not match catalog metadata');
   }
+
   next.counts.retainedHardware = retainedHardwareCount;
   next.counts.hardwareTombstones = retainedHardwareCount - next.counts.hardware;
-  const workbook = require('xlsx-js-style').readFile(path.join(stagingDir, `${product}_OCA_Catalog.xlsx`));
-  const coveragePolicy = options.skipCoverageValidation
-    ? { valid: true, skipped: true, reason: 'Coverage validation skipped via options' }
-    : require('./catalog_coverage.js').validateCatalogCoverage(product, next.catalog, next.services, workbook, options.profilesPath);
-  if (!coveragePolicy.valid) throw new Error(`Capture coverage incomplete: ${coveragePolicy.reason}`);
+  return capture;
+}
 
-  // Validate individual worksheet contents and non-emptiness
+function _validateWorkbookSheetsAndSkus(workbook, next) {
   for (const sheetName of workbook.SheetNames) {
     const sheet = workbook.Sheets[sheetName];
     if (!sheet) throw new Error(`Workbook sheet '${sheetName}' is unreadable.`);
@@ -78,28 +77,70 @@ function createCaptureReceipt(stagingDir, liveDir, product, options = {}) {
   const workbookRows = workbook.SheetNames.flatMap(name => require('xlsx-js-style').utils.sheet_to_json(workbook.Sheets[name]));
   const actual = skuSet({ entries: [{ skus: workbookRows }] });
   const expected = new Set([...skuSet(next.catalog), ...skuSet(next.services)]);
-  if ([...expected].some(sku => !actual.has(sku))) throw new Error('Workbook is missing catalog SKUs');
-  const previousFile = path.join(liveDir, `${product}_Catalog.json`);
-  let previous = null;
-  const previousComplete = ['Catalog.json', 'Services.json', 'Catalog_Rules.json', 'OCA_Catalog.xlsx']
-    .every(suffix => fs.existsSync(path.join(liveDir, `${product}_${suffix}`)));
-  if (fs.existsSync(previousFile) && previousComplete) previous = summarizeCatalog(liveDir, product);
+  if ([...expected].some(sku => !actual.has(sku))) {
+    throw new Error('Workbook is missing catalog SKUs');
+  }
+}
 
+function _extractCaptureProvenance(raw, options) {
   const selectedBase = raw.selectedBaseSku || raw.baseSku || null;
   const ownerConfig = raw.ownerConfiguration || null;
   const solutionDomain = raw.solutionDomain || options.solutionDomain || null;
   const observedSelectors = raw.observedSelectors || raw.selectorHistory || [];
-  const missingProvenance = [!selectedBase && 'BASE_NOT_OBSERVED', !ownerConfig && 'OWNER_NOT_OBSERVED',
-    !solutionDomain && 'DOMAIN_NOT_SCOPED', (!Array.isArray(observedSelectors) || !observedSelectors.length) && 'SELECTORS_NOT_OBSERVED',
-    raw.finalSelectorsRestored !== true && 'FINAL_SELECTORS_NOT_RESTORED'].filter(Boolean);
+  const missingProvenance = [
+    !selectedBase && 'BASE_NOT_OBSERVED',
+    !ownerConfig && 'OWNER_NOT_OBSERVED',
+    !solutionDomain && 'DOMAIN_NOT_SCOPED',
+    (!Array.isArray(observedSelectors) || !observedSelectors.length) && 'SELECTORS_NOT_OBSERVED',
+    raw.finalSelectorsRestored !== true && 'FINAL_SELECTORS_NOT_RESTORED'
+  ].filter(Boolean);
+
   if (missingProvenance.length && !options.skipCoverageValidation) {
     throw new Error(`Capture provenance incomplete: ${missingProvenance.join(', ')}`);
   }
 
+  return { selectedBase, ownerConfig, solutionDomain, observedSelectors, missingProvenance };
+}
+
+function _loadPreviousCatalogBaseline(liveDir, product) {
+  const previousFile = path.join(liveDir, `${product}_Catalog.json`);
+  const previousComplete = ['Catalog.json', 'Services.json', 'Catalog_Rules.json', 'OCA_Catalog.xlsx']
+    .every(suffix => fs.existsSync(path.join(liveDir, `${product}_${suffix}`)));
+  let previous = null;
+  if (fs.existsSync(previousFile) && previousComplete) {
+    previous = summarizeCatalog(liveDir, product);
+  }
+  return { previousFile, previousComplete, previous };
+}
+
+// Called after the existing workbook audit and before replacing the live folder.
+// A receipt describes captured coverage; it never certifies every portal state.
+function createCaptureReceipt(stagingDir, liveDir, product, options = {}) {
+  _validateTestOnlySkipCoverage(options);
+
+  const next = summarizeCatalog(stagingDir, product);
+  const raw = readJson(path.join(stagingDir, 'raw_data', 'oca_raw_data_full.json'));
+  const capture = _validateCaptureTimestampAndCounts(next, raw);
+
+  const workbook = require('xlsx-js-style').readFile(path.join(stagingDir, `${product}_OCA_Catalog.xlsx`));
+  const coveragePolicy = options.skipCoverageValidation
+    ? { valid: true, skipped: true, reason: 'Coverage validation skipped via options' }
+    : require('./catalog_coverage.js').validateCatalogCoverage(product, next.catalog, next.services, workbook, options.profilesPath);
+  if (!coveragePolicy.valid) throw new Error(`Capture coverage incomplete: ${coveragePolicy.reason}`);
+
+  _validateWorkbookSheetsAndSkus(workbook, next);
+  const { previousFile, previousComplete, previous } = _loadPreviousCatalogBaseline(liveDir, product);
+  const { selectedBase, ownerConfig, solutionDomain, observedSelectors, missingProvenance } = _extractCaptureProvenance(raw, options);
+
   const receipt = {
-    schemaVersion: 1, product, vendor: 'HPE', capturedAt: capture, auditedAt: new Date().toISOString(),
+    schemaVersion: 1,
+    product,
+    vendor: 'HPE',
+    capturedAt: capture,
+    auditedAt: new Date().toISOString(),
     incompleteLegacyBaselinePreserved: fs.existsSync(previousFile) && !previousComplete,
-    mode: previous ? 'REFRESH' : 'FIRST_CAPTURE', status: options.skipCoverageValidation ? 'DIAGNOSTIC_CAPTURE' : 'STAGING_AUDITED',
+    mode: previous ? 'REFRESH' : 'FIRST_CAPTURE',
+    status: options.skipCoverageValidation ? 'DIAGNOSTIC_CAPTURE' : 'STAGING_AUDITED',
     provenance: {
       baseSku: selectedBase,
       ownerConfiguration: ownerConfig,
@@ -113,16 +154,23 @@ function createCaptureReceipt(stagingDir, liveDir, product, options = {}) {
       baseSku: selectedBase,
       ownerConfiguration: ownerConfig,
       solutionDomain,
-      observedSelectors, missingProvenance,
+      observedSelectors,
+      missingProvenance,
       completeness: 'CAPTURED_STATES_ONLY',
       policy: coveragePolicy
     },
-    counts: next.counts, previousCounts: previous?.counts || null, hashes: next.hashes,
+    counts: next.counts,
+    previousCounts: previous?.counts || null,
+    hashes: next.hashes,
     rawSha256: hash(fs.readFileSync(path.join(stagingDir, 'raw_data', 'oca_raw_data_full.json'))),
     sheets: workbook.SheetNames.map(name => ({ name, rows: require('xlsx-js-style').utils.sheet_to_json(workbook.Sheets[name], { header: 1 }).length })),
-    deltas: { hardware: compareSkus(previous?.catalog, next.catalog), services: compareSkus(previous?.services, next.services),
+    deltas: {
+      hardware: compareSkus(previous?.catalog, next.catalog),
+      services: compareSkus(previous?.services, next.services),
       rulesChanged: previous ? JSON.stringify(previous.rules.rules) !== JSON.stringify(next.rules.rules) : true,
-      hardwareChanges: next.catalog.metadata.diffSummary || null, serviceChanges: next.services.metadata?.diffSummary || null },
+      hardwareChanges: next.catalog.metadata.diffSummary || null,
+      serviceChanges: next.services.metadata?.diffSummary || null
+    },
     cloud: { status: 'PENDING' }
   };
   safeWriteJsonAtomic(path.join(stagingDir, 'capture_receipt.json'), receipt);

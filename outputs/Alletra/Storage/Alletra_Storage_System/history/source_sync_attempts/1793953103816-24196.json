@@ -1,0 +1,24 @@
+{
+  "product": "Alletra_Storage_System",
+  "notebookId": "a67629ba-3434-42ab-b465-bd6d71852198",
+  "replacementSourceId": "3aa06e3c-e241-45a8-990d-b23c63c6becf",
+  "verifiedAt": "2026-11-06T08:18:23.816Z",
+  "contentFingerprints": {
+    "catalog": "dc184237b0708c6cff970816ef88fba44c159798d6f29f99dc5a8ce75a43b9c7",
+    "learnings": "87527a14c4d4c4fe75a5a805c62dd680eecebb6ade4a37b955a5639dc1dcc956",
+    "changes": "b52e5c725b0a53e11ff03134eafc504f4d7a08dbdd96faa255adb37d5daba496",
+    "workbook": "2a3d385e95cf2a23de5a51a0905d1030f253b4ffe3134db0e6bef06f62b92c82",
+    "combined": "a6ae73bfd9d984120dbc2b821329bfbe44e6516c927296367d7cde8b273c5271"
+  },
+  "legacyFingerprint": "a6ae73bfd9d984120dbc2b821329bfbe44e6516c927296367d7cde8b273c5271",
+  "retirementRequested": false,
+  "plannedRetirementIds": [
+    "1e506f2b-85a5-4059-b644-d63b655a6e47"
+  ],
+  "status": "RETIREMENT_PENDING",
+  "retiredSourceIds": [],
+  "remainingSourceIds": [
+    "1e506f2b-85a5-4059-b644-d63b655a6e47"
+  ],
+  "retirementErrors": []
+}

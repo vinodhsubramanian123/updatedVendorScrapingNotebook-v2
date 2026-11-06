@@ -191,6 +191,95 @@ export function deriveDualBrainBadges(data = {}, inner = {}) {
   return badges;
 }
 
+function _handleAbnormalPayload(payload) {
+  if (payload.status === 'SCHEMA_INVALID' || payload.data?.isContractInvalid === true || payload.data?.evalResults?.isContractInvalid === true) {
+    const diagnostic = payload.data || {};
+    return {
+      ...diagnostic,
+      status: 'ERROR',
+      contractStatus: 'SCHEMA_INVALID',
+      isContractInvalid: true,
+      error: payload.error?.message || 'Evaluator output failed schema validation',
+      schemaErrors: payload.error?.issues || diagnostic.schemaErrors || [],
+      customerDisposition: 'DELIVERY_BLOCKED_UNBUILDABLE',
+      deliveryAuthorization: null,
+      acceptanceGate: { status: 'FAILED', isValid: false },
+      evalResults: {
+        ...diagnostic.evalResults,
+        status: 'SCHEMA_INVALID',
+        isContractInvalid: true,
+        customerDisposition: 'DELIVERY_BLOCKED_UNBUILDABLE',
+        deliveryAuthorization: null,
+        acceptanceGate: { status: 'FAILED', isValid: false }
+      }
+    };
+  }
+
+  if (!payload.data && payload.error && typeof payload.error === 'object' && !Array.isArray(payload.error) && payload.error.status === 'CANCELLED') {
+    const cancellation = payload.error;
+    const data = cancellation.data && typeof cancellation.data === 'object' && !Array.isArray(cancellation.data) ? cancellation.data : {};
+    return {
+      ...normalizeEvalResult({ data }),
+      ...cancellation,
+      status: 'CANCELLED',
+      error: cancellation.error ?? cancellation.message ?? 'Evaluation cancelled'
+    };
+  }
+
+  if (payload.error && !payload.data) {
+    return { status: 'ERROR', error: payload.error?.error || 'Evaluation failed' };
+  }
+
+  return null;
+}
+
+function _pick(primary, secondary, fallback = null) {
+  if (primary !== undefined && primary !== null) return primary;
+  if (secondary !== undefined && secondary !== null) return secondary;
+  return fallback;
+}
+
+function _hoistEvaluationFields(data, inner) {
+  return {
+    items: _pick(data.items, inner.items, []),
+    bomItems: data.items || inner.items || data.bomItems || [],
+    unclassifiedSkus: _pick(data.unclassifiedSkus, inner.unclassifiedSkus, []),
+    chassis: data.chassisPrefix || data.chassisDir || inner.chassis || 'UNKNOWN_PRODUCT',
+    targetBudgetUsd: _pick(data.targetBudgetUsd, inner.targetBudgetUsd, 0),
+    errors: _pick(inner.errors, data.errors, []),
+    warnings: _pick(inner.warnings, data.warnings, []),
+    missingDependencies: _pick(inner.missingDependencies, data.missingDependencies, []),
+    confidence: _pick(inner.confidence, data.confidence, { score: 0, summary: '' }),
+    isMathClean: _pick(inner.isMathClean, data.isMathClean, null),
+    criticalViolationsCount: _pick(inner.criticalViolationsCount, data.criticalViolationsCount, null),
+    portalValidationStatus: _pick(inner.portalValidationStatus, data.portalValidationStatus, 'PENDING'),
+    ephemeralSourceValidation: _pick(inner.ephemeralSourceValidation, data.ephemeralSourceValidation, null),
+    agenticExplanation: _pick(inner.agenticExplanation, data.agenticExplanation, undefined),
+    agenticReviewStatus: _pick(inner.agenticReviewStatus, data.agenticReviewStatus, 'NOT_RUN'),
+    agenticReview: _pick(inner.agenticReview, data.agenticReview, null),
+    solutionTopology: _pick(inner.solutionTopology, data.solutionTopology, null),
+    ragAnswer: _pick(inner.ragAnswer, data.ragAnswer, null),
+    ragData: _pick(inner.ragResult, data.ragResult, null),
+    customerDisposition: _pick(inner.customerDisposition, data.customerDisposition, null),
+    deliveryAuthorization: _pick(inner.deliveryAuthorization, data.deliveryAuthorization, null),
+    evaluationNarrative: _pick(inner.evaluationNarrative, data.evaluationNarrative, null)
+  };
+}
+
+function _hoistClarificationFields(data, inner) {
+  const isClarification = data.code === 'PLATFORM_CLARIFICATION_REQUIRED' ||
+    inner.code === 'PLATFORM_CLARIFICATION_REQUIRED' ||
+    (data.status === 'ACTION_REQUIRED' && Boolean(data.candidates?.length || inner.candidates?.length));
+
+  return {
+    clarificationRequired: isClarification,
+    clarificationCode: data.code || inner.code || null,
+    clarificationQuestion: data.question || inner.question || null,
+    clarificationCandidates: data.candidates || inner.candidates || (Array.isArray(data.question?.options) ? data.question.options : []),
+    dualBrainBadges: deriveDualBrainBadges(data, inner)
+  };
+}
+
 /**
  * Flatten a raw EVAL_RESULT SSE payload into the shape that all dashboard
  * components expect. This is the *single* data contract normalisation point —
@@ -200,68 +289,18 @@ export function deriveDualBrainBadges(data = {}, inner = {}) {
  * @returns {object}        Normalised evalResults object
  */
 export function normalizeEvalResult(payload) {
-  if (payload.status === 'SCHEMA_INVALID' || payload.data?.isContractInvalid === true || payload.data?.evalResults?.isContractInvalid === true) {
-    const diagnostic = payload.data || {};
-    return { ...diagnostic, status: 'ERROR', contractStatus: 'SCHEMA_INVALID', isContractInvalid: true,
-      error: payload.error?.message || 'Evaluator output failed schema validation',
-      schemaErrors: payload.error?.issues || diagnostic.schemaErrors || [],
-      customerDisposition: 'DELIVERY_BLOCKED_UNBUILDABLE', deliveryAuthorization: null,
-      acceptanceGate: { status: 'FAILED', isValid: false },
-      evalResults: { ...diagnostic.evalResults, status: 'SCHEMA_INVALID', isContractInvalid: true,
-        customerDisposition: 'DELIVERY_BLOCKED_UNBUILDABLE', deliveryAuthorization: null,
-        acceptanceGate: { status: 'FAILED', isValid: false } } };
-  }
-  if (!payload.data && payload.error && typeof payload.error === 'object' &&
-      !Array.isArray(payload.error) && payload.error.status === 'CANCELLED') {
-    const cancellation = payload.error;
-    const data = cancellation.data && typeof cancellation.data === 'object' && !Array.isArray(cancellation.data)
-      ? cancellation.data : {};
-    return { ...normalizeEvalResult({ data }), ...cancellation, status: 'CANCELLED',
-      error: cancellation.error ?? cancellation.message ?? 'Evaluation cancelled' };
-  }
-  if (payload.error && !payload.data) {
-    return { status: 'ERROR', error: payload.error?.error || 'Evaluation failed' };
-  }
+  const abnormal = _handleAbnormalPayload(payload);
+  if (abnormal) return abnormal;
 
   const data = payload.data || {};
   const inner = data.evalResults || {};
 
   return {
     ...data,
-    // Hoist items and SKU collections
-    items: data.items ?? inner.items ?? [],
-    bomItems: data.items ?? inner.items ?? data.bomItems ?? [],
-    unclassifiedSkus: data.unclassifiedSkus ?? inner.unclassifiedSkus ?? [],
-    chassis: data.chassisPrefix || data.chassisDir || inner.chassis || 'UNKNOWN_PRODUCT',
-    targetBudgetUsd: data.targetBudgetUsd ?? inner.targetBudgetUsd ?? 0,
-    // Hoist inner eval fields to top level for component backward-compat
-    errors: inner.errors ?? data.errors ?? [],
-    warnings: inner.warnings ?? data.warnings ?? [],
-    missingDependencies: inner.missingDependencies ?? data.missingDependencies ?? [],
-    confidence: inner.confidence ?? data.confidence ?? { score: 0, summary: '' },
-    isMathClean: inner.isMathClean ?? data.isMathClean ?? null,
-    criticalViolationsCount: inner.criticalViolationsCount ?? data.criticalViolationsCount ?? null,
-    portalValidationStatus: inner.portalValidationStatus ?? data.portalValidationStatus ?? 'PENDING',
-    ephemeralSourceValidation: inner.ephemeralSourceValidation ?? data.ephemeralSourceValidation ?? null,
-    agenticExplanation: inner.agenticExplanation ?? data.agenticExplanation,
-    agenticReviewStatus: inner.agenticReviewStatus ?? data.agenticReviewStatus ?? 'NOT_RUN',
-    agenticReview: inner.agenticReview ?? data.agenticReview ?? null,
-    solutionTopology: inner.solutionTopology ?? data.solutionTopology ?? null,
+    ..._hoistEvaluationFields(data, inner),
     ...extractHardwareMetrics(data, inner),
     ...extractConflictAndStrategy(data, inner),
     ...extractProvenanceAndTrace(data, inner),
-    // RAG fields — read directly from evaluation result if already synthesized
-    ragAnswer: inner.ragAnswer ?? data.ragAnswer ?? null,
-    ragData: inner.ragResult ?? data.ragResult ?? null,
-    // Architectural Narrative & Delivery Gate (INV-126 & INV-128)
-    customerDisposition: inner.customerDisposition ?? data.customerDisposition ?? null,
-    deliveryAuthorization: inner.deliveryAuthorization ?? data.deliveryAuthorization ?? null,
-    evaluationNarrative: inner.evaluationNarrative ?? data.evaluationNarrative ?? null,
-    // Clarification & HITL Disambiguation (GAP-16)
-    clarificationRequired: data.code === 'PLATFORM_CLARIFICATION_REQUIRED' || inner.code === 'PLATFORM_CLARIFICATION_REQUIRED' || (data.status === 'ACTION_REQUIRED' && Boolean(data.candidates?.length || inner.candidates?.length)),
-    clarificationCode: data.code || inner.code || null,
-    clarificationQuestion: data.question || inner.question || null,
-    clarificationCandidates: data.candidates || inner.candidates || (Array.isArray(data.question?.options) ? data.question.options : []),
-    dualBrainBadges: deriveDualBrainBadges(data, inner)
+    ..._hoistClarificationFields(data, inner)
   };
 }

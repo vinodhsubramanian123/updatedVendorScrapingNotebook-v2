@@ -77,6 +77,143 @@ function getAbortErrorMessage(signal) {
   return 'Canonical evaluator was cancelled';
 }
 
+function _unwireSignal(signal, onAbort) {
+  if (!signal) return;
+  if (typeof signal.removeEventListener === 'function') {
+    signal.removeEventListener('abort', onAbort);
+  } else if (typeof signal.removeListener === 'function') {
+    signal.removeListener('abort', onAbort);
+  } else if (typeof signal.off === 'function') {
+    signal.off('abort', onAbort);
+  }
+}
+
+function _wireSignal(signal, onAbort) {
+  if (!signal) return;
+  if (typeof signal.addEventListener === 'function') {
+    signal.addEventListener('abort', onAbort, { once: true });
+  } else if (typeof signal.on === 'function') {
+    signal.on('abort', onAbort);
+  }
+}
+
+async function _executeChildTerminationAsync(child, group, options, state, settle) {
+  let receipt = null;
+  const secondaryFaults = [];
+
+  try {
+    receipt = await requestChildTermination(child, {
+      reason: state.primaryReason.reason,
+      cooperative: state.drainOutput,
+      graceMs: options.graceMs ?? (state.drainOutput ? 5000 : undefined),
+      confirmationMs: options.confirmationMs
+    });
+  } catch (terminationErr) {
+    secondaryFaults.push(terminationErr);
+    try {
+      if (child && typeof child.kill === 'function') {
+        child.kill('SIGKILL');
+      }
+    } catch (killErr) {
+      secondaryFaults.push(killErr);
+    }
+  }
+
+  if (!state.actualClosed) {
+    await new Promise(res => { state.pendingCloseResolve = res; });
+  }
+
+  const exitCode = state.finalExitCode !== null ? state.finalExitCode : (receipt?.exitCode ?? child?.exitCode ?? null);
+  const signal = state.finalSignal !== null ? state.finalSignal : (receipt?.signal ?? child?.signalCode ?? null);
+
+  const factualReceipt = receipt || {
+    exitConfirmed: Boolean(state.actualClosed || isChildAlreadyExited(child)),
+    state: (state.actualClosed || isChildAlreadyExited(child)) ? 'EXIT_CONFIRMED' : 'EXIT_UNCONFIRMED',
+    terminationRequested: true,
+    exitCode,
+    signal,
+    reason: state.primaryReason.reason,
+    secondaryFaults
+  };
+
+  if (receipt && secondaryFaults.length > 0 && Array.isArray(receipt.secondaryFaults)) {
+    receipt.secondaryFaults.push(...secondaryFaults);
+  }
+
+  let canonicalCancellation;
+  try {
+    if (state.stdout.split(MARKER).length === 3) {
+      const payload = parseChildPayload(state.stdout);
+      if (payload?.status === 'CANCELLED') canonicalCancellation = payload;
+    }
+  } catch { /* A missing/malformed frame is not a final canonical ledger. */ }
+
+  settle(resultEnvelope(group, state.primaryReason.status, {
+    error: state.primaryReason.error,
+    code: state.primaryReason.code,
+    stderr: state.stderr,
+    process: { exitCode, signal, terminationRequested: true },
+    receipt: factualReceipt,
+    ...(canonicalCancellation ? { result: canonicalCancellation } : {}),
+    ...(secondaryFaults.length > 0 ? { secondaryFaults } : {})
+  }));
+}
+
+function _setupChildStreamsAndEvents(child, group, options, state, terminate, settle) {
+  const append = (data, stream) => {
+    if (state.settled || (state.terminating && !state.drainOutput)) return;
+    state.bytes += Buffer.byteLength(data);
+    if (state.bytes > (options.maxOutputBytes ?? DEFAULT_MAX_OUTPUT_BYTES)) {
+      terminate('ERROR', 'Canonical evaluator output limit exceeded', 'MULTI_CHILD_OUTPUT_LIMIT');
+      return;
+    }
+    if (stream === 'stdout') state.stdout += data.toString();
+    else state.stderr += data.toString();
+  };
+
+  const onError = error => {
+    if (state.terminating || state.settled) return;
+    if (!child || !child.pid) {
+      settle(resultEnvelope(group, 'ERROR', {
+        error: error.message,
+        code: 'MULTI_CHILD_SPAWN_ERROR',
+        stderr: state.stderr,
+        process: { exitCode: null, signal: null }
+      }));
+      return;
+    }
+    terminate('ERROR', error.message, 'MULTI_CHILD_SPAWN_ERROR');
+  };
+
+  const onClose = (code, signal) => {
+    state.actualClosed = true;
+    state.finalExitCode = (code !== undefined && code !== null) ? code : (child?.exitCode ?? null);
+    state.finalSignal = (signal !== undefined && signal !== null) ? signal : (child?.signalCode ?? null);
+
+    if (state.pendingCloseResolve) {
+      const cb = state.pendingCloseResolve;
+      state.pendingCloseResolve = null;
+      cb();
+    }
+
+    if (state.terminating) return;
+    settle(childOutcome(group, state.stdout, state.stderr, state.finalExitCode, state.finalSignal, state.ipcChildPayload));
+  };
+
+  if (child.on && typeof child.on === 'function') {
+    child.on('message', (msg) => {
+      if (msg?.type === 'EVAL_RESULT_PAYLOAD') {
+        state.ipcChildPayload = msg;
+      }
+    });
+  }
+
+  if (child.stdout && typeof child.stdout.on === 'function') child.stdout.on('data', d => append(d, 'stdout'));
+  if (child.stderr && typeof child.stderr.on === 'function') child.stderr.on('data', d => append(d, 'stderr'));
+  child.on('error', onError);
+  child.on('close', onClose);
+}
+
 function executeGroupChild(group, options = {}) {
   const evalScript = path.join(__dirname, '../../evaluators/eval_boq.js');
   return new Promise((resolve, reject) => {
@@ -103,186 +240,67 @@ function executeGroupChild(group, options = {}) {
     let lifetimeMs;
     try { lifetimeMs = childTimeout(options, Date.now()); } catch (error) { return reject(error); }
 
-    let child = null;
-    let timer = null;
-    let settled = false;
-    let terminating = false;
-    let primaryReason = null;
-    let stdout = '';
-    let stderr = '';
-    let ipcChildPayload = null;
-    let bytes = 0;
-    let actualClosed = false;
-    let finalExitCode = null;
-    let finalSignal = null;
-    let pendingCloseResolve = null;
+    const state = {
+      child: null,
+      timer: null,
+      settled: false,
+      terminating: false,
+      primaryReason: null,
+      stdout: '',
+      stderr: '',
+      ipcChildPayload: null,
+      bytes: 0,
+      actualClosed: false,
+      finalExitCode: null,
+      finalSignal: null,
+      pendingCloseResolve: null,
+      drainOutput: false
+    };
+
     const ownedCli = process.env.PRESALES_TERMINAL_OWNER === '1';
-    let drainOutput = false;
 
     const cleanup = () => {
-      if (timer !== null) {
-        clearTimeout(timer);
-        timer = null;
+      if (state.timer !== null) {
+        clearTimeout(state.timer);
+        state.timer = null;
       }
-      if (options.signal) {
-        if (typeof options.signal.removeEventListener === 'function') {
-          options.signal.removeEventListener('abort', onAbort);
-        } else if (typeof options.signal.removeListener === 'function') {
-          options.signal.removeListener('abort', onAbort);
-        } else if (typeof options.signal.off === 'function') {
-          options.signal.off('abort', onAbort);
-        }
-      }
+      _unwireSignal(options.signal, onAbort);
     };
 
     const settle = result => {
-      if (settled) return;
-      settled = true;
+      if (state.settled) return;
+      state.settled = true;
       cleanup();
       resolve(result);
     };
 
     const terminate = (status, error, code) => {
-      if (terminating || settled) return;
-      terminating = true;
-      primaryReason = { status, error, code,
-        reason: status === 'CANCELLED' ? options.signal.reason : code };
-      drainOutput = Boolean(ownedCli && child?.connected && typeof child.send === 'function');
+      if (state.terminating || state.settled) return;
+      state.terminating = true;
+      state.primaryReason = {
+        status, error, code,
+        reason: status === 'CANCELLED' ? options.signal.reason : code
+      };
+      state.drainOutput = Boolean(ownedCli && state.child?.connected && typeof state.child.send === 'function');
       cleanup();
-
-      (async () => {
-        let receipt = null;
-        const secondaryFaults = [];
-
-        try {
-          receipt = await requestChildTermination(child, {
-            reason: primaryReason.reason,
-            cooperative: drainOutput,
-            graceMs: options.graceMs ?? (drainOutput ? 5000 : undefined),
-            confirmationMs: options.confirmationMs
-          });
-        } catch (terminationErr) {
-          secondaryFaults.push(terminationErr);
-          try {
-            if (child && typeof child.kill === 'function') {
-              child.kill('SIGKILL');
-            }
-          } catch (killErr) {
-            secondaryFaults.push(killErr);
-          }
-        }
-
-        if (!actualClosed) {
-          await new Promise(res => { pendingCloseResolve = res; });
-        }
-
-        const exitCode = finalExitCode !== null ? finalExitCode : (receipt?.exitCode ?? child?.exitCode ?? null);
-        const signal = finalSignal !== null ? finalSignal : (receipt?.signal ?? child?.signalCode ?? null);
-
-        const factualReceipt = receipt || {
-          exitConfirmed: Boolean(actualClosed || isChildAlreadyExited(child)),
-          state: (actualClosed || isChildAlreadyExited(child)) ? 'EXIT_CONFIRMED' : 'EXIT_UNCONFIRMED',
-          terminationRequested: true,
-          exitCode,
-          signal,
-          reason: primaryReason.reason,
-          secondaryFaults
-        };
-
-        if (receipt && secondaryFaults.length > 0 && Array.isArray(receipt.secondaryFaults)) {
-          receipt.secondaryFaults.push(...secondaryFaults);
-        }
-
-        let canonicalCancellation;
-        try {
-          if (stdout.split(MARKER).length === 3) {
-            const payload = parseChildPayload(stdout);
-            if (payload?.status === 'CANCELLED') canonicalCancellation = payload;
-          }
-        } catch { /* A missing/malformed frame is not a final canonical ledger. */ }
-
-        settle(resultEnvelope(group, primaryReason.status, {
-          error: primaryReason.error,
-          code: primaryReason.code,
-          stderr,
-          process: { exitCode, signal, terminationRequested: true },
-          receipt: factualReceipt,
-          ...(canonicalCancellation ? { result: canonicalCancellation } : {}),
-          ...(secondaryFaults.length > 0 ? { secondaryFaults } : {})
-        }));
-      })();
-    };
-
-    const append = (data, stream) => {
-      if (settled || (terminating && !drainOutput)) return;
-      bytes += Buffer.byteLength(data);
-      if (bytes > (options.maxOutputBytes ?? DEFAULT_MAX_OUTPUT_BYTES)) {
-        terminate('ERROR', 'Canonical evaluator output limit exceeded', 'MULTI_CHILD_OUTPUT_LIMIT');
-        return;
-      }
-      if (stream === 'stdout') stdout += data.toString();
-      else stderr += data.toString();
+      _executeChildTerminationAsync(state.child, group, options, state, settle);
     };
 
     const onAbort = () => {
       terminate('CANCELLED', getAbortErrorMessage(options.signal), 'MULTI_CHILD_CANCELLED');
     };
 
-    const onError = error => {
-      if (terminating || settled) return;
-      if (!child || !child.pid) {
-        settle(resultEnvelope(group, 'ERROR', {
-          error: error.message,
-          code: 'MULTI_CHILD_SPAWN_ERROR',
-          stderr,
-          process: { exitCode: null, signal: null }
-        }));
-        return;
-      }
-      terminate('ERROR', error.message, 'MULTI_CHILD_SPAWN_ERROR');
-    };
-
-    const onClose = (code, signal) => {
-      actualClosed = true;
-      finalExitCode = (code !== undefined && code !== null) ? code : (child?.exitCode ?? null);
-      finalSignal = (signal !== undefined && signal !== null) ? signal : (child?.signalCode ?? null);
-
-      if (pendingCloseResolve) {
-        const cb = pendingCloseResolve;
-        pendingCloseResolve = null;
-        cb();
-      }
-
-      if (terminating) return;
-      settle(childOutcome(group, stdout, stderr, finalExitCode, finalSignal, ipcChildPayload));
-    };
-
     try {
-      child = spawnObservedChild('executeGroupChild', __filename, extraEnv => spawn(process.execPath,
+      state.child = spawnObservedChild('executeGroupChild', __filename, extraEnv => spawn(process.execPath,
         childArguments(group, options, evalScript), {
           env: { ...process.env, ...extraEnv, STRUCTURED_PROGRESS: '0' },
           ...(ownedCli ? { stdio: ['pipe', 'pipe', 'pipe', 'ipc'] } : {})
         }));
 
-      if (child.on && typeof child.on === 'function') {
-        child.on('message', (msg) => {
-          if (msg?.type === 'EVAL_RESULT_PAYLOAD') {
-            ipcChildPayload = msg;
-          }
-        });
-      }
-
-      if (child.stdout && typeof child.stdout.on === 'function') child.stdout.on('data', d => append(d, 'stdout'));
-      if (child.stderr && typeof child.stderr.on === 'function') child.stderr.on('data', d => append(d, 'stderr'));
-      child.on('error', onError);
-      child.on('close', onClose);
+      _setupChildStreamsAndEvents(state.child, group, options, state, terminate, settle);
 
       if (options.signal) {
-        if (typeof options.signal.addEventListener === 'function') {
-          options.signal.addEventListener('abort', onAbort, { once: true });
-        } else if (typeof options.signal.on === 'function') {
-          options.signal.on('abort', onAbort);
-        }
+        _wireSignal(options.signal, onAbort);
         if (options.signal.aborted) {
           onAbort();
           return;
@@ -290,9 +308,9 @@ function executeGroupChild(group, options = {}) {
       }
 
       const remainingMs = options.deadlineAt === undefined ? lifetimeMs : Math.max(1, Math.min(lifetimeMs, options.deadlineAt - Date.now()));
-      timer = setTimeout(() => terminate('ERROR', 'Canonical evaluator timed out', 'MULTI_CHILD_TIMEOUT'), remainingMs);
+      state.timer = setTimeout(() => terminate('ERROR', 'Canonical evaluator timed out', 'MULTI_CHILD_TIMEOUT'), remainingMs);
     } catch (error) {
-      settle(resultEnvelope(group, 'ERROR', { error: error.message, code: 'MULTI_CHILD_SPAWN_ERROR', stderr, process: { exitCode: null, signal: null } }));
+      settle(resultEnvelope(group, 'ERROR', { error: error.message, code: 'MULTI_CHILD_SPAWN_ERROR', stderr: state.stderr, process: { exitCode: null, signal: null } }));
     }
   });
 }

@@ -1,0 +1,24 @@
+{
+  "product": "SN3600B_FC",
+  "notebookId": "d7f84352-1cdb-4842-84ca-39d2a10b91eb",
+  "replacementSourceId": "a5cf149d-0aa6-48d9-a059-9fb0cd53b2f3",
+  "verifiedAt": "2026-11-06T08:35:21.982Z",
+  "contentFingerprints": {
+    "catalog": "754f5ee986f13eb98f3bfc5745adb2400351bbc5f29143ecc461cfa1067813ab",
+    "learnings": "f9ebaaacc7b3180f7afcdf4d7900a50b7e3244d641b078dcc9cccb6220a111e8",
+    "changes": "9bde85860eb46bf5ffff528dc06712431603ebe3bc932611c4b096d4fe033519",
+    "workbook": "746326671e7244fed1c51d7fa9512a7499cd5ee35737516f5abcff1fab3accf3",
+    "combined": "1d56e49a78e2e3f0c116f42f9509b5d18bfe173a2bbeab40831a774efcf276ad"
+  },
+  "legacyFingerprint": "1d56e49a78e2e3f0c116f42f9509b5d18bfe173a2bbeab40831a774efcf276ad",
+  "retirementRequested": false,
+  "plannedRetirementIds": [
+    "393dbacc-441b-4475-be94-54b2170cc7a2"
+  ],
+  "status": "RETIREMENT_PENDING",
+  "retiredSourceIds": [],
+  "remainingSourceIds": [
+    "393dbacc-441b-4475-be94-54b2170cc7a2"
+  ],
+  "retirementErrors": []
+}

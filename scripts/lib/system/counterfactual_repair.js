@@ -236,50 +236,87 @@ function _evaluateStorageRepair(storage, errors, proofs) {
   }
 }
 
+function _checkGpuPowerCableProof(pcie, errors, proofs) {
+  const needsCable = pcie.needsGpuPowerCableKit || errors.some(e => /gpu.*power cable|gpu.*aux/i.test(e));
+  if (!needsCable) return;
+
+  const qty = Math.max(1, (pcie.gpuCount || 1) - (pcie.gpuPowerCableKitCount || 0));
+  proofs.push({
+    issueType: 'GPU_POWER_CABLE_MISSING',
+    rootCause: `Installed ${pcie.gpuCount || 1} GPU(s) lack required 16-pin / 8-pin auxiliary power feeds from riser headers.`,
+    requiredHardwareDeltas: [
+      {
+        action: 'ADD',
+        sku: 'P52410-B21',
+        description: 'HPE ProLiant DL380 GPU Auxiliary Power Cable Kit',
+        quantity: qty
+      }
+    ],
+    mathematicalProof: `Installed GPUs = ${pcie.gpuCount || 1} (up to 350W TDP per accelerator) vs Cabled feeds = ${pcie.gpuPowerCableKitCount || 0}. Adding ${qty}x P52410-B21 provides dedicated 12V aux power headers.`,
+    resultingStatus: '100% BUILDABLE'
+  });
+}
+
+function _resolveRiserDeltaAndType(pcie) {
+  if (pcie.needsPrimaryRiser) {
+    return {
+      delta: { sku: 'P48803-B21', desc: 'HPE ProLiant DL380 Gen11 3x16 Primary Riser Kit', qty: 1 },
+      issueType: 'PCIE_PRIMARY_RISER_MISSING',
+      addedSlots: 3
+    };
+  }
+  if (pcie.needsSecondaryRiser) {
+    return {
+      delta: { sku: 'P48813-B21', desc: 'HPE ProLiant DL380 Gen11 3x16 Secondary Riser Kit', qty: 1 },
+      issueType: 'PCIE_SECONDARY_RISER_MISSING',
+      addedSlots: 3
+    };
+  }
+  return {
+    delta: { sku: 'P56073-B21', desc: 'HPE ProLiant DL380 Gen11 Primary Riser Cable Kit', qty: 1 },
+    issueType: 'PCIE_CABLE_KIT_MISSING',
+    addedSlots: 1
+  };
+}
+
+function _checkPcieSlotCapacityProof(pcie, errors, proofs) {
+  const needsSlotOrRiser = pcie.isExceedingActiveSlots ||
+    pcie.needsPrimaryRiser ||
+    pcie.needsSecondaryRiser ||
+    pcie.needsPrimaryCableKit ||
+    pcie.needsSecondaryCableKit ||
+    errors.some(e => /pcie slot|riser.*missing/i.test(e));
+
+  if (!needsSlotOrRiser) return;
+
+  const { delta, issueType, addedSlots } = _resolveRiserDeltaAndType(pcie);
+  const reqCards = pcie.requiredPcieCards || 1;
+  const activeSlots = pcie.activeSlotsAvailable || 0;
+  const deficit = Math.max(1, reqCards - activeSlots);
+  const newCapacity = activeSlots + addedSlots;
+
+  proofs.push({
+    issueType,
+    rootCause: `Demand of ${reqCards} PCIe standup card(s) exceeds active slot capacity of ${activeSlots} slot(s).`,
+    requiredHardwareDeltas: [
+      {
+        action: 'ADD',
+        sku: delta.sku,
+        description: delta.desc,
+        quantity: delta.qty
+      }
+    ],
+    mathematicalProof: `Demand: ${reqCards} card(s) vs Active: ${activeSlots} slot(s) (-${deficit} deficit). Adding ${delta.sku} expands active capacity to ${newCapacity} slots >= ${reqCards} card(s).`,
+    resultingStatus: '100% BUILDABLE'
+  });
+}
+
 function _evaluatePcieRepair(pcie, errors, proofs) {
   if (!pcie || Object.keys(pcie).length === 0) {
     if (!errors.some(e => /pcie|riser|gpu.*power/i.test(e))) return;
   }
-  if (pcie.needsGpuPowerCableKit || errors.some(e => /gpu.*power cable|gpu.*aux/i.test(e))) {
-    const qty = Math.max(1, (pcie.gpuCount || 1) - (pcie.gpuPowerCableKitCount || 0));
-    proofs.push({
-      issueType: 'GPU_POWER_CABLE_MISSING',
-      rootCause: `Installed ${pcie.gpuCount || 1} GPU(s) lack required 16-pin / 8-pin auxiliary power feeds from riser headers.`,
-      requiredHardwareDeltas: [
-        {
-          action: 'ADD',
-          sku: 'P52410-B21',
-          description: 'HPE ProLiant DL380 GPU Auxiliary Power Cable Kit',
-          quantity: qty
-        }
-      ],
-      mathematicalProof: `Installed GPUs = ${pcie.gpuCount || 1} (up to 350W TDP per accelerator) vs Cabled feeds = ${pcie.gpuPowerCableKitCount || 0}. Adding ${qty}x P52410-B21 provides dedicated 12V aux power headers.`,
-      resultingStatus: '100% BUILDABLE'
-    });
-  }
-
-  if (pcie.isExceedingActiveSlots || pcie.needsPrimaryRiser || pcie.needsSecondaryRiser || pcie.needsPrimaryCableKit || pcie.needsSecondaryCableKit || errors.some(e => /pcie slot|riser.*missing/i.test(e))) {
-    const delta = pcie.needsPrimaryRiser
-      ? { sku: 'P48803-B21', desc: 'HPE ProLiant DL380 Gen11 3x16 Primary Riser Kit', qty: 1 }
-      : (pcie.needsSecondaryRiser
-        ? { sku: 'P48813-B21', desc: 'HPE ProLiant DL380 Gen11 3x16 Secondary Riser Kit', qty: 1 }
-        : { sku: 'P56073-B21', desc: 'HPE ProLiant DL380 Gen11 Primary Riser Cable Kit', qty: 1 });
-
-    proofs.push({
-      issueType: pcie.needsPrimaryRiser ? 'PCIE_PRIMARY_RISER_MISSING' : (pcie.needsSecondaryRiser ? 'PCIE_SECONDARY_RISER_MISSING' : 'PCIE_CABLE_KIT_MISSING'),
-      rootCause: `Demand of ${pcie.requiredPcieCards || 1} PCIe standup card(s) exceeds active slot capacity of ${pcie.activeSlotsAvailable || 0} slot(s).`,
-      requiredHardwareDeltas: [
-        {
-          action: 'ADD',
-          sku: delta.sku,
-          description: delta.desc,
-          quantity: delta.qty
-        }
-      ],
-      mathematicalProof: `Demand: ${pcie.requiredPcieCards || 1} card(s) vs Active: ${pcie.activeSlotsAvailable || 0} slot(s) (-${Math.max(1, (pcie.requiredPcieCards || 1) - (pcie.activeSlotsAvailable || 0))} deficit). Adding ${delta.sku} expands active capacity to ${(pcie.activeSlotsAvailable || 0) + (pcie.needsPrimaryRiser || pcie.needsSecondaryRiser ? 3 : 1)} slots >= ${pcie.requiredPcieCards || 1} card(s).`,
-      resultingStatus: '100% BUILDABLE'
-    });
-  }
+  _checkGpuPowerCableProof(pcie, errors, proofs);
+  _checkPcieSlotCapacityProof(pcie, errors, proofs);
 }
 
 function _evaluateContestedRepair(selfCorrectionTrail, errors, proofs) {

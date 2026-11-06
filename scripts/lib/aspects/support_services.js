@@ -6,6 +6,41 @@
 const { cleanBaseSKU, buildCatalogSkuIndex } = require('../catalog/sku.js');
 const { analyzeRetirementDate } = require('../catalog/lifecycle.js');
 
+function _isObsoleteSku(rawSku, rawDesc, rawLifecycle, catalogStatus) {
+  if (catalogStatus.includes('OB') || catalogStatus.includes('OBSOLETE')) return true;
+  if (rawLifecycle.includes('OBSOLETE') || rawLifecycle.includes('(OB)')) return true;
+  if (rawSku.includes('[OB]') || /^(?:OB|DS)\s+/i.test(rawSku)) return true;
+  return rawDesc.includes('[OB]');
+}
+
+function _isEolSku(rawSku, rawDesc, rawLifecycle, catalogStatus) {
+  if (catalogStatus.includes('90') || catalogStatus.includes('EOL')) return true;
+  if (rawLifecycle.includes('90-DAY') || rawLifecycle.includes('EOL')) return true;
+  if (rawSku.includes('[90]') || rawSku.includes('[EOL]') || rawSku.includes('90-DAY') || /^(?:90|EOL)\s+/i.test(rawSku)) return true;
+  return rawDesc.includes('[90]') || rawDesc.includes('[EOL]') || rawDesc.includes('90-DAY');
+}
+
+function _inspectRetirement(it, cleanSku, catalogSku, options, nearExpirySkus, eolSkus) {
+  const discontinuedDate = catalogSku['Discontinued Date'] || catalogSku.discontinuedDate || it.discontinuedDate || '';
+  const retirement = analyzeRetirementDate(discontinuedDate, options);
+  if (!retirement.known || (!retirement.isNear && !retirement.isPast)) return false;
+
+  const warning = {
+    sku: it.sku,
+    cleanSku,
+    description: it.description || catalogSku.Description || catalogSku.description || '',
+    status: retirement.isPast ? 'DISCONTINUATION DATE PASSED' : 'APPROACHING DISCONTINUATION',
+    discontinuedDate: retirement.retirementDate,
+    daysRemaining: retirement.daysRemaining,
+    quantity: it.quantity || 1
+  };
+  nearExpirySkus.push(warning);
+  if (!eolSkus.some(entry => entry.cleanSku === cleanSku)) {
+    eolSkus.push(warning);
+  }
+  return true;
+}
+
 function evalSupportServices(items, catalogData = null, options = {}) {
   let hasObsoleteRisk = false;
   let hasEolWarning = false;
@@ -20,25 +55,11 @@ function evalSupportServices(items, catalogData = null, options = {}) {
     const rawDesc = String(it.description || '').trim().toUpperCase();
     const rawLifecycle = String(it.lifecycleStatus || '').trim().toUpperCase();
 
-    // Check embedded brackets/tokens in SKU or Description (e.g. "[OB]", "(OB)", "OB P123")
-    const isObsolete = rawLifecycle.includes('OBSOLETE') || rawLifecycle.includes('(OB)') || 
-                       rawSku.includes('[OB]') || /^(?:OB|DS)\s+/i.test(rawSku) ||
-                       rawDesc.includes('[OB]');
-                       
-    // Strict EOL check: require explicit delimiters to avoid false-positives on SKUs starting with '90'
-    const isEolWarning = rawLifecycle.includes('90-DAY') || rawLifecycle.includes('EOL') || 
-                         rawSku.includes('[90]') || rawSku.includes('[EOL]') ||
-                         rawSku.includes('90-DAY') || /^(?:90|EOL)\s+/i.test(rawSku) ||
-                         rawDesc.includes('[90]') || rawDesc.includes('[EOL]') || rawDesc.includes('90-DAY');
-
-    // Check matched catalog entry via O(1) indexed lookup
     const catalogItem = skuIndex.get(cleanSku);
     const catalogStatus = String(catalogItem?.lifecycleStatus || '').toUpperCase();
     const catalogSku = catalogItem?.skuData || {};
-    const discontinuedDate = catalogSku['Discontinued Date'] || catalogSku.discontinuedDate || it.discontinuedDate || '';
-    const retirement = analyzeRetirementDate(discontinuedDate, options);
 
-    if (isObsolete || catalogStatus.includes('OB') || catalogStatus.includes('OBSOLETE')) {
+    if (_isObsoleteSku(rawSku, rawDesc, rawLifecycle, catalogStatus)) {
       hasObsoleteRisk = true;
       obsoleteSkus.push({
         sku: it.sku,
@@ -48,7 +69,8 @@ function evalSupportServices(items, catalogData = null, options = {}) {
         quantity: it.quantity || 1
       });
     }
-    if (isEolWarning || catalogStatus.includes('90') || catalogStatus.includes('EOL')) {
+
+    if (_isEolSku(rawSku, rawDesc, rawLifecycle, catalogStatus)) {
       hasEolWarning = true;
       eolSkus.push({
         sku: it.sku,
@@ -58,19 +80,9 @@ function evalSupportServices(items, catalogData = null, options = {}) {
         quantity: it.quantity || 1
       });
     }
-    if (retirement.known && (retirement.isNear || retirement.isPast)) {
+
+    if (_inspectRetirement(it, cleanSku, catalogSku, options, nearExpirySkus, eolSkus)) {
       hasEolWarning = true;
-      const warning = {
-        sku: it.sku,
-        cleanSku,
-        description: it.description || catalogSku.Description || catalogSku.description || '',
-        status: retirement.isPast ? 'DISCONTINUATION DATE PASSED' : 'APPROACHING DISCONTINUATION',
-        discontinuedDate: retirement.retirementDate,
-        daysRemaining: retirement.daysRemaining,
-        quantity: it.quantity || 1
-      };
-      nearExpirySkus.push(warning);
-      if (!eolSkus.some(entry => entry.cleanSku === cleanSku)) eolSkus.push(warning);
     }
   }
 

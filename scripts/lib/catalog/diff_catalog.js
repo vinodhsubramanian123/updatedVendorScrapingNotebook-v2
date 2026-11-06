@@ -333,6 +333,128 @@ function buildCompanionSkuMap(options, historyLabel) {
   return companionSkuMap;
 }
 
+function _handleReinstatedSku(pn, currPrice, scrapeDate, priceHistory, discontinuedRegistry, diffSummary) {
+  if (discontinuedRegistry[pn] && discontinuedRegistry[pn].status === 'DISCONTINUED') {
+    discontinuedRegistry[pn].status = 'REINSTATED';
+    discontinuedRegistry[pn].reinstatedDate = scrapeDate;
+    discontinuedRegistry[pn].lastKnownPrice = currPrice.toFixed(2);
+    appendTrailEvent(priceHistory[pn], {
+      date: scrapeDate,
+      price: currPrice,
+      status: 'REINSTATED'
+    });
+    diffSummary.reinstated++;
+  }
+}
+
+function _diffBaselineSku(sku, pn, currPrice, scrapeDate, priceHistory, diffSummary) {
+  sku['Diff Status'] = 'BASELINE';
+  sku['Previous List Price (USD)'] = 'N/A';
+  sku['Price Change (USD)'] = '$0.00';
+  sku['Price Change (%)'] = '0.00%';
+  sku['Attribute Deltas'] = 'None';
+
+  appendTrailEvent(priceHistory[pn], { date: scrapeDate, price: currPrice, status: 'BASELINE' });
+  diffSummary.unchanged++;
+}
+
+function _diffAddedSku(sku, pn, currPrice, entry, scrapeDate, priceHistory, discontinuedRegistry, diffSummary) {
+  sku['Diff Status'] = 'ADDED';
+  sku['Previous List Price (USD)'] = 'N/A';
+  sku['Price Change (USD)'] = currPrice > 0 ? `+$${currPrice.toFixed(2)}` : '$0.00';
+  sku['Price Change (%)'] = currPrice > 0 ? '+100.00%' : '0.00%';
+  sku['Attribute Deltas'] = 'New SKU introduced';
+
+  appendTrailEvent(priceHistory[pn], { date: scrapeDate, price: currPrice, status: 'ADDED' });
+  diffSummary.added++;
+
+  if (!discontinuedRegistry[pn]) {
+    discontinuedRegistry[pn] = {
+      productNumber: pn,
+      description: sku['Description'] || sku.description || '',
+      mainCategory: entry.parentCategory || '',
+      subCategory: entry.subCategory || '',
+      firstSeenDate: scrapeDate,
+      status: 'ACTIVE'
+    };
+  }
+}
+
+function _diffExistingSku(sku, pn, currPrice, prevSku, entry, catalogData, scrapeDate, priceHistory, attributeHistory, diffSummary) {
+  const prevPrice = parsePrice(prevSku['Unit Price (USD)'] || prevSku['Price (USD)'] || prevSku['Price'] || prevSku.price);
+  sku['Previous List Price (USD)'] = prevPrice > 0 ? prevPrice.toFixed(2) : 'N/A';
+
+  const attributeDeltas = recordAttributeDeltas(sku, prevSku, {
+    scrapeDate,
+    productNumber: pn,
+    chassis: catalogData.metadata?.chassis || 'Chassis',
+    mainCategory: entry.parentCategory || prevSku.parentCategory || '',
+    subCategory: entry.subCategory || prevSku.subCategory || ''
+  }, attributeHistory);
+
+  const priceHasChanged = Math.abs(currPrice - prevPrice) > 0.001;
+  const attrsHaveChanged = attributeDeltas.length > 0;
+
+  sku['Attribute Deltas'] = attrsHaveChanged
+    ? attributeDeltas.map(d => `${d.field}: "${d.oldValue}" → "${d.newValue}"`).join(' | ')
+    : 'None';
+
+  if (priceHasChanged && attrsHaveChanged) {
+    const delta = currPrice - prevPrice;
+    const pct = prevPrice > 0 ? (delta / prevPrice * 100) : 0;
+    sku['Diff Status'] = 'PRICE_AND_ATTRIBUTE_CHANGED';
+    sku['Price Change (USD)'] = `${delta > 0 ? '+' : ''}$${delta.toFixed(2)}`;
+    sku['Price Change (%)'] = `${pct > 0 ? '+' : ''}${pct.toFixed(2)}%`;
+    appendTrailEvent(priceHistory[pn], { date: scrapeDate, price: currPrice, status: 'PRICE_AND_ATTRIBUTE_CHANGED', prevPrice });
+    diffSummary.priceAndAttributeChanged++;
+  } else if (priceHasChanged) {
+    const delta = currPrice - prevPrice;
+    const pct = prevPrice > 0 ? (delta / prevPrice * 100) : 0;
+    sku['Diff Status'] = 'PRICE_CHANGED';
+    sku['Price Change (USD)'] = `${delta > 0 ? '+' : ''}$${delta.toFixed(2)}`;
+    sku['Price Change (%)'] = `${pct > 0 ? '+' : ''}${pct.toFixed(2)}%`;
+    appendTrailEvent(priceHistory[pn], { date: scrapeDate, price: currPrice, status: 'PRICE_CHANGED', prevPrice });
+    diffSummary.priceChanged++;
+  } else if (attrsHaveChanged) {
+    sku['Diff Status'] = 'ATTRIBUTE_CHANGED';
+    sku['Price Change (USD)'] = '$0.00';
+    sku['Price Change (%)'] = '0.00%';
+    appendTrailEvent(priceHistory[pn], { date: scrapeDate, price: currPrice, status: 'ATTRIBUTE_CHANGED' });
+    diffSummary.attributeChanged++;
+  } else {
+    sku['Diff Status'] = 'UNCHANGED';
+    sku['Price Change (USD)'] = '$0.00';
+    sku['Price Change (%)'] = '0.00%';
+    if (priceHistory[pn].length === 0) {
+      appendTrailEvent(priceHistory[pn], { date: scrapeDate, price: currPrice, status: 'BASELINE' });
+    }
+    diffSummary.unchanged++;
+  }
+}
+
+function _diffSingleCatalogSku(sku, pn, entry, prevCatalog, prevSkuMap, catalogData, priceHistory, discontinuedRegistry, attributeHistory, scrapeDate, diffSummary) {
+  if (isRemovalTombstone(sku)) {
+    sku['Diff Status'] = 'REMOVED';
+    return;
+  }
+
+  const currPrice = parsePrice(sku['Unit Price (USD)'] || sku['Price (USD)'] || sku['Price'] || sku.price);
+  if (!priceHistory[pn]) priceHistory[pn] = [];
+
+  _handleReinstatedSku(pn, currPrice, scrapeDate, priceHistory, discontinuedRegistry, diffSummary);
+
+  if (!prevCatalog) {
+    _diffBaselineSku(sku, pn, currPrice, scrapeDate, priceHistory, diffSummary);
+  } else if (!prevSkuMap.has(pn)) {
+    _diffAddedSku(sku, pn, currPrice, entry, scrapeDate, priceHistory, discontinuedRegistry, diffSummary);
+  } else {
+    const prevSku = prevSkuMap.get(pn);
+    _diffExistingSku(sku, pn, currPrice, prevSku, entry, catalogData, scrapeDate, priceHistory, attributeHistory, diffSummary);
+  }
+
+  sku['Price History Trail'] = buildTrailString(priceHistory[pn] || []);
+}
+
 function diffCurrentCatalogEntries(catalogData, prevCatalog, prevSkuMap, priceHistory, discontinuedRegistry, attributeHistory, scrapeDate, diffSummary) {
   const currSkuMap = new Map();
 
@@ -341,115 +463,148 @@ function diffCurrentCatalogEntries(catalogData, prevCatalog, prevSkuMap, priceHi
       const pn = sku['Product #'];
       if (!pn) continue;
       currSkuMap.set(pn, sku);
-
-      if (isRemovalTombstone(sku)) {
-        sku['Diff Status'] = 'REMOVED';
-        continue;
-      }
-
-      const currPrice = parsePrice(sku['Unit Price (USD)'] || sku['Price (USD)'] || sku['Price'] || sku.price);
-
-      if (!priceHistory[pn]) priceHistory[pn] = [];
-
-      if (discontinuedRegistry[pn] && discontinuedRegistry[pn].status === 'DISCONTINUED') {
-        discontinuedRegistry[pn].status        = 'REINSTATED';
-        discontinuedRegistry[pn].reinstatedDate = scrapeDate;
-        discontinuedRegistry[pn].lastKnownPrice = currPrice.toFixed(2);
-        appendTrailEvent(priceHistory[pn], {
-          date:   scrapeDate,
-          price:  currPrice,
-          status: 'REINSTATED'
-        });
-        diffSummary.reinstated++;
-      }
-
-      if (!prevCatalog) {
-        sku['Diff Status']               = 'BASELINE';
-        sku['Previous List Price (USD)']  = 'N/A';
-        sku['Price Change (USD)']         = '$0.00';
-        sku['Price Change (%)']           = '0.00%';
-        sku['Attribute Deltas']           = 'None';
-
-        appendTrailEvent(priceHistory[pn], { date: scrapeDate, price: currPrice, status: 'BASELINE' });
-        diffSummary.unchanged++;
-      } else if (!prevSkuMap.has(pn)) {
-        sku['Diff Status']               = 'ADDED';
-        sku['Previous List Price (USD)']  = 'N/A';
-        sku['Price Change (USD)']         = currPrice > 0 ? `+$${currPrice.toFixed(2)}` : '$0.00';
-        sku['Price Change (%)']           = currPrice > 0 ? '+100.00%' : '0.00%';
-        sku['Attribute Deltas']           = 'New SKU introduced';
-
-        appendTrailEvent(priceHistory[pn], { date: scrapeDate, price: currPrice, status: 'ADDED' });
-        diffSummary.added++;
-
-        if (!discontinuedRegistry[pn]) {
-          discontinuedRegistry[pn] = {
-            productNumber: pn,
-            description:   sku['Description'] || sku.description || '',
-            mainCategory:  entry.parentCategory || '',
-            subCategory:   entry.subCategory || '',
-            firstSeenDate: scrapeDate,
-            status:        'ACTIVE'
-          };
-        }
-      } else {
-        const prevSku   = prevSkuMap.get(pn);
-        const prevPrice = parsePrice(prevSku['Unit Price (USD)'] || prevSku['Price (USD)'] || prevSku['Price'] || prevSku.price);
-        sku['Previous List Price (USD)'] = prevPrice > 0 ? prevPrice.toFixed(2) : 'N/A';
-
-        const attributeDeltas = recordAttributeDeltas(sku, prevSku, {
-          scrapeDate,
-          productNumber: pn,
-          chassis: catalogData.metadata?.chassis || 'Chassis',
-          mainCategory: entry.parentCategory || prevSku.parentCategory || '',
-          subCategory: entry.subCategory || prevSku.subCategory || ''
-        }, attributeHistory);
-
-        const priceHasChanged  = Math.abs(currPrice - prevPrice) > 0.001;
-        const attrsHaveChanged = attributeDeltas.length > 0;
-
-        sku['Attribute Deltas'] = attrsHaveChanged
-          ? attributeDeltas.map(d => `${d.field}: "${d.oldValue}" → "${d.newValue}"`).join(' | ')
-          : 'None';
-
-        if (priceHasChanged && attrsHaveChanged) {
-          const delta = currPrice - prevPrice;
-          const pct   = prevPrice > 0 ? (delta / prevPrice * 100) : 0;
-          sku['Diff Status']        = 'PRICE_AND_ATTRIBUTE_CHANGED';
-          sku['Price Change (USD)'] = `${delta > 0 ? '+' : ''}$${delta.toFixed(2)}`;
-          sku['Price Change (%)']   = `${pct > 0 ? '+' : ''}${pct.toFixed(2)}%`;
-          appendTrailEvent(priceHistory[pn], { date: scrapeDate, price: currPrice, status: 'PRICE_AND_ATTRIBUTE_CHANGED', prevPrice });
-          diffSummary.priceAndAttributeChanged++;
-        } else if (priceHasChanged) {
-          const delta = currPrice - prevPrice;
-          const pct   = prevPrice > 0 ? (delta / prevPrice * 100) : 0;
-          sku['Diff Status']        = 'PRICE_CHANGED';
-          sku['Price Change (USD)'] = `${delta > 0 ? '+' : ''}$${delta.toFixed(2)}`;
-          sku['Price Change (%)']   = `${pct > 0 ? '+' : ''}${pct.toFixed(2)}%`;
-          appendTrailEvent(priceHistory[pn], { date: scrapeDate, price: currPrice, status: 'PRICE_CHANGED', prevPrice });
-          diffSummary.priceChanged++;
-        } else if (attrsHaveChanged) {
-          sku['Diff Status']        = 'ATTRIBUTE_CHANGED';
-          sku['Price Change (USD)'] = '$0.00';
-          sku['Price Change (%)']   = '0.00%';
-          appendTrailEvent(priceHistory[pn], { date: scrapeDate, price: currPrice, status: 'ATTRIBUTE_CHANGED' });
-          diffSummary.attributeChanged++;
-        } else {
-          sku['Diff Status']        = 'UNCHANGED';
-          sku['Price Change (USD)'] = '$0.00';
-          sku['Price Change (%)']   = '0.00%';
-          if (priceHistory[pn].length === 0) {
-            appendTrailEvent(priceHistory[pn], { date: scrapeDate, price: currPrice, status: 'BASELINE' });
-          }
-          diffSummary.unchanged++;
-        }
-      }
-
-      sku['Price History Trail'] = buildTrailString(priceHistory[pn] || []);
+      _diffSingleCatalogSku(sku, pn, entry, prevCatalog, prevSkuMap, catalogData, priceHistory, discontinuedRegistry, attributeHistory, scrapeDate, diffSummary);
     }
   }
 
   return currSkuMap;
+}
+
+function _handleCategoryMigratedEntry(pn, prevSku, compSku, catalogData, priceHistory, attributeHistory, scrapeDate, diffSummary) {
+  const compPrice = parsePrice(compSku['Unit Price (USD)'] || compSku['Price (USD)'] || compSku['Price'] || compSku.price);
+  if (!priceHistory[pn]) priceHistory[pn] = [];
+  appendTrailEvent(priceHistory[pn], {
+    date: scrapeDate,
+    price: compPrice,
+    status: 'CATEGORY_MIGRATED',
+    targetCategory: compSku.parentCategory
+  });
+  diffSummary.categoryMigrated++;
+
+  recordAttributeDeltas({
+    'Product #': pn,
+    'Main Category': compSku.parentCategory,
+    'Sub-Category': compSku.subCategory
+  }, prevSku, {
+    scrapeDate,
+    productNumber: pn,
+    chassis: catalogData.metadata?.chassis || 'Chassis',
+    mainCategory: prevSku.parentCategory || '',
+    subCategory: prevSku.subCategory || ''
+  }, attributeHistory);
+}
+
+function _resolveRemovalReason(prevSku, scrapeDate) {
+  const prevLifecycle = firstAttributeValue(prevSku, ['Lifecycle Status', 'lifecycleStatus']) || '';
+  const vendorDiscontinuedDate = firstAttributeValue(prevSku, ['Discontinued Date']);
+  let removalReason = 'ABSENT_FROM_CATALOG';
+  if (/OB|Obsolete|EOL|Discontinued/i.test(prevLifecycle)) {
+    removalReason = 'VENDOR_OBSOLETE';
+  } else if (vendorDiscontinuedDate && new Date(vendorDiscontinuedDate) <= new Date(scrapeDate)) {
+    removalReason = 'SCHEDULED_END_DATE';
+  } else if (vendorDiscontinuedDate && new Date(vendorDiscontinuedDate) > new Date(scrapeDate)) {
+    // Safeguard (INV-141): Do not mark a SKU as discontinued or tombstoned if vendor lifecycle has a future end date
+    // Dynamic WebLogic DOM sub-trees (e.g. GPU Accelerators or memory-mixing exclusions) are conditional, not EOL.
+    return { skip: true, removalReason, prevLifecycle, vendorDiscontinuedDate };
+  }
+  return { skip: false, removalReason, prevLifecycle, vendorDiscontinuedDate };
+}
+
+function _buildDiscontinuedRegistryRecord(pn, prevSku, prevPrice, scrapeDate, removalReason, prevLifecycle, vendorDiscontinuedDate, trailStr, priceHistory, discontinuedRegistry, catalogData, options) {
+  const existingEntry = discontinuedRegistry[pn];
+  const businessRelevant = isBusinessRelevantDiscontinuedSku(options, existingEntry, {
+    productNumber: pn, sku: prevSku, catalogData
+  });
+  const firstSeenDate = existingEntry?.firstSeenDate || priceHistory[pn][0]?.date || '';
+  let daysActive = 0;
+  if (firstSeenDate) {
+    const diffMs = new Date(scrapeDate) - new Date(firstSeenDate);
+    daysActive   = Math.round(diffMs / (1000 * 60 * 60 * 24));
+  }
+
+  let reason = 'Removed from active HPE OCA portal catalog';
+  if (removalReason === 'VENDOR_OBSOLETE') {
+    reason = 'Vendor marked obsolete/EOL in portal';
+  } else if (removalReason === 'SCHEDULED_END_DATE') {
+    reason = `Vendor scheduled end of life reached (${vendorDiscontinuedDate})`;
+  }
+
+  const record = {
+    productNumber:  pn,
+    description:    prevSku.Description || prevSku.description || '',
+    mainCategory:   prevSku.parentCategory || 'Deprecation Archive',
+    subCategory:    prevSku.subCategory    || 'Discontinued SKUs',
+    firstSeenDate,
+    discontinuedDate: scrapeDate,
+    daysActive,
+    lastKnownPrice: prevPrice.toFixed(2),
+    fullPriceTrail: trailStr,
+    status:         'DISCONTINUED',
+    removalReason,
+    previousLifecycleStatus: prevLifecycle || 'Active',
+    vendorDiscontinuedDate,
+    trackingState:  'STOPPED_AFTER_REMOVAL',
+    retentionClass: businessRelevant ? 'BUSINESS_RELEVANT' : 'COMPACT_LIFECYCLE_TOMBSTONE',
+    businessRelevant,
+    reason
+  };
+
+  return { record, daysActive, firstSeenDate };
+}
+
+function _createTombstoneSku(pn, prevSku, prevPrice, scrapeDate, daysActive, firstSeenDate, trailStr, catalogData) {
+  return {
+    'Main Category':              prevSku.parentCategory || 'Deprecation Archive',
+    'Sub-Category':               prevSku.subCategory    || 'Discontinued SKUs',
+    'Hierarchy Path':             prevSku['Hierarchy Path'] || `HPE OCA > ${catalogData.metadata?.chassis || 'Chassis'} > Deprecation Archive > Discontinued SKUs`,
+    'Component Role':             prevSku['Component Role'] || 'Discontinued Hardware',
+    'Constraint Text':            prevSku['Constraint Text'] || 'Discontinued',
+    'Subcategory Max Qty':        '0',
+    'Table Rule/Note':            '[DISCONTINUED] SKU removed from latest HPE OCA portal catalog',
+    'Option Type':                prevSku['Option Type'] || prevSku.optionType || ((prevSku.parentCategory || '').toLowerCase().includes('chassis') ? 'CTO' : 'Standard'),
+    'Product #':                  pn,
+    'Description':                `[REMOVED SKU] ${prevSku.Description || prevSku.description || ''}`,
+    'Current Qty':                '0',
+    'Unit Price (USD)':           prevPrice.toFixed(2),
+    'Price Delta (USD)':          '-',
+    'Extended Price (USD)':       '0.00',
+    'Price per GB (USD)':         '-',
+    'HPE Recommended':            'No',
+    'Start Date':                 prevSku['Start Date'] || prevSku.Start || firstSeenDate,
+    'Discontinued Date':          scrapeDate,
+    'Days Active':                String(daysActive),
+    'Diff Status':                'REMOVED',
+    'Lifecycle Status':           prevSku['Lifecycle Status'] || prevSku.lifecycleStatus || 'Discontinued',
+    'Lifecycle Badge':            prevSku['Lifecycle Badge'] || (String(prevSku['Lifecycle Status'] || '').includes('OB') ? 'OB' : 'DS'),
+    'Availability':               prevSku['Availability'] || 'Discontinued',
+    'Lead Time':                  prevSku['Lead Time'] || 'Not available (Discontinued)',
+    'Lead Time Source':           prevSku['Lead Time Source'] || 'Catalog deprecation',
+    'Vendor Attributes (JSON)':   prevSku['Vendor Attributes (JSON)'] || '{}',
+    'Previous List Price (USD)':  prevPrice.toFixed(2),
+    'Price Change (USD)':         prevPrice > 0 ? `-$${prevPrice.toFixed(2)}` : '$0.00',
+    'Price Change (%)':           prevPrice > 0 ? '-100.00%' : '0.00%',
+    'Attribute Deltas':           'SKU Discontinued & Tombstoned',
+    'Price History Trail':        trailStr
+  };
+}
+
+function _insertTombstoneSku(catalogData, tombstoneSKU) {
+  let targetEntry = catalogData.entries.find(e => e.subCategory === tombstoneSKU['Sub-Category']);
+  if (!targetEntry) {
+    targetEntry = {
+      parentCategory: tombstoneSKU['Main Category'],
+      subCategory:    tombstoneSKU['Sub-Category'],
+      constraint:     'Discontinued',
+      maxQty:         0,
+      rules:          ['[DISCONTINUED] SKU present in previous scrape but removed from active catalog'],
+      headers:        ['Product #', 'Description', 'Current Qty', 'Unit Price (USD)', 'Days Active'],
+      skuCount:       0,
+      skus:           []
+    };
+    catalogData.entries.push(targetEntry);
+  }
+  targetEntry.skus.push(tombstoneSKU);
+  targetEntry.skuCount = targetEntry.skus.length;
 }
 
 function diffRemovedCatalogEntries(catalogData, prevSkuMap, currSkuMap, companionSkuMap, priceHistory, discontinuedRegistry, attributeHistory, scrapeDate, diffSummary, options) {
@@ -457,29 +612,7 @@ function diffRemovedCatalogEntries(catalogData, prevSkuMap, currSkuMap, companio
     if (currSkuMap.has(pn)) continue;
 
     if (companionSkuMap.has(pn)) {
-      const compSku = companionSkuMap.get(pn);
-      const compPrice = parsePrice(compSku['Unit Price (USD)'] || compSku['Price (USD)'] || compSku['Price'] || compSku.price);
-      if (!priceHistory[pn]) priceHistory[pn] = [];
-      appendTrailEvent(priceHistory[pn], {
-        date: scrapeDate,
-        price: compPrice,
-        status: 'CATEGORY_MIGRATED',
-        targetCategory: compSku.parentCategory
-      });
-      diffSummary.categoryMigrated++;
-
-      recordAttributeDeltas({
-        'Product #': pn,
-        'Main Category': compSku.parentCategory,
-        'Sub-Category': compSku.subCategory
-      }, prevSku, {
-        scrapeDate,
-        productNumber: pn,
-        chassis: catalogData.metadata?.chassis || 'Chassis',
-        mainCategory: prevSku.parentCategory || '',
-        subCategory: prevSku.subCategory || ''
-      }, attributeHistory);
-
+      _handleCategoryMigratedEntry(pn, prevSku, companionSkuMap.get(pn), catalogData, priceHistory, attributeHistory, scrapeDate, diffSummary);
       continue;
     }
 
@@ -491,108 +624,23 @@ function diffRemovedCatalogEntries(catalogData, prevSkuMap, currSkuMap, companio
       continue;
     }
 
+    const removal = _resolveRemovalReason(prevSku, scrapeDate);
+    if (removal.skip) {
+      continue;
+    }
+
     appendTrailEvent(priceHistory[pn], { date: scrapeDate, price: prevPrice, status: 'REMOVED' });
     diffSummary.removed++;
 
     const trailStr = buildTrailString(priceHistory[pn]);
-    const prevLifecycle = firstAttributeValue(prevSku, ['Lifecycle Status', 'lifecycleStatus']) || '';
-    const vendorDiscontinuedDate = firstAttributeValue(prevSku, ['Discontinued Date']);
-    let removalReason = 'ABSENT_FROM_CATALOG';
-    if (/OB|Obsolete|EOL|Discontinued/i.test(prevLifecycle)) {
-      removalReason = 'VENDOR_OBSOLETE';
-    } else if (vendorDiscontinuedDate && new Date(vendorDiscontinuedDate) <= new Date(scrapeDate)) {
-      removalReason = 'SCHEDULED_END_DATE';
-    } else if (vendorDiscontinuedDate && new Date(vendorDiscontinuedDate) > new Date(scrapeDate)) {
-      // Safeguard (INV-141): Do not mark a SKU as discontinued or tombstoned if vendor lifecycle has a future end date
-      // Dynamic WebLogic DOM sub-trees (e.g. GPU Accelerators or memory-mixing exclusions) are conditional, not EOL.
-      continue;
-    }
+    const { record, daysActive, firstSeenDate } = _buildDiscontinuedRegistryRecord(
+      pn, prevSku, prevPrice, scrapeDate, removal.removalReason, removal.prevLifecycle,
+      removal.vendorDiscontinuedDate, trailStr, priceHistory, discontinuedRegistry, catalogData, options
+    );
+    discontinuedRegistry[pn] = record;
 
-    const existingEntry = discontinuedRegistry[pn];
-    const businessRelevant = isBusinessRelevantDiscontinuedSku(options, existingEntry, {
-      productNumber: pn, sku: prevSku, catalogData
-    });
-    const firstSeenDate = existingEntry?.firstSeenDate || priceHistory[pn][0]?.date || '';
-    let daysActive = 0;
-    if (firstSeenDate) {
-      const diffMs = new Date(scrapeDate) - new Date(firstSeenDate);
-      daysActive   = Math.round(diffMs / (1000 * 60 * 60 * 24));
-    }
-
-    discontinuedRegistry[pn] = {
-      productNumber:  pn,
-      description:    prevSku.Description || prevSku.description || '',
-      mainCategory:   prevSku.parentCategory || 'Deprecation Archive',
-      subCategory:    prevSku.subCategory    || 'Discontinued SKUs',
-      firstSeenDate,
-      discontinuedDate: scrapeDate,
-      daysActive,
-      lastKnownPrice: prevPrice.toFixed(2),
-      fullPriceTrail: trailStr,
-      status:         'DISCONTINUED',
-      removalReason,
-      previousLifecycleStatus: prevLifecycle || 'Active',
-      vendorDiscontinuedDate,
-      trackingState:  'STOPPED_AFTER_REMOVAL',
-      retentionClass: businessRelevant ? 'BUSINESS_RELEVANT' : 'COMPACT_LIFECYCLE_TOMBSTONE',
-      businessRelevant,
-      reason:         removalReason === 'VENDOR_OBSOLETE'
-        ? 'Vendor marked obsolete/EOL in portal'
-        : (removalReason === 'SCHEDULED_END_DATE'
-          ? `Vendor scheduled end of life reached (${vendorDiscontinuedDate})`
-          : 'Removed from active HPE OCA portal catalog')
-    };
-
-    const tombstoneSKU = {
-      'Main Category':              prevSku.parentCategory || 'Deprecation Archive',
-      'Sub-Category':               prevSku.subCategory    || 'Discontinued SKUs',
-      'Hierarchy Path':             prevSku['Hierarchy Path'] || `HPE OCA > ${catalogData.metadata?.chassis || 'Chassis'} > Deprecation Archive > Discontinued SKUs`,
-      'Component Role':             prevSku['Component Role'] || 'Discontinued Hardware',
-      'Constraint Text':            prevSku['Constraint Text'] || 'Discontinued',
-      'Subcategory Max Qty':        '0',
-      'Table Rule/Note':            '[DISCONTINUED] SKU removed from latest HPE OCA portal catalog',
-      'Option Type':                prevSku['Option Type'] || prevSku.optionType || ((prevSku.parentCategory || '').toLowerCase().includes('chassis') ? 'CTO' : 'Standard'),
-      'Product #':                  pn,
-      'Description':                `[REMOVED SKU] ${prevSku.Description || prevSku.description || ''}`,
-      'Current Qty':                '0',
-      'Unit Price (USD)':           prevPrice.toFixed(2),
-      'Price Delta (USD)':          '-',
-      'Extended Price (USD)':       '0.00',
-      'Price per GB (USD)':         '-',
-      'HPE Recommended':            'No',
-      'Start Date':                 prevSku['Start Date'] || prevSku.Start || firstSeenDate,
-      'Discontinued Date':          scrapeDate,
-      'Days Active':                String(daysActive),
-      'Diff Status':                'REMOVED',
-      'Lifecycle Status':           prevSku['Lifecycle Status'] || prevSku.lifecycleStatus || 'Discontinued',
-      'Lifecycle Badge':            prevSku['Lifecycle Badge'] || (String(prevSku['Lifecycle Status'] || '').includes('OB') ? 'OB' : 'DS'),
-      'Availability':               prevSku['Availability'] || 'Discontinued',
-      'Lead Time':                  prevSku['Lead Time'] || 'Not available (Discontinued)',
-      'Lead Time Source':           prevSku['Lead Time Source'] || 'Catalog deprecation',
-      'Vendor Attributes (JSON)':   prevSku['Vendor Attributes (JSON)'] || '{}',
-      'Previous List Price (USD)':  prevPrice.toFixed(2),
-      'Price Change (USD)':         prevPrice > 0 ? `-$${prevPrice.toFixed(2)}` : '$0.00',
-      'Price Change (%)':           prevPrice > 0 ? '-100.00%' : '0.00%',
-      'Attribute Deltas':           'SKU Discontinued & Tombstoned',
-      'Price History Trail':        trailStr
-    };
-
-    let targetEntry = catalogData.entries.find(e => e.subCategory === tombstoneSKU['Sub-Category']);
-    if (!targetEntry) {
-      targetEntry = {
-        parentCategory: tombstoneSKU['Main Category'],
-        subCategory:    tombstoneSKU['Sub-Category'],
-        constraint:     'Discontinued',
-        maxQty:         0,
-        rules:          ['[DISCONTINUED] SKU present in previous scrape but removed from active catalog'],
-        headers:        ['Product #', 'Description', 'Current Qty', 'Unit Price (USD)', 'Days Active'],
-        skuCount:       0,
-        skus:           []
-      };
-      catalogData.entries.push(targetEntry);
-    }
-    targetEntry.skus.push(tombstoneSKU);
-    targetEntry.skuCount = targetEntry.skus.length;
+    const tombstoneSKU = _createTombstoneSku(pn, prevSku, prevPrice, scrapeDate, daysActive, firstSeenDate, trailStr, catalogData);
+    _insertTombstoneSku(catalogData, tombstoneSKU);
   }
 }
 

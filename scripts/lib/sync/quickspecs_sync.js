@@ -171,16 +171,7 @@ function getNotebookSources(notebookId) {
   }
 }
 
-/**
- * Verify QuickSpecs source and fingerprint for a product chassis in its assigned NotebookLM notebook.
- *
- * @param {string} [chassisName='DL380_Gen11']
- * @param {object} [options={}]
- * @param {boolean} [options.autoUpload=false]
- * @param {string} [options.forcedNotebookId=null]
- * @returns {Promise<object>}
- */
-async function verifyNotebookQuickSpecs(chassisName = 'DL380_Gen11', options = {}) {
+function _resolveNotebookTarget(chassisName, options) {
   let notebookCfg = {};
   if (fs.existsSync(CONFIG_NOTEBOOKS)) {
     try {
@@ -192,7 +183,6 @@ async function verifyNotebookQuickSpecs(chassisName = 'DL380_Gen11', options = {
   const notebookId = options.forcedNotebookId ||
     (typeof notebookEntry === 'object' ? notebookEntry?.notebookId : notebookEntry) ||
     null;
-  if (!notebookId) return { chassis: chassisName, status: 'UNMAPPED_NOTEBOOK', sourceFound: false, timestamp: new Date().toISOString() };
 
   const productSpec = KNOWN_QUICKSPECS_DOC_MAP[chassisName] || {
     docId: null,
@@ -202,10 +192,10 @@ async function verifyNotebookQuickSpecs(chassisName = 'DL380_Gen11', options = {
     productName: chassisName
   };
 
-  const localPdfPath = findLocalQuickSpecsPdf(chassisName);
-  const localFingerprint = computePdfFingerprint(localPdfPath);
+  return { notebookId, productSpec };
+}
 
-  const sources = getNotebookSources(notebookId);
+function _partitionQuickSpecsSources(sources, productSpec) {
   const quickspecsSources = [];
   const pollutedSources = [];
 
@@ -214,7 +204,6 @@ async function verifyNotebookQuickSpecs(chassisName = 'DL380_Gen11', options = {
     const isQuickSpecs = /quickspec/i.test(title) || (productSpec.docId && title.includes(productSpec.docId));
 
     if (isQuickSpecs) {
-      // Check if polluted by other generations
       if (productSpec.blockedPattern && productSpec.blockedPattern.test(title)) {
         pollutedSources.push(src);
       } else {
@@ -222,6 +211,80 @@ async function verifyNotebookQuickSpecs(chassisName = 'DL380_Gen11', options = {
       }
     }
   });
+
+  return { quickspecsSources, pollutedSources };
+}
+
+function _persistOfficialQuickSpecsSource(primarySource, isDocIdMatched, chassisName, options) {
+  if (!((options.autoUpload || options.persistOfficialSource) && primarySource?.id && isDocIdMatched !== false && fs.existsSync(CONFIG_NOTEBOOKS))) {
+    return false;
+  }
+  try {
+    const cfg = JSON.parse(fs.readFileSync(CONFIG_NOTEBOOKS, 'utf-8'));
+    const entry = cfg.notebooks?.[chassisName];
+    if (entry && typeof entry === 'object') {
+      const officialIds = Array.from(new Set([...(entry.officialSourceIds || []), primarySource.id]));
+      const trustedIds = Array.from(new Set([...(entry.trustedSourceIds || []), primarySource.id]));
+      if (officialIds.length !== (entry.officialSourceIds || []).length || trustedIds.length !== (entry.trustedSourceIds || []).length) {
+        entry.officialSourceIds = officialIds;
+        entry.trustedSourceIds = trustedIds;
+        safeWriteJsonAtomic(CONFIG_NOTEBOOKS, cfg);
+        return true;
+      }
+    }
+  } catch (_) { /* ignore */ }
+  return false;
+}
+
+function _autoUploadQuickSpecsPdf(chassisName, notebookId, localPdfPath, productSpec) {
+  try {
+    const canonicalTitle = `HPE_${chassisName}_QuickSpecs_${productSpec.docId || 'unidentified'}.pdf`;
+    const envPath = process.env.PATH || '';
+    const homeBin = path.join(os.homedir(), '.local', 'bin');
+    const extendedPath = [homeBin, envPath].filter(Boolean).join(path.delimiter);
+
+    const stdout = execFileSync('nlm', [
+      'source', 'add', notebookId,
+      '--file', localPdfPath,
+      '--title', canonicalTitle,
+      '--wait'
+    ], {
+      encoding: 'utf-8',
+      timeout: 120000,
+      env: { ...process.env, PATH: extendedPath }
+    });
+
+    return {
+      success: true,
+      stdout,
+      message: `Successfully uploaded ${canonicalTitle} to Notebook ${notebookId}`
+    };
+  } catch (uploadErr) {
+    return {
+      success: false,
+      error: uploadErr.message
+    };
+  }
+}
+
+/**
+ * Verify QuickSpecs source and fingerprint for a product chassis in its assigned NotebookLM notebook.
+ *
+ * @param {string} [chassisName='DL380_Gen11']
+ * @param {object} [options={}]
+ * @param {boolean} [options.autoUpload=false]
+ * @param {string} [options.forcedNotebookId=null]
+ * @returns {Promise<object>}
+ */
+async function verifyNotebookQuickSpecs(chassisName = 'DL380_Gen11', options = {}) {
+  const { notebookId, productSpec } = _resolveNotebookTarget(chassisName, options);
+  if (!notebookId) return { chassis: chassisName, status: 'UNMAPPED_NOTEBOOK', sourceFound: false, timestamp: new Date().toISOString() };
+
+  const localPdfPath = findLocalQuickSpecsPdf(chassisName);
+  const localFingerprint = computePdfFingerprint(localPdfPath);
+
+  const sources = getNotebookSources(notebookId);
+  const { quickspecsSources, pollutedSources } = _partitionQuickSpecsSources(sources, productSpec);
 
   const sourceFound = quickspecsSources.length > 0;
   const primarySource = sourceFound ? quickspecsSources[0] : null;
@@ -262,55 +325,16 @@ async function verifyNotebookQuickSpecs(chassisName = 'DL380_Gen11', options = {
     timestamp: new Date().toISOString()
   };
 
-  // Persist verified official QuickSpecs source ID into notebooks.json when requested
-  if ((options.autoUpload || options.persistOfficialSource) && primarySource?.id && isDocIdMatched !== false && fs.existsSync(CONFIG_NOTEBOOKS)) {
-    try {
-      const cfg = JSON.parse(fs.readFileSync(CONFIG_NOTEBOOKS, 'utf-8'));
-      const entry = cfg.notebooks?.[chassisName];
-      if (entry && typeof entry === 'object') {
-        const officialIds = Array.from(new Set([...(entry.officialSourceIds || []), primarySource.id]));
-        const trustedIds = Array.from(new Set([...(entry.trustedSourceIds || []), primarySource.id]));
-        if (officialIds.length !== (entry.officialSourceIds || []).length || trustedIds.length !== (entry.trustedSourceIds || []).length) {
-          entry.officialSourceIds = officialIds;
-          entry.trustedSourceIds = trustedIds;
-          safeWriteJsonAtomic(CONFIG_NOTEBOOKS, cfg);
-          result.officialSourceRegistered = true;
-        }
-      }
-    } catch (_) { /* ignore */ }
+  if (_persistOfficialQuickSpecsSource(primarySource, isDocIdMatched, chassisName, options)) {
+    result.officialSourceRegistered = true;
   }
 
   // Auto-Upload if requested and source is missing
   if (options.autoUpload && !sourceFound && localPdfPath && fs.existsSync(localPdfPath)) {
-    try {
-      const canonicalTitle = `HPE_${chassisName}_QuickSpecs_${productSpec.docId || 'unidentified'}.pdf`;
-      const envPath = process.env.PATH || '';
-      const homeBin = path.join(os.homedir(), '.local', 'bin');
-      const extendedPath = [homeBin, envPath].filter(Boolean).join(path.delimiter);
-
-      const stdout = execFileSync('nlm', [
-        'source', 'add', notebookId,
-        '--file', localPdfPath,
-        '--title', canonicalTitle,
-        '--wait'
-      ], {
-        encoding: 'utf-8',
-        timeout: 120000,
-        env: { ...process.env, PATH: extendedPath }
-      });
-
-      result.uploadResult = {
-        success: true,
-        stdout,
-        message: `Successfully uploaded ${canonicalTitle} to Notebook ${notebookId}`
-      };
+    result.uploadResult = _autoUploadQuickSpecsPdf(chassisName, notebookId, localPdfPath, productSpec);
+    if (result.uploadResult.success) {
       const verified = await verifyNotebookQuickSpecs(chassisName, { ...options, autoUpload: false, persistOfficialSource: true });
       return { ...verified, uploadResult: result.uploadResult };
-    } catch (uploadErr) {
-      result.uploadResult = {
-        success: false,
-        error: uploadErr.message
-      };
     }
   }
 

@@ -39,36 +39,44 @@ function _findCatalogEntry(catalogData, sku) {
   return { matchedEntry: null, matchedSkuObj: null };
 }
 
-function _extractCapabilities(effLower, role) {
-  const capabilities = {};
-
-  // Cores & Frequency (Processors)
+function _extractProcessorCaps(effLower, capabilities) {
   const coreMatch = effLower.match(/(\d+)\s*-?\s*core/i);
   if (coreMatch) capabilities.cores = parseInt(coreMatch[1], 10);
   const ghzMatch = effLower.match(/(\d+\.\d+)\s*ghz/i);
   if (ghzMatch) capabilities.frequencyGhz = parseFloat(ghzMatch[1]);
   const tdpMatch = effLower.match(/(\d{2,3})\s*w/i);
   if (tdpMatch) capabilities.tdpWatts = parseInt(tdpMatch[1], 10);
+}
 
-  // Memory Capacity & Speed
+function _extractMemoryCaps(effLower, role, capabilities) {
   const gbMatch = effLower.match(/(\d+)\s*gb/i);
   if (gbMatch && (role === 'Memory' || effLower.includes('rdimm') || effLower.includes('ddr5'))) {
     capabilities.capacityGb = parseInt(gbMatch[1], 10);
     capabilities.isDdr5 = effLower.includes('ddr5');
     capabilities.isDdr4 = effLower.includes('ddr4');
   }
+}
 
-  // Storage Controller Cache & Bus Width
+function _extractStorageControllerCaps(effLower, role, capabilities) {
   const cacheMatch = effLower.match(/(\d+)\s*gb\s*cache/i);
-  if (cacheMatch) capabilities.cacheGb = parseInt(cacheMatch[1], 10);
-  else if (effLower.includes('4gb') && (role === 'Storage Controller' || effLower.includes('mr408') || effLower.includes('mr216'))) capabilities.cacheGb = 4;
-  else if (effLower.includes('8gb') && (role === 'Storage Controller' || effLower.includes('mr416') || effLower.includes('sr932'))) capabilities.cacheGb = 8;
+  if (cacheMatch) {
+    capabilities.cacheGb = parseInt(cacheMatch[1], 10);
+  } else if (effLower.includes('4gb') && (role === 'Storage Controller' || effLower.includes('mr408') || effLower.includes('mr216'))) {
+    capabilities.cacheGb = 4;
+  } else if (effLower.includes('8gb') && (role === 'Storage Controller' || effLower.includes('mr416') || effLower.includes('sr932'))) {
+    capabilities.cacheGb = 8;
+  }
 
-  if (effLower.includes('x16') || effLower.includes('16 lanes')) capabilities.busWidth = 'x16';
-  else if (effLower.includes('x8') || effLower.includes('8 lanes')) capabilities.busWidth = 'x8';
-  else if (effLower.includes('-o') || effLower.includes('ocp')) capabilities.busWidth = 'OCP3';
+  if (effLower.includes('x16') || effLower.includes('16 lanes')) {
+    capabilities.busWidth = 'x16';
+  } else if (effLower.includes('x8') || effLower.includes('8 lanes')) {
+    capabilities.busWidth = 'x8';
+  } else if (effLower.includes('-o') || effLower.includes('ocp')) {
+    capabilities.busWidth = 'OCP3';
+  }
+}
 
-  // Power Supply Wattage & Efficiency
+function _extractPsuCaps(effLower, role, capabilities) {
   const psuWattMatch = effLower.match(/(\d{3,4})\s*w/i);
   if (psuWattMatch && (role === 'Power Supply' || effLower.includes('flex slot') || effLower.includes('power supply'))) {
     capabilities.psuWattage = parseInt(psuWattMatch[1], 10);
@@ -76,15 +84,29 @@ function _extractCapabilities(effLower, role) {
     capabilities.isPlatinum = effLower.includes('platinum') || effLower.includes('94%');
     capabilities.isDcTelco = effLower.includes('-48vdc') || effLower.includes('dc');
   }
+}
 
-  // Network Ports & Speeds
+function _extractNetworkCaps(effLower, capabilities) {
   const portMatch = effLower.match(/(\d+)\s*-?\s*port/i);
   if (portMatch) capabilities.portsCount = parseInt(portMatch[1], 10);
-  if (effLower.includes('100gb') || effLower.includes('100g')) capabilities.speedGbps = 100;
-  else if (effLower.includes('25gb') || effLower.includes('10/25gb') || effLower.includes('25g')) capabilities.speedGbps = 25;
-  else if (effLower.includes('10gb') || effLower.includes('10g')) capabilities.speedGbps = 10;
-  else if (effLower.includes('1gb') || effLower.includes('1g') || effLower.includes('base-t')) capabilities.speedGbps = 1;
+  if (effLower.includes('100gb') || effLower.includes('100g')) {
+    capabilities.speedGbps = 100;
+  } else if (effLower.includes('25gb') || effLower.includes('10/25gb') || effLower.includes('25g')) {
+    capabilities.speedGbps = 25;
+  } else if (effLower.includes('10gb') || effLower.includes('10g')) {
+    capabilities.speedGbps = 10;
+  } else if (effLower.includes('1gb') || effLower.includes('1g') || effLower.includes('base-t')) {
+    capabilities.speedGbps = 1;
+  }
+}
 
+function _extractCapabilities(effLower, role) {
+  const capabilities = {};
+  _extractProcessorCaps(effLower, capabilities);
+  _extractMemoryCaps(effLower, role, capabilities);
+  _extractStorageControllerCaps(effLower, role, capabilities);
+  _extractPsuCaps(effLower, role, capabilities);
+  _extractNetworkCaps(effLower, capabilities);
   return capabilities;
 }
 
@@ -108,34 +130,59 @@ function _inferCompanionRequirements(capabilities, role, effLower) {
   return companionRequirements;
 }
 
-function introspectSku(itemOrSku, catalogData = null, chassisInfo = {}) {
+function _extractInputSkuAndDesc(itemOrSku) {
   const safeItem = (itemOrSku && typeof itemOrSku === 'object') ? itemOrSku : {};
   const rawSku = typeof itemOrSku === 'string' ? itemOrSku : (safeItem.sku || safeItem['Product #'] || '');
   const sku = cleanBaseSKU(rawSku);
   const desc = typeof itemOrSku === 'string' ? '' : (safeItem.description || safeItem.Description || '');
+  return { safeItem, sku, desc };
+}
 
-  const { matchedEntry, matchedSkuObj } = _findCatalogEntry(catalogData, sku);
+function _extractPriceUsd(matchedSkuObj, safeItem) {
+  const rawPrice = matchedSkuObj?.['Unit Price (USD)'] || matchedSkuObj?.['Price (USD)'] || safeItem.unitPriceUsd;
+  if (typeof rawPrice === 'number') return rawPrice;
+  return parseFloat(String(rawPrice || '0').replace(/[$,]/g, '')) || 0;
+}
 
+function _resolveCatalogProperties(matchedEntry, matchedSkuObj, safeItem, desc, sku) {
   const parentCategory = matchedEntry?.parentCategory || safeItem.category || 'Option Component';
   const subCategory = matchedEntry?.subCategory || 'General';
   const hierarchyPath = matchedSkuObj?.['Hierarchy Path'] || `${parentCategory} > ${subCategory} > ${sku}`;
   const effectiveDescription = matchedSkuObj?.Description || matchedSkuObj?.description || desc || `HPE Hardware Option (${sku})`;
   const constraintText = matchedSkuObj?.['Constraint Text'] || matchedSkuObj?.constraint || '';
-  const rawPrice = matchedSkuObj?.['Unit Price (USD)'] || matchedSkuObj?.['Price (USD)'] || safeItem.unitPriceUsd;
-  const priceUsd = typeof rawPrice === 'number' ? rawPrice : parseFloat(String(rawPrice || '0').replace(/[$,]/g, '')) || 0;
+  const priceUsd = _extractPriceUsd(matchedSkuObj, safeItem);
   const lifecycleStatus = matchedSkuObj?.['Lifecycle Status'] || safeItem.lifecycleStatus || 'ACTIVE';
+
+  return { parentCategory, subCategory, hierarchyPath, effectiveDescription, constraintText, priceUsd, lifecycleStatus };
+}
+
+function _extractMaxQtyFromConstraint(constraintText, matchedEntry) {
+  const maxMatch = constraintText.match(/max(?:imum)?\s*(\d+)/i) || constraintText.match(/up to\s*(\d+)/i);
+  if (maxMatch) return parseInt(maxMatch[1], 10);
+  if (typeof matchedEntry?.maxQty === 'number') return matchedEntry.maxQty;
+  return null;
+}
+
+function introspectSku(itemOrSku, catalogData = null, chassisInfo = {}) {
+  const { safeItem, sku, desc } = _extractInputSkuAndDesc(itemOrSku);
+  const { matchedEntry, matchedSkuObj } = _findCatalogEntry(catalogData, sku);
+
+  const {
+    parentCategory,
+    subCategory,
+    hierarchyPath,
+    effectiveDescription,
+    constraintText,
+    priceUsd,
+    lifecycleStatus
+  } = _resolveCatalogProperties(matchedEntry, matchedSkuObj, safeItem, desc, sku);
 
   const role = classifyComponentRole(parentCategory, effectiveDescription);
   const effLower = effectiveDescription.toLowerCase();
-
   const capabilities = _extractCapabilities(effLower, role);
-
-  let maxQty = null;
-  const maxMatch = constraintText.match(/max(?:imum)?\s*(\d+)/i) || constraintText.match(/up to\s*(\d+)/i);
-  if (maxMatch) maxQty = parseInt(maxMatch[1], 10);
-  else if (typeof matchedEntry?.maxQty === 'number') maxQty = matchedEntry.maxQty;
-
+  const maxQty = _extractMaxQtyFromConstraint(constraintText, matchedEntry);
   const companionRequirements = _inferCompanionRequirements(capabilities, role, effLower);
+  const isFactoryDefault = effLower.includes('standard') && (role === 'Cooling / Thermal' || role === 'PCIe Riser');
 
   return {
     sku,
@@ -150,7 +197,7 @@ function introspectSku(itemOrSku, catalogData = null, chassisInfo = {}) {
     maxQty,
     capabilities,
     companionRequirements,
-    isFactoryDefault: effLower.includes('standard') && (role === 'Cooling / Thermal' || role === 'PCIe Riser')
+    isFactoryDefault
   };
 }
 
@@ -256,6 +303,69 @@ function analyzeCascadingImpact(changeProposal = {}, currentBom = [], catalogDat
   };
 }
 
+function _parseItemPrice(sku, defaultVal = 0) {
+  const raw = String(sku['Unit Price (USD)'] || sku['Price (USD)'] || defaultVal);
+  return parseFloat(raw.replace(/[$,]/g, '')) || defaultVal;
+}
+
+function _findRank2BaselineAddon(parentCat, subCat, skus) {
+  if (!parentCat.includes('infrastructure') && !subCat.includes('rail') && !subCat.includes('cable management') && !subCat.includes('bezel')) {
+    return null;
+  }
+  const validSku = skus.find(s => {
+    const desc = (s.Description || s.description || '').toLowerCase();
+    const price = _parseItemPrice(s, 0);
+    return (desc.includes('rail') || desc.includes('management arm') || desc.includes('cma')) && price > 0 && price < 500;
+  });
+  if (!validSku) return null;
+
+  return {
+    sku: cleanBaseSKU(validSku['Product #'] || validSku.sku),
+    description: validSku.Description || validSku.description || 'Factory Baseline Infrastructure',
+    quantity: 1,
+    unitPriceUsd: _parseItemPrice(validSku, 200),
+    category: 'Factory Baseline Accessory'
+  };
+}
+
+function _findRank3StorageAddon(parentCat, subCat, skus) {
+  if (!parentCat.includes('storage') && !subCat.includes('battery') && !subCat.includes('cache') && !subCat.includes('accelerator')) {
+    return null;
+  }
+  const validSku = skus.find(s => {
+    const desc = (s.Description || s.description || '').toLowerCase();
+    return (desc.includes('battery') || desc.includes('capacitor') || desc.includes('cache') || desc.includes('performance')) && !desc.includes('obsolete');
+  });
+  if (!validSku) return null;
+
+  return {
+    sku: cleanBaseSKU(validSku['Product #'] || validSku.sku),
+    description: validSku.Description || validSku.description || 'Storage / Throughput Performance Upgrade',
+    quantity: 1,
+    unitPriceUsd: _parseItemPrice(validSku, 450),
+    category: 'Performance Acceleration'
+  };
+}
+
+function _findRank4ExpansionAddon(parentCat, subCat, skus) {
+  if (!parentCat.includes('riser') && !subCat.includes('riser') && !subCat.includes('fan') && !subCat.includes('expansion')) {
+    return null;
+  }
+  const validSku = skus.find(s => {
+    const desc = (s.Description || s.description || '').toLowerCase();
+    return (desc.includes('riser') || desc.includes('fan kit') || desc.includes('expansion')) && !desc.includes('obsolete');
+  });
+  if (!validSku) return null;
+
+  return {
+    sku: cleanBaseSKU(validSku['Product #'] || validSku.sku),
+    description: validSku.Description || validSku.description || 'Chassis Expansion Infrastructure',
+    quantity: 1,
+    unitPriceUsd: _parseItemPrice(validSku, 750),
+    category: 'Scalability Expansion'
+  };
+}
+
 /**
  * Universal Dynamic Strategy Addon Discovery:
  * Generates Rank 2 (Baseline Accessories), Rank 3 (Performance), and Rank 4 (Scalability)
@@ -275,63 +385,26 @@ function discoverDynamicStrategyAddons(catalogData = null, chassisInfo = {}, wor
     return { rank2Addons, rank3Addons, rank4Addons };
   }
 
-  catalogData.entries.forEach(entry => {
+  for (const entry of catalogData.entries) {
     const parentCat = (entry.parentCategory || '').toLowerCase();
     const subCat = (entry.subCategory || '').toLowerCase();
     const skus = entry.skus || [];
 
-    // 1. Rank 2: Factory Standard Baseline Accessories (Rails, CMA, Bezels)
-    if (parentCat.includes('infrastructure') || subCat.includes('rail') || subCat.includes('cable management') || subCat.includes('bezel')) {
-      const validSku = skus.find(s => {
-        const desc = (s.Description || s.description || '').toLowerCase();
-        const price = parseFloat(String(s['Unit Price (USD)'] || s['Price (USD)'] || '0').replace(/[$,]/g, ''));
-        return (desc.includes('rail') || desc.includes('management arm') || desc.includes('cma')) && price > 0 && price < 500;
-      });
-      if (validSku && rank2Addons.length < 2) {
-        rank2Addons.push({
-          sku: cleanBaseSKU(validSku['Product #'] || validSku.sku),
-          description: validSku.Description || validSku.description || 'Factory Baseline Infrastructure',
-          quantity: 1,
-          unitPriceUsd: parseFloat(String(validSku['Unit Price (USD)'] || validSku['Price (USD)'] || '200').replace(/[$,]/g, '')) || 200,
-          category: 'Factory Baseline Accessory'
-        });
-      }
+    if (rank2Addons.length < 2) {
+      const addon = _findRank2BaselineAddon(parentCat, subCat, skus);
+      if (addon) rank2Addons.push(addon);
     }
 
-    // 2. Rank 3: Storage & Throughput Performance (Batteries, Cache Upgrades, Accelerators)
-    if (parentCat.includes('storage') || subCat.includes('battery') || subCat.includes('cache') || subCat.includes('accelerator')) {
-      const validSku = skus.find(s => {
-        const desc = (s.Description || s.description || '').toLowerCase();
-        return (desc.includes('battery') || desc.includes('capacitor') || desc.includes('cache') || desc.includes('performance')) && !desc.includes('obsolete');
-      });
-      if (validSku && rank3Addons.length < 2) {
-        rank3Addons.push({
-          sku: cleanBaseSKU(validSku['Product #'] || validSku.sku),
-          description: validSku.Description || validSku.description || 'Storage / Throughput Performance Upgrade',
-          quantity: 1,
-          unitPriceUsd: parseFloat(String(validSku['Unit Price (USD)'] || validSku['Price (USD)'] || '450').replace(/[$,]/g, '')) || 450,
-          category: 'Performance Acceleration'
-        });
-      }
+    if (rank3Addons.length < 2) {
+      const addon = _findRank3StorageAddon(parentCat, subCat, skus);
+      if (addon) rank3Addons.push(addon);
     }
 
-    // 3. Rank 4: Scalability & Headroom Expansion (PCIe Risers, High-Perf Fans)
-    if (parentCat.includes('riser') || subCat.includes('riser') || subCat.includes('fan') || subCat.includes('expansion')) {
-      const validSku = skus.find(s => {
-        const desc = (s.Description || s.description || '').toLowerCase();
-        return (desc.includes('riser') || desc.includes('fan kit') || desc.includes('expansion')) && !desc.includes('obsolete');
-      });
-      if (validSku && rank4Addons.length < 2) {
-        rank4Addons.push({
-          sku: cleanBaseSKU(validSku['Product #'] || validSku.sku),
-          description: validSku.Description || validSku.description || 'Chassis Expansion Infrastructure',
-          quantity: 1,
-          unitPriceUsd: parseFloat(String(validSku['Unit Price (USD)'] || validSku['Price (USD)'] || '750').replace(/[$,]/g, '')) || 750,
-          category: 'Scalability Expansion'
-        });
-      }
+    if (rank4Addons.length < 2) {
+      const addon = _findRank4ExpansionAddon(parentCat, subCat, skus);
+      if (addon) rank4Addons.push(addon);
     }
-  });
+  }
 
   return { rank2Addons, rank3Addons, rank4Addons };
 }

@@ -144,92 +144,135 @@ function getGenericRulesForDomain(domain = 'SERVER') {
   return (matrix.rules || []).filter(r => r.domain === targetDomain || r.domain === 'UNIVERSAL');
 }
 
-/**
- * Dynamically extract evaluation context and metrics from an item list without hardcoding
- * @param {Array} items Raw BOQ items or BOM parts
+function _inspectProcessorTelemetry(desc, cat, qty, state) {
+  if (cat.includes('processor') || desc.includes('xeon') || desc.includes('epyc') || (desc.includes('core') && !cat.includes('support'))) {
+    state.cpuCount += qty;
+    const tdpMatch = desc.match(/(\d{2,3})w\b/i);
+    if (tdpMatch) {
+      const tdp = parseInt(tdpMatch[1], 10);
+      if (tdp > state.maxTdp) state.maxTdp = tdp;
+      state.totalTdp += tdp * qty;
+    }
+  }
+}
+
+function _inspectGpuTelemetry(desc, cat, state) {
+  const isGpu = /(?:graphic|accelerator)/.test(cat) || /(?:nvidia|h100|h200|l40|a100|rtx 6000|gpu)/.test(desc);
+  if (isGpu) {
+    state.hasGpu = true;
+    if (/(?:double-wide|l40s|h100|h200|a100|rtx 6000|8dw)/.test(desc)) {
+      state.hasDoubleWideGpu = true;
+    }
+  }
+}
+
+function _inspectControllerTelemetry(desc, cat, qty, state) {
+  const isCtrl = cat.includes('controller') || /(?:raid|smart array|hba|tri-mode)/.test(desc);
+  if (isCtrl) {
+    state.controllerCount += qty;
+    const hasCache = /(?:cache|fbwc|4gb|8gb)/.test(desc);
+    const explicitNoCache = /(?:no cache|mr216i|zero cache)/.test(desc);
+    if (explicitNoCache || !hasCache) {
+      state.hasCachelessController = true;
+    }
+  }
+}
+
+function _inspectStorageDriveTelemetry(desc, cat, qty, state) {
+  const isStorage = (cat.includes('storage device') || cat.includes('drive')) && !/(?:cage|controller|cable|blank)/.test(desc);
+  if (isStorage && /(?:ssd|hdd|nvme|sas|sata|tb|gb)/.test(desc)) {
+    state.driveCount += qty;
+  }
+}
+
+function _inspectCageTelemetry(desc, cat, state) {
+  if (desc.includes('cage') || cat.includes('smart chassis') || desc.includes('backplane')) {
+    if (desc.includes('sff')) state.cageFormFactors.add('SFF');
+    if (desc.includes('edsff')) state.cageFormFactors.add('EDSFF');
+    if (desc.includes('lff')) state.cageFormFactors.add('LFF');
+  }
+}
+
+function _inspectPowerTelemetry(desc, cat, qty, state) {
+  if (cat.includes('power supply') || desc.includes('psu') || desc.includes('flex slot')) {
+    state.psuCount += qty;
+    const wattMatch = desc.match(/(\d{3,4})w\b/i);
+    if (wattMatch) {
+      const watts = parseInt(wattMatch[1], 10);
+      if (watts > state.maxPsuWattage) state.maxPsuWattage = watts;
+    }
+  }
+}
+
+function _inspectMemoryAndPcieTelemetry(desc, cat, qty, state) {
+  if (cat.includes('memory') || /(?:dimm|rdimm|ddr4|ddr5)/.test(desc)) {
+    state.dimmCount += qty;
+  }
+  if (/(?:networking|graphic|controller)/.test(cat) || /(?:pcie|adapter|hba)/.test(desc)) {
+    state.pcieCardCount += qty;
+  }
+}
+
 /**
  * Parse hardware and power telemetry from item descriptions and categories
  */
 function parseHardwareTelemetry(items = []) {
-  let totalTdp = 0, maxTdp = 0, cpuCount = 0;
-  let hasGpu = false, hasDoubleWideGpu = false;
-  let driveCount = 0, controllerCount = 0, hasCachelessController = false;
-  let psuCount = 0, maxPsuWattage = 0, dimmCount = 0, pcieCardCount = 0;
-  const cageFormFactors = new Set();
+  const state = {
+    totalTdp: 0, maxTdp: 0, cpuCount: 0,
+    hasGpu: false, hasDoubleWideGpu: false,
+    driveCount: 0, controllerCount: 0, hasCachelessController: false,
+    psuCount: 0, maxPsuWattage: 0, dimmCount: 0, pcieCardCount: 0,
+    cageFormFactors: new Set()
+  };
 
   for (const it of items) {
     const desc = (it.description || it.Description || it.name || '').toLowerCase();
     const cat = (it.category || it.Category || it.parentCategory || '').toLowerCase();
     const qty = parseInt(it.qty || it.Qty || it.CurrentQty || 1, 10) || 1;
 
-    // Processor & TDP
-    if (cat.includes('processor') || desc.includes('xeon') || desc.includes('epyc') || (desc.includes('core') && !cat.includes('support'))) {
-      cpuCount += qty;
-      const tdpMatch = desc.match(/(\d{2,3})w\b/i);
-      if (tdpMatch) {
-        const tdp = parseInt(tdpMatch[1], 10);
-        if (tdp > maxTdp) maxTdp = tdp;
-        totalTdp += tdp * qty;
-      }
-    }
+    _inspectProcessorTelemetry(desc, cat, qty, state);
+    _inspectGpuTelemetry(desc, cat, state);
+    _inspectControllerTelemetry(desc, cat, qty, state);
+    _inspectStorageDriveTelemetry(desc, cat, qty, state);
+    _inspectCageTelemetry(desc, cat, state);
+    _inspectPowerTelemetry(desc, cat, qty, state);
+    _inspectMemoryAndPcieTelemetry(desc, cat, qty, state);
+  }
 
-    // Accelerator / GPU
-    if (cat.includes('graphic') || cat.includes('accelerator') || desc.includes('nvidia') || desc.includes('h100') || desc.includes('h200') || desc.includes('l40') || desc.includes('a100') || desc.includes('rtx 6000') || desc.includes('gpu')) {
-      hasGpu = true;
-      if (desc.includes('double-wide') || desc.includes('l40s') || desc.includes('h100') || desc.includes('h200') || desc.includes('a100') || desc.includes('rtx 6000') || desc.includes('8dw')) {
-        hasDoubleWideGpu = true;
-      }
-    }
+  return state;
+}
 
-    // Storage Controller
-    if (cat.includes('controller') || desc.includes('raid') || desc.includes('smart array') || desc.includes('hba') || desc.includes('tri-mode')) {
-      controllerCount += qty;
-      if (desc.includes('no cache') || desc.includes('mr216i') || desc.includes('zero cache') || (!desc.includes('cache') && !desc.includes('fbwc') && !desc.includes('4gb') && !desc.includes('8gb'))) {
-        hasCachelessController = true;
-      }
-    }
+function _inspectItemCapabilities(items, options = {}) {
+  let has16Pin = false;
+  let isStd2U = false;
+  let hasDualOcp = Boolean(options.hasDualOcpRequirement);
+  let reqMultiX16 = Boolean(options.requiresMultiX16PrimaryRiser);
+  let hasRearBoot = false;
+  let hasTertiary = false;
+  let hasDataDrive = Boolean(options.hasDataDriveRequirement);
+  let hasRail = false;
+  let reqCma = Boolean(options.requiresCma);
+  let hasCma = false;
+  let hasTitanium = false;
 
-    // Storage Drive
-    if ((cat.includes('storage device') || cat.includes('drive')) && !desc.includes('cage') && !desc.includes('controller') && !desc.includes('cable') && !desc.includes('blank')) {
-      if (desc.includes('ssd') || desc.includes('hdd') || desc.includes('nvme') || desc.includes('sas') || desc.includes('sata') || desc.includes('tb') || desc.includes('gb')) {
-        driveCount += qty;
-      }
-    }
-
-    // Drive Cage
-    if (desc.includes('cage') || cat.includes('smart chassis') || desc.includes('backplane')) {
-      if (desc.includes('sff')) cageFormFactors.add('SFF');
-      if (desc.includes('edsff')) cageFormFactors.add('EDSFF');
-      if (desc.includes('lff')) cageFormFactors.add('LFF');
-    }
-
-    // Power Supply
-    if (cat.includes('power supply') || desc.includes('psu') || desc.includes('flex slot')) {
-      psuCount += qty;
-      const wattMatch = desc.match(/(\d{3,4})w\b/i);
-      if (wattMatch) {
-        const watts = parseInt(wattMatch[1], 10);
-        if (watts > maxPsuWattage) maxPsuWattage = watts;
-      }
-    }
-
-    // Memory DIMM
-    if (cat.includes('memory') || desc.includes('dimm') || desc.includes('rdimm') || desc.includes('ddr4') || desc.includes('ddr5')) {
-      dimmCount += qty;
-    }
-
-    // Expansion card
-    if (cat.includes('networking') || cat.includes('graphic') || cat.includes('controller') || desc.includes('pcie') || desc.includes('adapter') || desc.includes('hba')) {
-      pcieCardCount += qty;
-    }
+  for (const it of items) {
+    const d = (it.description || it.Description || '').toLowerCase();
+    if (/(?:h200|h100|rtx 6000|l40s|16-pin|12v-2x6|12vhpwr)/.test(d)) has16Pin = true;
+    if (/(?:2u|dl380|r770|r760)/.test(d) && !d.includes('dl380a')) isStd2U = true;
+    if (/(?:2nd ocp|second ocp|ocpb|slotb)/.test(d)) hasDualOcp = true;
+    if (/(?:2x16 fh|rear 2x16|x16\/x16\/x16 primary)/.test(d)) reqMultiX16 = true;
+    if (/(?:ns204i|boss|boot device|rear mount)/.test(d)) hasRearBoot = true;
+    if (/(?:tertiary riser|3rd riser)/.test(d)) hasTertiary = true;
+    if (/(?:data storage|solid state drive|sata|960gb|1\.92tb)/.test(d) && !d.includes('ns204i') && !d.includes('boss')) hasDataDrive = true;
+    if (d.includes('rail')) hasRail = true;
+    if (/(?:with cable management arm|with cma|cable management arm)/.test(d)) reqCma = true;
+    if (/(?:cable management arm|cma)/.test(d) && !d.includes('readyrails sliding guide rail with cable management arm')) hasCma = true;
+    if (d.includes('titanium')) hasTitanium = true;
   }
 
   return {
-    totalTdp, maxTdp, cpuCount,
-    hasGpu, hasDoubleWideGpu,
-    driveCount, controllerCount, hasCachelessController,
-    psuCount, maxPsuWattage, dimmCount, pcieCardCount,
-    cageFormFactors
+    has16Pin, isStd2U, hasDualOcp, reqMultiX16, hasRearBoot,
+    hasTertiary, hasDataDrive, hasRail, reqCma, hasCma, hasTitanium
   };
 }
 
@@ -243,57 +286,31 @@ function deriveCapabilities(items, parsed, options = {}) {
   } = parsed;
 
   const totalPeak = totalTdp + (hasGpu ? 450 : 0) + (dimmCount * 15) + 350;
+  const ic = _inspectItemCapabilities(items, options);
 
   return {
     hasGpuAccelerator: hasGpu,
     hasDoubleWideGpu,
-    has16PinGpuAccelerator: items.some(it => {
-      const d = (it.description || it.Description || '').toLowerCase();
-      return d.includes('h200') || d.includes('h100') || d.includes('rtx 6000') || d.includes('l40s') || d.includes('16-pin') || d.includes('12v-2x6') || d.includes('12vhpwr');
-    }),
-    isStandard2URack: items.some(it => {
-      const d = (it.description || it.Description || '').toLowerCase();
-      return (d.includes('2u') || d.includes('dl380') || d.includes('r770') || d.includes('r760')) && !d.includes('dl380a');
-    }),
+    has16PinGpuAccelerator: ic.has16Pin,
+    isStandard2URack: ic.isStd2U,
     hasInternalStorageController: controllerCount > 0,
     hasDriveBackplane: cageFormFactors.size > 0,
     hasCachelessController,
-    usesParityRaid: !!options.usesParityRaid,
+    usesParityRaid: Boolean(options.usesParityRaid),
     hasDisparateCageMixing: cageFormFactors.size > 1,
     hasUnbalancedMemoryChannels: dimmCount > 0 && (dimmCount % 8 !== 0 && dimmCount % 12 !== 0 && dimmCount % 16 !== 0),
-    hasInsufficientCoreLicenses: !!options.hasInsufficientCoreLicenses,
-    hasMissingTransceivers: !!options.hasMissingTransceivers,
-    requiresLot9Enablement: options.isNonEuExport && maxPsuWattage > 0 && maxPsuWattage <= 1600 && !items.some(it => (it.description || '').toLowerCase().includes('titanium')),
-    hasDualOcpRequirement: !!options.hasDualOcpRequirement || items.some(it => {
-      const d = (it.description || it.Description || '').toLowerCase();
-      return d.includes('2nd ocp') || d.includes('second ocp') || d.includes('ocpb') || d.includes('slotb');
-    }),
-    requiresMultiX16PrimaryRiser: !!options.requiresMultiX16PrimaryRiser || items.some(it => {
-      const d = (it.description || it.Description || '').toLowerCase();
-      return d.includes('2x16 fh') || d.includes('rear 2x16') || d.includes('x16/x16/x16 primary');
-    }),
-    hasRearBootDevice: items.some(it => {
-      const d = (it.description || it.Description || '').toLowerCase();
-      return d.includes('ns204i') || d.includes('boss') || d.includes('boot device') || d.includes('rear mount');
-    }),
-    hasTertiaryRiser: items.some(it => {
-      const d = (it.description || it.Description || '').toLowerCase();
-      return d.includes('tertiary riser') || d.includes('3rd riser');
-    }),
-    hasDataDriveRequirement: !!options.hasDataDriveRequirement || items.some(it => {
-      const d = (it.description || it.Description || '').toLowerCase();
-      return (d.includes('data storage') || d.includes('solid state drive') || d.includes('sata') || d.includes('960gb') || d.includes('1.92tb')) && !d.includes('ns204i') && !d.includes('boss');
-    }),
+    hasInsufficientCoreLicenses: Boolean(options.hasInsufficientCoreLicenses),
+    hasMissingTransceivers: Boolean(options.hasMissingTransceivers),
+    requiresLot9Enablement: Boolean(options.isNonEuExport) && maxPsuWattage > 0 && maxPsuWattage <= 1600 && !ic.hasTitanium,
+    hasDualOcpRequirement: ic.hasDualOcp,
+    requiresMultiX16PrimaryRiser: ic.reqMultiX16,
+    hasRearBootDevice: ic.hasRearBoot,
+    hasTertiaryRiser: ic.hasTertiary,
+    hasDataDriveRequirement: ic.hasDataDrive,
     hasSinglePsuDeficit: (totalPeak > 1500) && maxPsuWattage > 0 && maxPsuWattage < 1600,
-    hasSlidingRailKit: items.some(it => (it.description || it.Description || '').toLowerCase().includes('rail')),
-    requiresCma: !!options.requiresCma || items.some(it => {
-      const d = (it.description || it.Description || '').toLowerCase();
-      return d.includes('with cable management arm') || d.includes('with cma') || d.includes('cable management arm');
-    }),
-    hasCma: items.some(it => {
-      const d = (it.description || it.Description || '').toLowerCase();
-      return (d.includes('cable management arm') || d.includes('cma')) && !d.includes('readyrails sliding guide rail with cable management arm');
-    })
+    hasSlidingRailKit: ic.hasRail,
+    requiresCma: ic.reqCma,
+    hasCma: ic.hasCma
   };
 }
 

@@ -7,6 +7,74 @@
 
 const { stripAnsi } = require('./query_sanitizer.js');
 
+function _parseObjectStdout(stdout) {
+  return {
+    answer: stdout.answer || stdout.response || JSON.stringify(stdout),
+    citations: Array.isArray(stdout.citations)
+      ? stdout.citations
+      : Object.entries(stdout.citations || {}).map(([k, v]) => ({ index: k, sourceId: v })),
+    sourcesUsed: stdout.sources_used || []
+  };
+}
+
+function _parseJsonStdout(cleanStdout) {
+  try {
+    const parsed = JSON.parse(cleanStdout);
+    const answer = parsed.answer || parsed.response || parsed.result || cleanStdout;
+    const sourcesUsed = parsed.sources_used || [];
+    let citations = [];
+    if (Array.isArray(parsed.citations)) {
+      citations = parsed.citations;
+    } else if (parsed.citations && typeof parsed.citations === 'object') {
+      citations = Object.entries(parsed.citations).map(([k, v]) => ({
+        index: k,
+        sourceId: v,
+        title: (parsed.references && parsed.references.find(r => r.source_id === v)?.cited_text) || `Source ${v}`
+      }));
+    }
+    const references = (parsed.references && Array.isArray(parsed.references)) ? parsed.references : undefined;
+    return { answer, sourcesUsed, citations, references };
+  } catch (_) {
+    return { answer: cleanStdout, sourcesUsed: [], citations: [] };
+  }
+}
+
+function _extractInlineCitations(answer, references = []) {
+  if (!answer) return [];
+  const inlineMatches = [];
+  const regex = /\[(?:cite:\s*(\d+)|source:\s*([^\]]+)|ref(?:erence)?\s*(\d+)|(\d+))\]/gi;
+  let m;
+  while ((m = regex.exec(answer)) !== null) {
+    const index = m[1] || m[3] || m[4];
+    const text = m[2];
+    if (index) {
+      const ref = references.find(r => String(r.source_id) === String(index) || String(r.index) === String(index));
+      inlineMatches.push({
+        index,
+        sourceId: ref?.source_id || index,
+        title: ref?.title || ref?.cited_text || `Source ${index}`
+      });
+    } else if (text) {
+      inlineMatches.push({
+        index: String(inlineMatches.length + 1),
+        sourceId: text.trim(),
+        title: text.trim()
+      });
+    }
+  }
+  return inlineMatches;
+}
+
+function _unwrapNestedJsonAnswer(answer) {
+  if (typeof answer === 'string' && answer.startsWith('{') && answer.endsWith('}')) {
+    try {
+      const inner = JSON.parse(answer);
+      if (inner.answer) return inner.answer;
+    } catch (_) {}
+  }
+  return answer;
+}
+
 function postProcessNotebookResult(stdout, originalQuery = '', context = {}) {
   const result = {
     query: originalQuery,
@@ -24,65 +92,17 @@ function postProcessNotebookResult(stdout, originalQuery = '', context = {}) {
   }
 
   if (typeof stdout === 'object') {
-    result.answer = stdout.answer || stdout.response || JSON.stringify(stdout);
-    result.citations = Array.isArray(stdout.citations) ? stdout.citations : Object.entries(stdout.citations || {}).map(([k, v]) => ({ index: k, sourceId: v }));
-    result.sourcesUsed = stdout.sources_used || [];
+    Object.assign(result, _parseObjectStdout(stdout));
     return validateGroundingCitations(result, context);
   }
 
   const cleanStdout = stripAnsi(stdout).trim();
-
-  try {
-    const parsed = JSON.parse(cleanStdout);
-    result.answer = parsed.answer || parsed.response || parsed.result || cleanStdout;
-    result.sourcesUsed = parsed.sources_used || [];
-    
-    if (Array.isArray(parsed.citations)) {
-      result.citations = parsed.citations;
-    } else if (parsed.citations && typeof parsed.citations === 'object') {
-      result.citations = Object.entries(parsed.citations).map(([k, v]) => ({
-        index: k,
-        sourceId: v,
-        title: (parsed.references && parsed.references.find(r => r.source_id === v)?.cited_text) || `Source ${v}`
-      }));
-    }
-    if (parsed.references && Array.isArray(parsed.references)) {
-      result.references = parsed.references;
-    }
-  } catch (_) {
-    result.answer = cleanStdout;
-  }
-
-  if (result.answer.startsWith('{') && result.answer.endsWith('}')) {
-    try {
-      const inner = JSON.parse(result.answer);
-      if (inner.answer) result.answer = inner.answer;
-    } catch (_) {}
-  }
+  Object.assign(result, _parseJsonStdout(cleanStdout));
+  result.answer = _unwrapNestedJsonAnswer(result.answer);
 
   // Parse inline citations if structured citations are empty
   if ((!result.citations || result.citations.length === 0) && result.answer) {
-    const inlineMatches = [];
-    const regex = /\[(?:cite:\s*(\d+)|source:\s*([^\]]+)|ref(?:erence)?\s*(\d+)|(\d+))\]/gi;
-    let m;
-    while ((m = regex.exec(result.answer)) !== null) {
-      const index = m[1] || m[3] || m[4];
-      const text = m[2];
-      if (index) {
-        const ref = (result.references || []).find(r => String(r.source_id) === String(index) || String(r.index) === String(index));
-        inlineMatches.push({
-          index,
-          sourceId: ref?.source_id || index,
-          title: ref?.title || ref?.cited_text || `Source ${index}`
-        });
-      } else if (text) {
-        inlineMatches.push({
-          index: String(inlineMatches.length + 1),
-          sourceId: text.trim(),
-          title: text.trim()
-        });
-      }
-    }
+    const inlineMatches = _extractInlineCitations(result.answer, result.references);
     if (inlineMatches.length > 0) {
       result.citations = inlineMatches;
     }

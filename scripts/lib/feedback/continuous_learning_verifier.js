@@ -87,6 +87,55 @@ function verifyKnowledgeRuleReachability(rule, chassisVariant, sampleBom = [], c
   };
 }
 
+function _validateRuleGovernance(delta, options) {
+  const status = String(delta?.status || delta?.governanceStatus || 'ACTIVE').toUpperCase();
+  if (status === 'REJECTED') {
+    throw new Error(`LEARNED_RULE_GOVERNANCE_BLOCKED: Rule status "${status}" cannot be certified or added to active history.`);
+  }
+  if (options.strictGovernance && status !== 'ACTIVE' && status !== 'APPROVED') {
+    throw new Error(`LEARNED_RULE_GOVERNANCE_BLOCKED: Rule status "${status}" cannot be certified or added to active history.`);
+  }
+}
+
+function _matchesDeltaCriteria(e, fullDelta, fullDepSku, fullCondKey, fullCondOp, fullThreshold, fullSelector) {
+  if (e.deltaId === fullDelta.deltaId) return true;
+  if (e.affectedSku !== fullDelta.affectedSku) return false;
+  if (e.ruleType !== fullDelta.ruleType) return false;
+
+  const eDepSku = e.requiredDependencySku || e.targetSku || null;
+  if (eDepSku !== fullDepSku) return false;
+
+  const eCondKey = e.conditionKey || null;
+  if (eCondKey !== fullCondKey) return false;
+
+  const eCondOp = e.conditionOperator || null;
+  if (eCondOp !== fullCondOp) return false;
+
+  const eThreshold = e.thresholdValue != null ? e.thresholdValue : null;
+  if (eThreshold !== fullThreshold) return false;
+
+  const eSelector = e.selector || null;
+  return eSelector === fullSelector;
+}
+
+function _upsertDeltaInHistory(existing, fullDelta) {
+  const fullDepSku = fullDelta.requiredDependencySku || fullDelta.targetSku || null;
+  const fullCondKey = fullDelta.conditionKey || null;
+  const fullCondOp = fullDelta.conditionOperator || null;
+  const fullThreshold = fullDelta.thresholdValue != null ? fullDelta.thresholdValue : null;
+  const fullSelector = fullDelta.selector || null;
+
+  const existingIdx = existing.findIndex(e =>
+    _matchesDeltaCriteria(e, fullDelta, fullDepSku, fullCondKey, fullCondOp, fullThreshold, fullSelector)
+  );
+
+  if (existingIdx >= 0) {
+    existing[existingIdx] = fullDelta;
+  } else {
+    existing.push(fullDelta);
+  }
+}
+
 /**
  * Record a new rule into chassis catalog_deltas.json and immediately certify reachability
  * @param {object} delta 
@@ -100,10 +149,7 @@ function recordAndCertifyLearnedRule(delta, chassisDir, testBom = [], options = 
   }
 
   // Governance Status Guard (INV-105 / G05)
-  const status = String(delta?.status || delta?.governanceStatus || 'ACTIVE').toUpperCase();
-  if (status === 'REJECTED' || (options.strictGovernance && status !== 'ACTIVE' && status !== 'APPROVED')) {
-    throw new Error(`LEARNED_RULE_GOVERNANCE_BLOCKED: Rule status "${status}" cannot be certified or added to active history.`);
-  }
+  _validateRuleGovernance(delta, options);
 
   const historyDir = path.join(chassisDir, 'history');
   if (!fs.existsSync(historyDir)) {
@@ -131,28 +177,7 @@ function recordAndCertifyLearnedRule(delta, chassisDir, testBom = [], options = 
       }
     }
 
-    // Expand semantic deduplication to include selectors, conditions, and thresholds (INV-125 / G05)
-    const fullDepSku = fullDelta.requiredDependencySku || fullDelta.targetSku || null;
-    const fullCondKey = fullDelta.conditionKey || null;
-    const fullCondOp = fullDelta.conditionOperator || null;
-    const fullThreshold = fullDelta.thresholdValue ?? null;
-    const fullSelector = fullDelta.selector || null;
-
-    const existingIdx = existing.findIndex(e =>
-      e.deltaId === deltaId ||
-      (e.affectedSku === fullDelta.affectedSku &&
-       e.ruleType === fullDelta.ruleType &&
-       (e.requiredDependencySku || e.targetSku || null) === fullDepSku &&
-       (e.conditionKey || null) === fullCondKey &&
-       (e.conditionOperator || null) === fullCondOp &&
-       (e.thresholdValue ?? null) === fullThreshold &&
-       (e.selector || null) === fullSelector)
-    );
-    if (existingIdx >= 0) {
-      existing[existingIdx] = fullDelta;
-    } else {
-      existing.push(fullDelta);
-    }
+    _upsertDeltaInHistory(existing, fullDelta);
 
     safeWriteJsonAtomic(deltaFile, existing);
     logger.info('CONTINUOUS_LEARNING', `Persisted delta ${deltaId} to ${deltaFile}`);

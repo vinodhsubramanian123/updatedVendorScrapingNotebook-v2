@@ -544,6 +544,21 @@ function executePhysicalPreChecks(items, catalogData, chassisDir, JSON_MODE, req
     evalResults.confidence.score = Math.min(evalResults.confidence.score, 0.74);
     evalResults.confidence.confidenceReasons.push('[REQUIREMENT_AMBIGUITY] A part/category or attribute-only requirement needs human confirmation before solution learning.');
   }
+
+  // Proactive Presales Lifecycle & Price Trend Advisories (G-EVD-02)
+  try {
+    const { generatePresalesLifecycleAdvisories } = require('../lib/catalog/sku_versioning.js');
+    const advisories = generatePresalesLifecycleAdvisories(items, chassisDir);
+    evalResults.presalesLifecycleAdvisories = advisories;
+    if (advisories && advisories.length > 0) {
+      for (const adv of advisories) {
+        evalResults.warnings.push(`[PRESALES_ADVISORY] ${adv.message}`);
+      }
+    }
+  } catch (_advErr) {
+    // Non-blocking presales advisory audit
+  }
+
   const graph = evalResults.conflictGraph || {};
   const stage2AspectMathMs = Math.max(Date.now() - tAspectStart, 1);
 
@@ -655,6 +670,14 @@ function _evaluateRagGroundingAndViolations(evalResults, ragResult) {
     } else if (!ragFlagsViolation) {
       evalResults.ragVerified = true;
     }
+  }
+
+  // Per-Rank Grounded Micro-Grounding & Citations (G-RSN-02)
+  const rankedSolutions = evalResults.conflictGraph?.rankedSolutions || [];
+  for (const sol of rankedSolutions) {
+    sol.nlmVerified = Boolean(evalResults.ragVerified);
+    sol.groundingTier = evalResults.notebookLmStatus?.groundingTier || 'TIER_1_LOCAL_DETERMINISTIC';
+    sol.quickSpecsCitations = (ragResult?.citations || []).slice(0, 5);
   }
 }
 

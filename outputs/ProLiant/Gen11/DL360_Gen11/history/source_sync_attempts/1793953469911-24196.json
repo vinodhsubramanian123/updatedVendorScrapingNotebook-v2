@@ -1,0 +1,24 @@
+{
+  "product": "DL360_Gen11",
+  "notebookId": "528d2896-92ac-4c85-98c3-6405b4925b0c",
+  "replacementSourceId": "750040d9-d26d-4cb6-8637-8e8415c8a147",
+  "verifiedAt": "2026-11-06T08:24:29.911Z",
+  "contentFingerprints": {
+    "catalog": "fdd8ade192da28c8bcdedaff3cf5aa376503fe265379be202ac6dba0e64ca36c",
+    "learnings": "a1cd3b9c309ebd3ab131434fbf245c95157b5f9a445d779d27fb1ae4d77f440c",
+    "changes": "df12b7bb4d6630262e9765a58e0e3810f03d21cdc2497082030507b3a9ff6c73",
+    "workbook": "62592bc2fcf104925b7bcc45cb6c6bdf782c7a18f77d6ff3952a300b33ef8933",
+    "combined": "dd761a6a58b3f1780eada5cb1e4bcaa758954762a7eebc1086e3c7e2a61d4bca"
+  },
+  "legacyFingerprint": "dd761a6a58b3f1780eada5cb1e4bcaa758954762a7eebc1086e3c7e2a61d4bca",
+  "retirementRequested": false,
+  "plannedRetirementIds": [
+    "1ec71054-aed4-4348-9c66-d70b5b6f31df"
+  ],
+  "status": "RETIREMENT_PENDING",
+  "retiredSourceIds": [],
+  "remainingSourceIds": [
+    "1ec71054-aed4-4348-9c66-d70b5b6f31df"
+  ],
+  "retirementErrors": []
+}

@@ -108,6 +108,14 @@ function assertNotebookHealth(cfg, chassisName, loggerRef) {
   return { isHealthy: false, degradationMode: degradedMode, confidenceLabel };
 }
 
+const UNIVERSAL_KEYWORDS = ['all hpe', 'global', 'vendor-wide', 'across all servers', 'taa', 'gta', 'dc lug', '-48vdc', 'telco'];
+const FAMILY_KEYWORDS = ['family-wide', 'entire family', 'all gen11', 'all gen12', 'across this generation', 'ddr5', 'ddr4', '1dpc', '2dpc'];
+
+function _hasChassisHardwareSku(deltaOrText) {
+  return Boolean(deltaOrText.affectedSku && !isApprovedUniversalPolicySku(deltaOrText.affectedSku)) ||
+         Boolean(deltaOrText.requiredDependencySku && !isApprovedUniversalPolicySku(deltaOrText.requiredDependencySku));
+}
+
 function classifyKnowledgeScope(deltaOrText) {
   // Accept both a delta object and a raw string (called from knowledge_extractor.js)
   const isString = typeof deltaOrText === 'string';
@@ -118,23 +126,15 @@ function classifyKnowledgeScope(deltaOrText) {
   const ruleType = isString ? '' : String(deltaOrText.ruleType || '').toUpperCase();
 
   // Strict Invariant (INV-48 / INV-110): Universal / shared rules must NEVER contain chassis hardware SKUs
-  if (!isString) {
-    const hasChassisHardwareSku =
-      Boolean(deltaOrText.affectedSku && !isApprovedUniversalPolicySku(deltaOrText.affectedSku)) ||
-      Boolean(deltaOrText.requiredDependencySku && !isApprovedUniversalPolicySku(deltaOrText.requiredDependencySku));
-    if (hasChassisHardwareSku) {
-      return 'CHASSIS_SPECIFIC';
-    }
+  if (!isString && _hasChassisHardwareSku(deltaOrText)) {
+    return 'CHASSIS_SPECIFIC';
   }
 
-  if (raw.includes('all hpe') || raw.includes('global') || raw.includes('vendor-wide') || raw.includes('across all servers') ||
-      raw.includes('taa') || raw.includes('gta') || raw.includes('dc lug') || raw.includes('-48vdc') || raw.includes('telco')) {
+  if (UNIVERSAL_KEYWORDS.some(kw => raw.includes(kw))) {
     return 'UNIVERSAL_VENDOR';
   }
-  const explicitlyFamilyWide = raw.includes('family-wide') || raw.includes('entire family') ||
-    raw.includes('all gen11') || raw.includes('all gen12') || raw.includes('across this generation');
-  if (!c && (ruleType === 'OPTION_TYPE_SUBSTITUTION' || explicitlyFamilyWide ||
-      raw.includes('ddr5') || raw.includes('ddr4') || raw.includes('1dpc') || raw.includes('2dpc'))) {
+  const matchesFamily = ruleType === 'OPTION_TYPE_SUBSTITUTION' || FAMILY_KEYWORDS.some(kw => raw.includes(kw));
+  if (!c && matchesFamily) {
     return 'FAMILY_GEN';
   }
   return 'CHASSIS_SPECIFIC';
@@ -148,67 +148,164 @@ function hasExplicitWideScopeEvidence(delta, level) {
   return delta.familyWideVerified === true || /family-wide|entire family|all gen\s*\d+|across this generation/.test(raw);
 }
 
+function _shouldSkipDeltaGovernance(d) {
+  const governanceStatus = String(d.governanceStatus || d.status || '').toUpperCase();
+  if (/QUARANTIN|REJECT|CONTRADICT|PENDING/.test(governanceStatus)) return true;
+  return !d.chassis && !d.affectedSku && !d.ruleType && !d.rawMessage;
+}
+
+function _mergeSingleDelta(d, inferredChassis, deltas, seenIds) {
+  if (_shouldSkipDeltaGovernance(d)) return;
+  if (!d.chassis && inferredChassis && inferredChassis !== 'history' && inferredChassis !== 'outputs') {
+    d.chassis = inferredChassis;
+  }
+  if (d.chassis) d.chassis = normalizeChassisName(d.chassis);
+  const rawText = d.rawMessage || d.ruleUpdate || '';
+  const key = `${d.chassis}|${d.affectedSku}|${d.requiredDependencySku || ''}|${rawText}`;
+
+  const existingIdx = deltas.findIndex(existing => {
+    const existingRaw = existing.rawMessage || existing.ruleUpdate || '';
+    return existing.chassis === d.chassis &&
+           existing.affectedSku === d.affectedSku &&
+           (existing.requiredDependencySku === d.requiredDependencySku || (!existing.requiredDependencySku && !d.requiredDependencySku)) &&
+           (existingRaw === rawText);
+  });
+
+  if (existingIdx >= 0) {
+    const existingD = deltas[existingIdx];
+    const dTime = d.timestamp ? new Date(d.timestamp).getTime() : 0;
+    const eTime = existingD.timestamp ? new Date(existingD.timestamp).getTime() : 0;
+    if (dTime > eTime) {
+      deltas[existingIdx] = d;
+    }
+  } else {
+    seenIds.add(key);
+    deltas.push(d);
+  }
+}
+
+function _scanDeltasDir(dir, deltas, seenIds) {
+  if (!fs.existsSync(dir)) return;
+  const entries = fs.readdirSync(dir, { withFileTypes: true });
+  for (const ent of entries) {
+    const full = path.join(dir, ent.name);
+    if (ent.isDirectory()) {
+      const ephemeral = ent.name === 'temp' || ent.name.startsWith('staging_') ||
+        ent.name.startsWith('failed_') || ent.name.includes('_promotion_bak_');
+      if (ephemeral) continue;
+      _scanDeltasDir(full, deltas, seenIds);
+    } else if (ent.name === 'catalog_deltas.json') {
+      try {
+        const content = JSON.parse(fs.readFileSync(full, 'utf-8'));
+        const list = Array.isArray(content) ? content : (content.deltas || []);
+        const inferredChassis = normalizeChassisName(
+          path.basename(dir) === 'history' ? path.basename(path.dirname(dir)) : path.basename(dir)
+        );
+        list.forEach(d => _mergeSingleDelta(d, inferredChassis, deltas, seenIds));
+      } catch (_) {}
+    }
+  }
+}
+
 function collectAllDeltas(outputsRoot = OUTPUTS_ROOT) {
   const deltas = [];
   const seenIds = new Set();
-
-  function scanDir(dir) {
-    if (!fs.existsSync(dir)) return;
-    const entries = fs.readdirSync(dir, { withFileTypes: true });
-    for (const ent of entries) {
-      const full = path.join(dir, ent.name);
-      if (ent.isDirectory()) {
-        const ephemeral = ent.name === 'temp' || ent.name.startsWith('staging_') ||
-          ent.name.startsWith('failed_') || ent.name.includes('_promotion_bak_');
-        if (ephemeral) continue;
-        scanDir(full);
-      } else if (ent.name === 'catalog_deltas.json') {
-        try {
-          const content = JSON.parse(fs.readFileSync(full, 'utf-8'));
-          const list = Array.isArray(content) ? content : (content.deltas || []);
-          const inferredChassis = normalizeChassisName(
-            path.basename(dir) === 'history' ? path.basename(path.dirname(dir)) : path.basename(dir)
-          );
-          list.forEach(d => {
-            const governanceStatus = String(d.governanceStatus || d.status || '').toUpperCase();
-            if (/QUARANTIN|REJECT|CONTRADICT|PENDING/.test(governanceStatus)) return;
-            // Skip orphan deltas with no meaningful data
-            if (!d.chassis && !d.affectedSku && !d.ruleType && !d.rawMessage) return;
-            if (!d.chassis && inferredChassis && inferredChassis !== 'history' && inferredChassis !== 'outputs') {
-              d.chassis = inferredChassis;
-            }
-            // Normalize chassis name if present (INV-36) — preserve undefined for universal scope classification
-            if (d.chassis) d.chassis = normalizeChassisName(d.chassis);
-            const rawText = d.rawMessage || d.ruleUpdate || '';
-            const key = `${d.chassis}|${d.affectedSku}|${d.requiredDependencySku || ''}|${rawText}`;
-            
-            const existingIdx = deltas.findIndex(existing => {
-              const existingRaw = existing.rawMessage || existing.ruleUpdate || '';
-              return existing.chassis === d.chassis && 
-                     existing.affectedSku === d.affectedSku &&
-                     (existing.requiredDependencySku === d.requiredDependencySku || (!existing.requiredDependencySku && !d.requiredDependencySku)) &&
-                     (existingRaw === rawText);
-            });
-
-            if (existingIdx >= 0) {
-              const existingD = deltas[existingIdx];
-              const dTime = d.timestamp ? new Date(d.timestamp).getTime() : 0;
-              const eTime = existingD.timestamp ? new Date(existingD.timestamp).getTime() : 0;
-              if (dTime > eTime) {
-                deltas[existingIdx] = d;
-              }
-            } else {
-              seenIds.add(key);
-              deltas.push(d);
-            }
-          });
-        } catch (_) {}
-      }
-    }
-  }
-
-  scanDir(outputsRoot);
+  _scanDeltasDir(outputsRoot, deltas, seenIds);
   return deltas;
+}
+
+function _shouldCorrectDeltaScope(scope, d, hasProductProvenance, hasChassisHardwareSku) {
+  if (hasChassisHardwareSku && (scope === 'UNIVERSAL_VENDOR' || scope === 'FAMILY_GEN')) {
+    return true;
+  }
+  if (scope === 'UNIVERSAL_VENDOR' && hasProductProvenance && !hasExplicitWideScopeEvidence(d, 'vendor')) {
+    return true;
+  }
+  if (scope === 'FAMILY_GEN' && hasProductProvenance && !hasExplicitWideScopeEvidence(d, 'family')) {
+    return true;
+  }
+  return false;
+}
+
+function _resolveEnrichedDeltaScope(d, notebookConfig) {
+  let scope = d.scopeTaxonomy || classifyKnowledgeScope(d);
+  if (scope === 'UNIVERSAL_HPE') scope = 'UNIVERSAL_VENDOR';
+  if (scope === 'FAMILY_GEN_SPECIFIC') scope = 'FAMILY_GEN';
+
+  const hasProductProvenance = Boolean(d.chassis || d.productId);
+  const hasChassisHardwareSku =
+    Boolean(d.affectedSku && !isApprovedUniversalPolicySku(d.affectedSku)) ||
+    Boolean(d.requiredDependencySku && !isApprovedUniversalPolicySku(d.requiredDependencySku));
+  const scopeWasCorrected = _shouldCorrectDeltaScope(scope, d, hasProductProvenance, hasChassisHardwareSku);
+  if (scopeWasCorrected) scope = 'CHASSIS_SPECIFIC';
+
+  const identity = resolveProductIdentity(d.chassis || '', notebookConfig);
+  const enrichedDelta = {
+    ...d,
+    vendor: d.vendor || identity?.vendor || 'HPE',
+    pillar: d.pillar || identity?.pillar || inferPillar(d.family),
+    family: d.family || identity?.family || '',
+    generation: d.generation || d.gen || identity?.generation || '',
+    productId: d.productId || identity?.productId || d.chassis || '',
+    scopeTaxonomy: scope,
+    ...(scopeWasCorrected ? { scopeCorrection: 'CONSERVATIVE_PRODUCT_FIREWALL' } : {}),
+    solutionType: d.solutionType || (d.chassis ? `${d.chassis} CTO Server` : 'General Server')
+  };
+
+  return { enrichedDelta, scope };
+}
+
+function _formatCharterRulesSection(rules, prefix, emptyMessage, titleFormatter) {
+  if (!rules || rules.length === 0) {
+    return `*${emptyMessage}*\n\n`;
+  }
+  let out = '';
+  rules.forEach((d, idx) => {
+    const title = titleFormatter ? titleFormatter(d, idx) : `[${d.deltaId || `DELTA-${prefix}${idx+1}`}] ${d.ruleType || 'RULE'}`;
+    out += `#### ${prefix}${idx + 1}. ${title}\n`;
+    out += `- **Scope**: \`${d.scopeTaxonomy || 'UNKNOWN'}\`\n`;
+    out += `- **Rule**: ${d.ruleUpdate || d.rawMessage}\n`;
+    if (d.affectedSku) out += `- **Affected ${prefix === 'U' ? 'Policy Token' : 'SKU'}**: \`${d.affectedSku}\`\n`;
+    if (d.requiredDependencySku) out += `- **Required Dependency**: \`${d.requiredDependencySku}\`\n`;
+    if (d.humanReasoning) out += `- **Engineering Rationale**: *${d.humanReasoning}*\n`;
+    out += `\n`;
+  });
+  return out;
+}
+
+function _buildMasterCharterMarkdown(nowISO, allDeltasCount, universalRules, familyGenRules, chassisSpecificRules) {
+  let md = `# HPE Knowledge Registry — Local Audit Index\n\n`;
+  md += `**Document Version**: \`2.0.0\` | **Generated**: \`${nowISO}\`  \n`;
+  md += `**Scope**: Local governance index. This file is not a NotebookLM source; product notebooks receive independently scoped projections.  \n`;
+  md += `**Total Verified Knowledge Deltas**: \`${allDeltasCount}\` (\`${universalRules.length}\` Universal + \`${familyGenRules.length}\` Family/Gen + \`${chassisSpecificRules.length}\` Chassis Specific)  \n\n`;
+  md += `---\n\n`;
+  md += `## Scoped Knowledge Delta Inventory\n\n`;
+
+  md += `### 🌐 1. Universal Vendor Rules (Zero Product-Specific SKUs)\n\n`;
+  md += _formatCharterRulesSection(
+    universalRules,
+    'U',
+    'No verified universal vendor rules logged.',
+    (d, idx) => `[${d.deltaId || `DELTA-U${idx+1}`}] ${d.ruleType || 'POLICY'}`
+  );
+
+  md += `### 🏛️ 2. Family & Generation Rules\n\n`;
+  md += _formatCharterRulesSection(
+    familyGenRules,
+    'F',
+    'No verified family/generation rules logged.',
+    (d, idx) => `[${d.deltaId || `DELTA-F${idx+1}`}] ${d.family || 'Family'} ${d.generation || 'Gen'} — ${d.ruleType || 'RULE'}`
+  );
+
+  md += `### 🎯 3. Chassis & Solution Gotchas (Grouped by Product)\n\n`;
+  md += _formatCharterRulesSection(
+    chassisSpecificRules,
+    'C',
+    'No persistent chassis-specific gotchas logged.',
+    (d, idx) => `[${d.deltaId || `DELTA-C${idx+1}`}] ${d.chassis || 'Chassis'} — ${d.ruleType || 'RULE'}`
+  );
+
+  return md;
 }
 
 function buildMasterKnowledgeRegistry(options = {}) {
@@ -221,37 +318,7 @@ function buildMasterKnowledgeRegistry(options = {}) {
   const chassisSpecificRules = [];
 
   allDeltas.forEach(d => {
-    let scope = d.scopeTaxonomy || classifyKnowledgeScope(d);
-    // Backward compatibility normalization
-    if (scope === 'UNIVERSAL_HPE') scope = 'UNIVERSAL_VENDOR';
-    if (scope === 'FAMILY_GEN_SPECIFIC') scope = 'FAMILY_GEN';
-
-    // Legacy data frequently promoted a one-product portal observation merely
-    // because its prose contained words such as "global" or "Gen12". Keep it
-    // chassis-specific unless broad applicability was explicitly verified.
-    const hasProductProvenance = Boolean(d.chassis || d.productId);
-    const hasChassisHardwareSku =
-      Boolean(d.affectedSku && !isApprovedUniversalPolicySku(d.affectedSku)) ||
-      Boolean(d.requiredDependencySku && !isApprovedUniversalPolicySku(d.requiredDependencySku));
-    const scopeWasCorrected =
-      (scope === 'UNIVERSAL_VENDOR' && hasProductProvenance && !hasExplicitWideScopeEvidence(d, 'vendor')) ||
-      (scope === 'FAMILY_GEN' && hasProductProvenance && !hasExplicitWideScopeEvidence(d, 'family')) ||
-      ((scope === 'UNIVERSAL_VENDOR' || scope === 'FAMILY_GEN') && hasChassisHardwareSku);
-    if (scopeWasCorrected) scope = 'CHASSIS_SPECIFIC';
-
-    const identity = resolveProductIdentity(d.chassis || '', notebookConfig);
-    const enrichedDelta = {
-      ...d,
-      vendor: d.vendor || identity?.vendor || 'HPE',
-      pillar: d.pillar || identity?.pillar || inferPillar(d.family),
-      family: d.family || identity?.family || '',
-      generation: d.generation || d.gen || identity?.generation || '',
-      productId: d.productId || identity?.productId || d.chassis || '',
-      scopeTaxonomy: scope,
-      ...(scopeWasCorrected ? { scopeCorrection: 'CONSERVATIVE_PRODUCT_FIREWALL' } : {}),
-      solutionType: d.solutionType || (d.chassis ? `${d.chassis} CTO Server` : 'General Server')
-    };
-
+    const { enrichedDelta, scope } = _resolveEnrichedDeltaScope(d, notebookConfig);
     if (scope === 'UNIVERSAL_VENDOR') {
       universalRules.push(enrichedDelta);
     } else if (scope === 'FAMILY_GEN') {
@@ -262,15 +329,11 @@ function buildMasterKnowledgeRegistry(options = {}) {
   });
 
   const nowISO = new Date().toISOString();
-
-  // Collect unique product families represented in the learned rules (excluding non-product tokens)
   const familySet = new Set(allDeltas.map(d => d.family || (d.chassis || '').split('_')[0]).filter(f => Boolean(f) && !['GLOBAL', 'Universal', 'GENERAL'].includes(f)));
 
   const registry = {
     registryVersion: '2.0.0',
     schemaVersion: '1.0',
-    // GAP-4 FIX: generatedAt is the canonical timestamp field read by the dashboard.
-    // lastUpdated is preserved for backward compatibility with older consumers.
     generatedAt: nowISO,
     lastUpdated: nowISO,
     totalLearnedRules: allDeltas.length,
@@ -291,59 +354,8 @@ function buildMasterKnowledgeRegistry(options = {}) {
   if (persist && !fs.existsSync(historyDir)) fs.mkdirSync(historyDir, { recursive: true });
   if (persist) safeWriteJsonAtomic(registryFile, registry);
 
-  // Emit consolidated master Markdown charter for universal cross-notebook sync
   const masterCharterFile = path.join(historyDir, 'master_universal_knowledge_charter.md');
-  let md = `# HPE Knowledge Registry — Local Audit Index\n\n`;
-  md += `**Document Version**: \`2.0.0\` | **Generated**: \`${nowISO}\`  \n`;
-  md += `**Scope**: Local governance index. This file is not a NotebookLM source; product notebooks receive independently scoped projections.  \n`;
-  md += `**Total Verified Knowledge Deltas**: \`${allDeltas.length}\` (\`${universalRules.length}\` Universal + \`${familyGenRules.length}\` Family/Gen + \`${chassisSpecificRules.length}\` Chassis Specific)  \n\n`;
-  md += `---\n\n`;
-  md += `## Scoped Knowledge Delta Inventory\n\n`;
-
-  md += `### 🌐 1. Universal Vendor Rules (Zero Product-Specific SKUs)\n\n`;
-  if (universalRules.length === 0) {
-    md += `*No verified universal vendor rules logged.*\n\n`;
-  } else {
-    universalRules.forEach((d, idx) => {
-      md += `#### U${idx + 1}. [${d.deltaId || `DELTA-U${idx+1}`}] ${d.ruleType || 'POLICY'}\n`;
-      md += `- **Scope**: \`UNIVERSAL_VENDOR\`\n`;
-      md += `- **Rule**: ${d.ruleUpdate || d.rawMessage}\n`;
-      if (d.affectedSku) md += `- **Affected Policy Token**: \`${d.affectedSku}\`\n`;
-      if (d.requiredDependencySku) md += `- **Required Dependency**: \`${d.requiredDependencySku}\`\n`;
-      if (d.humanReasoning) md += `- **Engineering Rationale**: *${d.humanReasoning}*\n`;
-      md += `\n`;
-    });
-  }
-
-  md += `### 🏛️ 2. Family & Generation Rules\n\n`;
-  if (familyGenRules.length === 0) {
-    md += `*No verified family/generation rules logged.*\n\n`;
-  } else {
-    familyGenRules.forEach((d, idx) => {
-      md += `#### F${idx + 1}. [${d.deltaId || `DELTA-F${idx+1}`}] ${d.family || 'Family'} ${d.generation || 'Gen'} — ${d.ruleType || 'RULE'}\n`;
-      md += `- **Scope**: \`FAMILY_GEN\`\n`;
-      md += `- **Rule**: ${d.ruleUpdate || d.rawMessage}\n`;
-      if (d.affectedSku) md += `- **Affected SKU**: \`${d.affectedSku}\`\n`;
-      if (d.requiredDependencySku) md += `- **Required Dependency**: \`${d.requiredDependencySku}\`\n`;
-      if (d.humanReasoning) md += `- **Engineering Rationale**: *${d.humanReasoning}*\n`;
-      md += `\n`;
-    });
-  }
-
-  md += `### 🎯 3. Chassis & Solution Gotchas (Grouped by Product)\n\n`;
-  if (chassisSpecificRules.length === 0) {
-    md += `*No persistent chassis-specific gotchas logged.*\n\n`;
-  } else {
-    chassisSpecificRules.forEach((d, idx) => {
-      md += `#### C${idx + 1}. [${d.deltaId || `DELTA-C${idx+1}`}] ${d.chassis || 'Chassis'} — ${d.ruleType || 'RULE'}\n`;
-      md += `- **Scope**: \`CHASSIS_SPECIFIC\`\n`;
-      md += `- **Rule**: ${d.ruleUpdate || d.rawMessage}\n`;
-      if (d.affectedSku) md += `- **Affected SKU**: \`${d.affectedSku}\`\n`;
-      if (d.requiredDependencySku) md += `- **Required Dependency**: \`${d.requiredDependencySku}\`\n`;
-      if (d.humanReasoning) md += `- **Engineering Rationale**: *${d.humanReasoning}*\n`;
-      md += `\n`;
-    });
-  }
+  const md = _buildMasterCharterMarkdown(nowISO, allDeltas.length, universalRules, familyGenRules, chassisSpecificRules);
 
   if (persist) {
     try { fs.writeFileSync(masterCharterFile, md.replace(/[ \t]+$/gm, '').trimEnd() + '\n', 'utf-8'); } catch (_) {}

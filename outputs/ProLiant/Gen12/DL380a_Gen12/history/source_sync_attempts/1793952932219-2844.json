@@ -1,0 +1,24 @@
+{
+  "product": "DL380a_Gen12",
+  "notebookId": "b233ec88-4682-4164-a801-3ee6ca649dc1",
+  "replacementSourceId": "94cc8fcb-683a-4a6a-a1b9-2e019fc9e104",
+  "verifiedAt": "2026-11-06T08:15:32.219Z",
+  "contentFingerprints": {
+    "catalog": "05e9fc9cc158eab84fbceeff36ea0915f139c9eb9703a866b8c6349701cf5782",
+    "learnings": "8df5d8af6c706e6d1f1f3504a87c89454015f2e505c9c27e6256556d519ee8e1",
+    "changes": "8f5b61ed2854b692c9b7441b74e5dd7762e99a6b06196a1062c9c964b488166b",
+    "workbook": "3102b66afde685fcb9cddf18c162d9e499d1b2b65fd4985cd4d3a61d1984a11f",
+    "combined": "09557f39c3199ebfef474a0a6d858d8a8cef7cc3864cacdf08399747e25cd490"
+  },
+  "legacyFingerprint": "09557f39c3199ebfef474a0a6d858d8a8cef7cc3864cacdf08399747e25cd490",
+  "retirementRequested": false,
+  "plannedRetirementIds": [
+    "e6ecd13c-4467-4fed-9c9e-9a67793c5800"
+  ],
+  "status": "RETIREMENT_PENDING",
+  "retiredSourceIds": [],
+  "remainingSourceIds": [
+    "e6ecd13c-4467-4fed-9c9e-9a67793c5800"
+  ],
+  "retirementErrors": []
+}

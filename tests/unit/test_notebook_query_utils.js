@@ -97,7 +97,7 @@ async function testSuite() {
   const mockAuthErr = new Error('401 UNAUTHENTICATED: Session token expired');
   const diag = diagnoseNotebookFailure(targetNotebookId, mockAuthErr);
   assert(
-    diag.errorType === 'AUTH_EXPIRED' && diag.remediationAction.includes('nlm login'),
+    diag.errorType === 'AUTH_EXPIRED' && (diag.remediationAction.includes('nlm login') || diag.remediationAction.includes('auth:nlm:heal')),
     'Test 7: Root-cause failure diagnostic classifies auth errors cleanly',
     `Diagnostic: ${JSON.stringify(diag)}`
   );

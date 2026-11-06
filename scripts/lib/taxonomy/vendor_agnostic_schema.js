@@ -100,16 +100,7 @@ function detectHardwareDomain(text = '', category = '', metadata = {}) {
   return 'server';
 }
 
-/**
- * Extract physical hardware specifications from item text/description
- * @param {object} item - Raw or intermediate item
- * @returns {object} Extracted physical specifications
- */
-function extractComponentSpecifications(item = {}) {
-  const desc = String(item.description || '').toLowerCase();
-  const specs = {};
-
-  // TDP (Watts) - strictly for processors and bounded to <= 500W to avoid matching PSU wattages
+function _extractCpuSpecs(desc, specs) {
   const isCpu = desc.includes('processor') || desc.includes('xeon') || desc.includes('epyc') || desc.includes('cpu');
   const tdpMatch = desc.match(/\b(\d{2,3})\s*w\b/i);
   if (tdpMatch && isCpu) {
@@ -119,13 +110,13 @@ function extractComponentSpecifications(item = {}) {
     }
   }
 
-  // Cores (e.g. 32-core, 32 core, 32C)
   const coreMatch = desc.match(/(\d{1,3})\s*(?:-|–)?\s*c(?:ore(?:s)?)?\b/i);
   if (coreMatch) {
     specs.cores = parseInt(coreMatch[1], 10);
   }
+}
 
-  // Speed (GHz / MHz)
+function _extractFrequencySpecs(desc, specs) {
   const ghzMatch = desc.match(/(\d+\.\d+)\s*ghz\b/i);
   if (ghzMatch) {
     specs.speedGhz = parseFloat(ghzMatch[1]);
@@ -134,20 +125,21 @@ function extractComponentSpecifications(item = {}) {
   if (mhzMatch) {
     specs.speedMhz = parseInt(mhzMatch[1], 10);
   }
+}
 
-  // Memory Capacity (GB / TB)
+function _extractMemoryAndDriveSpecs(desc, specs) {
   const memGbMatch = desc.match(/(\d{1,4})\s*gb\b/i);
   if (memGbMatch && (desc.includes('memory') || desc.includes('dimm') || desc.includes('rdimm') || desc.includes('ddr'))) {
     specs.capacityGb = parseInt(memGbMatch[1], 10);
   }
 
-  // Storage Drive Capacity (TB / GB)
   const driveTbMatch = desc.match(/(\d+(?:\.\d+)?)\s*tb\b/i);
   if (driveTbMatch && (desc.includes('ssd') || desc.includes('hdd') || desc.includes('nvme') || desc.includes('drive'))) {
     specs.driveCapacityTb = parseFloat(driveTbMatch[1]);
   }
+}
 
-  // Power Supply Wattage & Efficiency
+function _extractPowerSpecs(desc, specs) {
   const psuWattMatch = desc.match(/(\d{3,4})\s*w\b/i);
   if (psuWattMatch && (desc.includes('power supply') || desc.includes('flex slot') || desc.includes('psu'))) {
     specs.wattage = parseInt(psuWattMatch[1], 10);
@@ -156,18 +148,32 @@ function extractComponentSpecifications(item = {}) {
     else if (desc.includes('gold')) specs.efficiency = 'Gold';
     else if (desc.includes('-48vdc') || desc.includes('dc power')) specs.efficiency = '-48VDC';
   }
+}
 
-  // Transceiver / Network Port Speed
+function _extractNetworkAndFormFactorSpecs(desc, specs) {
   const netSpeedMatch = desc.match(/(\d{1,3})\s*gb(?:e)?\b/i);
   if (netSpeedMatch && (desc.includes('ethernet') || desc.includes('adapter') || desc.includes('transceiver') || desc.includes('fibre channel') || desc.includes('fc'))) {
     specs.portSpeedGb = parseInt(netSpeedMatch[1], 10);
   }
 
-  // Form Factor - evaluate EDSFF before SFF to avoid greedy substring collision
   if (desc.includes('edsff')) specs.formFactor = 'EDSFF';
   else if (desc.includes('sff')) specs.formFactor = 'SFF';
   else if (desc.includes('lff')) specs.formFactor = 'LFF';
+}
 
+/**
+ * Extract physical hardware specifications from item text/description
+ * @param {object} item - Raw or intermediate item
+ * @returns {object} Extracted physical specifications
+ */
+function extractComponentSpecifications(item = {}) {
+  const desc = String(item.description || '').toLowerCase();
+  const specs = {};
+  _extractCpuSpecs(desc, specs);
+  _extractFrequencySpecs(desc, specs);
+  _extractMemoryAndDriveSpecs(desc, specs);
+  _extractPowerSpecs(desc, specs);
+  _extractNetworkAndFormFactorSpecs(desc, specs);
   return specs;
 }
 
@@ -205,33 +211,77 @@ function detectSolutionDomain(items = [], context = {}) {
  * @param {object} [context={}] - Evaluation or parsing context
  * @returns {object} CanonicalHardwareItem
  */
-function normalizeHardwareItem(rawItem = {}, context = {}) {
+function _extractRawIdentity(rawItem) {
   const rawSku = String(rawItem.sku || rawItem.partNumber || rawItem.itemNumber || '').trim();
   const cleanSku = cleanBaseSKU(rawSku);
   const description = String(rawItem.description || rawItem.desc || rawItem.name || '').trim();
-  const rawQty = Number(rawItem.quantity ?? rawItem.qty ?? 1);
-  if (!Number.isInteger(rawQty) || rawQty < 1) throw new Error('Hardware quantity must be a positive integer');
-  const quantity = rawQty;
   const category = String(rawItem.category || rawItem.parentCategory || '').trim();
   const subcategory = String(rawItem.subcategory || '').trim();
+  const effectiveSku = cleanSku || rawSku;
+  return { rawSku, cleanSku, description, category, subcategory, effectiveSku };
+}
 
+function _extractNormalizedQuantity(rawItem) {
+  let qtyVal = 1;
+  if (rawItem.quantity != null) {
+    qtyVal = Number(rawItem.quantity);
+  } else if (rawItem.qty != null) {
+    qtyVal = Number(rawItem.qty);
+  }
+  if (!Number.isInteger(qtyVal) || qtyVal < 1) {
+    throw new Error('Hardware quantity must be a positive integer');
+  }
+  return qtyVal;
+}
+
+function _extractNormalizedPricing(rawItem, quantity) {
+  let currency = 'USD';
+  if (rawItem.currency) {
+    currency = String(rawItem.currency).toUpperCase();
+  } else if (rawItem.pricing?.currency) {
+    currency = String(rawItem.pricing.currency).toUpperCase();
+  }
+
+  const rawPrice = rawItem.unitPriceUsd != null ? rawItem.unitPriceUsd
+    : (rawItem.priceUsd != null ? rawItem.priceUsd
+    : (rawItem.pricing?.unitPriceUsd != null ? rawItem.pricing.unitPriceUsd
+    : (rawItem.price != null ? rawItem.price : rawItem.listPrice)));
+
+  const parsedPrice = require('./sku_resolver.js').extractCatalogItemPrice({ listPrice: rawPrice });
+  const validPrice = (currency === 'USD' && parsedPrice.hasPrice) ? parsedPrice.price : null;
+  const isResolved = validPrice !== null;
+  const extendedPriceUsd = isResolved ? validPrice * quantity : null;
+
+  return {
+    validPrice,
+    isResolved,
+    pricing: {
+      unitPriceUsd: validPrice,
+      extendedPriceUsd,
+      currency,
+      originalUnitPrice: parsedPrice.price,
+      isResolved
+    }
+  };
+}
+
+function normalizeHardwareItem(rawItem = {}, context = {}) {
+  const { rawSku, cleanSku, description, category, subcategory, effectiveSku } = _extractRawIdentity(rawItem);
+  const quantity = _extractNormalizedQuantity(rawItem);
   const vendor = detectVendor(description, cleanSku, context);
   const domain = detectHardwareDomain(description, category, context);
   const componentRole = classifyComponentRole(category, description);
   const specifications = extractComponentSpecifications({ ...rawItem, description });
+  const { validPrice, isResolved, pricing } = _extractNormalizedPricing(rawItem, quantity);
 
-  const currency = String(rawItem.currency || rawItem.pricing?.currency || 'USD').toUpperCase();
-  const rawPrice = rawItem.unitPriceUsd ?? rawItem.priceUsd ?? rawItem.pricing?.unitPriceUsd ?? rawItem.price ?? rawItem.listPrice;
-  const parsedPrice = require('./sku_resolver.js').extractCatalogItemPrice({ listPrice: rawPrice });
-  const validPrice = currency === 'USD' && parsedPrice.hasPrice ? parsedPrice.price : null;
-  const isResolved = validPrice !== null;
+  const sourceFile = context.filePath || rawItem.provenance?.sourceFile || null;
+  const configId = rawItem.configId || rawItem.clusterId || null;
 
   return {
     ...rawItem,
-    // Identity fields (harmonized across evaluator contracts)
-    sku: cleanSku || rawSku,
-    cleanSku: cleanSku || rawSku,
-    partNumber: cleanSku || rawSku,
+    sku: effectiveSku,
+    cleanSku: effectiveSku,
+    partNumber: effectiveSku,
     rawPartNumber: rawSku,
     description,
     quantity,
@@ -241,29 +291,18 @@ function normalizeHardwareItem(rawItem = {}, context = {}) {
     vendor,
     domain,
     specifications,
-
-    // Pricing fields
     unitPriceUsd: validPrice,
     priceUsd: validPrice,
-    pricing: {
-      unitPriceUsd: validPrice,
-      extendedPriceUsd: validPrice !== null ? validPrice * quantity : null,
-      currency,
-      originalUnitPrice: parsedPrice.price,
-      isResolved
-    },
-
-    // Configuration & Quantity Scope metadata
+    pricing,
     quantityScope: rawItem.quantityScope,
     quantityBasis: rawItem.quantityBasis,
-    configId: rawItem.configId || rawItem.clusterId || null,
+    configId,
     clusterMultiplier: rawItem.clusterMultiplier || 1,
     requirementTag: rawItem.requirementTag || null,
     isResolved,
-
     provenance: {
       ...rawItem.provenance,
-      sourceFile: context.filePath || rawItem.provenance?.sourceFile || null,
+      sourceFile,
       lineNumber: rawItem.lineNumber || null,
       rawItem
     }

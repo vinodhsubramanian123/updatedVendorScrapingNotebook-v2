@@ -104,29 +104,7 @@ function normalizeAllocatedClusters(clustersOrBom) {
  * @param {object} [options={}] - Options { strict: boolean, allowPolicyAdditions: boolean }
  * @returns {object} Structured conservation ledger
  */
-function buildUniversalQuantityConservationLedger(rawItems, clustersOrBom, options = {}) {
-  if (!Array.isArray(rawItems)) {
-    return {
-      isFullyConserved: false,
-      totalDiscrepancies: 1,
-      error: 'INVALID_RAW_ITEMS_ARRAY',
-      ledger: [],
-      summary: { totalRequestedUnits: 0, totalAllocatedUnits: 0, netUnitDelta: 0 }
-    };
-  }
-
-  const clusters = normalizeAllocatedClusters(clustersOrBom);
-  if (rawItems.length > 0 && clusters.length === 0) {
-    return {
-      isFullyConserved: false,
-      totalDiscrepancies: rawItems.length,
-      error: 'NO_ALLOCATED_CLUSTERS',
-      ledger: [],
-      summary: { totalRequestedUnits: 0, totalAllocatedUnits: 0, netUnitDelta: 0 }
-    };
-  }
-
-  // 1. Pre-index allocated items across all clusters
+function _indexAllocatedItemsAcrossClusters(clusters) {
   const allocatedByCanonicalKey = new Map();
   let totalAllocatedUnits = 0;
 
@@ -168,7 +146,10 @@ function buildUniversalQuantityConservationLedger(rawItems, clustersOrBom, optio
     });
   });
 
-  // 2. Aggregate requested source items by canonical SKU key
+  return { allocatedByCanonicalKey, totalAllocatedUnits };
+}
+
+function _aggregateRequestedItemsByCanonicalKey(rawItems) {
   const requestedByCanonicalKey = new Map();
   const sourceRowRecords = [];
   let totalRequestedUnits = 0;
@@ -216,17 +197,16 @@ function buildUniversalQuantityConservationLedger(rawItems, clustersOrBom, optio
     reqEntry.rows.push(rowRec);
   });
 
-  // 3. Reconcile Requested vs. Allocated
+  return { requestedByCanonicalKey, totalRequestedUnits, sourceRowRecords };
+}
+
+function _reconcileRequestedVsAllocated(requestedByCanonicalKey, allocatedByCanonicalKey, processedCanonicalKeys) {
   const ledger = [];
   let isFullyConserved = true;
   let totalDiscrepancies = 0;
   let exactConservedCount = 0;
   let deficitCount = 0;
   let surplusCount = 0;
-  let policyAdditionsCount = 0;
-  let unrequestedAdditionsCount = 0;
-
-  const processedCanonicalKeys = new Set();
 
   for (const [canonicalKey, req] of requestedByCanonicalKey.entries()) {
     processedCanonicalKeys.add(canonicalKey);
@@ -256,7 +236,6 @@ function buildUniversalQuantityConservationLedger(rawItems, clustersOrBom, optio
       totalDiscrepancies++;
     }
 
-    // Allocate share proportionally to source rows
     let remainingToShare = allocatedTotal;
     const rowAllocations = req.rows.map(r => {
       const share = Math.min(r.requestedQuantity, remainingToShare);
@@ -289,7 +268,23 @@ function buildUniversalQuantityConservationLedger(rawItems, clustersOrBom, optio
     });
   }
 
-  // 4. Include Allocated-Only Additions (Enablement Kits / Policy Mandated Items)
+  return {
+    ledger,
+    isFullyConserved,
+    totalDiscrepancies,
+    exactConservedCount,
+    deficitCount,
+    surplusCount
+  };
+}
+
+function _reconcileAllocatedOnlyAdditions(allocatedByCanonicalKey, processedCanonicalKeys, options) {
+  const ledger = [];
+  let isFullyConserved = true;
+  let totalDiscrepancies = 0;
+  let policyAdditionsCount = 0;
+  let unrequestedAdditionsCount = 0;
+
   for (const [canonicalKey, alloc] of allocatedByCanonicalKey.entries()) {
     if (processedCanonicalKeys.has(canonicalKey)) continue;
 
@@ -300,7 +295,6 @@ function buildUniversalQuantityConservationLedger(rawItems, clustersOrBom, optio
     if (isPolicy) {
       policyAdditionsCount++;
       if (options.strict === true) {
-        // In strict mathematical mode, even policy additions record a delta
         totalDiscrepancies++;
       }
     } else {
@@ -328,14 +322,56 @@ function buildUniversalQuantityConservationLedger(rawItems, clustersOrBom, optio
   }
 
   return {
+    ledger,
+    isFullyConserved,
+    totalDiscrepancies,
+    policyAdditionsCount,
+    unrequestedAdditionsCount
+  };
+}
+
+function buildUniversalQuantityConservationLedger(rawItems, clustersOrBom, options = {}) {
+  if (!Array.isArray(rawItems)) {
+    return {
+      isFullyConserved: false,
+      totalDiscrepancies: 1,
+      error: 'INVALID_RAW_ITEMS_ARRAY',
+      ledger: [],
+      summary: { totalRequestedUnits: 0, totalAllocatedUnits: 0, netUnitDelta: 0 }
+    };
+  }
+
+  const clusters = normalizeAllocatedClusters(clustersOrBom);
+  if (rawItems.length > 0 && clusters.length === 0) {
+    return {
+      isFullyConserved: false,
+      totalDiscrepancies: rawItems.length,
+      error: 'NO_ALLOCATED_CLUSTERS',
+      ledger: [],
+      summary: { totalRequestedUnits: 0, totalAllocatedUnits: 0, netUnitDelta: 0 }
+    };
+  }
+
+  const { allocatedByCanonicalKey, totalAllocatedUnits } = _indexAllocatedItemsAcrossClusters(clusters);
+  const { requestedByCanonicalKey, totalRequestedUnits } = _aggregateRequestedItemsByCanonicalKey(rawItems);
+
+  const processedCanonicalKeys = new Set();
+  const reqReconciled = _reconcileRequestedVsAllocated(requestedByCanonicalKey, allocatedByCanonicalKey, processedCanonicalKeys);
+  const allocReconciled = _reconcileAllocatedOnlyAdditions(allocatedByCanonicalKey, processedCanonicalKeys, options);
+
+  const fullLedger = [...reqReconciled.ledger, ...allocReconciled.ledger];
+  const isFullyConserved = reqReconciled.isFullyConserved && allocReconciled.isFullyConserved;
+  const totalDiscrepancies = reqReconciled.totalDiscrepancies + allocReconciled.totalDiscrepancies;
+
+  return {
     isFullyConserved: isFullyConserved && totalDiscrepancies === 0,
     totalDiscrepancies,
-    exactConservedCount,
-    deficitCount,
-    surplusCount,
-    policyAdditionsCount,
-    unrequestedAdditionsCount,
-    ledger,
+    exactConservedCount: reqReconciled.exactConservedCount,
+    deficitCount: reqReconciled.deficitCount,
+    surplusCount: reqReconciled.surplusCount,
+    policyAdditionsCount: allocReconciled.policyAdditionsCount,
+    unrequestedAdditionsCount: allocReconciled.unrequestedAdditionsCount,
+    ledger: fullLedger,
     summary: {
       totalRequestedUnits,
       totalAllocatedUnits,
