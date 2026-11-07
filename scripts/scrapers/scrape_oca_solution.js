@@ -44,26 +44,7 @@ function cleanupOrphanedStaging(tempDir, logger) {
   }
 }
 
-/**
- * Executes Step 8 (Staging Audit), Step 9 (Promotion & NotebookLM Sync), and Step 10 (Registry Sync).
- */
-async function auditAndPromoteStaging({
-  outputDir,
-  liveOutputDir,
-  catalogXlsx,
-  catalogJson,
-  meta,
-  tables,
-  totalLen,
-  treeInfo,
-  pdfDestPath,
-  pipelineStart,
-  stepTelemetry = {},
-  conditionalSkusCount = 0
-}) {
-
-  let captureReceipt;
-  // STEP 8: Automated Post-Flight Audit Verification
+function runStagingPostFlightAudit(outputDir, liveOutputDir, catalogXlsx, catalogJson, meta, stepTelemetry) {
   console.log('\n--- STEP 8: Staging Post-Flight Quality Audit ---');
   emitProgress(8, 10, 'Staging Tally Audit & Quality Certification', 'in_progress', 'Running 7-check post-flight audit suite', {
     stage: 'STAGING_AUDIT', percent: 90, category: meta.cleanName
@@ -76,7 +57,6 @@ async function auditAndPromoteStaging({
       { stdio: 'inherit', cwd: PROJECT_ROOT }
     );
 
-    // Strict Pre-Promotion JSON Schema & Cardinality Guardrail
     const stagingCatalogContent = JSON.parse(fs.readFileSync(catalogJson, 'utf-8'));
     const skuCount = stagingCatalogContent.metadata?.totalUniqueSKUs || 0;
     const entriesCount = Array.isArray(stagingCatalogContent.entries) ? stagingCatalogContent.entries.length : 0;
@@ -91,7 +71,7 @@ async function auditAndPromoteStaging({
       humanConfirmed: true
     });
 
-    captureReceipt = require('../lib/catalog/catalog_capture_receipt.js').createCaptureReceipt(outputDir, liveOutputDir, meta.cleanName);
+    const captureReceipt = require('../lib/catalog/catalog_capture_receipt.js').createCaptureReceipt(outputDir, liveOutputDir, meta.cleanName);
 
     const { verifyScrapingStep, AtomicStepAnomalyError } = require('../lib/scraper/scraping_verifiability.js');
     const isTallyVerified = skuCount > 0 && entriesCount > 0 && fs.existsSync(catalogXlsx);
@@ -102,6 +82,7 @@ async function auditAndPromoteStaging({
     }
 
     console.log('✅ Staging audit and JSON Schema assertions passed 100%! Ready to promote to live workspace.');
+    return captureReceipt;
   } catch (e) {
     const failedStagingDir = path.join(OUTPUTS_ROOT, 'temp', `failed_staging_${meta.cleanName}_${Date.now()}`);
     console.error('\n❌ STAGING POST-FLIGHT AUDIT FAILED:', e.message);
@@ -123,6 +104,120 @@ async function auditAndPromoteStaging({
     try { fs.renameSync(outputDir, failedStagingDir); } catch (_) {}
     process.exit(1);
   }
+}
+
+function readPromotedSkuCounts(liveOutputDir, liveCatalogJson, meta, defaultCount) {
+  let hwSkuCount = defaultCount;
+  let serviceSkuCount = 0;
+  try {
+    const liveCatalogData = JSON.parse(fs.readFileSync(liveCatalogJson, 'utf-8'));
+    hwSkuCount = liveCatalogData.metadata?.totalUniqueSKUs || defaultCount;
+    const liveServicesJson = path.join(liveOutputDir, `${meta.cleanName}_Services.json`);
+    if (fs.existsSync(liveServicesJson)) {
+      const svcData = JSON.parse(fs.readFileSync(liveServicesJson, 'utf-8'));
+      serviceSkuCount = svcData.metadata?.totalUniqueSKUs || 0;
+    }
+  } catch (catalogReadErr) {
+    console.warn(`Warning: Could not read liveCatalogJson for SKU count: ${catalogReadErr.message}`);
+  }
+  return { hwSkuCount, serviceSkuCount, totalSkuCount: hwSkuCount + serviceSkuCount };
+}
+
+function resolveActualPromotedPdf(liveOutputDir, pdfDestPath) {
+  const livePdfPath = pdfDestPath ? path.join(liveOutputDir, path.basename(pdfDestPath)) : null;
+  if (livePdfPath && fs.existsSync(livePdfPath)) return livePdfPath;
+  const preservedPdf = fs.existsSync(liveOutputDir)
+    ? fs.readdirSync(liveOutputDir).find(name => name.toLowerCase().endsWith('.pdf'))
+    : null;
+  return preservedPdf ? path.join(liveOutputDir, preservedPdf) : null;
+}
+
+function assertPromotedCatalogImmutability(liveCatalogJson, liveOutputDir, outputDir, meta, hwSkuCount) {
+  const promotedCatalog = JSON.parse(fs.readFileSync(liveCatalogJson, 'utf8'));
+  if (promotedCatalog.metadata?.totalUniqueSKUs !== hwSkuCount) {
+    const quarantineDir = path.join(OUTPUTS_ROOT, 'temp', `quarantine_immutability_${meta.cleanName}_${Date.now()}`);
+    console.error(`\n❌ Step 10 immutability check failed: promoted catalog changed from ${hwSkuCount} to ${promotedCatalog.metadata?.totalUniqueSKUs}.`);
+    console.error(`   Staging dir preserved for diagnosis at: ${outputDir}`);
+    try { fs.renameSync(liveOutputDir, quarantineDir); } catch (_) {}
+    throw new Error(`Step 10 immutability check failed: promoted catalog SKU count changed from ${hwSkuCount} to ${promotedCatalog.metadata?.totalUniqueSKUs}. Live dir quarantined to ${path.basename(quarantineDir)}.`);
+  }
+}
+
+function resolveFinalConditionalSkusCount(conditionalSkusCount, liveOutputDir) {
+  if (conditionalSkusCount) return conditionalSkusCount;
+  try {
+    const rawJsonForRefl = path.join(liveOutputDir, 'raw_data', 'conditional_skus.json');
+    if (fs.existsSync(rawJsonForRefl)) {
+      return JSON.parse(fs.readFileSync(rawJsonForRefl, 'utf8')).totalConditionalSkus || 0;
+    }
+  } catch (_) {}
+  return 0;
+}
+
+function reportPipelineCompletion({
+  nlmSyncPending, durationSec, treeInfo, meta, liveOutputDir, liveCatalogJson,
+  liveCatalogXlsx, actualPdfPath, totalSkuCount, hwSkuCount, serviceSkuCount, finalConditionalSkusCount
+}) {
+  const pipelineStatus = nlmSyncPending ? 'PARTIAL_SUCCESS' : 'SUCCESS';
+  const completionLabel = nlmSyncPending
+    ? `Scrape Pipeline Complete (NLM Sync Pending)`
+    : `Scrape Pipeline & Knowledge Sync Complete`;
+  emitProgress(10, 10, completionLabel, 'completed', `Completed in ${durationSec}s`, {
+    stage: 'REGISTRY_SYNC', percent: 100, category: meta.cleanName,
+    nlmSyncPending
+  });
+
+  if (JSON_MODE) {
+    emitResult(pipelineStatus, {
+      solutionName: treeInfo.solutionName || 'OCA Solution',
+      family:       meta.family,
+      gen:          meta.gen,
+      chassisName:  meta.cleanName,
+      outputDir:    liveOutputDir,
+      jsonPath:     liveCatalogJson,
+      xlsxPath:     liveCatalogXlsx,
+      pdfPath:      actualPdfPath,
+      tablesCount:  totalSkuCount,
+      hwSkuCount,
+      serviceSkuCount,
+      conditionalSkusCount: finalConditionalSkusCount,
+      nlmSyncPending,
+      durationSec
+    });
+  } else {
+    console.log('\n================================================================');
+    if (nlmSyncPending) {
+      console.log(`✅ PIPELINE COMPLETED (LOCAL) in ${durationSec}s — Live Workspace Updated:`);
+      console.log(`   ${liveOutputDir}`);
+      console.log(`   HW SKUs: ${hwSkuCount} | Service SKUs: ${serviceSkuCount} | Total: ${totalSkuCount}`);
+      console.log(`   ⚠️  NotebookLM sync pending — retry: npm run sync:nlm -- --chassis ${meta.cleanName}`);
+    } else {
+      console.log(`🎉 PIPELINE COMPLETED SUCCESSFULLY in ${durationSec}s — Live Workspace Updated:`);
+      console.log(`   ${liveOutputDir}`);
+      console.log(`   HW SKUs: ${hwSkuCount} | Service SKUs: ${serviceSkuCount} | Total: ${totalSkuCount}`);
+    }
+    console.log('================================================================\n');
+  }
+}
+
+/**
+ * Executes Step 8 (Staging Audit), Step 9 (Promotion & NotebookLM Sync), and Step 10 (Registry Sync).
+ */
+async function auditAndPromoteStaging({
+  outputDir,
+  liveOutputDir,
+  catalogXlsx,
+  catalogJson,
+  meta,
+  tables,
+  totalLen,
+  treeInfo,
+  pdfDestPath,
+  pipelineStart,
+  stepTelemetry = {},
+  conditionalSkusCount = 0
+}) {
+  const captureReceipt = runStagingPostFlightAudit(outputDir, liveOutputDir, catalogXlsx, catalogJson, meta, stepTelemetry);
 
   // STEP 9: Promote Staging to Live Workspace & Cloud NotebookLM Grounding
   console.log('\n--- STEP 9: Promoting Staging to Live Workspace & Cloud NotebookLM Grounding ---');
@@ -130,10 +225,10 @@ async function auditAndPromoteStaging({
     stage: 'KNOWLEDGE_SYNC', percent: 95, category: meta.cleanName
   });
 
-  const { promoteStagingDirectory } = require('../lib/system/fs_compat.js');
+  const { promoteStagingDirectory, copyDirRecursive } = require('../lib/system/fs_compat.js');
   const evidenceDir = path.join(liveOutputDir, 'evidence');
   if (fs.existsSync(evidenceDir)) {
-    require('../lib/system/fs_compat.js').copyDirRecursive(evidenceDir, path.join(outputDir, 'evidence'));
+    copyDirRecursive(evidenceDir, path.join(outputDir, 'evidence'));
   }
   promoteStagingDirectory(outputDir, liveOutputDir);
 
@@ -142,29 +237,8 @@ async function auditAndPromoteStaging({
     productKey: meta.cleanName, catalogPath: liveCatalogJson, stagingAuditPassed: true
   });
   const liveCatalogXlsx = path.join(liveOutputDir, `${meta.cleanName}_OCA_Catalog.xlsx`);
-  const livePdfPath = pdfDestPath ? path.join(liveOutputDir, path.basename(pdfDestPath)) : null;
-  const preservedPdf = fs.existsSync(liveOutputDir)
-    ? fs.readdirSync(liveOutputDir).find(name => name.toLowerCase().endsWith('.pdf'))
-    : null;
-  const actualPdfPath = livePdfPath && fs.existsSync(livePdfPath)
-    ? livePdfPath
-    : (preservedPdf ? path.join(liveOutputDir, preservedPdf) : null);
-
-  let hwSkuCount = tables.length;
-  let serviceSkuCount = 0;
-  let totalSkuCount = tables.length;
-  try {
-    const liveCatalogData = JSON.parse(fs.readFileSync(liveCatalogJson, 'utf-8'));
-    hwSkuCount = liveCatalogData.metadata?.totalUniqueSKUs || tables.length;
-    const liveServicesJson = path.join(liveOutputDir, `${meta.cleanName}_Services.json`);
-    if (fs.existsSync(liveServicesJson)) {
-      const svcData = JSON.parse(fs.readFileSync(liveServicesJson, 'utf-8'));
-      serviceSkuCount = svcData.metadata?.totalUniqueSKUs || 0;
-    }
-    totalSkuCount = hwSkuCount + serviceSkuCount;
-  } catch (catalogReadErr) {
-    console.warn(`Warning: Could not read liveCatalogJson for SKU count: ${catalogReadErr.message}`);
-  }
+  const actualPdfPath = resolveActualPromotedPdf(liveOutputDir, pdfDestPath);
+  const { hwSkuCount, serviceSkuCount, totalSkuCount } = readPromotedSkuCounts(liveOutputDir, liveCatalogJson, meta, tables.length);
 
   updateScrapedRegistry({
     timestamp:      new Date().toISOString(),
@@ -182,7 +256,6 @@ async function auditAndPromoteStaging({
     textLength:     totalLen
   });
 
-  // Post-flow knowledge sync — update master registry & auto-upload to NotebookLM
   let postFlowSyncResult = null;
   try {
     const { triggerPostFlowSyncAsync } = require('../lib/sync/post_flow_sync.js');
@@ -213,23 +286,9 @@ async function auditAndPromoteStaging({
     stage: 'REGISTRY_SYNC', percent: 98, category: meta.cleanName
   });
 
-  // GAP-09 FIX: Run immutability check BEFORE cleaning up staging, so if it fails
-  // the staging dir still exists for diagnosis and the live workspace can be quarantined.
-  const promotedCatalog = JSON.parse(fs.readFileSync(liveCatalogJson, 'utf8'));
-  if (promotedCatalog.metadata?.totalUniqueSKUs !== hwSkuCount) {
-    const quarantineDir = path.join(OUTPUTS_ROOT, 'temp', `quarantine_immutability_${meta.cleanName}_${Date.now()}`);
-    console.error(`\n❌ Step 10 immutability check failed: promoted catalog changed from ${hwSkuCount} to ${promotedCatalog.metadata?.totalUniqueSKUs}.`);
-    console.error(`   Staging dir preserved for diagnosis at: ${outputDir}`);
-    try { fs.renameSync(liveOutputDir, quarantineDir); } catch (_) {}
-    throw new Error(`Step 10 immutability check failed: promoted catalog SKU count changed from ${hwSkuCount} to ${promotedCatalog.metadata?.totalUniqueSKUs}. Live dir quarantined to ${path.basename(quarantineDir)}.`);
-  }
-
-  // Clean up staging folder only after immutability check passes
+  assertPromotedCatalogImmutability(liveCatalogJson, liveOutputDir, outputDir, meta, hwSkuCount);
   try { if (fs.existsSync(outputDir)) fs.rmSync(outputDir, { recursive: true, force: true }); } catch (_) {}
 
-  // GAP-08 FIX: NLM sync failure is a PARTIAL_SUCCESS (local catalog is promoted and safe).
-  // Cloud sync can be retried independently with: npm run sync:nlm <chassis>
-  // Never crash or report ERROR when only the cloud grounding step is pending.
   const nlmSyncPending = !postFlowSyncResult?.success || postFlowSyncResult.syncStatus !== 'CLOUD_VERIFIED';
   if (nlmSyncPending) {
     const syncReason = postFlowSyncResult?.error || postFlowSyncResult?.syncStatus || 'unknown cloud state';
@@ -240,21 +299,8 @@ async function auditAndPromoteStaging({
   }
 
   const durationSec = ((Date.now() - pipelineStart) / 1000).toFixed(1);
-
-  const step10Result = verifyScrapingStep(10, { registryUpdated: true });
-  stepTelemetry[10] = step10Result;
-
-  // GAP-07 FIX: Read conditionalSkusCount from passed parameter or fallback to promoted raw_data
-  let finalConditionalSkusCount = conditionalSkusCount || 0;
-  if (!finalConditionalSkusCount) {
-    try {
-      const rawJsonForRefl = path.join(liveOutputDir, 'raw_data', 'conditional_skus.json');
-      if (fs.existsSync(rawJsonForRefl)) {
-        finalConditionalSkusCount = JSON.parse(fs.readFileSync(rawJsonForRefl, 'utf8')).totalConditionalSkus || 0;
-      }
-    } catch (_) {}
-  }
-
+  stepTelemetry[10] = verifyScrapingStep(10, { registryUpdated: true });
+  const finalConditionalSkusCount = resolveFinalConditionalSkusCount(conditionalSkusCount, liveOutputDir);
 
   selfReflectOnScrapingSession({
     product: meta.cleanName,
@@ -282,48 +328,10 @@ async function auditAndPromoteStaging({
     preflightReport: stepTelemetry[0] || null
   });
 
-  // GAP-08: emit PARTIAL_SUCCESS when NLM sync is pending, not SUCCESS
-  const pipelineStatus = nlmSyncPending ? 'PARTIAL_SUCCESS' : 'SUCCESS';
-  const completionLabel = nlmSyncPending
-    ? `Scrape Pipeline Complete (NLM Sync Pending)`
-    : `Scrape Pipeline & Knowledge Sync Complete`;
-  emitProgress(10, 10, completionLabel, 'completed', `Completed in ${durationSec}s`, {
-    stage: 'REGISTRY_SYNC', percent: 100, category: meta.cleanName,
-    nlmSyncPending
+  reportPipelineCompletion({
+    nlmSyncPending, durationSec, treeInfo, meta, liveOutputDir, liveCatalogJson,
+    liveCatalogXlsx, actualPdfPath, totalSkuCount, hwSkuCount, serviceSkuCount, finalConditionalSkusCount
   });
-
-  if (JSON_MODE) {
-    emitResult(pipelineStatus, {
-      solutionName: treeInfo.solutionName || 'OCA Solution',
-      family:       meta.family,
-      gen:          meta.gen,
-      chassisName:  meta.cleanName,
-      outputDir:    liveOutputDir,
-      jsonPath:     liveCatalogJson,
-      xlsxPath:     liveCatalogXlsx,
-      pdfPath:      actualPdfPath,
-      tablesCount:  totalSkuCount,
-      hwSkuCount,
-      serviceSkuCount,
-      conditionalSkusCount: finalConditionalSkusCount,
-      nlmSyncPending,
-      durationSec
-    });
-
-  } else {
-    console.log('\n================================================================');
-    if (nlmSyncPending) {
-      console.log(`✅ PIPELINE COMPLETED (LOCAL) in ${durationSec}s — Live Workspace Updated:`);
-      console.log(`   ${liveOutputDir}`);
-      console.log(`   HW SKUs: ${hwSkuCount} | Service SKUs: ${serviceSkuCount} | Total: ${totalSkuCount}`);
-      console.log(`   ⚠️  NotebookLM sync pending — retry: npm run sync:nlm -- --chassis ${meta.cleanName}`);
-    } else {
-      console.log(`🎉 PIPELINE COMPLETED SUCCESSFULLY in ${durationSec}s — Live Workspace Updated:`);
-      console.log(`   ${liveOutputDir}`);
-      console.log(`   HW SKUs: ${hwSkuCount} | Service SKUs: ${serviceSkuCount} | Total: ${totalSkuCount}`);
-    }
-    console.log('================================================================\n');
-  }
 }
 
 function resolveExpectedProductIdentity(targetChassisQuery, notebookConfig) {
@@ -564,8 +572,8 @@ async function sweepUnavailableDomRules(ws, sendCommand) {
 }
 
 async function navigateProductNode(ws, targetHint, options = {}) {
-
   const { isComponentsTab = false, enterMenu = false } = options;
+  const fallbackKeywords = ['gen11', 'gen12', '#1', 'alletra', 'msl', 'sn3600', 'synergy', 'f32', 'cray', 'storeever', 'switch', 'storage'];
   await sendCommand(ws, 'Runtime.evaluate', {
     expression: `(() => {
       const target = ${JSON.stringify(targetHint)};
@@ -593,14 +601,12 @@ async function navigateProductNode(ws, targetHint, options = {}) {
 
         if (typeof jQuery !== 'undefined') {
           const targetTokens = (target || '').split(/\\s+/).filter(tok => tok.length >= 3);
+          const kwList = ${JSON.stringify(fallbackKeywords)};
           const titleSpan = jQuery('.fancytree-title, span[id*="node_title"]').filter((i, el) => {
             const t = jQuery(el).text().toLowerCase();
             if (target && t.includes(target)) return true;
-            if (targetTokens.length > 0 && targetTokens.some(tok => t.includes(tok))) return true;
-            return t.includes('gen11') || t.includes('gen12') || t.includes('#1') ||
-                   t.includes('alletra') || t.includes('msl') || t.includes('sn3600') ||
-                   t.includes('synergy') || t.includes('f32') || t.includes('cray') ||
-                   t.includes('storeever') || t.includes('switch') || t.includes('storage');
+            if (targetTokens.some(tok => t.includes(tok))) return true;
+            return kwList.some(kw => t.includes(kw));
           });
           if (titleSpan.length > 0) titleSpan.first().trigger('click').trigger('dblclick');
           const lastVal = jQuery('#selectNavTreeOption option').last().val();
@@ -727,63 +733,7 @@ async function discoverSolutionTreeAndMenu(ws, targetHint) {
   return { treeInfo, alreadyAtMenu, step2Result };
 }
 
-async function resolveActiveProductAndProfile(ws, targetChassisQuery, pageTarget) {
-  const headingRes = await sendCommand(ws, 'Runtime.evaluate', {
-    expression: `(() => {
-      const targetedSelectors = [
-        '.product_description',
-        '[id*="summary_property_description"]',
-        '[id*="summary_property_summary_name"]',
-        '.eo_nav_li.current',
-        '.eo_nav_div',
-        '.configName',
-        '.breadcrumb',
-        '.breadcrumb-item',
-        'h1, h2, h3, h4',
-        '.fancytree-title',
-        '.menu_info',
-        '.menu-title',
-        '#solution_title',
-        'strong, td'
-      ];
-
-      // A nested component's breadcrumb contains its parent. Prefer the
-      // actual menu product heading so the parent cannot become its identity.
-      let foundHeading = (document.querySelector('.menu_info')?.innerText || '').split('\\n')
-        .map(line => line.trim()).find(line => /\\[[A-Z0-9-]+\\]$/.test(line)) || '';
-      const pattern = /(?:DL|ML|RL|SY|GX)\\d{3}|ProLiant|Alletra|StoreEver|StoreOnce|MSL\\d+|Synergy|Cray|Gen\\d+/i;
-
-      for (const sel of targetedSelectors) {
-        if (foundHeading) break;
-        const els = Array.from(document.querySelectorAll(sel));
-        for (const el of els) {
-          const t = (el.innerText || '').trim();
-          if (t && t.length < 200 && pattern.test(t)) {
-            foundHeading = t;
-            break;
-          }
-        }
-        if (foundHeading) break;
-      }
-
-      const rawHeading = foundHeading || document.title;
-      const pageHeading = rawHeading
-        .replace(/Collapse All|Expand All|Expand Subsections|Undo Selection|Remove Defaults|View HPE Recommended only/gi, '')
-        .trim();
-      const qsLink = document.querySelector('a[href*="quickspec"], a.qs-link-a')?.href || '';
-      return JSON.stringify({ pageHeading, qsLink });
-    })()`,
-    returnByValue: true
-  });
-  let { pageHeading, qsLink } = JSON.parse(headingRes.result.value);
-  if (!pageHeading || pageHeading.includes('External OCA') || pageHeading.includes('OCA Solution') || pageHeading.includes('General')) {
-    if (targetChassisQuery) {
-      pageHeading = targetChassisQuery;
-    }
-  }
-  console.log(`Active Product Node Title: "${pageHeading}"`);
-
-  const meta = parseProductMeta(pageHeading, targetChassisQuery || pageTarget.title);
+function enforceProductIdentityGate(meta, targetChassisQuery) {
   if (targetChassisQuery && (!meta.gen || meta.gen === 'General')) {
     const overrideMeta = parseProductMeta(targetChassisQuery);
     meta.family = overrideMeta.family || meta.family;
@@ -805,6 +755,61 @@ async function resolveActiveProductAndProfile(ws, targetChassisQuery, pageTarget
     meta.family = expectedIdentity.family;
     meta.gen = expectedIdentity.generation;
   }
+}
+
+async function resolveActiveProductAndProfile(ws, targetChassisQuery, pageTarget) {
+  const headingRes = await sendCommand(ws, 'Runtime.evaluate', {
+    expression: `(() => {
+      const targetedSelectors = [
+        '.product_description',
+        '[id*="summary_property_description"]',
+        '[id*="summary_property_summary_name"]',
+        '.eo_nav_li.current',
+        '.eo_nav_div',
+        '.configName',
+        '.breadcrumb',
+        '.breadcrumb-item',
+        'h1, h2, h3, h4',
+        '.fancytree-title',
+        '.menu_info',
+        '.menu-title',
+        '#solution_title',
+        'strong, td'
+      ];
+
+      let foundHeading = (document.querySelector('.menu_info')?.innerText || '').split('\\n')
+        .map(line => line.trim()).find(line => /\\[[A-Z0-9-]+\\]$/.test(line)) || '';
+      const pattern = /(?:DL|ML|RL|SY|GX)\\d{3}|ProLiant|Alletra|StoreEver|StoreOnce|MSL\\d+|Synergy|Cray|Gen\\d+/i;
+
+      for (const sel of targetedSelectors) {
+        if (foundHeading) break;
+        const els = Array.from(document.querySelectorAll(sel));
+        for (const el of els) {
+          const t = (el.innerText || '').trim();
+          if (t && t.length < 200 && pattern.test(t)) {
+            foundHeading = t;
+            break;
+          }
+        }
+      }
+
+      const rawHeading = foundHeading || document.title;
+      const pageHeading = rawHeading
+        .replace(/Collapse All|Expand All|Expand Subsections|Undo Selection|Remove Defaults|View HPE Recommended only/gi, '')
+        .trim();
+      const qsLink = document.querySelector('a[href*="quickspec"], a.qs-link-a')?.href || '';
+      return JSON.stringify({ pageHeading, qsLink });
+    })()`,
+    returnByValue: true
+  });
+  let { pageHeading, qsLink } = JSON.parse(headingRes.result.value);
+  if (targetChassisQuery && (!pageHeading || /External OCA|OCA Solution|General/.test(pageHeading))) {
+    pageHeading = targetChassisQuery;
+  }
+  console.log(`Active Product Node Title: "${pageHeading}"`);
+
+  const meta = parseProductMeta(pageHeading, targetChassisQuery || pageTarget.title);
+  enforceProductIdentityGate(meta, targetChassisQuery);
 
   const { loadProfile } = require('../lib/system/profile_loader.js');
   const profile = await loadProfile(meta.family, meta.gen);
@@ -956,6 +961,93 @@ async function extractPageDomPayload(ws, meta, profile) {
   };
 }
 
+function resolveOrSynthesizeChassisDiscovery(initDiscovery, liveOutputDir, meta, profile, domPayload, pageHeading) {
+  if (initDiscovery) return initDiscovery;
+  let chassisDiscovery = null;
+  const priorDiscoveryPath = path.join(liveOutputDir, 'raw_data', 'chassis_discovery.json');
+  if (fs.existsSync(priorDiscoveryPath)) {
+    try {
+      chassisDiscovery = JSON.parse(fs.readFileSync(priorDiscoveryPath, 'utf8'));
+      if (chassisDiscovery) {
+        chassisDiscovery.reusedAt = new Date().toISOString();
+      }
+    } catch (discoveryErr) {
+      console.warn(`Could not preserve prior chassis discovery evidence: ${discoveryErr.message}`);
+    }
+  }
+
+  const baseSku = resolveBaseSkuForProduct(meta, chassisDiscovery, profile);
+  const edtMatch = domPayload.fullText.match(/EDT[\s\n]*(\d+[\s\n]*-[\s\n]*\d+[\s\n]*days?)/i);
+  const deliveryEstimate = edtMatch ? `EDT ${edtMatch[1].replace(/\s+/g, ' ')}` : (chassisDiscovery?.deliveryEstimate || '');
+
+  if (!chassisDiscovery || chassisDiscovery.selectedSku !== baseSku) {
+    return {
+      query: meta.cleanName,
+      selectedSku: baseSku,
+      source: 'HPE OCA Configuration Session via authenticated CDP session',
+      capturedAt: new Date().toISOString(),
+      deliveryEstimate,
+      candidates: [
+        {
+          type: 'dropdown-option',
+          cardSelector: '[data-cand-idx="0"]',
+          optionValue: baseSku,
+          text: `${baseSku} - ${pageHeading}`,
+          sku: baseSku,
+          listPriceUsd: 0,
+          availability: 'Available in OCA product catalog',
+          leadTime: deliveryEstimate,
+          deliveryLabel: '',
+          isBto: false,
+          isTaa: false,
+          isGta: false,
+          isCto: true
+        }
+      ]
+    };
+  }
+  chassisDiscovery.capturedAt = new Date().toISOString();
+  chassisDiscovery.deliveryEstimate = deliveryEstimate;
+  if (chassisDiscovery.candidates?.[0]) {
+    chassisDiscovery.candidates[0].leadTime = deliveryEstimate;
+  }
+  return chassisDiscovery;
+}
+
+function writeCompanionRawRuleFiles(rawDir, meta, domPayload, networkSniffedRules, safeWriteJsonAtomic) {
+  if (domPayload.conditionalSkus.length > 0) {
+    safeWriteJsonAtomic(path.join(rawDir, 'conditional_skus.json'), {
+      timestamp: new Date().toISOString(),
+      chassisName: meta.cleanName,
+      totalConditionalSkus: domPayload.conditionalSkus.length,
+      skus: domPayload.conditionalSkus
+    });
+    console.log(`Conditional SKUs saved to raw_data/conditional_skus.json`);
+  }
+
+  if (domPayload.unavailableRules.length > 0 || domPayload.unavailableSkus.length > 0) {
+    safeWriteJsonAtomic(path.join(rawDir, 'unavailable_rules.json'), {
+      timestamp: new Date().toISOString(),
+      chassisName: meta.cleanName,
+      totalUnavailableRules: domPayload.unavailableRules.length,
+      totalUnavailableSkus: domPayload.unavailableSkus.length,
+      rules: domPayload.unavailableRules,
+      skus: domPayload.unavailableSkus
+    });
+    console.log(`Unavailable rules & conditional SKUs saved to raw_data/unavailable_rules.json`);
+  }
+
+  if (networkSniffedRules.length > 0) {
+    safeWriteJsonAtomic(path.join(rawDir, 'network_sniffed_rules.json'), {
+      timestamp: new Date().toISOString(),
+      chassisName: meta.cleanName,
+      totalRules: networkSniffedRules.length,
+      rules: networkSniffedRules
+    });
+    console.log(`Network-sniffed rules saved to raw_data/network_sniffed_rules.json`);
+  }
+}
+
 async function setupStagingAndPersistRawData({
   meta,
   profile,
@@ -970,13 +1062,9 @@ async function setupStagingAndPersistRawData({
     'External_OCA_Hewlett_Packard_Enterprise', 'General', '', 'outputs',
     '-------------', 'Output Path', 'Unknown_Chassis', 'OCA Solution', 'Chassis Dir'
   ]);
-  if (
-    !meta.cleanName ||
-    BLOCKED_CHASSIS_NAMES.has(meta.cleanName) ||
-    !/^[A-Za-z0-9][A-Za-z0-9_-]+$/.test(meta.cleanName) ||
-    meta.cleanName.includes('..') ||
-    meta.cleanName.length > 80
-  ) {
+  const isInvalidName = !meta.cleanName || BLOCKED_CHASSIS_NAMES.has(meta.cleanName) ||
+    !/^[A-Za-z0-9][A-Za-z0-9_-]+$/.test(meta.cleanName) || meta.cleanName.includes('..') || meta.cleanName.length > 80;
+  if (isInvalidName) {
     throw new Error(
       `Phantom chassis name rejected: "${meta.cleanName}" (parsed from: "${pageHeading}").\n` +
       `Ensure you are on the correct Product Node Menu tab in OCA and the page heading contains a recognizable HPE product name.`
@@ -989,57 +1077,7 @@ async function setupStagingAndPersistRawData({
   const stagingDir = path.join(OUTPUTS_ROOT, 'temp', `staging_${meta.cleanName.replace(/[^a-zA-Z0-9_-]/g, '_')}_${Date.now()}`);
   const outputDir = stagingDir;
 
-  let chassisDiscovery = initDiscovery;
-  if (!chassisDiscovery) {
-    const priorDiscoveryPath = path.join(liveOutputDir, 'raw_data', 'chassis_discovery.json');
-    if (fs.existsSync(priorDiscoveryPath)) {
-      try {
-        chassisDiscovery = JSON.parse(fs.readFileSync(priorDiscoveryPath, 'utf8'));
-        if (chassisDiscovery) {
-          chassisDiscovery.reusedAt = new Date().toISOString();
-        }
-      } catch (discoveryErr) {
-        console.warn(`Could not preserve prior chassis discovery evidence: ${discoveryErr.message}`);
-      }
-    }
-
-    const baseSku = resolveBaseSkuForProduct(meta, chassisDiscovery, profile);
-    const edtMatch = domPayload.fullText.match(/EDT[\s\n]*(\d+[\s\n]*-[\s\n]*\d+[\s\n]*days?)/i);
-    const deliveryEstimate = edtMatch ? `EDT ${edtMatch[1].replace(/\s+/g, ' ')}` : (chassisDiscovery?.deliveryEstimate || '');
-
-    if (!chassisDiscovery || chassisDiscovery.selectedSku !== baseSku) {
-      chassisDiscovery = {
-        query: meta.cleanName,
-        selectedSku: baseSku,
-        source: 'HPE OCA Configuration Session via authenticated CDP session',
-        capturedAt: new Date().toISOString(),
-        deliveryEstimate,
-        candidates: [
-          {
-            type: 'dropdown-option',
-            cardSelector: '[data-cand-idx="0"]',
-            optionValue: baseSku,
-            text: `${baseSku} - ${pageHeading}`,
-            sku: baseSku,
-            listPriceUsd: 0,
-            availability: 'Available in OCA product catalog',
-            leadTime: deliveryEstimate,
-            deliveryLabel: '',
-            isBto: false,
-            isTaa: false,
-            isGta: false,
-            isCto: true
-          }
-        ]
-      };
-    } else {
-      chassisDiscovery.capturedAt = new Date().toISOString();
-      chassisDiscovery.deliveryEstimate = deliveryEstimate;
-      if (chassisDiscovery.candidates?.[0]) {
-        chassisDiscovery.candidates[0].leadTime = deliveryEstimate;
-      }
-    }
-  }
+  const chassisDiscovery = resolveOrSynthesizeChassisDiscovery(initDiscovery, liveOutputDir, meta, profile, domPayload, pageHeading);
 
   console.log(`\n🛡️ Staging Isolation Active: Scraping & building inside temporary staging directory:`);
   console.log(`   ${stagingDir}`);
@@ -1101,37 +1139,7 @@ async function setupStagingAndPersistRawData({
   }
   console.log(`Raw data JSON saved atomically to staging: ${rawJsonPath}`);
 
-  if (domPayload.conditionalSkus.length > 0) {
-    safeWriteJsonAtomic(path.join(rawDir, 'conditional_skus.json'), {
-      timestamp: new Date().toISOString(),
-      chassisName: meta.cleanName,
-      totalConditionalSkus: domPayload.conditionalSkus.length,
-      skus: domPayload.conditionalSkus
-    });
-    console.log(`Conditional SKUs saved to raw_data/conditional_skus.json`);
-  }
-
-  if (domPayload.unavailableRules.length > 0 || domPayload.unavailableSkus.length > 0) {
-    safeWriteJsonAtomic(path.join(rawDir, 'unavailable_rules.json'), {
-      timestamp: new Date().toISOString(),
-      chassisName: meta.cleanName,
-      totalUnavailableRules: domPayload.unavailableRules.length,
-      totalUnavailableSkus: domPayload.unavailableSkus.length,
-      rules: domPayload.unavailableRules,
-      skus: domPayload.unavailableSkus
-    });
-    console.log(`Unavailable rules & conditional SKUs saved to raw_data/unavailable_rules.json`);
-  }
-
-  if (networkSniffedRules.length > 0) {
-    safeWriteJsonAtomic(path.join(rawDir, 'network_sniffed_rules.json'), {
-      timestamp: new Date().toISOString(),
-      chassisName: meta.cleanName,
-      totalRules: networkSniffedRules.length,
-      rules: networkSniffedRules
-    });
-    console.log(`Network-sniffed rules saved to raw_data/network_sniffed_rules.json`);
-  }
+  writeCompanionRawRuleFiles(rawDir, meta, domPayload, networkSniffedRules, safeWriteJsonAtomic);
 
   const pdfDestPath = downloadQuickSpecsPdfSafely(qsLink, outputDir, meta.cleanName);
 

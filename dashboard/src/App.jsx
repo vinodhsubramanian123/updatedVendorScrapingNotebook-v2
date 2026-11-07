@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import Header from './components/Header';
 import CatalogExplorer from './components/CatalogExplorer';
 import ScraperTriggerCard from './components/ScraperTriggerCard';
@@ -20,13 +20,11 @@ import TraceabilityInspector from './components/TraceabilityInspector';
 import { BoqTopologyModal } from './components/topology';
 import PlatformDisambiguationCard from './components/PlatformDisambiguationCard';
 
-// Extracted services & hooks (GAP-L1, GAP-L4 fixes)
 import { useSSEStream } from './hooks/useSSEStream.js';
 import { useRagPoller } from './hooks/useRagPoller.js';
 import { useCatalogs } from './hooks/useCatalogs.js';
 
-// ── Generic Modal Wrapper ─────────────────────────────────────────────────────
-import { useEffect } from 'react';
+const IMMEDIATE_RAG_STATUSES = ['COMPLETED', 'CLOUD_VERIFIED', 'LOCAL_FALLBACK'];
 
 function ToolModal({ isOpen, onClose, title, children }) {
   useEffect(() => {
@@ -62,423 +60,347 @@ function ToolModal({ isOpen, onClose, title, children }) {
   );
 }
 
-// ── App ───────────────────────────────────────────────────────────────────────
-export default function App() {
-  // ── Catalog State (via useCatalogs hook) ─────────────────────────────────
-  const {
-    catalogs,
-    catalogData,
-    isCatalogLoading,
-    selectedChassis,
-    setSelectedChassis,
-    refreshCatalogs
-  } = useCatalogs('DL380_Gen12');
+function isBoqFileInput(boqInput) {
+  if (boqInput instanceof File) return true;
+  if (!boqInput || typeof boqInput !== 'object') return false;
+  return typeof boqInput.name === 'string' && typeof boqInput.size === 'number';
+}
 
-  const selectedChassisRef = useRef(selectedChassis);
-  useEffect(() => { selectedChassisRef.current = selectedChassis; }, [selectedChassis]);
+async function buildBoqRequestPayload(boqInput, maybeRawText) {
+  if (isBoqFileInput(boqInput)) {
+    const formData = new FormData();
+    formData.append('boqFile', boqInput);
+    const uploadRes = await fetch('/api/upload-boq', { method: 'POST', body: formData });
+    const uploadData = await uploadRes.json();
+    const payload = { filepath: uploadData.filepath };
+    if (maybeRawText) payload.rawText = maybeRawText;
+    return payload;
+  }
+  if (typeof boqInput === 'string') {
+    return { rawText: boqInput };
+  }
+  if (boqInput && typeof boqInput === 'object') {
+    const payload = { ...boqInput };
+    if (maybeRawText && !payload.rawText) payload.rawText = maybeRawText;
+    return payload;
+  }
+  if (maybeRawText) {
+    return { rawText: maybeRawText };
+  }
+  return {};
+}
 
-  // ── UI State ──────────────────────────────────────────────────────────────
-  const [activeTab, setActiveTab] = useState('orchestrator');
-  const [activeModal, setActiveModal] = useState(null);
-  const [showTraceabilityInspector, setShowTraceabilityInspector] = useState(false);
-  const [globalSearchTerm, setGlobalSearchTerm] = useState('');
+function dispatchBackgroundMatrixRagQuery(raw, chassisId, setEvalResults, startMatrixRagPoll) {
+  fetch('/api/notebook-query-async', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      query: raw.data.notebookPayload,
+      chassis: chassisId,
+      learningEligible: raw.data.evalResults?.requirementResolution?.learningEligible === true,
+      chassisDir: raw.data.chassisDir
+    })
+  })
+    .then(res => res.json())
+    .then(jobInfo => {
+      if (IMMEDIATE_RAG_STATUSES.includes(jobInfo.status)) {
+        const answer = jobInfo.result?.answer || jobInfo.answer;
+        setEvalResults(prev => ({ ...prev, ragAnswer: answer, ragData: jobInfo.result || jobInfo }));
+      } else if (jobInfo.jobId) {
+        startMatrixRagPoll(jobInfo.jobId);
+      }
+    })
+    .catch(err => console.error('Failed to dispatch background RAG query:', err));
+}
 
-  // ── Task / Pipeline State ──────────────────────────────────────────────────
-  const [logStream, setLogStream] = useState([]);
-  const [isTaskRunning, setIsTaskRunning] = useState(false);
-  const [_taskHistory, setTaskHistory] = useState([]);
-  const [activeProgress, setActiveProgress] = useState(null);
+function buildGroundedRagState(normalised) {
+  if (normalised.ragData) return normalised.ragData;
+  const citeCount = normalised.notebookLmStatus?.citationsCount;
+  return {
+    answer: normalised.ragAnswer,
+    citations: citeCount ? [`Verified QuickSpecs Reference (${citeCount} citations)`] : [],
+    source: normalised.notebookLmStatus?.source || 'GROUNDED'
+  };
+}
 
-  // ── Eval State ────────────────────────────────────────────────────────────
-  const [evalResults, setEvalResults] = useState(null);
-  const [intakeTopologyData, setIntakeTopologyData] = useState(null);
-  const [auditReport, setAuditReport] = useState(null);
-  const [isQueryingRag, setIsQueryingRag] = useState(false);
-  const [isRagOpen, setIsRagOpen] = useState(false);
-  const [ragElapsedTime, setRagElapsedTime] = useState(0);
-  const [ragData, setRagData] = useState({ answer: null, latencyMs: null, source: null });
-  const [isFeedbackDrawerOpen, setIsFeedbackDrawerOpen] = useState(false);
-  const [isQuarantineOpen, setIsQuarantineOpen] = useState(false);
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [selectedCardForFeedback, setSelectedCardForFeedback] = useState(null);
+function triggerMatrixRecomputeIfApplicable(prev, fullData, fallbackChassis) {
+  if (!prev?.items || prev.items.length === 0) return;
+  fetch('/api/recompute-matrix', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      evalData: prev,
+      ragResult: fullData,
+      chassisDir: prev.chassisDir || fallbackChassis
+    })
+  }).catch(err => console.warn('[App.jsx] Recompute matrix advisory:', err));
+}
 
-  // ── RAG Poller for Matrix (useRagPoller hook — SMELL-S4 fix) ─────────────
-  const { startPoll: startMatrixRagPoll } = useRagPoller({
-    onResult: (answer, fullData) => {
-      setEvalResults(prev => {
-        const next = { ...prev, ragAnswer: answer, ragData: fullData };
-        if (prev?.items && prev.items.length > 0) {
-          fetch('/api/recompute-matrix', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              evalData: prev,
-              ragResult: fullData,
-              chassisDir: prev.chassisDir || selectedChassisRef.current
-            })
-          }).catch(err => console.warn('[App.jsx] Recompute matrix advisory:', err));
-        }
-        return next;
-      });
-    },
-    onTimeout: () => {
-      setEvalResults(prev => ({ ...prev, ragAnswer: '⚠️ NotebookLM Query Timeout: RAG verification took too long.' }));
-    },
-    onFail: (errMsg) => {
-      setEvalResults(prev => ({ ...prev, ragAnswer: `⚠️ NotebookLM Query Failed: ${errMsg}` }));
-    }
-  });
+function handleEvalResultEffect(normalised, raw, chassisId, setEvalResults, setRagData, startMatrixRagPoll) {
+  setEvalResults(normalised);
+  if (raw.error) return;
+  const needsBgRag = !normalised.ragAnswer && !raw.data?.ragAnswer && Boolean(raw.data?.notebookPayload);
+  if (needsBgRag) {
+    dispatchBackgroundMatrixRagQuery(raw, chassisId, setEvalResults, startMatrixRagPoll);
+  } else if (normalised.ragAnswer) {
+    setRagData(buildGroundedRagState(normalised));
+  }
+}
 
-  // ── RAG Poller for Drawer search ──────────────────────────────────────────
-  const elapsedIntervalRef = useRef(null);
-  const { startPoll: startSearchRagPoll } = useRagPoller({
-    onResult: (_, fullData) => {
-      setRagData(fullData);
+async function executeSmartSearchRequest({
+  query,
+  selectedChassis,
+  setIsRagOpen,
+  setIsQueryingRag,
+  setRagElapsedTime,
+  setRagData,
+  elapsedIntervalRef,
+  stopRagElapsedTimer,
+  startSearchRagPoll
+}) {
+  if (!query?.trim()) return;
+  setIsRagOpen(true);
+  setIsQueryingRag(true);
+  setRagElapsedTime(0);
+  setRagData({ query, answer: 'Querying Gemini NotebookLM RAG... Consulting QuickSpecs notebook.', citations: [], source: 'PENDING' });
+
+  stopRagElapsedTimer();
+  let secs = 0;
+  elapsedIntervalRef.current = setInterval(() => { secs += 1.5; setRagElapsedTime(secs); }, 1500);
+
+  try {
+    const initRes = await fetch('/api/notebook-query-async', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query, chassis: selectedChassis })
+    });
+    const jobInfo = await initRes.json();
+
+    if (IMMEDIATE_RAG_STATUSES.includes(jobInfo.status)) {
+      setRagData(jobInfo.result || jobInfo);
       setIsQueryingRag(false);
-      if (elapsedIntervalRef.current) { clearInterval(elapsedIntervalRef.current); elapsedIntervalRef.current = null; }
-    },
-    onTimeout: () => {
-      setRagData(prev => ({ ...prev, answer: '⚠️ NotebookLM Query Timeout: No response received within the 15-minute grounding window.', source: 'ERROR' }));
-      setIsQueryingRag(false);
-      if (elapsedIntervalRef.current) { clearInterval(elapsedIntervalRef.current); elapsedIntervalRef.current = null; }
-    },
-    onFail: (errMsg) => {
-      setRagData(prev => ({ ...prev, answer: `NotebookLM Query Failed: ${errMsg}`, source: 'ERROR' }));
-      setIsQueryingRag(false);
-      if (elapsedIntervalRef.current) { clearInterval(elapsedIntervalRef.current); elapsedIntervalRef.current = null; }
+      stopRagElapsedTimer();
+      return;
     }
-  });
 
-  // ── SSE Stream (useSSEStream hook — GAP-L1a fix) ─────────────────────────
-  useSSEStream({
-    onTaskStarted: useCallback((payload) => {
-      setIsTaskRunning(true);
-      setActiveProgress({ task: payload.task, currentStep: 0, totalSteps: 0, action: 'Starting...', status: 'started' });
-    }, []),
+    if (jobInfo.jobId) startSearchRagPoll(jobInfo.jobId);
+  } catch (err) {
+    setRagData({ query, answer: `Failed to initiate RAG Query: ${err.message || 'Network error'}`, citations: [], source: 'ERROR' });
+    setIsQueryingRag(false);
+    stopRagElapsedTimer();
+  }
+}
 
-    onTaskCompleted: useCallback((payload) => {
-      setIsTaskRunning(false);
-      setActiveProgress(null);
-      refreshCatalogs(); // Refresh catalog registry after scrape/rebuild
-      setTaskHistory(prev => [{
-        type: payload.task || 'PIPELINE_ACTION',
-        status: payload.code === 0 ? 'COMPLETED' : 'FAILED',
-        timestamp: new Date().toISOString()
-      }, ...prev.slice(0, 15)]);
-      if (payload.task?.includes('SCRAPE') || payload.task?.includes('REBUILD')) {
-        setActiveTab('catalog');
-      }
-    }, [refreshCatalogs]),
-
-    onProgress: useCallback((payload) => {
-      setActiveProgress({
-        task: payload.task || 'RUNNING',
-        currentStep: payload.step,
-        totalSteps: payload.total,
-        action: payload.action,
-        status: payload.status,
-        detail: payload.detail
-      });
-      setLogStream(prev => [...prev.slice(-200), payload]);
-    }, []),
-
-    onLog: useCallback((payload) => {
-      setLogStream(prev => [...prev.slice(-200), payload]);
-    }, []),
-
-    onEvalResult: useCallback((normalised, raw) => {
-      setIsTaskRunning(false);
-      setActiveProgress(null);
-
-      if (raw.error) {
-        setEvalResults(normalised);
-        return;
-      }
-
-      setEvalResults(normalised);
-
-      // Dispatch background RAG query ONLY if RAG was not already computed by the evaluator
-      if (!normalised.ragAnswer && !raw.data?.ragAnswer && raw.data?.notebookPayload) {
-        fetch('/api/notebook-query-async', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            query: raw.data.notebookPayload,
-            chassis: selectedChassisRef.current,
-            learningEligible: raw.data.evalResults?.requirementResolution?.learningEligible === true,
-            chassisDir: raw.data.chassisDir
-          })
-        })
-          .then(res => res.json())
-          .then(jobInfo => {
-            if (['COMPLETED', 'CLOUD_VERIFIED', 'LOCAL_FALLBACK'].includes(jobInfo.status)) {
-              const answer = jobInfo.result?.answer || jobInfo.answer;
-              setEvalResults(prev => ({ ...prev, ragAnswer: answer, ragData: jobInfo.result || jobInfo }));
-            } else if (jobInfo.jobId) {
-              startMatrixRagPoll(jobInfo.jobId);
-            }
-          })
-          .catch(err => console.error('Failed to dispatch background RAG query:', err));
-      } else if (normalised.ragAnswer) {
-        setRagData(normalised.ragData || {
-          answer: normalised.ragAnswer,
-          citations: normalised.notebookLmStatus?.citationsCount ? [`Verified QuickSpecs Reference (${normalised.notebookLmStatus.citationsCount} citations)`] : [],
-          source: normalised.notebookLmStatus?.source || 'GROUNDED'
-        });
-      }
-    }, [startMatrixRagPoll])
-  });
-
-  // ── Handlers ──────────────────────────────────────────────────────────────
-  const handleSearchLocal = (query) => { setGlobalSearchTerm(query); setActiveTab('catalog'); };
-
-  const handleSmartSearch = async (query) => {
-    if (!query?.trim()) return;
-    setIsRagOpen(true);
-    setIsQueryingRag(true);
-    setRagElapsedTime(0);
-    setRagData({ query, answer: 'Querying Gemini NotebookLM RAG... Consulting QuickSpecs notebook.', citations: [], source: 'PENDING' });
-
-    // Elapsed timer
-    if (elapsedIntervalRef.current) clearInterval(elapsedIntervalRef.current);
-    let secs = 0;
-    elapsedIntervalRef.current = setInterval(() => { secs += 1.5; setRagElapsedTime(secs); }, 1500);
-
-    try {
-      const initRes = await fetch('/api/notebook-query-async', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query, chassis: selectedChassis })
-      });
-      const jobInfo = await initRes.json();
-
-      if (['COMPLETED', 'CLOUD_VERIFIED', 'LOCAL_FALLBACK'].includes(jobInfo.status)) {
-        setRagData(jobInfo.result || jobInfo);
-        setIsQueryingRag(false);
-        if (elapsedIntervalRef.current) { clearInterval(elapsedIntervalRef.current); elapsedIntervalRef.current = null; }
-        return;
-      }
-
-      if (jobInfo.jobId) startSearchRagPoll(jobInfo.jobId);
-    } catch (err) {
-      setRagData({ query, answer: `Failed to initiate RAG Query: ${err.message || 'Network error'}`, citations: [], source: 'ERROR' });
-      setIsQueryingRag(false);
-      if (elapsedIntervalRef.current) { clearInterval(elapsedIntervalRef.current); elapsedIntervalRef.current = null; }
+async function executeBoqEvaluationRequest(boqInput, maybeRawText, currentCat, setLogStream, setEvalResults) {
+  setLogStream([]);
+  setEvalResults(null);
+  try {
+    const payload = await buildBoqRequestPayload(boqInput, maybeRawText);
+    const chassisDir = currentCat?.chassisDir || currentCat?.id;
+    const res = await fetch('/api/eval-boq', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...payload, chassisDir })
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      setEvalResults({ status: 'ERROR', error: data.error });
+      return { error: data.error };
     }
-  };
+    return { status: 'ACCEPTED' };
+  } catch (err) {
+    setEvalResults({ status: 'ERROR', error: err.message });
+    return { error: err.message };
+  }
+}
 
-  const handleTriggerScrape = async (mode) => {
-    setLogStream([]); setActiveTab('scraper'); setEvalResults(null);
-    try { await fetch('/api/scrape', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mode }) }); } catch (err) { console.error(err); }
-  };
-
-  const handleTriggerRebuild = async () => {
-    setLogStream([]); setActiveTab('scraper'); setEvalResults(null);
-    try { await fetch('/api/rebuild', { method: 'POST' }); } catch (err) { console.error(err); }
-  };
-
-  const handleTriggerSyncKnowledge = async () => {
-    setLogStream([]); setActiveTab('scraper'); setEvalResults(null);
-    try { await fetch('/api/sync-knowledge', { method: 'POST' }); } catch (err) { console.error(err); }
-  };
-
-  const handleTriggerDownloadPdf = async () => {
-    setLogStream([]); setActiveTab('scraper'); setEvalResults(null);
-    try { await fetch('/api/download-pdf', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ chassisId: selectedChassis }) }); } catch (err) { console.error(err); }
-  };
-
-  const handleTriggerKillTask = async () => {
-    try { await fetch('/api/kill-task', { method: 'POST' }); } catch (err) { console.error(err); }
-  };
-
-  const handleTriggerNavigate = async () => {
-    setLogStream([]); setActiveTab('scraper'); setEvalResults(null);
-    try { await fetch('/api/navigate-oca', { method: 'POST' }); } catch (err) { console.error(err); }
-  };
-
-  const handleEvaluateBoq = async (boqInput, maybeRawText) => {
-    setLogStream([]); setEvalResults(null);
-    try {
-      let payload = {};
-      const isFileObj = boqInput instanceof File || (boqInput && typeof boqInput === 'object' && typeof boqInput.name === 'string' && typeof boqInput.size === 'number');
-      if (isFileObj) {
-        const formData = new FormData();
-        formData.append('boqFile', boqInput);
-        const uploadRes = await fetch('/api/upload-boq', { method: 'POST', body: formData });
-        const uploadData = await uploadRes.json();
-        payload.filepath = uploadData.filepath;
-        if (maybeRawText) payload.rawText = maybeRawText;
-      } else if (typeof boqInput === 'string') {
-        payload.rawText = boqInput;
-      } else if (boqInput && typeof boqInput === 'object') {
-        payload = { ...boqInput };
-        if (maybeRawText && !payload.rawText) payload.rawText = maybeRawText;
-      } else if (maybeRawText) {
-        payload.rawText = maybeRawText;
-      }
-
-      const currentCat = catalogs.find(c => c.id === selectedChassis);
-      const res = await fetch('/api/eval-boq', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...payload, chassisDir: currentCat?.chassisDir || currentCat?.id })
-      });
-      const data = await res.json();
-      if (!res.ok) { setEvalResults({ status: 'ERROR', error: data.error }); return { error: data.error }; }
-      return { status: 'ACCEPTED' };
-    } catch (err) {
-      setEvalResults({ status: 'ERROR', error: err.message });
-      return { error: err.message };
-    }
-  };
-
-  const handleSelectClarification = async (candidate) => {
-    setSelectedChassis(candidate);
-    const prevPayload = evalResults?.originalPayload || {};
-    await handleEvaluateBoq({ ...prevPayload, chassisName: candidate, chassisDir: candidate });
-  };
-
-  const currentCatObj = catalogs.find(c => c.id === selectedChassis);
-
-  // ── Render ────────────────────────────────────────────────────────────────
+function DualBrainBadgesBar({ evalResults }) {
+  if (!evalResults?.dualBrainBadges?.length || evalResults?.clarificationRequired) return null;
   return (
-    <div className="min-h-screen pb-16">
-      <Header
-        catalogs={catalogs}
-        catalogData={catalogData}
-        selectedChassis={selectedChassis}
-        onSelectChassis={setSelectedChassis}
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        onSmartSearch={handleSmartSearch}
-        onSearchLocal={handleSearchLocal}
-        onOpenRag={() => setIsRagOpen(true)}
-        onOpenFeedbackDrawer={() => setIsFeedbackDrawerOpen(true)}
-        onOpenQuarantineDrawer={() => setIsQuarantineOpen(true)}
-        onOpenSettings={() => setIsSettingsOpen(true)}
-        isTaskRunning={isTaskRunning}
-        isCatalogLoading={isCatalogLoading}
-      />
+    <div className="flex flex-wrap items-center gap-2 bg-white/70 backdrop-blur-sm border border-slate-200/80 rounded-xl px-4 py-2.5 shadow-xs animate-tab-enter">
+      <span className="text-xs font-semibold text-slate-500 mr-1">Verification Status:</span>
+      {evalResults.dualBrainBadges.map(badge => (
+        <span
+          key={badge.id}
+          className={`badge badge-${badge.variant} text-xs cursor-help transition-transform hover:scale-105`}
+          title={badge.tooltip}
+        >
+          {badge.label}
+        </span>
+      ))}
+    </div>
+  );
+}
 
-      <main className="max-w-7xl mx-auto px-6 mt-6 space-y-6">
-        <GlobalLoadingState isTaskRunning={isTaskRunning} isQueryingRag={isQueryingRag} activeProgress={activeProgress} mode="banner" />
+function AppMainTabContent({
+  activeTab,
+  setActiveTab,
+  evalResults,
+  auditReport,
+  isTaskRunning,
+  activeProgress,
+  selectedChassis,
+  setSelectedChassis,
+  logStream,
+  catalogs,
+  catalogData,
+  currentCatObj,
+  isCatalogLoading,
+  globalSearchTerm,
+  setGlobalSearchTerm,
+  setActiveModal,
+  setShowTraceabilityInspector,
+  setSelectedCardForFeedback,
+  setIsRagOpen,
+  handleSmartSearch,
+  handleEvaluateBoq,
+  handleTriggerScrape,
+  handleTriggerRebuild,
+  handleTriggerDownloadPdf,
+  handleTriggerSyncKnowledge,
+  handleTriggerKillTask,
+  handleTriggerNavigate
+}) {
+  if (activeTab === 'orchestrator') {
+    return (
+      <div key="orchestrator" className="animate-tab-enter">
+        <MacroOrchestratorFlow
+          evalResults={evalResults}
+          auditReport={auditReport}
+          isTaskRunning={isTaskRunning}
+          activeProgress={activeProgress}
+          selectedChassis={selectedChassis}
+          logStream={logStream}
+          onOpenTool={(tool) => {
+            if (tool === 'traceability') {
+              setShowTraceabilityInspector(true);
+            } else {
+              setActiveModal(tool);
+            }
+          }}
+          onTriggerSyncKnowledge={handleTriggerSyncKnowledge}
+          onNavigateTab={setActiveTab}
+        />
+      </div>
+    );
+  }
 
-        {evalResults?.clarificationRequired && (
-          <PlatformDisambiguationCard
-            evalResults={evalResults}
-            onSelectCandidate={handleSelectClarification}
-            onDismiss={() => setEvalResults(prev => prev ? { ...prev, clarificationRequired: false } : null)}
-          />
-        )}
-
-        {evalResults?.dualBrainBadges?.length > 0 && !evalResults?.clarificationRequired && (
-          <div className="flex flex-wrap items-center gap-2 bg-white/70 backdrop-blur-sm border border-slate-200/80 rounded-xl px-4 py-2.5 shadow-xs animate-tab-enter">
-            <span className="text-xs font-semibold text-slate-500 mr-1">Verification Status:</span>
-            {evalResults.dualBrainBadges.map(badge => (
-              <span
-                key={badge.id}
-                className={`badge badge-${badge.variant} text-xs cursor-help transition-transform hover:scale-105`}
-                title={badge.tooltip}
-              >
-                {badge.label}
-              </span>
-            ))}
+  if (activeTab === 'matrix') {
+    return (
+      <div key="matrix" className="animate-tab-enter space-y-6">
+        <div className="flex items-center justify-between bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+          <div>
+            <span className="badge badge-emerald mb-1">5-Tier Resolution Engine</span>
+            <h2 className="text-lg font-bold text-slate-900">5-Tier Strategic Resolution Matrix</h2>
+            <p className="text-xs text-slate-500">Compare ranked candidate BOMs across CapEx budget, workload DNA intent, and strict hardware buildability.</p>
           </div>
-        )}
-
-        {activeTab === 'orchestrator' && (
-          <div key="orchestrator" className="animate-tab-enter">
-            <MacroOrchestratorFlow
-              evalResults={evalResults} auditReport={auditReport}
-              isTaskRunning={isTaskRunning} activeProgress={activeProgress}
-              selectedChassis={selectedChassis} logStream={logStream}
-              onOpenTool={(tool) => {
-                if (tool === 'traceability') {
-                  setShowTraceabilityInspector(true);
-                } else {
-                  setActiveModal(tool);
-                }
-              }}
-              onTriggerSyncKnowledge={handleTriggerSyncKnowledge}
-              onNavigateTab={setActiveTab}
-            />
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setActiveModal('boqTopology')}
+              className="btn btn-secondary text-xs flex items-center gap-1.5"
+            >
+              Visual BOQ Topology
+            </button>
+            <button
+              onClick={() => setActiveModal('boqUploader')}
+              className="btn btn-primary text-xs flex items-center gap-1.5"
+            >
+              Load / Evaluate BOQ
+            </button>
           </div>
-        )}
+        </div>
+        <ResolutionMatrix
+          evalResults={evalResults}
+          onOpenPortalFeedback={setSelectedCardForFeedback}
+          selectedChassis={selectedChassis}
+          onTriggerDemoBoq={handleEvaluateBoq}
+          onOpenTopology={() => setActiveModal('boqTopology')}
+        />
+      </div>
+    );
+  }
 
-        {activeTab === 'matrix' && (
-          <div key="matrix" className="animate-tab-enter space-y-6">
-            <div className="flex items-center justify-between bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-              <div>
-                <span className="badge badge-emerald mb-1">5-Tier Resolution Engine</span>
-                <h2 className="text-lg font-bold text-slate-900">5-Tier Strategic Resolution Matrix</h2>
-                <p className="text-xs text-slate-500">Compare ranked candidate BOMs across CapEx budget, workload DNA intent, and strict hardware buildability.</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setActiveModal('boqTopology')}
-                  className="btn btn-secondary text-xs flex items-center gap-1.5"
-                >
-                  Visual BOQ Topology
-                </button>
-                <button
-                  onClick={() => setActiveModal('boqUploader')}
-                  className="btn btn-primary text-xs flex items-center gap-1.5"
-                >
-                  Load / Evaluate BOQ
-                </button>
-              </div>
-            </div>
-            <ResolutionMatrix
-              evalResults={evalResults}
-              onOpenPortalFeedback={setSelectedCardForFeedback}
-              selectedChassis={selectedChassis}
-              onTriggerDemoBoq={handleEvaluateBoq}
-              onOpenTopology={() => setActiveModal('boqTopology')}
-            />
-          </div>
-        )}
+  if (activeTab === 'pipeline' || activeTab === 'scraper') {
+    return (
+      <div key="pipeline" className="animate-tab-enter">
+        <ScraperTriggerCard
+          logStream={logStream}
+          isTaskRunning={isTaskRunning}
+          onTriggerScrape={handleTriggerScrape}
+          onTriggerRebuild={handleTriggerRebuild}
+          onTriggerDownloadPdf={handleTriggerDownloadPdf}
+          onTriggerSyncKnowledge={handleTriggerSyncKnowledge}
+          onTriggerKillTask={handleTriggerKillTask}
+          onTriggerNavigate={handleTriggerNavigate}
+        />
+      </div>
+    );
+  }
 
-        {(activeTab === 'pipeline' || activeTab === 'scraper') && (
-          <div key="pipeline" className="animate-tab-enter">
-            <ScraperTriggerCard
-              logStream={logStream} isTaskRunning={isTaskRunning}
-              onTriggerScrape={handleTriggerScrape} onTriggerRebuild={handleTriggerRebuild}
-              onTriggerDownloadPdf={handleTriggerDownloadPdf} onTriggerSyncKnowledge={handleTriggerSyncKnowledge}
-              onTriggerKillTask={handleTriggerKillTask} onTriggerNavigate={handleTriggerNavigate}
-            />
-          </div>
-        )}
+  if (activeTab === 'catalog') {
+    return (
+      <div key="catalog" className="animate-tab-enter">
+        <CatalogExplorer
+          catalogData={catalogData}
+          catalogs={catalogs}
+          selectedChassis={selectedChassis}
+          onSelectChassis={setSelectedChassis}
+          chassisName={currentCatObj?.chassis}
+          isCatalogLoading={isCatalogLoading}
+          globalSearchTerm={globalSearchTerm}
+          onClearSearch={() => setGlobalSearchTerm('')}
+          onOpenRag={() => setIsRagOpen(true)}
+          onRagQuery={handleSmartSearch}
+        />
+      </div>
+    );
+  }
 
-        {activeTab === 'catalog' && (
-          <div key="catalog" className="animate-tab-enter">
-            <CatalogExplorer
-              catalogData={catalogData} catalogs={catalogs}
-              selectedChassis={selectedChassis} onSelectChassis={setSelectedChassis}
-              chassisName={currentCatObj?.chassis} isCatalogLoading={isCatalogLoading}
-              globalSearchTerm={globalSearchTerm} onClearSearch={() => setGlobalSearchTerm('')}
-              onOpenRag={() => setIsRagOpen(true)} onRagQuery={handleSmartSearch}
-            />
-          </div>
-        )}
+  if (activeTab === 'artifacts') {
+    return (
+      <div key="artifacts" className="animate-tab-enter">
+        <ArtifactInspector currentCatalog={currentCatObj} />
+      </div>
+    );
+  }
 
-        {activeTab === 'artifacts' && (
-          <div key="artifacts" className="animate-tab-enter">
-            <ArtifactInspector currentCatalog={currentCatObj} />
-          </div>
-        )}
+  if (activeTab === 'telemetry') {
+    return (
+      <div key="telemetry" className="animate-tab-enter">
+        <TelemetryCard />
+      </div>
+    );
+  }
 
-        {activeTab === 'telemetry' && (
-          <div key="telemetry" className="animate-tab-enter">
-            <TelemetryCard />
-          </div>
-        )}
-      </main>
+  return null;
+}
 
-      {/* Tool Modals */}
+function AppToolModals({
+  activeModal,
+  setActiveModal,
+  evalResults,
+  intakeTopologyData,
+  setIntakeTopologyData,
+  logStream,
+  currentCatObj,
+  isTaskRunning,
+  selectedChassis,
+  setSelectedCardForFeedback,
+  setIsRagOpen,
+  handleSmartSearch,
+  handleEvaluateBoq,
+  handleTriggerScrape,
+  auditReport,
+  setAuditReport
+}) {
+  return (
+    <>
       <ToolModal isOpen={activeModal === 'boqUploader'} onClose={() => setActiveModal(null)} title="Stage 1: BOQ Quote Ingestion & 6-Aspect Math Engine">
         <BoqUploader
-          onEvaluateBoq={handleEvaluateBoq} evalResults={evalResults}
-          logStream={logStream} chassisDir={currentCatObj?.chassisDir}
+          onEvaluateBoq={handleEvaluateBoq}
+          evalResults={evalResults}
+          logStream={logStream}
+          chassisDir={currentCatObj?.chassisDir}
           isTaskRunning={isTaskRunning}
           onOpenMatrix={() => setActiveModal('resolutionMatrix')}
           onOpenReconciliation={() => setActiveModal('reconciliation')}
@@ -489,7 +411,11 @@ export default function App() {
         />
         {evalResults && (
           <div className="mt-6 space-y-6 animate-fade-in">
-            <AmbiguityInbox evalResults={evalResults} chassisContext={selectedChassis || 'Unknown Chassis'} onReEvaluate={(extraText) => handleEvaluateBoq({ rawText: extraText || '' })} />
+            <AmbiguityInbox
+              evalResults={evalResults}
+              chassisContext={selectedChassis || 'Unknown Chassis'}
+              onReEvaluate={(extraText) => handleEvaluateBoq({ rawText: extraText || '' })}
+            />
             <WorkloadDnaCard dnaData={evalResults.workloadDna} />
           </div>
         )}
@@ -532,8 +458,265 @@ export default function App() {
           }}
         />
       </ToolModal>
+    </>
+  );
+}
 
-      {/* Drawers */}
+export default function App() {
+  const {
+    catalogs,
+    catalogData,
+    isCatalogLoading,
+    selectedChassis,
+    setSelectedChassis,
+    refreshCatalogs
+  } = useCatalogs('DL380_Gen12');
+
+  const selectedChassisRef = useRef(selectedChassis);
+  useEffect(() => { selectedChassisRef.current = selectedChassis; }, [selectedChassis]);
+
+  const [activeTab, setActiveTab] = useState('orchestrator');
+  const [activeModal, setActiveModal] = useState(null);
+  const [showTraceabilityInspector, setShowTraceabilityInspector] = useState(false);
+  const [globalSearchTerm, setGlobalSearchTerm] = useState('');
+
+  const [logStream, setLogStream] = useState([]);
+  const [isTaskRunning, setIsTaskRunning] = useState(false);
+  const [_taskHistory, setTaskHistory] = useState([]);
+  const [activeProgress, setActiveProgress] = useState(null);
+
+  const [evalResults, setEvalResults] = useState(null);
+  const [intakeTopologyData, setIntakeTopologyData] = useState(null);
+  const [auditReport, setAuditReport] = useState(null);
+  const [isQueryingRag, setIsQueryingRag] = useState(false);
+  const [isRagOpen, setIsRagOpen] = useState(false);
+  const [ragElapsedTime, setRagElapsedTime] = useState(0);
+  const [ragData, setRagData] = useState({ answer: null, latencyMs: null, source: null });
+  const [isFeedbackDrawerOpen, setIsFeedbackDrawerOpen] = useState(false);
+  const [isQuarantineOpen, setIsQuarantineOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [selectedCardForFeedback, setSelectedCardForFeedback] = useState(null);
+
+  const { startPoll: startMatrixRagPoll } = useRagPoller({
+    onResult: (answer, fullData) => {
+      setEvalResults(prev => {
+        triggerMatrixRecomputeIfApplicable(prev, fullData, selectedChassisRef.current);
+        return { ...prev, ragAnswer: answer, ragData: fullData };
+      });
+    },
+    onTimeout: () => {
+      setEvalResults(prev => ({ ...prev, ragAnswer: '⚠️ NotebookLM Query Timeout: RAG verification took too long.' }));
+    },
+    onFail: (errMsg) => {
+      setEvalResults(prev => ({ ...prev, ragAnswer: `⚠️ NotebookLM Query Failed: ${errMsg}` }));
+    }
+  });
+
+  const elapsedIntervalRef = useRef(null);
+  const stopRagElapsedTimer = () => {
+    if (elapsedIntervalRef.current) {
+      clearInterval(elapsedIntervalRef.current);
+      elapsedIntervalRef.current = null;
+    }
+  };
+
+  const { startPoll: startSearchRagPoll } = useRagPoller({
+    onResult: (_, fullData) => {
+      setRagData(fullData);
+      setIsQueryingRag(false);
+      stopRagElapsedTimer();
+    },
+    onTimeout: () => {
+      setRagData(prev => ({ ...prev, answer: '⚠️ NotebookLM Query Timeout: No response received within the 15-minute grounding window.', source: 'ERROR' }));
+      setIsQueryingRag(false);
+      stopRagElapsedTimer();
+    },
+    onFail: (errMsg) => {
+      setRagData(prev => ({ ...prev, answer: `NotebookLM Query Failed: ${errMsg}`, source: 'ERROR' }));
+      setIsQueryingRag(false);
+      stopRagElapsedTimer();
+    }
+  });
+
+  useSSEStream({
+    onTaskStarted: useCallback((payload) => {
+      setIsTaskRunning(true);
+      setActiveProgress({ task: payload.task, currentStep: 0, totalSteps: 0, action: 'Starting...', status: 'started' });
+    }, []),
+
+    onTaskCompleted: useCallback((payload) => {
+      setIsTaskRunning(false);
+      setActiveProgress(null);
+      refreshCatalogs();
+      setTaskHistory(prev => [{
+        type: payload.task || 'PIPELINE_ACTION',
+        status: payload.code === 0 ? 'COMPLETED' : 'FAILED',
+        timestamp: new Date().toISOString()
+      }, ...prev.slice(0, 15)]);
+      const taskName = payload.task || '';
+      if (taskName.includes('SCRAPE') || taskName.includes('REBUILD')) {
+        setActiveTab('catalog');
+      }
+    }, [refreshCatalogs]),
+
+    onProgress: useCallback((payload) => {
+      setActiveProgress({
+        task: payload.task || 'RUNNING',
+        currentStep: payload.step,
+        totalSteps: payload.total,
+        action: payload.action,
+        status: payload.status,
+        detail: payload.detail
+      });
+      setLogStream(prev => [...prev.slice(-200), payload]);
+    }, []),
+
+    onLog: useCallback((payload) => {
+      setLogStream(prev => [...prev.slice(-200), payload]);
+    }, []),
+
+    onEvalResult: useCallback((normalised, raw) => {
+      setIsTaskRunning(false);
+      setActiveProgress(null);
+      handleEvalResultEffect(normalised, raw, selectedChassisRef.current, setEvalResults, setRagData, startMatrixRagPoll);
+    }, [startMatrixRagPoll])
+  });
+
+  const handleSearchLocal = (query) => { setGlobalSearchTerm(query); setActiveTab('catalog'); };
+
+  const handleSmartSearch = (query) => executeSmartSearchRequest({
+    query,
+    selectedChassis,
+    setIsRagOpen,
+    setIsQueryingRag,
+    setRagElapsedTime,
+    setRagData,
+    elapsedIntervalRef,
+    stopRagElapsedTimer,
+    startSearchRagPoll
+  });
+
+  const postScraperEndpoint = async (url, bodyObj) => {
+    setLogStream([]);
+    setActiveTab('scraper');
+    setEvalResults(null);
+    try {
+      const options = bodyObj
+        ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(bodyObj) }
+        : { method: 'POST' };
+      await fetch(url, options);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleTriggerScrape = (mode) => postScraperEndpoint('/api/scrape', { mode });
+  const handleTriggerRebuild = () => postScraperEndpoint('/api/rebuild');
+  const handleTriggerSyncKnowledge = () => postScraperEndpoint('/api/sync-knowledge');
+  const handleTriggerDownloadPdf = () => postScraperEndpoint('/api/download-pdf', { chassisId: selectedChassis });
+  const handleTriggerNavigate = () => postScraperEndpoint('/api/navigate-oca');
+
+  const handleTriggerKillTask = async () => {
+    try { await fetch('/api/kill-task', { method: 'POST' }); } catch (err) { console.error(err); }
+  };
+
+  const currentCatObj = catalogs.find(c => c.id === selectedChassis);
+  const handleEvaluateBoq = (boqInput, maybeRawText) => executeBoqEvaluationRequest(
+    boqInput,
+    maybeRawText,
+    currentCatObj,
+    setLogStream,
+    setEvalResults
+  );
+
+  const handleSelectClarification = async (candidate) => {
+    setSelectedChassis(candidate);
+    const prevPayload = evalResults?.originalPayload || {};
+    await handleEvaluateBoq({ ...prevPayload, chassisName: candidate, chassisDir: candidate });
+  };
+
+  return (
+    <div className="min-h-screen pb-16">
+      <Header
+        catalogs={catalogs}
+        catalogData={catalogData}
+        selectedChassis={selectedChassis}
+        onSelectChassis={setSelectedChassis}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        onSmartSearch={handleSmartSearch}
+        onSearchLocal={handleSearchLocal}
+        onOpenRag={() => setIsRagOpen(true)}
+        onOpenFeedbackDrawer={() => setIsFeedbackDrawerOpen(true)}
+        onOpenQuarantineDrawer={() => setIsQuarantineOpen(true)}
+        onOpenSettings={() => setIsSettingsOpen(true)}
+        isTaskRunning={isTaskRunning}
+        isCatalogLoading={isCatalogLoading}
+      />
+
+      <main className="max-w-7xl mx-auto px-6 mt-6 space-y-6">
+        <GlobalLoadingState isTaskRunning={isTaskRunning} isQueryingRag={isQueryingRag} activeProgress={activeProgress} mode="banner" />
+
+        {evalResults?.clarificationRequired && (
+          <PlatformDisambiguationCard
+            evalResults={evalResults}
+            onSelectCandidate={handleSelectClarification}
+            onDismiss={() => setEvalResults(prev => prev ? { ...prev, clarificationRequired: false } : null)}
+          />
+        )}
+
+        <DualBrainBadgesBar evalResults={evalResults} />
+
+        <AppMainTabContent
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          evalResults={evalResults}
+          auditReport={auditReport}
+          isTaskRunning={isTaskRunning}
+          activeProgress={activeProgress}
+          selectedChassis={selectedChassis}
+          setSelectedChassis={setSelectedChassis}
+          logStream={logStream}
+          catalogs={catalogs}
+          catalogData={catalogData}
+          currentCatObj={currentCatObj}
+          isCatalogLoading={isCatalogLoading}
+          globalSearchTerm={globalSearchTerm}
+          setGlobalSearchTerm={setGlobalSearchTerm}
+          setActiveModal={setActiveModal}
+          setShowTraceabilityInspector={setShowTraceabilityInspector}
+          setSelectedCardForFeedback={setSelectedCardForFeedback}
+          setIsRagOpen={setIsRagOpen}
+          handleSmartSearch={handleSmartSearch}
+          handleEvaluateBoq={handleEvaluateBoq}
+          handleTriggerScrape={handleTriggerScrape}
+          handleTriggerRebuild={handleTriggerRebuild}
+          handleTriggerDownloadPdf={handleTriggerDownloadPdf}
+          handleTriggerSyncKnowledge={handleTriggerSyncKnowledge}
+          handleTriggerKillTask={handleTriggerKillTask}
+          handleTriggerNavigate={handleTriggerNavigate}
+        />
+      </main>
+
+      <AppToolModals
+        activeModal={activeModal}
+        setActiveModal={setActiveModal}
+        evalResults={evalResults}
+        intakeTopologyData={intakeTopologyData}
+        setIntakeTopologyData={setIntakeTopologyData}
+        logStream={logStream}
+        currentCatObj={currentCatObj}
+        isTaskRunning={isTaskRunning}
+        selectedChassis={selectedChassis}
+        setSelectedCardForFeedback={setSelectedCardForFeedback}
+        setIsRagOpen={setIsRagOpen}
+        handleSmartSearch={handleSmartSearch}
+        handleEvaluateBoq={handleEvaluateBoq}
+        handleTriggerScrape={handleTriggerScrape}
+        auditReport={auditReport}
+        setAuditReport={setAuditReport}
+      />
+
       <NotebookRagDrawer isOpen={isRagOpen} onClose={() => setIsRagOpen(false)} ragData={ragData} isQuerying={isQueryingRag} ragElapsedTime={ragElapsedTime} onQuerySubmit={handleSmartSearch} selectedChassis={selectedChassis} />
       <SettingsDrawer isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
       <UserFeedbackDrawer isOpen={isFeedbackDrawerOpen} onClose={() => setIsFeedbackDrawerOpen(false)} />

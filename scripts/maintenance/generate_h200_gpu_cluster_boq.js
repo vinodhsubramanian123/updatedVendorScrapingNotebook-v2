@@ -15,10 +15,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
-function buildH200ClusterWorkbook() {
-  const wb = XLSX.utils.book_new();
-
-  // Color Palette & Styles
+function _createH200WorkbookStyles() {
   const primaryBrand = '00A389'; // HPE Green / Teal
   const darkNavy = '0F172A';
   const lightTeal = 'E6F7F5';
@@ -96,6 +93,153 @@ function buildH200ClusterWorkbook() {
     font: { name: 'Calibri', sz: 10, bold: true, color: { rgb: primaryBrand } },
     fill: { fgColor: { rgb: 'F0FDF4' } }
   };
+
+  return {
+    titleStyle,
+    subTitleStyle,
+    headerStyle,
+    subHeaderStyle,
+    cellStyle,
+    centerCellStyle,
+    currencyCellStyle,
+    boldCurrencyStyle,
+    highlightFixStyle
+  };
+}
+
+function _applyHeaderRowStyle(ws, rowIdx, colCount, headerStyle) {
+  for (let c = 0; c < colCount; c++) {
+    const cellRef = XLSX.utils.encode_cell({ r: rowIdx, c });
+    if (ws[cellRef]) ws[cellRef].s = headerStyle;
+  }
+}
+
+function _styleSingleDl380aRow(ws, r, styles) {
+  const { cellStyle, centerCellStyle, currencyCellStyle, highlightFixStyle } = styles;
+  for (let c = 0; c < 9; c++) {
+    const cellRef = XLSX.utils.encode_cell({ r, c });
+    if (!ws[cellRef]) continue;
+    if (c === 0 || c === 3 || c === 4) ws[cellRef].s = centerCellStyle;
+    else if (c === 1) ws[cellRef].s = { ...cellStyle, font: { bold: true } };
+    else if (c === 5 || c === 6) ws[cellRef].s = currencyCellStyle;
+    else if (c === 8 && ws[cellRef].v.includes('Mandatory')) ws[cellRef].s = highlightFixStyle;
+    else ws[cellRef].s = cellStyle;
+  }
+}
+
+function _styleClusterBoqSheet(ws, rows, styles) {
+  const { titleStyle, subTitleStyle, headerStyle, subHeaderStyle, boldCurrencyStyle, cellStyle, centerCellStyle, currencyCellStyle, highlightFixStyle } = styles;
+  ws['A1'].s = titleStyle;
+  ws['A2'].s = subTitleStyle;
+  _applyHeaderRowStyle(ws, 3, 10, headerStyle);
+  for (let r = 4; r < 4 + rows.length; r++) {
+    for (let c = 0; c < 10; c++) {
+      const cellRef = XLSX.utils.encode_cell({ r, c });
+      if (!ws[cellRef]) continue;
+      if (c === 0 || c === 3 || c === 4 || c === 5) ws[cellRef].s = centerCellStyle;
+      else if (c === 1) ws[cellRef].s = { ...cellStyle, font: { bold: true } };
+      else if (c === 6 || c === 7) ws[cellRef].s = currencyCellStyle;
+      else if (c === 9 && ws[cellRef].v.includes('Mandatory')) ws[cellRef].s = highlightFixStyle;
+      else ws[cellRef].s = cellStyle;
+    }
+  }
+  const totalRowIdx = 4 + rows.length + 1;
+  ws[XLSX.utils.encode_cell({ r: totalRowIdx, c: 0 })].s = { ...subHeaderStyle, font: { bold: true, sz: 11 } };
+  ws[XLSX.utils.encode_cell({ r: totalRowIdx, c: 7 })].s = boldCurrencyStyle;
+}
+
+function _styleSingleNodeBoqSheet(ws, rows, styles) {
+  const { titleStyle, subTitleStyle, headerStyle, subHeaderStyle, boldCurrencyStyle, cellStyle, centerCellStyle, currencyCellStyle, highlightFixStyle } = styles;
+  ws['A1'].s = titleStyle;
+  ws['A2'].s = subTitleStyle;
+  _applyHeaderRowStyle(ws, 3, 7, headerStyle);
+  for (let r = 4; r < 4 + rows.length; r++) {
+    for (let c = 0; c < 7; c++) {
+      const cellRef = XLSX.utils.encode_cell({ r, c });
+      if (!ws[cellRef]) continue;
+      if (c === 0) ws[cellRef].s = { ...cellStyle, font: { bold: true } };
+      else if (c === 1 || c === 2) ws[cellRef].s = centerCellStyle;
+      else if (c === 4 || c === 5) ws[cellRef].s = currencyCellStyle;
+      else if (c === 6 && ws[cellRef].v.includes('Mandatory')) ws[cellRef].s = highlightFixStyle;
+      else ws[cellRef].s = cellStyle;
+    }
+  }
+  const totalRowIdx = 4 + rows.length + 1;
+  ws[XLSX.utils.encode_cell({ r: totalRowIdx, c: 0 })].s = { ...subHeaderStyle, font: { bold: true, sz: 11 } };
+  ws[XLSX.utils.encode_cell({ r: totalRowIdx, c: 5 })].s = boldCurrencyStyle;
+}
+
+function _styleStrategyMatrixSheet(ws, strategyRows, styles) {
+  const { headerStyle, cellStyle, centerCellStyle, currencyCellStyle } = styles;
+  _applyHeaderRowStyle(ws, 0, 8, headerStyle);
+  for (let r = 1; r < strategyRows.length; r++) {
+    for (let c = 0; c < 8; c++) {
+      const cellRef = XLSX.utils.encode_cell({ r, c });
+      if (!ws[cellRef]) continue;
+      if (c === 0) ws[cellRef].s = { ...cellStyle, font: { bold: true } };
+      else if (c === 2 || c === 5) ws[cellRef].s = centerCellStyle;
+      else if (c === 3 || c === 4) ws[cellRef].s = currencyCellStyle;
+      else ws[cellRef].s = cellStyle;
+    }
+  }
+}
+
+function _styleFacilitySizingSheet(ws, facilityRows, styles) {
+  const { titleStyle, subTitleStyle, headerStyle, cellStyle } = styles;
+  ws['A1'].s = titleStyle;
+  ws['A2'].s = subTitleStyle;
+  _applyHeaderRowStyle(ws, 3, 4, headerStyle);
+  for (let r = 4; r < facilityRows.length; r++) {
+    for (let c = 0; c < 4; c++) {
+      const cellRef = XLSX.utils.encode_cell({ r, c });
+      if (!ws[cellRef]) continue;
+      if (c === 0) ws[cellRef].s = { ...cellStyle, font: { bold: true } };
+      else ws[cellRef].s = cellStyle;
+    }
+  }
+}
+
+function _styleSummaryAndRfpSheets(wsSummary, wsRfp, styles) {
+  const { titleStyle, subTitleStyle, headerStyle, subHeaderStyle, cellStyle, centerCellStyle } = styles;
+  wsSummary['A1'].s = titleStyle;
+  wsSummary['A2'].s = subTitleStyle;
+  [3, 10, 18].forEach(r => {
+    const cellRef = XLSX.utils.encode_cell({ r, c: 0 });
+    if (wsSummary[cellRef]) wsSummary[cellRef].s = subHeaderStyle;
+  });
+  [11, 19].forEach(r => _applyHeaderRowStyle(wsSummary, r, 4, headerStyle));
+
+  wsRfp['A1'].s = titleStyle;
+  wsRfp['A2'].s = subTitleStyle;
+  _applyHeaderRowStyle(wsRfp, 3, 5, headerStyle);
+  for (let r = 4; r < 11; r++) {
+    for (let c = 0; c < 5; c++) {
+      const cellRef = XLSX.utils.encode_cell({ r, c });
+      if (!wsRfp[cellRef]) continue;
+      if (c === 0) wsRfp[cellRef].s = centerCellStyle;
+      else if (c === 1) wsRfp[cellRef].s = { ...cellStyle, font: { bold: true } };
+      else wsRfp[cellRef].s = cellStyle;
+    }
+  }
+}
+
+function _stylePortalUploadSheet(wsPortalUpload, rowCount, styles) {
+  const { headerStyle, cellStyle, centerCellStyle } = styles;
+  _applyHeaderRowStyle(wsPortalUpload, 0, 3, headerStyle);
+  for (let r = 1; r < rowCount; r++) {
+    const c0 = XLSX.utils.encode_cell({ r, c: 0 });
+    const c1 = XLSX.utils.encode_cell({ r, c: 1 });
+    const c2 = XLSX.utils.encode_cell({ r, c: 2 });
+    if (wsPortalUpload[c0]) wsPortalUpload[c0].s = centerCellStyle;
+    if (wsPortalUpload[c1]) wsPortalUpload[c1].s = { ...cellStyle, font: { bold: true } };
+    if (wsPortalUpload[c2]) wsPortalUpload[c2].s = cellStyle;
+  }
+}
+
+function buildH200ClusterWorkbook() {
+  const wb = XLSX.utils.book_new();
+  const styles = _createH200WorkbookStyles();
+  const { titleStyle, subTitleStyle, headerStyle, subHeaderStyle, boldCurrencyStyle } = styles;
 
   // =========================================================================
   // DEFINITIVE SKU ROWS & ARITHMETIC DEFINITIONS
@@ -293,19 +437,6 @@ function buildH200ClusterWorkbook() {
     { wch: 45 }
   ];
 
-  wsSummary['A1'].s = titleStyle;
-  wsSummary['A2'].s = subTitleStyle;
-  [3, 10, 18].forEach(r => {
-    const cellRef = XLSX.utils.encode_cell({ r, c: 0 });
-    if (wsSummary[cellRef]) wsSummary[cellRef].s = subHeaderStyle;
-  });
-  [11, 19].forEach(r => {
-    for (let c = 0; c < 4; c++) {
-      const cellRef = XLSX.utils.encode_cell({ r, c });
-      if (wsSummary[cellRef]) wsSummary[cellRef].s = headerStyle;
-    }
-  });
-
   XLSX.utils.book_append_sheet(wb, wsSummary, 'Executive_Summary');
 
   // =========================================================================
@@ -334,21 +465,7 @@ function buildH200ClusterWorkbook() {
     { wch: 55 }
   ];
 
-  wsRfp['A1'].s = titleStyle;
-  wsRfp['A2'].s = subTitleStyle;
-  for (let c = 0; c < 5; c++) {
-    const cellRef = XLSX.utils.encode_cell({ r: 3, c });
-    if (wsRfp[cellRef]) wsRfp[cellRef].s = headerStyle;
-  }
-  for (let r = 4; r < 11; r++) {
-    for (let c = 0; c < 5; c++) {
-      const cellRef = XLSX.utils.encode_cell({ r, c });
-      if (!wsRfp[cellRef]) continue;
-      if (c === 0) wsRfp[cellRef].s = centerCellStyle;
-      else if (c === 1) wsRfp[cellRef].s = { ...cellStyle, font: { bold: true } };
-      else wsRfp[cellRef].s = cellStyle;
-    }
-  }
+  _styleSummaryAndRfpSheets(wsSummary, wsRfp, styles);
 
   XLSX.utils.book_append_sheet(wb, wsRfp, 'Customer_RFP_Specification');
 
@@ -380,20 +497,9 @@ function buildH200ClusterWorkbook() {
 
   wsSingleDl380a['A1'].s = titleStyle;
   wsSingleDl380a['A2'].s = subTitleStyle;
-  for (let c = 0; c < 9; c++) {
-    const cellRef = XLSX.utils.encode_cell({ r: 3, c });
-    if (wsSingleDl380a[cellRef]) wsSingleDl380a[cellRef].s = headerStyle;
-  }
+  _applyHeaderRowStyle(wsSingleDl380a, 3, 9, headerStyle);
   for (let r = 4; r < 4 + singleDl380aRows.length; r++) {
-    for (let c = 0; c < 9; c++) {
-      const cellRef = XLSX.utils.encode_cell({ r, c });
-      if (!wsSingleDl380a[cellRef]) continue;
-      if (c === 0 || c === 3 || c === 4) wsSingleDl380a[cellRef].s = centerCellStyle;
-      else if (c === 1) wsSingleDl380a[cellRef].s = { ...cellStyle, font: { bold: true } };
-      else if (c === 5 || c === 6) wsSingleDl380a[cellRef].s = currencyCellStyle;
-      else if (c === 8 && wsSingleDl380a[cellRef].v.includes('Mandatory')) wsSingleDl380a[cellRef].s = highlightFixStyle;
-      else wsSingleDl380a[cellRef].s = cellStyle;
-    }
+    _styleSingleDl380aRow(wsSingleDl380a, r, styles);
   }
 
   const singleDl380aTotalRowIdx = 4 + singleDl380aRows.length + 1;
@@ -441,18 +547,7 @@ function buildH200ClusterWorkbook() {
     { wch: 20 },
     { wch: 80 }
   ];
-  for (let c = 0; c < 3; c++) {
-    const cellRef = XLSX.utils.encode_cell({ r: 0, c });
-    if (wsPortalUpload[cellRef]) wsPortalUpload[cellRef].s = headerStyle;
-  }
-  for (let r = 1; r < portalUploadRows.length; r++) {
-    const c0 = XLSX.utils.encode_cell({ r, c: 0 });
-    const c1 = XLSX.utils.encode_cell({ r, c: 1 });
-    const c2 = XLSX.utils.encode_cell({ r, c: 2 });
-    if (wsPortalUpload[c0]) wsPortalUpload[c0].s = centerCellStyle;
-    if (wsPortalUpload[c1]) wsPortalUpload[c1].s = { ...cellStyle, font: { bold: true } };
-    if (wsPortalUpload[c2]) wsPortalUpload[c2].s = cellStyle;
-  }
+  _stylePortalUploadSheet(wsPortalUpload, portalUploadRows.length, styles);
   XLSX.utils.book_append_sheet(wb, wsPortalUpload, 'Portal_Upload_DL380a');
 
 
@@ -483,27 +578,7 @@ function buildH200ClusterWorkbook() {
     { wch: 55 }  // Notes
   ];
 
-  wsDl380a['A1'].s = titleStyle;
-  wsDl380a['A2'].s = subTitleStyle;
-  for (let c = 0; c < 10; c++) {
-    const cellRef = XLSX.utils.encode_cell({ r: 3, c });
-    if (wsDl380a[cellRef]) wsDl380a[cellRef].s = headerStyle;
-  }
-  for (let r = 4; r < 4 + dl380aClusterRows.length; r++) {
-    for (let c = 0; c < 10; c++) {
-      const cellRef = XLSX.utils.encode_cell({ r, c });
-      if (!wsDl380a[cellRef]) continue;
-      if (c === 0 || c === 3 || c === 4 || c === 5) wsDl380a[cellRef].s = centerCellStyle;
-      else if (c === 1) wsDl380a[cellRef].s = { ...cellStyle, font: { bold: true } };
-      else if (c === 6 || c === 7) wsDl380a[cellRef].s = currencyCellStyle;
-      else if (c === 9 && wsDl380a[cellRef].v.includes('Mandatory')) wsDl380a[cellRef].s = highlightFixStyle;
-      else wsDl380a[cellRef].s = cellStyle;
-    }
-  }
-
-  const dl380aTotalRowIdx = 4 + dl380aClusterRows.length + 1;
-  wsDl380a[XLSX.utils.encode_cell({ r: dl380aTotalRowIdx, c: 0 })].s = { ...subHeaderStyle, font: { bold: true, sz: 11 } };
-  wsDl380a[XLSX.utils.encode_cell({ r: dl380aTotalRowIdx, c: 7 })].s = boldCurrencyStyle;
+  _styleClusterBoqSheet(wsDl380a, dl380aClusterRows, styles);
 
   XLSX.utils.book_append_sheet(wb, wsDl380a, 'HPE_2_Node_DL380a_HA_Cluster');
 
@@ -534,27 +609,7 @@ function buildH200ClusterWorkbook() {
     { wch: 55 }  // Notes
   ];
 
-  wsCluster['A1'].s = titleStyle;
-  wsCluster['A2'].s = subTitleStyle;
-  for (let c = 0; c < 10; c++) {
-    const cellRef = XLSX.utils.encode_cell({ r: 3, c });
-    if (wsCluster[cellRef]) wsCluster[cellRef].s = headerStyle;
-  }
-  for (let r = 4; r < 4 + clusterRows.length; r++) {
-    for (let c = 0; c < 10; c++) {
-      const cellRef = XLSX.utils.encode_cell({ r, c });
-      if (!wsCluster[cellRef]) continue;
-      if (c === 0 || c === 3 || c === 4 || c === 5) wsCluster[cellRef].s = centerCellStyle;
-      else if (c === 1) wsCluster[cellRef].s = { ...cellStyle, font: { bold: true } };
-      else if (c === 6 || c === 7) wsCluster[cellRef].s = currencyCellStyle;
-      else if (c === 9 && wsCluster[cellRef].v.includes('Mandatory')) wsCluster[cellRef].s = highlightFixStyle;
-      else wsCluster[cellRef].s = cellStyle;
-    }
-  }
-
-  const clusterTotalRowIdx = 4 + clusterRows.length + 1;
-  wsCluster[XLSX.utils.encode_cell({ r: clusterTotalRowIdx, c: 0 })].s = { ...subHeaderStyle, font: { bold: true, sz: 11 } };
-  wsCluster[XLSX.utils.encode_cell({ r: clusterTotalRowIdx, c: 7 })].s = boldCurrencyStyle;
+  _styleClusterBoqSheet(wsCluster, clusterRows, styles);
 
   XLSX.utils.book_append_sheet(wb, wsCluster, 'HPE_4_Node_HA_Cluster_BOQ');
 
@@ -582,27 +637,7 @@ function buildH200ClusterWorkbook() {
     { wch: 55 }  // Status
   ];
 
-  wsSingle['A1'].s = titleStyle;
-  wsSingle['A2'].s = subTitleStyle;
-  for (let c = 0; c < 7; c++) {
-    const cellRef = XLSX.utils.encode_cell({ r: 3, c });
-    if (wsSingle[cellRef]) wsSingle[cellRef].s = headerStyle;
-  }
-  for (let r = 4; r < 4 + singleNodeRows.length; r++) {
-    for (let c = 0; c < 7; c++) {
-      const cellRef = XLSX.utils.encode_cell({ r, c });
-      if (!wsSingle[cellRef]) continue;
-      if (c === 0) wsSingle[cellRef].s = { ...cellStyle, font: { bold: true } };
-      else if (c === 1 || c === 2) wsSingle[cellRef].s = centerCellStyle;
-      else if (c === 4 || c === 5) wsSingle[cellRef].s = currencyCellStyle;
-      else if (c === 6 && wsSingle[cellRef].v.includes('Mandatory')) wsSingle[cellRef].s = highlightFixStyle;
-      else wsSingle[cellRef].s = cellStyle;
-    }
-  }
-
-  const singleTotalRowIdx = 4 + singleNodeRows.length + 1;
-  wsSingle[XLSX.utils.encode_cell({ r: singleTotalRowIdx, c: 0 })].s = { ...subHeaderStyle, font: { bold: true, sz: 11 } };
-  wsSingle[XLSX.utils.encode_cell({ r: singleTotalRowIdx, c: 5 })].s = boldCurrencyStyle;
+  _styleSingleNodeBoqSheet(wsSingle, singleNodeRows, styles);
 
   XLSX.utils.book_append_sheet(wb, wsSingle, 'HPE_Single_Node_BOQ');
 
@@ -630,20 +665,7 @@ function buildH200ClusterWorkbook() {
     { wch: 60 }
   ];
 
-  for (let c = 0; c < 8; c++) {
-    const cellRef = XLSX.utils.encode_cell({ r: 0, c });
-    if (wsStrategy[cellRef]) wsStrategy[cellRef].s = headerStyle;
-  }
-  for (let r = 1; r < strategyRows.length; r++) {
-    for (let c = 0; c < 8; c++) {
-      const cellRef = XLSX.utils.encode_cell({ r, c });
-      if (!wsStrategy[cellRef]) continue;
-      if (c === 0) wsStrategy[cellRef].s = { ...cellStyle, font: { bold: true } };
-      else if (c === 2 || c === 5) wsStrategy[cellRef].s = centerCellStyle;
-      else if (c === 3 || c === 4) wsStrategy[cellRef].s = currencyCellStyle;
-      else wsStrategy[cellRef].s = cellStyle;
-    }
-  }
+  _styleStrategyMatrixSheet(wsStrategy, strategyRows, styles);
 
   XLSX.utils.book_append_sheet(wb, wsStrategy, '5_Tier_Strategy_Matrix');
 
@@ -676,20 +698,7 @@ function buildH200ClusterWorkbook() {
     { wch: 55 }
   ];
 
-  wsFacility['A1'].s = titleStyle;
-  wsFacility['A2'].s = subTitleStyle;
-  for (let c = 0; c < 4; c++) {
-    const cellRef = XLSX.utils.encode_cell({ r: 3, c });
-    if (wsFacility[cellRef]) wsFacility[cellRef].s = headerStyle;
-  }
-  for (let r = 4; r < facilityRows.length; r++) {
-    for (let c = 0; c < 4; c++) {
-      const cellRef = XLSX.utils.encode_cell({ r, c });
-      if (!wsFacility[cellRef]) continue;
-      if (c === 0) wsFacility[cellRef].s = { ...cellStyle, font: { bold: true } };
-      else wsFacility[cellRef].s = cellStyle;
-    }
-  }
+  _styleFacilitySizingSheet(wsFacility, facilityRows, styles);
 
   XLSX.utils.book_append_sheet(wb, wsFacility, 'Datacenter_Facility_Sizing');
 

@@ -24,11 +24,7 @@ const FALSE_DISCONTINUED_SKUS = new Set([
   '389692-B21'
 ]);
 
-function runRemediation() {
-  console.log('================================================================');
-  console.log('🔧 DL380a GEN12 CATALOG & KNOWLEDGE GROUNDING REMEDIATION');
-  console.log('================================================================\n');
-
+function cleanHistoryFiles() {
   // 1. Clean up discontinued_skus.json
   const discPath = path.join(DL380A_DIR, 'history', 'discontinued_skus.json');
   if (fs.existsSync(discPath)) {
@@ -40,7 +36,6 @@ function runRemediation() {
         removedCount++;
       }
     }
-    // Also check S2D86C - it's vendor obsolete, keep true status
     safeWriteJsonAtomic(discPath, disc);
     console.log(`✅ Cleaned up history/discontinued_skus.json: purged ${removedCount} false tombstone records.`);
   }
@@ -52,7 +47,6 @@ function runRemediation() {
     for (const sku of FALSE_DISCONTINUED_SKUS) {
       if (priceHist[sku]) {
         priceHist[sku] = priceHist[sku].filter(entry => !(entry.date === '2026-09-30' && entry.status === 'REMOVED'));
-        // If empty or only added, ensure last entry has active price
         const last = priceHist[sku][priceHist[sku].length - 1];
         if (last && last.status === 'REMOVED') {
           last.status = 'ACTIVE';
@@ -62,25 +56,17 @@ function runRemediation() {
     safeWriteJsonAtomic(priceHistPath, priceHist);
     console.log(`✅ Cleaned up history/price_history.json: removed false 2026-09-30 REMOVED events.`);
   }
+}
 
-  // 3. Load golden authentic 2026-09-13 snapshot for GPU Accelerators & Memory
-  const goldenCatPath = path.join(DL380A_DIR, 'history', 'catalog_2026-09-13.json');
-  const liveCatPath = path.join(DL380A_DIR, 'DL380a_Gen12_Catalog.json');
-  if (!fs.existsSync(goldenCatPath) || !fs.existsSync(liveCatPath)) {
-    throw new Error('Required catalog files missing for DL380a');
-  }
-
-  const goldenCat = JSON.parse(fs.readFileSync(goldenCatPath, 'utf8'));
-  const liveCat = JSON.parse(fs.readFileSync(liveCatPath, 'utf8'));
-
-  // Extract GPU Accelerators from golden
+function restoreCatalogSkus(goldenCat, liveCat) {
   const goldenGpuEntry = goldenCat.entries.find(e => e.subCategory === 'GPU Accelerators');
   if (!goldenGpuEntry) throw new Error('Golden catalog missing GPU Accelerators');
 
-  // Replace live GPU Accelerators entry
   const liveGpuIdx = liveCat.entries.findIndex(e => e.subCategory === 'GPU Accelerators');
   const restoredGpuSkus = goldenGpuEntry.skus.map(s => {
     const skuPn = s['Product #'] || s.sku;
+    const isOb = skuPn === 'S2D86C';
+    const unitPrice = parseFloat(s['Unit Price (USD)'] || 0).toFixed(2);
     return {
       ...s,
       'Hierarchy Path': `HPE OCA > DL380a Gen12 [P76706-B21] > Graphics & GPU > GPU Accelerators`,
@@ -90,15 +76,15 @@ function runRemediation() {
       'Table Rule/Note': 'Support up to 8 double-wide PCIe accelerators with P75008-B21 8 Double Wide FIO Configuration',
       'Option Type': 'Standard',
       'Diff Status': 'UNCHANGED',
-      'Lifecycle Status': skuPn === 'S2D86C' ? 'Obsolete (OB)' : 'Active',
-      'Lifecycle Badge': skuPn === 'S2D86C' ? 'OB' : '',
-      'Availability': skuPn === 'S2D86C' ? 'Obsolete (OB)' : 'Available',
+      'Lifecycle Status': isOb ? 'Obsolete (OB)' : 'Active',
+      'Lifecycle Badge': isOb ? 'OB' : '',
+      'Availability': isOb ? 'Obsolete (OB)' : 'Available',
       'Lead Time': '',
       'Lead Time Source': 'Not published by OCA',
       'HPE Recommended': s['HPE Recommended'] || 'No',
       'Description': (s.Description || s.description || '').replace(/^\[REMOVED SKU\]\s*/i, '').replace(/^\[DISCONTINUED\]\s*/i, ''),
       'Current Qty': '0',
-      'Price History Trail': `2026-09-13: $${parseFloat(s['Unit Price (USD)'] || 0).toFixed(2)} → 2026-09-30: $${parseFloat(s['Unit Price (USD)'] || 0).toFixed(2)}`
+      'Price History Trail': `2026-09-13: $${unitPrice} → 2026-09-30: $${unitPrice}`
     };
   });
 
@@ -119,12 +105,12 @@ function runRemediation() {
   }
   console.log(`✅ Restored ${restoredGpuSkus.length} active GPU Accelerators (including S6A73C $57,002.00 active through 12/31/2028).`);
 
-  // Restore Memory entries
   const liveMemEntries = liveCat.entries.filter(e => (e.parentCategory || '').includes('Memory') && (e.subCategory || '').includes('Memory'));
   for (const mEntry of liveMemEntries) {
     mEntry.skus = mEntry.skus.map(s => {
       const pn = s['Product #'] || s.sku;
       if (FALSE_DISCONTINUED_SKUS.has(pn)) {
+        const unitPrice = parseFloat(s['Unit Price (USD)'] || 0).toFixed(2);
         return {
           ...s,
           'Diff Status': 'UNCHANGED',
@@ -136,13 +122,98 @@ function runRemediation() {
           'Table Rule/Note': '',
           'Hierarchy Path': `HPE OCA > DL380a Gen12 [P76706-B21] > Memory > Memory`,
           'Description': (s.Description || s.description || '').replace(/^\[REMOVED SKU\]\s*/i, '').replace(/^\[DISCONTINUED\]\s*/i, ''),
-          'Price History Trail': `2026-09-13: $${parseFloat(s['Unit Price (USD)'] || 0).toFixed(2)} → 2026-09-30: $${parseFloat(s['Unit Price (USD)'] || 0).toFixed(2)}`
+          'Price History Trail': `2026-09-13: $${unitPrice} → 2026-09-30: $${unitPrice}`
         };
       }
       return s;
     });
   }
   console.log(`✅ Restored active DDR5 memory entries under Memory category.`);
+}
+
+function updateKnowledgeRegistries() {
+  const psuRuleText = 'Requires a minimum of five power supplies for 2DW/4DW GPU configurations (up to eight for N+N grid redundancy or pre-populating all 8 bays) and eight power supplies for 8DW/10DW; H100/H200 NVL supports 2400W P67252-B21 or 3200W P67248-B21 Titanium supplies, without mixing wattages.';
+  const deltasPath = path.join(DL380A_DIR, 'catalog_deltas.json');
+  if (fs.existsSync(deltasPath)) {
+    const deltas = JSON.parse(fs.readFileSync(deltasPath, 'utf8'));
+    const psuDelta = deltas.find(d => d.deltaId === 'DELTA_DL380A_GEN12_GPU_PSU_COUNT_MATRIX');
+    if (psuDelta) {
+      psuDelta.ruleUpdate = psuRuleText;
+    }
+
+    if (!deltas.some(d => d.deltaId === 'DELTA_UNIVERSAL_CLOUD_MANAGEMENT_OPTIONAL')) {
+      deltas.push({
+        deltaId: 'DELTA_UNIVERSAL_CLOUD_MANAGEMENT_OPTIONAL',
+        timestamp: '2026-10-08T00:00:00.000Z',
+        chassis: 'DL380a_Gen12',
+        rawMessage: 'Official HPE presales architecture: Cloud Management FIO Enablement (S1A05A) and Compute Ops Management SaaS (R7A11AAE) are optional add-ons, never mandatory.',
+        errorType: 'OPTIONAL_SOFTWARE_SERVICE',
+        ruleType: 'SOFTWARE_OPTIONALITY',
+        affectedSku: 'S1A05A',
+        requiredDependencySku: null,
+        ruleUpdate: 'Cloud Management FIO Enablement (S1A05A) and Compute Ops Management SaaS (R7A11AAE) are strictly optional services/licenses. They are not required for hardware buildability, power-on, or vendor portal acceptance.',
+        scopeTaxonomy: 'UNIVERSAL_VENDOR',
+        solutionType: 'General Server',
+        status: 'VERIFIED',
+        validation: {
+          validatedAt: '2026-10-08',
+          sourceId: 'HPE Official Ordering Guide',
+          result: 'SUPPORTED'
+        }
+      });
+    }
+    safeWriteJsonAtomic(deltasPath, deltas);
+    console.log(`✅ Updated catalog_deltas.json with clarified 5-8 PSU matrix and cloud management optionality rule.`);
+  }
+
+  const masterRegPath = path.join(PROJECT_ROOT, 'outputs', 'history', 'master_knowledge_registry.json');
+  if (fs.existsSync(masterRegPath)) {
+    const reg = JSON.parse(fs.readFileSync(masterRegPath, 'utf8'));
+    for (const group of Object.values(reg)) {
+      if (Array.isArray(group)) {
+        const d = group.find(x => x.deltaId === 'DELTA_DL380A_GEN12_GPU_PSU_COUNT_MATRIX');
+        if (d) {
+          d.ruleUpdate = psuRuleText;
+        }
+      }
+    }
+    safeWriteJsonAtomic(masterRegPath, reg);
+    console.log(`✅ Updated outputs/history/master_knowledge_registry.json.`);
+  }
+
+  const charterPath = path.join(PROJECT_ROOT, 'outputs', 'history', 'master_universal_knowledge_charter.md');
+  if (fs.existsSync(charterPath)) {
+    let charter = fs.readFileSync(charterPath, 'utf8');
+    charter = charter.replace(
+      /Use exactly five power supplies for 2DW\/4DW GPU configurations and eight for 8DW\/10DW/g,
+      'Requires a minimum of five power supplies for 2DW/4DW GPU configurations (up to eight for N+N grid redundancy or pre-populating all 8 bays) and eight power supplies for 8DW/10DW'
+    );
+    if (!charter.includes('DELTA_UNIVERSAL_CLOUD_MANAGEMENT_OPTIONAL')) {
+      charter += `\n\n### 94. [DELTA_UNIVERSAL_CLOUD_MANAGEMENT_OPTIONAL] GLOBAL — SOFTWARE_OPTIONALITY\n- **Scope**: \`UNIVERSAL_VENDOR\`\n- **Rule**: Cloud Management FIO Enablement (\`S1A05A\`) and Compute Ops Management SaaS (\`R7A11AAE\`) are strictly optional services/licenses. They are not required for hardware buildability, power-on, or vendor portal acceptance.\n- **Affected SKU**: \`S1A05A\`\n`;
+    }
+    fs.writeFileSync(charterPath, charter, 'utf8');
+    console.log(`✅ Updated outputs/history/master_universal_knowledge_charter.md.`);
+  }
+}
+
+function runRemediation() {
+  console.log('================================================================');
+  console.log('🔧 DL380a GEN12 CATALOG & KNOWLEDGE GROUNDING REMEDIATION');
+  console.log('================================================================\n');
+
+  cleanHistoryFiles();
+
+  // 3. Load golden authentic 2026-09-13 snapshot for GPU Accelerators & Memory
+  const goldenCatPath = path.join(DL380A_DIR, 'history', 'catalog_2026-09-13.json');
+  const liveCatPath = path.join(DL380A_DIR, 'DL380a_Gen12_Catalog.json');
+  if (!fs.existsSync(goldenCatPath) || !fs.existsSync(liveCatPath)) {
+    throw new Error('Required catalog files missing for DL380a');
+  }
+
+  const goldenCat = JSON.parse(fs.readFileSync(goldenCatPath, 'utf8'));
+  const liveCat = JSON.parse(fs.readFileSync(liveCatPath, 'utf8'));
+
+  restoreCatalogSkus(goldenCat, liveCat);
 
   // Restore 389692-B21 (HPE Customer Defined RAID Setting Service) under Storage Controllers > RAID Settings
   let raidEntry = liveCat.entries.find(e => 
@@ -186,8 +257,6 @@ function runRemediation() {
     }
   }
 
-
-
   // Recount Unique SKUs
   const allSkus = new Set(liveCat.entries.flatMap(e => e.skus || []).map(s => (s['Product #'] || s.sku || '').trim()).filter(Boolean));
   liveCat.metadata.totalUniqueSKUs = allSkus.size;
@@ -196,69 +265,7 @@ function runRemediation() {
   safeWriteJsonAtomic(liveCatPath, liveCat);
   console.log(`✅ Saved updated DL380a_Gen12_Catalog.json (total unique SKUs: ${allSkus.size}).`);
 
-  // 4. Update catalog_deltas.json
-  const deltasPath = path.join(DL380A_DIR, 'catalog_deltas.json');
-  if (fs.existsSync(deltasPath)) {
-    const deltas = JSON.parse(fs.readFileSync(deltasPath, 'utf8'));
-    const psuDelta = deltas.find(d => d.deltaId === 'DELTA_DL380A_GEN12_GPU_PSU_COUNT_MATRIX');
-    if (psuDelta) {
-      psuDelta.ruleUpdate = 'Requires a minimum of five power supplies for 2DW/4DW GPU configurations (up to eight for N+N grid redundancy or pre-populating all 8 bays) and eight power supplies for 8DW/10DW; H100/H200 NVL supports 2400W P67252-B21 or 3200W P67248-B21 Titanium supplies, without mixing wattages.';
-    }
-
-    if (!deltas.some(d => d.deltaId === 'DELTA_UNIVERSAL_CLOUD_MANAGEMENT_OPTIONAL')) {
-      deltas.push({
-        deltaId: 'DELTA_UNIVERSAL_CLOUD_MANAGEMENT_OPTIONAL',
-        timestamp: '2026-10-08T00:00:00.000Z',
-        chassis: 'DL380a_Gen12',
-        rawMessage: 'Official HPE presales architecture: Cloud Management FIO Enablement (S1A05A) and Compute Ops Management SaaS (R7A11AAE) are optional add-ons, never mandatory.',
-        errorType: 'OPTIONAL_SOFTWARE_SERVICE',
-        ruleType: 'SOFTWARE_OPTIONALITY',
-        affectedSku: 'S1A05A',
-        requiredDependencySku: null,
-        ruleUpdate: 'Cloud Management FIO Enablement (S1A05A) and Compute Ops Management SaaS (R7A11AAE) are strictly optional services/licenses. They are not required for hardware buildability, power-on, or vendor portal acceptance.',
-        scopeTaxonomy: 'UNIVERSAL_VENDOR',
-        solutionType: 'General Server',
-        status: 'VERIFIED',
-        validation: {
-          validatedAt: '2026-10-08',
-          sourceId: 'HPE Official Ordering Guide',
-          result: 'SUPPORTED'
-        }
-      });
-    }
-    safeWriteJsonAtomic(deltasPath, deltas);
-    console.log(`✅ Updated catalog_deltas.json with clarified 5-8 PSU matrix and cloud management optionality rule.`);
-  }
-
-  // 5. Update master knowledge registry & charter
-  const masterRegPath = path.join(PROJECT_ROOT, 'outputs', 'history', 'master_knowledge_registry.json');
-  if (fs.existsSync(masterRegPath)) {
-    const reg = JSON.parse(fs.readFileSync(masterRegPath, 'utf8'));
-    for (const group of Object.values(reg)) {
-      if (Array.isArray(group)) {
-        const d = group.find(x => x.deltaId === 'DELTA_DL380A_GEN12_GPU_PSU_COUNT_MATRIX');
-        if (d) {
-          d.ruleUpdate = 'Requires a minimum of five power supplies for 2DW/4DW GPU configurations (up to eight for N+N grid redundancy or pre-populating all 8 bays) and eight power supplies for 8DW/10DW; H100/H200 NVL supports 2400W P67252-B21 or 3200W P67248-B21 Titanium supplies, without mixing wattages.';
-        }
-      }
-    }
-    safeWriteJsonAtomic(masterRegPath, reg);
-    console.log(`✅ Updated outputs/history/master_knowledge_registry.json.`);
-  }
-
-  const charterPath = path.join(PROJECT_ROOT, 'outputs', 'history', 'master_universal_knowledge_charter.md');
-  if (fs.existsSync(charterPath)) {
-    let charter = fs.readFileSync(charterPath, 'utf8');
-    charter = charter.replace(
-      /Use exactly five power supplies for 2DW\/4DW GPU configurations and eight for 8DW\/10DW/g,
-      'Requires a minimum of five power supplies for 2DW/4DW GPU configurations (up to eight for N+N grid redundancy or pre-populating all 8 bays) and eight power supplies for 8DW/10DW'
-    );
-    if (!charter.includes('DELTA_UNIVERSAL_CLOUD_MANAGEMENT_OPTIONAL')) {
-      charter += `\n\n### 94. [DELTA_UNIVERSAL_CLOUD_MANAGEMENT_OPTIONAL] GLOBAL — SOFTWARE_OPTIONALITY\n- **Scope**: \`UNIVERSAL_VENDOR\`\n- **Rule**: Cloud Management FIO Enablement (\`S1A05A\`) and Compute Ops Management SaaS (\`R7A11AAE\`) are strictly optional services/licenses. They are not required for hardware buildability, power-on, or vendor portal acceptance.\n- **Affected SKU**: \`S1A05A\`\n`;
-    }
-    fs.writeFileSync(charterPath, charter, 'utf8');
-    console.log(`✅ Updated outputs/history/master_universal_knowledge_charter.md.`);
-  }
+  updateKnowledgeRegistries();
 
   // 6. Regenerate TSV, CSV, Master Excel, and NotebookLM Sync Payload
   console.log('\nRegenerating tabular files and Excel workbook...');

@@ -84,12 +84,7 @@ const PATH_B_ITEMS = [
   { sku: 'R7A11AAE', desc: 'HPE Compute Ops Management Enhanced 3-Year SaaS Base License', cat: 'Cloud Management & Control', qA: 1, qB: 1, tot: 60, price: 450.00, rfpQty: 0, rfpSku: 'R7A11AAE', role: 'Mandatory Factory Order Control', status: 'Mandatory Injection (CLIC Rule 81322276)' }
 ];
 
-function buildMasterWorkbook() {
-  const wb = xlsx.utils.book_new();
-
-  // -------------------------------------------------------------
-  // Sheet 1: RFP vs Certified Solution (Reconciliation)
-  // -------------------------------------------------------------
+function appendSheet1RfpVsCertified(wb) {
   const s1Data = [
     ['HPE ProLiant DL380 Gen11 — Certified Tender Solution vs Customer RFP Reconciliation (Path B Architecture)'],
     ['Customer Tender Reference: GID-RFQS-HPE-2026-006 | Scope: 60 Enterprise Server Nodes (20x Platinum Cluster A + 40x Gold Cluster B)'],
@@ -125,7 +120,6 @@ function buildMasterWorkbook() {
     { wch: 5 }, { wch: 18 }, { wch: 16 }, { wch: 18 }, { wch: 22 }, { wch: 22 }, { wch: 22 }, { wch: 55 }, { wch: 18 }, { wch: 22 }, { wch: 50 }
   ];
 
-  // Apply styling to Sheet 1
   ws1['A1'].s = headerStyle(C_DARK, C_WHITE, 13);
   ws1['A2'].s = cellStyle(C_SLATE, false, 'left', C_WHITE, 10);
   ws1['A3'].s = cellStyle(C_EMERALD, true, 'left', C_WHITE, 10);
@@ -135,24 +129,24 @@ function buildMasterWorkbook() {
     if (ws1[cellAddr]) ws1[cellAddr].s = headerStyle(C_DARK, C_WHITE, 10);
   }
 
+  const centerCols = new Set([0, 2, 4, 5, 6]);
   for (let r = 5; r < 5 + PATH_B_ITEMS.length; r++) {
-    const isAlt = r % 2 === 0;
-    const bg = isAlt ? C_ROW_ALT : C_WHITE;
+    const bg = (r % 2 === 0) ? C_ROW_ALT : C_WHITE;
     for (let c = 0; c < 11; c++) {
       const addr = xlsx.utils.encode_cell({ r, c });
       if (!ws1[addr]) continue;
-      const align = (c === 0 || c === 2 || c === 4 || c === 5 || c === 6) ? 'center' : (c === 8 || c === 9) ? 'right' : 'left';
-      const isBold = c === 3 || c === 9;
-      ws1[addr].s = cellStyle(bg, isBold, align, '000000', 9);
-      if (c === 8 || c === 9) ws1[addr].z = '$#,##0.00';
+      const isCurr = c === 8 || c === 9;
+      const align = centerCols.has(c) ? 'center' : (isCurr ? 'right' : 'left');
+      ws1[addr].s = cellStyle(bg, c === 3 || c === 9, align, '000000', 9);
+      if (isCurr) ws1[addr].z = '$#,##0.00';
     }
   }
 
   xlsx.utils.book_append_sheet(wb, ws1, 'RFP vs Certified Solution');
+  return s1GrandTotal;
+}
 
-  // -------------------------------------------------------------
-  // Sheet 2: Master Solution Executive BOM
-  // -------------------------------------------------------------
+function appendSheet2ExecutiveBom(wb, s1GrandTotal) {
   const s2Data = [
     ['HPE DL380 Gen11 — Master Solution Executive Bill of Materials (60 Nodes)'],
     ['Scope: 20x Cluster A (Intel Xeon-Platinum 8580) + 40x Cluster B (Intel Xeon-Gold 6530)'],
@@ -192,124 +186,65 @@ function buildMasterWorkbook() {
     if (ws2[addr]) ws2[addr].s = headerStyle(C_DARK, C_WHITE, 10);
   }
 
+  const centerCols = new Set([0, 5, 6, 7]);
   for (let r = 4; r < 4 + PATH_B_ITEMS.length; r++) {
     const bg = (r % 2 === 0) ? C_ROW_ALT : C_WHITE;
     for (let c = 0; c < 11; c++) {
       const addr = xlsx.utils.encode_cell({ r, c });
       if (!ws2[addr]) continue;
-      const align = (c === 0 || c === 5 || c === 6 || c === 7) ? 'center' : (c === 8 || c === 9) ? 'right' : 'left';
+      const isCurr = c === 8 || c === 9;
+      const align = centerCols.has(c) ? 'center' : (isCurr ? 'right' : 'left');
       ws2[addr].s = cellStyle(bg, c === 1 || c === 9, align, '000000', 9);
-      if (c === 8 || c === 9) ws2[addr].z = '$#,##0.00';
+      if (isCurr) ws2[addr].z = '$#,##0.00';
     }
   }
 
   xlsx.utils.book_append_sheet(wb, ws2, 'Master Executive BOM');
+}
 
-  // -------------------------------------------------------------
-  // Sheet 3: Cluster A (20x Platinum Nodes)
-  // -------------------------------------------------------------
-  const clusterA_items = PATH_B_ITEMS.filter(it => it.qA > 0);
-  const s3Data = [
-    ['Cluster A: 20x HPE ProLiant DL380 Gen11 8SFF (Intel Xeon-Platinum 8580 Compute Tier)'],
-    ['Specification per node: Dual 60-Core CPUs (120 Cores), 512GB DDR5-5600, Dual 1800W Titanium PSUs, 8SFF Tri-Mode, 4 PCIe Cards'],
+function appendClusterSheet(wb, sheetName, items, qtyField, nodeMultiplier, titleText, subTitleText, totalLabel, totalDesc) {
+  const sData = [
+    [titleText],
+    [subTitleText],
     [],
-    ['#', 'HPE Option Part #', 'Category', 'Qty / Node', 'Cluster Qty (20 Nodes)', 'Unit Price (USD)', 'Extended Price (USD)', 'Component Description', 'Placement & Function']
+    ['#', 'HPE Option Part #', 'Category', 'Qty / Node', `Cluster Qty (${nodeMultiplier} Nodes)`, 'Unit Price (USD)', 'Extended Price (USD)', 'Component Description', 'Placement & Function']
   ];
 
-  let clusterATotal = 0;
-  clusterA_items.forEach((it, idx) => {
-    const clusterQty = it.qA * 20;
+  let clusterTotal = 0;
+  items.forEach((it, idx) => {
+    const qNode = it[qtyField];
+    const clusterQty = qNode * nodeMultiplier;
     const ext = clusterQty * it.price;
-    clusterATotal += ext;
-    s3Data.push([
-      idx + 1,
-      it.sku,
-      it.cat,
-      it.qA,
-      clusterQty,
-      it.price,
-      ext,
-      it.desc,
-      it.role
-    ]);
+    clusterTotal += ext;
+    sData.push([idx + 1, it.sku, it.cat, qNode, clusterQty, it.price, ext, it.desc, it.role]);
   });
-  s3Data.push([]);
-  s3Data.push(['', '', '', 'CLUSTER A TOTAL LIST VALUE:', '', '', clusterATotal, '20 Compute Powerhouse Nodes']);
+  sData.push([]);
+  sData.push(['', '', '', totalLabel, '', '', clusterTotal, totalDesc]);
 
-  const ws3 = xlsx.utils.aoa_to_sheet(s3Data);
-  ws3['!cols'] = [{ wch: 5 }, { wch: 18 }, { wch: 25 }, { wch: 12 }, { wch: 22 }, { wch: 18 }, { wch: 22 }, { wch: 55 }, { wch: 35 }];
-  ws3['A1'].s = headerStyle(C_DARK, C_WHITE, 12);
-  ws3['A2'].s = cellStyle(C_SLATE, false, 'left', C_WHITE, 9);
+  const ws = xlsx.utils.aoa_to_sheet(sData);
+  ws['!cols'] = [{ wch: 5 }, { wch: 18 }, { wch: 25 }, { wch: 12 }, { wch: 22 }, { wch: 18 }, { wch: 22 }, { wch: 55 }, { wch: 35 }];
+  ws['A1'].s = headerStyle(C_DARK, C_WHITE, 12);
+  ws['A2'].s = cellStyle(C_SLATE, false, 'left', C_WHITE, 9);
   for (let c = 0; c < 9; c++) {
     const addr = xlsx.utils.encode_cell({ r: 3, c });
-    if (ws3[addr]) ws3[addr].s = headerStyle(C_DARK, C_WHITE, 10);
+    if (ws[addr]) ws[addr].s = headerStyle(C_DARK, C_WHITE, 10);
   }
-  for (let r = 4; r < 4 + clusterA_items.length; r++) {
+  const centerCols = new Set([0, 3, 4]);
+  for (let r = 4; r < 4 + items.length; r++) {
     const bg = (r % 2 === 0) ? C_ROW_ALT : C_WHITE;
     for (let c = 0; c < 9; c++) {
       const addr = xlsx.utils.encode_cell({ r, c });
-      if (!ws3[addr]) continue;
-      const align = (c === 0 || c === 3 || c === 4) ? 'center' : (c === 5 || c === 6) ? 'right' : 'left';
-      ws3[addr].s = cellStyle(bg, c === 1 || c === 6, align, '000000', 9);
-      if (c === 5 || c === 6) ws3[addr].z = '$#,##0.00';
+      if (!ws[addr]) continue;
+      const isCurr = c === 5 || c === 6;
+      const align = centerCols.has(c) ? 'center' : (isCurr ? 'right' : 'left');
+      ws[addr].s = cellStyle(bg, c === 1 || c === 6, align, '000000', 9);
+      if (isCurr) ws[addr].z = '$#,##0.00';
     }
   }
-  xlsx.utils.book_append_sheet(wb, ws3, 'Cluster A (20x Platinum)');
+  xlsx.utils.book_append_sheet(wb, ws, sheetName);
+}
 
-  // -------------------------------------------------------------
-  // Sheet 4: Cluster B (40x Gold Nodes)
-  // -------------------------------------------------------------
-  const clusterB_items = PATH_B_ITEMS.filter(it => it.qB > 0);
-  const s4Data = [
-    ['Cluster B: 40x HPE ProLiant DL380 Gen11 8SFF (Intel Xeon-Gold 6530 Workload Tier)'],
-    ['Specification per node: Dual 32-Core CPUs (64 Cores), 512GB DDR5-5600, Dual 1600W Platinum PSUs, 8SFF Tri-Mode, 5 PCIe Cards'],
-    [],
-    ['#', 'HPE Option Part #', 'Category', 'Qty / Node', 'Cluster Qty (40 Nodes)', 'Unit Price (USD)', 'Extended Price (USD)', 'Component Description', 'Placement & Function']
-  ];
-
-  let clusterBTotal = 0;
-  clusterB_items.forEach((it, idx) => {
-    const clusterQty = it.qB * 40;
-    const ext = clusterQty * it.price;
-    clusterBTotal += ext;
-    s4Data.push([
-      idx + 1,
-      it.sku,
-      it.cat,
-      it.qB,
-      clusterQty,
-      it.price,
-      ext,
-      it.desc,
-      it.role
-    ]);
-  });
-  s4Data.push([]);
-  s4Data.push(['', '', '', 'CLUSTER B TOTAL LIST VALUE:', '', '', clusterBTotal, '40 Workload Cluster Nodes']);
-
-  const ws4 = xlsx.utils.aoa_to_sheet(s4Data);
-  ws4['!cols'] = [{ wch: 5 }, { wch: 18 }, { wch: 25 }, { wch: 12 }, { wch: 22 }, { wch: 18 }, { wch: 22 }, { wch: 55 }, { wch: 35 }];
-  ws4['A1'].s = headerStyle(C_DARK, C_WHITE, 12);
-  ws4['A2'].s = cellStyle(C_SLATE, false, 'left', C_WHITE, 9);
-  for (let c = 0; c < 9; c++) {
-    const addr = xlsx.utils.encode_cell({ r: 3, c });
-    if (ws4[addr]) ws4[addr].s = headerStyle(C_DARK, C_WHITE, 10);
-  }
-  for (let r = 4; r < 4 + clusterB_items.length; r++) {
-    const bg = (r % 2 === 0) ? C_ROW_ALT : C_WHITE;
-    for (let c = 0; c < 9; c++) {
-      const addr = xlsx.utils.encode_cell({ r, c });
-      if (!ws4[addr]) continue;
-      const align = (c === 0 || c === 3 || c === 4) ? 'center' : (c === 5 || c === 6) ? 'right' : 'left';
-      ws4[addr].s = cellStyle(bg, c === 1 || c === 6, align, '000000', 9);
-      if (c === 5 || c === 6) ws4[addr].z = '$#,##0.00';
-    }
-  }
-  xlsx.utils.book_append_sheet(wb, ws4, 'Cluster B (40x Gold)');
-
-  // -------------------------------------------------------------
-  // Sheet 5: CLIC Advice Remediation Audit
-  // -------------------------------------------------------------
+function appendSheet5And6AuditAndArch(wb) {
   const s5Data = [
     ['HPE CLIC Configurator Compliance & Rule Remediation Audit Matrix (Path B)'],
     ['Formal validation of all 60 nodes against official HPE CLIC ordering rules and factory constraints.'],
@@ -326,9 +261,7 @@ function buildMasterWorkbook() {
     { id: '81322276', sev: 'PROCESS CONTROL', comp: 'Cloud Ops Management', text: 'Gen11 CTO models require at least 1 COM base license to proceed to quote conversion.', res: 'Injected 60x R7A11AAE (1 per node across all 60 nodes) for seamless portal approval.', stat: '100% PASS' }
   ];
 
-  auditRules.forEach(r => {
-    s5Data.push([r.id, r.sev, r.comp, r.text, r.res, r.stat]);
-  });
+  auditRules.forEach(r => s5Data.push([r.id, r.sev, r.comp, r.text, r.res, r.stat]));
 
   const ws5 = xlsx.utils.aoa_to_sheet(s5Data);
   ws5['!cols'] = [{ wch: 22 }, { wch: 22 }, { wch: 25 }, { wch: 50 }, { wch: 50 }, { wch: 18 }];
@@ -350,9 +283,6 @@ function buildMasterWorkbook() {
   }
   xlsx.utils.book_append_sheet(wb, ws5, 'CLIC Compliance Audit');
 
-  // -------------------------------------------------------------
-  // Sheet 6: Technical Architecture Matrix
-  // -------------------------------------------------------------
   const s6Data = [
     ['HPE ProLiant DL380 Gen11 — Physical Slot & Infrastructure Architecture (Path B)'],
     ['Complete slot occupancy map, storage topology, and cabling interconnects across both clusters.'],
@@ -387,9 +317,53 @@ function buildMasterWorkbook() {
     }
   }
   xlsx.utils.book_append_sheet(wb, ws6, 'Technical Architecture');
+}
 
+function buildMasterWorkbook() {
+  const wb = xlsx.utils.book_new();
+  const s1GrandTotal = appendSheet1RfpVsCertified(wb);
+  appendSheet2ExecutiveBom(wb, s1GrandTotal);
+
+  const clusterA_items = PATH_B_ITEMS.filter(it => it.qA > 0);
+  appendClusterSheet(
+    wb, 'Cluster A (20x Platinum)', clusterA_items, 'qA', 20,
+    'Cluster A: 20x HPE ProLiant DL380 Gen11 8SFF (Intel Xeon-Platinum 8580 Compute Tier)',
+    'Specification per node: Dual 60-Core CPUs (120 Cores), 512GB DDR5-5600, Dual 1800W Titanium PSUs, 8SFF Tri-Mode, 4 PCIe Cards',
+    'CLUSTER A TOTAL LIST VALUE:', '20 Compute Powerhouse Nodes'
+  );
+
+  const clusterB_items = PATH_B_ITEMS.filter(it => it.qB > 0);
+  appendClusterSheet(
+    wb, 'Cluster B (40x Gold)', clusterB_items, 'qB', 40,
+    'Cluster B: 40x HPE ProLiant DL380 Gen11 8SFF (Intel Xeon-Gold 6530 Workload Tier)',
+    'Specification per node: Dual 32-Core CPUs (64 Cores), 512GB DDR5-5600, Dual 1600W Platinum PSUs, 8SFF Tri-Mode, 5 PCIe Cards',
+    'CLUSTER B TOTAL LIST VALUE:', '40 Workload Cluster Nodes'
+  );
+
+  appendSheet5And6AuditAndArch(wb);
   xlsx.writeFile(wb, MASTER_FILE);
   console.log(`✅ Master 6-Sheet Presentation Workbook Generated: ${MASTER_FILE}`);
+}
+
+function stylePortalRange(ws, rStart, rEnd, subtotalRow) {
+  for (let r = rStart; r < rEnd; r++) {
+    const bg = (r % 2 === 0) ? C_ROW_ALT : C_WHITE;
+    for (let c = 0; c < 7; c++) {
+      const addr = xlsx.utils.encode_cell({ r, c });
+      if (!ws[addr]) continue;
+      const isCurr = c === 4 || c === 5;
+      const align = (c === 1 || c === 2) ? 'center' : (isCurr ? 'right' : 'left');
+      ws[addr].s = cellStyle(bg, c === 0 || c === 5, align, '000000', 9);
+      if (isCurr) ws[addr].z = '$#,##0.00';
+    }
+  }
+  for (let c = 0; c < 7; c++) {
+    const addr = xlsx.utils.encode_cell({ r: subtotalRow, c });
+    if (!ws[addr]) continue;
+    const isCurr = c === 4 || c === 5;
+    ws[addr].s = cellStyle(C_EMERALD, true, isCurr ? 'right' : (c === 2 ? 'center' : 'left'), C_WHITE, 10);
+    if (isCurr) ws[addr].z = '$#,##0.00';
+  }
 }
 
 function buildPartnerPortalWorkbook() {
@@ -481,24 +455,8 @@ function buildPartnerPortalWorkbook() {
 
   const rStartA = 1;
   const rEndA = rStartA + clusterA_items.length;
-  for (let r = rStartA; r < rEndA; r++) {
-    const bg = (r % 2 === 0) ? C_ROW_ALT : C_WHITE;
-    for (let c = 0; c < 7; c++) {
-      const addr = xlsx.utils.encode_cell({ r, c });
-      if (!ws[addr]) continue;
-      const align = (c === 1 || c === 2) ? 'center' : (c === 4 || c === 5) ? 'right' : 'left';
-      ws[addr].s = cellStyle(bg, c === 0 || c === 5, align, '000000', 9);
-      if (c === 4 || c === 5) ws[addr].z = '$#,##0.00';
-    }
-  }
-
   const subtotalRowA = rEndA;
-  for (let c = 0; c < 7; c++) {
-    const addr = xlsx.utils.encode_cell({ r: subtotalRowA, c });
-    if (!ws[addr]) continue;
-    ws[addr].s = cellStyle(C_EMERALD, true, (c === 4 || c === 5) ? 'right' : (c === 2 ? 'center' : 'left'), C_WHITE, 10);
-    if (c === 4 || c === 5) ws[addr].z = '$#,##0.00';
-  }
+  stylePortalRange(ws, rStartA, rEndA, subtotalRowA);
 
   // Calculate Configuration 2 starting row index
   const rStartB_Title = subtotalRowA + 3; // +2 blank rows + 1
@@ -517,32 +475,17 @@ function buildPartnerPortalWorkbook() {
     if (ws[addr]) ws[addr].s = headerStyle(C_DARK, C_WHITE, 10);
   }
 
-  for (let r = rStartB_Data; r < rEndB; r++) {
-    const bg = (r % 2 === 0) ? C_ROW_ALT : C_WHITE;
-    for (let c = 0; c < 7; c++) {
-      const addr = xlsx.utils.encode_cell({ r, c });
-      if (!ws[addr]) continue;
-      const align = (c === 1 || c === 2) ? 'center' : (c === 4 || c === 5) ? 'right' : 'left';
-      ws[addr].s = cellStyle(bg, c === 0 || c === 5, align, '000000', 9);
-      if (c === 4 || c === 5) ws[addr].z = '$#,##0.00';
-    }
-  }
-
   const subtotalRowB = rEndB;
-  for (let c = 0; c < 7; c++) {
-    const addr = xlsx.utils.encode_cell({ r: subtotalRowB, c });
-    if (!ws[addr]) continue;
-    ws[addr].s = cellStyle(C_EMERALD, true, (c === 4 || c === 5) ? 'right' : (c === 2 ? 'center' : 'left'), C_WHITE, 10);
-    if (c === 4 || c === 5) ws[addr].z = '$#,##0.00';
-  }
+  stylePortalRange(ws, rStartB_Data, rEndB, subtotalRowB);
 
   // Grand Total row styling
   const grandTotalRow = subtotalRowB + 3;
   for (let c = 0; c < 7; c++) {
     const addr = xlsx.utils.encode_cell({ r: grandTotalRow, c });
     if (!ws[addr]) continue;
-    ws[addr].s = cellStyle(C_DARK, true, (c === 4 || c === 5) ? 'right' : (c === 2 ? 'center' : 'left'), C_WHITE, 11);
-    if (c === 4 || c === 5) ws[addr].z = '$#,##0.00';
+    const isCurr = c === 4 || c === 5;
+    ws[addr].s = cellStyle(C_DARK, true, isCurr ? 'right' : (c === 2 ? 'center' : 'left'), C_WHITE, 11);
+    if (isCurr) ws[addr].z = '$#,##0.00';
   }
 
   xlsx.utils.book_append_sheet(wb, ws, 'Partner Portal Upload BOM');

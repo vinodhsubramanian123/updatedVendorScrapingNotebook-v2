@@ -134,6 +134,47 @@ function scanImportedSources() {
   return extractedRules;
 }
 
+const HEADER_CHASSIS_PATTERNS = [
+  [/dl380a/i, 'DL380a_Gen12'],
+  [/dl380[_\s-]?gen[_\s-]?12/i, 'DL380_Gen12'],
+  [/dl380[_\s-]?gen[_\s-]?11/i, 'DL380_Gen11'],
+  [/dl360[_\s-]?gen[_\s-]?11|dl360/i, 'DL360_Gen11'],
+  [/dl145/i, 'DL145_Gen11'],
+  [/dl580/i, 'DL580_Gen12'],
+  [/msl3040/i, 'MSL3040_Tape'],
+  [/alletra/i, 'Alletra_Storage_System'],
+  [/sy480|synergy[_\s-]?480|synergy.*compute/i, 'SY480_Gen12'],
+  [/synergy|sy100gb/i, 'SY100Gb_F32_Module'],
+  [/gx5000|cray/i, 'GX5000_General_RACK']
+];
+
+function detectChassisFromMarkdownHeader(headerText) {
+  for (const [pattern, chassis] of HEADER_CHASSIS_PATTERNS) {
+    if (pattern.test(headerText)) return normalizeChassisName(chassis);
+  }
+  return normalizeChassisName('GLOBAL');
+}
+
+function flushMarkdownRuleBlock(blockBuffer, currentChassis, skuRegex, sourceFilename, nowIso, rules) {
+  if (blockBuffer.length === 0) return;
+  const blockText = blockBuffer.join(' ');
+  if (!/bypass|override|mandat|require|block|unbuildable|constraint|must/i.test(blockText)) return;
+  const foundSkus = [...new Set(blockText.match(skuRegex) || [])];
+  if (foundSkus.length === 0) return;
+  const scopeTaxonomy = classifyRuleScope({ chassis: currentChassis, rawMessage: blockText }, blockText);
+  rules.push({
+    chassis: normalizeChassisName(currentChassis),
+    scopeTaxonomy,
+    affectedSku: foundSkus[0],
+    requiredDependencySku: foundSkus.length > 1 ? foundSkus[1] : null,
+    ruleType: inferRuleType(blockText),
+    ruleUpdate: blockText.slice(0, 300),
+    rawMessage: blockText.slice(0, 500),
+    sourceFilename,
+    timestamp: nowIso
+  });
+}
+
 /**
  * Parses markdown text to extract architectural rules, gotchas, and workarounds.
  */
@@ -145,57 +186,15 @@ function parseRulesFromMarkdown(text, sourceFilename) {
   // Pattern: SKU (e.g. P73282-B21, 873763-B21, HU4B2A3, Q2R41A, R9F76A, S1R06A, 581817-B21)
   const skuRegex = /\b([A-Z0-9]{6}-[B|F|A]21|[0-9]{6}-[B|F|A]21|[A-Z][0-9][A-Z0-9]{3,4}[A-Z]|HU4[A-Z0-9]{4,9}|HA[0-9]{3}[A-Z0-9]+|U[0-9][A-Z0-9]{4})\b/g;
 
-  let currentChassis = 'GLOBAL';
   const headerText = sourceFilename + ' ' + text.slice(0, 500);
-  if (/dl380a/i.test(headerText)) {
-    currentChassis = 'DL380a_Gen12';
-  } else if (/dl380[_\s-]?gen[_\s-]?12/i.test(headerText)) {
-    currentChassis = 'DL380_Gen12';
-  } else if (/dl380[_\s-]?gen[_\s-]?11/i.test(headerText)) {
-    currentChassis = 'DL380_Gen11';
-  } else if (/dl360[_\s-]?gen[_\s-]?11|dl360/i.test(headerText)) {
-    currentChassis = 'DL360_Gen11';
-  } else if (/dl145/i.test(headerText)) {
-    currentChassis = 'DL145_Gen11';
-  } else if (/dl580/i.test(headerText)) {
-    currentChassis = 'DL580_Gen12';
-  } else if (/msl3040/i.test(headerText)) {
-    currentChassis = 'MSL3040_Tape';
-  } else if (/alletra/i.test(headerText)) {
-    currentChassis = 'Alletra_Storage_System';
-  } else if (/sy480|synergy[_\s-]?480|synergy.*compute/i.test(headerText)) {
-    currentChassis = 'SY480_Gen12';
-  } else if (/synergy|sy100gb/i.test(headerText)) {
-    currentChassis = 'SY100Gb_F32_Module';
-  } else if (/gx5000|cray/i.test(headerText)) {
-    currentChassis = 'GX5000_General_RACK';
-  }
-  // Always normalize the detected chassis name (INV-36)
-  currentChassis = normalizeChassisName(currentChassis);
+  const currentChassis = detectChassisFromMarkdownHeader(headerText);
 
   // Detect distinct rule blocks or numbered sections
   let blockBuffer = [];
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trim();
     if (/^(#+|\d+\.|\*|-|Rule\s+\d+|SECTION\s+\d+)/i.test(line) && blockBuffer.length > 0) {
-      const blockText = blockBuffer.join(' ');
-      if (/bypass|override|mandat|require|block|unbuildable|constraint|must/i.test(blockText)) {
-        const foundSkus = [...new Set(blockText.match(skuRegex) || [])];
-        if (foundSkus.length > 0) {
-          const scopeTaxonomy = classifyRuleScope({ chassis: currentChassis, rawMessage: blockText }, blockText);
-          rules.push({
-            chassis: normalizeChassisName(currentChassis),
-            scopeTaxonomy,
-            affectedSku: foundSkus[0],
-            requiredDependencySku: foundSkus.length > 1 ? foundSkus[1] : null,
-            ruleType: inferRuleType(blockText),
-            ruleUpdate: blockText.slice(0, 300),
-            rawMessage: blockText.slice(0, 500),
-            sourceFilename,
-            timestamp: nowIso
-          });
-        }
-      }
+      flushMarkdownRuleBlock(blockBuffer, currentChassis, skuRegex, sourceFilename, nowIso, rules);
       blockBuffer = [];
     }
     if (line.length > 0) {
@@ -204,26 +203,7 @@ function parseRulesFromMarkdown(text, sourceFilename) {
   }
 
   // Flush final trailing blockBuffer
-  if (blockBuffer.length > 0) {
-    const blockText = blockBuffer.join(' ');
-    if (/bypass|override|mandat|require|block|unbuildable|constraint|must/i.test(blockText)) {
-      const foundSkus = [...new Set(blockText.match(skuRegex) || [])];
-      if (foundSkus.length > 0) {
-        const scopeTaxonomy = classifyRuleScope({ chassis: currentChassis, rawMessage: blockText }, blockText);
-        rules.push({
-          chassis: normalizeChassisName(currentChassis),
-          scopeTaxonomy,
-          affectedSku: foundSkus[0],
-          requiredDependencySku: foundSkus.length > 1 ? foundSkus[1] : null,
-          ruleType: inferRuleType(blockText),
-          ruleUpdate: blockText.slice(0, 300),
-          rawMessage: blockText.slice(0, 500),
-          sourceFilename,
-          timestamp: nowIso
-        });
-      }
-    }
-  }
+  flushMarkdownRuleBlock(blockBuffer, currentChassis, skuRegex, sourceFilename, nowIso, rules);
 
   return rules;
 }

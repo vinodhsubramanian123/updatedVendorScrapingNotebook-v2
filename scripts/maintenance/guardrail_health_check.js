@@ -43,18 +43,12 @@ function recordCheck(id, name, status, details = {}) {
   }
 }
 
-async function runHealthHeartbeat() {
-  console.log('===============================================================');
-  console.log('🛡️  ENTERPRISE SYSTEM GUARDRAIL HEALTH HEARTBEAT');
-  console.log('===============================================================\n');
-
-  // Guardrail 1: NotebookLM MCP & CLI Profile
+function checkNotebookLmGuardrail() {
   try {
     const home = os.homedir();
     const binName = process.platform === 'win32' ? 'nlm.exe' : 'nlm';
     const homeBin = path.join(home, '.local', 'bin', binName);
-    
-    // Check local bin or system PATH
+
     let hasNlm = fs.existsSync(homeBin);
     if (!hasNlm) {
       const macHomebrew = path.join('/opt/homebrew', 'bin', binName);
@@ -87,7 +81,9 @@ async function runHealthHeartbeat() {
   } catch (err) {
     recordCheck(1, 'NotebookLM MCP / CLI Connection & OAuth Profile', 'FAIL', { error: err.message });
   }
+}
 
+function checkGeminiAndEngineGuardrails() {
   // Guardrail 2: Gemini API Key Rotation & Quota State
   try {
     const geminiRotator = require('../lib/system/gemini_rotator.js');
@@ -126,6 +122,15 @@ async function runHealthHeartbeat() {
   } catch (err) {
     recordCheck(3, 'Deterministic Physical Aspect Math Engine (7 Aspects)', 'FAIL', { error: err.message });
   }
+}
+
+async function runHealthHeartbeat() {
+  console.log('===============================================================');
+  console.log('🛡️  ENTERPRISE SYSTEM GUARDRAIL HEALTH HEARTBEAT');
+  console.log('===============================================================\n');
+
+  checkNotebookLmGuardrail();
+  checkGeminiAndEngineGuardrails();
 
   // Guardrail 4: Staging Validation & Anomaly Protection
   try {

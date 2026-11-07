@@ -2,8 +2,8 @@
 
 **Document Classification:** Canonical Ground-Truth Architecture & Validation Charter<br>
 **Maintained By:** HPE ProLiant AI Studio Autonomous Knowledge Engine (Antigravity AI)<br>
-**Last Synchronized:** 2026-11-06T14:07:38.948Z<br>
-**Total Deduplicated Learned Rules:** 142<br>
+**Last Synchronized:** 2026-11-07T08:48:54.700Z<br>
+**Total Deduplicated Learned Rules:** 120<br>
 **Universal Invariant Compliance:** INV-1 through INV-38 Certified<br>
 **Google Drive Destination:** `shared_folder_id: 1YR0lBh-gg00amKHRxuOqp5Aea3iL5O7-`
 
@@ -160,7 +160,7 @@ The Catalog Vendor Solution provides modular, AI-assisted catalog ingestion, nor
 
 ## 5. Deduplicated Learned Rule Ledger & Verification Provenance
 
-Total verified rules indexed in this build: **142**.
+Total verified rules indexed in this build: **120**.
 
 | Scope | Target Chassis | Category | Affected SKU | Dependency SKU | Rule Summary / Validation Directive | Verifications |
 | :--- | :--- | :--- | :--- | :--- | :--- | :---: |
@@ -176,15 +176,6 @@ Total verified rules indexed in this build: **142**.
 | 📦 CHASSIS | `Alletra_Storage_System` | `STORAGE_CHASSIS_SPECIFIC` | `R0Q37A` | `—` | HPE Alletra Storage MP B10000 base storage controller chassis is R0Q37A (HPE Alletra MP Dual-Node Storage Controller Bas | 1x |
 | 📦 CHASSIS | `Alletra_Storage_System` | `STORAGE_DOMAIN_FIREWALL` | `R0Q37A` | `—` | Storage domain separation (INV-194): Alletra storage controller bays, expansion JBOFs, FC/iSCSI target adapters, and sto | 1x |
 | 📦 CHASSIS | `Alletra_Storage_System` | `NOTEBOOK_PURITY_GOVERNANCE` | `undefined` | `—` | Per Invariant INV-24, customer BOQ spreadsheets and unverified tender documents (including Latest Alletra Requirement BO | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `P74700-B21` | `—` | Observed price drift on P74700-B21 (memory) | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `S4A91C` | `—` | Observed price drift on S4A91C (drive) | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `HA113A1` | `—` | Observed price drift on HA113A1 (support) | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `HU4B2A30C4W` | `—` | Observed price drift on HU4B2A30C4W (service) | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `SKU_SUBSTITUTION` | `P70436-B21` | `P91249-B21` | When customer quotes specify P70436-B21, substitute with active Multi Vendor SKU P91249-B21 (same High Performance U.3 s | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `BATTERY_EXEMPTION` | `R7J57A` | `—` | Exempt Intel VROC and NS204i-u boot devices from Smart Storage Battery P01367-B21 requirement. Battery is exclusively re | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `WORKFLOW_DUAL_PUBLICATION_ADVISORY` | `undefined` | `—` | Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Goog | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `WORKFLOW_SOURCE_RETIREMENT_ADVISORY` | `undefined` | `—` | Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata bef | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY` | `undefined` | `—` | Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending date | 1x |
 | 📦 CHASSIS | `GLOBAL` | `ENVIRONMENT_HEALING_PROTOCOL` | `NLM_MCP_AUTH` | `—` | Headless Chrome instances (--headless=new) spawned during background pre-flights can become orphaned zombies on port 922 | 1x |
 | 📦 CHASSIS | `DL380a_Gen12` | `STORAGE_COLLISION` | `P74710-B21` | `—` | DL380a prohibits mixing 4SFF cage P74710-B21 and 4EDSFF cage P74712-B21. | 1x |
 | 📦 CHASSIS | `DL380a_Gen12` | `PROCESSOR_POPULATION` | `P76706-B21` | `—` | DL380a Gen12 requires two identical processor models; single-processor and mixed-processor configurations are unsupporte | 1x |
@@ -221,29 +212,33 @@ Total verified rules indexed in this build: **142**.
 | 📦 CHASSIS | `DL385_Gen11` | `PROCESSOR_CACHE_TRADE_OFF_STRATEGY` | `P53712-B21` | `P53701-B21` | When modernizing AMD EPYC 7543 (32c, 2.8GHz, 256MB L3, 225W), EPYC 9334 (32c, 2.7GHz, 128MB L3, 210W, ,170 USD) saves Ca | 1x |
 | 📦 CHASSIS | `DL385_Gen11` | `FAN_PACKAGING_MODALITY_RULE` | `P58465-B21` | `P53921-B21` | On HPE ProLiant DL385 Gen11 (and DL3X5 AMD platforms), P58465-B21 (HPE ProLiant DL3X5 Gen11 2U Performance Fan Kit, .00  | 1x |
 | 📦 CHASSIS | `DL385_Gen11` | `MANAGEMENT_LICENSE_VS_FIO_TOKEN_SEPARATION` | `S1A05A` | `R7A11AAE` | On DL385 Gen11 CTO builds (P53921-B21), R7A11AAE (HPE Compute Ops Management Standard 3-year Upfront SaaS, .00 USD) sati | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `P74700-B21` | `—` | Observed price drift on P74700-B21 (memory) | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `S4A91C` | `—` | Observed price drift on S4A91C (drive) | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `HA113A1` | `—` | Observed price drift on HA113A1 (support) | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `HU4B2A30C4W` | `—` | Observed price drift on HU4B2A30C4W (service) | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `SKU_SUBSTITUTION` | `P70436-B21` | `P91249-B21` | When customer quotes specify P70436-B21, substitute with active Multi Vendor SKU P91249-B21 (same High Performance U.3 s | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `BATTERY_EXEMPTION` | `R7J57A` | `—` | Exempt Intel VROC and NS204i-u boot devices from Smart Storage Battery P01367-B21 requirement. Battery is exclusively re | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `WORKFLOW_DUAL_PUBLICATION_ADVISORY` | `undefined` | `—` | Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Goog | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `WORKFLOW_SOURCE_RETIREMENT_ADVISORY` | `undefined` | `—` | Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata bef | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY` | `undefined` | `—` | Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending date | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `SUPPORT_PRICING_UPDATE` | `HU4B2A30C4W` | `P76706-B21` | HPE DL380a Gen12 Support (HU4B2A30C4W, under HU4B2A3 3Y Tech Care Basic) list price updated in November 2026 OCA catalog | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `SUPPLY_CHAIN_LEAD_TIME_BOTTLENECK` | `S3U30C` | `—` | CRITICAL PRESALES CONSTRAINT: NVIDIA H200 NVL 141GB PCIe Accelerator (S3U30C) carries an estimated availability factory  | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `CLIC_STATUS_CLEARANCE` | `P76706-B21` | `—` | Portal validation warnings on HPE ProLiant Compute DL380a Gen12 8DW/16SW CTO Server (P76706-B21) and HPE Compute Ops Man | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `ARRAY_GEOMETRY_BUILD_BLOCKER` | `339778-B21` | `—` | In HPE OCA / CLIC on DL380a Gen12, 339778-B21 (HPE RAID 1 Drive 1 FIO Setting) strictly enforces Drive Count == 2. When  | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `WORKFLOW_VENDOR_OBSERVATION_ADVISORY` | `P78279-B21` | `—` | HPE NS204i-u v2 480GB Boot Device (P78279-B21) and front boot cage (P75284-B21) have zero hardware, cage, or bus depende | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `WORKFLOW_VENDOR_OBSERVATION_ADVISORY` | `P69770-B21` | `—` | DL380a Gen12 base CTO chassis P76706-B21 does not bundle rack rails. When customer tender requests installation, racking | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `undefined` | `P76453-B21` | `—` | Portal validation flagged restriction on P76453-B21. | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `undefined` | `P73282-B21` | `P73282-B21` | If P73282-B21 is present, P73282-B21 is mandatory. | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `undefined` | `P74573-B21` | `P74573-B21` | If P74573-B21 is present, P74573-B21 is mandatory. | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `undefined` | `P48820-B21` | `P48820-B21` | If P48820-B21 is present, P48820-B21 is mandatory. | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `undefined` | `P69728-B21` | `P69728-B21` | If P69728-B21 is present, P69728-B21 is mandatory. | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `undefined` | `P47777-B21` | `P47777-B21` | If P47777-B21 is present, P47777-B21 is mandatory. | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `undefined` | `P01366-B21` | `P01366-B21` | If P01366-B21 is present, P01366-B21 is mandatory. | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `undefined` | `P03178-B21` | `P03178-B21` | If P03178-B21 is present, P03178-B21 is mandatory. | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `undefined` | `P76449-B21` | `P76450-B21` | Portal validation flagged restriction on P76450-B21. | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `PREPROCESSING_SPLIT_CONFIRMED` | `undefined` | `—` | Confirmed configuration variation reason 'WORKLOAD_NODE_PURPOSE' for config_1 | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `undefined` | `P74573-B21` | `P74792-B21` | Intel Xeon 6730P 250W CPU requires HPE ProLiant Compute DL380 Gen12 Performance Heat Sink Kit (P74792-B21) due to exceed | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `undefined` | `P74573-B21` | `P48820-B21` | Intel Xeon 6730P 250W CPU requires HPE ProLiant High Performance Fan Kit (P48820-B21) because it exceeds the 240W system | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `undefined` | `P69728-F21` | `DDR5-6400` | If P69728-F21 is present, DDR5-6400 is mandatory. | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `OPTION_TYPE_SUBSTITUTION` | `P69728-B21` | `P69728-F21` | / **`P69728-B21`** / HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 Smart Memory Kit / Memory / RDIMM (BTO) / **❌ BLOCKED in C | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `DEPENDENCY_CHAIN` | `P75740-B21` | `873763-B21` | / **`P75740-B21`** / HPE DL3XX Gen12 8SFF x1 U.3 Tri-Mode Drive Cage Kit / Smart Chassis / Drive Cage / **✅ Valid Front  | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `DEPENDENCY_CHAIN` | `P28586-B21` | `P75740-B21` | / **`P28586-B21`** / HPE 1.2TB SAS 12G 10K SFF BC 3yr Wty HDD / Storage / SFF SAS HDD / **✅ Valid SAS HDD** / 12G SAS 10 | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `DEPENDENCY_CHAIN` | `P51083-B21` | `P74573-B21` | / **`P51083-B21`** / HPE ProLiant DL380 Gen11 2U x16/x16/x16 Secondary Riser Kit / PCIe Expansion / Secondary Riser / ** | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `DEPENDENCY_CHAIN` | `P47777-B21` | `P01366-B21` | / **`P47777-B21`** / HPE MR416i-p Gen11 x16 Lanes 8GB Cache PCI SPDM Storage Controller / Storage Controller / Tri-Mode  | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `DEPENDENCY_CHAIN` | `P28586-B21` | `P40430-B21` | Connecting SAS hard drives (`P28586-B21` and `P40430-B21`) in the 8SFF drive cage (`P75740-B21`) to the MR416i-p storage | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `DEPENDENCY_CHAIN` | `P76453-B21` | `P75740-B21` | 4.  **High-Speed Backplane Data Cable (`P76453-B21`):** Routing SAS/SATA/NVMe data lanes from Box 1 or Box 2 backplanes  | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `OPTION_TYPE_SUBSTITUTION` | `P64707-B21` | `P69728-F21` | / **`P64707-B21`** / HPE 64GB 2Rx4 DDR5-5600 Registered Memory / Memory / RDIMM / **❌ Incompatible Gen11 Memory** / Gen1 | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `DEPENDENCY_CHAIN` | `P48818-B21` | `P38995-B21` | / **`P48818-B21`** / HPE 800W Flex Slot Platinum Hot Plug Power Supply / Power Supplies / **❌ Invalid SKU & Lack of Redu | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `DEPENDENCY_CHAIN` | `P75740-B21` | `P75741-B21` | 2.  **Drive Cage Required:** You must add an **8SFF x1 U.3 Tri-Mode Drive Cage Kit (`P75740-B21`)** or an **8SFF x4 U.3  | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `SKU_SUBSTITUTION` | `P48818-B21` | `P38995-B21` | / **`P48818-B21`** / HPE 800W Flex Slot Platinum Hot Plug Power Supply / Power Supplies / **❌ Invalid SKU & Lack of Redu | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `CARRY_OVER_VALIDATED` | `P47777-B21` | `—` | / **P47777-B21** / HPE MR416i-p Gen11 Storage Controller / **✅ VALID** / This PCIe plug-in controller is fully supported | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `DEPENDENCY_CHAIN` | `P01366-B21` | `P48918-B21` | / **P01366-B21** / HPE 96W Smart Storage Battery / **✅ VALID** / Fully compatible battery to protect the MR416i-p's vola | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `DEPENDENCY_CHAIN` | `P10180-B21` | `P72203-B21` | / **P10180-B21** / Broadcom BCM5719 1Gb 4p BASE-T OCP3 NIC / **❌ OBSOLETE** / Legacy Gen11 part number [8]. It also **re | 1x |
@@ -265,33 +260,16 @@ Total verified rules indexed in this build: **142**.
 | 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_CHASSIS_CLASSIFICATION_ADVISORY` | `undefined` | `—` | Specialty hardware categories (SAN switches like SN3600B, fabric interconnect modules like SY100Gb, and tape libraries l | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_SCOPE_ISOLATION_ADVISORY` | `P36877-B21` | `—` | Passive accessories such as DC lug terminal kits (P36877-B21), power cords, and rail kits are architecture-invariant and | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_DOM_EXTRACTION_ADVISORY` | `undefined` | `—` | WebLogic OCA table expansion in cdp.js must explicitly toggle show_cost alongside show_price and trigger change events o | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `PROCESSOR_ARCHITECTURAL_MATCH_STRATEGY` | `P74571-B21` | `P74577-B21` | When modernizing Cascade Lake Xeon Gold 6258R (28c, 2.7GHz, 38.5MB L3, 205W), Xeon 6530P (32c, 2.3GHz, 144MB L3, 225W, , | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `PROCESSOR_ARCHITECTURAL_MATCH_STRATEGY` | `P74571-B21` | `P74577-B21` | When modernizing Cascade Lake Xeon Gold 6258R (28c, 2.7GHz, 38.5MB L3, 205W), Xeon 6530P (32c, 2.3GHz, 144MB L3, 225W, $ | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `MEMORY_CHANNEL_POPULATION_STRATEGY` | `P69728-F21` | `P69729-F21` | On Intel Xeon 6 (8 memory channels per CPU, 16 channels dual socket), legacy 6-channel memory capacities (such as 1,152  | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `THERMAL_HEATSINK_RIGHT_SIZING_RULE` | `P74794-B21` | `P74792-B21` | On HPE ProLiant DL380 Gen12 (P73282-B21), processors with 185W < TDP <= 270W (such as Intel Xeon 6530P 225W P74571-B21)  | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `MANAGEMENT_LICENSE_VS_FIO_TOKEN_SEPARATION` | `S1A05A` | `R7A11AAE` | On DL380 Gen12 CTO builds (P73282-B21), R7A11AAE (HPE Compute Ops Management Standard 3-year Upfront SaaS, .00 USD) sati | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `MANAGEMENT_LICENSE_VS_FIO_TOKEN_SEPARATION` | `S1A05A` | `R7A11AAE` | On DL380 Gen12 CTO builds (P73282-B21), R7A11AAE (HPE Compute Ops Management Standard 3-year Upfront SaaS, $515.00 USD)  | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_DUAL_PUBLICATION_ADVISORY` | `undefined` | `—` | Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Goog | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_SOURCE_RETIREMENT_ADVISORY` | `undefined` | `—` | Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata bef | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY` | `undefined` | `—` | Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending date | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `SUPPORT_PRICING_UPDATE` | `HU4B2A30C4W` | `P76706-B21` | HPE DL380a Gen12 Support (HU4B2A30C4W, under HU4B2A3 3Y Tech Care Basic) list price updated in November 2026 OCA catalog | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `SUPPLY_CHAIN_LEAD_TIME_BOTTLENECK` | `S3U30C` | `—` | CRITICAL PRESALES CONSTRAINT: NVIDIA H200 NVL 141GB PCIe Accelerator (S3U30C) carries an estimated availability factory  | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `CLIC_STATUS_CLEARANCE` | `P76706-B21` | `—` | Portal validation warnings on HPE ProLiant Compute DL380a Gen12 8DW/16SW CTO Server (P76706-B21) and HPE Compute Ops Man | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `ARRAY_GEOMETRY_BUILD_BLOCKER` | `339778-B21` | `—` | In HPE OCA / CLIC on DL380a Gen12, 339778-B21 (HPE RAID 1 Drive 1 FIO Setting) strictly enforces Drive Count == 2. When  | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `WORKFLOW_VENDOR_OBSERVATION_ADVISORY` | `P78279-B21` | `—` | HPE NS204i-u v2 480GB Boot Device (P78279-B21) and front boot cage (P75284-B21) have zero hardware, cage, or bus depende | 1x |
-| 📦 CHASSIS | `DL380a_Gen12` | `WORKFLOW_VENDOR_OBSERVATION_ADVISORY` | `P69770-B21` | `—` | DL380a Gen12 base CTO chassis P76706-B21 does not bundle rack rails. When customer tender requests installation, racking | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `SUPPORT_PRICING_UPDATE` | `HU4B2A30C4V` | `P73282-B21` | HPE DL380 Gen12 Support (HU4B2A30C4V, under HU4B2A3 3Y Tech Care Basic) list price updated in November 2026 OCA catalog  | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `CLIC_STATUS_CLEARANCE` | `P73282-B21` | `—` | Portal validation warnings on HPE ProLiant DL380 Gen12 SFF NC CTO Server (P73282-B21) and HPE Compute Ops Management Sta | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `LEAD_TIME_AND_LIFECYCLE` | `P73282-B21` | `—` | DL380 Gen12 CTO base chassis (P73282-B21) availability lead time improved to 14 days (down from 30 days). Xeon 6787P CPU | 1x |
-| 📦 CHASSIS | `SY480_Gen12` | `STARTUP_SERVICE_FORMULA` | `HA124A1` | `HA124A1#5ZM` | Onsite Frame Startup requires exactly 1x HA124A1#5ZM + (TotalFrames - 1)x HA124A1#5ZQ. Purge all HA124A1#V0F lines when  | 1x |
-| 📦 CHASSIS | `SY480_Gen12` | `HARDWARE_SUPPORT_1TO1` | `867796-B21` | `HU4B2A3#Z1R` | Qty of HU4B2A3#Z1R must exactly equal qty of 867796-B21 (VC SE 100Gb F32 Module). | 1x |
-| 📦 CHASSIS | `SY480_Gen12` | `HARDWARE_SUPPORT_1TO1` | `872957-B21` | `HU4B2A3#Z1Q` | Qty of HU4B2A3#Z1Q must exactly equal qty of 872957-B21 (Synergy Composer2 Management Appliance). | 1x |
-| 📦 CHASSIS | `SY480_Gen12` | `HARDWARE_SUPPORT_1TO1` | `P77653-B21` | `HU4B2A30BU5` | Qty of HU4B2A30BU5 must exactly equal qty of P77653-B21 (Brocade 64Gb FC Switch Module). | 1x |
-| 📦 CHASSIS | `SY480_Gen12` | `HARDWARE_SUPPORT_1TO1` | `P68217-B21` | `HU4B2A30BT7` | Qty of HU4B2A30BT7 must exactly equal qty of P68217-B21 (HPE SY480 Gen12 Compute Module). | 1x |
-| 📦 CHASSIS | `SY480_Gen12` | `DECOUPLING` | `HA124A1` | `HU4B2A3` | HPE Synergy quoting requires strict decoupling of two independent service domains: (1) HU4B2A3 — ongoing Point-of-Sale h | 1x |
-| 📦 CHASSIS | `SY480_Gen12` | `EXCLUSION` | `HA124A1#V0F` | `HA124A1#5ZM` | Remote startup (HA124A1#V0F) and Onsite startup (HA124A1#5ZM) are mutually exclusive delivery models for Synergy frame d | 1x |
-| 📦 CHASSIS | `GLOBAL` | `DIAGNOSTIC` | `P73282-B21` | `HA124A1#5ZM` | In multi-icon OCA solutions (Icon Separation mode), CLIC Rule 81039677 ("Installation and Startup must be quoted for ALL | 1x |
-| 📦 CHASSIS | `SY480_Gen12` | `ISOLATION` | `HU4B2A3` | `—` | When applying support services in OCA multi-icon solutions, NEVER check "Apply displayed install/support to all icons in | 1x |
-| 📦 CHASSIS | `GLOBAL` | `PROCEDURE` | `HU4B2A3` | `—` | When OCA CLIC Rules 99916598/99916599 persist after correcting support quantities, the stale rules cache must be flushed | 1x |
-| 📦 CHASSIS | `SY480_Gen12` | `PLACEMENT` | `HA124A1#5ZM` | `HA124A1#5ZQ` | Synergy startup services (HA124A1#5ZM First Frame Onsite, HA124A1#5ZQ Additional Frame Onsite) must be placed ONLY at th | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `EXCLUSION_UNBUILDABLE` | `R3P67A` | `Q2E58AAE` | On HPE Synergy 12000 Frames (P51174-B21) populated solely with SY480 Gen12 compute nodes (P68217-B21), selecting Virtual | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `STANDALONE_ORDERING_TAXONOMY` | `R3P67A` | `R3P67AAE` | R3P67A is a Factory Integrated Option (FIO LTU) ending in 'A', which strictly requires sub-iteming under a factory CTO c | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `MULTI_ORDER_PARTITIONING_PATTERN` | `P51174-B21` | `Q2E58AAE` | When a multi-frame Synergy deployment (e.g. 2 frames, 24 nodes) is partitioned into separate commercial orders (Option B | 1x |

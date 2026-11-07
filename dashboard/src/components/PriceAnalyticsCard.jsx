@@ -2,6 +2,95 @@ import React, { useState, useEffect } from 'react';
 import { TrendingUp, TrendingDown, DollarSign, Calendar, Layers, Activity, History } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend } from 'recharts';
 
+function computePriceAnalyticsMetrics(analyticsData, selectedCategory) {
+  const latestSnapshot = analyticsData.snapshots[analyticsData.snapshots.length - 1];
+  const categoryBreakdown = latestSnapshot?.priceAnalytics?.categoryBreakdown || {};
+  const categories = Object.keys(categoryBreakdown);
+
+  const priceHistoryMap = analyticsData.priceHistory || {};
+  const skuKeys = Object.keys(priceHistoryMap);
+  const totalSkusTracked = skuKeys.length;
+
+  let priceChangedCount = 0;
+  let totalDeltaSum = 0;
+
+  skuKeys.forEach(pn => {
+    const history = priceHistoryMap[pn] || [];
+    if (history.length > 1) {
+      const first = history[0].price || 0;
+      const last = history[history.length - 1].price || 0;
+      if (Math.abs(last - first) > 0.01) {
+        priceChangedCount++;
+        totalDeltaSum += (last - first);
+      }
+    }
+  });
+
+  const chartData = analyticsData.snapshots.map(snap => {
+    const dateStr = new Date(snap.scrapeDate).toISOString().split('T')[0];
+    const point = { date: dateStr };
+    const catBreakdown = snap.priceAnalytics?.categoryBreakdown || {};
+
+    if (selectedCategory === 'ALL') {
+      let sum = 0;
+      let count = 0;
+      Object.values(catBreakdown).forEach(c => {
+        if (c.avgPrice) {
+          sum += c.avgPrice;
+          count++;
+        }
+      });
+      point.avgPrice = count > 0 ? (sum / count) : 0;
+    } else {
+      point.avgPrice = catBreakdown[selectedCategory]?.avgPrice || 0;
+    }
+    return point;
+  });
+
+  return { categoryBreakdown, categories, totalSkusTracked, priceChangedCount, totalDeltaSum, chartData };
+}
+
+function CategoryPriceCard({ cat, data }) {
+  const avgFormatted = data.avgPrice ? `$${data.avgPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '$0.00';
+  const minFormatted = data.minPrice ? `$${data.minPrice.toLocaleString()}` : '$0';
+  const maxFormatted = data.maxPrice ? `$${data.maxPrice.toLocaleString()}` : '$0';
+  const subcategories = data.subcategories || {};
+
+  return (
+    <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 hover:border-blue-300 transition-all">
+      <div className="flex items-center justify-between mb-2">
+        <span className="font-bold text-slate-800 text-sm">{cat}</span>
+        <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full">
+          {data.totalSKUs} SKUs
+        </span>
+      </div>
+
+      <div className="mt-3 space-y-2 text-xs">
+        <div className="flex justify-between items-center text-slate-600">
+          <span>Category Average:</span>
+          <span className="font-bold text-slate-900">{avgFormatted}</span>
+        </div>
+
+        <div className="flex justify-between items-center text-slate-500">
+          <span>Price Range (Min - Max):</span>
+          <span className="font-medium text-slate-700">{minFormatted} - {maxFormatted}</span>
+        </div>
+
+        <div className="pt-2 border-t border-slate-200">
+          <div className="text-[11px] font-medium text-slate-400 mb-1">Subcategories ({Object.keys(subcategories).length}):</div>
+          <div className="flex flex-wrap gap-1">
+            {Object.entries(subcategories).map(([sub, sData]) => (
+              <span key={sub} className="px-2 py-0.5 bg-white border border-slate-200 text-slate-600 text-[10px] rounded">
+                {sub} ({sData.totalSKUs})
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function PriceAnalyticsCard({ selectedChassis: _selectedChassis, chassisDir }) {
   const [analyticsData, setAnalyticsData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -31,7 +120,7 @@ export default function PriceAnalyticsCard({ selectedChassis: _selectedChassis, 
     );
   }
 
-  if (!analyticsData || !analyticsData.snapshots || analyticsData.snapshots.length === 0) {
+  if (!analyticsData?.snapshots?.length) {
     return (
       <div className="p-6 bg-slate-50 rounded-xl border border-slate-200 text-center">
         <History className="w-8 h-8 mx-auto text-slate-400 mb-2" />
@@ -43,47 +132,10 @@ export default function PriceAnalyticsCard({ selectedChassis: _selectedChassis, 
     );
   }
 
-  const latestSnapshot = analyticsData.snapshots[analyticsData.snapshots.length - 1];
-  const categoryBreakdown = latestSnapshot?.priceAnalytics?.categoryBreakdown || {};
-  const categories = Object.keys(categoryBreakdown);
-
-  // Compute overall statistics
-  const priceHistoryMap = analyticsData.priceHistory || {};
-  const skuKeys = Object.keys(priceHistoryMap);
-  const totalSkusTracked = skuKeys.length;
-
-  let priceChangedCount = 0;
-  let totalDeltaSum = 0;
-
-  skuKeys.forEach(pn => {
-    const history = priceHistoryMap[pn] || [];
-    if (history.length > 1) {
-      const first = history[0].price || 0;
-      const last = history[history.length - 1].price || 0;
-      if (Math.abs(last - first) > 0.01) {
-        priceChangedCount++;
-        totalDeltaSum += (last - first);
-      }
-    }
-  });
-
-  // Prepare chart data for selected category across all snapshots
-  const chartData = analyticsData.snapshots.map(snap => {
-    const dateStr = new Date(snap.scrapeDate).toISOString().split("T")[0];
-    const point = { date: dateStr };
-    const catBreakdown = snap.priceAnalytics?.categoryBreakdown || {};
-    
-    if (selectedCategory === "ALL") {
-      let sum = 0, count = 0;
-      Object.values(catBreakdown).forEach(c => {
-        if (c.avgPrice) { sum += c.avgPrice; count++; }
-      });
-      point.avgPrice = count > 0 ? (sum / count) : 0;
-    } else {
-      point.avgPrice = catBreakdown[selectedCategory]?.avgPrice || 0;
-    }
-    return point;
-  });
+  const { categoryBreakdown, categories, totalSkusTracked, priceChangedCount, totalDeltaSum, chartData } =
+    computePriceAnalyticsMetrics(analyticsData, selectedCategory);
+  const isNonNegativeDelta = totalDeltaSum >= 0;
+  const visibleCategories = categories.filter(c => selectedCategory === 'ALL' || selectedCategory === c);
 
   return (
     <div className="space-y-6">
@@ -120,13 +172,13 @@ export default function PriceAnalyticsCard({ selectedChassis: _selectedChassis, 
         </div>
 
         <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-3">
-          <div className={`w-10 h-10 rounded-lg ${totalDeltaSum >= 0 ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'} flex items-center justify-center font-bold`}>
-            {totalDeltaSum >= 0 ? <TrendingUp className="w-5 h-5" /> : <TrendingDown className="w-5 h-5" />}
+          <div className={`w-10 h-10 rounded-lg ${isNonNegativeDelta ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'} flex items-center justify-center font-bold`}>
+            {isNonNegativeDelta ? <TrendingUp className="w-5 h-5" /> : <TrendingDown className="w-5 h-5" />}
           </div>
           <div>
             <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Net Portfolio Impact</div>
-            <div className={`text-xl font-bold ${totalDeltaSum >= 0 ? 'text-emerald-700' : 'text-rose-700'}`}>
-              {totalDeltaSum >= 0 ? '+' : ''}${totalDeltaSum.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            <div className={`text-xl font-bold ${isNonNegativeDelta ? 'text-emerald-700' : 'text-rose-700'}`}>
+              {isNonNegativeDelta ? '+' : ''}${totalDeltaSum.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </div>
           </div>
         </div>
@@ -157,49 +209,9 @@ export default function PriceAnalyticsCard({ selectedChassis: _selectedChassis, 
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {categories
-            .filter(c => selectedCategory === 'ALL' || selectedCategory === c)
-            .map(cat => {
-              const data = categoryBreakdown[cat];
-              const avgFormatted = data.avgPrice ? `$${data.avgPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '$0.00';
-              const minFormatted = data.minPrice ? `$${data.minPrice.toLocaleString()}` : '$0';
-              const maxFormatted = data.maxPrice ? `$${data.maxPrice.toLocaleString()}` : '$0';
-
-              return (
-                <div key={cat} className="p-4 bg-slate-50 rounded-xl border border-slate-200 hover:border-blue-300 transition-all">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="font-bold text-slate-800 text-sm">{cat}</span>
-                    <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full">
-                      {data.totalSKUs} SKUs
-                    </span>
-                  </div>
-
-                  <div className="mt-3 space-y-2 text-xs">
-                    <div className="flex justify-between items-center text-slate-600">
-                      <span>Category Average:</span>
-                      <span className="font-bold text-slate-900">{avgFormatted}</span>
-                    </div>
-
-                    <div className="flex justify-between items-center text-slate-500">
-                      <span>Price Range (Min - Max):</span>
-                      <span className="font-medium text-slate-700">{minFormatted} - {maxFormatted}</span>
-                    </div>
-
-                    {/* Subcategories pill list */}
-                    <div className="pt-2 border-t border-slate-200">
-                      <div className="text-[11px] font-medium text-slate-400 mb-1">Subcategories ({Object.keys(data.subcategories || {}).length}):</div>
-                      <div className="flex flex-wrap gap-1">
-                        {Object.entries(data.subcategories || {}).map(([sub, sData]) => (
-                          <span key={sub} className="px-2 py-0.5 bg-white border border-slate-200 text-slate-600 text-[10px] rounded">
-                            {sub} ({sData.totalSKUs})
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+          {visibleCategories.map(cat => (
+            <CategoryPriceCard key={cat} cat={cat} data={categoryBreakdown[cat]} />
+          ))}
         </div>
       </div>
 

@@ -520,22 +520,22 @@ function appendDecision(record, quarantineFile = currentQuarantineFile) {
   safeWriteJsonAtomic(decisionFile, decisions);
 }
 
+const VOLTAGE_TOKEN_RE = /^\d{2,3}V(?:AC|DC)$/i;
+
+function _isInvalidSkuToken(token) {
+  return SKU_BLACKLIST.has(token.toUpperCase()) || VOLTAGE_TOKEN_RE.test(token) || !isValidHpeSKU(token);
+}
+
 function _checkDeltaSkuValidity(affected, required) {
   if (!affected || affected === 'UNKNOWN_SKU') {
     return { valid: false, reasons: ['Missing affectedSku'] };
   }
-  if (SKU_BLACKLIST.has(affected.toUpperCase())) {
-    return { valid: false, reasons: [`Blacklisted token rejected as SKU: ${affected}`] };
-  }
-  if (!isValidHpeSKU(affected)) {
-    return { valid: false, reasons: [`Invalid HPE SKU syntax: ${affected}`] };
+  if (_isInvalidSkuToken(affected)) {
+    return { valid: false, reasons: [`Invalid or blacklisted HPE SKU token: ${affected}`] };
   }
   if (required) {
-    if (SKU_BLACKLIST.has(required.toUpperCase())) {
-      return { valid: false, reasons: [`Blacklisted token rejected as required SKU: ${required}`] };
-    }
-    if (!isValidHpeSKU(required)) {
-      return { valid: false, reasons: [`Invalid HPE SKU syntax for dependency: ${required}`] };
+    if (_isInvalidSkuToken(required)) {
+      return { valid: false, reasons: [`Invalid or blacklisted HPE SKU token for dependency: ${required}`] };
     }
     if (affected === required) {
       return { valid: false, reasons: [`Self-dependency cycle detected: ${affected} requires ${required}`] };

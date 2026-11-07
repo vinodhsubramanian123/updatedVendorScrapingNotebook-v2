@@ -39,7 +39,7 @@
     "lint": "npx -y oxlint dashboard/",
     "lint:core": "npx -y oxlint scripts/ tests/",
     "lint:all": "npx -y oxlint scripts/ tests/ dashboard/",
-    "lint:complexity": "node scripts/maintenance/analyze_complexity.js --fail-on-breach --max-cc=105",
+    "lint:complexity": "node scripts/maintenance/analyze_complexity.js --fail-on-breach --max-cc=30",
     "lint:complexity:core": "node scripts/maintenance/analyze_complexity.js --fail-on-breach --max-cc=30 --tier=core",
     "lint:complexity:aspects": "node scripts/maintenance/analyze_complexity.js --fail-on-breach --max-cc=30 --tier=aspects",
     "audit:complexity": "node scripts/maintenance/analyze_complexity.js",

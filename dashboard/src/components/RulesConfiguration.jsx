@@ -1,9 +1,170 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  ShieldCheck, AlertTriangle, Layers, 
+import {
+  ShieldCheck, AlertTriangle, Layers,
   Search, Sliders, Sparkles, CheckCircle, Database,
   ChevronRight, RefreshCw, Bookmark, HelpCircle, X
 } from 'lucide-react';
+
+const LEVEL_DETAILS = {
+  VENDOR: { label: 'Vendor Portal', color: 'bg-purple-100 text-purple-800 border-purple-200' },
+  CHASSIS: { label: 'Chassis Form-Factor', color: 'bg-blue-100 text-blue-800 border-blue-200' },
+  CATEGORY: { label: 'Category Mixing', color: 'bg-indigo-100 text-indigo-800 border-indigo-200' },
+  SUBCATEGORY: { label: 'Subcategory Limits', color: 'bg-amber-100 text-amber-800 border-amber-200' },
+  SKU: { label: 'SKU Dependency', color: 'bg-emerald-100 text-emerald-800 border-emerald-200' }
+};
+
+function resolveRulesDataset(rulesData, catalogData) {
+  const parsedRules = [...(rulesData?.parsedRules || [])];
+  const subcategoryConstraints = [...(rulesData?.subcategoryConstraints || [])];
+  const isFallback = Boolean(rulesData?.isFallback);
+  const sourceFile = rulesData?.sourceFile || 'Fallback Catalog JSON';
+
+  if (parsedRules.length === 0 && catalogData?.entries) {
+    catalogData.entries.forEach(entry => {
+      if (entry.rules?.length > 0) {
+        entry.rules.forEach(ruleText => {
+          parsedRules.push({
+            level: 'SUBCATEGORY',
+            ruleType: 'INLINE_NOTE',
+            parentCategory: entry.parentCategory,
+            subCategory: entry.subCategory,
+            ruleText,
+            isStrict: !ruleText.toLowerCase().includes('recommended')
+          });
+        });
+      }
+    });
+  }
+
+  if (subcategoryConstraints.length === 0 && catalogData?.subcategories) {
+    catalogData.subcategories.forEach(sc => {
+      subcategoryConstraints.push({
+        parentCategory: sc.parentCategory,
+        subCategory: sc.name,
+        constraint: sc.constraint,
+        maxQty: sc.maxQty,
+        level: 'SUBCATEGORY'
+      });
+    });
+  }
+
+  return { parsedRules, activeSubcategories: subcategoryConstraints, isFallback, sourceFile };
+}
+
+function filterCatalogRules(parsedRules, activeLevelFilter, showStrictOnly, searchQuery) {
+  let list = [...parsedRules];
+  if (activeLevelFilter !== 'ALL') {
+    list = list.filter(r => r.level === activeLevelFilter);
+  }
+  if (showStrictOnly) {
+    list = list.filter(r => r.isStrict);
+  }
+  if (searchQuery.trim()) {
+    const q = searchQuery.toLowerCase();
+    list = list.filter(r =>
+      Boolean(r.ruleText?.toLowerCase().includes(q)) ||
+      Boolean(r.parentCategory?.toLowerCase().includes(q)) ||
+      Boolean(r.subCategory?.toLowerCase().includes(q)) ||
+      Boolean(r.level?.toLowerCase().includes(q))
+    );
+  }
+  return list;
+}
+
+function isRuleLearned(rule) {
+  return rule.parentCategory === 'Learned Feedback Rules' || (rule.level === 'VENDOR' && Boolean(rule.ruleText?.includes('flagged')));
+}
+
+function SubcategoryBoundsSection({ activeSubcategories }) {
+  if (activeSubcategories.length === 0) return null;
+
+  return (
+    <div className="glass-card p-5 space-y-4">
+      <div>
+        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+          <Sliders className="w-4 h-4 text-amber-500 stroke-[2.25px]" />
+          Scraped Subcategory Capacity Limits & Slot Bounds
+        </h3>
+        <p className="text-xs text-slate-500 mt-1">
+          Automated physical limits scraped from the active OCA tab landmarks (Max CPU, DIMMs, PSUs, etc.)
+        </p>
+      </div>
+
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+        {activeSubcategories.map((sc, scIdx) => {
+          const isUnlimited = sc.maxQty === -1 || sc.maxQty === 32;
+          const hasFiniteMax = sc.maxQty !== undefined && sc.maxQty !== -1 && sc.maxQty !== -2;
+          return (
+            <div key={scIdx} className="bg-slate-50 border border-slate-200/80 p-3 rounded-xl flex flex-col justify-between hover:border-slate-300 transition-all shadow-2xs">
+              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-tight truncate" title={sc.parentCategory}>
+                {sc.parentCategory}
+              </p>
+              <p className="text-xs font-extrabold text-slate-900 truncate mt-1" title={sc.subCategory}>
+                {sc.subCategory}
+              </p>
+              <div className="mt-2.5 flex items-center justify-between">
+                <span className={`text-[10px] font-extrabold px-1.5 py-0.5 rounded-full ${isUnlimited ? 'bg-slate-200 text-slate-700' : 'bg-amber-100 text-amber-800'}`}>
+                  {sc.constraint || 'No Limit'}
+                </span>
+                <span className="text-[11px] font-black text-slate-700">
+                  {hasFiniteMax ? `Max ${sc.maxQty}` : '—'}
+                </span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function RuleLedgerRow({ rule }) {
+  const lvlInfo = LEVEL_DETAILS[rule.level] || { label: rule.level, color: 'bg-slate-100 text-slate-800' };
+  const isLearned = isRuleLearned(rule);
+
+  return (
+    <div className="p-4 hover:bg-slate-50/50 transition-colors flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="space-y-1.5 flex-1 max-w-4xl">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className={`text-[9px] uppercase tracking-wider font-extrabold px-2 py-0.5 border rounded-full ${lvlInfo.color}`}>
+            {lvlInfo.label}
+          </span>
+          {rule.parentCategory && (
+            <span className="text-[10px] text-slate-400 font-bold flex items-center gap-1">
+              {rule.parentCategory}
+              <ChevronRight className="w-2.5 h-2.5 stroke-[3]" />
+              <span className="text-slate-600">{rule.subCategory}</span>
+            </span>
+          )}
+        </div>
+
+        <div className="text-xs font-bold text-slate-800 leading-relaxed">
+          {isLearned && (
+            <span className="text-indigo-900 bg-indigo-50 border border-indigo-100 rounded px-2 py-0.5 inline-flex items-center gap-1.5 mr-1.5 font-extrabold shadow-3xs">
+              <Sparkles className="w-3 h-3 text-indigo-600" />
+              Partner-Learned Loop
+            </span>
+          )}
+          {rule.ruleText}
+        </div>
+      </div>
+
+      <div className="flex items-center justify-end shrink-0 gap-3">
+        {rule.isStrict ? (
+          <span className="text-[9px] font-extrabold uppercase tracking-widest px-2 py-1 bg-rose-50 text-rose-700 border border-rose-200 rounded flex items-center gap-1 shadow-2xs">
+            <AlertTriangle className="w-3 h-3 text-rose-600 stroke-[2.25px]" />
+            Strict Constraint
+          </span>
+        ) : (
+          <span className="text-[9px] font-extrabold uppercase tracking-widest px-2 py-1 bg-blue-50 text-blue-700 border border-blue-200 rounded flex items-center gap-1 shadow-2xs">
+            <CheckCircle className="w-3 h-3 text-blue-600 stroke-[2.25px]" />
+            Guideline Advisory
+          </span>
+        )}
+      </div>
+    </div>
+  );
+}
 
 export default function RulesConfiguration({ catalogData, chassisDir, chassisName }) {
   const [rulesData, setRulesData] = useState(null);
@@ -12,7 +173,6 @@ export default function RulesConfiguration({ catalogData, chassisDir, chassisNam
   const [activeLevelFilter, setActiveLevelFilter] = useState('ALL');
   const [showStrictOnly, setShowStrictOnly] = useState(false);
 
-  // 1. Fetch rich multi-level rules from the standalone Catalog Rules API
   useEffect(() => {
     if (!chassisDir) return;
     setLoading(true);
@@ -32,70 +192,13 @@ export default function RulesConfiguration({ catalogData, chassisDir, chassisNam
       });
   }, [chassisDir]);
 
-  // 2. Dual-Safety Net: Combine API rules with inline catalog entries if necessary
-  let parsedRules = rulesData?.parsedRules || [];
-  const subcategoryConstraints = rulesData?.subcategoryConstraints || [];
-  const isFallback = rulesData?.isFallback || false;
-  const sourceFile = rulesData?.sourceFile || 'Fallback Catalog JSON';
+  const { parsedRules, activeSubcategories, isFallback, sourceFile } = resolveRulesDataset(rulesData, catalogData);
+  const filteredRules = filterCatalogRules(parsedRules, activeLevelFilter, showStrictOnly, searchQuery);
 
-  // If we couldn't get any rules from the API, extract inline notes from the main catalog data
-  if (parsedRules.length === 0 && catalogData?.entries) {
-    catalogData.entries.forEach(entry => {
-      if (entry.rules && entry.rules.length > 0) {
-        entry.rules.forEach(ruleText => {
-          parsedRules.push({
-            level: 'SUBCATEGORY',
-            ruleType: 'INLINE_NOTE',
-            parentCategory: entry.parentCategory,
-            subCategory: entry.subCategory,
-            ruleText: ruleText,
-            isStrict: !ruleText.toLowerCase().includes('recommended')
-          });
-        });
-      }
-    });
-  }
-
-  // Also extract subcategory limits from catalogData metadata if they're missing from the rules API
-  let activeSubcategories = subcategoryConstraints;
-  if (activeSubcategories.length === 0 && catalogData?.subcategories) {
-    catalogData.subcategories.forEach(sc => {
-      activeSubcategories.push({
-        parentCategory: sc.parentCategory,
-        subCategory: sc.name,
-        constraint: sc.constraint,
-        maxQty: sc.maxQty,
-        level: 'SUBCATEGORY'
-      });
-    });
-  }
-
-  // 3. Filter rules based on Search, Level Filter, and Strictness
-  let filteredRules = [...parsedRules];
-
-  if (activeLevelFilter !== 'ALL') {
-    filteredRules = filteredRules.filter(r => r.level === activeLevelFilter);
-  }
-
-  if (showStrictOnly) {
-    filteredRules = filteredRules.filter(r => r.isStrict);
-  }
-
-  if (searchQuery.trim()) {
-    const q = searchQuery.toLowerCase();
-    filteredRules = filteredRules.filter(r => 
-      r.ruleText?.toLowerCase().includes(q) ||
-      r.parentCategory?.toLowerCase().includes(q) ||
-      r.subCategory?.toLowerCase().includes(q) ||
-      r.level?.toLowerCase().includes(q)
-    );
-  }
-
-  // 4. Statistics calculations
   const totalRulesCount = parsedRules.length;
   const strictRulesCount = parsedRules.filter(r => r.isStrict).length;
   const recommendedRulesCount = totalRulesCount - strictRulesCount;
-  const learnedRulesCount = parsedRules.filter(r => r.parentCategory === 'Learned Feedback Rules' || r.level === 'VENDOR' && r.ruleText?.includes('flagged')).length;
+  const learnedRulesCount = parsedRules.filter(isRuleLearned).length;
 
   const levelBreakdown = {
     VENDOR: parsedRules.filter(r => r.level === 'VENDOR').length,
@@ -105,17 +208,8 @@ export default function RulesConfiguration({ catalogData, chassisDir, chassisNam
     SKU: parsedRules.filter(r => r.level === 'SKU').length,
   };
 
-  const levelDetails = {
-    VENDOR: { label: 'Vendor Portal', color: 'bg-purple-100 text-purple-800 border-purple-200' },
-    CHASSIS: { label: 'Chassis Form-Factor', color: 'bg-blue-100 text-blue-800 border-blue-200' },
-    CATEGORY: { label: 'Category Mixing', color: 'bg-indigo-100 text-indigo-800 border-indigo-200' },
-    SUBCATEGORY: { label: 'Subcategory Limits', color: 'bg-amber-100 text-amber-800 border-amber-200' },
-    SKU: { label: 'SKU Dependency', color: 'bg-emerald-100 text-emerald-800 border-emerald-200' }
-  };
-
   return (
     <div className="space-y-6 animate-fade-in-up">
-      {/* 1. Header Banner */}
       <div className="glass-card p-6 border-l-4 border-l-purple-600 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
@@ -125,7 +219,7 @@ export default function RulesConfiguration({ catalogData, chassisDir, chassisNam
             </h2>
           </div>
           <p className="text-xs text-slate-500 mt-1 max-w-2xl">
-            Real-time catalog rules, physical constraints, and thermal threshold maps for <span className="font-bold text-slate-800">{chassisName || 'Selected Platform'}</span>. 
+            Real-time catalog rules, physical constraints, and thermal threshold maps for <span className="font-bold text-slate-800">{chassisName || 'Selected Platform'}</span>.
             Integrates vendor limitations directly from QuickSpecs knowledge grounding.
           </p>
         </div>
@@ -143,7 +237,6 @@ export default function RulesConfiguration({ catalogData, chassisDir, chassisNam
         </div>
       </div>
 
-      {/* 2. Overview Key Metrics Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="glass-card p-4 flex items-center gap-4">
           <div className="p-3 rounded-xl bg-purple-50 text-purple-600">
@@ -194,47 +287,9 @@ export default function RulesConfiguration({ catalogData, chassisDir, chassisNam
         </div>
       </div>
 
-      {/* 3. Subcategory Physical Boundaries & Capacity Limits */}
-      {activeSubcategories.length > 0 && (
-        <div className="glass-card p-5 space-y-4">
-          <div>
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-              <Sliders className="w-4 h-4 text-amber-500 stroke-[2.25px]" />
-              Scraped Subcategory Capacity Limits & Slot Bounds
-            </h3>
-            <p className="text-xs text-slate-500 mt-1">
-              Automated physical limits scraped from the active OCA tab landmarks (Max CPU, DIMMs, PSUs, etc.)
-            </p>
-          </div>
+      <SubcategoryBoundsSection activeSubcategories={activeSubcategories} />
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-            {activeSubcategories.map((sc, scIdx) => (
-              <div key={scIdx} className="bg-slate-50 border border-slate-200/80 p-3 rounded-xl flex flex-col justify-between hover:border-slate-300 transition-all shadow-2xs">
-                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-tight truncate" title={sc.parentCategory}>
-                  {sc.parentCategory}
-                </p>
-                <p className="text-xs font-extrabold text-slate-900 truncate mt-1" title={sc.subCategory}>
-                  {sc.subCategory}
-                </p>
-                <div className="mt-2.5 flex items-center justify-between">
-                  <span className={`text-[10px] font-extrabold px-1.5 py-0.5 rounded-full ${
-                    sc.maxQty === -1 || sc.maxQty === 32 ? 'bg-slate-200 text-slate-700' : 'bg-amber-100 text-amber-800'
-                  }`}>
-                    {sc.constraint || 'No Limit'}
-                  </span>
-                  <span className="text-[11px] font-black text-slate-700">
-                    {sc.maxQty !== undefined && sc.maxQty !== -1 && sc.maxQty !== -2 ? `Max ${sc.maxQty}` : '—'}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* 4. Filter Control Bar */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white/95 backdrop-blur-md p-4 rounded-xl border border-slate-200 sticky top-[238px] z-20 shadow-xs">
-        {/* Search */}
         <div className="relative flex-1">
           <Search className="w-4 h-4 text-slate-500 absolute left-3 top-2.5 stroke-[2.25px]" />
           <input
@@ -245,7 +300,8 @@ export default function RulesConfiguration({ catalogData, chassisDir, chassisNam
             className="w-full pl-9 pr-10 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500/30"
           />
           {searchQuery && (
-            <button aria-label="Close"
+            <button
+              aria-label="Close"
               onClick={() => setSearchQuery('')}
               className="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 transition-colors"
               title="Clear search query"
@@ -255,7 +311,6 @@ export default function RulesConfiguration({ catalogData, chassisDir, chassisNam
           )}
         </div>
 
-        {/* Level Selector Filters */}
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
           <button
             onClick={() => setActiveLevelFilter('ALL')}
@@ -278,12 +333,11 @@ export default function RulesConfiguration({ catalogData, chassisDir, chassisNam
                   : 'bg-white text-slate-600 border-slate-200 hover:text-slate-950 disabled:opacity-40'
               }`}
             >
-              {levelDetails[lvl]?.label || lvl} ({levelBreakdown[lvl]})
+              {LEVEL_DETAILS[lvl]?.label || lvl} ({levelBreakdown[lvl]})
             </button>
           ))}
         </div>
 
-        {/* Strictness Switch */}
         <div className="flex items-center gap-2 pl-2 border-l border-slate-200 shrink-0">
           <span className="text-xs font-bold text-slate-600">Strict Only</span>
           <button
@@ -297,7 +351,6 @@ export default function RulesConfiguration({ catalogData, chassisDir, chassisNam
         </div>
       </div>
 
-      {/* 5. Unified Rules Ledger Tree */}
       <div className="glass-card overflow-hidden">
         <div className="bg-slate-50 border-b border-slate-200 px-4 py-3 flex items-center justify-between">
           <h3 className="font-bold text-slate-800 flex items-center gap-2 text-xs uppercase tracking-wider">
@@ -322,70 +375,22 @@ export default function RulesConfiguration({ catalogData, chassisDir, chassisNam
           </div>
         ) : (
           <div className="divide-y divide-slate-100 max-h-[550px] overflow-y-auto">
-            {filteredRules.map((rule, idx) => {
-              const lvlInfo = levelDetails[rule.level] || { label: rule.level, color: 'bg-slate-100 text-slate-800' };
-              const isLearned = rule.parentCategory === 'Learned Feedback Rules' || rule.level === 'VENDOR' && rule.ruleText?.includes('flagged');
-
-              return (
-                <div key={idx} className="p-4 hover:bg-slate-50/50 transition-colors flex flex-col md:flex-row md:items-center justify-between gap-4">
-                  <div className="space-y-1.5 flex-1 max-w-4xl">
-                    {/* Level Badge + Breadcrumb Path */}
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className={`text-[9px] uppercase tracking-wider font-extrabold px-2 py-0.5 border rounded-full ${lvlInfo.color}`}>
-                        {lvlInfo.label}
-                      </span>
-                      {rule.parentCategory && (
-                        <span className="text-[10px] text-slate-400 font-bold flex items-center gap-1">
-                          {rule.parentCategory}
-                          <ChevronRight className="w-2.5 h-2.5 stroke-[3]" />
-                          <span className="text-slate-600">{rule.subCategory}</span>
-                        </span>
-                      )}
-                    </div>
-
-                    {/* Rule text */}
-                    <div className="text-xs font-bold text-slate-800 leading-relaxed">
-                      {isLearned ? (
-                        <span className="text-indigo-900 bg-indigo-50 border border-indigo-100 rounded px-2 py-0.5 inline-flex items-center gap-1.5 mr-1.5 font-extrabold shadow-3xs">
-                          <Sparkles className="w-3 h-3 text-indigo-600" />
-                          Partner-Learned Loop
-                        </span>
-                      ) : null}
-                      {rule.ruleText}
-                    </div>
-                  </div>
-
-                  {/* Strictness Action Banner */}
-                  <div className="flex items-center justify-end shrink-0 gap-3">
-                    {rule.isStrict ? (
-                      <span className="text-[9px] font-extrabold uppercase tracking-widest px-2 py-1 bg-rose-50 text-rose-700 border border-rose-200 rounded flex items-center gap-1 shadow-2xs">
-                        <AlertTriangle className="w-3 h-3 text-rose-600 stroke-[2.25px]" />
-                        Strict Constraint
-                      </span>
-                    ) : (
-                      <span className="text-[9px] font-extrabold uppercase tracking-widest px-2 py-1 bg-blue-50 text-blue-700 border border-blue-200 rounded flex items-center gap-1 shadow-2xs">
-                        <CheckCircle className="w-3 h-3 text-blue-600 stroke-[2.25px]" />
-                        Guideline Advisory
-                      </span>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
+            {filteredRules.map((rule, idx) => (
+              <RuleLedgerRow key={idx} rule={rule} />
+            ))}
           </div>
         )}
       </div>
 
-      {/* 6. Diagnostic Note / Help */}
       <div className="bg-slate-50 border border-slate-200 p-4 rounded-xl flex items-start gap-3">
         <Sliders className="w-5 h-5 text-purple-600 stroke-[2] shrink-0 mt-0.5" />
         <div className="text-[11px] text-slate-500 leading-relaxed">
           <p className="font-extrabold text-slate-700">How the HPE ProLiant AI Studio Rule Engine Evaluates Vendor BOM Quotes</p>
           <p className="mt-1">
-            The rules displayed on this dashboard are dynamically compiled during active catalog scraping of the HPE Partner Portal. 
-            When you upload a customer quote under the **BOQ Evaluator** or submit a reconciled quote under **Partner Reconciliation**, 
-            the deterministic rules engine computes multi-dimensional aspect algebra (calculating heat thermal TDP limits, riser routing slot configurations, and power electrical draw) 
-            prior to submitting candidate variations. 
+            The rules displayed on this dashboard are dynamically compiled during active catalog scraping of the HPE Partner Portal.
+            When you upload a customer quote under the **BOQ Evaluator** or submit a reconciled quote under **Partner Reconciliation**,
+            the deterministic rules engine computes multi-dimensional aspect algebra (calculating heat thermal TDP limits, riser routing slot configurations, and power electrical draw)
+            prior to submitting candidate variations.
             If portal validation raises any regional substitutions or unhandled dependencies, the system creates a taxonomy-scoped delta loop, preserving the learned rules in the dashboard for continuous improvement.
           </p>
         </div>

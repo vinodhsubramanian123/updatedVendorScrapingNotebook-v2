@@ -250,6 +250,13 @@ function capturePass(source, scenario, pass, archive, infrastructure) {
   }
 }
 
+function buildStoppedReason(scenario, record, first, second, sameInputs, comparison) {
+  return { scenarioId: scenario.id, disposition: 'REVIEW_REQUIRED_BEFORE_FURTHER_CAPTURE',
+    codes: [...(!first.qualification.qualified || !second.qualification.qualified ? ['UNQUALIFIED_PASS'] : []),
+      ...(!sameInputs ? ['INPUT_IDENTITY_MISMATCH'] : []), ...(!comparison.equal ? ['GOLDEN_COMPARISON_FAILED'] : [])],
+    unqualifiedPasses: record.passes.filter(pass => !pass.qualification.qualified).map(pass => pass.pass) };
+}
+
 function captureGoldens(options = {}, injectedInfrastructure) {
   if (options.passes !== undefined && options.passes !== 2) throw new Error('Strict golden capture requires exactly --passes 2');
   const source = fs.realpathSync(options.source || path.resolve(__dirname, '../..'));
@@ -269,10 +276,7 @@ function captureGoldens(options = {}, injectedInfrastructure) {
       reproducible: comparison.equal, sameInputs, comparison, passes: [first, second] };
     records.push(record);
     if (!record.qualified || !record.reproducible) {
-      stoppedReason = { scenarioId: scenario.id, disposition: 'REVIEW_REQUIRED_BEFORE_FURTHER_CAPTURE',
-        codes: [...(!first.qualification.qualified || !second.qualification.qualified ? ['UNQUALIFIED_PASS'] : []),
-          ...(!sameInputs ? ['INPUT_IDENTITY_MISMATCH'] : []), ...(!comparison.equal ? ['GOLDEN_COMPARISON_FAILED'] : [])],
-        unqualifiedPasses: record.passes.filter(pass => !pass.qualification.qualified).map(pass => pass.pass) };
+      stoppedReason = buildStoppedReason(scenario, record, first, second, sameInputs, comparison);
       break;
     }
   }

@@ -12,7 +12,6 @@
       "driveSheetUrl": "https://docs.google.com/spreadsheets/d/1ODabKd0jVBFJU0ga4hfZOs5TtzNIuCXJWb4oXr88ocY/edit",
       "driveSourceId": "00cb0c3d-6d19-4a49-9cfa-aea446f08338",
       "lastSyncedAt": "2026-11-02T14:51:25.836Z",
-      "lastSyncDeltaCount": 70,
       "lastSyncedSourceId": "f2b3ce90-d75d-4dea-b897-ec80d4513065",
       "lastSyncedSourceName": "DL380_Gen12_OCA_Catalog_2026-11-02",
       "trustedSourceIds": [
@@ -46,19 +45,11 @@
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeSourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
       "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
-      "lastPayloadChecksum": "f1f6708f96d1129bec291b6ff9d5f43ca9d705de15b11affba9a0266e4ac3b9c",
-      "lastContentFingerprints": {
-        "catalog": "583493eab50fffa5b285003c4fc6dba75e517539e82662b7a8df93bcf7f9057f",
-        "learnings": "06c6c16847cf01d79ca54de6c8222673484a8e38fffb3ff9e121c0d7a8e8a77a",
-        "changes": "8c8ac010ae0d7136dc42c147f17b00e4f244bf4a3a32ae609fd4195312c2a3f9",
-        "workbook": "009aca23ceb9abd5c3b9437d00251f047e716b7fd6aaa85e5a6e5b83c5b86046",
-        "combined": "c32dbef117203092d2928c0467e224dea0ad22e5dcaa9f1d01a8fa8f6c2b8501"
-      },
       "runningKnowledgeVerifiedRevision": "296bd26394d92203eea17969e734e536c2da742cd74bf628f7d7f55d32d7ac96",
       "runningKnowledgeVerifiedAt": "2026-11-02T15:23:44.521Z",
       "lastSyncAttemptAt": "2026-11-06T08:32:16.917Z",
-      "lastSyncError": "Product isolation rejected DL380_Gen12 payload: reference to registered product DL380_Gen11",
-      "cloudSyncState": "FAILED",
+      "lastSyncError": null,
+      "cloudSyncState": "VERIFIED",
       "lastCatalogSha256": "76d08b70a125abab46f9fc0babf59ea7684bd4d76b0443a12582ee7d4f936f3d",
       "lastArtifactHashes": {
         "Catalog.json": "76d08b70a125abab46f9fc0babf59ea7684bd4d76b0443a12582ee7d4f936f3d",
@@ -68,7 +59,16 @@
       },
       "workflowLearningRevision": "b72420b16ad98907ee5a68cd2ca47ef59250cd00a675e91f2c24ba07203a692d",
       "workflowLearningVerifiedAt": "2026-10-01T06:13:01.449Z",
-      "publishDriveWorkbook": true
+      "publishDriveWorkbook": true,
+      "lastSyncDeltaCount": 59,
+      "lastPayloadChecksum": "c09c5430e5212eedfa9c402b4f70f3869d1c81a0b21c6a50422c0435535434c3",
+      "lastContentFingerprints": {
+        "catalog": "583493eab50fffa5b285003c4fc6dba75e517539e82662b7a8df93bcf7f9057f",
+        "learnings": "c09c5430e5212eedfa9c402b4f70f3869d1c81a0b21c6a50422c0435535434c3",
+        "changes": "e90c95794bd0522a8e8208e2064cfc72eccffc11cabcb77e13c443a841e43516",
+        "workbook": "009aca23ceb9abd5c3b9437d00251f047e716b7fd6aaa85e5a6e5b83c5b86046",
+        "combined": "c01e484e85860d3d650976696bec15c1edfe4fa7e44206af1e84ee4f1cf00c64"
+      }
     },
     "DL360_Gen11": {
       "notebookId": "528d2896-92ac-4c85-98c3-6405b4925b0c",

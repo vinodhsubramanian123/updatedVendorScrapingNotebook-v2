@@ -16,6 +16,119 @@ const PROJECT_ROOT  = path.resolve(__dirname, '..', '..');
 const OUTPUTS_ROOT  = path.join(PROJECT_ROOT, 'outputs');
 const JSON_MODE     = process.argv.includes('--json');
 
+async function extractWizardSubTab(ws, step, index, total, allTables, dropdownSKUs) {
+  console.log(`\n  • Sub-tab ${index + 1}/${total}: "${step.text}"...`);
+
+  await sendCommand(ws, 'Runtime.evaluate', {
+    expression: `(() => {
+      const el = document.querySelector('a[href="' + ${JSON.stringify(step.href)} + '"]') || document.getElementById(${JSON.stringify(step.id)});
+      if (el) el.click();
+    })()`,
+    returnByValue: true
+  });
+
+  await sleep(2500);
+
+  const stepDataRes = await sendCommand(ws, 'Runtime.evaluate', {
+    expression: `(() => {
+      const panel = document.querySelector(${JSON.stringify(step.href)});
+      const text = panel ? panel.innerText : '';
+
+      const tables = panel ? Array.from(panel.querySelectorAll('table')).map((t, idx) => {
+        const rows = [];
+        t.querySelectorAll('tr').forEach(tr => {
+          const cells = [];
+          tr.querySelectorAll('td, th').forEach(cell => cells.push(cell.innerText.trim()));
+          if (cells.length > 0) rows.push(cells);
+        });
+        return { tableIndex: idx, subTab: ${JSON.stringify(step.text)}, rowCount: rows.length, rows };
+      }) : [];
+
+      const selects = panel ? Array.from(panel.querySelectorAll('select')).map(s => {
+        const label = s.closest('div, tr, td')?.innerText.substring(0, 120).replace(/\\n/g, ' ').trim() || ${JSON.stringify(step.text)};
+        const options = Array.from(s.options).map(o => ({
+          text: o.text.trim(),
+          value: o.value
+        })).filter(o => o.text && o.text !== 'None.' && !o.text.startsWith('Please make a selection'));
+
+        return { id: s.id, label, options };
+      }) : [];
+
+      return JSON.stringify({ text, tables, selects });
+    })()`,
+    returnByValue: true
+  });
+
+  const stepData = JSON.parse(stepDataRes.result.value);
+  stepData.tables.forEach(t => allTables.push(t));
+
+  stepData.selects.forEach(sel => {
+    if (sel.options.length > 0) {
+      const rows = [['Product #', 'Description', 'Quantity', 'Price (USD)']];
+      sel.options.forEach(opt => {
+        const pnMatch = opt.text.match(/\(([A-Z0-9-]{5,15})\)/) || opt.text.match(/\b([A-Z0-9]{3}[A-Z0-9-]{2,20}[A-Z0-9])\b/);
+        const pn = pnMatch ? pnMatch[1] : '';
+        const desc = opt.text.replace(/\([A-Z0-9-]{5,15}\)\s*/, '').trim();
+
+        if (pn) {
+          rows.push([pn, desc || opt.text, '0', '0.00']);
+          dropdownSKUs.push({ subTab: step.text, label: sel.label, pn, desc });
+        }
+      });
+
+      if (rows.length > 1) {
+        allTables.push({
+          tableIndex: allTables.length,
+          subTab: step.text,
+          label: sel.label,
+          rowCount: rows.length,
+          rows
+        });
+      }
+    }
+  });
+
+  console.log(`    Extracted ${stepData.tables.length} tables, ${stepData.selects.length} option dropdowns.`);
+  return `\n\n=== ${step.text} ===\n\n` + stepData.text;
+}
+
+function auditAndPromoteStorageStaging(outputDir, meta, catalogJson, catalogXlsx) {
+  console.log('\n--- STEP 6: Staging Post-Flight Quality Audit ---');
+  let captureReceipt = null;
+  const liveOutputDir = path.join(OUTPUTS_ROOT, meta.family, meta.gen, meta.cleanName);
+  try {
+    execSync(
+      `node "${path.join(PROJECT_ROOT, 'tests', 'integration', 'verify_excel_tally.js')}" "${catalogXlsx}"`,
+      { stdio: 'inherit', cwd: PROJECT_ROOT }
+    );
+    const stagingCatalogContent = JSON.parse(fs.readFileSync(catalogJson, 'utf-8'));
+    const skuCount = stagingCatalogContent.metadata?.totalUniqueSKUs || 0;
+    const entriesCount = Array.isArray(stagingCatalogContent.entries) ? stagingCatalogContent.entries.length : 0;
+    if (!stagingCatalogContent.metadata || skuCount <= 0) {
+      throw new Error(`Pre-Promotion Schema Guard Failed: totalUniqueSKUs is ${skuCount} (must be > 0).`);
+    }
+    if (entriesCount === 0) {
+      throw new Error(`Pre-Promotion Schema Guard Failed: entries[] is empty or not an array.`);
+    }
+    captureReceipt = require('../lib/catalog/catalog_capture_receipt.js').createCaptureReceipt(outputDir, liveOutputDir, meta.cleanName, { solutionDomain: 'STORAGE' });
+    console.log('✅ Staging audit passed 100%! Ready to promote to live workspace.');
+  } catch (e) {
+    const failedStagingDir = path.join(OUTPUTS_ROOT, 'temp', `failed_staging_${meta.cleanName}_${Date.now()}`);
+    console.error('❌ STAGING POST-FLIGHT AUDIT FAILED:', e.message);
+    console.error(`🛡️ Live workspace intact! Preserving failed staging for audit inspection at: ${failedStagingDir}`);
+    try { fs.renameSync(outputDir, failedStagingDir); } catch (_) {}
+    process.exit(1);
+  }
+
+  console.log('\n--- STEP 7: Promoting Staging to Live Workspace & Master Knowledge Sync ---');
+  const { promoteStagingDirectory } = require('../lib/system/fs_compat.js');
+  promoteStagingDirectory(outputDir, liveOutputDir);
+  if (captureReceipt) {
+    require('../lib/catalog/catalog_capture_receipt.js').finalizeCaptureReceipt(liveOutputDir, captureReceipt, null);
+  }
+  return liveOutputDir;
+}
+
 async function main() {
   console.log('================================================================');
   console.log('📦 HPE STORAGE SOLUTION WIZARD SCRAPER (Alletra / Nimble / MSA)');
@@ -95,84 +208,8 @@ async function main() {
     // STEP 2: Iterate through each Storage Wizard sub-tab
     if (subTabs.length > 0) {
       console.log('\n--- STEP 2: Iterating Wizard Sub-Tabs & Extracting SKUs ---');
-
       for (let i = 0; i < subTabs.length; i++) {
-        const step = subTabs[i];
-        console.log(`\n  • Sub-tab ${i+1}/${subTabs.length}: "${step.text}"...`);
-
-        // Safely escaped element selectors
-        await sendCommand(ws, 'Runtime.evaluate', {
-          expression: `(() => {
-            const el = document.querySelector('a[href="' + ${JSON.stringify(step.href)} + '"]') || document.getElementById(${JSON.stringify(step.id)});
-            if (el) el.click();
-          })()`,
-          returnByValue: true
-        });
-
-        await sleep(2500);
-
-        const stepDataRes = await sendCommand(ws, 'Runtime.evaluate', {
-          expression: `(() => {
-            const panel = document.querySelector(${JSON.stringify(step.href)});
-            const text = panel ? panel.innerText : '';
-
-            const tables = panel ? Array.from(panel.querySelectorAll('table')).map((t, idx) => {
-              const rows = [];
-              t.querySelectorAll('tr').forEach(tr => {
-                const cells = [];
-                tr.querySelectorAll('td, th').forEach(cell => cells.push(cell.innerText.trim()));
-                if (cells.length > 0) rows.push(cells);
-              });
-              return { tableIndex: idx, subTab: ${JSON.stringify(step.text)}, rowCount: rows.length, rows };
-            }) : [];
-
-            const selects = panel ? Array.from(panel.querySelectorAll('select')).map(s => {
-              const label = s.closest('div, tr, td')?.innerText.substring(0, 120).replace(/\\n/g, ' ').trim() || ${JSON.stringify(step.text)};
-              const options = Array.from(s.options).map(o => ({
-                text: o.text.trim(),
-                value: o.value
-              })).filter(o => o.text && o.text !== 'None.' && !o.text.startsWith('Please make a selection'));
-
-              return { id: s.id, label, options };
-            }) : [];
-
-            return JSON.stringify({ text, tables, selects });
-          })()`,
-          returnByValue: true
-        });
-
-        const stepData = JSON.parse(stepDataRes.result.value);
-        combinedFullText += `\n\n=== ${step.text} ===\n\n` + stepData.text;
-
-        stepData.tables.forEach(t => allTables.push(t));
-
-        stepData.selects.forEach(sel => {
-          if (sel.options.length > 0) {
-            const rows = [['Product #', 'Description', 'Quantity', 'Price (USD)']];
-            sel.options.forEach(opt => {
-              const pnMatch = opt.text.match(/\(([A-Z0-9-]{5,15})\)/) || opt.text.match(/\b([A-Z0-9]{3}[A-Z0-9-]{2,20}[A-Z0-9])\b/);
-              const pn = pnMatch ? pnMatch[1] : '';
-              const desc = opt.text.replace(/\([A-Z0-9-]{5,15}\)\s*/, '').trim();
-
-              if (pn) {
-                rows.push([pn, desc || opt.text, '0', '0.00']);
-                dropdownSKUs.push({ subTab: step.text, label: sel.label, pn, desc });
-              }
-            });
-
-            if (rows.length > 1) {
-              allTables.push({
-                tableIndex: allTables.length,
-                subTab: step.text,
-                label: sel.label,
-                rowCount: rows.length,
-                rows
-              });
-            }
-          }
-        });
-
-        console.log(`    Extracted ${stepData.tables.length} tables, ${stepData.selects.length} option dropdowns.`);
+        combinedFullText += await extractWizardSubTab(ws, subTabs[i], i, subTabs.length, allTables, dropdownSKUs);
       }
     } else {
       console.log('No wizard sub-tabs found — performing standard page extraction...');
@@ -260,42 +297,8 @@ async function main() {
     { stdio: 'inherit', cwd: PROJECT_ROOT }
   );
 
-  // STEP 6: Post-Flight Quality Audit
-  console.log('\n--- STEP 6: Staging Post-Flight Quality Audit ---');
-  let captureReceipt = null;
-  const liveOutputDir = path.join(OUTPUTS_ROOT, meta.family, meta.gen, meta.cleanName);
-  try {
-    execSync(
-      `node "${path.join(PROJECT_ROOT, 'tests', 'integration', 'verify_excel_tally.js')}" "${catalogXlsx}"`,
-      { stdio: 'inherit', cwd: PROJECT_ROOT }
-    );
-    // Strict Pre-Promotion JSON Schema & Cardinality Guardrail
-    const stagingCatalogContent = JSON.parse(fs.readFileSync(catalogJson, 'utf-8'));
-    const skuCount = stagingCatalogContent.metadata?.totalUniqueSKUs || 0;
-    const entriesCount = Array.isArray(stagingCatalogContent.entries) ? stagingCatalogContent.entries.length : 0;
-    if (!stagingCatalogContent.metadata || skuCount <= 0) {
-      throw new Error(`Pre-Promotion Schema Guard Failed: totalUniqueSKUs is ${skuCount} (must be > 0).`);
-    }
-    if (entriesCount === 0) {
-      throw new Error(`Pre-Promotion Schema Guard Failed: entries[] is empty or not an array.`);
-    }
-    captureReceipt = require('../lib/catalog/catalog_capture_receipt.js').createCaptureReceipt(outputDir, liveOutputDir, meta.cleanName, { solutionDomain: 'STORAGE' });
-    console.log('✅ Staging audit passed 100%! Ready to promote to live workspace.');
-  } catch (e) {
-    const failedStagingDir = path.join(OUTPUTS_ROOT, 'temp', `failed_staging_${meta.cleanName}_${Date.now()}`);
-    console.error('❌ STAGING POST-FLIGHT AUDIT FAILED:', e.message);
-    console.error(`🛡️ Live workspace intact! Preserving failed staging for audit inspection at: ${failedStagingDir}`);
-    try { fs.renameSync(outputDir, failedStagingDir); } catch (_) {}
-    process.exit(1);
-  }
-
-  // STEP 7: Promote Staging to Live Workspace, Update Registry & Sync
-  console.log('\n--- STEP 7: Promoting Staging to Live Workspace & Master Knowledge Sync ---');
-  const { promoteStagingDirectory } = require('../lib/system/fs_compat.js');
-  promoteStagingDirectory(outputDir, liveOutputDir);
-  if (captureReceipt) {
-    require('../lib/catalog/catalog_capture_receipt.js').finalizeCaptureReceipt(liveOutputDir, captureReceipt, null);
-  }
+  // STEP 6 & 7: Audit and Promote Staging
+  const liveOutputDir = auditAndPromoteStorageStaging(outputDir, meta, catalogJson, catalogXlsx);
 
   const liveCatalogJson = path.join(liveOutputDir, `${meta.cleanName}_Catalog.json`);
   const liveCatalogXlsx = path.join(liveOutputDir, `${meta.cleanName}_OCA_Catalog.xlsx`);

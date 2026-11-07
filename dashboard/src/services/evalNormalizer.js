@@ -9,6 +9,28 @@
  * service layer, NOT in a React component, so they can be tested in isolation.
  */
 
+function _boolStatus(val) {
+  if (val === true) return 'PASS';
+  if (val === false) return 'FAIL';
+  return 'UNKNOWN';
+}
+
+function _boolLabel(val, trueLabel, falseLabel, unknownLabel) {
+  if (val === true) return trueLabel;
+  if (val === false) return falseLabel;
+  return unknownLabel;
+}
+
+function _computePowerStatus(evalData) {
+  if (evalData.hasDcPowerSupply === true) {
+    return _boolStatus(evalData.hasDcLugKit);
+  }
+  if (evalData.hasDcPowerSupply === false) {
+    return 'PASS';
+  }
+  return 'UNKNOWN';
+}
+
 /**
  * Build the structured aspectChecks display array from raw eval fields.
  * This encapsulates all hardware-domain label logic (fans, batteries, DC lug kits).
@@ -18,40 +40,38 @@
  */
 export function buildAspectChecksFromEval(evalData) {
   if (!evalData || Object.keys(evalData).length === 0) return [];
-  const boolStatus = (val) => val === true ? 'PASS' : (val === false ? 'FAIL' : 'UNKNOWN');
 
   let pcieStatus = 'UNKNOWN';
   if (typeof evalData.requiredPcieCards === 'number' && typeof evalData.totalPcieSlotsAvailable === 'number') {
     pcieStatus = evalData.requiredPcieCards <= evalData.totalPcieSlotsAvailable ? 'PASS' : 'FAIL';
   }
 
-  let powerStatus = 'UNKNOWN';
-  if (evalData.hasDcPowerSupply === true) {
-    powerStatus = evalData.hasDcLugKit === true ? 'PASS' : (evalData.hasDcLugKit === false ? 'FAIL' : 'UNKNOWN');
-  } else if (evalData.hasDcPowerSupply === false) {
-    powerStatus = 'PASS';
-  }
+  const powerStatus = _computePowerStatus(evalData);
+  const fanIcon = _boolLabel(evalData.hasHighPerfFans, '✅', '❌', '⚠️ Unknown');
+  const batteryIcon = _boolLabel(evalData.hasSmartBattery, '✅', '❌', '⚠️ Unknown');
+  const dcPsuLabel = _boolLabel(evalData.hasDcPowerSupply, 'YES', 'NO', 'UNKNOWN');
+  const lugKitIcon = _boolLabel(evalData.hasDcLugKit, '✅', '❌', 'N/A');
 
   return [
     {
       id: 1, name: 'Compute & Thermal',
-      status: boolStatus(evalData.hasHighPerfFans),
-      detail: `${evalData.cpuCount || 0} CPUs (Max TDP: ${evalData.maxCpuTdpWatts || 0}W) | High-Perf Fans: ${evalData.hasHighPerfFans === true ? '✅' : (evalData.hasHighPerfFans === false ? '❌' : '⚠️ Unknown')}`
+      status: _boolStatus(evalData.hasHighPerfFans),
+      detail: `${_pick(evalData.cpuCount, 0, 0) || 0} CPUs (Max TDP: ${_pick(evalData.maxCpuTdpWatts, 0, 0) || 0}W) | High-Perf Fans: ${fanIcon}`
     },
     {
       id: 2, name: 'Memory & Channels',
-      status: boolStatus(evalData.isBalancedChannel),
-      detail: `${evalData.memoryCount || 0} DIMMs (${evalData.totalMemoryGb || 0} GB Total)`
+      status: _boolStatus(evalData.isBalancedChannel),
+      detail: `${_pick(evalData.memoryCount, 0, 0) || 0} DIMMs (${_pick(evalData.totalMemoryGb, 0, 0) || 0} GB Total)`
     },
     {
       id: 3, name: 'Storage & Tri-Mode',
-      status: boolStatus(evalData.hasSmartBattery),
-      detail: `${evalData.driveCount || 0} Drives | Battery: ${evalData.hasSmartBattery === true ? '✅' : (evalData.hasSmartBattery === false ? '❌' : '⚠️ Unknown')}`
+      status: _boolStatus(evalData.hasSmartBattery),
+      detail: `${_pick(evalData.driveCount, 0, 0) || 0} Drives | Battery: ${batteryIcon}`
     },
     {
       id: 4, name: 'PCIe Expansion',
       status: pcieStatus,
-      detail: `${evalData.requiredPcieCards ?? '?'} Cards / ${evalData.totalPcieSlotsAvailable ?? '?'} Slots`
+      detail: `${_pick(evalData.requiredPcieCards, null, '?')} Cards / ${_pick(evalData.totalPcieSlotsAvailable, null, '?')} Slots`
     },
     {
       id: 5, name: 'Networking & OCP',
@@ -61,7 +81,7 @@ export function buildAspectChecksFromEval(evalData) {
     {
       id: 6, name: 'Power & Ambient',
       status: powerStatus,
-      detail: `DC PSU: ${evalData.hasDcPowerSupply === true ? 'YES' : (evalData.hasDcPowerSupply === false ? 'NO' : 'UNKNOWN')} | Lug Kit: ${evalData.hasDcLugKit === true ? '✅' : (evalData.hasDcLugKit === false ? '❌' : 'N/A')}`
+      detail: `DC PSU: ${dcPsuLabel} | Lug Kit: ${lugKitIcon}`
     },
     {
       id: 7, name: 'Support Services',
@@ -73,38 +93,40 @@ export function buildAspectChecksFromEval(evalData) {
 
 function extractHardwareMetrics(data, inner) {
   return {
-    cpuCount: inner.cpuCount ?? data.cpuCount,
-    maxCpuTdpWatts: inner.maxCpuTdpWatts ?? data.maxCpuTdpWatts,
-    memoryCount: inner.memoryCount ?? data.memoryCount,
-    totalMemoryGb: inner.totalMemoryGb ?? data.totalMemoryGb,
-    driveCount: inner.driveCount ?? data.driveCount,
-    hasHighPerfFans: inner.hasHighPerfFans ?? data.hasHighPerfFans,
-    hasSmartBattery: inner.hasSmartBattery ?? data.hasSmartBattery,
-    hasDcPowerSupply: inner.hasDcPowerSupply ?? data.hasDcPowerSupply,
-    hasDcLugKit: inner.hasDcLugKit ?? data.hasDcLugKit,
-    hasOcpAdapter: inner.hasOcpAdapter ?? data.hasOcpAdapter,
-    hasSupportService: inner.hasSupportService ?? data.hasSupportService,
+    cpuCount: _pick(inner.cpuCount, data.cpuCount, undefined),
+    maxCpuTdpWatts: _pick(inner.maxCpuTdpWatts, data.maxCpuTdpWatts, undefined),
+    memoryCount: _pick(inner.memoryCount, data.memoryCount, undefined),
+    totalMemoryGb: _pick(inner.totalMemoryGb, data.totalMemoryGb, undefined),
+    driveCount: _pick(inner.driveCount, data.driveCount, undefined),
+    hasHighPerfFans: _pick(inner.hasHighPerfFans, data.hasHighPerfFans, undefined),
+    hasSmartBattery: _pick(inner.hasSmartBattery, data.hasSmartBattery, undefined),
+    hasDcPowerSupply: _pick(inner.hasDcPowerSupply, data.hasDcPowerSupply, undefined),
+    hasDcLugKit: _pick(inner.hasDcLugKit, data.hasDcLugKit, undefined),
+    hasOcpAdapter: _pick(inner.hasOcpAdapter, data.hasOcpAdapter, undefined),
+    hasSupportService: _pick(inner.hasSupportService, data.hasSupportService, undefined),
     aspectChecks: inner.aspectChecks ?? data.aspectChecks ?? buildAspectChecksFromEval(inner)
   };
 }
 
-function extractConflictAndStrategy(data, inner) {
-  const conflictGraph = data.conflictGraph ?? inner.conflictGraph ?? {};
-  const cgRanked = (Array.isArray(conflictGraph.rankedSolutions) && conflictGraph.rankedSolutions.length > 0)
-    ? conflictGraph.rankedSolutions
-    : (Array.isArray(inner.conflictGraph?.rankedSolutions) && inner.conflictGraph.rankedSolutions.length > 0)
-    ? inner.conflictGraph.rankedSolutions
-    : (Array.isArray(data.rankedSolutions) && data.rankedSolutions.length > 0)
-    ? data.rankedSolutions
-    : [];
+function _firstNonEmptyArray(...lists) {
+  for (const list of lists) {
+    if (Array.isArray(list) && list.length > 0) return list;
+  }
+  return [];
+}
 
-  const cgRecommended = (Array.isArray(conflictGraph.recommendedSolutions) && conflictGraph.recommendedSolutions.length > 0)
-    ? conflictGraph.recommendedSolutions
-    : (Array.isArray(inner.conflictGraph?.recommendedSolutions) && inner.conflictGraph.recommendedSolutions.length > 0)
-    ? inner.conflictGraph.recommendedSolutions
-    : (Array.isArray(data.recommendedSolutions) && data.recommendedSolutions.length > 0)
-    ? data.recommendedSolutions
-    : [];
+function extractConflictAndStrategy(data, inner) {
+  const conflictGraph = _pick(data.conflictGraph, inner.conflictGraph, {});
+  const cgRanked = _firstNonEmptyArray(
+    conflictGraph.rankedSolutions,
+    inner.conflictGraph?.rankedSolutions,
+    data.rankedSolutions
+  );
+  const cgRecommended = _firstNonEmptyArray(
+    conflictGraph.recommendedSolutions,
+    inner.conflictGraph?.recommendedSolutions,
+    data.recommendedSolutions
+  );
 
   const finalRanked = cgRanked.length > 0 ? cgRanked : cgRecommended;
   const finalRecommended = cgRecommended.length > 0 ? cgRecommended : finalRanked;
@@ -119,35 +141,35 @@ function extractConflictAndStrategy(data, inner) {
     conflictGraph: mergedConflictGraph,
     rankedSolutions: finalRanked,
     recommendedSolutions: finalRecommended,
-    workloadDna: conflictGraph.workloadDna ?? data.workloadDna,
-    arbitrationResults: conflictGraph.arbitrationResults ?? inner.arbitrationResults ?? data.arbitrationResults ?? null,
-    clusterSizing: data.clusterSizing ?? inner.clusterSizing ?? null,
-    chassisDefaults: data.chassisDefaults ?? inner.chassisDefaults ?? [],
-    redundantDefaults: data.redundantDefaults ?? inner.redundantDefaults ?? [],
-    opinionDiscrepancies: data.opinionDiscrepancies ?? inner.opinionDiscrepancies ?? [],
-    introspectedComponents: conflictGraph.introspectedComponents ?? inner.introspectedComponents ?? []
+    workloadDna: _pick(conflictGraph.workloadDna, data.workloadDna, undefined),
+    arbitrationResults: _pick(conflictGraph.arbitrationResults, _pick(inner.arbitrationResults, data.arbitrationResults, null), null),
+    clusterSizing: _pick(data.clusterSizing, inner.clusterSizing, null),
+    chassisDefaults: _pick(data.chassisDefaults, inner.chassisDefaults, []),
+    redundantDefaults: _pick(data.redundantDefaults, inner.redundantDefaults, []),
+    opinionDiscrepancies: _pick(data.opinionDiscrepancies, inner.opinionDiscrepancies, []),
+    introspectedComponents: _pick(conflictGraph.introspectedComponents, inner.introspectedComponents, [])
   };
 }
 
 function extractProvenanceAndTrace(data, inner) {
-  const provenanceTrace = data.provenanceTrace ?? inner.provenanceTrace ?? null;
+  const provenanceTrace = _pick(data.provenanceTrace, inner.provenanceTrace, null);
   return {
     provenanceTrace,
-    traceId: data.traceId ?? provenanceTrace?.traceId ?? null,
-    evidenceHealth: data.evidenceHealth ?? inner.evidenceHealth ?? null,
-    evidenceLogPath: data.evidenceLogPath ?? inner.evidenceLogPath ?? null,
-    evidenceSummaryPath: data.evidenceSummaryPath ?? inner.evidenceSummaryPath ?? null,
-    portalWorkbookPath: data.portalWorkbookPath ?? inner.portalWorkbookPath ?? null,
-    deliveryError: data.deliveryError ?? inner.deliveryError ?? null,
-    manifestSha256: data.manifestSha256 ?? inner.manifestSha256 ?? null,
-    needsActions: inner.needsActions ?? data.needsActions ?? [],
-    unsolicitedOptionalItems: inner.unsolicitedOptionalItems ?? data.unsolicitedOptionalItems ?? [],
-    totalUnsolicitedCostUsd: inner.totalUnsolicitedCostUsd ?? data.totalUnsolicitedCostUsd ?? 0,
-    stageBreakdown: inner.stageBreakdown ?? data.stageBreakdown ?? {},
-    notebookLmStatus: inner.notebookLmStatus ?? data.notebookLmStatus ?? null,
-    postFlowSync: inner.postFlowSync ?? data.postFlowSync ?? null,
-    requirementResolution: inner.requirementResolution ?? data.requirementResolution ?? null,
-    pcieTopology: inner.evalSummary?.pcie?.slotLayout ?? data.pcieTopology ?? null
+    traceId: _pick(data.traceId, provenanceTrace?.traceId, null),
+    evidenceHealth: _pick(data.evidenceHealth, inner.evidenceHealth, null),
+    evidenceLogPath: _pick(data.evidenceLogPath, inner.evidenceLogPath, null),
+    evidenceSummaryPath: _pick(data.evidenceSummaryPath, inner.evidenceSummaryPath, null),
+    portalWorkbookPath: _pick(data.portalWorkbookPath, inner.portalWorkbookPath, null),
+    deliveryError: _pick(data.deliveryError, inner.deliveryError, null),
+    manifestSha256: _pick(data.manifestSha256, inner.manifestSha256, null),
+    needsActions: _pick(inner.needsActions, data.needsActions, []),
+    unsolicitedOptionalItems: _pick(inner.unsolicitedOptionalItems, data.unsolicitedOptionalItems, []),
+    totalUnsolicitedCostUsd: _pick(inner.totalUnsolicitedCostUsd, data.totalUnsolicitedCostUsd, 0),
+    stageBreakdown: _pick(inner.stageBreakdown, data.stageBreakdown, {}),
+    notebookLmStatus: _pick(inner.notebookLmStatus, data.notebookLmStatus, null),
+    postFlowSync: _pick(inner.postFlowSync, data.postFlowSync, null),
+    requirementResolution: _pick(inner.requirementResolution, data.requirementResolution, null),
+    pcieTopology: _pick(inner.evalSummary?.pcie?.slotLayout, data.pcieTopology, null)
   };
 }
 

@@ -137,6 +137,26 @@ function ownedSummary(artifact, ledger, views, parsed, root, ids) {
   return artifact.path === ledger.path.replace('evidence_log_', 'evidence_summary_').replace(/\.json$/, '.md')
     && (isCurrentRfpLedger(ledger, parsed, root, ids) || views.some(view => relativeReference(root, view.evidenceSummaryPath) === artifact.path));
 }
+function reconcileBoundLedgers(bound, artifacts, byPath, views, parsed, root, ids, options, proof) {
+  for (const { artifact: ledger, projected } of bound) {
+    for (let i = 0; i < ledger.content.artifacts.length; i++) {
+      const entry = ledger.content.artifacts[i], relative = relativeReference(root, entry.filePath), target = byPath.get(relative);
+      if (entry.role !== 'ANALYSIS_REPORT' || entry.exists !== true) continue;
+      const original = artifacts.find(a => a.path === relative), raw = original && verifiedBytes(original, root, options);
+      if (!views.some(view => relativeReference(root, view.outputReportPath) === relative) || !raw || entry.sha256 !== raw.record.sha256 || entry.sizeBytes !== raw.record.bytes)
+        throw new Error(`BOQ_ANALYSIS_REPORT_INTEGRITY_MISMATCH: ${ledger.path}`);
+      if (target?.state !== 'VERIFIED_GENERATED_MARKDOWN') continue;
+      const bytes = Buffer.from(target.content, 'utf8');
+      projected.artifacts[i].sha256 = `<VERIFIED_SEMANTIC_SHA256:${digest(bytes)}>`;
+      projected.artifacts[i].sizeBytes = bytes.length;
+      proof.push({ path: ledger.path, role: entry.role, target: relative, rawSha256: raw.record.sha256, rawBytes: raw.record.bytes, semanticSha256: digest(bytes), semanticBytes: bytes.length });
+    }
+    const summary = artifacts.find(a => ownedSummary(a, ledger, views, parsed, root, ids));
+    if (!summary) continue;
+    const raw = verifiedBytes(summary, root, options), projectedSummary = raw && verifiedSummary(summary, ledger, root, options, projected, raw);
+    if (projectedSummary) { byPath.set(summary.path, projectedSummary); proof.push({ path: summary.path, rawSha256: raw.record.sha256, rawBytes: raw.record.bytes, projectedState: projectedSummary.state }); }
+  }
+}
 function projectBoqArtifacts(artifacts, parsed, root, options = {}) {
   const views = canonicalViews(parsed), ids = returnedTraceIds(parsed), proof = [], byPath = new Map(), bound = [];
   const isCurrentLedger = artifact => currentLedger(artifact, views, parsed, root, ids);
@@ -158,24 +178,7 @@ function projectBoqArtifacts(artifacts, parsed, root, options = {}) {
     }
     byPath.set(artifact.path, { ...artifact, content });
   }
-  for (const { artifact: ledger, projected } of bound) {
-    for (let i = 0; i < ledger.content.artifacts.length; i++) {
-      const entry = ledger.content.artifacts[i], relative = relativeReference(root, entry.filePath), target = byPath.get(relative);
-      if (entry.role !== 'ANALYSIS_REPORT' || entry.exists !== true) continue;
-      const original = artifacts.find(a => a.path === relative), raw = original && verifiedBytes(original, root, options);
-      if (!views.some(view => relativeReference(root, view.outputReportPath) === relative) || !raw || entry.sha256 !== raw.record.sha256 || entry.sizeBytes !== raw.record.bytes)
-        throw new Error(`BOQ_ANALYSIS_REPORT_INTEGRITY_MISMATCH: ${ledger.path}`);
-      if (target?.state !== 'VERIFIED_GENERATED_MARKDOWN') continue;
-      const bytes = Buffer.from(target.content, 'utf8');
-      projected.artifacts[i].sha256 = `<VERIFIED_SEMANTIC_SHA256:${digest(bytes)}>`;
-      projected.artifacts[i].sizeBytes = bytes.length;
-      proof.push({ path: ledger.path, role: entry.role, target: relative, rawSha256: raw.record.sha256, rawBytes: raw.record.bytes, semanticSha256: digest(bytes), semanticBytes: bytes.length });
-    }
-    const summary = artifacts.find(a => ownedSummary(a, ledger, views, parsed, root, ids));
-    if (!summary) continue;
-    const raw = verifiedBytes(summary, root, options), projectedSummary = raw && verifiedSummary(summary, ledger, root, options, projected, raw);
-    if (projectedSummary) { byPath.set(summary.path, projectedSummary); proof.push({ path: summary.path, rawSha256: raw.record.sha256, rawBytes: raw.record.bytes, projectedState: projectedSummary.state }); }
-  }
+  reconcileBoundLedgers(bound, artifacts, byPath, views, parsed, root, ids, options, proof);
   return { artifacts: artifacts.map(artifact => byPath.get(artifact.path)), proof };
 }
 module.exports = { boqArtifactPolicy, projectLedger, relativeReference, verifiedBytes, markdownProjection, projectDecisionHistory, projectTelemetry, projectBoqArtifacts };

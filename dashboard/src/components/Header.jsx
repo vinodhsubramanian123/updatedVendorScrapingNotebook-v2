@@ -6,12 +6,79 @@ import ChassisSelector from './header/ChassisSelector';
 import SmartSearchInput from './header/SmartSearchInput';
 import NavigationTabs from './header/NavigationTabs';
 
-export default function Header({ 
-  catalogs, 
+const QUESTION_WORDS = ['why', 'how', 'does', 'can', 'what', 'should', 'is', 'where', 'notebook', 'rag', 'compat', 'rule', 'explain'];
+
+function resolveSkuId(sku) {
+  return sku['Product #'] || sku.sku || sku.partNumber || sku.id || '';
+}
+
+function resolveSkuDescription(sku) {
+  return sku.Description || sku.description || sku.name || 'HPE Component';
+}
+
+function resolveSkuPrice(sku) {
+  return sku['Unit Price (USD)'] || sku['List Price'] || sku.listPriceFormatted || '$0.00';
+}
+
+function scoreCatalogSkuMatch(sku, entry, query) {
+  const skuId = resolveSkuId(sku).toLowerCase();
+  const desc = resolveSkuDescription(sku).toLowerCase();
+  const category = (entry.parentCategory || '').toLowerCase();
+  const rulesText = (entry.rules || []).join(' ').toLowerCase();
+
+  if (skuId && skuId === query) return 100;
+  if (skuId && skuId.includes(query)) return 90;
+  if (desc.includes(query)) return 80;
+  if (category.includes(query) || rulesText.includes(query)) return 70;
+  return 0;
+}
+
+function computeLocalSearchResults(searchQuery, catalogData) {
+  const query = searchQuery.trim().toLowerCase();
+  if (!query) return { skus: [], confidence: 0, isQuestion: false };
+
+  const isQuestion = QUESTION_WORDS.some(w => query.includes(w));
+  const matches = [];
+
+  if (catalogData?.entries) {
+    catalogData.entries.forEach(entry => {
+      entry.skus?.forEach(sku => {
+        const matchScore = scoreCatalogSkuMatch(sku, entry, query);
+        if (matchScore > 0) {
+          matches.push({
+            sku: resolveSkuId(sku),
+            description: resolveSkuDescription(sku),
+            price: resolveSkuPrice(sku),
+            optionType: sku.optionType || sku['Option Type'] || 'CTO Option',
+            parentCategory: entry.parentCategory || 'General',
+            matchScore
+          });
+        }
+      });
+    });
+  }
+
+  matches.sort((a, b) => b.matchScore - a.matchScore);
+  const topMatches = matches.slice(0, 5);
+  let confidence = 10;
+  if (topMatches.length > 0) {
+    confidence = isQuestion ? 45 : topMatches[0].matchScore;
+  }
+
+  return {
+    skus: topMatches,
+    totalCount: matches.length,
+    confidence,
+    isQuestion
+  };
+}
+
+export default function Header({
+  catalogs,
   catalogData,
-  selectedChassis, 
-  onSelectChassis, 
-  activeTab, 
+  selectedChassis,
+  onSelectChassis,
+  activeTab,
   setActiveTab,
   _onSmartSearch,
   _onSearchLocal,
@@ -52,62 +119,10 @@ export default function Header({
     };
   }, []);
 
-  const localSearchResults = useMemo(() => {
-    const query = searchQuery.trim().toLowerCase();
-    if (!query) return { skus: [], confidence: 0, isQuestion: false };
-
-    const questionWords = ['why', 'how', 'does', 'can', 'what', 'should', 'is', 'where', 'notebook', 'rag', 'compat', 'rule', 'explain'];
-    const isQuestion = questionWords.some(w => query.includes(w));
-
-    let matches = [];
-    if (catalogData && catalogData.entries) {
-      catalogData.entries.forEach(entry => {
-        entry.skus?.forEach(sku => {
-          const skuId = (sku['Product #'] || sku.sku || sku.partNumber || sku.id || '').toLowerCase();
-          const desc = (sku.Description || sku.description || sku.name || '').toLowerCase();
-          const category = (entry.parentCategory || '').toLowerCase();
-          const rulesText = (entry.rules || []).join(' ').toLowerCase();
-
-          let matchScore = 0;
-          if (skuId && (skuId === query || skuId.includes(query))) {
-            matchScore = skuId === query ? 100 : 90;
-          } else if (desc.includes(query)) {
-            matchScore = 80;
-          } else if (category.includes(query) || rulesText.includes(query)) {
-            matchScore = 70;
-          }
-
-          if (matchScore > 0) {
-            matches.push({
-              sku: sku['Product #'] || sku.sku || sku.partNumber || sku.id,
-              description: sku.Description || sku.description || sku.name || 'HPE Component',
-              price: sku['Unit Price (USD)'] || sku['List Price'] || sku.listPriceFormatted || '$0.00',
-              optionType: sku.optionType || sku['Option Type'] || 'CTO Option',
-              parentCategory: entry.parentCategory || 'General',
-              matchScore
-            });
-          }
-        });
-      });
-    }
-
-    matches.sort((a, b) => b.matchScore - a.matchScore);
-    const topMatches = matches.slice(0, 5);
-
-    let confidence = 0;
-    if (topMatches.length > 0) {
-      confidence = isQuestion ? 45 : topMatches[0].matchScore;
-    } else {
-      confidence = 10;
-    }
-
-    return {
-      skus: topMatches,
-      totalCount: matches.length,
-      confidence,
-      isQuestion
-    };
-  }, [searchQuery, catalogData]);
+  const localSearchResults = useMemo(
+    () => computeLocalSearchResults(searchQuery, catalogData),
+    [searchQuery, catalogData]
+  );
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();

@@ -1,21 +1,16 @@
 import React, { useState } from 'react';
 import { TrendingUp, PlusCircle, MinusCircle, AlertCircle, FileText, Download, Server, RefreshCw } from 'lucide-react';
 
-export default function CatalogOverviewCard({ catalog, catalogData, onNavigate }) {
-  const [isDownloading, setIsDownloading] = useState(false);
-  const [downloadError, setDownloadError] = useState(null);
+const BASE_PARENT_KEYWORDS = ['server', 'base', 'chassis', 'smart', 'compute module', 'system'];
+const BASE_DESC_KEYWORDS = ['server', 'chassis', 'node', 'system', 'module', 'cto'];
 
-  if (!catalog || !catalogData) return null;
-
-  const metadata = catalogData.metadata || {};
-  
-  // Calculate diff status breakdown
-  let addedSkus = new Set();
-  let removedSkus = new Set();
-  let priceChangedSkus = new Set();
+function computeCatalogDiffStats(entries) {
+  const addedSkus = new Set();
+  const removedSkus = new Set();
+  const priceChangedSkus = new Set();
   let totalSkus = 0;
 
-  catalogData.entries?.forEach(entry => {
+  entries?.forEach(entry => {
     entry.skus?.forEach(sku => {
       totalSkus++;
       const status = sku.diffStatus || sku['Diff Status'] || 'UNCHANGED';
@@ -25,47 +20,110 @@ export default function CatalogOverviewCard({ catalog, catalogData, onNavigate }
       else if (status === 'PRICE_CHANGED') priceChangedSkus.add(skuId);
     });
   });
-  
-  let added = addedSkus.size;
-  let removed = removedSkus.size;
-  let priceChanged = priceChangedSkus.size;
 
-  let uniqueSkus = metadata.totalUniqueSKUs || catalog.totalSKUs || totalSkus;
-  
-  const scrapeDate = metadata.scrapeDate || catalog.scrapeDate || 'Latest Scrape';
+  return {
+    added: addedSkus.size,
+    removed: removedSkus.size,
+    priceChanged: priceChangedSkus.size,
+    totalSkus
+  };
+}
 
-  // FB-1: Extract Chassis Variant & Portfolio Price Matrix
+function isEntryBaseCategory(entry) {
+  const parentLower = (entry.parentCategory || '').toLowerCase();
+  const subLower = (entry.subCategory || '').toLowerCase();
+  if (subLower.includes('base') || subLower.includes('chassis')) return true;
+  return BASE_PARENT_KEYWORDS.some(kw => parentLower.includes(kw));
+}
+
+function parseCatalogSkuRawPrice(sku) {
+  for (const key of ['Unit Price (USD)', 'Price (USD)', 'List Price (USD)', 'List Price', 'Price', 'listPriceFormatted', 'listPrice']) {
+    if (sku[key]) return sku[key];
+  }
+  return '0';
+}
+
+function matchesBaseVariantDesc(descLower, parentLower, priceNum) {
+  if (priceNum > 0) return true;
+  if (parentLower.includes('chassis') || parentLower.includes('base')) return true;
+  return BASE_DESC_KEYWORDS.some(kw => descLower.includes(kw));
+}
+
+function extractBaseVariants(entries) {
   const baseVariants = [];
-  catalogData.entries?.forEach(entry => {
-    const parentLower = (entry.parentCategory || '').toLowerCase();
-    const subLower = (entry.subCategory || '').toLowerCase();
-    
-    // Look for Base Configuration, Server, Compute Module, System, Smart Chassis, or Chassis
-    if (parentLower.includes('server') || parentLower.includes('base') || parentLower.includes('chassis') || parentLower.includes('smart') || parentLower.includes('compute module') || parentLower.includes('system') || subLower.includes('base') || subLower.includes('chassis')) {
-      entry.skus?.forEach(sku => {
-        const rawPrice = sku['Unit Price (USD)'] || sku['Price (USD)'] || sku['List Price (USD)'] || sku['List Price'] || sku['Price'] || sku.listPriceFormatted || sku.listPrice || '0';
-        const priceNum = typeof rawPrice === 'number' ? rawPrice : parseFloat(String(rawPrice).replace(/[$,]/g, '')) || 0;
-        const skuId = sku['Product #'] || sku.sku || sku.partNumber;
-        const desc = sku.Description || sku.description || sku['Description'] || '';
-        const descLower = desc.toLowerCase();
+  const seenSkus = new Set();
 
-        if (skuId && !baseVariants.find(v => v.sku === skuId)) {
-          if (descLower.includes('server') || descLower.includes('chassis') || descLower.includes('node') || descLower.includes('system') || descLower.includes('module') || descLower.includes('cto') || parentLower.includes('chassis') || parentLower.includes('base') || priceNum > 0) {
-            baseVariants.push({
-              sku: skuId,
-              desc: desc,
-              price: priceNum > 0 ? `$${priceNum.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : (sku.listPriceFormatted || '$1,850.00'),
-              priceNum: priceNum || 1850
-            });
-          }
-        }
-      });
-    }
+  entries?.forEach(entry => {
+    if (!isEntryBaseCategory(entry)) return;
+    const parentLower = (entry.parentCategory || '').toLowerCase();
+
+    entry.skus?.forEach(sku => {
+      const skuId = sku['Product #'] || sku.sku || sku.partNumber;
+      if (!skuId || seenSkus.has(skuId)) return;
+
+      const rawPrice = parseCatalogSkuRawPrice(sku);
+      const priceNum = typeof rawPrice === 'number' ? rawPrice : parseFloat(String(rawPrice).replace(/[$,]/g, '')) || 0;
+      const desc = sku.Description || sku.description || '';
+
+      if (matchesBaseVariantDesc(desc.toLowerCase(), parentLower, priceNum)) {
+        seenSkus.add(skuId);
+        const formattedPrice = priceNum > 0
+          ? `$${priceNum.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+          : (sku.listPriceFormatted || '$1,850.00');
+        baseVariants.push({
+          sku: skuId,
+          desc,
+          price: formattedPrice,
+          priceNum: priceNum || 1850
+        });
+      }
+    });
   });
 
-  // Sort by price ascending and display ALL base variants for the family
   baseVariants.sort((a, b) => a.priceNum - b.priceNum);
-  const displayVariants = baseVariants;
+  return baseVariants;
+}
+
+function ChassisVariantMatrixSection({ displayVariants }) {
+  if (displayVariants.length === 0) return null;
+  return (
+    <div className="pt-2">
+      <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+        <Server className="w-4 h-4 text-blue-600" /> Chassis Variant & Portfolio Price Matrix
+      </h4>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-3">
+        {displayVariants.map((variant, idx) => (
+          <div key={idx} className="bg-white p-3 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+            <div>
+              <p className="text-[10px] font-bold text-blue-600 mb-0.5">{variant.sku}</p>
+              <p className="text-[11px] font-semibold text-slate-700 line-clamp-3 mb-2" title={variant.desc}>
+                {variant.desc}
+              </p>
+            </div>
+            <div className="pt-2 border-t border-slate-100 flex justify-between items-center mt-auto">
+              <span className="text-[10px] text-slate-500 font-semibold uppercase">Base Price</span>
+              <span className="text-sm font-bold text-emerald-700">
+                {String(variant.price).startsWith('$') ? variant.price : `$${variant.price}`}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default function CatalogOverviewCard({ catalog, catalogData, onNavigate }) {
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [downloadError, setDownloadError] = useState(null);
+
+  if (!catalog || !catalogData) return null;
+
+  const metadata = catalogData.metadata || {};
+  const { added, removed, priceChanged, totalSkus } = computeCatalogDiffStats(catalogData.entries);
+  const uniqueSkus = metadata.totalUniqueSKUs || catalog.totalSKUs || totalSkus;
+  const scrapeDate = metadata.scrapeDate || catalog.scrapeDate || 'Latest Scrape';
+  const displayVariants = extractBaseVariants(catalogData.entries);
 
   const handleDownloadExcel = async () => {
     setIsDownloading(true);
@@ -73,11 +131,9 @@ export default function CatalogOverviewCard({ catalog, catalogData, onNavigate }
     try {
       const response = await fetch(catalog.xlsxPath);
       const contentType = response.headers.get('Content-Type');
-      
       if (!contentType || !contentType.includes('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')) {
         throw new Error('Invalid content type received. The file may be corrupt or served as HTML.');
       }
-      
       const blob = await response.blob();
       const downloadUrl = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
@@ -105,7 +161,7 @@ export default function CatalogOverviewCard({ catalog, catalogData, onNavigate }
           <p className="text-xs text-slate-500 mt-2">Please wait while the blob is generated.</p>
         </div>
       )}
-      
+
       {downloadError && (
         <div className="absolute top-0 left-0 right-0 bg-rose-50 border-b border-rose-200 p-2 text-center z-40">
           <p className="text-xs font-semibold text-rose-700">{downloadError}</p>
@@ -147,7 +203,6 @@ export default function CatalogOverviewCard({ catalog, catalogData, onNavigate }
         </div>
       </div>
 
-      {/* Catalog Metrics Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-100 relative group">
           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center justify-between">
@@ -172,7 +227,6 @@ export default function CatalogOverviewCard({ catalog, catalogData, onNavigate }
         </div>
       </div>
 
-      {/* Catalog Diff Summary Card (Fix G26) */}
       <div className="bg-slate-50/80 p-4 rounded-xl border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <TrendingUp className="w-4 h-4 text-blue-600 shrink-0" />
@@ -201,32 +255,7 @@ export default function CatalogOverviewCard({ catalog, catalogData, onNavigate }
         </div>
       </div>
 
-      {/* FB-1: Chassis Variant & Portfolio Price Matrix */}
-      {displayVariants.length > 0 && (
-        <div className="pt-2">
-          <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3 flex items-center gap-1.5">
-            <Server className="w-4 h-4 text-blue-600" /> Chassis Variant & Portfolio Price Matrix
-          </h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-3">
-            {displayVariants.map((variant, idx) => (
-              <div key={idx} className="bg-white p-3 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
-                <div>
-                  <p className="text-[10px] font-bold text-blue-600 mb-0.5">{variant.sku}</p>
-                  <p className="text-[11px] font-semibold text-slate-700 line-clamp-3 mb-2" title={variant.desc}>
-                    {variant.desc}
-                  </p>
-                </div>
-                <div className="pt-2 border-t border-slate-100 flex justify-between items-center mt-auto">
-                  <span className="text-[10px] text-slate-500 font-semibold uppercase">Base Price</span>
-                  <span className="text-sm font-bold text-emerald-700">
-                    {String(variant.price).startsWith('$') ? variant.price : `$${variant.price}`}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      <ChassisVariantMatrixSection displayVariants={displayVariants} />
     </div>
   );
 }

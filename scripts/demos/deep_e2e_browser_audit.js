@@ -14,6 +14,63 @@ const SERVER_URL = 'http://127.0.0.1:3000';
 const CUSTOMER_BOQ = path.resolve(__dirname, '..', 'HP Opportunity- DL380_5 Servers.xlsx');
 const SCREENSHOT_DIR = path.resolve(__dirname, '..', 'outputs', 'history', 'audit_screenshots');
 
+async function auditSecondaryTabs(page, auditReport) {
+  // SECTION 9: Pipeline Ops Tab (Scraper & Operations)
+  console.log('▶ [Audit 11] Auditing Pipeline Ops Tab (Scraper & Progress)...');
+  const pipelineTabBtn = page.locator('button[data-tab="pipeline"]').first();
+  if (await pipelineTabBtn.isVisible()) {
+    await pipelineTabBtn.click();
+    await page.waitForTimeout(800);
+    await page.screenshot({ path: path.join(SCREENSHOT_DIR, '14_pipeline_ops_tab.png') });
+    auditReport.screenshotsCaptured.push('14_pipeline_ops_tab.png');
+  }
+
+  // SECTION 10: Catalog Explorer Tab across Product Lines
+  console.log('▶ [Audit 12] Auditing Catalog Explorer across 6 Product Lines...');
+  const catalogTabBtn = page.locator('button[data-tab="catalog"]').first();
+  if (await catalogTabBtn.isVisible()) {
+    await catalogTabBtn.click();
+    await page.waitForTimeout(800);
+    await page.screenshot({ path: path.join(SCREENSHOT_DIR, '15_catalog_explorer_tab.png') });
+    auditReport.screenshotsCaptured.push('15_catalog_explorer_tab.png');
+
+    const productLines = ['DL380 Gen12', 'DL380 Gen11', 'Alletra', 'Synergy', 'MSL Tape', 'Cray'];
+    for (const pl of productLines) {
+      const plBtn = page.locator(`button:has-text("${pl}")`).first();
+      if (await plBtn.isVisible()) {
+        await plBtn.click();
+        await page.waitForTimeout(300);
+      }
+    }
+  }
+
+  // SECTION 11: Agentic Insights (Telemetry) & Matrix Tabs
+  console.log('▶ [Audit 13] Auditing Agentic Insights (Telemetry) & Matrix Tabs...');
+  const telemetryTabBtn = page.locator('button[data-tab="telemetry"]').first();
+  if (await telemetryTabBtn.isVisible()) {
+    await telemetryTabBtn.click();
+    await page.waitForTimeout(800);
+    await page.screenshot({ path: path.join(SCREENSHOT_DIR, '16_agentic_insights_tab.png') });
+    auditReport.screenshotsCaptured.push('16_agentic_insights_tab.png');
+  }
+
+  const matrixTabBtn = page.locator('button[data-tab="matrix"]').first();
+  if (await matrixTabBtn.isVisible()) {
+    await matrixTabBtn.click();
+    await page.waitForTimeout(800);
+    await page.screenshot({ path: path.join(SCREENSHOT_DIR, '17_resolution_matrix_tab.png') });
+    auditReport.screenshotsCaptured.push('17_resolution_matrix_tab.png');
+  }
+
+  const feedbackBtn = page.locator('button[title="HITL Feedback & Learning"]').first();
+  if (await feedbackBtn.isVisible()) {
+    await feedbackBtn.click();
+    await page.waitForTimeout(500);
+    await page.screenshot({ path: path.join(SCREENSHOT_DIR, '18_feedback_drawer.png') });
+    auditReport.screenshotsCaptured.push('18_feedback_drawer.png');
+  }
+}
+
 async function runAudit() {
   console.log('================================================================');
   console.log('🔍 STARTING DEEP COMPREHENSIVE E2E BROWSER AUDIT');
@@ -242,7 +299,6 @@ async function runAudit() {
     // SECTION 7: 5-Tier Strategic Resolution Matrix Modal
     // -------------------------------------------------------------------------
     console.log('▶ [Audit 9] Auditing 5-Tier Strategic Resolution Matrix Modal...');
-    // Open matrix modal via Macro Lifecycle card
     const openMatrixBtn = page.locator('button:has-text("Open 5-Tier Strategy Matrix"), button:has-text("Resolution Matrix"), button:has-text("5-Tier Strategy Matrix")').first();
     if (await openMatrixBtn.isVisible()) {
       await openMatrixBtn.click();
@@ -251,7 +307,6 @@ async function runAudit() {
       await page.screenshot({ path: path.join(SCREENSHOT_DIR, '12_strategy_matrix_modal.png') });
       auditReport.screenshotsCaptured.push('12_strategy_matrix_modal.png');
 
-      // Check Ranks 1 to 5
       for (let r = 1; r <= 5; r++) {
         const rankHeader = page.locator(`text=Rank ${r}`).first();
         if (!(await rankHeader.isVisible())) {
@@ -259,7 +314,6 @@ async function runAudit() {
         }
       }
 
-      // Close matrix modal
       const closeMatrixBtn = page.locator('button[aria-label="Close modal"]').first();
       if (await closeMatrixBtn.isVisible()) {
         await closeMatrixBtn.click();
@@ -285,68 +339,7 @@ async function runAudit() {
       }
     }
 
-    // -------------------------------------------------------------------------
-    // SECTION 9: Pipeline Ops Tab (Scraper & Operations)
-    // -------------------------------------------------------------------------
-    console.log('▶ [Audit 11] Auditing Pipeline Ops Tab (Scraper & Progress)...');
-    const pipelineTabBtn = page.locator('button[data-tab="pipeline"]').first();
-    if (await pipelineTabBtn.isVisible()) {
-      await pipelineTabBtn.click();
-      await page.waitForTimeout(800);
-      await page.screenshot({ path: path.join(SCREENSHOT_DIR, '14_pipeline_ops_tab.png') });
-      auditReport.screenshotsCaptured.push('14_pipeline_ops_tab.png');
-    }
-
-    // -------------------------------------------------------------------------
-    // SECTION 10: Catalog Explorer Tab across Product Lines
-    // -------------------------------------------------------------------------
-    console.log('▶ [Audit 12] Auditing Catalog Explorer across 6 Product Lines...');
-    const catalogTabBtn = page.locator('button[data-tab="catalog"]').first();
-    if (await catalogTabBtn.isVisible()) {
-      await catalogTabBtn.click();
-      await page.waitForTimeout(800);
-      await page.screenshot({ path: path.join(SCREENSHOT_DIR, '15_catalog_explorer_tab.png') });
-      auditReport.screenshotsCaptured.push('15_catalog_explorer_tab.png');
-
-      // Test switching product lines
-      const productLines = ['DL380 Gen12', 'DL380 Gen11', 'Alletra', 'Synergy', 'MSL Tape', 'Cray'];
-      for (const pl of productLines) {
-        const plBtn = page.locator(`button:has-text("${pl}")`).first();
-        if (await plBtn.isVisible()) {
-          await plBtn.click();
-          await page.waitForTimeout(300);
-        }
-      }
-    }
-
-    // -------------------------------------------------------------------------
-    // SECTION 11: Agentic Insights (Telemetry) & Matrix Tabs
-    // -------------------------------------------------------------------------
-    console.log('▶ [Audit 13] Auditing Agentic Insights (Telemetry) & Matrix Tabs...');
-    const telemetryTabBtn = page.locator('button[data-tab="telemetry"]').first();
-    if (await telemetryTabBtn.isVisible()) {
-      await telemetryTabBtn.click();
-      await page.waitForTimeout(800);
-      await page.screenshot({ path: path.join(SCREENSHOT_DIR, '16_agentic_insights_tab.png') });
-      auditReport.screenshotsCaptured.push('16_agentic_insights_tab.png');
-    }
-
-    const matrixTabBtn = page.locator('button[data-tab="matrix"]').first();
-    if (await matrixTabBtn.isVisible()) {
-      await matrixTabBtn.click();
-      await page.waitForTimeout(800);
-      await page.screenshot({ path: path.join(SCREENSHOT_DIR, '17_resolution_matrix_tab.png') });
-      auditReport.screenshotsCaptured.push('17_resolution_matrix_tab.png');
-    }
-
-    // Test Feedback Drawer
-    const feedbackBtn = page.locator('button[title="HITL Feedback & Learning"]').first();
-    if (await feedbackBtn.isVisible()) {
-      await feedbackBtn.click();
-      await page.waitForTimeout(500);
-      await page.screenshot({ path: path.join(SCREENSHOT_DIR, '18_feedback_drawer.png') });
-      auditReport.screenshotsCaptured.push('18_feedback_drawer.png');
-    }
+    await auditSecondaryTabs(page, auditReport);
 
     auditReport.completedAt = new Date().toISOString();
     auditReport.status = 'SUCCESS';

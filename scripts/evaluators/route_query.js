@@ -45,10 +45,137 @@ function getBaseChassisSku(chassisKey = '') {
   return null;
 }
 
+const BASE_PLATFORM_SIGNATURES = [
+  { key: 'dl380a', pattern: /\b(?:dl\s*380a|dl380a|380a\s*g\d+|380ag\d+|dl380a[-_]?(?:gen|g)\d+)\b/i, prefix: 'dl380a_' },
+  { key: 'dl380', pattern: /\b(?:dl\s*380|dl380|380\s*g\d+|380g\d+|dl380[-_]?(?:gen|g)\d+)\b(?!a\b)/i, prefix: 'dl380_' },
+  { key: 'dl385', pattern: /\b(?:dl\s*385|dl385|385\s*g\d+|385g\d+|dl385[-_]?(?:gen|g)\d+)\b/i, prefix: 'dl385_' },
+  { key: 'dl360', pattern: /\b(?:dl\s*360|dl360|360\s*g\d+|360g\d+|dl360[-_]?(?:gen|g)\d+)\b/i, prefix: 'dl360_' },
+  { key: 'dl145', pattern: /\b(?:dl\s*145|dl145|145\s*g\d+|145g\d+|dl145[-_]?(?:gen|g)\d+)\b/i, prefix: 'dl145_' },
+  { key: 'dl580', pattern: /\b(?:dl\s*580|dl580|580\s*g\d+|580g\d+|dl580[-_]?(?:gen|g)\d+)\b/i, prefix: 'dl580_' },
+  { key: 'sy480', pattern: /\b(?:sy\s*480|sy480|synergy\s*480|synergy\s*compute|480\s*g\d+|480g\d+|sy480[-_]?(?:gen|g)\d+)\b/i, prefix: 'sy480_' },
+  { key: 'sy100gb', pattern: /\b(?:sy\s*100gb|sy100gb|f32\s*module|f32|synergy\s*100gb|synergy\s*fabric|synergy\s*switch)\b/i, prefix: 'sy100gb' },
+  { key: 'alletra', pattern: /\b(?:alletra|alletra\s*9000|alletra\s*storage|alletra\s*mp)\b/i, prefix: 'alletra' },
+  { key: 'msl3040', pattern: /\b(?:msl\s*3040|msl3040|storeever|tape\s*library|tape\s*automation)\b/i, prefix: 'msl3040' },
+  { key: 'gx5000', pattern: /\b(?:gx\s*5000|gx5000|cray\s*rack|gx\s*general)\b/i, prefix: 'gx5000' },
+  { key: 'sn3600b', pattern: /\bsn\s*3600b\b/i, prefix: 'sn3600b' }
+];
+
+function _buildPlatformSignatures(catalogs) {
+  const signatures = [...BASE_PLATFORM_SIGNATURES];
+  for (const c of catalogs) {
+    const baseId = c.id.split('_')[0].toLowerCase();
+    if (!signatures.some(p => p.key === baseId || c.id.toLowerCase().startsWith(p.prefix || p.key))) {
+      signatures.push({
+        key: baseId,
+        pattern: new RegExp(`\\b${baseId}\\b`, 'i'),
+        prefix: baseId
+      });
+    }
+  }
+  return signatures;
+}
+
+function _parseGenerationHints(text, context) {
+  const migrationMatch = text.match(/\b(?:migrate|modernize|upgrade|transition|move|replace|from)\b.*?\bgen\s*(\d+)\b.*?\b(?:to|into|->|with|target)\b.*?\bgen\s*(\d+)\b/i) ||
+                         text.match(/\bgen\s*(\d+)\b\s*(?:to|->)\s*.*?\bgen\s*(\d+)\b/i);
+
+  let targetGen = null;
+  if (migrationMatch) {
+    const sourceGen = `Gen${migrationMatch[1]}`;
+    targetGen = `Gen${migrationMatch[2]}`;
+    if (context && typeof context === 'object') {
+      context.migrationSourceGen = sourceGen;
+      context.migrationTargetGen = targetGen;
+    }
+  }
+
+  const explicitGenMatch = targetGen ? null : (
+    text.match(/\bgen\s*(\d+)\b/i) ||
+    text.match(/(?:dl\s*\d+[a-z]?|sy\s*\d+|\b\d{3}[a-z]?)[-_]?(?:gen|g)(\d+)\b/i) ||
+    text.match(/\bg(\d+)\b/i)
+  );
+  const explicitGen = targetGen || (explicitGenMatch ? `Gen${explicitGenMatch[1]}` : null);
+  const requestedGenerations = new Set([
+    ...[...text.matchAll(/\bgen\s*(\d+)\b/gi)].map(match => match[1]),
+    ...[...text.matchAll(/(?:dl\s*\d+[a-z]?|sy\s*\d+|\b\d{3}[a-z]?)[-_]?(?:gen|g)(\d+)\b/gi)].map(match => match[1]),
+    ...[...text.matchAll(/\bg(\d+)\b/gi)].map(match => match[1])
+  ]);
+  return { targetGen, explicitGen, requestedGenerations };
+}
+
+function _resolveSinglePlatformCandidate(platform, candidates, explicitGen) {
+  const unsupportedResult = {
+    chassisKey: `${platform.key.toUpperCase()}_${explicitGen}_UNSUPPORTED`,
+    catalogDir: null,
+    catalogPath: null,
+    catalogData: null,
+    isAmbiguous: true,
+    error: `${platform.key.toUpperCase()} ${explicitGen} is not available in portfolio.`
+  };
+  if (candidates.length === 1) {
+    const cand = candidates[0];
+    if (explicitGen && !cand.id.includes(explicitGen)) return { earlyReturn: unsupportedResult };
+    return { matchedCatalog: cand };
+  }
+  if (candidates.length > 1) {
+    if (!explicitGen) {
+      return {
+        earlyReturn: {
+          chassisKey: 'AMBIGUOUS_PRODUCT',
+          catalogDir: null,
+          catalogPath: null,
+          catalogData: null,
+          isAmbiguous: true,
+          candidates: candidates.map(c => c.id),
+          error: 'Multiple product generations match; specify the exact target generation.'
+        }
+      };
+    }
+    const matchedCatalog = candidates.find(c => c.id.includes(explicitGen));
+    if (!matchedCatalog) return { earlyReturn: unsupportedResult };
+    return { matchedCatalog };
+  }
+  return { matchedCatalog: null };
+}
+
+function _matchPlatformCandidates(text, catalogs, platformSignatures, explicitGen) {
+  const matchedPlatforms = platformSignatures.filter(p => p.pattern.test(text));
+  if (matchedPlatforms.length === 1) {
+    const platform = matchedPlatforms[0];
+    const prefix = platform.prefix || (platform.key.includes('_') ? platform.key : `${platform.key}_`);
+    const candidates = catalogs.filter(c => c.id.toLowerCase().startsWith(prefix));
+    return _resolveSinglePlatformCandidate(platform, candidates, explicitGen);
+  }
+  if (matchedPlatforms.length > 1) {
+    return {
+      earlyReturn: {
+        chassisKey: 'AMBIGUOUS_QUERY',
+        catalogDir: null,
+        catalogPath: null,
+        catalogData: null,
+        isAmbiguous: true,
+        candidates: catalogs.filter(c => matchedPlatforms.some(p => c.id.toLowerCase().startsWith(p.prefix))).map(c => c.id),
+        error: `Multiple hardware platforms matched query text: ${matchedPlatforms.map(p => p.key.toUpperCase()).join(', ')}. Please specify a single target model.`,
+        availableCatalogs: catalogs.map(c => c.id)
+      }
+    };
+  }
+  return { matchedCatalog: null };
+}
+
+function _loadCatalogDataSafe(catalogJsonPath) {
+  if (!catalogJsonPath || !fs.existsSync(catalogJsonPath)) return null;
+  try {
+    return JSON.parse(fs.readFileSync(catalogJsonPath, 'utf-8'));
+  } catch (err) {
+    logger.warn('ROUTE_QUERY', `Error parsing catalog JSON at ${catalogJsonPath}: ${err?.message}`);
+    return null;
+  }
+}
+
 function getChassisCatalog(queryText = '', context = {}) {
   const text = (queryText + ' ' + (context.chassisName || context.model || '')).toLowerCase().replace(/_/g, ' ');
 
-  // 1. Discover all available catalogs dynamically
   let catalogs = [];
   try {
     catalogs = listAllCatalogs();
@@ -56,7 +183,6 @@ function getChassisCatalog(queryText = '', context = {}) {
     logger.debug('ROUTE_QUERY', `Dynamic catalog discovery note: ${err?.message}`);
   }
 
-  // 2. Explicit unsupported check derived dynamically from portfolio presence
   if (/\b(?:dl\s*360|dl360|360\s*g|360g)\b/i.test(text) && /\b(?:gen\s*12|gen12|g12)\b/i.test(text)) {
     const hasDl360Gen12 = catalogs.some(c => c.id.toLowerCase().includes('dl360') && c.id.toLowerCase().includes('gen12'));
     if (!hasDl360Gen12) {
@@ -71,133 +197,25 @@ function getChassisCatalog(queryText = '', context = {}) {
     }
   }
 
-  // 3. Match against dynamic catalogs
-  let matchedCatalog = null;
+  const target = String(context.chassisName || context.model || '').toLowerCase().trim();
+  let matchedCatalog = target
+    ? catalogs.find(c => c.id.toLowerCase() === target || c.chassis?.toLowerCase() === target)
+    : null;
 
-  // Direct ID check if chassisName or model was passed
-  if (context.chassisName || context.model) {
-    const target = (context.chassisName || context.model).toLowerCase().trim();
-    matchedCatalog = catalogs.find(c => c.id.toLowerCase() === target || c.chassis?.toLowerCase() === target);
-  }
-
-  // Model/Platform definition table with explicit tokens, boundary patterns, and catalog prefixes
-  const PLATFORM_SIGNATURES = [
-    { key: 'dl380a', pattern: /\b(?:dl\s*380a|dl380a|380a\s*g\d+|380ag\d+|dl380a[-_]?(?:gen|g)\d+)\b/i, prefix: 'dl380a_' },
-    { key: 'dl380', pattern: /\b(?:dl\s*380|dl380|380\s*g\d+|380g\d+|dl380[-_]?(?:gen|g)\d+)\b(?!a\b)/i, prefix: 'dl380_' },
-    { key: 'dl385', pattern: /\b(?:dl\s*385|dl385|385\s*g\d+|385g\d+|dl385[-_]?(?:gen|g)\d+)\b/i, prefix: 'dl385_' },
-    { key: 'dl360', pattern: /\b(?:dl\s*360|dl360|360\s*g\d+|360g\d+|dl360[-_]?(?:gen|g)\d+)\b/i, prefix: 'dl360_' },
-    { key: 'dl145', pattern: /\b(?:dl\s*145|dl145|145\s*g\d+|145g\d+|dl145[-_]?(?:gen|g)\d+)\b/i, prefix: 'dl145_' },
-    { key: 'dl580', pattern: /\b(?:dl\s*580|dl580|580\s*g\d+|580g\d+|dl580[-_]?(?:gen|g)\d+)\b/i, prefix: 'dl580_' },
-    { key: 'sy480', pattern: /\b(?:sy\s*480|sy480|synergy\s*480|synergy\s*compute|480\s*g\d+|480g\d+|sy480[-_]?(?:gen|g)\d+)\b/i, prefix: 'sy480_' },
-    { key: 'sy100gb', pattern: /\b(?:sy\s*100gb|sy100gb|f32\s*module|f32|synergy\s*100gb|synergy\s*fabric|synergy\s*switch)\b/i, prefix: 'sy100gb' },
-    { key: 'alletra', pattern: /\b(?:alletra|alletra\s*9000|alletra\s*storage|alletra\s*mp)\b/i, prefix: 'alletra' },
-    { key: 'msl3040', pattern: /\b(?:msl\s*3040|msl3040|storeever|tape\s*library|tape\s*automation)\b/i, prefix: 'msl3040' },
-    { key: 'gx5000', pattern: /\b(?:gx\s*5000|gx5000|cray\s*rack|gx\s*general)\b/i, prefix: 'gx5000' },
-    { key: 'sn3600b', pattern: /\bsn\s*3600b\b/i, prefix: 'sn3600b' }
-  ];
-
-  // Dynamically augment PLATFORM_SIGNATURES with any newly discovered catalogs
-  for (const c of catalogs) {
-    const baseId = c.id.split('_')[0].toLowerCase();
-    if (!PLATFORM_SIGNATURES.some(p => p.key === baseId || c.id.toLowerCase().startsWith(p.prefix || p.key))) {
-      PLATFORM_SIGNATURES.push({
-        key: baseId,
-        pattern: new RegExp(`\\b${baseId}\\b`, 'i'),
-        prefix: baseId
-      });
-    }
-  }
-
-  // Parse migration/upgrade pattern (e.g. "Migrate DL380 Gen10 to Gen12", "Gen10 to Gen12")
-  const migrationMatch = text.match(/\b(?:migrate|modernize|upgrade|transition|move|replace|from)\b.*?\bgen\s*(\d+)\b.*?\b(?:to|into|->|with|target)\b.*?\bgen\s*(\d+)\b/i) ||
-                         text.match(/\bgen\s*(\d+)\b\s*(?:to|->)\s*.*?\bgen\s*(\d+)\b/i);
-
-  let targetGen = null;
-  let sourceGen = null;
-  if (migrationMatch) {
-    sourceGen = `Gen${migrationMatch[1]}`;
-    targetGen = `Gen${migrationMatch[2]}`;
-    if (context && typeof context === 'object') {
-      context.migrationSourceGen = sourceGen;
-      context.migrationTargetGen = targetGen;
-    }
-  }
-
-  // Parse explicit generation from text (e.g. Gen11, Gen 11, Gen12, Gen 12, G11, G12, 380G12)
-  const explicitGenMatch = targetGen ? null : (
-    text.match(/\bgen\s*(\d+)\b/i) ||
-    text.match(/(?:dl\s*\d+[a-z]?|sy\s*\d+|\b\d{3}[a-z]?)[-_]?(?:gen|g)(\d+)\b/i) ||
-    text.match(/\bg(\d+)\b/i)
-  );
-  const explicitGen = targetGen || (explicitGenMatch ? `Gen${explicitGenMatch[1]}` : null);
+  const platformSignatures = _buildPlatformSignatures(catalogs);
+  const { targetGen, explicitGen, requestedGenerations } = _parseGenerationHints(text, context);
 
   if (matchedCatalog && explicitGen && !matchedCatalog.id.toLowerCase().includes(explicitGen.toLowerCase())) {
     return { chassisKey: 'GENERATION_MISMATCH', catalogDir: null, catalogPath: null, catalogData: null, isAmbiguous: true, error: 'Explicit product and requested generation disagree.' };
   }
-  const requestedGenerations = new Set([
-    ...[...text.matchAll(/\bgen\s*(\d+)\b/gi)].map(match => match[1]),
-    ...[...text.matchAll(/(?:dl\s*\d+[a-z]?|sy\s*\d+|\b\d{3}[a-z]?)[-_]?(?:gen|g)(\d+)\b/gi)].map(match => match[1]),
-    ...[...text.matchAll(/\bg(\d+)\b/gi)].map(match => match[1])
-  ]);
   if (!targetGen && requestedGenerations.size > 1) {
     return { chassisKey: 'AMBIGUOUS_QUERY', catalogDir: null, catalogPath: null, catalogData: null, isAmbiguous: true, error: 'Multiple generations require separate configurations.' };
   }
 
   if (!matchedCatalog) {
-    const matchedPlatforms = PLATFORM_SIGNATURES.filter(p => p.pattern.test(text));
-
-    if (matchedPlatforms.length === 1) {
-      const platform = matchedPlatforms[0];
-      const prefix = platform.prefix || (platform.key.includes('_') ? platform.key : `${platform.key}_`);
-      const candidates = catalogs.filter(c => {
-        const idLower = c.id.toLowerCase();
-        return idLower.startsWith(prefix);
-      });
-
-      if (candidates.length === 1) {
-        const cand = candidates[0];
-        if (explicitGen && !cand.id.includes(explicitGen)) {
-          return {
-            chassisKey: `${platform.key.toUpperCase()}_${explicitGen}_UNSUPPORTED`,
-            catalogDir: null,
-            catalogPath: null,
-            catalogData: null,
-            isAmbiguous: true,
-            error: `${platform.key.toUpperCase()} ${explicitGen} is not available in portfolio.`
-          };
-        }
-        matchedCatalog = cand;
-      } else if (candidates.length > 1) {
-        if (explicitGen) {
-          matchedCatalog = candidates.find(c => c.id.includes(explicitGen));
-          if (!matchedCatalog) {
-            return {
-              chassisKey: `${platform.key.toUpperCase()}_${explicitGen}_UNSUPPORTED`,
-              catalogDir: null,
-              catalogPath: null,
-              catalogData: null,
-              isAmbiguous: true,
-              error: `${platform.key.toUpperCase()} ${explicitGen} is not available in portfolio.`
-            };
-          }
-        } else {
-          return { chassisKey: 'AMBIGUOUS_PRODUCT', catalogDir: null, catalogPath: null,
-            catalogData: null, isAmbiguous: true, candidates: candidates.map(c => c.id),
-            error: 'Multiple product generations match; specify the exact target generation.' };
-        }
-      }
-    } else if (matchedPlatforms.length > 1) {
-      return {
-        chassisKey: 'AMBIGUOUS_QUERY',
-        catalogDir: null,
-        catalogPath: null,
-        catalogData: null,
-        isAmbiguous: true,
-        candidates: catalogs.filter(c => matchedPlatforms.some(p => c.id.toLowerCase().startsWith(p.prefix))).map(c => c.id),
-        error: `Multiple hardware platforms matched query text: ${matchedPlatforms.map(p => p.key.toUpperCase()).join(', ')}. Please specify a single target model.`,
-        availableCatalogs: catalogs.map(c => c.id)
-      };
-    }
+    const resolved = _matchPlatformCandidates(text, catalogs, platformSignatures, explicitGen);
+    if (resolved.earlyReturn) return resolved.earlyReturn;
+    matchedCatalog = resolved.matchedCatalog;
   }
 
   if (!matchedCatalog) {
@@ -212,15 +230,7 @@ function getChassisCatalog(queryText = '', context = {}) {
     };
   }
 
-  let catalogData = null;
-  if (fs.existsSync(matchedCatalog.catalogJsonPath)) {
-    try {
-      catalogData = JSON.parse(fs.readFileSync(matchedCatalog.catalogJsonPath, 'utf-8'));
-    } catch (err) {
-      logger.warn('ROUTE_QUERY', `Error parsing catalog JSON at ${matchedCatalog.catalogJsonPath}: ${err?.message}`);
-    }
-  }
-
+  const catalogData = _loadCatalogDataSafe(matchedCatalog.catalogJsonPath);
   return {
     chassisKey: matchedCatalog.id,
     catalogDir: matchedCatalog.catalogDir,
@@ -287,21 +297,12 @@ function _classifyExplicitTrack(text, context, filePath) {
   return null;
 }
 
+const HETEROGENEOUS_KEYWORD_RE = /(?:heterogeneous|mixed[\s-]domain|carrier\s+(?:fleet|nodes?)|ad-hoc\s+absorption|dummy\s+server|tender\s+modernization|dirty\s+boq|unbuildable\s+ad-hoc|loose\s+memory|spare\s+parts\s+absorption)/i;
+const CROSS_VENDOR_DIRECT_RE = /(?:dell\s+to\s+hpe|cisco\s+to\s+hpe|lenovo\s+to\s+hpe|cross\s+vendor|transpile|competitor\s+quote)/i;
+
 function _classifyHeterogeneousAndCompetitor(text, context) {
   const isHeterogeneous =
-    text.includes('heterogeneous') ||
-    text.includes('mixed domain') ||
-    text.includes('mixed-domain') ||
-    text.includes('carrier fleet') ||
-    text.includes('carrier node') ||
-    text.includes('carrier nodes') ||
-    text.includes('ad-hoc absorption') ||
-    text.includes('dummy server') ||
-    text.includes('tender modernization') ||
-    text.includes('dirty boq') ||
-    text.includes('unbuildable ad-hoc') ||
-    text.includes('loose memory') ||
-    text.includes('spare parts absorption') ||
+    HETEROGENEOUS_KEYWORD_RE.test(text) ||
     Boolean(context.heterogeneous) ||
     context.intent === 'HETEROGENEOUS_TENDER_MODERNIZATION';
 
@@ -319,16 +320,11 @@ function _classifyHeterogeneousAndCompetitor(text, context) {
     text.includes('?') &&
     !/\b(?:convert|transpile|transform|migrate|translate)\b/i.test(text);
 
+  const hasVendorTransformVerb = /convert|map|transform|migrate|translate/i.test(text) && /dell|cisco|lenovo|supermicro/i.test(text);
   const isCrossVendor = !isCrossVendorQuestion && (
-    text.includes('dell to hpe') ||
-    text.includes('cisco to hpe') ||
-    text.includes('lenovo to hpe') ||
-    text.includes('cross vendor') ||
-    text.includes('transpile') ||
-    text.includes('competitor quote') ||
-    (/convert|map|transform|migrate|translate/i.test(text) && /dell|cisco|lenovo|supermicro/i.test(text)) ||
-    Boolean(context.crossVendor) ||
-    Boolean(context.sourceVendor) ||
+    CROSS_VENDOR_DIRECT_RE.test(text) ||
+    hasVendorTransformVerb ||
+    Boolean(context.crossVendor || context.sourceVendor) ||
     context.intent === 'CROSS_VENDOR_TRANSFORMATION'
   );
 
@@ -407,14 +403,13 @@ function _classifyFileBased(text, filePath, context) {
   return null;
 }
 
-function _classifyAdvancedPresalesTracks(text, context, detectedPath) {
-  if (
-    text.includes('reconcile') ||
-    text.includes('compare bom') ||
-    text.includes('tender vs quote') ||
-    text.includes('ghost sku') ||
-    text.includes('quote comparison')
-  ) {
+const RECONCILE_KEYWORD_RE = /(?:reconcile|compare\s+bom|tender\s+vs\s+quote|ghost\s+sku|quote\s+comparison)/i;
+const CATALOG_KEYWORD_RE = /(?:price\s+trend|pricing\s+history|is\s+obsolete|lifecycle|direct\s+ship|gpl\s+price|list\s+price\s+of|options\s+added)/i;
+const SIZING_TEXT_KEYWORD_RE = /(?:size\s+a\s+server|sizing|build\s+a\s+bom|generate\s+a\s+bom|create\s+a\s+configuration)/i;
+const BOQ_TEXT_KEYWORD_RE = /(?:evaluate\s+boq|verify\s+bom|check\s+buildability|validate\s+boq)/i;
+
+function _classifyOptimizationTracks(text, context) {
+  if (RECONCILE_KEYWORD_RE.test(text)) {
     return {
       intent: 'BOM_RECONCILIATION',
       confidence: 0.94,
@@ -429,7 +424,7 @@ function _classifyAdvancedPresalesTracks(text, context, detectedPath) {
       !/\b(?:size|sizing|configure|config|build|quote|cluster|nodes?|need|ram|tb|gb|cores?)\b/i.test(text))) ||
     context.intent === 'WORKLOAD_DNA';
 
-  if (isWorkloadDna && !text.includes('reconcile')) {
+  if (isWorkloadDna) {
     return {
       intent: 'WORKLOAD_DNA',
       confidence: 0.95,
@@ -443,7 +438,7 @@ function _classifyAdvancedPresalesTracks(text, context, detectedPath) {
     Boolean(context.budget) ||
     context.intent === 'VALUE_ENGINEERING';
 
-  if (isValueEngineering && !text.includes('reconcile')) {
+  if (isValueEngineering) {
     return {
       intent: 'VALUE_ENGINEERING',
       confidence: 0.94,
@@ -464,12 +459,11 @@ function _classifyAdvancedPresalesTracks(text, context, detectedPath) {
       rationale: 'Query requests minimal-mutation alternative topology synthesis to prune troublesome SKUs and dependency bloat.'
     };
   }
+  return null;
+}
 
-  const isRemarksReconciliation =
-    /\b(?:commercial\s*remarks|reconciliation\s*remarks|append\s*remarks|engineering\s*remarks|commercial\s*action)\b/i.test(text) ||
-    context.intent === 'REMARKS_RECONCILIATION';
-
-  if (isRemarksReconciliation) {
+function _classifyLifecycleAndClusterTracks(text, context, detectedPath) {
+  if (/\b(?:commercial\s*remarks|reconciliation\s*remarks|append\s*remarks|engineering\s*remarks|commercial\s*action)\b/i.test(text) || context.intent === 'REMARKS_RECONCILIATION') {
     return {
       intent: 'REMARKS_RECONCILIATION',
       confidence: 0.94,
@@ -478,11 +472,7 @@ function _classifyAdvancedPresalesTracks(text, context, detectedPath) {
     };
   }
 
-  const isWorkbookGen =
-    /\b(?:generate.*(?:excel|workbook|spreadsheet|\.xlsx)|create.*(?:excel|workbook|spreadsheet|\.xlsx)|export.*(?:excel|workbook|spreadsheet|\.xlsx)|portal\s*upload|partner\s*portal|7[\s-]column\s*portal|standardized\s*7[\s-]column)\b/i.test(text) ||
-    context.intent === 'WORKBOOK_GENERATION';
-
-  if (isWorkbookGen && !text.includes('reconcile')) {
+  if (/\b(?:generate.*(?:excel|workbook|spreadsheet|\.xlsx)|create.*(?:excel|workbook|spreadsheet|\.xlsx)|export.*(?:excel|workbook|spreadsheet|\.xlsx)|portal\s*upload|partner\s*portal|7[\s-]column\s*portal|standardized\s*7[\s-]column)\b/i.test(text) || context.intent === 'WORKBOOK_GENERATION') {
     return {
       intent: 'WORKBOOK_GENERATION',
       confidence: 0.95,
@@ -505,11 +495,7 @@ function _classifyAdvancedPresalesTracks(text, context, detectedPath) {
     };
   }
 
-  const isAdversarial =
-    /\b(?:adversarial|red[\s-]team|stress[\s-]test|boundary[\s-]fuzz|chaos[\s-]test|fuzz\s*validation)\b/i.test(text) ||
-    context.intent === 'ADVERSARIAL_VALIDATION';
-
-  if (isAdversarial) {
+  if (/\b(?:adversarial|red[\s-]team|stress[\s-]test|boundary[\s-]fuzz|chaos[\s-]test|fuzz\s*validation)\b/i.test(text) || context.intent === 'ADVERSARIAL_VALIDATION') {
     return {
       intent: 'ADVERSARIAL_VALIDATION',
       confidence: 0.95,
@@ -518,11 +504,7 @@ function _classifyAdvancedPresalesTracks(text, context, detectedPath) {
     };
   }
 
-  const isContinuousLearning =
-    /\b(?:continuous[\s-]learning|record\s*feedback|reflect.*(?:feedback|error)|register\s*learned|quarantine\s*(?:delta|rule)|learning\s*reachability|feedback\s*loop)\b/i.test(text) ||
-    context.intent === 'CONTINUOUS_LEARNING';
-
-  if (isContinuousLearning) {
+  if (/\b(?:continuous[\s-]learning|record\s*feedback|reflect.*(?:feedback|error)|register\s*learned|quarantine\s*(?:delta|rule)|learning\s*reachability|feedback\s*loop)\b/i.test(text) || context.intent === 'CONTINUOUS_LEARNING') {
     return {
       intent: 'CONTINUOUS_LEARNING',
       confidence: 0.94,
@@ -531,11 +513,7 @@ function _classifyAdvancedPresalesTracks(text, context, detectedPath) {
     };
   }
 
-  const isKnowledgeSync =
-    /\b(?:knowledge[\s-]sync|synchroniz(?:e|ation)\s*knowledge|sync\s*deltas?|sync\s*catalog|inspect\s*drift|knowledge\s*drift|post[\s-]flow\s*sync)\b/i.test(text) ||
-    context.intent === 'KNOWLEDGE_SYNC';
-
-  if (isKnowledgeSync) {
+  if (/\b(?:knowledge[\s-]sync|synchroniz(?:e|ation)\s*knowledge|sync\s*deltas?|sync\s*catalog|inspect\s*drift|knowledge\s*drift|post[\s-]flow\s*sync)\b/i.test(text) || context.intent === 'KNOWLEDGE_SYNC') {
     return {
       intent: 'KNOWLEDGE_SYNC',
       confidence: 0.94,
@@ -547,27 +525,39 @@ function _classifyAdvancedPresalesTracks(text, context, detectedPath) {
   return null;
 }
 
-function _classifyCatalogSizingOrQa(text, filePath, context) {
-  const detectedSkus = (text.match(/\b([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6}|[A-Z0-9]{5,8}AAE|[HURS][A-Z0-9]{4,11})\b/gi) || []).filter(isValidHpeSKU);
-  const isSingleSkuInquiry = detectedSkus.length === 1 && !filePath && (!context.items || !Array.isArray(context.items) || context.items.length <= 1);
-  const isSingleSkuPricingOrLifecycle = isSingleSkuInquiry && (
+function _classifyAdvancedPresalesTracks(text, context, detectedPath) {
+  return _classifyOptimizationTracks(text, context) || _classifyLifecycleAndClusterTracks(text, context, detectedPath);
+}
+
+function _isSingleSkuCatalogQuery(text, filePath, context, detectedSkus) {
+  if (detectedSkus.length !== 1 || filePath) return false;
+  if (Array.isArray(context.items) && context.items.length > 1) return false;
+  return (
     /\b(?:price|pricing|cost|rate|gpl|list\s*price|trend|history|obsolete|eol|lifecycle|direct\s*ship|status|availability|available|details?|lookup|check\s+(?:sku|part|price|status)?)\b/i.test(text) ||
     !text.includes(' ') ||
     /^(?:check|show|get|find|lookup|inspect|price\s+of|cost\s+of|status\s+of)?\s*[a-z0-9-]+$/i.test(text)
   );
+}
 
-  const hasCatalogKeywords =
-    isSingleSkuPricingOrLifecycle ||
-    text.includes('price trend') ||
-    text.includes('pricing history') ||
-    text.includes('is obsolete') ||
-    text.includes('lifecycle') ||
-    text.includes('direct ship') ||
-    text.includes('gpl price') ||
-    text.includes('list price of') ||
-    text.includes('options added');
+function _hasSizingSpecificationKeywords(text) {
+  const serverModelPattern = /\b(?:dl\s*380a?|dl\s*145|dl\s*580|sy\s*480|synergy|alletra|cray|sn\s*3600b?|computescale|tensorscale|proliant)\b/i;
+  const specPattern = /\b(?:processor|cpu|cores?|memory|ram|dimm|gpus?|accelerators?|h200|h100|l40s|drive|drives|storage|nvme|ssd|1gbe|10gbe|25gbe|sfp|base-t|nodes?|units?|no\s+local\s+drive|basic\s+processor|minimum\s+memory)\b/i;
+  const hasSpecTokens = /\b(?:\d+x|\d+\s*(?:gb|tb|cores?|units?|nodes?)|with|plus|and)\b/i.test(text);
+  const isPresalesSpecification = (serverModelPattern.test(text) && specPattern.test(text) && hasSpecTokens) ||
+    /\b(?:tensorscale|computescale)\b/i.test(text);
+  const hasExplicitSizingVerb = /\b(?:size\s+a|sizing|build\s+a\s+bom|generate\s+a\s+bom|create\s+a\s+configuration|quote\s+me|configure|can\s+(?:i|we)\s+(?:get|order|configure|quote|have|build))\b/i.test(text);
+  const hasNeedSpec = text.includes('need') && /\b(?:cores|ram|tb\s+storage)\b/i.test(text);
 
-  if (hasCatalogKeywords) {
+  return (isPresalesSpecification && (!text.includes('?') || hasExplicitSizingVerb)) ||
+    SIZING_TEXT_KEYWORD_RE.test(text) ||
+    hasNeedSpec;
+}
+
+function _classifyCatalogSizingOrQa(text, filePath, context) {
+  const detectedSkus = (text.match(/\b([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6}|[A-Z0-9]{5,8}AAE|[HURS][A-Z0-9]{4,11})\b/gi) || []).filter(isValidHpeSKU);
+  const isSingleSkuPricingOrLifecycle = _isSingleSkuCatalogQuery(text, filePath, context, detectedSkus);
+
+  if (isSingleSkuPricingOrLifecycle || CATALOG_KEYWORD_RE.test(text)) {
     return {
       intent: 'CATALOG_INTELLIGENCE',
       confidence: 0.95,
@@ -578,28 +568,7 @@ function _classifyCatalogSizingOrQa(text, filePath, context) {
     };
   }
 
-  const serverModelPattern = /\b(?:dl\s*380a?|dl\s*145|dl\s*580|sy\s*480|synergy|alletra|cray|sn\s*3600b?|computescale|tensorscale|proliant)\b/i;
-  const specPattern = /\b(?:processor|cpu|cores?|memory|ram|dimm|gpus?|accelerators?|h200|h100|l40s|drive|drives|storage|nvme|ssd|1gbe|10gbe|25gbe|sfp|base-t|nodes?|units?|no\s+local\s+drive|basic\s+processor|minimum\s+memory)\b/i;
-  const hasSpecTokens = /\b(?:\d+x|\d+\s*(?:gb|tb|cores?|units?|nodes?)|with|plus|and)\b/i.test(text);
-  const isPresalesSpecification = (serverModelPattern.test(text) && specPattern.test(text) && hasSpecTokens) ||
-    /\b(?:tensorscale|computescale)\b/i.test(text);
-
-  const hasExplicitSizingVerb = /\b(?:size\s+a|sizing|build\s+a\s+bom|generate\s+a\s+bom|create\s+a\s+configuration|quote\s+me|configure|can\s+(?:i|we)\s+(?:get|order|configure|quote|have|build))\b/i.test(text);
-
-  const hasSizingKeywords =
-    (isPresalesSpecification && (!text.includes('?') || hasExplicitSizingVerb)) ||
-    text.includes('size a server') ||
-    text.includes('sizing') ||
-    text.includes('build a bom') ||
-    text.includes('generate a bom') ||
-    text.includes('create a configuration') ||
-    (text.includes('need') && (text.includes('cores') || text.includes('ram') || text.includes('tb storage')));
-
-  const detectedSkuTokens = (text.match(/\b([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6}|[A-Z0-9]{5,8}AAE|[HURS][A-Z0-9]{4,11})\b/gi) || []).filter(isValidHpeSKU);
-  const hasSkuTokens = detectedSkuTokens.length >= 2;
-  const hasBoqKeywords = text.includes('evaluate boq') || text.includes('verify bom') || text.includes('check buildability') || text.includes('validate boq');
-
-  if (hasSkuTokens || hasBoqKeywords) {
+  if (detectedSkus.length >= 2 || BOQ_TEXT_KEYWORD_RE.test(text)) {
     return {
       intent: 'BOQ_EVALUATION',
       confidence: 0.90,
@@ -608,7 +577,6 @@ function _classifyCatalogSizingOrQa(text, filePath, context) {
     };
   }
 
-  // Workload DNA upfront classification
   let workloadDna = null;
   try {
     const { inferWorkloadDnaFromText } = require('../lib/conflict/workload_dna.js');
@@ -617,7 +585,7 @@ function _classifyCatalogSizingOrQa(text, filePath, context) {
     workloadDna = null;
   }
 
-  if (workloadDna && workloadDna.confidence >= 0.70 && detectedSkuTokens.length === 0) {
+  if (workloadDna && workloadDna.confidence >= 0.70 && detectedSkus.length === 0) {
     const workloadLabel = workloadDna.primaryWorkload || workloadDna.workloadType;
     return {
       intent: 'RFP_SIZING_TO_BOM',
@@ -628,7 +596,7 @@ function _classifyCatalogSizingOrQa(text, filePath, context) {
     };
   }
 
-  if (hasSizingKeywords) {
+  if (_hasSizingSpecificationKeywords(text)) {
     return {
       intent: 'RFP_SIZING_TO_BOM',
       confidence: 0.95,
@@ -907,44 +875,51 @@ async function _handleOcrQuoteIngestion(queryText, context) {
   };
 }
 
+function _readSkuPriceHistory(catalogDir, targetSku) {
+  if (!catalogDir) return null;
+  const historyFile = path.join(catalogDir, 'history', 'price_history.json');
+  if (!fs.existsSync(historyFile)) return null;
+  try {
+    const hist = JSON.parse(fs.readFileSync(historyFile, 'utf-8'));
+    return targetSku ? (hist[targetSku] || null) : hist;
+  } catch (e) {
+    logger.warn('ROUTE_QUERY', `Failed reading price history file at ${historyFile}: ${e?.message}`);
+    return null;
+  }
+}
+
+function _mapCatalogSkuDetail(entry, found) {
+  const unitPriceRaw = found['Unit Price (USD)'];
+  return {
+    sku: found.sku || found['Product #'],
+    description: found.Description || found.description,
+    category: entry.parentCategory || entry.subCategory || found.category || 'General Option',
+    subCategory: entry.subCategory || null,
+    lifecycleStatus: found.lifecycleStatus || found['Lifecycle Status'] || found['CLIC Status'] || 'Active',
+    effectiveStartDate: found['Start Date'] || found.effectiveStartDate || null,
+    discontinuedDate: found['Discontinued Date'] || found.discontinuedDate || null,
+    currentPriceUsd: found.listPrice || (unitPriceRaw ? parseFloat(unitPriceRaw) : null),
+    priceHistoryTrail: found['Price History Trail'] || null,
+    availability: found.Availability || null
+  };
+}
+
+function _findLiveSkuDetails(catalogData, targetSku) {
+  if (!targetSku || !catalogData?.entries) return null;
+  for (const entry of catalogData.entries) {
+    if (!Array.isArray(entry.skus)) continue;
+    const found = entry.skus.find(it => cleanBaseSKU(it.sku || it['Product #']) === targetSku);
+    if (found) return _mapCatalogSkuDetail(entry, found);
+  }
+  return null;
+}
+
 function _handleCatalogIntelligence(queryText, context) {
   const skuCandidates = (queryText.match(/\b([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6}|[A-Z0-9]{5,8}AAE|[HURS][A-Z0-9]{4,11})\b/gi) || []).filter(isValidHpeSKU);
   const targetSku = skuCandidates.length > 0 ? cleanBaseSKU(skuCandidates[0]) : null;
   const chassisInfo = getChassisCatalog(queryText, context);
-  const historyFile = chassisInfo.catalogDir ? path.join(chassisInfo.catalogDir, 'history', 'price_history.json') : null;
-  let skuHistory = null;
-  if (historyFile && fs.existsSync(historyFile)) {
-    try {
-      const hist = JSON.parse(fs.readFileSync(historyFile, 'utf-8'));
-      skuHistory = targetSku ? (hist[targetSku] || null) : hist;
-    } catch (e) {
-      logger.warn('ROUTE_QUERY', `Failed reading price history file at ${historyFile}: ${e?.message}`);
-    }
-  }
-
-  let liveSkuDetails = null;
-  if (targetSku && chassisInfo.catalogData?.entries) {
-    for (const entry of chassisInfo.catalogData.entries) {
-      if (Array.isArray(entry.skus)) {
-        const found = entry.skus.find(it => cleanBaseSKU(it.sku || it['Product #']) === targetSku);
-        if (found) {
-          liveSkuDetails = {
-            sku: found.sku || found['Product #'],
-            description: found.Description || found.description,
-            category: entry.parentCategory || entry.subCategory || found.category || 'General Option',
-            subCategory: entry.subCategory || null,
-            lifecycleStatus: found.lifecycleStatus || found['Lifecycle Status'] || found['CLIC Status'] || 'Active',
-            effectiveStartDate: found['Start Date'] || found.effectiveStartDate || null,
-            discontinuedDate: found['Discontinued Date'] || found.discontinuedDate || null,
-            currentPriceUsd: found.listPrice || (found['Unit Price (USD)'] ? parseFloat(found['Unit Price (USD)']) : null),
-            priceHistoryTrail: found['Price History Trail'] || null,
-            availability: found.Availability || null
-          };
-          break;
-        }
-      }
-    }
-  }
+  const skuHistory = _readSkuPriceHistory(chassisInfo.catalogDir, targetSku);
+  const liveSkuDetails = _findLiveSkuDetails(chassisInfo.catalogData, targetSku);
 
   return {
     targetSku,
@@ -966,17 +941,12 @@ function _handleCatalogIntelligence(queryText, context) {
   };
 }
 
-async function _handleRfpSizing(queryText, context) {
-  const chassisInfo = getChassisCatalog(queryText, context);
-  const nodeMatch = queryText.match(/\b(\d+)\s*(?:nodes?|servers?|units?|appliances?|clusters?)\b/i);
-  const serverCount = nodeMatch ? parseInt(nodeMatch[1], 10) : (context.serverCount || 1);
-
+function _parseRfpRawLines(queryText) {
   let rawLines = queryText.split(/[\r\n;]+/).map(l => l.trim()).filter(Boolean);
   if (rawLines.length === 1) {
     const clauses = queryText.split(/\s+(?:with|and|plus|,)\s+/i).map(c => c.trim()).filter(Boolean);
     if (clauses.length > 1) rawLines = clauses;
   }
-  // Filter out leading chassis declaration clause if it doesn't contain component specs
   if (rawLines.length > 1) {
     const first = rawLines[0];
     const hasSpec = /\b(?:processor|cpu|cores?|memory|ram|dimm|gpus?|accelerators?|h200|h100|drive|drives|storage|nvme|ssd|nic|adapter|power)\b/i.test(first);
@@ -984,66 +954,70 @@ async function _handleRfpSizing(queryText, context) {
       rawLines.shift();
     }
   }
+  return rawLines;
+}
+
+function _inferResolutionQuantity(r) {
+  const qtyMatch = r.input.match(/\b(\d+)\s*(?:x|units?|pcs?|processors?|cpus?|dimms?|drives?|ssds?|psus?)\b/i);
+  if (qtyMatch) return parseInt(qtyMatch[1], 10) || 1;
+  if (r.expectedRole === 'Processor' && r.input.toLowerCase().includes('dual')) return 2;
+  return 1;
+}
+
+function _buildRfpCandidateItems(chassisInfo, rawLines, serverCount) {
   const unresolvedRequirements = rawLines.map(line => ({ line }));
+  if (!chassisInfo.catalogData) {
+    return { sizingResult: null, candidateItems: [], evaluation: null };
+  }
 
-  let sizingResult = null;
-  let candidateItems = [];
-  let evaluation = null;
+  const sizingResult = resolveRequirementIntent({
+    rawLines,
+    unresolvedRequirements,
+    catalogData: chassisInfo.catalogData,
+    productConfirmed: true
+  });
 
-  if (chassisInfo.catalogData) {
-    sizingResult = resolveRequirementIntent({
-      rawLines,
-      unresolvedRequirements,
-      catalogData: chassisInfo.catalogData,
-      productConfirmed: true
+  const candidateItems = [];
+  const baseSku = getBaseChassisSku(chassisInfo.chassisKey);
+  if (baseSku) {
+    candidateItems.push({
+      sku: baseSku,
+      quantity: 1,
+      description: `${chassisInfo.chassisKey} CTO Base Chassis`
     });
+  }
 
-    const baseSku = getBaseChassisSku(chassisInfo.chassisKey);
-    if (baseSku) {
+  for (const r of (sizingResult.resolutions || [])) {
+    const sku = r.appliedSku || r.candidates?.[0]?.sku;
+    if (sku && isValidHpeSKU(sku)) {
       candidateItems.push({
-        sku: baseSku,
-        quantity: 1,
-        description: `${chassisInfo.chassisKey} CTO Base Chassis`
+        sku,
+        quantity: _inferResolutionQuantity(r),
+        description: r.candidates?.[0]?.description || r.input,
+        role: r.expectedRole,
+        confidence: r.confidence
       });
-    }
-
-    (sizingResult.resolutions || []).forEach(r => {
-      const sku = r.appliedSku || r.candidates?.[0]?.sku;
-      if (sku && isValidHpeSKU(sku)) {
-        let qty = 1;
-        const qtyMatch = r.input.match(/\b(\d+)\s*(?:x|units?|pcs?|processors?|cpus?|dimms?|drives?|ssds?|psus?)\b/i);
-        if (qtyMatch) {
-          qty = parseInt(qtyMatch[1], 10) || 1;
-        } else if (r.expectedRole === 'Processor' && r.input.toLowerCase().includes('dual')) {
-          qty = 2;
-        }
-        candidateItems.push({
-          sku,
-          quantity: qty,
-          description: r.candidates?.[0]?.description || r.input,
-          role: r.expectedRole,
-          confidence: r.confidence
-        });
-      }
-    });
-
-    if (candidateItems.length > 0) {
-      try {
-        evaluation = evaluateBOQMultiAspect(candidateItems, {
-          chassis: chassisInfo.chassisKey,
-          targetDir: chassisInfo.catalogDir || '',
-          catalogData: chassisInfo.catalogData,
-          productConfirmed: !chassisInfo.isAmbiguous,
-          serverCount
-        });
-      } catch (evalErr) {
-        evaluation = { error: evalErr.message };
-      }
     }
   }
 
-  let traceId = null;
-  let evidenceLogPath = null;
+  let evaluation = null;
+  if (candidateItems.length > 0) {
+    try {
+      evaluation = evaluateBOQMultiAspect(candidateItems, {
+        chassis: chassisInfo.chassisKey,
+        targetDir: chassisInfo.catalogDir || '',
+        catalogData: chassisInfo.catalogData,
+        productConfirmed: !chassisInfo.isAmbiguous,
+        serverCount
+      });
+    } catch (evalErr) {
+      evaluation = { error: evalErr.message };
+    }
+  }
+  return { sizingResult, candidateItems, evaluation };
+}
+
+function _recordRfpSizingLedger(queryText, context, chassisInfo, serverCount, rawLines, candidateItems, sizingResult, evaluation) {
   try {
     const { createEvidenceLedger } = require('../lib/system/evidence_ledger.js');
     const crypto = require('crypto');
@@ -1054,7 +1028,7 @@ async function _handleRfpSizing(queryText, context) {
       query: queryText,
       filePath: context.filePath || null
     });
-    traceId = ledger.traceId;
+    const traceId = ledger.traceId;
     ledger.customerInput.filePath = context.filePath || 'QUERY_INPUT_SIZING';
     ledger.customerInput.queryText = queryText;
     ledger.recordArtifact('CUSTOMER_INPUT', null, {
@@ -1070,7 +1044,7 @@ async function _handleRfpSizing(queryText, context) {
     ledger.completePhase(2, chassisInfo.catalogData ? 'PASSED' : 'ACTION_REQUIRED', { chassisKey: chassisInfo.chassisKey });
 
     ledger.startPhase(3, '7-Aspect Physical Evaluation of Sized Candidate BOM', { candidateItemCount: candidateItems.length });
-    candidateItems.forEach(item => {
+    for (const item of candidateItems) {
       ledger.recordSkuAudit(
         item.sku,
         'SIZED_CANDIDATE_SKU',
@@ -1079,20 +1053,22 @@ async function _handleRfpSizing(queryText, context) {
         item.role || item.category || 'Candidate Component',
         { quantity: item.quantity, serverCount }
       );
-    });
-    ledger.completePhase(3, evaluation && !evaluation.error && evaluation.mathFrameworkPass === true && !evaluation.errors?.length ? 'PASSED' : 'ACTION_REQUIRED', {
+    }
+    const phase3Pass = Boolean(evaluation && !evaluation.error && evaluation.mathFrameworkPass === true && !evaluation.errors?.length);
+    ledger.completePhase(3, phase3Pass ? 'PASSED' : 'ACTION_REQUIRED', {
       errors: evaluation?.errors?.length || 0,
       confidenceScore: evaluation?.confidence?.score || null
     });
 
+    const isClarificationFree = Boolean(sizingResult && !sizingResult.requiresHumanClarification);
     ledger.startPhase(4, 'Workload DNA & Construction Plan Analysis', { constructionPlan: sizingResult?.constructionPlan || [] });
-    ledger.completePhase(4, sizingResult && !sizingResult.requiresHumanClarification ? 'PASSED' : 'ACTION_REQUIRED', { resolutionsCount: sizingResult?.resolutions?.length || 0 });
+    ledger.completePhase(4, isClarificationFree ? 'PASSED' : 'ACTION_REQUIRED', { resolutionsCount: sizingResult?.resolutions?.length || 0 });
 
     ledger.startPhase(5, 'Strategy Synthesis & Multi-Node Cluster Sizing', { serverCount });
     ledger.completePhase(5, 'ACTION_REQUIRED', { clusterSizing: evaluation?.clusterSizing || null, reason: 'Sized candidates require full pipeline validation before ranking or delivery.' });
 
     ledger.startPhase(6, 'Confidence Floor & Presales Clarification Scoring', { requiresClarification: sizingResult?.requiresHumanClarification });
-    ledger.completePhase(6, !sizingResult || sizingResult.requiresHumanClarification ? 'ACTION_REQUIRED' : 'PASSED', {
+    ledger.completePhase(6, isClarificationFree ? 'PASSED' : 'ACTION_REQUIRED', {
       requiresHumanClarification: sizingResult?.requiresHumanClarification
     });
 
@@ -1106,32 +1082,45 @@ async function _handleRfpSizing(queryText, context) {
     ledger.completePhase(9, 'ACTION_REQUIRED', { status: 'SIZING_DRAFT', reason: 'Knowledge synchronization has not run in the sizing path.' });
 
     const exported = ledger.finalizeAndExport();
-    evidenceLogPath = exported.jsonPath;
+    return { traceId, evidenceLogPath: exported.jsonPath };
   } catch (err) {
-    const _logger = require('../lib/system/pipeline_logger.js');
-    _logger.warn('ROUTE_QUERY', 'Failed to finalize RFP sizing evidence ledger', err);
+    logger.warn('ROUTE_QUERY', 'Failed to finalize RFP sizing evidence ledger', err);
+    return { traceId: null, evidenceLogPath: null };
   }
+}
 
-  let evaluatedSolution = null;
+async function _continueRfpEvaluationIfRequested(context, candidateItems, chassisInfo, serverCount, traceId) {
   const shouldContinue = Boolean(context.continueEvaluation || context.evaluateImmediately || context.evaluate);
-  if (shouldContinue && candidateItems.length > 0) {
-    try {
-      const { runEvaluationPipeline } = require('./eval_boq.js');
-      evaluatedSolution = await runEvaluationPipeline({
-        inputItems: candidateItems,
-        chassisDir: chassisInfo.catalogDir,
-        serverCount,
-        OFFLINE_MODE: context.offlineMode !== false && !context.enableCloudValidation,
-        JSON_MODE: true,
-        traceId,
-        deadline: context.deadline || null,
-        cancellationToken: context.cancellationToken || null,
-        options: context.options || {}
-      });
-    } catch (evalErr) {
-      evaluatedSolution = { status: 'ERROR', error: evalErr.message };
-    }
+  if (!shouldContinue || candidateItems.length === 0) return null;
+  try {
+    const { runEvaluationPipeline } = require('./eval_boq.js');
+    return await runEvaluationPipeline({
+      inputItems: candidateItems,
+      chassisDir: chassisInfo.catalogDir,
+      serverCount,
+      OFFLINE_MODE: context.offlineMode !== false && !context.enableCloudValidation,
+      JSON_MODE: true,
+      traceId,
+      deadline: context.deadline || null,
+      cancellationToken: context.cancellationToken || null,
+      options: context.options || {}
+    });
+  } catch (evalErr) {
+    return { status: 'ERROR', error: evalErr.message };
   }
+}
+
+async function _handleRfpSizing(queryText, context) {
+  const chassisInfo = getChassisCatalog(queryText, context);
+  const nodeMatch = queryText.match(/\b(\d+)\s*(?:nodes?|servers?|units?|appliances?|clusters?)\b/i);
+  const serverCount = nodeMatch ? parseInt(nodeMatch[1], 10) : (context.serverCount || 1);
+  const rawLines = _parseRfpRawLines(queryText);
+
+  const { sizingResult, candidateItems, evaluation } = _buildRfpCandidateItems(chassisInfo, rawLines, serverCount);
+  const { traceId, evidenceLogPath } = _recordRfpSizingLedger(
+    queryText, context, chassisInfo, serverCount, rawLines, candidateItems, sizingResult, evaluation
+  );
+  const evaluatedSolution = await _continueRfpEvaluationIfRequested(context, candidateItems, chassisInfo, serverCount, traceId);
 
   const status = candidateItems.length === 0
     ? 'REQUIRES_HUMAN_CLARIFICATION'
@@ -1186,55 +1175,56 @@ function _formatReconciliationMessage(auditReport, actuallyTwoBaseline, singleFi
   return `Single-file vendor quote audited against catalog ${chassisKey}${issueText}. ${singleFileNote}`;
 }
 
+function _normalizeUncatalogedSkus(skus = []) {
+  return skus.map(entry => {
+    const skuCode = typeof entry === 'string' ? entry : (entry?.sku || '');
+    const valid = isValidHpeSKU(skuCode);
+    return {
+      ...(typeof entry === 'object' ? entry : {}),
+      sku: skuCode,
+      isValidFormat: valid,
+      note: valid
+        ? 'Valid HPE SKU format; uncataloged in current scraped snapshot (check latest QuickSpecs or regional catalog).'
+        : 'Unrecognized SKU format; potential typo or non-HPE part number.'
+    };
+  });
+}
+
+function _resolveReconciliationBaseline(customerFile, context) {
+  if (customerFile && fs.existsSync(customerFile)) {
+    const customerItems = readRoutedItems({ filePath: customerFile, targetSheet: context.targetSheet });
+    if (Array.isArray(customerItems) && customerItems.length > 0) {
+      return {
+        proposedSolution: { rank: 1, name: 'Original customer baseline', skuList: customerItems },
+        isTwoBaseline: true,
+        customerFileEmpty: false
+      };
+    }
+    return { proposedSolution: null, isTwoBaseline: false, customerFileEmpty: true };
+  }
+  if (context.proposedSolution) {
+    const pItems = context.proposedSolution.skuList || context.proposedSolution.skuPartsList || [];
+    if (Array.isArray(pItems) && pItems.length > 0) {
+      return { proposedSolution: context.proposedSolution, isTwoBaseline: true, customerFileEmpty: false };
+    }
+  }
+  return { proposedSolution: null, isTwoBaseline: false, customerFileEmpty: false };
+}
+
 function _handleBomReconciliation(queryText, context) {
   const chassisInfo = getChassisCatalog(queryText, context);
   const vendorFile = context.vendorFilePath || context.secondaryFilePath || (context.filePath?.toLowerCase().includes('vendor') ? context.filePath : null);
   const customerFile = context.customerFilePath || (context.secondaryFilePath ? context.filePath : null);
 
-  const normalizeUncataloged = (skus = []) => {
-    return skus.map(entry => {
-      const skuCode = typeof entry === 'string' ? entry : (entry?.sku || '');
-      const valid = isValidHpeSKU(skuCode);
-      return {
-        ...(typeof entry === 'object' ? entry : {}),
-        sku: skuCode,
-        isValidFormat: valid,
-        note: valid
-          ? 'Valid HPE SKU format; uncataloged in current scraped snapshot (check latest QuickSpecs or regional catalog).'
-          : 'Unrecognized SKU format; potential typo or non-HPE part number.'
-      };
-    });
-  };
-
   if (vendorFile && fs.existsSync(vendorFile)) {
-    let proposedSolution = null;
-    let isTwoBaseline = false;
-    let customerFileEmpty = false;
-    if (customerFile && fs.existsSync(customerFile)) {
-      const customerItems = readRoutedItems({ filePath: customerFile, targetSheet: context.targetSheet });
-      if (Array.isArray(customerItems) && customerItems.length > 0) {
-        proposedSolution = { rank: 1, name: 'Original customer baseline', skuList: customerItems };
-        isTwoBaseline = true;
-      } else {
-        customerFileEmpty = true;
-      }
-    } else if (context.proposedSolution) {
-      const pItems = context.proposedSolution.skuList || context.proposedSolution.skuPartsList || [];
-      if (Array.isArray(pItems) && pItems.length > 0) {
-        proposedSolution = context.proposedSolution;
-        isTwoBaseline = true;
-      }
-    }
-
+    const { proposedSolution, isTwoBaseline, customerFileEmpty } = _resolveReconciliationBaseline(customerFile, context);
     const auditReport = isTwoBaseline
       ? verifyVendorBOM(path.resolve(vendorFile), proposedSolution, chassisInfo.catalogDir)
       : auditSingleVendorBOM(path.resolve(vendorFile), chassisInfo.catalogDir);
 
-    // Re-verify that auditReport actually ran as two-baseline comparison
     const actuallyTwoBaseline = isTwoBaseline && Boolean(auditReport?.isTwoBaselineComparison);
-
     if (auditReport?.discrepancies?.uncatalogedSkus?.length) {
-      auditReport.discrepancies.uncatalogedSkus = normalizeUncataloged(auditReport.discrepancies.uncatalogedSkus);
+      auditReport.discrepancies.uncatalogedSkus = _normalizeUncatalogedSkus(auditReport.discrepancies.uncatalogedSkus);
     }
     const singleFileNote = customerFileEmpty
       ? 'Note: Customer tender was provided but contained no recognizable items; comparison requires both valid files.'
@@ -1248,10 +1238,11 @@ function _handleBomReconciliation(queryText, context) {
       message: _formatReconciliationMessage(auditReport, actuallyTwoBaseline, singleFileNote, chassisInfo.chassisKey),
       suggestedAction: actuallyTwoBaseline ? null : 'SUPPLY_CUSTOMER_TENDER_FOR_FULL_RECONCILIATION'
     };
-  } else if (context.filePath && fs.existsSync(context.filePath)) {
+  }
+  if (context.filePath && fs.existsSync(context.filePath)) {
     const auditReport = auditSingleVendorBOM(path.resolve(context.filePath), chassisInfo.catalogDir);
     if (auditReport?.discrepancies?.uncatalogedSkus?.length) {
-      auditReport.discrepancies.uncatalogedSkus = normalizeUncataloged(auditReport.discrepancies.uncatalogedSkus);
+      auditReport.discrepancies.uncatalogedSkus = _normalizeUncatalogedSkus(auditReport.discrepancies.uncatalogedSkus);
     }
     return {
       intent: 'BOM_RECONCILIATION',
@@ -1261,15 +1252,14 @@ function _handleBomReconciliation(queryText, context) {
       message: _formatReconciliationMessage(auditReport, false, 'Note: Customer tender was not provided; comparison requires both files.', chassisInfo.chassisKey),
       suggestedAction: 'SUPPLY_CUSTOMER_TENDER_FOR_FULL_RECONCILIATION'
     };
-  } else {
-    return {
-      intent: 'BOM_RECONCILIATION',
-      status: 'INPUT_REQUIRED',
-      isTwoBaselineComparison: false,
-      message: 'BOM Reconciliation requires a vendor quote file (--vendor) and customer tender file (--customer).',
-      suggestedAction: 'UPLOAD_VENDOR_AND_CUSTOMER_SPREADSHEETS'
-    };
   }
+  return {
+    intent: 'BOM_RECONCILIATION',
+    status: 'INPUT_REQUIRED',
+    isTwoBaselineComparison: false,
+    message: 'BOM Reconciliation requires a vendor quote file (--vendor) and customer tender file (--customer).',
+    suggestedAction: 'UPLOAD_VENDOR_AND_CUSTOMER_SPREADSHEETS'
+  };
 }
 
 async function _handleHeterogeneousTenderModernization(queryText, context) {
@@ -1345,57 +1335,124 @@ async function _handleHeterogeneousTenderModernization(queryText, context) {
   };
 }
 
-async function _handleCrossVendorTransformation(queryText, context) {
-  const { transformCompetitorQuote } = require('../lib/boq/cross_vendor_transformer.js');
-  const targetChassis = context.targetHpeChassis || context.chassisName || null;
-  const qLower = (typeof queryText === 'string' ? queryText : '').toLowerCase();
-  let sourceVendor = context.sourceVendor || ['cisco', 'lenovo', 'supermicro', 'dell'].find(vendor => qLower.includes(vendor))?.toUpperCase() || null;
-  const nodeCount = context.nodeMultiplier ?? context.nodes ?? 1;
+const COMPETITOR_VENDORS = ['cisco', 'lenovo', 'supermicro', 'dell'];
+const OCR_IMAGE_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp', '.tiff', '.bmp', '.pdf'];
 
-  let inputData = context.competitorSpec || queryText;
-  let ocrProvenance = null;
-  if (context.filePath) {
-    const extension = path.extname(context.filePath).toLowerCase();
-    if (['.png', '.jpg', '.jpeg', '.webp', '.tiff', '.bmp', '.pdf'].includes(extension)) {
-      if (!fs.existsSync(context.filePath)) {
-        return {
+function _detectVendorFromText(str) {
+  const lower = typeof str === 'string' ? str.toLowerCase() : '';
+  return COMPETITOR_VENDORS.find(vendor => lower.includes(vendor))?.toUpperCase() || null;
+}
+
+async function _ingestCompetitorFileInput(context, currentSourceVendor) {
+  if (!context.filePath) {
+    return { inputData: context.competitorSpec, ocrProvenance: null, sourceVendor: currentSourceVendor };
+  }
+  const extension = path.extname(context.filePath).toLowerCase();
+  if (OCR_IMAGE_EXTENSIONS.includes(extension)) {
+    if (!fs.existsSync(context.filePath)) {
+      return {
+        earlyReturn: {
           intent: 'CROSS_VENDOR_TRANSFORMATION',
           status: 'FILE_NOT_FOUND',
           error: `Target image file not found: ${context.filePath}`
-        };
-      }
-      const { performGeminiOcr } = require('../lib/ocr/ocr_service.js');
-      const ocrResult = await performGeminiOcr(context.filePath, context);
-      if (ocrResult && ocrResult.isOcrProcessed && ocrResult.ocrStatus === 'SUCCESS' && ocrResult.text) {
-        inputData = ocrResult.text;
-        ocrProvenance = {
-          sourceDocument: path.resolve(context.filePath),
-          modelUsed: ocrResult.modelUsed,
-          lineCount: ocrResult.lineCount,
-          detectedSkus: ocrResult.detectedSkus
-        };
-        if (!sourceVendor && typeof inputData === 'string') {
-          const inLower = inputData.toLowerCase();
-          sourceVendor = ['cisco', 'lenovo', 'supermicro', 'dell'].find(vendor => inLower.includes(vendor))?.toUpperCase() || null;
         }
-      } else {
-        return {
+      };
+    }
+    const { performGeminiOcr } = require('../lib/ocr/ocr_service.js');
+    const ocrResult = await performGeminiOcr(context.filePath, context);
+    if (!ocrResult || !ocrResult.isOcrProcessed || ocrResult.ocrStatus !== 'SUCCESS' || !ocrResult.text) {
+      return {
+        earlyReturn: {
           intent: 'CROSS_VENDOR_TRANSFORMATION',
           status: 'OCR_EXTRACTION_FAILED',
           error: ocrResult?.rawError || ocrResult?.text || 'OCR processing failed for competitor image quote.',
           remediationAction: ocrResult?.remediationAction || 'Check image clarity or provide structured text/JSON quote.'
-        };
-      }
-    } else if (!['.txt', '.md', '.json'].includes(extension)) {
-      return {
+        }
+      };
+    }
+    const inputData = ocrResult.text;
+    const ocrProvenance = {
+      sourceDocument: path.resolve(context.filePath),
+      modelUsed: ocrResult.modelUsed,
+      lineCount: ocrResult.lineCount,
+      detectedSkus: ocrResult.detectedSkus
+    };
+    const sourceVendor = currentSourceVendor || _detectVendorFromText(inputData);
+    return { inputData, ocrProvenance, sourceVendor };
+  }
+  if (!['.txt', '.md', '.json'].includes(extension)) {
+    return {
+      earlyReturn: {
         intent: 'CROSS_VENDOR_TRANSFORMATION', status: 'STRUCTURED_TENDER_REQUIRED',
         message: 'Ingest spreadsheets and scanned quotes before transformation; binary files cannot be read as tender text.'
-      };
-    } else {
-      const contents = fs.readFileSync(context.filePath, 'utf8');
-      inputData = extension === '.json' ? JSON.parse(contents) : contents;
+      }
+    };
+  }
+  const contents = fs.readFileSync(context.filePath, 'utf8');
+  return {
+    inputData: extension === '.json' ? JSON.parse(contents) : contents,
+    ocrProvenance: null,
+    sourceVendor: currentSourceVendor
+  };
+}
+
+function _computeCompetitorParityGaps(spec, candidateBom) {
+  const parityGaps = [];
+  if (spec?.compute?.totalCores != null) {
+    const cpuItems = candidateBom.filter(it => /\b(xeon|epyc|processor|cpu)\b/i.test(it.description || ''));
+    const candidateCores = cpuItems.reduce((acc, it) => {
+      const cores = Number(it.description?.match(/(\d+)[\s-]*(?:cores?|c\b)/i)?.[1] || 0);
+      return acc + (cores * (it.quantity || 1));
+    }, 0);
+    if (candidateCores < spec.compute.totalCores) {
+      parityGaps.push({
+        subsystem: 'COMPUTE_PROCESSORS',
+        status: 'GAP_IDENTIFIED',
+        requested: spec.compute.totalCores,
+        candidate: candidateCores,
+        reason: 'Candidate cores below requested specification.'
+      });
     }
   }
+  if (spec?.memory?.totalMemoryGb != null) {
+    const memItems = candidateBom.filter(it => /\b(rdimm|dimm|memory)\b/i.test(it.description || ''));
+    const candidateMem = memItems.reduce((acc, it) => {
+      const cap = Number(it.description?.match(/(\d+)\s*gb/i)?.[1] || 0);
+      return acc + (cap * (it.quantity || 1));
+    }, 0);
+    if (candidateMem < spec.memory.totalMemoryGb) {
+      parityGaps.push({
+        subsystem: 'MEMORY_TOPOLOGY',
+        status: 'GAP_IDENTIFIED',
+        requested: spec.memory.totalMemoryGb,
+        candidate: candidateMem,
+        reason: 'Candidate memory capacity below requested specification.'
+      });
+    }
+  }
+  return parityGaps;
+}
+
+function _deriveCrossVendorStatus(targetChassis, candidateBom, evaluatedSolution) {
+  if (!targetChassis) return 'TARGET_PRODUCT_REQUIRED';
+  if (!candidateBom.length) return 'SCOPED_SIZING_REQUIRED';
+  if (!evaluatedSolution) return 'CANDIDATE_EVALUATION_REQUIRED';
+  return evaluatedSolution.errors?.length > 0
+    ? 'CANDIDATE_VIOLATIONS_DETECTED'
+    : 'CANDIDATE_EVALUATION_COMPLETE';
+}
+
+async function _handleCrossVendorTransformation(queryText, context) {
+  const { transformCompetitorQuote } = require('../lib/boq/cross_vendor_transformer.js');
+  const targetChassis = context.targetHpeChassis || context.chassisName || null;
+  let sourceVendor = context.sourceVendor || _detectVendorFromText(queryText);
+  const nodeCount = context.nodeMultiplier ?? context.nodes ?? 1;
+
+  const fileIngest = await _ingestCompetitorFileInput(context, sourceVendor);
+  if (fileIngest.earlyReturn) return fileIngest.earlyReturn;
+  const inputData = fileIngest.inputData || queryText;
+  const ocrProvenance = fileIngest.ocrProvenance;
+  sourceVendor = fileIngest.sourceVendor;
 
   const candidateItems = context.targetBom || (Array.isArray(context.items) ? context.items : null);
   const transformResult = transformCompetitorQuote(inputData, sourceVendor, targetChassis, {
@@ -1403,31 +1460,9 @@ async function _handleCrossVendorTransformation(queryText, context) {
   });
 
   let evaluatedSolution = null;
-  const parityGaps = [];
-  const spec = transformResult.competitorSpec;
-
+  let parityGaps = [];
   if (targetChassis && transformResult.candidateBom.length > 0) {
-    if (spec.compute?.totalCores != null) {
-      const cpuItems = transformResult.candidateBom.filter(it => /\b(xeon|epyc|processor|cpu)\b/i.test(it.description || ''));
-      const candidateCores = cpuItems.reduce((acc, it) => {
-        const cores = Number(it.description?.match(/(\d+)[\s-]*(?:cores?|c\b)/i)?.[1] || 0);
-        return acc + (cores * (it.quantity || 1));
-      }, 0);
-      if (candidateCores < spec.compute.totalCores) {
-        parityGaps.push({ subsystem: 'COMPUTE_PROCESSORS', status: 'GAP_IDENTIFIED', requested: spec.compute.totalCores, candidate: candidateCores, reason: 'Candidate cores below requested specification.' });
-      }
-    }
-    if (spec.memory?.totalMemoryGb != null) {
-      const memItems = transformResult.candidateBom.filter(it => /\b(rdimm|dimm|memory)\b/i.test(it.description || ''));
-      const candidateMem = memItems.reduce((acc, it) => {
-        const cap = Number(it.description?.match(/(\d+)\s*gb/i)?.[1] || 0);
-        return acc + (cap * (it.quantity || 1));
-      }, 0);
-      if (candidateMem < spec.memory.totalMemoryGb) {
-        parityGaps.push({ subsystem: 'MEMORY_TOPOLOGY', status: 'GAP_IDENTIFIED', requested: spec.memory.totalMemoryGb, candidate: candidateMem, reason: 'Candidate memory capacity below requested specification.' });
-      }
-    }
-
+    parityGaps = _computeCompetitorParityGaps(transformResult.competitorSpec, transformResult.candidateBom);
     if (context.continueEvaluation) {
       try {
         const chassisInfo = getChassisCatalog(targetChassis, context);
@@ -1442,19 +1477,11 @@ async function _handleCrossVendorTransformation(queryText, context) {
     }
   }
 
-  const finalStatus = !targetChassis
-    ? 'TARGET_PRODUCT_REQUIRED'
-    : (transformResult.candidateBom.length === 0
-      ? 'SCOPED_SIZING_REQUIRED'
-      : (evaluatedSolution
-        ? (evaluatedSolution.errors?.length > 0 ? 'CANDIDATE_VIOLATIONS_DETECTED' : 'CANDIDATE_EVALUATION_COMPLETE')
-        : 'CANDIDATE_EVALUATION_REQUIRED'));
-
   return {
     intent: 'CROSS_VENDOR_TRANSFORMATION',
     skillTarget: 'cross-vendor-transformation-skill',
     ...transformResult,
-    status: finalStatus,
+    status: _deriveCrossVendorStatus(targetChassis, transformResult.candidateBom, evaluatedSolution),
     sourceVendor,
     targetChassis,
     competitorSpec: transformResult.competitorSpec,
@@ -1732,26 +1759,33 @@ async function _handleRemarksReconciliation(queryText, context) {
     message: 'Remarks formatted; row parity and allocation evidence remain caller responsibilities.' };
 }
 
-async function _handleMultiClusterTender(queryText, context) {
-  const scope = requireScopedCatalog(queryText, context);
-  const profile = getChassisMap()[scope.chassisKey];
-  let partitionResult = null;
+function _extractClusterPartition(context) {
   if (context.filePath && fs.existsSync(context.filePath)) {
     try {
       const { analyzeAndPartitionClusters, extractRawItemsFromWorkbook } = require('../lib/boq/multi_cluster_splitter.js');
       const rawItems = extractRawItemsFromWorkbook(context.filePath);
-      partitionResult = analyzeAndPartitionClusters(rawItems, path.basename(context.filePath));
+      return analyzeAndPartitionClusters(rawItems, path.basename(context.filePath));
     } catch (err) {
       logger.debug('ROUTE_QUERY', `Failed extracting cluster partition from ${context.filePath}: ${err?.message}`);
-    }
-  } else if (Array.isArray(context.items) && context.items.length > 0) {
-    try {
-      const { analyzeAndPartitionClusters } = require('../lib/boq/multi_cluster_splitter.js');
-      partitionResult = analyzeAndPartitionClusters(context.items, 'tender_items');
-    } catch (err) {
-      logger.debug('ROUTE_QUERY', `Failed analyzing cluster partition from context items: ${err?.message}`);
+      return null;
     }
   }
+  if (Array.isArray(context.items) && context.items.length > 0) {
+    try {
+      const { analyzeAndPartitionClusters } = require('../lib/boq/multi_cluster_splitter.js');
+      return analyzeAndPartitionClusters(context.items, 'tender_items');
+    } catch (err) {
+      logger.debug('ROUTE_QUERY', `Failed analyzing cluster partition from context items: ${err?.message}`);
+      return null;
+    }
+  }
+  return null;
+}
+
+async function _handleMultiClusterTender(queryText, context) {
+  const scope = requireScopedCatalog(queryText, context);
+  const profile = getChassisMap()[scope.chassisKey];
+  const partitionResult = _extractClusterPartition(context);
 
   const counts = [...queryText.matchAll(/\b(\d+)\s*(?:nodes?|servers?|units?)\b/gi)].map(match => Number(match[1]));
   const count = context.serverCount ?? (partitionResult?.totalChassis || (counts.length === 1 ? counts[0] : null));
@@ -1886,6 +1920,112 @@ async function _executeRoutedQueryWithShadow(queryText = '', context = {}) {
   return observe(queryText, context, _executeLegacyRoutedQuery);
 }
 
+function _resolvePlatformSelectionMemory(queryText, initialPlatform, context) {
+  const platformSelectionMemory = { retrievedIds: [], usedIds: [], status: 'NOT_APPLICABLE' };
+  let updatedContext = context;
+  if (initialPlatform.isAmbiguous && initialPlatform.candidates?.length > 1) {
+    try {
+      const { retrievePlatformSelection } = require('../lib/boq/user_platform_selection_store.js');
+      const memory = retrievePlatformSelection(queryText, initialPlatform.candidates, listAllCatalogs(), context);
+      platformSelectionMemory.retrievedIds = memory.retrievedIds;
+      platformSelectionMemory.status = memory.reason;
+      if (memory.selected) {
+        const selectedContext = { ...context, chassisName: memory.selected.selectedPlatform };
+        const resolved = getChassisCatalog(queryText, selectedContext);
+        if (!resolved.isAmbiguous && resolved.chassisKey === memory.selected.selectedPlatform) {
+          updatedContext = selectedContext;
+          platformSelectionMemory.usedIds = [memory.selected.id];
+        }
+      }
+    } catch (error) {
+      platformSelectionMemory.status = 'PREFERENCE_READ_FAILED';
+      platformSelectionMemory.error = error.message;
+    }
+  }
+  return { platformSelectionMemory, updatedContext };
+}
+
+function _buildAmbiguityResponse(queryText, classification, chassisInfoForConf, traceId) {
+  const ambiguityDetails = {
+    error: chassisInfoForConf?.error,
+    candidates: chassisInfoForConf?.candidates || [],
+    chassisKey: chassisInfoForConf?.chassisKey
+  };
+  const interimResponse = {
+    query: queryText,
+    classification,
+    hitlRequired: true,
+    ambiguityDetails
+  };
+  const question = require('../lib/boq/platform_disambiguation_prompt.js').formatDisambiguationPrompt(interimResponse, queryText);
+  const reasonText = chassisInfoForConf?.error || 'Ambiguous platform target requiring human clarification';
+  return {
+    status: 'ACTION_REQUIRED',
+    code: 'PLATFORM_CLARIFICATION_REQUIRED',
+    reason: reasonText,
+    message: reasonText,
+    nextAction: 'PRESENT_DISAMBIGUATION_CHOICE_TO_USER',
+    question,
+    traceId
+  };
+}
+
+function _buildDispatchErrorResponse(dispatchErr, context, classification, traceId) {
+  const cancelled = context.signal?.aborted && Object.is(dispatchErr, context.signal.reason);
+  return {
+    status: cancelled || dispatchErr.name === 'AbortError' ? 'CANCELLED' : 'FAILED',
+    error: {
+      code: dispatchErr.code || 'HANDLER_EXECUTION_FAILED',
+      message: dispatchErr.message,
+      stack: process.env.NODE_ENV === 'test' ? undefined : dispatchErr.stack
+    },
+    message: `Intent handler failed: ${dispatchErr.message}`,
+    classification,
+    customerDisposition: 'DELIVERY_BLOCKED_UNBUILDABLE',
+    traceId
+  };
+}
+
+function _attachAcceptanceGate(responseData, classification, context, chassisInfoForConf) {
+  if (!responseData || typeof responseData !== 'object') return;
+  try {
+    const { verifyPrePresentationAcceptance } = require('../lib/boq/bom_verifier.js');
+    const evalContext = {
+      ...context,
+      catalogData: context.catalogData || responseData.catalogData || responseData.chassisInfo?.catalogData || chassisInfoForConf?.catalogData,
+      catalogDir: context.catalogDir || responseData.catalogDir || responseData.chassisInfo?.catalogDir || chassisInfoForConf?.catalogDir
+    };
+    const acceptance = responseData.acceptanceGate || verifyPrePresentationAcceptance(responseData, classification.intent, evalContext);
+    responseData.acceptanceGate = {
+      status: acceptance.status,
+      isValid: acceptance.isValid,
+      blockersCount: acceptance.blockersCount,
+      warningsCount: acceptance.warningsCount,
+      blockers: acceptance.blockers,
+      warnings: acceptance.warnings
+    };
+  } catch (error) {
+    responseData.acceptanceGate = {
+      status: 'ERROR', isValid: false, blockersCount: 1, warningsCount: 0,
+      blockers: [{ id: 'ACCEPTANCE_ERROR', detail: error.message }]
+    };
+  }
+}
+
+function _attachQueryPlanIfAvailable(envelope, queryText, context) {
+  try {
+    const { planPresalesQuery } = require('../lib/boq/presales_query_planner.js');
+    if (typeof planPresalesQuery === 'function') {
+      const plan = planPresalesQuery(queryText, context);
+      Object.defineProperty(envelope, 'queryPlan', {
+        value: plan,
+        enumerable: Boolean(context.includeQueryPlan),
+        configurable: true
+      });
+    }
+  } catch { /* ignore planner errors on malformed inputs */ }
+}
+
 /**
  * Execute routed presales query based on classified intent
  * @param {string} queryText 
@@ -1897,122 +2037,41 @@ async function _executeLegacyRoutedQuery(queryText = '', context = {}) {
   const classification = classifyQueryIntent(queryText, context);
   const startTime = Date.now();
   const initialPlatform = getChassisCatalog(queryText, context);
-  const platformSelectionMemory = { retrievedIds: [], usedIds: [], status: 'NOT_APPLICABLE' };
-  if (initialPlatform.isAmbiguous && initialPlatform.candidates?.length > 1) {
-    try {
-      const { retrievePlatformSelection } = require('../lib/boq/user_platform_selection_store.js');
-      const memory = retrievePlatformSelection(queryText, initialPlatform.candidates, listAllCatalogs(), context);
-      platformSelectionMemory.retrievedIds = memory.retrievedIds;
-      platformSelectionMemory.status = memory.reason;
-      if (memory.selected) {
-        const selectedContext = { ...context, chassisName: memory.selected.selectedPlatform };
-        const resolved = getChassisCatalog(queryText, selectedContext);
-        if (!resolved.isAmbiguous && resolved.chassisKey === memory.selected.selectedPlatform) {
-          context = selectedContext;
-          platformSelectionMemory.usedIds = [memory.selected.id];
-        }
-      }
-    } catch (error) {
-      platformSelectionMemory.status = 'PREFERENCE_READ_FAILED';
-      platformSelectionMemory.error = error.message;
-    }
-  }
+  const { platformSelectionMemory, updatedContext } = _resolvePlatformSelectionMemory(queryText, initialPlatform, context);
+  context = updatedContext;
 
-  // ── Classification confidence scoring ───────────────────────────────────
-  let confidence = 0.95;
-  let classificationBasis = 'EXPLICIT_CHASSIS';
-  const chassisInfoForConf = (() => {
-    try { return getChassisCatalog(queryText, context); } catch (_) { return null; }
-  })();
+  let chassisInfoForConf = null;
+  try { chassisInfoForConf = getChassisCatalog(queryText, context); } catch { chassisInfoForConf = null; }
 
   const unresolvedAmbiguity = ['AMBIGUOUS_QUERY', 'AMBIGUOUS_PRODUCT', 'GENERATION_MISMATCH'].includes(chassisInfoForConf?.chassisKey) || classification.intent === 'AMBIGUOUS_QUERY';
-  let responseData = null;
-
   const crypto = require('crypto');
   let traceId = context.traceId || resolveEntryTraceId(() => `TRC-${Date.now()}-${crypto.randomBytes(3).toString('hex').toUpperCase()}`);
   context.traceId = traceId;
 
+  let confidence = 0.40;
+  let classificationBasis = 'AMBIGUOUS_QUERY';
+  let responseData = null;
+
   if (unresolvedAmbiguity) {
-    confidence = 0.40;
-    classificationBasis = 'AMBIGUOUS_QUERY';
-    const ambiguityDetails = {
-      error: chassisInfoForConf?.error,
-      candidates: chassisInfoForConf?.candidates || [],
-      chassisKey: chassisInfoForConf?.chassisKey
-    };
-    const interimResponse = {
-      query: queryText,
-      classification,
-      hitlRequired: true,
-      ambiguityDetails
-    };
-    const question = require('../lib/boq/platform_disambiguation_prompt.js').formatDisambiguationPrompt(interimResponse, queryText);
-    responseData = {
-      status: 'ACTION_REQUIRED',
-      code: 'PLATFORM_CLARIFICATION_REQUIRED',
-      reason: chassisInfoForConf?.error || 'Ambiguous platform target requiring human clarification',
-      message: chassisInfoForConf?.error || 'Ambiguous platform target requiring human clarification',
-      nextAction: 'PRESENT_DISAMBIGUATION_CHOICE_TO_USER',
-      question,
-      traceId
-    };
+    responseData = _buildAmbiguityResponse(queryText, classification, chassisInfoForConf, traceId);
   } else {
     const scored = _deriveClassificationConfidence(queryText, context, classification, chassisInfoForConf);
     confidence = scored.confidence;
     classificationBasis = scored.classificationBasis;
-
     try {
       responseData = await _dispatchIntentHandler(classification, queryText, context);
     } catch (dispatchErr) {
-      const cancelled = context.signal?.aborted && Object.is(dispatchErr, context.signal.reason);
-      responseData = {
-        status: cancelled || dispatchErr.name === 'AbortError' ? 'CANCELLED' : 'FAILED',
-        error: {
-          code: dispatchErr.code || 'HANDLER_EXECUTION_FAILED',
-          message: dispatchErr.message,
-          stack: process.env.NODE_ENV === 'test' ? undefined : dispatchErr.stack
-        },
-        message: `Intent handler failed: ${dispatchErr.message}`,
-        classification,
-        customerDisposition: 'DELIVERY_BLOCKED_UNBUILDABLE',
-        traceId
-      };
+      responseData = _buildDispatchErrorResponse(dispatchErr, context, classification, traceId);
     }
   }
 
-  // Ensure universal trace ID & execution provenance across all routed tracks (GAP-33 / INV-111)
   traceId = responseData?.traceId || traceId;
   if (responseData && typeof responseData === 'object' && !responseData.traceId) {
     responseData.traceId = traceId;
   }
 
-  // 14-Point Pre-Presentation Acceptance Gate (GAP-24, GAP-36, output-validation-skill)
-  try {
-    const { verifyPrePresentationAcceptance } = require('../lib/boq/bom_verifier.js');
-    const evalContext = {
-      ...context,
-      catalogData: context.catalogData || responseData?.catalogData || responseData?.chassisInfo?.catalogData || chassisInfoForConf?.catalogData,
-      catalogDir: context.catalogDir || responseData?.catalogDir || responseData?.chassisInfo?.catalogDir || chassisInfoForConf?.catalogDir
-    };
-    const acceptance = responseData?.acceptanceGate || verifyPrePresentationAcceptance(responseData, classification.intent, evalContext);
-    if (responseData && typeof responseData === 'object') {
-      responseData.acceptanceGate = {
-        status: acceptance.status,
-        isValid: acceptance.isValid,
-        blockersCount: acceptance.blockersCount,
-        warningsCount: acceptance.warningsCount,
-        blockers: acceptance.blockers,
-        warnings: acceptance.warnings
-      };
-    }
-  } catch (error) {
-    if (responseData && typeof responseData === 'object') responseData.acceptanceGate = {
-      status: 'ERROR', isValid: false, blockersCount: 1, warningsCount: 0,
-      blockers: [{ id: 'ACCEPTANCE_ERROR', detail: error.message }]
-    };
-  }
+  _attachAcceptanceGate(responseData, classification, context, chassisInfoForConf);
 
-  // Automated Reasoning Post-Analysis, Feedback Reflection Hook & Opt-In Ledger Persistence
   const executionTimeMs = Date.now() - startTime;
   let reasoningAnalysis = null;
   try {
@@ -2025,12 +2084,13 @@ async function _executeLegacyRoutedQuery(queryText = '', context = {}) {
       traceId,
       executionTimeMs
     });
-  } catch (_analysisErr) {
+  } catch {
     if (responseData && typeof responseData === 'object' && !responseData.traceStatus) {
       responseData.traceStatus = responseData.evidenceLogPath ? 'PERSISTED_EVIDENCE_LEDGER' : 'CORRELATION_ONLY_NO_PERSISTED_LEDGER';
     }
   }
 
+  const isAmbiguous = Boolean(chassisInfoForConf?.isAmbiguous) || unresolvedAmbiguity;
   const envelope = {
     query: queryText,
     classification,
@@ -2038,11 +2098,11 @@ async function _executeLegacyRoutedQuery(queryText = '', context = {}) {
     reasoningAnalysis,
     traceId,
     executionTimeMs,
-    classificationConfidence: confidence, // 0.0-1.0
-    hitlRequired: Boolean(chassisInfoForConf?.isAmbiguous) || unresolvedAmbiguity || confidence < 0.75,
+    classificationConfidence: confidence,
+    hitlRequired: isAmbiguous || confidence < 0.75,
     platformSelectionMemory,
     resolvedPlatform: chassisInfoForConf && !chassisInfoForConf.isAmbiguous ? chassisInfoForConf.chassisKey : null,
-    ambiguityDetails: (chassisInfoForConf?.isAmbiguous || unresolvedAmbiguity) ? {
+    ambiguityDetails: isAmbiguous ? {
       error: chassisInfoForConf?.error,
       candidates: chassisInfoForConf?.candidates || chassisInfoForConf?.availableCatalogs || [],
       chassisKey: chassisInfoForConf?.chassisKey
@@ -2050,18 +2110,7 @@ async function _executeLegacyRoutedQuery(queryText = '', context = {}) {
     classificationBasis
   };
 
-  try {
-    const { planPresalesQuery } = require('../lib/boq/presales_query_planner.js');
-    if (typeof planPresalesQuery === 'function') {
-      const plan = planPresalesQuery(queryText, context);
-      Object.defineProperty(envelope, 'queryPlan', {
-        value: plan,
-        enumerable: Boolean(context.includeQueryPlan),
-        configurable: true
-      });
-    }
-  } catch { /* ignore planner errors on malformed inputs */ }
-
+  _attachQueryPlanIfAvailable(envelope, queryText, context);
   return envelope;
 }
 

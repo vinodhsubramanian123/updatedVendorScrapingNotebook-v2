@@ -125,6 +125,18 @@ function validateRfpDecisionHistory(artifacts, parsed, root, options) {
     retainedHistoricalRows: artifact.content.length - 1, droppedOldTailRows: Math.max(0, prior.length - 99) };
 }
 
+function isValidCatalogFreshness(freshness, capture, start, end) {
+  if (!validIso(capture) || freshness.captureTimestamp !== new Date(capture).toISOString() || freshness.thresholdHours !== 72
+    || !['FRESH', 'STALE'].includes(freshness.status) || freshness.isFresh !== (freshness.status === 'FRESH')
+    || typeof freshness.ageHours !== 'number' || !Number.isFinite(freshness.ageHours) || freshness.ageHours < 0
+    || Number(freshness.ageHours.toFixed(1)) !== freshness.ageHours) return false;
+  const lower = (Date.parse(start) - Date.parse(capture)) / 3600000, upper = (Date.parse(end) - Date.parse(capture)) / 3600000;
+  const isFresh = freshness.status === 'FRESH';
+  return !(lower < 0 || (isFresh ? upper > 72 : lower <= 72)
+    || freshness.ageHours < Number(lower.toFixed(1)) || freshness.ageHours > Number(upper.toFixed(1))
+    || freshness.reason !== `Catalog is ${isFresh ? 'fresh' : 'stale'} (${freshness.ageHours} hours old, threshold: 72 hours).`);
+}
+
 function projectRfpGeneratedFields(parsed, root, options) {
   const evaluation = rfpEvaluation(parsed), inputs = options.projectionInputs;
   const start = inputs?.startedAt, end = parsed?.response?.timestamp;
@@ -138,15 +150,8 @@ function projectRfpGeneratedFields(parsed, root, options) {
   if (!relative || !/^outputs\/[^/]+\/[^/]+\/[^/]+$/.test(relative) || path.posix.basename(relative) !== parsed.response.result.chassis) return { response: result, proof };
   const baseline = baselineInput(options, relative + '/' + path.posix.basename(relative) + '_Catalog.json', root);
   const capture = baseline.content?.metadata?.scrapeTimestamp;
-  if (!validIso(capture) || freshness.captureTimestamp !== new Date(capture).toISOString() || freshness.thresholdHours !== 72
-    || !['FRESH', 'STALE'].includes(freshness.status) || freshness.isFresh !== (freshness.status === 'FRESH')
-    || typeof freshness.ageHours !== 'number' || !Number.isFinite(freshness.ageHours) || freshness.ageHours < 0
-    || Number(freshness.ageHours.toFixed(1)) !== freshness.ageHours) return { response: result, proof };
-  const lower = (Date.parse(start) - Date.parse(capture)) / 3600000, upper = (Date.parse(end) - Date.parse(capture)) / 3600000;
+  if (!isValidCatalogFreshness(freshness, capture, start, end)) return { response: result, proof };
   const isFresh = freshness.status === 'FRESH';
-  if (lower < 0 || (isFresh ? upper > 72 : lower <= 72)
-    || freshness.ageHours < Number(lower.toFixed(1)) || freshness.ageHours > Number(upper.toFixed(1))
-    || freshness.reason !== `Catalog is ${isFresh ? 'fresh' : 'stale'} (${freshness.ageHours} hours old, threshold: 72 hours).`) return { response: result, proof };
   projected.catalogFreshness.ageHours = marker;
   projected.catalogFreshness.reason = `Catalog is ${isFresh ? 'fresh' : 'stale'} (${marker} hours old, threshold: 72 hours).`;
   proof.push({ field: 'response.result.evaluation.catalogFreshness', baselinePath: baseline.record.path, baselineSha256: baseline.record.sha256,

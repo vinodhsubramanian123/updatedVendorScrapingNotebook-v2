@@ -199,6 +199,131 @@ function generateDellWorkbook() {
 // =========================================================================
 // 2. GENERATE HPE PROLIANT DL380 GEN12 EQUIVALENT WORKBOOK
 // =========================================================================
+function appendHpeMappingAndStrategySheets(wb, singleTotal, clusterTotal) {
+  // 3. Dell vs HPE 1:1 Mapping
+  const mappingRows = [
+    ['Category', 'Dell PowerEdge R770 Specification', 'Dell Qty (Per Node / 4 Nodes)', 'HPE DL380 Gen12 Equivalent SKU', 'HPE Description & Capability', 'HPE Qty (Per Node / 4 Nodes)', 'Equivalence & Technical Compliance Notes'],
+    ['Form Factor', 'PowerEdge R770 2U Rack Chassis', '1 / 4', 'P73282-B21', 'HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server', '1 / 4', 'Exact 2U form factor match. Saves 50% rack space (8U vs 16U) and $15,823 base list price per server vs 4U DL380a Gen12.'],
+    ['Processors', '2* Intel Xeon 6 6760P 2.2GHz 64C (330W TDP)', '2 / 8', 'P73832-B21', 'Intel Xeon 6760P 2.2GHz 64-core 330W Processor for HPE', '2 / 8', 'Exact processor match. Identical 64 cores / 128 threads per socket, 320MB L3 cache, 330W TDP.'],
+    ['CPU Cooling', 'High-Performance Platinum Heatsinks', '2 / 8', 'P74787-B21', 'HPE ProLiant Compute DL3XX Gen12 High Performance Heat Sink Kit', '2 / 8', 'Mandatory 1U-profile high-performance heatsinks providing clearance for P81130-B21 air baffles while cooling up to 350W TDP.'],
+    ['Chassis Cooling', '6* PowerEdge 2U High-Performance Platinum Fans', '6 / 24', 'P48820-B21 + P81130-B21', 'HPE DL380/DL560 Gen11 2U High Performance Fan Kit + Cooling Upgrade Kit', '1 kit (6 fans) / 4 kits', 'High-performance 6-fan array + airflow baffle upgrade required for 330W CPUs and H200 accelerator.'],
+    ['Ambient Temp', 'Supported at customer standard inlet temp', 'Implicit', 'P79558-B21', 'HPE ProLiant Compute 25C Max Recommended Ambient Temp Tracking', '1 / 4', 'Mandatory OCA Rule 81394884: 330W CPU + H200 NVL in 8SFF cage blocks 27C/30C ambient. Selecting 25C clears validation.'],
+    ['System Memory', '8* 64GB RDIMM 6400MT/s (512GB Total)', '8 / 32', 'P69728-F21', 'HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 CAS-52 Smart FIO Kit', '8 / 32', 'Exact memory match. 512GB DDR5-6400 per node; balanced 4 DIMMs per CPU channel configuration.'],
+    ['Accelerator', 'NVIDIA H200 NVL 141GB (450W power cap)', '1 / 4', 'S3U30C', 'NVIDIA H200 NVL 141GB PCIe Accelerator for HPE', '1 / 4', 'Exact GPU match. 141GB HBM3e high-bandwidth memory; 450W power cap in 2U server matches Dell R770 specification.'],
+    ['GPU Power Cable', 'PowerEdge GPU auxiliary power cable', '1 / 4', 'P93055-B21', 'HPE GPU 16-pin Power Cable Kit', '1 / 4', 'Mandatory 16-pin power cable (12V-2x6) connecting motherboard/riser power rail directly to H200 NVL. Clears Rule 81392332.'],
+    ['Boot Device', 'BOSS-N1 Card + 2* M.2 480GB (RAID 1)', '1 / 4', 'P78279-B21 + P74755-B21 + P77928-B21', 'HPE NS204i-u v2 480GB NVMe Boot Device + Rear Mount Bracket + FIO Trigger', '1 / 4', 'Direct functional counterpart. Dedicated mirrored OS boot storage with hardware RAID 1 protection and hot-plug rear carrier.'],
+    ['Storage Controller', 'PERC H965i Front DC-MHs Tri-Mode', '1 / 4', 'P47777-B21 + P76453-B21 + P48918-B21 + P01366-B21', 'HPE MR416i-p Gen11 x16 Lanes 8GB Cache + Box 1/2 Data Cable + SPDM/Telemetry Cable + 96W Battery', '1 / 4', 'Pivoting to PCIe standup (Path B Principle) preserves OCP slot for 25GbE NIC; 8GB write cache exceeds Dell specs.'],
+    ['Storage Drives', '3* 960GB SATA 6G Read-Intensive SSDs', '3 / 12', 'P40498-B21', 'HPE 960GB SATA 6G Read Intensive SFF BC Multi Vendor SSD', '3 / 12', 'Direct functional match. 960GB SATA 6Gbps enterprise read-intensive SSDs in Basic Carrier (BC).'],
+    ['Drive Cage', '2.5-inch chassis up to 16 SAS4/SATA drives', '1 / 4', 'P75740-B21', 'HPE ProLiant Compute DL3XX Gen12 8SFF x1 U.3 Tri-Mode Drive Cage Kit', '1 / 4', 'Supports 8SFF SATA/SAS/NVMe drives with expansion capability up to 16/24SFF.'],
+    ['Host Networking', 'Broadcom 57414 Dual-Port 25GbE OCP 3.0 NIC', '1 / 4', 'P10115-B21 + P72203-B21 + 2* 845398-B21', 'Broadcom BCM57414 10/25Gb 2-port OCP3 Adapter + Slot B Cable Kit + 2x 25G SR Optics', '1 / 4', 'Exact NIC silicon match (BCM57414) in OCP 3.0 form factor with mandatory Slot B routing cable + genuine 25GbE SR optics.'],
+    ['PCIe Risers', 'Riser config 6-2 Rear 2x16 FH, 2x16 DWFL', '1 / 4', 'P48803-B21 + P51083-B21 + FIO Kits', 'HPE DL380 2U Primary Riser (x16/x16/x16) + Secondary Riser (x16/x16/x16)', '1 set / 4 sets', 'Provides redundant full-height Gen5 PCIe expansion slots with dedicated double-wide slot clearance for H200.'],
+    ['Power Supplies', 'Dual redundant 3200W Titanium HLAC PSUs', '2 / 8', 'P44712-B21', 'HPE 1800W-2200W Flex Slot Titanium Hot Plug Power Supply Kit', '2 / 8', 'HPE-qualified 96% Titanium redundant power envelope covering peak dual 330W CPUs + 450W H200 GPU.'],
+    ['Power Cords', '2* C19/C20 2.0M 250V 16A Extension Cords', '2 / 8', '295633-B22', 'HPE C19 - C20 WW 250V 16Amp 2.5m Jumper Cord', '2 / 8', 'Matching 16A high-current C19/C20 rack jumper cords.'],
+    ['Remote Mgmt', 'iDRAC10 Enterprise 17G', '1 / 4', 'BD505A', 'HPE iLO Advanced 1-server License with 3yr Support', '1 / 4', 'Full enterprise out-of-band management; mandatory for Advanced Power Management governing 450W GPU cap.'],
+    ['Cloud SaaS Mgmt', 'Dell OpenManage Enterprise (Implicit)', '1 / 4', 'R7A11AAE', 'HPE Compute Ops Management Standard 3-year Upfront SaaS E-Delivery', '1 / 4', 'Mandatory CLIC Rule 81322276 for Gen12 CTO models; provides centralized cloud infrastructure management.'],
+    ['Rack Mount / CMA', 'ReadyRails Sliding Rails with CMA', '1 / 4', 'P52341-B21 + P70744-B21', 'HPE Easy Install Rail 3 Kit + Gen12 2U Cable Management Arm', '1 / 4', 'Tool-less sliding rail kit and articulating CMA for 42U enterprise rack enclosures.'],
+    ['Support Services', 'Standard Dell ProSupport / Basic (Unspecified)', '1 / 4', 'HU4B2A3 (0C4W)', 'HPE 3Y Tech Care Basic Service (9x5 Next Business Day HW Support)', '1 / 4', 'Product-qualified 3-year HPE Tech Care Basic per corporate support policy charter.']
+  ];
+
+  const wsMappingData = [
+    ['DELL POWEREDGE R770 VS HPE PROLIANT DL380 GEN12 TECHNICAL COMPARISON'],
+    ['Comprehensive Architectural & Component-by-Component Mapping with Engineering Validation Notes'],
+    [],
+    ['Category', 'Dell PowerEdge R770 Specification', 'Dell Qty', 'HPE DL380 Gen12 Equivalent SKU', 'HPE Description & Capability', 'HPE Qty', 'Equivalence & Technical Compliance Notes'],
+    ...mappingRows.slice(1)
+  ];
+
+  const wsMapping = XLSX.utils.aoa_to_sheet(wsMappingData);
+  wsMapping['!cols'] = [
+    { wch: 18 }, { wch: 42 }, { wch: 12 }, { wch: 22 }, { wch: 55 }, { wch: 12 }, { wch: 60 }
+  ];
+
+  wsMapping['A1'].s = titleStyle;
+  wsMapping['A2'].s = subTitleStyle;
+
+  for (let c = 0; c < 7; c++) {
+    const cellRef = XLSX.utils.encode_cell({ r: 3, c });
+    if (wsMapping[cellRef]) wsMapping[cellRef].s = headerStyle;
+  }
+
+  for (let r = 4; r < 4 + mappingRows.length - 1; r++) {
+    for (let c = 0; c < 7; c++) {
+      const cellRef = XLSX.utils.encode_cell({ r, c });
+      if (!wsMapping[cellRef]) continue;
+      if (c === 0) wsMapping[cellRef].s = { ...cellStyle, font: { name: 'Calibri', sz: 10, bold: true } };
+      else if (c === 2 || c === 5) wsMapping[cellRef].s = centerCellStyle;
+      else if (c === 3) wsMapping[cellRef].s = { ...cellStyle, font: { name: 'Calibri', sz: 10, bold: true, color: { rgb: '0284C7' } } };
+      else wsMapping[cellRef].s = cellStyle;
+    }
+  }
+
+  XLSX.utils.book_append_sheet(wb, wsMapping, 'Dell_vs_HPE_Mapping');
+
+  // 4. Multi-Rank Strategy Matrix
+  const strategyRows = [
+    ['Strategy Tier', 'Target Architecture', 'H200 GPU Count (Per Node / Cluster)', 'Single-Node CapEx (USD)', '4-Node Cluster CapEx (USD)', 'Rack Units', 'Thermal & Power Envelope', 'Strategic Recommendation'],
+    ['Rank 1 (Customer Intent Match — RECOMMENDED)', 'HPE ProLiant DL380 Gen12 2U SFF CTO Server with 2x Xeon 6760P (330W), 512GB DDR5-6400, 1x H200 NVL 141GB (450W), 3x 960GB SATA SSDs, NS204i-u RAID1 Boot, 25GbE OCP NIC + Slot B Cable, Titanium PSUs, 27C Ambient Flag, COM SaaS', '1 / 4', singleTotal, clusterTotal, '8U Total', '27C Ambient Inlet, High-Perf Fans, 2200W Titanium PSUs', 'Optimal match preserving 100% customer intent with lowest CapEx. Saves $63.2k chassis list price vs DL380a across cluster.'],
+    ['Rank 1B (Path B Principle — Zero-Cable Standup NIC)', 'HPE ProLiant DL380 Gen12 swapping OCP3 NIC P10115-B21 + P72203-B21 for PCIe standup NIC P26262-B21 in Primary Riser Slot 3, eliminating internal OCP routing cable with identical 25GbE performance', '1 / 4', singleTotal - 77.00, clusterTotal - (77.00 * 4), '8U Total', '27C Ambient Inlet, High-Perf Fans, 2200W Titanium PSUs', 'Cleanest internal airflow layout; eliminates internal ribbon cables across the system board.'],
+    ['Rank 2 (Balanced Expansion — 2x H200 Ready)', 'HPE ProLiant DL380 Gen12 2U SFF configured with pre-installed Primary & Secondary GPU risers, cabling, and power headroom to accept a 2nd H200 NVL (up to 282GB aggregate GPU memory per server)', '2 / 8 (Supported Max)', singleTotal + 112579 + 84, clusterTotal + (112579 + 84) * 4, '8U Total', '27C Ambient Inlet, High-Perf Fans, 2200W Titanium PSUs', 'Recommended if the customer plans near-term AI inference scale-out without purchasing additional rack chassis.'],
+    ['Rank 3 (High-IOPS NVMe Optimization)', 'HPE ProLiant DL380 Gen12 substituting 3x SATA SSDs with 3x 1.92TB Gen4 NVMe U.3 Read-Intensive SSDs (P50216-B21) for 10x storage throughput and lower latency', '1 / 4', singleTotal - 4650 + (3 * 25989), clusterTotal - 18600 + (12 * 25989), '8U Total', '27C Ambient Inlet, High-Perf Fans, 2200W Titanium PSUs', 'Optimal for high-throughput AI vector search, embeddings, and dataset preprocessing.'],
+    ['Rank 5 (Budget / CapEx Minimized Baseline)', 'HPE ProLiant DL380 Gen12 baseline utilizing 4x 32GB DDR5-6400 for 256GB RAM, retaining single H200 GPU and essential buildability enablement kits', '1 / 4', singleTotal - (4 * 28532), clusterTotal - (16 * 28532), '8U Total', '27C Ambient Inlet, High-Perf Fans, 2200W Titanium PSUs', 'CapEx minimized buildable baseline for budget-restricted tender submissions.']
+  ];
+
+  const wsStrategyData = [
+    ['5-TIER STRATEGIC RESOLUTION MATRIX & ARCHITECTURE COMPARISON'],
+    ['Evaluated Options for Dell PowerEdge R770 to HPE ProLiant Gen12 Transition'],
+    [],
+    ['Strategy Tier', 'Target Architecture', 'H200 GPU Count', 'Single-Node CapEx (USD)', '4-Node Cluster CapEx (USD)', 'Rack Units', 'Thermal & Power Envelope', 'Strategic Recommendation'],
+    ...strategyRows.slice(1)
+  ];
+
+  const wsStrategy = XLSX.utils.aoa_to_sheet(wsStrategyData);
+  wsStrategy['!cols'] = [
+    { wch: 28 }, { wch: 60 }, { wch: 18 }, { wch: 22 }, { wch: 24 }, { wch: 12 }, { wch: 32 }, { wch: 55 }
+  ];
+
+  wsStrategy['A1'].s = titleStyle;
+  wsStrategy['A2'].s = subTitleStyle;
+
+  for (let c = 0; c < 8; c++) {
+    const cellRef = XLSX.utils.encode_cell({ r: 3, c });
+    if (wsStrategy[cellRef]) wsStrategy[cellRef].s = headerStyle;
+  }
+
+  for (let r = 4; r < 4 + strategyRows.length - 1; r++) {
+    for (let c = 0; c < 8; c++) {
+      const cellRef = XLSX.utils.encode_cell({ r, c });
+      if (!wsStrategy[cellRef]) continue;
+      if (c === 0) wsStrategy[cellRef].s = { ...cellStyle, font: { name: 'Calibri', sz: 10, bold: true } };
+      else if (c === 2 || c === 5) wsStrategy[cellRef].s = centerCellStyle;
+      else if (c === 3 || c === 4) wsStrategy[cellRef].s = currencyCellStyle;
+      else wsStrategy[cellRef].s = cellStyle;
+    }
+  }
+
+  XLSX.utils.book_append_sheet(wb, wsStrategy, 'Ranked_Strategy_Matrix');
+}
+
+function _styleHpeSingleCell(wsSingle, r, c, item) {
+  const cellRef = XLSX.utils.encode_cell({ r, c });
+  if (!wsSingle[cellRef]) return;
+  if (c === 0) wsSingle[cellRef].s = { ...cellStyle, font: { name: 'Calibri', sz: 10, bold: true } };
+  else if (c === 2) wsSingle[cellRef].s = centerCellStyle;
+  else if (c === 3 || c === 4) wsSingle[cellRef].s = currencyCellStyle;
+  else if (c === 6 && (item[6].includes('Mandatory') || item[6].includes('Crucial'))) wsSingle[cellRef].s = fixHighlightStyle;
+  else wsSingle[cellRef].s = cellStyle;
+}
+
+function _styleHpeClusterCell(wsCluster, r, c, item) {
+  const cellRef = XLSX.utils.encode_cell({ r, c });
+  if (!wsCluster[cellRef]) return;
+  if (c === 0 || c === 3 || c === 4 || c === 5) wsCluster[cellRef].s = centerCellStyle;
+  else if (c === 1) wsCluster[cellRef].s = { ...cellStyle, font: { name: 'Calibri', sz: 10, bold: true } };
+  else if (c === 6 || c === 7) wsCluster[cellRef].s = currencyCellStyle;
+  else if (c === 9 && (item[9].includes('Mandatory') || item[9].includes('Learned'))) wsCluster[cellRef].s = fixHighlightStyle;
+  else wsCluster[cellRef].s = cellStyle;
+}
+
 function generateHpeWorkbook() {
   const wb = XLSX.utils.book_new();
 
@@ -252,13 +377,7 @@ function generateHpeWorkbook() {
 
   const wsSingle = XLSX.utils.aoa_to_sheet(wsSingleData);
   wsSingle['!cols'] = [
-    { wch: 16 }, // Product #
-    { wch: 62 }, // Description
-    { wch: 8 },  // Qty
-    { wch: 22 }, // Unit List Price
-    { wch: 22 }, // Extended Price
-    { wch: 20 }, // Category
-    { wch: 48 }  // CLIC Status
+    { wch: 16 }, { wch: 62 }, { wch: 8 }, { wch: 22 }, { wch: 22 }, { wch: 20 }, { wch: 48 }
   ];
 
   wsSingle['A1'].s = titleStyle;
@@ -272,16 +391,9 @@ function generateHpeWorkbook() {
   let singleTotal = 0;
   for (let r = 4; r < 4 + singleNodeItems.length - 1; r++) {
     const item = singleNodeItems[r - 3];
-    const extPrice = item[4];
-    singleTotal += extPrice;
+    singleTotal += item[4];
     for (let c = 0; c < 7; c++) {
-      const cellRef = XLSX.utils.encode_cell({ r, c });
-      if (!wsSingle[cellRef]) continue;
-      if (c === 0) wsSingle[cellRef].s = { ...cellStyle, font: { name: 'Calibri', sz: 10, bold: true } };
-      else if (c === 2) wsSingle[cellRef].s = centerCellStyle;
-      else if (c === 3 || c === 4) wsSingle[cellRef].s = currencyCellStyle;
-      else if (c === 6 && (item[6].includes('Mandatory') || item[6].includes('Crucial'))) wsSingle[cellRef].s = fixHighlightStyle;
-      else wsSingle[cellRef].s = cellStyle;
+      _styleHpeSingleCell(wsSingle, r, c, item);
     }
   }
 
@@ -343,16 +455,7 @@ function generateHpeWorkbook() {
 
   const wsCluster = XLSX.utils.aoa_to_sheet(wsClusterData);
   wsCluster['!cols'] = [
-    { wch: 8 },  // Item #
-    { wch: 16 }, // Product #
-    { wch: 62 }, // Description
-    { wch: 18 }, // Per-Node Base Qty
-    { wch: 17 }, // Cluster Multiplier
-    { wch: 18 }, // Total Order Qty
-    { wch: 22 }, // Unit List Price
-    { wch: 24 }, // Extended List Price
-    { wch: 20 }, // Component Role
-    { wch: 55 }  // Notes
+    { wch: 8 }, { wch: 16 }, { wch: 62 }, { wch: 18 }, { wch: 17 }, { wch: 18 }, { wch: 22 }, { wch: 24 }, { wch: 20 }, { wch: 55 }
   ];
 
   wsCluster['A1'].s = titleStyle;
@@ -366,17 +469,9 @@ function generateHpeWorkbook() {
   let clusterTotal = 0;
   for (let r = 4; r < 4 + clusterItems.length - 1; r++) {
     const item = clusterItems[r - 3];
-    const extPrice = item[7];
-    clusterTotal += extPrice;
+    clusterTotal += item[7];
     for (let c = 0; c < 10; c++) {
-      const cellRef = XLSX.utils.encode_cell({ r, c });
-      if (!wsCluster[cellRef]) continue;
-      if (c === 0) wsCluster[cellRef].s = centerCellStyle;
-      else if (c === 1) wsCluster[cellRef].s = { ...cellStyle, font: { name: 'Calibri', sz: 10, bold: true } };
-      else if (c === 3 || c === 4 || c === 5) wsCluster[cellRef].s = centerCellStyle;
-      else if (c === 6 || c === 7) wsCluster[cellRef].s = currencyCellStyle;
-      else if (c === 9 && (item[9].includes('Mandatory') || item[9].includes('Learned'))) wsCluster[cellRef].s = fixHighlightStyle;
-      else wsCluster[cellRef].s = cellStyle;
+      _styleHpeClusterCell(wsCluster, r, c, item);
     }
   }
 
@@ -388,121 +483,7 @@ function generateHpeWorkbook() {
 
   XLSX.utils.book_append_sheet(wb, wsCluster, 'HPE_DL380_Gen12_4Node_Cluster');
 
-  // 3. Dell vs HPE 1:1 Mapping
-  const mappingRows = [
-    ['Category', 'Dell PowerEdge R770 Specification', 'Dell Qty (Per Node / 4 Nodes)', 'HPE DL380 Gen12 Equivalent SKU', 'HPE Description & Capability', 'HPE Qty (Per Node / 4 Nodes)', 'Equivalence & Technical Compliance Notes'],
-    ['Form Factor', 'PowerEdge R770 2U Rack Chassis', '1 / 4', 'P73282-B21', 'HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server', '1 / 4', 'Exact 2U form factor match. Saves 50% rack space (8U vs 16U) and $15,823 base list price per server vs 4U DL380a Gen12.'],
-    ['Processors', '2* Intel Xeon 6 6760P 2.2GHz 64C (330W TDP)', '2 / 8', 'P73832-B21', 'Intel Xeon 6760P 2.2GHz 64-core 330W Processor for HPE', '2 / 8', 'Exact processor match. Identical 64 cores / 128 threads per socket, 320MB L3 cache, 330W TDP.'],
-    ['CPU Cooling', 'High-Performance Platinum Heatsinks', '2 / 8', 'P74787-B21', 'HPE ProLiant Compute DL3XX Gen12 High Performance Heat Sink Kit', '2 / 8', 'Mandatory 1U-profile high-performance heatsinks providing clearance for P81130-B21 air baffles while cooling up to 350W TDP.'],
-    ['Chassis Cooling', '6* PowerEdge 2U High-Performance Platinum Fans', '6 / 24', 'P48820-B21 + P81130-B21', 'HPE DL380/DL560 Gen11 2U High Performance Fan Kit + Cooling Upgrade Kit', '1 kit (6 fans) / 4 kits', 'High-performance 6-fan array + airflow baffle upgrade required for 330W CPUs and H200 accelerator.'],
-    ['Ambient Temp', 'Supported at customer standard inlet temp', 'Implicit', 'P79558-B21', 'HPE ProLiant Compute 25C Max Recommended Ambient Temp Tracking', '1 / 4', 'Mandatory OCA Rule 81394884: 330W CPU + H200 NVL in 8SFF cage blocks 27C/30C ambient. Selecting 25C clears validation.'],
-    ['System Memory', '8* 64GB RDIMM 6400MT/s (512GB Total)', '8 / 32', 'P69728-F21', 'HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 CAS-52 Smart FIO Kit', '8 / 32', 'Exact memory match. 512GB DDR5-6400 per node; balanced 4 DIMMs per CPU channel configuration.'],
-    ['Accelerator', 'NVIDIA H200 NVL 141GB (450W power cap)', '1 / 4', 'S3U30C', 'NVIDIA H200 NVL 141GB PCIe Accelerator for HPE', '1 / 4', 'Exact GPU match. 141GB HBM3e high-bandwidth memory; 450W power cap in 2U server matches Dell R770 specification.'],
-    ['GPU Power Cable', 'PowerEdge GPU auxiliary power cable', '1 / 4', 'P93055-B21', 'HPE GPU 16-pin Power Cable Kit', '1 / 4', 'Mandatory 16-pin power cable (12V-2x6) connecting motherboard/riser power rail directly to H200 NVL. Clears Rule 81392332.'],
-    ['Boot Device', 'BOSS-N1 Card + 2* M.2 480GB (RAID 1)', '1 / 4', 'P78279-B21 + P74755-B21 + P77928-B21', 'HPE NS204i-u v2 480GB NVMe Boot Device + Rear Mount Bracket + FIO Trigger', '1 / 4', 'Direct functional counterpart. Dedicated mirrored OS boot storage with hardware RAID 1 protection and hot-plug rear carrier.'],
-    ['Storage Controller', 'PERC H965i Front DC-MHs Tri-Mode', '1 / 4', 'P47777-B21 + P76453-B21 + P48918-B21 + P01366-B21', 'HPE MR416i-p Gen11 x16 Lanes 8GB Cache + Box 1/2 Data Cable + SPDM/Telemetry Cable + 96W Battery', '1 / 4', 'Pivoting to PCIe standup (Path B Principle) preserves OCP slot for 25GbE NIC; 8GB write cache exceeds Dell specs.'],
-    ['Storage Drives', '3* 960GB SATA 6G Read-Intensive SSDs', '3 / 12', 'P40498-B21', 'HPE 960GB SATA 6G Read Intensive SFF BC Multi Vendor SSD', '3 / 12', 'Direct functional match. 960GB SATA 6Gbps enterprise read-intensive SSDs in Basic Carrier (BC).'],
-    ['Drive Cage', '2.5-inch chassis up to 16 SAS4/SATA drives', '1 / 4', 'P75740-B21', 'HPE ProLiant Compute DL3XX Gen12 8SFF x1 U.3 Tri-Mode Drive Cage Kit', '1 / 4', 'Supports 8SFF SATA/SAS/NVMe drives with expansion capability up to 16/24SFF.'],
-    ['Host Networking', 'Broadcom 57414 Dual-Port 25GbE OCP 3.0 NIC', '1 / 4', 'P10115-B21 + P72203-B21 + 2* 845398-B21', 'Broadcom BCM57414 10/25Gb 2-port OCP3 Adapter + Slot B Cable Kit + 2x 25G SR Optics', '1 / 4', 'Exact NIC silicon match (BCM57414) in OCP 3.0 form factor with mandatory Slot B routing cable + genuine 25GbE SR optics.'],
-    ['PCIe Risers', 'Riser config 6-2 Rear 2x16 FH, 2x16 DWFL', '1 / 4', 'P48803-B21 + P51083-B21 + FIO Kits', 'HPE DL380 2U Primary Riser (x16/x16/x16) + Secondary Riser (x16/x16/x16)', '1 set / 4 sets', 'Provides redundant full-height Gen5 PCIe expansion slots with dedicated double-wide slot clearance for H200.'],
-    ['Power Supplies', 'Dual redundant 3200W Titanium HLAC PSUs', '2 / 8', 'P44712-B21', 'HPE 1800W-2200W Flex Slot Titanium Hot Plug Power Supply Kit', '2 / 8', 'HPE-qualified 96% Titanium redundant power envelope covering peak dual 330W CPUs + 450W H200 GPU.'],
-    ['Power Cords', '2* C19/C20 2.0M 250V 16A Extension Cords', '2 / 8', '295633-B22', 'HPE C19 - C20 WW 250V 16Amp 2.5m Jumper Cord', '2 / 8', 'Matching 16A high-current C19/C20 rack jumper cords.'],
-    ['Remote Mgmt', 'iDRAC10 Enterprise 17G', '1 / 4', 'BD505A', 'HPE iLO Advanced 1-server License with 3yr Support', '1 / 4', 'Full enterprise out-of-band management; mandatory for Advanced Power Management governing 450W GPU cap.'],
-    ['Cloud SaaS Mgmt', 'Dell OpenManage Enterprise (Implicit)', '1 / 4', 'R7A11AAE', 'HPE Compute Ops Management Standard 3-year Upfront SaaS E-Delivery', '1 / 4', 'Mandatory CLIC Rule 81322276 for Gen12 CTO models; provides centralized cloud infrastructure management.'],
-    ['Rack Mount / CMA', 'ReadyRails Sliding Rails with CMA', '1 / 4', 'P52341-B21 + P70744-B21', 'HPE Easy Install Rail 3 Kit + Gen12 2U Cable Management Arm', '1 / 4', 'Tool-less sliding rail kit and articulating CMA for 42U enterprise rack enclosures.'],
-    ['Support Services', 'Standard Dell ProSupport / Basic (Unspecified)', '1 / 4', 'HU4B2A3 (0C4W)', 'HPE 3Y Tech Care Basic Service (9x5 Next Business Day HW Support)', '1 / 4', 'Product-qualified 3-year HPE Tech Care Basic per corporate support policy charter.']
-  ];
-
-  const wsMappingData = [
-    ['DELL POWEREDGE R770 VS HPE PROLIANT DL380 GEN12 TECHNICAL COMPARISON'],
-    ['Comprehensive Architectural & Component-by-Component Mapping with Engineering Validation Notes'],
-    [],
-    ['Category', 'Dell PowerEdge R770 Specification', 'Dell Qty', 'HPE DL380 Gen12 Equivalent SKU', 'HPE Description & Capability', 'HPE Qty', 'Equivalence & Technical Compliance Notes'],
-    ...mappingRows.slice(1)
-  ];
-
-  const wsMapping = XLSX.utils.aoa_to_sheet(wsMappingData);
-  wsMapping['!cols'] = [
-    { wch: 18 }, // Category
-    { wch: 42 }, // Dell Spec
-    { wch: 12 }, // Dell Qty
-    { wch: 22 }, // HPE SKU
-    { wch: 55 }, // HPE Description
-    { wch: 12 }, // HPE Qty
-    { wch: 60 }  // Equivalence Notes
-  ];
-
-  wsMapping['A1'].s = titleStyle;
-  wsMapping['A2'].s = subTitleStyle;
-
-  for (let c = 0; c < 7; c++) {
-    const cellRef = XLSX.utils.encode_cell({ r: 3, c });
-    if (wsMapping[cellRef]) wsMapping[cellRef].s = headerStyle;
-  }
-
-  for (let r = 4; r < 4 + mappingRows.length - 1; r++) {
-    for (let c = 0; c < 7; c++) {
-      const cellRef = XLSX.utils.encode_cell({ r, c });
-      if (!wsMapping[cellRef]) continue;
-      if (c === 0) wsMapping[cellRef].s = { ...cellStyle, font: { name: 'Calibri', sz: 10, bold: true } };
-      else if (c === 2 || c === 5) wsMapping[cellRef].s = centerCellStyle;
-      else if (c === 3) wsMapping[cellRef].s = { ...cellStyle, font: { name: 'Calibri', sz: 10, bold: true, color: { rgb: '0284C7' } } };
-      else wsMapping[cellRef].s = cellStyle;
-    }
-  }
-
-  XLSX.utils.book_append_sheet(wb, wsMapping, 'Dell_vs_HPE_Mapping');
-
-  // 4. Multi-Rank Strategy Matrix
-  const strategyRows = [
-    ['Strategy Tier', 'Target Architecture', 'H200 GPU Count (Per Node / Cluster)', 'Single-Node CapEx (USD)', '4-Node Cluster CapEx (USD)', 'Rack Units', 'Thermal & Power Envelope', 'Strategic Recommendation'],
-    ['Rank 1 (Customer Intent Match — RECOMMENDED)', 'HPE ProLiant DL380 Gen12 2U SFF CTO Server with 2x Xeon 6760P (330W), 512GB DDR5-6400, 1x H200 NVL 141GB (450W), 3x 960GB SATA SSDs, NS204i-u RAID1 Boot, 25GbE OCP NIC + Slot B Cable, Titanium PSUs, 27C Ambient Flag, COM SaaS', '1 / 4', singleTotal, clusterTotal, '8U Total', '27C Ambient Inlet, High-Perf Fans, 2200W Titanium PSUs', 'Optimal match preserving 100% customer intent with lowest CapEx. Saves $63.2k chassis list price vs DL380a across cluster.'],
-    ['Rank 1B (Path B Principle — Zero-Cable Standup NIC)', 'HPE ProLiant DL380 Gen12 swapping OCP3 NIC P10115-B21 + P72203-B21 for PCIe standup NIC P26262-B21 in Primary Riser Slot 3, eliminating internal OCP routing cable with identical 25GbE performance', '1 / 4', singleTotal - 77.00, clusterTotal - (77.00 * 4), '8U Total', '27C Ambient Inlet, High-Perf Fans, 2200W Titanium PSUs', 'Cleanest internal airflow layout; eliminates internal ribbon cables across the system board.'],
-    ['Rank 2 (Balanced Expansion — 2x H200 Ready)', 'HPE ProLiant DL380 Gen12 2U SFF configured with pre-installed Primary & Secondary GPU risers, cabling, and power headroom to accept a 2nd H200 NVL (up to 282GB aggregate GPU memory per server)', '2 / 8 (Supported Max)', singleTotal + 112579 + 84, clusterTotal + (112579 + 84) * 4, '8U Total', '27C Ambient Inlet, High-Perf Fans, 2200W Titanium PSUs', 'Recommended if the customer plans near-term AI inference scale-out without purchasing additional rack chassis.'],
-    ['Rank 3 (High-IOPS NVMe Optimization)', 'HPE ProLiant DL380 Gen12 substituting 3x SATA SSDs with 3x 1.92TB Gen4 NVMe U.3 Read-Intensive SSDs (P50216-B21) for 10x storage throughput and lower latency', '1 / 4', singleTotal - 4650 + (3 * 25989), clusterTotal - 18600 + (12 * 25989), '8U Total', '27C Ambient Inlet, High-Perf Fans, 2200W Titanium PSUs', 'Optimal for high-throughput AI vector search, embeddings, and dataset preprocessing.'],
-    ['Rank 5 (Budget / CapEx Minimized Baseline)', 'HPE ProLiant DL380 Gen12 baseline utilizing 4x 32GB DDR5-6400 for 256GB RAM, retaining single H200 GPU and essential buildability enablement kits', '1 / 4', singleTotal - (4 * 28532), clusterTotal - (16 * 28532), '8U Total', '27C Ambient Inlet, High-Perf Fans, 2200W Titanium PSUs', 'CapEx minimized buildable baseline for budget-restricted tender submissions.']
-  ];
-
-  const wsStrategyData = [
-    ['5-TIER STRATEGIC RESOLUTION MATRIX & ARCHITECTURE COMPARISON'],
-    ['Evaluated Options for Dell PowerEdge R770 to HPE ProLiant Gen12 Transition'],
-    [],
-    ['Strategy Tier', 'Target Architecture', 'H200 GPU Count', 'Single-Node CapEx (USD)', '4-Node Cluster CapEx (USD)', 'Rack Units', 'Thermal & Power Envelope', 'Strategic Recommendation'],
-    ...strategyRows.slice(1)
-  ];
-
-  const wsStrategy = XLSX.utils.aoa_to_sheet(wsStrategyData);
-  wsStrategy['!cols'] = [
-    { wch: 28 }, // Strategy Tier
-    { wch: 60 }, // Architecture
-    { wch: 18 }, // GPU Count
-    { wch: 22 }, // Single Node CapEx
-    { wch: 24 }, // 4-Node CapEx
-    { wch: 12 }, // Rack Units
-    { wch: 32 }, // Thermal/Power
-    { wch: 55 }  // Recommendation
-  ];
-
-  wsStrategy['A1'].s = titleStyle;
-  wsStrategy['A2'].s = subTitleStyle;
-
-  for (let c = 0; c < 8; c++) {
-    const cellRef = XLSX.utils.encode_cell({ r: 3, c });
-    if (wsStrategy[cellRef]) wsStrategy[cellRef].s = headerStyle;
-  }
-
-  for (let r = 4; r < 4 + strategyRows.length - 1; r++) {
-    for (let c = 0; c < 8; c++) {
-      const cellRef = XLSX.utils.encode_cell({ r, c });
-      if (!wsStrategy[cellRef]) continue;
-      if (c === 0) wsStrategy[cellRef].s = { ...cellStyle, font: { name: 'Calibri', sz: 10, bold: true } };
-      else if (c === 2 || c === 5) wsStrategy[cellRef].s = centerCellStyle;
-      else if (c === 3 || c === 4) wsStrategy[cellRef].s = currencyCellStyle;
-      else wsStrategy[cellRef].s = cellStyle;
-    }
-  }
-
-  XLSX.utils.book_append_sheet(wb, wsStrategy, 'Ranked_Strategy_Matrix');
+  appendHpeMappingAndStrategySheets(wb, singleTotal, clusterTotal);
 
   const outDir = 'outputs/ProLiant/Gen12/DL380_Gen12/reports';
   if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
@@ -510,7 +491,6 @@ function generateHpeWorkbook() {
   XLSX.writeFile(wb, hpeFilePath);
   console.log('Successfully wrote HPE Excel to:', hpeFilePath);
 
-  // Write to Downloads with fallback
   const downloadsPaths = [
     path.join(os.homedir(), 'Downloads', 'HPE_DL380_Gen12_H200_Equivalent_BOQ_v3.xlsx'),
     path.join(os.homedir(), 'Downloads', 'HPE_DL380_Gen12_H200_Equivalent_BOQ.xlsx')

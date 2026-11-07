@@ -403,10 +403,10 @@ function _executeCloudQuery(nlmExecutable, targetNotebookId, sanitizedQuery, tim
         if (conversationId) attemptRecord.update({ conversationId });
         if (settledRef.value) return;
         try {
-          throwIfQueryStopped(options);
           if (error) {
             return _handleChildSpawnOrAuthError(error, child, stdout, stderr, finish, reject, failUnknown);
           }
+          throwIfQueryStopped(options);
           _processCloudQueryOutput(stdout, sanitizedQuery, options, targetNotebookId, startTime, attemptRecord, finish, resolve, failUnknown);
         } catch (failure) {
           if ((options.signal?.aborted && Object.is(failure, options.signal.reason)) || failure?.code === 'NOTEBOOK_QUERY_DEADLINE_EXCEEDED') {

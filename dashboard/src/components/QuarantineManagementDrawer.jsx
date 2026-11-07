@@ -1,6 +1,67 @@
 import React, { useState, useEffect } from 'react';
 import { ShieldAlert, X, Check, Trash2, RefreshCw, AlertTriangle, ShieldCheck, CheckCircle2 } from 'lucide-react';
 
+function QuarantinedDeltaCard({ delta, idx, actionInProgress, onReject, onPromote }) {
+  const id = delta.id || delta.deltaId || `RULE-${idx}`;
+  const isBusy = actionInProgress === id;
+  const affectedSku = delta.affectedSku || 'GLOBAL_RULE';
+  const reasonLabel = delta.quarantineReason || delta.reason || 'UNVERIFIED';
+  const ruleMessage = delta.rawMessage || delta.description || delta.ruleUpdate || 'No rule message provided.';
+
+  return (
+    <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-3 shadow-xs">
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2">
+          <span className="font-mono text-xs font-bold text-slate-900 bg-white px-2 py-0.5 rounded border border-slate-200">
+            {affectedSku}
+          </span>
+          {delta.requiredDependencySku && (
+            <>
+              <span className="text-xs text-slate-400 font-bold">→</span>
+              <span className="font-mono text-xs font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                {delta.requiredDependencySku}
+              </span>
+            </>
+          )}
+        </div>
+        <span className="badge badge-amber text-[9px] font-mono uppercase">
+          {reasonLabel}
+        </span>
+      </div>
+
+      <div>
+        <p className="text-xs text-slate-700 font-medium leading-relaxed">
+          {ruleMessage}
+        </p>
+        {delta.chassis && (
+          <p className="text-[10px] text-slate-400 mt-1">
+            Chassis Scope: <strong className="text-slate-600">{delta.chassis}</strong>
+          </p>
+        )}
+      </div>
+
+      <div className="pt-2 border-t border-slate-200 flex items-center justify-end gap-2">
+        <button
+          onClick={() => onReject(id)}
+          disabled={isBusy}
+          className="btn-secondary text-xs px-3 py-1 text-rose-700 border-rose-200 hover:bg-rose-50 flex items-center gap-1"
+        >
+          <Trash2 className="w-3.5 h-3.5" />
+          Reject
+        </button>
+        <button
+          onClick={() => onPromote(delta)}
+          disabled={isBusy}
+          className="btn-primary text-xs px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white flex items-center gap-1 shadow-sm"
+        >
+          <Check className="w-3.5 h-3.5" />
+          {isBusy ? 'Promoting...' : 'Promote Rule'}
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function QuarantineManagementDrawer({ isOpen, onClose }) {
   const [quarantinedDeltas, setQuarantinedDeltas] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -87,12 +148,9 @@ export default function QuarantineManagementDrawer({ isOpen, onClose }) {
 
   return (
     <div className="fixed inset-0 z-50 flex">
-      {/* Backdrop */}
       <div className="flex-1 bg-slate-900/40 backdrop-blur-sm" onClick={onClose} />
 
-      {/* Drawer */}
       <div className="w-full max-w-xl bg-white shadow-2xl border-l border-slate-200 flex flex-col h-full overflow-hidden">
-        {/* Header */}
         <div className="p-6 border-b border-slate-100 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div className="p-2 rounded-xl bg-amber-500 text-white shadow-md shadow-amber-500/20">
@@ -116,7 +174,6 @@ export default function QuarantineManagementDrawer({ isOpen, onClose }) {
           </button>
         </div>
 
-        {/* Content */}
         <div className="flex-1 overflow-y-auto p-6 space-y-4">
           {statusMessage && (
             <div
@@ -163,66 +220,16 @@ export default function QuarantineManagementDrawer({ isOpen, onClose }) {
             </div>
           ) : (
             <div className="space-y-3">
-              {quarantinedDeltas.map((delta, idx) => {
-                const id = delta.id || delta.deltaId || `RULE-${idx}`;
-                const isBusy = actionInProgress === id;
-
-                return (
-                  <div
-                    key={id}
-                    className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-3 shadow-xs"
-                  >
-                    <div className="flex items-center justify-between gap-2">
-                      <div className="flex items-center gap-2">
-                        <span className="font-mono text-xs font-bold text-slate-900 bg-white px-2 py-0.5 rounded border border-slate-200">
-                          {delta.affectedSku || 'GLOBAL_RULE'}
-                        </span>
-                        {delta.requiredDependencySku && (
-                          <>
-                            <span className="text-xs text-slate-400 font-bold">→</span>
-                            <span className="font-mono text-xs font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                              {delta.requiredDependencySku}
-                            </span>
-                          </>
-                        )}
-                      </div>
-                      <span className="badge badge-amber text-[9px] font-mono uppercase">
-                        {delta.quarantineReason || delta.reason || 'UNVERIFIED'}
-                      </span>
-                    </div>
-
-                    <div>
-                      <p className="text-xs text-slate-700 font-medium leading-relaxed">
-                        {delta.rawMessage || delta.description || delta.ruleUpdate || 'No rule message provided.'}
-                      </p>
-                      {delta.chassis && (
-                        <p className="text-[10px] text-slate-400 mt-1">
-                          Chassis Scope: <strong className="text-slate-600">{delta.chassis}</strong>
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="pt-2 border-t border-slate-200 flex items-center justify-end gap-2">
-                      <button
-                        onClick={() => handleReject(id)}
-                        disabled={isBusy}
-                        className="btn-secondary text-xs px-3 py-1 text-rose-700 border-rose-200 hover:bg-rose-50 flex items-center gap-1"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                        Reject
-                      </button>
-                      <button
-                        onClick={() => handlePromote(delta)}
-                        disabled={isBusy}
-                        className="btn-primary text-xs px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white flex items-center gap-1 shadow-sm"
-                      >
-                        <Check className="w-3.5 h-3.5" />
-                        {isBusy ? 'Promoting...' : 'Promote Rule'}
-                      </button>
-                    </div>
-                  </div>
-                );
-              })}
+              {quarantinedDeltas.map((delta, idx) => (
+                <QuarantinedDeltaCard
+                  key={delta.id || delta.deltaId || `RULE-${idx}`}
+                  delta={delta}
+                  idx={idx}
+                  actionInProgress={actionInProgress}
+                  onReject={handleReject}
+                  onPromote={handlePromote}
+                />
+              ))}
             </div>
           )}
         </div>

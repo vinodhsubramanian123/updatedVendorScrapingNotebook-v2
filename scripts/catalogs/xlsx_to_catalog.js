@@ -2,6 +2,89 @@ const fs = require('fs');
 const path = require('path');
 const XLSX = require('xlsx-js-style');
 
+function extractRulesMapFromSheet(wb) {
+  const rulesSheet = wb.Sheets['Rules & Constraints'];
+  const rulesData = rulesSheet ? XLSX.utils.sheet_to_json(rulesSheet) : [];
+  const rulesMap = new Map();
+  for (const r of rulesData) {
+    const key = `${r['Main Category']}||${r['Sub-Category']}`;
+    if (!rulesMap.has(key)) rulesMap.set(key, []);
+    rulesMap.get(key).push(r['Rule Text'] || '');
+  }
+  return rulesMap;
+}
+
+function appendXlsxRowToGrouped(row, grouped, uniqueSKUs, rulesMap) {
+  const parentCat = row['Main Category'] || 'General';
+  const subCat = row['Sub-Category'] || parentCat;
+  const sku = row['Product #'];
+  if (!sku) return;
+  uniqueSKUs.add(sku);
+
+  const desc = row['Description'];
+  const constraint = row['Constraint Text'] || '';
+  const maxQtyRaw = row['Subcategory Max Qty'];
+  const maxQty = maxQtyRaw ? parseInt(maxQtyRaw, 10) : -1;
+  const unitPrice = parseFloat(String(row['Unit Price (USD)']).replace(/[$,]/g, '')) || 0;
+  const optionType = row['Option Type'] || 'Standard';
+  const startDate = row['Start Date'] || '';
+  const discontinuedDate = row['Discontinued Date'] || '';
+  const currentQty = parseInt(row['Current Qty'], 10) || 0;
+
+  const key = `${parentCat}||${subCat}`;
+  if (!grouped.has(key)) {
+    grouped.set(key, {
+      parentCategory: parentCat,
+      subCategory: subCat,
+      constraint: constraint,
+      maxQty: maxQty,
+      rules: Array.from(new Set(rulesMap.get(key) || [])),
+      headers: ['Product #', 'Description', 'List Price', 'Qty', 'Start Date'],
+      rows: [],
+      skus: [],
+      skuCount: 0
+    });
+  }
+
+  const lifecycleStatus = row['Lifecycle Status'] || row['CLIC Status'] || 'Active';
+  const availability = row['Availability'] || 'Available';
+  const leadTime = row['Lead Time'] || '';
+  const leadTimeSource = row['Lead Time Source'] || 'Not published by OCA';
+  const vendorAttrs = row['Vendor Attributes (JSON)'] || '{}';
+  const role = row['Component Role'] || (parentCat === 'Chassis' ? 'Base Chassis' : 'Option Component');
+  const formattedPrice = `$${unitPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+  const entry = grouped.get(key);
+  entry.skus.push({
+    'Product #': sku,
+    'Description': desc,
+    'Unit Price (USD)': unitPrice.toFixed(2),
+    'Price (USD)': unitPrice.toFixed(2),
+    'Current Qty': String(currentQty),
+    'Option Type': optionType,
+    'Lifecycle Status': lifecycleStatus,
+    'CLIC Status': lifecycleStatus,
+    'lifecycleStatus': lifecycleStatus,
+    'Availability': availability,
+    'Lead Time': leadTime,
+    'Lead Time Source': leadTimeSource,
+    'Start Date': startDate,
+    'Discontinued Date': discontinuedDate,
+    'Vendor Attributes (JSON)': vendorAttrs,
+    'Constraint Text': constraint,
+    'Subcategory Max Qty': maxQtyRaw,
+    'Component Role': role,
+    sku,
+    description: desc,
+    listPrice: unitPrice,
+    listPriceFormatted: formattedPrice,
+    qty: currentQty
+  });
+
+  entry.rows.push([sku, desc, formattedPrice, String(currentQty), startDate]);
+  entry.skuCount = entry.skus.length;
+}
+
 function convertXlsxToCatalog(xlsxPath, jsonOutputPath) {
   if (!fs.existsSync(xlsxPath)) {
     console.error(`XLSX not found: ${xlsxPath}`);
@@ -15,98 +98,16 @@ function convertXlsxToCatalog(xlsxPath, jsonOutputPath) {
     return false;
   }
 
-  // Extract rules from Rules & Constraints
-  const rulesSheet = wb.Sheets['Rules & Constraints'];
-  const rulesData = rulesSheet ? XLSX.utils.sheet_to_json(rulesSheet) : [];
-  const rulesMap = new Map();
-  for (const r of rulesData) {
-    const key = `${r['Main Category']}||${r['Sub-Category']}`;
-    if (!rulesMap.has(key)) rulesMap.set(key, []);
-    rulesMap.get(key).push(r['Rule Text'] || '');
-  }
-  
+  const rulesMap = extractRulesMapFromSheet(wb);
   const data = XLSX.utils.sheet_to_json(sheet);
   const folderName = path.basename(path.dirname(xlsxPath));
   const chassisLabel = folderName.replace(/_/g, ' ');
 
   const grouped = new Map();
   const uniqueSKUs = new Set();
-  
+
   for (const row of data) {
-    const parentCat = row['Main Category'] || 'General';
-    const subCat = row['Sub-Category'] || parentCat;
-    const sku = row['Product #'];
-    const desc = row['Description'];
-    const constraint = row['Constraint Text'] || '';
-    const maxQtyRaw = row['Subcategory Max Qty'];
-    const maxQty = maxQtyRaw ? parseInt(maxQtyRaw, 10) : -1;
-    const unitPrice = parseFloat(String(row['Unit Price (USD)']).replace(/[$,]/g, '')) || 0;
-    const optionType = row['Option Type'] || 'Standard';
-    const startDate = row['Start Date'] || '';
-    const discontinuedDate = row['Discontinued Date'] || '';
-    const currentQty = parseInt(row['Current Qty'], 10) || 0;
-
-    if (!sku) continue;
-    uniqueSKUs.add(sku);
-    
-    const key = `${parentCat}||${subCat}`;
-    if (!grouped.has(key)) {
-      grouped.set(key, {
-        parentCategory: parentCat,
-        subCategory: subCat,
-        constraint: constraint,
-        maxQty: maxQty,
-        rules: Array.from(new Set(rulesMap.get(key) || [])),
-        headers: ['Product #', 'Description', 'List Price', 'Qty', 'Start Date'],
-        rows: [],
-        skus: [],
-        skuCount: 0
-      });
-    }
-    
-    const lifecycleStatus = row['Lifecycle Status'] || row['CLIC Status'] || 'Active';
-    const availability = row['Availability'] || 'Available';
-    const leadTime = row['Lead Time'] || '';
-    const leadTimeSource = row['Lead Time Source'] || 'Not published by OCA';
-    const vendorAttrs = row['Vendor Attributes (JSON)'] || '{}';
-    const role = row['Component Role'] || (parentCat === 'Chassis' ? 'Base Chassis' : 'Option Component');
-
-    const entry = grouped.get(key);
-    entry.skus.push({
-      'Product #': sku,
-      'Description': desc,
-      'Unit Price (USD)': unitPrice.toFixed(2),
-      'Price (USD)': unitPrice.toFixed(2),
-      'Current Qty': String(currentQty),
-      'Option Type': optionType,
-      'Lifecycle Status': lifecycleStatus,
-      'CLIC Status': lifecycleStatus,
-      'lifecycleStatus': lifecycleStatus,
-      'Availability': availability,
-      'Lead Time': leadTime,
-      'Lead Time Source': leadTimeSource,
-      'Start Date': startDate,
-      'Discontinued Date': discontinuedDate,
-      'Vendor Attributes (JSON)': vendorAttrs,
-      'Constraint Text': constraint,
-      'Subcategory Max Qty': maxQtyRaw,
-      'Component Role': role,
-      sku,
-      description: desc,
-      listPrice: unitPrice,
-      listPriceFormatted: `$${unitPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-      qty: currentQty
-    });
-    
-    entry.rows.push([
-      sku,
-      desc,
-      `$${unitPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-      String(currentQty),
-      startDate
-    ]);
-    
-    entry.skuCount = entry.skus.length;
+    appendXlsxRowToGrouped(row, grouped, uniqueSKUs, rulesMap);
   }
   
   const subcategoriesMap = new Map();

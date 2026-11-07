@@ -183,102 +183,90 @@ function throwIfRequestAborted(signal) {
   if (signal?.aborted) throw signal.reason;
 }
 
+function formatMcpJsonText(payload) {
+  return { content: [{ type: "text", text: JSON.stringify(payload, null, 2) }] };
+}
+
+async function handleQueryNotebookLmTool(args, signal) {
+  const chassisId = normalizeChassisName(args.chassis_id);
+  const cfg = loadNotebookConfig();
+  const notebookId = getNotebookIdForChassis(cfg, chassisId) || getNotebookIdForChassis(cfg, args.chassis_id);
+  let result;
+  if (!notebookId) {
+    const degradedMode = getNotebookDegradedMode(cfg, chassisId) || getNotebookDegradedMode(cfg, args.chassis_id);
+    const localResult = queryLocalKnowledgeBase(args.query, chassisId);
+    result = { ...localResult, source: 'LOCAL_RAG_NO_NOTEBOOK_MAPPED', degradedMode };
+  } else {
+    result = await executeNotebookQuery(notebookId, args.query, { context: { chassis: chassisId }, signal });
+    throwIfRequestAborted(signal);
+  }
+  return formatMcpJsonText(result);
+}
+
+function handleRecordKnowledgeDeltaTool(args) {
+  const chassisId = normalizeChassisName(args.chassis_id);
+  const cat = listAllCatalogs().find(c => c.id === chassisId || c.id === args.chassis_id);
+  let outputDir = cat ? cat.catalogDir : null;
+  if (!outputDir) {
+    const rawChassisId = String(chassisId || args.chassis_id || '').trim();
+    if (!rawChassisId || !rawChassisId.replace(/[^a-zA-Z0-9]/g, '')) throw new Error('Invalid chassis_id');
+    const cleanChassisId = rawChassisId.replace(/[^a-zA-Z0-9_-]/g, '_');
+    outputDir = path.resolve(__dirname, '..', '..', 'outputs', cleanChassisId);
+  }
+  const outputsRoot = path.resolve(__dirname, '..', '..', 'outputs');
+  if (!outputDir.startsWith(outputsRoot + path.sep) && outputDir !== outputsRoot) {
+    throw new Error('Path Traversal: outputDir must reside within outputs directory');
+  }
+  if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
+  const result = processPortalFeedback("MCP tool rule update", outputDir, {
+    affectedSku: args.affected_sku,
+    requiredDependencySku: args.required_sku,
+    ruleUpdate: args.rule_update,
+    humanReasoning: "MCP Server tool-call derived knowledge delta",
+    sourceAgent: 'MCP_EXTERNAL'
+  });
+  return formatMcpJsonText(result);
+}
+
 async function executeToolRequest(request, extra) {
   const signal = extra.signal;
   try {
     throwIfRequestAborted(signal);
     const toolName = request.params?.name || request.name;
     const args = request.params?.arguments || request.arguments || {};
-    let items = [];
-    if (args.items_json) {
-      items = JSON.parse(args.items_json);
-    }
+    const items = args.items_json ? JSON.parse(args.items_json) : [];
 
     switch (toolName) {
-      case "evaluate_aspect_thermal": {
-        const result = evalComputeThermal(items);
-        return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
-      }
-      case "evaluate_aspect_memory": {
-        const result = evalMemoryChannel(items, args.cpu_count || 0);
-        return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
-      }
-      case "evaluate_aspect_storage": {
-        const result = evalStorageTriMode(items);
-        return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
-      }
-      case "evaluate_aspect_networking": {
-        const result = evalNetworkingOcp(items);
-        return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
-      }
-      case "evaluate_aspect_pcie": {
-        const result = evalPcieRiserSlots(items);
-        return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
-      }
-      case "evaluate_aspect_power": {
-        const result = evalPowerEnvironment(items);
-        return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
-      }
-      case "evaluate_aspect_support": {
-        const result = evalSupportManufacturing(items, null, args.total_socket_cores || 0, args.server_count || 1);
-        return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
-      }
-      case "query_notebooklm": {
-        const chassisId = normalizeChassisName(args.chassis_id);
-        const cfg = loadNotebookConfig();
-        const notebookId = getNotebookIdForChassis(cfg, chassisId) || getNotebookIdForChassis(cfg, args.chassis_id);
-        let result;
-        if (!notebookId) {
-          // No notebook mapped or disabled — return degraded mode rather than passing null
-          const degradedMode = getNotebookDegradedMode(cfg, chassisId) || getNotebookDegradedMode(cfg, args.chassis_id);
-          const localResult = queryLocalKnowledgeBase(args.query, chassisId);
-          result = { ...localResult, source: 'LOCAL_RAG_NO_NOTEBOOK_MAPPED', degradedMode };
-        } else {
-          result = await executeNotebookQuery(notebookId, args.query, { context: { chassis: chassisId }, signal });
-          throwIfRequestAborted(signal);
-        }
-        return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
-      }
-      case "query_catalog_db": {
-        const chassisId = normalizeChassisName(args.chassis_id);
-        const result = queryLocalKnowledgeBase(args.query, chassisId);
-        return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
-      }
+      case "evaluate_aspect_thermal":
+        return formatMcpJsonText(evalComputeThermal(items));
+      case "evaluate_aspect_memory":
+        return formatMcpJsonText(evalMemoryChannel(items, args.cpu_count || 0));
+      case "evaluate_aspect_storage":
+        return formatMcpJsonText(evalStorageTriMode(items));
+      case "evaluate_aspect_networking":
+        return formatMcpJsonText(evalNetworkingOcp(items));
+      case "evaluate_aspect_pcie":
+        return formatMcpJsonText(evalPcieRiserSlots(items));
+      case "evaluate_aspect_power":
+        return formatMcpJsonText(evalPowerEnvironment(items));
+      case "evaluate_aspect_support":
+        return formatMcpJsonText(evalSupportManufacturing(items, null, args.total_socket_cores || 0, args.server_count || 1));
+      case "query_notebooklm":
+        return await handleQueryNotebookLmTool(args, signal);
+      case "query_catalog_db":
+        return formatMcpJsonText(queryLocalKnowledgeBase(args.query, normalizeChassisName(args.chassis_id)));
       case "simulate_build": {
         const chassisId = normalizeChassisName(args.chassis_id);
         const cat = listAllCatalogs().find(c => c.id === chassisId || c.id === args.chassis_id);
         const result = evaluateBOQMultiAspect(items, { chassis: chassisId, targetDir: cat?.catalogDir });
-        const envelope = {
+        return formatMcpJsonText({
           simulationType: 'LOCAL_PHYSICAL_MATH_SIMULATION',
           portalValidationStatus: 'PORTAL VALIDATION PENDING',
           ...result
-        };
-        return { content: [{ type: "text", text: JSON.stringify(envelope, null, 2) }] };
-      }
-      case "record_knowledge_delta": {
-        const chassisId = normalizeChassisName(args.chassis_id);
-        const cat = listAllCatalogs().find(c => c.id === chassisId || c.id === args.chassis_id);
-        let outputDir = cat ? cat.catalogDir : null;
-        if (!outputDir) {
-          const rawChassisId = String(chassisId || args.chassis_id || '').trim();
-          if (!rawChassisId || !rawChassisId.replace(/[^a-zA-Z0-9]/g, '')) throw new Error('Invalid chassis_id');
-          const cleanChassisId = rawChassisId.replace(/[^a-zA-Z0-9_-]/g, '_');
-          outputDir = path.resolve(__dirname, '..', '..', 'outputs', cleanChassisId);
-        }
-        const outputsRoot = path.resolve(__dirname, '..', '..', 'outputs');
-        if (!outputDir.startsWith(outputsRoot + path.sep) && outputDir !== outputsRoot) {
-          throw new Error('Path Traversal: outputDir must reside within outputs directory');
-        }
-        if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
-        const result = processPortalFeedback("MCP tool rule update", outputDir, {
-          affectedSku: args.affected_sku,
-          requiredDependencySku: args.required_sku,
-          ruleUpdate: args.rule_update,
-          humanReasoning: "MCP Server tool-call derived knowledge delta",
-          sourceAgent: 'MCP_EXTERNAL'
         });
-        return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
       }
+      case "record_knowledge_delta":
+        return handleRecordKnowledgeDeltaTool(args);
       default:
         throw new Error(`Unknown tool: ${request.params.name}`);
     }

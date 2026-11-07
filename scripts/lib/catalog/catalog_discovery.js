@@ -254,8 +254,45 @@ function findCatalogJsonFiles(dir) {
  * @param {string} outputsRoot Optional override for outputs directory
  * @returns {Array<object>} Array of catalog summary objects
  */
+function _loadNotebooksOfficialCounts() {
+  try {
+    const nbPath = path.join(PROJECT_ROOT, 'scripts', 'config', 'notebooks.json');
+    if (!fs.existsSync(nbPath)) return {};
+    const nb = JSON.parse(fs.readFileSync(nbPath, 'utf8')).notebooks || {};
+    const map = {};
+    for (const [key, val] of Object.entries(nb)) {
+      map[key] = Array.isArray(val?.officialSourceIds) ? val.officialSourceIds.length : 0;
+    }
+    return map;
+  } catch {
+    return {};
+  }
+}
+
+function _resolveLocalPdfInfo(dir, fileBase) {
+  let pdfPath = path.join(dir, `HPE_${fileBase}_QuickSpecs.pdf`);
+  if (!fs.existsSync(pdfPath)) {
+    const pdfs = fs.readdirSync(dir).filter(f => f.endsWith('.pdf'));
+    pdfPath = pdfs.length > 0 ? path.join(dir, pdfs[0]) : null;
+  }
+  if (!pdfPath || !fs.existsSync(pdfPath)) return null;
+  const pStat = fs.statSync(pdfPath);
+  const md5 = crypto.createHash('md5').update(fs.readFileSync(pdfPath)).digest('hex').substring(0, 8);
+  return {
+    path: pdfPath,
+    sizeMb: parseFloat((pStat.size / 1024 / 1024).toFixed(2)),
+    md5Prefix: md5
+  };
+}
+
+/**
+ * List all available catalogs with summary metadata.
+ * @param {string} outputsRoot Optional override for outputs directory
+ * @returns {Array<object>} Array of catalog summary objects
+ */
 function listAllCatalogs(outputsRoot = OUTPUTS_ROOT) {
   const catalogJsons = findCatalogJsonFiles(outputsRoot);
+  const officialCounts = _loadNotebooksOfficialCounts();
   const catalogs = [];
 
   catalogJsons.sort().forEach(jsonPath => {
@@ -264,25 +301,8 @@ function listAllCatalogs(outputsRoot = OUTPUTS_ROOT) {
       const meta = data.metadata || {};
       const dir  = path.dirname(jsonPath);
       const fileBase = path.basename(jsonPath, '_Catalog.json');
-
       const xlsxPath = path.join(dir, `${fileBase}_OCA_Catalog.xlsx`);
-      let pdfPath = path.join(dir, `HPE_${fileBase}_QuickSpecs.pdf`);
-      if (!fs.existsSync(pdfPath)) {
-        const pdfs = fs.readdirSync(dir).filter(f => f.endsWith('.pdf'));
-        pdfPath = pdfs.length > 0 ? path.join(dir, pdfs[0]) : null;
-      }
-
-      let pdfInfo = null;
-      if (pdfPath && fs.existsSync(pdfPath)) {
-        const pStat = fs.statSync(pdfPath);
-        const md5 = crypto.createHash('md5').update(fs.readFileSync(pdfPath)).digest('hex').substring(0, 8);
-        pdfInfo = {
-          path: pdfPath,
-          sizeMb: parseFloat((pStat.size / 1024 / 1024).toFixed(2)),
-          md5Prefix: md5
-        };
-      }
-
+      const pdfInfo = _resolveLocalPdfInfo(dir, fileBase);
       const historyDir = path.join(dir, 'history');
       const hasDiffHistory = fs.existsSync(historyDir) &&
         fs.readdirSync(historyDir).some(f => f.startsWith('catalog_') && f.endsWith('.json'));
@@ -300,6 +320,7 @@ function listAllCatalogs(outputsRoot = OUTPUTS_ROOT) {
         hasExcel: fs.existsSync(xlsxPath),
         xlsxPath: fs.existsSync(xlsxPath) ? xlsxPath : null,
         pdf: pdfInfo,
+        cloudQuickSpecsCount: officialCounts[fileBase] || 0,
         hasDiffHistory
       });
     } catch (e) { const _logger = require('../system/pipeline_logger.js'); _logger.warn('ERROR', 'catalog_discovery.js', e); }
@@ -324,27 +345,44 @@ function getCatalogDetail(catalogJsonPath) {
   }
 }
 
+function _isIgnoredDeltaPath(file, filePath) {
+  if (file.startsWith('.')) return true;
+  if (IGNORED_DISCOVERY_DIRS.has(file) && file !== 'history') return true;
+  if (file === 'skill_workflow_excellence') return true;
+  if (file.startsWith('failed_staging') || file.startsWith('staging_')) return true;
+  if (file.endsWith('.tmp') || file.endsWith('.bak') || file.includes('.tmp')) return true;
+  return Boolean(filePath && (filePath.includes(`${path.sep}temp${path.sep}`) || filePath.endsWith(`${path.sep}temp`)));
+}
+
 /**
  * Recursively collect all KnowledgeDeltas from catalog_deltas.json files.
  * @param {string} dir Starting directory
  * @returns {Array<object>} All deltas
  */
-function collectKnowledgeDeltas(dir = OUTPUTS_ROOT) {
+function collectKnowledgeDeltas(dir = OUTPUTS_ROOT, _seenIds = new Set()) {
   let deltas = [];
   if (!fs.existsSync(dir)) return deltas;
 
   const list = fs.readdirSync(dir);
   list.forEach(file => {
     const filePath = path.join(dir, file);
-    if (isIgnoredDiscoveryPath(file, filePath)) return;
+    if (_isIgnoredDeltaPath(file, filePath)) return;
     try {
       const stat = fs.statSync(filePath);
       if (stat && stat.isDirectory()) {
-        deltas = deltas.concat(collectKnowledgeDeltas(filePath));
+        deltas = deltas.concat(collectKnowledgeDeltas(filePath, _seenIds));
       } else if (file === 'catalog_deltas.json') {
         try {
           const parsed = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-          if (Array.isArray(parsed)) deltas.push(...parsed);
+          if (Array.isArray(parsed)) {
+            for (const item of parsed) {
+              const id = item?.deltaId || item?.ruleId;
+              if (!id || !_seenIds.has(id)) {
+                if (id) _seenIds.add(id);
+                deltas.push(item);
+              }
+            }
+          }
         } catch (e) { const _logger = require('../system/pipeline_logger.js'); _logger.warn('ERROR', 'catalog_discovery.js', e); }
       }
     } catch (e) { const _logger = require('../system/pipeline_logger.js'); _logger.warn('ERROR', 'catalog_discovery.js', e); }

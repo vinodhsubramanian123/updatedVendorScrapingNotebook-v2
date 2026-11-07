@@ -199,44 +199,41 @@ function refreshMasterCatalogCsv(payloadPath, chassisName) {
   return csvPath;
 }
 
+const ISOLATED_CORE_COMPONENT_RE = /\b(processor|xeon|epyc|ddr4|ddr5|memory\s+kit|chassis\s+cto|system\s+board|motherboard)\b/i;
+const CARRYOVER_ACCESSORY_OPTION_RE = /\b(riser|shipping|kit|cable|rail|bracket|fan|bezel|heatsink|power\s*cord|transceiver|adapter|controller)\b/i;
+const HPE_SKU_TOKEN_RE = /\b[A-Z0-9]{5,}(?:-[A-Z0-9]{2,3})?\b/;
+const VERIFIED_EVIDENCE_MARKER_RE = /Evidence: (?:OFFICIAL_VENDOR_DOC|CERTIFIED_OCA_CATALOG|VERIFIED_PORTAL_RULE); Sources: [A-Za-z0-9_.:-]+(?:,[A-Za-z0-9_.:-]+)*\)/;
+
+function _isVerifiedSharedPayloadLine(line, chassisName) {
+  if (ISOLATED_CORE_COMPONENT_RE.test(line)) return false;
+
+  const marker = line.match(/\[SHARED_ACCESSORY_VERIFIED target=([^\]]+)\]/);
+  if (marker) {
+    const targetListed = marker[1].split(',').some(product =>
+      normalizeLearningText(product) === normalizeLearningText(chassisName)
+    );
+    return targetListed && HPE_SKU_TOKEN_RE.test(line) && VERIFIED_EVIDENCE_MARKER_RE.test(line);
+  }
+
+  // In a managed catalog table row or learned delta rule line, non-isolated hardware options
+  // (risers, kits, cables, rails, shipping, adapters, controllers) whose official vendor name
+  // references a prior product generation (e.g. DL380 Gen11 Riser Kit on DL380 Gen12) are valid.
+  const isTableOrDeltaRow = /^\s*\|/.test(line) || /\b(?:DELTA|LEARN)[_-][A-Za-z0-9_-]+/.test(line);
+  if (isTableOrDeltaRow) {
+    return HPE_SKU_TOKEN_RE.test(line) && CARRYOVER_ACCESSORY_OPTION_RE.test(line);
+  }
+
+  return false;
+}
+
 function assertPayloadProductIsolation(payloadText, chassisName, notebookCfg) {
-  const text = String(payloadText || '');
-  const isVerifiedSharedLine = line => {
-    const marker = line.match(/\[SHARED_ACCESSORY_VERIFIED target=([^\]]+)\]/);
-    if (marker) {
-      const targetListed = marker[1].split(',').some(product =>
-        normalizeLearningText(product) === normalizeLearningText(chassisName)
-      );
-      if (!targetListed) return false;
-
-      // Strict invariant: Isolated core components (CPU, memory, chassis, motherboards) can NEVER be shared accessories
-      const isIsolatedComponent = /\b(processor|xeon|epyc|ddr4|ddr5|memory\s+kit|chassis\s+cto|system\s+board|motherboard)\b/i.test(line);
-      if (isIsolatedComponent) return false;
-
-      return /\b[A-Z0-9]{5,}(?:-[A-Z0-9]{2,3})?\b/.test(line) &&
-        /Evidence: (?:OFFICIAL_VENDOR_DOC|CERTIFIED_OCA_CATALOG|VERIFIED_PORTAL_RULE); Sources: [A-Za-z0-9_.:-]+(?:,[A-Za-z0-9_.:-]+)*\)/.test(line);
-    }
-
-    // In a managed catalog table row, non-isolated hardware options (risers, kits, cables, rails, shipping)
-    // whose vendor name references another product generation (e.g. DL380 Gen11 Riser Kit on DL380 Gen12)
-    // are official certified options within this chassis catalog.
-    const isTableRow = /^\s*\|\s*\d+\s*\|/.test(line);
-    if (isTableRow) {
-      const isIsolatedComponent = /\b(processor|xeon|epyc|ddr4|ddr5|memory\s+kit|chassis\s+cto|system\s+board|motherboard)\b/i.test(line);
-      if (isIsolatedComponent) return false;
-      const hasSku = /\b[A-Z0-9]{5,}(?:-[A-Z0-9]{2,3})?\b/.test(line);
-      const isAccessoryOption = /\b(riser|shipping|kit|cable|rail|bracket|fan|bezel|heatsink|power\s*cord|transceiver|adapter)\b/i.test(line);
-      return hasSku && isAccessoryOption;
-    }
-
-    return false;
-  };
+  const lines = String(payloadText || '').split(/\r?\n/);
   const otherProducts = Object.keys(notebookCfg?.notebooks || {}).filter(name => name !== chassisName);
   for (const product of otherProducts) {
     const aliases = [product, product.replace(/_/g, ' ')];
-    const offendingLine = text.split(/\r?\n/).find(line =>
+    const offendingLine = lines.find(line =>
       aliases.some(alias => new RegExp(`(^|[^A-Za-z0-9])${alias.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}([^A-Za-z0-9]|$)`, 'i').test(line)) &&
-      !isVerifiedSharedLine(line)
+      !_isVerifiedSharedPayloadLine(line, chassisName)
     );
     if (offendingLine) {
       throw new Error(`Product isolation rejected ${chassisName} payload: reference to registered product ${product}`);

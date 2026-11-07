@@ -1,15 +1,39 @@
 import React from 'react';
 import { CheckCircle2, XCircle, Clock, Loader2 } from 'lucide-react';
 
+const STATUS_PATTERNS = [
+  { state: 'RUNNING', tokens: ['RUN', 'PROGRESS', 'EXEC', 'ACTIVE'] },
+  { state: 'COMPLETE', tokens: ['COMPLET', 'PASS', 'SUCCESS', 'OK'] },
+  { state: 'FAILED', tokens: ['FAIL', 'ERR', 'CANCEL', 'KILL'] },
+  { state: 'PENDING', tokens: ['PEND', 'QUEUE', 'WAIT', 'IDLE'] }
+];
+
+function normalizeTaskStatus(status, exitCode) {
+  if (typeof exitCode === 'number') {
+    return exitCode === 0 ? 'COMPLETE' : 'FAILED';
+  }
+  if (!status) return 'PENDING';
+  const s = String(status).toUpperCase();
+  const match = STATUS_PATTERNS.find(entry => entry.tokens.some(t => s.includes(t)));
+  return match ? match.state : 'PENDING';
+}
+
+const SIZE_CLASSES = {
+  sm: 'text-[10px] px-2 py-0.5 gap-1 font-semibold rounded-md border',
+  md: 'text-xs px-2.5 py-1 gap-1.5 font-bold rounded-lg border shadow-xs',
+  lg: 'text-sm px-3.5 py-1.5 gap-2 font-bold rounded-xl border shadow-sm'
+};
+
+const ICON_SIZES = {
+  sm: 'w-3 h-3',
+  md: 'w-3.5 h-3.5',
+  lg: 'w-4 h-4'
+};
+
 /**
  * TaskStatusBadge Component
- * 
+ *
  * Provides consistent, highly visible status indicator badges for individual scraping & pipeline tasks.
- * Supported lifecycle states:
- * - 'Pending' / 'QUEUED' / 'IDLE': Amber/Slate theme with clock icon
- * - 'Running' / 'IN_PROGRESS': Blue theme with animated spinning loader
- * - 'Complete' / 'COMPLETED' / 'SUCCESS': Emerald green theme with check icon
- * - 'Failed' / 'ERROR': Rose red theme with X-circle icon
  */
 export default function TaskStatusBadge({
   status = 'Pending',
@@ -18,25 +42,9 @@ export default function TaskStatusBadge({
   showIcon = true,
   className = ''
 }) {
-  // Normalize status state
-  let normalized = 'PENDING';
+  const normalized = normalizeTaskStatus(status, exitCode);
+  const hasNonZeroExit = exitCode !== null && exitCode !== undefined && exitCode !== 0;
 
-  if (typeof exitCode === 'number') {
-    normalized = exitCode === 0 ? 'COMPLETE' : 'FAILED';
-  } else if (status) {
-    const s = String(status).toUpperCase();
-    if (s.includes('RUN') || s.includes('PROGRESS') || s.includes('EXEC') || s.includes('ACTIVE')) {
-      normalized = 'RUNNING';
-    } else if (s.includes('COMPLET') || s.includes('PASS') || s.includes('SUCCESS') || s.includes('OK')) {
-      normalized = 'COMPLETE';
-    } else if (s.includes('FAIL') || s.includes('ERR') || s.includes('CANCEL') || s.includes('KILL')) {
-      normalized = 'FAILED';
-    } else if (s.includes('PEND') || s.includes('QUEUE') || s.includes('WAIT') || s.includes('IDLE')) {
-      normalized = 'PENDING';
-    }
-  }
-
-  // Configuration map for visual badge styling
   const config = {
     PENDING: {
       label: 'Pending',
@@ -60,7 +68,7 @@ export default function TaskStatusBadge({
       iconClass: 'text-emerald-600 dark:text-emerald-400'
     },
     FAILED: {
-      label: exitCode !== null && exitCode !== undefined && exitCode !== 0 ? `Failed (Code ${exitCode})` : 'Failed',
+      label: hasNonZeroExit ? `Failed (Code ${exitCode})` : 'Failed',
       bgClass: 'bg-rose-500/10 text-rose-700 dark:text-rose-300 border-rose-500/30',
       dotClass: 'bg-rose-500',
       icon: XCircle,
@@ -71,26 +79,13 @@ export default function TaskStatusBadge({
   const currentConfig = config[normalized] || config.PENDING;
   const IconComponent = currentConfig.icon;
 
-  // Size styling classes
-  const sizeClasses = {
-    sm: 'text-[10px] px-2 py-0.5 gap-1 font-semibold rounded-md border',
-    md: 'text-xs px-2.5 py-1 gap-1.5 font-bold rounded-lg border shadow-xs',
-    lg: 'text-sm px-3.5 py-1.5 gap-2 font-bold rounded-xl border shadow-sm'
-  };
-
-  const iconSizes = {
-    sm: 'w-3 h-3',
-    md: 'w-3.5 h-3.5',
-    lg: 'w-4 h-4'
-  };
-
   return (
     <span
-      className={`inline-flex items-center justify-center transition-all ${sizeClasses[size] || sizeClasses.md} ${currentConfig.bgClass} ${className}`}
+      className={`inline-flex items-center justify-center transition-all ${SIZE_CLASSES[size] || SIZE_CLASSES.md} ${currentConfig.bgClass} ${className}`}
       title={`Task Lifecycle State: ${currentConfig.label}`}
     >
       {showIcon && (
-        <IconComponent className={`${iconSizes[size] || iconSizes.md} ${currentConfig.iconClass} shrink-0`} />
+        <IconComponent className={`${ICON_SIZES[size] || ICON_SIZES.md} ${currentConfig.iconClass} shrink-0`} />
       )}
       <span>{currentConfig.label}</span>
     </span>

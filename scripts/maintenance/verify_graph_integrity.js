@@ -17,6 +17,57 @@ const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
 const GRAPH_JSON = path.join(PROJECT_ROOT, 'graphify-out', 'graph.json');
 const SKILLS_DIR = path.join(PROJECT_ROOT, '.agents', 'skills');
 
+function buildGraphMaps(nodes, links) {
+  const nodeMap = new Map();
+  const inEdges = new Map();
+  const outEdges = new Map();
+  const fileNodes = new Map();
+
+  for (const n of nodes) {
+    nodeMap.set(n.id, n);
+    const sf = n.source_file || n.id;
+    if (!fileNodes.has(sf)) fileNodes.set(sf, []);
+    fileNodes.get(sf).push(n);
+  }
+
+  for (const e of links) {
+    if (!outEdges.has(e.source)) outEdges.set(e.source, []);
+    outEdges.get(e.source).push(e);
+    if (!inEdges.has(e.target)) inEdges.set(e.target, []);
+    inEdges.get(e.target).push(e);
+  }
+
+  return { nodeMap, inEdges, outEdges, fileNodes };
+}
+
+function collectSkillLinks(skillName, skillFileKey, nodesInSkill, outEdges, inEdges, nodeMap) {
+  const peerSkills = new Set();
+  const codeLinks = new Set();
+
+  for (const n of nodesInSkill) {
+    const outs = outEdges.get(n.id) || [];
+    const ins = inEdges.get(n.id) || [];
+
+    for (const e of [...outs, ...ins]) {
+      const otherId = e.source === n.id ? e.target : e.source;
+      const otherNode = nodeMap.get(otherId);
+      const otherFile = otherNode?.source_file || otherId;
+
+      if (!otherFile || otherFile === skillFileKey) continue;
+
+      if (otherFile.includes('.agents/skills/') && otherFile.endsWith('SKILL.md')) {
+        const peer = otherFile.split('.agents/skills/')[1]?.split('/')[0];
+        if (peer && peer !== skillName) peerSkills.add(peer);
+      } else if ((otherFile.endsWith('.js') || otherFile.endsWith('.cjs') || otherFile.endsWith('.jsx')) &&
+                 (otherFile.startsWith('scripts/') || otherFile.startsWith('dashboard/'))) {
+        codeLinks.add(otherFile);
+      }
+    }
+  }
+
+  return { peerSkills, codeLinks };
+}
+
 function verifyGraphIntegrity(options = {}) {
   const issues = [];
   const log = options.silent ? () => {} : console.log;
@@ -36,29 +87,7 @@ function verifyGraphIntegrity(options = {}) {
 
   log(`   Graph loaded: ${nodes.length} nodes, ${links.length} links`);
 
-  // Build node map and adjacency
-  const nodeMap = new Map();
-  const inEdges = new Map();
-  const outEdges = new Map();
-
-  for (const n of nodes) {
-    nodeMap.set(n.id, n);
-  }
-
-  for (const e of links) {
-    if (!outEdges.has(e.source)) outEdges.set(e.source, []);
-    outEdges.get(e.source).push(e);
-    if (!inEdges.has(e.target)) inEdges.set(e.target, []);
-    inEdges.get(e.target).push(e);
-  }
-
-  // 1. Group nodes by source file
-  const fileNodes = new Map();
-  for (const n of nodes) {
-    const sf = n.source_file || n.id;
-    if (!fileNodes.has(sf)) fileNodes.set(sf, []);
-    fileNodes.get(sf).push(n);
-  }
+  const { nodeMap, inEdges, outEdges, fileNodes } = buildGraphMaps(nodes, links);
 
   // 2. Discover all skills on disk
   const diskSkills = fs.readdirSync(SKILLS_DIR).filter(name => {
@@ -81,30 +110,7 @@ function verifyGraphIntegrity(options = {}) {
     }
 
     const nodesInSkill = fileNodes.get(skillFileKey) || [];
-    const peerSkills = new Set();
-    const codeLinks = new Set();
-
-    for (const n of nodesInSkill) {
-      const outs = outEdges.get(n.id) || [];
-      const ins = inEdges.get(n.id) || [];
-
-      for (const e of [...outs, ...ins]) {
-        const otherId = e.source === n.id ? e.target : e.source;
-        const otherNode = nodeMap.get(otherId);
-        const otherFile = otherNode?.source_file || otherId;
-
-        if (!otherFile || otherFile === skillFileKey) continue;
-
-        if (otherFile.includes('.agents/skills/') && otherFile.endsWith('SKILL.md')) {
-          const peer = otherFile.split('.agents/skills/')[1]?.split('/')[0];
-          if (peer && peer !== skillName) peerSkills.add(peer);
-        } else if (otherFile.endsWith('.js') || otherFile.endsWith('.cjs') || otherFile.endsWith('.jsx')) {
-          if (otherFile.startsWith('scripts/') || otherFile.startsWith('dashboard/')) {
-            codeLinks.add(otherFile);
-          }
-        }
-      }
-    }
+    const { peerSkills, codeLinks } = collectSkillLinks(skillName, skillFileKey, nodesInSkill, outEdges, inEdges, nodeMap);
 
     skillNetwork[skillName] = {
       peerSkills: Array.from(peerSkills),

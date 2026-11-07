@@ -44,6 +44,87 @@ const RECOMMENDED_FIELDS = [
   { field: 'lastSyncedSourceId', label: 'Last Synced Source', validate: v => typeof v === 'string' && v.length > 10, severity: 'MEDIUM' },
 ];
 
+function _auditSingleNotebook(key, entry, issues) {
+  for (const { field, label, validate } of REQUIRED_FIELDS) {
+    if (!validate(entry[field])) {
+      issues.push({ notebook: key, severity: 'CRITICAL', category: 'REQUIRED_FIELD', field, message: `Missing or invalid ${label} (${field}: ${JSON.stringify(entry[field])})` });
+    }
+  }
+
+  if (entry.cloudSyncState === 'FAILED' || entry.lastSyncError) {
+    issues.push({
+      notebook: key,
+      severity: 'HIGH',
+      category: 'SYNC_STATE_FAILED',
+      field: 'cloudSyncState',
+      message: `Cloud sync state is ${entry.cloudSyncState || 'FAILED'}${entry.lastSyncError ? `: ${entry.lastSyncError}` : ''}`
+    });
+  }
+
+  if (entry.queryEnabled === false) {
+    issues.push({ notebook: key, severity: 'LOW', category: 'QUERY_STATE', field: 'queryEnabled', message: 'Queries currently disabled (fail-closed mode active for unready/advisory product).' });
+  }
+
+  for (const { field, label, validate, severity } of RECOMMENDED_FIELDS) {
+    if (!validate(entry[field])) {
+      const effectiveSeverity = entry.queryEnabled === false && severity === 'HIGH' ? 'LOW' : severity;
+      const note = entry.queryEnabled === false ? 'fail-closed advisory product' : (severity === 'HIGH' ? 'RAG grounding may be degraded' : 'optional but recommended');
+      issues.push({ notebook: key, severity: effectiveSeverity, category: 'RECOMMENDED_FIELD', field, message: `Missing ${label} — ${note}` });
+    }
+  }
+
+  if (entry.lastSyncedAt) {
+    const daysSince = (Date.now() - new Date(entry.lastSyncedAt).getTime()) / (1000 * 60 * 60 * 24);
+    if (daysSince > STALE_THRESHOLD_DAYS) {
+      issues.push({ notebook: key, severity: 'MEDIUM', category: 'STALE_SYNC', message: `Last sync ${Math.floor(daysSince)} days ago (${entry.lastSyncedAt}). Threshold: ${STALE_THRESHOLD_DAYS} days.` });
+    }
+  } else {
+    issues.push({ notebook: key, severity: 'HIGH', category: 'STALE_SYNC', message: 'No lastSyncedAt timestamp — notebook may never have been synced.' });
+  }
+
+  if (Array.isArray(entry.quarantinedSourceIds) && entry.quarantinedSourceIds.length > 5) {
+    issues.push({ notebook: key, severity: 'MEDIUM', category: 'QUARANTINE', message: `${entry.quarantinedSourceIds.length} quarantined sources — consider cleanup to reduce noise.` });
+  }
+}
+
+function _auditKnowledgeRegistry(notebookKeys, issues) {
+  if (!fs.existsSync(REGISTRY_PATH)) return;
+  try {
+    const registry = JSON.parse(fs.readFileSync(REGISTRY_PATH, 'utf8'));
+    const chassisCoverage = new Map();
+    for (const arr of [registry.universalRules, registry.familyGenRules, registry.chassisSpecificRules]) {
+      for (const r of arr || []) {
+        const ch = r.chassis || 'GLOBAL';
+        chassisCoverage.set(ch, (chassisCoverage.get(ch) || 0) + 1);
+      }
+    }
+
+    for (const key of notebookKeys) {
+      const ruleCount = chassisCoverage.get(key) || 0;
+      if (ruleCount === 0) {
+        issues.push({ notebook: key, severity: 'LOW', category: 'KNOWLEDGE_GAP', message: 'Zero learned rules in knowledge registry. Consider adding gap resolution documentation.' });
+      }
+    }
+
+    for (const name of chassisCoverage.keys()) {
+      if (name === 'GLOBAL') continue;
+      if (name.includes(' ')) {
+        issues.push({ notebook: 'REGISTRY', severity: 'HIGH', category: 'CHASSIS_NAMING', message: `Chassis name "${name}" uses spaces instead of underscores.` });
+      }
+      if (/_(8SFF|24SFF|8LFF|12LFF|EDSFF|SFF|LFF)$/i.test(name)) {
+        issues.push({ notebook: 'REGISTRY', severity: 'HIGH', category: 'CHASSIS_NAMING', message: `Chassis name "${name}" has a form-factor suffix — should be consolidated per INV-36.` });
+      }
+    }
+
+    const actualTotal = (registry.universalRules?.length || 0) + (registry.familyGenRules?.length || 0) + (registry.chassisSpecificRules?.length || 0);
+    if (registry.totalLearnedRules !== actualTotal) {
+      issues.push({ notebook: 'REGISTRY', severity: 'CRITICAL', category: 'REGISTRY_INTEGRITY', message: `totalLearnedRules (${registry.totalLearnedRules}) !== sum of rule arrays (${actualTotal}).` });
+    }
+  } catch (err) {
+    issues.push({ notebook: 'REGISTRY', severity: 'MEDIUM', category: 'REGISTRY_READ', message: `Cannot read registry: ${err.message}` });
+  }
+}
+
 /**
  * Audits all notebook entries in notebooks.json.
  * @returns {{ issues: Array, summary: object }}
@@ -61,89 +142,12 @@ function auditNotebooks() {
   const notebooks = config.notebooks || {};
   const notebookKeys = Object.keys(notebooks);
 
-  // Check each notebook
   for (const key of notebookKeys) {
-    const entry = notebooks[key];
-
-    // Required field checks
-    for (const { field, label, validate } of REQUIRED_FIELDS) {
-      if (!validate(entry[field])) {
-        issues.push({ notebook: key, severity: 'CRITICAL', category: 'REQUIRED_FIELD', field, message: `Missing or invalid ${label} (${field}: ${JSON.stringify(entry[field])})` });
-      }
-    }
-
-    if (entry.queryEnabled === false) {
-      issues.push({ notebook: key, severity: 'LOW', category: 'QUERY_STATE', field: 'queryEnabled', message: 'Queries currently disabled (fail-closed mode active for unready/advisory product).' });
-    }
-
-    // Recommended field checks
-    for (const { field, label, validate, severity } of RECOMMENDED_FIELDS) {
-      if (!validate(entry[field])) {
-        const effectiveSeverity = entry.queryEnabled === false && severity === 'HIGH' ? 'LOW' : severity;
-        const note = entry.queryEnabled === false ? 'fail-closed advisory product' : (severity === 'HIGH' ? 'RAG grounding may be degraded' : 'optional but recommended');
-        issues.push({ notebook: key, severity: effectiveSeverity, category: 'RECOMMENDED_FIELD', field, message: `Missing ${label} — ${note}` });
-      }
-    }
-
-    // Stale sync check
-    if (entry.lastSyncedAt) {
-      const daysSince = (Date.now() - new Date(entry.lastSyncedAt).getTime()) / (1000 * 60 * 60 * 24);
-      if (daysSince > STALE_THRESHOLD_DAYS) {
-        issues.push({ notebook: key, severity: 'MEDIUM', category: 'STALE_SYNC', message: `Last sync ${Math.floor(daysSince)} days ago (${entry.lastSyncedAt}). Threshold: ${STALE_THRESHOLD_DAYS} days.` });
-      }
-    } else {
-      issues.push({ notebook: key, severity: 'HIGH', category: 'STALE_SYNC', message: 'No lastSyncedAt timestamp — notebook may never have been synced.' });
-    }
-
-    // Quarantine check
-    if (Array.isArray(entry.quarantinedSourceIds) && entry.quarantinedSourceIds.length > 5) {
-      issues.push({ notebook: key, severity: 'MEDIUM', category: 'QUARANTINE', message: `${entry.quarantinedSourceIds.length} quarantined sources — consider cleanup to reduce noise.` });
-    }
+    _auditSingleNotebook(key, notebooks[key], issues);
   }
 
-  // Cross-reference with knowledge registry
-  if (fs.existsSync(REGISTRY_PATH)) {
-    try {
-      const registry = JSON.parse(fs.readFileSync(REGISTRY_PATH, 'utf8'));
+  _auditKnowledgeRegistry(notebookKeys, issues);
 
-      // Check chassis coverage
-      const chassisCoverage = new Map();
-      for (const arr of [registry.universalRules, registry.familyGenRules, registry.chassisSpecificRules]) {
-        for (const r of arr || []) {
-          const ch = r.chassis || 'GLOBAL';
-          chassisCoverage.set(ch, (chassisCoverage.get(ch) || 0) + 1);
-        }
-      }
-
-      for (const key of notebookKeys) {
-        const ruleCount = chassisCoverage.get(key) || 0;
-        if (ruleCount === 0) {
-          issues.push({ notebook: key, severity: 'LOW', category: 'KNOWLEDGE_GAP', message: `Zero learned rules in knowledge registry. Consider adding gap resolution documentation.` });
-        }
-      }
-
-      // Check chassis name consistency (no spaces, no form-factor suffixes)
-      for (const name of chassisCoverage.keys()) {
-        if (name === 'GLOBAL') continue;
-        if (name.includes(' ')) {
-          issues.push({ notebook: 'REGISTRY', severity: 'HIGH', category: 'CHASSIS_NAMING', message: `Chassis name "${name}" uses spaces instead of underscores.` });
-        }
-        if (/_(8SFF|24SFF|8LFF|12LFF|EDSFF|SFF|LFF)$/i.test(name)) {
-          issues.push({ notebook: 'REGISTRY', severity: 'HIGH', category: 'CHASSIS_NAMING', message: `Chassis name "${name}" has a form-factor suffix — should be consolidated per INV-36.` });
-        }
-      }
-
-      // Verify registry consistency
-      const actualTotal = (registry.universalRules?.length || 0) + (registry.familyGenRules?.length || 0) + (registry.chassisSpecificRules?.length || 0);
-      if (registry.totalLearnedRules !== actualTotal) {
-        issues.push({ notebook: 'REGISTRY', severity: 'CRITICAL', category: 'REGISTRY_INTEGRITY', message: `totalLearnedRules (${registry.totalLearnedRules}) !== sum of rule arrays (${actualTotal}).` });
-      }
-    } catch (err) {
-      issues.push({ notebook: 'REGISTRY', severity: 'MEDIUM', category: 'REGISTRY_READ', message: `Cannot read registry: ${err.message}` });
-    }
-  }
-
-  // Compute summary
   const summary = {
     totalNotebooks: notebookKeys.length,
     totalIssues: issues.length,

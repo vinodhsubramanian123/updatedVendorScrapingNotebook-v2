@@ -168,15 +168,46 @@ function resolveRootAndSubProducts(evalResults, rawItems, productFamily) {
   return { rootNode, subProducts };
 }
 
+function _isSkuItemAmbiguous(item, evalResults) {
+  if (item.isAmbiguous || item.needsHumanClarification || item.category === 'Unknown') {
+    return true;
+  }
+  if (evalResults.unclassifiedSkus?.includes(item.sku)) {
+    return true;
+  }
+  return Boolean(
+    evalResults.errors?.some(
+      e => typeof e === 'string' && e.includes(item.sku) && (e.includes('ambiguous') || e.includes('unknown'))
+    )
+  );
+}
+
+function _buildSkuNode(item, idx, subsystem, productFamily, status, isAmbiguous) {
+  const quantity = Number(item.quantity || item.qty || 1);
+  const unitPriceUsd = Number(item.unitPriceUsd || item.price || 0);
+  return {
+    id: `node-sku-${item.sku || idx}-${idx}`,
+    type: 'SKU_ITEM',
+    sku: item.sku || `ITEM-${idx + 1}`,
+    label: item.description || item.sku || 'Server Component',
+    category: item.category || 'Hardware',
+    subCategory: item.subCategory || '',
+    quantity,
+    unitPriceUsd,
+    extendedPriceUsd: Number(item.extendedPriceUsd || quantity * unitPriceUsd),
+    subsystem,
+    productFamily,
+    status,
+    optionType: item.optionType || 'CTO',
+    rationale: item.rationale || item.rule || (isAmbiguous ? 'Requires Human-in-the-Loop review & classification.' : null)
+  };
+}
+
 function populateTopologySkuNodes(activeItems, evalResults, productFamily, nodes, edges, fixes, ambiguities) {
   activeItems.forEach((item, idx) => {
     const subsystem = getSubsystemForSku(item);
-    const isFixInjected = item.isFixInjected || item.isResolved || (item.rule && item.rule.includes('CLIC'));
-    const isAmbiguous = item.isAmbiguous ||
-                        item.needsHumanClarification ||
-                        item.category === 'Unknown' ||
-                        (evalResults.unclassifiedSkus && evalResults.unclassifiedSkus.includes(item.sku)) ||
-                        (evalResults.errors && evalResults.errors.some(e => typeof e === 'string' && e.includes(item.sku) && (e.includes('ambiguous') || e.includes('unknown'))));
+    const isFixInjected = Boolean(item.isFixInjected || item.isResolved || item.rule?.includes('CLIC'));
+    const isAmbiguous = _isSkuItemAmbiguous(item, evalResults);
 
     let status = 'VALID';
     if (isAmbiguous) {
@@ -185,23 +216,7 @@ function populateTopologySkuNodes(activeItems, evalResults, productFamily, nodes
       status = 'FIX_APPLIED';
     }
 
-    const skuNode = {
-      id: `node-sku-${item.sku || idx}-${idx}`,
-      type: 'SKU_ITEM',
-      sku: item.sku || `ITEM-${idx + 1}`,
-      label: item.description || item.sku || 'Server Component',
-      category: item.category || 'Hardware',
-      subCategory: item.subCategory || '',
-      quantity: Number(item.quantity || item.qty || 1),
-      unitPriceUsd: Number(item.unitPriceUsd || item.price || 0),
-      extendedPriceUsd: Number(item.extendedPriceUsd || (item.quantity || 1) * (item.unitPriceUsd || 0)),
-      subsystem,
-      productFamily,
-      status,
-      optionType: item.optionType || 'CTO',
-      rationale: item.rationale || item.rule || (isAmbiguous ? 'Requires Human-in-the-Loop review & classification.' : null)
-    };
-
+    const skuNode = _buildSkuNode(item, idx, subsystem, productFamily, status, isAmbiguous);
     nodes.push(skuNode);
 
     if (isFixInjected) fixes.push(skuNode);

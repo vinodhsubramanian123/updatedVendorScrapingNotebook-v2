@@ -127,19 +127,27 @@ function _extractCarryOverValidation(unit, pLower, validSkus, chassisName, addDe
   return true;
 }
 
-function _extractSkuSubstitution(unit, pLower, validSkus, chassisName, addDelta) {
-  const isSubstitution = pLower.includes('instead of') || pLower.includes('replaced by') || pLower.includes('superseded by');
-  if (!isSubstitution || validSkus.length < 2) return false;
+const SUBSTITUTION_RE = /\b(instead\s+of|replaced\s+by|superseded\s+by|invalid\s+sku[\s\S]*?\bvalid\b[\s\S]*?\bsku\s+is)\b/i;
+const NEGATIVE_DEPENDENCY_RE = /\b(instead\s+of|replaced\s+by|superseded\s+by|capped\s+at|capped|cannot\s+be\s+used|not\s+supported|incompatible|while\s+acceptable|optional|prohibited|barred|forbidden|not\s+allowed|disallowed|invalid\s+sku)\b/i;
+const REQUIREMENT_VERB_RE = /\b(requires?|mandates?|must\s+configure|must\s+be\s+selected)\b/i;
 
-  let targetSku;
-  let obsoleteSku;
-  if (pLower.includes('replaced by') || pLower.includes('superseded by')) {
-    obsoleteSku = validSkus[0];
-    targetSku = validSkus[1];
-  } else {
-    targetSku = validSkus[0];
-    obsoleteSku = validSkus[1];
-  }
+function _hasValidDependencySpan(unit, parentSku, childSku) {
+  const upper = unit.toUpperCase();
+  const parentIdx = upper.indexOf(parentSku.toUpperCase());
+  if (parentIdx < 0) return false;
+  const childIdx = upper.indexOf(childSku.toUpperCase(), parentIdx + parentSku.length);
+  if (childIdx < 0) return false;
+  const between = unit.slice(parentIdx + parentSku.length, childIdx);
+  if (/\bor\b/i.test(between) && !REQUIREMENT_VERB_RE.test(between)) return false;
+  return REQUIREMENT_VERB_RE.test(between);
+}
+
+function _extractSkuSubstitution(unit, pLower, validSkus, chassisName, addDelta) {
+  if (!SUBSTITUTION_RE.test(pLower) || validSkus.length < 2) return false;
+
+  const isForwardOrder = pLower.includes('replaced by') || pLower.includes('superseded by') || pLower.includes('invalid sku');
+  const obsoleteSku = isForwardOrder ? validSkus[0] : validSkus[1];
+  const targetSku = isForwardOrder ? validSkus[1] : validSkus[0];
 
   addDelta({
     deltaId: `DELTA_RAG_SUBST_${obsoleteSku}_${targetSku}_${Date.now()}`,
@@ -158,16 +166,13 @@ function _extractSkuSubstitution(unit, pLower, validSkus, chassisName, addDelta)
 }
 
 function _extractDependencyChain(unit, pLower, validSkus, chassisName, addDelta) {
-  const isSubstitution = pLower.includes('instead of') || pLower.includes('replaced by') || pLower.includes('superseded by');
-  const isNegativeOrAdvisory = isSubstitution || pLower.includes('capped at') || pLower.includes('capped') || pLower.includes('cannot be used') || pLower.includes('not supported') || pLower.includes('incompatible') || pLower.includes('while acceptable') || pLower.includes('optional');
-  if (isNegativeOrAdvisory) return false;
-
-  const hasRequirement = pLower.includes('require') || pLower.includes('mandate') || pLower.includes('must configure') || pLower.includes('must be selected');
-  if (!hasRequirement || validSkus.length < 2) return false;
+  if (NEGATIVE_DEPENDENCY_RE.test(pLower) || !REQUIREMENT_VERB_RE.test(pLower) || validSkus.length < 2) {
+    return false;
+  }
 
   const parentSku = validSkus[0];
   const childSku = validSkus[1];
-  if (parentSku === childSku) return false;
+  if (parentSku === childSku || !_hasValidDependencySpan(unit, parentSku, childSku)) return false;
 
   const capabilityTag = _inferCapabilityTag(pLower);
   addDelta({

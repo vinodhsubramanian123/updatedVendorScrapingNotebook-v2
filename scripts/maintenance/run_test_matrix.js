@@ -149,6 +149,20 @@ function getTestTier(testFile) {
   return 'other';
 }
 
+const BOOLEAN_ARG_FLAGS = {
+  '--failed-only': 'failedOnly',
+  '-f': 'failedOnly',
+  '--allow-empty': 'allowEmpty',
+  '--bail': 'bail',
+  '-b': 'bail',
+  '--verbose': 'verbose',
+  '-v': 'verbose',
+  '--list': 'listOnly',
+  '-l': 'listOnly',
+  '--help': 'help',
+  '-h': 'help'
+};
+
 /**
  * Parses CLI arguments into structured configuration.
  */
@@ -169,10 +183,8 @@ function parseArgs(args) {
 
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
-    if (arg === '--failed-only' || arg === '-f') {
-      config.failedOnly = true;
-    } else if (arg === '--allow-empty') {
-      config.allowEmpty = true;
+    if (BOOLEAN_ARG_FLAGS[arg]) {
+      config[BOOLEAN_ARG_FLAGS[arg]] = true;
     } else if (arg === '--isolated' || arg === '-i') {
       config.isolatedFile = args[++i];
     } else if (arg === '--pattern' || arg === '-p') {
@@ -181,16 +193,8 @@ function parseArgs(args) {
       config.tier = (args[++i] || '').toLowerCase();
     } else if (arg === '--domain' || arg === '-D') {
       config.domain = (args[++i] || '').toLowerCase();
-    } else if (arg === '--bail' || arg === '-b') {
-      config.bail = true;
-    } else if (arg === '--verbose' || arg === '-v') {
-      config.verbose = true;
-    } else if (arg === '--list' || arg === '-l') {
-      config.listOnly = true;
     } else if (arg === '--timeout' || arg === '-t') {
       config.timeoutMs = parseInt(args[++i], 10) || 60000;
-    } else if (arg === '--help' || arg === '-h') {
-      config.help = true;
     } else if (!arg.startsWith('-') && !config.isolatedFile) {
       config.isolatedFile = arg;
     }
@@ -314,6 +318,68 @@ function shouldUseNodeTestRunner(filePath, rootDir) {
   }
 }
 
+const LONG_RUNNING_TEST_PATTERNS = [
+  'tests/e2e/',
+  'verify_all',
+  'test_boq_eval_benchmarks',
+  'test_cross_vendor_and_candidate_scrutiny',
+  'test_product_notebook_resolution',
+  'test_clic_cross_product_validation'
+];
+
+function getEffectiveTimeoutMs(testFile, timeoutMs) {
+  return LONG_RUNNING_TEST_PATTERNS.some(p => testFile.includes(p))
+    ? Math.max(timeoutMs, 420000)
+    : timeoutMs;
+}
+
+function extractFailureSummary(stderr, stdout) {
+  const allOutput = stderr + '\n' + stdout;
+  const lines = allOutput.split('\n');
+  const errorLines = lines.filter(l =>
+    l.includes('AssertionError') ||
+    l.includes('Error:') ||
+    l.includes('❌') ||
+    l.includes('FAIL') ||
+    l.includes('stack') ||
+    l.includes('at ')
+  );
+  return (errorLines.length > 0 ? errorLines.slice(0, 15).join('\n') : lines.slice(-20).join('\n')).trim();
+}
+
+function evaluateTestOutcome(code, timedOut, isNodeTest, stdout, stderr, timeoutMs) {
+  let pass = code === 0 && !timedOut;
+  let isSkipped = false;
+  let isSilentPass = false;
+
+  // Invariant check: Detect silent passes & non-certifying skips (INV-129 / R-09)
+  if (pass && isNodeTest && (/# tests 0\b|ℹ tests 0\b/.test(stdout) || (/(?:# pass 0\b|ℹ pass 0\b)/.test(stdout) && !/(?:[1-9]\d*)\s+pass/i.test(stdout)))) {
+    pass = false;
+    isSilentPass = true;
+  } else if (pass && /(?:0\/0 assertions passed|0 assertions passed|0 of 0 assertions passed)\b/i.test(stdout)) {
+    pass = false;
+    isSilentPass = true;
+  } else if (code === 0 && !timedOut && /\[TEST_STATUS:\s*SKIPPED\]/i.test(stdout)) {
+    isSkipped = true;
+    pass = false; // A skipped suite does not count as a certified pass
+  }
+
+  let errorSummary = '';
+  if (!pass) {
+    if (isSkipped) {
+      errorSummary = 'Test execution was skipped due to offline or missing live environment (ALLOW_E2E_SKIP).';
+    } else if (timedOut) {
+      errorSummary = `Execution timed out after ${timeoutMs}ms`;
+    } else if (isSilentPass) {
+      errorSummary = 'Silent Pass Detected: Test runner reported 0 tests executed or 0 assertions passed.';
+    } else {
+      errorSummary = extractFailureSummary(stderr, stdout);
+    }
+  }
+
+  return { pass, isSkipped, errorSummary };
+}
+
 /**
  * Executes a single test in an isolated child process.
  */
@@ -327,16 +393,7 @@ function runSingleTest(testFile, rootDir, timeoutMs, verbose) {
     let stderr = '';
     let timedOut = false;
 
-    const effectiveTimeoutMs = (
-      testFile.includes('tests/e2e/') ||
-      testFile.includes('verify_all') ||
-      testFile.includes('test_boq_eval_benchmarks') ||
-      testFile.includes('test_cross_vendor_and_candidate_scrutiny') ||
-      testFile.includes('test_product_notebook_resolution') ||
-      testFile.includes('test_clic_cross_product_validation')
-    )
-      ? Math.max(timeoutMs, 420000)
-      : timeoutMs;
+    const effectiveTimeoutMs = getEffectiveTimeoutMs(testFile, timeoutMs);
 
     const child = spawn(process.execPath, args, {
       cwd: rootDir,
@@ -363,45 +420,7 @@ function runSingleTest(testFile, rootDir, timeoutMs, verbose) {
     child.on('close', (code) => {
       clearTimeout(timer);
       const durationMs = Date.now() - startTime;
-      let pass = code === 0 && !timedOut;
-      let isSkipped = false;
-      let isSilentPass = false;
-
-      // Invariant check: Detect silent passes & non-certifying skips (INV-129 / R-09)
-      if (pass && isNodeTest && (/# tests 0\b|ℹ tests 0\b/.test(stdout) || (/(?:# pass 0\b|ℹ pass 0\b)/.test(stdout) && !/(?:[1-9]\d*)\s+pass/i.test(stdout)))) {
-        pass = false;
-        isSilentPass = true;
-      } else if (pass && /(?:0\/0 assertions passed|0 assertions passed|0 of 0 assertions passed)\b/i.test(stdout)) {
-        pass = false;
-        isSilentPass = true;
-      } else if (code === 0 && !timedOut && /\[TEST_STATUS:\s*SKIPPED\]/i.test(stdout)) {
-        isSkipped = true;
-        pass = false; // A skipped suite does not count as a certified pass
-      }
-
-      let errorSummary = '';
-      if (!pass) {
-        if (isSkipped) {
-          errorSummary = 'Test execution was skipped due to offline or missing live environment (ALLOW_E2E_SKIP).';
-        } else if (timedOut) {
-          errorSummary = `Execution timed out after ${timeoutMs}ms`;
-        } else if (isSilentPass) {
-          errorSummary = 'Silent Pass Detected: Test runner reported 0 tests executed or 0 assertions passed.';
-        } else {
-          // Extract relevant failure lines
-          const allOutput = stderr + '\n' + stdout;
-          const lines = allOutput.split('\n');
-          const errorLines = lines.filter(l =>
-            l.includes('AssertionError') ||
-            l.includes('Error:') ||
-            l.includes('❌') ||
-            l.includes('FAIL') ||
-            l.includes('stack') ||
-            l.includes('at ')
-          );
-          errorSummary = (errorLines.length > 0 ? errorLines.slice(0, 15).join('\n') : lines.slice(-20).join('\n')).trim();
-        }
-      }
+      const { pass, isSkipped, errorSummary } = evaluateTestOutcome(code, timedOut, isNodeTest, stdout, stderr, timeoutMs);
 
       resolve({
         testFile,
@@ -433,15 +452,72 @@ function runSingleTest(testFile, rootDir, timeoutMs, verbose) {
   });
 }
 
-/**
- * Main execution coordinator.
- */
-async function main() {
-  const args = process.argv.slice(2);
-  const config = parseArgs(args);
+function resolveTargetSuites(config) {
+  if (config.isolatedFile) {
+    const relPath = path.isAbsolute(config.isolatedFile)
+      ? path.relative(ROOT_DIR, config.isolatedFile)
+      : config.isolatedFile;
+    if (!fs.existsSync(path.join(ROOT_DIR, relPath))) {
+      console.error(`❌ Specified test file does not exist: ${relPath}`);
+      process.exit(1);
+    }
+    config.verbose = true; // Always verbose in isolated mode
+    console.log(`🎯 Running in ISOLATED TEST MODE: ${relPath}\n`);
+    return [relPath];
+  }
+  if (config.failedOnly) {
+    const ledger = loadFailureLedger();
+    const failedFiles = (ledger.failures || []).map(f => f.testFile);
+    if (failedFiles.length === 0) {
+      console.log(`✨ No previous failures found in ledger (${FAILURE_LEDGER_PATH}). Everything is clean!`);
+      process.exit(0);
+    }
+    const targetTests = failedFiles.filter(f => fs.existsSync(path.join(ROOT_DIR, f)));
+    console.log(`🔄 Running in FAILED-ONLY ISOLATION MODE: ${targetTests.length} suite(s) to re-test\n`);
+    return targetTests;
+  }
+  let targetTests = discoverTests(ROOT_DIR, config.tier);
+  if (config.domain) {
+    const d = DOMAIN_METADATA[config.domain];
+    if (!d) {
+      console.error(`❌ Unknown test domain "${config.domain}". Valid domains: ${Object.keys(DOMAIN_METADATA).join(', ')}`);
+      process.exit(1);
+    }
+    targetTests = targetTests.filter(t => d.matcher(t));
+    console.log(`🎯 Filtered by domain "${d.icon} ${d.name}": ${targetTests.length} suite(s) found\n`);
+  } else if (config.pattern) {
+    const reg = new RegExp(config.pattern, 'i');
+    targetTests = targetTests.filter(t => reg.test(t));
+    console.log(`🔍 Filtered by pattern "${config.pattern}": ${targetTests.length} suite(s) found\n`);
+  } else if (config.tier) {
+    console.log(`🎯 Filtered by tier "${config.tier.toUpperCase()}": ${targetTests.length} suite(s) found\n`);
+  } else {
+    console.log(`📁 Discovered ${targetTests.length} test suite(s) across unit, chaos, integration, and e2e tiers\n`);
+  }
+  return targetTests;
+}
 
-  if (config.help) {
-    console.log(`
+function printFailureDiagnostics(testFile, tier, result) {
+  console.log(`\n  ┌──────────────────────────────────────────────────────────┐`);
+  console.log(`  │ ⚠️  FAILURE ISOLATION & DIAGNOSTIC TRACE                 │`);
+  console.log(`  ├──────────────────────────────────────────────────────────┤`);
+  console.log(`  │ Test File: ${testFile}`);
+  console.log(`  │ Tier:      ${tier.toUpperCase()}`);
+  console.log(`  │ Exit Code: ${result.exitCode}`);
+  console.log(`  │ Duration:  ${result.durationMs}ms`);
+  console.log(`  │ Re-run:    node ${testFile}`);
+  console.log(`  │ Isolated:  npm run test:isolated -- ${testFile}`);
+  console.log(`  └──────────────────────────────────────────────────────────┘`);
+  if (result.errorSummary) {
+    console.log(`\n  📋 Error Diagnostics:\n`);
+    const indented = result.errorSummary.split('\n').map(l => `    ${l}`).join('\n');
+    console.log(indented);
+    console.log(`\n----------------------------------------------------------------\n`);
+  }
+}
+
+function printHelpAndExit() {
+  console.log(`
 ================================================================
 🧪 ISOLATED TEST MATRIX & FAILURE TELEMETRY RUNNER
 ================================================================
@@ -482,55 +558,25 @@ NPM Script Equivalents:
   npm run test:failed     Re-test ONLY previously failing tests
   npm run test:isolated -- tests/unit/test_example.js
 `);
-    process.exit(0);
+  process.exit(0);
+}
+
+/**
+ * Main execution coordinator.
+ */
+async function main() {
+  const args = process.argv.slice(2);
+  const config = parseArgs(args);
+
+  if (config.help) {
+    printHelpAndExit();
   }
 
   console.log(`\n================================================================`);
   console.log(`🧪 ISOLATED TEST MATRIX & TIERED TELEMETRY HARNESS`);
   console.log(`================================================================\n`);
 
-  let targetTests = [];
-
-  if (config.isolatedFile) {
-    let relPath = path.isAbsolute(config.isolatedFile)
-      ? path.relative(ROOT_DIR, config.isolatedFile)
-      : config.isolatedFile;
-    if (!fs.existsSync(path.join(ROOT_DIR, relPath))) {
-      console.error(`❌ Specified test file does not exist: ${relPath}`);
-      process.exit(1);
-    }
-    targetTests = [relPath];
-    config.verbose = true; // Always verbose in isolated mode
-    console.log(`🎯 Running in ISOLATED TEST MODE: ${relPath}\n`);
-  } else if (config.failedOnly) {
-    const ledger = loadFailureLedger();
-    const failedFiles = (ledger.failures || []).map(f => f.testFile);
-    if (failedFiles.length === 0) {
-      console.log(`✨ No previous failures found in ledger (${FAILURE_LEDGER_PATH}). Everything is clean!`);
-      process.exit(0);
-    }
-    targetTests = failedFiles.filter(f => fs.existsSync(path.join(ROOT_DIR, f)));
-    console.log(`🔄 Running in FAILED-ONLY ISOLATION MODE: ${targetTests.length} suite(s) to re-test\n`);
-  } else {
-    targetTests = discoverTests(ROOT_DIR, config.tier);
-    if (config.domain) {
-      const d = DOMAIN_METADATA[config.domain];
-      if (!d) {
-        console.error(`❌ Unknown test domain "${config.domain}". Valid domains: ${Object.keys(DOMAIN_METADATA).join(', ')}`);
-        process.exit(1);
-      }
-      targetTests = targetTests.filter(t => d.matcher(t));
-      console.log(`🎯 Filtered by domain "${d.icon} ${d.name}": ${targetTests.length} suite(s) found\n`);
-    } else if (config.pattern) {
-      const reg = new RegExp(config.pattern, 'i');
-      targetTests = targetTests.filter(t => reg.test(t));
-      console.log(`🔍 Filtered by pattern "${config.pattern}": ${targetTests.length} suite(s) found\n`);
-    } else if (config.tier) {
-      console.log(`🎯 Filtered by tier "${config.tier.toUpperCase()}": ${targetTests.length} suite(s) found\n`);
-    } else {
-      console.log(`📁 Discovered ${targetTests.length} test suite(s) across unit, chaos, integration, and e2e tiers\n`);
-    }
-  }
+  const targetTests = resolveTargetSuites(config);
 
   if (config.listOnly) {
     console.log('📋 Discovered Test Suites:');
@@ -567,7 +613,6 @@ NPM Script Equivalents:
     const tier = getTestTier(testFile);
     const meta = TIER_METADATA[tier];
 
-    // Print tier divider banner when transitioning
     if (tier !== currentTier && meta) {
       currentTier = tier;
       const countInTier = targetTests.filter(t => getTestTier(t) === tier).length;
@@ -606,24 +651,8 @@ NPM Script Equivalents:
       failures.push(result);
       console.log(`[${indexStr}]  ❌ FAIL   ${durStr}   ${testFile}`);
 
-      // If not in verbose mode, print the failure snippet immediately for quick inspection
       if (!config.verbose) {
-        console.log(`\n  ┌──────────────────────────────────────────────────────────┐`);
-        console.log(`  │ ⚠️  FAILURE ISOLATION & DIAGNOSTIC TRACE                 │`);
-        console.log(`  ├──────────────────────────────────────────────────────────┤`);
-        console.log(`  │ Test File: ${testFile}`);
-        console.log(`  │ Tier:      ${tier.toUpperCase()}`);
-        console.log(`  │ Exit Code: ${result.exitCode}`);
-        console.log(`  │ Duration:  ${result.durationMs}ms`);
-        console.log(`  │ Re-run:    node ${testFile}`);
-        console.log(`  │ Isolated:  npm run test:isolated -- ${testFile}`);
-        console.log(`  └──────────────────────────────────────────────────────────┘`);
-        if (result.errorSummary) {
-          console.log(`\n  📋 Error Diagnostics:\n`);
-          const indented = result.errorSummary.split('\n').map(l => `    ${l}`).join('\n');
-          console.log(indented);
-          console.log(`\n----------------------------------------------------------------\n`);
-        }
+        printFailureDiagnostics(testFile, tier, result);
       }
 
       if (config.bail) {
@@ -664,14 +693,12 @@ NPM Script Equivalents:
   console.log(`  Pass Rate:      ${((passedCount / results.length) * 100).toFixed(1)}%`);
   console.log(`  Total Time:     ${(totalDurationMs / 1000).toFixed(2)}s`);
 
-  // Slowest test suites
   const sortedByTime = [...results].sort((a, b) => b.durationMs - a.durationMs).slice(0, 5);
   console.log(`\n⏱️  Slowest Test Suites:`);
   sortedByTime.forEach(s => {
     console.log(`  • ${(s.durationMs / 1000).toFixed(2)}s — [${getTestTier(s.testFile).toUpperCase()}] ${s.testFile}`);
   });
 
-  // Update failure ledger
   saveFailureLedger(failures, results.length, passedCount, totalDurationMs);
 
   if (failedCount > 0) {

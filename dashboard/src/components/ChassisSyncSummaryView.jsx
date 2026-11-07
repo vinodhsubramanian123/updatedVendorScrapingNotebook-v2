@@ -4,6 +4,67 @@ import ChassisHeaderSummary from './summary/ChassisHeaderSummary';
 import ChassisActiveModelCard from './summary/ChassisActiveModelCard';
 import ChassisPortfolioTable from './summary/ChassisPortfolioTable';
 
+const BASE_PARENT_TOKENS = ['chassis', 'server', 'base', 'compute module', 'system', 'tape'];
+const BASE_SUB_TOKENS = ['variant', 'base'];
+
+function isBaseVariantEntry(entry) {
+  const parentLower = (entry.parentCategory || '').toLowerCase();
+  const subLower = (entry.subCategory || '').toLowerCase();
+  return (
+    BASE_PARENT_TOKENS.some(t => parentLower.includes(t)) ||
+    BASE_SUB_TOKENS.some(t => subLower.includes(t))
+  );
+}
+
+function resolveRawSkuPrice(s) {
+  const candidates = [
+    s['List Price'],
+    s['Price'],
+    s['Unit Price (USD)'],
+    s['List Price (USD)'],
+    s.listPriceFormatted
+  ];
+  for (const val of candidates) {
+    if (val) return val;
+  }
+  return s.listPrice !== undefined && s.listPrice !== '' ? s.listPrice : '$0.00';
+}
+
+function mapSkuToBaseVariant(s, entry) {
+  const skuId = s['Product #'] || s.sku || s.partNumber || s.id;
+  if (!skuId) return null;
+  const desc = s.Description || s.description || s.name || 'Base Chassis CTO Server Variant';
+  const rawPrice = resolveRawSkuPrice(s);
+  const price = typeof rawPrice === 'number'
+    ? `$${rawPrice.toLocaleString('en-US', { minimumFractionDigits: 2 })}`
+    : String(rawPrice);
+
+  return {
+    sku: skuId,
+    desc,
+    price,
+    qty: s.Qty || s.qty || '1',
+    optionType: s.optionType || s['Option Type'] || 'CTO Chassis Base',
+    constraint: entry.constraint || 'Chassis Standard (Max 1)',
+    rules: entry.rules || ['Mandatory base chassis selection required for solution build']
+  };
+}
+
+function extractActiveBaseVariants(selectedChassis, catalogData) {
+  if (!selectedChassis || !catalogData?.entries) return [];
+  const variants = [];
+  catalogData.entries.forEach(entry => {
+    if (!isBaseVariantEntry(entry)) return;
+    entry.skus?.forEach(s => {
+      const mapped = mapSkuToBaseVariant(s, entry);
+      if (mapped && !variants.some(v => v.sku === mapped.sku)) {
+        variants.push(mapped);
+      }
+    });
+  });
+  return variants;
+}
+
 export default function ChassisSyncSummaryView({
   selectedChassis,
   catalogData,
@@ -40,53 +101,14 @@ export default function ChassisSyncSummaryView({
   }, []);
 
   const activeProductModel = useMemo(() => {
-    if (!selectedChassis || !data || !data.variants) return null;
+    if (!selectedChassis || !data?.variants) return null;
     return data.variants.find(v => v.id === selectedChassis) || null;
   }, [selectedChassis, data]);
 
-  const activeProductBaseVariants = useMemo(() => {
-    if (!selectedChassis || !catalogData || !catalogData.entries) return [];
-    const variants = [];
-    catalogData.entries.forEach(entry => {
-      const parentLower = (entry.parentCategory || '').toLowerCase();
-      const subLower = (entry.subCategory || '').toLowerCase();
-      if (
-        parentLower.includes('chassis') ||
-        parentLower.includes('server') ||
-        parentLower.includes('base') ||
-        subLower.includes('variant') ||
-        parentLower.includes('compute module') ||
-        parentLower.includes('system') ||
-        parentLower.includes('tape') ||
-        subLower.includes('base')
-      ) {
-        entry.skus?.forEach(s => {
-          const skuId = s['Product #'] || s.sku || s.partNumber || s.id;
-          const desc = s.Description || s.description || s.name || '';
-          const rawPrice =
-            s['List Price'] ||
-            s['Price'] ||
-            s['Unit Price (USD)'] ||
-            s['List Price (USD)'] ||
-            s.listPriceFormatted ||
-            (s.listPrice !== undefined && s.listPrice !== '' ? s.listPrice : '$0.00');
-          const qty = s.Qty || s.qty || '1';
-          if (skuId && !variants.find(v => v.sku === skuId)) {
-            variants.push({
-              sku: skuId,
-              desc: desc || 'Base Chassis CTO Server Variant',
-              price: typeof rawPrice === 'number' ? `$${rawPrice.toLocaleString('en-US', { minimumFractionDigits: 2 })}` : String(rawPrice),
-              qty,
-              optionType: s.optionType || s['Option Type'] || 'CTO Chassis Base',
-              constraint: entry.constraint || 'Chassis Standard (Max 1)',
-              rules: entry.rules || ['Mandatory base chassis selection required for solution build']
-            });
-          }
-        });
-      }
-    });
-    return variants;
-  }, [selectedChassis, catalogData]);
+  const activeProductBaseVariants = useMemo(
+    () => extractActiveBaseVariants(selectedChassis, catalogData),
+    [selectedChassis, catalogData]
+  );
 
   if (isLoading) {
     return (

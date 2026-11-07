@@ -1,6 +1,105 @@
 import React, { useState, useEffect } from 'react';
 import { FileCode, ShieldCheck, RefreshCw, FileText, CheckCircle2, AlertCircle, Eye, X, BookOpen, AlertTriangle } from 'lucide-react';
 
+function AuditCertificateResultCard({ auditResult }) {
+  if (!auditResult) return null;
+  const isPassed = Boolean(auditResult.passed);
+
+  return (
+    <div className={`glass-card p-6 border-l-4 ${isPassed ? 'border-l-emerald-500' : 'border-l-rose-500'}`}>
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2">
+          {isPassed ? <CheckCircle2 className="w-4 h-4 text-emerald-600" /> : <AlertCircle className="w-4 h-4 text-rose-600" />}
+          Data Quality Audit Certificate Result
+        </h3>
+        <span className={`badge ${isPassed ? 'badge-emerald' : 'badge-amber'}`}>
+          {isPassed ? '100% AUDIT PASS' : 'AUDIT ISSUES DETECTED'}
+        </span>
+      </div>
+
+      {auditResult.checks ? (
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+          {Object.entries(auditResult.checks).map(([checkName, checkVal]) => (
+            <div key={checkName} className="p-2.5 bg-slate-50 rounded-lg border border-slate-100">
+              <span className="text-slate-400 font-semibold block text-[10px] uppercase truncate">{checkName}</span>
+              <span className={`font-bold ${checkVal?.passed ? 'text-emerald-600' : 'text-rose-600'}`}>
+                {checkVal?.passed ? 'PASS' : 'FAIL'}
+              </span>
+              {checkVal?.detail && <p className="text-[10px] text-slate-500 mt-0.5 truncate">{checkVal.detail}</p>}
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="text-xs text-slate-600">
+          {auditResult.error || JSON.stringify(auditResult)}
+        </p>
+      )}
+    </div>
+  );
+}
+
+function ArtifactFilesGrid({ currentCatalog, onViewArtifact }) {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {currentCatalog?.jsonPath && (
+        <div className="glass-card p-4 space-y-2">
+          <h4 className="font-semibold text-xs text-slate-900 flex items-center gap-1.5">
+            <FileCode className="w-4 h-4 text-blue-600" /> Master Catalog JSON
+          </h4>
+          <p className="text-[11px] text-slate-500">Structured companion JSON schema</p>
+          <button
+            onClick={() => onViewArtifact(currentCatalog.jsonPath)}
+            className="w-full btn-secondary justify-center text-xs"
+          >
+            <Eye className="w-3.5 h-3.5 text-blue-600" /> View JSON
+          </button>
+        </div>
+      )}
+
+      {currentCatalog?.xlsxPath && (
+        <div className="glass-card p-4 space-y-2">
+          <h4 className="font-semibold text-xs text-slate-900 flex items-center gap-1.5">
+            <FileText className="w-4 h-4 text-emerald-600" /> Multi-Sheet Excel Workbook
+          </h4>
+          <p className="text-[11px] text-slate-500">Classified Excel workbook artifact</p>
+          <a
+            href={currentCatalog.xlsxPath}
+            download
+            className="w-full btn-secondary justify-center text-xs"
+          >
+            Download .xlsx
+          </a>
+        </div>
+      )}
+
+      {currentCatalog?.pdfPath ? (
+        <div className="glass-card p-4 space-y-2">
+          <h4 className="font-semibold text-xs text-slate-900 flex items-center gap-1.5">
+            <FileText className="w-4 h-4 text-amber-600" /> Technical QuickSpecs / Datasheet PDF
+          </h4>
+          <p className="text-[11px] text-slate-500">Official technical QuickSpecs document</p>
+          <a
+            href={currentCatalog.pdfPath}
+            target="_blank"
+            rel="noreferrer"
+            className="w-full btn-secondary justify-center text-xs"
+          >
+            Open PDF
+          </a>
+        </div>
+      ) : (
+        <div className="glass-card p-4 space-y-2 opacity-60">
+          <h4 className="font-semibold text-xs text-slate-700 flex items-center gap-1.5">
+            <AlertTriangle className="w-4 h-4 text-amber-500" /> QuickSpecs PDF
+          </h4>
+          <p className="text-[11px] text-slate-500">PDF not cached locally yet</p>
+          <span className="text-[10px] text-slate-400 block italic">Use Scraper tab to download</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function ArtifactInspector({ currentCatalog }) {
   const [auditResult, setAuditResult] = useState(null);
   const [isAuditing, setIsAuditing] = useState(false);
@@ -8,6 +107,7 @@ export default function ArtifactInspector({ currentCatalog }) {
   const [fileContent, setFileContent] = useState('');
   const [showRegistry, setShowRegistry] = useState(false);
   const [registryContent, setRegistryContent] = useState('');
+  const [verifyAllStatus, setVerifyAllStatus] = useState(null);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -43,8 +143,9 @@ export default function ArtifactInspector({ currentCatalog }) {
       const res = await fetch(artifactPath);
       const text = await res.text();
       setFileContent(text);
-    } catch (e) { console.warn('Caught suppressed error in ArtifactInspector.jsx:', e);
-setFileContent('Error loading artifact content.');
+    } catch (e) {
+      console.warn('Caught suppressed error in ArtifactInspector.jsx:', e);
+      setFileContent('Error loading artifact content.');
     }
   };
 
@@ -54,21 +155,11 @@ setFileContent('Error loading artifact content.');
       const res = await fetch('/artifacts/SCRAPED_CATALOGS.md');
       const text = await res.text();
       setRegistryContent(text);
-    } catch (e) { console.warn('Caught suppressed error in ArtifactInspector.jsx:', e);
-setRegistryContent('Could not load SCRAPED_CATALOGS.md');
+    } catch (e) {
+      console.warn('Caught suppressed error in ArtifactInspector.jsx:', e);
+      setRegistryContent('Could not load SCRAPED_CATALOGS.md');
     }
   };
-
-  // Derive intermittent scrap paths from catalog path
-  const folderPath = currentCatalog?.jsonPath
-    ? currentCatalog.jsonPath.substring(0, currentCatalog.jsonPath.lastIndexOf('/'))
-    : null;
-
-  const prefix = currentCatalog?.id || 'Catalog';
-  const tsvSkusPath = folderPath ? `${folderPath}/intermittent_scraps/${prefix}_Catalog_SKUs.tsv` : null;
-  const tsvRulesPath = folderPath ? `${folderPath}/intermittent_scraps/${prefix}_Catalog_Rules.tsv` : null;
-
-  const [verifyAllStatus, setVerifyAllStatus] = useState(null);
 
   const handleVerifyAll = async () => {
     setVerifyAllStatus('LAUNCHING');
@@ -86,9 +177,15 @@ setRegistryContent('Could not load SCRAPED_CATALOGS.md');
     }
   };
 
+  const folderPath = currentCatalog?.jsonPath
+    ? currentCatalog.jsonPath.substring(0, currentCatalog.jsonPath.lastIndexOf('/'))
+    : null;
+  const prefix = currentCatalog?.id || 'Catalog';
+  const tsvSkusPath = folderPath ? `${folderPath}/intermittent_scraps/${prefix}_Catalog_SKUs.tsv` : null;
+  const tsvRulesPath = folderPath ? `${folderPath}/intermittent_scraps/${prefix}_Catalog_Rules.tsv` : null;
+
   return (
     <div className="space-y-6">
-      {/* Header & Quality Audit Trigger */}
       <div className="glass-card p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
           <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
@@ -107,10 +204,7 @@ setRegistryContent('Could not load SCRAPED_CATALOGS.md');
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          <button
-            onClick={handleViewRegistry}
-            className="btn-secondary text-xs"
-          >
+          <button onClick={handleViewRegistry} className="btn-secondary text-xs">
             <BookOpen className="w-3.5 h-3.5 text-blue-600" />
             View Master Registry
           </button>
@@ -134,119 +228,21 @@ setRegistryContent('Could not load SCRAPED_CATALOGS.md');
         </div>
       </div>
 
-      {/* Audit Checklist Card — Strict Fail-Closed Check */}
-      {auditResult && (
-        <div className={`glass-card p-6 border-l-4 ${auditResult.passed ? 'border-l-emerald-500' : 'border-l-rose-500'}`}>
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2">
-              {auditResult.passed
-                ? <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                : <AlertCircle className="w-4 h-4 text-rose-600" />
-              }
-              Data Quality Audit Certificate Result
-            </h3>
-            <span className={`badge ${auditResult.passed ? 'badge-emerald' : 'badge-amber'}`}>
-              {auditResult.passed ? '100% AUDIT PASS' : 'AUDIT ISSUES DETECTED'}
-            </span>
-          </div>
+      <AuditCertificateResultCard auditResult={auditResult} />
 
-          {auditResult.checks ? (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
-              {Object.entries(auditResult.checks).map(([checkName, checkVal]) => (
-                <div key={checkName} className="p-2.5 bg-slate-50 rounded-lg border border-slate-100">
-                  <span className="text-slate-400 font-semibold block text-[10px] uppercase truncate">{checkName}</span>
-                  <span className={`font-bold ${checkVal?.passed ? 'text-emerald-600' : 'text-rose-600'}`}>
-                    {checkVal?.passed ? 'PASS' : 'FAIL'}
-                  </span>
-                  {checkVal?.detail && <p className="text-[10px] text-slate-500 mt-0.5 truncate">{checkVal.detail}</p>}
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="text-xs text-slate-600">
-              {auditResult.error || JSON.stringify(auditResult)}
-            </p>
-          )}
-        </div>
-      )}
+      <ArtifactFilesGrid currentCatalog={currentCatalog} onViewArtifact={handleViewArtifact} />
 
-      {/* Artifact Files Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {currentCatalog?.jsonPath && (
-          <div className="glass-card p-4 space-y-2">
-            <h4 className="font-semibold text-xs text-slate-900 flex items-center gap-1.5">
-              <FileCode className="w-4 h-4 text-blue-600" /> Master Catalog JSON
-            </h4>
-            <p className="text-[11px] text-slate-500">Structured companion JSON schema</p>
-            <button
-              onClick={() => handleViewArtifact(currentCatalog.jsonPath)}
-              className="w-full btn-secondary justify-center text-xs"
-            >
-              <Eye className="w-3.5 h-3.5 text-blue-600" /> View JSON
-            </button>
-          </div>
-        )}
-
-        {currentCatalog?.xlsxPath && (
-          <div className="glass-card p-4 space-y-2">
-            <h4 className="font-semibold text-xs text-slate-900 flex items-center gap-1.5">
-              <FileText className="w-4 h-4 text-emerald-600" /> Multi-Sheet Excel Workbook
-            </h4>
-            <p className="text-[11px] text-slate-500">Classified Excel workbook artifact</p>
-            <a
-              href={currentCatalog.xlsxPath}
-              download
-              className="w-full btn-secondary justify-center text-xs"
-            >
-              Download .xlsx
-            </a>
-          </div>
-        )}
-
-        {currentCatalog?.pdfPath ? (
-          <div className="glass-card p-4 space-y-2">
-            <h4 className="font-semibold text-xs text-slate-900 flex items-center gap-1.5">
-              <FileText className="w-4 h-4 text-amber-600" /> Technical QuickSpecs / Datasheet PDF
-            </h4>
-            <p className="text-[11px] text-slate-500">Official technical QuickSpecs document</p>
-            <a
-              href={currentCatalog.pdfPath}
-              target="_blank"
-              rel="noreferrer"
-              className="w-full btn-secondary justify-center text-xs"
-            >
-              Open PDF
-            </a>
-          </div>
-        ) : (
-          <div className="glass-card p-4 space-y-2 opacity-60">
-            <h4 className="font-semibold text-xs text-slate-700 flex items-center gap-1.5">
-              <AlertTriangle className="w-4 h-4 text-amber-500" /> QuickSpecs PDF
-            </h4>
-            <p className="text-[11px] text-slate-400">PDF not cached locally yet</p>
-            <span className="text-[10px] text-slate-400 block italic">Use Scraper tab to download</span>
-          </div>
-        )}
-      </div>
-
-      {/* TSV Intermediary Files Section (Enhancement U6) */}
       {folderPath && (
         <div className="glass-card p-4 space-y-3">
           <h4 className="font-bold text-xs text-slate-900 uppercase tracking-wider">Intermittent Scraping TSV Files:</h4>
           <div className="flex gap-3">
             {tsvSkusPath && (
-              <button
-                onClick={() => handleViewArtifact(tsvSkusPath)}
-                className="btn-secondary text-xs"
-              >
+              <button onClick={() => handleViewArtifact(tsvSkusPath)} className="btn-secondary text-xs">
                 <Eye className="w-3.5 h-3.5 text-purple-600" /> View SKUs TSV
               </button>
             )}
             {tsvRulesPath && (
-              <button
-                onClick={() => handleViewArtifact(tsvRulesPath)}
-                className="btn-secondary text-xs"
-              >
+              <button onClick={() => handleViewArtifact(tsvRulesPath)} className="btn-secondary text-xs">
                 <Eye className="w-3.5 h-3.5 text-purple-600" /> View Rules TSV
               </button>
             )}
@@ -254,9 +250,8 @@ setRegistryContent('Could not load SCRAPED_CATALOGS.md');
         </div>
       )}
 
-      {/* Master Registry Preview Drawer/Modal */}
       {showRegistry && (
-        <div 
+        <div
           className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4"
           onClick={(e) => {
             if (e.target === e.currentTarget) setShowRegistry(false);
@@ -278,7 +273,6 @@ setRegistryContent('Could not load SCRAPED_CATALOGS.md');
         </div>
       )}
 
-      {/* Artifact Content Viewer */}
       {viewFile && (
         <div className="glass-card p-4 space-y-2">
           <div className="flex items-center justify-between border-b border-slate-100 pb-2">

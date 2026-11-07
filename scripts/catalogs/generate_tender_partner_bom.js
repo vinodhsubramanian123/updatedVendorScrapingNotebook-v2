@@ -193,6 +193,31 @@ const CLUSTER_B_ITEMS = [
   { sku: 'R7A11AAE', category: 'Management License', desc: 'HPE Compute Ops Management Enhanced 3-year SaaS', qty: 1, mult: 40, total: 40 }
 ];
 
+function resolvePartnerPortalCellStyle(R, C, layout) {
+  if (R === 0) return STYLES.title;
+  if (R === 1) {
+    return {
+      font: { name: 'Calibri', sz: 10, italic: true, color: { rgb: '94A3B8' } },
+      fill: { fgColor: { rgb: '1E293B' } },
+      alignment: { horizontal: 'center', vertical: 'center' }
+    };
+  }
+  if (R === layout.startRowA) return STYLES.clusterHeaderA;
+  if (R === layout.startRowB) return STYLES.clusterHeaderB;
+  if (R === layout.startRowA + 1 || R === layout.startRowB + 1) return STYLES.tableHeader;
+
+  const inA = R >= layout.dataStartRowA && R <= layout.dataEndRowA;
+  const inB = R >= layout.dataStartRowB && R <= layout.dataEndRowB;
+  if (!inA && !inB) return null;
+
+  if (C === 4) return inA ? STYLES.multiplierSpanA : STYLES.multiplierSpanB;
+  const startRow = inA ? layout.dataStartRowA : layout.dataStartRowB;
+  const isEven = (R - startRow) % 2 === 0;
+  if (C === 0) return isEven ? STYLES.skuEven : STYLES.skuOdd;
+  if (C === 3 || C === 5) return isEven ? STYLES.centerEven : STYLES.centerOdd;
+  return isEven ? STYLES.rowEven : STYLES.rowOdd;
+}
+
 function generatePartnerPortalWorkbook() {
   const wb = XLSX.utils.book_new();
   const wsData = [];
@@ -273,59 +298,14 @@ function generatePartnerPortalWorkbook() {
 
   // Apply cell styling
   const range = XLSX.utils.decode_range(ws['!ref']);
+  const layout = { startRowA, dataStartRowA, dataEndRowA, startRowB, dataStartRowB, dataEndRowB };
 
   for (let R = range.s.r; R <= range.e.r; ++R) {
     for (let C = range.s.c; C <= range.e.c; ++C) {
       const cellRef = XLSX.utils.encode_cell({ r: R, c: C });
       if (!ws[cellRef]) ws[cellRef] = { t: 's', v: '' };
-      const cell = ws[cellRef];
-
-      // Row 0: Main Title
-      if (R === 0) {
-        cell.s = STYLES.title;
-      }
-      // Row 1: Subtitle
-      else if (R === 1) {
-        cell.s = {
-          font: { name: 'Calibri', sz: 10, italic: true, color: { rgb: '94A3B8' } },
-          fill: { fgColor: { rgb: '1E293B' } },
-          alignment: { horizontal: 'center', vertical: 'center' }
-        };
-      }
-      // Cluster A Header Banner
-      else if (R === startRowA) {
-        cell.s = STYLES.clusterHeaderA;
-      }
-      // Cluster B Header Banner
-      else if (R === startRowB) {
-        cell.s = STYLES.clusterHeaderB;
-      }
-      // Table Header Rows
-      else if (R === startRowA + 1 || R === startRowB + 1) {
-        cell.s = STYLES.tableHeader;
-      }
-      // Multiplier Span for Cluster A
-      else if (R >= dataStartRowA && R <= dataEndRowA && C === 4) {
-        cell.s = STYLES.multiplierSpanA;
-      }
-      // Multiplier Span for Cluster B
-      else if (R >= dataStartRowB && R <= dataEndRowB && C === 4) {
-        cell.s = STYLES.multiplierSpanB;
-      }
-      // Data Rows for Cluster A
-      else if (R >= dataStartRowA && R <= dataEndRowA) {
-        const isEven = (R - dataStartRowA) % 2 === 0;
-        if (C === 0) cell.s = isEven ? STYLES.skuEven : STYLES.skuOdd;
-        else if (C === 3 || C === 5) cell.s = isEven ? STYLES.centerEven : STYLES.centerOdd;
-        else cell.s = isEven ? STYLES.rowEven : STYLES.rowOdd;
-      }
-      // Data Rows for Cluster B
-      else if (R >= dataStartRowB && R <= dataEndRowB) {
-        const isEven = (R - dataStartRowB) % 2 === 0;
-        if (C === 0) cell.s = isEven ? STYLES.skuEven : STYLES.skuOdd;
-        else if (C === 3 || C === 5) cell.s = isEven ? STYLES.centerEven : STYLES.centerOdd;
-        else cell.s = isEven ? STYLES.rowEven : STYLES.rowOdd;
-      }
+      const style = resolvePartnerPortalCellStyle(R, C, layout);
+      if (style) ws[cellRef].s = style;
     }
   }
 

@@ -118,6 +118,33 @@ assert.throws(
 assert.strictEqual(fs.readFileSync(corruptDeltaPath, 'utf-8'), corruptLedger, 'Corrupt ledger must remain available for recovery');
 console.log('  ✅ PASS: Corrupt active knowledge ledger fails closed without overwrite');
 
+// Test 6: Negative-path guard against prohibitions, disjunctive alternatives, co-listed SKUs, and invalid-SKU substitutions
+const negativeRagResponse = `
+1. **Thermal Heatsink Prohibition**:
+   Standard Heatsink P48814-B21 is strictly barred/prohibited with P48813-B21 or P48815-B21 in high-TDP 350W configurations.
+
+2. **Disjunctive Cage Alternatives**:
+   Configuring 24x SFF NVMe drives requires P48805-B21 (8SFF U.3 x4 Cage Kit) or P48802-B21 (8SFF U.3 x1 Cage Kit).
+
+3. **Co-Listed Subject Drives**:
+   Mixing SAS and NVMe drives (P28586-B21 and P40430-B21) on the same backplane requires P47777-B21 Tri-Mode controller.
+
+4. **Invalid SKU Substitution**:
+   Invalid SKU P48818-B21 is not a valid DL380 Gen12 battery; the valid Smart Storage Hybrid Capacitor SKU is P38995-B21.
+`;
+const negDeltas = extractKnowledgeFromRagAnswer(negativeRagResponse, 'outputs/ProLiant/Gen12/DL380_Gen12', {
+  chassis: 'DL380_Gen12'
+});
+const falseProhibitedDep = negDeltas.find(d => d.ruleType === 'DEPENDENCY_CHAIN' && d.affectedSku === 'P48814-B21');
+assert.strictEqual(falseProhibitedDep, undefined, 'Prohibited heatsink clause must NOT emit a DEPENDENCY_CHAIN');
+const falseDisjunctiveDep = negDeltas.find(d => d.ruleType === 'DEPENDENCY_CHAIN' && d.affectedSku === 'P48805-B21' && d.requiredDependencySku === 'P48802-B21');
+assert.strictEqual(falseDisjunctiveDep, undefined, 'Disjunctive cage alternative (A or B) must NOT emit a DEPENDENCY_CHAIN');
+const falseColistedDep = negDeltas.find(d => d.ruleType === 'DEPENDENCY_CHAIN' && d.affectedSku === 'P28586-B21' && d.requiredDependencySku === 'P40430-B21');
+assert.strictEqual(falseColistedDep, undefined, 'Co-listed subject SKUs (A and B) before requires verb must NOT emit A -> B DEPENDENCY_CHAIN');
+const validSubDelta = negDeltas.find(d => d.ruleType === 'SKU_SUBSTITUTION' && d.affectedSku === 'P48818-B21' && d.requiredDependencySku === 'P38995-B21');
+assert.ok(validSubDelta, 'Invalid SKU ... valid SKU is ... must extract as SKU_SUBSTITUTION');
+console.log('  ✅ PASS: Negative-path guards prevented false DEPENDENCY_CHAIN extraction and classified SKU_SUBSTITUTION');
+
 // Clean up temp dirs and reset quarantine
 fs.rmSync(tempDir, { recursive: true, force: true });
 fs.rmSync(quarantineTempDir, { recursive: true, force: true });

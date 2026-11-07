@@ -13,13 +13,92 @@ import {
   SkuAuditModal
 } from './catalog';
 
-export default function CatalogExplorer({ 
-  catalogData, 
-  chassisName, 
+function resolveExplorerSkuRawPrice(sku) {
+  for (const key of ['Unit Price (USD)', 'Price (USD)', 'List Price (USD)', 'List Price', 'Price', 'listPriceFormatted']) {
+    if (sku[key]) return sku[key];
+  }
+  if (sku.listPrice !== undefined && sku.listPrice !== '') return sku.listPrice;
+  return 'N/A';
+}
+
+function normalizeExplorerSkuItem(sku, entry) {
+  const skuId = sku.sku || sku['Product #'] || sku.partNumber || sku.id || 'CTO-OPTION';
+  const desc = sku.description || sku['Description'] || sku.name || sku.subCategory || 'Configuration Option';
+  const optType = sku.optionType || sku['Option Type'] || sku.Type || 'CTO';
+  const rawPrice = resolveExplorerSkuRawPrice(sku);
+  const priceDeltaVal = sku['Price Delta (USD)'];
+  const defaultDiff = priceDeltaVal && priceDeltaVal !== '-' ? 'PRICE_CHANGED' : 'UNCHANGED';
+
+  return {
+    ...sku,
+    sku: skuId,
+    description: desc,
+    optionType: optType,
+    listPrice: rawPrice,
+    diffStatus: sku.diffStatus || sku['Diff Status'] || defaultDiff,
+    priceDelta: priceDeltaVal || sku.priceDelta || null,
+    parentCategory: entry.parentCategory || 'Uncategorized',
+    subCategory: entry.subCategory || 'General',
+    constraint: entry.constraint,
+    rules: entry.rules
+  };
+}
+
+function extractAllCatalogSkus(catalogData) {
+  const allSkus = [];
+  catalogData.entries?.forEach(entry => {
+    entry.skus?.forEach(sku => {
+      allSkus.push(normalizeExplorerSkuItem(sku, entry));
+    });
+  });
+  return allSkus;
+}
+
+function filterDisplayedSkus(baseSkus, viewMode, activeCategory, activeSubCategory, activeType, showOnlyChanges) {
+  let result = baseSkus;
+  if (viewMode === 'services') {
+    result = result.filter(s => s.optionType === 'Service');
+  } else {
+    if (activeCategory !== 'ALL') {
+      result = result.filter(s => s.parentCategory === activeCategory);
+    }
+    if (activeSubCategory !== 'ALL') {
+      result = result.filter(s => s.subCategory === activeSubCategory);
+    }
+    if (activeType !== 'ALL') {
+      result = result.filter(s => s.optionType === activeType);
+    }
+  }
+  if (showOnlyChanges) {
+    result = result.filter(s => s.diffStatus && s.diffStatus !== 'UNCHANGED');
+  }
+  return result;
+}
+
+function formatCatalogPrice(priceVal) {
+  if (priceVal === undefined || priceVal === null || priceVal === '' || priceVal === 'N/A') return 'N/A';
+  const num = parseFloat(String(priceVal).replace(/[^0-9.]/g, ''));
+  if (isNaN(num)) return 'N/A';
+  return `$${num.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`;
+}
+
+function computeIncrementalStats(metadata, allSkusCount, changedCount) {
+  if (metadata?.incrementalStats) return metadata.incrementalStats;
+  if (metadata?.diffSummary) return metadata.diffSummary;
+  const unchangedCount = allSkusCount - changedCount;
+  return {
+    unchangedSkusCount: unchangedCount,
+    estimatedTokensSaved: unchangedCount * 150
+  };
+}
+
+export default function CatalogExplorer({
+  catalogData,
+  chassisName,
   catalogs = [],
   selectedChassis,
   onSelectChassis,
-  isCatalogLoading = false, 
+  isCatalogLoading = false,
   initialSearchQuery = '',
   _globalSearchTerm = '',
   _onClearSearch,
@@ -42,15 +121,14 @@ export default function CatalogExplorer({
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape') {
-        if (selectedSkuTrend) {
-          setSelectedSkuTrend(null);
-          setRealPriceTrail([]);
-        }
-        if (selectedSkuAudit) {
-          setSelectedSkuAudit(null);
-          setSkuAuditData(null);
-        }
+      if (e.key !== 'Escape') return;
+      if (selectedSkuTrend) {
+        setSelectedSkuTrend(null);
+        setRealPriceTrail([]);
+      }
+      if (selectedSkuAudit) {
+        setSelectedSkuAudit(null);
+        setSkuAuditData(null);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -58,24 +136,17 @@ export default function CatalogExplorer({
   }, [selectedSkuTrend, selectedSkuAudit]);
 
   useEffect(() => {
-    if (catalogData) {
-      catalogIndexer.indexCatalog(catalogData);
-      if (initialSearchQuery && initialSearchQuery.trim()) {
-        const matches = catalogIndexer.search(initialSearchQuery);
-        setSearchResults(matches);
-      }
+    if (!catalogData) return;
+    catalogIndexer.indexCatalog(catalogData);
+    if (initialSearchQuery && initialSearchQuery.trim()) {
+      setSearchResults(catalogIndexer.search(initialSearchQuery));
     }
   }, [catalogData, initialSearchQuery]);
 
   const handleQueryChange = (e) => {
     const val = e.target.value;
     setQuery(val);
-    if (!val.trim()) {
-      setSearchResults(null);
-    } else {
-      const matches = catalogIndexer.search(val);
-      setSearchResults(matches);
-    }
+    setSearchResults(val.trim() ? catalogIndexer.search(val) : null);
   };
 
   const handleClearQuery = () => {
@@ -95,83 +166,29 @@ export default function CatalogExplorer({
     );
   }
 
-  // Extract all SKUs across entries
-  const allSkus = [];
-  catalogData.entries?.forEach(entry => {
-    entry.skus?.forEach(sku => {
-      const skuId = sku.sku || sku['Product #'] || sku.partNumber || sku.id || 'CTO-OPTION';
-      const desc = sku.description || sku['Description'] || sku.name || sku.subCategory || 'Configuration Option';
-      const optType = sku.optionType || sku['Option Type'] || sku.Type || 'CTO';
-      const rawPrice = sku['Unit Price (USD)'] || sku['Price (USD)'] || sku['List Price (USD)'] || sku['List Price'] || sku['Price'] || sku.listPriceFormatted || (sku.listPrice !== undefined && sku.listPrice !== '' ? sku.listPrice : 'N/A');
-
-      allSkus.push({
-        ...sku,
-        sku: skuId,
-        description: desc,
-        optionType: optType,
-        listPrice: rawPrice,
-        diffStatus: sku.diffStatus || sku['Diff Status'] || (sku['Price Delta (USD)'] && sku['Price Delta (USD)'] !== '-' ? 'PRICE_CHANGED' : 'UNCHANGED'),
-        priceDelta: sku['Price Delta (USD)'] || sku.priceDelta || null,
-        parentCategory: entry.parentCategory || 'Uncategorized',
-        subCategory: entry.subCategory || 'General',
-        constraint: entry.constraint,
-        rules: entry.rules
-      });
-    });
-  });
-
+  const allSkus = extractAllCatalogSkus(catalogData);
   const categories = ['ALL', ...new Set(allSkus.map(e => e.parentCategory).filter(Boolean))];
-  const availableSubCategories = activeCategory === 'ALL'
-    ? ['ALL', ...new Set(allSkus.map(e => e.subCategory).filter(Boolean))]
-    : ['ALL', ...new Set(allSkus.filter(e => e.parentCategory === activeCategory).map(e => e.subCategory).filter(Boolean))];
+  const subCatPool = activeCategory === 'ALL' ? allSkus : allSkus.filter(e => e.parentCategory === activeCategory);
+  const availableSubCategories = ['ALL', ...new Set(subCatPool.map(e => e.subCategory).filter(Boolean))];
 
-  let displayedSkus = searchResults !== null ? searchResults : allSkus;
-  
-  if (viewMode === 'services') {
-    displayedSkus = displayedSkus.filter(s => s.optionType === 'Service');
-  } else {
-    if (activeCategory !== 'ALL') {
-      displayedSkus = displayedSkus.filter(s => s.parentCategory === activeCategory);
-    }
-    if (activeSubCategory !== 'ALL') {
-      displayedSkus = displayedSkus.filter(s => s.subCategory === activeSubCategory);
-    }
-    if (activeType !== 'ALL') {
-      displayedSkus = displayedSkus.filter(s => s.optionType === activeType);
-    }
-  }
-
-  const changedSkus = allSkus.filter(s => s.diffStatus && s.diffStatus !== 'UNCHANGED');
-  const changedCount = changedSkus.length;
-
-  if (showOnlyChanges) {
-    displayedSkus = displayedSkus.filter(s => s.diffStatus && s.diffStatus !== 'UNCHANGED');
-  }
-
+  const baseDisplayed = searchResults !== null ? searchResults : allSkus;
+  const displayedSkus = filterDisplayedSkus(baseDisplayed, viewMode, activeCategory, activeSubCategory, activeType, showOnlyChanges);
+  const changedCount = allSkus.filter(s => s.diffStatus && s.diffStatus !== 'UNCHANGED').length;
   const chassisDir = catalogData?.metadata?.chassisDir || (chassisName ? chassisName.replace(/ /g, '_') : '');
-
-  const formatPrice = (priceVal) => {
-    if (priceVal === undefined || priceVal === null || priceVal === '' || priceVal === 'N/A') return 'N/A';
-    const num = parseFloat(String(priceVal).replace(/[^0-9.]/g, ''));
-    if (isNaN(num)) return 'N/A';
-    return `$${num.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`;
-  };
+  const incrStats = computeIncrementalStats(catalogData.metadata, allSkus.length, changedCount);
 
   const handleOpenTrend = async (sku) => {
     setSelectedSkuTrend(sku);
     setLoadingHistory(true);
     const skuId = sku.sku || sku.partNumber;
+    const baseline = [{ date: 'Current', price: parseFloat(sku.listPrice) || 0, status: 'BASELINE' }];
     try {
       const res = await fetch(`/api/price-history?sku=${encodeURIComponent(skuId)}&chassisDir=${encodeURIComponent(chassisDir)}`);
       const data = await res.json();
-      if (data.history && data.history.length > 0) {
-        setRealPriceTrail(data.history);
-      } else {
-        setRealPriceTrail([{ date: 'Current', price: parseFloat(sku.listPrice) || 0, status: 'BASELINE' }]);
-      }
-    } catch (e) { 
+      setRealPriceTrail(data.history && data.history.length > 0 ? data.history : baseline);
+    } catch (e) {
       console.warn('Caught suppressed error in CatalogExplorer.jsx:', e);
-      setRealPriceTrail([{ date: 'Current', price: parseFloat(sku.listPrice) || 0, status: 'BASELINE' }]);
+      setRealPriceTrail(baseline);
     }
     setLoadingHistory(false);
   };
@@ -182,22 +199,12 @@ export default function CatalogExplorer({
     const skuId = sku.sku || sku.partNumber;
     try {
       const res = await fetch(`/api/sku-version-audit?sku=${encodeURIComponent(skuId)}&chassisDir=${encodeURIComponent(chassisDir)}`);
-      if (res.ok) {
-        const audit = await res.json();
-        setSkuAuditData(audit);
-      } else {
-        setSkuAuditData(null);
-      }
+      setSkuAuditData(res.ok ? await res.json() : null);
     } catch (e) {
       console.warn('Error fetching SKU audit:', e);
       setSkuAuditData(null);
     }
     setLoadingAudit(false);
-  };
-
-  const incrStats = catalogData.metadata?.incrementalStats || catalogData.metadata?.diffSummary || {
-    unchangedSkusCount: catalogData.metadata?.diffSummary?.unchanged || (allSkus.length - changedCount),
-    estimatedTokensSaved: (catalogData.metadata?.diffSummary?.unchanged || (allSkus.length - changedCount)) * 150
   };
 
   return (
@@ -243,7 +250,7 @@ export default function CatalogExplorer({
       ) : (
         <CatalogTable
           displayedSkus={displayedSkus}
-          formatPrice={formatPrice}
+          formatPrice={formatCatalogPrice}
           onOpenSkuAudit={handleOpenSkuAudit}
           onOpenTrend={handleOpenTrend}
         />

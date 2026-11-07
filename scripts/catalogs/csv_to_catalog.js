@@ -32,6 +32,110 @@ function parseCSVLine(line) {
   return result;
 }
 
+function appendCsvRowToGrouped(row, getVal, grouped, uniqueSKUs) {
+  const parentCat = getVal(row, 'Main Category') || 'General';
+  const subCat = getVal(row, 'Sub-Category') || parentCat;
+  const sku = getVal(row, 'Product #');
+  if (!sku) return;
+  uniqueSKUs.add(sku);
+
+  const desc = getVal(row, 'Description');
+  const constraint = getVal(row, 'Constraint Text') || '';
+  const maxQtyRaw = getVal(row, 'Subcategory Max Qty');
+  const maxQty = maxQtyRaw ? parseInt(maxQtyRaw, 10) : -1;
+  const unitPriceStr = getVal(row, 'Unit Price (USD)').replace(/[$,]/g, '');
+  const unitPrice = parseFloat(unitPriceStr) || 0;
+  const optionType = getVal(row, 'Option Type') || 'Standard';
+  const startDate = getVal(row, 'Start Date') || '';
+  const discontinuedDate = getVal(row, 'Discontinued Date') || '';
+  const currentQty = parseInt(getVal(row, 'Current Qty'), 10) || 0;
+
+  const key = `${parentCat}||${subCat}`;
+  if (!grouped.has(key)) {
+    grouped.set(key, {
+      parentCategory: parentCat,
+      subCategory: subCat,
+      constraint: constraint,
+      maxQty: maxQty,
+      rules: [],
+      headers: ['Product #', 'Description', 'List Price', 'Qty', 'Start Date'],
+      rows: [],
+      skus: [],
+      skuCount: 0
+    });
+  }
+
+  const lifecycleStatus = getVal(row, 'Lifecycle Status') || getVal(row, 'CLIC Status') || 'Active';
+  const availability = getVal(row, 'Availability') || 'Available';
+  const leadTime = getVal(row, 'Lead Time') || '';
+  const leadTimeSource = getVal(row, 'Lead Time Source') || 'Not published by OCA';
+  const vendorAttrs = getVal(row, 'Vendor Attributes (JSON)') || '{}';
+  const role = getVal(row, 'Component Role') || (parentCat === 'Chassis' ? 'Base Chassis' : 'Option Component');
+  const formattedPrice = `$${unitPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+  const entry = grouped.get(key);
+  entry.skus.push({
+    'Product #': sku,
+    'Description': desc,
+    'Unit Price (USD)': unitPrice.toFixed(2),
+    'Price (USD)': unitPrice.toFixed(2),
+    'Current Qty': String(currentQty),
+    'Option Type': optionType,
+    'Lifecycle Status': lifecycleStatus,
+    'CLIC Status': lifecycleStatus,
+    'lifecycleStatus': lifecycleStatus,
+    'Availability': availability,
+    'Lead Time': leadTime,
+    'Lead Time Source': leadTimeSource,
+    'Start Date': startDate,
+    'Discontinued Date': discontinuedDate,
+    'Vendor Attributes (JSON)': vendorAttrs,
+    'Constraint Text': constraint,
+    'Subcategory Max Qty': maxQtyRaw,
+    'Component Role': role,
+    // Alias keys for legacy backward compatibility:
+    sku,
+    description: desc,
+    listPrice: unitPrice,
+    listPriceFormatted: formattedPrice,
+    qty: currentQty
+  });
+
+  entry.rows.push([sku, desc, formattedPrice, String(currentQty), startDate]);
+  entry.skuCount = entry.skus.length;
+}
+
+function writeCsvIntermediateArtifacts(jsonOutputPath, entries, subcategoriesMap, chassisLabel) {
+  try {
+    const targetDir = path.dirname(jsonOutputPath);
+    const scrapsDir = path.join(targetDir, 'intermittent_scraps');
+    if (!fs.existsSync(scrapsDir)) fs.mkdirSync(scrapsDir, { recursive: true });
+
+    const filePrefix = path.basename(jsonOutputPath, '.json').replace(/_Catalog$/, '');
+    const { generateMainSheet, generateRulesSheet, generateSummarySheet } = require('../lib/catalog/catalog_formatter.js');
+
+    const subcatList = Array.from(subcategoriesMap.values()).map(s => ({
+      parentCategory: s.parentCategory,
+      name: s.name,
+      constraint: s.constraint,
+      maxQty: s.maxQty
+    }));
+
+    fs.writeFileSync(path.join(scrapsDir, `${filePrefix}_Catalog_SKUs.tsv`), generateMainSheet(entries, chassisLabel), 'utf-8');
+    fs.writeFileSync(path.join(scrapsDir, `${filePrefix}_Catalog_Rules.tsv`), generateRulesSheet(entries, subcatList), 'utf-8');
+    fs.writeFileSync(path.join(scrapsDir, `${filePrefix}_Catalog_Summary.tsv`), generateSummarySheet(entries, subcatList), 'utf-8');
+
+    const generateXlsxScript = path.join(__dirname, 'generate_xlsx.js');
+    const xlsxPath = path.join(targetDir, `${filePrefix}_OCA_Catalog.xlsx`);
+    if (fs.existsSync(generateXlsxScript)) {
+      const { execSync } = require('child_process');
+      execSync(`node "${generateXlsxScript}" "${xlsxPath}"`, { stdio: 'pipe' });
+    }
+  } catch (err) {
+    console.warn(`  ⚠️ TSV/Excel generation failed during CSV sync: ${err.message}`);
+  }
+}
+
 function convertCSVToCatalogJSON(csvPath, jsonOutputPath) {
   if (!fs.existsSync(csvPath)) {
     console.error(`CSV file not found: ${csvPath}`);
@@ -59,82 +163,7 @@ function convertCSVToCatalogJSON(csvPath, jsonOutputPath) {
 
   for (let i = 1; i < lines.length; i++) {
     const row = parseCSVLine(lines[i]);
-    const parentCat = getVal(row, 'Main Category') || 'General';
-    const subCat = getVal(row, 'Sub-Category') || parentCat;
-    const sku = getVal(row, 'Product #');
-    const desc = getVal(row, 'Description');
-    const constraint = getVal(row, 'Constraint Text') || '';
-    const maxQtyRaw = getVal(row, 'Subcategory Max Qty');
-    const maxQty = maxQtyRaw ? parseInt(maxQtyRaw, 10) : -1;
-    const unitPriceStr = getVal(row, 'Unit Price (USD)').replace(/[$,]/g, '');
-    const unitPrice = parseFloat(unitPriceStr) || 0;
-    const optionType = getVal(row, 'Option Type') || 'Standard';
-    const startDate = getVal(row, 'Start Date') || '';
-    const discontinuedDate = getVal(row, 'Discontinued Date') || '';
-    const currentQty = parseInt(getVal(row, 'Current Qty'), 10) || 0;
-
-    if (!sku) continue;
-    uniqueSKUs.add(sku);
-
-    const key = `${parentCat}||${subCat}`;
-    if (!grouped.has(key)) {
-      grouped.set(key, {
-        parentCategory: parentCat,
-        subCategory: subCat,
-        constraint: constraint,
-        maxQty: maxQty,
-        rules: [],
-        headers: ['Product #', 'Description', 'List Price', 'Qty', 'Start Date'],
-        rows: [],
-        skus: [],
-        skuCount: 0
-      });
-    }
-
-    const lifecycleStatus = getVal(row, 'Lifecycle Status') || getVal(row, 'CLIC Status') || 'Active';
-    const availability = getVal(row, 'Availability') || 'Available';
-    const leadTime = getVal(row, 'Lead Time') || '';
-    const leadTimeSource = getVal(row, 'Lead Time Source') || 'Not published by OCA';
-    const vendorAttrs = getVal(row, 'Vendor Attributes (JSON)') || '{}';
-    const role = getVal(row, 'Component Role') || (parentCat === 'Chassis' ? 'Base Chassis' : 'Option Component');
-
-    const entry = grouped.get(key);
-    entry.skus.push({
-      'Product #': sku,
-      'Description': desc,
-      'Unit Price (USD)': unitPrice.toFixed(2),
-      'Price (USD)': unitPrice.toFixed(2),
-      'Current Qty': String(currentQty),
-      'Option Type': optionType,
-      'Lifecycle Status': lifecycleStatus,
-      'CLIC Status': lifecycleStatus,
-      'lifecycleStatus': lifecycleStatus,
-      'Availability': availability,
-      'Lead Time': leadTime,
-      'Lead Time Source': leadTimeSource,
-      'Start Date': startDate,
-      'Discontinued Date': discontinuedDate,
-      'Vendor Attributes (JSON)': vendorAttrs,
-      'Constraint Text': constraint,
-      'Subcategory Max Qty': maxQtyRaw,
-      'Component Role': role,
-      // Alias keys for legacy backward compatibility:
-      sku,
-      description: desc,
-      listPrice: unitPrice,
-      listPriceFormatted: `$${unitPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-      qty: currentQty
-    });
-
-    entry.rows.push([
-      sku,
-      desc,
-      `$${unitPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-      String(currentQty),
-      startDate
-    ]);
-
-    entry.skuCount = entry.skus.length;
+    appendCsvRowToGrouped(row, getVal, grouped, uniqueSKUs);
   }
 
   const subcategoriesMap = new Map();
@@ -186,34 +215,7 @@ function convertCSVToCatalogJSON(csvPath, jsonOutputPath) {
   }
 
   // Generate TSV intermediate scraps & rebuild Excel workbook
-  try {
-    const targetDir = path.dirname(jsonOutputPath);
-    const scrapsDir = path.join(targetDir, 'intermittent_scraps');
-    if (!fs.existsSync(scrapsDir)) fs.mkdirSync(scrapsDir, { recursive: true });
-
-    const filePrefix = path.basename(jsonOutputPath, '.json').replace(/_Catalog$/, '');
-    const { generateMainSheet, generateRulesSheet, generateSummarySheet } = require('../lib/catalog/catalog_formatter.js');
-
-    const subcatList = Array.from(subcategoriesMap.values()).map(s => ({
-      parentCategory: s.parentCategory,
-      name: s.name,
-      constraint: s.constraint,
-      maxQty: s.maxQty
-    }));
-
-    fs.writeFileSync(path.join(scrapsDir, `${filePrefix}_Catalog_SKUs.tsv`), generateMainSheet(entries, chassisLabel), 'utf-8');
-    fs.writeFileSync(path.join(scrapsDir, `${filePrefix}_Catalog_Rules.tsv`), generateRulesSheet(entries, subcatList), 'utf-8');
-    fs.writeFileSync(path.join(scrapsDir, `${filePrefix}_Catalog_Summary.tsv`), generateSummarySheet(entries, subcatList), 'utf-8');
-
-    const generateXlsxScript = path.join(__dirname, 'generate_xlsx.js');
-    const xlsxPath = path.join(targetDir, `${filePrefix}_OCA_Catalog.xlsx`);
-    if (fs.existsSync(generateXlsxScript)) {
-      const { execSync } = require('child_process');
-      execSync(`node "${generateXlsxScript}" "${xlsxPath}"`, { stdio: 'pipe' });
-    }
-  } catch (err) {
-    console.warn(`  ⚠️ TSV/Excel generation failed during CSV sync: ${err.message}`);
-  }
+  writeCsvIntermediateArtifacts(jsonOutputPath, entries, subcategoriesMap, chassisLabel);
 
   console.log(`✅ Successfully generated ${jsonOutputPath} with ${uniqueSKUs.size} SKUs across ${entries.length} sections.`);
   return true;

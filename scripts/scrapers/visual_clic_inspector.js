@@ -10,6 +10,30 @@
 const { getOCATarget, getAnyPageTarget, connectWS, sendCommand, sleep, dismissDOMModals } = require('../lib/scraper/cdp.js');
 const { processPortalFeedback } = require('../lib/feedback/feedback_loop.js');
 
+async function extractModalErrorsFromDOM(ws) {
+  console.log(`Step 3: Extracting unbuildable error messages & root causes from modal form...`);
+  const modalRes = await sendCommand(ws, 'Runtime.evaluate', {
+    expression: `(() => {
+      const banner = document.getElementById('ag-clic-banner');
+      const modal = document.querySelector('.clic-error-modal, .ui-dialog, .modal-dialog, #clic_results, [class*="modal"], [class*="popup"]');
+      
+      const fullText = document.body ? document.body.innerText : '';
+      const skuMatches = fullText.match(/\\b([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6})\\b/g) || [];
+
+      if (banner) banner.innerHTML = '✅ ANTIGRAVITY AI: Extracted Unbuildable Errors & Root Cause Trace successfully!';
+
+      return {
+        hasErrors: fullText.toLowerCase().includes('unbuildable') || fullText.toLowerCase().includes('error') || fullText.toLowerCase().includes('required'),
+        errorSnippet: fullText.substring(0, 800),
+        detectedSkus: Array.from(new Set(skuMatches))
+      };
+    })()`,
+    returnByValue: true
+  });
+
+  return (modalRes && modalRes.result) ? modalRes.result.value : {};
+}
+
 async function main() {
   console.log(`================================================================`);
   console.log(`🚀 VISUAL COMPONENT CLIC CHECK & UNBUILDABLE ERROR EXTRACTOR`);
@@ -111,27 +135,7 @@ async function main() {
   await dismissDOMModals(ws);
 
   // 3. Extract modal errors, root causes, and recommended SKU fixes
-  console.log(`Step 3: Extracting unbuildable error messages & root causes from modal form...`);
-  const modalRes = await sendCommand(ws, 'Runtime.evaluate', {
-    expression: `(() => {
-      const banner = document.getElementById('ag-clic-banner');
-      const modal = document.querySelector('.clic-error-modal, .ui-dialog, .modal-dialog, #clic_results, [class*="modal"], [class*="popup"]');
-      
-      const fullText = document.body ? document.body.innerText : '';
-      const skuMatches = fullText.match(/\\b([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6})\\b/g) || [];
-
-      if (banner) banner.innerHTML = '✅ ANTIGRAVITY AI: Extracted Unbuildable Errors & Root Cause Trace successfully!';
-
-      return {
-        hasErrors: fullText.toLowerCase().includes('unbuildable') || fullText.toLowerCase().includes('error') || fullText.toLowerCase().includes('required'),
-        errorSnippet: fullText.substring(0, 800),
-        detectedSkus: Array.from(new Set(skuMatches))
-      };
-    })()`,
-    returnByValue: true
-  });
-
-  const modalData = (modalRes && modalRes.result) ? modalRes.result.value : {};
+  const modalData = await extractModalErrorsFromDOM(ws);
   console.log(`\n📋 EXTRACTED UNBUILDABLE ERROR ANALYSIS:`);
   console.log(`  • Unbuildable Errors Present : ${modalData.hasErrors ? 'YES' : 'NO'}`);
   console.log(`  • Detected SKUs in Context   : ${modalData.detectedSkus ? modalData.detectedSkus.join(', ') : 'None'}`);

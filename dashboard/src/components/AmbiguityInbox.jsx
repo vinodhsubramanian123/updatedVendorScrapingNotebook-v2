@@ -1,13 +1,273 @@
 import React, { useState } from 'react';
 import { HelpCircle, BrainCircuit, Sparkles, PlusCircle, CheckCircle, ChevronDown, ChevronUp, AlertCircle } from 'lucide-react';
 
+function computeAmbiguityTriggerState(evalResults) {
+  const defaultScore = evalResults.errors?.length > 0 ? 0.2 : 0.95;
+  const rawScore = evalResults.confidence?.score
+    ?? evalResults.confidenceScore
+    ?? evalResults.conflictGraph?.quantitativeConfidenceScore
+    ?? defaultScore;
+  const score = typeof rawScore === 'number' ? rawScore : parseFloat(rawScore) || 0.5;
+  const ctoAnomalies = evalResults.preprocessing?.variations?.[0]?.ctoAnomalies
+    || evalResults.ctoAnomalies
+    || [];
+  const partResolutions = evalResults.requirementResolution?.resolutions || [];
+  const hasErrors = Boolean(evalResults.errors && evalResults.errors.length > 0);
+  const isTriggered = score < 0.85
+    || hasErrors
+    || Boolean(evalResults.requiresUserChassisConfirmation)
+    || Boolean(evalResults.confidence?.isHitlTriggered)
+    || ctoAnomalies.length > 0;
+
+  return { score, ctoAnomalies, partResolutions, isTriggered };
+}
+
+function CtoAnomaliesList({ ctoAnomalies }) {
+  if (ctoAnomalies.length === 0) return null;
+  return (
+    <div className="pt-2 border-t border-amber-300/80 space-y-1">
+      <div className="flex items-center gap-1.5 font-bold text-rose-900 text-xs">
+        <AlertCircle className="w-4 h-4 text-rose-700 stroke-[2.25px]" />
+        CTO Multi-Unit Quantity Anomaly Detected:
+      </div>
+      {ctoAnomalies.map((anom, idx) => (
+        <p key={idx} className="text-[11px] text-rose-800 font-mono pl-5">
+          • SKU {anom.sku}: {anom.rawQuantity} total units across {anom.chassisCount} server chassis yields non-integer atomic quantity ({anom.atomicQuantity.toFixed(2)} per server).
+        </p>
+      ))}
+    </div>
+  );
+}
+
+function PartResolutionsList({ partResolutions, chassisContext, onSelectCandidate }) {
+  if (partResolutions.length === 0) return null;
+  return (
+    <div className="pt-2 border-t border-amber-300/80 space-y-2">
+      <div className="font-bold text-amber-950 text-xs">Requirement-led part/category review:</div>
+      {partResolutions.map((resolution, idx) => (
+        <div key={`${resolution.suspectedSku || 'requirement'}-${idx}`} className="rounded-lg border border-amber-200 bg-white p-2.5 space-y-1.5">
+          <div className="flex flex-wrap items-center gap-2 text-[11px]">
+            <span className="font-mono font-bold text-rose-800">{resolution.suspectedSku || 'No valid part number'}</span>
+            <span className="text-slate-500">→ expected category</span>
+            <span className="font-bold text-indigo-800">{resolution.expectedRole || 'Unresolved'}</span>
+            <span className="ml-auto font-mono text-amber-900">{Math.round((resolution.confidence || 0) * 100)}% confidence</span>
+          </div>
+          <div className="flex flex-wrap gap-1.5">
+            {(resolution.candidates || []).map(candidate => (
+              <button
+                type="button"
+                key={candidate.sku}
+                onClick={() => onSelectCandidate(resolution, candidate, chassisContext)}
+                className="rounded-md border border-slate-300 bg-slate-50 px-2 py-1 text-[10px] font-bold text-slate-800 hover:border-indigo-400 hover:bg-indigo-50"
+                title={candidate.description}
+              >
+                {candidate.sku} · {Math.round(candidate.score * 100)}%
+              </button>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function formatCitationEntry(c) {
+  if (typeof c === 'string') return c;
+  return c.title || c.id || c.url || '';
+}
+
+function NotebookConsultationSection({ isQuerying, onQuery, notebookResponse, notebookMeta }) {
+  const citationsList = notebookMeta?.citations
+    ? notebookMeta.citations.map(formatCitationEntry).filter(Boolean).join('; ')
+    : '';
+
+  return (
+    <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
+      <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3 flex items-center gap-2">
+        <BrainCircuit className="w-4 h-4 text-purple-800 stroke-[2.25px]" /> Step 1: Consult NotebookLM MCP
+      </h4>
+      <p className="text-[11px] text-slate-600 mb-3">Query the Gemini Notebook agent directly to interpret the unresolved errors using the grounded QuickSpecs documents.</p>
+
+      <button
+        onClick={onQuery}
+        disabled={isQuerying}
+        className="btn-secondary w-full sm:w-auto text-xs bg-white hover:bg-purple-50 text-slate-900 font-bold border-slate-300 transition-all"
+      >
+        {isQuerying ? <><Sparkles className="w-3.5 h-3.5 animate-spin text-purple-700" /> Querying MCP...</> : <><Sparkles className="w-3.5 h-3.5 text-purple-800 stroke-[2.25px]" /> Auto-Query NotebookLM</>}
+      </button>
+
+      {notebookResponse && (
+        <div className="mt-4 p-3 bg-purple-50 border border-purple-200 rounded text-sm text-purple-950 font-medium whitespace-pre-wrap space-y-2">
+          <div className={`text-[10px] uppercase tracking-wider font-bold ${notebookMeta?.learningEligible ? 'text-emerald-800' : 'text-amber-900'}`}>
+            {notebookMeta?.learningEligible ? 'Cloud grounded with traceable citations' : 'Advisory only — not eligible for learning'}
+          </div>
+          <div>{notebookResponse}</div>
+          {citationsList && <div className="text-[11px] text-slate-700">Citations: {citationsList}</div>}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function AmbiguityDecisionForm({
+  formValues,
+  formSetters,
+  isSubmitting,
+  submitStatus,
+  onSubmit,
+  onReEvaluate
+}) {
+  const {
+    ruleUpdate,
+    humanReasoning,
+    scopeTaxonomy,
+    affectedSku,
+    requiredDependencySku,
+    reviewer,
+    evidenceType,
+    evidenceId,
+    confirmedVerified
+  } = formValues;
+
+  const isSubmitDisabled = isSubmitting || !ruleUpdate || !humanReasoning || !affectedSku || !reviewer || !evidenceId || !confirmedVerified;
+  const statusColorClass = submitStatus?.type === 'success'
+    ? 'text-emerald-800'
+    : submitStatus?.type === 'warning'
+      ? 'text-amber-900'
+      : 'text-rose-800';
+
+  return (
+    <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
+      <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3 flex items-center gap-2">
+        <PlusCircle className="w-4 h-4 text-emerald-800 stroke-[2.25px]" /> Step 2: Submit Evidence-Backed Human Decision
+      </h4>
+      <p className="text-[11px] text-slate-600 mb-4">NotebookLM output is advisory. A rule is activated only after an engineer records independent reasoning and traceable evidence; unresolved conflicts remain quarantined.</p>
+
+      <form onSubmit={onSubmit} className="space-y-3">
+        <div>
+          <label className="block text-[10px] font-bold text-slate-700 uppercase mb-1">Rule Update / Technical Rule</label>
+          <textarea
+            required
+            value={ruleUpdate}
+            onChange={e => formSetters.setRuleUpdate(e.target.value)}
+            className="w-full text-sm border-slate-300 rounded-lg shadow-2xs focus:border-indigo-500 focus:ring-indigo-500 bg-white"
+            rows="2"
+            placeholder="e.g. Storage Controller MR416i-p requires P76453-B21 Box 1/2 Cable Kit..."
+          />
+        </div>
+
+        <div>
+          <label className="block text-[10px] font-bold text-slate-700 uppercase mb-1">Human Engineer Reasoning & Context</label>
+          <input
+            required
+            type="text"
+            value={humanReasoning}
+            onChange={e => formSetters.setHumanReasoning(e.target.value)}
+            className="w-full text-sm border-slate-300 rounded-lg shadow-2xs focus:border-indigo-500 focus:ring-indigo-500 bg-white"
+            placeholder="Explain why this fix is necessary (e.g. Controller backplane SAS expander routing requirement)..."
+          />
+        </div>
+
+        <div className="grid grid-cols-3 gap-3">
+          <div>
+            <label className="block text-[10px] font-bold text-slate-700 uppercase mb-1">Scope Taxonomy</label>
+            <select
+              value={scopeTaxonomy}
+              onChange={e => formSetters.setScopeTaxonomy(e.target.value)}
+              className="w-full text-sm border-slate-300 rounded-lg shadow-2xs focus:border-indigo-500 focus:ring-indigo-500 bg-white [color-scheme:light]"
+            >
+              <option value="CHASSIS_SPECIFIC">Chassis Specific (e.g. Selected Chassis)</option>
+              <option value="FAMILY_GEN">Family & Gen (e.g. ProLiant Gen12)</option>
+              <option value="UNIVERSAL_VENDOR">Universal Vendor (All HPE)</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-[10px] font-bold text-slate-700 uppercase mb-1">Affected SKU</label>
+            <input
+              required
+              type="text"
+              value={affectedSku}
+              onChange={e => formSetters.setAffectedSku(e.target.value)}
+              className="w-full text-sm border-slate-300 rounded-lg shadow-2xs focus:border-indigo-500 focus:ring-indigo-500 bg-white font-mono"
+              placeholder="P47777-B21"
+            />
+          </div>
+          <div>
+            <label className="block text-[10px] font-bold text-slate-700 uppercase mb-1">Required Dependency SKU</label>
+            <input
+              type="text"
+              value={requiredDependencySku}
+              onChange={e => formSetters.setRequiredDependencySku(e.target.value)}
+              className="w-full text-sm border-slate-300 rounded-lg shadow-2xs focus:border-indigo-500 focus:ring-indigo-500 bg-white font-mono"
+              placeholder="P76453-B21"
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div>
+            <label className="block text-[10px] font-bold text-slate-700 uppercase mb-1">Reviewer</label>
+            <input required value={reviewer} onChange={e => formSetters.setReviewer(e.target.value)} className="w-full text-sm border-slate-300 rounded-lg shadow-2xs bg-white" placeholder="Engineer name or ID" />
+          </div>
+          <div>
+            <label className="block text-[10px] font-bold text-slate-700 uppercase mb-1">Evidence Type</label>
+            <select value={evidenceType} onChange={e => formSetters.setEvidenceType(e.target.value)} className="w-full text-sm border-slate-300 rounded-lg shadow-2xs bg-white [color-scheme:light]">
+              <option value="OFFICIAL_QUICKSPECS">Official QuickSpecs</option>
+              <option value="OFFICIAL_VENDOR_PORTAL">Official Vendor Portal</option>
+              <option value="CERTIFIED_CATALOG">Certified Catalog</option>
+              <option value="NOTEBOOKLM_CITATION">NotebookLM Citation</option>
+              <option value="TESTED_BUILD">Tested OCA/CLIC Build</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-[10px] font-bold text-slate-700 uppercase mb-1">Evidence ID / URL / Rule ID</label>
+            <input required value={evidenceId} onChange={e => formSetters.setEvidenceId(e.target.value)} className="w-full text-sm border-slate-300 rounded-lg shadow-2xs bg-white" placeholder="Source ID, URL, portal rule, or test trace" />
+          </div>
+        </div>
+
+        <label className="flex items-start gap-2 text-xs text-slate-700">
+          <input type="checkbox" required checked={confirmedVerified} onChange={e => formSetters.setConfirmedVerified(e.target.checked)} className="mt-0.5" />
+          <span>I independently verified this rule for the exact product generation and confirm the evidence is authoritative. I understand conflicting rules will remain quarantined until supersession is documented.</span>
+        </label>
+
+        <div className="pt-2 flex flex-wrap items-center justify-between gap-3">
+          <button
+            type="submit"
+            disabled={isSubmitDisabled}
+            className="btn-primary text-xs text-white font-bold bg-indigo-600 hover:bg-indigo-700"
+          >
+            {isSubmitting ? 'Validating...' : 'Submit Verified Human Decision'}
+          </button>
+
+          {submitStatus && (
+            <div className="flex items-center gap-3">
+              <span className={`text-xs font-bold flex items-center gap-1 ${statusColorClass}`}>
+                {submitStatus.type === 'success' ? <CheckCircle className="w-3.5 h-3.5 text-emerald-700 stroke-[2.25px]" /> : null}
+                {submitStatus.msg}
+              </span>
+              {submitStatus.type === 'success' && onReEvaluate && (
+                <button
+                  type="button"
+                  onClick={() => onReEvaluate()}
+                  className="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold flex items-center gap-1 shadow-xs transition-transform active:scale-95"
+                >
+                  <Sparkles className="w-3.5 h-3.5" /> Re-Evaluate BOQ with Learned Rule
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+      </form>
+    </div>
+  );
+}
+
 export default function AmbiguityInbox({ evalResults, chassisContext, onReEvaluate }) {
   const [isOpen, setIsOpen] = useState(true);
   const [isQuerying, setIsQuerying] = useState(false);
   const [notebookResponse, setNotebookResponse] = useState('');
   const [notebookMeta, setNotebookMeta] = useState(null);
-  
-  // Resolution form state
+
   const [ruleUpdate, setRuleUpdate] = useState('');
   const [humanReasoning, setHumanReasoning] = useState('');
   const [scopeTaxonomy, setScopeTaxonomy] = useState('CHASSIS_SPECIFIC');
@@ -22,25 +282,7 @@ export default function AmbiguityInbox({ evalResults, chassisContext, onReEvalua
 
   if (!evalResults) return null;
 
-  // Extract confidence score across all possible result schemas
-  const rawScore = evalResults.confidence?.score 
-    ?? evalResults.confidenceScore 
-    ?? evalResults.conflictGraph?.quantitativeConfidenceScore 
-    ?? (evalResults.errors?.length > 0 ? 0.2 : 0.95);
-  const score = typeof rawScore === 'number' ? rawScore : parseFloat(rawScore) || 0.5;
-
-  const ctoAnomalies = evalResults.preprocessing?.variations?.[0]?.ctoAnomalies 
-    || evalResults.ctoAnomalies 
-    || [];
-  const partResolutions = evalResults.requirementResolution?.resolutions || [];
-
-  // Trigger if score < 0.85, or errors exist, or chassis confirmation needed, or CTO quantity anomalies detected
-  const isTriggered = score < 0.85 
-    || (evalResults.errors && evalResults.errors.length > 0)
-    || evalResults.requiresUserChassisConfirmation
-    || evalResults.confidence?.isHitlTriggered
-    || ctoAnomalies.length > 0;
-
+  const { score, ctoAnomalies, partResolutions, isTriggered } = computeAmbiguityTriggerState(evalResults);
   if (!isTriggered) return null;
 
   const handleQueryNotebookLM = async () => {
@@ -51,7 +293,7 @@ export default function AmbiguityInbox({ evalResults, chassisContext, onReEvalua
     try {
       const errorsStr = evalResults.errors?.join('\n') || 'Unknown conflict';
       const prompt = `I have a hardware configuration conflict for ${chassisContext} that I need to resolve. The evaluation failed with these errors:\n${errorsStr}\n\nBased on your QuickSpecs knowledge, what is the exact physical rule missing here? Does one SKU require another? Return a concise technical rule.`;
-      
+
       const res = await fetch('/api/ask-notebook', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -63,9 +305,8 @@ export default function AmbiguityInbox({ evalResults, chassisContext, onReEvalua
       if (data.learningEligible && data.citations?.length > 0) {
         const firstCitation = data.citations[0];
         setEvidenceType('NOTEBOOKLM_CITATION');
-        setEvidenceId(typeof firstCitation === 'string' ? firstCitation : (firstCitation.id || firstCitation.url || firstCitation.title || ''));
+        setEvidenceId(formatCitationEntry(firstCitation));
       }
-
     } catch (err) {
       setNotebookResponse(`Error querying NotebookLM: ${err.message}`);
     } finally {
@@ -89,7 +330,7 @@ export default function AmbiguityInbox({ evalResults, chassisContext, onReEvalua
         confirmedVerified,
         evidence: [{ type: evidenceType, id: evidenceId }]
       };
-      
+
       const res = await fetch('/api/resolve-ambiguity', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -97,7 +338,10 @@ export default function AmbiguityInbox({ evalResults, chassisContext, onReEvalua
       });
       const data = await res.json();
       if (data.success) {
-        setSubmitStatus({ type: data.promoted ? 'success' : 'warning', msg: data.promoted ? `Verified rule promoted [${data.deltaId}]` : `Held in quarantine [${data.quarantineId || data.deltaId}]` });
+        const msg = data.promoted
+          ? `Verified rule promoted [${data.deltaId}]`
+          : `Held in quarantine [${data.quarantineId || data.deltaId}]`;
+        setSubmitStatus({ type: data.promoted ? 'success' : 'warning', msg });
       } else {
         setSubmitStatus({ type: 'error', msg: data.error });
       }
@@ -108,9 +352,16 @@ export default function AmbiguityInbox({ evalResults, chassisContext, onReEvalua
     }
   };
 
+  const handleSelectCandidate = (resolution, candidate, ctx) => {
+    const suspected = resolution.suspectedSku || 'ATTRIBUTE_REQUIREMENT';
+    setAffectedSku(suspected);
+    setRequiredDependencySku(candidate.sku);
+    setRuleUpdate(`For ${ctx}, replace ${resolution.suspectedSku || 'the unresolved requirement'} with ${candidate.sku} (${candidate.description}) after confirming category ${resolution.expectedRole}.`);
+  };
+
   return (
     <div className="glass-card border-amber-300 shadow-xs mb-6 overflow-hidden">
-      <div 
+      <div
         className="bg-amber-100/70 p-4 border-b border-amber-300 flex justify-between items-center cursor-pointer"
         onClick={() => setIsOpen(!isOpen)}
       >
@@ -135,207 +386,53 @@ export default function AmbiguityInbox({ evalResults, chassisContext, onReEvalua
               {evalResults.confidence?.summary || evalResults.goldenRuleSummary || 'Hardware rule ambiguity, missing dependency, or non-integer CTO divisor detected.'}
             </p>
 
-            {/* Non-integer CTO Divisor Anomaly Warnings */}
-            {ctoAnomalies.length > 0 && (
-              <div className="pt-2 border-t border-amber-300/80 space-y-1">
-                <div className="flex items-center gap-1.5 font-bold text-rose-900 text-xs">
-                  <AlertCircle className="w-4 h-4 text-rose-700 stroke-[2.25px]" />
-                  CTO Multi-Unit Quantity Anomaly Detected:
-                </div>
-                {ctoAnomalies.map((anom, idx) => (
-                  <p key={idx} className="text-[11px] text-rose-800 font-mono pl-5">
-                    • SKU {anom.sku}: {anom.rawQuantity} total units across {anom.chassisCount} server chassis yields non-integer atomic quantity ({anom.atomicQuantity.toFixed(2)} per server).
-                  </p>
-                ))}
-              </div>
-            )}
-
-            {partResolutions.length > 0 && (
-              <div className="pt-2 border-t border-amber-300/80 space-y-2">
-                <div className="font-bold text-amber-950 text-xs">Requirement-led part/category review:</div>
-                {partResolutions.map((resolution, idx) => (
-                  <div key={`${resolution.suspectedSku || 'requirement'}-${idx}`} className="rounded-lg border border-amber-200 bg-white p-2.5 space-y-1.5">
-                    <div className="flex flex-wrap items-center gap-2 text-[11px]">
-                      <span className="font-mono font-bold text-rose-800">{resolution.suspectedSku || 'No valid part number'}</span>
-                      <span className="text-slate-500">→ expected category</span>
-                      <span className="font-bold text-indigo-800">{resolution.expectedRole || 'Unresolved'}</span>
-                      <span className="ml-auto font-mono text-amber-900">{Math.round((resolution.confidence || 0) * 100)}% confidence</span>
-                    </div>
-                    <div className="flex flex-wrap gap-1.5">
-                      {(resolution.candidates || []).map(candidate => (
-                        <button
-                          type="button"
-                          key={candidate.sku}
-                          onClick={() => {
-                            setAffectedSku(resolution.suspectedSku || 'ATTRIBUTE_REQUIREMENT');
-                            setRequiredDependencySku(candidate.sku);
-                            setRuleUpdate(`For ${chassisContext}, replace ${resolution.suspectedSku || 'the unresolved requirement'} with ${candidate.sku} (${candidate.description}) after confirming category ${resolution.expectedRole}.`);
-                          }}
-                          className="rounded-md border border-slate-300 bg-slate-50 px-2 py-1 text-[10px] font-bold text-slate-800 hover:border-indigo-400 hover:bg-indigo-50"
-                          title={candidate.description}
-                        >
-                          {candidate.sku} · {Math.round(candidate.score * 100)}%
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
+            <CtoAnomaliesList ctoAnomalies={ctoAnomalies} />
+            <PartResolutionsList
+              partResolutions={partResolutions}
+              chassisContext={chassisContext}
+              onSelectCandidate={handleSelectCandidate}
+            />
 
             <p className="pt-2 border-t border-amber-300 text-[11px] text-slate-700">
               No canned SKU fix is applied here. Every decision must identify the exact product generation, evidence, reviewer, and reasoning.
             </p>
           </div>
 
-          <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
-            <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3 flex items-center gap-2">
-              <BrainCircuit className="w-4 h-4 text-purple-800 stroke-[2.25px]" /> Step 1: Consult NotebookLM MCP
-            </h4>
-            <p className="text-[11px] text-slate-600 mb-3">Query the Gemini Notebook agent directly to interpret the unresolved errors using the grounded QuickSpecs documents.</p>
-            
-            <button 
-              onClick={handleQueryNotebookLM}
-              disabled={isQuerying}
-              className="btn-secondary w-full sm:w-auto text-xs bg-white hover:bg-purple-50 text-slate-900 font-bold border-slate-300 transition-all"
-            >
-              {isQuerying ? <><Sparkles className="w-3.5 h-3.5 animate-spin text-purple-700" /> Querying MCP...</> : <><Sparkles className="w-3.5 h-3.5 text-purple-800 stroke-[2.25px]" /> Auto-Query NotebookLM</>}
-            </button>
+          <NotebookConsultationSection
+            isQuerying={isQuerying}
+            onQuery={handleQueryNotebookLM}
+            notebookResponse={notebookResponse}
+            notebookMeta={notebookMeta}
+          />
 
-            {notebookResponse && (
-              <div className="mt-4 p-3 bg-purple-50 border border-purple-200 rounded text-sm text-purple-950 font-medium whitespace-pre-wrap space-y-2">
-                <div className={`text-[10px] uppercase tracking-wider font-bold ${notebookMeta?.learningEligible ? 'text-emerald-800' : 'text-amber-900'}`}>
-                  {notebookMeta?.learningEligible ? 'Cloud grounded with traceable citations' : 'Advisory only — not eligible for learning'}
-                </div>
-                <div>{notebookResponse}</div>
-                {notebookMeta?.citations?.length > 0 && <div className="text-[11px] text-slate-700">Citations: {notebookMeta.citations.map(c => typeof c === 'string' ? c : (c.title || c.id || c.url)).filter(Boolean).join('; ')}</div>}
-              </div>
-            )}
-          </div>
-
-          <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
-            <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3 flex items-center gap-2">
-              <PlusCircle className="w-4 h-4 text-emerald-800 stroke-[2.25px]" /> Step 2: Submit Evidence-Backed Human Decision
-            </h4>
-            <p className="text-[11px] text-slate-600 mb-4">NotebookLM output is advisory. A rule is activated only after an engineer records independent reasoning and traceable evidence; unresolved conflicts remain quarantined.</p>
-            
-            <form onSubmit={handleResolve} className="space-y-3">
-              <div>
-                <label className="block text-[10px] font-bold text-slate-700 uppercase mb-1">Rule Update / Technical Rule</label>
-                <textarea 
-                  required
-                  value={ruleUpdate}
-                  onChange={e => setRuleUpdate(e.target.value)}
-                  className="w-full text-sm border-slate-300 rounded-lg shadow-2xs focus:border-indigo-500 focus:ring-indigo-500 bg-white"
-                  rows="2"
-                  placeholder="e.g. Storage Controller MR416i-p requires P76453-B21 Box 1/2 Cable Kit..."
-                />
-              </div>
-
-              <div>
-                <label className="block text-[10px] font-bold text-slate-700 uppercase mb-1">Human Engineer Reasoning & Context</label>
-                <input
-                  required
-                  type="text"
-                  value={humanReasoning}
-                  onChange={e => setHumanReasoning(e.target.value)}
-                  className="w-full text-sm border-slate-300 rounded-lg shadow-2xs focus:border-indigo-500 focus:ring-indigo-500 bg-white"
-                  placeholder="Explain why this fix is necessary (e.g. Controller backplane SAS expander routing requirement)..."
-                />
-              </div>
-              
-              <div className="grid grid-cols-3 gap-3">
-                <div>
-                  <label className="block text-[10px] font-bold text-slate-700 uppercase mb-1">Scope Taxonomy</label>
-                  <select 
-                    value={scopeTaxonomy}
-                    onChange={e => setScopeTaxonomy(e.target.value)}
-                    className="w-full text-sm border-slate-300 rounded-lg shadow-2xs focus:border-indigo-500 focus:ring-indigo-500 bg-white [color-scheme:light]"
-                  >
-                    <option value="CHASSIS_SPECIFIC">Chassis Specific (e.g. Selected Chassis)</option>
-                    <option value="FAMILY_GEN">Family & Gen (e.g. ProLiant Gen12)</option>
-                    <option value="UNIVERSAL_VENDOR">Universal Vendor (All HPE)</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-[10px] font-bold text-slate-700 uppercase mb-1">Affected SKU</label>
-                  <input
-                    required
-                    type="text"
-                    value={affectedSku}
-                    onChange={e => setAffectedSku(e.target.value)}
-                    className="w-full text-sm border-slate-300 rounded-lg shadow-2xs focus:border-indigo-500 focus:ring-indigo-500 bg-white font-mono"
-                    placeholder="P47777-B21"
-                  />
-                </div>
-                <div>
-                  <label className="block text-[10px] font-bold text-slate-700 uppercase mb-1">Required Dependency SKU</label>
-                  <input 
-                    type="text"
-                    value={requiredDependencySku}
-                    onChange={e => setRequiredDependencySku(e.target.value)}
-                    className="w-full text-sm border-slate-300 rounded-lg shadow-2xs focus:border-indigo-500 focus:ring-indigo-500 bg-white font-mono"
-                    placeholder="P76453-B21"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                <div>
-                  <label className="block text-[10px] font-bold text-slate-700 uppercase mb-1">Reviewer</label>
-                  <input required value={reviewer} onChange={e => setReviewer(e.target.value)} className="w-full text-sm border-slate-300 rounded-lg shadow-2xs bg-white" placeholder="Engineer name or ID" />
-                </div>
-                <div>
-                  <label className="block text-[10px] font-bold text-slate-700 uppercase mb-1">Evidence Type</label>
-                  <select value={evidenceType} onChange={e => setEvidenceType(e.target.value)} className="w-full text-sm border-slate-300 rounded-lg shadow-2xs bg-white [color-scheme:light]">
-                    <option value="OFFICIAL_QUICKSPECS">Official QuickSpecs</option>
-                    <option value="OFFICIAL_VENDOR_PORTAL">Official Vendor Portal</option>
-                    <option value="CERTIFIED_CATALOG">Certified Catalog</option>
-                    <option value="NOTEBOOKLM_CITATION">NotebookLM Citation</option>
-                    <option value="TESTED_BUILD">Tested OCA/CLIC Build</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-[10px] font-bold text-slate-700 uppercase mb-1">Evidence ID / URL / Rule ID</label>
-                  <input required value={evidenceId} onChange={e => setEvidenceId(e.target.value)} className="w-full text-sm border-slate-300 rounded-lg shadow-2xs bg-white" placeholder="Source ID, URL, portal rule, or test trace" />
-                </div>
-              </div>
-
-              <label className="flex items-start gap-2 text-xs text-slate-700">
-                <input type="checkbox" required checked={confirmedVerified} onChange={e => setConfirmedVerified(e.target.checked)} className="mt-0.5" />
-                <span>I independently verified this rule for the exact product generation and confirm the evidence is authoritative. I understand conflicting rules will remain quarantined until supersession is documented.</span>
-              </label>
-
-              <div className="pt-2 flex flex-wrap items-center justify-between gap-3">
-                <button 
-                  type="submit" 
-                  disabled={isSubmitting || !ruleUpdate || !humanReasoning || !affectedSku || !reviewer || !evidenceId || !confirmedVerified}
-                  className="btn-primary text-xs text-white font-bold bg-indigo-600 hover:bg-indigo-700"
-                >
-                  {isSubmitting ? 'Validating...' : 'Submit Verified Human Decision'}
-                </button>
-                
-                {submitStatus && (
-                  <div className="flex items-center gap-3">
-                    <span className={`text-xs font-bold flex items-center gap-1 ${submitStatus.type === 'success' ? 'text-emerald-800' : submitStatus.type === 'warning' ? 'text-amber-900' : 'text-rose-800'}`}>
-                      {submitStatus.type === 'success' ? <CheckCircle className="w-3.5 h-3.5 text-emerald-700 stroke-[2.25px]" /> : null}
-                      {submitStatus.msg}
-                    </span>
-                    {submitStatus.type === 'success' && onReEvaluate && (
-                      <button
-                        type="button"
-                        onClick={() => onReEvaluate()}
-                        className="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold flex items-center gap-1 shadow-xs transition-transform active:scale-95"
-                      >
-                        <Sparkles className="w-3.5 h-3.5" /> Re-Evaluate BOQ with Learned Rule
-                      </button>
-                    )}
-                  </div>
-                )}
-              </div>
-            </form>
-          </div>
-          
+          <AmbiguityDecisionForm
+            formValues={{
+              ruleUpdate,
+              humanReasoning,
+              scopeTaxonomy,
+              affectedSku,
+              requiredDependencySku,
+              reviewer,
+              evidenceType,
+              evidenceId,
+              confirmedVerified
+            }}
+            formSetters={{
+              setRuleUpdate,
+              setHumanReasoning,
+              setScopeTaxonomy,
+              setAffectedSku,
+              setRequiredDependencySku,
+              setReviewer,
+              setEvidenceType,
+              setEvidenceId,
+              setConfirmedVerified
+            }}
+            isSubmitting={isSubmitting}
+            submitStatus={submitStatus}
+            onSubmit={handleResolve}
+            onReEvaluate={onReEvaluate}
+          />
         </div>
       )}
     </div>

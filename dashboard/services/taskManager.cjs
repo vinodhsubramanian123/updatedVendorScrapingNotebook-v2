@@ -83,6 +83,51 @@ function isTaskRunning() {
 /** Return a copy of the current active task metadata (or null). */
 function getActiveTask() { return activeTask ? { ...activeTask } : null; }
 
+function _streamProcessChunk(data, streamType, logs) {
+  const lines = data.toString().split('\n');
+  lines.forEach(line => {
+    if (!line.trim()) return;
+    const logEntry = { timestamp: new Date().toISOString(), stream: streamType, text: line };
+    logs.push(logEntry);
+
+    try {
+      const parsed = JSON.parse(line);
+      if (parsed.type === 'progress' || parsed.type === 'log') {
+        broadcastSSE({ ...parsed, type: parsed.type.toUpperCase(), stream: streamType });
+        return;
+      }
+    } catch (_) {}
+
+    broadcastSSE({ type: 'LOG', text: line, stream: streamType });
+  });
+}
+
+function _persistTaskTrace(outputsDir, runId, type, startTime, durationMs, exitCode, logs) {
+  if (!outputsDir) return;
+  const traceDir = path.join(outputsDir, 'history', 'runs');
+  if (!fs.existsSync(traceDir)) fs.mkdirSync(traceDir, { recursive: true });
+  try {
+    const { safeWriteJsonAtomic } = require('../../scripts/lib/system/fs_compat.js');
+    safeWriteJsonAtomic(path.join(traceDir, `${runId}.json`), {
+      runId,
+      taskType: type,
+      startTime: new Date(startTime).toISOString(),
+      durationMs,
+      exitCode,
+      logs
+    });
+  } catch (e) {
+    console.error(`[taskManager] Failed to persist trace ${runId}:`, e.message);
+  }
+}
+
+function _releaseTaskMutexIfOwned(runId, proc) {
+  if (activeTask && (activeTask.runId === runId || activeTask.process === proc)) {
+    activeTask.closed = true;
+    activeTask = null;
+  }
+}
+
 /**
  * Wire up a spawned child process as the active task, attach log streaming,
  * and respond immediately to the HTTP client.
@@ -101,99 +146,32 @@ function startTask(type, proc, res, outputsDir) {
   activeTask = { type, runId, pid: proc?.pid, process: proc, startTime };
   broadcastSSE({ type: 'TASK_STARTED', task: type, runId });
 
-  const handleData = (data, streamType) => {
-    const lines = data.toString().split('\n');
-    lines.forEach(line => {
-      if (!line.trim()) return;
-      const logEntry = { timestamp: new Date().toISOString(), stream: streamType, text: line };
-      logs.push(logEntry);
-
-      try {
-        const parsed = JSON.parse(line);
-        if (parsed.type === 'progress' || parsed.type === 'log') {
-          broadcastSSE({ ...parsed, type: parsed.type.toUpperCase(), stream: streamType });
-          return;
-        }
-      } catch (_) {}
-
-      broadcastSSE({ type: 'LOG', text: line, stream: streamType });
-    });
-  };
-
   if (proc?.stdout && typeof proc.stdout.on === 'function') {
-    proc.stdout.on('data', data => handleData(data, 'stdout'));
+    proc.stdout.on('data', data => _streamProcessChunk(data, 'stdout', logs));
   }
   if (proc?.stderr && typeof proc.stderr.on === 'function') {
-    proc.stderr.on('data', data => handleData(data, 'stderr'));
+    proc.stderr.on('data', data => _streamProcessChunk(data, 'stderr', logs));
   }
 
   if (proc && typeof proc.on === 'function') {
     proc.on('error', (err) => {
       broadcastSSE({ type: 'LOG', text: `Task execution error: ${err.message}`, stream: 'stderr' });
       const hasLivePid = Boolean(proc && typeof proc.pid === 'number' && proc.pid > 0);
-      if (!hasLivePid) {
-        // Spawn failure without pid terminates once
-        if (completed) return;
+      if (!hasLivePid && !completed) {
         completed = true;
-        if (activeTask && (activeTask.runId === runId || activeTask.process === proc)) {
-          activeTask.closed = true;
-          activeTask = null;
-        }
+        _releaseTaskMutexIfOwned(runId, proc);
         broadcastSSE({ type: 'TASK_COMPLETED', code: 1, task: type, runId, durationMs: 0 });
-
-        // Persist trace log
-        if (outputsDir) {
-          const traceDir = path.join(outputsDir, 'history', 'runs');
-          if (!fs.existsSync(traceDir)) fs.mkdirSync(traceDir, { recursive: true });
-          try {
-            const { safeWriteJsonAtomic } = require('../../scripts/lib/system/fs_compat.js');
-            safeWriteJsonAtomic(path.join(traceDir, `${runId}.json`), {
-              runId,
-              taskType: type,
-              startTime: new Date(startTime).toISOString(),
-              durationMs: 0,
-              exitCode: 1,
-              logs
-            });
-          } catch (e) {
-            console.error(`[taskManager] Failed to persist trace ${runId}:`, e.message);
-          }
-        }
+        _persistTaskTrace(outputsDir, runId, type, startTime, 0, 1, logs);
       }
-      // Runtime error on live pid does NOT release ownership until close
     });
 
     proc.on('close', (code) => {
       if (completed) return;
       completed = true;
-
-      const isCurrentTask = Boolean(activeTask && (activeTask.runId === runId || activeTask.process === proc));
-      if (isCurrentTask) {
-        activeTask.closed = true;
-        activeTask = null;
-      }
-
+      _releaseTaskMutexIfOwned(runId, proc);
       const durationMs = Date.now() - startTime;
       broadcastSSE({ type: 'TASK_COMPLETED', code, task: type, runId, durationMs });
-
-      // Persist trace log atomically
-      if (outputsDir) {
-        const traceDir = path.join(outputsDir, 'history', 'runs');
-        if (!fs.existsSync(traceDir)) fs.mkdirSync(traceDir, { recursive: true });
-        try {
-          const { safeWriteJsonAtomic } = require('../../scripts/lib/system/fs_compat.js');
-          safeWriteJsonAtomic(path.join(traceDir, `${runId}.json`), {
-            runId,
-            taskType: type,
-            startTime: new Date(startTime).toISOString(),
-            durationMs,
-            exitCode: code,
-            logs
-          });
-        } catch (e) {
-          console.error(`[taskManager] Failed to persist trace ${runId}:`, e.message);
-        }
-      }
+      _persistTaskTrace(outputsDir, runId, type, startTime, durationMs, code, logs);
     });
   }
 

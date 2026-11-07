@@ -83,6 +83,32 @@ function resolveModule(root, source, specifier) {
   return { target: relative(root, base), resolution: 'UNRESOLVED_LOCAL' };
 }
 
+function collectAstNode(node, ancestors, context) {
+  const { text, addImport, exports, calls, switches } = context;
+  if (node.type === 'ImportDeclaration') addImport(node.source.value, node, 'esm', node.specifiers.map(s => ({ imported: s.type === 'ImportNamespaceSpecifier' ? '*' : s.type === 'ImportDefaultSpecifier' ? 'default' : property(s.imported), local: s.local.name })));
+  if (node.type === 'ExportNamedDeclaration') {
+    exports.push(...declaredNames(node.declaration), ...node.specifiers.map(s => property(s.exported)));
+    if (node.source) addImport(node.source.value, node, 'reexport');
+  }
+  if (node.type === 'ExportDefaultDeclaration') exports.push('default');
+  if (node.type === 'ExportAllDeclaration') { exports.push('*REEXPORT'); addImport(node.source.value, node, 'reexport-all'); }
+  if (node.type === 'AssignmentExpression') {
+    const name = memberName(node.left);
+    if (name === 'module.exports') {
+      if (node.right.type === 'ObjectExpression') for (const p of node.right.properties) exports.push(p.type === 'SpreadElement' ? '*DYNAMIC_SPREAD' : property(p.key));
+      else exports.push('*ASSIGNED_VALUE');
+    } else if (name?.startsWith('module.exports.') || name?.startsWith('exports.')) exports.push(name.split('.').at(-1));
+  }
+  if (node.type === 'CallExpression' || node.type === 'OptionalCallExpression') {
+    const callee = memberName(node.callee);
+    calls.push({ callee: callee || '<computed>', line: node.loc?.start.line });
+    if (callee === 'require') addImport(literal(node.arguments[0]), node, 'require', requireBindings(node, ancestors));
+    if (node.callee.type === 'Import') addImport(literal(node.arguments[0]), node, 'dynamic-import');
+  }
+  if (node.type === 'ImportExpression') addImport(literal(node.source), node, 'dynamic-import');
+  if (node.type === 'SwitchStatement') switches.push({ expression: text.slice(node.discriminant.start, node.discriminant.end), line: node.loc.start.line, cases: node.cases.map(c => ({ value: c.test ? literal(c.test) ?? text.slice(c.test.start, c.test.end) : '<default>', line: c.loc.start.line })) });
+}
+
 function analyzeSource(root, file, parser = parserInfo()) {
   const text = fs.readFileSync(path.join(root, file), 'utf8');
   const parsed = parseSource(text, file, parser);
@@ -92,30 +118,8 @@ function analyzeSource(root, file, parser = parserInfo()) {
     if (specifier === null) { dynamicEdges.push({ kind, line: node.loc?.start.line, expression: text.slice(node.start, node.end).slice(0, 200) }); return; }
     imports.push({ specifier, kind, line: node.loc?.start.line, bindings, ...resolveModule(root, file, specifier) });
   };
-  visit(parsed.ast, (node, ancestors) => {
-    if (node.type === 'ImportDeclaration') addImport(node.source.value, node, 'esm', node.specifiers.map(s => ({ imported: s.type === 'ImportNamespaceSpecifier' ? '*' : s.type === 'ImportDefaultSpecifier' ? 'default' : property(s.imported), local: s.local.name })));
-    if (node.type === 'ExportNamedDeclaration') {
-      exports.push(...declaredNames(node.declaration), ...node.specifiers.map(s => property(s.exported)));
-      if (node.source) addImport(node.source.value, node, 'reexport');
-    }
-    if (node.type === 'ExportDefaultDeclaration') exports.push('default');
-    if (node.type === 'ExportAllDeclaration') { exports.push('*REEXPORT'); addImport(node.source.value, node, 'reexport-all'); }
-    if (node.type === 'AssignmentExpression') {
-      const name = memberName(node.left);
-      if (name === 'module.exports') {
-        if (node.right.type === 'ObjectExpression') for (const p of node.right.properties) exports.push(p.type === 'SpreadElement' ? '*DYNAMIC_SPREAD' : property(p.key));
-        else exports.push('*ASSIGNED_VALUE');
-      } else if (name?.startsWith('module.exports.') || name?.startsWith('exports.')) exports.push(name.split('.').at(-1));
-    }
-    if (node.type === 'CallExpression' || node.type === 'OptionalCallExpression') {
-      const callee = memberName(node.callee);
-      calls.push({ callee: callee || '<computed>', line: node.loc?.start.line });
-      if (callee === 'require') addImport(literal(node.arguments[0]), node, 'require', requireBindings(node, ancestors));
-      if (node.callee.type === 'Import') addImport(literal(node.arguments[0]), node, 'dynamic-import');
-    }
-    if (node.type === 'ImportExpression') addImport(literal(node.source), node, 'dynamic-import');
-    if (node.type === 'SwitchStatement') switches.push({ expression: text.slice(node.discriminant.start, node.discriminant.end), line: node.loc.start.line, cases: node.cases.map(c => ({ value: c.test ? literal(c.test) ?? text.slice(c.test.start, c.test.end) : '<default>', line: c.loc.start.line })) });
-  });
+  const context = { text, addImport, exports, calls, switches };
+  visit(parsed.ast, (node, ancestors) => collectAstNode(node, ancestors, context));
   return { path: file, parseStatus: 'PARSED', deprecatedDeclaration: /@deprecated\b/.test(text.slice(0, 1200)), imports, exports: [...new Set(exports.filter(Boolean))].sort(), calls, dynamicEdges, switches };
 }
 

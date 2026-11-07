@@ -6,6 +6,98 @@ import MatrixToolbar from './matrix/MatrixToolbar';
 import RejectionModal from './matrix/RejectionModal';
 import MatrixStatusBanners from './matrix/MatrixStatusBanners';
 
+const STANDARD_CATEGORIES = [
+  { id: 'chassis', label: 'Chassis Base & Form Factor', match: ['chassis', 'base', 'enclosure', 'cto'] },
+  { id: 'cpu', label: 'Compute Processors & Thermal TDP', match: ['processor', 'cpu', 'intel', 'xeon'] },
+  { id: 'cooling', label: 'Thermal Fans & Heatsinks', match: ['fan', 'cooling', 'heatsink', 'thermal'] },
+  { id: 'memory', label: 'Memory (DDR5 1DPC / 2DPC)', match: ['memory', 'ram', 'dimm', 'ddr5'] },
+  { id: 'storage_ctrl', label: 'Storage Controllers & Battery', match: ['storage controller', 'controller', 'raid', 'cache', 'battery'] },
+  { id: 'storage_drives', label: 'Drive Media & Backplanes', match: ['drive', 'ssd', 'hdd', 'nvme', 'cage'] },
+  { id: 'power', label: 'Power Infrastructure & Redundancy', match: ['power', 'psu', 'titanium', 'platinum', 'dc', 'lug'] },
+  { id: 'networking', label: 'Networking & PCIe Risers', match: ['network', 'nic', 'ocp', 'adapter', 'riser', 'pcie'] },
+  { id: 'support', label: 'Pointnext Tech Care Warranty', match: ['service', 'support', 'warranty', 'care'] }
+];
+
+function extractRankedSolutionsFromEval(evalResults) {
+  const candidates = [
+    evalResults?.conflictGraph?.rankedSolutions,
+    evalResults?.rankedSolutions,
+    evalResults?.conflictGraph?.recommendedSolutions,
+    evalResults?.recommendedSolutions
+  ];
+  for (const list of candidates) {
+    if (Array.isArray(list) && list.length > 0) return list;
+  }
+  return [];
+}
+
+function buildDetailedSwaps(sol, resolvedFixes) {
+  if (resolvedFixes.length > 0) {
+    return resolvedFixes.map(f => `${f.sku}: ${f.reasoning || f.action}`);
+  }
+  return [
+    `Modifications: ${sol.tradeoffMetrics?.skuModifications || '0 fixes'}`,
+    `Cost Delta: ${sol.tradeoffMetrics?.costDeltaUsd || '$0'}`,
+    `Expansion: ${sol.tradeoffMetrics?.capacityExpansion || 'Standard'}`
+  ];
+}
+
+function formatSolutionCapex(sol) {
+  const formattedTotal = `$${Number(sol.estimatedCostUsd || 0).toLocaleString()}`;
+  if (sol.pricingComplete === false) {
+    const missingCount = sol.priceUnavailableSkus?.length || 0;
+    const suffix = missingCount === 1 ? '' : 's';
+    return `Partial: ${formattedTotal} (Missing: ${missingCount} SKU${suffix})`;
+  }
+  return formattedTotal;
+}
+
+function mapSolutionToTier(sol, evalResults) {
+  const resolvedFixes = evalResults?.conflictGraph?.resolvedFixes || evalResults?.resolvedFixes || [];
+  const scoreVal = sol.score || 0.9;
+  const badgeClass = sol.rank === 1 ? 'badge-emerald' : sol.rank <= 3 ? 'badge-blue' : 'badge-amber';
+  const ragSecondOpinion = sol.rank === 1 && evalResults?.ragAnswer ? evalResults.ragAnswer : sol.ragSecondOpinion;
+
+  return {
+    rank: sol.rank,
+    title: sol.name,
+    subtitle: sol.workloadDnaMatch || `Rank ${sol.rank} Solution`,
+    score: scoreVal,
+    intentMatch: sol.tradeoffMetrics?.intentAlignment || `${Math.round(scoreVal * 100)}%`,
+    capex: formatSolutionCapex(sol),
+    budgetBreakdown: sol.budgetBreakdown || null,
+    badgeClass,
+    rationale: sol.reasoning,
+    ragSecondOpinion,
+    isOptimal: sol.rank === 1,
+    swaps: buildDetailedSwaps(sol, resolvedFixes),
+    skuPartsList: sol.skuPartsList || [],
+    cascadingImpact: sol.cascadingImpact || null,
+    leastDeltaAnalysis: sol.leastDeltaAnalysis || null,
+    decisionTrace: sol.decisionTrace || [],
+    portalConditionalSkus: sol.portalConditionalSkus || [],
+    isLeastDeltaPath: Boolean(sol.leastDeltaAnalysis?.isLeastDeltaPath || sol.isLeastDeltaPath)
+  };
+}
+
+function formatBomCopyLines(tier) {
+  const partLines = tier.skuPartsList.map(p => {
+    const priceStr = p.priceKnown === false
+      ? 'PRICE N/A'
+      : `$${((p.unitPriceUsd || 0) * (p.quantity || 1)).toLocaleString()}`;
+    return `${p.quantity}x\t${p.sku}\t${priceStr}\t[${p.category || 'Option'}]\t${p.description}`;
+  });
+  return [
+    `HPE PROLIANT BOM — ${tier.title}`,
+    `Strategy: ${tier.subtitle} | CapEx: ${tier.capex}`,
+    `Workload Alignment: ${tier.intentMatch}`,
+    `--------------------------------------------------`,
+    ...partLines,
+    `--------------------------------------------------`,
+    `Total Estimated CapEx Budget: ${tier.capex}`
+  ];
+}
+
 export default function ResolutionMatrix({
   evalResults,
   onOpenPortalFeedback,
@@ -27,25 +119,17 @@ export default function ResolutionMatrix({
   const [expandedParts, setExpandedParts] = useState({});
   const [copyStatus, setCopyStatus] = useState({});
 
-  const STANDARD_CATEGORIES = [
-    { id: 'chassis', label: 'Chassis Base & Form Factor', match: ['chassis', 'base', 'enclosure', 'cto'] },
-    { id: 'cpu', label: 'Compute Processors & Thermal TDP', match: ['processor', 'cpu', 'intel', 'xeon'] },
-    { id: 'cooling', label: 'Thermal Fans & Heatsinks', match: ['fan', 'cooling', 'heatsink', 'thermal'] },
-    { id: 'memory', label: 'Memory (DDR5 1DPC / 2DPC)', match: ['memory', 'ram', 'dimm', 'ddr5'] },
-    { id: 'storage_ctrl', label: 'Storage Controllers & Battery', match: ['storage controller', 'controller', 'raid', 'cache', 'battery'] },
-    { id: 'storage_drives', label: 'Drive Media & Backplanes', match: ['drive', 'ssd', 'hdd', 'nvme', 'cage'] },
-    { id: 'power', label: 'Power Infrastructure & Redundancy', match: ['power', 'psu', 'titanium', 'platinum', 'dc', 'lug'] },
-    { id: 'networking', label: 'Networking & PCIe Risers', match: ['network', 'nic', 'ocp', 'adapter', 'riser', 'pcie'] },
-    { id: 'support', label: 'Pointnext Tech Care Warranty', match: ['service', 'support', 'warranty', 'care'] }
-  ];
+  const clearRejectionModal = () => {
+    setRejectionModal(null);
+    setRejectionText('');
+    setRejectionConfirmed(null);
+    setRejectionError(null);
+  };
 
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape' && rejectionModal) {
-        setRejectionModal(null);
-        setRejectionText('');
-        setRejectionConfirmed(null);
-        setRejectionError(null);
+        clearRejectionModal();
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -54,73 +138,21 @@ export default function ResolutionMatrix({
 
   const handleCopyBomText = (tier) => {
     if (!tier.skuPartsList || tier.skuPartsList.length === 0) return;
-    const lines = [
-      `HPE PROLIANT BOM — ${tier.title}`,
-      `Strategy: ${tier.subtitle} | CapEx: ${tier.capex}`,
-      `Workload Alignment: ${tier.intentMatch}`,
-      `--------------------------------------------------`,
-      ...tier.skuPartsList.map(p => `${p.quantity}x\t${p.sku}\t${p.priceKnown === false ? 'PRICE N/A' : `$${((p.unitPriceUsd || 0) * (p.quantity || 1)).toLocaleString()}`}\t[${p.category || 'Option'}]\t${p.description}`),
-      `--------------------------------------------------`,
-      `Total Estimated CapEx Budget: ${tier.capex}`
-    ];
-    navigator.clipboard.writeText(lines.join('\n'));
+    navigator.clipboard.writeText(formatBomCopyLines(tier).join('\n'));
     setCopyStatus(prev => ({ ...prev, [tier.rank]: true }));
     setTimeout(() => {
       setCopyStatus(prev => ({ ...prev, [tier.rank]: false }));
     }, 2500);
   };
 
-  const rankedFromEval = (Array.isArray(evalResults?.conflictGraph?.rankedSolutions) && evalResults.conflictGraph.rankedSolutions.length > 0)
-    ? evalResults.conflictGraph.rankedSolutions
-    : (Array.isArray(evalResults?.rankedSolutions) && evalResults.rankedSolutions.length > 0)
-    ? evalResults.rankedSolutions
-    : (Array.isArray(evalResults?.conflictGraph?.recommendedSolutions) && evalResults.conflictGraph.recommendedSolutions.length > 0)
-    ? evalResults.conflictGraph.recommendedSolutions
-    : (Array.isArray(evalResults?.recommendedSolutions) && evalResults.recommendedSolutions.length > 0)
-    ? evalResults.recommendedSolutions
-    : [];
-
-  const tiers = (rankedFromEval && rankedFromEval.length > 0)
-    ? rankedFromEval.map(sol => {
-        const resolvedFixes = evalResults?.conflictGraph?.resolvedFixes || evalResults?.resolvedFixes || [];
-        const detailedSwaps = resolvedFixes.length > 0
-          ? resolvedFixes.map(f => `${f.sku}: ${f.reasoning || f.action}`)
-          : [
-              `Modifications: ${sol.tradeoffMetrics?.skuModifications || '0 fixes'}`,
-              `Cost Delta: ${sol.tradeoffMetrics?.costDeltaUsd || '$0'}`,
-              `Expansion: ${sol.tradeoffMetrics?.capacityExpansion || 'Standard'}`
-            ];
-
-        return {
-          rank: sol.rank,
-          title: sol.name,
-          subtitle: sol.workloadDnaMatch || `Rank ${sol.rank} Solution`,
-          score: sol.score || 0.9,
-          intentMatch: sol.tradeoffMetrics?.intentAlignment || `${Math.round((sol.score || 0.9) * 100)}%`,
-          capex: sol.pricingComplete === false
-            ? `Partial: $${Number(sol.estimatedCostUsd || 0).toLocaleString()} (Missing: ${sol.priceUnavailableSkus?.length || 0} SKU${sol.priceUnavailableSkus?.length === 1 ? '' : 's'})`
-            : `$${Number(sol.estimatedCostUsd || 0).toLocaleString()}`,
-          budgetBreakdown: sol.budgetBreakdown || null,
-          badgeClass: sol.rank === 1 ? 'badge-emerald' : sol.rank <= 3 ? 'badge-blue' : 'badge-amber',
-          rationale: sol.reasoning,
-          ragSecondOpinion: sol.rank === 1 && evalResults?.ragAnswer ? evalResults.ragAnswer : sol.ragSecondOpinion,
-          isOptimal: sol.rank === 1,
-          swaps: detailedSwaps,
-          skuPartsList: sol.skuPartsList || [],
-          cascadingImpact: sol.cascadingImpact || null,
-          leastDeltaAnalysis: sol.leastDeltaAnalysis || null,
-          decisionTrace: sol.decisionTrace || [],
-          portalConditionalSkus: sol.portalConditionalSkus || [],
-          isLeastDeltaPath: Boolean(sol.leastDeltaAnalysis?.isLeastDeltaPath || sol.isLeastDeltaPath)
-        };
-      })
-    : [];
+  const rankedFromEval = extractRankedSolutionsFromEval(evalResults);
+  const tiers = rankedFromEval.map(sol => mapSolutionToTier(sol, evalResults));
+  const resolvedChassisId = evalResults?.conflictGraph?.chassisInfo?.id || selectedChassis || 'DL380_Gen12';
 
   const handleExportXlsx = async (tier) => {
     setExportingRank(tier.rank);
     setExportError(null);
     try {
-      const chassisId = evalResults?.conflictGraph?.chassisInfo?.id || selectedChassis || 'DL380_Gen12';
       const parts = tier.skuPartsList && tier.skuPartsList.length > 0
         ? tier.skuPartsList
         : (evalResults?.items || []);
@@ -129,7 +161,7 @@ export default function ResolutionMatrix({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          chassisId,
+          chassisId: resolvedChassisId,
           rankTier: tier.rank,
           strategyName: tier.title,
           items: parts,
@@ -159,12 +191,11 @@ export default function ResolutionMatrix({
     setRejectionError(null);
 
     try {
-      const chassisId = evalResults?.conflictGraph?.chassisInfo?.id || selectedChassis || 'DL380_Gen12';
       const res = await fetch('/api/simulate-error', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          chassis: chassisId,
+          chassis: resolvedChassisId,
           errorMessage: `[Rank ${rejectionModal.rank} - ${rejectionModal.title}] ${rejectionText}`
         })
       });
@@ -236,12 +267,7 @@ export default function ResolutionMatrix({
 
       <RejectionModal
         modalData={rejectionModal}
-        onClose={() => {
-          setRejectionModal(null);
-          setRejectionText('');
-          setRejectionConfirmed(null);
-          setRejectionError(null);
-        }}
+        onClose={clearRejectionModal}
         rejectionText={rejectionText}
         setRejectionText={setRejectionText}
         onSubmit={handleRejectionSubmit}
@@ -253,7 +279,7 @@ export default function ResolutionMatrix({
       {vendorVerificationModal && (
         <VendorBomVerificationModal
           rankSolution={vendorVerificationModal}
-          selectedChassis={evalResults?.conflictGraph?.chassisInfo?.id || selectedChassis || 'DL380_Gen12'}
+          selectedChassis={resolvedChassisId}
           onClose={() => setVendorVerificationModal(null)}
           onApplyReconciliation={(_result) => {
             setVendorVerificationModal(null);

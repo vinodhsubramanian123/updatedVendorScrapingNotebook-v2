@@ -11,6 +11,32 @@ const xlsx = require('xlsx-js-style');
 const { getOCATarget, getAnyPageTarget, connectWS, sendCommand } = require('../lib/scraper/cdp.js');
 const { processPortalFeedback } = require('../lib/feedback/feedback_loop.js');
 
+function classifyClicRowSeverity(severity, adviceText) {
+  const lowerAdvice = adviceText.toLowerCase();
+  const isWarning = severity.includes('warning') || severity.includes('advisory') ||
+    (!severity && (/^warning\b/i.test(adviceText) || lowerAdvice.includes('recommend')));
+  const unbuildableMarkers = ['unbuildable', 'is not buildable', 'must include', 'requires', 'cannot be selected', 'not allowed'];
+  const isUnbuildable = severity.includes('unbuildable') || severity.includes('error') ||
+    unbuildableMarkers.some(m => lowerAdvice.includes(m));
+  return { isWarning, isUnbuildable };
+}
+
+function extractResolutionPaths(adviceText) {
+  const resolutionPaths = [];
+  if (/\b(?:or|alternatively|instead)\b/i.test(adviceText)) {
+    const parts = adviceText.split(/\b(?:or|alternatively|instead)\b/i);
+    parts.forEach((p, idx) => {
+      if (p.trim().length > 3) {
+        resolutionPaths.push({
+          pathId: `Path_${String.fromCharCode(65 + idx)}`,
+          suggestion: p.trim()
+        });
+      }
+    });
+  }
+  return resolutionPaths;
+}
+
 /**
  * Parse an exported CLIC Advice Excel file (e.g. CLIC_Advice_TempUCID.xlsx)
  * @param {string} excelPath Path to CLIC advice workbook
@@ -47,12 +73,7 @@ function parseClicAdviceExcel(excelPath, targetCatalogDir = 'outputs/ProLiant/Ge
     if (seenRules.has(dedupKey)) continue;
     seenRules.add(dedupKey);
 
-    const isWarning = severity.includes('warning') || severity.includes('advisory') ||
-      (!severity && /^warning\b/i.test(adviceText)) || (!severity && adviceText.toLowerCase().includes('recommend'));
-    const isUnbuildable = severity.includes('unbuildable') || severity.includes('error') ||
-      adviceText.toLowerCase().includes('unbuildable') || adviceText.toLowerCase().includes('is not buildable') ||
-      adviceText.toLowerCase().includes('must include') || adviceText.toLowerCase().includes('requires') ||
-      adviceText.toLowerCase().includes('cannot be selected') || adviceText.toLowerCase().includes('not allowed');
+    const { isWarning, isUnbuildable } = classifyClicRowSeverity(severity, adviceText);
 
     if (isWarning && !isUnbuildable) {
       advisories.push({
@@ -67,18 +88,7 @@ function parseClicAdviceExcel(excelPath, targetCatalogDir = 'outputs/ProLiant/Ge
     }
 
     // Unbuildable Error: detect multi-path resolution choices
-    const resolutionPaths = [];
-    if (/\b(?:or|alternatively|instead)\b/i.test(adviceText)) {
-      const parts = adviceText.split(/\b(?:or|alternatively|instead)\b/i);
-      parts.forEach((p, idx) => {
-        if (p.trim().length > 3) {
-          resolutionPaths.push({
-            pathId: `Path_${String.fromCharCode(65 + idx)}`,
-            suggestion: p.trim()
-          });
-        }
-      });
-    }
+    const resolutionPaths = extractResolutionPaths(adviceText);
 
     const feedbackPayload = `[CLIC RULE ${ruleNum || 'PORTAL'}] Product ${productNum}: ${adviceText}`;
     try {
