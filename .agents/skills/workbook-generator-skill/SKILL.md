@@ -1,11 +1,31 @@
 ---
 name: workbook-generator-skill
-description: Use this skill to generate professional Excel workbooks (.xlsx) for customer presentation, vendor quote reconciliation, or Partner Portal / CLIC upload. Produces standardized 7-column vendor portal sheets with cluster subtotals and 2-line gaps, as well as multi-sheet executive evaluation reports with cell formatting and formula totals.
+description: >-
+  Use this skill to generate professional Excel workbooks (.xlsx) for customer presentation, vendor
+  quote reconciliation, or Partner Portal / CLIC upload. Produces standardized 7-column vendor portal
+  sheets with cluster subtotals and 2-line gaps, as well as multi-sheet executive evaluation reports
+  with cell formatting and formula totals. **DO call for**: producing the analytical workbook or the
+  7-column Partner Portal upload sheet from an evaluated result. **DO NOT call for**: evaluating the
+  configuration (boq-eval-skill).
 ---
 
 # Professional Excel Workbook & Portal Upload Generator Skill (`workbook-generator-skill`)
 
+Read [Normative Language Standard](../../rules/normative_language.md). Enforces OCA export modifier and tracking row deduplication (`INV-209`).
+
 **Purpose**: Once a server configuration or tender is evaluated, the presales team requires physical spreadsheet deliverables: (1) an exportable **Partner Portal / CLIC Upload Workbook** that can be directly imported into HPE OCA / CLIC with zero syntax errors, and (2) a **Professional Executive Evaluation Workbook** with visual styling, currency formatting, aspect math audits, and RAG citations. This skill encapsulates all Excel generation logic using pure in-memory JavaScript (`xlsx-js-style`), guaranteeing 100% cross-platform compatibility without external binary dependencies (`INV-16`, `INV-32`, `INV-37`).
+
+---
+
+## ⛔ HALT Conditions
+
+```
+HALT-WBG1: If candidate solution contains 0 items or unbuildable rank:
+  emit [ERR_INVALID_WORKBOOK_SOURCE] and HALT generation immediately.
+
+HALT-WBG2: If export contains duplicate 0D1/B19 companion modifier rows:
+  emit [ERR_DUPLICATE_OCA_MODIFIER_ROWS] and deduplicate before serializing (INV-209).
+```
 
 ---
 

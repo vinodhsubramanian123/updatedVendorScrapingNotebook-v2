@@ -76,6 +76,10 @@ When a task arrives, dynamically load and read the corresponding `SKILL.md` from
 | **Live CLIC Portal Validation & Receipt Binding** | [`clic-portal-validation-skill`](file:///.agents/skills/clic-portal-validation-skill/SKILL.md) | `scripts/lib/boq/bom_verifier.js` |
 | **Scraping-Time Conditional SKU Discovery** | [`conditional-sku-discovery-skill`](file:///.agents/skills/conditional-sku-discovery-skill/SKILL.md) | `scripts/scrapers/scrape_oca_solution.js` |
 | **Popperian Falsification & Epistemic Audit** | [`epistemic-verification-skill`](file:///.agents/skills/epistemic-verification-skill/SKILL.md) | `scripts/lib/system/evidence_ledger.js` |
+| **Code Quality Gate & CC <= 30 Ceiling** | [`code-quality-gate-skill`](file:///.agents/skills/code-quality-gate-skill/SKILL.md) | `scripts/maintenance/analyze_complexity.js` |
+| **Self-Correction & Counterfactual Backtracking** | [`self-correction-counterfactual-skill`](file:///.agents/skills/self-correction-counterfactual-skill/SKILL.md) | `scripts/lib/system/evidence_ledger.js` |
+| **Dual-Track 90-Day Clearance vs Production** | [`presales-clearance-strategy-skill`](file:///.agents/skills/presales-clearance-strategy-skill/SKILL.md) | `scripts/lib/catalog/sku_versioning.js` |
+| **Turnkey Racking, Factory RAID & Cabling** | [`turnkey-racking-cabling-skill`](file:///.agents/skills/turnkey-racking-cabling-skill/SKILL.md) | `scripts/lib/boq/bom_verifier.js` |
 | **Anti-Slop Modern UI / Dashboard Styling** | [`design-taste-frontend`](file:///.agents/skills/design-taste-frontend/SKILL.md) | `dashboard/src/` |
 
 ### Asynchronous CI/CD & Macro Lifecycle Protocols (INV-72 Excluded from Customer BOQ Flow)
@@ -88,7 +92,7 @@ When a task arrives, dynamically load and read the corresponding `SKILL.md` from
 ---
 
 ## 4. Multi-Agent & Multi-Brain Division of Labor
-- **Antigravity / Gemini 3.8 / 3.6 Flash**: Lead Execution Architect and Pair Programmer. Drives evaluations, manages atomic operations, maintains $CC \le 135$ and 0-warning linter discipline.
+- **Antigravity / Gemini 3.8 / 3.6 Flash**: Lead Execution Architect and Pair Programmer. Drives evaluations, manages atomic operations, maintains $CC \le 30$ global ceiling across all functions and 0-warning linter discipline.
 - **Gemini NotebookLM**: Authoritative Ground-Truth Brain. Grounded in official QuickSpecs PDFs and live 22-sheet catalogs.
 - **OpenAI Codex / Claude**: Independent Peer Review & Red-Teaming Safety Layer (`codex-peer-review-skill`). Runs `gpt-6.1-sol` as default for static commit reviews, branch audits, and gap analysis; reserves `gpt-6-astra` for deep architectural proofs under ChatGPT Plus quota.
 - **Google Jules**: Background asynchronous CI/CD, boundary test generation, and pull request audits.
@@ -97,7 +101,7 @@ When a task arrives, dynamically load and read the corresponding `SKILL.md` from
 
 ## 5. Technical Invariants & Epistemic Rules Reference
 To conserve context tokens, detailed specifications and negative-path implementations are modularized:
-- **Complete Invariant Catalog (INV-1 through INV-225)**: Consult [`docs/INVARIANTS.md`](file:///docs/INVARIANTS.md) for full technical definitions and history.
+- **Complete Invariant Catalog (INV-1 through INV-230)**: Consult [`docs/INVARIANTS.md`](file:///docs/INVARIANTS.md) for full technical definitions and history.
 - **Deep Cognitive Reasoning & Anti-Pattern Prevention (Anti-Patterns 1 to 22)**: Consult [`.agents/rules/epistemic_truth_and_deep_reasoning.md`](file:///.agents/rules/epistemic_truth_and_deep_reasoning.md).
 - **Consolidated Documentation**:
   - [`docs/DIRECTORY_STRUCTURE.md`](file:///docs/DIRECTORY_STRUCTURE.md): Canonical repository directory mapping.

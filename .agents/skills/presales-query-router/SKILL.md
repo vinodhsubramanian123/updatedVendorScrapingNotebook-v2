@@ -1,6 +1,11 @@
 ---
 name: presales-query-router
-description: Use this skill to classify incoming presales queries, customer tender requests, hardware questions, and quotes into the correct execution pathway (Freeform Q&A, RFP Sizing-to-BOM, BOQ Evaluation, BOM Reconciliation, or Catalog Intelligence).
+description: >-
+  Use this skill to classify incoming presales queries, customer tender requests, hardware questions,
+  and quotes into the correct execution pathway (Freeform Q&A, RFP Sizing-to-BOM, BOQ Evaluation, BOM
+  Reconciliation, or Catalog Intelligence). **DO call for**: classifying any incoming presales query,
+  tender or quote into its execution track. **DO NOT call for**: executing a track directly when
+  intent is already explicit.
 ---
 
 # Presales Query Router & Autonomous Intent Dispatcher (`presales-query-router`)
@@ -171,7 +176,7 @@ When the agent classifies intent, it MUST construct a **structured handoff paylo
   },
   "expectedOutput": {
     "synthesizedBom": [
-      { "sku": "P73289-B21", "qty": 2, "description": "...", "role": "PROCESSOR" }
+      { "sku": "P74571-B21", "qty": 2, "description": "...", "role": "PROCESSOR" }
     ],
     "rolesResolved": ["CHASSIS", "PROCESSOR", "MEMORY", "STORAGE_CONTROLLER", "DRIVES", "NETWORKING", "POWER", "SUPPORT"],
     "rolesMissing": [],
@@ -248,7 +253,7 @@ When the agent classifies intent, it MUST construct a **structured handoff paylo
   "track": "CATALOG_INTELLIGENCE",
   "handoff": {
     "queryType": "PRICE_TRAIL | LIFECYCLE_STATUS | OPTIONS_ADDED | GENERATION_COMPARISON",
-    "targetSku": "P73289-B21",
+    "targetSku": "P74571-B21",
     "targetModel": "DL380_Gen12",
     "catalogDir": "outputs/ProLiant/Gen12/DL380_Gen12"
   },
@@ -294,22 +299,20 @@ If any verification gate fails, the agent MUST:
 
 ---
 
-## ⚡ Zero-Repetition Directives
-- **Zero Prompting**: Do not ask the user "Which tool should I use?" or "Do you have permission?". Autonomously classify the intent and execute.
+## ⚡ Autonomous Dispatch & Up-Front Ambiguity Triage (`INV-73`, `INV-98`)
+- **Zero Tool Hesitation**: Do NOT ask the user "Which tool to use?" or "Do you have permission?". Autonomously classify the intent and execute via canonical dispatchers.
+- **Up-Front Ambiguity Triage**: Clarify in the initial turn ONLY if critical structural ambiguity exists (e.g., completely unmapped platform or contradictory chassis quantities where confidence $< 0.95$). Never guess or hallucinate.
 - **Honest Observability**: Output explicit badges (`[🧠 Deterministic Brain: PASSED]`, `[📚 Cloud NLM Verified]`, `[🛡️ CLIC/OCA 100% Buildable]`).
 - **Financial Transparency**: All solutions must include SKU, Description, Qty, Unit List Price, Extended List Price, and Total CapEx Budget in USD.
-- **Execution Tracing**: Every flow MUST produce a structured execution trace per `execution-trace-skill`.
-- **Output Validation**: Every output MUST pass acceptance criteria per `output-validation-skill` before presentation.
+- **Execution Tracing**: Every flow MUST produce a structured execution trace per [`execution-trace-skill`](../execution-trace-skill/SKILL.md).
+- **Output Validation**: Every output MUST pass acceptance criteria per [`output-validation-skill`](../output-validation-skill/SKILL.md) before presentation.
+- **Normative Directives**: Comply with [Normative Language Standard](../../rules/normative_language.md).
 
+### Component-Domain Routing
+Read `docs/SOLUTION_TOPOLOGY_AND_VALIDATION.md` before onboarding a new product or evaluating mixed domains. Route by owned component role, not family.
 
-### Component-domain routing and supported coverage (2026-09-22)
-
-Read `docs/SOLUTION_TOPOLOGY_AND_VALIDATION.md` before onboarding a new product or evaluating mixed domains. Route by owned component role, not family: Synergy compute is server, F32 fabric is networking, and a frame solution is composite. Use exact product catalogs and validate cross-component containment, bays, adapters/fabric, optical endpoints, shared power and per-icon support. Missing profiles stay NOT_EVALUATED; never substitute server checks or certify an entire solution from a successful scrape. Preserve explicit customer requirements in the closest rank; the 3-year Basic default applies only when unspecified or explicitly authorized.
-
-
-### Runtime conditional discovery contract (2026-09-30)
-
-Read [the shared catalog and BOQ runtime procedure](../../../docs/RUNTIME_CONDITIONAL_DISCOVERY.md) before scraping or live BOQ validation. This contract supersedes older full-coverage claims and blanket bans on BOQ-time conditional investigation. Catalog capture and BOQ-scoped runtime investigation are separate; exploratory portal checks may run before local PASS, while final acceptance requires the exact restored manifest and current vendor receipt. Never select OEM by default, infer mandatory rules from hidden visibility, or treat a catalog miss as unsupported. The runtime plan is generated/exported by the canonical evaluator and checked at acceptance; applying arbitrary BOQs and non-ambient selector states remains a live-agent procedure. Preserve base/owner/quantity/selector provenance and disclose unexecuted branches. Reachable workflow advisories are seeded via scripts/maintenance/record_scraping_workflow_learnings.js; reachability is not hardware certification or cloud sync.
+### Runtime Conditional Discovery
+Follow [Shared Runtime Conditional Discovery Contract](../../../docs/RUNTIME_CONDITIONAL_DISCOVERY.md).
 
 ### CP7a planner ownership — engineering reference, unused at runtime
 

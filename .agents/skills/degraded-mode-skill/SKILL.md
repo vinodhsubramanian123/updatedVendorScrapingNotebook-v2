@@ -1,15 +1,16 @@
 ---
 name: degraded-mode-skill
-description: >
-  Detect, disclose, and recover from degraded catalog or NotebookLM notebook states.
-  Encapsulates per-product-generation metadata freshness checks (monthly 30-day cadence
-  and 72-hour fast-track threshold), `assertNotebookHealth()` + `DEGRADED_UNGROUNDED`
-  disclosure, BOQ-triggered on-demand resync workflow (via oca-portal-navigator →
-  oca-catalog-scraper), atomic post-resync metadata commit (only after staging audit
-  passes + catalog promoted), and local RAG dual-layer fallback when cloud is unavailable.
-  **Call this skill whenever a BOQ evaluation encounters a stale product catalog, a
-  NotebookLM notebook in FAILED/DEGRADED state, or when an agent/user explicitly
-  requests a catalog resync for a specific product generation.**
+description: >-
+  Detect, disclose, and recover from degraded catalog or NotebookLM notebook states. Encapsulates
+  per-product-generation metadata freshness checks (monthly 30-day cadence and 72-hour fast-track
+  threshold), `assertNotebookHealth()` + `DEGRADED_UNGROUNDED` disclosure, BOQ-triggered on-demand
+  resync workflow (via oca-portal-navigator → oca-catalog-scraper), atomic post-resync metadata commit
+  (only after staging audit passes + catalog promoted), and local RAG dual-layer fallback when cloud
+  is unavailable. **Call this skill whenever a BOQ evaluation encounters a stale product catalog, a
+  NotebookLM notebook in FAILED/DEGRADED state, or when an agent/user explicitly requests a catalog
+  resync for a specific product generation.** **DO call for**: stale catalogs, FAILED or degraded
+  notebooks, resync decisions and DEGRADED_UNGROUNDED disclosure. **DO NOT call for**: normal grounded
+  queries (nlm-skill) or scraping itself (oca-catalog-scraper).
 ---
 
 # Degraded Mode Skill — Catalog Freshness, Staleness Detection & Atomic Resync
@@ -157,9 +158,11 @@ Step 8 → Verify lastSyncedAt + lastContentFingerprints updated in notebooks.js
 ### 3.3 If User Selects Option B (Proceed with Stale Data)
 
 - Tag ALL evaluation outputs with `DEGRADED_UNGROUNDED` badge (see §5)
-- Never allow Tier 2 RAG verification badge unless notebook is fresh and verified
+- Fall back strictly to Local RAG Dual-Layer Search (`local_rag_search.js`)
+- Never allow Cloud NotebookLM Tier 2 RAG verification badge unless notebook is fresh and verified
 - Never allow `PORTAL_CONDITIONAL` SKU assertions (blocked when stale > 72h)
 - Disclose stale catalog age in every deliverable header and summary section
+- Comply with [Normative Language Standard](../../rules/normative_language.md)
 
 ---
 

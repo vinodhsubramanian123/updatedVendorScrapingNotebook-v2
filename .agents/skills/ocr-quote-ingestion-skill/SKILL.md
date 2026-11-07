@@ -1,6 +1,12 @@
 ---
 name: ocr-quote-ingestion-skill
-description: Use this skill to ingest and parse unstructured or image-based customer quotes, scanned PDF tenders, configuration screenshots, or image files (PNG, JPG, JPEG, WEBP, TIFF, GIF) up to 25MB. Leverages Gemini Vision Multimodal OCR with smart FIFO key rotation to extract structured tables containing part numbers, descriptions, quantities, and prices.
+description: >-
+  Use this skill to ingest and parse unstructured or image-based customer quotes, scanned PDF tenders,
+  configuration screenshots, or image files (PNG, JPG, JPEG, WEBP, TIFF, GIF) up to 25MB. Leverages
+  Gemini Vision Multimodal OCR with smart FIFO key rotation to extract structured tables containing
+  part numbers, descriptions, quantities, and prices. **DO call for**: image or scanned-PDF quotes up
+  to 25MB that need table extraction. **DO NOT call for**: native spreadsheet or text input
+  (boq-eval-skill).
 ---
 
 # Unstructured Document OCR & Scanned Quote Ingestion Skill (`ocr-quote-ingestion-skill`)
@@ -16,6 +22,20 @@ Activate this skill whenever the customer inquiry includes:
 2. **Scanned / Rasterized PDF Quotes**: PDF documents where `pdftotext` or standard text extraction returns empty strings or garbled characters due to rasterization.
 3. **Portal Screenshots**: Screenshots of HPE OCA, Cisco CCW, Dell Solutions Configurator, or tender tables pasted by the user.
 4. **Obfuscated / Degraded Document Tables**: Scanned tenders with skewed rows, phone camera watermarks, or fax headers.
+
+---
+
+Read [Normative Language Standard](../../rules/normative_language.md).
+
+## ⛔ HALT Conditions
+
+```
+HALT-OCR1: If file size exceeds 25MB (MAX_IMAGE_SIZE_BYTES):
+  emit [ERR_OCR_FILE_SIZE_EXCEEDED] and request compressed image or PDF page split.
+
+HALT-OCR2: If all configured Gemini API keys are exhausted without valid OCR extraction:
+  emit [ERR_OCR_API_KEYS_EXHAUSTED] and request text/spreadsheet input from user.
+```
 
 ---
 
@@ -36,8 +56,8 @@ The OCR engine operates through 4 robust stages:
 - Validates mime-types (`image/png`, `image/jpeg`, `image/webp`, `application/pdf`).
 
 ### 2. Multimodal Gemini Vision Prompting & FIFO Key Rotation
-- Dispatches image payload to Gemini Vision (`gemini-3.6-flash` or `gemini-3.7-flash`).
-- Managed by `gemini_rotator.js`: if active API key hits rate limits (429 / RESOURCE_EXHAUSTED), the request automatically demotes the key to the bottom of the queue and rotates to the next active key seamlessly.
+- Dispatches image payload to Gemini Vision using dynamic model rotation across configured fallback models (`gemini_rotator.js`, `guardrail_transport.js`).
+- If active API key hits rate limits (429 / RESOURCE_EXHAUSTED), the request automatically demotes the key to the bottom of the queue and rotates to the next active key seamlessly.
 - Uses specialized OCR system prompt instructing the vision model to:
   - Isolate tabular boundaries.
   - Separate SKU column from Description column.

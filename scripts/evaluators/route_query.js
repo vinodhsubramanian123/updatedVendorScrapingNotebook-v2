@@ -275,7 +275,11 @@ function _classifyExplicitTrack(text, context, filePath) {
     KNOWLEDGE_SYNC: 'knowledge-sync-skill', CROSS_VENDOR_TRANSFORMATION: 'cross-vendor-transformation-skill',
     HETEROGENEOUS_TENDER_MODERNIZATION: 'heterogeneous-tender-modernizer', BOQ_EVALUATION: 'boq-eval-skill',
     BOM_RECONCILIATION: 'bom-reconciliation-skill', FREEFORM_QA: 'nlm-skill',
-    RFP_SIZING_TO_BOM: 'rfp-sizing-synthesizer', CATALOG_INTELLIGENCE: 'catalog-intelligence-skill'
+    RFP_SIZING_TO_BOM: 'rfp-sizing-synthesizer', CATALOG_INTELLIGENCE: 'catalog-intelligence-skill',
+    CODE_QUALITY_GATE: 'code-quality-gate-skill',
+    SELF_CORRECTION_COUNTERFACTUAL: 'self-correction-counterfactual-skill',
+    PRESALES_CLEARANCE_STRATEGY: 'presales-clearance-strategy-skill',
+    TURNKEY_RACKING_CABLING: 'turnkey-racking-cabling-skill'
   };
   if (context.intent && explicitTracks[context.intent]) {
     return {
@@ -406,7 +410,7 @@ function _classifyFileBased(text, filePath, context) {
 const RECONCILE_KEYWORD_RE = /(?:reconcile|compare\s+bom|tender\s+vs\s+quote|ghost\s+sku|quote\s+comparison)/i;
 const CATALOG_KEYWORD_RE = /(?:price\s+trend|pricing\s+history|is\s+obsolete|lifecycle|direct\s+ship|gpl\s+price|list\s+price\s+of|options\s+added)/i;
 const SIZING_TEXT_KEYWORD_RE = /(?:size\s+a\s+server|sizing|build\s+a\s+bom|generate\s+a\s+bom|create\s+a\s+configuration)/i;
-const BOQ_TEXT_KEYWORD_RE = /(?:evaluate\s+boq|verify\s+bom|check\s+buildability|validate\s+boq)/i;
+const BOQ_TEXT_KEYWORD_RE = /(?:evaluate\s+(?:(?:this|the|customer)\s+)?boq|verify\s+(?:(?:this|the|customer)\s+)?bom|check\s+buildability|validate\s+(?:(?:this|the|customer)\s+)?boq)/i;
 
 function _classifyOptimizationTracks(text, context) {
   if (RECONCILE_KEYWORD_RE.test(text)) {
@@ -525,8 +529,49 @@ function _classifyLifecycleAndClusterTracks(text, context, detectedPath) {
   return null;
 }
 
+function _classifyArchitecturalQualityTracks(text, context) {
+  if (/\b(?:code\s*quality|complexity\s*ceiling|cyclomatic\s*complexity|oxlint|lint\s*check|clean\s*dag|quality\s*gate)\b/i.test(text) || context.intent === 'CODE_QUALITY_GATE') {
+    return {
+      intent: 'CODE_QUALITY_GATE',
+      confidence: 0.95,
+      skillTarget: 'code-quality-gate-skill',
+      rationale: 'Query requests code quality audit, cyclomatic complexity ceiling verification, or linter check.'
+    };
+  }
+  if (/\b(?:counterfactual|self[\s-]correction|backtracking\s*trail|minimum\s*mutation|phase\s*9\s*narrative)\b/i.test(text) || context.intent === 'SELF_CORRECTION_COUNTERFACTUAL') {
+    return {
+      intent: 'SELF_CORRECTION_COUNTERFACTUAL',
+      confidence: 0.94,
+      skillTarget: 'self-correction-counterfactual-skill',
+      rationale: 'Query requests counterfactual self-correction backtracking or Phase 9 reasoning narrative derivation.'
+    };
+  }
+  if (BOQ_TEXT_KEYWORD_RE.test(text)) {
+    return null;
+  }
+  if (/\b(?:clearance\s*hardware|90[\s-]day\s*clearance|clearance\s*strategy|dual[\s-]track\s*baseline|factory\s*excess)\b/i.test(text) || context.intent === 'PRESALES_CLEARANCE_STRATEGY') {
+    return {
+      intent: 'PRESALES_CLEARANCE_STRATEGY',
+      confidence: 0.94,
+      skillTarget: 'presales-clearance-strategy-skill',
+      rationale: 'Query requests 90-day clearance hardware evaluation or dual-track baseline comparison.'
+    };
+  }
+  if (/\b(?:turnkey|rack\s*and\s*stack|rail\s*kits?|cabling\s*completeness|factory\s*raid\s*transpilation)\b/i.test(text) || context.intent === 'TURNKEY_RACKING_CABLING') {
+    return {
+      intent: 'TURNKEY_RACKING_CABLING',
+      confidence: 0.94,
+      skillTarget: 'turnkey-racking-cabling-skill',
+      rationale: 'Query requests turnkey physical racking, rail kits, transceivers, or factory RAID transpilation.'
+    };
+  }
+  return null;
+}
+
 function _classifyAdvancedPresalesTracks(text, context, detectedPath) {
-  return _classifyOptimizationTracks(text, context) || _classifyLifecycleAndClusterTracks(text, context, detectedPath);
+  return _classifyOptimizationTracks(text, context) ||
+         _classifyLifecycleAndClusterTracks(text, context, detectedPath) ||
+         _classifyArchitecturalQualityTracks(text, context);
 }
 
 function _isSingleSkuCatalogQuery(text, filePath, context, detectedSkus) {

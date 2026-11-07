@@ -1,85 +1,93 @@
 ---
 name: epistemic-verification-skill
-description: Execute rigorous Popperian falsification, negative-path counterexample audits, honest nullable data contract validation, fresh-process learning consumption proof, and 9-phase terminal evidence ledger verification across all evaluations and PRs.
+description: >-
+  **Popperian Falsification, Epistemic Truth & Negative-Path Counterexample Audits**.
+  **DO call for**: Validating proposed fixes before integration, auditing nullable price integrity,
+  verifying fresh-process learning consumption, and asserting terminal 9-phase evidence ledger health.
+  **DO NOT call for**: Standard customer spreadsheet formatting (use workbook-generator-skill),
+  or live portal scraping (use oca-catalog-scraper).
 ---
 
-# Epistemic Verification & Anti-Hallucination Audit Skill
+# Epistemic Verification & Popperian Falsification Gate (`epistemic-verification-skill`)
 
-## Purpose & Authority
-This skill provides deterministic verification and falsification protocols to ensure that all evaluations, code changes, and agentic workflows are **100% mathematically sound, non-hallucinated, factually grounded, and non-repudiable on disk**.
+## 1. Purpose & Core Authority
+This skill establishes deterministic falsification protocols to ensure that all evaluations, code changes, and agentic workflows are **100% mathematically sound, non-hallucinated, factually grounded, and non-repudiable on disk** (`INV-104` to `INV-111`, `INV-191`, `INV-202`, `INV-215`, `INV-229`, `INV-230`).
 
-Invoke this skill whenever:
-- Validating a proposed fix or feature before local integration.
-- Auditing presales outputs, BOQ pricing, and multi-node cluster scaling.
-- Verifying that continuous learning deltas or user preferences are provably consumed in a clean process without prompt priming.
-- Ensuring zero manufactured numbers (e.g. unquoted prices turning into \$0).
-- Verifying terminal ledger health and cancellation envelopes.
-
----
-
-## 1. The 5 Core Falsification Gates
-
-Every candidate change or deliverable must pass these five gates:
-
-### Gate 1: The Nullable Price Integrity Gate
-- **Invariant**: Missing, unquoted, or unpriced items must evaluate to `null` with `pricingComplete: false`.
-- **Check**: Assert that `it.unitPriceUsd === null` and `it.quotedUnitPriceUsd === null` for unpriced rows.
-- **Counterexample Test**: Pass `{ sku: "TEST-SKU", unitPriceUsd: null }` through `BOQItemSchema`. It must NOT coerce to `0`.
-- **Budget Optimizer Check**: Verify that `budget_optimizer.js` does NOT overwrite `it.quotedUnitPriceUsd` with `catalogListPriceUsd`.
-
-### Gate 2: The Fresh-Process Consumption Gate
-- **Invariant**: Persisted learning, user preferences, and knowledge deltas must be consumed by a separate, unprimed Node process.
-- **Check**: Execute the candidate query in a fresh subprocess *without injecting any context or hints into the prompt*.
-- **Proof**: The subprocess must retrieve the record from disk and execute the stored preference solely through its normalized query lookup.
-
-### Gate 3: The Cascading Aspect Integrity Gate
-- **Invariant**: Any slot arbitration, controller move, or SKU substitution must trigger a full 7-aspect checker re-evaluation.
-- **Check**: Ensure that moving an OCP controller to a PCIe slot re-evaluates:
-  - PCIe riser lane availability and bifurcation.
-  - Thermal envelope and high-performance fan requirements.
-  - GPU auxiliary power cables and wattage draw.
-
-### Gate 4: The Category Isolation & Anti-Poisoning Gate
-- **Invariant**: User session preferences and operational incidents must NEVER be promoted into physical hardware conflict rules.
-- **Check**: Verify incident taxonomy:
-  - `OPERATIONAL_INCIDENT` (e.g. scraper timeout, network flake) $\rightarrow$ Recorded in operational history; zero hardware rule generation.
-  - `WORKFLOW_PREFERENCE` (e.g. user selected 2U chassis) $\rightarrow$ Saved in `user_platform_selection_store.js`; zero hardware rule generation.
-  - `HARDWARE_PHYSICAL_RULE` $\rightarrow$ Certified ONLY with official QuickSpecs citation or CLIC error receipt.
-
-### Gate 5: The 9-Phase Terminal Ledger Gate
-- **Invariant**: Every presales pipeline run must bring all 9 phases of the `EvidenceLedger` to a terminal status (`PASSED`, `FAILED`, `ACTION_REQUIRED`, `SKIPPED`).
-- **Check**: Phase 8 records all deliverables (report, XLSX, JSON). Phase 9 records reflection. No phase may remain `RUNNING` or `undefined`. Run:
-  ```powershell
-  node scripts/maintenance/audit_evidence_health.js --save
-  ```
+- **Non-Repudiation on Disk (`INV-104`)**: Truth exists in persistent files on disk verified by SHA-256 fingerprints, never in transient in-memory flags.
+- **Zero Default Success (`INV-105`)**: Loose `!== false ? 'PASS' : 'FAIL'` evaluation is strictly prohibited. Missing checks MUST evaluate to `'UNKNOWN'` or `'NOT_EVALUATED'`.
+- **Zero Self-Citation (`INV-106`)**: Ephemeral candidate BOMs attached to NotebookLM are query inputs only; self-citations evaluate to `UNKNOWN`.
+- **Universal CC $\le 30$ Ceiling (`INV-229`, `INV-230`)**: Whole-repository cyclomatic complexity ceiling strictly $\le 30$.
+- **Normative Directives**: Comply with [Normative Language Standard](../../rules/normative_language.md).
 
 ---
 
-## 2. Reusable Verification Commands
+## ⛔ HALT Conditions
 
-```powershell
-# 1. Run isolated fixture tests
-npm run test:isolated -- <path_to_test>
+```
+HALT-EPI1: If any presales pipeline run terminates with non-terminal ledger phases:
+  emit [ERR_NON_TERMINAL_EVIDENCE_PHASES] and HALT.
+  No phase may remain RUNNING or undefined. All 9 phases must be terminal (INV-107).
 
-# 2. Run affected domain regression
-npm run test:domain -- <domain_name>
+HALT-EPI2: If unquoted/missing prices are coerced to $0 instead of null:
+  emit [ERR_MANUFACTURED_PRICE_COERCION] and HALT. Nullable prices must remain null.
 
-# 3. Check circular dependencies across entire repository
-node scripts/maintenance/analyze_circular_deps.js
-
-# 4. Check cyclomatic complexity (CC <= 135)
-node scripts/maintenance/analyze_complexity.js
-
-# 5. Offline targeted linter
-npx oxlint <modified_files>
+HALT-EPI3: If a test suite reports 0 assertions or 0 discovered suites (INV-129):
+  emit [ERR_SILENT_EMPTY_TEST_PASS] and fail the test execution run.
 ```
 
 ---
 
-## 3. Peer Skills & Implementation Engines
+## 2. The 5 Core Falsification Gates
 
-- **Output Validation Gate**: Directly reinforces [`output-validation-skill`](../output-validation-skill/SKILL.md) and [`bom_verifier.js`](../../../scripts/lib/boq/bom_verifier.js) by providing falsification proofs for B1–B18 criteria.
-- **Evidence Ledger**: Enforces terminal phase verification via [`evidence_ledger.js`](../../../scripts/lib/system/evidence_ledger.js) and [`audit_evidence_health.js`](../../../scripts/maintenance/audit_evidence_health.js).
-- **Macro Lifecycle Integration**: Orchestrated under [`orchestrator-workflow-skill`](../orchestrator-workflow-skill/SKILL.md) as the Phase 9 terminal reflection falsifier.
-- **Continuous Learning Falsifier**: Validates learning reachability and consumption without prompt priming via [`continuous-learning-skill`](../continuous-learning-skill/SKILL.md) and [`continuous_learning_verifier.js`](../../../scripts/lib/feedback/continuous_learning_verifier.js).
-- **Independent Peer Review**: Works in tandem with [`codex-peer-review-skill`](../codex-peer-review-skill/SKILL.md) for independent red-teaming.
+### Gate 1: The Nullable Price Integrity Gate
+- Missing, unquoted, or unpriced items MUST evaluate to `null` with `pricingComplete: false`.
+- Counterexample Test: Pass `{ sku: "TEST-SKU", unitPriceUsd: null }` through `BOQItemSchema`. It MUST NOT coerce to `0`.
+- Verify that `budget_optimizer.js` does NOT overwrite `quotedUnitPriceUsd` with list price.
+
+### Gate 2: The Fresh-Process Consumption Gate
+- Persisted learning, user preferences, and knowledge deltas MUST be consumed by a separate, unprimed Node process.
+- Execute candidate queries in a fresh subprocess *without injecting any context or hints into the prompt*.
+- Proof: The subprocess MUST retrieve the record from disk and apply it through its normalized query lookup.
+
+### Gate 3: The Cascading Aspect Integrity Gate
+- Any slot arbitration, controller move, or SKU substitution MUST trigger a full 7-aspect checker re-evaluation.
+- Moving an OCP controller to a PCIe slot re-evaluates PCIe riser lanes, thermal fan kits, and aux power cables.
+
+### Gate 4: The Category Isolation & Anti-Poisoning Gate
+- User session preferences and operational incidents MUST NEVER be promoted into physical hardware conflict rules.
+  - `OPERATIONAL_INCIDENT` $\rightarrow$ Recorded in operational history; zero hardware rule generation.
+  - `WORKFLOW_PREFERENCE` $\rightarrow$ Saved in `user_platform_selection_store.js`; zero hardware rule generation.
+  - `HARDWARE_PHYSICAL_RULE` $\rightarrow$ Certified ONLY with official QuickSpecs citation or CLIC error receipt.
+
+### Gate 5: The 9-Phase Terminal Ledger Gate
+- Every presales pipeline run MUST bring all 9 phases of the `EvidenceLedger` to terminal status (`PASSED`, `FAILED`, `ACTION_REQUIRED`, `SKIPPED`, `NOT_REACHED`).
+- Verification: `node scripts/maintenance/audit_evidence_health.js --save`
+
+---
+
+## 3. Reusable Verification Commands
+
+```powershell
+# 1. Fast smoke test suite
+npm run test:smoke
+
+# 2. Universal cyclomatic complexity audit (CC <= 30 ceiling)
+node scripts/maintenance/analyze_complexity.js
+
+# 3. Static circular dependency analysis (clean DAG)
+node scripts/maintenance/analyze_circular_deps.js
+
+# 4. Core oxlint verification (0 warnings, 0 errors)
+npm run lint:core
+
+# 5. Affected domain regression suite
+npm run test:domain <domain_name>
+```
+
+---
+
+## 4. References & Related Charters
+- [Code Quality Gate Skill](../code-quality-gate-skill/SKILL.md)
+- [Self-Correction & Counterfactual Skill](../self-correction-counterfactual-skill/SKILL.md)
+- [Evidence Ledger Service](../../../scripts/lib/system/evidence_ledger.js)
+- [Master System Invariants Directory (INV-104 to INV-111, INV-229, INV-230)](../../../docs/INVARIANTS.md)

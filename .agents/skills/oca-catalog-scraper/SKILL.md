@@ -1,6 +1,10 @@
 ---
 name: oca-catalog-scraper
-description: Use this skill to live-scrape HPE OCA portal product catalogs (ProLiant, Synergy, Alletra, Cray, StoreEver) via CDP remote debugging on port 9222.
+description: >-
+  Use this skill to live-scrape HPE OCA portal product catalogs (ProLiant, Synergy, Alletra, Cray,
+  StoreEver) via CDP remote debugging on port 9222. **DO call for**: live scraping of OCA product
+  catalogs through CDP port 9222. **DO NOT call for**: BOQ evaluation (boq-eval-skill) or portal
+  navigation only (oca-portal-navigator).
 ---
 
 # OCA Catalog Scraper Skill (`oca-catalog-scraper`)
@@ -9,7 +13,7 @@ description: Use this skill to live-scrape HPE OCA portal product catalogs (ProL
 
 ## 1. Purpose & Overview (Workflow 1)
 
-This skill represents **Workflow 1 (Intelligence Extraction)** of the dual-workflow paradigm. Its sole purpose is to extract complete product catalog intelligence from vendor portals (HPE OCA, etc.) to build the baseline rules engine. It produces a classified multi-sheet **Catalog Excel workbook** (20 sheets) + companion JSON files stored under `outputs/{Family}/{Gen}/{Model}_{FormFactor}/`. These rules are structurally required by **Workflow 2 (Pre-Flight Evaluation)** to validate quotes.
+This skill represents **Workflow 1 (Intelligence Extraction)** of the dual-workflow paradigm. Its sole purpose is to extract complete product catalog intelligence from vendor portals (such as HPE OCA) to build the baseline rules engine. It produces a classified multi-sheet **Catalog Excel workbook** (20 sheets) + companion JSON files stored under `outputs/{Family}/{Gen}/{Model}_{FormFactor}/`. These rules are structurally required by **Workflow 2 (Pre-Flight Evaluation)** to validate quotes.
 
 ---
 
@@ -88,7 +92,7 @@ sequenceDiagram
 
 1. `Category Summary`: Subcategories with quantity limits, constraint texts, and category roles.
 2. `All SKUs`: Full 24-column metadata structure for every hardware component.
-3. `Chassis Variants`: CTO Base Chassis Models (`P52534-B21`, etc.).
+3. `Chassis Variants`: CTO Base Chassis Models (`P52534-B21` and variants).
 4. `Rules & Constraints`: Aspect & constraint rules across the hierarchy levels.
 5. `Hardware Accessories`: Form-factor brackets, blanks, security bezels, cable kits.
 6. `Software & Licenses`: Pointnext, Tech Care tiers, iLO Advanced, OS licenses.
@@ -191,6 +195,13 @@ Read `docs/SOLUTION_TOPOLOGY_AND_VALIDATION.md` before onboarding a new product 
    - Run `node scripts/catalogs/ensure_catalogs.js --product DL380_Gen12,DL360_Gen11` to evaluate catalog freshness, acquire exclusive workflow leases, and execute sequential verified refreshes.
 
 
-### Runtime conditional discovery contract (2026-09-30)
+### Dynamic Multi-Pillar & Backend Sniffing (`INV-223`)
+The scraper navigates Server, Storage, SAN, Synergy, and HPC nodes dynamically, supports headless mode (`--headless` / `OCA_HEADLESS_MODE=1`), protects active port 9222 tabs, and ingests backend network rules (`raw_data/network_sniffed_rules.json`). Read [Normative Language Standard](../../rules/normative_language.md).
 
-Read [the shared catalog and BOQ runtime procedure](../../../docs/RUNTIME_CONDITIONAL_DISCOVERY.md) before scraping or live BOQ validation. This contract supersedes older full-coverage claims and blanket bans on BOQ-time conditional investigation. Catalog capture and BOQ-scoped runtime investigation are separate; exploratory portal checks may run before local PASS, while final acceptance requires the exact restored manifest and current vendor receipt. Never select OEM by default, infer mandatory rules from hidden visibility, or treat a catalog miss as unsupported. The runtime plan is generated/exported by the canonical evaluator and checked at acceptance; applying arbitrary BOQs and non-ambient selector states remains a live-agent procedure. Preserve base/owner/quantity/selector provenance and disclose unexecuted branches. Reachable workflow advisories are seeded via scripts/maintenance/record_scraping_workflow_learnings.js; reachability is not hardware certification or cloud sync.
+### Runtime Conditional Discovery
+Follow [Shared Runtime Conditional Discovery Contract](../../../docs/RUNTIME_CONDITIONAL_DISCOVERY.md).
+
+---
+
+## References
+- [CDP Remote Debugging & WebLogic Modal Interception Reference](references/cdp_modal_interception.md)

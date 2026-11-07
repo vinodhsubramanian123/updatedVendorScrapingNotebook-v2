@@ -1,6 +1,11 @@
 ---
 name: execution-trace-skill
-description: Use this skill to produce structured, auditable execution traces when running customer queries, BOQ evaluations, RFP sizing, BOM reconciliations, or any presales pipeline through the Antigravity agent harness. Enables step-level gap analysis and end-to-end verification.
+description: >-
+  Use this skill to produce structured, auditable execution traces when running customer queries, BOQ
+  evaluations, RFP sizing, BOM reconciliations, or any presales pipeline through the Antigravity agent
+  harness. Enables step-level gap analysis and end-to-end verification. **DO call for**: structured,
+  auditable execution traces and the 9-phase evidence ledger for any presales pipeline run. **DO NOT
+  call for**: physical math checks (boq-eval-skill) or output acceptance (output-validation-skill).
 ---
 
 # Execution Trace & Step-Level Checkpoint Verification Skill (`execution-trace-skill`)
@@ -64,8 +69,8 @@ Every agent-driven presales flow produces two artifacts via [`evidence_ledger.js
     "failures": []
   },
   "deltaReport": {
-    "customerRequested": ["P73289-B21 x2", "P64707-B21 x16", "..."],
-    "weProduced": ["P73289-B21 x2", "P64707-B21 x16", "P48818-B21 x1 (ADDED)", "..."],
+    "customerRequested": ["P67088-B21 x2", "P64707-B21 x16", "..."],
+    "weProduced": ["P67088-B21 x2", "P64707-B21 x16", "P48818-B21 x1 (ADDED)", "..."],
     "additions": [{ "sku": "P48818-B21", "reason": "Secondary CPU Heatsink mandatory for dual-socket" }],
     "removals": [],
     "substitutions": []
@@ -163,12 +168,12 @@ Every execution trace MUST conclude with a structured delta report:
 ```markdown
 ### 🔄 Configuration Delta Report
 
-**Customer Requested**: 14 line items, 2x P73289-B21 (CPU), 16x P64707-B21 (Memory), ...
+**Customer Requested**: 14 line items, 2x P67088-B21 (CPU), 16x P64707-B21 (Memory), ...
 **We Produced (Rank 1A)**: 18 line items
 
 | Change Type | SKU | Description | Reason | Source |
 |-------------|-----|-------------|--------|--------|
-| ✅ PRESERVED | P73289-B21 | Xeon Platinum 8580 | Customer intent matched | DETERMINISTIC |
+| ✅ PRESERVED | P67088-B21 | Xeon Platinum 8580 | Customer intent matched | DETERMINISTIC |
 | ➕ ADDED | P48818-B21 | Secondary CPU Heatsink | Mandatory for dual-socket (INV-61) | DETERMINISTIC |
 | ➕ ADDED | P48820-B21 | High-Perf Fan Kit | Required for 350W TDP (INV-27) | DETERMINISTIC |
 | ➕ ADDED | P35876-B21 | CE Mark Removal Kit | Non-EU Platinum PSU (INV-30) | RAG_VERIFIED |

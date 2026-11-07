@@ -1,11 +1,33 @@
 ---
 name: least-delta-combinator-skill
-description: Use this skill to eliminate cascading dependency bloat and synthesize Least-Delta / Minimal-Mutation alternative topologies (Rank 1L / Rank 1M). Identifies root-cause "troublesome SKUs" (e.g. an 8-port controller with 16 drives forcing a SAS expander, extra cables, fans, and high-wattage PSUs) and substitutes direct functional alternatives to prune the entire cascading dependency tree.
+description: >-
+  Use this skill to eliminate cascading dependency bloat and synthesize Least-Delta / Minimal-Mutation
+  alternative topologies (Rank 1L / Rank 1M). Identifies root-cause "troublesome SKUs" (e.g. an 8-port
+  controller with 16 drives forcing a SAS expander, extra cables, fans, and high-wattage PSUs) and
+  substitutes direct functional alternatives to prune the entire cascading dependency tree. **DO call
+  for**: pruning cascading dependency bloat caused by one troublesome SKU and synthesizing Rank 1L/1M
+  alternatives. **DO NOT call for**: initial conflict detection (boq-eval-skill) or budget
+  optimization (value-engineering-skill).
 ---
 
 # Least-Delta Solution Combinator & Cascading Pruning Skill (`least-delta-combinator-skill`)
 
-**Purpose**: In enterprise server configuration, a single suboptimal part selection by a customer or presales architect often triggers a massive "ripple effect" of mandatory accessories (e.g. choosing an 8-port RAID controller with 16 drives forces the injection of a $1,200 SAS Expander Card, two extra internal SAS cables, a high-performance fan kit, and a larger power supply). Simply adding all those parts makes the build technically valid, but bloats CapEx and adds physical failure points. This skill identifies the root-cause "troublesome SKU", formulates an alternative topology (Rank 1L / Rank 1M), and prunes the entire cascading dependency tree to deliver 100% buildability with the fewest net mutations.
+Read [Normative Language Standard](../../rules/normative_language.md). Enforces configuration-aware architectural ranking (`INV-193`) and penalizes architectural capability downgrades (`INV-204`).
+
+**Purpose**: In enterprise server configuration, a single suboptimal part selection by a customer often triggers a massive "ripple effect" of mandatory accessories (e.g., an 8-port RAID controller with 16 drives forcing a SAS Expander Card, extra cables, high-performance fans, and larger PSUs). Simply adding those parts bloats CapEx and adds failure points. This skill identifies the root-cause "troublesome SKU", formulates an alternative topology (Rank 1L / Rank 1M), and prunes the entire cascading dependency tree to deliver 100% buildability with minimal mutations.
+
+---
+
+## ⛔ HALT Conditions
+
+```
+HALT-LDC1: If pruned alternative introduces architectural downgrade without user waiver:
+  emit [ERR_CAPABILITY_DOWNGRADE_PENALTY] and apply tier penalties (INV-204).
+  Remediation: Do not substitute lower-tier components (e.g. 10Gb for 25Gb, or Bronze for Titanium).
+
+HALT-LDC2: If least-delta alternative cannot achieve 100% buildability:
+  emit [ERR_LEAST_DELTA_UNBUILDABLE] and discard candidate (Zero-Rank Invariant).
+```
 
 ---
 
@@ -45,7 +67,7 @@ The engine operates through 4 sequential steps:
 
 ### 2. Formulating the Clean Functional Alternative
 - Queries `catalog.json` for a direct replacement that natively satisfies the customer's requirement without external companion hardware:
-  - *Example*: Replaces 8-port controller (`MR408i-o` / `MR216i-p`) with **16-port Tri-Mode controller (`MR416i-o` `P55415-B21` or `MR416i-p` `P47777-B21`)**.
+  - *Example*: Replaces 8-port controller (`MR408i-o` / `MR216i-p`) with **16-port Tri-Mode controller (`MR416i-o` `P47781-B21` or `MR416i-p` `P47777-B21`)**.
 
 ### 3. Cascading Dependency Pruning
 - Automatically deletes the root troublesome SKU AND prunes all downstream dependencies from the BOM:
@@ -97,7 +119,7 @@ When the Least-Delta Combinator produces a Rank 1L alternative, the agent MUST p
   • Total Injected Fix Spend: +$1,430.00 (3 extra physical components)
 
 [Path 1L: Least-Delta Alternative — RECOMMENDED]
-  • Substitutes: MR416i-o 16-port Controller (P55415-B21) instead of 8-port.
+  • Substitutes: MR416i-o 16-port Controller (P47781-B21) instead of 8-port.
   • Prunes: Completely eliminates SAS Expander & Extra Cables!
   • Net CapEx Impact: Saves $650.00 vs Path 1A.
   • Reliability Benefit: Eliminates 3 potential physical failure points in storage bus.

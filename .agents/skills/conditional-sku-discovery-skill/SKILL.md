@@ -1,11 +1,28 @@
 ---
 name: conditional-sku-discovery-skill
-description: Discover hidden and selector-dependent catalog SKUs, and investigate BOQ-specific conditional SKUs in a scoped live portal session. Keep catalog coverage, observed visibility, compatibility and final CLIC acceptance separate. Read docs/RUNTIME_CONDITIONAL_DISCOVERY.md for implemented APIs and current automation limits.
+description: >-
+  Discover hidden and selector-dependent catalog SKUs, and investigate BOQ-specific conditional SKUs
+  in a scoped live portal session. Keep catalog coverage, observed visibility, compatibility and final
+  CLIC acceptance separate. Read docs/RUNTIME_CONDITIONAL_DISCOVERY.md for implemented APIs and
+  current automation limits. **DO call for**: scraping-time or BOQ-scoped discovery of hidden and
+  selector-dependent SKUs in a verified portal session. **DO NOT call for**: final portal acceptance
+  (clic-portal-validation-skill) or catalog-only questions (catalog-intelligence-skill).
 ---
 
 # Conditional SKU discovery
 
-Read [the shared runtime procedure](../../../docs/RUNTIME_CONDITIONAL_DISCOVERY.md) first. It is the cross-agent source of truth for catalog capture and BOQ-triggered investigations.
+Read [Shared Runtime Conditional Discovery Contract](../../../docs/RUNTIME_CONDITIONAL_DISCOVERY.md) and [Normative Language Standard](../../rules/normative_language.md). It is the cross-agent source of truth for catalog capture and BOQ-triggered investigations.
+
+## ⛔ HALT Conditions
+
+```
+HALT-CSD1: If ambient state cannot be restored to baseline after probing:
+  emit [ERR_AMBIENT_RESTORE_FAILED] and abort portal session immediately.
+  Do NOT proceed with tainted environmental selectors.
+
+HALT-CSD2: If probe modifies customer requested environmental requirements without authorization:
+  emit [ERR_UNAUTHORIZED_ENVIRONMENT_MUTATION] and revert changes.
+```
 
 ## When to use
 
@@ -22,7 +39,7 @@ const { extractHiddenElements, probeConditionalSkuVisibility } = require('./scri
 const capture = await setupNetworkSniffer(ws);
 try {
   const hidden = await extractHiddenElements(ws, sendCommand); // array
-  // Only when appropriate for this investigation; this mutates and restores ambient.
+  // Execute probe ONLY when ambient investigation is requested; mutates and restores ambient.
   const conditional = await probeConditionalSkuVisibility(ws, sendCommand, [35, 30, 27, 25]);
   await capture.flush?.();
   const rules = capture.getCapturedRules();
@@ -59,6 +76,11 @@ Missing from capture does not mean unsupported. Hidden does not mean orderable, 
 ## Completion gate
 
 A plan, hidden list or successful catalog build cannot close this workflow. Require exact final state readback, fresh complete vendor validation and retained evidence. Unsupported selector automation stays unresolved. Source replacement follows knowledge-sync verification, never discovery alone.
+
+## Related Workflow Skills
+- [OCA Catalog Scraper](../oca-catalog-scraper/SKILL.md)
+- [BOQ Evaluation & Strategic Buildability Engine](../boq-eval-skill/SKILL.md)
+- [Live CLIC Portal Validation Skill](../clic-portal-validation-skill/SKILL.md)
 
 
 ### Verified correction (2026-10-01)

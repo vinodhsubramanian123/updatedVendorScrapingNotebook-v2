@@ -1,11 +1,13 @@
 ---
 name: codex-peer-review-skill
 description: >-
-  **OpenAI Codex Autonomous Peer Review & Verification Protocol** — Guides when and how
-  to invoke Codex CLI for independent static peer reviews, gap analysis, and architectural judgements.
-  Governs model selection (gpt-6.1-sol default for reviews/gap analysis vs gpt-6-astra for highest complexity
-  intelligence), ChatGPT Plus token conservation, non-interactive execution, parallel execution,
-  and fail-open rate limit recovery.
+  **OpenAI Codex Autonomous Peer Review & Verification Protocol** — Guides when and how to invoke
+  Codex CLI for independent static peer reviews, gap analysis, and architectural judgements. Governs
+  model selection (gpt-6.1-sol default for reviews/gap analysis vs gpt-6-astra for highest complexity
+  intelligence), ChatGPT Plus token conservation, non-interactive execution, parallel execution, and
+  fail-open rate limit recovery. **DO call for**: independent static peer review, gap analysis or
+  architectural audit with Codex CLI. **DO NOT call for**: any live customer BOQ flow (INV-72) or
+  CI/CD dispatch (jules-autonomous-protocol).
 ---
 
 # OpenAI Codex Autonomous Peer Review & Verification Protocol
@@ -16,6 +18,18 @@ description: >-
 - **Zero-Help Invariant**: AI agents MUST NEVER run `codex --help`, `codex review --help`, or exploratory CLI tests. All flags and execution patterns are strictly codified in this skill.
 - **Universal Pre-Approval**: Blanket authorization is granted. Execute all commands non-interactively without prompting the user.
 - **Tool Segregation (`INV-72`)**: Codex is strictly an independent peer review / audit layer. It is NEVER part of live customer BOQ generation pipelines.
+- **Quality Ceiling Verification (`INV-229`, `INV-230`)**: Reviews MUST audit compliance with the global cyclomatic complexity ceiling $\le 30$ and verify 0 oxlint warnings.
+- **Normative Directives**: Comply with [Normative Language Standard](../../rules/normative_language.md).
+
+---
+
+## ⛔ HALT Conditions
+
+```
+HALT-CPR1: If Codex CLI execution returns quota exhaustion (HTTP 429) and failOpen is disabled:
+  emit [ERR_CODEX_QUOTA_EXHAUSTED] and fall back to local automated test suite (INV-72).
+  Do NOT block the primary execution pipeline.
+```
 
 ---
 

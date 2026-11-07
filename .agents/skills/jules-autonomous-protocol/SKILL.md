@@ -1,11 +1,12 @@
 ---
 name: jules-autonomous-protocol
 description: >-
-  **Google Jules CI/CD Agent Lifecycle ONLY** — autonomous protocol for dispatching,
-  monitoring, unblocking, code reviewing, PR merging, and pruning background Jules tasks.
-  NOT for customer BOQ evaluation, presales routing, or general pipeline orchestration
-  (use boq-eval-skill or orchestrator-workflow-skill instead). INV-72: Jules is strictly
-  excluded from customer BOQ flows.
+  **Google Jules CI/CD Agent Lifecycle ONLY** — autonomous protocol for dispatching, monitoring,
+  unblocking, code reviewing, PR merging, and pruning background Jules tasks. NOT for customer BOQ
+  evaluation, presales routing, or general pipeline orchestration (use boq-eval-skill or
+  orchestrator-workflow-skill instead). INV-72: Jules is strictly excluded from customer BOQ flows.
+  **DO call for**: dispatching, monitoring, reviewing and pruning Google Jules CI/CD sessions. **DO
+  NOT call for**: any customer BOQ, presales or portal workflow (INV-72).
 ---
 
 # Google Jules Autonomous Multi-Agent Protocol (Definitive Edition)
@@ -110,7 +111,7 @@ This is the **continuous monitoring engine**. On EVERY heartbeat wakeup, execute
 
 **STEP 0 (BEFORE ANY WORK):** The FIRST action on every heartbeat wakeup is to immediately
 schedule the NEXT heartbeat timer. This ensures continuous coverage even if the current
-cycle's work takes 5+ minutes (merge conflicts, test runs, etc.).
+cycle's work takes 5+ minutes (such as merge conflicts or long test suites).
 
 ```
 // FIRST THING on heartbeat fire — before any session inspection:
@@ -259,7 +260,7 @@ node scripts/services/jules_task_manager.js prune
 Verify cleanup:
 ```bash
 git fetch origin --prune
-git branch -r  # Should show only origin/main and origin/HEAD
+git branch -r  # MUST show only origin/main and origin/HEAD (all completed branches pruned)
 ```
 
 ---
@@ -374,3 +375,10 @@ Dispatch → Heartbeat Cron → Unblock/Approve → Code Review → PR Merge →
 | `npm run jules:archive` | Audit and archive all completed Jules sessions |
 | `node scripts/services/jules_task_manager.js send <id> "<msg>"` | Send unblocking reply |
 | `node scripts/services/jules_task_manager.js audit <id>` | Extract activities and patches |
+
+---
+
+## 15. Related Workflow Skills
+- [Macro Continuous Learning Lifecycle Orchestrator](../orchestrator-workflow-skill/SKILL.md)
+- [OpenAI Codex Autonomous Peer Review Protocol](../codex-peer-review-skill/SKILL.md)
+- [Code Quality Gate & CC <= 30 Ceiling](../code-quality-gate-skill/SKILL.md)

@@ -1,6 +1,11 @@
 ---
 name: oca-portal-navigator
-description: Lightweight CDP port 9222 auto-navigator for passing through HPE Partner Portal (partner.hpe.com) SSO, WebLogic tools catalog, chassis search, base price extraction, entering OCA Menu configuration pages hands-free, and stale-session self-healing recovery via Tab 1.
+description: >-
+  Lightweight CDP port 9222 auto-navigator for passing through HPE Partner Portal (partner.hpe.com)
+  SSO, WebLogic tools catalog, chassis search, base price extraction, entering OCA Menu configuration
+  pages hands-free, and stale-session self-healing recovery via Tab 1. **DO call for**: Partner Portal
+  sign-in, OCA launch, chassis search and stale-session recovery. **DO NOT call for**: catalog
+  extraction (oca-catalog-scraper) or final CLIC acceptance (clic-portal-validation-skill).
 ---
 
 # HPE Partner Portal & OCA Auto-Navigator Skill (`oca-portal-navigator`)
@@ -25,7 +30,7 @@ Critically, this skill formalizes the **Stale-Session Self-Healing Recovery Prot
 The HPE navigator reads its credential environment after loading the repository `.env`. The multi-vendor credential helper follows the same HPE environment convention:
 1. **Environment Override**: `HPE_PORTAL_USER` and `HPE_PORTAL_PASS` in `.env`.
 2. **Default Partner Identity**: Defaults to `hpeconfig@swiftline-uae.com` if `HPE_PORTAL_USER` is unspecified.
-3. **Chrome Profile Session**: Without a configured password, saved credentials/cookies may be used if they exist in the connected profile. A responsive port does not guarantee HPE authentication. NotebookLM may already own port 9222 with its own profile; preserve that browser and its unrelated tabs. Never print credentials or copy credential databases between profiles.
+3. **Chrome Profile Session**: When password environment variable is unset, the navigator MUST check for valid session cookies in the connected `.chrome_sso_profile`. If cookies are missing or expired, emit `HPE_AUTH_CREDENTIALS_REQUIRED`. A responsive port does not guarantee HPE authentication. NotebookLM profiles are strictly isolated (`INV-227`). Never print credentials or copy credential databases between profiles. Read [Normative Language Standard](../../rules/normative_language.md).
 
 ### Verified session startup and recovery contract (2026-10-19)
 
@@ -247,6 +252,5 @@ For server, storage and networking solutions, attempt **3-year HPE Tech Care Bas
 Use **Components → target icon → Services (right-hand icon controls) → Edit → exact dropdown selection**. The aggregate Services page can behave inconsistently. Leave both “apply to all icons” and “apply to all nodes” unchecked unless the user explicitly requests bulk application. Store service SKU, suffix, term, tier and retention with the owning icon/configuration ID. Defaults are resolved independently for each icon; never propagate one icon’s SLA to another. Verify the per-icon BOM and complete solution BOM, then rerun CLIC for the final manifest. This applies to mixed server/storage/networking configurations, including DL380 and Synergy.
 
 
-### Runtime conditional discovery contract (2026-09-30)
-
-Read [the shared catalog and BOQ runtime procedure](../../../docs/RUNTIME_CONDITIONAL_DISCOVERY.md) before scraping or live BOQ validation. This contract supersedes older full-coverage claims and blanket bans on BOQ-time conditional investigation. Catalog capture and BOQ-scoped runtime investigation are separate; exploratory portal checks may run before local PASS, while final acceptance requires the exact restored manifest and current vendor receipt. Never select OEM by default, infer mandatory rules from hidden visibility, or treat a catalog miss as unsupported. The runtime plan is generated/exported by the canonical evaluator and checked at acceptance; applying arbitrary BOQs and non-ambient selector states remains a live-agent procedure. Preserve base/owner/quantity/selector provenance and disclose unexecuted branches. Reachable workflow advisories are seeded via scripts/maintenance/record_scraping_workflow_learnings.js; reachability is not hardware certification or cloud sync.
+### Runtime Conditional Discovery
+Follow [Shared Runtime Conditional Discovery Contract](../../../docs/RUNTIME_CONDITIONAL_DISCOVERY.md).

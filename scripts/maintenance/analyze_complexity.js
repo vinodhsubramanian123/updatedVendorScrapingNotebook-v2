@@ -127,7 +127,7 @@ function runAnalysis() {
   const args = process.argv.slice(2);
   const failOnBreach = args.includes('--fail-on-breach');
   const maxCcArg = args.find(a => a.startsWith('--max-cc=') || a.startsWith('--threshold='));
-  const maxCcThreshold = maxCcArg ? parseInt(maxCcArg.split('=')[1], 10) : 105;
+  const maxCcThreshold = maxCcArg ? parseInt(maxCcArg.split('=')[1], 10) : 30;
 
   const tierArg = args.find(a => a.startsWith('--tier='));
   const tier = tierArg ? tierArg.split('=')[1].toLowerCase() : 'all';

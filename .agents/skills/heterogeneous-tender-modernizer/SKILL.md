@@ -1,11 +1,16 @@
 ---
 name: heterogeneous-tender-modernizer
-description: Plan mixed-domain hardware tenders and explicitly requested loose-component carrier allocations while preserving source rows, quantity ownership and unresolved validation gaps.
+description: >-
+  Plan mixed-domain hardware tenders and explicitly requested loose-component carrier allocations
+  while preserving source rows, quantity ownership and unresolved validation gaps. **DO call for**:
+  mixed-domain tenders and explicitly requested loose-component carrier allocations. **DO NOT call
+  for**: single-product BOQs (boq-eval-skill) or competitor translations
+  (cross-vendor-transformation-skill).
 ---
 
 # Heterogeneous tender modernization
 
-Read `docs/SOLUTION_TOPOLOGY_AND_VALIDATION.md`. Route by owned component role, not table title or product family. Mixed assemblies, unknown components and containment gaps remain unresolved; do not run them through server defaults.
+Read `docs/SOLUTION_TOPOLOGY_AND_VALIDATION.md` and [Normative Language Standard](../../rules/normative_language.md). Route by owned component role, not table title or product family. Mixed assemblies, unknown components and containment gaps remain unresolved; do not run them through server defaults. Follow `INV-203` (shared datacenter infrastructure partitioning) and `INV-212` (multi-node cluster power normalization).
 
 ## ⛔ HALT Conditions
 
@@ -21,8 +26,7 @@ HALT-HTM2: If context.tables is empty or contains 0 items across all groups:
 
 ## Inputs and execution
 
-
-Use `scripts/evaluators/route_query.js` with heterogeneous intent. Supply `context.tables` or a JSON `--file` containing table groups. Each group has `items`, an optional stable `id`, and an explicit `multiplier` (defaults to one). Each item needs `quantity` or `qty`. Preserve original part numbers, descriptions, prices, notes and requested quantities. Ingest Excel/PDF through the appropriate existing ingestion skill before this route; it does not read binary workbooks itself.
+Use `scripts/evaluators/route_query.js` with heterogeneous intent. Supply `context.tables` or a JSON `--file` containing table groups. Each group has `items`, an optional stable `id`, and an explicit `multiplier` (defaults to one). Each item needs `quantity` or `qty`. Preserve original part numbers, descriptions, prices, notes and requested quantities. Ingest Excel/PDF through `ocr-quote-ingestion-skill` or standard spreadsheet ingestion before this route; it does not read binary workbooks itself.
 
 The implementation is `scripts/lib/boq/heterogeneous_tender_modernizer.js`:
 

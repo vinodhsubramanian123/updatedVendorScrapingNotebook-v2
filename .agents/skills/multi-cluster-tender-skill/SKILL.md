@@ -1,11 +1,33 @@
 ---
 name: multi-cluster-tender-skill
-description: Use this skill to decompose large, aggregated customer tender RFQs (>1 server, multi-node requests, multi-tier Web/App/DB architectures, or multi-sheet workbooks) into homogeneous, 100% buildable server clusters. Computes Diophantine cluster multipliers, datacenter rack layout (42U rack counts), peak facility power envelopes (kW), high-line utility derating, and rail kit coverage.
+description: >-
+  Use this skill to decompose large, aggregated customer tender RFQs (>1 server, multi-node requests,
+  multi-tier Web/App/DB architectures, or multi-sheet workbooks) into homogeneous, 100% buildable
+  server clusters. Computes Diophantine cluster multipliers, datacenter rack layout (42U rack counts),
+  peak facility power envelopes (kW), high-line utility derating, and rail kit coverage. **DO call
+  for**: aggregated multi-server tenders, 42U rack counts and facility power envelopes. **DO NOT call
+  for**: single-node BOQs (boq-eval-skill) or mixed-domain carrier allocation
+  (heterogeneous-tender-modernizer).
 ---
 
 # Multi-Cluster Tender Sizing & Decomposition Skill (`multi-cluster-tender-skill`)
 
-**Purpose**: Real-world enterprise customer RFQs and tenders rarely ask for a single standalone server. They typically aggregate multiple node types (e.g. 40x General Compute nodes + 16x Database nodes + 4x GPU AI nodes) into a single spreadsheet or quote. This skill enables the Antigravity agent to autonomously decompose complex multi-server tenders into distinct, homogeneous, 100% buildable configurations, evaluate each cluster independently, and synthesize total datacenter facility infrastructure (rack units, 42U rack counts, peak power kW, and rail kits).
+Read [Normative Language Standard](../../rules/normative_language.md). Enforces shared datacenter infrastructure partitioning (`INV-203`) and multi-node cluster power normalization (`INV-212`).
+
+**Purpose**: Real-world enterprise customer RFQs and tenders aggregate multiple node types (e.g., 40x General Compute nodes + 16x Database nodes + 4x GPU AI nodes) into a single spreadsheet or quote. This skill enables the agent to autonomously decompose complex multi-server tenders into distinct, homogeneous, 100% buildable configurations, evaluate each cluster independently, and synthesize total datacenter facility infrastructure (rack units, 42U rack counts, peak power kW, and rail kits).
+
+---
+
+## ⛔ HALT Conditions
+
+```
+HALT-MCT1: If Diophantine multiplier factorization yields no integral solution:
+  emit [ERR_NON_INTEGRAL_CLUSTER_PARTITION] and prompt user to clarify node multiplier (INV-192).
+  Do NOT round fractional server counts or inflate quantities.
+
+HALT-MCT2: If facility power envelope per rack exceeds 42U thermal/power budget (>15kW without high-line derating):
+  emit [ERR_RACK_POWER_ENVELOPE_EXCEEDED] and enforce rack distribution (INV-212).
+```
 
 ---
 

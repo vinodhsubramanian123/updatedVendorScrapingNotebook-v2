@@ -1,6 +1,10 @@
 ---
 name: rfp-sizing-synthesizer
-description: Use this skill to translate unstructured customer RFP specifications, sizing requirements, and tender wishlists (cores, RAM, storage, network, power) into a 100% buildable starting BOM with exact HPE part numbers.
+description: >-
+  Use this skill to translate unstructured customer RFP specifications, sizing requirements, and
+  tender wishlists (cores, RAM, storage, network, power) into a 100% buildable starting BOM with exact
+  HPE part numbers. **DO call for**: natural-language RFP requirements with no SKUs that need a
+  starting BOM. **DO NOT call for**: tenders that already list SKUs (boq-eval-skill).
 ---
 
 # Natural Language RFP Sizing-to-BOM Synthesizer (`rfp-sizing-synthesizer`)
@@ -22,17 +26,17 @@ When a customer or sales engineer provides a tender wishlist without HPE part nu
 ### 2. Compute & Core Interleaving
 - **Core Count Target**: Calculate per-socket core requirements:
   - Entry / Basic Compute: Intel Xeon Silver 4510 / Xeon 6505P 16-core ($2.8\text{GHz}$) for minimal cost where GPU accelerators provide the compute muscle.
-  - 64 cores total $\rightarrow$ 2x 32-core processors (e.g., Intel Xeon Gold 6548Y 32-core 280W `P73299-B21` or Gold 6530).
-  - 128 cores total $\rightarrow$ 2x 64-core processors (e.g., Intel Xeon Platinum 8580 64-core 350W `P73289-B21`).
+  - 64 cores total $\rightarrow$ 2x 32-core processors (e.g., Intel Xeon Gold 6548Y+ 32-core 250W `P67082-B21` or Gold 6530 `P67095-B21`).
+  - 128 cores total $\rightarrow$ 2x 64-core processors (e.g., Intel Xeon Platinum 8580 60-core 350W `P67088-B21` or Platinum 8592+ 64-core 350W `P67089-B21`).
 - **Secondary CPU Heatsink Rule**: Dual-processor configurations MUST always include the secondary CPU heatsink kit (`P48818-B21` for Gen12, `P74792-B21` for Gen11).
 - **High-Performance Fans**: Processors $\ge 240\text{W}$ TDP mandate High-Performance Fan Kit (`P48820-B21`) on standard DL380; DL380a uses factory-integrated high-performance accelerator fan modules.
 
 ### 3. Memory Channel Interleaving vs. Minimal Supported Population
 - **DL380 Gen12 (16 Memory Channels — 8 per CPU)**:
   - **Optimal Interleaving (1DPC Symmetrical — 16 DIMMs)**:
-    - **256GB Total**: 16x 16GB DDR5-5600 (`P73300-B21` / `P64705-B21`).
-    - **512GB Total**: 16x 32GB 2Rx8 DDR5-5600 Smart Memory (`P73300-B21` / `P64707-B21`).
-    - **1TB Total**: 16x 64GB 2Rx4 DDR5-5600 Smart Memory (`P73301-B21` / `P64708-B21`).
+    - **256GB Total**: 16x 16GB DDR5-5600 (`P64705-B21`).
+    - **512GB Total**: 16x 32GB 2Rx8 DDR5-5600 Smart Memory (`P64707-B21`).
+    - **1TB Total**: 16x 64GB 2Rx4 DDR5-5600 Smart Memory (`P64708-B21`).
     - **2TB Total**: 16x 128GB 4Rx4 or 32x 64GB (2DPC with clock speed derating).
 - **Minimal Entry Population (Supported Hierarchy)**:
   - Per HPE CLIC rules, supported DIMM counts per socket are `[1, 2, 4, 6, 8, 12, 16]`.
@@ -56,7 +60,7 @@ When a customer or sales engineer provides a tender wishlist without HPE part nu
 ### 5. GPU Accelerator Density Arbitration & Auxiliary Power (DL380a Gen12) (`INV-84`)
 
 > [!NOTE]
-> **Dynamic Catalog SKU Verification**: The part numbers in this section (`S3U30C`, `P75008-B21`, `P75005-B21`, `P74700-B21`, etc.) reflect the certified DL380a Gen12 baseline. Prior to final deliverable generation, always verify active orderability, current pricing, and lifecycle status against `outputs/ProLiant/Gen12/DL380a_Gen12/catalog.json` via `getHistoricalSkuPrice()` — accelerator options evolve with vendor releases.
+> **Dynamic Catalog SKU Verification**: The part numbers in this section (`S3U30C`, `P75008-B21`, `P75005-B21`, `P74700-B21`, and related accelerator options) reflect the certified DL380a Gen12 baseline. Prior to final deliverable generation, always verify active orderability, current pricing, and lifecycle status against `outputs/ProLiant/Gen12/DL380a_Gen12/catalog.json` via `getHistoricalSkuPrice()` — accelerator options evolve with vendor releases.
 
 - **H200 NVL Parallel Sub-Path Sizing (8DW vs. 10DW)**:
   - DL380a Gen12 supports both 8DW and 10DW accelerator topologies.
@@ -121,8 +125,8 @@ The agent MUST compile the synthesized BOM into this exact structure before pipi
 
 ```
 Part Number,Qty,Description
-P55446-B21,1,HPE ProLiant DL380 Gen12 8SFF CTO Base Server
-P73289-B21,2,Intel Xeon Platinum 8580 64-core 350W Processor
+P73282-B21,1,HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-order Server
+P67088-B21,2,Intel Xeon Platinum 8580 60-core 350W Processor
 P48818-B21,1,HPE DL380 Gen12 Secondary CPU Heatsink Kit
 P64707-B21,16,HPE 32GB 2Rx8 DDR5-5600 Smart Memory Kit
 P47777-B21,1,HPE MR416i-p Gen11 PCIe Standup Tri-Mode Controller
@@ -135,7 +139,7 @@ HU4B2A3,1,HPE 3Y Tech Care Basic Hardware Only Support
 ### Required Columns
 | Column | Description | Validation |
 |--------|-------------|------------|
-| `Part Number` | Full HPE SKU (e.g., `P73289-B21`) | Must pass `isValidHpeSKU()` |
+| `Part Number` | Full HPE SKU (e.g., `P73282-B21`) | Must pass `isValidHpeSKU()` |
 | `Qty` | Integer quantity per atomic server node | Must be ≥1, integer only |
 | `Description` | Human-readable component description | Must not be empty |
 
@@ -143,11 +147,11 @@ HU4B2A3,1,HPE 3Y Tech Care Basic Hardware Only Support
 
 | Role | Required | Example SKU | Notes |
 |------|----------|-------------|-------|
-| **CHASSIS** | ✅ Mandatory | `P55446-B21` | Exactly 1 base CTO chassis |
-| **PROCESSOR** | ✅ Mandatory | `P73289-B21` | 1 or 2 (matching socket count) |
+| **CHASSIS** | ✅ Mandatory | `P73282-B21` | Exactly 1 base CTO chassis |
+| **PROCESSOR** | ✅ Mandatory | `P67088-B21` | 1 or 2 (matching socket count) |
 | **MEMORY** | ✅ Mandatory | `P64707-B21` | Must be symmetrical (multiple of channel count) |
 | **STORAGE_CONTROLLER** | ⚠️ Conditional | `P47777-B21` | OCP or PCIe standup; omitted if node is diskless (`873763-B21`) or boot-only (`NS204i-u`) per `INV-81` & `INV-87` |
-| **DRIVES** | ⚠️ If storage requested | `P36999-B21` | Match RAID level and capacity requirements; omit for diskless nodes (`INV-81`) |
+| **DRIVES** | ⚠️ If storage requested | `P47808-B21` | Match RAID level and capacity requirements; omit for diskless nodes (`INV-81`) |
 | **NETWORKING** | ✅ Mandatory | `P10115-B21` | At least 1 NIC |
 | **POWER** | ✅ Mandatory | `P38997-B21` | 1+1 redundant default |
 | **SUPPORT** | ⚠️ Default 3yr basic | `HU4B2A3` | Never inject installation/startup services (`INV-32`) |
@@ -165,16 +169,16 @@ HU4B2A3,1,HPE 3Y Tech Care Basic Hardware Only Support
 | S3 | **Memory Symmetry** | DIMM count is a multiple of (channels_per_cpu × cpu_count). For DL380 Gen12: 8 channels/CPU × 2 CPUs = 16 channels, so DIMM count ∈ {16, 32} | WARN — asymmetric population degrades bandwidth |
 | S4 | **All Roles Resolved** | All 7 mandatory roles (or 5 if storage/support are N/A) have at least 1 SKU | HALT — incomplete BOM |
 | S5 | **SKU Validity** | Every SKU passes `isValidHpeSKU()` regex | HALT — invalid part numbers |
-| S6 | **SKU Catalog Existence** | Every SKU exists in `catalog.json` for the target chassis directory | WARN — uncertified SKU (may still be valid but unscraped) |
-| S7 | **Price Availability** | ≥80% of SKUs have resolved prices via `getHistoricalSkuPrice()` | WARN — financial totals will be incomplete |
+| S6 | **SKU Catalog Existence** | Every SKU exists in `catalog.json` for target chassis | WARN — ground via local RAG or NotebookLM; if unresolved, mark as `[RAG_UNGROUNDED]` (`INV-104`) |
+| S7 | **Price Availability** | ≥80% of SKUs have resolved prices via `getHistoricalSkuPrice()` | WARN — financial totals will be incomplete; disclose unpriced items as `null` |
 | S8 | **Thermal Envelope** | Total CPU TDP does not exceed chassis thermal maximum (e.g., DL380 Gen12 supports up to 2x 350W) | HALT — thermally infeasible |
-| S9 | **Power Headroom** | Total system draw ≤ PSU wattage (with 20% headroom for burst) | WARN — consider higher PSU tier |
-| S10 | **Secondary Accessories** | Dual-CPU configs include secondary heatsink (`INV-61`); ≥240W TDP includes high-perf fans | WARN — will be auto-injected by eval but better to include proactively |
+| S9 | **Power Headroom** | Total system draw ≤ PSU wattage (with 20% headroom for burst) | WARN — escalate PSU wattage to next tier (e.g., 800W $\rightarrow$ 1000W $\rightarrow$ 1600W $\rightarrow$ 2200W Titanium) (`INV-29`) |
+| S10 | **Secondary Accessories** | Dual-CPU configs include secondary heatsink (`INV-61`, `INV-208`); ≥240W TDP includes high-perf fans (`INV-206`) | WARN — MUST inject secondary heatsink and high-performance fan kit proactively |
 
 ### Gate Summary Output Format
 ```
 Pre-Flight Sizing Verification:
-  ✅ S1: Chassis P55446-B21 present
+  ✅ S1: Chassis P73282-B21 present
   ✅ S2: CPU count 2 (dual-socket)
   ✅ S3: Memory 16 DIMMs (16 channels, 1DPC — symmetric)
   ✅ S4: 7/7 roles resolved

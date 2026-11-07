@@ -8,13 +8,14 @@ vendorNotebookSolution/
 │   ├── AGENTS.md                          ← Core system architecture & agent directives (INV-1 to INV-200)
 │   ├── DATA_DICTIONARY.md                 ← JSON schemas & pipeline contracts
 │   ├── PORTFOLIO_STATUS.md                ← Live portfolio intelligence state of health (10 canonical products)
-│   └── skills/                            ← 30 Specialized workflow skills
+│   └── skills/                            ← 34 Specialized workflow skills
 │       ├── adversarial-validation-skill/  ← Enterprise chaos red-teaming & 10 failure mode checks
 │       ├── bom-reconciliation-skill/      ← Customer tender vs partner quote reconciler
 │       ├── boq-eval-skill/                ← 7-aspect physical math & pre-flight BOQ validation
 │       ├── boq-remarks-reconciliation-skill/ ← Commercial remarks annotation & quantity bridging
 │       ├── catalog-intelligence-skill/    ← Pricing trends & lifecycle state tracking
 │       ├── clic-portal-validation-skill/  ← Scoped portal conditions & final acceptance verification
+│       ├── code-quality-gate-skill/       ← Whole-repository code quality, complexity ceiling & epistemic gate
 │       ├── codex-peer-review-skill/       ← Independent Codex peer review & static gap audit
 │       ├── conditional-sku-discovery-skill/ ← Hidden & selector-dependent SKU discovery
 │       ├── continuous-learning-skill/     ← Closed-loop continuous learning & reachability
@@ -34,8 +35,11 @@ vendorNotebookSolution/
 │       ├── ocr-quote-ingestion-skill/     ← Multimodal Gemini Vision OCR for quotes
 │       ├── orchestrator-workflow-skill/   ← Macro continuous learning lifecycle
 │       ├── output-validation-skill/       ← Pre-presentation 18-point acceptance criteria gate (B1–B18)
-│       ├── presales-query-router/         ← 5-track presales intent query classifier
+│       ├── presales-clearance-strategy-skill/ ← Dual-track 90-day clearance vs active production baseline strategy
+│       ├── presales-query-router/         ← Presales intent query classifier with dynamic dispatch
 │       ├── rfp-sizing-synthesizer/        ← Unstructured sizing specs to starting BOM
+│       ├── self-correction-counterfactual-skill/ ← Autonomous counterfactual backtracking & Phase 9 narratives
+│       ├── turnkey-racking-cabling-skill/ ← Turnkey physical racking, rail kits, transceivers & DL380a factory RAID transpilation
 │       ├── value-engineering-skill/       ← Post-buildability CapEx/OpEx deal optimizer
 │       ├── workbook-generator-skill/      ← Standardized 7-column upload sheets & workbooks
 │       └── workload-dna-skill/            ← Enterprise app workload matching & slot arbitration

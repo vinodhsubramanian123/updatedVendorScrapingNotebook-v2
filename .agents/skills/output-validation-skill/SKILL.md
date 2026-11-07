@@ -1,6 +1,12 @@
 ---
 name: output-validation-skill
-description: Use this skill to validate the completeness, correctness, and quality of any presales output (BOQ evaluation, RFP sizing, BOM reconciliation, Q&A answer) before presenting it to the user. Catches missing badges, incomplete financial totals, unresolved SKUs, and structural defects.
+description: >-
+  Use this skill to validate the completeness, correctness, and quality of any presales output (BOQ
+  evaluation, RFP sizing, BOM reconciliation, Q&A answer) before presenting it to the user. Catches
+  missing badges, incomplete financial totals, unresolved SKUs, and structural defects. **DO call
+  for**: the 18-point acceptance check on any presales output before it is presented. **DO NOT call
+  for**: producing the output (boq-eval-skill) or live portal validation
+  (clic-portal-validation-skill).
 ---
 
 # 18-Point Output Validation & Acceptance Criteria Skill (`output-validation-skill`)
@@ -118,9 +124,21 @@ The agent MUST execute validation as the **final step** of every presales flow, 
 
 ---
 
-## 🔄 Self-Healing Strategies
+Read [Normative Language Standard](../../rules/normative_language.md). Every output MUST pass the 18-point pre-presentation acceptance gate before presentation to the customer.
 
-When a BLOCK criterion fails, the agent SHOULD attempt these remediation strategies before giving up:
+## ⛔ HALT Conditions
+
+```
+HALT-OVS1: If any BLOCK criterion fails after MAX_REMEDIATION_ATTEMPTS (3 attempts):
+  emit [ERR_PRE_PRESENTATION_GATE_FAILED] and set customerDisposition = 'DELIVERY_BLOCKED_UNBUILDABLE'.
+  Do NOT export delivery authorization or present uncertified outputs (INV-128).
+```
+
+---
+
+## 🔄 Deterministic Self-Healing Sequence (Max 3 Attempts)
+
+When a BLOCK criterion fails, the agent MUST execute up to `MAX_REMEDIATION_ATTEMPTS = 3` bounded remediation iterations in strict sequence before halting:
 
 | Failed Criterion | Self-Heal Strategy |
 |-----------------|-------------------|

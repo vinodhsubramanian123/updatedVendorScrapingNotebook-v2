@@ -3,13 +3,30 @@ name: catalog-intelligence-skill
 description: >-
   Explore catalog pricing history, price trends, SKU lifecycle state changes (Obsolete,
   Direct Ship, 90-Day Warning, EOL), and newly added hardware options across product generations.
-  **Call THIS skill (not boq-eval-skill) for standalone lifecycle status, price history,
-  or OB/EOL questions about specific SKUs outside the context of a full BOQ evaluation.**
+  **DO call for**: Standalone SKU pricing history, price trends, obsolescence notifications (OB/EOL),
+  90-day clearance discovery (audit 2026-10-20), and generational option diffs.
+  **DO NOT call for**: Full BOQ evaluations (use boq-eval-skill), or competitive RFP sizing (use rfp-sizing-synthesizer).
 ---
 
 # Catalog Intelligence, Price Trails & Lifecycle State Skill (`catalog-intelligence-skill`)
 
+## 1. Scope & Lifecycle Authority
 This skill guides the agent in querying, analyzing, and explaining catalog updates, pricing drift, obsolescence notifications, and generational option differences across HPE ProLiant, Synergy, Alletra, StoreEver, and Cray platforms.
+
+- **Dual-track clearance strategy**: When a SKU is in a 90-Day EOL or Clearance state, hand off to [`presales-clearance-strategy-skill`](../presales-clearance-strategy-skill/SKILL.md) (source: docs/audits/2026-10-20-sku-lifecycle-and-presales-clearance-strategy.md). This skill reports lifecycle facts only.
+- **Normative Directives**: Comply with [Normative Language Standard](../../rules/normative_language.md).
+
+---
+
+## ⛔ HALT Conditions
+
+```
+HALT-CAT1: If target directory or catalog.json does not exist for the queried chassis:
+  emit [ERR_CATALOG_NOT_FOUND] and HALT. Scrape target catalog first.
+
+HALT-CAT2: If queried SKU is not found across any certified catalog:
+  emit [ERR_SKU_NOT_IN_CATALOG] and query NotebookLM or Local RAG. Do NOT fabricate price.
+```
 
 ---
 
@@ -109,7 +126,7 @@ When migrating customer infrastructure from DL380 Gen11 to DL380 Gen12:
 # Query historical price of a SKU
 node -e "
   const { getHistoricalSkuPrice } = require('./scripts/lib/catalog/sku_versioning.js');
-  console.log(getHistoricalSkuPrice('P73299-B21', 'outputs/ProLiant/Gen12/DL380_Gen12'));
+  console.log(getHistoricalSkuPrice('P74571-B21', 'outputs/ProLiant/Gen12/DL380_Gen12'));
 "
 
 # Run catalog diff against previous snapshot to view additions & price changes

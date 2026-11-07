@@ -1,6 +1,11 @@
 ---
 name: value-engineering-skill
-description: Use this skill to evaluate post-buildability CapEx/OpEx optimizations on certified BOQ solutions, including CPU right-sizing, NIC bandwidth alignment, PSU efficiency tuning, and memory tier selection. Always runs AFTER 100% buildability is confirmed, never before.
+description: >-
+  Use this skill to evaluate post-buildability CapEx/OpEx optimizations on certified BOQ solutions,
+  including CPU right-sizing, NIC bandwidth alignment, PSU efficiency tuning, and memory tier
+  selection. Always runs AFTER 100% buildability is confirmed, never before. **DO call for**:
+  post-buildability CapEx/OpEx optimization of an already certified configuration. **DO NOT call
+  for**: any configuration that is not yet buildable (INV-76).
 ---
 
 # Value Engineering & Deal Optimization Skill (`value-engineering-skill`)
@@ -9,23 +14,24 @@ description: Use this skill to evaluate post-buildability CapEx/OpEx optimizatio
 
 > **Critical Ordering Invariant**: Value engineering MUST run AFTER buildability is confirmed. Never optimize a configuration that hasn't passed the 7-aspect pre-flight checks — you'd be optimizing something that can't be built.
 
-## ⛔ Mandatory Buildability Hard Gate (INV-76)
+Read [Normative Language Standard](../../rules/normative_language.md).
+
+## ⛔ HALT Conditions (INV-76)
 
 Before executing any value engineering analysis, assert that the target configuration is 100% buildable:
 
 ```
-GATE-VE1: Assert eval_boq.js output contains:
-  overallBuildability === true (or buildable === true)
+HALT-VE1: Assert eval_boq.js output contains overallBuildability === true.
   If buildability is false or missing:
     emit [ERR_VE_ON_UNBUILDABLE: Value engineering cannot run on unbuildable configurations.]
-    Return immediately — NEVER optimize an unbuildable BOM.
+    Return immediately — NEVER optimize an unbuildable BOM (INV-76).
 ```
 
 ---
 
 ## ⚡ Trigger Conditions
 
-The agent SHOULD invoke value engineering when:
+The agent MUST invoke value engineering when any of the following conditions are met:
 
 | Condition | Action |
 |-----------|--------|
@@ -97,10 +103,10 @@ The agent MUST NOT invoke value engineering when:
     "optimizations": [
       {
         "dimension": "CPU_RIGHT_SIZING",
-        "currentSku": "P73289-B21",
-        "currentDescription": "Xeon Platinum 8580 64-core 350W",
-        "suggestedSku": "P73299-B21",
-        "suggestedDescription": "Xeon Gold 6548Y 32-core 280W",
+        "currentSku": "P67088-B21",
+        "currentDescription": "Xeon Platinum 8580 60-core 350W",
+        "suggestedSku": "P67082-B21",
+        "suggestedDescription": "Xeon Gold 6548Y+ 32-core 250W",
         "unitPriceDelta": -2100.00,
         "totalSavings": -4200.00,
         "rationale": "Workload DNA is VIRTUALIZATION_DENSE — 32 cores/socket provides sufficient density for 40 VMs with lower TDP",

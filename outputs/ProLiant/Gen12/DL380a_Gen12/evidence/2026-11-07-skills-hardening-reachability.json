@@ -1,0 +1,65 @@
+{
+  "product": "DL380a_Gen12",
+  "recordedAt": "2026-11-07T13:48:05.791Z",
+  "source": "docs/audits/2026-11-07-agent-skills-audit-and-reasoning-clarity.md",
+  "results": [
+    {
+      "deltaId": "LEARN_DL380A_GEN12_WORKFLOW_NORMATIVE_LANGUAGE_PRECISION_20261107",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_DL380A_GEN12_WORKFLOW_NORMATIVE_LANGUAGE_PRECISION_20261107",
+        "ruleType": "WORKFLOW_NORMATIVE_LANGUAGE_PRECISION",
+        "affectedSku": "",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-11-07T13:48:05.704Z"
+      }
+    },
+    {
+      "deltaId": "LEARN_DL380A_GEN12_WORKFLOW_MODULAR_SKILL_TOKEN_OPTIMIZATION_20261107",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_DL380A_GEN12_WORKFLOW_MODULAR_SKILL_TOKEN_OPTIMIZATION_20261107",
+        "ruleType": "WORKFLOW_MODULAR_SKILL_TOKEN_OPTIMIZATION",
+        "affectedSku": "",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-11-07T13:48:05.734Z"
+      }
+    },
+    {
+      "deltaId": "LEARN_DL380A_GEN12_WORKFLOW_UNIVERSAL_CC30_AND_QUALITY_CEILING_20261107",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_DL380A_GEN12_WORKFLOW_UNIVERSAL_CC30_AND_QUALITY_CEILING_20261107",
+        "ruleType": "WORKFLOW_UNIVERSAL_CC30_AND_QUALITY_CEILING",
+        "affectedSku": "",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-11-07T13:48:05.761Z"
+      }
+    },
+    {
+      "deltaId": "LEARN_DL380A_GEN12_WORKFLOW_SPECIALIZED_ARCHITECTURAL_DISPATCH_20261107",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_DL380A_GEN12_WORKFLOW_SPECIALIZED_ARCHITECTURAL_DISPATCH_20261107",
+        "ruleType": "WORKFLOW_SPECIALIZED_ARCHITECTURAL_DISPATCH",
+        "affectedSku": "",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-11-07T13:48:05.791Z"
+      }
+    }
+  ],
+  "allReachable": true,
+  "hardwareCompatibilityCertified": false
+}

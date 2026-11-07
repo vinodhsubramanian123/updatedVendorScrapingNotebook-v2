@@ -89,6 +89,7 @@
     "test:offline": "node tests/chaos/test_offline_pipeline.js",
     "test:edges": "node tests/chaos/test_edge_cases.js",
     "test:invariants": "node --test tests/unit/test_all_system_invariants.js",
+    "test:skills": "node scripts/maintenance/validate_skills_integrity.js",
     "test:history": "node tests/integration/test_historical_pricing_timeline.js",
     "test:audit": "node tests/integration/test_excel_alignment_and_audit.js",
     "test:evidence": "node --test tests/unit/test_evidence_workflow_truth.js",

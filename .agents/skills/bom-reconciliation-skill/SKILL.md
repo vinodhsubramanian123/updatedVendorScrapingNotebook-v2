@@ -1,12 +1,14 @@
 ---
 name: bom-reconciliation-skill
 description: >-
-  **COMPARE two BOM documents** — reconcile a customer tender (requirements) against a
-  vendor partner quote, verifying line-by-line part numbers, quantities, prices, substituted
-  components, unrequested extras, and missing mandatory enablement kits. Produces a 4-dimension
-  audit (Direct Matches / Missing Items / Unsolicited Extras / Substitutions) and net CapEx delta.
-  DISTINCT from boq-remarks-reconciliation-skill which ANNOTATES a completed reconciliation
-  with commercial remark columns — do not confuse the two.
+  **COMPARE two BOM documents** — reconcile a customer tender (requirements) against a vendor partner
+  quote, verifying line-by-line part numbers, quantities, prices, substituted components, unrequested
+  extras, and missing mandatory enablement kits. Produces a 4-dimension audit (Direct Matches /
+  Missing Items / Unsolicited Extras / Substitutions) and net CapEx delta. DISTINCT from
+  boq-remarks-reconciliation-skill which ANNOTATES a completed reconciliation with commercial remark
+  columns — do not confuse the two. **DO call for**: line-by-line comparison of a customer tender
+  against a vendor partner quote. **DO NOT call for**: adding the remarks column
+  (boq-remarks-reconciliation-skill) or evaluating one BOQ on its own (boq-eval-skill).
 ---
 
 # BOM Reconciliation & Vendor Quote Difference Analyzer (`bom-reconciliation-skill`)
@@ -116,7 +118,7 @@ The verifier produces a structured JSON with these 4 audit dimensions:
 {
   "reconciliation": {
     "directMatches": [
-      { "sku": "P73289-B21", "description": "Xeon Platinum 8580", "customerQty": 2, "vendorQty": 2, "status": "MATCH" }
+      { "sku": "P67088-B21", "description": "Xeon Platinum 8580", "customerQty": 2, "vendorQty": 2, "status": "MATCH" }
     ],
     "missingItems": [
       { "sku": "P10115-B21", "description": "25GbE OCP3 NIC", "customerQty": 1, "risk": "CRITICAL — primary network adapter omitted" }
@@ -125,7 +127,7 @@ The verifier produces a structured JSON with these 4 audit dimensions:
       { "sku": "HA114A1", "description": "Installation and Startup Service", "vendorQty": 1, "unitPrice": 1500.00, "capExImpact": 1500.00, "flag": "UNSOLICITED_EXTRA_COST" }
     ],
     "substitutions": [
-      { "customerSku": "P73289-B21", "vendorSku": "P73299-B21", "type": "SUPPLY_CHAIN", "rationale": "Xeon 8580 → Gold 6548Y downgrade without customer consent" }
+      { "customerSku": "P67088-B21", "vendorSku": "P67082-B21", "type": "SUPPLY_CHAIN", "rationale": "Xeon 8580 → Gold 6548Y downgrade without customer consent" }
     ],
     "summary": {
       "totalDirectMatches": 12,

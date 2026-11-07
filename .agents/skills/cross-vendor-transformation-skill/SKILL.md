@@ -9,36 +9,48 @@ description: >-
   comparisons, or freeform product questions — those route via presales-query-router.
 ---
 
-# Cross-vendor transformation
+# Cross-Vendor Transformation & Parity Translation Engine (`cross-vendor-transformation-skill`)
 
-Use the exact source requirements and requested target product. Never substitute a fixed chassis, CPU, GPU, drive, support SKU, price, or notebook ID. Missing information stays unknown; product examples and past portal receipts are not universal compatibility rules.
+## 1. Scope & Parity Invariants
+This skill governs the systematic translation of competitor hardware tenders (Dell PowerEdge, Cisco UCS, Lenovo ThinkSystem, Supermicro) into verified HPE ProLiant/Synergy equivalents while preserving core customer specifications and documenting technical parity gaps (`INV-190`).
 
-Read `docs/SOLUTION_TOPOLOGY_AND_VALIDATION.md` before mixed-domain work. Resolve each owned component against its exact catalog, generation and region. Preserve local drives, adapter counts, support terms and other explicit requirements in the closest proposal; disclose deviations separately.
+- **Competitor Ingress Detection (`INV-190`)**: Competitor part numbers are candidate evaluation requirements, never ground truth. They MUST be mapped to functional equivalents in the certified HPE catalog.
+- **Fabric & Protocol Parity (`INV-216`)**: InfiniBand and RoCEv2 fabrics are distinct; high-performance compute interconnects (e.g., NVIDIA Quantum-2 IB vs. 200Gb/400Gb RoCEv2) MUST NOT be silently conflated or substituted without parity disclosure.
+- **Turnkey Completeness (`INV-228`)**: Turnkey competitor proposals specifying installation mandate equivalent HPE rail kits, optical transceivers, and PDU cables (`turnkey-racking-cabling-skill`).
+- **Normative Directives**: Comply with [Normative Language Standard](../../rules/normative_language.md).
+
+---
 
 ## ⛔ HALT Conditions
 
 ```
-HALT-CV1: If context.targetVendor / target chassis is not specified:
-  emit [TARGET_PRODUCT_REQUIRED] — ask user to specify target platform before proceeding.
+HALT-CV1: If context.targetVendor or target chassis is not specified:
+  emit [ERR_TARGET_PRODUCT_REQUIRED] and request exact target platform (e.g., 'DL380 Gen12').
+  Do NOT infer a default model or assume an unverified chassis.
 
 HALT-CV2: If source BOM rows are 0 after ingestion:
-  emit [SCOPED_SIZING_REQUIRED] — cannot transform an empty source.
-  Route to ocr-quote-ingestion-skill if source is an image/scanned PDF.
+  emit [ERR_EMPTY_SOURCE_BOM] and HALT. Route to ocr-quote-ingestion-skill if input is an image or PDF.
 
-HALT-CV3: If source vendor catalog is not in certified outputs/ directory:
-  emit [CATALOG_UNAVAILABLE — run oca-catalog-scraper for <targetChassis> first].
-  Do NOT attempt transformation without certified ground truth catalog.
+HALT-CV3: If target chassis catalog is missing from outputs/{Family}/{Gen}/{Model}/:
+  emit [ERR_CATALOG_UNAVAILABLE] and HALT. Scrape target chassis catalog first.
 ```
 
-## Execution
+---
 
-1. Ingest the source through the existing spreadsheet/OCR workflow. Retain original rows, units, configuration ownership and per-node versus total quantities.
-2. Use `scripts/evaluators/route_query.js` with explicit cross-vendor intent, source vendor and target chassis. The JavaScript API accepts `context.competitorSpec`, `context.targetBom` (per-node quantities), and `context.nodeMultiplier`. The CLI accepts text/JSON using `--file` and target identity using `--chassis`.
-3. `scripts/lib/boq/cross_vendor_transformer.js` extracts partial CPU/memory requirements and retains all source lines. It does **not** autonomously select catalog parts or certify physical parity. Review unparsed requirements before sizing. A missing target returns `TARGET_PRODUCT_REQUIRED`; a missing candidate returns `SCOPED_SIZING_REQUIRED`.
-4. Synthesize the target with the [RFP sizing skill](../rfp-sizing-synthesizer/SKILL.md) through the canonical sizing pipeline, then evaluate each complete candidate with `scripts/evaluators/eval_boq.js`. Do not execute throwaway tender scripts. The transformer retains supplied candidates separately from recommendations; an empty recommendation is an evidence gap, not a diskless solution.
-5. Assess compute, memory, accelerators, thermal limits, controller/cache, cabling, data drives, boot, risers, networking, redundant power, and infrastructure/support. These are review categories; every unresolved category remains `NOT_EVALUATED`. Presence of a processor or DIMM description does not prove performance or quantity parity.
-6. Use `validateSolutionWithEphemeralSource` in `scripts/lib/sync/nlm_solution_source_validator.js` with exact product notebook resolution, native citations and the complete manifest. A prose PASS is insufficient. Obtain a fresh live vendor acceptance receipt for the final unchanged manifest.
-7. Generate only evaluated alternatives. Never label placeholder performance/budget tiers buildable or quote fixed historical savings. Use the [workbook generator](../workbook-generator-skill/SKILL.md) for its documented export dialect, and [commercial remarks](../boq-remarks-reconciliation-skill/SKILL.md) for customer reconciliation.
+## 2. Execution Pipeline
 
-Default support is product-qualified 3-year Tech Care Basic only when the customer is silent. Select per owning icon with both apply-to-all controls off. Every deliverable remains `PORTAL VALIDATION PENDING` until final live acceptance. Offline operation must retain inputs and unresolved checks without inventing SKUs or cloud success.
+1. **Source Ingestion**: Ingest the competitor quote via spreadsheet parsing or OCR. Retain original rows, units, configuration ownership, and per-node quantities.
+2. **Intent Routing**: Dispatch via `scripts/evaluators/route_query.js` with explicit cross-vendor intent.
+3. **Requirement Extraction**: `scripts/lib/boq/cross_vendor_transformer.js` invokes `parseCompetitorSpecification()` to extract CPU cores, clock speed, socket counts, memory capacity, drive types/RAID, GPU accelerators, and network bandwidth. Unparsed items remain visible as `unresolvedRequirements`.
+4. **Target Synthesis**: Synthesize candidate HPE configurations via [`rfp-sizing-synthesizer`](../rfp-sizing-synthesizer/SKILL.md) and evaluate candidate buildability via canonical `eval_boq.js`.
+5. **Physical Aspect Verification**: Audit all 7 physical aspects. Protocol mismatches (e.g., InfiniBand vs. Ethernet RoCEv2) MUST be explicitly flagged.
+6. **Grounding & Receipt**: Verify candidates via ephemeral NotebookLM query (`INV-24`). Final deliverables remain marked `PORTAL VALIDATION PENDING` until live CLIC verification occurs (`INV-201`, Gate B19).
+7. **Workbook Generation**: Format deliverables via [`workbook-generator-skill`](../workbook-generator-skill/SKILL.md) and [`boq-remarks-reconciliation-skill`](../boq-remarks-reconciliation-skill/SKILL.md) for transparent customer line-by-line reconciliation.
 
+---
+
+## 3. References & Related Charters
+- [Cross-Vendor Architecture Transformer](../../../scripts/lib/boq/cross_vendor_transformer.js) via `parseCompetitorSpecification()` and `transformCompetitorQuote()`
+- [Heterogeneous Tender Modernizer](../heterogeneous-tender-modernizer/SKILL.md)
+- [RFP Sizing Synthesizer](../rfp-sizing-synthesizer/SKILL.md)
+- [Master System Invariants Directory (INV-190, INV-216, INV-228)](../../../docs/INVARIANTS.md)

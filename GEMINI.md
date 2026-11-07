@@ -62,7 +62,7 @@
 
 ## 10. Tiered Multi-Brain Verification & CLIC Advice Divergent Path Resolution Protocol (`INV-91` - `INV-93`)
 - **Multi-Brain Collaboration & Token Conservation**:
-  - **Antigravity / Gemini 3.6 Flash**: Primary Lead Execution Architect. Drives the Dual-Brain evaluation pipeline, manages atomic file operations, executes catalog diffs and scraping, and maintains 0-warning linter and cyclomatic complexity gates ($CC \le 135$).
+  - **Antigravity / Gemini 3.6 Flash**: Primary Lead Execution Architect. Drives the Dual-Brain evaluation pipeline, manages atomic file operations, executes catalog diffs and scraping, and maintains 0-warning linter and cyclomatic complexity gates ($CC \le 30$).
   - **Gemini NotebookLM**: Authoritative Intent & Ground-Truth Brain. Grounding source for QuickSpecs PDFs, live 22-sheet catalogs, and verified KnowledgeDeltas. Whenever in doubt, query NotebookLM; if confidence $< 0.95$, escalate to human.
   - **OpenAI Codex / GPT-6 Astra Light**: Secondary Verification & Peer Review Safety Layer. Utilized in a light-hearted, token-conservative manner via Plus subscription for critical architectural verifications, diff audits, and independent verification of generated walkthroughs and analysis reports. Fail-open non-blocking (if tokens/quota are unavailable, the autonomous pipeline never halts).
   - **Gemini Studio**: Future synthesis layer for multi-turn reasoning and visual steering.

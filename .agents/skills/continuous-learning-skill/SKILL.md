@@ -1,6 +1,12 @@
 ---
 name: continuous-learning-skill
-description: Closed-loop continuous learning, evidence log reflection, and automated knowledge reachability verification across product generations. Guarantees that learned rules, past failures, and presales feedback are actively reachable and applied on subsequent runs without human repetition.
+description: >-
+  Closed-loop continuous learning, evidence log reflection, and automated knowledge reachability
+  verification across product generations. Guarantees that learned rules, past failures, and presales
+  feedback are actively reachable and applied on subsequent runs without human repetition. **DO call
+  for**: recording portal feedback, certifying learned rules and verifying learning reachability. **DO
+  NOT call for**: running a BOQ evaluation (boq-eval-skill) or syncing notebooks
+  (knowledge-sync-skill).
 ---
 
 # Continuous Learning & Knowledge Reachability Skill (`continuous-learning-skill`)
@@ -117,6 +123,8 @@ Both knowledge-sync writers must use buildMasterKnowledgeRegistry so product-sco
 Retain exported evidence beside the product report in its `evidence/` directory; shared history paths may be ignored by Git and must not be the only linked copy. Learn topology coverage gaps and scoped service parent/suffix evidence, not unsupported generic vendor rules.
 
 
-### Runtime conditional discovery contract (2026-09-30)
+### Multi-Observation Reinforcement Learning (`INV-224`, `INV-225`)
+The engine promotes verified cloud-grounded rules and reinforces cited quarantined rules across $\ge 3$ observations, tracked via `telemetry.js:recordSelfHealingEvent`. Read [Normative Language Standard](../../rules/normative_language.md).
 
-Read [the shared catalog and BOQ runtime procedure](../../../docs/RUNTIME_CONDITIONAL_DISCOVERY.md) before scraping or live BOQ validation. This contract supersedes older full-coverage claims and blanket bans on BOQ-time conditional investigation. Catalog capture and BOQ-scoped runtime investigation are separate; exploratory portal checks may run before local PASS, while final acceptance requires the exact restored manifest and current vendor receipt. Never select OEM by default, infer mandatory rules from hidden visibility, or treat a catalog miss as unsupported. The runtime plan is generated/exported by the canonical evaluator and checked at acceptance; applying arbitrary BOQs and non-ambient selector states remains a live-agent procedure. Preserve base/owner/quantity/selector provenance and disclose unexecuted branches. Reachable workflow advisories are seeded via scripts/maintenance/record_scraping_workflow_learnings.js; reachability is not hardware certification or cloud sync.
+### Runtime Conditional Discovery
+Follow [Shared Runtime Conditional Discovery Contract](../../../docs/RUNTIME_CONDITIONAL_DISCOVERY.md).

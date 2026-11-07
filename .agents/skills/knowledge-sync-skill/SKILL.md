@@ -1,6 +1,11 @@
 ---
 name: knowledge-sync-skill
-description: Bi-directional knowledge synchronization skill between Antigravity AI evaluation engine and Gemini NotebookLM RAG notebooks across multi-product generations (DL380 Gen12, Gen11, Alletra, Synergy, Cray).
+description: >-
+  Bi-directional knowledge synchronization skill between Antigravity AI evaluation engine and Gemini
+  NotebookLM RAG notebooks across multi-product generations (DL380 Gen12, Gen11, Alletra, Synergy,
+  Cray). **DO call for**: synchronizing catalogs and knowledge deltas with NotebookLM notebooks and
+  checking drift. **DO NOT call for**: answering questions from a notebook (nlm-skill) or evaluating a
+  BOQ (boq-eval-skill).
 ---
 
 # Knowledge Sync Skill — Bi-Directional Agent & Gemini NotebookLM Alignment Protocol
@@ -231,7 +236,7 @@ for (const p of products) {
    - `isManagedTitle` identifies all catalog source variants (`_OCA_Catalog_`, `Canonical Knowledge`, `Master Catalog`).
    - Duplicate detection matches `s.drive_id === canonicalDriveSheetId || s.doc_id === canonicalDriveSheetId`.
    - **`isCatalogSnapshotTitle` expanded zombie matcher (`INV-219`)**: In addition to `ownedIds` (registered sourceId references), the retirement pass also matches unregistered zombie sources by title:
-     - `title.startsWith(`${chassisName}_OCA_Catalog_`)` — catches all dated snapshot variants (`DL380_Gen12_OCA_Catalog_2026-10-28`, etc.)
+     - `title.startsWith(`${chassisName}_OCA_Catalog_`)` — catches all dated snapshot variants (such as `DL380_Gen12_OCA_Catalog_2026-10-28` and earlier snapshots)
      - `title === `notebook_sync_payload_${chassisName}.md`` — catches stale filename-based uploads
      - `title === `${chassisName} Canonical Knowledge`` — catches legacy canonical knowledge source titles
    - This dual-path retirement (owned IDs + managed snapshot titles) prevents unreferenced zombie catalogs from accumulating across scraping sessions.
@@ -244,9 +249,11 @@ for (const p of products) {
 
 
 
-### Runtime conditional discovery contract (2026-09-30)
+### Automated QuickSpecs Attachment & Source Detachment (`INV-222`)
+`post_flow_sync.js` and `quickspecs_sync.js` auto-attach newly downloaded QuickSpecs PDFs and register `officialSourceIds`; `nlm_sync_client.js:retireStaleNotebookSources` detaches superseded catalog snapshots and quarantined source IDs. Read [Normative Language Standard](../../rules/normative_language.md).
 
-Read [the shared catalog and BOQ runtime procedure](../../../docs/RUNTIME_CONDITIONAL_DISCOVERY.md) before scraping or live BOQ validation. This contract supersedes older full-coverage claims and blanket bans on BOQ-time conditional investigation. Catalog capture and BOQ-scoped runtime investigation are separate; exploratory portal checks may run before local PASS, while final acceptance requires the exact restored manifest and current vendor receipt. Never select OEM by default, infer mandatory rules from hidden visibility, or treat a catalog miss as unsupported. The runtime plan is generated/exported by the canonical evaluator and checked at acceptance; applying arbitrary BOQs and non-ambient selector states remains a live-agent procedure. Preserve base/owner/quantity/selector provenance and disclose unexecuted branches. Reachable workflow advisories are seeded via scripts/maintenance/record_scraping_workflow_learnings.js; reachability is not hardware certification or cloud sync.
+### Runtime Conditional Discovery
+Follow [Shared Runtime Conditional Discovery Contract](../../../docs/RUNTIME_CONDITIONAL_DISCOVERY.md).
 
 
 ### Verified correction (2026-10-01)

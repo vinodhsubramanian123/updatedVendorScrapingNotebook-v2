@@ -1,11 +1,32 @@
 ---
 name: adversarial-validation-skill
-description: Use this skill to execute automated adversarial red-teaming, boundary fuzzing, and stress-testing on ANY generated BOQ, sized BOM, or tender recommendation before presenting it to the customer. Catches subtle enterprise failure modes across thermal limits, Tri-Mode SAS expanders, GPU aux power, high-performance fans, ErP Lot 9 PSUs, and riser power cables.
+description: >-
+  Use this skill to execute automated adversarial red-teaming, boundary fuzzing, and stress-testing on
+  ANY generated BOQ, sized BOM, or tender recommendation before presenting it to the customer. Catches
+  subtle enterprise failure modes across thermal limits, Tri-Mode SAS expanders, GPU aux power,
+  high-performance fans, ErP Lot 9 PSUs, and riser power cables. **DO call for**: pre-presentation
+  red-team and boundary stress tests on any generated BOQ, BOM or tender recommendation. **DO NOT call
+  for**: initial BOQ parsing (boq-eval-skill) or live portal validation
+  (clic-portal-validation-skill).
 ---
 
 # Adversarial Red-Teaming & Boundary Validation Skill (`adversarial-validation-skill`)
 
+Read [Normative Language Standard](../../rules/normative_language.md). Enforces modular fan rotor vs bundled chassis 6-pack validation (`INV-206`) and thermal heatsink tier right-sizing (`INV-208`).
+
 **Purpose**: A configuration can look clean on paper or in simple checks, but fail catastrophic physical deployment constraints in enterprise datacenter environments. This skill enforces a mandatory adversarial stress-testing pass against the 11 most treacherous enterprise hardware failure modes discovered in real-world deployments. It acts as an automated "devil's advocate" to challenge the candidate BOM and guarantee that Rank 1 is truly 100% buildable with zero surprises. Real candidate scrutiny is strictly separated from synthetic chaos stress testing.
+
+---
+
+## ⛔ HALT Conditions
+
+```
+HALT-ADV1: If candidate BOM has 0 items or lacks base chassis:
+  emit [ERR_INVALID_ADVERSARIAL_TARGET] and HALT execution immediately.
+
+HALT-ADV2: If adversarial red-team fuzzing discovers unmitigated thermal or electrical conflict:
+  emit [ERR_ADVERSARIAL_CONFLICT_DETECTED] and inject required mitigation kits before customer presentation.
+```
 
 ---
 
@@ -41,7 +62,7 @@ Every candidate BOM is audited against these 11 failure injection patterns:
 | **2** | **Tri-Mode Direct-Attach Saturation** | Dedicated 8-port controllers (`MR408i-o`, `MR216i-p`) directly address only 8 drives. $>8$ drives causes silent port starvation (`INV-26`). | Inject SAS Expander Card `P48835-B21` or Tri-Mode Switch `P55806-B21`. |
 | **3** | **Controller Enablement Cabling Mismatch** | Standard 8SFF cages with OCP controllers require direct enablement cables; Premium cages on risers require Y-splitters (`INV-26`). | Inject OCP Enablement Cable `P48918-B21` or PCIe Riser Splitter `P48832-B21`. |
 | **4** | **GPU Auxiliary Power Starvation** | High-wattage PCIe GPUs draw $>75\text{W}$ and cannot be powered solely by the PCIe slot (`INV-27`). | Inject GPU Aux Power Cable Kit `P48816-B21` or `P76450-B21`. |
-| **5** | **Thermal Envelope & High-Perf Fans** | High-TDP processors ($>240\text{W}$) or accelerators mandate high-RPM redundant cooling (`INV-27`). | Inject High-Performance Fan Kit `P48820-B21` (or `P56950-B21`). |
+| **5** | **Thermal Envelope & High-Perf Fans** | High-TDP processors ($>240\text{W}$) or accelerators mandate high-RPM redundant cooling (`INV-27`). | Inject High-Performance Fan Kit `P48820-B21`. |
 | **6** | **EU Ecodesign ErP Lot 9 Platinum PSU Trap** | Dual-socket servers with 94% Platinum PSUs default to EU Ecodesign Regulation 2019/424 blocks in CLIC/OCA (`INV-30`). | Auto-inject HPE CE Mark Removal FIO Enablement Kit `P35876-B21` ($1 list). |
 | **7** | **PCIe Riser 5th Slot Power Starvation** | Populating $\ge 5$ physical PCIe cards across risers leaves Slot 1 on Primary Riser unpowered (`INV-31`). | Inject Primary Cable Kit `P56073-B21`. |
 | **8** | **Memory Channel Speed Throttling & Mixing** | Mixing RDIMM with 3DS RDIMM, or mixing x4 and x8 bit-widths, degrades memory bus from 6400 MT/s to 4400 MT/s or causes boot failure. | Normalize to uniform capacity and bit-width (all x4). |

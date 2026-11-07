@@ -164,7 +164,11 @@ test('QueryRouter — Correctly classifies all specialized and operational presa
     { query: 'Decompose 100-node cluster into 42U rack layout and power envelope', expected: 'MULTI_CLUSTER_TENDER', target: 'multi-cluster-tender-skill' },
     { query: 'Run adversarial red-team stress test on this BOQ configuration', expected: 'ADVERSARIAL_VALIDATION', target: 'adversarial-validation-skill' },
     { query: 'Reflect portal feedback error and register learned rule delta', expected: 'CONTINUOUS_LEARNING', target: 'continuous-learning-skill' },
-    { query: 'Synchronize knowledge delta to NotebookLM grounding notebook', expected: 'KNOWLEDGE_SYNC', target: 'knowledge-sync-skill' }
+    { query: 'Synchronize knowledge delta to NotebookLM grounding notebook', expected: 'KNOWLEDGE_SYNC', target: 'knowledge-sync-skill' },
+    { query: 'Audit whole repository code quality and cyclomatic complexity ceiling', expected: 'CODE_QUALITY_GATE', target: 'code-quality-gate-skill' },
+    { query: 'Derive counterfactual self-correction backtracking trail and Phase 9 narrative', expected: 'SELF_CORRECTION_COUNTERFACTUAL', target: 'self-correction-counterfactual-skill' },
+    { query: 'Synthesize 90-day clearance hardware baseline proposal', expected: 'PRESALES_CLEARANCE_STRATEGY', target: 'presales-clearance-strategy-skill' },
+    { query: 'Verify turnkey rack and stack rail kits and cabling completeness', expected: 'TURNKEY_RACKING_CABLING', target: 'turnkey-racking-cabling-skill' }
   ];
 
   for (const { query, context, expected, target } of tracks) {
@@ -187,3 +191,37 @@ test('QueryRouter — FREEFORM_QA attaches catalogAudit, feasibilityCheck, non-e
   assert.ok(res.queryPlan, 'queryPlan must be attached on router envelope');
   assert.strictEqual(res.queryPlan.objective, 'FREEFORM_QA');
 });
+
+test('QueryRouter — Avoids misclassifying standard BOQ and single-SKU queries containing turnkey or clearance keywords', () => {
+  const collisions = [
+    {
+      query: 'Evaluate this BOQ with turnkey racking: P73282-B21, P64707-B21',
+      expected: 'BOQ_EVALUATION',
+      target: 'boq-eval-skill'
+    },
+    {
+      query: 'Evaluate this BOQ with 90-day clearance hardware: P73282-B21, P64707-B21',
+      expected: 'BOQ_EVALUATION',
+      target: 'boq-eval-skill'
+    },
+    {
+      query: 'Evaluate this file',
+      context: { filePath: 'test.xlsx', query: 'turnkey setup' },
+      expected: 'BOQ_EVALUATION',
+      target: 'boq-eval-skill'
+    },
+    {
+      query: 'What is the price of clearance SKU P73282-B21?',
+      expected: 'CATALOG_INTELLIGENCE',
+      target: 'catalog-intelligence-skill'
+    }
+  ];
+
+  for (const { query, context, expected, target } of collisions) {
+    const c = classifyQueryIntent(query, context);
+    assert.strictEqual(c.intent, expected, `Query "${query}" should classify as ${expected}`);
+    assert.strictEqual(c.skillTarget, target, `Query "${query}" should target skill ${target}`);
+  }
+});
+
+

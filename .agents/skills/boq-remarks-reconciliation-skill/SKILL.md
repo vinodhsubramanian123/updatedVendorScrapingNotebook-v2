@@ -1,36 +1,33 @@
 ---
 name: boq-remarks-reconciliation-skill
 description: >-
-  **ANNOTATE a completed BOQ reconciliation** by adding an auditable commercial remarks
-  column and quantity bridges while preserving all original cells. Call AFTER
-  bom-reconciliation-skill has produced its 4-dimension audit — this skill adds the
-  remarks column, not the comparison logic. Actions: MATCHED / MODERNIZED / REDUCED /
-  BUFFERED / REMOVED / FACTORY_INCLUDED / ABSORBED / ADDED / NOT_EVALUATED.
-  DISTINCT from bom-reconciliation-skill which COMPARES two BOM documents.
+  **ANNOTATE a completed BOQ reconciliation** by adding an auditable commercial remarks column and
+  quantity bridges while preserving all original cells. Call AFTER bom-reconciliation-skill has
+  produced its 4-dimension audit — this skill adds the remarks column, not the comparison logic.
+  Actions: MATCHED / MODERNIZED / REDUCED / BUFFERED / REMOVED / FACTORY_INCLUDED / ABSORBED / ADDED /
+  NOT_EVALUATED. DISTINCT from bom-reconciliation-skill which COMPARES two BOM documents. **DO call
+  for**: adding commercial remark columns and quantity bridges after a reconciliation exists. **DO NOT
+  call for**: producing the reconciliation itself (bom-reconciliation-skill) or generating workbooks
+  (workbook-generator-skill).
 ---
 
 # Commercial remarks and reconciliation
+
+Read [Normative Language Standard](../../rules/normative_language.md). Enforces line-by-line tender quantity conservation and transparent delta auditing (`INV-192`, `INV-33`).
 
 Use [`commercial_remarks.js`](../../../scripts/lib/boq/commercial_remarks.js) for header resolution and action formatting. It is a pure data helper, not a workbook editor or a live Google Sheets publisher. Use [`workbook-generator-skill`](../workbook-generator-skill/SKILL.md) and [`generate_boq_xlsx.js`](../../../scripts/lib/boq/generate_boq_xlsx.js) for actual artifacts. Do not run a historical scratch script against a new customer file.
 
 ---
 
-## 💻 Implementation Engine & Direct Execution
-- **Core Engine**: [`commercial_remarks.js`](../../../scripts/lib/boq/commercial_remarks.js) via `appendCommercialRemarks()` and `formatCommercialRemark()`
-- **Reconciliation Engine**: [`vendor_bom_verifier.js`](../../../scripts/lib/boq/vendor_bom_verifier.js) via `verifyVendorBOM()`
-- **Workbook Exporter**: [`generate_boq_xlsx.js`](../../../scripts/lib/boq/generate_boq_xlsx.js)
-- **Output Gate**: [`bom_verifier.js`](../../../scripts/lib/boq/bom_verifier.js) via [`output-validation-skill`](../output-validation-skill/SKILL.md)
-
-
-## ⛔ Pre-Gate: Baseline Integrity Check
-
-Before generating any remark column, assert the baseline BOM is fresh:
+## ⛔ HALT Conditions
 
 ```
-GATE-BR0: Assert baseline_bom.json exists at outputs/{Family}/{Gen}/{Model}/baseline_bom.json
-  AND its SHA-256 matches the current catalog snapshot.
-  If missing or mismatch: emit [ERR_BASELINE_STALE] and HALT until baseline is refreshed.
-  Do NOT diff against an empty or stale baseline — this silently produces false MATCHED marks.
+HALT-BRR1: If baseline_bom.json is missing or SHA-256 mismatches catalog snapshot:
+  emit [ERR_BASELINE_STALE] and HALT execution immediately.
+  Do NOT diff against an empty or stale baseline.
+
+HALT-BRR2: If customer requested quantities are silently reduced or omitted:
+  emit [ERR_QUANTITY_CONSERVATION_VIOLATION] and enforce tender conservation ledger (INV-192).
 ```
 
 ---
@@ -38,13 +35,13 @@ GATE-BR0: Assert baseline_bom.json exists at outputs/{Family}/{Gen}/{Model}/base
 ## Preserve the customer baseline
 
 
-Locate each table's header row from its content. `resolveTenderColumns(headerRow)` recognizes part number, description, quantity, multiplier and unit-price aliases, and rejects missing required or ambiguous columns. If a customer's header is outside those aliases, supply an explicit reviewed mapping rather than guessing. Never assume fixed column letters or overwrite customer Remarks/Notes.
+Locate each table's header row from its content. `resolveTenderColumns()` recognizes part number, description, quantity, multiplier and unit-price aliases, and rejects missing required or ambiguous columns. If a customer's header is outside those aliases, supply an explicit reviewed mapping rather than guessing. Never assume fixed column letters or overwrite customer Remarks/Notes.
 
-Append an Engineering Remarks & Configuration Action column beyond the occupied extent of each table. `appendCommercialRemarks(rows, remarksByRow, headerIndex)` demonstrates the row-array contract and preserves input values. For real workbooks, retain formulas, styles, merged ranges and customer cells; write only analysis cells in a copy. Verify the original customer cells remain unchanged, including notes containing words such as “spare”.
+Append an Engineering Remarks & Configuration Action column beyond the occupied extent of each table. `appendCommercialRemarks()` demonstrates the row-array contract and preserves input values. For real workbooks, retain formulas, styles, merged ranges and customer cells; write only analysis cells in a copy. Verify the original customer cells remain unchanged, including notes containing words such as “spare”.
 
 ## Actions and evidence
 
-`formatCommercialRemark(action, context)` accepts these primary actions:
+`formatCommercialRemark()` accepts these primary actions:
 
 | Action | Meaning |
 | --- | --- |

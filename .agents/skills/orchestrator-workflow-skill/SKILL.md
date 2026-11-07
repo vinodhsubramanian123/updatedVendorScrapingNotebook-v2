@@ -1,368 +1,96 @@
 ---
 name: orchestrator-workflow-skill
 description: >-
-  **Macro Continuous Learning Lifecycle Orchestrator** — manages the 6-stage lifecycle
-  across scraping, knowledge sync, BOQ evaluation, Notebook RAG, HITL trial, and feedback learning.
+  **Macro Continuous Learning Lifecycle Orchestrator** — manages the 6-stage lifecycle across
+  scraping, knowledge sync, BOQ evaluation, Notebook RAG, HITL trial, and feedback learning.
   Directs sub-skill delegation across the entire pipeline.
-  For Google Jules background CI/CD and PR audits, see jules-autonomous-protocol.
+  **DO call for**: End-to-end multi-stage pipeline orchestration, macro continuous learning loops,
+  and failure ledger auditing.
+  **DO NOT call for**: Single BOQ evaluations (use boq-eval-skill), Google Jules background CI/CD (use jules-autonomous-protocol),
+  or static commit reviews (use codex-peer-review-skill).
 ---
 
-# Orchestrator Workflow Skill — End-to-End Autonomous Lifecycle (`orchestrator-workflow-skill`)
+# Macro Continuous Learning Lifecycle Orchestrator (`orchestrator-workflow-skill`)
 
-This skill defines the macro-architecture that ties all individual agentic skills into a single **Continuous Learning Loop**. Whenever you are managing a complex task in this workspace, refer to this 6-stage lifecycle to understand your exact role, execution boundaries, and sub-skill delegation pathways.
+## 1. Scope & Lifecycle Architecture
+This skill manages the macro 6-stage continuous learning lifecycle across live WebLogic scraping, decoupled knowledge synchronization, dual-brain BOQ evaluation, grounded NotebookLM verification, human-in-the-loop portal trials, and telemetry reinforcement learning.
 
----
-
-## 🏛️ Macro Architecture & Continuous Learning Loop (Mermaid Visual)
+- **Dual-Brain Harmony**: Balances deterministic local verification with agentic cloud reasoning.
+- **Atomic Operations**: All state mutations MUST use `safeWriteJsonAtomic` from `scripts/lib/system/fs_compat.js`.
+- **Normative Directives**: Comply with [Normative Language Standard](../../rules/normative_language.md).
 
 ```mermaid
-graph TD
-    subgraph "Stage 1: Ingestion (CDP Scraper)"
-        A["HPE Partner Portal / OCA Session (Port 9222)"] --> B["oca-catalog-scraper"]
-        B --> C["scripts/catalogs/build_catalog.js"]
-    end
-
-    subgraph "Stage 2: Knowledge Sync & Dual Safety Net"
-        C --> D["scripts/lib/catalog/diff_catalog.js (Price Trails)"]
-        C --> E["*_Catalog_Rules.json (Dual Safety Net)"]
-        D --> F["outputs/SCRAPED_CATALOGS.md (Master Registry)"]
-        E --> G["knowledge-sync-skill (Master Registry & Scope Taxonomy)"]
-        G --> H["nlm-skill (Sync to Gemini NotebookLM)"]
-    end
-
-    subgraph "Stage 3 & 4: BOQ Eval, Workload DNA & Conflict Graph"
-        I["Customer BOQ / Quote"] --> J["boq-eval-skill"]
-        J --> K["scripts/lib/boq/boq_evaluator.js (7-Aspect Physical Math)"]
-        K --> L["scripts/lib/conflict/conflict_graph.js (5-Level Conflict Graph & Workload DNA)"]
-        L --> M["5-Tier Strategic Resolution Matrix (Rank 1: Intent Match)"]
-        M --> N["Grounded Gemini Notebook RAG (nlm-skill)"]
-    end
-
-    subgraph "Stage 5 & 6: HITL Trial, Telemetry & Closed-Loop Learning"
-        N --> O["outputs/{Family}/{Gen}/{Model}/reports/ (BOQ Report)"]
-        O --> P["Human-in-the-Loop (HITL) Portal Build"]
-        N --> Z["AmbiguityInbox (Dashboard NotebookLM MCP Bridge)"]
-        Z --> R["outputs/history/catalog_deltas.json (KnowledgeDelta)"]
-        P -- "Portal Error Rejection" --> Q["scripts/lib/feedback/feedback_loop.js"]
-        Q --> R
-        R --> G
-        O --> S["scripts/lib/system/telemetry.js (outputs/history/pipeline_telemetry.json)"]
-        O -.-> T["Task Trace Ledger (outputs/history/runs/{run_id}.json)"]
-    end
+flowchart TD
+    S1[Stage 1: Ingestion & Scraping] --> S2[Stage 2: Knowledge Sync & Dual Safety Net]
+    S2 --> S3[Stage 3: BOQ Evaluation & Conflict Graph]
+    S3 --> S4[Stage 4: Grounded NotebookLM Validation]
+    S4 --> S5[Stage 5: Live HITL Portal Trial & Acceptance]
+    S5 --> S6[Stage 6: Closed-Loop Feedback & Telemetry Learning]
+    S6 -. Continuous Feedback Delta .-> S2
 ```
 
 ---
 
-## 🔁 The 6-Stage Continuous Learning Lifecycle
+## ⛔ HALT Conditions
 
-### 1. Ingestion (Live Scraping & Self-Healing Navigation)
-- **Actors**: [`oca-catalog-scraper`](../oca-catalog-scraper/SKILL.md) & [`oca-portal-navigator`](../oca-portal-navigator/SKILL.md)
-- **Action**: 
-  - **Universal Auth Pre-Flight (`npm run auth:status`)**: Before initiating any scraping session, run `npm run auth:status` to audit all 5 authentication surfaces (Google Drive/Sheets ADC, NotebookLM CLI, Gemini Key Rotator, Chrome CDP port 9222, Jules CI/CD). This single command surfaces any expired tokens, missing scopes, or standby services before the scraping lifecycle begins. Products with `canonicalDriveEnabled: false` skip the Drive scope check in the preflight gate.
-  - Navigates hands-free from HPE Partner Portal SSO (`https://partner.hpe.com`) to target chassis configuration Menu tabs via Chrome DevTools Protocol (`scripts/lib/scraper/cdp.js`, `scripts/lib/scraper/navigate_oca.js`) on port 9222.
-  - **Tab 1 Stale-Session Self-Healing Recovery Protocol (INV-89)**: In the event of WebLogic session expiry, silent freezes, or CDP disconnects, never reloads OCA in-place (which breaks Java session state). Recovers autonomously by recycling to Tab 1 (Partner Portal), reloading to generate fresh SAML tokens, clicking One Config Advanced anew, and re-establishing clean menu state.
-  - Scrapes the live HPE OCA vendor portal extracting full component option matrices, lifecycle tags (OB, DS, 90, EOL), and pricing.
-- **Output**: Generates classified JSON catalogs, standalone rules files (`*_Catalog_Rules.json`), and multi-sheet Excel workbooks (`*_OCA_Catalog.xlsx`).
+```
+HALT-ORCH1: If an unhandled exception or crash occurs in any stage without safe failure ledger recording:
+  emit [ERR_ORCHESTRATOR_UNHANDLED_CRASH] and record event in outputs/history/failure_ledger.json.
+  Do NOT leave file system in partially committed state.
 
-### 2. Decoupled Knowledge Sync & Dual Safety Net
-- **Actor**: [`diff_catalog.js`](../../../scripts/lib/catalog/diff_catalog.js) & [`knowledge-sync-skill`](../knowledge-sync-skill/SKILL.md)
-- **Action**: 
-  - Compares newly scraped JSON against historical snapshots to log SKU additions, removals, and cumulative price trails.
-  - Emits standalone `*_Catalog_Rules.json` for fast dual safety net loading.
-  - Auto-synchronizes `outputs/SCRAPED_CATALOGS.md` master registry (`npm run registry:sync`).
-  - **Decoupled Workflow**: Knowledge Sync (pushing to NotebookLM via CLI or MCP) now runs as an independent background task (`/api/sync-knowledge`) to ensure core scraping speed is unaffected.
+HALT-ORCH2: If stage dependency prerequisites are unsatisfied (e.g., Stage 3 attempted without Stage 1/2 catalog):
+  emit [ERR_ORCHESTRATOR_PREREQUISITE_MISSING] and halt forward transition.
+  Remediation: Complete prerequisite catalog ingestion before launching evaluations.
 
-### 3. BOQ Ingestion, 8-Stage Atomicity & Conflict Graph
-- **Actor**: [`boq-eval-skill`](../boq-eval-skill/SKILL.md) (`npm run eval:boq <file>`)
-- **Action**:
-  - **Pre-Flight Scraped-Catalog Gate (INV-96)**: Prior to running physical checks, the engine asserts `isCatalogCertified(chassisId)`. If the target chassis has never been scraped from OCA or has 0 SKUs, evaluation halts early with `[ERR_UNSCRAPED_SOLUTION]`, directing the agent/user to scrape ground truth first.
-  - **8-Stage Atomic Execution**: Streams `STRUCTURED_PROGRESS` JSON events so dashboards provide visual timeline feedback.
-  - Ingests customer BOQs, multi-sheet proposals, or obfuscated SKU text.
-  - Extracts **Workload DNA Profile** (CPU core/freq density, RAM per core ratio, GPU VDI class, NVMe RI vs MU vs WI SSDs).
-  - Evaluates deterministic 7-aspect physical math assertions (Compute & Thermal, Memory Channel, Storage & Tri-Mode, Networking & OCP, PCIe Riser, Power & Environmental, Support & Manufacturing).
-  - Validates full BOM + fixes across 5 rule hierarchy levels (`VENDOR`, `CHASSIS`, `CATEGORY`, `SUBCATEGORY`, `SKU`) using `conflict_graph.js`.
-  - Outputs a **5-Tier Strategic Resolution Matrix** where **Rank 1 strictly matches customer workload intent** (neither over- nor under-provisioned).
-  - Exposes **Confidence Breakdown Tooltips** to drill down into specific physical mismatch penalties.
-
-### 4. Grounded Gemini Notebook Validation (RAG) & Ephemeral Source Validation
-- **Actor**: [`nlm-skill`](../nlm-skill/SKILL.md), [`boq-eval-skill`](../boq-eval-skill/SKILL.md) & **React Dashboard** (`http://localhost:5173`)
-- **Action**: 
-  - Initiates parallel, non-blocking asynchronous queries to Gemini NotebookLM to cross-reference identified physical constraints against vendor spec sheets.
-  - **Autonomous Solution Strategy Double-Check (INV-97)**: Once the 5-Tier Strategy Matrix is generated, the newly synthesized Rank 1 and Rank 1L solutions are automatically verified against the product NotebookLM notebook (using ephemeral solution source validation) to double-check that added enablement kits (cables, SAS expanders, auxiliary GPU power) comply with QuickSpecs and newly learned rules.
-  - **Ephemeral Solution Sheet Source Validation (INV-24)**: When whole-solution or multi-rank configurations exceed prompt character limits, the engine outputs a token-dense solution CSV, temporarily attaches it as a document source, executes grounded validation across all 7 physical aspects, extracts learnings into persistent `KnowledgeDelta` records, and immediately detaches the source.
-  - If new verified deltas are extracted, `recomputeStrategyMatrixWithRag` dynamically recomputes physical checks and re-synthesizes the 5-Tier Strategy Matrix before final deliverable export.
-  - Automatically exports a 6-sheet **Multi-Rank Solution Deliverable** (`.xlsx`) and companion `.csv` via [`workbook-generator-skill`](../workbook-generator-skill/SKILL.md).
-  - **Cloud Delivery & ADC Pre-Flight Health Gate (INV-90)**: Prior to any Google Drive deliverable upload or client sharing, the engine executes `ensureGoogleAuthValid({ autoHeal: true })` (or `npm run auth:check`). It audits token validity, granted scopes, and token age. If expired (`invalid_grant`) or expiring soon, the agent is 100% pre-authorized to autonomously execute `npm run auth:heal` or `npm run auth:drive` (using `~/.config/gcloud/client_secret.json`) to self-heal credentials without human intervention, ensuring seamless operation across laptop migrations. Note: The 7-day ADC token expiry cliff only applies to GCP OAuth apps in **Testing** mode; apps published to **In Production** generate permanent long-lived refresh tokens.
-  - The React Dashboard provides a full Command-and-Control hub for triggering Knowledge Sync, exporting corrected BOQs, logging portal rejection KnowledgeDeltas, and managing the async RAG status polling (`GET /api/notebook-query-status/:jobId`).
-
-### 5. Human-in-the-Loop (HITL) Portal Trial & Ambiguity Resolution
-- **Actor**: Human Sales Engineer / User & Dashboard `AmbiguityInbox`
-- **Action**: 
-  - Takes the top-ranked solution from the Dashboard and attempts to build it in the live OCA portal.
-  - If a BOQ evaluation drops below 75% confidence, the **Ambiguity Inbox** prompts the user to Auto-Query NotebookLM via the MCP bridge to acquire missing configuration rules.
-
-### 6. Closed-Loop Feedback & Telemetry Learning
-- **Actor**: [`feedback_loop.js`](../../../scripts/lib/feedback/feedback_loop.js), `server.cjs` Trace Ledger, & Dashboard Modal
-- **Action**:
-  - Log vendor rejections via `npm run eval:boq <boq> --simulate-portal-error "<error>"` or directly via the Dashboard **"Report Portal Rejection"** modal.
-  - Permanently appends `KnowledgeDeltas` to `history/catalog_deltas.json` and updates `_Catalog_Rules.json`.
-  - Records execution metrics in `pipeline_telemetry.json` and persistent trace replays in `runs/{run_id}.json` (`npm run trace:view <id>`)
+HALT-ORCH3: If circular execution loop is detected across stage transitions (>3 iterations on same manifest):
+  emit [ERR_ORCHESTRATOR_CYCLE_DETECTED] and escalate to Human Architect (HITL).
+```
 
 ---
 
-## 🎯 Sub-Skill Routing & Execution Directory
+## 2. The 6-Stage Continuous Learning Lifecycle
 
-| Workflow Domain | Responsible Skill | Implementation Engine & Direct Links |
-|---|---|---|
-| **Macro Orchestration** | [`orchestrator-workflow-skill`](../orchestrator-workflow-skill/SKILL.md) | Macro continuous learning lifecycle across all 6 stages. |
-| **Presales Intent Routing** | [`presales-query-router`](../presales-query-router/SKILL.md) | 5-track intent dispatcher: [`route_query.js`](../../../scripts/evaluators/route_query.js). |
-| **SSO & Portal Navigation** | [`oca-portal-navigator`](../oca-portal-navigator/SKILL.md) | Hands-free SSO passing & Tab 1 self-healing: [`navigate_oca.js`](../../../scripts/lib/scraper/navigate_oca.js). |
-| **Live Scraping & Extraction** | [`oca-catalog-scraper`](../oca-catalog-scraper/SKILL.md) | Live CDP extraction: [`scrape_oca_solution.js`](../../../scripts/scrapers/scrape_oca_solution.js). |
-| **Catalog Intelligence & Price Trails** | [`catalog-intelligence-skill`](../catalog-intelligence-skill/SKILL.md) | Historical pricing & state changes: [`diff_catalog.js`](../../../scripts/lib/catalog/diff_catalog.js). |
-| **Knowledge Sync & Deltas** | [`knowledge-sync-skill`](../knowledge-sync-skill/SKILL.md) | Bi-directional NLM sync: [`knowledge_sync.js`](../../../scripts/lib/sync/knowledge_sync.js). |
-| **BOQ Evaluation & Aspects** | [`boq-eval-skill`](../boq-eval-skill/SKILL.md) | 7-aspect physical math: [`eval_boq.js`](../../../scripts/evaluators/eval_boq.js). |
-| **Workload DNA Matching** | [`workload-dna-skill`](../workload-dna-skill/SKILL.md) | Enterprise app workload matching: [`workload_dna.js`](../../../scripts/lib/conflict/workload_dna.js). |
-| **Least-Delta Combinator** | [`least-delta-combinator-skill`](../least-delta-combinator-skill/SKILL.md) | Generational upgrades & pruning: [`least_delta_combinator.js`](../../../scripts/lib/conflict/least_delta_combinator.js). |
-| **Active Knowledge Reachability** | [`continuous-learning-skill`](../continuous-learning-skill/SKILL.md) | Active rule discovery: [`active_knowledge_router.js`](../../../scripts/lib/catalog/active_knowledge_router.js). |
-| **Continuous Learning Verifier** | [`continuous-learning-skill`](../continuous-learning-skill/SKILL.md) | Zero-repetition certification: [`continuous_learning_verifier.js`](../../../scripts/lib/feedback/continuous_learning_verifier.js). |
-| **Execution Trace & Shared State** | [`execution-trace-skill`](../execution-trace-skill/SKILL.md) | 9-phase evidence ledger: [`evidence_ledger.js`](../../../scripts/lib/system/evidence_ledger.js). |
-| **Multi-Cluster Tender Splitting** | [`multi-cluster-tender-skill`](../multi-cluster-tender-skill/SKILL.md) | Multi-node cluster partitioning & 42U sizing: [`multi_cluster_splitter.js`](../../../scripts/lib/boq/multi_cluster_splitter.js). |
-| **RFP Sizing-to-BOM** | [`rfp-sizing-synthesizer`](../rfp-sizing-synthesizer/SKILL.md) | Natural language sizing requirements to starting BOM: [`requirement_intent_resolver.js`](../../../scripts/lib/boq/requirement_intent_resolver.js). |
-| **BOM Reconciliation** | [`bom-reconciliation-skill`](../bom-reconciliation-skill/SKILL.md) | Tender vs vendor quote verification: [`vendor_bom_verifier.js`](../../../scripts/lib/boq/vendor_bom_verifier.js). |
-| **Value Engineering & CapEx** | [`value-engineering-skill`](../value-engineering-skill/SKILL.md) | Post-buildability CapEx/OpEx deal optimizer: [`deal_optimizer.js`](../../../scripts/lib/boq/deal_optimizer.js). |
-| **Adversarial Chaos Validation** | [`adversarial-validation-skill`](../adversarial-validation-skill/SKILL.md) | Enterprise chaos red-teaming: [`adversarial_agent.js`](../../../scripts/evaluators/adversarial_agent.js). |
-| **Multimodal Vision OCR** | [`ocr-quote-ingestion-skill`](../ocr-quote-ingestion-skill/SKILL.md) | Vision OCR for PDF/image quotes: [`ocr_service.js`](../../../scripts/lib/ocr/ocr_service.js). |
-| **Deliverables & Workbook Export** | [`workbook-generator-skill`](../workbook-generator-skill/SKILL.md) | 12-column workbooks & CSV companions: [`generate_boq_xlsx.js`](../../../scripts/lib/boq/generate_boq_xlsx.js). |
-| **Output Acceptance Gate** | [`output-validation-skill`](../output-validation-skill/SKILL.md) | Pre-presentation 18-point acceptance criteria check (B1–B18): [`bom_verifier.js`](../../../scripts/lib/boq/bom_verifier.js). |
-| **Dual-Brain RAG & Grounding** | [`nlm-skill`](../nlm-skill/SKILL.md) | Gemini NotebookLM RAG verification: [`agentic_guardrail.js`](../../../scripts/lib/rag/agentic_guardrail.js). |
-| **Multi-Agent Jules Delegation** | [`jules-autonomous-protocol`](../jules-autonomous-protocol/SKILL.md) | Autonomous PR review: [`jules_task_manager.js`](../../../scripts/services/jules_task_manager.js). |
-| **Frontend UI/UX & Aesthetics** | [`design-taste-frontend`](../design-taste-frontend/SKILL.md) | Anti-slop UI aesthetics: [`App.jsx`](../../../dashboard/src/App.jsx). |
-| **Dynamic Semantic Graph** | `graphify` | Dynamic semantic graph & AST navigation: [`graphify-out/`](../../../graphify-out/). |
-| **Catalog Freshness & Degraded Mode Recovery** | [`degraded-mode-skill`](../degraded-mode-skill/SKILL.md) | Per-product-gen metadata freshness, BOQ-triggered resync, atomic commit contract: [`product_metadata_manager.js`](../../../scripts/lib/catalog/product_metadata_manager.js). |
-| **Live CLIC Portal Validation & Receipt Binding** | [`clic-portal-validation-skill`](../clic-portal-validation-skill/SKILL.md) | CLIC Advice parsing, divergent path resolution (Rank 1A/1B), SHA-256 receipt binding (INV-107): [`bom_verifier.js`](../../../scripts/lib/boq/bom_verifier.js). |
-| **Scraping-Time Conditional SKU Discovery** | [`conditional-sku-discovery-skill`](../conditional-sku-discovery-skill/SKILL.md) | Full DOM walk, 8-sweep macro selector, `Catalog_Rules.json` compilation, PORTAL_CONDITIONAL flagging (INV-118/119): [`scrape_oca_solution.js`](../../../scripts/scrapers/scrape_oca_solution.js). |
-| **Cross-Vendor Architectural Transpiler** | [`cross-vendor-transformation-skill`](../cross-vendor-transformation-skill/SKILL.md) | Competitor quote translation to HPE equivalents: [`cross_vendor_transformer.js`](../../../scripts/lib/boq/cross_vendor_transformer.js). |
-| **Heterogeneous Multi-Domain Modernization** | [`heterogeneous-tender-modernizer`](../heterogeneous-tender-modernizer/SKILL.md) | Mixed-domain tender planning & carrier allocation: [`heterogeneous_tender_modernizer.js`](../../../scripts/lib/boq/heterogeneous_tender_modernizer.js). |
-| **Commercial Remarks & Reconciliation Hierarchy** | [`boq-remarks-reconciliation-skill`](../boq-remarks-reconciliation-skill/SKILL.md) | Auditable commercial remarks & quantity bridges: [`commercial_remarks.js`](../../../scripts/lib/boq/commercial_remarks.js). |
-| **Popperian Falsification & Epistemic Audit** | [`epistemic-verification-skill`](../epistemic-verification-skill/SKILL.md) | Negative-path falsification & terminal 9-phase evidence ledger: [`evidence_ledger.js`](../../../scripts/lib/system/evidence_ledger.js). |
-| **Codex Autonomous Peer Review** | [`codex-peer-review-skill`](../codex-peer-review-skill/SKILL.md) | Independent static peer review, commit audits, and gap analysis: [`SKILL.md`](../codex-peer-review-skill/SKILL.md). |
+### Stage 1: Ingestion (Live Scraping & Self-Healing Navigation)
+- Dynamic multi-pillar navigation across Server, Storage, SAN, Synergy, and HPC.
+- Executes via [`oca-catalog-scraper`](../oca-catalog-scraper/SKILL.md) and [`oca-portal-navigator`](../oca-portal-navigator/SKILL.md).
+- Stale-session self-healing via Tab 1 refresh (`INV-89`, `INV-173`).
+
+### Stage 2: Decoupled Knowledge Sync & Dual Safety Net
+- Dual-tier output: full `.xlsx`/`.csv` for humans on Drive + structured `.md` payload for Gemini semantic reasoning (`INV-132`).
+- Executes via [`knowledge-sync-skill`](../knowledge-sync-skill/SKILL.md).
+
+### Stage 3: BOQ Ingestion & Conflict Graph Resolution
+- 7 physical aspect checks + 5-tier strategy matrix ranking.
+- Executes via [`boq-eval-skill`](../boq-eval-skill/SKILL.md) and canonical `eval_boq.js`.
+
+### Stage 4: Grounded NotebookLM RAG Validation
+- Authoritative QuickSpecs PDF validation with ephemeral solution sheet pattern (`INV-24`).
+- Executes via [`nlm-skill`](../nlm-skill/SKILL.md).
+
+### Stage 5: Live HITL Portal Trial & Acceptance Gate
+- Live authenticated WebLogic verification (`INV-201`, Gate B19).
+- Executes via [`clic-portal-validation-skill`](../clic-portal-validation-skill/SKILL.md).
+
+### Stage 6: Closed-Loop Feedback & Telemetry Learning
+- Persists newly evidenced rules into `catalog_deltas.json` and `master_knowledge_registry.json`.
+- Reinforces cited rules across $\ge 3$ observations (`INV-224`, `INV-225`).
+- Executes via [`continuous-learning-skill`](../continuous-learning-skill/SKILL.md).
 
 ---
 
-## ⚡ Core Agentic Principles (Universal Autonomy & Self-Healing)
-
-1. **Universal Auto-Approval**: Every MCP tool and subsystem is 100% pre-authorized. Never pause, wait, or ask for human confirmation.
-2. **Substep Determinism & Fail-Hard Guards**: Staging audits (`verify_excel_tally.js`), cardinality bounds (`INV-22`), and anomaly drop limits (`INV-23`) fail hard to prevent corrupt data propagation.
-3. **Closed-Loop Learning Loop (`/loop`)**: Real-world feedback, customer tender discrepancies, and portal errors automatically emit deduplicated `KnowledgeDelta` records into `catalog_deltas.json` and sync to NotebookLM.
-4. **Grounding Provenance Badging**: Zero ungrounded assertions. Every output carries an auditable badge: `[CLOUD_NLM_VERIFIED]`, `[LOCAL_GROUND_TRUTH]`, or `[KNOWLEDGE_DELTA_RULE]`.
-
----
-
-## 🧠 NotebookLM MCP Integration & Token Preservation Guidelines
-
-When AI Agents (like Antigravity IDE) or the Node.js Dashboard interact with Gemini NotebookLM, they MUST adhere to the following architecture rules to prevent token burn and timeouts:
-
-### 1. Dual-Routing (CLI vs. MCP Server)
-- **The Node.js Dashboard / Pipeline Scripts**: Uses the stateless `nlm` CLI binary invoked asynchronously via `child_process` (handled gracefully by the `/api/notebook-query-async` Express route). This prevents UI blocking and protects against zombie processes via strict iteration limits.
-- **The AI Agents (Antigravity IDE / Gemini Spark)**: Interact directly with the long-lived **MCP Server** (`mcp__gemini-notebook-mcp__*` tools). The same local MCP installation handles both routes transparently.
-
-### 2. Asynchronous "Fire-and-Forget" Pattern for Studio Artifacts
-When generating heavy media (Podcasts/Audio, Infographics, Videos, Reports) via NotebookLM, **NEVER** use synchronous blocking execution.
-1. **Creation**: Dispatch the task using `studio_create(artifact_type="...", confirm=True)` which returns an `artifact_id` instantly.
-2. **Polling**: Execute intermediate tasks (like logging telemetry), then asynchronously poll `studio_status(notebook_id, artifact_id)`.
-3. **Download**: Only trigger `download_artifact` once status transitions to `completed`.
-This asynchronous pattern is mandated for all agents to protect context window limits.
+## 3. Sub-Skill Dispatch Directory
+Consult the Master Dynamic Skill Dispatch Matrix in [AGENTS.md](../../../AGENTS.md) for specialized route delegations:
+- **Tender Decomposition**: [`multi-cluster-tender-skill`](../multi-cluster-tender-skill/SKILL.md)
+- **Least-Delta Alternative**: [`least-delta-combinator-skill`](../least-delta-combinator-skill/SKILL.md)
+- **Workload Classification**: [`workload-dna-skill`](../workload-dna-skill/SKILL.md)
+- **Commercial Remarks**: [`boq-remarks-reconciliation-skill`](../boq-remarks-reconciliation-skill/SKILL.md)
+- **Adversarial Red-Teaming**: [`adversarial-validation-skill`](../adversarial-validation-skill/SKILL.md)
+- **Turnkey Delivery Completeness**: [`turnkey-racking-cabling-skill`](../turnkey-racking-cabling-skill/SKILL.md)
 
 ---
 
-## 🔄 The Human-Triggered Closed-Loop Execution Lifecycle
-
-To prevent any ambiguity for future agents observing this system, here is the exact chronological flow of how a human trigger evolves into autonomous system improvement:
-
-1. **The Human Trigger (Step 1)**: The Sales Engineer drops an Excel quote into the Dashboard UI. 
-2. **The Autonomous Pipeline (Step 2)**: The system takes over seamlessly. It streams 8 stages of execution via SSE, extracts Workload DNA, runs physical math (thermal/power limits), and ranks solutions.
-3. **The Results UI (Step 3)**: The human views the `ConflictGraphInspector` and the `ResolutionMatrix` on the dashboard. They see exactly *why* a math rule failed (Explainability) and what the NotebookLM AI suggests as a fix (RAG).
-4. **The Live Trial (Step 4)**: The human takes the Rank 1 suggestion and manually builds it inside the live HPE OCA Partner Portal UI.
-5. **The Feedback Bifurcation (Step 5)**:
-   - *If it works*: The human does nothing. The pipeline run telemetry logs a "Success" trace in `pipeline_telemetry.json`.
-   - *If the Portal rejects it (Ambiguity/Missing Rule)*: The human clicks **"Report Portal Error"** on the Dashboard and pastes the exact HPE error string (e.g., "Feature XYZ requires License ABC").
-6. **The Closed-Loop Learning (Step 6)**:
-   - `feedback_loop.js` parses the error and writes a new persistent rule to `history/catalog_deltas.json`.
-   - On the next run, `conflict_graph.js` dynamically injects this learned delta into the pre-flight checks.
-   - **The Result**: Because the system has learned the missing rule, the system will never suggest that invalid configuration again. The Confidence Score for future identical BOQs instantly improves (e.g., jumping from 60% to 100%), completely resolving the ambiguity without touching core code!
-
-### Who is the Workflow Orchestrator?
-To be absolutely clear, the "Orchestrator" in this architecture is context-dependent:
-- **For Human Dashboard Triggers**: The **Node.js Express Server (`server.cjs`)** is the workflow orchestrator. It listens for the HTTP trigger, spawns the evaluation scripts in isolated shells, collects the telemetry, pipes the SSE stream to the UI, and formats the final ledger.
-- **For Autonomous AI Triggers & Multi-Agent Collaboration**: **You (Antigravity AI Agent)** are the system architect and master orchestrator. Guided by this `orchestrator-workflow-skill`, you are responsible for running commands, parsing output, managing the NotebookLM MCP bridge, delegating background verification to Google Jules, and ensuring final perfection.
-
----
-
-## 🤖 7. Multi-Agent Autonomous Delegation Protocol (Antigravity ↔ Google Jules)
-
-To maximize velocity and offload heavy validation without human friction:
-1. **Smart Task Offloading**: Antigravity delegates heavy stress-testing, boundary test generation, and container environment verification to Google Jules via `@google/jules-sdk` and `scripts/services/jules_task_manager.js`.
-2. **Proactive Background Scheduling (`schedule` tool)**: When Jules tasks are in-flight, Antigravity **MUST NOT sit idle waiting for human prompts**. Antigravity registers periodic timers (`DurationSeconds=120-180`, `TimerCondition="never"`) to autonomously wake up, inspect session activities (`session.activities.list()`), answer clarifications, push remediation commits, and verify test suites.
-3. **Rigorous Code Review & Patch Audit (INV-10 & INV-12)**:
-   - Inspect all authored changesets and git diffs (`git diff --stat origin/main..<branch>`).
-   - Guard against unwanted build artifacts (`outputs/history/*.json` dumps, temp test files) before integrating.
-   - Verify that all architectural invariants (domain directories, sync/async contracts, atomic writes) are strictly maintained.
-4. **Full Automated Certification (INV-16 & INV-17)**:
-   - Run the full test suite (`npm run test:all`) across all 18 test tiers.
-   - Run portfolio certification (`npm test`) across all 7/7 product lines.
-   - Verify zero lint errors (`npm run lint`).
-   - Run dashboard component tests (`npm --workspace dashboard test -- --run`).
-5. **Post-Merge Remote Branch Pruning (INV-11 & INV-18)**:
-   - Use cross-platform pure Node.js REST API inspection (`npm run jules:prs`) to discover and track all open and closed pull requests with zero dependency on `gh` binary.
-   - Once changes are audited and merged to `main`, prune stale remote feature branches cleanly via `npm run jules:prune` (`node scripts/services/jules_task_manager.js prune`) to maintain repository hygiene.
-6. **Audit-Before-Archive Lifecycle Governance (INV-19)**:
-   - Run `npm run jules:archive` (`node scripts/services/jules_task_manager.js archive-completed`) to audit session threads, verify patch deltas, archive finished sessions on the Jules API, and log immutable trace records to `outputs/history/jules_archived_sessions.json`.
-7. **Proactive Codebase-Wide Bug Pattern Remediation**:
-   - When a bug or bottleneck is discovered in any subsystem, proactively audit the entire repository for the same structural pattern (e.g. non-atomic JSON writes, un-memoized synchronous config loops, or Unix-only shell commands like `which`) and eliminate them across all modules.
-8. **Architect & Final Authority**: Antigravity governs all multi-agent work as the ultimate authority, validating all 50+ test tiers, 7/7 portfolio product lines, Excel alignments, and zero-warning lints before declaring final completion.
-
----
-
-## 8. Complete System Invariants & Operational Guardrails (`INV-1` to `INV-120`)
-
-> [!NOTE]
-> **Complete Invariant Catalog Reference**: The complete, authoritative catalog of all 120 technical invariants (INV-1 through INV-120) is maintained in [`docs/INVARIANTS.md`](../../../docs/INVARIANTS.md). The table below highlights the foundational execution invariants for fast agent reference:
-
-| Invariant ID | Title | Summary & Guardrail Contract |
-| :--- | :--- | :--- |
-| **`INV-1`** | Price Trail Deduplication | Deduplicates price history by `DATE` only using priority table; never creates duplicate same-day trails. |
-| **`INV-2`** | Promoted SKU Count Registry | Reads actual unique hardware and service counts from promoted `catalog.json.metadata.totalUniqueSKUs`. |
-| **`INV-3`** | Direct SSE Stage ID Matching | Stepper cards match directly on SSE stage ID string rather than legacy percentage math. |
-| **`INV-4`** | Knowledge Registry Timestamps | Emits both canonical `generatedAt` (read by UI) and `lastUpdated`, plus `schemaVersion: "1.0"`. |
-| **`INV-5`** | Step 10 Sync Fail-Hard Contract| Knowledge Sync failures in Step 10 MUST rethrow and exit 1; never emit 100% on failure. |
-| **`INV-6`** | Snapshot `scrapeDate` Format | Snapshot filenames strictly follow `catalog_YYYY-MM-DD.json` (`YYYY-MM-DD` string key). |
-| **`INV-7`** | Test Payload Routing | Test chassis sync payloads route to `outputs/temp/test_payloads/`; `outputs/history/` stays clean. |
-| **`INV-8`** | Parallel History JSON Parsing | Parallelizes snapshot parsing via `Promise.all` with fast substring pre-checks. |
-| **`INV-9`** | Memoized SKU Price Cache | Caches SKU pricing in `Map` for $O(1)$ amortized lookups across multi-item BOM audits. |
-| **`INV-10`**| Jules Background PR Delegation | Async multi-agent delegation with mandatory explicit notifications on commit updates. |
-| **`INV-11`**| Remote Branch Pruning | AI agents delete merged remote feature branches cleanly via `jules_task_manager.js prune`. |
-| **`INV-12`**| Patch Audit Before Retirement | Audits all unidiff patches in Jules session logs before retiring sessions. |
-| **`INV-13`**| Knowledge Delta Deduplication | Deduplicates incoming rules against `catalog_deltas.json` and master registry. |
-| **`INV-15`**| Proactive Background Scheduling| AI agents register background `schedule` timers rather than sitting idle waiting for humans. |
-| **`INV-16`**| Cross-Platform Compatibility | Zero shell-specific binary dependencies (no `grep`, `unzip`, `which`, `curl` via execSync). |
-| **`INV-17`**| Ingestion Diagnostics Traces | `build_catalog.js` emits structured provenance traces for introspective test reporting. |
-| **`INV-18`**| Node.js Native PR Inspection | Cross-platform GitHub REST API inspection (`jules:prs`) with zero dependency on `gh` binary. |
-| **`INV-19`**| Audit-Before-Archive Protocol | Audits threads/patches and logs to `jules_archived_sessions.json` before archiving sessions. |
-| **`INV-20`**| WebLogic DOM Sub-Choice Trigger| Clicks toolbar toggles and dispatches jQuery `change` events on all `showmore_*` selectors. |
-| **`INV-21`**| PID & Badge Separation Protocol| Separates lifecycle badges (`OB`, `DS`, `90`) into dedicated fields while preserving clean SKUs. |
-| **`INV-22`**| Category Cardinality Assertion | Minimum cardinality thresholds for flagship servers (e.g. >=30 CPUs) before promotion. |
-| **`INV-23`**| Catastrophic Drop Guardrail | Pre-promotion check halts Step 8 if SKU count drops >30% below previous baseline. |
-| **`INV-24`**| Customer BOQ Knowledge Isolation| Customer BOQs/BOMs MUST NEVER be added to NotebookLM sources; RAG is grounded on ground truth only. |
-| **`INV-25`**| Container Tree Option Placement | Internal CTO components carry `#0D1` / `-F21` Smart FIO tags; unparented BTO memory fails CLIC validation. |
-| **`INV-26`**| Tri-Mode Storage Expander Math  | Injects SAS Expander `P48835-B21` for $>8$ drives on a single controller; routes OCP vs PCIe cables. |
-| **`INV-27`**| GPU Auxiliary Power Cabling     | Injects GPU power cables `P48816-B21` / `P76450-B21` and high-perf fan kits for PCIe GPUs. |
-| **`INV-28`**| OS Core Multiplier Licensing    | Enforces 16-core base server minimum + 2/4/16 core add-on packs matching total physical CPU cores. |
-| **`INV-29`**| Multi-Node Cluster Matrix       | Sizing matrix computes total RU, 42U racks, peak kW draw, rail kits, and 220V utility derating advisories. |
-| **`INV-30`**| EU Ecodesign Lot 9 Platinum PSU | Injects CE Mark Removal Kit `P35876-B21` ($1 list) for Platinum PSUs on high-TDP configurations. |
-| **`INV-31`**| PCIe 5th Slot Power Delivery    | Injects Primary Cable Kit `P56073-B21` for physical Slot 1 when $\ge 5$ PCIe expansion cards are populated. |
-| **`INV-32`**| Zero Unsolicited Software/SaaS  | Decouples base hardware from unsolicited services/SaaS; enforces standardized 7-column upload schema. |
-| **`INV-33`**| Single Source of Pricing Truth  | Resolves SKU pricing dynamically via `getHistoricalSkuPrice` without hardcoded price arrays. |
-| **`INV-34`**| Dynamic GPL Price Preservation  | Preserves historical Global List Prices across unbundled OCA views rendering temporary $0.00 prices. |
-| **`INV-35`**| Obsolete Vendor Badge Cleaning  | Strips vendor error strings and lifecycle badges (`OB`, `DS`, `90`, `EOL`) via clean regex filters. |
-| **`INV-36`**| Product Generation Hierarchy    | Enforces strict 3-tier taxonomy `{Family}/{Gen}/{Model}/` without form-factor directory fragmentation. |
-| **`INV-37`**| Automated Multi-Cluster Subtotal| Emits `CONFIG #N SUBTOTAL:` rows in Set column and 2-line separator gaps in partner portal workbooks. |
-| **`INV-38`**| Dynamic Chassis Path Resolution | `sku_versioning.js` dynamically resolves bare model strings to canonical directories under `outputs/`. |
-| **`INV-39`**| Multi-Cluster Architectural Partitioning | Partitions mixed CPU tenders into homogeneous 100% buildable clusters with form-factor bus pivoting. |
-| **`INV-40`**| Continuous Milestone Knowledge Sync | Automatically synchronizes verified learnings between local rule engine and Gemini NotebookLM without waiting for humans. |
-| **`INV-41`**| Dual-Brain RAG Headroom & 24h TTL | Enforces 120s RAG timeout, 180s Guardrail timeout, 3-query budget cap, and 24-hour cache TTL eviction. |
-| **`INV-42`**| Diophantine Multiplier Allocation | Allocates multi-server tender quantities across clusters using mathematically rigorous Hamilton–Hare method. |
-| **`INV-43`**| MCP-First Jules Lifecycle Order | Prioritizes MCP tools over CLI and enforces strict 8-stage lifecycle sequence with zero human relaying. |
-| **`INV-44`**| Jules SDK State Machine Contract | Leverages callable client methods (`client.sessions().all()`, `session.approve()`, `session.send()`) matching SDK v2 contracts. |
-| **`INV-45`**| Atomic Workflow Decomposition   | Decomposes scraping into 10 stages and BOQ evaluation into 7 substeps with SSE telemetry and 4-tier RAG grounding. |
-| **`INV-46`**| Static Circular Dependency DAG & CC Bounds | Enforces 0 circular dependencies across module graph and keeps McCabe cyclomatic complexity within strict quality budgets. |
-| **`INV-47`**| Isolated Test Matrix & Failure Ledger | Executes suites in isolated subprocesses, logs failures to `test_failure_ledger.json`, and enables fast-path `--failed-only` reruns. |
-| **`INV-48`**| Strict Generation & Family Firewall | Enforces strict generation/family scoping in RAG lookups with zero cross-generation catalog fallback. |
-| **`INV-49`**| Multi-Solution Autonomous Partitioning | Dissects mixed proposals into isolated Solution Clusters evaluated against their respective ground truth. |
-| **`INV-50`**| Ambiguity Inbox Escalation & Sign-off | Flags unverified/obsolete SKUs as `NEEDS_HUMAN_CLARIFICATION` for human sales engineer sign-off in the UI. |
-| **`INV-51`**| 4-Tier Vendor-Agnostic Taxonomy | Standardizes all catalogs and RAG sources under `{Vendor}/{Family}/{Gen}/{Model}/` for 100% clean vendor isolation. |
-| **`INV-52`**| Fuzzy Category & Upward Alignment | Aligns typos and description rows to target categories, matching exact or upward (never downward) with 100% buildable fixes. |
-| **`INV-54`**| DL380a Gen12 & DL145 Gen11 Domain Isolation | Dedicated chassis maps, rules, and hardware profiles for 8DW GPU and 1U edge platforms with zero cross-pollution. |
-| **`INV-55`**| Query Normalization & Regex Escaping | Safely normalizes query objects to string and escapes regex special characters in keyword searches. |
-| **`INV-56`**| Zero-Hardcoding Generic Domain Templates | Abstract capability flags and generic rules (`generic_domain_templates.js`) dynamically resolved to concrete catalog SKUs. |
-| **`INV-57`**| Tiered Test Matrix Architecture | 4 deterministic tiers (`unit`, `chaos`, `integration`, `e2e`) with fast default mode and structured failure ledger. |
-| **`INV-58`**| Monolithic CLI Pipeline Decomposition | Maintains CC $\le 10$ on orchestration entry points by isolating ingestion, diffs, and exports into stage modules. |
-| **`INV-59`**| Memoized O(1) Catalog SKU Index | Pre-builds and caches SKU lookup Map on `catalogData._skuIndex` to eliminate nested $O(N \times M \times K)$ scans. |
-| **`INV-60`**| Customer Tender Base SKU Accumulation | Accumulates repeated hardware SKU quantities (`fullBomMap.get(sku).quantity += qty`) rather than overwriting. |
-| **`INV-61`**| Generation-Aware Mandatory SKUs (SSOT) | SSOT in `catalog_rules.js` resolving heatsinks and riser cable kits dynamically by generation without cross-pollution. |
-| **`INV-62`**| Strict Delimited Lifecycle Parsing | Requires explicit token delimiters (`/^(?:90|EOL)\s+/i`, `[90]`, `(90)`) to prevent false-positive EOL flags on SKUs starting with "90". |
-| **`INV-63`**| Dynamic BOM Lead Sheet Filtering | Automatically detects and skips non-BOM documentation tabs (Cover page, Terms, Instructions, Readme). |
-| **`INV-64`**| Frontend Canonical Product Taxonomy | Standardizes all dashboard hooks and components on canonical model IDs (`DL380_Gen12`) with safe auto-fallback. |
-| **`INV-65`**| Modern CDP Download Behavior Protocol | Uses `Browser.setDownloadBehavior` with `allow` and resolved directories; forbids `allowAndName` to preserve filenames. |
-| **`INV-66`**| Browser Security Preservation Protocol | Never disables browser security controls; applies scoped permissions and validates completed files. |
-| **`INV-67`**| Non-Destructive Price Anomaly Quarantine | Quarantines price spikes non-destructively in `diff_catalog.js` without silent data erasure. |
-| **`INV-68`**| Evidence-Gated Shared Accessory Compatibility | Shared accessories require exact target-product source evidence before verification. |
-| **`INV-69`**| Delta-Only SKU Lifecycle & Business Retention | Diff engine records meaningful transitions rather than redundant UNCHANGED events. |
-| **`INV-70`**| Evidence-Gated HITL Resolution & Confidence | Observation quarantined; promotion requires named reviewer, reasoning, and trusted evidence. |
-| **`INV-71`**| Requirement-Led Part Resolution & PCIe Evidence | Resolves malformed part numbers from complete requirement context and categories. |
-| **`INV-72`**| Customer Input Workflow Discipline & Scoped Learning | Customer BOQs route strictly through canonical `eval_boq.js`; zero ad-hoc scripts. |
-| **`INV-73`**| Zero-Repetition Autonomous BOQ Protocol | AI agents deliver complete solutions end-to-end without requiring repeated user prompts. |
-| **`INV-74`**| Least-Delta Combinator & Troublesome SKU Pruning | Evaluates troublesome SKUs causing cascading bloat and synthesizes minimal-mutation variants (Rank 1L/1M). |
-| **`INV-75`**| Auditable Decision Trace Ledger Protocol | Captures structured timestamped reasoning steps with 4-brain source attribution in `decision_traces.json`. |
-| **`INV-76`**| Value Engineering & Deal Optimizer Protocol | Evaluates advisory CapEx/OpEx savings (CPU right-sizing, NIC bandwidth alignment, PSU efficiency tuning). |
-| **`INV-77`**| QuickSpecs vs Live OCA Reconciliation Protocol | Discrepancies between QuickSpecs and OCA emit `expansion_guidance.json` to guide dynamic sub-choice expansion. |
-| **`INV-78`**| Unified Presales Intent Query Routing Protocol | Inbound queries route through `route_query.js` into 5 canonical tracks with unified single-user governance. |
-
----
-
-## 🧭 Sub-Skill Routing & Execution Directory (7-Phase Architecture)
-
-| Phase | Execution Pathway | Specialized Skill | Primary Engine / Script | When to Invoke |
-|:---|:---|:---|:---|:---|
-| **0** | **Scanned PDF / Image Intake** | [`ocr-quote-ingestion-skill`](../ocr-quote-ingestion-skill/SKILL.md) | `scripts/lib/ocr/ocr_service.js` | Image files (.png, .jpg), scanned PDF quotes, portal screenshots |
-| **0** | **Multi-Node Tender Decomposition** | [`multi-cluster-tender-skill`](../multi-cluster-tender-skill/SKILL.md) | `scripts/lib/boq/multi_cluster_splitter.js` | Tenders with >1 server, multi-sheet RFQs, 42U rack & power sizing |
-| **0** | **OCA Portal Live Scraper** | [`oca-catalog-scraper`](../oca-catalog-scraper/SKILL.md) | `scripts/scrapers/scrape_oca_solution.js` | Live extraction of WebLogic OCA catalogs via CDP port 9222 |
-| **0** | **Hands-Free Portal Navigator** | [`oca-portal-navigator`](../oca-portal-navigator/SKILL.md) | `scripts/lib/scraper/navigate_oca.js` | Passing through Partner Portal SSO, search & menu navigation |
-| **1** | **Presales Intent Classification** | [`presales-query-router`](../presales-query-router/SKILL.md) | `scripts/evaluators/route_query.js` | Classifying inbound queries into the 5 canonical tracks |
-| **1** | **Workload DNA & App Matching** | [`workload-dna-skill`](../workload-dna-skill/SKILL.md) | `scripts/lib/conflict/workload_dna.js` | Sizing for SAP HANA, VMware VCF, VDI, SQL, AI inference, HPC |
-| **1** | **RFP Sizing to Starting BOM** | [`rfp-sizing-synthesizer`](../rfp-sizing-synthesizer/SKILL.md) | `scripts/evaluators/route_query.js` | Unstructured core/RAM/storage capacity wishes -> 100% buildable BOM |
-| **1** | **Catalog Pricing & Trends** | [`catalog-intelligence-skill`](../catalog-intelligence-skill/SKILL.md) | `scripts/lib/catalog/sku_versioning.js` | Historical price trails, lifecycle status changes (OB, DS, 90, EOL) |
-| **2** | **Customer BOQ Evaluation** | [`boq-eval-skill`](../boq-eval-skill/SKILL.md) | `scripts/evaluators/eval_boq.js` | Evaluating physical buildability across all 7 hardware dimensions |
-| **2** | **BOM Tender Reconciliation** | [`bom-reconciliation-skill`](../bom-reconciliation-skill/SKILL.md) | `scripts/lib/boq/vendor_bom_verifier.js` | Cross-verifying customer requirements vs partner portal quotes |
-| **3** | **Least-Delta Cascade Pruning** | [`least-delta-combinator-skill`](../least-delta-combinator-skill/SKILL.md) | `scripts/lib/conflict/least_delta_combinator.js` | Pruning cascading additions caused by troublesome SKUs (Rank 1L/1M) |
-| **3** | **Deal Value Engineering** | [`value-engineering-skill`](../value-engineering-skill/SKILL.md) | `scripts/lib/boq/deal_optimizer.js` | Evaluating post-buildability CapEx/OpEx savings (CPU, NIC, PSU) |
-| **4** | **NotebookLM RAG Grounding** | [`nlm-skill`](../nlm-skill/SKILL.md) | `gemini-notebook-mcp` tools | Fact-checking QuickSpecs PDFs & master catalogs via Cloud RAG |
-| **4** | **Knowledge Registry Delta Sync**| [`knowledge-sync-skill`](../knowledge-sync-skill/SKILL.md) | `scripts/lib/sync/knowledge_sync.js` | Bi-directional sync of verified KnowledgeDeltas across generations |
-| **5** | **Adversarial Chaos Red-Team** | [`adversarial-validation-skill`](../adversarial-validation-skill/SKILL.md) | `scripts/evaluators/adversarial_agent.js` | 10 Enterprise failure mode sanity checks (mandatory pre-presentation) |
-| **5** | **Output Acceptance Gate** | [`output-validation-skill`](../output-validation-skill/SKILL.md) | Pre-presentation checklist | Validating completeness, prices, badges, and structural soundness |
-| **6** | **Professional Excel Generator** | [`workbook-generator-skill`](../workbook-generator-skill/SKILL.md) | `scripts/lib/boq/generate_boq_xlsx.js` | Standardized 7-column upload sheets & executive multi-sheet workbooks |
-| **6** | **Execution Trace & Gate Audit** | [`execution-trace-skill`](../execution-trace-skill/SKILL.md) | `outputs/temp/execution_trace_*.json` | Capturing step-by-step trace timestamps, durations, and delta report |
-
----
-
-## 📋 Stage-Level Checkpoint & Verification Matrix
-
-Every stage of the continuous learning lifecycle enforces explicit, deterministic pass/fail gates:
-
-| Stage | Name | Verification Checkpoint Gate | Pass Condition | Failure Recovery Action |
-|:---|:---|:---|:---|:---|
-| **1** | **Ingestion / CDP Scrape** | DOM Expansion & Cardinality Gate (`INV-20`, `INV-22`) | Hardware SKUs $\ge 30$ processor options for 2P servers; all `showmore_*` clicked | Re-run CDP scraper with full table expansion |
-| **2** | **Knowledge Sync & Diffs** | Price Trail & Schema Gate (`INV-1`, `INV-4`) | Single event per date; `generatedAt` & `schemaVersion: "1.0"` present | Regenerate registry with atomic serialization |
-| **3** | **BOQ Ingestion & Math** | 7-Aspect Physical Pre-Flight Gate | All 7 physical checkers pass; $O(1)$ indexed lookup clean | Identify aspect failure, trigger Conflict Graph |
-| **4** | **5-Tier Resolution** | Strategy Matrix & Buildability Gate (`INV-25`) | Rank 1 through 5 synthesized; unbuildable = 0 rank; FIO `#0D1` tagged | Run Least-Delta combinator (`INV-74`) or pivot Path B |
-| **5** | **RAG & Adversarial** | Strict SKU Citation & Chaos Gate | Cloud NLM cites exact SKU; 0 violations in adversarial sanity pass | Run adversarial fixer; escalate to human if ambiguous |
-| **6** | **HITL Closed-Loop** | Delta Deduplication & Scoped Sync (`INV-13`, `INV-24`) | KnowledgeDelta deduplicated; non-poisoned sources; customer isolated | Route to `quarantined_deltas.json` awaiting human sign-off |
-
----
-
-## 🕵️ Agent Execution Trace & Delta Protocol
-
-When using the Antigravity Agent Harness to test customer queries and BOQs end-to-end:
-1. **Trace Initialization**: Assign a unique `run_id` (e.g., `RUN-20260913-113000`).
-2. **Step-by-Step Logging**: Capture input payload, resolved SKUs, execution duration, and checkpoint gate status for each step.
-3. **Artifact Generation**: Emit `outputs/temp/execution_trace_{timestamp}.json` conforming to `execution-trace-skill`.
-4. **Markdown Delta Presentation**: Present results using the standardized 3-part comparison:
-   - **Customer Request Summary**: Workload targets, requested SKUs, capacity goals, stated budget.
-   - **Engine Certified Build**: Selected Rank 1 topology, exact part numbers, quantities, list prices, and Dual-Brain badges.
-   - **Delta & Reconciliation Analysis**: Injected enablement kits, replaced obsolete/incompatible parts, and CapEx savings achieved.
-
-
-
-
-
-
-
+## 4. References & Lifecycle Appendices
+- [Macro MCP Server Execution Protocol](../../../scripts/services/mcp_server.js) via `executeToolRequest()`
+- [Full original orchestrator text](references/orchestrator_full_original_reference.md): core agentic principles, MCP token-preservation guidelines, human-triggered lifecycle, multi-agent delegation protocol, INV-1..120 guardrails, stage checkpoint matrix, execution trace and delta protocol
+- [Master System Invariants Directory](../../../docs/INVARIANTS.md)
+- [Master Operating Charter](../../../AGENTS.md)

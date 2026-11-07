@@ -1,17 +1,32 @@
 ---
 name: workload-dna-skill
 description: >-
-  Classify enterprise workload DNA (SAP HANA, VMware vSphere/VCF, VDI, Microsoft SQL,
-  High-Frequency Trading, AI/LLM Inference, Big Data) and match hardware architectures
-  to application performance requirements. Optimizes NUMA node balance and memory channel
-  interleaving (1DPC vs 2DPC). **ALSO call when a BOQ contains contested physical slots
-  (e.g. both an OCP NIC and OCP storage controller on a 1-OCP-slot chassis) — this skill
-  arbitrates the slot collision and pivots components.**
+  Classify enterprise workload DNA (SAP HANA, VMware vSphere/VCF, VDI, Microsoft SQL, High-Frequency
+  Trading, AI/LLM Inference, Big Data) and match hardware architectures to application performance
+  requirements. Optimizes NUMA node balance and memory channel interleaving (1DPC vs 2DPC). **ALSO
+  call when a BOQ contains contested physical slots (e.g. both an OCP NIC and OCP storage controller
+  on a 1-OCP-slot chassis) — this skill arbitrates the slot collision and pivots components.** **DO
+  call for**: workload classification (SAP HANA, VMware, VDI, SQL, HFT, AI) and contested-slot
+  arbitration. **DO NOT call for**: catalog pricing questions (catalog-intelligence-skill).
 ---
 
 # Workload DNA Profiler & Application Sizing Matcher Skill (`workload-dna-skill`)
 
+Read [Normative Language Standard](../../rules/normative_language.md). Enforces NUMA memory interleaving and write-intensive flash protection (`INV-217`).
+
 **Purpose**: High-performance enterprise workloads cannot be properly sized using simple core and RAM tallies alone. Different enterprise applications demand fundamentally different hardware topologies: SAP HANA requires strict 1:1 NUMA memory channel balance and high RAM-per-core ratios; VMware VCF requires high core density and balanced OCP networking; AI/LLM inference requires PCIe lane bandwidth and GPU auxiliary power; while High-Frequency Trading requires max clock frequencies over core counts. This skill profiles the customer's Workload DNA and arbitrates contested hardware resources to ensure optimal application performance.
+
+---
+
+## ⛔ HALT Conditions
+
+```
+HALT-WDNA1: If SAP HANA workload profile is paired with asymmetric DIMM counts or unbalanced NUMA:
+  emit [ERR_HANA_NUMA_UNBALANCED] and enforce symmetrical 1DPC/2DPC channel interleaving (INV-217).
+
+HALT-WDNA2: If write-intensive database workload is assigned Read-Intensive (RI) SSDs:
+  emit [ERR_SSD_ENDURANCE_MISMATCH] and pivot to Mixed-Use (MU) or Write-Intensive (WI) flash media.
+```
 
 ---
 
