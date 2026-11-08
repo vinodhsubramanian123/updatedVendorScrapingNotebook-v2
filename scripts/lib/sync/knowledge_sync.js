@@ -149,6 +149,8 @@ function hasExplicitWideScopeEvidence(delta, level) {
 }
 
 function _shouldSkipDeltaGovernance(d) {
+  if (d.active === false) return true;
+  if ([d.status, d.governanceStatus].some(s => /^(RETRACTED|SUPERSEDED|REVOKED|EXPIRED|DEPRECATED)$/i.test(s || ''))) return true;
   const governanceStatus = String(d.governanceStatus || d.status || '').toUpperCase();
   if (/QUARANTIN|REJECT|CONTRADICT|PENDING/.test(governanceStatus)) return true;
   return !d.chassis && !d.affectedSku && !d.ruleType && !d.rawMessage;
@@ -201,7 +203,10 @@ function _scanDeltasDir(dir, deltas, seenIds) {
         const inferredChassis = normalizeChassisName(
           path.basename(dir) === 'history' ? path.basename(path.dirname(dir)) : path.basename(dir)
         );
-        list.forEach(d => _mergeSingleDelta(d, inferredChassis, deltas, seenIds));
+        const { _loadRevokedIdentifiers, _isDeltaRevokedOrInactive } = require('../catalog/active_knowledge_router');
+        const revoked = _loadRevokedIdentifiers(path.basename(dir) === 'history' ? path.dirname(dir) : dir);
+        list.filter(d => !_isDeltaRevokedOrInactive(d, revoked))
+          .forEach(d => _mergeSingleDelta(d, inferredChassis, deltas, seenIds));
       } catch (_) {}
     }
   }

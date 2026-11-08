@@ -1,137 +1,113 @@
 'use strict';
-/**
- * tests/unit/test_counterfactual_repair_and_reasoning.js — Counterfactual Repair & Mathematical Derivations Verification
- */
-
-const { describe, it } = require('node:test');
+const test = require('node:test');
 const assert = require('node:assert/strict');
-const { generateCounterfactualRepairProofs } = require('../../scripts/lib/system/counterfactual_repair.js');
-const { performReasoningPostAnalysis } = require('../../scripts/lib/system/reasoning_post_analyzer.js');
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
+const { safeWriteJsonAtomic } = require('../../scripts/lib/system/fs_compat');
+const { generateCounterfactualRepairProofs: repair } = require('../../scripts/lib/system/counterfactual_repair');
+const { determineEpistemicTier, performReasoningPostAnalysis } = require('../../scripts/lib/system/reasoning_post_analyzer');
+const { retractPromotedDelta, supersedeKnowledgeDelta } = require('../../scripts/lib/feedback/quarantined_deltas');
+const { filterDeltaRules } = require('../../scripts/lib/catalog/active_knowledge_router');
+const { collectAllDeltas } = require('../../scripts/lib/sync/knowledge_sync');
+const { _handleBoqReflectionPhase } = require('../../scripts/evaluators/eval_boq');
+const catalog = { metadata: { model: 'DL380_Gen12' }, entries: [{ parentCategory: 'Power Supplies', skus: [
+  { sku: 'P38997-B21', Description: '1600W Power Supply' }, { sku: 'P44712-B21', Description: '2200W Power Supply' }
+] }] };
+const evaluation = power => ({ chassis: 'DL380_Gen12', catalogData: catalog, evalSummary: { power } });
 
-describe('Counterfactual Repair Engine & Mathematical Reasoning Proofs (Features 6 & 8 / Requirement R2)', () => {
+test('Both missing and underpowered PSUs enforce actual catalog ceiling; proposals are never certification', () => {
+  for (const missing of [true, false]) {
+    const proof = repair(evaluation({ hasZeroPsus: missing, hasPsuWattageDeficit: !missing, psuCount: missing ? 0 : 2, requiredWattageWithHeadroom: 3000 }))[0];
+    assert.equal(proof.resultingStatus, 'REPAIR_INFEASIBLE');
+    assert.deepEqual(proof.requiredHardwareDeltas, []);
+  }
+  const proof = repair(evaluation({ hasZeroPsus: true, estimatedNodeWattage: 850 }), { serverCount: 3 })[0];
+  assert.equal(proof.resultingStatus, 'PROPOSED_UNVALIDATED');
+  assert.equal(proof.requiredHardwareDeltas[0].quantity, 6);
+  assert.equal(proof.requiredHardwareDeltas[0].sku, 'P38997-B21');
+});
 
-  it('1. Power: Generates exact proofs for power deficit and 0 PSUs', () => {
-    const evalResults = {
-      customerDisposition: 'DELIVERY_BLOCKED_UNBUILDABLE',
-      evalSummary: {
-        power: {
-          hasZeroPsus: true,
-          psuCount: 0,
-          estimatedNodeWattage: 850
-        }
-      }
-    };
+test('Unknown, mismatched and absent catalogs never select generic parts; invalid counts stay unresolved', () => {
+  for (const overrides of [{ chassis: undefined }, { chassis: 'DL360_Gen12' }, { catalogData: null }]) {
+    const proof = repair({ ...evaluation({ hasZeroPsus: true, estimatedNodeWattage: 850 }), ...overrides })[0];
+    assert.equal(proof.resultingStatus, 'ACTION_REQUIRED');
+    assert.deepEqual(proof.requiredHardwareDeltas, []);
+  }
+  for (const serverCount of [0, -1, NaN, 1.5]) assert.deepEqual(repair(evaluation({ hasZeroPsus: true, estimatedNodeWattage: 850 }), { serverCount })[0].requiredHardwareDeltas, []);
+});
 
-    const proofs = generateCounterfactualRepairProofs(evalResults, { serverCount: 1 });
-    assert.equal(proofs.length, 1);
-    assert.equal(proofs[0].issueType, 'POWER_PSU_MISSING');
-    assert.equal(proofs[0].requiredHardwareDeltas[0].action, 'ADD');
-    assert.equal(proofs[0].requiredHardwareDeltas[0].sku, 'P38997-B21');
-    assert.equal(proofs[0].requiredHardwareDeltas[0].quantity, 2);
-    assert.ok(proofs[0].mathematicalProof.includes('1600W'));
-    assert.equal(proofs[0].resultingStatus, '100% BUILDABLE');
-  });
+test('Thermal proposals require explicit rating and packaging; service selection respects SLA and duration', () => {
+  const data = structuredClone(catalog);
+  data.entries.push({ parentCategory: 'Thermal', skus: [{ sku: 'P74794-B21', Description: 'Heat Sink', thermalRatingWatts: 350, socketsPerKit: 2 }] });
+  data.entries.push({ parentCategory: 'Services', skus: [
+    { sku: 'HU4B1A3', Description: '3 Year Tech Care Basic' }, { sku: 'HU4B3A3', Description: '3 Year Tech Care Critical' }
+  ] });
+  const result = { chassis: 'DL380_Gen12', catalogData: data, compute: { needsHeatsink: true, cpuCount: 2, maxCpuTdpWatts: 300 }, support: { hasSupportService: false } };
+  const proofs = repair(result, { customerRequirements: { supportLevel: 'Critical' } });
+  assert.equal(proofs[0].requiredHardwareDeltas[0].quantity, 1);
+  assert.equal(proofs[1].requiredHardwareDeltas[0].sku, 'HU4B3A3');
+  assert.equal(repair(result, { customerRequirements: { supportYears: 5 } })[1].resultingStatus, 'ACTION_REQUIRED');
+  data.entries[1].skus[0].thermalRatingWatts = undefined;
+  assert.deepEqual(repair(result)[0].requiredHardwareDeltas, []);
+});
 
-  it('2. Thermal: Generates exact proofs for missing heatsink and high TDP', () => {
-    const evalResults = {
-      customerDisposition: 'DELIVERY_BLOCKED_UNBUILDABLE',
-      evalSummary: {
-        compute: {
-          cpuCount: 2,
-          maxCpuTdpWatts: 225,
-          needsHeatsink: true
-        }
-      }
-    };
+test('Every blocker survives, including duplicate IDs and no IDs; SKU prose never authorizes additions', () => {
+  const blockers = [{ id: 'BUDGET', detail: 'Over budget' }, { id: 'BUDGET', detail: 'Second constraint' },
+    { detail: 'P69770-B21 is prohibited' }, { id: 'GROUNDING', detail: 'Missing citations' }];
+  const proofs = repair({ acceptanceGate: { blockers, blockersCount: 5 } });
+  assert.equal(proofs.length, 5);
+  assert.equal(new Set(proofs.map(p => p.issueType)).size, 5);
+  assert.ok(proofs.every(p => p.requiredHardwareDeltas.length === 0));
+  assert.equal(proofs[3].resultingStatus, 'ACTION_REQUIRED_EVIDENCE_PROBE');
+  assert.equal(proofs[4].issueType, 'BLOCKER_DETAILS_MISSING');
+});
 
-    const proofs = generateCounterfactualRepairProofs(evalResults, { serverCount: 1 });
-    assert.equal(proofs.length, 1);
-    assert.equal(proofs[0].issueType, 'THERMAL_HEATSINK_MISSING');
-    assert.equal(proofs[0].requiredHardwareDeltas[0].sku, 'P74792-B21');
-    assert.equal(proofs[0].requiredHardwareDeltas[0].quantity, 2);
-    assert.ok(proofs[0].mathematicalProof.includes('270W'));
-    assert.equal(proofs[0].resultingStatus, '100% BUILDABLE');
-  });
+test('Bare receipt IDs, flags and fabricated receipt hashes never establish Tier 3', () => {
+  for (const result of [{ portalValidationStatus: 'ACCEPTED_BY_VENDOR' }, { clicValidation: { isValid: true } },
+    { clicReceipt: { receiptId: 'fake', status: 'ACCEPTED_BY_VENDOR' } }, { portalReceipt: { receiptSha256: 'fake' } }]) {
+    assert.equal(determineEpistemicTier(result).vendorAcceptancePending, true);
+  }
+});
 
-  it('3. Memory: Generates exact proofs for memory channel imbalance and 0 RAM', () => {
-    const evalResults = {
-      customerDisposition: 'DELIVERY_BLOCKED_UNBUILDABLE',
-      evalSummary: {
-        memory: {
-          cpuCount: 2,
-          memoryCount: 3,
-          channelWidth: 8,
-          isBalancedChannel: false
-        }
-      }
-    };
+test('Missing, attempted and rejected correction states are not counted as resolved', () => {
+  const responseData = { selfCorrectionTrail: [{}, { status: 'REJECTED', verifiedBuildable: true }, { status: 'RESOLVED', verifiedBuildable: false }] };
+  const analysis = performReasoningPostAnalysis({ responseData, context: { persistLedger: false } });
+  assert.match(analysis.reasoningNarrative.join(' '), /Resolved 0 physical/);
+  assert.match(analysis.reasoningNarrative.join(' '), /UNVERIFIED/);
+});
 
-    const proofs = generateCounterfactualRepairProofs(evalResults, { serverCount: 1 });
-    assert.equal(proofs.length, 1);
-    assert.equal(proofs[0].issueType, 'MEMORY_UNBALANCED_CHANNELS');
-    assert.ok(proofs[0].mathematicalProof.includes('16 DIMMs'));
-    assert.equal(proofs[0].resultingStatus, '100% BUILDABLE');
-  });
+test('Retraction survives fresh reads and registry rebuild; all registry shapes are deactivated', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'reasoning-retraction-'));
+  try {
+    const chassisDir = path.join(dir, 'DL380_Gen12');
+    const history = path.join(chassisDir, 'history'); fs.mkdirSync(history, { recursive: true });
+    const delta = { deltaId: 'BAD', chassis: 'DL380_Gen12', affectedSku: 'P38997-B21', requiredDependencySku: 'P44712-B21', ruleType: 'PREREQUISITE', status: 'ACTIVE', governanceStatus: 'ACTIVE', rawMessage: 'Bad rule' };
+    const masterRegistryPath = path.join(dir, 'master.json');
+    safeWriteJsonAtomic(masterRegistryPath, { universalRules: [delta], familyGenRules: [delta], chassisSpecificRules: [delta], deltas: [delta] });
+    safeWriteJsonAtomic(path.join(history, 'catalog_deltas.json'), [delta]);
+    const options = { masterRegistryPath, globalDeltasPath: path.join(dir, 'global.json'), chassisDir, filePath: path.join(history, 'quarantined_deltas.json') };
+    assert.equal(retractPromotedDelta('BAD', 'Incorrect constraint', options), true);
+    const master = JSON.parse(fs.readFileSync(masterRegistryPath));
+    assert.ok(Object.values(master).every(list => list[0].active === false));
+    const saved = JSON.parse(fs.readFileSync(path.join(history, 'catalog_deltas.json')));
+    const filtered = filterDeltaRules(saved, 'DL380_Gen12', chassisDir);
+    assert.ok(Object.values(filtered).filter(Array.isArray).every(list => list.length === 0));
+    assert.deepEqual(collectAllDeltas(dir), []);
+    // An old source copy also remains inactive through the persistent decision ledger.
+    safeWriteJsonAtomic(path.join(history, 'catalog_deltas.json'), [delta]);
+    assert.deepEqual(collectAllDeltas(dir), []);
+    const fresh = require('child_process').spawnSync(process.execPath, ['-e',
+      "const {collectAllDeltas}=require('./scripts/lib/sync/knowledge_sync'); if(collectAllDeltas(process.argv[1]).length) process.exit(1);", dir],
+      { cwd: path.resolve(__dirname, '../..'), encoding: 'utf8' });
+    assert.equal(fresh.status, 0, fresh.stderr);
+    supersedeKnowledgeDelta('BAD', 'GOOD', 'Replacement', options);
+    assert.equal(JSON.parse(fs.readFileSync(masterRegistryPath)).chassisSpecificRules[0].status, 'SUPERSEDED');
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
 
-  it('4. Reasoning Post-Analyzer: Calculates explicit Step 3 math and Step 6 resolution proofs', () => {
-    const responseData = {
-      status: 'ACTION_REQUIRED',
-      chassis: 'DL380_Gen12',
-      isMathClean: false,
-      customerDisposition: 'DELIVERY_BLOCKED_UNBUILDABLE',
-      aspectChecksCompleted: true,
-      aspectChecks: [
-        { id: 1, name: 'Power', status: 'FAIL', detail: 'PSU deficit' }
-      ],
-      evalSummary: {
-        power: {
-          estimatedNodeWattage: 850,
-          requiredWattageWithHeadroom: 1020,
-          maxPsuWattage: 800,
-          hasPsuHeadroomDeficit: true
-        },
-        memory: {
-          cpuCount: 2,
-          memoryCount: 16,
-          channelWidth: 8,
-          isBalancedChannel: true
-        },
-        pcie: {
-          requiredPcieCards: 3,
-          activeSlotsAvailable: 2,
-          totalPhysicalSlots: 3
-        },
-        compute: {
-          cpuCount: 2,
-          maxCpuTdpWatts: 225
-        }
-      },
-      selfCorrectionTrail: [
-        {
-          contestedResourceType: 'OCP_SLOT_1_COLLISION',
-          selfCorrectionAction: 'Branch B: Form-Factor Pivot to PCIe Storage',
-          resolutionDetails: 'Pivoted controller to PCIe Standup Slot 3.'
-        }
-      ]
-    };
-
-    const analysis = performReasoningPostAnalysis({
-      queryText: 'Evaluate unbuildable tender',
-      context: { chassisName: 'DL380_Gen12', persistLedger: false },
-      classification: { intent: 'BOQ_EVALUATION', confidence: 1.0 },
-      responseData,
-      traceId: 'TRC-TEST-MATH-001',
-      executionTimeMs: 80
-    });
-
-    assert.ok(analysis.reasoningNarrative);
-    const narrative = analysis.reasoningNarrative.join('\n');
-    assert.ok(narrative.includes('Power Deficit Proof: Node load = 850W + 20% headroom (170W) = 1020W required vs 800W PSU capacity -> Deficit: -220W (28% overage)'));
-    assert.ok(narrative.includes('Memory Balance Proof: 16 DIMMs across 2 CPU(s) with 8 channels/socket'));
-    assert.ok(narrative.includes('PCIe Capacity Proof: Demand = 3 card(s) vs Active = 2 slot(s)'));
-    assert.ok(narrative.includes('Autonomous Self-Correction & Backtracking: Resolved 1 physical contention(s)'));
-    assert.ok(narrative.includes('Deterministic Counterfactual Repair Proofs: Generated'));
-    assert.ok(analysis.counterfactualRepairProofs.length > 0);
-  });
-
+test('Reflection errors remain ACTION_REQUIRED', async () => {
+  const phase = await _handleBoqReflectionPhase({ options: {}, startTime: Date.now(), evalResults: { get aspectChecks() { throw new Error('broken analyzer'); } } });
+  assert.equal(phase.status, 'ACTION_REQUIRED');
+  assert.equal(phase.summary.epistemicTier, 'UNKNOWN');
 });

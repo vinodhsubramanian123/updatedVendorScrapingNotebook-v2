@@ -100,7 +100,7 @@ describe('Milestone 2 Counterfactual Repair & Physical Self-Correction Adversari
         'STORAGE_CABLE_KIT_MISSING',
         'STORAGE_BATTERY_MISSING',
         'GPU_POWER_CABLE_MISSING',
-        'PCIE_SECONDARY_RISER_MISSING',
+        'PCIE_SLOT_CAPACITY',
         'CONTESTED_RESOURCE_COLLISION',
         'SUPPORT_SERVICE_MISSING'
       ];
@@ -110,7 +110,7 @@ describe('Milestone 2 Counterfactual Repair & Physical Self-Correction Adversari
         assert.ok(found, `Must include proof for ${expectedType}`);
         assert.ok(found.rootCause, `${expectedType} must specify a root cause`);
         assert.ok(found.mathematicalProof, `${expectedType} must provide mathematical proof`);
-        assert.equal(found.resultingStatus, '100% BUILDABLE');
+        assert.ok(['PROPOSED_UNVALIDATED', 'REPAIR_INFEASIBLE', 'ACTION_REQUIRED'].includes(found.resultingStatus), `Status must be hypothesis or infeasible: ${found.resultingStatus}`);
       }
     });
 
@@ -135,7 +135,7 @@ describe('Milestone 2 Counterfactual Repair & Physical Self-Correction Adversari
       const skuPattern = /^[A-Z0-9]{5,8}(-[A-Z0-9]{3})?$/;
 
       for (const proof of proofs) {
-        assert.ok(proof.requiredHardwareDeltas.length > 0, `${proof.issueType} must have non-empty deltas`);
+        assert.ok(proof.requiredHardwareDeltas.length > 0 || proof.resultingStatus === 'ACTION_REQUIRED');
         for (const delta of proof.requiredHardwareDeltas) {
           assert.ok(validActions.has(delta.action), `Delta action '${delta.action}' must be valid`);
           assert.ok(typeof delta.sku === 'string' && delta.sku.length > 0, `Delta SKU must be non-empty string in ${proof.issueType}`);
@@ -168,19 +168,19 @@ describe('Milestone 2 Counterfactual Repair & Physical Self-Correction Adversari
 
         const psuProof = proofs.find(p => p.issueType === 'POWER_PSU_MISSING');
         assert.ok(psuProof);
-        assert.equal(psuProof.requiredHardwareDeltas[0].quantity, size * 2, `PSUs must be 2 per node (${size * 2})`);
+        assert.deepEqual(psuProof.requiredHardwareDeltas, [], 'Missing catalog evidence stays unresolved');
 
         const fanProof = proofs.find(p => p.issueType === 'THERMAL_FANS_UNDERPOPULATED');
         assert.ok(fanProof);
-        assert.equal(fanProof.requiredHardwareDeltas[0].quantity, size, `Fan kits must be 1 per server node (${size})`);
+        assert.deepEqual(fanProof.requiredHardwareDeltas, [], 'Missing catalog evidence stays unresolved');
 
         const supportProof = proofs.find(p => p.issueType === 'SUPPORT_SERVICE_MISSING');
         assert.ok(supportProof);
-        assert.equal(supportProof.requiredHardwareDeltas[0].quantity, size, `Support contracts must be 1 per node (${size})`);
+        assert.deepEqual(supportProof.requiredHardwareDeltas, [], 'Missing catalog evidence stays unresolved');
 
         const heatsinkProof = proofs.find(p => p.issueType === 'THERMAL_HEATSINK_MISSING');
         assert.ok(heatsinkProof);
-        assert.equal(heatsinkProof.requiredHardwareDeltas[0].quantity, size * 2, `Heatsinks must cover all ${size * 2} sockets`);
+        assert.deepEqual(heatsinkProof.requiredHardwareDeltas, [], 'Missing catalog evidence stays unresolved');
       });
     }
 
@@ -197,10 +197,10 @@ describe('Milestone 2 Counterfactual Repair & Physical Self-Correction Adversari
 
         const proofs = generateCounterfactualRepairProofs(evalResults, { serverCount: count });
         const psuProof = proofs.find(p => p.issueType === 'POWER_PSU_MISSING');
-        assert.equal(psuProof.requiredHardwareDeltas[0].quantity, 2, `Quantity must default to 2 for count=${count}`);
+        assert.deepEqual(psuProof.requiredHardwareDeltas, [], 'Missing catalog evidence stays unresolved');
 
         const supportProof = proofs.find(p => p.issueType === 'SUPPORT_SERVICE_MISSING');
-        assert.equal(supportProof.requiredHardwareDeltas[0].quantity, 1, `Support quantity must default to 1 for count=${count}`);
+        assert.deepEqual(supportProof.requiredHardwareDeltas, [], 'Missing catalog evidence stays unresolved');
       }
     });
   });
@@ -251,8 +251,8 @@ describe('Milestone 2 Counterfactual Repair & Physical Self-Correction Adversari
 
       const proofs = generateCounterfactualRepairProofs(blockerEval);
       assert.equal(proofs.length, 1);
-      assert.equal(proofs[0].issueType, 'BLOCKER_B16');
-      assert.equal(proofs[0].requiredHardwareDeltas[0].sku, 'P10115-B21');
+      assert.equal(proofs[0].issueType, 'BLOCKER_B16_1');
+      assert.deepEqual(proofs[0].requiredHardwareDeltas, []);
     });
   });
 

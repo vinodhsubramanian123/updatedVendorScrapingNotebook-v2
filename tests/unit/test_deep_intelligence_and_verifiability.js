@@ -397,33 +397,65 @@ describe('Deep Intelligence, Web Verifiability & Self-Correction Matrix', () => 
     });
 
     it('Positive Control: Claiming ACCEPTED_BY_VENDOR WITH verified session receipt PASSES Gate B19', () => {
-      const boqOutput = {
-        portalValidationStatus: 'ACCEPTED_BY_VENDOR',
-        sessionReceipt: {
-          sessionId: 'OCA-SESS-98231',
-          validatedAt: '2026-10-24T18:00:00Z',
-          manifestSha256: 'a1b2c3d4e5f67890...'
-        },
-        aspectChecks: [
-          { aspectId: 'COMPUTE_TOPOLOGY', status: 'PASS' },
-          { aspectId: 'MEMORY_POPULATION', status: 'PASS' },
-          { aspectId: 'THERMAL_ENVELOPE', status: 'PASS' },
-          { aspectId: 'POWER_LOAD', status: 'PASS' },
-          { aspectId: 'PCIE_BUS_LANES', status: 'PASS' },
-          { aspectId: 'STORAGE_CONTROLLER_PAIR', status: 'PASS' },
-          { aspectId: 'CHASSIS_OPTIONS', status: 'PASS' }
-        ],
-        items: [{ sku: 'P52534-B21', quantity: 1 }]
-      };
+      const fs = require('fs');
+      const os = require('os');
+      const { safeWriteJsonAtomic } = require('../../scripts/lib/system/fs_compat');
+      const { readPortalReceipt } = require('../../scripts/lib/boq/portal_receipt.js');
+      const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'portal-b19-pos-'));
+      try {
+        const evidenceDir = path.join(tmpDir, 'evidence');
+        fs.mkdirSync(evidenceDir, { recursive: true });
+        const capturedAt = new Date().toISOString();
+        const rows = [
+          ['Hierarchy', 'Qty', 'Product #', 'Product Description', 'Config Name', 'Unit Price (USD)', 'Ext. Price (USD)'],
+          ['1', '1', 'P52534-B21', 'HPE ProLiant DL380 Gen11 CTO Server', 'Config_1', '1,500.00', '1,500.00']
+        ];
+        const capturedScope = {
+          chassis: 'DL380_Gen11', baseSku: 'P52534-B21', configurationName: 'Config_1',
+          selectors: {}
+        };
+        safeWriteJsonAtomic(path.join(evidenceDir, 'clic_corrected_bom.json'), {
+          capturedAt, capturedScope, text: 'Solution List Price USD 1,500.00', tables: [{ rows }]
+        });
+        safeWriteJsonAtomic(path.join(evidenceDir, 'clic_corrected_configuration.json'), {
+          capturedAt, capturedScope, text: 'Overall Status: OK Unbuildables 0 Errors: 0 Warnings: 0 Process control 0'
+        });
 
-      const checks = validateBoqEvaluationCriteria(boqOutput, {
-        catalogData: { 'P52534-B21': { name: 'DL380 Gen11 CTO' } }
-      });
+        const receipt = readPortalReceipt(tmpDir, { chassis: 'DL380_Gen11' });
+        const boqOutput = {
+          portalValidationStatus: 'ACCEPTED_BY_VENDOR',
+          portalReceipt: receipt,
+          chassis: 'DL380_Gen11',
+          baseSku: 'P52534-B21',
+          configurationName: 'Config_1',
+          selectors: {},
+          aspectChecks: [
+            { aspectId: 'COMPUTE_TOPOLOGY', status: 'PASS' },
+            { aspectId: 'MEMORY_POPULATION', status: 'PASS' },
+            { aspectId: 'THERMAL_ENVELOPE', status: 'PASS' },
+            { aspectId: 'POWER_LOAD', status: 'PASS' },
+            { aspectId: 'PCIE_BUS_LANES', status: 'PASS' },
+            { aspectId: 'STORAGE_CONTROLLER_PAIR', status: 'PASS' },
+            { aspectId: 'CHASSIS_OPTIONS', status: 'PASS' }
+          ],
+          items: [{ sku: 'P52534-B21', quantity: 1, configurationName: 'Config_1' }]
+        };
 
-      const gateB19 = checks.find(c => c.id === 'B19');
-      assert.ok(gateB19);
-      assert.equal(gateB19.status, 'PASSED');
-      assert.equal(gateB19.passed, true);
+        const checks = validateBoqEvaluationCriteria(boqOutput, {
+          chassis: 'DL380_Gen11',
+          baseSku: 'P52534-B21',
+          configurationName: 'Config_1',
+          selectors: {},
+          catalogData: { 'P52534-B21': { name: 'DL380 Gen11 CTO' } }
+        });
+
+        const gateB19 = checks.find(c => c.id === 'B19');
+        assert.ok(gateB19);
+        assert.equal(gateB19.status, 'PASSED');
+        assert.equal(gateB19.passed, true);
+      } finally {
+        fs.rmSync(tmpDir, { recursive: true, force: true });
+      }
     });
   });
 

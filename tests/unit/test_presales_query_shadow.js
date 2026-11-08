@@ -17,11 +17,11 @@ const sha = value => crypto.createHash('sha256').update(value).digest('hex');
 
 function restoreLegacySource(actual) {
   const wrapperStart = actual.indexOf('// CP7b report-only proposal.');
-  const wrapperEnd = actual.indexOf('/**\n * Execute routed presales query', wrapperStart);
+  const wrapperEnd = actual.indexOf('function _resolvePlatformSelectionMemory', wrapperStart);
   assert.ok(wrapperStart > 0 && wrapperEnd > wrapperStart);
   const restored = (actual.slice(0, wrapperStart) + actual.slice(wrapperEnd))
     .replace('async function _executeLegacyRoutedQuery(', 'async function executeRoutedQuery(');
-  assert.equal(sha(restored), 'eb8a27f776f18085ae799fb663af7293cc0350c0c0bf4b287bb9693101a0d5d5');
+  assert.equal(sha(restored), 'ce25e3108253eb58d3f1303bbb6b3e631023af4b77e4876c0045b74c07208021');
   return restored;
 }
 

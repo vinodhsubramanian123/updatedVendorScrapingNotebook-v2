@@ -1,0 +1,93 @@
+{
+  "product": "DL380_Gen12",
+  "recordedAt": "2026-11-08T09:58:04.641Z",
+  "source": "docs/audits/2026-11-08-solution-reasoning-and-self-correction-gap-review.md",
+  "results": [
+    {
+      "deltaId": "LEARN_REASONING_COUNTERFACTUAL_HYPOTHESIS_SEMANTICS_20261108",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_REASONING_COUNTERFACTUAL_HYPOTHESIS_SEMANTICS_20261108",
+        "ruleType": "WORKFLOW_HYPOTHESIS_SEMANTICS_ADVISORY",
+        "affectedSku": "",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-11-08T09:58:04.476Z"
+      }
+    },
+    {
+      "deltaId": "LEARN_REASONING_ARITHMETIC_PREDICATE_INFEASIBILITY_20261108",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_REASONING_ARITHMETIC_PREDICATE_INFEASIBILITY_20261108",
+        "ruleType": "WORKFLOW_PREDICATE_INFEASIBILITY_ADVISORY",
+        "affectedSku": "",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-11-08T09:58:04.515Z"
+      }
+    },
+    {
+      "deltaId": "LEARN_REASONING_EXACT_CATALOG_SCOPED_DISCOVERY_20261108",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_REASONING_EXACT_CATALOG_SCOPED_DISCOVERY_20261108",
+        "ruleType": "WORKFLOW_CATALOG_SCOPED_DISCOVERY_ADVISORY",
+        "affectedSku": "",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-11-08T09:58:04.543Z"
+      }
+    },
+    {
+      "deltaId": "LEARN_REASONING_EVIDENCE_VS_HARDWARE_DECOUPLING_20261108",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_REASONING_EVIDENCE_VS_HARDWARE_DECOUPLING_20261108",
+        "ruleType": "WORKFLOW_EVIDENCE_DECOUPLING_ADVISORY",
+        "affectedSku": "",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-11-08T09:58:04.573Z"
+      }
+    },
+    {
+      "deltaId": "LEARN_REASONING_CRYPTOGRAPHIC_TIER3_RECEIPT_VERIFICATION_20261108",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_REASONING_CRYPTOGRAPHIC_TIER3_RECEIPT_VERIFICATION_20261108",
+        "ruleType": "WORKFLOW_TIER3_RECEIPT_VERIFICATION_ADVISORY",
+        "affectedSku": "",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-11-08T09:58:04.605Z"
+      }
+    },
+    {
+      "deltaId": "LEARN_REASONING_APPEND_ONLY_KNOWLEDGE_RETRACTION_20261108",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_REASONING_APPEND_ONLY_KNOWLEDGE_RETRACTION_20261108",
+        "ruleType": "WORKFLOW_APPEND_ONLY_RETRACTION_ADVISORY",
+        "affectedSku": "",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-11-08T09:58:04.641Z"
+      }
+    }
+  ],
+  "allReachable": true,
+  "hardwareCompatibilityCertified": false
+}

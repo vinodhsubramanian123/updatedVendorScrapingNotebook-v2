@@ -1061,6 +1061,119 @@ function rejectQuarantinedDelta(quarantineIdOrDeltaId, reason = 'REJECTED_BY_REV
 }
 
 /**
+ * Deactivate a delta in a registry without deleting historical entries (INV-231).
+ */
+function _deactivateDeltaInRegistry(registryPath, idOrFp, updateFields) {
+  if (!fs.existsSync(registryPath)) return false;
+  try {
+    const data = JSON.parse(fs.readFileSync(registryPath, 'utf-8'));
+    let modified = false;
+    const updateList = (list) => {
+      if (!Array.isArray(list)) return;
+      for (const item of list) {
+        const fp = item.knowledgeFingerprint || buildKnowledgeFingerprint(item);
+        if (item.deltaId === idOrFp || fp === idOrFp || item.quarantineId === idOrFp) {
+          Object.assign(item, updateFields);
+          modified = true;
+        }
+      }
+    };
+    if (Array.isArray(data)) {
+      updateList(data);
+    } else {
+      updateList(data.universalRules);
+      updateList(data.familyGenRules);
+      updateList(data.chassisSpecificRules);
+      updateList(data.deltas);
+    }
+    if (modified) {
+      safeWriteJsonAtomic(registryPath, data);
+      return true;
+    }
+  } catch (err) {
+    logger.warn('QUARANTINE', `Failed to deactivate delta in ${path.basename(registryPath)}: ${err.message}`);
+  }
+  return false;
+}
+
+/**
+ * Retract an active promoted delta and mark it inactive with append-only audit trail (INV-231).
+ */
+function retractPromotedDelta(deltaIdOrFingerprint, reason = 'RETRACTED_BY_REVIEWER', options = {}) {
+  const reviewer = options.reviewer || (SINGLE_USER_MODE ? 'SINGLE_USER_LEAD_ARCHITECT' : 'REVIEWER');
+  const now = new Date().toISOString();
+  const updateFields = {
+    active: false,
+    status: 'RETRACTED',
+    retractedAt: now,
+    retractedBy: reviewer,
+    retractionReason: String(reason)
+  };
+
+  const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
+  const masterReg = options.masterRegistryPath || path.join(PROJECT_ROOT, 'outputs', 'history', 'master_knowledge_registry.json');
+  let deactivated = _deactivateDeltaInRegistry(masterReg, deltaIdOrFingerprint, updateFields);
+  deactivated = _deactivateDeltaInRegistry(options.globalDeltasPath || path.join(PROJECT_ROOT, 'outputs', 'history', 'catalog_deltas.json'), deltaIdOrFingerprint, updateFields) || deactivated;
+
+  if (options.chassisDir) {
+    const chassisDeltas = path.join(options.chassisDir, 'history', 'catalog_deltas.json');
+    const chDeactivated = _deactivateDeltaInRegistry(chassisDeltas, deltaIdOrFingerprint, updateFields);
+    deactivated = deactivated || chDeactivated;
+  }
+
+  const quarantineFile = options.filePath || currentQuarantineFile;
+  appendDecision({
+    decisionId: `DECISION_${Date.now()}_RETRACT`,
+    deltaId: deltaIdOrFingerprint,
+    decision: 'RETRACTED',
+    decidedAt: now,
+    reviewer,
+    reasoning: String(reason)
+  }, quarantineFile);
+
+  return deactivated;
+}
+
+/**
+ * Supersede a delta with a newer delta, keeping both in the append-only audit trail (INV-231).
+ */
+function supersedeKnowledgeDelta(oldDeltaId, newDeltaId, reason = 'SUPERSEDED_BY_NEWER_RULE', options = {}) {
+  const reviewer = options.reviewer || (SINGLE_USER_MODE ? 'SINGLE_USER_LEAD_ARCHITECT' : 'REVIEWER');
+  const now = new Date().toISOString();
+  const updateFields = {
+    active: false,
+    status: 'SUPERSEDED',
+    supersededBy: newDeltaId,
+    supersededAt: now,
+    supersededByReviewer: reviewer,
+    supersessionReason: String(reason)
+  };
+
+  const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
+  const masterReg = options.masterRegistryPath || path.join(PROJECT_ROOT, 'outputs', 'history', 'master_knowledge_registry.json');
+  _deactivateDeltaInRegistry(masterReg, oldDeltaId, updateFields);
+  _deactivateDeltaInRegistry(options.globalDeltasPath || path.join(PROJECT_ROOT, 'outputs', 'history', 'catalog_deltas.json'), oldDeltaId, updateFields);
+
+  if (options.chassisDir) {
+    const chassisDeltas = path.join(options.chassisDir, 'history', 'catalog_deltas.json');
+    _deactivateDeltaInRegistry(chassisDeltas, oldDeltaId, updateFields);
+  }
+
+  const quarantineFile = options.filePath || currentQuarantineFile;
+  appendDecision({
+    decisionId: `DECISION_${Date.now()}_SUPERSEDE`,
+    deltaId: oldDeltaId,
+    newDeltaId,
+    decision: 'SUPERSEDED',
+    decidedAt: now,
+    reviewer,
+    reasoning: String(reason)
+  }, quarantineFile);
+
+  return true;
+}
+
+/**
  * Clear all quarantined deltas (test utility).
  */
 function clearQuarantinedDeltas() {
@@ -1096,6 +1209,8 @@ module.exports = {
   getQuarantinedDeltas,
   promoteQuarantinedDelta,
   rejectQuarantinedDelta,
+  retractPromotedDelta,
+  supersedeKnowledgeDelta,
   deleteQuarantinedDelta: rejectQuarantinedDelta,
   clearQuarantinedDeltas,
   setQuarantineFilePath,

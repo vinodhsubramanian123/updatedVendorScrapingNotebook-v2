@@ -211,7 +211,41 @@ function receiptMatches(receipt, candidate, options = {}) {
   return _matchesReceiptManifest(receipt, candidate, options, items);
 }
 
+function currentReceiptScope(output, context) {
+  return { ...context, chassis: output.chassis || context.chassis,
+    baseSku: output.baseSku || context.baseSku,
+    configurationName: output.configurationName || context.configurationName,
+    configurationId: output.configurationId || context.configurationId,
+    selectors: output.selectors || context.selectors };
+}
+
+/** Re-read original captures; caller-supplied status and hashes are never proof. */
+function verifyCurrentPortalReceipt(output = {}, context = {}) {
+  try {
+    const accepted = new Set(['ACCEPTED_BY_VENDOR', 'CLIC_ACCEPTED', 'CORRECTED_CANDIDATE_CLIC_ACCEPTED']);
+    if ([output.portalValidationStatus, context.portalValidationStatus].some(s => s && !accepted.has(s))) return null;
+    const raw = output.sessionReceipt || output.sessionReceiptPath || output.portalReceipt || output.clicReceipt ||
+      context.sessionReceipt || context.sessionReceiptPath || context.portalReceipt;
+    let targetDir;
+    if (typeof raw === 'string') {
+      targetDir = fs.statSync(raw).isDirectory() ? raw : path.dirname(path.dirname(raw));
+    } else if (raw && typeof raw.bomPath === 'string' && path.basename(raw.bomPath) === 'clic_corrected_bom.json') {
+      targetDir = path.dirname(path.dirname(raw.bomPath));
+    }
+    if (!targetDir || output.clicValidation?.isValid === false || context.clicValidation?.isValid === false) return null;
+    const receipt = readPortalReceipt(targetDir);
+    const scope = currentReceiptScope(output, context);
+    const candidate = { ...output, items: output.items || output.skuPartsList || context.items || context.skuPartsList };
+    if (!receiptMatches(receipt, candidate, scope)) return null;
+    if (raw && typeof raw === 'object' && ['bomSha256', 'checkSha256', 'manifestSha256'].some(k => raw[k] && raw[k] !== receipt[k])) return null;
+    return receipt;
+  } catch {
+    return null;
+  }
+}
+
 module.exports = {
+  verifyCurrentPortalReceipt,
   readPortalReceipt,
   receiptMatches,
   normalizeSku,

@@ -49,8 +49,21 @@ HALT-CV3: If target chassis catalog is missing from outputs/{Family}/{Gen}/{Mode
 
 ---
 
+## 💻 Implementation Engine & Direct Execution
+
+The implementation is `scripts/lib/boq/cross_vendor_transformer.js`:
+- `transformCompetitorQuote` transforms competitor hardware tenders into equivalent HPE ProLiant configurations.
+- `parseCompetitorSpecification` extracts core specifications (CPU, RAM, storage, GPU, networking) from raw rows.
+- `audit12PointPhysicalParity` audits physical parity across 12 architectural subsystems.
+- `detectFabricProtocol` distinguishes InfiniBand and RoCEv2 interconnect fabrics.
+- `detectArchitectureChannelWidth` calculates memory channel balance.
+
+Presales query dispatch executes via `scripts/evaluators/route_query.js` (`executeRoutedQuery`).
+
+---
+
 ## 3. References & Related Charters
-- [Cross-Vendor Architecture Transformer](../../../scripts/lib/boq/cross_vendor_transformer.js) via `parseCompetitorSpecification()` and `transformCompetitorQuote()`
+- [`cross_vendor_transformer.js`](../../../scripts/lib/boq/cross_vendor_transformer.js) via `parseCompetitorSpecification()` and `transformCompetitorQuote()`
 - [Heterogeneous Tender Modernizer](../heterogeneous-tender-modernizer/SKILL.md)
 - [RFP Sizing Synthesizer](../rfp-sizing-synthesizer/SKILL.md)
 - [Master System Invariants Directory (INV-190, INV-216, INV-228)](../../../docs/INVARIANTS.md)

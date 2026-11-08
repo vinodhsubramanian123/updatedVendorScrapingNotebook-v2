@@ -1,428 +1,207 @@
 'use strict';
-/**
- * scripts/lib/system/counterfactual_repair.js — Deterministic Counterfactual Repair Proof Engine
- *
- * Synthesizes deterministic counterfactual repair proofs when an evaluation
- * encounters unbuildable conditions (customerDisposition === 'DELIVERY_BLOCKED_UNBUILDABLE'):
- * 1. Analyzes physical aspect deficits (power, thermal, memory, PCIe, storage, networking, support).
- * 2. Emits structured repair proofs: Array<{ issueType, rootCause, requiredHardwareDeltas, mathematicalProof, resultingStatus }>.
- * 3. Proves mathematically that applying the specified hardware deltas restores 100% buildability.
- */
+/** Catalog-scoped repair hypotheses. No proposal certifies a changed candidate. */
+const fs = require('fs');
+const path = require('path');
+const { cleanBaseSKU } = require('../catalog/sku');
+const normalize = value => String(value || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+const positive = value => typeof value === 'number' && Number.isFinite(value) && value > 0;
 
-const { cleanBaseSKU } = require('../catalog/sku.js');
-
-function _extractAspects(evalResults = {}) {
-  const safeEval = evalResults || {};
-  const summary = safeEval.evalSummary || {};
-  return {
-    power: summary.power || safeEval.power || {},
-    memory: summary.memory || safeEval.memory || {},
-    compute: summary.compute || safeEval.compute || {},
-    pcie: summary.pcie || safeEval.pcie || {},
-    storage: summary.storage || safeEval.storage || {},
-    networking: summary.networking || safeEval.networking || safeEval.network || {},
-    support: summary.support || safeEval.support || {},
-    errors: safeEval.errors || safeEval.evaluation?.errors || [],
-    acceptance: safeEval.acceptanceGate || {},
-    selfCorrectionTrail: safeEval.selfCorrectionTrail || []
-  };
+function _loadCatalogFromDisk(options, result, platform) {
+  try {
+    const rawDir = options.chassisDir || result.chassisDir || '';
+    let dir = rawDir;
+    if (!dir && platform) {
+      const { resolveChassisDirectory } = require('../catalog/sku_versioning');
+      dir = resolveChassisDirectory(platform);
+    }
+    if (!dir || !fs.existsSync(dir) || /history|tests[\\/]fixtures/i.test(dir)) return null;
+    const baseName = path.basename(dir);
+    const catFile = path.join(dir, `${baseName}_Catalog.json`);
+    if (fs.existsSync(catFile)) {
+      return JSON.parse(fs.readFileSync(catFile, 'utf8'));
+    }
+  } catch (_) {}
+  return null;
 }
 
-function _evaluatePowerRepair(power, serverCount, errors, proofs) {
-  if (!power || Object.keys(power).length === 0) {
-    if (!errors.some(e => /power|psu|wattage/i.test(e))) return;
+function catalogScope(result, options) {
+  let catalog = options.catalogData || result.catalogData;
+  const platform = result.chassis || options.chassisName || options.platform || options.chassis;
+  if (!catalog && platform) {
+    catalog = _loadCatalogFromDisk(options, result, platform);
   }
-  const sCount = Math.max(1, serverCount || 1);
-  if (power.hasZeroPsus || (power.psuCount === 0 && !power.hasIntegratedPower && (power.estimatedNodeWattage > 0 || errors.some(e => /psu.*missing|zero.*psu/i.test(e))))) {
-    proofs.push({
-      issueType: 'POWER_PSU_MISSING',
-      rootCause: `Configuration specifies ${sCount} server node(s) but contains 0 power supplies.`,
-      requiredHardwareDeltas: [
-        {
-          action: 'ADD',
-          sku: 'P38997-B21',
-          description: 'HPE 1600W Flex Slot Platinum Hot Plug Low Halogen Power Supply Kit',
-          quantity: sCount * 2
-        }
-      ],
-      mathematicalProof: `Server count = ${sCount} with 0 PSUs. Redundant 1+1 operation mandates 2x PSUs per server. Adding ${sCount * 2}x 1600W PSUs delivers redundant power for estimated ${power.estimatedNodeWattage || 800}W node load with +${1600 - (power.estimatedNodeWattage || 800)}W headroom margin.`,
-      resultingStatus: '100% BUILDABLE'
-    });
-    return;
-  }
-
-  if (power.hasPsuWattageDeficit || power.hasPsuHeadroomDeficit || errors.some(e => /psu.*wattage|power.*headroom/i.test(e))) {
-    const wNode = power.estimatedNodeWattage || 800;
-    const wReq = power.requiredWattageWithHeadroom || Math.ceil(wNode * 1.20);
-    const wPsu = power.maxPsuWattage || 800;
-    const deficit = Math.max(1, wReq - wPsu);
-    const overagePct = Math.round((deficit / wPsu) * 100);
-    const target = wReq > 1600
-      ? { sku: 'P44712-B21', desc: 'HPE 2200W Flex Slot Platinum Hot Plug Power Supply Kit', watts: 2200 }
-      : (wReq > 1000
-        ? { sku: 'P38997-B21', desc: 'HPE 1600W Flex Slot Platinum Hot Plug Low Halogen Power Supply Kit', watts: 1600 }
-        : { sku: 'P03178-B21', desc: 'HPE 1000W Flex Slot Titanium Hot Plug Power Supply Kit', watts: 1000 });
-
-    proofs.push({
-      issueType: power.hasPsuWattageDeficit ? 'POWER_WATTAGE_DEFICIT' : 'POWER_HEADROOM_DEFICIT',
-      rootCause: `Installed ${wPsu}W PSU is insufficient for estimated node load of ${wNode}W + 20% required headroom (${wReq}W). Deficit: -${deficit}W (${overagePct}% overage).`,
-      requiredHardwareDeltas: [
-        {
-          action: 'SUBSTITUTE',
-          sku: target.sku,
-          description: target.desc,
-          quantity: Math.max(2, power.psuCount || (sCount * 2))
-        }
-      ],
-      mathematicalProof: `Node load = ${wNode}W + 20% headroom (${Math.ceil(wNode * 0.2)}W) = ${wReq}W required vs ${wPsu}W installed (-${deficit}W deficit / ${overagePct}% overage). Upgrading to ${target.watts}W PSUs yields ${target.watts}W >= ${wReq}W (+${target.watts - wReq}W headroom margin, ${Math.round(((target.watts - wReq) / wReq) * 100)}% reserve).`,
-      resultingStatus: '100% BUILDABLE'
-    });
-  }
-}
-
-function _evaluateThermalRepair(compute, serverCount, errors, proofs) {
-  if (!compute || Object.keys(compute).length === 0) {
-    if (!errors.some(e => /thermal|heatsink|fan|liquid cooling|dlc/i.test(e))) return;
-  }
-  const sCount = Math.max(1, serverCount || 1);
-  const cpuCount = compute.cpuCount || (sCount * 2);
-  const maxTdp = compute.maxCpuTdpWatts || 0;
-
-  if (compute.needsHeatsink || errors.some(e => /heatsink|heat sink/i.test(e))) {
-    const target = maxTdp > 270
-      ? { sku: 'P74794-B21', desc: 'HPE ProLiant DL380 Gen12 Max Performance Heat Sink Kit', qty: Math.max(1, Math.ceil(cpuCount / 2)), rated: 350 }
-      : (maxTdp > 185
-        ? { sku: 'P74792-B21', desc: 'HPE ProLiant High Performance Heat Sink Kit', qty: cpuCount, rated: 270 }
-        : { sku: 'P49145-B21', desc: 'HPE ProLiant Standard Heat Sink Kit', qty: cpuCount, rated: 185 });
-
-    proofs.push({
-      issueType: 'THERMAL_HEATSINK_MISSING',
-      rootCause: `Configuration contains ${cpuCount} CPU(s) (Max TDP: ${maxTdp}W) but 0 processor heatsinks.`,
-      requiredHardwareDeltas: [
-        {
-          action: 'ADD',
-          sku: target.sku,
-          description: target.desc,
-          quantity: target.qty
-        }
-      ],
-      mathematicalProof: `Installed CPUs = ${cpuCount} (TDP: ${maxTdp}W, total dissipation: ${cpuCount * maxTdp}W) vs Heatsinks = 0. Adding ${target.qty}x ${target.sku} provides certified thermal dissipation up to ${target.rated}W per socket (100% socket cooling coverage).`,
-      resultingStatus: '100% BUILDABLE'
-    });
-  }
-
-  if (compute.needsDirectLiquidCooling || errors.some(e => /liquid cooling|dlc/i.test(e))) {
-    proofs.push({
-      issueType: 'THERMAL_DLC_MANDATED',
-      rootCause: `CPU TDP of ${maxTdp}W exceeds standard 350W air-cooling ceiling (+${maxTdp - 350}W overage).`,
-      requiredHardwareDeltas: [
-        {
-          action: 'ADD',
-          sku: 'P74796-B21',
-          description: 'HPE ProLiant Direct Liquid Cooling Cold Plate Kit',
-          quantity: cpuCount
-        }
-      ],
-      mathematicalProof: `Max CPU TDP = ${maxTdp}W exceeds air limit by +${maxTdp - 350}W. DLC cold plate loop rated for up to 500W heat extraction per socket.`,
-      resultingStatus: '100% BUILDABLE'
-    });
-  }
-
-  const fanDeficit = compute.fanKitUnderPopulated ||
-    (compute.hasHighPerfFans === false && maxTdp > 185) ||
-    errors.some(e => /fan kit|high performance fan/i.test(e));
-  if (fanDeficit) {
-    proofs.push({
-      issueType: compute.fanKitUnderPopulated ? 'THERMAL_FANS_UNDERPOPULATED' : 'THERMAL_HIGH_PERF_FANS_MISSING',
-      rootCause: `Processors > 185W TDP (${maxTdp}W) mandate High Performance Fan Kits for adequate chassis CFM airflow.`,
-      requiredHardwareDeltas: [
-        {
-          action: 'ADD',
-          sku: 'P48820-B21',
-          description: 'HPE ProLiant DL380 Gen11 High Performance Fan Kit',
-          quantity: sCount
-        }
-      ],
-      mathematicalProof: `Chassis requires 1 High Performance Fan Kit (6 high-CFM redundant rotors) for CPUs > 185W (installed: ${compute.fanKitCount || 0} kits). Adding ${sCount}x P48820-B21 delivers full 6-rotor chassis airflow.`,
-      resultingStatus: '100% BUILDABLE'
-    });
-  }
-}
-
-function _evaluateMemoryRepair(memory, errors, proofs) {
-  if (!memory || Object.keys(memory).length === 0) {
-    if (!errors.some(e => /memory|dimm|channel/i.test(e))) return;
-  }
-  const cpus = memory.cpuCount || 2;
-  const channels = memory.channelWidth || 8;
-  const totalChannels = cpus * channels;
-
-  if (memory.needsMemory || (memory.memoryCount === 0 && cpus > 0 && memory.hasZeroMemory) || errors.some(e => /zero memory|no memory/i.test(e))) {
-    proofs.push({
-      issueType: 'MEMORY_MISSING',
-      rootCause: `Configuration specifies ${cpus} CPU(s) but contains 0 memory DIMMs installed.`,
-      requiredHardwareDeltas: [
-        {
-          action: 'ADD',
-          sku: 'P43328-B21',
-          description: 'HPE 32GB (1x32GB) Dual Rank x4 DDR5-5600 Registered Smart Memory Kit',
-          quantity: totalChannels
-        }
-      ],
-      mathematicalProof: `Installed RAM = 0 GB across ${cpus} CPU(s). Adding ${totalChannels}x 32GB DIMMs populates 1 DIMM per channel across all ${totalChannels} channels (${totalChannels * 32}GB total, 100% channel bandwidth at DDR5-5600).`,
-      resultingStatus: '100% BUILDABLE'
-    });
-    return;
-  }
-
-  if (memory.isInvalidChannelConfiguration || (memory.isBalancedChannel === false && (memory.memoryCount || 0) > 0) || errors.some(e => /memory.*channel|unbalanced.*memory/i.test(e))) {
-    const memCount = memory.memoryCount || 1;
-    const targetBalanced = Math.max(totalChannels, Math.ceil(memCount / totalChannels) * totalChannels);
-    const deltaQty = targetBalanced - memCount;
-    const sampleDimm = memory.memoryItems?.[0] || { sku: 'P43328-B21', description: 'HPE 32GB DDR5-5600 Smart Memory Kit' };
-    proofs.push({
-      issueType: memory.isInvalidChannelConfiguration ? 'MEMORY_INVALID_POPULATION' : 'MEMORY_UNBALANCED_CHANNELS',
-      rootCause: `Installed ${memCount} DIMMs across ${cpus} CPU(s) yields ${(memCount / cpus).toFixed(1)} DIMMs/socket, causing asymmetric interleaving and NUMA latency penalty.`,
-      requiredHardwareDeltas: [
-        {
-          action: deltaQty >= 0 ? 'ADD' : 'REMOVE',
-          sku: cleanBaseSKU(sampleDimm.sku) || 'P43328-B21',
-          description: sampleDimm.description || 'HPE 32GB DDR5-5600 Smart Memory Kit',
-          quantity: Math.abs(deltaQty) || cpus
-        }
-      ],
-      mathematicalProof: `Current: ${memCount} DIMMs across ${cpus} CPU(s) with ${channels} channels/socket (${((memCount / totalChannels) * 100).toFixed(0)}% channel saturation). Adjusting by ${deltaQty >= 0 ? '+' : ''}${deltaQty} DIMM(s) achieves ${targetBalanced} DIMMs (${targetBalanced / cpus} DIMMs/socket, 100% balanced interleaving across all ${totalChannels} channels).`,
-      resultingStatus: '100% BUILDABLE'
-    });
-  }
-}
-
-function _evaluateStorageRepair(storage, errors, proofs) {
-  if (!storage || Object.keys(storage).length === 0) {
-    if (!errors.some(e => /storage|controller|splitter|battery/i.test(e))) return;
-  }
-  if (storage.needsCableKit || errors.some(e => /cable kit.*controller|storage.*splitter/i.test(e))) {
-    proofs.push({
-      issueType: 'STORAGE_CABLE_KIT_MISSING',
-      rootCause: 'Tri-mode storage controller requires dedicated drive cage enablement / splitter cable kit.',
-      requiredHardwareDeltas: [
-        {
-          action: 'ADD',
-          sku: 'P48832-B21',
-          description: 'HPE ProLiant DL380 Gen11 Tri-Mode Splitter Cable Kit',
-          quantity: 1
-        }
-      ],
-      mathematicalProof: 'Controller requires 16-lane x8 SlimSAS connection to 8SFF backplane. Adding 1x P48832-B21 establishes physical connectivity between PCIe controller and drive cage.',
-      resultingStatus: '100% BUILDABLE'
-    });
-  }
-
-  if ((storage.hasSmartBattery === false && storage.hasStorageController) || errors.some(e => /smart storage battery|p02377/i.test(e))) {
-    proofs.push({
-      issueType: 'STORAGE_BATTERY_MISSING',
-      rootCause: 'Flash-backed write cache controller requires 96W Smart Storage Battery to prevent data corruption during power loss.',
-      requiredHardwareDeltas: [
-        {
-          action: 'ADD',
-          sku: 'P02377-B21',
-          description: 'HPE 96W Smart Storage Battery (up to 20 Devices) with 145mm Cable Kit',
-          quantity: 1
-        }
-      ],
-      mathematicalProof: 'Hardware write-back cache (8GB) requires 96W battery backup (CLIC Rule 81300214). Adding 1x P02377-B21 satisfies mandatory data protection rule.',
-      resultingStatus: '100% BUILDABLE'
-    });
-  }
-}
-
-function _checkGpuPowerCableProof(pcie, errors, proofs) {
-  const needsCable = pcie.needsGpuPowerCableKit || errors.some(e => /gpu.*power cable|gpu.*aux/i.test(e));
-  if (!needsCable) return;
-
-  const qty = Math.max(1, (pcie.gpuCount || 1) - (pcie.gpuPowerCableKitCount || 0));
-  proofs.push({
-    issueType: 'GPU_POWER_CABLE_MISSING',
-    rootCause: `Installed ${pcie.gpuCount || 1} GPU(s) lack required 16-pin / 8-pin auxiliary power feeds from riser headers.`,
-    requiredHardwareDeltas: [
-      {
-        action: 'ADD',
-        sku: 'P52410-B21',
-        description: 'HPE ProLiant DL380 GPU Auxiliary Power Cable Kit',
-        quantity: qty
-      }
-    ],
-    mathematicalProof: `Installed GPUs = ${pcie.gpuCount || 1} (up to 350W TDP per accelerator) vs Cabled feeds = ${pcie.gpuPowerCableKitCount || 0}. Adding ${qty}x P52410-B21 provides dedicated 12V aux power headers.`,
-    resultingStatus: '100% BUILDABLE'
-  });
-}
-
-function _resolveRiserDeltaAndType(pcie) {
-  if (pcie.needsPrimaryRiser) {
-    return {
-      delta: { sku: 'P48803-B21', desc: 'HPE ProLiant DL380 Gen11 3x16 Primary Riser Kit', qty: 1 },
-      issueType: 'PCIE_PRIMARY_RISER_MISSING',
-      addedSlots: 3
-    };
-  }
-  if (pcie.needsSecondaryRiser) {
-    return {
-      delta: { sku: 'P48813-B21', desc: 'HPE ProLiant DL380 Gen11 3x16 Secondary Riser Kit', qty: 1 },
-      issueType: 'PCIE_SECONDARY_RISER_MISSING',
-      addedSlots: 3
-    };
-  }
-  return {
-    delta: { sku: 'P56073-B21', desc: 'HPE ProLiant DL380 Gen11 Primary Riser Cable Kit', qty: 1 },
-    issueType: 'PCIE_CABLE_KIT_MISSING',
-    addedSlots: 1
-  };
-}
-
-function _checkPcieSlotCapacityProof(pcie, errors, proofs) {
-  const needsSlotOrRiser = pcie.isExceedingActiveSlots ||
-    pcie.needsPrimaryRiser ||
-    pcie.needsSecondaryRiser ||
-    pcie.needsPrimaryCableKit ||
-    pcie.needsSecondaryCableKit ||
-    errors.some(e => /pcie slot|riser.*missing/i.test(e));
-
-  if (!needsSlotOrRiser) return;
-
-  const { delta, issueType, addedSlots } = _resolveRiserDeltaAndType(pcie);
-  const reqCards = pcie.requiredPcieCards || 1;
-  const activeSlots = pcie.activeSlotsAvailable || 0;
-  const deficit = Math.max(1, reqCards - activeSlots);
-  const newCapacity = activeSlots + addedSlots;
-
-  proofs.push({
-    issueType,
-    rootCause: `Demand of ${reqCards} PCIe standup card(s) exceeds active slot capacity of ${activeSlots} slot(s).`,
-    requiredHardwareDeltas: [
-      {
-        action: 'ADD',
-        sku: delta.sku,
-        description: delta.desc,
-        quantity: delta.qty
-      }
-    ],
-    mathematicalProof: `Demand: ${reqCards} card(s) vs Active: ${activeSlots} slot(s) (-${deficit} deficit). Adding ${delta.sku} expands active capacity to ${newCapacity} slots >= ${reqCards} card(s).`,
-    resultingStatus: '100% BUILDABLE'
-  });
-}
-
-function _evaluatePcieRepair(pcie, errors, proofs) {
-  if (!pcie || Object.keys(pcie).length === 0) {
-    if (!errors.some(e => /pcie|riser|gpu.*power/i.test(e))) return;
-  }
-  _checkGpuPowerCableProof(pcie, errors, proofs);
-  _checkPcieSlotCapacityProof(pcie, errors, proofs);
-}
-
-function _evaluateContestedRepair(selfCorrectionTrail, errors, proofs) {
-  if (!selfCorrectionTrail?.length && !errors?.length) return;
-  const hasOcpContention = selfCorrectionTrail.some(t => String(t.contestedResourceType || '').includes('OCP') || String(t.detectedFailure || '').includes('OCP')) ||
-    errors.some(e => /ocp.*collision|contested.*ocp/i.test(e));
-
-  if (hasOcpContention) {
-    proofs.push({
-      issueType: 'CONTESTED_RESOURCE_COLLISION',
-      rootCause: 'Single OCP 3.0 slot contested between storage controller (-o) and OCP network adapter.',
-      requiredHardwareDeltas: [
-        {
-          action: 'SUBSTITUTE',
-          sku: 'P47777-B21',
-          description: 'HPE MR416i-p Gen11 x16 Lanes 8GB Cache PCI SPDM Storage Controller',
-          quantity: 1
-        },
-        {
-          action: 'SUBSTITUTE',
-          sku: 'P48832-B21',
-          description: 'HPE ProLiant DL380 Gen11 Tri-Mode Splitter Cable Kit',
-          quantity: 1
-        }
-      ],
-      mathematicalProof: 'OCP slot capacity = 1 vs demand = 2 (contested OCP Slot 1). Pivoting storage controller to standup PCIe Riser Slot 3 frees OCP Slot 1 for NIC. Resulting allocations: OCP 1/1 (NIC), PCIe Standup 1/3 (Storage Controller). Both subsystems 100% satisfied.',
-      resultingStatus: '100% BUILDABLE'
-    });
-  }
-}
-
-function _evaluateSupportRepair(support, serverCount, errors, proofs) {
-  if (!support || Object.keys(support).length === 0) {
-    if (!errors.some(e => /tech care|pointnext|support/i.test(e))) return;
-  }
-  const sCount = Math.max(1, serverCount || 1);
-  if (support.hasSupportService === false || support.needsSupportService === true || errors.some(e => /tech care|pointnext.*support/i.test(e))) {
-    proofs.push({
-      issueType: 'SUPPORT_SERVICE_MISSING',
-      rootCause: 'Configuration lacks mandatory 3-Year Pointnext Tech Care hardware support contract.',
-      requiredHardwareDeltas: [
-        {
-          action: 'ADD',
-          sku: 'HU4B2A3',
-          description: 'HPE 3 Year Tech Care Essential DL380 Gen11 Service',
-          quantity: sCount
-        }
-      ],
-      mathematicalProof: `Server count = ${sCount} requires 1:1 hardware support contract pairing. Adding ${sCount}x HU4B2A3 provides 24x7 4-hour response coverage across 36-month warranty lifecycle.`,
-      resultingStatus: '100% BUILDABLE'
-    });
-  }
-}
-
-function _evaluateResidualBlockers(acceptance, existingProofs, proofs) {
-  const blockers = acceptance.blockers || [];
-  const existingTypes = new Set(existingProofs.map(p => p.issueType));
-
-  for (const b of blockers) {
-    const detail = b.detail || b.name || b.id || '';
-    const skuMatch = detail.match(/\b([A-Z0-9]{5,7}-[A-Z0-9]{3}|[A-Z0-9]{6,8})\b/);
-    const sku = skuMatch ? skuMatch[1] : undefined;
-    const issueType = `BLOCKER_${b.id || 'GENERIC'}`;
-
-    if (!existingTypes.has(issueType)) {
-      proofs.push({
-        issueType,
-        rootCause: `Pre-presentation acceptance blocker [${b.id}]: ${detail}`,
-        requiredHardwareDeltas: [
-          {
-            action: 'ADD',
-            sku,
-            description: `Mandatory enablement resolution for ${b.id}`,
-            quantity: 1
-          }
-        ],
-        mathematicalProof: `Blocker ${b.id}: ${detail}. Ingesting required component satisfies strict acceptance gate criteria.`,
-        resultingStatus: '100% BUILDABLE'
-      });
-      existingTypes.add(issueType);
+  const identities = [catalog?.metadata?.model, catalog?.metadata?.chassis].filter(Boolean);
+  if (!platform || !identities.some(id => normalize(id) === normalize(platform))) return { rows: [], platform: platform || null };
+  const rows = [];
+  for (const entry of catalog.entries || []) {
+    for (const row of entry.skus || []) {
+      const sku = cleanBaseSKU(row.sku || row['Product #']);
+      if (!sku || /obsolete|discontinued|removed|end.of.life/i.test(String(row.lifecycleStatus || row['Lifecycle Status'] || ''))) continue;
+      rows.push({ ...row, sku, description: row.description || row.Description || '',
+        category: `${entry.parentCategory || ''} ${entry.subCategory || ''}`.trim() });
     }
   }
+  return { rows, platform, catalogMetadata: catalog.metadata };
+}
+
+function unresolved(issueType, detail, category = 'HARDWARE_SELECTION') {
+  return { issueType, rootCause: detail, requiredHardwareDeltas: [],
+    requiredAction: { action: 'RESOLVE_SCOPED_CONSTRAINT', category },
+    mathematicalProof: detail, resultingStatus: 'ACTION_REQUIRED' };
+}
+
+function proposal(issueType, detail, candidates, quantity, action, scope) {
+  if (!Number.isSafeInteger(quantity) || quantity <= 0 || candidates.length !== 1) {
+    return { ...unresolved(issueType, detail), candidateSkus: [...new Set(candidates.map(row => row.sku))] };
+  }
+  const row = candidates[0];
+  return { issueType, rootCause: detail,
+    requiredHardwareDeltas: [{ action, sku: row.sku, description: row.description, quantity }],
+    provenance: { platform: scope.platform, catalogBuiltAt: scope.catalogMetadata?.builtAt || null },
+    mathematicalProof: `${detail} Catalog candidate only; full physical, topology, customer-intent and portal validation remain required.`,
+    resultingStatus: 'PROPOSED_UNVALIDATED' };
+}
+
+function matching(scope, pattern) {
+  const bySku = new Map();
+  for (const row of scope.rows) if (pattern.test(`${row.category} ${row.description}`)) bySku.set(row.sku, row);
+  return [...bySku.values()];
+}
+
+function _filterPsuCandidates(candidates, power) {
+  const descRaw = String(power.installedPsuType || power.installedPsuDescription || power.description || '');
+  const isDcRequested = /dc|-48v/i.test(descRaw);
+  const isTitaniumRequested = /titanium/i.test(descRaw);
+  return candidates.filter(row => {
+    const desc = row.description.toLowerCase();
+    const isDc = desc.includes('-48vdc') || desc.includes('dc power');
+    if (isDcRequested && !isDc) return false;
+    if (!isDcRequested && isDc) return false;
+    return true;
+  }).sort((a, b) => {
+    if (isTitaniumRequested) {
+      const aTit = a.description.toLowerCase().includes('titanium');
+      const bTit = b.description.toLowerCase().includes('titanium');
+      if (aTit !== bTit) return aTit ? -1 : 1;
+    }
+    return a.watts - b.watts || a.sku.localeCompare(b.sku);
+  });
+}
+
+function powerRepair(power, scope, count, errors, proofs) {
+  const missing = power.hasZeroPsus || power.psuCount === 0 && !power.hasIntegratedPower;
+  if (!missing && !power.hasPsuWattageDeficit && !power.hasPsuHeadroomDeficit && !errors.some(e => /psu.*wattage|power.*headroom/i.test(e))) return;
+  const type = missing ? 'POWER_PSU_MISSING' : 'POWER_WATTAGE_DEFICIT';
+  const required = positive(power.requiredWattageWithHeadroom) ? power.requiredWattageWithHeadroom :
+    positive(power.estimatedNodeWattage) ? Math.ceil(power.estimatedNodeWattage * 1.2) : null;
+  if (!required) { proofs.push(unresolved(type, 'Node power requirement is unknown.')); return; }
+  const allCandidates = matching(scope, /power suppl/i).map(row => ({ ...row,
+    watts: Number(row.wattage || row.watts || row.description.match(/\b(\d+)\s*W\b/i)?.[1])
+  })).filter(row => positive(row.watts));
+  if (!allCandidates.length) { proofs.push(unresolved(type, `No rated PSU candidate in the exact product catalog for ${required}W.`)); return; }
+  const candidates = _filterPsuCandidates(allCandidates, power);
+  const feasible = candidates.filter(row => row.watts >= required);
+  if (!feasible.length) {
+    const max = candidates.length > 0 ? Math.max(...candidates.map(row => row.watts)) : Math.max(...allCandidates.map(row => row.watts));
+    proofs.push({ ...unresolved(type, `${max}W >= ${required}W fails; ${required - max}W deficit remains in available catalog candidates.`), resultingStatus: 'REPAIR_INFEASIBLE' });
+    return;
+  }
+  const target = feasible[0];
+  const quantity = missing ? (Number.isSafeInteger(count) && count > 0 ? count * 2 : null) : power.psuCount;
+  proofs.push(proposal(type, `${target.watts}W >= ${required}W for the proposed 1+1 power topology.`, [target], quantity, missing ? 'ADD' : 'SUBSTITUTE', scope));
+}
+
+function thermalRepairs(compute, scope, count, errors, proofs) {
+  const cpus = compute.cpuCount;
+  const tdp = compute.maxCpuTdpWatts;
+  if (compute.needsHeatsink || errors.some(e => /heat\s*sink/i.test(e))) {
+    const candidates = matching(scope, /heat\s*sink/i).filter(row => positive(row.thermalRatingWatts) && positive(tdp) && row.thermalRatingWatts >= tdp && positive(row.socketsPerKit));
+    proofs.push(proposal('THERMAL_HEATSINK_MISSING', `Cooling must cover ${cpus ?? 'unknown'} sockets at ${tdp ?? 'unknown'}W/socket; rating and kit packaging require explicit catalog evidence.`, candidates,
+      candidates.length === 1 && positive(cpus) ? Math.ceil(cpus / candidates[0].socketsPerKit) : null, 'ADD', scope));
+  }
+  if (compute.needsDirectLiquidCooling) proofs.push(unresolved('THERMAL_DLC_MANDATED', 'Validate the complete liquid cooling loop and facility dependencies against scoped thermal rules.'));
+  if (compute.fanKitUnderPopulated || compute.hasHighPerfFans === false && positive(tdp) && errors.some(e => /fan/i.test(e))) {
+    proofs.push(proposal('THERMAL_FANS_UNDERPOPULATED', 'Fan population and packaging require the exact product thermal rule.', [], count, 'ADD', scope));
+  }
+}
+
+function memoryRepair(memory, scope, errors, proofs) {
+  const missing = memory.needsMemory || memory.hasZeroMemory;
+  const invalid = memory.isInvalidChannelConfiguration || memory.isBalancedChannel === false || errors.some(e => /unbalanced.*memory/i.test(e));
+  if (!missing && !invalid) return;
+  const type = missing ? 'MEMORY_MISSING' : 'MEMORY_UNBALANCED_CHANNELS';
+  const cpus = memory.cpuCount;
+  const channels = memory.channelWidth;
+  const current = missing ? 0 : memory.memoryCount;
+  if (![cpus, channels].every(n => Number.isSafeInteger(n) && n > 0) || !Number.isSafeInteger(current) || current < 0) {
+    proofs.push(unresolved(type, 'CPU/channel counts and current DIMM population must be known.')); return;
+  }
+  const total = cpus * channels;
+  const delta = Math.max(total, Math.ceil(current / total) * total) - current;
+  const sample = cleanBaseSKU(memory.memoryItems?.[0]?.sku);
+  const candidates = scope.rows.filter(row => row.sku === sample);
+  proofs.push(proposal(type, `${current} DIMMs across ${total} channels; proposed increment ${delta}. Population rules and customer capacity limits require validation.`, candidates, delta, 'ADD', scope));
+}
+
+function otherRepairs(aspects, errors, proofs) {
+  const { storage, pcie, selfCorrectionTrail } = aspects;
+  const checks = [
+    ['STORAGE_CABLE_KIT_MISSING', storage.needsCableKit, /storage.*splitter|cable kit.*controller/i],
+    ['STORAGE_BATTERY_MISSING', storage.hasSmartBattery === false && storage.hasStorageController, /smart storage battery/i],
+    ['GPU_POWER_CABLE_MISSING', pcie.needsGpuPowerCableKit, /gpu.*power cable|gpu.*aux/i],
+    ['PCIE_SLOT_CAPACITY', pcie.isExceedingActiveSlots || pcie.needsPrimaryRiser || pcie.needsSecondaryRiser || pcie.needsPrimaryCableKit || pcie.needsSecondaryCableKit, /pcie slot|riser.*missing/i],
+    ['CONTESTED_RESOURCE_COLLISION', selfCorrectionTrail.some(t => t.status !== 'RESOLVED' && /OCP/i.test(t.contestedResourceType || '')), /ocp.*collision|contested.*ocp/i]
+  ];
+  for (const [type, condition, pattern] of checks) if (condition || errors.some(e => pattern.test(e))) {
+    proofs.push(unresolved(type, 'Resolve using exact product enablement rules, customer requirements and owning component; no generic part substitution is authorized.'));
+  }
+}
+
+function supportRepair(support, scope, count, requirements, errors, proofs) {
+  if (support.hasSupportService !== false && !support.needsSupportService && !errors.some(e => /tech care|pointnext.*support/i.test(e))) return;
+  const level = String(requirements.supportSla || requirements.serviceLevel || requirements.supportLevel || 'Basic');
+  const years = requirements.supportYears ?? 3;
+  const candidates = matching(scope, /tech care/i).filter(row => {
+    const desc = row.description.toLowerCase();
+    return desc.includes(level.toLowerCase()) && Number(desc.match(/\b(\d+)\s*(?:year|yr)\b/i)?.[1]) === years;
+  });
+  proofs.push(proposal('SUPPORT_SERVICE_MISSING', `Select product-qualified ${years}-year ${level} support for each owning component.`, candidates, count, 'ADD', scope));
+}
+
+function blockerProposal(blocker, index) {
+  const b = typeof blocker === 'string' ? { detail: blocker } : blocker || {};
+  const detail = String(b.detail || b.name || b.id || 'Unspecified acceptance blocker');
+  const id = String(b.id || `UNIDENTIFIED_${index + 1}`);
+  const category = /GROUNDING|NOTEBOOKLM|CITATION|RECEIPT|PORTAL|CLIC|FRESHNESS|STALE/i.test(`${id} ${detail}`) ? 'EVIDENCE_DEFICIT' :
+    /BUDGET|CUSTOMER_CONSTRAINT|MUTUALLY_EXCLUSIVE_SPEC/i.test(id) ? 'CUSTOMER_REQUIREMENT_CONFLICT' : 'GENERAL_BLOCKER';
+  const result = unresolved(`BLOCKER_${id}_${index + 1}`, detail, category);
+  result.blockerId = b.id || null;
+  if (category === 'EVIDENCE_DEFICIT') {
+    result.requiredEvidenceAction = { action: 'RESOLVE_EVIDENCE_CONTRACT', target: id };
+    result.resultingStatus = 'ACTION_REQUIRED_EVIDENCE_PROBE';
+  }
+  // Prose mentions never authorize ADD/REMOVE, quantities, or substitutions.
+  return result;
 }
 
 function generateCounterfactualRepairProofs(evalResults = {}, options = {}) {
-  const safeEval = evalResults || {};
-  const safeOpts = options || {};
-  const { power, memory, compute, pcie, storage, support, errors, acceptance, selfCorrectionTrail } = _extractAspects(safeEval);
-  const serverCount = safeOpts.serverCount || safeEval.serverCount || 1;
+  const result = evalResults || {};
+  const opts = options || {};
+  const summary = result.evalSummary || result;
+  const errors = (result.errors || result.evaluation?.errors || []).map(e => typeof e === 'string' ? e : JSON.stringify(e));
+  const scope = catalogScope(result, opts);
+  const rawCount = opts.serverCount ?? result.serverCount ?? 1;
+  const count = Number.isSafeInteger(rawCount) && rawCount > 0 ? rawCount : NaN;
   const proofs = [];
-
-  _evaluatePowerRepair(power, serverCount, errors, proofs);
-  _evaluateThermalRepair(compute, serverCount, errors, proofs);
-  _evaluateMemoryRepair(memory, errors, proofs);
-  _evaluateStorageRepair(storage, errors, proofs);
-  _evaluatePcieRepair(pcie, errors, proofs);
-  _evaluateContestedRepair(selfCorrectionTrail, errors, proofs);
-  _evaluateSupportRepair(support, serverCount, errors, proofs);
-
-  if (proofs.length === 0 && acceptance.blockersCount > 0) {
-    _evaluateResidualBlockers(acceptance, proofs, proofs);
-  }
-
+  powerRepair(summary.power || {}, scope, count, errors, proofs);
+  thermalRepairs(summary.compute || {}, scope, count, errors, proofs);
+  memoryRepair(summary.memory || {}, scope, errors, proofs);
+  otherRepairs({ storage: summary.storage || {}, pcie: summary.pcie || {}, support: summary.support || {}, selfCorrectionTrail: result.selfCorrectionTrail || [] }, errors, proofs);
+  supportRepair(summary.support || {}, scope, count, opts.customerRequirements || result.customerRequirements || {}, errors, proofs);
+  const acceptance = result.acceptanceGate || {};
+  const blockers = Array.isArray(acceptance.blockers) ? acceptance.blockers : [];
+  blockers.forEach((b, i) => proofs.push(blockerProposal(b, i)));
+  if (acceptance.blockersCount > blockers.length) proofs.push(unresolved('BLOCKER_DETAILS_MISSING', `${acceptance.blockersCount - blockers.length} acceptance blocker details are missing.`, 'GENERAL_BLOCKER'));
   return proofs;
 }
-
-module.exports = {
-  generateCounterfactualRepairProofs
-};
+module.exports = { generateCounterfactualRepairProofs };

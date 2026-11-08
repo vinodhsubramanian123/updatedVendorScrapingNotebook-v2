@@ -1590,7 +1590,14 @@ async function _handleBoqDeliverablesPhase(ctx, options, evidenceLedger, startTi
           { ...options, ...ctx.ingestCtx }
         );
       } catch (_cfErr) {
-        ctx.evalResults.counterfactualRepairProofs = [];
+        ctx.evalResults.counterfactualRepairProofs = [{
+          issueType: 'REPAIR_EXECUTION_ERROR',
+          rootCause: _cfErr.message,
+          requiredHardwareDeltas: [],
+          requiredAction: { action: 'RESOLVE_SCOPED_CONSTRAINT', category: 'ENGINEERING_DIAGNOSTIC' },
+          mathematicalProof: `Counterfactual repair engine encountered an execution error: ${_cfErr.message}`,
+          resultingStatus: 'ACTION_REQUIRED'
+        }];
       }
     }
   }
@@ -1627,6 +1634,7 @@ async function _handleBoqDeliverablesPhase(ctx, options, evidenceLedger, startTi
 
 async function _handleBoqReflectionPhase(ctx) {
   let reasoningAnalysis = null;
+  let reflectionError = null;
   try {
     const { performReasoningPostAnalysis } = require('../lib/system/reasoning_post_analyzer.js');
     reasoningAnalysis = performReasoningPostAnalysis({
@@ -1640,9 +1648,27 @@ async function _handleBoqReflectionPhase(ctx) {
     });
     ctx.evalResults.reasoningAnalysis = reasoningAnalysis;
   } catch (err) {
-    if (typeof logger.debug === 'function') {
-      logger.debug('EVAL_BOQ', `Post-evaluation reasoning analysis non-blocking note: ${err?.message || err}`);
+    reflectionError = err;
+    ctx.evalResults.reflectionError = err.message;
+    if (typeof logger.warn === 'function') {
+      logger.warn('EVAL_BOQ', `Post-evaluation reasoning analysis failed (INV-231): ${err?.message || err}`);
     }
+  }
+
+  if (reflectionError) {
+    return {
+      status: 'ACTION_REQUIRED',
+      summary: {
+        newLearningsCount: 0,
+        evidenceLogPath: ctx.evalResults.evidenceLogPath || null,
+        epistemicTier: 'UNKNOWN',
+        error: reflectionError.message
+      },
+      checks: [
+        { status: 'FAIL', label: `Knowledge reflection failed: ${reflectionError.message}` },
+        { status: ctx.evalResults.evidenceLogPath ? 'PASS' : 'WARN', label: `Evidence ledger exported: ${ctx.evalResults.evidenceLogPath ? path.basename(ctx.evalResults.evidenceLogPath) : 'Pending'}` }
+      ]
+    };
   }
 
   return {
@@ -1926,5 +1952,6 @@ module.exports = {
   executeGroundedRagValidation,
   generateMarkdownReport,
   serializeAndExportResults,
-  recomputeStrategyMatrixWithRag
+  recomputeStrategyMatrixWithRag,
+  _handleBoqReflectionPhase
 };

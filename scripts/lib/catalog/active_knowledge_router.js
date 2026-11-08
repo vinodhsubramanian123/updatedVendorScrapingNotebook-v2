@@ -64,7 +64,7 @@ function _loadRawDeltasFromDisk(chassisDir) {
   return rawDeltas;
 }
 
-const REVOKED_DECISION_TYPES = new Set(['REJECTED', 'REVOKED', 'AUTO_REJECTED', 'EXPIRED', 'SUPERSEDED']);
+const REVOKED_DECISION_TYPES = new Set(['REJECTED', 'REVOKED', 'RETRACTED', 'AUTO_REJECTED', 'EXPIRED', 'SUPERSEDED']);
 
 function _applyDecisionRecords(revokedSet, records) {
   if (!Array.isArray(records)) return;
@@ -135,9 +135,10 @@ function _loadRevokedIdentifiers(chassisDir) {
   return revokedSet;
 }
 
-const INACTIVE_GOVERNANCE_STATUSES = new Set(['PENDING', 'QUARANTINED', 'REJECTED', 'DRAFT', 'REVOKED', 'EXPIRED', 'DEPRECATED']);
+const INACTIVE_GOVERNANCE_STATUSES = new Set(['PENDING', 'QUARANTINED', 'REJECTED', 'DRAFT', 'REVOKED', 'RETRACTED', 'SUPERSEDED', 'EXPIRED', 'DEPRECATED']);
 
 function _isDeltaRevokedOrInactive(delta, revokedSet) {
+  if (delta.active === false) return true;
   const deltaId = delta.deltaId || delta.ruleId;
   let deltaFp = delta.knowledgeFingerprint;
   if (!deltaFp) {
@@ -152,8 +153,7 @@ function _isDeltaRevokedOrInactive(delta, revokedSet) {
   ) {
     return true;
   }
-  const status = String(delta.governanceStatus || delta.status || 'ACTIVE').toUpperCase();
-  return INACTIVE_GOVERNANCE_STATUSES.has(status);
+  return [delta.governanceStatus, delta.status].some(status => INACTIVE_GOVERNANCE_STATUSES.has(String(status || '').toUpperCase()));
 }
 
 function _inferFamilyName(chassis) {
@@ -299,6 +299,7 @@ module.exports = {
   loadActiveKnowledgeRules,
   filterDeltaRules: (rawDeltas, chassisVariant = '', chassisDir = '', options = {}) => loadActiveKnowledgeRules(chassisVariant, chassisDir, { rawDeltas, ...options }),
   _loadRevokedIdentifiers,
+  _isDeltaRevokedOrInactive,
   MASTER_REGISTRY_PATH,
   GLOBAL_DELTAS_PATH
 };

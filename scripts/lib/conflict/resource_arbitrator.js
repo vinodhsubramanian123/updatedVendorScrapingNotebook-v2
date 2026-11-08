@@ -845,6 +845,7 @@ function _buildArbitrationSelfCorrectionTrail(contentions, branches, effectiveEv
       selfCorrectionTrail.push({
         step: isLegacyOcp ? 'CONTESTED_RESOURCE_ARBITRATION' : stepNumber++,
         contestedResourceType: contention.resourceType,
+        status: 'RESOLVED',
         hypothesis: contention.hypothesis || `Greedy allocation attempted to assign all ${contention.requestedDemands} demands to ${contention.resourceType} (capacity: ${contention.maxCapacity}).`,
         detectedFailure: contention.detectedFailure || contention.tradeoffSummary,
         backtrackedFrom: contention.backtrackedFrom || contention.contenders?.map(c => `${c.role} (${c.sku})`).join(', ') || 'Contested component set',

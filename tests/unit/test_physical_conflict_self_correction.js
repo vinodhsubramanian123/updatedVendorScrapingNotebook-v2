@@ -128,9 +128,9 @@ describe('Generalized Counterfactual Self-Correction Trail (Feature 5 / Requirem
 
   it('7. End-to-End: Reasoning Post-Analyzer embeds multi-aspect selfCorrectionTrail into Step 6 narrative', () => {
     const multiAspectTrail = [
-      { step: 1, contestedResourceType: 'THERMAL_COOLING_ENVELOPE', selfCorrectionAction: 'Branch DLC: Injected Direct Liquid Cooling', resolutionDetails: 'Normalized cooling manifold', verifiedBuildable: true },
-      { step: 2, contestedResourceType: 'MEMORY_BUS_ARCHITECTURE', selfCorrectionAction: 'Branch Memory: Standardized DDR5', resolutionDetails: 'Substituted uniform DDR5', verifiedBuildable: true },
-      { step: 3, contestedResourceType: 'MANDATORY_CTO_MANAGEMENT_LICENSE', selfCorrectionAction: 'Branch Licensing: Injected R7A11AAE COM SaaS', resolutionDetails: 'Enforced Rule 81322276', verifiedBuildable: true }
+      { step: 1, contestedResourceType: 'THERMAL_COOLING_ENVELOPE', status: 'RESOLVED', selfCorrectionAction: 'Branch DLC: Injected Direct Liquid Cooling', resolutionDetails: 'Normalized cooling manifold', verifiedBuildable: true },
+      { step: 2, contestedResourceType: 'MEMORY_BUS_ARCHITECTURE', status: 'RESOLVED', selfCorrectionAction: 'Branch Memory: Standardized DDR5', resolutionDetails: 'Substituted uniform DDR5', verifiedBuildable: true },
+      { step: 3, contestedResourceType: 'MANDATORY_CTO_MANAGEMENT_LICENSE', status: 'RESOLVED', selfCorrectionAction: 'Branch Licensing: Injected R7A11AAE COM SaaS', resolutionDetails: 'Enforced Rule 81322276', verifiedBuildable: true }
     ];
 
     const analysis = performReasoningPostAnalysis({

@@ -4,11 +4,11 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen11/DL380_Gen11`
 
-**Sync Timestamp**: 2026-11-06T15:19:24.502Z
+**Sync Timestamp**: 2026-11-08T11:16:14.518Z
 
 **Total Verified SKUs**: `1408` (`753` Hardware + `655` Services)
 
-**Total Synced KnowledgeDeltas**: `22`
+**Total Synced KnowledgeDeltas**: `21`
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -56,39 +56,35 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
    - **Rule**: When ordering MegaRAID controller P58335-B21, MegaRAID Tools cannot be used to configure legacy SmartRAID arrays.
    - **Affected SKU**: `P58335-B21` | **Required Dependency**: `P58335-B21`
 
-5. **[DELTA_RAG_CARRYOVER_P48183-B21_1787856180158] DL380_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen11 CTO Server`):
-   - **Rule**: P48183-B21`)** [cite: 250] is fully supported
-   - **Affected SKU**: `P48183-B21` | **Required Dependency**: `N/A`
-
-6. **[DELTA_CLIC_81354632_DL380_GEN11] DL380_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen11 CTO Server`):
+5. **[DELTA_CLIC_81354632_DL380_GEN11] DL380_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen11 CTO Server`):
    - **Rule**: If P48832-B21 (Tri-Mode Splitter Cable) is selected, P48814-B21 (8SFF U.3 Premium Cage) is mandatory.
    - **Affected SKU**: `P48832-B21` | **Required Dependency**: `P48814-B21`
 
-7. **[DELTA_CLIC_81354652_DL380_GEN11] DL380_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen11 CTO Server`):
+6. **[DELTA_CLIC_81354652_DL380_GEN11] DL380_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen11 CTO Server`):
    - **Rule**: If P02377-B21 / P01366-B21 (Capacitor/Battery) is selected, P48918-B21 (Storage Controller Enablement Cable Kit) is mandatory.
    - **Affected SKU**: `P02377-B21` | **Required Dependency**: `P48918-B21`
 
-8. **[DELTA_CLIC_81355854_DL380_GEN11] DL380_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen11 CTO Server`):
+7. **[DELTA_CLIC_81355854_DL380_GEN11] DL380_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen11 CTO Server`):
    - **Rule**: P51911-B21 and P48830-B21 cannot be selected together. Retain P48830-B21.
    - **Affected SKU**: `P51911-B21` | **Required Dependency**: `P48830-B21`
 
-9. **[DELTA_CLIC_81016755_DL380_GEN11] DL380_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen11 CTO Server`):
+8. **[DELTA_CLIC_81016755_DL380_GEN11] DL380_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen11 CTO Server`):
    - **Rule**: When 5+ PCIe cards are installed, P56073-B21 Primary Cable Kit is mandatory for Primary Riser Slot 1.
    - **Affected SKU**: `P48803-B21` | **Required Dependency**: `P56073-B21`
 
-10. **[DELTA_CLIC_EU_LOT9_P35876_DL380_GEN11] DL380_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen11 CTO Server`):
+9. **[DELTA_CLIC_EU_LOT9_P35876_DL380_GEN11] DL380_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen11 CTO Server`):
    - **Rule**: When ordering Platinum PSUs (P38997-B21) on high-draw dual-socket configurations, P35876-B21 (CE Mark Removal Kit) is required for non-EU deployment, or upgrade to Titanium PSUs (P44712-B21).
    - **Affected SKU**: `P38997-B21` | **Required Dependency**: `P35876-B21`
 
-11. **[DELTA_RAG_DEP_P02377-B21_P48918-B21_1787913302880] DL380_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen11 CTO Server`):
+10. **[DELTA_RAG_DEP_P02377-B21_P48918-B21_1787913302880] DL380_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen11 CTO Server`):
    - **Rule**: P02377-B21` or `P01366-B21` **mandates the inclusion of `P48918-B21
    - **Affected SKU**: `P02377-B21` | **Required Dependency**: `P48918-B21`
 
-12. **[DELTA_RAG_DEP_P58335-B21_P48918-B21_1787913632019] DL380_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen11 CTO Server`):
+11. **[DELTA_RAG_DEP_P58335-B21_P48918-B21_1787913632019] DL380_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen11 CTO Server`):
    - **Rule**: P58335-B21`)** with the **Smart Storage Hybrid Capacitor (`P02377-B21`)** strictly requires `P48918-B21
    - **Affected SKU**: `P58335-B21` | **Required Dependency**: `P48918-B21`
 
-13. **[DELTA_RAG_DEP_write-cach_P48918-B21_1787915281069] DL380_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen11 CTO Server`):
+12. **[DELTA_RAG_DEP_write-cach_P48918-B21_1787915281069] DL380_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen11 CTO Server`):
    - **Rule**: Selecting storage controller P58335-B21 write-cache backup requires enablement cable P48918-B21.
    - **Affected SKU**: `P58335-B21` | **Required Dependency**: `P48918-B21`
 

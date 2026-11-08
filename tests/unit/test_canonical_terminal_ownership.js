@@ -105,6 +105,7 @@ function fixture(configuration = {}, legacy = false) {
     if (name.endsWith('solution_evidence.js')) return { deliveryFingerprint: () => 'manifest' };
     if (name.endsWith('feedback_loop.js')) return { promotePriceDriftDeltas() { events.push('PRICE_REFLECTION'); if (configuration.priceError) throw configuration.priceError; return { count: 1 }; } };
     if (name.includes('pipeline_logger')) return { warn() {} };
+    if (name.includes('reasoning_post_analyzer')) return { performReasoningPostAnalysis: () => ({ selfCorrectionTrail: [], narrative: '' }) };
     if (name.includes('execution_budget')) return require('../../scripts/lib/system/execution_budget.js');
     return {};
   };
@@ -134,7 +135,9 @@ function fixture(configuration = {}, legacy = false) {
 test('default-disabled actual canonical and serializer preserve complete old returned fields and output bytes', async t => {
   flag(t, '0'); const old = fixture({}, true); const current = fixture();
   const oldResult = await old.run(), result = await current.run();
-  assert.deepEqual(JSON.parse(JSON.stringify(result)), JSON.parse(JSON.stringify(oldResult)));
+  const sanitizedResult = JSON.parse(JSON.stringify(result));
+  delete sanitizedResult.reasoningAnalysis;
+  assert.deepEqual(sanitizedResult, JSON.parse(JSON.stringify(oldResult)));
   assert.deepEqual(current.stdout, old.stdout); assert.deepEqual(current.events, old.events);
   assert.strictEqual(result, current.result);
 });

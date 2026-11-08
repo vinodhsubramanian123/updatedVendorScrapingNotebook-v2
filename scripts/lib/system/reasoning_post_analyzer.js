@@ -18,23 +18,34 @@ const logger = require('./pipeline_logger.js');
 const { detectVendor, detectHardwareDomain } = require('../taxonomy/vendor_agnostic_schema.js');
 
 /**
- * Determine the Epistemic Tier of the completed solution
+ * Determine the Epistemic Tier of the completed solution (INV-231)
  */
-function determineEpistemicTier(responseData, _classification) {
-  const isClicVerified = responseData?.clicValidation?.isValid === true ||
-    responseData?.portalValidationStatus === 'ACCEPTED_BY_VENDOR';
-  if (isClicVerified) {
+function determineEpistemicTier(responseData, _classification, context = {}) {
+  // Tier 3: Requires verified cryptographic vendor portal receipt OR live accepted portal receipt
+  const receipt = require('../boq/portal_receipt').verifyCurrentPortalReceipt(responseData, context);
+  const isLivePortalAccepted = Boolean(receipt);
+
+  if (isLivePortalAccepted) {
+    const fingerprint = receipt.manifestSha256;
     return {
       tier: 'TIER_3_OFFICIAL_VENDOR_ACCEPTANCE',
       label: 'Tier 3: Official Vendor Acceptance Receipt',
       vendorAcceptancePending: false,
+      receiptFingerprint: fingerprint,
       description: 'Verified live against official vendor configurator / CLIC acceptance receipt.'
     };
   }
 
-  const isCloudGrounded = responseData?.notebookLmStatus?.isCloudGrounded === true &&
-    (responseData?.notebookLmStatus?.citationsCount || 0) > 0;
-  if (isCloudGrounded) {
+  // Tier 2: Requires authentic cloud document citations from trusted sources
+  const nlm = responseData?.notebookLmStatus;
+  const hasGroundedCitations = Boolean(
+    nlm?.isCloudGrounded === true &&
+    (nlm?.citationsCount || 0) > 0 &&
+    (!Array.isArray(nlm?.citations) || nlm.citations.length > 0) &&
+    nlm?.cloudSyncState !== 'FAILED' &&
+    nlm?.cloudSyncState !== 'DEGRADED'
+  );
+  if (hasGroundedCitations) {
     return {
       tier: 'TIER_2_DOCUMENT_CITATION',
       label: 'Tier 2: Grounded Document Citation Check',
@@ -43,15 +54,20 @@ function determineEpistemicTier(responseData, _classification) {
     };
   }
 
-  const hasPhysicalMath = responseData?.aspectChecksCompleted === true ||
-    responseData?.isMathClean !== undefined ||
-    Array.isArray(responseData?.errors);
-  if (hasPhysicalMath) {
+  // Tier 1: Requires verified execution of deterministic physical aspect checks
+  const hasExecutedAspectChecks = Boolean(
+    responseData?.aspectChecksCompleted === true ||
+    (Array.isArray(responseData?.aspectChecks) && responseData.aspectChecks.length > 0)
+  );
+  if (hasExecutedAspectChecks) {
+    const checks = Array.isArray(responseData?.aspectChecks) ? responseData.aspectChecks : [];
+    const passedCount = checks.filter(c => c.status === 'PASS').length;
+    const countStr = checks.length > 0 ? ` (${passedCount}/${checks.length} PASS)` : '';
     return {
       tier: 'TIER_1_PHYSICAL_SANITY',
       label: 'Tier 1: Pre-Flight Physical Sanity Check',
       vendorAcceptancePending: true,
-      description: 'Deterministic 7-aspect physical rules evaluated (TDP, memory, PCIe, power envelope). Document grounding and live validation pending.'
+      description: `Deterministic physical aspect checks evaluated${countStr} (TDP, memory, PCIe, power envelope). Document grounding and live validation pending.`
     };
   }
 
@@ -176,8 +192,7 @@ function _deriveMemoryProof(memory) {
   if (isUnbalanced) {
     return `Memory Balance Proof: ${dimms} DIMMs across ${cpus} CPU(s) with ${chWidth} channels/socket (${(dimms / cpus).toFixed(1)} DIMMs/socket) -> Interleaving: UNBALANCED (${satPct}% saturation [${Math.min(dimms, totalCh)}/${totalCh} channels active]). Balance check: ${dimms} % ${totalCh} = ${dimms % totalCh} != 0 (asymmetric NUMA interleaving).`;
   }
-  const bw = (totalCh * 44.8).toFixed(1);
-  return `Memory Balance Proof: ${dimms} DIMMs across ${cpus} CPU(s) with ${chWidth} channels/socket (${dimms / cpus} DIMMs/socket) -> Interleaving: 100% BALANCED across all ${totalCh} channels (Theoretical memory bandwidth: ${bw} GB/s at DDR5-5600).`;
+  return `Memory Balance Proof: ${dimms} DIMMs across ${cpus} CPU(s) with ${chWidth} channels/socket (${dimms / cpus} DIMMs/socket) -> Interleaving: 100% BALANCED across all ${totalCh} channels (${dimms}/${totalCh} channels populated).`;
 }
 
 function _derivePcieProof(pcie) {
@@ -193,19 +208,14 @@ function _derivePcieProof(pcie) {
 }
 
 function _deriveThermalProof(compute, cpus = 2) {
-  const tdp = compute.maxCpuTdpWatts || 0;
-  if (tdp <= 0) return null;
-  const totalDissipation = cpus * tdp;
-
-  if (tdp > 350) {
-    return `Thermal Dissipation Proof: Max CPU TDP = ${tdp}W (Total socket dissipation: ${totalDissipation}W) exceeds 350W air-cooling limit (+${tdp - 350}W overage). Direct Liquid Cooling (DLC) mandatory.`;
-  }
-  if (tdp > 185) {
-    return `Thermal Dissipation Proof: Max CPU TDP = ${tdp}W (Total socket dissipation: ${totalDissipation}W <= 350W air ceiling). High Performance Heat Sink (185W-270W certified) and High Performance Fan Kits mandatory.`;
-  }
-  return `Thermal Dissipation Proof: Max CPU TDP = ${tdp}W (Total socket dissipation: ${totalDissipation}W <= 185W standard ceiling). Standard cooling certified.`;
+  const tdp = compute.maxCpuTdpWatts;
+  if (!Number.isFinite(tdp) || tdp <= 0) return null;
+  const rating = compute.installedCoolingCapacityWatts;
+  const capacity = Number.isFinite(rating) && rating > 0
+    ? `Reported per-socket cooling capacity: ${rating}W (${rating >= tdp ? 'meets' : 'below'} ${tdp}W TDP).`
+    : 'Cooling capacity and enablement rules require scoped validation.';
+  return `Thermal Check: ${tdp}W maximum CPU TDP across ${cpus} reported sockets. ${capacity}`;
 }
-
 /**
  * Step 3 Mathematical Derivations (Power, Memory, PCIe, Thermal)
  */
@@ -238,15 +248,12 @@ function _deriveStep3MathematicalProofs(responseData) {
  */
 function _deriveStep6ResolutionProofs(selfCorrectionTrail = []) {
   return selfCorrectionTrail.map((t, idx) => {
-    if (t.mathematicalProof) return `[Resolution ${idx + 1}] ${t.mathematicalProof}`;
+    if (t.mathematicalProof) return `[Correction ${idx + 1}] (${t.status || 'UNVERIFIED'}): ${t.mathematicalProof}`;
     const type = t.contestedResourceType || 'RESOURCE_CONTENTION';
-    if (type.includes('OCP')) {
-      return `[Resolution ${idx + 1} - OCP Contention]: OCP Slot 1 capacity = 1 card vs demand = 2 (Storage Controller -o + NIC OCP3). Pivot: Controller moved to PCIe standup Slot 3 (frees OCP Slot 1 for NIC; consumes 1 standup slot; bandwidth upgraded from x8 to x16 lanes [64 GB/s PCIe Gen5], write cache 4GB -> 8GB; net allocations: OCP 1/1 [100%], PCIe Standup 1/3 [33% utilized]).`;
-    }
-    if (type.includes('BAY') || type.includes('REAR')) {
-      return `[Resolution ${idx + 1} - Rear Bay Space]: Rear chassis bay capacity = 1 vs demand = 2 (NS204i-u Boot Device + 2SFF Rear Drive Cage). Pivot: Boot device moved to PCIe standup Slot (NS204i-p) (frees rear drive cage bay; net allocations: Rear drive cages 1/1 [100%], PCIe Standup slots utilized: +1; retains dedicated RAID-1 OS mirror).`;
-    }
-    return `[Resolution ${idx + 1} - ${type}]: ${t.selfCorrectionAction}. ${t.resolutionDetails || 'Topology rebalanced to certified buildable state.'}`;
+    const action = t.selfCorrectionAction || 'Topological rebalance';
+    const details = t.resolutionDetails || 'Validation outcome unavailable.';
+    const status = t.status || 'UNVERIFIED';
+    return `[Resolution ${idx + 1} - ${type}] (${status}): ${action}. ${details}`;
   });
 }
 
@@ -281,14 +288,15 @@ function _buildReasoningNarrative({
   ];
 
   if (selfCorrectionTrail.length > 0) {
-    const step6Line = `6. Autonomous Self-Correction & Backtracking: Resolved ${selfCorrectionTrail.length} physical contention(s) via automated topological pivots (${selfCorrectionTrail.map(t => t.selfCorrectionAction).join('; ')}).` +
+    const resolvedCount = selfCorrectionTrail.filter(t => t.status === 'RESOLVED' && t.verifiedBuildable === true).length;
+    const step6Line = `6. Autonomous Self-Correction & Backtracking: Resolved ${resolvedCount} physical contention(s) (out of ${selfCorrectionTrail.length} processed) via automated topological pivots (${selfCorrectionTrail.map(t => t.selfCorrectionAction || t.contestedResourceType).join('; ')}).` +
       (step6ResolutionProofs.length > 0 ? `\n   - ${step6ResolutionProofs.join('\n   - ')}` : '');
     narrative.push(step6Line);
   }
 
   if (counterfactualRepairProofs.length > 0) {
     narrative.push(
-      `7. Deterministic Counterfactual Repair Proofs: Generated ${counterfactualRepairProofs.length} repair proof(s) providing exact hardware deltas and mathematical proofs for 100% buildability (${counterfactualRepairProofs.map(p => p.issueType).join(', ')}).\n   - ${counterfactualRepairProofs.map(p => `[${p.issueType}] ${p.mathematicalProof}`).join('\n   - ')}`
+      `7. Deterministic Counterfactual Repair Proposals: Generated ${counterfactualRepairProofs.length} repair proposal(s) with exact hardware deltas and mathematical predicates (${counterfactualRepairProofs.map(p => `${p.issueType} [${p.resultingStatus}]`).join(', ')}).\n   - ${counterfactualRepairProofs.map(p => `[${p.issueType}] (${p.resultingStatus}) ${p.mathematicalProof}`).join('\n   - ')}`
     );
   }
 
@@ -457,7 +465,15 @@ function _resolveCounterfactualRepairProofs(responseData, context, acceptance) {
       proofs = generateCounterfactualRepairProofs(responseData, context);
       responseData.counterfactualRepairProofs = proofs;
     } catch (_err) {
-      proofs = [];
+      proofs = [{
+        issueType: 'REPAIR_EXECUTION_ERROR',
+        rootCause: _err.message,
+        requiredHardwareDeltas: [],
+        requiredAction: { action: 'RESOLVE_SCOPED_CONSTRAINT', category: 'ENGINEERING_DIAGNOSTIC' },
+        mathematicalProof: `Counterfactual repair engine encountered an execution error: ${_err.message}`,
+        resultingStatus: 'ACTION_REQUIRED'
+      }];
+      responseData.counterfactualRepairProofs = proofs;
     }
   }
   return proofs;
@@ -495,11 +511,16 @@ function _buildAnalysisPayload({
     counterfactualRepairProofs,
     epistemicIntegrity: {
       ...epistemic,
-      isMathClean: responseData.isMathClean ?? (rawErrors.length === 0),
+      isMathClean: responseData.isMathClean !== undefined
+        ? Boolean(responseData.isMathClean)
+        : (responseData.aspectChecksCompleted ? rawErrors.length === 0 : null),
       hasDiscrepancies: (responseData.opinionDiscrepancies?.length || 0) > 0 || (rawErrors.length > 0)
     },
     transparencyAudit: {
-      physicalChecksEvaluated: Boolean(responseData.aspectChecksCompleted || responseData.stage2AspectMathMs),
+      physicalChecksEvaluated: Boolean(
+        (responseData.aspectChecksCompleted && Array.isArray(responseData.aspectChecks) && responseData.aspectChecks.length > 0) ||
+        responseData.stage2AspectMathMs
+      ),
       conflictsDetectedCount: conflictsCount,
       missingDependenciesCount: missingDeps.length,
       diagnosticHintsAttachedCount: diagnosticHints.length,
@@ -542,7 +563,7 @@ function performReasoningPostAnalysis({
   const effectiveIntent = classification.intent || responseData.intent || 'UNKNOWN';
 
   // 1. Determine Epistemic Tier
-  const epistemic = determineEpistemicTier(responseData, classification);
+  const epistemic = determineEpistemicTier(responseData, classification, context);
 
   // 2. Extract violations, warnings, conflicts, and diagnostic hints
   const { rawErrors, rawWarnings, missingDeps, diagnosticHints, conflictsCount } = _extractViolationStats(responseData);

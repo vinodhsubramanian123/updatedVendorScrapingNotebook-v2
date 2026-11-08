@@ -17,8 +17,35 @@ const { safeWriteJsonAtomic } = require('../../scripts/lib/system/fs_compat');
 
 const {
   readPortalReceipt,
+  verifyCurrentPortalReceipt,
   receiptMatches
 } = require('../../scripts/lib/boq/portal_receipt.js');
+
+test('Tier 3 re-reads captures and rejects changed quantity, scope, stale captures and tampered fingerprints', () => {
+  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'portal-current-'));
+  try {
+    createMockPortalEvidenceDir(tmpDir);
+    const receipt = readPortalReceipt(tmpDir);
+    const candidate = { portalReceipt: receipt, chassis: receipt.chassis, baseSku: receipt.baseSku,
+      configurationName: receipt.configurationName, selectors: receipt.selectors,
+      items: receipt.rows.map(row => ({ sku: row.sku, quantity: row.quantity })) };
+    const { determineEpistemicTier } = require('../../scripts/lib/system/reasoning_post_analyzer');
+    assert.ok(verifyCurrentPortalReceipt(candidate));
+    assert.equal(determineEpistemicTier(candidate).tier, 'TIER_3_OFFICIAL_VENDOR_ACCEPTANCE');
+    assert.equal(validateBoqEvaluationCriteria({ ...candidate, portalValidationStatus: 'CLIC_ACCEPTED' }).find(c => c.id === 'B19').status, 'PASSED');
+    const changed = structuredClone(candidate);
+    changed.items[0].quantity++;
+    assert.equal(verifyCurrentPortalReceipt(changed), null);
+    assert.equal(determineEpistemicTier(changed).vendorAcceptancePending, true);
+    assert.equal(validateBoqEvaluationCriteria({ ...changed, portalValidationStatus: 'CLIC_ACCEPTED' }).find(c => c.id === 'B19').status, 'FAILED');
+    assert.equal(verifyCurrentPortalReceipt({ ...candidate, chassis: 'DL360_Gen12' }), null);
+    assert.equal(verifyCurrentPortalReceipt({ ...candidate, portalReceipt: { ...receipt, bomSha256: 'tampered' } }), null);
+    createMockPortalEvidenceDir(tmpDir, { capturedAt: new Date(Date.now() - 25 * 3600000).toISOString() });
+    assert.equal(verifyCurrentPortalReceipt(candidate), null);
+    createMockPortalEvidenceDir(tmpDir, { checkText: 'Overall Status: ERROR Unbuildables 1 Errors: 1' });
+    assert.equal(verifyCurrentPortalReceipt(candidate), null);
+  } finally { fs.rmSync(tmpDir, { recursive: true, force: true }); }
+});
 const { validateBoqEvaluationCriteria } = require('../../scripts/lib/boq/bom_verifier.js');
 
 function createMockPortalEvidenceDir(tmpDir, overrides = {}) {

@@ -2,8 +2,8 @@
 
 **Document Classification:** Canonical Ground-Truth Architecture & Validation Charter<br>
 **Maintained By:** HPE ProLiant AI Studio Autonomous Knowledge Engine (Antigravity AI)<br>
-**Last Synchronized:** 2026-11-07T08:48:54.700Z<br>
-**Total Deduplicated Learned Rules:** 120<br>
+**Last Synchronized:** 2026-11-08T10:59:41.788Z<br>
+**Total Deduplicated Learned Rules:** 133<br>
 **Universal Invariant Compliance:** INV-1 through INV-38 Certified<br>
 **Google Drive Destination:** `shared_folder_id: 1YR0lBh-gg00amKHRxuOqp5Aea3iL5O7-`
 
@@ -160,7 +160,7 @@ The Catalog Vendor Solution provides modular, AI-assisted catalog ingestion, nor
 
 ## 5. Deduplicated Learned Rule Ledger & Verification Provenance
 
-Total verified rules indexed in this build: **120**.
+Total verified rules indexed in this build: **133**.
 
 | Scope | Target Chassis | Category | Affected SKU | Dependency SKU | Rule Summary / Validation Directive | Verifications |
 | :--- | :--- | :--- | :--- | :--- | :--- | :---: |
@@ -197,7 +197,6 @@ Total verified rules indexed in this build: **120**.
 | 📦 CHASSIS | `DL380_Gen11` | `SUPPLY_CONSTRAINT_FIO_SUBSTITUTION` | `P64707-B21` | `P64707-F21` | Standalone SKU P64707-B21 constrained; must substitute factory-integrated P64707-F21 for CTO factory build. | 1x |
 | 📦 CHASSIS | `DL380_Gen11` | `OPERATING_SYSTEM_ADVISORY` | `P52534-B21` | `—` | Advisory: Selection of an Operating System is recommended for factory deployment. | 1x |
 | 📦 CHASSIS | `DL380_Gen11` | `MANAGEMENT_UTILITY_COMPATIBILITY` | `P58335-B21` | `P58335-B21` | When ordering MegaRAID controller P58335-B21, MegaRAID Tools cannot be used to configure legacy SmartRAID arrays. | 1x |
-| 📦 CHASSIS | `DL380_Gen11` | `CARRY_OVER_VALIDATED` | `P48183-B21` | `—` | P48183-B21`)** [cite: 250] is fully supported | 1x |
 | 📦 CHASSIS | `DL380_Gen11` | `PHYSICAL_ATTACH_REQUIREMENT` | `P48832-B21` | `P48814-B21` | If P48832-B21 (Tri-Mode Splitter Cable) is selected, P48814-B21 (8SFF U.3 Premium Cage) is mandatory. | 1x |
 | 📦 CHASSIS | `DL380_Gen11` | `PHYSICAL_POWER_ENABLEMENT` | `P02377-B21` | `P48918-B21` | If P02377-B21 / P01366-B21 (Capacitor/Battery) is selected, P48918-B21 (Storage Controller Enablement Cable Kit) is mand | 1x |
 | 📦 CHASSIS | `DL380_Gen11` | `MUTUAL_EXCLUSIVITY` | `P51911-B21` | `P48830-B21` | P51911-B21 and P48830-B21 cannot be selected together. Retain P48830-B21. | 1x |
@@ -227,6 +226,10 @@ Total verified rules indexed in this build: **120**.
 | 📦 CHASSIS | `DL380a_Gen12` | `ARRAY_GEOMETRY_BUILD_BLOCKER` | `339778-B21` | `—` | In HPE OCA / CLIC on DL380a Gen12, 339778-B21 (HPE RAID 1 Drive 1 FIO Setting) strictly enforces Drive Count == 2. When  | 1x |
 | 📦 CHASSIS | `DL380a_Gen12` | `WORKFLOW_VENDOR_OBSERVATION_ADVISORY` | `P78279-B21` | `—` | HPE NS204i-u v2 480GB Boot Device (P78279-B21) and front boot cage (P75284-B21) have zero hardware, cage, or bus depende | 1x |
 | 📦 CHASSIS | `DL380a_Gen12` | `WORKFLOW_VENDOR_OBSERVATION_ADVISORY` | `P69770-B21` | `—` | DL380a Gen12 base CTO chassis P76706-B21 does not bundle rack rails. When customer tender requests installation, racking | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `WORKFLOW_NORMATIVE_LANGUAGE_PRECISION` | `undefined` | `—` | All agent skill directives, checklists, and execution handoffs must adhere to strict RFC-2119 normative vocabulary (MUST | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `WORKFLOW_MODULAR_SKILL_TOKEN_OPTIMIZATION` | `undefined` | `—` | Monolithic skills exceeding 25KB must be modularized into a concise core execution SKILL.md (<=250 lines) plus dedicated | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `WORKFLOW_UNIVERSAL_CC30_AND_QUALITY_CEILING` | `undefined` | `—` | Every function across all repository scripts and test fixtures must strictly comply with the universal cyclomatic comple | 1x |
+| 📦 CHASSIS | `DL380a_Gen12` | `WORKFLOW_SPECIALIZED_ARCHITECTURAL_DISPATCH` | `undefined` | `—` | Incoming presales inquiries must be classified and dispatched by presales-query-router across 34 specialized skill track | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `undefined` | `P76453-B21` | `—` | Portal validation flagged restriction on P76453-B21. | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `undefined` | `P76449-B21` | `P76450-B21` | Portal validation flagged restriction on P76450-B21. | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `PREPROCESSING_SPLIT_CONFIRMED` | `undefined` | `—` | Confirmed configuration variation reason 'WORKLOAD_NODE_PURPOSE' for config_1 | 1x |
@@ -270,6 +273,16 @@ Total verified rules indexed in this build: **120**.
 | 📦 CHASSIS | `DL380_Gen12` | `SUPPORT_PRICING_UPDATE` | `HU4B2A30C4V` | `P73282-B21` | HPE DL380 Gen12 Support (HU4B2A30C4V, under HU4B2A3 3Y Tech Care Basic) list price updated in November 2026 OCA catalog  | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `CLIC_STATUS_CLEARANCE` | `P73282-B21` | `—` | Portal validation warnings on HPE ProLiant DL380 Gen12 SFF NC CTO Server (P73282-B21) and HPE Compute Ops Management Sta | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `LEAD_TIME_AND_LIFECYCLE` | `P73282-B21` | `—` | DL380 Gen12 CTO base chassis (P73282-B21) availability lead time improved to 14 days (down from 30 days). Xeon 6787P CPU | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_NORMATIVE_LANGUAGE_PRECISION` | `undefined` | `—` | All agent skill directives, checklists, and execution handoffs must adhere to strict RFC-2119 normative vocabulary (MUST | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_MODULAR_SKILL_TOKEN_OPTIMIZATION` | `undefined` | `—` | Monolithic skills exceeding 25KB must be modularized into a concise core execution SKILL.md (<=250 lines) plus dedicated | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_UNIVERSAL_CC30_AND_QUALITY_CEILING` | `undefined` | `—` | Every function across all repository scripts and test fixtures must strictly comply with the universal cyclomatic comple | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_SPECIALIZED_ARCHITECTURAL_DISPATCH` | `undefined` | `—` | Incoming presales inquiries must be classified and dispatched by presales-query-router across 34 specialized skill track | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_HYPOTHESIS_SEMANTICS_ADVISORY` | `undefined` | `—` | Hardware repair proposals generated during counterfactual repair are unvalidated delta hypotheses (PROPOSED_UNVALIDATED) | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_PREDICATE_INFEASIBILITY_ADVISORY` | `undefined` | `—` | When physical demand exceeds available catalog capacity (e.g. required wattage exceeds maximum rated PSU candidate, or s | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_CATALOG_SCOPED_DISCOVERY_ADVISORY` | `undefined` | `—` | Repair discovery must select options exclusively from the verified target product catalog snapshot. Input electrical con | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_EVIDENCE_DECOUPLING_ADVISORY` | `undefined` | `—` | Acceptance blockers regarding evidence deficits (missing document grounding, citations, or portal session receipts) must | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_TIER3_RECEIPT_VERIFICATION_ADVISORY` | `undefined` | `—` | Tier 3 Official Vendor Acceptance strictly requires an authentic cryptographic session receipt re-verified from disk mat | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_APPEND_ONLY_RETRACTION_ADVISORY` | `undefined` | `—` | Falsified, erroneous, or superseded learned rules must be deactivated across all registry arrays (chassis deltas, wrappe | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `EXCLUSION_UNBUILDABLE` | `R3P67A` | `Q2E58AAE` | On HPE Synergy 12000 Frames (P51174-B21) populated solely with SY480 Gen12 compute nodes (P68217-B21), selecting Virtual | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `STANDALONE_ORDERING_TAXONOMY` | `R3P67A` | `R3P67AAE` | R3P67A is a Factory Integrated Option (FIO LTU) ending in 'A', which strictly requires sub-iteming under a factory CTO c | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `MULTI_ORDER_PARTITIONING_PATTERN` | `P51174-B21` | `Q2E58AAE` | When a multi-frame Synergy deployment (e.g. 2 frames, 24 nodes) is partitioned into separate commercial orders (Option B | 1x |

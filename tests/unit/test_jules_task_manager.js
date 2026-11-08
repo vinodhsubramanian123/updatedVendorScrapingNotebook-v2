@@ -25,8 +25,8 @@ test('Jules Task Manager — Resolved Headers & Token Contract', () => {
 });
 
 test('Jules Task Manager — List Sessions and Live Integration Contract', async () => {
-  if (!process.env.JULES_API_KEY) {
-    console.log('Skipping live Jules API call (JULES_API_KEY not present)');
+  if (!process.env.RUN_LIVE_JULES_TESTS || !process.env.JULES_API_KEY) {
+    console.log('Skipping live Jules API call (RUN_LIVE_JULES_TESTS not enabled)');
     return;
   }
   const sessions = await julesTaskManager.listSessions();
@@ -38,8 +38,8 @@ test('Jules Task Manager — List Sessions and Live Integration Contract', async
 });
 
 test('Jules Task Manager — Auto-Unblock Scan Contract', async () => {
-  if (!process.env.JULES_API_KEY) {
-    console.log('Skipping live Jules API call (JULES_API_KEY not present)');
+  if (!process.env.RUN_LIVE_JULES_TESTS || !process.env.JULES_API_KEY) {
+    console.log('Skipping live Jules API call (RUN_LIVE_JULES_TESTS not enabled)');
     return;
   }
   const unblocked = await julesTaskManager.autoUnblockSessions();

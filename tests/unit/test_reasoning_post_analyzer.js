@@ -31,8 +31,8 @@ test('reasoning_post_analyzer: determines epistemic tiers accurately', () => {
   const t3 = determineEpistemicTier({
     portalValidationStatus: 'ACCEPTED_BY_VENDOR'
   }, { intent: 'BOQ_EVALUATION' });
-  assert.equal(t3.tier, 'TIER_3_OFFICIAL_VENDOR_ACCEPTANCE');
-  assert.equal(t3.vendorAcceptancePending, false);
+  assert.equal(t3.tier, 'TIER_0_UNTRUSTED_CLAIM');
+  assert.equal(t3.vendorAcceptancePending, true);
 });
 
 test('reasoning_post_analyzer: generates comprehensive analysis and attaches to responseData', () => {
