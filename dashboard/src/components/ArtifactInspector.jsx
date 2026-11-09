@@ -220,7 +220,7 @@ export default function ArtifactInspector({ currentCatalog }) {
           <button
             onClick={handleRunAudit}
             disabled={isAuditing || !currentCatalog?.xlsxPath}
-            className="btn-primary text-xs disabled:opacity-50"
+            className="btn-primary text-xs "
           >
             {isAuditing ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <ShieldCheck className="w-3.5 h-3.5" />}
             Run 7-Check Audit
