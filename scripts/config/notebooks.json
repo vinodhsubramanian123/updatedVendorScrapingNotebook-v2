@@ -47,9 +47,9 @@
       "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
       "runningKnowledgeVerifiedRevision": "296bd26394d92203eea17969e734e536c2da742cd74bf628f7d7f55d32d7ac96",
       "runningKnowledgeVerifiedAt": "2026-11-02T15:23:44.521Z",
-      "lastSyncAttemptAt": "2026-11-06T08:32:16.917Z",
-      "lastSyncError": null,
-      "cloudSyncState": "VERIFIED",
+      "lastSyncAttemptAt": "2026-11-09T11:26:17.644Z",
+      "lastSyncError": "NotebookLM credentials are stale or expired (Command failed: nlm login --check). Please re-authenticate proactively by running in PowerShell: npm run auth:nlm:heal",
+      "cloudSyncState": "FAILED",
       "lastCatalogSha256": "76d08b70a125abab46f9fc0babf59ea7684bd4d76b0443a12582ee7d4f936f3d",
       "lastArtifactHashes": {
         "Catalog.json": "76d08b70a125abab46f9fc0babf59ea7684bd4d76b0443a12582ee7d4f936f3d",
@@ -625,8 +625,8 @@
       "gen": "Gen12",
       "canonicalDriveEnabled": false,
       "publishDriveWorkbook": true,
-      "cloudSyncState": "VERIFIED",
-      "lastSyncError": null,
+      "cloudSyncState": "FAILED",
+      "lastSyncError": "NotebookLM credentials are stale or expired (Command failed: nlm login --check). Please re-authenticate proactively by running in PowerShell: npm run auth:nlm:heal",
       "isolationLevel": "CHASSIS_SPECIFIC",
       "queryEnabled": true,
       "lastSyncedAt": "2026-11-06T08:34:12.267Z",
@@ -673,7 +673,8 @@
         "Services.json": "180bb36c562cdbbcaa28804ab9b21ce03c0342f848e000efd824bf71d2859260",
         "Catalog_Rules.json": "9d0346a4cdbdd609a2237555ac4a08e71bc27df5e0618cd318e15fd9a66b9a4b",
         "OCA_Catalog.xlsx": "840b40c2428e0bd980331044689349df4010051073853d40c79e3a0b5358ae1f"
-      }
+      },
+      "lastSyncAttemptAt": "2026-11-09T11:26:39.605Z"
     },
     "SN3600B_FC": {
       "notebookId": "d7f84352-1cdb-4842-84ca-39d2a10b91eb",
@@ -720,8 +721,8 @@
       "publishDriveWorkbook": true,
       "lastSyncedAt": "2026-11-06T08:35:19.112Z",
       "lastSyncDeltaCount": 9,
-      "cloudSyncState": "VERIFIED",
-      "lastSyncError": null,
+      "cloudSyncState": "FAILED",
+      "lastSyncError": "NotebookLM credentials are stale or expired (Command failed: nlm login --check). Please re-authenticate proactively by running in PowerShell: npm run auth:nlm:heal",
       "lastSyncedSourceName": "SN3600B_FC_OCA_Catalog_2026-11-06",
       "canonicalKnowledgeSourceIds": [
         "a5cf149d-0aa6-48d9-a059-9fb0cd53b2f3",
@@ -733,7 +734,7 @@
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeVerifiedRevision": "296bd26394d92203eea17969e734e536c2da742cd74bf628f7d7f55d32d7ac96",
       "runningKnowledgeVerifiedAt": "2026-11-02T15:24:42.463Z",
-      "lastSyncAttemptAt": "2026-10-28T10:03:09.178Z",
+      "lastSyncAttemptAt": "2026-11-09T11:26:58.690Z",
       "lastCatalogSha256": "964c5768e67698076d5bd41602addf0d1b5bb63dfa5dff6d9fd1de297ca5f1c6",
       "lastArtifactHashes": {
         "Catalog.json": "964c5768e67698076d5bd41602addf0d1b5bb63dfa5dff6d9fd1de297ca5f1c6",
