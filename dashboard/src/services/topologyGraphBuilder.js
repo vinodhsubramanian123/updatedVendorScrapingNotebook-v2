@@ -47,15 +47,18 @@ export function detectProductFamily(evalResults, items = []) {
   if (combined.includes('cray') || combined.includes('gx5000') || combined.includes('slingshot')) {
     return 'Cray';
   }
+  if (combined.includes('sn3600') || combined.includes('storefabric') || combined.includes('fibre channel switch') || combined.includes('b-series') || combined.includes('fc switch')) {
+    return 'SAN';
+  }
   return 'ProLiant';
 }
 
 const SUBSYSTEM_PATTERNS = [
-  { subsystem: 'COMPUTE', regex: /processor|cpu|xeon|epyc|heatsink|fan/i },
-  { subsystem: 'MEMORY', regex: /memory|dimm|ddr5|ddr4|smart memory/i },
-  { subsystem: 'STORAGE', regex: /storage|drive|controller|ssd|nvme|hdd|smart array|tri-mode|storage battery|cage|tape/i },
+  { subsystem: 'COMPUTE', regex: /processor|cpu|xeon|epyc|heatsink/i },
+  { subsystem: 'MEMORY', regex: /memory|dimm|ddr5|ddr4|rdimm|lrdimm|mrdimm|pc4|pc5|smart memory/i },
   { subsystem: 'PCIE_NETWORK', regex: /network|pcie|adapter|riser|gpu|ocp|ethernet|fibre channel|accelerator|virtual connect|transceiver/i },
-  { subsystem: 'POWER_THERMAL', regex: /power|psu|thermal|power supply|lug kit|flex slot|cable|pdu|ambient|flm|power cord/i },
+  { subsystem: 'STORAGE', regex: /storage|drive|controller|ssd|nvme|hdd|smart array|tri-mode|storage battery|drive cage|cage|tape/i },
+  { subsystem: 'POWER_THERMAL', regex: /power|psu|thermal|fan|power supply|lug kit|flex slot|cable|pdu|ambient|flm|power cord/i },
   { subsystem: 'SERVICES', regex: /service|support|care|tech care|complete care|installation|proactive/i }
 ];
 
@@ -138,10 +141,14 @@ function resolveRootAndSubProducts(evalResults, rawItems, productFamily) {
     chassisName = 'HPE StoreEver MSL3040 Tape Library System';
   } else if (productFamily === 'Cray') {
     chassisName = 'HPE Cray Supercomputing GX5000 Rack';
+  } else if (productFamily === 'SAN') {
+    chassisName = 'HPE StoreFabric SN3600B Fibre Channel Switch';
   } else {
-    chassisName = evalResults.conflictGraph?.chassisInfo?.formFactor
-      ? `HPE ProLiant DL380 Gen12 (${evalResults.conflictGraph.chassisInfo.formFactor})`
-      : 'HPE ProLiant Server Chassis (CTO Base)';
+    chassisName = evalResults.chassis
+      ? `HPE ProLiant ${evalResults.chassis}`
+      : (evalResults.conflictGraph?.chassisInfo?.formFactor
+        ? `HPE ProLiant DL380 Gen12 (${evalResults.conflictGraph.chassisInfo.formFactor})`
+        : 'HPE ProLiant Server Chassis (CTO Base)');
   }
 
   const rootNode = {

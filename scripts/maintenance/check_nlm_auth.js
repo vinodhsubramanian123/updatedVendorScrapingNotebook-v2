@@ -19,8 +19,8 @@ const path = require('path');
 const os = require('os');
 const fs = require('fs');
 
-function cleanStaleNlmChromeAndLocks() {
-  const profileDir = path.join(os.homedir(), '.notebooklm-mcp-cli', 'chrome-profiles', 'default');
+function cleanStaleNlmChromeAndLocks(customProfileDir) {
+  const profileDir = customProfileDir || process.env.NLM_PROFILE_DIR || path.join(os.homedir(), '.notebooklm-mcp-cli', 'chrome-profiles', 'default');
   const locks = ['lockfile', 'SingletonLock', 'SingletonCookie', 'SingletonSocket'];
   for (const lock of locks) {
     const lockPath = path.join(profileDir, lock);

@@ -334,10 +334,19 @@ function _preflightCatalogFreshness(detectedChassisName, chassisDir, options, is
     const { buildRefreshPlan, executeRefreshPlan } = require('../lib/catalog/catalog_refresh_plan.js');
     const plan = buildRefreshPlan({ products: [detectedChassisName] });
     const refresh = executeRefreshPlan(plan);
-    if (!refresh.success) throw new Error(`ERR_CATALOG_REFRESH: ${JSON.stringify(refresh.results)}`);
-    const refreshed = require('../lib/catalog/product_metadata_manager.js').getProductGenerationMetadata(detectedChassisName);
-    resolvedChassisDir = refreshed.outputDir;
-    chassisDetection.chassisDir = resolvedChassisDir;
+    if (!refresh.success) {
+      const certCheck = isCatalogCertified(detectedChassisName);
+      if (certCheck.certified) {
+        console.warn(`⚠️ [DEGRADED_MODE] Online catalog refresh was not completed for '${detectedChassisName}'. Proceeding in Degraded Mode with local certified catalog on disk.`);
+        chassisDetection.degradedMode = true;
+      } else {
+        throw new Error(`ERR_CATALOG_REFRESH: ${JSON.stringify(refresh.results)}`);
+      }
+    } else {
+      const refreshed = require('../lib/catalog/product_metadata_manager.js').getProductGenerationMetadata(detectedChassisName);
+      resolvedChassisDir = refreshed.outputDir;
+      chassisDetection.chassisDir = resolvedChassisDir;
+    }
   }
   if (!isExplicitTestPath && process.env.ALLOW_UNSCRAPED_EVAL !== '1') {
     const certCheck = isCatalogCertified(detectedChassisName);

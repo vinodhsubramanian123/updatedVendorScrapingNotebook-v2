@@ -197,21 +197,21 @@ test('🏛️ SYSTEM INVARIANTS HARNESS (INV-1 to INV-19)', async (t) => {
     assert.strictEqual(typeof cleanStaleNlmChromeAndLocks, 'function', 'cleanStaleNlmChromeAndLocks must be exported');
     assert.strictEqual(typeof checkAuthHealth, 'function', 'checkAuthHealth must be exported');
 
-    // Verify lockfile cleanup in real/mock profile dir
-    const profileDir = path.join(os.homedir(), '.notebooklm-mcp-cli', 'chrome-profiles', 'default');
-    fs.mkdirSync(profileDir, { recursive: true });
+    // Verify lockfile cleanup in isolated mock profile dir
+    const tempTestDir = fs.mkdtempSync(path.join(os.tmpdir(), 'nlm-locks-'));
     const dummyLocks = ['lockfile', 'SingletonLock', 'SingletonCookie', 'SingletonSocket'];
-    dummyLocks.forEach(f => fs.writeFileSync(path.join(profileDir, f), 'dummy-lock-data'));
+    dummyLocks.forEach(f => fs.writeFileSync(path.join(tempTestDir, f), 'dummy-lock-data'));
 
-    cleanStaleNlmChromeAndLocks();
+    cleanStaleNlmChromeAndLocks(tempTestDir);
 
     dummyLocks.forEach(f => {
       assert.strictEqual(
-        fs.existsSync(path.join(profileDir, f)),
+        fs.existsSync(path.join(tempTestDir, f)),
         false,
         `Lock ${f} must be removed by cleanStaleNlmChromeAndLocks`
       );
     });
+    fs.rmSync(tempTestDir, { recursive: true, force: true });
   });
 
   await t.test('INV-182: Dual-Domain Synergy Frame Startup Sizing & Quoting Decoupling Invariant', () => {

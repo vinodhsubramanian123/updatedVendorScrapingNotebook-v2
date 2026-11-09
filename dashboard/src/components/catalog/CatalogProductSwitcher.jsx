@@ -16,9 +16,9 @@ export default function CatalogProductSwitcher({ catalogs = [], selectedChassis,
         <div className="flex flex-wrap items-center gap-1.5">
           <button
             type="button"
-            onClick={() => onSelectChassis && onSelectChassis('')}
+            onClick={() => onSelectChassis && onSelectChassis(catalogs[0]?.id || 'DL380_Gen12')}
             className={`px-2.5 py-1 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer ${
-              !selectedChassis
+              !selectedChassis || selectedChassis === (catalogs[0]?.id || 'DL380_Gen12')
                 ? 'bg-emerald-600 text-white shadow-xs'
                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
             }`}

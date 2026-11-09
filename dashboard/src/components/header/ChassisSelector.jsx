@@ -13,17 +13,26 @@ export default function ChassisSelector({
   isCatalogLoading
 }) {
   const filteredCatalogs = catalogs.filter(c => {
-    const term = chassisFilter.toLowerCase();
+    const term = chassisFilter.toLowerCase().trim();
+    if (!term) return true;
+    const name = (c.chassis || c.model || c.id || '').toLowerCase();
+    const id = (c.id || '').toLowerCase();
+    const idWithSpaces = id.replace(/_/g, ' ');
+    const family = (c.family || '').toLowerCase();
+    const gen = (c.gen || '').toLowerCase();
     return (
-      (c.id && c.id.toLowerCase().includes(term)) ||
-      (c.model && c.model.toLowerCase().includes(term)) ||
-      (c.family && c.family.toLowerCase().includes(term))
+      name.includes(term) ||
+      id.includes(term) ||
+      idWithSpaces.includes(term) ||
+      family.includes(term) ||
+      gen.includes(term)
     );
   });
 
   const currentChassisObj = catalogs.find(c => c.id === selectedChassis) || {
     id: selectedChassis || 'DL380_Gen12',
-    model: selectedChassis || 'DL380 Gen12',
+    chassis: selectedChassis ? selectedChassis.replace(/_/g, ' ') : 'DL380 Gen12',
+    model: selectedChassis ? selectedChassis.replace(/_/g, ' ') : 'DL380 Gen12',
     family: 'ProLiant'
   };
 
@@ -36,7 +45,7 @@ export default function ChassisSelector({
         <Server className="w-4 h-4 text-emerald-600 shrink-0" />
         <div className="text-left truncate max-w-[130px] sm:max-w-[160px]">
           <span className="block text-[10px] text-slate-500 font-normal leading-none">Chassis Context</span>
-          <span className="font-bold truncate">{currentChassisObj.model || currentChassisObj.id}</span>
+          <span className="font-bold truncate">{currentChassisObj.chassis || currentChassisObj.model || currentChassisObj.id}</span>
         </div>
         {isCatalogLoading ? (
           <RefreshCw className="w-3.5 h-3.5 text-blue-600 animate-spin shrink-0" />
@@ -65,6 +74,7 @@ export default function ChassisSelector({
                 return (
                   <button
                     key={c.id}
+                    data-chassis-id={c.id}
                     onClick={() => {
                       onSelectChassis(c.id);
                       setIsChassisOpen(false);
@@ -76,7 +86,7 @@ export default function ChassisSelector({
                     }`}
                   >
                     <div>
-                      <p className="leading-tight">{c.model || c.id}</p>
+                      <p className="leading-tight">{c.chassis || c.model || c.id}</p>
                       <span className="text-[10px] text-slate-400 font-normal">{c.family || 'ProLiant'} • {c.gen || 'Gen12'}</span>
                     </div>
                     {isSelected && <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />}

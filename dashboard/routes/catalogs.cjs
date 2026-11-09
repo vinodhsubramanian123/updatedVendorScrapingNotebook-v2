@@ -43,6 +43,126 @@ function invalidateCatalogCache() {
 }
 
 /**
+ * Count total SKUs in a JSON catalog file.
+ */
+function countSKUsInJson(filePath) {
+  if (!fs.existsSync(filePath)) return 0;
+  try {
+    const content = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+    return content.metadata?.totalUniqueSKUs || content.entries?.reduce((acc, e) => acc + (e.skuCount || e.skus?.length || 0), 0) || 0;
+  } catch (_) {
+    return 0;
+  }
+}
+
+function loadDiscontinuedSkuMap(folderPath) {
+  const discontinuedPath = path.join(folderPath, 'history', 'discontinued_skus.json');
+  if (!fs.existsSync(discontinuedPath)) return {};
+  try {
+    const rawDisc = JSON.parse(fs.readFileSync(discontinuedPath, 'utf-8'));
+    if (Array.isArray(rawDisc)) {
+      const map = {};
+      for (const item of rawDisc) {
+        const skuCode = item.productNumber || item.sku;
+        if (skuCode) map[skuCode] = item;
+      }
+      return map;
+    }
+    if (typeof rawDisc === 'object' && rawDisc !== null) {
+      return rawDisc;
+    }
+  } catch (_) {}
+  return {};
+}
+
+function _applySkuLifecycleInfo(sku, discInfo) {
+  if (discInfo) {
+    sku.lifecycleStatus = discInfo.status || 'OBSOLETE';
+    sku.obsoleteDate = discInfo.discontinuedDate || discInfo.discontinuedAt || null;
+    sku.reinstatedDate = discInfo.reinstatedDate || null;
+    sku.lifecycleReason = discInfo.reason || null;
+    sku.replacementSku = discInfo.replacementSku || null;
+    if (sku.lifecycleStatus === 'DISCONTINUED' || sku.lifecycleStatus === 'OBSOLETE') {
+      sku.isObsolete = true;
+    }
+  } else if (!sku.lifecycleStatus) {
+    sku.lifecycleStatus = 'ACTIVE';
+  }
+}
+
+/**
+ * Normalize an entry and its SKUs (SFF drive cages to Storage, FIO badges, lifecycle).
+ */
+function normalizeEntryAndSkus(entry, discontinuedMap = {}) {
+  if (entry.subCategory && /sff drive cages/i.test(entry.subCategory) && entry.parentCategory === 'Networking') {
+    entry.parentCategory = 'Drive Enclosures / Drives';
+  }
+  if (Array.isArray(entry.skus)) {
+    for (const sku of entry.skus) {
+      if (entry.parentCategory === 'Drive Enclosures / Drives' && sku.parentCategory === 'Networking') {
+        sku.parentCategory = 'Drive Enclosures / Drives';
+      }
+      const rawPrice = sku['Unit Price (USD)'] ?? sku['Price (USD)'] ?? sku.listPrice ?? '';
+      const numPrice = Number(parseFloat(String(rawPrice).replace(/[$,]/g, '')));
+      const desc = String(sku.Description || sku.description || '');
+      if (numPrice === 0 && (/fio|factory integrated/i.test(desc) || sku.isFio)) {
+        sku.isFioIncluded = true;
+        sku.fioBadge = 'FIO ($0.00 Included)';
+      }
+      const cleanSku = String(sku.SKU || sku.sku || sku.partNumber || '').trim();
+      _applySkuLifecycleInfo(sku, discontinuedMap[cleanSku]);
+    }
+  }
+}
+
+/**
+ * Load catalog JSON, merging companion *_Services.json entries and normalizing classifications.
+ */
+function loadAndNormalizeCatalog(fullPath) {
+  const content = JSON.parse(fs.readFileSync(fullPath, 'utf-8'));
+  if (!content.entries) content.entries = [];
+
+  const folderPath = path.dirname(fullPath);
+  const baseName = path.basename(fullPath);
+  const servicesFileName = baseName.replace(/_Catalog\.json$/, '_Services.json');
+  const servicesPath = path.join(folderPath, servicesFileName);
+
+  if (baseName.endsWith('_Catalog.json') && fs.existsSync(servicesPath)) {
+    try {
+      const servicesContent = JSON.parse(fs.readFileSync(servicesPath, 'utf-8'));
+      if (Array.isArray(servicesContent.entries)) {
+        for (const sEntry of servicesContent.entries) {
+          sEntry.optionType = 'Service';
+          if (!sEntry.parentCategory || sEntry.parentCategory === 'Unknown') {
+            sEntry.parentCategory = 'Support Services';
+          }
+          if (Array.isArray(sEntry.skus)) {
+            for (const sSku of sEntry.skus) {
+              sSku.optionType = 'Service';
+              sSku['Option Type'] = 'Service';
+              if (!sSku.parentCategory) sSku.parentCategory = sEntry.parentCategory;
+            }
+          }
+          content.entries.push(sEntry);
+        }
+      }
+      if (servicesContent.metadata?.totalUniqueSKUs) {
+        if (!content.metadata) content.metadata = {};
+        content.metadata.totalUniqueSKUs = (content.metadata.totalUniqueSKUs || 0) + servicesContent.metadata.totalUniqueSKUs;
+      }
+      content.metadata = { ...content.metadata, hasMergedServices: true };
+    } catch (_) {}
+  }
+
+  const discontinuedMap = loadDiscontinuedSkuMap(folderPath);
+  for (const entry of content.entries) {
+    normalizeEntryAndSkus(entry, discontinuedMap);
+  }
+
+  return content;
+}
+
+/**
  * Recursively discover chassis catalog files under OUTPUTS_DIR.
  * Returns built catalog list; result is cached until invalidated.
  */
@@ -67,12 +187,16 @@ function getCachedCatalogs() {
         const folderName = path.basename(folderPath);
 
         let metadata = { chassis: folderName };
-        let totalSKUs = 0;
+        let totalSKUs = countSKUsInJson(fullPath);
         try {
           const content = JSON.parse(fs.readFileSync(fullPath, 'utf-8'));
           metadata = content.metadata || metadata;
-          totalSKUs = metadata.totalUniqueSKUs || content.entries?.reduce((acc, e) => acc + (e.skuCount || 0), 0) || 0;
         } catch (_) {}
+
+        const servicesFileName = item.name.replace(/_Catalog\.json$/, '_Services.json');
+        const servicesFullPath = path.join(folderPath, servicesFileName);
+        const servicesSKUs = countSKUsInJson(servicesFullPath);
+        totalSKUs += servicesSKUs;
 
         const pdfFile = fs.readdirSync(folderPath).find(f => f.endsWith('.pdf'));
         const xlsxFile = fs.readdirSync(folderPath).find(f => f.endsWith('.xlsx'));
@@ -124,8 +248,8 @@ router.get('/catalog-data', (req, res) => {
   try { fullPath = assertSafePath(relPath); } catch (e) { return sendErrorResponse(res, 403, e, { source: 'CATALOGS_ROUTER' }); }
   if (!fs.existsSync(fullPath)) return sendErrorResponse(res, 404, 'Catalog file not found', { source: 'CATALOGS_ROUTER' });
   try {
-    res.setHeader('Content-Type', 'application/json');
-    res.send(fs.readFileSync(fullPath, 'utf-8'));
+    const data = loadAndNormalizeCatalog(fullPath);
+    res.json(data);
   } catch (err) { sendErrorResponse(res, 500, err, { source: 'CATALOGS_ROUTER' }); }
 });
 
@@ -242,7 +366,7 @@ router.get('/price-analytics', (req, res) => {
     const priceHistoryFile = path.join(historyDir, 'price_history.json');
     const priceHistory = fs.existsSync(priceHistoryFile) ? JSON.parse(fs.readFileSync(priceHistoryFile, 'utf-8')) : {};
     const snapshots = fs.readdirSync(historyDir)
-      .filter(f => f.startsWith('catalog_') && f.endsWith('.json')).sort()
+      .filter(f => f.startsWith('catalog_') && f.endsWith('.json') && !f.includes('deltas')).sort()
       .map(f => {
         try {
           const content = JSON.parse(fs.readFileSync(path.join(historyDir, f), 'utf-8'));

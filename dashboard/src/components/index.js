@@ -38,7 +38,6 @@ export { default as NotebookLmHealthBadge } from './NotebookLmHealthBadge';
 
 // Telemetry & Observability Components
 export { default as TelemetryCard } from './TelemetryCard';
-export { default as TaskHistoryCard } from './TaskHistoryCard';
 export { default as ExportHistoryCard } from './ExportHistoryCard';
 export { default as ArtifactInspector } from './ArtifactInspector';
 export { default as TraceabilityInspector } from './TraceabilityInspector';

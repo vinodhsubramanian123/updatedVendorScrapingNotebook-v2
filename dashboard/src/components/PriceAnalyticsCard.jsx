@@ -2,6 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { TrendingUp, TrendingDown, DollarSign, Calendar, Layers, Activity, History } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend } from 'recharts';
 
+function formatSnapshotDate(scrapeDate, index) {
+  if (!scrapeDate || scrapeDate === 'N/A') return `Snapshot #${index + 1}`;
+  const parsed = new Date(scrapeDate);
+  if (!isNaN(parsed.getTime())) {
+    return parsed.toISOString().split('T')[0];
+  }
+  return String(scrapeDate);
+}
+
+function formatSnapshotLocaleDate(scrapeDate) {
+  if (!scrapeDate || scrapeDate === 'N/A') return 'N/A';
+  const parsed = new Date(scrapeDate);
+  if (!isNaN(parsed.getTime())) {
+    return parsed.toLocaleString();
+  }
+  return String(scrapeDate);
+}
+
 function computePriceAnalyticsMetrics(analyticsData, selectedCategory) {
   const latestSnapshot = analyticsData.snapshots[analyticsData.snapshots.length - 1];
   const categoryBreakdown = latestSnapshot?.priceAnalytics?.categoryBreakdown || {};
@@ -26,8 +44,8 @@ function computePriceAnalyticsMetrics(analyticsData, selectedCategory) {
     }
   });
 
-  const chartData = analyticsData.snapshots.map(snap => {
-    const dateStr = new Date(snap.scrapeDate).toISOString().split('T')[0];
+  const chartData = (analyticsData.snapshots || []).map((snap, idx) => {
+    const dateStr = formatSnapshotDate(snap.scrapeDate, idx);
     const point = { date: dateStr };
     const catBreakdown = snap.priceAnalytics?.categoryBreakdown || {};
 
@@ -91,15 +109,15 @@ function CategoryPriceCard({ cat, data }) {
   );
 }
 
-export default function PriceAnalyticsCard({ selectedChassis: _selectedChassis, chassisDir }) {
+export default function PriceAnalyticsCard({ selectedChassis, chassisDir }) {
   const [analyticsData, setAnalyticsData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('ALL');
+  const targetDir = chassisDir || selectedChassis || 'DL380_Gen12';
 
   useEffect(() => {
-    if (!chassisDir) return;
     setLoading(true);
-    fetch(`/api/price-analytics?chassisDir=${encodeURIComponent(chassisDir)}`)
+    fetch(`/api/price-analytics?chassisDir=${encodeURIComponent(targetDir)}`)
       .then(res => res.json())
       .then(data => {
         setAnalyticsData(data);
@@ -109,7 +127,7 @@ export default function PriceAnalyticsCard({ selectedChassis: _selectedChassis, 
         console.error('Error fetching price analytics:', err);
         setLoading(false);
       });
-  }, [chassisDir]);
+  }, [targetDir]);
 
   if (loading) {
     return (
@@ -251,7 +269,7 @@ export default function PriceAnalyticsCard({ selectedChassis: _selectedChassis, 
                 </div>
                 <div>
                   <div className="font-bold text-slate-800">{snap.filename}</div>
-                  <div className="text-slate-500 text-[11px]">Scraped Date: {new Date(snap.scrapeDate).toLocaleString()}</div>
+                  <div className="text-slate-500 text-[11px]">Scraped Date: {formatSnapshotLocaleDate(snap.scrapeDate)}</div>
                 </div>
               </div>
 

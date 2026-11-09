@@ -61,6 +61,14 @@ export default function CatalogFilterBar({
             Services & Support
           </button>
           <button
+            onClick={() => setViewMode('obsolete')}
+            className={`px-3 py-1 text-xs font-bold rounded-md transition-all cursor-pointer ${
+              viewMode === 'obsolete' ? 'bg-rose-600 text-white shadow-sm' : 'text-slate-500 hover:text-slate-700'
+            }`}
+          >
+            Lifecycle & Obsolete
+          </button>
+          <button
             onClick={() => setViewMode('rules')}
             className={`px-3 py-1 text-xs font-bold rounded-md transition-all cursor-pointer ${
               viewMode === 'rules' ? 'bg-purple-600 text-white shadow-sm' : 'text-slate-500 hover:text-slate-700'

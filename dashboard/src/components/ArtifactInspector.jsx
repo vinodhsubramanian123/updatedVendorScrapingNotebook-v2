@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FileCode, ShieldCheck, RefreshCw, FileText, CheckCircle2, AlertCircle, Eye, X, BookOpen, AlertTriangle } from 'lucide-react';
+import ExportHistoryCard from './ExportHistoryCard';
 
 function AuditCertificateResultCard({ auditResult }) {
   if (!auditResult) return null;
@@ -284,6 +285,8 @@ export default function ArtifactInspector({ currentCatalog }) {
           </pre>
         </div>
       )}
+
+      <ExportHistoryCard />
     </div>
   );
 }

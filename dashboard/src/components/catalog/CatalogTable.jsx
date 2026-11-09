@@ -42,11 +42,25 @@ export default function CatalogTable({ displayedSkus = [], formatPrice, onOpenSk
                     }`}
                   >
                     <td className="px-4 py-2.5">
-                      <span className={`badge ${
-                        isAdded ? 'badge-emerald' : isPriceChanged || isAttrChanged ? 'badge-amber' : isRemoved ? 'badge-rose' : 'bg-slate-100 text-slate-600'
-                      }`}>
-                        {status}
-                      </span>
+                      {sku.isObsolete || sku.lifecycleStatus === 'DISCONTINUED' || sku.lifecycleStatus === 'OBSOLETE' ? (
+                        <span className="badge badge-rose font-bold text-[10px]" title={sku.lifecycleReason || 'Discontinued / Obsolete SKU'}>
+                          DISCONTINUED {sku.obsoleteDate ? `(${sku.obsoleteDate})` : ''}
+                        </span>
+                      ) : sku.lifecycleStatus === '90-DAY WARNING' ? (
+                        <span className="badge badge-amber font-bold text-[10px]" title="90-Day End-of-Life Warning">
+                          90-DAY WARNING
+                        </span>
+                      ) : sku.lifecycleStatus === 'REINSTATED' ? (
+                        <span className="badge bg-blue-100 text-blue-700 font-bold text-[10px]" title={`Reinstated on ${sku.reinstatedDate || 'recent date'}`}>
+                          REINSTATED
+                        </span>
+                      ) : (
+                        <span className={`badge ${
+                          isAdded ? 'badge-emerald' : isPriceChanged || isAttrChanged ? 'badge-amber' : isRemoved ? 'badge-rose' : 'bg-slate-100 text-slate-600'
+                        }`}>
+                          {status}
+                        </span>
+                      )}
                     </td>
                     <td className="px-4 py-2.5 font-bold mono text-slate-900">{sku.sku || sku.partNumber || sku.id || 'CTO-OPTION'}</td>
                     <td className="px-4 py-2.5 font-medium text-slate-700 max-w-xs truncate">
@@ -56,7 +70,13 @@ export default function CatalogTable({ displayedSkus = [], formatPrice, onOpenSk
                     <td className="px-4 py-2.5 text-slate-500">{sku.subCategory}</td>
                     <td className="px-4 py-2.5 font-semibold text-slate-600">{sku.optionType || 'CTO'}</td>
                     <td className="px-4 py-2.5 font-semibold text-slate-900">
-                      {formatPrice(sku.listPrice)}
+                      {sku.isFioIncluded ? (
+                        <span className="inline-flex items-center px-2 py-0.5 bg-blue-50 text-blue-700 text-[10px] font-bold rounded-full border border-blue-200">
+                          {sku.fioBadge || 'FIO ($0.00 Included)'}
+                        </span>
+                      ) : (
+                        formatPrice(sku.listPrice)
+                      )}
                       {sku.priceDelta && (
                         <span className={`ml-1.5 text-[10px] font-bold ${
                           sku.priceDelta.startsWith('-') ? 'text-emerald-600' : 'text-amber-600'

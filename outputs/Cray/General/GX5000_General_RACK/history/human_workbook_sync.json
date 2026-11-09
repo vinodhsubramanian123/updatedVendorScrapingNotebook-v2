@@ -1,7 +1,7 @@
 {
   "success": true,
   "spreadsheetId": "1HPB_a9Wsf5onL3Iqa-Y9NAfeK9wTpm2yYkdWMI_KmYc",
-  "backupFile": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\history\\drive_backups\\drive_backup_0d51f2cc-e4e2-455a-bfc0-b9088cddf0fa.json",
+  "backupFile": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\history\\drive_backups\\drive_backup_2a4fd862-cebc-4eb5-8e14-910e0194820a.json",
   "tabsWritten": [
     {
       "title": "Certified Catalog",
@@ -57,7 +57,7 @@
     "Certified Catalog": "b7563c1490b0ef5a0c0354af7d93311ba6b94857eeb97847b0091cf962f0f824",
     "Verified Learnings": "1f0779a3ccfbb19b453eef70c273da730fb898961ab69f4fce398c1c9cd49d59",
     "Change Log": "d284350496fbeecb198edb97fbb0d6923a59f37a21822707a64390fef59bbfd9",
-    "Sync Metadata": "006aed86a76be1a0bdfa945a5074a1c27ee045050d5b7a14cf5aec73b5d747af",
+    "Sync Metadata": "d9c810ef49465f556fa13a08a924df0a2f63ddc3b1a294dc40ddc022caee43e1",
     "Category Summary": "a3e94563e5d89f36987b0909fb1013e3eafaea96325f3c0a0a4d6e7f60d0fc0b",
     "All SKUs": "ec82ff118b444a58ac011eb6bb38d463b7874c2d1c5cc88864342efb4d0899e3",
     "Chassis Variants": "3bd8ddbc164e416bfef1851b1b4305102211a83b9d3bf66defb137425dbeed3c",
@@ -67,14 +67,12 @@
     "Chassis": "ec82ff118b444a58ac011eb6bb38d463b7874c2d1c5cc88864342efb4d0899e3",
     "Metadata": "e6bfc90210bb77d6286f8b0269128447987cc63ade3c18441ea21528c3920d4d"
   },
-  "verifiedAt": "2026-11-06T08:19:01.361Z",
+  "verifiedAt": "2026-11-09T11:20:31.403Z",
   "fingerprints": {
     "catalog": "b7563c1490b0ef5a0c0354af7d93311ba6b94857eeb97847b0091cf962f0f824",
     "learnings": "411657cedb9344b2fd1501714c0a1bd5a141e531969f567af579d25038aa7776",
     "changes": "d284350496fbeecb198edb97fbb0d6923a59f37a21822707a64390fef59bbfd9",
     "workbook": "c0f90f67096837f3b5443c1654c5106b9bf482be19792f4f796d648bc8f705ab",
     "combined": "b87322ab6f06816338667446f462d46f706cc61e0ba4565a9d306a31023be0d3"
-  },
-  "created": true,
-  "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1HPB_a9Wsf5onL3Iqa-Y9NAfeK9wTpm2yYkdWMI_KmYc/edit"
+  }
 }

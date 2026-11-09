@@ -9,6 +9,7 @@ import {
   CheckCircle2
 } from 'lucide-react';
 import TelemetryModalWrapper from './TelemetryModalWrapper';
+import ExportHistoryCard from '../../ExportHistoryCard';
 
 export function ViolationsModal({ isOpen, onClose, history = [] }) {
   const failedRuns = history.filter(h => h.criticalViolationsCount > 0);
@@ -266,37 +267,10 @@ export function ExportsModal({ isOpen, onClose }) {
       iconColor="text-emerald-600"
       headerBg="bg-emerald-50/50"
       headerBorder="border-emerald-100"
-      maxWidth="max-w-2xl"
+      maxWidth="max-w-3xl"
     >
       <div className="space-y-4 text-xs text-slate-700">
-        <div className="bg-emerald-50 border border-emerald-200 p-3 rounded-xl flex items-center justify-between">
-          <div>
-            <span className="font-bold text-emerald-900 block">Automated XLSX Export Pipeline</span>
-            <span className="text-[11px] text-emerald-700">Rank 1 through Rank 5 Strategy Matrix solutions exported with atomic data guarantees</span>
-          </div>
-          <span className="badge badge-emerald">Ready</span>
-        </div>
-
-        <div className="space-y-2">
-          <h4 className="font-bold text-slate-900">Export Artifact Format & Schema:</h4>
-          <div className="grid grid-cols-2 gap-2 text-[11px]">
-            <div className="p-2.5 bg-slate-50 border border-slate-200 rounded-lg">
-              <strong className="text-slate-800 block">Itemized BOM Sheet</strong>
-              <span className="text-slate-500">Includes HPE -B21 SKUs, Normalized Qty, List Price USD, Option Type (CTO/BTO)</span>
-            </div>
-            <div className="p-2.5 bg-slate-50 border border-slate-200 rounded-lg">
-              <strong className="text-slate-800 block">Variance Audit Sheet</strong>
-              <span className="text-slate-500">Line-by-line quote delta analysis and rule justification notes</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
-          <strong className="text-slate-900 text-xs block">Human-in-the-Loop Action Protocol:</strong>
-          <p className="text-slate-600 leading-relaxed">
-            When a vendor partner quote has uncataloged SKUs or price variances, the system quarantines a product-scoped observation and provides a corrected workbook. No active rule is inferred from the quote alone.
-          </p>
-        </div>
+        <ExportHistoryCard />
       </div>
     </TelemetryModalWrapper>
   );

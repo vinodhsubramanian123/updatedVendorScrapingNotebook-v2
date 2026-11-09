@@ -166,7 +166,8 @@ async function testHttpEndpoints() {
     const postPayload = JSON.stringify({
       evalResults,
       chassisId: 'DL380_Gen12',
-      rankTier: 1
+      rankTier: 1,
+      diagnostic: true
     });
 
     const resExport = await fetchHttp('http://127.0.0.1:3000/api/export-boq', 'POST', postPayload);

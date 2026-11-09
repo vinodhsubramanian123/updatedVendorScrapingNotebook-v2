@@ -1,7 +1,7 @@
 {
   "success": true,
   "spreadsheetId": "17Ut1mkfILDvpI45dSjM1qeTQsufqh2sWOHdkUUv3mHU",
-  "backupFile": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\history\\drive_backups\\drive_backup_ac9d312c-7f6b-49cf-b6ae-2f69a4322a50.json",
+  "backupFile": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\history\\drive_backups\\drive_backup_d7500d3e-dd50-451e-85e2-ef44c7ef3be2.json",
   "tabsWritten": [
     {
       "title": "Certified Catalog",
@@ -129,7 +129,7 @@
     "Certified Catalog": "ca55db8228b670bda68007f5161b3740bea880d515307fd5545d5ece1c18dfc5",
     "Verified Learnings": "af73741df67fa0a4981fa52c01626ca7736378441633b646511a70240ce6874d",
     "Change Log": "d3422c6aefe7e2512b4b7867fad806e587b4e9740f623127029a35dc7a7210ab",
-    "Sync Metadata": "e68b2145046c2e4af81e6eb13804e0561b1319e9c8809f79a0919a35d781e8f4",
+    "Sync Metadata": "8ee486278b87faa620ad0369acc2a7867443155298097d84586580c1df19ceea",
     "Category Summary": "2f5694e424bfb7592ae3d9f2aaea82d18c74bd6d947d3ea00898ed1d196ae0ae",
     "All SKUs": "45b78a14ac66e70197c80bfb1d36581eda1754caf375dfd7967b1d4260e00872",
     "Chassis Variants": "c3724a867c4da976c8f8b5ff918a40a11639f3fa4b195b97435a1820ae617751",
@@ -157,7 +157,7 @@
     "Discontinued SKUs": "14d470807a5fb22cd5706657e0dbcd12f8771964d260b3fd2107fdb7c0cad636",
     "Metadata": "20796bcccb22885f6d3934ed9abbc546a28dc6c2fc4ed7910237e59d403ea610"
   },
-  "verifiedAt": "2026-11-06T08:20:39.812Z",
+  "verifiedAt": "2026-11-09T11:21:47.212Z",
   "fingerprints": {
     "catalog": "ca55db8228b670bda68007f5161b3740bea880d515307fd5545d5ece1c18dfc5",
     "learnings": "c649384a80a6bf3e4b80f3c381d6cae1319eb56fa75fa68b0241192d2a60283a",

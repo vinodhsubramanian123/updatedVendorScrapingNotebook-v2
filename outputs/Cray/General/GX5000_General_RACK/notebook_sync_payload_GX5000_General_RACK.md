@@ -4,7 +4,7 @@
 
 **Scope Identity**: `HPE/SERVER/Cray/General/GX5000_General_RACK`
 
-**Sync Timestamp**: 2026-11-08T11:15:53.484Z
+**Sync Timestamp**: 2026-11-09T11:20:15.025Z
 
 **Total Verified SKUs**: `2` (`2` Hardware + `0` Services)
 
@@ -67,4 +67,110 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 | Chassis Identifier | Product Family | Generation | Form Factor | CTO Base SKU |
 |--------------------|----------------|------------|-------------|--------------|
 | **GX5000_General_RACK** | Cray | Gen1 | Rack | `P57100-B21` |
+
+
+<!-- MANAGED_FULL_CATALOG -->
+Content fingerprint: b87322ab6f06816338667446f462d46f706cc61e0ba4565a9d306a31023be0d3
+
+## Complete workbook text projection
+
+Displayed cell values follow by sheet and original row. Formatting, charts and formulas remain in the Excel artifact. Repeated rows refer to the first identical row and schema; no content is replaced by a fingerprint.
+
+### Category Summary
+
+| Original row | Column 1 | Column 2 | Column 3 | Column 4 | Column 5 | Column 6 | Column 7 | Column 8 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | Main Category | Sub-Category | Constraint | Min Qty | Max Qty | Total SKUs | Has Rules | Rule Count |
+| 2 | Chassis | Variants | Chassis Standard (Max 1) | 0 | 1 | 2 | Yes | 1 |
+
+
+### All SKUs
+
+| Original row | Column 1 | Column 2 | Column 3 | Column 4 | Column 5 | Column 6 | Column 7 | Column 8 | Column 9 | Column 10 | Column 11 | Column 12 | Column 13 | Column 14 | Column 15 | Column 16 | Column 17 | Column 18 | Column 19 | Column 20 | Column 21 | Column 22 | Column 23 | Column 24 | Column 25 | Column 26 | Column 27 | Column 28 | Column 29 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | Main Category | Sub-Category | Hierarchy Path | Component Role | Constraint Text | Subcategory Min Qty | Subcategory Max Qty | Table Rule/Note | Product # | Option Type | Description | Current Qty | Unit Price (USD) | Price Delta (USD) | Extended Price (USD) | Price per GB (USD) | HPE Recommended | Availability | Lead Time | Lead Time Source | Lifecycle Status | Start Date | Discontinued Date | Vendor Attributes (JSON) | Diff Status | Previous List Price (USD) | Price Change (USD) | Price Change (%) | Price History Trail |
+| 2 | Chassis | Variants | HPE OCA &gt; GX5000 General RACK &gt; Chassis &gt; Variants | Base Chassis | max 1 | 0 | 1 | Mandatory base chassis selection required for solution build | P57100-B21 | CTO | HPE Cray Supercomputing GX5000 General Rack CTO Chassis | 1 | $18,000.00 |  |  |  | Unknown |  |  |  |  | 2026-08-10 |  |  | BASELINE | N/A | $0.00 | $0.00 | $2,026.00 |
+| 3 | Chassis | Variants | HPE OCA &gt; GX5000 General RACK &gt; Chassis &gt; Variants | Base Chassis | max 1 | 0 | 1 | Mandatory base chassis selection required for solution build | P57101-B21 | CTO | HPE Cray Supercomputing GX5000 Liquid-Cooled Blade CTO Chassis | 1 | $19,500.00 |  |  |  | Unknown |  |  |  |  | 2026-08-10 |  |  | BASELINE | N/A | $0.00 | $0.00 | $2,026.00 |
+
+
+### Chassis Variants
+
+| Original row | Column 1 | Column 2 | Column 3 | Column 4 | Column 5 | Column 6 | Column 7 | Column 8 | Column 9 | Column 10 | Column 11 | Column 12 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | Product # | Form Factor | Description | Option Type | HPE Recommended | List Price (USD) | Constraint | Start Date | Discontinued Date | Diff Status | Price History Trail | Note |
+| 2 | P57100-B21 | Unknown | HPE Cray Supercomputing GX5000 General Rack CTO Chassis | CTO | Unknown | $18,000.00 | max 1 | 2026-08-10 | Unknown | BASELINE | $2,026.00 | [TEXT_1] |
+| 3 | P57101-B21 | Unknown | HPE Cray Supercomputing GX5000 Liquid-Cooled Blade CTO Chassis | CTO | Unknown | $19,500.00 | max 1 | 2026-08-10 | Unknown | BASELINE | $2,026.00 | [TEXT_1] |
+
+
+### Chassis Options Matrix
+
+| Original row | Column 1 | Column 2 | Column 3 | Column 4 | Column 5 | Column 6 | Column 7 | Column 8 | Column 9 | Column 10 | Column 11 | Column 12 | Column 13 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | Base SKU | Form Factor | Option Type | HPE Recommended | List Price (USD) | Drive Media Supported | Base Drive Bays | Max Expandability | Power Envelope | Lifecycle Status | Start Date | Discontinued Date | Architectural Rules |
+| 2 | P57100-B21 | Unknown | CTO | Unknown | $18,000.00 | UNVERIFIED — variant-specific evidence required | UNVERIFIED — title is not a bay inventory | UNVERIFIED — variant-specific evidence required | UNVERIFIED — variant-specific evidence required | Unknown | 2026-08-10 | Unknown | NOT VERIFIED: do not transfer compatibility or rules between base SKUs without scoped vendor evidence. |
+| 3 | P57101-B21 | Unknown | CTO | Unknown | $19,500.00 | UNVERIFIED — variant-specific evidence required | UNVERIFIED — title is not a bay inventory | UNVERIFIED — variant-specific evidence required | UNVERIFIED — variant-specific evidence required | Unknown | 2026-08-10 | Unknown | NOT VERIFIED: do not transfer compatibility or rules between base SKUs without scoped vendor evidence. |
+
+
+### Rules &amp; Constraints
+
+| Original row | Column 1 | Column 2 | Column 3 | Column 4 | Column 5 |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Main Category | Sub-Category | Constraint | Rule Type | Rule Text |
+| 2 | Chassis | Variants | max 1 | Quantity Constraint | Quantity: max 1 |
+| 3 | Chassis | Variants | Chassis Standard (Max 1) | Configuration Rule | Mandatory base chassis selection required for solution build |
+
+
+### Price History Timeline
+
+| Original row | Column 1 | Column 2 | Column 3 | Column 4 | Column 5 | Column 6 | Column 7 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | Main Category | Sub-Category | Product # | Description | Current Price (USD) | Diff Status | Price History Trail |
+| 2 | Chassis | Variants | P57100-B21 | HPE Cray Supercomputing GX5000 General Rack CTO Chassis | $18,000.00 | BASELINE | $2,026.00 |
+| 3 | Chassis | Variants | P57101-B21 | HPE Cray Supercomputing GX5000 Liquid-Cooled Blade CTO Chassis | $19,500.00 | BASELINE | $2,026.00 |
+
+
+### Chassis
+
+| Original row | Column 1 | Column 2 | Column 3 | Column 4 | Column 5 | Column 6 | Column 7 | Column 8 | Column 9 | Column 10 | Column 11 | Column 12 | Column 13 | Column 14 | Column 15 | Column 16 | Column 17 | Column 18 | Column 19 | Column 20 | Column 21 | Column 22 | Column 23 | Column 24 | Column 25 | Column 26 | Column 27 | Column 28 | Column 29 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | Main Category | Sub-Category | Hierarchy Path | Component Role | Constraint Text | Subcategory Min Qty | Subcategory Max Qty | Table Rule/Note | Product # | Option Type | Description | Current Qty | Unit Price (USD) | Price Delta (USD) | Extended Price (USD) | Price per GB (USD) | HPE Recommended | Availability | Lead Time | Lead Time Source | Lifecycle Status | Start Date | Discontinued Date | Vendor Attributes (JSON) | Diff Status | Previous List Price (USD) | Price Change (USD) | Price Change (%) | Price History Trail |
+
+Row 2: identical to sheet All SKUs, row 2.
+Row 3: identical to sheet All SKUs, row 3.
+
+### Metadata
+
+| Original row | Column 1 | Column 2 |
+| --- | --- | --- |
+| 1 | Field | Value |
+| 2 | Chassis | GX5000 General RACK |
+| 3 | Scrape Date | 2026-08-10 |
+| 4 | Source | OCA (Online Configuration Application) |
+| 5 | Total Sub-Categories | 1 |
+| 6 | Total Hardware SKUs | 2 |
+| 7 | Total Service/Software SKUs | 0 |
+| 8 | Total Combined SKUs | 2 |
+| 9 | Chassis Variant Options | 2 |
+| 10 | Total Rules | 2 |
+| 11 | Unavailable DOM Rules | 0 |
+| 12 | Total Tables | 1 |
+| 13 | Diff Added SKUs | 0 |
+| 14 | Diff Removed SKUs | 0 |
+| 15 | Diff Price Changed | 0 |
+| 16 | Diff Attr Changed | 0 |
+| 17 | Diff Reinstated SKUs | 0 |
+| 18 | Diff Unchanged SKUs | 2 |
+| 19 | Discontinued (All-Time) | 0 |
+| 20 | Reinstated (All-Time) | 0 |
+| 21 | Services JSON | (Not yet generated) |
+| 22 | Output Folder | C:/Users/latha/.gemini/antigravity/scratch/antigravityProjects/updatedVendorScrapingNotebook-v2/outputs/Cray/General/GX5000_General_RACK |
+
+
+## Shared cell text
+
+Bracketed TEXT identifiers above refer to these exact repeated values. The surrounding sheet, column and row determine applicability.
+
+### TEXT_1
+
+Select ONE chassis variant as the mandatory CTO base. All component rules, drive bay limits, and power constraints depend on this selection.
 

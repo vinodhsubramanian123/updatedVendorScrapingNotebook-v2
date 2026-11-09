@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Settings, X, Save, Check, Loader, BookOpen, RefreshCw, Plus, Trash2 } from 'lucide-react';
 
+function getNotebookIdString(val) {
+  if (typeof val === 'object' && val !== null) {
+    return val.notebookId || val.id || '';
+  }
+  return typeof val === 'string' ? val : '';
+}
+
 export default function SettingsDrawer({ isOpen, onClose }) {
   const [config, setConfig] = useState({ defaultNotebookId: '', notebooks: {} });
   const [loading, setLoading] = useState(false);
@@ -61,10 +68,16 @@ export default function SettingsDrawer({ isOpen, onClose }) {
   };
 
   const handleUpdateMapping = (key, value) => {
-    setConfig(prev => ({
-      ...prev,
-      notebooks: { ...prev.notebooks, [key]: value }
-    }));
+    setConfig(prev => {
+      const current = prev.notebooks?.[key];
+      const updatedValue = (typeof current === 'object' && current !== null)
+        ? { ...current, notebookId: value }
+        : value;
+      return {
+        ...prev,
+        notebooks: { ...prev.notebooks, [key]: updatedValue }
+      };
+    });
   };
 
   if (!isOpen) return null;
@@ -132,7 +145,7 @@ export default function SettingsDrawer({ isOpen, onClose }) {
                       </div>
                       <input
                         type="text"
-                        value={nbId}
+                        value={getNotebookIdString(nbId)}
                         onChange={e => handleUpdateMapping(chassis, e.target.value)}
                         placeholder="Notebook ID"
                         className="flex-1 border border-slate-200 rounded-lg px-2 py-1.5 text-[11px] font-mono text-slate-700 focus:outline-none focus:ring-1 focus:ring-blue-400"

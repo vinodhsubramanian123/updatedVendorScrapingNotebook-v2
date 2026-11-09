@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { MessageSquare, X, Send, CheckCircle2 } from 'lucide-react';
 
+function formatFeedbackText(val) {
+  if (typeof val === 'string') return val;
+  if (typeof val === 'object' && val !== null) {
+    return val.text || val.message || val.instruction || JSON.stringify(val);
+  }
+  return String(val || '');
+}
+
 export default function UserFeedbackDrawer({ isOpen, onClose }) {
   const [feedbackText, setFeedbackText] = useState('');
   const [category, setCategory] = useState('feature_request');
@@ -136,7 +144,7 @@ export default function UserFeedbackDrawer({ isOpen, onClose }) {
                   <span className="mono text-[10px] font-bold text-slate-700">{item.id}</span>
                   <span className="badge badge-amber">{item.status}</span>
                 </div>
-                <p className="text-slate-700 font-medium">{item.text}</p>
+                <p className="text-slate-700 font-medium">{formatFeedbackText(item.text)}</p>
               </div>
             ))
           )}

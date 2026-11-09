@@ -19,6 +19,7 @@ import MacroOrchestratorFlow from './components/MacroOrchestratorFlow';
 import TraceabilityInspector from './components/TraceabilityInspector';
 import { BoqTopologyModal } from './components/topology';
 import PlatformDisambiguationCard from './components/PlatformDisambiguationCard';
+import ErrorBoundary from './components/ErrorBoundary';
 
 import { useSSEStream } from './hooks/useSSEStream.js';
 import { useRagPoller } from './hooks/useRagPoller.js';
@@ -349,7 +350,10 @@ function AppMainTabContent({
           isCatalogLoading={isCatalogLoading}
           globalSearchTerm={globalSearchTerm}
           onClearSearch={() => setGlobalSearchTerm('')}
-          onOpenRag={() => setIsRagOpen(true)}
+          onOpenRag={(query) => {
+            if (query) handleSmartSearch(query);
+            else setIsRagOpen(true);
+          }}
           onRagQuery={handleSmartSearch}
         />
       </div>
@@ -667,35 +671,37 @@ export default function App() {
 
         <DualBrainBadgesBar evalResults={evalResults} />
 
-        <AppMainTabContent
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-          evalResults={evalResults}
-          auditReport={auditReport}
-          isTaskRunning={isTaskRunning}
-          activeProgress={activeProgress}
-          selectedChassis={selectedChassis}
-          setSelectedChassis={setSelectedChassis}
-          logStream={logStream}
-          catalogs={catalogs}
-          catalogData={catalogData}
-          currentCatObj={currentCatObj}
-          isCatalogLoading={isCatalogLoading}
-          globalSearchTerm={globalSearchTerm}
-          setGlobalSearchTerm={setGlobalSearchTerm}
-          setActiveModal={setActiveModal}
-          setShowTraceabilityInspector={setShowTraceabilityInspector}
-          setSelectedCardForFeedback={setSelectedCardForFeedback}
-          setIsRagOpen={setIsRagOpen}
-          handleSmartSearch={handleSmartSearch}
-          handleEvaluateBoq={handleEvaluateBoq}
-          handleTriggerScrape={handleTriggerScrape}
-          handleTriggerRebuild={handleTriggerRebuild}
-          handleTriggerDownloadPdf={handleTriggerDownloadPdf}
-          handleTriggerSyncKnowledge={handleTriggerSyncKnowledge}
-          handleTriggerKillTask={handleTriggerKillTask}
-          handleTriggerNavigate={handleTriggerNavigate}
-        />
+        <ErrorBoundary fallbackTitle="View Rendering Error">
+          <AppMainTabContent
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            evalResults={evalResults}
+            auditReport={auditReport}
+            isTaskRunning={isTaskRunning}
+            activeProgress={activeProgress}
+            selectedChassis={selectedChassis}
+            setSelectedChassis={setSelectedChassis}
+            logStream={logStream}
+            catalogs={catalogs}
+            catalogData={catalogData}
+            currentCatObj={currentCatObj}
+            isCatalogLoading={isCatalogLoading}
+            globalSearchTerm={globalSearchTerm}
+            setGlobalSearchTerm={setGlobalSearchTerm}
+            setActiveModal={setActiveModal}
+            setShowTraceabilityInspector={setShowTraceabilityInspector}
+            setSelectedCardForFeedback={setSelectedCardForFeedback}
+            setIsRagOpen={setIsRagOpen}
+            handleSmartSearch={handleSmartSearch}
+            handleEvaluateBoq={handleEvaluateBoq}
+            handleTriggerScrape={handleTriggerScrape}
+            handleTriggerRebuild={handleTriggerRebuild}
+            handleTriggerDownloadPdf={handleTriggerDownloadPdf}
+            handleTriggerSyncKnowledge={handleTriggerSyncKnowledge}
+            handleTriggerKillTask={handleTriggerKillTask}
+            handleTriggerNavigate={handleTriggerNavigate}
+          />
+        </ErrorBoundary>
       </main>
 
       <AppToolModals

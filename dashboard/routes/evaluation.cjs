@@ -169,9 +169,12 @@ router.post('/eval-boq', (req, res) => {
   const evalScript = path.join(PROJECT_ROOT, 'scripts', 'evaluators', 'eval_boq.js');
   const args = [evalScript, targetPath, '--json', '--defer-rag'];
   if (safeChassisDir) args.push('--chassis', safeChassisDir);
+  const isCdpActive = ['1', 'true'].includes(String(process.env.ACTIVE_CDP_SESSION || '').trim().toLowerCase());
   const isOffline = ['1', 'true'].includes(String(process.env.OFFLINE_MODE || '').trim().toLowerCase()) ||
     ['1', 'true'].includes(String(process.env.LOCAL_EVAL_ONLY || '').trim().toLowerCase()) ||
-    process.env.NODE_ENV === 'test';
+    process.env.NODE_ENV === 'test' ||
+    req.body.offline === true ||
+    !isCdpActive;
   if (isOffline) args.push('--offline');
 
   const ownedCli = process.env.PRESALES_TERMINAL_OWNER === '1';
