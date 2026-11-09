@@ -273,6 +273,157 @@ function evalNetworkingOcp(items, catalogData = null, mandatorySkus = {}, server
   };
 }
 
+const PRE_INSTALLED_OPTIC_SKUS = new Set([
+  'R2E09A', 'R2E08A', 'R2J62A', 'R2J63A'
+]);
+
+const SPEED_TIER_PATTERNS = [
+  { tier: '400G', form: 'QSFP-DD', regex: /\b400g(?:b|be)?\b/i },
+  { tier: '200G', form: 'QSFP56',  regex: /\b200g(?:b|be)?\b/i },
+  { tier: '100G', form: 'QSFP28',  regex: /\b100g(?:b|be)?\b/i },
+  { tier: '40G',  form: 'QSFP+',   regex: /\b40g(?:b|be)?\b/i },
+  { tier: '25G',  form: 'SFP28',   regex: /\b(?:25g(?:b|be)?|10\/25gb)\b/i },
+  { tier: '64G_FC', form: 'SFP+',  regex: /\b(?:64gb|64g fc|64gbs)\b/i },
+  { tier: '32G_FC', form: 'SFP+',  regex: /\b(?:32gb|32g fc|32gbs)\b/i },
+  { tier: '10G',  form: 'SFP+',    regex: /\b10g(?:b|be)?\b/i },
+  { tier: '400G', form: 'QSFP-DD', regex: /\b(?:qsfp-dd|osfp)\b/i },
+  { tier: '200G', form: 'QSFP56',  regex: /\bqsfp56\b/i },
+  { tier: '100G', form: 'QSFP28',  regex: /\bqsfp28\b/i },
+  { tier: '40G',  form: 'QSFP+',   regex: /\bqsfp\+\b/i },
+  { tier: '25G',  form: 'SFP28',   regex: /\bsfp28\b/i },
+  { tier: '10G',  form: 'SFP+',    regex: /\bsfp\+\b/i }
+];
+
+function _resolveSpeedTierFromText(text) {
+  for (const entry of SPEED_TIER_PATTERNS) {
+    if (entry.regex.test(text)) {
+      return { speedTier: entry.tier, formFactor: entry.form };
+    }
+  }
+  return null;
+}
+
+function classifyOpticalNicPort(desc, sku) {
+  const d = String(desc || '').toLowerCase();
+  const clean = cleanBaseSKU(sku);
+
+  if (/\b(?:base-t|10gbase-t|rj-45|twisted pair)\b/i.test(d)) {
+    return null;
+  }
+  if (!/\b(?:adapter|flr|ocp3|nic|hba|host bus adapter)\b/i.test(d)) {
+    return null;
+  }
+
+  const resolved = _resolveSpeedTierFromText(d);
+  if (!resolved) return null;
+
+  const ports = parseAdapterPortCount(d);
+  const includesOptics = PRE_INSTALLED_OPTIC_SKUS.has(clean);
+  return { ...resolved, ports, includesOptics };
+}
+
+const KNOWN_OPTIC_SKUS = {
+  '845398-B21': { speedTier: '25G', formFactor: 'SFP28' },
+  '845396-B21': { speedTier: '25G', formFactor: 'SFP28' },
+  '866529-B21': { speedTier: '100G', formFactor: 'QSFP28' },
+  '845404-B21': { speedTier: '100G', formFactor: 'QSFP28' },
+  '845408-B21': { speedTier: '100G', formFactor: 'QSFP28' },
+  'P00842-B21': { speedTier: '100G', formFactor: 'QSFP28' },
+  'P21153-B21': { speedTier: '100G', formFactor: 'QSFP28' },
+  '455883-B21': { speedTier: '10G', formFactor: 'SFP+' },
+  'AJ716B': { speedTier: '10G', formFactor: 'SFP+' },
+  'AJ717A': { speedTier: '10G', formFactor: 'SFP+' }
+};
+
+function classifyTransceiver(desc, sku) {
+  const d = String(desc || '').toLowerCase();
+  const clean = cleanBaseSKU(sku);
+
+  if (/\b(?:adapter|switch|controller)\b/i.test(d) && !/\b(?:switch card|transceiver|dac)\b/i.test(d)) {
+    return null;
+  }
+
+  const packMatch = d.match(/\b(\d+)\s*-?\s*pack\b/i);
+  const packSize = packMatch ? parseInt(packMatch[1], 10) : 1;
+
+  if (KNOWN_OPTIC_SKUS[clean]) {
+    return { ...KNOWN_OPTIC_SKUS[clean], packSize };
+  }
+
+  if (!/\b(?:transceiver|optical|sfp|qsfp|direct attach|dac|aoc|active optical)\b/i.test(d)) {
+    return null;
+  }
+
+  const resolved = _resolveSpeedTierFromText(d);
+  if (!resolved) return null;
+
+  return { ...resolved, packSize };
+}
+
+function auditOpticalLinkEndpoints(parts) {
+  const demands = {};
+  const supplies = {};
+  const opticalNics = [];
+  const transceivers = [];
+
+  for (const p of parts) {
+    if (isOcaModifierTrackingRow(p.sku, p.desc || p.description)) continue;
+    const qty = Number(p.qty ?? p.quantity) || 0;
+    if (qty <= 0) continue;
+
+    const desc = p.desc || p.description || '';
+    const nicInfo = classifyOpticalNicPort(desc, p.sku);
+    if (nicInfo) {
+      opticalNics.push({ ...p, ...nicInfo, qty });
+      const totalPorts = nicInfo.ports * qty;
+      demands[nicInfo.speedTier] = (demands[nicInfo.speedTier] || 0) + totalPorts;
+      if (nicInfo.includesOptics) {
+        supplies[nicInfo.speedTier] = (supplies[nicInfo.speedTier] || 0) + totalPorts;
+      }
+    }
+
+    const trInfo = classifyTransceiver(desc, p.sku);
+    if (trInfo) {
+      transceivers.push({ ...p, ...trInfo, qty });
+      const totalCount = trInfo.packSize * qty;
+      supplies[trInfo.speedTier] = (supplies[trInfo.speedTier] || 0) + totalCount;
+    }
+  }
+
+  const mismatches = [];
+  const missing = [];
+  const deficits = [];
+
+  for (const [tier, needed] of Object.entries(demands)) {
+    const available = supplies[tier] || 0;
+    if (available === 0) {
+      const otherSuppliedTiers = Object.keys(supplies).filter(k => supplies[k] > 0 && k !== tier);
+      if (otherSuppliedTiers.length > 0) {
+        mismatches.push(`Speed/form-factor mismatch: ${tier} optical adapter ports cannot use ${otherSuppliedTiers.join(', ')} transceivers`);
+      } else {
+        missing.push(`Matching optical transceivers or DAC cables for ${tier} ports (requires ${needed})`);
+      }
+    } else if (available < needed) {
+      deficits.push(`Optical transceiver quantity (${available}) insufficient for ${needed} ${tier} ports`);
+    }
+  }
+
+  const isCompatible = opticalNics.length === 0 || (mismatches.length === 0 && missing.length === 0 && deficits.length === 0);
+  return {
+    isCompatible,
+    opticalNics,
+    transceivers,
+    demands,
+    supplies,
+    mismatches,
+    missing,
+    deficits
+  };
+}
+
 module.exports = {
-  evalNetworkingOcp
+  evalNetworkingOcp,
+  classifyOpticalNicPort,
+  classifyTransceiver,
+  auditOpticalLinkEndpoints
 };

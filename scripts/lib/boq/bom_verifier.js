@@ -23,6 +23,7 @@ const { isValidHpeSKU, cleanBaseSKU, buildCatalogSkuIndex } = require('../catalo
 const { candidateReviewCurrent } = require('./solution_evidence.js');
 const { analyzeDeliveryPacing } = require('./delivery_pacing_analyzer.js');
 const { getRegisteredAspectsForDomain } = require('../aspects/aspect_registry.js');
+const { auditOpticalLinkEndpoints } = require('../aspects/networking_ocp.js');
 const { readPortalReceipt, receiptMatches } = require('./portal_receipt.js');
 
 /**
@@ -922,7 +923,20 @@ function _checkPortalReceiptIntegrity(output, context = {}) {
 }
 
 const RAIL_KIT_SKUS = new Set(['P69770-B21', 'P52341-B21', 'P26485-B21', 'P26487-B21', 'P52343-B21']);
-const OPTICAL_TRANSCEIVER_SKUS = new Set(['845398-B21', '455883-B21', 'P00842-B21', 'P21153-B21']);
+const RAIL_1U_SKUS = new Set(['P52343-B21']);
+const RAIL_2U_SKUS = new Set(['P69770-B21', 'P52341-B21', 'P26485-B21']);
+const OPTICAL_TRANSCEIVER_SKUS = new Set(['845398-B21', '455883-B21', 'P00842-B21', 'P21153-B21', '866529-B21', '845404-B21', '845408-B21']);
+
+function _detectChassisUHeight(parts) {
+  for (const p of parts) {
+    const d = String(p.desc || '').toLowerCase();
+    if (d.includes('dl360') || d.includes('1u cto') || d.includes('1u server')) return 1;
+    if (d.includes('dl380') || d.includes('dl385') || d.includes('2u cto') || d.includes('2u server')) return 2;
+    if (d.includes('dl580') || d.includes('4u cto') || d.includes('4u server')) return 4;
+    if (d.includes('synergy') || d.includes('sy480') || d.includes('compute module')) return 0;
+  }
+  return 2;
+}
 
 function _hasTurnkeyRailKit(parts) {
   return parts.some(p => p.qty > 0 && (
@@ -1004,41 +1018,64 @@ function _normalizeBomParts(output) {
   const items = output?.items || output?.candidateBOM || output?.skuPartsList || [];
   return items.map(it => {
     const rawQty = it.quantity ?? it.qty;
-    const isValidQty = Number.isSafeInteger(Number(rawQty)) && Number(rawQty) > 0;
+    const isValidQty = (typeof rawQty === 'number' || typeof rawQty === 'string') &&
+      Number.isSafeInteger(Number(rawQty)) && Number(rawQty) > 0;
     return {
       sku: cleanBaseSKU(it.sku || it['Product #'] || ''),
       desc: String(it.description || it.Description || '').toLowerCase(),
       category: String(it.category || it.parentCategory || it.subCategory || '').toLowerCase(),
       role: String(it['Component Role'] || it.componentRole || '').toLowerCase(),
       qty: isValidQty ? Number(rawQty) : 0,
-      hasInvalidQty: !isValidQty && rawQty !== undefined && rawQty !== null
+      hasInvalidQty: !isValidQty
     };
   });
 }
 
 function _auditTurnkeyRailKits(parts, requiredNodes, missingTurnkeyItems) {
+  const uHeight = _detectChassisUHeight(parts);
+  if (uHeight === 0) {
+    return { hasRailKit: true, railKitQty: requiredNodes };
+  }
+
   const hasRailKit = _hasTurnkeyRailKit(parts);
   const railKitQty = _getTurnkeyRailKitQuantity(parts);
   if (!hasRailKit || railKitQty === 0) {
     missingTurnkeyItems.push('Rack Rail Kit (e.g. P69770-B21 Ball Bearing Rails)');
-  } else if (railKitQty < requiredNodes) {
+    return { hasRailKit: false, railKitQty: 0 };
+  }
+  if (railKitQty < requiredNodes) {
     missingTurnkeyItems.push(`Rail kit quantity (${railKitQty}) insufficient for ${requiredNodes} nodes`);
   }
+
+  const has1uRails = parts.some(p => p.qty > 0 && (RAIL_1U_SKUS.has(p.sku) || p.desc.includes('1u easy install')));
+  const has2uRails = parts.some(p => p.qty > 0 && (RAIL_2U_SKUS.has(p.sku) || p.desc.includes('2u easy install') || p.desc.includes('2u ball bearing')));
+
+  if (uHeight === 1 && has2uRails && !has1uRails) {
+    missingTurnkeyItems.push('1U-qualified Rack Rail Kit (e.g. P52343-B21; found incompatible 2U rail kit)');
+  } else if (uHeight === 2 && has1uRails && !has2uRails) {
+    missingTurnkeyItems.push('2U-qualified Rack Rail Kit (e.g. P52341-B21/P69770-B21; found incompatible 1U rail kit)');
+  }
+
   return { hasRailKit, railKitQty };
 }
 
 function _auditTurnkeyTransceivers(parts, missingTurnkeyItems) {
-  const opticalNics = _findOpticalNics(parts);
-  const opticalTransceivers = _findOpticalTransceivers(parts);
-  const totalTransceiversQty = opticalTransceivers.reduce((sum, p) => sum + p.qty, 0);
-  const totalOpticalPorts = opticalNics.reduce((sum, p) => sum + (p.qty * _getNicPortCount(p.desc)), 0);
+  const linkResult = auditOpticalLinkEndpoints(parts);
+  const opticalNics = linkResult.opticalNics;
+  const totalTransceiversQty = linkResult.transceivers.reduce((sum, p) => sum + p.qty, 0);
+  const totalOpticalPorts = Object.values(linkResult.demands).reduce((sum, n) => sum + n, 0);
 
-  if (opticalNics.length > 0 && totalTransceiversQty === 0) {
-    missingTurnkeyItems.push('Matching Optical Transceivers or DAC Cables (e.g. 845398-B21 25Gb SFP28 SR) for optical network adapters');
-  } else if (opticalNics.length > 0 && totalTransceiversQty < totalOpticalPorts) {
-    missingTurnkeyItems.push(`Optical transceiver quantity (${totalTransceiversQty}) insufficient for ${totalOpticalPorts} optical ports`);
+  if (linkResult.mismatches.length > 0) {
+    missingTurnkeyItems.push(...linkResult.mismatches);
   }
-  return { opticalNics, totalTransceiversQty, totalOpticalPorts };
+  if (linkResult.missing.length > 0) {
+    missingTurnkeyItems.push(...linkResult.missing);
+  }
+  if (linkResult.deficits.length > 0) {
+    missingTurnkeyItems.push(...linkResult.deficits);
+  }
+
+  return { opticalNics, totalTransceiversQty, totalOpticalPorts, linkResult };
 }
 
 function _checkTurnkeyDeploymentCompleteness(output, context = {}) {
@@ -1053,11 +1090,17 @@ function _checkTurnkeyDeploymentCompleteness(output, context = {}) {
   }
 
   const parts = _normalizeBomParts(output);
-  const requiredNodes = context.serverCount || output?.serverCount || _detectServerNodeCount(parts) || 1;
+  const requiredNodes = context.serverCount ?? output?.serverCount ?? _detectServerNodeCount(parts);
   const missingTurnkeyItems = [];
+  if (!Number.isSafeInteger(requiredNodes) || requiredNodes <= 0) {
+    missingTurnkeyItems.push('Valid positive integer server count');
+  }
+  if (parts.some(p => p.hasInvalidQty)) {
+    missingTurnkeyItems.push('Explicit positive integer quantities for every BOM item');
+  }
 
   const { hasRailKit } = _auditTurnkeyRailKits(parts, requiredNodes, missingTurnkeyItems);
-  const { opticalNics, totalTransceiversQty } = _auditTurnkeyTransceivers(parts, missingTurnkeyItems);
+  const { opticalNics, totalTransceiversQty, linkResult } = _auditTurnkeyTransceivers(parts, missingTurnkeyItems);
 
   if (missingTurnkeyItems.length > 0) {
     return makeCheck(
@@ -1075,8 +1118,8 @@ function _checkTurnkeyDeploymentCompleteness(output, context = {}) {
     'Turnkey Racking, Cabling & Optical Transceiver Completeness (INV-228)',
     'BLOCK',
     'PASSED',
-    'Turnkey infrastructure verified: rack rails and network transceivers/cabling are present in candidate BOM.',
-    { hasRailKit, opticalNicsCount: opticalNics.length, transceiversCount: totalTransceiversQty }
+    'Turnkey infrastructure verified: rack rails and network transceivers/cabling are present and speed-matched in candidate BOM.',
+    { hasRailKit, opticalNicsCount: opticalNics.length, transceiversCount: totalTransceiversQty, speedDemands: linkResult?.demands }
   );
 }
 

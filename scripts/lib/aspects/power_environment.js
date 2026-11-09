@@ -114,7 +114,7 @@ function _tallyPsuWattageAndCurrent(tally, desc, it) {
     if (w > tally.maxPsuWattage) tally.maxPsuWattage = w;
     tally.psuWattages.add(w);
   }
-  const isDc = desc.includes('-48vdc') || desc.includes('dc power') || desc.includes('48v dc') || desc.includes('48vdc') || desc.includes('hvdc');
+  const isDc = /(?:\d\s*v\s*dc\b|\bdc\b)/i.test(desc) || desc.includes('hvdc');
   if (isDc) {
     tally.hasDcPowerSupply = true;
     tally.dcPsuCount = (tally.dcPsuCount || 0) + qty;
@@ -226,7 +226,41 @@ function _resolveEffectiveServerCount(serverCount, catalogData) {
   return 1;
 }
 
-function _buildPowerEvaluationResult(tally, items, effectiveServerCount, totalHardwareWatts) {
+function _checkPsuDerating(tally, estimatedNodeWattage, options = {}) {
+  const inputVoltage = String(options.inputVoltage || '').toLowerCase();
+  const isLowLine = /\b(?:100v|110v|115v|120v|127v|low[\s-]*line)\b/i.test(inputVoltage);
+  const isHighLine = /\b(?:200v|208v|220v|230v|240v|high[\s-]*line)\b/i.test(inputVoltage);
+
+  let deratedWattage = tally.maxPsuWattage;
+  let hasLowLineDerating = false;
+  let lowLineUnsupported = false;
+
+  if (isLowLine) {
+    if (tally.hasTitaniumPsu || tally.maxPsuWattage > 1600) {
+      deratedWattage = 0;
+      lowLineUnsupported = true;
+      hasLowLineDerating = true;
+    } else if (tally.maxPsuWattage === 1600) {
+      deratedWattage = 1000;
+      hasLowLineDerating = true;
+    }
+  }
+
+  const hasDeratedDeficit = isLowLine && (lowLineUnsupported || deratedWattage < estimatedNodeWattage);
+  const isInputVoltageUnspecified = !isLowLine && !isHighLine && !tally.hasDcPowerSupply;
+
+  return {
+    isLowLine,
+    isHighLine,
+    deratedWattage,
+    hasLowLineDerating,
+    lowLineUnsupported,
+    hasDeratedDeficit,
+    isInputVoltageUnspecified
+  };
+}
+
+function _buildPowerEvaluationResult(tally, items, effectiveServerCount, totalHardwareWatts, options = {}) {
   if (tally.psuCount > 0 && tally.maxPsuWattage === 0) {
     tally.maxPsuWattage = 800;
   }
@@ -234,9 +268,10 @@ function _buildPowerEvaluationResult(tally, items, effectiveServerCount, totalHa
   const estimatedHardwareWattsPerNode = Math.round(totalHardwareWatts / effectiveServerCount);
   const estimatedNodeWattage = estimatedHardwareWattsPerNode + 150;
   const requiredWattageWithHeadroom = Math.ceil(estimatedNodeWattage * 1.20);
+  const derating = _checkPsuDerating(tally, estimatedNodeWattage, options);
   const hasPsuHeadroomDeficit = tally.psuCount > 0 && tally.maxPsuWattage < requiredWattageWithHeadroom;
-  const hasPsuWattageDeficit = tally.psuCount > 0 && tally.maxPsuWattage < estimatedNodeWattage;
-  const needsHighLine220v = estimatedNodeWattage > 800 && tally.maxPsuWattage >= 1600;
+  const hasPsuWattageDeficit = (tally.psuCount > 0 && tally.maxPsuWattage < estimatedNodeWattage) || derating.hasDeratedDeficit;
+  const needsHighLine220v = (estimatedNodeWattage > 800 && tally.maxPsuWattage >= 1600) || derating.hasDeratedDeficit;
   const needsCeRemovalKit = checkLot9CeRemovalNeeds(tally, estimatedNodeWattage);
   const hasSynergyRedundantPowerError = tally.isSynergy12000Frame && tally.synergyTitanium2650wCount !== 6;
   const dl380aPsu = checkDl380aPsuCompliance(tally);
@@ -255,6 +290,7 @@ function _buildPowerEvaluationResult(tally, items, effectiveServerCount, totalHa
     needsCeRemovalKit,
     psuCount: tally.psuCount,
     maxPsuWattage: tally.maxPsuWattage,
+    derating,
     estimatedNodeWattage,
     requiredWattageWithHeadroom,
     hasPsuHeadroomDeficit,
@@ -282,7 +318,7 @@ function _buildPowerEvaluationResult(tally, items, effectiveServerCount, totalHa
   };
 }
 
-function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}, serverCount = 1) {
+function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}, serverCount = 1, options = {}) {
   const effectiveServerCount = Math.max(1, _resolveEffectiveServerCount(serverCount, catalogData));
 
   const tally = {
@@ -330,7 +366,7 @@ function evalPowerEnvironment(items, catalogData = null, mandatorySkus = {}, ser
     tallyPowerHardware(tally, it, desc, sku, role, dcLugSku, skuIndex, mandatorySkus);
   }
 
-  return _buildPowerEvaluationResult(tally, items, effectiveServerCount, totalHardwareWatts);
+  return _buildPowerEvaluationResult(tally, items, effectiveServerCount, totalHardwareWatts, options);
 }
 
 module.exports = {

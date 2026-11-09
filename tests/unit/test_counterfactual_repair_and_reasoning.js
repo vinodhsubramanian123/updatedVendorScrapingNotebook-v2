@@ -16,6 +16,22 @@ const catalog = { metadata: { model: 'DL380_Gen12' }, entries: [{ parentCategory
 ] }] };
 const evaluation = power => ({ chassis: 'DL380_Gen12', catalogData: catalog, evalSummary: { power } });
 
+test('Electrically excluded PSUs cannot create false or negative wattage deficits', () => {
+  for (const description of ['2200W -48VDC Power Supply', '2200W -48V DC Power Supply', '2200W DC Power Supply']) {
+    const result = evaluation({ hasZeroPsus: true, requiredWattageWithHeadroom: 1000, installedPsuType: 'AC' });
+    result.catalogData = { metadata: catalog.metadata, entries: [{ parentCategory: 'Power Supplies', skus: [
+      { sku: 'P44712-B21', description }
+    ] }] };
+    const proof = repair(result)[0];
+    assert.equal(proof.resultingStatus, 'ACTION_REQUIRED');
+    assert.deepEqual(proof.requiredHardwareDeltas, []);
+    assert.match(proof.mathematicalProof, /No electrically compatible/);
+    assert.doesNotMatch(proof.mathematicalProof, /-1200W/);
+    result.evalSummary.power.installedPsuType = '-48VDC';
+    assert.equal(repair(result)[0].resultingStatus, 'PROPOSED_UNVALIDATED');
+  }
+});
+
 test('Both missing and underpowered PSUs enforce actual catalog ceiling; proposals are never certification', () => {
   for (const missing of [true, false]) {
     const proof = repair(evaluation({ hasZeroPsus: missing, hasPsuWattageDeficit: !missing, psuCount: missing ? 0 : 2, requiredWattageWithHeadroom: 3000 }))[0];

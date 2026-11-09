@@ -74,7 +74,7 @@ function _filterPsuCandidates(candidates, power) {
   const isTitaniumRequested = /titanium/i.test(descRaw);
   return candidates.filter(row => {
     const desc = row.description.toLowerCase();
-    const isDc = desc.includes('-48vdc') || desc.includes('dc power');
+    const isDc = /(?:\d\s*v\s*dc\b|\bdc\b)/i.test(desc);
     if (isDcRequested && !isDc) return false;
     if (!isDcRequested && isDc) return false;
     return true;
@@ -100,9 +100,13 @@ function powerRepair(power, scope, count, errors, proofs) {
   })).filter(row => positive(row.watts));
   if (!allCandidates.length) { proofs.push(unresolved(type, `No rated PSU candidate in the exact product catalog for ${required}W.`)); return; }
   const candidates = _filterPsuCandidates(allCandidates, power);
+  if (!candidates.length) {
+    proofs.push(unresolved(type, 'No electrically compatible rated PSU candidate remains; no wattage ceiling can be established.'));
+    return;
+  }
   const feasible = candidates.filter(row => row.watts >= required);
   if (!feasible.length) {
-    const max = candidates.length > 0 ? Math.max(...candidates.map(row => row.watts)) : Math.max(...allCandidates.map(row => row.watts));
+    const max = Math.max(...candidates.map(row => row.watts));
     proofs.push({ ...unresolved(type, `${max}W >= ${required}W fails; ${required - max}W deficit remains in available catalog candidates.`), resultingStatus: 'REPAIR_INFEASIBLE' });
     return;
   }
