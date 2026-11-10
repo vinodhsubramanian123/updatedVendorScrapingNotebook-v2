@@ -88,6 +88,7 @@ function LeastDeltaSection({ leastDeltaAnalysis, isExpanded, onToggle }) {
         <button
           onClick={onToggle}
           className="text-[10px] font-semibold text-blue-700 hover:text-blue-900 flex items-center gap-0.5 cursor-pointer"
+          aria-expanded={isExpanded}
         >
           {isExpanded ? 'Hide' : 'Details'}
           {isExpanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
@@ -142,6 +143,7 @@ function DecisionTraceSection({ decisionTrace, isExpanded, onToggle }) {
         <button
           onClick={onToggle}
           className="text-[10px] font-semibold text-slate-600 hover:text-slate-900 flex items-center gap-0.5 cursor-pointer"
+          aria-expanded={isExpanded}
         >
           <span>{decisionTrace.length} Decision{decisionTrace.length === 1 ? '' : 's'}</span>
           {isExpanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
