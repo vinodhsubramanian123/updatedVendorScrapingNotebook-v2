@@ -4,6 +4,7 @@ import EvaluationProgressSteps from './uploader/EvaluationProgressSteps';
 import PreflightPipelineAudit from './uploader/PreflightPipelineAudit';
 import MultiConfigSplitModal from './uploader/MultiConfigSplitModal';
 import EvaluationOutcomeCard from './uploader/EvaluationOutcomeCard';
+import { postJson, uploadBoqFile } from '../services/api.js';
 
 const STANDARD_SAMPLE_LINES = [
   '1x P73282-B21 HPE ProLiant DL380 Gen12 8SFF CTO Server',
@@ -45,7 +46,7 @@ function isLogStreamEvaluating(logStream) {
 }
 
 function computeHighestEvaluationStep(logStream, isEvaluating, evalResults) {
-  if (evalResults && evalResults.status !== 'ERROR') return 10;
+  if (evalResults && ['SUCCESS', 'COMPLETED'].includes(evalResults.status)) return 10;
   if (!isEvaluating) return 0;
   let highest = 1;
   for (const log of logStream) {
@@ -68,19 +69,11 @@ function isValidFileObject(candidate) {
 async function runBoqPreprocessRequest(currentFile, currentText, chassisDir) {
   let filepath = null;
   if (currentFile) {
-    const formData = new FormData();
-    formData.append('boqFile', currentFile);
-    const uploadRes = await fetch('/api/upload-boq', { method: 'POST', body: formData });
-    const uploadData = await uploadRes.json();
+    const uploadData = await uploadBoqFile(currentFile);
     filepath = uploadData.filepath;
   }
 
-  const res = await fetch('/api/preprocess-boq', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ filepath, rawText: currentText, chassisDir })
-  });
-  return res.json();
+  return postJson('/api/preprocess-boq', { filepath, rawText: currentText, chassisDir });
 }
 
 function resolvePreprocessTargets(overrideFile, overrideRawText, file, rawText) {
@@ -98,7 +91,7 @@ function resolveDirectEvalFilePayload(file, preflightData) {
 
 function formatVariationRawText(variation) {
   return (variation.items || [])
-    .map(it => `${it.quantity || 1}x ${it.sku} ${it.description || ''}`)
+    .map(it => `${it.quantity}x ${it.sku} ${it.description || ''}`)
     .join('\n');
 }
 
@@ -146,6 +139,14 @@ export default function BoqUploader({
   const [confirmedConfigSplits, setConfirmedConfigSplits] = useState(new Set());
   const logsEndRef = useRef(null);
   const outcomeRef = useRef(null);
+  const intakeRevision = useRef(0);
+  useEffect(() => {
+    intakeRevision.current++;
+    setPreflightData(null);
+    setConfirmedConfigSplits(new Set());
+    setIsSplitModalOpen(false);
+    setIsPreprocessing(false);
+  }, [file, rawText, chassisDir]);
 
   const isEvaluating = isSubmitting || Boolean(isTaskRunning && isLogStreamEvaluating(logStream));
   const currentStep = React.useMemo(
@@ -176,6 +177,7 @@ export default function BoqUploader({
   };
 
   const handlePreprocess = async (overrideFile = null, overrideRawText = null) => {
+    const revision = intakeRevision.current;
     const { currentFile, currentText, hasPayload } = resolvePreprocessTargets(overrideFile, overrideRawText, file, rawText);
     if (!hasPayload) return;
     setIsPreprocessing(true);
@@ -183,6 +185,7 @@ export default function BoqUploader({
 
     try {
       const data = await runBoqPreprocessRequest(currentFile, currentText, chassisDir);
+      if (revision !== intakeRevision.current) return;
       if (data.status === 'SUCCESS') {
         setPreflightData(data.preflightData);
       } else {
@@ -191,23 +194,20 @@ export default function BoqUploader({
     } catch (err) {
       setEvalError(err.message);
     } finally {
-      setIsPreprocessing(false);
+      if (revision === intakeRevision.current) setIsPreprocessing(false);
     }
   };
 
   const handleConfirmSplit = async (configId, splitReason) => {
+    const revision = intakeRevision.current;
     try {
-      const res = await fetch('/api/confirm-preflight-split', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ configId, splitReason, chassisDir })
-      });
-      const data = await res.json();
+      const data = await postJson('/api/confirm-preflight-split', { configId, splitReason, chassisDir });
+      if (revision !== intakeRevision.current) return;
       if (data.status === 'SUCCESS') {
         setConfirmedConfigSplits(prev => new Set([...prev, configId]));
       }
     } catch (e) {
-      console.warn('Sample load error:', e);
+      if (revision === intakeRevision.current) setEvalError(e.message);
     }
   };
 

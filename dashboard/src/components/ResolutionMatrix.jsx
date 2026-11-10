@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import VendorBomVerificationModal from './VendorBomVerificationModal';
 import RankCard from './matrix/RankCard';
 import MatrixComparisonTable from './matrix/MatrixComparisonTable';
 import MatrixToolbar from './matrix/MatrixToolbar';
 import RejectionModal from './matrix/RejectionModal';
 import MatrixStatusBanners from './matrix/MatrixStatusBanners';
+import { formatPrice, extendedPrice } from '../services/pricing.js';
 
 const STANDARD_CATEGORIES = [
   { id: 'chassis', label: 'Chassis Base & Form Factor', match: ['chassis', 'base', 'enclosure', 'cto'] },
@@ -36,14 +37,14 @@ function buildDetailedSwaps(sol, resolvedFixes) {
     return resolvedFixes.map(f => `${f.sku}: ${f.reasoning || f.action}`);
   }
   return [
-    `Modifications: ${sol.tradeoffMetrics?.skuModifications || '0 fixes'}`,
-    `Cost Delta: ${sol.tradeoffMetrics?.costDeltaUsd || '$0'}`,
-    `Expansion: ${sol.tradeoffMetrics?.capacityExpansion || 'Standard'}`
+    `Modifications: ${sol.tradeoffMetrics?.skuModifications ?? 'Not reported'}`,
+    `Cost Delta: ${formatPrice(sol.tradeoffMetrics?.costDeltaUsd)}`,
+    `Expansion: ${sol.tradeoffMetrics?.capacityExpansion ?? 'Not reported'}`
   ];
 }
 
 function formatSolutionCapex(sol) {
-  const formattedTotal = `$${Number(sol.estimatedCostUsd || 0).toLocaleString()}`;
+  const formattedTotal = formatPrice(sol.estimatedCostUsd);
   if (sol.pricingComplete === false) {
     const missingCount = sol.priceUnavailableSkus?.length || 0;
     const suffix = missingCount === 1 ? '' : 's';
@@ -54,7 +55,7 @@ function formatSolutionCapex(sol) {
 
 function mapSolutionToTier(sol, evalResults) {
   const resolvedFixes = evalResults?.conflictGraph?.resolvedFixes || evalResults?.resolvedFixes || [];
-  const scoreVal = sol.score || 0.9;
+  const scoreVal = Number.isFinite(sol.score) ? sol.score : null;
   const badgeClass = sol.rank === 1 ? 'badge-emerald' : sol.rank <= 3 ? 'badge-blue' : 'badge-amber';
   const ragSecondOpinion = sol.rank === 1 && evalResults?.ragAnswer ? evalResults.ragAnswer : sol.ragSecondOpinion;
 
@@ -63,7 +64,7 @@ function mapSolutionToTier(sol, evalResults) {
     title: sol.name,
     subtitle: sol.workloadDnaMatch || `Rank ${sol.rank} Solution`,
     score: scoreVal,
-    intentMatch: sol.tradeoffMetrics?.intentAlignment || `${Math.round(scoreVal * 100)}%`,
+    intentMatch: sol.tradeoffMetrics?.intentAlignment ?? (scoreVal === null ? 'Not assessed' : `${Math.round(scoreVal * 100)}%`),
     capex: formatSolutionCapex(sol),
     budgetBreakdown: sol.budgetBreakdown || null,
     badgeClass,
@@ -82,13 +83,11 @@ function mapSolutionToTier(sol, evalResults) {
 
 function formatBomCopyLines(tier) {
   const partLines = tier.skuPartsList.map(p => {
-    const priceStr = p.priceKnown === false
-      ? 'PRICE N/A'
-      : `$${((p.unitPriceUsd || 0) * (p.quantity || 1)).toLocaleString()}`;
+    const priceStr = formatPrice(extendedPrice(p));
     return `${p.quantity}x\t${p.sku}\t${priceStr}\t[${p.category || 'Option'}]\t${p.description}`;
   });
   return [
-    `HPE PROLIANT BOM — ${tier.title}`,
+    `Candidate BOM — ${tier.title}`,
     `Strategy: ${tier.subtitle} | CapEx: ${tier.capex}`,
     `Workload Alignment: ${tier.intentMatch}`,
     `--------------------------------------------------`,
@@ -96,6 +95,51 @@ function formatBomCopyLines(tier) {
     `--------------------------------------------------`,
     `Total Estimated CapEx Budget: ${tier.capex}`
   ];
+}
+
+function resolveMatrixProduct(evalResults, selectedChassis) {
+  if (!evalResults) return selectedChassis;
+  const explicit = evalResults.conflictGraph?.chassisInfo?.id || evalResults.chassisPrefix;
+  if (explicit) return explicit;
+  const directory = evalResults.chassisDir || evalResults.chassis;
+  return directory ? String(directory).split(/[/\\]/).pop() : null;
+}
+
+async function performCandidateExport(tier, state) {
+    const { setExportingRank, setExportError, evalResults, resolvedChassisId, setExportedFiles, identity, identityRef } = state;
+    if (!resolvedChassisId) { setExportError('The evaluated product identity is unavailable. Re-evaluate before export.'); return; }
+    setExportingRank(tier.rank);
+    setExportError(null);
+    try {
+      const parts = tier.skuPartsList && tier.skuPartsList.length > 0
+        ? tier.skuPartsList
+        : (evalResults?.items || []);
+
+      const res = await fetch('/api/export-boq-xlsx', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chassisId: resolvedChassisId,
+          rankTier: tier.rank,
+          strategyName: tier.title,
+          items: parts,
+          evalResults: evalResults || {},
+          totalBudgetUsd: tier.capex
+        })
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'Failed to generate XLSX');
+      }
+
+      if (identityRef.current !== identity) return;
+      setExportedFiles(prev => ({ ...prev, [tier.rank]: { filename: data.filename, downloadPath: data.downloadPath } }));
+    } catch (err) {
+      if (identityRef.current === identity) setExportError(err.message);
+    } finally {
+      if (identityRef.current === identity) setExportingRank(null);
+    }
 }
 
 export default function ResolutionMatrix({
@@ -136,9 +180,10 @@ export default function ResolutionMatrix({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [rejectionModal]);
 
-  const handleCopyBomText = (tier) => {
+  const handleCopyBomText = async (tier) => {
     if (!tier.skuPartsList || tier.skuPartsList.length === 0) return;
-    navigator.clipboard.writeText(formatBomCopyLines(tier).join('\n'));
+    try { await navigator.clipboard.writeText(formatBomCopyLines(tier).join('\n')); }
+    catch (err) { setExportError(`Copy failed: ${err.message}`); return; }
     setCopyStatus(prev => ({ ...prev, [tier.rank]: true }));
     setTimeout(() => {
       setCopyStatus(prev => ({ ...prev, [tier.rank]: false }));
@@ -147,41 +192,18 @@ export default function ResolutionMatrix({
 
   const rankedFromEval = extractRankedSolutionsFromEval(evalResults);
   const tiers = rankedFromEval.map(sol => mapSolutionToTier(sol, evalResults));
-  const resolvedChassisId = evalResults?.conflictGraph?.chassisInfo?.id || selectedChassis || 'DL380_Gen12';
-
-  const handleExportXlsx = async (tier) => {
-    setExportingRank(tier.rank);
+  const resolvedChassisId = resolveMatrixProduct(evalResults, selectedChassis);
+  const resultIdentity = JSON.stringify([evalResults?.runId, evalResults?.traceId, evalResults?.manifestSha256, rankedFromEval]);
+  const identityRef = useRef(resultIdentity);
+  identityRef.current = resultIdentity;
+  useEffect(() => {
+    setExportedFiles({});
     setExportError(null);
-    try {
-      const parts = tier.skuPartsList && tier.skuPartsList.length > 0
-        ? tier.skuPartsList
-        : (evalResults?.items || []);
+    setCopyStatus({});
+  }, [resultIdentity]);
 
-      const res = await fetch('/api/export-boq-xlsx', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chassisId: resolvedChassisId,
-          rankTier: tier.rank,
-          strategyName: tier.title,
-          items: parts,
-          evalResults: evalResults || {},
-          totalBudgetUsd: tier.capex
-        })
-      });
-
-      const data = await res.json();
-      if (!res.ok || !data.success) {
-        throw new Error(data.error || 'Failed to generate XLSX');
-      }
-
-      setExportedFiles(prev => ({ ...prev, [tier.rank]: data.filename }));
-    } catch (err) {
-      setExportError(err.message);
-    } finally {
-      setExportingRank(null);
-    }
-  };
+  const handleExportXlsx = tier => performCandidateExport(tier,
+    { setExportingRank, setExportError, evalResults, resolvedChassisId, setExportedFiles, identity: resultIdentity, identityRef });
 
   const handleRejectionSubmit = async (e) => {
     e.preventDefault();

@@ -1,23 +1,10 @@
+import { postJson } from '../services/api.js';
 import React, { useState } from 'react';
 import { ShieldCheck, Upload, AlertTriangle, CheckCircle2, RefreshCw, FileText, Sparkles } from 'lucide-react';
 
-function parseVendorQuoteInput(vendorText) {
-  try {
-    return JSON.parse(vendorText);
-  } catch {
-    const items = [];
-    const lines = vendorText.split('\n');
-    lines.forEach(line => {
-      const match = line.match(/\b([A-Z0-9]{5,6}-[A-Z0-9]{2,3})\b/i);
-      if (match) {
-        const sku = match[1].toUpperCase();
-        const qtyMatch = line.match(/\b(\d+)\b/);
-        const quantity = qtyMatch ? parseInt(qtyMatch[1], 10) : 1;
-        items.push({ sku, quantity, description: line.trim() });
-      }
-    });
-    return items;
-  }
+async function parseVendorQuoteInput(vendorText) {
+  const data = await postJson('/api/parse-vendor-quote', { rawText: vendorText });
+  return data.items;
 }
 
 function ReconciliationReportPanel({ auditReport, onOpenTopology, isScraping, onTriggerFreshScrape, onClearReport }) {
@@ -202,7 +189,7 @@ export default function PartnerReconciliationView({
     setErrorMessage(null);
 
     try {
-      const items = parseVendorQuoteInput(vendorText);
+      const items = await parseVendorQuoteInput(vendorText);
       if (items.length === 0) {
         setErrorMessage('No valid HPE SKUs (e.g., P47777-B21) detected in uploaded input.');
         setIsVerifying(false);
@@ -243,12 +230,7 @@ export default function PartnerReconciliationView({
       if (onTriggerScrape) {
         await onTriggerScrape('solution');
       } else {
-        await fetch('/api/scrape', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ mode: 'solution' })
-        });
-        alert('Fresh CDP catalog scrape initiated for the active OCA tab.');
+        await postJson('/api/scrape', { mode: 'solution', chassis: selectedChassis });
       }
     } catch (err) {
       alert(`Failed to launch fresh scrape: ${err.message}`);

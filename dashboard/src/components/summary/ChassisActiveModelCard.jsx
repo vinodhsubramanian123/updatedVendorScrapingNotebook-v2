@@ -19,8 +19,8 @@ export default function ChassisActiveModelCard({
             </span>
             <span className="text-xs font-semibold text-slate-400">Active Chassis Context</span>
           </div>
-          <h2 className="text-xl font-extrabold text-slate-800 tracking-tight">{activeProductModel.model || selectedChassis}</h2>
-          <p className="text-xs text-slate-500 mt-0.5">Form Factor: {activeProductModel.formFactor || 'Standard Server Chassis'}</p>
+          <h2 className="text-xl font-extrabold text-slate-800 tracking-tight">{activeProductModel.chassis || selectedChassis}</h2>
+          <p className="text-xs text-slate-500 mt-0.5">Form Factor: {activeProductModel.formFactor || 'Not recorded'}</p>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">

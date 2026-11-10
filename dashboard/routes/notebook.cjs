@@ -130,9 +130,22 @@ router.post('/notebook-query', asyncHandler(async (req, res) => {
 }));
 
 // ── Async Notebook Query ──────────────────────────────────────────────────────
+function validateEvaluationQueryContext(runId, query, chassis) {
+  if (!runId) return;
+  const { getRunSnapshot } = require('../services/runState.cjs');
+  const result = getRunSnapshot().latestResult;
+  if (result?.runId !== runId || result.data?.notebookPayload !== query) throw new Error('Notebook query does not match the current evaluation payload');
+  const target = result.data.chassisDir;
+  if (!target || !chassis || path.resolve(resolveChassisDirectory(target)) !== path.resolve(resolveChassisDirectory(chassis))) {
+    throw new Error('Notebook query product does not match the evaluated product');
+  }
+}
+
 router.post('/notebook-query-async', (req, res) => {
-  const { query, chassis, learningEligible, chassisDir } = req.body;
+  const { query, chassis, learningEligible, chassisDir, runId } = req.body;
   if (!query) return sendErrorResponse(res, 400, 'Query string is required', { source: 'NOTEBOOK_ROUTER' });
+  try { validateEvaluationQueryContext(runId, query, chassis); }
+  catch (err) { return sendErrorResponse(res, 409, err, { source: 'NOTEBOOK_ROUTER' }); }
 
   const notebookId = resolveNotebookId(chassis);
   if (!notebookId) {
@@ -162,8 +175,12 @@ router.post('/notebook-query-async', (req, res) => {
     }
   }
   const jobInfo = startAsyncNotebookQueryJob(notebookId, query, {
-    context: { chassis, learningEligible: Boolean(learningEligible), chassisDir: safeChassisDir }
+    context: { chassis, learningEligible: Boolean(learningEligible), chassisDir: safeChassisDir, runId: runId || null }
   }, executeNotebookQuery);
+  if (runId) {
+    const { registerRagJob } = require('../services/runState.cjs');
+    registerRagJob(runId, jobInfo.jobId);
+  }
   broadcastSSE({ type: 'LOG', text: `🤖 [ASYNC_RAG_LAUNCHED] Job ${jobInfo.jobId} started for ${chassis || 'DL380 Gen12 SFF'}`, stream: 'stdout' });
   res.status(202).json(jobInfo);
 });
@@ -280,6 +297,25 @@ router.post('/resolve-ambiguity', (req, res) => {
 });
 
 // ── Vendor BOM Cross-Verification ─────────────────────────────────────────────
+router.post('/parse-vendor-quote', (req, res) => {
+  const { rawText } = req.body || {};
+  if (typeof rawText !== 'string' || !rawText.trim()) return sendErrorResponse(res, 400, 'Quote text is required', { source: 'NOTEBOOK_ROUTER' });
+  try {
+    let parsed;
+    if (/^\s*\[/.test(rawText)) parsed = { items: JSON.parse(rawText) };
+    else {
+      const { parseSkuLines } = require('../../scripts/lib/boq/boq_parser.js');
+      parsed = parseSkuLines(rawText.split(/\r?\n/));
+    }
+    if (!Array.isArray(parsed.items) || !parsed.items.length) throw new Error('No quote line items could be parsed');
+    if (parsed.unmatchedSkus?.length || parsed.unresolvedRequirements?.length) throw new Error('Quote contains unresolved lines. Review the canonical intake before reconciliation.');
+    for (const item of parsed.items) {
+      if (!item.sku || !Number.isSafeInteger(item.quantity) || item.quantity <= 0) throw new Error('Every quote item requires a SKU and positive integer quantity');
+    }
+    res.json({ items: parsed.items });
+  } catch (err) { sendErrorResponse(res, 400, err, { source: 'NOTEBOOK_ROUTER' }); }
+});
+
 router.post('/verify-vendor-bom', (req, res) => {
   const { vendorItems, proposedRankSolution, chassisDir } = req.body;
   if (!vendorItems || !Array.isArray(vendorItems)) return sendErrorResponse(res, 400, 'vendorItems array is required', { source: 'NOTEBOOK_ROUTER' });
@@ -301,7 +337,7 @@ router.post('/verify-vendor-bom', (req, res) => {
           const { triggerPostFlowSync } = require('../../scripts/lib/sync/post_flow_sync.js');
           const chassisName = path.basename(safeChassisDir);
           const syncResult = triggerPostFlowSync(chassisName, 'RECONCILIATION');
-          broadcastSSE({ type: 'LOG', text: `🔄 [AUTO_SYNC] Post-reconciliation knowledge sync: ${syncResult.success ? 'SUCCESS' : 'FAILED'} (${syncResult.masterRegistryRulesCount || 0} rules, ${syncResult.unSyncedDeltasCount || 0} unsynced)`, stream: syncResult.success ? 'stdout' : 'stderr' });
+          broadcastSSE({ type: 'LOG', text: `🔄 [AUTO_SYNC] Post-reconciliation knowledge sync: ${syncResult.syncStatus || 'FAILED'} (${syncResult.masterRegistryRulesCount ?? 'unknown'} rules, ${syncResult.unSyncedDeltasCount ?? 'unknown'} unsynced)`, stream: syncResult.success ? 'stdout' : 'stderr', syncStatus: syncResult.syncStatus, cloudUploaded: syncResult.cloudUploaded === true, driftStatus: syncResult.driftStatus });
         } catch (syncErr) {
           broadcastSSE({ type: 'LOG', text: `⚠️ [AUTO_SYNC] Post-reconciliation sync failed: ${syncErr.message}`, stream: 'stderr' });
         }
@@ -375,21 +411,27 @@ router.delete('/notebook/quarantined-deltas/:id', handleRejectQuarantinedDelta);
 
 // ── Notebook Config Registry ──────────────────────────────────────────────────
 router.get('/config/notebooks', (req, res) => {
+  const { configRevision } = require('../services/notebookConfig.cjs');
   const notebooksPath = path.join(CONFIG_DIR, 'notebooks.json');
-  if (!fs.existsSync(notebooksPath)) return res.json({ defaultNotebookId: '', notebooks: {} });
-  try { res.json(JSON.parse(fs.readFileSync(notebooksPath, 'utf-8'))); } catch (err) { sendErrorResponse(res, 500, err, { source: 'NOTEBOOK_ROUTER' }); }
+  if (!fs.existsSync(notebooksPath)) {
+    const config = { defaultNotebookId: '', notebooks: {} };
+    return res.json({ ...config, revision: configRevision(config) });
+  }
+  try {
+    const config = JSON.parse(fs.readFileSync(notebooksPath, 'utf-8'));
+    res.json({ ...config, revision: configRevision(config) });
+  } catch (err) { sendErrorResponse(res, 500, err, { source: 'NOTEBOOK_ROUTER' }); }
 });
 
 router.post('/config/notebooks', (req, res) => {
-  const { defaultNotebookId, notebooks } = req.body;
-  if (!notebooks || typeof notebooks !== 'object') return sendErrorResponse(res, 400, 'notebooks object is required', { source: 'NOTEBOOK_ROUTER' });
+  const { configRevision, updateConfig } = require('../services/notebookConfig.cjs');
   const notebooksPath = path.join(CONFIG_DIR, 'notebooks.json');
   try {
-    const existing = fs.existsSync(notebooksPath) ? JSON.parse(fs.readFileSync(notebooksPath, 'utf-8')) : {};
-    const updated = { ...existing, defaultNotebookId: defaultNotebookId || existing.defaultNotebookId || '', notebooks: { ...existing.notebooks, ...notebooks } };
+    const existing = fs.existsSync(notebooksPath) ? JSON.parse(fs.readFileSync(notebooksPath, 'utf-8')) : { defaultNotebookId: '', notebooks: {} };
+    const updated = updateConfig(existing, req.body);
     safeWriteJsonAtomic(notebooksPath, updated);
-    res.json({ message: 'Notebook registry updated', config: updated });
-  } catch (err) { sendErrorResponse(res, 500, err, { source: 'NOTEBOOK_ROUTER' }); }
+    res.json({ message: 'Notebook registry updated', config: { ...updated, revision: configRevision(updated) } });
+  } catch (err) { sendErrorResponse(res, err.status || 400, err, { source: 'NOTEBOOK_ROUTER' }); }
 });
 
 // ── Feedback Queue ────────────────────────────────────────────────────

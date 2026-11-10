@@ -14,13 +14,13 @@ export default function WorkloadDnaCard({ dnaData }) {
 
   // Support both raw workloadDna payload and nested conflictGraph payload
   const dna = dnaData.workloadDna || dnaData;
-  const totalCoresDisplay = dna.totalCores ? `${dna.totalCores} Cores` : 'Standard Cores';
-  const socketFreqDisplay = dna.maxFreqGhz ? `${dna.maxFreqGhz}GHz` : (dna.totalCores ? `${Math.ceil(dna.totalCores / 2)}/sock` : 'Standard');
+  const totalCoresDisplay = Number.isFinite(dna.totalCores) ? `${dna.totalCores} Cores` : 'Not reported';
+  const socketFreqDisplay = Number.isFinite(dna.maxFreqGhz) ? `${dna.maxFreqGhz}GHz` : 'Not reported';
   const ramPerCoreDisplay = dna.gbPerCore ? `${dna.gbPerCore} GB / Core` : (dna.totalMemoryGb && dna.totalCores ? `${Math.round(dna.totalMemoryGb / dna.totalCores)} GB / Core` : 'Standard Memory');
-  const gpuCount = dna.hasGpu ? (dna.gpuCount || 1) : 0;
-  const storageIoType = dna.workloadDescription || dna.storageWorkload || dna.storageType || 'Standard Tier Storage';
-  const workloadIntent = dna.primaryWorkload || dna.intent || 'General Purpose Enterprise Compute';
-  const confidenceScore = dna.confidence ? `${Math.round(dna.confidence * (dna.confidence <= 1 ? 100 : 1))}%` : '95%';
+  const gpuCount = dna.gpuCount ?? (dna.hasGpu === false ? 0 : 'Not reported');
+  const storageIoType = dna.workloadDescription || dna.storageWorkload || dna.storageType || 'Not assessed';
+  const workloadIntent = dna.primaryWorkload || dna.intent || 'Not assessed';
+  const confidenceScore = Number.isFinite(dna.confidence) ? `${Math.round(dna.confidence * (dna.confidence <= 1 ? 100 : 1))}%` : 'Not assessed';
 
   return (
     <div className="glass-card p-6 space-y-4 animate-fade-in-up delay-100">
@@ -35,10 +35,10 @@ export default function WorkloadDnaCard({ dnaData }) {
 
         <div className="flex flex-wrap items-center gap-2">
           <span className="badge bg-indigo-50 text-indigo-700 border border-indigo-200 text-[10px] font-bold">
-            🧠 Brain 1: NotebookLM Grounded
+            Workload data reported by the evaluation
           </span>
           <span className="badge bg-blue-50 text-blue-700 border border-blue-200 text-[10px] font-bold">
-            ✨ Brain 2: Gemini Intent Checked
+            Grounding and intent review are separate evidence
           </span>
           <span className="badge badge-emerald">DNA Confidence {confidenceScore}</span>
         </div>

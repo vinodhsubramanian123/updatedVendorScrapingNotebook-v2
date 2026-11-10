@@ -12,91 +12,62 @@
  *   pollRag(jobId);  // start polling for a specific job
  */
 import { useRef, useCallback, useEffect } from 'react';
+import { requestJson, postJson } from '../services/api.js';
 
 const POLL_INTERVAL_MS = 2000;
-const MAX_POLLS = 450; // 2s * 450 = 900s max (15 minutes)
+const TIMEOUT_MS = 15 * 60 * 1000;
 
-/**
- * @param {object} options
- * @param {Function} options.onResult    (answer: string, fullData: object) => void
- * @param {Function} [options.onTimeout] () => void
- * @param {Function} [options.onFail]    (errorMsg: string) => void
- */
+/** Each poll owns its job, requests and context. Late responses cannot finish another job. */
 export function useRagPoller({ onResult, onTimeout, onFail } = {}) {
-  const activeTimerRef = useRef(null);
-  const activeJobIdRef = useRef(null);
-
-  const stopTimer = useCallback(() => {
-    if (activeTimerRef.current !== null) {
-      clearInterval(activeTimerRef.current);
-      activeTimerRef.current = null;
-    }
+  const active = useRef(null);
+  const callbacks = useRef({});
+  callbacks.current = { onResult, onTimeout, onFail };
+  const detach = useCallback(() => {
+    const job = active.current;
+    active.current = null;
+    if (job) { clearTimeout(job.timer); job.controller?.abort(); }
+    return job;
   }, []);
-
-  /** Cancel both the browser poll and its durable server-side cloud job. */
   const cancelPoll = useCallback(async (reason = 'CANCELLED_BY_CLIENT') => {
-    stopTimer();
-    const jobId = activeJobIdRef.current;
-    activeJobIdRef.current = null;
-    if (!jobId) return;
-    try {
-      await fetch(`/api/notebook-query-cancel/${jobId}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ reason })
-      });
-    } catch (err) {
-      console.error('[useRagPoller] cancellation error:', err);
-    }
-  }, [stopTimer]);
+    const job = detach();
+    if (!job) return;
+    try { await postJson('/api/notebook-query-cancel/' + encodeURIComponent(job.id), { reason }); }
+    catch (err) { console.warn('[useRagPoller] cancellation:', err.message); }
+  }, [detach]);
+  useEffect(() => () => { detach(); }, [detach]);
 
-  useEffect(() => () => {
-    void cancelPoll('CLIENT_UNMOUNTED');
-  }, [cancelPoll]);
-
-  /**
-   * Start polling for a job. Automatically cancels any previous poll.
-   * @param {string} jobId  The async notebook query job ID to poll.
-   */
-  const startPoll = useCallback((jobId) => {
-    if (activeJobIdRef.current && activeJobIdRef.current !== jobId) {
-      void cancelPoll('REPLACED_BY_NEW_JOB');
-    } else {
-      stopTimer();
-    }
-    activeJobIdRef.current = jobId;
-
-    let polls = 0;
-
-    activeTimerRef.current = setInterval(async () => {
-      polls++;
-
-      if (polls > MAX_POLLS) {
-        void cancelPoll('CLIENT_POLL_TIMEOUT');
-        onTimeout?.();
-        return;
+  const startPoll = useCallback((jobId, context = null) => {
+    detach();
+    const job = { id: jobId, context, started: Date.now(), failures: 0, timer: null, controller: null };
+    active.current = job;
+    const ownsJob = () => active.current === job;
+    const poll = async () => {
+      if (!ownsJob()) return;
+      if (Date.now() - job.started >= TIMEOUT_MS) {
+        detach(); callbacks.current.onTimeout?.(context); return;
       }
-
+      job.controller = new AbortController();
+      const timeout = setTimeout(() => job.controller.abort(), 30000);
       try {
-        const res = await fetch(`/api/notebook-query-status/${jobId}`);
-        const data = await res.json();
-
-        if (data.status === 'COMPLETED' || data.status === 'CLOUD_VERIFIED' || data.status === 'LOCAL_FALLBACK') {
-          stopTimer();
-          activeJobIdRef.current = null;
-          const answer = data.result?.answer || data.answer;
-          onResult?.(answer, data.result || data);
-        } else if (data.status === 'FAILED' || data.status === 'CANCELLED') {
-          stopTimer();
-          activeJobIdRef.current = null;
-          onFail?.(data.error || 'RAG query failed or was cancelled');
+        const data = await requestJson('/api/notebook-query-status/' + encodeURIComponent(job.id), { signal: job.controller.signal });
+        if (!ownsJob()) return;
+        job.failures = 0;
+        if (['COMPLETED', 'CLOUD_VERIFIED', 'LOCAL_FALLBACK'].includes(data.status)) {
+          detach();
+          callbacks.current.onResult?.(data.result?.answer || data.answer, data.result || data, context);
+          return;
         }
-        // Still PROCESSING or CLOUD_PENDING — keep polling
+        if (['FAILED', 'CANCELLED'].includes(data.status)) {
+          detach(); callbacks.current.onFail?.(data.error || 'RAG job failed or cancelled', context); return;
+        }
       } catch (err) {
-        console.error('[useRagPoller] poll error:', err);
-      }
-    }, POLL_INTERVAL_MS);
-  }, [cancelPoll, stopTimer, onResult, onTimeout, onFail]);
-
+        if (!ownsJob()) return;
+        job.failures++;
+        if (job.failures >= 3) { detach(); callbacks.current.onFail?.(err.message, context); return; }
+      } finally { clearTimeout(timeout); }
+      if (ownsJob()) job.timer = setTimeout(poll, POLL_INTERVAL_MS);
+    };
+    job.timer = setTimeout(poll, POLL_INTERVAL_MS);
+  }, [detach]);
   return { startPoll, cancelPoll };
 }

@@ -9,12 +9,17 @@ export default function StepStageCard({
   metrics,
   IconComponent
 }) {
-  const isRunning = status === 'IN_PROGRESS';
+  const isRunning = status === 'IN_PROGRESS' || status === 'RUNNING';
   const isComplete = status === 'COMPLETED';
-  const isWarning = status === 'WARNING' || status === 'BLOCKED';
+  const isWarning = ['WARNING', 'BLOCKED', 'FAILED'].includes(status);
+  const metricEntries = metrics?.label ? [[metrics.label, metrics.value]] : Object.entries(metrics || {});
 
   return (
     <div
+      role="button"
+      tabIndex={0}
+      aria-pressed={isSelected}
+      onKeyDown={event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onSelect(); } }}
       onClick={onSelect}
       className={`p-3.5 rounded-xl border transition-all cursor-pointer flex flex-col justify-between ${
         isSelected
@@ -63,9 +68,12 @@ export default function StepStageCard({
       </div>
 
       {metrics && (
-        <div className="pt-2 border-t border-slate-100 text-[10px] text-slate-600 flex items-center justify-between">
-          <span className="font-medium text-slate-500">{metrics.label || 'Status'}:</span>
-          <span className="font-bold text-slate-800 font-mono">{metrics.value || 'Active'}</span>
+        <div className="pt-2 border-t border-slate-100 text-[10px] text-slate-600 space-y-1">
+          <div className="font-bold">{status || 'UNKNOWN'}</div>
+          {metricEntries.map(([label, value]) => <div key={label} className="flex items-center justify-between gap-2">
+            <span className="font-medium text-slate-500">{label}:</span>
+            <span className="font-bold text-slate-800 font-mono">{String(value ?? 'Unknown')}</span>
+          </div>)}
         </div>
       )}
     </div>

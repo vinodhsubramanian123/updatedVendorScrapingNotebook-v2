@@ -9,6 +9,8 @@
 
 const path = require('path');
 const fs = require('fs');
+const { captureEvent, getRunSnapshot } = require('./runState.cjs');
+const { StringDecoder } = require('string_decoder');
 
 // ── SSE Client Registry ────────────────────────────────────────────────────
 const sseClients = new Set();
@@ -31,9 +33,10 @@ function onTaskStarted(fn) {
 
 /** Write a JSON event to all connected SSE clients and notify lifecycle listeners. */
 function broadcastSSE(data) {
+  data = captureEvent(data);
   const payload = `data: ${JSON.stringify(data)}\n\n`;
   for (const client of sseClients) {
-    client.write(payload);
+    try { client.write(payload); } catch (_) { sseClients.delete(client); }
   }
 
   if (data?.type === 'TASK_COMPLETED') {
@@ -83,8 +86,10 @@ function isTaskRunning() {
 /** Return a copy of the current active task metadata (or null). */
 function getActiveTask() { return activeTask ? { ...activeTask } : null; }
 
-function _streamProcessChunk(data, streamType, logs) {
-  const lines = data.toString().split('\n');
+function _streamProcessChunk(data, streamType, logs, buffers, runId, flush = false) {
+  buffers[streamType].text += flush ? buffers[streamType].decoder.end() : buffers[streamType].decoder.write(data);
+  const lines = buffers[streamType].text.split('\n');
+  buffers[streamType].text = flush ? '' : lines.pop();
   lines.forEach(line => {
     if (!line.trim()) return;
     const logEntry = { timestamp: new Date().toISOString(), stream: streamType, text: line };
@@ -93,12 +98,12 @@ function _streamProcessChunk(data, streamType, logs) {
     try {
       const parsed = JSON.parse(line);
       if (parsed.type === 'progress' || parsed.type === 'log') {
-        broadcastSSE({ ...parsed, type: parsed.type.toUpperCase(), stream: streamType });
+        broadcastSSE({ ...parsed, type: parsed.type.toUpperCase(), stream: streamType, runId });
         return;
       }
     } catch (_) {}
 
-    broadcastSSE({ type: 'LOG', text: line, stream: streamType });
+    broadcastSSE({ type: 'LOG', text: line, stream: streamType, runId });
   });
 }
 
@@ -142,15 +147,16 @@ function startTask(type, proc, res, outputsDir) {
   const logs = [];
   let completed = false;
   const startTime = Date.now();
+  const buffers = { stdout: { text: '', decoder: new StringDecoder('utf8') }, stderr: { text: '', decoder: new StringDecoder('utf8') } };
 
   activeTask = { type, runId, pid: proc?.pid, process: proc, startTime };
   broadcastSSE({ type: 'TASK_STARTED', task: type, runId });
 
   if (proc?.stdout && typeof proc.stdout.on === 'function') {
-    proc.stdout.on('data', data => _streamProcessChunk(data, 'stdout', logs));
+    proc.stdout.on('data', data => _streamProcessChunk(data, 'stdout', logs, buffers, runId));
   }
   if (proc?.stderr && typeof proc.stderr.on === 'function') {
-    proc.stderr.on('data', data => _streamProcessChunk(data, 'stderr', logs));
+    proc.stderr.on('data', data => _streamProcessChunk(data, 'stderr', logs, buffers, runId));
   }
 
   if (proc && typeof proc.on === 'function') {
@@ -168,6 +174,7 @@ function startTask(type, proc, res, outputsDir) {
     proc.on('close', (code) => {
       if (completed) return;
       completed = true;
+      for (const stream of ['stdout', 'stderr']) _streamProcessChunk(null, stream, logs, buffers, runId, true);
       _releaseTaskMutexIfOwned(runId, proc);
       const durationMs = Date.now() - startTime;
       broadcastSSE({ type: 'TASK_COMPLETED', code, task: type, runId, durationMs });
@@ -188,6 +195,7 @@ function startTask(type, proc, res, outputsDir) {
 function _setActiveTask(task) { activeTask = task; }
 
 module.exports = {
+  getRunSnapshot,
   broadcastSSE,
   addSseClient,
   removeSseClient,

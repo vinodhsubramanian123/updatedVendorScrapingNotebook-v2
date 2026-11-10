@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Settings, X, Save, Check, Loader, BookOpen, RefreshCw, Plus, Trash2 } from 'lucide-react';
+import { requestJson, postJson } from '../services/api.js';
+import { useModalFocus } from '../hooks/useModalFocus.js';
 
 function getNotebookIdString(val) {
   if (typeof val === 'object' && val !== null) {
@@ -9,51 +11,46 @@ function getNotebookIdString(val) {
 }
 
 export default function SettingsDrawer({ isOpen, onClose }) {
+  const drawerRef = useModalFocus(isOpen, onClose);
   const [config, setConfig] = useState({ defaultNotebookId: '', notebooks: {} });
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [error, setError] = useState(null);
   const [newChassis, setNewChassis] = useState('');
   const [newNotebookId, setNewNotebookId] = useState('');
 
   useEffect(() => {
     if (!isOpen) return;
     setLoading(true);
-    fetch('/api/config/notebooks')
-      .then(r => r.json())
+    const controller = new AbortController();
+    setError(null);
+    requestJson('/api/config/notebooks', { signal: controller.signal })
       .then(data => { setConfig(data); setLoading(false); })
-      .catch(() => setLoading(false));
+      .catch(err => { if (!controller.signal.aborted) { setError(err.message); setLoading(false); } });
+    return () => controller.abort();
   }, [isOpen]);
-
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape' && isOpen) onClose();
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose]);
 
   const handleSave = async () => {
     setSaving(true);
+    setSaved(false);
+    setError(null);
     try {
-      await fetch('/api/config/notebooks', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(config)
-      });
+      const data = await postJson('/api/config/notebooks', { ...config, replaceMappings: true });
+      setConfig(data.config);
       setSaved(true);
       setTimeout(() => setSaved(false), 2000);
     } catch (err) {
-      console.error('Save failed:', err);
+      setError(err.message);
     }
     setSaving(false);
   };
 
   const handleAddMapping = () => {
-    if (!newChassis.trim()) return;
+    if (!newChassis.trim() || !newNotebookId.trim()) return;
     setConfig(prev => ({
       ...prev,
-      notebooks: { ...prev.notebooks, [newChassis.trim()]: newNotebookId.trim() }
+      notebooks: { ...prev.notebooks, [newChassis.trim()]: { notebookId: newNotebookId.trim(), canonicalDriveEnabled: false } }
     }));
     setNewChassis('');
     setNewNotebookId('');
@@ -88,12 +85,20 @@ export default function SettingsDrawer({ isOpen, onClose }) {
       <div className="flex-1 bg-black/30 backdrop-blur-sm" onClick={onClose} />
 
       {/* Drawer */}
-      <div className="w-full max-w-md bg-white shadow-2xl border-l border-slate-200 flex flex-col">
+      <div
+        ref={drawerRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="settings-title"
+        tabIndex="-1"
+        className="w-full max-w-md bg-white shadow-2xl border-l border-slate-200 flex flex-col focus:outline-none"
+      >
+        {error && <div role="alert" className="p-3 text-sm text-rose-800 bg-rose-50">{error}</div>}
         {/* Header */}
         <div className="flex items-center justify-between border-b border-slate-100 px-6 py-4 shrink-0">
           <div className="flex items-center gap-2">
             <Settings className="w-5 h-5 text-slate-600" />
-            <h3 className="font-bold text-slate-900 text-base">System Settings</h3>
+            <h3 id="settings-title" className="font-bold text-slate-900 text-base">System Settings</h3>
           </div>
           <button aria-label="Close" onClick={onClose} className="text-slate-400 hover:text-slate-700 transition-colors">
             <X className="w-5 h-5" />
@@ -180,7 +185,7 @@ export default function SettingsDrawer({ isOpen, onClose }) {
                   />
                   <button
                     onClick={handleAddMapping}
-                    disabled={!newChassis.trim()}
+                    disabled={!newChassis.trim() || !newNotebookId.trim() || saving}
                     className="w-full btn-secondary justify-center text-xs disabled:opacity-40"
                   >
                     <Plus className="w-3.5 h-3.5" />

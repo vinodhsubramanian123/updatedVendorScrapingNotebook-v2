@@ -30,6 +30,106 @@ function getIcon(name) {
   return ICON_MAP[name] || FileUp;
 }
 
+function filterLogs(logs, logFilter, logSearch) {
+  const query = logSearch.trim().toLowerCase();
+  return logs.filter(l => {
+    if (logFilter !== 'ALL' && l.level !== logFilter) return false;
+    if (!query) return true;
+    const msg = (l.message || '').toLowerCase();
+    const stg = (l.stage || '').toLowerCase();
+    return msg.includes(query) || stg.includes(query);
+  });
+}
+
+function executeStepAction(act, { onNavigateTab, onTriggerSyncKnowledge, onOpenTool }) {
+  if (!act) return;
+  if (act.tab && onNavigateTab) {
+    onNavigateTab(act.tab);
+  } else if (act.action === 'SYNC' && onTriggerSyncKnowledge) {
+    onTriggerSyncKnowledge();
+  } else if ((act.modal || act.tool) && onOpenTool) {
+    onOpenTool(act.modal || act.tool);
+  }
+}
+
+function StepDetailPanel({
+  selectedStep,
+  onOpenTraceability,
+  onNavigateTab,
+  onTriggerSyncKnowledge,
+  onOpenTool,
+  activeSubstepIdx,
+  setActiveSubstepIdx
+}) {
+  if (!selectedStep) return null;
+  const act = selectedStep.action || selectedStep.primaryAction;
+  const actionLabel = selectedStep.action?.text || selectedStep.primaryAction?.label || 'Action';
+  const substeps = selectedStep.substeps || [];
+
+  return (
+    <div className="p-5 bg-slate-50 rounded-xl border border-slate-200 space-y-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-200">
+        <div>
+          <div className="flex items-center gap-2">
+            <span className="badge badge-emerald">{selectedStep.phase || 'Phase 1'}</span>
+            <h3 className="font-bold text-slate-900 text-base">{selectedStep.title}</h3>
+          </div>
+          <p className="text-xs text-slate-500 mt-0.5">{selectedStep.description}</p>
+        </div>
+
+        <div className="flex items-center gap-2">
+          {onOpenTraceability && (
+            <button
+              onClick={onOpenTraceability}
+              className="btn-secondary text-xs py-1.5 px-2.5 flex items-center gap-1.5"
+              title="Open End-to-End Decision Traceability Inspector"
+            >
+              <GitCommit className="w-3.5 h-3.5 text-slate-500" />
+              Traceability
+            </button>
+          )}
+          {act && (
+            <button
+              onClick={() => executeStepAction(act, { onNavigateTab, onTriggerSyncKnowledge, onOpenTool })}
+              className="btn-primary text-xs py-1.5 px-3 flex items-center gap-1.5 shadow-sm"
+            >
+              <Zap className="w-3.5 h-3.5" />
+              {actionLabel}
+            </button>
+          )}
+        </div>
+      </div>
+
+      {substeps.length > 0 && (
+        <div className="space-y-2">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-slate-600 block">
+            Execution Sub-steps & Micro-Operations:
+          </span>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+            {substeps.map((sub, idx) => (
+              <div
+                key={idx}
+                onClick={() => setActiveSubstepIdx(idx)}
+                className={`p-2.5 rounded-lg border text-xs cursor-pointer transition-all ${
+                  activeSubstepIdx === idx
+                    ? 'bg-white border-emerald-400 shadow-sm'
+                    : 'bg-white/60 border-slate-200 hover:bg-white'
+                }`}
+              >
+                <div className="flex items-center justify-between mb-1">
+                  <span className="font-bold text-slate-800 text-[11px]">#{idx + 1} {sub.title}</span>
+                  <span className="text-[9px] font-mono text-slate-400">{sub.estimatedTime || 'Fast'}</span>
+                </div>
+                <p className="text-[10px] text-slate-500 leading-snug line-clamp-2">{sub.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function WorkflowStepper({
   evalResults,
   auditReport,
@@ -69,18 +169,9 @@ export default function WorkflowStepper({
   };
 
   const progressPercent = computeProgressPercent(stateContext);
-
   const selectedStep = ALL_STAGES.find(s => s.id === selectedStepId) || ALL_STAGES[0];
-
   const logs = parseLogStream(logStream);
-
-  const filteredLogs = logs.filter(l => {
-    if (logFilter !== 'ALL' && l.level !== logFilter) return false;
-    if (logSearch.trim() && !l.message.toLowerCase().includes(logSearch.toLowerCase()) && !l.stage.toLowerCase().includes(logSearch.toLowerCase())) {
-      return false;
-    }
-    return true;
-  });
+  const filteredLogs = filterLogs(logs, logFilter, logSearch);
 
   const handleCopyLogs = () => {
     const text = filteredLogs.map(l => `[${l.timestamp}] [${l.level}] ${l.message}`).join('\n');
@@ -144,76 +235,15 @@ export default function WorkflowStepper({
             </div>
           </div>
 
-          {selectedStep && (
-            <div className="p-5 bg-slate-50 rounded-xl border border-slate-200 space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-200">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="badge badge-emerald">{selectedStep.phase || 'Phase 1'}</span>
-                    <h3 className="font-bold text-slate-900 text-base">{selectedStep.title}</h3>
-                  </div>
-                  <p className="text-xs text-slate-500 mt-0.5">{selectedStep.description}</p>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  {onOpenTraceability && (
-                    <button
-                      onClick={onOpenTraceability}
-                      className="btn-secondary text-xs py-1.5 px-2.5 flex items-center gap-1.5"
-                      title="Open End-to-End Decision Traceability Inspector"
-                    >
-                      <GitCommit className="w-3.5 h-3.5 text-slate-500" />
-                      Traceability
-                    </button>
-                  )}
-                  {selectedStep.primaryAction && (
-                    <button
-                      onClick={() => {
-                        if (selectedStep.primaryAction.tab && onNavigateTab) {
-                          onNavigateTab(selectedStep.primaryAction.tab);
-                        } else if (selectedStep.primaryAction.action === 'SYNC' && onTriggerSyncKnowledge) {
-                          onTriggerSyncKnowledge();
-                        } else if (selectedStep.primaryAction.tool && onOpenTool) {
-                          onOpenTool(selectedStep.primaryAction.tool);
-                        }
-                      }}
-                      className="btn-primary text-xs py-1.5 px-3 flex items-center gap-1.5 shadow-sm"
-                    >
-                      <Zap className="w-3.5 h-3.5" />
-                      {selectedStep.primaryAction.label}
-                    </button>
-                  )}
-                </div>
-              </div>
-
-              {selectedStep.substeps && selectedStep.substeps.length > 0 && (
-                <div className="space-y-2">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-slate-600 block">
-                    Execution Sub-steps & Micro-Operations:
-                  </span>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
-                    {selectedStep.substeps.map((sub, idx) => (
-                      <div
-                        key={idx}
-                        onClick={() => setActiveSubstepIdx(idx)}
-                        className={`p-2.5 rounded-lg border text-xs cursor-pointer transition-all ${
-                          activeSubstepIdx === idx
-                            ? 'bg-white border-emerald-400 shadow-sm'
-                            : 'bg-white/60 border-slate-200 hover:bg-white'
-                        }`}
-                      >
-                        <div className="flex items-center justify-between mb-1">
-                          <span className="font-bold text-slate-800 text-[11px]">#{idx + 1} {sub.title}</span>
-                          <span className="text-[9px] font-mono text-slate-400">{sub.estimatedTime || 'Fast'}</span>
-                        </div>
-                        <p className="text-[10px] text-slate-500 leading-snug line-clamp-2">{sub.description}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
+          <StepDetailPanel
+            selectedStep={selectedStep}
+            onOpenTraceability={onOpenTraceability}
+            onNavigateTab={onNavigateTab}
+            onTriggerSyncKnowledge={onTriggerSyncKnowledge}
+            onOpenTool={onOpenTool}
+            activeSubstepIdx={activeSubstepIdx}
+            setActiveSubstepIdx={setActiveSubstepIdx}
+          />
 
           {showLogConsole && (
             <StepLogViewer

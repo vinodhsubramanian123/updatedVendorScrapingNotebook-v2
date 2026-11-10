@@ -58,7 +58,7 @@ export default function MatrixToolbar({
 
         {!evalResults && onTriggerDemoBoq && (
           <button
-            onClick={onTriggerDemoBoq}
+            onClick={() => onTriggerDemoBoq()}
             className="btn-secondary text-xs"
           >
             Load Demo BOQ

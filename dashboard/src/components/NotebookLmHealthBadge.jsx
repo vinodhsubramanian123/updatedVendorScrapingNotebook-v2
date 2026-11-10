@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { CheckCircle, AlertTriangle, RefreshCw, Sparkles } from 'lucide-react';
 
 function parseNlmHealthResponse(data) {
-  const hasNotebooks = Array.isArray(data?.notebooks) && data.notebooks.length > 0;
-  const isArrayList = Array.isArray(data) && data.length > 0;
-  if (data?.status === 'HEALTHY' || hasNotebooks || isArrayList) {
+  if (data?.status === 'HEALTHY') {
     return { state: 'HEALTHY', mode: data?.mode || 'MCP_CLI', raw: data };
   }
   if (data?.status === 'STANDBY') {
@@ -21,14 +19,14 @@ function getNlmBadgePresentation(status, metrics, isRefreshing) {
   };
   const labels = {
     CHECKING: 'Checking MCP...',
-    HEALTHY: 'NotebookLM MCP Ready',
+    HEALTHY: 'NotebookLM Connection Ready',
     STANDBY: 'NotebookLM (Local RAG)'
   };
   let tooltipText = typeof status.raw === 'string' ? status.raw : 'Error connecting to Gemini NotebookLM';
   if (status.state === 'HEALTHY') {
-    tooltipText = `NotebookLM MCP CLI Connected (Avg Latency: ${metrics.avgNlmResponseTimeMs}ms, Agreement: ${metrics.nlmAgreementIndex}%)`;
+    tooltipText = `NotebookLM connection available. Source grounding is checked per query. Average latency: ${metrics.avgNlmResponseTimeMs ?? 'unavailable'}; agreement: ${metrics.nlmAgreementIndex ?? 'unavailable'}`;
   } else if (status.state === 'STANDBY') {
-    tooltipText = `Local Knowledge & 5-Level Conflict Engine Active (${status.raw?.notebooksFound || 6} chassis mapped)`;
+    tooltipText = `Local knowledge available (${status.raw?.notebooksFound ?? 'unknown'} products mapped); cloud grounding not established`;
   }
 
   let icon = <AlertTriangle className="w-3 h-3 text-rose-600" />;
@@ -50,7 +48,7 @@ function getNlmBadgePresentation(status, metrics, isRefreshing) {
 
 export default function NotebookLmHealthBadge({ onOpenRag }) {
   const [status, setStatus] = useState({ state: 'CHECKING', mode: 'LOCAL_RAG', raw: null });
-  const [metrics, setMetrics] = useState({ avgNlmResponseTimeMs: 140, nlmAgreementIndex: 95 });
+  const [metrics, setMetrics] = useState({ avgNlmResponseTimeMs: null, nlmAgreementIndex: null });
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const checkHealth = async () => {
@@ -64,8 +62,8 @@ export default function NotebookLmHealthBadge({ onOpenRag }) {
       if (consultRes.ok) {
         const cData = await consultRes.json();
         setMetrics({
-          avgNlmResponseTimeMs: cData.avgNlmResponseTimeMs || 140,
-          nlmAgreementIndex: cData.nlmAgreementIndex || 95
+          avgNlmResponseTimeMs: cData.avgNlmResponseTimeMs ?? null,
+          nlmAgreementIndex: cData.nlmAgreementIndex ?? null
         });
       }
     } catch (err) {

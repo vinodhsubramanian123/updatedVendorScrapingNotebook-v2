@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Award, Check, MessageSquare, Download, Loader, Sparkles, ShieldCheck, Copy, CheckCircle, Zap, Brain, GitFork, ChevronDown, ChevronUp, XCircle } from 'lucide-react';
 import { getCategoryStyle } from '../../utils/categoryStyles';
+import { formatPrice, extendedPrice } from '../../services/pricing.js';
 
 function RankSkuPartsSection({ tier, isExpanded, onToggleExpand, onCopyBom, isCopied }) {
   if (!tier.skuPartsList?.length) return null;
@@ -57,7 +58,7 @@ function RankSkuPartsSection({ tier, isExpanded, onToggleExpand, onCopyBom, isCo
                     {part.sku}
                   </td>
                   <td className="px-2 py-1 text-slate-600 font-mono">
-                    ${((part.unitPriceUsd || 0) * (part.quantity || 1)).toLocaleString()}
+                    {formatPrice(extendedPrice(part))}
                   </td>
                   <td className="px-2 py-1">
                     <span className={`px-1.5 py-0.5 rounded text-[9px] font-medium border ${getCategoryStyle(part.category)}`}>
@@ -219,7 +220,7 @@ export default function RankCard({
           </div>
           {tier.isOptimal && (
             <span className="badge badge-emerald flex items-center gap-1 font-bold shadow-sm animate-pulse">
-              <Award className="w-3.5 h-3.5 text-emerald-600" /> Optimal Workload Match
+              <Award className="w-3.5 h-3.5 text-emerald-600" /> First Ranked Candidate
             </span>
           )}
         </div>
@@ -239,15 +240,15 @@ export default function RankCard({
           {tier.budgetBreakdown && (
             <div className="pt-2 border-t border-slate-200/60 grid grid-cols-3 gap-1 text-[10px] text-slate-500 text-center">
               <div>
-                <span className="block font-semibold text-slate-700">${(tier.budgetBreakdown.baseBomCost || 0).toLocaleString()}</span>
+                <span className="block font-semibold text-slate-700">{formatPrice(tier.budgetBreakdown.baseBomCost)}</span>
                 Base BOM
               </div>
               <div>
-                <span className="block font-semibold text-rose-600">+${(tier.budgetBreakdown.fixCost || 0).toLocaleString()}</span>
+                <span className="block font-semibold text-rose-600">{formatPrice(tier.budgetBreakdown.fixCost)}</span>
                 Aspect Fixes
               </div>
               <div>
-                <span className="block font-semibold text-blue-600">+${(tier.budgetBreakdown.strategyAddonCost || 0).toLocaleString()}</span>
+                <span className="block font-semibold text-blue-600">{formatPrice(tier.budgetBreakdown.strategyAddonCost)}</span>
                 Add-ons
               </div>
             </div>
@@ -380,9 +381,9 @@ export default function RankCard({
 
         {exportedFile && (
           <div className="p-2 bg-emerald-50 border border-emerald-200 rounded-lg text-[11px] text-emerald-800 flex items-center justify-between">
-            <span className="truncate">Saved: <strong>{exportedFile}</strong></span>
+            <span className="truncate">Saved: <strong>{exportedFile.filename}</strong></span>
             <a
-              href={`/artifacts/${exportedFile}`}
+              href={exportedFile.downloadPath}
               download
               className="text-emerald-700 underline font-bold shrink-0 ml-2"
             >

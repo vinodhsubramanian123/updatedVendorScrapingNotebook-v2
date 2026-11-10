@@ -39,13 +39,18 @@ export default function TelemetryCard({ initialTelemetry, telemetry: propTelemet
   const [activeModal, setActiveModal] = useState(null);
 
   if (fetchError && !telemetry) {
+    const isNetworkError = fetchError.toLowerCase().includes('failed to fetch') || fetchError.toLowerCase().includes('networkerror');
     return (
       <div className="glass-card p-6 text-center text-rose-600 border-l-4 border-l-rose-500 space-y-3">
         <AlertTriangle className="w-8 h-8 text-rose-500 mx-auto" />
-        <p className="text-sm font-bold">Telemetry Bridge Error</p>
-        <p className="text-xs text-slate-500">{fetchError}</p>
+        <p className="text-sm font-bold">Telemetry Bridge Disconnected</p>
+        <p className="text-xs text-slate-500">
+          {isNetworkError
+            ? 'Unable to connect to the backend server bridge. Ensure the dashboard server is running (e.g. npm start).'
+            : fetchError}
+        </p>
         <button onClick={fetchTelemetry} className="btn-primary text-xs mx-auto inline-flex items-center gap-1.5">
-          <RefreshCw className="w-3.5 h-3.5" /> Retry Fetching Telemetry
+          <RefreshCw className="w-3.5 h-3.5" /> Retry Connecting to Telemetry Bridge
         </button>
       </div>
     );

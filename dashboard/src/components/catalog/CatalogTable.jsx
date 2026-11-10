@@ -1,14 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { History, TrendingUp } from 'lucide-react';
 
 export default function CatalogTable({ displayedSkus = [], formatPrice, onOpenSkuAudit, onOpenTrend }) {
+  const [selectedPage, setSelectedPage] = useState(1);
+  const pageSize = 100;
+  const pages = Math.max(1, Math.ceil(displayedSkus.length / pageSize));
+  const page = Math.min(selectedPage, pages);
+  useEffect(() => setSelectedPage(1), [displayedSkus]);
+  const visibleSkus = displayedSkus.slice((page - 1) * pageSize, page * pageSize);
   return (
     <div className="glass-card overflow-hidden">
+      <div className="flex items-center justify-between gap-3 px-4 py-2 text-xs">
+        <span>{displayedSkus.length} option occurrences · Page {page} of {pages}</span>
+        <div className="flex gap-3">
+          <button disabled={page <= 1} onClick={() => setSelectedPage(page - 1)} className="disabled:opacity-40">Previous</button>
+          <button disabled={page >= pages} onClick={() => setSelectedPage(page + 1)} className="disabled:opacity-40">Next</button>
+        </div>
+      </div>
       <div className="overflow-x-auto max-h-[520px]">
         <table className="w-full text-left text-xs">
           <thead className="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold sticky top-0 z-10">
             <tr>
-              <th className="px-4 py-3">Checksum Status</th>
+              <th className="px-4 py-3">Change / Lifecycle Status</th>
               <th className="px-4 py-3">Vendor SKU ID / Part #</th>
               <th className="px-4 py-3">Description</th>
               <th className="px-4 py-3">Category</th>
@@ -26,7 +39,7 @@ export default function CatalogTable({ displayedSkus = [], formatPrice, onOpenSk
                 </td>
               </tr>
             ) : (
-              displayedSkus.map((sku, idx) => {
+              visibleSkus.map((sku, idx) => {
                 const status = sku.diffStatus || 'UNCHANGED';
                 const isAdded = status === 'ADDED';
                 const isRemoved = status === 'REMOVED' || status === 'REMOVED_DISCONTINUED';
@@ -79,7 +92,7 @@ export default function CatalogTable({ displayedSkus = [], formatPrice, onOpenSk
                       )}
                       {sku.priceDelta && (
                         <span className={`ml-1.5 text-[10px] font-bold ${
-                          sku.priceDelta.startsWith('-') ? 'text-emerald-600' : 'text-amber-600'
+                          String(sku.priceDelta).startsWith('-') ? 'text-emerald-600' : 'text-amber-600'
                         }`}>
                           ({sku.priceDelta})
                         </span>

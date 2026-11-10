@@ -3,25 +3,24 @@ import { Search, CheckCircle2, FileSpreadsheet, FileText } from 'lucide-react';
 
 export default function ChassisPortfolioTable({
   variants = [],
-  searchTerm,
+  searchTerm = '',
   setSearchTerm,
-  selectedFamily,
+  selectedFamily = 'ALL',
   setSelectedFamily,
-  selectedStatus,
+  selectedStatus = 'ALL',
   setSelectedStatus,
   families = [],
   selectedChassis,
   onSelectChassis
 }) {
   const filteredVariants = variants.filter(v => {
-    const matchesSearch = !searchTerm.trim() ||
+    const matchesSearch = !searchTerm?.trim() ||
       v.id?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      v.model?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      v.chassis?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       v.family?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesFamily = selectedFamily === 'ALL' || v.family === selectedFamily;
     const matchesStatus = selectedStatus === 'ALL' ||
-      (selectedStatus === 'HEALTHY' && v.health === 'HEALTHY') ||
-      (selectedStatus === 'PARTIAL' && v.health === 'PARTIAL');
+      v.syncStatus === selectedStatus;
     return matchesSearch && matchesFamily && matchesStatus;
   });
 
@@ -46,7 +45,7 @@ export default function ChassisPortfolioTable({
           </div>
 
           <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl">
-            {['ALL', 'HEALTHY', 'PARTIAL'].map(s => (
+            {['ALL', 'HEALTHY', 'PARSED_NO_RULES', 'INCOMPLETE'].map(s => (
               <button
                 key={s}
                 onClick={() => setSelectedStatus?.(s)}
@@ -105,7 +104,7 @@ export default function ChassisPortfolioTable({
                 >
                   <td className="py-3 px-4">
                     <div className="flex items-center gap-2">
-                      <span className="font-bold text-slate-800">{v.model || v.id}</span>
+                      <span className="font-bold text-slate-800">{v.chassis || v.id}</span>
                       {isSelected && (
                         <span className="px-1.5 py-0.5 bg-emerald-100 text-emerald-800 font-bold text-[10px] rounded">
                           ACTIVE
@@ -118,9 +117,9 @@ export default function ChassisPortfolioTable({
                   </td>
 
                   <td className="py-3 px-4">
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200/60">
+                    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold border ${v.syncStatus === 'HEALTHY' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-amber-50 text-amber-800 border-amber-200'}`}>
                       <CheckCircle2 className="w-3 h-3" />
-                      <span>{v.skuStatus || 'PARSED'}</span>
+                      <span>{v.syncStatus || 'UNKNOWN'}</span>
                     </span>
                   </td>
 

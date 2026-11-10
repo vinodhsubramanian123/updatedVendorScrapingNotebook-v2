@@ -1,43 +1,25 @@
+import { postJson, requestJson, uploadBoqFile } from '../services/api.js';
 import React, { useState, useEffect } from 'react';
 import { ShieldCheck, Upload, RefreshCw, X } from 'lucide-react';
 import VendorMatchTable from './reconciliation/VendorMatchTable';
 import ReconciliationActionPanel from './reconciliation/ReconciliationActionPanel';
 import { getCategoryStyle } from '../utils/categoryStyles';
 
-function parseModalVendorInput(vendorText) {
-  try {
-    return JSON.parse(vendorText);
-  } catch {
-    const items = [];
-    const lines = vendorText.split('\n');
-    lines.forEach(line => {
-      const match = line.match(/\b([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6}|[HURS][A-Z0-9]{4,10})\b/i);
-      if (match) {
-        const sku = match[1].toUpperCase().replace(/(CTO|BTO|FIO)$/i, '');
-        const qtyMatch = line.match(/\b(\d+)\b/);
-        const quantity = qtyMatch ? parseInt(qtyMatch[1], 10) : 1;
-        items.push({ sku, quantity, description: line.trim() });
-      }
-    });
-    return items;
-  }
+async function parseModalVendorInput(vendorText) {
+  const data = await postJson('/api/parse-vendor-quote', { rawText: vendorText });
+  return data.items;
 }
 
 async function uploadAndPreprocessVendorFile(uploadedFile, selectedChassis) {
-  const formData = new FormData();
-  formData.append('boqFile', uploadedFile);
-  const uploadRes = await fetch('/api/upload-boq', {
-    method: 'POST',
-    body: formData
-  });
-  const uploadData = await uploadRes.json();
+  const uploadData = await uploadBoqFile(uploadedFile);
 
-  const preRes = await fetch('/api/preprocess-boq', {
+
+  return requestJson('/api/preprocess-boq', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ filepath: uploadData.filepath, chassisDir: selectedChassis })
   });
-  return preRes.json();
+
 }
 
 function buildAddedVendorDefaultRules(data, selectedChassis) {
@@ -165,7 +147,7 @@ export default function VendorBomVerificationModal({
     setDeltaSyncSuccess(null);
 
     try {
-      const items = parseModalVendorInput(vendorText);
+      const items = await parseModalVendorInput(vendorText);
       if (items.length === 0) {
         setErrorMessage('No valid HPE SKUs detected in uploaded input.');
         setIsVerifying(false);

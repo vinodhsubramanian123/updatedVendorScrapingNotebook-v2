@@ -9,7 +9,7 @@
  *     onTaskStarted, onTaskCompleted, onProgress, onLog, onEvalResult
  *   });
  */
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { normalizeEvalResult } from '../services/evalNormalizer.js';
 
 /**
@@ -27,6 +27,8 @@ export function useSSEStream({
   onLog,
   onEvalResult
 } = {}) {
+  const handlers = useRef({});
+  handlers.current = { onTaskStarted, onTaskCompleted, onProgress, onLog, onEvalResult };
   useEffect(() => {
     const eventSource = new EventSource('/api/stream-logs');
 
@@ -39,20 +41,37 @@ export function useSSEStream({
       }
 
       switch (payload.type) {
+        case 'RUN_SNAPSHOT': {
+          if (payload.activeTask) handlers.current.onTaskStarted?.({ ...payload.activeTask, recovered: true });
+          else handlers.current.onTaskCompleted?.({ task: 'RECOVERY', recovered: true });
+          for (const log of payload.logs || []) handlers.current.onLog?.(log);
+          if (payload.progress && payload.activeTask) handlers.current.onProgress?.(payload.progress);
+          const result = payload.latestResult;
+          if (payload.latestQueryResult) window.dispatchEvent(new CustomEvent('dashboard-routed-result', { detail: payload.latestQueryResult }));
+          if (result && (!payload.activeTask || result.runId === payload.activeTask.runId)) {
+            handlers.current.onEvalResult?.(normalizeEvalResult(result), { ...result, recovered: true });
+          }
+          break;
+        }
         case 'TASK_STARTED':
-          onTaskStarted?.(payload);
+          handlers.current.onTaskStarted?.(payload);
+          break;
+
+        case 'ROUTED_RESULT':
+          window.dispatchEvent(new CustomEvent('dashboard-routed-result', { detail: payload }));
           break;
 
         case 'TASK_COMPLETED':
-          onTaskCompleted?.(payload);
+          handlers.current.onTaskCompleted?.(payload);
+          window.dispatchEvent(new CustomEvent('dashboard-task-completed', { detail: payload }));
           break;
 
         case 'PROGRESS':
-          onProgress?.(payload);
+          handlers.current.onProgress?.(payload);
           break;
 
         case 'LOG':
-          onLog?.(payload);
+          handlers.current.onLog?.(payload);
           break;
 
         case 'EVAL_RESULT':
@@ -60,7 +79,7 @@ export function useSSEStream({
           // Normalise the raw payload before surfacing it to the app —
           // all domain flattening lives in the service layer now.
           const normalised = normalizeEvalResult(payload);
-          onEvalResult?.(normalised, payload);
+          handlers.current.onEvalResult?.(normalised, payload);
           break;
         }
 
@@ -74,8 +93,6 @@ export function useSSEStream({
     };
 
     return () => eventSource.close();
-    // Handlers are captured at mount. If callers need reactive updates they
-    // should stabilise references with useCallback before passing them in.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // The connection stays stable while dispatching to current render handlers.
   }, []);
 }

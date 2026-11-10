@@ -46,7 +46,7 @@ function MacroViewSwitcher({ viewMode, setViewMode }) {
   return (
     <div className="flex items-center gap-2 shrink-0 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-bold">
       <button onClick={() => setViewMode('simulator')} className={getBtnClass('simulator')}>
-        <Sparkles className="w-3.5 h-3.5 text-amber-500" /> Auto-Pilot Runner
+        <Sparkles className="w-3.5 h-3.5 text-amber-500" /> Workflow Simulation
       </button>
       <button onClick={() => setViewMode('stepper')} className={getBtnClass('stepper')}>
         <Activity className="w-3.5 h-3.5" /> 9-Stage Stepper
@@ -73,18 +73,18 @@ function StageSubstepBox({ isActive, IconComponent, title, subtitle }) {
   );
 }
 
-function resolveStageOneStatus(isEvaluating, hasEval, violationsCount) {
+function resolveStageOneStatus(isEvaluating, hasEval, violationsCount, evalResults) {
   if (isEvaluating) return 'RUNNING';
   if (!hasEval) return 'READY';
-  return violationsCount > 0 ? 'WARNING' : 'COMPLETED';
+  return violationsCount === 0 && evalResults?.isMathClean === true && evalResults?.ephemeralSourceValidation?.success === true ? 'COMPLETED' : 'WARNING';
 }
 
 function buildStageOneSubsteps(evalResults, hasEval, isEvaluating, activeProgress, violationsCount) {
   const stepNum = activeProgress?.currentStep || 0;
   const parsedCount = evalResults?.items?.length;
-  const tiersCount = evalResults?.conflictGraph?.rankedSolutions?.length || 5;
+  const tiersCount = evalResults?.conflictGraph?.rankedSolutions?.length ?? 0;
   const mathSubtitle = hasEval
-    ? (violationsCount === 0 ? 'All 7 Aspects Passed' : `${violationsCount} Violations Flagged`)
+    ? (evalResults?.isMathClean === true ? 'Local checks reported clean' : `${violationsCount} reported violations; review check outcomes`)
     : 'Thermal / Power / RAM';
 
   return [
@@ -110,7 +110,7 @@ function buildStageOneSubsteps(evalResults, hasEval, isEvaluating, activeProgres
       isActive: hasEval || (isEvaluating && stepNum >= 5),
       IconComponent: Brain,
       title: '4. RAG AI Verification',
-      subtitle: evalResults?.ragAnswer ? 'QuickSpecs Verified' : 'Grounded Double-Check'
+      subtitle: evalResults?.ephemeralSourceValidation?.success === true ? 'Candidate review recorded' : 'Candidate review pending'
     }
   ];
 }
@@ -125,7 +125,7 @@ function StageOneVerificationCard({
   isTaskRunning,
   onOpenTool
 }) {
-  const stageStatus = resolveStageOneStatus(isEvaluating, hasEval, violationsCount);
+  const stageStatus = resolveStageOneStatus(isEvaluating, hasEval, violationsCount, evalResults);
   const substeps = buildStageOneSubsteps(evalResults, hasEval, isEvaluating, activeProgress, violationsCount);
 
   return (
@@ -205,7 +205,7 @@ function StageTwoReconciliationCard({
   onOpenTool,
   onTriggerSyncKnowledge
 }) {
-  const stageStatus = isSyncing ? 'RUNNING' : (hasAudit ? 'COMPLETED' : 'READY');
+  const stageStatus = isSyncing ? 'RUNNING' : (hasAudit ? 'WARNING' : 'READY');
   const reconcileTitle = !hasEval
     ? 'Stage 1 candidate BOQ evaluation must be completed first to establish a baseline BOM.'
     : 'Reconcile Partner Quote against baseline BOM';
@@ -358,11 +358,11 @@ export default function MacroOrchestratorFlow({
 
   const isEvaluating = Boolean(isTaskRunning && activeProgress?.task?.includes('EVAL'));
   const isSyncing = Boolean(isTaskRunning && activeProgress?.task?.includes('KNOWLEDGE_SYNC'));
-  const hasEval = Boolean(evalResults && evalResults.status !== 'ERROR');
+  const hasEval = Boolean(evalResults && !['ERROR', 'CANCELLED'].includes(evalResults.status) && !evalResults.clarificationRequired);
   const hasAudit = Boolean(auditReport);
 
   const confidenceVal = evalResults?.confidence?.score ?? evalResults?.conflictGraph?.quantitativeConfidenceScore;
-  const confidencePercent = confidenceVal !== undefined ? Math.round(confidenceVal * 100) : null;
+  const confidencePercent = Number.isFinite(confidenceVal) ? Math.round(confidenceVal * (confidenceVal <= 1 ? 100 : 1)) : null;
   const violationsCount = evalResults?.aspectChecks?.filter(a => a.status === 'FAIL')?.length || evalResults?.errors?.length || 0;
 
   const logs = parseLogStream(logStream);

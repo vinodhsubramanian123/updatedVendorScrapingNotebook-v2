@@ -120,7 +120,9 @@ app.use('/api', (err, req, res, next) => {
 async function initAndStartServer() {
   const distPath = path.resolve(__dirname, 'dist');
 
-  if (fs.existsSync(distPath)) {
+  const production = process.argv.includes('--production') || process.env.NODE_ENV === 'production' || process.env.DASHBOARD_SERVE_DIST === '1';
+  if (production && !fs.existsSync(path.join(distPath, 'index.html'))) throw new Error('Production dashboard build is missing. Run npm run build before starting in production.');
+  if (production) {
     console.log(`📦 Serving production build from: ${distPath}`);
     app.use(express.static(distPath));
     app.use((req, res, next) => {
@@ -162,6 +164,7 @@ async function initAndStartServer() {
   // Graceful shutdown — prevent zombie processes on SIGTERM
   const shutdown = () => {
     const activeTask = getActiveTask();
+    activeTask?.abortController?.abort(new Error('Dashboard shutting down'));
     if (activeTask?.process) {
       try { activeTask.process.kill('SIGTERM'); } catch (_) {}
     }

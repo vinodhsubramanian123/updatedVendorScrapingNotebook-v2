@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FileSpreadsheet } from 'lucide-react';
 import { catalogIndexer } from '../utils/nlpSearch';
 import PriceAnalyticsCard from './PriceAnalyticsCard';
 import GlobalLoadingState from './GlobalLoadingState';
 import RulesConfiguration from './RulesConfiguration';
+import { parsePrice, formatPrice } from '../services/pricing.js';
+import { requestJson } from '../services/api.js';
 import {
   CatalogProductSwitcher,
   CatalogFilterBar,
@@ -15,7 +17,7 @@ import {
 
 function resolveExplorerSkuRawPrice(sku) {
   for (const key of ['Unit Price (USD)', 'Price (USD)', 'List Price (USD)', 'List Price', 'Price', 'listPriceFormatted']) {
-    if (sku[key]) return sku[key];
+    if (sku[key] !== undefined && sku[key] !== null && sku[key] !== '') return sku[key];
   }
   if (sku.listPrice !== undefined && sku.listPrice !== '') return sku.listPrice;
   return 'N/A';
@@ -88,10 +90,7 @@ function filterDisplayedSkus(baseSkus, viewMode, activeCategory, activeSubCatego
 }
 
 function formatCatalogPrice(priceVal) {
-  if (priceVal === undefined || priceVal === null || priceVal === '' || priceVal === 'N/A') return 'N/A';
-  const num = parseFloat(String(priceVal).replace(/[^0-9.]/g, ''));
-  if (isNaN(num)) return 'N/A';
-  return `$${num.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`;
+  return formatPrice(priceVal);
 }
 
 function computeIncrementalStats(metadata, allSkusCount, changedCount) {
@@ -125,14 +124,14 @@ function deriveCatalogCategories(allSkus, activeCategory) {
 
 async function fetchSkuPriceHistory(sku, chassisDir) {
   const skuId = sku.sku || sku.partNumber;
-  const baseline = [{ date: 'Current', price: parseFloat(sku.listPrice) || 0, status: 'BASELINE' }];
+  const price = parsePrice(sku.listPrice);
+  const baseline = price === null ? [] : [{ date: 'Current observation (no history)', price, status: 'CURRENT_OBSERVATION' }];
   try {
-    const res = await fetch(`/api/price-history?sku=${encodeURIComponent(skuId)}&chassisDir=${encodeURIComponent(chassisDir)}`);
-    const data = await res.json();
+    const data = await requestJson(`/api/price-history?sku=${encodeURIComponent(skuId)}&chassisDir=${encodeURIComponent(chassisDir)}`);
     return (data.history && data.history.length > 0) ? data.history : baseline;
   } catch (e) {
     console.warn('Caught suppressed error in CatalogExplorer.jsx:', e);
-    return baseline;
+    throw e;
   }
 }
 
@@ -195,10 +194,23 @@ export default function CatalogExplorer({
   const [viewMode, setViewMode] = useState("table");
   const [realPriceTrail, setRealPriceTrail] = useState([]);
   const [loadingHistory, setLoadingHistory] = useState(false);
+  const [historyError, setHistoryError] = useState(null);
   const [showOnlyChanges, setShowOnlyChanges] = useState(false);
   const [selectedSkuAudit, setSelectedSkuAudit] = useState(null);
   const [skuAuditData, setSkuAuditData] = useState(null);
   const [loadingAudit, setLoadingAudit] = useState(false);
+  const historyRequest = useRef(0);
+  const auditRequest = useRef(0);
+  useEffect(() => {
+    historyRequest.current++;
+    auditRequest.current++;
+    setSelectedSkuTrend(null);
+    setSelectedSkuAudit(null);
+    setRealPriceTrail([]);
+    setSkuAuditData(null);
+    setActiveCategory('ALL');
+    setActiveSubCategory('ALL');
+  }, [selectedChassis]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -261,23 +273,32 @@ export default function CatalogExplorer({
   const incrStats = computeIncrementalStats(catalogData.metadata, allSkus.length, changedCount);
 
   const handleOpenTrend = async (sku) => {
+    const request = ++historyRequest.current;
     setSelectedSkuTrend(sku);
     setLoadingHistory(true);
-    const history = await fetchSkuPriceHistory(sku, chassisDir);
-    setRealPriceTrail(history);
-    setLoadingHistory(false);
+    setHistoryError(null);
+    setRealPriceTrail([]);
+    try {
+      const data = await fetchSkuPriceHistory(sku, chassisDir);
+      if (request === historyRequest.current) setRealPriceTrail(data);
+    }
+    catch (err) { if (request === historyRequest.current) setHistoryError(err.message); }
+    finally { if (request === historyRequest.current) setLoadingHistory(false); }
   };
 
   const handleOpenSkuAudit = async (sku) => {
+    const request = ++auditRequest.current;
     setSelectedSkuAudit(sku);
     setLoadingAudit(true);
     const auditData = await fetchSkuAuditData(sku, chassisDir);
+    if (request !== auditRequest.current) return;
     setSkuAuditData(auditData);
     setLoadingAudit(false);
   };
 
   return (
     <div className="space-y-4">
+      {historyError && <div role="alert" className="text-sm text-rose-800">Price history unavailable: {historyError}</div>}
       <CatalogProductSwitcher
         catalogs={catalogs}
         selectedChassis={selectedChassis}
@@ -327,6 +348,7 @@ export default function CatalogExplorer({
         selectedSkuTrend={selectedSkuTrend}
         onClose={() => { setSelectedSkuTrend(null); setRealPriceTrail([]); }}
         loadingHistory={loadingHistory}
+        historyError={historyError}
         realPriceTrail={realPriceTrail}
       />
 

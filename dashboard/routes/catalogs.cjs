@@ -36,10 +36,12 @@ const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
 
 // ── Catalog Registry Cache (GAP-L5) ──────────────────────────────────────────
 let _catalogCache = null;
+const _normalizedCatalogCache = new Map();
 
 /** Call this after a scrape/rebuild SSE TASK_COMPLETED event. */
 function invalidateCatalogCache() {
   _catalogCache = null;
+  _normalizedCatalogCache.clear();
 }
 
 /**
@@ -119,6 +121,16 @@ function normalizeEntryAndSkus(entry, discontinuedMap = {}) {
  * Load catalog JSON, merging companion *_Services.json entries and normalizing classifications.
  */
 function loadAndNormalizeCatalog(fullPath) {
+  let cacheKey = null;
+  try {
+    const stat = fs.statSync(fullPath);
+    cacheKey = `${fullPath}:${stat.mtimeMs}`;
+    if (_normalizedCatalogCache.has(cacheKey)) {
+      return _normalizedCatalogCache.get(cacheKey);
+    }
+  } catch (_) {}
+
+  const { catalogCounts } = require('../services/catalogCounts.cjs');
   const content = JSON.parse(fs.readFileSync(fullPath, 'utf-8'));
   if (!content.entries) content.entries = [];
 
@@ -159,6 +171,8 @@ function loadAndNormalizeCatalog(fullPath) {
     normalizeEntryAndSkus(entry, discontinuedMap);
   }
 
+  content.metadata = { ...content.metadata, ...catalogCounts(content) };
+  if (cacheKey) _normalizedCatalogCache.set(cacheKey, content);
   return content;
 }
 
@@ -197,6 +211,7 @@ function getCachedCatalogs() {
         const servicesFullPath = path.join(folderPath, servicesFileName);
         const servicesSKUs = countSKUsInJson(servicesFullPath);
         totalSKUs += servicesSKUs;
+        try { totalSKUs = loadAndNormalizeCatalog(fullPath).metadata.totalUniqueSKUs; } catch (_) {}
 
         const pdfFile = fs.readdirSync(folderPath).find(f => f.endsWith('.pdf'));
         const xlsxFile = fs.readdirSync(folderPath).find(f => f.endsWith('.xlsx'));
@@ -289,7 +304,7 @@ router.get('/chassis-sync-summary', (req, res) => {
 
       if (fs.existsSync(cat.catalogJsonPath)) {
         try {
-          const content = JSON.parse(fs.readFileSync(cat.catalogJsonPath, 'utf-8'));
+          const content = loadAndNormalizeCatalog(cat.catalogJsonPath);
           totalSKUs = content.metadata?.totalUniqueSKUs || content.entries?.reduce((a, e) => a + (e.skuCount || 0), 0) || 0;
           subcategoriesCount = content.metadata?.totalSubcategories || content.entries?.length || 0;
           tablesCount = content.metadata?.totalTables || 0;
@@ -319,7 +334,7 @@ router.get('/chassis-sync-summary', (req, res) => {
 
       const hasExcel = !!cat.hasExcel, hasPdf = !!cat.pdf, hasDiffHistory = !!cat.hasDiffHistory;
       let syncStatus = 'HEALTHY';
-      if (skuStatus === 'PARSED' && totalRules > 0 && hasExcel) { syncStatus = 'HEALTHY'; healthyCount++; }
+      if (skuStatus === 'PARSED' && totalRules > 0 && hasExcel && !isRulesFallback) { syncStatus = 'HEALTHY'; healthyCount++; }
       else if (skuStatus === 'PARSED') { syncStatus = 'PARSED_NO_RULES'; partialCount++; }
       else syncStatus = 'INCOMPLETE';
 
@@ -341,10 +356,13 @@ router.get('/chassis-sync-summary', (req, res) => {
     res.json({
       summary: {
         totalFamilies: familiesSet.size, totalChassisVariants: totalVariants,
+        families: [...familiesSet].sort(),
         healthyVariants: healthyCount, partialVariants: partialCount,
         totalPortfolioSKUs: totalSKUsSum, totalActiveRules: totalRulesSum,
         healthPercentage: totalVariants > 0 ? Math.round((healthyCount / totalVariants) * 100) : 0,
-        lastSyncTimestamp: new Date().toISOString()
+        generatedAt: new Date().toISOString(),
+        lastSyncTimestamp: null,
+        cloudSyncStatus: 'NOT_VERIFIED'
       },
       variants: variantsSummary
     });
@@ -431,7 +449,7 @@ router.get('/session-observability', (req, res) => {
 
 router.get('/price-history', (req, res) => {
   const { chassisDir, sku } = req.query;
-  if (!sku) return res.status(400).json({ error: 'SKU parameter required' });
+  if (!sku || !chassisDir) return res.status(400).json({ error: 'Exact chassisDir and SKU parameters are required' });
   let historyFile = null;
   if (chassisDir) {
     try {

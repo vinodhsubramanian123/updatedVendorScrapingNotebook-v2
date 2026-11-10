@@ -24,7 +24,7 @@
     "bundle:env": "node scripts/maintenance/create_migration_bundle.js",
     "setup:browsers": "node scripts/maintenance/setup_browsers.js",
     "dev": "node dashboard/server.cjs",
-    "start": "node dashboard/server.cjs",
+    "start": "node dashboard/server.cjs --production",
     "guardrail:check": "node scripts/maintenance/guardrail_health_check.js",
     "auth:drive": "node scripts/services/google_sheets_service.js login",
     "auth:check": "node scripts/services/google_sheets_service.js check-health",

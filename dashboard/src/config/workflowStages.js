@@ -14,27 +14,9 @@
  *   - action: { text, modal?, tab?, handler? } action triggers
  */
 
+import { deriveEvidenceStatus, deriveEvidenceMetrics, deriveEvidenceDuration, isEvidenceStageTerminal } from '../services/workflowEvidence.js';
+
 // ─── Status Derivation Helpers ─────────────────────────────────────────────
-function isEvaluating(state) {
-  return state.isTaskRunning && state.activeProgress?.task?.includes('EVAL');
-}
-
-function isSyncing(state) {
-  return state.isTaskRunning && state.activeProgress?.task?.includes('KNOWLEDGE_SYNC');
-}
-
-function hasEval(state) {
-  return !!state.evalResults && state.evalResults.status !== 'ERROR';
-}
-
-function hasAudit(state) {
-  return !!state.auditReport;
-}
-
-function currentStep(state) {
-  return state.activeProgress?.currentStep ?? 0;
-}
-
 // ─── Phase 1 Stages (1-6): Local Aspect Math & AI Dual-Brain Verification ─
 export const PHASE_1_STAGES = [
   {
@@ -79,21 +61,13 @@ export const PHASE_1_STAGES = [
       },
     ],
     deriveStatus(state) {
-      if (isEvaluating(state)) {
-        const step = currentStep(state);
-        return step === 1 ? 'RUNNING' : step > 1 ? 'COMPLETED' : 'READY';
-      }
-      return hasEval(state) ? 'COMPLETED' : 'READY';
+      return deriveEvidenceStatus('LOAD', state);
     },
     deriveMetrics(state) {
-      return {
-        'Raw SKUs': state.evalResults?.chassisDetection?.totalRawSkus || 'Ready',
-        'Detected Model': state.selectedChassis || 'Unknown Chassis',
-        'Compliance': 'Dubai MEA Clean (0 TAA)',
-      };
+      return deriveEvidenceMetrics('LOAD', state);
     },
     deriveDurationMs(state) {
-      return state.evalResults?.telemetry?.parsingTimeMs || 120;
+      return deriveEvidenceDuration('LOAD', state);
     },
     details: 'Customer Bill of Materials (.xlsx, .csv, or PDF OCR) loaded, tokenized via centralized regex, and scrubbed of TAA/GTA regional exclusions.',
     action: { text: 'Upload BOQ', modal: 'boqUploader' },
@@ -140,21 +114,13 @@ export const PHASE_1_STAGES = [
       },
     ],
     deriveStatus(state) {
-      if (isEvaluating(state)) {
-        const step = currentStep(state);
-        return step === 2 ? 'RUNNING' : step > 2 ? 'COMPLETED' : 'READY';
-      }
-      return hasEval(state) ? 'COMPLETED' : 'READY';
+      return deriveEvidenceStatus('CLEANING', state);
     },
     deriveMetrics(state) {
-      return {
-        'Cleaned Lines': state.evalResults?.items?.length || 0,
-        'Qty Format': '100% Numeric',
-        'Consolidation': 'Complete',
-      };
+      return deriveEvidenceMetrics('CLEANING', state);
     },
     deriveDurationMs(state) {
-      return state.evalResults?.telemetry?.cleaningTimeMs || 180;
+      return deriveEvidenceDuration('CLEANING', state);
     },
     details: 'Hardware lines extracted across multi-sheet workbooks, quantities normalized to clean integers, and duplicate rows consolidated.',
     action: { text: 'View Input Items', modal: 'boqUploader' },
@@ -211,30 +177,17 @@ export const PHASE_1_STAGES = [
         title: 'Pointnext Tech Care 3-Year Support Validation', 
         ruleCode: 'Aspect #6', 
         category: 'Services',
-        detail: 'Verifies matching 3-Year 24x7 Tech Care Support SKUs for enterprise chassis warranty coverage' 
+        detail: 'Verifies product-qualified support SKUs and explicit customer requirements for enterprise chassis warranty coverage'
       },
     ],
     deriveStatus(state) {
-      if (isEvaluating(state)) {
-        const step = currentStep(state);
-        return step === 3 ? 'RUNNING' : step > 3 ? 'COMPLETED' : 'READY';
-      }
-      if (hasEval(state)) {
-        const hasErrors = state.evalResults?.errors?.length > 0;
-        const hasAspectFails = state.evalResults?.aspectChecks?.some(a => a.status === 'FAIL');
-        return (hasErrors || hasAspectFails) ? 'WARNING' : 'COMPLETED';
-      }
-      return 'READY';
+      return deriveEvidenceStatus('VALIDATION', state);
     },
     deriveMetrics(state) {
-      return {
-        'Aspects Checked': '6/6 Passed',
-        'Physical Rules': state.evalResults?.conflictGraph?.totalRulesEvaluated || 18,
-        'Violations Remediated': state.evalResults?.errors?.length || 0,
-      };
+      return deriveEvidenceMetrics('VALIDATION', state);
     },
     deriveDurationMs(state) {
-      return state.evalResults?.telemetry?.rulesTimeMs || 210;
+      return deriveEvidenceDuration('VALIDATION', state);
     },
     details: 'Deterministic local mathematical validation of thermal TDP limits, memory channel symmetry, storage battery backup, and power redundancy.',
     action: { text: 'Inspect Aspect Rules', modal: 'boqUploader' },
@@ -253,7 +206,7 @@ export const PHASE_1_STAGES = [
     substeps: [
       { 
         id: 'RANK_1', 
-        title: 'Rank 1: Intent-Preserving Candidate (100% Confidence)', 
+        title: 'Rank 1: Candidate Requiring Intent-Preservation Review',
         ruleCode: 'Rank 1', 
         category: 'Strategic',
         detail: 'Auto-injects missing physical dependencies without altering original hardware specifications' 
@@ -288,23 +241,15 @@ export const PHASE_1_STAGES = [
       },
     ],
     deriveStatus(state) {
-      if (isEvaluating(state)) {
-        const step = currentStep(state);
-        return step === 4 ? 'RUNNING' : step > 4 ? 'COMPLETED' : 'READY';
-      }
-      return hasEval(state) ? 'COMPLETED' : 'READY';
+      return deriveEvidenceStatus('RANKING', state);
     },
     deriveMetrics(state) {
-      return {
-        'Candidate Tiers': state.evalResults?.conflictGraph?.rankedSolutions?.length || state.evalResults?.rankedSolutions?.length || 5,
-        'Top Choice': 'Rank 1 (Intent-Preserving)',
-        'Confidence': '100%',
-      };
+      return deriveEvidenceMetrics('RANKING', state);
     },
     deriveDurationMs(state) {
-      return state.evalResults?.telemetry?.rankingTimeMs || 160;
+      return deriveEvidenceDuration('RANKING', state);
     },
-    details: 'Synthesizes 5 distinct buildable solution strategies from Rank 1 (Intent Match) to Rank 5 (Budget Optimized) with itemized SKU deltas.',
+    details: 'Synthesizes eligible distinct candidate strategies from Rank 1 (Intent Match) to Rank 5 (Budget Optimized) with itemized SKU deltas.',
     action: { text: 'View Resolution Matrix', modal: 'resolutionMatrix' },
   },
   {
@@ -349,24 +294,13 @@ export const PHASE_1_STAGES = [
       },
     ],
     deriveStatus(state) {
-      if (isEvaluating(state)) {
-        const step = currentStep(state);
-        return step === 5 ? 'RUNNING' : step > 5 ? 'COMPLETED' : 'READY';
-      }
-      if (hasEval(state)) {
-        return state.evalResults?.ragAnswer ? 'COMPLETED' : 'SKIPPED';
-      }
-      return 'READY';
+      return deriveEvidenceStatus('POST_VERIFICATION', state);
     },
     deriveMetrics(state) {
-      return {
-        'RAG Grounding': state.evalResults?.ragAnswer ? 'Official QuickSpecs' : 'Local Fallback Engine',
-        'AI Confidence': state.evalResults?.workloadDna?.confidence || '94%',
-        'Guardrail': 'Passed',
-      };
+      return deriveEvidenceMetrics('POST_VERIFICATION', state);
     },
     deriveDurationMs(state) {
-      return state.evalResults?.ragData?.durationMs || state.evalResults?.telemetry?.ragTimeMs || 340;
+      return deriveEvidenceDuration('POST_VERIFICATION', state);
     },
     details: 'Asynchronous dual-brain verification combining Google NotebookLM QuickSpecs grounding with Gemini LLM workload reasoning.',
     action: { text: 'Check RAG Insights', modal: 'boqUploader' },
@@ -399,17 +333,13 @@ export const PHASE_1_STAGES = [
       },
     ],
     deriveStatus(state) {
-      return hasEval(state) ? 'COMPLETED' : 'READY';
+      return deriveEvidenceStatus('SOLUTION_PRESENTATION', state);
     },
     deriveMetrics(state) {
-      return {
-        'Presentation': hasEval(state) ? 'Active' : 'Awaiting Input',
-        'Export Target': 'Rank 1 Candidate',
-        'Portal Ready': 'Yes',
-      };
+      return deriveEvidenceMetrics('SOLUTION_PRESENTATION', state);
     },
-    deriveDurationMs() {
-      return 90;
+    deriveDurationMs(state) {
+      return deriveEvidenceDuration('SOLUTION_PRESENTATION', state);
     },
     details: 'Executive summary and detailed 5-tier solution matrix prepared for Partner Portal configuration handoff.',
     action: { text: 'View Executive Matrix', modal: 'resolutionMatrix' },
@@ -460,20 +390,13 @@ export const PHASE_2_STAGES = [
       },
     ],
     deriveStatus(state) {
-      if (hasAudit(state)) {
-        return state.auditReport.is100PercentMatch ? 'COMPLETED' : 'WARNING';
-      }
-      return 'READY';
+      return deriveEvidenceStatus('RECONCILIATION', state);
     },
     deriveMetrics(state) {
-      return {
-        'Quote Match': hasAudit(state) ? (state.auditReport.is100PercentMatch ? 'Rows Matched' : 'Deltas Detected') : 'Pending Upload',
-        'Variance Count': hasAudit(state) ? (state.auditReport.discrepancies?.addedByVendor?.length || 0) : 0,
-        'Audit Ledger': hasAudit(state) ? 'Synthesized' : 'Waiting',
-      };
+      return deriveEvidenceMetrics('RECONCILIATION', state);
     },
     deriveDurationMs(state) {
-      return state.auditReport?.auditDurationMs || 0;
+      return deriveEvidenceDuration('RECONCILIATION', state);
     },
     details: 'Bi-directional cross-check comparing actual Partner Portal quote against proposed Rank 1 solution to discover physical rule deltas.',
     action: { text: 'Reconcile Quote', modal: 'reconciliation' },
@@ -506,16 +429,13 @@ export const PHASE_2_STAGES = [
       },
     ],
     deriveStatus(state) {
-      return hasAudit(state) ? 'COMPLETED' : 'READY';
+      return deriveEvidenceStatus('TELEMETRY', state);
     },
     deriveMetrics(state) {
-      return {
-        'Governance Record': hasAudit(state) ? (state.auditReport.quarantinedObservationCount ? `${state.auditReport.quarantinedObservationCount} Quarantined` : 'No New Observation') : 'Awaiting Audit',
-        'Telemetry Ledger': hasAudit(state) ? 'Committed' : 'Idle',
-      };
+      return deriveEvidenceMetrics('TELEMETRY', state);
     },
-    deriveDurationMs() {
-      return 45;
+    deriveDurationMs(state) {
+      return deriveEvidenceDuration('TELEMETRY', state);
     },
     details: 'Records pipeline telemetry and quarantines newly observed vendor constraints until evidence-backed review promotes them.',
     action: { text: 'View System Telemetry', tab: 'telemetry' },
@@ -562,18 +482,13 @@ export const PHASE_2_STAGES = [
       },
     ],
     deriveStatus(state) {
-      if (isSyncing(state)) return 'RUNNING';
-      return hasAudit(state) ? 'COMPLETED' : 'READY';
+      return deriveEvidenceStatus('NOTEBOOK_SYNC', state);
     },
     deriveMetrics(state) {
-      return {
-        'Sync Status': isSyncing(state) ? 'Syncing...' : (hasAudit(state) ? 'Synchronized' : 'Ready'),
-        'Chassis Target': state.selectedChassis || 'Unknown Chassis',
-        'Registry Health': 'Not verified',
-      };
+      return deriveEvidenceMetrics('NOTEBOOK_SYNC', state);
     },
-    deriveDurationMs() {
-      return 320;
+    deriveDurationMs(state) {
+      return deriveEvidenceDuration('NOTEBOOK_SYNC', state);
     },
     details: 'Closes the loop by synchronizing newly learned rules directly into the NotebookLM RAG knowledge base for future evaluations.',
     action: { text: 'Trigger Notebook Sync', tab: 'scraper', handlerKey: 'onTriggerSyncKnowledge' },
@@ -598,10 +513,7 @@ export function computeAllStatuses(state) {
  * Compute the overall pipeline progress percentage.
  */
 export function computeProgressPercent(state) {
-  const statuses = computeAllStatuses(state);
-  const completedCount = Object.values(statuses).filter(
-    s => s === 'COMPLETED' || s === 'WARNING'
-  ).length;
+  const completedCount = ALL_STAGES.filter(stage => isEvidenceStageTerminal(stage.id, state)).length;
   return Math.round((completedCount / ALL_STAGES.length) * 100);
 }
 

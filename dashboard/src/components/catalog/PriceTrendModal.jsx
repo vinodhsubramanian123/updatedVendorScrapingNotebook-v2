@@ -2,7 +2,7 @@ import React from 'react';
 import { TrendingUp, X } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 
-export default function PriceTrendModal({ selectedSkuTrend, onClose, loadingHistory, realPriceTrail }) {
+export default function PriceTrendModal({ selectedSkuTrend, onClose, loadingHistory, realPriceTrail, historyError }) {
   if (!selectedSkuTrend) return null;
 
   return (
@@ -28,6 +28,8 @@ export default function PriceTrendModal({ selectedSkuTrend, onClose, loadingHist
 
         {loadingHistory ? (
           <div className="h-64 flex items-center justify-center text-xs text-slate-400">Loading price history...</div>
+        ) : historyError ? <div role="alert" className="py-6 text-sm text-rose-800">{historyError}</div> : realPriceTrail.length === 0 ? (
+          <div className="py-6 text-sm text-slate-600">No price observations are available.</div>
         ) : (
           <div className="h-64 w-full my-4">
             <ResponsiveContainer width="100%" height="100%">

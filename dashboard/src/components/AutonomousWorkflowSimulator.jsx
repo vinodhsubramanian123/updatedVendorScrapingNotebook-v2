@@ -325,7 +325,7 @@ export default function AutonomousWorkflowSimulator({
             </span>
           </div>
           <h2 className="text-xl font-extrabold text-slate-900 tracking-tight">
-            Automated Lifecycle Simulation & Live Step Execution
+            Workflow Simulation — no live validation or publication
           </h2>
           <p className="text-xs text-slate-500">
             Witness the entire 9-stage lifecycle execute autonomously with deliberate pacing, aspect checks, confidence scoring, and closed-loop learning.

@@ -42,6 +42,10 @@ export default function BoqInputZone({
       </div>
 
       <div
+        role="button"
+        tabIndex={0}
+        aria-label="Choose a BOQ file to upload"
+        onKeyDown={event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); document.getElementById('boq-file-input')?.click(); } }}
         onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
         onDragLeave={() => setIsDragging(false)}
         onDrop={onDrop}
@@ -57,7 +61,7 @@ export default function BoqInputZone({
         <input
           id="boq-file-input"
           type="file"
-          accept=".xlsx,.xls,.csv,.txt,.tsv"
+          accept=".xlsx,.xls,.csv,.txt,.tsv,.json,.pdf,.png,.jpg,.jpeg,.webp"
           className="hidden"
           onChange={onFileChange}
         />
@@ -69,8 +73,8 @@ export default function BoqInputZone({
           </div>
         ) : (
           <div>
-            <p className="text-xs font-semibold text-slate-700">Drop your Excel (.xlsx, .xls) or CSV BOM here</p>
-            <p className="text-[11px] text-slate-500 mt-0.5">Supports multi-sheet workbooks and raw SKU lists</p>
+            <p className="text-xs font-semibold text-slate-700">Drop your Excel workbook, quote text, PDF or image here</p>
+            <p className="text-[11px] text-slate-500 mt-0.5">PDF/images: up to 25MB for OCR. Other supported files: up to 50MB.</p>
           </div>
         )}
       </div>

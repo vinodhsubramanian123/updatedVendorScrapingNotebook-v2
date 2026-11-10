@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Download, FileDown, Settings, Server, FileText } from 'lucide-react';
+import { formatPrice } from '../services/pricing.js';
 
 export default function ExportHistoryCard() {
   const [exportsList, setExportsList] = useState([]);
@@ -116,7 +117,7 @@ export default function ExportHistoryCard() {
                     </span>
                   </td>
                   <td className="px-4 py-2 font-mono text-emerald-700 font-bold">
-                    ${(exp.estimatedCostUsd || 0).toLocaleString()}
+                    {formatPrice(exp.estimatedCostUsd)}{exp.pricingComplete === false ? ' (partial)' : ''}
                   </td>
                   <td className="px-4 py-2">
                     <a 

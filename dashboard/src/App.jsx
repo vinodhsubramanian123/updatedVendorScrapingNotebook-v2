@@ -20,20 +20,19 @@ import TraceabilityInspector from './components/TraceabilityInspector';
 import { BoqTopologyModal } from './components/topology';
 import PlatformDisambiguationCard from './components/PlatformDisambiguationCard';
 import ErrorBoundary from './components/ErrorBoundary';
+import PresalesRequestPanel from './components/PresalesRequestPanel';
+import ChassisSyncSummaryView from './components/ChassisSyncSummaryView';
 
 import { useSSEStream } from './hooks/useSSEStream.js';
 import { useRagPoller } from './hooks/useRagPoller.js';
 import { useCatalogs } from './hooks/useCatalogs.js';
+import { requestJson, postJson, uploadBoqFile } from './services/api.js';
+import { useModalFocus } from './hooks/useModalFocus.js';
 
 const IMMEDIATE_RAG_STATUSES = ['COMPLETED', 'CLOUD_VERIFIED', 'LOCAL_FALLBACK'];
 
 function ToolModal({ isOpen, onClose, title, children }) {
-  useEffect(() => {
-    if (!isOpen) return;
-    const handleKeyDown = (e) => { if (e.key === 'Escape') onClose(); };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose]);
+  const dialogRef = useModalFocus(isOpen, onClose);
 
   if (!isOpen) return null;
   return (
@@ -41,7 +40,7 @@ function ToolModal({ isOpen, onClose, title, children }) {
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
       className="fixed inset-0 bg-slate-950/75 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-modal-backdrop"
     >
-      <div className="bg-slate-50 w-full max-w-6xl max-h-[90vh] rounded-2xl shadow-2xl overflow-hidden flex flex-col border border-slate-200/90 animate-modal-content">
+      <div ref={dialogRef} role="dialog" aria-modal="true" aria-label={title} tabIndex={-1} className="bg-slate-50 w-full max-w-6xl max-h-[90vh] rounded-2xl shadow-2xl overflow-hidden flex flex-col border border-slate-200/90 animate-modal-content">
         <div className="flex items-center justify-between px-6 py-4 bg-white border-b border-slate-200">
           <h2 className="text-base font-extrabold text-slate-800 tracking-tight">{title}</h2>
           <button
@@ -67,21 +66,37 @@ function isBoqFileInput(boqInput) {
   return typeof boqInput.name === 'string' && typeof boqInput.size === 'number';
 }
 
+function isEventObject(val) {
+  return Boolean(val && typeof val === 'object' && (val.nativeEvent || typeof val.preventDefault === 'function'));
+}
+
+const STANDARD_SAMPLE_TEXT = [
+  '1x P73282-B21 HPE ProLiant DL380 Gen12 8SFF CTO Server',
+  '2x P74845-B21 Intel Xeon Gold 6530 32-Core 270W Processor',
+  '16x P64707-B21 HPE 64GB 2Rx4 DDR5-5600 Registered Memory',
+  '1x P47777-B21 Broadcom MegaRAID MR416i-p Gen11 Storage Controller',
+  '1x P01366-B21 HPE 96W Smart Storage Battery (up to 20 Devices)',
+  '4x P40498-B21 HPE 3.84TB NVMe Gen4 High Performance Read Intensive SFF BC U.3 SSD',
+  '2x P38995-B21 HPE 1000W Flex Slot Platinum Hot Plug Low Halogen Power Supply Kit',
+  '1x P73315-B21 HPE ProLiant DL380 Gen12 High Performance Fan Kit',
+  '1x P73321-B21 HPE ProLiant DL380 Gen12 8SFF Controller Cable Kit',
+  '1x P64923-B21 Broadcom BCM5719 Ethernet 1Gb 4-port BASE-T OCP3 Adapter for HPE',
+  '1x HU4B2A3 HPE 3 Year Tech Care Basic DL380 Gen12 Service'
+].join('\n');
+
 async function buildBoqRequestPayload(boqInput, maybeRawText) {
-  if (isBoqFileInput(boqInput)) {
-    const formData = new FormData();
-    formData.append('boqFile', boqInput);
-    const uploadRes = await fetch('/api/upload-boq', { method: 'POST', body: formData });
-    const uploadData = await uploadRes.json();
+  const cleanInput = isEventObject(boqInput) ? null : boqInput;
+  if (isBoqFileInput(cleanInput)) {
+    const uploadData = await uploadBoqFile(cleanInput);
     const payload = { filepath: uploadData.filepath };
     if (maybeRawText) payload.rawText = maybeRawText;
     return payload;
   }
-  if (typeof boqInput === 'string') {
-    return { rawText: boqInput };
+  if (typeof cleanInput === 'string') {
+    return { rawText: cleanInput };
   }
-  if (boqInput && typeof boqInput === 'object') {
-    const payload = { ...boqInput };
+  if (cleanInput && typeof cleanInput === 'object') {
+    const payload = { ...cleanInput };
     if (maybeRawText && !payload.rawText) payload.rawText = maybeRawText;
     return payload;
   }
@@ -91,27 +106,24 @@ async function buildBoqRequestPayload(boqInput, maybeRawText) {
   return {};
 }
 
-function dispatchBackgroundMatrixRagQuery(raw, chassisId, setEvalResults, startMatrixRagPoll) {
-  fetch('/api/notebook-query-async', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
+function dispatchBackgroundMatrixRagQuery(raw, chassisId, context, complete, startMatrixRagPoll, isCurrent, onError) {
+  postJson('/api/notebook-query-async', {
+      runId: raw.runId,
       query: raw.data.notebookPayload,
       chassis: chassisId,
       learningEligible: raw.data.evalResults?.requirementResolution?.learningEligible === true,
       chassisDir: raw.data.chassisDir
-    })
   })
-    .then(res => res.json())
     .then(jobInfo => {
+      if (!isCurrent()) return;
       if (IMMEDIATE_RAG_STATUSES.includes(jobInfo.status)) {
         const answer = jobInfo.result?.answer || jobInfo.answer;
-        setEvalResults(prev => ({ ...prev, ragAnswer: answer, ragData: jobInfo.result || jobInfo }));
+        complete(answer, jobInfo.result || jobInfo, context);
       } else if (jobInfo.jobId) {
-        startMatrixRagPoll(jobInfo.jobId);
-      }
+        startMatrixRagPoll(jobInfo.jobId, context);
+      } else throw new Error('Notebook job response is missing its job ID');
     })
-    .catch(err => console.error('Failed to dispatch background RAG query:', err));
+    .catch(err => { if (isCurrent()) onError(`Candidate review could not start: ${err.message}`); });
 }
 
 function buildGroundedRagState(normalised) {
@@ -119,33 +131,20 @@ function buildGroundedRagState(normalised) {
   const citeCount = normalised.notebookLmStatus?.citationsCount;
   return {
     answer: normalised.ragAnswer,
-    citations: citeCount ? [`Verified QuickSpecs Reference (${citeCount} citations)`] : [],
-    source: normalised.notebookLmStatus?.source || 'GROUNDED'
+    citations: [],
+    citationsCount: citeCount ?? null,
+    source: normalised.notebookLmStatus?.source || 'UNKNOWN'
   };
 }
 
 function triggerMatrixRecomputeIfApplicable(prev, fullData, fallbackChassis) {
   if (!prev?.items || prev.items.length === 0) return;
-  fetch('/api/recompute-matrix', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
+  return postJson('/api/recompute-matrix', {
+      runId: prev.runId,
       evalData: prev,
       ragResult: fullData,
       chassisDir: prev.chassisDir || fallbackChassis
-    })
   }).catch(err => console.warn('[App.jsx] Recompute matrix advisory:', err));
-}
-
-function handleEvalResultEffect(normalised, raw, chassisId, setEvalResults, setRagData, startMatrixRagPoll) {
-  setEvalResults(normalised);
-  if (raw.error) return;
-  const needsBgRag = !normalised.ragAnswer && !raw.data?.ragAnswer && Boolean(raw.data?.notebookPayload);
-  if (needsBgRag) {
-    dispatchBackgroundMatrixRagQuery(raw, chassisId, setEvalResults, startMatrixRagPoll);
-  } else if (normalised.ragAnswer) {
-    setRagData(buildGroundedRagState(normalised));
-  }
 }
 
 async function executeSmartSearchRequest({
@@ -157,7 +156,9 @@ async function executeSmartSearchRequest({
   setRagData,
   elapsedIntervalRef,
   stopRagElapsedTimer,
-  startSearchRagPoll
+  startSearchRagPoll,
+  context,
+  isCurrent
 }) {
   if (!query?.trim()) return;
   setIsRagOpen(true);
@@ -170,12 +171,8 @@ async function executeSmartSearchRequest({
   elapsedIntervalRef.current = setInterval(() => { secs += 1.5; setRagElapsedTime(secs); }, 1500);
 
   try {
-    const initRes = await fetch('/api/notebook-query-async', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query, chassis: selectedChassis })
-    });
-    const jobInfo = await initRes.json();
+    const jobInfo = await postJson('/api/notebook-query-async', { query, chassis: selectedChassis });
+    if (!isCurrent()) return;
 
     if (IMMEDIATE_RAG_STATUSES.includes(jobInfo.status)) {
       setRagData(jobInfo.result || jobInfo);
@@ -184,8 +181,10 @@ async function executeSmartSearchRequest({
       return;
     }
 
-    if (jobInfo.jobId) startSearchRagPoll(jobInfo.jobId);
+    if (jobInfo.jobId) startSearchRagPoll(jobInfo.jobId, context);
+    else throw new Error('Notebook job response is missing its job ID');
   } catch (err) {
+    if (!isCurrent()) return;
     setRagData({ query, answer: `Failed to initiate RAG Query: ${err.message || 'Network error'}`, citations: [], source: 'ERROR' });
     setIsQueryingRag(false);
     stopRagElapsedTimer();
@@ -197,18 +196,9 @@ async function executeBoqEvaluationRequest(boqInput, maybeRawText, currentCat, s
   setEvalResults(null);
   try {
     const payload = await buildBoqRequestPayload(boqInput, maybeRawText);
-    const chassisDir = currentCat?.chassisDir || currentCat?.id;
-    const res = await fetch('/api/eval-boq', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...payload, chassisDir })
-    });
-    const data = await res.json();
-    if (!res.ok) {
-      setEvalResults({ status: 'ERROR', error: data.error });
-      return { error: data.error };
-    }
-    return { status: 'ACCEPTED' };
+    const chassisDir = payload.chassisDir || currentCat?.chassisDir || currentCat?.id;
+    const data = await postJson('/api/eval-boq', { ...payload, chassisDir });
+    return { ...data, originalPayload: payload };
   } catch (err) {
     setEvalResults({ status: 'ERROR', error: err.message });
     return { error: err.message };
@@ -262,9 +252,12 @@ function AppMainTabContent({
   handleTriggerKillTask,
   handleTriggerNavigate
 }) {
+  const handleTriggerDemoBoq = () => handleEvaluateBoq(null, STANDARD_SAMPLE_TEXT);
+
   if (activeTab === 'orchestrator') {
     return (
       <div key="orchestrator" className="animate-tab-enter">
+        <PresalesRequestPanel product={currentCatObj} isTaskRunning={isTaskRunning} onEvaluateBoq={handleEvaluateBoq} />
         <MacroOrchestratorFlow
           evalResults={evalResults}
           auditReport={auditReport}
@@ -314,7 +307,7 @@ function AppMainTabContent({
           evalResults={evalResults}
           onOpenPortalFeedback={setSelectedCardForFeedback}
           selectedChassis={selectedChassis}
-          onTriggerDemoBoq={handleEvaluateBoq}
+          onTriggerDemoBoq={handleTriggerDemoBoq}
           onOpenTopology={() => setActiveModal('boqTopology')}
         />
       </div>
@@ -323,7 +316,15 @@ function AppMainTabContent({
 
   if (activeTab === 'pipeline' || activeTab === 'scraper') {
     return (
-      <div key="pipeline" className="animate-tab-enter">
+      <div key="pipeline" className="space-y-6 animate-tab-enter">
+        <ChassisSyncSummaryView
+          selectedChassis={selectedChassis}
+          catalogData={catalogData}
+          onSelectChassis={setSelectedChassis}
+          onNavigateTab={setActiveTab}
+          isTaskRunning={isTaskRunning}
+          onTriggerSyncKnowledge={handleTriggerSyncKnowledge}
+        />
         <ScraperTriggerCard
           logStream={logStream}
           isTaskRunning={isTaskRunning}
@@ -363,7 +364,12 @@ function AppMainTabContent({
   if (activeTab === 'artifacts') {
     return (
       <div key="artifacts" className="animate-tab-enter">
-        <ArtifactInspector currentCatalog={currentCatObj} />
+        <ArtifactInspector
+          currentCatalog={currentCatObj}
+          onTriggerDownloadPdf={handleTriggerDownloadPdf}
+          onNavigateTab={setActiveTab}
+          isTaskRunning={isTaskRunning}
+        />
       </div>
     );
   }
@@ -397,6 +403,8 @@ function AppToolModals({
   auditReport,
   setAuditReport
 }) {
+  const handleTriggerDemoBoq = () => handleEvaluateBoq(null, STANDARD_SAMPLE_TEXT);
+
   return (
     <>
       <ToolModal isOpen={activeModal === 'boqUploader'} onClose={() => setActiveModal(null)} title="Stage 1: BOQ Quote Ingestion & 6-Aspect Math Engine">
@@ -430,7 +438,7 @@ function AppToolModals({
           evalResults={evalResults}
           onOpenPortalFeedback={setSelectedCardForFeedback}
           selectedChassis={selectedChassis}
-          onTriggerDemoBoq={handleEvaluateBoq}
+          onTriggerDemoBoq={handleTriggerDemoBoq}
           onOpenTopology={() => setActiveModal('boqTopology')}
         />
       </ToolModal>
@@ -466,11 +474,68 @@ function AppToolModals({
   );
 }
 
+function completeMatrixRagForRun(answer, fullData, context, state) {
+  if (context?.epoch !== state.evaluationEpoch.current || context?.runId !== state.evaluationRunRef.current) return;
+  const previous = state.evalRef.current;
+  if (!previous || previous.runId !== context.runId) return;
+  const updated = { ...previous, ragAnswer: answer, ragData: fullData };
+  state.evalRef.current = updated;
+  state.setEvalResults(updated);
+  state.setRagData(fullData);
+  triggerMatrixRecomputeIfApplicable(updated, fullData, updated.chassisDir);
+}
+
+function receiveEvaluation(normalised, raw, state) {
+  if (raw.recovered && !state.evaluationRunRef.current) state.evaluationRunRef.current = raw.runId;
+  if (raw.runId && raw.runId !== state.evaluationRunRef.current) return;
+  normalised = { ...normalised, runId: raw.runId || normalised.runId };
+  state.evalRef.current = normalised;
+  state.setEvalResults(normalised);
+  if (normalised.ragAnswer) state.setRagData(buildGroundedRagState(normalised));
+  if (raw.recovered && raw.ragJobId) {
+    state.startMatrixRagPoll(raw.ragJobId, { runId: raw.runId, epoch: state.evaluationEpoch.current });
+    return;
+  }
+  const needsRag = !raw.recovered && !raw.error && !normalised.ragAnswer && Boolean(raw.data?.notebookPayload);
+  if (!needsRag) return;
+  const context = { runId: raw.runId, epoch: state.evaluationEpoch.current };
+  const product = normalised.chassisPrefix || raw.data.chassisPrefix || state.selectedChassisRef.current;
+  dispatchBackgroundMatrixRagQuery(raw, product, context, state.completeMatrixRag, state.startMatrixRagPoll,
+    () => context.epoch === state.evaluationEpoch.current && context.runId === state.evaluationRunRef.current, state.setActionError);
+}
+
+function receiveTaskCompletion(payload, state) {
+  if (!payload.recovered && payload.runId && payload.runId !== state.activeRunRef.current) return;
+  state.activeRunRef.current = null;
+  state.setIsTaskRunning(false);
+  state.setActiveProgress(null);
+  if (payload.recovered) return;
+  state.refreshCatalogs();
+  state.setTaskHistory(prev => [{ type: payload.task || 'PIPELINE_ACTION', status: payload.code === 0 ? 'COMPLETED' : 'FAILED', timestamp: new Date().toISOString() }, ...prev.slice(0, 15)]);
+  const taskName = payload.task || '';
+  if (payload.code === 0 && (taskName.includes('SCRAPE') || taskName.includes('REBUILD'))) state.setActiveTab('catalog');
+}
+
+async function replayClarifiedIntake(candidate, input, catalogs, submit, setError) {
+  if (!input) { setError('Original intake is unavailable. Reload the BOQ before confirming a platform.'); return; }
+  const product = catalogs.find(cat => cat.id === candidate);
+  const payload = await buildBoqRequestPayload(input.boqInput, input.maybeRawText);
+  return submit({ ...payload, chassisName: candidate, chassisDir: product?.chassisDir || candidate });
+}
+
+function recoverIntake(input, evaluation) {
+  if (input?.runId && input.runId === evaluation?.runId) return input;
+  const descriptor = evaluation?.inputDescriptor;
+  if (!descriptor?.filepath || !descriptor.sha256) return null;
+  return { boqInput: { filepath: descriptor.filepath, inputSha256: descriptor.sha256 } };
+}
+
 export default function App() {
   const {
     catalogs,
     catalogData,
     isCatalogLoading,
+    catalogError,
     selectedChassis,
     setSelectedChassis,
     refreshCatalogs
@@ -490,6 +555,13 @@ export default function App() {
   const [activeProgress, setActiveProgress] = useState(null);
 
   const [evalResults, setEvalResults] = useState(null);
+  const evalRef = useRef(null);
+  const evaluationRunRef = useRef(null);
+  const activeRunRef = useRef(null);
+  const inputRef = useRef(null);
+  const evaluationEpoch = useRef(0);
+  const searchEpoch = useRef(0);
+  const [actionError, setActionError] = useState(null);
   const [intakeTopologyData, setIntakeTopologyData] = useState(null);
   const [auditReport, setAuditReport] = useState(null);
   const [isQueryingRag, setIsQueryingRag] = useState(false);
@@ -501,18 +573,15 @@ export default function App() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [selectedCardForFeedback, setSelectedCardForFeedback] = useState(null);
 
-  const { startPoll: startMatrixRagPoll } = useRagPoller({
-    onResult: (answer, fullData) => {
-      setEvalResults(prev => {
-        triggerMatrixRecomputeIfApplicable(prev, fullData, selectedChassisRef.current);
-        return { ...prev, ragAnswer: answer, ragData: fullData };
-      });
+  const completeMatrixRag = (answer, fullData, context) => completeMatrixRagForRun(answer, fullData, context,
+    { evaluationEpoch, evaluationRunRef, evalRef, setEvalResults, setRagData });
+  const { startPoll: startMatrixRagPoll, cancelPoll: cancelMatrixRagPoll } = useRagPoller({
+    onResult: completeMatrixRag,
+    onTimeout: (context) => {
+      if (context?.epoch === evaluationEpoch.current) setActionError('NotebookLM candidate review timed out. The result remains provisional.');
     },
-    onTimeout: () => {
-      setEvalResults(prev => ({ ...prev, ragAnswer: '⚠️ NotebookLM Query Timeout: RAG verification took too long.' }));
-    },
-    onFail: (errMsg) => {
-      setEvalResults(prev => ({ ...prev, ragAnswer: `⚠️ NotebookLM Query Failed: ${errMsg}` }));
+    onFail: (errMsg, context) => {
+      if (context?.epoch === evaluationEpoch.current) setActionError(`NotebookLM candidate review failed: ${errMsg}`);
     }
   });
 
@@ -523,19 +592,23 @@ export default function App() {
       elapsedIntervalRef.current = null;
     }
   };
+  useEffect(() => () => clearInterval(elapsedIntervalRef.current), []);
 
-  const { startPoll: startSearchRagPoll } = useRagPoller({
-    onResult: (_, fullData) => {
+  const { startPoll: startSearchRagPoll, cancelPoll: cancelSearchRagPoll } = useRagPoller({
+    onResult: (_, fullData, context) => {
+      if (context !== searchEpoch.current) return;
       setRagData(fullData);
       setIsQueryingRag(false);
       stopRagElapsedTimer();
     },
-    onTimeout: () => {
+    onTimeout: (context) => {
+      if (context !== searchEpoch.current) return;
       setRagData(prev => ({ ...prev, answer: '⚠️ NotebookLM Query Timeout: No response received within the 15-minute grounding window.', source: 'ERROR' }));
       setIsQueryingRag(false);
       stopRagElapsedTimer();
     },
-    onFail: (errMsg) => {
+    onFail: (errMsg, context) => {
+      if (context !== searchEpoch.current) return;
       setRagData(prev => ({ ...prev, answer: `NotebookLM Query Failed: ${errMsg}`, source: 'ERROR' }));
       setIsQueryingRag(false);
       stopRagElapsedTimer();
@@ -544,26 +617,18 @@ export default function App() {
 
   useSSEStream({
     onTaskStarted: useCallback((payload) => {
+      setLogStream([]);
+      activeRunRef.current = payload.runId;
+      if (payload.task === 'EVAL_BOQ') evaluationRunRef.current = payload.runId;
       setIsTaskRunning(true);
       setActiveProgress({ task: payload.task, currentStep: 0, totalSteps: 0, action: 'Starting...', status: 'started' });
     }, []),
 
-    onTaskCompleted: useCallback((payload) => {
-      setIsTaskRunning(false);
-      setActiveProgress(null);
-      refreshCatalogs();
-      setTaskHistory(prev => [{
-        type: payload.task || 'PIPELINE_ACTION',
-        status: payload.code === 0 ? 'COMPLETED' : 'FAILED',
-        timestamp: new Date().toISOString()
-      }, ...prev.slice(0, 15)]);
-      const taskName = payload.task || '';
-      if (taskName.includes('SCRAPE') || taskName.includes('REBUILD')) {
-        setActiveTab('catalog');
-      }
-    }, [refreshCatalogs]),
+    onTaskCompleted: useCallback(payload => receiveTaskCompletion(payload,
+      { activeRunRef, setIsTaskRunning, setActiveProgress, refreshCatalogs, setTaskHistory, setActiveTab }), [refreshCatalogs]),
 
     onProgress: useCallback((payload) => {
+      if (payload.runId && payload.runId !== activeRunRef.current) return;
       setActiveProgress({
         task: payload.task || 'RUNNING',
         currentStep: payload.step,
@@ -579,16 +644,16 @@ export default function App() {
       setLogStream(prev => [...prev.slice(-200), payload]);
     }, []),
 
-    onEvalResult: useCallback((normalised, raw) => {
-      setIsTaskRunning(false);
-      setActiveProgress(null);
-      handleEvalResultEffect(normalised, raw, selectedChassisRef.current, setEvalResults, setRagData, startMatrixRagPoll);
-    }, [startMatrixRagPoll])
+    onEvalResult: useCallback((normalised, raw) => receiveEvaluation(normalised, raw,
+      { evaluationRunRef, evaluationEpoch, evalRef, setEvalResults, setRagData, selectedChassisRef, completeMatrixRag, startMatrixRagPoll, setActionError }), [startMatrixRagPoll, completeMatrixRag])
   });
 
   const handleSearchLocal = (query) => { setGlobalSearchTerm(query); setActiveTab('catalog'); };
 
-  const handleSmartSearch = (query) => executeSmartSearchRequest({
+  const handleSmartSearch = (query) => {
+    const context = ++searchEpoch.current;
+    void cancelSearchRagPoll('REPLACED_BY_NEW_QUERY');
+    return executeSmartSearchRequest({
     query,
     selectedChassis,
     setIsRagOpen,
@@ -597,50 +662,59 @@ export default function App() {
     setRagData,
     elapsedIntervalRef,
     stopRagElapsedTimer,
-    startSearchRagPoll
+    startSearchRagPoll,
+    context,
+    isCurrent: () => context === searchEpoch.current
   });
+  };
 
   const postScraperEndpoint = async (url, bodyObj) => {
-    setLogStream([]);
-    setActiveTab('scraper');
-    setEvalResults(null);
+    setActionError(null);
     try {
       const options = bodyObj
         ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(bodyObj) }
         : { method: 'POST' };
-      await fetch(url, options);
+      await requestJson(url, options);
+      setActiveTab('pipeline');
     } catch (err) {
-      console.error(err);
+      setActionError(err.message);
     }
   };
 
-  const handleTriggerScrape = (mode) => postScraperEndpoint('/api/scrape', { mode });
+  const handleTriggerScrape = (mode) => postScraperEndpoint('/api/scrape', { mode, chassis: selectedChassis });
   const handleTriggerRebuild = () => postScraperEndpoint('/api/rebuild');
   const handleTriggerSyncKnowledge = () => postScraperEndpoint('/api/sync-knowledge');
   const handleTriggerDownloadPdf = () => postScraperEndpoint('/api/download-pdf', { chassisId: selectedChassis });
-  const handleTriggerNavigate = () => postScraperEndpoint('/api/navigate-oca');
+  const handleTriggerNavigate = () => postScraperEndpoint('/api/navigate-oca', { chassis: selectedChassis });
 
   const handleTriggerKillTask = async () => {
-    try { await fetch('/api/kill-task', { method: 'POST' }); } catch (err) { console.error(err); }
+    try { await requestJson('/api/kill-task', { method: 'POST' }); } catch (err) { setActionError(err.message); }
   };
 
   const currentCatObj = catalogs.find(c => c.id === selectedChassis);
-  const handleEvaluateBoq = (boqInput, maybeRawText) => executeBoqEvaluationRequest(
-    boqInput,
-    maybeRawText,
-    currentCatObj,
-    setLogStream,
-    setEvalResults
-  );
+  const handleEvaluateBoq = async (boqInput, maybeRawText) => {
+    evaluationEpoch.current++;
+    void cancelMatrixRagPoll('REPLACED_BY_NEW_EVALUATION');
+    inputRef.current = { boqInput, maybeRawText };
+    evalRef.current = null;
+    setActionError(null);
+    const response = await executeBoqEvaluationRequest(boqInput, maybeRawText, currentCatObj, setLogStream, setEvalResults);
+    inputRef.current = { boqInput, maybeRawText, runId: response.runId };
+    return response;
+  };
 
   const handleSelectClarification = async (candidate) => {
     setSelectedChassis(candidate);
-    const prevPayload = evalResults?.originalPayload || {};
-    await handleEvaluateBoq({ ...prevPayload, chassisName: candidate, chassisDir: candidate });
+    try { await replayClarifiedIntake(candidate, recoverIntake(inputRef.current, evalRef.current), catalogs, handleEvaluateBoq, setActionError); }
+    catch (err) { setActionError(err.message); }
   };
 
   return (
     <div className="min-h-screen pb-16">
+      {(actionError || catalogError) && <div role="alert" className="p-3 bg-rose-50 text-rose-800 text-sm">
+        {actionError || catalogError}
+        <button className="ml-3 underline" onClick={() => { setActionError(null); refreshCatalogs(); }}>Retry catalog / dismiss</button>
+      </div>}
       <Header
         catalogs={catalogs}
         catalogData={catalogData}

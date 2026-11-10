@@ -44,7 +44,7 @@ const upload = multer({
   limits: { fileSize: 50 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     const ext = path.extname(file.originalname).toLowerCase();
-    const allowed = ['.xlsx', '.xls', '.csv', '.json', '.txt', '.pdf', '.png', '.jpg', '.jpeg', '.webp'];
+    const allowed = ['.xlsx', '.xls', '.csv', '.tsv', '.json', '.txt', '.pdf', '.png', '.jpg', '.jpeg', '.webp'];
     if (allowed.includes(ext)) {
       cb(null, true);
     } else {
@@ -144,7 +144,7 @@ router.post('/eval-boq', (req, res) => {
 
   let targetPath = safeFilepath;
   if (!targetPath && rawText) {
-    targetPath = path.join(TEMP_DIR, `boq_text_${Date.now()}.json`);
+    targetPath = path.join(TEMP_DIR, `boq_text_${Date.now()}_${require('crypto').randomBytes(4).toString('hex')}.txt`);
     fs.writeFileSync(targetPath, rawText, 'utf-8');
   }
 
@@ -167,6 +167,10 @@ router.post('/eval-boq', (req, res) => {
   }
 
   const evalScript = path.join(PROJECT_ROOT, 'scripts', 'evaluators', 'eval_boq.js');
+  const inputSha256 = require('crypto').createHash('sha256').update(fs.readFileSync(targetPath)).digest('hex');
+  if (req.body.inputSha256 && req.body.inputSha256 !== inputSha256) return sendErrorResponse(res, 409, 'Original intake content changed. Upload or review the input again.', { source: 'EVALUATION_ROUTER' });
+  const inputDescriptor = { filepath: targetPath, sha256: inputSha256 };
+  const publishEvaluation = event => broadcastSSE({ ...event, inputDescriptor });
   const args = [evalScript, targetPath, '--json', '--defer-rag'];
   if (safeChassisDir) args.push('--chassis', safeChassisDir);
   const isCdpActive = ['1', 'true'].includes(String(process.env.ACTIVE_CDP_SESSION || '').trim().toLowerCase());
@@ -251,7 +255,7 @@ router.post('/eval-boq', (req, res) => {
       }
 
       broadcastSSE({ type: 'TASK_COMPLETED', code: 1, task: 'EVAL_BOQ', runId, durationMs: 0 });
-      broadcastSSE({ type: 'EVAL_RESULT', error: err.message, runId });
+      publishEvaluation({ type: 'EVAL_RESULT', error: err.message, runId });
 
       const traceDir = path.join(OUTPUTS_DIR, 'history', 'runs');
       if (!fs.existsSync(traceDir)) fs.mkdirSync(traceDir, { recursive: true });
@@ -332,9 +336,9 @@ router.post('/eval-boq', (req, res) => {
           const blocked = validated.data.customerDisposition === 'DELIVERY_BLOCKED_UNBUILDABLE' ||
             validated.data.evalResults?.customerDisposition === 'DELIVERY_BLOCKED_UNBUILDABLE';
           const resultStatus = blocked && parsedData.status !== 'ERROR' ? 'ACTION_REQUIRED' : parsedData.status || validated.data.status;
-          broadcastSSE({ type: 'EVAL_RESULT', data: { ...validated.data, status: resultStatus }, runId });
+          publishEvaluation({ type: 'EVAL_RESULT', data: { ...validated.data, status: resultStatus }, runId });
         } else {
-          broadcastSSE({
+          publishEvaluation({
             type: 'EVAL_RESULT',
             status: 'SCHEMA_INVALID',
             customerDisposition: 'DELIVERY_BLOCKED_UNBUILDABLE',
@@ -356,12 +360,12 @@ router.post('/eval-boq', (req, res) => {
         }
 
       } else if (parsedData) {
-        broadcastSSE({ type: 'EVAL_RESULT', error: parsedData, runId });
+        publishEvaluation({ type: 'EVAL_RESULT', error: parsedData, runId });
       } else {
         throw new Error('No valid JSON result found in stdout');
       }
     } catch (err) {
-      broadcastSSE({ type: 'EVAL_RESULT', error: lastErrorMessage || 'Failed to parse evaluator JSON', runId });
+      publishEvaluation({ type: 'EVAL_RESULT', error: lastErrorMessage || 'Failed to parse evaluator JSON', runId });
     }
   });
 });
@@ -395,7 +399,7 @@ router.post(['/export-boq', '/export-boq-xlsx'], (req, res) => {
   const rankedSolution = evalResults.conflictGraph?.rankedSolutions?.find(s => s.rank === tier) || null;
   const historyExportsDir = path.join(OUTPUTS_DIR, 'history', 'exports');
   if (!fs.existsSync(historyExportsDir)) fs.mkdirSync(historyExportsDir, { recursive: true });
-  const metadata = { id: `${timestamp}-${tier}`, filename: exportFilename, chassisId: chassisId || 'Unknown', rank: tier, solutionName: rankedSolution?.name || 'N/A', estimatedCostUsd: rankedSolution?.estimatedCostUsd || 0, downloadPath: `/artifacts/temp/exports/${exportFilename}`, exportedAt: new Date(timestamp).toISOString() };
+  const metadata = { id: `${timestamp}-${tier}`, filename: exportFilename, chassisId: chassisId || 'Unknown', rank: tier, solutionName: rankedSolution?.name || 'N/A', estimatedCostUsd: rankedSolution?.estimatedCostUsd ?? null, pricingComplete: rankedSolution?.pricingComplete ?? null, runId: evalResults.runId || null, manifestSha256: evalResults.manifestSha256 || null, downloadPath: `/artifacts/temp/exports/${exportFilename}`, exportedAt: new Date(timestamp).toISOString() };
   try {
     const { safeWriteJsonAtomic } = require('../../scripts/lib/system/fs_compat.js');
     safeWriteJsonAtomic(path.join(historyExportsDir, `${timestamp}-${tier}.json`), metadata);
@@ -419,19 +423,39 @@ router.post('/audit-catalog', (req, res) => {
 });
 
 // ── Recompute Strategy Matrix with Grounded RAG ──────────────────────────────
+function resolveRecomputeProduct(evalData, requestedDirectory) {
+  const directory = evalData.chassisDir || evalData.evalResults?.chassisDir;
+  const expected = assertSafePath(resolveChassisDirectory(directory));
+  if (requestedDirectory && assertSafePath(resolveChassisDirectory(requestedDirectory)) !== expected) {
+    const error = new Error('Product does not match the stored evaluation');
+    error.status = 409;
+    throw error;
+  }
+  return expected;
+}
+
 router.post('/recompute-matrix', (req, res) => {
-  const { evalData, ragResult, chassisDir } = req.body;
+  const { getRunSnapshot } = require('../services/taskManager.cjs');
+  const { ragResult, chassisDir, runId } = req.body;
+  const snapshot = getRunSnapshot();
+  const stored = snapshot.latestResult;
+  if (snapshot.activeTask?.task === 'EVAL_BOQ' && snapshot.activeTask.runId !== runId) {
+    return sendErrorResponse(res, 409, 'A newer evaluation is running', { source: 'EVALUATION_ROUTER' });
+  }
+  if (!runId || stored?.runId !== runId || !stored.data) {
+    return sendErrorResponse(res, 409, 'Recompute requires the current server-held evaluation run', { source: 'EVALUATION_ROUTER' });
+  }
+  const evalData = stored.data;
   if (!evalData || !ragResult) {
     return sendErrorResponse(res, 400, 'evalData and ragResult payloads are required', { source: 'EVALUATION_ROUTER' });
   }
   try {
     const { recomputeStrategyMatrixWithRag } = require('../../scripts/evaluators/eval_boq.js');
-    let safeChassisDir = chassisDir;
-    if (safeChassisDir) {
-      try { safeChassisDir = assertSafePath(safeChassisDir); } catch (_) {}
-    }
+    let safeChassisDir;
+    try { safeChassisDir = resolveRecomputeProduct(evalData, chassisDir); }
+    catch (err) { return sendErrorResponse(res, err.status || 403, err, { source: 'EVALUATION_ROUTER' }); }
     const updatedData = recomputeStrategyMatrixWithRag(evalData, ragResult, safeChassisDir);
-    broadcastSSE({ type: 'EVAL_RESULT_UPDATED', data: updatedData });
+    broadcastSSE({ type: 'EVAL_RESULT_UPDATED', data: updatedData, runId, inputDescriptor: stored.inputDescriptor });
     res.json({ success: true, data: updatedData });
   } catch (err) {
     sendErrorResponse(res, 500, err, { source: 'EVALUATION_ROUTER' });
@@ -453,15 +477,41 @@ router.get('/decision-traces', (req, res) => {
 });
 
 // ── Presales Intent Query Router ──────────────────────────────────────────────
+function resolveQueryContext(input) {
+  if (!input || typeof input !== 'object' || Array.isArray(input)) throw new Error('Query context must be an object');
+  const context = { ...input };
+  for (const key of ['filePath', 'file', 'secondaryFilePath', 'vendorFilePath', 'customerFilePath']) {
+    if (context[key]) context[key] = assertSafePath(context[key]);
+  }
+  if (context.chassisDir) context.chassisDir = assertSafePath(resolveChassisDirectory(context.chassisDir));
+  return context;
+}
+
 router.post('/query/route', async (req, res) => {
+  if (isTaskRunning()) return sendErrorResponse(res, 409, 'Another workflow is currently running', { source: 'EVALUATION_ROUTER' });
+  const { query, context: inputContext } = req.body || {};
+  if (typeof query !== 'string' || !query.trim()) return sendErrorResponse(res, 400, 'Missing query parameter', { source: 'EVALUATION_ROUTER' });
+  let context;
+  try { context = resolveQueryContext(inputContext || {}); }
+  catch (err) { return sendErrorResponse(res, 400, err, { source: 'EVALUATION_ROUTER' }); }
+  const { _setActiveTask, getActiveTask } = require('../services/taskManager.cjs');
+  const runId = `query_${Date.now()}_${require('crypto').randomBytes(4).toString('hex')}`;
+  const abortController = new AbortController();
+  _setActiveTask({ type: 'PRESALES_QUERY', runId, startTime: Date.now(), abortController });
+  broadcastSSE({ type: 'TASK_STARTED', task: 'PRESALES_QUERY', runId, product: context.chassisName });
+  let code = 1;
   try {
     const { executeRoutedQuery } = require('../../scripts/evaluators/route_query.js');
-    const { query, context } = req.body || {};
-    if (!query) return sendErrorResponse(res, 400, 'Missing query parameter', { source: 'EVALUATION_ROUTER' });
-    const result = await executeRoutedQuery(query, context || {});
+    const result = await executeRoutedQuery(query, { ...context, signal: abortController.signal });
+    result.cancellationRequested = abortController.signal.aborted;
+    code = result.result?.status === 'ERROR' ? 1 : 0;
+    broadcastSSE({ type: 'ROUTED_RESULT', runId, product: context.chassisName, data: result, cancellationRequested: abortController.signal.aborted });
     res.json(result);
   } catch (err) {
     sendErrorResponse(res, 500, err, { source: 'EVALUATION_ROUTER' });
+  } finally {
+    if (getActiveTask()?.runId === runId) _setActiveTask(null);
+    broadcastSSE({ type: 'TASK_COMPLETED', task: 'PRESALES_QUERY', runId, code });
   }
 });
 

@@ -98,7 +98,7 @@ export default function ChassisSyncSummaryView({
 
   useEffect(() => {
     fetchSummary();
-  }, []);
+  }, [isTaskRunning]);
 
   const activeProductModel = useMemo(() => {
     if (!selectedChassis || !data?.variants) return null;

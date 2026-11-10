@@ -24,10 +24,10 @@ export default function MatrixStatusBanners({ evalResults }) {
         <div className="p-2.5 rounded-xl border border-emerald-300 bg-emerald-50/70 text-emerald-950 text-xs flex items-center justify-between shadow-xs">
           <div className="flex items-center gap-2.5">
             <span className="px-2 py-0.5 rounded text-[10px] bg-emerald-700 text-white font-bold font-mono uppercase shrink-0">
-              DELIVERY_AUTHORIZED
+              DELIVERY_CERTIFICATE_PRESENT
             </span>
             <span className="font-medium">
-              Cryptographic delivery authorization verified ({evalResults.deliveryAuthorization.certificateId || 'CERT-OK'}). 100% buildable proposal export cleared.
+              Delivery certificate supplied ({evalResults.deliveryAuthorization.certificateId || 'ID unavailable'}). The server revalidates authorization against the current manifest before export.
             </span>
           </div>
         </div>
@@ -38,17 +38,21 @@ export default function MatrixStatusBanners({ evalResults }) {
         <div className="p-3 rounded-xl border border-amber-300 bg-amber-50/90 text-amber-950 text-xs flex items-center justify-between shadow-xs">
           <div className="flex items-center gap-2">
             <span className="badge badge-amber font-mono font-bold animate-pulse">⏳ Provisional Matrix</span>
-            <span className="font-medium">Physical aspect math verified. Background Gemini NotebookLM RAG verification in progress...</span>
+            <span className="font-medium">Candidate review remains incomplete. Consult the stage outcomes for local checks and cloud review status.</span>
           </div>
         </div>
-      ) : (evalResults?.matrixStatus === 'VERIFIED' || evalResults?.ragSecondOpinion || evalResults?.ragResult) ? (
+      ) : evalResults?.ephemeralSourceValidation?.success === true ? (
         <div className="p-2.5 rounded-xl border border-emerald-200 bg-emerald-50/80 text-emerald-900 text-xs flex items-center justify-between shadow-xs">
           <div className="flex items-center gap-2">
-            <span className="badge badge-emerald font-mono font-bold">✅ Dual-Brain RAG Verified</span>
-            <span className="font-medium">100% buildable, certified against live NotebookLM sources and QuickSpecs knowledge.</span>
+            <span className="badge badge-emerald font-mono font-bold">Grounded candidate review recorded</span>
+            <span className="font-medium">Review source citations and manifest identity. Official vendor acceptance is a separate requirement.</span>
           </div>
         </div>
       ) : null}
+
+      {evalResults && <div className="p-3 rounded-xl border border-slate-200 text-xs text-slate-700">
+        Vendor acceptance: {evalResults.portalValidationStatus || 'PORTAL VALIDATION PENDING'}. Changing the manifest requires new acceptance evidence.
+      </div>}
 
       {/* Value Engineering & Commercial Deal Optimization (GAP 2 & GAP 5) */}
       {evalResults?.valueEngineering && (

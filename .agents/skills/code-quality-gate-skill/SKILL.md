@@ -13,7 +13,7 @@ description: >-
 ## 1. Scope & Quality Invariants
 This skill establishes non-negotiable code quality, cyclomatic complexity, static analysis, and verification boundaries for all automated agents, subagents, and human contributors operating on this codebase.
 
-- **Universal Cyclomatic Complexity $\le 30$ (`INV-229`, `INV-230`)**: Every function across all JavaScript files MUST strictly comply with a maximum cyclomatic complexity ceiling of 30. Zero functions exceeding 30 are permitted.
+- **Universal Cyclomatic Complexity $\le 30$ (`INV-229`, `INV-230`, `INV-233`)**: Every function across all JavaScript files MUST strictly comply with a maximum cyclomatic complexity ceiling of 30. Zero functions exceeding 30 are permitted.
 - **Zero Lint Warnings**: `oxlint` across core scripts and tests MUST return 0 warnings and 0 errors.
 - **Clean DAG (0 Circular Dependencies)**: The module graph across 690+ files MUST remain a strict directed acyclic graph.
 - **Non-Empty Isolated Test Discovery (`INV-129`, `INV-218`)**: Every domain test suite MUST discover and execute $>0$ tests; silent passes with 0 assertions or 0 suites are strictly failed.

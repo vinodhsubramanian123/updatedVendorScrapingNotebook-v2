@@ -54,91 +54,67 @@ function _detectProductDomain(evalData) {
   return 'SERVER';
 }
 
-function _buildStorageArrayAspectChecks(evalData) {
-  return [
-    { id: 1, name: 'Active Controller Nodes', status: 'PASS', detail: `${_pick(evalData.nodeCount, 2, 2)} Active/Active Controller Nodes` },
-    { id: 2, name: 'NVMe Solid-State Media', status: 'PASS', detail: `${_pick(evalData.driveCount, 0, 0)} NVMe SSDs Provisioned` },
-    { id: 3, name: 'Host Interconnect Ports', status: 'PASS', detail: '32Gb FC / 25GbE iSCSI Host Target Qualified' },
-    { id: 4, name: 'Turnkey Enclosure & Rails', status: 'PASS', detail: '4U Storage Array Chassis & Sliding Rail Kit' },
-    { id: 5, name: 'Alletra OS & Data Services', status: 'PASS', detail: 'Thin Provisioning, Deduplication & HA Failover Active' },
-    { id: 6, name: 'Redundant Power Envelope', status: 'PASS', detail: 'Dual Titanium High-Efficiency Power Supplies' },
-    { id: 7, name: 'Support Services', status: 'PASS', detail: `Tech Care: ${evalData.hasSupportService ? '✅' : '3-Yr Tech Care Basic'}` }
+function _buildNonServerAspectChecks(domain, evalData) {
+  const descriptors = {
+    SAN: [
+      { id: 1, name: 'Chassis & Fabric Ports', detail: `${_pick(evalData.portCount, 24, 24)} Fibre Channel Ports (Checks pending)` },
+      { id: 2, name: 'Optical Link Transceivers', detail: '32Gb SFP+ Short Wave Optics (Checks pending)' },
+      { id: 3, name: 'Brocade Fabric OS', detail: 'Enterprise Fabric OS (Checks pending)' },
+      { id: 4, name: 'Turnkey SAN Enclosure & Rails', detail: '1U Rackmount Enclosure & Rail Kit (Checks pending)' },
+      { id: 5, name: 'Enterprise Power & Cooling', detail: 'Integrated 1U Hot-Plug PSUs & Dual Fans (Checks pending)' },
+      { id: 6, name: 'Support Services', detail: `Tech Care: ${evalData.hasSupportService ? '✅' : '3-Yr Tech Care Basic'}` }
+    ],
+    TAPE: [
+      { id: 1, name: 'Robotic Tape Library Enclosure', detail: 'StoreEver MSL Base Enclosure (Checks pending)' },
+      { id: 2, name: 'LTO Ultrium Tape Drives', detail: `${_pick(evalData.driveCount, 1, 1)} LTO SAS/FC Tape Drives (Checks pending)` },
+      { id: 3, name: 'Cartridge Slot Capacity', detail: `${_pick(evalData.slotCount, 40, 40)} Active Cartridge Storage Slots (Checks pending)` },
+      { id: 4, name: 'Host HBA / Controller Interface', detail: 'SAS / FC Controller Host Connectivity (Checks pending)' },
+      { id: 5, name: 'Redundant Power & Rails', detail: 'Hot-Plug Redundant Power & Enclosure Rails (Checks pending)' },
+      { id: 6, name: 'Support Services', detail: `Tech Care: ${evalData.hasSupportService ? '✅' : '3-Yr Tech Care Basic'}` }
+    ],
+    STORAGE_ARRAY: [
+      { id: 1, name: 'Active Controller Nodes', detail: `${_pick(evalData.nodeCount, 2, 2)} Active/Active Nodes (Checks pending)` },
+      { id: 2, name: 'NVMe Solid-State Media', detail: `${_pick(evalData.driveCount, 0, 0)} NVMe SSDs Provisioned (Checks pending)` },
+      { id: 3, name: 'Host Interconnect Ports', detail: '32Gb FC / 25GbE Target Qualified (Checks pending)' },
+      { id: 4, name: 'Turnkey Enclosure & Rails', detail: 'Storage Enclosure & Rails (Checks pending)' },
+      { id: 5, name: 'Alletra OS & Data Services', detail: 'HA Failover Active (Checks pending)' },
+      { id: 6, name: 'Redundant Power Envelope', detail: 'Dual High-Efficiency PSUs (Checks pending)' },
+      { id: 7, name: 'Support Services', detail: `Tech Care: ${evalData.hasSupportService ? '✅' : '3-Yr Tech Care Basic'}` }
+    ],
+    FABRIC_INTERCONNECT: [
+      { id: 1, name: 'Virtual Connect Architecture', detail: 'Synergy Composable Fabric Interconnect (Checks pending)' },
+      { id: 2, name: 'QSFP28 Uplink Ports', detail: `${_pick(evalData.portCount, 32, 32)} Uplinks (Checks pending)` },
+      { id: 3, name: 'Frame Downlink Fabric', detail: 'Frame Interconnect Bay Routing (Checks pending)' },
+      { id: 4, name: 'OneView Orchestration', detail: 'SDN Automation Active (Checks pending)' },
+      { id: 5, name: 'Optical Links & DAC Transceivers', detail: 'Optics & DAC Qualified (Checks pending)' },
+      { id: 6, name: 'Passive Frame Cooling & Power', detail: 'Synergy Shared Power (Checks pending)' },
+      { id: 7, name: 'Support Services', detail: `Tech Care: ${evalData.hasSupportService ? '✅' : '3-Yr Tech Care Basic'}` }
+    ],
+    CRAY_RACK: [
+      { id: 1, name: 'Cabinet Form Factor', detail: '42U High-Density Rack (Checks pending)' },
+      { id: 2, name: 'Load & Caster Capacity', detail: 'Heavy-Duty Shock Pallet Qualified (Checks pending)' },
+      { id: 3, name: 'High-Density PDU Enclosure', detail: 'Dual 3-Phase PDUs (Checks pending)' },
+      { id: 4, name: 'Thermal Airflow Doors', detail: 'High-Airflow Doors (Checks pending)' },
+      { id: 5, name: 'Cable Management Channels', detail: 'Vertical Channels (Checks pending)' },
+      { id: 6, name: 'Slingshot Fabric Support', detail: 'Slingshot Interconnect (Checks pending)' },
+      { id: 7, name: 'Support Services', detail: `Tech Care: ${evalData.hasSupportService ? '✅' : '3-Yr Tech Care'}` }
+    ]
+  };
+  const list = descriptors[domain] || [
+    { id: 'NOT_EVALUATED', name: `${domain} Aspect Validation`, detail: 'Canonical domain check results are unavailable. Review evaluation diagnostics.' }
   ];
+  return list.map(item => ({ ...item, status: 'NOT_EVALUATED' }));
 }
 
-function _buildFabricAspectChecks(evalData) {
-  return [
-    { id: 1, name: 'Virtual Connect Architecture', status: 'PASS', detail: 'Synergy Composable 100Gb F32 Fabric Interconnect' },
-    { id: 2, name: 'QSFP28 Uplink Ports', status: 'PASS', detail: `${_pick(evalData.portCount, 32, 32)} 100GbE / 32Gb FC QSFP28 Uplinks` },
-    { id: 3, name: 'Frame Downlink Fabric', status: 'PASS', detail: 'Redundant Frame Interconnect Bay Routing Qualified' },
-    { id: 4, name: 'HPE OneView Orchestration', status: 'PASS', detail: 'Software-Defined Network Automation Active' },
-    { id: 5, name: 'Optical Links & DAC Transceivers', status: 'PASS', detail: '100G QSFP28 & 25G SFP28 Cables Qualified' },
-    { id: 6, name: 'Passive Frame Cooling & Power', status: 'PASS', detail: 'Synergy 12000 Shared Frame Redundant Power' },
-    { id: 7, name: 'Support Services', status: 'PASS', detail: `Tech Care: ${evalData.hasSupportService ? '✅' : '3-Yr Tech Care Basic'}` }
-  ];
-}
-
-function _buildCrayRackAspectChecks(evalData) {
-  return [
-    { id: 1, name: 'Cabinet Form Factor', status: 'PASS', detail: '42U High-Density Datacenter Server Rack' },
-    { id: 2, name: 'Load & Caster Capacity', status: 'PASS', detail: 'Heavy-Duty Shock Pallet & Leveling Feet Qualified' },
-    { id: 3, name: 'High-Density PDU Enclosure', status: 'PASS', detail: 'Dual 3-Phase Intelligent Vertical PDUs' },
-    { id: 4, name: 'Thermal Airflow Doors', status: 'PASS', detail: '80%+ Perforated Hexagonal High-Airflow Front/Rear' },
-    { id: 5, name: 'Cable Management Channels', status: 'PASS', detail: 'High-Capacity Vertical & Horizontal Tie-Off Channels' },
-    { id: 6, name: 'Slingshot Fabric Support', status: 'PASS', detail: 'Cray Slingshot High-Speed Interconnect Qualified' },
-    { id: 7, name: 'Support Services', status: 'PASS', detail: `Tech Care: ${evalData.hasSupportService ? '✅' : '3-Yr Pointnext / Tech Care'}` }
-  ];
-}
-
-function _buildSanAspectChecks(evalData) {
-  return [
-    { id: 1, name: 'Chassis & Fabric Ports', status: 'PASS', detail: `${_pick(evalData.portCount, 24, 24)} Fibre Channel Ports Enabled` },
-    { id: 2, name: 'Optical Transceivers', status: 'PASS', detail: `${_pick(evalData.transceiverCount, 0, 0)} SW/LW SFP+ Modules` },
-    { id: 3, name: 'SAN Fabric Routing', status: 'PASS', detail: 'Brocade Fabric OS / B-Series Architecture' },
-    { id: 4, name: 'Rack & Mounting Kit', status: 'PASS', detail: 'Integrated 1U Switch Rail Kit Qualified' },
-    { id: 5, name: 'Management Interface', status: 'PASS', detail: 'Out-of-Band 1GbE Ethernet & Serial Console' },
-    { id: 6, name: 'Dual Power Envelope', status: 'PASS', detail: 'Redundant Integrated AC Power & Fan Assembly' },
-    { id: 7, name: 'Support Services', status: 'PASS', detail: `Tech Care: ${evalData.hasSupportService ? '✅' : '3-Yr Tech Care Basic'}` }
-  ];
-}
-
-function _buildTapeAspectChecks(evalData) {
-  return [
-    { id: 1, name: 'Enclosure & Robotics', status: 'PASS', detail: `${_pick(evalData.driveCount, 0, 0)} Tape Drive(s) / Robotics Scalable` },
-    { id: 2, name: 'Cartridge Slots & Mail Slots', status: 'PASS', detail: '32-Slot Base Enclosure Qualified' },
-    { id: 3, name: 'Tape Interface (SAS/FC)', status: 'PASS', detail: 'LTO-8 / LTO-9 Ultrium Controller Qualified' },
-    { id: 4, name: 'Rack Kit & Redundancy', status: 'PASS', detail: '3U Rail Kit & Cable Management Arm' },
-    { id: 5, name: 'Barcode Reader / Media', status: 'PASS', detail: 'Automated Barcode Reader Active' },
-    { id: 6, name: 'Power & Cooling', status: 'PASS', detail: 'Redundant Power Supply Qualified' },
-    { id: 7, name: 'Support Services', status: 'PASS', detail: `Tech Care: ${evalData.hasSupportService ? '✅' : '3-Yr Tech Care Basic'}` }
-  ];
-}
-
-/**
- * Build the structured aspectChecks display array from raw eval fields.
- * This encapsulates all hardware-domain label logic (fans, batteries, DC lug kits).
- *
- * @param {object} evalData  Inner evalResults object from the evaluator output
- * @returns {Array<{id:number, name:string, status:'PASS'|'FAIL', detail:string}>}
- */
-export function buildAspectChecksFromEval(evalData) {
-  if (!evalData || Object.keys(evalData).length === 0) return [];
-  const domain = _detectProductDomain(evalData);
-  if (domain === 'SAN') return _buildSanAspectChecks(evalData);
-  if (domain === 'TAPE') return _buildTapeAspectChecks(evalData);
-  if (domain === 'STORAGE_ARRAY') return _buildStorageArrayAspectChecks(evalData);
-  if (domain === 'FABRIC_INTERCONNECT') return _buildFabricAspectChecks(evalData);
-  if (domain === 'CRAY_RACK') return _buildCrayRackAspectChecks(evalData);
-
-  let pcieStatus = 'UNKNOWN';
-  if (typeof evalData.requiredPcieCards === 'number' && typeof evalData.totalPcieSlotsAvailable === 'number') {
-    pcieStatus = evalData.requiredPcieCards <= evalData.totalPcieSlotsAvailable ? 'PASS' : 'FAIL';
-  }
-
-  const powerStatus = _computePowerStatus(evalData);
+function _buildServerAspectChecks(evalData) {
   const fanIcon = _boolLabel(evalData.hasHighPerfFans, '✅', '❌', '⚠️ Unknown');
   const batteryIcon = _boolLabel(evalData.hasSmartBattery, '✅', '❌', '⚠️ Unknown');
-  const dcPsuLabel = _boolLabel(evalData.hasDcPowerSupply, 'YES', 'NO', 'UNKNOWN');
+  const pcieStatus = (evalData.requiredPcieCards !== undefined && evalData.totalPcieSlotsAvailable !== undefined)
+    ? (evalData.requiredPcieCards > evalData.totalPcieSlotsAvailable ? 'FAIL' : 'PASS')
+    : 'PASS';
+
+  const powerStatus = _computePowerStatus(evalData);
+  const dcPsuLabel = evalData.hasDcPowerSupply === true ? 'YES' : evalData.hasDcPowerSupply === false ? 'NO' : 'UNKNOWN';
   const lugKitIcon = _boolLabel(evalData.hasDcLugKit, '✅', '❌', 'N/A');
 
   return [
@@ -180,6 +156,22 @@ export function buildAspectChecksFromEval(evalData) {
   ];
 }
 
+/**
+ * Use the canonical checker's results. Component presence and product names
+ * cannot establish complete physical validation or domain applicability.
+ */
+export function buildAspectChecksFromEval(evalData) {
+  if (!evalData || Object.keys(evalData).length === 0) return [];
+  if (Array.isArray(evalData.evalSummary?.aspectChecks) && evalData.evalSummary.aspectChecks.length > 0) {
+    return evalData.evalSummary.aspectChecks;
+  }
+  const domain = _detectProductDomain(evalData);
+  if (domain !== 'SERVER') {
+    return _buildNonServerAspectChecks(domain, evalData);
+  }
+  return _buildServerAspectChecks(evalData);
+}
+
 function extractHardwareMetrics(data, inner) {
   return {
     cpuCount: _pick(inner.cpuCount, data.cpuCount, undefined),
@@ -193,7 +185,7 @@ function extractHardwareMetrics(data, inner) {
     hasDcLugKit: _pick(inner.hasDcLugKit, data.hasDcLugKit, undefined),
     hasOcpAdapter: _pick(inner.hasOcpAdapter, data.hasOcpAdapter, undefined),
     hasSupportService: _pick(inner.hasSupportService, data.hasSupportService, undefined),
-    aspectChecks: inner.aspectChecks ?? data.aspectChecks ?? buildAspectChecksFromEval(inner)
+    aspectChecks: inner.aspectChecks ?? data.aspectChecks ?? buildAspectChecksFromEval({ ...data, ...inner })
   };
 }
 
@@ -273,7 +265,7 @@ export function deriveDualBrainBadges(data = {}, inner = {}) {
       id: 'LOCAL_DETERMINISTIC_PASS',
       label: 'Local Deterministic: PASS',
       variant: 'emerald',
-      tooltip: 'All 7 physical constraint aspects passed deterministic mathematical boundary checks.'
+      tooltip: 'The evaluator reports that its applicable local physical checks passed. Cloud and vendor acceptance require separate evidence.'
     });
   } else if (isMathClean === false) {
     badges.push({
@@ -284,7 +276,7 @@ export function deriveDualBrainBadges(data = {}, inner = {}) {
     });
   }
 
-  if (isCloudGrounded) {
+  if (isCloudGrounded === true) {
     badges.push({
       id: 'CLOUD_GROUNDED_VERIFIED',
       label: 'Cloud Grounded: VERIFIED',
@@ -302,7 +294,17 @@ export function deriveDualBrainBadges(data = {}, inner = {}) {
   return badges;
 }
 
+function _actionRequiredPayload(payload) {
+  if (!payload.data && payload.error?.status === 'ACTION_REQUIRED') {
+    const actionable = payload.error;
+    return { ...normalizeEvalResult({ data: { ...actionable, ...actionable.data } }), status: 'ACTION_REQUIRED' };
+  }
+  return null;
+}
+
 function _handleAbnormalPayload(payload) {
+  const actionable = _actionRequiredPayload(payload);
+  if (actionable) return actionable;
   if (payload.status === 'SCHEMA_INVALID' || payload.data?.isContractInvalid === true || payload.data?.evalResults?.isContractInvalid === true) {
     const diagnostic = payload.data || {};
     return {
@@ -338,7 +340,7 @@ function _handleAbnormalPayload(payload) {
   }
 
   if (payload.error && !payload.data) {
-    return { status: 'ERROR', error: payload.error?.error || 'Evaluation failed' };
+    return { status: 'ERROR', error: typeof payload.error === 'string' ? payload.error : (payload.error?.error || payload.error?.message || 'Evaluation failed') };
   }
 
   return null;
@@ -401,13 +403,20 @@ function _hoistClarificationFields(data, inner) {
  */
 export function normalizeEvalResult(payload) {
   const abnormal = _handleAbnormalPayload(payload);
-  if (abnormal) return abnormal;
+  if (abnormal) {
+    const res = { ...abnormal };
+    if (payload.runId !== undefined) res.runId = payload.runId;
+    if (payload.inputDescriptor !== undefined) res.inputDescriptor = payload.inputDescriptor;
+    return res;
+  }
 
   const data = payload.data || {};
   const inner = data.evalResults || {};
 
   return {
     ...data,
+    runId: payload.runId || data.runId || null,
+    inputDescriptor: payload.inputDescriptor || data.inputDescriptor || null,
     ..._hoistEvaluationFields(data, inner),
     ...extractHardwareMetrics(data, inner),
     ...extractConflictAndStrategy(data, inner),

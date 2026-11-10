@@ -12,7 +12,7 @@ export default function ChassisHeaderSummary({ summary, onTriggerSyncKnowledge, 
           <Server className="w-5 h-5 text-emerald-600" />
         </div>
         <div className="flex items-baseline gap-2">
-          <span className="text-2xl font-black text-slate-800 tracking-tight">{summary.totalProducts || 0}</span>
+          <span className="text-2xl font-black text-slate-800 tracking-tight">{summary.totalChassisVariants ?? 'Unknown'}</span>
           <span className="text-xs text-slate-500 font-medium">Products discovered</span>
         </div>
         <div className="text-[11px] text-slate-400 mt-1">Coverage and validation vary by product</div>
@@ -24,10 +24,10 @@ export default function ChassisHeaderSummary({ summary, onTriggerSyncKnowledge, 
           <Layers className="w-5 h-5 text-blue-600" />
         </div>
         <div className="flex items-baseline gap-2">
-          <span className="text-2xl font-black text-slate-800 tracking-tight">{(summary.totalSKUs || 0).toLocaleString()}</span>
+          <span className="text-2xl font-black text-slate-800 tracking-tight">{summary.totalPortfolioSKUs?.toLocaleString() ?? 'Unknown'}</span>
           <span className="text-xs text-blue-600 font-medium">Stored Catalog</span>
         </div>
-        <div className="text-[11px] text-slate-400 mt-1">Hardware + Service SKUs</div>
+        <div className="text-[11px] text-slate-400 mt-1">Sum of per-product unique hardware + service codes</div>
       </div>
 
       <div className="bg-white border border-slate-200/80 rounded-xl p-4 shadow-sm">
@@ -36,7 +36,7 @@ export default function ChassisHeaderSummary({ summary, onTriggerSyncKnowledge, 
           <ShieldCheck className="w-5 h-5 text-purple-600" />
         </div>
         <div className="flex items-baseline gap-2">
-          <span className="text-2xl font-black text-slate-800 tracking-tight">{summary.totalRules || 0}</span>
+          <span className="text-2xl font-black text-slate-800 tracking-tight">{summary.totalActiveRules ?? 'Unknown'}</span>
           <span className="text-xs text-purple-600 font-medium">5-Level Hierarchy</span>
         </div>
         <div className="text-[11px] text-slate-400 mt-1">Physical Constraints</div>
@@ -49,7 +49,7 @@ export default function ChassisHeaderSummary({ summary, onTriggerSyncKnowledge, 
             <Database className="w-5 h-5 text-amber-600" />
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-sm font-bold text-slate-700">Multi-Product Synced</span>
+            <span className="text-sm font-bold text-slate-700">Cloud sync requires receipt verification</span>
           </div>
         </div>
         <button

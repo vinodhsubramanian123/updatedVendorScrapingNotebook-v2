@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FileCode, ShieldCheck, RefreshCw, FileText, CheckCircle2, AlertCircle, Eye, X, BookOpen, AlertTriangle } from 'lucide-react';
+import { FileCode, ShieldCheck, RefreshCw, FileText, CheckCircle2, AlertCircle, Eye, X, BookOpen, AlertTriangle, Download } from 'lucide-react';
 import ExportHistoryCard from './ExportHistoryCard';
 
 function AuditCertificateResultCard({ auditResult }) {
@@ -39,7 +39,7 @@ function AuditCertificateResultCard({ auditResult }) {
   );
 }
 
-function ArtifactFilesGrid({ currentCatalog, onViewArtifact }) {
+function ArtifactFilesGrid({ currentCatalog, onViewArtifact, onTriggerDownloadPdf, onNavigateTab, isTaskRunning }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       {currentCatalog?.jsonPath && (
@@ -89,19 +89,41 @@ function ArtifactFilesGrid({ currentCatalog, onViewArtifact }) {
           </a>
         </div>
       ) : (
-        <div className="glass-card p-4 space-y-2 opacity-60">
+        <div className="glass-card p-4 space-y-2">
           <h4 className="font-semibold text-xs text-slate-700 flex items-center gap-1.5">
             <AlertTriangle className="w-4 h-4 text-amber-500" /> QuickSpecs PDF
           </h4>
-          <p className="text-[11px] text-slate-500">PDF not cached locally yet</p>
-          <span className="text-[10px] text-slate-400 block italic">Use Scraper tab to download</span>
+          <p className="text-[11px] text-slate-500">PDF not cached locally in outputs yet</p>
+          <div className="flex items-center gap-2 pt-1">
+            {onTriggerDownloadPdf && (
+              <button
+                type="button"
+                disabled={isTaskRunning}
+                onClick={onTriggerDownloadPdf}
+                className="btn-primary text-xs py-1.5 px-3 flex items-center gap-1.5"
+                title="Download official QuickSpecs PDF for this product via downloader"
+              >
+                <Download className="w-3.5 h-3.5" /> Download PDF
+              </button>
+            )}
+            {onNavigateTab && (
+              <button
+                type="button"
+                onClick={() => onNavigateTab('pipeline')}
+                className="btn-secondary text-xs py-1.5 px-2.5"
+                title="View download progress and logs in Pipeline Ops"
+              >
+                Pipeline Ops
+              </button>
+            )}
+          </div>
         </div>
       )}
     </div>
   );
 }
 
-export default function ArtifactInspector({ currentCatalog }) {
+export default function ArtifactInspector({ currentCatalog, onTriggerDownloadPdf, onNavigateTab, isTaskRunning }) {
   const [auditResult, setAuditResult] = useState(null);
   const [isAuditing, setIsAuditing] = useState(false);
   const [viewFile, setViewFile] = useState(null);
@@ -199,7 +221,7 @@ export default function ArtifactInspector({ currentCatalog }) {
           {verifyAllStatus && (
             <p className={`text-xs font-semibold mt-1 flex items-center gap-1.5 ${verifyAllStatus.startsWith('ERROR') ? 'text-rose-600' : 'text-purple-600'}`}>
               <ShieldCheck className="w-3.5 h-3.5" />
-              {verifyAllStatus === 'STARTED' ? 'Portfolio verification suite launched! Watch the Scraper SSE Terminal for live logs.' : verifyAllStatus}
+              {verifyAllStatus === 'STARTED' ? 'Portfolio verification suite launched! Watch the Pipeline Ops SSE Terminal for live logs.' : verifyAllStatus}
             </p>
           )}
         </div>
@@ -231,7 +253,13 @@ export default function ArtifactInspector({ currentCatalog }) {
 
       <AuditCertificateResultCard auditResult={auditResult} />
 
-      <ArtifactFilesGrid currentCatalog={currentCatalog} onViewArtifact={handleViewArtifact} />
+      <ArtifactFilesGrid
+        currentCatalog={currentCatalog}
+        onViewArtifact={handleViewArtifact}
+        onTriggerDownloadPdf={onTriggerDownloadPdf}
+        onNavigateTab={onNavigateTab}
+        isTaskRunning={isTaskRunning}
+      />
 
       {folderPath && (
         <div className="glass-card p-4 space-y-3">
