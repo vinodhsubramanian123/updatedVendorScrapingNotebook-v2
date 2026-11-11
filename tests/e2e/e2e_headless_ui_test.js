@@ -232,11 +232,11 @@ async function runE2ETest() {
     testResults.push({ name: 'Telemetry & Observability API', passed: telemetryOk, durationMs: Date.now() - startTime6 });
     console.log(`  ✅ Telemetry API verified: Total Evaluated=${evalCount}, Version=${telemetryRes?.version || '1.2.0'}`);
 
-    // TEST 7: Master Excel Workbook Export
-    console.log('\n▶ [TEST 7] Testing Master Excel Workbook Export...');
+    // TEST 7: Isolated Diagnostic Excel Workbook Export & Customer Bypass Guard
+    console.log('\n▶ [TEST 7] Testing Diagnostic Excel Export & Customer Export Guard...');
     const startTime7 = Date.now();
     const exportRes = await page.evaluate(async (payload) => {
-      const res = await fetch('/api/export-boq', {
+      const unauthRes = await fetch('/api/export-boq', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -245,12 +245,21 @@ async function runE2ETest() {
           rankTier: 1
         })
       });
-      return await res.json();
+      const diagRes = await fetch('/api/export-boq-diagnostic', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          evalResults: payload,
+          chassisId: 'DL380_Gen12_SFF',
+          rankTier: 1
+        })
+      });
+      return { unauthStatus: unauthRes.status, diag: await diagRes.json() };
     }, evalApiResponse);
 
-    const exportOk = !!(exportRes.filename || exportRes.downloadPath || exportRes.downloadUrl);
-    testResults.push({ name: 'Master Excel Workbook Export', passed: exportOk, durationMs: Date.now() - startTime7 });
-    console.log(`  ✅ Master Excel Workbook generated: ${exportRes.filename || exportRes.downloadPath}`);
+    const exportOk = exportRes.unauthStatus >= 400 && !!(exportRes.diag?.filename || exportRes.diag?.downloadPath);
+    testResults.push({ name: 'Diagnostic Excel Workbook Export & Bypass Guard', passed: exportOk, durationMs: Date.now() - startTime7 });
+    console.log(`  ✅ Diagnostic Workbook generated (${exportRes.diag?.filename}); unauthenticated customer export status=${exportRes.unauthStatus}`);
 
   } catch (err) {
     gaps.push(`E2E Execution Error: ${err.message}`);

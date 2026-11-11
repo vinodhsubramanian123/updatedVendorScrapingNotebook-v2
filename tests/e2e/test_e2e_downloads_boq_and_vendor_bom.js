@@ -566,7 +566,7 @@ async function runE2ETest() {
     const step9Start = Date.now();
 
     const exportRes = await page.evaluate(async (evalPayload) => {
-      const res = await fetch('/api/export-boq', {
+      const blockedCustomer = await fetch('/api/export-boq', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -576,20 +576,29 @@ async function runE2ETest() {
           diagnostic: true
         })
       });
-      return await res.json();
+      const res = await fetch('/api/export-boq-diagnostic', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          evalResults: evalPayload,
+          chassisId: 'DL380_Gen12_SFF',
+          rankTier: 1
+        })
+      });
+      return { customerStatus: blockedCustomer.status, diag: await res.json() };
     }, JSON.parse(JSON.stringify(vendorEval)));
 
-    const exportOk = Boolean(exportRes.filename || exportRes.downloadPath);
+    const exportOk = exportRes.customerStatus === 400 && Boolean(exportRes.diag?.filename && exportRes.diag?.downloadPath && exportRes.diag?.diagnostic);
     testResults.push({
-      name: '9. Master Excel Workbook Export',
+      name: '9. Isolated Diagnostic Excel Workbook Export (Customer Override Blocked)',
       passed: exportOk,
       durationMs: Date.now() - step9Start
     });
     if (exportOk) {
-      console.log(`  ✅ Master Excel Workbook generated: ${exportRes.filename || exportRes.downloadPath}`);
+      console.log(`  ✅ Diagnostic workbook generated cleanly & customer diagnostic override blocked: ${exportRes.diag.filename}`);
     } else {
-      console.log(`  ❌ Master Excel Workbook export failed: No file generated`);
-      gaps.push('Step 9: Master Excel Workbook export returned no filename');
+      console.log(`  ❌ Diagnostic Excel Workbook check failed`);
+      gaps.push('Step 9: Diagnostic Excel Workbook export failed or customer override was not blocked');
     }
 
   } catch (err) {

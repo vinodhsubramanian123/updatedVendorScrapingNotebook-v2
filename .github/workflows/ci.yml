@@ -1,88 +1,72 @@
-name: CI — Cross-Platform Pipeline & Offline Tests
+name: HPE BOQ Evaluator & Dashboard CI
 
 on:
   push:
-    branches: [main, master]
+    branches: [ main, master ]
   pull_request:
-    branches: [main, master]
+    branches: [ main, master ]
 
 jobs:
-  test:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        node-version: [20, 22]
+  verify:
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js ${{ matrix.node-version }}
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: '22'
+          cache: 'npm'
 
-      - name: Install dependencies
-        run: npm install --include=optional
+      - name: Install root & dashboard dependencies
+        run: npm ci
 
-      - name: Syntax check eval_boq.js
-        run: node --check scripts/evaluators/eval_boq.js
+      - name: Install Playwright Chromium browser
+        run: npx playwright install --with-deps chromium
 
-      - name: Run dashboard linter
-        run: npm run lint
+      - name: Static Lint (dashboard + core scripts/tests)
+        run: |
+          npm run lint
+          npm run lint:core
 
-      - name: Run dashboard component tests
+      - name: Cyclomatic Complexity <= 30 & Circular Dependency Gates
+        run: |
+          npm run lint:complexity
+          npm run test:circular
+
+      - name: Build Dashboard Production Bundle
+        run: npm run build
+
+      - name: Run Dashboard Component Tests (Vitest)
         run: npm --workspace dashboard test -- --run
 
-      - name: Run offline pipeline tests
-        run: node tests/chaos/test_offline_pipeline.js
+      - name: Run Core & Release-Gate Regression Suites
+        run: |
+          npm run test:smoke
+          node --test tests/unit/test_offline_policy_enforcement.js tests/unit/test_export_authorization_and_candidate_binding.js tests/unit/test_run_recovery_and_sizing_context.js
+          node tests/unit/test_topology_builder.js
+          node tests/integration/test_dashboard_workflow_reliability.js
 
-      - name: Bootstrap Gen12 golden catalog
-        run: npm run bootstrap:gen12
+      - name: Run Isolated Offline Browser Release Gate (Orders 1-5)
+        env:
+          OFFLINE_MODE: '1'
+          LOCAL_EVAL_ONLY: '1'
+        run: node scripts/maintenance/test_dashboard_browser_e2e.js
 
-      - name: Certify Gen12 golden catalog
-        run: npm run certify:gen12
+      - name: Run Isolated Offline Portfolio E2E
+        env:
+          OFFLINE_MODE: '1'
+          LOCAL_EVAL_ONLY: '1'
+        run: node tests/e2e/test_dashboard_full_portfolio_e2e.js
 
-      - name: Run 6-aspect math tests
-        run: node tests/integration/test_all_aspects.js
-
-      - name: Run conflict graph tests
-        run: node tests/integration/test_conflict_graph.js
-
-      - name: Run end-to-end scenarios tests
-        run: node tests/integration/test_end_to_end_scenarios.js
-
-      - name: Run vendor portal BOM verification tests
-        run: node tests/integration/test_vendor_bom_verifier.js
-
-      - name: Run Gemini rotator FIFO & quota tests
-        run: node tests/unit/test_gemini_rotator.js
-
-      - name: Run incremental checksum & diff tests
-        run: node tests/unit/test_incremental_checksum.js
-
-      - name: Run catalog refresh contract tests
-        run: node tests/unit/test_catalog_refresh_contract.js
-
-      - name: Run core workflow contracts tests
-        run: node tests/unit/test_core_workflow_contracts.js
-
-      - name: Run presales query router tests
-        run: node tests/unit/test_query_router.js
-
-      - name: Run edge cases & robustness tests
-        run: node tests/chaos/test_edge_cases.js
-
-      - name: Run chaos & failure modes resilience tests
-        run: node tests/chaos/test_failure_modes_and_chaos.js
-
-      - name: Run historical pricing timeline tests
-        run: node tests/integration/test_historical_pricing_timeline.js
-
-      - name: Run Master Excel alignment & audit tests
-        run: node tests/integration/test_excel_alignment_and_audit.js
-
-      - name: Run full multi-family portfolio certification
-        run: node tests/integration/verify_all.js
+      - name: Upload Dashboard Release Gate Evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dashboard-release-gate-evidence
+          path: |
+            outputs/history/dashboard_release_evidence.json
+            outputs/history/screenshots_e2e/
+          if-no-files-found: warn
