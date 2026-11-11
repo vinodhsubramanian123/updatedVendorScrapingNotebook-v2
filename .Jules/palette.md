@@ -1,3 +1,7 @@
 ## 2026-08-27 - [Disabled Button States]
 **Learning:** Found that custom buttons (`btn-primary` and `btn-secondary`) had no specific styling for their `disabled` state, causing them to appear active despite being unclickable. This degrades UX and accessibility, especially in forms or loading operations where visual feedback is crucial.
 **Action:** Always verify that custom buttons have an explicit `:disabled` pseudo-class (e.g., `opacity: 0.5; cursor: not-allowed;`) to ensure users instantly recognize when an action is unavailable.
+
+## 2024-05-13 - Add role, aria-checked, and keyboard focus to Custom Switch Toggle
+**Learning:** Custom toggle buttons (switches) created with `<div>` or `<button>` that act like checkboxes need specific accessibility attributes to be properly announced by screen readers and need visible focus states for keyboard navigation. We must include `role="switch"`, correctly bind the `aria-checked={stateVariable}` attribute, securely associate with text labels (e.g., using `aria-labelledby` or matching `id`), and implement visible keyboard focus states (e.g., via Tailwind's `focus:ring-2` or similar).
+**Action:** When implementing a custom toggle switch using a button, I will always add `role="switch"`, `aria-checked={booleanState}`, `aria-label="<Label>"` or `aria-labelledby`, and ensure it has keyboard focus styling like `focus:outline-none focus:ring-2`.
