@@ -144,6 +144,6 @@ This rule document governs all AI agents (Antigravity, Codex, Claude, subagents,
    - Verify that all active evidence logs report `healthy: true`, `gaps: []`, and `contradictions: 0`.
 
 4. **Multi-Brain Collaborative Verification**:
-   - **Antigravity / Gemini**: Lead Execution Architect & Orchestrator. Maintains CC $\le 135$ and 0-warning linter discipline.
+   - **Antigravity / Gemini**: Lead Execution Architect & Orchestrator. Maintains CC $\le 30$ and 0-warning linter discipline.
    - **Gemini NotebookLM**: Authoritative Intent & Ground-Truth Brain grounded in QuickSpecs and live catalogs.
    - **OpenAI Codex / Claude**: Independent Verification & Adversarial Red-Teaming Auditors. Diff review, failure mode auditing, and assumption challenges.

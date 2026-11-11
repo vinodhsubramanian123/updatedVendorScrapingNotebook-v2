@@ -179,6 +179,13 @@ Before customer presentation or delivery sign-off:
 - **Macro Lifecycle Orchestration**: Consult [`orchestrator-workflow-skill`](../orchestrator-workflow-skill/SKILL.md) to integrate validation outcomes with the continuous learning loop.
 
 
+### Candidate-Bound Export Authorization (`INV-235`)
+
+- **Strict Rank & Gate Enforcement (`exportEligibility.js`)**: `POST /api/export-boq` evaluates authorization strictly against the selected rank (`rankId`), `exportEligibility.eligible`, `customerDisposition`, and `deliveryAuthorized` computed by `dashboard/src/utils/exportEligibility.js` and enforced server-side in `dashboard/routes/evaluation.cjs`.
+- **Diagnostic Route Segregation**: `POST /api/export-boq` MUST reject `diagnostic: true` override flags and unknown or unauthorized rank identifiers with HTTP `403`/`400`. Diagnostic workbook exports belong exclusively on `POST /api/export-boq-diagnostic` (`DIAGNOSTIC_UNVERIFIED` / `DELIVERY_BLOCKED_*` watermarked outputs).
+- **Exact Originating Candidate Binding**: Customer spreadsheets MUST be generated from the exact authorized candidate (`serverCandidate`, exact part numbers and quantities) returned for the active run and verified free of `[INTERNAL DIAGNOSTIC]` markers (`test_export_authorization_and_candidate_binding.js`, `test_dashboard_browser_e2e.js`).
+
+
 ### Portable deliverables (2026-09-22)
 
 Saved Markdown deliverables use encoded report-relative links from `toReportLink`; native launchers use `toClickableFileUri`. Retain evidence beside the report. Check that every local target exists, including workbooks with spaces, Unicode, percent signs and parentheses. Cross-drive/share links need encoded file URLs and cannot be made portable without moving their targets. Native app launching on another OS is not certified by path-format checks.

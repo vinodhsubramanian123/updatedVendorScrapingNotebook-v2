@@ -96,8 +96,11 @@ npm run dev
 | `npm run dashboard` | Start Express backend, Vite frontend dev server, and feedback listener concurrently |
 | `npm run build` | Build production dashboard assets via Vite |
 | `npm run lint` | Run `oxlint` on dashboard source files (0-warning, 0-error gate) |
-| `npm run lint:core` | Run `oxlint` across all 526 scripts and test files with 95 rules (0-warning gate) |
-| `npm run lint:complexity` | Verify cyclomatic complexity gate ($CC \le 135$) across all functions |
+| `npm run lint:core` | Run `oxlint` across scripts and tests with 95 rules (0-warning gate) |
+| `npm run lint:complexity` | Verify strict cyclomatic complexity ceiling ($CC \le 30$) across all scanned functions |
+| `npm --workspace dashboard test -- --run` | Run frontend component & service Vitest suites |
+| `OFFLINE_MODE=1 LOCAL_EVAL_ONLY=1 node scripts/maintenance/test_dashboard_browser_e2e.js` | Run isolated headless Playwright release gate (Orders 1–5) & write `dashboard_release_evidence.json` |
+| `OFFLINE_MODE=1 LOCAL_EVAL_ONLY=1 node tests/e2e/test_dashboard_full_portfolio_e2e.js` | Run isolated offline Playwright portfolio & DL385 Gen11 topology E2E check |
 | `npm test` | Run complete isolated test matrix (249 suites across Unit, Chaos, Integration tiers) |
 | `npm run test:portfolio` | Run portfolio verification audit (`verify_all.js`) across 8 canonical products |
 | `npm run status` | Display unified observability dashboard overview (`observability_status.js`) |

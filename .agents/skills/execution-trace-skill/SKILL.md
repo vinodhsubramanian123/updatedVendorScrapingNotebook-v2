@@ -200,6 +200,11 @@ When executing ANY presales flow, the agent MUST:
 4. **Finalize Trace**: After completion, populate `finalOutput`, run `outputValidation`, generate `deltaReport`, and record `completedAt`
 5. **Present Summary**: Show the human-readable execution summary inline, highlighting any WARN or FAILED gates
 
+### Dashboard Run-ID Lifecycle, Restart Recovery & Expired Intake Binding (`INV-234`, `INV-235`)
+- **Active Run-ID Ownership (`runState.cjs`)**: `POST /api/kill-task` binds cancellation strictly to `{ runId }`. When the caller targets an unknown, completed, or superseded run while another run owns the slot, the server returns HTTP `409` (`RUN_NOT_ACTIVE` / `RUN_MISMATCH`) so a stale browser tab never cancels a newer evaluation.
+- **Restart Snapshot Preservation (`taskManager.cjs`)**: On server startup recovery, persisted `RUNNING` runs without live child processes transition to `INTERRUPTED` (preserving partial snapshots and inputs), while completed results and candidate matrices persist across dashboard restarts (`test_run_recovery_and_sizing_context.js`).
+- **Expired Upload Re-Bind (`evaluation.cjs`)**: `POST /api/upload-boq` assigns an opaque `uploadId` without returning the raw digest; when an intake token expires or restarts invalidate transient uploads, callers re-submit with caller-computed `inputSha256` or upload fresh intake rather than retrying an expired `410 REUPLOAD_REQUIRED` handle.
+
 ### Trace Storage Convention
 - Production traces: `outputs/temp/agent_traces/execution_trace_{YYYY-MM-DD}_{traceId}.json`
 - Test traces: `outputs/temp/test_payloads/trace_{traceId}.json` (follows `INV-7`)

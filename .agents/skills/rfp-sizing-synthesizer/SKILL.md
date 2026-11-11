@@ -197,3 +197,7 @@ Pre-Flight Sizing Verification:
 ### Solution-owner support default (2026-09-22)
 
 For server, storage and networking solutions, attempt **3-year HPE Tech Care Basic** unless the customer/user explicitly requests a different support level or term. Preserve explicit alternatives. Resolve the exact product-specific service and suffix through live OCA; never reuse a generic server Care Pack for another family. Prefer Basic without retention. If the exact product only offers Basic with a retention option, record that availability evidence and preserve the exact CDMR/GDMR designation rather than silently upgrading to Essential. Keep installation separate and only where requested. Revalidate CLIC after support changes; prior receipts do not transfer to changed manifests.
+
+### Sizing-to-Matrix Scope Continuity (`INV-235`)
+
+When a freeform RFP sizing synthesis routes into the BOQ evaluation matrix (`PresalesRequestPanel.jsx` -> `scripts/evaluators/route_query.js` -> `scripts/evaluators/eval_boq.js` -> `scripts/lib/boq/eval_output_serializer.js` -> `scripts/lib/boq/boq_evaluator.js` and `dashboard/routes/evaluation.cjs`), the pipeline MUST preserve the originating sizing context end-to-end: resolved `product`, `nodeCount`, `quantityBasis`, `parentRunId`, and component ownership metadata. Header product selector switches on the dashboard MUST NOT overwrite or orphan an active sizing result's target platform or node multiplicity when sending the candidate BOM to evaluation.

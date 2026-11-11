@@ -13,9 +13,9 @@ description: >-
 ## 1. Scope & Quality Invariants
 This skill establishes non-negotiable code quality, cyclomatic complexity, static analysis, and verification boundaries for all automated agents, subagents, and human contributors operating on this codebase.
 
-- **Universal Cyclomatic Complexity $\le 30$ (`INV-229`, `INV-230`, `INV-233`)**: Every function across all JavaScript files MUST strictly comply with a maximum cyclomatic complexity ceiling of 30. Zero functions exceeding 30 are permitted.
-- **Zero Lint Warnings**: `oxlint` across core scripts and tests MUST return 0 warnings and 0 errors.
-- **Clean DAG (0 Circular Dependencies)**: The module graph across 690+ files MUST remain a strict directed acyclic graph.
+- **Universal Cyclomatic Complexity $\le 30$ (`INV-229`, `INV-230`, `INV-233`, `INV-234`, `INV-235`)**: Every function across all JavaScript files MUST strictly comply with a maximum cyclomatic complexity ceiling of 30. Zero functions exceeding 30 are permitted. Note: `scripts/maintenance/analyze_complexity.js` uses a brace-depth heuristic rather than a full AST parser, so literal brace characters inside regex literals or template strings (`String.fromCharCode(123, 125)`) can desynchronize block tracking.
+- **Zero Lint Warnings**: `oxlint` across both core scripts (`npm run lint:core`) and `dashboard/` (`npm run lint`) MUST return 0 warnings and 0 errors.
+- **Clean DAG (0 Circular Dependencies)**: The module graph across 710+ files MUST remain a strict directed acyclic graph (`npm run test:circular`), alongside Vitest (`npm --workspace dashboard test -- --run`) and the offline Playwright CI release gate ([`.github/workflows/ci.yml`](../../../.github/workflows/ci.yml), `test_dashboard_browser_e2e.js`, `test_dashboard_full_portfolio_e2e.js`).
 - **Non-Empty Isolated Test Discovery (`INV-129`, `INV-218`)**: Every domain test suite MUST discover and execute $>0$ tests; silent passes with 0 assertions or 0 suites are strictly failed.
 - **Zero Unverified Check-Ins (`INV-111`)**: Agents MUST NEVER execute `git commit` or `git push` without explicit, unambiguous human user instruction.
 - **Documentation Integrity**: Existing docstrings, JSDoc headers, and architectural comments MUST be preserved during refactoring.
@@ -82,8 +82,12 @@ When refactoring functions approaching the CC $\le 30$ threshold:
 
 ---
 
-## 4. References & Related Charters
+## 4. Offline Playwright CI Gate & Disconnect Guard Discipline (`INV-235`)
+- **Scoped Restart Disconnect Windows**: Any `allowRestartDisconnect` tolerance in Playwright release tests (`scripts/maintenance/test_dashboard_browser_e2e.js`) MUST stay scoped strictly inside the intentional server restart window (`[plannedRestartStart, plannedRestartEnd]`). Network errors outside that window FAIL the release check.
+- **Non-Hardcoded Topology Fidelity**: Product-scoped evaluation assertions in CI MUST verify dynamic product metadata and live workbook SKU binding rather than hardcoding legacy catalog expectations across unrelated hardware generations.
+
+## 5. References & Related Charters
 - [Complexity Analyzer Engine](../../../scripts/maintenance/analyze_complexity.js) via `runAnalysis()` and `analyzeFile()`
 - [Master Operating Charter (CC <= 30 Benchmark)](../../../AGENTS.md)
 - [Epistemic Verification Skill](../epistemic-verification-skill/SKILL.md)
-- [System Invariants Directory (INV-229, INV-230)](../../../docs/INVARIANTS.md)
+- [System Invariants Directory (INV-229, INV-230, INV-235)](../../../docs/INVARIANTS.md)

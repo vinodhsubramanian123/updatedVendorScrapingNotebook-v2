@@ -1935,6 +1935,32 @@ Read `docs/audits/2026-10-23-priority-intelligence-and-graph-architecture-audit.
    - *Past Blindspot*: Skills and code were treated as separate documentation artifacts, leading to isolated skills in AST extractions, unreferenced ad-hoc scripts (`export_tender_to_downloads.js`), and missing code links.
    - *Durable Solution*: Unified all 30 skills into a single interconnected AST graph with zero isolated skills. Hooked [`verify_graph_integrity.js`](file:///scripts/maintenance/verify_graph_integrity.js) into `npm run update:graph` and `npm run verify:graph`, ensuring automated continuous graph verification.
 
+---
+
+## 2026-11-11 — Dashboard Release-Gap Closure (Orders 1–5), Air-Gap Enforcement & Browser E2E Sign-Off (`INV-233` to `INV-235`)
+
+Read [`docs/audits/2026-11-11-dashboard-release-gap-plan.md`](file:///docs/audits/2026-11-11-dashboard-release-gap-plan.md) and [`docs/audits/2026-11-11-dashboard-gap-closure-and-e2e-certification.md`](file:///docs/audits/2026-11-11-dashboard-gap-closure-and-e2e-certification.md):
+
+1. **Order 1 — Strict Server-Side Offline Policy Enforcement (`policy_resolver.js` / `policyResolver.cjs`)**:
+   - Enforced `OFFLINE_MODE`, `LOCAL_EVAL_ONLY`, and `USE_LOCAL_RAG_ONLY` server-side before preprocessing, routing, OCR, or grounding across [`ocr_service.js`](file:///scripts/lib/ocr/ocr_service.js), [`gemini_rotator.js`](file:///scripts/lib/system/gemini_rotator.js), [`notebook_query_utils.js`](file:///scripts/lib/notebook/notebook_query_utils.js), and [`agentic_guardrail.js`](file:///scripts/lib/rag/agentic_guardrail.js). Verified zero outbound calls on both PDF and image fixtures.
+
+2. **Order 2 — Candidate-Bound Export Authorization & Diagnostic Isolation**:
+   - Hardened `POST /api/export-boq` and [`exportEligibility.js`](file:///dashboard/src/services/exportEligibility.js) to reject `diagnostic: true` overrides (`400`) and unknown or unauthorized rank tiers, routing uncertified diagnostic workbooks to `POST /api/export-boq-diagnostic` (`outputs/temp/diagnostic_exports/`) and verifying customer workbooks bind strictly to exact authorized candidate SKUs with zero `[INTERNAL DIAGNOSTIC]` markers.
+
+3. **Order 3 — Run-ID Lifecycle, Restart Reconciliation & Intake SHA-256 Expiry Binding**:
+   - `POST /api/kill-task` rejects mismatched `runId` cancellation requests (`409`); server restarts reconcile in-flight `RUNNING` snapshots in `DASHBOARD_RUNS_DIR` to `INTERRUPTED`; expired or mutated clarification confirmation fails closed with `410 REUPLOAD_REQUIRED`.
+   - *Session Learnings*:
+     - `/api/upload-boq` (`dashboard/routes/evaluation.cjs`) returns `{ message, filepath, filename }` without a `sha256` field; callers and tests exercising `410` intake expiration MUST supply the SHA-256 digest of the uploaded content via `inputSha256`.
+     - Browser gates testing live server stop/restart while UI tabs hold active SSE/polling connections MUST scope expected `net::ERR_CONNECTION_RESET`/`REFUSED` filtering (`allowRestartDisconnect`) strictly inside the controlled restart/reload bracket, never globally.
+
+4. **Order 4 — Sizing-to-Matrix Scope Continuity**:
+   - Preserved `product`, `nodeCount`, `quantityBasis`, `parentRunId`, and component ownership from [`PresalesRequestPanel.jsx`](file:///dashboard/src/components/PresalesRequestPanel.jsx) through [`route_query.js`](file:///scripts/evaluators/route_query.js), [`eval_boq.js`](file:///scripts/evaluators/eval_boq.js), [`eval_output_serializer.js`](file:///scripts/lib/boq/eval_output_serializer.js), and [`boq_evaluator.js`](file:///scripts/lib/boq/boq_evaluator.js).
+
+5. **Order 5 — CI Sign-Off, Complexity Scanner Quirk & Non-Hardcoded Topology Fidelity**:
+   - Added [`.github/workflows/ci.yml`](file:///.github/workflows/ci.yml) executing lint, `CC <= 30`, clean DAG, Vite build, Vitest, core/integration suites, [`test_dashboard_browser_e2e.js`](file:///scripts/maintenance/test_dashboard_browser_e2e.js), and [`test_dashboard_full_portfolio_e2e.js`](file:///tests/e2e/test_dashboard_full_portfolio_e2e.js).
+   - *Tooling Gotcha*: [`analyze_complexity.js`](file:///scripts/maintenance/analyze_complexity.js) counts raw `{` / `}` characters including inside string literals; parser helpers should avoid literal brace tokens (use character codes such as `String.fromCharCode(123, 125)`) rather than relaxing complexity thresholds.
+   - *Concurrent Core Synergy/Sync Learnings*: Returning `[]` on CDP/CLI failure in [`quickspecs_sync.js`](file:///scripts/lib/sync/quickspecs_sync.js) previously masked missing inventory checks as `isIsolated: true`; failing closed via `null` (`SOURCE_INVENTORY_UNAVAILABLE`) preserves epistemic accuracy and requires offline unit tests to mock inventory retrieval explicitly. Similarly, composite frame platforms using `pillar: "COMPOSITE"` (`Synergy_12000_Frame`) require aligned pillar allowlists in downstream audit scripts (`notebook_health_audit.js`) alongside completed child-module captures.
+
 
 
 
