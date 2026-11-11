@@ -142,8 +142,9 @@ function validateEvaluationQueryContext(runId, query, chassis) {
 }
 
 router.post('/notebook-query-async', (req, res) => {
-  const { query, chassis, learningEligible, chassisDir, runId } = req.body;
-  if (!query) return sendErrorResponse(res, 400, 'Query string is required', { source: 'NOTEBOOK_ROUTER' });
+  const { query: rawQueryInput, chassis, learningEligible, chassisDir, runId } = req.body;
+  const query = typeof rawQueryInput === 'string' ? rawQueryInput : (rawQueryInput?.query || String(rawQueryInput || ''));
+  if (!query || !query.trim()) return sendErrorResponse(res, 400, 'Query string is required', { source: 'NOTEBOOK_ROUTER' });
   try { validateEvaluationQueryContext(runId, query, chassis); }
   catch (err) { return sendErrorResponse(res, 409, err, { source: 'NOTEBOOK_ROUTER' }); }
 

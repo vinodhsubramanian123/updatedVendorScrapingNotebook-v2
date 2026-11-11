@@ -210,6 +210,8 @@ export default function CatalogExplorer({
     setSkuAuditData(null);
     setActiveCategory('ALL');
     setActiveSubCategory('ALL');
+    setQuery('');
+    setSearchResults(null);
   }, [selectedChassis]);
 
   useEffect(() => {

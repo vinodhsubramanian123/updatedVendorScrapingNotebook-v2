@@ -34,12 +34,10 @@ function resolveLoadingPresentation(isQueryingRag, activeProgress, operationName
 
   const currentStep = activeProgress?.currentStep || 0;
   const totalSteps = activeProgress?.totalSteps || 0;
-  let fallbackPercent = 0;
-  if (isTaskRunning) fallbackPercent = 45;
-  else if (isQueryingRag) fallbackPercent = 70;
-  const percent = totalSteps > 0
+  const isProgressKnown = totalSteps > 0 && currentStep > 0;
+  const percent = isProgressKnown
     ? Math.min(100, Math.round((currentStep / totalSteps) * 100))
-    : fallbackPercent;
+    : null;
 
   return { title, subtitle, IconComponent, currentStep, totalSteps, percent };
 }
@@ -186,17 +184,17 @@ export default function GlobalLoadingState({
                   Step <strong className="text-blue-400">{currentStep}</strong> / {totalSteps}
                 </div>
               )}
-              <div className="text-white font-bold text-base bg-blue-900/40 border border-blue-500/30 px-3 py-1 rounded-lg">
-                {percent}%
+              <div className="text-white font-bold text-sm bg-blue-900/40 border border-blue-500/30 px-3 py-1 rounded-lg">
+                {percent !== null ? `${percent}%` : 'Working…'}
               </div>
             </div>
           </div>
 
-          <div className="mt-4 relative">
+          <div className="mt-4 relative" role="progressbar" aria-valuenow={percent ?? undefined} aria-valuemin={0} aria-valuemax={100} aria-label={title}>
             <div className="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden border border-slate-700 p-0.5">
               <div
-                className="h-full rounded-full progress-bar-fill relative overflow-hidden animate-stripes bg-gradient-to-r from-blue-500 via-indigo-500 to-emerald-400"
-                style={{ width: `${Math.max(percent, 8)}%` }}
+                className={`h-full rounded-full progress-bar-fill relative overflow-hidden bg-gradient-to-r from-blue-500 via-indigo-500 to-emerald-400 ${percent === null ? 'animate-pulse w-full' : 'animate-stripes'}`}
+                style={{ width: percent !== null ? `${Math.max(percent, 8)}%` : '100%' }}
               >
                 <div className="absolute inset-0 bg-white/10 animate-breathe" />
               </div>

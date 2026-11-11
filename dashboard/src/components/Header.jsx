@@ -80,13 +80,13 @@ export default function Header({
   onSelectChassis,
   activeTab,
   setActiveTab,
-  _onSmartSearch,
-  _onSearchLocal,
+  onSmartSearch,
+  onSearchLocal,
   onOpenRag,
   onOpenFeedbackDrawer,
   onOpenQuarantineDrawer,
   onOpenSettings,
-  _isTaskRunning,
+  isTaskRunning,
   isCatalogLoading = false
 }) {
   const [searchQuery, setSearchQuery] = useState('');
@@ -128,32 +128,34 @@ export default function Header({
     e.preventDefault();
     const q = searchQuery.trim();
     if (!q) return;
-    if (onOpenRag) {
+    setIsSearchOpen(false);
+    if (onSmartSearch) {
+      onSmartSearch(q);
+    } else if (onOpenRag) {
       onOpenRag(q);
-      setIsSearchOpen(false);
     }
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200 px-4 py-2.5 shadow-sm space-y-2">
-      <div className="flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
+    <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200 px-3 sm:px-4 py-2 shadow-sm space-y-2">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <div className="flex items-center gap-2">
-            <div className="p-2 rounded-xl bg-emerald-500 text-white shadow-md shadow-emerald-500/20">
-              <Cpu className="w-5 h-5" />
+            <div className="p-1.5 sm:p-2 rounded-xl bg-emerald-500 text-white shadow-md shadow-emerald-500/20 shrink-0">
+              <Cpu className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
             <div>
-              <h1 className="font-extrabold text-sm text-slate-900 tracking-tight flex items-center gap-1.5 leading-none">
+              <h1 className="font-extrabold text-xs sm:text-sm text-slate-900 tracking-tight flex items-center gap-1.5 leading-none">
                 HPE ProLiant AI Studio
-                <span className="badge badge-emerald text-[9px] py-0 px-1.5 font-mono">v2.5 Dual-Brain</span>
+                <span className="badge badge-emerald text-[8px] sm:text-[9px] py-0 px-1 font-mono">v2.5 Dual-Brain</span>
               </h1>
-              <p className="text-[10px] text-slate-400 font-medium mt-0.5">
+              <p className="text-[9px] sm:text-[10px] text-slate-400 font-medium mt-0.5 truncate max-w-[200px] sm:max-w-none">
                 BOQ Physical Math & Conflict Resolution Engine
               </p>
             </div>
           </div>
 
-          <div className="h-6 w-px bg-slate-200 hidden sm:block" />
+          <div className="h-6 w-px bg-slate-200 hidden md:block" />
 
           <ChassisSelector
             catalogs={catalogs}
@@ -168,18 +170,27 @@ export default function Header({
           />
         </div>
 
-        <SmartSearchInput
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          isSearchOpen={isSearchOpen}
-          setIsSearchOpen={setIsSearchOpen}
-          localSearchResults={localSearchResults}
-          onSubmitSearch={handleSearchSubmit}
-          onOpenRag={onOpenRag}
-          searchContainerRef={searchContainerRef}
-        />
+        <div className="flex-1 min-w-[180px] max-w-md order-3 sm:order-2">
+          <SmartSearchInput
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            isSearchOpen={isSearchOpen}
+            setIsSearchOpen={setIsSearchOpen}
+            localSearchResults={localSearchResults}
+            onSubmitSearch={handleSearchSubmit}
+            onOpenRag={(q) => {
+              setIsSearchOpen(false);
+              if (onSmartSearch) {
+                onSmartSearch(q);
+              } else if (onOpenRag) {
+                onOpenRag(q);
+              }
+            }}
+            searchContainerRef={searchContainerRef}
+          />
+        </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 shrink-0 order-2 sm:order-3">
           <CdpHealthBadge />
           <NotebookLmHealthBadge />
         </div>

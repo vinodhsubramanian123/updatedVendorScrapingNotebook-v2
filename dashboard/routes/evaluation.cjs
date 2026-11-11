@@ -31,6 +31,23 @@ const OUTPUTS_DIR = path.join(PROJECT_ROOT, 'outputs');
 const TEMP_DIR = path.join(OUTPUTS_DIR, 'temp');
 const HISTORY_DIR = path.join(OUTPUTS_DIR, 'history');
 
+function pruneStaleTempFiles(maxAgeMs = 2 * 60 * 60 * 1000) {
+  try {
+    if (!fs.existsSync(TEMP_DIR)) return;
+    const now = Date.now();
+    const files = fs.readdirSync(TEMP_DIR);
+    for (const file of files) {
+      const fullPath = path.join(TEMP_DIR, file);
+      try {
+        const stats = fs.statSync(fullPath);
+        if (now - stats.mtimeMs > maxAgeMs) {
+          fs.unlinkSync(fullPath);
+        }
+      } catch (_) {}
+    }
+  } catch (_) {}
+}
+
 // Multer config — kept local to this route module
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, TEMP_DIR),
@@ -169,16 +186,16 @@ router.post('/eval-boq', (req, res) => {
   const evalScript = path.join(PROJECT_ROOT, 'scripts', 'evaluators', 'eval_boq.js');
   const inputSha256 = require('crypto').createHash('sha256').update(fs.readFileSync(targetPath)).digest('hex');
   if (req.body.inputSha256 && req.body.inputSha256 !== inputSha256) return sendErrorResponse(res, 409, 'Original intake content changed. Upload or review the input again.', { source: 'EVALUATION_ROUTER' });
-  const inputDescriptor = { filepath: targetPath, sha256: inputSha256 };
-  const publishEvaluation = event => broadcastSSE({ ...event, inputDescriptor });
-  const args = [evalScript, targetPath, '--json', '--defer-rag'];
-  if (safeChassisDir) args.push('--chassis', safeChassisDir);
   const isCdpActive = ['1', 'true'].includes(String(process.env.ACTIVE_CDP_SESSION || '').trim().toLowerCase());
   const isOffline = ['1', 'true'].includes(String(process.env.OFFLINE_MODE || '').trim().toLowerCase()) ||
     ['1', 'true'].includes(String(process.env.LOCAL_EVAL_ONLY || '').trim().toLowerCase()) ||
     process.env.NODE_ENV === 'test' ||
     req.body.offline === true ||
     !isCdpActive;
+  const inputDescriptor = { filepath: targetPath, sha256: inputSha256, offline: isOffline };
+  const publishEvaluation = event => broadcastSSE({ ...event, inputDescriptor });
+  const args = [evalScript, targetPath, '--json', '--defer-rag'];
+  if (safeChassisDir) args.push('--chassis', safeChassisDir);
   if (isOffline) args.push('--offline');
 
   const ownedCli = process.env.PRESALES_TERMINAL_OWNER === '1';
@@ -190,7 +207,8 @@ router.post('/eval-boq', (req, res) => {
     })
   );
   if (ownedCli) proc._presalesCooperativeCancellation = true;
-  broadcastSSE({ type: 'TASK_STARTED', task: 'EVAL_BOQ', runId });
+  const targetProduct = req.body.chassisName || (safeChassisDir ? path.basename(safeChassisDir) : null);
+  broadcastSSE({ type: 'TASK_STARTED', task: 'EVAL_BOQ', runId, product: targetProduct });
   res.status(202).json({ status: 'ACCEPTED', runId, message: 'Evaluation job started in background' });
 
   let stdoutBuffer = '';
@@ -224,7 +242,7 @@ router.post('/eval-boq', (req, res) => {
       try {
         const parsed = JSON.parse(line);
         if (parsed.type === 'progress' || parsed.type === 'log') {
-          broadcastSSE({ ...parsed, type: parsed.type.toUpperCase(), stream: streamType });
+          broadcastSSE({ ...parsed, type: parsed.type.toUpperCase(), task: parsed.task || 'EVAL_BOQ', runId, stream: streamType });
           return;
         }
       } catch (_) {}
@@ -287,9 +305,8 @@ router.post('/eval-boq', (req, res) => {
     const durationMs = Date.now() - evalStartTime;
     broadcastSSE({ type: 'TASK_COMPLETED', code, task: 'EVAL_BOQ', runId, durationMs });
 
-    if (targetPath?.includes(TEMP_DIR) && fs.existsSync(targetPath)) {
-      try { fs.unlinkSync(targetPath); } catch (_) {}
-    }
+    // Retain intake file for clarification/refresh replay; prune stale temp files (>2h)
+    pruneStaleTempFiles();
 
     // Persist trace
     const traceDir = path.join(OUTPUTS_DIR, 'history', 'runs');

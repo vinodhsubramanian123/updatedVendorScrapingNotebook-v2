@@ -237,10 +237,10 @@ async function sweepProductFamilies(page, catalogs) {
     const catOption = page.locator(`button[data-chassis-id="${catId}"]`);
     if (await catOption.count() > 0) {
       await catOption.first().click();
-      await page.waitForTimeout(1000);
-
-      // Verify table or placeholder renders without crash
+      // Wait for catalog table to be populated
       const tableRows = page.locator('table tbody tr');
+      await tableRows.first().waitFor({ state: 'visible', timeout: 10000 }).catch(() => {});
+
       const rows = await tableRows.count();
       console.log(`  -> ${catId}: loaded successfully with ${rows} displayed row(s).`);
       if (rows === 0 && cat.totalSKUs > 0) {

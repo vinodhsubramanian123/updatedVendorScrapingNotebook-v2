@@ -496,7 +496,8 @@ function receiveEvaluation(normalised, raw, state) {
     state.startMatrixRagPoll(raw.ragJobId, { runId: raw.runId, epoch: state.evaluationEpoch.current });
     return;
   }
-  const needsRag = !raw.recovered && !raw.error && !normalised.ragAnswer && Boolean(raw.data?.notebookPayload);
+  const isOfflineRequested = raw.inputDescriptor?.offline === true || raw.data?.evalResults?.offlineMode === true || normalised.offlineMode === true;
+  const needsRag = !isOfflineRequested && !raw.recovered && !raw.error && !normalised.ragAnswer && Boolean(raw.data?.notebookPayload);
   if (!needsRag) return;
   const context = { runId: raw.runId, epoch: state.evaluationEpoch.current };
   const product = normalised.chassisPrefix || raw.data.chassisPrefix || state.selectedChassisRef.current;
@@ -527,7 +528,138 @@ function recoverIntake(input, evaluation) {
   if (input?.runId && input.runId === evaluation?.runId) return input;
   const descriptor = evaluation?.inputDescriptor;
   if (!descriptor?.filepath || !descriptor.sha256) return null;
-  return { boqInput: { filepath: descriptor.filepath, inputSha256: descriptor.sha256 } };
+  return { boqInput: { filepath: descriptor.filepath, inputSha256: descriptor.sha256, offline: descriptor.offline } };
+}
+
+function isAbortCancellation(err) {
+  return err?.name === 'AbortError' || err?.message?.includes('aborted');
+}
+
+function computeActiveBannerError(actionError, catalogError) {
+  if (actionError && !actionError.includes('aborted') && !actionError.includes('AbortError')) return actionError;
+  if (catalogError && !catalogError.includes('aborted') && !catalogError.includes('AbortError')) return catalogError;
+  return null;
+}
+
+function usePipelineTriggers({ selectedChassis, setActionError, setActiveTab }) {
+  const postScraperEndpoint = async (url, bodyObj) => {
+    setActionError(null);
+    try {
+      const options = bodyObj
+        ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(bodyObj) }
+        : { method: 'POST' };
+      await requestJson(url, options);
+      setActiveTab('pipeline');
+    } catch (err) {
+      if (!isAbortCancellation(err)) setActionError(err.message);
+    }
+  };
+
+  return {
+    handleTriggerScrape: (mode) => postScraperEndpoint('/api/scrape', { mode, chassis: selectedChassis }),
+    handleTriggerRebuild: () => postScraperEndpoint('/api/rebuild'),
+    handleTriggerSyncKnowledge: () => postScraperEndpoint('/api/sync-knowledge'),
+    handleTriggerDownloadPdf: () => postScraperEndpoint('/api/download-pdf', { chassisId: selectedChassis }),
+    handleTriggerNavigate: () => postScraperEndpoint('/api/navigate-oca', { chassis: selectedChassis }),
+    handleTriggerKillTask: async () => {
+      try { await requestJson('/api/kill-task', { method: 'POST' }); }
+      catch (err) { if (!isAbortCancellation(err)) setActionError(err.message); }
+    }
+  };
+}
+
+function useSearchRagPoller({ searchEpoch, setRagData, setIsQueryingRag, stopRagElapsedTimer }) {
+  return useRagPoller({
+    onResult: (_, fullData, context) => {
+      if (context !== searchEpoch.current) return;
+      setRagData(fullData);
+      setIsQueryingRag(false);
+      stopRagElapsedTimer();
+    },
+    onTimeout: (context) => {
+      if (context !== searchEpoch.current) return;
+      setRagData(prev => ({ ...prev, answer: '⚠️ NotebookLM Query Timeout: No response received within the 15-minute grounding window.', source: 'ERROR' }));
+      setIsQueryingRag(false);
+      stopRagElapsedTimer();
+    },
+    onFail: (errMsg, context) => {
+      if (context !== searchEpoch.current) return;
+      setRagData(prev => ({ ...prev, answer: `NotebookLM Query Failed: ${errMsg}`, source: 'ERROR' }));
+      setIsQueryingRag(false);
+      stopRagElapsedTimer();
+    }
+  });
+}
+
+function useMatrixRagPoller({ evaluationEpoch, setActionError, completeMatrixRag }) {
+  return useRagPoller({
+    onResult: completeMatrixRag,
+    onTimeout: (context) => {
+      if (context?.epoch === evaluationEpoch.current) {
+        setActionError('NotebookLM candidate review timed out. The result remains provisional.');
+      }
+    },
+    onFail: (errMsg, context) => {
+      if (typeof errMsg === 'string' && (errMsg.includes('AbortError') || errMsg.includes('aborted'))) return;
+      if (context?.epoch === evaluationEpoch.current) {
+        setActionError(`NotebookLM candidate review failed: ${errMsg}`);
+      }
+    }
+  });
+}
+
+function useProgressStream({
+  setLogStream,
+  activeRunRef,
+  evaluationRunRef,
+  setIsTaskRunning,
+  setActiveProgress,
+  refreshCatalogs,
+  setTaskHistory,
+  setActiveTab,
+  evaluationEpoch,
+  evalRef,
+  setEvalResults,
+  setRagData,
+  selectedChassisRef,
+  completeMatrixRag,
+  startMatrixRagPoll,
+  setActionError
+}) {
+  useSSEStream({
+    onTaskStarted: useCallback((payload) => {
+      setLogStream([]);
+      activeRunRef.current = payload.runId;
+      if (payload.task === 'EVAL_BOQ') evaluationRunRef.current = payload.runId;
+      setIsTaskRunning(true);
+      setActiveProgress({ task: payload.task, currentStep: 0, totalSteps: 0, action: 'Starting...', status: 'started' });
+    }, [activeRunRef, evaluationRunRef, setIsTaskRunning, setActiveProgress, setLogStream]),
+
+    onTaskCompleted: useCallback(payload => receiveTaskCompletion(payload,
+      { activeRunRef, setIsTaskRunning, setActiveProgress, refreshCatalogs, setTaskHistory, setActiveTab }),
+      [activeRunRef, setIsTaskRunning, setActiveProgress, refreshCatalogs, setTaskHistory, setActiveTab]),
+
+    onProgress: useCallback((payload) => {
+      if (payload.runId && payload.runId !== activeRunRef.current) return;
+      setActiveProgress({
+        task: payload.task || 'RUNNING',
+        currentStep: payload.step,
+        totalSteps: payload.total,
+        action: payload.action,
+        status: payload.status,
+        detail: payload.detail
+      });
+      setLogStream(prev => [...prev.slice(-200), payload]);
+    }, [activeRunRef, setActiveProgress, setLogStream]),
+
+    onLog: useCallback((payload) => {
+      setLogStream(prev => [...prev.slice(-200), payload]);
+    }, [setLogStream]),
+
+    onEvalResult: useCallback((normalised, raw) => receiveEvaluation(normalised, raw,
+      { evaluationRunRef, evaluationEpoch, evalRef, setEvalResults, setRagData, selectedChassisRef, completeMatrixRag, startMatrixRagPoll, setActionError }),
+      [evaluationRunRef, evaluationEpoch, evalRef, setEvalResults, setRagData, selectedChassisRef, completeMatrixRag, startMatrixRagPoll, setActionError])
+  });
 }
 
 export default function App() {
@@ -575,14 +707,10 @@ export default function App() {
 
   const completeMatrixRag = (answer, fullData, context) => completeMatrixRagForRun(answer, fullData, context,
     { evaluationEpoch, evaluationRunRef, evalRef, setEvalResults, setRagData });
-  const { startPoll: startMatrixRagPoll, cancelPoll: cancelMatrixRagPoll } = useRagPoller({
-    onResult: completeMatrixRag,
-    onTimeout: (context) => {
-      if (context?.epoch === evaluationEpoch.current) setActionError('NotebookLM candidate review timed out. The result remains provisional.');
-    },
-    onFail: (errMsg, context) => {
-      if (context?.epoch === evaluationEpoch.current) setActionError(`NotebookLM candidate review failed: ${errMsg}`);
-    }
+  const { startPoll: startMatrixRagPoll, cancelPoll: cancelMatrixRagPoll } = useMatrixRagPoller({
+    evaluationEpoch,
+    setActionError,
+    completeMatrixRag
   });
 
   const elapsedIntervalRef = useRef(null);
@@ -594,59 +722,40 @@ export default function App() {
   };
   useEffect(() => () => clearInterval(elapsedIntervalRef.current), []);
 
-  const { startPoll: startSearchRagPoll, cancelPoll: cancelSearchRagPoll } = useRagPoller({
-    onResult: (_, fullData, context) => {
-      if (context !== searchEpoch.current) return;
-      setRagData(fullData);
-      setIsQueryingRag(false);
-      stopRagElapsedTimer();
-    },
-    onTimeout: (context) => {
-      if (context !== searchEpoch.current) return;
-      setRagData(prev => ({ ...prev, answer: '⚠️ NotebookLM Query Timeout: No response received within the 15-minute grounding window.', source: 'ERROR' }));
-      setIsQueryingRag(false);
-      stopRagElapsedTimer();
-    },
-    onFail: (errMsg, context) => {
-      if (context !== searchEpoch.current) return;
-      setRagData(prev => ({ ...prev, answer: `NotebookLM Query Failed: ${errMsg}`, source: 'ERROR' }));
-      setIsQueryingRag(false);
-      stopRagElapsedTimer();
-    }
+  const { startPoll: startSearchRagPoll, cancelPoll: cancelSearchRagPoll } = useSearchRagPoller({
+    searchEpoch,
+    setRagData,
+    setIsQueryingRag,
+    stopRagElapsedTimer
   });
 
-  useSSEStream({
-    onTaskStarted: useCallback((payload) => {
-      setLogStream([]);
-      activeRunRef.current = payload.runId;
-      if (payload.task === 'EVAL_BOQ') evaluationRunRef.current = payload.runId;
-      setIsTaskRunning(true);
-      setActiveProgress({ task: payload.task, currentStep: 0, totalSteps: 0, action: 'Starting...', status: 'started' });
-    }, []),
-
-    onTaskCompleted: useCallback(payload => receiveTaskCompletion(payload,
-      { activeRunRef, setIsTaskRunning, setActiveProgress, refreshCatalogs, setTaskHistory, setActiveTab }), [refreshCatalogs]),
-
-    onProgress: useCallback((payload) => {
-      if (payload.runId && payload.runId !== activeRunRef.current) return;
-      setActiveProgress({
-        task: payload.task || 'RUNNING',
-        currentStep: payload.step,
-        totalSteps: payload.total,
-        action: payload.action,
-        status: payload.status,
-        detail: payload.detail
-      });
-      setLogStream(prev => [...prev.slice(-200), payload]);
-    }, []),
-
-    onLog: useCallback((payload) => {
-      setLogStream(prev => [...prev.slice(-200), payload]);
-    }, []),
-
-    onEvalResult: useCallback((normalised, raw) => receiveEvaluation(normalised, raw,
-      { evaluationRunRef, evaluationEpoch, evalRef, setEvalResults, setRagData, selectedChassisRef, completeMatrixRag, startMatrixRagPoll, setActionError }), [startMatrixRagPoll, completeMatrixRag])
+  useProgressStream({
+    setLogStream,
+    activeRunRef,
+    evaluationRunRef,
+    setIsTaskRunning,
+    setActiveProgress,
+    refreshCatalogs,
+    setTaskHistory,
+    setActiveTab,
+    evaluationEpoch,
+    evalRef,
+    setEvalResults,
+    setRagData,
+    selectedChassisRef,
+    completeMatrixRag,
+    startMatrixRagPoll,
+    setActionError
   });
+
+  const {
+    handleTriggerScrape,
+    handleTriggerRebuild,
+    handleTriggerSyncKnowledge,
+    handleTriggerDownloadPdf,
+    handleTriggerNavigate,
+    handleTriggerKillTask
+  } = usePipelineTriggers({ selectedChassis, setActionError, setActiveTab });
 
   const handleSearchLocal = (query) => { setGlobalSearchTerm(query); setActiveTab('catalog'); };
 
@@ -654,41 +763,18 @@ export default function App() {
     const context = ++searchEpoch.current;
     void cancelSearchRagPoll('REPLACED_BY_NEW_QUERY');
     return executeSmartSearchRequest({
-    query,
-    selectedChassis,
-    setIsRagOpen,
-    setIsQueryingRag,
-    setRagElapsedTime,
-    setRagData,
-    elapsedIntervalRef,
-    stopRagElapsedTimer,
-    startSearchRagPoll,
-    context,
-    isCurrent: () => context === searchEpoch.current
-  });
-  };
-
-  const postScraperEndpoint = async (url, bodyObj) => {
-    setActionError(null);
-    try {
-      const options = bodyObj
-        ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(bodyObj) }
-        : { method: 'POST' };
-      await requestJson(url, options);
-      setActiveTab('pipeline');
-    } catch (err) {
-      setActionError(err.message);
-    }
-  };
-
-  const handleTriggerScrape = (mode) => postScraperEndpoint('/api/scrape', { mode, chassis: selectedChassis });
-  const handleTriggerRebuild = () => postScraperEndpoint('/api/rebuild');
-  const handleTriggerSyncKnowledge = () => postScraperEndpoint('/api/sync-knowledge');
-  const handleTriggerDownloadPdf = () => postScraperEndpoint('/api/download-pdf', { chassisId: selectedChassis });
-  const handleTriggerNavigate = () => postScraperEndpoint('/api/navigate-oca', { chassis: selectedChassis });
-
-  const handleTriggerKillTask = async () => {
-    try { await requestJson('/api/kill-task', { method: 'POST' }); } catch (err) { setActionError(err.message); }
+      query,
+      selectedChassis,
+      setIsRagOpen,
+      setIsQueryingRag,
+      setRagElapsedTime,
+      setRagData,
+      elapsedIntervalRef,
+      stopRagElapsedTimer,
+      startSearchRagPoll,
+      context,
+      isCurrent: () => context === searchEpoch.current
+    });
   };
 
   const currentCatObj = catalogs.find(c => c.id === selectedChassis);
@@ -706,13 +792,17 @@ export default function App() {
   const handleSelectClarification = async (candidate) => {
     setSelectedChassis(candidate);
     try { await replayClarifiedIntake(candidate, recoverIntake(inputRef.current, evalRef.current), catalogs, handleEvaluateBoq, setActionError); }
-    catch (err) { setActionError(err.message); }
+    catch (err) {
+      if (!isAbortCancellation(err)) setActionError(err.message);
+    }
   };
+
+  const activeBannerError = computeActiveBannerError(actionError, catalogError);
 
   return (
     <div className="min-h-screen pb-16">
-      {(actionError || catalogError) && <div role="alert" className="p-3 bg-rose-50 text-rose-800 text-sm">
-        {actionError || catalogError}
+      {activeBannerError && <div role="alert" className="p-3 bg-rose-50 text-rose-800 text-sm">
+        {activeBannerError}
         <button className="ml-3 underline" onClick={() => { setActionError(null); refreshCatalogs(); }}>Retry catalog / dismiss</button>
       </div>}
       <Header
@@ -724,7 +814,10 @@ export default function App() {
         setActiveTab={setActiveTab}
         onSmartSearch={handleSmartSearch}
         onSearchLocal={handleSearchLocal}
-        onOpenRag={() => setIsRagOpen(true)}
+        onOpenRag={(q) => {
+          if (q && typeof q === 'string') handleSmartSearch(q);
+          else setIsRagOpen(true);
+        }}
         onOpenFeedbackDrawer={() => setIsFeedbackDrawerOpen(true)}
         onOpenQuarantineDrawer={() => setIsQuarantineOpen(true)}
         onOpenSettings={() => setIsSettingsOpen(true)}

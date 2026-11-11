@@ -62,6 +62,7 @@ export function useRagPoller({ onResult, onTimeout, onFail } = {}) {
         }
       } catch (err) {
         if (!ownsJob()) return;
+        if (err.name === 'AbortError' || err.message?.includes('aborted')) return;
         job.failures++;
         if (job.failures >= 3) { detach(); callbacks.current.onFail?.(err.message, context); return; }
       } finally { clearTimeout(timeout); }

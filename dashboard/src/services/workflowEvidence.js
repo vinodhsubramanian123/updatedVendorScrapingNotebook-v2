@@ -43,8 +43,11 @@ export function deriveEvidenceStatus(id, state) {
   // Structured progress identifies the actual running step; earlier step numbers
   // alone do not prove those stages passed.
   if (state.isTaskRunning && state.activeProgress?.task === 'EVAL_BOQ') {
-    const running = { LOAD: 1, CLEANING: 2, VALIDATION: 3, RANKING: 4, POST_VERIFICATION: 5 };
-    if (state.activeProgress.currentStep === running[id]) return 'RUNNING';
+    const step = state.activeProgress.currentStep;
+    if (id === 'LOAD' && step === 1) return 'RUNNING';
+    if (id === 'VALIDATION' && step >= 2 && step <= 7) return 'RUNNING';
+    if (id === 'RANKING' && (step === 8 || step === 9)) return 'RUNNING';
+    if (id === 'SOLUTION_PRESENTATION' && step === 10) return 'RUNNING';
   }
   return finalStageStatus(id, state);
 }

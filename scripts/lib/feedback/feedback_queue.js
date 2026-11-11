@@ -36,6 +36,14 @@ function saveQueue(queue) {
   safeWriteJsonAtomic(QUEUE_FILE, queue);
 }
 
+function sanitizeFeedbackText(feedbackText) {
+  if (typeof feedbackText === 'string') return feedbackText.trim();
+  if (typeof feedbackText === 'object' && feedbackText !== null) {
+    return (feedbackText.text || feedbackText.message || feedbackText.instruction || JSON.stringify(feedbackText)).trim();
+  }
+  return String(feedbackText || '').trim();
+}
+
 /**
  * Append a new feedback entry to the queue.
  * @param {string} feedbackText The user's feedback or feature request text
@@ -49,7 +57,7 @@ function appendFeedback(feedbackText, category = 'feature_request', context = {}
   const entry = {
     id: `FB-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
     timestamp: new Date().toISOString(),
-    text: String(feedbackText || '').trim(),
+    text: sanitizeFeedbackText(feedbackText),
     category: String(category || 'feature_request'),
     context: context || {},
     status: 'PENDING', // PENDING → IN_PROGRESS → COMPLETED → REJECTED

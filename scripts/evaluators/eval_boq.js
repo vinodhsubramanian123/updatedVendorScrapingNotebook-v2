@@ -846,7 +846,7 @@ async function executeGroundedRagValidation(ctx) {
   const { items, evalResults, notebookId, catalogData, chassisDetection, detectedChassisName, chassisDir, OFFLINE_MODE, JSON_MODE, inputFile } = ctx;
 
   const tRagStart = Date.now();
-  emitProgress(8, 10, 'Grounded Gemini Notebook Validation', 'in_progress', `Executing Grounded Gemini Notebook Validation against QuickSpecs.`);
+  emitProgress(8, 10, 'Agentic Guardrail Loop', 'in_progress', 'Evaluating guardrail constraints and autonomous knowledge deltas...');
 
   const ragPayload = formatNotebookQueryPayload(items, evalResults, evalResults.conflictGraph ? evalResults.conflictGraph.rankedSolutions : []);
 
@@ -854,6 +854,7 @@ async function executeGroundedRagValidation(ctx) {
     return _buildDeferredRagStatus(evalResults, tRagStart);
   }
 
+  emitProgress(9, 10, 'NotebookLM RAG Grounding', 'in_progress', 'Consulting official QuickSpecs and grounding validation citations...');
   const ragResult = await executeNotebookQuery(notebookId, ragPayload, {
     context: {
       chassis: _resolveRagChassisLabel(catalogData, chassisDetection, detectedChassisName),
@@ -1268,8 +1269,10 @@ function _revalidateAndRankCandidates(evalResults, ingestCtx, evidenceLedger) {
 }
 
 async function _handleBoqIngestionPhase(ctx, options, evidenceLedger) {
+  emitProgress(1, 10, 'Workload DNA & Intake', 'in_progress', 'Ingesting customer BOQ and classifying workload requirements...');
   evidenceLedger.startPhase(1, 'Intake, Ingestion & CTO Normalization', { boqFile: options.inputFile || options.BOQ_FILE });
   const ingestCtx = await ingestAndConsolidateBoq(options);
+  emitProgress(2, 10, 'Chassis Auto-Detection', 'in_progress', `Identified platform: ${path.basename(ingestCtx.chassisDir || 'Unknown')} (${ingestCtx.items.length} items parsed)`);
   if (ingestCtx.chassisDir) {
     evidenceLedger.updateTargetChassis(path.basename(ingestCtx.chassisDir), ingestCtx.chassisDir);
     evidenceLedger.recordArtifact('CATALOG', path.join(ingestCtx.chassisDir, `${path.basename(ingestCtx.chassisDir)}_Catalog.json`));
@@ -1300,6 +1303,7 @@ async function _handleBoqIngestionPhase(ctx, options, evidenceLedger) {
 }
 
 async function _handleBoqFingerprintingPhase(ctx, options, evidenceLedger) {
+  emitProgress(3, 10, 'Catalog Rules Engine', 'in_progress', 'Loading active knowledge rules and hardware constraints...');
   evidenceLedger.startPhase(2, 'Active Knowledge Routing & Discovery', { chassis: path.basename(ctx.ingestCtx.chassisDir) });
   const activeRules = loadActiveKnowledgeRules(path.basename(ctx.ingestCtx.chassisDir), ctx.ingestCtx.chassisDir);
   evidenceLedger.completePhase(2, 'PASSED', {
@@ -1322,6 +1326,7 @@ async function _handleBoqFingerprintingPhase(ctx, options, evidenceLedger) {
 }
 
 async function _handleBoqDomainAspectsPhase(ctx, options, evidenceLedger) {
+  emitProgress(4, 10, '7-Aspect Physical Math', 'in_progress', 'Evaluating thermal TDP, memory channel interleaving, and power envelope...');
   evidenceLedger.startPhase(3, '7-Aspect Physical Pre-Flight Math', { itemCount: ctx.ingestCtx.items.length });
   const { evalResults, graph, queryPayload, stage2AspectMathMs } = executePhysicalPreChecks(
     ctx.ingestCtx.items, ctx.ingestCtx.catalogData, ctx.ingestCtx.chassisDir, options.JSON_MODE, ctx.ingestCtx.requirementResolution, ctx.ingestCtx.configurationContext
@@ -1342,6 +1347,7 @@ async function _handleBoqDomainAspectsPhase(ctx, options, evidenceLedger) {
 }
 
 async function _handleBoqConflictGraphPhase(ctx, options, evidenceLedger) {
+  emitProgress(5, 10, 'Conflict Graph Arbitration', 'in_progress', 'Building cross-aspect conflict graph and arbitrating contested slots...');
   evidenceLedger.startPhase(4, 'Conflict Graph & Contested Resource Arbitration', {});
   const phase4Passed = ctx.graph?.isWholeSolutionValid === true;
   evidenceLedger.completePhase(4, phase4Passed ? 'PASSED' : 'ACTION_REQUIRED', {
@@ -1385,7 +1391,8 @@ async function _handleBoqModernizationPhase(ctx, options, evidenceLedger) {
 async function _handleBoqStrategySynthesisPhase(ctx, options, evidenceLedger) {
   evidenceLedger.startPhase(6, '5-Tier Strategy Matrix Synthesis', {});
   const tMatrixStart = Date.now();
-  emitProgress(9, 10, 'Strategic Matrix Synthesis', 'in_progress', 'Generating 5-Tier resolution matrix and tradeoff constraints.');
+  emitProgress(6, 10, '5-Tier Strategy Matrix', 'in_progress', 'Synthesizing ranked candidate solutions and Pareto tradeoffs...');
+  emitProgress(7, 10, 'CapEx Budget Optimizer', 'in_progress', 'Optimizing BOM CapEx and validating pricing availability...');
   const budgetOpt = optimizeForBudget(ctx.ingestCtx.items, ctx.evalResults, options.targetBudgetUsd, ctx.ingestCtx.catalogData, ctx.ingestCtx.chassisDir);
   ctx.evalResults.budgetOptimization = budgetOpt;
   ctx.budgetOpt = budgetOpt;
@@ -1541,6 +1548,7 @@ function _runLegacyDeliverablesPrelude(ctx, options, evidenceLedger) {
 }
 
 async function _handleBoqDeliverablesPhase(ctx, options, evidenceLedger, startTime) {
+  emitProgress(10, 10, 'Solution Presentation & Audit', 'completed', 'Generating multi-rank workbook deliverables and finalizing audit ledger...');
   evidenceLedger.startPhase(8, 'Multi-Rank Solution Deliverables & Excel Generation', {});
   Object.defineProperty(ctx.evalResults, 'evidenceLedger', { value: evidenceLedger, enumerable: false, configurable: true });
 

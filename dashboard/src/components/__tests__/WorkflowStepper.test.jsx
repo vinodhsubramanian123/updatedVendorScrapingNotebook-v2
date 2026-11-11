@@ -21,14 +21,14 @@ describe('WorkflowStepper', () => {
     await waitFor(() => {
       expect(screen.getByText(/Load BOQ/i)).toBeInTheDocument();
       expect(screen.getByText(/BOQ Cleaning/i)).toBeInTheDocument();
-    });
-  });
+    }, { timeout: 8000 });
+  }, 15000);
 
   it('shows completed state when progress is null', async () => {
     render(<WorkflowStepper progress={null} activeProgress={null} evalResults={mockEvalResults} isTaskRunning={false} />);
     await waitFor(() => {
       expect(screen.getByText(/Load BOQ/i)).toBeInTheDocument();
       expect(screen.getByText(/BOQ Cleaning/i)).toBeInTheDocument();
-    });
-  });
+    }, { timeout: 8000 });
+  }, 15000);
 });

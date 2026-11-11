@@ -69,6 +69,14 @@ function mapScenarioIcons(scenarios) {
   }));
 }
 
+function formatQueryString(val) {
+  if (typeof val === 'string') return val;
+  if (typeof val === 'object' && val !== null) {
+    return val.query || val.rawQuery || val.sanitizedQuery || JSON.stringify(val);
+  }
+  return String(val || '');
+}
+
 function isRagFallbackData(ragData) {
   if (!ragData) return false;
   if (ragData.source === 'FALLBACK' || ragData.source === 'LOCAL_FALLBACK') return true;
@@ -95,7 +103,7 @@ function RagHistoryTabView({ historyList }) {
                   {Math.round((entry.agreementScore || 0.95) * 100)}% Match
                 </span>
               </div>
-              <p className="font-semibold text-slate-800 line-clamp-2">"{entry.query}"</p>
+              <p className="font-semibold text-slate-800 line-clamp-2">"{formatQueryString(entry.query)}"</p>
               <p className="text-slate-600 line-clamp-3 text-[11px] leading-relaxed bg-white p-2 rounded border border-slate-100">
                 {entry.answer}
               </p>
@@ -118,7 +126,7 @@ function SanitizationDetailsBox({ sanitization, rawQueryFallback }) {
     <div className="mt-2 text-[10px] bg-slate-900 text-slate-100 p-3 rounded-lg font-mono space-y-2 overflow-x-auto">
       <div>
         <span className="text-indigo-400 font-bold">Raw Input:</span>
-        <p className="text-slate-300 break-words">{sanitization.rawQuery || rawQueryFallback}</p>
+        <p className="text-slate-300 break-words">{formatQueryString(sanitization.rawQuery || rawQueryFallback)}</p>
       </div>
       <div>
         <span className="text-emerald-400 font-bold">Sanitized Query Sent to NotebookLM:</span>
@@ -171,7 +179,7 @@ function RagResultView({ ragData, showSanitizationDetails, onToggleSanitization 
             </div>
           )}
         </div>
-        <p className="text-xs text-blue-800 italic font-medium">"{ragData.query}"</p>
+        <p className="text-xs text-blue-800 italic font-medium">"{formatQueryString(ragData.query)}"</p>
 
         {ragData.scenario && (
           <div className="flex items-center gap-2 pt-1 border-t border-blue-100">
@@ -191,7 +199,7 @@ function RagResultView({ ragData, showSanitizationDetails, onToggleSanitization 
         </button>
 
         {showSanitizationDetails && (
-          <SanitizationDetailsBox sanitization={sanitization} rawQueryFallback={ragData.query} />
+          <SanitizationDetailsBox sanitization={sanitization} rawQueryFallback={formatQueryString(ragData.query)} />
         )}
       </div>
 
