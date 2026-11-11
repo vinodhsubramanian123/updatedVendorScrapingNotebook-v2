@@ -14,7 +14,7 @@ import QuarantineManagementDrawer from './components/QuarantineManagementDrawer'
 import FeedbackModal from './components/FeedbackModal';
 import SettingsDrawer from './components/SettingsDrawer';
 import PartnerReconciliationView from './components/PartnerReconciliationView';
-import GlobalLoadingState from './components/GlobalLoadingState';
+import RunActivity from './components/RunActivity';
 import MacroOrchestratorFlow from './components/MacroOrchestratorFlow';
 import TraceabilityInspector from './components/TraceabilityInspector';
 import { BoqTopologyModal } from './components/topology';
@@ -230,6 +230,7 @@ function AppMainTabContent({
   auditReport,
   isTaskRunning,
   activeProgress,
+  runActivity,
   selectedChassis,
   setSelectedChassis,
   logStream,
@@ -328,6 +329,7 @@ function AppMainTabContent({
         <ScraperTriggerCard
           logStream={logStream}
           isTaskRunning={isTaskRunning}
+          runActivity={runActivity}
           onTriggerScrape={handleTriggerScrape}
           onTriggerRebuild={handleTriggerRebuild}
           onTriggerDownloadPdf={handleTriggerDownloadPdf}
@@ -393,7 +395,7 @@ function AppToolModals({
   setIntakeTopologyData,
   logStream,
   currentCatObj,
-  isTaskRunning,
+  activeProgress,
   selectedChassis,
   setSelectedCardForFeedback,
   setIsRagOpen,
@@ -413,7 +415,7 @@ function AppToolModals({
           evalResults={evalResults}
           logStream={logStream}
           chassisDir={currentCatObj?.chassisDir}
-          isTaskRunning={isTaskRunning}
+          activeProgress={activeProgress}
           onOpenMatrix={() => setActiveModal('resolutionMatrix')}
           onOpenReconciliation={() => setActiveModal('reconciliation')}
           onOpenTopology={(customData) => {
@@ -486,17 +488,17 @@ function completeMatrixRagForRun(answer, fullData, context, state) {
 }
 
 function receiveEvaluation(normalised, raw, state) {
-  if (raw.recovered && !state.evaluationRunRef.current) state.evaluationRunRef.current = raw.runId;
+  if (raw.recovered) state.evaluationRunRef.current = raw.runId;
   if (raw.runId && raw.runId !== state.evaluationRunRef.current) return;
   normalised = { ...normalised, runId: raw.runId || normalised.runId };
   state.evalRef.current = normalised;
   state.setEvalResults(normalised);
   if (normalised.ragAnswer) state.setRagData(buildGroundedRagState(normalised));
-  if (raw.recovered && raw.ragJobId) {
+  const isOfflineRequested = raw.inputDescriptor?.offline === true || raw.data?.evalResults?.offlineMode === true || normalised.offlineMode === true;
+  if (!isOfflineRequested && raw.recovered && raw.ragJobId && !normalised.ragAnswer) {
     state.startMatrixRagPoll(raw.ragJobId, { runId: raw.runId, epoch: state.evaluationEpoch.current });
     return;
   }
-  const isOfflineRequested = raw.inputDescriptor?.offline === true || raw.data?.evalResults?.offlineMode === true || normalised.offlineMode === true;
   const needsRag = !isOfflineRequested && !raw.recovered && !raw.error && !normalised.ragAnswer && Boolean(raw.data?.notebookPayload);
   if (!needsRag) return;
   const context = { runId: raw.runId, epoch: state.evaluationEpoch.current };
@@ -507,14 +509,17 @@ function receiveEvaluation(normalised, raw, state) {
 
 function receiveTaskCompletion(payload, state) {
   if (!payload.recovered && payload.runId && payload.runId !== state.activeRunRef.current) return;
+  state.visibleRunRef.current = payload.runId;
   state.activeRunRef.current = null;
   state.setIsTaskRunning(false);
   state.setActiveProgress(null);
+  state.setRunActivity(previous => payload.runId ? {
+    ...(previous?.runId === payload.runId ? previous : {}),
+    ...payload,
+    status: payload.status || (payload.code === 0 ? 'COMPLETED' : 'FAILED')
+  } : null);
   if (payload.recovered) return;
   state.refreshCatalogs();
-  state.setTaskHistory(prev => [{ type: payload.task || 'PIPELINE_ACTION', status: payload.code === 0 ? 'COMPLETED' : 'FAILED', timestamp: new Date().toISOString() }, ...prev.slice(0, 15)]);
-  const taskName = payload.task || '';
-  if (payload.code === 0 && (taskName.includes('SCRAPE') || taskName.includes('REBUILD'))) state.setActiveTab('catalog');
 }
 
 async function replayClarifiedIntake(candidate, input, catalogs, submit, setError) {
@@ -615,8 +620,8 @@ function useProgressStream({
   setIsTaskRunning,
   setActiveProgress,
   refreshCatalogs,
-  setTaskHistory,
-  setActiveTab,
+  setRunActivity,
+  setStreamConnected,
   evaluationEpoch,
   evalRef,
   setEvalResults,
@@ -626,18 +631,25 @@ function useProgressStream({
   startMatrixRagPoll,
   setActionError
 }) {
+  const visibleRunRef = useRef(null);
   useSSEStream({
     onTaskStarted: useCallback((payload) => {
       setLogStream([]);
       activeRunRef.current = payload.runId;
-      if (payload.task === 'EVAL_BOQ') evaluationRunRef.current = payload.runId;
+      visibleRunRef.current = payload.runId;
+      if (payload.task === 'EVAL_BOQ' && payload.runId !== evaluationRunRef.current) {
+        evaluationRunRef.current = payload.runId;
+        evalRef.current = null;
+        setEvalResults(null);
+      }
       setIsTaskRunning(true);
-      setActiveProgress({ task: payload.task, currentStep: 0, totalSteps: 0, action: 'Starting...', status: 'started' });
-    }, [activeRunRef, evaluationRunRef, setIsTaskRunning, setActiveProgress, setLogStream]),
+      setRunActivity({ ...payload, startTime: payload.startTime ?? Date.now(), status: 'RUNNING' });
+      setActiveProgress({ task: payload.task, action: 'Starting…', status: 'started' });
+    }, [activeRunRef, evaluationRunRef, evalRef, setEvalResults, setIsTaskRunning, setRunActivity, setActiveProgress, setLogStream]),
 
     onTaskCompleted: useCallback(payload => receiveTaskCompletion(payload,
-      { activeRunRef, setIsTaskRunning, setActiveProgress, refreshCatalogs, setTaskHistory, setActiveTab }),
-      [activeRunRef, setIsTaskRunning, setActiveProgress, refreshCatalogs, setTaskHistory, setActiveTab]),
+      { activeRunRef, visibleRunRef, setIsTaskRunning, setActiveProgress, refreshCatalogs, setRunActivity }),
+      [activeRunRef, setIsTaskRunning, setActiveProgress, refreshCatalogs, setRunActivity]),
 
     onProgress: useCallback((payload) => {
       if (payload.runId && payload.runId !== activeRunRef.current) return;
@@ -646,6 +658,7 @@ function useProgressStream({
         currentStep: payload.step,
         totalSteps: payload.total,
         action: payload.action,
+        stage: payload.stage,
         status: payload.status,
         detail: payload.detail
       });
@@ -653,8 +666,12 @@ function useProgressStream({
     }, [activeRunRef, setActiveProgress, setLogStream]),
 
     onLog: useCallback((payload) => {
+      if (payload.runId && payload.runId !== visibleRunRef.current) return;
       setLogStream(prev => [...prev.slice(-200), payload]);
     }, [setLogStream]),
+
+    onLogsRestored: setLogStream,
+    onConnectionChange: setStreamConnected,
 
     onEvalResult: useCallback((normalised, raw) => receiveEvaluation(normalised, raw,
       { evaluationRunRef, evaluationEpoch, evalRef, setEvalResults, setRagData, selectedChassisRef, completeMatrixRag, startMatrixRagPoll, setActionError }),
@@ -683,8 +700,9 @@ export default function App() {
 
   const [logStream, setLogStream] = useState([]);
   const [isTaskRunning, setIsTaskRunning] = useState(false);
-  const [_taskHistory, setTaskHistory] = useState([]);
   const [activeProgress, setActiveProgress] = useState(null);
+  const [runActivity, setRunActivity] = useState(null);
+  const [streamConnected, setStreamConnected] = useState(null);
 
   const [evalResults, setEvalResults] = useState(null);
   const evalRef = useRef(null);
@@ -736,8 +754,8 @@ export default function App() {
     setIsTaskRunning,
     setActiveProgress,
     refreshCatalogs,
-    setTaskHistory,
-    setActiveTab,
+    setRunActivity,
+    setStreamConnected,
     evaluationEpoch,
     evalRef,
     setEvalResults,
@@ -825,8 +843,14 @@ export default function App() {
         isCatalogLoading={isCatalogLoading}
       />
 
-      <main className="max-w-7xl mx-auto px-6 mt-6 space-y-6">
-        <GlobalLoadingState isTaskRunning={isTaskRunning} isQueryingRag={isQueryingRag} activeProgress={activeProgress} mode="banner" />
+      <main className="max-w-7xl mx-auto px-3 sm:px-6 mt-4 sm:mt-6 space-y-6">
+        <RunActivity
+          run={runActivity}
+          progress={activeProgress}
+          evaluation={evalResults}
+          reconnecting={streamConnected === false}
+          onNavigate={setActiveTab}
+        />
 
         {evalResults?.clarificationRequired && (
           <PlatformDisambiguationCard
@@ -846,6 +870,7 @@ export default function App() {
             auditReport={auditReport}
             isTaskRunning={isTaskRunning}
             activeProgress={activeProgress}
+            runActivity={runActivity}
             selectedChassis={selectedChassis}
             setSelectedChassis={setSelectedChassis}
             logStream={logStream}
@@ -879,7 +904,7 @@ export default function App() {
         setIntakeTopologyData={setIntakeTopologyData}
         logStream={logStream}
         currentCatObj={currentCatObj}
-        isTaskRunning={isTaskRunning}
+        activeProgress={activeProgress}
         selectedChassis={selectedChassis}
         setSelectedCardForFeedback={setSelectedCardForFeedback}
         setIsRagOpen={setIsRagOpen}

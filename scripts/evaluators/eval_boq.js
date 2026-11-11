@@ -846,7 +846,7 @@ async function executeGroundedRagValidation(ctx) {
   const { items, evalResults, notebookId, catalogData, chassisDetection, detectedChassisName, chassisDir, OFFLINE_MODE, JSON_MODE, inputFile } = ctx;
 
   const tRagStart = Date.now();
-  emitProgress(8, 10, 'Agentic Guardrail Loop', 'in_progress', 'Evaluating guardrail constraints and autonomous knowledge deltas...');
+  emitProgress(8, 10, 'Preparing evidence review', 'in_progress', 'Preparing the validation evidence.', { stage: 'POST_VERIFICATION' });
 
   const ragPayload = formatNotebookQueryPayload(items, evalResults, evalResults.conflictGraph ? evalResults.conflictGraph.rankedSolutions : []);
 
@@ -854,7 +854,8 @@ async function executeGroundedRagValidation(ctx) {
     return _buildDeferredRagStatus(evalResults, tRagStart);
   }
 
-  emitProgress(9, 10, 'NotebookLM RAG Grounding', 'in_progress', 'Consulting official QuickSpecs and grounding validation citations...');
+  emitProgress(9, 10, OFFLINE_MODE ? 'Reviewing local evidence' : 'Reviewing QuickSpecs in NotebookLM',
+    'in_progress', '', { stage: 'POST_VERIFICATION' });
   const ragResult = await executeNotebookQuery(notebookId, ragPayload, {
     context: {
       chassis: _resolveRagChassisLabel(catalogData, chassisDetection, detectedChassisName),
@@ -909,7 +910,7 @@ async function executeGroundedRagValidation(ctx) {
 
 function applyLearnedRAGDeltasIfPresent(evalResults, graph, ingestCtx, options, ragResult) {
   if (!evalResults.learnedDeltasCount || options.DEFER_RAG || !ragResult) return;
-  emitProgress(8, 10, 'Re-evaluating with Learned Deltas', 'in_progress', 'Recomputing physical aspect checks and strategy matrix with newly grounded RAG knowledge...');
+  emitProgress(9, 10, 'Rechecking with grounded evidence', 'in_progress', 'Recomputing hardware checks and candidate rankings.', { stage: 'POST_VERIFICATION' });
   try {
     const recomputed = recomputeStrategyMatrixWithRag({
       items: ingestCtx.items,
@@ -935,7 +936,7 @@ async function executeEphemeralSourceValidation(options, ingestCtx, evalResults)
   // Runs whenever sheet validation is explicitly requested OR when cloud RAG is active and a live product notebook is mapped.
   const shouldValidate = options.SHEET_VALIDATION || (!options.OFFLINE_MODE && !options.DEFER_RAG && ingestCtx.notebookId);
   if (!shouldValidate) return null;
-  emitProgress(9, 10, 'Ephemeral Source Validation', 'in_progress', 'Validating multi-rank solution sheets via NotebookLM ephemeral source...');
+  emitProgress(9, 10, 'Checking candidate evidence', 'in_progress', 'Validating the ranked solution sheets.', { stage: 'POST_VERIFICATION' });
   try {
     const result = await validateSolutionWithEphemeralSource(evalResults, {
       notebookId: ingestCtx.notebookId,
@@ -1269,10 +1270,10 @@ function _revalidateAndRankCandidates(evalResults, ingestCtx, evidenceLedger) {
 }
 
 async function _handleBoqIngestionPhase(ctx, options, evidenceLedger) {
-  emitProgress(1, 10, 'Workload DNA & Intake', 'in_progress', 'Ingesting customer BOQ and classifying workload requirements...');
+  emitProgress(1, 10, 'Reading the BOQ', 'in_progress', 'Parsing intake and workload requirements.', { stage: 'LOAD' });
   evidenceLedger.startPhase(1, 'Intake, Ingestion & CTO Normalization', { boqFile: options.inputFile || options.BOQ_FILE });
   const ingestCtx = await ingestAndConsolidateBoq(options);
-  emitProgress(2, 10, 'Chassis Auto-Detection', 'in_progress', `Identified platform: ${path.basename(ingestCtx.chassisDir || 'Unknown')} (${ingestCtx.items.length} items parsed)`);
+  emitProgress(2, 10, 'Resolving the platform', 'in_progress', `Identified platform: ${path.basename(ingestCtx.chassisDir || 'Unknown')} (${ingestCtx.items.length} items parsed)`, { stage: 'CLEANING' });
   if (ingestCtx.chassisDir) {
     evidenceLedger.updateTargetChassis(path.basename(ingestCtx.chassisDir), ingestCtx.chassisDir);
     evidenceLedger.recordArtifact('CATALOG', path.join(ingestCtx.chassisDir, `${path.basename(ingestCtx.chassisDir)}_Catalog.json`));
@@ -1303,7 +1304,7 @@ async function _handleBoqIngestionPhase(ctx, options, evidenceLedger) {
 }
 
 async function _handleBoqFingerprintingPhase(ctx, options, evidenceLedger) {
-  emitProgress(3, 10, 'Catalog Rules Engine', 'in_progress', 'Loading active knowledge rules and hardware constraints...');
+  emitProgress(3, 10, 'Loading catalog rules', 'in_progress', 'Loading hardware constraints for the selected product.', { stage: 'VALIDATION' });
   evidenceLedger.startPhase(2, 'Active Knowledge Routing & Discovery', { chassis: path.basename(ctx.ingestCtx.chassisDir) });
   const activeRules = loadActiveKnowledgeRules(path.basename(ctx.ingestCtx.chassisDir), ctx.ingestCtx.chassisDir);
   evidenceLedger.completePhase(2, 'PASSED', {
@@ -1326,7 +1327,7 @@ async function _handleBoqFingerprintingPhase(ctx, options, evidenceLedger) {
 }
 
 async function _handleBoqDomainAspectsPhase(ctx, options, evidenceLedger) {
-  emitProgress(4, 10, '7-Aspect Physical Math', 'in_progress', 'Evaluating thermal TDP, memory channel interleaving, and power envelope...');
+  emitProgress(4, 10, 'Checking hardware constraints', 'in_progress', '', { stage: 'VALIDATION' });
   evidenceLedger.startPhase(3, '7-Aspect Physical Pre-Flight Math', { itemCount: ctx.ingestCtx.items.length });
   const { evalResults, graph, queryPayload, stage2AspectMathMs } = executePhysicalPreChecks(
     ctx.ingestCtx.items, ctx.ingestCtx.catalogData, ctx.ingestCtx.chassisDir, options.JSON_MODE, ctx.ingestCtx.requirementResolution, ctx.ingestCtx.configurationContext
@@ -1347,7 +1348,7 @@ async function _handleBoqDomainAspectsPhase(ctx, options, evidenceLedger) {
 }
 
 async function _handleBoqConflictGraphPhase(ctx, options, evidenceLedger) {
-  emitProgress(5, 10, 'Conflict Graph Arbitration', 'in_progress', 'Building cross-aspect conflict graph and arbitrating contested slots...');
+  emitProgress(5, 10, 'Checking component conflicts', 'in_progress', '', { stage: 'VALIDATION' });
   evidenceLedger.startPhase(4, 'Conflict Graph & Contested Resource Arbitration', {});
   const phase4Passed = ctx.graph?.isWholeSolutionValid === true;
   evidenceLedger.completePhase(4, phase4Passed ? 'PASSED' : 'ACTION_REQUIRED', {
@@ -1365,6 +1366,7 @@ async function _handleBoqConflictGraphPhase(ctx, options, evidenceLedger) {
 }
 
 async function _handleBoqModernizationPhase(ctx, options, evidenceLedger) {
+  emitProgress(6, 10, 'Reviewing alternative configurations', 'in_progress', '', { stage: 'RANKING' });
   evidenceLedger.startPhase(5, 'Generational Modernization & Least-Delta Combinator', {});
   const modCount = ctx.activeRules?.generationalModernizations ? ctx.activeRules.generationalModernizations.length : 0;
   const hasModernizations = Array.isArray(ctx.graph?.modernizations) && ctx.graph.modernizations.length > 0;
@@ -1391,8 +1393,7 @@ async function _handleBoqModernizationPhase(ctx, options, evidenceLedger) {
 async function _handleBoqStrategySynthesisPhase(ctx, options, evidenceLedger) {
   evidenceLedger.startPhase(6, '5-Tier Strategy Matrix Synthesis', {});
   const tMatrixStart = Date.now();
-  emitProgress(6, 10, '5-Tier Strategy Matrix', 'in_progress', 'Synthesizing ranked candidate solutions and Pareto tradeoffs...');
-  emitProgress(7, 10, 'CapEx Budget Optimizer', 'in_progress', 'Optimizing BOM CapEx and validating pricing availability...');
+  emitProgress(7, 10, 'Checking budget and pricing', 'in_progress', 'Evaluating cost tradeoffs and price availability.', { stage: 'RANKING' });
   const budgetOpt = optimizeForBudget(ctx.ingestCtx.items, ctx.evalResults, options.targetBudgetUsd, ctx.ingestCtx.catalogData, ctx.ingestCtx.chassisDir);
   ctx.evalResults.budgetOptimization = budgetOpt;
   ctx.budgetOpt = budgetOpt;
@@ -1548,7 +1549,7 @@ function _runLegacyDeliverablesPrelude(ctx, options, evidenceLedger) {
 }
 
 async function _handleBoqDeliverablesPhase(ctx, options, evidenceLedger, startTime) {
-  emitProgress(10, 10, 'Solution Presentation & Audit', 'completed', 'Generating multi-rank workbook deliverables and finalizing audit ledger...');
+  emitProgress(10, 10, 'Finalizing results and audit', 'in_progress', 'Recording the evaluation outcome and delivery eligibility.', { stage: 'SOLUTION_PRESENTATION' });
   evidenceLedger.startPhase(8, 'Multi-Rank Solution Deliverables & Excel Generation', {});
   Object.defineProperty(ctx.evalResults, 'evidenceLedger', { value: evidenceLedger, enumerable: false, configurable: true });
 

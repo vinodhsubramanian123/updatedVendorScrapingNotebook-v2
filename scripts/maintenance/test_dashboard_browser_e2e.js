@@ -33,6 +33,27 @@ function waitForServer(url, timeoutMs = 20000) {
   });
 }
 
+async function verifyMobileLayout(browser) {
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: 'reduce' });
+  try {
+    await context.route('**/*', route => new URL(route.request().url()).origin === BASE_URL ? route.continue() : route.abort());
+    const page = await context.newPage();
+    await page.goto(BASE_URL);
+    const header = page.locator('header');
+    await header.getByRole('textbox', { name: 'Search catalog SKUs or ask NotebookLM' }).waitFor();
+    const layout = await header.evaluate(element => ({
+      padding: getComputedStyle(element).paddingInlineStart,
+      documentWidth: document.documentElement.scrollWidth
+    }));
+    if (parseFloat(layout.padding) === 0 || layout.documentWidth > 390) {
+      throw new Error(`Mobile layout lost spacing or overflows the viewport: ${JSON.stringify(layout)}`);
+    }
+    console.log('  ✓ Mobile search and navigation fit with external resources blocked');
+  } finally {
+    await context.close();
+  }
+}
+
 async function runBrowserTest() {
   console.log('🚀 [E2E] Starting dashboard server on port', PORT, 'in production mode...');
   const serverProc = spawn('node', ['dashboard/server.cjs', '--production'], {
@@ -182,6 +203,7 @@ async function runBrowserTest() {
       throw new Error(`Browser console errors detected: ${JSON.stringify(consoleErrors)}`);
     }
 
+    await verifyMobileLayout(browser);
     console.log('🎉 [E2E] All browser validation checks PASSED with 0 errors!');
     await browser.close();
   } finally {

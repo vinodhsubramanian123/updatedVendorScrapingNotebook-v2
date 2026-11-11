@@ -46,7 +46,7 @@ router.post('/scrape', (req, res) => {
   const proc = spawnObservedChild('scrape', __filename, (extraEnv) =>
     spawn('node', args, { cwd: PROJECT_ROOT, env: { ...process.env, STRUCTURED_PROGRESS: '1', ...extraEnv } })
   );
-  startTask(`SCRAPE_${(mode || 'solution').toUpperCase()}`, proc, res, OUTPUTS_DIR);
+  startTask(`SCRAPE_${(mode || 'solution').toUpperCase()}`, proc, res, OUTPUTS_DIR, targetChassis ? String(targetChassis).trim() : null);
 });
 
 // ── Rebuild All ───────────────────────────────────────────────────────────────
@@ -81,7 +81,7 @@ router.post('/navigate-oca', (req, res) => {
   const proc = spawnObservedChild('navigate_oca', __filename, (extraEnv) =>
     spawn('node', args, { cwd: PROJECT_ROOT, env: { ...process.env, STRUCTURED_PROGRESS: '1', ...extraEnv } })
   );
-  startTask('NAVIGATE_OCA', proc, res, OUTPUTS_DIR);
+  startTask('NAVIGATE_OCA', proc, res, OUTPUTS_DIR, String(targetChassis).trim());
 });
 
 // ── Launch Browser (Zero-Touch CDP) ──────────────────────────────────────────
@@ -115,12 +115,12 @@ router.post('/download-pdf', (req, res) => {
   const pdfScript = path.join(PROJECT_ROOT, 'scripts', 'scrapers', 'download_quickspecs_pdf.js');
   if (!fs.existsSync(pdfScript)) return sendErrorResponse(res, 404, 'download_quickspecs_pdf.js not found', { source: 'TASKS_ROUTER' });
 
-  let docId, destination;
+  let docId, destination, product;
   try {
     const { chassisId } = req.body || {};
     if (!chassisId) throw new Error('Exact product is required to download QuickSpecs');
     const dir = assertSafePath(resolveChassisDirectory(chassisId));
-    const product = path.basename(dir);
+    product = path.basename(dir);
     const { KNOWN_QUICKSPECS_DOC_MAP } = require('../../scripts/lib/sync/quickspecs_sync.js');
     docId = KNOWN_QUICKSPECS_DOC_MAP[product]?.docId;
     if (!docId) throw new Error(`No verified QuickSpecs document mapping for ${product}. Add its official mapping before download.`);
@@ -130,7 +130,7 @@ router.post('/download-pdf', (req, res) => {
   const proc = spawnObservedChild('download_pdf', __filename, (extraEnv) =>
     spawn('node', [pdfScript, docId, destination], { cwd: PROJECT_ROOT, env: { ...process.env, STRUCTURED_PROGRESS: '1', ...extraEnv } })
   );
-  startTask('DOWNLOAD_PDF', proc, res, OUTPUTS_DIR);
+  startTask('DOWNLOAD_PDF', proc, res, OUTPUTS_DIR, product);
 });
 
 // ── Kill Active Task ──────────────────────────────────────────────────────────

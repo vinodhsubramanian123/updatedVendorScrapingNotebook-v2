@@ -5,6 +5,7 @@ import NotebookLmHealthBadge from './NotebookLmHealthBadge';
 import ChassisSelector from './header/ChassisSelector';
 import SmartSearchInput from './header/SmartSearchInput';
 import NavigationTabs from './header/NavigationTabs';
+import { formatPrice } from '../services/pricing.js';
 
 const QUESTION_WORDS = ['why', 'how', 'does', 'can', 'what', 'should', 'is', 'where', 'notebook', 'rag', 'compat', 'rule', 'explain'];
 
@@ -17,7 +18,7 @@ function resolveSkuDescription(sku) {
 }
 
 function resolveSkuPrice(sku) {
-  return sku['Unit Price (USD)'] || sku['List Price'] || sku.listPriceFormatted || '$0.00';
+  return formatPrice(sku['Unit Price (USD)'] ?? sku['Price (USD)'] ?? sku['List Price'] ?? sku.listPriceFormatted ?? sku.listPrice);
 }
 
 function scoreCatalogSkuMatch(sku, entry, query) {
@@ -37,7 +38,7 @@ function computeLocalSearchResults(searchQuery, catalogData) {
   const query = searchQuery.trim().toLowerCase();
   if (!query) return { skus: [], confidence: 0, isQuestion: false };
 
-  const isQuestion = QUESTION_WORDS.some(w => query.includes(w));
+  const isQuestion = query.split(/\W+/).some(word => QUESTION_WORDS.includes(word));
   const matches = [];
 
   if (catalogData?.entries) {
@@ -129,7 +130,9 @@ export default function Header({
     const q = searchQuery.trim();
     if (!q) return;
     setIsSearchOpen(false);
-    if (onSmartSearch) {
+    if (onSearchLocal && !localSearchResults.isQuestion && localSearchResults.skus.length > 0) {
+      onSearchLocal(q);
+    } else if (onSmartSearch) {
       onSmartSearch(q);
     } else if (onOpenRag) {
       onOpenRag(q);
@@ -137,7 +140,7 @@ export default function Header({
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200 px-3 sm:px-4 py-2 shadow-sm space-y-2">
+    <header className="relative md:sticky top-0 z-40 bg-white/95 border-b border-slate-200 px-3 sm:px-4 py-2 shadow-sm space-y-2">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <div className="flex items-center gap-2">
@@ -147,11 +150,7 @@ export default function Header({
             <div>
               <h1 className="font-extrabold text-xs sm:text-sm text-slate-900 tracking-tight flex items-center gap-1.5 leading-none">
                 HPE ProLiant AI Studio
-                <span className="badge badge-emerald text-[8px] sm:text-[9px] py-0 px-1 font-mono">v2.5 Dual-Brain</span>
               </h1>
-              <p className="text-[9px] sm:text-[10px] text-slate-400 font-medium mt-0.5 truncate max-w-[200px] sm:max-w-none">
-                BOQ Physical Math & Conflict Resolution Engine
-              </p>
             </div>
           </div>
 
@@ -170,7 +169,7 @@ export default function Header({
           />
         </div>
 
-        <div className="flex-1 min-w-[180px] max-w-md order-3 sm:order-2">
+        <div className="flex-1 min-w-0 basis-full md:basis-48 md:max-w-md order-3 md:order-2">
           <SmartSearchInput
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
@@ -178,6 +177,10 @@ export default function Header({
             setIsSearchOpen={setIsSearchOpen}
             localSearchResults={localSearchResults}
             onSubmitSearch={handleSearchSubmit}
+            onSelectSku={sku => {
+              setIsSearchOpen(false);
+              onSearchLocal?.(sku);
+            }}
             onOpenRag={(q) => {
               setIsSearchOpen(false);
               if (onSmartSearch) {
@@ -190,7 +193,7 @@ export default function Header({
           />
         </div>
 
-        <div className="flex items-center gap-1.5 shrink-0 order-2 sm:order-3">
+        <div className="flex flex-wrap items-center gap-1.5 order-2 md:order-3">
           <CdpHealthBadge />
           <NotebookLmHealthBadge />
         </div>

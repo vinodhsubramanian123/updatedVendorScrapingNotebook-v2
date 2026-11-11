@@ -34,34 +34,6 @@ const MULTI_SAMPLE_LINES = [
   '1x P48818-B21 HPE 800W Flex Slot Platinum Hot Plug Power Supply'
 ].join('\n');
 
-function extractLogText(log) {
-  return typeof log === 'string' ? log : (log?.text || log?.action || '');
-}
-
-function isLogStreamEvaluating(logStream) {
-  return logStream.some(l => {
-    const text = extractLogText(l);
-    return text.includes('Step ') || text.includes('Evaluating') || text.includes('Extracting');
-  });
-}
-
-function computeHighestEvaluationStep(logStream, isEvaluating, evalResults) {
-  if (evalResults && ['SUCCESS', 'COMPLETED'].includes(evalResults.status)) return 10;
-  if (!isEvaluating) return 0;
-  let highest = 1;
-  for (const log of logStream) {
-    if (typeof log === 'object' && log !== null && typeof log.step === 'number') {
-      highest = Math.max(highest, log.step);
-    }
-    const text = extractLogText(log);
-    const match = text.match(/Step\s+(\d+)\/10/i);
-    if (match) {
-      highest = Math.max(highest, parseInt(match[1], 10));
-    }
-  }
-  return highest;
-}
-
 function isValidFileObject(candidate) {
   return (candidate instanceof File) || Boolean(candidate && typeof candidate.name === 'string' && typeof candidate.size === 'number');
 }
@@ -122,7 +94,7 @@ export default function BoqUploader({
   evalResults,
   logStream = [],
   chassisDir,
-  isTaskRunning = false,
+  activeProgress,
   onOpenMatrix,
   onOpenReconciliation,
   onOpenTopology
@@ -148,20 +120,19 @@ export default function BoqUploader({
     setIsPreprocessing(false);
   }, [file, rawText, chassisDir]);
 
-  const isEvaluating = isSubmitting || Boolean(isTaskRunning && isLogStreamEvaluating(logStream));
-  const currentStep = React.useMemo(
-    () => computeHighestEvaluationStep(logStream, isEvaluating, evalResults),
-    [logStream, isEvaluating, evalResults]
-  );
+  const isRunningEvaluation = activeProgress?.task === 'EVAL_BOQ';
+  const isEvaluating = isSubmitting || isRunningEvaluation;
+  const currentStep = isRunningEvaluation ? activeProgress.currentStep : undefined;
 
   useEffect(() => {
-    if (isEvaluating) logsEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const logArea = logsEndRef.current?.parentElement;
+    if (isEvaluating && logArea) logArea.scrollTop = logArea.scrollHeight;
   }, [logStream, isEvaluating]);
 
   useEffect(() => {
     if (!evalResults) return;
     setIsSubmitting(false);
-    outcomeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    outcomeRef.current?.scrollIntoView({ block: 'nearest' });
   }, [evalResults]);
 
   const handleDrop = (e) => {
@@ -276,7 +247,8 @@ export default function BoqUploader({
       <EvaluationProgressSteps
         isEvaluating={isEvaluating}
         currentStep={currentStep}
-        logStream={logStream}
+        action={isRunningEvaluation ? activeProgress.action : undefined}
+        logStream={isRunningEvaluation ? logStream : []}
         logsEndRef={logsEndRef}
       />
 

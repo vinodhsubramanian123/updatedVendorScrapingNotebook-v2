@@ -1,5 +1,9 @@
 /** Present execution evidence without converting an absent result into a passing stage. */
 const STEP_IDS = { LOAD: 1, CLEANING: 1, VALIDATION: 2, RANKING: 5, POST_VERIFICATION: 3 };
+const LEGACY_LIVE_STAGE = {
+  1: 'LOAD', 2: 'CLEANING', 3: 'VALIDATION', 4: 'VALIDATION', 5: 'VALIDATION',
+  6: 'RANKING', 7: 'RANKING', 8: 'POST_VERIFICATION', 9: 'POST_VERIFICATION', 10: 'SOLUTION_PRESENTATION'
+};
 
 function workflowStep(id, state) {
   return state.evalResults?.workflowSteps?.find(step => step.stepId === STEP_IDS[id]);
@@ -43,11 +47,9 @@ export function deriveEvidenceStatus(id, state) {
   // Structured progress identifies the actual running step; earlier step numbers
   // alone do not prove those stages passed.
   if (state.isTaskRunning && state.activeProgress?.task === 'EVAL_BOQ') {
-    const step = state.activeProgress.currentStep;
-    if (id === 'LOAD' && step === 1) return 'RUNNING';
-    if (id === 'VALIDATION' && step >= 2 && step <= 7) return 'RUNNING';
-    if (id === 'RANKING' && (step === 8 || step === 9)) return 'RUNNING';
-    if (id === 'SOLUTION_PRESENTATION' && step === 10) return 'RUNNING';
+    const { stage, currentStep, status } = state.activeProgress;
+    const activeStage = stage && stage !== 'IN_PROGRESS' ? stage : LEGACY_LIVE_STAGE[currentStep];
+    if (id === activeStage && status !== 'completed') return 'RUNNING';
   }
   return finalStageStatus(id, state);
 }

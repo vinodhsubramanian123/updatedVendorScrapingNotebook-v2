@@ -30,7 +30,7 @@ export default function WorkflowHeader({
 
       <div className="flex items-center gap-3 self-start sm:self-auto">
         <div className="text-right hidden sm:block">
-          <span className="text-[11px] text-slate-500 font-medium">Pipeline Progress</span>
+          <span className="text-[11px] text-slate-500 font-medium">Lifecycle evidence recorded</span>
           <p className="text-sm font-bold text-slate-900 font-mono">{progressPercent}%</p>
         </div>
 
@@ -43,6 +43,7 @@ export default function WorkflowHeader({
 
         <button
           onClick={() => setShowLogConsole(!showLogConsole)}
+          aria-expanded={showLogConsole}
           className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
             showLogConsole
               ? 'bg-slate-900 text-emerald-400 border-slate-900'
@@ -56,6 +57,8 @@ export default function WorkflowHeader({
           onClick={() => setIsExpanded(!isExpanded)}
           className="p-1.5 rounded-lg text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors"
           title={isExpanded ? 'Collapse Workflow' : 'Expand Workflow'}
+          aria-label={isExpanded ? 'Collapse workflow' : 'Expand workflow'}
+          aria-expanded={isExpanded}
         >
           {isExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
         </button>

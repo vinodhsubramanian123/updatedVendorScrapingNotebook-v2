@@ -269,14 +269,18 @@ function usePresalesSnapshot(product, setResult, setError) {
   useEffect(() => {
     setResult(null);
     const controller = new AbortController();
+    let hasLiveResult = false;
     const receive = event => {
-      if (!event) return;
-      if (!product?.id || event.product === product?.id) setResult(event.data || event);
+      if (!event || event.product !== product?.id) return false;
+      setResult(event.data || event);
+      return true;
     };
-    const listener = event => receive(event.detail);
+    const listener = event => {
+      if (receive(event.detail)) hasLiveResult = true;
+    };
     window.addEventListener('dashboard-routed-result', listener);
     requestJson('/api/run-snapshot', { signal: controller.signal })
-      .then(data => { if (data.latestQueryResult) receive(data.latestQueryResult); })
+      .then(data => { if (!controller.signal.aborted && !hasLiveResult) receive(data.latestQueryResult); })
       .catch(err => { if (!controller.signal.aborted) setError(err.message); });
     return () => {
       controller.abort();
@@ -345,7 +349,7 @@ function PresalesInputControls({ query, setQuery, setPrimary, setSecondary, loca
         </label>
         <label className="flex items-center gap-2 cursor-pointer font-medium text-slate-700">
           <input type="checkbox" checked={localOnly} onChange={event => setLocalOnly(event.target.checked)} />
-          Use local catalog only (strictly air-gapped / offline)
+          Use local catalog only
         </label>
       </div>
     </>
@@ -361,7 +365,7 @@ function PresalesActionToolbar({ busy, isTaskRunning, queryEmpty, classify, plan
         disabled={busy || isTaskRunning || queryEmpty}
         onClick={classify}
       >
-        {busy ? 'Analyzing…' : 'Classify Intent'}
+        {busy && !plan ? 'Identifying…' : 'Identify workflow'}
       </button>
       {plan && (
         <div className="flex flex-wrap items-center gap-2">
@@ -372,7 +376,7 @@ function PresalesActionToolbar({ busy, isTaskRunning, queryEmpty, classify, plan
             disabled={busy || isTaskRunning || plan.classification.intent === 'AMBIGUOUS_QUERY'}
             onClick={execute}
           >
-            Execute Solution
+            {busy ? 'Running…' : 'Run workflow'}
           </button>
         </div>
       )}
@@ -393,9 +397,9 @@ export default function PresalesRequestPanel({ product, isTaskRunning, onEvaluat
 
   return (
     <section className="glass-card p-5 mb-5 space-y-3">
-      <h2 className="font-bold text-base">Presales Request & Autonomous Sizing</h2>
+      <h2 className="font-bold text-base">Presales request</h2>
       <p className="text-xs text-slate-600">
-        Enter natural language sizing requirements, paste tender text, or drop customer quotes. The engine autonomously routes across Sizing, Validation, Reconciliation, and Catalog Intelligence for {product?.chassis || 'the selected platform'}.
+        Describe what you need or attach a quote. Review the proposed workflow before running it for {product?.chassis || 'the selected product'}.
       </p>
       <PresalesInputControls
         query={query} setQuery={setQuery}

@@ -8,6 +8,9 @@ const MAX_RUNS_HISTORY = 20;
 const runsById = new Map();
 let snapshot = { activeTask: null, latestResult: null, latestQueryResult: null, logs: [], progress: null };
 let sequence = 0;
+let latestTaskId = null;
+const latestRunByResult = new Map();
+const resultFieldByTask = { EVAL_BOQ: 'latestResult', PRESALES_QUERY: 'latestQueryResult' };
 
 function persistResult() {
   if (process.env.NODE_ENV === 'test') return;
@@ -26,6 +29,9 @@ try {
     const saved = JSON.parse(fs.readFileSync(STATE_PATH, 'utf8'));
     snapshot.latestResult = saved.latestResult || null;
     snapshot.latestQueryResult = saved.latestQueryResult || null;
+    for (const field of Object.values(resultFieldByTask)) {
+      if (snapshot[field]?.runId) latestRunByResult.set(field, snapshot[field].runId);
+    }
   }
 } catch (err) {
   console.warn('[runState] Saved result unavailable:', err.message);
@@ -35,7 +41,7 @@ function getOrCreateRun(runId, defaults = {}) {
   if (!runId) return null;
   if (!runsById.has(runId)) {
     if (runsById.size >= MAX_RUNS_HISTORY) {
-      const oldestKey = runsById.keys().next().value;
+      const oldestKey = [...runsById.keys()].find(key => key !== latestTaskId);
       runsById.delete(oldestKey);
     }
     runsById.set(runId, {
@@ -54,6 +60,18 @@ function getOrCreateRun(runId, defaults = {}) {
   return runsById.get(runId);
 }
 
+function captureResult(field, scoped) {
+  const newestRun = latestRunByResult.get(field);
+  const staleUpdate = scoped.type === 'EVAL_RESULT_UPDATED' && snapshot[field]?.runId !== scoped.runId;
+  if (staleUpdate || (newestRun && newestRun !== scoped.runId)) {
+    scoped.historical = true;
+    return;
+  }
+  if (scoped.runId) latestRunByResult.set(field, scoped.runId);
+  snapshot[field] = scoped;
+  persistResult();
+}
+
 function captureEvent(event) {
   const eventId = ++sequence;
   const runId = event.runId || snapshot.activeTask?.runId;
@@ -69,6 +87,9 @@ function captureEvent(event) {
     snapshot.activeTask = activeInfo;
     snapshot.logs = [];
     snapshot.progress = null;
+    latestTaskId = event.runId;
+    const resultField = resultFieldByTask[event.task];
+    if (resultField && latestTaskId) latestRunByResult.set(resultField, latestTaskId);
     getOrCreateRun(event.runId, activeInfo);
   }
 
@@ -84,7 +105,7 @@ function captureEvent(event) {
       if (targetRun.logs.length >= 200) targetRun.logs.shift();
       targetRun.logs.push(scoped);
     }
-    if (runId === snapshot.activeTask?.runId || !snapshot.activeTask) {
+    if (!runId || runId === latestTaskId) {
       if (snapshot.logs.length >= 200) snapshot.logs.shift();
       snapshot.logs.push(scoped);
     }
@@ -92,22 +113,12 @@ function captureEvent(event) {
 
   if (['EVAL_RESULT', 'EVAL_RESULT_UPDATED'].includes(event.type)) {
     if (targetRun) targetRun.result = scoped;
-    const isActiveRun = Boolean(snapshot.activeTask && snapshot.activeTask.runId === runId);
-    const isUnboundOrIdle = !snapshot.activeTask;
-    if (isActiveRun || isUnboundOrIdle) {
-      snapshot.latestResult = scoped;
-      persistResult();
-    }
+    captureResult('latestResult', scoped);
   }
 
   if (event.type === 'ROUTED_RESULT') {
     if (targetRun) targetRun.queryResult = scoped;
-    const isActiveRun = Boolean(snapshot.activeTask && snapshot.activeTask.runId === runId);
-    const isUnboundOrIdle = !snapshot.activeTask;
-    if (isActiveRun || isUnboundOrIdle) {
-      snapshot.latestQueryResult = scoped;
-      persistResult();
-    }
+    captureResult('latestQueryResult', scoped);
   }
 
   if (event.type === 'TASK_COMPLETED') {
@@ -125,9 +136,15 @@ function captureEvent(event) {
 }
 
 function getRunSnapshot() {
+  const lastRun = runsById.get(latestTaskId);
   return {
     ...snapshot,
     eventId: sequence,
+    latestTask: lastRun && {
+      runId: lastRun.runId, task: lastRun.task, product: lastRun.product,
+      startTime: lastRun.startTime, status: lastRun.status,
+      code: lastRun.exitCode, durationMs: lastRun.durationMs
+    },
     runsHistory: Array.from(runsById.values()).slice(-10).reverse()
   };
 }

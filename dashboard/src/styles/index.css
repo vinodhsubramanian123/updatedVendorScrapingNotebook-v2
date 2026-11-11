@@ -35,12 +35,6 @@
   --font-mono: 'Geist Mono', monospace;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
 body {
   background-color: var(--bg-porcelain);
   color: var(--text-primary);
@@ -254,6 +248,27 @@ body {
 .progress-bar-fill {
   transition: width 0.45s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease;
   will-change: width;
+}
+
+@keyframes run-activity-sweep {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(400%); }
+}
+
+.run-activity-indeterminate {
+  width: 25%;
+  animation: run-activity-sweep 1.65s ease-in-out infinite;
+}
+
+.run-activity-indeterminate[data-paused="true"] {
+  animation: none;
+  background-color: var(--color-amber-500);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .run-activity-indeterminate {
+    animation: none;
+  }
 }
 
 /* 13. Animated Progress Stripes */

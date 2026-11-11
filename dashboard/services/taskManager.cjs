@@ -142,7 +142,7 @@ function _releaseTaskMutexIfOwned(runId, proc) {
  * @param {import('express').Response} res             Express response to send 202 on
  * @param {string} outputsDir         Absolute path to the outputs directory
  */
-function startTask(type, proc, res, outputsDir) {
+function startTask(type, proc, res, outputsDir, product = null) {
   const runId = `run_${Date.now()}_${Math.random().toString(36).substr(2, 4)}`;
   const logs = [];
   let completed = false;
@@ -150,7 +150,7 @@ function startTask(type, proc, res, outputsDir) {
   const buffers = { stdout: { text: '', decoder: new StringDecoder('utf8') }, stderr: { text: '', decoder: new StringDecoder('utf8') } };
 
   activeTask = { type, runId, pid: proc?.pid, process: proc, startTime };
-  broadcastSSE({ type: 'TASK_STARTED', task: type, runId });
+  broadcastSSE({ type: 'TASK_STARTED', task: type, runId, product });
 
   if (proc?.stdout && typeof proc.stdout.on === 'function') {
     proc.stdout.on('data', data => _streamProcessChunk(data, 'stdout', logs, buffers, runId));

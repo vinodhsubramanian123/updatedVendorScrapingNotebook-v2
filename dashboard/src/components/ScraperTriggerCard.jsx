@@ -235,7 +235,7 @@ function ScraperSseTerminalCard({ logStream, searchQuery, setSearchQuery, logFil
   );
 }
 
-export default function ScraperTriggerCard({ logStream, isTaskRunning, onTriggerScrape, onTriggerRebuild, onTriggerDownloadPdf, onTriggerSyncKnowledge, onTriggerKillTask, onTriggerNavigate }) {
+export default function ScraperTriggerCard({ logStream, isTaskRunning, runActivity, onTriggerScrape, onTriggerRebuild, onTriggerDownloadPdf, onTriggerSyncKnowledge, onTriggerKillTask, onTriggerNavigate }) {
   const [scrapeMode, setScrapeMode] = useState('solution');
   const [cdpState, setCdpState] = useState({ status: 'CHECKING', message: 'Probing browser...' });
   const [logFilter, setLogFilter] = useState('ALL');
@@ -296,12 +296,14 @@ export default function ScraperTriggerCard({ logStream, isTaskRunning, onTrigger
 
         {!isTaskRunning && <CdpHandshakeBanner cdpState={cdpState} />}
 
-        <VendorScraperProgress
-          logStream={logStream}
-          isTaskRunning={isTaskRunning}
-          onCancelTask={onTriggerKillTask}
-          className="mb-6"
-        />
+        {(!runActivity || runActivity.task?.startsWith('SCRAPE')) && (
+          <VendorScraperProgress
+            logStream={runActivity ? logStream : []}
+            isTaskRunning={runActivity?.status === 'RUNNING'}
+            runStatus={runActivity?.status}
+            className="mb-6"
+          />
+        )}
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <LiveScrapeControlCard

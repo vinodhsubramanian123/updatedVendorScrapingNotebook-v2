@@ -31,16 +31,18 @@ const OUTPUTS_DIR = path.join(PROJECT_ROOT, 'outputs');
 const TEMP_DIR = path.join(OUTPUTS_DIR, 'temp');
 const HISTORY_DIR = path.join(OUTPUTS_DIR, 'history');
 
-function pruneStaleTempFiles(maxAgeMs = 2 * 60 * 60 * 1000) {
+function pruneStaleTempFiles(retainedInput, maxAgeMs = 2 * 60 * 60 * 1000) {
   try {
     if (!fs.existsSync(TEMP_DIR)) return;
     const now = Date.now();
     const files = fs.readdirSync(TEMP_DIR);
     for (const file of files) {
+      if (!/^boq_(?:text_)?\d+_[a-zA-Z0-9._-]+$/.test(file)) continue;
       const fullPath = path.join(TEMP_DIR, file);
+      if (fullPath === retainedInput) continue;
       try {
         const stats = fs.statSync(fullPath);
-        if (now - stats.mtimeMs > maxAgeMs) {
+        if (stats.isFile() && now - stats.mtimeMs > maxAgeMs) {
           fs.unlinkSync(fullPath);
         }
       } catch (_) {}
@@ -178,7 +180,7 @@ router.post('/eval-boq', (req, res) => {
       console.warn(`[EVALUATION_ROUTER] Failed to persist error run trace ${runId}:`, _?.message);
     }
     broadcastSSE({ type: 'TASK_STARTED', task: 'EVAL_BOQ', runId });
-    broadcastSSE({ type: 'LOG', text: errorMsg, stream: 'stderr' });
+    broadcastSSE({ type: 'LOG', text: errorMsg, stream: 'stderr', runId });
     broadcastSSE({ type: 'TASK_COMPLETED', code: 1, task: 'EVAL_BOQ', runId, durationMs: 0 });
     return res.status(400).json({ error: errorMsg });
   }
@@ -246,7 +248,7 @@ router.post('/eval-boq', (req, res) => {
           return;
         }
       } catch (_) {}
-      broadcastSSE({ type: 'LOG', text: line, stream: streamType });
+      broadcastSSE({ type: 'LOG', text: line, stream: streamType, runId });
     });
   };
 
@@ -259,7 +261,7 @@ router.post('/eval-boq', (req, res) => {
 
   proc.on('error', (err) => {
     lastErrorMessage = err.message;
-    broadcastSSE({ type: 'LOG', text: `Evaluator process error: ${err.message}`, stream: 'stderr' });
+    broadcastSSE({ type: 'LOG', text: `Evaluator process error: ${err.message}`, stream: 'stderr', runId });
 
     const hasLivePid = Boolean(proc && typeof proc.pid === 'number' && proc.pid > 0);
     if (!hasLivePid) {
@@ -293,7 +295,7 @@ router.post('/eval-boq', (req, res) => {
     ['stdout', 'stderr'].forEach(st => {
       if (lineBuffers[st]?.trim()) {
         logs.push({ timestamp: new Date().toISOString(), stream: st, text: lineBuffers[st] });
-        broadcastSSE({ type: 'LOG', text: lineBuffers[st], stream: st });
+        broadcastSSE({ type: 'LOG', text: lineBuffers[st], stream: st, runId });
       }
     });
 
@@ -306,7 +308,7 @@ router.post('/eval-boq', (req, res) => {
     broadcastSSE({ type: 'TASK_COMPLETED', code, task: 'EVAL_BOQ', runId, durationMs });
 
     // Retain intake file for clarification/refresh replay; prune stale temp files (>2h)
-    pruneStaleTempFiles();
+    pruneStaleTempFiles(targetPath);
 
     // Persist trace
     const traceDir = path.join(OUTPUTS_DIR, 'history', 'runs');

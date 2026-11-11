@@ -135,6 +135,7 @@ function validateEvaluationQueryContext(runId, query, chassis) {
   const { getRunSnapshot } = require('../services/runState.cjs');
   const result = getRunSnapshot().latestResult;
   if (result?.runId !== runId || result.data?.notebookPayload !== query) throw new Error('Notebook query does not match the current evaluation payload');
+  if (result.inputDescriptor?.offline === true) throw new Error('This evaluation was configured for local-only execution');
   const target = result.data.chassisDir;
   if (!target || !chassis || path.resolve(resolveChassisDirectory(target)) !== path.resolve(resolveChassisDirectory(chassis))) {
     throw new Error('Notebook query product does not match the evaluated product');
@@ -182,7 +183,7 @@ router.post('/notebook-query-async', (req, res) => {
     const { registerRagJob } = require('../services/runState.cjs');
     registerRagJob(runId, jobInfo.jobId);
   }
-  broadcastSSE({ type: 'LOG', text: `🤖 [ASYNC_RAG_LAUNCHED] Job ${jobInfo.jobId} started for ${chassis || 'DL380 Gen12 SFF'}`, stream: 'stdout' });
+  broadcastSSE({ type: 'LOG', text: `🤖 [ASYNC_RAG_LAUNCHED] Job ${jobInfo.jobId} started for ${chassis || 'DL380 Gen12 SFF'}`, stream: 'stdout', runId });
   res.status(202).json(jobInfo);
 });
 

@@ -40,6 +40,7 @@ export default function ChassisSelector({
     <div className="relative" ref={chassisDropdownRef}>
       <button
         onClick={() => setIsChassisOpen(!isChassisOpen)}
+        aria-expanded={isChassisOpen}
         className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-100/80 hover:bg-slate-200/80 border border-slate-200 transition-colors text-xs font-semibold text-slate-800"
       >
         <Server className="w-4 h-4 text-emerald-600 shrink-0" />
@@ -55,12 +56,13 @@ export default function ChassisSelector({
       </button>
 
       {isChassisOpen && (
-        <div className="absolute top-full left-0 mt-1 w-64 bg-white rounded-xl shadow-xl border border-slate-200 z-50 p-2 space-y-2 animate-in fade-in duration-150">
+        <div className="absolute top-full right-0 max-[360px]:right-auto max-[360px]:left-0 sm:right-auto sm:left-0 mt-1 w-64 max-w-[calc(100vw-1.5rem)] bg-white rounded-xl shadow-xl border border-slate-200 z-50 p-2 space-y-2 animate-dropdown-reveal">
           <input
             type="text"
             value={chassisFilter}
             onChange={e => setChassisFilter(e.target.value)}
             placeholder="Search chassis..."
+            aria-label="Search products"
             className="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 outline-none focus:border-emerald-500"
             autoFocus
           />

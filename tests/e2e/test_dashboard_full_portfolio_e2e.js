@@ -237,6 +237,7 @@ async function sweepProductFamilies(page, catalogs) {
     const catOption = page.locator(`button[data-chassis-id="${catId}"]`);
     if (await catOption.count() > 0) {
       await catOption.first().click();
+      await page.waitForTimeout(500);
       // Wait for catalog table to be populated
       const tableRows = page.locator('table tbody tr');
       await tableRows.first().waitFor({ state: 'visible', timeout: 10000 }).catch(() => {});

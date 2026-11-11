@@ -8,11 +8,12 @@ export default function SmartSearchInput({
   setIsSearchOpen,
   localSearchResults,
   onSubmitSearch,
+  onSelectSku,
   onOpenRag,
   searchContainerRef
 }) {
   return (
-    <div className="relative flex-1 max-w-md hidden md:block" ref={searchContainerRef}>
+    <div className="relative" ref={searchContainerRef}>
       <form onSubmit={onSubmitSearch} className="relative">
         <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
         <input
@@ -23,7 +24,8 @@ export default function SmartSearchInput({
             setIsSearchOpen(true);
           }}
           onFocus={() => setIsSearchOpen(true)}
-          placeholder="Search catalog SKUs, rules or ask NotebookLM..."
+          aria-label="Search catalog SKUs or ask NotebookLM"
+          placeholder="Find a SKU or ask NotebookLM"
           className="w-full text-xs bg-slate-100/90 border border-slate-200 rounded-xl pl-9 pr-8 py-2 outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition-all text-slate-800"
         />
         {searchQuery && (
@@ -39,7 +41,7 @@ export default function SmartSearchInput({
       </form>
 
       {isSearchOpen && searchQuery.trim().length > 0 && (
-        <div className="absolute top-full left-0 right-0 mt-16 bg-white rounded-xl shadow-2xl border border-slate-200 z-50 p-3 space-y-2 animate-in fade-in duration-150">
+        <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-xl shadow-xl border border-slate-200 z-50 p-3 space-y-2 animate-dropdown-reveal">
           <div className="flex items-center justify-between text-[11px] pb-2 border-b border-slate-100">
             <span className="font-bold text-slate-700">
               Matching SKUs in Current Catalog ({localSearchResults.skus.length}):
@@ -60,17 +62,18 @@ export default function SmartSearchInput({
               </p>
             ) : (
               localSearchResults.skus.map((sku, sIdx) => (
-                <div
+                <button
                   key={sIdx}
-                  className="p-2 hover:bg-slate-50 rounded-lg text-xs flex items-center justify-between transition-colors cursor-pointer"
-                  onClick={() => onOpenRag(`Tell me the rules and dependencies for SKU ${sku.sku}`)}
+                  type="button"
+                  className="w-full gap-2 p-2 hover:bg-slate-50 rounded-lg text-xs text-left flex items-center justify-between transition-colors cursor-pointer"
+                  onClick={() => onSelectSku(sku.sku)}
                 >
-                  <div>
+                  <div className="min-w-0">
                     <span className="font-mono font-bold text-slate-900">{sku.sku}</span>
                     <p className="text-[11px] text-slate-500 truncate max-w-[280px]">{sku.description}</p>
                   </div>
-                  <span className="font-mono text-emerald-700 text-xs font-bold shrink-0 ml-2">{sku.price}</span>
-                </div>
+                  <span className="text-slate-700 text-xs shrink-0">{sku.price}</span>
+                </button>
               ))
             )}
           </div>

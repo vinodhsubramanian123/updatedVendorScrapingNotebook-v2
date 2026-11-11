@@ -25,10 +25,12 @@ export function useSSEStream({
   onTaskCompleted,
   onProgress,
   onLog,
-  onEvalResult
+  onEvalResult,
+  onLogsRestored,
+  onConnectionChange
 } = {}) {
   const handlers = useRef({});
-  handlers.current = { onTaskStarted, onTaskCompleted, onProgress, onLog, onEvalResult };
+  handlers.current = { onTaskStarted, onTaskCompleted, onProgress, onLog, onEvalResult, onLogsRestored, onConnectionChange };
   useEffect(() => {
     const eventSource = new EventSource('/api/stream-logs');
 
@@ -43,14 +45,15 @@ export function useSSEStream({
       switch (payload.type) {
         case 'RUN_SNAPSHOT': {
           if (payload.activeTask) handlers.current.onTaskStarted?.({ ...payload.activeTask, recovered: true });
-          else handlers.current.onTaskCompleted?.({ task: 'RECOVERY', recovered: true });
-          for (const log of payload.logs || []) handlers.current.onLog?.(log);
+          else handlers.current.onTaskCompleted?.({ ...payload.latestTask, recovered: true });
+          handlers.current.onLogsRestored?.(payload.logs || []);
           if (payload.progress && payload.activeTask) handlers.current.onProgress?.(payload.progress);
           const result = payload.latestResult;
           if (payload.latestQueryResult) window.dispatchEvent(new CustomEvent('dashboard-routed-result', { detail: payload.latestQueryResult }));
-          if (result && (!payload.activeTask || result.runId === payload.activeTask.runId)) {
+          if (result && (payload.activeTask?.task !== 'EVAL_BOQ' || result.runId === payload.activeTask.runId)) {
             handlers.current.onEvalResult?.(normalizeEvalResult(result), { ...result, recovered: true });
           }
+          handlers.current.onConnectionChange?.(true);
           break;
         }
         case 'TASK_STARTED':
@@ -58,7 +61,7 @@ export function useSSEStream({
           break;
 
         case 'ROUTED_RESULT':
-          window.dispatchEvent(new CustomEvent('dashboard-routed-result', { detail: payload }));
+          if (!payload.historical) window.dispatchEvent(new CustomEvent('dashboard-routed-result', { detail: payload }));
           break;
 
         case 'TASK_COMPLETED':
@@ -76,6 +79,7 @@ export function useSSEStream({
 
         case 'EVAL_RESULT':
         case 'EVAL_RESULT_UPDATED': {
+          if (payload.historical) break;
           // Normalise the raw payload before surfacing it to the app —
           // all domain flattening lives in the service layer now.
           const normalised = normalizeEvalResult(payload);
@@ -88,9 +92,7 @@ export function useSSEStream({
       }
     };
 
-    eventSource.onerror = (err) => {
-      console.error('[useSSEStream] EventSource error:', err);
-    };
+    eventSource.onerror = () => handlers.current.onConnectionChange?.(false);
 
     return () => eventSource.close();
     // The connection stays stable while dispatching to current render handlers.

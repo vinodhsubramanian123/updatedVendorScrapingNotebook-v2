@@ -105,7 +105,7 @@ function computeIncrementalStats(metadata, allSkusCount, changedCount) {
 
 function CatalogEmptyPlaceholder({ isCatalogLoading }) {
   return (
-    <GlobalLoadingState mode="catalog" isLoadingData={isCatalogLoading} operationName="Loading Master Catalog Data...">
+    <GlobalLoadingState isLoadingData={isCatalogLoading}>
       <div className="glass-card p-8 text-center text-slate-500">
         <FileSpreadsheet className="w-12 h-12 text-slate-300 mx-auto mb-3" />
         <p className="font-semibold text-slate-700">No Catalog Selected</p>

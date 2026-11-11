@@ -1,13 +1,10 @@
-import Tooltip from './Tooltip';
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import TaskStatusBadge from './TaskStatusBadge';
 import {
   Activity,
   CheckCircle2,
-  Clock,
   Loader2,
   Server,
-  Square,
   Terminal,
   XCircle,
   Zap,
@@ -51,45 +48,6 @@ function applyJsonProgress(acc, parsed) {
   if (parsed.sku) acc.sku = parsed.sku;
 }
 
-function isCompletionText(text) {
-  return text.includes('100%') || text.includes('✅ Scrape completed') || text.includes('Scrape Complete');
-}
-
-function isFailureText(text) {
-  return text.includes('❌') || text.includes('Error') || text.includes('Failed');
-}
-
-function applyPlainLogHeuristics(acc, text) {
-  if (isCompletionText(text)) {
-    acc.percent = 100;
-    acc.completed = true;
-    acc.msg = text;
-  } else if (isFailureText(text)) {
-    acc.failed = true;
-  }
-
-  const percentMatch = text.match(/(\d{1,3})%/);
-  if (percentMatch && acc.percent === null) {
-    const val = parseInt(percentMatch[1], 10);
-    if (val <= 100) acc.percent = val;
-  }
-
-  const itemsMatch = text.match(/(\d+)\s*(SKUs|items|entries|products)/i);
-  if (itemsMatch && acc.items === 0) {
-    acc.items = parseInt(itemsMatch[1], 10);
-  }
-}
-
-function computeDefaultStageIndex(percent) {
-  if (percent === null) return 0;
-  if (percent >= 100) return 5;
-  if (percent >= 80) return 4;
-  if (percent >= 50) return 3;
-  if (percent >= 30) return 2;
-  if (percent >= 10) return 1;
-  return 0;
-}
-
 function deriveScraperProgressState(logStream, isTaskRunning) {
   const acc = {
     percent: null,
@@ -97,19 +55,16 @@ function deriveScraperProgressState(logStream, isTaskRunning) {
     msg: 'Pipeline ready for task execution.',
     items: 0,
     category: '',
-    sku: '',
-    completed: false,
-    failed: false
+    sku: ''
   };
 
   for (let i = logStream.length - 1; i >= 0; i--) {
-    const text = logStream[i].text || '';
-    const parsed = tryParseJsonProgress(text);
+    const event = logStream[i];
+    const parsed = event.type === 'PROGRESS' ? event : tryParseJsonProgress(event.text || '');
     if (parsed) {
       applyJsonProgress(acc, parsed);
       break;
     }
-    applyPlainLogHeuristics(acc, text);
   }
 
   const recentLogEntries = logStream
@@ -124,26 +79,8 @@ function deriveScraperProgressState(logStream, isTaskRunning) {
     statusMessage: acc.msg,
     scrapedItems: acc.items,
     currentCategory: acc.category,
-    currentSku: acc.sku,
-    currentStageIndex: computeDefaultStageIndex(acc.percent),
-    recentLogEntries,
-    isCompleted: acc.completed,
-    isFailed: acc.failed
+    recentLogEntries
   };
-}
-
-function formatSecondsMmSs(seconds) {
-  const mins = Math.floor(seconds / 60);
-  const secs = seconds % 60;
-  return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-}
-
-function estimateRemainingTime(elapsedSeconds, progressPercent, isTaskRunning) {
-  if (!isTaskRunning || progressPercent === null || progressPercent <= 5) return 'Calculating...';
-  if (progressPercent >= 100) return '00:00';
-  const totalEst = (elapsedSeconds / progressPercent) * 100;
-  const rem = Math.max(0, Math.round(totalEst - elapsedSeconds));
-  return `~${formatSecondsMmSs(rem)}`;
 }
 
 function computeStageItemStatus(stg, idx, isTaskRunning, isCompleted, currentStageId, progressPercent) {
@@ -154,8 +91,7 @@ function computeStageItemStatus(stg, idx, isTaskRunning, isCompleted, currentSta
     const isDone = isCompleted || (stgIdx > idx);
     return { isCurrent, isDone };
   }
-  const pct = progressPercent ?? (isTaskRunning ? 5 : 0);
-  const isCurrent = isTaskRunning && pct >= stg.minPercent && pct <= stg.maxPercent;
+  const isCurrent = isTaskRunning && progressPercent !== null && progressPercent >= stg.minPercent && progressPercent <= stg.maxPercent;
   const isDone = isCompleted || (progressPercent !== null && progressPercent > stg.maxPercent);
   return { isCurrent, isDone };
 }
@@ -199,10 +135,6 @@ function ScraperHeaderBanner({
   isCompleted,
   isFailed,
   statusMessage,
-  taskType,
-  formattedTime,
-  estimatedRemaining,
-  onCancelTask,
   showDetails,
   onToggleDetails
 }) {
@@ -215,7 +147,7 @@ function ScraperHeaderBanner({
         : 'bg-slate-800 text-slate-300';
 
   const badgeStatus = isTaskRunning ? 'Running' : isCompleted ? 'Complete' : isFailed ? 'Failed' : 'Pending';
-  const fallbackSubtitle = isTaskRunning ? `Processing ${taskType} workflow...` : 'Task ended.';
+  const fallbackSubtitle = isTaskRunning ? 'Starting catalog scrape…' : 'Run finished.';
 
   return (
     <div className="p-4 sm:p-5 bg-slate-900 text-white flex flex-wrap items-center justify-between gap-3">
@@ -241,33 +173,9 @@ function ScraperHeaderBanner({
       </div>
 
       <div className="flex items-center gap-3">
-        {isTaskRunning && (
-          <div className="hidden sm:flex items-center gap-3 text-xs bg-slate-800/80 border border-slate-700/60 px-3 py-1.5 rounded-lg">
-            <div className="flex items-center gap-1.5 text-slate-300">
-              <Clock className="w-3.5 h-3.5 text-blue-400" />
-              <span className="font-mono text-white font-semibold">{formattedTime}</span>
-            </div>
-            <div className="h-3 w-px bg-slate-700" />
-            <div className="text-slate-400 text-[11px]">
-              ETA: <span className="font-mono text-slate-200 font-semibold">{estimatedRemaining}</span>
-            </div>
-          </div>
-        )}
-
-        {isTaskRunning && onCancelTask && (
-          <Tooltip content="Abort current scraper process">
-            <button
-              onClick={onCancelTask}
-              className="flex items-center gap-1.5 text-xs font-semibold bg-rose-500/20 text-rose-300 border border-rose-500/40 hover:bg-rose-500/30 px-3 py-1.5 rounded-lg transition-all"
-            >
-              <Square className="w-3.5 h-3.5 fill-rose-400 text-rose-400" />
-              <span>Cancel</span>
-            </button>
-          </Tooltip>
-        )}
-
         <button
           onClick={onToggleDetails}
+          aria-expanded={showDetails}
           className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-colors"
           title={showDetails ? 'Hide details' : 'Show details'}
         >
@@ -281,44 +189,22 @@ function ScraperHeaderBanner({
 export default function VendorScraperProgress({
   logStream = [],
   isTaskRunning = false,
-  taskType = 'SCRAPE',
-  onCancelTask,
+  runStatus,
   className = ''
 }) {
   const [showDetails, setShowDetails] = useState(true);
-  const [elapsedSeconds, setElapsedSeconds] = useState(0);
-
-  useEffect(() => {
-    let timer;
-    if (isTaskRunning) {
-      setElapsedSeconds(0);
-      timer = setInterval(() => {
-        setElapsedSeconds(prev => prev + 1);
-      }, 1000);
-    } else {
-      setElapsedSeconds(0);
-    }
-    return () => clearInterval(timer);
-  }, [isTaskRunning]);
-
   const {
     progressPercent,
     progressStage,
     currentStageId,
     statusMessage,
     scrapedItems,
-    recentLogEntries,
-    isCompleted,
-    isFailed
+    recentLogEntries
   } = useMemo(() => deriveScraperProgressState(logStream, isTaskRunning), [logStream, isTaskRunning]);
+  const isCompleted = runStatus === 'COMPLETED';
+  const isFailed = runStatus === 'FAILED';
 
-  const formattedTime = useMemo(() => formatSecondsMmSs(elapsedSeconds), [elapsedSeconds]);
-  const estimatedRemaining = useMemo(
-    () => estimateRemainingTime(elapsedSeconds, progressPercent, isTaskRunning),
-    [elapsedSeconds, progressPercent, isTaskRunning]
-  );
-
-  if (!isTaskRunning && logStream.length === 0) {
+  if (!runStatus && !isTaskRunning && logStream.length === 0) {
     return (
       <div className={`bg-slate-50/80 border border-slate-200/80 rounded-xl p-4 text-slate-500 text-xs flex items-center justify-between ${className}`}>
         <div className="flex items-center gap-2">
@@ -330,15 +216,16 @@ export default function VendorScraperProgress({
     );
   }
 
-  const effectivePercent = progressPercent !== null ? progressPercent : (isTaskRunning ? 35 : 0);
+  const indeterminate = isTaskRunning && progressPercent === null;
+  const effectivePercent = isCompleted ? 100 : progressPercent;
   const barColorClass = isCompleted
     ? 'bg-emerald-500'
     : isFailed
       ? 'bg-rose-500'
       : isTaskRunning
-        ? 'animate-stripes bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-500'
-        : 'bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-500';
-  const percentDisplay = progressPercent !== null ? `${progressPercent}%` : (isTaskRunning ? 'Running...' : '0%');
+        ? 'bg-blue-600'
+        : 'bg-slate-400';
+  const percentDisplay = effectivePercent !== null ? `${effectivePercent}%` : (isTaskRunning ? 'Working…' : '');
 
   return (
     <div className={`bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden transition-all ${className}`}>
@@ -347,10 +234,6 @@ export default function VendorScraperProgress({
         isCompleted={isCompleted}
         isFailed={isFailed}
         statusMessage={statusMessage}
-        taskType={taskType}
-        formattedTime={formattedTime}
-        estimatedRemaining={estimatedRemaining}
-        onCancelTask={onCancelTask}
         showDetails={showDetails}
         onToggleDetails={() => setShowDetails(!showDetails)}
       />
@@ -377,13 +260,9 @@ export default function VendorScraperProgress({
         <div className="relative">
           <div className="w-full bg-slate-100 h-3 rounded-full overflow-hidden border border-slate-200/80 p-0.5 shadow-inner">
             <div
-              className={`h-full rounded-full progress-bar-fill relative overflow-hidden ${barColorClass}`}
-              style={{ width: `${Math.max(effectivePercent, 5)}%` }}
-            >
-              {isTaskRunning && (
-                <div className="absolute inset-0 bg-white/10 animate-pulse-slow" />
-              )}
-            </div>
+              className={`h-full rounded-full ${indeterminate ? 'run-activity-indeterminate' : 'progress-bar-fill'} ${barColorClass}`}
+              style={indeterminate ? undefined : { width: `${effectivePercent ?? 0}%` }}
+            />
           </div>
         </div>
 

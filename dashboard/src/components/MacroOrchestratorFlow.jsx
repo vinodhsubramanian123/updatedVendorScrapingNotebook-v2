@@ -8,6 +8,7 @@ import {
 import WorkflowStepper from './WorkflowStepper';
 import AutonomousWorkflowSimulator from './AutonomousWorkflowSimulator';
 import { parseLogStream } from '../utils/logParser';
+import { deriveEvidenceStatus } from '../services/workflowEvidence';
 
 function MacroStatusBadge({ status }) {
   if (status === 'COMPLETED') {
@@ -44,17 +45,17 @@ function MacroViewSwitcher({ viewMode, setViewMode }) {
   }`;
 
   return (
-    <div className="flex items-center gap-2 shrink-0 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-bold">
-      <button onClick={() => setViewMode('simulator')} className={getBtnClass('simulator')}>
+    <div aria-label="Workflow views" role="group" className="grid grid-cols-2 sm:flex sm:flex-wrap gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-bold">
+      <button aria-pressed={viewMode === 'simulator'} onClick={() => setViewMode('simulator')} className={getBtnClass('simulator')}>
         <Sparkles className="w-3.5 h-3.5 text-amber-500" /> Workflow Simulation
       </button>
-      <button onClick={() => setViewMode('stepper')} className={getBtnClass('stepper')}>
+      <button aria-pressed={viewMode === 'stepper'} onClick={() => setViewMode('stepper')} className={getBtnClass('stepper')}>
         <Activity className="w-3.5 h-3.5" /> 9-Stage Stepper
       </button>
-      <button onClick={() => setViewMode('macro')} className={getBtnClass('macro')}>
+      <button aria-pressed={viewMode === 'macro'} onClick={() => setViewMode('macro')} className={getBtnClass('macro')}>
         <Zap className="w-3.5 h-3.5" /> Macro Lifecycle
       </button>
-      <button onClick={() => setViewMode('both')} className={getBtnClass('both')}>
+      <button aria-pressed={viewMode === 'both'} onClick={() => setViewMode('both')} className={getBtnClass('both')}>
         All Views
       </button>
     </div>
@@ -80,7 +81,7 @@ function resolveStageOneStatus(isEvaluating, hasEval, violationsCount, evalResul
 }
 
 function buildStageOneSubsteps(evalResults, hasEval, isEvaluating, activeProgress, violationsCount) {
-  const stepNum = activeProgress?.currentStep || 0;
+  const isRunning = id => deriveEvidenceStatus(id, { isTaskRunning: isEvaluating, activeProgress }) === 'RUNNING';
   const parsedCount = evalResults?.items?.length;
   const tiersCount = evalResults?.conflictGraph?.rankedSolutions?.length ?? 0;
   const mathSubtitle = hasEval
@@ -89,25 +90,25 @@ function buildStageOneSubsteps(evalResults, hasEval, isEvaluating, activeProgres
 
   return [
     {
-      isActive: hasEval || isEvaluating,
+      isActive: hasEval || isRunning('LOAD') || isRunning('CLEANING'),
       IconComponent: FileUp,
       title: '1. Parse Document',
       subtitle: parsedCount ? `${parsedCount} SKUs Parsed` : 'Excel / CSV intake'
     },
     {
-      isActive: hasEval || (isEvaluating && stepNum >= 2),
+      isActive: hasEval || isRunning('VALIDATION'),
       IconComponent: ShieldCheck,
       title: '2. Physical Math',
       subtitle: mathSubtitle
     },
     {
-      isActive: hasEval || (isEvaluating && stepNum >= 4),
+      isActive: hasEval || isRunning('RANKING'),
       IconComponent: Layers,
       title: '3. 5-Tier Ranking',
       subtitle: hasEval ? `${tiersCount} Tiers Synthesized` : 'Rank 1 Intent Match'
     },
     {
-      isActive: hasEval || (isEvaluating && stepNum >= 5),
+      isActive: hasEval || isRunning('POST_VERIFICATION'),
       IconComponent: Brain,
       title: '4. RAG AI Verification',
       subtitle: evalResults?.ephemeralSourceValidation?.success === true ? 'Candidate review recorded' : 'Candidate review pending'
@@ -368,9 +369,8 @@ export default function MacroOrchestratorFlow({
   const logs = parseLogStream(logStream);
 
   useEffect(() => {
-    if (showLogConsole && consoleEndRef.current) {
-      consoleEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
+    const consoleArea = consoleEndRef.current?.parentElement;
+    if (showLogConsole && consoleArea) consoleArea.scrollTop = consoleArea.scrollHeight;
   }, [logs.length, showLogConsole]);
 
   const showSimulator = viewMode === 'simulator' || viewMode === 'both';
@@ -381,12 +381,12 @@ export default function MacroOrchestratorFlow({
     <div className="space-y-6 max-w-6xl mx-auto animate-fade-in">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200/80 pb-4">
         <div className="space-y-1">
-          <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight flex items-center gap-3">
-            <LayoutDashboard className="w-7 h-7 text-blue-600" />
-            Autonomous BOQ Evaluation & Closed-Loop Orchestrator
-          </h1>
+          <h2 className="text-xl font-bold text-slate-900 tracking-tight flex items-center gap-2.5">
+            <LayoutDashboard aria-hidden="true" className="size-5 shrink-0 text-emerald-700" />
+            BOQ evaluation workflow
+          </h2>
           <p className="text-slate-500 text-xs max-w-2xl">
-            6-aspect physical constraint math, 5-tier Strategic Resolution Matrix, dual-brain RAG verification, and Partner Portal quote reconciliation.
+            Validate a BOQ, review ranked candidates, and reconcile a partner quote.
           </p>
         </div>
 

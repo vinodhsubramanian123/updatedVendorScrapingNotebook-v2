@@ -56,7 +56,29 @@ function request(url, options = {}, body = null) {
   });
 }
 
+function verifyLateRunEvents() {
+  const { captureEvent, getRunSnapshot } = require('../../dashboard/services/runState.cjs');
+  const start = runId => captureEvent({ type: 'TASK_STARTED', task: 'EVAL_BOQ', runId });
+  const finish = runId => captureEvent({ type: 'TASK_COMPLETED', task: 'EVAL_BOQ', runId, code: 0 });
+  start('earlier');
+  finish('earlier');
+  start('latest');
+  finish('latest');
+  captureEvent({ type: 'EVAL_RESULT', runId: 'latest' });
+  const update = captureEvent({ type: 'EVAL_RESULT_UPDATED', runId: 'earlier' });
+  captureEvent({ type: 'LOG', runId: 'earlier', text: 'Late output' });
+  const snapshot = getRunSnapshot();
+  assert.equal(snapshot.activeTask, null);
+  assert.equal(snapshot.latestTask.runId, 'latest');
+  assert.equal(snapshot.latestTask.status, 'COMPLETED');
+  assert.equal(snapshot.latestResult.runId, 'latest');
+  assert.equal(update.historical, true);
+  assert.equal(snapshot.logs.length, 0);
+  assert.equal(snapshot.runsHistory.find(run => run.runId === 'earlier').logs.length, 1);
+}
+
 async function main() {
+  process.env.NODE_ENV = 'test';
   console.log('================================================================');
   console.log('🧪 RUNNING DASHBOARD WORKFLOW RELIABILITY & RUN ISOLATION SUITE');
   console.log('================================================================\n');
@@ -84,6 +106,7 @@ async function main() {
   }
 
   try {
+    await runAsyncTest('Reliability - Late events preserve the latest completed run', verifyLateRunEvents);
     await runAsyncTest('Reliability - Run state snapshot initial schema', async () => {
       const res = await request(`http://127.0.0.1:${TEST_PORT}/api/run-snapshot`, { method: 'GET' });
       assert.strictEqual(res.status, 200);
@@ -93,12 +116,15 @@ async function main() {
       assert.ok(Array.isArray(res.data.runsHistory), 'runsHistory should be an array');
     });
 
-    await runAsyncTest('Reliability - Evaluation accepts offline flag and starts with runId', async () => {
+    await runAsyncTest('Reliability - Offline evaluation reaches a result for the selected catalog', async () => {
       const sampleText = '1x P73282-B21 HPE ProLiant DL380 Gen12 8SFF Server\n2x P74845-B21 Intel Xeon Gold 6530';
+      const registry = await request(`http://127.0.0.1:${TEST_PORT}/api/available-catalogs`);
+      const product = registry.data.catalogs.find(catalog => catalog.id === 'DL380_Gen12');
+      assert.ok(product?.chassisDir, 'DL380 Gen12 requires a registered catalog directory');
       const evalRes = await request(`http://127.0.0.1:${TEST_PORT}/api/eval-boq`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
-      }, { rawText: sampleText, chassisDir: 'DL380_Gen12', offline: true });
+      }, { rawText: sampleText, chassisDir: product.chassisDir, offline: true });
 
       assert.strictEqual(evalRes.status, 202);
       assert.ok(evalRes.data.runId, 'Evaluation response should return runId');
@@ -112,12 +138,17 @@ async function main() {
         assert.strictEqual(snapRes.data.activeTask.product, 'DL380_Gen12');
       }
 
-      // Wait for background eval task to finish before proceeding to next test
-      for (let i = 0; i < 60; i++) {
+      let result;
+      const deadline = Date.now() + 90000;
+      while (Date.now() < deadline) {
         const check = await request(`http://127.0.0.1:${TEST_PORT}/api/run-snapshot`, { method: 'GET' });
-        if (!check.data.activeTask) break;
+        result = check.data.latestResult;
+        if (result?.runId === evalRes.data.runId) break;
         await new Promise(r => setTimeout(r, 200));
       }
+      assert.equal(result?.runId, evalRes.data.runId, 'The requested run must publish a terminal result');
+      assert.equal(result.inputDescriptor?.offline, true);
+      assert.ok(['SUCCESS', 'ACTION_REQUIRED'].includes(result.data?.status), result.error?.error || 'Expected an evaluated outcome');
     });
 
     await runAsyncTest('Reliability - Query classification returns human-friendly rationale', async () => {

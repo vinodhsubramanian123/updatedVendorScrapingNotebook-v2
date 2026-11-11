@@ -21,7 +21,7 @@ export default function NavigationTabs({
 }) {
   return (
     <div className="flex items-center justify-between border-t border-slate-100 pt-2">
-      <nav className="flex items-center gap-1 overflow-x-auto py-1">
+      <nav aria-label="Dashboard views" className="flex min-w-0 items-center gap-1 overflow-x-auto py-1">
         {TABS.map(tab => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -29,6 +29,7 @@ export default function NavigationTabs({
             <button
               key={tab.id}
               data-tab={tab.id}
+              aria-current={isActive ? 'page' : undefined}
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all shrink-0 cursor-pointer ${
                 isActive
