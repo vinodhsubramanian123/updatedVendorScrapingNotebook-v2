@@ -18,7 +18,14 @@ export async function requestJson(url, options = {}) {
     try { data = await response.json(); } catch {
       throw new Error(`HTTP ${response.status}: Server returned an invalid JSON response`);
     }
-    if (!response.ok) throw new Error(apiErrorMessage(data, `HTTP ${response.status}`));
+    if (!response.ok) {
+      const err = new Error(apiErrorMessage(data, `HTTP ${response.status}`));
+      err.status = response.status;
+      err.code = data?.code || data?.status;
+      err.remediationAction = data?.remediationAction;
+      err.data = data;
+      throw err;
+    }
     return data;
   } finally {
     clearTimeout(timer);

@@ -367,6 +367,9 @@ function _hoistEvaluationFields(data, inner) {
     criticalViolationsCount: _pick(inner.criticalViolationsCount, data.criticalViolationsCount, null),
     portalValidationStatus: _pick(inner.portalValidationStatus, data.portalValidationStatus, 'PENDING'),
     ephemeralSourceValidation: _pick(inner.ephemeralSourceValidation, data.ephemeralSourceValidation, null),
+    acceptanceGate: _pick(inner.acceptanceGate, data.acceptanceGate, null),
+    manifestFingerprint: _pick(inner.manifestFingerprint, data.manifestFingerprint, null),
+    deliveryAuthError: _pick(inner.deliveryAuthError, data.deliveryAuthError, null),
     agenticExplanation: _pick(inner.agenticExplanation, data.agenticExplanation, undefined),
     agenticReviewStatus: _pick(inner.agenticReviewStatus, data.agenticReviewStatus, 'NOT_RUN'),
     agenticReview: _pick(inner.agenticReview, data.agenticReview, null),
@@ -375,7 +378,16 @@ function _hoistEvaluationFields(data, inner) {
     ragData: _pick(inner.ragResult, data.ragResult, null),
     customerDisposition: _pick(inner.customerDisposition, data.customerDisposition, null),
     deliveryAuthorization: _pick(inner.deliveryAuthorization, data.deliveryAuthorization, null),
-    evaluationNarrative: _pick(inner.evaluationNarrative, data.evaluationNarrative, null)
+    evaluationNarrative: _pick(inner.evaluationNarrative, data.evaluationNarrative, null),
+    offlineMode: _pick(inner.offlineMode, data.offlineMode, null),
+    effectivePolicy: _pick(data.effectivePolicy, inner.effectivePolicy, null),
+    candidateReference: _pick(data.candidateReference, inner.candidateReference, null),
+    parentRunId: _pick(data.parentRunId, inner.parentRunId, null),
+    candidateDigest: _pick(data.candidateDigest, inner.candidateDigest, null),
+    serverCount: _pick(inner.serverCount, data.serverCount, _pick(inner.configurationContext?.multiplier, data.configurationContext?.multiplier, 1)),
+    nodeCount: _pick(inner.nodeCount, data.nodeCount, _pick(inner.serverCount, data.serverCount, 1)),
+    quantityBasis: _pick(inner.quantityBasis, data.quantityBasis, _pick(data.candidateReference?.quantityBasis, inner.candidateReference?.quantityBasis, null)),
+    configurationContext: _pick(inner.configurationContext, data.configurationContext, null)
   };
 }
 

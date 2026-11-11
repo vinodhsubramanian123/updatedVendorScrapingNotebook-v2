@@ -393,6 +393,14 @@ class GeminiKeyRotator {
    * @returns {Promise<any>}
    */
   async executeWithSmartRotation(operationFn, options = {}) {
+    const isServerOffline = [process.env.OFFLINE_MODE, process.env.LOCAL_EVAL_ONLY]
+      .some(value => ['true', '1'].includes(String(value || '').trim().toLowerCase()));
+    if (isServerOffline || options?.offline === true || options?.offlineMode === true || options?.effectivePolicy?.offline === true) {
+      const err = new Error('OFFLINE_POLICY_BLOCKED: Cloud Gemini API invocation blocked by local-only execution policy.');
+      err.code = 'OFFLINE_POLICY_BLOCKED';
+      throw err;
+    }
+
     this._autoResetExhaustedKeys();
     const envKeys = this._getEnvKeys();
     const totalKeys = Math.max(1, envKeys.length);

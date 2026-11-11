@@ -79,7 +79,15 @@ function formatQueryString(val) {
 
 function isRagFallbackData(ragData) {
   if (!ragData) return false;
-  if (ragData.source === 'FALLBACK' || ragData.source === 'LOCAL_FALLBACK') return true;
+  if (
+    ragData.source === 'FALLBACK' ||
+    ragData.source === 'LOCAL_FALLBACK' ||
+    ragData.source === 'LOCAL_RAG_FALLBACK' ||
+    ragData.isCloudGrounded === false ||
+    Boolean(ragData.cloudUnavailableReason)
+  ) {
+    return true;
+  }
   return Boolean(ragData.answer && ragData.answer.toLowerCase().includes('fallback'));
 }
 
@@ -220,6 +228,11 @@ function RagResultView({ ragData, showSanitizationDetails, onToggleSanitization 
         <div className={`text-xs space-y-2 leading-relaxed p-4 rounded-xl border whitespace-pre-line shadow-sm ${
           isFallback ? 'bg-amber-50/60 border-amber-200 text-amber-900' : 'bg-slate-50 border-slate-200 text-slate-800'
         }`}>
+          {ragData.cloudUnavailableReason && (
+            <div className="font-semibold text-[11px] text-amber-900 bg-amber-100/80 border border-amber-300 rounded px-2 py-1">
+              Cloud grounding unavailable: {ragData.cloudUnavailableReason}
+            </div>
+          )}
           {ragData.answer}
         </div>
       </div>

@@ -101,6 +101,11 @@ function NotebookConsultationSection({ isQuerying, onQuery, notebookResponse, no
           <div className={`text-[10px] uppercase tracking-wider font-bold ${notebookMeta?.learningEligible ? 'text-emerald-800' : 'text-amber-900'}`}>
             {notebookMeta?.learningEligible ? 'Cloud grounded with traceable citations' : 'Advisory only — not eligible for learning'}
           </div>
+          {notebookMeta?.cloudUnavailableReason && (
+            <div className="text-[11px] font-semibold text-amber-900 bg-amber-100/80 border border-amber-300 rounded px-2 py-1">
+              Local-only / Cloud grounding unavailable: {notebookMeta.cloudUnavailableReason}
+            </div>
+          )}
           <div>{notebookResponse}</div>
           {citationsList && <div className="text-[11px] text-slate-700">Citations: {citationsList}</div>}
         </div>
@@ -294,10 +299,18 @@ export default function AmbiguityInbox({ evalResults, chassisContext, onReEvalua
       const errorsStr = evalResults.errors?.join('\n') || 'Unknown conflict';
       const prompt = `I have a hardware configuration conflict for ${chassisContext} that I need to resolve. The evaluation failed with these errors:\n${errorsStr}\n\nBased on your QuickSpecs knowledge, what is the exact physical rule missing here? Does one SKU require another? Return a concise technical rule.`;
 
+      const isOfflineEval = evalResults?.effectivePolicy?.offline ?? evalResults?.offlineMode ?? true;
+      const bodyPayload = {
+        prompt,
+        chassis: chassisContext,
+        offline: Boolean(isOfflineEval),
+        offlineMode: Boolean(isOfflineEval),
+        ...(evalResults?.runId ? { runId: evalResults.runId } : {})
+      };
       const res = await fetch('/api/ask-notebook', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt, chassis: chassisContext })
+        body: JSON.stringify(bodyPayload)
       });
       const data = await res.json();
       setNotebookResponse(data.answer || 'No response received.');

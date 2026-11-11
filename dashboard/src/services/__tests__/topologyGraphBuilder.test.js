@@ -138,5 +138,29 @@ describe('topologyGraphBuilder', () => {
       expect(emptyGraph.edges).toEqual([]);
       expect(emptyGraph.stats.totalNodes).toBe(0);
     });
+
+    it('uses evaluated product and node count instead of hardcoded DL380 defaults for other platforms', () => {
+      const dl360Eval = {
+        chassis: 'DL360 Gen12',
+        serverCount: 3,
+        items: [
+          { sku: 'P74001-B21', description: 'HPE ProLiant DL360 Gen12 8SFF CTO Server', category: 'Chassis', quantity: 1 },
+          { sku: 'P74845-B21', description: 'Intel Xeon Gold 6530 Processor', category: 'Processors', quantity: 2 }
+        ],
+        conflictGraph: { chassisInfo: { formFactor: '1U 8SFF' } }
+      };
+      const graph = buildTopologyGraph(dl360Eval, 'BASELINE');
+      expect(graph.rootNode.sku).toBe('P74001-B21');
+      expect(graph.rootNode.label).toContain('DL360 Gen12');
+      expect(graph.rootNode.label).not.toContain('DL380');
+      expect(graph.rootNode.quantity).toBe(3);
+
+      const unknownDefaultGraph = buildTopologyGraph({
+        conflictGraph: { chassisInfo: { formFactor: '1U Rack' } },
+        items: [{ sku: 'R1111A', description: 'Generic Network Adapter', category: 'Networking', quantity: 1 }]
+      }, 'BASELINE');
+      expect(unknownDefaultGraph.rootNode.sku).toBe('UNKNOWN_BASE_SKU');
+      expect(unknownDefaultGraph.rootNode.label).not.toContain('DL380');
+    });
   });
 });

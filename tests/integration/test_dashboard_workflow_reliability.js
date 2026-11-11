@@ -12,7 +12,9 @@
 const assert = require('assert');
 const path = require('path');
 const fs = require('fs');
+const os = require('os');
 const http = require('http');
+const crypto = require('crypto');
 const { spawn } = require('child_process');
 
 let passedTests = 0;
@@ -84,8 +86,15 @@ async function main() {
   console.log('================================================================\n');
 
   const TEST_PORT = '3499';
+  const tmpRunsDir = fs.mkdtempSync(path.join(os.tmpdir(), 'wf-reliability-runs-'));
   const serverProcess = spawn('node', [path.join(__dirname, '../../dashboard/server.cjs')], {
-    env: { ...process.env, PORT: TEST_PORT, NODE_ENV: 'test', DASHBOARD_SERVE_DIST: '1' }
+    env: {
+      ...process.env,
+      PORT: TEST_PORT,
+      NODE_ENV: 'test',
+      DASHBOARD_SERVE_DIST: '1',
+      DASHBOARD_RUNS_DIR: tmpRunsDir
+    }
   });
 
   let serverReady = false;
@@ -116,6 +125,7 @@ async function main() {
       assert.ok(Array.isArray(res.data.runsHistory), 'runsHistory should be an array');
     });
 
+    let completedEvalRunId = null;
     await runAsyncTest('Reliability - Offline evaluation reaches a result for the selected catalog', async () => {
       const sampleText = '1x P73282-B21 HPE ProLiant DL380 Gen12 8SFF Server\n2x P74845-B21 Intel Xeon Gold 6530';
       const registry = await request(`http://127.0.0.1:${TEST_PORT}/api/available-catalogs`);
@@ -128,6 +138,7 @@ async function main() {
 
       assert.strictEqual(evalRes.status, 202);
       assert.ok(evalRes.data.runId, 'Evaluation response should return runId');
+      completedEvalRunId = evalRes.data.runId;
       assert.strictEqual(evalRes.data.status, 'ACCEPTED');
 
       // Wait a moment for runState to capture task
@@ -163,15 +174,18 @@ async function main() {
       assert.ok(res.data.confidence >= 0.8, 'Confidence should be high for clear sizing');
     });
 
+    let queryRunId = null;
     await runAsyncTest('Reliability - Query route executes with runId scoping', async () => {
       // Clear any prior active task
       await request(`http://127.0.0.1:${TEST_PORT}/api/kill-task`, { method: 'POST' });
       await new Promise(r => setTimeout(r, 600));
 
+      queryRunId = `query_scope_${Date.now()}`;
       const res = await request(`http://127.0.0.1:${TEST_PORT}/api/query/route`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
       }, {
+        runId: queryRunId,
         query: 'Is P73282-B21 active in DL380 Gen12?',
         context: { chassisName: 'DL380_Gen12', offlineMode: true }
       });
@@ -182,8 +196,111 @@ async function main() {
       assert.ok(res.data.traceId, 'Response should contain traceId');
     });
 
+    await runAsyncTest('Reliability - Run-by-ID validation, full recovery & merged history', async () => {
+      const invalidRes = await request(`http://127.0.0.1:${TEST_PORT}/api/run/..%2Fsecret`, { method: 'GET' });
+      assert.strictEqual(invalidRes.status, 400);
+      assert.strictEqual(invalidRes.data.code, 'INVALID_RUN_ID');
+
+      const evalGet = await request(`http://127.0.0.1:${TEST_PORT}/api/run/${encodeURIComponent(completedEvalRunId)}`, { method: 'GET' });
+      assert.strictEqual(evalGet.status, 200);
+      assert.strictEqual(evalGet.data.run.runId, completedEvalRunId);
+      assert.strictEqual(evalGet.data.run.status, 'COMPLETED');
+      assert.ok(evalGet.data.run.result, 'Recovered evaluation run must contain full result');
+
+      const queryGet = await request(`http://127.0.0.1:${TEST_PORT}/api/run/${encodeURIComponent(queryRunId)}`, { method: 'GET' });
+      assert.strictEqual(queryGet.status, 200);
+      assert.strictEqual(queryGet.data.run.task, 'PRESALES_QUERY');
+      assert.ok(queryGet.data.run.queryResult, 'Recovered query run must contain queryResult');
+
+      const histRes = await request(`http://127.0.0.1:${TEST_PORT}/api/history/runs`, { method: 'GET' });
+      assert.strictEqual(histRes.status, 200);
+      const runs = Array.isArray(histRes.data) ? histRes.data : (histRes.data?.runs || []);
+      assert.ok(runs.some(r => r.runId === completedEvalRunId && r.hasRecoverableResult), 'History must include completed eval run');
+      assert.ok(runs.some(r => r.runId === queryRunId && r.taskType === 'PRESALES_QUERY'), 'History must include presales query run');
+    });
+
+    await runAsyncTest('Reliability - Stale runId kill rejected (409) & duplicate cancel is idempotent', async () => {
+      const registry = await request(`http://127.0.0.1:${TEST_PORT}/api/available-catalogs`);
+      const product = registry.data.catalogs.find(catalog => catalog.id === 'DL380_Gen12');
+      const cancelTargetRunId = `cancel_target_${Date.now()}`;
+      const evalStart = await request(`http://127.0.0.1:${TEST_PORT}/api/eval-boq`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      }, {
+        runId: cancelTargetRunId,
+        rawText: '1x P73282-B21 HPE ProLiant DL380 Gen12 8SFF Server\n2x P74845-B21 Intel Xeon Gold 6530',
+        chassisDir: product.chassisDir,
+        offline: true
+      });
+      assert.strictEqual(evalStart.status, 202);
+
+      const staleKill = await request(`http://127.0.0.1:${TEST_PORT}/api/kill-task`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      }, { runId: 'stale_other_tab_run_123' });
+      assert.strictEqual(staleKill.status, 409);
+      assert.strictEqual(staleKill.data.code, 'RUN_ID_MISMATCH');
+
+      const snapWhileRunning = await request(`http://127.0.0.1:${TEST_PORT}/api/run-snapshot`, { method: 'GET' });
+      assert.strictEqual(snapWhileRunning.data.activeTask?.runId, cancelTargetRunId, 'Stale kill must leave active task running');
+
+      const firstKill = await request(`http://127.0.0.1:${TEST_PORT}/api/kill-task`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      }, { runId: cancelTargetRunId });
+      assert.strictEqual(firstKill.status, 200);
+      assert.strictEqual(firstKill.data.status, 'CANCELLED');
+
+      const secondKill = await request(`http://127.0.0.1:${TEST_PORT}/api/kill-task`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      }, { runId: cancelTargetRunId });
+      assert.strictEqual(secondKill.status, 200);
+      assert.strictEqual(secondKill.data.status, 'CANCELLED');
+
+      const snapAfterCancel = await request(`http://127.0.0.1:${TEST_PORT}/api/run-snapshot`, { method: 'GET' });
+      assert.strictEqual(snapAfterCancel.data.isTaskRunning, false, 'Mutex must be released after kill returns CANCELLED');
+
+      const cancelledRun = await request(`http://127.0.0.1:${TEST_PORT}/api/run/${encodeURIComponent(cancelTargetRunId)}`, { method: 'GET' });
+      assert.strictEqual(cancelledRun.status, 200);
+      assert.strictEqual(cancelledRun.data.run.status, 'CANCELLED');
+    });
+
+    await runAsyncTest('Reliability - Changed or expired intake rejects clarification replay with REUPLOAD_REQUIRED', async () => {
+      const tempDir = path.join(__dirname, '../../outputs/temp');
+      if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir, { recursive: true });
+      const tempCsv = path.join(tempDir, `test_intake_reliability_${Date.now()}.csv`);
+      fs.writeFileSync(tempCsv, '1x P73282-B21 HPE ProLiant DL380 Gen12\n');
+      try {
+        const origHash = crypto.createHash('sha256').update(fs.readFileSync(tempCsv)).digest('hex');
+        fs.writeFileSync(tempCsv, '2x P73282-B21 HPE ProLiant DL380 Gen12\n');
+
+        const changedRes = await request(`http://127.0.0.1:${TEST_PORT}/api/eval-boq`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' }
+        }, { filepath: tempCsv, inputSha256: origHash, offline: true });
+        assert.strictEqual(changedRes.status, 409);
+        assert.strictEqual(changedRes.data.code, 'INTAKE_CHANGED');
+        assert.strictEqual(changedRes.data.remediationAction, 'REUPLOAD_REQUIRED');
+
+        const oldDate = new Date(Date.now() - 3 * 60 * 60 * 1000);
+        fs.utimesSync(tempCsv, oldDate, oldDate);
+        const expiredRes = await request(`http://127.0.0.1:${TEST_PORT}/api/eval-boq`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' }
+        }, { filepath: tempCsv, inputSha256: origHash, offline: true });
+        assert.strictEqual(expiredRes.status, 410);
+        assert.strictEqual(expiredRes.data.code, 'INTAKE_EXPIRED');
+        assert.strictEqual(expiredRes.data.remediationAction, 'REUPLOAD_REQUIRED');
+      } finally {
+        if (fs.existsSync(tempCsv)) fs.unlinkSync(tempCsv);
+      }
+    });
+
   } finally {
     serverProcess.kill('SIGTERM');
+    await new Promise(r => setTimeout(r, 300));
+    try { fs.rmSync(tmpRunsDir, { recursive: true, force: true, maxRetries: 5 }); } catch (_) {}
   }
 
   console.log('\n================================================================');

@@ -22,8 +22,13 @@ const statusStyles = {
 function describeRun(run, progress, evaluation, reconnecting) {
   if (reconnecting) return { tone: 'reconnecting', message: 'Reconnecting to live updates' };
   if (run.status === 'RUNNING') return { tone: 'running', message: progress?.action || 'Starting…', action: 'View logs', view: 'pipeline' };
-  if (evaluation?.status === 'CANCELLED') return { tone: 'attention', message: 'Cancelled', action: 'View logs', view: 'pipeline' };
-  if (evaluation?.clarificationRequired) return { tone: 'attention', message: 'Platform confirmation needed', action: 'Review intake', view: 'orchestrator' };
+  if (run.status === 'INTERRUPTED') return { tone: 'attention', message: 'Interrupted by backend restart', action: 'View logs', view: 'pipeline' };
+  if (run.status === 'CANCELLED' || evaluation?.status === 'CANCELLED') return { tone: 'attention', message: 'Cancelled', action: 'View logs', view: 'pipeline' };
+  if (evaluation?.clarificationRequired || run.status === 'ACTION_REQUIRED') {
+    return evaluation?.clarificationRequired
+      ? { tone: 'attention', message: 'Platform confirmation needed', action: 'Review intake', view: 'orchestrator' }
+      : { tone: 'attention', message: 'Review required', action: 'Review results', view: 'matrix' };
+  }
   if (run.status === 'FAILED' || evaluation?.status === 'ERROR') {
     return { tone: 'failed', message: 'Run failed', action: 'View logs', view: 'pipeline' };
   }
@@ -78,13 +83,13 @@ function StageTrack({ task, progress, reconnecting }) {
   );
 }
 
-export default function RunActivity({ run, progress, evaluation, reconnecting, onNavigate }) {
+export default function RunActivity({ run, progress, evaluation, reconnecting, onNavigate, onCancelTask }) {
   const running = run?.status === 'RUNNING';
   const elapsed = useElapsed(run, running);
   if (!run && !reconnecting) return <div role="status" className="sr-only" />;
 
   const currentEvaluation = run?.runId && run.runId === evaluation?.runId ? evaluation : null;
-  const { tone, message, action, view } = describeRun(run, progress, currentEvaluation, reconnecting);
+  const { tone, message, action, view } = describeRun(run || {}, progress, currentEvaluation, reconnecting);
   const { icon: Icon, color } = statusStyles[tone];
   const task = taskNames[run?.task] || (run?.task?.startsWith('SCRAPE') ? 'Catalog scrape' : 'Workflow');
   const product = typeof run?.product === 'string' ? run.product.replaceAll('_', ' ') : null;
@@ -97,6 +102,15 @@ export default function RunActivity({ run, progress, evaluation, reconnecting, o
           <p className="text-sm font-semibold text-slate-900">{message}</p>
         </div>
         {elapsed && <span className="text-xs tabular-nums text-slate-600" aria-label={`Elapsed time ${elapsed}`}>{elapsed}</span>}
+        {running && onCancelTask && run?.runId && (
+          <button
+            type="button"
+            onClick={() => onCancelTask(run.runId)}
+            className="text-xs font-semibold text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 rounded-lg px-2.5 py-1.5"
+          >
+            Cancel run
+          </button>
+        )}
         {action && (
           <button type="button" onClick={() => onNavigate(view)} className="btn-secondary inline-flex items-center gap-1.5 text-xs">
             {action}<ArrowRight aria-hidden="true" className="size-3.5" />

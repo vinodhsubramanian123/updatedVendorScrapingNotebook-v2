@@ -123,47 +123,64 @@ export function identifySubProducts(items = [], productFamily = 'ProLiant') {
   return subProducts;
 }
 
+const FAMILY_CHASSIS_LABELS = {
+  Synergy: 'HPE Synergy 12000 Composable Frame Solution',
+  Alletra: 'HPE Alletra Storage System (Base Controller Array)',
+  StoreEver: 'HPE StoreEver MSL3040 Tape Library System',
+  Cray: 'HPE Cray Supercomputing GX5000 Rack',
+  SAN: 'HPE StoreFabric SN3600B Fibre Channel Switch'
+};
+
+function resolveChassisDisplayName(productFamily, resolvedModel, evalResults) {
+  if (FAMILY_CHASSIS_LABELS[productFamily]) {
+    return resolvedModel || FAMILY_CHASSIS_LABELS[productFamily];
+  }
+  const cleanModel = resolvedModel ? String(resolvedModel).replace(/_/g, ' ') : null;
+  if (cleanModel) {
+    return /^hpe\b/i.test(cleanModel) ? cleanModel : `HPE ProLiant ${cleanModel}`;
+  }
+  const formFactor = evalResults.conflictGraph?.chassisInfo?.formFactor;
+  return formFactor ? `HPE Evaluated Platform (${formFactor})` : 'HPE Server Chassis (CTO Base)';
+}
+
+function resolveChassisBaseSku(evalResults, firstChassisItem, productFamily) {
+  return evalResults.conflictGraph?.chassisInfo?.chassisSku
+    || firstChassisItem?.sku
+    || evalResults.workloadDna?.detectedChassis
+    || evalResults.chassis
+    || evalResults.detectedChassis
+    || evalResults.variations?.[0]?.baseChassisSku
+    || (productFamily === 'Synergy' ? 'SY12000-FRAME' : 'UNKNOWN_BASE_SKU');
+}
+
 function resolveRootAndSubProducts(evalResults, rawItems, productFamily) {
   const subProducts = identifySubProducts(rawItems, productFamily);
-  const chassisSku = evalResults.conflictGraph?.chassisInfo?.chassisSku ||
-                     evalResults.workloadDna?.detectedChassis ||
-                     evalResults.chassis ||
-                     evalResults.detectedChassis ||
-                     evalResults.variations?.[0]?.baseChassisSku ||
-                     (productFamily === 'Synergy' ? 'SY12000-FRAME' : 'P73282-B21');
-
-  let chassisName = '';
-  if (productFamily === 'Synergy') {
-    chassisName = 'HPE Synergy 12000 Composable Frame Solution';
-  } else if (productFamily === 'Alletra') {
-    chassisName = 'HPE Alletra Storage System (Base Controller Array)';
-  } else if (productFamily === 'StoreEver') {
-    chassisName = 'HPE StoreEver MSL3040 Tape Library System';
-  } else if (productFamily === 'Cray') {
-    chassisName = 'HPE Cray Supercomputing GX5000 Rack';
-  } else if (productFamily === 'SAN') {
-    chassisName = 'HPE StoreFabric SN3600B Fibre Channel Switch';
-  } else {
-    chassisName = evalResults.chassis
-      ? `HPE ProLiant ${evalResults.chassis}`
-      : (evalResults.conflictGraph?.chassisInfo?.formFactor
-        ? `HPE ProLiant DL380 Gen12 (${evalResults.conflictGraph.chassisInfo.formFactor})`
-        : 'HPE ProLiant Server Chassis (CTO Base)');
-  }
-
+  const firstChassisItem = (rawItems || []).find(it =>
+    /cto\b|chassis|server|switch|library|array/i.test(`${it.category || ''} ${it.subCategory || ''} ${it.description || ''}`)
+  );
+  const chassisSku = resolveChassisBaseSku(evalResults, firstChassisItem, productFamily);
+  const resolvedModel = evalResults.conflictGraph?.chassisInfo?.model
+    || evalResults.chassis
+    || evalResults.detectedChassis
+    || firstChassisItem?.description
+    || null;
+  const chassisName = resolveChassisDisplayName(productFamily, resolvedModel, evalResults);
+  const formFactor = evalResults.conflictGraph?.chassisInfo?.formFactor || (productFamily === 'Synergy' ? '10U Frame' : 'Evaluated Base');
+  const nodeQuantity = evalResults.serverCount || evalResults.nodeCount || evalResults.configurationContext?.multiplier || evalResults.preflightData?.ctoNodeMultiplier || 1;
   const rootNode = {
     id: 'node-chassis-root',
     type: 'CHASSIS_ROOT',
     sku: chassisSku,
     label: chassisName,
+    formFactor,
     subsystem: 'ROOT',
     productFamily,
     status: 'VALID',
     category: 'Solution Root Enclosure',
-    quantity: evalResults.preflightData?.ctoNodeMultiplier || 1,
+    quantity: nodeQuantity,
     details: {
       productFamily,
-      formFactor: evalResults.conflictGraph?.chassisInfo?.formFactor || (productFamily === 'Synergy' ? '10U Frame' : '8SFF'),
+      formFactor,
       maxSockets: evalResults.conflictGraph?.chassisInfo?.maxSockets || 2,
       maxDimms: evalResults.conflictGraph?.chassisInfo?.maxDimms || 32,
       maxPcieSlots: evalResults.totalPcieSlotsAvailable || 8,

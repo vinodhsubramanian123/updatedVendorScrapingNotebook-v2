@@ -10,14 +10,14 @@ async function parseModalVendorInput(vendorText) {
   return data.items;
 }
 
-async function uploadAndPreprocessVendorFile(uploadedFile, selectedChassis) {
+async function uploadAndPreprocessVendorFile(uploadedFile, selectedChassis, offline = true) {
   const uploadData = await uploadBoqFile(uploadedFile);
 
 
   return requestJson('/api/preprocess-boq', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ filepath: uploadData.filepath, chassisDir: selectedChassis })
+    body: JSON.stringify({ filepath: uploadData.filepath, chassisDir: selectedChassis, offline })
   });
 
 }
@@ -38,7 +38,9 @@ function VendorQuoteInputBox({
   isOcrProcessing,
   isVerifying,
   onFileUpload,
-  onVerify
+  onVerify,
+  localOnly,
+  setLocalOnly
 }) {
   return (
     <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
@@ -50,7 +52,7 @@ function VendorQuoteInputBox({
           type="file"
           id="vendor-file-input"
           className="hidden"
-          accept=".xlsx,.xls,.csv,.pdf,.txt"
+          accept=".xlsx,.xls,.csv,.pdf,.txt,.png,.jpg,.jpeg,.webp"
           onChange={e => e.target.files && onFileUpload(e.target.files[0])}
         />
         <button
@@ -70,7 +72,11 @@ function VendorQuoteInputBox({
         className="w-full text-xs border border-slate-300 rounded-lg p-3 h-28 font-mono outline-none focus:ring-2 focus:ring-emerald-500"
       />
 
-      <div className="flex justify-end">
+      <div className="flex items-center justify-between gap-2">
+        <label className="flex items-center gap-2 text-xs font-medium text-slate-700 cursor-pointer">
+          <input type="checkbox" checked={localOnly} onChange={e => setLocalOnly(e.target.checked)} />
+          Use local catalog only
+        </label>
         <button
           onClick={onVerify}
           disabled={isVerifying || !vendorText.trim()}
@@ -82,6 +88,11 @@ function VendorQuoteInputBox({
       </div>
     </div>
   );
+}
+
+function appendVendorRemediation(message, remediationAction, fallback) {
+  const base = String(message || fallback);
+  return remediationAction && !base.includes(remediationAction) ? `${base} ${remediationAction}` : base;
 }
 
 export default function VendorBomVerificationModal({
@@ -100,6 +111,7 @@ export default function VendorBomVerificationModal({
 
   const [humanReasoning, setHumanReasoning] = useState('');
   const [ruleConstraint, setRuleConstraint] = useState('');
+  const [localOnly, setLocalOnly] = useState(true);
   const [isRagVerifying, setIsRagVerifying] = useState(false);
   const [ragVerificationResult, setRagVerificationResult] = useState(null);
   const [isSubmittingDelta, setIsSubmittingDelta] = useState(false);
@@ -122,17 +134,16 @@ export default function VendorBomVerificationModal({
     setFile(uploadedFile);
     setIsOcrProcessing(true);
     setErrorMessage(null);
-
     try {
-      const preData = await uploadAndPreprocessVendorFile(uploadedFile, selectedChassis);
+      const preData = await uploadAndPreprocessVendorFile(uploadedFile, selectedChassis, localOnly);
       if (preData.status === 'SUCCESS' && preData.preflightData) {
         const itemsList = preData.preflightData.configVariations?.[0]?.items || [];
         setVendorText(itemsList.map(i => `${i.sku}, ${i.quantity}, ${i.description}`).join('\n'));
       } else {
-        setErrorMessage(preData.error || 'Failed to extract SKUs from uploaded file.');
+        setErrorMessage(appendVendorRemediation(preData.error, preData.remediationAction, 'Failed to extract SKUs from uploaded file.'));
       }
     } catch (err) {
-      setErrorMessage(`Upload error: ${err.message}`);
+      setErrorMessage(appendVendorRemediation(`Upload error: ${err.message}`, err.remediationAction));
     } finally {
       setIsOcrProcessing(false);
     }
@@ -150,31 +161,27 @@ export default function VendorBomVerificationModal({
       const items = await parseModalVendorInput(vendorText);
       if (items.length === 0) {
         setErrorMessage('No valid HPE SKUs detected in uploaded input.');
-        setIsVerifying(false);
         return;
       }
-
-      const proposedRankSolution = rankSolution || { rank: 1, skuList: [] };
       const res = await fetch('/api/verify-vendor-bom', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           vendorItems: items,
-          proposedRankSolution,
+          proposedRankSolution: rankSolution || { rank: 1, skuList: [] },
           chassisDir: selectedChassis
         })
       });
-
       const data = await res.json();
-      if (res.ok) {
-        setAuditReport(data);
-        const defaults = buildAddedVendorDefaultRules(data, selectedChassis);
-        if (defaults) {
-          setRuleConstraint(defaults.ruleConstraint);
-          setHumanReasoning(defaults.humanReasoning);
-        }
-      } else {
+      if (!res.ok) {
         setErrorMessage(data.error || 'Failed to verify Vendor BOM');
+        return;
+      }
+      setAuditReport(data);
+      const defaults = buildAddedVendorDefaultRules(data, selectedChassis);
+      if (defaults) {
+        setRuleConstraint(defaults.ruleConstraint);
+        setHumanReasoning(defaults.humanReasoning);
       }
     } catch (err) {
       setErrorMessage(err.message);
@@ -193,7 +200,7 @@ export default function VendorBomVerificationModal({
       const res = await fetch('/api/notebook-query', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chassis: targetChassis, query: prompt })
+        body: JSON.stringify({ chassis: targetChassis, query: prompt, offline: localOnly })
       });
       setRagVerificationResult(await res.json());
     } catch (err) {
@@ -267,6 +274,8 @@ export default function VendorBomVerificationModal({
             isVerifying={isVerifying}
             onFileUpload={handleFileUpload}
             onVerify={handleVerify}
+            localOnly={localOnly}
+            setLocalOnly={setLocalOnly}
           />
 
           {errorMessage && (

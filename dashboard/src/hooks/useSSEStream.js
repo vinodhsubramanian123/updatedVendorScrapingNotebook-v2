@@ -50,6 +50,7 @@ export function useSSEStream({
           if (payload.progress && payload.activeTask) handlers.current.onProgress?.(payload.progress);
           const result = payload.latestResult;
           if (payload.latestQueryResult) window.dispatchEvent(new CustomEvent('dashboard-routed-result', { detail: payload.latestQueryResult }));
+          window.dispatchEvent(new CustomEvent('dashboard-sse-snapshot', { detail: payload }));
           if (result && (payload.activeTask?.task !== 'EVAL_BOQ' || result.runId === payload.activeTask.runId)) {
             handlers.current.onEvalResult?.(normalizeEvalResult(result), { ...result, recovered: true });
           }

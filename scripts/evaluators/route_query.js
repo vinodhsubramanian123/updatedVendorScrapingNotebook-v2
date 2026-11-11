@@ -20,6 +20,7 @@ const { cleanBaseSKU, isValidHpeSKU } = require('../lib/catalog/sku.js');
 const { resolveRequirementIntent } = require('../lib/boq/requirement_intent_resolver.js');
 const { verifyVendorBOM, auditSingleVendorBOM } = require('../lib/boq/vendor_bom_verifier.js');
 const { getChassisMap, listAllCatalogs } = require('../lib/catalog/catalog_discovery.js');
+const { resolveEffectivePolicy } = require('../lib/system/policy_resolver.js');
 const logger = require('../lib/system/pipeline_logger.js');
 
 function getBaseChassisSku(chassisKey = '') {
@@ -52,6 +53,7 @@ const BASE_PLATFORM_SIGNATURES = [
   { key: 'dl360', pattern: /\b(?:dl\s*360|dl360|360\s*g\d+|360g\d+|dl360[-_]?(?:gen|g)\d+)\b/i, prefix: 'dl360_' },
   { key: 'dl145', pattern: /\b(?:dl\s*145|dl145|145\s*g\d+|145g\d+|dl145[-_]?(?:gen|g)\d+)\b/i, prefix: 'dl145_' },
   { key: 'dl580', pattern: /\b(?:dl\s*580|dl580|580\s*g\d+|580g\d+|dl580[-_]?(?:gen|g)\d+)\b/i, prefix: 'dl580_' },
+  { key: 'synergy12000', pattern: /\b(?:synergy\s*12000|p51174-b21)\b/i, prefix: 'synergy_12000_frame' },
   { key: 'sy480', pattern: /\b(?:sy\s*480|sy480|synergy\s*480|synergy\s*compute|480\s*g\d+|480g\d+|sy480[-_]?(?:gen|g)\d+)\b/i, prefix: 'sy480_' },
   { key: 'sy100gb', pattern: /\b(?:sy\s*100gb|sy100gb|f32\s*module|f32|synergy\s*100gb|synergy\s*fabric|synergy\s*switch)\b/i, prefix: 'sy100gb' },
   { key: 'alletra', pattern: /\b(?:alletra|alletra\s*9000|alletra\s*storage|alletra\s*mp)\b/i, prefix: 'alletra' },
@@ -59,6 +61,9 @@ const BASE_PLATFORM_SIGNATURES = [
   { key: 'gx5000', pattern: /\b(?:gx\s*5000|gx5000|cray\s*rack|gx\s*general)\b/i, prefix: 'gx5000' },
   { key: 'sn3600b', pattern: /\bsn\s*3600b\b/i, prefix: 'sn3600b' }
 ];
+
+const COMPETITOR_VENDORS = ['cisco', 'lenovo', 'supermicro', 'dell'];
+const OCR_IMAGE_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp', '.tiff', '.bmp', '.pdf'];
 
 function _buildPlatformSignatures(catalogs) {
   const signatures = [...BASE_PLATFORM_SIGNATURES];
@@ -408,7 +413,7 @@ function _classifyFileBased(text, filePath, context) {
 }
 
 const RECONCILE_KEYWORD_RE = /(?:reconcile|compare\s+bom|tender\s+vs\s+quote|ghost\s+sku|quote\s+comparison)/i;
-const CATALOG_KEYWORD_RE = /(?:price\s+trend|pricing\s+history|is\s+obsolete|lifecycle|direct\s+ship|gpl\s+price|list\s+price\s+of|options\s+added)/i;
+const CATALOG_KEYWORD_RE = /(?:price\s+trend|pricing\s+history|is\s+obsolete|lifecycle|direct\s+ship|gpl\s+price|list\s+price\s+of|options\s+added|\blead[ -]+time\b)/i;
 const SIZING_TEXT_KEYWORD_RE = /(?:size\s+a\s+server|sizing|build\s+a\s+bom|generate\s+a\s+bom|create\s+a\s+configuration)/i;
 const BOQ_TEXT_KEYWORD_RE = /(?:evaluate\s+(?:(?:this|the|customer)\s+)?boq|verify\s+(?:(?:this|the|customer)\s+)?bom|check\s+buildability|validate\s+(?:(?:this|the|customer)\s+)?boq)/i;
 
@@ -730,15 +735,20 @@ function _buildFreeformFeasibilityCheck(queryText, chassisInfo, answerText) {
   };
 }
 
+function _resolveContextPolicy(context = {}, { defaultOffline = false, includeRagOnly = false } = {}) {
+  return resolveEffectivePolicy({
+    clientOffline: context.offline,
+    clientOfflineMode: context.offlineMode,
+    enableCloudValidation: context.enableCloudValidation,
+    inheritedPolicy: context.effectivePolicy || null,
+    defaultOffline,
+    includeRagOnly,
+    lockInheritedOffline: true
+  });
+}
+
 function _isOfflineContext(context = {}) {
-  if (context.offlineMode !== undefined) {
-    if (typeof context.offlineMode === 'boolean') return context.offlineMode;
-    const str = String(context.offlineMode).trim().toLowerCase();
-    if (['true', '1'].includes(str)) return true;
-    if (['false', '0'].includes(str)) return false;
-  }
-  return [process.env.OFFLINE_MODE, process.env.LOCAL_EVAL_ONLY]
-    .some(value => ['true', '1'].includes(String(value || '').trim().toLowerCase()));
+  return _resolveContextPolicy(context, { defaultOffline: false, includeRagOnly: false }).offline;
 }
 
 /**
@@ -751,7 +761,8 @@ async function _handleFreeformQa(queryText, context) {
   let isCloudGrounded = false;
   let cloudSource = null;
 
-  const isOffline = _isOfflineContext(context);
+  const policy = _resolveContextPolicy(context, { defaultOffline: false, includeRagOnly: true });
+  const isOffline = policy.offline;
   const ragTimeoutMs = parseInt(process.env.RAG_TIMEOUT_MS || '120000', 10);
   if (!isOffline && chassisName && chassisName !== 'UNKNOWN_PRODUCT') {
     try {
@@ -761,7 +772,10 @@ async function _handleFreeformQa(queryText, context) {
       if (notebookId) {
         const queryRes = await executeNotebookQuery(notebookId, queryText, {
           context: { chassis: chassisName },
-          timeout: ragTimeoutMs
+          timeout: ragTimeoutMs,
+          offline: false,
+          offlineMode: false,
+          effectivePolicy: policy
         });
         if (queryRes && queryRes.answer && !queryRes.isFallback) {
           ragResult = queryRes;
@@ -786,6 +800,7 @@ async function _handleFreeformQa(queryText, context) {
     citations: ragResult.citations || [],
     source: cloudSource || 'Local RAG Dual-Layer Search & Master Knowledge Registry',
     isCloudGrounded: Boolean(isCloudGrounded),
+    effectivePolicy: policy,
     feasibilityCheck: _buildFreeformFeasibilityCheck(queryText, chassisInfo, ragResult.answer)
   };
   if (chassisInfo.catalogData) {
@@ -806,18 +821,22 @@ function _boqPipelineFailure(error, context) {
 }
 
 function _resolveBoqOfflineMode(context = {}) {
-  if (typeof _isOfflineContext === 'function') {
-    return _isOfflineContext(context);
-  }
-  if (context.offlineMode !== undefined) {
-    return Boolean(context.offlineMode);
-  }
-  return [process.env.OFFLINE_MODE, process.env.LOCAL_EVAL_ONLY]
-    .some(value => ['true', '1'].includes(String(value || '').trim().toLowerCase()));
+  return _resolveContextPolicy(context, { defaultOffline: false }).offline;
 }
 
 async function _handleBoqEvaluation(queryText, context) {
   const chassisInfo = getChassisCatalog(queryText, context);
+  const policy = _resolveContextPolicy(context, { defaultOffline: false });
+  if (context.filePath && OCR_IMAGE_EXTENSIONS.includes(path.extname(context.filePath).toLowerCase()) && policy.offline) {
+    return {
+      intent: 'BOQ_EVALUATION',
+      status: 'OFFLINE_INPUT_REQUIRED',
+      error: 'Local-only execution is active. Image and scanned PDF OCR require cloud processing. Please provide pasted text or upload CSV/XLSX.',
+      remediationAction: 'Provide pasted text or upload CSV/XLSX.',
+      isOcrProcessed: false,
+      effectivePolicy: policy
+    };
+  }
   if (context.filePath && fs.existsSync(context.filePath)) {
     try {
       const { runEvaluationPipeline } = require('./eval_boq.js');
@@ -828,7 +847,8 @@ async function _handleBoqEvaluation(queryText, context) {
         signal: context.signal,
         traceId: context.traceId,
         JSON_MODE: true,
-        OFFLINE_MODE: _resolveBoqOfflineMode(context)
+        OFFLINE_MODE: policy.offline,
+        effectivePolicy: policy
       });
     } catch (pipeErr) {
       return _boqPipelineFailure(pipeErr, context);
@@ -843,7 +863,8 @@ async function _handleBoqEvaluation(queryText, context) {
         signal: context.signal,
         traceId: context.traceId,
         JSON_MODE: true,
-        OFFLINE_MODE: _resolveBoqOfflineMode(context)
+        OFFLINE_MODE: policy.offline,
+        effectivePolicy: policy
       });
     } catch (pipeErr) {
       return _boqPipelineFailure(pipeErr, context);
@@ -858,27 +879,48 @@ async function _handleBoqEvaluation(queryText, context) {
 
 async function _handleOcrQuoteIngestion(queryText, context) {
   const imgPath = context.filePath || (queryText.match(/[\w\-./\\]+\.(?:png|jpg|jpeg|webp|tiff|bmp|pdf)/i)?.[0] || '');
-  if (context.executeOcr && imgPath) {
-    const { performGeminiOcr } = require('../lib/ocr/ocr_service.js');
-    const { parseSkuLines } = require('../lib/boq/boq_parser.js');
-    if (!fs.existsSync(imgPath)) {
+  const policy = _resolveContextPolicy(context, { defaultOffline: false });
+  const fileExists = Boolean(imgPath && fs.existsSync(imgPath));
+
+  if ((context.executeOcr && imgPath) || (fileExists && policy.offline)) {
+    if (!fileExists) {
       return {
         intent: 'OCR_QUOTE_INGESTION',
         filePath: imgPath,
         skillTarget: 'ocr-quote-ingestion-skill',
         status: 'FILE_NOT_FOUND',
-        error: `Target image file not found: ${imgPath}`
+        error: `Target image file not found: ${imgPath}`,
+        effectivePolicy: policy
       };
     }
-    const ocrResult = await performGeminiOcr(imgPath);
+    if (policy.offline) {
+      return {
+        intent: 'OCR_QUOTE_INGESTION',
+        filePath: imgPath,
+        skillTarget: 'ocr-quote-ingestion-skill',
+        status: 'OFFLINE_INPUT_REQUIRED',
+        error: 'Local-only execution is active. Image and scanned PDF OCR require cloud processing. Please provide pasted text or a supported tabular file (CSV/XLSX).',
+        remediationAction: 'Provide pasted text or a supported tabular file (CSV/XLSX).',
+        isOcrProcessed: false,
+        effectivePolicy: policy
+      };
+    }
+    const { performGeminiOcr } = require('../lib/ocr/ocr_service.js');
+    const { parseSkuLines } = require('../lib/boq/boq_parser.js');
+    const ocrResult = await performGeminiOcr(imgPath, {
+      offline: policy.offline,
+      offlineMode: policy.offline,
+      effectivePolicy: policy
+    });
     if (!ocrResult || !ocrResult.isOcrProcessed || ocrResult.ocrStatus !== 'SUCCESS') {
       return {
         intent: 'OCR_QUOTE_INGESTION',
         filePath: imgPath,
         skillTarget: 'ocr-quote-ingestion-skill',
-        status: 'OCR_EXTRACTION_FAILED',
+        status: ocrResult?.ocrStatus === 'OFFLINE_BLOCKED' ? 'OFFLINE_INPUT_REQUIRED' : 'OCR_EXTRACTION_FAILED',
         error: ocrResult?.rawError || ocrResult?.text || 'OCR processing failed',
-        remediationAction: ocrResult?.remediationAction || 'Check image clarity or provide structured text BOM.'
+        remediationAction: ocrResult?.remediationAction || 'Check image clarity or provide structured text BOM.',
+        effectivePolicy: policy
       };
     }
     const lines = ocrResult.text.split(/\r?\n/).filter(l => l.trim().length > 0);
@@ -908,6 +950,7 @@ async function _handleOcrQuoteIngestion(queryText, context) {
       },
       itemCount: parsed.items.length,
       items: parsed.items,
+      effectivePolicy: policy,
       message: `Successfully extracted ${parsed.items.length} hardware BOM item(s) from ${path.basename(imgPath)} via Gemini Vision OCR.`
     };
   }
@@ -916,6 +959,7 @@ async function _handleOcrQuoteIngestion(queryText, context) {
     filePath: imgPath,
     skillTarget: 'ocr-quote-ingestion-skill',
     status: 'READY_FOR_OCR',
+    effectivePolicy: policy,
     message: `Input document identified (${path.basename(imgPath || 'quote')}). Routed to multimodal Gemini Vision OCR pipeline.`
   };
 }
@@ -935,6 +979,7 @@ function _readSkuPriceHistory(catalogDir, targetSku) {
 
 function _mapCatalogSkuDetail(entry, found) {
   const unitPriceRaw = found['Unit Price (USD)'];
+  const leadTime = require('../lib/taxonomy/sku_resolver.js').extractCatalogItemLeadTime(found);
   return {
     sku: found.sku || found['Product #'],
     description: found.Description || found.description,
@@ -945,7 +990,9 @@ function _mapCatalogSkuDetail(entry, found) {
     discontinuedDate: found['Discontinued Date'] || found.discontinuedDate || null,
     currentPriceUsd: found.listPrice || (unitPriceRaw ? parseFloat(unitPriceRaw) : null),
     priceHistoryTrail: found['Price History Trail'] || null,
-    availability: found.Availability || null
+    availability: found.Availability || null,
+    estimatedLeadTimeDays: leadTime.days,
+    leadTimeSource: leadTime.isPublished ? found['Lead Time Source'] || null : null
   };
 }
 
@@ -961,13 +1008,23 @@ function _findLiveSkuDetails(catalogData, targetSku) {
 
 function _handleCatalogIntelligence(queryText, context) {
   const skuCandidates = (queryText.match(/\b([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6}|[A-Z0-9]{5,8}AAE|[HURS][A-Z0-9]{4,11})\b/gi) || []).filter(isValidHpeSKU);
-  const targetSku = skuCandidates.length > 0 ? cleanBaseSKU(skuCandidates[0]) : null;
   const chassisInfo = getChassisCatalog(queryText, context);
+  const skuCodes = skuCandidates.map(cleanBaseSKU);
+  const baseSku = getBaseChassisSku(chassisInfo.chassisKey);
+  const targetSku = skuCodes.find(sku => sku !== baseSku) || skuCodes[0] || null;
   const skuHistory = _readSkuPriceHistory(chassisInfo.catalogDir, targetSku);
   const liveSkuDetails = _findLiveSkuDetails(chassisInfo.catalogData, targetSku);
+  const freshness = liveSkuDetails && require('../lib/catalog/catalog_freshness_guard.js')
+    .auditCatalogFreshness(chassisInfo.catalogData, { staleWarningDays: 3, criticalOutdatedDays: 30 });
+  const platform = getChassisMap()[chassisInfo.chassisKey];
 
   return {
     targetSku,
+    ...(chassisInfo.catalogData && {
+      chassis: chassisInfo.chassisKey,
+      productType: chassisInfo.catalogData.metadata?.pillar,
+      chassisInfo: { gen: platform?.gen, formFactor: platform?.formFactor }
+    }),
     pricingTrail: skuHistory,
     liveDetails: liveSkuDetails ? {
       description: liveSkuDetails.description,
@@ -978,7 +1035,12 @@ function _handleCatalogIntelligence(queryText, context) {
       discontinuedDate: liveSkuDetails.discontinuedDate,
       currentPriceUsd: liveSkuDetails.currentPriceUsd,
       priceHistoryTrail: liveSkuDetails.priceHistoryTrail,
-      availability: liveSkuDetails.availability
+      availability: liveSkuDetails.availability,
+      estimatedLeadTimeDays: liveSkuDetails.estimatedLeadTimeDays,
+      leadTimeSource: liveSkuDetails.leadTimeSource,
+      capturedAt: freshness.normalizedMetadata.scrapeTimestamp,
+      freshnessStatus: freshness.freshnessStatus,
+      source: 'OCA_CATALOG_SNAPSHOT'
     } : null,
     message: targetSku
       ? `Catalog Intelligence retrieved for SKU ${targetSku}${liveSkuDetails ? ` (Status: ${liveSkuDetails.lifecycleStatus || 'Active'})` : ''}.`
@@ -989,7 +1051,7 @@ function _handleCatalogIntelligence(queryText, context) {
 function _parseRfpRawLines(queryText) {
   let rawLines = queryText.split(/[\r\n;]+/).map(l => l.trim()).filter(Boolean);
   if (rawLines.length === 1) {
-    const clauses = queryText.split(/\s+(?:with|and|plus|,)\s+/i).map(c => c.trim()).filter(Boolean);
+    const clauses = queryText.split(/(?:\s+(?:with|and|plus)\s+|,\s*)/i).map(c => c.replace(/^(?:and|with|plus)\s+/i, '').trim()).filter(Boolean);
     if (clauses.length > 1) rawLines = clauses;
   }
   if (rawLines.length > 1) {
@@ -1009,6 +1071,23 @@ function _inferResolutionQuantity(r) {
   return 1;
 }
 
+function _scaleCandidateItemForCluster(item, count, isBase = false) {
+  const { isGlobalItem } = require('../lib/boq/configuration_context.js');
+  const perNode = item.quantity ?? 1;
+  const globalItem = !isBase && isGlobalItem(item, count);
+  const totalQty = globalItem ? perNode : perNode * count;
+  return {
+    ...item,
+    quantity: totalQty,
+    perNodeQuantity: globalItem ? null : perNode,
+    clusterQuantity: totalQty,
+    quantityScope: globalItem ? 'global' : 'configuration',
+    configurationId: globalItem ? null : 'configuration-1',
+    configurationMultiplier: globalItem ? 1 : count,
+    quantityBasis: count > 1 || globalItem ? 'total' : 'base'
+  };
+}
+
 function _buildRfpCandidateItems(chassisInfo, rawLines, serverCount) {
   const unresolvedRequirements = rawLines.map(line => ({ line }));
   if (!chassisInfo.catalogData) {
@@ -1022,10 +1101,10 @@ function _buildRfpCandidateItems(chassisInfo, rawLines, serverCount) {
     productConfirmed: true
   });
 
-  const candidateItems = [];
+  const singleNodeItems = [];
   const baseSku = getBaseChassisSku(chassisInfo.chassisKey);
   if (baseSku) {
-    candidateItems.push({
+    singleNodeItems.push({
       sku: baseSku,
       quantity: 1,
       description: `${chassisInfo.chassisKey} CTO Base Chassis`
@@ -1035,7 +1114,7 @@ function _buildRfpCandidateItems(chassisInfo, rawLines, serverCount) {
   for (const r of (sizingResult.resolutions || [])) {
     const sku = r.appliedSku || r.candidates?.[0]?.sku;
     if (sku && isValidHpeSKU(sku)) {
-      candidateItems.push({
+      singleNodeItems.push({
         sku,
         quantity: _inferResolutionQuantity(r),
         description: r.candidates?.[0]?.description || r.input,
@@ -1046,9 +1125,9 @@ function _buildRfpCandidateItems(chassisInfo, rawLines, serverCount) {
   }
 
   let evaluation = null;
-  if (candidateItems.length > 0) {
+  if (singleNodeItems.length > 0) {
     try {
-      evaluation = evaluateBOQMultiAspect(candidateItems, {
+      evaluation = evaluateBOQMultiAspect(singleNodeItems, {
         chassis: chassisInfo.chassisKey,
         targetDir: chassisInfo.catalogDir || '',
         catalogData: chassisInfo.catalogData,
@@ -1059,6 +1138,11 @@ function _buildRfpCandidateItems(chassisInfo, rawLines, serverCount) {
       evaluation = { error: evalErr.message };
     }
   }
+
+  const count = (typeof serverCount === 'number' && serverCount > 0) ? serverCount : 1;
+  const candidateItems = singleNodeItems.map((item, idx) =>
+    _scaleCandidateItemForCluster(item, count, idx === 0 && Boolean(baseSku))
+  );
   return { sizingResult, candidateItems, evaluation };
 }
 
@@ -1138,12 +1222,14 @@ async function _continueRfpEvaluationIfRequested(context, candidateItems, chassi
   const shouldContinue = Boolean(context.continueEvaluation || context.evaluateImmediately || context.evaluate);
   if (!shouldContinue || candidateItems.length === 0) return null;
   try {
+    const evalPolicy = _resolveContextPolicy(context, { defaultOffline: true });
     const { runEvaluationPipeline } = require('./eval_boq.js');
     return await runEvaluationPipeline({
       inputItems: candidateItems,
       chassisDir: chassisInfo.catalogDir,
       serverCount,
-      OFFLINE_MODE: context.offlineMode !== false && !context.enableCloudValidation,
+      OFFLINE_MODE: evalPolicy.offline,
+      effectivePolicy: evalPolicy,
       JSON_MODE: true,
       traceId,
       deadline: context.deadline || null,
@@ -1153,6 +1239,36 @@ async function _continueRfpEvaluationIfRequested(context, candidateItems, chassi
   } catch (evalErr) {
     return { status: 'ERROR', error: evalErr.message };
   }
+}
+
+function _buildRfpMissingRequirements(chassisInfo, candidateItems) {
+  const coveredRoles = new Set(candidateItems.map(it => it.role).filter(Boolean));
+  const hasCatalog = Boolean(chassisInfo?.catalogData && chassisInfo?.chassisKey && chassisInfo.chassisKey !== 'UNKNOWN_PRODUCT');
+  const missing = [];
+  if (!hasCatalog) missing.push('Target Product Catalog');
+  for (const role of ['Processor', 'Memory', 'Drive Cage / Drive']) {
+    if (!coveredRoles.has(role)) missing.push(role);
+  }
+  return { missingRequirements: missing, requiresClarification: missing.length > 0 || candidateItems.length < 3 || Boolean(chassisInfo.isAmbiguous) };
+}
+
+function _buildRfpCandidateReference(context, chassisInfo, candidateItems, serverCount, traceId, effectivePolicy, missingRequirements, requiresClarification) {
+  const crypto = require('crypto');
+  const digest = crypto.createHash('sha256').update(JSON.stringify(candidateItems.map(it => ({ sku: it.sku, quantity: it.quantity, quantityScope: it.quantityScope })))).digest('hex');
+  return {
+    parentRunId: context.runId || traceId,
+    product: chassisInfo.chassisKey,
+    chassisDir: chassisInfo.catalogDir || null,
+    serverCount,
+    nodeCount: serverCount,
+    quantityBasis: serverCount > 1 ? 'CLUSTER_MULTIPLIED' : 'SINGLE_NODE',
+    items: candidateItems,
+    digest,
+    missingRequirements,
+    requiresHumanClarification: requiresClarification,
+    offlineMode: effectivePolicy.offline,
+    effectivePolicy
+  };
 }
 
 async function _handleRfpSizing(queryText, context) {
@@ -1166,21 +1282,28 @@ async function _handleRfpSizing(queryText, context) {
     queryText, context, chassisInfo, serverCount, rawLines, candidateItems, sizingResult, evaluation
   );
   const evaluatedSolution = await _continueRfpEvaluationIfRequested(context, candidateItems, chassisInfo, serverCount, traceId);
-
-  const status = candidateItems.length === 0
-    ? 'REQUIRES_HUMAN_CLARIFICATION'
-    : (evaluatedSolution ? (evaluatedSolution.status || 'EVALUATION_COMPLETE') : 'SIZING_DRAFT');
+  const status = candidateItems.length === 0 ? 'REQUIRES_HUMAN_CLARIFICATION' : (evaluatedSolution?.status || (evaluatedSolution ? 'EVALUATION_COMPLETE' : 'SIZING_DRAFT'));
+  const effectivePolicy = _resolveContextPolicy(context, { defaultOffline: false, includeRagOnly: false });
+  const { missingRequirements, requiresClarification } = _buildRfpMissingRequirements(chassisInfo, candidateItems);
+  const candidateReference = _buildRfpCandidateReference(context, chassisInfo, candidateItems, serverCount, traceId, effectivePolicy, missingRequirements, requiresClarification);
 
   return {
     intent: 'RFP_SIZING_TO_BOM',
     chassis: chassisInfo.chassisKey,
+    chassisDir: candidateReference.chassisDir,
     serverCount,
+    nodeCount: serverCount,
+    quantityBasis: candidateReference.quantityBasis,
+    effectivePolicy,
+    candidateReference,
+    items: candidateItems,
     clusterSizing: evaluation?.clusterSizing || null,
     sizingRequirements: sizingResult?.intent || null,
     categoryCoverage: sizingResult?.categoryCoverage || null,
     resolutions: sizingResult?.resolutions || [],
     constructionPlan: sizingResult?.constructionPlan || [],
-    requiresHumanClarification: sizingResult?.requiresHumanClarification ?? true,
+    requiresHumanClarification: requiresClarification,
+    missingRequirements,
     candidateBOM: candidateItems,
     isStartingBomDraft: !evaluatedSolution,
     isEvaluationComplete: Boolean(evaluatedSolution),
@@ -1380,9 +1503,6 @@ async function _handleHeterogeneousTenderModernization(queryText, context) {
   };
 }
 
-const COMPETITOR_VENDORS = ['cisco', 'lenovo', 'supermicro', 'dell'];
-const OCR_IMAGE_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp', '.tiff', '.bmp', '.pdf'];
-
 function _detectVendorFromText(str) {
   const lower = typeof str === 'string' ? str.toLowerCase() : '';
   return COMPETITOR_VENDORS.find(vendor => lower.includes(vendor))?.toUpperCase() || null;
@@ -1403,15 +1523,35 @@ async function _ingestCompetitorFileInput(context, currentSourceVendor) {
         }
       };
     }
+    const policy = _resolveContextPolicy(context, { defaultOffline: false });
+    if (policy.offline) {
+      return {
+        earlyReturn: {
+          intent: 'CROSS_VENDOR_TRANSFORMATION',
+          status: 'OFFLINE_INPUT_REQUIRED',
+          error: 'Local-only execution is active. Image and scanned PDF OCR require cloud processing. Please provide tabular text (CSV/XLSX) or paste quote text.',
+          remediationAction: 'Provide pasted text or a supported tabular file (CSV/XLSX).',
+          isOcrProcessed: false,
+          effectivePolicy: policy
+        }
+      };
+    }
     const { performGeminiOcr } = require('../lib/ocr/ocr_service.js');
-    const ocrResult = await performGeminiOcr(context.filePath, context);
+    const ocrResult = await performGeminiOcr(context.filePath, {
+      ...context,
+      offline: policy.offline,
+      offlineMode: policy.offline,
+      effectivePolicy: policy
+    });
     if (!ocrResult || !ocrResult.isOcrProcessed || ocrResult.ocrStatus !== 'SUCCESS' || !ocrResult.text) {
       return {
         earlyReturn: {
           intent: 'CROSS_VENDOR_TRANSFORMATION',
-          status: 'OCR_EXTRACTION_FAILED',
+          status: ocrResult?.ocrStatus === 'OFFLINE_BLOCKED' ? 'OFFLINE_INPUT_REQUIRED' : 'OCR_EXTRACTION_FAILED',
           error: ocrResult?.rawError || ocrResult?.text || 'OCR processing failed for competitor image quote.',
-          remediationAction: ocrResult?.remediationAction || 'Check image clarity or provide structured text/JSON quote.'
+          remediationAction: ocrResult?.remediationAction || 'Check image clarity or provide structured text/JSON quote.',
+          isOcrProcessed: false,
+          effectivePolicy: policy
         }
       };
     }
@@ -1487,47 +1627,85 @@ function _deriveCrossVendorStatus(targetChassis, candidateBom, evaluatedSolution
     : 'CANDIDATE_EVALUATION_COMPLETE';
 }
 
+function _buildCrossVendorCandidateRef(context, targetChassis, chassisInfo, nodeCount, candidateBom, effectivePolicy) {
+  const crypto = require('crypto');
+  const digest = crypto.createHash('sha256').update(JSON.stringify(candidateBom.map(it => ({ sku: it.sku, quantity: it.quantity, quantityScope: it.quantityScope })))).digest('hex');
+  const missingRequirements = [];
+  if (!targetChassis || !chassisInfo?.catalogData) missingRequirements.push('Target Product Catalog');
+  if (candidateBom.length === 0) missingRequirements.push('Candidate BOM Items');
+  const requiresClarification = missingRequirements.length > 0;
+  return {
+    missingRequirements,
+    requiresClarification,
+    candidateReference: {
+      parentRunId: context.runId || null,
+      product: targetChassis || chassisInfo?.chassisKey || null,
+      chassisDir: chassisInfo?.catalogDir || null,
+      serverCount: nodeCount,
+      nodeCount,
+      quantityBasis: nodeCount > 1 ? 'CLUSTER_MULTIPLIED' : 'SINGLE_NODE',
+      items: candidateBom,
+      digest,
+      missingRequirements,
+      requiresHumanClarification: requiresClarification,
+      offlineMode: effectivePolicy.offline,
+      effectivePolicy
+    }
+  };
+}
+
+function _evaluateCrossVendorBomIfRequested(targetChassis, chassisInfo, transformResult, context) {
+  if (!targetChassis || !transformResult.candidateBom.length) return { parityGaps: [], evaluatedSolution: null };
+  const parityGaps = _computeCompetitorParityGaps(transformResult.competitorSpec, transformResult.candidateBom);
+  if (!context.continueEvaluation) return { parityGaps, evaluatedSolution: null };
+  try {
+    return {
+      parityGaps,
+      evaluatedSolution: evaluateBOQMultiAspect(transformResult.candidateBom, {
+        chassis: targetChassis,
+        targetDir: chassisInfo?.catalogDir || '',
+        catalogData: chassisInfo?.catalogData
+      })
+    };
+  } catch (evalErr) {
+    return { parityGaps, evaluatedSolution: { status: 'ERROR', error: evalErr.message } };
+  }
+}
+
 async function _handleCrossVendorTransformation(queryText, context) {
   const { transformCompetitorQuote } = require('../lib/boq/cross_vendor_transformer.js');
   const targetChassis = context.targetHpeChassis || context.chassisName || null;
-  let sourceVendor = context.sourceVendor || _detectVendorFromText(queryText);
   const nodeCount = context.nodeMultiplier ?? context.nodes ?? 1;
 
-  const fileIngest = await _ingestCompetitorFileInput(context, sourceVendor);
+  const fileIngest = await _ingestCompetitorFileInput(context, context.sourceVendor || _detectVendorFromText(queryText));
   if (fileIngest.earlyReturn) return fileIngest.earlyReturn;
-  const inputData = fileIngest.inputData || queryText;
-  const ocrProvenance = fileIngest.ocrProvenance;
-  sourceVendor = fileIngest.sourceVendor;
-
   const candidateItems = context.targetBom || (Array.isArray(context.items) ? context.items : null);
-  const transformResult = transformCompetitorQuote(inputData, sourceVendor, targetChassis, {
+  const transformResult = transformCompetitorQuote(fileIngest.inputData || queryText, fileIngest.sourceVendor, targetChassis, {
     nodeMultiplier: nodeCount, targetBom: candidateItems || []
   });
 
-  let evaluatedSolution = null;
-  let parityGaps = [];
-  if (targetChassis && transformResult.candidateBom.length > 0) {
-    parityGaps = _computeCompetitorParityGaps(transformResult.competitorSpec, transformResult.candidateBom);
-    if (context.continueEvaluation) {
-      try {
-        const chassisInfo = getChassisCatalog(targetChassis, context);
-        evaluatedSolution = evaluateBOQMultiAspect(transformResult.candidateBom, {
-          chassis: targetChassis,
-          targetDir: chassisInfo.catalogDir || '',
-          catalogData: chassisInfo.catalogData
-        });
-      } catch (evalErr) {
-        evaluatedSolution = { status: 'ERROR', error: evalErr.message };
-      }
-    }
-  }
+  const chassisInfo = targetChassis ? getChassisCatalog(targetChassis, context) : null;
+  const { parityGaps, evaluatedSolution } = _evaluateCrossVendorBomIfRequested(targetChassis, chassisInfo, transformResult, context);
+  const effectivePolicy = _resolveContextPolicy(context, { defaultOffline: false, includeRagOnly: false });
+  const candidateBom = transformResult.candidateBom || [];
+  const refBundle = _buildCrossVendorCandidateRef(context, targetChassis, chassisInfo, nodeCount, candidateBom, effectivePolicy);
 
   return {
     intent: 'CROSS_VENDOR_TRANSFORMATION',
     skillTarget: 'cross-vendor-transformation-skill',
     ...transformResult,
+    chassisDir: refBundle.candidateReference.chassisDir,
+    serverCount: nodeCount,
+    nodeCount,
+    quantityBasis: refBundle.candidateReference.quantityBasis,
+    effectivePolicy,
+    missingRequirements: refBundle.missingRequirements,
+    requiresHumanClarification: refBundle.requiresClarification,
+    candidateReference: refBundle.candidateReference,
+    items: candidateBom,
+    candidateBOM: candidateBom,
     status: _deriveCrossVendorStatus(targetChassis, transformResult.candidateBom, evaluatedSolution),
-    sourceVendor,
+    sourceVendor: fileIngest.sourceVendor,
     targetChassis,
     competitorSpec: transformResult.competitorSpec,
     auditReport: transformResult.auditReport,
@@ -1535,7 +1713,7 @@ async function _handleCrossVendorTransformation(queryText, context) {
     evaluatedSolution,
     strategyMatrix: transformResult.strategyMatrix,
     recommendedBom: transformResult.recommendedBom,
-    ...(ocrProvenance ? { ocrProvenance } : {})
+    ...(fileIngest.ocrProvenance ? { ocrProvenance: fileIngest.ocrProvenance } : {})
   };
 }
 
@@ -1756,16 +1934,18 @@ async function _handleContinuousLearning(queryText, context) {
 
 async function _handleKnowledgeSync(queryText, context) {
   const scope = requireScopedCatalog(queryText, context);
+  const policy = _resolveContextPolicy(context, { defaultOffline: false, includeRagOnly: true });
   const { inspectKnowledgeDrift } = require('../lib/sync/knowledge_sync');
   if (/\binspect\b/i.test(queryText) && !/\b(?:sync|synchronize|upload|publish)\b/i.test(queryText)) return {
     intent: 'KNOWLEDGE_SYNC', chassis: scope.chassisKey, status: 'INSPECTED',
-    drift: inspectKnowledgeDrift(scope.chassisKey), message: 'Read-only drift inspection completed.'
+    drift: inspectKnowledgeDrift(scope.chassisKey), effectivePolicy: policy, message: 'Read-only drift inspection completed.'
   };
   const result = await require('../lib/sync/post_flow_sync').triggerPostFlowSyncAsync(scope.chassisKey, 'ROUTED_QUERY_SYNC', {
-    targetDir: scope.catalogDir, autoUploadNLM: context.autoUploadNLM === true
+    targetDir: scope.catalogDir, autoUploadNLM: !policy.offline && context.autoUploadNLM === true
   });
   return { intent: 'KNOWLEDGE_SYNC', chassis: scope.chassisKey,
     status: result.success === false ? 'FAILED' : result.syncStatus || 'UNKNOWN', syncResult: result,
+    effectivePolicy: policy,
     message: result.error || 'Synchronization result retained with its actual local/cloud evidence status.' };
 }
 
@@ -2077,51 +2257,34 @@ function _attachQueryPlanIfAvailable(envelope, queryText, context) {
  * @param {object} context 
  * @returns {Promise<object>} Execution result
  */
-async function _executeLegacyRoutedQuery(queryText = '', context = {}) {
-  context = { ...context };
-  const classification = classifyQueryIntent(queryText, context);
-  const startTime = Date.now();
-  const initialPlatform = getChassisCatalog(queryText, context);
-  const { platformSelectionMemory, updatedContext } = _resolvePlatformSelectionMemory(queryText, initialPlatform, context);
-  context = updatedContext;
-
-  let chassisInfoForConf = null;
-  try { chassisInfoForConf = getChassisCatalog(queryText, context); } catch { chassisInfoForConf = null; }
-
-  const unresolvedAmbiguity = ['AMBIGUOUS_QUERY', 'AMBIGUOUS_PRODUCT', 'GENERATION_MISMATCH'].includes(chassisInfoForConf?.chassisKey) || classification.intent === 'AMBIGUOUS_QUERY';
-  const crypto = require('crypto');
-  let traceId = context.traceId || resolveEntryTraceId(() => `TRC-${Date.now()}-${crypto.randomBytes(3).toString('hex').toUpperCase()}`);
-  context.traceId = traceId;
-
-  let confidence = 0.40;
-  let classificationBasis = 'AMBIGUOUS_QUERY';
-  let responseData = null;
-
+async function _executeClassifiedOrAbortDispatch(classification, queryText, context, chassisInfoForConf, unresolvedAmbiguity, traceId) {
+  if (context.signal?.aborted) {
+    const abortErr = context.signal.reason instanceof Error
+      ? context.signal.reason
+      : new Error(String(context.signal.reason || 'Workflow cancelled'));
+    abortErr.name = 'AbortError';
+    return { confidence: 0.40, classificationBasis: 'AMBIGUOUS_QUERY', responseData: _buildDispatchErrorResponse(abortErr, context, classification, traceId) };
+  }
   if (unresolvedAmbiguity) {
-    responseData = _buildAmbiguityResponse(queryText, classification, chassisInfoForConf, traceId);
-  } else {
-    const scored = _deriveClassificationConfidence(queryText, context, classification, chassisInfoForConf);
-    confidence = scored.confidence;
-    classificationBasis = scored.classificationBasis;
-    try {
-      responseData = await _dispatchIntentHandler(classification, queryText, context);
-    } catch (dispatchErr) {
-      responseData = _buildDispatchErrorResponse(dispatchErr, context, classification, traceId);
+    return { confidence: 0.40, classificationBasis: 'AMBIGUOUS_QUERY', responseData: _buildAmbiguityResponse(queryText, classification, chassisInfoForConf, traceId) };
+  }
+  const scored = _deriveClassificationConfidence(queryText, context, classification, chassisInfoForConf);
+  try {
+    const responseData = await _dispatchIntentHandler(classification, queryText, context);
+    if (context.signal?.aborted && responseData && typeof responseData === 'object') {
+      responseData.status = 'CANCELLED';
+      responseData.cancellationRequested = true;
     }
+    return { ...scored, responseData };
+  } catch (dispatchErr) {
+    return { ...scored, responseData: _buildDispatchErrorResponse(dispatchErr, context, classification, traceId) };
   }
+}
 
-  traceId = responseData?.traceId || traceId;
-  if (responseData && typeof responseData === 'object' && !responseData.traceId) {
-    responseData.traceId = traceId;
-  }
-
-  _attachAcceptanceGate(responseData, classification, context, chassisInfoForConf);
-
-  const executionTimeMs = Date.now() - startTime;
-  let reasoningAnalysis = null;
+function _performReasoningSafe(queryText, context, classification, responseData, traceId, executionTimeMs) {
   try {
     const { performReasoningPostAnalysis } = require('../lib/system/reasoning_post_analyzer.js');
-    reasoningAnalysis = performReasoningPostAnalysis({
+    return performReasoningPostAnalysis({
       queryText,
       context: { ...context, persistLedger: Boolean(context.persistLedger) },
       classification,
@@ -2133,18 +2296,53 @@ async function _executeLegacyRoutedQuery(queryText = '', context = {}) {
     if (responseData && typeof responseData === 'object' && !responseData.traceStatus) {
       responseData.traceStatus = responseData.evidenceLogPath ? 'PERSISTED_EVIDENCE_LEDGER' : 'CORRELATION_ONLY_NO_PERSISTED_LEDGER';
     }
+    return null;
   }
+}
 
+async function _executeLegacyRoutedQuery(queryText = '', context = {}) {
+  const resolvedPolicy = _resolveContextPolicy(context, { defaultOffline: false });
+  context = {
+    ...context,
+    effectivePolicy: resolvedPolicy,
+    offline: resolvedPolicy.offline,
+    offlineMode: resolvedPolicy.offline,
+    ...(resolvedPolicy.offline ? { enableCloudValidation: false } : {})
+  };
+  const classification = classifyQueryIntent(queryText, context);
+  const startTime = Date.now();
+  const initialPlatform = getChassisCatalog(queryText, context);
+  const { platformSelectionMemory, updatedContext } = _resolvePlatformSelectionMemory(queryText, initialPlatform, context);
+  context = updatedContext;
+
+  let chassisInfoForConf = null;
+  try { chassisInfoForConf = getChassisCatalog(queryText, context); } catch { chassisInfoForConf = null; }
+  const unresolvedAmbiguity = ['AMBIGUOUS_QUERY', 'AMBIGUOUS_PRODUCT', 'GENERATION_MISMATCH'].includes(chassisInfoForConf?.chassisKey) || classification.intent === 'AMBIGUOUS_QUERY';
+  let traceId = context.traceId || resolveEntryTraceId(() => `TRC-${Date.now()}-${require('crypto').randomBytes(3).toString('hex').toUpperCase()}`);
+  context.traceId = traceId;
+
+  const dispatched = await _executeClassifiedOrAbortDispatch(classification, queryText, context, chassisInfoForConf, unresolvedAmbiguity, traceId);
+  const responseData = dispatched.responseData;
+  traceId = responseData?.traceId || traceId;
+  if (responseData && typeof responseData === 'object' && !responseData.traceId) responseData.traceId = traceId;
+
+  _attachAcceptanceGate(responseData, classification, context, chassisInfoForConf);
+  const executionTimeMs = Date.now() - startTime;
+  const reasoningAnalysis = _performReasoningSafe(queryText, context, classification, responseData, traceId, executionTimeMs);
+
+  const effectivePolicy = responseData?.effectivePolicy || resolvedPolicy;
+  context.effectivePolicy = effectivePolicy;
   const isAmbiguous = Boolean(chassisInfoForConf?.isAmbiguous) || unresolvedAmbiguity;
   const envelope = {
     query: queryText,
     classification,
+    effectivePolicy,
     result: responseData,
     reasoningAnalysis,
     traceId,
     executionTimeMs,
-    classificationConfidence: confidence,
-    hitlRequired: isAmbiguous || confidence < 0.75,
+    classificationConfidence: dispatched.confidence,
+    hitlRequired: isAmbiguous || dispatched.confidence < 0.75,
     platformSelectionMemory,
     resolvedPlatform: chassisInfoForConf && !chassisInfoForConf.isAmbiguous ? chassisInfoForConf.chassisKey : null,
     ambiguityDetails: isAmbiguous ? {
@@ -2152,7 +2350,7 @@ async function _executeLegacyRoutedQuery(queryText = '', context = {}) {
       candidates: chassisInfoForConf?.candidates || chassisInfoForConf?.availableCatalogs || [],
       chassisKey: chassisInfoForConf?.chassisKey
     } : null,
-    classificationBasis
+    classificationBasis: dispatched.classificationBasis
   };
 
   _attachQueryPlanIfAvailable(envelope, queryText, context);
@@ -2219,5 +2417,6 @@ if (require.main === module) {
 module.exports = {
   classifyQueryIntent,
   executeRoutedQuery,
-  getChassisCatalog
+  getChassisCatalog,
+  _isOfflineContext
 };

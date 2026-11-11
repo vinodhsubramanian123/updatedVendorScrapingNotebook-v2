@@ -44,6 +44,14 @@ function sendErrorResponse(res, status, error, options = {}) {
     context: options.context
   });
 
+  if (options.remediationAction !== undefined) envelope.remediationAction = options.remediationAction;
+  if (options.runId !== undefined) envelope.runId = options.runId;
+  if (options.activeRunId !== undefined) envelope.activeRunId = options.activeRunId;
+  if (options.requestedRunId !== undefined) envelope.requestedRunId = options.requestedRunId;
+  if (options.effectivePolicy !== undefined) envelope.effectivePolicy = options.effectivePolicy;
+  if (options.isOcrProcessed !== undefined) envelope.isOcrProcessed = options.isOcrProcessed;
+  if (options.status !== undefined) envelope.status = options.status;
+
   return res.status(status).json(envelope);
 }
 

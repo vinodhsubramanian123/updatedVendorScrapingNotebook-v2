@@ -163,10 +163,52 @@ function readBoqLines(rawInput, filePath = '', targetSheet = null) {
   return lines.filter(l => l.trim().length > 0);
 }
 
+function _normalizeStructuredBoqItem(item) {
+  return {
+    ...item,
+    sku: item.sku || item.partNumber || item.pn || item['Product #'] || item['Part No'],
+    quantity: item.quantity ?? item.qty ?? 1
+  };
+}
+
+function _buildStructuredBoqResult(parsed) {
+  const jsonItems = Array.isArray(parsed)
+    ? parsed
+    : (Array.isArray(parsed?.items) ? parsed.items : parsed?.candidateReference?.items);
+  if (!Array.isArray(jsonItems) || jsonItems.length === 0) return null;
+  const candidateReference = parsed?.candidateReference || null;
+  const rawMult = candidateReference?.serverCount || candidateReference?.nodeCount || parsed?.serverCount || parsed?.nodeCount || 1;
+  return {
+    items: jsonItems.map(_normalizeStructuredBoqItem),
+    rawLines: [],
+    unresolvedRequirements: [],
+    clusters: [],
+    multiplier: Number(rawMult) || 1,
+    candidateReference,
+    chassisDir: candidateReference?.chassisDir || parsed?.chassisDir || null,
+    parentRunId: candidateReference?.parentRunId || parsed?.parentRunId || null,
+    candidateDigest: candidateReference?.digest || parsed?.candidateDigest || null
+  };
+}
+
+function _tryParseStructuredBoqJson(rawInput, filePath) {
+  let content = null;
+  if (typeof rawInput === 'string' && /\.json$/i.test(filePath || '')) content = rawInput;
+  else if (typeof rawInput === 'string' && /\.json$/i.test(rawInput) && fs.existsSync(rawInput)) content = fs.readFileSync(rawInput, 'utf8');
+  if (!content) return null;
+  try {
+    return _buildStructuredBoqResult(JSON.parse(content));
+  } catch (_) {
+    return null;
+  }
+}
+
 function parseAndConsolidateBOQDetailed(rawInput, filePath = '', targetSheet = null) {
   if (Array.isArray(rawInput) && rawInput.every(item => item && typeof item === 'object')) {
     return { items: rawInput.map(item => ({ ...item, sku: item.sku || item.partNumber || item.pn || item['Product #'] || item['Part No'], quantity: item.quantity ?? item.qty ?? 1 })), rawLines: [], unresolvedRequirements: [], clusters: [], multiplier: 1 };
   }
+  const structuredJson = _tryParseStructuredBoqJson(rawInput, filePath);
+  if (structuredJson) return structuredJson;
   const rawLines = readBoqLines(rawInput, filePath, targetSheet);
   return { ...parseSkuLines(rawLines), rawLines };
 }

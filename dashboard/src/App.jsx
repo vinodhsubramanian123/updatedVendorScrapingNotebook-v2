@@ -27,6 +27,7 @@ import { useSSEStream } from './hooks/useSSEStream.js';
 import { useRagPoller } from './hooks/useRagPoller.js';
 import { useCatalogs } from './hooks/useCatalogs.js';
 import { requestJson, postJson, uploadBoqFile } from './services/api.js';
+import { normalizeEvalResult } from './services/evalNormalizer.js';
 import { useModalFocus } from './hooks/useModalFocus.js';
 
 const IMMEDIATE_RAG_STATUSES = ['COMPLETED', 'CLOUD_VERIFIED', 'LOCAL_FALLBACK'];
@@ -150,6 +151,7 @@ function triggerMatrixRecomputeIfApplicable(prev, fullData, fallbackChassis) {
 async function executeSmartSearchRequest({
   query,
   selectedChassis,
+  localOnly = true,
   setIsRagOpen,
   setIsQueryingRag,
   setRagElapsedTime,
@@ -171,7 +173,13 @@ async function executeSmartSearchRequest({
   elapsedIntervalRef.current = setInterval(() => { secs += 1.5; setRagElapsedTime(secs); }, 1500);
 
   try {
-    const jobInfo = await postJson('/api/notebook-query-async', { query, chassis: selectedChassis });
+    const offlineFlag = Boolean(localOnly);
+    const jobInfo = await postJson('/api/notebook-query-async', {
+      query,
+      chassis: selectedChassis,
+      offline: offlineFlag,
+      offlineMode: offlineFlag
+    });
     if (!isCurrent()) return;
 
     if (IMMEDIATE_RAG_STATUSES.includes(jobInfo.status)) {
@@ -191,17 +199,46 @@ async function executeSmartSearchRequest({
   }
 }
 
-async function executeBoqEvaluationRequest(boqInput, maybeRawText, currentCat, setLogStream, setEvalResults) {
+const SESSION_BOQ_RUN_KEY = 'boq.ownedRunId';
+const SESSION_BOQ_LAST_COMPLETED_KEY = 'boq.lastCompletedRunId';
+const SESSION_BOQ_INTAKE_KEY = 'boq.intakeDescriptor';
+
+function readSessionValue(key) {
+  try { return typeof window !== 'undefined' ? window.sessionStorage?.getItem(key) || null : null; }
+  catch { return null; }
+}
+
+function readSessionJson(key) {
+  try {
+    const raw = readSessionValue(key);
+    return raw ? JSON.parse(raw) : null;
+  } catch { return null; }
+}
+
+function writeSessionJson(key, value) {
+  try {
+    if (typeof window === 'undefined' || !window.sessionStorage) return;
+    if (value === null || value === undefined) window.sessionStorage.removeItem(key);
+    else window.sessionStorage.setItem(key, typeof value === 'string' ? value : JSON.stringify(value));
+  } catch {}
+}
+
+async function executeBoqEvaluationRequest(boqInput, maybeRawText, currentCat, setLogStream, setEvalResults, localOnly = true, runId = null) {
   setLogStream([]);
   setEvalResults(null);
   try {
     const payload = await buildBoqRequestPayload(boqInput, maybeRawText);
-    const chassisDir = payload.chassisDir || currentCat?.chassisDir || currentCat?.id;
-    const data = await postJson('/api/eval-boq', { ...payload, chassisDir });
+    if (payload.offline === undefined) payload.offline = localOnly;
+    if (runId && !payload.runId) payload.runId = runId;
+    const explicitProduct = payload.chassisDir || payload.candidateReference?.chassisDir || payload.candidateReference?.product || payload.chassisName;
+    const chassisDir = explicitProduct || currentCat?.chassisDir || currentCat?.id;
+    const chassisName = payload.chassisName || payload.candidateReference?.product || (explicitProduct ? undefined : currentCat?.id);
+    const data = await postJson('/api/eval-boq', { ...payload, chassisDir, ...(chassisName ? { chassisName } : {}) });
     return { ...data, originalPayload: payload };
   } catch (err) {
-    setEvalResults({ status: 'ERROR', error: err.message });
-    return { error: err.message };
+    const errResult = { status: 'ERROR', code: err.code, error: err.message, remediationAction: err.remediationAction };
+    setEvalResults(errResult);
+    return { error: err.message, remediationAction: err.remediationAction, code: err.code, status: err.status };
   }
 }
 
@@ -251,7 +288,8 @@ function AppMainTabContent({
   handleTriggerDownloadPdf,
   handleTriggerSyncKnowledge,
   handleTriggerKillTask,
-  handleTriggerNavigate
+  handleTriggerNavigate,
+  handleReopenRun
 }) {
   const handleTriggerDemoBoq = () => handleEvaluateBoq(null, STANDARD_SAMPLE_TEXT);
 
@@ -336,6 +374,7 @@ function AppMainTabContent({
           onTriggerSyncKnowledge={handleTriggerSyncKnowledge}
           onTriggerKillTask={handleTriggerKillTask}
           onTriggerNavigate={handleTriggerNavigate}
+          onReopenRun={handleReopenRun}
         />
       </div>
     );
@@ -403,7 +442,9 @@ function AppToolModals({
   handleEvaluateBoq,
   handleTriggerScrape,
   auditReport,
-  setAuditReport
+  setAuditReport,
+  boqLocalOnly,
+  setBoqLocalOnly
 }) {
   const handleTriggerDemoBoq = () => handleEvaluateBoq(null, STANDARD_SAMPLE_TEXT);
 
@@ -416,6 +457,8 @@ function AppToolModals({
           logStream={logStream}
           chassisDir={currentCatObj?.chassisDir}
           activeProgress={activeProgress}
+          localOnly={boqLocalOnly}
+          onLocalOnlyChange={setBoqLocalOnly}
           onOpenMatrix={() => setActiveModal('resolutionMatrix')}
           onOpenReconciliation={() => setActiveModal('reconciliation')}
           onOpenTopology={(customData) => {
@@ -487,14 +530,42 @@ function completeMatrixRagForRun(answer, fullData, context, state) {
   triggerMatrixRecomputeIfApplicable(updated, fullData, updated.chassisDir);
 }
 
+function _shouldAcceptIncomingRunId(raw, state) {
+  const ownedId = state.evaluationRunRef.current || readSessionValue(SESSION_BOQ_RUN_KEY);
+  if (raw.explicitReopen) {
+    state.evaluationRunRef.current = raw.runId;
+    return true;
+  }
+  if (raw.recovered) {
+    if (!ownedId) state.evaluationRunRef.current = raw.runId;
+    return !ownedId || raw.runId === ownedId;
+  }
+  if (raw.runId && ownedId && raw.runId !== ownedId) return false;
+  if (raw.runId && !ownedId) state.evaluationRunRef.current = raw.runId;
+  return true;
+}
+
+function _isOfflineEvaluationRequested(raw, normalised) {
+  return Boolean(
+    raw.effectivePolicy?.offline === true ||
+    raw.inputDescriptor?.offline === true ||
+    raw.data?.evalResults?.offlineMode === true ||
+    normalised.effectivePolicy?.offline === true ||
+    normalised.offlineMode === true
+  );
+}
+
 function receiveEvaluation(normalised, raw, state) {
-  if (raw.recovered) state.evaluationRunRef.current = raw.runId;
-  if (raw.runId && raw.runId !== state.evaluationRunRef.current) return;
+  if (!_shouldAcceptIncomingRunId(raw, state)) return;
   normalised = { ...normalised, runId: raw.runId || normalised.runId };
   state.evalRef.current = normalised;
   state.setEvalResults(normalised);
+  const completedCleanly = normalised.status && !['ERROR', 'CANCELLED', 'INTERRUPTED', 'ACTION_REQUIRED'].includes(normalised.status);
+  if (completedCleanly && !normalised.clarificationRequired && normalised.runId) {
+    writeSessionJson(SESSION_BOQ_LAST_COMPLETED_KEY, normalised.runId);
+  }
   if (normalised.ragAnswer) state.setRagData(buildGroundedRagState(normalised));
-  const isOfflineRequested = raw.inputDescriptor?.offline === true || raw.data?.evalResults?.offlineMode === true || normalised.offlineMode === true;
+  const isOfflineRequested = _isOfflineEvaluationRequested(raw, normalised);
   if (!isOfflineRequested && raw.recovered && raw.ragJobId && !normalised.ragAnswer) {
     state.startMatrixRagPoll(raw.ragJobId, { runId: raw.runId, epoch: state.evaluationEpoch.current });
     return;
@@ -505,6 +576,73 @@ function receiveEvaluation(normalised, raw, state) {
   const product = normalised.chassisPrefix || raw.data.chassisPrefix || state.selectedChassisRef.current;
   dispatchBackgroundMatrixRagQuery(raw, product, context, state.completeMatrixRag, state.startMatrixRagPoll,
     () => context.epoch === state.evaluationEpoch.current && context.runId === state.evaluationRunRef.current, state.setActionError);
+}
+
+function syncInputFromRun(run, inputRef) {
+  const desc = run?.inputDescriptor;
+  if (!desc?.filepath) return;
+  const offline = run.effectivePolicy?.offline ?? desc.offline;
+  const record = {
+    boqInput: { filepath: desc.filepath, inputSha256: desc.sha256, offline, effectivePolicy: run.effectivePolicy || desc.effectivePolicy },
+    inputDescriptor: desc,
+    offline,
+    runId: run.runId
+  };
+  if (inputRef) inputRef.current = record;
+  writeSessionJson(SESSION_BOQ_INTAKE_KEY, record);
+}
+
+function restoreBoqRunRecord(run, state, explicit = false) {
+  if (!run?.result) return;
+  const restoredRaw = {
+    ...run.result,
+    runId: run.runId,
+    inputDescriptor: run.inputDescriptor || run.result.inputDescriptor,
+    effectivePolicy: run.effectivePolicy || run.result.effectivePolicy,
+    explicitReopen: explicit,
+    recovered: !explicit
+  };
+  receiveEvaluation(normalizeEvalResult(restoredRaw), restoredRaw, state);
+  syncInputFromRun(run, state.inputRef);
+}
+
+async function restorePreviousCompletedBoq(ownedId, snapshotDetail, state) {
+  if (state.evalRef.current) return;
+  const lastCompletedId = readSessionValue(SESSION_BOQ_LAST_COMPLETED_KEY);
+  if (lastCompletedId && lastCompletedId !== ownedId) {
+    try {
+      const prevData = await requestJson(`/api/run/${encodeURIComponent(lastCompletedId)}`);
+      const prevRun = prevData?.run || prevData;
+      if (prevRun?.result) {
+        restoreBoqRunRecord(prevRun, state, true);
+        return;
+      }
+    } catch {}
+  }
+  if (snapshotDetail?.latestResult?.data) {
+    const snap = snapshotDetail.latestResult;
+    restoreBoqRunRecord({ runId: snap.runId, result: snap, inputDescriptor: snap.inputDescriptor, effectivePolicy: snap.effectivePolicy }, state, true);
+  }
+}
+
+async function recoverOwnedBoqRun(snapshotDetail, state) {
+  const ownedId = state.evaluationRunRef.current || readSessionValue(SESSION_BOQ_RUN_KEY);
+  if (!ownedId) return;
+  try {
+    const data = await requestJson(`/api/run/${encodeURIComponent(ownedId)}`);
+    const run = data?.run || data;
+    if (!run) return;
+    if (run.result) {
+      restoreBoqRunRecord(run, state, true);
+      return;
+    }
+    if (run.status === 'INTERRUPTED' || run.status === 'CANCELLED') {
+      if (!state.activeRunRef.current) {
+        state.setRunActivity(prev => (!prev || prev.status !== 'RUNNING') ? { ...run } : prev);
+      }
+      await restorePreviousCompletedBoq(ownedId, snapshotDetail, state);
+    }
+  } catch {}
 }
 
 function receiveTaskCompletion(payload, state) {
@@ -518,22 +656,39 @@ function receiveTaskCompletion(payload, state) {
     ...payload,
     status: payload.status || (payload.code === 0 ? 'COMPLETED' : 'FAILED')
   } : null);
+  if (payload.runId && payload.runId === state.evaluationRunRef.current && !state.evalRef.current) {
+    requestJson(`/api/run/${encodeURIComponent(payload.runId)}`)
+      .then(data => {
+        const run = data?.run || data;
+        if (run?.result && state.evaluationRunRef.current === payload.runId) {
+          state.recoverEvalRun?.(run);
+        }
+      })
+      .catch(() => {});
+  }
   if (payload.recovered) return;
   state.refreshCatalogs();
 }
 
 async function replayClarifiedIntake(candidate, input, catalogs, submit, setError) {
-  if (!input) { setError('Original intake is unavailable. Reload the BOQ before confirming a platform.'); return; }
+  if (!input) { setError('Original intake is unavailable. Reload the BOQ before confirming a platform.'); return { error: 'Original intake is unavailable' }; }
   const product = catalogs.find(cat => cat.id === candidate);
   const payload = await buildBoqRequestPayload(input.boqInput, input.maybeRawText);
+  if (payload.offline === undefined && input.offline !== undefined) payload.offline = input.offline;
   return submit({ ...payload, chassisName: candidate, chassisDir: product?.chassisDir || candidate });
 }
 
 function recoverIntake(input, evaluation) {
+  if (input?.runId && input.runId === evaluation?.runId && input.boqInput?.filepath && input.boqInput?.inputSha256) return input;
+  const descriptor = evaluation?.inputDescriptor || (input?.runId === evaluation?.runId ? input?.inputDescriptor : null);
+  if (descriptor?.filepath && descriptor.sha256) {
+    return {
+      boqInput: { filepath: descriptor.filepath, inputSha256: descriptor.sha256, offline: descriptor.offline, effectivePolicy: descriptor.effectivePolicy },
+      offline: descriptor.offline
+    };
+  }
   if (input?.runId && input.runId === evaluation?.runId) return input;
-  const descriptor = evaluation?.inputDescriptor;
-  if (!descriptor?.filepath || !descriptor.sha256) return null;
-  return { boqInput: { filepath: descriptor.filepath, inputSha256: descriptor.sha256, offline: descriptor.offline } };
+  return null;
 }
 
 function isAbortCancellation(err) {
@@ -546,7 +701,7 @@ function computeActiveBannerError(actionError, catalogError) {
   return null;
 }
 
-function usePipelineTriggers({ selectedChassis, setActionError, setActiveTab }) {
+function usePipelineTriggers({ selectedChassis, setActionError, setActiveTab, activeRunRef, runActivityRef }) {
   const postScraperEndpoint = async (url, bodyObj) => {
     setActionError(null);
     try {
@@ -566,9 +721,15 @@ function usePipelineTriggers({ selectedChassis, setActionError, setActiveTab }) 
     handleTriggerSyncKnowledge: () => postScraperEndpoint('/api/sync-knowledge'),
     handleTriggerDownloadPdf: () => postScraperEndpoint('/api/download-pdf', { chassisId: selectedChassis }),
     handleTriggerNavigate: () => postScraperEndpoint('/api/navigate-oca', { chassis: selectedChassis }),
-    handleTriggerKillTask: async () => {
-      try { await requestJson('/api/kill-task', { method: 'POST' }); }
-      catch (err) { if (!isAbortCancellation(err)) setActionError(err.message); }
+    handleTriggerKillTask: async (explicitRunId) => {
+      const targetRunId = (typeof explicitRunId === 'string' && explicitRunId)
+        ? explicitRunId
+        : (activeRunRef?.current || runActivityRef?.current?.runId || undefined);
+      try {
+        await postJson('/api/kill-task', targetRunId ? { runId: targetRunId } : {});
+      } catch (err) {
+        if (!isAbortCancellation(err)) setActionError(err.message);
+      }
     }
   };
 }
@@ -613,10 +774,65 @@ function useMatrixRagPoller({ evaluationEpoch, setActionError, completeMatrixRag
   });
 }
 
+function buildPersistedIntakeRecord(boqInput, maybeRawText, response, effectiveOffline, runId) {
+  if (response?.inputDescriptor) {
+    return {
+      boqInput: {
+        filepath: response.inputDescriptor.filepath,
+        inputSha256: response.inputDescriptor.sha256,
+        offline: effectiveOffline
+      },
+      inputDescriptor: response.inputDescriptor,
+      maybeRawText,
+      offline: effectiveOffline,
+      runId
+    };
+  }
+  const safeInput = (typeof File !== 'undefined' && boqInput instanceof File) || isBoqFileInput(boqInput) ? null : boqInput;
+  return { boqInput: safeInput, maybeRawText, offline: effectiveOffline, runId };
+}
+
+async function executeRunReopen(run, state) {
+  if (!run?.runId) return;
+  state.setActionError(null);
+  try {
+    const data = await requestJson(`/api/run/${encodeURIComponent(run.runId)}`);
+    const full = data?.run || data;
+    if (!full) throw new Error(`Run ${run.runId} could not be loaded`);
+    if (full.result) {
+      state.evaluationEpoch.current++;
+      state.evaluationRunRef.current = full.runId;
+      writeSessionJson(SESSION_BOQ_RUN_KEY, full.runId);
+      restoreBoqRunRecord(full, state, true);
+      if (full.product && state.catalogs.some(c => c.id === full.product)) {
+        state.setSelectedChassis(full.product);
+      }
+      state.setActiveTab('matrix');
+      return;
+    }
+    if (full.queryResult) {
+      writeSessionJson('presales.ownedRunId', full.runId);
+      state.setActiveTab('orchestrator');
+      setTimeout(() => {
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new CustomEvent('dashboard-reopen-routed-result', {
+            detail: { runId: full.runId, data: full.queryResult.data || full.queryResult }
+          }));
+        }
+      }, 0);
+      return;
+    }
+    state.setActionError(`Run ${full.runId} has status ${full.status || 'UNKNOWN'} and no saved result to reopen.`);
+  } catch (err) {
+    if (!isAbortCancellation(err)) state.setActionError(err.message);
+  }
+}
+
 function useProgressStream({
   setLogStream,
   activeRunRef,
   evaluationRunRef,
+  inputRef,
   setIsTaskRunning,
   setActiveProgress,
   refreshCatalogs,
@@ -632,13 +848,40 @@ function useProgressStream({
   setActionError
 }) {
   const visibleRunRef = useRef(null);
+  const recoveryStateRef = useRef(null);
+  recoveryStateRef.current = {
+    evaluationRunRef,
+    evaluationEpoch,
+    evalRef,
+    inputRef,
+    activeRunRef,
+    setEvalResults,
+    setRagData,
+    setRunActivity,
+    selectedChassisRef,
+    completeMatrixRag,
+    startMatrixRagPoll,
+    setActionError
+  };
+
+  useEffect(() => {
+    void recoverOwnedBoqRun(null, recoveryStateRef.current);
+    const onSnapshot = (event) => {
+      void recoverOwnedBoqRun(event?.detail || null, recoveryStateRef.current);
+    };
+    window.addEventListener('dashboard-sse-snapshot', onSnapshot);
+    return () => window.removeEventListener('dashboard-sse-snapshot', onSnapshot);
+  }, []);
+
   useSSEStream({
     onTaskStarted: useCallback((payload) => {
-      setLogStream([]);
+      if (!payload.recovered) setLogStream([]);
       activeRunRef.current = payload.runId;
       visibleRunRef.current = payload.runId;
-      if (payload.task === 'EVAL_BOQ' && payload.runId !== evaluationRunRef.current) {
+      const ownedId = evaluationRunRef.current || readSessionValue(SESSION_BOQ_RUN_KEY);
+      if (payload.task === 'EVAL_BOQ' && !ownedId && !payload.recovered) {
         evaluationRunRef.current = payload.runId;
+        writeSessionJson(SESSION_BOQ_RUN_KEY, payload.runId);
         evalRef.current = null;
         setEvalResults(null);
       }
@@ -648,8 +891,18 @@ function useProgressStream({
     }, [activeRunRef, evaluationRunRef, evalRef, setEvalResults, setIsTaskRunning, setRunActivity, setActiveProgress, setLogStream]),
 
     onTaskCompleted: useCallback(payload => receiveTaskCompletion(payload,
-      { activeRunRef, visibleRunRef, setIsTaskRunning, setActiveProgress, refreshCatalogs, setRunActivity }),
-      [activeRunRef, setIsTaskRunning, setActiveProgress, refreshCatalogs, setRunActivity]),
+      {
+        activeRunRef,
+        visibleRunRef,
+        evaluationRunRef,
+        evalRef,
+        setIsTaskRunning,
+        setActiveProgress,
+        refreshCatalogs,
+        setRunActivity,
+        recoverEvalRun: (run) => restoreBoqRunRecord(run, recoveryStateRef.current, true)
+      }),
+      [activeRunRef, evaluationRunRef, evalRef, setIsTaskRunning, setActiveProgress, refreshCatalogs, setRunActivity]),
 
     onProgress: useCallback((payload) => {
       if (payload.runId && payload.runId !== activeRunRef.current) return;
@@ -706,9 +959,11 @@ export default function App() {
 
   const [evalResults, setEvalResults] = useState(null);
   const evalRef = useRef(null);
-  const evaluationRunRef = useRef(null);
+  const evaluationRunRef = useRef(readSessionValue(SESSION_BOQ_RUN_KEY));
   const activeRunRef = useRef(null);
-  const inputRef = useRef(null);
+  const runActivityRef = useRef(null);
+  useEffect(() => { runActivityRef.current = runActivity; }, [runActivity]);
+  const inputRef = useRef(readSessionJson(SESSION_BOQ_INTAKE_KEY));
   const evaluationEpoch = useRef(0);
   const searchEpoch = useRef(0);
   const [actionError, setActionError] = useState(null);
@@ -722,6 +977,7 @@ export default function App() {
   const [isQuarantineOpen, setIsQuarantineOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [selectedCardForFeedback, setSelectedCardForFeedback] = useState(null);
+  const [boqLocalOnly, setBoqLocalOnly] = useState(true);
 
   const completeMatrixRag = (answer, fullData, context) => completeMatrixRagForRun(answer, fullData, context,
     { evaluationEpoch, evaluationRunRef, evalRef, setEvalResults, setRagData });
@@ -751,6 +1007,7 @@ export default function App() {
     setLogStream,
     activeRunRef,
     evaluationRunRef,
+    inputRef,
     setIsTaskRunning,
     setActiveProgress,
     refreshCatalogs,
@@ -773,7 +1030,7 @@ export default function App() {
     handleTriggerDownloadPdf,
     handleTriggerNavigate,
     handleTriggerKillTask
-  } = usePipelineTriggers({ selectedChassis, setActionError, setActiveTab });
+  } = usePipelineTriggers({ selectedChassis, setActionError, setActiveTab, activeRunRef, runActivityRef });
 
   const handleSearchLocal = (query) => { setGlobalSearchTerm(query); setActiveTab('catalog'); };
 
@@ -783,6 +1040,7 @@ export default function App() {
     return executeSmartSearchRequest({
       query,
       selectedChassis,
+      localOnly: boqLocalOnly,
       setIsRagOpen,
       setIsQueryingRag,
       setRagElapsedTime,
@@ -799,21 +1057,65 @@ export default function App() {
   const handleEvaluateBoq = async (boqInput, maybeRawText) => {
     evaluationEpoch.current++;
     void cancelMatrixRagPoll('REPLACED_BY_NEW_EVALUATION');
-    inputRef.current = { boqInput, maybeRawText };
+    const requestedOffline = (boqInput && typeof boqInput === 'object' && boqInput.offline !== undefined)
+      ? boqInput.offline
+      : boqLocalOnly;
+    const clientRunId = (boqInput && typeof boqInput === 'object' && boqInput.runId)
+      ? boqInput.runId
+      : `run_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
+    evaluationRunRef.current = clientRunId;
+    writeSessionJson(SESSION_BOQ_RUN_KEY, clientRunId);
+    const initialRecord = buildPersistedIntakeRecord(boqInput, maybeRawText, null, requestedOffline, clientRunId);
+    inputRef.current = initialRecord;
+    writeSessionJson(SESSION_BOQ_INTAKE_KEY, initialRecord);
     evalRef.current = null;
     setActionError(null);
-    const response = await executeBoqEvaluationRequest(boqInput, maybeRawText, currentCatObj, setLogStream, setEvalResults);
-    inputRef.current = { boqInput, maybeRawText, runId: response.runId };
+    const response = await executeBoqEvaluationRequest(boqInput, maybeRawText, currentCatObj, setLogStream, setEvalResults, requestedOffline, clientRunId);
+    if (response?.error) {
+      const msg = response.remediationAction && !String(response.error).includes(response.remediationAction)
+        ? `${response.error} — ${response.remediationAction}`
+        : response.error;
+      setActionError(msg);
+      return response;
+    }
+    const effectiveOffline = response?.effectivePolicy?.offline ?? requestedOffline;
+    const resolvedRunId = response?.runId || clientRunId;
+    const persisted = buildPersistedIntakeRecord(boqInput, maybeRawText, response, effectiveOffline, resolvedRunId);
+    inputRef.current = persisted;
+    writeSessionJson(SESSION_BOQ_INTAKE_KEY, persisted);
     return response;
   };
 
   const handleSelectClarification = async (candidate) => {
     setSelectedChassis(candidate);
-    try { await replayClarifiedIntake(candidate, recoverIntake(inputRef.current, evalRef.current), catalogs, handleEvaluateBoq, setActionError); }
-    catch (err) {
+    try {
+      const res = await replayClarifiedIntake(candidate, recoverIntake(inputRef.current, evalRef.current), catalogs, handleEvaluateBoq, setActionError);
+      if (res?.error) {
+        const msg = res.remediationAction && !String(res.error).includes(res.remediationAction)
+          ? `${res.error} — ${res.remediationAction}`
+          : res.error;
+        setActionError(msg);
+      }
+    } catch (err) {
       if (!isAbortCancellation(err)) setActionError(err.message);
     }
   };
+
+  const handleReopenRun = (run) => executeRunReopen(run, {
+    evaluationEpoch,
+    evaluationRunRef,
+    evalRef,
+    inputRef,
+    setEvalResults,
+    setRagData,
+    selectedChassisRef,
+    completeMatrixRag,
+    startMatrixRagPoll,
+    setActionError,
+    setSelectedChassis,
+    catalogs,
+    setActiveTab
+  });
 
   const activeBannerError = computeActiveBannerError(actionError, catalogError);
 
@@ -850,6 +1152,7 @@ export default function App() {
           evaluation={evalResults}
           reconnecting={streamConnected === false}
           onNavigate={setActiveTab}
+          onCancelTask={handleTriggerKillTask}
         />
 
         {evalResults?.clarificationRequired && (
@@ -892,6 +1195,7 @@ export default function App() {
             handleTriggerSyncKnowledge={handleTriggerSyncKnowledge}
             handleTriggerKillTask={handleTriggerKillTask}
             handleTriggerNavigate={handleTriggerNavigate}
+            handleReopenRun={handleReopenRun}
           />
         </ErrorBoundary>
       </main>
@@ -913,6 +1217,8 @@ export default function App() {
         handleTriggerScrape={handleTriggerScrape}
         auditReport={auditReport}
         setAuditReport={setAuditReport}
+        boqLocalOnly={boqLocalOnly}
+        setBoqLocalOnly={setBoqLocalOnly}
       />
 
       <NotebookRagDrawer isOpen={isRagOpen} onClose={() => setIsRagOpen(false)} ragData={ragData} isQuerying={isQueryingRag} ragElapsedTime={ragElapsedTime} onQuerySubmit={handleSmartSearch} selectedChassis={selectedChassis} />

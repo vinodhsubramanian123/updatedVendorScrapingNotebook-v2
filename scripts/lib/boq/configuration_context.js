@@ -45,10 +45,12 @@ function isGlobalItem(it, multiplier = 1) {
   return false;
 }
 
-function _validateSingleConfigurationAnchors(items) {
+function _validateSingleConfigurationAnchors(items, options = {}) {
   const anchors = items.filter(isCtoBaseChassis);
   const anchor = anchors[0];
-  const multiplierValue = anchor?.configurationMultiplier ?? anchor?.quantity ?? 1;
+  const explicitCount = options?.serverCount ?? options?.nodeCount;
+  const fallbackCount = !anchor && explicitCount !== undefined ? explicitCount : undefined;
+  const multiplierValue = anchor?.configurationMultiplier ?? anchor?.quantity ?? (fallbackCount !== undefined ? fallbackCount : 1);
   if (!validQuantity(multiplierValue)) throw ambiguity('Invalid configuration count.');
   const multiplier = Number(multiplierValue);
   const local = items.filter(it => !isGlobalItem(it, multiplier));
@@ -104,8 +106,8 @@ function _normalizeLocalConfigurationItem(it, raw, unitPriceUsd, multiplier, con
   };
 }
 
-function normalizeConfiguration(items) {
-  const { anchor, multiplier, configurationId } = _validateSingleConfigurationAnchors(items);
+function normalizeConfiguration(items, options = {}) {
+  const { anchor, multiplier, configurationId } = _validateSingleConfigurationAnchors(items, options);
 
   const normalized = items.map(it => {
     const quantity = it.quantity ?? it.qty ?? 1;

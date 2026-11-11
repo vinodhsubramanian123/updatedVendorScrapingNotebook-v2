@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Terminal, X, Loader2 } from 'lucide-react';
 import TaskStatusBadge from '../TaskStatusBadge';
+import { useModalFocus } from '../../hooks/useModalFocus';
 
 export default function RunDetailModal({
   selectedTraceRun,
@@ -8,15 +9,7 @@ export default function RunDetailModal({
   isLoadingTrace,
   onClose
 }) {
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape' && selectedTraceRun) {
-        onClose?.();
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [selectedTraceRun, onClose]);
+  const dialogRef = useModalFocus(Boolean(selectedTraceRun), onClose);
 
   if (!selectedTraceRun) return null;
 
@@ -25,7 +18,14 @@ export default function RunDetailModal({
       onClick={(e) => { if (e.target === e.currentTarget) onClose?.(); }}
       className="fixed inset-0 bg-slate-950/75 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-modal-backdrop"
     >
-      <div className="bg-slate-900 border border-slate-700/80 rounded-2xl w-full max-w-4xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden animate-modal-content">
+      <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label={`Trace details for ${selectedTraceRun.runId}`}
+        tabIndex={-1}
+        className="bg-slate-900 border border-slate-700/80 rounded-2xl w-full max-w-4xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden animate-modal-content"
+      >
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-950/50">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-emerald-950 border border-emerald-800/60 rounded-xl text-emerald-400">
@@ -34,7 +34,7 @@ export default function RunDetailModal({
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="text-sm font-bold text-white font-mono">{selectedTraceRun.runId}</h3>
-                <TaskStatusBadge status={selectedTraceRun.exitCode === 0 ? 'COMPLETED' : 'FAILED'} />
+                <TaskStatusBadge status={selectedTraceRun.status || (selectedTraceRun.exitCode === 0 ? 'COMPLETED' : 'FAILED')} exitCode={selectedTraceRun.exitCode} />
               </div>
               <p className="text-xs text-slate-400 mt-0.5">
                 Task: <span className="text-slate-200 font-semibold">{selectedTraceRun.taskType || selectedTraceRun.type}</span> • Duration: {selectedTraceRun.durationMs ? `${(selectedTraceRun.durationMs / 1000).toFixed(1)}s` : 'N/A'}

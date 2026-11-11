@@ -19,7 +19,7 @@ const ROLE_PATTERNS = [
   ['Drive Cage / Drive', /\b(?:drives?|drive\s+cage|ssd|hdd|nvme|sas\s+drive|sata\s+drive)\b/i],
   ['Storage Controller', /\b(?:storage controller|raid|smart array|megaraid|trimode|tri-mode|mr\d|sr\d)\b/i],
   ['Fibre Channel HBA', /\b(?:fibre channel|fiber channel|fc hba|host bus adapter)\b/i],
-  ['Network Adapter', /\b(?:network|ethernet|nic|ocp|infiniband|base-t)\b/i],
+  ['Network Adapter', /\b(?:network(?:ing)?|ethernet|nic|ocp|infiniband|base-t)\b/i],
   ['PCIe Riser', /\b(?:riser|pcie slots?|expansion slots?)\b/i],
   ['Power Supply', /\b(?:power supply|psu|titanium|platinum|\d{3,4}w)\b/i]
 ];

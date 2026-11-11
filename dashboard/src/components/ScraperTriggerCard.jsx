@@ -235,7 +235,7 @@ function ScraperSseTerminalCard({ logStream, searchQuery, setSearchQuery, logFil
   );
 }
 
-export default function ScraperTriggerCard({ logStream, isTaskRunning, runActivity, onTriggerScrape, onTriggerRebuild, onTriggerDownloadPdf, onTriggerSyncKnowledge, onTriggerKillTask, onTriggerNavigate }) {
+export default function ScraperTriggerCard({ logStream, isTaskRunning, runActivity, onTriggerScrape, onTriggerRebuild, onTriggerDownloadPdf, onTriggerSyncKnowledge, onTriggerKillTask, onTriggerNavigate, onReopenRun }) {
   const [scrapeMode, setScrapeMode] = useState('solution');
   const [cdpState, setCdpState] = useState({ status: 'CHECKING', message: 'Probing browser...' });
   const [logFilter, setLogFilter] = useState('ALL');
@@ -280,7 +280,7 @@ export default function ScraperTriggerCard({ logStream, isTaskRunning, runActivi
             {isTaskRunning && (
               <Tooltip content="Cancel running task">
                 <button
-                  onClick={onTriggerKillTask}
+                  onClick={() => onTriggerKillTask?.(runActivity?.runId)}
                   className="flex items-center gap-1 text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-200 px-2.5 py-1 rounded-lg hover:bg-rose-100 transition-all"
                 >
                   <Square className="w-3 h-3 text-rose-600 fill-rose-600" /> Cancel Task
@@ -379,6 +379,7 @@ export default function ScraperTriggerCard({ logStream, isTaskRunning, runActivi
       <ScrapingHistorySection
         onTriggerScrape={onTriggerScrape}
         onTriggerRebuild={onTriggerRebuild}
+        onReopenRun={onReopenRun}
         isTaskRunning={isTaskRunning}
       />
     </div>

@@ -15,7 +15,15 @@ const { spawn } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 
-const { isTaskRunning, getActiveTask, startTask } = require('../services/taskManager.cjs');
+const {
+  isTaskRunning,
+  getActiveTask,
+  startTask,
+  beginTaskCancellation,
+  cancelAbortTask,
+  awaitTaskCleanup
+} = require('../services/taskManager.cjs');
+const { isValidRunId, getRunById } = require('../services/runState.cjs');
 const { invalidateChassisMapCache } = require('../../scripts/lib/conflict/conflict_graph.js');
 const { sendErrorResponse } = require('../services/errorHandler.cjs');
 const { requestChildTermination } = require('../../scripts/lib/system/child_termination.js');
@@ -134,14 +142,75 @@ router.post('/download-pdf', (req, res) => {
 });
 
 // ── Kill Active Task ──────────────────────────────────────────────────────────
+function _parseKillDuration(val, label) {
+  if (val === undefined) return undefined;
+  if (!Number.isSafeInteger(val) || val <= 0) {
+    throw new TypeError(`${label} must be a positive safe integer`);
+  }
+  return val;
+}
+
+async function _handleAbortControllerCancel(activeTask, graceMs, res) {
+  const result = await cancelAbortTask(activeTask.runId, graceMs ?? 5000);
+  if (result?.exitConfirmed) {
+    return res.json({
+      message: 'Task cancelled successfully',
+      status: 'CANCELLED',
+      runId: activeTask.runId,
+      task: activeTask.type
+    });
+  }
+  return res.json({
+    status: 'EXIT_UNCONFIRMED',
+    message: 'Cancellation requested; waiting for the workflow to finish cleanup',
+    runId: activeTask.runId,
+    task: activeTask.type,
+    mutexHeld: true
+  });
+}
+
 router.post('/kill-task', async (req, res) => {
+  const requestedRunId = req.body?.runId;
+  if (requestedRunId !== undefined && requestedRunId !== null && requestedRunId !== '' && !isValidRunId(String(requestedRunId))) {
+    return sendErrorResponse(res, 400, 'Invalid run ID format', { source: 'TASKS_ROUTER', code: 'INVALID_RUN_ID', runId: String(requestedRunId) });
+  }
+
+  let graceMs;
+  let confirmationMs;
+  try {
+    graceMs = _parseKillDuration(req.body?.graceMs, 'graceMs');
+    confirmationMs = _parseKillDuration(req.body?.confirmationMs, 'confirmationMs');
+  } catch (valErr) {
+    return sendErrorResponse(res, 400, valErr.message, { source: 'TASKS_ROUTER', runId: requestedRunId || null });
+  }
+
   const activeTask = getActiveTask();
   if (!activeTask) {
-    return sendErrorResponse(res, 400, 'No active task to kill', { source: 'TASKS_ROUTER', runId: null });
+    if (requestedRunId) {
+      const recorded = getRunById(String(requestedRunId));
+      if (recorded && recorded.status === 'CANCELLED') {
+        return res.json({
+          message: 'Run was already cancelled',
+          status: 'CANCELLED',
+          runId: recorded.runId,
+          task: recorded.task,
+          idempotent: true
+        });
+      }
+    }
+    return sendErrorResponse(res, 400, 'No active task to kill', { source: 'TASKS_ROUTER', runId: null, code: 'NO_ACTIVE_TASK' });
   }
+  if (requestedRunId && activeTask.runId !== requestedRunId) {
+    return sendErrorResponse(res, 409, `Target runId ${requestedRunId} does not match active task ${activeTask.runId}; cancellation ignored`, {
+      source: 'TASKS_ROUTER',
+      code: 'RUN_ID_MISMATCH',
+      activeRunId: activeTask.runId,
+      requestedRunId
+    });
+  }
+
   if (activeTask.abortController) {
-    activeTask.abortController.abort(new Error('User requested cancellation'));
-    return res.json({ status: 'EXIT_UNCONFIRMED', message: 'Cancellation requested; waiting for the workflow to finish cleanup', runId: activeTask.runId, mutexHeld: true });
+    return _handleAbortControllerCancel(activeTask, graceMs, res);
   }
   if (!activeTask.process || typeof activeTask.process.on !== 'function') {
     return sendErrorResponse(res, 400, 'No active tracked process to terminate', { source: 'TASKS_ROUTER', runId: activeTask.runId });
@@ -150,28 +219,8 @@ router.post('/kill-task', async (req, res) => {
   const proc = activeTask.process;
   const runId = activeTask.runId;
   const taskType = activeTask.type;
+  beginTaskCancellation(runId);
 
-  // Validate optional duration parameters before caching promise
-  let graceMs;
-  let confirmationMs;
-  try {
-    if (req.body?.graceMs !== undefined) {
-      if (!Number.isSafeInteger(req.body.graceMs) || req.body.graceMs <= 0) {
-        throw new TypeError('graceMs must be a positive safe integer');
-      }
-      graceMs = req.body.graceMs;
-    }
-    if (req.body?.confirmationMs !== undefined) {
-      if (!Number.isSafeInteger(req.body.confirmationMs) || req.body.confirmationMs <= 0) {
-        throw new TypeError('confirmationMs must be a positive safe integer');
-      }
-      confirmationMs = req.body.confirmationMs;
-    }
-  } catch (valErr) {
-    return sendErrorResponse(res, 400, valErr.message, { source: 'TASKS_ROUTER', runId });
-  }
-
-  // Repeated concurrent kill requests reuse one in-flight termination
   if (!proc._terminationPromise) {
     const opts = {
       reason: req.body?.reason !== undefined ? req.body.reason : 'user_cancellation',
@@ -183,7 +232,6 @@ router.post('/kill-task', async (req, res) => {
     const termPromise = requestChildTermination(proc, opts)
       .then((receipt) => {
         proc._terminationReceipt = receipt;
-        // A completed observation may be retried while the same live task retains ownership.
         if (!receipt.exitConfirmed && proc._terminationPromise === termPromise) {
           delete proc._terminationPromise;
         }
@@ -201,18 +249,27 @@ router.post('/kill-task', async (req, res) => {
 
   try {
     const receipt = await proc._terminationPromise;
-
     if (receipt.exitConfirmed) {
+      const cleanupSettled = await awaitTaskCleanup(runId, confirmationMs ?? 2000);
+      if (cleanupSettled) {
+        return res.json({
+          message: 'Task cancelled successfully',
+          status: 'CANCELLED',
+          runId,
+          task: taskType,
+          receipt
+        });
+      }
       return res.json({
-        message: 'Task cancelled successfully',
-        status: 'CANCELLED',
+        message: 'Process exited; waiting for cleanup to finish',
+        status: 'EXIT_UNCONFIRMED',
         runId,
         task: taskType,
-        receipt
+        receipt,
+        mutexHeld: true
       });
     }
 
-    // EXIT_UNCONFIRMED: termination requested with exact receipt, mutex still held
     return res.json({
       message: 'Termination requested',
       status: 'EXIT_UNCONFIRMED',

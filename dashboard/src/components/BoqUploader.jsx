@@ -38,14 +38,14 @@ function isValidFileObject(candidate) {
   return (candidate instanceof File) || Boolean(candidate && typeof candidate.name === 'string' && typeof candidate.size === 'number');
 }
 
-async function runBoqPreprocessRequest(currentFile, currentText, chassisDir) {
+async function runBoqPreprocessRequest(currentFile, currentText, chassisDir, offline = true) {
   let filepath = null;
   if (currentFile) {
     const uploadData = await uploadBoqFile(currentFile);
     filepath = uploadData.filepath;
   }
 
-  return postJson('/api/preprocess-boq', { filepath, rawText: currentText, chassisDir });
+  return postJson('/api/preprocess-boq', { filepath, rawText: currentText, chassisDir, offline });
 }
 
 function resolvePreprocessTargets(overrideFile, overrideRawText, file, rawText) {
@@ -89,6 +89,12 @@ function PreprocessingSkeletonCard() {
   );
 }
 
+function formatUploaderErrorMessage(baseMessage, remediationAction, fallback = 'Request failed') {
+  const text = String(baseMessage || fallback);
+  if (!remediationAction || text.includes(remediationAction)) return text;
+  return `${text} ${remediationAction}`;
+}
+
 export default function BoqUploader({
   onEvaluateBoq,
   evalResults,
@@ -97,13 +103,18 @@ export default function BoqUploader({
   activeProgress,
   onOpenMatrix,
   onOpenReconciliation,
-  onOpenTopology
+  onOpenTopology,
+  localOnly,
+  onLocalOnlyChange
 }) {
   const [isDragging, setIsDragging] = useState(false);
   const [file, setFile] = useState(null);
   const [rawText, setRawText] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [evalError, setEvalError] = useState(null);
+  const [internalLocalOnly, setInternalLocalOnly] = useState(true);
+  const effectiveLocalOnly = typeof localOnly === 'boolean' ? localOnly : internalLocalOnly;
+  const handleLocalOnlyChange = onLocalOnlyChange || setInternalLocalOnly;
 
   const [isPreprocessing, setIsPreprocessing] = useState(false);
   const [preflightData, setPreflightData] = useState(null);
@@ -122,7 +133,6 @@ export default function BoqUploader({
 
   const isRunningEvaluation = activeProgress?.task === 'EVAL_BOQ';
   const isEvaluating = isSubmitting || isRunningEvaluation;
-  const currentStep = isRunningEvaluation ? activeProgress.currentStep : undefined;
 
   useEffect(() => {
     const logArea = logsEndRef.current?.parentElement;
@@ -135,35 +145,19 @@ export default function BoqUploader({
     outcomeRef.current?.scrollIntoView({ block: 'nearest' });
   }, [evalResults]);
 
-  const handleDrop = (e) => {
-    e.preventDefault();
-    setIsDragging(false);
-    const dropped = e.dataTransfer.files?.[0];
-    if (dropped) setFile(dropped);
-  };
-
-  const handleFileChange = (e) => {
-    const selected = e.target.files?.[0];
-    if (selected) setFile(selected);
-  };
-
   const handlePreprocess = async (overrideFile = null, overrideRawText = null) => {
     const revision = intakeRevision.current;
     const { currentFile, currentText, hasPayload } = resolvePreprocessTargets(overrideFile, overrideRawText, file, rawText);
     if (!hasPayload) return;
     setIsPreprocessing(true);
     setEvalError(null);
-
     try {
-      const data = await runBoqPreprocessRequest(currentFile, currentText, chassisDir);
+      const data = await runBoqPreprocessRequest(currentFile, currentText, chassisDir, effectiveLocalOnly);
       if (revision !== intakeRevision.current) return;
-      if (data.status === 'SUCCESS') {
-        setPreflightData(data.preflightData);
-      } else {
-        setEvalError(data.error || 'Failed to preprocess BOQ');
-      }
+      if (data.status === 'SUCCESS') setPreflightData(data.preflightData);
+      else setEvalError(formatUploaderErrorMessage(data.error, data.remediationAction, 'Failed to preprocess BOQ'));
     } catch (err) {
-      setEvalError(err.message);
+      setEvalError(formatUploaderErrorMessage(err.message, err.remediationAction));
     } finally {
       if (revision === intakeRevision.current) setIsPreprocessing(false);
     }
@@ -173,8 +167,7 @@ export default function BoqUploader({
     const revision = intakeRevision.current;
     try {
       const data = await postJson('/api/confirm-preflight-split', { configId, splitReason, chassisDir });
-      if (revision !== intakeRevision.current) return;
-      if (data.status === 'SUCCESS') {
+      if (revision === intakeRevision.current && data.status === 'SUCCESS') {
         setConfirmedConfigSplits(prev => new Set([...prev, configId]));
       }
     } catch (e) {
@@ -188,9 +181,13 @@ export default function BoqUploader({
     setIsSubmitting(true);
     setEvalError(null);
     try {
-      await onEvaluateBoq(filePayload, rawText);
+      const res = await onEvaluateBoq(filePayload, rawText);
+      if (res?.error) {
+        setEvalError(formatUploaderErrorMessage(res.error, res.remediationAction));
+        setIsSubmitting(false);
+      }
     } catch (err) {
-      setEvalError(err.message);
+      setEvalError(formatUploaderErrorMessage(err.message, err.remediationAction));
       setIsSubmitting(false);
     }
   };
@@ -205,11 +202,6 @@ export default function BoqUploader({
     onEvaluateBoq(null, varText);
   };
 
-  const handleLoadSampleBoq = (type) => {
-    setRawText(type === 'standard' ? STANDARD_SAMPLE_LINES : MULTI_SAMPLE_LINES);
-    setFile(null);
-  };
-
   return (
     <div className="space-y-6">
       <BoqInputZone
@@ -219,13 +211,15 @@ export default function BoqUploader({
         setFile={setFile}
         rawText={rawText}
         setRawText={setRawText}
-        onDrop={handleDrop}
-        onFileChange={handleFileChange}
+        onDrop={(e) => { e.preventDefault(); setIsDragging(false); if (e.dataTransfer.files?.[0]) setFile(e.dataTransfer.files[0]); }}
+        onFileChange={(e) => { if (e.target.files?.[0]) setFile(e.target.files[0]); }}
         onPreprocess={handlePreprocess}
         isPreprocessing={isPreprocessing}
         onDirectEvaluate={handleDirectEvaluate}
         isEvaluating={isEvaluating}
-        onLoadSampleBoq={handleLoadSampleBoq}
+        onLoadSampleBoq={(type) => { setRawText(type === 'standard' ? STANDARD_SAMPLE_LINES : MULTI_SAMPLE_LINES); setFile(null); }}
+        localOnly={effectiveLocalOnly}
+        onLocalOnlyChange={handleLocalOnlyChange}
       />
 
       {evalError && (
@@ -246,7 +240,7 @@ export default function BoqUploader({
 
       <EvaluationProgressSteps
         isEvaluating={isEvaluating}
-        currentStep={currentStep}
+        currentStep={isRunningEvaluation ? activeProgress.currentStep : undefined}
         action={isRunningEvaluation ? activeProgress.action : undefined}
         logStream={isRunningEvaluation ? logStream : []}
         logsEndRef={logsEndRef}

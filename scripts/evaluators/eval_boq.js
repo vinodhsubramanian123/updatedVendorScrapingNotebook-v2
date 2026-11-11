@@ -100,7 +100,8 @@ function _getFlagValue(args, flagName, defaultValue = null) {
 const FLAGS_WITH_VALUE = new Set([
   '--chassis', '--notebook-id', '--output', '--sheet',
   '--simulate-portal-error', '--output-dir', '--budget',
-  '--file', '--query-timeout-ms', '--deadline-at'
+  '--file', '--query-timeout-ms', '--deadline-at',
+  '--server-count', '--multiplier', '--parent-run-id', '--candidate-digest', '--candidate-ref'
 ]);
 
 function _findPositionalInputFile(args) {
@@ -123,7 +124,9 @@ function parseEvaluationArguments(args = process.argv.slice(2)) {
   }
 
   const JSON_MODE = args.includes('--json');
-  const OFFLINE_MODE = args.includes('--offline') || process.env.LOCAL_EVAL_ONLY === '1';
+  const OFFLINE_MODE = args.includes('--offline') ||
+    ['1', 'true'].includes(String(process.env.OFFLINE_MODE || '').trim().toLowerCase()) ||
+    ['1', 'true'].includes(String(process.env.LOCAL_EVAL_ONLY || '').trim().toLowerCase());
   const DEFER_RAG = args.includes('--defer-rag');
   const inputFile = _findPositionalInputFile(args);
 
@@ -147,10 +150,17 @@ function parseEvaluationArguments(args = process.argv.slice(2)) {
   const { numericCliOption } = require('../lib/system/execution_budget.js');
   const queryTimeoutMs = numericCliOption(args, '--query-timeout-ms');
   const deadlineAt = numericCliOption(args, '--deadline-at');
+  const serverCountVal = _getFlagValue(args, '--server-count') || _getFlagValue(args, '--multiplier');
+  const serverCount = serverCountVal ? parseInt(serverCountVal, 10) : undefined;
+  const parentRunId = _getFlagValue(args, '--parent-run-id');
+  const candidateDigest = _getFlagValue(args, '--candidate-digest');
 
   return {
     ...(queryTimeoutMs === undefined ? {} : { queryTimeoutMs }),
     ...(deadlineAt === undefined ? {} : { deadlineAt }),
+    ...(serverCount !== undefined ? { serverCount } : {}),
+    ...(parentRunId ? { parentRunId } : {}),
+    ...(candidateDigest ? { candidateDigest } : {}),
     inputFile,
     JSON_MODE,
     OFFLINE_MODE,
@@ -213,11 +223,18 @@ async function _extractRawBoqPayload(inputFile, options, inMemory, isExcel, JSON
   if (inMemory) {
     rawContent = options.inputItems ?? options.rawText;
   } else if (isImageFile(inputFile)) {
-    if (options.OFFLINE_MODE) {
-      throw new Error(`OCR extraction requires cloud connectivity but OFFLINE_MODE is enabled. Please provide a text, CSV, or Excel BOM file.`);
+    const isOffline = Boolean(options.OFFLINE_MODE || options.effectivePolicy?.offline);
+    if (isOffline) {
+      const err = new Error('Local-only execution is active (OFFLINE_MODE is enabled). Image/PDF OCR requires cloud processing. Please provide pasted text, CSV, or Excel BOM file.');
+      err.code = 'OFFLINE_INPUT_REQUIRED';
+      throw err;
     }
     if (!JSON_MODE) console.log(`📸 Detected image/PDF document input (${path.basename(inputFile)}). Initiating Multimodal Gemini OCR extraction...`);
-    const ocrResult = await performGeminiOcr(inputFile);
+    const ocrResult = await performGeminiOcr(inputFile, {
+      offline: false,
+      offlineMode: false,
+      effectivePolicy: options.effectivePolicy || null
+    });
     if (!ocrResult || ocrResult.ocrStatus !== 'SUCCESS' || !ocrResult.isOcrProcessed) {
       const errReason = ocrResult?.rawError || ocrResult?.remediationAction || ocrResult?.text || 'OCR extraction failed';
       throw new Error(`Ingestion Phase Failed (OCR): ${errReason}`);
@@ -420,9 +437,10 @@ function _applyPolicyAndConfiguration(rawItems, options, chassisDir, catalogData
   items = requirementResolution.resolvedItems;
   let configurationContext;
   try {
-    configurationContext = require('../lib/boq/configuration_context').normalizeConfiguration(items);
+    const requestedServerCount = options.serverCount ?? parsedBoq?.candidateReference?.serverCount ?? parsedBoq?.candidateReference?.nodeCount;
+    configurationContext = require('../lib/boq/configuration_context').normalizeConfiguration(items, { serverCount: requestedServerCount });
     items = configurationContext.items;
-    if (options.serverCount !== undefined && Number(options.serverCount) !== configurationContext.multiplier) {
+    if (requestedServerCount !== undefined && Number(requestedServerCount) !== configurationContext.multiplier) {
       throw new Error('ERR_QUANTITY_CONTEXT: Requested serverCount disagrees with the customer configuration multiplier.');
     }
   } catch (err) {
@@ -433,18 +451,47 @@ function _applyPolicyAndConfiguration(rawItems, options, chassisDir, catalogData
   return { items, requirementResolution, configurationContext };
 }
 
+function _resolveEffectiveExplicitChassis(options, parsedBoq) {
+  return options.chassisDir
+    || parsedBoq.chassisDir
+    || options.candidateReference?.chassisDir
+    || parsedBoq.candidateReference?.product
+    || options.candidateReference?.product
+    || '';
+}
+
+function _probeNotebookHealthSafe(detectedChassisName) {
+  try {
+    const nbCfg = loadNotebookConfig();
+    const notebookHealth = assertNotebookHealth(nbCfg, detectedChassisName, logger);
+    return { notebookHealth, notebookDegradedMode: notebookHealth.degradationMode };
+  } catch {
+    return { notebookHealth: null, notebookDegradedMode: null };
+  }
+}
+
+function _applySimulatedErrorAndPrintBanner(options, chassisDir, inputFile, notebookId, outputPath, itemCount) {
+  if (options.simulatePortalError) {
+    if (!options.JSON_MODE) console.log(`\n🔄 Processing simulated partner portal error feedback...`);
+    const delta = processPortalFeedback(options.simulatePortalError, options.explicitOutputDir || chassisDir);
+    if (!options.JSON_MODE) console.log(`✅ KnowledgeDelta logged: ${delta.deltaId} (${delta.ruleUpdate})`);
+  }
+  if (options.JSON_MODE) return;
+  console.log(`\n===============================================================\n🚀 HPE BOQ PRE-FLIGHT EVALUATION & GEMINI NOTEBOOK VALIDATOR\n===============================================================`);
+  console.log(`  📄 Input BOQ File : ${inputFile}\n  📚 Notebook ID    : ${notebookId}\n  📝 Output Report  : ${outputPath}\n  🔧 Chassis Dir    : ${chassisDir}`);
+  console.log(`\n🔍 Phase 1: Consolidated ${itemCount} unique hardware SKUs from BOQ.`);
+}
+
 async function ingestAndConsolidateBoq(options) {
   const inMemory = !options.inputFile && (Array.isArray(options.inputItems) || typeof options.rawText === 'string');
   if (!inMemory && (!options.inputFile || !fs.existsSync(options.inputFile))) {
     throw new Error(`Input BOQ file not found: ${options.inputFile || '(none provided)'}`);
   }
-  const { inputFile = `InMemory_${crypto.randomUUID()}.txt`, targetSheetName, explicitNotebookId, explicitOutputPath, simulatePortalError, explicitOutputDir, JSON_MODE } = options;
+  const { inputFile = `InMemory_${crypto.randomUUID()}.txt`, targetSheetName, explicitNotebookId, explicitOutputPath, JSON_MODE } = options;
 
   const tStart = Date.now();
   const inputBase = path.basename(inputFile, path.extname(inputFile));
-  const isExcel = /\.xlsx?$/i.test(inputFile);
-
-  const { rawContent, ocrMetadata } = await _extractRawBoqPayload(inputFile, options, inMemory, isExcel, JSON_MODE);
+  const { rawContent, ocrMetadata } = await _extractRawBoqPayload(inputFile, options, inMemory, /\.xlsx?$/i.test(inputFile), JSON_MODE);
 
   const parsedBoq = parseAndConsolidateBOQDetailed(rawContent, inMemory ? '' : inputFile, targetSheetName);
   let items = parsedBoq.items;
@@ -454,76 +501,37 @@ async function ingestAndConsolidateBoq(options) {
   }
   const stage1ParsingMs = Math.max(Date.now() - tStart, 1);
 
-  let { chassisDir, chassisDetection } = await _resolveChassisSelection(items, options.chassisDir, JSON_MODE);
+  let { chassisDir, chassisDetection } = await _resolveChassisSelection(items, _resolveEffectiveExplicitChassis(options, parsedBoq), JSON_MODE);
   const detectedChassisName = path.basename(chassisDir || '');
-
   const isExplicitTestPath = /(?:^|[\\/])tests[\\/]fixtures|(?:^|[\\/])outputs[\\/]temp[\\/]test_payloads/i.test(chassisDir) || process.env.NODE_ENV === 'test';
   chassisDir = _preflightCatalogFreshness(detectedChassisName, chassisDir, options, isExplicitTestPath, JSON_MODE, chassisDetection);
 
   const configuredNotebookId = getDefaultNotebookId(detectedChassisName);
-  const notebookId = explicitNotebookId && explicitNotebookId === configuredNotebookId
-    ? explicitNotebookId
-    : configuredNotebookId;
-
-  let notebookDegradedMode = null;
-  let notebookHealth = null;
-  try {
-    const nbCfg = loadNotebookConfig();
-    notebookHealth = assertNotebookHealth(nbCfg, detectedChassisName, logger);
-    notebookDegradedMode = notebookHealth.degradationMode;
-  } catch { /* non-fatal */ }
+  const notebookId = explicitNotebookId === configuredNotebookId ? explicitNotebookId : configuredNotebookId;
+  const { notebookHealth, notebookDegradedMode } = _probeNotebookHealthSafe(detectedChassisName);
 
   const defaultReportsDir = path.join(chassisDir, 'reports');
-  if (!fs.existsSync(defaultReportsDir)) {
-    fs.mkdirSync(defaultReportsDir, { recursive: true });
-  }
-
+  if (!fs.existsSync(defaultReportsDir)) fs.mkdirSync(defaultReportsDir, { recursive: true });
   const fileSuffix = targetSheetName ? `${inputBase}_${targetSheetName.replace(/[/\\?*[\]:]/g, '_')}` : inputBase;
   const outputPath = explicitOutputPath || path.join(defaultReportsDir, `BOQ_Evaluation_${fileSuffix}.md`);
-
-  if (simulatePortalError) {
-    const feedbackDir = explicitOutputDir || chassisDir;
-    if (!JSON_MODE) console.log(`\n🔄 Processing simulated partner portal error feedback...`);
-    const delta = processPortalFeedback(simulatePortalError, feedbackDir);
-    if (!JSON_MODE) console.log(`✅ KnowledgeDelta logged: ${delta.deltaId} (${delta.ruleUpdate})`);
-  }
-
-  if (!JSON_MODE) {
-    console.log(`\n===============================================================`);
-    console.log(`🚀 HPE BOQ PRE-FLIGHT EVALUATION & GEMINI NOTEBOOK VALIDATOR`);
-    console.log(`===============================================================`);
-    console.log(`  📄 Input BOQ File : ${inputFile}`);
-    console.log(`  📚 Notebook ID    : ${notebookId}`);
-    console.log(`  📝 Output Report  : ${outputPath}`);
-    console.log(`  🔧 Chassis Dir    : ${chassisDir}`);
-    console.log(`\n🔍 Phase 1: Consolidated ${items.length} unique hardware SKUs from BOQ.`);
-  }
+  _applySimulatedErrorAndPrintBanner(options, chassisDir, inputFile, notebookId, outputPath, items.length);
 
   const { catalogData, catalogAudit, chassisPrefix } = _loadAndAuditCatalogData(chassisDir, isExplicitTestPath);
   const policyResult = _applyPolicyAndConfiguration(items, options, chassisDir, catalogData, parsedBoq, chassisDetection);
   items = policyResult.items;
   const { requirementResolution, configurationContext } = policyResult;
+  const serverCount = configurationContext.multiplier || options.serverCount || 1;
+  const candidateReference = options.candidateReference || parsedBoq.candidateReference || null;
 
   return {
-    items,
-    configurationContext,
-    serverCount: configurationContext.multiplier || 1,
-    inputFile,
-    chassisDir,
-    chassisPrefix,
-    chassisDetection,
-    detectedChassisName,
-    notebookId,
-    notebookDegradedMode,
-    notebookHealth,
-    outputPath,
-    catalogData,
-    requirementResolution,
-    unmatchedSkus: parsedBoq.unmatchedSkus || [],
-    unresolvedRequirements: parsedBoq.unresolvedRequirements || [],
-    ocrMetadata,
-    catalogAudit,
-    stage1ParsingMs
+    items, configurationContext, serverCount, nodeCount: serverCount,
+    quantityBasis: candidateReference?.quantityBasis || (serverCount > 1 ? 'CLUSTER_MULTIPLIED' : 'SINGLE_NODE'),
+    parentRunId: options.parentRunId || parsedBoq.parentRunId || null,
+    candidateDigest: options.candidateDigest || parsedBoq.candidateDigest || null,
+    candidateReference, inputFile, chassisDir, chassisPrefix, chassisDetection, detectedChassisName,
+    notebookId, notebookDegradedMode, notebookHealth, outputPath, catalogData, requirementResolution,
+    unmatchedSkus: parsedBoq.unmatchedSkus || [], unresolvedRequirements: parsedBoq.unresolvedRequirements || [],
+    ocrMetadata, catalogAudit, stage1ParsingMs
   };
 }
 
@@ -756,7 +764,11 @@ async function _executeAgenticGuardrailReview(items, chassisDir, inputFile, eval
   const tGuardrailStart = Date.now();
   if (!JSON_MODE) console.log('\n🤖 Triggering Agentic Guardrail Loop for resolution...');
 
-  const guardrailResult = await runAgenticGuardrail(items, chassisDir);
+  const guardrailResult = await runAgenticGuardrail(items, chassisDir, {
+    offline: OFFLINE_MODE,
+    offlineMode: OFFLINE_MODE,
+    effectivePolicy: evalResults.effectivePolicy || null
+  });
   evalResults.agenticReviewStatus = guardrailResult.success === true && !guardrailResult.error ? 'ADVISORY_RETURNED' : 'UNAVAILABLE';
   evalResults.agenticReview = {
     status: evalResults.agenticReviewStatus,
@@ -849,26 +861,46 @@ async function executeGroundedRagValidation(ctx) {
   emitProgress(8, 10, 'Preparing evidence review', 'in_progress', 'Preparing the validation evidence.', { stage: 'POST_VERIFICATION' });
 
   const ragPayload = formatNotebookQueryPayload(items, evalResults, evalResults.conflictGraph ? evalResults.conflictGraph.rankedSolutions : []);
+  const isOffline = Boolean(OFFLINE_MODE || ctx.effectivePolicy?.offline || evalResults.effectivePolicy?.offline);
 
-  if (!OFFLINE_MODE && ctx.DEFER_RAG) {
+  if (!isOffline && ctx.DEFER_RAG) {
     return _buildDeferredRagStatus(evalResults, tRagStart);
   }
 
-  emitProgress(9, 10, OFFLINE_MODE ? 'Reviewing local evidence' : 'Reviewing QuickSpecs in NotebookLM',
+  emitProgress(9, 10, isOffline ? 'Reviewing local evidence' : 'Reviewing QuickSpecs in NotebookLM',
     'in_progress', '', { stage: 'POST_VERIFICATION' });
-  const ragResult = await executeNotebookQuery(notebookId, ragPayload, {
-    context: {
-      chassis: _resolveRagChassisLabel(catalogData, chassisDetection, detectedChassisName),
-      skus: items.map(i => i.sku).filter(Boolean),
-      items: items
-    },
-    onAttempt: attempt => { evalResults.notebookQueryRecovery = attempt; ctx.onQueryAttempt?.(attempt); },
-    offlineMode: OFFLINE_MODE,
-    timeout: parseInt(process.env.RAG_TIMEOUT_MS || '600000', 10),
-    queryTimeoutMs: ctx.queryTimeoutMs,
-    deadlineAt: ctx.deadlineAt,
-    signal: ctx.signal
-  });
+  let ragResult;
+  if (isOffline) {
+    const { queryLocalKnowledgeBase } = require('../lib/rag/local_rag_search.js');
+    const localRes = queryLocalKnowledgeBase(ragPayload, _resolveRagChassisLabel(catalogData, chassisDetection, detectedChassisName));
+    const policyReason = ctx.effectivePolicy?.serverEnforced || evalResults.effectivePolicy?.serverEnforced
+      ? 'Local evaluation mode enforced by server (OFFLINE_MODE/LOCAL_EVAL_ONLY/USE_LOCAL_RAG_ONLY)'
+      : 'Offline evaluation mode requested in options';
+    ragResult = {
+      ...localRes,
+      source: 'LOCAL_RAG_FALLBACK',
+      isCloudGrounded: false,
+      groundingVerification: 'UNVERIFIED',
+      groundingTier: 'TIER_2_VERIFIED_LOCAL_SAFETY_NET',
+      fallbackReason: policyReason
+    };
+  } else {
+    ragResult = await executeNotebookQuery(notebookId, ragPayload, {
+      context: {
+        chassis: _resolveRagChassisLabel(catalogData, chassisDetection, detectedChassisName),
+        skus: items.map(i => i.sku).filter(Boolean),
+        items: items
+      },
+      onAttempt: attempt => { evalResults.notebookQueryRecovery = attempt; ctx.onQueryAttempt?.(attempt); },
+      offline: false,
+      offlineMode: false,
+      effectivePolicy: ctx.effectivePolicy || evalResults.effectivePolicy || null,
+      timeout: parseInt(process.env.RAG_TIMEOUT_MS || '600000', 10),
+      queryTimeoutMs: ctx.queryTimeoutMs,
+      deadlineAt: ctx.deadlineAt,
+      signal: ctx.signal
+    });
+  }
   delete evalResults.notebookQueryRecovery;
   if (ragResult.queryAttempt) evalResults.notebookQueryAttempt = ragResult.queryAttempt;
   const stage3RAGMs = Math.max(Date.now() - tRagStart, 1);
@@ -900,7 +932,7 @@ async function executeGroundedRagValidation(ctx) {
   _extractVerifiedKnowledgeDeltas(evalResults, ragResult, chassisDir, catalogData);
 
   const ragAnswer = _formatRagAnswerText(ragResult, ragDurationFormatted, evalResults);
-  const stage4GuardrailMs = await _executeAgenticGuardrailReview(items, chassisDir, inputFile || ctx.inputFile, evalResults, OFFLINE_MODE, JSON_MODE, catalogData);
+  const stage4GuardrailMs = await _executeAgenticGuardrailReview(items, chassisDir, inputFile || ctx.inputFile, evalResults, isOffline, JSON_MODE, catalogData);
 
   return { ragResult, ragAnswer, stage3RAGMs, stage4GuardrailMs };
 }
@@ -1040,8 +1072,10 @@ async function _executeIntakeAndKnowledgePhases(options, evidenceLedger) {
     evidenceLedger.recordArtifact('CATALOG_RULES', path.join(ingestCtx.chassisDir, `${path.basename(ingestCtx.chassisDir)}_Catalog_Rules.json`));
   }
   evidenceLedger.customerInput.totalRequestedLines = ingestCtx.items.length;
-  evidenceLedger.customerInput.serverCount = ingestCtx.serverCount || 1;
-  evidenceLedger.sharedState.nodeMultiplier = ingestCtx.serverCount || 1;
+  evidenceLedger.customerInput.serverCount = options.serverCount !== undefined ? options.serverCount : (ingestCtx.serverCount || 1);
+  evidenceLedger.sharedState.nodeMultiplier = options.serverCount !== undefined ? options.serverCount : (ingestCtx.serverCount || 1);
+  if (options.parentRunId) evidenceLedger.sharedState.parentRunId = options.parentRunId;
+  if (options.candidateDigest) evidenceLedger.sharedState.candidateDigest = options.candidateDigest;
   ingestCtx.items.forEach(item => evidenceLedger.recordSkuAudit(item.sku, 'NORMALIZED_INPUT', 'Parsed customer input; this record does not certify compatibility.', null, item.category, { quantity: item.quantity }));
   evidenceLedger.completePhase(1, 'PASSED', {
     itemsCount: ingestCtx.items.length,
@@ -1227,7 +1261,8 @@ function _executePhase4And5(options, evidenceLedger, graph, activeRules) {
 
 function _revalidateAndRankCandidates(evalResults, ingestCtx, evidenceLedger) {
   for (const candidate of evalResults.conflictGraph?.rankedSolutions || []) {
-    const checked = evaluatePhysicalMath(candidate.skuPartsList || [], ingestCtx.catalogData, ingestCtx.chassisDir, { skipSynthesis: true });
+    const perNodeParts = (candidate.skuPartsList || []).filter(item => item.quantityScope !== 'global');
+    const checked = evaluatePhysicalMath(perNodeParts, ingestCtx.catalogData, ingestCtx.chassisDir, { skipSynthesis: true });
     candidate.finalValidation = {
       aspectChecks: checked.aspectChecks || [],
       errors: checked.errors || [],
@@ -1280,8 +1315,10 @@ async function _handleBoqIngestionPhase(ctx, options, evidenceLedger) {
     evidenceLedger.recordArtifact('CATALOG_RULES', path.join(ingestCtx.chassisDir, `${path.basename(ingestCtx.chassisDir)}_Catalog_Rules.json`));
   }
   evidenceLedger.customerInput.totalRequestedLines = ingestCtx.items.length;
-  evidenceLedger.customerInput.serverCount = ingestCtx.serverCount || 1;
-  evidenceLedger.sharedState.nodeMultiplier = ingestCtx.serverCount || 1;
+  evidenceLedger.customerInput.serverCount = options.serverCount !== undefined ? options.serverCount : (ingestCtx.serverCount || 1);
+  evidenceLedger.sharedState.nodeMultiplier = options.serverCount !== undefined ? options.serverCount : (ingestCtx.serverCount || 1);
+  if (options.parentRunId) evidenceLedger.sharedState.parentRunId = options.parentRunId;
+  if (options.candidateDigest) evidenceLedger.sharedState.candidateDigest = options.candidateDigest;
   ingestCtx.items.forEach(item => evidenceLedger.recordSkuAudit(item.sku, 'NORMALIZED_INPUT', 'Parsed customer input; this record does not certify compatibility.', null, item.category, { quantity: item.quantity }));
   evidenceLedger.completePhase(1, 'PASSED', {
     itemsCount: ingestCtx.items.length,
@@ -1332,6 +1369,8 @@ async function _handleBoqDomainAspectsPhase(ctx, options, evidenceLedger) {
   const { evalResults, graph, queryPayload, stage2AspectMathMs } = executePhysicalPreChecks(
     ctx.ingestCtx.items, ctx.ingestCtx.catalogData, ctx.ingestCtx.chassisDir, options.JSON_MODE, ctx.ingestCtx.requirementResolution, ctx.ingestCtx.configurationContext
   );
+  evalResults.offlineMode = Boolean(options.OFFLINE_MODE || options.effectivePolicy?.offline);
+  if (options.effectivePolicy) evalResults.effectivePolicy = options.effectivePolicy;
   ctx.ingestCtx.items = evalResults.items || ctx.ingestCtx.items;
   ctx.evalResults = evalResults;
   ctx.graph = graph;
@@ -1476,6 +1515,7 @@ async function _handleBoqRagGroundingPhase(ctx, options, evidenceLedger) {
     ...ctx.ingestCtx,
     evalResults: ctx.evalResults,
     OFFLINE_MODE: options.OFFLINE_MODE || (!options.DEFER_RAG && !sourceReady),
+    effectivePolicy: options.effectivePolicy || ctx.evalResults.effectivePolicy || null,
     JSON_MODE: options.JSON_MODE,
     SYNC_RAG: options.SYNC_RAG,
     DEFER_RAG: options.DEFER_RAG,
@@ -1548,28 +1588,24 @@ function _runLegacyDeliverablesPrelude(ctx, options, evidenceLedger) {
   _promoteTerminalPriceDrift(ctx, options);
 }
 
-async function _handleBoqDeliverablesPhase(ctx, options, evidenceLedger, startTime) {
-  emitProgress(10, 10, 'Finalizing results and audit', 'in_progress', 'Recording the evaluation outcome and delivery eligibility.', { stage: 'SOLUTION_PRESENTATION' });
-  evidenceLedger.startPhase(8, 'Multi-Rank Solution Deliverables & Excel Generation', {});
-  Object.defineProperty(ctx.evalResults, 'evidenceLedger', { value: evidenceLedger, enumerable: false, configurable: true });
+function _assignDeliverablesScope(ctx, options) {
+  const dirBase = ctx.ingestCtx.chassisDir ? path.basename(ctx.ingestCtx.chassisDir) : '';
+  const targetChassis = ctx.ingestCtx.chassisPrefix || dirBase || ctx.evalResults.chassis || ctx.ingestCtx.detectedChassisName || 'PROLIANT_SERVER';
+  const resolvedServerCount = ctx.ingestCtx.serverCount || options.serverCount || ctx.evalResults.configurationContext?.multiplier || 1;
+  ctx.evalResults.chassis = targetChassis;
+  ctx.evalResults.serverCount = resolvedServerCount;
+  ctx.evalResults.nodeCount = ctx.ingestCtx.nodeCount || resolvedServerCount;
+  ctx.evalResults.quantityBasis = ctx.ingestCtx.quantityBasis || (resolvedServerCount > 1 ? 'CLUSTER_MULTIPLIED' : 'SINGLE_NODE');
+  if (ctx.ingestCtx.parentRunId || options.parentRunId) ctx.evalResults.parentRunId = ctx.ingestCtx.parentRunId || options.parentRunId;
+  if (ctx.ingestCtx.candidateDigest || options.candidateDigest) ctx.evalResults.candidateDigest = ctx.ingestCtx.candidateDigest || options.candidateDigest;
+  if (ctx.ingestCtx.candidateReference || options.candidateReference) ctx.evalResults.candidateReference = ctx.ingestCtx.candidateReference || options.candidateReference;
+  return targetChassis;
+}
 
-  terminalOwner.prepareDeliverables(ctx,
-    () => _runLegacyDeliverablesPrelude(ctx, options, evidenceLedger),
-    () => _prepareNotebookDeliveryHealth(ctx));
-
-  const { verifyPrePresentationAcceptance } = require('../lib/boq/bom_verifier.js');
-  const { issueDeliveryAuthorization } = require('../lib/contracts/workflow_contract.js');
-  const acceptance = verifyPrePresentationAcceptance(ctx.evalResults, 'BOQ_EVALUATION', {
-    ...options,
-    ...ctx.ingestCtx,
-    catalogData: ctx.ingestCtx.catalogData || options.catalogData
-  });
-  ctx.evalResults.acceptanceGate = acceptance;
-
+function _applyAcceptanceDeliveryState(ctx, options, acceptance, targetChassis) {
   if (acceptance.isValid) {
-    const targetChassis = ctx.ingestCtx.chassisPrefix || (ctx.ingestCtx.chassisDir ? path.basename(ctx.ingestCtx.chassisDir) : '') || ctx.evalResults.chassis || ctx.ingestCtx.detectedChassisName || 'PROLIANT_SERVER';
-    ctx.evalResults.chassis = targetChassis;
     const { deliveryFingerprint } = require('../lib/boq/solution_evidence.js');
+    const { issueDeliveryAuthorization } = require('../lib/contracts/workflow_contract.js');
     const rawFingerprint = deliveryFingerprint(ctx.evalResults);
     ctx.evalResults.manifestFingerprint = rawFingerprint;
     try {
@@ -1586,39 +1622,52 @@ async function _handleBoqDeliverablesPhase(ctx, options, evidenceLedger, startTi
           warnings: acceptance.warnings.map(w => w.detail)
         }
       });
-      ctx.evalResults.customerDisposition = 'VALIDATION_REQUIRED';
-    } catch (_authErr) {
-      ctx.evalResults.customerDisposition = 'VALIDATION_REQUIRED';
-      ctx.evalResults.deliveryAuthError = _authErr.message;
-      const _logger = require('../lib/system/pipeline_logger.js');
-      _logger.warn('EVAL_BOQ', `Delivery authorization issuance deferred: ${_authErr.message}`);
+    } catch (authErr) {
+      ctx.evalResults.deliveryAuthError = authErr.message;
+      require('../lib/system/pipeline_logger.js').warn('EVAL_BOQ', `Delivery authorization issuance deferred: ${authErr.message}`);
     }
-  } else {
-    ctx.evalResults.customerDisposition = ctx.evalResults.isMathClean === false
-      ? 'DELIVERY_BLOCKED_UNBUILDABLE'
-      : 'VALIDATION_REQUIRED';
-    if (!ctx.evalResults.deliveryAuthError && acceptance.blockersCount > 0) {
-      ctx.evalResults.deliveryAuthError = `Pre-presentation acceptance failed with ${acceptance.blockersCount} blocker(s): ${acceptance.blockers.map(b => b.name || b.id).join(', ')}`;
-    }
-    if (ctx.evalResults.customerDisposition === 'DELIVERY_BLOCKED_UNBUILDABLE') {
-      try {
-        const { generateCounterfactualRepairProofs } = require('../lib/system/counterfactual_repair.js');
-        ctx.evalResults.counterfactualRepairProofs = generateCounterfactualRepairProofs(
-          ctx.evalResults,
-          { ...options, ...ctx.ingestCtx }
-        );
-      } catch (_cfErr) {
-        ctx.evalResults.counterfactualRepairProofs = [{
-          issueType: 'REPAIR_EXECUTION_ERROR',
-          rootCause: _cfErr.message,
-          requiredHardwareDeltas: [],
-          requiredAction: { action: 'RESOLVE_SCOPED_CONSTRAINT', category: 'ENGINEERING_DIAGNOSTIC' },
-          mathematicalProof: `Counterfactual repair engine encountered an execution error: ${_cfErr.message}`,
-          resultingStatus: 'ACTION_REQUIRED'
-        }];
-      }
-    }
+    ctx.evalResults.customerDisposition = 'VALIDATION_REQUIRED';
+    return;
   }
+
+  ctx.evalResults.customerDisposition = ctx.evalResults.isMathClean === false ? 'DELIVERY_BLOCKED_UNBUILDABLE' : 'VALIDATION_REQUIRED';
+  if (!ctx.evalResults.deliveryAuthError && acceptance.blockersCount > 0) {
+    ctx.evalResults.deliveryAuthError = `Pre-presentation acceptance failed with ${acceptance.blockersCount} blocker(s): ${acceptance.blockers.map(b => b.name || b.id).join(', ')}`;
+  }
+  if (ctx.evalResults.customerDisposition !== 'DELIVERY_BLOCKED_UNBUILDABLE') return;
+  try {
+    const { generateCounterfactualRepairProofs } = require('../lib/system/counterfactual_repair.js');
+    ctx.evalResults.counterfactualRepairProofs = generateCounterfactualRepairProofs(ctx.evalResults, { ...options, ...ctx.ingestCtx });
+  } catch (cfErr) {
+    ctx.evalResults.counterfactualRepairProofs = [{
+      issueType: 'REPAIR_EXECUTION_ERROR',
+      rootCause: cfErr.message,
+      requiredHardwareDeltas: [],
+      requiredAction: { action: 'RESOLVE_SCOPED_CONSTRAINT', category: 'ENGINEERING_DIAGNOSTIC' },
+      mathematicalProof: `Counterfactual repair engine encountered an execution error: ${cfErr.message}`,
+      resultingStatus: 'ACTION_REQUIRED'
+    }];
+  }
+}
+
+async function _handleBoqDeliverablesPhase(ctx, options, evidenceLedger, startTime) {
+  emitProgress(10, 10, 'Finalizing results and audit', 'in_progress', 'Recording the evaluation outcome and delivery eligibility.', { stage: 'SOLUTION_PRESENTATION' });
+  evidenceLedger.startPhase(8, 'Multi-Rank Solution Deliverables & Excel Generation', {});
+  Object.defineProperty(ctx.evalResults, 'evidenceLedger', { value: evidenceLedger, enumerable: false, configurable: true });
+
+  terminalOwner.prepareDeliverables(ctx,
+    () => _runLegacyDeliverablesPrelude(ctx, options, evidenceLedger),
+    () => _prepareNotebookDeliveryHealth(ctx));
+
+  const { verifyPrePresentationAcceptance } = require('../lib/boq/bom_verifier.js');
+  const acceptance = verifyPrePresentationAcceptance(ctx.evalResults, 'BOQ_EVALUATION', {
+    ...options,
+    ...ctx.ingestCtx,
+    catalogData: ctx.ingestCtx.catalogData || options.catalogData
+  });
+  ctx.evalResults.acceptanceGate = acceptance;
+  const targetChassis = _assignDeliverablesScope(ctx, options);
+  _applyAcceptanceDeliveryState(ctx, options, acceptance, targetChassis);
 
   await serializeAndExportResults(terminalOwner.serializerContext(ctx, {
     ...options,
@@ -1638,10 +1687,7 @@ async function _handleBoqDeliverablesPhase(ctx, options, evidenceLedger, startTi
   const exportOk = Boolean(ctx.evalResults.multiRankWorkbookPath && !ctx.evalResults.deliveryError);
   return terminalOwner.phase8Outcome(ctx, {
     status: exportOk ? 'PASSED' : 'ACTION_REQUIRED',
-    summary: {
-      multiRankWorkbookPath: ctx.evalResults.multiRankWorkbookPath,
-      deliveryError: ctx.evalResults.deliveryError || null
-    },
+    summary: { multiRankWorkbookPath: ctx.evalResults.multiRankWorkbookPath, deliveryError: ctx.evalResults.deliveryError || null },
     checks: [
       { status: ctx.evalResults.multiRankWorkbookPath ? 'PASS' : 'WARN', label: `Multi-Rank Matrix (.xlsx): ${ctx.evalResults.multiRankWorkbookPath ? path.basename(ctx.evalResults.multiRankWorkbookPath) : 'Pending'}` },
       { status: ctx.evalResults.multiRankCsvPath ? 'PASS' : 'WARN', label: `Token-Dense CSV: ${ctx.evalResults.multiRankCsvPath ? path.basename(ctx.evalResults.multiRankCsvPath) : 'Pending'}` },
@@ -1805,7 +1851,27 @@ function _createOwnedPhaseHandlers(options, evidenceLedger, startTime) {
   };
 }
 
+function _resolvePipelineEffectivePolicy(options) {
+  const { resolveEffectivePolicy } = require('../lib/system/policy_resolver.js');
+  let inheritedPolicy = options.effectivePolicy || null;
+  if (!inheritedPolicy && process.env.DASHBOARD_EFFECTIVE_POLICY) {
+    try { inheritedPolicy = JSON.parse(process.env.DASHBOARD_EFFECTIVE_POLICY); } catch {}
+  }
+  const policy = resolveEffectivePolicy({
+    clientOffline: options.OFFLINE_MODE !== undefined ? options.OFFLINE_MODE : options.offline,
+    clientOfflineMode: options.offlineMode,
+    enableCloudValidation: options.enableCloudValidation,
+    inheritedPolicy,
+    defaultOffline: false,
+    lockInheritedOffline: true
+  });
+  options.OFFLINE_MODE = policy.offline;
+  options.effectivePolicy = policy;
+  return policy;
+}
+
 function runEvaluationPipelineWithinTrace(options) {
+  _resolvePipelineEffectivePolicy(options);
   return terminalOwner.selectPipeline(
     () => _runLegacyEvaluationPipelineWithinTrace(options),
     () => {
@@ -1906,29 +1972,55 @@ function _extractRagDeltasForRecompute(ragResult, targetDir, catalogData, chassi
  * @param {string} [chassisDirOverride]
  * @returns {object} Updated data object with verified matrix
  */
+function _resolveRecomputeScopeFields(baseData, configContext) {
+  const prevEval = baseData.evalResults || {};
+  const serverCount = baseData.serverCount || configContext?.multiplier || prevEval.serverCount || 1;
+  const effectivePolicy = baseData.effectivePolicy || prevEval.effectivePolicy || null;
+  return {
+    serverCount,
+    nodeCount: baseData.nodeCount || prevEval.nodeCount || serverCount,
+    quantityBasis: baseData.quantityBasis || prevEval.quantityBasis || (serverCount > 1 ? 'CLUSTER_MULTIPLIED' : 'SINGLE_NODE'),
+    parentRunId: baseData.parentRunId || prevEval.parentRunId || null,
+    candidateDigest: baseData.candidateDigest || prevEval.candidateDigest || null,
+    candidateReference: baseData.candidateReference || prevEval.candidateReference || null,
+    effectivePolicy,
+    offlineMode: baseData.offlineMode ?? effectivePolicy?.offline ?? prevEval.offlineMode ?? false
+  };
+}
+
 function recomputeStrategyMatrixWithRag(baseData, ragResult, chassisDirOverride = '') {
   if (!baseData || !ragResult) return baseData;
   const { items, targetDir, chassisPrefix, catalogData } = _resolveRecomputeContext(baseData, chassisDirOverride);
   const learnedCount = _extractRagDeltasForRecompute(ragResult, targetDir, catalogData, chassisPrefix);
+  const configContext = baseData.configurationContext || baseData.evalResults?.configurationContext || null;
 
   const { evaluateBOQMultiAspect } = require('../lib/boq/boq_evaluator.js');
-  const reEval = evaluateBOQMultiAspect(items, { filePath: baseData.inputFile, catalogData, targetDir });
-
+  const { applyConfigurationContext } = require('../lib/boq/configuration_context.js');
   const { synthesize5TierRankedSolutions } = require('../lib/conflict/conflict_graph.js');
-  const updatedGraph = reEval.conflictGraph || {};
-  const newRankedSolutions = synthesize5TierRankedSolutions(
-    items,
-    reEval,
-    updatedGraph,
-    updatedGraph.chassisInfo || { model: chassisPrefix },
-    targetDir
-  );
+  const hasUnambiguousScope = configContext && configContext.ownershipEvidence !== 'AMBIGUOUS_OWNERSHIP_RAW';
+  const perNodeItems = hasUnambiguousScope ? items.filter(it => it.quantityScope !== 'global') : items;
+  const rawReEval = evaluateBOQMultiAspect(perNodeItems, { filePath: baseData.inputFile, catalogData, targetDir });
 
-  const budgetOpt = optimizeForBudget(items, reEval, baseData.targetBudgetUsd || 0, catalogData);
+  const updatedGraph = rawReEval.conflictGraph || {};
+  const combinedGraph = {
+    ...baseData.conflictGraph,
+    ...updatedGraph,
+    rankedSolutions: synthesize5TierRankedSolutions(
+      perNodeItems, rawReEval, updatedGraph, updatedGraph.chassisInfo || { model: chassisPrefix }, targetDir
+    )
+  };
+  const reEval = hasUnambiguousScope
+    ? applyConfigurationContext({ ...rawReEval, conflictGraph: combinedGraph }, configContext)
+    : { ...rawReEval, conflictGraph: combinedGraph };
+
+  const budgetOpt = optimizeForBudget(perNodeItems, reEval, baseData.targetBudgetUsd || 0, catalogData);
   const cloudStatus = ragResult.isCloudGrounded ? 'CLOUD_VERIFIED' : 'LOCAL_FALLBACK';
+  const scopeFields = _resolveRecomputeScopeFields(baseData, configContext);
 
   return {
     ...baseData,
+    ...scopeFields,
+    configurationContext: reEval.configurationContext || configContext,
     isProvisional: true,
     matrixStatus: 'CANDIDATE_REVIEW_REQUIRED',
     cloudGroundingStatus: cloudStatus,
@@ -1945,17 +2037,15 @@ function recomputeStrategyMatrixWithRag(baseData, ragResult, chassisDirOverride 
     evalResults: {
       ...baseData.evalResults,
       ...reEval,
+      ...scopeFields,
+      configurationContext: reEval.configurationContext || configContext,
       isProvisional: true,
       matrixStatus: 'CANDIDATE_REVIEW_REQUIRED',
       cloudGroundingStatus: cloudStatus,
       ragAnswer: ragResult.answer,
       ragResult
     },
-    conflictGraph: {
-      ...baseData.conflictGraph,
-      ...updatedGraph,
-      rankedSolutions: newRankedSolutions
-    },
+    conflictGraph: reEval.conflictGraph || combinedGraph,
     budgetOptimization: budgetOpt
   };
 }

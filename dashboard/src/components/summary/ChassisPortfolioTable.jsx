@@ -45,7 +45,7 @@ export default function ChassisPortfolioTable({
           </div>
 
           <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl">
-            {['ALL', 'HEALTHY', 'PARSED_NO_RULES', 'INCOMPLETE'].map(s => (
+            {['ALL', 'HEALTHY', 'PARSED_NO_RULES', 'STALE_CAPTURE', 'INCOMPLETE'].map(s => (
               <button
                 key={s}
                 onClick={() => setSelectedStatus?.(s)}
@@ -87,6 +87,8 @@ export default function ChassisPortfolioTable({
           <thead className="bg-slate-50 text-slate-600 font-bold border-b border-slate-200">
             <tr>
               <th className="py-3 px-4">Platform & Generation</th>
+              <th className="py-3 px-4">OCA Capture (UTC)</th>
+              <th className="py-3 px-4">NotebookLM Publication (UTC)</th>
               <th className="py-3 px-4">Catalog Status</th>
               <th className="py-3 px-4">Scraped SKUs</th>
               <th className="py-3 px-4">Rules & Math</th>
@@ -114,6 +116,23 @@ export default function ChassisPortfolioTable({
                     <div className="text-[11px] text-slate-400 font-medium mt-0.5">
                       {v.family} • {v.gen}
                     </div>
+                  </td>
+
+                  <td className="py-3 px-4 whitespace-nowrap">
+                    <div>{v.capture?.capturedAt?.slice(0, 10) || 'Unavailable'}</div>
+                    {v.capture?.coverageIssues?.map(issue => (
+                      <div key={issue} className="text-[11px] text-amber-800">{issue.replaceAll('_', ' ').toLowerCase()}</div>
+                    ))}
+                  </td>
+
+                  <td className="py-3 px-4 whitespace-nowrap">
+                    <div>{v.capture?.publishedAt?.slice(0, 10) || 'Unavailable'}</div>
+                    {v.capture && (
+                      <div className="text-[11px] text-slate-600">{v.capture.cloudSyncStatus.replaceAll('_', ' ').toLowerCase()}</div>
+                    )}
+                    {v.capture?.publishedCaptureMatches === false && (
+                      <div className="text-[11px] text-amber-800">Current capture pending publication</div>
+                    )}
                   </td>
 
                   <td className="py-3 px-4">
@@ -151,6 +170,7 @@ export default function ChassisPortfolioTable({
                   <td className="py-3 px-4 text-right">
                     <button
                       onClick={() => onSelectChassis?.(v.id)}
+                      disabled={v.capture?.hasCatalog === false}
                       className="px-3 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-lg text-xs transition-colors cursor-pointer"
                     >
                       Select

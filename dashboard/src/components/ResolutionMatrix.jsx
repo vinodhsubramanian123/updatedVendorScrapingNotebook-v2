@@ -6,6 +6,7 @@ import MatrixToolbar from './matrix/MatrixToolbar';
 import RejectionModal from './matrix/RejectionModal';
 import MatrixStatusBanners from './matrix/MatrixStatusBanners';
 import { formatPrice, extendedPrice } from '../services/pricing.js';
+import { getCandidateExportEligibility } from '../services/exportEligibility.js';
 
 const STANDARD_CATEGORIES = [
   { id: 'chassis', label: 'Chassis Base & Form Factor', match: ['chassis', 'base', 'enclosure', 'cto'] },
@@ -77,6 +78,8 @@ function mapSolutionToTier(sol, evalResults) {
     leastDeltaAnalysis: sol.leastDeltaAnalysis || null,
     decisionTrace: sol.decisionTrace || [],
     portalConditionalSkus: sol.portalConditionalSkus || [],
+    physicalMathClean: sol.physicalMathClean ?? null,
+    portalValidationStatus: sol.portalValidationStatus || null,
     isLeastDeltaPath: Boolean(sol.leastDeltaAnalysis?.isLeastDeltaPath || sol.isLeastDeltaPath)
   };
 }
@@ -106,40 +109,54 @@ function resolveMatrixProduct(evalResults, selectedChassis) {
 }
 
 async function performCandidateExport(tier, state) {
-    const { setExportingRank, setExportError, evalResults, resolvedChassisId, setExportedFiles, identity, identityRef } = state;
-    if (!resolvedChassisId) { setExportError('The evaluated product identity is unavailable. Re-evaluate before export.'); return; }
-    setExportingRank(tier.rank);
-    setExportError(null);
-    try {
-      const parts = tier.skuPartsList && tier.skuPartsList.length > 0
-        ? tier.skuPartsList
-        : (evalResults?.items || []);
+  const { setExportingRank, setExportError, evalResults, resolvedChassisId, setExportedFiles, identity, identityRef } = state;
+  if (!resolvedChassisId) { setExportError('The evaluated product identity is unavailable. Re-evaluate before export.'); return; }
+  const eligibility = getCandidateExportEligibility(evalResults, tier);
+  if (!eligibility.eligible) {
+    setExportError(eligibility.reason);
+    return;
+  }
+  setExportingRank(tier.rank);
+  setExportError(null);
+  try {
+    const parts = tier.skuPartsList || [];
+    const res = await fetch('/api/export-boq-xlsx', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        runId: eligibility.runId,
+        chassisId: resolvedChassisId,
+        rankTier: tier.rank,
+        strategyName: tier.title,
+        items: parts,
+        totalBudgetUsd: tier.capex
+      })
+    });
 
-      const res = await fetch('/api/export-boq-xlsx', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chassisId: resolvedChassisId,
-          rankTier: tier.rank,
-          strategyName: tier.title,
-          items: parts,
-          evalResults: evalResults || {},
-          totalBudgetUsd: tier.capex
-        })
-      });
-
-      const data = await res.json();
-      if (!res.ok || !data.success) {
-        throw new Error(data.error || 'Failed to generate XLSX');
-      }
-
-      if (identityRef.current !== identity) return;
-      setExportedFiles(prev => ({ ...prev, [tier.rank]: { filename: data.filename, downloadPath: data.downloadPath } }));
-    } catch (err) {
-      if (identityRef.current === identity) setExportError(err.message);
-    } finally {
-      if (identityRef.current === identity) setExportingRank(null);
+    const data = await res.json();
+    if (!res.ok || !data.success) {
+      throw new Error(data.error || 'Failed to generate XLSX');
     }
+
+    if (identityRef.current !== identity) return;
+    setExportedFiles(prev => ({
+      ...prev,
+      [tier.rank]: {
+        filename: data.filename,
+        downloadPath: data.downloadPath,
+        candidateSha256: data.candidateSha256,
+        workbookSha256: data.workbookSha256,
+        evidenceState: data.evidenceState
+      }
+    }));
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('dashboard-export-created', { detail: data }));
+    }
+  } catch (err) {
+    if (identityRef.current === identity) setExportError(err.message);
+  } finally {
+    if (identityRef.current === identity) setExportingRank(null);
+  }
 }
 
 export default function ResolutionMatrix({
@@ -275,6 +292,7 @@ export default function ResolutionMatrix({
               onExportXlsx={handleExportXlsx}
               isExporting={exportingRank === tier.rank}
               exportedFile={exportedFiles[tier.rank]}
+              exportEligibility={getCandidateExportEligibility(evalResults, tier)}
               onOpenVendorVerification={(t) => setVendorVerificationModal(t)}
               onOpenRejectionModal={(t) => {
                 setRejectionModal(t);

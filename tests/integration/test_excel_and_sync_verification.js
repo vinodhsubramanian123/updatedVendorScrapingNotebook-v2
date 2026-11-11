@@ -170,10 +170,17 @@ async function testHttpEndpoints() {
       diagnostic: true
     });
 
-    const resExport = await fetchHttp('http://127.0.0.1:3000/api/export-boq', 'POST', postPayload);
-    assertTest('HTTP POST /api/export-boq returns 200 OK', resExport.statusCode === 200, `Status: ${resExport.statusCode}`);
-    const exportJson = JSON.parse(resExport.body);
-    assertTest('HTTP POST /api/export-boq returns valid downloadPath', exportJson.downloadPath && exportJson.downloadPath.startsWith('/artifacts/temp/exports/'), exportJson.downloadPath);
+    const resCustomerOverride = await fetchHttp('http://127.0.0.1:3000/api/export-boq', 'POST', postPayload);
+    assertTest('HTTP POST /api/export-boq rejects diagnostic override (400)', resCustomerOverride.statusCode === 400, `Status: ${resCustomerOverride.statusCode}`);
+
+    const resDiag = await fetchHttp('http://127.0.0.1:3000/api/export-boq-diagnostic', 'POST', JSON.stringify({
+      evalResults,
+      chassisId: 'DL380_Gen12',
+      rankTier: 1
+    }));
+    assertTest('HTTP POST /api/export-boq-diagnostic returns 200 OK', resDiag.statusCode === 200, `Status: ${resDiag.statusCode}`);
+    const diagJson = JSON.parse(resDiag.body);
+    assertTest('HTTP POST /api/export-boq-diagnostic returns isolated diagnostic downloadPath', diagJson.downloadPath && diagJson.downloadPath.startsWith('/artifacts/temp/diagnostic_exports/'), diagJson.downloadPath);
 
   } catch (err) {
     console.error('  ⚠️ Local server HTTP test advisory (server may be on alternative port or busy):', err.message);

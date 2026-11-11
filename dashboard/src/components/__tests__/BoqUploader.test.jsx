@@ -43,4 +43,21 @@ describe('BoqUploader', () => {
       expect.stringContaining('P73282-B21')
     );
   });
+
+  it('defaults to local-only mode and warns when a PDF/image quote is selected under local-only mode', () => {
+    const mockToggle = vi.fn();
+    render(<BoqUploader onEvaluateBoq={vi.fn()} evalResults={null} logStream={[]} chassisDir="DL380_Gen12_SFF" localOnly={true} onLocalOnlyChange={mockToggle} />);
+
+    const checkbox = screen.getByRole('checkbox', { name: /Use local catalog only/i });
+    expect(checkbox).toBeChecked();
+
+    const fileInput = document.getElementById('boq-file-input');
+    const pdfFile = new File(['%PDF-1.4 sample'], 'vendor_quote.pdf', { type: 'application/pdf' });
+    fireEvent.change(fileInput, { target: { files: [pdfFile] } });
+
+    expect(screen.getByRole('alert')).toHaveTextContent(/PDF and image files cannot be sent to cloud OCR/i);
+
+    fireEvent.click(checkbox);
+    expect(mockToggle).toHaveBeenCalledWith(false);
+  });
 });

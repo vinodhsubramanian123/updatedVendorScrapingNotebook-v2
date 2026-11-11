@@ -1,14 +1,22 @@
 import React from 'react';
-import { CheckCircle2, XCircle, Clock, Loader2 } from 'lucide-react';
+import { CheckCircle2, XCircle, Clock, Loader2, AlertTriangle, Ban } from 'lucide-react';
 
 const STATUS_PATTERNS = [
+  { state: 'CANCELLED', tokens: ['CANCEL', 'KILL', 'ABORT'] },
+  { state: 'INTERRUPTED', tokens: ['INTERRUPT', 'RESTART'] },
+  { state: 'ACTION_REQUIRED', tokens: ['ACTION_REQUIRED', 'CLARIF', 'BLOCKED'] },
   { state: 'RUNNING', tokens: ['RUN', 'PROGRESS', 'EXEC', 'ACTIVE'] },
   { state: 'COMPLETE', tokens: ['COMPLET', 'PASS', 'SUCCESS', 'OK'] },
-  { state: 'FAILED', tokens: ['FAIL', 'ERR', 'CANCEL', 'KILL'] },
+  { state: 'FAILED', tokens: ['FAIL', 'ERR'] },
   { state: 'PENDING', tokens: ['PEND', 'QUEUE', 'WAIT', 'IDLE'] }
 ];
 
 function normalizeTaskStatus(status, exitCode) {
+  if (status) {
+    const s = String(status).toUpperCase();
+    const explicit = STATUS_PATTERNS.find(entry => entry.state !== 'PENDING' && entry.tokens.some(t => s.includes(t)));
+    if (explicit) return explicit.state;
+  }
   if (typeof exitCode === 'number') {
     return exitCode === 0 ? 'COMPLETE' : 'FAILED';
   }
@@ -66,6 +74,27 @@ export default function TaskStatusBadge({
       dotClass: 'bg-emerald-500',
       icon: CheckCircle2,
       iconClass: 'text-emerald-600 dark:text-emerald-400'
+    },
+    ACTION_REQUIRED: {
+      label: 'Action Required',
+      bgClass: 'bg-amber-500/10 text-amber-800 dark:text-amber-300 border-amber-500/30',
+      dotClass: 'bg-amber-500',
+      icon: AlertTriangle,
+      iconClass: 'text-amber-600 dark:text-amber-400'
+    },
+    INTERRUPTED: {
+      label: 'Interrupted',
+      bgClass: 'bg-amber-500/10 text-amber-800 dark:text-amber-300 border-amber-500/30',
+      dotClass: 'bg-amber-500',
+      icon: AlertTriangle,
+      iconClass: 'text-amber-600 dark:text-amber-400'
+    },
+    CANCELLED: {
+      label: 'Cancelled',
+      bgClass: 'bg-slate-500/10 text-slate-700 dark:text-slate-300 border-slate-400/40',
+      dotClass: 'bg-slate-500',
+      icon: Ban,
+      iconClass: 'text-slate-600 dark:text-slate-400'
     },
     FAILED: {
       label: hasNonZeroExit ? `Failed (Code ${exitCode})` : 'Failed',

@@ -49,6 +49,25 @@ async function performGeminiOcr(filePath, options = {}) {
     throw new Error(`OCR Target file not found: ${resolvedPath}`);
   }
 
+  const isServerOffline = [process.env.OFFLINE_MODE, process.env.LOCAL_EVAL_ONLY]
+    .some(value => ['true', '1'].includes(String(value || '').trim().toLowerCase()));
+  const isOffline = isServerOffline ||
+    options.offline === true ||
+    options.offlineMode === true ||
+    options.effectivePolicy?.offline === true;
+  if (isOffline) {
+    log('⚠️ Local-only policy enforced. Aborting cloud OCR transmission.');
+    return {
+      text: `[OFFLINE_NOTICE] Image file '${path.basename(resolvedPath)}' provided in offline mode. Cloud OCR transmission blocked.`,
+      lineCount: 0,
+      detectedSkus: [],
+      ocrStatus: 'OFFLINE_BLOCKED',
+      remediationAction: 'Provide pasted text or a supported tabular file (CSV/XLSX).',
+      isOcrProcessed: false,
+      logs
+    };
+  }
+
   const fileStats = fs.statSync(resolvedPath);
   if (fileStats.size > MAX_IMAGE_SIZE_BYTES) {
     throw new Error(`OCR Target file exceeds maximum allowed size of 25MB (Current size: ${(fileStats.size / (1024 * 1024)).toFixed(2)}MB)`);

@@ -57,13 +57,47 @@ function addSseClient(res) { sseClients.add(res); }
 function removeSseClient(res) { sseClients.delete(res); }
 
 // ── Task Mutex ─────────────────────────────────────────────────────────────
-/** @type {{ type: string, runId: string, pid: number, process: import('child_process').ChildProcess, startTime: number, closed?: boolean } | null} */
+/** @type {{ type: string, runId: string, pid?: number, process?: import('child_process').ChildProcess, abortController?: AbortController, startTime: number, closed?: boolean, cleaningUp?: boolean, cancellationRequested?: boolean, exitAt?: number, _cleanupPromise?: Promise<void>, _resolveCleanup?: Function, _abortPromise?: Promise<any> } | null} */
 let activeTask = null;
+
+function createCleanupDeferred() {
+  let resolved = false;
+  let resolveFn;
+  const promise = new Promise((resolve) => { resolveFn = resolve; });
+  return {
+    promise,
+    resolve: () => {
+      if (resolved) return;
+      resolved = true;
+      resolveFn?.();
+    }
+  };
+}
+
+function attachCleanupPromise(taskObj) {
+  if (!taskObj) return null;
+  if (!taskObj._cleanupPromise || typeof taskObj._resolveCleanup !== 'function') {
+    const deferred = createCleanupDeferred();
+    taskObj._cleanupPromise = deferred.promise;
+    taskObj._resolveCleanup = deferred.resolve;
+  }
+  const proc = taskObj.process;
+  if (proc && typeof proc.once === 'function' && !taskObj._exitHookAttached) {
+    taskObj._exitHookAttached = true;
+    proc.once('exit', () => {
+      if (!taskObj.closed) {
+        taskObj.cleaningUp = true;
+        taskObj.exitAt = Date.now();
+      }
+    });
+  }
+  return taskObj;
+}
 
 /**
  * Check if a background task is currently running.
  * Clears mutex ONLY on populated actual exitCode/signalCode or observed close.
- * Undefined exitCode or proc.killed does not indicate exit.
+ * Keeps mutex held while an observed exit is completing cleanup/persistence.
  */
 function isTaskRunning() {
   if (!activeTask) return false;
@@ -76,6 +110,9 @@ function isTaskRunning() {
     const hasExitCode = proc.exitCode !== null && proc.exitCode !== undefined;
     const hasSignalCode = proc.signalCode !== null && proc.signalCode !== undefined;
     if (hasExitCode || hasSignalCode) {
+      const withinCleanupGrace = Boolean(activeTask.cleaningUp) &&
+        (!activeTask.exitAt || (Date.now() - activeTask.exitAt) < 10000);
+      if (withinCleanupGrace) return true;
       activeTask = null;
       return false;
     }
@@ -85,6 +122,26 @@ function isTaskRunning() {
 
 /** Return a copy of the current active task metadata (or null). */
 function getActiveTask() { return activeTask ? { ...activeTask } : null; }
+
+function beginTaskCancellation(runId) {
+  if (!activeTask) return null;
+  if (runId && activeTask.runId !== runId) return null;
+  activeTask.cleaningUp = true;
+  activeTask.cancellationRequested = true;
+  return activeTask;
+}
+
+function isCancellationRequested(runId) {
+  if (!activeTask) return false;
+  if (runId && activeTask.runId !== runId) return false;
+  return Boolean(activeTask.cancellationRequested);
+}
+
+function setAbortPromise(runId, promise) {
+  if (!activeTask || activeTask.runId !== runId) return null;
+  activeTask._abortPromise = promise;
+  return promise;
+}
 
 function _streamProcessChunk(data, streamType, logs, buffers, runId, flush = false) {
   buffers[streamType].text += flush ? buffers[streamType].decoder.end() : buffers[streamType].decoder.write(data);
@@ -127,10 +184,46 @@ function _persistTaskTrace(outputsDir, runId, type, startTime, durationMs, exitC
 }
 
 function _releaseTaskMutexIfOwned(runId, proc) {
-  if (activeTask && (activeTask.runId === runId || activeTask.process === proc)) {
-    activeTask.closed = true;
+  if (activeTask && (activeTask.runId === runId || (proc && activeTask.process === proc))) {
+    const released = activeTask;
+    released.closed = true;
     activeTask = null;
+    try { released._resolveCleanup?.(); } catch (_) {}
   }
+}
+
+function releaseTaskMutex(runId, proc) {
+  _releaseTaskMutexIfOwned(runId, proc);
+}
+
+function cancelAbortTask(runId, graceMs = 5000) {
+  if (!activeTask || (runId && activeTask.runId !== runId) || !activeTask.abortController) return null;
+  if (!activeTask._abortPromise) {
+    activeTask.cleaningUp = true;
+    activeTask.cancellationRequested = true;
+    const target = activeTask;
+    try { target.abortController.abort(new Error('User requested cancellation')); } catch (_) {}
+    const waitMs = Number.isSafeInteger(graceMs) && graceMs > 0 ? graceMs : 5000;
+    target._abortPromise = target._cleanupPromise
+      ? Promise.race([
+          target._cleanupPromise.then(() => ({ exitConfirmed: true })),
+          new Promise(r => setTimeout(() => r({ exitConfirmed: false }), waitMs))
+        ])
+      : Promise.resolve({ exitConfirmed: false });
+  }
+  return activeTask._abortPromise;
+}
+
+async function awaitTaskCleanup(runId, timeoutMs = 2000) {
+  if (!activeTask || (runId && activeTask.runId !== runId)) return true;
+  if (!activeTask._cleanupPromise) return !isTaskRunning();
+  const target = activeTask;
+  const waitMs = Number.isSafeInteger(timeoutMs) && timeoutMs > 0 ? timeoutMs : 2000;
+  const finished = await Promise.race([
+    target._cleanupPromise.then(() => true),
+    new Promise(r => setTimeout(() => r(false), waitMs))
+  ]);
+  return Boolean(finished || !isTaskRunning());
 }
 
 /**
@@ -149,7 +242,8 @@ function startTask(type, proc, res, outputsDir, product = null) {
   const startTime = Date.now();
   const buffers = { stdout: { text: '', decoder: new StringDecoder('utf8') }, stderr: { text: '', decoder: new StringDecoder('utf8') } };
 
-  activeTask = { type, runId, pid: proc?.pid, process: proc, startTime };
+  const taskObj = attachCleanupPromise({ type, runId, pid: proc?.pid, process: proc, startTime });
+  activeTask = taskObj;
   broadcastSSE({ type: 'TASK_STARTED', task: type, runId, product });
 
   if (proc?.stdout && typeof proc.stdout.on === 'function') {
@@ -161,13 +255,14 @@ function startTask(type, proc, res, outputsDir, product = null) {
 
   if (proc && typeof proc.on === 'function') {
     proc.on('error', (err) => {
-      broadcastSSE({ type: 'LOG', text: `Task execution error: ${err.message}`, stream: 'stderr' });
+      broadcastSSE({ type: 'LOG', text: `Task execution error: ${err.message}`, stream: 'stderr', runId });
       const hasLivePid = Boolean(proc && typeof proc.pid === 'number' && proc.pid > 0);
       if (!hasLivePid && !completed) {
         completed = true;
-        _releaseTaskMutexIfOwned(runId, proc);
-        broadcastSSE({ type: 'TASK_COMPLETED', code: 1, task: type, runId, durationMs: 0 });
+        const cancelled = Boolean(taskObj.cancellationRequested);
+        broadcastSSE({ type: 'TASK_COMPLETED', code: 1, task: type, runId, durationMs: 0, cancelled });
         _persistTaskTrace(outputsDir, runId, type, startTime, 0, 1, logs);
+        _releaseTaskMutexIfOwned(runId, proc);
       }
     });
 
@@ -175,10 +270,11 @@ function startTask(type, proc, res, outputsDir, product = null) {
       if (completed) return;
       completed = true;
       for (const stream of ['stdout', 'stderr']) _streamProcessChunk(null, stream, logs, buffers, runId, true);
-      _releaseTaskMutexIfOwned(runId, proc);
       const durationMs = Date.now() - startTime;
-      broadcastSSE({ type: 'TASK_COMPLETED', code, task: type, runId, durationMs });
+      const cancelled = Boolean(taskObj.cancellationRequested);
+      broadcastSSE({ type: 'TASK_COMPLETED', code, task: type, runId, durationMs, cancelled });
       _persistTaskTrace(outputsDir, runId, type, startTime, durationMs, code, logs);
+      _releaseTaskMutexIfOwned(runId, proc);
     });
   }
 
@@ -192,7 +288,20 @@ function startTask(type, proc, res, outputsDir, product = null) {
  * (e.g. the eval-boq route which has special stdout parsing).
  * @internal
  */
-function _setActiveTask(task) { activeTask = task; }
+function _setActiveTask(task) {
+  if (!task) {
+    if (activeTask) {
+      const prev = activeTask;
+      prev.closed = true;
+      activeTask = null;
+      try { prev._resolveCleanup?.(); } catch (_) {}
+    } else {
+      activeTask = null;
+    }
+    return;
+  }
+  activeTask = attachCleanupPromise(task);
+}
 
 module.exports = {
   getRunSnapshot,
@@ -204,5 +313,12 @@ module.exports = {
   isTaskRunning,
   getActiveTask,
   startTask,
+  attachCleanupPromise,
+  beginTaskCancellation,
+  isCancellationRequested,
+  releaseTaskMutex,
+  cancelAbortTask,
+  awaitTaskCleanup,
+  setAbortPromise,
   _setActiveTask
 };

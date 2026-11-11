@@ -286,13 +286,18 @@ router.get('/catalog-rules', (req, res) => {
 router.get('/chassis-sync-summary', (req, res) => {
   const { listAllCatalogs } = require('../../scripts/lib/catalog/catalog_discovery.js');
   const { loadCatalogRules } = require('../../scripts/lib/catalog/catalog_rules.js');
+  const { getCatalogPortfolioCoverage } = require('../../scripts/lib/catalog/catalog_portfolio.js');
   try {
     const rawCatalogs = listAllCatalogs();
+    const coverageByProduct = new Map(getCatalogPortfolioCoverage().map(product => [product.product, product]));
+    const summarized = new Set();
     const variantsSummary = [];
     let totalSKUsSum = 0, totalRulesSum = 0, healthyCount = 0, partialCount = 0;
     const familiesSet = new Set();
 
     rawCatalogs.forEach(cat => {
+      const coverage = coverageByProduct.get(cat.id);
+      summarized.add(cat.id);
       const relativePath = cat.relativeDir;
       const parts = relativePath.split(/[/\\]/);
       const family = parts.length >= 2 ? parts[1] : 'Unknown';
@@ -333,10 +338,12 @@ router.get('/chassis-sync-summary', (req, res) => {
       } catch (_) { rulesStatus = 'ERROR'; }
 
       const hasExcel = !!cat.hasExcel, hasPdf = !!cat.pdf, hasDiffHistory = !!cat.hasDiffHistory;
-      let syncStatus = 'HEALTHY';
-      if (skuStatus === 'PARSED' && totalRules > 0 && hasExcel && !isRulesFallback) { syncStatus = 'HEALTHY'; healthyCount++; }
-      else if (skuStatus === 'PARSED') { syncStatus = 'PARSED_NO_RULES'; partialCount++; }
-      else syncStatus = 'INCOMPLETE';
+      let syncStatus = 'INCOMPLETE';
+      if (skuStatus === 'PARSED' && !coverage?.coverageIssues.length) {
+        if (coverage?.freshnessStatus !== 'FRESH') { syncStatus = 'STALE_CAPTURE'; partialCount++; }
+        else if (totalRules > 0 && hasExcel && !isRulesFallback) { syncStatus = 'HEALTHY'; healthyCount++; }
+        else { syncStatus = 'PARSED_NO_RULES'; partialCount++; }
+      }
 
       totalSKUsSum += totalSKUs;
       totalRulesSum += totalRules;
@@ -348,9 +355,19 @@ router.get('/chassis-sync-summary', (req, res) => {
         pdfPath: cat.pdf ? `/artifacts/${path.relative(OUTPUTS_DIR, cat.pdf.path).replace(/\\/g, '/')}` : null,
         skuStatus, totalSKUs, baseVariantsCount: baseVariants.length, subcategoriesCount, tablesCount,
         rulesStatus, totalRules, ruleLevels, isRulesFallback, hasExcel, hasPdf, hasDiffHistory, syncStatus,
-        scrapeDate: cat.scrapeDate || 'N/A'
+        scrapeDate: cat.scrapeDate || 'N/A',
+        capture: coverage
       });
     });
+
+    for (const coverage of coverageByProduct.values()) {
+      if (summarized.has(coverage.product)) continue;
+      if (coverage.family) familiesSet.add(coverage.family);
+      variantsSummary.push({
+        id: coverage.product, chassis: coverage.name, family: coverage.family, gen: coverage.generation,
+        skuStatus: 'MISSING', syncStatus: 'INCOMPLETE', totalSKUs: 0, totalRules: 0, capture: coverage
+      });
+    }
 
     const totalVariants = variantsSummary.length;
     res.json({
@@ -474,50 +491,108 @@ router.get('/price-history', (req, res) => {
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
+const LOG_MILESTONE_RULES = [
+  ['CDP Handshake', txt => txt.includes('CDP') || txt.includes('Port 9222')],
+  ['Portal Navigation', txt => txt.includes('Category') || txt.includes('navigat')],
+  ['DOM SKU Extraction', txt => txt.includes('DOM') || txt.includes('extract')],
+  ['Aspect Rules Synthesis', txt => txt.includes('Aspect') || txt.includes('Rules') || txt.includes('Conflict')],
+  ['Catalog Artifact Generation', txt => txt.includes('Excel') || txt.includes('JSON') || txt.includes('Catalog created') || txt.includes('written')]
+];
+
+function _collectHistoryRunLogsSummary(logs, initialChassis) {
+  let itemsScraped = 0;
+  let chassis = initialChassis;
+  let summaryText = '';
+  const milestones = new Set();
+  for (const entry of Array.isArray(logs) ? logs : []) {
+    const txt = entry?.text || '';
+    const skusMatch = txt.match(/(\d+)\s*(SKUs|unique SKUs|items|products|entries)/i);
+    if (skusMatch) itemsScraped = Math.max(itemsScraped, parseInt(skusMatch[1], 10));
+    const chassisMatch = !chassis && txt.match(/(DL380[^\s,]+|Alletra[^\s,]+|GX5000[^\s,]+|MSL3040[^\s,]+|SY100Gb[^\s,]+)/i);
+    if (chassisMatch) chassis = chassisMatch[1];
+    for (const [label, matcher] of LOG_MILESTONE_RULES) {
+      if (matcher(txt)) milestones.add(label);
+    }
+    if (/PASS|SUCCESS|completed|Complete/.test(txt)) summaryText = txt.substring(0, 120);
+  }
+  return { itemsScraped, chassis, summaryText, milestones: [...milestones] };
+}
+
+function _deriveHistoryRunSummaryText(status, exitCode, existingText) {
+  if (existingText) return existingText;
+  const labels = {
+    CANCELLED: 'Run cancelled by operator',
+    INTERRUPTED: 'Interrupted by backend restart',
+    ACTION_REQUIRED: 'Clarification or action required',
+    RUNNING: 'Run in progress'
+  };
+  return labels[status] || (exitCode === 0 ? 'Task executed successfully' : 'Task finished with errors');
+}
+
+function _deriveHistoryRunSummary(data) {
+  const logSummary = _collectHistoryRunLogsSummary(data.logs, data.product || null);
+  const status = data.status || (data.exitCode === 0 ? 'COMPLETED' : 'FAILED');
+  return {
+    runId: data.runId,
+    taskType: data.taskType || data.task || 'UNKNOWN',
+    product: data.product || logSummary.chassis || null,
+    status,
+    stage: data.stage || null,
+    startTime: data.startTime,
+    durationMs: data.durationMs,
+    exitCode: data.exitCode,
+    itemsScraped: logSummary.itemsScraped,
+    chassis: logSummary.chassis || 'General HPE Portfolio',
+    effectivePolicy: data.effectivePolicy || null,
+    hasRecoverableResult: Boolean(data.result || data.queryResult),
+    milestones: logSummary.milestones,
+    summaryText: _deriveHistoryRunSummaryText(status, data.exitCode, logSummary.summaryText),
+    logCount: data.logs?.length || 0
+  };
+}
+
 router.get('/history/runs', (req, res) => {
+  const { listPersistedRuns, isValidRunId } = require('../services/runState.cjs');
   const runsDir = path.join(OUTPUTS_DIR, 'history', 'runs');
-  if (!fs.existsSync(runsDir)) return res.json([]);
   try {
-    const files = fs.readdirSync(runsDir).filter(f => f.endsWith('.json'));
-    const runs = files.map(f => {
-      try {
-        const data = JSON.parse(fs.readFileSync(path.join(runsDir, f), 'utf-8'));
-        let itemsScraped = 0, chassis = null, summaryText = '';
-        const milestones = [];
-        if (Array.isArray(data.logs)) {
-          for (const l of data.logs) {
-            const txt = l.text || '';
-            const skusMatch = txt.match(/(\d+)\s*(SKUs|unique SKUs|items|products|entries)/i);
-            if (skusMatch) itemsScraped = Math.max(itemsScraped, parseInt(skusMatch[1], 10));
-            const chassisMatch = txt.match(/(DL380[^\s,]+|Alletra[^\s,]+|GX5000[^\s,]+|MSL3040[^\s,]+|SY100Gb[^\s,]+)/i);
-            if (chassisMatch && !chassis) chassis = chassisMatch[1];
-            if (txt.includes('CDP') || txt.includes('Port 9222')) milestones.push('CDP Handshake');
-            if (txt.includes('Category') || txt.includes('navigat')) milestones.push('Portal Navigation');
-            if (txt.includes('DOM') || txt.includes('extract')) milestones.push('DOM SKU Extraction');
-            if (txt.includes('Aspect') || txt.includes('Rules') || txt.includes('Conflict')) milestones.push('Aspect Rules Synthesis');
-            if (txt.includes('Excel') || txt.includes('JSON') || txt.includes('Catalog created') || txt.includes('written')) milestones.push('Catalog Artifact Generation');
-            if (txt.includes('PASS') || txt.includes('SUCCESS') || txt.includes('completed') || txt.includes('Complete')) summaryText = txt.substring(0, 120);
-          }
-        }
-        return {
-          runId: data.runId, taskType: data.taskType, startTime: data.startTime,
-          durationMs: data.durationMs, exitCode: data.exitCode, itemsScraped,
-          chassis: chassis || 'General HPE Portfolio', milestones: [...new Set(milestones)],
-          summaryText: summaryText || (data.exitCode === 0 ? 'Task executed successfully' : 'Task finished with errors'),
-          logCount: data.logs?.length || 0
-        };
-      } catch (_) { return null; }
-    }).filter(Boolean).sort((a, b) => new Date(b.startTime) - new Date(a.startTime));
+    const mergedById = new Map();
+    if (fs.existsSync(runsDir)) {
+      for (const f of fs.readdirSync(runsDir).filter(name => name.endsWith('.json'))) {
+        try {
+          const data = JSON.parse(fs.readFileSync(path.join(runsDir, f), 'utf-8'));
+          if (data && isValidRunId(data.runId)) mergedById.set(data.runId, data);
+        } catch (_) {}
+      }
+    }
+    for (const runRec of listPersistedRuns()) {
+      const existing = mergedById.get(runRec.runId) || {};
+      const mergedLogs = (Array.isArray(existing.logs) && existing.logs.length > (runRec.logs?.length || 0))
+        ? existing.logs
+        : (runRec.logs || existing.logs || []);
+      mergedById.set(runRec.runId, { ...existing, ...runRec, logs: mergedLogs });
+    }
+    const runs = Array.from(mergedById.values())
+      .map(_deriveHistoryRunSummary)
+      .sort((a, b) => new Date(b.startTime || 0) - new Date(a.startTime || 0));
     res.json(runs);
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
 router.get('/history/runs/:id', (req, res) => {
   const { id } = req.params;
-  if (!/^[a-zA-Z0-9_-]+$/.test(id)) return res.status(400).json({ error: 'Invalid trace ID format' });
+  const { isValidRunId, getRunById } = require('../services/runState.cjs');
+  if (!isValidRunId(id)) return res.status(400).json({ error: 'Invalid trace ID format' });
   const runFile = path.join(OUTPUTS_DIR, 'history', 'runs', `${id}.json`);
-  if (!fs.existsSync(runFile)) return res.status(404).json({ error: 'Run trace not found' });
-  try { res.json(JSON.parse(fs.readFileSync(runFile, 'utf-8'))); } catch (err) { res.status(500).json({ error: err.message }); }
+  let traceData = null;
+  if (fs.existsSync(runFile)) {
+    try { traceData = JSON.parse(fs.readFileSync(runFile, 'utf-8')); } catch (err) { return res.status(500).json({ error: err.message }); }
+  }
+  const runRecord = getRunById(id);
+  if (!traceData && !runRecord) return res.status(404).json({ error: 'Run trace not found' });
+  const mergedLogs = (Array.isArray(traceData?.logs) && traceData.logs.length > (runRecord?.logs?.length || 0))
+    ? traceData.logs
+    : (runRecord?.logs || traceData?.logs || []);
+  return res.json({ ...traceData, ...runRecord, logs: mergedLogs });
 });
 
 router.get('/history/exports', (req, res) => {
@@ -527,7 +602,7 @@ router.get('/history/exports', (req, res) => {
     const files = fs.readdirSync(historyExportsDir).filter(f => f.endsWith('.json'));
     const exportsList = files.map(f => {
       try { return JSON.parse(fs.readFileSync(path.join(historyExportsDir, f), 'utf-8')); } catch (_) { return null; }
-    }).filter(Boolean).sort((a, b) => new Date(b.exportedAt) - new Date(a.exportedAt));
+    }).filter(item => item && item.isDiagnostic !== true && !String(item.filename || '').includes('INTERNAL_DIAGNOSTIC')).sort((a, b) => new Date(b.exportedAt) - new Date(a.exportedAt));
     const limit = parseInt(req.query.limit, 10) || 5;
     res.json(exportsList.slice(0, limit));
   } catch (err) { res.status(500).json({ error: err.message }); }

@@ -897,8 +897,13 @@ function _buildTelemetryData(ctx, safeStartTime) {
 }
 
 function _buildNestedEvalResults(evalResults, provenanceTrace, narrative) {
+  const serverCount = evalResults.serverCount || evalResults.configurationContext?.multiplier || 1;
   return {
     ...evalResults,
+    serverCount,
+    nodeCount: evalResults.nodeCount || serverCount,
+    quantityBasis: evalResults.quantityBasis || (serverCount > 1 ? 'CLUSTER_MULTIPLIED' : 'SINGLE_NODE'),
+    candidateReference: evalResults.candidateReference || null,
     notebookLmStatus: evalResults.notebookLmStatus || null,
     postFlowSync: evalResults.postFlowSync || null,
     needsActions: evalResults.evalSummary?.needsActions || [],
@@ -925,14 +930,43 @@ function _resolveSerializedDisposition(evalResults, hasUnbuildableDisposition) {
   return hasUnbuildableDisposition ? 'DELIVERY_BLOCKED_UNBUILDABLE' : 'DELIVERY_AUTHORIZED';
 }
 
+function _firstDefinedScope(candidates, fallback = null) {
+  for (const val of candidates) {
+    if (val !== undefined && val !== null) return val;
+  }
+  return fallback;
+}
+
+function _buildSerializedScopeFields(ctx, evalResults) {
+  const opts = ctx.options || {};
+  const shared = evalResults.evidenceLedger?.sharedState || {};
+  const resolvedServerCount = _firstDefinedScope(
+    [ctx.serverCount, opts.serverCount, evalResults.serverCount, shared.nodeMultiplier, evalResults.configurationContext?.multiplier],
+    1
+  );
+  const offlineMode = Boolean(
+    _firstDefinedScope([ctx.OFFLINE_MODE, opts.OFFLINE_MODE, evalResults.offlineMode, evalResults.effectivePolicy?.offline], false)
+  );
+  return {
+    parentRunId: _firstDefinedScope([ctx.parentRunId, opts.parentRunId, evalResults.parentRunId, shared.parentRunId]),
+    candidateDigest: _firstDefinedScope([ctx.candidateDigest, opts.candidateDigest, evalResults.candidateDigest, shared.candidateDigest]),
+    serverCount: resolvedServerCount,
+    nodeCount: _firstDefinedScope([ctx.nodeCount, evalResults.nodeCount], resolvedServerCount),
+    quantityBasis: _firstDefinedScope([ctx.quantityBasis, evalResults.quantityBasis], resolvedServerCount > 1 ? 'CLUSTER_MULTIPLIED' : 'SINGLE_NODE'),
+    candidateReference: _firstDefinedScope([ctx.candidateReference, opts.candidateReference, evalResults.candidateReference]),
+    offlineMode,
+    effectivePolicy: _firstDefinedScope([opts.effectivePolicy, evalResults.effectivePolicy])
+  };
+}
+
 function _buildCoreSerializedData(ctx, evalResults, traceId, provenanceTrace, narrative, tracePayloads, outputPath, workflowSteps, safeStartTime, hasUnbuildableDisposition) {
-  const {
-    inputFile, chassisDir, chassisPrefix, chassisDetection, notebookId, items
-  } = ctx;
+  const { inputFile, chassisDir, chassisPrefix, chassisDetection, notebookId, items } = ctx;
   const isMathClean = evalResults.isMathClean === true && (!evalResults.missingDependencies || evalResults.missingDependencies.length === 0);
+  const repairField = evalResults.counterfactualRepairProofs ? { counterfactualRepairProofs: evalResults.counterfactualRepairProofs } : {};
 
   return {
     traceId,
+    ..._buildSerializedScopeFields(ctx, evalResults),
     provenanceTrace,
     inputFile,
     chassisDir,
@@ -944,7 +978,7 @@ function _buildCoreSerializedData(ctx, evalResults, traceId, provenanceTrace, na
     deliveryAuthError: evalResults.deliveryAuthError || null,
     deliveryAuthorization: evalResults.deliveryAuthorization || null,
     customerDisposition: _resolveSerializedDisposition(evalResults, hasUnbuildableDisposition),
-    ...(evalResults.counterfactualRepairProofs ? { counterfactualRepairProofs: evalResults.counterfactualRepairProofs } : {}),
+    ...repairField,
     evaluationNarrative: narrative,
     tracePayloads,
     outputReportPath: outputPath,
@@ -955,9 +989,7 @@ function _buildCoreSerializedData(ctx, evalResults, traceId, provenanceTrace, na
     itemCount: items.length,
     items,
     workflowSteps,
-    parsedSheets: [
-      { sheetName: 'BOQ_Main_Quote', itemCount: items.length, status: 'PARSED' }
-    ],
+    parsedSheets: [{ sheetName: 'BOQ_Main_Quote', itemCount: items.length, status: 'PARSED' }],
     telemetry: _buildTelemetryData(ctx, safeStartTime)
   };
 }

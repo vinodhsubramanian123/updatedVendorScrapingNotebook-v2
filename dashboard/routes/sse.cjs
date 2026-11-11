@@ -26,4 +26,37 @@ router.get('/stream-logs', (req, res) => {
 
 router.get('/run-snapshot', (req, res) => res.json(getRunSnapshot()));
 
+router.get(['/run/:runId', '/runs/:runId'], (req, res) => {
+  const path = require('path');
+  const fs = require('fs');
+  const { isValidRunId, getRunById } = require('../services/runState.cjs');
+  const { runId } = req.params;
+  if (!isValidRunId(runId)) {
+    return res.status(400).json({ error: 'Invalid run ID format', code: 'INVALID_RUN_ID', runId });
+  }
+  let run = getRunById(runId);
+  const tracePath = path.join(__dirname, '..', '..', 'outputs', 'history', 'runs', `${runId}.json`);
+  if (fs.existsSync(tracePath)) {
+    try {
+      const trace = JSON.parse(fs.readFileSync(tracePath, 'utf8'));
+      if (!run) {
+        run = {
+          runId,
+          task: trace.taskType || null,
+          product: trace.product || null,
+          startTime: trace.startTime,
+          durationMs: trace.durationMs,
+          exitCode: trace.exitCode,
+          status: trace.status || (trace.exitCode === 0 ? 'COMPLETED' : 'FAILED'),
+          logs: trace.logs || []
+        };
+      } else if ((!Array.isArray(run.logs) || run.logs.length === 0) && Array.isArray(trace.logs)) {
+        run = { ...run, logs: trace.logs };
+      }
+    } catch (_) {}
+  }
+  if (!run) return res.status(404).json({ error: 'Run not found', runId });
+  res.json({ run, ...run });
+});
+
 module.exports = router;

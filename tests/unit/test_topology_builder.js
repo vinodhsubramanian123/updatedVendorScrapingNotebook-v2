@@ -107,6 +107,21 @@ async function runTests() {
 
   console.log('  ✅ identifySubProducts edge cases verified.');
 
+  console.log('\n▶ Test 5: Non-DL380 Root Node & Cluster Quantity Fidelity');
+  const { buildTopologyGraph } = await import('../../dashboard/src/services/topologyGraphBuilder.js');
+  const dl360Graph = buildTopologyGraph({
+    chassis: 'DL360_Gen12',
+    serverCount: 4,
+    items: [
+      { sku: 'P74001-B21', description: 'HPE ProLiant DL360 Gen12 8SFF CTO Server', category: 'Chassis', quantity: 1 },
+      { sku: 'P74845-B21', description: 'Intel Xeon Gold 6530 Processor', category: 'Processors', quantity: 2 }
+    ],
+    conflictGraph: { chassisInfo: { formFactor: '1U 8SFF' } }
+  }, 'BASELINE');
+  assert.strictEqual(dl360Graph.rootNode.sku, 'P74001-B21');
+  assert.strictEqual(dl360Graph.rootNode.quantity, 4);
+  assert(!dl360Graph.rootNode.label.includes('DL380'), 'Must not leak DL380 Gen12 onto DL360 topology');
+
   console.log('\n🎉 ALL TOPOLOGY GRAPH BUILDER TESTS PASSED (100%)!');
 }
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { postJson, requestJson, uploadBoqFile } from '../services/api.js';
 import { formatPrice } from '../services/pricing.js';
+import { getCandidateExportEligibility } from '../services/exportEligibility.js';
 
 const INTENT_FRIENDLY_NAMES = {
   RFP_SIZING_TO_BOM: 'Natural Language Sizing to Buildable BOM',
@@ -19,13 +20,13 @@ const PRESET_QUERIES = [
 ];
 
 async function prepareRequest(query, product, primary, secondary, localOnly) {
-  const context = { chassisName: product?.id, chassisDir: product?.chassisDir, offlineMode: localOnly };
+  const context = { chassisName: product?.id, chassisDir: product?.chassisDir, offline: localOnly, offlineMode: localOnly };
   if (primary) context.filePath = (await uploadBoqFile(primary)).filepath;
   if (secondary) context.secondaryFilePath = (await uploadBoqFile(secondary)).filepath;
   return { query, context };
 }
 
-function OutcomeHeader({ envelope, result, onExportExcel, onEvaluateCandidateBom }) {
+function OutcomeHeader({ envelope, result, exportEligibility, onExportExcel, onEvaluateCandidateBom }) {
   const intent = envelope.classification?.intent;
   const friendlyIntent = INTENT_FRIENDLY_NAMES[intent] || intent || 'Presales Solution';
   const isClean = ['SUCCESS', '100% BUILDABLE', 'CERTIFIED'].includes(result.status);
@@ -49,7 +50,12 @@ function OutcomeHeader({ envelope, result, onExportExcel, onEvaluateCandidateBom
           </button>
         )}
         {onExportExcel && (
-          <button onClick={onExportExcel} className="btn-primary text-xs py-1 px-3 shadow-sm">
+          <button
+            onClick={onExportExcel}
+            disabled={!exportEligibility?.eligible}
+            title={exportEligibility?.eligible ? 'Download authorized customer Excel workbook' : exportEligibility?.reason}
+            className={`btn-primary text-xs py-1 px-3 shadow-sm ${!exportEligibility?.eligible ? 'opacity-50 cursor-not-allowed' : ''}`}
+          >
             Download Official Excel
           </button>
         )}
@@ -149,20 +155,29 @@ function RoutedBOMTable({ items }) {
           <thead className="bg-slate-50 border-b border-slate-200 sticky top-0">
             <tr>
               <th className="p-2 font-semibold">Qty</th>
+              <th className="p-2 font-semibold">Scope</th>
               <th className="p-2 font-semibold">SKU</th>
               <th className="p-2 font-semibold">Description</th>
               <th className="p-2 font-semibold">Unit Price</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
-            {items.slice(0, 100).map((item, index) => (
+            {items.slice(0, 100).map((item, index) => {
+              const scopeLabel = item.quantityScope === 'global'
+                ? 'global'
+                : (item.perNodeQuantity && item.configurationMultiplier > 1
+                  ? `${item.perNodeQuantity}/node × ${item.configurationMultiplier}`
+                  : (item.quantityBasis || 'node'));
+              return (
               <tr key={index} className="hover:bg-slate-50/60">
                 <td className="p-2 font-mono font-medium">{item.quantity ?? '1'}</td>
+                <td className="p-2 font-mono text-[11px] text-slate-600">{scopeLabel}</td>
                 <td className="p-2 font-mono text-emerald-700 font-semibold">{item.sku}</td>
                 <td className="p-2 text-slate-700">{item.description}</td>
                 <td className="p-2 font-mono text-slate-900">{formatPrice(item.unitPriceUsd)}</td>
               </tr>
-            ))}
+              );
+            })}
           </tbody>
         </table>
       </div>
@@ -170,20 +185,64 @@ function RoutedBOMTable({ items }) {
   );
 }
 
+function buildEvalPayloadForAuth(result, envelope) {
+  const base = result.evalResults || result;
+  return { ...base, runId: base.runId || envelope.runId || result.runId };
+}
+
+function CandidateReferenceSummary({ candidateRef }) {
+  if (!candidateRef) return null;
+  return (
+    <div data-testid="candidate-reference-summary" className="text-xs text-slate-700 bg-slate-50 p-2.5 rounded-lg border border-slate-200 flex flex-wrap justify-between items-center gap-2">
+      <span>Target Architecture: <strong>{candidateRef.product || 'Unknown'}</strong></span>
+      <span>Nodes: <strong>{candidateRef.nodeCount || candidateRef.serverCount || 1}</strong> ({candidateRef.quantityBasis || 'SINGLE_NODE'})</span>
+      {candidateRef.parentRunId && (
+        <span className="font-mono text-[11px] text-slate-500">Origin Run: {candidateRef.parentRunId}</span>
+      )}
+    </div>
+  );
+}
+
+function ClarificationAlert({ missingReqs }) {
+  const missingList = Array.isArray(missingReqs) && missingReqs.length > 0 ? ` (Missing: ${missingReqs.join(', ')})` : '';
+  return (
+    <div role="alert" className="text-xs font-semibold text-amber-900 bg-amber-50 p-2.5 rounded-lg border border-amber-300">
+      ⚠️ <strong>Human Clarification Required:</strong> Sizing requirements are incomplete or ambiguous{missingList}. Please refine the query before evaluation.
+    </div>
+  );
+}
+
 function RoutedOutcome({ envelope, onExportExcel, onEvaluateCandidateBom }) {
   if (!envelope) return null;
   const result = envelope.result || {};
-  const items = result.items || result.evalResults?.items || [];
+  const items = result.items || result.candidateBOM || result.evalResults?.items || [];
   const preview = JSON.stringify(envelope, null, 2);
+  const candidateRef = result.candidateReference || envelope.candidateReference;
+  const requiresClarification = Boolean(
+    result.requiresHumanClarification || result.status === 'REQUIRES_HUMAN_CLARIFICATION' || envelope.hitlRequired || result.hitlRequired
+  );
+  const exportEligibility = getCandidateExportEligibility(buildEvalPayloadForAuth(result, envelope));
+  const missingReqs = result.missingRequirements || candidateRef?.missingRequirements;
+  const showActions = items.length > 0 && !requiresClarification;
 
   return (
     <div className="space-y-3 border-t border-slate-200 pt-3">
       <OutcomeHeader
         envelope={envelope}
         result={result}
-        onExportExcel={items.length > 0 ? onExportExcel : null}
-        onEvaluateCandidateBom={items.length > 0 ? onEvaluateCandidateBom : null}
+        exportEligibility={exportEligibility}
+        onExportExcel={showActions ? onExportExcel : null}
+        onEvaluateCandidateBom={showActions ? onEvaluateCandidateBom : null}
       />
+
+      {showActions && !exportEligibility.eligible && (
+        <p className="text-[11px] text-amber-800 bg-amber-50/80 border border-amber-200 rounded-lg px-2.5 py-1.5">
+          Customer export locked until evaluated & authorized: {exportEligibility.reason}
+        </p>
+      )}
+
+      <CandidateReferenceSummary candidateRef={candidateRef} />
+      {requiresClarification && <ClarificationAlert missingReqs={missingReqs} />}
 
       {envelope.cancellationRequested && (
         <p role="alert" className="text-xs font-semibold text-amber-900 bg-amber-50 p-2 rounded-lg border border-amber-200">
@@ -192,13 +251,9 @@ function RoutedOutcome({ envelope, onExportExcel, onEvaluateCandidateBom }) {
       )}
 
       {result.message && <p className="text-xs text-slate-700">{String(result.message)}</p>}
-
       <GroundedAnswerView answer={result.answer} citations={result.citations} />
-
       <ReconciliationSummaryView report={result.reconciliationReport || result.auditReport} />
-
       <RoutedBOMTable items={items} />
-
       <ReasoningNarrativeView reasoningAnalysis={envelope.reasoningAnalysis} rawNarrative={result.reasoningNarrative} />
 
       <details>
@@ -210,13 +265,33 @@ function RoutedOutcome({ envelope, onExportExcel, onEvaluateCandidateBom }) {
   );
 }
 
+const SESSION_PRESALES_RUN_KEY = 'presales.ownedRunId';
+
+function readSessionValue(key) {
+  try {
+    return typeof window !== 'undefined' ? window.sessionStorage?.getItem(key) : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeSessionValue(key, val) {
+  try {
+    if (typeof window === 'undefined' || !window.sessionStorage) return;
+    if (!val) window.sessionStorage.removeItem(key);
+    else window.sessionStorage.setItem(key, val);
+  } catch {}
+}
+
 async function runClassification({ query, product, primary, secondary, localOnly, revision, setBusy, setError, setPlan, setResult }) {
   const version = revision.current;
   setBusy(true); setError(null); setResult(null);
   try {
     const input = await prepareRequest(query, product, primary, secondary, localOnly);
     const classification = await postJson('/api/query/classify', input);
-    if (version === revision.current) setPlan({ input, classification, version });
+    if (version === revision.current) {
+      setPlan({ input, classification, version, originProduct: product ? { id: product.id, chassisDir: product.chassisDir } : null });
+    }
   } catch (err) {
     if (version === revision.current) setError(err.message);
   } finally {
@@ -224,16 +299,25 @@ async function runClassification({ query, product, primary, secondary, localOnly
   }
 }
 
-async function runExecution({ plan, revision, primary, query, localOnly, onEvaluateBoq, setBusy, setError, setResult }) {
+async function runExecution({ plan, revision, primary, query, localOnly, onEvaluateBoq, setBusy, setError, setResult, setActiveRunId, activeRunIdRef }) {
   if (!plan || plan.version !== revision.current) return;
   const version = revision.current;
   setBusy(true); setError(null);
   try {
     if (plan.classification.intent === 'BOQ_EVALUATION') {
       const payload = primary ? { filepath: plan.input.context.filePath } : { rawText: query };
-      await onEvaluateBoq({ ...payload, offline: localOnly });
+      await onEvaluateBoq({
+        ...payload,
+        chassisDir: plan.input?.context?.chassisDir || plan.originProduct?.chassisDir,
+        chassisName: plan.input?.context?.chassisName || plan.originProduct?.id,
+        offline: plan.input?.context?.offline ?? localOnly
+      });
     } else {
-      const envelope = await postJson('/api/query/route', plan.input, { timeoutMs: 15 * 60 * 1000 });
+      const runId = `query_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`;
+      writeSessionValue(SESSION_PRESALES_RUN_KEY, runId);
+      if (activeRunIdRef) activeRunIdRef.current = runId;
+      if (setActiveRunId) setActiveRunId(runId);
+      const envelope = await postJson('/api/query/route', { ...plan.input, runId }, { timeoutMs: 15 * 60 * 1000 });
       if (version === revision.current) setResult(envelope);
     }
   } catch (err) {
@@ -243,55 +327,142 @@ async function runExecution({ plan, revision, primary, query, localOnly, onEvalu
   }
 }
 
-async function runExportExcel(result, product) {
+async function runExportExcel(result, product, setError) {
   if (!result) return;
+  const evalData = result.result?.evalResults || result.result || result;
+  const candidateRef = result.result?.candidateReference || result.candidateReference || evalData?.candidateReference;
+  const runId = result.runId || result.result?.runId || evalData?.runId;
+  const eligibility = getCandidateExportEligibility({ ...evalData, runId });
+  if (!eligibility.eligible) {
+    if (setError) setError(`Export blocked: ${eligibility.reason}`);
+    return;
+  }
   try {
-    const evalData = result.result?.evalResults || result.result || result;
+    if (setError) setError(null);
     const resp = await postJson('/api/export-boq', {
-      evalResults: evalData,
-      chassisId: product?.id || result.result?.chassis || 'DL380_Gen12'
+      runId,
+      chassisId: candidateRef?.product || result.result?.chassis || evalData?.chassis || product?.id || 'DL380_Gen12'
     });
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('dashboard-export-created', { detail: resp }));
+    }
     if (resp?.downloadPath) window.open(resp.downloadPath, '_blank');
   } catch (err) {
-    alert(`Export blocked: ${err.message}`);
+    if (setError) setError(`Export blocked: ${err.message}`);
   }
 }
 
-async function runCandidateEvaluation(result, onEvaluateBoq, localOnly) {
-  if (!result || !onEvaluateBoq) return;
-  const items = result.result?.items || result.result?.evalResults?.items || result.items || [];
-  if (!items.length) return;
-  const rawText = items.map(it => `${it.quantity ?? 1}x ${it.sku} ${it.description || ''}`).join('\n');
-  await onEvaluateBoq({ rawText, offline: localOnly });
+function firstTruthy(values, fallback = undefined) {
+  for (const val of values) {
+    if (val !== undefined && val !== null && val !== '') return val;
+  }
+  return fallback;
 }
 
-function usePresalesSnapshot(product, setResult, setError) {
+function buildCandidateEvaluationPayload(result, localOnly) {
+  if (!result) return null;
+  const resObj = result.result || result;
+  const items = firstTruthy([resObj.items, resObj.candidateBOM, resObj.evalResults?.items], []);
+  const candidateReference = resObj.candidateReference || result.candidateReference || null;
+  if (!items.length || resObj.requiresHumanClarification === true || candidateReference?.requiresHumanClarification === true) {
+    return null;
+  }
+  const serverCount = firstTruthy([candidateReference?.serverCount, candidateReference?.nodeCount, resObj.serverCount], 1);
+  const effectivePolicy = firstTruthy([candidateReference?.effectivePolicy, resObj.effectivePolicy, result.effectivePolicy], undefined);
+  return {
+    rawText: items.map(it => `${it.quantity ?? 1}x ${it.sku} ${it.description || ''}`).join('\n'),
+    items,
+    candidateReference,
+    serverCount,
+    nodeCount: candidateReference?.nodeCount || serverCount,
+    quantityBasis: candidateReference?.quantityBasis || (serverCount > 1 ? 'CLUSTER_MULTIPLIED' : 'SINGLE_NODE'),
+    parentRunId: firstTruthy([candidateReference?.parentRunId, result.runId, resObj.traceId]),
+    candidateDigest: candidateReference?.digest,
+    effectivePolicy,
+    chassisDir: candidateReference?.chassisDir || resObj.chassisDir,
+    chassisName: firstTruthy([candidateReference?.product, resObj.chassis, resObj.targetChassis]),
+    offline: effectivePolicy?.offline ?? candidateReference?.offlineMode ?? localOnly
+  };
+}
+
+async function runCandidateEvaluation(result, onEvaluateBoq, localOnly) {
+  const payload = onEvaluateBoq ? buildCandidateEvaluationPayload(result, localOnly) : null;
+  if (payload) await onEvaluateBoq(payload);
+}
+
+function usePresalesSnapshot(setResult, setError, activeRunId, setActiveRunId, activeRunIdRef) {
+  const recoverRunById = async (runId, signal) => {
+    if (!runId) return;
+    try {
+      const data = await requestJson(`/api/run/${encodeURIComponent(runId)}`, { signal });
+      if (signal?.aborted) return;
+      const run = data?.run || data;
+      if (!run) return;
+      if (run.queryResult) {
+        setResult(run.queryResult.data || run.queryResult);
+      } else if (run.status === 'INTERRUPTED') {
+        setError(`Previous presales run (${runId}) was interrupted by backend restart.`);
+      } else if (run.status === 'CANCELLED') {
+        setError(`Presales run (${runId}) was cancelled.`);
+      }
+    } catch (err) {
+      if (!signal?.aborted && err?.status !== 404) setError(err.message);
+    }
+  };
+
   useEffect(() => {
-    setResult(null);
     const controller = new AbortController();
-    let hasLiveResult = false;
-    const receive = event => {
-      if (!event || event.product !== product?.id) return false;
-      setResult(event.data || event);
-      return true;
+    if (activeRunId) {
+      void recoverRunById(activeRunId, controller.signal);
+    }
+    const onRoutedResult = event => {
+      const detail = event?.detail;
+      if (!detail || !activeRunIdRef.current) return;
+      if (detail.runId !== activeRunIdRef.current) return;
+      setResult(detail.data || detail);
     };
-    const listener = event => {
-      if (receive(event.detail)) hasLiveResult = true;
+    const onReopenResult = event => {
+      const detail = event?.detail;
+      if (!detail) return;
+      const runId = detail.runId || detail.data?.runId;
+      if (runId) {
+        writeSessionValue(SESSION_PRESALES_RUN_KEY, runId);
+        activeRunIdRef.current = runId;
+        setActiveRunId(runId);
+      }
+      setError(null);
+      setResult(detail.data || detail);
     };
-    window.addEventListener('dashboard-routed-result', listener);
-    requestJson('/api/run-snapshot', { signal: controller.signal })
-      .then(data => { if (!controller.signal.aborted && !hasLiveResult) receive(data.latestQueryResult); })
-      .catch(err => { if (!controller.signal.aborted) setError(err.message); });
+    const onSnapshotReconnect = () => {
+      if (activeRunIdRef.current) void recoverRunById(activeRunIdRef.current, controller.signal);
+    };
+    const onTaskCompleted = event => {
+      const detail = event?.detail;
+      if (detail?.runId && detail.runId === activeRunIdRef.current) {
+        void recoverRunById(detail.runId, controller.signal);
+      }
+    };
+
+    window.addEventListener('dashboard-routed-result', onRoutedResult);
+    window.addEventListener('dashboard-reopen-routed-result', onReopenResult);
+    window.addEventListener('dashboard-sse-snapshot', onSnapshotReconnect);
+    window.addEventListener('dashboard-task-completed', onTaskCompleted);
     return () => {
       controller.abort();
-      window.removeEventListener('dashboard-routed-result', listener);
+      window.removeEventListener('dashboard-routed-result', onRoutedResult);
+      window.removeEventListener('dashboard-reopen-routed-result', onReopenResult);
+      window.removeEventListener('dashboard-sse-snapshot', onSnapshotReconnect);
+      window.removeEventListener('dashboard-task-completed', onTaskCompleted);
     };
-  }, [product?.id, setResult, setError]);
+  }, [activeRunId, setResult, setError, setActiveRunId, activeRunIdRef]);
 }
 
 function usePresalesRunner(query, product, primary, secondary, localOnly, onEvaluateBoq) {
+  const initialRunId = readSessionValue(SESSION_PRESALES_RUN_KEY);
   const [plan, setPlan] = useState(null);
   const [result, setResult] = useState(null);
+  const [activeRunId, setActiveRunId] = useState(initialRunId);
+  const activeRunIdRef = useRef(initialRunId);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(null);
   const revision = useRef(0);
@@ -300,13 +471,13 @@ function usePresalesRunner(query, product, primary, secondary, localOnly, onEval
     revision.current++;
     setPlan(null);
     setError(null);
-  }, [query, product?.id, primary, secondary, localOnly]);
+  }, [query, primary, secondary, localOnly]);
 
-  usePresalesSnapshot(product, setResult, setError);
+  usePresalesSnapshot(setResult, setError, activeRunId, setActiveRunId, activeRunIdRef);
 
   const classify = () => runClassification({ query, product, primary, secondary, localOnly, revision, setBusy, setError, setPlan, setResult });
-  const execute = () => runExecution({ plan, revision, primary, query, localOnly, onEvaluateBoq, setBusy, setError, setResult });
-  const exportExcel = () => runExportExcel(result, product);
+  const execute = () => runExecution({ plan, revision, primary, query, localOnly, onEvaluateBoq, setBusy, setError, setResult, setActiveRunId, activeRunIdRef });
+  const exportExcel = () => runExportExcel(result, product, setError);
   const evaluateCandidateBom = () => runCandidateEvaluation(result, onEvaluateBoq, localOnly);
 
   return { plan, result, busy, error, classify, execute, exportExcel, evaluateCandidateBom };

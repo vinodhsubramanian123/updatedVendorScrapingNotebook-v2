@@ -17,6 +17,28 @@ function rankReviewBadge(evaluation, candidate) {
   return review?.isCloudGrounded === true && review.manifestSha256 === solutionFingerprint(evaluation) && verdict ? `CANDIDATE DOCUMENT REVIEW: ${verdict.verdict}` : 'CANDIDATE DOCUMENT REVIEW: UNVERIFIED';
 }
 
+function _parseStrictRankTier(rankTier) {
+  if (rankTier === undefined || rankTier === null) return 1;
+  if (typeof rankTier === 'boolean') {
+    throw new Error(`Invalid strategy rank tier: expected positive integer >= 1, received boolean (${rankTier}).`);
+  }
+  if (typeof rankTier === 'number') {
+    if (!Number.isSafeInteger(rankTier) || rankTier < 1) {
+      throw new Error(`Invalid strategy rank tier: expected positive integer >= 1, received ${rankTier}.`);
+    }
+    return rankTier;
+  }
+  const trimmed = String(rankTier).trim();
+  if (!/^[1-9]\d*$/.test(trimmed)) {
+    throw new Error(`Invalid strategy rank tier: expected positive integer >= 1, received "${rankTier}".`);
+  }
+  const parsed = Number(trimmed);
+  if (!Number.isSafeInteger(parsed) || parsed < 1) {
+    throw new Error(`Invalid strategy rank tier: out-of-range rank "${rankTier}".`);
+  }
+  return parsed;
+}
+
 function _enforceDeliveryAuthorization(evaluation, options = {}, targetChassis = '') {
   if (options.diagnostic === true) {
     return true;
@@ -32,14 +54,14 @@ function _enforceDeliveryAuthorization(evaluation, options = {}, targetChassis =
   });
 }
 
-function _appendCandidatePortalSheets(workbook, validCandidates, evaluation) {
+function _appendCandidatePortalSheets(workbook, validCandidates, evaluation, options = {}) {
   const mult = evaluation?.clusterSizing?.serverCount || evaluation?.clusterSizing?.totalNodes || evaluation?.serverCount || 1;
   for (const candidate of validCandidates) {
     const candidateWorkbook = generatePartnerPortalUploadBOM([{
       name: candidate.name,
       multiplier: mult,
       items: candidate.skuPartsList || candidate.skuList || []
-    }]);
+    }], null, options);
     const firstSheet = candidateWorkbook.SheetNames[0];
     if (firstSheet && candidateWorkbook.Sheets[firstSheet]) {
       XLSX.utils.book_append_sheet(workbook, candidateWorkbook.Sheets[firstSheet], `Rank ${candidate.rank}`);
@@ -47,13 +69,13 @@ function _appendCandidatePortalSheets(workbook, validCandidates, evaluation) {
   }
 }
 
-function _appendFallbackPortalSheet(workbook, fallbackItems, evaluation) {
+function _appendFallbackPortalSheet(workbook, fallbackItems, evaluation, options = {}) {
   const mult = evaluation?.clusterSizing?.serverCount || evaluation?.clusterSizing?.totalNodes || evaluation?.serverCount || 1;
   const candidateWorkbook = generatePartnerPortalUploadBOM([{
     name: evaluation?.chassis || 'Base_Configuration',
     multiplier: mult,
     items: fallbackItems
-  }]);
+  }], null, options);
   const firstSheet = candidateWorkbook.SheetNames[0];
   if (firstSheet && candidateWorkbook.Sheets[firstSheet]) {
     XLSX.utils.book_append_sheet(workbook, candidateWorkbook.Sheets[firstSheet], 'BOM');
@@ -63,16 +85,21 @@ function _appendFallbackPortalSheet(workbook, fallbackItems, evaluation) {
 function generateRankedPortalWorkbook(evaluation, exportPath, options = {}) {
   _enforceDeliveryAuthorization(evaluation, options, options.chassisKey);
   const workbook = XLSX.utils.book_new();
-  const candidates = _getRankedSolutions(evaluation);
+  const isDiagnostic = options.diagnostic === true;
+  const candidates = _getRankedSolutions(evaluation, {
+    allowRawFallback: isDiagnostic,
+    preferRankedList: options.preferRankedList === true,
+    diagnostic: isDiagnostic
+  });
   const validCandidates = (candidates || []).filter(candidate => (candidate.skuPartsList || candidate.skuList || []).length > 0);
-  const fallbackItems = evaluation?.items || evaluation?.parsedItems || [];
+  const fallbackItems = isDiagnostic ? (evaluation?.items || evaluation?.parsedItems || []) : [];
 
   if (validCandidates.length > 0) {
-    _appendCandidatePortalSheets(workbook, validCandidates, evaluation);
-  } else if (Array.isArray(fallbackItems) && fallbackItems.length > 0) {
-    _appendFallbackPortalSheet(workbook, fallbackItems, evaluation);
+    _appendCandidatePortalSheets(workbook, validCandidates, evaluation, options);
+  } else if (isDiagnostic && Array.isArray(fallbackItems) && fallbackItems.length > 0) {
+    _appendFallbackPortalSheet(workbook, fallbackItems, evaluation, options);
   } else {
-    throw new Error('Cannot export a portal workbook without candidate BOM items.');
+    throw new Error('Cannot export a portal workbook without validated candidate BOM items.');
   }
   if (exportPath && workbook.SheetNames.length > 0) {
     const outDir = path.dirname(exportPath);
@@ -83,16 +110,12 @@ function generateRankedPortalWorkbook(evaluation, exportPath, options = {}) {
 }
 
 function _resolveAllSkusWithFixes(rankedSolution, evalResults) {
-  let allSkus = rankedSolution?.skuList || rankedSolution?.skuPartsList || [];
-
-  if (allSkus.length === 0 && evalResults.items) {
-    const fixes = (evalResults.conflictGraph?.resolvedFixes || evalResults.missingDependencies || []).map(f => ({
-      ...f,
-      sku: f.sku || f.key,
-      isFixInjected: true,
-      category: 'Mandatory Aspect Fix'
-    }));
-    return [...evalResults.items.map(it => ({ ...it, isFixInjected: false })), ...fixes];
+  if (!rankedSolution) {
+    throw new Error('Cannot export BOQ: No valid ranked solution found for the requested strategy rank.');
+  }
+  let allSkus = rankedSolution.skuList || rankedSolution.skuPartsList || [];
+  if (allSkus.length === 0) {
+    throw new Error(`Cannot export BOQ: Strategy Rank ${rankedSolution.rank} contains zero candidate items.`);
   }
 
   if (!allSkus.some(s => s.isFixInjected || s.category === 'Mandatory Aspect Fix') && (evalResults.conflictGraph?.resolvedFixes?.length || evalResults.missingDependencies?.length)) {
@@ -110,9 +133,11 @@ function _resolveAllSkusWithFixes(rankedSolution, evalResults) {
   return allSkus;
 }
 
-function _buildSummarySheet(evalResults, chassisId, rankedSolution, tier, headerStyle, currencyStyle) {
+function _buildSummarySheet(evalResults, chassisId, rankedSolution, tier, headerStyle, currencyStyle, options = {}) {
+  const isDiagnostic = options.diagnostic === true;
+  const titlePrefix = isDiagnostic ? 'HPE BOQ EVALUATION REPORT - [INTERNAL DIAGNOSTIC] - STRATEGY RANK ' : 'HPE BOQ EVALUATION REPORT - STRATEGY RANK ';
   const summaryData = [
-    ['HPE BOQ EVALUATION REPORT - STRATEGY RANK ' + tier],
+    [titlePrefix + tier],
     [],
     ['Field', 'Value'],
     ['Chassis Variant', chassisId || 'Unknown'],
@@ -126,7 +151,10 @@ function _buildSummarySheet(evalResults, chassisId, rankedSolution, tier, header
     ['NotebookLM RAG Reasoning'],
     [rankedSolution?.reasoning || 'N/A']
   ];
-  summaryData.push(['Validation', portalLabel(rankedSolution)]);
+  if (isDiagnostic) {
+    summaryData.push(['Diagnostic Mode', 'INTERNAL DIAGNOSTIC OVERRIDE - NOT FOR PRESENTATION']);
+  }
+  summaryData.push(['Validation', isDiagnostic ? 'DIAGNOSTIC (AUTHORIZATION BYPASSED)' : portalLabel(rankedSolution)]);
   summaryData.push(['Pricing completeness', rankedSolution?.pricingComplete === false ? `INCOMPLETE — ${(rankedSolution.priceUnavailableSkus || rankedSolution.unresolvedPriceSkus)?.length || 0} SKU(s) unresolved` : 'Consult line pricing evidence']);
 
   const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
@@ -150,85 +178,82 @@ function _determinePricingRole(s, uPrice) {
   return 'Standard Option';
 }
 
-function _createSkusSheet(wb, skus, sheetName, emptyMessage, evalResults, headerStyle, currencyStyle) {
+function _applySkusSheetStyling(ws, skus, rowNum, headerStyle, currencyStyle) {
+  for (let c = 0; c < 7; c++) {
+    const cellRef = XLSX.utils.encode_cell({ r: 0, c });
+    if (ws[cellRef]) ws[cellRef].s = headerStyle;
+  }
+  for (let r = 1; r < rowNum; r++) {
+    const skuData = skus[r - 1];
+    const fillStyle = skuData?.status === 'Discontinued' ? { fill: { fgColor: { rgb: 'FFC000' } } } : {};
+    const setStyle = (col, extra) => {
+      if (ws[`${col}${r + 1}`]) ws[`${col}${r + 1}`].s = { ...fillStyle, ...extra };
+    };
+    setStyle('A', { font: { name: 'Courier New', bold: true }, locked: true });
+    setStyle('B', { locked: false });
+    setStyle('C', {});
+    setStyle('D', {});
+    setStyle('E', { locked: true, ...currencyStyle });
+    setStyle('F', { locked: true, ...currencyStyle });
+  }
+  if (skus.length > 0) {
+    ws[`A${rowNum}`].s = { font: { bold: true }, locked: true };
+    ws[`F${rowNum}`].s = { font: { bold: true }, locked: true, ...currencyStyle };
+    ws['!autofilter'] = { ref: `A1:F${rowNum - 1}` };
+  }
+  ws['!protect'] = { password: 'hpe', selectLockedCells: true, selectUnlockedCells: true, formatCells: false };
+}
+
+function _createSkusSheet(wb, skus, sheetName, emptyMessage, evalResults, headerStyle, currencyStyle, options = {}) {
   const data = [['SKU', 'Quantity', 'Description', 'Category', 'Unit Price (USD)', 'Extended Price (USD)', 'Pricing Impact & Role']];
   let rowNum = 2;
   const serverCount = evalResults.clusterSizing?.serverCount || 1;
+  const diagLabel = options.diagnostic === true ? '[INTERNAL DIAGNOSTIC]' : '';
+  const diagSuffix = diagLabel ? ` ${diagLabel}` : '';
 
   skus.forEach(s => {
     const uPrice = s.unitPriceUsd || 0;
-    const pricingRole = _determinePricingRole(s, uPrice);
     const totalQty = outputQuantities(s, serverCount).totalQty;
     const isPriceKnown = uPrice > 0 || s.isConfirmedZeroPrice === true;
-
     data.push([
-      s.sku,
-      totalQty,
-      s.description || '',
-      s.category || 'Standard',
+      s.sku, totalQty, s.description || '', s.category || 'Standard',
       isPriceKnown ? uPrice : 'UNRESOLVED',
       isPriceKnown ? { t: 'n', f: `B${rowNum}*E${rowNum}`, v: totalQty * uPrice } : 'UNRESOLVED',
-      pricingRole
+      _determinePricingRole(s, uPrice) + diagSuffix
     ]);
     rowNum++;
   });
 
   if (skus.length === 0) {
-    data.push([emptyMessage, '', '', '', '', '', '']);
+    data.push([emptyMessage, '', '', '', '', '', diagLabel]);
   } else {
-    data.push([skus.some(item => !(item.unitPriceUsd > 0) && !item.isConfirmedZeroPrice) ? 'KNOWN-PRICE SUBTOTAL (INCOMPLETE)' : 'TOTAL', '', '', '', '', { t: 'n', f: `SUM(F2:F${rowNum-1})` }, '']);
+    const totalLabel = skus.some(item => !(item.unitPriceUsd > 0) && !item.isConfirmedZeroPrice) ? 'KNOWN-PRICE SUBTOTAL (INCOMPLETE)' : 'TOTAL';
+    data.push([totalLabel, '', '', '', '', { t: 'n', f: `SUM(F2:F${rowNum - 1})` }, diagLabel]);
   }
 
   const ws = XLSX.utils.aoa_to_sheet(data);
-  ws['!cols'] = [
-    { wch: 20 },
-    { wch: 10 },
-    { wch: 75 },
-    { wch: 20 },
-    { wch: 15 },
-    { wch: 20 },
-    { wch: 32 }
-  ];
-
-  for (let c = 0; c < 7; c++) {
-    const cellRef = XLSX.utils.encode_cell({ r: 0, c });
-    if (ws[cellRef]) ws[cellRef].s = headerStyle;
-  }
-
-  for (let r = 1; r < rowNum; r++) {
-    const skuData = skus[r - 1];
-    const rowFill = (skuData && skuData.status === 'Discontinued') ? { fgColor: { rgb: 'FFC000' } } : null;
-
-    if (ws[`A${r+1}`]) ws[`A${r+1}`].s = { font: { name: 'Courier New', bold: true }, locked: true, ...(rowFill ? { fill: rowFill } : {}) };
-    if (ws[`B${r+1}`]) ws[`B${r+1}`].s = { locked: false, ...(rowFill ? { fill: rowFill } : {}) };
-    if (ws[`C${r+1}`]) ws[`C${r+1}`].s = rowFill ? { fill: rowFill } : {};
-    if (ws[`D${r+1}`]) ws[`D${r+1}`].s = rowFill ? { fill: rowFill } : {};
-    if (ws[`E${r+1}`]) ws[`E${r+1}`].s = Object.assign({ locked: true, ...(rowFill ? { fill: rowFill } : {}) }, currencyStyle);
-    if (ws[`F${r+1}`]) ws[`F${r+1}`].s = Object.assign({ locked: true, ...(rowFill ? { fill: rowFill } : {}) }, currencyStyle);
-  }
-
-  if (skus.length > 0) {
-    const totRow = rowNum;
-    ws[`A${totRow}`].s = { font: { bold: true }, locked: true };
-    ws[`F${totRow}`].s = Object.assign({ font: { bold: true }, locked: true }, currencyStyle);
-    ws['!autofilter'] = { ref: `A1:F${rowNum-1}` };
-  }
-
-  ws['!protect'] = {
-    password: 'hpe',
-    selectLockedCells: true,
-    selectUnlockedCells: true,
-    formatCells: false
-  };
-
+  ws['!cols'] = [{ wch: 20 }, { wch: 10 }, { wch: 75 }, { wch: 20 }, { wch: 15 }, { wch: 20 }, { wch: 32 }];
+  _applySkusSheetStyling(ws, skus, rowNum, headerStyle, currencyStyle);
   XLSX.utils.book_append_sheet(wb, ws, sheetName);
 }
 
 function generateProfessionalBOQ(evalResults, exportPath, chassisId, rankTier, options = {}) {
   _enforceDeliveryAuthorization(evalResults, options, chassisId);
   const wb = XLSX.utils.book_new();
-  const tier = rankTier || 1;
-  const rankedSolution = _getRankedSolutions(evalResults).find(s => s.rank === tier) || null;
+  const isDiagnostic = options.diagnostic === true;
+  const tier = _parseStrictRankTier(rankTier);
+  const rankedSolutions = _getRankedSolutions(evalResults, {
+    allowRawFallback: isDiagnostic,
+    preferRankedList: true,
+    diagnostic: isDiagnostic
+  });
+  const rankedSolution = rankedSolutions.find(s => Number(s.rank) === tier) || null;
+  if (!rankedSolution) {
+    throw new Error(`Cannot export BOQ: Strategy Rank ${tier} does not exist in evaluation results.`);
+  }
+  if (!isDiagnostic && rankedSolution.physicalMathClean === false) {
+    throw new Error(`Cannot export BOQ: Strategy Rank ${tier} failed physical buildability verification.`);
+  }
   const allSkus = _resolveAllSkusWithFixes(rankedSolution, evalResults);
 
   const baseSkus = allSkus.filter(s => !s.isFixInjected && s.category !== 'Strategy Add-on' && s.category !== 'Aspect Rule Fix' && s.category !== 'Mandatory Aspect Fix');
@@ -244,12 +269,12 @@ function generateProfessionalBOQ(evalResults, exportPath, chassisId, rankTier, o
 
   const currencyStyle = { numFmt: '"$"#,##0.00' };
 
-  const wsSummary = _buildSummarySheet(evalResults, chassisId, rankedSolution, tier, headerStyle, currencyStyle);
+  const wsSummary = _buildSummarySheet(evalResults, chassisId, rankedSolution, tier, headerStyle, currencyStyle, options);
   XLSX.utils.book_append_sheet(wb, wsSummary, 'Summary');
 
-  _createSkusSheet(wb, baseSkus, 'Base BOM', 'No base SKUs found in this tier.', evalResults, headerStyle, currencyStyle);
-  _createSkusSheet(wb, missingDeps, 'Missing Dependencies', 'No missing physical dependencies injected.', evalResults, headerStyle, currencyStyle);
-  _createSkusSheet(wb, strategyOptions, 'Strategy Add-ons', 'No strategy up-sell add-ons for this tier.', evalResults, headerStyle, currencyStyle);
+  _createSkusSheet(wb, baseSkus, 'Base BOM', 'No base SKUs found in this tier.', evalResults, headerStyle, currencyStyle, options);
+  _createSkusSheet(wb, missingDeps, 'Missing Dependencies', 'No missing physical dependencies injected.', evalResults, headerStyle, currencyStyle, options);
+  _createSkusSheet(wb, strategyOptions, 'Strategy Add-ons', 'No strategy up-sell add-ons for this tier.', evalResults, headerStyle, currencyStyle, options);
 
   if (exportPath) XLSX.writeFile(wb, exportPath);
   return exportPath || wb;
@@ -264,15 +289,20 @@ function generateProfessionalBOQ(evalResults, exportPath, chassisId, rankTier, o
  * @param {string} exportPath - Output xlsx file path
  * @param {object} [options] - Optional title/config metadata
  */
-function _normalizeClusterList(clusters) {
+function _normalizeClusterList(clusters, options = {}) {
   if (Array.isArray(clusters)) return clusters;
   if (clusters && typeof clusters === 'object') {
     if (Array.isArray(clusters.clusters) && clusters.clusters.length > 0) {
       return clusters.clusters;
     }
+    const isDiagnostic = options.diagnostic === true;
     const serverCount = clusters.clusterSizing?.serverCount || clusters.clusterSizing?.totalNodes || clusters.serverCount || clusters.multiplier || 1;
-    const rankedSolution = _getRankedSolutions(clusters)[0];
-    const items = rankedSolution?.skuPartsList || rankedSolution?.skuList || clusters.parsedItems || clusters.items || [];
+    const rankedSolution = _getRankedSolutions(clusters, {
+      allowRawFallback: isDiagnostic,
+      preferRankedList: options.preferRankedList === true,
+      diagnostic: isDiagnostic
+    })[0];
+    const items = rankedSolution?.skuPartsList || rankedSolution?.skuList || (isDiagnostic ? (clusters.parsedItems || clusters.items || []) : []);
     return [{
       name: clusters.chassis || 'Server_Cluster',
       multiplier: serverCount,
@@ -302,10 +332,11 @@ function _formatPortalItemRow(it, mult, cluster) {
   return { row, ext };
 }
 
-function _buildPortalRowsForClusters(clusterList) {
+function _buildPortalRowsForClusters(clusterList, options = {}) {
   const portalData = [];
   let grandTotal = 0;
   let totalServerNodes = 0;
+  const diagTag = options.diagnostic === true ? '[INTERNAL DIAGNOSTIC] ' : '';
 
   clusterList.forEach((cluster, cIdx) => {
     const mult = cluster.multiplier || cluster.nodeCount || 1;
@@ -334,13 +365,16 @@ function _buildPortalRowsForClusters(clusterList) {
       const p = item.unitPriceUsd || item.price || item.unitPrice || 0;
       return !(p > 0) && !item.isConfirmedZeroPrice;
     });
-    portalData.push(['', '', `CONFIG #${cIdx + 1} SUBTOTAL:${hasIncompletePrices ? ' (KNOWN-PRICE INCOMPLETE)' : ''}`, '', '', configSubtotal, `${mult} Nodes Ready for Portal Feed`]);
+    portalData.push(['', '', `CONFIG #${cIdx + 1} SUBTOTAL:${hasIncompletePrices ? ' (KNOWN-PRICE INCOMPLETE)' : ''}`, '', '', configSubtotal, `${diagTag}${mult} Nodes Ready for Portal Feed`]);
   });
 
   if (clusterList.length > 1) {
     portalData.push([]);
     portalData.push([]);
-    portalData.push(['GRAND TOTAL (ALL CONFIGURATIONS):', '', `${totalServerNodes} Total Server Nodes`, '', '', grandTotal, 'Portal validation pending']);
+    portalData.push(['GRAND TOTAL (ALL CONFIGURATIONS):', '', `${totalServerNodes} Total Server Nodes`, '', '', grandTotal, `${diagTag}Portal validation pending`]);
+  }
+  if (options.diagnostic === true) {
+    portalData.push(['[INTERNAL DIAGNOSTIC] NOT VALIDATED FOR CUSTOMER PRESENTATION — DIAGNOSTIC MODE']);
   }
 
   return { portalData, grandTotal, totalServerNodes };
@@ -439,8 +473,14 @@ function generatePartnerPortalUploadBOM(clusters, exportPath, _options = {}) {
   }
   const wb = XLSX.utils.book_new();
 
-  const clusterList = _normalizeClusterList(clusters);
-  const { portalData } = _buildPortalRowsForClusters(clusterList);
+  const clusterList = _normalizeClusterList(clusters, _options);
+  if (exportPath) {
+    const totalItems = clusterList.reduce((sum, c) => sum + ((c?.items || c?.parts || c?.skuPartsList || []).length), 0);
+    if (totalItems === 0) {
+      throw new Error('Cannot export Partner Portal BOM without valid candidate items.');
+    }
+  }
+  const { portalData } = _buildPortalRowsForClusters(clusterList, _options);
 
   const ws = XLSX.utils.aoa_to_sheet(portalData);
   ws['!cols'] = [
@@ -508,49 +548,100 @@ function _getWorkbookStyles() {
   return { C_DARK, C_EMERALD, C_SLATE, C_ROW_ALT, C_WHITE, C_BORDER, C_SOFT_EMERALD, cellStyle, headerStyle };
 }
 
-function _getRankedSolutions(evalResults) {
-  const graph = evalResults.conflictGraph || {};
-  // Preserve the actual advisory manifest for fixed SAN appliances even while
-  // exact vendor acceptance is pending. Never replace it with an empty fallback.
-  if (evalResults.productType === 'SAN' && graph.rankedSolutions?.length) {
-    return graph.rankedSolutions.map(candidate => ({ ...candidate, isDraft: !receiptMatches(candidate.portalReceipt, candidate), isCertified: false }));
-  }
-  let rankedSolutions = Array.isArray(graph.recommendedSolutions)
-    ? graph.recommendedSolutions
-    : (graph.rankedSolutions || []).filter(s => s.physicalMathClean !== false && s.isUniqueBom !== false && s.isParetoOptimal !== false);
-  if (!Array.isArray(rankedSolutions) || rankedSolutions.length === 0) {
-    const isClean = evalResults.isMathClean === true && evalResults.conflictGraph?.isWholeSolutionValid === true && Array.isArray(evalResults.aspectChecks) && evalResults.aspectChecks.length >= 7 && evalResults.aspectChecks.every(a => a.status === 'PASS') && (!evalResults.missingDependencies || evalResults.missingDependencies.length === 0);
-    const baseItems = (evalResults.items || []).map(it => ({ ...it, isFixInjected: false }));
-    const { summarizeCandidatePricing } = require('./pricing_presence.js');
-    const pricingSummary = summarizeCandidatePricing(
-      baseItems,
-      evalResults.clusterSizing?.serverCount || 1,
-      [],
-      outputQuantities
-    );
-    rankedSolutions = [{
-      rank: 1,
-      name: isClean ? 'Customer Intent Preserved (Deterministic Verified)' : 'Customer Intent (Unresolved Physical Gaps - Draft)',
-      reasoning: isClean ? 'Baseline configuration with all mandatory 7-aspect hardware dependency kits satisfied.' : 'Uncertified baseline configuration with pending physical requirements or conflicts.',
-      estimatedCostUsd: pricingSummary.totalOrderCostUsd ?? evalResults.budgetOptimization?.currentBomCostUsd ?? null,
-      totalOrderCostUsd: pricingSummary.totalOrderCostUsd,
-      knownOrderSubtotalUsd: pricingSummary.knownOrderSubtotalUsd,
-      pricingComplete: pricingSummary.pricingComplete,
-      priceUnavailableSkus: pricingSummary.priceUnavailableSkus,
-      skuPartsList: baseItems,
-      tradeoffMetrics: { intentAlignment: isClean ? '100%' : 'PENDING_RESOLUTION' },
-      isDraft: !isClean,
-      isCertified: false,
-      buildabilityStatus: isClean ? 'LOCAL_RULE_CHECKED' : 'UNRESOLVED_PHYSICAL_GAPS'
-    }];
-  }
-  return rankedSolutions;
+function _filterCleanCandidates(list, allowUnbuildable = false) {
+  if (!Array.isArray(list)) return [];
+  if (allowUnbuildable) return list;
+  return list.filter(s => s && s.physicalMathClean !== false && s.isUniqueBom !== false && s.isParetoOptimal !== false);
 }
 
-function _buildSummaryMetrics(evalResults, chassis, serverCount, rankedSolutions) {
+function _extractCandidateArray(evalResults, options = {}) {
+  const graph = evalResults?.conflictGraph || {};
+  const preferRanked = options.preferRankedList === true;
+  const allowUnbuildable = options.diagnostic === true;
+
+  if (evalResults?.productType === 'SAN') {
+    const sanList = graph.rankedSolutions?.length ? graph.rankedSolutions : evalResults?.rankedSolutions;
+    if (Array.isArray(sanList) && sanList.length > 0) {
+      return sanList.map(candidate => ({
+        ...candidate,
+        isDraft: !receiptMatches(candidate.portalReceipt, candidate),
+        isCertified: false
+      }));
+    }
+  }
+
+  const sources = preferRanked
+    ? [
+      { list: graph.rankedSolutions, filter: true },
+      { list: evalResults?.rankedSolutions, filter: true },
+      { list: graph.recommendedSolutions, filter: false },
+      { list: evalResults?.recommendedSolutions, filter: false }
+    ]
+    : [
+      { list: graph.recommendedSolutions, filter: false },
+      { list: evalResults?.recommendedSolutions, filter: false },
+      { list: graph.rankedSolutions, filter: true },
+      { list: evalResults?.rankedSolutions, filter: true }
+    ];
+
+  for (const { list, filter } of sources) {
+    if (Array.isArray(list) && list.length > 0) {
+      return filter ? _filterCleanCandidates(list, allowUnbuildable) : list;
+    }
+  }
+  return null;
+}
+
+function _buildRawDraftFallback(evalResults) {
+  const isClean = evalResults.isMathClean === true && evalResults.conflictGraph?.isWholeSolutionValid === true && Array.isArray(evalResults.aspectChecks) && evalResults.aspectChecks.length >= 7 && evalResults.aspectChecks.every(a => a.status === 'PASS') && (!evalResults.missingDependencies || evalResults.missingDependencies.length === 0);
+  const baseItems = (evalResults.items || []).map(it => ({ ...it, isFixInjected: false }));
+  const { summarizeCandidatePricing } = require('./pricing_presence.js');
+  const pricingSummary = summarizeCandidatePricing(
+    baseItems,
+    evalResults.clusterSizing?.serverCount || 1,
+    [],
+    outputQuantities
+  );
+  return [{
+    rank: 1,
+    name: isClean ? 'Customer Intent Preserved (Deterministic Verified)' : 'Customer Intent (Unresolved Physical Gaps - Draft)',
+    reasoning: isClean ? 'Baseline configuration with all mandatory 7-aspect hardware dependency kits satisfied.' : 'Uncertified baseline configuration with pending physical requirements or conflicts.',
+    estimatedCostUsd: pricingSummary.totalOrderCostUsd ?? evalResults.budgetOptimization?.currentBomCostUsd ?? null,
+    totalOrderCostUsd: pricingSummary.totalOrderCostUsd,
+    knownOrderSubtotalUsd: pricingSummary.knownOrderSubtotalUsd,
+    pricingComplete: pricingSummary.pricingComplete,
+    priceUnavailableSkus: pricingSummary.priceUnavailableSkus,
+    skuPartsList: baseItems,
+    tradeoffMetrics: { intentAlignment: isClean ? '100%' : 'PENDING_RESOLUTION' },
+    isDraft: !isClean,
+    isCertified: false,
+    buildabilityStatus: isClean ? 'LOCAL_RULE_CHECKED' : 'UNRESOLVED_PHYSICAL_GAPS'
+  }];
+}
+
+function _getRankedSolutions(evalResults, options = {}) {
+  const allowRawFallback = options.allowRawFallback !== false;
+  const resolved = _extractCandidateArray(evalResults || {}, options);
+  if (resolved !== null) {
+    return resolved;
+  }
+  if (!allowRawFallback) {
+    return [];
+  }
+  return _buildRawDraftFallback(evalResults || {});
+}
+
+function _buildSummaryMetrics(evalResults, chassis, serverCount, rankedSolutions, options = {}) {
+  const isDiagnostic = options.diagnostic === true;
+  const title = isDiagnostic
+    ? 'HPE PROLIANT AI STUDIO - [INTERNAL DIAGNOSTIC] - MULTI-RANK SOLUTION WORKBOOK'
+    : 'HPE PROLIANT AI STUDIO - MULTI-RANK SOLUTION WORKBOOK';
+  const subtitle = isDiagnostic
+    ? `Target Platform: ${chassis} | Scope: ${serverCount} Server Node(s) | [INTERNAL DIAGNOSTIC] Authorization bypassed for review only`
+    : `Target Platform: ${chassis} | Scope: ${serverCount} Server Node(s) | Evaluation draft; consult individual validation gates`;
   return [
-    ['HPE PROLIANT AI STUDIO - MULTI-RANK SOLUTION WORKBOOK'],
-    [`Target Platform: ${chassis} | Scope: ${serverCount} Server Node(s) | Evaluation draft; consult individual validation gates`],
+    [title],
+    [subtitle],
     [],
     ['SOLUTION METRICS & EVALUATION STATUS'],
     ['Target Server / Chassis', chassis],
@@ -637,7 +728,7 @@ function _buildSummaryAuditRows(rankedSolutions, evalResults) {
   return rows;
 }
 
-function _buildSummaryData(evalResults, chassis = 'DL380_Gen12', serverCount = 1, rankedSolutions = []) {
+function _buildSummaryData(evalResults, chassis = 'DL380_Gen12', serverCount = 1, rankedSolutions = [], options = {}) {
   if (Array.isArray(chassis) && (!Array.isArray(rankedSolutions) || !rankedSolutions.length)) {
     rankedSolutions = chassis;
     chassis = evalResults?.targetChassis || 'DL380_Gen12';
@@ -647,7 +738,7 @@ function _buildSummaryData(evalResults, chassis = 'DL380_Gen12', serverCount = 1
     rankedSolutions = [];
   }
   return [
-    ..._buildSummaryMetrics(evalResults, chassis, serverCount, rankedSolutions),
+    ..._buildSummaryMetrics(evalResults, chassis, serverCount, rankedSolutions, options),
     ..._buildSummaryStrategyRows(rankedSolutions, evalResults),
     ..._buildSummaryAspectRows(evalResults),
     ..._buildSummaryAuditRows(rankedSolutions, evalResults)
@@ -707,7 +798,7 @@ function _styleSummarySheet(wsSummary, summaryData, styles) {
   }
 }
 
-function _buildRankItemRow(it, rowNum, serverCount, s, evalResults) {
+function _buildRankItemRow(it, rowNum, serverCount, s, evalResults, options = {}) {
   const { perNodeQty, nodeMult, totalQty } = outputQuantities(it, serverCount);
   const unitPrice = it.unitPriceUsd || it.price || 0;
   const extPrice = totalQty * unitPrice;
@@ -716,6 +807,7 @@ function _buildRankItemRow(it, rowNum, serverCount, s, evalResults) {
   const isModernized = Boolean(it.category === 'Modernized Platform Hardware' || it.role === 'Modernized Platform Hardware');
   const role = it.role || it.category || 'Standard Option';
   const rationale = it.reasoning || it.rationale || (isFix ? 'Mandatory physical dependency kit identified by 7-aspect rule engine' : (isModernized ? 'Modernized 5th Gen Emerald Rapids + DDR5-5600 Smart FIO architecture' : 'Customer specified baseline component'));
+  const diagPrefix = options.diagnostic === true ? '[INTERNAL DIAGNOSTIC] ' : '';
 
   const row = [
     it.sku || it['Product #'] || '',
@@ -729,14 +821,15 @@ function _buildRankItemRow(it, rowNum, serverCount, s, evalResults) {
     rationale,
     rankReviewBadge(evalResults, s),
     it.reasoning || s.reasoning || 'No candidate validation evidence recorded',
-    s.physicalMathClean === true ? 'LOCAL_RULE_CHECKED; ' + portalLabel(s) : 'DRAFT; ' + portalLabel(s)
+    diagPrefix + (s.physicalMathClean === true ? 'LOCAL_RULE_CHECKED; ' + portalLabel(s) : 'DRAFT; ' + portalLabel(s))
   ];
   return { row, extPrice };
 }
 
-function _buildRankSheetData(s, serverCount, evalResults = {}) {
+function _buildRankSheetData(s, serverCount, evalResults = {}, options = {}) {
   const rankData = [];
-  rankData.push([`HPE SOLUTION SPECIFICATION — RANK ${s.rank}: ${s.name || ''}`]);
+  const diagLabel = options.diagnostic === true ? '[INTERNAL DIAGNOSTIC] — ' : '';
+  rankData.push([`HPE SOLUTION SPECIFICATION — ${diagLabel}RANK ${s.rank}: ${s.name || ''}`]);
   rankData.push([`Estimated CapEx: $${s.pricingComplete === false ? 'INCOMPLETE' : (s.estimatedCostUsd ?? 'UNRESOLVED').toLocaleString()} | Alignment: ${s.tradeoffMetrics?.intentAlignment || (evalResults.isMathClean === true ? '100%' : 'PENDING')} | Server Nodes: ${serverCount}`]);
   rankData.push([
     'Part No',
@@ -759,7 +852,7 @@ function _buildRankSheetData(s, serverCount, evalResults = {}) {
   let rankSubtotal = 0;
 
   items.forEach((it) => {
-    const { row, extPrice } = _buildRankItemRow(it, rowNum, serverCount, s, evalResults);
+    const { row, extPrice } = _buildRankItemRow(it, rowNum, serverCount, s, evalResults, options);
     rankSubtotal += extPrice;
     rankData.push(row);
     rowNum++;
@@ -778,7 +871,7 @@ function _buildRankSheetData(s, serverCount, evalResults = {}) {
     `${serverCount} Node(s)`,
     rankReviewBadge(evalResults, s),
     s.physicalMathClean === true ? 'LOCAL_RULE_CHECKED' : 'UNVERIFIED',
-    portalLabel(s)
+    (options.diagnostic === true ? '[INTERNAL DIAGNOSTIC] ' : '') + portalLabel(s)
   ]);
 
   return { rankData, items };
@@ -850,14 +943,23 @@ function _styleRankSheet(wsRank, rankData, items, styles) {
 function generateMultiRankSolutionWorkbook(evalResults, exportPath = '', chassisId = '', options = {}) {
   _enforceDeliveryAuthorization(evalResults, options, chassisId);
   const wb = XLSX.utils.book_new();
+  const isDiagnostic = options.diagnostic === true;
   const chassis = chassisId || evalResults.chassis || evalResults.chassisVariant || evalResults.model || 'Unknown_Chassis';
   const serverCount = evalResults.clusterSizing?.serverCount || evalResults.clusterSizing?.totalNodes || evalResults.serverCount || 1;
   const styles = _getWorkbookStyles();
 
-  const rankedSolutions = _getRankedSolutions(evalResults);
+  const rankedSolutions = _getRankedSolutions(evalResults, {
+    allowRawFallback: isDiagnostic,
+    preferRankedList: true,
+    diagnostic: isDiagnostic
+  });
+  const hasCandidateItems = rankedSolutions.some(s => (s.skuPartsList || s.skuList || []).length > 0);
+  if (!hasCandidateItems) {
+    throw new Error('Cannot export multi-rank workbook without validated candidate solutions.');
+  }
 
   // --- SHEET 1: EXECUTIVE SUMMARY & ASPECTS ---
-  const summaryData = _buildSummaryData(evalResults, chassis, serverCount, rankedSolutions);
+  const summaryData = _buildSummaryData(evalResults, chassis, serverCount, rankedSolutions, options);
   const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
   _styleSummarySheet(wsSummary, summaryData, styles);
   XLSX.utils.book_append_sheet(wb, wsSummary, 'Executive Summary & Aspects');
@@ -866,7 +968,7 @@ function generateMultiRankSolutionWorkbook(evalResults, exportPath = '', chassis
   rankedSolutions.forEach((s) => {
     const rawTitle = `Rank ${s.rank} - ${(s.name || 'Solution').slice(0, 20).replace(/[/\\?*[\]:]/g, '')}`.trim();
     const sheetTitle = rawTitle.slice(0, 31);
-    const { rankData, items } = _buildRankSheetData(s, serverCount, evalResults);
+    const { rankData, items } = _buildRankSheetData(s, serverCount, evalResults, options);
     const wsRank = XLSX.utils.aoa_to_sheet(rankData);
     _styleRankSheet(wsRank, rankData, items, styles);
     XLSX.utils.book_append_sheet(wb, wsRank, sheetTitle);
@@ -890,7 +992,7 @@ function _escapeCsvCell(val) {
   return `"${str}"`;
 }
 
-function _formatCsvSolutionItem(it, s, serverCount, evalResults) {
+function _formatCsvSolutionItem(it, s, serverCount, evalResults, options = {}) {
   const { perNodeQty, nodeMult, totalQty } = outputQuantities(it, serverCount);
   const unitPrice = it.unitPriceUsd || it.price || 0;
   const extPrice = totalQty * unitPrice;
@@ -898,6 +1000,7 @@ function _formatCsvSolutionItem(it, s, serverCount, evalResults) {
   const isModernized = Boolean(it.category === 'Modernized Platform Hardware' || it.role === 'Modernized Platform Hardware');
   const role = it.role || it.category || 'Standard Option';
   const rationale = it.reasoning || it.rationale || (isFix ? 'Mandatory physical dependency kit identified by 7-aspect rule engine' : (isModernized ? 'Modernized 5th Gen Emerald Rapids + DDR5-5600 Smart FIO architecture' : 'Customer specified baseline component'));
+  const diagPrefix = options.diagnostic === true ? '[INTERNAL DIAGNOSTIC] ' : '';
 
   return [
     _escapeCsvCell(`Rank ${s.rank}`),
@@ -913,7 +1016,7 @@ function _formatCsvSolutionItem(it, s, serverCount, evalResults) {
     _escapeCsvCell(rationale),
     _escapeCsvCell(rankReviewBadge(evalResults, s)),
     _escapeCsvCell(s.reasoning || 'No candidate validation evidence recorded'),
-    _escapeCsvCell(portalLabel(s))
+    _escapeCsvCell(diagPrefix + portalLabel(s))
   ].join(',');
 }
 
@@ -928,8 +1031,17 @@ function _formatCsvSolutionItem(it, s, serverCount, evalResults) {
  */
 function generateMultiRankSolutionCsv(evalResults, exportPath = '', options = {}) {
   _enforceDeliveryAuthorization(evalResults, options, options.chassisKey);
+  const isDiagnostic = options.diagnostic === true;
   const serverCount = evalResults.clusterSizing?.serverCount || evalResults.clusterSizing?.totalNodes || evalResults.serverCount || 1;
-  const rankedSolutions = _getRankedSolutions(evalResults);
+  const rankedSolutions = _getRankedSolutions(evalResults, {
+    allowRawFallback: isDiagnostic,
+    preferRankedList: true,
+    diagnostic: isDiagnostic
+  });
+  const hasCandidateItems = rankedSolutions.some(s => (s.skuPartsList || s.skuList || []).length > 0);
+  if (!hasCandidateItems) {
+    throw new Error('Cannot export multi-rank CSV without validated candidate solutions.');
+  }
 
   const headers = [
     'Strategy Rank',
@@ -950,16 +1062,10 @@ function generateMultiRankSolutionCsv(evalResults, exportPath = '', options = {}
 
   const rows = [headers.map(_escapeCsvCell).join(',')];
 
-  const solutions = rankedSolutions.length > 0 ? rankedSolutions : [{
-    rank: 1,
-    name: 'Customer Intent Preserved',
-    skuPartsList: evalResults.items || []
-  }];
-
-  solutions.forEach(s => {
+  rankedSolutions.forEach(s => {
     const items = s.skuPartsList || s.skuList || [];
     items.forEach(it => {
-      rows.push(_formatCsvSolutionItem(it, s, serverCount, evalResults));
+      rows.push(_formatCsvSolutionItem(it, s, serverCount, evalResults, options));
     });
   });
 
@@ -980,7 +1086,8 @@ module.exports = {
   generateMultiRankSolutionWorkbook,
   generateMultiRankSolutionCsv,
   _buildSummaryData,
-  _getRankedSolutions
+  _getRankedSolutions,
+  _parseStrictRankTier
 };
 
 // ── CLI Runner ─────────────────────────────────────────────────────────────

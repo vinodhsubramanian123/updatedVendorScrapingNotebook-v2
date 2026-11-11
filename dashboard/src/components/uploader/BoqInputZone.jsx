@@ -14,8 +14,12 @@ export default function BoqInputZone({
   isPreprocessing,
   onDirectEvaluate,
   isEvaluating,
-  onLoadSampleBoq
+  onLoadSampleBoq,
+  localOnly = true,
+  onLocalOnlyChange
 }) {
+  const isImageOrPdfFile = Boolean(file?.name && /\.(pdf|png|jpe?g|webp|tiff|gif|bmp)$/i.test(file.name));
+
   return (
     <div className="glass-card p-6 border border-slate-200 shadow-sm rounded-xl space-y-4">
       <div className="flex items-center justify-between">
@@ -103,26 +107,42 @@ export default function BoqInputZone({
         />
       </div>
 
-      <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
-        <button
-          type="button"
-          onClick={() => onPreprocess()}
-          disabled={isPreprocessing || (!file && !rawText.trim())}
-          className="btn-secondary text-xs flex items-center gap-1.5"
-        >
-          {isPreprocessing ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Layers className="w-3.5 h-3.5 text-slate-600" />}
-          {isPreprocessing ? 'Analyzing Variations...' : 'Pre-flight Variation Analysis'}
-        </button>
+      {localOnly && isImageOrPdfFile && (
+        <div role="alert" className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900">
+          <strong>Local-only mode active:</strong> PDF and image files cannot be sent to cloud OCR while <em>Use local catalog only</em> is checked. Provide pasted text or upload CSV/XLSX, or uncheck local-only mode if cloud OCR is permitted.
+        </div>
+      )}
 
-        <button
-          type="button"
-          onClick={onDirectEvaluate}
-          disabled={isEvaluating || (!file && !rawText.trim())}
-          className="btn-primary text-xs flex items-center gap-1.5 shadow-sm"
-        >
-          {isEvaluating ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Calculator className="w-3.5 h-3.5" />}
-          {isEvaluating ? 'Evaluating Solution...' : 'Run 7-Aspect Evaluation'}
-        </button>
+      <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-100">
+        <label className="flex items-center gap-2 text-xs font-medium text-slate-700 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={localOnly}
+            onChange={(e) => onLocalOnlyChange && onLocalOnlyChange(e.target.checked)}
+          />
+          Use local catalog only
+        </label>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => onPreprocess()}
+            disabled={isPreprocessing || (!file && !rawText.trim())}
+            className="btn-secondary text-xs flex items-center gap-1.5"
+          >
+            {isPreprocessing ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Layers className="w-3.5 h-3.5 text-slate-600" />}
+            {isPreprocessing ? 'Analyzing Variations...' : 'Pre-flight Variation Analysis'}
+          </button>
+
+          <button
+            type="button"
+            onClick={onDirectEvaluate}
+            disabled={isEvaluating || (!file && !rawText.trim())}
+            className="btn-primary text-xs flex items-center gap-1.5 shadow-sm"
+          >
+            {isEvaluating ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Calculator className="w-3.5 h-3.5" />}
+            {isEvaluating ? 'Evaluating Solution...' : 'Run 7-Aspect Evaluation'}
+          </button>
+        </div>
       </div>
     </div>
   );

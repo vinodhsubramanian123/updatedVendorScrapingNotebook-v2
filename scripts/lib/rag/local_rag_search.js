@@ -482,7 +482,7 @@ function queryLocalKnowledgeBase(query, chassisName = '') {
   return synthesizeRankedRagAnswer(rawMatches, citations, query, chassisName);
 }
 
-async function queryLocalKnowledgeBaseAsync(query, chassisName = '', notebookId = '') {
+async function queryLocalKnowledgeBaseAsync(query, chassisName = '', notebookId = '', options = {}) {
   let resolvedChassis = chassisName;
   if (!resolvedChassis && notebookId) {
     try {
@@ -499,6 +499,12 @@ async function queryLocalKnowledgeBaseAsync(query, chassisName = '', notebookId 
     } catch (e) { const _logger = require('../system/pipeline_logger.js'); _logger.warn('ERROR', 'local_rag_search.js', e); }
   }
   const localRes = queryLocalKnowledgeBase(query, resolvedChassis);
+
+  const isServerOffline = [process.env.OFFLINE_MODE, process.env.LOCAL_EVAL_ONLY, process.env.USE_LOCAL_RAG_ONLY]
+    .some(value => ['true', '1'].includes(String(value || '').trim().toLowerCase()));
+  if (isServerOffline || options?.offline === true || options?.offlineMode === true || options?.effectivePolicy?.offline === true) {
+    return localRes;
+  }
 
   const geminiRotator = require('../system/gemini_rotator.js');
   const activeKeyInfo = geminiRotator.getActiveKey();

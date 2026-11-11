@@ -346,8 +346,21 @@ function _extractGuardrailText(response) {
   return '';
 }
 
-async function runAgenticGuardrail(items, chassisDir) {
+async function runAgenticGuardrail(items, chassisDir, options = {}) {
   const startTime = Date.now();
+
+  const { resolveEffectivePolicy } = require('../system/policy_resolver.js');
+  const policy = resolveEffectivePolicy({
+    clientOffline: options.offline,
+    clientOfflineMode: options.offlineMode,
+    inheritedPolicy: options.effectivePolicy || null,
+    defaultOffline: false,
+    includeRagOnly: true,
+    lockInheritedOffline: true
+  });
+  if (policy.offline) {
+    return failedReview('OFFLINE_POLICY_BLOCKED: Agentic cloud guardrail is disabled under local-only policy.');
+  }
 
   const activeKeyInfo = geminiRotator.getActiveKey();
   if (!activeKeyInfo || !activeKeyInfo.apiKey) {

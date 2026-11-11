@@ -6,6 +6,7 @@ import RunDetailModal from './history/RunDetailModal';
 export default function ScrapingHistorySection({ 
   onTriggerScrape: _onTriggerScrape, 
   onTriggerRebuild: _onTriggerRebuild, 
+  onReopenRun,
   isTaskRunning = false,
   className = '' 
 }) {
@@ -81,6 +82,7 @@ export default function ScrapingHistorySection({
         typeFilter={typeFilter}
         setTypeFilter={setTypeFilter}
         onViewTrace={handleViewTrace}
+        onReopenRun={onReopenRun}
       />
 
       <RunDetailModal

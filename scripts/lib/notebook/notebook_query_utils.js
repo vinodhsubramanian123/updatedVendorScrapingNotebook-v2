@@ -475,8 +475,21 @@ function _resolveQueryTargetAndScope(targetNotebookId, rawQuery, options, queryL
   return { configuredEntry, authoritativeSourceIds, combinedSourceIds };
 }
 
+function _isOfflineExecutionBlocked(options = {}) {
+  const serverOffline = [process.env.OFFLINE_MODE, process.env.LOCAL_EVAL_ONLY, process.env.USE_LOCAL_RAG_ONLY]
+    .some(value => ['true', '1'].includes(String(value || '').trim().toLowerCase()));
+  return Boolean(
+    serverOffline ||
+    options.offline === true ||
+    options.offlineMode === true ||
+    options.useLocalRagOnly === true ||
+    options.effectivePolicy?.offline === true
+  );
+}
+
 function _checkCacheOrOfflineFallback(cacheKey, sanitizedQuery, rawQuery, options, authoritativeSourceIds, queryLocalKnowledgeBase, logger) {
-  if (!options.bypassCache && !options.offlineMode && !options.useLocalRagOnly && process.env.USE_LOCAL_RAG_ONLY !== '1' && process.env.LOCAL_EVAL_ONLY !== '1') {
+  const offlineBlocked = _isOfflineExecutionBlocked(options);
+  if (!options.bypassCache && !offlineBlocked) {
     const cached = getCachedRagResult(cacheKey);
     const verifiedCache = cached && postProcessNotebookResult(cached, sanitizedQuery, { ...options.context, authoritativeSourceIds });
     if (verifiedCache?.isCloudGrounded === true && verifiedCache?.groundingVerification === 'VERIFIED_GROUNDED') {
@@ -488,13 +501,13 @@ function _checkCacheOrOfflineFallback(cacheKey, sanitizedQuery, rawQuery, option
     }
   }
 
-  if (process.env.USE_LOCAL_RAG_ONLY === '1' || process.env.LOCAL_EVAL_ONLY === '1' || options.offlineMode === true || options.useLocalRagOnly === true) {
+  if (offlineBlocked) {
     const localRes = queryLocalKnowledgeBase(rawQuery, options.context ? options.context.chassis : '');
     return {
       ...localRes,
       source: 'LOCAL_RAG_FALLBACK',
       isCloudGrounded: false,
-      fallbackReason: options.offlineMode ? 'Offline evaluation mode requested in options' : 'Local evaluation mode explicitly configured (USE_LOCAL_RAG_ONLY/LOCAL_EVAL_ONLY)'
+      fallbackReason: options.offlineMode || options.offline ? 'Offline evaluation mode requested in options' : 'Local evaluation mode enforced by server (OFFLINE_MODE/LOCAL_EVAL_ONLY/USE_LOCAL_RAG_ONLY)'
     };
   }
 
@@ -512,7 +525,7 @@ function _checkQueryFatalAbortOrUnknown(failure, options, isStrictCloud) {
 }
 
 async function _tryInFlightAuthHealing(diagnostic, options, notebookId, rawQuery, logger) {
-  if (diagnostic.errorType !== 'AUTH_EXPIRED' || options._retriedAuth || options.offlineMode || options.useLocalRagOnly) {
+  if (diagnostic.errorType !== 'AUTH_EXPIRED' || options._retriedAuth || _isOfflineExecutionBlocked(options)) {
     return null;
   }
   try {

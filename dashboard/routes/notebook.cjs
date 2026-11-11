@@ -56,6 +56,7 @@ const logger = require('../../scripts/lib/system/pipeline_logger.js');
 const { verifyVendorBOM } = require('../../scripts/lib/boq/vendor_bom_verifier.js');
 const { processPortalFeedback } = require('../../scripts/lib/feedback/feedback_loop.js');
 const { resolveChassisDirectory } = require('../../scripts/lib/catalog/sku_versioning.js');
+const policyResolver = require('../services/policyResolver.cjs');
 
 if (process.env.NODE_ENV !== 'test') {
   const recovery = resumePendingJobs(executeNotebookQuery);
@@ -100,69 +101,153 @@ router.get('/notebook-scenarios', (req, res) => {
   });
 });
 
+function isServerOffline() {
+  return policyResolver.isServerOffline({ includeRagOnly: true });
+}
+
+function resolveNotebookPolicy(reqBody = {}, inheritedPolicy = null, lockInheritedOffline = false) {
+  return policyResolver.resolveEffectivePolicy({
+    clientOffline: reqBody.offline,
+    clientOfflineMode: reqBody.offlineMode,
+    enableCloudValidation: reqBody.enableCloudValidation,
+    inheritedPolicy,
+    defaultOffline: false,
+    includeRagOnly: true,
+    lockInheritedOffline
+  });
+}
+
+function findRunOrLatestSnapshot(runId) {
+  if (!runId) return null;
+  const { getRunById, getRunSnapshot } = require('../services/runState.cjs');
+  if (typeof getRunById === 'function') {
+    const run = getRunById(runId);
+    if (run) return run;
+  }
+  const latest = getRunSnapshot().latestResult;
+  return latest?.runId === runId ? latest : null;
+}
+
+function isRunOfflineLocked(runRecord, evalEvent) {
+  return Boolean(
+    runRecord?.effectivePolicy?.offline === true ||
+    runRecord?.inputDescriptor?.offline === true ||
+    evalEvent?.effectivePolicy?.offline === true ||
+    evalEvent?.inputDescriptor?.offline === true ||
+    evalEvent?.data?.effectivePolicy?.offline === true ||
+    evalEvent?.data?.evalResults?.offlineMode === true ||
+    evalEvent?.data?.offlineMode === true
+  );
+}
+
+function buildLocalFallbackResult(query, targetChassis, effectivePolicy, notebookId) {
+  const localRes = queryLocalKnowledgeBase(query, targetChassis || '');
+  const cloudUnavailableReason = effectivePolicy.serverEnforced
+    ? 'SERVER_OFFLINE_POLICY'
+    : (effectivePolicy.offline ? 'CLIENT_LOCAL_ONLY' : 'NO_DEDICATED_NOTEBOOK');
+  const prefix = effectivePolicy.offline
+    ? (effectivePolicy.serverEnforced
+      ? 'Local Evaluation Engine: Local-only policy enforced by server. Cloud NotebookLM grounding disabled.'
+      : 'Local Evaluation Engine: Local-only mode selected. Cloud NotebookLM grounding disabled.')
+    : `Local Evaluation Engine: No dedicated notebook configured for "${targetChassis || 'unknown'}".`;
+  const answer = localRes.answer ? `${prefix}\n\n${localRes.answer}` : prefix;
+  return {
+    ...localRes,
+    query: localRes.query || sanitizeNotebookQuery(query, { chassis: targetChassis }),
+    answer,
+    citations: Array.isArray(localRes.citations) ? localRes.citations : [],
+    source: notebookId && !effectivePolicy.offline ? 'LOCAL_FALLBACK' : 'LOCAL_RAG_FALLBACK',
+    groundingVerification: 'UNVERIFIED',
+    isCloudGrounded: false,
+    learningEligible: false,
+    effectivePolicy,
+    cloudUnavailableReason
+  };
+}
+
 // ── Synchronous Notebook Query ────────────────────────────────────────────────
 router.post('/notebook-query', asyncHandler(async (req, res) => {
-  const { query, chassis } = req.body;
+  const { query, chassis, chassisId, runId } = req.body || {};
   if (!query) return sendErrorResponse(res, 400, 'Query string is required', { source: 'NOTEBOOK_ROUTER' });
 
-  const sanitizationDetails = getSanitizationBreakdown(query, { chassis });
-  const notebookId = resolveNotebookId(chassis);
+  const targetChassis = chassis || chassisId || '';
+  const parentRun = runId ? findRunOrLatestSnapshot(runId) : null;
+  const effectivePolicy = resolveNotebookPolicy(req.body, parentRun?.effectivePolicy || null, Boolean(runId));
+  const sanitizationDetails = getSanitizationBreakdown(query, { chassis: targetChassis });
+  const notebookId = resolveNotebookId(targetChassis);
 
-  if (!notebookId) {
-    const localRes = queryLocalKnowledgeBase(query, chassis);
-    return res.json({ ...localRes, sanitizationDetails, scenario: sanitizationDetails.scenario });
+  if (effectivePolicy.offline || !notebookId) {
+    const localFallback = buildLocalFallbackResult(query, targetChassis, effectivePolicy, notebookId);
+    return res.json({
+      ...localFallback,
+      sanitizationDetails,
+      scenario: sanitizationDetails.scenario,
+      source: 'LOCAL_FALLBACK'
+    });
   }
 
   try {
     const startTime = Date.now();
-    const result = await executeNotebookQuery(notebookId, query, { context: { chassis } });
+    const result = await executeNotebookQuery(notebookId, query, {
+      context: { chassis: targetChassis },
+      offline: false,
+      offlineMode: false,
+      effectivePolicy
+    });
     const durationMs = Date.now() - startTime;
     telemetryLib.recordNotebookConsultationTelemetry({
       query: result.query, sanitizedQuery: sanitizationDetails.sanitizedQuery, answer: result.answer,
-      citations: result.citations, durationMs, scenario: sanitizationDetails.scenario, chassis,
+      citations: result.citations, durationMs, scenario: sanitizationDetails.scenario, chassis: targetChassis,
       agreementScore: result.isCloudGrounded ? 0.95 : 0.6,
       nextActionExecuted: result.isCloudGrounded ? 'DEPENDENCY_VALIDATED_AND_DOUBLE_PROOFED' : 'LOCAL_FALLBACK_ADVISORY'
     });
-    res.json({ ...result, durationMs, sanitizationDetails, scenario: sanitizationDetails.scenario, timestamps: { requestSentAt: new Date(startTime - durationMs).toISOString(), responseReceivedAt: new Date().toISOString() } });
+    res.json({ ...result, effectivePolicy, durationMs, sanitizationDetails, scenario: sanitizationDetails.scenario, timestamps: { requestSentAt: new Date(startTime - durationMs).toISOString(), responseReceivedAt: new Date().toISOString() } });
   } catch (err) {
-    res.json({ query: sanitizeNotebookQuery(query, { chassis }), sanitizationDetails, scenario: sanitizationDetails.scenario, answer: `NotebookLM Query Fallback: ${err.message || 'Timeout exceeded'}`, citations: [], source: 'FALLBACK' });
+    res.json({
+      query: sanitizeNotebookQuery(query, { chassis: targetChassis }),
+      sanitizationDetails,
+      scenario: sanitizationDetails.scenario,
+      answer: `NotebookLM Query Fallback: ${err.message || 'Timeout exceeded'}`,
+      citations: [],
+      source: 'FALLBACK',
+      isCloudGrounded: false,
+      groundingVerification: 'UNVERIFIED',
+      learningEligible: false,
+      effectivePolicy,
+      cloudUnavailableReason: 'NOTEBOOK_QUERY_ERROR'
+    });
   }
 }));
 
 // ── Async Notebook Query ──────────────────────────────────────────────────────
 function validateEvaluationQueryContext(runId, query, chassis) {
-  if (!runId) return;
-  const { getRunSnapshot } = require('../services/runState.cjs');
-  const result = getRunSnapshot().latestResult;
-  if (result?.runId !== runId || result.data?.notebookPayload !== query) throw new Error('Notebook query does not match the current evaluation payload');
-  if (result.inputDescriptor?.offline === true) throw new Error('This evaluation was configured for local-only execution');
-  const target = result.data.chassisDir;
+  if (!runId) return null;
+  const runRecord = findRunOrLatestSnapshot(runId);
+  const evalEvent = runRecord?.result || runRecord;
+  if (isServerOffline() || isRunOfflineLocked(runRecord, evalEvent)) {
+    throw new Error('Local-only run: deferred cloud notebook query is prohibited.');
+  }
+  if (!evalEvent || evalEvent.runId !== runId || evalEvent.data?.notebookPayload !== query) {
+    throw new Error('Notebook query does not match the current evaluation payload');
+  }
+  const target = evalEvent.data?.chassisDir;
   if (!target || !chassis || path.resolve(resolveChassisDirectory(target)) !== path.resolve(resolveChassisDirectory(chassis))) {
     throw new Error('Notebook query product does not match the evaluated product');
   }
+  return runRecord;
 }
 
 router.post('/notebook-query-async', (req, res) => {
-  const { query: rawQueryInput, chassis, learningEligible, chassisDir, runId } = req.body;
+  const { query: rawQueryInput, chassis, learningEligible, chassisDir, runId } = req.body || {};
   const query = typeof rawQueryInput === 'string' ? rawQueryInput : (rawQueryInput?.query || String(rawQueryInput || ''));
   if (!query || !query.trim()) return sendErrorResponse(res, 400, 'Query string is required', { source: 'NOTEBOOK_ROUTER' });
-  try { validateEvaluationQueryContext(runId, query, chassis); }
-  catch (err) { return sendErrorResponse(res, 409, err, { source: 'NOTEBOOK_ROUTER' }); }
-
-  const notebookId = resolveNotebookId(chassis);
-  if (!notebookId) {
-    return res.status(202).json({
-      jobId: `job_${Date.now()}_local`,
-      status: 'LOCAL_FALLBACK',
-      result: {
-        query: sanitizeNotebookQuery(query, { chassis }),
-        answer: 'Local Evaluation Engine: Dedicated RAG notebook mapping unavailable for this chassis. Fails closed to local deterministic rules.',
-        citations: [],
-        source: 'LOCAL_FALLBACK',
-        isCloudGrounded: false
-      }
-    });
+  let runRecord = null;
+  try {
+    runRecord = validateEvaluationQueryContext(runId, query, chassis);
+  } catch (err) {
+    return sendErrorResponse(res, 409, err, { source: 'NOTEBOOK_ROUTER', runId });
   }
+
   let safeChassisDir = null;
   if (learningEligible) {
     if (!chassisDir || !chassis) return sendErrorResponse(res, 400, 'learningEligible queries require exact chassis and chassisDir values', { source: 'NOTEBOOK_ROUTER' });
@@ -176,15 +261,47 @@ router.post('/notebook-query-async', (req, res) => {
       return sendErrorResponse(res, 403, err, { source: 'NOTEBOOK_ROUTER' });
     }
   }
+
+  const effectivePolicy = resolveNotebookPolicy(
+    req.body,
+    runRecord?.effectivePolicy || runRecord?.result?.effectivePolicy || null,
+    Boolean(runId)
+  );
+  if (runId && effectivePolicy.offline) {
+    return sendErrorResponse(res, 409, 'This evaluation was configured for local-only execution', {
+      source: 'NOTEBOOK_ROUTER',
+      runId,
+      effectivePolicy
+    });
+  }
+
+  const notebookId = resolveNotebookId(chassis);
+  if (effectivePolicy.offline || !notebookId) {
+    const localFallback = buildLocalFallbackResult(query, chassis, effectivePolicy, notebookId);
+    return res.status(202).json({
+      ...localFallback,
+      jobId: `job_${Date.now()}_local`,
+      status: 'LOCAL_FALLBACK',
+      effectivePolicy,
+      result: {
+        ...localFallback,
+        source: 'LOCAL_FALLBACK'
+      }
+    });
+  }
+
   const jobInfo = startAsyncNotebookQueryJob(notebookId, query, {
-    context: { chassis, learningEligible: Boolean(learningEligible), chassisDir: safeChassisDir, runId: runId || null }
-  }, executeNotebookQuery);
+    context: { chassis, learningEligible: Boolean(learningEligible), chassisDir: safeChassisDir, runId: runId || null },
+    offline: false,
+    offlineMode: false,
+    effectivePolicy
+  });
   if (runId) {
     const { registerRagJob } = require('../services/runState.cjs');
     registerRagJob(runId, jobInfo.jobId);
   }
   broadcastSSE({ type: 'LOG', text: `🤖 [ASYNC_RAG_LAUNCHED] Job ${jobInfo.jobId} started for ${chassis || 'DL380 Gen12 SFF'}`, stream: 'stdout', runId });
-  res.status(202).json(jobInfo);
+  res.status(202).json({ ...jobInfo, effectivePolicy });
 });
 
 // ── Async Notebook Query Status ───────────────────────────────────────────────
@@ -233,21 +350,54 @@ router.get('/notebooklm-consultations', (req, res) => {
 
 // ── Ask Notebook (MCP Bridge) ─────────────────────────────────────────────────
 router.post('/ask-notebook', asyncHandler(async (req, res) => {
-  const { prompt, chassis } = req.body;
+  const { prompt, chassis, runId } = req.body || {};
   if (!prompt) return sendErrorResponse(res, 400, 'prompt is required', { source: 'NOTEBOOK_ROUTER' });
 
+  const parentRun = runId ? findRunOrLatestSnapshot(runId) : null;
+  const effectivePolicy = resolveNotebookPolicy(req.body, parentRun?.effectivePolicy || null, Boolean(runId));
   const notebookId = resolveNotebookId(chassis);
-  if (!notebookId) {
-    logger.warn('NOTEBOOK_ROUTE', `No notebook configured for chassis "${chassis || 'unknown'}". Routing to LOCAL_RAG_FALLBACK.`);
-    const localRes = queryLocalKnowledgeBase(prompt, chassis || '');
-    return res.json({ answer: localRes.answer, citations: localRes.citations || [], query: localRes.query, source: 'LOCAL_RAG_FALLBACK', groundingVerification: 'UNVERIFIED', isCloudGrounded: false, learningEligible: false, warning: `No notebook configured for chassis "${chassis || 'unknown'}"` });
+  if (effectivePolicy.offline || !notebookId) {
+    if (!notebookId) {
+      logger.warn('NOTEBOOK_ROUTE', `No notebook configured for chassis "${chassis || 'unknown'}". Routing to LOCAL_RAG_FALLBACK.`);
+    }
+    const localRes = buildLocalFallbackResult(prompt, chassis || '', effectivePolicy, notebookId);
+    return res.json({
+      ...localRes,
+      warning: effectivePolicy.offline
+        ? 'Local-only execution policy is active; cloud NotebookLM disabled.'
+        : `No notebook configured for chassis "${chassis || 'unknown'}"`
+    });
   }
 
   try {
-    const result = await executeNotebookQuery(notebookId, prompt, { context: { chassis } });
-    res.json({ answer: result.answer, citations: result.citations || [], query: result.query, source: result.source, groundingVerification: result.groundingVerification, isCloudGrounded: result.isCloudGrounded === true, learningEligible: result.isCloudGrounded === true && result.groundingVerification === 'VERIFIED_GROUNDED' && (result.citations || []).length > 0 });
+    const result = await executeNotebookQuery(notebookId, prompt, {
+      context: { chassis },
+      offline: false,
+      offlineMode: false,
+      effectivePolicy
+    });
+    res.json({
+      answer: result.answer,
+      citations: result.citations || [],
+      query: result.query,
+      source: result.source,
+      groundingVerification: result.groundingVerification,
+      isCloudGrounded: result.isCloudGrounded === true,
+      learningEligible: result.isCloudGrounded === true && result.groundingVerification === 'VERIFIED_GROUNDED' && (result.citations || []).length > 0,
+      effectivePolicy
+    });
   } catch (err) {
-    res.json({ answer: `NotebookLM is unavailable or did not return verified grounding. No hardware rule was inferred. Continue with deterministic local checks or submit evidence for human review. (${err.message})`, citations: [], query: sanitizeNotebookQuery(prompt, { chassis }), source: 'NOTEBOOK_LM_UNAVAILABLE', groundingVerification: 'UNVERIFIED', isCloudGrounded: false, learningEligible: false });
+    res.json({
+      answer: `NotebookLM is unavailable or did not return verified grounding. No hardware rule was inferred. Continue with deterministic local checks or submit evidence for human review. (${err.message})`,
+      citations: [],
+      query: sanitizeNotebookQuery(prompt, { chassis }),
+      source: 'NOTEBOOK_LM_UNAVAILABLE',
+      groundingVerification: 'UNVERIFIED',
+      isCloudGrounded: false,
+      learningEligible: false,
+      effectivePolicy,
+      cloudUnavailableReason: 'NOTEBOOK_LM_UNAVAILABLE'
+    });
   }
 }));
 

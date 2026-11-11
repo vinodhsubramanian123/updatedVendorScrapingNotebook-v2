@@ -5,7 +5,7 @@ const INTENT_RULES = Object.freeze([
   ['BOQ_EVALUATION', 'OBJECTIVE', /\b(?:evaluate\s+(?:this\s+)?(?:boq|bom)|validate\s+(?:this\s+)?(?:boq|bom)|verify\s+bom|check\s+buildability)\b/i],
   ['RFP_SIZING_TO_BOM', 'OBJECTIVE', /\b(?:size\s+(?:a\s+)?(?:server|configuration)|sizing|build\s+(?:a\s+)?bom|generate\s+(?:a\s+)?bom|create\s+a\s+configuration|configure|quote\s+me|need.*(?:cores|ram|tb\s+storage))\b/i],
   ['BOM_RECONCILIATION', 'OBJECTIVE', /\b(?:reconcile|compare\s+boms?|tender\s+vs\.?\s+quote|quote\s+comparison|ghost\s+sku)\b/i],
-  ['CATALOG_INTELLIGENCE', 'OBJECTIVE', /\b(?:price\s+trend|pricing\s+history|lifecycle|is\s+obsolete|direct\s+ship|gpl\s+price|list\s+price\s+of|options\s+added)\b/i],
+  ['CATALOG_INTELLIGENCE', 'OBJECTIVE', /\b(?:price\s+trend|pricing\s+history|lifecycle|is\s+obsolete|direct\s+ship|gpl\s+price|list\s+price\s+of|options\s+added|lead[ -]+time)\b/i],
   ['OCR_QUOTE_INGESTION', 'MODALITY', /\b(?:ocr|scan(?:ned)?\s+(?:quote|pdf|tender)|extract.*(?:image|pdf))\b/i],
   ['HETEROGENEOUS_TENDER_MODERNIZATION', 'OBJECTIVE', /\b(?:heterogeneous|mixed[\s-]domain|carrier\s+(?:fleet|nodes?)|tender\s+modernization|dirty\s+boq|loose\s+memory|spare\s+parts\s+absorption)\b/i],
   ['CROSS_VENDOR_TRANSFORMATION', 'OBJECTIVE', /\b(?:dell\s+to\s+hpe|cisco\s+to\s+hpe|lenovo\s+to\s+hpe|cross[\s-]vendor|transpile|(?:convert|transform|migrate|translate|map).*(?:dell|cisco|lenovo|supermicro))\b/i],

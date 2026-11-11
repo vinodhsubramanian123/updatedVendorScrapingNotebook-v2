@@ -129,14 +129,14 @@ function TopologyNodeGraphic({ item, selectedNode, onSelectNode }) {
       >
         <circle r="60" fill="#0f172a" stroke="#10b981" strokeWidth="3" filter="url(#glow-emerald)" />
         <circle r="48" fill="#1e293b" stroke="#334155" strokeWidth="1.5" />
-        <text y="-8" textAnchor="middle" fill="#ffffff" fontSize="13" fontWeight="bold" fontFamily="sans-serif" pointerEvents="none">
-          DL380 Gen12
+        <text y="-8" textAnchor="middle" fill="#ffffff" fontSize="12" fontWeight="bold" fontFamily="sans-serif" pointerEvents="none">
+          {String(node.label || 'Evaluated Chassis').slice(0, 26)}
         </text>
         <text y="10" textAnchor="middle" fill="#10b981" fontSize="10" fontWeight="bold" fontFamily="monospace" pointerEvents="none">
-          {node.sku}
+          {node.sku || 'UNKNOWN_SKU'}
         </text>
         <text y="24" textAnchor="middle" fill="#94a3b8" fontSize="9" fontFamily="sans-serif" pointerEvents="none">
-          CTO Base Chassis
+          {(node.quantity && node.quantity > 1) ? `${node.quantity}x Nodes · ` : ''}{node.formFactor || node.details?.formFactor || 'Evaluated Solution Root'}
         </text>
       </g>
     );
