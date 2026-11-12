@@ -24,6 +24,10 @@ Product scope is **vendor + solution domain + family + generation + exact base S
 6. Build and audit the staged JSON/TSV/workbook. Compare unique SKUs, services, rules, categories, sheets, hashes and dated deltas before promotion. Unknown recommendation/price/capacity remains unknown.
 7. Verify new NotebookLM source identity, readiness, content and grounded citations before retiring the earlier managed sources. Capture timestamps are vendor observation times, not rebuild times.
 
+The Synergy 12000 frame `P51174-B21` has its own commercial frame catalog. Capture its menu with `npm run scrape -- --chassis Synergy_12000_Frame`. The frame catalog records options offered by the frame, including power cords and module part numbers. The F32 and 4-port Frame Link Module captures use the Components tree under the exact frame. For the Brocade 64Gb Fibre Channel Module, the scraper selects one `P77653-B21` in a fresh frame configuration, reads back that selection, and opens its owned menu. All three captures verify the exact child and parent SKUs. Support evidence records selected services or the absence of the component in the observed service tree. Alternative service selections and other portal configurations require separate observations.
+
+Run `node scripts/maintenance/audit_product_rules_association.js --require-fresh` to compare the product inventory and its known owned scopes with catalog and capture receipts. The portfolio dashboard shows the OCA capture and NotebookLM publication dates independently. A recent publication can refer to an older capture. New capture work uses `outputs/.catalog-staging`; the resume command can also read retained stages from the previous `outputs/temp` location.
+
 **Current automation boundary:** hidden-DOM extraction and ambient probing exist. CPU/backplane/PSU/GPU/NIC/fan multi-selector traversal and exhaustive all-base capture are not implemented as unattended enumeration. Mark unvisited branches explicitly. Do not convert intended sweep tables in a skill into a success claim.
 
 ## Workflow B: runtime checks for a concrete BOQ

@@ -410,7 +410,8 @@ const results = await searchLocalRAG({
 
 ---
 
-## §12 — Server-Side Air-Gap Enforcement & Source Inventory Fail-Closed Contract (`INV-234`, `INV-235`)
+## §12 — Server-Side Air-Gap Enforcement & Source Inventory Fail-Closed Contract (`INV-234`, `INV-235`, `INV-236`)
 
 - **Pre-Emptive Server Offline Policy (`policy_resolver.js`, `policyResolver.cjs`)**: Client requests carrying `offlineMode: true` (or server environment `OFFLINE_MODE=1` / `LOCAL_EVAL_ONLY=1`) MUST be resolved on the server BEFORE preprocessing (`ocr_service.js`), presales routing (`route_query.js`), guardrail execution (`agentic_guardrail.js`, `gemini_rotator.js`), or NotebookLM querying (`notebook_query_utils.js`). Requests attempting remote cloud OCR (`gemini-api` / PDF or image quotes), cloud LLM calls, or external NotebookLM RPCs under an offline policy fail immediately with zero outbound network attempts (`test_offline_policy_enforcement.js`).
 - **Fail-Closed Source Inventory Enumeration (`quickspecs_sync.js`)**: When NotebookLM source enumeration cannot reach an authenticated CDP or CLI session, `getNotebookSources()` MUST fail closed (`null` -> `SOURCE_INVENTORY_UNAVAILABLE`) rather than returning an empty array `[]`, preventing false-empty inventory decisions or blind source detachment. Tests verifying offline QuickSpecs state MUST provide explicit stub source inventories instead of relying on transport exceptions collapsing to `[]`.
+- **QuickSpecs PDF Binary Gate (`download_quickspecs_pdf.js`)**: Downloaded QuickSpecs files MUST pass `isValidPdfFile()` (`>= 100KB` and `%PDF-` signature) before promotion or notebook upload, preventing HTML error pages or parent-frame QuickSpecs mismatches from entering child module scopes.

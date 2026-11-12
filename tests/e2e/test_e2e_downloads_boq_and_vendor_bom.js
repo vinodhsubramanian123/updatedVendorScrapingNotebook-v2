@@ -76,14 +76,16 @@ async function runE2ETest() {
   if (!serverAlreadyRunning) {
     console.log(`Starting dashboard server on ${SERVER_URL}...`);
     const serverScript = path.join(__dirname, '../..', 'dashboard', 'server.cjs');
-    serverProc = spawn('node', [serverScript], {
+    const distIndex = path.join(__dirname, '../..', 'dashboard', 'dist', 'index.html');
+    const serverArgs = fs.existsSync(distIndex) ? [serverScript, '--production'] : [serverScript];
+    serverProc = spawn('node', serverArgs, {
       cwd: path.join(__dirname, '../..'),
       env: { ...process.env, PORT: String(PORT), LOCAL_EVAL_ONLY: '1' }
     });
 
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 40; i++) {
       await new Promise(r => setTimeout(r, 500));
-      if (await isServerRunning(SERVER_URL)) break;
+      if (await isServerRunning(`${SERVER_URL}/api/health`)) break;
     }
   } else {
     console.log(`Using active dashboard server at ${SERVER_URL}`);
@@ -102,10 +104,12 @@ async function runE2ETest() {
   const testResults = [];
   const consoleErrors = [];
   const gaps = [];
+  let expectingControlledExport400 = false;
 
   page.on('console', msg => {
     if (msg.type() === 'error') {
       const text = msg.text();
+      if (expectingControlledExport400 && text.includes('status of 400')) return;
       // Exclude expected HTTP status noise: 404 (missing resources), 409 (conflicts)
       if (!text.includes('favicon') && !text.includes('404') && !text.includes('409')) {
         consoleErrors.push(`[Browser Console Error] ${text}`);
@@ -412,8 +416,9 @@ async function runE2ETest() {
     const vendorEval = evaluateBOQMultiAspect(VENDOR_BOM_DOWNLOADS_PATH);
     const vendorSkuLines = vendorEval.items.map(it => `${it.sku}, ${it.quantity}, ${it.description || ''}`).join('\n');
 
-    await page.waitForSelector('textarea[placeholder*="P47777-B21"], textarea', { timeout: 10000 }).catch(() => {});
-    const vendorTextArea = await page.$('textarea[placeholder*="P47777-B21"], textarea');
+    const vendorSelector = 'textarea[placeholder*="P47777-B21"]';
+    await page.waitForSelector(`${vendorSelector}, textarea`, { timeout: 10000 }).catch(() => {});
+    const vendorTextArea = (await page.$(vendorSelector)) || (await page.$('textarea'));
     if (vendorTextArea) {
       await vendorTextArea.fill(vendorSkuLines);
       console.log(`  Pasted ${vendorEval.items.length} vendor quote items into reconciliation form`);
@@ -565,6 +570,7 @@ async function runE2ETest() {
     console.log('\n▶ [STEP 9] Generating Master Excel Export Workbook...');
     const step9Start = Date.now();
 
+    expectingControlledExport400 = true;
     const exportRes = await page.evaluate(async (evalPayload) => {
       const blockedCustomer = await fetch('/api/export-boq', {
         method: 'POST',
@@ -586,7 +592,9 @@ async function runE2ETest() {
         })
       });
       return { customerStatus: blockedCustomer.status, diag: await res.json() };
-    }, JSON.parse(JSON.stringify(vendorEval)));
+    }, JSON.parse(JSON.stringify(vendorEval))).finally(() => {
+      expectingControlledExport400 = false;
+    });
 
     const exportOk = exportRes.customerStatus === 400 && Boolean(exportRes.diag?.filename && exportRes.diag?.downloadPath && exportRes.diag?.diagnostic);
     testResults.push({

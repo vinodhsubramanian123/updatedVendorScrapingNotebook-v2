@@ -286,6 +286,7 @@ test('capture receipt records exact base/selector/owner provenance and validates
     outsideTableNotesCaptured: true,
     conditionalDiscovery: 'PROBED_SELECTOR_OBSERVED',
     observedSelectors: [{ selector: 'ambient', value: '27C' }],
+    finalSelectorsRestored: true,
     url: 'https://partner.hpe.com/oca/test'
   };
   fs.writeFileSync(path.join(rawDir, 'oca_raw_data_full.json'), JSON.stringify(rawData));
@@ -395,6 +396,10 @@ test('serializer transactional export updates customerDisposition to PRESENTATIO
   const outputPath = path.join(reportDir, 'test_report.md');
 
   const { evaluation } = groundedFixture(t);
+  evaluation.conflictGraph.recommendedSolutions[0].rank = 1;
+  if (Array.isArray(evaluation.ephemeralSourceValidation?.rankVerdicts) && evaluation.ephemeralSourceValidation.rankVerdicts[0]) {
+    evaluation.ephemeralSourceValidation.rankVerdicts[0].rank = 1;
+  }
   evaluation.customerDisposition = 'VALIDATION_REQUIRED';
   artifacts(t, evaluation);
 
@@ -404,9 +409,10 @@ test('serializer transactional export updates customerDisposition to PRESENTATIO
     reportDir,
     outputPath,
     evalResults: evaluation,
-    graph: { recommendedSolutions: [{ rank: 1, skuPartsList: [] }] },
+    graph: evaluation.conflictGraph,
     items: [{ sku: 'BASE', quantity: 1 }],
-    JSON_MODE: true
+    JSON_MODE: true,
+    DEFER_RAG: true
   });
 
   assert.equal(evaluation.customerDisposition, 'PRESENTATION_READY');

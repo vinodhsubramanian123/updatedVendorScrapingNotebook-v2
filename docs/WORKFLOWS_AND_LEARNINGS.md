@@ -1961,6 +1961,23 @@ Read [`docs/audits/2026-11-11-dashboard-release-gap-plan.md`](file:///docs/audit
    - *Tooling Gotcha*: [`analyze_complexity.js`](file:///scripts/maintenance/analyze_complexity.js) counts raw `{` / `}` characters including inside string literals; parser helpers should avoid literal brace tokens (use character codes such as `String.fromCharCode(123, 125)`) rather than relaxing complexity thresholds.
    - *Concurrent Core Synergy/Sync Learnings*: Returning `[]` on CDP/CLI failure in [`quickspecs_sync.js`](file:///scripts/lib/sync/quickspecs_sync.js) previously masked missing inventory checks as `isIsolated: true`; failing closed via `null` (`SOURCE_INVENTORY_UNAVAILABLE`) preserves epistemic accuracy and requires offline unit tests to mock inventory retrieval explicitly. Similarly, composite frame platforms using `pillar: "COMPOSITE"` (`Synergy_12000_Frame`) require aligned pillar allowlists in downstream audit scripts (`notebook_health_audit.js`) alongside completed child-module captures.
 
+---
+
+## 2026-11-12 — Synergy Composite/Child Catalog Isolation, QuickSpecs Integrity & Root-Cause UI/E2E Fixes (`INV-236`)
+
+1. **Synergy Composite & Child Module Catalog Coverage (`SY480_Gen12`, `SY100Gb_F32_Module`, `Synergy_12000_Frame`, `Synergy_4Port_Frame_Link_Module`, `Synergy_Brocade_64Gb_FC_Module`)**:
+   - Registered owned child-module scopes in [`chassis_map.json`](file:///scripts/config/chassis_map.json), [`notebooks.json`](file:///scripts/config/notebooks.json), [`catalog_coverage_profiles.json`](file:///scripts/config/catalog_coverage_profiles.json), [`catalog_discovery.js`](file:///scripts/lib/catalog/catalog_discovery.js), [`product_scope.js`](file:///scripts/lib/catalog/product_scope.js), and [`catalog_portfolio.js`](file:///scripts/lib/catalog/catalog_portfolio.js).
+   - Fixed [`knowledge_sync.js`](file:///scripts/lib/sync/knowledge_sync.js) (`_scanDeltasDir`) to skip `.`-prefixed hidden directories and `.promotion.` staging backup dirs after an isolated staging backup leaked cross-product Synergy frame deltas back into `SY480_Gen12`, causing false cross-product payload contamination.
+   - Quarantined parent-frame QuickSpecs accidentally captured onto `SY100Gb_F32_Module`, enforced `>= 100KB` + `%PDF-` binary validation (`isValidPdfFile`) in [`download_quickspecs_pdf.js`](file:///scripts/scrapers/download_quickspecs_pdf.js), and acquired the valid 307KB Brocade 64Gb FC Module QuickSpecs PDF.
+   - Normalized `fs.realpathSync` receipt matching in [`catalog_capture_receipt.js`](file:///scripts/lib/catalog/catalog_capture_receipt.js) for Windows junction paths and added `--strict` / `--require-fresh` controls to [`audit_product_rules_association.js`](file:///scripts/maintenance/audit_product_rules_association.js).
+   - Persisted certified workflow refresh learnings for all 3 new Synergy scopes via [`record_catalog_refresh_learnings.js`](file:///scripts/maintenance/record_catalog_refresh_learnings.js) and rebuilt clean isolated Markdown sync payloads across all 5 Synergy products.
+
+2. **Root-Cause UI & Playwright E2E Fixes (No Band-Aid Error Filtering)**:
+   - **Duplicate React Keys in `AmbiguityInbox`**: [`AmbiguityInbox.jsx`](file:///dashboard/src/components/AmbiguityInbox.jsx) rendered candidate buttons using `key={candidate.sku}`, triggering React duplicate-key console errors whenever ambiguous descriptions resolved to shared SKUs across option groups. Fixed at root cause using `key={`${candidate.sku}-${cIdx}`}` and rebuilt the Vite bundle.
+   - **DOM-Order Selector Collision after `PresalesRequestPanel` Addition**: [`test_ui_opportunity_boq.js`](file:///tests/integration/test_ui_opportunity_boq.js) and [`test_e2e_downloads_boq_and_vendor_bom.js`](file:///tests/e2e/test_e2e_downloads_boq_and_vendor_bom.js) queried generic `<input type="file">` / `<textarea>`, which matched `PresalesRequestPanel` earlier in DOM order rather than the open BOQ modal (`#boq-file-input`, `textarea[placeholder*="P47777-B21"]`). Fixed to wait for `--production` `/api/health` and target modal-scoped selectors explicitly.
+   - **Scoped Intentional Negative HTTP 400 Expectation**: When Step 9 of `test_e2e_downloads_boq_and_vendor_bom.js` intentionally verifies that `POST /api/export-boq` rejects diagnostic override requests with HTTP `400`, Chromium logs a `console.error` for the 400 response. Scoped `expectingControlledExport400` tightly around that negative-path test step instead of ignoring console errors globally (`0` unexpected console errors across all E2E steps).
+
+
 
 
 

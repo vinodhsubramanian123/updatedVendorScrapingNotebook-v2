@@ -259,3 +259,7 @@ Follow [Shared Runtime Conditional Discovery Contract](../../../docs/RUNTIME_CON
 ### Verified correction (2026-10-01)
 
 See [the post-check-in review](../../../docs/audits/2026-10-01-post-checkin-scraping-review.md). Ambient tracking may be selectable SKU rows; the row adapter is implemented and restoration failures are fatal. Distinguish collapsed layout from unavailable status: S3U30C existed at 30C but was unavailable on P73282-B21; at tested 27C the restriction disappeared. Do not infer an allowed <=30C gate or all lower temperatures. NotebookLM row counts and fingerprints do not replace content: the semantic projection now retains displayed sheet data with shared-text references and full-content readback. The four scoped advisory lessons were cloud-verified in the exact DL380 Gen12 notebook; full catalog republishing remains separate.
+
+### Composite Pillar & Staging Isolation (`INV-236`)
+- `knowledge_sync.js:_scanDeltasDir` ignores `.`-prefixed hidden directories and `.promotion.` staging backup directories so ephemeral staging backups never contaminate live `catalog_deltas.json` scans or `assertPayloadProductIsolation`.
+- `running_knowledge_sync.js` merges only the fields it owns into `notebooks.json` so shared sync passes never overwrite freshly committed per-product sync/verification state.

@@ -53,10 +53,10 @@ function PartResolutionsList({ partResolutions, chassisContext, onSelectCandidat
             <span className="ml-auto font-mono text-amber-900">{Math.round((resolution.confidence || 0) * 100)}% confidence</span>
           </div>
           <div className="flex flex-wrap gap-1.5">
-            {(resolution.candidates || []).map(candidate => (
+            {(resolution.candidates || []).map((candidate, cIdx) => (
               <button
                 type="button"
-                key={candidate.sku}
+                key={`${candidate.sku}-${cIdx}`}
                 onClick={() => onSelectCandidate(resolution, candidate, chassisContext)}
                 className="rounded-md border border-slate-300 bg-slate-50 px-2 py-1 text-[10px] font-bold text-slate-800 hover:border-indigo-400 hover:bg-indigo-50"
                 title={candidate.description}

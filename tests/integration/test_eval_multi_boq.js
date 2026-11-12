@@ -38,6 +38,7 @@ test('eval_multi_boq executes single text configuration in JSON mode', () => {
   try {
     const output = execSync(`node "${MULTI_EVAL_SCRIPT}" "${tmpFile}" --json`, {
       encoding: 'utf-8',
+      maxBuffer: 20 * 1024 * 1024,
       env: { ...process.env, STRUCTURED_PROGRESS: '0', LOCAL_EVAL_ONLY: '1' }
     });
 
@@ -45,7 +46,7 @@ test('eval_multi_boq executes single text configuration in JSON mode', () => {
     assert.ok(Array.isArray(parsed), 'Output must be an array');
     assert.strictEqual(parsed.length, 1);
     assert.strictEqual(parsed[0].sheetName, 'Default');
-    assert.ok(parsed[0].status === 'SUCCESS' || parsed[0].status === 'ERROR');
+    assert.ok(['SUCCESS', 'ACTION_REQUIRED', 'ERROR'].includes(parsed[0].status));
   } finally {
     if (fs.existsSync(tmpFile)) fs.unlinkSync(tmpFile);
   }

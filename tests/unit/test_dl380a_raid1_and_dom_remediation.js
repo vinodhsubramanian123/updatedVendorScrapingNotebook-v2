@@ -169,7 +169,7 @@ test('Step 4: bom_verifier Gate B20 enforces rail kits and optical transceivers 
   assert.ok(gateB20_1, 'Gate B20 check present');
   assert.strictEqual(gateB20_1.status, 'ACTION_REQUIRED');
   assert.ok(gateB20_1.detail.includes('P69770-B21') || gateB20_1.detail.includes('Rack Rail Kit'));
-  assert.ok(gateB20_1.detail.includes('845398-B21') || gateB20_1.detail.includes('Optical Transceivers'));
+  assert.ok(/845398-B21|optical transceivers/i.test(gateB20_1.detail));
 
   const mockOutputComplete = {
     items: [

@@ -89,14 +89,12 @@ test('BOQ Parser & Excel Generator Robustness Tests', async (t) => {
   });
 
   await t.test('generate_boq_xlsx.js - single item list & 500+ item list & empty list', () => {
-    // Empty item list
+    // Empty item list must fail closed rather than generating a blank deliverable
     const evalEmpty = {
       budgetOptimization: { currentBomCostUsd: 0 },
       conflictGraph: { rankedSolutions: [{ rank: 1, skuList: [] }] }
     };
-    generateProfessionalBOQ(evalEmpty, TEMP_XLSX, null, 1, { diagnostic: true });
-    let wb = XLSX.readFile(TEMP_XLSX, { cellFormula: true, cellStyles: true, cellNF: true });
-    assert.strictEqual(wb.SheetNames.includes('Base BOM'), true);
+    assert.throws(() => generateProfessionalBOQ(evalEmpty, TEMP_XLSX, null, 1, { diagnostic: true }), /zero candidate items/i);
     
     // Single item list
     const evalSingle = {
@@ -109,7 +107,7 @@ test('BOQ Parser & Excel Generator Robustness Tests', async (t) => {
       }
     };
     generateProfessionalBOQ(evalSingle, TEMP_XLSX, null, 1, { diagnostic: true });
-    wb = XLSX.readFile(TEMP_XLSX, { cellFormula: true, cellStyles: true, cellNF: true });
+    let wb = XLSX.readFile(TEMP_XLSX, { cellFormula: true, cellStyles: true, cellNF: true });
     
     let wsBaseBom = wb.Sheets['Base BOM'];
     let valA2 = wsBaseBom['A2'] ? wsBaseBom['A2'].v : null;

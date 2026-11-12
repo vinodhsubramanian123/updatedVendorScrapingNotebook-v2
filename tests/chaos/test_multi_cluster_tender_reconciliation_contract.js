@@ -92,7 +92,7 @@ async function runTests() {
     { clusterIndex: 1, clusterName: 'Compute_Cluster_A', multiplier: 10, items: uploadBOMItems }
   ];
 
-  generatePartnerPortalUploadBOM(uploadBOMItems, uploadXlsxPath, { ...multiClusterTenderData, diagnostic: true });
+  generatePartnerPortalUploadBOM(multiClusterTenderData, uploadXlsxPath, { diagnostic: true });
   assert(fs.existsSync(uploadXlsxPath), 'Generated Partner Portal Upload BOM workbook');
 
   const uploadWb = xlsx.readFile(uploadXlsxPath);

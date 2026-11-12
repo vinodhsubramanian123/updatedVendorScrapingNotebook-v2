@@ -43,15 +43,17 @@ async function runTest() {
   if (!serverAlreadyRunning) {
     console.log(`Starting dashboard server on ${SERVER_URL}...`);
     const serverScript = path.join(__dirname, '../..', 'dashboard', 'server.cjs');
-    serverProc = spawn('node', [serverScript], {
+    const distIndex = path.join(__dirname, '../..', 'dashboard', 'dist', 'index.html');
+    const serverArgs = fs.existsSync(distIndex) ? [serverScript, '--production'] : [serverScript];
+    serverProc = spawn('node', serverArgs, {
       cwd: path.join(__dirname, '../..'),
       env: { ...process.env, PORT: String(PORT) }
     });
 
-    // Wait up to 10 seconds for server startup
-    for (let i = 0; i < 20; i++) {
+    // Wait up to 20 seconds for server health readiness
+    for (let i = 0; i < 40; i++) {
       await new Promise(r => setTimeout(r, 500));
-      if (await isServerRunning(SERVER_URL)) break;
+      if (await isServerRunning(`${SERVER_URL}/api/health`)) break;
     }
   } else {
     console.log(`Using active dashboard server at ${SERVER_URL}`);
@@ -170,8 +172,9 @@ async function runTest() {
         await uploadBoqBtn.click();
         await page.waitForTimeout(600);
 
-        // Upload file via file input
-        const fileInput = page.locator('#boq-file-input, input[type="file"]').first();
+        // Upload file via BOQ uploader file input
+        const boqInput = page.locator('#boq-file-input');
+        const fileInput = (await boqInput.count() > 0) ? boqInput.first() : page.locator('input[type="file"]').first();
         if (await fileInput.count() > 0) {
           await fileInput.setInputFiles(boqFile);
           await page.waitForTimeout(800);
