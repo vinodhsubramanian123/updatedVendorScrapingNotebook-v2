@@ -3,18 +3,16 @@
  * scripts/maintain_portfolio.js — Multi-Product Portfolio Maintenance CLI
  * Usage:
  *   node scripts/maintain_portfolio.js --chassis <ChassisID>
- *   node scripts/maintain_portfolio.js --all-baseline
  *   node scripts/maintain_portfolio.js --sync-only
  *   node scripts/maintain_portfolio.js --certify-only
  *   npm run maintain:portfolio
  */
 
 const path = require('path');
-const { execSync } = require('child_process');
-const { listAllCatalogs, checkCdpHealth } = require('../lib/catalog/catalog_discovery.js');
+const { execFileSync } = require('child_process');
+const { getCatalogPortfolioCoverage } = require('../lib/catalog/catalog_portfolio.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
-const OUTPUTS_ROOT = path.join(PROJECT_ROOT, 'outputs');
 
 const args = process.argv.slice(2);
 const chassisIdx = args.indexOf('--chassis');
@@ -22,10 +20,10 @@ const targetChassis = chassisIdx !== -1 ? args[chassisIdx + 1] : null;
 const syncOnly = args.includes('--sync-only');
 const certifyOnly = args.includes('--certify-only');
 
-function runCmd(label, cmd) {
-  console.log(`\n▶ [${label}] Running: ${cmd}`);
+function runCmd(label, script, scriptArgs = []) {
+  console.log(`\n▶ [${label}] Running: ${script}`);
   const start = Date.now();
-  execSync(cmd, { cwd: PROJECT_ROOT, stdio: 'inherit' });
+  execFileSync(process.execPath, [script, ...scriptArgs], { cwd: PROJECT_ROOT, stdio: 'inherit' });
   console.log(`✅ [${label}] Done in ${((Date.now() - start) / 1000).toFixed(1)}s`);
 }
 
@@ -34,42 +32,28 @@ async function main() {
   console.log('🌐 HPE OCA PORTFOLIO INTELLIGENCE & MAINTENANCE RUNNER');
   console.log('================================================================\n');
 
-  const catalogs = listAllCatalogs(OUTPUTS_ROOT);
-  console.log(`Discovered ${catalogs.length} registered product line(s) on disk:`);
-  catalogs.forEach(c => console.log(`  • ${c.chassis.padEnd(28)} | SKUs: ${String(c.skuCount).padStart(4)} | Path: ${c.relativeDir}`));
+  const catalogs = getCatalogPortfolioCoverage();
+  console.log(`Portfolio coverage across ${catalogs.length} known product scopes:`);
+  catalogs.forEach(catalog => console.log(`  • ${catalog.product} | ${catalog.captureStatus} | ${catalog.freshnessStatus}`));
 
   if (certifyOnly) {
     console.log('\n--- Running Portfolio Certification Audit ---');
-    runCmd('Portfolio Audit (verify_all)', 'node tests/integration/verify_all.js');
-    runCmd('Gen12 Deep Certification Gate', 'node scripts/maintenance/certify_gen12.js');
+    runCmd('Expected Catalog Coverage', 'scripts/maintenance/audit_product_rules_association.js', ['--require-fresh']);
+    runCmd('Portfolio Audit (verify_all)', 'tests/integration/verify_all.js');
+    runCmd('Gen12 Deep Certification Gate', 'scripts/maintenance/certify_gen12.js');
     console.log('\n🎉 Portfolio Audit Passed!');
     return;
   }
 
-  // 1. Sync Registry
-  runCmd('Sync Master Registry (SCRAPED_CATALOGS.md)', 'node scripts/lib/catalog/sync_registry.js');
-
-  // 2. Sync Knowledge Payloads
-  if (targetChassis) {
-    runCmd(`Sync Knowledge Payload (${targetChassis})`, `node scripts/lib/sync/knowledge_sync.js --chassis "${targetChassis}"`);
-  } else {
-    runCmd('Sync Master Knowledge Registry & Payloads', 'node scripts/lib/sync/knowledge_sync.js');
-  }
-
-  // 3. If specific chassis requested for rescrape
   if (targetChassis && !syncOnly) {
-    console.log(`\nChecking CDP for chassis rescrape: ${targetChassis}`);
-    const cdpHealth = await checkCdpHealth(9222);
-    if (!cdpHealth.ok) {
-      console.warn(`⚠️ CDP not listening on port 9222. Skipping live scrape for ${targetChassis}.`);
-      console.warn(`To scrape ${targetChassis}, open Chrome on port 9222 and re-run with --chassis ${targetChassis}.`);
-    } else {
-      runCmd(`Scrape ${targetChassis}`, `node scripts/scrapers/scrape_oca_solution.js`);
-    }
+    runCmd(`Scrape ${targetChassis}`, 'scripts/scrapers/scrape_oca_solution.js', ['--chassis', targetChassis]);
+  } else {
+    runCmd('Sync Master Registry (SCRAPED_CATALOGS.md)', 'scripts/lib/catalog/sync_registry.js');
+    runCmd('Sync Knowledge Payloads', 'scripts/lib/sync/knowledge_sync.js', targetChassis ? ['--chassis', targetChassis] : []);
   }
 
-  // 4. Verify portfolio health
-  runCmd('Verify All Catalogs', 'node tests/integration/verify_all.js');
+  runCmd('Expected Catalog Coverage', 'scripts/maintenance/audit_product_rules_association.js');
+  runCmd('Verify All Catalogs', 'tests/integration/verify_all.js');
 
   console.log('\n================================================================');
   console.log('🎉 PORTFOLIO MAINTENANCE PIPELINE COMPLETE');

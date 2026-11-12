@@ -31,7 +31,10 @@ function getChassisMap() {
     "DL380_Gen11": { "family": "ProLiant", "gen": "Gen11", "formFactor": "8SFF", "uHeight": 2, "baseSku": "P52534-B21", "model": "DL380 Gen11 8SFF" },
     "MSL3040_Tape": { "family": "StoreEver", "gen": "Gen1", "formFactor": "Rack", "uHeight": 3, "baseSku": "Q6Q67A", "model": "MSL3040 Tape" },
     "GX5000_General_RACK": { "family": "Cray", "gen": "Gen1", "formFactor": "Rack", "uHeight": 42, "baseSku": "P57100-B21", "model": "GX5000 General RACK" },
-    "SY100Gb_F32_Module": { "family": "Synergy", "gen": "Gen1", "formFactor": "Blade", "uHeight": 0, "baseSku": "864273-B21", "model": "SY100Gb F32 Module" },
+    "SY100Gb_F32_Module": { "family": "Synergy", "gen": "General", "formFactor": "Interconnect Module", "uHeight": 0, "baseSku": "867796-B21", "model": "SY100Gb F32 Module" },
+    "Synergy_12000_Frame": { "family": "Synergy", "gen": "General", "formFactor": "Frame", "uHeight": 10, "baseSku": "P51174-B21", "model": "Synergy 12000 Frame" },
+    "Synergy_4Port_Frame_Link_Module": { "family": "Synergy", "gen": "General", "formFactor": "Management Module", "uHeight": 0, "baseSku": "876852-B21", "model": "Synergy 4-port Frame Link Module" },
+    "Synergy_Brocade_64Gb_FC_Module": { "family": "Synergy", "gen": "General", "formFactor": "FC Switch Module", "uHeight": 0, "baseSku": "P77653-B21", "model": "Brocade 64Gb FC Module for Synergy" },
     "Alletra_Storage_System": { "family": "Alletra", "gen": "Gen1", "formFactor": "Array", "uHeight": 4, "baseSku": "R0Q21A", "model": "Alletra Storage System" },
     "DL380a_Gen12": { "family": "ProLiant", "gen": "Gen12", "formFactor": "8DW/16SW", "uHeight": 4, "baseSku": "P76706-B21", "model": "DL380a Gen12" },
     "DL360_Gen11": { "family": "ProLiant", "gen": "Gen11", "formFactor": "8SFF", "uHeight": 1, "baseSku": "P52499-B21", "model": "DL360 Gen11 8SFF" },
@@ -146,7 +149,10 @@ function detectChassisVariant(items, overrideVariant = '') {
     { pattern: /\bmsl\b|\btape\b/i, id: 'MSL3040_Tape' },
     { pattern: /\bcray\b|\bgx5000\b/i, id: 'GX5000_General_RACK' },
     { pattern: /\bsy480\b|synergy\s*480|synergy.*(?:blade|compute)/i, id: 'SY480_Gen12' },
+    { pattern: /\bframe\s*link\s*module\b|synergy.*4[\s-]*port\s*(?:flm|frame\s*link)|\b876852-b21\b/i, id: 'Synergy_4Port_Frame_Link_Module', exclude: /\b(service|support)\b/i },
+    { pattern: /\bbrocade\s*64\s*gb.*synergy|synergy.*brocade\s*64\s*gb|\bp77653-b21\b/i, id: 'Synergy_Brocade_64Gb_FC_Module', exclude: /\b(service|support|transceiver|license|upgrade)\b/i },
     { pattern: /(?:synergy\s+)?(?:vc\s*)?100\s*gb\s*f32|synergy.*virtual\s*connect/i, id: 'SY100Gb_F32_Module', exclude: /\b(service|support|cable|transceiver)\b/i },
+    { pattern: /\bsynergy\s*12000\b|synergy.*frame|\bp51174-b21\b/i, id: 'Synergy_12000_Frame', exclude: /\b(service|support)\b/i },
     { pattern: /\bsn\s*3600b\b/i, id: 'SN3600B_FC', exclude: /\b(service|support|cable|transceiver|license|upgrade)\b/i }
   ];
 

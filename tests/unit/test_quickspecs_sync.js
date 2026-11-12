@@ -55,11 +55,36 @@ describe('QuickSpecs Sync & Fingerprinting Engine', () => {
   });
 
   it('verifies DL380 Gen11 isolation and grounding structure', async () => {
-    const result = await verifyNotebookQuickSpecs('DL380_Gen11');
+    const result = await verifyNotebookQuickSpecs('DL380_Gen11', {
+      sources: [
+        { id: 'qs-1', title: 'HPE ProLiant DL380 Gen11 QuickSpecs a50004307enw' },
+        { id: 'cat-1', title: 'notebook_sync_payload_DL380_Gen11.md' }
+      ]
+    });
     assert.equal(result.chassis, 'DL380_Gen11');
     assert.equal(result.notebookId, 'd37fa851-90cb-45b7-a8e1-78488a0bc6e6');
     assert.equal(result.expectedDocId, 'a50004307enw');
+    assert.equal(result.isDocIdMatched, true);
     assert.equal(result.isIsolated, true);
     assert.equal(result.pollutedSources.length, 0);
+    assert.equal(result.status, 'CERTIFIED_GROUNDED');
+  });
+
+  it('flags polluted cross-gen sources and preserves fail-closed metadata when inventory is unavailable', async () => {
+    const polluted = await verifyNotebookQuickSpecs('DL380_Gen11', {
+      sources: [
+        { id: 'qs-1', title: 'HPE ProLiant DL380 Gen11 QuickSpecs a50004307enw' },
+        { id: 'qs-bad', title: 'HPE ProLiant Compute DL380 Gen12 QuickSpecs' }
+      ]
+    });
+    assert.equal(polluted.isIsolated, false);
+    assert.equal(polluted.pollutedSources.length, 1);
+    assert.equal(polluted.status, 'ADVISORY_POLLUTED');
+
+    const unavailable = await verifyNotebookQuickSpecs('DL380_Gen11', { getSources: () => null });
+    assert.equal(unavailable.status, 'SOURCE_INVENTORY_UNAVAILABLE');
+    assert.equal(unavailable.expectedDocId, 'a50004307enw');
+    assert.equal(unavailable.isIsolated, null);
+    assert.deepEqual(unavailable.pollutedSources, []);
   });
 });

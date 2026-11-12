@@ -1,6 +1,8 @@
 'use strict';
 const { execFile } = require('child_process');
 const { promisify } = require('util');
+const fs = require('fs');
+const { safeWriteJsonAtomic, withFileLock } = require('../system/fs_compat');
 const runFile = promisify(execFile);
 
 async function refreshSharedKnowledgeSources(config, documentId, revision, options = {}) {
@@ -38,4 +40,23 @@ async function refreshSharedKnowledgeSources(config, documentId, revision, optio
   for (let index = 0; index < targets.length; index += 2) results.push(...await Promise.all(targets.slice(index, index + 2).map(([chassis, entry]) => refresh(chassis, entry))));
   return { verified: results.length > 0 && results.every(result => result.status === 'VERIFIED'), results };
 }
-module.exports = { refreshSharedKnowledgeSources };
+function persistSharedKnowledgeRefresh(configPath, refreshed, results) {
+  return withFileLock(configPath, () => {
+    const current = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+    current.runningKnowledgeDoc = refreshed.runningKnowledgeDoc;
+    for (const { chassis, sourceId, status } of results) {
+      const entry = current.notebooks?.[chassis];
+      const observation = refreshed.notebooks?.[chassis];
+      if (status !== 'VERIFIED' || !entry?.notebookId || entry.notebookId !== observation?.notebookId) continue;
+      for (const field of ['runningKnowledgeSourceId', 'runningKnowledgeDocId', 'runningKnowledgeVerifiedRevision', 'runningKnowledgeVerifiedAt']) {
+        entry[field] = observation[field];
+      }
+      for (const field of ['canonicalKnowledgeSourceIds', 'trustedSourceIds']) {
+        entry[field] = [...new Set([...(entry[field] || []), sourceId])];
+      }
+    }
+    safeWriteJsonAtomic(configPath, current);
+  });
+}
+
+module.exports = { refreshSharedKnowledgeSources, persistSharedKnowledgeRefresh };

@@ -16,7 +16,10 @@ if (!process.argv[2] || !process.argv[3]) {
 }
 
 const arg1          = process.argv[2];
-const docId         = arg1.replace(/.*\/doc\//, '').split(/[?#]/)[0].replace(/\.pdf$/i, '').trim();
+const url           = URL.canParse(arg1) ? new URL(arg1) : null;
+const directPdf     = url?.protocol === 'https:' && url.hostname === 'www.hpe.com' &&
+  url.pathname.startsWith('/psnow/downloadDoc/') && url.pathname.match(/([ac]\d{7,8}[a-z0-9]*)\.pdf$/i);
+const docId         = directPdf?.[1] || arg1.replace(/.*\/doc\//, '').split(/[?#]/)[0].replace(/\.pdf$/i, '').trim();
 if (!/^[a-z0-9_-]+$/i.test(docId)) throw new Error('INVALID_QUICKSPECS_DOCUMENT_ID');
 const rawOut        = process.argv[3];
 const forceDownload = process.argv.includes('--force');
@@ -26,20 +29,32 @@ const destPath    = path.isAbsolute(rawOut) ? rawOut : path.resolve(process.cwd(
 // Chrome downloads into the same directory as the destination file
 const downloadDir = path.dirname(destPath);
 
-// ── MD5 Cache Check (Rule #23) ────────────────────────────────────────────────
-if (!forceDownload && fs.existsSync(destPath)) {
-  const stats = fs.statSync(destPath);
-  if (stats.size > 500000) {
-    const hash = crypto.createHash('md5').update(fs.readFileSync(destPath)).digest('hex');
-    console.log(`\n================================================================`);
-    console.log(`⚡ [CACHE HIT] QuickSpecs PDF already exists & verified!`);
-    console.log(`Path:              ${destPath}`);
-    console.log(`Size:              ${(stats.size / 1024 / 1024).toFixed(2)} MB`);
-    console.log(`Fingerprint (MD5): ${hash}`);
-    console.log(`Skipping redundant download — session & bandwidth preserved.`);
-    console.log(`================================================================\n`);
-    process.exit(0);
+function isValidPdfFile(filePath) {
+  if (!fs.existsSync(filePath)) return false;
+  const stats = fs.statSync(filePath);
+  if (stats.size < 100000) return false;
+  const fd = fs.openSync(filePath, 'r');
+  try {
+    const header = Buffer.alloc(5);
+    fs.readSync(fd, header, 0, 5, 0);
+    return header.toString('latin1') === '%PDF-';
+  } finally {
+    fs.closeSync(fd);
   }
+}
+
+// ── MD5 Cache Check (Rule #23) ────────────────────────────────────────────────
+if (!forceDownload && isValidPdfFile(destPath)) {
+  const stats = fs.statSync(destPath);
+  const hash = crypto.createHash('md5').update(fs.readFileSync(destPath)).digest('hex');
+  console.log(`\n================================================================`);
+  console.log(`⚡ [CACHE HIT] QuickSpecs PDF already exists & verified!`);
+  console.log(`Path:              ${destPath}`);
+  console.log(`Size:              ${(stats.size / 1024 / 1024).toFixed(2)} MB`);
+  console.log(`Fingerprint (MD5): ${hash}`);
+  console.log(`Skipping redundant download — session & bandwidth preserved.`);
+  console.log(`================================================================\n`);
+  process.exit(0);
 }
 
 async function main() {
@@ -63,9 +78,9 @@ async function main() {
   const mainTarget = await getAnyPageTarget();
   const wsMain     = await connectWS(mainTarget.webSocketDebuggerUrl);
 
-  const targetUrl = `https://www.hpe.com/psnow/doc/${docId}.pdf`;
+  const targetUrl = directPdf ? url.href : `https://www.hpe.com/psnow/doc/${docId}.pdf`;
   console.log(`Creating dedicated Chrome tab for: ${targetUrl}`);
-  const createRes   = await sendCommand(wsMain, 'Target.createTarget', { url: targetUrl });
+  const createRes   = await sendCommand(wsMain, 'Target.createTarget', { url: 'about:blank' });
   const newTargetId = createRes.targetId;
   wsMain.close();
 
@@ -121,7 +136,7 @@ async function main() {
       const newFiles = filesNow.filter(f => !filesBefore.has(f));
       if (newFiles.length > 0) {
         const candidate = path.join(downloadDir, newFiles[0]);
-        if (fs.statSync(candidate).size > 500000) {
+        if (isValidPdfFile(candidate)) {
           newFilePath = candidate;
           downloaded  = true;
           break;

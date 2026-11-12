@@ -673,7 +673,10 @@ function _renderOwnedComponentScope(targetDir) {
   if (!fs.existsSync(rawCapturePath)) return '';
   const rawCapture = JSON.parse(fs.readFileSync(rawCapturePath, 'utf8'));
   if (!rawCapture.parentConfiguration) return '';
-  let md = `\n## Owned component capture scope\n\nObserved ${rawCapture.timestamp}; base ${rawCapture.selectedBaseSku}; owner ${rawCapture.ownerConfiguration}; parent ${rawCapture.parentConfiguration}. This is the component catalog, not certification of its parent solution.\n\n`;
+  const parentEvidence = rawCapture.parentBaseSku
+    ? `Parent base SKU: ${rawCapture.parentBaseSku}.`
+    : 'The raw capture records the parent configuration.';
+  let md = `\n## Owned component capture scope\n\nObserved ${rawCapture.timestamp}. Component base SKU: ${rawCapture.selectedBaseSku}. Owner: ${rawCapture.ownerConfiguration}. ${parentEvidence} Coverage is limited to the component menu.\n\n`;
   if (rawCapture.componentServiceEvidence) {
     md += `Service scope: ${rawCapture.componentServiceEvidence.scope}. Unexecuted: ${(rawCapture.componentServiceEvidence.unexecuted || []).join('; ')}. Missing prices remain unknown.\n\n`;
   }
@@ -790,6 +793,7 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
       : cfg.defaultNotebookId;
     uploadResult = syncToNotebookLM(notebookId, payloadPath, chassisName, totalRules, {
       ...syncOptions,
+      capturedAt: catalogData?.metadata?.scrapeTimestamp || catalogData?.metadata?.scrapeDate || null,
       contentFingerprints
     });
   }

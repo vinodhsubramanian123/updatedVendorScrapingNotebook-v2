@@ -445,7 +445,14 @@ function _checkEssentialSubsystems(catalogData, chassisName, errors) {
   const hasMemory = allCats.some(c => c.includes('memory') || c.includes('dimm') || c.includes('ram'));
   const hasPower = allCats.some(c => c.includes('power') || c.includes('psu') || c.includes('supply'));
 
-  const isNonServerOrSpecialty = /^(msl|alletra|nimble|storeever|san|switch|sn\d|sy100gb)/i.test(chassisName);
+  const { resolveProductIdentity } = require('./product_scope.js');
+  const pillar = resolveProductIdentity(chassisName, require('../../config/notebooks.json'))?.pillar;
+  if (pillar === 'COMPOSITE') {
+    if (!hasPower) errors.push('Missing mandatory frame category: Power Supply options not found.');
+    return parentCategories;
+  }
+  const isNonServerOrSpecialty = ['STORAGE', 'NETWORKING'].includes(pillar) ||
+    /^(msl|alletra|nimble|storeever|san|switch|sn\d|sy100gb)/i.test(chassisName);
   const isSynergyCompute = !isNonServerOrSpecialty && /^sy\d/i.test(chassisName);
 
   if (!isNonServerOrSpecialty && !isSynergyCompute) {
@@ -559,6 +566,7 @@ function _buildQualityResult(isValid, chassis, totalHardwareSkus, totalServiceSk
 }
 
 module.exports = {
+  safeDate,
   normalizeCatalogMetadata,
   auditCatalogFreshness,
   verifyTabularIntegrity,

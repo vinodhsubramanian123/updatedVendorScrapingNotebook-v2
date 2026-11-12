@@ -221,7 +221,7 @@ function isClearlyPhysicalSkuRow(sku) {
   if (/\b(?:raid setting|fio setting|raid service|factory setting|custom defined raid|customer defined raid)\b/i.test(description)) {
     return true;
   }
-  if (/\b(?:software|license|subscription|support|service|saas|e-ltu|care pack)\b/i.test(description)) return false;
+  if (/\b(?:software|license|subscription|support|service|svc|saas|e-ltu|care pack)\b/i.test(description)) return false;
   return /\b(?:adapter|card|cable|cord|kit|rail|drive|ssd|hdd|controller|processor|memory|dimm|transceiver|heatsink|heat sink|fan|riser|power supply|chassis|enclosure|accelerator|gpu|graphics|hba)\b/i.test(description);
 }
 
@@ -686,7 +686,7 @@ const REGEX_HEADER_RULES = [
   [/^start(?: date)?$/, 'Start Date'],
   [/^(?:discontinued|obsolete|end)(?: date)?$/, 'Discontinued Date'],
   [/^(?:availability|available|supply status)$/, 'Availability'],
-  [/^(?:estimated\s*(?:availability\s*)?)?lead\s*time|estimated\s*delivery|delivery\s*estimate|edt$/i, 'Lead Time'],
+  [/^(?:(?:estimated|est\.?)\s*(?:availability\s*)?)?lead\s*time|estimated\s*delivery|delivery\s*estimate|edt$/i, 'Lead Time'],
   [/^(?:clic\s*status|validation\s*status)$/i, 'CLIC Status'],
   [/^(?:lifecycle\s*status|sku\s*status)$/i, 'Lifecycle Status'],
   [/^(?:allocation\s*status|supply\s*status|market\s*availability)$/i, 'Allocation Status'],
@@ -895,7 +895,7 @@ function parseSingleTableRow(row, headers, offset, historyPriceMap) {
     !CANONICAL_ROW_KEYS.has(key) && String(value ?? '').trim()
   ));
 
-  if (/\bTAA\b|TAA Compliant|\bGTA\b|#GTA/i.test(pn) || /\bTAA\b|TAA Compliant|\bGTA\b|#GTA/i.test(descText)) {
+  if (require('../lib/catalog/sku.js').isTaaGtaCatalogOption(pn, descText)) {
     return null;
   }
 
@@ -1662,7 +1662,8 @@ function isCanonicalCtoChassisCandidate(candidate, chassisLabel) {
   if (candidate?.isBto || candidate?.isTaa || candidate?.isGta || /\b(?:TAA|GTA|BTO)\b|#GTA/i.test(text)) return false;
   const expected = parseProductMeta(chassisLabel).cleanName;
   const observed = parseProductMeta(text).cleanName;
-  const isFabricBase = expected === 'SY100Gb_F32_Module' && observed === expected &&
+  const registration = require('../config/notebooks.json').notebooks[expected];
+  const isFabricBase = registration?.captureViaParent && registration.baseSku === sku && observed === expected &&
     /\bmodule\b/i.test(text) && !/\b(support|service|license|cable|transceiver|kit)\b/i.test(text);
   const isSanBase = parseProductMeta(text).family === 'SAN' && /\bswitch\b/i.test(text) && !/\b(upgrade|license|support|service|kit)\b/i.test(text);
   if (expected !== observed || (!isSanBase && !isFabricBase && !/configure[\s-]+to[\s-]+order|\bcto\b/i.test(text))) return false;
@@ -1697,8 +1698,11 @@ async function loadHistoricalChassisEvidence(targetDir, chassisLabel) {
 }
 
 function resolveDiscoveredVariantPrice(candidate, previous, chassisLabel, productNumber) {
+  if (candidate.priceVerified && candidate.listPriceUsd === 0) return 0;
   const currentPrice = Number(candidate.listPriceUsd || 0);
   if (currentPrice > 0) return currentPrice;
+  const registration = require('../config/notebooks.json').notebooks[parseProductMeta(chassisLabel).cleanName];
+  if (registration?.requireExactOcaBase || registration?.captureViaParent) return null;
   const mapInfo = lookupChassisMapBaseSku(chassisLabel, null, productNumber);
   const mapPrice = Number(mapInfo?.listPrice || 0);
   if (mapPrice > 0) return mapPrice;
@@ -1712,10 +1716,11 @@ function buildDiscoveredVariantRecord(candidate, previous, productNumber, chassi
   const price = resolveDiscoveredVariantPrice(candidate, previous, chassisLabel, productNumber);
   const isSelectedVariant = cleanBaseSKU(chassisDiscovery.selectedSku || '') === productNumber;
   const leadTime = candidate.leadTime || (isSelectedVariant ? (chassisDiscovery.deliveryEstimate || '') : '');
-  const formattedPrice = price > 0 ? price.toFixed(2) : '0.00';
-  const clicStatus = candidate.clicStatus || 'Valid';
+  const formattedPrice = price === null ? '' : price.toFixed(2);
+  const clicStatus = candidate.clicStatus || (chassisDiscovery.parentConfiguration ? 'Not evaluated' : 'Valid');
   const lifecycleStatus = candidate.status || 'Active';
-  const leadTimeSource = !leadTime ? 'Not published by OCA' : (candidate.leadTime ? 'OCA candidate estimate' : 'OCA configuration estimate');
+  const leadTimeSource = !leadTime ? 'Not published by OCA' : (chassisDiscovery.parentOption ? 'OCA parent option row'
+    : (candidate.leadTime ? 'OCA candidate estimate' : 'OCA configuration estimate'));
 
   return {
     'Product #': productNumber,
@@ -1736,8 +1741,9 @@ function buildDiscoveredVariantRecord(candidate, previous, productNumber, chassi
     'HPE Recommended': previous['HPE Recommended'] === 'Yes' ? 'Yes' : 'No',
     Availability: candidate.availability || 'Available in OCA product catalog',
     'Lead Time': leadTime,
-    'Lead Time Days': '',
-    'Speed Tier': leadTime ? 'Standard Delivery (8-30d)' : 'Unpublished',
+    'Lead Time Days': candidate.leadTimeDays == null ? '' : String(candidate.leadTimeDays),
+    leadTimeDays: candidate.leadTimeDays ?? null,
+    'Speed Tier': candidate.leadTimeDays != null ? 'OCA Estimate' : (leadTime ? 'Standard Delivery (8-30d)' : 'Unpublished'),
     'Lead Time Source': leadTimeSource,
     'Start Date': candidate.startDate || previous['Start Date'] || '',
     'Discontinued Date': candidate.discontinuedDate || previous['Discontinued Date'] || '',
@@ -2258,12 +2264,8 @@ async function exportCatalogArtifacts(ctx) {
   safeWriteJsonAtomic(rulesJsonPath, rulesJsonData);
 
   const servicesJsonOutputPath = jsonOutputPath.replace('_Catalog.json', '_Services.json');
-  if (enrichedServicesCatalog.metadata.totalUniqueSKUs > 0) {
-    safeWriteJsonAtomic(servicesJsonOutputPath, enrichedServicesCatalog, { validateSchema: false, rejectInvalid: false });
-    console.log(`  📄 ${filePrefix}_Services.json  (${enrichedServicesCatalog.metadata.totalUniqueSKUs} service SKUs, diff-enriched)`);
-  } else {
-    console.log(`  ℹ️  No service SKUs found in this scrape — _Services.json not written.`);
-  }
+  safeWriteJsonAtomic(servicesJsonOutputPath, enrichedServicesCatalog, { validateSchema: false, rejectInvalid: false });
+  console.log(`  📄 ${filePrefix}_Services.json  (${enrichedServicesCatalog.metadata.totalUniqueSKUs} observed service/software SKUs)`);
 
   pipelineLogger.logStep('Step 6: Atomic Save Output JSON', 'SUCCESS', { path: jsonOutputPath });
   pipelineLogger.finalizeRun(validationResult.isValid ? 'COMPLETED' : 'PARTIAL_SUCCESS', {
@@ -2383,6 +2385,14 @@ async function main(rawInputPath = process.argv[2], jsonOutputPath = process.arg
   const unavail = resolveUnavailableRawData(ctx.rawData, rawInputPath);
   ctx.unavailableRules = applyUnavailableDomRulesAndSkus(
     hardwareEntries, cleanServicesEntries, unavail.rules, unavail.skus);
+  if (ctx.meta.cleanName === 'Synergy_12000_Frame') {
+    // CTO modules selectable within this frame are options. The exact frame
+    // base is injected separately from authenticated chassis discovery.
+    for (const entry of hardwareEntries) {
+      if (entry.parentCategory === 'Chassis') entry.parentCategory = 'Frame Options';
+      if (entry.subCategory === 'Variants') entry.subCategory = 'Frame Options';
+    }
+  }
   ctx.networkRules = _formatNetworkSniffedRules(ctx.rawData, rawInputPath);
 
   const { enrichedCatalog, enrichedServicesCatalog, validationResult } = await reconcilePriceAndLifecycleHistory(

@@ -184,3 +184,12 @@ test('physical kits embedded under manufacturing services are retaxonomized as h
   assert.equal(hardwareEntries[0].parentCategory, 'Accessories & Infrastructure');
   assert.equal(hardwareEntries[0].skus[0]['Component Role'], 'Chassis Infrastructure');
 });
+
+test('GPU integration SVC is counted as a service in an OCA hardware group', () => {
+  const entry = { parentCategory: 'Graphics & GPU', subCategory: 'GPU Accelerators', skus: [
+    { 'Product #': 'H36XCA1#006', 'Option Type': 'Standard', Description: 'HPE GPU on RHOCP Integrat SVC' }
+  ] };
+  const { hardwareEntries, servicesEntries } = partitionCatalogEntries([entry]);
+  assert.equal(hardwareEntries.length, 0);
+  assert.equal(servicesEntries[0].skus[0]['Product #'], 'H36XCA1#006');
+});

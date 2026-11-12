@@ -27,6 +27,7 @@ function normalizeProductText(value) {
 
 function normalizePortalSearchQuery(value) {
   const query = String(value || 'DL380 Gen12').replace(/_/g, ' ').trim();
+  if (/^Synergy\s+12000\s+Frame$/i.test(query)) return 'Synergy 12000';
   if (/^SY480\s+Gen12$/i.test(query)) return 'Synergy 480 Gen12';
   if (/^SY100Gb\s+F32\s+Module$/i.test(query)) return 'Synergy Virtual Connect SE 100Gb F32';
   return query;
@@ -1118,8 +1119,8 @@ async function _probeLoginPageDom(partnerTarget) {
   }
 }
 
-function _findPortalHomeTarget(currentPages) {
-  return currentPages.find(t =>
+async function _findPortalHomeTarget(currentPages, preferredTarget = null) {
+  const homes = currentPages.filter(t =>
     !isSeismicTarget(t) &&
     t.url &&
     t.url.includes('partner.hpe.com') &&
@@ -1129,6 +1130,19 @@ function _findPortalHomeTarget(currentPages) {
     !(t.title && /sign\s*in|login|log\s*in/i.test(t.title)) &&
     (t.url.includes('/group/prp') || t.url.includes('/home') || t.title.toLowerCase().includes('home - hpe partner portal') || t.title.toLowerCase().includes('partner home'))
   );
+  for (const target of homes) {
+    let ws;
+    try {
+      ws = await connectWS(target.webSocketDebuggerUrl);
+      const probe = await sendCommand(ws, 'Runtime.evaluate', {
+        expression: `Array.from(document.querySelectorAll('a[href*="eServiceId=187402"], #quick-links-807 a')).some(a => a.getClientRects().length)`,
+        returnByValue: true
+      });
+      if (probe.result?.value) return target;
+    } catch { /* The tab may have navigated while being checked. */ }
+    finally { ws?.close(); }
+  }
+  return homes.find(t => t.id === preferredTarget?.id) || homes[0];
 }
 
 async function _triggerPortalQuickLink(partnerWs) {
@@ -1235,7 +1249,7 @@ async function handlePartnerPortalLaunch(partnerTarget, query, options) {
   // Ensure we are using the authenticated portal home tab
   const currentPages = await getPageTargets();
   await pruneSeismicTabs(currentPages);
-  const homeTarget = _findPortalHomeTarget(currentPages);
+  const homeTarget = await _findPortalHomeTarget(currentPages, activePortalTarget);
 
   if (activePortalTarget && activePortalTarget.url && activePortalTarget.url.includes('oca.ext.hpe.com')) {
     console.log(`⚡ Direct OCA tab active at: ${safeNavigationLabel(activePortalTarget.url)}. Navigating directly to "${query}"...`);
@@ -1437,7 +1451,7 @@ async function _closeStaleOcaTabs(pages) {
 }
 
 async function _resolvePartnerPortalRecoveryTarget(freshPages, query, options) {
-  const partnerTarget = freshPages.find(t =>
+  const partnerTarget = await _findPortalHomeTarget(freshPages) || freshPages.find(t =>
     !isSeismicTarget(t) &&
     t.url &&
     t.url.includes('partner.hpe.com') &&
@@ -1516,13 +1530,7 @@ async function recoverAndLaunchFreshOCA(chassisQuery = 'DL380 Gen12', options = 
 
   // 4. Re-acquire fresh Partner Portal target and click One Config Advanced
   freshPages = await getPageTargets();
-  const reloadedPartner = freshPages.find(t =>
-    !isSeismicTarget(t) &&
-    t.url &&
-    t.url.includes('partner.hpe.com') &&
-    !t.url.includes('login') &&
-    !t.url.includes('sso')
-  ) || partnerTarget;
+  const reloadedPartner = freshPages.find(t => t.id === partnerTarget.id) || partnerTarget;
 
   return handlePartnerPortalLaunch(reloadedPartner, query, { ...options, forceFreshSession: true });
 }

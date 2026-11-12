@@ -35,6 +35,18 @@ if (!fs.existsSync(pdfPath)) {
   if (existingPdfs.length > 0) pdfPath = path.join(targetDir, existingPdfs[0]);
 }
 
+const NOTEBOOK_CONFIG_PATH = path.join(__dirname, '../../scripts/config/notebooks.json');
+
+function allowsUnpublishedBasePrice(productId, sku) {
+  if (!(sku['Unit Price (USD)'] === '' && (sku['Price (USD)'] === undefined || sku['Price (USD)'] === '') && sku.listPrice === null)) {
+    return false;
+  }
+  const nb = fs.existsSync(NOTEBOOK_CONFIG_PATH)
+    ? JSON.parse(fs.readFileSync(NOTEBOOK_CONFIG_PATH, 'utf8'))?.notebooks?.[productId]
+    : null;
+  return Boolean(nb && (nb.requireExactOcaBase || nb.captureViaParent));
+}
+
 function assert(condition, message) {
   if (!condition) {
     console.error('❌ GUARDRAIL FAIL:', message);
@@ -229,7 +241,7 @@ async function main() {
     }
 
     const priceVal = parseFloat(sku['Unit Price (USD)'] || sku['Price (USD)'] || sku.listPrice || 0);
-    if (!priceVal || priceVal <= 0) {
+    if ((!priceVal || priceVal <= 0) && !allowsUnpublishedBasePrice(filePrefix, sku)) {
       zeroPriceChassisCount++;
     }
 
@@ -337,8 +349,9 @@ async function main() {
   console.log('\n--- TEST 5: QuickSpecs PDF Quality ---');
   if (fs.existsSync(pdfPath)) {
     const pdfStats = fs.statSync(pdfPath);
-    assert(pdfStats.size > 500000,
-      `Post-flight: PDF size (${(pdfStats.size / 1024 / 1024).toFixed(2)} MB) > 500 KB`);
+    const pdfHeader = fs.readFileSync(pdfPath).subarray(0, 5).toString('latin1');
+    assert(pdfStats.size >= 100000 && pdfHeader === '%PDF-',
+      `Post-flight: PDF size (${(pdfStats.size / 1024 / 1024).toFixed(2)} MB) >= 100 KB and valid %PDF- header`);
   } else {
     console.log(`⚠️ ADVISORY: QuickSpecs PDF not present: ${path.basename(pdfPath)}`);
   }

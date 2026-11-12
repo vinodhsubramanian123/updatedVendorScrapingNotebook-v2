@@ -10,14 +10,20 @@ const advisories = [
   ['WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY', 'Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending dated vendor evidence; resolve contradictions before promoting hardware dependencies. Conflicting quantity claims require dated evidence for this exact product and selector state.']
 ];
 
+const { resolveProductIdentity } = require('../lib/catalog/product_scope');
+const notebooksConfig = require('../config/notebooks.json');
+
 function recordRefreshLearnings(products) {
   return products.map(product => {
     const meta = getProductGenerationMetadata(product);
     if (!meta.exists || !meta.outputDir) throw new Error(`CATALOG_NOT_FOUND: ${product}`);
+    const identity = resolveProductIdentity(product, notebooksConfig);
+    const family = identity?.family || meta.family || (/^sy/i.test(product) ? 'Synergy' : 'ProLiant');
+    const pillar = identity?.pillar || meta.pillar || (/F32_Module|Link_Module|FC_Module/i.test(product) ? 'NETWORKING' : 'SERVER');
     const results = advisories.map(([ruleType, rawMessage]) => recordAndCertifyLearnedRule({
       deltaId: `LEARN_${product.toUpperCase()}_${ruleType}_20261029`, ruleType, rawMessage,
-      productId: product, vendor: 'HPE', family: product.startsWith('SY') ? 'Synergy' : 'ProLiant',
-      generation: meta.generation, pillar: product === 'SY100Gb_F32_Module' ? 'NETWORKING' : 'SERVER',
+      productId: product, vendor: identity?.vendor || 'HPE', family,
+      generation: meta.generation, pillar,
       scopeTaxonomy: 'CHASSIS_SPECIFIC', governanceStatus: 'ACTIVE', evidenceType: 'WORKFLOW_REVIEW',
       source: 'docs/audits/2026-10-29-catalog-refresh-and-knowledge-sync.md',
       hardwareCompatibilityCertified: false

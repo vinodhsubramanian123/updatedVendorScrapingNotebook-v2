@@ -192,8 +192,8 @@ function _scanDeltasDir(dir, deltas, seenIds) {
   for (const ent of entries) {
     const full = path.join(dir, ent.name);
     if (ent.isDirectory()) {
-      const ephemeral = ent.name === 'temp' || ent.name.startsWith('staging_') ||
-        ent.name.startsWith('failed_') || ent.name.includes('_promotion_bak_');
+      const ephemeral = ent.name.startsWith('.') || ent.name === 'temp' || ent.name.startsWith('staging_') ||
+        ent.name.startsWith('failed_') || ent.name.includes('_promotion_bak_') || ent.name.includes('.promotion.');
       if (ephemeral) continue;
       _scanDeltasDir(full, deltas, seenIds);
     } else if (ent.name === 'catalog_deltas.json') {
@@ -402,6 +402,8 @@ async function main() {
     : (allCatalogFiles.length > 0 
         ? allCatalogFiles.map(f => path.basename(f, '_Catalog.json')) 
         : []);
+  const coverageIssues = chassis ? [] : require('../catalog/catalog_portfolio.js')
+    .getCatalogPortfolioCoverage().filter(product => product.coverageIssues.length);
 
   const results = [];
   for (const ch of targetChassisList) {
@@ -418,13 +420,14 @@ async function main() {
     });
   }
 
-  const complete = AUTO_UPLOAD && results.length > 0 && results.every(result => result.uploadResult?.success === true);
+  const complete = AUTO_UPLOAD && results.length > 0 && !coverageIssues.length &&
+    results.every(result => result.uploadResult?.success === true);
   if (AUTO_UPLOAD && !complete) process.exitCode = 1;
 
   if (JSON_MODE) {
     process.stdout.write(JSON.stringify({
       status: complete ? 'CLOUD_VERIFIED' : AUTO_UPLOAD ? 'CLOUD_FAILED' : 'LOCAL_PAYLOAD_ONLY',
-      data: { masterRegistry: registry, results }
+      data: { masterRegistry: registry, results, coverageIssues }
     }));
     return;
   }
@@ -434,6 +437,9 @@ async function main() {
   console.log('================================================================\n');
 
   console.log(`  📊 Master Rules    : ${registry.totalLearnedRules} total (Universal: ${registry.counts.universal}, Family/Gen: ${registry.counts.familyGen}, Chassis: ${registry.counts.chassisSpecific})`);
+  for (const product of coverageIssues) {
+    console.log(`  ⚠️  ${product.product}: ${product.coverageIssues.join(', ')}`);
+  }
   results.forEach(r => {
     if (r.payloadPath) {
       console.log(`  🎯 Target Product  : ${r.chassis.padEnd(25)} (Notebook: ${r.notebookId})`);

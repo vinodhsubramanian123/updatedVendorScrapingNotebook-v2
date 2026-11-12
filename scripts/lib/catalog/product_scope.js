@@ -19,7 +19,7 @@ function inferPillar(family, productId = '') {
 
   // Synergy is a special composite — pillar depends on component role
   if (normalizedFamily === 'synergy') {
-    if (/sy100gb|f32|virtual.?connect|interconnect/i.test(productId)) return 'NETWORKING';
+    if (/sy100gb|f32|virtual.?connect|interconnect|4port.frame.link.module|brocade.64gb.fc.module/i.test(productId)) return 'NETWORKING';
     if (/sy480|synergy.?480|compute/i.test(productId)) return 'SERVER';
     return 'COMPOSITE';
   }
@@ -61,7 +61,17 @@ const PRODUCT_ALIASES = {
   'alletra': 'Alletra_Storage_System',
   'alletrastoragesystem': 'Alletra_Storage_System',
   'sy100gbf32': 'SY100Gb_F32_Module',
-  'sy100gbf32module': 'SY100Gb_F32_Module'
+  'sy100gbf32module': 'SY100Gb_F32_Module',
+  'synergy12000': 'Synergy_12000_Frame',
+  'synergy12000frame': 'Synergy_12000_Frame',
+  'synergy4portframelink': 'Synergy_4Port_Frame_Link_Module',
+  'synergy4portframelinkmodule': 'Synergy_4Port_Frame_Link_Module',
+  'framelink': 'Synergy_4Port_Frame_Link_Module',
+  'framelinkmodule': 'Synergy_4Port_Frame_Link_Module',
+  'synergybrocade64gbfc': 'Synergy_Brocade_64Gb_FC_Module',
+  'synergybrocade64gbfcmodule': 'Synergy_Brocade_64Gb_FC_Module',
+  'brocade64gbfc': 'Synergy_Brocade_64Gb_FC_Module',
+  'brocade64gbfcmodule': 'Synergy_Brocade_64Gb_FC_Module'
 };
 
 function resolveProductIdentity(identifier, config = {}) {

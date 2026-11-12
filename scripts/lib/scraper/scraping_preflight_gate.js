@@ -36,7 +36,7 @@ function loadJsonFileSafe(filePath, fallback = {}) {
   return fallback;
 }
 
-function verifyTargetProductAndNotebookConfig(query) {
+function verifyTargetProductAndNotebookConfig(query, skipCloudCheck = false) {
   const notebookConfig = loadJsonFileSafe(NOTEBOOKS_CONFIG_PATH, { notebooks: {} });
   const coverageConfig = loadJsonFileSafe(COVERAGE_PROFILES_PATH, { profiles: {} });
   const identity = resolveProductIdentity(query, notebookConfig);
@@ -46,7 +46,7 @@ function verifyTargetProductAndNotebookConfig(query) {
 
   const productId = identity.productId;
   const nbEntry = notebookConfig.notebooks?.[productId] || null;
-  if (!nbEntry || !nbEntry.notebookId) {
+  if (!nbEntry?.notebookId && !skipCloudCheck) {
     throw new Error(`[PREFLIGHT_NOTEBOOK_MISSING] Product "${productId}" has no configured notebookId in scripts/config/notebooks.json.`);
   }
 
@@ -59,7 +59,7 @@ function verifyTargetProductAndNotebookConfig(query) {
     family: identity.family,
     generation: identity.generation,
     pillar,
-    notebookId: nbEntry.notebookId,
+    notebookId: nbEntry.notebookId || null,
     canonicalDriveEnabled: Boolean(nbEntry.canonicalDriveEnabled),
     publishDriveWorkbook: nbEntry.publishDriveWorkbook === true,
     expectedWorkbookSheets: coverageProfile?.expectedWorkbookSheets || null,
@@ -106,7 +106,7 @@ async function runScrapingPreflightGate({ targetChassisQuery, navQuery, skipClou
   const query = String(targetChassisQuery || navQuery || 'DL380 Gen12').trim();
   console.log('\n--- STEP 0: Unified Pre-Flight Readiness Gate (Product, NLM, Drive/Sheets, Portal Policy) ---');
 
-  const productCheck = verifyTargetProductAndNotebookConfig(query);
+  const productCheck = verifyTargetProductAndNotebookConfig(query, skipCloudCheck);
   const vendorPolicy = getVendorPortalPolicy(vendor);
   const nlmCheck = verifyNotebookLmPreflight(skipCloudCheck);
   const googleCheck = productCheck.canonicalDriveEnabled || productCheck.publishDriveWorkbook

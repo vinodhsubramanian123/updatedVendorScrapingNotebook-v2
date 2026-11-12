@@ -10,7 +10,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const { execFileSync: defaultExecFileSync } = require('child_process');
-const { safeWriteJsonAtomic } = require('../system/fs_compat.js');
+const { safeWriteJsonAtomic, withFileLock } = require('../system/fs_compat.js');
 const { normalizeLearningText } = require('./google_sheets_writer.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
@@ -250,7 +250,8 @@ function isGroundedCanary(parsed, sourceId, chassisName) {
   ].map(String));
   const rawTarget = String(chassisName || '').toLowerCase();
   const spacedTarget = rawTarget.replace(/_/g, ' ');
-  const mentionsProduct = (rawTarget && answer.includes(rawTarget)) || (spacedTarget && answer.includes(spacedTarget));
+  const comparableAnswer = answer.replace(/(\d)[\p{Pd}\s]+(?=port\b)/gu, '$1');
+  const mentionsProduct = Boolean(rawTarget && (answer.includes(rawTarget) || comparableAnswer.includes(spacedTarget)));
   return answer.length > 20 && mentionsProduct &&
     citedIds.has(String(sourceId)) && !/no (?:relevant )?source|cannot (?:find|verify)/i.test(answer);
 }
@@ -318,7 +319,7 @@ function buildTrustedSourceIds(existing = {}, newSourceId = null, driveSourceVer
 function syncToNotebookLM(notebookId, payloadPath, chassisName = 'Unknown_Chassis', totalRulesCount = 0, options = {}) {
   let release;
   try {
-    release = require('../system/workflow_lease.js').acquireWorkflowLease('notebook-catalog-sync');
+    release = require('../system/workflow_lease.js').acquireWorkflowLease('notebook-catalog-sync', options.locksRoot);
     return syncToNotebookLMWithinLease(notebookId, payloadPath, chassisName, totalRulesCount, options);
   } catch (error) {
     return { success: false, cloudVerified: false, mode: 'SYNC_BLOCKED', message: error.message };
@@ -366,7 +367,7 @@ function _verifyUploadedCandidateContent(effectiveNotebookId, newSourceId, chass
   if (!newSourceId) throw new Error('Uploaded candidate has no source ID; restricted verification cannot run.');
   const canaryArgs = [
     'notebook', 'query', effectiveNotebookId,
-    `Canary verification: Summarize base chassis model and SKUs for ${chassisName}.`
+    `Read the Target Product field in the selected source. Quote its exact identifier as written, including any underscores. Then name one SKU from its catalog and cite the selected source.`
   ];
   canaryArgs.push('--source-ids', newSourceId);
   const canaryTimeoutMs = parseInt(process.env.NLM_SYNC_CANARY_TIMEOUT_MS || '600000', 10);
@@ -675,12 +676,14 @@ function _cleanupQuarantinedIdsInConfig(configPath, chassisName, retiredSourceId
     return;
   }
   try {
-    const cfg = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
-    const entry = cfg.notebooks?.[chassisName];
-    if (entry && typeof entry === 'object' && Array.isArray(entry.quarantinedSourceIds)) {
-      entry.quarantinedSourceIds = entry.quarantinedSourceIds.filter(id => !retiredSourceIds.includes(id));
-      safeWriteJsonAtomic(configPath, cfg);
-    }
+    withFileLock(configPath, () => {
+      const cfg = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+      const entry = cfg.notebooks?.[chassisName];
+      if (entry && typeof entry === 'object' && Array.isArray(entry.quarantinedSourceIds)) {
+        entry.quarantinedSourceIds = entry.quarantinedSourceIds.filter(id => !retiredSourceIds.includes(id));
+        safeWriteJsonAtomic(configPath, cfg);
+      }
+    });
   } catch { /* ignore */ }
 }
 
@@ -878,17 +881,19 @@ function _prepareMarkdownPayloadIfLegacy({ payloadPath, chassisName, cfgEntry, e
 function _recordFailedSyncAttempt(configPath, chassisName, cliErr) {
   if (fs.existsSync(configPath)) {
     try {
-      const cfg = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
-      if (cfg.notebooks && cfg.notebooks[chassisName]) {
-        const existing = cfg.notebooks[chassisName];
-        cfg.notebooks[chassisName] = {
-          ...(typeof existing === 'object' ? existing : { notebookId: existing }),
-          lastSyncAttemptAt: new Date().toISOString(),
-          lastSyncError: cliErr.message,
-          cloudSyncState: 'FAILED'
-        };
-        safeWriteJsonAtomic(configPath, cfg);
-      }
+      withFileLock(configPath, () => {
+        const cfg = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+        if (cfg.notebooks && cfg.notebooks[chassisName]) {
+          const existing = cfg.notebooks[chassisName];
+          cfg.notebooks[chassisName] = {
+            ...(typeof existing === 'object' ? existing : { notebookId: existing }),
+            lastSyncAttemptAt: new Date().toISOString(),
+            lastSyncError: cliErr.message,
+            cloudSyncState: 'FAILED'
+          };
+          safeWriteJsonAtomic(configPath, cfg);
+        }
+      });
     } catch {}
   }
 }
@@ -898,53 +903,55 @@ function _commitCandidateActivation({ CONFIG_NOTEBOOKS, chassisName, effectiveNo
   let updatedResult = { ...result };
 
   try {
-    const cfg = JSON.parse(fs.readFileSync(CONFIG_NOTEBOOKS, 'utf-8'));
-    if (!cfg.notebooks?.[chassisName] || (cfg.notebooks[chassisName].notebookId || cfg.notebooks[chassisName]) !== effectiveNotebookId) {
-      throw new Error('Notebook mapping changed or disappeared before candidate activation.');
-    }
-    const existing = typeof cfg.notebooks[chassisName] === 'string'
-      ? { notebookId: cfg.notebooks[chassisName] }
-      : cfg.notebooks[chassisName];
-    let payloadChecksum = null;
-    if (payloadPath && fs.existsSync(payloadPath)) {
-      try {
-        const crypto = require('crypto');
-        const normalizedPayload = normalizeLearningText(fs.readFileSync(payloadPath, 'utf8'));
-        payloadChecksum = crypto.createHash('sha256').update(normalizedPayload).digest('hex');
-      } catch {}
-    }
+    withFileLock(CONFIG_NOTEBOOKS, () => {
+      const cfg = JSON.parse(fs.readFileSync(CONFIG_NOTEBOOKS, 'utf-8'));
+      if (!cfg.notebooks?.[chassisName] || (cfg.notebooks[chassisName].notebookId || cfg.notebooks[chassisName]) !== effectiveNotebookId) {
+        throw new Error('Notebook mapping changed or disappeared before candidate activation.');
+      }
+      const existing = typeof cfg.notebooks[chassisName] === 'string'
+        ? { notebookId: cfg.notebooks[chassisName] }
+        : cfg.notebooks[chassisName];
+      let payloadChecksum = null;
+      if (payloadPath && fs.existsSync(payloadPath)) {
+        try {
+          const crypto = require('crypto');
+          const normalizedPayload = normalizeLearningText(fs.readFileSync(payloadPath, 'utf8'));
+          payloadChecksum = crypto.createHash('sha256').update(normalizedPayload).digest('hex');
+        } catch {}
+      }
 
-    const payloadDir = path.dirname(payloadPath);
-    const catPath = path.join(payloadDir, `${chassisName}_Catalog.json`);
-    const lastCatalogSha256 = fs.existsSync(catPath) ? require('crypto').createHash('sha256').update(fs.readFileSync(catPath)).digest('hex') : null;
+      const payloadDir = path.dirname(payloadPath);
+      const catPath = path.join(payloadDir, `${chassisName}_Catalog.json`);
+      const lastCatalogSha256 = fs.existsSync(catPath) ? require('crypto').createHash('sha256').update(fs.readFileSync(catPath)).digest('hex') : null;
 
-    const lastArtifactHashes = Object.fromEntries(['Catalog.json', 'Services.json', 'Catalog_Rules.json', 'OCA_Catalog.xlsx'].map(suffix => {
-      const artPath = path.join(payloadDir, `${chassisName}_${suffix}`);
-      return [suffix, fs.existsSync(artPath) ? require('crypto').createHash('sha256').update(fs.readFileSync(artPath)).digest('hex') : null];
-    }));
+      const lastArtifactHashes = Object.fromEntries(['Catalog.json', 'Services.json', 'Catalog_Rules.json', 'OCA_Catalog.xlsx'].map(suffix => {
+        const artPath = path.join(payloadDir, `${chassisName}_${suffix}`);
+        return [suffix, fs.existsSync(artPath) ? require('crypto').createHash('sha256').update(fs.readFileSync(artPath)).digest('hex') : null];
+      }));
 
-    cfg.notebooks[chassisName] = {
-      ...existing,
-      queryEnabled: true,
-      lastSyncedAt: new Date().toISOString(),
-      lastSyncDeltaCount: totalRulesCount,
-      cloudSyncState: 'VERIFIED',
-      lastSyncError: null,
-      isolationLevel: 'CHASSIS_SPECIFIC',
-      lastSyncedSourceName: result.newSourceName,
-      trustedSourceIds: buildTrustedSourceIds({ ...existing, certifiedCatalogSourceIds: [] }, result.newSourceId, driveSourceVerified),
-      lastCatalogSha256,
-      lastArtifactHashes,
-      canonicalKnowledgeSourceIds: Array.from(new Set([result.newSourceId, driveSourceVerified].filter(Boolean))),
-      certifiedCatalogSourceIds: Array.from(new Set([result.newSourceId, driveSourceVerified].filter(Boolean))),
-      ...(payloadChecksum ? { lastPayloadChecksum: payloadChecksum } : {}),
-      ...(result.contentFingerprints ? { lastContentFingerprints: result.contentFingerprints } : {}),
-      ...(result.canonicalDriveSheetId ? { driveSheetId: result.canonicalDriveSheetId } : {}),
-      ...(result.canonicalDriveSheetUrl ? { driveSheetUrl: result.canonicalDriveSheetUrl } : {}),
-      ...(result.canonicalDriveSourceId ? { driveSourceId: result.canonicalDriveSourceId } : {}),
-      ...(result.newSourceId ? { lastSyncedSourceId: result.newSourceId } : {})
-    };
-    safeWriteJsonAtomic(CONFIG_NOTEBOOKS, cfg);
+      cfg.notebooks[chassisName] = {
+        ...existing,
+        queryEnabled: true,
+        lastSyncedAt: new Date().toISOString(),
+        lastSyncDeltaCount: totalRulesCount,
+        cloudSyncState: 'VERIFIED',
+        lastSyncError: null,
+        isolationLevel: 'CHASSIS_SPECIFIC',
+        lastSyncedSourceName: result.newSourceName,
+        trustedSourceIds: buildTrustedSourceIds({ ...existing, certifiedCatalogSourceIds: [] }, result.newSourceId, driveSourceVerified),
+        lastCatalogSha256,
+        lastArtifactHashes,
+        canonicalKnowledgeSourceIds: Array.from(new Set([result.newSourceId, driveSourceVerified].filter(Boolean))),
+        certifiedCatalogSourceIds: Array.from(new Set([result.newSourceId, driveSourceVerified].filter(Boolean))),
+        ...(payloadChecksum ? { lastPayloadChecksum: payloadChecksum } : {}),
+        ...(result.contentFingerprints ? { lastContentFingerprints: result.contentFingerprints } : {}),
+        ...(result.canonicalDriveSheetId ? { driveSheetId: result.canonicalDriveSheetId } : {}),
+        ...(result.canonicalDriveSheetUrl ? { driveSheetUrl: result.canonicalDriveSheetUrl } : {}),
+        ...(result.canonicalDriveSourceId ? { driveSourceId: result.canonicalDriveSourceId } : {}),
+        ...(result.newSourceId ? { lastSyncedSourceId: result.newSourceId } : {})
+      };
+      safeWriteJsonAtomic(CONFIG_NOTEBOOKS, cfg);
+    });
     activationCommitted = true;
   } catch (metadataErr) {
     updatedResult = {
@@ -1062,8 +1069,9 @@ function syncToNotebookLMWithinLease(notebookId, payloadPath, chassisName = 'Unk
   let driveSyncStatus = 'NOT_CONFIGURED';
   let driveSourceVerified = null;
   let contentFingerprints = options.contentFingerprints || null;
-  const scrapeDate = new Date().toISOString().split('T')[0];
-  const canonicalSourceName = `${chassisName}_OCA_Catalog_${scrapeDate}`;
+  const capturedAt = require('../catalog/catalog_freshness_guard.js').safeDate(options.capturedAt);
+  const captureDate = capturedAt ? capturedAt.toISOString().slice(0, 10) : 'capture_date_unknown';
+  const canonicalSourceName = `${chassisName}_OCA_Catalog_${captureDate}`;
 
   const { notebookCfg, cfgEntry, effectiveNotebookId } = _loadAndResolveNotebookConfig(CONFIG_NOTEBOOKS, chassisName, notebookId);
 

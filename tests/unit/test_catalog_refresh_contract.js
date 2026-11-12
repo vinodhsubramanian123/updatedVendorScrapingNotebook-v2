@@ -74,6 +74,94 @@ test('fresh local data retries cloud only; exact matching verified artifacts are
     assert.equal(plan.tasks[0].action, expected);
   }
 });
+test('Synergy BOM plans the frame and children and reports unmapped owned configurations', t => {
+  const filePath = path.join(temp(t), 'synergy.xlsx');
+  const workbook = xlsx.utils.book_new();
+  xlsx.utils.book_append_sheet(workbook, xlsx.utils.aoa_to_sheet([
+    ['Qty', 'Product #', 'Product Description', 'Config Name'],
+    [2, 'P51174-B21', 'HPE Synergy 12000 Configure-to-order Frame', 'Synergy 12000 Frame #2'],
+    [24, 'P68217-B21', 'HPE Synergy 480 Gen12 Configure-to-order Compute Module', 'Synergy 480 Gen12 #2'],
+    [4, '867796-B21', 'HPE Virtual Connect SE 100Gb F32 Module for Synergy', '100Gb Virtual #2'],
+    [4, 'P77653-B21', 'Brocade 64Gb Fibre Channel Module for HPE Synergy', 'Brocade 64Gb Fibre Channel Module for HPE Synergy #2'],
+    [4, '876852-B21', 'HPE Synergy 4-port Frame Link Module', '4-port Frame Link Module #2'],
+    [4, 'P77654-B21', 'Brocade 64Gb Fibre Channel Module for HPE Synergy', 'Brocade 64Gb Fibre Channel Module for HPE Synergy #3'],
+    [24, 'AF573A', 'HPE C13–C14 Jumper Cord', 'Synergy 12000 Frame #2']
+  ]), 'BOM');
+  xlsx.utils.book_append_sheet(workbook, xlsx.utils.aoa_to_sheet([
+    ['Category', 'Quantity', 'Category List Price (USD)', 'Total List Price (USD)'], ['Power', 24, 912, 912]
+  ]), 'Product View');
+  xlsx.writeFile(workbook, filePath);
+  const metadata = () => ({ exists: false, needsResync: true });
+  const plan = buildRefreshPlan({ filePath, metadata });
+  assert.deepEqual(plan.tasks.map(task => task.product), ['Synergy_12000_Frame', 'SY480_Gen12', 'SY100Gb_F32_Module',
+    'Synergy_Brocade_64Gb_FC_Module', 'Synergy_4Port_Frame_Link_Module']);
+  assert.equal(plan.sheets[1].status, 'NON_BOM_SHEET');
+  assert.deepEqual(plan.unresolved.map(item => [item.row, item.sku, item.reason]), [[7, 'P77654-B21', 'UNRESOLVED_BASE_PRODUCT']]);
+  assert.equal(plan.ready, false);
+  assert.equal(buildRefreshPlan({ products: ['P51174-B21'], metadata }).tasks[0].action, 'FIRST_CAPTURE');
+});
+
+test('portfolio keeps a missing parent visible when only its nested child is captured', t => {
+  const root = temp(t);
+  const child = path.join(root, 'Frame', 'Module');
+  fs.mkdirSync(child, { recursive: true });
+  const capturedAt = '2026-10-30T11:57:13.837Z';
+  const publishedAt = '2026-11-06T08:44:42.687Z';
+  const childCatalog = path.join(child, 'Module_Catalog.json');
+  json(childCatalog, { metadata: { scrapeTimestamp: capturedAt } });
+  const { getCatalogPortfolioCoverage } = require('../../scripts/lib/catalog/catalog_portfolio.js');
+  const { discoverAllProductCatalogs } = require('../../scripts/lib/catalog/product_metadata_manager.js');
+  const options = {
+    notebooks: { Module: { parentProductId: 'Frame', lastSyncedAt: publishedAt, cloudSyncState: 'VERIFIED' } },
+    profiles: {}, chassisGroups: {}
+  };
+  const coverage = getCatalogPortfolioCoverage({ ...options, artifacts: discoverAllProductCatalogs(root) });
+  const frame = coverage.find(product => product.product === 'Frame');
+  const module = coverage.find(product => product.product === 'Module');
+  assert.deepEqual(frame.coverageIssues, ['PRODUCT_UNREGISTERED', 'CATALOG_MISSING']);
+  assert.equal(module.capturedAt, capturedAt);
+  assert.equal(module.publishedAt, publishedAt);
+  assert.ok(module.coverageIssues.includes('RECEIPT_MISSING'));
+
+  json(path.join(root, 'Frame', 'Frame_Catalog.json'), { metadata: { scrapeTimestamp: capturedAt } });
+  assert.equal(discoverAllProductCatalogs(root).length, 2);
+
+  const { calculateFileSha256 } = require('../../scripts/lib/catalog/product_metadata_manager.js');
+  const companions = ['Services.json', 'Catalog_Rules.json', 'OCA_Catalog.xlsx'];
+  for (const suffix of companions) fs.writeFileSync(path.join(child, `Module_${suffix}`), 'fixture');
+  const rawDir = path.join(child, 'raw_data');
+  fs.mkdirSync(rawDir);
+  const raw = path.join(rawDir, 'oca_raw_data_full.json');
+  json(raw, { timestamp: capturedAt });
+  const hashes = Object.fromEntries(['Catalog.json', ...companions]
+    .map(suffix => [suffix, calculateFileSha256(path.join(child, `Module_${suffix}`))]));
+  json(path.join(child, 'capture_receipt.json'), {
+    product: 'Module', status: 'LOCAL_PROMOTED', capturedAt, hashes,
+    rawSha256: calculateFileSha256(raw), provenance: { ownerConfiguration: 'Module #1' },
+    coverage: { policy: { valid: true } }
+  });
+  const getModule = () => getCatalogPortfolioCoverage({ ...options, artifacts: discoverAllProductCatalogs(root) })
+    .find(product => product.product === 'Module');
+  assert.equal(getModule().captureStatus, 'VERIFIED');
+  fs.appendFileSync(path.join(child, 'Module_OCA_Catalog.xlsx'), 'changed');
+  assert.equal(getModule().captureStatus, 'RECEIPT_MISMATCH');
+});
+
+test('OCA abbreviated lead-time columns survive parsing and hidden TAA rows cannot overwrite commercial rows', () => {
+  const { parseSingleTableRow } = require('../../scripts/catalogs/build_catalog.js');
+  const headers = ['Product #', 'Description', 'Quantity', 'Price (USD)', 'Est. Lead Time'];
+  const { obj } = parseSingleTableRow(['AF573A', 'HPE Jumper Cord', '0', '38', '8'], headers, 0, {});
+  assert.equal(obj.leadTimeDays, 8);
+  assert.equal(obj['Lead Time Source'], 'OCA row attribute');
+  const { applyUnavailableDomRulesAndSkus } = require('../../scripts/lib/catalog/conditional_discovery.js');
+  const existing = { sku: 'P68217-B21' };
+  const hardware = [{ parentCategory: 'Frame Options', skus: [existing] }];
+  applyUnavailableDomRulesAndSkus(hardware, [], [], [
+    { sku: 'P68217-B21', rawSku: 'P68217-B21#GTA', description: 'Compute Module', ineligibilityReason: 'Non-TAA model' },
+    { sku: 'P51174-B22', description: 'HPE TAA-compliant Frame', section: 'Frame Options' }
+  ]);
+  assert.deepEqual(hardware[0].skus, [{ sku: 'P68217-B21' }]);
+});
 test('portal lease excludes another agent and releases for the next run', t => {
   const dir = temp(t);
   const release = acquireWorkflowLease('hpe', dir);
@@ -172,7 +260,10 @@ test('source retirement requires grounded replacement and verifies absence after
       if (args[1] === 'delete') { deletions.push(args[2]); if (mode === 'failed-delete') throw new Error('Deletion failed'); sources = sources.filter(source => source.id !== args[2]); return ''; }
       throw new Error(`Unexpected command ${args.join(' ')}`);
     };
-    const result = syncToNotebookLM('book', payload, 'Example', 0, { notebookConfigPath: configPath, execFileSync: run, confirmSourceRetirement: true, skipCatalogQualityCheck: true });
+    const result = syncToNotebookLM('book', payload, 'Example', 0, {
+      notebookConfigPath: configPath, locksRoot: path.join(dir, 'locks'), execFileSync: run,
+      confirmSourceRetirement: true, skipCatalogQualityCheck: true
+    });
     assert.equal(result.success, mode === 'success', result.message);
     assert.deepEqual(deletions, mode === 'uncited' ? ['new'] : ['old']);
     assert.ok(sources.some(source => source.id === 'official'));

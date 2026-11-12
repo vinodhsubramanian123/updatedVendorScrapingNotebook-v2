@@ -73,8 +73,8 @@ function discoverAllProductCatalogs(rootDir = OUTPUTS_ROOT) {
       return;
     }
 
-    const jsonFile = entries.find(e => e.isFile() && e.name.endsWith('_Catalog.json'));
-    if (jsonFile) {
+    const catalogFiles = entries.filter(e => e.isFile() && e.name.endsWith('_Catalog.json'));
+    for (const jsonFile of catalogFiles) {
       const fullJsonPath = path.join(current, jsonFile.name);
       const compositeKey = path.relative(rootDir, current).replace(/\\/g, '/');
       products.push({
@@ -83,7 +83,6 @@ function discoverAllProductCatalogs(rootDir = OUTPUTS_ROOT) {
         catalogPath: fullJsonPath,
         outputDir: current
       });
-      return;
     }
 
     for (const entry of entries) {
@@ -304,6 +303,7 @@ function commitSuccessfulResyncMetadata(params, options = {}) {
 }
 
 module.exports = {
+  calculateFileSha256,
   discoverAllProductCatalogs,
   getProductGenerationMetadata,
   refreshMasterProductMetadata,

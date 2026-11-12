@@ -1,6 +1,33 @@
 'use strict';
 const cdp = require('./cdp.js');
 
+async function captureOwnedServiceTab(ws, href, api, tables, texts) {
+  ws._unscopedServiceTables = await api.extractTablesAsRows(ws, href);
+  const scoped = await api.sendCommand(ws, 'Runtime.evaluate', {
+    expression: `(() => {
+      // COMPONENT_SERVICE_TREE
+      const data = Array.from(document.querySelectorAll('#sui-components-tree tr'))
+        .map(row => window.jQuery?.ui?.fancytree?.getNode(row)?.data).filter(row => row?.subConfId);
+      return { treeRows: data.length, owners: data
+        .filter(row => (row.product_number || row.productNumber || row.ucid) === ${JSON.stringify(ws._captureComponentSku)})
+        .map(row => ({ owner: row.subConfId, support: row.reactiveSupport, install: row.installService })) };
+    })()`, returnByValue: true
+  });
+  const evidence = scoped.result?.value;
+  if (!evidence?.treeRows) throw new Error('COMPONENT_SERVICE_TREE_NOT_LOADED');
+  const { owners, treeRows } = evidence;
+  ws._componentServiceEvidence = { scope: owners.length ? 'OBSERVED_SELECTED_SERVICES_ONLY' : 'OWNER_ABSENT_IN_OBSERVED_SERVICE_TREE', owners, treeRows,
+    unexecuted: ['alternative service types, terms and tiers', 'parent-level support changes'] };
+  const rows = [['Product #', 'Description', 'Price (USD)', 'Owner Configuration', 'Evidence Scope']];
+  for (const owner of owners) for (const value of [owner.support, owner.install]) {
+    const match = String(value || '').match(/^([A-Z0-9]+(?:#[A-Z0-9]+)?)\s+(.+)$/);
+    if (match) rows.push([match[1], match[2], '', owner.owner, 'Observed selected service; alternatives not enumerated']);
+  }
+  if (rows.length > 1) tables.push({ tableId: 'component_owned_services', rows, rowCount: rows.length });
+  texts.push(owners.length ? 'Support Services: observed component-owned selections only. Alternative service branches remain unexecuted.'
+    : 'Support Services: no entry for this component in the observed service tree. Alternative service branches remain unexecuted.');
+}
+
 // Capture each live view before navigating away. Browser-side timers spanning
 // multiple WebLogic tab changes can retain stale widgets or lose earlier data.
 async function captureSupplementalCatalogTabs(ws, pattern, api = cdp) {
@@ -18,27 +45,7 @@ async function captureSupplementalCatalogTabs(ws, pattern, api = cdp) {
     for (const href of new Set(discovery.result?.value || [])) {
       await selectCatalogTab(ws, href, api);
       if (ws._captureComponentSku && href === '#extended_overview_suisvc') {
-        ws._unscopedServiceTables = await api.extractTablesAsRows(ws, href);
-        const scoped = await api.sendCommand(ws, 'Runtime.evaluate', {
-          expression: `(() => {
-            const rows = Array.from(document.querySelectorAll('#sui-components-tree tr'));
-            return rows.map(row => window.jQuery?.ui?.fancytree?.getNode(row)?.data)
-              .filter(data => data?.ucid === ${JSON.stringify(ws._captureComponentSku)})
-              .map(data => ({ owner: data.subConfId, support: data.reactiveSupport, install: data.installService }));
-          })()`, returnByValue: true
-        });
-        const owners = scoped.result?.value || [];
-        if (!owners.length) throw new Error('COMPONENT_SERVICE_OWNER_NOT_FOUND');
-        ws._componentServiceEvidence = { scope: 'OBSERVED_SELECTED_SERVICES_ONLY', owners,
-          unexecuted: ['alternative service types, terms and tiers', 'parent-level support changes'] };
-        const rows = [['Product #', 'Description', 'Price (USD)', 'Owner Configuration', 'Evidence Scope']];
-        for (const owner of owners) for (const value of [owner.support, owner.install]) {
-          const match = String(value || '').match(/^([A-Z0-9]+(?:#[A-Z0-9]+)?)\s+(.+)$/);
-          if (match) rows.push([match[1], match[2], '', owner.owner, 'Observed selected service; alternatives not enumerated']);
-        }
-        if (rows.length < 2) throw new Error('COMPONENT_SERVICE_SELECTION_UNAVAILABLE');
-        tables.push({ tableId: 'component_owned_services', rows, rowCount: rows.length });
-        texts.push('Support Services: observed component-owned selections only. Alternative service branches remain unexecuted.');
+        await captureOwnedServiceTab(ws, href, api, tables, texts);
         continue;
       }
       tables.push(...await api.extractTablesAsRows(ws, href));
@@ -89,4 +96,4 @@ async function selectCatalogTab(ws, href, api) {
   if (!ready) throw new Error(`CATALOG_TAB_NOT_READY: ${href}`);
 }
 
-module.exports = { captureSupplementalCatalogTabs };
+module.exports = { captureSupplementalCatalogTabs, selectCatalogTab };

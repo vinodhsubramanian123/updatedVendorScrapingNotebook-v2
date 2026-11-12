@@ -29,7 +29,7 @@ const STALE_THRESHOLD_DAYS = 14; // Days before a sync is considered stale
 const REQUIRED_FIELDS = [
   { field: 'notebookId', label: 'Notebook ID', validate: v => typeof v === 'string' && v.length > 10 },
   { field: 'vendor', label: 'Vendor', validate: v => typeof v === 'string' && v.length > 0 },
-  { field: 'pillar', label: 'Pillar', validate: v => ['SERVER', 'STORAGE', 'NETWORKING'].includes(v) },
+  { field: 'pillar', label: 'Pillar', validate: v => ['SERVER', 'STORAGE', 'NETWORKING', 'COMPOSITE'].includes(v) },
   { field: 'family', label: 'Family', validate: v => typeof v === 'string' && v.length > 0 },
   { field: 'queryEnabled', label: 'Query Enabled', validate: v => typeof v === 'boolean' },
   { field: 'isolationLevel', label: 'Isolation Level', validate: v => typeof v === 'string' && v.length > 0 },

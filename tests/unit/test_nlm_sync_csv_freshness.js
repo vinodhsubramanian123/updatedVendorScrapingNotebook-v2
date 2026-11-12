@@ -56,6 +56,8 @@ test('Notebook payload and canary must remain exact-product and exact-source gro
     /Product isolation rejected/
   );
   assert.equal(isGroundedCanary({ answer: 'DL380a_Gen12 is verified', sources_used: ['source-a'] }, 'source-a', 'DL380a_Gen12'), true);
+  assert.equal(isGroundedCanary({ answer: 'HPE Synergy 4‑Port Frame Link Module is listed as 876852-B21', sources_used: ['source-a'] },
+    'source-a', 'Synergy_4Port_Frame_Link_Module'), true);
   assert.equal(isGroundedCanary({ answer: 'DL380a_Gen12 is verified', sources_used: ['wrong-source'] }, 'source-a', 'DL380a_Gen12'), false);
 });
 

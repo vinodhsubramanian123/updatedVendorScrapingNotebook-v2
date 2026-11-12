@@ -107,7 +107,7 @@
         "Power Supplies"
       ]
     },
-    "SN3600B_Fibre_Channel_Switch": {
+    "SN3600B_FC": {
       "product": "SN3600B Fibre Channel Switch",
       "pillar": "NETWORKING",
       "family": "B-Series",
@@ -119,6 +119,21 @@
         "Power Supplies",
         "Transceivers"
       ]
+    },
+    "Synergy_12000_Frame": {
+      "product": "Synergy 12000 Frame",
+      "pillar": "COMPOSITE",
+      "family": "Synergy",
+      "generation": "General",
+      "baseSku": "P51174-B21",
+      "minHardwareSKUs": 25,
+      "mandatoryCategories": ["Power Cord", "Power Supply"],
+      "requiredHardware": [
+        { "sku": "AF573A", "category": "Power Cord", "leadTimeRequired": true },
+        { "sku": "A0K02A", "category": "Power Cord", "leadTimeRequired": true },
+        { "sku": "P44712-B21", "category": "Power Supply" }
+      ],
+      "scope": "Commercial frame-owned menu and its selectable options under P51174-B21"
     },
     "SY480_Gen12": {
       "product": "Synergy 480 Gen12",
@@ -139,6 +154,32 @@
       "mandatoryServicesCategories": [
         "System Options"
       ]
+    },
+    "Synergy_4Port_Frame_Link_Module": {
+      "product": "HPE Synergy 4-port Frame Link Module",
+      "pillar": "NETWORKING",
+      "family": "Synergy",
+      "generation": "General",
+      "minHardwareSKUs": 10,
+      "expectedWorkbookSheets": 12,
+      "mandatoryCategories": ["Variants", "SFP Transceivers", "DAC Cables", "OM4 Fibre Cables"],
+      "requiredHardware": [{ "sku": "876852-B21", "category": "Variants" }],
+      "scope": "Frame Link Module menu and observed selected services under P51174-B21"
+    },
+    "Synergy_Brocade_64Gb_FC_Module": {
+      "product": "Brocade 64Gb Fibre Channel Module for HPE Synergy",
+      "pillar": "NETWORKING",
+      "family": "Synergy",
+      "generation": "General",
+      "minHardwareSKUs": 15,
+      "expectedWorkbookSheets": 11,
+      "mandatoryCategories": ["Variants", "OM3 LC-LC", "Premier Flex OM4"],
+      "requiredHardware": [
+        { "sku": "P77653-B21", "category": "Variants" },
+        { "sku": "AJ833A", "category": "OM3 LC-LC" },
+        { "sku": "QK732A", "category": "Premier Flex OM4" }
+      ],
+      "scope": "Observed cable and software options under P51174-B21 with one P77653-B21 selected; alternate branches unexecuted"
     },
     "SY100Gb_F32_Module": {
       "product": "Virtual Connect SE 100Gb F32 Module for Synergy",

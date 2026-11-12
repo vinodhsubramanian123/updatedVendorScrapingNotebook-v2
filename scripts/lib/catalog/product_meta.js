@@ -38,6 +38,20 @@ function detectProductFamily(fullText) {
 }
 
 function parseProductMeta(rawText, pageTitle = '') {
+  const heading = String(rawText || '').trim().replace(/_/g, ' ');
+  const ownedModule = heading.match(/^(?:HPE )?(Synergy 4[- ]?port Frame Link Module|(?:Synergy )?Brocade 64Gb (?:FC Module|Fibre Channel Module for (?:HPE )?Synergy))(?:\s*(?:#\d+|\[[A-Z0-9-]+\]))?$/i);
+  if (ownedModule) {
+    const cleanName = /Brocade/i.test(ownedModule[1])
+      ? 'Synergy_Brocade_64Gb_FC_Module' : 'Synergy_4Port_Frame_Link_Module';
+    return { family: 'Synergy', gen: 'General', cleanName };
+  }
+  if (/^(?:[A-Z0-9-]+\s+-\s+)?(?:HPE\s+)?Synergy[\s_]*12000(?:\s+(?:Configure-to-order|CTO))?(?:[\s_]+Frame(?:\s+Chassis)?)?(?:\s*(?:#\d+|\[[A-Z0-9-]+\]))?\s*$/i.test(String(rawText || '').trim())) {
+    return { family: 'Synergy', gen: 'General', cleanName: 'Synergy_12000_Frame' };
+  }
+  return parseModelAndGeneration(rawText, pageTitle);
+}
+
+function parseModelAndGeneration(rawText, pageTitle) {
   const fullText = `${rawText || ''} ${pageTitle || ''}`.replace(/_/g, ' ');
   if (/\b(?:SY100Gb|100Gb)\s+F32\b/i.test(fullText)) {
     return { family: 'Synergy', gen: 'General', cleanName: 'SY100Gb_F32_Module' };

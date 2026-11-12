@@ -2,7 +2,7 @@
 /**
  * scripts/maintenance/audit_product_rules_association.js
  *
- * Scans all 13 products in the repository catalog, checks:
+ * Audits the expected portfolio and the rules associated with existing catalogs:
  * 1. Product identity mapping against scripts/config/notebooks.json
  * 2. All deltas in catalog_deltas.json
  * 3. Whether each delta is associated, classified, and active or misclassified/blocked
@@ -16,6 +16,7 @@ const nb = require('../config/notebooks.json');
 const { resolveProductIdentity, ruleAppliesToProduct } = require('../lib/catalog/product_scope.js');
 const { loadActiveKnowledgeRules } = require('../lib/catalog/active_knowledge_router.js');
 const { findCatalogJsonFiles } = require('../lib/catalog/sync_registry.js');
+const { getCatalogPortfolioCoverage } = require('../lib/catalog/catalog_portfolio.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
 const OUTPUTS_ROOT = path.join(PROJECT_ROOT, 'outputs');
@@ -74,7 +75,7 @@ function _collectPromotableQuarantined(quar) {
 
 function auditAllProducts() {
   const catalogFiles = findCatalogJsonFiles(OUTPUTS_ROOT);
-  const auditResults = [];
+  const auditResults = new Map();
 
   for (const catFile of catalogFiles) {
     const dir = path.dirname(catFile);
@@ -89,7 +90,7 @@ function auditAllProducts() {
     const { unassociated, misclassified } = _classifyProductDeltas(deltas, identity, activeRules);
     const promotableQuarantined = _collectPromotableQuarantined(quar);
 
-    auditResults.push({
+    auditResults.set(chassisName, {
       chassisName,
       identityFound: Boolean(identity),
       pillar: identity?.pillar || 'UNKNOWN',
@@ -105,12 +106,20 @@ function auditAllProducts() {
     });
   }
 
-  return auditResults;
+  return getCatalogPortfolioCoverage({ verifyHashes: true }).map(coverage => ({
+    chassisName: coverage.product,
+    ...auditResults.get(coverage.product),
+    ...coverage
+  }));
 }
 
 if (require.main === module) {
   const res = auditAllProducts();
   console.log(JSON.stringify(res, null, 2));
+  const requireFresh = process.argv.includes('--require-fresh');
+  const strict = requireFresh || process.argv.includes('--strict');
+  if (res.some(product => (strict && product.coverageIssues.length) ||
+    (requireFresh && product.freshnessStatus !== 'FRESH'))) process.exitCode = 1;
 }
 
 module.exports = { auditAllProducts };

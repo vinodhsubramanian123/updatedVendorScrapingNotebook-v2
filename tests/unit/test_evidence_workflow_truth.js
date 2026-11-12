@@ -10,7 +10,7 @@ const { validateGroundingCitations } = require('../../scripts/lib/notebook/query
 const { _buildSummaryData, _getRankedSolutions, generatePartnerPortalReadyWorkbook } = require('../../scripts/lib/boq/generate_boq_xlsx');
 const XLSX = require('xlsx-js-style');
 const { solutionFingerprint, candidateReviewCurrent } = require('../../scripts/lib/boq/solution_evidence');
-const { refreshSharedKnowledgeSources } = require('../../scripts/lib/sync/shared_knowledge_refresh');
+const { refreshSharedKnowledgeSources, persistSharedKnowledgeRefresh } = require('../../scripts/lib/sync/shared_knowledge_refresh');
 const { generateUniversalCharterMarkdown } = require('../../scripts/services/running_knowledge_sync');
 
 test('notebook fallback preserves explicit generations', () => {
@@ -134,4 +134,27 @@ test('shared source is trusted only after exact revision readback', async () => 
   const rejected = await refreshSharedKnowledgeSources(bad, 'shared-document', 'different-revision', { run });
   assert.equal(rejected.verified, false);
   assert.equal(bad.notebooks.B.trustedSourceIds, undefined);
+});
+
+test('shared refresh preserves a catalog published during remote readback', t => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'shared-notebook-refresh-'));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  const file = path.join(dir, 'notebooks.json');
+  fs.writeFileSync(file, JSON.stringify({ notebooks: {
+    A: { notebookId: 'original', cloudSyncState: 'VERIFIED', lastSyncedSourceId: 'catalog', trustedSourceIds: ['catalog'] },
+    B: { notebookId: 'replacement', trustedSourceIds: ['current'] },
+    C: { notebookId: 'added-while-refreshing' }
+  } }));
+  persistSharedKnowledgeRefresh(file, { runningKnowledgeDoc: { documentId: 'document' }, notebooks: {
+    A: { notebookId: 'original', cloudSyncState: 'FAILED', runningKnowledgeDocId: 'document',
+      runningKnowledgeSourceId: 'shared', runningKnowledgeVerifiedRevision: 'current-revision', runningKnowledgeVerifiedAt: 'verified-at' },
+    B: { notebookId: 'old' }
+  } }, [{ chassis: 'A', status: 'VERIFIED', sourceId: 'shared' }, { chassis: 'B', status: 'VERIFIED', sourceId: 'old-source' }]);
+  const current = JSON.parse(fs.readFileSync(file, 'utf8'));
+  assert.equal(current.notebooks.A.cloudSyncState, 'VERIFIED');
+  assert.equal(current.notebooks.A.lastSyncedSourceId, 'catalog');
+  assert.deepEqual(current.notebooks.A.trustedSourceIds, ['catalog', 'shared']);
+  assert.deepEqual(current.notebooks.B.trustedSourceIds, ['current']);
+  assert.equal(current.notebooks.C.notebookId, 'added-while-refreshing');
+  assert.equal(current.notebooks.A.runningKnowledgeVerifiedRevision, 'current-revision');
 });

@@ -69,4 +69,12 @@ describe('Notebook Health Audit Unit Suite', () => {
     assert.strictEqual(queryDisabled.length, 0,
       `Notebooks with queryEnabled issues:\n${queryDisabled.map(i => `  [${i.notebook}] ${i.message}`).join('\n')}`);
   });
+
+  it('accepts COMPOSITE pillar entries such as Synergy_12000_Frame', () => {
+    const result = auditNotebooks();
+    const compositeIssues = result.issues.filter(i =>
+      i.notebook === 'Synergy_12000_Frame' && i.field === 'pillar');
+    assert.strictEqual(compositeIssues.length, 0,
+      `Unexpected COMPOSITE pillar issues:\n${compositeIssues.map(i => `  ${i.message}`).join('\n')}`);
+  });
 });

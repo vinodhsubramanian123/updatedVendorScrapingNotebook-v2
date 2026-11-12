@@ -261,6 +261,10 @@ function getUniqueSkuCount(entries) {
   return set.size;
 }
 
+function isTaaGtaCatalogOption(sku, description) {
+  return /\b(?:TAA|GTA)\b|#GTA/i.test(`${sku || ''} ${description || ''}`);
+}
+
 module.exports = {
   HPE_SKU_REGEX,
   HPE_SKU_EXTRACT_REGEX,
@@ -269,6 +273,7 @@ module.exports = {
   classifyOptionType,
   isOcaModifierTrackingRow,
   isServiceSku,
+  isTaaGtaCatalogOption,
   buildCatalogSkuIndex,
   classifySkuValidation,
   getUniqueSkuCount

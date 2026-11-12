@@ -20,6 +20,7 @@ const { normalize, resolveProductIdentity } = require('../lib/catalog/product_sc
 
 const PROJECT_ROOT  = path.resolve(__dirname, '..', '..');
 const OUTPUTS_ROOT  = path.join(PROJECT_ROOT, 'outputs');
+const CATALOG_STAGING_ROOT = path.join(OUTPUTS_ROOT, '.catalog-staging');
 const JSON_MODE     = process.argv.includes('--json');
 
 function cleanupOrphanedStaging(tempDir, logger) {
@@ -84,7 +85,7 @@ function runStagingPostFlightAudit(outputDir, liveOutputDir, catalogXlsx, catalo
     console.log('✅ Staging audit and JSON Schema assertions passed 100%! Ready to promote to live workspace.');
     return captureReceipt;
   } catch (e) {
-    const failedStagingDir = path.join(OUTPUTS_ROOT, 'temp', `failed_staging_${meta.cleanName}_${Date.now()}`);
+    const failedStagingDir = path.join(CATALOG_STAGING_ROOT, `failed_staging_${meta.cleanName}_${Date.now()}`);
     console.error('\n❌ STAGING POST-FLIGHT AUDIT FAILED:', e.message);
     console.error('\n🔒 LIVE WORKSPACE IS COMPLETELY INTACT — your previous good data is safe:');
     const liveFiles = [
@@ -135,7 +136,7 @@ function resolveActualPromotedPdf(liveOutputDir, pdfDestPath) {
 function assertPromotedCatalogImmutability(liveCatalogJson, liveOutputDir, outputDir, meta, hwSkuCount) {
   const promotedCatalog = JSON.parse(fs.readFileSync(liveCatalogJson, 'utf8'));
   if (promotedCatalog.metadata?.totalUniqueSKUs !== hwSkuCount) {
-    const quarantineDir = path.join(OUTPUTS_ROOT, 'temp', `quarantine_immutability_${meta.cleanName}_${Date.now()}`);
+    const quarantineDir = path.join(CATALOG_STAGING_ROOT, `quarantine_immutability_${meta.cleanName}_${Date.now()}`);
     console.error(`\n❌ Step 10 immutability check failed: promoted catalog changed from ${hwSkuCount} to ${promotedCatalog.metadata?.totalUniqueSKUs}.`);
     console.error(`   Staging dir preserved for diagnosis at: ${outputDir}`);
     try { fs.renameSync(liveOutputDir, quarantineDir); } catch (_) {}
@@ -241,7 +242,7 @@ async function auditAndPromoteStaging({
   const { hwSkuCount, serviceSkuCount, totalSkuCount } = readPromotedSkuCounts(liveOutputDir, liveCatalogJson, meta, tables.length);
 
   updateScrapedRegistry({
-    timestamp:      new Date().toISOString(),
+    timestamp:      captureReceipt.capturedAt,
     solutionName:   (treeInfo.solutionName && treeInfo.solutionName !== 'OCA Solution') ? treeInfo.solutionName : meta.cleanName.replace(/_/g, ' '),
     family:         meta.family,
     gen:            meta.gen,
@@ -259,9 +260,10 @@ async function auditAndPromoteStaging({
   let postFlowSyncResult = null;
   try {
     const { triggerPostFlowSyncAsync } = require('../lib/sync/post_flow_sync.js');
+    const cloudConfigured = Boolean(stepTelemetry[0]?.product?.notebookId);
     postFlowSyncResult = await triggerPostFlowSyncAsync(meta.cleanName, 'SCRAPE', {
-      autoUploadNLM: true,
-      syncRunningKnowledge: true,
+      autoUploadNLM: cloudConfigured,
+      syncRunningKnowledge: cloudConfigured,
       confirmSourceRetirement: !process.argv.includes('--keep-stale-sources')
     });
   } catch (syncErr) {
@@ -396,11 +398,23 @@ async function resolvePageTargetAndChassis({ navQuery, targetChassisQuery, isRec
   }
   let pageTarget;
   let chassisDiscovery = null;
+  const notebookConfig = require('../config/notebooks.json');
+  const identity = resolveProductIdentity(targetChassisQuery || navQuery, notebookConfig);
+  const registration = notebookConfig.notebooks[identity?.productId];
+  if (registration?.captureViaParent) {
+    return require('../lib/scraper/active_component_capture').captureViaParent(
+      identity.productId, registration, notebookConfig.notebooks[registration.parentProductId],
+      { forceFreshSession: isRecoverMode });
+  }
+  const navOptions = {
+    forceDiscovery: true,
+    ...(registration?.requireExactOcaBase ? { targetSku: registration.baseSku } : {})
+  };
 
   if (isRecoverMode) {
     console.log(`🔄 [INV-89] Recovery mode requested via CLI. Re-establishing fresh OCA session via Partner Portal...`);
     const { recoverAndLaunchFreshOCA } = require('../lib/scraper/navigate_oca.js');
-    const navigation = await recoverAndLaunchFreshOCA(navQuery, { forceDiscovery: true });
+    const navigation = await recoverAndLaunchFreshOCA(navQuery, navOptions);
     chassisDiscovery = navigation.chassisDiscovery || null;
     pageTarget = await getOCATarget();
   } else {
@@ -413,10 +427,10 @@ async function resolvePageTargetAndChassis({ navQuery, targetChassisQuery, isRec
         const { navigateToOCAChassis, recoverAndLaunchFreshOCA } = require('../lib/scraper/navigate_oca.js');
         let navigation;
         try {
-          navigation = await navigateToOCAChassis(navQuery, { forceDiscovery: true });
+          navigation = await navigateToOCAChassis(navQuery, navOptions);
         } catch (firstNavErr) {
           console.warn(`⚠️ Initial auto-navigation failed (${firstNavErr.message}). Attempting Tab 1 Self-Healing Recovery...`);
-          navigation = await recoverAndLaunchFreshOCA(navQuery, { forceDiscovery: true });
+          navigation = await recoverAndLaunchFreshOCA(navQuery, navOptions);
         }
         chassisDiscovery = navigation.chassisDiscovery || null;
         pageTarget = await getOCATarget();
@@ -428,11 +442,14 @@ async function resolvePageTargetAndChassis({ navQuery, targetChassisQuery, isRec
 
   if (targetChassisQuery && !chassisDiscovery) {
     const { navigateToOCAChassis } = require('../lib/scraper/navigate_oca.js');
-    const navigation = await navigateToOCAChassis(targetChassisQuery, { forceDiscovery: true });
+    const navigation = await navigateToOCAChassis(targetChassisQuery, navOptions);
     chassisDiscovery = navigation.chassisDiscovery || null;
     pageTarget = await getOCATarget();
   }
 
+  if (navOptions.targetSku && chassisDiscovery?.selectedSku !== navOptions.targetSku) {
+    throw new Error(`Expected exact OCA base ${navOptions.targetSku}; observed ${chassisDiscovery?.selectedSku || 'none'}.`);
+  }
   return { pageTarget, chassisDiscovery };
 }
 
@@ -734,7 +751,7 @@ async function discoverSolutionTreeAndMenu(ws, targetHint) {
 }
 
 function enforceProductIdentityGate(meta, targetChassisQuery) {
-  if (targetChassisQuery && (!meta.gen || meta.gen === 'General')) {
+  if (targetChassisQuery && (!meta.gen || meta.gen === 'General') && meta.family === 'General') {
     const overrideMeta = parseProductMeta(targetChassisQuery);
     meta.family = overrideMeta.family || meta.family;
     meta.gen = overrideMeta.gen || meta.gen;
@@ -810,6 +827,15 @@ async function resolveActiveProductAndProfile(ws, targetChassisQuery, pageTarget
 
   const meta = parseProductMeta(pageHeading, targetChassisQuery || pageTarget.title);
   enforceProductIdentityGate(meta, targetChassisQuery);
+  const registered = require('../config/notebooks.json').notebooks[meta.cleanName];
+  if ((registered?.requireExactOcaBase || registered?.captureViaParent) && !pageHeading.toUpperCase().includes(`[${registered.baseSku}]`)) {
+    throw new Error(`Active OCA menu did not show the registered base ${registered.baseSku}.`);
+  }
+  const { KNOWN_QUICKSPECS_DOC_MAP } = require('../lib/sync/quickspecs_sync.js');
+  const exactDocument = KNOWN_QUICKSPECS_DOC_MAP[meta.cleanName];
+  if (exactDocument?.docId && (registered?.captureViaParent || registered?.requireExactOcaBase)) {
+    qsLink = exactDocument.downloadUrl || `https://www.hpe.com/psnow/doc/${exactDocument.docId}`;
+  }
 
   const { loadProfile } = require('../lib/system/profile_loader.js');
   const profile = await loadProfile(meta.family, meta.gen);
@@ -1074,7 +1100,7 @@ async function setupStagingAndPersistRawData({
   console.log(`Family: "${meta.family}", Gen: "${meta.gen}", Chassis: "${meta.cleanName}"`);
 
   const liveOutputDir = path.join(OUTPUTS_ROOT, meta.family, meta.gen, meta.cleanName);
-  const stagingDir = path.join(OUTPUTS_ROOT, 'temp', `staging_${meta.cleanName.replace(/[^a-zA-Z0-9_-]/g, '_')}_${Date.now()}`);
+  const stagingDir = path.join(CATALOG_STAGING_ROOT, `staging_${meta.cleanName.replace(/[^a-zA-Z0-9_-]/g, '_')}_${Date.now()}`);
   const outputDir = stagingDir;
 
   const chassisDiscovery = resolveOrSynthesizeChassisDiscovery(initDiscovery, liveOutputDir, meta, profile, domPayload, pageHeading);
@@ -1104,11 +1130,13 @@ async function setupStagingAndPersistRawData({
     baseSku: resolvedBaseSku,
     ownerConfiguration: chassisDiscovery?.ownerConfiguration || pageHeading || meta.cleanName,
     parentConfiguration: chassisDiscovery?.parentConfiguration || null,
+    parentBaseSku: chassisDiscovery?.parentBaseSku || null,
     componentServiceEvidence: domPayload.componentServiceEvidence,
     unscopedServiceTables: domPayload.unscopedServiceTables,
     solutionDomain: inferPillar(meta.family, meta.cleanName),
     observedSelectors: [
       { selector: '#extended_overview_menu', value: 'EXPANDED' },
+      ...(chassisDiscovery?.parentOption ? [{ selector: 'parentOption', value: chassisDiscovery.parentOption }] : []),
       { selector: 'ambientTemperature', value: 'DEFAULT_AND_SWEEP_RESTORED' }
     ],
     finalSelectorsRestored: true,
@@ -1233,7 +1261,7 @@ async function main() {
   console.log('🚀 100% GENERIC DYNAMIC HPE OCA SOLUTION SCRAPER PIPELINE');
   console.log('================================================================\n');
 
-  cleanupOrphanedStaging(path.join(OUTPUTS_ROOT, 'temp'), logger);
+  cleanupOrphanedStaging(CATALOG_STAGING_ROOT, logger);
 
   const { targetChassisQuery, isRecoverMode, navQuery } = _parseCliArgs();
   const skipCloudCheck = process.argv.includes('--skip-cloud-check') || process.argv.includes('--offline');

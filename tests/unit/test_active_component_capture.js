@@ -41,3 +41,16 @@ test('owned F32 capture binds exact module, owner and parent without relabeling 
   }
   assert.throws(() => validateComponentObservation(observed, 'SY100Gb_F32_Module', 'P06584-B21'), /IDENTITY_UNVERIFIED/);
 });
+test('owned Synergy modules require their registered base and reject an unrelated parent', () => {
+  const { isCanonicalCtoChassisCandidate } = require('../../scripts/catalogs/build_catalog');
+  for (const [product, sku, label] of [
+    ['Synergy_4Port_Frame_Link_Module', '876852-B21', 'HPE Synergy 4-port Frame Link Module'],
+    ['Synergy_Brocade_64Gb_FC_Module', 'P77653-B21', 'Brocade 64Gb Fibre Channel Module for HPE Synergy']
+  ]) {
+    const observed = { heading: `${label} [${sku}]`, owner: `${label} #2`, parent: 'Synergy 12000 Frame #1' };
+    assert.equal(validateComponentObservation(observed, product, sku).selectedSku, sku);
+    assert.equal(isCanonicalCtoChassisCandidate({ sku, text: label }, product), true);
+    assert.equal(isCanonicalCtoChassisCandidate({ sku: 'P51174-B21', text: label }, product), false);
+    assert.throws(() => validateComponentObservation({ ...observed, parent: 'Synergy 480 Gen12 #1' }, product, sku), /IDENTITY_UNVERIFIED/);
+  }
+});

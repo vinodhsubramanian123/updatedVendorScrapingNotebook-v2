@@ -16,7 +16,7 @@ const os = require('os');
 const crypto = require('crypto');
 const { execFileSync } = require('child_process');
 const logger = require('../system/pipeline_logger.js');
-const { safeWriteJsonAtomic } = require('../system/fs_compat.js');
+const { safeWriteJsonAtomic, withFileLock } = require('../system/fs_compat.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
 const OUTPUTS_ROOT = path.join(PROJECT_ROOT, 'outputs');
@@ -69,9 +69,35 @@ const KNOWN_QUICKSPECS_DOC_MAP = {
     expectedFamily: 'StoreEver',
     expectedGen: 'Tape'
   },
+  'Synergy_12000_Frame': {
+    docId: 'c04815113',
+    docIdPattern: /c04815113/i,
+    titlePattern: /Synergy[\s_]+12000[\s_]+Frame/i,
+    blockedPattern: /SY480|F32|ProLiant/i,
+    productName: 'HPE Synergy 12000 Frame',
+    expectedFamily: 'Synergy',
+    expectedGen: 'General'
+  },
+  'Synergy_4Port_Frame_Link_Module': {
+    docId: 'a00030303enw',
+    docIdPattern: /a00030303/i,
+    titlePattern: /Synergy[\s_]+(?:4.port[\s_]+)?Frame[\s_]+Link[\s_]+Module/i,
+    productName: 'HPE Synergy Frame Link Module',
+    expectedFamily: 'Synergy',
+    expectedGen: 'General'
+  },
+  'Synergy_Brocade_64Gb_FC_Module': {
+    docId: 'a50009254enw',
+    downloadUrl: 'https://www.hpe.com/psnow/downloadDoc/HPE%20Brocade%2064Gb%20Fibre%20Channel%20Module%20for%20HPE%20Synergy%20QuickSpecs-a50009254enw.pdf?contentDisposition=attachment&deepLink=&form=false&hf=regular&id=a50009254enw.pdf&isFutureVersion=true&isLinearized=false&originalObjectName=&prelaunchSection=&preview=false&print=&r=&section=&softrollSection=&ver=2',
+    docIdPattern: /a50009254/i,
+    titlePattern: /Brocade[\s_]+64Gb.*Synergy/i,
+    productName: 'Brocade 64Gb Fibre Channel Module for HPE Synergy',
+    expectedFamily: 'Synergy',
+    expectedGen: 'General'
+  },
   'SY100Gb_F32_Module': {
-    docId: 'c04154446',
-    docIdPattern: /c04154446/i,
+    docId: 'a00067745enw',
+    docIdPattern: /a00067745/i,
     titlePattern: /Synergy|100Gb/i,
     blockedPattern: /ProLiant\s*DL/i,
     productName: 'HPE Synergy VC 100Gb F32 Module',
@@ -130,7 +156,7 @@ function findLocalQuickSpecsPdf(chassisName) {
     const entries = fs.readdirSync(dir, { withFileTypes: true });
     for (const ent of entries) {
       const full = path.join(dir, ent.name);
-      if (ent.isDirectory() && ent.name !== 'node_modules' && ent.name !== '.git') {
+      if (ent.isDirectory() && !ent.name.startsWith('.') && !['node_modules', 'temp', 'history', 'evidence'].includes(ent.name)) {
         const found = scan(full);
         if (found) return found;
       } else if (ent.isFile() && ent.name.endsWith('.pdf')) {
@@ -156,19 +182,42 @@ function getNotebookSources(notebookId) {
   const envPath = process.env.PATH || '';
   const homeBin = path.join(os.homedir(), '.local', 'bin');
   const extendedPath = [homeBin, envPath].filter(Boolean).join(path.delimiter);
+  const { nlmEnvironment } = require('../notebook/nlm_transport.js');
+  const envs = process.env.NLM_SYNC_READ_TRANSPORT
+    ? [nlmEnvironment(extendedPath, true)]
+    : [nlmEnvironment(extendedPath, true), nlmEnvironment(extendedPath, false)];
 
-  try {
-    const listOutput = execFileSync('nlm', ['source', 'list', notebookId, '--json'], {
-      encoding: 'utf-8',
-      timeout: 15000,
-      env: { ...process.env, PATH: extendedPath }
-    });
-    const parsed = JSON.parse(listOutput);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch (cliErr) {
-    logger.warn('QUICKSPECS_SYNC', `nlm CLI source list unavailable: ${cliErr.message}`);
-    return [];
+  for (const env of envs) {
+    try {
+      const listOutput = execFileSync('nlm', ['source', 'list', notebookId, '--json'], {
+        encoding: 'utf-8',
+        timeout: 45000,
+        env
+      });
+      const parsed = JSON.parse(listOutput);
+      return Array.isArray(parsed) ? parsed : null;
+    } catch (cliErr) {
+      logger.warn('QUICKSPECS_SYNC', `nlm CLI source list unavailable (${env.NOTEBOOKLM_RPC_TRANSPORT}): ${cliErr.message}`);
+    }
   }
+  return null;
+}
+
+function extractQuickSpecsDocId(source) {
+  if (source.url) {
+    try {
+      const url = new URL(source.url);
+      if (url.protocol !== 'https:' || url.hostname !== 'www.hpe.com' || !url.pathname.startsWith('/psnow/downloadDoc/')) return null;
+      return url.pathname.match(/([ac]\d{7,8}[a-z0-9]*)\.pdf$/i)?.[1] || null;
+    } catch { return null; }
+  }
+  return source.title?.match(/([ac]\d{7,8}[a-z0-9]*)/i)?.[1] || null;
+}
+
+function sourceMatchesQuickSpecs(source, productSpec) {
+  if (!productSpec.docId) return true;
+  const actual = extractQuickSpecsDocId(source)?.toLowerCase().replace(/enw$/, '');
+  return actual === productSpec.docId.toLowerCase().replace(/enw$/, '');
 }
 
 function _resolveNotebookTarget(chassisName, options) {
@@ -206,7 +255,7 @@ function _partitionQuickSpecsSources(sources, productSpec) {
     if (isQuickSpecs) {
       if (productSpec.blockedPattern && productSpec.blockedPattern.test(title)) {
         pollutedSources.push(src);
-      } else {
+      } else if (sourceMatchesQuickSpecs(src, productSpec)) {
         quickspecsSources.push(src);
       }
     }
@@ -216,13 +265,14 @@ function _partitionQuickSpecsSources(sources, productSpec) {
 }
 
 function _persistOfficialQuickSpecsSource(primarySource, isDocIdMatched, chassisName, options) {
-  if (!((options.autoUpload || options.persistOfficialSource) && primarySource?.id && isDocIdMatched !== false && fs.existsSync(CONFIG_NOTEBOOKS))) {
+  if (!((options.autoUpload || options.persistOfficialSource) && primarySource?.id && isDocIdMatched && fs.existsSync(CONFIG_NOTEBOOKS))) {
     return false;
   }
   try {
-    const cfg = JSON.parse(fs.readFileSync(CONFIG_NOTEBOOKS, 'utf-8'));
-    const entry = cfg.notebooks?.[chassisName];
-    if (entry && typeof entry === 'object') {
+    return withFileLock(CONFIG_NOTEBOOKS, () => {
+      const cfg = JSON.parse(fs.readFileSync(CONFIG_NOTEBOOKS, 'utf-8'));
+      const entry = cfg.notebooks?.[chassisName];
+      if (!entry || typeof entry !== 'object') return false;
       const officialIds = Array.from(new Set([...(entry.officialSourceIds || []), primarySource.id]));
       const trustedIds = Array.from(new Set([...(entry.trustedSourceIds || []), primarySource.id]));
       if (officialIds.length !== (entry.officialSourceIds || []).length || trustedIds.length !== (entry.trustedSourceIds || []).length) {
@@ -231,7 +281,8 @@ function _persistOfficialQuickSpecsSource(primarySource, isDocIdMatched, chassis
         safeWriteJsonAtomic(CONFIG_NOTEBOOKS, cfg);
         return true;
       }
-    }
+      return false;
+    });
   } catch (_) { /* ignore */ }
   return false;
 }
@@ -283,21 +334,31 @@ async function verifyNotebookQuickSpecs(chassisName = 'DL380_Gen11', options = {
   const localPdfPath = findLocalQuickSpecsPdf(chassisName);
   const localFingerprint = computePdfFingerprint(localPdfPath);
 
-  const sources = getNotebookSources(notebookId);
+  const sources = Array.isArray(options.sources)
+    ? options.sources
+    : (typeof options.getSources === 'function' ? options.getSources(notebookId) : getNotebookSources(notebookId));
+  if (!sources) {
+    return {
+      chassis: chassisName,
+      productName: productSpec.productName,
+      notebookId,
+      status: 'SOURCE_INVENTORY_UNAVAILABLE',
+      sourceFound: false,
+      quickspecsSources: [],
+      expectedDocId: productSpec.docId || null,
+      isIsolated: null,
+      pollutedSources: [],
+      timestamp: new Date().toISOString()
+    };
+  }
   const { quickspecsSources, pollutedSources } = _partitionQuickSpecsSources(sources, productSpec);
 
   const sourceFound = quickspecsSources.length > 0;
   const primarySource = sourceFound ? quickspecsSources[0] : null;
 
-  // Extract document ID from title
-  let extractedDocId = null;
-  if (primarySource) {
-    const docMatch = primarySource.title.match(/([ac]\d{7,8}[a-z0-9]*)/i);
-    if (docMatch) extractedDocId = docMatch[1];
-  }
-
+  const extractedDocId = primarySource ? extractQuickSpecsDocId(primarySource) : null;
   const isIsolated = pollutedSources.length === 0;
-  const isDocIdMatched = !productSpec.docId || (extractedDocId && extractedDocId.toLowerCase().includes(productSpec.docId.toLowerCase().replace(/enw$/, '')));
+  const isDocIdMatched = Boolean(primarySource && sourceMatchesQuickSpecs(primarySource, productSpec));
 
   const result = {
     chassis: chassisName,
@@ -309,8 +370,8 @@ async function verifyNotebookQuickSpecs(chassisName = 'DL380_Gen11', options = {
     primarySourceId: primarySource?.id || null,
     primarySourceTitle: primarySource?.title || null,
     expectedDocId: productSpec.docId,
-    extractedDocId: extractedDocId || (sourceFound ? productSpec.docId : null),
-    isDocIdMatched: Boolean(isDocIdMatched),
+    extractedDocId,
+    isDocIdMatched,
     isIsolated,
     pollutedSources: pollutedSources.map(s => ({ id: s.id, title: s.title })),
     localPdf: {
@@ -321,7 +382,7 @@ async function verifyNotebookQuickSpecs(chassisName = 'DL380_Gen11', options = {
       sha256: localFingerprint.sha256,
       valid: localFingerprint.valid
     },
-    status: sourceFound && isIsolated && (isDocIdMatched !== false) ? 'CERTIFIED_GROUNDED' : (sourceFound ? 'ADVISORY_POLLUTED' : 'MISSING_SOURCE'),
+    status: sourceFound && isIsolated && isDocIdMatched ? 'CERTIFIED_GROUNDED' : (sourceFound ? 'ADVISORY_POLLUTED' : 'MISSING_SOURCE'),
     timestamp: new Date().toISOString()
   };
 
@@ -370,10 +431,10 @@ async function main() {
     console.log(`  Document ID Match   : ${verification.isDocIdMatched ? '✅ MATCHED' : '⚠️ MISMATCH'} (Expected: ${verification.expectedDocId}, Extracted: ${verification.extractedDocId})`);
   }
   console.log(`  Cross-Gen Isolation : ${verification.isIsolated ? '✅ 100% CLEAN (Zero Contamination)' : '❌ CONTAMINATED'}`);
-  if (verification.pollutedSources.length > 0) {
+  if (verification.pollutedSources?.length > 0) {
     console.warn(`  ⚠️ Polluted Sources Detected:`, verification.pollutedSources);
   }
-  console.log(`  Local PDF Cache     : ${verification.localPdf.exists ? `✅ Found (${verification.localPdf.sizeMb} MB, MD5: ${verification.localPdf.md5?.substring(0, 10)}...)` : 'ℹ️ Remote Notebook Only (No Local PDF)'}`);
+  console.log(`  Local PDF Cache     : ${verification.localPdf?.exists ? `✅ Found (${verification.localPdf.sizeMb} MB, MD5: ${verification.localPdf.md5?.substring(0, 10)}...)` : 'ℹ️ Remote Notebook Only (No Local PDF)'}`);
   console.log(`  Overall Status      : ${verification.status === 'CERTIFIED_GROUNDED' ? '✅ CERTIFIED & GROUNDED' : verification.status}`);
   console.log('\n================================================================\n');
 }

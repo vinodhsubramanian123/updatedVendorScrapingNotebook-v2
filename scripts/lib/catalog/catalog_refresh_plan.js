@@ -10,8 +10,15 @@ const normalize = text => String(text || '').toLowerCase().replace(/[^a-z0-9]/g,
 function loadProductDefinitions() {
   const cfg = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/config/notebooks.json'), 'utf8'));
   return Object.entries(cfg.notebooks).map(([product, entry]) => ({ product, vendor: entry.vendor || 'HPE',
-    baseSku: entry.baseSku || null, family: entry.family, generation: entry.gen || entry.generation }));
+    baseSku: entry.baseSku || null, requireExactOcaBase: entry.requireExactOcaBase === true || entry.captureViaParent === true }));
 }
+
+function matchExplicitProduct(text, definitions) {
+  const exact = normalize(text);
+  return definitions.filter(entry => normalize(entry.product) === exact || (entry.baseSku && normalize(entry.baseSku) === exact))
+    .map(entry => entry.product);
+}
+
 function findProducts(text, definitions) {
   const canonical = String(text || '').replace(/_/g, ' ');
   return definitions.filter(entry => {
@@ -24,6 +31,55 @@ function findProducts(text, definitions) {
   }).map(entry => entry.product);
 }
 
+function getSheetLayout(rows) {
+  const header = rows.findIndex(row => row.some(cell => ['product', 'productnumber', 'partnumber', 'sku'].includes(normalize(cell)))
+    && row.some(cell => ['description', 'productdescription'].includes(normalize(cell))));
+  const columns = (rows[header] || []).map(normalize);
+  return {
+    header,
+    sku: columns.findIndex(cell => ['product', 'productnumber', 'partnumber', 'sku'].includes(cell)),
+    description: columns.findIndex(cell => ['description', 'productdescription'].includes(cell)),
+    owner: columns.indexOf('configname'),
+    isSummary: header === -1 && rows.some(row => {
+      const names = row.map(normalize);
+      return names.includes('category') && names.includes('categorylistpriceusd') && names.includes('totallistpriceusd');
+    })
+  };
+}
+
+function isUnmappedBase(row, layout) {
+  const description = String(layout.description >= 0 ? row[layout.description] ?? '' : row.join(' '));
+  if (/\b(?:(?:cto|configure[ -]+to[ -]+order)\s+(?:server|base|frame|rack|enclosure|chassis|compute module)|(?:DL|ML|RL)\s*\d{3}[a-z]?\b.*\bGen\s*\d+|poweredge|cisco\s+ucs)\b/i.test(description)) return true;
+  const owner = String(row[layout.owner] || '').replace(/\s*#\d+\s*$/, '');
+  return Boolean(owner && normalize(description).endsWith(normalize(owner)) &&
+    /\b(?:frame link module|(?:fibre|fiber) channel module|compute module|interconnect module|virtual connect)\b/i.test(owner));
+}
+
+function inspectWorkbookSheet(name, inputRows, definitions, add, unresolved, explicitProducts) {
+  const layout = getSheetLayout(inputRows);
+  const ignored = layout.isSummary || require('../boq/boq_parser.js').isNonBomSheet(name);
+  const products = new Set();
+  if (!ignored) inputRows.forEach((row, index) => {
+    if (index <= layout.header) return;
+    const sku = String(row[layout.sku] || '').trim();
+    const origin = { source: 'WORKBOOK', sheet: name, row: index + 1 };
+    const baseSku = sku.split(/\s+/)[0];
+    const exact = baseSku ? matchExplicitProduct(baseSku, definitions) : [];
+    const description = layout.description >= 0 ? row[layout.description] : row.join(' ');
+    const eligibleDefinitions = baseSku ? definitions.filter(entry => !entry.requireExactOcaBase) : definitions;
+    const inferred = exact.length ? [] : findProducts(description, eligibleDefinitions);
+    const matches = exact.length ? add(baseSku, origin, true) : inferred.flatMap(product => add(product, origin, true));
+    matches.forEach(product => products.add(product));
+    if (!matches.length && isUnmappedBase(row, layout)) {
+      unresolved.push({ ...origin, sku: sku || null, reason: 'UNRESOLVED_BASE_PRODUCT' });
+    }
+  });
+  if (!ignored && inputRows.length && !products.size && !explicitProducts) {
+    unresolved.push({ sheet: name, reason: 'NO_EXACT_PRODUCT_IN_SHEET' });
+  }
+  return { name, rows: inputRows.length, status: ignored ? 'NON_BOM_SHEET' : 'INSPECTED', products: [...products] };
+}
+
 function buildRefreshPlan({ products = [], filePath = null, query = null, vendor = 'HPE', force = false,
   definitions = loadProductDefinitions(), metadata = getProductGenerationMetadata } = {}) {
   const discovered = discoverAllProductCatalogs();
@@ -31,8 +87,7 @@ function buildRefreshPlan({ products = [], filePath = null, query = null, vendor
   const unresolved = [];
   const sheets = [];
   const add = (text, origin, explicit = false) => {
-    const matches = explicit ? definitions.filter(entry => normalize(entry.product) === normalize(text)).map(entry => entry.product)
-      : findProducts(text, definitions);
+    const matches = explicit ? matchExplicitProduct(text, definitions) : findProducts(text, definitions);
     if (!matches.length && explicit) unresolved.push({ ...origin, reason: 'EXACT_PRODUCT_MAPPING_REQUIRED', requested: text });
     for (const product of matches) rows.push({ ...origin, product });
     return matches;
@@ -44,22 +99,7 @@ function buildRefreshPlan({ products = [], filePath = null, query = null, vendor
     const wb = xlsx.readFile(filePath);
     for (const name of wb.SheetNames) {
       const inputRows = xlsx.utils.sheet_to_json(wb.Sheets[name], { header: 1, defval: '' });
-      const ignored = require('../boq/boq_parser.js').isNonBomSheet(name);
-      const productsInSheet = new Set();
-      inputRows.forEach((row, index) => {
-        if (ignored) return;
-        const text = row.join(' ');
-        const matches = add(text, { source: 'WORKBOOK', sheet: name, row: index + 1 });
-        matches.forEach(product => productsInSheet.add(product));
-        // Unknown base equipment may coexist with recognized equipment on one sheet.
-        if (!matches.length && /\b(?:cto\s+(?:server|base)|(?:DL|ML|RL)\s*\d{3}[a-z]?\b.*\bGen\s*\d+|poweredge|cisco\s+ucs)\b/i.test(text)) {
-          unresolved.push({ sheet: name, row: index + 1, reason: 'UNRESOLVED_BASE_PRODUCT' });
-        }
-      });
-      if (!ignored && inputRows.length && !productsInSheet.size && !products.length) {
-        unresolved.push({ sheet: name, reason: 'NO_EXACT_PRODUCT_IN_SHEET' });
-      }
-      sheets.push({ name, rows: inputRows.length, status: ignored ? 'NON_BOM_SHEET' : 'INSPECTED', products: [...productsInSheet] });
+      sheets.push(inspectWorkbookSheet(name, inputRows, definitions, add, unresolved, products.length > 0));
     }
   }
   const tasks = [...new Set(rows.map(row => row.product))].map(product => {

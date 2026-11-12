@@ -16,8 +16,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
-const { refreshSharedKnowledgeSources } = require('../lib/sync/shared_knowledge_refresh');
-const { safeWriteJsonAtomic } = require('../lib/system/fs_compat.js');
+const { refreshSharedKnowledgeSources, persistSharedKnowledgeRefresh } = require('../lib/sync/shared_knowledge_refresh');
 const logger = require('../lib/system/pipeline_logger.js');
 const {
   createGoogleDoc,
@@ -144,7 +143,10 @@ const HEADER_CHASSIS_PATTERNS = [
   [/msl3040/i, 'MSL3040_Tape'],
   [/alletra/i, 'Alletra_Storage_System'],
   [/sy480|synergy[_\s-]?480|synergy.*compute/i, 'SY480_Gen12'],
-  [/synergy|sy100gb/i, 'SY100Gb_F32_Module'],
+  [/frame[_\s-]?link[_\s-]?module|4[\s_-]*port[\s_-]*flm/i, 'Synergy_4Port_Frame_Link_Module'],
+  [/brocade[_\s-]?64gb.*synergy|synergy.*brocade[_\s-]?64gb/i, 'Synergy_Brocade_64Gb_FC_Module'],
+  [/synergy[_\s-]?12000|12000[\s_-]*frame/i, 'Synergy_12000_Frame'],
+  [/sy100gb|100gb[_\s-]?f32|virtual[_\s-]?connect.*f32/i, 'SY100Gb_F32_Module'],
   [/gx5000|cray/i, 'GX5000_General_RACK']
 ];
 
@@ -576,7 +578,7 @@ async function syncRunningKnowledge(options = {}) {
 
     sourceRefresh = await refreshSharedKnowledgeSources(config, googleDocResult.documentId, sharedRevision);
 
-    safeWriteJsonAtomic(NOTEBOOKS_CONFIG_PATH, config);
+    persistSharedKnowledgeRefresh(NOTEBOOKS_CONFIG_PATH, config, sourceRefresh.results);
     logger.info('RUNNING_KNOWLEDGE', `Updated notebooks.json with runningKnowledgeDoc ID: ${googleDocResult.documentId}`);
   } else if (dryRun) {
     logger.info('RUNNING_KNOWLEDGE', '[DRY RUN] Skipped Google Drive API calls.');

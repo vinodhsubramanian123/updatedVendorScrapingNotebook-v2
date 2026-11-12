@@ -36,8 +36,9 @@ function _validateTestOnlySkipCoverage(options) {
   if (process.env.NODE_ENV === 'production') {
     throw new Error('[INV-105] skipCoverageValidation is strictly prohibited in production.');
   }
-  const testsRoot = path.resolve(__dirname, '../../../tests');
-  const entry = path.resolve(process.argv[1] || '.');
+  const safeReal = target => { try { return fs.realpathSync(target); } catch { return path.resolve(target); } };
+  const testsRoot = safeReal(path.resolve(__dirname, '../../../tests'));
+  const entry = safeReal(path.resolve(process.argv[1] || '.'));
   const relative = path.relative(testsRoot, entry);
   const isEnclosedTest = !relative.startsWith('..') && !path.isAbsolute(relative) && /^test_.*\.js$/i.test(path.basename(entry));
   const isTestEnv = Boolean(process.env.NODE_TEST_CONTEXT) || isEnclosedTest;
@@ -102,6 +103,20 @@ function _extractCaptureProvenance(raw, options) {
   return { selectedBase, ownerConfig, solutionDomain, observedSelectors, missingProvenance };
 }
 
+function verifyRegisteredCaptureScope(product, raw) {
+  const { notebooks } = require('../../config/notebooks.json');
+  const entry = notebooks[product];
+  if ((entry?.requireExactOcaBase || entry?.captureViaParent) && raw.selectedBaseSku !== entry.baseSku) {
+    throw new Error(`Capture base does not match registered SKU ${entry.baseSku}`);
+  }
+  if (entry?.captureViaParent) {
+    const parentSku = notebooks[entry.parentProductId]?.baseSku;
+    if (!parentSku || raw.parentBaseSku !== parentSku || !raw.parentConfiguration) {
+      throw new Error(`Capture does not establish the exact parent of ${product}. Use its parent-scoped capture.`);
+    }
+  }
+}
+
 function _loadPreviousCatalogBaseline(liveDir, product) {
   const previousFile = path.join(liveDir, `${product}_Catalog.json`);
   const previousComplete = ['Catalog.json', 'Services.json', 'Catalog_Rules.json', 'OCA_Catalog.xlsx']
@@ -120,6 +135,7 @@ function createCaptureReceipt(stagingDir, liveDir, product, options = {}) {
 
   const next = summarizeCatalog(stagingDir, product);
   const raw = readJson(path.join(stagingDir, 'raw_data', 'oca_raw_data_full.json'));
+  if (!options.skipCoverageValidation) verifyRegisteredCaptureScope(product, raw);
   const capture = _validateCaptureTimestampAndCounts(next, raw);
 
   const workbook = require('xlsx-js-style').readFile(path.join(stagingDir, `${product}_OCA_Catalog.xlsx`));
@@ -144,6 +160,8 @@ function createCaptureReceipt(stagingDir, liveDir, product, options = {}) {
     provenance: {
       baseSku: selectedBase,
       ownerConfiguration: ownerConfig,
+      ...(raw.parentBaseSku ? { parentBaseSku: raw.parentBaseSku } : {}),
+      ...(raw.parentConfiguration ? { parentConfiguration: raw.parentConfiguration } : {}),
       solutionDomain,
       observedUrl: raw.url || null
     },
@@ -151,6 +169,7 @@ function createCaptureReceipt(stagingDir, liveDir, product, options = {}) {
       textExtractionMode: raw.textExtractionMode || 'UNKNOWN',
       outsideTableNotesCaptured: raw.outsideTableNotesCaptured === true,
       conditionalDiscovery: raw.conditionalDiscovery || 'UNVERIFIED',
+      ...(raw.componentServiceEvidence ? { componentServiceEvidence: raw.componentServiceEvidence } : {}),
       baseSku: selectedBase,
       ownerConfiguration: ownerConfig,
       solutionDomain,
@@ -186,6 +205,19 @@ function finalizeCaptureReceipt(dir, receipt, sync) {
   const history = path.join(dir, 'history', 'capture_receipts');
   fs.mkdirSync(history, { recursive: true });
   safeWriteJsonAtomic(path.join(history, `${receipt.auditedAt.replace(/[:.]/g, '-')}.json`), completed);
+  const svPath = path.join(dir, 'scraping_verification_receipt.json');
+  if (fs.existsSync(svPath) && sync?.syncStatus === 'CLOUD_VERIFIED') {
+    try {
+      const sv = JSON.parse(fs.readFileSync(svPath, 'utf8'));
+      if (sv?.postflight) {
+        sv.postflight.cloudSyncState = 'CLOUD_VERIFIED';
+        sv.postflight.pass = sv.postflight.diffSummaryError == null && sv.postflight.diffSummaryPresent !== false;
+        sv.postflight.status = sv.postflight.pass ? 'PASSED' : 'ACTION_REQUIRED';
+        sv.verifiedAt = completed.promotedAt;
+        safeWriteJsonAtomic(svPath, sv);
+      }
+    } catch (_) { /* preserve receipt if unreadable */ }
+  }
   return completed;
 }
 module.exports = { createCaptureReceipt, finalizeCaptureReceipt, currentRows, skuSet };

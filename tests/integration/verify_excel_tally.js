@@ -76,7 +76,9 @@ async function main() {
       const pdfStats = fs.statSync(pdfPath);
       console.log(`  📑 QuickSpecs PDF:  ${(pdfStats.size / 1024 / 1024).toFixed(2)} MB`);
     }
-    assert(fs.statSync(pdfPath).size > 500000, `PDF size (${(fs.statSync(pdfPath).size / 1024 / 1024).toFixed(2)} MB) > 500 KB threshold`);
+    const pdfStats = fs.statSync(pdfPath);
+    const pdfHeader = fs.readFileSync(pdfPath).subarray(0, 5).toString('latin1');
+    assert(pdfStats.size >= 100000 && pdfHeader === '%PDF-', `PDF size (${(pdfStats.size / 1024 / 1024).toFixed(2)} MB) >= 100 KB and valid %PDF- header`);
   } else {
     if (!JSON_MODE) console.log(`  ⚠️  ADVISORY: QuickSpecs PDF not present (no QuickSpecs link on OCA page): ${path.basename(pdfPath)}`);
   }

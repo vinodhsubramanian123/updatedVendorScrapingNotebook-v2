@@ -1,9 +1,10 @@
 'use strict';
-const { cleanBaseSKU, isValidHpeSKU, classifyOptionType } = require('./sku.js');
+const { cleanBaseSKU, isValidHpeSKU, classifyOptionType, isTaaGtaCatalogOption } = require('./sku.js');
 
 function applyConditionalDiscovery(entries, observations = []) {
   const rules = [];
   for (const observation of observations) {
+    if (isTaaGtaCatalogOption(observation.rawSku || observation.sku, observation.description)) continue;
     const sku = cleanBaseSKU(observation.sku);
     if (!sku || !isValidHpeSKU(sku)) continue;
     const ambient = observation.conditionType === 'AMBIENT_GATE' && Number.isFinite(observation.thresholdDegC);
@@ -177,6 +178,7 @@ function applyUnavailableDomRulesAndSkus(hardwareEntries, cleanServicesEntries, 
   const existingSkuMap = _buildExistingSkuMap(allEntries);
 
   for (const u of unavailableSkus) {
+    if (isTaaGtaCatalogOption(u.rawSku || u.sku, u.description)) continue;
     const cleanSku = cleanBaseSKU(u.sku);
     if (!cleanSku || !isValidHpeSKU(cleanSku)) continue;
 
