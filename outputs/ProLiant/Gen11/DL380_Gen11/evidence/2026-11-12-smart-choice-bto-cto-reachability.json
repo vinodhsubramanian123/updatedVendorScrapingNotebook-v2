@@ -1,0 +1,49 @@
+{
+  "recordedAt": "2026-11-12T10:37:29.750Z",
+  "universalRuleId": "LEARN_UNIVERSAL_SMART_CHOICE_BTO_VS_OCA_VALIDATION_20261112",
+  "g11RuleId": "LEARN_DL380_GEN11_P71674_425_SMART_CHOICE_20261112",
+  "registryCounts": {
+    "universal": 10,
+    "familyGen": 0,
+    "chassisSpecific": 134
+  },
+  "totalLearnedRules": 144,
+  "reachability": {
+    "universalOnDL380_Gen11": {
+      "reachable": true,
+      "ruleId": "LEARN_UNIVERSAL_SMART_CHOICE_BTO_VS_OCA_VALIDATION_20261112",
+      "ruleType": "WORKFLOW_SMART_CHOICE_CTO_VALIDATION_STEPS",
+      "affectedSku": "",
+      "targetSku": "",
+      "scopeTaxonomy": "UNIVERSAL_VENDOR",
+      "simulationResult": null,
+      "verifiedAt": "2026-11-12T10:37:29.496Z"
+    },
+    "universalOnDL380_Gen12": {
+      "reachable": true,
+      "ruleId": "LEARN_UNIVERSAL_SMART_CHOICE_BTO_VS_OCA_VALIDATION_20261112",
+      "ruleType": "WORKFLOW_SMART_CHOICE_CTO_VALIDATION_STEPS",
+      "affectedSku": "",
+      "targetSku": "",
+      "scopeTaxonomy": "UNIVERSAL_VENDOR",
+      "simulationResult": null,
+      "verifiedAt": "2026-11-12T10:37:29.664Z"
+    },
+    "g11RuleOnDL380_Gen11": {
+      "reachable": true,
+      "ruleId": "LEARN_DL380_GEN11_P71674_425_SMART_CHOICE_20261112",
+      "ruleType": "WORKFLOW_SMART_CHOICE_OBSERVATION",
+      "affectedSku": "P71674-425",
+      "targetSku": "",
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "simulationResult": null,
+      "verifiedAt": "2026-11-12T10:37:25.537Z"
+    },
+    "g11RuleBlockedOnDL380_Gen12": {
+      "reachable": false,
+      "reason": "Rule LEARN_DL380_GEN11_P71674_425_SMART_CHOICE_20261112 not reachable in ActiveKnowledgeRouter for DL380_Gen12. May be blocked by Generation Firewall or missing on disk.",
+      "activeRulesCount": 71
+    }
+  },
+  "hardwareCompatibilityCertified": false
+}

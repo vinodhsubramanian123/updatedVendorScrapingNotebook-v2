@@ -1,10 +1,10 @@
 {
   "registryVersion": "2.0.0",
   "schemaVersion": "1.0",
-  "generatedAt": "2026-11-12T07:22:08.804Z",
-  "lastUpdated": "2026-11-12T07:22:08.804Z",
-  "totalLearnedRules": 142,
-  "totalDeduplicatedRules": 142,
+  "generatedAt": "2026-11-12T11:10:25.089Z",
+  "lastUpdated": "2026-11-12T11:10:25.089Z",
+  "totalLearnedRules": 145,
+  "totalDeduplicatedRules": 145,
   "productFamiliesSynced": [
     "Alletra",
     "DL380a",
@@ -14,9 +14,9 @@
     "Synergy"
   ],
   "counts": {
-    "universal": 9,
+    "universal": 11,
     "familyGen": 0,
-    "chassisSpecific": 133
+    "chassisSpecific": 134
   },
   "universalRules": [
     {
@@ -87,6 +87,54 @@
       "family": "",
       "generation": "",
       "productId": "GLOBAL"
+    },
+    {
+      "deltaId": "LEARN_UNIVERSAL_SMART_CHOICE_BTO_VS_OCA_VALIDATION_20261112",
+      "timestamp": "2026-11-12T10:37:25.287Z",
+      "chassis": "GLOBAL",
+      "productId": "GLOBAL",
+      "vendor": "HPE",
+      "pillar": "SERVER",
+      "family": "",
+      "generation": "",
+      "scopeTaxonomy": "UNIVERSAL_VENDOR",
+      "vendorWideVerified": true,
+      "scopeEvidence": "Verified against HPE CLIC Rule 81016667 / 81400509 covering all xxxxxx-xx5 Smart Choice SKUs and ProLiant QuickSpecs BTO pre-configuration policy.",
+      "errorType": "WORKFLOW_BTO_SMART_CHOICE_BOUNDARY",
+      "ruleType": "WORKFLOW_SMART_CHOICE_CTO_VALIDATION_STEPS",
+      "affectedSku": null,
+      "requiredDependencySku": null,
+      "governanceStatus": "ACTIVE",
+      "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+      "evidenceType": "LIVE_PORTAL_AND_QUICKSPECS_OBSERVATION",
+      "solutionType": "Universal HPE BTO / Smart Choice vs CTO Guidance",
+      "hardwareCompatibilityCertified": false,
+      "ruleUpdate": "HPE Smart Choice (xxxxxx-xx5) and regional BTO SKUs are pre-configured distributor builds, NOT CTO (-B21) configurables: (1) Never infer unstated internal factory SKUs from the short description alone (QuickSpecs notes BTO models ship with a pre-selected primary NIC without naming its exact SKU in the title, and HPE forbids factory integration of extra options into pre-configured models). (2) Never treat an OCA Customize BOM export of a -xx5 SKU as proof of factory-included parts: OCA opens Smart Choice SKUs as blank shells (0 CPU/RAM/PSU errors), auto-selects separately priced CTO menu defaults on top of the base SKU, and fails CLIC with Rule 81016667 (UNBUILDABLE: configure/quote/order via Distributor webstore or iQuote Universal, Warning 81400509). (3) Validation & reasoning steps: verify suffix (-xx5 BTO/Smart Choice vs -B21 CTO in chassis_map.json / *_Catalog.json); if CTO is desired, map to -B21 CTO chassis and run the canonical CTO evaluation/CLIC path; if exact Smart Choice factory contents are needed, consult HPE Smart Choice Supplemental QuickSpecs (e.g. a50009219enw), iQuote Universal, or an authorized distributor.",
+      "rawMessage": "Universal workflow & on-demand validation lesson for HPE Smart Choice (xxxxxx-xx5) / BTO vs CTO: CTO QuickSpecs and *_Catalog.json exclude Smart Choice SKUs. Clicking Customize in OCA on Smart Choice opens an incomplete shell that injects priced menu add-ons and rejects via CLIC Rule 81016667 / Warning 81400509 (directing partners to iQuote Universal or distributor webstores). Validate factory-included Smart Choice contents via Supplemental QuickSpecs / iQuote Universal / distributor, or pivot to a -B21 CTO chassis for customizable HPE OCA/CLIC validation."
+    },
+    {
+      "deltaId": "LEARN_UNIVERSAL_CLIC_GLOBAL_CHECK_AND_SEVERITY_TRIAGE_20261112",
+      "timestamp": "2026-11-12T11:10:24.673Z",
+      "chassis": "GLOBAL",
+      "productId": "GLOBAL",
+      "vendor": "HPE",
+      "pillar": "SERVER",
+      "family": "",
+      "generation": "",
+      "scopeTaxonomy": "UNIVERSAL_VENDOR",
+      "vendorWideVerified": true,
+      "scopeEvidence": "Verified against live HPE OCA Solution-Level CLIC Check (#eo_nav_li_0), Summary Issues and Approvals, and exported CLIC_Advice Excel workbook (Information / Advice_Text / BOM sheets).",
+      "errorType": "PORTAL_VALIDATION_SEVERITY_TRIAGE",
+      "ruleType": "WORKFLOW_CLIC_GLOBAL_AND_SEVERITY_TRIAGE",
+      "affectedSku": null,
+      "requiredDependencySku": null,
+      "governanceStatus": "ACTIVE",
+      "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+      "evidenceType": "LIVE_PORTAL_CLIC_ADVICE_OBSERVATION",
+      "solutionType": "Universal HPE OCA CLIC Check & Advice Triage",
+      "hardwareCompatibilityCertified": false,
+      "ruleUpdate": "For any full HPE solution in OCA: (1) Run CLIC Check at the Global Solution Level (top breadcrumb #eo_nav_li_0) rather than only at a child frame/node (Partial CLIC Check), and click Download Advice (#_clic_download_excel) to inspect every row of the Advice_Text and BOM sheets alongside Solution Summary Messages/Issues. (2) Triage CLIC severities properly: Unbuildables and Process control (P+ in Advice_Text) MUST be fixed or formally exception-approved before quoting/ordering. Plain Error rows do not automatically break buildability and may sometimes be ignored, but MUST still be read carefully to verify whether a required action/quantity is missing or already met elsewhere in the solution. Warnings (e.g., PSU C13-to-C20 jumper cables for C19 PDUs, redundant VC FC licenses) must also be reviewed for physical deployment completeness. (3) Note that CLIC Advice Information sheet counts may underreport Warning rows compared to Advice_Text and CLIC Advice BOM may omit icon-level service lines outside the hardware container.",
+      "rawMessage": "Universal OCA CLIC workflow & severity triage lesson: Run CLIC Check at Global Solution level (#eo_nav_li_0) and Download Advice. Must fix Unbuildables and Process control (P+) errors. Plain Errors may not break buildability and can sometimes be ignored after verifying whether any action is needed; read Warnings too for physical readiness (e.g., power jumper cables, licensing symmetry) and inspect Advice_Text directly."
     },
     {
       "deltaId": "OWNER_STANDARD_3Y_BASIC",
@@ -899,6 +947,29 @@
       "family": "ProLiant",
       "generation": "Gen11",
       "productId": "DL380_Gen11",
+      "solutionType": "DL380_Gen11 CTO Server"
+    },
+    {
+      "deltaId": "LEARN_DL380_GEN11_P71674_425_SMART_CHOICE_20261112",
+      "ruleType": "WORKFLOW_SMART_CHOICE_OBSERVATION",
+      "errorType": "WORKFLOW_BTO_SMART_CHOICE_BOUNDARY",
+      "affectedSku": "P71674-425",
+      "requiredDependencySku": null,
+      "productId": "DL380_Gen11",
+      "vendor": "HPE",
+      "family": "ProLiant",
+      "generation": "Gen11",
+      "pillar": "SERVER",
+      "scopeTaxonomy": "CHASSIS_SPECIFIC",
+      "governanceStatus": "ACTIVE",
+      "status": "APPLIED_TO_PRECHECKS_AND_RAG",
+      "evidenceType": "LIVE_PORTAL_AND_QUICKSPECS_OBSERVATION",
+      "hardwareCompatibilityCertified": false,
+      "source": "outputs/ProLiant/Gen11/DL380_Gen11/HPE_DL380_Gen11_QuickSpecs.pdf (p.26-27) + Live OCA CLIC Check (Rule 81016667 / 81400509)",
+      "ruleUpdate": "P71674-425 (EMEA DL380 Gen11 Smart Choice 4510 12c 1P 64GB-R 8SFF MR408i-o 2x960GB SSD 2x1000W PS) is absent from DL380_Gen11_Catalog.json and DL380 Gen11 CTO QuickSpecs (deferred to Smart Choice Supplemental QuickSpecs a50009219enw). Baseline fixed by title + chassis spec: Silver 4510 1P, 64GB-R, 8SFF, MR408i-o, 2x960GB SSD, 2x1000W PSU, 1Gb dedicated rear iLO 6 port, and a pre-selected primary NIC (distributor listings cite BCM5719 1Gb 4p OCP3 P51181-B21). In live OCA Customize, P71674-425 loads as 0 CPU/0GB with PSU error, auto-adds separately priced P47777-B21 ($5,999 MR416i-p despite built-in MR408i-o), P01366-B21 ($110), P48918-B21 ($38), P51181-B21 ($485), S7P77AAE ($750), AC114A ($210) totaling $19,425 vs $11,833 base, and fails CLIC with Rule 81016667 (use iQuote Universal / distributor). Use CTO -B21 bases for customizable DL380 Gen11 configurations.",
+      "rawMessage": "Observed live OCA and QuickSpecs behavior for EMEA Smart Choice SKU P71674-425 on DL380 Gen11 (UCID 5158322629-01 & fresh Customize verification): OCA treats -425 as unbuildable in CLIC (Rule 81016667 / Warning 81400509) and overlays extra priced CTO menu defaults instead of exposing factory inside-the-box BOM.",
+      "timestamp": "2026-11-12T10:37:25.377Z",
+      "chassis": "DL380_Gen11",
       "solutionType": "DL380_Gen11 CTO Server"
     },
     {
@@ -2206,7 +2277,7 @@
     {
       "deltaId": "LEARN_CHASSIS_THREE_TIER_DOMAIN_CLASSIFICATION_20261012",
       "ruleType": "WORKFLOW_CHASSIS_CLASSIFICATION_ADVISORY",
-      "rawMessage": "Specialty hardware categories (SAN switches like SN3600B, fabric interconnect modules like SY100Gb, and tape libraries like MSL) do not contain server compute components (CPU, Memory, Power). Synergy compute blades (SY480 Gen12) require CPU and Memory, but Power supplies are governed at the Synergy 12000 enclosure frame level. Freshness guards must evaluate compliance using a three-tier domain discriminator rather than enforcing server categories on all products (INV-158).",
+      "rawMessage": "Use the registered product and its component role for catalog coverage. Server and compute-module catalogs require processor and memory options where specified by their profile. Shared-enclosure power belongs to the owning frame. Validate switch, fabric and tape catalogs against their own profile rather than server categories (INV-158).",
       "vendor": "HPE",
       "pillar": "SERVER",
       "family": "ProLiant",
