@@ -1,0 +1,351 @@
+Main Category	Sub-Category	Constraint	Rule Type	Rule Text
+Software	Solutions Software	Unlimited	Quantity Constraint	Quantity: Unlimited
+Unknown	HPE Workload Aware Security	max 1	Quantity Constraint	Quantity: max 1
+Unknown	Storage	max 12	Quantity Constraint	Quantity: max 12
+Cooling Options	Cooling Options	min 1, Required	Quantity Constraint	Quantity: min 1, Required
+Unknown	Compute	max 12	Quantity Constraint	Quantity: max 12
+Management Hardware	Appliance	max 2	Quantity Constraint	Quantity: max 2
+Management Hardware	Redundant Frame Link	max 2	Quantity Constraint	Quantity: max 2
+Management Hardware	Frame Link Module USB	max 99	Quantity Constraint	Quantity: max 99
+Interconnects	Interconnects	max 6	Quantity Constraint	Quantity: max 6
+Interconnects	Direct Attach Cables	max 18	Quantity Constraint	Quantity: max 18
+Interconnects	CAT Ethernet Cables	max 12	Quantity Constraint	Quantity: max 12
+Interconnects	Tape Storage	max 99	Quantity Constraint	Quantity: max 99
+Frame Options	Frame Options	max 2	Quantity Constraint	Quantity: max 2
+Frame Options	Rack Options	max 2	Quantity Constraint	Quantity: max 2
+Operating Environment	Red Hat Enterprise Linux Server	Unlimited	Quantity Constraint	Quantity: Unlimited
+Operating Environment	Non Preinstalled Operating System	Unlimited	Quantity Constraint	Quantity: Unlimited
+Cooling Options	Cooling Options (required)	max 10	Quantity Constraint	Quantity: max 10
+Cooling Options	Power Supply (required)	max 12	Quantity Constraint	Quantity: max 12
+Cooling Options	Power Supply	min 1, Required	Quantity Constraint	Quantity: min 1, Required
+Cooling Options	Accessories	max 6	Quantity Constraint	Quantity: max 6
+Cooling Options	Power Cords	max 12	Quantity Constraint	Quantity: max 12
+Cooling Options	Manufacturing Services	max 1	Quantity Constraint	Quantity: max 1
+Chassis	Variants	min 1, max 1 — Active OCA CTO chassis	Configuration Rule	Select exactly one currently discoverable, non-TAA/non-GTA CTO base chassis
+Frame Options	Server Management & Operating System Licenses	max 12	Configuration Rule	Selection constraint for Server Management & Operating System Licenses: max 12
+Frame Options	Server Management & Operating System Licenses	max 12	Configuration Rule	R1R47A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Frame Options	Server Management & Operating System Licenses	max 12	Configuration Rule	871940-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Frame Options	Server Management & Operating System Licenses	max 12	Configuration Rule	871941-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Frame Options	Server Management & Operating System Licenses	max 12	Configuration Rule	871942-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Frame Options	Server Management & Operating System Licenses	max 12	Configuration Rule	Q9Q88A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Frame Options	Server Management & Operating System Licenses	max 12	Configuration Rule	P22139-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Frame Options	Server Management & Operating System Licenses	max 12	Configuration Rule	P39531-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Frame Options	Server Management & Operating System Licenses	max 12	Configuration Rule	P83805-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Frame Options	Server Management & Operating System Licenses	max 12	Configuration Rule	732350-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Frame Options	Server Management & Operating System Licenses	max 12	Configuration Rule	732351-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Frame Options	Server Management & Operating System Licenses	max 12	Configuration Rule	732352-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Frame Options	Server Management & Operating System Licenses	max 12	Configuration Rule	834485-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Frame Options	Server Management & Operating System Licenses	max 12	Configuration Rule	871929-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Frame Options	Server Management & Operating System Licenses	max 12	Configuration Rule	871930-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Frame Options	Server Management & Operating System Licenses	max 12	Configuration Rule	871931-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Frame Options	Server Management & Operating System Licenses	max 12	Configuration Rule	Q9Q89A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Frame Options	Server Management & Operating System Licenses	max 12	Configuration Rule	R1R49A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Frame Options	Server Management & Operating System Licenses	max 12	Configuration Rule	732360-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Frame Options	Server Management & Operating System Licenses	max 12	Configuration Rule	834482-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Accessories & Infrastructure	Compute	max 12	Configuration Rule	Non-TAA Model cannot support TAA products.
+Accessories & Infrastructure	Compute	max 12	Configuration Rule	P83805-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Frame Options	Smart Array SAS Controllers	max 12	Configuration Rule	CTO Compute and Storage Modules can only be configured in a CTO Frame.
+Frame Options	Smart Array SAS Controllers	max 12	Configuration Rule	871943-B21 conditional visibility: portal selector activation required (CTO Compute and Storage Modules can only be configured in a CTO Frame.); PORTAL_CONDITIONAL
+Frame Options	Smart Array SAS Controllers	max 12	Configuration Rule	871945-B21 conditional visibility: portal selector activation required (CTO Compute and Storage Modules can only be configured in a CTO Frame.); PORTAL_CONDITIONAL
+Frame Options	Smart Array SAS Controllers	max 12	Configuration Rule	871946-B21 conditional visibility: portal selector activation required (CTO Compute and Storage Modules can only be configured in a CTO Frame.); PORTAL_CONDITIONAL
+Frame Options	Smart Array SAS Controllers	max 12	Configuration Rule	826950-B21 conditional visibility: portal selector activation required (CTO Compute and Storage Modules can only be configured in a CTO Frame.); PORTAL_CONDITIONAL
+Frame Options	Smart Array SAS Controllers	max 12	Configuration Rule	826951-B21 conditional visibility: portal selector activation required (CTO Compute and Storage Modules can only be configured in a CTO Frame.); PORTAL_CONDITIONAL
+Frame Options	Smart Array SAS Controllers	max 12	Configuration Rule	826952-B21 conditional visibility: portal selector activation required (CTO Compute and Storage Modules can only be configured in a CTO Frame.); PORTAL_CONDITIONAL
+Frame Options	Smart Array SAS Controllers	max 12	Configuration Rule	826953-B21 conditional visibility: portal selector activation required (CTO Compute and Storage Modules can only be configured in a CTO Frame.); PORTAL_CONDITIONAL
+Frame Options	Smart Array SAS Controllers	max 12	Configuration Rule	826954-B21 conditional visibility: portal selector activation required (CTO Compute and Storage Modules can only be configured in a CTO Frame.); PORTAL_CONDITIONAL
+Frame Options	Smart Array SAS Controllers	max 12	Configuration Rule	834483-B21 conditional visibility: portal selector activation required (CTO Compute and Storage Modules can only be configured in a CTO Frame.); PORTAL_CONDITIONAL
+Frame Options	Smart Array SAS Controllers	max 12	Configuration Rule	834484-B21 conditional visibility: portal selector activation required (CTO Compute and Storage Modules can only be configured in a CTO Frame.); PORTAL_CONDITIONAL
+Frame Options	Smart Array SAS Controllers	max 12	Configuration Rule	871932-B21 conditional visibility: portal selector activation required (CTO Compute and Storage Modules can only be configured in a CTO Frame.); PORTAL_CONDITIONAL
+Frame Options	Smart Array SAS Controllers	max 12	Configuration Rule	871933-B21 conditional visibility: portal selector activation required (CTO Compute and Storage Modules can only be configured in a CTO Frame.); PORTAL_CONDITIONAL
+Frame Options	Smart Array SAS Controllers	max 12	Configuration Rule	871934-B21 conditional visibility: portal selector activation required (CTO Compute and Storage Modules can only be configured in a CTO Frame.); PORTAL_CONDITIONAL
+Frame Options	Smart Array SAS Controllers	max 12	Configuration Rule	826956-B21 conditional visibility: portal selector activation required (CTO Compute and Storage Modules can only be configured in a CTO Frame.); PORTAL_CONDITIONAL
+Frame Options	Smart Array SAS Controllers	max 12	Configuration Rule	826957-B21 conditional visibility: portal selector activation required (CTO Compute and Storage Modules can only be configured in a CTO Frame.); PORTAL_CONDITIONAL
+Frame Options	Smart Array SAS Controllers	max 12	Configuration Rule	826958-B21 conditional visibility: portal selector activation required (CTO Compute and Storage Modules can only be configured in a CTO Frame.); PORTAL_CONDITIONAL
+Frame Options	Smart Array SAS Controllers	max 12	Configuration Rule	834480-B21 conditional visibility: portal selector activation required (CTO Compute and Storage Modules can only be configured in a CTO Frame.); PORTAL_CONDITIONAL
+Frame Options	Smart Array SAS Controllers	max 12	Configuration Rule	834481-B21 conditional visibility: portal selector activation required (CTO Compute and Storage Modules can only be configured in a CTO Frame.); PORTAL_CONDITIONAL
+Accessories & Infrastructure	Storage	max 12	Configuration Rule	Selection constraint for Storage: max 12
+Accessories & Infrastructure	Storage	max 12	Configuration Rule	835386-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
+Accessories & Infrastructure	Storage	max 12	Configuration Rule	R1R48A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	SFF Drive Cages & Enablement	max 24	Configuration Rule	CTO Compute and Storage Modules can only be configured in a CTO Frame.
+Drive Enclosures / Drives	SFF Drive Cages & Enablement	max 24	Configuration Rule	755984-B21 conditional visibility: portal selector activation required (CTO Compute and Storage Modules can only be configured in a CTO Frame.); PORTAL_CONDITIONAL
+Management Hardware	Appliance	max 2	Configuration Rule	Selection constraint for Appliance: max 2
+Accessories & Infrastructure	System Options	optional	Configuration Rule	Mixing Composer and Composer 2 is not allowed
+Accessories & Infrastructure	System Options	optional	Configuration Rule	804353-B21 conditional visibility: portal selector activation required (Mixing Composer and Composer 2 is not allowed); PORTAL_CONDITIONAL
+Accessories & Infrastructure	System Options	optional	Configuration Rule	If HPE Synergy 4-port Frame Link Module is included in the 12000 Frame, Synergy Image Streamer on Synergy Composer cannot be selected.
+Accessories & Infrastructure	System Options	optional	Configuration Rule	804937-B21 conditional visibility: portal selector activation required (If HPE Synergy 4-port Frame Link Module is included in the 12000 Frame, Synergy Image Streamer on Synergy Composer cannot be selected.); PORTAL_CONDITIONAL
+Management Hardware	Appliance	max 2	Configuration Rule	Max quantity of product limited by space available.
+Management Hardware	Appliance	max 2	Configuration Rule	P54624-B21 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Management Hardware	Appliance	max 2	Configuration Rule	Mixing of Composer 2 and Composer 2 Plus modules is not allowed.
+Management Hardware	Appliance	max 2	Configuration Rule	P73869-B21 conditional visibility: portal selector activation required (Mixing of Composer 2 and Composer 2 Plus modules is not allowed.); PORTAL_CONDITIONAL
+Management Hardware	Redundant Frame Link	max 2	Configuration Rule	Selection constraint for Redundant Frame Link: max 2
+Management Hardware	Frame Link Module USB	max 99	Configuration Rule	Either Frame link Module or 4p Frame Link Module can be selected. Mixing is not allowed.
+Management Hardware	Frame Link Module USB	max 99	Configuration Rule	804942-B21 conditional visibility: portal selector activation required (Either Frame link Module or 4p Frame Link Module can be selected. Mixing is not allowed.); PORTAL_CONDITIONAL
+Management Hardware	Frame Link Module USB	max 99	Configuration Rule	Selection constraint for Frame Link Module USB: max 99
+Interconnects	Interconnects	max 6	Configuration Rule	Selection constraint for Interconnects: max 6
+Interconnects	Interconnects	max 6	Configuration Rule	755985-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
+Interconnects	Interconnects	max 6	Configuration Rule	779215-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
+Interconnects	Interconnects	max 6	Configuration Rule	779218-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
+Interconnects	Interconnects	max 6	Configuration Rule	779224-B23 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
+Interconnects	Interconnects	max 6	Configuration Rule	779227-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
+Interconnects	Interconnects	max 6	Configuration Rule	799330-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
+Interconnects	Interconnects	max 6	Configuration Rule	K2Q83A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
+Interconnects	Interconnects	max 6	Configuration Rule	K2Q83B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
+Interconnects	Interconnects	max 6	Configuration Rule	K2Q84A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
+Interconnects	Interconnects	max 6	Configuration Rule	K2Q84B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
+Interconnects	Interconnects	max 6	Configuration Rule	K2Q86A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
+Interconnects	Interconnects	max 6	Configuration Rule	K2Q86B conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
+Interconnects	Interconnects	max 6	Configuration Rule	P08477-B21 conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
+Interconnects	Interconnects	max 6	Configuration Rule	Q2E55A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
+Interconnects	Interconnects	max 6	Configuration Rule	Q2E56A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
+Accessories & Infrastructure	System Options	optional	Configuration Rule	Product is obsolete
+Accessories & Infrastructure	System Options	optional	Configuration Rule	489184-B21 conditional visibility: portal selector activation required (Product is obsolete); PORTAL_CONDITIONAL
+Networking	PCIe Networking Adapters	max 8	Configuration Rule	Product not supported
+Networking	PCIe Networking Adapters	max 8	Configuration Rule	648312-B21 conditional visibility: portal selector activation required (Product not supported); PORTAL_CONDITIONAL
+Networking	PCIe Networking Adapters	max 8	Configuration Rule	658247-B21 conditional visibility: portal selector activation required (Product not supported); PORTAL_CONDITIONAL
+Networking	PCIe Networking Adapters	max 8	Configuration Rule	674280-B21 conditional visibility: portal selector activation required (Product not supported); PORTAL_CONDITIONAL
+Networking	PCIe Networking Adapters	max 8	Configuration Rule	674281-B21 conditional visibility: portal selector activation required (Product not supported); PORTAL_CONDITIONAL
+Networking	PCIe Networking Adapters	max 8	Configuration Rule	674282-B21 conditional visibility: portal selector activation required (Product not supported); PORTAL_CONDITIONAL
+Networking	PCIe Networking Adapters	max 8	Configuration Rule	674283-B21 conditional visibility: portal selector activation required (Product not supported); PORTAL_CONDITIONAL
+Networking	PCIe Networking Adapters	max 8	Configuration Rule	674284-B21 conditional visibility: portal selector activation required (Product not supported); PORTAL_CONDITIONAL
+Networking	PCIe Networking Adapters	max 8	Configuration Rule	829914-B21 conditional visibility: portal selector activation required (Product not supported); PORTAL_CONDITIONAL
+Networking	PCIe Networking Adapters	max 8	Configuration Rule	829915-B21 conditional visibility: portal selector activation required (Product not supported); PORTAL_CONDITIONAL
+Networking	PCIe Networking Adapters	max 8	Configuration Rule	829916-B21 conditional visibility: portal selector activation required (Product not supported); PORTAL_CONDITIONAL
+Networking	PCIe Networking Adapters	max 8	Configuration Rule	843191-B21 conditional visibility: portal selector activation required (Product not supported); PORTAL_CONDITIONAL
+Networking	PCIe Networking Adapters	max 8	Configuration Rule	843192-B21 conditional visibility: portal selector activation required (Product not supported); PORTAL_CONDITIONAL
+Networking	PCIe Networking Adapters	max 8	Configuration Rule	843193-B21 conditional visibility: portal selector activation required (Product not supported); PORTAL_CONDITIONAL
+Networking	PCIe Networking Adapters	max 8	Configuration Rule	846041-B21 conditional visibility: portal selector activation required (Product not supported); PORTAL_CONDITIONAL
+Accessories & Infrastructure	System Options	optional	Configuration Rule	Cannot mix together in the same Synergy 12000 Frame
+Accessories & Infrastructure	System Options	optional	Configuration Rule	794502-B23 conditional visibility: portal selector activation required (Cannot mix together in the same Synergy 12000 Frame); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Direct Attach Cables	max 18	Configuration Rule	Selection constraint for Direct Attach Cables: max 18
+Cables & Enablement Kits	Direct Attach Cables	max 18	Configuration Rule	845420-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Direct Attach Cables	max 18	Configuration Rule	487649-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Direct Attach Cables	max 18	Configuration Rule	487652-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Direct Attach Cables	max 18	Configuration Rule	720196-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Direct Attach Cables	max 18	Configuration Rule	720199-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Direct Attach Cables	max 18	Configuration Rule	720202-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Direct Attach Cables	max 18	Configuration Rule	720205-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Direct Attach Cables	max 18	Configuration Rule	720208-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Direct Attach Cables	max 18	Configuration Rule	721067-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Direct Attach Cables	max 18	Configuration Rule	721070-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Direct Attach Cables	max 18	Configuration Rule	721073-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Direct Attach Cables	max 18	Configuration Rule	730907-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Direct Attach Cables	max 18	Configuration Rule	804095-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Direct Attach Cables	max 18	Configuration Rule	804098-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Direct Attach Cables	max 18	Configuration Rule	804101-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Direct Attach Cables	max 18	Configuration Rule	804104-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Direct Attach Cables	max 18	Configuration Rule	804107-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Direct Attach Cables	max 18	Configuration Rule	804110-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Direct Attach Cables	max 18	Configuration Rule	804155-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Direct Attach Cables	max 18	Configuration Rule	845412-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Direct Attach Cables	max 18	Configuration Rule	845424-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Direct Attach Cables	max 18	Configuration Rule	AP818A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Direct Attach Cables	max 18	Configuration Rule	AP819A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Direct Attach Cables	max 18	Configuration Rule	AP820A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Direct Attach Cables	max 18	Configuration Rule	J9283B conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Direct Attach Cables	max 18	Configuration Rule	JD097C conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Direct Attach Cables	max 18	Configuration Rule	JG081C conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Networking	CAT Ethernet Cables	max 12	Configuration Rule	Selection constraint for CAT Ethernet Cables: max 12
+Networking	CAT Ethernet Cables	max 12	Configuration Rule	861414-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Tape Storage	max 99	Configuration Rule	Selection constraint for Tape Storage: max 99
+Drive Enclosures / Drives	Tape Storage	max 99	Configuration Rule	Q6Q65A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Tape Storage	max 99	Configuration Rule	Q6Q66A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Accessories & Infrastructure	Frame Options	max 2	Configuration Rule	Selection constraint for Frame Options: max 2
+Accessories & Infrastructure	-48VDC Power Supplies & Cable Kits	max 2	Configuration Rule	Selection constraint for -48VDC Power Supplies & Cable Kits: max 2
+Accessories & Infrastructure	-48VDC Power Supplies & Cable Kits	max 2	Configuration Rule	872033-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Accessories & Infrastructure	-48VDC Power Supplies & Cable Kits	max 2	Configuration Rule	872034-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Red Hat Enterprise Linux Server	no max	Configuration Rule	Selection constraint for Red Hat Enterprise Linux Server: no max
+Software & Licenses	Red Hat Enterprise Linux Server	no max	Configuration Rule	M6K35A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Red Hat Enterprise Linux Server	no max	Configuration Rule	M6K36A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cooling / Thermal	High Performance & Standard Fan Kits	max 6	Configuration Rule	Selection constraint for High Performance & Standard Fan Kits: max 6
+Power Supplies	Power Supply	required	Configuration Rule	Selection constraint for Power Supply: required
+Power Supplies	Power Supply	required	Configuration Rule	Model X - No Mixing of Power Supplies is allowed.  All selected Power Supplies must be of the same part number.  Minimum should be determined based on the Power Advisor Program.  (Minimum is always at least 2 - Power Advisor Program will  indicate scenarios in which more than 2 is required)
+Power Supplies	Power Supply	required	Configuration Rule	798095-B21 conditional visibility: portal selector activation required (Model X - No Mixing of Power Supplies is allowed.  All selected Power Supplies must be of the same part number.  Minimum should be determined based on the Power Advisor Program.  (Minimum is always at least 2 - Power Advisor Program will  indicate scenarios in which more than 2 is required)); PORTAL_CONDITIONAL
+Power Supplies	Power Supply	required	Configuration Rule	798096-B21 conditional visibility: portal selector activation required (Model X - No Mixing of Power Supplies is allowed.  All selected Power Supplies must be of the same part number.  Minimum should be determined based on the Power Advisor Program.  (Minimum is always at least 2 - Power Advisor Program will  indicate scenarios in which more than 2 is required)); PORTAL_CONDITIONAL
+Power Supplies	Power Supply	required	Configuration Rule	876929-B21 conditional visibility: portal selector activation required (Model X - No Mixing of Power Supplies is allowed.  All selected Power Supplies must be of the same part number.  Minimum should be determined based on the Power Advisor Program.  (Minimum is always at least 2 - Power Advisor Program will  indicate scenarios in which more than 2 is required)); PORTAL_CONDITIONAL
+Power Supplies	Power Supply	required	Configuration Rule	P27749-B21 conditional visibility: portal selector activation required (Model X - No Mixing of Power Supplies is allowed.  All selected Power Supplies must be of the same part number.  Minimum should be determined based on the Power Advisor Program.  (Minimum is always at least 2 - Power Advisor Program will  indicate scenarios in which more than 2 is required)); PORTAL_CONDITIONAL
+Power Supplies	Power Supply	required	Configuration Rule	P27750-B21 conditional visibility: portal selector activation required (Model X - No Mixing of Power Supplies is allowed.  All selected Power Supplies must be of the same part number.  Minimum should be determined based on the Power Advisor Program.  (Minimum is always at least 2 - Power Advisor Program will  indicate scenarios in which more than 2 is required)); PORTAL_CONDITIONAL
+Power Supplies	Power Supply	required	Configuration Rule	798099-B21 conditional visibility: portal selector activation required (Model X - No Mixing of Power Supplies is allowed.  All selected Power Supplies must be of the same part number.  Minimum should be determined based on the Power Advisor Program.  (Minimum is always at least 2 - Power Advisor Program will  indicate scenarios in which more than 2 is required)); PORTAL_CONDITIONAL
+Power Supplies	Power Supply	required	Configuration Rule	798100-B21 conditional visibility: portal selector activation required (Model X - No Mixing of Power Supplies is allowed.  All selected Power Supplies must be of the same part number.  Minimum should be determined based on the Power Advisor Program.  (Minimum is always at least 2 - Power Advisor Program will  indicate scenarios in which more than 2 is required)); PORTAL_CONDITIONAL
+Power Supplies	Power Supply	required	Configuration Rule	798101-B21 conditional visibility: portal selector activation required (Model X - No Mixing of Power Supplies is allowed.  All selected Power Supplies must be of the same part number.  Minimum should be determined based on the Power Advisor Program.  (Minimum is always at least 2 - Power Advisor Program will  indicate scenarios in which more than 2 is required)); PORTAL_CONDITIONAL
+Power Supplies	Power Supply	required	Configuration Rule	798102-B21 conditional visibility: portal selector activation required (Model X - No Mixing of Power Supplies is allowed.  All selected Power Supplies must be of the same part number.  Minimum should be determined based on the Power Advisor Program.  (Minimum is always at least 2 - Power Advisor Program will  indicate scenarios in which more than 2 is required)); PORTAL_CONDITIONAL
+Power Supplies	Power Supply	required	Configuration Rule	798342-B21 conditional visibility: portal selector activation required (Model X - No Mixing of Power Supplies is allowed.  All selected Power Supplies must be of the same part number.  Minimum should be determined based on the Power Advisor Program.  (Minimum is always at least 2 - Power Advisor Program will  indicate scenarios in which more than 2 is required)); PORTAL_CONDITIONAL
+Power Supplies	Power Supply	required	Configuration Rule	798349-B21 conditional visibility: portal selector activation required (Model X - No Mixing of Power Supplies is allowed.  All selected Power Supplies must be of the same part number.  Minimum should be determined based on the Power Advisor Program.  (Minimum is always at least 2 - Power Advisor Program will  indicate scenarios in which more than 2 is required)); PORTAL_CONDITIONAL
+Networking	PCIe Networking Adapters	max 6	Configuration Rule	Selection constraint for PCIe Networking Adapters: max 6
+Cables & Enablement Kits	Power Cords	max 12	Configuration Rule	Selection constraint for Power Cords: max 12
+Cables & Enablement Kits	Power Cords	max 12	Configuration Rule	AF558A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords	max 12	Configuration Rule	AF559A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords	max 12	Configuration Rule	AF560A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords	max 12	Configuration Rule	AF561A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords	max 12	Configuration Rule	AF562A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords	max 12	Configuration Rule	AF564A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords	max 12	Configuration Rule	AF565A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords	max 12	Configuration Rule	AF566A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords	max 12	Configuration Rule	AF567A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords	max 12	Configuration Rule	AF569A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords	max 12	Configuration Rule	AF570A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords	max 12	Configuration Rule	AF572A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords	max 12	Configuration Rule	AF573A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords	max 12	Configuration Rule	AF591A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords	max 12	Configuration Rule	E7804A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords	max 12	Configuration Rule	P9B76A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords	max 12	Configuration Rule	R1C65A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords	max 12	Configuration Rule	TK738A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords	max 12	Configuration Rule	TK739A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords	max 12	Configuration Rule	TK740A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords	max 12	Configuration Rule	TK741A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords	max 12	Configuration Rule	TK742A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords	max 12	Configuration Rule	TK743A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords	max 12	Configuration Rule	TK744A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords	max 12	Configuration Rule	TK745A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords & Jumper Cables		Configuration Rule	This cable kit support with only the following power supplies
+Cables & Enablement Kits	Power Cords & Jumper Cables		Configuration Rule	J6X00A conditional visibility: portal selector activation required (This cable kit support with only the following power supplies); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords & Jumper Cables		Configuration Rule	P9B75A conditional visibility: portal selector activation required (This cable kit support with only the following power supplies); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords & Jumper Cables		Configuration Rule	J6W98A conditional visibility: portal selector activation required (This cable kit support with only the following power supplies); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords & Jumper Cables		Configuration Rule	J6W99A conditional visibility: portal selector activation required (This cable kit support with only the following power supplies); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords & Jumper Cables		Configuration Rule	J6X01A conditional visibility: portal selector activation required (This cable kit support with only the following power supplies); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords & Jumper Cables		Configuration Rule	J6X02A conditional visibility: portal selector activation required (This cable kit support with only the following power supplies); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords & Jumper Cables		Configuration Rule	J6X03A conditional visibility: portal selector activation required (This cable kit support with only the following power supplies); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords & Jumper Cables		Configuration Rule	P9B77A conditional visibility: portal selector activation required (This cable kit support with only the following power supplies); PORTAL_CONDITIONAL
+Power Supplies	-48VDC Power Supplies & Cable Kits	min 1, max 2	Configuration Rule	This option cable kit contains 6 six power cords and support only with the following power supplies
+Power Supplies	-48VDC Power Supplies & Cable Kits	min 1, max 2	Configuration Rule	872035-B21 conditional visibility: portal selector activation required (This option cable kit contains 6 six power cords and support only with the following power supplies); PORTAL_CONDITIONAL
+Accessories & Infrastructure	System Options	optional	Configuration Rule	Selection constraint for System Options: optional
+Accessories & Infrastructure	System Options	optional	Configuration Rule	638212-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Accessories & Infrastructure	System Options	optional	Configuration Rule	672097-373 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Accessories & Infrastructure	System Options	optional	Configuration Rule	672097-113 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Accessories & Infrastructure	System Options	optional	Configuration Rule	631364-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Accessories & Infrastructure	System Options	optional	Configuration Rule	672097-223 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Accessories & Infrastructure	System Options	optional	Configuration Rule	631358-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Accessories & Infrastructure	System Options	optional	Configuration Rule	631348-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Accessories & Infrastructure	System Options	optional	Configuration Rule	672097-353 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Accessories & Infrastructure	System Options	optional	Configuration Rule	631346-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Accessories & Infrastructure	System Options	optional	Configuration Rule	672097-D63 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Accessories & Infrastructure	System Options	optional	Configuration Rule	672097-B33 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Accessories & Infrastructure	System Options	optional	Configuration Rule	631362-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Accessories & Infrastructure	System Options	optional	Configuration Rule	631360-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Accessories & Infrastructure	System Options	optional	Configuration Rule	672097-KD3 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Accessories & Infrastructure	System Options	optional	Configuration Rule	672097-133 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Accessories & Infrastructure	System Options	optional	Configuration Rule	638214-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Accessories & Infrastructure	System Options	optional	Configuration Rule	672097-103 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Accessories & Infrastructure	System Options	optional	Configuration Rule	672097-143 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Accessories & Infrastructure	System Options	optional	Configuration Rule	631344-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Accessories & Infrastructure	System Options	optional	Configuration Rule	631341-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	Selection constraint for Hard Disk Drives (SAS/SATA): max 24
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	L4Z37A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	G7M27A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	G7M28A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	G7M29A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	G7M30A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	JP408A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	F5Z52A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	Selection constraint for Non Preinstalled Operating System: no max
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R6J29AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1B00AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1B01AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1B04AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1B05AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1B02AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1B03AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1A94AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1A95AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1A98AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1A99AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1A96AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1A97AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1Z74AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1Z80AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1Z75AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1Z81AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1Z78AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1Z84AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1Z79AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1Z85AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1Z76AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1Z82AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1Z77AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1Z83AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1B10AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1B11AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1B08AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1B09AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1B06AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1B07AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1Z86AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1Z87AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1Z90AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1Z91AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1Z88AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1Z89AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1B18AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1B16AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1B19AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1B17AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1Z96AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1Z98AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1Z97AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1Z99AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1B15AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1B13AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1B14AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1B12AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R6J34AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R6J35AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1Z92AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R1Z94AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R6J37AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R6J38AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	Non Preinstalled Operating System	no max	Configuration Rule	R6J39AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	Q5U42AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	L4Z37AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	P9V17AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	P9V16AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	P9V20AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	G7M27AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	G7M28AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	P9A41AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	P9A42AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	P9V13AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	P9V12AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	P9V18AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	G7M31AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	G7M29AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	G7M30AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	P9A45AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	P9A43AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	P9A44AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	P9V15AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	P9V14AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	P9V19AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	JP408AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	Q5U39AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	Q5U41AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	Q5U44AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	Q5U43AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	Q5U40AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	F5Z52AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	Configuration Rule	P9P38AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Support Services	Server Management & Operating System Licenses	max 1	Configuration Rule	Selection constraint for Server Management & Operating System Licenses: max 1
+Support Services	Server Management & Operating System Licenses	max 1	Configuration Rule	Q8K91A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Support Services	Server Management & Operating System Licenses	max 1	Configuration Rule	Q8K91AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Support Services	Server Management & Operating System Licenses	max 1	Configuration Rule	Q8K92A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Support Services	Server Management & Operating System Licenses	max 1	Configuration Rule	Q8K92AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Support Services	Server Management & Operating System Licenses	max 1	Configuration Rule	Q8K93A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Support Services	Server Management & Operating System Licenses	max 1	Configuration Rule	Q8K94A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Support Services	Manufacturing Services	max 1	Configuration Rule	Selection constraint for Manufacturing Services: max 1
+Support Services	Compute	max 12	Configuration Rule	Selection constraint for Compute: max 12
+Compute and Storage	Configuration Rules	Non-TAA Model cannot support TAA products.	Learned Feedback Rule	[MUTUAL_EXCLUSION] Non-TAA Model cannot support TAA products.
+Compute and Storage	Configuration Rules	CTO Compute and Storage Modules can only be configured in a CTO Frame.	Learned Feedback Rule	[MUTUAL_EXCLUSION] CTO Compute and Storage Modules can only be configured in a CTO Frame.
+Management Hardware	Configuration Rules	Mixing Composer and Composer 2 is not allowed	Learned Feedback Rule	[MUTUAL_EXCLUSION] Mixing Composer and Composer 2 is not allowed
+Management Hardware	Configuration Rules	Non-TAA Model cannot support TAA products.	Learned Feedback Rule	[MUTUAL_EXCLUSION] Non-TAA Model cannot support TAA products.
+Management Hardware	Configuration Rules	If HPE Synergy 4-port Frame Link Module is included in the 12000 Frame, Synergy Image Streamer on Synergy Composer cannot be selected.	Learned Feedback Rule	[MUTUAL_EXCLUSION] If HPE Synergy 4-port Frame Link Module is included in the 12000 Frame, Synergy Image Streamer on Synergy Composer cannot be selected.
+Management Hardware	Configuration Rules	Max quantity of product limited by space available.	Learned Feedback Rule	[MUTUAL_EXCLUSION] Max quantity of product limited by space available.
+Management Hardware	Configuration Rules	Mixing of Composer 2 and Composer 2 Plus modules is not allowed.	Learned Feedback Rule	[MUTUAL_EXCLUSION] Mixing of Composer 2 and Composer 2 Plus modules is not allowed.
+Management Hardware	Configuration Rules	Either Frame link Module or 4p Frame Link Module can be selected. Mixing is not allowed.	Learned Feedback Rule	[MUTUAL_EXCLUSION] Either Frame link Module or 4p Frame Link Module can be selected. Mixing is not allowed.
+Interconnects	Configuration Rules	Non-TAA Model cannot support TAA products.	Learned Feedback Rule	[MUTUAL_EXCLUSION] Non-TAA Model cannot support TAA products.
+Interconnects	Configuration Rules	Product is obsolete	Learned Feedback Rule	[MUTUAL_EXCLUSION] Product is obsolete
+Interconnects	Configuration Rules	Product not supported	Learned Feedback Rule	[MUTUAL_EXCLUSION] Product not supported
+Interconnects	Configuration Rules	Cannot mix together in the same Synergy 12000 Frame	Learned Feedback Rule	[MUTUAL_EXCLUSION] Cannot mix together in the same Synergy 12000 Frame
+Power	Configuration Rules	Model X - No Mixing of Power Supplies is allowed. All selected Power Supplies must be of the same part number. Minimum should be determined based on the Power Advisor Program. (Minimum is always at least 2 - Power Advisor Program will indicate scenarios in which more than 2 is required)	Learned Feedback Rule	[MUTUAL_EXCLUSION] Model X - No Mixing of Power Supplies is allowed. All selected Power Supplies must be of the same part number. Minimum should be determined based on the Power Advisor Program. (Minimum is always at least 2 - Power Advisor Program will indicate scenarios in which more than 2 is required)
+Power	Configuration Rules	This cable kit support with only the following power supplies	Learned Feedback Rule	[MUTUAL_EXCLUSION] This cable kit support with only the following power supplies
+Power	Configuration Rules	This option cable kit contains 6 six power cords and support only with the following power supplies	Learned Feedback Rule	[MUTUAL_EXCLUSION] This option cable kit contains 6 six power cords and support only with the following power supplies
+Operating Environment	Red Hat Enterprise Linux Server		Minimum Requirement	Minimum 1 of any of the OS SKUs must be selected.
+Operating Environment	Red Hat Enterprise Linux Server		Recommendation	It is recommended to select an Operating System (Red Hat Enterprise Linux Server, Non Preinstalled Operating System)

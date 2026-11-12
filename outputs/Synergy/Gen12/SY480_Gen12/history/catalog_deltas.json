@@ -197,8 +197,7 @@
     "deltaId": "LEARN_SYNERGY_SUPPORT_PRICING_UPDATE_20261102",
     "ruleType": "SUPPORT_PRICING_UPDATE",
     "affectedSku": "HU4B2A30BT7",
-    "secondarySku": "HU4B2A3 WJN, HU4B2A3 Z1R",
-    "rawMessage": "Synergy stack 3Y Tech Care Basic support rates adjusted by ~5%: Synergy 12000 Frame Support (HU4B2A3 WJN) updated to $779.00 (+$37.00); VC SE 100Gb F32 Module Support (HU4B2A3 Z1R) updated to $813.00 (+$39.00/unit); SY480 Gen12 Compute Node Support (HU4B2A30BT7) updated to $3,497.00 (+$167.00/node). Overall 12-node solution services list price adjusted from $62,898.00 to $65,017.00 USD (+$2,119.00).",
+    "rawMessage": "SY480 Gen12 Compute Node 3Y Tech Care Basic Support (HU4B2A30BT7) updated to $3,497.00 (+$167.00/node).",
     "scopeTaxonomy": "CHASSIS_SPECIFIC",
     "governanceStatus": "ACTIVE",
     "evidenceType": "PORTAL_PRICING_OBSERVATION",
@@ -210,13 +209,13 @@
     "family": "Synergy",
     "generation": "Gen12",
     "pillar": "SERVER",
-    "ruleUpdate": "Synergy stack 3Y Tech Care Basic support rates adjusted by ~5%: Synergy 12000 Frame Support (HU4B2A3 WJN) updated to $779.00 (+$37.00); VC SE 100Gb F32 Module Support (HU4B2A3 Z1R) updated to $813.00 (+$39.00/unit); SY480 Gen12 Compute Node Support (HU4B2A30BT7) updated to $3,497.00 (+$167.00/node). Overall 12-node solution services list price adjusted from $62,898.00 to $65,017.00 USD (+$2,119.00)."
+    "ruleUpdate": "SY480 Gen12 Compute Node 3Y Tech Care Basic Support (HU4B2A30BT7) updated to $3,497.00 (+$167.00/node)."
   },
   {
     "deltaId": "LEARN_SYNERGY_LEAD_TIME_AND_VALIDATION_20261102",
     "ruleType": "LEAD_TIME_AND_VALIDATION",
     "affectedSku": "P80321-B21",
-    "rawMessage": "HPE 960GB NVMe M.2 2280 PE9010 SSD (P80321-B21) factory lead time extended from 11 days to 30 days (+19 days). Synergy 12000 CTO Frame (P51174-B21) lead time is 13 days, and CLIC validation warnings have cleared to clean/pass.",
+    "rawMessage": "HPE 960GB NVMe M.2 2280 PE9010 SSD (P80321-B21) factory lead time extended from 11 days to 30 days (+19 days).",
     "scopeTaxonomy": "CHASSIS_SPECIFIC",
     "governanceStatus": "ACTIVE",
     "evidenceType": "PORTAL_METADATA_OBSERVATION",
@@ -228,6 +227,6 @@
     "family": "Synergy",
     "generation": "Gen12",
     "pillar": "SERVER",
-    "ruleUpdate": "HPE 960GB NVMe M.2 2280 PE9010 SSD (P80321-B21) factory lead time extended from 11 days to 30 days (+19 days). Synergy 12000 CTO Frame (P51174-B21) lead time is 13 days, and CLIC validation warnings have cleared to clean/pass."
+    "ruleUpdate": "HPE 960GB NVMe M.2 2280 PE9010 SSD (P80321-B21) factory lead time extended from 11 days to 30 days (+19 days)."
   }
 ]

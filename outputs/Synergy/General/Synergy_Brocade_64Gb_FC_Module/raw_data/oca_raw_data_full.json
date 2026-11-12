@@ -1,0 +1,1564 @@
+{
+  "timestamp": "2026-11-12T03:22:14.338Z",
+  "pageTitle": "External OCA  | Hewlett Packard Enterprise",
+  "url": "https://oca.ext.hpe.com/oca/OCAInternalLogin",
+  "nodeText": "Brocade 64Gb Fibre Channel Module for HPE Synergy [P77653-B21]",
+  "qsLink": "https://www.hpe.com/psnow/downloadDoc/HPE%20Brocade%2064Gb%20Fibre%20Channel%20Module%20for%20HPE%20Synergy%20QuickSpecs-a50009254enw.pdf?contentDisposition=attachment&deepLink=&form=false&hf=regular&id=a50009254enw.pdf&isFutureVersion=true&isLinearized=false&originalObjectName=&prelaunchSection=&preview=false&print=&r=&section=&softrollSection=&ver=2",
+  "selectedBaseSku": "P77653-B21",
+  "baseSku": "P77653-B21",
+  "ownerConfiguration": "Brocade 64Gb Fibre Channel Module for HPE Synergy #1",
+  "parentConfiguration": "Synergy 12000 Frame #1",
+  "parentBaseSku": "P51174-B21",
+  "componentServiceEvidence": {
+    "scope": "OBSERVED_SELECTED_SERVICES_ONLY",
+    "owners": [
+      {
+        "owner": "C1E6737A03AC60CC7B398AB416B08497",
+        "support": "N/A",
+        "install": "N/A"
+      }
+    ],
+    "treeRows": 6,
+    "unexecuted": [
+      "alternative service types, terms and tiers",
+      "parent-level support changes"
+    ]
+  },
+  "unscopedServiceTables": [
+    {
+      "tableIndex": 0,
+      "tableId": "sui-components-tree",
+      "rowCount": 9,
+      "rows": [
+        [
+          "",
+          "Qty",
+          "Reactive support",
+          "Install",
+          "Device specific services"
+        ],
+        [
+          "Icon #1 - OCA Config 2\nIcon ID: I158316407-01EDT: 24 - 30 days",
+          "1",
+          "",
+          "",
+          ""
+        ],
+        [
+          "Synergy 12000 Frame #1\nP51174-B21CTO",
+          "1",
+          "HU4D5A5#WJN HPE 5Y Complete Care Addon Essential Service",
+          "N/A",
+          ""
+        ],
+        [
+          "HPE Virtual Connect SE 100Gb F32 Module for Synergy",
+          "",
+          "HU4D5A5#Z1R HPE 5Y Complete Care Addon Essential Service",
+          "N/A",
+          ""
+        ],
+        [
+          "Brocade 64Gb Fibre Channel Module for HPE Synergy",
+          "",
+          "N/A",
+          "N/A",
+          ""
+        ],
+        [
+          "HPE Virtual Connect SE 100Gb F32 Module for Synergy",
+          "",
+          "HU4D5A5#Z1R HPE 5Y Complete Care Addon Essential Service",
+          "N/A",
+          ""
+        ],
+        [
+          "HPE Synergy Composer2 Management Appliance",
+          "",
+          "HU4D5A5#Z1Q HPE 5Y Complete Care Addon Essential Service",
+          "N/A",
+          ""
+        ],
+        [
+          "HPE Synergy 12000 High Capacity Fan Kit",
+          "",
+          "HU4D5A5#699 HPE 5Y Complete Care Addon Essential Service",
+          "N/A",
+          ""
+        ],
+        [
+          "HPE 1800W-2200W Flex Slot Titanium Hot Plug Power Supply Kit",
+          "",
+          "HU4D5A5#699 HPE 5Y Complete Care Addon Essential Service",
+          "N/A",
+          ""
+        ]
+      ]
+    },
+    {
+      "tableIndex": 1,
+      "tableId": "",
+      "rowCount": 1,
+      "rows": [
+        [
+          "Description",
+          "Product Number",
+          "Quantity"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 2,
+      "tableId": "",
+      "rowCount": 1,
+      "rows": [
+        [
+          "Description",
+          "Product Number",
+          "Quantity"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 3,
+      "tableId": "",
+      "rowCount": 11,
+      "rows": [
+        [
+          "Description",
+          "Product Number",
+          "Quantity"
+        ],
+        [
+          "HPE 3PAR Onl Imp QuickStartup Rmt1 Svc",
+          "H0JD0A1",
+          ""
+        ],
+        [
+          "HPE NSS Improvement Unit of Service",
+          "H0JT1A1",
+          ""
+        ],
+        [
+          "HPE Zerto Virtual TAM 4yr 8x5 Remote SVC",
+          "H36NRA4",
+          ""
+        ],
+        [
+          "HPE Zerto Virtual TAM 5yr 8x5 Remote SVC",
+          "H36NRA5",
+          ""
+        ],
+        [
+          "HPE Zerto Health Check per Site SVC",
+          "H36NSA1",
+          ""
+        ],
+        [
+          "HPE Zerto Custom UoS SVC",
+          "H36NTA1",
+          ""
+        ],
+        [
+          "HPE Synergy First Frame Rmt Str SVC",
+          "H39VQA1#V0F",
+          ""
+        ],
+        [
+          "HPE Perf Analysis Comp Option1 Rmt1 SVC",
+          "H42ZHA1",
+          ""
+        ],
+        [
+          "HPE Perf Analysis Comp Option2 Rmt1 SVC",
+          "H42ZJA1",
+          ""
+        ],
+        [
+          "HPE Perf Analysis Comp Option3 Rmt1 SVC",
+          "H42ZKA1",
+          ""
+        ]
+      ]
+    },
+    {
+      "tableIndex": 4,
+      "tableId": "",
+      "rowCount": 11,
+      "rows": [
+        [
+          "Description",
+          "Product Number",
+          "Quantity"
+        ],
+        [
+          "HPE NSS Implementation Unit of Service",
+          "H0JT2A1",
+          ""
+        ],
+        [
+          "HPE Cray Team Day SVC",
+          "H29BRA1",
+          ""
+        ],
+        [
+          "HPE Storage Servers Install Hourly SVC",
+          "H29BSA1",
+          ""
+        ],
+        [
+          "HPE Zerto Quick Cloud Remote SVC",
+          "H36NLA1",
+          ""
+        ],
+        [
+          "HPE Zerto Quick Start Remote SVC",
+          "H36NMA1",
+          ""
+        ],
+        [
+          "HPE Zerto Quick Migration Remote SVC",
+          "H36NNA1",
+          ""
+        ],
+        [
+          "HPE Zerto Quick Advisor Remote SVC",
+          "H36NPA1",
+          ""
+        ],
+        [
+          "HPE Zerto Strutd TAM 1yr 12x5 Remote SVC",
+          "H36NQA1",
+          ""
+        ],
+        [
+          "HPE Zerto Strutd TAM 3yr 12x5 Remote SVC",
+          "H36NQA3",
+          ""
+        ],
+        [
+          "HPE Zerto Strutd TAM 4yr 12x5 Remote SVC",
+          "H36NQA4",
+          ""
+        ]
+      ]
+    },
+    {
+      "tableIndex": 5,
+      "tableId": "",
+      "rowCount": 11,
+      "rows": [
+        [
+          "Description",
+          "Product Number",
+          "Quantity"
+        ],
+        [
+          "HPE Data Migration Readiness Assess Svc",
+          "H0JD1A1",
+          ""
+        ],
+        [
+          "HPE Quickstart File Data Mig10TB SVC",
+          "H0JD7A1",
+          ""
+        ],
+        [
+          "HPE Energy Efficiency Analysis SVC",
+          "H1Y26A1#002",
+          ""
+        ],
+        [
+          "HPE Infra Condition and Cap Analysis SVC",
+          "H1Y26A1#003",
+          ""
+        ],
+        [
+          "HPE Container Adopt Ph2 Redht Onsite SVC",
+          "H30RYA1",
+          ""
+        ],
+        [
+          "HPE Container Adopt Ph1 Anths Onsite SVC",
+          "H30SDA1",
+          ""
+        ],
+        [
+          "HPE Container Adopt Ph2 Anths Rem SVC",
+          "H30SFA1",
+          ""
+        ],
+        [
+          "HPE Container Adopt Ph2 Anths Onsite SVC",
+          "H30SGA1",
+          ""
+        ],
+        [
+          "HPE Container Adopt Ph3 Anths Rem SVC",
+          "H30SHA1",
+          ""
+        ],
+        [
+          "HPE Container Adopt Ph3 Anths Onsite SVC",
+          "H30SJA1",
+          ""
+        ]
+      ]
+    },
+    {
+      "tableIndex": 6,
+      "tableId": "",
+      "rowCount": 1,
+      "rows": [
+        [
+          "Description",
+          "Product Number",
+          "Quantity"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 7,
+      "tableId": "",
+      "rowCount": 11,
+      "rows": [
+        [
+          "Description",
+          "Product Number",
+          "Quantity"
+        ],
+        [
+          "HPE Education - Learning Credits 1Yr SVC",
+          "H33XSA1",
+          ""
+        ],
+        [
+          "HPE Education - Learning Credits 2Yr SVC",
+          "H33XTA2",
+          ""
+        ],
+        [
+          "HPE Education - Learning Credits 3Yr SVC",
+          "H33XVA3",
+          ""
+        ],
+        [
+          "HPE Education - Learning Credits 4Yr SVC",
+          "H33XWA4",
+          ""
+        ],
+        [
+          "HPE Education - Learning Credits 5Yr SVC",
+          "H33XXA5",
+          ""
+        ],
+        [
+          "HPE Zerto Quick Upgrade Remote SVC",
+          "H36NVA1",
+          ""
+        ],
+        [
+          "HPE GPU on RHOCP Integrat SVC",
+          "H36XCA1#006",
+          ""
+        ],
+        [
+          "HPE Education 5 Day Remote SVC",
+          "H57GHA1",
+          ""
+        ],
+        [
+          "HPE Education 5 Day Onsite SVC",
+          "H57GJA1",
+          ""
+        ],
+        [
+          "HPE Education 1 Day Remote SVC",
+          "H57GKA1",
+          ""
+        ]
+      ]
+    },
+    {
+      "tableIndex": 8,
+      "tableId": "",
+      "rowCount": 11,
+      "rows": [
+        [
+          "Description",
+          "Product Number",
+          "Quantity"
+        ],
+        [
+          "HPE File Data Migration 100TB SVC",
+          "H0JD9A1",
+          ""
+        ],
+        [
+          "HPE Scality Integration Basic SVC",
+          "H1WU9A1",
+          ""
+        ],
+        [
+          "HPE Scality Integration Advanced SVC",
+          "H1WV0A1",
+          ""
+        ],
+        [
+          "HPE Risk Assessment 10 Functions SVC",
+          "H1XF9A1",
+          ""
+        ],
+        [
+          "HPE Business Imp Anlys 15 Process SVC",
+          "H1XG0A1",
+          ""
+        ],
+        [
+          "HPE AI Video Analytics Assessment SVC",
+          "H1XG7A1",
+          ""
+        ],
+        [
+          "HPE Energy Efficiency Analysis SVC",
+          "H1Y25A1#002",
+          ""
+        ],
+        [
+          "HPE Infra Condition and Cap Analysis SVC",
+          "H1Y25A1#003",
+          ""
+        ],
+        [
+          "HPE Remot NW Conf and IntHr BusHrs SVC",
+          "H2S79A1",
+          ""
+        ],
+        [
+          "HPE Onsite NW Conf and Int Bus Hrs SVC",
+          "H2S81A1",
+          ""
+        ]
+      ]
+    },
+    {
+      "tableIndex": 9,
+      "tableId": "",
+      "rowCount": 11,
+      "rows": [
+        [
+          "Description",
+          "Product Number",
+          "Quantity"
+        ],
+        [
+          "HPE Cray Custom Operations SVC",
+          "H29BQA1",
+          ""
+        ],
+        [
+          "HPE Container Adopt Ph3 Redht Onsite SVC",
+          "H30SBA1",
+          ""
+        ],
+        [
+          "HPE Container Adopt Ph1 Anths Rem SVC",
+          "H30SCA1",
+          ""
+        ],
+        [
+          "HPE Container Adopt Ph1 Rnchr Onsite SVC",
+          "H30SLA1",
+          ""
+        ],
+        [
+          "HPE Container Adopt Ph2 Rnchr Rem SVC",
+          "H30SMA1",
+          ""
+        ],
+        [
+          "HPE Container Adopt Ph2 Rnchr Onsite SVC",
+          "H30SNA1",
+          ""
+        ],
+        [
+          "HPE Zerto Virtual TAM 3yr 8x5 Remote SVC",
+          "H36NRA3",
+          ""
+        ],
+        [
+          "HPE Zerto Virtual TAM 1mo 8x5 Remote SVC",
+          "H36PBA1",
+          ""
+        ],
+        [
+          "HPE Zerto Virtual TAM 3mo 8x5 Remote SVC",
+          "H36PCA1",
+          ""
+        ],
+        [
+          "HPE Zerto Virtual TAM 6mo 8x5 Remote SVC",
+          "H36PDA1",
+          ""
+        ]
+      ]
+    },
+    {
+      "tableIndex": 10,
+      "tableId": "",
+      "rowCount": 2,
+      "rows": [
+        [
+          "Description",
+          "Product Number",
+          "Quantity"
+        ],
+        [
+          "HPE Private Cloud AI with X10000 St SVC",
+          "HA124A1#V5K",
+          ""
+        ]
+      ]
+    },
+    {
+      "tableIndex": 11,
+      "tableId": "",
+      "rowCount": 7,
+      "rows": [
+        [
+          "Description",
+          "Product Number",
+          "Quantity"
+        ],
+        [
+          "HPE Perf Analysis SAP Option2 Rmt1 SVC",
+          "H42ZQA1",
+          ""
+        ],
+        [
+          "HPE Perf Analysis SAP Option3 Rmt1 SVC",
+          "H42ZRA1",
+          ""
+        ],
+        [
+          "HPE Priv Cloud AI Deployment SVC",
+          "H43BCA1",
+          ""
+        ],
+        [
+          "HPE Data Sanitization HPC T1 NSH SVC",
+          "H44MDA1",
+          ""
+        ],
+        [
+          "HPE Compute Firmware Onsite SVC",
+          "H44NJA1",
+          ""
+        ],
+        [
+          "HPE Synergy Ecosystem Health Review SVC",
+          "HU7D2A1",
+          ""
+        ]
+      ]
+    },
+    {
+      "tableIndex": 12,
+      "tableId": "",
+      "rowCount": 11,
+      "rows": [
+        [
+          "Description",
+          "Product Number",
+          "Quantity"
+        ],
+        [
+          "HPE 1Y Service Credits Qty 10 SVC",
+          "H0JD4A1#WFH",
+          ""
+        ],
+        [
+          "HPE 1Y Service Credits Qty 10 SVC",
+          "H0JD4A1#WFK",
+          ""
+        ],
+        [
+          "HPE 1Y Service Credits Qty 10 SVC",
+          "H0JD4A1#WFM",
+          ""
+        ],
+        [
+          "HPE 1Y Service Credits Qty 10 SVC",
+          "H0JD4A1#Y65",
+          ""
+        ],
+        [
+          "HPE 1Y Service Credits Qty 10 SVC",
+          "H0JD4A1#Y6B",
+          ""
+        ],
+        [
+          "HPE 1Y Service Credits Qty 10 SVC",
+          "H0JD4A1008E",
+          ""
+        ],
+        [
+          "HPE 1Y Service Credits Qty 10 SVC",
+          "H0JD4A10BK5",
+          ""
+        ],
+        [
+          "HPE 3Y Service Credits Qty 30 SVC",
+          "H0JD4A3#WFH",
+          ""
+        ],
+        [
+          "HPE 3Y Service Credits Qty 30 SVC",
+          "H0JD4A3#WFK",
+          ""
+        ],
+        [
+          "HPE 3Y Service Credits Qty 30 SVC",
+          "H0JD4A3#WFM",
+          ""
+        ]
+      ]
+    },
+    {
+      "tableIndex": 13,
+      "tableId": "",
+      "rowCount": 11,
+      "rows": [
+        [
+          "Description",
+          "Product Number",
+          "Quantity"
+        ],
+        [
+          "HPE 3Y CC SB ATS Compute Base SVC",
+          "H39DJA3#Y35",
+          ""
+        ],
+        [
+          "HPE 4Y CC SB ATS Compute Base SVC",
+          "H39DJA4#Y35",
+          ""
+        ],
+        [
+          "HPE 5Y CC SB ATS Compute Base SVC",
+          "H39DJA5#Y35",
+          ""
+        ],
+        [
+          "HPE 3Y CC SB ATS Compute Ext SVC",
+          "H39DKA3#Y35",
+          ""
+        ],
+        [
+          "HPE 4Y CC SB ATS Compute Ext SVC",
+          "H39DKA4#Y35",
+          ""
+        ],
+        [
+          "HPE 5Y CC SB ATS Compute Ext SVC",
+          "H39DKA5#Y35",
+          ""
+        ],
+        [
+          "HPE 3Y CC SB ATS Storage Base SVC",
+          "H39DLA3#Y36",
+          ""
+        ],
+        [
+          "HPE 4Y CC SB ATS Storage Base SVC",
+          "H39DLA4#Y36",
+          ""
+        ],
+        [
+          "HPE 5Y CC SB ATS Storage Base SVC",
+          "H39DLA5#Y36",
+          ""
+        ],
+        [
+          "HPE 3Y CC SB ATS Storage Ext SVC",
+          "H39DMA3#Y36",
+          ""
+        ]
+      ]
+    },
+    {
+      "tableIndex": 14,
+      "tableId": "",
+      "rowCount": 7,
+      "rows": [
+        [
+          "Description",
+          "Product Number",
+          "Quantity"
+        ],
+        [
+          "HPE 3Y CC SB Expert Support SAP HANA SVC",
+          "H40CSA3",
+          ""
+        ],
+        [
+          "HPE 4Y CC SB Expert Support SAP HANA SVC",
+          "H40CSA4",
+          ""
+        ],
+        [
+          "HPE 5Y CC SB Expert Support SAP HANA SVC",
+          "H40CSA5",
+          ""
+        ],
+        [
+          "HPE 3Y CC SB Perform Optim SAP SVC",
+          "HY0W3A3#Z5K",
+          ""
+        ],
+        [
+          "HPE 4Y CC SB Perform Optim SAP SVC",
+          "HY0W3A4#Z5K",
+          ""
+        ],
+        [
+          "HPE 5Y CC SB Perform Optim SAP SVC",
+          "HY0W3A5#Z5K",
+          ""
+        ]
+      ]
+    }
+  ],
+  "solutionDomain": "NETWORKING",
+  "observedSelectors": [
+    {
+      "selector": "#extended_overview_menu",
+      "value": "EXPANDED"
+    },
+    {
+      "selector": "parentOption",
+      "value": {
+        "sku": "P77653-B21",
+        "category": "bladeEnclosureInterconnects",
+        "quantity": 1
+      }
+    },
+    {
+      "selector": "ambientTemperature",
+      "value": "DEFAULT_AND_SWEEP_RESTORED"
+    }
+  ],
+  "finalSelectorsRestored": true,
+  "scrollHeight": 827,
+  "textLength": 8514,
+  "textExtractionMode": "FULL_BODY_TEXT",
+  "outsideTableNotesCaptured": true,
+  "fullText": "Home\nConfigure\n❯\nOCA Config 2\nAction-Required\nConfig Status\nProcess Control\nUCID\nTempUCID\nSolution Type\nIcon Separation\nEDT\n27 - 34 days\nQuote ID\nNot quoted\nLock Type\nUnlocked\nQuotation Mode\nBuy\nIQ with aaS Compatible\nSolution List Price\n⇄\nUSD 530,352.00\nAdd Opportunity\nQuote\nSave\nExport\nAdd Product\nAuto Updates\nSearch Icon\nNew Delegation\nDesign Solution / Add Product\nPrice\nComplete Quote\nOCA Config 2\n>\nIcon #1 - OCA Config 2\n>\nSynergy 12000 Frame #1\n>\nBrocade 64Gb Fibre Channel Module for HPE Synergy #1\nSummary\nComponents\nMenu\nPower\nBOM\nCustomer Intent\nServices\nWhere Used\nCollapse All\nExpand All\nExpand Subsections\nUndo Selection\nRemove Defaults\nView HPE Recommended only\nBrocade 64Gb Fibre Channel Module for HPE Synergy [P77653-B21]\nCables\nSoftware\nAd-Hoc\n Cables\n\n\nOM3 LC-LC type connectors cable (max 8)\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tHPE Recommended \tEst. Lead Time \tStart\tDiscontinued\tObsolete\n  AJ833A\tHPE LC to LC Multi-mode OM3 2-Fiber 0.5m 1-Pack Fiber Optic Cable\t\n0\n\t65.00\tNA\t\n\t3\t08/10/2017\t11/30/2028\t12/31/2028\n  AJ836A\tHPE LC to LC Multi-mode OM3 2-Fiber 5.0m 1-Pack Fiber Optic Cable\t\n0\n\t115.00\tNA\t\n\t3\t08/10/2017\t11/30/2028\t12/31/2028\n  AJ838A\tHPE LC to LC Multi-mode OM3 2-Fiber 30.0m 1-Pack Fiber Optic Cable\t\n0\n\t208.00\tNA\t\n\t3\t08/10/2017\t11/30/2028\t12/31/2028\n  AJ839A\tHPE LC to LC Multi-mode OM3 2-Fiber 50.0m 1-Pack Fiber Optic Cable\t\n0\n\t253.00\tNA\t\n\t3\t08/10/2017\t11/30/2028\t12/31/2028\n  AJ834A\tHPE LC to LC Multi-mode OM3 2-Fiber 1.0m 1-Pack Fiber Optic Cable\t\n0\n\t70.00\tNA\t\n\t4\t08/10/2017\t11/30/2028\t12/31/2028\n  AJ835A\tHPE LC to LC Multi-mode OM3 2-Fiber 2.0m 1-Pack Fiber Optic Cable\t\n0\n\t95.00\tNA\t\n\t4\t08/10/2017\t11/30/2028\t12/31/2028\n  AJ837A\tHPE LC to LC Multi-mode OM3 2-Fiber 15.0m 1-Pack Fiber Optic Cable\t\n0\n\t162.00\tNA\t\n\t4\t08/10/2017\t11/30/2028\t12/31/2028\n\n\nPremier Flex OM4 LC-LC (max 8)\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tHPE Recommended \tEst. Lead Time \tStart\tDiscontinued\tObsolete\n  QK732A\tHPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 1m Cable\t\n0\n\t115.00\tNA\t\n\t3\t08/10/2017\t11/30/2028\t12/31/2028\n  QK737A\tHPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 50m Cable\t\n0\n\t415.00\tNA\t\n\t3\t08/10/2017\t11/30/2028\t12/31/2028\n  QK733A\tHPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 2m Cable\t\n0\n\t130.00\tNA\t\n\t4\t08/10/2017\t11/30/2028\t12/31/2028\n  QK734A\tHPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 5m Cable\t\n2\n\t147.00\t294.00\t\n\t14\t08/10/2017\t11/30/2028\t12/31/2028\n  QK735A\tHPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 15m Cable\t\n0\n\t195.00\tNA\t\n\t8\t08/10/2017\t11/30/2028\t12/31/2028\n  QK736A\tHPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 30m Cable\t\n0\n\t239.00\tNA\t\n\t4\t08/10/2017\t11/30/2028\t12/31/2028\n\n\nQSFP to 4xLC Breakout (max 4)\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tEst. Lead Time \tStart\tDiscontinued\tObsolete\n  K2Q46A\tHPE Premier Flex MPO8 to 4xLC Multi-mode OM4 5m Fiber Cable\t\n0\n\t800.00\tNA\t14\t08/10/2017\t11/30/2028\t12/31/2028\n  K2Q47A\tHPE Premier Flex MPO8 to 4xLC Multi-mode OM4 15m Fiber Cable\t\n0\n\t1,350.00\tNA\t4\t08/10/2017\t11/30/2028\t12/31/2028\n\n\nMPO/MPO Multi-mode (max 4)\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tHPE Recommended \tEst. Lead Time \tStart\tDiscontinued\tObsolete\n  H6Z30A\tHPE Premier Flex MPO12/MPO12 Multi-mode OM4 100m Fiber Cable\t\n0\n\t3,422.00\tNA\t\n\t3\t08/10/2017\t11/30/2028\t12/31/2028\n  QK731A\tHPE Premier Flex MPO12/MPO12 Multi-mode OM4 50m Fiber Cable\t\n0\n\t2,000.00\tNA\t\n\t3\t08/10/2017\t11/30/2028\t12/31/2028\n  QK729A\tHPE Premier Flex MPO12/MPO12 Multi-mode OM4 10m Fiber Cable\t\n0\n\t719.00\tNA\t\n\t4\t08/10/2017\t11/30/2028\t12/31/2028\n\n\n Software\n\n\nSoftware for Brocade Switches (no max)\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tEst. Lead Time \tStart\tDiscontinued\tObsolete\n  Q2E58AAE\tBrocade 32Gb Fibre Channel SAN Switch Module 8-port Upgrade E-LTU for HPE Synergy\t\n0\n\t8,586.00\tNA\t\t04/02/2019\t10/31/2029\t11/30/2029\n  Q2E60AAE\tBrocade 32Gb Fibre Channel SAN Switch Module Power Pack+ E-LTU for HPE Synergy\t\n0\n\t15,374.00\tNA\t\t04/02/2019\t10/31/2029\t11/30/2029\n\n\nSANnav - New License (no max)\n Select one of these SANnav licenses if this is a net new licenses. If this is a renewal of a current SANnav licenses, select one of the options from the SANnav - Renewal License section.\nNote changes to the trial license availability:\n- 90-day trial license was available with all SANnav releases through v2.2.0\n- 30-day trial license available with SANnav v2.2.1 and v2.2.2\n- No trial license available with SANnav v2.3.0\n(SANnav - New License)\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tEst. Lead Time \tStart\tDiscontinued\tObsolete\n  R3P47AAE\tHPE SANnav Global View 1yr E-LTU\t\n0\n\t135,058.00\tNA\t\t09/03/2019\t08/31/2031\t10/31/2031\n  R3P50AAE\tHPE SANnav Global View 3yr E-LTU\t\n0\n\t324,137.00\tNA\t\t09/03/2019\t08/31/2031\t10/31/2031\n  R4P31AAE\tHPE SANnav Global View 5yr E-LTU\t\n0\n\t540,233.00\tNA\t\t02/03/2020\t08/31/2031\t10/31/2031\n  R3P45AAE\tHPE SANnav Management Portal Base 1yr E-LTU\t\n0\n\t36,018.00\tNA\t\t09/03/2019\t08/31/2031\t10/31/2031\n  R3P48AAE\tHPE SANnav Management Portal Base 3yr E-LTU\t\n0\n\t86,443.00\tNA\t\t09/03/2019\t08/31/2031\t10/31/2031\n  R4P29AAE\tHPE SANnav Management Portal Base 5yr E-LTU\t\n0\n\t144,076.00\tNA\t\t02/03/2020\t08/31/2031\t10/31/2031\n  R3P46AAE\tHPE SANnav Management Portal Enterprise 1yr E-LTU\t\n0\n\t90,047.00\tNA\t\t09/03/2019\t08/31/2031\t10/31/2031\n  R3P49AAE\tHPE SANnav Management Portal Enterprise 3yr E-LTU\t\n0\n\t216,111.00\tNA\t\t09/03/2019\t08/31/2031\t10/31/2031\n  R4P30AAE\tHPE SANnav Management Portal Enterprise 5yr E-LTU\t\n0\n\t360,192.00\tNA\t\t02/03/2020\t08/31/2031\t10/31/2031\n\n\nSANnav - Renewal License (no max)\n Select one of these SANnav licenses only if this is a renewal of a current SANnav licenses otherwise order a net new license from the SANnav - New License section.\nNote changes to the trial license availability:\n- 90-day trial license available with all SANnav releases through v2.2.0\n- 30-day trial license available with SANnav v2.2.1 and v2.2.2\n- No trial license available with upcoming SANnav v2.3.0\nOnly one SANnav renewal licenses can be ordered per HPE order even if the customer has multiple renewals.\nMandatory: The following information is required to order a SANnav renewal license:\n1) End Customer Name (entity that will own/utilize the licenses)\n2) End Customer Email (entity that will own/utilize the licenses)\n3) End Customer SANnav Serial Number(s)\n4) Sales Representative Email\n5) Reseller Name and Email (if applicable)\n6) Distributor Name and Email (if applicable)\n7) A SRV Code Request must be made in the HPE SRV Code Request SharePoint at the following link:\nhttps://hpe.sharepoint.com/teams/srvcode/Lists/SANnav Renewal Verification Code Requests/AllItems.aspx\n8) After an HPE sales order has been created the HPE Order Number must be updated in the SharePoint, an email will be systematically sent to the\nSales Representative requesting the order number.\nOnce the order has been placed and the above has been completed the following will occurr:\na) The end customer will receive a notification the license will be available in 2-3 days\nb) The end customer will then activate the entitlement and retrieve the license key at My HPE Software Center at:\nhttps://myenterpriselicense.hpe.com/cwp-ui/auth/login\nc) The end customer installs the license\n(SANnav - Renewal License)\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tEst. Lead Time \tStart\tDiscontinued\tObsolete\n  S1S58AAE\tHPE SANnav Global View 1-year Renewal E-LTU\t\n0\n\t135,058.00\tNA\t\t06/05/2023\t08/31/2031\t10/31/2031\n  S1S52AAE\tHPE SANnav Management Portal Base 1-year Renewal E-LTU\t\n0\n\t36,018.00\tNA\t\t06/05/2023\t08/31/2031\t10/31/2031\n  S1S55AAE\tHPE SANnav Management Portal Enterprise 1-year Renewal E-LTU\t\n0\n\t90,047.00\tNA\t\t06/05/2023\t08/31/2031\t10/31/2031\n\n\n Ad-Hoc\n\nImportant Note: Before using Ad-Hoc please make sure you have reviewed and are following the Ad-Hoc guidelines available here. Failure to follow the guidelines can lead to blocked orders.\nProducts added as Ad-Hoc will not get default support services. If you need Support services, add the product from the OCA catalog if it's available.\nOnly use Sub-item=Y when you want to integrate FIO products or products with #0D1 options into the base model\n+/-\tProduct #\tDescription\toption\tMultiply With Node\tSub-item\tPrice (USD) \tQuantity\tStart\tDiscontinued\tObsolete\n\t<new ad-hoc item>\t<search by description>\t\t\t\t\t\t\t\n\nCLIC Check\nLive chat\nSupport Services: observed component-owned selections only. Alternative service branches remain unexecuted.",
+  "sections": [
+    {
+      "tagName": "H3",
+      "text": "Process Guide",
+      "className": ""
+    },
+    {
+      "tagName": "DIV",
+      "text": "Additional Services\n      \n    \n    AI Standard Service Advisor ToolUse the AI Standard Service Advisor Tool to identify the correct quoting path (IQ vs. FQ), receive a unique ID if the FQ path is required, and get guidance on selecting the appropriate services.Training materials and access to the tool: A&PS 2.0 – IQ Acceleration SharePoint pageAccess requests & support: Contact serviceadvisortool@hpe.com for access, issues or questions.\n      \n      Summary",
+      "className": "section-header"
+    }
+  ],
+  "tables": [
+    {
+      "tableIndex": 0,
+      "tableId": "",
+      "rowCount": 13,
+      "rows": [
+        [
+          "Cables"
+        ],
+        [
+          "OM3 LC-LC type connectors cable (max 8)"
+        ],
+        [
+          "Premier Flex OM4 LC-LC (max 8)"
+        ],
+        [
+          "QSFP to 4xLC Breakout (max 4)"
+        ],
+        [
+          "MPO/MPO Multi-mode (max 4)"
+        ],
+        [
+          "Software"
+        ],
+        [
+          "Software for Brocade Switches (no max)"
+        ],
+        [
+          "SANnav - New License (no max)\n Select one of these SANnav licenses if this is a net new licenses. If this is a renewal of a current SANnav licenses, select one of the options from the SANnav - Renewal License section.\nNote changes to the trial license availability:\n- 90-day trial license was available with all SANnav releases through v2.2.0\n- 30-day trial license available with SANnav v2.2.1 and v2.2.2\n- No trial license available with SANnav v2.3.0\n(SANnav - New License)"
+        ],
+        [
+          "SANnav - Renewal License (no max)\n Select one of these SANnav licenses only if this is a renewal of a current SANnav licenses otherwise order a net new license from the SANnav - New License section.\nNote changes to the trial license availability:\n- 90-day trial license available with all SANnav releases through v2.2.0\n- 30-day trial license available with SANnav v2.2.1 and v2.2.2\n- No trial license available with upcoming SANnav v2.3.0\nOnly one SANnav renewal licenses can be ordered per HPE order even if the customer has multiple renewals.\nMandatory: The following information is required to order a SANnav renewal license:\n1) End Customer Name (entity that will own/utilize the licenses)\n2) End Customer Email (entity that will own/utilize the licenses)\n3) End Customer SANnav Serial Number(s)\n4) Sales Representative Email\n5) Reseller Name and Email (if applicable)\n6) Distributor Name and Email (if applicable)\n7) A SRV Code Request must be made in the HPE SRV Code Request SharePoint at the following link:\nhttps://hpe.sharepoint.com/teams/srvcode/Lists/SANnav Renewal Verification Code Requests/AllItems.aspx\n8) After an HPE sales order has been created the HPE Order Number must be updated in the SharePoint, an email will be systematically sent to the\nSales Representative requesting the order number.\nOnce the order has been placed and the above has been completed the following will occurr:\na) The end customer will receive a notification the license will be available in 2-3 days\nb) The end customer will then activate the entitlement and retrieve the license key at My HPE Software Center at:\nhttps://myenterpriselicense.hpe.com/cwp-ui/auth/login\nc) The end customer installs the license\n(SANnav - Renewal License)"
+        ],
+        [
+          "Ad-Hoc"
+        ],
+        [
+          "Important Note: Before using Ad-Hoc please make sure you have reviewed and are following the Ad-Hoc guidelines available here. Failure to follow the guidelines can lead to blocked orders.\nProducts added as Ad-Hoc will not get default support services. If you need Support services, add the product from the OCA catalog if it's available.\nOnly use Sub-item=Y when you want to integrate FIO products or products with #0D1 options into the base model"
+        ],
+        [
+          "+/-",
+          "Product #",
+          "Description",
+          "option",
+          "Multiply With Node",
+          "Sub-item",
+          "Price (USD)",
+          "Quantity",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "",
+          "<new ad-hoc item>",
+          "<search by description>",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      ]
+    },
+    {
+      "tableIndex": 1,
+      "tableId": "",
+      "rowCount": 9,
+      "rows": [
+        [
+          "Available"
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Extended Price (USD)",
+          "HPE Recommended",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "AJ833A",
+          "HPE LC to LC Multi-mode OM3 2-Fiber 0.5m 1-Pack Fiber Optic Cable",
+          "0",
+          "65.00",
+          "NA",
+          "",
+          "3",
+          "08/10/2017",
+          "11/30/2028",
+          "12/31/2028"
+        ],
+        [
+          "AJ836A",
+          "HPE LC to LC Multi-mode OM3 2-Fiber 5.0m 1-Pack Fiber Optic Cable",
+          "0",
+          "115.00",
+          "NA",
+          "",
+          "3",
+          "08/10/2017",
+          "11/30/2028",
+          "12/31/2028"
+        ],
+        [
+          "AJ838A",
+          "HPE LC to LC Multi-mode OM3 2-Fiber 30.0m 1-Pack Fiber Optic Cable",
+          "0",
+          "208.00",
+          "NA",
+          "",
+          "3",
+          "08/10/2017",
+          "11/30/2028",
+          "12/31/2028"
+        ],
+        [
+          "AJ839A",
+          "HPE LC to LC Multi-mode OM3 2-Fiber 50.0m 1-Pack Fiber Optic Cable",
+          "0",
+          "253.00",
+          "NA",
+          "",
+          "3",
+          "08/10/2017",
+          "11/30/2028",
+          "12/31/2028"
+        ],
+        [
+          "AJ834A",
+          "HPE LC to LC Multi-mode OM3 2-Fiber 1.0m 1-Pack Fiber Optic Cable",
+          "0",
+          "70.00",
+          "NA",
+          "",
+          "4",
+          "08/10/2017",
+          "11/30/2028",
+          "12/31/2028"
+        ],
+        [
+          "AJ835A",
+          "HPE LC to LC Multi-mode OM3 2-Fiber 2.0m 1-Pack Fiber Optic Cable",
+          "0",
+          "95.00",
+          "NA",
+          "",
+          "4",
+          "08/10/2017",
+          "11/30/2028",
+          "12/31/2028"
+        ],
+        [
+          "AJ837A",
+          "HPE LC to LC Multi-mode OM3 2-Fiber 15.0m 1-Pack Fiber Optic Cable",
+          "0",
+          "162.00",
+          "NA",
+          "",
+          "4",
+          "08/10/2017",
+          "11/30/2028",
+          "12/31/2028"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 2,
+      "tableId": "",
+      "rowCount": 8,
+      "rows": [
+        [
+          "Available"
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Extended Price (USD)",
+          "HPE Recommended",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "QK732A",
+          "HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 1m Cable",
+          "0",
+          "115.00",
+          "NA",
+          "",
+          "3",
+          "08/10/2017",
+          "11/30/2028",
+          "12/31/2028"
+        ],
+        [
+          "QK737A",
+          "HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 50m Cable",
+          "0",
+          "415.00",
+          "NA",
+          "",
+          "3",
+          "08/10/2017",
+          "11/30/2028",
+          "12/31/2028"
+        ],
+        [
+          "QK733A",
+          "HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 2m Cable",
+          "0",
+          "130.00",
+          "NA",
+          "",
+          "4",
+          "08/10/2017",
+          "11/30/2028",
+          "12/31/2028"
+        ],
+        [
+          "QK734A",
+          "HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 5m Cable",
+          "2",
+          "147.00",
+          "294.00",
+          "",
+          "14",
+          "08/10/2017",
+          "11/30/2028",
+          "12/31/2028"
+        ],
+        [
+          "QK735A",
+          "HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 15m Cable",
+          "0",
+          "195.00",
+          "NA",
+          "",
+          "8",
+          "08/10/2017",
+          "11/30/2028",
+          "12/31/2028"
+        ],
+        [
+          "QK736A",
+          "HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 30m Cable",
+          "0",
+          "239.00",
+          "NA",
+          "",
+          "4",
+          "08/10/2017",
+          "11/30/2028",
+          "12/31/2028"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 3,
+      "tableId": "",
+      "rowCount": 4,
+      "rows": [
+        [
+          "Available"
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Extended Price (USD)",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "K2Q46A",
+          "HPE Premier Flex MPO8 to 4xLC Multi-mode OM4 5m Fiber Cable",
+          "0",
+          "800.00",
+          "NA",
+          "14",
+          "08/10/2017",
+          "11/30/2028",
+          "12/31/2028"
+        ],
+        [
+          "K2Q47A",
+          "HPE Premier Flex MPO8 to 4xLC Multi-mode OM4 15m Fiber Cable",
+          "0",
+          "1,350.00",
+          "NA",
+          "4",
+          "08/10/2017",
+          "11/30/2028",
+          "12/31/2028"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 4,
+      "tableId": "",
+      "rowCount": 5,
+      "rows": [
+        [
+          "Available"
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Extended Price (USD)",
+          "HPE Recommended",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "H6Z30A",
+          "HPE Premier Flex MPO12/MPO12 Multi-mode OM4 100m Fiber Cable",
+          "0",
+          "3,422.00",
+          "NA",
+          "",
+          "3",
+          "08/10/2017",
+          "11/30/2028",
+          "12/31/2028"
+        ],
+        [
+          "QK731A",
+          "HPE Premier Flex MPO12/MPO12 Multi-mode OM4 50m Fiber Cable",
+          "0",
+          "2,000.00",
+          "NA",
+          "",
+          "3",
+          "08/10/2017",
+          "11/30/2028",
+          "12/31/2028"
+        ],
+        [
+          "QK729A",
+          "HPE Premier Flex MPO12/MPO12 Multi-mode OM4 10m Fiber Cable",
+          "0",
+          "719.00",
+          "NA",
+          "",
+          "4",
+          "08/10/2017",
+          "11/30/2028",
+          "12/31/2028"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 5,
+      "tableId": "",
+      "rowCount": 11,
+      "rows": [
+        [
+          "Available"
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Extended Price (USD)",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "D4U69AAE [OB]",
+          "Brocade 16Gb Fibre Channel SAN Switch Module 12-port Upgrade E-LTU for HPE Synergy",
+          "0",
+          "8,334.00",
+          "NA",
+          "",
+          "08/10/2017",
+          "01/31/2023",
+          "04/28/2023"
+        ],
+        [
+          "Q2E58A [OB]",
+          "Brocade 32Gb Fibre Channel SAN Switch Module 8-port Upgrade LTU for HPE Synergy",
+          "0",
+          "8,500.00",
+          "NA",
+          "",
+          "04/02/2019",
+          "01/26/2023",
+          "01/27/2023"
+        ],
+        [
+          "Q2E58AAE",
+          "Brocade 32Gb Fibre Channel SAN Switch Module 8-port Upgrade E-LTU for HPE Synergy",
+          "0",
+          "8,586.00",
+          "NA",
+          "",
+          "04/02/2019",
+          "10/31/2029",
+          "11/30/2029"
+        ],
+        [
+          "Q2E60A [OB]",
+          "Brocade 32Gb Fibre Channel SAN Switch Module Power Pack+ LTU for HPE Synergy",
+          "0",
+          "15,220.00",
+          "NA",
+          "",
+          "04/02/2019",
+          "01/26/2023",
+          "01/27/2023"
+        ],
+        [
+          "Q2E60AAE",
+          "Brocade 32Gb Fibre Channel SAN Switch Module Power Pack+ E-LTU for HPE Synergy",
+          "0",
+          "15,374.00",
+          "NA",
+          "",
+          "04/02/2019",
+          "10/31/2029",
+          "11/30/2029"
+        ],
+        [
+          "T5517AAE [OB]",
+          "Brocade 8/16Gb Embedded FC Switch 12-port Upgrade E-LTU",
+          "0",
+          "5,277.00",
+          "NA",
+          "",
+          "08/10/2017",
+          "12/20/2022",
+          "12/21/2022"
+        ],
+        [
+          "T5527AAE [OB]",
+          "HPE B-series Entry Switch ISL Trunking E-LTU",
+          "0",
+          "6,125.00",
+          "NA",
+          "",
+          "08/10/2017",
+          "01/31/2023",
+          "04/28/2023"
+        ],
+        [
+          "TC464BAE [OB]",
+          "Brocade 16Gb Embedded Switch Power Pack+ E-LTU",
+          "0",
+          "7,815.00",
+          "NA",
+          "",
+          "10/01/2018",
+          "11/20/2023",
+          "11/21/2023"
+        ],
+        [
+          "TC514AAE [OB]",
+          "HPE 8/16Gb Embedded Switch Fabric Vision E-LTU",
+          "0",
+          "6,163.00",
+          "NA",
+          "",
+          "08/10/2017",
+          "11/20/2023",
+          "11/21/2023"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 6,
+      "tableId": "",
+      "rowCount": 11,
+      "rows": [
+        [
+          "Available"
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Extended Price (USD)",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "R3P47AAE",
+          "HPE SANnav Global View 1yr E-LTU",
+          "0",
+          "135,058.00",
+          "NA",
+          "",
+          "09/03/2019",
+          "08/31/2031",
+          "10/31/2031"
+        ],
+        [
+          "R3P50AAE",
+          "HPE SANnav Global View 3yr E-LTU",
+          "0",
+          "324,137.00",
+          "NA",
+          "",
+          "09/03/2019",
+          "08/31/2031",
+          "10/31/2031"
+        ],
+        [
+          "R4P31AAE",
+          "HPE SANnav Global View 5yr E-LTU",
+          "0",
+          "540,233.00",
+          "NA",
+          "",
+          "02/03/2020",
+          "08/31/2031",
+          "10/31/2031"
+        ],
+        [
+          "R3P45AAE",
+          "HPE SANnav Management Portal Base 1yr E-LTU",
+          "0",
+          "36,018.00",
+          "NA",
+          "",
+          "09/03/2019",
+          "08/31/2031",
+          "10/31/2031"
+        ],
+        [
+          "R3P48AAE",
+          "HPE SANnav Management Portal Base 3yr E-LTU",
+          "0",
+          "86,443.00",
+          "NA",
+          "",
+          "09/03/2019",
+          "08/31/2031",
+          "10/31/2031"
+        ],
+        [
+          "R4P29AAE",
+          "HPE SANnav Management Portal Base 5yr E-LTU",
+          "0",
+          "144,076.00",
+          "NA",
+          "",
+          "02/03/2020",
+          "08/31/2031",
+          "10/31/2031"
+        ],
+        [
+          "R3P46AAE",
+          "HPE SANnav Management Portal Enterprise 1yr E-LTU",
+          "0",
+          "90,047.00",
+          "NA",
+          "",
+          "09/03/2019",
+          "08/31/2031",
+          "10/31/2031"
+        ],
+        [
+          "R3P49AAE",
+          "HPE SANnav Management Portal Enterprise 3yr E-LTU",
+          "0",
+          "216,111.00",
+          "NA",
+          "",
+          "09/03/2019",
+          "08/31/2031",
+          "10/31/2031"
+        ],
+        [
+          "R4P30AAE",
+          "HPE SANnav Management Portal Enterprise 5yr E-LTU",
+          "0",
+          "360,192.00",
+          "NA",
+          "",
+          "02/03/2020",
+          "08/31/2031",
+          "10/31/2031"
+        ]
+      ]
+    },
+    {
+      "tableIndex": 7,
+      "tableId": "",
+      "rowCount": 5,
+      "rows": [
+        [
+          "Available"
+        ],
+        [
+          "Product #",
+          "Description",
+          "Quantity",
+          "Price (USD)",
+          "Extended Price (USD)",
+          "Est. Lead Time",
+          "Start",
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "S1S58AAE",
+          "HPE SANnav Global View 1-year Renewal E-LTU",
+          "0",
+          "135,058.00",
+          "NA",
+          "",
+          "06/05/2023",
+          "08/31/2031",
+          "10/31/2031"
+        ],
+        [
+          "S1S52AAE",
+          "HPE SANnav Management Portal Base 1-year Renewal E-LTU",
+          "0",
+          "36,018.00",
+          "NA",
+          "",
+          "06/05/2023",
+          "08/31/2031",
+          "10/31/2031"
+        ],
+        [
+          "S1S55AAE",
+          "HPE SANnav Management Portal Enterprise 1-year Renewal E-LTU",
+          "0",
+          "90,047.00",
+          "NA",
+          "",
+          "06/05/2023",
+          "08/31/2031",
+          "10/31/2031"
+        ]
+      ]
+    }
+  ],
+  "tableCount": 8,
+  "conditionalSkus": [
+    {
+      "sku": "D4U69AAE",
+      "badge": "OB",
+      "ruleContext": "OB",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_tr extended",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: OB"
+    },
+    {
+      "sku": "Q2E58A",
+      "badge": "OB",
+      "ruleContext": "OB",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_tr extended",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: OB"
+    },
+    {
+      "sku": "Q2E60A",
+      "badge": "OB",
+      "ruleContext": "OB",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_tr extended",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: OB"
+    },
+    {
+      "sku": "T5517AAE",
+      "badge": "OB",
+      "ruleContext": "OB",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_tr extended",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: OB"
+    },
+    {
+      "sku": "T5527AAE",
+      "badge": "OB",
+      "ruleContext": "OB",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_tr extended",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: OB"
+    },
+    {
+      "sku": "TC464BAE",
+      "badge": "OB",
+      "ruleContext": "OB",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_tr extended",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: OB"
+    },
+    {
+      "sku": "TC514AAE",
+      "badge": "OB",
+      "ruleContext": "OB",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_tr extended",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: OB"
+    }
+  ],
+  "conditionalSkusCount": 7,
+  "conditionalDiscovery": "HIDDEN_DOM_AND_AMBIENT_ONLY_OTHER_MACROS_UNVERIFIED",
+  "unavailableRules": [],
+  "unavailableRulesCount": 0,
+  "unavailableSkus": [],
+  "unavailableSkusCount": 0,
+  "networkSniffedRules": [],
+  "networkSniffedRulesCount": 0,
+  "networkCoverage": {
+    "capturedResponses": 0,
+    "pendingResponses": 0,
+    "failures": [],
+    "scope": "OBSERVED_REQUESTS_ONLY"
+  },
+  "chassisDiscovery": {
+    "query": "Synergy_Brocade_64Gb_FC_Module",
+    "selectedSku": "P77653-B21",
+    "source": "Authenticated OCA owned component menu",
+    "capturedAt": "2026-11-12T03:21:59.273Z",
+    "ownerConfiguration": "Brocade 64Gb Fibre Channel Module for HPE Synergy #1",
+    "parentConfiguration": "Synergy 12000 Frame #1",
+    "candidates": [
+      {
+        "sku": "P77653-B21",
+        "text": "Brocade 64Gb Fibre Channel Module for HPE Synergy [P77653-B21]",
+        "visited": true,
+        "listPriceUsd": 63999,
+        "leadTime": "3 days",
+        "leadTimeDays": 3
+      }
+    ],
+    "excludedCandidates": [],
+    "parentBaseSku": "P51174-B21",
+    "parentOption": {
+      "sku": "P77653-B21",
+      "category": "bladeEnclosureInterconnects",
+      "quantity": 1
+    }
+  }
+}

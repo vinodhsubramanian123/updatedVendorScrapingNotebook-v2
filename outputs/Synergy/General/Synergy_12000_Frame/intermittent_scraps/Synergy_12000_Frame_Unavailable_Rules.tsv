@@ -1,0 +1,18 @@
+Rule ID	Rule Type	Section	Constraint / Reason	Affected SKU Count	Affected SKUs
+RULE_1	CONDITIONAL_VISIBILITY	Compute and Storage	Non-TAA Model cannot support TAA products.	11	871940-B22, 871941-B22, 871942-B22, P22139-B22, P39531-B22, P83805-B21, P68217-B21, P83806-B21, 871929-B22, 871930-B22, 871931-B22
+RULE_2	CONDITIONAL_VISIBILITY	Compute and Storage	CTO Compute and Storage Modules can only be configured in a CTO Frame.	18	871943-B21, 871945-B21, 871946-B21, 826950-B21, 826951-B21, 826952-B21, 826953-B21, 826954-B21, 834483-B21, 834484-B21, 871932-B21, 871933-B21, 871934-B21, 826956-B21, 826957-B21, 826958-B21, 834480-B21, 834481-B21
+RULE_3	CONDITIONAL_VISIBILITY	Compute and Storage	CTO Compute and Storage Modules can only be configured in a CTO Frame.	1	755984-B21
+RULE_4	CONDITIONAL_VISIBILITY	Management Hardware	Mixing Composer and Composer 2 is not allowed	1	804353-B21
+RULE_5	CONDITIONAL_VISIBILITY	Management Hardware	Non-TAA Model cannot support TAA products.	4	804353-B22, 804937-B22, 872957-B22, P73869-B22
+RULE_6	CONDITIONAL_VISIBILITY	Management Hardware	If HPE Synergy 4-port Frame Link Module is included in the 12000 Frame, Synergy Image Streamer on Synergy Composer cannot be selected.	1	804937-B21
+RULE_7	CONDITIONAL_VISIBILITY	Management Hardware	Max quantity of product limited by space available.	1	P54624-B21
+RULE_8	CONDITIONAL_VISIBILITY	Management Hardware	Mixing of Composer 2 and Composer 2 Plus modules is not allowed.	1	P73869-B21
+RULE_9	CONDITIONAL_VISIBILITY	Management Hardware	Either Frame link Module or 4p Frame Link Module can be selected. Mixing is not allowed.	1	804942-B21
+RULE_10	CONDITIONAL_VISIBILITY	Management Hardware	Non-TAA Model cannot support TAA products.	1	804942-B22
+RULE_11	CONDITIONAL_VISIBILITY	Interconnects	Non-TAA Model cannot support TAA products.	5	867793-B22, 867796-B22, 779215-B22, 779218-B22, 799330-B22
+RULE_12	CONDITIONAL_VISIBILITY	Interconnects	Product is obsolete	1	489184-B21
+RULE_13	CONDITIONAL_VISIBILITY	Interconnects	Product not supported	14	648312-B21, 658247-B21, 674280-B21, 674281-B21, 674282-B21, 674283-B21, 674284-B21, 829914-B21, 829915-B21, 829916-B21, 843191-B21, 843192-B21, 843193-B21, 846041-B21
+RULE_14	CONDITIONAL_VISIBILITY	Interconnects	Cannot mix together in the same Synergy 12000 Frame	1	794502-B23
+RULE_15	CONDITIONAL_VISIBILITY	Power	Model X - No Mixing of Power Supplies is allowed. All selected Power Supplies must be of the same part number. Minimum should be determined based on the Power Advisor Program. (Minimum is always at least 2 - Power Advisor Program will indicate scenarios in which more than 2 is required)	11	798095-B21, 798096-B21, 876929-B21, P27749-B21, P27750-B21, 798099-B21, 798100-B21, 798101-B21, 798102-B21, 798342-B21, 798349-B21
+RULE_16	CONDITIONAL_VISIBILITY	Power	This cable kit support with only the following power supplies	8	J6X00A, P9B75A, J6W98A, J6W99A, J6X01A, J6X02A, J6X03A, P9B77A
+RULE_17	CONDITIONAL_VISIBILITY	Power	This option cable kit contains 6 six power cords and support only with the following power supplies	1	872035-B21

@@ -1,0 +1,249 @@
+{
+  "schemaVersion": 1,
+  "product": "SY480_Gen12",
+  "vendor": "HPE",
+  "capturedAt": "2026-11-12T03:27:37.665Z",
+  "auditedAt": "2026-11-12T03:29:25.605Z",
+  "incompleteLegacyBaselinePreserved": false,
+  "mode": "REFRESH",
+  "status": "LOCAL_PROMOTED",
+  "provenance": {
+    "baseSku": "P68217-B21",
+    "ownerConfiguration": "HPE Synergy 480 Gen12 Configure-to-order Compute Module [P68217-B21]",
+    "solutionDomain": "SERVER",
+    "observedUrl": "https://oca.ext.hpe.com/oca/OCAInternalLogin"
+  },
+  "coverage": {
+    "textExtractionMode": "FULL_BODY_TEXT",
+    "outsideTableNotesCaptured": true,
+    "conditionalDiscovery": "HIDDEN_DOM_AND_AMBIENT_ONLY_OTHER_MACROS_UNVERIFIED",
+    "baseSku": "P68217-B21",
+    "ownerConfiguration": "HPE Synergy 480 Gen12 Configure-to-order Compute Module [P68217-B21]",
+    "solutionDomain": "SERVER",
+    "observedSelectors": [
+      {
+        "selector": "#extended_overview_menu",
+        "value": "EXPANDED"
+      },
+      {
+        "selector": "ambientTemperature",
+        "value": "DEFAULT_AND_SWEEP_RESTORED"
+      }
+    ],
+    "missingProvenance": [],
+    "completeness": "CAPTURED_STATES_ONLY",
+    "policy": {
+      "valid": true,
+      "reason": "",
+      "profileProduct": "SY480_Gen12",
+      "scope": "PROFILE_MINIMUM_CAPTURE"
+    }
+  },
+  "counts": {
+    "hardware": 308,
+    "services": 293,
+    "rules": 342,
+    "categories": 12,
+    "retainedHardware": 308,
+    "hardwareTombstones": 0
+  },
+  "previousCounts": {
+    "hardware": 301,
+    "services": 262,
+    "rules": 334,
+    "categories": 11
+  },
+  "hashes": {
+    "Catalog.json": "05a7ff630fb12af6605b6d736e907cf7f3f2f99cf901fb7c3c43d449f4095510",
+    "Services.json": "da057aa387ad85c4f4fb362c11629a7b2388b5194c2fb47c0dec3227de25148f",
+    "Catalog_Rules.json": "38d54f3e1b9b1a696d2d1e70e8e777d0ba797c8e8378394e2376c03b4e4e7ff6",
+    "OCA_Catalog.xlsx": "9f57baa9c0e8d63c7f48ab87f635a726d8cf77550fd1e6eb45f971fb8f127e03"
+  },
+  "rawSha256": "7b1c958d776ba4ba5d46f55bb826cffebd9974ad5878db7828b9fdbb4f0b84a8",
+  "sheets": [
+    {
+      "name": "Category Summary",
+      "rows": 68
+    },
+    {
+      "name": "All SKUs",
+      "rows": 309
+    },
+    {
+      "name": "Chassis Variants",
+      "rows": 2
+    },
+    {
+      "name": "Chassis Options Matrix",
+      "rows": 2
+    },
+    {
+      "name": "Rules & Constraints",
+      "rows": 375
+    },
+    {
+      "name": "Unavailable Rules & Gates",
+      "rows": 5
+    },
+    {
+      "name": "Hardware Accessories",
+      "rows": 13
+    },
+    {
+      "name": "Software & Licenses",
+      "rows": 406
+    },
+    {
+      "name": "Support Services",
+      "rows": 121
+    },
+    {
+      "name": "Catalog Diffs",
+      "rows": 601
+    },
+    {
+      "name": "Price History Timeline",
+      "rows": 602
+    },
+    {
+      "name": "Processor",
+      "rows": 18
+    },
+    {
+      "name": "Memory",
+      "rows": 21
+    },
+    {
+      "name": "Networking",
+      "rows": 4
+    },
+    {
+      "name": "Chassis",
+      "rows": 2
+    },
+    {
+      "name": "PCIe Risers",
+      "rows": 2
+    },
+    {
+      "name": "Drive Enclosures  Drives",
+      "rows": 11
+    },
+    {
+      "name": "Cooling  Thermal",
+      "rows": 3
+    },
+    {
+      "name": "Accessories & Infrastructure",
+      "rows": 2
+    },
+    {
+      "name": "Support Services_2",
+      "rows": 2
+    },
+    {
+      "name": "Storage Controllers",
+      "rows": 7
+    },
+    {
+      "name": "Cables & Enablement Kits",
+      "rows": 3
+    },
+    {
+      "name": "Discontinued SKUs",
+      "rows": 93
+    },
+    {
+      "name": "Supply Chain & Lead Times",
+      "rows": 602
+    },
+    {
+      "name": "Metadata",
+      "rows": 22
+    }
+  ],
+  "deltas": {
+    "hardware": {
+      "added": [
+        "P83865-F21",
+        "P83867-F21",
+        "P83869-F21",
+        "P83865-B21",
+        "P83867-B21",
+        "P83869-B21",
+        "389692-B21"
+      ],
+      "removed": []
+    },
+    "services": {
+      "added": [
+        "H39VQA1#V0F",
+        "HA124A1#V0F",
+        "H1Y26A1#002",
+        "H1Y26A1#003",
+        "H36XCA1#006",
+        "H1Y25A1#002",
+        "H1Y25A1#003",
+        "HA124A1#V5K",
+        "HU0R5A5#Y39",
+        "H0JD4A1#WFH",
+        "H0JD4A1#WFK",
+        "H0JD4A1#WFM",
+        "H0JD4A1#Y65",
+        "H0JD4A1#Y6B",
+        "H0JD4A3#WFH",
+        "H0JD4A3#WFK",
+        "H54SBA5#Y35",
+        "H39DJA3#Y35",
+        "H39DJA4#Y35",
+        "H39DJA5#Y35",
+        "H39DKA3#Y35",
+        "H39DKA4#Y35",
+        "H39DKA5#Y35",
+        "H39DLA3#Y36",
+        "H39DLA4#Y36",
+        "H39DLA5#Y36",
+        "H40CSA3",
+        "H40CSA4",
+        "H40CSA5",
+        "HY0W3A3#Z5K",
+        "HY0W3A4#Z5K",
+        "HY0W3A5#Z5K"
+      ],
+      "removed": [
+        "389692-B21"
+      ]
+    },
+    "rulesChanged": true,
+    "hardwareChanges": {
+      "added": 7,
+      "removed": 0,
+      "categoryMigrated": 0,
+      "priceChanged": 0,
+      "attributeChanged": 278,
+      "priceAndAttributeChanged": 22,
+      "unchanged": 1,
+      "reinstated": 0,
+      "discontinuedTotal": 0
+    },
+    "serviceChanges": {
+      "added": 32,
+      "removed": 0,
+      "categoryMigrated": 1,
+      "priceChanged": 0,
+      "attributeChanged": 254,
+      "priceAndAttributeChanged": 7,
+      "unchanged": 0,
+      "reinstated": 0,
+      "discontinuedTotal": 39
+    }
+  },
+  "cloud": {
+    "status": "CLOUD_FAILED",
+    "success": false,
+    "sourceId": null,
+    "consolidationVerified": false,
+    "error": "CLI sync unavailable (Product isolation rejected SY480_Gen12 payload: reference to registered product Synergy_12000_Frame). Payload ready at C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\Synergy\\Gen12\\SY480_Gen12\\notebook_sync_payload_SY480_Gen12.md. Upload as \"SY480_Gen12_OCA_Catalog_2026-11-12\" via gemini-notebook-mcp source_add or nlm CLI."
+  },
+  "promotedAt": "2026-11-12T03:29:35.672Z"
+}

@@ -1,0 +1,17 @@
+{
+  "query": "Synergy_4Port_Frame_Link_Module",
+  "selectedSku": "876852-B21",
+  "source": "Authenticated OCA owned component menu",
+  "capturedAt": "2026-11-12T03:17:50.161Z",
+  "ownerConfiguration": "4-port Frame Link Module #1",
+  "parentConfiguration": "Synergy 12000 Frame #1",
+  "candidates": [
+    {
+      "sku": "876852-B21",
+      "text": "HPE Synergy 4-port Frame Link Module [876852-B21]",
+      "visited": true
+    }
+  ],
+  "excludedCandidates": [],
+  "parentBaseSku": "P51174-B21"
+}

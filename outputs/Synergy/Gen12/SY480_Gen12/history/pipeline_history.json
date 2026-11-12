@@ -1,6 +1,199 @@
 [
   {
     "summary": {
+      "runId": "run_SY480_Gen12_1794454135214",
+      "sessionName": "SY480_Gen12",
+      "startTime": "2026-11-12T03:28:55.213Z",
+      "endTime": "2026-11-12T03:28:56.039Z",
+      "durationMs": 826,
+      "durationSec": "0.83",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 308,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 308,
+      "validationStats": {
+        "totalEntries": 38,
+        "totalSKUs": 308,
+        "validSKUs": 308,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 1,
+        "zeroPriceSKUs": 32,
+        "priceErrors": 0,
+        "ruleCount": 217,
+        "categoryCount": 12
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-11-12T03:28:55.214Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\.catalog-staging\\failed_staging_SY480_Gen12_1794454061270\\raw_data\\oca_raw_data_full.json",
+          "jsonOutputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\.catalog-staging\\failed_staging_SY480_Gen12_1794454061270\\SY480_Gen12_Catalog.json",
+          "chassisLabel": "SY480 Gen12"
+        }
+      },
+      {
+        "timestamp": "2026-11-12T03:28:55.885Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 32,
+          "totalUniqueSKUs": 308,
+          "incrementalStats": {
+            "totalScrapedSkus": 308,
+            "unchangedSkusCount": 307,
+            "modifiedSkusCount": 1,
+            "addedSkusCount": 0,
+            "removedSkusCount": 1,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-12T03:28:55.890Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 38,
+            "totalSKUs": 308,
+            "validSKUs": 308,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 1,
+            "zeroPriceSKUs": 32,
+            "priceErrors": 0,
+            "ruleCount": 217,
+            "categoryCount": 12
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-12T03:28:56.038Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\.catalog-staging\\failed_staging_SY480_Gen12_1794454061270\\SY480_Gen12_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 308,
+      "classified": 308,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
+      "runId": "run_SY480_Gen12_1794454057919",
+      "sessionName": "SY480_Gen12",
+      "startTime": "2026-11-12T03:27:37.917Z",
+      "endTime": "2026-11-12T03:27:39.031Z",
+      "durationMs": 1114,
+      "durationSec": "1.11",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 309,
+      "warningCount": 1,
+      "errorCount": 0,
+      "totalUniqueSKUs": 309,
+      "validationStats": {
+        "totalEntries": 39,
+        "totalSKUs": 309,
+        "validSKUs": 309,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 1,
+        "zeroPriceSKUs": 34,
+        "priceErrors": 0,
+        "ruleCount": 217,
+        "categoryCount": 13
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-11-12T03:27:37.919Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\.catalog-staging\\staging_SY480_Gen12_1794454057662\\raw_data\\oca_raw_data_full.json",
+          "jsonOutputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\.catalog-staging\\staging_SY480_Gen12_1794454057662\\SY480_Gen12_Catalog.json",
+          "chassisLabel": "SY480 Gen12"
+        }
+      },
+      {
+        "timestamp": "2026-11-12T03:27:38.882Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 33,
+          "totalUniqueSKUs": 309,
+          "incrementalStats": {
+            "totalScrapedSkus": 309,
+            "unchangedSkusCount": 0,
+            "modifiedSkusCount": 0,
+            "addedSkusCount": 309,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-12T03:27:38.885Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 1,
+          "stats": {
+            "totalEntries": 39,
+            "totalSKUs": 309,
+            "validSKUs": 309,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 1,
+            "zeroPriceSKUs": 34,
+            "priceErrors": 0,
+            "ruleCount": 217,
+            "categoryCount": 13
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-12T03:27:39.031Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\.catalog-staging\\staging_SY480_Gen12_1794454057662\\SY480_Gen12_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [
+      {
+        "timestamp": "2026-11-12T03:27:38.885Z",
+        "message": "Base Chassis Variant SKU [P68217-B21] has $0 list price. Verify if CTO chassis price was scraped correctly."
+      }
+    ],
+    "errors": [],
+    "skuSummary": {
+      "total": 309,
+      "classified": 309,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
       "runId": "run_SY480_Gen12_1793255664973",
       "sessionName": "SY480_Gen12",
       "startTime": "2026-10-29T06:34:24.963Z",

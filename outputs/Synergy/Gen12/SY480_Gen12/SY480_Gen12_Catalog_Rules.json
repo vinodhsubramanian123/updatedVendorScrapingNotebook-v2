@@ -6,26 +6,26 @@
     "generation": "Gen12",
     "pillar": "SERVER",
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
-    "scrapeDate": "2026-10-29",
-    "scrapeTimestamp": "2026-10-29T06:34:24.500Z",
-    "builtAt": "2026-10-29T06:34:26.264Z",
-    "totalSubcategories": 31,
-    "totalUniqueSKUs": 301,
-    "totalTables": 36,
+    "scrapeDate": "2026-11-12",
+    "scrapeTimestamp": "2026-11-12T03:27:37.665Z",
+    "builtAt": "2026-11-12T03:28:55.641Z",
+    "totalSubcategories": 32,
+    "totalUniqueSKUs": 308,
+    "totalTables": 38,
     "diffSummary": {
-      "added": 60,
+      "added": 7,
       "removed": 0,
-      "categoryMigrated": 6,
+      "categoryMigrated": 0,
       "priceChanged": 0,
-      "attributeChanged": 151,
-      "priceAndAttributeChanged": 90,
-      "unchanged": 0,
-      "reinstated": 24,
+      "attributeChanged": 278,
+      "priceAndAttributeChanged": 22,
+      "unchanged": 1,
+      "reinstated": 0,
       "discontinuedTotal": 0
     },
-    "historySnapshot": "catalog_2026-10-29.json",
+    "historySnapshot": "catalog_2026-11-12.json",
     "priceAnalytics": {
-      "scrapeDate": "2026-10-29",
+      "scrapeDate": "2026-11-12",
       "categoryBreakdown": {
         "Chassis": {
           "totalSKUs": 1,
@@ -108,15 +108,15 @@
           "avgPrice": 399
         },
         "Memory": {
-          "totalSKUs": 14,
-          "totalPrice": 580754,
+          "totalSKUs": 20,
+          "totalPrice": 893044,
           "minPrice": 1,
           "maxPrice": 133186,
           "subcategories": {
             "Memory": {
-              "totalSKUs": 12,
-              "totalPrice": 580624,
-              "avgPrice": 48385.333333333336
+              "totalSKUs": 18,
+              "totalPrice": 892914,
+              "avgPrice": 49606.333333333336
             },
             "Memory Blank Kit": {
               "totalSKUs": 1,
@@ -129,7 +129,7 @@
               "avgPrice": 1
             }
           },
-          "avgPrice": 41482.42857142857
+          "avgPrice": 44652.2
         },
         "Accessories & Infrastructure": {
           "totalSKUs": 1,
@@ -147,14 +147,14 @@
         },
         "Software & Licenses": {
           "totalSKUs": 215,
-          "totalPrice": 2980628,
+          "totalPrice": 2980896,
           "minPrice": 1,
           "maxPrice": 99999,
           "subcategories": {
             "Server Management & Operating System Licenses": {
               "totalSKUs": 29,
-              "totalPrice": 1056496,
-              "avgPrice": 36430.89655172414
+              "totalPrice": 1056642,
+              "avgPrice": 36435.93103448276
             },
             "HP CMU Software": {
               "totalSKUs": 2,
@@ -163,13 +163,13 @@
             },
             "MS Windows Server Additional License": {
               "totalSKUs": 17,
-              "totalPrice": 225911,
-              "avgPrice": 13288.882352941177
+              "totalPrice": 225947,
+              "avgPrice": 13291
             },
             "Supported License Operating System Pack": {
               "totalSKUs": 30,
-              "totalPrice": 443470,
-              "avgPrice": 14782.333333333334
+              "totalPrice": 443428,
+              "avgPrice": 14780.933333333332
             },
             "Non Preinstalled Operating System": {
               "totalSKUs": 24,
@@ -183,8 +183,8 @@
             },
             "VMWare Core Editions": {
               "totalSKUs": 40,
-              "totalPrice": 402904,
-              "avgPrice": 10072.6
+              "totalPrice": 403032,
+              "avgPrice": 10075.8
             },
             "Proliant Software Media Kits": {
               "totalSKUs": 2,
@@ -217,7 +217,21 @@
               "avgPrice": 15324
             }
           },
-          "avgPrice": 13863.386046511629
+          "avgPrice": 13864.632558139534
+        },
+        "Support Services": {
+          "totalSKUs": 1,
+          "totalPrice": 1,
+          "minPrice": 1,
+          "maxPrice": 1,
+          "subcategories": {
+            "Support Services Options": {
+              "totalSKUs": 1,
+              "totalPrice": 1,
+              "avgPrice": 1
+            }
+          },
+          "avgPrice": 1
         },
         "Storage Controllers": {
           "totalSKUs": 6,
@@ -283,9 +297,18 @@
         }
       }
     },
-    "snapshotFingerprint": "d81d9ee12922b3d20cd288303ee1b507bf8a6b564afdbf64ad5528ec4a7712c5",
+    "incrementalStats": {
+      "totalScrapedSkus": 308,
+      "unchangedSkusCount": 307,
+      "modifiedSkusCount": 1,
+      "addedSkusCount": 0,
+      "removedSkusCount": 1,
+      "estimatedTokensSaved": 0,
+      "estimatedProcessingTimeSavedMs": 0
+    },
+    "snapshotFingerprint": "6025ec427a94f170e0feca3aeae9343b5a7706f2cf8f8b13196733e96253220f",
     "chassisVariantCount": 1,
-    "rulesGeneratedAt": "2026-10-29T06:34:27.145Z"
+    "rulesGeneratedAt": "2026-11-12T03:28:55.966Z"
   },
   "chassisVariants": [
     {
@@ -301,8 +324,8 @@
       "discontinuedDate": "",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "ATTRIBUTE_CHANGED",
-      "priceHistoryTrail": "2026-09-11: $4200.00 → 2026-10-29: $4200.00"
+      "diffStatus": "UNCHANGED",
+      "priceHistoryTrail": "2026-09-11: $4200.00 → 2026-10-29: $4200.00 → 2026-11-12: (no price)"
     }
   ],
   "chassisVariantMatrix": {
@@ -319,21 +342,21 @@
       "discontinuedDate": "",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "ATTRIBUTE_CHANGED",
-      "priceHistoryTrail": "2026-09-11: $4200.00 → 2026-10-29: $4200.00"
+      "diffStatus": "UNCHANGED",
+      "priceHistoryTrail": "2026-09-11: $4200.00 → 2026-10-29: $4200.00 → 2026-11-12: (no price)"
     }
   },
   "smartChassisCombinations": [],
   "solutionManifest": {
     "commercialBreakdown": {
       "hardware": 6624,
-      "support": 324486,
+      "support": 325450,
       "services": 9129,
       "software": 0,
-      "total": 340239
+      "total": 341203
     },
     "deliveryAndSupport": {
-      "iconId": "I157948070-01",
+      "iconId": "I158316730-01",
       "edt": "14 - 18 days",
       "configName": "OCA Config 2",
       "attachedServices": [
@@ -527,8 +550,8 @@
         "quantity": 1,
         "description": "HPE SY480 Gen12 Support",
         "configName": "Synergy 480 Gen12 #1",
-        "unitPrice": 19278,
-        "extPrice": 19278,
+        "unitPrice": 20242,
+        "extPrice": 20242,
         "startDate": "03/01/2021",
         "discDate": "12/31/2099"
       }
@@ -662,6 +685,108 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "P73447-F21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P83865-F21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P83865-F21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P83867-F21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P83867-F21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P83869-F21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P83869-F21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P83865-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P83865-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P83867-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P83867-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P83869-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P83869-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
       "parentCategory": "Memory",
       "subCategory": "Memory",
       "constraint": "",
@@ -4282,7 +4407,7 @@
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "R8V46AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+      "rule": "R8V46AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
       "subCategory": "High Availability Computing - Cluster Software",
       "constraint": "",
@@ -4299,7 +4424,7 @@
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "R8V48A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+      "rule": "R8V48A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
       "subCategory": "High Availability Computing - Cluster Software",
       "constraint": "",
@@ -4316,7 +4441,7 @@
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "S0W13AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+      "rule": "S0W13AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
       "subCategory": "High Availability Computing - Cluster Software",
       "constraint": "",
@@ -4333,7 +4458,7 @@
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "S0W16AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+      "rule": "S0W16AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
       "subCategory": "High Availability Computing - Cluster Software",
       "constraint": "",
@@ -4350,7 +4475,7 @@
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "S0W19AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+      "rule": "S0W19AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
       "subCategory": "High Availability Computing - Cluster Software",
       "constraint": "",
@@ -4367,7 +4492,7 @@
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "S0W22AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+      "rule": "S0W22AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
       "subCategory": "High Availability Computing - Cluster Software",
       "constraint": "",
@@ -4384,7 +4509,7 @@
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "S0W25AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+      "rule": "S0W25AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
       "subCategory": "High Availability Computing - Cluster Software",
       "constraint": "",
@@ -4401,7 +4526,7 @@
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "S0W27AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+      "rule": "S0W27AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
       "subCategory": "High Availability Computing - Cluster Software",
       "constraint": "",
@@ -4418,7 +4543,7 @@
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "S0W28AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+      "rule": "S0W28AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
       "subCategory": "High Availability Computing - Cluster Software",
       "constraint": "",
@@ -5519,6 +5644,28 @@
     {
       "level": "CHASSIS",
       "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "BTO_DISALLOWED",
+      "parentCategory": "Memory",
+      "subCategory": "Configuration Rules",
+      "constraint": "BTO Memories are not allowed in CTO Base Model.",
+      "maxQty": "",
+      "rule": "[BTO_DISALLOWED] BTO Memories are not allowed in CTO Base Model.",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "P83865-B21",
+        "P83867-B21",
+        "P83869-B21"
+      ],
+      "ineligibilityReason": "BTO Memories are not allowed in CTO Base Model.",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
       "vendorRuleClassification": "CHASSIS_GATE",
       "parentCategory": "Hybrid RAID",
       "subCategory": "Configuration Rules",
@@ -5603,6 +5750,13 @@
     },
     {
       "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "max 32",
+      "maxQty": 32,
+      "rule": "BTO Memories are not allowed in CTO Base Model."
+    },
+    {
+      "parentCategory": "Memory",
       "subCategory": "Memory Blank Kit",
       "constraint": "max 1",
       "maxQty": 1,
@@ -5635,6 +5789,13 @@
       "constraint": "max 1",
       "maxQty": 1,
       "rule": "Selection constraint for Memory Setting: max 1"
+    },
+    {
+      "parentCategory": "Support Services",
+      "subCategory": "Support Services Options",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for RAID Settings: max 1"
     },
     {
       "parentCategory": "Storage Controllers",
@@ -5838,13 +5999,6 @@
       "constraint": "no max",
       "maxQty": -1,
       "rule": "Selection constraint for Reseller Option Kit: no max"
-    },
-    {
-      "parentCategory": "Processor",
-      "subCategory": "Intel Xeon Scalable Processors",
-      "constraint": "Discontinued",
-      "maxQty": "",
-      "rule": "[DISCONTINUED] SKU present in previous scrape but removed from active catalog"
     }
   ]
 }

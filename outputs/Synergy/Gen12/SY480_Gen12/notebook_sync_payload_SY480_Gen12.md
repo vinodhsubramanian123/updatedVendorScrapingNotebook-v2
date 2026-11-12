@@ -4,9 +4,9 @@
 
 **Scope Identity**: `HPE/SERVER/Synergy/Gen12/SY480_Gen12`
 
-**Sync Timestamp**: 2026-11-09T11:27:16.610Z
+**Sync Timestamp**: 2026-11-12T07:19:21.113Z
 
-**Total Verified SKUs**: `602` (`301` Hardware + `301` Services)
+**Total Verified SKUs**: `601` (`308` Hardware + `293` Services)
 
 **Total Synced KnowledgeDeltas**: `19`
 
@@ -18,9 +18,9 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Reinstated | Status |
 |----------|------------|---------------------|---------------|-------------------|------------|--------|
-| **Hardware Components** | 301 | 60 | 0 | 151 | 24 | **CERTIFIED** |
-| **Support Services & SLAs** | 301 | 68 | 0 | 17 | 0 | **CERTIFIED** |
-| **Total Portfolio** | **602** | **128** | **0** | **168** | **24** | **ACTIVE** |
+| **Hardware Components** | 308 | 7 | 0 | 278 | 0 | **CERTIFIED** |
+| **Support Services & SLAs** | 293 | 32 | 0 | 254 | 0 | **CERTIFIED** |
+| **Total Portfolio** | **601** | **39** | **0** | **532** | **0** | **ACTIVE** |
 
 ## 🌐 1. Universal Vendor Rules (HPE)
 
@@ -73,11 +73,11 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
    - **Affected SKU**: `P69730-F21` | **Required Dependency**: `P51174-B21`
 
 9. **[LEARN_SYNERGY_SUPPORT_PRICING_UPDATE_20261102] SY480_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `SY480_Gen12 CTO Server`):
-   - **Rule**: Synergy stack 3Y Tech Care Basic support rates adjusted by ~5%: Synergy 12000 Frame Support (HU4B2A3 WJN) updated to $779.00 (+$37.00); VC SE 100Gb F32 Module Support (HU4B2A3 Z1R) updated to $813.00 (+$39.00/unit); SY480 Gen12 Compute Node Support (HU4B2A30BT7) updated to $3,497.00 (+$167.00/node). Overall 12-node solution services list price adjusted from $62,898.00 to $65,017.00 USD (+$2,119.00).
+   - **Rule**: SY480 Gen12 Compute Node 3Y Tech Care Basic Support (HU4B2A30BT7) updated to $3,497.00 (+$167.00/node).
    - **Affected SKU**: `HU4B2A30BT7` | **Required Dependency**: `N/A`
 
 10. **[LEARN_SYNERGY_LEAD_TIME_AND_VALIDATION_20261102] SY480_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `SY480_Gen12 CTO Server`):
-   - **Rule**: HPE 960GB NVMe M.2 2280 PE9010 SSD (P80321-B21) factory lead time extended from 11 days to 30 days (+19 days). Synergy 12000 CTO Frame (P51174-B21) lead time is 13 days, and CLIC validation warnings have cleared to clean/pass.
+   - **Rule**: HPE 960GB NVMe M.2 2280 PE9010 SSD (P80321-B21) factory lead time extended from 11 days to 30 days (+19 days).
    - **Affected SKU**: `P80321-B21` | **Required Dependency**: `N/A`
 
 
@@ -98,6 +98,12 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 2. **[Virtualization]**: Private Product is not valid for current customer account
    - **Gated Rule Type**: `MUTUAL_EXCLUSION`
    - **Affected SKUs (3)**: `S4R76AAE`, `S4F94AAE`, `S4G00AAE`
+
+### CTO vs BTO Factory Integration Rules
+
+1. **[Memory]**: BTO Memories are not allowed in CTO Base Model.
+   - **Gated Rule Type**: `BTO_DISALLOWED`
+   - **Affected SKUs (3)**: `P83865-B21`, `P83867-B21`, `P83869-B21`
 
 ## ⚠️ 4. Discontinued & Obsolete SKUs Registry
 
@@ -175,31 +181,31 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Product # | Description | Category | List Price (USD) | Discontinued Date | Price Trend | Presales Strategy Guidance |
 |---|---|---|---:|---|:---:|---|
-| `P77096-291` | Microsoft Windows Server 2025 16-core Standard FIO Pre-installed UEFI Japanese SW | Software & Licenses | $0 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
-| `P77096-B21` | Microsoft Windows Server 2025 16-core Standard FIO Pre-installed UEFI en/fr/de/es/it/pt/nl SW | Software & Licenses | $1,147 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
-| `P77097-291` | Microsoft Windows Server 2025 16-core Datacenter FIO Not Pre-installed Japanese SW | Software & Licenses | $0 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
-| `P77097-B21` | Microsoft Windows Server 2025 16-core Datacenter FIO Not Pre-installed en/fr/de/es/it/pt/nl SW | Software & Licenses | $5,712 | 01/31/2027 | +100.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
-| `P77095-291` | Microsoft Windows Server 2025 16-core Standard FIO Not Pre-installed Japanese SW | Software & Licenses | $0 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
-| `P77095-B21` | Microsoft Windows Server 2025 16-core Standard FIO Not Pre-installed en/fr/de/es/it/pt/nl SW | Software & Licenses | $1,147 | 01/31/2027 | +100.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
-| `P45879-B21` | Microsoft Windows Server 2019 16-core Downgrade Datacenter FIO Not Pre-installed English SW | Software & Licenses | $20 | 01/31/2027 | -28.57% | 🔥 **Clearance Opportunity** (-28.57% CapEx savings). Procure before 01/31/2027. |
-| `P45879-051` | Microsoft Windows Server 2019 16-core Downgrade Datacenter FIO Not Pre-installed French SW | Software & Licenses | $20 | 01/31/2027 | -28.57% | 🔥 **Clearance Opportunity** (-28.57% CapEx savings). Procure before 01/31/2027. |
-| `P45879-041` | Microsoft Windows Server 2019 16-core Downgrade Datacenter FIO Not Pre-installed German SW | Software & Licenses | $20 | 01/31/2027 | -28.57% | 🔥 **Clearance Opportunity** (-28.57% CapEx savings). Procure before 01/31/2027. |
-| `P45879-061` | Microsoft Windows Server 2019 16-core Downgrade Datacenter FIO Not Pre-installed Italian SW | Software & Licenses | $20 | 01/31/2027 | -28.57% | 🔥 **Clearance Opportunity** (-28.57% CapEx savings). Procure before 01/31/2027. |
-| `P45879-291` | Microsoft Windows Server 2019 16-core Downgrade Datacenter FIO Not Pre-installed Japanese SW | Software & Licenses | $99,999 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
-| `P45879-071` | Microsoft Windows Server 2019 16-core Downgrade Datacenter FIO Not Pre-installed Spanish SW | Software & Licenses | $20 | 01/31/2027 | -28.57% | 🔥 **Clearance Opportunity** (-28.57% CapEx savings). Procure before 01/31/2027. |
-| `P45862-B21` | Microsoft Windows Server 2019 16-core Downgrade Standard FIO Not Pre-installed English SW | Software & Licenses | $20 | 01/31/2027 | -28.57% | 🔥 **Clearance Opportunity** (-28.57% CapEx savings). Procure before 01/31/2027. |
-| `P45862-051` | Microsoft Windows Server 2019 16-core Downgrade Standard FIO Not Pre-installed French SW | Software & Licenses | $20 | 01/31/2027 | -28.57% | 🔥 **Clearance Opportunity** (-28.57% CapEx savings). Procure before 01/31/2027. |
-| `P45862-041` | Microsoft Windows Server 2019 16-core Downgrade Standard FIO Not Pre-installed German SW | Software & Licenses | $20 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
-| `P45862-061` | Microsoft Windows Server 2019 16-core Downgrade Standard FIO Not Pre-installed Italian SW | Software & Licenses | $20 | 01/31/2027 | -28.57% | 🔥 **Clearance Opportunity** (-28.57% CapEx savings). Procure before 01/31/2027. |
-| `P45862-291` | Microsoft Windows Server 2019 16-core Downgrade Standard FIO Not Pre-installed Japanese SW | Software & Licenses | $99,999 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
-| `P45862-071` | Microsoft Windows Server 2019 16-core Downgrade Standard FIO Not Pre-installed Spanish SW | Software & Licenses | $20 | 01/31/2027 | -28.57% | 🔥 **Clearance Opportunity** (-28.57% CapEx savings). Procure before 01/31/2027. |
-| `P77125-291` | Microsoft Windows Server 2022 Downgrade Datacenter FIO Not Pre-installed Japanese SW | Software & Licenses | $0 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
-| `P77125-B21` | Microsoft Windows Server 2022 Downgrade Datacenter FIO Not Pre-installed WW SW | Software & Licenses | $33 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
-| `P77124-291` | Microsoft Windows Server 2022 Downgrade Standard FIO Not Pre-installed Japanese SW | Software & Licenses | $0 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
-| `P77124-B21` | Microsoft Windows Server 2022 Downgrade Standard FIO Not Pre-installed WW SW | Software & Licenses | $33 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
-| `P77102-291` | Microsoft Windows Server 2025 16-core Datacenter Reassignment Reseller Option Kit Japanese SW | Software & Licenses | $0 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
-| `P77102-B21` | Microsoft Windows Server 2025 16-core Datacenter Reassignment Reseller Option Kit en/fr/de/es SW | Software & Licenses | $7,733 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
-| `P77101-AA1` | Microsoft Windows Server 2025 16-core Datacenter Reseller Option Kit Chinese Simplified SW | Software & Licenses | $0 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P77096-291` | Microsoft Windows Server 2025 16-core Standard FIO Pre-installed UEFI Japanese SW | Software & Licenses | $0 | 02/28/2027 | 0.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P77096-B21` | Microsoft Windows Server 2025 16-core Standard FIO Pre-installed UEFI en/fr/de/es/it/pt/nl SW | Software & Licenses | $1,147 | 02/28/2027 | 0.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P77097-291` | Microsoft Windows Server 2025 16-core Datacenter FIO Not Pre-installed Japanese SW | Software & Licenses | $0 | 02/28/2027 | 0.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P77097-B21` | Microsoft Windows Server 2025 16-core Datacenter FIO Not Pre-installed en/fr/de/es/it/pt/nl SW | Software & Licenses | $5,712 | 02/28/2027 | 0.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P77095-291` | Microsoft Windows Server 2025 16-core Standard FIO Not Pre-installed Japanese SW | Software & Licenses | $0 | 02/28/2027 | 0.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P77095-B21` | Microsoft Windows Server 2025 16-core Standard FIO Not Pre-installed en/fr/de/es/it/pt/nl SW | Software & Licenses | $1,147 | 02/28/2027 | 0.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P45879-B21` | Microsoft Windows Server 2019 16-core Downgrade Datacenter FIO Not Pre-installed English SW | Software & Licenses | $28 | 02/28/2027 | +40.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P45879-051` | Microsoft Windows Server 2019 16-core Downgrade Datacenter FIO Not Pre-installed French SW | Software & Licenses | $20 | 02/28/2027 | 0.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P45879-041` | Microsoft Windows Server 2019 16-core Downgrade Datacenter FIO Not Pre-installed German SW | Software & Licenses | $28 | 02/28/2027 | +40.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P45879-061` | Microsoft Windows Server 2019 16-core Downgrade Datacenter FIO Not Pre-installed Italian SW | Software & Licenses | $20 | 02/28/2027 | 0.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P45879-291` | Microsoft Windows Server 2019 16-core Downgrade Datacenter FIO Not Pre-installed Japanese SW | Software & Licenses | $99,999 | 02/28/2027 | 0.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P45879-071` | Microsoft Windows Server 2019 16-core Downgrade Datacenter FIO Not Pre-installed Spanish SW | Software & Licenses | $28 | 02/28/2027 | +40.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P45862-B21` | Microsoft Windows Server 2019 16-core Downgrade Standard FIO Not Pre-installed English SW | Software & Licenses | $28 | 02/28/2027 | +40.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P45862-051` | Microsoft Windows Server 2019 16-core Downgrade Standard FIO Not Pre-installed French SW | Software & Licenses | $28 | 02/28/2027 | +40.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P45862-041` | Microsoft Windows Server 2019 16-core Downgrade Standard FIO Not Pre-installed German SW | Software & Licenses | $20 | 02/28/2027 | 0.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P45862-061` | Microsoft Windows Server 2019 16-core Downgrade Standard FIO Not Pre-installed Italian SW | Software & Licenses | $20 | 02/28/2027 | 0.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P45862-291` | Microsoft Windows Server 2019 16-core Downgrade Standard FIO Not Pre-installed Japanese SW | Software & Licenses | $99,999 | 02/28/2027 | 0.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P45862-071` | Microsoft Windows Server 2019 16-core Downgrade Standard FIO Not Pre-installed Spanish SW | Software & Licenses | $28 | 02/28/2027 | +40.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P77125-291` | Microsoft Windows Server 2022 Downgrade Datacenter FIO Not Pre-installed Japanese SW | Software & Licenses | $0 | 02/28/2027 | 0.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P77125-B21` | Microsoft Windows Server 2022 Downgrade Datacenter FIO Not Pre-installed WW SW | Software & Licenses | $33 | 02/28/2027 | 0.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P77124-291` | Microsoft Windows Server 2022 Downgrade Standard FIO Not Pre-installed Japanese SW | Software & Licenses | $0 | 02/28/2027 | 0.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P77124-B21` | Microsoft Windows Server 2022 Downgrade Standard FIO Not Pre-installed WW SW | Software & Licenses | $33 | 02/28/2027 | 0.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P77102-291` | Microsoft Windows Server 2025 16-core Datacenter Reassignment Reseller Option Kit Japanese SW | Software & Licenses | $0 | 02/28/2027 | 0.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P77102-B21` | Microsoft Windows Server 2025 16-core Datacenter Reassignment Reseller Option Kit en/fr/de/es SW | Software & Licenses | $7,733 | 02/28/2027 | 0.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P77101-AA1` | Microsoft Windows Server 2025 16-core Datacenter Reseller Option Kit Chinese Simplified SW | Software & Licenses | $0 | 02/28/2027 | 0.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
 *... [11 additional impending EOL records omitted for brevity]*
 
 ## 📊 5b. Category-Level Trends & Significant Price Adjustments
@@ -211,11 +217,12 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 | **Chassis** | 1 | 0 | 1 | 0 | 0 | 🔄 Attributes/specifications updated (1 SKUs) |
 | **PCIe Risers** | 1 | 0 | 1 | 0 | 0 | 🔄 Attributes/specifications updated (1 SKUs) |
 | **Drive Enclosures / Drives** | 10 | 0 | 10 | 0 | 0 | 🔄 Attributes/specifications updated (10 SKUs) |
-| **Processor** | 17 | 1 | 16 | 0 | 0 | ✨ Portfolio expanding (+1 new options) |
+| **Processor** | 17 | 0 | 17 | 0 | 0 | 🔄 Attributes/specifications updated (17 SKUs) |
 | **Cooling / Thermal** | 2 | 0 | 2 | 0 | 0 | 🔄 Attributes/specifications updated (2 SKUs) |
-| **Memory** | 14 | 0 | 14 | 0 | 0 | 🔄 Attributes/specifications updated (14 SKUs) |
+| **Memory** | 20 | 6 | 14 | 0 | 0 | ✨ Portfolio expanding (+6 new options) |
 | **Accessories & Infrastructure** | 1 | 0 | 1 | 0 | 0 | 🔄 Attributes/specifications updated (1 SKUs) |
-| **Software & Licenses** | 244 | 59 | 185 | 0 | 17 | ⚠️ Active price drops / clearance (17 SKUs discounted) |
+| **Software & Licenses** | 244 | 0 | 244 | 0 | 1 | ⚠️ Active price drops / clearance (1 SKUs discounted) |
+| **Support Services** | 1 | 1 | 0 | 0 | 0 | ✨ Portfolio expanding (+1 new options) |
 | **Storage Controllers** | 6 | 0 | 6 | 0 | 0 | 🔄 Attributes/specifications updated (6 SKUs) |
 | **Networking** | 3 | 0 | 3 | 0 | 0 | 🔄 Attributes/specifications updated (3 SKUs) |
 | **Cables & Enablement Kits** | 2 | 0 | 2 | 0 | 0 | 🔄 Attributes/specifications updated (2 SKUs) |
@@ -224,57 +231,42 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Product # | Description | Category | Previous Price | Current Price | Delta (USD) | Change (%) | Movement Type |
 |---|---|---|---:|---:|---:|---:|---|
-| `P77111-B21` | Microsoft Windows Server 2025 1 Device CAL WW LTU | Software & Licenses | New Addition | $52 | $52 | **+100.0%** | ✨ NEW_OPTION |
-| `P46191-B21` | Microsoft Windows Server 2022 1 User CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU | Software & Licenses | New Addition | $55 | $55 | **+100.0%** | ✨ NEW_OPTION |
-| `P77110-B21` | Microsoft Windows Server 2025 1 User CAL WW LTU | Software & Licenses | New Addition | $72 | $72 | **+100.0%** | ✨ NEW_OPTION |
-| `P77119-B21` | Microsoft Windows Server 2025 Remote Desktop Service 1 Device CAL WW LTU | Software & Licenses | New Addition | $201 | $201 | **+100.0%** | ✨ NEW_OPTION |
-| `P46216-B21` | Microsoft Windows Server 2022 5 Devices CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU | Software & Licenses | New Addition | $216 | $216 | **+100.0%** | ✨ NEW_OPTION |
-| `P77113-B21` | Microsoft Windows Server 2025 5 Devices CAL WW LTU | Software & Licenses | New Addition | $226 | $226 | **+100.0%** | ✨ NEW_OPTION |
-| `P46215-B21` | Microsoft Windows Server 2022 5 Users CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU | Software & Licenses | New Addition | $271 | $271 | **+100.0%** | ✨ NEW_OPTION |
-| `P77118-B21` | Microsoft Windows Server 2025 Remote Desktop Service 1 User CAL WW LTU | Software & Licenses | New Addition | $280 | $280 | **+100.0%** | ✨ NEW_OPTION |
-| `P77112-B21` | Microsoft Windows Server 2025 5 Users CAL WW LTU | Software & Licenses | New Addition | $322 | $322 | **+100.0%** | ✨ NEW_OPTION |
-| `P46218-B21` | Microsoft Windows Server 2022 10 Devices CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU | Software & Licenses | New Addition | $429 | $429 | **+100.0%** | ✨ NEW_OPTION |
-| `P77115-B21` | Microsoft Windows Server 2025 10 Devices CAL WW LTU | Software & Licenses | New Addition | $444 | $444 | **+100.0%** | ✨ NEW_OPTION |
-| `S6L28B` | Microsoft Windows Server 2025 10-core Essentials FIO Not Pre-installed WW ESD LTU | Software & Licenses | New Addition | $445 | $445 | **+100.0%** | ✨ NEW_OPTION |
-| `P46217-B21` | Microsoft Windows Server 2022 10 Users CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU | Software & Licenses | New Addition | $539 | $539 | **+100.0%** | ✨ NEW_OPTION |
-| `P77114-B21` | Microsoft Windows Server 2025 10 Users CAL WW LTU | Software & Licenses | New Addition | $636 | $636 | **+100.0%** | ✨ NEW_OPTION |
-| `P46222-B21` | Microsoft Windows Server 2022 RDS 5 Devices CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU | Software & Licenses | New Addition | $880 | $880 | **+100.0%** | ✨ NEW_OPTION |
-| `P46221-B21` | Microsoft Windows Server 2022 RDS 5 Users CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU | Software & Licenses | New Addition | $935 | $935 | **+100.0%** | ✨ NEW_OPTION |
-| `P77121-B21` | Microsoft Windows Server 2025 Remote Desktop Service 5 Devices CAL WW LTU | Software & Licenses | New Addition | $974 | $974 | **+100.0%** | ✨ NEW_OPTION |
-| `P46005-B21` | Microsoft Windows Server 2022 16-core Standard FIO Not Pre-installed en/fr/it/de/es/nl/pt SW | Software & Licenses | New Addition | $988 | $988 | **+100.0%** | ✨ NEW_OPTION |
-| `S3R51A` | SUSE Linux Enterprise Server w/SUSE Manager Lifecycle Management+ 1-2 Sockets/1-2 VM 1yr 9x5 LTU | Software & Licenses | New Addition | $1,099 | $1,099 | **+100.0%** | ✨ NEW_OPTION |
-| `S7N90A` | SUSE Linux Enterprise Server w/SUSE Multi-Linux Mgr Lifecycle Mgmt+ 1-2 Skts/1-2 VM 1yr 9x5 LTU | Software & Licenses | New Addition | $1,099 | $1,099 | **+100.0%** | ✨ NEW_OPTION |
-*... [33 additional price movements omitted for brevity]*
+| `P83865-F21` | HPE 64GB (1x64GB) Dual Rank x4 DDR5-8000 CAS-64-64-64 EC8 Registered Smart FIO Memory Kit | Memory | New Addition | $32,811 | $32,811 | **+100.0%** | ✨ NEW_OPTION |
+| `P83865-B21` | HPE 64GB (1x64GB) Dual Rank x4 DDR5-8000 CAS-64-64-64 EC8 Registered Smart Memory Kit | Memory | New Addition | $32,811 | $32,811 | **+100.0%** | ✨ NEW_OPTION |
+| `P83867-F21` | HPE 96GB (1x96GB) Dual Rank x4 DDR5-8000 CAS-64-64-64 EC8 Registered Smart FIO Memory Kit | Memory | New Addition | $54,115 | $54,115 | **+100.0%** | ✨ NEW_OPTION |
+| `P83867-B21` | HPE 96GB (1x96GB) Dual Rank x4 DDR5-8000 CAS-64-64-64 EC8 Registered Smart Memory Kit | Memory | New Addition | $54,115 | $54,115 | **+100.0%** | ✨ NEW_OPTION |
+| `P83869-F21` | HPE 128GB (1x128GB) Dual Rank x4 DDR5-8000 CAS-64-64-64 EC8 Registered Smart FIO Memory Kit | Memory | New Addition | $69,219 | $69,219 | **+100.0%** | ✨ NEW_OPTION |
+| `P83869-B21` | HPE 128GB (1x128GB) Dual Rank x4 DDR5-8000 CAS-64-64-64 EC8 Registered Smart Memory Kit | Memory | New Addition | $69,219 | $69,219 | **+100.0%** | ✨ NEW_OPTION |
 
 ## 🔄 5. Recent Attribute & Specification Modifications Log
 
 | Timestamp | SKU | Attribute | Old Value | New Value |
 |-----------|-----|-----------|-----------|-----------|
-| 2026-10-29 | `TD377A` | CLIC Status | Obsolete (OB) | **** |
-| 2026-10-29 | `TD377A` | Lifecycle Badge | OB | **** |
-| 2026-10-29 | `TD377A` | Availability | Obsolete (OB) | **** |
-| 2026-10-29 | `TD377A` | Lead Time Source | Not published by OCA | **** |
-| 2026-10-29 | `TD377A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **** |
-| 2026-10-29 | `BD571A` | Description | Mellanox Unified Fabric Manager Advanced 1yr 24x7 Updates and Technical Support Flex License | **** |
-| 2026-10-29 | `BD571A` | Option Type | Standard | **** |
-| 2026-10-29 | `BD571A` | Start Date | 08/13/2012 | **** |
-| 2026-10-29 | `BD571A` | Discontinued Date | 03/03/2022 | **** |
-| 2026-10-29 | `BD571A` | Lifecycle Status | Obsolete (OB) | **** |
-| 2026-10-29 | `BD571A` | CLIC Status | Obsolete (OB) | **** |
-| 2026-10-29 | `BD571A` | Lifecycle Badge | OB | **** |
-| 2026-10-29 | `BD571A` | Availability | Obsolete (OB) | **** |
-| 2026-10-29 | `BD571A` | Lead Time Source | Not published by OCA | **** |
-| 2026-10-29 | `BD571A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **** |
-| 2026-10-29 | `BD572A` | Description | Mellanox Unified Fabric Manager Advanced 3yr 24x7 Updates and Technical Support Flex License | **** |
-| 2026-10-29 | `BD572A` | Option Type | Standard | **** |
-| 2026-10-29 | `BD572A` | Start Date | 08/13/2012 | **** |
-| 2026-10-29 | `BD572A` | Discontinued Date | 03/03/2022 | **** |
-| 2026-10-29 | `BD572A` | Lifecycle Status | Obsolete (OB) | **** |
-| 2026-10-29 | `BD572A` | CLIC Status | Obsolete (OB) | **** |
-| 2026-10-29 | `BD572A` | Lifecycle Badge | OB | **** |
-| 2026-10-29 | `BD572A` | Availability | Obsolete (OB) | **** |
-| 2026-10-29 | `BD572A` | Lead Time Source | Not published by OCA | **** |
-| 2026-10-29 | `BD572A` | Vendor Attributes | {"Extended Price (USD)":"0"} | **** |
+| 2026-11-12 | `P77100-AA1` | Vendor Attributes | {"listPrice":0} | **{}** |
+| 2026-11-12 | `P77100-AB1` | Discontinued Date | 01/31/2027 | **02/28/2027** |
+| 2026-11-12 | `P77100-AB1` | Lifecycle Status | Active | **EOL Warning (90-Day)** |
+| 2026-11-12 | `P77100-AB1` | Lifecycle Badge |  | **90** |
+| 2026-11-12 | `P77100-AB1` | Availability | Available | **EOL Warning (90-Day)** |
+| 2026-11-12 | `P77100-AB1` | Vendor Attributes | {"listPrice":0} | **{}** |
+| 2026-11-12 | `P77100-291` | Discontinued Date | 01/31/2027 | **02/28/2027** |
+| 2026-11-12 | `P77100-291` | Lifecycle Status | Active | **EOL Warning (90-Day)** |
+| 2026-11-12 | `P77100-291` | Lifecycle Badge |  | **90** |
+| 2026-11-12 | `P77100-291` | Availability | Available | **EOL Warning (90-Day)** |
+| 2026-11-12 | `P77100-291` | Vendor Attributes | {"listPrice":0} | **{}** |
+| 2026-11-12 | `S6L38A` | Discontinued Date | 11/30/2027 | **02/29/2028** |
+| 2026-11-12 | `P77100-021` | Discontinued Date | 01/31/2027 | **02/28/2027** |
+| 2026-11-12 | `P77100-021` | Lifecycle Status | Active | **EOL Warning (90-Day)** |
+| 2026-11-12 | `P77100-021` | Lifecycle Badge |  | **90** |
+| 2026-11-12 | `P77100-021` | Availability | Available | **EOL Warning (90-Day)** |
+| 2026-11-12 | `P77100-A21` | Discontinued Date | 01/31/2027 | **02/28/2027** |
+| 2026-11-12 | `P77100-A21` | Lifecycle Status | Active | **EOL Warning (90-Day)** |
+| 2026-11-12 | `P77100-A21` | Lifecycle Badge |  | **90** |
+| 2026-11-12 | `P77100-A21` | Availability | Available | **EOL Warning (90-Day)** |
+| 2026-11-12 | `P77100-371` | Discontinued Date | 01/31/2027 | **02/28/2027** |
+| 2026-11-12 | `P77100-371` | Lifecycle Status | Active | **EOL Warning (90-Day)** |
+| 2026-11-12 | `P77100-371` | Lifecycle Badge |  | **90** |
+| 2026-11-12 | `P77100-371` | Availability | Available | **EOL Warning (90-Day)** |
+| 2026-11-12 | `P77100-371` | Vendor Attributes | {"listPrice":0} | **{}** |
 
 ## 🧩 6. Same-Product CTO Variant Matrix
 
@@ -284,11 +276,11 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 ## 📦 9. Solution Manifest, EDT & Commercial Baseline
 
-**Configuration Profile**: `OCA Config 2` | **Icon ID**: `I157948070-01` | **Estimated Delivery Time (EDT)**: `14 - 18 days`
+**Configuration Profile**: `OCA Config 2` | **Icon ID**: `I158316730-01` | **Estimated Delivery Time (EDT)**: `14 - 18 days`
 
 | Hardware (USD) | Support (USD) | Services (USD) | Software (USD) | Total Baseline (USD) |
 |---:|---:|---:|---:|---:|
-| $6,624 | $3,24,486 | $9,129 | $0 | **$3,40,239** |
+| $6,624 | $3,25,450 | $9,129 | $0 | **$3,41,203** |
 
 ### Authoritative Baseline BOM Hierarchy
 
@@ -308,9 +300,45 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 | (1) | `HU0R5A5` | HPE 5Y Service Credits 10 Per Yr SVC | 1 | $0 | $0 |
 | (2) | `HU0R5A5 Y39` | HPE 5Y Service Credits Qty 50 SVC | 3 | $17,526 | $52,578 |
 | (1) | `HU4D5A5` | HPE 5Y Complete Care Addon Essential Service | 1 | $0 | $0 |
-| (2) | `HU4D5A50BT7` | HPE SY480 Gen12 Support | 1 | $19,278 | $19,278 |
+| (2) | `HU4D5A50BT7` | HPE SY480 Gen12 Support | 1 | $20,242 | $20,242 |
 
 ## ⏱️ 10. Supply Chain & Delivery Lead Time Intelligence
+
+### Confirmed Component Delivery SLAs
+
+| Product # | Description | Category | Lead Time | Channel Status |
+|---|---|---|---:|---|
+| `P68340-B21` | HPE Synergy NS204i-d v2 M.2 Boot Storage Device | PCIe Risers | 3 | Available |
+| `P80318-B21` | HPE 480GB NVMe Gen4 Mainstream Performance Read Intensive M.2 2280 PE9010 SSD | Drive Enclosures / Drives | 5 | Not published by OCA |
+| `P80321-B21` | HPE 960GB NVMe Gen4 Mainstream Performance Read Intensive M.2 2280 PE9010 SSD | Drive Enclosures / Drives | 5 | Not published by OCA |
+| `P73831-B21` | Intel Xeon 6747P 2.7GHz 48-core 330W Processor for HPE | Processor | 120 | Available |
+| `P74503-B21` | Intel Xeon 6505P 2.2GHz 12-core 150W Processor for HPE | Processor | 14 | Available |
+| `P74504-B21` | Intel Xeon 6507P 3.5GHz 8-core 150W Processor for HPE | Processor | 14 | Available |
+| `P74506-B21` | Intel Xeon 6515P 2.3GHz 16-core 150W Processor for HPE | Processor | 14 | Available |
+| `P74507-B21` | Intel Xeon 6517P 3.2GHz 16-core 190W Processor for HPE | Processor | 14 | Available |
+| `P74568-B21` | Intel Xeon 6520P 2.4GHz 24-core 210W Processor for HPE | Processor | 14 | Available |
+| `P74570-B21` | Intel Xeon 6527P 3.0GHz 24-core 255W Processor for HPE | Processor | 14 | Available |
+| `P74571-B21` | Intel Xeon 6530P 2.3GHz 32-core 225W Processor for HPE | Processor | 14 | Available |
+| `P74573-B21` | Intel Xeon 6730P 2.5GHz 32-core 250W Processor for HPE | Processor | 5 | Available |
+| `P74576-B21` | Intel Xeon 6737P 2.9GHz 32-core 270W Processor for HPE | Processor | 14 | Available |
+| `P73829-B21` | Intel Xeon 6740P 2.1GHz 48-core 270W Processor for HPE | Processor | 5 | Available |
+| `P73832-B21` | Intel Xeon 6760P 2.2GHz 64-core 330W Processor for HPE | Processor | 120 | Available |
+| `P73834-B21` | Intel Xeon 6767P 2.4GHz 64-core 350W Processor for HPE | Processor | 5 | Available |
+| `P73837-B21` | Intel Xeon 6787P 2.0GHz 86-core 350W Processor for HPE | Processor | 5 | Available |
+| `P74575-B21` | Intel Xeon 6736P 2.0GHz 36-core 205W Processor for HPE | Processor | 14 | Available |
+| `P81591-B21` | Intel Xeon 6745P 3.1GHz 32-core 300W Processor for HPE | Processor | 60 | Available |
+| `P68225-B21` | HPE Synergy 480 Gen12 CPU Front Heat Sink Kit | Cooling / Thermal | 14 | Not published by OCA |
+| `P68226-B21` | HPE Synergy 480 Gen12 CPU Rear Heat Sink Kit | Cooling / Thermal | 14 | Not published by OCA |
+| `P69728-F21` | HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit | Memory | 14 | Available |
+| `P69727-F21` | HPE 32GB (1x32GB) Dual Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit | Memory | 14 | Available |
+| `P69729-F21` | HPE 96GB (1x96GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit | Memory | 14 | Available |
+| `P69730-F21` | HPE 128GB (1x128GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit | Memory | 14 | Available |
+| `P73447-F21` | HPE 256GB (1x256GB) Quad Rank x4 DDR5-6400 CAS-60-52-52 EC8 Registered 3DS Smart FIO Memory Kit | Memory | 14 | Available |
+| `P07818-B21` | HPE DDR4 DIMM Blank Kit | Memory | 8 | Available |
+| `P68218-B21` | HPE Synergy 480 Gen12 4SFF SAS/SATA/NVMe OCP Drive Cage Kit | Drive Enclosures / Drives | 3 | Available |
+| `P68219-B21` | HPE Synergy 480 Gen12 4SFF NVMe Direct Connect Drive Cage Kit | Drive Enclosures / Drives | 3 | Available |
+| `P68220-B21` | HPE Synergy 480 Gen12 8EDSFF NVMe E3.S Direct Connect Drive Cage Kit | Drive Enclosures / Drives | 3 | Available |
+*... [18 additional supply chain records omitted for brevity]*
 
 ### ⚠️ Supply Chain Verification Advisory (Unpublished Delivery Lead Times)
 
@@ -318,20 +346,20 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Product # | Description | Category | Lead Time Status | Presales Action |
 |---|---|---|:---:|---|
-| `P80318-B21` | HPE 480GB NVMe Gen4 Mainstream Performance Read Intensive M.2 2280 PE9010 SSD | Drive Enclosures / Drives | **Unpublished** | Verify distributor inventory prior to SLA commitment |
-| `P80321-B21` | HPE 960GB NVMe Gen4 Mainstream Performance Read Intensive M.2 2280 PE9010 SSD | Drive Enclosures / Drives | **Unpublished** | Verify distributor inventory prior to SLA commitment |
-| `P73834-B21` | Intel Xeon 6767P 2.4GHz 64-core 350W Processor for HPE | Processor | **Unpublished** | Verify distributor inventory prior to SLA commitment |
-| `P74570-B21` | Intel Xeon 6527P 3.0GHz 24-core 255W Processor for HPE | Processor | **Unpublished** | Verify distributor inventory prior to SLA commitment |
-| `P74571-B21` | Intel Xeon 6530P 2.3GHz 32-core 225W Processor for HPE | Processor | **Unpublished** | Verify distributor inventory prior to SLA commitment |
-| `P74573-B21` | Intel Xeon 6730P 2.5GHz 32-core 250W Processor for HPE | Processor | **Unpublished** | Verify distributor inventory prior to SLA commitment |
-| `P74576-B21` | Intel Xeon 6737P 2.9GHz 32-core 270W Processor for HPE | Processor | **Unpublished** | Verify distributor inventory prior to SLA commitment |
-| `P73829-B21` | Intel Xeon 6740P 2.1GHz 48-core 270W Processor for HPE | Processor | **Unpublished** | Verify distributor inventory prior to SLA commitment |
-| `P73831-B21` | Intel Xeon 6747P 2.7GHz 48-core 330W Processor for HPE | Processor | **Unpublished** | Verify distributor inventory prior to SLA commitment |
-| `P73832-B21` | Intel Xeon 6760P 2.2GHz 64-core 330W Processor for HPE | Processor | **Unpublished** | Verify distributor inventory prior to SLA commitment |
-| `P73837-B21` | Intel Xeon 6787P 2.0GHz 86-core 350W Processor for HPE | Processor | **Unpublished** | Verify distributor inventory prior to SLA commitment |
-| `P74575-B21` | Intel Xeon 6736P 2.0GHz 36-core 205W Processor for HPE | Processor | **Unpublished** | Verify distributor inventory prior to SLA commitment |
-| `P81591-B21` | Intel Xeon 6745P 3.1GHz 32-core 300W Processor for HPE | Processor | **Unpublished** | Verify distributor inventory prior to SLA commitment |
-| `P69728-F21` | HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit | Memory | **Unpublished** | Verify distributor inventory prior to SLA commitment |
 | `P69726-B21` | HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit | Memory | **Unpublished** | Verify distributor inventory prior to SLA commitment |
-*... [92 additional unpublished items omitted for brevity]*
+| `P69726-F21` | HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit | Memory | **Unpublished** | Verify distributor inventory prior to SLA commitment |
+| `P69727-B21` | HPE 32GB (1x32GB) Dual Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit | Memory | **Unpublished** | Verify distributor inventory prior to SLA commitment |
+| `P69728-B21` | HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit | Memory | **Unpublished** | Verify distributor inventory prior to SLA commitment |
+| `P69729-B21` | HPE 96GB (1x96GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit | Memory | **Unpublished** | Verify distributor inventory prior to SLA commitment |
+| `P69730-B21` | HPE 128GB (1x128GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit | Memory | **Unpublished** | Verify distributor inventory prior to SLA commitment |
+| `P73447-B21` | HPE 256GB (1x256GB) Quad Rank x4 DDR5-6400 CAS-60-52-52 EC8 Registered 3DS Smart Memory Kit | Memory | **Unpublished** | Verify distributor inventory prior to SLA commitment |
+| `P83865-F21` | HPE 64GB (1x64GB) Dual Rank x4 DDR5-8000 CAS-64-64-64 EC8 Registered Smart FIO Memory Kit | Memory | **Unpublished** | Verify distributor inventory prior to SLA commitment |
+| `P83867-F21` | HPE 96GB (1x96GB) Dual Rank x4 DDR5-8000 CAS-64-64-64 EC8 Registered Smart FIO Memory Kit | Memory | **Unpublished** | Verify distributor inventory prior to SLA commitment |
+| `P83869-F21` | HPE 128GB (1x128GB) Dual Rank x4 DDR5-8000 CAS-64-64-64 EC8 Registered Smart FIO Memory Kit | Memory | **Unpublished** | Verify distributor inventory prior to SLA commitment |
+| `P83865-B21` | HPE 64GB (1x64GB) Dual Rank x4 DDR5-8000 CAS-64-64-64 EC8 Registered Smart Memory Kit | Memory | **Unpublished** | Verify distributor inventory prior to SLA commitment |
+| `P83867-B21` | HPE 96GB (1x96GB) Dual Rank x4 DDR5-8000 CAS-64-64-64 EC8 Registered Smart Memory Kit | Memory | **Unpublished** | Verify distributor inventory prior to SLA commitment |
+| `P83869-B21` | HPE 128GB (1x128GB) Dual Rank x4 DDR5-8000 CAS-64-64-64 EC8 Registered Smart Memory Kit | Memory | **Unpublished** | Verify distributor inventory prior to SLA commitment |
+| `P46199-AA1` | Microsoft Windows Server 2022 2-core Standard Additional License Chinese Simplified SW | Software & Licenses | **Unpublished** | Verify distributor inventory prior to SLA commitment |
+| `P46199-AB1` | Microsoft Windows Server 2022 2-core Standard Additional License Chinese Traditional SW | Software & Licenses | **Unpublished** | Verify distributor inventory prior to SLA commitment |
+*... [80 additional unpublished items omitted for brevity]*
 

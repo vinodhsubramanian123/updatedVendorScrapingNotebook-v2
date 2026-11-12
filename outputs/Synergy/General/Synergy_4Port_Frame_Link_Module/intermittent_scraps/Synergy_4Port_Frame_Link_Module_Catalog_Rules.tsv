@@ -1,0 +1,49 @@
+Main Category	Sub-Category	Constraint	Rule Type	Rule Text
+Transceivers	SFP Transceivers	max 4	Quantity Constraint	Quantity: max 4
+Cables	DAC Cables	max 4	Quantity Constraint	Quantity: max 4
+Cables	OM3 Fibre Cables	max 4	Quantity Constraint	Quantity: max 4
+Cables	OM4 Fibre Cables	max 4	Quantity Constraint	Quantity: max 4
+Cables	CAT6A Cables	max 4	Quantity Constraint	Quantity: max 4
+Cables	1Gb Transceivers for Management Ports Only	max 2	Quantity Constraint	Quantity: max 2
+Chassis	Variants	min 1, max 1 — Active OCA CTO chassis	Configuration Rule	Select exactly one currently discoverable, non-TAA/non-GTA CTO base chassis
+Networking	SFP Transceivers	max 4	Configuration Rule	Selection constraint for SFP Transceivers: max 4
+Networking	SFP Transceivers	max 4	Configuration Rule	Max quantity of product limited by space available.
+Networking	SFP Transceivers	max 4	Configuration Rule	QK724A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Networking	SFP Transceivers	max 4	Configuration Rule	R6B10A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Networking	SFP Transceivers	max 4	Configuration Rule	834972-B21 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Networking	SFP Transceivers	max 4	Configuration Rule	834972-B22 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Networking	SFP Transceivers	max 4	Configuration Rule	834972-B23 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Networking	SFP Transceivers	max 4	Configuration Rule	834972-B24 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Networking	SFP Transceivers	max 4	Configuration Rule	834972-B25 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Networking	SFP Transceivers	max 4	Configuration Rule	834972-B26 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Networking	SFP Transceivers	max 4	Configuration Rule	834972-B27 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Networking	SFP Transceivers	max 4	Configuration Rule	834972-B28 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Networking	SFP Transceivers	max 4	Configuration Rule	834973-B21 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Networking	SFP Transceivers	max 4	Configuration Rule	834973-B22 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Networking	SFP Transceivers	max 4	Configuration Rule	834973-B23 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Networking	SFP Transceivers	max 4	Configuration Rule	834973-B24 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Networking	SFP Transceivers	max 4	Configuration Rule	834973-B25 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Networking	SFP Transceivers	max 4	Configuration Rule	AJ716B conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Networking	SFP Transceivers	max 4	Configuration Rule	AJ717A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Networking	SFP Transceivers	max 4	Configuration Rule	AP783A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Networking	SFP Transceivers	max 4	Configuration Rule	AW538A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Networking	SFP Transceivers	max 4	Configuration Rule	H6Z29A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Networking	SFP Transceivers	max 4	Configuration Rule	JD093B conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Networking	SFP Transceivers	max 4	Configuration Rule	P9H29A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Networking	SFP Transceivers	max 4	Configuration Rule	P9H32A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Networking	SFP Transceivers	max 4	Configuration Rule	Q2R27A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Networking	SFP Transceivers	max 4	Configuration Rule	Q2R31A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Networking	SFP Transceivers	max 4	Configuration Rule	QK725A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Networking	SFP Transceivers	max 4	Configuration Rule	R6B11A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Networking	SFP Transceivers	max 4	Configuration Rule	R6B12A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Networking	SFP Transceivers	max 4	Configuration Rule	R6B13A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Networking	SFP Transceivers	max 4	Configuration Rule	R6B21A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	DAC Cables	max 4	Configuration Rule	Selection constraint for DAC Cables: max 4
+Networking	SFP Transceivers	max 4	Configuration Rule	JD095C conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Networking	SFP Transceivers	max 4	Configuration Rule	JD096C conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	OM3 Fibre Cables	max 4	Configuration Rule	Selection constraint for OM3 Fibre Cables: max 4
+Cables & Enablement Kits	OM4 Fibre Cables	max 4	Configuration Rule	Selection constraint for OM4 Fibre Cables: max 4
+Cables & Enablement Kits	CAT6A Cables	max 4	Configuration Rule	Selection constraint for CAT6A Cables: max 4
+Cables & Enablement Kits	CAT6A Cables	max 4	Configuration Rule	861414-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Networking	1Gb Transceivers for Management Ports Only	max 2	Configuration Rule	Selection constraint for 1Gb Transceivers for Management Ports Only: max 2
+Transceivers	Configuration Rules	Max quantity of product limited by space available.	Learned Feedback Rule	[MUTUAL_EXCLUSION] Max quantity of product limited by space available.

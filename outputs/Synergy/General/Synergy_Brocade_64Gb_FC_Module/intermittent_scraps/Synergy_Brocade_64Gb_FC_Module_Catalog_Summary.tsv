@@ -1,0 +1,16 @@
+Main Category	Sub-Category	Constraint	Min Qty	Max Qty	Total SKUs	Has Rules	Rule Count
+Unknown	OM3 LC-LC type connectors cable	max 8	0	8	0	No	0
+Unknown	Premier Flex OM4 LC-LC	max 8	0	8	0	No	0
+Unknown	QSFP to 4xLC Breakout	max 4	0	4	0	No	0
+Unknown	MPO/MPO Multi-mode	max 4	0	4	0	No	0
+Software	Software for Brocade Switches	no max	0	Unlimited	0	No	0
+Software	SANnav - New License	no max	0	Unlimited	0	No	0
+Software	SANnav - Renewal License	no max	0	Unlimited	0	No	0
+Chassis	Variants	min 1, max 1 — Active OCA CTO chassis	1	1	1	Yes	1
+Cables & Enablement Kits	OM3 LC-LC type connectors cable	max 8	0	8	7	Yes	1
+Cables & Enablement Kits	Premier Flex OM4 LC-LC	max 8	0	8	6	Yes	1
+Cables & Enablement Kits	QSFP to 4xLC Breakout	max 4	0	4	2	Yes	1
+Cables & Enablement Kits	MPO/MPO Multi-mode	max 4	0	4	3	Yes	1
+Software & Licenses	Software for Brocade Switches	no max	0	Unlimited	9	Yes	9
+Software & Licenses	SANnav - New License	no max	0	Unlimited	9	Yes	1
+Software & Licenses	SANnav - Renewal License	no max	0	Unlimited	3	Yes	1

@@ -4,9 +4,9 @@
 
 **Scope Identity**: `HPE/NETWORKING/Synergy/General/SY100Gb_F32_Module`
 
-**Sync Timestamp**: 2026-11-09T11:27:38.952Z
+**Sync Timestamp**: 2026-11-12T07:19:22.277Z
 
-**Total Verified SKUs**: `144` (`142` Hardware + `2` Services)
+**Total Verified SKUs**: `143` (`141` Hardware + `2` Services)
 
 **Total Synced KnowledgeDeltas**: `13`
 
@@ -18,14 +18,14 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Reinstated | Status |
 |----------|------------|---------------------|---------------|-------------------|------------|--------|
-| **Hardware Components** | 142 | 141 | 0 | 0 | 0 | **CERTIFIED** |
-| **Support Services & SLAs** | 2 | 0 | 0 | 0 | 0 | **CERTIFIED** |
-| **Total Portfolio** | **144** | **141** | **0** | **0** | **0** | **ACTIVE** |
+| **Hardware Components** | 141 | 0 | 0 | 139 | 0 | **CERTIFIED** |
+| **Support Services & SLAs** | 2 | 0 | 0 | 2 | 0 | **CERTIFIED** |
+| **Total Portfolio** | **143** | **0** | **0** | **141** | **0** | **ACTIVE** |
 
 
 ## Owned component capture scope
 
-Observed 2026-10-30T11:57:13.837Z; base 867796-B21; owner 100Gb Virtual #1; parent Synergy 12000 Frame #1. This is the component catalog, not certification of its parent solution.
+Observed 2026-11-11T18:49:10.220Z. Component base SKU: 867796-B21. Owner: 100Gb Virtual #1. Parent base SKU: P51174-B21. Coverage is limited to the component menu.
 
 Service scope: OBSERVED_SELECTED_SERVICES_ONLY. Unexecuted: alternative service types, terms and tiers; parent-level support changes. Missing prices remain unknown.
 
@@ -70,7 +70,7 @@ Service scope: OBSERVED_SELECTED_SERVICES_ONLY. Unexecuted: alternative service 
 
 1. **[Interconnect Addons and Options]**: Max quantity of product limited by space available.
    - **Gated Rule Type**: `MUTUAL_EXCLUSION`
-   - **Affected SKUs (62)**: `487655-B21`, `C7533A`, `C7535A`, `C7536A`, `C7537A`, `487649-B21`, `487652-B21`, `498385-B21`, `498385-B22`, `498385-B23`, `498385-B24`, `498385-B25`, `538272-B21`, `670759-B21`, `670759-B22`, `670759-B23`, `670759-B24`, `670759-B25`, `712495-B21`, `712497-B21`, `720196-B21`, `720205-B21`, `720208-B21`, `721067-B21`, `721070-B21`, `721073-B21`, `730907-B21`, `804095-B21`, `804098-B21`, `804101-B21`, `804104-B21`, `804107-B21`, `804110-B21`, `804155-B21`, `808722-B21`, `808722-B22`, `808722-B23`, `808722-B24`, `808722-B25`, `808722-B26`, `808722-B27`, `808722-B28`, `845412-B21`, `861412-B21`, `861413-B21`, `861414-B21`, `C7542A`, `G9Q68A`, `J9283B`, `JC784C`, `JD095C`, `JD096C`, `JD097C`, `JG081C`, `JG326A`, `JG327A`, `JG328A`, `JG329A`, `JG330A`, `JG331A`, `QK702A`, `QK736A`
+   - **Affected SKUs (62)**: `487655-B21`, `C7533A`, `C7535A`, `C7536A`, `C7537A`, `C7542A`, `G9Q68A`, `487649-B21`, `487652-B21`, `498385-B21`, `498385-B22`, `498385-B23`, `498385-B24`, `498385-B25`, `538272-B21`, `670759-B21`, `670759-B22`, `670759-B23`, `670759-B24`, `670759-B25`, `712495-B21`, `712497-B21`, `720196-B21`, `720205-B21`, `720208-B21`, `721067-B21`, `721070-B21`, `721073-B21`, `730907-B21`, `804095-B21`, `804098-B21`, `804101-B21`, `804104-B21`, `804107-B21`, `804110-B21`, `804155-B21`, `808722-B21`, `808722-B22`, `808722-B23`, `808722-B24`, `808722-B25`, `808722-B26`, `808722-B27`, `808722-B28`, `845412-B21`, `861412-B21`, `861413-B21`, `861414-B21`, `J9283B`, `JC784C`, `JD095C`, `JD096C`, `JD097C`, `JG081C`, `JG326A`, `JG327A`, `JG328A`, `JG329A`, `JG330A`, `JG331A`, `QK702A`, `QK736A`
 
 2. **[Interconnect Addons and Options]**: Product is obsolete
    - **Gated Rule Type**: `MUTUAL_EXCLUSION`
@@ -86,6 +86,7 @@ Service scope: OBSERVED_SELECTED_SERVICES_ONLY. Unexecuted: alternative service 
 
 | SKU | Description | Status | Discontinued Date | Last Known Price | Successor SKU | Tracking |
 |-----|-------------|--------|-------------------|------------------|---------------|----------|
+| `AJ718A` | HPE 8Gb Short Wave Fibre Channel SFP+ 1 Pack Transceiver | **DISCONTINUED** | 2026-11-11 | $180.00 | None | STOPPED_AFTER_REMOVAL |
 | `P06584-B21` | HPE Synergy VC 100Gb F32 Interconnect CTO Module | **DISCONTINUED** | 2026-10-30 | $5400.00 | None | STOPPED_AFTER_REMOVAL |
 
 ### ⏳ Impending Obsolescence & Clearance Hardware (90-Day to 180-Day Window)
@@ -94,12 +95,11 @@ Service scope: OBSERVED_SELECTED_SERVICES_ONLY. Unexecuted: alternative service 
 
 | Product # | Description | Category | List Price (USD) | Discontinued Date | Price Trend | Presales Strategy Guidance |
 |---|---|---|---:|---|:---:|---|
-| `P06584-B21` | [REMOVED SKU] HPE Synergy VC 100Gb F32 Interconnect CTO Module | Chassis | $5,400 | 2026-10-30 | -100.00% | 🔥 **Clearance Opportunity** (-100.00% CapEx savings). Procure before 2026-10-30. |
-| `AJ718A` | HPE 8Gb Short Wave Fibre Channel SFP+ 1 Pack Transceiver | Networking | $180 | 11/30/2026 | +100.00% | ⚠️ Approaching EOL (11/30/2026). Valid for immediate builds; verify multi-year roadmaps. |
-| `K2Q21A` | HPE C-series 3M Passive Copper SFP+ Cable | Cables & Enablement Kits | $467 | 10/22/2026 | +100.00% | ⚠️ Approaching EOL (10/22/2026). Valid for immediate builds; verify multi-year roadmaps. |
-| `K2Q22A` | HPE C-series 5M Passive Copper SFP+ Cable | Cables & Enablement Kits | $535 | 10/22/2026 | +100.00% | ⚠️ Approaching EOL (10/22/2026). Valid for immediate builds; verify multi-year roadmaps. |
-| `QK701A` | HPE C-series SFP+ to SFP+ Active Copper 7.0m Direct Attach Cable | Cables & Enablement Kits | $1,216 | 10/22/2026 | +100.00% | ⚠️ Approaching EOL (10/22/2026). Valid for immediate builds; verify multi-year roadmaps. |
-| `QK702A` | HPE C-series SFP+ to SFP+ Active Copper 10.0m Direct Attach Cable | Accessories & Infrastructure | $1,459 | 10/22/2026 | +100.00% | ⚠️ Approaching EOL (10/22/2026). Valid for immediate builds; verify multi-year roadmaps. |
+| `AJ718A` | [REMOVED SKU] HPE 8Gb Short Wave Fibre Channel SFP+ 1 Pack Transceiver | Networking | $180 | 2026-11-11 | -100.00% | 🔥 **Clearance Opportunity** (-100.00% CapEx savings). Procure before 2026-11-11. |
+| `K2Q21A` | HPE C-series 3M Passive Copper SFP+ Cable | Cables & Enablement Kits | $467 | 10/23/2026 | 0.00% | ⚠️ Approaching EOL (10/23/2026). Valid for immediate builds; verify multi-year roadmaps. |
+| `K2Q22A` | HPE C-series 5M Passive Copper SFP+ Cable | Cables & Enablement Kits | $535 | 10/23/2026 | 0.00% | ⚠️ Approaching EOL (10/23/2026). Valid for immediate builds; verify multi-year roadmaps. |
+| `QK701A` | HPE C-series SFP+ to SFP+ Active Copper 7.0m Direct Attach Cable | Cables & Enablement Kits | $1,216 | 10/23/2026 | 0.00% | ⚠️ Approaching EOL (10/23/2026). Valid for immediate builds; verify multi-year roadmaps. |
+| `QK702A` | HPE C-series SFP+ to SFP+ Active Copper 10.0m Direct Attach Cable | Accessories & Infrastructure | $1,459 | 10/23/2026 | 0.00% | ⚠️ Approaching EOL (10/23/2026). Valid for immediate builds; verify multi-year roadmaps. |
 
 ## 📊 5b. Category-Level Trends & Significant Price Adjustments
 
@@ -107,47 +107,53 @@ Service scope: OBSERVED_SELECTED_SERVICES_ONLY. Unexecuted: alternative service 
 
 | Category | Total SKUs | Added | Modified | Unchanged | Clearance / Drops | Category Planning Insight |
 |---|---:|---:|---:|---:|---:|---|
-| **Chassis** | 2 | 1 | 0 | 1 | 1 | ⚠️ Active price drops / clearance (1 SKUs discounted) |
-| **Networking** | 32 | 32 | 0 | 0 | 0 | ✨ Portfolio expanding (+32 new options) |
-| **Cables & Enablement Kits** | 44 | 44 | 0 | 0 | 0 | ✨ Portfolio expanding (+44 new options) |
-| **Accessories & Infrastructure** | 62 | 62 | 0 | 0 | 0 | ✨ Portfolio expanding (+62 new options) |
-| **Software & Licenses** | 2 | 2 | 0 | 0 | 0 | ✨ Portfolio expanding (+2 new options) |
+| **Chassis** | 1 | 0 | 1 | 0 | 0 | 🔄 Attributes/specifications updated (1 SKUs) |
+| **Networking** | 32 | 0 | 31 | 1 | 1 | ⚠️ Active price drops / clearance (1 SKUs discounted) |
+| **Cables & Enablement Kits** | 44 | 0 | 44 | 0 | 0 | 🔄 Attributes/specifications updated (44 SKUs) |
+| **Accessories & Infrastructure** | 62 | 0 | 62 | 0 | 0 | 🔄 Attributes/specifications updated (62 SKUs) |
+| **Software & Licenses** | 2 | 0 | 2 | 0 | 0 | 🔄 Attributes/specifications updated (2 SKUs) |
 
 ### High-Impact Price Adjustments (Drops $\ge 10\%$ and Major Moves)
 
 | Product # | Description | Category | Previous Price | Current Price | Delta (USD) | Change (%) | Movement Type |
 |---|---|---|---:|---:|---:|---:|---|
-| `P06584-B21` | [REMOVED SKU] HPE Synergy VC 100Gb F32 Interconnect CTO Module | Chassis | $5,400 | $5,400 | $-5,400 | **-100.0%** | 📉 CLEARANCE_DROP |
-| `AJ833A` | HPE LC to LC Multi-mode OM3 2-Fiber 0.5m 1-Pack Fiber Optic Cable | Cables & Enablement Kits | New Addition | $65 | $65 | **+100.0%** | ✨ NEW_OPTION |
-| `861412-B21` | HPE Synergy Frame Link Module CAT6A 1.2m Cable | Accessories & Infrastructure | New Addition | $65 | $65 | **+100.0%** | ✨ NEW_OPTION |
-| `AJ834A` | HPE LC to LC Multi-mode OM3 2-Fiber 1.0m 1-Pack Fiber Optic Cable | Cables & Enablement Kits | New Addition | $70 | $70 | **+100.0%** | ✨ NEW_OPTION |
-| `C7542A` | HPE 15.2m/50ft CAT5 RJ45 M/M Ethernet Cable | Accessories & Infrastructure | New Addition | $86 | $86 | **+100.0%** | ✨ NEW_OPTION |
-| `AJ835A` | HPE LC to LC Multi-mode OM3 2-Fiber 2.0m 1-Pack Fiber Optic Cable | Cables & Enablement Kits | New Addition | $95 | $95 | **+100.0%** | ✨ NEW_OPTION |
-| `670759-B21` | HPE 0.5M FDR Quad Small Form Factor Pluggable InfiniBand Copper Cable | Accessories & Infrastructure | New Addition | $99 | $99 | **+100.0%** | ✨ NEW_OPTION |
-| `861413-B21` | HPE Synergy Frame Link Module CAT6A 3m Cable | Accessories & Infrastructure | New Addition | $113 | $113 | **+100.0%** | ✨ NEW_OPTION |
-| `861414-B21` | HPE Synergy Frame Link Module CAT6A 6.4m Cable | Accessories & Infrastructure | New Addition | $113 | $113 | **+100.0%** | ✨ NEW_OPTION |
-| `AJ836A` | HPE LC to LC Multi-mode OM3 2-Fiber 5.0m 1-Pack Fiber Optic Cable | Cables & Enablement Kits | New Addition | $115 | $115 | **+100.0%** | ✨ NEW_OPTION |
-| `QK732A` | HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 1m Cable | Cables & Enablement Kits | New Addition | $115 | $115 | **+100.0%** | ✨ NEW_OPTION |
-| `QK733A` | HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 2m Cable | Cables & Enablement Kits | New Addition | $130 | $130 | **+100.0%** | ✨ NEW_OPTION |
-| `QK734A` | HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 5m Cable | Cables & Enablement Kits | New Addition | $147 | $147 | **+100.0%** | ✨ NEW_OPTION |
-| `AJ837A` | HPE LC to LC Multi-mode OM3 2-Fiber 15.0m 1-Pack Fiber Optic Cable | Cables & Enablement Kits | New Addition | $162 | $162 | **+100.0%** | ✨ NEW_OPTION |
-| `670759-B22` | HPE 1M FDR Quad Small Form Factor Pluggable InfiniBand Copper Cable | Accessories & Infrastructure | New Addition | $164 | $164 | **+100.0%** | ✨ NEW_OPTION |
-| `670759-B23` | HPE 1.5M FDR Quad Small Form Factor Pluggable InfiniBand Copper Cable | Accessories & Infrastructure | New Addition | $175 | $175 | **+100.0%** | ✨ NEW_OPTION |
-| `AJ718A` | HPE 8Gb Short Wave Fibre Channel SFP+ 1 Pack Transceiver | Networking | New Addition | $180 | $180 | **+100.0%** | ✨ NEW_OPTION |
-| `QK735A` | HPE Premier Flex LC/LC Multi-mode OM4 2 Fiber 15m Cable | Cables & Enablement Kits | New Addition | $195 | $195 | **+100.0%** | ✨ NEW_OPTION |
-| `670759-B24` | HPE 2M FDR Quad Small Form Factor Pluggable InfiniBand Copper Cable | Accessories & Infrastructure | New Addition | $197 | $197 | **+100.0%** | ✨ NEW_OPTION |
-| `JD095C` | HPE Networking X240 10G SFP+ SFP+ 0.65m DAC Cable | Accessories & Infrastructure | New Addition | $199 | $199 | **+100.0%** | ✨ NEW_OPTION |
-*... [93 additional price movements omitted for brevity]*
+| `AJ718A` | [REMOVED SKU] HPE 8Gb Short Wave Fibre Channel SFP+ 1 Pack Transceiver | Networking | $180 | $180 | $-180 | **-100.0%** | 📉 CLEARANCE_DROP |
 
 ## 🔄 5. Recent Attribute & Specification Modifications Log
 
-*No attribute or specification changes recorded across catalog snapshots.*
+| Timestamp | SKU | Attribute | Old Value | New Value |
+|-----------|-----|-----------|-----------|-----------|
+| 2026-11-11 | `JG329A` | Speed Tier | Unpublished | **Standard Delivery (8-30d)** |
+| 2026-11-11 | `JG329A` | Vendor Attributes | {"Est. Lead Time":"13","listPrice":692} | **{"listPrice":692}** |
+| 2026-11-11 | `JG330A` | Discontinued Date | 12/31/2050 | **12/31/2099** |
+| 2026-11-11 | `JG330A` | Lead Time | Unpublished | **13** |
+| 2026-11-11 | `JG330A` | Lead Time Source | Unpublished | **OCA row attribute** |
+| 2026-11-11 | `JG330A` | Lead Time Days |  | **13** |
+| 2026-11-11 | `JG330A` | Speed Tier | Unpublished | **Standard Delivery (8-30d)** |
+| 2026-11-11 | `JG330A` | Vendor Attributes | {"Est. Lead Time":"13","listPrice":850} | **{"listPrice":850}** |
+| 2026-11-11 | `JG331A` | Discontinued Date | 12/31/2050 | **12/31/2099** |
+| 2026-11-11 | `JG331A` | Lead Time | Unpublished | **13** |
+| 2026-11-11 | `JG331A` | Lead Time Source | Unpublished | **OCA row attribute** |
+| 2026-11-11 | `JG331A` | Lead Time Days |  | **13** |
+| 2026-11-11 | `JG331A` | Speed Tier | Unpublished | **Standard Delivery (8-30d)** |
+| 2026-11-11 | `JG331A` | Vendor Attributes | {"Est. Lead Time":"13","listPrice":986} | **{"listPrice":986}** |
+| 2026-11-11 | `QK702A` | Discontinued Date | 10/22/2026 | **10/23/2026** |
+| 2026-11-11 | `QK736A` | Discontinued Date | 11/30/2028 | **12/31/2028** |
+| 2026-11-11 | `QK736A` | Lead Time | Unpublished | **4** |
+| 2026-11-11 | `QK736A` | Lead Time Source | Unpublished | **OCA row attribute** |
+| 2026-11-11 | `QK736A` | Lead Time Days |  | **4** |
+| 2026-11-11 | `QK736A` | Speed Tier | Unpublished | **Fast-Ship Certified (<=7d)** |
+| 2026-11-11 | `QK736A` | Vendor Attributes | {"Est. Lead Time":"4","listPrice":239} | **{"listPrice":239}** |
+| 2026-11-11 | `AP784A` | Discontinued Date | 05/06/2016 | **04/01/2014** |
+| 2026-11-11 | `AP785A` | Discontinued Date | 05/06/2016 | **04/01/2014** |
+| 2026-11-11 | `R3P67A` | Discontinued Date | 09/30/2027 | **10/31/2027** |
+| 2026-11-11 | `N3R43A` | Discontinued Date | 05/31/2023 | **06/30/2023** |
 
 ## 🧩 6. Same-Product CTO Variant Matrix
 
 | Chassis Identifier | Product Family | Generation | Form Factor | CTO Base SKU |
 |--------------------|----------------|------------|-------------|--------------|
-| **SY100Gb_F32_Module** | Synergy | Gen1 | Blade | `864273-B21` |
+| **SY100Gb_F32_Module** | Synergy | General | Interconnect Module | `867796-B21` |
 
 ## ⭐ 8. Vendor Recommended & Preferred Hardware Options
 
@@ -161,7 +167,37 @@ Service scope: OBSERVED_SELECTED_SERVICES_ONLY. Unexecuted: alternative service 
 
 | Product # | Description | Category | Lead Time | Channel Status |
 |---|---|---|---:|---|
-| `P06584-B21` | [REMOVED SKU] HPE Synergy VC 100Gb F32 Interconnect CTO Module | Chassis | Not available (Discontinued) | Discontinued |
+| `841716-B21` | HPE 40Gb QSFP+ Bidirectional Transceiver | Networking | 3 | Available |
+| `882251-B21` | HPE Synergy 100GbE/4x25GbE/4x32GbFC QSFP28 Transceiver | Networking | 3 | Available |
+| `720187-B21` | HPE BladeSystem c-Class 40Gb QSFP+ MPO SR4 100m Transceiver | Networking | 4 | Available |
+| `845966-B21` | HPE 100Gb QSFP28 MPO SR4 100m Transceiver | Networking | 4 | Available |
+| `845970-B21` | HPE QSFP28 to SFP28 Adapter | Networking | 14 | Available |
+| `845972-B21` | HPE 100Gb QSFP28 Bidirectional Transceiver | Networking | 60 | Obsolete (OB) |
+| `JG661A` | HPE Networking X140 40G QSFP+ LC LR4 SM 10km 1310nm Transceiver | Networking | 78 | Available |
+| `JH234A` | HPE Networking X242 40G QSFP+ to QSFP+ 1m Direct Attach Copper Cable | Networking | 13 | Available |
+| `JH235A` | HPE Networking X242 40G QSFP+ to QSFP+ 3m Direct Attach Copper Cable | Networking | 13 | Available |
+| `JH236A` | HPE Networking X242 40G QSFP+ to QSFP+ 5m Direct Attach Copper Cable | Networking | 13 | Available |
+| `455886-B21` | HPE BladeSystem c-Class 10Gb SFP+ LR Transceiver | Networking | 3 | Available |
+| `813874-B21` | HPE 10GBase-T SFP+ Transceiver | Networking | 3 | Available |
+| `844483-B21` | HPE 25Gb SFP28 to SFP28 7m Active Optical Cable | Networking | 3 | Available |
+| `E7Y09A` | HPE 16Gb SFP+ Short Wave 1-pack Industrial Extended Transceiver | Networking | 3 | Available |
+| `E7Y10A` | HPE 16Gb SFP+ Short Wave 1-pack Commercial Transceiver | Networking | 3 | Available |
+| `455883-B21` | HPE BladeSystem c-Class 10Gb SFP+ SR Transceiver | Networking | 8 | Available |
+| `845398-B21` | HPE 25Gb SFP28 SR 100m Transceiver | Networking | 4 | Available |
+| `JG234A` | HPE Networking X130 10G SFP+ LC ER 40km Transceiver | Networking | 13 | Available |
+| `P9H30A` | HPE 32Gb SFP28 Short Wave Commercial Temperature Transceiver | Networking | 14 | Available |
+| `537963-B21` | HPE BladeSystem c-Class 10GbE SFP+ to SFP+ 5m Direct Attach Copper Cable | Cables & Enablement Kits | 3 | Available |
+| `720211-B21` | HPE BladeSystem c-Class 40G QSFP+ to QSFP+ 15m Active Optical Cable | Cables & Enablement Kits | 3 | Available |
+| `721064-B21` | HPE BladeSystem c-Class 40G QSFP+ to 4x10G SFP+ 3m Direct Attach Copper Splitter Cable | Cables & Enablement Kits | 3 | Available |
+| `721076-B21` | HPE BladeSystem c-Class QSFP+ to 4x10G SFP+ 15m Active Optical Cable | Cables & Enablement Kits | 3 | Available |
+| `845406-B21` | HPE 100Gb QSFP28 to QSFP28 3m Direct Attach Copper Cable | Cables & Enablement Kits | 3 | Available |
+| `845408-B21` | HPE 100Gb QSFP28 to QSFP28 5m Direct Attach Copper Cable | Cables & Enablement Kits | 3 | Available |
+| `845410-B21` | HPE 100Gb QSFP28 to QSFP28 7m Active Optical Cable | Cables & Enablement Kits | 3 | Available |
+| `845414-B21` | HPE 100Gb QSFP28 to QSFP28 15m Active Optical Cable | Cables & Enablement Kits | 3 | Available |
+| `845416-B21` | HPE 100Gb QSFP28 to 4x25Gb SFP28 3m Direct Attach Copper Cable | Cables & Enablement Kits | 3 | Available |
+| `845420-B21` | HPE QSFP28 to 4x25Gb SFP28 7m Active Optical Cable | Cables & Enablement Kits | 3 | Available |
+| `876680-B21` | HPE Synergy 300Gb Interconnect Link 2.1m Direct Attach Copper Cable | Cables & Enablement Kits | 3 | Available |
+*... [47 additional supply chain records omitted for brevity]*
 
 ### ⚠️ Supply Chain Verification Advisory (Unpublished Delivery Lead Times)
 
@@ -169,9 +205,6 @@ Service scope: OBSERVED_SELECTED_SERVICES_ONLY. Unexecuted: alternative service 
 
 | Product # | Description | Category | Lead Time Status | Presales Action |
 |---|---|---|:---:|---|
-| `882251-B21` | HPE Synergy 100GbE/4x25GbE/4x32GbFC QSFP28 Transceiver | Networking | **Unpublished** | Verify distributor inventory prior to SLA commitment |
-| `JG661A` | HPE Networking X140 40G QSFP+ LC LR4 SM 10km 1310nm Transceiver | Networking | **Unpublished** | Verify distributor inventory prior to SLA commitment |
 | `JH673A` | HPE Networking X150 100G QSFP28 CWDM4 2km SM Transceiver | Networking | **Unpublished** | Verify distributor inventory prior to SLA commitment |
 | `JL310A` | HPE Aruba Networking 100G QSFP28 LC LR4 10km SMF 2-strand Transceiver | Networking | **Unpublished** | Verify distributor inventory prior to SLA commitment |
-| `JG234A` | HPE Networking X130 10G SFP+ LC ER 40km Transceiver | Networking | **Unpublished** | Verify distributor inventory prior to SLA commitment |
 

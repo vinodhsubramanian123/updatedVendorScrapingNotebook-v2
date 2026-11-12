@@ -1283,5 +1283,261 @@
     "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
     "businessRelevant": false,
     "reason": "Removed from active HPE OCA portal catalog"
+  },
+  "H39VQA1#V0F": {
+    "productNumber": "H39VQA1#V0F",
+    "description": "HPE Synergy First Frame Rmt Str SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "HA124A1#V0F": {
+    "productNumber": "HA124A1#V0F",
+    "description": "HPE Synergy First Frame Rmt Str SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Reseller Option Kit",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "H1Y26A1#002": {
+    "productNumber": "H1Y26A1#002",
+    "description": "HPE Energy Efficiency Analysis SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "H1Y26A1#003": {
+    "productNumber": "H1Y26A1#003",
+    "description": "HPE Infra Condition and Cap Analysis SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "H1Y25A1#002": {
+    "productNumber": "H1Y25A1#002",
+    "description": "HPE Energy Efficiency Analysis SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "H1Y25A1#003": {
+    "productNumber": "H1Y25A1#003",
+    "description": "HPE Infra Condition and Cap Analysis SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "HA124A1#V5K": {
+    "productNumber": "HA124A1#V5K",
+    "description": "HPE Private Cloud AI with X10000 St SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "HU0R5A5#Y39": {
+    "productNumber": "HU0R5A5#Y39",
+    "description": "HPE 5Y Service Credits Qty 50 SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Reseller Option Kit",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "H0JD4A1#WFH": {
+    "productNumber": "H0JD4A1#WFH",
+    "description": "HPE 1Y Service Credits Qty 10 SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Reseller Option Kit",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "H0JD4A1#WFK": {
+    "productNumber": "H0JD4A1#WFK",
+    "description": "HPE 1Y Service Credits Qty 10 SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Reseller Option Kit",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "H0JD4A1#WFM": {
+    "productNumber": "H0JD4A1#WFM",
+    "description": "HPE 1Y Service Credits Qty 10 SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Reseller Option Kit",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "H0JD4A1#Y65": {
+    "productNumber": "H0JD4A1#Y65",
+    "description": "HPE 1Y Service Credits Qty 10 SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Reseller Option Kit",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "H0JD4A1#Y6B": {
+    "productNumber": "H0JD4A1#Y6B",
+    "description": "HPE 1Y Service Credits Qty 10 SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Reseller Option Kit",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "H0JD4A3#WFH": {
+    "productNumber": "H0JD4A3#WFH",
+    "description": "HPE 3Y Service Credits Qty 30 SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Reseller Option Kit",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "H0JD4A3#WFK": {
+    "productNumber": "H0JD4A3#WFK",
+    "description": "HPE 3Y Service Credits Qty 30 SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Reseller Option Kit",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "H54SBA5#Y35": {
+    "productNumber": "H54SBA5#Y35",
+    "description": "HPE 5Y Complete Care SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Reseller Option Kit",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "H39DJA3#Y35": {
+    "productNumber": "H39DJA3#Y35",
+    "description": "HPE 3Y CC SB ATS Compute Base SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Reseller Option Kit",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "H39DJA4#Y35": {
+    "productNumber": "H39DJA4#Y35",
+    "description": "HPE 4Y CC SB ATS Compute Base SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Reseller Option Kit",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "H39DJA5#Y35": {
+    "productNumber": "H39DJA5#Y35",
+    "description": "HPE 5Y CC SB ATS Compute Base SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Reseller Option Kit",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "H39DKA3#Y35": {
+    "productNumber": "H39DKA3#Y35",
+    "description": "HPE 3Y CC SB ATS Compute Ext SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Reseller Option Kit",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "H39DKA4#Y35": {
+    "productNumber": "H39DKA4#Y35",
+    "description": "HPE 4Y CC SB ATS Compute Ext SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Reseller Option Kit",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "H39DKA5#Y35": {
+    "productNumber": "H39DKA5#Y35",
+    "description": "HPE 5Y CC SB ATS Compute Ext SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Reseller Option Kit",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "H39DLA3#Y36": {
+    "productNumber": "H39DLA3#Y36",
+    "description": "HPE 3Y CC SB ATS Storage Base SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Reseller Option Kit",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "H39DLA4#Y36": {
+    "productNumber": "H39DLA4#Y36",
+    "description": "HPE 4Y CC SB ATS Storage Base SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Reseller Option Kit",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "H39DLA5#Y36": {
+    "productNumber": "H39DLA5#Y36",
+    "description": "HPE 5Y CC SB ATS Storage Base SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "Reseller Option Kit",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "H40CSA3": {
+    "productNumber": "H40CSA3",
+    "description": "HPE 3Y CC SB Expert Support SAP HANA SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "H40CSA4": {
+    "productNumber": "H40CSA4",
+    "description": "HPE 4Y CC SB Expert Support SAP HANA SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "H40CSA5": {
+    "productNumber": "H40CSA5",
+    "description": "HPE 5Y CC SB Expert Support SAP HANA SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "HY0W3A3#Z5K": {
+    "productNumber": "HY0W3A3#Z5K",
+    "description": "HPE 3Y CC SB Perform Optim SAP SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "HY0W3A4#Z5K": {
+    "productNumber": "HY0W3A4#Z5K",
+    "description": "HPE 4Y CC SB Perform Optim SAP SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "HY0W3A5#Z5K": {
+    "productNumber": "HY0W3A5#Z5K",
+    "description": "HPE 5Y CC SB Perform Optim SAP SVC",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "H36XCA1#006": {
+    "productNumber": "H36XCA1#006",
+    "description": "HPE GPU on RHOCP Integrat SVC",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
   }
 }

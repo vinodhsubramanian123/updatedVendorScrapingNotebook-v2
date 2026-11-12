@@ -1,0 +1,56 @@
+{
+  "verifiedAt": "2026-11-12T03:24:31.408Z",
+  "productId": "Synergy_Brocade_64Gb_FC_Module",
+  "family": "Synergy",
+  "generation": "General",
+  "preflight": {
+    "recordedAt": "2026-11-12T03:21:16.552Z",
+    "pass": true,
+    "product": {
+      "pass": true,
+      "productId": "Synergy_Brocade_64Gb_FC_Module",
+      "family": "Synergy",
+      "generation": "General",
+      "pillar": "NETWORKING",
+      "notebookId": "7b65f53f-ad1c-449d-b37f-9a5e7962e2af",
+      "canonicalDriveEnabled": false,
+      "publishDriveWorkbook": true,
+      "expectedWorkbookSheets": 11,
+      "requiredSheetsCount": 0
+    },
+    "notebookLm": {
+      "pass": true,
+      "status": "SKIPPED_BY_FLAG"
+    },
+    "googleWorkspace": {
+      "pass": true,
+      "status": "SKIPPED_BY_FLAG"
+    },
+    "vendorPolicy": {
+      "vendor": "HPE",
+      "anchorTabUrl": "https://partner.hpe.com/group/prp",
+      "handoffMechanism": "SAML_POST_NEW_TAB",
+      "allowInPlaceReload": false,
+      "recoveryProtocol": "CLOSE_CONFIG_TAB_RETURN_TO_TAB1_CLICK_QUICK_LINK"
+    }
+  },
+  "postflight": {
+    "pass": false,
+    "status": "ACTION_REQUIRED",
+    "diffSummaryError": null,
+    "hwSkuCount": 24,
+    "serviceSkuCount": 16,
+    "totalSkuCount": 40,
+    "conditionalSkusCount": 7,
+    "unavailableRulesCount": 0,
+    "diffSummaryPresent": true,
+    "diffCounts": {
+      "ADDED": 0,
+      "MODIFIED": 0,
+      "REMOVED": 0,
+      "DISCONTINUED": 0,
+      "UNCHANGED": 24
+    },
+    "cloudSyncState": "CLOUD_FAILED"
+  }
+}

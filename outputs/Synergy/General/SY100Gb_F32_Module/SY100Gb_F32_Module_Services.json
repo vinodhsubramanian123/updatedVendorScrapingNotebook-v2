@@ -6,9 +6,9 @@
     "generation": "General",
     "pillar": "NETWORKING",
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
-    "scrapeDate": "2026-10-30",
-    "scrapeTimestamp": "2026-10-30T11:57:13.837Z",
-    "builtAt": "2026-10-30T17:27:20.950Z",
+    "scrapeDate": "2026-11-11",
+    "scrapeTimestamp": "2026-11-11T18:49:10.220Z",
+    "builtAt": "2026-11-11T18:49:15.455Z",
     "totalSubcategories": 2,
     "totalUniqueSKUs": 2,
     "totalTables": 2,
@@ -17,15 +17,15 @@
       "removed": 0,
       "categoryMigrated": 0,
       "priceChanged": 0,
-      "attributeChanged": 0,
+      "attributeChanged": 2,
       "priceAndAttributeChanged": 0,
-      "unchanged": 2,
+      "unchanged": 0,
       "reinstated": 0,
       "discontinuedTotal": 0
     },
-    "historySnapshot": "services_catalog_2026-10-30.json",
+    "historySnapshot": "services_catalog_2026-11-11.json",
     "priceAnalytics": {
-      "scrapeDate": "2026-10-30",
+      "scrapeDate": "2026-11-11",
       "categoryBreakdown": {
         "Software & Licenses": {
           "totalSKUs": 1,
@@ -77,7 +77,8 @@
         "Extended Price (USD)",
         "Est. Lead Time",
         "Start",
-        "Discontinued"
+        "Discontinued",
+        "Obsolete"
       ],
       "skuCount": 1,
       "skus": [
@@ -87,9 +88,9 @@
           "Current Qty": "0",
           "Unit Price (USD)": "2999.00",
           "Extended Price (USD)": "NA",
-          "Est. Lead Time": "",
+          "Lead Time": "Unpublished",
           "Start Date": "09/03/2019",
-          "Discontinued Date": "09/30/2027",
+          "Discontinued Date": "10/31/2027",
           "sku": "R3P67AAE",
           "Option Type": "Service",
           "CLIC Status": "Unpublished",
@@ -98,7 +99,6 @@
           "lifecycleStatus": "Active",
           "lifecycleBadge": "",
           "Availability": "Available",
-          "Lead Time": "Unpublished",
           "Lead Time Source": "Unpublished",
           "leadTimeDays": null,
           "Lead Time Days": "",
@@ -112,12 +112,12 @@
           "vendorAttributes": {
             "listPrice": 2999
           },
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "2999.00",
+          "Attribute Deltas": "Discontinued Date: \"09/30/2027\" → \"10/31/2027\"",
+          "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
-          "Price History Trail": "2026-10-30: $2999.00"
+          "Price History Trail": "2026-10-30: $2999.00 → 2026-11-11: $2999.00"
         }
       ]
     },
@@ -141,7 +141,7 @@
           "Product #": "HU4D5A5#Z1R",
           "Description": "HPE 5Y Complete Care Addon Essential Service",
           "Unit Price (USD)": "",
-          "Owner Configuration": "CE45087D126BB28FD3A232EBB77B29B2",
+          "Owner Configuration": "40DFBA5F21575295DAD5FE86F2C55A9A",
           "Evidence Scope": "Observed selected service; alternatives not enumerated",
           "sku": "HU4D5A5#Z1R",
           "Option Type": "Service",
@@ -164,15 +164,15 @@
           "Cost (USD)": "",
           "costPrice": null,
           "vendorAttributes": {
-            "Owner Configuration": "CE45087D126BB28FD3A232EBB77B29B2",
+            "Owner Configuration": "40DFBA5F21575295DAD5FE86F2C55A9A",
             "Evidence Scope": "Observed selected service; alternatives not enumerated"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "Vendor Attributes: \"{\"Evidence Scope\":\"Observed selected service; alternatives not enumerated\",\"Owner Configuration\":\"CE45087D126BB28FD3A232EBB77B29B2\"}\" → \"{\"Evidence Scope\":\"Observed selected service; alternatives not enumerated\",\"Owner Configuration\":\"40DFBA5F21575295DAD5FE86F2C55A9A\"}\"",
+          "Diff Status": "ATTRIBUTE_CHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
-          "Price History Trail": "2026-10-30: (no price)"
+          "Price History Trail": "2026-10-30: (no price) → 2026-11-11: (no price)"
         }
       ]
     }

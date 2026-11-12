@@ -43,11 +43,19 @@ Cooling / Thermal	Standard & Performance Heat Sinks	max 6	Configuration Rule	P68
 Memory	Memory	max 32	Configuration Rule	Selection constraint for Memory: max 32
 Memory	Memory	max 32	Configuration Rule	P73447-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
 Memory	Memory	max 32	Configuration Rule	P73447-F21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
+Memory	Memory	max 32	Configuration Rule	P83865-F21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
+Memory	Memory	max 32	Configuration Rule	P83867-F21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
+Memory	Memory	max 32	Configuration Rule	P83869-F21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
+Memory	Memory	max 32	Configuration Rule	BTO Memories are not allowed in CTO Base Model.
+Memory	Memory	max 32	Configuration Rule	P83865-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
+Memory	Memory	max 32	Configuration Rule	P83867-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
+Memory	Memory	max 32	Configuration Rule	P83869-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
 Memory	Memory Blank Kit	max 1	Configuration Rule	Selection constraint for Memory Blank Kit: max 1
 Drive Enclosures / Drives	Drive Cage (required)	max 1	Configuration Rule	Selection constraint for Drive Cage (required): max 1
 Accessories & Infrastructure	Energy Star Configuration Presets	max 1	Configuration Rule	Selection constraint for Energy Star Configuration Presets: max 1
 Software & Licenses	Server Management & Operating System Licenses	max 1	Configuration Rule	Selection constraint for Server Management & Operating System Licenses: max 1
 Memory	Memory Setting	max 1	Configuration Rule	Selection constraint for Memory Setting: max 1
+Support Services	Support Services Options	max 1	Configuration Rule	Selection constraint for RAID Settings: max 1
 Storage Controllers	Storage Controllers Options	max 1	Configuration Rule	Selection constraint for RAID Settings: max 1
 Storage Controllers	RAID Settings	max 1	Configuration Rule	Selection constraint for RAID Settings: max 1
 Software & Licenses	HP CMU Software	no max	Configuration Rule	The VROC SKUs could be selected only if the NVMe drives are selected with either 4SFF Dir Conn Kit (P68219-B21) or 8EDSFF Kit (P68220-B21)
@@ -189,7 +197,7 @@ Software & Licenses	Server Management & Operating System Licenses	no max	Configu
 Software & Licenses	Server Management & Operating System Licenses	no max	Configuration Rule	J1U56A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Software & Licenses	Linux Value Added Software	no max	Configuration Rule	Selection constraint for Linux Value Added Software: no max
 Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	Selection constraint for High Availability Computing - Cluster Software: no max
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	R8V48A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
+Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	R8V48A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Software & Licenses	System Options	no max	Configuration Rule	Selection constraint for System Options: no max
 Software & Licenses	System Options	no max	Configuration Rule	QL803B conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Software & Licenses	System Options	no max	Configuration Rule	BD476A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
@@ -331,14 +339,14 @@ Software & Licenses	VMWare Core Editions	no max	Configuration Rule	S0F27AAE cond
 Software & Licenses	VMWare Core Editions	no max	Configuration Rule	R8V88AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Software & Licenses	VMWare Core Editions	no max	Configuration Rule	S0F21AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Software & Licenses	VMWare Core Editions	no max	Configuration Rule	S0F29AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	R8V46AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W13AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W16AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W19AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W22AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W25AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W27AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W28AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
+Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	R8V46AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W13AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W16AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W19AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W22AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W25AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W27AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W28AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Support Services	PCIe Networking Adapters	max 1	Configuration Rule	Selection constraint for PCIe Networking Adapters: max 1
 Support Services	PCIe Networking Adapters	max 1	Configuration Rule	TD378A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Support Services	PCIe Networking Adapters	max 1	Configuration Rule	TD377A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
@@ -361,7 +369,7 @@ Software & Licenses	Partner Software - Operating System 8pks	no max	Configuratio
 Software & Licenses	OEM Software	no max	Configuration Rule	R2U47AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Support Services	HPE Virtualization	no max	Configuration Rule	Selection constraint for HPE Virtualization: no max
 Support Services	Reseller Option Kit	no max	Configuration Rule	Selection constraint for Reseller Option Kit: no max
-Processor	Intel Xeon Scalable Processors	Discontinued	Configuration Rule	[DISCONTINUED] SKU present in previous scrape but removed from active catalog
 Processors	Configuration Rules	The total qty of heat sink selected should match with the qty of processor selected.	Learned Feedback Rule	[MUTUAL_EXCLUSION] The total qty of heat sink selected should match with the qty of processor selected.
+Memory	Configuration Rules	BTO Memories are not allowed in CTO Base Model.	Learned Feedback Rule	[BTO_DISALLOWED] BTO Memories are not allowed in CTO Base Model.
 Hybrid RAID	Configuration Rules	The VROC SKUs could be selected only if the NVMe drives are selected with either 4SFF Dir Conn Kit (P68219-B21) or 8EDSFF Kit (P68220-B21)	Learned Feedback Rule	[CHASSIS_GATE] The VROC SKUs could be selected only if the NVMe drives are selected with either 4SFF Dir Conn Kit (P68219-B21) or 8EDSFF Kit (P68220-B21)
 Virtualization	Configuration Rules	Private Product is not valid for current customer account	Learned Feedback Rule	[MUTUAL_EXCLUSION] Private Product is not valid for current customer account

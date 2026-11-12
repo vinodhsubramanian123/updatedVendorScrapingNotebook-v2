@@ -1,0 +1,214 @@
+{
+  "schemaVersion": 1,
+  "product": "Synergy_4Port_Frame_Link_Module",
+  "vendor": "HPE",
+  "capturedAt": "2026-11-12T03:18:03.540Z",
+  "auditedAt": "2026-11-12T03:18:16.687Z",
+  "incompleteLegacyBaselinePreserved": false,
+  "mode": "FIRST_CAPTURE",
+  "status": "LOCAL_PROMOTED",
+  "provenance": {
+    "baseSku": "876852-B21",
+    "ownerConfiguration": "4-port Frame Link Module #1",
+    "parentBaseSku": "P51174-B21",
+    "parentConfiguration": "Synergy 12000 Frame #1",
+    "solutionDomain": "NETWORKING",
+    "observedUrl": "https://oca.ext.hpe.com/oca/OCAInternalLogin"
+  },
+  "coverage": {
+    "textExtractionMode": "FULL_BODY_TEXT",
+    "outsideTableNotesCaptured": true,
+    "conditionalDiscovery": "HIDDEN_DOM_AND_AMBIENT_ONLY_OTHER_MACROS_UNVERIFIED",
+    "baseSku": "876852-B21",
+    "ownerConfiguration": "4-port Frame Link Module #1",
+    "solutionDomain": "NETWORKING",
+    "observedSelectors": [
+      {
+        "selector": "#extended_overview_menu",
+        "value": "EXPANDED"
+      },
+      {
+        "selector": "ambientTemperature",
+        "value": "DEFAULT_AND_SWEEP_RESTORED"
+      }
+    ],
+    "missingProvenance": [],
+    "completeness": "CAPTURED_STATES_ONLY",
+    "policy": {
+      "valid": true,
+      "reason": "",
+      "profileProduct": "Synergy_4Port_Frame_Link_Module",
+      "scope": "PROFILE_MINIMUM_CAPTURE"
+    }
+  },
+  "counts": {
+    "hardware": 62,
+    "services": 0,
+    "rules": 42,
+    "categories": 3,
+    "retainedHardware": 62,
+    "hardwareTombstones": 0
+  },
+  "previousCounts": null,
+  "hashes": {
+    "Catalog.json": "87d7d6c9b5bf3ca1d678422af1cc1683c9b337c1f153b23c17754ce432f440bd",
+    "Services.json": "73596a8c47ef887ffa335c98ec7d2391575a2b890503f26face24fc532baf938",
+    "Catalog_Rules.json": "b092b7caf016fe00e7a562b995d1af7a0b6db73cc7e63c954727b4553f744c50",
+    "OCA_Catalog.xlsx": "938491aa666baba629873e4822f155d870ae4790946b3696447fe98a9ee55d5b"
+  },
+  "rawSha256": "8381a18e895d3e16b7432e20359ffbbd07abfb6c4ed852de2c3dd9de2e72a76c",
+  "sheets": [
+    {
+      "name": "Category Summary",
+      "rows": 14
+    },
+    {
+      "name": "All SKUs",
+      "rows": 63
+    },
+    {
+      "name": "Chassis Variants",
+      "rows": 2
+    },
+    {
+      "name": "Chassis Options Matrix",
+      "rows": 2
+    },
+    {
+      "name": "Rules & Constraints",
+      "rows": 49
+    },
+    {
+      "name": "Unavailable Rules & Gates",
+      "rows": 3
+    },
+    {
+      "name": "Price History Timeline",
+      "rows": 63
+    },
+    {
+      "name": "Networking",
+      "rows": 41
+    },
+    {
+      "name": "Chassis",
+      "rows": 2
+    },
+    {
+      "name": "Cables & Enablement Kits",
+      "rows": 22
+    },
+    {
+      "name": "Supply Chain & Lead Times",
+      "rows": 63
+    },
+    {
+      "name": "Metadata",
+      "rows": 22
+    }
+  ],
+  "deltas": {
+    "hardware": {
+      "added": [
+        "876852-B21",
+        "455886-B21",
+        "813874-B21",
+        "455883-B21",
+        "JD092B",
+        "JD094B",
+        "JG234A",
+        "QK724A",
+        "R6B10A",
+        "834972-B21",
+        "834972-B22",
+        "834972-B23",
+        "834972-B24",
+        "834972-B25",
+        "834972-B26",
+        "834972-B27",
+        "834972-B28",
+        "834973-B21",
+        "834973-B22",
+        "834973-B23",
+        "834973-B24",
+        "834973-B25",
+        "AJ716B",
+        "AJ717A",
+        "AP783A",
+        "AW538A",
+        "H6Z29A",
+        "JD093B",
+        "P9H29A",
+        "P9H32A",
+        "Q2R27A",
+        "Q2R31A",
+        "QK725A",
+        "R6B11A",
+        "R6B12A",
+        "R6B13A",
+        "R6B21A",
+        "487655-B21",
+        "537963-B21",
+        "JC784C",
+        "JD097C",
+        "JG081C",
+        "JD095C",
+        "JD096C",
+        "AJ833A",
+        "AJ836A",
+        "AJ838A",
+        "AJ839A",
+        "AJ834A",
+        "AJ835A",
+        "AJ837A",
+        "QK732A",
+        "QK737A",
+        "QK733A",
+        "QK734A",
+        "QK735A",
+        "QK736A",
+        "861412-B21",
+        "861413-B21",
+        "861414-B21",
+        "453151-B21",
+        "453154-B21"
+      ],
+      "removed": []
+    },
+    "services": {
+      "added": [],
+      "removed": []
+    },
+    "rulesChanged": true,
+    "hardwareChanges": {
+      "added": 0,
+      "removed": 0,
+      "categoryMigrated": 0,
+      "priceChanged": 0,
+      "attributeChanged": 0,
+      "priceAndAttributeChanged": 0,
+      "unchanged": 62,
+      "reinstated": 0,
+      "discontinuedTotal": 0
+    },
+    "serviceChanges": {
+      "added": 0,
+      "removed": 0,
+      "categoryMigrated": 0,
+      "priceChanged": 0,
+      "attributeChanged": 0,
+      "priceAndAttributeChanged": 0,
+      "unchanged": 0,
+      "reinstated": 0,
+      "discontinuedTotal": 0
+    }
+  },
+  "cloud": {
+    "status": "CLOUD_FAILED",
+    "success": false,
+    "sourceId": null,
+    "consolidationVerified": false,
+    "error": "CLI sync unavailable (Transactional Sync Failed Candidate Verification for Synergy_4Port_Frame_Link_Module_OCA_Catalog_2026-11-12 (Canary verification failed for Synergy_4Port_Frame_Link_Module_OCA_Catalog_2026-11-12). Candidate 8ab90f9e-2678-474a-af0d-e79d0a2dd141 was purged. Old source remains active.). Payload ready at C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\Synergy\\General\\Synergy_4Port_Frame_Link_Module\\notebook_sync_payload_Synergy_4Port_Frame_Link_Module.md. Upload as \"Synergy_4Port_Frame_Link_Module_OCA_Catalog_2026-11-12\" via gemini-notebook-mcp source_add or nlm CLI."
+  },
+  "promotedAt": "2026-11-12T03:20:44.411Z"
+}

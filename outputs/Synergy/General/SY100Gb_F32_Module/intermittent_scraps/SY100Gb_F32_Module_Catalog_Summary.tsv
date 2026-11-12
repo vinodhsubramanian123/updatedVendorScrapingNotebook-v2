@@ -3,7 +3,7 @@ QSFP Options	QSFP Options	max 8	0	8	0	No	0
 SFP Options	SFP Options	max 16	0	16	0	No	0
 Cables	Cables	max 8	0	8	0	No	0
 License Upgrade	License Upgrade	max 1	0	1	0	No	0
-Chassis	Variants	min 1, max 1 — Active OCA CTO chassis	1	1	2	Yes	1
+Chassis	Variants	min 1, max 1 — Active OCA CTO chassis	1	1	1	Yes	1
 Networking	Optical Transceivers & DAC Cables	max 8	0	8	32	Yes	15
 Cables & Enablement Kits	Cables	max 8	0	8	44	Yes	35
 Accessories & Infrastructure	PCIe Networking Adapters	max 16	0	16	62	Yes	63

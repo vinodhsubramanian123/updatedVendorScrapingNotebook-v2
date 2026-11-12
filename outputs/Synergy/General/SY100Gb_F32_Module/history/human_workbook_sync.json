@@ -1,19 +1,19 @@
 {
   "success": true,
   "spreadsheetId": "1U6GAUs69k8JnI_CGZ6_MkaWQ9oN7Ik_LgrWlesjMZpA",
-  "backupFile": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\history\\drive_backups\\drive_backup_1eed0c20-7817-4329-a9dc-6e3add259d42.json",
+  "backupFile": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\history\\drive_backups\\drive_backup_a7c1ab2e-8a5b-4033-8f4b-3f8d1077f133.json",
   "tabsWritten": [
     {
       "title": "Certified Catalog",
-      "rows": 143
+      "rows": 142
     },
     {
       "title": "Verified Learnings",
-      "rows": 177
+      "rows": 210
     },
     {
       "title": "Change Log",
-      "rows": 289
+      "rows": 953
     },
     {
       "title": "Sync Metadata",
@@ -25,15 +25,15 @@
     },
     {
       "title": "All SKUs",
-      "rows": 143
+      "rows": 142
     },
     {
       "title": "Chassis Variants",
-      "rows": 3
+      "rows": 2
     },
     {
       "title": "Chassis Options Matrix",
-      "rows": 3
+      "rows": 2
     },
     {
       "title": "Rules & Constraints",
@@ -57,7 +57,7 @@
     },
     {
       "title": "Price History Timeline",
-      "rows": 145
+      "rows": 144
     },
     {
       "title": "Networking",
@@ -65,7 +65,7 @@
     },
     {
       "title": "Chassis",
-      "rows": 3
+      "rows": 2
     },
     {
       "title": "Cables & Enablement Kits",
@@ -81,7 +81,7 @@
     },
     {
       "title": "Supply Chain & Lead Times",
-      "rows": 145
+      "rows": 144
     },
     {
       "title": "Metadata",
@@ -90,34 +90,34 @@
   ],
   "readbackVerified": true,
   "readbackFingerprints": {
-    "Certified Catalog": "5ec738f5a12138404dd973081f3c4d9567ee98cdb4e12aaaa664d93e8c27cde4",
-    "Verified Learnings": "ceada28dd57b468f18e0277d552d006cc67b67eaabaae6b9df26f01ee75521ae",
-    "Change Log": "8b1578214b90f7dff8c76e9be07db0376efaeda63617f19b2ae87474563be3a3",
-    "Sync Metadata": "6a92cb42a028bbc495c4ee224108c4ba7347e1e3775c3fdbd3c32fbafb76e0f2",
-    "Category Summary": "ef5e2a3395597dda663cc6858caf76cbc6ac9952e9fc8cac1d9e2fa5904b96cf",
-    "All SKUs": "1095b85aaeb0cb1f167388208767ab8444629c0560e1d8a086afd12ca4b02caf",
-    "Chassis Variants": "1eb4bafc1a19ed5f1b14edf7a50a9cdda41356479ce6c953fbd730340330b927",
-    "Chassis Options Matrix": "0120d76f0796292ad4d5cfc5ccb2e2296be0aca1e94014a653d844ae6774c035",
-    "Rules & Constraints": "dca35aef119fb848aabd6375a21bfb63ca53bcc519b8ef08d47b4f571b928cf4",
-    "Unavailable Rules & Gates": "8a88dc213b685f59a6a8010a1f25e95d07025e25d219bb92d5420dbe1c873cae",
-    "Software & Licenses": "cc09dfc7e04026ff89432bcb03eb29690f2c1ecb0d24fba0daafc533fe910ff7",
-    "Support Services": "31f20fea1c640772608da290adcffd905fb3ce4f46647d3d0a8b1ce366079cd7",
-    "Catalog Diffs": "1095b85aaeb0cb1f167388208767ab8444629c0560e1d8a086afd12ca4b02caf",
-    "Price History Timeline": "973619b958758d75263cef27d97219c2cd2a246fb19ff11735b74d5387b9d2fd",
-    "Networking": "858c84864e42a3f5f1380b1028bac235c243f3393537162d836504ee813fdadf",
-    "Chassis": "cd2860a83c3ef50df504abf8f8919115acba86c061cf5a0674e56371c3f3be7d",
-    "Cables & Enablement Kits": "a25bb3515499b4af5751ca047c968fd0b5d45e6f7ebca9e422b9bd3857d61151",
-    "Accessories & Infrastructure": "eb95b9bfe62e579c23f9bb81ebc09014e7aeb81c57e87d7226786a22656093f0",
-    "Discontinued SKUs": "25074f1158364217e5f589010be8da687b1efdba6d84bc91896f0ffb8827d126",
-    "Supply Chain & Lead Times": "fc8352b33765fb238048a154f47320113fc72e3991079b5ea1e5a293ae05d0c2",
-    "Metadata": "a587ccb93c50ecc9544398bb124ddcf5944d09f48d8d28048f6e64c5581fe245"
+    "Certified Catalog": "fccea7404914d97be9f98e737b72a115f381d5419fbd4494d3c6ca5b2b3f50b2",
+    "Verified Learnings": "363e9ffc1ff6d60186bbf186a53f632eadbc55391f26c1fca3d234ecef8da5d0",
+    "Change Log": "66be7380ea4528f369bc4f2f2d66d4aeedc54ef6a7b92973c5f9afed01ffb168",
+    "Sync Metadata": "58bf18d6c06acc135257270a6f0ca37a0932357fcf4ec4b68711cd9359e1eb1f",
+    "Category Summary": "e18e6e343524d5ae64cfb3b8d1b2ae40a34636d47fb551fa499f4b18fa924928",
+    "All SKUs": "edfbabef8de0bc911069994056bf7c99f9217652425b5f389f9f73e478b9a272",
+    "Chassis Variants": "4ea38912ad7d11aa7d77364e882bbc820fbda0c0fd32fa8cba2beeebe4601367",
+    "Chassis Options Matrix": "c174579379e7e20dc678afd86f658e8d0d02cb60590249bcfbb06bbc31d80dc5",
+    "Rules & Constraints": "7aaaf1646ef90346f22aaa38212b1d77ddf8fac5411e82663e31d1343f8c8dbe",
+    "Unavailable Rules & Gates": "6fda145213f1128c9ea3b05f6d04b82f3c140bfe4c207bd609a45a72c207cc44",
+    "Software & Licenses": "0cd2a63dbadf4b67c67bd08123cd8f3d06a0d1b288543f69deb27a400becd852",
+    "Support Services": "59913bef48125c0e9d99bf32c3ddc794b65e5938fb8c72bdaa354bbd2c70ce65",
+    "Catalog Diffs": "a2574cbedc68be0112a049a0244c5304070ac000093d143e22bb75519f281d72",
+    "Price History Timeline": "b4c50e0fdbd847ad652f610a29fd34bb143758e788143f32b4ba87768a62a058",
+    "Networking": "f0d354df8986a674fe6f4a4752951d2e6648a443f3e4b39e4fa62b18f84ba23a",
+    "Chassis": "4e95e3f932edbf543bde4cfc66cd9218aa1eca3625f1a81cf216138bad76d7ea",
+    "Cables & Enablement Kits": "0f29b2d7c1b43d7a5d38c930b8faf475ab68801b6eb50d4e470ce5c5b30d7577",
+    "Accessories & Infrastructure": "8496ee3ca1c45499228b5911720242507be70f21c9c0e35bfce885a7a24e3034",
+    "Discontinued SKUs": "48a05a80aae75c298e29f14ba6c314bf285cae901603e5d4cd5786f9b7d4ecd9",
+    "Supply Chain & Lead Times": "2a878528c9912c7008b43e16a1600a5ea2932f5033208d456da8615fbd6b3591",
+    "Metadata": "738370dbeefc0e203ec87c9a3fa79765ffedf150b55b65af58aec8fd9c2fec69"
   },
-  "verifiedAt": "2026-11-06T08:41:33.538Z",
+  "verifiedAt": "2026-11-11T18:53:06.917Z",
   "fingerprints": {
-    "catalog": "5ec738f5a12138404dd973081f3c4d9567ee98cdb4e12aaaa664d93e8c27cde4",
-    "learnings": "5408ba2f70e33f28100fa4e5ec6aa4f544222de5b3f7326d33529766ca44e76e",
-    "changes": "8b1578214b90f7dff8c76e9be07db0376efaeda63617f19b2ae87474563be3a3",
-    "workbook": "c9d23841d76083e9a184cedd5be42cb1b5e61b4ea98e4e27eb496cda78528ab1",
-    "combined": "44c6ca6e0ee93c1ed9335917072539c5a010006b1cd9356502194ddbdf0c16ef"
+    "catalog": "fccea7404914d97be9f98e737b72a115f381d5419fbd4494d3c6ca5b2b3f50b2",
+    "learnings": "e328f907048d98b550942d079d07c6785b20516bca30ea9d570df7c6ed813eef",
+    "changes": "66be7380ea4528f369bc4f2f2d66d4aeedc54ef6a7b92973c5f9afed01ffb168",
+    "workbook": "dfa9004d7f1e407c2d686d2bc98b25ae711e789aec1c331bf4abcaa57010f9dd",
+    "combined": "68ca3c8d399617edbad5d750b82c3fdad48d0f5f1a7374d12ad7a68c46217a61"
   }
 }

@@ -1,1 +1,5242 @@
-[]
+[
+  {
+    "date": "2026-11-11",
+    "productNumber": "841716-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2030",
+    "newValue": "12/31/2030"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "841716-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "841716-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "841716-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "841716-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "841716-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":1412}",
+    "newValue": "{\"listPrice\":1412}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "882251-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2030",
+    "newValue": "12/31/2030"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "882251-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "882251-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "882251-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "882251-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "882251-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":6330}",
+    "newValue": "{\"listPrice\":6330}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "720187-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "07/31/2027",
+    "newValue": "08/30/2027"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "720187-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "720187-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "720187-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "720187-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "720187-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":2524}",
+    "newValue": "{\"listPrice\":2524}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "817040-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "03/31/2023",
+    "newValue": "05/05/2023"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845966-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2030",
+    "newValue": "12/31/2030"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845966-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845966-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845966-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845966-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845966-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":4252}",
+    "newValue": "{\"listPrice\":4252}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845970-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2030",
+    "newValue": "12/31/2030"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845970-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "14"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845970-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845970-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "14"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845970-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Standard Delivery (8-30d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845970-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":227}",
+    "newValue": "{\"listPrice\":227}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845972-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "07/27/2026",
+    "newValue": "07/28/2026"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845972-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "60"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845972-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845972-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "60"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845972-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Constrained / Long Lead Time (>45d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845972-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"60\",\"listPrice\":2585}",
+    "newValue": "{\"listPrice\":2585}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG661A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2050",
+    "newValue": "12/31/2099"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG661A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "78"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG661A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG661A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "78"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG661A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Constrained / Long Lead Time (>45d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG661A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"78\",\"listPrice\":10499}",
+    "newValue": "{\"listPrice\":10499}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JH234A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2050",
+    "newValue": "12/31/2099"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JH234A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "13"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JH234A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JH234A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "13"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JH234A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Standard Delivery (8-30d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JH234A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"13\",\"listPrice\":451}",
+    "newValue": "{\"listPrice\":451}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JH235A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2050",
+    "newValue": "12/31/2099"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JH235A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "13"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JH235A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JH235A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "13"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JH235A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Standard Delivery (8-30d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JH235A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"13\",\"listPrice\":629}",
+    "newValue": "{\"listPrice\":629}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JH236A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2050",
+    "newValue": "12/31/2099"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JH236A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "13"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JH236A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JH236A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "13"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JH236A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Standard Delivery (8-30d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JH236A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"13\",\"listPrice\":779}",
+    "newValue": "{\"listPrice\":779}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JH419A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2050",
+    "newValue": "12/31/2099"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JH420A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2050",
+    "newValue": "12/31/2099"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JH673A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2050",
+    "newValue": "12/31/2099"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JL307A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2050",
+    "newValue": "12/31/2099"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JL310A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2050",
+    "newValue": "12/31/2099"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "P90358-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2031",
+    "newValue": "12/31/2031"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "R0Z25A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2050",
+    "newValue": "12/31/2099"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "R0Z26A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2050",
+    "newValue": "12/31/2099"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "455886-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2030",
+    "newValue": "12/31/2030"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "455886-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "455886-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "455886-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "455886-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "455886-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":1751}",
+    "newValue": "{\"listPrice\":1751}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "813874-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "07/31/2027",
+    "newValue": "08/30/2027"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "813874-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "813874-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "813874-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "813874-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "813874-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":1173}",
+    "newValue": "{\"listPrice\":1173}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "844483-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "07/31/2027",
+    "newValue": "08/30/2027"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "844483-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "844483-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "844483-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "844483-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "844483-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":2451}",
+    "newValue": "{\"listPrice\":2451}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "E7Y09A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "06/30/2029",
+    "newValue": "07/31/2029"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "E7Y09A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "E7Y09A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "E7Y09A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "E7Y09A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "E7Y09A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":700}",
+    "newValue": "{\"listPrice\":700}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "E7Y10A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "06/30/2029",
+    "newValue": "07/31/2029"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "E7Y10A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "E7Y10A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "E7Y10A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "E7Y10A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "E7Y10A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":405}",
+    "newValue": "{\"listPrice\":405}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "455883-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2030",
+    "newValue": "12/31/2030"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "455883-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "8"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "455883-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "455883-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "8"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "455883-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Standard Delivery (8-30d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "455883-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":842}",
+    "newValue": "{\"listPrice\":842}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845398-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "06/30/2028",
+    "newValue": "07/31/2028"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845398-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845398-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845398-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845398-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845398-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":2110}",
+    "newValue": "{\"listPrice\":2110}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG234A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2050",
+    "newValue": "12/31/2099"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG234A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "13"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG234A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG234A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "13"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG234A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Standard Delivery (8-30d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG234A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"13\",\"listPrice\":10394}",
+    "newValue": "{\"listPrice\":10394}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "P9H30A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "P9H30A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "14"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "P9H30A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "P9H30A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "14"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "P9H30A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Standard Delivery (8-30d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "P9H30A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"14\",\"listPrice\":1399}",
+    "newValue": "{\"listPrice\":1399}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "P9H32A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "08/03/2022",
+    "newValue": "08/05/2022"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "537963-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "07/31/2027",
+    "newValue": "08/30/2027"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "537963-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "537963-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "537963-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "537963-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "537963-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":327}",
+    "newValue": "{\"listPrice\":327}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "720211-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "07/31/2027",
+    "newValue": "08/30/2027"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "720211-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "720211-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "720211-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "720211-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "720211-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":1711}",
+    "newValue": "{\"listPrice\":1711}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "721064-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2030",
+    "newValue": "12/31/2030"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "721064-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "721064-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "721064-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "721064-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "721064-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":729}",
+    "newValue": "{\"listPrice\":729}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "721076-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "07/31/2027",
+    "newValue": "08/30/2027"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "721076-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "721076-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "721076-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "721076-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "721076-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":2408}",
+    "newValue": "{\"listPrice\":2408}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845406-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2030",
+    "newValue": "12/31/2030"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845406-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845406-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845406-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845406-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845406-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":685}",
+    "newValue": "{\"listPrice\":685}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845408-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "07/31/2027",
+    "newValue": "08/31/2027"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845408-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845408-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845408-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845408-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845408-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":788}",
+    "newValue": "{\"listPrice\":788}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845410-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "07/31/2027",
+    "newValue": "08/30/2027"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845410-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845410-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845410-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845410-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845410-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":2861}",
+    "newValue": "{\"listPrice\":2861}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845414-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "07/31/2027",
+    "newValue": "08/30/2027"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845414-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845414-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845414-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845414-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845414-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":2972}",
+    "newValue": "{\"listPrice\":2972}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845416-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "07/31/2027",
+    "newValue": "08/31/2027"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845416-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845416-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845416-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845416-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845416-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":916}",
+    "newValue": "{\"listPrice\":916}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845420-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "07/31/2027",
+    "newValue": "08/30/2027"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845420-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845420-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845420-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845420-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845420-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":3437}",
+    "newValue": "{\"listPrice\":3437}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "876680-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2030",
+    "newValue": "12/31/2030"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "876680-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "876680-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "876680-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "876680-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "876680-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":678}",
+    "newValue": "{\"listPrice\":678}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "876692-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2030",
+    "newValue": "12/31/2030"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "876692-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "876692-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "876692-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "876692-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "876692-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":4247}",
+    "newValue": "{\"listPrice\":4247}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "876698-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2030",
+    "newValue": "12/31/2030"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "876698-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "876698-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "876698-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "876698-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "876698-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":4495}",
+    "newValue": "{\"listPrice\":4495}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ833A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2028",
+    "newValue": "12/31/2028"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ833A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ833A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ833A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ833A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ833A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":65}",
+    "newValue": "{\"listPrice\":65}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ836A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2028",
+    "newValue": "12/31/2028"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ836A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ836A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ836A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ836A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ836A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":115}",
+    "newValue": "{\"listPrice\":115}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ838A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2028",
+    "newValue": "12/31/2028"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ838A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ838A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ838A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ838A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ838A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":208}",
+    "newValue": "{\"listPrice\":208}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ839A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2028",
+    "newValue": "12/31/2028"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ839A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ839A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ839A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ839A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ839A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":253}",
+    "newValue": "{\"listPrice\":253}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "H6Z30A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2028",
+    "newValue": "12/31/2028"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "H6Z30A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "H6Z30A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "H6Z30A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "H6Z30A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "H6Z30A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":3422}",
+    "newValue": "{\"listPrice\":3422}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "P64635-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2030",
+    "newValue": "12/31/2030"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "P64635-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "P64635-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "P64635-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "P64635-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "P64635-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":4321}",
+    "newValue": "{\"listPrice\":4321}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "P64638-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2030",
+    "newValue": "12/31/2030"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "P64638-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "P64638-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "P64638-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "P64638-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "P64638-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":4247}",
+    "newValue": "{\"listPrice\":4247}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "P64641-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2030",
+    "newValue": "12/31/2030"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "P64641-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "P64641-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "P64641-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "P64641-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "P64641-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":4495}",
+    "newValue": "{\"listPrice\":4495}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "Q1H65A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2028",
+    "newValue": "12/31/2028"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "Q1H65A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "Q1H65A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "Q1H65A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "Q1H65A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "Q1H65A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":479}",
+    "newValue": "{\"listPrice\":479}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK731A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2028",
+    "newValue": "12/31/2028"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK731A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK731A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK731A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK731A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK731A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":2000}",
+    "newValue": "{\"listPrice\":2000}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK732A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2028",
+    "newValue": "12/31/2028"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK732A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK732A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK732A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK732A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK732A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":115}",
+    "newValue": "{\"listPrice\":115}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK737A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2028",
+    "newValue": "12/31/2028"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK737A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK737A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK737A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK737A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK737A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":415}",
+    "newValue": "{\"listPrice\":415}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "720199-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "10/18/2024",
+    "newValue": "12/31/2024"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "720202-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "11/24/2024",
+    "newValue": "11/25/2024"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845424-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "07/31/2027",
+    "newValue": "08/30/2027"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845424-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845424-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845424-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845424-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845424-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":4302}",
+    "newValue": "{\"listPrice\":4302}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "876689-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2030",
+    "newValue": "12/31/2030"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "876689-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "876689-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "876689-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "876689-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "876689-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":4321}",
+    "newValue": "{\"listPrice\":4321}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ834A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2028",
+    "newValue": "12/31/2028"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ834A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ834A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ834A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ834A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ834A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":70}",
+    "newValue": "{\"listPrice\":70}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ835A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2028",
+    "newValue": "12/31/2028"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ835A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ835A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ835A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ835A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ835A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":95}",
+    "newValue": "{\"listPrice\":95}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ837A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2028",
+    "newValue": "12/31/2028"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ837A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ837A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ837A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ837A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AJ837A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":162}",
+    "newValue": "{\"listPrice\":162}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AP818A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "07/19/2021",
+    "newValue": "07/20/2021"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AP819A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "07/19/2021",
+    "newValue": "07/20/2021"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AP820A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "06/15/2022",
+    "newValue": "06/16/2022"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "K2Q21A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "10/22/2026",
+    "newValue": "10/23/2026"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "K2Q22A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "10/22/2026",
+    "newValue": "10/23/2026"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "K2Q46A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2028",
+    "newValue": "12/31/2028"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "K2Q46A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "14"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "K2Q46A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "K2Q46A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "14"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "K2Q46A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Standard Delivery (8-30d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "K2Q46A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"14\",\"listPrice\":800}",
+    "newValue": "{\"listPrice\":800}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "K2Q47A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2028",
+    "newValue": "12/31/2028"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "K2Q47A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "K2Q47A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "K2Q47A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "K2Q47A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "K2Q47A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":1350}",
+    "newValue": "{\"listPrice\":1350}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK701A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "10/22/2026",
+    "newValue": "10/23/2026"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK729A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2028",
+    "newValue": "12/31/2028"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK729A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK729A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK729A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK729A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK729A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":719}",
+    "newValue": "{\"listPrice\":719}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK733A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2028",
+    "newValue": "12/31/2028"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK733A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK733A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK733A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK733A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK733A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":130}",
+    "newValue": "{\"listPrice\":130}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK734A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2028",
+    "newValue": "12/31/2028"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK734A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "14"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK734A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK734A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "14"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK734A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Standard Delivery (8-30d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK734A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"14\",\"listPrice\":147}",
+    "newValue": "{\"listPrice\":147}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK735A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2028",
+    "newValue": "12/31/2028"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK735A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "8"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK735A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK735A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "8"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK735A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Standard Delivery (8-30d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK735A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Cables & Enablement Kits",
+    "subCategory": "Cables",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":195}",
+    "newValue": "{\"listPrice\":195}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "487655-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "07/31/2027",
+    "newValue": "08/30/2027"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "487655-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "487655-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "487655-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "487655-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "487655-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":285}",
+    "newValue": "{\"listPrice\":285}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "C7533A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "07/31/2027",
+    "newValue": "08/31/2027"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "C7533A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "C7533A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "C7533A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "C7533A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "C7533A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":16}",
+    "newValue": "{\"listPrice\":16}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "C7535A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "07/31/2027",
+    "newValue": "08/31/2027"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "C7535A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "C7535A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "C7535A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "C7535A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "C7535A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":20}",
+    "newValue": "{\"listPrice\":20}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "C7536A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "07/31/2027",
+    "newValue": "08/31/2027"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "C7536A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "C7536A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "C7536A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "C7536A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "C7536A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":21}",
+    "newValue": "{\"listPrice\":21}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "C7537A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "07/31/2027",
+    "newValue": "08/31/2027"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "C7537A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "C7537A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "C7537A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "C7537A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "C7537A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"3\",\"listPrice\":46}",
+    "newValue": "{\"listPrice\":46}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "C7542A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "07/31/2027",
+    "newValue": "08/31/2027"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "C7542A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "C7542A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "C7542A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "C7542A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "C7542A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":86}",
+    "newValue": "{\"listPrice\":86}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "G9Q68A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "04/29/2028",
+    "newValue": "04/30/2028"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "G9Q68A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "G9Q68A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "G9Q68A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "3"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "G9Q68A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "G9Q68A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"8\"}",
+    "newValue": "{}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "487649-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2017",
+    "newValue": "01/31/2018"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "487652-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2018",
+    "newValue": "01/31/2019"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "498385-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2017",
+    "newValue": "01/31/2018"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "498385-B22",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2017",
+    "newValue": "01/31/2018"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "498385-B23",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2017",
+    "newValue": "01/31/2018"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "498385-B24",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2017",
+    "newValue": "01/31/2018"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "498385-B25",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2017",
+    "newValue": "01/31/2018"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "538272-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2018",
+    "newValue": "01/31/2019"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "670759-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2021",
+    "newValue": "03/21/2022"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "670759-B22",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2021",
+    "newValue": "03/21/2022"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "670759-B23",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2021",
+    "newValue": "03/21/2022"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "670759-B24",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2021",
+    "newValue": "03/21/2022"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "670759-B25",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2021",
+    "newValue": "03/21/2022"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "712495-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2016",
+    "newValue": "01/31/2017"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "712497-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2016",
+    "newValue": "01/31/2017"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "720196-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2018",
+    "newValue": "01/31/2019"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "720205-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2018",
+    "newValue": "01/31/2019"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "720208-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2017",
+    "newValue": "01/31/2018"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "721067-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2017",
+    "newValue": "01/31/2018"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "721070-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2018",
+    "newValue": "01/31/2019"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "721073-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2017",
+    "newValue": "01/31/2018"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "730907-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "10/15/2018",
+    "newValue": "10/16/2018"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "804095-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2018",
+    "newValue": "05/31/2018"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "804098-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2018",
+    "newValue": "12/31/2018"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "804101-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2022",
+    "newValue": "12/31/2022"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "804104-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2022",
+    "newValue": "12/31/2022"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "804107-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2018",
+    "newValue": "05/31/2018"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "804110-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2022",
+    "newValue": "12/31/2022"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "804155-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2022",
+    "newValue": "12/31/2022"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "808722-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2021",
+    "newValue": "03/21/2022"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "808722-B22",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2021",
+    "newValue": "03/21/2022"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "808722-B23",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2021",
+    "newValue": "03/21/2022"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "808722-B24",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2021",
+    "newValue": "03/21/2022"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "808722-B25",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2021",
+    "newValue": "03/21/2022"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "808722-B26",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2021",
+    "newValue": "11/30/2021"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "808722-B27",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2021",
+    "newValue": "03/21/2022"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "808722-B28",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2021",
+    "newValue": "03/21/2022"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "845412-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2017",
+    "newValue": "01/31/2018"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "861412-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "07/31/2027",
+    "newValue": "08/31/2027"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "861412-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "8"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "861412-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "861412-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "8"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "861412-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Standard Delivery (8-30d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "861412-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":65}",
+    "newValue": "{\"listPrice\":65}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "861413-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "07/31/2027",
+    "newValue": "08/31/2027"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "861413-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "8"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "861413-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "861413-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "8"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "861413-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Standard Delivery (8-30d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "861413-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":113}",
+    "newValue": "{\"listPrice\":113}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "861414-B21",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2022",
+    "newValue": "11/30/2022"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "J9283B",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2018",
+    "newValue": "05/31/2018"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "J9283B",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "5"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "J9283B",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "J9283B",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "5"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "J9283B",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "J9283B",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"5\"}",
+    "newValue": "{}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JC784C",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2050",
+    "newValue": "12/31/2099"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JC784C",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "13"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JC784C",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JC784C",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "13"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JC784C",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Standard Delivery (8-30d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JC784C",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"13\",\"listPrice\":430}",
+    "newValue": "{\"listPrice\":430}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JD095C",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2050",
+    "newValue": "12/31/2099"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JD095C",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "13"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JD095C",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JD095C",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "13"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JD095C",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Standard Delivery (8-30d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JD095C",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"13\",\"listPrice\":199}",
+    "newValue": "{\"listPrice\":199}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JD096C",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2050",
+    "newValue": "12/31/2099"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JD096C",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "13"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JD096C",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JD096C",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "13"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JD096C",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Standard Delivery (8-30d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JD096C",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"13\",\"listPrice\":220}",
+    "newValue": "{\"listPrice\":220}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JD097C",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2050",
+    "newValue": "12/31/2099"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JD097C",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "13"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JD097C",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JD097C",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "13"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JD097C",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Standard Delivery (8-30d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JD097C",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"13\",\"listPrice\":314}",
+    "newValue": "{\"listPrice\":314}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG081C",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2050",
+    "newValue": "12/31/2099"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG081C",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "13"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG081C",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG081C",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "13"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG081C",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Standard Delivery (8-30d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG081C",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"13\",\"listPrice\":346}",
+    "newValue": "{\"listPrice\":346}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG326A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2050",
+    "newValue": "12/31/2099"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG326A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "13"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG326A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG326A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "13"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG326A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Standard Delivery (8-30d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG326A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"13\",\"listPrice\":493}",
+    "newValue": "{\"listPrice\":493}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG327A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2050",
+    "newValue": "12/31/2099"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG327A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "13"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG327A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG327A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "13"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG327A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Standard Delivery (8-30d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG327A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"13\",\"listPrice\":625}",
+    "newValue": "{\"listPrice\":625}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG328A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2050",
+    "newValue": "12/31/2099"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG328A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "13"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG328A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG328A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "13"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG328A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Standard Delivery (8-30d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG328A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"13\",\"listPrice\":776}",
+    "newValue": "{\"listPrice\":776}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG329A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2050",
+    "newValue": "12/31/2099"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG329A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "13"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG329A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG329A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "13"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG329A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Standard Delivery (8-30d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG329A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"13\",\"listPrice\":692}",
+    "newValue": "{\"listPrice\":692}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG330A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2050",
+    "newValue": "12/31/2099"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG330A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "13"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG330A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG330A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "13"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG330A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Standard Delivery (8-30d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG330A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"13\",\"listPrice\":850}",
+    "newValue": "{\"listPrice\":850}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG331A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2050",
+    "newValue": "12/31/2099"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG331A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "13"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG331A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG331A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "13"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG331A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Standard Delivery (8-30d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "JG331A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"13\",\"listPrice\":986}",
+    "newValue": "{\"listPrice\":986}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK702A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "10/22/2026",
+    "newValue": "10/23/2026"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK736A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2028",
+    "newValue": "12/31/2028"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK736A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK736A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK736A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "4"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK736A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "QK736A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Accessories & Infrastructure",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"4\",\"listPrice\":239}",
+    "newValue": "{\"listPrice\":239}"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AP784A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "05/06/2016",
+    "newValue": "04/01/2014"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "AP785A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Networking",
+    "subCategory": "Optical Transceivers & DAC Cables",
+    "field": "Discontinued Date",
+    "oldValue": "05/06/2016",
+    "newValue": "04/01/2014"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "R3P67A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "License Upgrade",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2027",
+    "newValue": "10/31/2027"
+  },
+  {
+    "date": "2026-11-11",
+    "productNumber": "N3R43A",
+    "chassis": "SY100Gb F32 Module",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "License Upgrade",
+    "field": "Discontinued Date",
+    "oldValue": "05/31/2023",
+    "newValue": "06/30/2023"
+  }
+]

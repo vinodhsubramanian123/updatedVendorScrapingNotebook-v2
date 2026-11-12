@@ -19668,5 +19668,3005 @@
     "field": "Vendor Attributes",
     "oldValue": "{\"Extended Price (USD)\":\"0\"}",
     "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "339781-B21",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2043",
+    "newValue": "10/31/2043"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "339781-B21",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "1"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "339781-B21",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "339781-B21",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "1"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "339781-B21",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "339781-B21",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}",
+    "newValue": "{\"listPrice\":1}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R7J59AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "RAID Settings",
+    "field": "Discontinued Date",
+    "oldValue": "02/29/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3Q39AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "RAID Settings",
+    "field": "Discontinued Date",
+    "oldValue": "02/29/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "M6K34AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0E93AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0E94AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0E95AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S7N98AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S7N99AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S7P00AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3R58AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": "03/16/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3R57AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": "03/16/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3R59AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": "03/16/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3R56AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": "03/16/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S7N95AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3R55AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": "03/16/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S7N96AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3R60AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": "03/16/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S7N97AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q1X75AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2025",
+    "newValue": "02/28/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "M6K30AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": "03/16/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "M6K32AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": "03/16/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S7N75AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S7N76AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3R50AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": "03/16/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3R51AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": "03/16/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3R49AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": "03/16/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3R53AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": "03/16/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3R52AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": "03/16/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3R54AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": "03/16/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S7N79AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S7N80AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S7N81AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S7N82AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S7N83AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S7N84AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Non Preinstalled Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G3J32AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R6J26AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R6J29AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "03/01/2025",
+    "newValue": "04/01/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "J8J36AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "J8J35AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G5J62AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G5J63AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G5J64AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G5J65AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q0D22AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q0D23AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G3J28AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G3J29AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G3J30AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G3J31AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G3J33AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q5W20AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q5W19AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q5W22AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q5W21AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q8U19AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": "12/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q8U21AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": "12/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q8U20AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": "12/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q8U22AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": "12/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q8U15AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": "12/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q8U17AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": "12/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q8U16AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": "12/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q8U18AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": "12/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q5W24AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q5W23AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q5W26AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q5W25AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G3J22AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G3J23AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G3J24AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G3J25AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G3J26AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G3J27AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q0D26AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": "12/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q0D25AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": "12/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R6J33AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R6J34AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "03/01/2025",
+    "newValue": "04/01/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R6J35AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "03/01/2025",
+    "newValue": "04/01/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q0D30AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": "12/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q0D29AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": "12/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S5Q81AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "01/31/2028",
+    "newValue": "02/28/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S5Q82AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "01/31/2028",
+    "newValue": "02/28/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S5Q83AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "01/31/2028",
+    "newValue": "02/28/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2G27AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2025",
+    "newValue": "10/31/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2G28AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2025",
+    "newValue": "10/31/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S4R76AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Discontinued Date",
+    "oldValue": "09/06/2028",
+    "newValue": "10/07/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S4F94AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Discontinued Date",
+    "oldValue": "11/04/2025",
+    "newValue": "12/01/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S4G00AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Discontinued Date",
+    "oldValue": "11/04/2025",
+    "newValue": "12/01/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R8V76AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R8V74AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R8V77AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R8V75AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R8V78AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0F24AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R8V72AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": "03/16/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R8V73AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": "03/16/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S7N77AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S7N78AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0F26AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R8V87AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0F28AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R8V89AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0F30AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0F22AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0F25AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R8V86AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0F27AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R8V88AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0F21AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0F29AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "VMWare Core Editions",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G5J66AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G5J67AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G3J34AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G3J35AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G5J68AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G5J69AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G3J36AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G3J37AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R2A03AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R2A04AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R2A05AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R2A00AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R2A01AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R2A02AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Linux Value Added Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1T30AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "10/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1T31AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "10/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1T32AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "10/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1T36AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "10/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R8V45AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "10/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R8V46AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2026",
+    "newValue": "10/31/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R8V46AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Lifecycle Status",
+    "oldValue": "Direct Ship (DS)",
+    "newValue": "Obsolete (OB)"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R8V46AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Lifecycle Badge",
+    "oldValue": "DS",
+    "newValue": "OB"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R8V46AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Availability",
+    "oldValue": "Direct Ship (DS)",
+    "newValue": "Obsolete (OB)"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W12AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "10/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W13AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2026",
+    "newValue": "10/31/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W13AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Lifecycle Status",
+    "oldValue": "Direct Ship (DS)",
+    "newValue": "Obsolete (OB)"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W13AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Lifecycle Badge",
+    "oldValue": "DS",
+    "newValue": "OB"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W13AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Availability",
+    "oldValue": "Direct Ship (DS)",
+    "newValue": "Obsolete (OB)"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W15AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "10/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W16AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2026",
+    "newValue": "10/31/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W16AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Lifecycle Status",
+    "oldValue": "Direct Ship (DS)",
+    "newValue": "Obsolete (OB)"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W16AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Lifecycle Badge",
+    "oldValue": "DS",
+    "newValue": "OB"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W16AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Availability",
+    "oldValue": "Direct Ship (DS)",
+    "newValue": "Obsolete (OB)"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W18AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "10/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W19AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2026",
+    "newValue": "10/31/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W19AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Lifecycle Status",
+    "oldValue": "Direct Ship (DS)",
+    "newValue": "Obsolete (OB)"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W19AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Lifecycle Badge",
+    "oldValue": "DS",
+    "newValue": "OB"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W19AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Availability",
+    "oldValue": "Direct Ship (DS)",
+    "newValue": "Obsolete (OB)"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W21AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "10/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W22AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2026",
+    "newValue": "10/31/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W22AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Lifecycle Status",
+    "oldValue": "Direct Ship (DS)",
+    "newValue": "Obsolete (OB)"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W22AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Lifecycle Badge",
+    "oldValue": "DS",
+    "newValue": "OB"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W22AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Availability",
+    "oldValue": "Direct Ship (DS)",
+    "newValue": "Obsolete (OB)"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W24AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "10/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W25AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2026",
+    "newValue": "10/31/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W25AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Lifecycle Status",
+    "oldValue": "Direct Ship (DS)",
+    "newValue": "Obsolete (OB)"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W25AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Lifecycle Badge",
+    "oldValue": "DS",
+    "newValue": "OB"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W25AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Availability",
+    "oldValue": "Direct Ship (DS)",
+    "newValue": "Obsolete (OB)"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W27AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "10/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W28AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2026",
+    "newValue": "10/31/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W28AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Lifecycle Status",
+    "oldValue": "Direct Ship (DS)",
+    "newValue": "Obsolete (OB)"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W28AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Lifecycle Badge",
+    "oldValue": "DS",
+    "newValue": "OB"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W28AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Availability",
+    "oldValue": "Direct Ship (DS)",
+    "newValue": "Obsolete (OB)"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "TD378A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0}",
+    "newValue": "{}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "TD377A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "08/31/2017",
+    "newValue": "09/30/2017"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "TD377A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0}",
+    "newValue": "{}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "BD571A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "03/03/2022",
+    "newValue": "03/04/2022"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "BD572A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "PCIe Networking Adapters",
+    "field": "Discontinued Date",
+    "oldValue": "03/03/2022",
+    "newValue": "03/04/2022"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1P40AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1P41AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1P42AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R2Z51AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R2Z52AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R2Z53AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1P34AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1P37AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1P35AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1P38AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1P36AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1P39AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R2Z45AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R2Z46AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R2Z47AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q9S73AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q9S76AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q9S74AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q9S77AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q9S75AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q9S78AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System 8pks",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R7P98AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "OEM Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "10/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R2U47AAE",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "OEM Software",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2025",
+    "newValue": "02/28/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HA849A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"HA849A1\"}",
+    "newValue": "{\"Product Number\":\"HA849A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HA851A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"HA851A1\"}",
+    "newValue": "{\"Product Number\":\"HA851A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "ZU723A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":110,\"Product Number\":\"ZU723A\"}",
+    "newValue": "{\"Product Number\":\"ZU723A\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H29BWA1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H29BWA1\"}",
+    "newValue": "{\"Product Number\":\"H29BWA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H29BXA1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H29BXA1\"}",
+    "newValue": "{\"Product Number\":\"H29BXA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HA838A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"HA838A1\"}",
+    "newValue": "{\"Product Number\":\"HA838A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HA839A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"HA839A1\"}",
+    "newValue": "{\"Product Number\":\"HA839A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HA843A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"HA843A1\"}",
+    "newValue": "{\"Product Number\":\"HA843A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HA846A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"HA846A1\"}",
+    "newValue": "{\"Product Number\":\"HA846A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HA848A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"HA848A1\"}",
+    "newValue": "{\"Product Number\":\"HA848A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "AC068A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"AC068A\"}",
+    "newValue": "{\"Product Number\":\"AC068A\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB480A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"HB480A1\"}",
+    "newValue": "{\"Product Number\":\"HB480A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB481A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"HB481A1\"}",
+    "newValue": "{\"Product Number\":\"HB481A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB482A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"HB482A1\"}",
+    "newValue": "{\"Product Number\":\"HB482A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB483A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"HB483A1\"}",
+    "newValue": "{\"Product Number\":\"HB483A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB484A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"HB484A1\"}",
+    "newValue": "{\"Product Number\":\"HB484A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1J77A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"S1J77A\"}",
+    "newValue": "{\"Product Number\":\"S1J77A\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H0JD0A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H0JD0A1\"}",
+    "newValue": "{\"Product Number\":\"H0JD0A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H0JT1A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H0JT1A1\"}",
+    "newValue": "{\"Product Number\":\"H0JT1A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36NRA4",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H36NRA4\"}",
+    "newValue": "{\"Product Number\":\"H36NRA4\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36NRA5",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H36NRA5\"}",
+    "newValue": "{\"Product Number\":\"H36NRA5\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36NSA1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H36NSA1\"}",
+    "newValue": "{\"Product Number\":\"H36NSA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36NTA1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H36NTA1\"}",
+    "newValue": "{\"Product Number\":\"H36NTA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H42ZHA1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H42ZHA1\"}",
+    "newValue": "{\"Product Number\":\"H42ZHA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H42ZJA1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H42ZJA1\"}",
+    "newValue": "{\"Product Number\":\"H42ZJA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H42ZKA1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H42ZKA1\"}",
+    "newValue": "{\"Product Number\":\"H42ZKA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H0JT2A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Reseller Option Kit",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H0JT2A1\"}",
+    "newValue": "{\"Product Number\":\"H0JT2A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H29BRA1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Reseller Option Kit",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H29BRA1\"}",
+    "newValue": "{\"Product Number\":\"H29BRA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H29BSA1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Reseller Option Kit",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H29BSA1\"}",
+    "newValue": "{\"Product Number\":\"H29BSA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36NLA1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Reseller Option Kit",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H36NLA1\"}",
+    "newValue": "{\"Product Number\":\"H36NLA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36NMA1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Reseller Option Kit",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H36NMA1\"}",
+    "newValue": "{\"Product Number\":\"H36NMA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36NNA1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Reseller Option Kit",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H36NNA1\"}",
+    "newValue": "{\"Product Number\":\"H36NNA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36NPA1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Reseller Option Kit",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H36NPA1\"}",
+    "newValue": "{\"Product Number\":\"H36NPA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36NQA1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Reseller Option Kit",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H36NQA1\"}",
+    "newValue": "{\"Product Number\":\"H36NQA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36NQA3",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Reseller Option Kit",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H36NQA3\"}",
+    "newValue": "{\"Product Number\":\"H36NQA3\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R3J78A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"R3J78A\"}",
+    "newValue": "{\"Product Number\":\"R3J78A\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "P1F74A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":350,\"Product Number\":\"P1F74A\"}",
+    "newValue": "{\"Product Number\":\"P1F74A\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "P1F76A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":758,\"Product Number\":\"P1F76A\"}",
+    "newValue": "{\"Product Number\":\"P1F76A\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "P1F78A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":350,\"Product Number\":\"P1F78A\"}",
+    "newValue": "{\"Product Number\":\"P1F78A\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R2D12A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"R2D12A\"}",
+    "newValue": "{\"Product Number\":\"R2D12A\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R2D20A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"R2D20A\"}",
+    "newValue": "{\"Product Number\":\"R2D20A\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R2D10A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"R2D10A\"}",
+    "newValue": "{\"Product Number\":\"R2D10A\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R2D04A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"R2D04A\"}",
+    "newValue": "{\"Product Number\":\"R2D04A\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "P1F71A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":292,\"Product Number\":\"P1F71A\"}",
+    "newValue": "{\"Product Number\":\"P1F71A\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "P1F81A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"P1F81A\"}",
+    "newValue": "{\"Product Number\":\"P1F81A\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "AC123A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"AC123A\"}",
+    "newValue": "{\"Product Number\":\"AC123A\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "BQ337A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":100,\"Product Number\":\"BQ337A\"}",
+    "newValue": "{\"Product Number\":\"BQ337A\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "BQ335A",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":44,\"Product Number\":\"BQ335A\"}",
+    "newValue": "{\"Product Number\":\"BQ335A\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G1H96A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"G1H96A1\"}",
+    "newValue": "{\"Product Number\":\"G1H96A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G1H97A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"G1H97A1\"}",
+    "newValue": "{\"Product Number\":\"G1H97A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G1H98A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"G1H98A1\"}",
+    "newValue": "{\"Product Number\":\"G1H98A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G1H99A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"G1H99A1\"}",
+    "newValue": "{\"Product Number\":\"G1H99A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H0JD1A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H0JD1A1\"}",
+    "newValue": "{\"Product Number\":\"H0JD1A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H0JD7A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H0JD7A1\"}",
+    "newValue": "{\"Product Number\":\"H0JD7A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H30RYA1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H30RYA1\"}",
+    "newValue": "{\"Product Number\":\"H30RYA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H30SDA1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H30SDA1\"}",
+    "newValue": "{\"Product Number\":\"H30SDA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H33XSA1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H33XSA1\"}",
+    "newValue": "{\"Product Number\":\"H33XSA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H33XTA2",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H33XTA2\"}",
+    "newValue": "{\"Product Number\":\"H33XTA2\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H33XVA3",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H33XVA3\"}",
+    "newValue": "{\"Product Number\":\"H33XVA3\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H33XWA4",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H33XWA4\"}",
+    "newValue": "{\"Product Number\":\"H33XWA4\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H33XXA5",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H33XXA5\"}",
+    "newValue": "{\"Product Number\":\"H33XXA5\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36NVA1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H36NVA1\"}",
+    "newValue": "{\"Product Number\":\"H36NVA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H57GHA1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H57GHA1\"}",
+    "newValue": "{\"Product Number\":\"H57GHA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H57GJA1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H57GJA1\"}",
+    "newValue": "{\"Product Number\":\"H57GJA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H57GKA1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H57GKA1\"}",
+    "newValue": "{\"Product Number\":\"H57GKA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H0JD9A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H0JD9A1\"}",
+    "newValue": "{\"Product Number\":\"H0JD9A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H1WU9A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H1WU9A1\"}",
+    "newValue": "{\"Product Number\":\"H1WU9A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H1WV0A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H1WV0A1\"}",
+    "newValue": "{\"Product Number\":\"H1WV0A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H1XF9A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H1XF9A1\"}",
+    "newValue": "{\"Product Number\":\"H1XF9A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H1XG0A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H1XG0A1\"}",
+    "newValue": "{\"Product Number\":\"H1XG0A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H1XG7A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H1XG7A1\"}",
+    "newValue": "{\"Product Number\":\"H1XG7A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H2S79A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H2S79A1\"}",
+    "newValue": "{\"Product Number\":\"H2S79A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H2S81A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H2S81A1\"}",
+    "newValue": "{\"Product Number\":\"H2S81A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H29BQA1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H29BQA1\"}",
+    "newValue": "{\"Product Number\":\"H29BQA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H30SBA1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H30SBA1\"}",
+    "newValue": "{\"Product Number\":\"H30SBA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H30SCA1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H30SCA1\"}",
+    "newValue": "{\"Product Number\":\"H30SCA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H30SLA1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H30SLA1\"}",
+    "newValue": "{\"Product Number\":\"H30SLA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H30SMA1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H30SMA1\"}",
+    "newValue": "{\"Product Number\":\"H30SMA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H30SNA1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H30SNA1\"}",
+    "newValue": "{\"Product Number\":\"H30SNA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36NRA3",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H36NRA3\"}",
+    "newValue": "{\"Product Number\":\"H36NRA3\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36PBA1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H36PBA1\"}",
+    "newValue": "{\"Product Number\":\"H36PBA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36PCA1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H36PCA1\"}",
+    "newValue": "{\"Product Number\":\"H36PCA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36PDA1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H36PDA1\"}",
+    "newValue": "{\"Product Number\":\"H36PDA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H42ZQA1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H42ZQA1\"}",
+    "newValue": "{\"Product Number\":\"H42ZQA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H42ZRA1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H42ZRA1\"}",
+    "newValue": "{\"Product Number\":\"H42ZRA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H43BCA1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H43BCA1\"}",
+    "newValue": "{\"Product Number\":\"H43BCA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H44MDA1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H44MDA1\"}",
+    "newValue": "{\"Product Number\":\"H44MDA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H44NJA1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H44NJA1\"}",
+    "newValue": "{\"Product Number\":\"H44NJA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HU7D2A1",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"HU7D2A1\"}",
+    "newValue": "{\"Product Number\":\"HU7D2A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H0JD4A1008E",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Reseller Option Kit",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H0JD4A1008E\"}",
+    "newValue": "{\"Product Number\":\"H0JD4A1008E\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H0JD4A10BK5",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Reseller Option Kit",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H0JD4A10BK5\"}",
+    "newValue": "{\"Product Number\":\"H0JD4A10BK5\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "389692-B21",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "Description",
+    "oldValue": "HPE Customer Defined RAID Setting Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "389692-B21",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "Option Type",
+    "oldValue": "Standard",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "389692-B21",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "Start Date",
+    "oldValue": "02/02/2005",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "389692-B21",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2043",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "389692-B21",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "389692-B21",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "CLIC Status",
+    "oldValue": "Unpublished",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "389692-B21",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "389692-B21",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "389692-B21",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "389692-B21",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "389692-B21",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "Vendor Recommended",
+    "oldValue": "false",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "389692-B21",
+    "chassis": "SY480 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}",
+    "newValue": ""
   }
 ]

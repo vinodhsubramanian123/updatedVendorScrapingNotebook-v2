@@ -1,0 +1,18 @@
+{
+  "metadata": {
+    "chassis": "Synergy 4Port Frame Link Module",
+    "model": "Synergy_4Port_Frame_Link_Module",
+    "family": "Synergy",
+    "generation": "General",
+    "pillar": "NETWORKING",
+    "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
+    "scrapeDate": "2026-11-12",
+    "scrapeTimestamp": "2026-11-12T03:18:03.540Z",
+    "builtAt": "2026-11-12T03:18:15.455Z",
+    "totalSubcategories": 0,
+    "totalUniqueSKUs": 0,
+    "totalTables": 0
+  },
+  "subcategories": [],
+  "entries": []
+}

@@ -1,0 +1,49 @@
+Main Category	Sub-Category	Constraint	Min Qty	Max Qty	Total SKUs	Has Rules	Rule Count
+Software	Solutions Software	no max	0	Unlimited	0	No	0
+Unknown	HPE Workload Aware Security	max 1	0	1	0	No	0
+Unknown	Storage	max 12	0	12	0	No	0
+Cooling Options	Cooling Options	required	1	Required	0	No	0
+Unknown	Compute	max 12	0	12	0	No	0
+Management Hardware	Appliance	max 2	0	2	3	Yes	5
+Management Hardware	Redundant Frame Link	max 2	0	2	1	Yes	1
+Management Hardware	Frame Link Module USB	max 99	0	99	2	Yes	3
+Interconnects	Interconnects	max 6	0	6	21	Yes	16
+Interconnects	Direct Attach Cables	max 18	0	18	0	No	0
+Interconnects	CAT Ethernet Cables	max 12	0	12	0	No	0
+Interconnects	Tape Storage	max 99	0	99	0	No	0
+Frame Options	Frame Options	max 2	0	2	0	No	0
+Frame Options	Rack Options	max 2	0	2	0	No	0
+Operating Environment	Red Hat Enterprise Linux Server	no max	0	Unlimited	0	No	0
+Operating Environment	Non Preinstalled Operating System	no max	0	Unlimited	0	No	0
+Cooling Options	Cooling Options (required)	max 10	0	10	0	No	0
+Cooling Options	Power Supply (required)	max 12	0	12	0	No	0
+Cooling Options	Power Supply	required	1	Required	0	No	0
+Cooling Options	Accessories	max 6	0	6	0	No	0
+Cooling Options	Power Cords	max 12	0	12	0	No	0
+Cooling Options	Manufacturing Services	max 1	0	1	0	No	0
+Chassis	Variants	min 1, max 1 — Active OCA CTO chassis	1	1	1	Yes	1
+Frame Options	Server Management & Operating System Licenses	max 12	1	12	21	Yes	20
+Accessories & Infrastructure	Compute	max 12	0	12	1	Yes	2
+Frame Options	Smart Array SAS Controllers	max 12	1	12	18	Yes	19
+Accessories & Infrastructure	Storage	max 12	0	12	2	Yes	3
+Drive Enclosures / Drives	SFF Drive Cages & Enablement	max 24	0	24	1	Yes	2
+Accessories & Infrastructure	System Options	optional	0	Optional	24	Yes	29
+Networking	PCIe Networking Adapters	max 8	0	8	15	Yes	16
+Cables & Enablement Kits	Direct Attach Cables	max 18	0	18	37	Yes	28
+Networking	CAT Ethernet Cables	max 12	0	12	4	Yes	2
+Drive Enclosures / Drives	Tape Storage	max 99	0	99	5	Yes	3
+Accessories & Infrastructure	Frame Options	max 2	0	2	2	Yes	1
+Accessories & Infrastructure	-48VDC Power Supplies & Cable Kits	max 2	0	2	4	Yes	3
+Software & Licenses	Red Hat Enterprise Linux Server	no max	0	Unlimited	2	Yes	3
+Cooling / Thermal	High Performance & Standard Fan Kits	max 6	0	6	1	Yes	1
+Power Supplies	Power Supply	required	1	Required	12	Yes	13
+Cables & Enablement Kits	Power Cords	max 12	0	12	36	Yes	27
+Cables & Enablement Kits	Power Cords & Jumper Cables		0	N/A	8	Yes	9
+Power Supplies	-48VDC Power Supplies & Cable Kits	min 1, max 2	1	2	1	Yes	2
+Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	0	24	36	Yes	38
+Graphics & GPU	GPU Accelerators		0	N/A	10	No	0
+Software & Licenses	Non Preinstalled Operating System	no max	0	Unlimited	58	Yes	57
+Support Services	Server Management & Operating System Licenses	max 1	0	1	6	Yes	7
+Support Services	System Options		0	N/A	77	No	0
+Support Services	Manufacturing Services	max 1	0	1	30	Yes	3
+Support Services	Compute	max 12	0	12	6	Yes	1

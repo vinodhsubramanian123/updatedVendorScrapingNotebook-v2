@@ -958,5 +958,69 @@
     "subCategory": "Non Preinstalled Operating System",
     "firstSeenDate": "2026-10-29",
     "status": "ACTIVE"
+  },
+  "P83865-F21": {
+    "productNumber": "P83865-F21",
+    "description": "HPE 64GB (1x64GB) Dual Rank x4 DDR5-8000 CAS-64-64-64 EC8 Registered Smart FIO Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "P83867-F21": {
+    "productNumber": "P83867-F21",
+    "description": "HPE 96GB (1x96GB) Dual Rank x4 DDR5-8000 CAS-64-64-64 EC8 Registered Smart FIO Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "P83869-F21": {
+    "productNumber": "P83869-F21",
+    "description": "HPE 128GB (1x128GB) Dual Rank x4 DDR5-8000 CAS-64-64-64 EC8 Registered Smart FIO Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "P83865-B21": {
+    "productNumber": "P83865-B21",
+    "description": "HPE 64GB (1x64GB) Dual Rank x4 DDR5-8000 CAS-64-64-64 EC8 Registered Smart Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "P83867-B21": {
+    "productNumber": "P83867-B21",
+    "description": "HPE 96GB (1x96GB) Dual Rank x4 DDR5-8000 CAS-64-64-64 EC8 Registered Smart Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "P83869-B21": {
+    "productNumber": "P83869-B21",
+    "description": "HPE 128GB (1x128GB) Dual Rank x4 DDR5-8000 CAS-64-64-64 EC8 Registered Smart Memory Kit",
+    "mainCategory": "Memory",
+    "subCategory": "Memory",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "389692-B21": {
+    "productNumber": "389692-B21",
+    "description": "HPE Customer Defined RAID Setting Service",
+    "mainCategory": "Support Services",
+    "subCategory": "Support Services Options",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  },
+  "H36XCA1#006": {
+    "productNumber": "H36XCA1#006",
+    "description": "HPE GPU on RHOCP Integrat SVC",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
   }
 }

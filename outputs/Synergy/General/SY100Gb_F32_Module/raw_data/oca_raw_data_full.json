@@ -1,23 +1,24 @@
 {
-  "timestamp": "2026-10-30T11:57:13.837Z",
+  "timestamp": "2026-11-11T18:49:10.220Z",
   "pageTitle": "External OCA  | Hewlett Packard Enterprise",
   "url": "https://oca.ext.hpe.com/oca/OCAInternalLogin",
   "nodeText": "HPE Virtual Connect SE 100Gb F32 Module for Synergy [867796-B21]",
-  "qsLink": "https://www.hpe.com/psnow/doc/c04815113?from=app&section=search&isFutureVersion=true",
+  "qsLink": "",
   "selectedBaseSku": "867796-B21",
   "baseSku": "867796-B21",
   "ownerConfiguration": "100Gb Virtual #1",
   "parentConfiguration": "Synergy 12000 Frame #1",
+  "parentBaseSku": "P51174-B21",
   "componentServiceEvidence": {
     "scope": "OBSERVED_SELECTED_SERVICES_ONLY",
     "owners": [
       {
-        "owner": "CE45087D126BB28FD3A232EBB77B29B2",
+        "owner": "40DFBA5F21575295DAD5FE86F2C55A9A",
         "support": "HU4D5A5#Z1R HPE 5Y Complete Care Addon Essential Service",
         "install": "N/A"
       },
       {
-        "owner": "101B6950B64CDE84482ED30DE27663F4",
+        "owner": "0317B6534E4FD5E7CCC94DE7915FD7A8",
         "support": "HU4D5A5#Z1R HPE 5Y Complete Care Addon Essential Service",
         "install": "N/A"
       }
@@ -41,7 +42,7 @@
           "Device specific services"
         ],
         [
-          "Icon #1 - OCA Config 2\nIcon ID: I158053210-01EDT: 24 - 30 days",
+          "Icon #1 - OCA Config 2\nIcon ID: I158311752-01EDT: 24 - 30 days",
           "1",
           "",
           "",
@@ -681,6 +682,48 @@
           ""
         ]
       ]
+    },
+    {
+      "tableIndex": 14,
+      "tableId": "",
+      "rowCount": 7,
+      "rows": [
+        [
+          "Description",
+          "Product Number",
+          "Quantity"
+        ],
+        [
+          "HPE 3Y CC SB Expert Support SAP HANA SVC",
+          "H40CSA3",
+          ""
+        ],
+        [
+          "HPE 4Y CC SB Expert Support SAP HANA SVC",
+          "H40CSA4",
+          ""
+        ],
+        [
+          "HPE 5Y CC SB Expert Support SAP HANA SVC",
+          "H40CSA5",
+          ""
+        ],
+        [
+          "HPE 3Y CC SB Perform Optim SAP SVC",
+          "HY0W3A3#Z5K",
+          ""
+        ],
+        [
+          "HPE 4Y CC SB Perform Optim SAP SVC",
+          "HY0W3A4#Z5K",
+          ""
+        ],
+        [
+          "HPE 5Y CC SB Perform Optim SAP SVC",
+          "HY0W3A5#Z5K",
+          ""
+        ]
+      ]
     }
   ],
   "solutionDomain": "NETWORKING",
@@ -696,10 +739,10 @@
   ],
   "finalSelectorsRestored": true,
   "scrollHeight": 827,
-  "textLength": 5769,
+  "textLength": 6168,
   "textExtractionMode": "FULL_BODY_TEXT",
   "outsideTableNotesCaptured": true,
-  "fullText": "Home\nConfigure\n❯\nOCA Config 2\nAction-Required\nConfig Status\nProcess Control\nUCID\nTempUCID\nSolution Type\nIcon Separation\nEDT\n27 - 34 days\nQuote ID\nNot quoted\nLock Type\nUnlocked\nQuotation Mode\nBuy\nIQ with aaS Compatible\nSolution List Price\n⇄\nUSD 465,237.00\nAdd Opportunity\nQuote\nSave\nExport\nAdd Product\nAuto Updates\nSearch Icon\nNew Delegation\nDesign Solution / Add Product\nPrice\nComplete Quote\nOCA Config 2\n>\nIcon #1 - OCA Config 2\n>\nSynergy 12000 Frame #1\n>\n100Gb Virtual #1\nSummary\nComponents\nMenu\nPower\nBOM\nCustomer Intent\nServices\nWhere Used\nCollapse All\nExpand All\nExpand Subsections\nUndo Selection\nRemove Defaults\nView HPE Recommended only\nHPE Virtual Connect SE 100Gb F32 Module for Synergy [867796-B21]\nInterconnect Addons and Options\nAd-Hoc\n Interconnect Addons and Options\n\n\nQSFP Options (max 8)\n SFP Transceivers are available as extensions to the QSFP to SFP Adapter (720193-B21).\n\n\nShow more >>\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tHPE Recommended \tEst. Lead Time \tStart\tDiscontinued\n  720187-B21\tHPE BladeSystem c-Class 40Gb QSFP+ MPO SR4 100m Transceiver\t\n0\n\t2,524.00\tNA\t\n\t3\t05/06/2016\t07/31/2027\n  841716-B21\tHPE 40Gb QSFP+ Bidirectional Transceiver\t\n0\n\t1,412.00\tNA\t\n\t3\t01/05/2017\t11/30/2030\n  882251-B21\tHPE Synergy 100GbE/4x25GbE/4x32GbFC QSFP28 Transceiver\t\n0\n\t6,330.00\tNA\t\n\t3\t09/03/2019\t11/30/2030\n  845966-B21\tHPE 100Gb QSFP28 MPO SR4 100m Transceiver\t\n0\n\t4,252.00\tNA\t\n\t4\t06/06/2016\t11/30/2030\n  845970-B21\tHPE QSFP28 to SFP28 Adapter\t\n0\n\t227.00\tNA\t\n\t4\t12/03/2018\t11/30/2030\n  JG661A\tHPE Networking X140 40G QSFP+ LC LR4 SM 10km 1310nm Transceiver\t\n0\n\t10,499.00\tNA\t\n\t78\t05/06/2016\t12/31/2050\n  JH234A\tHPE Networking X242 40G QSFP+ to QSFP+ 1m Direct Attach Copper Cable\t\n0\n\t451.00\tNA\t\n\t13\t05/06/2016\t12/31/2050\n  JH235A\tHPE Networking X242 40G QSFP+ to QSFP+ 3m Direct Attach Copper Cable\t\n0\n\t629.00\tNA\t\n\t13\t05/06/2016\t12/31/2050\n  JH236A\tHPE Networking X242 40G QSFP+ to QSFP+ 5m Direct Attach Copper Cable\t\n0\n\t779.00\tNA\t\n\t13\t05/06/2016\t12/31/2050\n  JH419A\tHPE Networking X150 100G QSFP28 LC SWDM4 100m MM Transceiver\t\n0\n\t3,460.00\tNA\t\n\t\t05/07/2018\t12/31/2050\n\n\nSFP Options (max 16)\n Note: 2, 32Gb SFP+ transceivers are included with the HPE Synergy Virtual connect SE 32Gb FC Module, 876259-B21\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tHPE Recommended \tEst. Lead Time \tStart\tDiscontinued\n  813874-B21\tHPE 10GBase-T SFP+ Transceiver\t\n0\n\t1,173.00\tNA\t\n\t3\t05/06/2016\t07/31/2027\n  844483-B21\tHPE 25Gb SFP28 to SFP28 7m Active Optical Cable\t\n0\n\t2,451.00\tNA\t\n\t3\t12/03/2018\t07/31/2027\n 90 AJ718A\tHPE 8Gb Short Wave Fibre Channel SFP+ 1 Pack Transceiver\t\n0\n\t180.00\tNA\t\n\t3\t05/06/2016\t11/30/2026\n  E7Y09A\tHPE 16Gb SFP+ Short Wave 1-pack Industrial Extended Transceiver\t\n0\n\t700.00\tNA\t\n\t3\t05/06/2016\t06/30/2029\n  E7Y10A\tHPE 16Gb SFP+ Short Wave 1-pack Commercial Transceiver\t\n0\n\t405.00\tNA\t\n\t3\t05/06/2016\t06/30/2029\n  455883-B21\tHPE BladeSystem c-Class 10Gb SFP+ SR Transceiver\t\n0\n\t842.00\tNA\t\n\t8\t05/06/2016\t11/30/2030\n  455886-B21\tHPE BladeSystem c-Class 10Gb SFP+ LR Transceiver\t\n0\n\t1,751.00\tNA\t\n\t4\t05/06/2016\t11/30/2030\n  845398-B21\tHPE 25Gb SFP28 SR 100m Transceiver\t\n0\n\t2,110.00\tNA\t\n\t4\t06/06/2016\t06/30/2028\n  JG234A\tHPE Networking X130 10G SFP+ LC ER 40km Transceiver\t\n0\n\t10,394.00\tNA\t\n\t13\t05/06/2016\t12/31/2050\n  P9H30A\tHPE 32Gb SFP28 Short Wave Commercial Temperature Transceiver\t\n0\n\t1,399.00\tNA\t\n\t14\t09/29/2016\t04/30/2028\n\n\nCables (max 8)\n\n\nShow more >>\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tHPE Recommended \tEst. Lead Time \tStart\tDiscontinued\n  537963-B21\tHPE BladeSystem c-Class 10GbE SFP+ to SFP+ 5m Direct Attach Copper Cable\t\n0\n\t327.00\tNA\t\n\t3\t05/06/2016\t07/31/2027\n  720211-B21\tHPE BladeSystem c-Class 40G QSFP+ to QSFP+ 15m Active Optical Cable\t\n0\n\t1,711.00\tNA\t\n\t3\t05/06/2016\t07/31/2027\n  721064-B21\tHPE BladeSystem c-Class 40G QSFP+ to 4x10G SFP+ 3m Direct Attach Copper Splitter Cable\t\n0\n\t729.00\tNA\t\n\t3\t05/06/2016\t11/30/2030\n  721076-B21\tHPE BladeSystem c-Class QSFP+ to 4x10G SFP+ 15m Active Optical Cable\t\n0\n\t2,408.00\tNA\t\n\t3\t05/06/2016\t07/31/2027\n  845406-B21\tHPE 100Gb QSFP28 to QSFP28 3m Direct Attach Copper Cable\t\n1\n\t685.00\t685.00\t\n\t3\t06/06/2016\t11/30/2030\n  845408-B21\tHPE 100Gb QSFP28 to QSFP28 5m Direct Attach Copper Cable\t\n0\n\t788.00\tNA\t\n\t3\t06/06/2016\t07/31/2027\n  845410-B21\tHPE 100Gb QSFP28 to QSFP28 7m Active Optical Cable\t\n0\n\t2,861.00\tNA\t\n\t3\t09/25/2017\t07/31/2027\n  845414-B21\tHPE 100Gb QSFP28 to QSFP28 15m Active Optical Cable\t\n0\n\t2,972.00\tNA\t\n\t3\t09/25/2017\t07/31/2027\n  845416-B21\tHPE 100Gb QSFP28 to 4x25Gb SFP28 3m Direct Attach Copper Cable\t\n0\n\t916.00\tNA\t\n\t3\t06/06/2016\t07/31/2027\n  845420-B21\tHPE QSFP28 to 4x25Gb SFP28 7m Active Optical Cable\t\n0\n\t3,437.00\tNA\t\n\t3\t12/03/2018\t07/31/2027\n\n\n\nLicense Upgrade (max 1)\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tEst. Lead Time \tStart\tDiscontinued\n  R3P67A\tHPE Synergy 32Gb Fibre Channel Upgrade FIO LTU\t\n0\n\t2,999.00\tNA\t\t09/03/2019\t09/30/2027\n  R3P67AAE\tHPE Synergy 32Gb Fibre Channel Upgrade E-LTU\t\n0\n\t2,999.00\tNA\t\t09/03/2019\t09/30/2027\n\n\n Ad-Hoc\n\nImportant Note: Before using Ad-Hoc please make sure you have reviewed and are following the Ad-Hoc guidelines available here. Failure to follow the guidelines can lead to blocked orders.\nProducts added as Ad-Hoc will not get default support services. If you need Support services, add the product from the OCA catalog if it's available.\nOnly use Sub-item=Y when you want to integrate FIO products or products with #0D1 options into the base model\n+/-\tProduct #\tDescription\toption\tMultiply With Node\tSub-item\tPrice (USD) \tQuantity\tStart\tDiscontinued\n\t<new ad-hoc item>\t<search by description>\t\t\t\t\t\t\n\nCLIC Check\nLive chat\nSupport Services: observed component-owned selections only. Alternative service branches remain unexecuted.",
+  "fullText": "Home\nConfigure\n❯\nOCA Config 2\nAction-Required\nConfig Status\nProcess Control\nUCID\nTempUCID\nSolution Type\nIcon Separation\nEDT\n27 - 34 days\nQuote ID\nNot quoted\nLock Type\nUnlocked\nQuotation Mode\nBuy\nIQ with aaS Compatible\nSolution List Price\n⇄\nUSD 466,059.00\nAdd Opportunity\nQuote\nSave\nExport\nAdd Product\nAuto Updates\nSearch Icon\nNew Delegation\nDesign Solution / Add Product\nPrice\nComplete Quote\nOCA Config 2\n>\nIcon #1 - OCA Config 2\n>\nSynergy 12000 Frame #1\n>\n100Gb Virtual #1\nSummary\nComponents\nMenu\nPower\nBOM\nCustomer Intent\nServices\nWhere Used\nCollapse All\nExpand All\nExpand Subsections\nUndo Selection\nRemove Defaults\nView HPE Recommended only\nHPE Virtual Connect SE 100Gb F32 Module for Synergy [867796-B21]\nInterconnect Addons and Options\nAd-Hoc\n Interconnect Addons and Options\n\n\nQSFP Options (max 8)\n SFP Transceivers are available as extensions to the QSFP to SFP Adapter (720193-B21).\n\n\nShow more >>\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tHPE Recommended \tEst. Lead Time \tStart\tDiscontinued\tObsolete\n  841716-B21\tHPE 40Gb QSFP+ Bidirectional Transceiver\t\n0\n\t1,412.00\tNA\t\n\t3\t01/05/2017\t11/30/2030\t12/31/2030\n  882251-B21\tHPE Synergy 100GbE/4x25GbE/4x32GbFC QSFP28 Transceiver\t\n0\n\t6,330.00\tNA\t\n\t3\t09/03/2019\t11/30/2030\t12/31/2030\n  720187-B21\tHPE BladeSystem c-Class 40Gb QSFP+ MPO SR4 100m Transceiver\t\n0\n\t2,524.00\tNA\t\n\t4\t05/06/2016\t07/31/2027\t08/30/2027\n  845966-B21\tHPE 100Gb QSFP28 MPO SR4 100m Transceiver\t\n0\n\t4,252.00\tNA\t\n\t4\t06/06/2016\t11/30/2030\t12/31/2030\n  845970-B21\tHPE QSFP28 to SFP28 Adapter\t\n0\n\t227.00\tNA\t\n\t14\t12/03/2018\t11/30/2030\t12/31/2030\n  JG661A\tHPE Networking X140 40G QSFP+ LC LR4 SM 10km 1310nm Transceiver\t\n0\n\t10,499.00\tNA\t\n\t78\t05/06/2016\t12/31/2050\t12/31/2099\n  JH234A\tHPE Networking X242 40G QSFP+ to QSFP+ 1m Direct Attach Copper Cable\t\n0\n\t451.00\tNA\t\n\t13\t05/06/2016\t12/31/2050\t12/31/2099\n  JH235A\tHPE Networking X242 40G QSFP+ to QSFP+ 3m Direct Attach Copper Cable\t\n0\n\t629.00\tNA\t\n\t13\t05/06/2016\t12/31/2050\t12/31/2099\n  JH236A\tHPE Networking X242 40G QSFP+ to QSFP+ 5m Direct Attach Copper Cable\t\n0\n\t779.00\tNA\t\n\t13\t05/06/2016\t12/31/2050\t12/31/2099\n  JH419A\tHPE Networking X150 100G QSFP28 LC SWDM4 100m MM Transceiver\t\n0\n\t3,460.00\tNA\t\n\t\t05/07/2018\t12/31/2050\t12/31/2099\n\n\nSFP Options (max 16)\n Note: 2, 32Gb SFP+ transceivers are included with the HPE Synergy Virtual connect SE 32Gb FC Module, 876259-B21\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tHPE Recommended \tEst. Lead Time \tStart\tDiscontinued\tObsolete\n  455886-B21\tHPE BladeSystem c-Class 10Gb SFP+ LR Transceiver\t\n0\n\t1,751.00\tNA\t\n\t3\t05/06/2016\t11/30/2030\t12/31/2030\n  813874-B21\tHPE 10GBase-T SFP+ Transceiver\t\n0\n\t1,173.00\tNA\t\n\t3\t05/06/2016\t07/31/2027\t08/30/2027\n  844483-B21\tHPE 25Gb SFP28 to SFP28 7m Active Optical Cable\t\n0\n\t2,451.00\tNA\t\n\t3\t12/03/2018\t07/31/2027\t08/30/2027\n 30 AJ718A\tHPE 8Gb Short Wave Fibre Channel SFP+ 1 Pack Transceiver\t\n0\n\t180.00\tNA\t\n\t3\t05/06/2016\t11/30/2026\t12/31/2026\n  E7Y09A\tHPE 16Gb SFP+ Short Wave 1-pack Industrial Extended Transceiver\t\n0\n\t700.00\tNA\t\n\t3\t05/06/2016\t06/30/2029\t07/31/2029\n  E7Y10A\tHPE 16Gb SFP+ Short Wave 1-pack Commercial Transceiver\t\n0\n\t405.00\tNA\t\n\t3\t05/06/2016\t06/30/2029\t07/31/2029\n  455883-B21\tHPE BladeSystem c-Class 10Gb SFP+ SR Transceiver\t\n0\n\t842.00\tNA\t\n\t8\t05/06/2016\t11/30/2030\t12/31/2030\n  845398-B21\tHPE 25Gb SFP28 SR 100m Transceiver\t\n0\n\t2,110.00\tNA\t\n\t4\t06/06/2016\t06/30/2028\t07/31/2028\n  JG234A\tHPE Networking X130 10G SFP+ LC ER 40km Transceiver\t\n0\n\t10,394.00\tNA\t\n\t13\t05/06/2016\t12/31/2050\t12/31/2099\n  P9H30A\tHPE 32Gb SFP28 Short Wave Commercial Temperature Transceiver\t\n0\n\t1,399.00\tNA\t\n\t14\t09/29/2016\t04/30/2028\t05/31/2028\n\n\nCables (max 8)\n\n\nShow more >>\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tHPE Recommended \tEst. Lead Time \tStart\tDiscontinued\tObsolete\n  537963-B21\tHPE BladeSystem c-Class 10GbE SFP+ to SFP+ 5m Direct Attach Copper Cable\t\n0\n\t327.00\tNA\t\n\t3\t05/06/2016\t07/31/2027\t08/30/2027\n  720211-B21\tHPE BladeSystem c-Class 40G QSFP+ to QSFP+ 15m Active Optical Cable\t\n0\n\t1,711.00\tNA\t\n\t3\t05/06/2016\t07/31/2027\t08/30/2027\n  721064-B21\tHPE BladeSystem c-Class 40G QSFP+ to 4x10G SFP+ 3m Direct Attach Copper Splitter Cable\t\n0\n\t729.00\tNA\t\n\t3\t05/06/2016\t11/30/2030\t12/31/2030\n  721076-B21\tHPE BladeSystem c-Class QSFP+ to 4x10G SFP+ 15m Active Optical Cable\t\n0\n\t2,408.00\tNA\t\n\t3\t05/06/2016\t07/31/2027\t08/30/2027\n  845406-B21\tHPE 100Gb QSFP28 to QSFP28 3m Direct Attach Copper Cable\t\n1\n\t685.00\t685.00\t\n\t3\t06/06/2016\t11/30/2030\t12/31/2030\n  845408-B21\tHPE 100Gb QSFP28 to QSFP28 5m Direct Attach Copper Cable\t\n0\n\t788.00\tNA\t\n\t3\t06/06/2016\t07/31/2027\t08/31/2027\n  845410-B21\tHPE 100Gb QSFP28 to QSFP28 7m Active Optical Cable\t\n0\n\t2,861.00\tNA\t\n\t3\t09/25/2017\t07/31/2027\t08/30/2027\n  845414-B21\tHPE 100Gb QSFP28 to QSFP28 15m Active Optical Cable\t\n0\n\t2,972.00\tNA\t\n\t3\t09/25/2017\t07/31/2027\t08/30/2027\n  845416-B21\tHPE 100Gb QSFP28 to 4x25Gb SFP28 3m Direct Attach Copper Cable\t\n0\n\t916.00\tNA\t\n\t3\t06/06/2016\t07/31/2027\t08/31/2027\n  845420-B21\tHPE QSFP28 to 4x25Gb SFP28 7m Active Optical Cable\t\n0\n\t3,437.00\tNA\t\n\t3\t12/03/2018\t07/31/2027\t08/30/2027\n\n\n\nLicense Upgrade (max 1)\n\n\n\nProduct #\tDescription\tQuantity\tPrice (USD)\tExtended Price (USD)\tEst. Lead Time \tStart\tDiscontinued\tObsolete\n  R3P67A\tHPE Synergy 32Gb Fibre Channel Upgrade FIO LTU\t\n0\n\t2,999.00\tNA\t\t09/03/2019\t09/30/2027\t10/31/2027\n  R3P67AAE\tHPE Synergy 32Gb Fibre Channel Upgrade E-LTU\t\n0\n\t2,999.00\tNA\t\t09/03/2019\t09/30/2027\t10/31/2027\n\n\n Ad-Hoc\n\nImportant Note: Before using Ad-Hoc please make sure you have reviewed and are following the Ad-Hoc guidelines available here. Failure to follow the guidelines can lead to blocked orders.\nProducts added as Ad-Hoc will not get default support services. If you need Support services, add the product from the OCA catalog if it's available.\nOnly use Sub-item=Y when you want to integrate FIO products or products with #0D1 options into the base model\n+/-\tProduct #\tDescription\toption\tMultiply With Node\tSub-item\tPrice (USD) \tQuantity\tStart\tDiscontinued\tObsolete\n\t<new ad-hoc item>\t<search by description>\t\t\t\t\t\t\t\n\nCLIC Check\nLive chat\nSupport Services: observed component-owned selections only. Alternative service branches remain unexecuted.",
   "sections": [
     {
       "tagName": "H3",
@@ -708,7 +751,7 @@
     },
     {
       "tagName": "DIV",
-      "text": "Additional Services\n      \n    \n    \n      \n      Summary",
+      "text": "Additional Services\n      \n    \n    AI Standard Service Advisor ToolUse the AI Standard Service Advisor Tool to identify the correct quoting path (IQ vs. FQ), receive a unique ID if the FQ path is required, and get guidance on selecting the appropriate services.Training materials and access to the tool: A&PS 2.0 – IQ Acceleration SharePoint pageAccess requests & support: Contact serviceadvisortool@hpe.com for access, issues or questions.\n      \n      Summary",
       "className": "section-header"
     }
   ],
@@ -749,12 +792,14 @@
           "Price (USD)",
           "Quantity",
           "Start",
-          "Discontinued"
+          "Discontinued",
+          "Obsolete"
         ],
         [
           "",
           "<new ad-hoc item>",
           "<search by description>",
+          "",
           "",
           "",
           "",
@@ -781,18 +826,8 @@
           "HPE Recommended",
           "Est. Lead Time",
           "Start",
-          "Discontinued"
-        ],
-        [
-          "720187-B21",
-          "HPE BladeSystem c-Class 40Gb QSFP+ MPO SR4 100m Transceiver",
-          "0",
-          "2,524.00",
-          "NA",
-          "",
-          "3",
-          "05/06/2016",
-          "07/31/2027"
+          "Discontinued",
+          "Obsolete"
         ],
         [
           "841716-B21",
@@ -803,7 +838,8 @@
           "",
           "3",
           "01/05/2017",
-          "11/30/2030"
+          "11/30/2030",
+          "12/31/2030"
         ],
         [
           "882251-B21",
@@ -814,7 +850,20 @@
           "",
           "3",
           "09/03/2019",
-          "11/30/2030"
+          "11/30/2030",
+          "12/31/2030"
+        ],
+        [
+          "720187-B21",
+          "HPE BladeSystem c-Class 40Gb QSFP+ MPO SR4 100m Transceiver",
+          "0",
+          "2,524.00",
+          "NA",
+          "",
+          "4",
+          "05/06/2016",
+          "07/31/2027",
+          "08/30/2027"
         ],
         [
           "817040-B21 [OB]",
@@ -825,7 +874,8 @@
           "",
           "",
           "01/05/2017",
-          "03/31/2023"
+          "03/31/2023",
+          "05/05/2023"
         ],
         [
           "845966-B21",
@@ -836,7 +886,8 @@
           "",
           "4",
           "06/06/2016",
-          "11/30/2030"
+          "11/30/2030",
+          "12/31/2030"
         ],
         [
           "845970-B21",
@@ -845,9 +896,10 @@
           "227.00",
           "NA",
           "",
-          "4",
+          "14",
           "12/03/2018",
-          "11/30/2030"
+          "11/30/2030",
+          "12/31/2030"
         ],
         [
           "845972-B21 [OB]",
@@ -858,7 +910,8 @@
           "",
           "60",
           "12/03/2018",
-          "07/27/2026"
+          "07/27/2026",
+          "07/28/2026"
         ],
         [
           "JG661A",
@@ -869,7 +922,8 @@
           "",
           "78",
           "05/06/2016",
-          "12/31/2050"
+          "12/31/2050",
+          "12/31/2099"
         ],
         [
           "JH234A",
@@ -880,7 +934,8 @@
           "",
           "13",
           "05/06/2016",
-          "12/31/2050"
+          "12/31/2050",
+          "12/31/2099"
         ],
         [
           "JH235A",
@@ -891,7 +946,8 @@
           "",
           "13",
           "05/06/2016",
-          "12/31/2050"
+          "12/31/2050",
+          "12/31/2099"
         ],
         [
           "JH236A",
@@ -902,7 +958,8 @@
           "",
           "13",
           "05/06/2016",
-          "12/31/2050"
+          "12/31/2050",
+          "12/31/2099"
         ],
         [
           "JH419A",
@@ -913,7 +970,8 @@
           "",
           "",
           "05/07/2018",
-          "12/31/2050"
+          "12/31/2050",
+          "12/31/2099"
         ],
         [
           "JH420A",
@@ -924,7 +982,8 @@
           "",
           "",
           "01/09/2017",
-          "12/31/2050"
+          "12/31/2050",
+          "12/31/2099"
         ],
         [
           "JH673A",
@@ -935,7 +994,8 @@
           "",
           "",
           "06/05/2017",
-          "12/31/2050"
+          "12/31/2050",
+          "12/31/2099"
         ],
         [
           "JL307A",
@@ -946,7 +1006,8 @@
           "",
           "",
           "08/07/2017",
-          "12/31/2050"
+          "12/31/2050",
+          "12/31/2099"
         ],
         [
           "JL310A",
@@ -957,7 +1018,8 @@
           "",
           "",
           "08/07/2017",
-          "12/31/2050"
+          "12/31/2050",
+          "12/31/2099"
         ],
         [
           "P90358-B21",
@@ -968,7 +1030,8 @@
           "",
           "",
           "08/03/2026",
-          "11/30/2031"
+          "11/30/2031",
+          "12/31/2031"
         ],
         [
           "R0Z25A",
@@ -979,7 +1042,8 @@
           "",
           "",
           "05/06/2019",
-          "12/31/2050"
+          "12/31/2050",
+          "12/31/2099"
         ],
         [
           "R0Z26A",
@@ -990,7 +1054,8 @@
           "",
           "",
           "05/06/2019",
-          "12/31/2050"
+          "12/31/2050",
+          "12/31/2099"
         ]
       ]
     },
@@ -1011,7 +1076,20 @@
           "HPE Recommended",
           "Est. Lead Time",
           "Start",
-          "Discontinued"
+          "Discontinued",
+          "Obsolete"
+        ],
+        [
+          "455886-B21",
+          "HPE BladeSystem c-Class 10Gb SFP+ LR Transceiver",
+          "0",
+          "1,751.00",
+          "NA",
+          "",
+          "3",
+          "05/06/2016",
+          "11/30/2030",
+          "12/31/2030"
         ],
         [
           "813874-B21",
@@ -1022,7 +1100,8 @@
           "",
           "3",
           "05/06/2016",
-          "07/31/2027"
+          "07/31/2027",
+          "08/30/2027"
         ],
         [
           "844483-B21",
@@ -1033,10 +1112,11 @@
           "",
           "3",
           "12/03/2018",
-          "07/31/2027"
+          "07/31/2027",
+          "08/30/2027"
         ],
         [
-          "AJ718A [90]",
+          "AJ718A [30]",
           "HPE 8Gb Short Wave Fibre Channel SFP+ 1 Pack Transceiver",
           "0",
           "180.00",
@@ -1044,7 +1124,8 @@
           "",
           "3",
           "05/06/2016",
-          "11/30/2026"
+          "11/30/2026",
+          "12/31/2026"
         ],
         [
           "E7Y09A",
@@ -1055,7 +1136,8 @@
           "",
           "3",
           "05/06/2016",
-          "06/30/2029"
+          "06/30/2029",
+          "07/31/2029"
         ],
         [
           "E7Y10A",
@@ -1066,7 +1148,8 @@
           "",
           "3",
           "05/06/2016",
-          "06/30/2029"
+          "06/30/2029",
+          "07/31/2029"
         ],
         [
           "455883-B21",
@@ -1077,18 +1160,8 @@
           "",
           "8",
           "05/06/2016",
-          "11/30/2030"
-        ],
-        [
-          "455886-B21",
-          "HPE BladeSystem c-Class 10Gb SFP+ LR Transceiver",
-          "0",
-          "1,751.00",
-          "NA",
-          "",
-          "4",
-          "05/06/2016",
-          "11/30/2030"
+          "11/30/2030",
+          "12/31/2030"
         ],
         [
           "845398-B21",
@@ -1099,7 +1172,8 @@
           "",
           "4",
           "06/06/2016",
-          "06/30/2028"
+          "06/30/2028",
+          "07/31/2028"
         ],
         [
           "JG234A",
@@ -1110,7 +1184,8 @@
           "",
           "13",
           "05/06/2016",
-          "12/31/2050"
+          "12/31/2050",
+          "12/31/2099"
         ],
         [
           "P9H30A",
@@ -1121,7 +1196,8 @@
           "",
           "14",
           "09/29/2016",
-          "04/30/2028"
+          "04/30/2028",
+          "05/31/2028"
         ],
         [
           "P9H32A [OB]",
@@ -1132,7 +1208,8 @@
           "",
           "",
           "11/28/2016",
-          "08/03/2022"
+          "08/03/2022",
+          "08/05/2022"
         ]
       ]
     },
@@ -1153,7 +1230,8 @@
           "HPE Recommended",
           "Est. Lead Time",
           "Start",
-          "Discontinued"
+          "Discontinued",
+          "Obsolete"
         ],
         [
           "537963-B21",
@@ -1164,7 +1242,8 @@
           "",
           "3",
           "05/06/2016",
-          "07/31/2027"
+          "07/31/2027",
+          "08/30/2027"
         ],
         [
           "720211-B21",
@@ -1175,7 +1254,8 @@
           "",
           "3",
           "05/06/2016",
-          "07/31/2027"
+          "07/31/2027",
+          "08/30/2027"
         ],
         [
           "721064-B21",
@@ -1186,7 +1266,8 @@
           "",
           "3",
           "05/06/2016",
-          "11/30/2030"
+          "11/30/2030",
+          "12/31/2030"
         ],
         [
           "721076-B21",
@@ -1197,7 +1278,8 @@
           "",
           "3",
           "05/06/2016",
-          "07/31/2027"
+          "07/31/2027",
+          "08/30/2027"
         ],
         [
           "845406-B21",
@@ -1208,7 +1290,8 @@
           "",
           "3",
           "06/06/2016",
-          "11/30/2030"
+          "11/30/2030",
+          "12/31/2030"
         ],
         [
           "845408-B21",
@@ -1219,7 +1302,8 @@
           "",
           "3",
           "06/06/2016",
-          "07/31/2027"
+          "07/31/2027",
+          "08/31/2027"
         ],
         [
           "845410-B21",
@@ -1230,7 +1314,8 @@
           "",
           "3",
           "09/25/2017",
-          "07/31/2027"
+          "07/31/2027",
+          "08/30/2027"
         ],
         [
           "845414-B21",
@@ -1241,7 +1326,8 @@
           "",
           "3",
           "09/25/2017",
-          "07/31/2027"
+          "07/31/2027",
+          "08/30/2027"
         ],
         [
           "845416-B21",
@@ -1252,7 +1338,8 @@
           "",
           "3",
           "06/06/2016",
-          "07/31/2027"
+          "07/31/2027",
+          "08/31/2027"
         ],
         [
           "845420-B21",
@@ -1263,7 +1350,8 @@
           "",
           "3",
           "12/03/2018",
-          "07/31/2027"
+          "07/31/2027",
+          "08/30/2027"
         ],
         [
           "876680-B21",
@@ -1274,18 +1362,8 @@
           "",
           "3",
           "09/03/2019",
-          "11/30/2030"
-        ],
-        [
-          "876689-B21",
-          "HPE Synergy 300Gb Interconnect Link 3m Active Optical Cable",
-          "0",
-          "4,321.00",
-          "NA",
-          "",
-          "3",
-          "09/03/2019",
-          "11/30/2030"
+          "11/30/2030",
+          "12/31/2030"
         ],
         [
           "876692-B21",
@@ -1296,7 +1374,8 @@
           "",
           "3",
           "09/03/2019",
-          "11/30/2030"
+          "11/30/2030",
+          "12/31/2030"
         ],
         [
           "876698-B21",
@@ -1307,7 +1386,8 @@
           "",
           "3",
           "09/03/2019",
-          "11/30/2030"
+          "11/30/2030",
+          "12/31/2030"
         ],
         [
           "AJ833A",
@@ -1318,7 +1398,8 @@
           "",
           "3",
           "05/06/2016",
-          "11/30/2028"
+          "11/30/2028",
+          "12/31/2028"
         ],
         [
           "AJ836A",
@@ -1329,18 +1410,8 @@
           "",
           "3",
           "05/06/2016",
-          "11/30/2028"
-        ],
-        [
-          "AJ837A",
-          "HPE LC to LC Multi-mode OM3 2-Fiber 15.0m 1-Pack Fiber Optic Cable",
-          "0",
-          "162.00",
-          "NA",
-          "",
-          "3",
-          "05/06/2016",
-          "11/30/2028"
+          "11/30/2028",
+          "12/31/2028"
         ],
         [
           "AJ838A",
@@ -1351,7 +1422,8 @@
           "",
           "3",
           "05/06/2016",
-          "11/30/2028"
+          "11/30/2028",
+          "12/31/2028"
         ],
         [
           "AJ839A",
@@ -1362,7 +1434,8 @@
           "",
           "3",
           "05/06/2016",
-          "11/30/2028"
+          "11/30/2028",
+          "12/31/2028"
         ],
         [
           "H6Z30A",
@@ -1373,7 +1446,8 @@
           "",
           "3",
           "05/06/2016",
-          "11/30/2028"
+          "11/30/2028",
+          "12/31/2028"
         ],
         [
           "P64635-B21",
@@ -1384,7 +1458,8 @@
           "",
           "3",
           "08/05/2024",
-          "11/30/2030"
+          "11/30/2030",
+          "12/31/2030"
         ],
         [
           "P64638-B21",
@@ -1395,7 +1470,8 @@
           "",
           "3",
           "08/05/2024",
-          "11/30/2030"
+          "11/30/2030",
+          "12/31/2030"
         ],
         [
           "P64641-B21",
@@ -1406,7 +1482,8 @@
           "",
           "3",
           "08/05/2024",
-          "11/30/2030"
+          "11/30/2030",
+          "12/31/2030"
         ],
         [
           "Q1H65A",
@@ -1417,7 +1494,8 @@
           "",
           "3",
           "03/27/2017",
-          "11/30/2028"
+          "11/30/2028",
+          "12/31/2028"
         ],
         [
           "QK731A",
@@ -1428,7 +1506,8 @@
           "",
           "3",
           "05/06/2016",
-          "11/30/2028"
+          "11/30/2028",
+          "12/31/2028"
         ],
         [
           "QK732A",
@@ -1439,7 +1518,8 @@
           "",
           "3",
           "05/06/2016",
-          "11/30/2028"
+          "11/30/2028",
+          "12/31/2028"
         ],
         [
           "QK737A",
@@ -1450,7 +1530,8 @@
           "",
           "3",
           "05/06/2016",
-          "11/30/2028"
+          "11/30/2028",
+          "12/31/2028"
         ],
         [
           "720199-B21 [OB]",
@@ -1461,7 +1542,8 @@
           "",
           "",
           "05/06/2016",
-          "10/18/2024"
+          "10/18/2024",
+          "12/31/2024"
         ],
         [
           "720202-B21 [OB]",
@@ -1472,7 +1554,8 @@
           "",
           "",
           "05/06/2016",
-          "11/24/2024"
+          "11/24/2024",
+          "11/25/2024"
         ],
         [
           "845424-B21",
@@ -1483,7 +1566,20 @@
           "",
           "4",
           "12/03/2018",
-          "07/31/2027"
+          "07/31/2027",
+          "08/30/2027"
+        ],
+        [
+          "876689-B21",
+          "HPE Synergy 300Gb Interconnect Link 3m Active Optical Cable",
+          "0",
+          "4,321.00",
+          "NA",
+          "",
+          "4",
+          "09/03/2019",
+          "11/30/2030",
+          "12/31/2030"
         ],
         [
           "AJ834A",
@@ -1494,7 +1590,8 @@
           "",
           "4",
           "05/06/2016",
-          "11/30/2028"
+          "11/30/2028",
+          "12/31/2028"
         ],
         [
           "AJ835A",
@@ -1505,7 +1602,20 @@
           "",
           "4",
           "05/06/2016",
-          "11/30/2028"
+          "11/30/2028",
+          "12/31/2028"
+        ],
+        [
+          "AJ837A",
+          "HPE LC to LC Multi-mode OM3 2-Fiber 15.0m 1-Pack Fiber Optic Cable",
+          "0",
+          "162.00",
+          "NA",
+          "",
+          "4",
+          "05/06/2016",
+          "11/30/2028",
+          "12/31/2028"
         ],
         [
           "AP818A [OB]",
@@ -1516,7 +1626,8 @@
           "",
           "",
           "05/06/2016",
-          "07/19/2021"
+          "07/19/2021",
+          "07/20/2021"
         ],
         [
           "AP819A [OB]",
@@ -1527,7 +1638,8 @@
           "",
           "",
           "05/06/2016",
-          "07/19/2021"
+          "07/19/2021",
+          "07/20/2021"
         ],
         [
           "AP820A [OB]",
@@ -1538,7 +1650,8 @@
           "",
           "",
           "05/06/2016",
-          "06/15/2022"
+          "06/15/2022",
+          "06/16/2022"
         ],
         [
           "K2Q21A [OB]",
@@ -1549,7 +1662,8 @@
           "",
           "",
           "05/06/2016",
-          "10/22/2026"
+          "10/22/2026",
+          "10/23/2026"
         ],
         [
           "K2Q22A [OB]",
@@ -1560,7 +1674,8 @@
           "",
           "",
           "05/06/2016",
-          "10/22/2026"
+          "10/22/2026",
+          "10/23/2026"
         ],
         [
           "K2Q46A",
@@ -1571,7 +1686,8 @@
           "",
           "14",
           "05/06/2016",
-          "11/30/2028"
+          "11/30/2028",
+          "12/31/2028"
         ],
         [
           "K2Q47A",
@@ -1582,7 +1698,8 @@
           "",
           "4",
           "05/06/2016",
-          "11/30/2028"
+          "11/30/2028",
+          "12/31/2028"
         ],
         [
           "QK701A [OB]",
@@ -1593,7 +1710,8 @@
           "",
           "",
           "05/06/2016",
-          "10/22/2026"
+          "10/22/2026",
+          "10/23/2026"
         ],
         [
           "QK729A",
@@ -1604,7 +1722,8 @@
           "",
           "4",
           "05/06/2016",
-          "11/30/2028"
+          "11/30/2028",
+          "12/31/2028"
         ],
         [
           "QK733A",
@@ -1615,7 +1734,8 @@
           "",
           "4",
           "05/06/2016",
-          "11/30/2028"
+          "11/30/2028",
+          "12/31/2028"
         ],
         [
           "QK734A",
@@ -1626,7 +1746,8 @@
           "",
           "14",
           "05/06/2016",
-          "11/30/2028"
+          "11/30/2028",
+          "12/31/2028"
         ],
         [
           "QK735A",
@@ -1635,9 +1756,10 @@
           "195.00",
           "NA",
           "",
-          "4",
+          "8",
           "05/06/2016",
-          "11/30/2028"
+          "11/30/2028",
+          "12/31/2028"
         ]
       ]
     },
@@ -1658,7 +1780,8 @@
           "HPE Recommended",
           "Est. Lead Time",
           "Start",
-          "Discontinued"
+          "Discontinued",
+          "Obsolete"
         ],
         [
           "487655-B21",
@@ -1669,7 +1792,8 @@
           "",
           "3",
           "05/06/2016",
-          "07/31/2027"
+          "07/31/2027",
+          "08/30/2027"
         ],
         [
           "C7533A",
@@ -1680,7 +1804,8 @@
           "",
           "3",
           "05/06/2016",
-          "07/31/2027"
+          "07/31/2027",
+          "08/31/2027"
         ],
         [
           "C7535A",
@@ -1691,7 +1816,8 @@
           "",
           "3",
           "05/06/2016",
-          "07/31/2027"
+          "07/31/2027",
+          "08/31/2027"
         ],
         [
           "C7536A",
@@ -1702,7 +1828,8 @@
           "",
           "3",
           "05/06/2016",
-          "07/31/2027"
+          "07/31/2027",
+          "08/31/2027"
         ],
         [
           "C7537A",
@@ -1713,7 +1840,32 @@
           "",
           "3",
           "05/06/2016",
-          "07/31/2027"
+          "07/31/2027",
+          "08/31/2027"
+        ],
+        [
+          "C7542A",
+          "HPE 15.2m/50ft CAT5 RJ45 M/M Ethernet Cable",
+          "0",
+          "86.00",
+          "NA",
+          "",
+          "3",
+          "05/06/2016",
+          "07/31/2027",
+          "08/31/2027"
+        ],
+        [
+          "G9Q68A",
+          "HPE NonStop Category 6A 21 Foot Cable",
+          "0",
+          "NA",
+          "NA",
+          "",
+          "3",
+          "02/12/2019",
+          "04/29/2028",
+          "04/30/2028"
         ],
         [
           "487649-B21 [OB]",
@@ -1724,7 +1876,8 @@
           "",
           "",
           "05/06/2016",
-          "12/31/2017"
+          "12/31/2017",
+          "01/31/2018"
         ],
         [
           "487652-B21 [OB]",
@@ -1735,7 +1888,8 @@
           "",
           "",
           "05/06/2016",
-          "12/31/2018"
+          "12/31/2018",
+          "01/31/2019"
         ],
         [
           "498385-B21 [OB]",
@@ -1746,7 +1900,8 @@
           "",
           "",
           "05/06/2016",
-          "12/31/2017"
+          "12/31/2017",
+          "01/31/2018"
         ],
         [
           "498385-B22 [OB]",
@@ -1757,7 +1912,8 @@
           "",
           "",
           "05/06/2016",
-          "12/31/2017"
+          "12/31/2017",
+          "01/31/2018"
         ],
         [
           "498385-B23 [OB]",
@@ -1768,7 +1924,8 @@
           "",
           "",
           "05/06/2016",
-          "12/31/2017"
+          "12/31/2017",
+          "01/31/2018"
         ],
         [
           "498385-B24 [OB]",
@@ -1779,7 +1936,8 @@
           "",
           "",
           "05/06/2016",
-          "12/31/2017"
+          "12/31/2017",
+          "01/31/2018"
         ],
         [
           "498385-B25 [OB]",
@@ -1790,7 +1948,8 @@
           "",
           "",
           "05/06/2016",
-          "12/31/2017"
+          "12/31/2017",
+          "01/31/2018"
         ],
         [
           "538272-B21 [OB]",
@@ -1801,7 +1960,8 @@
           "",
           "",
           "05/06/2016",
-          "12/31/2018"
+          "12/31/2018",
+          "01/31/2019"
         ],
         [
           "670759-B21 [OB]",
@@ -1812,7 +1972,8 @@
           "",
           "",
           "05/06/2016",
-          "09/30/2021"
+          "09/30/2021",
+          "03/21/2022"
         ],
         [
           "670759-B22 [OB]",
@@ -1823,7 +1984,8 @@
           "",
           "",
           "05/06/2016",
-          "09/30/2021"
+          "09/30/2021",
+          "03/21/2022"
         ],
         [
           "670759-B23 [OB]",
@@ -1834,7 +1996,8 @@
           "",
           "",
           "05/06/2016",
-          "09/30/2021"
+          "09/30/2021",
+          "03/21/2022"
         ],
         [
           "670759-B24 [OB]",
@@ -1845,7 +2008,8 @@
           "",
           "",
           "05/06/2016",
-          "09/30/2021"
+          "09/30/2021",
+          "03/21/2022"
         ],
         [
           "670759-B25 [OB]",
@@ -1856,7 +2020,8 @@
           "",
           "",
           "05/06/2016",
-          "09/30/2021"
+          "09/30/2021",
+          "03/21/2022"
         ],
         [
           "712495-B21 [OB]",
@@ -1867,7 +2032,8 @@
           "",
           "",
           "05/06/2016",
-          "12/31/2016"
+          "12/31/2016",
+          "01/31/2017"
         ],
         [
           "712497-B21 [OB]",
@@ -1878,7 +2044,8 @@
           "",
           "",
           "05/06/2016",
-          "12/31/2016"
+          "12/31/2016",
+          "01/31/2017"
         ],
         [
           "720196-B21 [OB]",
@@ -1889,7 +2056,8 @@
           "",
           "",
           "05/06/2016",
-          "12/31/2018"
+          "12/31/2018",
+          "01/31/2019"
         ],
         [
           "720205-B21 [OB]",
@@ -1900,7 +2068,8 @@
           "",
           "",
           "05/06/2016",
-          "12/31/2018"
+          "12/31/2018",
+          "01/31/2019"
         ],
         [
           "720208-B21 [OB]",
@@ -1911,7 +2080,8 @@
           "",
           "",
           "05/06/2016",
-          "12/31/2017"
+          "12/31/2017",
+          "01/31/2018"
         ],
         [
           "721067-B21 [OB]",
@@ -1922,7 +2092,8 @@
           "",
           "",
           "05/06/2016",
-          "12/31/2017"
+          "12/31/2017",
+          "01/31/2018"
         ],
         [
           "721070-B21 [OB]",
@@ -1933,7 +2104,8 @@
           "",
           "",
           "05/06/2016",
-          "12/31/2018"
+          "12/31/2018",
+          "01/31/2019"
         ],
         [
           "721073-B21 [OB]",
@@ -1944,7 +2116,8 @@
           "",
           "",
           "05/06/2016",
-          "12/31/2017"
+          "12/31/2017",
+          "01/31/2018"
         ],
         [
           "730907-B21 [OB]",
@@ -1955,7 +2128,8 @@
           "",
           "",
           "05/06/2016",
-          "10/15/2018"
+          "10/15/2018",
+          "10/16/2018"
         ],
         [
           "804095-B21 [OB]",
@@ -1966,7 +2140,8 @@
           "",
           "",
           "01/05/2017",
-          "04/30/2018"
+          "04/30/2018",
+          "05/31/2018"
         ],
         [
           "804098-B21 [OB]",
@@ -1977,7 +2152,8 @@
           "",
           "",
           "01/05/2017",
-          "11/30/2018"
+          "11/30/2018",
+          "12/31/2018"
         ],
         [
           "804101-B21 [OB]",
@@ -1988,7 +2164,8 @@
           "",
           "",
           "01/05/2017",
-          "11/30/2022"
+          "11/30/2022",
+          "12/31/2022"
         ],
         [
           "804104-B21 [OB]",
@@ -1999,7 +2176,8 @@
           "",
           "",
           "01/05/2017",
-          "11/30/2022"
+          "11/30/2022",
+          "12/31/2022"
         ],
         [
           "804107-B21 [OB]",
@@ -2010,7 +2188,8 @@
           "",
           "",
           "01/05/2017",
-          "04/30/2018"
+          "04/30/2018",
+          "05/31/2018"
         ],
         [
           "804110-B21 [OB]",
@@ -2021,7 +2200,8 @@
           "",
           "",
           "01/05/2017",
-          "11/30/2022"
+          "11/30/2022",
+          "12/31/2022"
         ],
         [
           "804155-B21 [OB]",
@@ -2032,7 +2212,8 @@
           "",
           "",
           "01/05/2017",
-          "11/30/2022"
+          "11/30/2022",
+          "12/31/2022"
         ],
         [
           "808722-B21 [OB]",
@@ -2043,7 +2224,8 @@
           "",
           "",
           "05/06/2016",
-          "09/30/2021"
+          "09/30/2021",
+          "03/21/2022"
         ],
         [
           "808722-B22 [OB]",
@@ -2054,7 +2236,8 @@
           "",
           "",
           "05/06/2016",
-          "09/30/2021"
+          "09/30/2021",
+          "03/21/2022"
         ],
         [
           "808722-B23 [OB]",
@@ -2065,7 +2248,8 @@
           "",
           "",
           "05/06/2016",
-          "09/30/2021"
+          "09/30/2021",
+          "03/21/2022"
         ],
         [
           "808722-B24 [OB]",
@@ -2076,7 +2260,8 @@
           "",
           "",
           "05/06/2016",
-          "09/30/2021"
+          "09/30/2021",
+          "03/21/2022"
         ],
         [
           "808722-B25 [OB]",
@@ -2087,7 +2272,8 @@
           "",
           "",
           "05/06/2016",
-          "09/30/2021"
+          "09/30/2021",
+          "03/21/2022"
         ],
         [
           "808722-B26 [OB]",
@@ -2098,7 +2284,8 @@
           "",
           "",
           "05/06/2016",
-          "10/31/2021"
+          "10/31/2021",
+          "11/30/2021"
         ],
         [
           "808722-B27 [OB]",
@@ -2109,7 +2296,8 @@
           "",
           "",
           "05/06/2016",
-          "09/30/2021"
+          "09/30/2021",
+          "03/21/2022"
         ],
         [
           "808722-B28 [OB]",
@@ -2120,7 +2308,8 @@
           "",
           "",
           "05/06/2016",
-          "09/30/2021"
+          "09/30/2021",
+          "03/21/2022"
         ],
         [
           "845412-B21 [OB]",
@@ -2131,7 +2320,8 @@
           "",
           "",
           "09/25/2017",
-          "12/31/2017"
+          "12/31/2017",
+          "01/31/2018"
         ],
         [
           "861412-B21",
@@ -2142,7 +2332,8 @@
           "",
           "8",
           "01/05/2017",
-          "07/31/2027"
+          "07/31/2027",
+          "08/31/2027"
         ],
         [
           "861413-B21",
@@ -2153,7 +2344,8 @@
           "",
           "8",
           "01/05/2017",
-          "07/31/2027"
+          "07/31/2027",
+          "08/31/2027"
         ],
         [
           "861414-B21 [OB]",
@@ -2164,29 +2356,8 @@
           "",
           "",
           "01/05/2017",
-          "10/31/2022"
-        ],
-        [
-          "C7542A",
-          "HPE 15.2m/50ft CAT5 RJ45 M/M Ethernet Cable",
-          "0",
-          "86.00",
-          "NA",
-          "",
-          "8",
-          "05/06/2016",
-          "07/31/2027"
-        ],
-        [
-          "G9Q68A",
-          "HPE NonStop Category 6A 21 Foot Cable",
-          "0",
-          "NA",
-          "NA",
-          "",
-          "8",
-          "02/12/2019",
-          "04/29/2028"
+          "10/31/2022",
+          "11/30/2022"
         ],
         [
           "J9283B [OB]",
@@ -2197,7 +2368,8 @@
           "",
           "5",
           "05/06/2016",
-          "04/30/2018"
+          "04/30/2018",
+          "05/31/2018"
         ],
         [
           "JC784C",
@@ -2208,7 +2380,8 @@
           "",
           "13",
           "05/06/2016",
-          "12/31/2050"
+          "12/31/2050",
+          "12/31/2099"
         ],
         [
           "JD095C",
@@ -2219,7 +2392,8 @@
           "",
           "13",
           "05/06/2016",
-          "12/31/2050"
+          "12/31/2050",
+          "12/31/2099"
         ],
         [
           "JD096C",
@@ -2230,7 +2404,8 @@
           "",
           "13",
           "05/06/2016",
-          "12/31/2050"
+          "12/31/2050",
+          "12/31/2099"
         ],
         [
           "JD097C",
@@ -2241,7 +2416,8 @@
           "",
           "13",
           "05/06/2016",
-          "12/31/2050"
+          "12/31/2050",
+          "12/31/2099"
         ],
         [
           "JG081C",
@@ -2252,7 +2428,8 @@
           "",
           "13",
           "05/06/2016",
-          "12/31/2050"
+          "12/31/2050",
+          "12/31/2099"
         ],
         [
           "JG326A",
@@ -2263,7 +2440,8 @@
           "",
           "13",
           "05/06/2016",
-          "12/31/2050"
+          "12/31/2050",
+          "12/31/2099"
         ],
         [
           "JG327A",
@@ -2274,7 +2452,8 @@
           "",
           "13",
           "05/06/2016",
-          "12/31/2050"
+          "12/31/2050",
+          "12/31/2099"
         ],
         [
           "JG328A",
@@ -2285,7 +2464,8 @@
           "",
           "13",
           "05/06/2016",
-          "12/31/2050"
+          "12/31/2050",
+          "12/31/2099"
         ],
         [
           "JG329A",
@@ -2296,7 +2476,8 @@
           "",
           "13",
           "05/06/2016",
-          "12/31/2050"
+          "12/31/2050",
+          "12/31/2099"
         ],
         [
           "JG330A",
@@ -2307,7 +2488,8 @@
           "",
           "13",
           "05/06/2016",
-          "12/31/2050"
+          "12/31/2050",
+          "12/31/2099"
         ],
         [
           "JG331A",
@@ -2318,7 +2500,8 @@
           "",
           "13",
           "05/06/2016",
-          "12/31/2050"
+          "12/31/2050",
+          "12/31/2099"
         ],
         [
           "QK702A [OB]",
@@ -2329,7 +2512,8 @@
           "",
           "",
           "05/06/2016",
-          "10/22/2026"
+          "10/22/2026",
+          "10/23/2026"
         ],
         [
           "QK736A",
@@ -2340,7 +2524,8 @@
           "",
           "4",
           "05/06/2016",
-          "11/30/2028"
+          "11/30/2028",
+          "12/31/2028"
         ]
       ]
     },
@@ -2361,7 +2546,8 @@
           "HPE Recommended",
           "Est. Lead Time",
           "Start",
-          "Discontinued"
+          "Discontinued",
+          "Obsolete"
         ],
         [
           "AP784A [OB]",
@@ -2372,7 +2558,8 @@
           "",
           "",
           "05/06/2016",
-          "05/06/2016"
+          "05/06/2016",
+          "04/01/2014"
         ],
         [
           "AP785A [OB]",
@@ -2383,7 +2570,8 @@
           "",
           "",
           "05/06/2016",
-          "05/06/2016"
+          "05/06/2016",
+          "04/01/2014"
         ]
       ]
     },
@@ -2403,7 +2591,8 @@
           "Extended Price (USD)",
           "Est. Lead Time",
           "Start",
-          "Discontinued"
+          "Discontinued",
+          "Obsolete"
         ],
         [
           "R3P67A",
@@ -2413,7 +2602,8 @@
           "NA",
           "",
           "09/03/2019",
-          "09/30/2027"
+          "09/30/2027",
+          "10/31/2027"
         ],
         [
           "R3P67AAE",
@@ -2423,7 +2613,8 @@
           "NA",
           "",
           "09/03/2019",
-          "09/30/2027"
+          "09/30/2027",
+          "10/31/2027"
         ]
       ]
     },
@@ -2443,7 +2634,8 @@
           "Extended Price (USD)",
           "Est. Lead Time",
           "Start",
-          "Discontinued"
+          "Discontinued",
+          "Obsolete"
         ],
         [
           "N3R43A [OB]",
@@ -2453,7 +2645,8 @@
           "NA",
           "",
           "05/06/2016",
-          "05/31/2023"
+          "05/31/2023",
+          "06/30/2023"
         ]
       ]
     },
@@ -2471,14 +2664,14 @@
           "HU4D5A5#Z1R",
           "HPE 5Y Complete Care Addon Essential Service",
           "",
-          "CE45087D126BB28FD3A232EBB77B29B2",
+          "40DFBA5F21575295DAD5FE86F2C55A9A",
           "Observed selected service; alternatives not enumerated"
         ],
         [
           "HU4D5A5#Z1R",
           "HPE 5Y Complete Care Addon Essential Service",
           "",
-          "101B6950B64CDE84482ED30DE27663F4",
+          "0317B6534E4FD5E7CCC94DE7915FD7A8",
           "Observed selected service; alternatives not enumerated"
         ]
       ],
@@ -2631,19 +2824,6 @@
       "evidence": "Gated/conditional: OB"
     },
     {
-      "sku": "876689-B21",
-      "badge": "",
-      "ruleContext": "OB",
-      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
-      "hiddenAncestorClass": "item_tr extended hpe-preferred overflow-row dqe-hidden",
-      "parentClass": "item_prod",
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "operator": "requires_selection",
-      "thresholdDegC": null,
-      "visibleAtDefaultC": false,
-      "evidence": "Gated/conditional: OB"
-    },
-    {
       "sku": "876692-B21",
       "badge": "",
       "ruleContext": "OB",
@@ -2684,19 +2864,6 @@
     },
     {
       "sku": "AJ836A",
-      "badge": "",
-      "ruleContext": "OB",
-      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
-      "hiddenAncestorClass": "item_tr extended hpe-preferred overflow-row dqe-hidden",
-      "parentClass": "item_prod",
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "operator": "requires_selection",
-      "thresholdDegC": null,
-      "visibleAtDefaultC": false,
-      "evidence": "Gated/conditional: OB"
-    },
-    {
-      "sku": "AJ837A",
       "badge": "",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
@@ -2878,6 +3045,19 @@
       "evidence": "Gated/conditional: OB"
     },
     {
+      "sku": "876689-B21",
+      "badge": "",
+      "ruleContext": "OB",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: OB"
+    },
+    {
       "sku": "AJ834A",
       "badge": "",
       "ruleContext": "OB",
@@ -2892,6 +3072,19 @@
     },
     {
       "sku": "AJ835A",
+      "badge": "",
+      "ruleContext": "OB",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: OB"
+    },
+    {
+      "sku": "AJ837A",
       "badge": "",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
@@ -3113,6 +3306,32 @@
     },
     {
       "sku": "C7537A",
+      "badge": "",
+      "ruleContext": "Max quantity of product limited by space available.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Max quantity of product limited by space available."
+    },
+    {
+      "sku": "C7542A",
+      "badge": "",
+      "ruleContext": "Max quantity of product limited by space available.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Max quantity of product limited by space available."
+    },
+    {
+      "sku": "G9Q68A",
       "badge": "",
       "ruleContext": "Max quantity of product limited by space available.",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
@@ -3658,32 +3877,6 @@
       "evidence": "Gated/conditional: Max quantity of product limited by space available."
     },
     {
-      "sku": "C7542A",
-      "badge": "",
-      "ruleContext": "Max quantity of product limited by space available.",
-      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
-      "hiddenAncestorClass": "item_prod",
-      "parentClass": "item_prod",
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "operator": "requires_selection",
-      "thresholdDegC": null,
-      "visibleAtDefaultC": false,
-      "evidence": "Gated/conditional: Max quantity of product limited by space available."
-    },
-    {
-      "sku": "G9Q68A",
-      "badge": "",
-      "ruleContext": "Max quantity of product limited by space available.",
-      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
-      "hiddenAncestorClass": "item_prod",
-      "parentClass": "item_prod",
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "operator": "requires_selection",
-      "thresholdDegC": null,
-      "visibleAtDefaultC": false,
-      "evidence": "Gated/conditional: Max quantity of product limited by space available."
-    },
-    {
       "sku": "J9283B",
       "badge": "OB",
       "ruleContext": "Max quantity of product limited by space available.",
@@ -3920,6 +4113,8 @@
         "C7535A",
         "C7536A",
         "C7537A",
+        "C7542A",
+        "G9Q68A",
         "487649-B21",
         "487652-B21",
         "498385-B21",
@@ -3961,8 +4156,6 @@
         "861412-B21",
         "861413-B21",
         "861414-B21",
-        "C7542A",
-        "G9Q68A",
         "J9283B",
         "JC784C",
         "JD095C",
@@ -4075,6 +4268,38 @@
       "listPrice": 46,
       "startDate": "05/06/2016",
       "discontinuedDate": "07/31/2027",
+      "section": "Interconnect Addons and Options",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Max quantity of product limited by space available.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "C7542A",
+      "rawSku": "C7542A",
+      "isPrivateSku": false,
+      "description": "HPE 15.2m/50ft CAT5 RJ45 M/M Ethernet Cable",
+      "listPrice": 86,
+      "startDate": "05/06/2016",
+      "discontinuedDate": "07/31/2027",
+      "section": "Interconnect Addons and Options",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Max quantity of product limited by space available.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "G9Q68A",
+      "rawSku": "G9Q68A",
+      "isPrivateSku": false,
+      "description": "HPE NonStop Category 6A 21 Foot Cable",
+      "listPrice": 0,
+      "startDate": "02/12/2019",
+      "discontinuedDate": "04/29/2028",
       "section": "Interconnect Addons and Options",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "Max quantity of product limited by space available.",
@@ -4740,38 +4965,6 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
-      "sku": "C7542A",
-      "rawSku": "C7542A",
-      "isPrivateSku": false,
-      "description": "HPE 15.2m/50ft CAT5 RJ45 M/M Ethernet Cable",
-      "listPrice": 86,
-      "startDate": "05/06/2016",
-      "discontinuedDate": "07/31/2027",
-      "section": "Interconnect Addons and Options",
-      "ruleType": "MUTUAL_EXCLUSION",
-      "ineligibilityReason": "Max quantity of product limited by space available.",
-      "supplyBadge": "",
-      "supplyTitle": "",
-      "isSelectable": false,
-      "status": "PORTAL_CONDITIONAL"
-    },
-    {
-      "sku": "G9Q68A",
-      "rawSku": "G9Q68A",
-      "isPrivateSku": false,
-      "description": "HPE NonStop Category 6A 21 Foot Cable",
-      "listPrice": 0,
-      "startDate": "02/12/2019",
-      "discontinuedDate": "04/29/2028",
-      "section": "Interconnect Addons and Options",
-      "ruleType": "MUTUAL_EXCLUSION",
-      "ineligibilityReason": "Max quantity of product limited by space available.",
-      "supplyBadge": "",
-      "supplyTitle": "",
-      "isSelectable": false,
-      "status": "PORTAL_CONDITIONAL"
-    },
-    {
       "sku": "J9283B",
       "rawSku": "OB\n         J9283B",
       "isPrivateSku": false,
@@ -5054,10 +5247,10 @@
     "scope": "OBSERVED_REQUESTS_ONLY"
   },
   "chassisDiscovery": {
-    "query": "SY100Gb F32 Module",
+    "query": "SY100Gb_F32_Module",
     "selectedSku": "867796-B21",
     "source": "Authenticated OCA owned component menu",
-    "capturedAt": "2026-10-30T11:56:59.252Z",
+    "capturedAt": "2026-11-11T18:48:51.228Z",
     "ownerConfiguration": "100Gb Virtual #1",
     "parentConfiguration": "Synergy 12000 Frame #1",
     "candidates": [
@@ -5067,6 +5260,7 @@
         "visited": true
       }
     ],
-    "excludedCandidates": []
+    "excludedCandidates": [],
+    "parentBaseSku": "P51174-B21"
   }
 }

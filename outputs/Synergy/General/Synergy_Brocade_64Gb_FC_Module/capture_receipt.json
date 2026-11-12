@@ -1,0 +1,212 @@
+{
+  "schemaVersion": 1,
+  "product": "Synergy_Brocade_64Gb_FC_Module",
+  "vendor": "HPE",
+  "capturedAt": "2026-11-12T03:22:14.338Z",
+  "auditedAt": "2026-11-12T03:22:56.865Z",
+  "incompleteLegacyBaselinePreserved": false,
+  "mode": "FIRST_CAPTURE",
+  "status": "LOCAL_PROMOTED",
+  "provenance": {
+    "baseSku": "P77653-B21",
+    "ownerConfiguration": "Brocade 64Gb Fibre Channel Module for HPE Synergy #1",
+    "parentBaseSku": "P51174-B21",
+    "parentConfiguration": "Synergy 12000 Frame #1",
+    "solutionDomain": "NETWORKING",
+    "observedUrl": "https://oca.ext.hpe.com/oca/OCAInternalLogin"
+  },
+  "coverage": {
+    "textExtractionMode": "FULL_BODY_TEXT",
+    "outsideTableNotesCaptured": true,
+    "conditionalDiscovery": "HIDDEN_DOM_AND_AMBIENT_ONLY_OTHER_MACROS_UNVERIFIED",
+    "componentServiceEvidence": {
+      "scope": "OBSERVED_SELECTED_SERVICES_ONLY",
+      "owners": [
+        {
+          "owner": "C1E6737A03AC60CC7B398AB416B08497",
+          "support": "N/A",
+          "install": "N/A"
+        }
+      ],
+      "treeRows": 6,
+      "unexecuted": [
+        "alternative service types, terms and tiers",
+        "parent-level support changes"
+      ]
+    },
+    "baseSku": "P77653-B21",
+    "ownerConfiguration": "Brocade 64Gb Fibre Channel Module for HPE Synergy #1",
+    "solutionDomain": "NETWORKING",
+    "observedSelectors": [
+      {
+        "selector": "#extended_overview_menu",
+        "value": "EXPANDED"
+      },
+      {
+        "selector": "parentOption",
+        "value": {
+          "sku": "P77653-B21",
+          "category": "bladeEnclosureInterconnects",
+          "quantity": 1
+        }
+      },
+      {
+        "selector": "ambientTemperature",
+        "value": "DEFAULT_AND_SWEEP_RESTORED"
+      }
+    ],
+    "missingProvenance": [],
+    "completeness": "CAPTURED_STATES_ONLY",
+    "policy": {
+      "valid": true,
+      "reason": "",
+      "profileProduct": "Synergy_Brocade_64Gb_FC_Module",
+      "scope": "PROFILE_MINIMUM_CAPTURE"
+    }
+  },
+  "counts": {
+    "hardware": 24,
+    "services": 16,
+    "rules": 15,
+    "categories": 3,
+    "retainedHardware": 24,
+    "hardwareTombstones": 0
+  },
+  "previousCounts": null,
+  "hashes": {
+    "Catalog.json": "00b104bfadada6c8030d6fca768477f9a76bfdfdd620b7273f407734e2ca75b6",
+    "Services.json": "aff0b690d44f795d2a311a3d2c6340b7b3f83e53e179ecb4cf15ac4bccfd86e5",
+    "Catalog_Rules.json": "6aa6f22c64b96e92a975bcdcd98acc5e7ef54ddee171b2c343fd8488d3be2dd2",
+    "OCA_Catalog.xlsx": "86cfbe31771efd43a81f6efefeab13d9db743c2e9a187d9b503f0e9499d9091d"
+  },
+  "rawSha256": "fb2fe78c6799578f86c1bccdc5c0c61ab097b78bfb697f2fbae4eae5030de6c8",
+  "sheets": [
+    {
+      "name": "Category Summary",
+      "rows": 16
+    },
+    {
+      "name": "All SKUs",
+      "rows": 25
+    },
+    {
+      "name": "Chassis Variants",
+      "rows": 2
+    },
+    {
+      "name": "Chassis Options Matrix",
+      "rows": 2
+    },
+    {
+      "name": "Rules & Constraints",
+      "rows": 23
+    },
+    {
+      "name": "Software & Licenses",
+      "rows": 22
+    },
+    {
+      "name": "Price History Timeline",
+      "rows": 41
+    },
+    {
+      "name": "Chassis",
+      "rows": 2
+    },
+    {
+      "name": "Cables & Enablement Kits",
+      "rows": 19
+    },
+    {
+      "name": "Supply Chain & Lead Times",
+      "rows": 41
+    },
+    {
+      "name": "Metadata",
+      "rows": 22
+    }
+  ],
+  "deltas": {
+    "hardware": {
+      "added": [
+        "P77653-B21",
+        "AJ833A",
+        "AJ836A",
+        "AJ838A",
+        "AJ839A",
+        "AJ834A",
+        "AJ835A",
+        "AJ837A",
+        "QK732A",
+        "QK737A",
+        "QK733A",
+        "QK734A",
+        "QK735A",
+        "QK736A",
+        "K2Q46A",
+        "K2Q47A",
+        "H6Z30A",
+        "QK731A",
+        "QK729A",
+        "Q2E58A",
+        "Q2E60A",
+        "5517AAE",
+        "5527AAE",
+        "TC464BAE"
+      ],
+      "removed": []
+    },
+    "services": {
+      "added": [
+        "D4U69AAE",
+        "Q2E58AAE",
+        "Q2E60AAE",
+        "TC514AAE",
+        "R3P47AAE",
+        "R3P50AAE",
+        "R4P31AAE",
+        "R3P45AAE",
+        "R3P48AAE",
+        "R4P29AAE",
+        "R3P46AAE",
+        "R3P49AAE",
+        "R4P30AAE",
+        "S1S58AAE",
+        "S1S52AAE",
+        "S1S55AAE"
+      ],
+      "removed": []
+    },
+    "rulesChanged": true,
+    "hardwareChanges": {
+      "added": 0,
+      "removed": 0,
+      "categoryMigrated": 0,
+      "priceChanged": 0,
+      "attributeChanged": 0,
+      "priceAndAttributeChanged": 0,
+      "unchanged": 24,
+      "reinstated": 0,
+      "discontinuedTotal": 0
+    },
+    "serviceChanges": {
+      "added": 0,
+      "removed": 0,
+      "categoryMigrated": 0,
+      "priceChanged": 0,
+      "attributeChanged": 0,
+      "priceAndAttributeChanged": 0,
+      "unchanged": 16,
+      "reinstated": 0,
+      "discontinuedTotal": 0
+    }
+  },
+  "cloud": {
+    "status": "CLOUD_FAILED",
+    "success": false,
+    "sourceId": null,
+    "consolidationVerified": false,
+    "error": "WORKFLOW_BUSY: notebook-catalog-sync; acquisition transaction at C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\history\\locks\\notebook-catalog-sync.lock; workflow lease busy"
+  },
+  "promotedAt": "2026-11-12T03:24:30.597Z"
+}

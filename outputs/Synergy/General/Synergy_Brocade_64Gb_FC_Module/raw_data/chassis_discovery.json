@@ -1,0 +1,25 @@
+{
+  "query": "Synergy_Brocade_64Gb_FC_Module",
+  "selectedSku": "P77653-B21",
+  "source": "Authenticated OCA owned component menu",
+  "capturedAt": "2026-11-12T03:21:59.273Z",
+  "ownerConfiguration": "Brocade 64Gb Fibre Channel Module for HPE Synergy #1",
+  "parentConfiguration": "Synergy 12000 Frame #1",
+  "candidates": [
+    {
+      "sku": "P77653-B21",
+      "text": "Brocade 64Gb Fibre Channel Module for HPE Synergy [P77653-B21]",
+      "visited": true,
+      "listPriceUsd": 63999,
+      "leadTime": "3 days",
+      "leadTimeDays": 3
+    }
+  ],
+  "excludedCandidates": [],
+  "parentBaseSku": "P51174-B21",
+  "parentOption": {
+    "sku": "P77653-B21",
+    "category": "bladeEnclosureInterconnects",
+    "quantity": 1
+  }
+}

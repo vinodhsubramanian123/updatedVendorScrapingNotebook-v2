@@ -18,12 +18,10 @@ Networking	Optical Transceivers & DAC Cables	max 16	Configuration Rule	Selection
 Networking	Optical Transceivers & DAC Cables	max 16	Configuration Rule	P9H32A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Cables	max 8	Configuration Rule	Selection constraint for Cables: max 8
 Cables & Enablement Kits	Cables	max 8	Configuration Rule	876680-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Cables	max 8	Configuration Rule	876689-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Cables	max 8	Configuration Rule	876692-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Cables	max 8	Configuration Rule	876698-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Cables	max 8	Configuration Rule	AJ833A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Cables	max 8	Configuration Rule	AJ836A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Cables	max 8	Configuration Rule	AJ837A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Cables	max 8	Configuration Rule	AJ838A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Cables	max 8	Configuration Rule	AJ839A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Cables	max 8	Configuration Rule	H6Z30A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
@@ -37,8 +35,10 @@ Cables & Enablement Kits	Cables	max 8	Configuration Rule	QK737A conditional visi
 Cables & Enablement Kits	Cables	max 8	Configuration Rule	720199-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Cables	max 8	Configuration Rule	720202-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Cables	max 8	Configuration Rule	845424-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Cables	max 8	Configuration Rule	876689-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Cables	max 8	Configuration Rule	AJ834A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Cables	max 8	Configuration Rule	AJ835A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Cables	max 8	Configuration Rule	AJ837A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Cables	max 8	Configuration Rule	AP818A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Cables	max 8	Configuration Rule	AP819A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Cables	max 8	Configuration Rule	AP820A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
@@ -57,6 +57,8 @@ Accessories & Infrastructure	PCIe Networking Adapters	max 16	Configuration Rule	
 Accessories & Infrastructure	PCIe Networking Adapters	max 16	Configuration Rule	C7535A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
 Accessories & Infrastructure	PCIe Networking Adapters	max 16	Configuration Rule	C7536A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
 Accessories & Infrastructure	PCIe Networking Adapters	max 16	Configuration Rule	C7537A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Accessories & Infrastructure	PCIe Networking Adapters	max 16	Configuration Rule	C7542A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Accessories & Infrastructure	PCIe Networking Adapters	max 16	Configuration Rule	G9Q68A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
 Accessories & Infrastructure	PCIe Networking Adapters	max 16	Configuration Rule	487649-B21 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
 Accessories & Infrastructure	PCIe Networking Adapters	max 16	Configuration Rule	487652-B21 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
 Accessories & Infrastructure	PCIe Networking Adapters	max 16	Configuration Rule	498385-B21 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
@@ -98,8 +100,6 @@ Accessories & Infrastructure	PCIe Networking Adapters	max 16	Configuration Rule	
 Accessories & Infrastructure	PCIe Networking Adapters	max 16	Configuration Rule	861412-B21 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
 Accessories & Infrastructure	PCIe Networking Adapters	max 16	Configuration Rule	861413-B21 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
 Accessories & Infrastructure	PCIe Networking Adapters	max 16	Configuration Rule	861414-B21 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
-Accessories & Infrastructure	PCIe Networking Adapters	max 16	Configuration Rule	C7542A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
-Accessories & Infrastructure	PCIe Networking Adapters	max 16	Configuration Rule	G9Q68A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
 Accessories & Infrastructure	PCIe Networking Adapters	max 16	Configuration Rule	J9283B conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
 Accessories & Infrastructure	PCIe Networking Adapters	max 16	Configuration Rule	JC784C conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
 Accessories & Infrastructure	PCIe Networking Adapters	max 16	Configuration Rule	JD095C conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL

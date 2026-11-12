@@ -1,0 +1,96 @@
+[
+  {
+    "summary": {
+      "runId": "run_Synergy_Brocade_64Gb_FC_Module_1794453775653",
+      "sessionName": "Synergy_Brocade_64Gb_FC_Module",
+      "startTime": "2026-11-12T03:22:55.651Z",
+      "endTime": "2026-11-12T03:22:56.109Z",
+      "durationMs": 458,
+      "durationSec": "0.46",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 24,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 24,
+      "validationStats": {
+        "totalEntries": 6,
+        "totalSKUs": 24,
+        "validSKUs": 24,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 1,
+        "zeroPriceSKUs": 0,
+        "priceErrors": 0,
+        "ruleCount": 11,
+        "categoryCount": 3
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-11-12T03:22:55.653Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\.catalog-staging\\staging_Synergy_Brocade_64Gb_FC_Module_1794453734334\\raw_data\\oca_raw_data_full.json",
+          "jsonOutputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\.catalog-staging\\staging_Synergy_Brocade_64Gb_FC_Module_1794453734334\\Synergy_Brocade_64Gb_FC_Module_Catalog.json",
+          "chassisLabel": "Synergy Brocade 64Gb FC Module"
+        }
+      },
+      {
+        "timestamp": "2026-11-12T03:22:56.073Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 6,
+          "totalUniqueSKUs": 24,
+          "incrementalStats": {
+            "totalScrapedSkus": 24,
+            "unchangedSkusCount": 0,
+            "modifiedSkusCount": 0,
+            "addedSkusCount": 24,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-12T03:22:56.075Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 6,
+            "totalSKUs": 24,
+            "validSKUs": 24,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 1,
+            "zeroPriceSKUs": 0,
+            "priceErrors": 0,
+            "ruleCount": 11,
+            "categoryCount": 3
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-12T03:22:56.109Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\.catalog-staging\\staging_Synergy_Brocade_64Gb_FC_Module_1794453734334\\Synergy_Brocade_64Gb_FC_Module_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 24,
+      "classified": 24,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  }
+]

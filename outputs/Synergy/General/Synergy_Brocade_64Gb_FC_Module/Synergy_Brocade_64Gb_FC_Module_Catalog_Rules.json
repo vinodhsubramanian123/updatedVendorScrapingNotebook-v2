@@ -1,0 +1,309 @@
+{
+  "metadata": {
+    "chassis": "Synergy Brocade 64Gb FC Module",
+    "model": "Synergy_Brocade_64Gb_FC_Module",
+    "family": "Synergy",
+    "generation": "General",
+    "pillar": "NETWORKING",
+    "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
+    "scrapeDate": "2026-11-12",
+    "scrapeTimestamp": "2026-11-12T03:22:14.338Z",
+    "builtAt": "2026-11-12T03:22:56.020Z",
+    "totalSubcategories": 6,
+    "totalUniqueSKUs": 24,
+    "totalTables": 6,
+    "diffSummary": {
+      "added": 0,
+      "removed": 0,
+      "categoryMigrated": 0,
+      "priceChanged": 0,
+      "attributeChanged": 0,
+      "priceAndAttributeChanged": 0,
+      "unchanged": 24,
+      "reinstated": 0,
+      "discontinuedTotal": 0
+    },
+    "historySnapshot": "catalog_2026-11-12.json",
+    "priceAnalytics": {
+      "scrapeDate": "2026-11-12",
+      "categoryBreakdown": {
+        "Chassis": {
+          "totalSKUs": 1,
+          "totalPrice": 63999,
+          "minPrice": 63999,
+          "maxPrice": 63999,
+          "subcategories": {
+            "Variants": {
+              "totalSKUs": 1,
+              "totalPrice": 63999,
+              "avgPrice": 63999
+            }
+          },
+          "avgPrice": 63999
+        },
+        "Cables & Enablement Kits": {
+          "totalSKUs": 18,
+          "totalPrice": 10500,
+          "minPrice": 65,
+          "maxPrice": 3422,
+          "subcategories": {
+            "OM3 LC-LC type connectors cable": {
+              "totalSKUs": 7,
+              "totalPrice": 968,
+              "avgPrice": 138.28571428571428
+            },
+            "Premier Flex OM4 LC-LC": {
+              "totalSKUs": 6,
+              "totalPrice": 1241,
+              "avgPrice": 206.83333333333334
+            },
+            "QSFP to 4xLC Breakout": {
+              "totalSKUs": 2,
+              "totalPrice": 2150,
+              "avgPrice": 1075
+            },
+            "MPO/MPO Multi-mode": {
+              "totalSKUs": 3,
+              "totalPrice": 6141,
+              "avgPrice": 2047
+            }
+          },
+          "avgPrice": 583.3333333333334
+        },
+        "Software & Licenses": {
+          "totalSKUs": 5,
+          "totalPrice": 42937,
+          "minPrice": 5277,
+          "maxPrice": 15220,
+          "subcategories": {
+            "Software for Brocade Switches": {
+              "totalSKUs": 5,
+              "totalPrice": 42937,
+              "avgPrice": 8587.4
+            }
+          },
+          "avgPrice": 8587.4
+        }
+      }
+    },
+    "snapshotFingerprint": "000491ebf26630b026eed9510509d4457090d6bf8bbc5c12fc8716a4b1f9c965",
+    "chassisVariantCount": 1,
+    "rulesGeneratedAt": "2026-11-12T03:22:56.093Z"
+  },
+  "chassisVariants": [
+    {
+      "sku": "P77653-B21",
+      "description": "Brocade 64Gb Fibre Channel Module for HPE Synergy [P77653-B21]",
+      "formFactor": "Unknown",
+      "listPrice": 63999,
+      "listPriceFormatted": "$63999.00",
+      "optionType": "CTO",
+      "hpeRecommended": "Yes",
+      "HPE Recommended": "Unknown",
+      "startDate": "",
+      "discontinuedDate": "",
+      "constraint": "min 1, max 1",
+      "maxQty": "1",
+      "diffStatus": "BASELINE",
+      "priceHistoryTrail": "2026-11-12: $63999.00"
+    }
+  ],
+  "chassisVariantMatrix": {
+    "P77653-B21": {
+      "sku": "P77653-B21",
+      "description": "Brocade 64Gb Fibre Channel Module for HPE Synergy [P77653-B21]",
+      "formFactor": "Unknown",
+      "listPrice": 63999,
+      "listPriceFormatted": "$63999.00",
+      "optionType": "CTO",
+      "hpeRecommended": "Yes",
+      "HPE Recommended": "Unknown",
+      "startDate": "",
+      "discontinuedDate": "",
+      "constraint": "min 1, max 1",
+      "maxQty": "1",
+      "diffStatus": "BASELINE",
+      "priceHistoryTrail": "2026-11-12: $63999.00"
+    }
+  },
+  "smartChassisCombinations": [],
+  "solutionManifest": null,
+  "subcategories": [],
+  "rules": [
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "D4U69AAE"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "D4U69AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Software for Brocade Switches",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "Q2E58A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "Q2E58A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Software for Brocade Switches",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "Q2E60A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "Q2E60A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Software for Brocade Switches",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "5517AAE"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "5517AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Software for Brocade Switches",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "5527AAE"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "5527AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Software for Brocade Switches",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "TC464BAE"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "TC464BAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Software for Brocade Switches",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "TC514AAE"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "TC514AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Software for Brocade Switches",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "parentCategory": "Chassis",
+      "subCategory": "Variants",
+      "constraint": "min 1, max 1 — Active OCA CTO chassis",
+      "maxQty": 1,
+      "rule": "Select exactly one currently discoverable, non-TAA/non-GTA CTO base chassis"
+    },
+    {
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "OM3 LC-LC type connectors cable",
+      "constraint": "max 8",
+      "maxQty": 8,
+      "rule": "Selection constraint for OM3 LC-LC type connectors cable: max 8"
+    },
+    {
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "Premier Flex OM4 LC-LC",
+      "constraint": "max 8",
+      "maxQty": 8,
+      "rule": "Selection constraint for Premier Flex OM4 LC-LC: max 8"
+    },
+    {
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "QSFP to 4xLC Breakout",
+      "constraint": "max 4",
+      "maxQty": 4,
+      "rule": "Selection constraint for QSFP to 4xLC Breakout: max 4"
+    },
+    {
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "MPO/MPO Multi-mode",
+      "constraint": "max 4",
+      "maxQty": 4,
+      "rule": "Selection constraint for MPO/MPO Multi-mode: max 4"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Software for Brocade Switches",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for Software for Brocade Switches: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "SANnav - New License",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for SANnav - New License: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "SANnav - Renewal License",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for SANnav - Renewal License: no max"
+    }
+  ]
+}

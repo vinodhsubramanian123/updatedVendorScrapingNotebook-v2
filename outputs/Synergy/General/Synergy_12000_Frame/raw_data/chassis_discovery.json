@@ -1,0 +1,86 @@
+{
+  "query": "Synergy 12000",
+  "selectedSku": "P51174-B21",
+  "source": "HPE OCA Product Search via authenticated CDP session",
+  "capturedAt": "2026-11-11T18:26:36.289Z",
+  "deliveryEstimate": "",
+  "candidates": [
+    {
+      "type": "dropdown-option",
+      "cardSelector": "[data-cand-idx=\"0\"]",
+      "optionValue": "P51174-B21",
+      "text": "P51174-B21 - HPE Synergy 12000 Configure-to-order Frame",
+      "sku": "P51174-B21",
+      "listPriceUsd": 0,
+      "availability": "Available in OCA product catalog",
+      "leadTime": "",
+      "deliveryLabel": "",
+      "isBto": false,
+      "isTaa": false,
+      "isGta": false,
+      "isCto": true
+    }
+  ],
+  "excludedCandidates": [
+    {
+      "type": "dropdown-option",
+      "cardSelector": "[data-cand-idx=\"0\"]",
+      "optionValue": "P51174-B22",
+      "text": "P51174-B22 - HPE Synergy 12000 TAA-compliant Configure-to-order Frame with 2x4 Frame Link Module",
+      "sku": "P51174-B22",
+      "listPriceUsd": 0,
+      "availability": "Available in OCA product catalog",
+      "leadTime": "",
+      "deliveryLabel": "",
+      "isBto": false,
+      "isTaa": true,
+      "isGta": false,
+      "isCto": true
+    },
+    {
+      "type": "dropdown-option",
+      "cardSelector": "[data-cand-idx=\"1\"]",
+      "optionValue": "804923-B21",
+      "text": "804923-B21 - HPE Synergy 12000 Frame Compute Half Shelf",
+      "sku": "804923-B21",
+      "listPriceUsd": 0,
+      "availability": "Available in OCA product catalog",
+      "leadTime": "",
+      "deliveryLabel": "",
+      "isBto": true,
+      "isTaa": false,
+      "isGta": false,
+      "isCto": false
+    },
+    {
+      "type": "dropdown-option",
+      "cardSelector": "[data-cand-idx=\"1\"]",
+      "optionValue": "P51175-B21",
+      "text": "P51175-B21 - HPE Synergy 12000 High Capacity Fan Kit",
+      "sku": "P51175-B21",
+      "listPriceUsd": 0,
+      "availability": "Available in OCA product catalog",
+      "leadTime": "",
+      "deliveryLabel": "",
+      "isBto": true,
+      "isTaa": false,
+      "isGta": false,
+      "isCto": false
+    },
+    {
+      "type": "dropdown-option",
+      "cardSelector": "[data-cand-idx=\"2\"]",
+      "optionValue": "5156667291-02",
+      "text": "5156667291-02 - Synergy 12000-2Frame",
+      "sku": "5156667291-02",
+      "listPriceUsd": 0,
+      "availability": "Not published by OCA",
+      "leadTime": "",
+      "deliveryLabel": "",
+      "isBto": true,
+      "isTaa": false,
+      "isGta": false,
+      "isCto": false
+    }
+  ]
+}

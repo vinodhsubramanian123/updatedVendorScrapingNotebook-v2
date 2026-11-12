@@ -2,8 +2,8 @@
 
 **Document Classification:** Canonical Ground-Truth Architecture & Validation Charter<br>
 **Maintained By:** HPE ProLiant AI Studio Autonomous Knowledge Engine (Antigravity AI)<br>
-**Last Synchronized:** 2026-11-08T10:59:41.788Z<br>
-**Total Deduplicated Learned Rules:** 133<br>
+**Last Synchronized:** 2026-11-12T07:22:08.828Z<br>
+**Total Deduplicated Learned Rules:** 142<br>
 **Universal Invariant Compliance:** INV-1 through INV-38 Certified<br>
 **Google Drive Destination:** `shared_folder_id: 1YR0lBh-gg00amKHRxuOqp5Aea3iL5O7-`
 
@@ -160,7 +160,7 @@ The Catalog Vendor Solution provides modular, AI-assisted catalog ingestion, nor
 
 ## 5. Deduplicated Learned Rule Ledger & Verification Provenance
 
-Total verified rules indexed in this build: **133**.
+Total verified rules indexed in this build: **142**.
 
 | Scope | Target Chassis | Category | Affected SKU | Dependency SKU | Rule Summary / Validation Directive | Verifications |
 | :--- | :--- | :--- | :--- | :--- | :--- | :---: |
@@ -291,12 +291,21 @@ Total verified rules indexed in this build: **133**.
 | 📦 CHASSIS | `SY480_Gen12` | `WORKFLOW_SOURCE_RETIREMENT_ADVISORY` | `undefined` | `—` | Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata bef | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY` | `undefined` | `—` | Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending date | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `CLIC_ERROR_RESOLUTION_CERTIFIED` | `P69730-F21` | `P51174-B21` | CRITICAL BUILDABILITY BREAKTHROUGH: HPE 128GB (1x128GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 Smart FIO Memory Kit (P69730 | 1x |
-| 📦 CHASSIS | `SY480_Gen12` | `SUPPORT_PRICING_UPDATE` | `HU4B2A30BT7` | `—` | Synergy stack 3Y Tech Care Basic support rates adjusted by ~5%: Synergy 12000 Frame Support (HU4B2A3 WJN) updated to $77 | 1x |
-| 📦 CHASSIS | `SY480_Gen12` | `LEAD_TIME_AND_VALIDATION` | `P80321-B21` | `—` | HPE 960GB NVMe M.2 2280 PE9010 SSD (P80321-B21) factory lead time extended from 11 days to 30 days (+19 days). Synergy 1 | 1x |
+| 📦 CHASSIS | `SY480_Gen12` | `SUPPORT_PRICING_UPDATE` | `HU4B2A30BT7` | `—` | SY480 Gen12 Compute Node 3Y Tech Care Basic Support (HU4B2A30BT7) updated to $3,497.00 (+$167.00/node). | 1x |
+| 📦 CHASSIS | `SY480_Gen12` | `LEAD_TIME_AND_VALIDATION` | `P80321-B21` | `—` | HPE 960GB NVMe M.2 2280 PE9010 SSD (P80321-B21) factory lead time extended from 11 days to 30 days (+19 days). | 1x |
 | 📦 CHASSIS | `SY100Gb_F32_Module` | `WORKFLOW_DUAL_PUBLICATION_ADVISORY` | `undefined` | `—` | Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Goog | 1x |
 | 📦 CHASSIS | `SY100Gb_F32_Module` | `WORKFLOW_SOURCE_RETIREMENT_ADVISORY` | `undefined` | `—` | Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata bef | 1x |
 | 📦 CHASSIS | `SY100Gb_F32_Module` | `WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY` | `undefined` | `—` | Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending date | 1x |
 | 📦 CHASSIS | `SY100Gb_F32_Module` | `SUPPORT_PRICING_UPDATE` | `HU4B2A3 Z1R` | `—` | HPE Virtual Connect SE 100Gb F32 Module for Synergy Support (HU4B2A3 Z1R, under HU4B2A3 3Y Tech Care Basic) list price u | 1x |
+| 📦 CHASSIS | `Synergy_12000_Frame` | `WORKFLOW_DUAL_PUBLICATION_ADVISORY` | `undefined` | `—` | Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Goog | 1x |
+| 📦 CHASSIS | `Synergy_12000_Frame` | `WORKFLOW_SOURCE_RETIREMENT_ADVISORY` | `undefined` | `—` | Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata bef | 1x |
+| 📦 CHASSIS | `Synergy_12000_Frame` | `WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY` | `undefined` | `—` | Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending date | 1x |
+| 📦 CHASSIS | `Synergy_4Port_Frame_Link_Module` | `WORKFLOW_DUAL_PUBLICATION_ADVISORY` | `undefined` | `—` | Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Goog | 1x |
+| 📦 CHASSIS | `Synergy_4Port_Frame_Link_Module` | `WORKFLOW_SOURCE_RETIREMENT_ADVISORY` | `undefined` | `—` | Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata bef | 1x |
+| 📦 CHASSIS | `Synergy_4Port_Frame_Link_Module` | `WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY` | `undefined` | `—` | Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending date | 1x |
+| 📦 CHASSIS | `Synergy_Brocade_64Gb_FC_Module` | `WORKFLOW_DUAL_PUBLICATION_ADVISORY` | `undefined` | `—` | Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Goog | 1x |
+| 📦 CHASSIS | `Synergy_Brocade_64Gb_FC_Module` | `WORKFLOW_SOURCE_RETIREMENT_ADVISORY` | `undefined` | `—` | Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata bef | 1x |
+| 📦 CHASSIS | `Synergy_Brocade_64Gb_FC_Module` | `WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY` | `undefined` | `—` | Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending date | 1x |
 
 ---
 *End of Master Running Knowledge & Learnings Charter. Auto-generated and synchronized by Antigravity AI.*

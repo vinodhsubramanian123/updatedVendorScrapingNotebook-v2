@@ -1,6 +1,100 @@
 [
   {
     "summary": {
+      "runId": "run_SY100Gb_F32_Module_1794422952074",
+      "sessionName": "SY100Gb_F32_Module",
+      "startTime": "2026-11-11T18:49:12.072Z",
+      "endTime": "2026-11-11T18:49:15.995Z",
+      "durationMs": 3923,
+      "durationSec": "3.92",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 141,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalUniqueSKUs": 141,
+      "validationStats": {
+        "totalEntries": 8,
+        "totalSKUs": 141,
+        "validSKUs": 141,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 1,
+        "zeroPriceSKUs": 25,
+        "priceErrors": 0,
+        "ruleCount": 117,
+        "categoryCount": 5
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-11-11T18:49:12.074Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\.catalog-staging\\staging_SY100Gb_F32_Module_1794422950212\\raw_data\\oca_raw_data_full.json",
+          "jsonOutputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\.catalog-staging\\staging_SY100Gb_F32_Module_1794422950212\\SY100Gb_F32_Module_Catalog.json",
+          "chassisLabel": "SY100Gb F32 Module"
+        }
+      },
+      {
+        "timestamp": "2026-11-11T18:49:15.843Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 5,
+          "totalUniqueSKUs": 141,
+          "incrementalStats": {
+            "totalScrapedSkus": 141,
+            "unchangedSkusCount": 0,
+            "modifiedSkusCount": 0,
+            "addedSkusCount": 141,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-11T18:49:15.848Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 0,
+          "stats": {
+            "totalEntries": 8,
+            "totalSKUs": 141,
+            "validSKUs": 141,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 1,
+            "zeroPriceSKUs": 25,
+            "priceErrors": 0,
+            "ruleCount": 117,
+            "categoryCount": 5
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-11T18:49:15.995Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\.catalog-staging\\staging_SY100Gb_F32_Module_1794422950212\\SY100Gb_F32_Module_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [],
+    "errors": [],
+    "skuSummary": {
+      "total": 141,
+      "classified": 141,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
       "runId": "run_SY100Gb_F32_Module_1793381240060",
       "sessionName": "SY100Gb_F32_Module",
       "startTime": "2026-10-30T17:27:20.057Z",

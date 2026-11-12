@@ -2,14 +2,16 @@
   "schemaVersion": 1,
   "product": "SY100Gb_F32_Module",
   "vendor": "HPE",
-  "capturedAt": "2026-10-30T11:57:13.837Z",
-  "auditedAt": "2026-10-31T06:24:26.234Z",
-  "incompleteLegacyBaselinePreserved": true,
-  "mode": "FIRST_CAPTURE",
+  "capturedAt": "2026-11-11T18:49:10.220Z",
+  "auditedAt": "2026-11-11T18:49:21.158Z",
+  "incompleteLegacyBaselinePreserved": false,
+  "mode": "REFRESH",
   "status": "LOCAL_PROMOTED",
   "provenance": {
     "baseSku": "867796-B21",
     "ownerConfiguration": "100Gb Virtual #1",
+    "parentBaseSku": "P51174-B21",
+    "parentConfiguration": "Synergy 12000 Frame #1",
     "solutionDomain": "NETWORKING",
     "observedUrl": "https://oca.ext.hpe.com/oca/OCAInternalLogin"
   },
@@ -40,21 +42,26 @@
     }
   },
   "counts": {
-    "hardware": 141,
+    "hardware": 140,
     "services": 2,
     "rules": 120,
     "categories": 5,
-    "retainedHardware": 142,
+    "retainedHardware": 141,
     "hardwareTombstones": 1
   },
-  "previousCounts": null,
-  "hashes": {
-    "Catalog.json": "953edf82f9b756e23b47e6162f65d1fd5a4a01180cc2f1dc22c39b2edda7cfe3",
-    "Services.json": "13db8a79b6df72755198f813edb22be71e647ead242fdda19c1a10eaeacf8b3c",
-    "Catalog_Rules.json": "61abc2b3f65f1918e1faa6e5fdb40223c8af50de3257479cd2dabc286b47ed5e",
-    "OCA_Catalog.xlsx": "0d55bb1e6c0ac38cbd37062d15784a0293d8696d02ba01f65100848122a60426"
+  "previousCounts": {
+    "hardware": 141,
+    "services": 2,
+    "rules": 120,
+    "categories": 5
   },
-  "rawSha256": "cb7cf8dd014e04df52e321dc8322295871c10660d246a5c569c6190bd339bace",
+  "hashes": {
+    "Catalog.json": "06dbf48ee06d6dab32eb78ac99cd5821af7457da37e6f0adad77a50f519192b3",
+    "Services.json": "ec8eb93abec3b396986b6644e9ce2bce83385482ec006ff444940751caffef86",
+    "Catalog_Rules.json": "38922a0fd37fe94e88e7bdb1a92e555a3c2d61c581e7f3929ce191f2be52c552",
+    "OCA_Catalog.xlsx": "7ceb6e672ee5f5a8d13b427f271ecbd6b15e13ab794a04b9409312c687d11dfb"
+  },
+  "rawSha256": "c85a62afcc2ee5c8adacb7b29f139fc7801eb1f0d507e7bdb17c7dee2b08cd43",
   "sheets": [
     {
       "name": "Category Summary",
@@ -62,15 +69,15 @@
     },
     {
       "name": "All SKUs",
-      "rows": 143
+      "rows": 142
     },
     {
       "name": "Chassis Variants",
-      "rows": 3
+      "rows": 2
     },
     {
       "name": "Chassis Options Matrix",
-      "rows": 3
+      "rows": 2
     },
     {
       "name": "Rules & Constraints",
@@ -94,7 +101,7 @@
     },
     {
       "name": "Price History Timeline",
-      "rows": 145
+      "rows": 144
     },
     {
       "name": "Networking",
@@ -102,7 +109,7 @@
     },
     {
       "name": "Chassis",
-      "rows": 3
+      "rows": 2
     },
     {
       "name": "Cables & Enablement Kits",
@@ -118,7 +125,7 @@
     },
     {
       "name": "Supply Chain & Lead Times",
-      "rows": 145
+      "rows": 144
     },
     {
       "name": "Metadata",
@@ -127,188 +134,45 @@
   ],
   "deltas": {
     "hardware": {
-      "added": [
-        "867796-B21",
-        "720187-B21",
-        "841716-B21",
-        "882251-B21",
-        "817040-B21",
-        "845966-B21",
-        "845970-B21",
-        "845972-B21",
-        "JG661A",
-        "JH234A",
-        "JH235A",
-        "JH236A",
-        "JH419A",
-        "JH420A",
-        "JH673A",
-        "JL307A",
-        "JL310A",
-        "P90358-B21",
-        "R0Z25A",
-        "R0Z26A",
-        "813874-B21",
-        "844483-B21",
-        "AJ718A",
-        "E7Y09A",
-        "E7Y10A",
-        "455883-B21",
-        "455886-B21",
-        "845398-B21",
-        "JG234A",
-        "P9H30A",
-        "P9H32A",
-        "537963-B21",
-        "720211-B21",
-        "721064-B21",
-        "721076-B21",
-        "845406-B21",
-        "845408-B21",
-        "845410-B21",
-        "845414-B21",
-        "845416-B21",
-        "845420-B21",
-        "876680-B21",
-        "876689-B21",
-        "876692-B21",
-        "876698-B21",
-        "AJ833A",
-        "AJ836A",
-        "AJ837A",
-        "AJ838A",
-        "AJ839A",
-        "H6Z30A",
-        "P64635-B21",
-        "P64638-B21",
-        "P64641-B21",
-        "Q1H65A",
-        "QK731A",
-        "QK732A",
-        "QK737A",
-        "720199-B21",
-        "720202-B21",
-        "845424-B21",
-        "AJ834A",
-        "AJ835A",
-        "AP818A",
-        "AP819A",
-        "AP820A",
-        "K2Q21A",
-        "K2Q22A",
-        "K2Q46A",
-        "K2Q47A",
-        "QK701A",
-        "QK729A",
-        "QK733A",
-        "QK734A",
-        "QK735A",
-        "487655-B21",
-        "C7533A",
-        "C7535A",
-        "C7536A",
-        "C7537A",
-        "487649-B21",
-        "487652-B21",
-        "498385-B21",
-        "498385-B22",
-        "498385-B23",
-        "498385-B24",
-        "498385-B25",
-        "538272-B21",
-        "670759-B21",
-        "670759-B22",
-        "670759-B23",
-        "670759-B24",
-        "670759-B25",
-        "712495-B21",
-        "712497-B21",
-        "720196-B21",
-        "720205-B21",
-        "720208-B21",
-        "721067-B21",
-        "721070-B21",
-        "721073-B21",
-        "730907-B21",
-        "804095-B21",
-        "804098-B21",
-        "804101-B21",
-        "804104-B21",
-        "804107-B21",
-        "804110-B21",
-        "804155-B21",
-        "808722-B21",
-        "808722-B22",
-        "808722-B23",
-        "808722-B24",
-        "808722-B25",
-        "808722-B26",
-        "808722-B27",
-        "808722-B28",
-        "845412-B21",
-        "861412-B21",
-        "861413-B21",
-        "861414-B21",
-        "C7542A",
-        "G9Q68A",
-        "J9283B",
-        "JC784C",
-        "JD095C",
-        "JD096C",
-        "JD097C",
-        "JG081C",
-        "JG326A",
-        "JG327A",
-        "JG328A",
-        "JG329A",
-        "JG330A",
-        "JG331A",
-        "QK702A",
-        "QK736A",
-        "AP784A",
-        "AP785A",
-        "R3P67A",
-        "N3R43A"
-      ],
-      "removed": []
+      "added": [],
+      "removed": [
+        "AJ718A"
+      ]
     },
     "services": {
-      "added": [
-        "R3P67AAE",
-        "HU4D5A5#Z1R"
-      ],
+      "added": [],
       "removed": []
     },
     "rulesChanged": true,
     "hardwareChanges": {
-      "added": 141,
+      "added": 0,
       "removed": 1,
       "categoryMigrated": 0,
       "priceChanged": 0,
-      "attributeChanged": 0,
+      "attributeChanged": 139,
       "priceAndAttributeChanged": 0,
-      "unchanged": 0,
+      "unchanged": 1,
       "reinstated": 0,
-      "discontinuedTotal": 1
+      "discontinuedTotal": 2
     },
     "serviceChanges": {
       "added": 0,
       "removed": 0,
       "categoryMigrated": 0,
       "priceChanged": 0,
-      "attributeChanged": 0,
+      "attributeChanged": 2,
       "priceAndAttributeChanged": 0,
-      "unchanged": 2,
+      "unchanged": 0,
       "reinstated": 0,
       "discontinuedTotal": 0
     }
   },
   "cloud": {
-    "status": "CLOUD_VERIFIED",
-    "success": true,
-    "sourceId": "2e822c3e-19ba-40d5-836e-acb06c2c0bd0",
-    "consolidationVerified": true,
-    "error": "Uploaded and canary-verified \"SY100Gb_F32_Module_OCA_Catalog_2026-10-31\" in NotebookLM (c6390834-ff1e-4602-9391-8415f673afa3). Existing sources were preserved unless explicit retirement was confirmed."
+    "status": "CLOUD_FAILED",
+    "success": false,
+    "sourceId": null,
+    "consolidationVerified": false,
+    "error": "CLI sync unavailable (Product isolation rejected SY100Gb_F32_Module payload: reference to registered product Synergy_12000_Frame). Payload ready at C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\Synergy\\General\\SY100Gb_F32_Module\\notebook_sync_payload_SY100Gb_F32_Module.md. Upload as \"SY100Gb_F32_Module_OCA_Catalog_2026-11-11\" via gemini-notebook-mcp source_add or nlm CLI."
   },
-  "promotedAt": "2026-10-31T06:28:23.288Z"
+  "promotedAt": "2026-11-11T18:53:34.646Z"
 }

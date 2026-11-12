@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-10-30T11:57:13.862Z",
+  "timestamp": "2026-11-11T18:49:10.277Z",
   "chassisName": "SY100Gb_F32_Module",
   "totalConditionalSkus": 109,
   "skus": [
@@ -147,19 +147,6 @@
       "evidence": "Gated/conditional: OB"
     },
     {
-      "sku": "876689-B21",
-      "badge": "",
-      "ruleContext": "OB",
-      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
-      "hiddenAncestorClass": "item_tr extended hpe-preferred overflow-row dqe-hidden",
-      "parentClass": "item_prod",
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "operator": "requires_selection",
-      "thresholdDegC": null,
-      "visibleAtDefaultC": false,
-      "evidence": "Gated/conditional: OB"
-    },
-    {
       "sku": "876692-B21",
       "badge": "",
       "ruleContext": "OB",
@@ -200,19 +187,6 @@
     },
     {
       "sku": "AJ836A",
-      "badge": "",
-      "ruleContext": "OB",
-      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
-      "hiddenAncestorClass": "item_tr extended hpe-preferred overflow-row dqe-hidden",
-      "parentClass": "item_prod",
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "operator": "requires_selection",
-      "thresholdDegC": null,
-      "visibleAtDefaultC": false,
-      "evidence": "Gated/conditional: OB"
-    },
-    {
-      "sku": "AJ837A",
       "badge": "",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
@@ -394,6 +368,19 @@
       "evidence": "Gated/conditional: OB"
     },
     {
+      "sku": "876689-B21",
+      "badge": "",
+      "ruleContext": "OB",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: OB"
+    },
+    {
       "sku": "AJ834A",
       "badge": "",
       "ruleContext": "OB",
@@ -408,6 +395,19 @@
     },
     {
       "sku": "AJ835A",
+      "badge": "",
+      "ruleContext": "OB",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: OB"
+    },
+    {
+      "sku": "AJ837A",
       "badge": "",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
@@ -629,6 +629,32 @@
     },
     {
       "sku": "C7537A",
+      "badge": "",
+      "ruleContext": "Max quantity of product limited by space available.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Max quantity of product limited by space available."
+    },
+    {
+      "sku": "C7542A",
+      "badge": "",
+      "ruleContext": "Max quantity of product limited by space available.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "evidence": "Gated/conditional: Max quantity of product limited by space available."
+    },
+    {
+      "sku": "G9Q68A",
       "badge": "",
       "ruleContext": "Max quantity of product limited by space available.",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
@@ -1163,32 +1189,6 @@
     {
       "sku": "861414-B21",
       "badge": "OB",
-      "ruleContext": "Max quantity of product limited by space available.",
-      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
-      "hiddenAncestorClass": "item_prod",
-      "parentClass": "item_prod",
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "operator": "requires_selection",
-      "thresholdDegC": null,
-      "visibleAtDefaultC": false,
-      "evidence": "Gated/conditional: Max quantity of product limited by space available."
-    },
-    {
-      "sku": "C7542A",
-      "badge": "",
-      "ruleContext": "Max quantity of product limited by space available.",
-      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
-      "hiddenAncestorClass": "item_prod",
-      "parentClass": "item_prod",
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "operator": "requires_selection",
-      "thresholdDegC": null,
-      "visibleAtDefaultC": false,
-      "evidence": "Gated/conditional: Max quantity of product limited by space available."
-    },
-    {
-      "sku": "G9Q68A",
-      "badge": "",
       "ruleContext": "Max quantity of product limited by space available.",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_prod",

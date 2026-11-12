@@ -1,0 +1,178 @@
+{
+  "schemaVersion": 1,
+  "product": "SY100Gb_F32_Module",
+  "vendor": "HPE",
+  "capturedAt": "2026-11-11T18:49:10.220Z",
+  "auditedAt": "2026-11-11T18:49:21.158Z",
+  "incompleteLegacyBaselinePreserved": false,
+  "mode": "REFRESH",
+  "status": "LOCAL_PROMOTED",
+  "provenance": {
+    "baseSku": "867796-B21",
+    "ownerConfiguration": "100Gb Virtual #1",
+    "parentBaseSku": "P51174-B21",
+    "parentConfiguration": "Synergy 12000 Frame #1",
+    "solutionDomain": "NETWORKING",
+    "observedUrl": "https://oca.ext.hpe.com/oca/OCAInternalLogin"
+  },
+  "coverage": {
+    "textExtractionMode": "FULL_BODY_TEXT",
+    "outsideTableNotesCaptured": true,
+    "conditionalDiscovery": "HIDDEN_DOM_AND_AMBIENT_ONLY_OTHER_MACROS_UNVERIFIED",
+    "baseSku": "867796-B21",
+    "ownerConfiguration": "100Gb Virtual #1",
+    "solutionDomain": "NETWORKING",
+    "observedSelectors": [
+      {
+        "selector": "#extended_overview_menu",
+        "value": "EXPANDED"
+      },
+      {
+        "selector": "ambientTemperature",
+        "value": "DEFAULT_AND_SWEEP_RESTORED"
+      }
+    ],
+    "missingProvenance": [],
+    "completeness": "CAPTURED_STATES_ONLY",
+    "policy": {
+      "valid": true,
+      "reason": "",
+      "profileProduct": "SY100Gb_F32_Module",
+      "scope": "PROFILE_MINIMUM_CAPTURE"
+    }
+  },
+  "counts": {
+    "hardware": 140,
+    "services": 2,
+    "rules": 120,
+    "categories": 5,
+    "retainedHardware": 141,
+    "hardwareTombstones": 1
+  },
+  "previousCounts": {
+    "hardware": 141,
+    "services": 2,
+    "rules": 120,
+    "categories": 5
+  },
+  "hashes": {
+    "Catalog.json": "06dbf48ee06d6dab32eb78ac99cd5821af7457da37e6f0adad77a50f519192b3",
+    "Services.json": "ec8eb93abec3b396986b6644e9ce2bce83385482ec006ff444940751caffef86",
+    "Catalog_Rules.json": "38922a0fd37fe94e88e7bdb1a92e555a3c2d61c581e7f3929ce191f2be52c552",
+    "OCA_Catalog.xlsx": "7ceb6e672ee5f5a8d13b427f271ecbd6b15e13ab794a04b9409312c687d11dfb"
+  },
+  "rawSha256": "c85a62afcc2ee5c8adacb7b29f139fc7801eb1f0d507e7bdb17c7dee2b08cd43",
+  "sheets": [
+    {
+      "name": "Category Summary",
+      "rows": 11
+    },
+    {
+      "name": "All SKUs",
+      "rows": 142
+    },
+    {
+      "name": "Chassis Variants",
+      "rows": 2
+    },
+    {
+      "name": "Chassis Options Matrix",
+      "rows": 2
+    },
+    {
+      "name": "Rules & Constraints",
+      "rows": 125
+    },
+    {
+      "name": "Unavailable Rules & Gates",
+      "rows": 4
+    },
+    {
+      "name": "Software & Licenses",
+      "rows": 4
+    },
+    {
+      "name": "Support Services",
+      "rows": 2
+    },
+    {
+      "name": "Catalog Diffs",
+      "rows": 143
+    },
+    {
+      "name": "Price History Timeline",
+      "rows": 144
+    },
+    {
+      "name": "Networking",
+      "rows": 33
+    },
+    {
+      "name": "Chassis",
+      "rows": 2
+    },
+    {
+      "name": "Cables & Enablement Kits",
+      "rows": 45
+    },
+    {
+      "name": "Accessories & Infrastructure",
+      "rows": 63
+    },
+    {
+      "name": "Discontinued SKUs",
+      "rows": 143
+    },
+    {
+      "name": "Supply Chain & Lead Times",
+      "rows": 144
+    },
+    {
+      "name": "Metadata",
+      "rows": 22
+    }
+  ],
+  "deltas": {
+    "hardware": {
+      "added": [],
+      "removed": [
+        "AJ718A"
+      ]
+    },
+    "services": {
+      "added": [],
+      "removed": []
+    },
+    "rulesChanged": true,
+    "hardwareChanges": {
+      "added": 0,
+      "removed": 1,
+      "categoryMigrated": 0,
+      "priceChanged": 0,
+      "attributeChanged": 139,
+      "priceAndAttributeChanged": 0,
+      "unchanged": 1,
+      "reinstated": 0,
+      "discontinuedTotal": 2
+    },
+    "serviceChanges": {
+      "added": 0,
+      "removed": 0,
+      "categoryMigrated": 0,
+      "priceChanged": 0,
+      "attributeChanged": 2,
+      "priceAndAttributeChanged": 0,
+      "unchanged": 0,
+      "reinstated": 0,
+      "discontinuedTotal": 0
+    }
+  },
+  "cloud": {
+    "status": "CLOUD_FAILED",
+    "success": false,
+    "sourceId": null,
+    "consolidationVerified": false,
+    "error": "CLI sync unavailable (Product isolation rejected SY100Gb_F32_Module payload: reference to registered product Synergy_12000_Frame). Payload ready at C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\Synergy\\General\\SY100Gb_F32_Module\\notebook_sync_payload_SY100Gb_F32_Module.md. Upload as \"SY100Gb_F32_Module_OCA_Catalog_2026-11-11\" via gemini-notebook-mcp source_add or nlm CLI."
+  },
+  "promotedAt": "2026-11-11T18:53:34.646Z"
+}

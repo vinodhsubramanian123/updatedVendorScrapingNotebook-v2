@@ -1,0 +1,95 @@
+{
+  "success": true,
+  "spreadsheetId": "1GCEWGLOnkAaCWT7hY1Byy_MaWcols-kYCLxGxprsoMg",
+  "backupFile": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\history\\drive_backups\\drive_backup_f6a959c8-e68b-45b5-a019-e1fb538a7575.json",
+  "tabsWritten": [
+    {
+      "title": "Certified Catalog",
+      "rows": 25
+    },
+    {
+      "title": "Verified Learnings",
+      "rows": 117
+    },
+    {
+      "title": "Change Log",
+      "rows": 25
+    },
+    {
+      "title": "Sync Metadata",
+      "rows": 10
+    },
+    {
+      "title": "Category Summary",
+      "rows": 16
+    },
+    {
+      "title": "All SKUs",
+      "rows": 25
+    },
+    {
+      "title": "Chassis Variants",
+      "rows": 2
+    },
+    {
+      "title": "Chassis Options Matrix",
+      "rows": 2
+    },
+    {
+      "title": "Rules & Constraints",
+      "rows": 23
+    },
+    {
+      "title": "Software & Licenses",
+      "rows": 22
+    },
+    {
+      "title": "Price History Timeline",
+      "rows": 41
+    },
+    {
+      "title": "Chassis",
+      "rows": 2
+    },
+    {
+      "title": "Cables & Enablement Kits",
+      "rows": 19
+    },
+    {
+      "title": "Supply Chain & Lead Times",
+      "rows": 41
+    },
+    {
+      "title": "Metadata",
+      "rows": 22
+    }
+  ],
+  "readbackVerified": true,
+  "readbackFingerprints": {
+    "Certified Catalog": "12fbb1cff9802a3c0306af9f45ef81d56e511fd60d35bdc8798a45a1ae2e316f",
+    "Verified Learnings": "31f15a15a0dcc5e1a83caddc05668a305316874c481abf29771e88e204514fa1",
+    "Change Log": "49a978cb8061c189e00b3e7d4e67e9aa82c9afb606c9c5f93db87d1f89990d9b",
+    "Sync Metadata": "d112701fcdea3382ac7b0b143d9ed0347fb2c8a14488d8bf9b1e1d0e1c4b5129",
+    "Category Summary": "82fa7e3e818a1ebeb4f92c2bbd29c54f0a740df2a73debcd5e977462591aa10e",
+    "All SKUs": "82e9a2727f96df2ea7e063ad1813d18f5742ea4843a6b008ea9c0eb7194b836b",
+    "Chassis Variants": "6b1e10d30e254460eac17dfebbee04fcfe63f228521e24efa9a065e360a7d63e",
+    "Chassis Options Matrix": "5464c885a6563525371f95164a120300160c6ee9747b353a771ce6959dbf3f71",
+    "Rules & Constraints": "a761388c167aeb93f567f3593b5ba62b7fc1ab2307fddbf54c60992640339929",
+    "Software & Licenses": "34131cca4cfe9043e9e479d1840014c3e66e2aca2aabacd96db8402b0fcad5a2",
+    "Price History Timeline": "14a758d7c6c5a79b31e27d4a55d8e1db12403c33c18b9447cd253c54aa6d0d33",
+    "Chassis": "01e58ce93e286fa73b0d281c8ad4497f4522a09bc7ffa4997ac83987762fda43",
+    "Cables & Enablement Kits": "efc7de40efdda527cf8bb93c041991dd6f7df49088c23612b90e0ffe0c05c392",
+    "Supply Chain & Lead Times": "dc8c7c48eaef7f95d9a0d01f1e31ddd3b21f407ea4eae07f4cc8f691c5844b1e",
+    "Metadata": "660e4669c4f96d95288e486a1379cceefbec0e211d3ba8c9a168d60793b85cd3"
+  },
+  "verifiedAt": "2026-11-12T03:26:55.755Z",
+  "fingerprints": {
+    "catalog": "12fbb1cff9802a3c0306af9f45ef81d56e511fd60d35bdc8798a45a1ae2e316f",
+    "learnings": "64a95b9108cd6890a947bd85aecafa32b0d3cf1a69017ea017f2236f352c84f2",
+    "changes": "49a978cb8061c189e00b3e7d4e67e9aa82c9afb606c9c5f93db87d1f89990d9b",
+    "workbook": "fd6a2ebb37f715a7881929143bf3cef520a1f655469a27b909852a9b61ec1440",
+    "combined": "1c57aae8878a5831c32177dcb6c1b36b4df2310c700807df1f2c6513e406c2a5"
+  },
+  "created": true,
+  "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1GCEWGLOnkAaCWT7hY1Byy_MaWcols-kYCLxGxprsoMg/edit"
+}

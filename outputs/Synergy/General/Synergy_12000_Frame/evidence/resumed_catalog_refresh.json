@@ -1,0 +1,18 @@
+{
+  "product": "Synergy_12000_Frame",
+  "observedAt": "2026-11-11T18:27:00.733Z",
+  "resumedAt": "2026-11-11T18:38:20.927Z",
+  "promoted": {
+    "success": true,
+    "liveTargetDir": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\Synergy\\General\\Synergy_12000_Frame",
+    "backupDir": null,
+    "journalPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\Synergy\\General\\.Synergy_12000_Frame.promotion.df819825-daf0-4eaa-aad4-15efb5f4d001.json"
+  },
+  "sync": {
+    "success": false,
+    "flowType": "SCRAPE",
+    "chassisName": "Synergy_12000_Frame",
+    "error": "ScrapedCatalogQualityError: Catalog quality check failed with 1 error(s): Missing mandatory server category: Processor / CPU options not found."
+  },
+  "success": false
+}

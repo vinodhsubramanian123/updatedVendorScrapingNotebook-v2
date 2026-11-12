@@ -6,40 +6,40 @@
     "generation": "General",
     "pillar": "NETWORKING",
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
-    "scrapeDate": "2026-10-30",
-    "scrapeTimestamp": "2026-10-30T11:57:13.837Z",
-    "builtAt": "2026-10-30T17:27:20.949Z",
+    "scrapeDate": "2026-11-11",
+    "scrapeTimestamp": "2026-11-11T18:49:10.220Z",
+    "builtAt": "2026-11-11T18:49:15.455Z",
     "totalSubcategories": 5,
-    "totalUniqueSKUs": 142,
+    "totalUniqueSKUs": 141,
     "totalTables": 8,
     "diffSummary": {
-      "added": 141,
+      "added": 0,
       "removed": 1,
       "categoryMigrated": 0,
       "priceChanged": 0,
-      "attributeChanged": 0,
+      "attributeChanged": 139,
       "priceAndAttributeChanged": 0,
-      "unchanged": 0,
+      "unchanged": 1,
       "reinstated": 0,
-      "discontinuedTotal": 1
+      "discontinuedTotal": 2
     },
-    "historySnapshot": "catalog_2026-10-30.json",
+    "historySnapshot": "catalog_2026-11-11.json",
     "priceAnalytics": {
-      "scrapeDate": "2026-10-30",
+      "scrapeDate": "2026-11-11",
       "categoryBreakdown": {
         "Chassis": {
-          "totalSKUs": 2,
-          "totalPrice": 8600,
+          "totalSKUs": 1,
+          "totalPrice": 3200,
           "minPrice": 3200,
-          "maxPrice": 5400,
+          "maxPrice": 3200,
           "subcategories": {
             "Variants": {
-              "totalSKUs": 2,
-              "totalPrice": 8600,
-              "avgPrice": 4300
+              "totalSKUs": 1,
+              "totalPrice": 3200,
+              "avgPrice": 3200
             }
           },
-          "avgPrice": 4300
+          "avgPrice": 3200
         },
         "Networking": {
           "totalSKUs": 30,
@@ -99,18 +99,9 @@
         }
       }
     },
-    "incrementalStats": {
-      "totalScrapedSkus": 142,
-      "unchangedSkusCount": 117,
-      "modifiedSkusCount": 25,
-      "addedSkusCount": 0,
-      "removedSkusCount": 0,
-      "estimatedTokensSaved": 0,
-      "estimatedProcessingTimeSavedMs": 0
-    },
-    "snapshotFingerprint": "f2d3c673818500e2b6dd67c2959401d2ab6384f5c04447993167ef6a29dd3868",
+    "snapshotFingerprint": "7c88cd82a18e35c5a230ec97e10899433ce91c6b7ad44132868f82c685c0458d",
     "chassisVariantCount": 2,
-    "rulesGeneratedAt": "2026-10-30T17:27:21.294Z"
+    "rulesGeneratedAt": "2026-11-11T18:49:15.932Z"
   },
   "chassisVariants": [
     {
@@ -126,7 +117,7 @@
       "discontinuedDate": "",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "ADDED",
+      "diffStatus": "UNCHANGED",
       "priceHistoryTrail": "2026-10-30: $3200.00"
     },
     {
@@ -140,10 +131,9 @@
       "HPE Recommended": "Unknown",
       "startDate": "2026-08-10",
       "discontinuedDate": "2026-10-30",
-      "constraint": "min 1, max 1",
-      "maxQty": "1",
-      "diffStatus": "REMOVED",
-      "priceHistoryTrail": "2026-10-30: $5400.00 (✕ REMOVED)"
+      "constraint": "min 1, max 1 — Active OCA CTO chassis",
+      "maxQty": 1,
+      "sourceSnapshot": "catalog_2026-10-30.json"
     }
   ],
   "chassisVariantMatrix": {
@@ -160,7 +150,7 @@
       "discontinuedDate": "",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "ADDED",
+      "diffStatus": "UNCHANGED",
       "priceHistoryTrail": "2026-10-30: $3200.00"
     },
     "P06584-B21": {
@@ -174,10 +164,9 @@
       "HPE Recommended": "Unknown",
       "startDate": "2026-08-10",
       "discontinuedDate": "2026-10-30",
-      "constraint": "min 1, max 1",
-      "maxQty": "1",
-      "diffStatus": "REMOVED",
-      "priceHistoryTrail": "2026-10-30: $5400.00 (✕ REMOVED)"
+      "constraint": "min 1, max 1 — Active OCA CTO chassis",
+      "maxQty": 1,
+      "sourceSnapshot": "catalog_2026-10-30.json"
     }
   },
   "smartChassisCombinations": [],
@@ -375,23 +364,6 @@
       "level": "CHASSIS",
       "ruleType": "CONDITIONAL_VISIBILITY",
       "affectedSkus": [
-        "876689-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "876689-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
         "876692-B21"
       ],
       "conditionType": "PORTAL_CONDITIONAL_VIEW",
@@ -451,23 +423,6 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "AJ836A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "AJ837A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "AJ837A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Cables & Enablement Kits",
       "subCategory": "Cables",
       "constraint": "",
@@ -698,6 +653,23 @@
       "level": "CHASSIS",
       "ruleType": "CONDITIONAL_VISIBILITY",
       "affectedSkus": [
+        "876689-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "876689-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "Cables",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
         "AJ834A"
       ],
       "conditionType": "PORTAL_CONDITIONAL_VIEW",
@@ -723,6 +695,23 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "AJ835A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "Cables",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "AJ837A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "AJ837A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Cables & Enablement Kits",
       "subCategory": "Cables",
       "constraint": "",
@@ -1012,6 +1001,40 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "C7537A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL",
+      "parentCategory": "Accessories & Infrastructure",
+      "subCategory": "PCIe Networking Adapters",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "C7542A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "C7542A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL",
+      "parentCategory": "Accessories & Infrastructure",
+      "subCategory": "PCIe Networking Adapters",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "G9Q68A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "G9Q68A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL",
       "parentCategory": "Accessories & Infrastructure",
       "subCategory": "PCIe Networking Adapters",
       "constraint": "",
@@ -1718,40 +1741,6 @@
       "level": "CHASSIS",
       "ruleType": "CONDITIONAL_VISIBILITY",
       "affectedSkus": [
-        "C7542A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "C7542A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL",
-      "parentCategory": "Accessories & Infrastructure",
-      "subCategory": "PCIe Networking Adapters",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "G9Q68A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "G9Q68A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL",
-      "parentCategory": "Accessories & Infrastructure",
-      "subCategory": "PCIe Networking Adapters",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
         "J9283B"
       ],
       "conditionType": "PORTAL_CONDITIONAL_VIEW",
@@ -2056,6 +2045,8 @@
         "C7535A",
         "C7536A",
         "C7537A",
+        "C7542A",
+        "G9Q68A",
         "487649-B21",
         "487652-B21",
         "498385-B21",
@@ -2097,8 +2088,6 @@
         "861412-B21",
         "861413-B21",
         "861414-B21",
-        "C7542A",
-        "G9Q68A",
         "J9283B",
         "JC784C",
         "JD095C",

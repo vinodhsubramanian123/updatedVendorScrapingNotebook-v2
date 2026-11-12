@@ -9,6 +9,12 @@
     {
       "date": "2026-10-29",
       "price": 332,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 332,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -21,6 +27,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 2635,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 2635,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -35,6 +47,12 @@
     {
       "date": "2026-10-29",
       "price": 2736,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 2736,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -47,6 +65,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 9130,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 9130,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -61,6 +85,12 @@
     {
       "date": "2026-10-29",
       "price": 11350,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 11350,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -73,6 +103,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 22485,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 22485,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -87,6 +123,12 @@
     {
       "date": "2026-10-29",
       "price": 2457,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 2457,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -99,6 +141,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 8123,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 8123,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -113,6 +161,12 @@
     {
       "date": "2026-10-29",
       "price": 6830,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 6830,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -125,6 +179,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 13124,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 13124,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -139,6 +199,12 @@
     {
       "date": "2026-10-29",
       "price": 16595,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 16595,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -151,6 +217,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 16517,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 16517,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -165,6 +237,12 @@
     {
       "date": "2026-10-29",
       "price": 23285,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 23285,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -177,6 +255,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 1756,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 1756,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -191,6 +275,12 @@
     {
       "date": "2026-10-29",
       "price": 2293,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 2293,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -203,6 +293,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 3734,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 3734,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -217,6 +313,12 @@
     {
       "date": "2026-10-29",
       "price": 4242,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 4242,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -229,6 +331,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 10516,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 10516,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -243,6 +351,12 @@
     {
       "date": "2026-10-29",
       "price": 10247,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 10247,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -255,6 +369,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 14682,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 14682,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -269,6 +389,12 @@
     {
       "date": "2026-10-29",
       "price": 14818,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 14818,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -281,6 +407,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 399,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 399,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -295,6 +427,12 @@
     {
       "date": "2026-10-29",
       "price": 399,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 399,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -307,6 +445,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 28532,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 28532,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -321,6 +465,12 @@
     {
       "date": "2026-10-29",
       "price": 13909,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 13909,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -333,6 +483,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 47056,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 47056,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -347,6 +503,12 @@
     {
       "date": "2026-10-29",
       "price": 60190,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 60190,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -359,6 +521,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 133186,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 133186,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -373,6 +541,12 @@
     {
       "date": "2026-10-29",
       "price": 7439,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 7439,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -385,6 +559,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 7439,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 7439,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -399,6 +579,12 @@
     {
       "date": "2026-10-29",
       "price": 13909,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 13909,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -411,6 +597,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 28532,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 28532,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -425,6 +617,12 @@
     {
       "date": "2026-10-29",
       "price": 47056,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 47056,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -437,6 +635,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 60190,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 60190,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -451,6 +655,12 @@
     {
       "date": "2026-10-29",
       "price": 133186,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 133186,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -463,6 +673,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 129,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 129,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -477,6 +693,12 @@
     {
       "date": "2026-10-29",
       "price": 549,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 549,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -488,6 +710,11 @@
     },
     {
       "date": "2026-10-29",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 0,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -502,6 +729,11 @@
       "date": "2026-10-29",
       "price": 0,
       "status": "ATTRIBUTE_CHANGED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P68221-B21": [
@@ -512,6 +744,11 @@
     },
     {
       "date": "2026-10-29",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 0,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -526,6 +763,12 @@
     {
       "date": "2026-10-29",
       "price": 249,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 249,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -538,6 +781,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 1,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 1,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -552,6 +801,12 @@
     {
       "date": "2026-10-29",
       "price": 1,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 1,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -564,6 +819,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 1,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 1,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -579,7 +840,13 @@
       "date": "2026-10-29",
       "price": 1,
       "status": "CATEGORY_MIGRATED",
-      "targetCategory": "Support Services"
+      "targetCategory": "Support Services",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 1,
+      "status": "ADDED"
     }
   ],
   "339777-B21": [
@@ -591,6 +858,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 1,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 1,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -605,6 +878,12 @@
     {
       "date": "2026-10-29",
       "price": 1,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 1,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -617,6 +896,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 1,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 1,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -632,7 +917,8 @@
       "date": "2026-10-29",
       "price": 1,
       "status": "CATEGORY_MIGRATED",
-      "targetCategory": "Support Services"
+      "targetCategory": "Support Services",
+      "validationState": "VALIDATED"
     }
   ],
   "339780-B21": [
@@ -644,6 +930,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 1,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 1,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -657,6 +949,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 1,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 1,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -672,7 +970,13 @@
       "date": "2026-10-29",
       "price": 2165,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 1
+      "prevPrice": 1,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 2165,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P68223-B21": [
@@ -684,6 +988,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 329,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 329,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -698,6 +1008,12 @@
     {
       "date": "2026-10-29",
       "price": 265,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 265,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -710,6 +1026,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 2925,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 2925,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -724,6 +1046,12 @@
     {
       "date": "2026-10-29",
       "price": 2925,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 2925,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -736,6 +1064,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 5699,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 5699,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -750,6 +1084,12 @@
     {
       "date": "2026-10-29",
       "price": 422,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 422,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -762,6 +1102,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 1087,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 1087,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -777,7 +1123,14 @@
       "date": "2026-10-29",
       "price": 272,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 263
+      "prevPrice": 263,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 263,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 272
     }
   ],
   "P46199-AA1": [
@@ -789,6 +1142,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 99999,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 99999,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -803,6 +1162,12 @@
     {
       "date": "2026-10-29",
       "price": 99999,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 99999,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -815,6 +1180,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 136,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 136,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -829,6 +1200,12 @@
     {
       "date": "2026-10-29",
       "price": 4946,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 4946,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -842,7 +1219,14 @@
     {
       "date": "2026-10-29",
       "price": 1238,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 1283,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 1238
     }
   ],
   "P46214-B21": [
@@ -854,6 +1238,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 619,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 619,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -868,6 +1258,12 @@
     {
       "date": "2026-10-29",
       "price": 1258,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 1258,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -880,6 +1276,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 320,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 320,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -894,6 +1296,11 @@
       "date": "2026-10-29",
       "price": 0,
       "status": "ATTRIBUTE_CHANGED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77106-AB1": [
@@ -904,6 +1311,11 @@
     },
     {
       "date": "2026-10-29",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 0,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -918,6 +1330,12 @@
     {
       "date": "2026-10-29",
       "price": 164,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 164,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -930,6 +1348,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 5712,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 5712,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -944,6 +1368,12 @@
     {
       "date": "2026-10-29",
       "price": 1434,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 1434,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -956,6 +1386,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 721,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 721,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -970,6 +1406,12 @@
     {
       "date": "2026-10-29",
       "price": 99999,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 99999,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -982,6 +1424,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 988,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 988,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -996,6 +1444,11 @@
       "date": "2026-10-29",
       "price": 0,
       "status": "ATTRIBUTE_CHANGED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77096-B21": [
@@ -1007,6 +1460,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 1147,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 1147,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -1021,7 +1480,13 @@
     {
       "date": "2026-10-29",
       "price": 10183,
-      "status": "REINSTATED"
+      "status": "REINSTATED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 10183,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "Q0D23A": [
@@ -1034,7 +1499,13 @@
     {
       "date": "2026-10-29",
       "price": 6264,
-      "status": "REINSTATED"
+      "status": "REINSTATED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 6264,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "Q5W20A": [
@@ -1047,7 +1518,13 @@
     {
       "date": "2026-10-29",
       "price": 4072,
-      "status": "REINSTATED"
+      "status": "REINSTATED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 4072,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "Q5W19A": [
@@ -1060,7 +1537,13 @@
     {
       "date": "2026-10-29",
       "price": 2505,
-      "status": "REINSTATED"
+      "status": "REINSTATED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 2505,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "Q5W22A": [
@@ -1073,7 +1556,13 @@
     {
       "date": "2026-10-29",
       "price": 6787,
-      "status": "REINSTATED"
+      "status": "REINSTATED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 6787,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "Q5W21A": [
@@ -1086,7 +1575,13 @@
     {
       "date": "2026-10-29",
       "price": 4175,
-      "status": "REINSTATED"
+      "status": "REINSTATED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 4175,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "Q8U19A": [
@@ -1099,7 +1594,13 @@
     {
       "date": "2026-10-29",
       "price": 6737,
-      "status": "REINSTATED"
+      "status": "REINSTATED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 6737,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "Q8U21A": [
@@ -1112,7 +1613,13 @@
     {
       "date": "2026-10-29",
       "price": 5483,
-      "status": "REINSTATED"
+      "status": "REINSTATED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 5483,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "Q8U20A": [
@@ -1125,7 +1632,13 @@
     {
       "date": "2026-10-29",
       "price": 11229,
-      "status": "REINSTATED"
+      "status": "REINSTATED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 11229,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "Q8U22A": [
@@ -1138,7 +1651,13 @@
     {
       "date": "2026-10-29",
       "price": 9139,
-      "status": "REINSTATED"
+      "status": "REINSTATED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 9139,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "Q8U15A": [
@@ -1151,7 +1670,13 @@
     {
       "date": "2026-10-29",
       "price": 24680,
-      "status": "REINSTATED"
+      "status": "REINSTATED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 24680,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "Q8U17A": [
@@ -1164,7 +1689,13 @@
     {
       "date": "2026-10-29",
       "price": 20325,
-      "status": "REINSTATED"
+      "status": "REINSTATED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 20325,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "Q8U16A": [
@@ -1177,7 +1708,13 @@
     {
       "date": "2026-10-29",
       "price": 41134,
-      "status": "REINSTATED"
+      "status": "REINSTATED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 41134,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "Q8U18A": [
@@ -1190,7 +1727,13 @@
     {
       "date": "2026-10-29",
       "price": 33874,
-      "status": "REINSTATED"
+      "status": "REINSTATED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 33874,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "Q5W24A": [
@@ -1203,7 +1746,13 @@
     {
       "date": "2026-10-29",
       "price": 14516,
-      "status": "REINSTATED"
+      "status": "REINSTATED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 14516,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "Q5W23A": [
@@ -1216,7 +1765,13 @@
     {
       "date": "2026-10-29",
       "price": 9072,
-      "status": "REINSTATED"
+      "status": "REINSTATED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 9072,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "Q5W26A": [
@@ -1229,7 +1784,13 @@
     {
       "date": "2026-10-29",
       "price": 24194,
-      "status": "REINSTATED"
+      "status": "REINSTATED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 24194,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "Q5W25A": [
@@ -1242,7 +1803,13 @@
     {
       "date": "2026-10-29",
       "price": 15119,
-      "status": "REINSTATED"
+      "status": "REINSTATED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 15119,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "Q0D26A": [
@@ -1255,7 +1822,13 @@
     {
       "date": "2026-10-29",
       "price": 7532,
-      "status": "REINSTATED"
+      "status": "REINSTATED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 7532,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "Q0D25A": [
@@ -1268,7 +1841,13 @@
     {
       "date": "2026-10-29",
       "price": 2085,
-      "status": "REINSTATED"
+      "status": "REINSTATED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 2085,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "Q0D30A": [
@@ -1281,7 +1860,13 @@
     {
       "date": "2026-10-29",
       "price": 15095,
-      "status": "REINSTATED"
+      "status": "REINSTATED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 15095,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "Q0D29A": [
@@ -1294,7 +1879,13 @@
     {
       "date": "2026-10-29",
       "price": 4395,
-      "status": "REINSTATED"
+      "status": "REINSTATED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 4395,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P11086-B21": [
@@ -1307,7 +1898,14 @@
     {
       "date": "2026-10-29",
       "price": 20,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 28,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 20
     }
   ],
   "P11086-051": [
@@ -1321,7 +1919,14 @@
       "date": "2026-10-29",
       "price": 20,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 28
+      "prevPrice": 28,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 28,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 20
     }
   ],
   "P11086-041": [
@@ -1335,7 +1940,14 @@
       "date": "2026-10-29",
       "price": 20,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 28
+      "prevPrice": 28,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 28,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 20
     }
   ],
   "P11086-061": [
@@ -1349,7 +1961,14 @@
       "date": "2026-10-29",
       "price": 20,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 28
+      "prevPrice": 28,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 28,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 20
     }
   ],
   "P11086-291": [
@@ -1360,6 +1979,11 @@
     },
     {
       "date": "2026-10-29",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 0,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -1375,7 +1999,14 @@
       "date": "2026-10-29",
       "price": 20,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 28
+      "prevPrice": 28,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 28,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 20
     }
   ],
   "P11083-B21": [
@@ -1389,7 +2020,14 @@
       "date": "2026-10-29",
       "price": 20,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 28
+      "prevPrice": 28,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 28,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 20
     }
   ],
   "P11083-051": [
@@ -1403,7 +2041,14 @@
       "date": "2026-10-29",
       "price": 20,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 28
+      "prevPrice": 28,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 28,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 20
     }
   ],
   "P11083-041": [
@@ -1417,7 +2062,14 @@
       "date": "2026-10-29",
       "price": 20,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 28
+      "prevPrice": 28,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 28,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 20
     }
   ],
   "P11083-061": [
@@ -1430,7 +2082,14 @@
     {
       "date": "2026-10-29",
       "price": 20,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 28,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 20
     }
   ],
   "P11083-291": [
@@ -1441,6 +2100,11 @@
     },
     {
       "date": "2026-10-29",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 0,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -1456,7 +2120,14 @@
       "date": "2026-10-29",
       "price": 20,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 28
+      "prevPrice": 28,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 28,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 20
     }
   ],
   "P45879-B21": [
@@ -1470,7 +2141,14 @@
       "date": "2026-10-29",
       "price": 20,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 28
+      "prevPrice": 28,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 28,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 20
     }
   ],
   "P45879-051": [
@@ -1484,7 +2162,13 @@
       "date": "2026-10-29",
       "price": 20,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 28
+      "prevPrice": 28,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 20,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P45879-041": [
@@ -1498,7 +2182,14 @@
       "date": "2026-10-29",
       "price": 20,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 28
+      "prevPrice": 28,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 28,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 20
     }
   ],
   "P45879-061": [
@@ -1512,7 +2203,13 @@
       "date": "2026-10-29",
       "price": 20,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 28
+      "prevPrice": 28,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 20,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P45879-291": [
@@ -1524,6 +2221,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 99999,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 99999,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -1539,7 +2242,14 @@
       "date": "2026-10-29",
       "price": 20,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 28
+      "prevPrice": 28,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 28,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 20
     }
   ],
   "P45862-B21": [
@@ -1553,7 +2263,14 @@
       "date": "2026-10-29",
       "price": 20,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 28
+      "prevPrice": 28,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 28,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 20
     }
   ],
   "P45862-051": [
@@ -1567,7 +2284,14 @@
       "date": "2026-10-29",
       "price": 20,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 28
+      "prevPrice": 28,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 28,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 20
     }
   ],
   "P45862-041": [
@@ -1579,6 +2303,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 20,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 20,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -1594,7 +2324,13 @@
       "date": "2026-10-29",
       "price": 20,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 28
+      "prevPrice": 28,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 20,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P45862-291": [
@@ -1606,6 +2342,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 99999,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 99999,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -1621,7 +2363,14 @@
       "date": "2026-10-29",
       "price": 20,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 28
+      "prevPrice": 28,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 28,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 20
     }
   ],
   "P77125-291": [
@@ -1632,6 +2381,11 @@
     },
     {
       "date": "2026-10-29",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 0,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -1646,6 +2400,12 @@
     {
       "date": "2026-10-29",
       "price": 33,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 33,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -1657,6 +2417,11 @@
     },
     {
       "date": "2026-10-29",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 0,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -1671,6 +2436,12 @@
     {
       "date": "2026-10-29",
       "price": 33,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 33,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -1683,6 +2454,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 752,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 752,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -1697,6 +2474,12 @@
     {
       "date": "2026-10-29",
       "price": 3390,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 3390,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -1709,6 +2492,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 55,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 55,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -1723,6 +2512,12 @@
     {
       "date": "2026-10-29",
       "price": 225,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 225,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -1736,6 +2531,12 @@
     {
       "date": "2026-10-29",
       "price": 300,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 300,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -1748,6 +2549,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 65,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 65,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -1789,7 +2596,8 @@
       "date": "2026-10-29",
       "price": 183,
       "status": "CATEGORY_MIGRATED",
-      "targetCategory": "Support Services"
+      "targetCategory": "Support Services",
+      "validationState": "VALIDATED"
     }
   ],
   "BD572A": [
@@ -1803,7 +2611,8 @@
       "date": "2026-10-29",
       "price": 235,
       "status": "CATEGORY_MIGRATED",
-      "targetCategory": "Support Services"
+      "targetCategory": "Support Services",
+      "validationState": "VALIDATED"
     }
   ],
   "BC351A": [
@@ -1814,6 +2623,11 @@
     },
     {
       "date": "2026-10-29",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 0,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -1828,6 +2642,11 @@
       "date": "2026-10-29",
       "price": 0,
       "status": "ATTRIBUTE_CHANGED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "BD566A": [
@@ -1838,6 +2657,11 @@
     },
     {
       "date": "2026-10-29",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 0,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -1852,6 +2676,11 @@
       "date": "2026-10-29",
       "price": 0,
       "status": "ATTRIBUTE_CHANGED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "BD568A": [
@@ -1862,6 +2691,11 @@
     },
     {
       "date": "2026-10-29",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 0,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -1876,6 +2710,11 @@
       "date": "2026-10-29",
       "price": 0,
       "status": "ATTRIBUTE_CHANGED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "N0U73A": [
@@ -1888,7 +2727,13 @@
     {
       "date": "2026-10-29",
       "price": 7803,
-      "status": "REINSTATED"
+      "status": "REINSTATED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 7803,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "N0U75A": [
@@ -1901,7 +2746,13 @@
     {
       "date": "2026-10-29",
       "price": 13005,
-      "status": "REINSTATED"
+      "status": "REINSTATED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 13005,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P46172-AA1": [
@@ -1913,6 +2764,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 99999,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 99999,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -1927,6 +2784,12 @@
     {
       "date": "2026-10-29",
       "price": 99999,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 99999,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -1939,6 +2802,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 99999,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 99999,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -1954,7 +2823,14 @@
       "date": "2026-10-29",
       "price": 407,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 394
+      "prevPrice": 394,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 394,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 407
     }
   ],
   "P46172-A21": [
@@ -1966,6 +2842,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 407,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 407,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -1980,6 +2862,12 @@
     {
       "date": "2026-10-29",
       "price": 99999,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 99999,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -1993,6 +2881,12 @@
     {
       "date": "2026-10-29",
       "price": 99999,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 99999,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -2005,6 +2899,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 99999,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 99999,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -2020,7 +2920,14 @@
       "date": "2026-10-29",
       "price": 4946,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 5105
+      "prevPrice": 5105,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 5105,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 4946
     }
   ],
   "P46123-A21": [
@@ -2032,6 +2939,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 4946,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 4946,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -2046,6 +2959,12 @@
     {
       "date": "2026-10-29",
       "price": 7260,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 7260,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -2058,6 +2977,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 99999,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 99999,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -2072,6 +2997,12 @@
     {
       "date": "2026-10-29",
       "price": 99999,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 99999,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -2084,6 +3015,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 99999,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 99999,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -2098,6 +3035,12 @@
     {
       "date": "2026-10-29",
       "price": 99999,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 99999,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -2110,6 +3053,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 988,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 988,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -2124,6 +3073,12 @@
     {
       "date": "2026-10-29",
       "price": 988,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 988,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -2135,6 +3090,11 @@
     },
     {
       "date": "2026-10-29",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 0,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -2149,6 +3109,12 @@
     {
       "date": "2026-10-29",
       "price": 7733,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 7733,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -2160,6 +3126,11 @@
     },
     {
       "date": "2026-10-29",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 0,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -2174,6 +3145,11 @@
       "date": "2026-10-29",
       "price": 0,
       "status": "ATTRIBUTE_CHANGED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77101-291": [
@@ -2184,6 +3160,11 @@
     },
     {
       "date": "2026-10-29",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 0,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -2198,6 +3179,12 @@
     {
       "date": "2026-10-29",
       "price": 5712,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 5712,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -2210,6 +3197,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 5712,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 5712,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -2224,6 +3217,11 @@
       "date": "2026-10-29",
       "price": 0,
       "status": "ATTRIBUTE_CHANGED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77100-AA1": [
@@ -2234,6 +3232,11 @@
     },
     {
       "date": "2026-10-29",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 0,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -2248,6 +3251,11 @@
       "date": "2026-10-29",
       "price": 0,
       "status": "ATTRIBUTE_CHANGED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77100-291": [
@@ -2258,6 +3266,11 @@
     },
     {
       "date": "2026-10-29",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 0,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -2272,6 +3285,12 @@
     {
       "date": "2026-10-29",
       "price": 1147,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 1147,
       "status": "ATTRIBUTE_CHANGED"
     }
   ],
@@ -2284,6 +3303,12 @@
     },
     {
       "date": "2026-10-29",
+      "price": 1147,
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
       "price": 1147,
       "status": "ATTRIBUTE_CHANGED"
     }
@@ -2298,6 +3323,11 @@
       "date": "2026-10-29",
       "price": 0,
       "status": "ATTRIBUTE_CHANGED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P68217-B21": [
@@ -2310,7 +3340,14 @@
     {
       "date": "2026-10-29",
       "price": 4200,
-      "status": "ATTRIBUTE_CHANGED"
+      "status": "ATTRIBUTE_CHANGED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 0,
+      "status": "PRICE_CHANGED",
+      "prevPrice": 4200
     }
   ],
   "R7J57A": [
@@ -2318,7 +3355,13 @@
       "date": "2026-10-29",
       "price": 371,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 371,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S3Q19A": [
@@ -2326,7 +3369,13 @@
       "date": "2026-10-29",
       "price": 229,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 229,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S6K30B": [
@@ -2334,7 +3383,13 @@
       "date": "2026-10-29",
       "price": 1147,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 1147,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S6L35B": [
@@ -2342,7 +3397,13 @@
       "date": "2026-10-29",
       "price": 5712,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 5712,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S4R43A": [
@@ -2350,7 +3411,13 @@
       "date": "2026-10-29",
       "price": 1429,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 1429,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S4R44A": [
@@ -2358,7 +3425,13 @@
       "date": "2026-10-29",
       "price": 879,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 879,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S4R45A": [
@@ -2366,7 +3439,13 @@
       "date": "2026-10-29",
       "price": 2144,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 2144,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S4R46A": [
@@ -2374,7 +3453,13 @@
       "date": "2026-10-29",
       "price": 1319,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 1319,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S4R47A": [
@@ -2382,7 +3467,13 @@
       "date": "2026-10-29",
       "price": 6110,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 6110,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S4R48A": [
@@ -2390,7 +3481,13 @@
       "date": "2026-10-29",
       "price": 3759,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 3759,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S4R37A": [
@@ -2398,7 +3495,13 @@
       "date": "2026-10-29",
       "price": 1429,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 1429,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S4R40A": [
@@ -2406,7 +3509,13 @@
       "date": "2026-10-29",
       "price": 879,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 879,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S4R38A": [
@@ -2414,7 +3523,13 @@
       "date": "2026-10-29",
       "price": 4072,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 4072,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S4R41A": [
@@ -2422,7 +3537,13 @@
       "date": "2026-10-29",
       "price": 2505,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 2505,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S4R39A": [
@@ -2430,7 +3551,13 @@
       "date": "2026-10-29",
       "price": 6787,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 6787,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S4R42A": [
@@ -2438,7 +3565,13 @@
       "date": "2026-10-29",
       "price": 4175,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 4175,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S4R31A": [
@@ -2446,7 +3579,13 @@
       "date": "2026-10-29",
       "price": 4839,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 4839,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S4R34A": [
@@ -2454,7 +3593,13 @@
       "date": "2026-10-29",
       "price": 3024,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 3024,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S4R32A": [
@@ -2462,7 +3607,13 @@
       "date": "2026-10-29",
       "price": 14516,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 14516,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S4R35A": [
@@ -2470,7 +3621,13 @@
       "date": "2026-10-29",
       "price": 9072,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 9072,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S4R33A": [
@@ -2478,7 +3635,13 @@
       "date": "2026-10-29",
       "price": 24194,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 24194,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S4R36A": [
@@ -2486,7 +3649,13 @@
       "date": "2026-10-29",
       "price": 15119,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 15119,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R8V76A": [
@@ -2494,7 +3663,13 @@
       "date": "2026-10-29",
       "price": 3980,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 3980,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R8V74A": [
@@ -2502,7 +3677,13 @@
       "date": "2026-10-29",
       "price": 2260,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 2260,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R8V77A": [
@@ -2510,7 +3691,13 @@
       "date": "2026-10-29",
       "price": 10800,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 10800,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R8V75A": [
@@ -2518,7 +3705,13 @@
       "date": "2026-10-29",
       "price": 6110,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 6110,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R8V78A": [
@@ -2526,7 +3719,13 @@
       "date": "2026-10-29",
       "price": 18000,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 18000,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R8V79A": [
@@ -2534,7 +3733,13 @@
       "date": "2026-10-29",
       "price": 10200,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 10200,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R8V72A": [
@@ -2542,7 +3747,13 @@
       "date": "2026-10-29",
       "price": 18873,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 18873,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R8V73A": [
@@ -2550,7 +3761,13 @@
       "date": "2026-10-29",
       "price": 31455,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 31455,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S7N87A": [
@@ -2558,7 +3775,13 @@
       "date": "2026-10-29",
       "price": 18873,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 18873,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S7P10A": [
@@ -2566,7 +3789,13 @@
       "date": "2026-10-29",
       "price": 18873,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 18873,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S7P11A": [
@@ -2574,7 +3803,13 @@
       "date": "2026-10-29",
       "price": 31455,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 31455,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S7N88A": [
@@ -2582,7 +3817,13 @@
       "date": "2026-10-29",
       "price": 31455,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 31455,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S6L47A": [
@@ -2590,7 +3831,13 @@
       "date": "2026-10-29",
       "price": 20,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 20,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S6L45A": [
@@ -2598,7 +3845,13 @@
       "date": "2026-10-29",
       "price": 20,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 20,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S6L46A": [
@@ -2606,7 +3859,13 @@
       "date": "2026-10-29",
       "price": 20,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 20,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S6L44A": [],
@@ -2615,7 +3874,13 @@
       "date": "2026-10-29",
       "price": 33,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 33,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S6L43A": [
@@ -2623,7 +3888,13 @@
       "date": "2026-10-29",
       "price": 33,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 33,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S6L41A": [],
@@ -2632,7 +3903,13 @@
       "date": "2026-10-29",
       "price": 1506,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 1506,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S4T27A": [
@@ -2640,7 +3917,13 @@
       "date": "2026-10-29",
       "price": 4519,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 4519,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S4T22A": [
@@ -2648,7 +3931,13 @@
       "date": "2026-10-29",
       "price": 439,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 439,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S4T23A": [
@@ -2656,7 +3945,13 @@
       "date": "2026-10-29",
       "price": 1251,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 1251,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S4T24A": [
@@ -2664,7 +3959,13 @@
       "date": "2026-10-29",
       "price": 879,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 879,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S4T25A": [
@@ -2672,7 +3973,13 @@
       "date": "2026-10-29",
       "price": 2637,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 2637,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R2A03A": [
@@ -2680,7 +3987,13 @@
       "date": "2026-10-29",
       "price": 1482,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 1482,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R2A04A": [
@@ -2688,7 +4001,13 @@
       "date": "2026-10-29",
       "price": 4447,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 4447,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R2A05A": [
@@ -2696,7 +4015,13 @@
       "date": "2026-10-29",
       "price": 7411,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 7411,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R2A00A": [
@@ -2704,7 +4029,13 @@
       "date": "2026-10-29",
       "price": 385,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 385,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R2A01A": [
@@ -2712,7 +4043,13 @@
       "date": "2026-10-29",
       "price": 1097,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 1097,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R2A02A": [
@@ -2720,7 +4057,13 @@
       "date": "2026-10-29",
       "price": 1828,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 1828,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R8V48A": [
@@ -2728,7 +4071,13 @@
       "date": "2026-10-29",
       "price": 50,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 50,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R1P40A": [
@@ -2736,7 +4085,13 @@
       "date": "2026-10-29",
       "price": 87,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 87,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R1P41A": [
@@ -2744,7 +4099,13 @@
       "date": "2026-10-29",
       "price": 248,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 248,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R1P42A": [
@@ -2752,7 +4113,13 @@
       "date": "2026-10-29",
       "price": 413,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 413,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R1P34A": [
@@ -2760,7 +4127,13 @@
       "date": "2026-10-29",
       "price": 2858,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 2858,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R1P37A": [
@@ -2768,7 +4141,13 @@
       "date": "2026-10-29",
       "price": 1758,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 1758,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R1P35A": [
@@ -2776,7 +4155,13 @@
       "date": "2026-10-29",
       "price": 8145,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 8145,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R1P38A": [
@@ -2784,7 +4169,13 @@
       "date": "2026-10-29",
       "price": 5010,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 5010,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R1P36A": [
@@ -2792,7 +4183,13 @@
       "date": "2026-10-29",
       "price": 13575,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 13575,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R1P39A": [
@@ -2800,7 +4197,13 @@
       "date": "2026-10-29",
       "price": 8350,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 8350,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R8V84A": [
@@ -2808,7 +4211,13 @@
       "date": "2026-10-29",
       "price": 18873,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 18873,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "R8V85A": [
@@ -2816,7 +4225,13 @@
       "date": "2026-10-29",
       "price": 31455,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 31455,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S7P12A": [
@@ -2824,7 +4239,13 @@
       "date": "2026-10-29",
       "price": 7803,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 7803,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S7P13A": [
@@ -2832,7 +4253,13 @@
       "date": "2026-10-29",
       "price": 13005,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 13005,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S6L39A": [
@@ -2840,7 +4267,13 @@
       "date": "2026-10-29",
       "price": 445,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 445,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S6L37A": [
@@ -2848,7 +4281,13 @@
       "date": "2026-10-29",
       "price": 7733,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 7733,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S6L36A": [
@@ -2856,7 +4295,13 @@
       "date": "2026-10-29",
       "price": 5712,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 5712,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S6L38A": [
@@ -2864,119 +4309,223 @@
       "date": "2026-10-29",
       "price": 1147,
       "status": "PRICE_AND_ATTRIBUTE_CHANGED",
-      "prevPrice": 0
+      "prevPrice": 0,
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 1147,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P94926-B21": [
     {
       "date": "2026-10-29",
       "price": 1825,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 1825,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S6K30A": [
     {
       "date": "2026-10-29",
       "price": 1147,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 1147,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P46194-B21": [
     {
       "date": "2026-10-29",
       "price": 44,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 41,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 44
     }
   ],
   "P46191-AA1": [
     {
       "date": "2026-10-29",
       "price": 99999,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 99999,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P46191-B21": [
     {
       "date": "2026-10-29",
       "price": 55,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 55,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P46218-B21": [
     {
       "date": "2026-10-29",
       "price": 429,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 429,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P46217-B21": [
     {
       "date": "2026-10-29",
       "price": 539,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 539,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P46216-B21": [
     {
       "date": "2026-10-29",
       "price": 216,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 216,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P46215-AA1": [
     {
       "date": "2026-10-29",
       "price": 99999,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 99999,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P46215-AB1": [
     {
       "date": "2026-10-29",
       "price": 99999,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 99999,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P46215-B21": [
     {
       "date": "2026-10-29",
       "price": 271,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 232,
+      "status": "PRICE_AND_ATTRIBUTE_CHANGED",
+      "prevPrice": 271
     }
   ],
   "P46220-B21": [
     {
       "date": "2026-10-29",
       "price": 2145,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 2145,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P46219-B21": [
     {
       "date": "2026-10-29",
       "price": 2695,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 2695,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P46222-B21": [
     {
       "date": "2026-10-29",
       "price": 880,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 880,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P46221-B21": [
     {
       "date": "2026-10-29",
       "price": 935,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 935,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77111-B21": [
     {
       "date": "2026-10-29",
       "price": 52,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 52,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77110-AA1": [
@@ -2984,34 +4533,63 @@
       "date": "2026-10-29",
       "price": 0,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77110-B21": [
     {
       "date": "2026-10-29",
       "price": 72,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 72,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77115-B21": [
     {
       "date": "2026-10-29",
       "price": 444,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 444,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77114-B21": [
     {
       "date": "2026-10-29",
       "price": 636,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 636,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77113-B21": [
     {
       "date": "2026-10-29",
       "price": 226,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 226,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77112-AA1": [
@@ -3019,6 +4597,11 @@
       "date": "2026-10-29",
       "price": 0,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77112-AB1": [
@@ -3026,104 +4609,193 @@
       "date": "2026-10-29",
       "price": 0,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77112-B21": [
     {
       "date": "2026-10-29",
       "price": 322,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 322,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77117-B21": [
     {
       "date": "2026-10-29",
       "price": 2184,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 2184,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77116-B21": [
     {
       "date": "2026-10-29",
       "price": 3143,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 3143,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77119-B21": [
     {
       "date": "2026-10-29",
       "price": 201,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 201,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77118-B21": [
     {
       "date": "2026-10-29",
       "price": 280,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 280,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77121-B21": [
     {
       "date": "2026-10-29",
       "price": 974,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 974,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77120-B21": [
     {
       "date": "2026-10-29",
       "price": 1364,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 1364,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77123-B21": [
     {
       "date": "2026-10-29",
       "price": 9666,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 9666,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77122-B21": [
     {
       "date": "2026-10-29",
       "price": 13566,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 13566,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P45916-291": [
     {
       "date": "2026-10-29",
       "price": 99999,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 99999,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P45916-B21": [
     {
       "date": "2026-10-29",
       "price": 4946,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 4946,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P46005-291": [
     {
       "date": "2026-10-29",
       "price": 99999,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 99999,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P46005-B21": [
     {
       "date": "2026-10-29",
       "price": 988,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 988,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S6L28B": [
     {
       "date": "2026-10-29",
       "price": 445,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 445,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77097-291": [
@@ -3131,13 +4803,24 @@
       "date": "2026-10-29",
       "price": 0,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77097-B21": [
     {
       "date": "2026-10-29",
       "price": 5712,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 5712,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77095-291": [
@@ -3145,20 +4828,37 @@
       "date": "2026-10-29",
       "price": 0,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "P77095-B21": [
     {
       "date": "2026-10-29",
       "price": 1147,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 1147,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "M6K34A": [
     {
       "date": "2026-10-29",
       "price": 2040,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 2040,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "M6K35A": [
@@ -3166,6 +4866,11 @@
       "date": "2026-10-29",
       "price": 0,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "M6K36A": [
@@ -3173,117 +4878,267 @@
       "date": "2026-10-29",
       "price": 0,
       "status": "ADDED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 0,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "M6K30A": [
     {
       "date": "2026-10-29",
       "price": 7803,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 7803,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "M6K32A": [
     {
       "date": "2026-10-29",
       "price": 13005,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 13005,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S7N85A": [
     {
       "date": "2026-10-29",
       "price": 7803,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 7803,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S7N86A": [
     {
       "date": "2026-10-29",
       "price": 13005,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 13005,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S3R50A": [
     {
       "date": "2026-10-29",
       "price": 1599,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 1599,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S3R51A": [
     {
       "date": "2026-10-29",
       "price": 1099,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 1099,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S3R49A": [
     {
       "date": "2026-10-29",
       "price": 4399,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 4399,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S3R53A": [
     {
       "date": "2026-10-29",
       "price": 2990,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 2990,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S3R52A": [
     {
       "date": "2026-10-29",
       "price": 7196,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 7196,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S3R54A": [
     {
       "date": "2026-10-29",
       "price": 4946,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 4946,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S7N89A": [
     {
       "date": "2026-10-29",
       "price": 1599,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 1599,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S7N90A": [
     {
       "date": "2026-10-29",
       "price": 1099,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 1099,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S7N91A": [
     {
       "date": "2026-10-29",
       "price": 4399,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 4399,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S7N92A": [
     {
       "date": "2026-10-29",
       "price": 2990,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 2990,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S7N93A": [
     {
       "date": "2026-10-29",
       "price": 7196,
-      "status": "ADDED"
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 7196,
+      "status": "ATTRIBUTE_CHANGED"
     }
   ],
   "S7N94A": [
     {
       "date": "2026-10-29",
       "price": 4946,
+      "status": "ADDED",
+      "validationState": "VALIDATED"
+    },
+    {
+      "date": "2026-11-12",
+      "price": 4946,
+      "status": "ATTRIBUTE_CHANGED"
+    }
+  ],
+  "P83865-F21": [
+    {
+      "date": "2026-11-12",
+      "price": 32811,
+      "status": "ADDED"
+    }
+  ],
+  "P83867-F21": [
+    {
+      "date": "2026-11-12",
+      "price": 54115,
+      "status": "ADDED"
+    }
+  ],
+  "P83869-F21": [
+    {
+      "date": "2026-11-12",
+      "price": 69219,
+      "status": "ADDED"
+    }
+  ],
+  "P83865-B21": [
+    {
+      "date": "2026-11-12",
+      "price": 32811,
+      "status": "ADDED"
+    }
+  ],
+  "P83867-B21": [
+    {
+      "date": "2026-11-12",
+      "price": 54115,
+      "status": "ADDED"
+    }
+  ],
+  "P83869-B21": [
+    {
+      "date": "2026-11-12",
+      "price": 69219,
+      "status": "ADDED"
+    }
+  ],
+  "H36XCA1#006": [
+    {
+      "date": "2026-11-12",
+      "price": 0,
       "status": "ADDED"
     }
   ]

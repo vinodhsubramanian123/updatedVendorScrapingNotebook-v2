@@ -1,0 +1,50 @@
+{
+  "product": "Synergy_4Port_Frame_Link_Module",
+  "recordedAt": "2026-11-12T07:18:28.696Z",
+  "results": [
+    {
+      "deltaId": "LEARN_SYNERGY_4PORT_FRAME_LINK_MODULE_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_SYNERGY_4PORT_FRAME_LINK_MODULE_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029",
+        "ruleType": "WORKFLOW_DUAL_PUBLICATION_ADVISORY",
+        "affectedSku": "",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-11-12T07:18:28.640Z"
+      }
+    },
+    {
+      "deltaId": "LEARN_SYNERGY_4PORT_FRAME_LINK_MODULE_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_SYNERGY_4PORT_FRAME_LINK_MODULE_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029",
+        "ruleType": "WORKFLOW_SOURCE_RETIREMENT_ADVISORY",
+        "affectedSku": "",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-11-12T07:18:28.673Z"
+      }
+    },
+    {
+      "deltaId": "LEARN_SYNERGY_4PORT_FRAME_LINK_MODULE_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_SYNERGY_4PORT_FRAME_LINK_MODULE_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029",
+        "ruleType": "WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY",
+        "affectedSku": "",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-11-12T07:18:28.696Z"
+      }
+    }
+  ],
+  "allReachable": true,
+  "hardwareCompatibilityCertified": false
+}

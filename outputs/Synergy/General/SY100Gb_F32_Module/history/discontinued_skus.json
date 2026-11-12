@@ -181,7 +181,18 @@
     "mainCategory": "Networking",
     "subCategory": "Optical Transceivers & DAC Cables",
     "firstSeenDate": "2026-10-30",
-    "status": "ACTIVE"
+    "discontinuedDate": "2026-11-11",
+    "daysActive": 12,
+    "lastKnownPrice": "180.00",
+    "fullPriceTrail": "2026-10-30: $180.00 → 2026-11-11: $180.00 (✕ REMOVED)",
+    "status": "DISCONTINUED",
+    "removalReason": "VENDOR_OBSOLETE",
+    "previousLifecycleStatus": "EOL Warning (90-Day)",
+    "vendorDiscontinuedDate": "11/30/2026",
+    "trackingState": "STOPPED_AFTER_REMOVAL",
+    "retentionClass": "COMPACT_LIFECYCLE_TOMBSTONE",
+    "businessRelevant": false,
+    "reason": "Vendor marked obsolete/EOL in portal"
   },
   "E7Y09A": {
     "productNumber": "E7Y09A",

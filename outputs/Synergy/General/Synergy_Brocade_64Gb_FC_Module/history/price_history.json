@@ -1,0 +1,170 @@
+{
+  "P77653-B21": [
+    {
+      "date": "2026-11-12",
+      "price": 63999,
+      "status": "BASELINE"
+    }
+  ],
+  "AJ833A": [
+    {
+      "date": "2026-11-12",
+      "price": 65,
+      "status": "BASELINE"
+    }
+  ],
+  "AJ836A": [
+    {
+      "date": "2026-11-12",
+      "price": 115,
+      "status": "BASELINE"
+    }
+  ],
+  "AJ838A": [
+    {
+      "date": "2026-11-12",
+      "price": 208,
+      "status": "BASELINE"
+    }
+  ],
+  "AJ839A": [
+    {
+      "date": "2026-11-12",
+      "price": 253,
+      "status": "BASELINE"
+    }
+  ],
+  "AJ834A": [
+    {
+      "date": "2026-11-12",
+      "price": 70,
+      "status": "BASELINE"
+    }
+  ],
+  "AJ835A": [
+    {
+      "date": "2026-11-12",
+      "price": 95,
+      "status": "BASELINE"
+    }
+  ],
+  "AJ837A": [
+    {
+      "date": "2026-11-12",
+      "price": 162,
+      "status": "BASELINE"
+    }
+  ],
+  "QK732A": [
+    {
+      "date": "2026-11-12",
+      "price": 115,
+      "status": "BASELINE"
+    }
+  ],
+  "QK737A": [
+    {
+      "date": "2026-11-12",
+      "price": 415,
+      "status": "BASELINE"
+    }
+  ],
+  "QK733A": [
+    {
+      "date": "2026-11-12",
+      "price": 130,
+      "status": "BASELINE"
+    }
+  ],
+  "QK734A": [
+    {
+      "date": "2026-11-12",
+      "price": 147,
+      "status": "BASELINE"
+    }
+  ],
+  "QK735A": [
+    {
+      "date": "2026-11-12",
+      "price": 195,
+      "status": "BASELINE"
+    }
+  ],
+  "QK736A": [
+    {
+      "date": "2026-11-12",
+      "price": 239,
+      "status": "BASELINE"
+    }
+  ],
+  "K2Q46A": [
+    {
+      "date": "2026-11-12",
+      "price": 800,
+      "status": "BASELINE"
+    }
+  ],
+  "K2Q47A": [
+    {
+      "date": "2026-11-12",
+      "price": 1350,
+      "status": "BASELINE"
+    }
+  ],
+  "H6Z30A": [
+    {
+      "date": "2026-11-12",
+      "price": 3422,
+      "status": "BASELINE"
+    }
+  ],
+  "QK731A": [
+    {
+      "date": "2026-11-12",
+      "price": 2000,
+      "status": "BASELINE"
+    }
+  ],
+  "QK729A": [
+    {
+      "date": "2026-11-12",
+      "price": 719,
+      "status": "BASELINE"
+    }
+  ],
+  "Q2E58A": [
+    {
+      "date": "2026-11-12",
+      "price": 8500,
+      "status": "BASELINE"
+    }
+  ],
+  "Q2E60A": [
+    {
+      "date": "2026-11-12",
+      "price": 15220,
+      "status": "BASELINE"
+    }
+  ],
+  "5517AAE": [
+    {
+      "date": "2026-11-12",
+      "price": 5277,
+      "status": "BASELINE"
+    }
+  ],
+  "5527AAE": [
+    {
+      "date": "2026-11-12",
+      "price": 6125,
+      "status": "BASELINE"
+    }
+  ],
+  "TC464BAE": [
+    {
+      "date": "2026-11-12",
+      "price": 7815,
+      "status": "BASELINE"
+    }
+  ]
+}

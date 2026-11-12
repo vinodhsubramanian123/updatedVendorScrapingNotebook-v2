@@ -1,0 +1,101 @@
+[
+  {
+    "summary": {
+      "runId": "run_Synergy_12000_Frame_1794422281234",
+      "sessionName": "Synergy_12000_Frame",
+      "startTime": "2026-11-11T18:38:01.228Z",
+      "endTime": "2026-11-11T18:38:04.838Z",
+      "durationMs": 3610,
+      "durationSec": "3.61",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 230,
+      "warningCount": 1,
+      "errorCount": 0,
+      "totalUniqueSKUs": 229,
+      "validationStats": {
+        "totalEntries": 35,
+        "totalSKUs": 230,
+        "validSKUs": 230,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 1,
+        "zeroPriceSKUs": 60,
+        "priceErrors": 0,
+        "ruleCount": 217,
+        "categoryCount": 12
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-11-11T18:38:01.234Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "outputs\\.catalog-staging\\staging_Synergy_12000_Frame_1794421620729\\raw_data\\oca_raw_data_full.json",
+          "jsonOutputPath": "outputs\\.catalog-staging\\staging_Synergy_12000_Frame_1794421620729\\Synergy_12000_Frame_Catalog.json",
+          "chassisLabel": "Synergy 12000 Frame"
+        }
+      },
+      {
+        "timestamp": "2026-11-11T18:38:04.625Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 24,
+          "totalUniqueSKUs": 229,
+          "incrementalStats": {
+            "totalScrapedSkus": 229,
+            "unchangedSkusCount": 0,
+            "modifiedSkusCount": 0,
+            "addedSkusCount": 229,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-11T18:38:04.632Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 1,
+          "stats": {
+            "totalEntries": 35,
+            "totalSKUs": 230,
+            "validSKUs": 230,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 1,
+            "zeroPriceSKUs": 60,
+            "priceErrors": 0,
+            "ruleCount": 217,
+            "categoryCount": 12
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-11T18:38:04.838Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "outputs\\.catalog-staging\\staging_Synergy_12000_Frame_1794421620729\\Synergy_12000_Frame_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [
+      {
+        "timestamp": "2026-11-11T18:38:04.632Z",
+        "message": "Base Chassis Variant SKU [P51174-B21] has $0 list price. Verify if CTO chassis price was scraped correctly."
+      }
+    ],
+    "errors": [],
+    "skuSummary": {
+      "total": 230,
+      "classified": 230,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  }
+]

@@ -1,0 +1,730 @@
+{
+  "version": "1.0.0",
+  "chassis": "Synergy_12000_Frame",
+  "generatedAt": "2026-11-11T18:38:01.245Z",
+  "executionDurationMs": 3610,
+  "summary": {
+    "totalRawTables": 59,
+    "validProductTables": 50,
+    "skippedTablesCount": 13,
+    "selfHealedTablesCount": 0,
+    "selfHealedSkusCount": 0,
+    "totalExtractedSKUs": 230,
+    "totalUniqueSKUs": 229,
+    "totalRulesExtracted": 381,
+    "chassisVariantsCount": 1
+  },
+  "skippedTables": [
+    {
+      "tableIndex": 0,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 1,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 2,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 3,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 4,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 5,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 6,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 7,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 21,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 26,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 49,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 57,
+      "reason": "Table rows < 2 or empty",
+      "sampleSnippet": null
+    },
+    {
+      "tableIndex": 66,
+      "reason": "No valid SKU or headers detected",
+      "sampleSnippet": null
+    }
+  ],
+  "selfHealedTables": [],
+  "tableDecisions": [
+    {
+      "tableIndex": 9,
+      "subCategory": "Server Management & Operating System Licenses",
+      "parentCategory": "Chassis",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Base Chassis",
+      "constraint": "max 12",
+      "minQty": 1,
+      "maxQty": 12,
+      "skuCount": 21,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 10,
+      "subCategory": "Compute",
+      "parentCategory": "Accessories & Infrastructure",
+      "matchedVia": "fallback_accessories",
+      "detectedRole": "Option Component",
+      "constraint": "max 12",
+      "minQty": 0,
+      "maxQty": 12,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 11,
+      "subCategory": "Smart Array SAS Controllers",
+      "parentCategory": "Chassis",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Base Chassis",
+      "constraint": "max 12",
+      "minQty": 1,
+      "maxQty": 12,
+      "skuCount": 18,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 12,
+      "subCategory": "Storage",
+      "parentCategory": "Accessories & Infrastructure",
+      "matchedVia": "fallback_accessories",
+      "detectedRole": "Composable Enclosure",
+      "constraint": "max 12",
+      "minQty": 0,
+      "maxQty": 12,
+      "skuCount": 2,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 13,
+      "subCategory": "SFF Drive Cages & Enablement",
+      "parentCategory": "Drive Enclosures / Drives",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Composable Enclosure",
+      "constraint": "max 24",
+      "minQty": 0,
+      "maxQty": 24,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 14,
+      "subCategory": "Appliance",
+      "parentCategory": "Management Hardware",
+      "matchedVia": "portal_text_position",
+      "detectedRole": "Option Component",
+      "constraint": "max 2",
+      "minQty": 0,
+      "maxQty": 2,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 15,
+      "subCategory": "System Options",
+      "parentCategory": "Accessories & Infrastructure",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Option Component",
+      "constraint": "optional",
+      "minQty": 0,
+      "maxQty": -3,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 17,
+      "subCategory": "System Options",
+      "parentCategory": "Accessories & Infrastructure",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Option Component",
+      "constraint": "optional",
+      "minQty": 0,
+      "maxQty": -3,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 18,
+      "subCategory": "Appliance",
+      "parentCategory": "Management Hardware",
+      "matchedVia": "portal_text_position",
+      "detectedRole": "Option Component",
+      "constraint": "max 2",
+      "minQty": 0,
+      "maxQty": 2,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 19,
+      "subCategory": "Appliance",
+      "parentCategory": "Management Hardware",
+      "matchedVia": "portal_text_position",
+      "detectedRole": "Option Component",
+      "constraint": "max 2",
+      "minQty": 0,
+      "maxQty": 2,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 20,
+      "subCategory": "Redundant Frame Link",
+      "parentCategory": "Management Hardware",
+      "matchedVia": "portal_text_position",
+      "detectedRole": "Composable Enclosure",
+      "constraint": "max 2",
+      "minQty": 0,
+      "maxQty": 2,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 22,
+      "subCategory": "Frame Link Module USB",
+      "parentCategory": "Management Hardware",
+      "matchedVia": "portal_text_position",
+      "detectedRole": "Composable Enclosure",
+      "constraint": "max 99",
+      "minQty": 0,
+      "maxQty": 99,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 24,
+      "subCategory": "Frame Link Module USB",
+      "parentCategory": "Management Hardware",
+      "matchedVia": "portal_text_position",
+      "detectedRole": "Composable Enclosure",
+      "constraint": "max 99",
+      "minQty": 0,
+      "maxQty": 99,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 25,
+      "subCategory": "Interconnects",
+      "parentCategory": "Interconnects",
+      "matchedVia": "portal_text_position",
+      "detectedRole": "Fabric Interconnect",
+      "constraint": "max 6",
+      "minQty": 0,
+      "maxQty": 6,
+      "skuCount": 21,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 28,
+      "subCategory": "System Options",
+      "parentCategory": "Accessories & Infrastructure",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Network Switch",
+      "constraint": "optional",
+      "minQty": 0,
+      "maxQty": -3,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 29,
+      "subCategory": "PCIe Networking Adapters",
+      "parentCategory": "Networking",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Network Switch",
+      "constraint": "max 8",
+      "minQty": 0,
+      "maxQty": 8,
+      "skuCount": 14,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 30,
+      "subCategory": "System Options",
+      "parentCategory": "Accessories & Infrastructure",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Fabric Interconnect",
+      "constraint": "optional",
+      "minQty": 0,
+      "maxQty": -3,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 31,
+      "subCategory": "Direct Attach Cables",
+      "parentCategory": "Cables & Enablement Kits",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Transceiver",
+      "constraint": "max 18",
+      "minQty": 0,
+      "maxQty": 18,
+      "skuCount": 37,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 32,
+      "subCategory": "CAT Ethernet Cables",
+      "parentCategory": "Networking",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Cable Kit",
+      "constraint": "max 12",
+      "minQty": 0,
+      "maxQty": 12,
+      "skuCount": 4,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 33,
+      "subCategory": "Tape Storage",
+      "parentCategory": "Drive Enclosures / Drives",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Drive Cage / Drive",
+      "constraint": "max 99",
+      "minQty": 0,
+      "maxQty": 99,
+      "skuCount": 5,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 34,
+      "subCategory": "Frame Options",
+      "parentCategory": "Accessories & Infrastructure",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Composable Enclosure",
+      "constraint": "max 2",
+      "minQty": 0,
+      "maxQty": 2,
+      "skuCount": 2,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 35,
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "parentCategory": "Accessories & Infrastructure",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Chassis Infrastructure",
+      "constraint": "max 2",
+      "minQty": 0,
+      "maxQty": 2,
+      "skuCount": 4,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 36,
+      "subCategory": "Red Hat Enterprise Linux Server",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 2,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 37,
+      "subCategory": "Non Preinstalled Operating System",
+      "parentCategory": "Software & Licenses",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "no max",
+      "minQty": 0,
+      "maxQty": -1,
+      "skuCount": 58,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 38,
+      "subCategory": "High Performance & Standard Fan Kits",
+      "parentCategory": "Cooling / Thermal",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Cooling / Thermal",
+      "constraint": "max 6",
+      "minQty": 0,
+      "maxQty": 6,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 39,
+      "subCategory": "Power Supply",
+      "parentCategory": "Power Supplies",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Power Supply",
+      "constraint": "required",
+      "minQty": 1,
+      "maxQty": -2,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 40,
+      "subCategory": "Power Supply",
+      "parentCategory": "Power Supplies",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Power Supply",
+      "constraint": "required",
+      "minQty": 1,
+      "maxQty": -2,
+      "skuCount": 11,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 41,
+      "subCategory": "PCIe Networking Adapters",
+      "parentCategory": "Networking",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Network Adapter",
+      "constraint": "max 6",
+      "minQty": 0,
+      "maxQty": 6,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 42,
+      "subCategory": "Power Cords",
+      "parentCategory": "Cables & Enablement Kits",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Cable Kit",
+      "constraint": "max 12",
+      "minQty": 0,
+      "maxQty": 12,
+      "skuCount": 35,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 43,
+      "subCategory": "Power Cords & Jumper Cables",
+      "parentCategory": "Cables & Enablement Kits",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Cable Kit",
+      "constraint": "N/A",
+      "minQty": 0,
+      "maxQty": "",
+      "skuCount": 8,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 44,
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "parentCategory": "Power Supplies",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Cable Kit",
+      "constraint": "min 1, max 2",
+      "minQty": 1,
+      "maxQty": 2,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 45,
+      "subCategory": "Power Cords",
+      "parentCategory": "Cables & Enablement Kits",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Cable Kit",
+      "constraint": "max 12",
+      "minQty": 0,
+      "maxQty": 12,
+      "skuCount": 1,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 46,
+      "subCategory": "System Options",
+      "parentCategory": "Accessories & Infrastructure",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Option Component",
+      "constraint": "optional",
+      "minQty": 0,
+      "maxQty": -3,
+      "skuCount": 20,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 47,
+      "subCategory": "Hard Disk Drives (SAS/SATA)",
+      "parentCategory": "Drive Enclosures / Drives",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "max 24",
+      "minQty": 0,
+      "maxQty": 24,
+      "skuCount": 36,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 48,
+      "subCategory": "Server Management & Operating System Licenses",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 6,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 50,
+      "subCategory": "System Options",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "N/A",
+      "minQty": 0,
+      "maxQty": "",
+      "skuCount": 10,
+      "rulesCount": 0
+    },
+    {
+      "tableIndex": 51,
+      "subCategory": "System Options",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "N/A",
+      "minQty": 0,
+      "maxQty": "",
+      "skuCount": 7,
+      "rulesCount": 0
+    },
+    {
+      "tableIndex": 52,
+      "subCategory": "System Options",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "N/A",
+      "minQty": 0,
+      "maxQty": "",
+      "skuCount": 10,
+      "rulesCount": 0
+    },
+    {
+      "tableIndex": 53,
+      "subCategory": "Manufacturing Services",
+      "parentCategory": "Support Services",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 10,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 54,
+      "subCategory": "System Options",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "N/A",
+      "minQty": 0,
+      "maxQty": "",
+      "skuCount": 10,
+      "rulesCount": 0
+    },
+    {
+      "tableIndex": 55,
+      "subCategory": "System Options",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "N/A",
+      "minQty": 0,
+      "maxQty": "",
+      "skuCount": 3,
+      "rulesCount": 0
+    },
+    {
+      "tableIndex": 56,
+      "subCategory": "System Options",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "N/A",
+      "minQty": 0,
+      "maxQty": "",
+      "skuCount": 10,
+      "rulesCount": 0
+    },
+    {
+      "tableIndex": 58,
+      "subCategory": "GPU Accelerators",
+      "parentCategory": "Graphics & GPU",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "N/A",
+      "minQty": 0,
+      "maxQty": "",
+      "skuCount": 10,
+      "rulesCount": 0
+    },
+    {
+      "tableIndex": 59,
+      "subCategory": "System Options",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "N/A",
+      "minQty": 0,
+      "maxQty": "",
+      "skuCount": 10,
+      "rulesCount": 0
+    },
+    {
+      "tableIndex": 60,
+      "subCategory": "System Options",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "N/A",
+      "minQty": 0,
+      "maxQty": "",
+      "skuCount": 10,
+      "rulesCount": 0
+    },
+    {
+      "tableIndex": 61,
+      "subCategory": "System Options",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "N/A",
+      "minQty": 0,
+      "maxQty": "",
+      "skuCount": 1,
+      "rulesCount": 0
+    },
+    {
+      "tableIndex": 62,
+      "subCategory": "Compute",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "max 12",
+      "minQty": 0,
+      "maxQty": 12,
+      "skuCount": 6,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 63,
+      "subCategory": "Manufacturing Services",
+      "parentCategory": "Support Services",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 10,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 64,
+      "subCategory": "Manufacturing Services",
+      "parentCategory": "Support Services",
+      "matchedVia": "direct_taxonomy_keyword",
+      "detectedRole": "Service & Support",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1,
+      "skuCount": 10,
+      "rulesCount": 1
+    },
+    {
+      "tableIndex": 65,
+      "subCategory": "System Options",
+      "parentCategory": "Support Services",
+      "matchedVia": "role_classifier",
+      "detectedRole": "Service & Support",
+      "constraint": "N/A",
+      "minQty": 0,
+      "maxQty": "",
+      "skuCount": 6,
+      "rulesCount": 0
+    }
+  ],
+  "categoryDistribution": {
+    "Chassis": 1,
+    "Frame Options": 39,
+    "Accessories & Infrastructure": 33,
+    "Drive Enclosures / Drives": 13,
+    "Management Hardware": 6,
+    "Interconnects": 21,
+    "Networking": 19,
+    "Cables & Enablement Kits": 81,
+    "Software & Licenses": 2,
+    "Cooling / Thermal": 1,
+    "Power Supplies": 13,
+    "Graphics & GPU": 1
+  },
+  "chassisVariantsMatrix": {
+    "P51174-B21": {
+      "description": "HPE Synergy 12000 Configure-to-order Frame",
+      "formFactor": "Unknown",
+      "listPrice": 0,
+      "diffStatus": "BASELINE"
+    }
+  },
+  "dataAnomalies": {
+    "priceInconsistencies": [],
+    "unparseablePrices": [],
+    "filteredPhantomSKUs": [],
+    "duplicateSKUs": []
+  },
+  "attributeFidelity": {
+    "skusWithLeadTime": 75,
+    "skusWithCost": 0,
+    "skusWithPriceDelta": 20,
+    "skusWithPricePerGb": 0,
+    "clicStatusDistribution": {
+      "Valid": 1,
+      "Unpublished": 229
+    },
+    "lifecycleStatusDistribution": {
+      "Active": 76,
+      "Obsolete (OB)": 152,
+      "Direct Ship (DS)": 2
+    }
+  }
+}

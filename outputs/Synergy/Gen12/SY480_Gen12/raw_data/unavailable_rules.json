@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-10-29T06:34:24.564Z",
+  "timestamp": "2026-11-12T03:27:37.705Z",
   "chassisName": "SY480_Gen12",
-  "totalUnavailableRules": 3,
-  "totalUnavailableSkus": 7,
+  "totalUnavailableRules": 4,
+  "totalUnavailableSkus": 10,
   "rules": [
     {
       "ruleId": "RULE_1",
@@ -17,6 +17,18 @@
     },
     {
       "ruleId": "RULE_2",
+      "ruleType": "BTO_DISALLOWED",
+      "section": "Memory",
+      "reason": "BTO Memories are not allowed in CTO Base Model.",
+      "affectedSkusCount": 3,
+      "affectedSkus": [
+        "P83865-B21",
+        "P83867-B21",
+        "P83869-B21"
+      ]
+    },
+    {
+      "ruleId": "RULE_3",
       "ruleType": "CHASSIS_GATE",
       "section": "Hybrid RAID",
       "reason": "The VROC SKUs could be selected only if the NVMe drives are selected with either 4SFF Dir Conn Kit (P68219-B21) or 8EDSFF Kit (P68220-B21)",
@@ -27,7 +39,7 @@
       ]
     },
     {
-      "ruleId": "RULE_3",
+      "ruleId": "RULE_4",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Virtualization",
       "reason": "Private Product is not valid for current customer account",
@@ -67,6 +79,54 @@
       "section": "Processors",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "The total qty of heat sink selected should match with the qty of processor selected.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P83865-B21",
+      "rawSku": "P83865-B21",
+      "isPrivateSku": false,
+      "description": "HPE 64GB (1x64GB) Dual Rank x4 DDR5-8000 CAS-64-64-64 EC8 Registered Smart Memory Kit",
+      "listPrice": 32811,
+      "startDate": "11/02/2026",
+      "discontinuedDate": "06/30/2030",
+      "section": "Memory",
+      "ruleType": "BTO_DISALLOWED",
+      "ineligibilityReason": "BTO Memories are not allowed in CTO Base Model.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P83867-B21",
+      "rawSku": "P83867-B21",
+      "isPrivateSku": false,
+      "description": "HPE 96GB (1x96GB) Dual Rank x4 DDR5-8000 CAS-64-64-64 EC8 Registered Smart Memory Kit",
+      "listPrice": 54115,
+      "startDate": "11/02/2026",
+      "discontinuedDate": "06/30/2030",
+      "section": "Memory",
+      "ruleType": "BTO_DISALLOWED",
+      "ineligibilityReason": "BTO Memories are not allowed in CTO Base Model.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P83869-B21",
+      "rawSku": "P83869-B21",
+      "isPrivateSku": false,
+      "description": "HPE 128GB (1x128GB) Dual Rank x4 DDR5-8000 CAS-64-64-64 EC8 Registered Smart Memory Kit",
+      "listPrice": 69219,
+      "startDate": "11/02/2026",
+      "discontinuedDate": "06/30/2030",
+      "section": "Memory",
+      "ruleType": "BTO_DISALLOWED",
+      "ineligibilityReason": "BTO Memories are not allowed in CTO Base Model.",
       "supplyBadge": "",
       "supplyTitle": "",
       "isSelectable": false,

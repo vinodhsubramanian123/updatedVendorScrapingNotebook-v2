@@ -1,8 +1,8 @@
 {
-  "query": "SY100Gb F32 Module",
+  "query": "SY100Gb_F32_Module",
   "selectedSku": "867796-B21",
   "source": "Authenticated OCA owned component menu",
-  "capturedAt": "2026-10-30T11:56:59.252Z",
+  "capturedAt": "2026-11-11T18:48:51.228Z",
   "ownerConfiguration": "100Gb Virtual #1",
   "parentConfiguration": "Synergy 12000 Frame #1",
   "candidates": [
@@ -12,5 +12,6 @@
       "visited": true
     }
   ],
-  "excludedCandidates": []
+  "excludedCandidates": [],
+  "parentBaseSku": "P51174-B21"
 }
