@@ -128,7 +128,17 @@ function _buildUniversalAndFamilyRulesSection(targetIdentity, universalRules = [
   return md;
 }
 
-function _buildChassisSpecificRulesSection(chassisName, chassisSpecificRules = [], targetIdentity) {
+function formatOwnedParentReference(text, chassisName, cfg) {
+  const parentId = cfg.notebooks?.[chassisName]?.parentProductId;
+  const parentSku = cfg.notebooks?.[parentId]?.baseSku;
+  if (!parentSku) return text;
+  const escape = value => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const parentName = parentId.split('_').map(escape).join('[ _]+');
+  const namedParent = new RegExp(`\\b${parentName}s?\\s*\\(${escape(parentSku)}\\)`, 'gi');
+  return String(text || '').replace(namedParent, `parent configuration ${parentSku}`);
+}
+
+function _buildChassisSpecificRulesSection(chassisName, chassisSpecificRules = [], targetIdentity, cfg) {
   let md = `## 🎯 3. Chassis & Solution-Type Gotchas (${chassisName})\n\n`;
   const relevantChassisRules = chassisSpecificRules.filter(r => {
     if (isVerifiedSharedAccessoryRule(r, targetIdentity)) return true;
@@ -150,7 +160,7 @@ function _buildChassisSpecificRulesSection(chassisName, chassisSpecificRules = [
         return;
       }
       md += `${idx + 1}. **[${r.deltaId}] ${r.chassis}** (Taxonomy: \`${r.scopeTaxonomy || 'CHASSIS_SPECIFIC'}\` | Solution: \`${r.solutionType || 'General Server'}\`):\n`;
-      md += `   - **Rule**: ${ruleBody}\n`;
+      md += `   - **Rule**: ${formatOwnedParentReference(ruleBody, chassisName, cfg)}\n`;
       md += `   - **Affected SKU**: \`${r.affectedSku || 'N/A'}\` | **Required Dependency**: \`${r.requiredDependencySku || 'N/A'}\`\n`;
       if (r.humanReasoning) {
         md += `   - 💡 **Human Engineer Rationale**: *"${r.humanReasoning}"*\n`;
@@ -672,15 +682,21 @@ function _renderOwnedComponentScope(targetDir) {
   const rawCapturePath = path.join(targetDir, 'raw_data', 'oca_raw_data_full.json');
   if (!fs.existsSync(rawCapturePath)) return '';
   const rawCapture = JSON.parse(fs.readFileSync(rawCapturePath, 'utf8'));
-  if (!rawCapture.parentConfiguration) return '';
+  const discovery = rawCapture.ownedMenuDiscovery;
+  const childSkus = [...new Set((discovery?.children || []).map(child => child.baseSku).filter(Boolean))];
+  const childEvidence = discovery ? `\n## Configured child menus\n\n${discovery.status}. ${childSkus.length ? `Observed child base SKUs ${childSkus.join(', ')}. ` : ''} Other selector states require separate observation.\n\n` : '';
+  if (!rawCapture.parentConfiguration) return childEvidence;
   const parentEvidence = rawCapture.parentBaseSku
     ? `Parent base SKU: ${rawCapture.parentBaseSku}.`
     : 'The raw capture records the parent configuration.';
   let md = `\n## Owned component capture scope\n\nObserved ${rawCapture.timestamp}. Component base SKU: ${rawCapture.selectedBaseSku}. Owner: ${rawCapture.ownerConfiguration}. ${parentEvidence} Coverage is limited to the component menu.\n\n`;
+  if (rawCapture.scopePath?.length) {
+    md += `The observed ownership path runs through ${rawCapture.scopePath.map(step => step.baseSku).join(' → ')}.\n\n`;
+  }
   if (rawCapture.componentServiceEvidence) {
     md += `Service scope: ${rawCapture.componentServiceEvidence.scope}. Unexecuted: ${(rawCapture.componentServiceEvidence.unexecuted || []).join('; ')}. Missing prices remain unknown.\n\n`;
   }
-  return md;
+  return md + childEvidence;
 }
 
 function _renderLivePortalServices(targetDir, chassisName, cfg) {
@@ -822,7 +838,7 @@ function _assembleMarkdownDocument(targetDir, chassisName, ctx) {
   let md = _buildHeaderAndSummarySection(ctx.targetIdentity, chassisName, ctx.totalActiveHwSKUs, ctx.totalActiveSrvSKUs, ctx.totalRules, ctx.hwDiff, ctx.srvDiff);
   md += _renderOwnedComponentScope(targetDir);
   md += _buildUniversalAndFamilyRulesSection(ctx.targetIdentity, ctx.scopedRegistry.universalRules, ctx.scopedRegistry.familyGenRules);
-  md += _buildChassisSpecificRulesSection(chassisName, ctx.scopedRegistry.chassisSpecificRules, ctx.targetIdentity);
+  md += _buildChassisSpecificRulesSection(chassisName, ctx.scopedRegistry.chassisSpecificRules, ctx.targetIdentity, ctx.cfg);
   md += _buildUnavailableDomGatingRulesSection(ctx.unavailableRules);
   md += _buildDiscontinuedSection(chassisName, ctx.discontinuedRegistry, ctx.servicesDiscontinuedRegistry, ctx.cfg, ctx.catalogData);
   md += _buildCategoryTrendsAndPriceMovesSection(ctx.catalogData);

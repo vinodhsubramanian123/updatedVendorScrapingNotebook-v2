@@ -153,6 +153,18 @@ test('Codex Audit Remediation — Full 13-Finding Validation Matrix', async (t) 
     const mockNegativeEval = {
       isMathClean: true,
       targetChassis: 'DL380_Gen12',
+      items: [
+        { sku: 'P73282-B21', description: 'HPE ProLiant DL380 Gen12 8SFF CTO Server', quantity: 1, unitPriceUsd: 5584 }
+      ],
+      rankedSolutions: [
+        {
+          rank: 1,
+          name: 'Customer Intent Preserved',
+          skuPartsList: [
+            { sku: 'P73282-B21', description: 'HPE ProLiant DL380 Gen12 8SFF CTO Server', quantity: 1, unitPriceUsd: 5584 }
+          ]
+        }
+      ],
       aspectChecks: {
         compute: { pass: true },
         power: { pass: true }

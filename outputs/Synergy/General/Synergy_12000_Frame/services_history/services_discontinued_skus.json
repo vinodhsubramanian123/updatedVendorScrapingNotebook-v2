@@ -1,1 +1,10 @@
-{}
+{
+  "H36XCA1#006": {
+    "productNumber": "H36XCA1#006",
+    "description": "HPE GPU on RHOCP Integrat SVC",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "firstSeenDate": "2026-11-12",
+    "status": "ACTIVE"
+  }
+}

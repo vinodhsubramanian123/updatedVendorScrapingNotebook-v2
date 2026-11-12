@@ -1,0 +1,18 @@
+{
+  "product": "Synergy_12000_Frame",
+  "notebookId": "5b9ddeda-0d03-44ee-80c8-766f494ea34c",
+  "replacementSourceId": "94781b8e-016a-49ee-953e-66c74bc81d97",
+  "verifiedAt": "2026-11-12T11:04:16.921Z",
+  "contentFingerprints": null,
+  "legacyFingerprint": "4fc2f1b90b629fabd143f25c397fd4846aff4b23d9d93a8669490e4df41db4ed",
+  "retirementRequested": false,
+  "plannedRetirementIds": [
+    "dfc352b5-8233-4a8f-9b4f-4a0aec34d0a2"
+  ],
+  "status": "RETIREMENT_PENDING",
+  "retiredSourceIds": [],
+  "remainingSourceIds": [
+    "dfc352b5-8233-4a8f-9b4f-4a0aec34d0a2"
+  ],
+  "retirementErrors": []
+}

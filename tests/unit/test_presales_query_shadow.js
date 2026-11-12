@@ -21,7 +21,7 @@ function restoreLegacySource(actual) {
   assert.ok(wrapperStart > 0 && wrapperEnd > wrapperStart);
   const restored = (actual.slice(0, wrapperStart) + actual.slice(wrapperEnd))
     .replace('async function _executeLegacyRoutedQuery(', 'async function executeRoutedQuery(');
-  assert.equal(sha(restored), 'ce25e3108253eb58d3f1303bbb6b3e631023af4b77e4876c0045b74c07208021');
+  assert.equal(sha(restored), '9f732b388d92973ed523eb749873e64c9e481043f14060c803696c8553e7f9c3');
   return restored;
 }
 
@@ -154,6 +154,7 @@ function loadStubbedRouter(source, enabled, shadowLoader) {
     if (name.endsWith('catalog_discovery.js')) return { getChassisMap: () => ({}), listAllCatalogs: () => [] };
     if (name.endsWith('bom_verifier.js')) return { verifyPrePresentationAcceptance: () => ({ status: 'FIXTURE', isValid: false, blockersCount: 0, warningsCount: 0, blockers: [], warnings: [] }) };
     if (name.endsWith('execution_trace_runtime.js')) return require('../../scripts/lib/system/execution_trace_runtime.js');
+    if (name.endsWith('policy_resolver.js')) return require('../../scripts/lib/system/policy_resolver.js');
     return {};
   };
   requireStub.main = null;
@@ -165,10 +166,10 @@ function loadStubbedRouter(source, enabled, shadowLoader) {
   return { router: module.exports, calls, helperLoads: () => helperLoads, globals };
 }
 
-test('CP7b default-disabled wrapper preserves three exports and does not load shadow', async () => {
+test('CP7b default-disabled wrapper preserves expected exports and does not load shadow', async () => {
   for (const enabled of [undefined, '', '0', 'true']) {
     const loaded = loadStubbedRouter(fs.readFileSync(routerPath, 'utf8'), enabled);
-    assert.deepEqual(Object.keys(loaded.router), ['classifyQueryIntent', 'executeRoutedQuery', 'getChassisCatalog']);
+    assert.deepEqual(Object.keys(loaded.router), ['classifyQueryIntent', 'executeRoutedQuery', 'getChassisCatalog', '_isOfflineContext']);
     await loaded.router.executeRoutedQuery('What is the maximum memory?');
     assert.equal(loaded.calls.length, 1); assert.equal(loaded.calls[0].name, 'FreeformQa'); assert.equal(loaded.helperLoads(), 0);
   }
@@ -205,7 +206,7 @@ test('CP7b stubbed legacy selection/envelope parity covers all overrides, OCR, s
     .concat([{ query: '', context: { intent: 'OCR_QUOTE_INGESTION', filePath: 'scan.pdf' } },
       { query: 'Size a server', context: { explicitTrack: 'FREEFORM_QA' } },
       { query: '', context: { filePath: 'quote.custom', intent: 'UNSUPPORTED_TRACK' } }]);
-  const normalize = result => JSON.parse(JSON.stringify(result, (key, value) => ['traceId', 'timestamp', 'executionTimeMs'].includes(key) ? undefined : value));
+  const normalize = result => JSON.parse(JSON.stringify(result, (key, value) => ['traceId', 'timestamp', 'executionTimeMs', 'resolvedAt'].includes(key) ? undefined : value));
   for (const scenario of scenarios) {
     const before = loadStubbedRouter(oldSource, undefined); const after = loadStubbedRouter(current, '1');
     let oldResult; let newResult; let oldError; let newError;

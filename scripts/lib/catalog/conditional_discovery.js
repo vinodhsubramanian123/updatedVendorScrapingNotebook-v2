@@ -5,6 +5,8 @@ function applyConditionalDiscovery(entries, observations = []) {
   const rules = [];
   for (const observation of observations) {
     if (isTaaGtaCatalogOption(observation.rawSku || observation.sku, observation.description)) continue;
+    if (observation.visibilityReason === 'HIDDEN_IN_DEFAULT_DOM_STATE' &&
+      /^(?:OB|DS|CS|90|PVT)$/i.test(String(observation.ruleContext || '').trim())) continue;
     const sku = cleanBaseSKU(observation.sku);
     if (!sku || !isValidHpeSKU(sku)) continue;
     const ambient = observation.conditionType === 'AMBIENT_GATE' && Number.isFinite(observation.thresholdDegC);

@@ -78,6 +78,14 @@ const KNOWN_QUICKSPECS_DOC_MAP = {
     expectedFamily: 'Synergy',
     expectedGen: 'General'
   },
+  'SY480_Gen12': {
+    docId: 'a50009201enw',
+    docIdPattern: /a50009201/i,
+    titlePattern: /Synergy[\s_]+480[\s_]+Gen12|SY480[\s_]+Gen12/i,
+    productName: 'HPE Synergy 480 Gen12 Compute Module',
+    expectedFamily: 'Synergy',
+    expectedGen: 'Gen12'
+  },
   'Synergy_4Port_Frame_Link_Module': {
     docId: 'a00030303enw',
     docIdPattern: /a00030303/i,

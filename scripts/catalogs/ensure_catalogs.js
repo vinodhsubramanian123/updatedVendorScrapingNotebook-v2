@@ -5,7 +5,7 @@ function values(flag) { return args.flatMap((value, index) => value === flag && 
 const products = values('--product').flatMap(p => p.split(',')).map(s => s.trim()).filter(Boolean);
 try {
   const plan = buildRefreshPlan({ products, filePath: values('--workbook')[0],
-    query: values('--query')[0], vendor: values('--vendor')[0] || 'HPE', force: args.includes('--force') });
+    query: values('--query')[0], vendor: values('--vendor')[0] || 'HPE', force: args.includes('--force'), includeOwned: args.includes('--include-owned') });
   const execution = args.includes('--execute') ? executeRefreshPlan(plan) : null;
   process.stdout.write(JSON.stringify({ plan, execution }, null, 2) + '\n');
   if (!plan.ready || execution?.success === false) process.exitCode = 1;

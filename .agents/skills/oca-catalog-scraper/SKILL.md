@@ -17,6 +17,8 @@ This skill represents **Workflow 1 (Intelligence Extraction)** of the dual-workf
 
 ---
 
+For an independently configurable child menu, follow the [nested product scope contract](../../../docs/RUNTIME_CONDITIONAL_DISCOVERY.md#nested-product-scopes). Use the registered root-to-leaf path and confirm each owner before capture. Use `scripts/catalogs/ensure_catalogs.js --product <ID> --include-owned` to inspect the full registered subtree. Report any observed menu without an exact mapping and any unexecuted selector state.
+
 ## 2. 10-Stage Scraping Lifecycle Architecture (Mermaid Sequence Visual)
 
 ```mermaid

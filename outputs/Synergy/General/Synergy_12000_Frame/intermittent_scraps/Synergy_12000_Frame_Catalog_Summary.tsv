@@ -41,9 +41,9 @@ Cables & Enablement Kits	Power Cords	max 12	0	12	36	Yes	27
 Cables & Enablement Kits	Power Cords & Jumper Cables		0	N/A	8	Yes	9
 Power Supplies	-48VDC Power Supplies & Cable Kits	min 1, max 2	1	2	1	Yes	2
 Drive Enclosures / Drives	Hard Disk Drives (SAS/SATA)	max 24	0	24	36	Yes	38
-Graphics & GPU	GPU Accelerators		0	N/A	10	No	0
 Software & Licenses	Non Preinstalled Operating System	no max	0	Unlimited	58	Yes	57
 Support Services	Server Management & Operating System Licenses	max 1	0	1	6	Yes	7
 Support Services	System Options		0	N/A	77	No	0
 Support Services	Manufacturing Services	max 1	0	1	30	Yes	3
+Graphics & GPU	GPU Accelerators		0	N/A	10	No	0
 Support Services	Compute	max 12	0	12	6	Yes	1

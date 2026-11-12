@@ -230,7 +230,9 @@ const EXTRACT_HIDDEN_ELEMENTS_SCRIPT = String.raw`(() => {
       const row = el.closest('tr, .item_row, [data-item-id]');
       const table = row?.closest('table');
       const isUnavailableTable = Boolean(table?.closest('.UavailableTable, .uavailableTable_tr, [class*="uavailable"]'));
-      const redHeader = table?.querySelector('.choice_header1[style*="red"], .choice_header1.unavailable, [style*="color: red"], [style*="color:red"]');
+      // An OB/DS badge in a neighboring row can be red too. Only a
+      // configuration header can establish a condition for the whole table.
+      const redHeader = table?.querySelector('.choice_header1[style*="red"], .choice_header1.unavailable');
       let ruleContext = (redHeader?.innerText || redHeader?.textContent || '').replace(/[\r\n\t]+/g, ' ').trim();
 
       if (!isUnavailableTable && !ruleContext) {

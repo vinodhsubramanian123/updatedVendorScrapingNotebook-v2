@@ -115,11 +115,15 @@ function auditAllProducts() {
 
 if (require.main === module) {
   const res = auditAllProducts();
-  console.log(JSON.stringify(res, null, 2));
+  const chassisArg = process.argv.indexOf('--chassis');
+  const selected = chassisArg === -1 ? res : res.filter(product => product.product === process.argv[chassisArg + 1]);
+  console.log(JSON.stringify(selected, null, 2));
   const requireFresh = process.argv.includes('--require-fresh');
-  const strict = requireFresh || process.argv.includes('--strict');
-  if (res.some(product => (strict && product.coverageIssues.length) ||
-    (requireFresh && product.freshnessStatus !== 'FRESH'))) process.exitCode = 1;
+  const requirePublished = process.argv.includes('--require-published');
+  const strict = requireFresh || requirePublished || process.argv.includes('--strict');
+  if (!selected.length || selected.some(product => (strict && product.coverageIssues.length) ||
+    (requireFresh && product.freshnessStatus !== 'FRESH') ||
+    (requirePublished && (product.cloudSyncStatus !== 'VERIFIED' || product.publishedCaptureMatches !== true)))) process.exitCode = 1;
 }
 
 module.exports = { auditAllProducts };

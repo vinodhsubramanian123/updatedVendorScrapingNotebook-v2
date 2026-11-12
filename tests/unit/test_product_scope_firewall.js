@@ -20,6 +20,16 @@ test('product identities distinguish DL380, DL380a, DL145, and generations', () 
   assert.notEqual(dl380g12.productId, dl380a.productId);
 });
 
+test('exact nested product keys take precedence over suffix aliases and ambiguous SKU matches', () => {
+  const fixture = { notebooks: {
+    Fabric: { baseSku: 'P10000-B21' }, Fabric_Module: { baseSku: 'P20000-B21' },
+    Fabric_Alternate: { baseSku: 'P20000-B21' }
+  } };
+  assert.equal(resolveProductIdentity('Fabric_Module', fixture).productId, 'Fabric_Module');
+  assert.equal(resolveProductIdentity('Fabric Module', fixture).productId, 'Fabric_Module');
+  assert.equal(resolveProductIdentity('P20000-B21', fixture), null);
+});
+
 test('chassis-specific and family-generation rules cannot cross scope boundaries', () => {
   const dl380g12 = resolveProductIdentity('DL380_Gen12', config);
   const dl380a = resolveProductIdentity('DL380a_Gen12', config);

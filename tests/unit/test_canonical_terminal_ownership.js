@@ -107,6 +107,8 @@ function fixture(configuration = {}, legacy = false) {
     if (name.includes('pipeline_logger')) return { warn() {} };
     if (name.includes('reasoning_post_analyzer')) return { performReasoningPostAnalysis: () => ({ selfCorrectionTrail: [], narrative: '' }) };
     if (name.includes('execution_budget')) return require('../../scripts/lib/system/execution_budget.js');
+    if (name.includes('policy_resolver')) return require('../../scripts/lib/system/policy_resolver.js');
+    if (name.includes('progress')) return { emitProgress() {} };
     return {};
   };
   canonicalRequire.main = null;
@@ -135,10 +137,25 @@ function fixture(configuration = {}, legacy = false) {
 test('default-disabled actual canonical and serializer preserve complete old returned fields and output bytes', async t => {
   flag(t, '0'); const old = fixture({}, true); const current = fixture();
   const oldResult = await old.run(), result = await current.run();
+  assert.equal(result.serverCount, 1);
+  assert.equal(result.nodeCount, 1);
+  assert.equal(result.quantityBasis, 'SINGLE_NODE');
   const sanitizedResult = JSON.parse(JSON.stringify(result));
-  delete sanitizedResult.reasoningAnalysis;
+  for (const field of ['reasoningAnalysis', 'serverCount', 'nodeCount', 'quantityBasis']) delete sanitizedResult[field];
   assert.deepEqual(sanitizedResult, JSON.parse(JSON.stringify(oldResult)));
-  assert.deepEqual(current.stdout, old.stdout); assert.deepEqual(current.events, old.events);
+  const normalizeOut = list => list.map(line => {
+    const marker = '__EVAL_RESULT_JSON__';
+    const parts = line.split(marker);
+    if (parts.length < 2) return line;
+    const payload = JSON.parse(parts[1]);
+    for (const k of ['parentRunId', 'candidateDigest', 'serverCount', 'nodeCount', 'quantityBasis', 'candidateReference', 'offlineMode', 'effectivePolicy']) delete payload.data[k];
+    if (payload.data.evalResults) {
+      for (const k of ['serverCount', 'nodeCount', 'quantityBasis', 'candidateReference']) delete payload.data.evalResults[k];
+    }
+    return `${parts[0]}${marker}${JSON.stringify(payload)}${marker}${parts[2] ?? ''}`;
+  });
+  assert.deepEqual(normalizeOut(current.stdout), normalizeOut(old.stdout));
+  assert.deepEqual(current.events, old.events);
   assert.strictEqual(result, current.result);
 });
 

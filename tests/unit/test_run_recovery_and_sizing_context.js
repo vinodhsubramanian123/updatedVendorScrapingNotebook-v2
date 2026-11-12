@@ -12,25 +12,34 @@ describe('P1 · Run Recovery and Sizing Context Preservation', () => {
   const { executeRoutedQuery } = require('../../scripts/evaluators/route_query.js');
 
   it('1. Persists run record atomically and retrieves it by run ID', () => {
-    const testRunId = `test_run_${Date.now()}`;
-    const testRecord = {
-      runId: testRunId,
-      task: 'PRESALES_QUERY',
-      product: 'DL380_Gen12',
-      startTime: Date.now(),
-      status: 'COMPLETED',
-      exitCode: 0,
-      durationMs: 120,
-      logs: [{ text: 'Step 1 complete' }],
-      effectivePolicy: { offline: true }
-    };
-    persistRunRecord(testRecord);
+    const tmpRunsDir = fs.mkdtempSync(path.join(os.tmpdir(), 'runstate-persist-'));
+    const prevRunsDir = process.env.DASHBOARD_RUNS_DIR;
+    process.env.DASHBOARD_RUNS_DIR = tmpRunsDir;
+    try {
+      const testRunId = `test_run_${Date.now()}`;
+      const testRecord = {
+        runId: testRunId,
+        task: 'PRESALES_QUERY',
+        product: 'DL380_Gen12',
+        startTime: Date.now(),
+        status: 'COMPLETED',
+        exitCode: 0,
+        durationMs: 120,
+        logs: [{ text: 'Step 1 complete' }],
+        effectivePolicy: { offline: true }
+      };
+      persistRunRecord(testRecord);
 
-    const retrieved = getRunById(testRunId);
-    assert.ok(retrieved, 'Should retrieve persisted run record');
-    assert.strictEqual(retrieved.runId, testRunId);
-    assert.strictEqual(retrieved.status, 'COMPLETED');
-    assert.strictEqual(retrieved.effectivePolicy?.offline, true);
+      const retrieved = getRunById(testRunId);
+      assert.ok(retrieved, 'Should retrieve persisted run record');
+      assert.strictEqual(retrieved.runId, testRunId);
+      assert.strictEqual(retrieved.status, 'COMPLETED');
+      assert.strictEqual(retrieved.effectivePolicy?.offline, true);
+    } finally {
+      if (prevRunsDir === undefined) delete process.env.DASHBOARD_RUNS_DIR;
+      else process.env.DASHBOARD_RUNS_DIR = prevRunsDir;
+      fs.rmSync(tmpRunsDir, { recursive: true, force: true });
+    }
   });
 
   it('2. Sizing result includes structured candidateReference with product, nodeCount, and candidate digest', async () => {

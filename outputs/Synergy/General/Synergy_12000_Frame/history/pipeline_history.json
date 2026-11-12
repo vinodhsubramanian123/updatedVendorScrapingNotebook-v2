@@ -1,6 +1,105 @@
 [
   {
     "summary": {
+      "runId": "run_Synergy_12000_Frame_1794481360350",
+      "sessionName": "Synergy_12000_Frame",
+      "startTime": "2026-11-12T11:02:40.348Z",
+      "endTime": "2026-11-12T11:02:43.045Z",
+      "durationMs": 2697,
+      "durationSec": "2.70",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 229,
+      "warningCount": 1,
+      "errorCount": 0,
+      "totalUniqueSKUs": 228,
+      "validationStats": {
+        "totalEntries": 34,
+        "totalSKUs": 229,
+        "validSKUs": 229,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 1,
+        "zeroPriceSKUs": 59,
+        "priceErrors": 0,
+        "ruleCount": 217,
+        "categoryCount": 11
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-11-12T11:02:40.350Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\.catalog-staging\\staging_Synergy_12000_Frame_1794481343637\\raw_data\\oca_raw_data_full.json",
+          "jsonOutputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\.catalog-staging\\staging_Synergy_12000_Frame_1794481343637\\Synergy_12000_Frame_Catalog.json",
+          "chassisLabel": "Synergy 12000 Frame"
+        }
+      },
+      {
+        "timestamp": "2026-11-12T11:02:42.617Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 23,
+          "totalUniqueSKUs": 228,
+          "incrementalStats": {
+            "totalScrapedSkus": 228,
+            "unchangedSkusCount": 0,
+            "modifiedSkusCount": 0,
+            "addedSkusCount": 228,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-12T11:02:42.627Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 1,
+          "stats": {
+            "totalEntries": 34,
+            "totalSKUs": 229,
+            "validSKUs": 229,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 1,
+            "zeroPriceSKUs": 59,
+            "priceErrors": 0,
+            "ruleCount": 217,
+            "categoryCount": 11
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-12T11:02:43.044Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\.catalog-staging\\staging_Synergy_12000_Frame_1794481343637\\Synergy_12000_Frame_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [
+      {
+        "timestamp": "2026-11-12T11:02:42.626Z",
+        "message": "Base Chassis Variant SKU [P51174-B21] has $0 list price. Verify if CTO chassis price was scraped correctly."
+      }
+    ],
+    "errors": [],
+    "skuSummary": {
+      "total": 229,
+      "classified": 229,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
       "runId": "run_Synergy_12000_Frame_1794422281234",
       "sessionName": "Synergy_12000_Frame",
       "startTime": "2026-11-11T18:38:01.228Z",

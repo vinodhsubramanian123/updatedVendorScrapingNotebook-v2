@@ -348,4 +348,4 @@ Power	Configuration Rules	Model X - No Mixing of Power Supplies is allowed. All 
 Power	Configuration Rules	This cable kit support with only the following power supplies	Learned Feedback Rule	[MUTUAL_EXCLUSION] This cable kit support with only the following power supplies
 Power	Configuration Rules	This option cable kit contains 6 six power cords and support only with the following power supplies	Learned Feedback Rule	[MUTUAL_EXCLUSION] This option cable kit contains 6 six power cords and support only with the following power supplies
 Operating Environment	Red Hat Enterprise Linux Server		Minimum Requirement	Minimum 1 of any of the OS SKUs must be selected.
-Operating Environment	Red Hat Enterprise Linux Server		Recommendation	It is recommended to select an Operating System (Red Hat Enterprise Linux Server, Non Preinstalled Operating System)
+Operating Environment	Red Hat Enterprise Linux Server		Recommendation	It is recommended to select an Operating System (Non Preinstalled Operating System, Red Hat Enterprise Linux Server)

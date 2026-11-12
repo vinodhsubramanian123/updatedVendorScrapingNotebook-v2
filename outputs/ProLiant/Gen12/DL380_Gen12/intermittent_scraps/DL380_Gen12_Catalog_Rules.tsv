@@ -76,6 +76,8 @@ Chassis	Variants	min 1, max 1 — Active OCA CTO chassis	Configuration Rule	Sele
 Accessories & Infrastructure	Energy Star Configuration Presets	max 1	Configuration Rule	Selection constraint for Energy Star Configuration Presets: max 1
 Processor	Processor	max 2	Configuration Rule	Selection constraint for Processor: max 2
 Processor	Processor	max 2	Configuration Rule	P74576-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
+Processor	Processor	max 2	Configuration Rule	P74577-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
+Processor	Processor	max 2	Configuration Rule	P71117-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
 Processor	Processor	max 2	Configuration Rule	P71118-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
 Processor	Processor	max 2	Configuration Rule	P71119-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
 Processor	Processor	max 2	Configuration Rule	P71120-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
@@ -83,16 +85,14 @@ Processor	Processor	max 2	Configuration Rule	P71121-B21 conditional visibility: 
 Processor	Processor	max 2	Configuration Rule	P71122-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
 Processor	Processor	max 2	Configuration Rule	P71124-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
 Processor	Processor	max 2	Configuration Rule	P73829-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
-Processor	Processor	max 2	Configuration Rule	P73831-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
 Processor	Processor	max 2	Configuration Rule	P73832-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
+Processor	Processor	max 2	Configuration Rule	P73834-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
 Processor	Processor	max 2	Configuration Rule	P73835-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
 Processor	Processor	max 2	Configuration Rule	P73837-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
 Processor	Processor	max 2	Configuration Rule	P73838-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
-Processor	Processor	max 2	Configuration Rule	P74504-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
-Processor	Processor	max 2	Configuration Rule	P74507-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
+Processor	Processor	max 2	Configuration Rule	P74508-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
 Processor	Processor	max 2	Configuration Rule	P74572-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
 Processor	Processor	max 2	Configuration Rule	P74575-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
-Processor	Processor	max 2	Configuration Rule	P74577-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
 Processor	Processor	max 2	Configuration Rule	P74578-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
 Processor	Processor	max 2	Configuration Rule	P74579-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
 Processor	Processor	max 2	Configuration Rule	P81591-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL
@@ -111,10 +111,14 @@ Memory	Memory	max 32	Configuration Rule	Mixing of x4 and x8 memory is not allowe
 Memory	Memory	max 32	Configuration Rule	P69728-F21 conditional visibility: portal selector activation required (Mixing of x4 and x8 memory is not allowed); PORTAL_CONDITIONAL
 Memory	Memory	max 32	Configuration Rule	96GB Memory cannot be mixed with any other Memory.
 Memory	Memory	max 32	Configuration Rule	P69729-F21 conditional visibility: portal selector activation required (96GB Memory cannot be mixed with any other Memory.); PORTAL_CONDITIONAL
+Memory	Memory	max 32	Configuration Rule	P83867-F21 conditional visibility: portal selector activation required (96GB Memory cannot be mixed with any other Memory.); PORTAL_CONDITIONAL
 Memory	Memory	max 32	Configuration Rule	128GB Memory cannot be mixed with any other Memory.
 Memory	Memory	max 32	Configuration Rule	P69730-F21 conditional visibility: portal selector activation required (128GB Memory cannot be mixed with any other Memory.); PORTAL_CONDITIONAL
+Memory	Memory	max 32	Configuration Rule	P83869-F21 conditional visibility: portal selector activation required (128GB Memory cannot be mixed with any other Memory.); PORTAL_CONDITIONAL
 Memory	Memory	max 32	Configuration Rule	Mixing of 3DS and non 3DS memory is not allowed.
 Memory	Memory	max 32	Configuration Rule	P73447-F21 conditional visibility: portal selector activation required (Mixing of 3DS and non 3DS memory is not allowed.); PORTAL_CONDITIONAL
+Memory	Memory	max 32	Configuration Rule	Mixing of 6400B and 8000B Memory is NOT allowed.
+Memory	Memory	max 32	Configuration Rule	P83865-F21 conditional visibility: portal selector activation required (Mixing of 6400B and 8000B Memory is NOT allowed.); PORTAL_CONDITIONAL
 Memory	Memory Blank Kit	max 1	Configuration Rule	Selection constraint for Memory Blank Kit: max 1
 Drive Enclosures / Drives	Drive Cage	max 9	Configuration Rule	Selection constraint for Drive Cage: max 9
 Drive Enclosures / Drives	Drive Cage	max 9	Configuration Rule	Supported with EDSFF CTO Server only.
@@ -126,17 +130,17 @@ Drive Enclosures / Drives	Drive Cage	max 9	Configuration Rule	P75411-B21 conditi
 Drive Enclosures / Drives	Drive Cage	max 9	Configuration Rule	P76875-B21 conditional visibility: portal selector activation required (Supported with 8LFF and 12LFF CTO Server only.); PORTAL_CONDITIONAL
 Drive Enclosures / Drives	SFF Drive Cages & Enablement	max 1	Configuration Rule	Supported with 8LFF CTO Server only.
 Drive Enclosures / Drives	SFF Drive Cages & Enablement	max 1	Configuration Rule	P74744-B21 conditional visibility: portal selector activation required (Supported with 8LFF CTO Server only.); PORTAL_CONDITIONAL
-Networking	SFF Drive Cages & Enablement	no max	Configuration Rule	Nvme option not available with 8sff smart chassis choice.
-Networking	SFF Drive Cages & Enablement	no max	Configuration Rule	P77955-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL
-Networking	SFF Drive Cages & Enablement	no max	Configuration Rule	P77958-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL
-Networking	SFF Drive Cages & Enablement	no max	Configuration Rule	P77931-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL
-Networking	SFF Drive Cages & Enablement	no max	Configuration Rule	P78064-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL
-Networking	SFF Drive Cages & Enablement	no max	Configuration Rule	P77934-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL
-Networking	SFF Drive Cages & Enablement	no max	Configuration Rule	P77961-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL
-Networking	SFF Drive Cages & Enablement	no max	Configuration Rule	P78070-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL
-Networking	SFF Drive Cages & Enablement	no max	Configuration Rule	P78047-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL
-Networking	SFF Drive Cages & Enablement	no max	Configuration Rule	P78058-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL
-Networking	SFF Drive Cages & Enablement	no max	Configuration Rule	P78061-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL
+Networking	Optical Transceivers & DAC Cables	no max	Configuration Rule	Nvme option not available with 8sff smart chassis choice.
+Networking	Optical Transceivers & DAC Cables	no max	Configuration Rule	P77955-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL
+Networking	Optical Transceivers & DAC Cables	no max	Configuration Rule	P77958-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL
+Networking	Optical Transceivers & DAC Cables	no max	Configuration Rule	P77931-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL
+Networking	Optical Transceivers & DAC Cables	no max	Configuration Rule	P78064-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL
+Networking	Optical Transceivers & DAC Cables	no max	Configuration Rule	P77934-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL
+Networking	Optical Transceivers & DAC Cables	no max	Configuration Rule	P77961-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL
+Networking	Optical Transceivers & DAC Cables	no max	Configuration Rule	P78070-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL
+Networking	Optical Transceivers & DAC Cables	no max	Configuration Rule	P78047-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL
+Networking	Optical Transceivers & DAC Cables	no max	Configuration Rule	P78058-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL
+Networking	Optical Transceivers & DAC Cables	no max	Configuration Rule	P78061-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL
 Drive Enclosures / Drives	SFF Drive Cages & Enablement	no max	Configuration Rule	Nvme option not available with 8sff smart chassis choice.
 Drive Enclosures / Drives	SFF Drive Cages & Enablement	no max	Configuration Rule	P77937-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL
 Drive Enclosures / Drives	SFF Drive Cages & Enablement	no max	Configuration Rule	P77940-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL
@@ -156,19 +160,20 @@ Storage Controllers	Internal Storage Controller Cables	max 3	Configuration Rule	
 Cables & Enablement Kits	Storage Controller Cable Kits	max 1	Configuration Rule	Supported with 8LFF and 12LFF CTO Server only.
 Cables & Enablement Kits	Storage Controller Cable Kits	max 1	Configuration Rule	P76473-B21 conditional visibility: portal selector activation required (Supported with 8LFF and 12LFF CTO Server only.); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Storage Controller Cable Kits	max 1	Configuration Rule	P77474-B21 conditional visibility: portal selector activation required (Supported with 8LFF and 12LFF CTO Server only.); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Storage Controller Cable Kits	max 1	Configuration Rule	P77475-B21 conditional visibility: portal selector activation required (Supported with 8LFF and 12LFF CTO Server only.); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Storage Controller Cable Kits	max 1	Configuration Rule	P77484-B21 conditional visibility: portal selector activation required (Supported with 8LFF and 12LFF CTO Server only.); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Storage Controller Cable Kits	max 1	Configuration Rule	P77485-B21 conditional visibility: portal selector activation required (Supported with 8LFF and 12LFF CTO Server only.); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Storage Controller Cable Kits	max 1	Configuration Rule	P76474-B21 conditional visibility: portal selector activation required (Supported with 8LFF and 12LFF CTO Server only.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Storage Controller Cable Kits	max 1	Configuration Rule	P77475-B21 conditional visibility: portal selector activation required (Supported with 8LFF and 12LFF CTO Server only.); PORTAL_CONDITIONAL
 Cables & Enablement Kits	SFF Drive Cages & Enablement	max 1	Configuration Rule	Supported with 8LFF CTO Server only and requires 2SFF SBS Cage.
-Cables & Enablement Kits	SFF Drive Cages & Enablement	max 1	Configuration Rule	P76476-B21 conditional visibility: portal selector activation required (Supported with 8LFF CTO Server only and requires 2SFF SBS Cage.); PORTAL_CONDITIONAL
 Cables & Enablement Kits	SFF Drive Cages & Enablement	max 1	Configuration Rule	P77481-B21 conditional visibility: portal selector activation required (Supported with 8LFF CTO Server only and requires 2SFF SBS Cage.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	SFF Drive Cages & Enablement	max 1	Configuration Rule	P76476-B21 conditional visibility: portal selector activation required (Supported with 8LFF CTO Server only and requires 2SFF SBS Cage.); PORTAL_CONDITIONAL
 Cables & Enablement Kits	SFF Drive Cages & Enablement	max 1	Configuration Rule	P77480-B21 conditional visibility: portal selector activation required (Supported with 8LFF CTO Server only and requires 2SFF SBS Cage.); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Energy Star	max 1	Configuration Rule	Supported with 12EDSFF CTO Server only.
 Cables & Enablement Kits	Energy Star	max 1	Configuration Rule	P83798-B21 conditional visibility: portal selector activation required (Supported with 12EDSFF CTO Server only.); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Energy Star	max 1	Configuration Rule	P83799-B21 conditional visibility: portal selector activation required (Supported with 12EDSFF CTO Server only.); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Energy Star	max 1	Configuration Rule	P87968-B21 conditional visibility: portal selector activation required (Supported with 12EDSFF CTO Server only.); PORTAL_CONDITIONAL
 Storage Controllers	Storage Controllers Options	max 1	Configuration Rule	Selection constraint for RAID Settings: max 1
+Support Services	Support Services Options	max 1	Configuration Rule	Selection constraint for RAID Settings: max 1
 Drive Enclosures / Drives	Optical Drive	max 1	Configuration Rule	Selection constraint for Optical Drive: max 1
 Drive Enclosures / Drives	Optical Drive	max 1	Configuration Rule	BTO products are not allowed in CTO Base Model.
 Drive Enclosures / Drives	Optical Drive	max 1	Configuration Rule	701498-B21 conditional visibility: portal selector activation required (BTO products are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
@@ -190,8 +195,8 @@ Accessories & Infrastructure	Logical Size Settings	max 1	Configuration Rule	Sele
 Accessories & Infrastructure	Logical Size Settings	max 1	Configuration Rule	436007-B21 conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Software & Licenses	Server Management & Operating System Licenses	max 1	Configuration Rule	Selection constraint for Server Management & Operating System Licenses: max 1
 Accessories & Infrastructure	vSAN Tracking SKUs	max 1	Configuration Rule	Selection constraint for vSAN Tracking SKUs: max 1
-Software & Licenses	vSAN Tracking SKUs	max 1	Configuration Rule	Selection constraint for vSAN Tracking SKUs: max 1
-Software & Licenses	iLO Common Password	max 1	Configuration Rule	Selection constraint for iLO Common Password: max 1
+Software & Licenses	Software & Licenses Options	max 1	Configuration Rule	Selection constraint for vSAN Tracking SKUs: max 1
+Software & Licenses	Server Management & Operating System Licenses	max 1	Configuration Rule	Selection constraint for iLO Common Password: max 1
 Networking	Ethernet PCIe	max 5	Configuration Rule	Selection constraint for Ethernet PCIe: max 5
 Graphics & GPU	GPU Accelerators	max 1	Configuration Rule	Private Product is not valid for current customer account
 Graphics & GPU	GPU Accelerators	max 1	Configuration Rule	P74383-B21 conditional visibility: portal selector activation required (Private Product is not valid for current customer account); PORTAL_CONDITIONAL
@@ -218,10 +223,10 @@ Networking	OCP3 Networking Adapters	max 1	Configuration Rule	P89140-B21 conditio
 Cables & Enablement Kits	Energy Star	max 1	Configuration Rule	BTO products are not allowed in CTO Base Model.
 Cables & Enablement Kits	Energy Star	max 1	Configuration Rule	AJ833A conditional visibility: portal selector activation required (BTO products are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Energy Star	max 1	Configuration Rule	AJ836A conditional visibility: portal selector activation required (BTO products are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Energy Star	max 1	Configuration Rule	AJ837A conditional visibility: portal selector activation required (BTO products are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Energy Star	max 1	Configuration Rule	AJ838A conditional visibility: portal selector activation required (BTO products are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Energy Star	max 1	Configuration Rule	AJ839A conditional visibility: portal selector activation required (BTO products are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Energy Star	max 1	Configuration Rule	AJ834A conditional visibility: portal selector activation required (BTO products are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Energy Star	max 1	Configuration Rule	AJ837A conditional visibility: portal selector activation required (BTO products are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
 Cables & Enablement Kits	OCP3 Networking Adapters	max 2	Configuration Rule	Selection constraint for OCP3 Networking Adapters: max 2
 Networking	Networking Accessories	max 1	Configuration Rule	Selection constraint for Networking Accessories: max 1
 Cables & Enablement Kits	Energy Star	max 1	Configuration Rule	Private Product is not valid for current customer account
@@ -254,16 +259,10 @@ Cooling / Thermal	Power Cooling Options	max 3	Configuration Rule	Selection const
 Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	HPE 1600W -48VDC Pwr Cbl Lug Kit(P36877-B21) Supported only with HPE 1600W FS -48VDC Ht Plg PS Kit (P17023-B21).
 Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	P36877-B21 conditional visibility: portal selector activation required (HPE 1600W -48VDC Pwr Cbl Lug Kit(P36877-B21) Supported only with HPE 1600W FS -48VDC Ht Plg PS Kit (P17023-B21).); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Power Cords	max 2	Configuration Rule	Selection constraint for Power Cords: max 2
-Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	BTO products are not allowed in CTO Base Model.
-Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	A0N33A conditional visibility: portal selector activation required (BTO products are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	A0K02A conditional visibility: portal selector activation required (BTO products are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	Max quantity of product limited by space available.
 Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	AF556A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	AF557A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	AF568A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	AF573A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	P78130-B21 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
-Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	P78156-B21 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	AF557A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	AF558A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	AF559A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	AF560A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
@@ -276,15 +275,21 @@ Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	AF
 Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	AF569A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	AF570A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	AF572A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	AF573A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	AF591A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	P78130-B21 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	P78131-B21 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	P78144-B21 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	P78147-B21 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	P78156-B21 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	P78940-B21 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	P78941-B21 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
 Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	R1C65A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL
 Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	If AC Power Supply is selected then only AC Power Cords should be in the drop-down.
 Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 1	Configuration Rule	P22173-B21 conditional visibility: portal selector activation required (If AC Power Supply is selected then only AC Power Cords should be in the drop-down.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	BTO products are not allowed in CTO Base Model.
+Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	A0K02A conditional visibility: portal selector activation required (BTO products are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Power Cords & Jumper Cables	max 1	Configuration Rule	A0N33A conditional visibility: portal selector activation required (BTO products are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
 Software & Licenses	Proliant Software Media Kits	no max	Configuration Rule	Not Supported ProStack Server Software
 Software & Licenses	Proliant Software Media Kits	no max	Configuration Rule	S7J52A conditional visibility: portal selector activation required (Not Supported ProStack Server Software); PORTAL_CONDITIONAL
 Graphics & GPU	GPU Accelerators	no max	Configuration Rule	Selection constraint for GPU Accelerators: no max
@@ -322,7 +327,7 @@ Software & Licenses	HPC Software Products	no max	Configuration Rule	S2M61A condi
 Software & Licenses	HPC Software Products	no max	Configuration Rule	S2M62A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Software & Licenses	HPC Software Products	no max	Configuration Rule	S2M63A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	Selection constraint for High Availability Computing - Cluster Software: no max
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	R8V48A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
+Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	R8V48A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Software & Licenses	Partner Software - Operating System	no max	Configuration Rule	Selection constraint for Partner Software - Operating System: no max
 Software & Licenses	Compute Ops Management SKUs	required	Configuration Rule	Selection constraint for Compute Ops Management SKUs: required
 Software & Licenses	OEM Software	no max	Configuration Rule	Selection constraint for OEM Software: no max
@@ -547,26 +552,6 @@ Software & Licenses	HPC Software Products	no max	Configuration Rule	S2J32AAE con
 Software & Licenses	HPC Software Products	no max	Configuration Rule	S2J33AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Software & Licenses	HPC Software Products	no max	Configuration Rule	S2J34AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Software & Licenses	HPC Software Products	no max	Configuration Rule	S2J35AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	HPC Software Products	no max	Configuration Rule	S2L38AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	HPC Software Products	no max	Configuration Rule	S2L39AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	HPC Software Products	no max	Configuration Rule	S2L40AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	HPC Software Products	no max	Configuration Rule	S2L41AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	HPC Software Products	no max	Configuration Rule	S2L42AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	HPC Software Products	no max	Configuration Rule	S2L43AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	HPC Software Products	no max	Configuration Rule	S2L44AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	HPC Software Products	no max	Configuration Rule	S2L45AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	HPC Software Products	no max	Configuration Rule	S2L46AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	HPC Software Products	no max	Configuration Rule	S2L47AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	HPC Software Products	no max	Configuration Rule	S2L48AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	HPC Software Products	no max	Configuration Rule	S2L49AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	HPC Software Products	no max	Configuration Rule	S2L50AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	HPC Software Products	no max	Configuration Rule	S2L51AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	HPC Software Products	no max	Configuration Rule	S2L52AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	HPC Software Products	no max	Configuration Rule	S2L53AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	HPC Software Products	no max	Configuration Rule	S2L54AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	HPC Software Products	no max	Configuration Rule	S2L55AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	HPC Software Products	no max	Configuration Rule	S2L56AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	HPC Software Products	no max	Configuration Rule	S2L57AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Software & Licenses	HPC Software Products	no max	Configuration Rule	S4H91AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Software & Licenses	HPC Software Products	no max	Configuration Rule	S4H93AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Software & Licenses	HPC Software Products	no max	Configuration Rule	S4H95AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
@@ -594,21 +579,21 @@ Software & Licenses	HPC Software Products	no max	Configuration Rule	S4J29AAE con
 Software & Licenses	HPC Software Products	no max	Configuration Rule	S4J31AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Software & Licenses	HPC Software Products	no max	Configuration Rule	S4J33AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Software & Licenses	HPC Software Products	no max	Configuration Rule	S4J35AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	R8V46AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W13AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W16AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W18AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W19AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W20AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W21AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W22AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W23AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W24AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W25AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W26AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W27AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W28AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
-Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W29AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL
+Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	R8V46AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W13AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W16AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W18AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W19AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W20AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W21AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W22AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W23AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W24AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W25AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W26AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W27AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W28AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
+Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	S0W29AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL
 Software & Licenses	Partner Software - Interconnect Management Array	no max	Configuration Rule	Selection constraint for Partner Software - Interconnect Management Array: no max
 Graphics & GPU	NVIDIA GPU SW	no max	Configuration Rule	Selection constraint for NVIDIA GPU SW: no max
 Software & Licenses	Compute Ops Management Enablement SKUs	max 1	Configuration Rule	Selection constraint for Compute Ops Management Enablement SKUs: max 1
@@ -718,12 +703,12 @@ Support Services	Energy Star	max 1	Configuration Rule	S4G00AAE conditional visib
 Support Services	Energy Star	max 1	Configuration Rule	S4R76AAE conditional visibility: portal selector activation required (Private Product is not valid for current customer account); PORTAL_CONDITIONAL
 Support Services	HPE Virtualization	no max	Configuration Rule	Selection constraint for HPE Virtualization: no max
 Support Services	Data Management Framework (SGI DMF)	no max	Configuration Rule	Selection constraint for Data Management Framework (SGI DMF): no max
-Software & Licenses	VMware vCloud Products	no max	Configuration Rule	Selection constraint for VMware vCloud Products: no max
 Processor	Configuration Rules	Mixing of Heat sink is not allowed.	Learned Feedback Rule	[MUTUAL_EXCLUSION] Mixing of Heat sink is not allowed.
 Memory	Configuration Rules	Mixing of x4 and x8 memory is not allowed	Learned Feedback Rule	[MEMORY_MIXING] Mixing of x4 and x8 memory is not allowed
 Memory	Configuration Rules	96GB Memory cannot be mixed with any other Memory.	Learned Feedback Rule	[MEMORY_MIXING] 96GB Memory cannot be mixed with any other Memory.
 Memory	Configuration Rules	128GB Memory cannot be mixed with any other Memory.	Learned Feedback Rule	[MEMORY_MIXING] 128GB Memory cannot be mixed with any other Memory.
 Memory	Configuration Rules	Mixing of 3DS and non 3DS memory is not allowed.	Learned Feedback Rule	[MEMORY_MIXING] Mixing of 3DS and non 3DS memory is not allowed.
+Memory	Configuration Rules	Mixing of 6400B and 8000B Memory is NOT allowed.	Learned Feedback Rule	[MUTUAL_EXCLUSION] Mixing of 6400B and 8000B Memory is NOT allowed.
 Smart Chassis	Configuration Rules	Supported with EDSFF CTO Server only.	Learned Feedback Rule	[CHASSIS_GATE] Supported with EDSFF CTO Server only.
 Smart Chassis	Configuration Rules	Supported with 8LFF and 12LFF CTO Server only.	Learned Feedback Rule	[CHASSIS_GATE] Supported with 8LFF and 12LFF CTO Server only.
 Smart Chassis	Configuration Rules	Supported with 8LFF CTO Server only.	Learned Feedback Rule	[CHASSIS_GATE] Supported with 8LFF CTO Server only.
@@ -743,8 +728,8 @@ Graphics Options	Configuration Rules	Private Product is not valid for current cu
 Power Supplies	Configuration Rules	Mixing of Power supplies are not allowed.	Learned Feedback Rule	[MUTUAL_EXCLUSION] Mixing of Power supplies are not allowed.
 Power Supplies	Configuration Rules	If AC Power Supply is selected then only AC Power Cords should be in the drop-down.	Learned Feedback Rule	[MUTUAL_EXCLUSION] If AC Power Supply is selected then only AC Power Cords should be in the drop-down.
 Power Supplies	Configuration Rules	HPE 1600W -48VDC Pwr Cbl Lug Kit(P36877-B21) Supported only with HPE 1600W FS -48VDC Ht Plg PS Kit (P17023-B21).	Learned Feedback Rule	[PAIRED_KIT_REQUIRED] HPE 1600W -48VDC Pwr Cbl Lug Kit(P36877-B21) Supported only with HPE 1600W FS -48VDC Ht Plg PS Kit (P17023-B21).
-Power Supplies	Configuration Rules	BTO products are not allowed in CTO Base Model.	Learned Feedback Rule	[BTO_DISALLOWED] BTO products are not allowed in CTO Base Model.
 Power Supplies	Configuration Rules	Max quantity of product limited by space available.	Learned Feedback Rule	[MUTUAL_EXCLUSION] Max quantity of product limited by space available.
+Power Supplies	Configuration Rules	BTO products are not allowed in CTO Base Model.	Learned Feedback Rule	[BTO_DISALLOWED] BTO products are not allowed in CTO Base Model.
 Private Cloud Business Edition	Configuration Rules	Not Supported ProStack Server Software	Learned Feedback Rule	[MUTUAL_EXCLUSION] Not Supported ProStack Server Software
 HPE Compute Ops Management	Configuration Rules	Max 1 per server (This is applicable for both 3year and 5 year license in TOTAL) Total number of licenses within an order cannot exceed the number of servers	Learned Feedback Rule	[MUTUAL_EXCLUSION] Max 1 per server (This is applicable for both 3year and 5 year license in TOTAL) Total number of licenses within an order cannot exceed the number of servers
 HPE Compute Ops Management	Configuration Rules	For Gen11/Gen12 servers ONLY Min 1/Max 1 per server. Total number of licenses within an order cannot exceed the number of servers	Learned Feedback Rule	[MUTUAL_EXCLUSION] For Gen11/Gen12 servers ONLY Min 1/Max 1 per server. Total number of licenses within an order cannot exceed the number of servers

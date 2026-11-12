@@ -2,8 +2,8 @@
 
 **Document Classification:** Canonical Ground-Truth Architecture & Validation Charter<br>
 **Maintained By:** HPE ProLiant AI Studio Autonomous Knowledge Engine (Antigravity AI)<br>
-**Last Synchronized:** 2026-11-12T07:22:08.828Z<br>
-**Total Deduplicated Learned Rules:** 142<br>
+**Last Synchronized:** 2026-11-12T14:35:53.012Z<br>
+**Total Deduplicated Learned Rules:** 145<br>
 **Universal Invariant Compliance:** INV-1 through INV-38 Certified<br>
 **Google Drive Destination:** `shared_folder_id: 1YR0lBh-gg00amKHRxuOqp5Aea3iL5O7-`
 
@@ -160,13 +160,15 @@ The Catalog Vendor Solution provides modular, AI-assisted catalog ingestion, nor
 
 ## 5. Deduplicated Learned Rule Ledger & Verification Provenance
 
-Total verified rules indexed in this build: **142**.
+Total verified rules indexed in this build: **145**.
 
 | Scope | Target Chassis | Category | Affected SKU | Dependency SKU | Rule Summary / Validation Directive | Verifications |
 | :--- | :--- | :--- | :--- | :--- | :--- | :---: |
 | 🌐 UNIVERSAL | `GLOBAL` | `ERROR_DIAGNOSTIC_ATTRIBUTION` | `SOLUTION_TREE_ITEM_0100_01` | `—` | When Rule 81039677 occurs on multi-icon tenders, trace errors to individual child icon containers instead of modifying t | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `ICON_SUPPORT_ISOLATION` | `HU4B2A3` | `—` | Configure support services independently per icon container. Never broadcast support attributes across diverse product f | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `SESSION_RECOVERY_PROTOCOL` | `HU4B2A3` | `—` | Historical service-selector workaround only: in an authenticated working OCA configuration with contradictory service se | 1x |
+| 🌐 UNIVERSAL | `GLOBAL` | `WORKFLOW_SMART_CHOICE_CTO_VALIDATION_STEPS` | `null` | `—` | HPE Smart Choice (xxxxxx-xx5) and regional BTO SKUs are pre-configured distributor builds, NOT CTO (-B21) configurables: | 1x |
+| 🌐 UNIVERSAL | `GLOBAL` | `WORKFLOW_CLIC_GLOBAL_AND_SEVERITY_TRIAGE` | `null` | `—` | For any full HPE solution in OCA: (1) Run CLIC Check at the Global Solution Level (top breadcrumb #eo_nav_li_0) rather t | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `SUPPORT_POLICY` | `undefined` | `—` | Preserve explicit customer support term and tier in the closest rank; use 3-year Tech Care Basic only when unspecified o | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `ICON_SUPPORT_ISOLATION` | `undefined` | `—` | Select Services from Components for the owning icon, edit its dropdowns, and leave both apply-to-all icons and apply-to- | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `SESSION_RECOVERY_PROTOCOL` | `undefined` | `—` | When OCA says it encountered a problem, restart from Partner Portal refresh/login and open One Config Advanced through Q | 1x |
@@ -205,6 +207,7 @@ Total verified rules indexed in this build: **142**.
 | 📦 CHASSIS | `DL380_Gen11` | `DEPENDENCY_CHAIN` | `P02377-B21` | `P48918-B21` | P02377-B21` or `P01366-B21` **mandates the inclusion of `P48918-B21 | 1x |
 | 📦 CHASSIS | `DL380_Gen11` | `DEPENDENCY_CHAIN` | `P58335-B21` | `P48918-B21` | P58335-B21`)** with the **Smart Storage Hybrid Capacitor (`P02377-B21`)** strictly requires `P48918-B21 | 1x |
 | 📦 CHASSIS | `DL380_Gen11` | `STORAGE_CACHE_CABLE_DEPENDENCY` | `P58335-B21` | `P48918-B21` | Selecting storage controller P58335-B21 write-cache backup requires enablement cable P48918-B21. | 1x |
+| 📦 CHASSIS | `DL380_Gen11` | `WORKFLOW_SMART_CHOICE_OBSERVATION` | `P71674-425` | `—` | P71674-425 (EMEA DL380 Gen11 Smart Choice 4510 12c 1P 64GB-R 8SFF MR408i-o 2x960GB SSD 2x1000W PS) is absent from DL380_ | 1x |
 | 📦 CHASSIS | `DL385_Gen11` | `MANDATORY_SOFTWARE_ATTACH` | `P53921-B21` | `R7A11AAE` | All compatible NPI CTO base models for Gen11 DL and ML platforms (such as DL385 Gen11 P53921-B21) strictly mandate at le | 1x |
 | 📦 CHASSIS | `DL385_Gen11` | `THERMAL_COOLING_PACKAGING_RULE` | `P58464-B21` | `P58465-B21` | On AMD DL3X5 Gen11 platforms, Standard Fan Kit (P58464-B21, $157) is ordered as individual fan modules (4 for 1P = $628, | 1x |
 | 📦 CHASSIS | `DL385_Gen11` | `MANDATORY_THERMAL_AIR_BAFFLE` | `P53921-B21` | `P57886-B21` | P57886-B21 (HPE ProLiant DL385 Gen11 2U Standard/Performance FIO Air Baffle Kit, $41.00 USD, Qty 1) is physically and lo | 1x |
@@ -260,7 +263,7 @@ Total verified rules indexed in this build: **142**.
 | 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_RUNTIME_DISCOVERY_ADVISORY` | `undefined` | `—` | Catalog absence is not proof of unsupported hardware. Investigate missing and conditional BOQ SKUs on the exact base and | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_CAPTURE_COVERAGE_ADVISORY` | `undefined` | `—` | Chassis discovery does not establish traversal. Current automated conditional capture covers hidden DOM and ambient prob | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_VENDOR_OBSERVATION_ADVISORY` | `S3U30C` | `—` | Live OCA evidence on commercial DL380 Gen12 base P73282-B21: S3U30C NVIDIA H200 NVL 141GB was already present in the DOM | 1x |
-| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_CHASSIS_CLASSIFICATION_ADVISORY` | `undefined` | `—` | Specialty hardware categories (SAN switches like SN3600B, fabric interconnect modules like SY100Gb, and tape libraries l | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_CHASSIS_CLASSIFICATION_ADVISORY` | `undefined` | `—` | Use the registered product and its component role for catalog coverage. Server and compute-module catalogs require proce | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_SCOPE_ISOLATION_ADVISORY` | `P36877-B21` | `—` | Passive accessories such as DC lug terminal kits (P36877-B21), power cords, and rail kits are architecture-invariant and | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_DOM_EXTRACTION_ADVISORY` | `undefined` | `—` | WebLogic OCA table expansion in cdp.js must explicitly toggle show_cost alongside show_price and trigger change events o | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `PROCESSOR_ARCHITECTURAL_MATCH_STRATEGY` | `P74571-B21` | `P74577-B21` | When modernizing Cascade Lake Xeon Gold 6258R (28c, 2.7GHz, 38.5MB L3, 205W), Xeon 6530P (32c, 2.3GHz, 144MB L3, 225W, $ | 1x |

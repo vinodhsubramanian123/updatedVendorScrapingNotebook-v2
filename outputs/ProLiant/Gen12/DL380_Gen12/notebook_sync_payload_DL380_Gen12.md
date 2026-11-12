@@ -4,11 +4,11 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen12/DL380_Gen12`
 
-**Sync Timestamp**: 2026-11-09T11:25:59.910Z
+**Sync Timestamp**: 2026-11-12T14:32:40.473Z
 
-**Total Verified SKUs**: `1128` (`605` Hardware + `523` Services)
+**Total Verified SKUs**: `1172` (`619` Hardware + `553` Services)
 
-**Total Synced KnowledgeDeltas**: `69`
+**Total Synced KnowledgeDeltas**: `71`
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -18,21 +18,23 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Reinstated | Status |
 |----------|------------|---------------------|---------------|-------------------|------------|--------|
-| **Hardware Components** | 605 | 6 | 0 | 376 | 1 | **CERTIFIED** |
-| **Support Services & SLAs** | 523 | 5 | 0 | 3 | 0 | **CERTIFIED** |
-| **Total Portfolio** | **1128** | **11** | **0** | **379** | **1** | **ACTIVE** |
+| **Hardware Components** | 619 | 15 | 0 | 1144 | 1 | **CERTIFIED** |
+| **Support Services & SLAs** | 553 | 31 | 0 | 490 | 0 | **CERTIFIED** |
+| **Total Portfolio** | **1172** | **46** | **0** | **1634** | **1** | **ACTIVE** |
 
 ## 🌐 1. Universal Vendor Rules (HPE)
 
 1. **[DELTA_UNIVERSAL_MULTI_ICON_ERROR_ATTRIBUTION]**: When Rule 81039677 occurs on multi-icon tenders, trace errors to individual child icon containers instead of modifying the root BOM item. *(Type: ERROR_DIAGNOSTIC_ATTRIBUTION)*
 2. **[DELTA_UNIVERSAL_SUPPORT_TIER_ISOLATION]**: Configure support services independently per icon container. Never broadcast support attributes across diverse product families. *(Type: ICON_SUPPORT_ISOLATION)*
 3. **[DELTA_UNIVERSAL_OCA_SUPPORT_CACHE_FLUSH]**: Historical service-selector workaround only: in an authenticated working OCA configuration with contradictory service selections, reselect services for the owning node and revalidate. It is not an expired-session recovery. If OCA displays encountered-a-problem, refresh/login from Partner Portal and launch One Config Advanced through Quick Links; never reload the failed OCA tab or remove services as a session fix. *(Type: SESSION_RECOVERY_PROTOCOL)*
-4. **[OWNER_STANDARD_3Y_BASIC]**: Preserve explicit customer support term and tier in the closest rank; use 3-year Tech Care Basic only when unspecified or explicitly authorized. For this SN3600B BOQ the owner authorized 5-year Essential to 3-year Basic. Compare qualified fixed and flexible service options; disclose retention and preserve parent/suffix pairs. This commercial preference is not vendor qualification. *(Type: SUPPORT_POLICY)*
-5. **[OWNER_ICON_SERVICE_ISOLATION]**: Select Services from Components for the owning icon, edit its dropdowns, and leave both apply-to-all icons and apply-to-all nodes off. Different icons retain their own SLA. *(Type: ICON_SUPPORT_ISOLATION)*
-6. **[OWNER_OCA_EXPIRED_SESSION]**: When OCA says it encountered a problem, restart from Partner Portal refresh/login and open One Config Advanced through Quick Links. Do not reload the failed OCA session. Keep a Partner Portal tab before closing stale OCA so CDP does not disappear. This supersedes cache-flush advice for encountered-a-problem errors. *(Type: SESSION_RECOVERY_PROTOCOL)*
-7. **[OWNER_CLOSEST_REQUIREMENT_RANK]**: Closest rank preserves customer requirements and makes only necessary compatibility/buildability changes. Budget alternatives disclose every deviation; do not silently reduce term, tier, capacity or resilience. Keep explicit owner overrides auditable against the original customer BOQ. *(Type: CUSTOMER_INTENT_POLICY)*
-8. **[OWNER_COMPONENT_DOMAIN_ROUTING]**: Route by component role and exact product, never vendor or family alone. Synergy compute, fabric and frame use separate scopes. Resolve ownership before quantities. Validate each component and enclosure/bay, adapter/fabric, optical endpoints, shared power and per-icon SLA relationships; missing profiles remain NOT_EVALUATED and cannot inherit server defaults. Scraping completeness is not buildability certification. *(Type: COMPONENT_DOMAIN_ROUTING)*
-9. **[GUARDRAIL_TRANSPORT_RECOVERY]**: Gemini guardrail API sends must retain systemInstruction and function declarations when overriding SDK send config. Enforce scoped local simulation and NotebookLM checks. Retry bounded transient provider errors without exhausting keys, distinguish per-minute from explicit daily quotas, and use configured approved model fallback with preserved tool results and no replay side effects. Empty or unfinished responses are unavailable, not verification. Dashboard status is independent of NotebookLM and vendor acceptance. *(Type: GUARDRAIL_RECOVERY_POLICY)*
+4. **[LEARN_UNIVERSAL_SMART_CHOICE_BTO_VS_OCA_VALIDATION_20261112]**: HPE Smart Choice (xxxxxx-xx5) and regional BTO SKUs are pre-configured distributor builds, NOT CTO (-B21) configurables: (1) Never infer unstated internal factory SKUs from the short description alone (QuickSpecs notes BTO models ship with a pre-selected primary NIC without naming its exact SKU in the title, and HPE forbids factory integration of extra options into pre-configured models). (2) Never treat an OCA Customize BOM export of a -xx5 SKU as proof of factory-included parts: OCA opens Smart Choice SKUs as blank shells (0 CPU/RAM/PSU errors), auto-selects separately priced CTO menu defaults on top of the base SKU, and fails CLIC with Rule 81016667 (UNBUILDABLE: configure/quote/order via Distributor webstore or iQuote Universal, Warning 81400509). (3) Validation & reasoning steps: verify suffix (-xx5 BTO/Smart Choice vs -B21 CTO in chassis_map.json / *_Catalog.json); if CTO is desired, map to -B21 CTO chassis and run the canonical CTO evaluation/CLIC path; if exact Smart Choice factory contents are needed, consult HPE Smart Choice Supplemental QuickSpecs (e.g. a50009219enw), iQuote Universal, or an authorized distributor. *(Type: WORKFLOW_SMART_CHOICE_CTO_VALIDATION_STEPS)*
+5. **[LEARN_UNIVERSAL_CLIC_GLOBAL_CHECK_AND_SEVERITY_TRIAGE_20261112]**: For any full HPE solution in OCA: (1) Run CLIC Check at the Global Solution Level (top breadcrumb #eo_nav_li_0) rather than only at a child frame/node (Partial CLIC Check), and click Download Advice (#_clic_download_excel) to inspect every row of the Advice_Text and BOM sheets alongside Solution Summary Messages/Issues. (2) Triage CLIC severities properly: Unbuildables and Process control (P+ in Advice_Text) MUST be fixed or formally exception-approved before quoting/ordering. Plain Error rows do not automatically break buildability and may sometimes be ignored, but MUST still be read carefully to verify whether a required action/quantity is missing or already met elsewhere in the solution. Warnings (e.g., PSU C13-to-C20 jumper cables for C19 PDUs, redundant VC FC licenses) must also be reviewed for physical deployment completeness. (3) Note that CLIC Advice Information sheet counts may underreport Warning rows compared to Advice_Text and CLIC Advice BOM may omit icon-level service lines outside the hardware container. *(Type: WORKFLOW_CLIC_GLOBAL_AND_SEVERITY_TRIAGE)*
+6. **[OWNER_STANDARD_3Y_BASIC]**: Preserve explicit customer support term and tier in the closest rank; use 3-year Tech Care Basic only when unspecified or explicitly authorized. For this SN3600B BOQ the owner authorized 5-year Essential to 3-year Basic. Compare qualified fixed and flexible service options; disclose retention and preserve parent/suffix pairs. This commercial preference is not vendor qualification. *(Type: SUPPORT_POLICY)*
+7. **[OWNER_ICON_SERVICE_ISOLATION]**: Select Services from Components for the owning icon, edit its dropdowns, and leave both apply-to-all icons and apply-to-all nodes off. Different icons retain their own SLA. *(Type: ICON_SUPPORT_ISOLATION)*
+8. **[OWNER_OCA_EXPIRED_SESSION]**: When OCA says it encountered a problem, restart from Partner Portal refresh/login and open One Config Advanced through Quick Links. Do not reload the failed OCA session. Keep a Partner Portal tab before closing stale OCA so CDP does not disappear. This supersedes cache-flush advice for encountered-a-problem errors. *(Type: SESSION_RECOVERY_PROTOCOL)*
+9. **[OWNER_CLOSEST_REQUIREMENT_RANK]**: Closest rank preserves customer requirements and makes only necessary compatibility/buildability changes. Budget alternatives disclose every deviation; do not silently reduce term, tier, capacity or resilience. Keep explicit owner overrides auditable against the original customer BOQ. *(Type: CUSTOMER_INTENT_POLICY)*
+10. **[OWNER_COMPONENT_DOMAIN_ROUTING]**: Route by component role and exact product, never vendor or family alone. Synergy compute, fabric and frame use separate scopes. Resolve ownership before quantities. Validate each component and enclosure/bay, adapter/fabric, optical endpoints, shared power and per-icon SLA relationships; missing profiles remain NOT_EVALUATED and cannot inherit server defaults. Scraping completeness is not buildability certification. *(Type: COMPONENT_DOMAIN_ROUTING)*
+11. **[GUARDRAIL_TRANSPORT_RECOVERY]**: Gemini guardrail API sends must retain systemInstruction and function declarations when overriding SDK send config. Enforce scoped local simulation and NotebookLM checks. Retry bounded transient provider errors without exhausting keys, distinguish per-minute from explicit daily quotas, and use configured approved model fallback with preserved tool results and no replay side effects. Empty or unfinished responses are unavailable, not verification. Dashboard status is independent of NotebookLM and vendor acceptance. *(Type: GUARDRAIL_RECOVERY_POLICY)*
 
 ## 🏛️ 2. Family & Generation Rules (ProLiant Gen12)
 
@@ -192,7 +194,7 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
    - **Affected SKU**: `S3U30C` | **Required Dependency**: `N/A`
 
 38. **[LEARN_CHASSIS_THREE_TIER_DOMAIN_CLASSIFICATION_20261012] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
-   - **Rule**: Specialty hardware categories (SAN switches like SN3600B, fabric interconnect modules like SY100Gb, and tape libraries like MSL) do not contain server compute components (CPU, Memory, Power). Synergy compute blades (SY480 Gen12) require CPU and Memory, but Power supplies are governed at the Synergy 12000 enclosure frame level. Freshness guards must evaluate compliance using a three-tier domain discriminator rather than enforcing server categories on all products (INV-158).
+   - **Rule**: Use the registered product and its component role for catalog coverage. Server and compute-module catalogs require processor and memory options where specified by their profile. Shared-enclosure power belongs to the owning frame. Validate switch, fabric and tape catalogs against their own profile rather than server categories (INV-158).
    - **Affected SKU**: `N/A` | **Required Dependency**: `N/A`
 
 39. **[LEARN_UNIVERSAL_ACCESSORY_SCOPE_ISOLATION_20261012] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
@@ -300,11 +302,11 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 2. **[Memory]**: 96GB Memory cannot be mixed with any other Memory.
    - **Gated Rule Type**: `MEMORY_MIXING`
-   - **Affected SKUs (1)**: `P69729-F21`
+   - **Affected SKUs (2)**: `P69729-F21`, `P83867-F21`
 
 3. **[Memory]**: 128GB Memory cannot be mixed with any other Memory.
    - **Gated Rule Type**: `MEMORY_MIXING`
-   - **Affected SKUs (1)**: `P69730-F21`
+   - **Affected SKUs (2)**: `P69730-F21`, `P83869-F21`
 
 4. **[Memory]**: Mixing of 3DS and non 3DS memory is not allowed.
    - **Gated Rule Type**: `MEMORY_MIXING`
@@ -338,11 +340,11 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 7. **[Storage Devices]**: Supported with 8LFF and 12LFF CTO Server only.
    - **Gated Rule Type**: `CHASSIS_GATE`
-   - **Affected SKUs (6)**: `P76473-B21`, `P77474-B21`, `P77475-B21`, `P77484-B21`, `P77485-B21`, `P76474-B21`
+   - **Affected SKUs (6)**: `P76473-B21`, `P77474-B21`, `P77484-B21`, `P77485-B21`, `P76474-B21`, `P77475-B21`
 
 8. **[Storage Devices]**: Supported with 8LFF CTO Server only and requires 2SFF SBS Cage.
    - **Gated Rule Type**: `CHASSIS_GATE`
-   - **Affected SKUs (3)**: `P76476-B21`, `P77481-B21`, `P77480-B21`
+   - **Affected SKUs (3)**: `P77481-B21`, `P76476-B21`, `P77480-B21`
 
 9. **[Storage Devices]**: Supported with 12EDSFF CTO Server only.
    - **Gated Rule Type**: `CHASSIS_GATE`
@@ -374,51 +376,55 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
    - **Gated Rule Type**: `MUTUAL_EXCLUSION`
    - **Affected SKUs (5)**: `P49145-B21`, `P74204-B21`, `P74208-B21`, `P74787-B21`, `P74794-B21`
 
-2. **[Networking]**: Private Product is not valid for current customer account
+2. **[Memory]**: Mixing of 6400B and 8000B Memory is NOT allowed.
    - **Gated Rule Type**: `MUTUAL_EXCLUSION`
-   - **Affected SKUs (1)**: `P74383-B21`
+   - **Affected SKUs (1)**: `P83865-F21`
 
 3. **[Networking]**: Private Product is not valid for current customer account
    - **Gated Rule Type**: `MUTUAL_EXCLUSION`
-   - **Affected SKUs (1)**: `P89140-B21`
+   - **Affected SKUs (1)**: `P74383-B21`
 
 4. **[Networking]**: Private Product is not valid for current customer account
    - **Gated Rule Type**: `MUTUAL_EXCLUSION`
+   - **Affected SKUs (1)**: `P89140-B21`
+
+5. **[Networking]**: Private Product is not valid for current customer account
+   - **Gated Rule Type**: `MUTUAL_EXCLUSION`
    - **Affected SKUs (2)**: `P74606-B21`, `P97416-B21`
 
-5. **[Graphics Options]**: Private Product is not valid for current customer account
+6. **[Graphics Options]**: Private Product is not valid for current customer account
    - **Gated Rule Type**: `MUTUAL_EXCLUSION`
    - **Affected SKUs (1)**: `S7J51C`
 
-6. **[Power Supplies]**: Mixing of Power supplies are not allowed.
+7. **[Power Supplies]**: Mixing of Power supplies are not allowed.
    - **Gated Rule Type**: `MUTUAL_EXCLUSION`
    - **Affected SKUs (3)**: `P38995-B21`, `P38997-B21`, `P44712-B21`
 
-7. **[Power Supplies]**: If AC Power Supply is selected then only AC Power Cords should be in the drop-down.
+8. **[Power Supplies]**: If AC Power Supply is selected then only AC Power Cords should be in the drop-down.
    - **Gated Rule Type**: `MUTUAL_EXCLUSION`
    - **Affected SKUs (1)**: `P17023-B21`
 
-8. **[Power Supplies]**: Max quantity of product limited by space available.
+9. **[Power Supplies]**: Max quantity of product limited by space available.
    - **Gated Rule Type**: `MUTUAL_EXCLUSION`
-   - **Affected SKUs (25)**: `AF556A`, `AF557A`, `AF568A`, `AF573A`, `P78130-B21`, `P78156-B21`, `AF558A`, `AF559A`, `AF560A`, `AF561A`, `AF562A`, `AF564A`, `AF565A`, `AF566A`, `AF567A`, `AF569A`, `AF570A`, `AF572A`, `AF591A`, `P78131-B21`, `P78144-B21`, `P78147-B21`, `P78940-B21`, `P78941-B21`, `R1C65A`
+   - **Affected SKUs (25)**: `AF556A`, `AF568A`, `AF557A`, `AF558A`, `AF559A`, `AF560A`, `AF561A`, `AF562A`, `AF564A`, `AF565A`, `AF566A`, `AF567A`, `AF569A`, `AF570A`, `AF572A`, `AF573A`, `AF591A`, `P78130-B21`, `P78131-B21`, `P78144-B21`, `P78147-B21`, `P78156-B21`, `P78940-B21`, `P78941-B21`, `R1C65A`
 
-9. **[Power Supplies]**: If AC Power Supply is selected then only AC Power Cords should be in the drop-down.
+10. **[Power Supplies]**: If AC Power Supply is selected then only AC Power Cords should be in the drop-down.
    - **Gated Rule Type**: `MUTUAL_EXCLUSION`
    - **Affected SKUs (1)**: `P22173-B21`
 
-10. **[Private Cloud Business Edition]**: Not Supported ProStack Server Software
+11. **[Private Cloud Business Edition]**: Not Supported ProStack Server Software
    - **Gated Rule Type**: `MUTUAL_EXCLUSION`
    - **Affected SKUs (1)**: `S7J52A`
 
-11. **[HPE Compute Ops Management]**: Max 1 per server (This is applicable for both 3year and 5 year license in TOTAL) Total number of licenses within an order cannot exceed the number of servers
+12. **[HPE Compute Ops Management]**: Max 1 per server (This is applicable for both 3year and 5 year license in TOTAL) Total number of licenses within an order cannot exceed the number of servers
    - **Gated Rule Type**: `MUTUAL_EXCLUSION`
    - **Affected SKUs (2)**: `R7A11AAE`, `S2E10AAE`
 
-12. **[HPE Compute Ops Management]**: For Gen11/Gen12 servers ONLY Min 1/Max 1 per server. Total number of licenses within an order cannot exceed the number of servers
+13. **[HPE Compute Ops Management]**: For Gen11/Gen12 servers ONLY Min 1/Max 1 per server. Total number of licenses within an order cannot exceed the number of servers
    - **Gated Rule Type**: `MUTUAL_EXCLUSION`
    - **Affected SKUs (3)**: `S5E59AAE`, `S5E60AAE`, `S5E61AAE`
 
-13. **[Virtualization]**: Private Product is not valid for current customer account
+14. **[Virtualization]**: Private Product is not valid for current customer account
    - **Gated Rule Type**: `MUTUAL_EXCLUSION`
    - **Affected SKUs (3)**: `S4F94AAE`, `S4G00AAE`, `S4R76AAE`
 
@@ -434,11 +440,11 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 3. **[Networking]**: BTO products are not allowed in CTO Base Model.
    - **Gated Rule Type**: `BTO_DISALLOWED`
-   - **Affected SKUs (6)**: `AJ833A`, `AJ836A`, `AJ837A`, `AJ838A`, `AJ839A`, `AJ834A`
+   - **Affected SKUs (6)**: `AJ833A`, `AJ836A`, `AJ838A`, `AJ839A`, `AJ834A`, `AJ837A`
 
 4. **[Power Supplies]**: BTO products are not allowed in CTO Base Model.
    - **Gated Rule Type**: `BTO_DISALLOWED`
-   - **Affected SKUs (2)**: `A0N33A`, `A0K02A`
+   - **Affected SKUs (2)**: `A0K02A`, `A0N33A`
 
 ## ⚠️ 4. Discontinued & Obsolete SKUs Registry
 
@@ -467,7 +473,7 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 | `P73287-B21` | HPE ProLiant Compute DL380 Gen12 High Power / Telco CTO Server | **DISCONTINUED** | 2026-09-09 | $7450.00 | None | STOPPED_AFTER_REMOVAL |
 | `804398-B21` | HPE Smart Array E208e-p SR Gen10 (8 External Lanes/No Cache) 12G SAS PCIe Plug-in Controller | **REINSTATED** | 2026-09-30 | $1775.00 | None | STOPPED_AFTER_REMOVAL |
 | `339781-B21` | HPE RAID FIO Advanced Data Guarding Option | **DISCONTINUED** | 2026-09-30 | $1.00 | None | STOPPED_AFTER_REMOVAL |
-| `389692-B21` | HPE Customer Defined RAID Setting Service | **DISCONTINUED** | 2026-09-30 | $1.00 | None | STOPPED_AFTER_REMOVAL |
+| `389692-B21` | HPE Customer Defined RAID Setting Service | **REINSTATED** | 2026-09-30 | $1.00 | None | STOPPED_AFTER_REMOVAL |
 | `469774-409` | HPE Remove Standard Power Cords | **DISCONTINUED** | 2026-09-10 | $1.00 | None | STOPPED_AFTER_REMOVAL |
 | `P60283-B21` | [SHARED_ACCESSORY_VERIFIED target=DL380_Gen12] HPE OEM ProLiant DL380 Gen11 Over Pack FIO Shipping Kit (Class: CABLE; Evidence: CERTIFIED_OCA_CATALOG; Sources: DL380_Gen12_Master_Catalog) | **REINSTATED** | 2026-09-10 | $99.00 | None | STOPPED_AFTER_REMOVAL |
 | `P73325-B21` | HPE ProLiant Compute Localization FIO Kit | **REINSTATED** | 2026-09-10 | $4.00 | None | STOPPED_AFTER_REMOVAL |
@@ -491,6 +497,30 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 | `AC123A` | HPE Special Request/ Equipment Logistic Service | **DISCONTINUED** | 2026-09-09 | $816.00 | None | STOPPED_AFTER_REMOVAL |
 | `BQ335A` | HPE Expedite Shipment Small Logistic Service | **DISCONTINUED** | 2026-09-09 | $44.00 | None | STOPPED_AFTER_REMOVAL |
 | `BQ337A` | HPE Expedite Shipment Large Logistic Service | **DISCONTINUED** | 2026-09-09 | $100.00 | None | STOPPED_AFTER_REMOVAL |
+| `S2L38AAE` | TotalView 32 Processes 1-year Support E-LTU | **DISCONTINUED** | 2026-11-12 | $9228.00 | None | STOPPED_AFTER_REMOVAL |
+| `S2L39AAE` | TotalView 64 Processes 1-year Support E-LTU | **DISCONTINUED** | 2026-11-12 | $12894.00 | None | STOPPED_AFTER_REMOVAL |
+| `S2L40AAE` | TotalView 128 Processes 1-year Support E-LTU | **DISCONTINUED** | 2026-11-12 | $16672.00 | None | STOPPED_AFTER_REMOVAL |
+| `S2L41AAE` | TotalView 256 Processes 1-year Support E-LTU | **DISCONTINUED** | 2026-11-12 | $22228.00 | None | STOPPED_AFTER_REMOVAL |
+| `S2L42AAE` | TotalView 512 Processes 1-year Support E-LTU | **DISCONTINUED** | 2026-11-12 | $26672.00 | None | STOPPED_AFTER_REMOVAL |
+| `S2L43AAE` | TotalView 32 Processes 3-year Support E-LTU | **DISCONTINUED** | 2026-11-12 | $26672.00 | None | STOPPED_AFTER_REMOVAL |
+| `S2L44AAE` | TotalView 64 Processes 3-year Support E-LTU | **DISCONTINUED** | 2026-11-12 | $36117.00 | None | STOPPED_AFTER_REMOVAL |
+| `S2L45AAE` | TotalView 128 Processes 3-year Support E-LTU | **DISCONTINUED** | 2026-11-12 | $46672.00 | None | STOPPED_AFTER_REMOVAL |
+| `S2L46AAE` | TotalView 256 Processes 3-year Support E-LTU | **DISCONTINUED** | 2026-11-12 | $61117.00 | None | STOPPED_AFTER_REMOVAL |
+| `S2L47AAE` | TotalView 512 Processes 3-year Support E-LTU | **DISCONTINUED** | 2026-11-12 | $73339.00 | None | STOPPED_AFTER_REMOVAL |
+| `S2L48AAE` | TotalView 32 Processes 4-year Support E-LTU | **DISCONTINUED** | 2026-11-12 | $33339.00 | None | STOPPED_AFTER_REMOVAL |
+| `S2L49AAE` | TotalView 64 Processes 4-year Support E-LTU | **DISCONTINUED** | 2026-11-12 | $46672.00 | None | STOPPED_AFTER_REMOVAL |
+| `S2L50AAE` | TotalView 128 Processes 4-year Support E-LTU | **DISCONTINUED** | 2026-11-12 | $60006.00 | None | STOPPED_AFTER_REMOVAL |
+| `S2L51AAE` | TotalView 256 Processes 4-year Support E-LTU | **DISCONTINUED** | 2026-11-12 | $78894.00 | None | STOPPED_AFTER_REMOVAL |
+| `S2L52AAE` | TotalView 512 Processes 4-year Support E-LTU | **DISCONTINUED** | 2026-11-12 | $95006.00 | None | STOPPED_AFTER_REMOVAL |
+| `S2L53AAE` | TotalView 32 Processes 5-year Support E-LTU | **DISCONTINUED** | 2026-11-12 | $39450.00 | None | STOPPED_AFTER_REMOVAL |
+| `S2L54AAE` | TotalView 64 Processes 5-year Support E-LTU | **DISCONTINUED** | 2026-11-12 | $55006.00 | None | STOPPED_AFTER_REMOVAL |
+| `S2L55AAE` | TotalView 128 Processes 5-year Support E-LTU | **DISCONTINUED** | 2026-11-12 | $70561.00 | None | STOPPED_AFTER_REMOVAL |
+| `S2L56AAE` | TotalView 256 Processes 5-year Support E-LTU | **DISCONTINUED** | 2026-11-12 | $93339.00 | None | STOPPED_AFTER_REMOVAL |
+| `S2L57AAE` | TotalView 512 Processes 5-year Support E-LTU | **DISCONTINUED** | 2026-11-12 | $112228.00 | None | STOPPED_AFTER_REMOVAL |
+| `S3Z84AAE` | Red Hat OpenShift Container Platform Bare Metal 1 Physical Node 1yr Subscription 24x7 Support E-LTU | **DISCONTINUED** | 2026-11-12 | $53719.00 | None | STOPPED_AFTER_REMOVAL |
+| `S3Z86AAE` | Red Hat OpenShift Container Platform Bare Metal 1 Physical Node 1yr Subscription 9x5 Support E-LTU | **DISCONTINUED** | 2026-11-12 | $35808.00 | None | STOPPED_AFTER_REMOVAL |
+| `S3Z88AAE` | Red Hat OpenShift Container Platform Plus Bare Metal 1 Physical Node 1yr Subscription 24x7 Sup E-LTU | **DISCONTINUED** | 2026-11-12 | $22385.00 | None | STOPPED_AFTER_REMOVAL |
+| `S3Z90AAE` | Red Hat OpenShift Container Platform Plus Bare Metal 1 Physical Node 1yr Subscription 9x5 Sup E-LTU | **DISCONTINUED** | 2026-11-12 | $14999.00 | None | STOPPED_AFTER_REMOVAL |
 
 ### ⏳ Impending Obsolescence & Clearance Hardware (90-Day to 180-Day Window)
 
@@ -503,27 +533,27 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 | `P73284-B21` | HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-order Server | Chassis | $6,350 | 2026-09-09 | 0.00% | ⚠️ Approaching EOL (2026-09-09). Valid for immediate builds; verify multi-year roadmaps. |
 | `P73285-B21` | HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-order Server | Chassis | $6,890 | 2026-09-09 | 0.00% | ⚠️ Approaching EOL (2026-09-09). Valid for immediate builds; verify multi-year roadmaps. |
 | `P73286-B21` | HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-order Server | Chassis | $7,120 | 2026-09-09 | 0.00% | ⚠️ Approaching EOL (2026-09-09). Valid for immediate builds; verify multi-year roadmaps. |
-| `Q9V61A` | HPE Performance Cluster Manager FIO Software | Software & Licenses | $1 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
-| `P77095-291` | Microsoft Windows Server 2025 16-core Standard FIO Not Pre-installed Japanese SW | Software & Licenses | $0 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
-| `P77095-B21` | Microsoft Windows Server 2025 16-core Standard FIO Not Pre-installed en/fr/de/es/it/pt/nl SW | Software & Licenses | $1,147 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
-| `P77096-291` | Microsoft Windows Server 2025 16-core Standard FIO Pre-installed UEFI Japanese SW | Software & Licenses | $0 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
-| `P77096-B21` | Microsoft Windows Server 2025 16-core Standard FIO Pre-installed UEFI en/fr/de/es/it/pt/nl SW | Software & Licenses | $1,147 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
-| `P77097-291` | Microsoft Windows Server 2025 16-core Datacenter FIO Not Pre-installed Japanese SW | Software & Licenses | $0 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
-| `P77097-B21` | Microsoft Windows Server 2025 16-core Datacenter FIO Not Pre-installed en/fr/de/es/it/pt/nl SW | Software & Licenses | $5,712 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
-| `P45879-B21` | Microsoft Windows Server 2019 16-core Downgrade Datacenter FIO Not Pre-installed English SW | Software & Licenses | $20 | 01/31/2027 | -28.57% | 🔥 **Clearance Opportunity** (-28.57% CapEx savings). Procure before 01/31/2027. |
-| `P45879-051` | Microsoft Windows Server 2019 16-core Downgrade Datacenter FIO Not Pre-installed French SW | Software & Licenses | $20 | 01/31/2027 | -28.57% | 🔥 **Clearance Opportunity** (-28.57% CapEx savings). Procure before 01/31/2027. |
-| `P45879-041` | Microsoft Windows Server 2019 16-core Downgrade Datacenter FIO Not Pre-installed German SW | Software & Licenses | $20 | 01/31/2027 | -28.57% | 🔥 **Clearance Opportunity** (-28.57% CapEx savings). Procure before 01/31/2027. |
-| `P45879-061` | Microsoft Windows Server 2019 16-core Downgrade Datacenter FIO Not Pre-installed Italian SW | Software & Licenses | $20 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
-| `P45879-291` | Microsoft Windows Server 2019 16-core Downgrade Datacenter FIO Not Pre-installed Japanese SW | Software & Licenses | $99,999 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
-| `P45879-071` | Microsoft Windows Server 2019 16-core Downgrade Datacenter FIO Not Pre-installed Spanish SW | Software & Licenses | $20 | 01/31/2027 | -28.57% | 🔥 **Clearance Opportunity** (-28.57% CapEx savings). Procure before 01/31/2027. |
-| `P45862-B21` | Microsoft Windows Server 2019 16-core Downgrade Standard FIO Not Pre-installed English SW | Software & Licenses | $20 | 01/31/2027 | -28.57% | 🔥 **Clearance Opportunity** (-28.57% CapEx savings). Procure before 01/31/2027. |
-| `P45862-051` | Microsoft Windows Server 2019 16-core Downgrade Standard FIO Not Pre-installed French SW | Software & Licenses | $20 | 01/31/2027 | -28.57% | 🔥 **Clearance Opportunity** (-28.57% CapEx savings). Procure before 01/31/2027. |
-| `P45862-041` | Microsoft Windows Server 2019 16-core Downgrade Standard FIO Not Pre-installed German SW | Software & Licenses | $20 | 01/31/2027 | -28.57% | 🔥 **Clearance Opportunity** (-28.57% CapEx savings). Procure before 01/31/2027. |
-| `P45862-061` | Microsoft Windows Server 2019 16-core Downgrade Standard FIO Not Pre-installed Italian SW | Software & Licenses | $20 | 01/31/2027 | -28.57% | 🔥 **Clearance Opportunity** (-28.57% CapEx savings). Procure before 01/31/2027. |
-| `P45862-291` | Microsoft Windows Server 2019 16-core Downgrade Standard FIO Not Pre-installed Japanese SW | Software & Licenses | $99,999 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
-| `P45862-071` | Microsoft Windows Server 2019 16-core Downgrade Standard FIO Not Pre-installed Spanish SW | Software & Licenses | $20 | 01/31/2027 | -28.57% | 🔥 **Clearance Opportunity** (-28.57% CapEx savings). Procure before 01/31/2027. |
-| `P77125-291` | Microsoft Windows Server 2022 Downgrade Datacenter FIO Not Pre-installed Japanese SW | Software & Licenses | $0 | 01/31/2027 | 0.00% | ⚠️ Approaching EOL (01/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
-*... [90 additional impending EOL records omitted for brevity]*
+| `P74383-B21` | Nvidia B3220L 200Gb 2p QSFP 112 Spl DPU | Graphics & GPU | $15,334 | 03/31/2027 | 0.00% | ⚠️ Approaching EOL (03/31/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `Q9V61A` | HPE Performance Cluster Manager FIO Software | Software & Licenses | $1 | 02/28/2027 | 0.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P77095-291` | Microsoft Windows Server 2025 16-core Standard FIO Not Pre-installed Japanese SW | Software & Licenses | $0 | 02/28/2027 | 0.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P77095-B21` | Microsoft Windows Server 2025 16-core Standard FIO Not Pre-installed en/fr/de/es/it/pt/nl SW | Software & Licenses | $1,147 | 02/28/2027 | 0.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P77096-291` | Microsoft Windows Server 2025 16-core Standard FIO Pre-installed UEFI Japanese SW | Software & Licenses | $0 | 02/28/2027 | 0.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P77096-B21` | Microsoft Windows Server 2025 16-core Standard FIO Pre-installed UEFI en/fr/de/es/it/pt/nl SW | Software & Licenses | $1,147 | 02/28/2027 | 0.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P77097-291` | Microsoft Windows Server 2025 16-core Datacenter FIO Not Pre-installed Japanese SW | Software & Licenses | $0 | 02/28/2027 | 0.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P77097-B21` | Microsoft Windows Server 2025 16-core Datacenter FIO Not Pre-installed en/fr/de/es/it/pt/nl SW | Software & Licenses | $5,712 | 02/28/2027 | 0.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P45879-B21` | Microsoft Windows Server 2019 16-core Downgrade Datacenter FIO Not Pre-installed English SW | Software & Licenses | $20 | 02/28/2027 | 0.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P45879-051` | Microsoft Windows Server 2019 16-core Downgrade Datacenter FIO Not Pre-installed French SW | Software & Licenses | $20 | 02/28/2027 | 0.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P45879-041` | Microsoft Windows Server 2019 16-core Downgrade Datacenter FIO Not Pre-installed German SW | Software & Licenses | $28 | 02/28/2027 | +40.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P45879-061` | Microsoft Windows Server 2019 16-core Downgrade Datacenter FIO Not Pre-installed Italian SW | Software & Licenses | $20 | 02/28/2027 | 0.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P45879-291` | Microsoft Windows Server 2019 16-core Downgrade Datacenter FIO Not Pre-installed Japanese SW | Software & Licenses | $99,999 | 02/28/2027 | 0.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P45879-071` | Microsoft Windows Server 2019 16-core Downgrade Datacenter FIO Not Pre-installed Spanish SW | Software & Licenses | $20 | 02/28/2027 | 0.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P45862-B21` | Microsoft Windows Server 2019 16-core Downgrade Standard FIO Not Pre-installed English SW | Software & Licenses | $20 | 02/28/2027 | 0.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P45862-051` | Microsoft Windows Server 2019 16-core Downgrade Standard FIO Not Pre-installed French SW | Software & Licenses | $28 | 02/28/2027 | +40.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P45862-041` | Microsoft Windows Server 2019 16-core Downgrade Standard FIO Not Pre-installed German SW | Software & Licenses | $28 | 02/28/2027 | +40.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P45862-061` | Microsoft Windows Server 2019 16-core Downgrade Standard FIO Not Pre-installed Italian SW | Software & Licenses | $28 | 02/28/2027 | +40.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P45862-291` | Microsoft Windows Server 2019 16-core Downgrade Standard FIO Not Pre-installed Japanese SW | Software & Licenses | $99,999 | 02/28/2027 | 0.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+| `P45862-071` | Microsoft Windows Server 2019 16-core Downgrade Standard FIO Not Pre-installed Spanish SW | Software & Licenses | $28 | 02/28/2027 | +40.00% | ⚠️ Approaching EOL (02/28/2027). Valid for immediate builds; verify multi-year roadmaps. |
+*... [91 additional impending EOL records omitted for brevity]*
 
 ## 📊 5b. Category-Level Trends & Significant Price Adjustments
 
@@ -535,13 +565,14 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 | **Accessories & Infrastructure** | 34 | 0 | 34 | 0 | 0 | 🔄 Attributes/specifications updated (34 SKUs) |
 | **Processor** | 34 | 0 | 34 | 0 | 0 | 🔄 Attributes/specifications updated (34 SKUs) |
 | **Cooling / Thermal** | 16 | 0 | 16 | 0 | 0 | 🔄 Attributes/specifications updated (16 SKUs) |
-| **Memory** | 11 | 2 | 9 | 0 | 0 | ✨ Portfolio expanding (+2 new options) |
+| **Memory** | 19 | 8 | 11 | 0 | 0 | ✨ Portfolio expanding (+8 new options) |
 | **Drive Enclosures / Drives** | 28 | 0 | 28 | 0 | 0 | 🔄 Attributes/specifications updated (28 SKUs) |
-| **Networking** | 76 | 0 | 76 | 0 | 1 | ⚠️ Active price drops / clearance (1 SKUs discounted) |
+| **Networking** | 82 | 6 | 76 | 0 | 0 | ✨ Portfolio expanding (+6 new options) |
 | **PCIe Risers** | 10 | 0 | 10 | 0 | 0 | 🔄 Attributes/specifications updated (10 SKUs) |
-| **Storage Controllers** | 53 | 1 | 52 | 0 | 0 | ✨ Portfolio expanding (+1 new options) |
+| **Storage Controllers** | 52 | 0 | 52 | 0 | 0 | 🔄 Attributes/specifications updated (52 SKUs) |
 | **Cables & Enablement Kits** | 96 | 0 | 96 | 0 | 0 | 🔄 Attributes/specifications updated (96 SKUs) |
-| **Software & Licenses** | 773 | 3 | 770 | 0 | 36 | ⚠️ Active price drops / clearance (36 SKUs discounted) |
+| **Support Services** | 1 | 1 | 0 | 0 | 0 | ✨ Portfolio expanding (+1 new options) |
+| **Software & Licenses** | 773 | 0 | 773 | 0 | 0 | 🔄 Attributes/specifications updated (773 SKUs) |
 | **Graphics & GPU** | 31 | 0 | 31 | 0 | 0 | 🔄 Attributes/specifications updated (31 SKUs) |
 | **Power Supplies** | 10 | 0 | 10 | 0 | 0 | 🔄 Attributes/specifications updated (10 SKUs) |
 
@@ -549,49 +580,50 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Product # | Description | Category | Previous Price | Current Price | Delta (USD) | Change (%) | Movement Type |
 |---|---|---|---:|---:|---:|---:|---|
-| `P65333-H21` | HPE InfiniBand NDR200/Ethernet 200GbE 2-port QSFP112 PCIe5 x16 MCX755106AC-HEAT Adapter | Networking | $7,331 | $5,425 | $-1,906 | **-26.0%** | 📉 CLEARANCE_DROP |
-| `P46218-B21` | Microsoft Windows Server 2022 10 Devices CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU | Software & Licenses | $342 | $429 | $87 | **+25.4%** | 📈 PRICE_INCREASE |
-| `P46218-B21` | Microsoft Windows Server 2022 10 Devices CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU | Software & Licenses | $342 | $429 | $87 | **+25.4%** | 📈 PRICE_INCREASE |
-| `P46218-B21` | Microsoft Windows Server 2022 10 Devices CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU | Software & Licenses | $342 | $429 | $87 | **+25.4%** | 📈 PRICE_INCREASE |
-| `P46222-B21` | Microsoft Windows Server 2022 RDS 5 Devices CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU | Software & Licenses | $691 | $880 | $189 | **+27.4%** | 📈 PRICE_INCREASE |
-| `P46222-B21` | Microsoft Windows Server 2022 RDS 5 Devices CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU | Software & Licenses | $691 | $880 | $189 | **+27.4%** | 📈 PRICE_INCREASE |
-| `P46222-B21` | Microsoft Windows Server 2022 RDS 5 Devices CAL en/cs/de/es/fr/it/nl/pl/pt/ru/sv/ko/ja/xc LTU | Software & Licenses | $691 | $880 | $189 | **+27.4%** | 📈 PRICE_INCREASE |
-| `S6L28B` | Microsoft Windows Server 2025 10-core Essentials FIO Not Pre-installed WW ESD LTU | Software & Licenses | New Addition | $445 | $445 | **+100.0%** | ✨ NEW_OPTION |
-| `S6L28B` | Microsoft Windows Server 2025 10-core Essentials FIO Not Pre-installed WW ESD LTU | Software & Licenses | New Addition | $445 | $445 | **+100.0%** | ✨ NEW_OPTION |
-| `S6L28B` | Microsoft Windows Server 2025 10-core Essentials FIO Not Pre-installed WW ESD LTU | Software & Licenses | New Addition | $445 | $445 | **+100.0%** | ✨ NEW_OPTION |
-| `804398-B21` | HPE Smart Array E208e-p SR Gen10 (8 External Lanes/No Cache) 12G SAS PCIe Plug-in Controller | Storage Controllers | New Addition | $1,775 | $1,775 | **+100.0%** | ✨ NEW_OPTION |
-| `P69726-B21` | HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit | Memory | New Addition | $7,439 | $7,439 | **+100.0%** | ✨ NEW_OPTION |
-| `P69726-F21` | HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit | Memory | New Addition | $7,439 | $7,439 | **+100.0%** | ✨ NEW_OPTION |
+| `P76851-B21` | Intel E835-XXVDA2 Ethernet 10/25Gb 2-port SFP28 Adapter for HPE | Networking | New Addition | $1,390 | $1,390 | **+100.0%** | ✨ NEW_OPTION |
+| `P76848-B21` | Intel E835-XXVDA2 Ethernet 10/25Gb 2-port SFP28 OCP3 Adapter for HPE | Networking | New Addition | $1,390 | $1,390 | **+100.0%** | ✨ NEW_OPTION |
+| `P76857-B21` | Intel E835-XXVDA4 Ethernet 10/25Gb 4-port SFP28 Adapter for HPE | Networking | New Addition | $3,100 | $3,100 | **+100.0%** | ✨ NEW_OPTION |
+| `P76854-B21` | Intel E835-XXVDA4 Ethernet 10/25Gb 4-port SFP28 OCP3 Adapter for HPE | Networking | New Addition | $3,100 | $3,100 | **+100.0%** | ✨ NEW_OPTION |
+| `P76863-B21` | Intel E835-CQDA2 Ethernet 100Gb 2-port QSFP28 Adapter for HPE | Networking | New Addition | $3,600 | $3,600 | **+100.0%** | ✨ NEW_OPTION |
+| `P76860-B21` | Intel E835-CQDA2 Ethernet 100Gb 2-port QSFP28 OCP3 Adapter for HPE | Networking | New Addition | $3,600 | $3,600 | **+100.0%** | ✨ NEW_OPTION |
+| `P69727-B21` | HPE 32GB (1x32GB) Dual Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit | Memory | New Addition | $13,909 | $13,909 | **+100.0%** | ✨ NEW_OPTION |
+| `P69728-B21` | HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit | Memory | New Addition | $28,532 | $28,532 | **+100.0%** | ✨ NEW_OPTION |
+| `P83865-F21` | HPE 64GB (1x64GB) Dual Rank x4 DDR5-8000 CAS-64-64-64 EC8 Registered Smart FIO Memory Kit | Memory | New Addition | $32,811 | $32,811 | **+100.0%** | ✨ NEW_OPTION |
+| `P69729-B21` | HPE 96GB (1x96GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit | Memory | New Addition | $47,056 | $47,056 | **+100.0%** | ✨ NEW_OPTION |
+| `P83867-F21` | HPE 96GB (1x96GB) Dual Rank x4 DDR5-8000 CAS-64-64-64 EC8 Registered Smart FIO Memory Kit | Memory | New Addition | $54,115 | $54,115 | **+100.0%** | ✨ NEW_OPTION |
+| `P69730-B21` | HPE 128GB (1x128GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit | Memory | New Addition | $60,190 | $60,190 | **+100.0%** | ✨ NEW_OPTION |
+| `P83869-F21` | HPE 128GB (1x128GB) Dual Rank x4 DDR5-8000 CAS-64-64-64 EC8 Registered Smart FIO Memory Kit | Memory | New Addition | $69,219 | $69,219 | **+100.0%** | ✨ NEW_OPTION |
+| `P73447-B21` | HPE 256GB (1x256GB) Quad Rank x4 DDR5-6400 CAS-60-52-52 EC8 Registered 3DS Smart Memory Kit | Memory | New Addition | $1,33,186 | $1,33,186 | **+100.0%** | ✨ NEW_OPTION |
 
 ## 🔄 5. Recent Attribute & Specification Modifications Log
 
 | Timestamp | SKU | Attribute | Old Value | New Value |
 |-----------|-----|-----------|-----------|-----------|
-| 2026-10-29 | `P71118-B21` | Vendor Attributes | {"listPrice":7062} | **{"listPrice":7062,"Vendor Status Badge":"CS"}** |
-| 2026-10-29 | `P71119-B21` | Availability | Available | **CS (vendor status; meaning unverified)** |
-| 2026-10-29 | `P71119-B21` | Portal Visibility |  | **PORTAL_CONDITIONAL** |
-| 2026-10-29 | `P71119-B21` | Condition Type |  | **PORTAL_CONDITIONAL_VIEW** |
-| 2026-10-29 | `P71119-B21` | Vendor Attributes | {"listPrice":8459} | **{"listPrice":8459,"Vendor Status Badge":"CS"}** |
-| 2026-10-29 | `P71120-B21` | Availability | Available | **CS (vendor status; meaning unverified)** |
-| 2026-10-29 | `P71120-B21` | Portal Visibility |  | **PORTAL_CONDITIONAL** |
-| 2026-10-29 | `P71120-B21` | Condition Type |  | **PORTAL_CONDITIONAL_VIEW** |
-| 2026-10-29 | `P71120-B21` | Vendor Attributes | {"listPrice":8965} | **{"listPrice":8965,"Vendor Status Badge":"CS"}** |
-| 2026-10-29 | `P71121-B21` | Availability | Available | **CS (vendor status; meaning unverified)** |
-| 2026-10-29 | `P71121-B21` | Portal Visibility |  | **PORTAL_CONDITIONAL** |
-| 2026-10-29 | `P71121-B21` | Condition Type |  | **PORTAL_CONDITIONAL_VIEW** |
-| 2026-10-29 | `P71121-B21` | Vendor Attributes | {"listPrice":11891} | **{"listPrice":11891,"Vendor Status Badge":"CS"}** |
-| 2026-10-29 | `P71122-B21` | Availability | Available | **CS (vendor status; meaning unverified)** |
-| 2026-10-29 | `P71122-B21` | Portal Visibility |  | **PORTAL_CONDITIONAL** |
-| 2026-10-29 | `P71122-B21` | Condition Type |  | **PORTAL_CONDITIONAL_VIEW** |
-| 2026-10-29 | `P71122-B21` | Vendor Attributes | {"listPrice":14473} | **{"listPrice":14473,"Vendor Status Badge":"CS"}** |
-| 2026-10-29 | `P73835-B21` | Availability | Available | **CS (vendor status; meaning unverified)** |
-| 2026-10-29 | `P73835-B21` | Portal Visibility |  | **PORTAL_CONDITIONAL** |
-| 2026-10-29 | `P73835-B21` | Condition Type |  | **PORTAL_CONDITIONAL_VIEW** |
-| 2026-10-29 | `P73835-B21` | Vendor Attributes | {"listPrice":48922} | **{"listPrice":48922,"Vendor Status Badge":"CS"}** |
-| 2026-10-29 | `P73838-B21` | Availability | Available | **CS (vendor status; meaning unverified)** |
-| 2026-10-29 | `P73838-B21` | Portal Visibility |  | **PORTAL_CONDITIONAL** |
-| 2026-10-29 | `P73838-B21` | Condition Type |  | **PORTAL_CONDITIONAL_VIEW** |
-| 2026-10-29 | `P73838-B21` | Vendor Attributes | {"listPrice":58094} | **{"listPrice":58094,"Vendor Status Badge":"CS"}** |
+| 2026-11-12 | `S4R43A` | Discontinued Date | 11/03/2027 | **12/03/2027** |
+| 2026-11-12 | `S4R44A` | Discontinued Date | 11/03/2027 | **12/03/2027** |
+| 2026-11-12 | `S4R45A` | Discontinued Date | 11/03/2027 | **12/03/2027** |
+| 2026-11-12 | `S4R46A` | Discontinued Date | 11/03/2027 | **12/03/2027** |
+| 2026-11-12 | `S4R47A` | Discontinued Date | 11/03/2027 | **12/03/2027** |
+| 2026-11-12 | `S4R48A` | Discontinued Date | 11/03/2027 | **12/03/2027** |
+| 2026-11-12 | `P79555-B21` | Price Delta (USD) | +0.00 | **Selected** |
+| 2026-11-12 | `S3U30C` | Discontinued Date | 12/31/2027 | **07/31/2028** |
+| 2026-11-12 | `S3U30C` | Lead Time | Unpublished | **168** |
+| 2026-11-12 | `S3U30C` | Lead Time Source | Unpublished | **OCA row attribute** |
+| 2026-11-12 | `S3U30C` | Lead Time Days |  | **168** |
+| 2026-11-12 | `S3U30C` | Speed Tier | Unpublished | **Constrained / Long Lead Time (>45d)** |
+| 2026-11-12 | `S3U30C` | Vendor Attributes | {"Est. Lead Time":"168","listPrice":112579} | **{"listPrice":112579}** |
+| 2026-11-12 | `S6A73C` | Discontinued Date | 12/31/2028 | **01/31/2029** |
+| 2026-11-12 | `S6A73C` | Lead Time | Unpublished | **14** |
+| 2026-11-12 | `S6A73C` | Lead Time Source | Unpublished | **OCA row attribute** |
+| 2026-11-12 | `S6A73C` | Lead Time Days |  | **14** |
+| 2026-11-12 | `S6A73C` | Speed Tier | Unpublished | **Standard Delivery (8-30d)** |
+| 2026-11-12 | `S6A73C` | Vendor Attributes | {"Est. Lead Time":"14","listPrice":57002} | **{"listPrice":57002}** |
+| 2026-11-12 | `S6W21C` | Discontinued Date | 12/31/2028 | **01/31/2029** |
+| 2026-11-12 | `S6W21C` | Lead Time | Unpublished | **112** |
+| 2026-11-12 | `S6W21C` | Lead Time Source | Unpublished | **OCA row attribute** |
+| 2026-11-12 | `S6W21C` | Lead Time Days |  | **112** |
+| 2026-11-12 | `S6W21C` | Speed Tier | Unpublished | **Constrained / Long Lead Time (>45d)** |
+| 2026-11-12 | `S6W21C` | Vendor Attributes | {"Est. Lead Time":"112","listPrice":37899} | **{"listPrice":37899}** |
 
 ## 🧩 6. Same-Product CTO Variant Matrix
 
@@ -624,17 +656,17 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Product # | Description | Category | Recommendation Badge | List Price (USD) | Lead Time |
 |---|---|---|:---:|---:|---|
-| `P01366-B21` | HPE 96W Smart Storage Lithium-ion Battery with 145mm Cable Kit | Storage Controllers | **Recommended** | $110 | Unpublished |
-| `P03178-B21` | HPE 1000W Flex Slot Titanium Hot Plug Power Supply Kit | Power Supplies | **Recommended** | $926 | Unpublished |
-| `P03178-B21` | HPE 1000W Flex Slot Titanium Hot Plug Power Supply Kit | Power Supplies | **Recommended** | $926 | Unpublished |
+| `P01366-B21` | HPE 96W Smart Storage Lithium-ion Battery with 145mm Cable Kit | Storage Controllers | **Recommended** | $110 | 4 |
+| `P03178-B21` | HPE 1000W Flex Slot Titanium Hot Plug Power Supply Kit | Power Supplies | **Recommended** | $926 | 14 |
+| `P03178-B21` | HPE 1000W Flex Slot Titanium Hot Plug Power Supply Kit | Power Supplies | **Recommended** | $926 | 14 |
 
 ## 📦 9. Solution Manifest, EDT & Commercial Baseline
 
-**Configuration Profile**: `OCA Config 2` | **Icon ID**: `I157947987-01` | **Estimated Delivery Time (EDT)**: `24 - 30 days`
+**Configuration Profile**: `OCA Config 2` | **Icon ID**: `I158326198-01` | **Estimated Delivery Time (EDT)**: `24 - 30 days`
 
 | Hardware (USD) | Support (USD) | Services (USD) | Software (USD) | Total Baseline (USD) |
 |---:|---:|---:|---:|---:|
-| $46,095 | $35,916 | $1,234 | $1,220 | **$84,465** |
+| $46,095 | $19,306 | $1,234 | $1,220 | **$67,855** |
 
 ### Authoritative Baseline BOM Hierarchy
 
@@ -660,9 +692,45 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 | (2) | `P52341-B21` | HPE ProLiant DL3XX Gen11 Easy Install Rail 3 Kit | 1 | $164 | $164 |
 | (3) | `P52341-B21 0D1` | Factory Integrated | 1 | $0 | $0 |
 | (2) | `P73325-B21` | HPE ProLiant Compute Localization FIO Kit | 1 | $4 | $4 |
-*... [12 additional baseline items omitted for brevity]*
+*... [9 additional baseline items omitted for brevity]*
 
 ## ⏱️ 10. Supply Chain & Delivery Lead Time Intelligence
+
+### Confirmed Component Delivery SLAs
+
+| Product # | Description | Category | Lead Time | Channel Status |
+|---|---|---|---:|---|
+| `P68503-B21` | ENERGY STAR 4.0 FIO Trigger Configuration Kit for HPE | Accessories & Infrastructure | 1 | Available |
+| `P73831-B21` | Intel Xeon 6747P 2.7GHz 48-core 330W Processor for HPE | Processor | 120 | Available |
+| `P74503-B21` | Intel Xeon 6505P 2.2GHz 12-core 150W Processor for HPE | Processor | 14 | Available |
+| `P74504-B21` | Intel Xeon 6507P 3.5GHz 8-core 150W Processor for HPE | Processor | 14 | Available |
+| `P74506-B21` | Intel Xeon 6515P 2.3GHz 16-core 150W Processor for HPE | Processor | 14 | Available |
+| `P74507-B21` | Intel Xeon 6517P 3.2GHz 16-core 190W Processor for HPE | Processor | 14 | Available |
+| `P74509-B21` | Intel Xeon 6724P 3.6GHz 16-core 210W Processor for HPE | Processor | 14 | Available |
+| `P74568-B21` | Intel Xeon 6520P 2.4GHz 24-core 210W Processor for HPE | Processor | 14 | Available |
+| `P74570-B21` | Intel Xeon 6527P 3.0GHz 24-core 255W Processor for HPE | Processor | 14 | Available |
+| `P74571-B21` | Intel Xeon 6530P 2.3GHz 32-core 225W Processor for HPE | Processor | 14 | Available |
+| `P74573-B21` | Intel Xeon 6730P 2.5GHz 32-core 250W Processor for HPE | Processor | 5 | Available |
+| `P74576-B21` | Intel Xeon 6737P 2.9GHz 32-core 270W Processor for HPE | Processor | 14 | Available |
+| `P74577-B21` | Intel Xeon 6738P 2.9GHz 32-core 270W Processor for HPE | Processor | 3 | Available |
+| `P71117-B21` | Intel Xeon 6710E 2.4GHz 64-core 205W Processor for HPE | Processor | 14 | Available |
+| `P71124-B21` | Intel Xeon 6780E 2.2GHz 144-core 330W Processor for HPE | Processor | 14 | Available |
+| `P73829-B21` | Intel Xeon 6740P 2.1GHz 48-core 270W Processor for HPE | Processor | 5 | Available |
+| `P73832-B21` | Intel Xeon 6760P 2.2GHz 64-core 330W Processor for HPE | Processor | 120 | Available |
+| `P73834-B21` | Intel Xeon 6767P 2.4GHz 64-core 350W Processor for HPE | Processor | 5 | Available |
+| `P73837-B21` | Intel Xeon 6787P 2.0GHz 86-core 350W Processor for HPE | Processor | 5 | Available |
+| `P74508-B21` | Intel Xeon 6714P 4.0GHz 8-core 165W Processor for HPE | Processor | 14 | Available |
+| `P74572-B21` | Intel Xeon 6728P 2.7GHz 24-core 210W Processor for HPE | Processor | 14 | Available |
+| `P74575-B21` | Intel Xeon 6736P 2.0GHz 36-core 205W Processor for HPE | Processor | 14 | Available |
+| `P74578-B21` | Intel Xeon 6732P 3.8GHz 32-core 350W Processor for HPE | Processor | 120 | Available |
+| `P74579-B21` | Intel Xeon 6748P 2.5GHz 48-core 300W Processor for HPE | Processor | 120 | Available |
+| `P81591-B21` | Intel Xeon 6745P 3.1GHz 32-core 300W Processor for HPE | Processor | 60 | Available |
+| `P87302-B21` | Intel Xeon 6725P 3.7GHz 16-core 235W Processor for HPE | Processor | 120 | Available |
+| `P90157-B21` | Intel Xeon 6762P 2.9GHz 64-core 350W Processor for HPE | Processor | 120 | Available |
+| `P74792-B21` | HPE ProLiant Compute DL380 Gen12 2U High Performance Heat Sink Kit | Cooling / Thermal | 7 | Available |
+| `P49145-B21` | HPE ProLiant DL380 2U Standard Heat Sink Kit | Cooling / Thermal | 8 | Not published by OCA |
+| `P74204-B21` | HPE ProLiant Compute DL380 Gen12 Cold Plate Module FIO Kit from PCIe NS204-u | Cooling / Thermal | 4 | Not published by OCA |
+*... [335 additional supply chain records omitted for brevity]*
 
 ### ⚠️ Supply Chain Verification Advisory (Unpublished Delivery Lead Times)
 
@@ -670,20 +738,20 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 | Product # | Description | Category | Lead Time Status | Presales Action |
 |---|---|---|:---:|---|
-| `P71117-B21` | Intel Xeon 6710E 2.4GHz 64-core 205W Processor for HPE | Processor | **Unpublished** | Verify distributor inventory prior to SLA commitment |
-| `P73834-B21` | Intel Xeon 6767P 2.4GHz 64-core 350W Processor for HPE | Processor | **Unpublished** | Verify distributor inventory prior to SLA commitment |
-| `P74508-B21` | Intel Xeon 6714P 4.0GHz 8-core 165W Processor for HPE | Processor | **Unpublished** | Verify distributor inventory prior to SLA commitment |
-| `P74509-B21` | Intel Xeon 6724P 3.6GHz 16-core 210W Processor for HPE | Processor | **Unpublished** | Verify distributor inventory prior to SLA commitment |
-| `P74570-B21` | Intel Xeon 6527P 3.0GHz 24-core 255W Processor for HPE | Processor | **Unpublished** | Verify distributor inventory prior to SLA commitment |
-| `P74571-B21` | Intel Xeon 6530P 2.3GHz 32-core 225W Processor for HPE | Processor | **Unpublished** | Verify distributor inventory prior to SLA commitment |
-| `P74573-B21` | Intel Xeon 6730P 2.5GHz 32-core 250W Processor for HPE | Processor | **Unpublished** | Verify distributor inventory prior to SLA commitment |
-| `P74576-B21` | Intel Xeon 6737P 2.9GHz 32-core 270W Processor for HPE | Processor | **Unpublished** | Verify distributor inventory prior to SLA commitment |
+| `P73282-B21` | HPE ProLiant Compute DL380 Gen12 SFF NC Configure-to-order Server | Chassis | **Unpublished** | Verify distributor inventory prior to SLA commitment |
+| `P73283-B21` | HPE ProLiant Compute DL380 Gen12 24SFF NC Configure-to-order Server | Chassis | **Unpublished** | Verify distributor inventory prior to SLA commitment |
+| `P73284-B21` | HPE ProLiant Compute DL380 Gen12 12LFF NC Configure-to-order Server | Chassis | **Unpublished** | Verify distributor inventory prior to SLA commitment |
+| `P73285-B21` | HPE ProLiant Compute DL380 Gen12 8LFF NC Configure-to-order Server | Chassis | **Unpublished** | Verify distributor inventory prior to SLA commitment |
+| `P73286-B21` | HPE ProLiant Compute DL380 Gen12 EDSFF NC Configure-to-order Server | Chassis | **Unpublished** | Verify distributor inventory prior to SLA commitment |
 | `P71118-B21` | Intel Xeon 6731E 2.2GHz 96-core 250W Processor for HPE | Processor | **Unpublished** | Verify distributor inventory prior to SLA commitment |
 | `P71119-B21` | Intel Xeon 6740E 2.4GHz 96-core 250W Processor for HPE | Processor | **Unpublished** | Verify distributor inventory prior to SLA commitment |
 | `P71120-B21` | Intel Xeon 6746E 2.0GHz 112-core 250W Processor for HPE | Processor | **Unpublished** | Verify distributor inventory prior to SLA commitment |
 | `P71121-B21` | Intel Xeon 6756E 1.8GHz 128-core 225W Processor for HPE | Processor | **Unpublished** | Verify distributor inventory prior to SLA commitment |
 | `P71122-B21` | Intel Xeon 6766E 1.9GHz 144-core 250W Processor for HPE | Processor | **Unpublished** | Verify distributor inventory prior to SLA commitment |
-| `P71124-B21` | Intel Xeon 6780E 2.2GHz 144-core 330W Processor for HPE | Processor | **Unpublished** | Verify distributor inventory prior to SLA commitment |
-| `P73829-B21` | Intel Xeon 6740P 2.1GHz 48-core 270W Processor for HPE | Processor | **Unpublished** | Verify distributor inventory prior to SLA commitment |
-*... [359 additional unpublished items omitted for brevity]*
+| `P73835-B21` | Intel Xeon 6768P 2.4GHz 64-core 330W Processor for HPE | Processor | **Unpublished** | Verify distributor inventory prior to SLA commitment |
+| `P73838-B21` | Intel Xeon 6788P 2.0GHz 86-core 350W Processor for HPE | Processor | **Unpublished** | Verify distributor inventory prior to SLA commitment |
+| `P69726-B21` | HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit | Memory | **Unpublished** | Verify distributor inventory prior to SLA commitment |
+| `P69726-F21` | HPE 16GB (1x16GB) Single Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit | Memory | **Unpublished** | Verify distributor inventory prior to SLA commitment |
+| `P69727-B21` | HPE 32GB (1x32GB) Dual Rank x8 DDR5-6400 CAS-52-52-52 EC8 Registered Smart Memory Kit | Memory | **Unpublished** | Verify distributor inventory prior to SLA commitment |
+*... [313 additional unpublished items omitted for brevity]*
 

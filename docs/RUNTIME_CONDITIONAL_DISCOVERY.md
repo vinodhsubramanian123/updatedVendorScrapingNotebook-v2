@@ -26,7 +26,18 @@ Product scope is **vendor + solution domain + family + generation + exact base S
 
 The Synergy 12000 frame `P51174-B21` has its own commercial frame catalog. Capture its menu with `npm run scrape -- --chassis Synergy_12000_Frame`. The frame catalog records options offered by the frame, including power cords and module part numbers. The F32 and 4-port Frame Link Module captures use the Components tree under the exact frame. For the Brocade 64Gb Fibre Channel Module, the scraper selects one `P77653-B21` in a fresh frame configuration, reads back that selection, and opens its owned menu. All three captures verify the exact child and parent SKUs. Support evidence records selected services or the absence of the component in the observed service tree. Alternative service selections and other portal configurations require separate observations.
 
-Run `node scripts/maintenance/audit_product_rules_association.js --require-fresh` to compare the product inventory and its known owned scopes with catalog and capture receipts. The portfolio dashboard shows the OCA capture and NotebookLM publication dates independently. A recent publication can refer to an older capture. New capture work uses `outputs/.catalog-staging`; the resume command can also read retained stages from the previous `outputs/temp` location.
+Run `node scripts/maintenance/audit_product_rules_association.js --require-fresh --require-published` to compare the product inventory and its known owned scopes with capture receipts and the published artifact hashes. The portfolio dashboard shows the OCA capture and NotebookLM publication dates independently. A recent publication can refer to an older capture. New capture work uses `outputs/.catalog-staging`; the resume command can also read retained stages from the previous `outputs/temp` location.
+
+### Nested product scopes
+
+Register each independently configurable menu in `scripts/config/notebooks.json` with its exact `baseSku`, family, generation, pillar, and coverage profile. For a menu reached through another product, set `captureViaParent: true` and `parentProductId` to its immediate owner. Set `ocaMenuName` to the displayed OCA menu title for models the product parser does not recognize. Use `ocaSearchQuery` on a root registration when its portal search label differs from the product ID. A `parentOptionCategory` can identify a verified selector that reveals a child in a fresh catalog configuration.
+
+The capture starts at the registered root and verifies every base SKU and breadcrumb before entering the next owned menu. Receipts bind the complete ownership path. The planner adds the ancestors needed to capture a leaf, and `--include-owned` walks the registered subtree. Keep independent expected scopes in `ownedCatalogs` in `scripts/config/chassis_map.json`. Nested declarations can use their own `ownedCatalogs` lists. The audit surfaces missing registrations, invalid ownership paths, and unregistered configured menus observed in OCA. A menu visible only under an unvisited selector remains outside the observed capture.
+
+```powershell
+node scripts/catalogs/ensure_catalogs.js --product Synergy_12000_Frame --include-owned
+node scripts/catalogs/ensure_catalogs.js --product Synergy_12000_Frame --include-owned --execute
+```
 
 **Current automation boundary:** hidden-DOM extraction and ambient probing exist. CPU/backplane/PSU/GPU/NIC/fan multi-selector traversal and exhaustive all-base capture are not implemented as unattended enumeration. Mark unvisited branches explicitly. Do not convert intended sweep tables in a skill into a success claim.
 

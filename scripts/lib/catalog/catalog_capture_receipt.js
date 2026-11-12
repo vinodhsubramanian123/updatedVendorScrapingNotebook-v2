@@ -110,8 +110,13 @@ function verifyRegisteredCaptureScope(product, raw) {
     throw new Error(`Capture base does not match registered SKU ${entry.baseSku}`);
   }
   if (entry?.captureViaParent) {
-    const parentSku = notebooks[entry.parentProductId]?.baseSku;
-    if (!parentSku || raw.parentBaseSku !== parentSku || !raw.parentConfiguration) {
+    const { resolveOwnedCatalogPath, matchesOwnedCatalogPath } = require('./catalog_hierarchy');
+    const expected = resolveOwnedCatalogPath(product, notebooks);
+    const parentSku = expected.at(-2).baseSku;
+    const pathMatches = raw.scopePath ? matchesOwnedCatalogPath(expected, raw.scopePath) &&
+      raw.scopePath.at(-1).ownerConfiguration === raw.ownerConfiguration && raw.scopePath.at(-2).ownerConfiguration === raw.parentConfiguration
+      : expected.length === 2;
+    if (!pathMatches || raw.parentBaseSku !== parentSku || !raw.parentConfiguration) {
       throw new Error(`Capture does not establish the exact parent of ${product}. Use its parent-scoped capture.`);
     }
   }
@@ -162,6 +167,7 @@ function createCaptureReceipt(stagingDir, liveDir, product, options = {}) {
       ownerConfiguration: ownerConfig,
       ...(raw.parentBaseSku ? { parentBaseSku: raw.parentBaseSku } : {}),
       ...(raw.parentConfiguration ? { parentConfiguration: raw.parentConfiguration } : {}),
+      ...(raw.scopePath ? { scopePath: raw.scopePath } : {}),
       solutionDomain,
       observedUrl: raw.url || null
     },
@@ -170,6 +176,7 @@ function createCaptureReceipt(stagingDir, liveDir, product, options = {}) {
       outsideTableNotesCaptured: raw.outsideTableNotesCaptured === true,
       conditionalDiscovery: raw.conditionalDiscovery || 'UNVERIFIED',
       ...(raw.componentServiceEvidence ? { componentServiceEvidence: raw.componentServiceEvidence } : {}),
+      ...(raw.ownedMenuDiscovery ? { ownedMenuDiscovery: raw.ownedMenuDiscovery } : {}),
       baseSku: selectedBase,
       ownerConfiguration: ownerConfig,
       solutionDomain,

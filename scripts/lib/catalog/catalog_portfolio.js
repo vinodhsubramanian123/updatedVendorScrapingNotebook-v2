@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const { calculateFileSha256, discoverAllProductCatalogs } = require('./product_metadata_manager.js');
 const { auditCatalogFreshness } = require('./catalog_freshness_guard.js');
+const { resolveOwnedCatalogPath, matchesOwnedCatalogPath, collectDeclaredCatalogScopes } = require('./catalog_hierarchy');
 
 const readJson = file => JSON.parse(fs.readFileSync(file, 'utf8'));
 const configDir = path.resolve(__dirname, '../../config');
@@ -17,7 +18,7 @@ function receiptMatchesArtifacts(receipt, artifact, product) {
     receipt.rawSha256 === calculateFileSha256(path.join(artifact.outputDir, 'raw_data', 'oca_raw_data_full.json'));
 }
 
-function inspectCapture(product, artifact, { baseSku, parentBaseSku, verifyHashes }) {
+function inspectCapture(product, artifact, { baseSku, scopePath, verifyHashes }) {
   if (!artifact) return { captureStatus: 'CATALOG_MISSING', capturedAt: null, freshnessStatus: 'UNKNOWN' };
   let catalog;
   try { catalog = readJson(artifact.catalogPath); }
@@ -30,29 +31,38 @@ function inspectCapture(product, artifact, { baseSku, parentBaseSku, verifyHashe
 
   try {
     const receipt = readJson(receiptPath);
+    const provenance = receipt.provenance || {};
+    const parentBaseSku = scopePath?.at(-2)?.baseSku;
+    const validPath = !scopePath || (provenance.scopePath
+      ? matchesOwnedCatalogPath(scopePath, provenance.scopePath) && provenance.scopePath.at(-1).ownerConfiguration === provenance.ownerConfiguration &&
+        provenance.scopePath.at(-2).ownerConfiguration === provenance.parentConfiguration : scopePath.length === 2);
     const sameCapture = Number.isFinite(Date.parse(dates.capturedAt)) &&
       Date.parse(receipt.capturedAt) === Date.parse(dates.capturedAt);
-    const exactScope = receipt.product === product && Boolean(receipt.provenance?.ownerConfiguration) &&
-      (!baseSku || receipt.provenance?.baseSku === baseSku) &&
-      (!parentBaseSku || receipt.provenance?.parentBaseSku === parentBaseSku);
+    const exactScope = receipt.product === product && Boolean(provenance.ownerConfiguration) && validPath &&
+      (!baseSku || provenance.baseSku === baseSku) && (!parentBaseSku || provenance.parentBaseSku === parentBaseSku);
     const sameArtifacts = !verifyHashes || receiptMatchesArtifacts(receipt, artifact, product);
     const verified = sameCapture && exactScope && sameArtifacts && receipt.status === 'LOCAL_PROMOTED' &&
       receipt.coverage?.policy?.valid === true;
     return { ...dates, captureStatus: verified ? 'VERIFIED' : 'RECEIPT_MISMATCH',
-      artifactHashes: verified ? receipt.hashes : null };
+      artifactHashes: verified ? receipt.hashes : null, ownedMenuDiscovery: verified ? receipt.coverage?.ownedMenuDiscovery : null };
   } catch {
     return { ...dates, captureStatus: 'RECEIPT_UNREADABLE' };
   }
 }
 
-function summarizeProduct(product, registration, profile, expectedScope, matches, { parentBaseSku, verifyHashes }) {
-  const baseSku = registration?.baseSku || profile?.baseSku || expectedScope?.baseSku || null;
-  const { artifactHashes, ...capture } = inspectCapture(product, matches[0], { baseSku, parentBaseSku, verifyHashes });
-  const coverageIssues = [
+function catalogCoverageIssues(registration, expectedScope, matches, captureStatus) {
+  return [
     !registration && 'PRODUCT_UNREGISTERED',
     matches.length > 1 && 'DUPLICATE_CATALOGS',
-    capture.captureStatus !== 'VERIFIED' && capture.captureStatus
+    captureStatus !== 'VERIFIED' && captureStatus,
+    expectedScope?.declarationIssue,
+    registration && expectedScope && (registration.parentProductId !== expectedScope.parentProductId || registration.baseSku !== expectedScope.baseSku) && 'OWNED_SCOPE_REGISTRY_MISMATCH'
   ].filter(Boolean);
+}
+
+function summarizeProduct(product, registration, profile, expectedScope, matches, { scopePath, verifyHashes }) {
+  const baseSku = registration?.baseSku || profile?.baseSku || expectedScope?.baseSku || null;
+  const { artifactHashes, ...capture } = inspectCapture(product, matches[0], { baseSku, scopePath, verifyHashes });
   return {
     product,
     name: profile?.product || expectedScope?.name || product.replace(/_/g, ' '),
@@ -60,24 +70,15 @@ function summarizeProduct(product, registration, profile, expectedScope, matches
     generation: registration?.gen || registration?.generation || profile?.generation || expectedScope?.generation || null,
     baseSku,
     parentProductId: registration?.parentProductId || expectedScope?.parentProductId || null,
+    ownershipPath: scopePath?.map(({ productId, baseSku }) => ({ productId, baseSku })) || null,
     hasCatalog: matches.length > 0,
     ...capture,
-    coverageIssues,
+    coverageIssues: catalogCoverageIssues(registration, expectedScope, matches, capture.captureStatus),
     publishedAt: registration?.lastSyncedAt || null,
     publishedCaptureMatches: artifactHashes && registration?.lastArtifactHashes
       ? captureArtifacts.every(suffix => artifactHashes[suffix] === registration.lastArtifactHashes[suffix]) : null,
     cloudSyncStatus: registration?.cloudSyncState || 'UNSYNCED'
   };
-}
-
-function getOwnedCatalogScopes(chassisGroups) {
-  const scopes = new Map();
-  for (const group of Object.values(chassisGroups || {})) {
-    for (const child of group.ownedCatalogs || []) {
-      scopes.set(child.productId, { ...child, family: group.family, generation: group.gen, parentProductId: group.catalogProductId });
-    }
-  }
-  return scopes;
 }
 
 function getCatalogPortfolioCoverage({
@@ -86,7 +87,7 @@ function getCatalogPortfolioCoverage({
   chassisGroups = readJson(path.join(configDir, 'chassis_map.json')).chassis_base_skus_by_family_gen,
   artifacts = discoverAllProductCatalogs(), verifyHashes = true
 } = {}) {
-  const owned = getOwnedCatalogScopes(chassisGroups);
+  const owned = collectDeclaredCatalogScopes(chassisGroups);
   const expected = new Set([...Object.keys(notebooks), ...Object.keys(profiles), ...owned.keys()]);
   for (const group of Object.values(chassisGroups || {})) {
     if (group.catalogProductId) expected.add(group.catalogProductId);
@@ -105,10 +106,23 @@ function getCatalogPortfolioCoverage({
 
   return [...new Set([...expected, ...byProduct.keys()])].map(product => {
     const registration = notebooks[product];
-    const parentBaseSku = registration?.captureViaParent ? notebooks[registration.parentProductId]?.baseSku : null;
-    const summary = summarizeProduct(product, registration, profiles[product], owned.get(product), byProduct.get(product) || [], { parentBaseSku, verifyHashes });
+    let scopePath = null;
+    let ownershipIssue = null;
+    try { if (registration?.captureViaParent) scopePath = resolveOwnedCatalogPath(product, notebooks); }
+    catch (error) { ownershipIssue = error.message; }
+    const summary = summarizeProduct(product, registration, profiles[product], owned.get(product), byProduct.get(product) || [], { scopePath, verifyHashes });
+    if (ownershipIssue) summary.coverageIssues.push(ownershipIssue);
     if (summary.parentProductId && !notebooks[summary.parentProductId]) {
       summary.coverageIssues.push('PARENT_UNREGISTERED');
+    }
+    const hasOwnedScopes = Object.values(notebooks).some(entry => entry?.parentProductId === product && entry.captureViaParent);
+    if (hasOwnedScopes && summary.ownedMenuDiscovery && summary.ownedMenuDiscovery.status !== 'OBSERVED_CONFIGURED_CHILD_MENUS') {
+      summary.coverageIssues.push(`OWNED_MENU_INVENTORY_UNVERIFIED: ${summary.ownedMenuDiscovery.status}`);
+    }
+    for (const baseSku of new Set((summary.ownedMenuDiscovery?.children || []).map(child => child.baseSku))) {
+      const mappings = Object.values(notebooks).filter(entry => entry?.parentProductId === product && entry.baseSku === baseSku);
+      if (!baseSku) summary.coverageIssues.push('OBSERVED_MENU_WITHOUT_BASE_SKU');
+      else if (mappings.length !== 1) summary.coverageIssues.push(`${mappings.length ? 'AMBIGUOUS' : 'UNREGISTERED'}_OBSERVED_OWNED_SKU: ${baseSku}`);
     }
     return summary;
   });

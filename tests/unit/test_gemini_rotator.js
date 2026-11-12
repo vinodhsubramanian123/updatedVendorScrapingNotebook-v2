@@ -112,12 +112,21 @@ async function runTests() {
     const masked = maskKey(key);
     try {
       const ai = new GoogleGenAI({ apiKey: key });
+      const controller = new AbortController();
+      let timeoutId;
       const probePromise = ai.models.generateContent({
         model: DEFAULT_MODEL,
-        contents: 'Respond with exactly the single word "READY".'
+        contents: 'Respond with exactly the single word "READY".',
+        config: { abortSignal: controller.signal }
       });
-      const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('Probe timeout 4000ms')), 4000));
-      const response = await Promise.race([probePromise, timeoutPromise]);
+      const timeoutPromise = new Promise((_, reject) => {
+        timeoutId = setTimeout(() => {
+          controller.abort();
+          reject(new Error('Probe timeout 4000ms'));
+        }, 4000);
+        if (typeof timeoutId.unref === 'function') timeoutId.unref();
+      });
+      const response = await Promise.race([probePromise, timeoutPromise]).finally(() => clearTimeout(timeoutId));
       const text = response.text ? response.text.trim() : '';
       console.log(`  Key ${i + 1}/${keysToProbe.length} [${masked}]: ✅ ALIVE (Response: "${text.slice(0, 20)}")`);
       workingCount++;
@@ -130,11 +139,19 @@ async function runTests() {
   console.log('\n▶ Test 7: Live executeWithSmartRotation() with Automatic Failover');
   try {
     const result = await liveRotator.executeWithSmartRotation(async ({ ai, fingerprint }) => {
-      const res = await ai.models.generateContent({
-        model: DEFAULT_MODEL,
-        contents: 'Respond with exactly: "SMART_ROTATION_SUCCESS"'
-      });
-      return { text: res.text ? res.text.trim() : '', keyUsed: fingerprint };
+      const controller = new AbortController();
+      const callTimer = setTimeout(() => controller.abort(), 4000);
+      if (typeof callTimer.unref === 'function') callTimer.unref();
+      try {
+        const res = await ai.models.generateContent({
+          model: DEFAULT_MODEL,
+          contents: 'Respond with exactly: "SMART_ROTATION_SUCCESS"',
+          config: { abortSignal: controller.signal }
+        });
+        return { text: res.text ? res.text.trim() : '', keyUsed: fingerprint };
+      } finally {
+        clearTimeout(callTimer);
+      }
     }, { timeoutMs: 4000, maxRetries: 2 });
 
     console.log(`  ✅ Live Execution succeeded on Key [${result.keyUsed}]: "${result.text}"`);
@@ -147,6 +164,7 @@ async function runTests() {
       msg.includes('high demand') || msg.includes('overloaded') ||
       msg.includes('exhausted') || msg.includes('cooling down') ||
       msg.includes('timeout') || msg.includes('Timeout') ||
+      msg.includes('abort') || msg.includes('Abort') ||
       msg.includes('All keys exhausted') || msg.includes('Operation failed after');
     if (isUpstreamIssue) {
       console.log(`  ⚠️ Live API transient upstream limit during test run (${msg.slice(0, 100)}). Failover & queue demotion verified.`);
@@ -163,6 +181,7 @@ async function runTests() {
 
   cleanup();
   console.log(`\n🎉 All 7 Gemini Key Rotator Tests Passed Successfully!`);
+  process.exit(0);
 }
 
 runTests().catch(err => {

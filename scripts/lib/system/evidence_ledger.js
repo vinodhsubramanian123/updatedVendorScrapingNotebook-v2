@@ -294,7 +294,7 @@ class EvidenceLedger {
       else if (phase.status === 'RUNNING') gaps.push(`PHASE_${nStr}_UNFINISHED`);
     }
     if (!this.skuAuditLedger.length && !abortedInPhase1) gaps.push('SKU_DECISIONS_MISSING');
-    if (!this.artifacts.some(a => a.role === 'CUSTOMER_INPUT' && a.sha256)) gaps.push('INPUT_FINGERPRINT_MISSING');
+    if (!this.artifacts.some(a => a.role === 'CUSTOMER_INPUT' && a.sha256) && !abortedInPhase1) gaps.push('INPUT_FINGERPRINT_MISSING');
     const outcomes = Object.values(this.phases).map(p => p.status === 'ACTION_REQUIRED' &&
       this.phaseResolutions.some(resolution => resolution.phaseNum === p.phaseNumber) ? 'RESOLVED' : p.status);
     const workflowStatus = this.workflowFailures.length || outcomes.includes('FAILED') ? 'FAILED' :

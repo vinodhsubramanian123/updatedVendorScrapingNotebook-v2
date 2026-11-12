@@ -103,6 +103,11 @@ function loadBoqHandler(pipeline) {
   assert.ok(start > 0 && end > start);
   return vm.runInNewContext(source.slice(start, end) + '\n_handleBoqEvaluation;', {
     getChassisCatalog: () => ({ catalogDir: 'fixture' }),
+    OCR_IMAGE_EXTENSIONS: ['.png', '.jpg', '.jpeg', '.webp', '.tiff', '.bmp', '.pdf'],
+    path,
+    _resolveContextPolicy: (context = {}, { defaultOffline = false } = {}) => ({
+      offline: Boolean(context.offlineMode ?? context.offline ?? defaultOffline)
+    }),
     fs: { existsSync: () => true }, process: { env: {} },
     require: name => { assert.equal(name, './eval_boq.js'); return { runEvaluationPipeline: pipeline }; }
   });

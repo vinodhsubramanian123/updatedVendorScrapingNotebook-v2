@@ -2,7 +2,7 @@
   "query": "DL380 Gen12",
   "selectedSku": "P73282-B21",
   "source": "HPE OCA Product Search via authenticated CDP session",
-  "capturedAt": "2026-10-29T06:23:30.660Z",
+  "capturedAt": "2026-11-12T10:47:49.270Z",
   "deliveryEstimate": "",
   "candidates": [
     {
@@ -307,7 +307,7 @@
     },
     {
       "type": "direct-button",
-      "cardSelector": "[data-cand-idx=\"7\"]",
+      "cardSelector": "[data-cand-idx=\"8\"]",
       "text": "DL380 Gen12 Enterprise AI - Small Scale AI Inferencing RTX PRO 4500 BSE The HPE ProLiant DL380 Gen12 EDSFF NC Configure-to-order Server delivers reliable, balanced performance for modern enterprise workloads. Featuring dual Intel Xeon 6515P 2.3GHz 16-core processors and 128GB (4x32GB) DDR5 memory, it is optimized for virtualization, databases, and mixed-use applications. Equipped with two 3.2TB NVMe Gen5 EDSFF SSDs, this server provides fast, high-performance storage for demanding data tasks. The included 5-year HPE Compute Ops Management Standard SaaS offers secure, cloud-based management for streamlined IT operations. - 2.3GHz 16-core - 1024GB - HPE 3.2TB NVMe Gen5 High Performance Mixed Use E3S EC1 EDSFF SPDM CM7 SSD i Unlocked Compare STs USD 132,101.50 Estimated Net Price Customize Quote",
       "sku": "DL380",
       "listPriceUsd": 0,
@@ -321,7 +321,7 @@
     },
     {
       "type": "direct-button",
-      "cardSelector": "[data-cand-idx=\"8\"]",
+      "cardSelector": "[data-cand-idx=\"9\"]",
       "text": "DL380 Gen12 Enterprise AI - Medium Scale AI Inferencing RTX PRO 4500 BSE The HPE ProLiant DL380 Gen12 EDSFF NC Configure-to-order Server delivers robust performance and scalability for demanding enterprise workloads. Powered by dual Intel Xeon 6527P 3.0GHz 24-core processors and 256GB (8x32GB) DDR5 memory, it excels at virtualization, database, and analytics tasks. Four 3.2TB NVMe Gen5 EDSFF SSDs provide high-speed, reliable storage for mixed-use applications. The included 5-year HPE Compute Ops Management Standard SaaS ensures streamlined, secure cloud-based server management and simplified IT operations. - 2x 3.0GHz 24-core - 256GB - HPE 3.2TB NVMe Gen5 High Performance Mixed Use E3S EC1 EDSFF SPDM CM7 SSD i Unlocked Compare STs USD 72,317.36 Estimated Net Price Customize Quote",
       "sku": "DL380",
       "listPriceUsd": 0,
@@ -335,7 +335,7 @@
     },
     {
       "type": "direct-button",
-      "cardSelector": "[data-cand-idx=\"15\"]",
+      "cardSelector": "[data-cand-idx=\"16\"]",
       "text": "DL380 Gen12 Virtualization, large-scale VMs and container workloads, database management, data analytics The HPE ProLiant DL380 Gen12 Configure to Order Server with two Intel Xeon 6527P 24 core processors, 256 GB total DDR5 memory, and two 1.92TB SATA read-intensive SSDs is well-suited for virtualization environments, supporting large-scale VMs and container workloads with excellent performance. It is well-suited for database management, including transactional and analytical processing, benefiting from high read speeds and reliable storage. The server is also suitable for data analytics, backup and recovery solutions, remote desktop services, and hybrid cloud deployments. Its scalable architecture allows for future expansion to accommodate growing workload demands, making it a versatile platform for enterprise data centers. - 2x 3.0GHz 24-core - 256GB - 1.92TB SATA 6G Read Intensive SFF BC Multi Vendor SSD i Unlocked Compare STs USD 35,781.46 Estimated Net Price Customize Quote",
       "sku": "DL380",
       "listPriceUsd": 0,
@@ -966,6 +966,36 @@
     },
     {
       "type": "dropdown-option",
+      "cardSelector": "[data-cand-idx=\"2\"]",
+      "optionValue": "P98090-AA5",
+      "text": "P98090-AA5 - HPE ProLiant Compute DL380 Gen12 6515P 2.3GHz 16c 1P 1x64GB-R 8SFF MR416i-o 2x1000W PS CN Server",
+      "sku": "P98090-AA5",
+      "listPriceUsd": 0,
+      "availability": "Available in OCA product catalog",
+      "leadTime": "",
+      "deliveryLabel": "",
+      "isBto": true,
+      "isTaa": false,
+      "isGta": false,
+      "isCto": false
+    },
+    {
+      "type": "dropdown-option",
+      "cardSelector": "[data-cand-idx=\"2\"]",
+      "optionValue": "P98311-295",
+      "text": "P98311-295 - HPE ProLiant Compute DL380 Gen12 6515P 2.3GHz 16c 1P 1x64GB-R 16SFF MR416i-p 2x1000W PS JP Server",
+      "sku": "P98311-295",
+      "listPriceUsd": 0,
+      "availability": "Available in OCA product catalog",
+      "leadTime": "",
+      "deliveryLabel": "",
+      "isBto": true,
+      "isTaa": false,
+      "isGta": false,
+      "isCto": false
+    },
+    {
+      "type": "dropdown-option",
       "cardSelector": "[data-cand-idx=\"3\"]",
       "optionValue": "P73282-B21#GTA_CTOLITE",
       "text": "P73282-B21#GTA - HPE DL380 Gen12 SFF Networking Choice TAA Compliant Configure-to-order Server",
@@ -1042,6 +1072,36 @@
     {
       "type": "dropdown-option",
       "cardSelector": "[data-cand-idx=\"4\"]",
+      "optionValue": "hc380AzureStackG12GTA",
+      "text": "hc380AzureStackG12GTA - HPE DL380 Gen12 Server Premier Solution for Azure Local TAA Compliant Product",
+      "sku": "HC380AZURESTACKG12GTA",
+      "listPriceUsd": 0,
+      "availability": "Available in OCA product catalog",
+      "leadTime": "",
+      "deliveryLabel": "",
+      "isBto": true,
+      "isTaa": true,
+      "isGta": false,
+      "isCto": false
+    },
+    {
+      "type": "dropdown-option",
+      "cardSelector": "[data-cand-idx=\"4\"]",
+      "optionValue": "hc380AzureStackG12Server",
+      "text": "hc380AzureStackG12Server - HPE ProLiant Compute DL380 Gen12 Server Premier Solution for Azure Local - Wizard",
+      "sku": "HC380AZURESTACKG12SERVER",
+      "listPriceUsd": 0,
+      "availability": "Available in OCA product catalog",
+      "leadTime": "",
+      "deliveryLabel": "",
+      "isBto": true,
+      "isTaa": false,
+      "isGta": false,
+      "isCto": false
+    },
+    {
+      "type": "dropdown-option",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P74734-B21",
       "text": "P74734-B21 - HPE ProLiant Compute DL380 Gen12 2SFF Rear Primary/Secondary Riser Cage Kit",
       "sku": "P74734-B21",
@@ -1056,7 +1116,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P74741-B21",
       "text": "P74741-B21 - HPE ProLiant Compute DL380 Gen12 4LFF SAS/SATA LP Midplane Drive Cage Kit",
       "sku": "P74741-B21",
@@ -1071,7 +1131,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P74746-B21",
       "text": "P74746-B21 - HPE ProLiant Compute DL380 Gen12 2LFF Rear Primary Drive Cage Kit",
       "sku": "P74746-B21",
@@ -1086,7 +1146,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P74748-B21",
       "text": "P74748-B21 - HPE ProLiant Compute DL380 Gen12 System Insight Display Kit",
       "sku": "P74748-B21",
@@ -1101,7 +1161,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P75411-B21",
       "text": "P75411-B21 - HPE ProLiant Compute DL380 Gen12 2LFF Rear/Tertiary Drive Cage Kit",
       "sku": "P75411-B21",
@@ -1116,7 +1176,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P76452-B21",
       "text": "P76452-B21 - HPE ProLiant Compute DL380 Gen12 8SFF/2SFF UMB OROC Cable Kit",
       "sku": "P76452-B21",
@@ -1131,7 +1191,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P76453-B21",
       "text": "P76453-B21 - HPE ProLiant Compute DL380 Gen12 8SFF/2SFF UMB PCIe Cable Kit",
       "sku": "P76453-B21",
@@ -1146,7 +1206,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P76454-B21",
       "text": "P76454-B21 - HPE ProLiant Compute DL380 Gen12 OROC 8SFF x2 Controller Cable Kit",
       "sku": "P76454-B21",
@@ -1161,7 +1221,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P76456-B21",
       "text": "P76456-B21 - HPE ProLiant Compute DL380 Gen12 8SFF x2 PCIe Box 2 Controller Cable Kit",
       "sku": "P76456-B21",
@@ -1176,7 +1236,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P76461-B21",
       "text": "P76461-B21 - HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Box 1 for 2 Processors Cable Kit",
       "sku": "P76461-B21",
@@ -1191,7 +1251,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P76462-B21",
       "text": "P76462-B21 - HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Box 2 Cable Kit",
       "sku": "P76462-B21",
@@ -1206,7 +1266,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P76463-B21",
       "text": "P76463-B21 - HPE ProLiant Compute DL380 Gen12 16SFF x4 2x Gen4 Retimer Card Box 1/3 Cable Kit",
       "sku": "P76463-B21",
@@ -1221,7 +1281,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P76464-B21",
       "text": "P76464-B21 - HPE ProLiant Compute DL380 Gen12 36EDSFF x2 Direct Attach Cable Kit",
       "sku": "P76464-B21",
@@ -1236,7 +1296,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P76465-B21",
       "text": "P76465-B21 - HPE ProLiant Compute DL380 Gen12 12EDSFF x4 Direct Attach Box 2 Cable Kit",
       "sku": "P76465-B21",
@@ -1251,7 +1311,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P76467-B21",
       "text": "P76467-B21 - HPE ProLiant Compute DL380 Gen12 12EDSFF x2 Direct Attach Box 1/2 Cable Kit",
       "sku": "P76467-B21",
@@ -1266,7 +1326,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P76468-B21",
       "text": "P76468-B21 - HPE ProLiant Compute DL380 Gen12 Front 8SFF x4 Direct Attach Box 1/3 Cable Kit",
       "sku": "P76468-B21",
@@ -1281,7 +1341,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P76473-B21",
       "text": "P76473-B21 - HPE ProLiant Compute DL380 Gen12 8LFF PCIe Controller Box 2/3 Cable Kit",
       "sku": "P76473-B21",
@@ -1296,7 +1356,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P76474-B21",
       "text": "P76474-B21 - HPE ProLiant Compute DL380 Gen12 8LFF OROC Box 2/3 Cable Kit",
       "sku": "P76474-B21",
@@ -1311,7 +1371,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P76475-B21",
       "text": "P76475-B21 - HPE ProLiant Compute DL380 Gen12 2SFF x4 PCIe Box 6 Cable Kit",
       "sku": "P76475-B21",
@@ -1326,7 +1386,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P76476-B21",
       "text": "P76476-B21 - HPE ProLiant Compute DL380 Gen12 2SFF x4 U.3 Side-by-Side Cable Kit",
       "sku": "P76476-B21",
@@ -1341,7 +1401,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P76875-B21",
       "text": "P76875-B21 - HPE ProLiant Compute DL380 Gen12 2LFF Rear Secondary Drive Cage Kit",
       "sku": "P76875-B21",
@@ -1356,7 +1416,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P77474-B21",
       "text": "P77474-B21 - HPE ProLiant Compute DL380 Gen12 8LFF PCIe Box 1/7 Cable Kit",
       "sku": "P77474-B21",
@@ -1371,7 +1431,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P77475-B21",
       "text": "P77475-B21 - HPE ProLiant Compute DL380 Gen12 8LFF OROC Box 1/7 Cable Kit",
       "sku": "P77475-B21",
@@ -1386,7 +1446,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P77476-B21",
       "text": "P77476-B21 - HPE ProLiant Compute DL380 Gen12 4EDSFF Front Cable Kit",
       "sku": "P77476-B21",
@@ -1401,7 +1461,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P77477-B21",
       "text": "P77477-B21 - HPE ProLiant Compute DL380 Gen12 2SFF x4 OROC Box 6 OCP Cable Kit",
       "sku": "P77477-B21",
@@ -1416,7 +1476,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P77478-B21",
       "text": "P77478-B21 - HPE ProLiant Compute DL380 Gen12 2SFF HDD Stacking Drive Direct Attach Cable Kit",
       "sku": "P77478-B21",
@@ -1431,7 +1491,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P77480-B21",
       "text": "P77480-B21 - HPE ProLiant Compute DL380 Gen12 OROC 2SFF U.3 Side-by-Side Cable Kit",
       "sku": "P77480-B21",
@@ -1446,7 +1506,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P77481-B21",
       "text": "P77481-B21 - HPE ProLiant Compute DL380 Gen12 2SFF U.3 Side-by-Side Direct Attach Cable Kit",
       "sku": "P77481-B21",
@@ -1461,7 +1521,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P77482-B21",
       "text": "P77482-B21 - HPE ProLiant Compute DL380 Gen12 2SFF Rear PCIe Cable Kit",
       "sku": "P77482-B21",
@@ -1476,7 +1536,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P77483-B21",
       "text": "P77483-B21 - HPE ProLiant Compute DL380 Gen12 2SFF Rear OROC Cable Kit",
       "sku": "P77483-B21",
@@ -1491,7 +1551,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P77484-B21",
       "text": "P77484-B21 - HPE ProLiant Compute DL380 Gen12 2LFF Rear PCIe Cable Kit",
       "sku": "P77484-B21",
@@ -1506,7 +1566,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P77485-B21",
       "text": "P77485-B21 - HPE ProLiant Compute DL380 Gen12 2LFF Rear OROC Cable Kit",
       "sku": "P77485-B21",
@@ -1521,7 +1581,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P77486-B21",
       "text": "P77486-B21 - HPE ProLiant Compute DL380 Gen12 8SFF x2 Direct Attach Cable Kit",
       "sku": "P77486-B21",
@@ -1536,7 +1596,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P77488-B21",
       "text": "P77488-B21 - HPE ProLiant Compute DL380 Gen12 8SFF x4 PCIe for 2 Controllers Box 1/2 Cable Kit",
       "sku": "P77488-B21",
@@ -1551,7 +1611,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P77489-B21",
       "text": "P77489-B21 - HPE ProLiant Compute DL380 Gen12 8SFF x4 Direct Attach Box 2/3 for 1P Cable Kit",
       "sku": "P77489-B21",
@@ -1566,7 +1626,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P77490-B21",
       "text": "P77490-B21 - HPE ProLiant Compute DL380 Gen12 4EDSFF x4 Direct Attach Box 1 Cable Kit",
       "sku": "P77490-B21",
@@ -1581,7 +1641,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P77491-B21",
       "text": "P77491-B21 - HPE ProLiant Compute DL380 Gen12 4EDSFF x4 Direct Attach Box 3 Cable Kit",
       "sku": "P77491-B21",
@@ -1596,7 +1656,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P77492-B21",
       "text": "P77492-B21 - HPE ProLiant Compute DL380 Gen12 16SFF x4 1x Gen4 Retimer Card Box 1/3 Direct Attach Cable Kit",
       "sku": "P77492-B21",
@@ -1611,7 +1671,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P77493-B21",
       "text": "P77493-B21 - HPE ProLiant Compute DL380 Gen12 2SFF x4 Direct Attach Box 6 Cable Kit",
       "sku": "P77493-B21",
@@ -1626,7 +1686,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P81130-B21",
       "text": "P81130-B21 - HPE ProLiant Compute DL380 Gen12 Cooling Upgrade Enablement Kit",
       "sku": "P81130-B21",
@@ -1641,7 +1701,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P83798-B21",
       "text": "P83798-B21 - HPE ProLiant Compute DL380 Gen12 MR932i-p 4EDSFF x4 Signal Cable Kit",
       "sku": "P83798-B21",
@@ -1656,7 +1716,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P83799-B21",
       "text": "P83799-B21 - HPE ProLiant Compute DL380 Gen12 MR932i-p 4EDSFF x2 Signal Cable Kit",
       "sku": "P83799-B21",
@@ -1671,7 +1731,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P83800-B21",
       "text": "P83800-B21 - HPE ProLiant Compute DL380 Gen12 MR932i-p 8SFF x4 Cable Kit",
       "sku": "P83800-B21",
@@ -1686,7 +1746,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P83801-B21",
       "text": "P83801-B21 - HPE ProLiant Compute DL380 Gen12 MR932i-p 8SFF x2 Cable Kit",
       "sku": "P83801-B21",
@@ -1701,7 +1761,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P84481-B21",
       "text": "P84481-B21 - HPE ProLiant Compute DL380 Gen12 MR932i-p 8SFF x1 Cable Kit",
       "sku": "P84481-B21",
@@ -1716,7 +1776,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P87235-B21",
       "text": "P87235-B21 - HPE ProLiant Compute DL380 Gen12 MR932i-p Rear 2SFF Box 4/5 Cable Kit",
       "sku": "P87235-B21",
@@ -1731,7 +1791,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P87236-B21",
       "text": "P87236-B21 - HPE ProLiant Compute DL380 Gen12 MR932i-p Rear 2SFF Box 6 Cable Kit",
       "sku": "P87236-B21",
@@ -1746,7 +1806,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"4\"]",
+      "cardSelector": "[data-cand-idx=\"5\"]",
       "optionValue": "P87968-B21",
       "text": "P87968-B21 - HPE ProLiant Compute DL380 Gen12 12EDSFF Power Cable Kit",
       "sku": "P87968-B21",
@@ -1761,7 +1821,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"5\"]",
+      "cardSelector": "[data-cand-idx=\"6\"]",
       "optionValue": "5155535243-01",
       "text": "5155535243-01 - ComputeScale - 1x DL380 Gen12 - 64GB RAM - No Local Drive - 1GbE 4p",
       "sku": "5155535243-01",
@@ -1776,7 +1836,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"5\"]",
+      "cardSelector": "[data-cand-idx=\"6\"]",
       "optionValue": "5154153105-01",
       "text": "5154153105-01 - DL380-Gen12-Intel-Xeon-6530P_80Server_32GB",
       "sku": "5154153105-01",
@@ -1791,7 +1851,7 @@
     },
     {
       "type": "dropdown-option",
-      "cardSelector": "[data-cand-idx=\"5\"]",
+      "cardSelector": "[data-cand-idx=\"6\"]",
       "optionValue": "5149940647-01",
       "text": "5149940647-01 - DL380 Gen12 24SFF BOM Config 31122025",
       "sku": "5149940647-01",
@@ -1806,7 +1866,7 @@
     },
     {
       "type": "direct-button",
-      "cardSelector": "[data-cand-idx=\"6\"]",
+      "cardSelector": "[data-cand-idx=\"7\"]",
       "text": "DL380 Gen12 Enterprise AI - Small Scale Ultra-Fast Storage Data Center Density H200 NVL Drive AI, analytics, and high-performance workloads with the HPE ProLiant DL380 Gen12 EDSFF NC server, featuring dual Intel Xeon 6520P 24-core processors, 512GB ultra-fast DDR5 memory, and 6.4TB Gen5 NVMe EDSFF storage. Two NVIDIA H200 NVL 141GB accelerators deliver exceptional GPU power for intensive AI and data tasks. Experience ultra-fast 100Gb networking and secure, cloud-based management with HPE Compute Ops Management SaaS. - 2x 2.4GHz 24-core - 512GB - HPE 3.2TB NVMe Gen5 High Performance Mixed Use E3.S EC1 PM1755 SSD i Unlocked Compare STs USD 120,922.96 Estimated Net Price Customize Quote",
       "sku": "DL380",
       "listPriceUsd": 0,
@@ -1820,7 +1880,7 @@
     },
     {
       "type": "direct-button",
-      "cardSelector": "[data-cand-idx=\"9\"]",
+      "cardSelector": "[data-cand-idx=\"10\"]",
       "text": "DL380 Gen12 Enterprise AI - Intel Inferencing SLM - DL380 Gen12 NO GPU Experience extreme compute density with the HPE ProLiant DL380 Gen12 EDSFF NC server, featuring dual Intel Xeon 6788P 86-core processors for a total of 172 cores, 1TB DDR5 memory, and ultra-fast 7.68TB NVMe Gen5 EDSFF SSD storage. Centralized, streamlined management is enabled via HPE Compute Ops Management Standard SaaS (5-year license), making this server ideal for AI, HPC, and data-intensive enterprise workloads. - i Unlocked Compare STs USD 133,853.39 Estimated Net Price Customize Quote",
       "sku": "DL380",
       "listPriceUsd": 0,
@@ -1834,7 +1894,7 @@
     },
     {
       "type": "direct-button",
-      "cardSelector": "[data-cand-idx=\"10\"]",
+      "cardSelector": "[data-cand-idx=\"11\"]",
       "text": "DL380 Gen12 Enterprise AI - Small Scale Rapid Storage Data Center Density RTX Pro 6000 BSE Advance AI, HPC, and data-driven workloads with the HPE ProLiant DL380 Gen12 EDSFF NC server, equipped with dual Intel Xeon 6520P 24-core processors, 384GB ultra-fast DDR5 memory, and 6.4TB high-performance Gen5 NVMe EDSFF storage. Two NVIDIA RTX PRO 6000 Blackwell 96GB GPUs deliver exceptional acceleration for demanding applications. Experience lightning-fast 100Gb networking and seamless, secure management through HPE Compute Ops Management SaaS. - 2x 2.4GHz 24-core - 384GB - HPE 3.2TB NVMe Gen5 High Performance Mixed Use E3.S EC1 PM1755 SSD i Unlocked Compare STs USD 82,715.04 Estimated Net Price Customize Quote",
       "sku": "DL380",
       "listPriceUsd": 0,
@@ -1848,7 +1908,7 @@
     },
     {
       "type": "direct-button",
-      "cardSelector": "[data-cand-idx=\"11\"]",
+      "cardSelector": "[data-cand-idx=\"12\"]",
       "text": "DL380 Gen12 Scalable Server for Performance-Driven Enterprise Application The HPE ProLiant DL380 Gen12 is a powerful and versatile 2U server designed for enterprise workloads requiring high performance and scalability. Featuring an Intel Xeon 6527P 24-core processor running at 3.0GHz and 1024GB of memory, it is well-suited for memory-intensive applications, virtualization, and data analytics. With no pre-configured storage, this server provides flexibility to customize storage solutions based on specific business needs. Backed by HPE 3-Year Tech Care Essential Service, it ensures reliable performance and comprehensive support for critical operations. - 2x 3.0GHz 24-core - 1024GB - Not Applicable i Unlocked Compare STs USD 61,318.65 Estimated Net Price Customize Quote",
       "sku": "DL380",
       "listPriceUsd": 0,
@@ -1862,7 +1922,7 @@
     },
     {
       "type": "direct-button",
-      "cardSelector": "[data-cand-idx=\"12\"]",
+      "cardSelector": "[data-cand-idx=\"13\"]",
       "text": "DL380 Gen12 Flexible, High-Performance Server for Enterprise Workloads The HPE ProLiant DL380 Gen12 is a robust and scalable 2U server designed for enterprise environments requiring high computational power and large memory capacity. Featuring an Intel Xeon 6530P 32-core processor and 1024GB of memory, it is ideal for virtualization, database management, and memory-intensive applications. With no pre-configured storage, it offers flexibility for custom storage solutions tailored to specific workload requirements. Backed by HPE 3-Year Tech Care Essential Service, this server provides dependable support for mission-critical operations. - 2x 2.3GHz 32-core - 1024GB - Not Applicable i Unlocked Compare STs USD 184,310.17 Estimated Net Price Customize Quote",
       "sku": "DL380",
       "listPriceUsd": 0,
@@ -1876,7 +1936,7 @@
     },
     {
       "type": "direct-button",
-      "cardSelector": "[data-cand-idx=\"13\"]",
+      "cardSelector": "[data-cand-idx=\"14\"]",
       "text": "DL380 Gen12 High-Performance Server for VMware vSAN Workloads The HPE ProLiant DL380 Gen12 Server for VMware vSAN ESA AF-4 with Micron 7500 is a cutting-edge solution designed for modern software-defined storage and virtualization environments. Powered by an Intel Xeon 6517P 16-core processor running at 3.2GHz, 512GB of memory, and four high-performance 7.68TB NVMe Gen4 Micron 7500 SSDs, this server delivers exceptional speed, scalability, and reliability for all-flash VMware vSAN Enterprise Storage Architecture (ESA) configurations. Its advanced NVMe storage ensures low latency and high throughput, making it ideal for demanding workloads such as databases, virtualization, and analytics. Backed by HPE 3-Year Tech Care Essential Service, it provides dependable performance, expert support, and operational continuity for mission-critical applications. - 2x 3.0GHZ 16-core - 512GB - Not Applicable i Unlocked Compare STs USD 79,377.19 Estimated Net Price Customize Quote",
       "sku": "DL380",
       "listPriceUsd": 0,
@@ -1890,7 +1950,7 @@
     },
     {
       "type": "direct-button",
-      "cardSelector": "[data-cand-idx=\"14\"]",
+      "cardSelector": "[data-cand-idx=\"15\"]",
       "text": "DL380 Gen12 High-Performance Server for Memory-Intensive Workloads The HPE ProLiant DL380 Gen12 is a powerful and versatile 2U server designed to handle memory-intensive and compute-heavy enterprise workloads. Equipped with an Intel Xeon 6530P 32-core processor, 1024GB of memory, and 1.92TB NVMe Gen4 mainstream performance read-intensive SSD storage, it delivers exceptional speed, reliability, and scalability for applications such as virtualization, data analytics, and high-performance computing. Supported by HPE 3-Year Tech Care Essential Service, this server ensures robust support and operational reliability for critical business environments. - 2x 2.3GHz 32-core - 1024GB - 1.92TB NVMe Gen4 Mainstream Performance Read Intensive SFF BC U.3 Static V2 Multi Vendor SSD i Unlocked Compare STs USD 76,348.88 Estimated Net Price Customize Quote",
       "sku": "DL380",
       "listPriceUsd": 0,

@@ -3,20 +3,24 @@ const cdp = require('./cdp.js');
 
 async function captureOwnedServiceTab(ws, href, api, tables, texts) {
   ws._unscopedServiceTables = await api.extractTablesAsRows(ws, href);
+  const deepOwner = ws._captureDeepOwner;
   const scoped = await api.sendCommand(ws, 'Runtime.evaluate', {
     expression: `(() => {
       // COMPONENT_SERVICE_TREE
       const data = Array.from(document.querySelectorAll('#sui-components-tree tr'))
         .map(row => window.jQuery?.ui?.fancytree?.getNode(row)?.data).filter(row => row?.subConfId);
       return { treeRows: data.length, owners: data
-        .filter(row => (row.product_number || row.productNumber || row.ucid) === ${JSON.stringify(ws._captureComponentSku)})
+        .filter(row => (row.product_number || row.productNumber || row.ucid) === ${JSON.stringify(ws._captureComponentSku)} &&
+          (${!deepOwner} || row.subConfId === ${JSON.stringify(deepOwner?.ownerId || null)}))
         .map(row => ({ owner: row.subConfId, support: row.reactiveSupport, install: row.installService })) };
     })()`, returnByValue: true
   });
   const evidence = scoped.result?.value;
   if (!evidence?.treeRows) throw new Error('COMPONENT_SERVICE_TREE_NOT_LOADED');
   const { owners, treeRows } = evidence;
-  ws._componentServiceEvidence = { scope: owners.length ? 'OBSERVED_SELECTED_SERVICES_ONLY' : 'OWNER_ABSENT_IN_OBSERVED_SERVICE_TREE', owners, treeRows,
+  const scope = owners.length ? 'OBSERVED_SELECTED_SERVICES_ONLY'
+    : (deepOwner ? 'EXACT_SERVICE_OWNER_UNVERIFIED' : 'OWNER_ABSENT_IN_OBSERVED_SERVICE_TREE');
+  ws._componentServiceEvidence = { scope, owners, treeRows,
     unexecuted: ['alternative service types, terms and tiers', 'parent-level support changes'] };
   const rows = [['Product #', 'Description', 'Price (USD)', 'Owner Configuration', 'Evidence Scope']];
   for (const owner of owners) for (const value of [owner.support, owner.install]) {
@@ -24,8 +28,7 @@ async function captureOwnedServiceTab(ws, href, api, tables, texts) {
     if (match) rows.push([match[1], match[2], '', owner.owner, 'Observed selected service; alternatives not enumerated']);
   }
   if (rows.length > 1) tables.push({ tableId: 'component_owned_services', rows, rowCount: rows.length });
-  texts.push(owners.length ? 'Support Services: observed component-owned selections only. Alternative service branches remain unexecuted.'
-    : 'Support Services: no entry for this component in the observed service tree. Alternative service branches remain unexecuted.');
+  texts.push(`Support Services: ${scope}. Alternative service branches remain unexecuted.`);
 }
 
 // Capture each live view before navigating away. Browser-side timers spanning
@@ -43,6 +46,7 @@ async function captureSupplementalCatalogTabs(ws, pattern, api = cdp) {
   const texts = [];
   try {
     for (const href of new Set(discovery.result?.value || [])) {
+      if (ws._captureDeepOwner && ['#extended_overview_svc', '#extended_overview_bom'].includes(href)) continue;
       await selectCatalogTab(ws, href, api);
       if (ws._captureComponentSku && href === '#extended_overview_suisvc') {
         await captureOwnedServiceTab(ws, href, api, tables, texts);
@@ -65,6 +69,10 @@ async function captureSupplementalCatalogTabs(ws, pattern, api = cdp) {
     }
   } finally {
     await selectCatalogTab(ws, '#extended_overview_menu', api);
+  }
+  if (ws._captureComponentSku && !ws._componentServiceEvidence) {
+    ws._componentServiceEvidence = { scope: 'COMPONENT_SERVICE_VIEW_UNAVAILABLE', owners: [],
+      unexecuted: ['component-owned service selections and alternatives'] };
   }
   return { tables, fullText: texts.join('\n') };
 }

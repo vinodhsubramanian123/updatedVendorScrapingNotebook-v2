@@ -1173,6 +1173,16 @@ function _recordRfpSizingLedger(queryText, context, chassisInfo, serverCount, ra
     ledger.completePhase(2, chassisInfo.catalogData ? 'PASSED' : 'ACTION_REQUIRED', { chassisKey: chassisInfo.chassisKey });
 
     ledger.startPhase(3, '7-Aspect Physical Evaluation of Sized Candidate BOM', { candidateItemCount: candidateItems.length });
+    if (candidateItems.length === 0) {
+      ledger.recordSkuAudit(
+        'UNRESOLVED_TARGET',
+        'UNRESOLVED_SIZING_TARGET',
+        chassisInfo.error || 'No candidate SKUs synthesized because target product catalog could not be resolved.',
+        null,
+        'Unresolved Sizing Target',
+        { chassisKey: chassisInfo.chassisKey, rawLineCount: rawLines.length, serverCount }
+      );
+    }
     for (const item of candidateItems) {
       ledger.recordSkuAudit(
         item.sku,

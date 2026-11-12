@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-10-29T06:27:15.993Z",
+  "timestamp": "2026-11-12T10:51:12.417Z",
   "chassisName": "DL380_Gen12",
-  "totalConditionalSkus": 537,
+  "totalConditionalSkus": 540,
   "skus": [
     {
       "sku": "S3U30C",
@@ -74,7 +74,33 @@
       "badge": "",
       "ruleContext": "CS",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_tr overflow-row dqe-hidden",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "portalVerificationRequired": true
+    },
+    {
+      "sku": "P74577-B21",
+      "badge": "",
+      "ruleContext": "CS",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended custom hpe-preferred overflow-row dqe-hidden",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "portalVerificationRequired": true
+    },
+    {
+      "sku": "P71117-B21",
+      "badge": "",
+      "ruleContext": "CS",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_tr extended custom overflow-row dqe-hidden",
       "parentClass": "item_prod",
       "conditionType": "PORTAL_CONDITIONAL_VIEW",
       "operator": "requires_selection",
@@ -174,7 +200,7 @@
       "portalVerificationRequired": true
     },
     {
-      "sku": "P73831-B21",
+      "sku": "P73832-B21",
       "badge": "",
       "ruleContext": "CS",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
@@ -187,7 +213,7 @@
       "portalVerificationRequired": true
     },
     {
-      "sku": "P73832-B21",
+      "sku": "P73834-B21",
       "badge": "",
       "ruleContext": "CS",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
@@ -239,20 +265,7 @@
       "portalVerificationRequired": true
     },
     {
-      "sku": "P74504-B21",
-      "badge": "",
-      "ruleContext": "CS",
-      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
-      "hiddenAncestorClass": "item_tr extended custom overflow-row dqe-hidden",
-      "parentClass": "item_prod",
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "operator": "requires_selection",
-      "thresholdDegC": null,
-      "visibleAtDefaultC": false,
-      "portalVerificationRequired": true
-    },
-    {
-      "sku": "P74507-B21",
+      "sku": "P74508-B21",
       "badge": "",
       "ruleContext": "CS",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
@@ -279,19 +292,6 @@
     },
     {
       "sku": "P74575-B21",
-      "badge": "",
-      "ruleContext": "CS",
-      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
-      "hiddenAncestorClass": "item_tr extended custom overflow-row dqe-hidden",
-      "parentClass": "item_prod",
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "operator": "requires_selection",
-      "thresholdDegC": null,
-      "visibleAtDefaultC": false,
-      "portalVerificationRequired": true
-    },
-    {
-      "sku": "P74577-B21",
       "badge": "",
       "ruleContext": "CS",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
@@ -473,7 +473,33 @@
       "portalVerificationRequired": true
     },
     {
+      "sku": "P83867-F21",
+      "badge": "",
+      "ruleContext": "96GB Memory cannot be mixed with any other Memory.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "portalVerificationRequired": true
+    },
+    {
       "sku": "P69730-F21",
+      "badge": "",
+      "ruleContext": "128GB Memory cannot be mixed with any other Memory.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "portalVerificationRequired": true
+    },
+    {
+      "sku": "P83869-F21",
       "badge": "",
       "ruleContext": "128GB Memory cannot be mixed with any other Memory.",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
@@ -489,6 +515,19 @@
       "sku": "P73447-F21",
       "badge": "",
       "ruleContext": "Mixing of 3DS and non 3DS memory is not allowed.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "portalVerificationRequired": true
+    },
+    {
+      "sku": "P83865-F21",
+      "badge": "",
+      "ruleContext": "Mixing of 6400B and 8000B Memory is NOT allowed.",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_prod",
       "parentClass": "item_prod",
@@ -811,19 +850,6 @@
       "portalVerificationRequired": true
     },
     {
-      "sku": "P77475-B21",
-      "badge": "",
-      "ruleContext": "Supported with 8LFF and 12LFF CTO Server only.",
-      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
-      "hiddenAncestorClass": "item_prod",
-      "parentClass": "item_prod",
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "operator": "requires_selection",
-      "thresholdDegC": null,
-      "visibleAtDefaultC": false,
-      "portalVerificationRequired": true
-    },
-    {
       "sku": "P77484-B21",
       "badge": "",
       "ruleContext": "Supported with 8LFF and 12LFF CTO Server only.",
@@ -863,7 +889,20 @@
       "portalVerificationRequired": true
     },
     {
-      "sku": "P76476-B21",
+      "sku": "P77475-B21",
+      "badge": "",
+      "ruleContext": "Supported with 8LFF and 12LFF CTO Server only.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "portalVerificationRequired": true
+    },
+    {
+      "sku": "P77481-B21",
       "badge": "",
       "ruleContext": "Supported with 8LFF CTO Server only and requires 2SFF SBS Cage.",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
@@ -876,7 +915,7 @@
       "portalVerificationRequired": true
     },
     {
-      "sku": "P77481-B21",
+      "sku": "P76476-B21",
       "badge": "",
       "ruleContext": "Supported with 8LFF CTO Server only and requires 2SFF SBS Cage.",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
@@ -1266,19 +1305,6 @@
       "portalVerificationRequired": true
     },
     {
-      "sku": "AJ837A",
-      "badge": "",
-      "ruleContext": "BTO products are not allowed in CTO Base Model.",
-      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
-      "hiddenAncestorClass": "item_prod",
-      "parentClass": "item_prod",
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "operator": "requires_selection",
-      "thresholdDegC": null,
-      "visibleAtDefaultC": false,
-      "portalVerificationRequired": true
-    },
-    {
       "sku": "AJ838A",
       "badge": "",
       "ruleContext": "BTO products are not allowed in CTO Base Model.",
@@ -1306,6 +1332,19 @@
     },
     {
       "sku": "AJ834A",
+      "badge": "",
+      "ruleContext": "BTO products are not allowed in CTO Base Model.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "portalVerificationRequired": true
+    },
+    {
+      "sku": "AJ837A",
       "badge": "",
       "ruleContext": "BTO products are not allowed in CTO Base Model.",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
@@ -1435,46 +1474,7 @@
       "portalVerificationRequired": true
     },
     {
-      "sku": "A0N33A",
-      "badge": "",
-      "ruleContext": "BTO products are not allowed in CTO Base Model.",
-      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
-      "hiddenAncestorClass": "item_prod",
-      "parentClass": "item_prod",
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "operator": "requires_selection",
-      "thresholdDegC": null,
-      "visibleAtDefaultC": false,
-      "portalVerificationRequired": true
-    },
-    {
-      "sku": "A0K02A",
-      "badge": "",
-      "ruleContext": "BTO products are not allowed in CTO Base Model.",
-      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
-      "hiddenAncestorClass": "item_prod",
-      "parentClass": "item_prod",
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "operator": "requires_selection",
-      "thresholdDegC": null,
-      "visibleAtDefaultC": false,
-      "portalVerificationRequired": true
-    },
-    {
       "sku": "AF556A",
-      "badge": "",
-      "ruleContext": "Max quantity of product limited by space available.",
-      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
-      "hiddenAncestorClass": "item_prod",
-      "parentClass": "item_prod",
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "operator": "requires_selection",
-      "thresholdDegC": null,
-      "visibleAtDefaultC": false,
-      "portalVerificationRequired": true
-    },
-    {
-      "sku": "AF557A",
       "badge": "",
       "ruleContext": "Max quantity of product limited by space available.",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
@@ -1500,33 +1500,7 @@
       "portalVerificationRequired": true
     },
     {
-      "sku": "AF573A",
-      "badge": "",
-      "ruleContext": "Max quantity of product limited by space available.",
-      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
-      "hiddenAncestorClass": "item_prod",
-      "parentClass": "item_prod",
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "operator": "requires_selection",
-      "thresholdDegC": null,
-      "visibleAtDefaultC": false,
-      "portalVerificationRequired": true
-    },
-    {
-      "sku": "P78130-B21",
-      "badge": "",
-      "ruleContext": "Max quantity of product limited by space available.",
-      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
-      "hiddenAncestorClass": "item_prod",
-      "parentClass": "item_prod",
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "operator": "requires_selection",
-      "thresholdDegC": null,
-      "visibleAtDefaultC": false,
-      "portalVerificationRequired": true
-    },
-    {
-      "sku": "P78156-B21",
+      "sku": "AF557A",
       "badge": "",
       "ruleContext": "Max quantity of product limited by space available.",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
@@ -1695,7 +1669,33 @@
       "portalVerificationRequired": true
     },
     {
+      "sku": "AF573A",
+      "badge": "",
+      "ruleContext": "Max quantity of product limited by space available.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "portalVerificationRequired": true
+    },
+    {
       "sku": "AF591A",
+      "badge": "",
+      "ruleContext": "Max quantity of product limited by space available.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "portalVerificationRequired": true
+    },
+    {
+      "sku": "P78130-B21",
       "badge": "",
       "ruleContext": "Max quantity of product limited by space available.",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
@@ -1735,6 +1735,19 @@
     },
     {
       "sku": "P78147-B21",
+      "badge": "",
+      "ruleContext": "Max quantity of product limited by space available.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "portalVerificationRequired": true
+    },
+    {
+      "sku": "P78156-B21",
       "badge": "",
       "ruleContext": "Max quantity of product limited by space available.",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
@@ -1789,6 +1802,32 @@
       "sku": "P22173-B21",
       "badge": "",
       "ruleContext": "If AC Power Supply is selected then only AC Power Cords should be in the drop-down.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "portalVerificationRequired": true
+    },
+    {
+      "sku": "A0K02A",
+      "badge": "",
+      "ruleContext": "BTO products are not allowed in CTO Base Model.",
+      "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
+      "hiddenAncestorClass": "item_prod",
+      "parentClass": "item_prod",
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "operator": "requires_selection",
+      "thresholdDegC": null,
+      "visibleAtDefaultC": false,
+      "portalVerificationRequired": true
+    },
+    {
+      "sku": "A0N33A",
+      "badge": "",
+      "ruleContext": "BTO products are not allowed in CTO Base Model.",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_prod",
       "parentClass": "item_prod",
@@ -2723,7 +2762,7 @@
     },
     {
       "sku": "S2L38AAE",
-      "badge": "90",
+      "badge": "30",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
@@ -2736,7 +2775,7 @@
     },
     {
       "sku": "S2L39AAE",
-      "badge": "90",
+      "badge": "30",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
@@ -2749,7 +2788,7 @@
     },
     {
       "sku": "S2L40AAE",
-      "badge": "90",
+      "badge": "30",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
@@ -2762,7 +2801,7 @@
     },
     {
       "sku": "S2L41AAE",
-      "badge": "90",
+      "badge": "30",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
@@ -2775,7 +2814,7 @@
     },
     {
       "sku": "S2L42AAE",
-      "badge": "90",
+      "badge": "30",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
@@ -2788,7 +2827,7 @@
     },
     {
       "sku": "S2L43AAE",
-      "badge": "90",
+      "badge": "30",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
@@ -2801,7 +2840,7 @@
     },
     {
       "sku": "S2L44AAE",
-      "badge": "90",
+      "badge": "30",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
@@ -2814,7 +2853,7 @@
     },
     {
       "sku": "S2L45AAE",
-      "badge": "90",
+      "badge": "30",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
@@ -2827,7 +2866,7 @@
     },
     {
       "sku": "S2L46AAE",
-      "badge": "90",
+      "badge": "30",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
@@ -2840,7 +2879,7 @@
     },
     {
       "sku": "S2L47AAE",
-      "badge": "90",
+      "badge": "30",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
@@ -2853,7 +2892,7 @@
     },
     {
       "sku": "S2L48AAE",
-      "badge": "90",
+      "badge": "30",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
@@ -2866,7 +2905,7 @@
     },
     {
       "sku": "S2L49AAE",
-      "badge": "90",
+      "badge": "30",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
@@ -2879,7 +2918,7 @@
     },
     {
       "sku": "S2L50AAE",
-      "badge": "90",
+      "badge": "30",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
@@ -2892,7 +2931,7 @@
     },
     {
       "sku": "S2L51AAE",
-      "badge": "90",
+      "badge": "30",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
@@ -2905,7 +2944,7 @@
     },
     {
       "sku": "S2L52AAE",
-      "badge": "90",
+      "badge": "30",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
@@ -2918,7 +2957,7 @@
     },
     {
       "sku": "S2L53AAE",
-      "badge": "90",
+      "badge": "30",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
@@ -2931,7 +2970,7 @@
     },
     {
       "sku": "S2L54AAE",
-      "badge": "90",
+      "badge": "30",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
@@ -2944,7 +2983,7 @@
     },
     {
       "sku": "S2L55AAE",
-      "badge": "90",
+      "badge": "30",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
@@ -2957,7 +2996,7 @@
     },
     {
       "sku": "S2L56AAE",
-      "badge": "90",
+      "badge": "30",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
@@ -2970,7 +3009,7 @@
     },
     {
       "sku": "S2L57AAE",
-      "badge": "90",
+      "badge": "30",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
@@ -3685,8 +3724,8 @@
     },
     {
       "sku": "R8V46AAE",
-      "badge": "DS",
-      "ruleContext": "DS",
+      "badge": "OB",
+      "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended",
       "parentClass": "item_prod",
@@ -3699,7 +3738,7 @@
     {
       "sku": "R8V48A",
       "badge": "OB",
-      "ruleContext": "DS",
+      "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended",
       "parentClass": "item_prod",
@@ -3711,8 +3750,8 @@
     },
     {
       "sku": "S0W13AAE",
-      "badge": "DS",
-      "ruleContext": "DS",
+      "badge": "OB",
+      "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended last-visible",
       "parentClass": "item_prod",
@@ -3724,8 +3763,8 @@
     },
     {
       "sku": "S0W16AAE",
-      "badge": "DS",
-      "ruleContext": "DS",
+      "badge": "OB",
+      "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended",
       "parentClass": "item_prod",
@@ -3738,7 +3777,7 @@
     {
       "sku": "S0W18AAE",
       "badge": "",
-      "ruleContext": "DS",
+      "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
       "parentClass": "item_prod",
@@ -3750,8 +3789,8 @@
     },
     {
       "sku": "S0W19AAE",
-      "badge": "DS",
-      "ruleContext": "DS",
+      "badge": "OB",
+      "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
       "parentClass": "item_prod",
@@ -3764,7 +3803,7 @@
     {
       "sku": "S0W20AAE",
       "badge": "",
-      "ruleContext": "DS",
+      "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
       "parentClass": "item_prod",
@@ -3777,7 +3816,7 @@
     {
       "sku": "S0W21AAE",
       "badge": "",
-      "ruleContext": "DS",
+      "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
       "parentClass": "item_prod",
@@ -3789,8 +3828,8 @@
     },
     {
       "sku": "S0W22AAE",
-      "badge": "DS",
-      "ruleContext": "DS",
+      "badge": "OB",
+      "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
       "parentClass": "item_prod",
@@ -3803,7 +3842,7 @@
     {
       "sku": "S0W23AAE",
       "badge": "",
-      "ruleContext": "DS",
+      "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
       "parentClass": "item_prod",
@@ -3816,7 +3855,7 @@
     {
       "sku": "S0W24AAE",
       "badge": "",
-      "ruleContext": "DS",
+      "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
       "parentClass": "item_prod",
@@ -3828,8 +3867,8 @@
     },
     {
       "sku": "S0W25AAE",
-      "badge": "DS",
-      "ruleContext": "DS",
+      "badge": "OB",
+      "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
       "parentClass": "item_prod",
@@ -3842,7 +3881,7 @@
     {
       "sku": "S0W26AAE",
       "badge": "",
-      "ruleContext": "DS",
+      "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
       "parentClass": "item_prod",
@@ -3855,7 +3894,7 @@
     {
       "sku": "S0W27AAE",
       "badge": "",
-      "ruleContext": "DS",
+      "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
       "parentClass": "item_prod",
@@ -3867,8 +3906,8 @@
     },
     {
       "sku": "S0W28AAE",
-      "badge": "DS",
-      "ruleContext": "DS",
+      "badge": "OB",
+      "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
       "parentClass": "item_prod",
@@ -3881,7 +3920,7 @@
     {
       "sku": "S0W29AAE",
       "badge": "",
-      "ruleContext": "DS",
+      "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended last-row overflow-row dqe-hidden",
       "parentClass": "item_prod",
@@ -5661,7 +5700,7 @@
     },
     {
       "sku": "P45862-291",
-      "badge": "",
+      "badge": "90",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
@@ -5674,7 +5713,7 @@
     },
     {
       "sku": "P45862-071",
-      "badge": "",
+      "badge": "90",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
@@ -5726,7 +5765,7 @@
     },
     {
       "sku": "P77125-291",
-      "badge": "",
+      "badge": "90",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
@@ -5752,7 +5791,7 @@
     },
     {
       "sku": "P77125-B21",
-      "badge": "",
+      "badge": "90",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
@@ -5765,7 +5804,7 @@
     },
     {
       "sku": "P77124-291",
-      "badge": "",
+      "badge": "90",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
@@ -5791,7 +5830,7 @@
     },
     {
       "sku": "P77124-B21",
-      "badge": "",
+      "badge": "90",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended last-row overflow-row dqe-hidden",
@@ -6077,7 +6116,7 @@
     },
     {
       "sku": "P77101-DN1",
-      "badge": "",
+      "badge": "90",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
@@ -6090,7 +6129,7 @@
     },
     {
       "sku": "P77101-371",
-      "badge": "",
+      "badge": "90",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
@@ -6103,7 +6142,7 @@
     },
     {
       "sku": "P77100-AA1",
-      "badge": "",
+      "badge": "90",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
@@ -6116,7 +6155,7 @@
     },
     {
       "sku": "P77100-AB1",
-      "badge": "",
+      "badge": "90",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
@@ -6129,7 +6168,7 @@
     },
     {
       "sku": "P77100-291",
-      "badge": "",
+      "badge": "90",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
@@ -6155,7 +6194,7 @@
     },
     {
       "sku": "P77100-021",
-      "badge": "",
+      "badge": "90",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
@@ -6168,7 +6207,7 @@
     },
     {
       "sku": "P77100-A21",
-      "badge": "",
+      "badge": "90",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
@@ -6181,7 +6220,7 @@
     },
     {
       "sku": "P77100-DN1",
-      "badge": "",
+      "badge": "90",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended overflow-row dqe-hidden",
@@ -6194,7 +6233,7 @@
     },
     {
       "sku": "P77100-371",
-      "badge": "",
+      "badge": "90",
       "ruleContext": "OB",
       "visibilityReason": "HIDDEN_IN_DEFAULT_DOM_STATE",
       "hiddenAncestorClass": "item_tr extended last-row overflow-row dqe-hidden",

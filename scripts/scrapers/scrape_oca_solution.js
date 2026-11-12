@@ -403,7 +403,7 @@ async function resolvePageTargetAndChassis({ navQuery, targetChassisQuery, isRec
   const registration = notebookConfig.notebooks[identity?.productId];
   if (registration?.captureViaParent) {
     return require('../lib/scraper/active_component_capture').captureViaParent(
-      identity.productId, registration, notebookConfig.notebooks[registration.parentProductId],
+      identity.productId, notebookConfig,
       { forceFreshSession: isRecoverMode });
   }
   const navOptions = {
@@ -679,6 +679,7 @@ async function initCdpAndSession({ navQuery, targetChassisQuery, isRecoverMode }
 
   await setupDialogAutoHandler(ws);
   ws._captureComponentSku = chassisDiscovery?.parentConfiguration ? chassisDiscovery.selectedSku : null;
+  ws._captureDeepOwner = chassisDiscovery?.scopePath?.length > 2 ? chassisDiscovery.scopePath.at(-1) : null;
 
   let networkSniffer = null;
   try {
@@ -774,7 +775,7 @@ function enforceProductIdentityGate(meta, targetChassisQuery) {
   }
 }
 
-async function resolveActiveProductAndProfile(ws, targetChassisQuery, pageTarget) {
+async function resolveActiveProductAndProfile(ws, targetChassisQuery, pageTarget, chassisDiscovery) {
   const headingRes = await sendCommand(ws, 'Runtime.evaluate', {
     expression: `(() => {
       const targetedSelectors = [
@@ -825,7 +826,11 @@ async function resolveActiveProductAndProfile(ws, targetChassisQuery, pageTarget
   }
   console.log(`Active Product Node Title: "${pageHeading}"`);
 
-  const meta = parseProductMeta(pageHeading, targetChassisQuery || pageTarget.title);
+  const ownedScope = chassisDiscovery?.scopePath?.at(-1);
+  const ownedRegistration = require('../config/notebooks.json').notebooks[ownedScope?.productId];
+  const meta = ownedRegistration?.captureViaParent && pageHeading.endsWith(`[${ownedScope.baseSku}]`)
+    ? { cleanName: ownedScope.productId, family: ownedRegistration.family, gen: ownedRegistration.gen || ownedRegistration.generation, pillar: ownedRegistration.pillar }
+    : parseProductMeta(pageHeading, targetChassisQuery || pageTarget.title);
   enforceProductIdentityGate(meta, targetChassisQuery);
   const registered = require('../config/notebooks.json').notebooks[meta.cleanName];
   if ((registered?.requireExactOcaBase || registered?.captureViaParent) && !pageHeading.toUpperCase().includes(`[${registered.baseSku}]`)) {
@@ -1131,12 +1136,15 @@ async function setupStagingAndPersistRawData({
     ownerConfiguration: chassisDiscovery?.ownerConfiguration || pageHeading || meta.cleanName,
     parentConfiguration: chassisDiscovery?.parentConfiguration || null,
     parentBaseSku: chassisDiscovery?.parentBaseSku || null,
+    ...(chassisDiscovery?.scopePath ? { scopePath: chassisDiscovery.scopePath } : {}),
+    ownedMenuDiscovery: domPayload.ownedMenuDiscovery,
     componentServiceEvidence: domPayload.componentServiceEvidence,
     unscopedServiceTables: domPayload.unscopedServiceTables,
-    solutionDomain: inferPillar(meta.family, meta.cleanName),
+    solutionDomain: meta.pillar || inferPillar(meta.family, meta.cleanName),
     observedSelectors: [
       { selector: '#extended_overview_menu', value: 'EXPANDED' },
-      ...(chassisDiscovery?.parentOption ? [{ selector: 'parentOption', value: chassisDiscovery.parentOption }] : []),
+      ...(chassisDiscovery?.scopePath || []).filter(step => step.parentOption)
+        .map(step => ({ selector: 'parentOption', productId: step.productId, value: step.parentOption })),
       { selector: 'ambientTemperature', value: 'DEFAULT_AND_SWEEP_RESTORED' }
     ],
     finalSelectorsRestored: true,
@@ -1298,12 +1306,14 @@ async function main() {
     treeInfo = treeData.treeInfo;
     stepTelemetry[2] = treeData.step2Result;
 
-    const prodData = await resolveActiveProductAndProfile(ws, targetChassisQuery, pageTarget);
+    const prodData = await resolveActiveProductAndProfile(ws, targetChassisQuery, pageTarget, chassisDiscovery);
     meta = prodData.meta;
     const profile = prodData.profile;
     stepTelemetry[3] = prodData.step3Result;
 
     const domPayload = await extractPageDomPayload(ws, meta, profile);
+    const baseSku = chassisDiscovery?.selectedSku || resolveBaseSkuForProduct(meta, chassisDiscovery, profile);
+    domPayload.ownedMenuDiscovery = await require('../lib/scraper/active_component_capture').observeOwnedMenus(ws, baseSku);
     tables = domPayload.tables;
     totalLen = domPayload.totalLen;
     conditionalSkus = domPayload.conditionalSkus;

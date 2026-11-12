@@ -402,8 +402,8 @@ async function main() {
     : (allCatalogFiles.length > 0 
         ? allCatalogFiles.map(f => path.basename(f, '_Catalog.json')) 
         : []);
-  const coverageIssues = chassis ? [] : require('../catalog/catalog_portfolio.js')
-    .getCatalogPortfolioCoverage().filter(product => product.coverageIssues.length);
+  const portfolio = require('../catalog/catalog_portfolio.js').getCatalogPortfolioCoverage();
+  const coverageIssues = chassis ? [] : portfolio.filter(product => product.coverageIssues.length);
 
   const results = [];
   for (const ch of targetChassisList) {
@@ -411,9 +411,13 @@ async function main() {
       confirmSourceRetirement: CONFIRM_SOURCE_RETIREMENT
     });
     const notebookId = getNotebookIdForChassis(cfg, ch);
+    const capture = portfolio.find(item => item.product === ch);
     results.push({
       chassis: ch,
       notebookId,
+      capturedAt: capture?.capturedAt || null,
+      captureStatus: capture?.captureStatus || 'UNVERIFIED',
+      freshnessStatus: capture?.freshnessStatus || 'UNKNOWN',
       payloadPath: payload.payloadPath,
       deltaCount: payload.deltaCount,
       uploadResult: payload.uploadResult
@@ -443,6 +447,7 @@ async function main() {
   results.forEach(r => {
     if (r.payloadPath) {
       console.log(`  🎯 Target Product  : ${r.chassis.padEnd(25)} (Notebook: ${r.notebookId})`);
+      console.log(`     OCA capture     : ${r.capturedAt || 'Unverified date'} (${r.captureStatus}, ${r.freshnessStatus})`);
       console.log(`     📝 Payload Path : ${path.relative(PROJECT_ROOT, r.payloadPath)}`);
       if (r.uploadResult) {
         console.log(`     🤖 Auto-Sync    : ${r.uploadResult.success ? '✅ SUCCESS' : '⚠️ ADVISORY'} (${r.uploadResult.message})`);

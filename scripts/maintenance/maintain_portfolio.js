@@ -38,7 +38,7 @@ async function main() {
 
   if (certifyOnly) {
     console.log('\n--- Running Portfolio Certification Audit ---');
-    runCmd('Expected Catalog Coverage', 'scripts/maintenance/audit_product_rules_association.js', ['--require-fresh']);
+    runCmd('Expected Catalog Coverage', 'scripts/maintenance/audit_product_rules_association.js', ['--require-fresh', '--require-published']);
     runCmd('Portfolio Audit (verify_all)', 'tests/integration/verify_all.js');
     runCmd('Gen12 Deep Certification Gate', 'scripts/maintenance/certify_gen12.js');
     console.log('\n🎉 Portfolio Audit Passed!');
@@ -52,7 +52,8 @@ async function main() {
     runCmd('Sync Knowledge Payloads', 'scripts/lib/sync/knowledge_sync.js', targetChassis ? ['--chassis', targetChassis] : []);
   }
 
-  runCmd('Expected Catalog Coverage', 'scripts/maintenance/audit_product_rules_association.js');
+  runCmd('Expected Catalog Coverage', 'scripts/maintenance/audit_product_rules_association.js',
+    [syncOnly ? '--strict' : '--require-fresh', ...(targetChassis ? ['--chassis', targetChassis] : [])]);
   runCmd('Verify All Catalogs', 'tests/integration/verify_all.js');
 
   console.log('\n================================================================');

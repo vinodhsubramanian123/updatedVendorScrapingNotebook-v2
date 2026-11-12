@@ -1,0 +1,223 @@
+{
+  "schemaVersion": 1,
+  "product": "Synergy_12000_Frame",
+  "vendor": "HPE",
+  "capturedAt": "2026-11-12T11:02:23.642Z",
+  "auditedAt": "2026-11-12T11:02:47.252Z",
+  "incompleteLegacyBaselinePreserved": false,
+  "mode": "REFRESH",
+  "status": "LOCAL_PROMOTED",
+  "provenance": {
+    "baseSku": "P51174-B21",
+    "ownerConfiguration": "HPE Synergy 12000 Configure-to-order Frame [P51174-B21]",
+    "solutionDomain": "COMPOSITE",
+    "observedUrl": "https://oca.ext.hpe.com/oca/OCAInternalLogin"
+  },
+  "coverage": {
+    "textExtractionMode": "FULL_BODY_TEXT",
+    "outsideTableNotesCaptured": true,
+    "conditionalDiscovery": "HIDDEN_DOM_AND_AMBIENT_ONLY_OTHER_MACROS_UNVERIFIED",
+    "ownedMenuDiscovery": {
+      "status": "OBSERVED_CONFIGURED_CHILD_MENUS",
+      "children": [
+        {
+          "baseSku": "876852-B21",
+          "ownerConfiguration": "4-port Frame Link Module #1"
+        },
+        {
+          "baseSku": "876852-B21",
+          "ownerConfiguration": "4-port Frame Link Module #2"
+        },
+        {
+          "baseSku": "867796-B21",
+          "ownerConfiguration": "100Gb Virtual #1"
+        },
+        {
+          "baseSku": "867796-B21",
+          "ownerConfiguration": "100Gb Virtual #2"
+        }
+      ]
+    },
+    "baseSku": "P51174-B21",
+    "ownerConfiguration": "HPE Synergy 12000 Configure-to-order Frame [P51174-B21]",
+    "solutionDomain": "COMPOSITE",
+    "observedSelectors": [
+      {
+        "selector": "#extended_overview_menu",
+        "value": "EXPANDED"
+      },
+      {
+        "selector": "ambientTemperature",
+        "value": "DEFAULT_AND_SWEEP_RESTORED"
+      }
+    ],
+    "missingProvenance": [],
+    "completeness": "CAPTURED_STATES_ONLY",
+    "policy": {
+      "valid": true,
+      "reason": "",
+      "profileProduct": "Synergy_12000_Frame",
+      "scope": "PROFILE_MINIMUM_CAPTURE"
+    }
+  },
+  "counts": {
+    "hardware": 228,
+    "services": 216,
+    "rules": 381,
+    "categories": 11,
+    "retainedHardware": 228,
+    "hardwareTombstones": 0
+  },
+  "previousCounts": {
+    "hardware": 229,
+    "services": 215,
+    "rules": 381,
+    "categories": 12
+  },
+  "hashes": {
+    "Catalog.json": "281e301b5775ad057903edf02f0bb48ac81a86ac46f6eb672c12240925599c91",
+    "Services.json": "af78eb0114affec9778ae369704dccb7717319bf05bfdba77d2b1f99232d0722",
+    "Catalog_Rules.json": "31a41c8565d93dbaddbae0d01d50a924b2b6951d871ae10e301b2aa0e922c7c3",
+    "OCA_Catalog.xlsx": "8b6845a91276890ebb522bbb279963ac8f8fc1fd3e1879952e32514da1cd124d"
+  },
+  "rawSha256": "e6aeba7ebc8d261538b31a0607bcfe658a796979acc18d87b5b2698484fb07d3",
+  "sheets": [
+    {
+      "name": "Category Summary",
+      "rows": 49
+    },
+    {
+      "name": "All SKUs",
+      "rows": 230
+    },
+    {
+      "name": "Chassis Variants",
+      "rows": 2
+    },
+    {
+      "name": "Chassis Options Matrix",
+      "rows": 2
+    },
+    {
+      "name": "Rules & Constraints",
+      "rows": 351
+    },
+    {
+      "name": "Unavailable Rules & Gates",
+      "rows": 18
+    },
+    {
+      "name": "Hardware Accessories",
+      "rows": 11
+    },
+    {
+      "name": "Software & Licenses",
+      "rows": 117
+    },
+    {
+      "name": "Support Services",
+      "rows": 114
+    },
+    {
+      "name": "Catalog Diffs",
+      "rows": 3
+    },
+    {
+      "name": "Price History Timeline",
+      "rows": 446
+    },
+    {
+      "name": "Networking",
+      "rows": 20
+    },
+    {
+      "name": "Power Supplies",
+      "rows": 14
+    },
+    {
+      "name": "Chassis",
+      "rows": 2
+    },
+    {
+      "name": "Frame Options",
+      "rows": 40
+    },
+    {
+      "name": "Accessories & Infrastructure",
+      "rows": 34
+    },
+    {
+      "name": "Drive Enclosures  Drives",
+      "rows": 14
+    },
+    {
+      "name": "Management Hardware",
+      "rows": 7
+    },
+    {
+      "name": "Interconnects",
+      "rows": 22
+    },
+    {
+      "name": "Cables & Enablement Kits",
+      "rows": 82
+    },
+    {
+      "name": "Cooling  Thermal",
+      "rows": 2
+    },
+    {
+      "name": "Supply Chain & Lead Times",
+      "rows": 446
+    },
+    {
+      "name": "Metadata",
+      "rows": 22
+    }
+  ],
+  "deltas": {
+    "hardware": {
+      "added": [],
+      "removed": [
+        "H36XCA1#006"
+      ]
+    },
+    "services": {
+      "added": [
+        "H36XCA1#006"
+      ],
+      "removed": []
+    },
+    "rulesChanged": false,
+    "hardwareChanges": {
+      "added": 0,
+      "removed": 0,
+      "categoryMigrated": 1,
+      "priceChanged": 0,
+      "attributeChanged": 0,
+      "priceAndAttributeChanged": 1,
+      "unchanged": 228,
+      "reinstated": 0,
+      "discontinuedTotal": 0
+    },
+    "serviceChanges": {
+      "added": 1,
+      "removed": 0,
+      "categoryMigrated": 0,
+      "priceChanged": 0,
+      "attributeChanged": 0,
+      "priceAndAttributeChanged": 0,
+      "unchanged": 215,
+      "reinstated": 0,
+      "discontinuedTotal": 0
+    }
+  },
+  "cloud": {
+    "status": "CLOUD_VERIFIED",
+    "success": true,
+    "sourceId": "94781b8e-016a-49ee-953e-66c74bc81d97",
+    "consolidationVerified": false,
+    "error": "Uploaded and canary-verified \"Synergy_12000_Frame_OCA_Catalog_2026-11-12\" in NotebookLM (5b9ddeda-0d03-44ee-80c8-766f494ea34c). Existing sources were preserved unless explicit retirement was confirmed."
+  },
+  "promotedAt": "2026-11-12T11:06:34.231Z"
+}

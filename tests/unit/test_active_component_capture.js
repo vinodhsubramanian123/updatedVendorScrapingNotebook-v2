@@ -1,7 +1,8 @@
 'use strict';
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { validateComponentObservation } = require('../../scripts/lib/scraper/active_component_capture');
+const { runInNewContext } = require('node:vm');
+const { validateComponentObservation, captureViaParent } = require('../../scripts/lib/scraper/active_component_capture');
 test('module identity and owned service suffix survive catalog normalization', () => {
   const { parseProductMeta } = require('../../scripts/lib/catalog/product_meta');
   const { isCanonicalCtoChassisCandidate } = require('../../scripts/catalogs/build_catalog');
@@ -53,4 +54,64 @@ test('owned Synergy modules require their registered base and reject an unrelate
     assert.equal(isCanonicalCtoChassisCandidate({ sku: 'P51174-B21', text: label }, product), false);
     assert.throws(() => validateComponentObservation({ ...observed, parent: 'Synergy 480 Gen12 #1' }, product, sku), /IDENTITY_UNVERIFIED/);
   }
+});
+
+test('owned OCA capture walks four levels and selects the correct instance at each depth', async () => {
+  const ids = ['Root_Frame', 'Fabric_Carrier', 'Fabric_Module', 'Expansion_Blade'];
+  const skus = ['P10000-B21', 'P20000-B21', 'P30000-B21', 'P40000-B21'];
+  const names = ['Root frame', 'Fabric carrier', 'Fabric module', 'Expansion blade'];
+  const owners = names.map(name => `${name} #1`);
+  const notebooks = Object.fromEntries(ids.map((id, i) => [id, {
+    baseSku: skus[i], ocaMenuName: names[i], ...(i ? { captureViaParent: true, parentProductId: ids[i - 1] } : {})
+  }]));
+  let depth = 0;
+  let expandedDepth = -1;
+  let activeTab = '#extended_overview_menu';
+  const view = { innerText: 'loaded', getClientRects: () => [1], querySelectorAll: () => [1] };
+  const tabs = ['#extended_overview_components', '#extended_overview_menu'].map(href => ({
+    getAttribute: name => name === 'href' ? href : String(activeTab === href),
+    closest: () => null, click: () => { activeTab = href; }
+  }));
+  const createTitle = (parentLabel, click) => ({
+    getClientRects: () => [1], click, node: {
+      data: { product_number: skus[depth + 1], default_tab: 'menu' },
+      parent: { data: { product_number: skus[depth], subconfig_name: parentLabel } }
+    }
+  });
+  const document = {
+    querySelector: selector => selector === '#extended_overview_menu' ? {
+      getClientRects: () => activeTab === '#extended_overview_menu' ? [1] : [],
+      querySelector: () => ({ innerText: `${names[depth]} [${skus[depth]}]` })
+    } : null,
+    getElementById: () => view,
+    querySelectorAll: selector => {
+      if (selector === '.eo_nav_li') return ['Config', 'Icon', ...owners.slice(0, depth + 1)].map(innerText => ({ innerText }));
+      if (selector === 'a.ui-tabs-anchor') return tabs;
+      if (!selector.endsWith('.fancytree-title')) return [];
+      const parentTitle = { getClientRects: () => [1], node: {
+        data: { product_number: skus[depth], subconfig_name: owners[depth] }, expanded: expandedDepth === depth,
+        span: { querySelector: () => ({ click: () => { expandedDepth = depth; } }) }
+      } };
+      if (expandedDepth !== depth) return [parentTitle];
+      const correct = createTitle(owners[depth], () => { depth++; activeTab = '#extended_overview_menu'; });
+      return depth ? [parentTitle, createTitle(`${names[depth]} #2`, () => assert.fail('selected sibling branch')), correct] : [parentTitle, correct];
+    }
+  };
+  const read = expression => runInNewContext(expression, { document, window: { jQuery: { ui: { fancytree: { getNode: el => el.node } } } } });
+  const api = {
+    getOCATarget: async () => ({ id: 'test', webSocketDebuggerUrl: 'fixture' }),
+    connectWS: async () => ({ close() {} }),
+    sendCommand: async (_ws, _command, { expression }) => ({ result: { value: read(expression) } }),
+    waitForDOMPredicate: async (_ws, expression) => Boolean(read(expression))
+  };
+  const navigate = async (id, options) => {
+    assert.equal(id, ids[0]);
+    assert.equal(options.targetSku, skus[0]);
+    return { pageId: 'test', chassisDiscovery: { selectedSku: skus[0] } };
+  };
+  const result = await captureViaParent(ids.at(-1), { notebooks }, { api, navigate });
+  assert.equal(depth, 3);
+  assert.deepEqual(result.chassisDiscovery.scopePath.map(step => step.baseSku), skus);
+  assert.equal(result.chassisDiscovery.parentBaseSku, skus.at(-2));
+  assert.equal(result.chassisDiscovery.ownerConfiguration, owners.at(-1));
 });

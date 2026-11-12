@@ -436,11 +436,15 @@ class GeminiKeyRotator {
           Type,
           model: options.model || DEFAULT_MODEL
         });
+        let timeoutId;
         const result = options.timeoutMs
           ? await Promise.race([
               opPromise,
-              new Promise((_, reject) => setTimeout(() => reject(new Error(`Operation timeout after ${options.timeoutMs}ms`)), options.timeoutMs))
-            ])
+              new Promise((_, reject) => {
+                timeoutId = setTimeout(() => reject(new Error(`Operation timeout after ${options.timeoutMs}ms`)), options.timeoutMs);
+                if (typeof timeoutId.unref === 'function') timeoutId.unref();
+              })
+            ]).finally(() => clearTimeout(timeoutId))
           : await opPromise;
 
         this.markKeySuccess(active.apiKey);

@@ -6,26 +6,26 @@
     "generation": "Gen12",
     "pillar": "SERVER",
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
-    "scrapeDate": "2026-10-29",
-    "scrapeTimestamp": "2026-10-29T06:27:15.927Z",
-    "builtAt": "2026-10-29T06:29:34.477Z",
-    "totalSubcategories": 69,
-    "totalUniqueSKUs": 605,
-    "totalTables": 153,
+    "scrapeDate": "2026-11-12",
+    "scrapeTimestamp": "2026-11-12T10:51:12.353Z",
+    "builtAt": "2026-11-12T10:51:14.749Z",
+    "totalSubcategories": 71,
+    "totalUniqueSKUs": 619,
+    "totalTables": 155,
     "diffSummary": {
-      "added": 6,
-      "removed": 1,
+      "added": 15,
+      "removed": 0,
       "categoryMigrated": 0,
       "priceChanged": 0,
-      "attributeChanged": 376,
-      "priceAndAttributeChanged": 61,
-      "unchanged": 734,
+      "attributeChanged": 1144,
+      "priceAndAttributeChanged": 27,
+      "unchanged": 5,
       "reinstated": 1,
-      "discontinuedTotal": 17
+      "discontinuedTotal": 16
     },
-    "historySnapshot": "catalog_2026-10-29.json",
+    "historySnapshot": "catalog_2026-11-12.json",
     "priceAnalytics": {
-      "scrapeDate": "2026-10-29",
+      "scrapeDate": "2026-11-12",
       "categoryBreakdown": {
         "Chassis": {
           "totalSKUs": 5,
@@ -124,15 +124,15 @@
           "avgPrice": 844.1875
         },
         "Memory": {
-          "totalSKUs": 11,
-          "totalPrice": 297931,
+          "totalSKUs": 19,
+          "totalPrice": 736949,
           "minPrice": 1,
           "maxPrice": 133186,
           "subcategories": {
             "Memory": {
-              "totalSKUs": 7,
-              "totalPrice": 297751,
-              "avgPrice": 42535.857142857145
+              "totalSKUs": 15,
+              "totalPrice": 736769,
+              "avgPrice": 49117.933333333334
             },
             "Memory Blank Kit": {
               "totalSKUs": 3,
@@ -145,7 +145,7 @@
               "avgPrice": 1
             }
           },
-          "avgPrice": 27084.636363636364
+          "avgPrice": 38786.78947368421
         },
         "Drive Enclosures / Drives": {
           "totalSKUs": 28,
@@ -187,20 +187,20 @@
           "avgPrice": 149.39285714285714
         },
         "Networking": {
-          "totalSKUs": 73,
-          "totalPrice": 283914,
+          "totalSKUs": 79,
+          "totalPrice": 300094,
           "minPrice": 1,
           "maxPrice": 15334,
           "subcategories": {
-            "SFF Drive Cages & Enablement": {
+            "Optical Transceivers & DAC Cables": {
               "totalSKUs": 7,
               "totalPrice": 7,
               "avgPrice": 1
             },
             "Ethernet PCIe": {
-              "totalSKUs": 14,
-              "totalPrice": 47990,
-              "avgPrice": 3427.8571428571427
+              "totalSKUs": 17,
+              "totalPrice": 56080,
+              "avgPrice": 3298.823529411765
             },
             "InfiniBand PCIe": {
               "totalSKUs": 14,
@@ -218,9 +218,9 @@
               "avgPrice": 8345.166666666666
             },
             "OCP Ethernet": {
-              "totalSKUs": 11,
-              "totalPrice": 23242,
-              "avgPrice": 2112.909090909091
+              "totalSKUs": 14,
+              "totalPrice": 31332,
+              "avgPrice": 2238
             },
             "OCP3 Networking Adapters": {
               "totalSKUs": 1,
@@ -233,7 +233,7 @@
               "avgPrice": 17
             }
           },
-          "avgPrice": 3889.2328767123286
+          "avgPrice": 3798.6582278481014
         },
         "PCIe Risers": {
           "totalSKUs": 10,
@@ -265,15 +265,15 @@
           "avgPrice": 330.1
         },
         "Storage Controllers": {
-          "totalSKUs": 53,
-          "totalPrice": 52856,
+          "totalSKUs": 52,
+          "totalPrice": 51081,
           "minPrice": 1,
           "maxPrice": 11399,
           "subcategories": {
             "SAS Controller": {
-              "totalSKUs": 10,
-              "totalPrice": 43526,
-              "avgPrice": 4352.6
+              "totalSKUs": 9,
+              "totalPrice": 41751,
+              "avgPrice": 4639
             },
             "Smart Storage Batteries": {
               "totalSKUs": 4,
@@ -296,7 +296,7 @@
               "avgPrice": 300
             }
           },
-          "avgPrice": 997.2830188679245
+          "avgPrice": 982.3269230769231
         },
         "Cables & Enablement Kits": {
           "totalSKUs": 94,
@@ -367,23 +367,32 @@
           },
           "avgPrice": 491.20212765957444
         },
+        "Support Services": {
+          "totalSKUs": 1,
+          "totalPrice": 1,
+          "minPrice": 1,
+          "maxPrice": 1,
+          "subcategories": {
+            "Support Services Options": {
+              "totalSKUs": 1,
+              "totalPrice": 1,
+              "avgPrice": 1
+            }
+          },
+          "avgPrice": 1
+        },
         "Software & Licenses": {
           "totalSKUs": 704,
-          "totalPrice": 17225618,
+          "totalPrice": 17224985,
           "minPrice": 1,
           "maxPrice": 543984,
           "subcategories": {
             "Server Management & Operating System Licenses": {
-              "totalSKUs": 67,
-              "totalPrice": 2266888,
-              "avgPrice": 33834.149253731346
+              "totalSKUs": 68,
+              "totalPrice": 2266283,
+              "avgPrice": 33327.69117647059
             },
-            "vSAN Tracking SKUs": {
-              "totalSKUs": 1,
-              "totalPrice": 1,
-              "avgPrice": 1
-            },
-            "iLO Common Password": {
+            "Software & Licenses Options": {
               "totalSKUs": 1,
               "totalPrice": 1,
               "avgPrice": 1
@@ -445,13 +454,13 @@
             },
             "MS Windows Server": {
               "totalSKUs": 72,
-              "totalPrice": 1319547,
-              "avgPrice": 18327.041666666668
+              "totalPrice": 1319400,
+              "avgPrice": 18325
             },
             "MS Windows Server - Essentials": {
               "totalSKUs": 87,
-              "totalPrice": 603045,
-              "avgPrice": 6931.551724137931
+              "totalPrice": 603165,
+              "avgPrice": 6932.931034482759
             },
             "SUSE Linux Enterprise Server": {
               "totalSKUs": 48,
@@ -469,7 +478,7 @@
               "avgPrice": 5902.833333333333
             }
           },
-          "avgPrice": 24468.207386363636
+          "avgPrice": 24467.308238636364
         },
         "Graphics & GPU": {
           "totalSKUs": 29,
@@ -526,18 +535,9 @@
         }
       }
     },
-    "incrementalStats": {
-      "totalScrapedSkus": 605,
-      "unchangedSkusCount": 590,
-      "modifiedSkusCount": 5,
-      "addedSkusCount": 10,
-      "removedSkusCount": 0,
-      "estimatedTokensSaved": 0,
-      "estimatedProcessingTimeSavedMs": 0
-    },
-    "snapshotFingerprint": "bdd358be1bdbe25e726e017a29fe5a27bb999eeac95b569b72470fab29251823",
+    "snapshotFingerprint": "0df68568b9c5a499e7a1bced4d59ebc39cb013048952593762cf3388e58e128f",
     "chassisVariantCount": 6,
-    "rulesGeneratedAt": "2026-10-29T06:29:35.658Z"
+    "rulesGeneratedAt": "2026-11-12T10:51:15.541Z"
   },
   "chassisVariants": [
     {
@@ -553,7 +553,7 @@
       "discontinuedDate": "2026-09-09",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "ATTRIBUTE_CHANGED",
+      "diffStatus": "UNCHANGED",
       "priceHistoryTrail": "2026-08-12: $5584.00 → 2026-08-13: $5584.00 → 2026-08-14: $5584.00 → 2026-08-16: $5584.00 → 2026-08-19: $5584.00 → 2026-08-22: $5584.00 (✕ REMOVED) → 2026-09-09: $5584.00 (✕ REMOVED) → 2026-09-10: $5584.00 → 2026-09-30: $5584.00 → 2026-10-17: $5584.00 → 2026-10-29: $5584.00"
     },
     {
@@ -569,7 +569,7 @@
       "discontinuedDate": "2026-09-09",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "ATTRIBUTE_CHANGED",
+      "diffStatus": "UNCHANGED",
       "priceHistoryTrail": "2026-08-12: $5980.00 → 2026-08-13: $5980.00 → 2026-08-14: $5980.00 → 2026-08-16: $5980.00 → 2026-08-19: $5980.00 → 2026-08-22: $5980.00 (✕ REMOVED) → 2026-08-24: $5980.00 (✕ REMOVED) → 2026-09-09: $5980.00 (✕ REMOVED) → 2026-09-10: $5980.00 → 2026-09-30: $5980.00 → 2026-10-17: $5980.00 → 2026-10-29: $5980.00"
     },
     {
@@ -585,7 +585,7 @@
       "discontinuedDate": "2026-09-09",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "ATTRIBUTE_CHANGED",
+      "diffStatus": "UNCHANGED",
       "priceHistoryTrail": "2026-08-12: $6350.00 → 2026-08-13: $6350.00 → 2026-08-14: $6350.00 → 2026-08-16: $6350.00 → 2026-08-19: $6350.00 → 2026-08-22: $6350.00 (✕ REMOVED) → 2026-08-24: $6350.00 (✕ REMOVED) → 2026-09-09: $6350.00 (✕ REMOVED) → 2026-09-10: $6350.00 → 2026-09-30: $6350.00 → 2026-10-17: $6350.00 → 2026-10-29: $6350.00"
     },
     {
@@ -601,7 +601,7 @@
       "discontinuedDate": "2026-09-09",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "ATTRIBUTE_CHANGED",
+      "diffStatus": "UNCHANGED",
       "priceHistoryTrail": "2026-08-12: $6890.00 → 2026-08-13: $6890.00 → 2026-08-14: $6890.00 → 2026-08-16: $6890.00 → 2026-08-19: $6890.00 → 2026-08-22: $6890.00 (✕ REMOVED) → 2026-08-24: $6890.00 (✕ REMOVED) → 2026-09-09: $6890.00 (✕ REMOVED) → 2026-09-10: $6890.00 → 2026-09-30: $6890.00 → 2026-10-17: $6890.00 → 2026-10-29: $6890.00"
     },
     {
@@ -617,7 +617,7 @@
       "discontinuedDate": "2026-09-09",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "ATTRIBUTE_CHANGED",
+      "diffStatus": "UNCHANGED",
       "priceHistoryTrail": "2026-08-12: $7120.00 → 2026-08-13: $7120.00 → 2026-08-14: $7120.00 → 2026-08-16: $7120.00 → 2026-08-19: $7120.00 → 2026-08-22: $7120.00 (✕ REMOVED) → 2026-08-24: $7120.00 (✕ REMOVED) → 2026-09-09: $7120.00 (✕ REMOVED) → 2026-09-10: $7120.00 → 2026-09-30: $7120.00 → 2026-10-17: $7120.00 → 2026-10-29: $7120.00"
     },
     {
@@ -650,7 +650,7 @@
       "discontinuedDate": "2026-09-09",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "ATTRIBUTE_CHANGED",
+      "diffStatus": "UNCHANGED",
       "priceHistoryTrail": "2026-08-12: $5584.00 → 2026-08-13: $5584.00 → 2026-08-14: $5584.00 → 2026-08-16: $5584.00 → 2026-08-19: $5584.00 → 2026-08-22: $5584.00 (✕ REMOVED) → 2026-09-09: $5584.00 (✕ REMOVED) → 2026-09-10: $5584.00 → 2026-09-30: $5584.00 → 2026-10-17: $5584.00 → 2026-10-29: $5584.00"
     },
     "P73283-B21": {
@@ -666,7 +666,7 @@
       "discontinuedDate": "2026-09-09",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "ATTRIBUTE_CHANGED",
+      "diffStatus": "UNCHANGED",
       "priceHistoryTrail": "2026-08-12: $5980.00 → 2026-08-13: $5980.00 → 2026-08-14: $5980.00 → 2026-08-16: $5980.00 → 2026-08-19: $5980.00 → 2026-08-22: $5980.00 (✕ REMOVED) → 2026-08-24: $5980.00 (✕ REMOVED) → 2026-09-09: $5980.00 (✕ REMOVED) → 2026-09-10: $5980.00 → 2026-09-30: $5980.00 → 2026-10-17: $5980.00 → 2026-10-29: $5980.00"
     },
     "P73284-B21": {
@@ -682,7 +682,7 @@
       "discontinuedDate": "2026-09-09",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "ATTRIBUTE_CHANGED",
+      "diffStatus": "UNCHANGED",
       "priceHistoryTrail": "2026-08-12: $6350.00 → 2026-08-13: $6350.00 → 2026-08-14: $6350.00 → 2026-08-16: $6350.00 → 2026-08-19: $6350.00 → 2026-08-22: $6350.00 (✕ REMOVED) → 2026-08-24: $6350.00 (✕ REMOVED) → 2026-09-09: $6350.00 (✕ REMOVED) → 2026-09-10: $6350.00 → 2026-09-30: $6350.00 → 2026-10-17: $6350.00 → 2026-10-29: $6350.00"
     },
     "P73285-B21": {
@@ -698,7 +698,7 @@
       "discontinuedDate": "2026-09-09",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "ATTRIBUTE_CHANGED",
+      "diffStatus": "UNCHANGED",
       "priceHistoryTrail": "2026-08-12: $6890.00 → 2026-08-13: $6890.00 → 2026-08-14: $6890.00 → 2026-08-16: $6890.00 → 2026-08-19: $6890.00 → 2026-08-22: $6890.00 (✕ REMOVED) → 2026-08-24: $6890.00 (✕ REMOVED) → 2026-09-09: $6890.00 (✕ REMOVED) → 2026-09-10: $6890.00 → 2026-09-30: $6890.00 → 2026-10-17: $6890.00 → 2026-10-29: $6890.00"
     },
     "P73286-B21": {
@@ -714,7 +714,7 @@
       "discontinuedDate": "2026-09-09",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "ATTRIBUTE_CHANGED",
+      "diffStatus": "UNCHANGED",
       "priceHistoryTrail": "2026-08-12: $7120.00 → 2026-08-13: $7120.00 → 2026-08-14: $7120.00 → 2026-08-16: $7120.00 → 2026-08-19: $7120.00 → 2026-08-22: $7120.00 (✕ REMOVED) → 2026-08-24: $7120.00 (✕ REMOVED) → 2026-09-09: $7120.00 (✕ REMOVED) → 2026-09-10: $7120.00 → 2026-09-30: $7120.00 → 2026-10-17: $7120.00 → 2026-10-29: $7120.00"
     },
     "P73287-B21": {
@@ -898,13 +898,13 @@
   "solutionManifest": {
     "commercialBreakdown": {
       "hardware": 46095,
-      "support": 35916,
+      "support": 19306,
       "services": 1234,
       "software": 1220,
-      "total": 84465
+      "total": 67855
     },
     "deliveryAndSupport": {
-      "iconId": "I157947987-01",
+      "iconId": "I158326198-01",
       "edt": "24 - 30 days",
       "configName": "OCA Config 2",
       "attachedServices": [
@@ -1083,7 +1083,7 @@
         "unitPrice": 11,
         "extPrice": 22,
         "startDate": "02/03/2025",
-        "discDate": "07/31/2028"
+        "discDate": "06/30/2029"
       },
       {
         "hierarchyLevel": "(2)",
@@ -1255,42 +1255,6 @@
       },
       {
         "hierarchyLevel": "(1)",
-        "sku": "H1SR4AS",
-        "optionCode": "",
-        "quantity": 1,
-        "description": "HPE Service Credit",
-        "configName": "DL380 Gen12 #1",
-        "unitPrice": 0,
-        "extPrice": 0,
-        "startDate": "04/27/2016",
-        "discDate": "04/06/2099"
-      },
-      {
-        "hierarchyLevel": "(1)",
-        "sku": "H0JD4A5",
-        "optionCode": "",
-        "quantity": 1,
-        "description": "HPE 5Y Service Credits 10 Per Yr SVC",
-        "configName": "DL380 Gen12 #1",
-        "unitPrice": 0,
-        "extPrice": 0,
-        "startDate": "05/02/2016",
-        "discDate": "12/31/2099"
-      },
-      {
-        "hierarchyLevel": "(2)",
-        "sku": "H0JD4A5",
-        "optionCode": "WFK",
-        "quantity": 1,
-        "description": "HPE 5Y Service Credits Qty 50 SVC",
-        "configName": "DL380 Gen12 #1",
-        "unitPrice": 17526,
-        "extPrice": 17526,
-        "startDate": "05/02/2016",
-        "discDate": "12/31/2099"
-      },
-      {
-        "hierarchyLevel": "(1)",
         "sku": "H39VPA1",
         "optionCode": "",
         "quantity": 1,
@@ -1344,8 +1308,8 @@
         "quantity": 1,
         "description": "HPE DL380 Gen12 Support",
         "configName": "DL380 Gen12 #1",
-        "unitPrice": 18313,
-        "extPrice": 18313,
+        "unitPrice": 19229,
+        "extPrice": 19229,
         "startDate": "03/01/2021",
         "discDate": "12/31/2099"
       }
@@ -1547,6 +1511,40 @@
       "level": "CHASSIS",
       "ruleType": "CONDITIONAL_VISIBILITY",
       "affectedSkus": [
+        "P74577-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P74577-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+      "parentCategory": "Processor",
+      "subCategory": "Processor",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P71117-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P71117-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+      "parentCategory": "Processor",
+      "subCategory": "Processor",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
         "P71118-B21"
       ],
       "conditionType": "PORTAL_CONDITIONAL_VIEW",
@@ -1666,14 +1664,14 @@
       "level": "CHASSIS",
       "ruleType": "CONDITIONAL_VISIBILITY",
       "affectedSkus": [
-        "P73831-B21"
+        "P73832-B21"
       ],
       "conditionType": "PORTAL_CONDITIONAL_VIEW",
       "conditionKey": "portalSelector",
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "P73831-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+      "rule": "P73832-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
       "parentCategory": "Processor",
       "subCategory": "Processor",
       "constraint": "",
@@ -1683,14 +1681,14 @@
       "level": "CHASSIS",
       "ruleType": "CONDITIONAL_VISIBILITY",
       "affectedSkus": [
-        "P73832-B21"
+        "P73834-B21"
       ],
       "conditionType": "PORTAL_CONDITIONAL_VIEW",
       "conditionKey": "portalSelector",
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "P73832-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+      "rule": "P73834-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
       "parentCategory": "Processor",
       "subCategory": "Processor",
       "constraint": "",
@@ -1751,31 +1749,14 @@
       "level": "CHASSIS",
       "ruleType": "CONDITIONAL_VISIBILITY",
       "affectedSkus": [
-        "P74504-B21"
+        "P74508-B21"
       ],
       "conditionType": "PORTAL_CONDITIONAL_VIEW",
       "conditionKey": "portalSelector",
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "P74504-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
-      "parentCategory": "Processor",
-      "subCategory": "Processor",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P74507-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P74507-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
+      "rule": "P74508-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
       "parentCategory": "Processor",
       "subCategory": "Processor",
       "constraint": "",
@@ -1810,23 +1791,6 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "P74575-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
-      "parentCategory": "Processor",
-      "subCategory": "Processor",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P74577-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P74577-B21 conditional visibility: portal selector activation required (CS); PORTAL_CONDITIONAL",
       "parentCategory": "Processor",
       "subCategory": "Processor",
       "constraint": "",
@@ -2057,6 +2021,23 @@
       "level": "CHASSIS",
       "ruleType": "CONDITIONAL_VISIBILITY",
       "affectedSkus": [
+        "P83867-F21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P83867-F21 conditional visibility: portal selector activation required (96GB Memory cannot be mixed with any other Memory.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
         "P69730-F21"
       ],
       "conditionType": "PORTAL_CONDITIONAL_VIEW",
@@ -2074,6 +2055,23 @@
       "level": "CHASSIS",
       "ruleType": "CONDITIONAL_VISIBILITY",
       "affectedSkus": [
+        "P83869-F21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P83869-F21 conditional visibility: portal selector activation required (128GB Memory cannot be mixed with any other Memory.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
         "P73447-F21"
       ],
       "conditionType": "PORTAL_CONDITIONAL_VIEW",
@@ -2082,6 +2080,23 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "P73447-F21 conditional visibility: portal selector activation required (Mixing of 3DS and non 3DS memory is not allowed.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P83865-F21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P83865-F21 conditional visibility: portal selector activation required (Mixing of 6400B and 8000B Memory is NOT allowed.); PORTAL_CONDITIONAL",
       "parentCategory": "Memory",
       "subCategory": "Memory",
       "constraint": "",
@@ -2202,7 +2217,7 @@
       "portalVerificationRequired": true,
       "rule": "P77955-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL",
       "parentCategory": "Networking",
-      "subCategory": "SFF Drive Cages & Enablement",
+      "subCategory": "Optical Transceivers & DAC Cables",
       "constraint": "",
       "maxQty": ""
     },
@@ -2219,7 +2234,7 @@
       "portalVerificationRequired": true,
       "rule": "P77958-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL",
       "parentCategory": "Networking",
-      "subCategory": "SFF Drive Cages & Enablement",
+      "subCategory": "Optical Transceivers & DAC Cables",
       "constraint": "",
       "maxQty": ""
     },
@@ -2236,7 +2251,7 @@
       "portalVerificationRequired": true,
       "rule": "P77931-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL",
       "parentCategory": "Networking",
-      "subCategory": "SFF Drive Cages & Enablement",
+      "subCategory": "Optical Transceivers & DAC Cables",
       "constraint": "",
       "maxQty": ""
     },
@@ -2253,7 +2268,7 @@
       "portalVerificationRequired": true,
       "rule": "P78064-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL",
       "parentCategory": "Networking",
-      "subCategory": "SFF Drive Cages & Enablement",
+      "subCategory": "Optical Transceivers & DAC Cables",
       "constraint": "",
       "maxQty": ""
     },
@@ -2270,7 +2285,7 @@
       "portalVerificationRequired": true,
       "rule": "P77934-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL",
       "parentCategory": "Networking",
-      "subCategory": "SFF Drive Cages & Enablement",
+      "subCategory": "Optical Transceivers & DAC Cables",
       "constraint": "",
       "maxQty": ""
     },
@@ -2321,7 +2336,7 @@
       "portalVerificationRequired": true,
       "rule": "P77961-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL",
       "parentCategory": "Networking",
-      "subCategory": "SFF Drive Cages & Enablement",
+      "subCategory": "Optical Transceivers & DAC Cables",
       "constraint": "",
       "maxQty": ""
     },
@@ -2338,7 +2353,7 @@
       "portalVerificationRequired": true,
       "rule": "P78070-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL",
       "parentCategory": "Networking",
-      "subCategory": "SFF Drive Cages & Enablement",
+      "subCategory": "Optical Transceivers & DAC Cables",
       "constraint": "",
       "maxQty": ""
     },
@@ -2355,7 +2370,7 @@
       "portalVerificationRequired": true,
       "rule": "P78047-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL",
       "parentCategory": "Networking",
-      "subCategory": "SFF Drive Cages & Enablement",
+      "subCategory": "Optical Transceivers & DAC Cables",
       "constraint": "",
       "maxQty": ""
     },
@@ -2372,7 +2387,7 @@
       "portalVerificationRequired": true,
       "rule": "P78058-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL",
       "parentCategory": "Networking",
-      "subCategory": "SFF Drive Cages & Enablement",
+      "subCategory": "Optical Transceivers & DAC Cables",
       "constraint": "",
       "maxQty": ""
     },
@@ -2389,7 +2404,7 @@
       "portalVerificationRequired": true,
       "rule": "P78061-B21 conditional visibility: portal selector activation required (Nvme option not available with 8sff smart chassis choice.); PORTAL_CONDITIONAL",
       "parentCategory": "Networking",
-      "subCategory": "SFF Drive Cages & Enablement",
+      "subCategory": "Optical Transceivers & DAC Cables",
       "constraint": "",
       "maxQty": ""
     },
@@ -2499,23 +2514,6 @@
       "level": "CHASSIS",
       "ruleType": "CONDITIONAL_VISIBILITY",
       "affectedSkus": [
-        "P77475-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P77475-B21 conditional visibility: portal selector activation required (Supported with 8LFF and 12LFF CTO Server only.); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Storage Controller Cable Kits",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
         "P77484-B21"
       ],
       "conditionType": "PORTAL_CONDITIONAL_VIEW",
@@ -2567,16 +2565,16 @@
       "level": "CHASSIS",
       "ruleType": "CONDITIONAL_VISIBILITY",
       "affectedSkus": [
-        "P76476-B21"
+        "P77475-B21"
       ],
       "conditionType": "PORTAL_CONDITIONAL_VIEW",
       "conditionKey": "portalSelector",
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "P76476-B21 conditional visibility: portal selector activation required (Supported with 8LFF CTO Server only and requires 2SFF SBS Cage.); PORTAL_CONDITIONAL",
+      "rule": "P77475-B21 conditional visibility: portal selector activation required (Supported with 8LFF and 12LFF CTO Server only.); PORTAL_CONDITIONAL",
       "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "SFF Drive Cages & Enablement",
+      "subCategory": "Storage Controller Cable Kits",
       "constraint": "",
       "maxQty": ""
     },
@@ -2592,6 +2590,23 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "P77481-B21 conditional visibility: portal selector activation required (Supported with 8LFF CTO Server only and requires 2SFF SBS Cage.); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "SFF Drive Cages & Enablement",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P76476-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P76476-B21 conditional visibility: portal selector activation required (Supported with 8LFF CTO Server only and requires 2SFF SBS Cage.); PORTAL_CONDITIONAL",
       "parentCategory": "Cables & Enablement Kits",
       "subCategory": "SFF Drive Cages & Enablement",
       "constraint": "",
@@ -3094,23 +3109,6 @@
       "level": "CHASSIS",
       "ruleType": "CONDITIONAL_VISIBILITY",
       "affectedSkus": [
-        "AJ837A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "AJ837A conditional visibility: portal selector activation required (BTO products are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Energy Star",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
         "AJ838A"
       ],
       "conditionType": "PORTAL_CONDITIONAL_VIEW",
@@ -3153,6 +3151,23 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "AJ834A conditional visibility: portal selector activation required (BTO products are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "Energy Star",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "AJ837A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "AJ837A conditional visibility: portal selector activation required (BTO products are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
       "parentCategory": "Cables & Enablement Kits",
       "subCategory": "Energy Star",
       "constraint": "",
@@ -3315,40 +3330,6 @@
       "level": "CHASSIS",
       "ruleType": "CONDITIONAL_VISIBILITY",
       "affectedSkus": [
-        "A0N33A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "A0N33A conditional visibility: portal selector activation required (BTO products are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Power Cords & Jumper Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "A0K02A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "A0K02A conditional visibility: portal selector activation required (BTO products are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Power Cords & Jumper Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
         "AF556A"
       ],
       "conditionType": "PORTAL_CONDITIONAL_VIEW",
@@ -3357,23 +3338,6 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "AF556A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Power Cords & Jumper Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "AF557A"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "AF557A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL",
       "parentCategory": "Cables & Enablement Kits",
       "subCategory": "Power Cords & Jumper Cables",
       "constraint": "",
@@ -3400,48 +3364,14 @@
       "level": "CHASSIS",
       "ruleType": "CONDITIONAL_VISIBILITY",
       "affectedSkus": [
-        "AF573A"
+        "AF557A"
       ],
       "conditionType": "PORTAL_CONDITIONAL_VIEW",
       "conditionKey": "portalSelector",
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "AF573A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Power Cords & Jumper Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P78130-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P78130-B21 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL",
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Power Cords & Jumper Cables",
-      "constraint": "",
-      "maxQty": ""
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
-      "affectedSkus": [
-        "P78156-B21"
-      ],
-      "conditionType": "PORTAL_CONDITIONAL_VIEW",
-      "conditionKey": "portalSelector",
-      "conditionOperator": "requires_selection",
-      "thresholdValue": null,
-      "portalVerificationRequired": true,
-      "rule": "P78156-B21 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL",
+      "rule": "AF557A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL",
       "parentCategory": "Cables & Enablement Kits",
       "subCategory": "Power Cords & Jumper Cables",
       "constraint": "",
@@ -3655,6 +3585,23 @@
       "level": "CHASSIS",
       "ruleType": "CONDITIONAL_VISIBILITY",
       "affectedSkus": [
+        "AF573A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "AF573A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "Power Cords & Jumper Cables",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
         "AF591A"
       ],
       "conditionType": "PORTAL_CONDITIONAL_VIEW",
@@ -3663,6 +3610,23 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "AF591A conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "Power Cords & Jumper Cables",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P78130-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P78130-B21 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL",
       "parentCategory": "Cables & Enablement Kits",
       "subCategory": "Power Cords & Jumper Cables",
       "constraint": "",
@@ -3714,6 +3678,23 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "P78147-B21 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "Power Cords & Jumper Cables",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P78156-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P78156-B21 conditional visibility: portal selector activation required (Max quantity of product limited by space available.); PORTAL_CONDITIONAL",
       "parentCategory": "Cables & Enablement Kits",
       "subCategory": "Power Cords & Jumper Cables",
       "constraint": "",
@@ -3784,6 +3765,40 @@
       "rule": "P22173-B21 conditional visibility: portal selector activation required (If AC Power Supply is selected then only AC Power Cords should be in the drop-down.); PORTAL_CONDITIONAL",
       "parentCategory": "Cables & Enablement Kits",
       "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "A0K02A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "A0K02A conditional visibility: portal selector activation required (BTO products are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "Power Cords & Jumper Cables",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "A0N33A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "A0N33A conditional visibility: portal selector activation required (BTO products are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "Power Cords & Jumper Cables",
       "constraint": "",
       "maxQty": ""
     },
@@ -5006,8 +5021,6 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "S2L38AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "HPC Software Products",
       "constraint": "",
       "maxQty": ""
     },
@@ -5023,8 +5036,6 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "S2L39AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "HPC Software Products",
       "constraint": "",
       "maxQty": ""
     },
@@ -5040,8 +5051,6 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "S2L40AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "HPC Software Products",
       "constraint": "",
       "maxQty": ""
     },
@@ -5057,8 +5066,6 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "S2L41AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "HPC Software Products",
       "constraint": "",
       "maxQty": ""
     },
@@ -5074,8 +5081,6 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "S2L42AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "HPC Software Products",
       "constraint": "",
       "maxQty": ""
     },
@@ -5091,8 +5096,6 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "S2L43AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "HPC Software Products",
       "constraint": "",
       "maxQty": ""
     },
@@ -5108,8 +5111,6 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "S2L44AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "HPC Software Products",
       "constraint": "",
       "maxQty": ""
     },
@@ -5125,8 +5126,6 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "S2L45AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "HPC Software Products",
       "constraint": "",
       "maxQty": ""
     },
@@ -5142,8 +5141,6 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "S2L46AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "HPC Software Products",
       "constraint": "",
       "maxQty": ""
     },
@@ -5159,8 +5156,6 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "S2L47AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "HPC Software Products",
       "constraint": "",
       "maxQty": ""
     },
@@ -5176,8 +5171,6 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "S2L48AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "HPC Software Products",
       "constraint": "",
       "maxQty": ""
     },
@@ -5193,8 +5186,6 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "S2L49AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "HPC Software Products",
       "constraint": "",
       "maxQty": ""
     },
@@ -5210,8 +5201,6 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "S2L50AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "HPC Software Products",
       "constraint": "",
       "maxQty": ""
     },
@@ -5227,8 +5216,6 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "S2L51AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "HPC Software Products",
       "constraint": "",
       "maxQty": ""
     },
@@ -5244,8 +5231,6 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "S2L52AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "HPC Software Products",
       "constraint": "",
       "maxQty": ""
     },
@@ -5261,8 +5246,6 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "S2L53AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "HPC Software Products",
       "constraint": "",
       "maxQty": ""
     },
@@ -5278,8 +5261,6 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "S2L54AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "HPC Software Products",
       "constraint": "",
       "maxQty": ""
     },
@@ -5295,8 +5276,6 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "S2L55AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "HPC Software Products",
       "constraint": "",
       "maxQty": ""
     },
@@ -5312,8 +5291,6 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "S2L56AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "HPC Software Products",
       "constraint": "",
       "maxQty": ""
     },
@@ -5329,8 +5306,6 @@
       "thresholdValue": null,
       "portalVerificationRequired": true,
       "rule": "S2L57AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
-      "parentCategory": "Software & Licenses",
-      "subCategory": "HPC Software Products",
       "constraint": "",
       "maxQty": ""
     },
@@ -6263,7 +6238,7 @@
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "R8V46AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+      "rule": "R8V46AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
       "subCategory": "High Availability Computing - Cluster Software",
       "constraint": "",
@@ -6280,7 +6255,7 @@
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "R8V48A conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+      "rule": "R8V48A conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
       "subCategory": "High Availability Computing - Cluster Software",
       "constraint": "",
@@ -6297,7 +6272,7 @@
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "S0W13AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+      "rule": "S0W13AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
       "subCategory": "High Availability Computing - Cluster Software",
       "constraint": "",
@@ -6314,7 +6289,7 @@
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "S0W16AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+      "rule": "S0W16AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
       "subCategory": "High Availability Computing - Cluster Software",
       "constraint": "",
@@ -6331,7 +6306,7 @@
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "S0W18AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+      "rule": "S0W18AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
       "subCategory": "High Availability Computing - Cluster Software",
       "constraint": "",
@@ -6348,7 +6323,7 @@
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "S0W19AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+      "rule": "S0W19AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
       "subCategory": "High Availability Computing - Cluster Software",
       "constraint": "",
@@ -6365,7 +6340,7 @@
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "S0W20AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+      "rule": "S0W20AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
       "subCategory": "High Availability Computing - Cluster Software",
       "constraint": "",
@@ -6382,7 +6357,7 @@
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "S0W21AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+      "rule": "S0W21AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
       "subCategory": "High Availability Computing - Cluster Software",
       "constraint": "",
@@ -6399,7 +6374,7 @@
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "S0W22AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+      "rule": "S0W22AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
       "subCategory": "High Availability Computing - Cluster Software",
       "constraint": "",
@@ -6416,7 +6391,7 @@
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "S0W23AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+      "rule": "S0W23AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
       "subCategory": "High Availability Computing - Cluster Software",
       "constraint": "",
@@ -6433,7 +6408,7 @@
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "S0W24AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+      "rule": "S0W24AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
       "subCategory": "High Availability Computing - Cluster Software",
       "constraint": "",
@@ -6450,7 +6425,7 @@
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "S0W25AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+      "rule": "S0W25AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
       "subCategory": "High Availability Computing - Cluster Software",
       "constraint": "",
@@ -6467,7 +6442,7 @@
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "S0W26AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+      "rule": "S0W26AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
       "subCategory": "High Availability Computing - Cluster Software",
       "constraint": "",
@@ -6484,7 +6459,7 @@
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "S0W27AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+      "rule": "S0W27AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
       "subCategory": "High Availability Computing - Cluster Software",
       "constraint": "",
@@ -6501,7 +6476,7 @@
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "S0W28AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+      "rule": "S0W28AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
       "subCategory": "High Availability Computing - Cluster Software",
       "constraint": "",
@@ -6518,7 +6493,7 @@
       "conditionOperator": "requires_selection",
       "thresholdValue": null,
       "portalVerificationRequired": true,
-      "rule": "S0W29AAE conditional visibility: portal selector activation required (DS); PORTAL_CONDITIONAL",
+      "rule": "S0W29AAE conditional visibility: portal selector activation required (OB); PORTAL_CONDITIONAL",
       "parentCategory": "Software & Licenses",
       "subCategory": "High Availability Computing - Cluster Software",
       "constraint": "",
@@ -10543,7 +10518,8 @@
       "thresholdValue": null,
       "observedTemperatureC": null,
       "affectedSkus": [
-        "P69729-F21"
+        "P69729-F21",
+        "P83867-F21"
       ],
       "ineligibilityReason": "96GB Memory cannot be mixed with any other Memory.",
       "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
@@ -10563,7 +10539,8 @@
       "thresholdValue": null,
       "observedTemperatureC": null,
       "affectedSkus": [
-        "P69730-F21"
+        "P69730-F21",
+        "P83869-F21"
       ],
       "ineligibilityReason": "128GB Memory cannot be mixed with any other Memory.",
       "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
@@ -10586,6 +10563,26 @@
         "P73447-F21"
       ],
       "ineligibilityReason": "Mixing of 3DS and non 3DS memory is not allowed.",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "Memory",
+      "subCategory": "Configuration Rules",
+      "constraint": "Mixing of 6400B and 8000B Memory is NOT allowed.",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] Mixing of 6400B and 8000B Memory is NOT allowed.",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "P83865-F21"
+      ],
+      "ineligibilityReason": "Mixing of 6400B and 8000B Memory is NOT allowed.",
       "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
       "portalVerificationRequired": true
     },
@@ -10746,10 +10743,10 @@
       "affectedSkus": [
         "P76473-B21",
         "P77474-B21",
-        "P77475-B21",
         "P77484-B21",
         "P77485-B21",
-        "P76474-B21"
+        "P76474-B21",
+        "P77475-B21"
       ],
       "ineligibilityReason": "Supported with 8LFF and 12LFF CTO Server only.",
       "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
@@ -10769,8 +10766,8 @@
       "thresholdValue": null,
       "observedTemperatureC": null,
       "affectedSkus": [
-        "P76476-B21",
         "P77481-B21",
+        "P76476-B21",
         "P77480-B21"
       ],
       "ineligibilityReason": "Supported with 8LFF CTO Server only and requires 2SFF SBS Cage.",
@@ -10896,10 +10893,10 @@
       "affectedSkus": [
         "AJ833A",
         "AJ836A",
-        "AJ837A",
         "AJ838A",
         "AJ839A",
-        "AJ834A"
+        "AJ834A",
+        "AJ837A"
       ],
       "ineligibilityReason": "BTO products are not allowed in CTO Base Model.",
       "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
@@ -11012,27 +11009,6 @@
     {
       "level": "CHASSIS",
       "ruleType": "CONDITIONAL_VISIBILITY",
-      "vendorRuleClassification": "BTO_DISALLOWED",
-      "parentCategory": "Power Supplies",
-      "subCategory": "Configuration Rules",
-      "constraint": "BTO products are not allowed in CTO Base Model.",
-      "maxQty": "",
-      "rule": "[BTO_DISALLOWED] BTO products are not allowed in CTO Base Model.",
-      "conditionKey": "portalSelection",
-      "conditionOperator": "unknown",
-      "thresholdValue": null,
-      "observedTemperatureC": null,
-      "affectedSkus": [
-        "A0N33A",
-        "A0K02A"
-      ],
-      "ineligibilityReason": "BTO products are not allowed in CTO Base Model.",
-      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
-      "portalVerificationRequired": true
-    },
-    {
-      "level": "CHASSIS",
-      "ruleType": "CONDITIONAL_VISIBILITY",
       "vendorRuleClassification": "MUTUAL_EXCLUSION",
       "parentCategory": "Power Supplies",
       "subCategory": "Configuration Rules",
@@ -11045,11 +11021,8 @@
       "observedTemperatureC": null,
       "affectedSkus": [
         "AF556A",
-        "AF557A",
         "AF568A",
-        "AF573A",
-        "P78130-B21",
-        "P78156-B21",
+        "AF557A",
         "AF558A",
         "AF559A",
         "AF560A",
@@ -11062,15 +11035,39 @@
         "AF569A",
         "AF570A",
         "AF572A",
+        "AF573A",
         "AF591A",
+        "P78130-B21",
         "P78131-B21",
         "P78144-B21",
         "P78147-B21",
+        "P78156-B21",
         "P78940-B21",
         "P78941-B21",
         "R1C65A"
       ],
       "ineligibilityReason": "Max quantity of product limited by space available.",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "BTO_DISALLOWED",
+      "parentCategory": "Power Supplies",
+      "subCategory": "Configuration Rules",
+      "constraint": "BTO products are not allowed in CTO Base Model.",
+      "maxQty": "",
+      "rule": "[BTO_DISALLOWED] BTO products are not allowed in CTO Base Model.",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "A0K02A",
+        "A0N33A"
+      ],
+      "ineligibilityReason": "BTO products are not allowed in CTO Base Model.",
       "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
       "portalVerificationRequired": true
     },
@@ -11231,6 +11228,13 @@
     },
     {
       "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "max 32",
+      "maxQty": 32,
+      "rule": "Mixing of 6400B and 8000B Memory is NOT allowed."
+    },
+    {
+      "parentCategory": "Memory",
       "subCategory": "Memory Blank Kit",
       "constraint": "max 1",
       "maxQty": 1,
@@ -11266,7 +11270,7 @@
     },
     {
       "parentCategory": "Networking",
-      "subCategory": "SFF Drive Cages & Enablement",
+      "subCategory": "Optical Transceivers & DAC Cables",
       "constraint": "no max",
       "maxQty": -1,
       "rule": "Nvme option not available with 8sff smart chassis choice."
@@ -11365,6 +11369,13 @@
     {
       "parentCategory": "Storage Controllers",
       "subCategory": "Storage Controllers Options",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for RAID Settings: max 1"
+    },
+    {
+      "parentCategory": "Support Services",
+      "subCategory": "Support Services Options",
       "constraint": "max 1",
       "maxQty": 1,
       "rule": "Selection constraint for RAID Settings: max 1"
@@ -11469,14 +11480,14 @@
     },
     {
       "parentCategory": "Software & Licenses",
-      "subCategory": "vSAN Tracking SKUs",
+      "subCategory": "Software & Licenses Options",
       "constraint": "max 1",
       "maxQty": 1,
       "rule": "Selection constraint for vSAN Tracking SKUs: max 1"
     },
     {
       "parentCategory": "Software & Licenses",
-      "subCategory": "iLO Common Password",
+      "subCategory": "Server Management & Operating System Licenses",
       "constraint": "max 1",
       "maxQty": 1,
       "rule": "Selection constraint for iLO Common Password: max 1"
@@ -11703,13 +11714,6 @@
       "subCategory": "Power Cords & Jumper Cables",
       "constraint": "max 1",
       "maxQty": 1,
-      "rule": "BTO products are not allowed in CTO Base Model."
-    },
-    {
-      "parentCategory": "Cables & Enablement Kits",
-      "subCategory": "Power Cords & Jumper Cables",
-      "constraint": "max 1",
-      "maxQty": 1,
       "rule": "Max quantity of product limited by space available."
     },
     {
@@ -11718,6 +11722,13 @@
       "constraint": "max 1",
       "maxQty": 1,
       "rule": "If AC Power Supply is selected then only AC Power Cords should be in the drop-down."
+    },
+    {
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "Power Cords & Jumper Cables",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "BTO products are not allowed in CTO Base Model."
     },
     {
       "parentCategory": "Software & Licenses",
@@ -11949,13 +11960,6 @@
       "constraint": "no max",
       "maxQty": -1,
       "rule": "Selection constraint for Data Management Framework (SGI DMF): no max"
-    },
-    {
-      "parentCategory": "Software & Licenses",
-      "subCategory": "VMware vCloud Products",
-      "constraint": "no max",
-      "maxQty": -1,
-      "rule": "Selection constraint for VMware vCloud Products: no max"
     }
   ]
 }

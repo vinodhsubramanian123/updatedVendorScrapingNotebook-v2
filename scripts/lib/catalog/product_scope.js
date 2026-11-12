@@ -74,15 +74,26 @@ const PRODUCT_ALIASES = {
   'brocade64gbfcmodule': 'Synergy_Brocade_64Gb_FC_Module'
 };
 
+function findExactRegistration(identifier, notebooks, registrations) {
+  // Resolve full product IDs before considering display aliases or form-factor suffixes.
+  const name = path.basename(String(identifier || ''));
+  if (Object.hasOwn(notebooks, name)) return [name, notebooks[name]];
+  const fullRequested = normalize(name);
+  const exact = registrations.filter(([key]) => normalize(key) === fullRequested);
+  if (exact.length) return exact.length === 1 ? exact[0] : null;
+  const skuMatches = registrations.filter(([, entry]) => entry?.baseSku && normalize(entry.baseSku) === fullRequested);
+  return skuMatches.length > 1 ? null : skuMatches[0];
+}
+
 function resolveProductIdentity(identifier, config = {}) {
   const notebooks = config.notebooks || {};
-  const requested = baseProductId(identifier);
-  const requestedNorm = normalize(requested);
-
-  // 1. Direct normalized match
-  let match = Object.entries(notebooks).find(([key]) => normalize(baseProductId(key)) === requestedNorm);
+  const requestedNorm = normalize(baseProductId(identifier));
+  const registrations = Object.entries(notebooks);
+  let match = findExactRegistration(identifier, notebooks, registrations);
+  if (match === null) return null;
   if (!match && requestedNorm) {
-    match = Object.entries(notebooks).find(([, entry]) => entry?.baseSku && normalize(entry.baseSku) === requestedNorm);
+    const aliases = registrations.filter(([key]) => normalize(baseProductId(key)) === requestedNorm);
+    if (aliases.length === 1) match = aliases[0];
   }
 
   // 2. Product alias fallback
@@ -96,7 +107,7 @@ function resolveProductIdentity(identifier, config = {}) {
     const isDl380a = requestedNorm.includes('380a');
     const isDl380NonA = requestedNorm.includes('380') && !isDl380a;
 
-    const candidates = Object.entries(notebooks).filter(([key]) => {
+    const candidates = registrations.filter(([key]) => {
       const normKey = normalize(baseProductId(key));
       const requestedGeneration = requestedNorm.match(/gen\d+/)?.[0];
       if (requestedGeneration && normKey.match(/gen\d+/)?.[0] !== requestedGeneration) return false;

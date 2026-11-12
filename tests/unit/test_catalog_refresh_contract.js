@@ -85,6 +85,7 @@ test('Synergy BOM plans the frame and children and reports unmapped owned config
     [4, 'P77653-B21', 'Brocade 64Gb Fibre Channel Module for HPE Synergy', 'Brocade 64Gb Fibre Channel Module for HPE Synergy #2'],
     [4, '876852-B21', 'HPE Synergy 4-port Frame Link Module', '4-port Frame Link Module #2'],
     [4, 'P77654-B21', 'Brocade 64Gb Fibre Channel Module for HPE Synergy', 'Brocade 64Gb Fibre Channel Module for HPE Synergy #3'],
+    [1, 'P77655-B21', 'HPE Fabric Expansion Tray', 'Fabric Expansion Tray #1'],
     [24, 'AF573A', 'HPE C13–C14 Jumper Cord', 'Synergy 12000 Frame #2']
   ]), 'BOM');
   xlsx.utils.book_append_sheet(workbook, xlsx.utils.aoa_to_sheet([
@@ -96,7 +97,9 @@ test('Synergy BOM plans the frame and children and reports unmapped owned config
   assert.deepEqual(plan.tasks.map(task => task.product), ['Synergy_12000_Frame', 'SY480_Gen12', 'SY100Gb_F32_Module',
     'Synergy_Brocade_64Gb_FC_Module', 'Synergy_4Port_Frame_Link_Module']);
   assert.equal(plan.sheets[1].status, 'NON_BOM_SHEET');
-  assert.deepEqual(plan.unresolved.map(item => [item.row, item.sku, item.reason]), [[7, 'P77654-B21', 'UNRESOLVED_BASE_PRODUCT']]);
+  assert.deepEqual(plan.unresolved.map(item => [item.row, item.sku, item.reason]), [
+    [7, 'P77654-B21', 'UNRESOLVED_BASE_PRODUCT'], [8, 'P77655-B21', 'UNRESOLVED_BASE_PRODUCT']
+  ]);
   assert.equal(plan.ready, false);
   assert.equal(buildRefreshPlan({ products: ['P51174-B21'], metadata }).tasks[0].action, 'FIRST_CAPTURE');
 });
@@ -143,8 +146,67 @@ test('portfolio keeps a missing parent visible when only its nested child is cap
   const getModule = () => getCatalogPortfolioCoverage({ ...options, artifacts: discoverAllProductCatalogs(root) })
     .find(product => product.product === 'Module');
   assert.equal(getModule().captureStatus, 'VERIFIED');
+  options.notebooks.Module.lastArtifactHashes = { ...hashes, 'Services.json': 'different-published-artifact' };
+  assert.equal(getModule().publishedCaptureMatches, false);
+  options.notebooks.Module.lastArtifactHashes = hashes;
+  assert.equal(getModule().publishedCaptureMatches, true);
   fs.appendFileSync(path.join(child, 'Module_OCA_Catalog.xlsx'), 'changed');
   assert.equal(getModule().captureStatus, 'RECEIPT_MISMATCH');
+});
+
+test('refresh plans walk the full ownership path and report nested declarations without a registration', () => {
+  const { collectDeclaredCatalogScopes } = require('../../scripts/lib/catalog/catalog_hierarchy');
+  const declarations = collectDeclaredCatalogScopes({ root: { catalogProductId: 'Root', ownedCatalogs: [
+    { productId: 'Carrier', baseSku: 'P20000-B21', ownedCatalogs: [
+      { productId: 'Leaf', baseSku: 'P30000-B21', ownedCatalogs: [{ productId: 'Unregistered', baseSku: 'P40000-B21' }] }
+    ] }
+  ] } });
+  const definitions = [
+    { product: 'Root', baseSku: 'P10000-B21', vendor: 'HPE' },
+    { product: 'Carrier', baseSku: 'P20000-B21', vendor: 'HPE', captureViaParent: true, parentProductId: 'Root' },
+    { product: 'Leaf', baseSku: 'P30000-B21', vendor: 'HPE', captureViaParent: true, parentProductId: 'Carrier' }
+  ];
+  const metadata = () => ({ exists: false, needsResync: true });
+  const direct = buildRefreshPlan({ products: ['Leaf'], definitions, metadata });
+  assert.equal(direct.ready, true);
+  assert.deepEqual(direct.tasks.map(task => task.product), ['Root', 'Carrier', 'Leaf']);
+  assert.deepEqual(direct.tasks.at(-1).scopePath.map(step => step.baseSku), definitions.map(item => item.baseSku));
+  const subtree = buildRefreshPlan({ products: ['Root'], includeOwned: true, declaredScopes: declarations, definitions, metadata });
+  assert.equal(subtree.ready, false);
+  assert.deepEqual(subtree.unresolved, [{ product: 'Unregistered', parentProduct: 'Leaf', reason: 'UNRESOLVED_OWNED_SCOPE' }]);
+  const invalid = buildRefreshPlan({ products: ['Leaf'], definitions: definitions.slice(1), metadata });
+  assert.match(invalid.unresolved[0].detail, /CATALOG_PARENT_UNREGISTERED/);
+  definitions[0] = { ...definitions[0], captureViaParent: true, parentProductId: 'Leaf' };
+  assert.match(buildRefreshPlan({ products: ['Leaf'], definitions, metadata }).unresolved[0].detail, /CATALOG_OWNERSHIP_CYCLE/);
+});
+
+test('a deep receipt requires the entire scope path and reports an unmapped child seen in OCA', t => {
+  const root = temp(t);
+  const file = path.join(root, 'Leaf_Catalog.json');
+  const capturedAt = new Date().toISOString();
+  json(file, { metadata: { scrapeTimestamp: capturedAt } });
+  const notebooks = { Root: { baseSku: 'P10000-B21' }, Carrier: { baseSku: 'P20000-B21', captureViaParent: true, parentProductId: 'Root' },
+    Leaf: { baseSku: 'P30000-B21', captureViaParent: true, parentProductId: 'Carrier' } };
+  const receipt = { product: 'Leaf', status: 'LOCAL_PROMOTED', capturedAt,
+    provenance: { baseSku: 'P30000-B21', ownerConfiguration: 'leaf', parentBaseSku: 'P20000-B21', parentConfiguration: 'carrier' },
+    coverage: { policy: { valid: true }, ownedMenuDiscovery: { status: 'OBSERVED_CONFIGURED_CHILD_MENUS', children: [{ baseSku: 'P40000-B21' }] } } };
+  const receiptPath = path.join(root, 'capture_receipt.json');
+  const { getCatalogPortfolioCoverage } = require('../../scripts/lib/catalog/catalog_portfolio');
+  const auditLeaf = () => getCatalogPortfolioCoverage({ notebooks, profiles: {}, chassisGroups: {}, verifyHashes: false,
+    artifacts: [{ outputDir: root, catalogPath: file }] }).find(item => item.product === 'Leaf');
+  json(receiptPath, receipt);
+  assert.equal(auditLeaf().captureStatus, 'RECEIPT_MISMATCH');
+  receipt.provenance.scopePath = [
+    { productId: 'Root', baseSku: 'P10000-B21', ownerConfiguration: 'root' },
+    { productId: 'Carrier', baseSku: 'P20000-B21', ownerConfiguration: 'carrier' },
+    { productId: 'Leaf', baseSku: 'P30000-B21', ownerConfiguration: 'leaf' }
+  ];
+  json(receiptPath, receipt);
+  assert.equal(auditLeaf().captureStatus, 'VERIFIED');
+  assert.ok(auditLeaf().coverageIssues.includes('UNREGISTERED_OBSERVED_OWNED_SKU: P40000-B21'));
+  receipt.provenance.scopePath[0].baseSku = 'P99999-B21';
+  json(receiptPath, receipt);
+  assert.equal(auditLeaf().captureStatus, 'RECEIPT_MISMATCH');
 });
 
 test('OCA abbreviated lead-time columns survive parsing and hidden TAA rows cannot overwrite commercial rows', () => {

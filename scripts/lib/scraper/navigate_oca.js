@@ -1120,6 +1120,7 @@ async function _probeLoginPageDom(partnerTarget) {
 }
 
 async function _findPortalHomeTarget(currentPages, preferredTarget = null) {
+  const isPortalHome = target => /^https:\/\/partner\.hpe\.com\/group\/prp\/?(?:[?#]|$)/i.test(target.url || '');
   const homes = currentPages.filter(t =>
     !isSeismicTarget(t) &&
     t.url &&
@@ -1129,7 +1130,7 @@ async function _findPortalHomeTarget(currentPages, preferredTarget = null) {
     !t.url.includes('auth') &&
     !(t.title && /sign\s*in|login|log\s*in/i.test(t.title)) &&
     (t.url.includes('/group/prp') || t.url.includes('/home') || t.title.toLowerCase().includes('home - hpe partner portal') || t.title.toLowerCase().includes('partner home'))
-  );
+  ).sort((left, right) => Number(isPortalHome(right)) - Number(isPortalHome(left)));
   for (const target of homes) {
     let ws;
     try {
@@ -1158,7 +1159,7 @@ async function _triggerPortalQuickLink(partnerWs) {
 
   const launchResult = await sendCommand(partnerWs, 'Runtime.evaluate', {
     expression: `(() => {
-      const link = document.querySelector('#quick-links-807 a, a[href*="eServiceId=187402"], [onclick*="187402"]') ||
+      const link = document.querySelector('#quick-links-807 a') || document.querySelector('a[href*="eServiceId=187402"], [onclick*="187402"]') ||
         Array.from(document.querySelectorAll('a')).find(a =>
           (a.href || '').includes('eServiceId=187402') ||
           (a.innerText || '').toLowerCase().includes('one config advanced')
@@ -1197,7 +1198,7 @@ async function _triggerPortalQuickLink(partnerWs) {
     )`, 20000, 500);
     await sendCommand(partnerWs, 'Runtime.evaluate', {
       expression: `(() => {
-        const link = document.querySelector('#quick-links-807 a, a[href*="eServiceId=187402"]') ||
+        const link = document.querySelector('#quick-links-807 a') || document.querySelector('a[href*="eServiceId=187402"]') ||
           Array.from(document.querySelectorAll('a')).find(a =>
             (a.href || '').includes('eServiceId=187402') ||
             (a.innerText || '').toLowerCase().includes('one config advanced')

@@ -4,13 +4,15 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const { discoverAllProductCatalogs, getProductGenerationMetadata } = require('./product_metadata_manager.js');
 const { safeWriteJsonAtomic } = require('../system/fs_compat.js');
+const { resolveOwnedCatalogPath, collectDeclaredCatalogScopes } = require('./catalog_hierarchy');
 const ROOT = path.resolve(__dirname, '../../..');
 const normalize = text => String(text || '').toLowerCase().replace(/[^a-z0-9]/g, '');
 
 function loadProductDefinitions() {
   const cfg = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/config/notebooks.json'), 'utf8'));
   return Object.entries(cfg.notebooks).map(([product, entry]) => ({ product, vendor: entry.vendor || 'HPE',
-    baseSku: entry.baseSku || null, requireExactOcaBase: entry.requireExactOcaBase === true || entry.captureViaParent === true }));
+    baseSku: entry.baseSku || null, parentProductId: entry.parentProductId, captureViaParent: entry.captureViaParent === true,
+    requireExactOcaBase: entry.requireExactOcaBase === true || entry.captureViaParent === true }));
 }
 
 function matchExplicitProduct(text, definitions) {
@@ -50,9 +52,10 @@ function getSheetLayout(rows) {
 function isUnmappedBase(row, layout) {
   const description = String(layout.description >= 0 ? row[layout.description] ?? '' : row.join(' '));
   if (/\b(?:(?:cto|configure[ -]+to[ -]+order)\s+(?:server|base|frame|rack|enclosure|chassis|compute module)|(?:DL|ML|RL)\s*\d{3}[a-z]?\b.*\bGen\s*\d+|poweredge|cisco\s+ucs)\b/i.test(description)) return true;
-  const owner = String(row[layout.owner] || '').replace(/\s*#\d+\s*$/, '');
+  const ownerLabel = String(row[layout.owner] || '');
+  const owner = ownerLabel.replace(/\s*#\d+\s*$/, '');
   return Boolean(owner && normalize(description).endsWith(normalize(owner)) &&
-    /\b(?:frame link module|(?:fibre|fiber) channel module|compute module|interconnect module|virtual connect)\b/i.test(owner));
+    (/\s#\d+\s*$/.test(ownerLabel) || /\b(?:frame link module|(?:fibre|fiber) channel module|compute module|interconnect module|virtual connect)\b/i.test(owner)));
 }
 
 function inspectWorkbookSheet(name, inputRows, definitions, add, unresolved, explicitProducts) {
@@ -65,6 +68,10 @@ function inspectWorkbookSheet(name, inputRows, definitions, add, unresolved, exp
     const origin = { source: 'WORKBOOK', sheet: name, row: index + 1 };
     const baseSku = sku.split(/\s+/)[0];
     const exact = baseSku ? matchExplicitProduct(baseSku, definitions) : [];
+    if (exact.length > 1) {
+      unresolved.push({ ...origin, sku: baseSku, products: exact, reason: 'AMBIGUOUS_EXACT_BASE_SKU' });
+      return;
+    }
     const description = layout.description >= 0 ? row[layout.description] : row.join(' ');
     const eligibleDefinitions = baseSku ? definitions.filter(entry => !entry.requireExactOcaBase) : definitions;
     const inferred = exact.length ? [] : findProducts(description, eligibleDefinitions);
@@ -80,8 +87,52 @@ function inspectWorkbookSheet(name, inputRows, definitions, add, unresolved, exp
   return { name, rows: inputRows.length, status: ignored ? 'NON_BOM_SHEET' : 'INSPECTED', products: [...products] };
 }
 
-function buildRefreshPlan({ products = [], filePath = null, query = null, vendor = 'HPE', force = false,
-  definitions = loadProductDefinitions(), metadata = getProductGenerationMetadata } = {}) {
+function expandOwnedRefreshScopes(rows, unresolved, definitions, { includeOwned, declaredScopes }) {
+  const registry = Object.fromEntries(definitions.map(definition => [definition.product, definition]));
+  const selected = new Set(rows.map(row => row.product));
+  if (includeOwned) {
+    for (const product of selected) {
+      const children = new Set(definitions.filter(entry => entry.parentProductId === product).map(entry => entry.product));
+      for (const [id, scope] of declaredScopes) if (scope.parentProductId === product) children.add(id);
+      for (const child of children) {
+        if (selected.has(child)) continue;
+        if (!registry[child] || declaredScopes.get(child)?.declarationIssue) {
+          unresolved.push({ product: child, parentProduct: product, reason: 'UNRESOLVED_OWNED_SCOPE' });
+          continue;
+        }
+        selected.add(child);
+        rows.push({ product: child, parentProduct: product, source: 'OWNED_DESCENDANT' });
+      }
+    }
+  }
+  const ordered = new Map();
+  for (const product of selected) {
+    try {
+      const path = registry[product]?.captureViaParent ? resolveOwnedCatalogPath(product, registry) : [];
+      for (const [index, entry] of path.entries()) {
+        const scopePath = path.slice(0, index + 1).map(({ productId, baseSku }) => ({ productId, baseSku }));
+        if (!selected.has(entry.productId) && !ordered.has(entry.productId)) rows.push({ product: entry.productId, source: 'OWNERSHIP_ANCESTOR' });
+        ordered.set(entry.productId, scopePath);
+      }
+      if (!ordered.has(product)) ordered.set(product, null);
+    } catch (error) { unresolved.push({ product, reason: 'INVALID_CATALOG_OWNERSHIP', detail: error.message }); }
+  }
+  return ordered;
+}
+
+function refreshTask(product, scopePath, { identity, current, audit, vendor, force, origins }) {
+  const supported = normalize(vendor) === 'hpe' && normalize(identity.vendor) === 'hpe';
+  const inventoryUnverified = audit?.coverageIssues?.some(issue => issue.startsWith('OWNED_MENU_INVENTORY_UNVERIFIED:'));
+  const captureNeeded = force || current.needsResync || inventoryUnverified || (audit && audit.captureStatus !== 'VERIFIED');
+  const publishNeeded = current.notebook?.syncState !== 'VERIFIED' || !current.notebook?.catalogMatches || (audit && audit.publishedCaptureMatches !== true);
+  const action = !supported ? 'UNSUPPORTED_VENDOR' : captureNeeded ? (current.exists ? 'REFRESH' : 'FIRST_CAPTURE') : publishNeeded ? 'SYNC_ONLY' : 'REUSE';
+  return { product, vendor: identity.vendor, action, capturedAt: current.scrapeTimestamp || null,
+    catalogSha256: current.catalogSha256 || null, ...(scopePath ? { scopePath } : {}), origins };
+}
+
+function buildRefreshPlan({ products = [], filePath = null, query = null, vendor = 'HPE', force = false, includeOwned = false,
+  definitions = loadProductDefinitions(), metadata = getProductGenerationMetadata,
+  declaredScopes = collectDeclaredCatalogScopes(require('../../config/chassis_map.json').chassis_base_skus_by_family_gen) } = {}) {
   const discovered = discoverAllProductCatalogs();
   const rows = [];
   const unresolved = [];
@@ -89,6 +140,10 @@ function buildRefreshPlan({ products = [], filePath = null, query = null, vendor
   const add = (text, origin, explicit = false) => {
     const matches = explicit ? matchExplicitProduct(text, definitions) : findProducts(text, definitions);
     if (!matches.length && explicit) unresolved.push({ ...origin, reason: 'EXACT_PRODUCT_MAPPING_REQUIRED', requested: text });
+    if (explicit && matches.length > 1) {
+      unresolved.push({ ...origin, reason: 'AMBIGUOUS_EXACT_BASE_SKU', requested: text, products: matches });
+      return [];
+    }
     for (const product of matches) rows.push({ ...origin, product });
     return matches;
   };
@@ -102,17 +157,30 @@ function buildRefreshPlan({ products = [], filePath = null, query = null, vendor
       sheets.push(inspectWorkbookSheet(name, inputRows, definitions, add, unresolved, products.length > 0));
     }
   }
-  const tasks = [...new Set(rows.map(row => row.product))].map(product => {
+  const scopes = expandOwnedRefreshScopes(rows, unresolved, definitions, { includeOwned, declaredScopes });
+  const coverage = metadata === getProductGenerationMetadata ? require('./catalog_portfolio').getCatalogPortfolioCoverage() : [];
+  const coverageByProduct = new Map(coverage.map(item => [item.product, item]));
+  const tasks = [...scopes].map(([product, scopePath]) => {
     const identity = definitions.find(entry => entry.product === product);
     const current = metadata(product, discovered);
-    const supported = normalize(vendor) === 'hpe' && normalize(identity.vendor) === 'hpe';
-    const action = !supported ? 'UNSUPPORTED_VENDOR' : force || current.needsResync ? (current.exists ? 'REFRESH' : 'FIRST_CAPTURE')
-      : current.notebook?.syncState !== 'VERIFIED' || !current.notebook?.catalogMatches ? 'SYNC_ONLY' : 'REUSE';
-    return { product, vendor: identity.vendor, action, capturedAt: current.scrapeTimestamp || null,
-      catalogSha256: current.catalogSha256 || null, origins: rows.filter(row => row.product === product) };
+    const audit = coverageByProduct.get(product);
+    if (includeOwned) for (const issue of audit?.coverageIssues || []) {
+      if (/OBSERVED_OWNED_SKU|OBSERVED_MENU_WITHOUT_BASE_SKU|OWNED_SCOPE_REGISTRY_MISMATCH/.test(issue)) unresolved.push({ product, reason: issue });
+    }
+    return refreshTask(product, scopePath, { identity, current, audit, vendor, force, origins: rows.filter(row => row.product === product) });
   });
   return { schemaVersion: 1, createdAt: new Date().toISOString(), vendor, sheets, tasks, unresolved,
     ready: tasks.length > 0 && !unresolved.length && tasks.every(task => task.action !== 'UNSUPPORTED_VENDOR') };
+}
+
+function verifyRefreshResult(product, metadata) {
+  const after = metadata(product);
+  const audit = metadata === getProductGenerationMetadata ? require('./catalog_portfolio').getCatalogPortfolioCoverage().find(item => item.product === product) : null;
+  if (after.needsResync || after.notebook?.syncState !== 'VERIFIED' || !after.notebook?.catalogMatches ||
+      (audit && (audit.coverageIssues.length || audit.publishedCaptureMatches !== true))) {
+    throw new Error('Post-run freshness or cloud fingerprint verification incomplete');
+  }
+  return after;
 }
 
 // Sequential on purpose: the authenticated OCA browser is one mutable session.
@@ -120,7 +188,11 @@ function executeRefreshPlan(plan, { run = execFileSync, metadata = getProductGen
   if (!plan.ready) throw new Error('CATALOG_PLAN_UNRESOLVED: See exact product/vendor/sheet gaps in the plan');
   const results = [];
   for (const task of plan.tasks) {
-    if (task.action === 'REUSE') { results.push({ ...task, status: 'REUSED' }); continue; }
+    if (task.action === 'REUSE') {
+      try { verifyRefreshResult(task.product, metadata); results.push({ ...task, status: 'REUSED' }); }
+      catch (error) { results.push({ ...task, status: 'FAILED', error: error.message }); break; }
+      continue;
+    }
     const dir = path.join(ROOT, 'outputs', 'history', 'catalog_refresh_runs');
     fs.mkdirSync(dir, { recursive: true });
     const id = `${Date.now()}-${process.pid}-${task.product}`;
@@ -132,10 +204,7 @@ function executeRefreshPlan(plan, { run = execFileSync, metadata = getProductGen
     let result;
     try {
       run(process.execPath, args, { cwd: ROOT, stdio: ['ignore', fd, fd], timeout: 45 * 60 * 1000, windowsHide: true });
-      const after = metadata(task.product);
-      if (after.needsResync || after.notebook?.syncState !== 'VERIFIED' || !after.notebook?.catalogMatches) {
-        throw new Error('Post-run freshness or cloud fingerprint verification incomplete');
-      }
+      const after = verifyRefreshResult(task.product, metadata);
       result = { ...task, status: 'VERIFIED', logPath, capturedAt: after.scrapeTimestamp, catalogSha256: after.catalogSha256 };
     } catch (error) {
       result = { ...task, status: 'FAILED', logPath, error: error.message };

@@ -6,14 +6,14 @@
     "generation": "General",
     "pillar": "COMPOSITE",
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
-    "scrapeDate": "2026-11-11",
-    "scrapeTimestamp": "2026-11-11T18:27:00.733Z",
-    "builtAt": "2026-11-11T18:38:04.276Z",
+    "scrapeDate": "2026-11-12",
+    "scrapeTimestamp": "2026-11-12T11:02:23.642Z",
+    "builtAt": "2026-11-12T11:02:42.245Z",
     "totalSubcategories": 7,
-    "totalUniqueSKUs": 215,
+    "totalUniqueSKUs": 216,
     "totalTables": 18,
     "diffSummary": {
-      "added": 0,
+      "added": 1,
       "removed": 0,
       "categoryMigrated": 0,
       "priceChanged": 0,
@@ -23,9 +23,9 @@
       "reinstated": 0,
       "discontinuedTotal": 0
     },
-    "historySnapshot": "services_catalog_2026-11-11.json",
+    "historySnapshot": "services_catalog_2026-11-12.json",
     "priceAnalytics": {
-      "scrapeDate": "2026-11-11",
+      "scrapeDate": "2026-11-12",
       "categoryBreakdown": {
         "Software & Licenses": {
           "totalSKUs": 56,
@@ -211,11 +211,11 @@
           "vendorAttributes": {
             "listPrice": 21544
           },
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "21544.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $21544.00"
         },
         {
@@ -253,11 +253,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "86513.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $86513.00"
         },
         {
@@ -295,11 +295,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "7717.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $7717.00"
         },
         {
@@ -337,11 +337,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "21994.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $21994.00"
         },
         {
@@ -379,11 +379,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "771746.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $771746.00"
         },
         {
@@ -421,11 +421,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "2199750.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $2199750.00"
         },
         {
@@ -463,11 +463,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "385876.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $385876.00"
         },
         {
@@ -505,11 +505,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "1099351.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $1099351.00"
         },
         {
@@ -547,11 +547,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "5512.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $5512.00"
         },
         {
@@ -589,11 +589,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "15718.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $15718.00"
         },
         {
@@ -631,11 +631,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "551246.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $551246.00"
         },
         {
@@ -673,11 +673,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "1570801.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $1570801.00"
         },
         {
@@ -715,11 +715,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "275623.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $275623.00"
         },
         {
@@ -757,11 +757,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "785400.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $785400.00"
         },
         {
@@ -799,11 +799,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "7679.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $7679.00"
         },
         {
@@ -841,11 +841,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "5249.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $5249.00"
         },
         {
@@ -883,11 +883,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "21884.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $21884.00"
         },
         {
@@ -925,11 +925,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "15639.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $15639.00"
         },
         {
@@ -967,11 +967,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "767887.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $767887.00"
         },
         {
@@ -1009,11 +1009,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "548490.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $548490.00"
         },
         {
@@ -1051,11 +1051,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "2188751.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $2188751.00"
         },
         {
@@ -1093,11 +1093,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "1562947.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $1562947.00"
         },
         {
@@ -1135,11 +1135,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "383947.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $383947.00"
         },
         {
@@ -1177,11 +1177,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "274245.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $274245.00"
         },
         {
@@ -1219,11 +1219,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "1093854.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $1093854.00"
         },
         {
@@ -1261,11 +1261,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "781473.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $781473.00"
         },
         {
@@ -1303,11 +1303,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "18399.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $18399.00"
         },
         {
@@ -1345,11 +1345,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "55019.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $55019.00"
         },
         {
@@ -1387,11 +1387,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "1653751.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $1653751.00"
         },
         {
@@ -1429,11 +1429,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "4713450.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $4713450.00"
         },
         {
@@ -1471,11 +1471,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "826875.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $826875.00"
         },
         {
@@ -1513,11 +1513,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "2357248.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $2357248.00"
         },
         {
@@ -1555,11 +1555,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "18399.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $18399.00"
         },
         {
@@ -1597,11 +1597,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "54744.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $54744.00"
         },
         {
@@ -1639,11 +1639,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "1645482.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $1645482.00"
         },
         {
@@ -1681,11 +1681,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "4689883.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $4689883.00"
         },
         {
@@ -1723,11 +1723,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "822741.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $822741.00"
         },
         {
@@ -1765,11 +1765,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "2345462.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $2345462.00"
         },
         {
@@ -1807,11 +1807,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "19844.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $19844.00"
         },
         {
@@ -1849,11 +1849,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "12599.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $12599.00"
         },
         {
@@ -1891,11 +1891,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "56595.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $56595.00"
         },
         {
@@ -1933,11 +1933,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "37693.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $37693.00"
         },
         {
@@ -1975,11 +1975,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "19745.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $19745.00"
         },
         {
@@ -2017,11 +2017,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "13163.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $13163.00"
         },
         {
@@ -2059,11 +2059,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "56312.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $56312.00"
         },
         {
@@ -2101,11 +2101,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "37505.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $37505.00"
         },
         {
@@ -2141,11 +2141,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -2181,11 +2181,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -2223,11 +2223,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "50399.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $50399.00"
         },
         {
@@ -2265,11 +2265,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "34016.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $34016.00"
         },
         {
@@ -2302,11 +2302,11 @@
           "vendorAttributes": {
             "listPrice": 4475
           },
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "4475.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $4475.00"
         },
         {
@@ -2344,11 +2344,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "26642.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $26642.00"
         },
         {
@@ -2386,11 +2386,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "17987.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $17987.00"
         },
         {
@@ -2428,11 +2428,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "47999.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $47999.00"
         },
         {
@@ -2470,11 +2470,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "32399.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $32399.00"
         },
         {
@@ -2512,11 +2512,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "1949.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $1949.00"
         },
         {
@@ -2554,11 +2554,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "7699.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $7699.00"
         },
         {
@@ -2596,11 +2596,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "5539.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $5539.00"
         }
       ]
@@ -2691,11 +2691,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "62410.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $62410.00"
         },
         {
@@ -2731,11 +2731,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -2773,11 +2773,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "8000.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $8000.00"
         },
         {
@@ -2815,11 +2815,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "7060.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $7060.00"
         },
         {
@@ -2857,11 +2857,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "26480.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $26480.00"
         },
         {
@@ -2899,11 +2899,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "2000.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $2000.00"
         },
         {
@@ -2941,11 +2941,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "1600.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $1600.00"
         },
         {
@@ -2983,11 +2983,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "7540.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $7540.00"
         },
         {
@@ -3025,11 +3025,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "4800.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $4800.00"
         },
         {
@@ -3067,11 +3067,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "4000.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $4000.00"
         },
         {
@@ -3109,11 +3109,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "3200.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $3200.00"
         },
         {
@@ -3151,11 +3151,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "12000.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $12000.00"
         },
         {
@@ -3193,11 +3193,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "12820.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $12820.00"
         },
         {
@@ -3235,11 +3235,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "10000.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $10000.00"
         },
         {
@@ -3277,11 +3277,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "8000.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $8000.00"
         },
         {
@@ -3319,11 +3319,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "38470.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $38470.00"
         },
         {
@@ -3361,11 +3361,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "30000.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $30000.00"
         },
         {
@@ -3403,11 +3403,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "24000.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $24000.00"
         },
         {
@@ -3445,11 +3445,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "6000.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $6000.00"
         },
         {
@@ -3487,11 +3487,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "4800.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $4800.00"
         },
         {
@@ -3529,11 +3529,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "19860.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $19860.00"
         },
         {
@@ -3571,11 +3571,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "42070.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $42070.00"
         },
         {
@@ -3613,11 +3613,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "62410.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $62410.00"
         },
         {
@@ -3653,11 +3653,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -3693,11 +3693,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -3733,11 +3733,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -3773,11 +3773,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -3815,11 +3815,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "12429.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $12429.00"
         },
         {
@@ -3857,11 +3857,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "530.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $530.00"
         }
       ]
@@ -3929,11 +3929,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "625.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $625.00"
         },
         {
@@ -3971,11 +3971,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "625.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $625.00"
         },
         {
@@ -4013,11 +4013,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "1875.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $1875.00"
         },
         {
@@ -4055,11 +4055,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "1875.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $1875.00"
         },
         {
@@ -4097,11 +4097,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "50.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $50.00"
         },
         {
@@ -4139,11 +4139,11 @@
           "thresholdValue": null,
           "conditionOperator": "requires_selection",
           "conditionKey": "portalSelector",
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
+          "Previous List Price (USD)": "50.00",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: $50.00"
         }
       ]
@@ -4190,11 +4190,11 @@
           "vendorAttributes": {
             "Product Number": "HA849A1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -4225,11 +4225,11 @@
           "vendorAttributes": {
             "Product Number": "HA851A1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -4260,11 +4260,11 @@
           "vendorAttributes": {
             "Product Number": "ZU723A"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -4295,11 +4295,11 @@
           "vendorAttributes": {
             "Product Number": "H29BWA1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -4330,11 +4330,11 @@
           "vendorAttributes": {
             "Product Number": "H29BXA1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -4365,11 +4365,11 @@
           "vendorAttributes": {
             "Product Number": "HA838A1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -4400,11 +4400,11 @@
           "vendorAttributes": {
             "Product Number": "HA839A1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -4435,11 +4435,11 @@
           "vendorAttributes": {
             "Product Number": "HA846A1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -4470,11 +4470,11 @@
           "vendorAttributes": {
             "Product Number": "HA848A1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -4505,11 +4505,11 @@
           "vendorAttributes": {
             "Product Number": "HA867A1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         }
       ]
@@ -4556,11 +4556,11 @@
           "vendorAttributes": {
             "Product Number": "AC068A"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -4591,11 +4591,11 @@
           "vendorAttributes": {
             "Product Number": "HB480A1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -4626,11 +4626,11 @@
           "vendorAttributes": {
             "Product Number": "HB481A1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -4661,11 +4661,11 @@
           "vendorAttributes": {
             "Product Number": "HB482A1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -4696,11 +4696,11 @@
           "vendorAttributes": {
             "Product Number": "HB483A1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -4731,11 +4731,11 @@
           "vendorAttributes": {
             "Product Number": "HB484A1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -4766,11 +4766,11 @@
           "vendorAttributes": {
             "Product Number": "S1J77A"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         }
       ]
@@ -4817,11 +4817,11 @@
           "vendorAttributes": {
             "Product Number": "H0JD0A1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -4852,11 +4852,11 @@
           "vendorAttributes": {
             "Product Number": "H0JT1A1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -4887,11 +4887,11 @@
           "vendorAttributes": {
             "Product Number": "H36NRA4"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -4922,11 +4922,11 @@
           "vendorAttributes": {
             "Product Number": "H36NRA5"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -4957,11 +4957,11 @@
           "vendorAttributes": {
             "Product Number": "H36NSA1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -4992,11 +4992,11 @@
           "vendorAttributes": {
             "Product Number": "H36NTA1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -5027,11 +5027,11 @@
           "vendorAttributes": {
             "Product Number": "H39VQA1#V0F"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -5062,11 +5062,11 @@
           "vendorAttributes": {
             "Product Number": "H42ZHA1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -5097,11 +5097,11 @@
           "vendorAttributes": {
             "Product Number": "H42ZJA1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -5132,11 +5132,11 @@
           "vendorAttributes": {
             "Product Number": "H42ZKA1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         }
       ]
@@ -5185,11 +5185,11 @@
           "vendorAttributes": {
             "Product Number": "HA124A1#V0F"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -5220,11 +5220,11 @@
           "vendorAttributes": {
             "Product Number": "H0JT2A1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -5255,11 +5255,11 @@
           "vendorAttributes": {
             "Product Number": "H29BRA1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -5290,11 +5290,11 @@
           "vendorAttributes": {
             "Product Number": "H29BSA1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -5325,11 +5325,11 @@
           "vendorAttributes": {
             "Product Number": "H36NLA1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -5360,11 +5360,11 @@
           "vendorAttributes": {
             "Product Number": "H36NMA1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -5395,11 +5395,11 @@
           "vendorAttributes": {
             "Product Number": "H36NNA1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -5430,11 +5430,11 @@
           "vendorAttributes": {
             "Product Number": "H36NPA1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -5465,11 +5465,11 @@
           "vendorAttributes": {
             "Product Number": "H36NQA1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -5500,11 +5500,11 @@
           "vendorAttributes": {
             "Product Number": "H36NQA3"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         }
       ]
@@ -5523,41 +5523,6 @@
       ],
       "skuCount": 10,
       "skus": [
-        {
-          "Description": "HPE Unloading Logistic Service",
-          "Product Number": "P1F74A",
-          "Current Qty": "0",
-          "Product #": "P1F74A",
-          "sku": "P1F74A",
-          "Option Type": "Standard",
-          "CLIC Status": "Unpublished",
-          "clicStatus": "Unpublished",
-          "Lifecycle Status": "Active",
-          "lifecycleStatus": "Active",
-          "lifecycleBadge": "",
-          "Availability": "Not published by OCA",
-          "Lead Time": "Unpublished",
-          "Lead Time Source": "Unpublished",
-          "leadTimeDays": null,
-          "Lead Time Days": "",
-          "Speed Tier": "Unpublished",
-          "HPE Recommended": "No",
-          "vendorRecommended": false,
-          "Unit Price (USD)": "",
-          "List Price (USD)": "",
-          "listPrice": null,
-          "Cost (USD)": "",
-          "costPrice": null,
-          "vendorAttributes": {
-            "Product Number": "P1F74A"
-          },
-          "Diff Status": "BASELINE",
-          "Previous List Price (USD)": "N/A",
-          "Price Change (USD)": "$0.00",
-          "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
-          "Price History Trail": "2026-11-11: (no price)"
-        },
         {
           "Description": "HPE VIP GPS Tracking Service",
           "Product Number": "R3J78A",
@@ -5586,11 +5551,46 @@
           "vendorAttributes": {
             "Product Number": "R3J78A"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
+          "Price History Trail": "2026-11-11: (no price)"
+        },
+        {
+          "Description": "HPE Unloading Logistic Service",
+          "Product Number": "P1F74A",
+          "Current Qty": "0",
+          "Product #": "P1F74A",
+          "sku": "P1F74A",
+          "Option Type": "Standard",
+          "CLIC Status": "Unpublished",
+          "clicStatus": "Unpublished",
+          "Lifecycle Status": "Active",
+          "lifecycleStatus": "Active",
+          "lifecycleBadge": "",
+          "Availability": "Not published by OCA",
+          "Lead Time": "Unpublished",
+          "Lead Time Source": "Unpublished",
+          "leadTimeDays": null,
+          "Lead Time Days": "",
+          "Speed Tier": "Unpublished",
+          "HPE Recommended": "No",
+          "vendorRecommended": false,
+          "Unit Price (USD)": "",
+          "List Price (USD)": "",
+          "listPrice": null,
+          "Cost (USD)": "",
+          "costPrice": null,
+          "vendorAttributes": {
+            "Product Number": "P1F74A"
+          },
+          "Previous List Price (USD)": "N/A",
           "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -5621,11 +5621,11 @@
           "vendorAttributes": {
             "Product Number": "P1F76A"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -5656,11 +5656,11 @@
           "vendorAttributes": {
             "Product Number": "P1F78A"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -5691,11 +5691,11 @@
           "vendorAttributes": {
             "Product Number": "R2D12A"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -5726,11 +5726,11 @@
           "vendorAttributes": {
             "Product Number": "R2D20A"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -5761,11 +5761,11 @@
           "vendorAttributes": {
             "Product Number": "R2D10A"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -5796,11 +5796,11 @@
           "vendorAttributes": {
             "Product Number": "R2D04A"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -5831,11 +5831,11 @@
           "vendorAttributes": {
             "Product Number": "P1F71A"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -5866,11 +5866,11 @@
           "vendorAttributes": {
             "Product Number": "P1F81A"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         }
       ]
@@ -5917,11 +5917,11 @@
           "vendorAttributes": {
             "Product Number": "AC123A"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -5952,11 +5952,11 @@
           "vendorAttributes": {
             "Product Number": "BQ337A"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -5987,11 +5987,11 @@
           "vendorAttributes": {
             "Product Number": "BQ335A"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         }
       ]
@@ -6038,11 +6038,11 @@
           "vendorAttributes": {
             "Product Number": "G1H96A1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -6073,11 +6073,11 @@
           "vendorAttributes": {
             "Product Number": "G1H97A1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -6108,11 +6108,11 @@
           "vendorAttributes": {
             "Product Number": "G1H98A1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -6143,11 +6143,11 @@
           "vendorAttributes": {
             "Product Number": "G1H99A1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -6178,11 +6178,11 @@
           "vendorAttributes": {
             "Product Number": "H0JD1A1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -6213,11 +6213,11 @@
           "vendorAttributes": {
             "Product Number": "H0JD7A1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -6248,11 +6248,11 @@
           "vendorAttributes": {
             "Product Number": "H1Y26A1#002"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -6283,11 +6283,11 @@
           "vendorAttributes": {
             "Product Number": "H1Y26A1#003"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -6318,11 +6318,11 @@
           "vendorAttributes": {
             "Product Number": "H30RYA1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -6353,11 +6353,11 @@
           "vendorAttributes": {
             "Product Number": "H30SDA1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         }
       ]
@@ -6374,7 +6374,7 @@
         "Product Number",
         "Quantity"
       ],
-      "skuCount": 9,
+      "skuCount": 10,
       "skus": [
         {
           "Description": "HPE Education - Learning Credits 1Yr SVC",
@@ -6404,11 +6404,11 @@
           "vendorAttributes": {
             "Product Number": "H33XSA1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -6439,11 +6439,11 @@
           "vendorAttributes": {
             "Product Number": "H33XTA2"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -6474,11 +6474,11 @@
           "vendorAttributes": {
             "Product Number": "H33XVA3"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -6509,11 +6509,11 @@
           "vendorAttributes": {
             "Product Number": "H33XWA4"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -6544,11 +6544,11 @@
           "vendorAttributes": {
             "Product Number": "H33XXA5"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -6579,12 +6579,47 @@
           "vendorAttributes": {
             "Product Number": "H36NVA1"
           },
-          "Diff Status": "BASELINE",
+          "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
+          "Price Change (USD)": "$0.00",
+          "Price Change (%)": "0.00%",
+          "Price History Trail": "2026-11-11: (no price)"
+        },
+        {
+          "Description": "HPE GPU on RHOCP Integrat SVC",
+          "Product Number": "H36XCA1#006",
+          "Current Qty": "0",
+          "Product #": "H36XCA1#006",
+          "sku": "H36XCA1#006",
+          "Option Type": "Service",
+          "CLIC Status": "Unpublished",
+          "clicStatus": "Unpublished",
+          "Lifecycle Status": "Active",
+          "lifecycleStatus": "Active",
+          "lifecycleBadge": "",
+          "Availability": "Not published by OCA",
+          "Lead Time": "Unpublished",
+          "Lead Time Source": "Unpublished",
+          "leadTimeDays": null,
+          "Lead Time Days": "",
+          "Speed Tier": "Unpublished",
+          "HPE Recommended": "No",
+          "vendorRecommended": false,
+          "Unit Price (USD)": "",
+          "List Price (USD)": "",
+          "listPrice": null,
+          "Cost (USD)": "",
+          "costPrice": null,
+          "vendorAttributes": {
+            "Product Number": "H36XCA1#006"
+          },
+          "Diff Status": "ADDED",
           "Previous List Price (USD)": "N/A",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
-          "Price History Trail": "2026-11-11: (no price)"
+          "Attribute Deltas": "New SKU introduced",
+          "Price History Trail": "2026-11-12: (no price)"
         },
         {
           "Description": "HPE Education 5 Day Remote SVC",
@@ -6614,11 +6649,11 @@
           "vendorAttributes": {
             "Product Number": "H57GHA1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -6649,11 +6684,11 @@
           "vendorAttributes": {
             "Product Number": "H57GJA1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -6684,11 +6719,11 @@
           "vendorAttributes": {
             "Product Number": "H57GKA1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         }
       ]
@@ -6735,11 +6770,11 @@
           "vendorAttributes": {
             "Product Number": "H0JD9A1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -6770,11 +6805,11 @@
           "vendorAttributes": {
             "Product Number": "H1WU9A1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -6805,11 +6840,11 @@
           "vendorAttributes": {
             "Product Number": "H1WV0A1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -6840,11 +6875,11 @@
           "vendorAttributes": {
             "Product Number": "H1XF9A1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -6875,11 +6910,11 @@
           "vendorAttributes": {
             "Product Number": "H1XG0A1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -6910,11 +6945,11 @@
           "vendorAttributes": {
             "Product Number": "H1XG7A1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -6945,11 +6980,11 @@
           "vendorAttributes": {
             "Product Number": "H1Y25A1#002"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -6980,11 +7015,11 @@
           "vendorAttributes": {
             "Product Number": "H1Y25A1#003"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -7015,11 +7050,11 @@
           "vendorAttributes": {
             "Product Number": "H2S79A1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -7050,11 +7085,11 @@
           "vendorAttributes": {
             "Product Number": "H2S81A1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         }
       ]
@@ -7101,11 +7136,11 @@
           "vendorAttributes": {
             "Product Number": "H29BQA1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -7136,11 +7171,11 @@
           "vendorAttributes": {
             "Product Number": "H30SBA1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -7171,11 +7206,11 @@
           "vendorAttributes": {
             "Product Number": "H30SCA1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -7206,11 +7241,11 @@
           "vendorAttributes": {
             "Product Number": "H30SLA1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -7241,11 +7276,11 @@
           "vendorAttributes": {
             "Product Number": "H30SMA1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -7276,11 +7311,11 @@
           "vendorAttributes": {
             "Product Number": "H30SNA1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -7311,11 +7346,11 @@
           "vendorAttributes": {
             "Product Number": "H36NRA3"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -7346,11 +7381,11 @@
           "vendorAttributes": {
             "Product Number": "H36PBA1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -7381,11 +7416,11 @@
           "vendorAttributes": {
             "Product Number": "H36PCA1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -7416,11 +7451,11 @@
           "vendorAttributes": {
             "Product Number": "H36PDA1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         }
       ]
@@ -7467,11 +7502,11 @@
           "vendorAttributes": {
             "Product Number": "HA124A1#V5K"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         }
       ]
@@ -7520,11 +7555,11 @@
           "vendorAttributes": {
             "Product Number": "H42ZQA1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -7555,11 +7590,11 @@
           "vendorAttributes": {
             "Product Number": "H42ZRA1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -7590,11 +7625,11 @@
           "vendorAttributes": {
             "Product Number": "H43BCA1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -7625,11 +7660,11 @@
           "vendorAttributes": {
             "Product Number": "H44MDA1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -7660,11 +7695,11 @@
           "vendorAttributes": {
             "Product Number": "H44NJA1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -7695,11 +7730,11 @@
           "vendorAttributes": {
             "Product Number": "HU7D2A1"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         }
       ]
@@ -7748,11 +7783,11 @@
           "vendorAttributes": {
             "Product Number": "HU0R5A5#Y39"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -7783,11 +7818,11 @@
           "vendorAttributes": {
             "Product Number": "H0JD4A1#WFH"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -7818,11 +7853,11 @@
           "vendorAttributes": {
             "Product Number": "H0JD4A1#WFK"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -7853,11 +7888,11 @@
           "vendorAttributes": {
             "Product Number": "H0JD4A1#WFM"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -7888,11 +7923,11 @@
           "vendorAttributes": {
             "Product Number": "H0JD4A1#Y65"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -7923,11 +7958,11 @@
           "vendorAttributes": {
             "Product Number": "H0JD4A1#Y6B"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -7958,11 +7993,11 @@
           "vendorAttributes": {
             "Product Number": "H0JD4A1008E"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -7993,11 +8028,11 @@
           "vendorAttributes": {
             "Product Number": "H0JD4A10BK5"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -8028,11 +8063,11 @@
           "vendorAttributes": {
             "Product Number": "H0JD4A3#WFH"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -8063,11 +8098,11 @@
           "vendorAttributes": {
             "Product Number": "H0JD4A3#WFK"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         }
       ]
@@ -8116,11 +8151,11 @@
           "vendorAttributes": {
             "Product Number": "H54SBA5#Y35"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -8151,11 +8186,11 @@
           "vendorAttributes": {
             "Product Number": "H39DJA3#Y35"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -8186,11 +8221,11 @@
           "vendorAttributes": {
             "Product Number": "H39DJA4#Y35"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -8221,11 +8256,11 @@
           "vendorAttributes": {
             "Product Number": "H39DJA5#Y35"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -8256,11 +8291,11 @@
           "vendorAttributes": {
             "Product Number": "H39DKA3#Y35"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -8291,11 +8326,11 @@
           "vendorAttributes": {
             "Product Number": "H39DKA4#Y35"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -8326,11 +8361,11 @@
           "vendorAttributes": {
             "Product Number": "H39DKA5#Y35"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -8361,11 +8396,11 @@
           "vendorAttributes": {
             "Product Number": "H39DLA3#Y36"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -8396,11 +8431,11 @@
           "vendorAttributes": {
             "Product Number": "H39DLA4#Y36"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -8431,11 +8466,11 @@
           "vendorAttributes": {
             "Product Number": "H39DLA5#Y36"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         }
       ]
@@ -8482,11 +8517,11 @@
           "vendorAttributes": {
             "Product Number": "H40CSA3"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -8517,11 +8552,11 @@
           "vendorAttributes": {
             "Product Number": "H40CSA4"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -8552,11 +8587,11 @@
           "vendorAttributes": {
             "Product Number": "H40CSA5"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -8587,11 +8622,11 @@
           "vendorAttributes": {
             "Product Number": "HY0W3A3#Z5K"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -8622,11 +8657,11 @@
           "vendorAttributes": {
             "Product Number": "HY0W3A4#Z5K"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         },
         {
@@ -8657,11 +8692,11 @@
           "vendorAttributes": {
             "Product Number": "HY0W3A5#Z5K"
           },
-          "Diff Status": "BASELINE",
           "Previous List Price (USD)": "N/A",
+          "Attribute Deltas": "None",
+          "Diff Status": "UNCHANGED",
           "Price Change (USD)": "$0.00",
           "Price Change (%)": "0.00%",
-          "Attribute Deltas": "None",
           "Price History Trail": "2026-11-11: (no price)"
         }
       ]

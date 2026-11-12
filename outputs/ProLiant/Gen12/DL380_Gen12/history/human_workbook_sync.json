@@ -1,19 +1,19 @@
 {
   "success": true,
   "spreadsheetId": "1ODabKd0jVBFJU0ga4hfZOs5TtzNIuCXJWb4oXr88ocY",
-  "backupFile": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\history\\drive_backups\\drive_backup_52806555-9ca7-4c55-813b-e9580a366d3d.json",
+  "backupFile": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\history\\drive_backups\\drive_backup_d93f9977-d7a9-4e7b-a024-dca1ec52dea6.json",
   "tabsWritten": [
     {
       "title": "Certified Catalog",
-      "rows": 1178
+      "rows": 1192
     },
     {
       "title": "Verified Learnings",
-      "rows": 693
+      "rows": 756
     },
     {
       "title": "Change Log",
-      "rows": 16168
+      "rows": 19668
     },
     {
       "title": "Sync Metadata",
@@ -21,11 +21,11 @@
     },
     {
       "title": "Category Summary",
-      "rows": 151
+      "rows": 150
     },
     {
       "title": "All SKUs",
-      "rows": 1178
+      "rows": 1192
     },
     {
       "title": "Chassis Variants",
@@ -37,31 +37,31 @@
     },
     {
       "title": "Rules & Constraints",
-      "rows": 770
+      "rows": 755
     },
     {
       "title": "Unavailable Rules & Gates",
-      "rows": 36
+      "rows": 37
     },
     {
       "title": "Hardware Accessories",
-      "rows": 19
+      "rows": 29
     },
     {
       "title": "Software & Licenses",
-      "rows": 1181
+      "rows": 1179
     },
     {
       "title": "Support Services",
-      "rows": 99
+      "rows": 121
     },
     {
       "title": "Catalog Diffs",
-      "rows": 452
+      "rows": 1740
     },
     {
       "title": "Price History Timeline",
-      "rows": 1701
+      "rows": 1745
     },
     {
       "title": "Processor",
@@ -69,11 +69,11 @@
     },
     {
       "title": "Memory",
-      "rows": 12
+      "rows": 20
     },
     {
       "title": "Networking",
-      "rows": 77
+      "rows": 83
     },
     {
       "title": "Power Supplies",
@@ -101,11 +101,15 @@
     },
     {
       "title": "Storage Controllers",
-      "rows": 54
+      "rows": 53
     },
     {
       "title": "Cables & Enablement Kits",
       "rows": 97
+    },
+    {
+      "title": "Support Services_2",
+      "rows": 2
     },
     {
       "title": "Graphics & GPU",
@@ -113,11 +117,11 @@
     },
     {
       "title": "Discontinued SKUs",
-      "rows": 925
+      "rows": 939
     },
     {
       "title": "Supply Chain & Lead Times",
-      "rows": 1701
+      "rows": 1745
     },
     {
       "title": "Metadata",
@@ -126,43 +130,44 @@
   ],
   "readbackVerified": true,
   "readbackFingerprints": {
-    "Certified Catalog": "583493eab50fffa5b285003c4fc6dba75e517539e82662b7a8df93bcf7f9057f",
-    "Verified Learnings": "d0552aa998d7bb664c3e3718a602db46a3769db054131f2703aa7f3a89a17f3e",
-    "Change Log": "8c8ac010ae0d7136dc42c147f17b00e4f244bf4a3a32ae609fd4195312c2a3f9",
-    "Sync Metadata": "067ec342145449497c0f0dc3a979d1d26fc4002d017cffbdccba35ca3ff0b2ae",
-    "Category Summary": "dd5c67a6e98e49463b3d022e8f2fabf81658238ea17a7670d3574c4ebdfafd9f",
-    "All SKUs": "fa9fad8eca376b4d86757a3136481175cb81f3858cbc8f0fbcc30771011f5c7f",
-    "Chassis Variants": "603bdd07f3e881d1ee4686a7dc68e0719e68058a2e1e7879439d324665e1ce5e",
+    "Certified Catalog": "7bd6c490ca979555febf8881a5c2d73a9d3601639ec53ba06b9509b4a818645c",
+    "Verified Learnings": "3e45e65f0d46032712219a1a265f27533112e747180a466feaa818c2f9b104f1",
+    "Change Log": "49c2f6a813b1744ba899ed27b2dce1d630a60b5e5d8dd4096565a4f49b696234",
+    "Sync Metadata": "682ba6e9430b950d8d3b65baa29a3cc8740bd82d7b1634e830199af6f48f1630",
+    "Category Summary": "3718f7bdc128f4278b933adc81e7f7cb311064959a207f5e083aa9927402a97e",
+    "All SKUs": "e59da9c3932f67c3e05e500b49e5eda47a0fd939a5ffee030366ef1f247b2263",
+    "Chassis Variants": "1d0c0bc2e27124395b7964791a3e85fb09d768ae035681c5badff79ebc7df2c7",
     "Chassis Options Matrix": "f07ea3d990a7cbd7229066b0e5891e9b9cc73d6a328555208b92e993a9c55cbc",
-    "Rules & Constraints": "701acf144efd2047340bd25e3703fbf1900717608e12ed95ae9b5188eacb4f19",
-    "Unavailable Rules & Gates": "4556ce152290b9ed64ca0dde65a1ece8b7b0ffd64c10095a4a740d673f2cdba5",
-    "Hardware Accessories": "731e49ba77a350ec32ff83497184ae6d41603d8be141c2583d1b05bf228efae5",
-    "Software & Licenses": "5083eb1a2bfea8149e468c7de76facad37862385228ec7204186855ad8a5f702",
-    "Support Services": "27a1636ab177766ff1bc0a1904a7483312081e2f60e9ffca9856e4fa1937d1a5",
-    "Catalog Diffs": "76ce4db568ef99f56f4557f3ae3f1fc52067b7db4b428047722e89f7c7e79f5e",
-    "Price History Timeline": "235a17e22b265ac01439827bb815fe3ef5898dd549986dcd30fe2b6a6c6ef36f",
-    "Processor": "f3a1eb9cbb703b67fb438896900deedd58028308c6311ab19982376d6561b0cb",
-    "Memory": "d1c17e2530cfa1a45fcb4ef32c0480be1c6e7d4016e645cac8f0f8e6582e6320",
-    "Networking": "50edc5a1c87a30b558c4d3d9096113f61f2fffe9f2f3cf1226eca10bcb199147",
-    "Power Supplies": "28670c2251b81f8937741e59c8253a08ef0e39389e385a1392e76ef860c90da1",
-    "Chassis": "68c0c015d458a400a7169c54aac3ae7e9324ac58ffd346b12a1bba3ef3c37e17",
-    "Accessories & Infrastructure": "0db8a2a4eb6261e89468e49cc721645fa0cbf6fa6372de0d4ad2de6a276f9a0c",
-    "Cooling  Thermal": "5ff40bd1576cf0987b15507d093e3d57eed63006819dce17b7001c97492855fa",
-    "Drive Enclosures  Drives": "a0d3f9386e8a2ef3b78ac8cd9650e70584487b95f29229d7fca995d118e704f3",
-    "PCIe Risers": "6532f1a54a4c9e6b5de69209cdec44fb55ddf3212a6d191e4bb082f1a88346f5",
-    "Storage Controllers": "3c16afbd38dbd86b448e13e7c1e72c39130718f7604feee2eaa725163e856a0a",
-    "Cables & Enablement Kits": "db23c7cd7ea99158e571e246f5714a35eabdf8e504e4f58202af51ea581c817d",
-    "Graphics & GPU": "e542125b2f3f059048858ccf2d5f5df238d1fce68b3cebb4ecdcda658e29350f",
-    "Discontinued SKUs": "70e78713ac2494ac42de62fee8975fd10fb7a9094fdaac51ae4f9980e41cac6d",
-    "Supply Chain & Lead Times": "d47dc257eb324aa586f8de9390612d2803d2be52c3ccfc6429f890a61b230dce",
-    "Metadata": "124bbb81c8c8b1bb19ce78f9ce69b58e2b8898f19e784bd2c35e41d365bc0faa"
+    "Rules & Constraints": "f3492ebfdcc38e253ab1defab00b2e89f7bbe15394d1f3300bef0dce878a196f",
+    "Unavailable Rules & Gates": "acb0154031c30d07eea5482e6c893061fc02cf4943cc0d151a2ea406ebd984fd",
+    "Hardware Accessories": "effed565c73a52913614fae85e099eb33db8e89d68645b0463764238a8838558",
+    "Software & Licenses": "0cab94e2f34778089ae60db3ebbfda2d60aae7dc581b5b3f158afb2a5dd1c1cd",
+    "Support Services": "eda039ded357ca79df0923155377a60280b9723ef01970dd23878bbad8b8fef1",
+    "Catalog Diffs": "f999fdade9ec5d2bf72c09d8bd18770b7a32129aac0433395fce7e4ea163c2b3",
+    "Price History Timeline": "eff3e6abaa0b48cfff9553104a06b8b5f567bf8175576399ad542da387d896b7",
+    "Processor": "3b8aacfbc360e1df304960f423aff58f814caf70bd73faa74153a4b3cf64edc8",
+    "Memory": "3d2aed8bd0197d5599a7a1043f4a64266173afcfbf3188e7ac241d013a3789ff",
+    "Networking": "8f98e2b98cee724be994359df67b525310162eb8bc086eca29f74e02766ebcdd",
+    "Power Supplies": "f7f11e0d08c89c842756772e195d37165a165028669a23a8d4ebfe25d2154d51",
+    "Chassis": "97ad67797e0b45c7e2886d3303d132bf0b0b43abe2aceecd09ad5b5fe5f88dbb",
+    "Accessories & Infrastructure": "87e7cedb2191c5295515d8e610e261217935a4c34a9bc7c11389127bca961533",
+    "Cooling  Thermal": "c85462e05c8236b40e9d88bbf1300e102df7bec20858e2f369d7e9af88b1a98e",
+    "Drive Enclosures  Drives": "6e58b2bf280b7e021c0b861ef792778d186baf1b337502ec20f750f86679eed3",
+    "PCIe Risers": "95822c1d909a146963254bfda8a59097e4593b7e1977422c16da10d404dd1043",
+    "Storage Controllers": "4c81375da7b7555786faec2e597f735f7394bffc4622e0dcda6952d4eb41036f",
+    "Cables & Enablement Kits": "3756ccf007667bdff33ebf87fb946ce0c7287dd4257879393e79c1ee37b1748d",
+    "Support Services_2": "1c15096f10e48919ef9ed5228d6b01781662bd46608072a648cf6f62b41f4247",
+    "Graphics & GPU": "740a48c8d8d54a956d9ff22c1188f400574063421b661668dcc97e98cf1a845b",
+    "Discontinued SKUs": "bedf196bd9a387b5c51318fcbf6875b9792b6fae64c41d5bc6c19ef373725508",
+    "Supply Chain & Lead Times": "e18c3e2281135632dfe12249f003299b55f24215d06d6380798ad6a0588be9b8",
+    "Metadata": "9f08a2096ebac5dce911ae6bcec60b6ef278f9ca982d1c78c65879eb033897bf"
   },
-  "verifiedAt": "2026-11-02T14:48:17.013Z",
+  "verifiedAt": "2026-11-12T11:00:13.081Z",
   "fingerprints": {
-    "catalog": "583493eab50fffa5b285003c4fc6dba75e517539e82662b7a8df93bcf7f9057f",
-    "learnings": "06c6c16847cf01d79ca54de6c8222673484a8e38fffb3ff9e121c0d7a8e8a77a",
-    "changes": "8c8ac010ae0d7136dc42c147f17b00e4f244bf4a3a32ae609fd4195312c2a3f9",
-    "workbook": "009aca23ceb9abd5c3b9437d00251f047e716b7fd6aaa85e5a6e5b83c5b86046",
-    "combined": "c32dbef117203092d2928c0467e224dea0ad22e5dcaa9f1d01a8fa8f6c2b8501"
+    "catalog": "7bd6c490ca979555febf8881a5c2d73a9d3601639ec53ba06b9509b4a818645c",
+    "learnings": "acd835757814d19077faaf5a0d73372117709238d2f2048e2ebc936f5f43edc8",
+    "changes": "49c2f6a813b1744ba899ed27b2dce1d630a60b5e5d8dd4096565a4f49b696234",
+    "workbook": "69d0cedc9d932bfd24543fa046b10f13a7a5f0bba0c40f52a4923d6c2bc575ec",
+    "combined": "e9a19b403c14c7acbe0402d5833d5692d448c0e0f3de1b89f4f14a021ad85eda"
   }
 }

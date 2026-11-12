@@ -1,0 +1,56 @@
+{
+  "verifiedAt": "2026-11-12T11:06:35.035Z",
+  "productId": "Synergy_12000_Frame",
+  "family": "Synergy",
+  "generation": "General",
+  "preflight": {
+    "recordedAt": "2026-11-12T11:01:29.433Z",
+    "pass": true,
+    "product": {
+      "pass": true,
+      "productId": "Synergy_12000_Frame",
+      "family": "Synergy",
+      "generation": "General",
+      "pillar": "COMPOSITE",
+      "notebookId": "5b9ddeda-0d03-44ee-80c8-766f494ea34c",
+      "canonicalDriveEnabled": false,
+      "publishDriveWorkbook": true,
+      "expectedWorkbookSheets": null,
+      "requiredSheetsCount": 0
+    },
+    "notebookLm": {
+      "pass": true,
+      "status": "SKIPPED_BY_FLAG"
+    },
+    "googleWorkspace": {
+      "pass": true,
+      "status": "SKIPPED_BY_FLAG"
+    },
+    "vendorPolicy": {
+      "vendor": "HPE",
+      "anchorTabUrl": "https://partner.hpe.com/group/prp",
+      "handoffMechanism": "SAML_POST_NEW_TAB",
+      "allowInPlaceReload": false,
+      "recoveryProtocol": "CLOSE_CONFIG_TAB_RETURN_TO_TAB1_CLICK_QUICK_LINK"
+    }
+  },
+  "postflight": {
+    "pass": true,
+    "status": "VERIFIED",
+    "diffSummaryError": null,
+    "hwSkuCount": 228,
+    "serviceSkuCount": 216,
+    "totalSkuCount": 444,
+    "conditionalSkusCount": 295,
+    "unavailableRulesCount": 17,
+    "diffSummaryPresent": true,
+    "diffCounts": {
+      "ADDED": 0,
+      "MODIFIED": 1,
+      "REMOVED": 0,
+      "DISCONTINUED": 0,
+      "UNCHANGED": 228
+    },
+    "cloudSyncState": "CLOUD_VERIFIED"
+  }
+}

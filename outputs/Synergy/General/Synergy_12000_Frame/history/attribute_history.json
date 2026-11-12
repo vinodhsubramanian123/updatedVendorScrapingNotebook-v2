@@ -1,1 +1,132 @@
-[]
+[
+  {
+    "date": "2026-11-12",
+    "productNumber": "P83805-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Frame Options",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Description",
+    "oldValue": "HPE Synergy 480 Gen11 for SAP HANA Compute Node",
+    "newValue": "HPE Synergy 480 Gen11 Solution Compute Node"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "P83805-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Frame Options",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Option Type",
+    "oldValue": "Standard",
+    "newValue": "CTO"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "P83805-B21",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Frame Options",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0}",
+    "newValue": "{\"listPrice\":3463}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36XCA1#006",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Description",
+    "oldValue": "HPE GPU on RHOCP Integrat SVC",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36XCA1#006",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Option Type",
+    "oldValue": "Standard",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36XCA1#006",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36XCA1#006",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "CLIC Status",
+    "oldValue": "Unpublished",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36XCA1#006",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Availability",
+    "oldValue": "Not published by OCA",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36XCA1#006",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36XCA1#006",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36XCA1#006",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36XCA1#006",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Vendor Recommended",
+    "oldValue": "false",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36XCA1#006",
+    "chassis": "Synergy 12000 Frame",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Product Number\":\"H36XCA1#006\"}",
+    "newValue": ""
+  }
+]

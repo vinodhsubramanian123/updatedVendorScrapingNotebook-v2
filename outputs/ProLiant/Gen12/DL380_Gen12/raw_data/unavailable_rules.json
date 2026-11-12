@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-10-29T06:27:16.008Z",
+  "timestamp": "2026-11-12T10:51:12.425Z",
   "chassisName": "DL380_Gen12",
-  "totalUnavailableRules": 35,
-  "totalUnavailableSkus": 112,
+  "totalUnavailableRules": 36,
+  "totalUnavailableSkus": 115,
   "rules": [
     {
       "ruleId": "RULE_1",
@@ -33,9 +33,10 @@
       "ruleType": "MEMORY_MIXING",
       "section": "Memory",
       "reason": "96GB Memory cannot be mixed with any other Memory.",
-      "affectedSkusCount": 1,
+      "affectedSkusCount": 2,
       "affectedSkus": [
-        "P69729-F21"
+        "P69729-F21",
+        "P83867-F21"
       ]
     },
     {
@@ -43,9 +44,10 @@
       "ruleType": "MEMORY_MIXING",
       "section": "Memory",
       "reason": "128GB Memory cannot be mixed with any other Memory.",
-      "affectedSkusCount": 1,
+      "affectedSkusCount": 2,
       "affectedSkus": [
-        "P69730-F21"
+        "P69730-F21",
+        "P83869-F21"
       ]
     },
     {
@@ -60,6 +62,16 @@
     },
     {
       "ruleId": "RULE_6",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "section": "Memory",
+      "reason": "Mixing of 6400B and 8000B Memory is NOT allowed.",
+      "affectedSkusCount": 1,
+      "affectedSkus": [
+        "P83865-F21"
+      ]
+    },
+    {
+      "ruleId": "RULE_7",
       "ruleType": "CHASSIS_GATE",
       "section": "Smart Chassis",
       "reason": "Supported with EDSFF CTO Server only.",
@@ -69,7 +81,7 @@
       ]
     },
     {
-      "ruleId": "RULE_7",
+      "ruleId": "RULE_8",
       "ruleType": "CHASSIS_GATE",
       "section": "Smart Chassis",
       "reason": "Supported with 8LFF and 12LFF CTO Server only.",
@@ -82,7 +94,7 @@
       ]
     },
     {
-      "ruleId": "RULE_8",
+      "ruleId": "RULE_9",
       "ruleType": "CHASSIS_GATE",
       "section": "Smart Chassis",
       "reason": "Supported with 8LFF CTO Server only.",
@@ -92,7 +104,7 @@
       ]
     },
     {
-      "ruleId": "RULE_9",
+      "ruleId": "RULE_10",
       "ruleType": "CHASSIS_GATE",
       "section": "Smart Chassis",
       "reason": "Nvme option not available with 8sff smart chassis choice.",
@@ -118,7 +130,7 @@
       ]
     },
     {
-      "ruleId": "RULE_10",
+      "ruleId": "RULE_11",
       "ruleType": "SLOT_COLLISION",
       "section": "Smart Chassis",
       "reason": "Tertiary x8x16 Riser and OCPA x16/ CPU1 OCPB x8 cannot be selected together.",
@@ -128,7 +140,7 @@
       ]
     },
     {
-      "ruleId": "RULE_11",
+      "ruleId": "RULE_12",
       "ruleType": "CHASSIS_GATE",
       "section": "Smart Chassis",
       "reason": "Supported with EDSFF CTO Server only.",
@@ -139,7 +151,7 @@
       ]
     },
     {
-      "ruleId": "RULE_12",
+      "ruleId": "RULE_13",
       "ruleType": "CHASSIS_GATE",
       "section": "Smart Chassis",
       "reason": "Selected Smart Chassis Configuration is not valid",
@@ -151,7 +163,7 @@
       ]
     },
     {
-      "ruleId": "RULE_13",
+      "ruleId": "RULE_14",
       "ruleType": "CHASSIS_GATE",
       "section": "Storage Devices",
       "reason": "Supported with 8LFF and 12LFF CTO Server only.",
@@ -159,26 +171,26 @@
       "affectedSkus": [
         "P76473-B21",
         "P77474-B21",
-        "P77475-B21",
         "P77484-B21",
         "P77485-B21",
-        "P76474-B21"
+        "P76474-B21",
+        "P77475-B21"
       ]
     },
     {
-      "ruleId": "RULE_14",
+      "ruleId": "RULE_15",
       "ruleType": "CHASSIS_GATE",
       "section": "Storage Devices",
       "reason": "Supported with 8LFF CTO Server only and requires 2SFF SBS Cage.",
       "affectedSkusCount": 3,
       "affectedSkus": [
-        "P76476-B21",
         "P77481-B21",
+        "P76476-B21",
         "P77480-B21"
       ]
     },
     {
-      "ruleId": "RULE_15",
+      "ruleId": "RULE_16",
       "ruleType": "CHASSIS_GATE",
       "section": "Storage Devices",
       "reason": "Supported with 12EDSFF CTO Server only.",
@@ -190,7 +202,7 @@
       ]
     },
     {
-      "ruleId": "RULE_16",
+      "ruleId": "RULE_17",
       "ruleType": "BTO_DISALLOWED",
       "section": "Storage Devices",
       "reason": "BTO products are not allowed in CTO Base Model.",
@@ -200,7 +212,7 @@
       ]
     },
     {
-      "ruleId": "RULE_17",
+      "ruleId": "RULE_18",
       "ruleType": "CHASSIS_GATE",
       "section": "Storage Devices",
       "reason": "Supported with 8LFF CTO Server only.",
@@ -210,7 +222,7 @@
       ]
     },
     {
-      "ruleId": "RULE_18",
+      "ruleId": "RULE_19",
       "ruleType": "BTO_DISALLOWED",
       "section": "Storage Devices",
       "reason": "BTO products are not allowed in CTO Base Model.",
@@ -221,7 +233,7 @@
       ]
     },
     {
-      "ruleId": "RULE_19",
+      "ruleId": "RULE_20",
       "ruleType": "CHASSIS_GATE",
       "section": "Factory Configuration Settings",
       "reason": "Supported with 12EDSFF CTO Server only.",
@@ -232,7 +244,7 @@
       ]
     },
     {
-      "ruleId": "RULE_20",
+      "ruleId": "RULE_21",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Networking",
       "reason": "Private Product is not valid for current customer account",
@@ -242,7 +254,7 @@
       ]
     },
     {
-      "ruleId": "RULE_21",
+      "ruleId": "RULE_22",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Networking",
       "reason": "Private Product is not valid for current customer account",
@@ -252,7 +264,7 @@
       ]
     },
     {
-      "ruleId": "RULE_22",
+      "ruleId": "RULE_23",
       "ruleType": "BTO_DISALLOWED",
       "section": "Networking",
       "reason": "BTO products are not allowed in CTO Base Model.",
@@ -260,14 +272,14 @@
       "affectedSkus": [
         "AJ833A",
         "AJ836A",
-        "AJ837A",
         "AJ838A",
         "AJ839A",
-        "AJ834A"
+        "AJ834A",
+        "AJ837A"
       ]
     },
     {
-      "ruleId": "RULE_23",
+      "ruleId": "RULE_24",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Networking",
       "reason": "Private Product is not valid for current customer account",
@@ -278,7 +290,7 @@
       ]
     },
     {
-      "ruleId": "RULE_24",
+      "ruleId": "RULE_25",
       "ruleType": "AMBIENT_GATE",
       "section": "Graphics Options",
       "reason": "RTX Pro 6000/ RTX Pro 6000D/ H200 NVL GPU and 30C Ambient Temperature cannot be selected together.",
@@ -290,7 +302,7 @@
       ]
     },
     {
-      "ruleId": "RULE_25",
+      "ruleId": "RULE_26",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Graphics Options",
       "reason": "Private Product is not valid for current customer account",
@@ -300,7 +312,7 @@
       ]
     },
     {
-      "ruleId": "RULE_26",
+      "ruleId": "RULE_27",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Power Supplies",
       "reason": "Mixing of Power supplies are not allowed.",
@@ -312,7 +324,7 @@
       ]
     },
     {
-      "ruleId": "RULE_27",
+      "ruleId": "RULE_28",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Power Supplies",
       "reason": "If AC Power Supply is selected then only AC Power Cords should be in the drop-down.",
@@ -322,24 +334,13 @@
       ]
     },
     {
-      "ruleId": "RULE_28",
+      "ruleId": "RULE_29",
       "ruleType": "PAIRED_KIT_REQUIRED",
       "section": "Power Supplies",
       "reason": "HPE 1600W -48VDC Pwr Cbl Lug Kit(P36877-B21) Supported only with HPE 1600W FS -48VDC Ht Plg PS Kit (P17023-B21).",
       "affectedSkusCount": 1,
       "affectedSkus": [
         "P36877-B21"
-      ]
-    },
-    {
-      "ruleId": "RULE_29",
-      "ruleType": "BTO_DISALLOWED",
-      "section": "Power Supplies",
-      "reason": "BTO products are not allowed in CTO Base Model.",
-      "affectedSkusCount": 2,
-      "affectedSkus": [
-        "A0N33A",
-        "A0K02A"
       ]
     },
     {
@@ -350,11 +351,8 @@
       "affectedSkusCount": 25,
       "affectedSkus": [
         "AF556A",
-        "AF557A",
         "AF568A",
-        "AF573A",
-        "P78130-B21",
-        "P78156-B21",
+        "AF557A",
         "AF558A",
         "AF559A",
         "AF560A",
@@ -367,10 +365,13 @@
         "AF569A",
         "AF570A",
         "AF572A",
+        "AF573A",
         "AF591A",
+        "P78130-B21",
         "P78131-B21",
         "P78144-B21",
         "P78147-B21",
+        "P78156-B21",
         "P78940-B21",
         "P78941-B21",
         "R1C65A"
@@ -388,6 +389,17 @@
     },
     {
       "ruleId": "RULE_32",
+      "ruleType": "BTO_DISALLOWED",
+      "section": "Power Supplies",
+      "reason": "BTO products are not allowed in CTO Base Model.",
+      "affectedSkusCount": 2,
+      "affectedSkus": [
+        "A0K02A",
+        "A0N33A"
+      ]
+    },
+    {
+      "ruleId": "RULE_33",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Private Cloud Business Edition",
       "reason": "Not Supported ProStack Server Software",
@@ -397,7 +409,7 @@
       ]
     },
     {
-      "ruleId": "RULE_33",
+      "ruleId": "RULE_34",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "HPE Compute Ops Management",
       "reason": "Max 1 per server (This is applicable for both 3year and 5 year license in TOTAL) Total number of licenses within an order cannot exceed the number of servers",
@@ -408,7 +420,7 @@
       ]
     },
     {
-      "ruleId": "RULE_34",
+      "ruleId": "RULE_35",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "HPE Compute Ops Management",
       "reason": "For Gen11/Gen12 servers ONLY Min 1/Max 1 per server. Total number of licenses within an order cannot exceed the number of servers",
@@ -420,7 +432,7 @@
       ]
     },
     {
-      "ruleId": "RULE_35",
+      "ruleId": "RULE_36",
       "ruleType": "MUTUAL_EXCLUSION",
       "section": "Virtualization",
       "reason": "Private Product is not valid for current customer account",
@@ -546,12 +558,44 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
+      "sku": "P83867-F21",
+      "rawSku": "P83867-F21",
+      "isPrivateSku": false,
+      "description": "HPE 96GB (1x96GB) Dual Rank x4 DDR5-8000 CAS-64-64-64 EC8 Registered Smart FIO Memory Kit",
+      "listPrice": 54115,
+      "startDate": "11/02/2026",
+      "discontinuedDate": "06/30/2030",
+      "section": "Memory",
+      "ruleType": "MEMORY_MIXING",
+      "ineligibilityReason": "96GB Memory cannot be mixed with any other Memory.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
       "sku": "P69730-F21",
       "rawSku": "P69730-F21",
       "isPrivateSku": false,
       "description": "HPE 128GB (1x128GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 EC8 Registered Smart FIO Memory Kit",
       "listPrice": 60190,
       "startDate": "04/06/2026",
+      "discontinuedDate": "06/30/2030",
+      "section": "Memory",
+      "ruleType": "MEMORY_MIXING",
+      "ineligibilityReason": "128GB Memory cannot be mixed with any other Memory.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P83869-F21",
+      "rawSku": "P83869-F21",
+      "isPrivateSku": false,
+      "description": "HPE 128GB (1x128GB) Dual Rank x4 DDR5-8000 CAS-64-64-64 EC8 Registered Smart FIO Memory Kit",
+      "listPrice": 69219,
+      "startDate": "11/02/2026",
       "discontinuedDate": "06/30/2030",
       "section": "Memory",
       "ruleType": "MEMORY_MIXING",
@@ -572,6 +616,22 @@
       "section": "Memory",
       "ruleType": "MEMORY_MIXING",
       "ineligibilityReason": "Mixing of 3DS and non 3DS memory is not allowed.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P83865-F21",
+      "rawSku": "P83865-F21",
+      "isPrivateSku": false,
+      "description": "HPE 64GB (1x64GB) Dual Rank x4 DDR5-8000 CAS-64-64-64 EC8 Registered Smart FIO Memory Kit",
+      "listPrice": 32811,
+      "startDate": "11/02/2026",
+      "discontinuedDate": "06/30/2030",
+      "section": "Memory",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Mixing of 6400B and 8000B Memory is NOT allowed.",
       "supplyBadge": "",
       "supplyTitle": "",
       "isSelectable": false,
@@ -1074,22 +1134,6 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
-      "sku": "P77475-B21",
-      "rawSku": "P77475-B21",
-      "isPrivateSku": false,
-      "description": "HPE ProLiant Compute DL380 Gen12 8LFF OROC Box 1/7 Cable Kit",
-      "listPrice": 61,
-      "startDate": "02/24/2025",
-      "discontinuedDate": "06/30/2029",
-      "section": "Storage Devices",
-      "ruleType": "CHASSIS_GATE",
-      "ineligibilityReason": "Supported with 8LFF and 12LFF CTO Server only.",
-      "supplyBadge": "",
-      "supplyTitle": "",
-      "isSelectable": false,
-      "status": "PORTAL_CONDITIONAL"
-    },
-    {
       "sku": "P77484-B21",
       "rawSku": "P77484-B21",
       "isPrivateSku": false,
@@ -1138,16 +1182,16 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
-      "sku": "P76476-B21",
-      "rawSku": "P76476-B21",
+      "sku": "P77475-B21",
+      "rawSku": "P77475-B21",
       "isPrivateSku": false,
-      "description": "HPE ProLiant Compute DL380 Gen12 2SFF x4 U.3 Side-by-Side Cable Kit",
-      "listPrice": 102,
+      "description": "HPE ProLiant Compute DL380 Gen12 8LFF OROC Box 1/7 Cable Kit",
+      "listPrice": 61,
       "startDate": "02/24/2025",
       "discontinuedDate": "06/30/2029",
       "section": "Storage Devices",
       "ruleType": "CHASSIS_GATE",
-      "ineligibilityReason": "Supported with 8LFF CTO Server only and requires 2SFF SBS Cage.",
+      "ineligibilityReason": "Supported with 8LFF and 12LFF CTO Server only.",
       "supplyBadge": "",
       "supplyTitle": "",
       "isSelectable": false,
@@ -1159,6 +1203,22 @@
       "isPrivateSku": false,
       "description": "HPE ProLiant Compute DL380 Gen12 2SFF U.3 Side-by-Side Direct Attach Cable Kit",
       "listPrice": 73,
+      "startDate": "02/24/2025",
+      "discontinuedDate": "06/30/2029",
+      "section": "Storage Devices",
+      "ruleType": "CHASSIS_GATE",
+      "ineligibilityReason": "Supported with 8LFF CTO Server only and requires 2SFF SBS Cage.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P76476-B21",
+      "rawSku": "P76476-B21",
+      "isPrivateSku": false,
+      "description": "HPE ProLiant Compute DL380 Gen12 2SFF x4 U.3 Side-by-Side Cable Kit",
+      "listPrice": 102,
       "startDate": "02/24/2025",
       "discontinuedDate": "06/30/2029",
       "section": "Storage Devices",
@@ -1336,7 +1396,7 @@
       "description": "Nvidia B3220L 200Gb 2p QSFP 112 Spl DPU",
       "listPrice": 15334,
       "startDate": "05/31/2024",
-      "discontinuedDate": "06/30/2027",
+      "discontinuedDate": "02/28/2027",
       "section": "Networking",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "Private Product is not valid for current customer account",
@@ -1383,22 +1443,6 @@
       "isPrivateSku": false,
       "description": "HPE LC to LC Multi-mode OM3 2-Fiber 5.0m 1-Pack Fiber Optic Cable",
       "listPrice": 115,
-      "startDate": "06/13/2008",
-      "discontinuedDate": "11/30/2028",
-      "section": "Networking",
-      "ruleType": "BTO_DISALLOWED",
-      "ineligibilityReason": "BTO products are not allowed in CTO Base Model.",
-      "supplyBadge": "",
-      "supplyTitle": "",
-      "isSelectable": false,
-      "status": "PORTAL_CONDITIONAL"
-    },
-    {
-      "sku": "AJ837A",
-      "rawSku": "AJ837A",
-      "isPrivateSku": false,
-      "description": "HPE LC to LC Multi-mode OM3 2-Fiber 15.0m 1-Pack Fiber Optic Cable",
-      "listPrice": 162,
       "startDate": "06/13/2008",
       "discontinuedDate": "11/30/2028",
       "section": "Networking",
@@ -1458,6 +1502,22 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
+      "sku": "AJ837A",
+      "rawSku": "AJ837A",
+      "isPrivateSku": false,
+      "description": "HPE LC to LC Multi-mode OM3 2-Fiber 15.0m 1-Pack Fiber Optic Cable",
+      "listPrice": 162,
+      "startDate": "06/13/2008",
+      "discontinuedDate": "11/30/2028",
+      "section": "Networking",
+      "ruleType": "BTO_DISALLOWED",
+      "ineligibilityReason": "BTO products are not allowed in CTO Base Model.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
       "sku": "P74606-B21",
       "rawSku": "P74606-B21\n\n    PVT",
       "isPrivateSku": true,
@@ -1496,7 +1556,7 @@
       "description": "NVIDIA H200 NVL 141GB PCIe Accelerator for HPE",
       "listPrice": 112579,
       "startDate": "02/03/2025",
-      "discontinuedDate": "12/31/2027",
+      "discontinuedDate": "06/30/2028",
       "section": "Graphics Options",
       "ruleType": "AMBIENT_GATE",
       "ineligibilityReason": "RTX Pro 6000/ RTX Pro 6000D/ H200 NVL GPU and 30C Ambient Temperature cannot be selected together.",
@@ -1608,7 +1668,7 @@
       "description": "HPE 1600W Flex Slot -48VDC Hot Plug Power Supply Kit",
       "listPrice": 1561,
       "startDate": "12/07/2020",
-      "discontinuedDate": "06/30/2028",
+      "discontinuedDate": "06/30/2029",
       "section": "Power Supplies",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "If AC Power Supply is selected then only AC Power Cords should be in the drop-down.",
@@ -1634,38 +1694,6 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
-      "sku": "A0N33A",
-      "rawSku": "A0N33A",
-      "isPrivateSku": false,
-      "description": "HPE C13-NEMA 6-15P 10A/250V 3.6m Black Power Cord",
-      "listPrice": 78,
-      "startDate": "08/30/2011",
-      "discontinuedDate": "09/30/2031",
-      "section": "Power Supplies",
-      "ruleType": "BTO_DISALLOWED",
-      "ineligibilityReason": "BTO products are not allowed in CTO Base Model.",
-      "supplyBadge": "",
-      "supplyTitle": "",
-      "isSelectable": false,
-      "status": "PORTAL_CONDITIONAL"
-    },
-    {
-      "sku": "A0K02A",
-      "rawSku": "A0K02A",
-      "isPrivateSku": false,
-      "description": "HPE C13 - C14 WW 250V 10Amp 2.0m Jumper Cord",
-      "listPrice": 34,
-      "startDate": "08/30/2011",
-      "discontinuedDate": "09/30/2031",
-      "section": "Power Supplies",
-      "ruleType": "BTO_DISALLOWED",
-      "ineligibilityReason": "BTO products are not allowed in CTO Base Model.",
-      "supplyBadge": "",
-      "supplyTitle": "",
-      "isSelectable": false,
-      "status": "PORTAL_CONDITIONAL"
-    },
-    {
       "sku": "AF556A",
       "rawSku": "AF556A",
       "isPrivateSku": false,
@@ -1673,22 +1701,6 @@
       "listPrice": 55,
       "startDate": "03/26/2007",
       "discontinuedDate": "06/30/2029",
-      "section": "Power Supplies",
-      "ruleType": "MUTUAL_EXCLUSION",
-      "ineligibilityReason": "Max quantity of product limited by space available.",
-      "supplyBadge": "",
-      "supplyTitle": "",
-      "isSelectable": false,
-      "status": "PORTAL_CONDITIONAL"
-    },
-    {
-      "sku": "AF557A",
-      "rawSku": "AF557A",
-      "isPrivateSku": false,
-      "description": "HPE C13 - GB-1002 CN 250V 10Amp 1.83m Power Cord",
-      "listPrice": 156,
-      "startDate": "05/29/2006",
-      "discontinuedDate": "10/31/2031",
       "section": "Power Supplies",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "Max quantity of product limited by space available.",
@@ -1714,45 +1726,13 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
-      "sku": "AF573A",
-      "rawSku": "AF573A",
+      "sku": "AF557A",
+      "rawSku": "AF557A",
       "isPrivateSku": false,
-      "description": "HPE C13 - C14 WW 250V 10Amp Flint Gray 2.0m Jumper Cord",
-      "listPrice": 38,
-      "startDate": "07/09/2007",
-      "discontinuedDate": "09/30/2031",
-      "section": "Power Supplies",
-      "ruleType": "MUTUAL_EXCLUSION",
-      "ineligibilityReason": "Max quantity of product limited by space available.",
-      "supplyBadge": "",
-      "supplyTitle": "",
-      "isSelectable": false,
-      "status": "PORTAL_CONDITIONAL"
-    },
-    {
-      "sku": "P78130-B21",
-      "rawSku": "P78130-B21",
-      "isPrivateSku": false,
-      "description": "HPE C13 - NEMA 5-15P 125V 10Amp 1.83m FIO Power Cord",
-      "listPrice": 10,
-      "startDate": "02/03/2025",
-      "discontinuedDate": "07/31/2028",
-      "section": "Power Supplies",
-      "ruleType": "MUTUAL_EXCLUSION",
-      "ineligibilityReason": "Max quantity of product limited by space available.",
-      "supplyBadge": "",
-      "supplyTitle": "",
-      "isSelectable": false,
-      "status": "PORTAL_CONDITIONAL"
-    },
-    {
-      "sku": "P78156-B21",
-      "rawSku": "P78156-B21",
-      "isPrivateSku": false,
-      "description": "HPE C13 - C14 250V 10Amp 3m FIO Power Cord",
-      "listPrice": 14,
-      "startDate": "02/03/2025",
-      "discontinuedDate": "07/31/2028",
+      "description": "HPE C13 - GB-1002 CN 250V 10Amp 1.83m Power Cord",
+      "listPrice": 156,
+      "startDate": "05/29/2006",
+      "discontinuedDate": "10/31/2031",
       "section": "Power Supplies",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "Max quantity of product limited by space available.",
@@ -1767,7 +1747,7 @@
       "isPrivateSku": false,
       "description": "HPE C13 - IRAM -2073 AR 250V 10A 2.5m Power Cord",
       "listPrice": 65,
-      "startDate": "05/29/2006",
+      "startDate": "06/30/2006",
       "discontinuedDate": "06/30/2029",
       "section": "Power Supplies",
       "ruleType": "MUTUAL_EXCLUSION",
@@ -1954,6 +1934,22 @@
       "status": "PORTAL_CONDITIONAL"
     },
     {
+      "sku": "AF573A",
+      "rawSku": "AF573A",
+      "isPrivateSku": false,
+      "description": "HPE C13 - C14 WW 250V 10Amp Flint Gray 2.0m Jumper Cord",
+      "listPrice": 38,
+      "startDate": "07/09/2007",
+      "discontinuedDate": "09/30/2031",
+      "section": "Power Supplies",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Max quantity of product limited by space available.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
       "sku": "AF591A",
       "rawSku": "AF591A",
       "isPrivateSku": false,
@@ -1961,6 +1957,22 @@
       "listPrice": 49,
       "startDate": "07/14/2008",
       "discontinuedDate": "10/31/2031",
+      "section": "Power Supplies",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Max quantity of product limited by space available.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P78130-B21",
+      "rawSku": "P78130-B21",
+      "isPrivateSku": false,
+      "description": "HPE C13 - NEMA 5-15P 125V 10Amp 1.83m FIO Power Cord",
+      "listPrice": 10,
+      "startDate": "02/03/2025",
+      "discontinuedDate": "07/31/2028",
       "section": "Power Supplies",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "Max quantity of product limited by space available.",
@@ -2007,6 +2019,22 @@
       "isPrivateSku": false,
       "description": "HPE C13 - C14 250V 10Amp 2m IN FIO Power Cord",
       "listPrice": 77,
+      "startDate": "02/03/2025",
+      "discontinuedDate": "07/31/2028",
+      "section": "Power Supplies",
+      "ruleType": "MUTUAL_EXCLUSION",
+      "ineligibilityReason": "Max quantity of product limited by space available.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "P78156-B21",
+      "rawSku": "P78156-B21",
+      "isPrivateSku": false,
+      "description": "HPE C13 - C14 250V 10Amp 3m FIO Power Cord",
+      "listPrice": 14,
       "startDate": "02/03/2025",
       "discontinuedDate": "07/31/2028",
       "section": "Power Supplies",
@@ -2076,6 +2104,38 @@
       "section": "Power Supplies",
       "ruleType": "MUTUAL_EXCLUSION",
       "ineligibilityReason": "If AC Power Supply is selected then only AC Power Cords should be in the drop-down.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "A0K02A",
+      "rawSku": "A0K02A",
+      "isPrivateSku": false,
+      "description": "HPE C13 - C14 WW 250V 10Amp 2.0m Jumper Cord",
+      "listPrice": 34,
+      "startDate": "08/30/2011",
+      "discontinuedDate": "09/30/2031",
+      "section": "Power Supplies",
+      "ruleType": "BTO_DISALLOWED",
+      "ineligibilityReason": "BTO products are not allowed in CTO Base Model.",
+      "supplyBadge": "",
+      "supplyTitle": "",
+      "isSelectable": false,
+      "status": "PORTAL_CONDITIONAL"
+    },
+    {
+      "sku": "A0N33A",
+      "rawSku": "A0N33A",
+      "isPrivateSku": false,
+      "description": "HPE C13-NEMA 6-15P 10A/250V 3.6m Black Power Cord",
+      "listPrice": 78,
+      "startDate": "08/30/2011",
+      "discontinuedDate": "09/30/2031",
+      "section": "Power Supplies",
+      "ruleType": "BTO_DISALLOWED",
+      "ineligibilityReason": "BTO products are not allowed in CTO Base Model.",
       "supplyBadge": "",
       "supplyTitle": "",
       "isSelectable": false,

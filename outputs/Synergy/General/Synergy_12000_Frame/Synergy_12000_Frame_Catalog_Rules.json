@@ -6,26 +6,26 @@
     "generation": "General",
     "pillar": "COMPOSITE",
     "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
-    "scrapeDate": "2026-11-11",
-    "scrapeTimestamp": "2026-11-11T18:27:00.733Z",
-    "builtAt": "2026-11-11T18:38:04.275Z",
-    "totalSubcategories": 24,
-    "totalUniqueSKUs": 229,
-    "totalTables": 35,
+    "scrapeDate": "2026-11-12",
+    "scrapeTimestamp": "2026-11-12T11:02:23.642Z",
+    "builtAt": "2026-11-12T11:02:42.244Z",
+    "totalSubcategories": 23,
+    "totalUniqueSKUs": 228,
+    "totalTables": 34,
     "diffSummary": {
       "added": 0,
       "removed": 0,
-      "categoryMigrated": 0,
+      "categoryMigrated": 1,
       "priceChanged": 0,
       "attributeChanged": 0,
-      "priceAndAttributeChanged": 0,
-      "unchanged": 230,
+      "priceAndAttributeChanged": 1,
+      "unchanged": 228,
       "reinstated": 0,
       "discontinuedTotal": 0
     },
-    "historySnapshot": "catalog_2026-11-11.json",
+    "historySnapshot": "catalog_2026-11-12.json",
     "priceAnalytics": {
-      "scrapeDate": "2026-11-11",
+      "scrapeDate": "2026-11-12",
       "categoryBreakdown": {
         "Chassis": {
           "totalSKUs": 0,
@@ -245,26 +245,12 @@
             }
           },
           "avgPrice": 2878.769230769231
-        },
-        "Graphics & GPU": {
-          "totalSKUs": 0,
-          "totalPrice": 0,
-          "minPrice": 0,
-          "maxPrice": 0,
-          "subcategories": {
-            "GPU Accelerators": {
-              "totalSKUs": 0,
-              "totalPrice": 0,
-              "avgPrice": 0
-            }
-          },
-          "avgPrice": 0
         }
       }
     },
-    "snapshotFingerprint": "c35e25f451bb27f1010ea5ac7dbeca0cc787474c885b2dbf6422fb5f69719a73",
+    "snapshotFingerprint": "b6762755a6f99063641cbf57a4d7ab0403e985fdf2e2c17f21f6dcd5e73ee270",
     "chassisVariantCount": 1,
-    "rulesGeneratedAt": "2026-11-11T18:38:04.738Z"
+    "rulesGeneratedAt": "2026-11-12T11:02:42.843Z"
   },
   "chassisVariants": [
     {
@@ -280,7 +266,7 @@
       "discontinuedDate": "",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "BASELINE",
+      "diffStatus": "UNCHANGED",
       "priceHistoryTrail": "2026-11-11: (no price)"
     }
   ],
@@ -298,7 +284,7 @@
       "discontinuedDate": "",
       "constraint": "min 1, max 1",
       "maxQty": "1",
-      "diffStatus": "BASELINE",
+      "diffStatus": "UNCHANGED",
       "priceHistoryTrail": "2026-11-11: (no price)"
     }
   },
@@ -306,7 +292,7 @@
   "solutionManifest": {
     "commercialBreakdown": null,
     "deliveryAndSupport": {
-      "iconId": "I158311407-01",
+      "iconId": "I158326811-01",
       "edt": "24 - 30 days",
       "configName": "OCA Config 2",
       "attachedServices": [

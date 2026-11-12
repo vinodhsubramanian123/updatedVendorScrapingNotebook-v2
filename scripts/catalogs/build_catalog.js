@@ -355,7 +355,10 @@ async function initCatalogBuild(rawInputPath, jsonOutputPath, argv = process.arg
   const tables   = rawData.tables || [];
   diagnostics.setRawTableCount(tables.length);
 
-  const meta = parseProductMeta(chassisLabel);
+  const registration = require('../config/notebooks.json').notebooks[filePrefix];
+  const meta = registration?.captureViaParent
+    ? { cleanName: filePrefix, family: registration.family, gen: registration.gen || registration.generation, pillar: registration.pillar }
+    : parseProductMeta(chassisLabel);
   const capturedAt = rawData.timestamp || rawData.scrapeTimestamp || rawData.metadata?.scrapeTimestamp || rawData.metadata?.timestamp;
   const capturedMs = capturedAt ? new Date(capturedAt).getTime() : NaN;
   if (!Number.isFinite(capturedMs) || capturedMs > Date.now()) {
@@ -1660,13 +1663,15 @@ function isCanonicalCtoChassisCandidate(candidate, chassisLabel) {
   const sku = cleanBaseSKU(candidate?.sku || '');
   if (!sku || !isValidHpeSKU(sku) || !text || candidate?.eligible === false) return false;
   if (candidate?.isBto || candidate?.isTaa || candidate?.isGta || /\b(?:TAA|GTA|BTO)\b|#GTA/i.test(text)) return false;
-  const expected = parseProductMeta(chassisLabel).cleanName;
+  const registeredId = String(chassisLabel).replace(/ /g, '_');
+  const expected = require('../config/notebooks.json').notebooks[registeredId]?.captureViaParent ? registeredId : parseProductMeta(chassisLabel).cleanName;
   const observed = parseProductMeta(text).cleanName;
   const registration = require('../config/notebooks.json').notebooks[expected];
-  const isFabricBase = registration?.captureViaParent && registration.baseSku === sku && observed === expected &&
-    /\bmodule\b/i.test(text) && !/\b(support|service|license|cable|transceiver|kit)\b/i.test(text);
+  if (registration?.captureViaParent) {
+    return registration.baseSku === sku && require('../lib/catalog/catalog_hierarchy').registeredOwnedMenuMatches({ ...registration, productId: expected }, text);
+  }
   const isSanBase = parseProductMeta(text).family === 'SAN' && /\bswitch\b/i.test(text) && !/\b(upgrade|license|support|service|kit)\b/i.test(text);
-  if (expected !== observed || (!isSanBase && !isFabricBase && !/configure[\s-]+to[\s-]+order|\bcto\b/i.test(text))) return false;
+  if (expected !== observed || (!isSanBase && !/configure[\s-]+to[\s-]+order|\bcto\b/i.test(text))) return false;
   return !/\b(?:OEM|solutions?|Commvault|Cohesity|Veeam|vSAN|template)\b/i.test(text);
 }
 
@@ -1882,7 +1887,7 @@ function buildCatalogObject(entries, filePrefix, meta, chassisLabel, subcatList)
       model:              meta.cleanName || chassisLabel,
       family:             meta.family || 'General',
       generation:         meta.gen || 'General',
-      pillar:             require('../lib/catalog/product_scope').inferPillar(meta.family, meta.cleanName || filePrefix),
+      pillar:             meta.pillar || require('../lib/catalog/product_scope').inferPillar(meta.family, meta.cleanName || filePrefix),
       validationScope:    'CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS',
       scrapeDate:         meta.scrapeTimestamp ? meta.scrapeTimestamp.split('T')[0] : null,
       scrapeTimestamp:    meta.scrapeTimestamp || null,

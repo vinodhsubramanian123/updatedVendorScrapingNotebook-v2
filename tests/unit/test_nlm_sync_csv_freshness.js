@@ -66,3 +66,17 @@ test('Drive freshness certification fails closed on a non-empty stale report', (
   assert.equal(isDriveFreshnessReportClean('[]'), true);
   assert.equal(isDriveFreshnessReportClean('[{"id":"stale-source"}]'), false);
 });
+
+test('compute rules retain a registered parent by exact SKU and reject a mismatched parent', () => {
+  const { generateNotebookSyncPayload } = require('../../scripts/lib/sync/sync_payload_builder');
+  const cfg = require('../../scripts/config/notebooks.json');
+  const product = 'SY480_Gen12';
+  const build = sku => generateNotebookSyncPayload(product, false, {
+    chassisSpecificRules: [{ deltaId: 'DELTA_PARENT_SCOPE', chassis: product, scopeTaxonomy: 'CHASSIS_SPECIFIC',
+      ruleUpdate: `Use the HPE Synergy 12000 Frame (${sku}) for this scoped rule.` }]
+  }, { persist: false }).markdownText;
+  const valid = build('P51174-B21');
+  assert.match(valid, /parent configuration P51174-B21/);
+  assert.equal(assertPayloadProductIsolation(valid, product, cfg), true);
+  assert.throws(() => assertPayloadProductIsolation(build('P00000-B21'), product, cfg), /Product isolation rejected/);
+});

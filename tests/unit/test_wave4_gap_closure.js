@@ -71,4 +71,51 @@ test('Wave 4 Gap Closure — G11 Evidence Health Governance', async (t) => {
     assert.strictEqual(report.unhealthy, 0, 'Zero unhealthy evidence records');
     assert.strictEqual(report.healthy, report.total, 'All records are healthy');
   });
+
+  await t.test('G11.1 (Regression): Phase 1 abort exempts INPUT_FINGERPRINT_MISSING while healthy Phase 1 requires skuDecisions', () => {
+    const { EvidenceLedger } = require('../../scripts/lib/system/evidence_ledger.js');
+    const aborted = new EvidenceLedger({ traceId: 'TRC-G11-PHASE1-ABORT', chassis: 'UNKNOWN_CHASSIS', filePath: 'RAW_INPUT' });
+    aborted.startPhase(1, 'BOQ Intake', {});
+    aborted.completePhase(1, 'FAILED', { error: 'EISDIR: illegal operation on a directory' });
+    for (let p = 2; p <= 9; p++) {
+      aborted.startPhase(p, `Phase ${p}`, {});
+      aborted.completePhase(p, 'NOT_REACHED', {});
+    }
+    assert.strictEqual(aborted.getHealth().healthy, true, 'Phase 1 abort without inputSha256 or skuDecisions must remain healthy');
+
+    const nonAbortedMissing = new EvidenceLedger({ traceId: 'TRC-G11-PHASE1-PASS-EMPTY', chassis: 'DL380_Gen12', filePath: 'RAW_INPUT' });
+    nonAbortedMissing.recordInlineArtifact('CUSTOMER_INPUT', 'sample');
+    nonAbortedMissing.startPhase(1, 'BOQ Intake', {});
+    nonAbortedMissing.completePhase(1, 'PASSED', {});
+    for (let p = 2; p <= 9; p++) {
+      nonAbortedMissing.startPhase(p, `Phase ${p}`, {});
+      nonAbortedMissing.completePhase(p, 'PASSED', {});
+    }
+    const health = nonAbortedMissing.getHealth();
+    assert.strictEqual(health.healthy, false);
+    assert.ok(health.gaps.includes('SKU_DECISIONS_MISSING'));
+  });
+
+  await t.test('G11.2 (Regression): RFP sizing records SKU audit decisions in a healthy evidence ledger', async () => {
+    const { executeRoutedQuery } = require('../../scripts/evaluators/route_query.js');
+    const out = await executeRoutedQuery('Size 2 nodes of DL380 Gen12 with quantum flux widget', {
+      chassisName: 'DL380_Gen12',
+      offline: true,
+      offlineMode: true
+    });
+    const logPath = out?.result?.evidenceLogPath;
+    assert.ok(logPath && fs.existsSync(logPath), 'Evidence log path must be persisted');
+    try {
+      const logJson = JSON.parse(fs.readFileSync(logPath, 'utf8'));
+      const mdPath = logPath.replace(/\.json$/i, '.md');
+      assert.strictEqual(logJson.health?.healthy, true, `Expected healthy ledger, got ${JSON.stringify(logJson.health)}`);
+      assert.ok(
+        Array.isArray(logJson.skuAuditLedger) && logJson.skuAuditLedger.length > 0,
+        'Expected non-empty skuAuditLedger in sizing evidence log'
+      );
+      if (fs.existsSync(mdPath)) fs.unlinkSync(mdPath);
+    } finally {
+      if (fs.existsSync(logPath)) fs.unlinkSync(logPath);
+    }
+  });
 });

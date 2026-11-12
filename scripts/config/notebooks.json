@@ -11,13 +11,13 @@
       "driveSheetId": "1ODabKd0jVBFJU0ga4hfZOs5TtzNIuCXJWb4oXr88ocY",
       "driveSheetUrl": "https://docs.google.com/spreadsheets/d/1ODabKd0jVBFJU0ga4hfZOs5TtzNIuCXJWb4oXr88ocY/edit",
       "driveSourceId": "00cb0c3d-6d19-4a49-9cfa-aea446f08338",
-      "lastSyncedAt": "2026-11-02T14:51:25.836Z",
-      "lastSyncedSourceId": "f2b3ce90-d75d-4dea-b897-ec80d4513065",
-      "lastSyncedSourceName": "DL380_Gen12_OCA_Catalog_2026-11-02",
+      "lastSyncedAt": "2026-11-12T11:01:28.348Z",
+      "lastSyncedSourceId": "a87a92fc-5ef0-40e5-a810-04ce76927d8c",
+      "lastSyncedSourceName": "DL380_Gen12_OCA_Catalog_2026-11-12",
       "trustedSourceIds": [
         "6eb52606-9295-4f0b-af65-89454b2d443a",
         "6414b478-0c7b-4eeb-980c-da6d2b58f5e4",
-        "f2b3ce90-d75d-4dea-b897-ec80d4513065",
+        "a87a92fc-5ef0-40e5-a810-04ce76927d8c",
         "1c9f7b40-d826-4974-8dcb-0e1e73bd6520"
       ],
       "officialSourceIds": [
@@ -33,35 +33,35 @@
       "isolationLevel": "CHASSIS_SPECIFIC",
       "queryEnabled": true,
       "certifiedCatalogSourceIds": [
-        "f2b3ce90-d75d-4dea-b897-ec80d4513065"
+        "a87a92fc-5ef0-40e5-a810-04ce76927d8c"
       ],
       "verifiedLearningSourceIds": [
         "6414b478-0c7b-4eeb-980c-da6d2b58f5e4"
       ],
       "canonicalKnowledgeSourceIds": [
-        "f2b3ce90-d75d-4dea-b897-ec80d4513065",
+        "a87a92fc-5ef0-40e5-a810-04ce76927d8c",
         "1c9f7b40-d826-4974-8dcb-0e1e73bd6520"
       ],
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeSourceId": "1c9f7b40-d826-4974-8dcb-0e1e73bd6520",
       "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
-      "runningKnowledgeVerifiedRevision": "b293b412451985e4e5c36490a4dbe64ca3dcd63da813bd18b14fb06eb42eb20d",
-      "runningKnowledgeVerifiedAt": "2026-11-12T03:39:44.565Z",
-      "lastSyncAttemptAt": "2026-11-09T11:26:17.644Z",
+      "runningKnowledgeVerifiedRevision": "dea4e4ce2b3bc25aaa6a1dcfdc2cf8e395d9e25a2be260d81cf00592d973504e",
+      "runningKnowledgeVerifiedAt": "2026-11-12T11:04:53.959Z",
+      "lastSyncAttemptAt": "2026-11-12T13:51:24.738Z",
       "lastSyncError": "NotebookLM credentials are stale or expired (Command failed: nlm login --check). Please re-authenticate proactively by running in PowerShell: npm run auth:nlm:heal",
       "cloudSyncState": "FAILED",
-      "lastCatalogSha256": "76d08b70a125abab46f9fc0babf59ea7684bd4d76b0443a12582ee7d4f936f3d",
+      "lastCatalogSha256": "f015e2767b38d044b6233b48409ffdfc6df7f351acd345a5377fa045b16d5dab",
       "lastArtifactHashes": {
-        "Catalog.json": "76d08b70a125abab46f9fc0babf59ea7684bd4d76b0443a12582ee7d4f936f3d",
-        "Services.json": "2a66eda1eeac2a2e297258cc3cfbe311bf7b566e40d6c169a2041ef7a3e11c8d",
-        "Catalog_Rules.json": "bb6f03b0e22392769596b50946b442fa7287910e3ff021dbf7ee9ca9ac735134",
-        "OCA_Catalog.xlsx": "a43656a43acd069f092f6c9eccab30ccdcda7fb943044d8fa255cf227c194bb2"
+        "Catalog.json": "f015e2767b38d044b6233b48409ffdfc6df7f351acd345a5377fa045b16d5dab",
+        "Services.json": "9655caadc8f86058c45451ff9ce6fc2297313b254ca0a1d68a5f1555a1e00ebe",
+        "Catalog_Rules.json": "25bca99a75886de47a4f9a4a301241acdb2ab6cf3e9a9d2fd513abf647b913d1",
+        "OCA_Catalog.xlsx": "a736467a42ccf4665d7086c355c1d8355015db355d067cf47586ec6211c2f2ce"
       },
       "workflowLearningRevision": "b72420b16ad98907ee5a68cd2ca47ef59250cd00a675e91f2c24ba07203a692d",
       "workflowLearningVerifiedAt": "2026-10-01T06:13:01.449Z",
       "publishDriveWorkbook": true,
-      "lastSyncDeltaCount": 59,
-      "lastPayloadChecksum": "c09c5430e5212eedfa9c402b4f70f3869d1c81a0b21c6a50422c0435535434c3",
+      "lastSyncDeltaCount": 70,
+      "lastPayloadChecksum": "2dfec71b6cdbaf49dd301b717f920d8cbc5aaeeabef480d4ef41c7a011be89eb",
       "lastContentFingerprints": {
         "catalog": "583493eab50fffa5b285003c4fc6dba75e517539e82662b7a8df93bcf7f9057f",
         "learnings": "c09c5430e5212eedfa9c402b4f70f3869d1c81a0b21c6a50422c0435535434c3",
@@ -128,8 +128,8 @@
         "combined": "dd761a6a58b3f1780eada5cb1e4bcaa758954762a7eebc1086e3c7e2a61d4bca"
       },
       "lastSyncAttemptAt": "2026-11-09T11:23:41.035Z",
-      "runningKnowledgeVerifiedRevision": "b293b412451985e4e5c36490a4dbe64ca3dcd63da813bd18b14fb06eb42eb20d",
-      "runningKnowledgeVerifiedAt": "2026-11-12T03:39:28.684Z"
+      "runningKnowledgeVerifiedRevision": "dea4e4ce2b3bc25aaa6a1dcfdc2cf8e395d9e25a2be260d81cf00592d973504e",
+      "runningKnowledgeVerifiedAt": "2026-11-12T11:04:46.427Z"
     },
     "DL380_Gen11": {
       "notebookId": "d37fa851-90cb-45b7-a8e1-78488a0bc6e6",
@@ -184,8 +184,8 @@
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeSourceId": "d97e7d3c-dd44-4a02-b9f2-021003c96016",
       "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
-      "runningKnowledgeVerifiedRevision": "b293b412451985e4e5c36490a4dbe64ca3dcd63da813bd18b14fb06eb42eb20d",
-      "runningKnowledgeVerifiedAt": "2026-11-12T03:39:56.046Z",
+      "runningKnowledgeVerifiedRevision": "dea4e4ce2b3bc25aaa6a1dcfdc2cf8e395d9e25a2be260d81cf00592d973504e",
+      "runningKnowledgeVerifiedAt": "2026-11-12T11:05:04.646Z",
       "lastCatalogSha256": "0ab523379fe02a6eaa810b581a5086e5428f8380fcff96cb282ab98800e45d1f",
       "lastArtifactHashes": {
         "Catalog.json": "0ab523379fe02a6eaa810b581a5086e5428f8380fcff96cb282ab98800e45d1f",
@@ -243,8 +243,8 @@
       "lastSyncAttemptAt": "2026-11-09T11:20:14.399Z",
       "lastSyncError": "Command failed: nlm source list a67629ba-3434-42ab-b465-bd6d71852198 --json\n┌───────────────────── Traceback (most recent call last) ─────────────────────┐\r\n│ C:\\Users\\latha\\AppData\\Roaming\\uv\\tools\\notebooklm-mcp-cli\\Lib\\site-package │\r\n│ s\\notebooklm_tools\\cli\\commands\\source.py:50 in list_sources                │\r\n│                                                                             │\r\n│    47 │   │   │   │   │   │   │   not src[\"is_fresh\"] if src[\"is_fresh\"] is │\r\n│       not None else None                                                    │\r\n│    48 │   │   │   │   │   │   )                                             │\r\n│    49 │   │   │   else:                                                     │\r\n│ >  50 │   │   │   │   sources =                                             │\r\n│       client.get_notebook_sources_with_types(notebook_id)                   │\r\n│    51 │   │                                                                 │\r\n│    52 │   │   fmt = detect_output_format(json_output, quiet, url_flag=url)  │\r\n│    53 │   │   formatter = get_formatter(fmt, console)                       │\r\n│                                                                             │\r\n│ C:\\Users\\latha\\AppData\\Roaming\\uv\\tools\\notebooklm-mcp-cli\\Lib\\site-package │\r\n│ s\\notebooklm_tools\\core\\sources.py:329 in get_notebook_sources_with_types   │\r\n│                                                                             │\r\n│    326 │   def get_notebook_sources_with_types(self, notebook_id: str) ->   │\r\n│        list[dict[str, Any]]:                                                │\r\n│    327 │   │   \"\"\"Get all sources from a notebook with their type           │\r\n│        information.\"\"\"                                                      │\r\n│    328 │   │   notebook_client = cast(_NotebookLookupProtocol, self)        │\r\n│ >  329 │   │   result = notebook_client.get_notebook(notebook_id)           │\r\n│    330 │   │                                                                │\r\n│    331 │   │   if not isinstance(result, list) or not result:               │\r\n│    332 │   │   │   raise RPCError(\"Could not read notebook sources: missing │\r\n│        notebook response\")                                                  │\r\n│                                                                             │\r\n│ C:\\Users\\latha\\AppData\\Roaming\\uv\\tools\\notebooklm-mcp-cli\\Lib\\site-package │\r\n│ s\\notebooklm_tools\\core\\notebooks.py:152 in get_notebook                    │\r\n│                                                                             │\r\n│   149 │   def get_notebook(self, notebook_id: str, timeout: float | None =  │\r\n│       None) -> dict | None:                                                 │\r\n│   150 │   │   \"\"\"Get notebook details.\"\"\"                                   │\r\n│   151 │   │   kwargs = {\"timeout\": timeout} if timeout is not None else {}  │\r\n│ > 152 │   │   return self._call_rpc(                                        │\r\n│   153 │   │   │   self.RPC_GET_NOTEBOOK,                                    │\r\n│   154 │   │   │   [notebook_id, None, [2], None, 0],                        │\r\n│   155 │   │   │   f\"/notebook/{notebook_id}\",                               │\r\n│                                                                             │\r\n│ C:\\Users\\latha\\AppData\\Roaming\\uv\\tools\\notebooklm-mcp-cli\\Lib\\site-package │\r\n│ s\\notebooklm_tools\\core\\base.py:1020 in _call_rpc                           │\r\n│                                                                             │\r\n│   1017 │   │   \"\"\"                                                          │\r\n│   1018 │   │   retry_server_errors = retry_server_errors and rpc_id in      │\r\n│        _REPLAY_SAFE_READ_RPCS                                               │\r\n│   1019 │   │   if self._cdp_rpc_transport_enabled():                        │\r\n│ > 1020 │   │   │   return self._call_rpc_via_cdp(                           │\r\n│   1021 │   │   │   │   rpc_id,                                              │\r\n│   1022 │   │   │   │   params,                                              │\r\n│   1023 │   │   │   │   path,                                                │\r\n│                                                                             │\r\n│ C:\\Users\\latha\\AppData\\Roaming\\uv\\tools\\notebooklm-mcp-cli\\Lib\\site-package │\r\n│ s\\notebooklm_tools\\core\\base.py:959 in _call_rpc_via_cdp                    │\r\n│                                                                             │\r\n│    956 │   │   retry_server_errors: bool = True,                            │\r\n│    957 │   ) -> Any:                                                        │\r\n│    958 │   │   \"\"\"Execute a batchexecute RPC through the experimental CDP   │\r\n│        transport.\"\"\"                                                        │\r\n│ >  959 │   │   self._prepare_cdp_transport(timeout if timeout is not None   │\r\n│        else DEFAULT_TIMEOUT)                                                │\r\n│    960 │   │   body = self._build_request_body(rpc_id, params)              │\r\n│    961 │   │   url = self._build_url(rpc_id, path)                          │\r\n│    962 │   │   response_text = self._post_form_via_cdp(                     │\r\n│                                                                             │\r\n│ C:\\Users\\latha\\AppData\\Roaming\\uv\\tools\\notebooklm-mcp-cli\\Lib\\site-package │\r\n│ s\\notebooklm_tools\\core\\base.py:907 in _prepare_cdp_transport               │\r\n│                                                                             │\r\n│    904 │   │   │   session_fallback = self._session_id                      │\r\n│    905 │   │   │   build_fallback = self._bl                                │\r\n│    906 │   │                                                                │\r\n│ >  907 │   │   context = get_cdp_page_context(                              │\r\n│    908 │   │   │   profile_name=self._profile_name,                         │\r\n│    909 │   │   │   timeout=timeout if timeout is not None else              │\r\n│        DEFAULT_TIMEOUT,                                                     │\r\n│    910 │   │   │   csrf_fallback=csrf_fallback,                             │\r\n│                                                                             │\r\n│ C:\\Users\\latha\\AppData\\Roaming\\uv\\tools\\notebooklm-mcp-cli\\Lib\\site-package │\r\n│ s\\notebooklm_tools\\core\\cdp_transport.py:130 in get_cdp_page_context        │\r\n│                                                                             │\r\n│   127 │   │   if ready_port is None:                                        │\r\n│   128 │   │   │   with contextlib.suppress(Exception):                      │\r\n│   129 │   │   │   │   cdp.terminate_chrome(port=launch_port)                │\r\n│ > 130 │   │   │   raise CdpTransportError(\"Headless browser did not expose  │\r\n│       CDP in time.\")                                                        │\r\n│   131 │   │   if ready_port != launch_port:                                 │\r\n│   132 │   │   │   with contextlib.suppress(Exception):                      │\r\n│   133 │   │   │   │   cdp.terminate_chrome(port=launch_port)                │\r\n└─────────────────────────────────────────────────────────────────────────────┘\r\nCdpTransportError: Headless browser did not expose CDP in time.\r\n",
       "cloudSyncState": "FAILED",
-      "runningKnowledgeVerifiedRevision": "b293b412451985e4e5c36490a4dbe64ca3dcd63da813bd18b14fb06eb42eb20d",
-      "runningKnowledgeVerifiedAt": "2026-11-12T03:39:56.078Z",
+      "runningKnowledgeVerifiedRevision": "dea4e4ce2b3bc25aaa6a1dcfdc2cf8e395d9e25a2be260d81cf00592d973504e",
+      "runningKnowledgeVerifiedAt": "2026-11-12T11:05:04.647Z",
       "lastCatalogSha256": "5701989ca2caa67e5ce560dff025798b21f26b29dae8ae62dd7b7b82e2981146",
       "lastArtifactHashes": {
         "Catalog.json": "5701989ca2caa67e5ce560dff025798b21f26b29dae8ae62dd7b7b82e2981146",
@@ -311,8 +311,8 @@
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeSourceId": "d0b76b30-f540-4119-9f56-0283184fc9fe",
       "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
-      "runningKnowledgeVerifiedRevision": "b293b412451985e4e5c36490a4dbe64ca3dcd63da813bd18b14fb06eb42eb20d",
-      "runningKnowledgeVerifiedAt": "2026-11-12T03:40:06.908Z",
+      "runningKnowledgeVerifiedRevision": "dea4e4ce2b3bc25aaa6a1dcfdc2cf8e395d9e25a2be260d81cf00592d973504e",
+      "runningKnowledgeVerifiedAt": "2026-11-12T11:05:16.314Z",
       "lastCatalogSha256": "273b416de81c550224f3f4b71cbc552b488bda75b2b0c3e985ffc70566f335aa",
       "lastArtifactHashes": {
         "Catalog.json": "273b416de81c550224f3f4b71cbc552b488bda75b2b0c3e985ffc70566f335aa",
@@ -373,8 +373,8 @@
       "driveSheetId": "1HPB_a9Wsf5onL3Iqa-Y9NAfeK9wTpm2yYkdWMI_KmYc",
       "driveSheetUrl": "https://docs.google.com/spreadsheets/d/1HPB_a9Wsf5onL3Iqa-Y9NAfeK9wTpm2yYkdWMI_KmYc/edit",
       "lastSyncAttemptAt": "2026-11-09T11:21:05.502Z",
-      "runningKnowledgeVerifiedRevision": "b293b412451985e4e5c36490a4dbe64ca3dcd63da813bd18b14fb06eb42eb20d",
-      "runningKnowledgeVerifiedAt": "2026-11-12T03:40:06.672Z"
+      "runningKnowledgeVerifiedRevision": "dea4e4ce2b3bc25aaa6a1dcfdc2cf8e395d9e25a2be260d81cf00592d973504e",
+      "runningKnowledgeVerifiedAt": "2026-11-12T11:05:16.693Z"
     },
     "Synergy_12000_Frame": {
       "notebookId": "5b9ddeda-0d03-44ee-80c8-766f494ea34c",
@@ -388,41 +388,41 @@
       "canonicalDriveEnabled": false,
       "publishDriveWorkbook": true,
       "isolationLevel": "CHASSIS_SPECIFIC",
-      "lastSyncedAt": "2026-11-11T18:43:49.472Z",
-      "lastSyncDeltaCount": 9,
+      "lastSyncedAt": "2026-11-12T11:04:09.569Z",
+      "lastSyncDeltaCount": 13,
       "cloudSyncState": "VERIFIED",
       "lastSyncError": null,
-      "lastSyncedSourceName": "Synergy_12000_Frame_OCA_Catalog_2026-11-11",
+      "lastSyncedSourceName": "Synergy_12000_Frame_OCA_Catalog_2026-11-12",
       "trustedSourceIds": [
-        "dfc352b5-8233-4a8f-9b4f-4a0aec34d0a2",
         "bd5e5672-ab9a-431a-b90a-ae3e05675a3b",
+        "94781b8e-016a-49ee-953e-66c74bc81d97",
         "e81109a0-bfc5-4051-b460-eba68e3542c2"
       ],
-      "lastCatalogSha256": "11ac6856a8beeb706a0014ca255b9cb4d7016f6ad71401d8528781a9a4cb89e5",
+      "lastCatalogSha256": "281e301b5775ad057903edf02f0bb48ac81a86ac46f6eb672c12240925599c91",
       "lastArtifactHashes": {
-        "Catalog.json": "11ac6856a8beeb706a0014ca255b9cb4d7016f6ad71401d8528781a9a4cb89e5",
-        "Services.json": "cc8f56521a9669d73afcd0393bd896140cabf9d0da088299f80e7fdd58d41666",
-        "Catalog_Rules.json": "ad2dbd15bc8983103bb895d1068b396b7a85ccbfb4fbe7ed1c63182dcaca570c",
-        "OCA_Catalog.xlsx": "2dfe1ab6656b7f01365f6e20c6e3804e28ff7eff8e1ea49907c5343883b84bcf"
+        "Catalog.json": "281e301b5775ad057903edf02f0bb48ac81a86ac46f6eb672c12240925599c91",
+        "Services.json": "af78eb0114affec9778ae369704dccb7717319bf05bfdba77d2b1f99232d0722",
+        "Catalog_Rules.json": "31a41c8565d93dbaddbae0d01d50a924b2b6951d871ae10e301b2aa0e922c7c3",
+        "OCA_Catalog.xlsx": "8b6845a91276890ebb522bbb279963ac8f8fc1fd3e1879952e32514da1cd124d"
       },
       "canonicalKnowledgeSourceIds": [
-        "dfc352b5-8233-4a8f-9b4f-4a0aec34d0a2",
+        "94781b8e-016a-49ee-953e-66c74bc81d97",
         "e81109a0-bfc5-4051-b460-eba68e3542c2"
       ],
       "certifiedCatalogSourceIds": [
-        "dfc352b5-8233-4a8f-9b4f-4a0aec34d0a2"
+        "94781b8e-016a-49ee-953e-66c74bc81d97"
       ],
-      "lastPayloadChecksum": "f644f965b8b149299f2b3a998756e79c638f4c60f9e9d41e07e3c210a6ed2fb8",
+      "lastPayloadChecksum": "dcc6be94a68abbb6e4ef9f69372fc317e8f092ee39eb413f712642de8380821e",
       "driveSheetId": "1doBW-ZROwmEUoSnW3xYMklPEdM5xGp6C3vW72XAo5xI",
       "driveSheetUrl": "https://docs.google.com/spreadsheets/d/1doBW-ZROwmEUoSnW3xYMklPEdM5xGp6C3vW72XAo5xI/edit",
-      "lastSyncedSourceId": "dfc352b5-8233-4a8f-9b4f-4a0aec34d0a2",
+      "lastSyncedSourceId": "94781b8e-016a-49ee-953e-66c74bc81d97",
       "officialSourceIds": [
         "bd5e5672-ab9a-431a-b90a-ae3e05675a3b"
       ],
       "runningKnowledgeSourceId": "e81109a0-bfc5-4051-b460-eba68e3542c2",
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
-      "runningKnowledgeVerifiedRevision": "b293b412451985e4e5c36490a4dbe64ca3dcd63da813bd18b14fb06eb42eb20d",
-      "runningKnowledgeVerifiedAt": "2026-11-12T03:40:20.106Z"
+      "runningKnowledgeVerifiedRevision": "dea4e4ce2b3bc25aaa6a1dcfdc2cf8e395d9e25a2be260d81cf00592d973504e",
+      "runningKnowledgeVerifiedAt": "2026-11-12T11:05:32.037Z"
     },
     "Synergy_4Port_Frame_Link_Module": {
       "notebookId": "4734668c-e278-4404-8343-b2a99853b58d",
@@ -471,8 +471,8 @@
       "lastSyncedSourceId": "0d6b6d7a-ef72-47dc-b4ba-fa6de7204d23",
       "runningKnowledgeSourceId": "9ebcfb6d-f258-402f-9232-55f666895f49",
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
-      "runningKnowledgeVerifiedRevision": "b293b412451985e4e5c36490a4dbe64ca3dcd63da813bd18b14fb06eb42eb20d",
-      "runningKnowledgeVerifiedAt": "2026-11-12T03:40:21.267Z"
+      "runningKnowledgeVerifiedRevision": "dea4e4ce2b3bc25aaa6a1dcfdc2cf8e395d9e25a2be260d81cf00592d973504e",
+      "runningKnowledgeVerifiedAt": "2026-11-12T11:05:32.661Z"
     },
     "Synergy_Brocade_64Gb_FC_Module": {
       "notebookId": "7b65f53f-ad1c-449d-b37f-9a5e7962e2af",
@@ -521,8 +521,8 @@
       "lastSyncedSourceId": "d891a205-0ce9-4f30-b5de-6397c735fd6e",
       "runningKnowledgeSourceId": "2f2f939c-0111-4623-aca6-07ce3fa9a075",
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
-      "runningKnowledgeVerifiedRevision": "b293b412451985e4e5c36490a4dbe64ca3dcd63da813bd18b14fb06eb42eb20d",
-      "runningKnowledgeVerifiedAt": "2026-11-12T03:40:39.771Z"
+      "runningKnowledgeVerifiedRevision": "dea4e4ce2b3bc25aaa6a1dcfdc2cf8e395d9e25a2be260d81cf00592d973504e",
+      "runningKnowledgeVerifiedAt": "2026-11-12T11:05:48.626Z"
     },
     "SY100Gb_F32_Module": {
       "notebookId": "c6390834-ff1e-4602-9391-8415f673afa3",
@@ -563,8 +563,8 @@
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeSourceId": "e442c3f2-dfc9-4b16-997f-867dc4d05448",
       "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
-      "runningKnowledgeVerifiedRevision": "b293b412451985e4e5c36490a4dbe64ca3dcd63da813bd18b14fb06eb42eb20d",
-      "runningKnowledgeVerifiedAt": "2026-11-12T03:40:38.504Z",
+      "runningKnowledgeVerifiedRevision": "dea4e4ce2b3bc25aaa6a1dcfdc2cf8e395d9e25a2be260d81cf00592d973504e",
+      "runningKnowledgeVerifiedAt": "2026-11-12T11:05:48.629Z",
       "publishDriveWorkbook": true,
       "lastSyncAttemptAt": "2026-11-11T18:49:39.050Z",
       "lastSyncError": null,
@@ -604,19 +604,21 @@
         "f2310433-1322-4d39-8f88-6991f123170b",
         "bed0c191-6268-41b9-9a98-371bc2c9960d",
         "360db92c-82ce-455d-924b-48a6d468ddb5",
-        "5b68c17d-792f-4e13-9b96-cc9f10be3d54",
+        "cbea292a-5a54-4445-b086-4811ee7872bb",
+        "db629ae1-e911-4ae1-b903-72b11051ae83",
         "197c1910-d257-46e9-ba13-784dfaaae008"
       ],
       "officialSourceIds": [
         "72a1fc27-f62b-441f-a95d-b7b8a0a1e862",
         "f2310433-1322-4d39-8f88-6991f123170b",
-        "bed0c191-6268-41b9-9a98-371bc2c9960d"
+        "bed0c191-6268-41b9-9a98-371bc2c9960d",
+        "db629ae1-e911-4ae1-b903-72b11051ae83"
       ],
       "certifiedCatalogSourceIds": [
-        "5b68c17d-792f-4e13-9b96-cc9f10be3d54"
+        "cbea292a-5a54-4445-b086-4811ee7872bb"
       ],
       "canonicalKnowledgeSourceIds": [
-        "5b68c17d-792f-4e13-9b96-cc9f10be3d54",
+        "cbea292a-5a54-4445-b086-4811ee7872bb",
         "197c1910-d257-46e9-ba13-784dfaaae008"
       ],
       "verifiedLearningSourceIds": [
@@ -628,12 +630,12 @@
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeSourceId": "197c1910-d257-46e9-ba13-784dfaaae008",
       "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
-      "lastSyncedAt": "2026-11-06T08:40:52.911Z",
-      "lastSyncDeltaCount": 28,
-      "cloudSyncState": "FAILED",
-      "lastSyncError": "Product isolation rejected SY480_Gen12 payload: reference to registered product Synergy_12000_Frame",
-      "lastSyncedSourceName": "SY480_Gen12_OCA_Catalog_2026-11-06",
-      "lastPayloadChecksum": "21f70d5374308fd92248f19aae7d9347602a86d9f7bc2d80c561972ad1b8468a",
+      "lastSyncedAt": "2026-11-12T10:43:44.987Z",
+      "lastSyncDeltaCount": 20,
+      "cloudSyncState": "VERIFIED",
+      "lastSyncError": null,
+      "lastSyncedSourceName": "SY480_Gen12_OCA_Catalog_2026-11-12",
+      "lastPayloadChecksum": "04d99667ca463c260f91212e551cc0863d5dc646fb591b364638a79be4dc00a1",
       "lastContentFingerprints": {
         "catalog": "24748d8a21c20b50fda492ebcc170df754270cc2fe6d5d8aa5318abdfe3f92bf",
         "learnings": "a31082b2906090fe84a24c68e14d8b924a3a2069f135d8e2655754424aa9b151",
@@ -644,18 +646,18 @@
       "driveSheetId": "1ukT4-pUQukZ9FUnzl5KJI-BVSk5zPye_1yvvS4nK3iY",
       "driveSheetUrl": "https://docs.google.com/spreadsheets/d/1ukT4-pUQukZ9FUnzl5KJI-BVSk5zPye_1yvvS4nK3iY/edit",
       "driveSourceId": "fbef4c8a-9ee6-48a4-99e3-b0e1af4f5fe6",
-      "lastSyncedSourceId": "5b68c17d-792f-4e13-9b96-cc9f10be3d54",
-      "runningKnowledgeVerifiedRevision": "b293b412451985e4e5c36490a4dbe64ca3dcd63da813bd18b14fb06eb42eb20d",
-      "runningKnowledgeVerifiedAt": "2026-11-12T03:40:55.516Z",
+      "lastSyncedSourceId": "cbea292a-5a54-4445-b086-4811ee7872bb",
+      "runningKnowledgeVerifiedRevision": "dea4e4ce2b3bc25aaa6a1dcfdc2cf8e395d9e25a2be260d81cf00592d973504e",
+      "runningKnowledgeVerifiedAt": "2026-11-12T11:06:06.443Z",
       "publishDriveWorkbook": true,
-      "lastCatalogSha256": "8590766c8fef190a242d480e7760539dacf05c85d28ba2c6d07f84ddd1db4507",
+      "lastCatalogSha256": "05a7ff630fb12af6605b6d736e907cf7f3f2f99cf901fb7c3c43d449f4095510",
       "lastArtifactHashes": {
-        "Catalog.json": "8590766c8fef190a242d480e7760539dacf05c85d28ba2c6d07f84ddd1db4507",
-        "Services.json": "5e15781b7e6af46605b89bbcf34e6156c752eeb8096e80a0166d8bd95e160320",
-        "Catalog_Rules.json": "239f5df655c96b210c4c1f99ca9ad77d2ef5068b26655bcdb2dc504aa7481455",
-        "OCA_Catalog.xlsx": "dd95769371a3909b0f76b46deac83f13ff478073144aee5e08dc163c43a06242"
+        "Catalog.json": "05a7ff630fb12af6605b6d736e907cf7f3f2f99cf901fb7c3c43d449f4095510",
+        "Services.json": "da057aa387ad85c4f4fb362c11629a7b2388b5194c2fb47c0dec3227de25148f",
+        "Catalog_Rules.json": "38d54f3e1b9b1a696d2d1e70e8e777d0ba797c8e8378394e2376c03b4e4e7ff6",
+        "OCA_Catalog.xlsx": "9f57baa9c0e8d63c7f48ab87f635a726d8cf77550fd1e6eb45f971fb8f127e03"
       },
-      "lastSyncAttemptAt": "2026-11-12T03:29:32.099Z"
+      "lastSyncAttemptAt": "2026-11-12T10:40:38.695Z"
     },
     "DL380a_Gen12": {
       "notebookId": "b233ec88-4682-4164-a801-3ee6ca649dc1",
@@ -703,8 +705,8 @@
       "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
       "cloudSyncState": "VERIFIED",
       "lastSyncError": null,
-      "runningKnowledgeVerifiedRevision": "b293b412451985e4e5c36490a4dbe64ca3dcd63da813bd18b14fb06eb42eb20d",
-      "runningKnowledgeVerifiedAt": "2026-11-12T03:40:55.399Z",
+      "runningKnowledgeVerifiedRevision": "dea4e4ce2b3bc25aaa6a1dcfdc2cf8e395d9e25a2be260d81cf00592d973504e",
+      "runningKnowledgeVerifiedAt": "2026-11-12T11:06:06.529Z",
       "lastCatalogSha256": "73092a6813447de85ce26befbf0bdfd66e91b6698f84d7316d35dd91834386e6",
       "lastArtifactHashes": {
         "Catalog.json": "73092a6813447de85ce26befbf0bdfd66e91b6698f84d7316d35dd91834386e6",
@@ -765,8 +767,8 @@
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeSourceId": "dbd6ab4a-9793-49f7-8756-9a35f5919c2e",
       "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
-      "runningKnowledgeVerifiedRevision": "b293b412451985e4e5c36490a4dbe64ca3dcd63da813bd18b14fb06eb42eb20d",
-      "runningKnowledgeVerifiedAt": "2026-11-12T03:41:11.129Z",
+      "runningKnowledgeVerifiedRevision": "dea4e4ce2b3bc25aaa6a1dcfdc2cf8e395d9e25a2be260d81cf00592d973504e",
+      "runningKnowledgeVerifiedAt": "2026-11-12T11:06:22.222Z",
       "lastCatalogSha256": "a61ac4a77c47a2e8ff88d6e58cafc743e2cd94e83fff8e800b8749b6dc96142e",
       "lastArtifactHashes": {
         "Catalog.json": "a61ac4a77c47a2e8ff88d6e58cafc743e2cd94e83fff8e800b8749b6dc96142e",
@@ -824,8 +826,8 @@
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
       "runningKnowledgeSourceId": "5113e36d-0364-4b00-bc94-02521ab224e0",
       "runningKnowledgeDocUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
-      "runningKnowledgeVerifiedRevision": "b293b412451985e4e5c36490a4dbe64ca3dcd63da813bd18b14fb06eb42eb20d",
-      "runningKnowledgeVerifiedAt": "2026-11-12T03:41:11.122Z",
+      "runningKnowledgeVerifiedRevision": "dea4e4ce2b3bc25aaa6a1dcfdc2cf8e395d9e25a2be260d81cf00592d973504e",
+      "runningKnowledgeVerifiedAt": "2026-11-12T11:06:22.189Z",
       "lastCatalogSha256": "ba30f85618e0ce5d2124e731f71a14f83ee8b51869b678993542284229488f60",
       "lastArtifactHashes": {
         "Catalog.json": "ba30f85618e0ce5d2124e731f71a14f83ee8b51869b678993542284229488f60",
@@ -891,8 +893,8 @@
       "lastSyncedSourceId": "a5cf149d-0aa6-48d9-a059-9fb0cd53b2f3",
       "runningKnowledgeSourceId": "0de1f8f6-396b-4da5-95d9-f4f01a82cd15",
       "runningKnowledgeDocId": "1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M",
-      "runningKnowledgeVerifiedRevision": "b293b412451985e4e5c36490a4dbe64ca3dcd63da813bd18b14fb06eb42eb20d",
-      "runningKnowledgeVerifiedAt": "2026-11-12T03:41:27.575Z",
+      "runningKnowledgeVerifiedRevision": "dea4e4ce2b3bc25aaa6a1dcfdc2cf8e395d9e25a2be260d81cf00592d973504e",
+      "runningKnowledgeVerifiedAt": "2026-11-12T11:06:34.187Z",
       "lastSyncAttemptAt": "2026-11-09T11:26:58.690Z",
       "lastCatalogSha256": "964c5768e67698076d5bd41602addf0d1b5bb63dfa5dff6d9fd1de297ca5f1c6",
       "lastArtifactHashes": {
@@ -953,8 +955,8 @@
       "lastPayloadChecksum": "cfefa7b4fe1e8321079e4a3a8bb262adf442d8ce71f8f84f4848706e46afbe4a",
       "lastSyncedSourceId": "e5de8b5a-9f79-4ef5-9904-4670855ac3ce",
       "runningKnowledgeSourceId": "7ab0fa77-e619-4956-9a39-deff777e34d0",
-      "runningKnowledgeVerifiedRevision": "b293b412451985e4e5c36490a4dbe64ca3dcd63da813bd18b14fb06eb42eb20d",
-      "runningKnowledgeVerifiedAt": "2026-11-12T03:41:27.639Z",
+      "runningKnowledgeVerifiedRevision": "dea4e4ce2b3bc25aaa6a1dcfdc2cf8e395d9e25a2be260d81cf00592d973504e",
+      "runningKnowledgeVerifiedAt": "2026-11-12T11:06:34.005Z",
       "lastContentFingerprints": {
         "catalog": "bf24c26e69c9e4dd6c6f2acd288176ed262b4b334a17739db548d4c72f636feb",
         "learnings": "22babd782fc5080b92cde20a5084610947f7b97c5848de432ade02d161563281",
@@ -970,9 +972,9 @@
     "documentUrl": "https://docs.google.com/document/d/1TNdR_1A-IH7UQo8gAqQ2c3HEN7f8FTgPizozvolpf6M/edit",
     "title": "HPE AI Studio — Master Running Knowledge & Learnings Charter",
     "folderId": "1YR0lBh-gg00amKHRxuOqp5Aea3iL5O7-",
-    "lastSyncedAt": "2026-11-12T03:39:17.332Z",
-    "totalDeduplicatedRules": 133,
-    "universalRuleCount": 9,
-    "chassisRuleCount": 124
+    "lastSyncedAt": "2026-11-12T13:51:36.722Z",
+    "totalDeduplicatedRules": 145,
+    "universalRuleCount": 11,
+    "chassisRuleCount": 134
   }
 }

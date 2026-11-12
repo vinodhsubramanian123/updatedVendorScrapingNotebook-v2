@@ -41028,5 +41028,5455 @@
     "field": "Vendor Attributes",
     "oldValue": "{\"listPrice\":1}",
     "newValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":1}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "339781-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2043",
+    "newValue": "10/31/2043"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "339781-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "1"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "339781-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "339781-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "1"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "339781-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Fast-Ship Certified (<=7d)"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "339781-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}",
+    "newValue": "{\"listPrice\":1}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "469774-409",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Manufacturing Services",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2030",
+    "newValue": "01/31/2031"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "469774-409",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Manufacturing Services",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": "8"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "469774-409",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Manufacturing Services",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": "OCA row attribute"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "469774-409",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Manufacturing Services",
+    "field": "Lead Time Days",
+    "oldValue": "",
+    "newValue": "8"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "469774-409",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Manufacturing Services",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": "Standard Delivery (8-30d)"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "469774-409",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Manufacturing Services",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"8\",\"listPrice\":1}",
+    "newValue": "{\"listPrice\":1}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R9H29AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Discontinued Date",
+    "oldValue": "12/18/2024",
+    "newValue": "02/01/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R9Y51AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Discontinued Date",
+    "oldValue": "12/18/2024",
+    "newValue": "02/01/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R9Y52AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Discontinued Date",
+    "oldValue": "12/18/2024",
+    "newValue": "02/01/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1S86AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Discontinued Date",
+    "oldValue": "12/18/2024",
+    "newValue": "02/01/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1S87AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Discontinued Date",
+    "oldValue": "12/18/2024",
+    "newValue": "02/01/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1U64AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Discontinued Date",
+    "oldValue": "12/18/2024",
+    "newValue": "02/01/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2R35AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Discontinued Date",
+    "oldValue": "12/18/2024",
+    "newValue": "02/01/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3P91AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Discontinued Date",
+    "oldValue": "12/18/2024",
+    "newValue": "02/01/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3P92AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Discontinued Date",
+    "oldValue": "12/18/2024",
+    "newValue": "02/01/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3P93AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Discontinued Date",
+    "oldValue": "12/18/2024",
+    "newValue": "02/01/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3P94AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Discontinued Date",
+    "oldValue": "12/18/2024",
+    "newValue": "02/01/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3P95AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Discontinued Date",
+    "oldValue": "12/18/2024",
+    "newValue": "02/01/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3R04AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Discontinued Date",
+    "oldValue": "07/31/2027",
+    "newValue": "08/31/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3R05AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Discontinued Date",
+    "oldValue": "07/31/2027",
+    "newValue": "08/31/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3R06AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Discontinued Date",
+    "oldValue": "07/31/2027",
+    "newValue": "08/31/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3R07AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Discontinued Date",
+    "oldValue": "07/31/2027",
+    "newValue": "08/31/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3W26AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Discontinued Date",
+    "oldValue": "07/31/2027",
+    "newValue": "08/31/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3W27AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Discontinued Date",
+    "oldValue": "07/31/2027",
+    "newValue": "08/31/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3W28AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Discontinued Date",
+    "oldValue": "07/31/2027",
+    "newValue": "08/31/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3W29AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Discontinued Date",
+    "oldValue": "07/31/2027",
+    "newValue": "08/31/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q9V60AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "01/31/2027",
+    "newValue": "02/28/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q9V60AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": "EOL Warning (90-Day)"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q9V60AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Lifecycle Badge",
+    "oldValue": "",
+    "newValue": "90"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q9V60AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": "EOL Warning (90-Day)"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R6X84AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "03/31/2028",
+    "newValue": "04/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1R55AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "03/31/2028",
+    "newValue": "04/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1R56AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "03/31/2028",
+    "newValue": "04/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1R57AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "03/31/2028",
+    "newValue": "04/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1R58AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "03/31/2028",
+    "newValue": "04/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1R63AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "06/01/2028",
+    "newValue": "07/01/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1R64AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "06/01/2028",
+    "newValue": "07/01/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1R65AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "06/01/2028",
+    "newValue": "07/01/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1R66AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "06/01/2028",
+    "newValue": "07/01/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1R67AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "06/01/2028",
+    "newValue": "07/01/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1R68AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "06/01/2028",
+    "newValue": "07/01/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1R69AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "06/01/2028",
+    "newValue": "07/01/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1R70AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "06/01/2028",
+    "newValue": "07/01/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1R71AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "06/01/2028",
+    "newValue": "07/01/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1R72AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "06/01/2028",
+    "newValue": "07/01/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1R73AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "06/01/2028",
+    "newValue": "07/01/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1R74AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "06/01/2028",
+    "newValue": "07/01/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1R75AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "06/01/2028",
+    "newValue": "07/01/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1R76AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "06/01/2028",
+    "newValue": "07/01/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1R77AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "06/01/2028",
+    "newValue": "07/01/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1R78AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "06/01/2028",
+    "newValue": "07/01/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2H96AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2H97AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2H98AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2H99AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2J00AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2J01AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2J02AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2J03AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2J04AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2J05AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2J06AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2J07AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2J08AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2J09AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2J10AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2J11AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2J12AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2J13AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2J14AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2J15AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2J16AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2J17AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2J18AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2J19AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2J20AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2J21AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2J22AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2J23AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2J24AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2J25AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2J26AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2J27AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2J28AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2J29AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2J30AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2J31AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2J32AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2J33AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2J34AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2J35AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S4H91AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "08/01/2027",
+    "newValue": "09/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S4H93AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "08/01/2027",
+    "newValue": "09/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S4H95AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "08/01/2027",
+    "newValue": "09/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S4H97AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "08/01/2027",
+    "newValue": "09/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S4H99AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "08/01/2027",
+    "newValue": "09/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S4J00AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "08/01/2027",
+    "newValue": "09/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S4J02AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "08/01/2027",
+    "newValue": "09/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S4J04AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "08/01/2027",
+    "newValue": "09/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S4J06AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "08/01/2027",
+    "newValue": "09/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S4J08AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "08/01/2027",
+    "newValue": "09/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S4J09AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "08/01/2027",
+    "newValue": "09/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S4J11AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "08/01/2027",
+    "newValue": "09/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S4J13AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "08/01/2027",
+    "newValue": "09/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S4J15AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "08/01/2027",
+    "newValue": "09/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S4J17AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "08/01/2027",
+    "newValue": "09/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S4J18AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "08/01/2027",
+    "newValue": "09/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S4J19AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "08/01/2027",
+    "newValue": "09/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S4J20AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "08/01/2027",
+    "newValue": "09/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S4J21AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "08/01/2027",
+    "newValue": "09/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S4J22AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "08/01/2027",
+    "newValue": "09/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S4J23AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "08/01/2027",
+    "newValue": "09/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S4J25AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "08/01/2027",
+    "newValue": "09/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S4J27AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "08/01/2027",
+    "newValue": "09/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S4J29AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "08/01/2027",
+    "newValue": "09/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S4J31AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "08/01/2027",
+    "newValue": "09/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S4J33AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "08/01/2027",
+    "newValue": "09/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S4J35AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "HPC Software Products",
+    "field": "Discontinued Date",
+    "oldValue": "08/01/2027",
+    "newValue": "09/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1T30AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "10/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1T31AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "10/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1T32AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "10/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1T36AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "10/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R7P98AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "10/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R8V45AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "10/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R8V46AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2026",
+    "newValue": "10/31/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R8V46AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Lifecycle Status",
+    "oldValue": "Direct Ship (DS)",
+    "newValue": "Obsolete (OB)"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R8V46AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Lifecycle Badge",
+    "oldValue": "DS",
+    "newValue": "OB"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R8V46AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Availability",
+    "oldValue": "Direct Ship (DS)",
+    "newValue": "Obsolete (OB)"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W12AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "10/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W13AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2026",
+    "newValue": "10/31/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W13AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Lifecycle Status",
+    "oldValue": "Direct Ship (DS)",
+    "newValue": "Obsolete (OB)"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W13AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Lifecycle Badge",
+    "oldValue": "DS",
+    "newValue": "OB"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W13AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Availability",
+    "oldValue": "Direct Ship (DS)",
+    "newValue": "Obsolete (OB)"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W14AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "12/27/2027",
+    "newValue": "12/28/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W15AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "10/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W16AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2026",
+    "newValue": "10/31/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W16AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Lifecycle Status",
+    "oldValue": "Direct Ship (DS)",
+    "newValue": "Obsolete (OB)"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W16AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Lifecycle Badge",
+    "oldValue": "DS",
+    "newValue": "OB"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W16AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Availability",
+    "oldValue": "Direct Ship (DS)",
+    "newValue": "Obsolete (OB)"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W17AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "12/27/2027",
+    "newValue": "12/28/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W18AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "10/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W19AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2026",
+    "newValue": "10/31/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W19AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Lifecycle Status",
+    "oldValue": "Direct Ship (DS)",
+    "newValue": "Obsolete (OB)"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W19AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Lifecycle Badge",
+    "oldValue": "DS",
+    "newValue": "OB"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W19AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Availability",
+    "oldValue": "Direct Ship (DS)",
+    "newValue": "Obsolete (OB)"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W20AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "12/27/2027",
+    "newValue": "12/28/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W21AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "10/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W22AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2026",
+    "newValue": "10/31/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W22AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Lifecycle Status",
+    "oldValue": "Direct Ship (DS)",
+    "newValue": "Obsolete (OB)"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W22AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Lifecycle Badge",
+    "oldValue": "DS",
+    "newValue": "OB"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W22AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Availability",
+    "oldValue": "Direct Ship (DS)",
+    "newValue": "Obsolete (OB)"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W23AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "12/27/2027",
+    "newValue": "12/28/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W24AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "10/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W25AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2026",
+    "newValue": "10/31/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W25AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Lifecycle Status",
+    "oldValue": "Direct Ship (DS)",
+    "newValue": "Obsolete (OB)"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W25AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Lifecycle Badge",
+    "oldValue": "DS",
+    "newValue": "OB"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W25AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Availability",
+    "oldValue": "Direct Ship (DS)",
+    "newValue": "Obsolete (OB)"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W26AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "12/27/2027",
+    "newValue": "12/28/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W27AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "10/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W28AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2026",
+    "newValue": "10/31/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W28AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Lifecycle Status",
+    "oldValue": "Direct Ship (DS)",
+    "newValue": "Obsolete (OB)"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W28AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Lifecycle Badge",
+    "oldValue": "DS",
+    "newValue": "OB"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W28AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Availability",
+    "oldValue": "Direct Ship (DS)",
+    "newValue": "Obsolete (OB)"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0W29AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "High Availability Computing - Cluster Software",
+    "field": "Discontinued Date",
+    "oldValue": "12/27/2027",
+    "newValue": "12/28/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1D73AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Interconnect Management Array",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": "12/31/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1D74AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Interconnect Management Array",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": "12/31/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1D75AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Interconnect Management Array",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": "12/31/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R3Q35AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R3Q37AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R3Q38AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R3Q39AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R3Q40AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R3Q42AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R3Q44AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R3Q46AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R3Q47AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R3Q48AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R3Q49AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R3Q51AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R3Q52AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R3Q53AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R3Q63AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R3Q67AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R3Q68AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R3Q72AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R3Q73AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R3Q77AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R3Q79AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R3Q81AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R3Q93AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R3Q94AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R3Q95AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R3R01AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R3R02AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R3R03AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R3R06AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R3R07AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R3R12AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R3R21AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R3R26AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R3R27AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2027",
+    "newValue": "11/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2S16AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2028",
+    "newValue": "11/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2S17AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2028",
+    "newValue": "11/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2S18AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2028",
+    "newValue": "11/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2S19AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2028",
+    "newValue": "11/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2S20AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2028",
+    "newValue": "11/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2S21AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2028",
+    "newValue": "11/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2S22AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2028",
+    "newValue": "11/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2S23AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2028",
+    "newValue": "11/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2S24AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2028",
+    "newValue": "11/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2S25AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2028",
+    "newValue": "11/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2S26AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2028",
+    "newValue": "11/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2S27AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2028",
+    "newValue": "11/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2S28AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2028",
+    "newValue": "11/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2S29AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2028",
+    "newValue": "11/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2S30AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2028",
+    "newValue": "11/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2S31AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2028",
+    "newValue": "11/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2S32AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2028",
+    "newValue": "11/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2S33AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2028",
+    "newValue": "11/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2S34AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2028",
+    "newValue": "11/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2S35AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2028",
+    "newValue": "11/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2S36AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2028",
+    "newValue": "11/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2S37AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2028",
+    "newValue": "11/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2S38AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2028",
+    "newValue": "11/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2S39AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2028",
+    "newValue": "11/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S7K93AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "04/29/2027",
+    "newValue": "04/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S7K94AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "NVIDIA GPU SW",
+    "field": "Discontinued Date",
+    "oldValue": "04/29/2027",
+    "newValue": "04/30/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1P40AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1P41AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1P42AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R2Z51AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R2Z52AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R2Z53AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1P34AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1P37AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1P35AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1P38AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1P36AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1P39AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R2Z45AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R2Z46AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R2Z47AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q9S73AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q9S76AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q9S74AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q9S77AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q9S75AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q9S78AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Partner Software - Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R7A11AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Discontinued Date",
+    "oldValue": "02/29/2028",
+    "newValue": "03/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R7A12AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Discontinued Date",
+    "oldValue": "02/29/2028",
+    "newValue": "03/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2E10AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Discontinued Date",
+    "oldValue": "02/29/2028",
+    "newValue": "03/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S5E59AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Discontinued Date",
+    "oldValue": "02/29/2028",
+    "newValue": "03/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S5E60AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Discontinued Date",
+    "oldValue": "02/29/2028",
+    "newValue": "03/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S5E61AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management SKUs",
+    "field": "Discontinued Date",
+    "oldValue": "02/29/2028",
+    "newValue": "03/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2R34AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management Enablement SKUs",
+    "field": "Discontinued Date",
+    "oldValue": "02/29/2028",
+    "newValue": "03/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S6C28AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management Enablement SKUs",
+    "field": "Discontinued Date",
+    "oldValue": "06/30/2028",
+    "newValue": "07/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S6C28AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Compute Ops Management Enablement SKUs",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0}",
+    "newValue": "{}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R2U47AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "OEM Software",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2025",
+    "newValue": "02/28/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G5J66AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G5J67AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G3J34AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G3J35AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G5J68AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G5J69AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G3J36AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G3J37AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R2A03AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R2A04AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R2A05AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R2A00AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R2A01AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R2A02AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "M6K34AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Add-ons",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "E5Y35AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "OneView Management Software",
+    "field": "Discontinued Date",
+    "oldValue": "07/31/2030",
+    "newValue": "08/31/2030"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "P8B26AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "OneView Management Software",
+    "field": "Discontinued Date",
+    "oldValue": "07/31/2030",
+    "newValue": "08/31/2030"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1D41AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "01/31/2031",
+    "newValue": "02/28/2031"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1D42AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "01/31/2031",
+    "newValue": "02/28/2031"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1D43AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "08/15/2026",
+    "newValue": "12/31/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1D44AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "01/31/2031",
+    "newValue": "02/28/2031"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1D45AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "01/31/2031",
+    "newValue": "02/28/2031"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1D46AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "08/15/2026",
+    "newValue": "12/31/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1D49AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "01/31/2031",
+    "newValue": "02/28/2031"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1D50AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "01/31/2031",
+    "newValue": "02/28/2031"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1D51AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "08/15/2026",
+    "newValue": "12/31/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1D52AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "01/31/2031",
+    "newValue": "02/28/2031"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1D53AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "01/31/2031",
+    "newValue": "02/28/2031"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1D54AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "08/15/2026",
+    "newValue": "12/31/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1D55AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "01/31/2031",
+    "newValue": "02/28/2031"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1D56AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "01/31/2031",
+    "newValue": "02/28/2031"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1D57AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "08/15/2026",
+    "newValue": "12/31/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1D58AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "01/31/2031",
+    "newValue": "02/28/2031"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1D59AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "01/31/2031",
+    "newValue": "02/28/2031"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1D60AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "08/15/2026",
+    "newValue": "12/31/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1D61AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "01/31/2031",
+    "newValue": "02/28/2031"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1D62AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "01/31/2031",
+    "newValue": "02/28/2031"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1D63AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "08/15/2026",
+    "newValue": "12/31/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1D64AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "01/31/2031",
+    "newValue": "02/28/2031"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1D65AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "01/31/2031",
+    "newValue": "02/28/2031"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R1D66AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "08/15/2026",
+    "newValue": "12/31/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R7J59AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "INTEL VROC Products",
+    "field": "Discontinued Date",
+    "oldValue": "02/29/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3Q39AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Storage Controllers",
+    "subCategory": "INTEL VROC Products",
+    "field": "Discontinued Date",
+    "oldValue": "02/29/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q0D22AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q0D23AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q0D25AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": "12/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q0D26AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": "12/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q0D29AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": "12/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q0D30AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": "12/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q1X74AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2025",
+    "newValue": "02/28/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q1X75AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "10/31/2025",
+    "newValue": "02/28/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q5W19AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q5W20AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q5W21AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q5W22AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q5W23AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q5W24AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q5W25AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q5W26AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q8U15AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": "12/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q8U16AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": "12/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q8U17AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": "12/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q8U18AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": "12/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q8U19AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": "12/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q8U20AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": "12/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q8U21AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": "12/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "Q8U22AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "11/30/2027",
+    "newValue": "12/01/2027"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R8V72AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": "03/16/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R8V73AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": "03/16/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R8V74AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R8V75AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R8V76AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R8V77AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R8V78AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R8V86AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R8V87AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R8V88AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R8V89AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0F21AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0F22AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0F24AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0F25AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0F26AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0F27AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0F28AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0F29AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0F30AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3B60AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2024",
+    "newValue": "01/31/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3B61AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2024",
+    "newValue": "01/31/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3B62AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2024",
+    "newValue": "01/31/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3B63AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2024",
+    "newValue": "01/31/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3B64AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2024",
+    "newValue": "01/31/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3B65AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2024",
+    "newValue": "01/31/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3B66AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2024",
+    "newValue": "01/31/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3B67AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2024",
+    "newValue": "01/31/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3B68AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2024",
+    "newValue": "01/31/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3B69AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2024",
+    "newValue": "01/31/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3B70AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2024",
+    "newValue": "01/31/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3B71AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2024",
+    "newValue": "01/31/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S7N77AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S7N78AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Supported Operating System",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R6J26AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R6J29AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Discontinued Date",
+    "oldValue": "03/01/2025",
+    "newValue": "04/01/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R6J33AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R6J34AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Discontinued Date",
+    "oldValue": "03/01/2025",
+    "newValue": "04/01/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R6J35AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Discontinued Date",
+    "oldValue": "03/01/2025",
+    "newValue": "04/01/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3Z85AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Discontinued Date",
+    "oldValue": "03/01/2025",
+    "newValue": "04/01/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3Z87AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Discontinued Date",
+    "oldValue": "03/01/2025",
+    "newValue": "04/01/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3Z89AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Discontinued Date",
+    "oldValue": "03/01/2025",
+    "newValue": "04/01/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3Z91AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat OpenShift Platform Container",
+    "field": "Discontinued Date",
+    "oldValue": "03/01/2025",
+    "newValue": "04/01/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0E93AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0E94AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S0E95AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE containers",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "M6K30AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": "03/16/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "M6K32AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": "03/16/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3R49AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": "03/16/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3R50AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": "03/16/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3R51AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": "03/16/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3R52AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": "03/16/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3R53AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": "03/16/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3R54AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": "03/16/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3R55AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": "03/16/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3R56AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": "03/16/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3R57AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": "03/16/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3R58AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": "03/16/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3R59AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": "03/16/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S3R60AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Discontinued Date",
+    "oldValue": "03/02/2026",
+    "newValue": "03/16/2026"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S7N75AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S7N76AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S7N79AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S7N80AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S7N81AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S7N82AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S7N83AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S7N84AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S7N95AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S7N96AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S7N97AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S7N98AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S7N99AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S7P00AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "SUSE Linux Enterprise Server",
+    "field": "Discontinued Date",
+    "oldValue": "04/30/2028",
+    "newValue": "05/31/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S5Q81AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "01/31/2028",
+    "newValue": "02/28/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S5Q82AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "01/31/2028",
+    "newValue": "02/28/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S5Q83AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Server Management & Operating System Licenses",
+    "field": "Discontinued Date",
+    "oldValue": "01/31/2028",
+    "newValue": "02/28/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G3J22AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G3J23AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G3J24AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G3J25AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G3J26AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G3J27AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G3J28AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G3J29AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G3J30AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G3J31AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G3J32AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G3J33AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G5J62AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G5J63AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G5J64AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G5J65AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "J8J35AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "J8J36AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2028",
+    "newValue": "12/30/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2G27AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2025",
+    "newValue": "10/31/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S2G28AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "field": "Discontinued Date",
+    "oldValue": "09/30/2025",
+    "newValue": "10/31/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S4F94AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "field": "Discontinued Date",
+    "oldValue": "11/04/2025",
+    "newValue": "12/01/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S4G00AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "field": "Discontinued Date",
+    "oldValue": "11/04/2025",
+    "newValue": "12/01/2025"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S4R76AAE",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "field": "Discontinued Date",
+    "oldValue": "09/06/2028",
+    "newValue": "10/07/2028"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HA849A1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"HA849A1\"}",
+    "newValue": "{\"Product Number\":\"HA849A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HA851A1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"HA851A1\"}",
+    "newValue": "{\"Product Number\":\"HA851A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "ZU723A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":110,\"Product Number\":\"ZU723A\"}",
+    "newValue": "{\"Product Number\":\"ZU723A\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H29BWA1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H29BWA1\"}",
+    "newValue": "{\"Product Number\":\"H29BWA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H29BXA1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H29BXA1\"}",
+    "newValue": "{\"Product Number\":\"H29BXA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HA838A1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"HA838A1\"}",
+    "newValue": "{\"Product Number\":\"HA838A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HA839A1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"HA839A1\"}",
+    "newValue": "{\"Product Number\":\"HA839A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HA843A1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"HA843A1\"}",
+    "newValue": "{\"Product Number\":\"HA843A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HA846A1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"HA846A1\"}",
+    "newValue": "{\"Product Number\":\"HA846A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HA848A1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"HA848A1\"}",
+    "newValue": "{\"Product Number\":\"HA848A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "AC068A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"AC068A\"}",
+    "newValue": "{\"Product Number\":\"AC068A\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB480A1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"HB480A1\"}",
+    "newValue": "{\"Product Number\":\"HB480A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB481A1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"HB481A1\"}",
+    "newValue": "{\"Product Number\":\"HB481A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB482A1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"HB482A1\"}",
+    "newValue": "{\"Product Number\":\"HB482A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB483A1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"HB483A1\"}",
+    "newValue": "{\"Product Number\":\"HB483A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HB484A1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"HB484A1\"}",
+    "newValue": "{\"Product Number\":\"HB484A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "S1J77A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"S1J77A\"}",
+    "newValue": "{\"Product Number\":\"S1J77A\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H0JD0A1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H0JD0A1\"}",
+    "newValue": "{\"Product Number\":\"H0JD0A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H0JT1A1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H0JT1A1\"}",
+    "newValue": "{\"Product Number\":\"H0JT1A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36NRA4",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H36NRA4\"}",
+    "newValue": "{\"Product Number\":\"H36NRA4\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36NRA5",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H36NRA5\"}",
+    "newValue": "{\"Product Number\":\"H36NRA5\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36NSA1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H36NSA1\"}",
+    "newValue": "{\"Product Number\":\"H36NSA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36NTA1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H36NTA1\"}",
+    "newValue": "{\"Product Number\":\"H36NTA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H42ZHA1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H42ZHA1\"}",
+    "newValue": "{\"Product Number\":\"H42ZHA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H42ZJA1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H42ZJA1\"}",
+    "newValue": "{\"Product Number\":\"H42ZJA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H42ZKA1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H42ZKA1\"}",
+    "newValue": "{\"Product Number\":\"H42ZKA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H0JT2A1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H0JT2A1\"}",
+    "newValue": "{\"Product Number\":\"H0JT2A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H29BRA1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H29BRA1\"}",
+    "newValue": "{\"Product Number\":\"H29BRA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H29BSA1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H29BSA1\"}",
+    "newValue": "{\"Product Number\":\"H29BSA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36NLA1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H36NLA1\"}",
+    "newValue": "{\"Product Number\":\"H36NLA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36NMA1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H36NMA1\"}",
+    "newValue": "{\"Product Number\":\"H36NMA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36NNA1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H36NNA1\"}",
+    "newValue": "{\"Product Number\":\"H36NNA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36NPA1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H36NPA1\"}",
+    "newValue": "{\"Product Number\":\"H36NPA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36NQA1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H36NQA1\"}",
+    "newValue": "{\"Product Number\":\"H36NQA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36NQA3",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H36NQA3\"}",
+    "newValue": "{\"Product Number\":\"H36NQA3\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36NQA4",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Energy Star",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H36NQA4\"}",
+    "newValue": "{\"Product Number\":\"H36NQA4\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R3J78A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"R3J78A\"}",
+    "newValue": "{\"Product Number\":\"R3J78A\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "P1F74A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":350,\"Product Number\":\"P1F74A\"}",
+    "newValue": "{\"Product Number\":\"P1F74A\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "P1F76A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":758,\"Product Number\":\"P1F76A\"}",
+    "newValue": "{\"Product Number\":\"P1F76A\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "P1F78A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":350,\"Product Number\":\"P1F78A\"}",
+    "newValue": "{\"Product Number\":\"P1F78A\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R2D12A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"R2D12A\"}",
+    "newValue": "{\"Product Number\":\"R2D12A\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R2D20A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"R2D20A\"}",
+    "newValue": "{\"Product Number\":\"R2D20A\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R2D10A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"R2D10A\"}",
+    "newValue": "{\"Product Number\":\"R2D10A\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "R2D04A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"R2D04A\"}",
+    "newValue": "{\"Product Number\":\"R2D04A\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "P1F71A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":292,\"Product Number\":\"P1F71A\"}",
+    "newValue": "{\"Product Number\":\"P1F71A\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "P1F81A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"P1F81A\"}",
+    "newValue": "{\"Product Number\":\"P1F81A\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "AC123A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":816,\"Product Number\":\"AC123A\"}",
+    "newValue": "{\"Product Number\":\"AC123A\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "BQ337A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":100,\"Product Number\":\"BQ337A\"}",
+    "newValue": "{\"Product Number\":\"BQ337A\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "BQ335A",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":44,\"Product Number\":\"BQ335A\"}",
+    "newValue": "{\"Product Number\":\"BQ335A\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G1H96A1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Data Management Framework (SGI DMF)",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"G1H96A1\"}",
+    "newValue": "{\"Product Number\":\"G1H96A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G1H97A1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Data Management Framework (SGI DMF)",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"G1H97A1\"}",
+    "newValue": "{\"Product Number\":\"G1H97A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G1H98A1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Data Management Framework (SGI DMF)",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"G1H98A1\"}",
+    "newValue": "{\"Product Number\":\"G1H98A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "G1H99A1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Data Management Framework (SGI DMF)",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"G1H99A1\"}",
+    "newValue": "{\"Product Number\":\"G1H99A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H0JD1A1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Data Management Framework (SGI DMF)",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H0JD1A1\"}",
+    "newValue": "{\"Product Number\":\"H0JD1A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H0JD7A1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Data Management Framework (SGI DMF)",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H0JD7A1\"}",
+    "newValue": "{\"Product Number\":\"H0JD7A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H30RYA1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Data Management Framework (SGI DMF)",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H30RYA1\"}",
+    "newValue": "{\"Product Number\":\"H30RYA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H30SDA1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "Data Management Framework (SGI DMF)",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H30SDA1\"}",
+    "newValue": "{\"Product Number\":\"H30SDA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H33XSA1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H33XSA1\"}",
+    "newValue": "{\"Product Number\":\"H33XSA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H33XTA2",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H33XTA2\"}",
+    "newValue": "{\"Product Number\":\"H33XTA2\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H33XVA3",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H33XVA3\"}",
+    "newValue": "{\"Product Number\":\"H33XVA3\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H33XWA4",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H33XWA4\"}",
+    "newValue": "{\"Product Number\":\"H33XWA4\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H33XXA5",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H33XXA5\"}",
+    "newValue": "{\"Product Number\":\"H33XXA5\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36NVA1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H36NVA1\"}",
+    "newValue": "{\"Product Number\":\"H36NVA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H57GHA1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H57GHA1\"}",
+    "newValue": "{\"Product Number\":\"H57GHA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H57GJA1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H57GJA1\"}",
+    "newValue": "{\"Product Number\":\"H57GJA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H57GKA1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Graphics & GPU",
+    "subCategory": "GPU Accelerators",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H57GKA1\"}",
+    "newValue": "{\"Product Number\":\"H57GKA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H0JD9A1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H0JD9A1\"}",
+    "newValue": "{\"Product Number\":\"H0JD9A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H1WU9A1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H1WU9A1\"}",
+    "newValue": "{\"Product Number\":\"H1WU9A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H1WV0A1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H1WV0A1\"}",
+    "newValue": "{\"Product Number\":\"H1WV0A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H1XF9A1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H1XF9A1\"}",
+    "newValue": "{\"Product Number\":\"H1XF9A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H1XG0A1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H1XG0A1\"}",
+    "newValue": "{\"Product Number\":\"H1XG0A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H1XG7A1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H1XG7A1\"}",
+    "newValue": "{\"Product Number\":\"H1XG7A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H2S79A1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H2S79A1\"}",
+    "newValue": "{\"Product Number\":\"H2S79A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H2S81A1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H2S81A1\"}",
+    "newValue": "{\"Product Number\":\"H2S81A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H29BQA1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H29BQA1\"}",
+    "newValue": "{\"Product Number\":\"H29BQA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H30SBA1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H30SBA1\"}",
+    "newValue": "{\"Product Number\":\"H30SBA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H30SCA1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H30SCA1\"}",
+    "newValue": "{\"Product Number\":\"H30SCA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H30SLA1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H30SLA1\"}",
+    "newValue": "{\"Product Number\":\"H30SLA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H30SMA1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H30SMA1\"}",
+    "newValue": "{\"Product Number\":\"H30SMA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H30SNA1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H30SNA1\"}",
+    "newValue": "{\"Product Number\":\"H30SNA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36NRA3",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H36NRA3\"}",
+    "newValue": "{\"Product Number\":\"H36NRA3\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36PBA1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H36PBA1\"}",
+    "newValue": "{\"Product Number\":\"H36PBA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36PCA1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H36PCA1\"}",
+    "newValue": "{\"Product Number\":\"H36PCA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H36PDA1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Software & Licenses",
+    "subCategory": "Red Hat (add-ons)",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H36PDA1\"}",
+    "newValue": "{\"Product Number\":\"H36PDA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H42ZQA1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H42ZQA1\"}",
+    "newValue": "{\"Product Number\":\"H42ZQA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H42ZRA1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H42ZRA1\"}",
+    "newValue": "{\"Product Number\":\"H42ZRA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H43BCA1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H43BCA1\"}",
+    "newValue": "{\"Product Number\":\"H43BCA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H44MDA1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H44MDA1\"}",
+    "newValue": "{\"Product Number\":\"H44MDA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H44NJA1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H44NJA1\"}",
+    "newValue": "{\"Product Number\":\"H44NJA1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "HU7D2A1",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"HU7D2A1\"}",
+    "newValue": "{\"Product Number\":\"HU7D2A1\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H0JD4A1008E",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H0JD4A1008E\"}",
+    "newValue": "{\"Product Number\":\"H0JD4A1008E\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H0JD4A10BK5",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "System Options",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H0JD4A10BK5\"}",
+    "newValue": "{\"Product Number\":\"H0JD4A10BK5\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H46SGA3",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H46SGA3\"}",
+    "newValue": "{\"Product Number\":\"H46SGA3\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H46SGA4",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H46SGA4\"}",
+    "newValue": "{\"Product Number\":\"H46SGA4\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H46SGA5",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H46SGA5\"}",
+    "newValue": "{\"Product Number\":\"H46SGA5\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H46SHA3",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H46SHA3\"}",
+    "newValue": "{\"Product Number\":\"H46SHA3\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H46SHA4",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H46SHA4\"}",
+    "newValue": "{\"Product Number\":\"H46SHA4\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H46SHA5",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H46SHA5\"}",
+    "newValue": "{\"Product Number\":\"H46SHA5\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H46SJA3",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H46SJA3\"}",
+    "newValue": "{\"Product Number\":\"H46SJA3\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H46SJA4",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H46SJA4\"}",
+    "newValue": "{\"Product Number\":\"H46SJA4\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H46SJA5",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H46SJA5\"}",
+    "newValue": "{\"Product Number\":\"H46SJA5\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "H46SKA3",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "HPE Virtualization",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"listPrice\":0,\"Product Number\":\"H46SKA3\"}",
+    "newValue": "{\"Product Number\":\"H46SKA3\"}"
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "389692-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "Description",
+    "oldValue": "HPE Customer Defined RAID Setting Service",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "389692-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "Option Type",
+    "oldValue": "Standard",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "389692-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "Start Date",
+    "oldValue": "02/02/2005",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "389692-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "Discontinued Date",
+    "oldValue": "12/31/2043",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "389692-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "Lifecycle Status",
+    "oldValue": "Active",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "389692-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "CLIC Status",
+    "oldValue": "Unpublished",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "389692-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "Availability",
+    "oldValue": "Available",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "389692-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "Lead Time",
+    "oldValue": "Unpublished",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "389692-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "Lead Time Source",
+    "oldValue": "Unpublished",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "389692-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "Speed Tier",
+    "oldValue": "Unpublished",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "389692-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "Vendor Recommended",
+    "oldValue": "false",
+    "newValue": ""
+  },
+  {
+    "date": "2026-11-12",
+    "productNumber": "389692-B21",
+    "chassis": "DL380 Gen12",
+    "mainCategory": "Support Services",
+    "subCategory": "RAID Settings",
+    "field": "Vendor Attributes",
+    "oldValue": "{\"Est. Lead Time\":\"1\",\"listPrice\":1}",
+    "newValue": ""
   }
 ]
