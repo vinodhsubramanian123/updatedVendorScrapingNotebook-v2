@@ -54,6 +54,8 @@
       "DISCONTINUED": 0,
       "UNCHANGED": 1149
     },
-    "cloudSyncState": "CLOUD_FAILED"
-  }
+    "cloudSyncState": "CLOUD_VERIFIED",
+    "verifiedSourceId": "a87a92fc-5ef0-40e5-a810-04ce76927d8c"
+  },
+  "overallPass": false
 }

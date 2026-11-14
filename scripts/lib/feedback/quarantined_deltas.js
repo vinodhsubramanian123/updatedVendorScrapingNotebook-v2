@@ -544,6 +544,43 @@ function _checkDeltaSkuValidity(affected, required) {
   return { valid: true };
 }
 
+function _escapeRx(str) {
+  return String(str || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function _checkSemanticExtractionIntegrity(delta, affected, required, rawMsg) {
+  const fullText = `${rawMsg} ${delta.ruleUpdate || ''} ${delta.remediationAction || ''}`;
+  if (/\bSKU\s+(\d{6})-[A-Z0-9]{3}\s*\(\s*Qty\s+\1\s*\)/i.test(fullText)) {
+    return {
+      valid: false,
+      reasons: ['INV-230 Semantic Gate: Corrupted manifest diff where 6-digit SKU prefix was parsed as quantity']
+    };
+  }
+  const ruleKind = String(delta.ruleType || delta.errorType || '').toUpperCase();
+  if (required && ruleKind.includes('DEPENDENCY')) {
+    const reqEsc = _escapeRx(required);
+    const affEsc = _escapeRx(affected);
+    const slashOrPairRx = new RegExp(`\\b${affEsc}\\s*(?:\\/|\\bor\\b)\\s*${reqEsc}\\b`, 'i');
+    if (slashOrPairRx.test(rawMsg)) {
+      return {
+        valid: false,
+        reasons: [`INV-230 Semantic Gate: Disjunctive/slash alternative pair (${affected} / ${required}) misparsed as dependency`]
+      };
+    }
+    const discontinuedRx = new RegExp(
+      `(?:${reqEsc}[^.\\n]{0,80}\\b(?:discontinued|blocked|obsolete|prohibited)\\b|\\b(?:discontinued|blocked|obsolete|prohibited)\\b[^.\\n]{0,80}${reqEsc})`,
+      'i'
+    );
+    if (discontinuedRx.test(rawMsg)) {
+      return {
+        valid: false,
+        reasons: [`INV-230 Semantic Gate: Discontinued/blocked SKU (${required}) inverted into required dependency`]
+      };
+    }
+  }
+  return { valid: true };
+}
+
 function _checkCatalogSkuExistence(affected, required, options) {
   let catalogSkusExist = true;
   const reasons = [];
@@ -667,6 +704,12 @@ function validateKnowledgeDelta(delta, options = {}) {
   const skuCheck = _checkDeltaSkuValidity(affected, required);
   if (!skuCheck.valid) {
     return { valid: false, status: 'REJECTED', reasons: skuCheck.reasons, sanitizedDelta: null };
+  }
+
+  // Gate 1a: Semantic Extraction Integrity (INV-230)
+  const semanticCheck = _checkSemanticExtractionIntegrity(delta, affected, required, rawMsg);
+  if (!semanticCheck.valid) {
+    return { valid: false, status: 'REJECTED', reasons: semanticCheck.reasons, sanitizedDelta: null };
   }
 
   // Gate 1b: Catalog SKU Existence Check (INV-24 & INV-48)
@@ -1203,6 +1246,43 @@ function logAutonomousRejection(delta, reasons, options = {}) {
   }, quarantineFile);
 }
 
+/**
+ * Re-validate existing quarantined deltas against current INV-230 governance gates
+ * and prune rejected entries with an append-only audit decision record.
+ */
+function pruneInvalidQuarantinedDeltas(options = {}) {
+  const quarantineFile = options.filePath || currentQuarantineFile;
+  const list = getQuarantinedDeltas({ filePath: quarantineFile });
+  if (!list.length) return { prunedCount: 0, remainingCount: 0, prunedIds: [] };
+
+  const kept = [];
+  const prunedIds = [];
+  for (const item of list) {
+    const validation = validateKnowledgeDelta(item, { catalogData: options.catalogData });
+    if (!validation.valid || validation.status === 'REJECTED') {
+      const fingerprint = item.knowledgeFingerprint || buildKnowledgeFingerprint(item);
+      appendDecision({
+        decisionId: `DECISION_${Date.now()}_${fingerprint.slice(0, 10)}_PRUNE`,
+        quarantineId: item.quarantineId,
+        deltaId: item.deltaId,
+        knowledgeFingerprint: fingerprint,
+        decision: 'AUTO_REJECTED_BY_INV230_REVALIDATION',
+        decidedAt: new Date().toISOString(),
+        reviewer: 'SYSTEM_INV230_REVALIDATOR',
+        reasoning: (validation.reasons || ['Failed INV-230 re-validation']).join('; ')
+      }, quarantineFile);
+      prunedIds.push(item.quarantineId || item.deltaId);
+    } else {
+      kept.push(item);
+    }
+  }
+
+  if (prunedIds.length > 0) {
+    safeWriteJsonAtomic(quarantineFile, kept);
+  }
+  return { prunedCount: prunedIds.length, remainingCount: kept.length, prunedIds };
+}
+
 module.exports = {
   validateKnowledgeDelta,
   saveQuarantinedDelta,
@@ -1211,6 +1291,7 @@ module.exports = {
   rejectQuarantinedDelta,
   retractPromotedDelta,
   supersedeKnowledgeDelta,
+  pruneInvalidQuarantinedDeltas,
   deleteQuarantinedDelta: rejectQuarantinedDelta,
   clearQuarantinedDeltas,
   setQuarantineFilePath,

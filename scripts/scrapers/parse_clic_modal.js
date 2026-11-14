@@ -11,14 +11,121 @@ const xlsx = require('xlsx-js-style');
 const { getOCATarget, getAnyPageTarget, connectWS, sendCommand } = require('../lib/scraper/cdp.js');
 const { processPortalFeedback } = require('../lib/feedback/feedback_loop.js');
 
-function classifyClicRowSeverity(severity, adviceText) {
-  const lowerAdvice = adviceText.toLowerCase();
-  const isWarning = severity.includes('warning') || severity.includes('advisory') ||
-    (!severity && (/^warning\b/i.test(adviceText) || lowerAdvice.includes('recommend')));
+function classifyClicRowSeverity(severity = '', adviceText = '') {
+  const sev = String(severity || '').trim().toLowerCase();
+  const text = String(adviceText || '').trim();
+  const lowerAdvice = text.toLowerCase();
+
+  const isProcessControl =
+    sev === 'p+' ||
+    sev.includes('process control') ||
+    sev.includes('process-control') ||
+    lowerAdvice.includes('process control') ||
+    lowerAdvice.includes('base warranty service icon');
+
   const unbuildableMarkers = ['unbuildable', 'is not buildable', 'must include', 'requires', 'cannot be selected', 'not allowed'];
-  const isUnbuildable = severity.includes('unbuildable') || severity.includes('error') ||
-    unbuildableMarkers.some(m => lowerAdvice.includes(m));
-  return { isWarning, isUnbuildable };
+  const isUnbuildable = !isProcessControl && (
+    sev === 'u' ||
+    sev.includes('unbuildable') ||
+    ((!sev || sev === 'u') && unbuildableMarkers.some(m => lowerAdvice.includes(m)))
+  );
+
+  const isError = !isProcessControl && !isUnbuildable && (
+    sev === 'e' ||
+    sev.includes('error')
+  );
+
+  const isWarning = !isProcessControl && !isUnbuildable && !isError && (
+    sev === 'w' ||
+    sev.includes('warning') ||
+    sev.includes('advisory') ||
+    (!sev && (/^warning\b/i.test(text) || lowerAdvice.includes('recommend')))
+  );
+
+  const isPhysicalDeploymentWarning = isWarning &&
+    /\b(?:c13|c19|c20|jumper|pdu|power\s+cord|high-line|licensing\s+symmetry|redundant\s+vc|bay\s*\d+)\b/i.test(text);
+
+  const severityTier = isUnbuildable
+    ? 'UNBUILDABLE'
+    : isProcessControl
+      ? 'PROCESS_CONTROL'
+      : isError
+        ? 'ERROR'
+        : isWarning
+          ? 'WARNING'
+          : 'INFO';
+
+  return {
+    severityTier,
+    isUnbuildable,
+    isProcessControl,
+    isError,
+    isWarning,
+    isPhysicalDeploymentWarning
+  };
+}
+
+function _auditInformationSheet(wb, actualCounts) {
+  const infoSheet = wb.Sheets['Information'] || wb.Sheets['Info'];
+  if (!infoSheet) {
+    return { present: false, warningCountDiscrepancy: false, reportedWarnings: null, actualWarnings: actualCounts.warnings };
+  }
+  const rows = xlsx.utils.sheet_to_json(infoSheet, { header: 1, defval: '' });
+  let reportedWarnings = null;
+  let reportedUnbuildable = null;
+  let reportedErrors = null;
+  let reportedProcessControl = null;
+
+  for (const row of rows) {
+    const joined = (Array.isArray(row) ? row : []).map(c => String(c ?? '').trim()).join(' ');
+    const warnMatch = joined.match(/\bwarnings?\b\s*[:=-]?\s*(\d+)/i);
+    if (warnMatch && reportedWarnings === null) reportedWarnings = parseInt(warnMatch[1], 10);
+    const unbMatch = joined.match(/\bunbuildables?\b\s*[:=-]?\s*(\d+)/i);
+    if (unbMatch && reportedUnbuildable === null) reportedUnbuildable = parseInt(unbMatch[1], 10);
+    const errMatch = joined.match(/\berrors?\b\s*[:=-]?\s*(\d+)/i);
+    if (errMatch && reportedErrors === null) reportedErrors = parseInt(errMatch[1], 10);
+    const pcMatch = joined.match(/\b(?:process\s*control|p\+)\b\s*[:=-]?\s*(\d+)/i);
+    if (pcMatch && reportedProcessControl === null) reportedProcessControl = parseInt(pcMatch[1], 10);
+  }
+
+  const warningCountDiscrepancy = reportedWarnings !== null && reportedWarnings < actualCounts.warnings;
+  return {
+    present: true,
+    reportedWarnings,
+    actualWarnings: actualCounts.warnings,
+    reportedUnbuildable,
+    actualUnbuildable: actualCounts.unbuildable,
+    reportedErrors,
+    actualErrors: actualCounts.errors,
+    reportedProcessControl,
+    actualProcessControl: actualCounts.processControl,
+    warningCountDiscrepancy,
+    note: warningCountDiscrepancy
+      ? `Information sheet reported ${reportedWarnings} Warning(s), but Advice_Text contains ${actualCounts.warnings} Warning row(s). Always inspect Advice_Text directly.`
+      : null
+  };
+}
+
+function _auditClicBomSheet(wb) {
+  const bomSheet = wb.Sheets['BOM'] || wb.Sheets['Bom'];
+  if (!bomSheet) {
+    return { present: false, rowCount: 0, hasServiceRows: false, omitsIconLevelServices: false, note: null };
+  }
+  const rows = xlsx.utils.sheet_to_json(bomSheet, { defval: '' });
+  const hasServiceRows = rows.some(r => {
+    const lineText = Object.values(r).map(v => String(v || '')).join(' ');
+    return /\b(?:HU4B[A-Z0-9]+|HA114[A-Z0-9]+|H7J3[A-Z0-9]+|tech\s*care|support\s*service|foundation\s*care)\b/i.test(lineText);
+  });
+  const omitsIconLevelServices = rows.length > 0 && !hasServiceRows;
+  return {
+    present: true,
+    rowCount: rows.length,
+    hasServiceRows,
+    omitsIconLevelServices,
+    note: omitsIconLevelServices
+      ? 'CLIC Advice BOM sheet reflects the hardware container only and omits icon-level support/service lines configured outside the hardware container.'
+      : null
+  };
 }
 
 function extractResolutionPaths(adviceText) {
@@ -37,6 +144,85 @@ function extractResolutionPaths(adviceText) {
   return resolutionPaths;
 }
 
+function _extractClicRowFields(r) {
+  return {
+    ruleNum: String(r['Rule#'] || r['Rule #'] || r['Rule'] || '').trim(),
+    productNum: String(r['Product#'] || r['Product #'] || r['Product'] || '').trim(),
+    adviceText: String(r['Advice Text'] || r['AdviceText'] || r['Message'] || '').trim(),
+    desc: String(r['Description'] || '').trim(),
+    severity: String(r['Severity'] || r['Type'] || r['Level'] || '').trim().toLowerCase()
+  };
+}
+
+function _processClicAdviceRow(rowFields, targetCatalogDir, buckets) {
+  const { ruleNum, productNum, adviceText, desc, severity } = rowFields;
+  const classification = classifyClicRowSeverity(severity, adviceText);
+
+  if (classification.isWarning) {
+    const warnEntry = {
+      ruleNum,
+      productNum,
+      description: desc,
+      adviceText,
+      severity: 'WARNING',
+      severityTier: classification.severityTier,
+      isPhysicalDeploymentWarning: classification.isPhysicalDeploymentWarning
+    };
+    buckets.advisories.push(warnEntry);
+    if (classification.isPhysicalDeploymentWarning) {
+      buckets.physicalDeploymentWarnings.push(warnEntry);
+    }
+    console.log(`  ℹ️ Advisory Warning (Ignored for buildability): Rule ${ruleNum.padEnd(10)} | SKU: ${productNum}`);
+    return;
+  }
+
+  if (classification.isProcessControl) {
+    buckets.processControlBlockers.push({
+      ruleNum,
+      productNum,
+      description: desc,
+      adviceText,
+      severity: 'PROCESS_CONTROL',
+      severityTier: classification.severityTier
+    });
+    console.log(`  🚦 Process Control (P+) Release Blocker: Rule ${ruleNum.padEnd(10)} | SKU: ${productNum}`);
+    return;
+  }
+
+  if (classification.isError && !classification.isUnbuildable) {
+    buckets.nonUnbuildableErrors.push({
+      ruleNum,
+      productNum,
+      description: desc,
+      adviceText,
+      severity: 'ERROR',
+      severityTier: classification.severityTier
+    });
+    console.log(`  ⚠️ Non-Unbuildable Error: Rule ${ruleNum.padEnd(10)} | SKU: ${productNum}`);
+    return;
+  }
+
+  const resolutionPaths = extractResolutionPaths(adviceText);
+  const feedbackPayload = `[CLIC RULE ${ruleNum || 'PORTAL'}] Product ${productNum}: ${adviceText}`;
+  try {
+    const delta = processPortalFeedback(feedbackPayload, targetCatalogDir);
+    buckets.results.push({
+      ruleNum,
+      productNum,
+      description: desc,
+      adviceText,
+      severity: 'UNBUILDABLE',
+      severityTier: classification.severityTier,
+      resolutionPaths,
+      deltaId: delta.deltaId,
+      ruleUpdate: delta.ruleUpdate
+    });
+    console.log(`  ✅ Logged Unbuildable Rule ${ruleNum.padEnd(10)} | SKU: ${productNum.padEnd(12)} -> Delta: ${delta.deltaId}`);
+  } catch (err) {
+    console.warn(`  ⚠️ Failed to log feedback for rule ${ruleNum}:`, err.message);
+  }
+}
+
 /**
  * Parse an exported CLIC Advice Excel file (e.g. CLIC_Advice_TempUCID.xlsx)
  * @param {string} excelPath Path to CLIC advice workbook
@@ -48,7 +234,7 @@ function parseClicAdviceExcel(excelPath, targetCatalogDir = 'outputs/ProLiant/Ge
   }
 
   const wb = xlsx.readFile(excelPath);
-  const adviceSheet = wb.Sheets['Advice_Text'] || wb.Sheets['Advice Text'] || wb.Sheets[wb.SheetNames[0]];
+  const adviceSheet = wb.Sheets['Advice_Text'] || wb.Sheets['Advice Text'] || wb.Sheets['Advice'] || wb.Sheets[wb.SheetNames[0]];
   if (!adviceSheet) {
     throw new Error(`Could not find Advice_Text sheet in ${excelPath}`);
   }
@@ -56,62 +242,44 @@ function parseClicAdviceExcel(excelPath, targetCatalogDir = 'outputs/ProLiant/Ge
   const rows = xlsx.utils.sheet_to_json(adviceSheet);
   console.log(`📑 Ingesting ${rows.length} CLIC advice items from: ${excelPath}`);
 
-  const results = [];
-  const advisories = [];
+  const buckets = {
+    results: [],
+    advisories: [],
+    physicalDeploymentWarnings: [],
+    processControlBlockers: [],
+    nonUnbuildableErrors: []
+  };
   const seenRules = new Set();
 
   for (const r of rows) {
-    const ruleNum = String(r['Rule#'] || r['Rule #'] || r['Rule'] || '').trim();
-    const productNum = String(r['Product#'] || r['Product #'] || r['Product'] || '').trim();
-    const adviceText = String(r['Advice Text'] || r['AdviceText'] || r['Message'] || '').trim();
-    const desc = String(r['Description'] || '').trim();
-    const severity = String(r['Severity'] || r['Type'] || r['Level'] || '').trim().toLowerCase();
+    const rowFields = _extractClicRowFields(r);
+    if (!rowFields.adviceText || rowFields.adviceText.length < 5) continue;
 
-    if (!adviceText || adviceText.length < 5) continue;
-
-    const dedupKey = `${ruleNum}_${productNum}_${adviceText.substring(0, 40)}`;
+    const dedupKey = `${rowFields.ruleNum}_${rowFields.productNum}_${rowFields.adviceText.substring(0, 40)}`;
     if (seenRules.has(dedupKey)) continue;
     seenRules.add(dedupKey);
 
-    const { isWarning, isUnbuildable } = classifyClicRowSeverity(severity, adviceText);
-
-    if (isWarning && !isUnbuildable) {
-      advisories.push({
-        ruleNum,
-        productNum,
-        description: desc,
-        adviceText,
-        severity: 'WARNING'
-      });
-      console.log(`  ℹ️ Advisory Warning (Ignored for buildability): Rule ${ruleNum.padEnd(10)} | SKU: ${productNum}`);
-      continue;
-    }
-
-    // Unbuildable Error: detect multi-path resolution choices
-    const resolutionPaths = extractResolutionPaths(adviceText);
-
-    const feedbackPayload = `[CLIC RULE ${ruleNum || 'PORTAL'}] Product ${productNum}: ${adviceText}`;
-    try {
-      const delta = processPortalFeedback(feedbackPayload, targetCatalogDir);
-      results.push({
-        ruleNum,
-        productNum,
-        description: desc,
-        adviceText,
-        severity: 'ERROR',
-        resolutionPaths,
-        deltaId: delta.deltaId,
-        ruleUpdate: delta.ruleUpdate
-      });
-      console.log(`  ✅ Logged Unbuildable Rule ${ruleNum.padEnd(10)} | SKU: ${productNum.padEnd(12)} -> Delta: ${delta.deltaId}`);
-    } catch (err) {
-      console.warn(`  ⚠️ Failed to log feedback for rule ${ruleNum}:`, err.message);
-    }
+    _processClicAdviceRow(rowFields, targetCatalogDir, buckets);
   }
 
+  const { results, advisories, physicalDeploymentWarnings, processControlBlockers, nonUnbuildableErrors } = buckets;
+  const informationSheetSummary = _auditInformationSheet(wb, {
+    warnings: advisories.length,
+    unbuildable: results.length,
+    errors: nonUnbuildableErrors.length,
+    processControl: processControlBlockers.length
+  });
+  const bomSheetSummary = _auditClicBomSheet(wb);
+
   results.unbuildableErrors = results;
+  results.processControlBlockers = processControlBlockers;
+  results.nonUnbuildableErrors = nonUnbuildableErrors;
   results.advisories = advisories;
-  results.totalIngested = results.length + advisories.length;
+  results.warnings = advisories;
+  results.physicalDeploymentWarnings = physicalDeploymentWarnings;
+  results.informationSheetSummary = informationSheetSummary;
+  results.bomSheetSummary = bomSheetSummary;
+  results.totalIngested = results.length + advisories.length + processControlBlockers.length + nonUnbuildableErrors.length;
 
   return results;
 }
@@ -176,6 +344,8 @@ if (require.main === module) {
 }
 
 module.exports = {
+  classifyClicRowSeverity,
+  extractResolutionPaths,
   parseClicAdviceExcel,
   parseLiveCdpModal
 };

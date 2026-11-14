@@ -677,6 +677,10 @@ XLSX.utils.book_append_sheet(wb, metaWS, 'Metadata');
 
 // ── Write file ────────────────────────────────────────────────────────────────
 XLSX.writeFile(wb, xlsxPath);
+try {
+  const { reconcileRebuiltCaptureReceipt } = require('../lib/catalog/catalog_capture_receipt.js');
+  reconcileRebuiltCaptureReceipt(targetDir, filePrefix);
+} catch { /* ignore if receipt not present */ }
 
 console.log('\n✅ Excel workbook saved: ' + xlsxPath);
 console.log(`   Hardware SKUs: ${skuData.data.length} | Service SKUs: ${servicesData.data.length} | Rules: ${rulesData.data.length}`);

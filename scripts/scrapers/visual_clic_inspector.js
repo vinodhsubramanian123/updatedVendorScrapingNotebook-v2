@@ -10,20 +10,42 @@
 const { getOCATarget, getAnyPageTarget, connectWS, sendCommand, sleep, dismissDOMModals } = require('../lib/scraper/cdp.js');
 const { processPortalFeedback } = require('../lib/feedback/feedback_loop.js');
 
+async function ensureGlobalSolutionNodeSelected(ws) {
+  console.log(`Step 1B: Selecting Global Solution Level (#eo_nav_li_0) so P+ Process Control rules evaluate across all icons...`);
+  const navRes = await sendCommand(ws, 'Runtime.evaluate', {
+    expression: `(() => {
+      const globalNode = document.querySelector('#eo_nav_li_0 a, #eo_nav_li_0');
+      if (globalNode && globalNode.offsetWidth > 0 && globalNode.offsetHeight > 0) {
+        globalNode.click();
+        return { selected: true, selector: '#eo_nav_li_0' };
+      }
+      return { selected: false, selector: null };
+    })()`,
+    returnByValue: true
+  });
+  return (navRes && navRes.result) ? navRes.result.value : { selected: false, selector: null };
+}
+
 async function extractModalErrorsFromDOM(ws) {
   console.log(`Step 3: Extracting unbuildable error messages & root causes from modal form...`);
   const modalRes = await sendCommand(ws, 'Runtime.evaluate', {
     expression: `(() => {
       const banner = document.getElementById('ag-clic-banner');
       const modal = document.querySelector('.clic-error-modal, .ui-dialog, .modal-dialog, #clic_results, [class*="modal"], [class*="popup"]');
+      const downloadExcelBtn = document.querySelector('#_clic_download_excel');
       
       const fullText = document.body ? document.body.innerText : '';
+      const lowerText = fullText.toLowerCase();
       const skuMatches = fullText.match(/\\b([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6})\\b/g) || [];
 
       if (banner) banner.innerHTML = '✅ ANTIGRAVITY AI: Extracted Unbuildable Errors & Root Cause Trace successfully!';
 
       return {
-        hasErrors: fullText.toLowerCase().includes('unbuildable') || fullText.toLowerCase().includes('error') || fullText.toLowerCase().includes('required'),
+        hasModal: Boolean(modal),
+        hasExcelDownloadButton: Boolean(downloadExcelBtn),
+        hasUnbuildable: lowerText.includes('unbuildable'),
+        hasProcessControl: lowerText.includes('process control') || lowerText.includes('p+'),
+        hasErrors: lowerText.includes('unbuildable') || lowerText.includes('process control') || lowerText.includes('error') || lowerText.includes('required'),
         errorSnippet: fullText.substring(0, 800),
         detectedSkus: Array.from(new Set(skuMatches))
       };
@@ -79,6 +101,8 @@ async function main() {
 
   await sleep(2000);
   await dismissDOMModals(ws);
+  await ensureGlobalSolutionNodeSelected(ws);
+  await sleep(1000);
 
   // 2. Highlight and click CLIC check or Unbuildable Status link
   console.log(`Step 2: Locating and highlighting CLIC Check / Unbuildable Status button...`);
@@ -156,7 +180,14 @@ async function main() {
   console.log(`================================================================\n`);
 }
 
-main().catch(err => {
-  console.error('Visual CLIC inspector error:', err.message);
-  process.exit(1);
-});
+if (require.main === module) {
+  main().catch(err => {
+    console.error('Visual CLIC inspector error:', err.message);
+    process.exit(1);
+  });
+}
+
+module.exports = {
+  ensureGlobalSolutionNodeSelected,
+  extractModalErrorsFromDOM
+};

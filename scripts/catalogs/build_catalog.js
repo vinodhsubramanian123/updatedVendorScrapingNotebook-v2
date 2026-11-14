@@ -2272,6 +2272,11 @@ async function exportCatalogArtifacts(ctx) {
   safeWriteJsonAtomic(servicesJsonOutputPath, enrichedServicesCatalog, { validateSchema: false, rejectInvalid: false });
   console.log(`  📄 ${filePrefix}_Services.json  (${enrichedServicesCatalog.metadata.totalUniqueSKUs} observed service/software SKUs)`);
 
+  try {
+    const { reconcileRebuiltCaptureReceipt } = require('../lib/catalog/catalog_capture_receipt.js');
+    reconcileRebuiltCaptureReceipt(targetDir, filePrefix);
+  } catch { /* ignore if receipt not present */ }
+
   pipelineLogger.logStep('Step 6: Atomic Save Output JSON', 'SUCCESS', { path: jsonOutputPath });
   pipelineLogger.finalizeRun(validationResult.isValid ? 'COMPLETED' : 'PARTIAL_SUCCESS', {
     totalUniqueSKUs: enrichedCatalog.metadata?.totalUniqueSKUs,

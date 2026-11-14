@@ -17,6 +17,7 @@ const { resolveProductIdentity, ruleAppliesToProduct } = require('../lib/catalog
 const { loadActiveKnowledgeRules } = require('../lib/catalog/active_knowledge_router.js');
 const { findCatalogJsonFiles } = require('../lib/catalog/sync_registry.js');
 const { getCatalogPortfolioCoverage } = require('../lib/catalog/catalog_portfolio.js');
+const { validateKnowledgeDelta } = require('../lib/feedback/quarantined_deltas.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
 const OUTPUTS_ROOT = path.join(PROJECT_ROOT, 'outputs');
@@ -57,11 +58,13 @@ function _classifyProductDeltas(deltas, identity, activeRules) {
   return { unassociated, misclassified };
 }
 
-function _collectPromotableQuarantined(quar) {
+function _collectPromotableQuarantined(quar, catalogData = null) {
   const promotableQuarantined = [];
   for (const q of quar) {
     const obs = Number(q.observationCount || q.frequency || 1);
-    if (obs >= 3) {
+    if (obs < 3) continue;
+    const validation = validateKnowledgeDelta(q, { catalogData });
+    if (validation.valid && validation.status === 'PROMOTED') {
       promotableQuarantined.push({
         quarantineId: q.quarantineId || q.deltaId,
         affectedSku: q.affectedSku,
@@ -82,13 +85,15 @@ function auditAllProducts() {
     const chassisName = path.basename(catFile, '_Catalog.json');
     const identity = resolveProductIdentity(chassisName, nb);
 
+    const catalogData = _readJsonSafe(catFile, null);
     const deltas = _readJsonSafe(path.join(dir, 'history', 'catalog_deltas.json'), []);
     const quar = _readJsonSafe(path.join(dir, 'history', 'quarantined_deltas.json'), []);
     const rules = _readJsonSafe(path.join(dir, `${chassisName}_Catalog_Rules.json`), []);
 
     const activeRules = loadActiveKnowledgeRules(chassisName, dir);
     const { unassociated, misclassified } = _classifyProductDeltas(deltas, identity, activeRules);
-    const promotableQuarantined = _collectPromotableQuarantined(quar);
+    const promotableQuarantined = _collectPromotableQuarantined(quar, catalogData);
+    const repeatedQuarantinedCount = quar.filter(q => Number(q.observationCount || q.frequency || 1) >= 3).length;
 
     auditResults.set(chassisName, {
       chassisName,
@@ -101,6 +106,7 @@ function auditAllProducts() {
       unassociatedDeltas: unassociated,
       misclassifiedDeltas: misclassified,
       quarantinedCount: quar.length,
+      repeatedQuarantinedCount,
       promotableQuarantined,
       rulesCount: Array.isArray(rules) ? rules.length : (rules?.rules?.length || 0)
     });

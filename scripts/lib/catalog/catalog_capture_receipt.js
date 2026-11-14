@@ -227,4 +227,43 @@ function finalizeCaptureReceipt(dir, receipt, sync) {
   }
   return completed;
 }
-module.exports = { createCaptureReceipt, finalizeCaptureReceipt, currentRows, skuSet };
+function reconcileRebuiltCaptureReceipt(dir, product) {
+  if (!dir || !product) return null;
+  const receiptPath = path.join(dir, 'capture_receipt.json');
+  const rawPath = path.join(dir, 'raw_data', 'oca_raw_data_full.json');
+  if (!fs.existsSync(receiptPath) || !fs.existsSync(rawPath)) return null;
+  const requiredArtifacts = ['Catalog.json', 'Services.json', 'Catalog_Rules.json', 'OCA_Catalog.xlsx'];
+  if (!requiredArtifacts.every(suffix => fs.existsSync(path.join(dir, `${product}_${suffix}`)))) {
+    return null;
+  }
+
+  try {
+    const receipt = readJson(receiptPath);
+    const rawBytes = fs.readFileSync(rawPath);
+    const currentRawSha256 = hash(rawBytes);
+    if (!receipt || receipt.product !== product || receipt.rawSha256 !== currentRawSha256) {
+      return null;
+    }
+    const raw = JSON.parse(rawBytes.toString('utf8'));
+    const next = summarizeCatalog(dir, product);
+    _validateCaptureTimestampAndCounts(next, raw);
+    const workbook = require('xlsx-js-style').readFile(path.join(dir, `${product}_OCA_Catalog.xlsx`));
+    _validateWorkbookSheetsAndSkus(workbook, next);
+
+    const hashesChanged = Object.entries(next.hashes).some(([k, v]) => receipt.hashes?.[k] !== v);
+    if (!hashesChanged) return receipt;
+
+    const updated = {
+      ...receipt,
+      counts: next.counts,
+      hashes: next.hashes,
+      rebuiltAt: new Date().toISOString()
+    };
+    safeWriteJsonAtomic(receiptPath, updated);
+    return updated;
+  } catch {
+    return null;
+  }
+}
+
+module.exports = { createCaptureReceipt, finalizeCaptureReceipt, reconcileRebuiltCaptureReceipt, currentRows, skuSet };

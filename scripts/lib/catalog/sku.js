@@ -113,15 +113,92 @@ function cleanBaseSKU(skuStr) {
 }
 
 /**
- * Determine Option Type based on SKU suffix.
+ * Identify whether a SKU or description represents a pre-configured HPE Smart Choice /
+ * Regional BTO server bundle (e.g. P71674-425 EMEA, -005 US/AMS, -295 JP, -375 APJ, -AA5 CN).
+ * Distinct from legacy 6-digit numeric cable/accessory SKUs (e.g. 834972-B25).
  * @param {string} skuStr
+ * @param {string} [description='']
+ * @returns {boolean}
+ */
+function isSmartChoiceOrBtoSku(skuStr, description = '') {
+  const raw = String(skuStr || '').replace(/[\r\n\t]+/g, ' ').trim();
+  const clean = cleanBaseSKU(raw);
+  const desc = String(description || '').trim();
+  if (!clean && !desc) return false;
+  if (/\bBTO$/i.test(raw) && !/\bBTO\/CTO$/i.test(raw)) return true;
+  if (/^[PQRS][0-9A-Z]{5}-(?:005|035|045|055|205|295|375|425|AA5|[0-9]{2}5)$/i.test(clean)) {
+    return true;
+  }
+  if (/\b(?:smart\s*choice|smart\s*buy|pre-?configured\s+bto)\b/i.test(desc)) {
+    return true;
+  }
+  return false;
+}
+
+const SMART_CHOICE_REGION_LABELS = {
+  '005': 'US / Americas (-005)',
+  '035': 'UK (-035)',
+  '045': 'Germany (-045)',
+  '055': 'France (-055)',
+  '205': 'Canada (-205)',
+  '295': 'Japan (-295)',
+  '375': 'Asia Pacific (-375)',
+  '425': 'EMEA (-425)',
+  'AA5': 'China (-AA5)'
+};
+
+/**
+ * Classify commercial fulfillment modality (Smart Choice BTO vs. CTO vs. FIO vs. Standard).
+ * References CLIC Rule 81016667 (FIO without CTO base chassis) and Warning 81400509 (no-CTO-if-Smart-Buy),
+ * plus HPE ProLiant Compute Smart Choice Supplemental QuickSpecs (a50009219enw).
+ * @param {string} skuStr
+ * @param {string} [description='']
+ * @returns {{ sku: string, isSmartChoiceBto: boolean, fulfillmentMode: string, regionSuffix: string|null, regionLabel: string|null, clicRuleIds: string[], referenceDocId: string, guidance: string|null }}
+ */
+function classifyCommercialFulfillmentMode(skuStr, description = '') {
+  const clean = cleanBaseSKU(skuStr);
+  const isSmartChoice = isSmartChoiceOrBtoSku(skuStr, description);
+  const suffixMatch = clean.match(/-([0-9A-Z]{2}5)$/i);
+  const regionSuffix = suffixMatch ? suffixMatch[1].toUpperCase() : null;
+  const regionLabel = regionSuffix ? (SMART_CHOICE_REGION_LABELS[regionSuffix] || `Regional BTO (-${regionSuffix})`) : null;
+
+  if (isSmartChoice) {
+    return {
+      sku: clean,
+      isSmartChoiceBto: true,
+      fulfillmentMode: 'SMART_CHOICE_BTO',
+      regionSuffix,
+      regionLabel,
+      clicRuleIds: ['81016667', '81400509'],
+      referenceDocId: 'a50009219enw',
+      guidance: `SKU ${clean} is a pre-configured HPE Smart Choice / Regional BTO server bundle${regionLabel ? ` (${regionLabel})` : ''}. Do NOT inject an unverified CTO base chassis shell into OCA Customize to force-validate it (CLIC Rule 81016667: FIO options require a -B21 CTO base chassis; CLIC Warning 81400509: no-CTO-if-Smart-Buy). Order ${clean} as a standalone pre-configured Smart Choice BTO SKU with field-installable (BTO-compatible) options only (verify factory contents via HPE Smart Choice Supplemental QuickSpecs a50009219enw or iQuote Universal), OR pivot to a Configure-To-Order (-B21) base chassis for custom FIO configurations.`
+    };
+  }
+
+  const optType = classifyOptionType(skuStr, description);
+  return {
+    sku: clean,
+    isSmartChoiceBto: false,
+    fulfillmentMode: optType.toUpperCase(),
+    regionSuffix: null,
+    regionLabel: null,
+    clicRuleIds: [],
+    referenceDocId: 'a50009219enw',
+    guidance: null
+  };
+}
+
+/**
+ * Determine Option Type based on SKU suffix or Smart Choice BTO pattern.
+ * @param {string} skuStr
+ * @param {string} [description='']
  * @returns {'CTO' | 'BTO' | 'FIO' | 'Standard' | 'Service' | 'BTO/CTO'}
  */
-function classifyOptionType(skuStr) {
+function classifyOptionType(skuStr, description = '') {
   const str = String(skuStr || '').replace(/[\r\n\t]+/g, ' ').trim().toUpperCase();
   if (str === 'BTO/CTO' || str.endsWith('BTO/CTO')) return 'BTO/CTO';
   if (str.endsWith('CTO')) return 'CTO';
-  if (str.endsWith('BTO')) return 'BTO';
+  if (str.endsWith('BTO') || isSmartChoiceOrBtoSku(skuStr, description)) return 'BTO';
   if (str.endsWith('FIO') || /\s+0D1\b/i.test(str)) return 'FIO';
   if (isServiceSku(str)) return 'Service';
   return 'Standard';
@@ -206,11 +283,12 @@ function buildCatalogSkuIndex(catalogData) {
  * @param {object|null} [catalogData=null] - Scoped catalog data (optional)
  * @returns {{ sku: string, cleanSku: string, isSyntacticallyValid: boolean, isCatalogVerified: boolean, lifecycleStatus: string, category: string, optionType: string, isService: boolean }}
  */
-function classifySkuValidation(sku, catalogData = null) {
+function classifySkuValidation(sku, catalogData = null, description = '') {
   const cleanSku = cleanBaseSKU(sku);
   const isSyntacticallyValid = isValidHpeSKU(cleanSku);
-  const optionType = classifyOptionType(sku);
+  const optionType = classifyOptionType(sku, description);
   const isService = isServiceSku(cleanSku);
+  const commercialFulfillment = classifyCommercialFulfillmentMode(sku, description);
 
   // Default classification: syntax-only (Tier 0)
   const result = {
@@ -219,9 +297,11 @@ function classifySkuValidation(sku, catalogData = null) {
     isSyntacticallyValid,
     isCatalogVerified: false,
     lifecycleStatus: 'CATALOG_NOT_SUPPLIED',
-    category: 'UNKNOWN',
+    category: commercialFulfillment.isSmartChoiceBto ? 'SMART_CHOICE_BTO_CHASSIS' : 'UNKNOWN',
     optionType,
-    isService
+    isService,
+    isSmartChoiceBto: commercialFulfillment.isSmartChoiceBto,
+    commercialFulfillment
   };
 
   // If syntax is invalid, no further tiers can pass
@@ -232,6 +312,9 @@ function classifySkuValidation(sku, catalogData = null) {
 
   // If no catalog data provided, we can only confirm syntax — epistemic honesty (INV-0)
   if (!catalogData) {
+    if (commercialFulfillment.isSmartChoiceBto) {
+      result.lifecycleStatus = 'SMART_CHOICE_BTO_PRECONFIGURED';
+    }
     return result;
   }
 
@@ -240,7 +323,9 @@ function classifySkuValidation(sku, catalogData = null) {
   const catalogEntry = catalogIndex.get(cleanSku);
 
   if (!catalogEntry) {
-    result.lifecycleStatus = 'NOT_IN_CATALOG';
+    result.lifecycleStatus = commercialFulfillment.isSmartChoiceBto
+      ? 'SMART_CHOICE_BTO_NOT_IN_CTO_CATALOG'
+      : 'NOT_IN_CATALOG';
     return result;
   }
 
@@ -270,6 +355,8 @@ module.exports = {
   HPE_SKU_EXTRACT_REGEX,
   isValidHpeSKU,
   cleanBaseSKU,
+  isSmartChoiceOrBtoSku,
+  classifyCommercialFulfillmentMode,
   classifyOptionType,
   isOcaModifierTrackingRow,
   isServiceSku,

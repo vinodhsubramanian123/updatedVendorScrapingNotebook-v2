@@ -39,11 +39,11 @@
     }
   },
   "counts": {
-    "hardware": 451,
+    "hardware": 460,
     "services": 322,
     "rules": 335,
     "categories": 14,
-    "retainedHardware": 451,
+    "retainedHardware": 460,
     "hardwareTombstones": 0
   },
   "previousCounts": {
@@ -53,10 +53,10 @@
     "categories": 14
   },
   "hashes": {
-    "Catalog.json": "aa116ca3ff5716adfcf4ad3cf93712d3bee657fdfbda6c7877bf0be8e1ed646d",
+    "Catalog.json": "73092a6813447de85ce26befbf0bdfd66e91b6698f84d7316d35dd91834386e6",
     "Services.json": "1c3dff98380718ea7139a20b37efa352376350109f64b34b49bb7cc40b16313e",
     "Catalog_Rules.json": "6453e049a786b9b801ee4244cd7b10788a6c426f481defa8dfbe8720e4a63cfe",
-    "OCA_Catalog.xlsx": "eae2c399e17acee44575c55ed2af41d4058e7198e8ce17db175fce0c0958340c"
+    "OCA_Catalog.xlsx": "b572fe7f8e46d0aad0b52e3a90060010eb9fe78699f217cf7374d7c9cf7b8723"
   },
   "rawSha256": "ff49b8d7c2d8f8c6e81755f35a0776c72ead36e9a0c32bb13953502141a1e439",
   "sheets": [
@@ -239,5 +239,6 @@
     "consolidationVerified": true,
     "error": "Uploaded and canary-verified \"DL380a_Gen12_OCA_Catalog_2026-10-29\" in NotebookLM (b233ec88-4682-4164-a801-3ee6ca649dc1). Existing sources were preserved unless explicit retirement was confirmed."
   },
-  "promotedAt": "2026-10-29T08:54:47.686Z"
+  "promotedAt": "2026-10-29T08:54:47.686Z",
+  "rebuiltAt": "2026-11-14T07:48:45.320Z"
 }

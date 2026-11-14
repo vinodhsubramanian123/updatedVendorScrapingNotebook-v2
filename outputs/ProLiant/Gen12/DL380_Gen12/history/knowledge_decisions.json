@@ -1,0 +1,42 @@
+[
+  {
+    "decisionId": "DECISION_1794642923733_dfd9198176_PRUNE",
+    "quarantineId": "QUARANTINE_dfd9198176fdbefa",
+    "deltaId": "DELTA_RAG_DEP_R7A11A_512485-B21_1789281305835",
+    "knowledgeFingerprint": "dfd9198176fdbefac4cd3bc1a04bb35f717abdfd66509390f7337ed85d773905",
+    "decision": "AUTO_REJECTED_BY_INV230_REVALIDATION",
+    "decidedAt": "2026-11-14T07:55:23.733Z",
+    "reviewer": "SYSTEM_INV230_REVALIDATOR",
+    "reasoning": "INV-230 Semantic Gate: Discontinued/blocked SKU (512485-B21) inverted into required dependency"
+  },
+  {
+    "decisionId": "DECISION_1794642923746_d3debd4f2d_PRUNE",
+    "quarantineId": "QUARANTINE_d3debd4f2d475868",
+    "deltaId": "DELTA-1794223133348-024zq",
+    "knowledgeFingerprint": "d3debd4f2d475868adeff805420e99b50fa0e7e070694513811545b119bd09b9",
+    "decision": "AUTO_REJECTED_BY_INV230_REVALIDATION",
+    "decidedAt": "2026-11-14T07:55:23.746Z",
+    "reviewer": "SYSTEM_INV230_REVALIDATOR",
+    "reasoning": "INV-230 Semantic Gate: Corrupted manifest diff where 6-digit SKU prefix was parsed as quantity"
+  },
+  {
+    "decisionId": "DECISION_1794642923757_5c7ff8a736_PRUNE",
+    "quarantineId": "QUARANTINE_5c7ff8a7364afefd",
+    "deltaId": "DELTA-1794223134045-a8oko",
+    "knowledgeFingerprint": "5c7ff8a7364afefddd40426716664359677504e9848cde23e48fe3b80aaea580",
+    "decision": "AUTO_REJECTED_BY_INV230_REVALIDATION",
+    "decidedAt": "2026-11-14T07:55:23.757Z",
+    "reviewer": "SYSTEM_INV230_REVALIDATOR",
+    "reasoning": "INV-230 Semantic Gate: Corrupted manifest diff where 6-digit SKU prefix was parsed as quantity"
+  },
+  {
+    "decisionId": "DECISION_1794642923768_eb12c6f539_PRUNE",
+    "quarantineId": "QUARANTINE_eb12c6f539bc4a2d",
+    "deltaId": "DELTA-1794223134173-5zxch",
+    "knowledgeFingerprint": "eb12c6f539bc4a2dd00348429332c0a7331d99b1c4183f6cad13690d17d2d43f",
+    "decision": "AUTO_REJECTED_BY_INV230_REVALIDATION",
+    "decidedAt": "2026-11-14T07:55:23.768Z",
+    "reviewer": "SYSTEM_INV230_REVALIDATOR",
+    "reasoning": "INV-230 Semantic Gate: Corrupted manifest diff where 6-digit SKU prefix was parsed as quantity"
+  }
+]

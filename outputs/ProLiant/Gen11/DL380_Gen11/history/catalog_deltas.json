@@ -229,5 +229,44 @@
     "rawMessage": "Observed live OCA and QuickSpecs behavior for EMEA Smart Choice SKU P71674-425 on DL380 Gen11 (UCID 5158322629-01 & fresh Customize verification): OCA treats -425 as unbuildable in CLIC (Rule 81016667 / Warning 81400509) and overlays extra priced CTO menu defaults instead of exposing factory inside-the-box BOM.",
     "timestamp": "2026-11-12T10:37:25.377Z",
     "chassis": "DL380_Gen11"
+  },
+  {
+    "deltaId": "LEARN_UNIVERSAL_NLM_READ_FAILOVER_AND_SYNC_PRESERVATION_20261114",
+    "ruleType": "WORKFLOW_NLM_SYNC_RESILIENCE_ADVISORY",
+    "rawMessage": "Idempotent NotebookLM read RPCs (source list, source content, canary notebook query) MUST fail over from CDP to httpx via execNlmReadWithFallback() when CdpTransportError occurs. Transient CLI read/transport errors MUST NOT downgrade cloudSyncState from VERIFIED to FAILED when an active certifiedCatalogSourceIds publication already matches the current on-disk Catalog.json SHA-256.",
+    "vendor": "HPE",
+    "scopeTaxonomy": "UNIVERSAL_VENDOR",
+    "governanceStatus": "ACTIVE",
+    "evidenceType": "WORKFLOW_REVIEW",
+    "source": "scripts/lib/notebook/nlm_transport.js",
+    "hardwareCompatibilityCertified": false,
+    "timestamp": "2026-11-14T08:20:29.484Z",
+    "chassis": "DL380_Gen11"
+  },
+  {
+    "deltaId": "LEARN_UNIVERSAL_CAPTURE_RECEIPT_REBUILD_RECONCILIATION_20261114",
+    "ruleType": "WORKFLOW_CAPTURE_RECEIPT_ADVISORY",
+    "rawMessage": "Local catalog rebuild scripts (build_catalog.js, generate_xlsx.js) MUST invoke reconcileRebuiltCaptureReceipt() to refresh capture_receipt.json artifact hashes and counts only when raw_data/oca_raw_data_full.json SHA-256 matches the verified receipt rawSha256. Rebuilt receipts MUST fail closed when rawSha256 differs.",
+    "vendor": "HPE",
+    "scopeTaxonomy": "UNIVERSAL_VENDOR",
+    "governanceStatus": "ACTIVE",
+    "evidenceType": "WORKFLOW_REVIEW",
+    "source": "scripts/lib/catalog/catalog_capture_receipt.js",
+    "hardwareCompatibilityCertified": false,
+    "timestamp": "2026-11-14T08:20:29.666Z",
+    "chassis": "DL380_Gen11"
+  },
+  {
+    "deltaId": "LEARN_UNIVERSAL_QUARANTINE_SEMANTIC_REVALIDATION_20261114",
+    "ruleType": "WORKFLOW_QUARANTINE_GOVERNANCE_ADVISORY",
+    "rawMessage": "Quarantined knowledge deltas MUST pass _checkSemanticExtractionIntegrity() (rejecting inverted discontinued-SKU dependencies, slash/disjunctive pairs misparsed as dependencies, and corrupted 6-digit SKU-prefix quantities) before promotion eligibility. Legacy quarantined deltas failing INV-230 re-validation MUST be pruned with append-only AUTO_REJECTED_BY_INV230_REVALIDATION records in knowledge_decisions.json.",
+    "vendor": "HPE",
+    "scopeTaxonomy": "UNIVERSAL_VENDOR",
+    "governanceStatus": "ACTIVE",
+    "evidenceType": "WORKFLOW_REVIEW",
+    "source": "scripts/lib/feedback/quarantined_deltas.js",
+    "hardwareCompatibilityCertified": false,
+    "timestamp": "2026-11-14T08:20:29.805Z",
+    "chassis": "DL380_Gen11"
   }
 ]

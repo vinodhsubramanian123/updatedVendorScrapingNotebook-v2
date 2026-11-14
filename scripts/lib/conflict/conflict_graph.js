@@ -11,7 +11,14 @@
  */
 
 const path = require('path');
-const { cleanBaseSKU, isValidHpeSKU, HPE_SKU_EXTRACT_REGEX } = require('../catalog/sku.js');
+const {
+  cleanBaseSKU,
+  isValidHpeSKU,
+  isSmartChoiceOrBtoSku,
+  classifyCommercialFulfillmentMode,
+  classifyOptionType,
+  HPE_SKU_EXTRACT_REGEX
+} = require('../catalog/sku.js');
 const { SKU_BLACKLIST } = require('../feedback/quarantined_deltas.js');
 const { loadCatalogRules, getMandatorySkusForChassis } = require('../catalog/catalog_rules.js');
 
@@ -365,6 +372,92 @@ function _evaluateLearnedMutualExclusion(delta, affectedSku, msg, fullBomMap, fu
   }
 }
 
+function _resolvePrimaryCtoBaseChassis(chassisInfo) {
+  const cmap = getChassisMap();
+  const byFamilyGen = cmap?.chassis_base_skus_by_family_gen || {};
+  const modelStr = String(chassisInfo?.model || '').toLowerCase();
+  const genStr = String(chassisInfo?.gen || '').toLowerCase();
+  const ffStr = String(chassisInfo?.formFactor || '8SFF').toUpperCase();
+
+  for (const group of Object.values(byFamilyGen)) {
+    const groupModel = String(group.modelFamily || group.catalogProductId || '').toLowerCase();
+    const groupGen = String(group.gen || '').toLowerCase();
+    if ((modelStr && groupModel.includes(modelStr.split(' ')[0])) && (!genStr || groupGen === genStr)) {
+      const entries = Object.entries(group.skus || {});
+      const exactFf = entries.find(([, meta]) => String(meta.formFactor || '').toUpperCase() === ffStr);
+      if (exactFf) return { sku: exactFf[0], ...exactFf[1] };
+      if (entries.length > 0) return { sku: entries[0][0], ...entries[0][1] };
+    }
+  }
+  if (genStr.includes('11')) {
+    return { sku: 'P52534-B21', description: 'HPE ProLiant DL380 Gen11 8SFF Configure-to-order Server', formFactor: '8SFF' };
+  }
+  return { sku: 'P73282-B21', description: 'HPE ProLiant Compute DL380 Gen12 8SFF NC CTO Server', formFactor: '8SFF' };
+}
+
+function _evaluateVendorBtoCtoRules(fullBomList, chassisInfo, learnedDeltas, recordAudit, conflicts, learnedSubstitutions) {
+  const smartChoiceItems = fullBomList.filter(it => isSmartChoiceOrBtoSku(it.sku, it.description));
+  if (smartChoiceItems.length === 0) {
+    recordAudit('VENDOR', 'Smart Choice BTO vs. CTO Commercial Fulfillment Boundary', 'PASS', 'No regional Smart Choice / BTO (-xx5) chassis mixed into CTO configuration flow.');
+    return;
+  }
+
+  const hasCtoOrFioOptions = fullBomList.some(it => {
+    if (isSmartChoiceOrBtoSku(it.sku, it.description)) return false;
+    const optType = classifyOptionType(it.sku, it.description);
+    return optType === 'CTO' || optType === 'FIO' || /-B21$/i.test(cleanBaseSKU(it.sku));
+  });
+
+  const ctoPivot = _resolvePrimaryCtoBaseChassis(chassisInfo);
+  const matchingPolicyDelta = (learnedDeltas || []).find(d =>
+    d.ruleType === 'COMPATIBILITY_AND_FULFILLMENT_BOUNDARY' ||
+    String(d.deltaId || '').includes('SMART_CHOICE')
+  );
+
+  for (const btoItem of smartChoiceItems) {
+    const fulfillment = classifyCommercialFulfillmentMode(btoItem.sku, btoItem.description);
+    const err = `Commercial Fulfillment Mode Conflict (CLIC Rule 81016667 / Warning 81400509): ${fulfillment.guidance}` +
+      (ctoPivot ? ` Recommended CTO Base Chassis Pivot: ${ctoPivot.sku} (${ctoPivot.description}).` : '');
+    const diagnosticHint = {
+      deltaId: matchingPolicyDelta?.deltaId || 'LEARN_UNIVERSAL_SMART_CHOICE_BTO_VS_OCA_VALIDATION_20261112',
+      rule: matchingPolicyDelta?.ruleUpdate || fulfillment.guidance,
+      rationale: matchingPolicyDelta?.humanReasoning || 'Smart Choice BTO (-xx5) SKUs are pre-configured factory builds and cannot be mixed with custom FIO options or force-validated by injecting an unverified CTO base shell into OCA Customize.',
+      provenance: matchingPolicyDelta?.provenance || 'HPE_SMART_CHOICE_QUICKSPECS_AND_OCA_CLIC_LIVE_RECEIPT',
+      referenceDocId: 'a50009219enw',
+      clicRuleIds: ['81016667', '81400509'],
+      recommendedCtoBaseSku: ctoPivot?.sku || null,
+      referenceNotice: `💡 Diagnostic Hint [${matchingPolicyDelta?.deltaId || 'SMART_CHOICE_BTO'}]: ${fulfillment.guidance}`
+    };
+
+    if (hasCtoOrFioOptions || fullBomList.length > 1) {
+      conflicts.push({
+        level: 'VENDOR',
+        type: 'BTO_CTO_MODE_MISMATCH',
+        sku: btoItem.sku,
+        recommendedCtoBaseSku: ctoPivot?.sku || null,
+        clicRuleIds: ['81016667', '81400509'],
+        referenceDocId: 'a50009219enw',
+        message: err,
+        diagnosticHint
+      });
+      recordAudit('VENDOR', `Smart Choice BTO (${btoItem.sku}) vs. CTO Mode Boundary`, 'FAIL', err, btoItem.sku);
+    } else {
+      recordAudit('VENDOR', `Smart Choice BTO (${btoItem.sku}) Standalone Fulfillment Notice`, 'WARNING', err, btoItem.sku);
+    }
+
+    if (ctoPivot && ctoPivot.sku && !learnedSubstitutions.some(s => s.affectedSku === btoItem.sku)) {
+      learnedSubstitutions.push({
+        affectedSku: btoItem.sku,
+        requiredSku: ctoPivot.sku,
+        ruleType: 'OPTION_TYPE_SUBSTITUTION',
+        deltaId: diagnosticHint.deltaId,
+        ruleUpdate: `Pivot Smart Choice BTO ${btoItem.sku} to CTO Base Chassis ${ctoPivot.sku} (${ctoPivot.description}) for custom CTO/FIO configurations.`,
+        provenance: diagnosticHint.provenance
+      });
+    }
+  }
+}
+
 function _evaluateLearnedDeltas(fullBomMap, fullBomList, learnedDeltas, targetChassis, recordAudit, conflicts, learnedSubstitutions = []) {
   const dependencyEdges = new Set();
 
@@ -373,11 +466,16 @@ function _evaluateLearnedDeltas(fullBomMap, fullBomList, learnedDeltas, targetCh
     const requiredSku = cleanBaseSKU(delta.requiredDependencySku || delta.requiredSku || '');
     const msg = delta.rawMessage || delta.errorMessage || delta.ruleUpdate || '';
 
+    // Gate 2 first for universal policy rules without specific SKU
+    if (!_isDeltaApplicableToTarget(delta, targetChassis)) return;
+
+    if (!affectedSku && delta.ruleType === 'COMPATIBILITY_AND_FULFILLMENT_BOUNDARY') {
+      recordAudit('LEARNED_DELTA', `Universal Fulfillment Policy: ${delta.deltaId || 'POLICY'}`, 'INFO', msg);
+      return;
+    }
+
     // Gate 1: SKU validity & Blacklist token check
     if (!_isValidLearnedDeltaSku(affectedSku, requiredSku)) return;
-
-    // Gate 2: Generation & Chassis Scoping Check (INV-48 Generation Firewall)
-    if (!_isDeltaApplicableToTarget(delta, targetChassis)) return;
 
     const hasAffected = fullBomMap.has(affectedSku) || fullBomList.some(it => (it.description || '').includes(affectedSku));
     if (!hasAffected) return;
@@ -398,30 +496,43 @@ function _evaluateLearnedDeltas(fullBomMap, fullBomList, learnedDeltas, targetCh
   });
 }
 
+function _isMutualExclusionTopicMatch(conflictType, delta, msgLower, dMsgLower) {
+  if (conflictType !== 'MUTUAL_EXCLUSION') return false;
+  if (delta.ruleType !== 'MUTUAL_EXCLUSION' && delta.errorType !== 'MUTUAL_EXCLUSION') return false;
+  const topics = ['mixing', 'memory', 'power'];
+  return topics.some(t => msgLower.includes(t)) && topics.some(t => dMsgLower.includes(t));
+}
+
+function _doesDeltaMatchConflict(conflict, delta, msgLower) {
+  const dSku = String(delta.affectedSku || '').toLowerCase();
+  const dReq = String(delta.requiredDependencySku || '').toLowerCase();
+  const dMsg = String(delta.rawMessage || delta.ruleUpdate || '').toLowerCase();
+  if (dSku && msgLower.includes(dSku)) return true;
+  if (dReq && msgLower.includes(dReq)) return true;
+  return _isMutualExclusionTopicMatch(conflict.type, delta, msgLower, dMsg);
+}
+
+function _buildDiagnosticHintFromDelta(matchingDelta) {
+  const deltaId = matchingDelta.deltaId || 'HISTORICAL_LESSON';
+  const rule = matchingDelta.ruleUpdate || matchingDelta.rawMessage;
+  const rationale = matchingDelta.humanReasoning || null;
+  return {
+    deltaId,
+    rule,
+    rationale,
+    provenance: matchingDelta.provenance || 'CLIC_VERIFIED_HISTORICAL_RECORD',
+    referenceNotice: `💡 Diagnostic Hint [${deltaId}]: Past learning: ${rule}${rationale ? ` (${rationale})` : ''}`
+  };
+}
+
 function _enrichConflictsWithDiagnosticHints(conflicts, learnedDeltas) {
   if (!Array.isArray(conflicts) || !Array.isArray(learnedDeltas)) return;
   for (const c of conflicts) {
     if (c.diagnosticHint) continue;
-    const msg = String(c.message || '').toLowerCase();
-    const matchingDelta = learnedDeltas.find(d => {
-      const dSku = (d.affectedSku || '').toLowerCase();
-      const dReq = (d.requiredDependencySku || '').toLowerCase();
-      const dMsg = (d.rawMessage || d.ruleUpdate || '').toLowerCase();
-      if (dSku && msg.includes(dSku)) return true;
-      if (dReq && msg.includes(dReq)) return true;
-      if (c.type === 'MUTUAL_EXCLUSION' && (d.ruleType === 'MUTUAL_EXCLUSION' || d.errorType === 'MUTUAL_EXCLUSION') && (msg.includes('mixing') || msg.includes('memory') || msg.includes('power'))) {
-        return dMsg.includes('mixing') || dMsg.includes('memory') || dMsg.includes('power');
-      }
-      return false;
-    });
+    const msgLower = String(c.message || '').toLowerCase();
+    const matchingDelta = learnedDeltas.find(d => _doesDeltaMatchConflict(c, d, msgLower));
     if (matchingDelta) {
-      c.diagnosticHint = {
-        deltaId: matchingDelta.deltaId || 'HISTORICAL_LESSON',
-        rule: matchingDelta.ruleUpdate || matchingDelta.rawMessage,
-        rationale: matchingDelta.humanReasoning || null,
-        provenance: matchingDelta.provenance || 'CLIC_VERIFIED_HISTORICAL_RECORD',
-        referenceNotice: `💡 Diagnostic Hint [${matchingDelta.deltaId || 'HISTORICAL_LESSON'}]: Past learning: ${matchingDelta.ruleUpdate || matchingDelta.rawMessage}${matchingDelta.humanReasoning ? ` (${matchingDelta.humanReasoning})` : ''}`
-      };
+      c.diagnosticHint = _buildDiagnosticHintFromDelta(matchingDelta);
     }
   }
 }
@@ -565,10 +676,11 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
 
   const { fullBomMap, fullBomList, depsList } = _buildUnifiedBomMap(boqItems, missingDependencies);
 
-  // 1. LEARNED KNOWLEDGE DELTAS VALIDATION
+  // 1. VENDOR LEVEL (BTO vs CTO Mode, Partner Restrictions) & LEARNED KNOWLEDGE DELTAS VALIDATION
   const learnedDeltas = loadLearnedKnowledgeDeltas(resolvedTargetDir);
   const targetChassis = (chassisVariantOverride || (resolvedTargetDir ? path.basename(resolvedTargetDir) : '')).toLowerCase();
   const learnedSubstitutions = [];
+  _evaluateVendorBtoCtoRules(fullBomList, chassisInfo, learnedDeltas, recordAudit, conflicts, learnedSubstitutions);
   _evaluateLearnedDeltas(fullBomMap, fullBomList, learnedDeltas, targetChassis, recordAudit, conflicts, learnedSubstitutions);
 
   // 2. CHASSIS LEVEL VALIDATION (Form Factor Gates: SFF vs LFF vs EDSFF)

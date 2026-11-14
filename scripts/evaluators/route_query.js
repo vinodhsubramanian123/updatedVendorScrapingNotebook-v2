@@ -16,7 +16,7 @@ const { observeRouterEntry, observeActualInvocation, resolveEntryTraceId } = req
 const path = require('path');
 const { queryLocalKnowledgeBase } = require('../lib/rag/local_rag_search.js');
 const { evaluateBOQMultiAspect } = require('../lib/boq/boq_evaluator.js');
-const { cleanBaseSKU, isValidHpeSKU } = require('../lib/catalog/sku.js');
+const { cleanBaseSKU, isValidHpeSKU, isSmartChoiceOrBtoSku, classifyCommercialFulfillmentMode } = require('../lib/catalog/sku.js');
 const { resolveRequirementIntent } = require('../lib/boq/requirement_intent_resolver.js');
 const { verifyVendorBOM, auditSingleVendorBOM } = require('../lib/boq/vendor_bom_verifier.js');
 const { getChassisMap, listAllCatalogs } = require('../lib/catalog/catalog_discovery.js');
@@ -716,6 +716,8 @@ function _buildFreeformFeasibilityCheck(queryText, chassisInfo, answerText) {
   }
   const verifiedSkus = skuMatches.filter(s => catalogSkus.has(s));
   const absentSkus = skuMatches.filter(s => !catalogSkus.has(s));
+  const smartChoiceBtoSkus = absentSkus.filter(s => isSmartChoiceOrBtoSku(s));
+  const commercialFulfillmentNotes = smartChoiceBtoSkus.map(s => classifyCommercialFulfillmentMode(s).guidance);
   let activeRulesCount = 0;
   if (chassisInfo.catalogDir) {
     try {
@@ -730,6 +732,8 @@ function _buildFreeformFeasibilityCheck(queryText, chassisInfo, answerText) {
     buildabilityRelevant: isBuildabilityQuery || skuMatches.length > 1,
     verifiedSkus,
     absentSkus,
+    smartChoiceBtoSkus,
+    commercialFulfillmentNotes,
     activeRulesCount,
     requiresFullBoqEvaluation: isBuildabilityQuery && skuMatches.length >= 2
   };
@@ -1017,6 +1021,7 @@ function _handleCatalogIntelligence(queryText, context) {
   const freshness = liveSkuDetails && require('../lib/catalog/catalog_freshness_guard.js')
     .auditCatalogFreshness(chassisInfo.catalogData, { staleWarningDays: 3, criticalOutdatedDays: 30 });
   const platform = getChassisMap()[chassisInfo.chassisKey];
+  const commercialFulfillment = targetSku ? classifyCommercialFulfillmentMode(targetSku, liveSkuDetails?.description || '') : null;
 
   return {
     targetSku,
@@ -1026,6 +1031,7 @@ function _handleCatalogIntelligence(queryText, context) {
       chassisInfo: { gen: platform?.gen, formFactor: platform?.formFactor }
     }),
     pricingTrail: skuHistory,
+    commercialFulfillment,
     liveDetails: liveSkuDetails ? {
       description: liveSkuDetails.description,
       category: liveSkuDetails.category,
@@ -1043,7 +1049,9 @@ function _handleCatalogIntelligence(queryText, context) {
       source: 'OCA_CATALOG_SNAPSHOT'
     } : null,
     message: targetSku
-      ? `Catalog Intelligence retrieved for SKU ${targetSku}${liveSkuDetails ? ` (Status: ${liveSkuDetails.lifecycleStatus || 'Active'})` : ''}.`
+      ? (commercialFulfillment?.isSmartChoiceBto && !liveSkuDetails
+        ? `Catalog Intelligence for ${targetSku}: ${commercialFulfillment.guidance}`
+        : `Catalog Intelligence retrieved for SKU ${targetSku}${liveSkuDetails ? ` (Status: ${liveSkuDetails.lifecycleStatus || 'Active'})` : ''}.`)
       : 'Catalog Intelligence retrieved across tracked portfolio.'
   };
 }
@@ -1357,13 +1365,17 @@ function _normalizeUncatalogedSkus(skus = []) {
   return skus.map(entry => {
     const skuCode = typeof entry === 'string' ? entry : (entry?.sku || '');
     const valid = isValidHpeSKU(skuCode);
+    const fulfillment = valid ? classifyCommercialFulfillmentMode(skuCode) : null;
     return {
       ...(typeof entry === 'object' ? entry : {}),
       sku: skuCode,
       isValidFormat: valid,
-      note: valid
-        ? 'Valid HPE SKU format; uncataloged in current scraped snapshot (check latest QuickSpecs or regional catalog).'
-        : 'Unrecognized SKU format; potential typo or non-HPE part number.'
+      isSmartChoiceBto: Boolean(fulfillment?.isSmartChoiceBto),
+      note: fulfillment?.isSmartChoiceBto
+        ? fulfillment.guidance
+        : (valid
+          ? 'Valid HPE SKU format; uncataloged in current scraped snapshot (check latest QuickSpecs or regional catalog).'
+          : 'Unrecognized SKU format; potential typo or non-HPE part number.')
     };
   });
 }

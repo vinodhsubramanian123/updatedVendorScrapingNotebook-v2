@@ -19,7 +19,7 @@
  */
 
 const fs = require('fs');
-const { isValidHpeSKU, cleanBaseSKU, buildCatalogSkuIndex } = require('../catalog/sku.js');
+const { isValidHpeSKU, cleanBaseSKU, isSmartChoiceOrBtoSku, classifyCommercialFulfillmentMode, buildCatalogSkuIndex } = require('../catalog/sku.js');
 const { candidateReviewCurrent } = require('./solution_evidence.js');
 const { analyzeDeliveryPacing } = require('./delivery_pacing_analyzer.js');
 const { getRegisteredAspectsForDomain } = require('../aspects/aspect_registry.js');
@@ -645,10 +645,14 @@ function _checkUnmatchedSkus(output, context = {}) {
       if (!u) return 'UNKNOWN_SKU';
       if (typeof u === 'string') return u;
       return u.rawSku || u.sku || u.rawLine || JSON.stringify(u);
-    }).join(', ');
+    });
+    const smartChoiceNotes = skuNames
+      .filter(s => isSmartChoiceOrBtoSku(s))
+      .map(s => classifyCommercialFulfillmentMode(s).guidance);
+    const smartChoiceSuffix = smartChoiceNotes.length > 0 ? ` ${smartChoiceNotes.join(' ')}` : '';
     return makeCheck('B16', 'Zero Unmatched Customer SKUs (FP-1)', 'BLOCK', 'FAILED',
-      `Unmatched customer SKU(s) failed parsing/catalog validation: ${skuNames}. Delivery blocked per INV-105/FP-1.`,
-      { unmatchedCount: unmatched.length, unmatchedSkus: unmatched });
+      `Unmatched customer SKU(s) failed parsing/catalog validation: ${skuNames.join(', ')}. Delivery blocked per INV-105/FP-1.${smartChoiceSuffix}`,
+      { unmatchedCount: unmatched.length, unmatchedSkus: unmatched, smartChoiceBtoDetected: smartChoiceNotes.length > 0 });
   }
 
   const hasIntakeEvidence = Array.isArray(output?.items) || Array.isArray(output?.rawItems) ||
