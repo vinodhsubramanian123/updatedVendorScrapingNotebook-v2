@@ -301,6 +301,7 @@ function _autoUploadQuickSpecsPdf(chassisName, notebookId, localPdfPath, product
     const envPath = process.env.PATH || '';
     const homeBin = path.join(os.homedir(), '.local', 'bin');
     const extendedPath = [homeBin, envPath].filter(Boolean).join(path.delimiter);
+    const { nlmEnvironment } = require('../notebook/nlm_transport.js');
 
     const stdout = execFileSync('nlm', [
       'source', 'add', notebookId,
@@ -310,7 +311,7 @@ function _autoUploadQuickSpecsPdf(chassisName, notebookId, localPdfPath, product
     ], {
       encoding: 'utf-8',
       timeout: 120000,
-      env: { ...process.env, PATH: extendedPath }
+      env: { ...nlmEnvironment(extendedPath, false), PYTHONIOENCODING: 'utf-8' }
     });
 
     return {

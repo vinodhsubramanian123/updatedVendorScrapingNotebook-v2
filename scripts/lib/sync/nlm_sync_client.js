@@ -533,17 +533,16 @@ function _resolveOrAddDriveSource(effectiveNotebookId, sheetId, chassisName, sou
 }
 
 function _verifyCanonicalDriveFreshnessAndCanary(effectiveNotebookId, sourceId, chassisName, contentFingerprints, cfgEntry, extendedPath, execFileSync) {
-  const staleOutput = execFileSync('nlm', ['source', 'stale', effectiveNotebookId, '--json'], {
+  const staleOutput = execNlmRead(execFileSync, ['source', 'stale', effectiveNotebookId, '--json'], {
     encoding: 'utf-8',
-    timeout: 600000,
-    env: require('../notebook/nlm_transport.js').nlmEnvironment(extendedPath)
-  });
+    timeout: 600000
+  }, extendedPath);
   const quarantined = cfgEntry?.quarantinedSourceIds || [];
   if (!isTargetDriveSourceFresh(staleOutput, sourceId, quarantined)) {
     throw new Error(`NotebookLM reports canonical Drive source (${sourceId}) is still stale after synchronization: ${String(staleOutput).trim()}`);
   }
 
-  const driveCanaryOutput = execFileSync('nlm', [
+  const driveCanaryOutput = execNlmRead(execFileSync, [
     'notebook', 'query', effectiveNotebookId,
     `Drive source canary: identify ${chassisName} and summarize one certified catalog change or verified rule.`,
     '--source-ids', sourceId,
@@ -552,9 +551,8 @@ function _verifyCanonicalDriveFreshnessAndCanary(effectiveNotebookId, sourceId, 
     '--json'
   ], {
     encoding: 'utf-8',
-    timeout: 600000,
-    env: require('../notebook/nlm_transport.js').nlmEnvironment(extendedPath)
-  });
+    timeout: 600000
+  }, extendedPath);
   const driveCanary = JSON.parse(driveCanaryOutput);
   if (!isGroundedCanary(driveCanary, sourceId, chassisName)) {
     throw new Error('restricted Drive-source canary did not return a grounded answer');
@@ -914,18 +912,30 @@ function _recordFailedSyncAttempt(configPath, chassisName, cliErr, payloadPath =
   }
 }
 
-function _syncPostflightVerificationReceipt(payloadDir, newSourceId) {
+function _applyPostflightSyncDetails(postflight, newSourceId, details, verifiedAt) {
+  postflight.cloudSyncState = 'CLOUD_VERIFIED';
+  if (details.notebookId) postflight.notebookId = details.notebookId;
+  if (newSourceId) postflight.verifiedSourceId = newSourceId;
+  if (details.verifiedSourceName) postflight.verifiedSourceName = details.verifiedSourceName;
+  if (details.payloadSha256) postflight.payloadSha256 = details.payloadSha256;
+  if (details.readbackVerified !== undefined) postflight.readbackVerified = Boolean(details.readbackVerified);
+  if (details.canaryVerified !== undefined) postflight.canaryVerified = details.canaryVerified;
+  postflight.cloudVerifiedAt = verifiedAt;
+}
+
+function _syncPostflightVerificationReceipt(payloadDir, newSourceId, details = {}) {
   if (!payloadDir) return;
   const receiptPath = path.join(payloadDir, 'scraping_verification_receipt.json');
   if (!fs.existsSync(receiptPath)) return;
   try {
     const receipt = JSON.parse(fs.readFileSync(receiptPath, 'utf-8'));
-    if (receipt && typeof receipt === 'object' && receipt.postflight && typeof receipt.postflight === 'object') {
-      receipt.postflight.cloudSyncState = 'CLOUD_VERIFIED';
-      if (newSourceId) receipt.postflight.verifiedSourceId = newSourceId;
-      receipt.postflight.cloudVerifiedAt = new Date().toISOString();
+    if (receipt?.postflight && typeof receipt.postflight === 'object') {
+      const verifiedAt = new Date().toISOString();
+      _applyPostflightSyncDetails(receipt.postflight, newSourceId, details, verifiedAt);
       if (receipt.postflight.qualityAuditPassed && receipt.postflight.diffSummaryPresent) {
         receipt.postflight.pass = true;
+        receipt.postflight.status = 'VERIFIED';
+        receipt.verifiedAt = verifiedAt;
         receipt.overallPass = Boolean(receipt.preflight?.pass !== false);
       }
       safeWriteJsonAtomic(receiptPath, receipt);
@@ -933,9 +943,23 @@ function _syncPostflightVerificationReceipt(payloadDir, newSourceId) {
   } catch {}
 }
 
+function _computeRawFileSha256(filePath) {
+  if (!filePath || !fs.existsSync(filePath)) return null;
+  try {
+    return require('crypto').createHash('sha256').update(fs.readFileSync(filePath)).digest('hex');
+  } catch {
+    return null;
+  }
+}
+
 function _commitCandidateActivation({ CONFIG_NOTEBOOKS, chassisName, effectiveNotebookId, result, totalRulesCount, driveSourceVerified, payloadPath }) {
   let activationCommitted = false;
-  let updatedResult = { ...result };
+  const payloadSha256 = _computeRawFileSha256(payloadPath);
+  let updatedResult = {
+    ...result,
+    notebookId: result?.notebookId || effectiveNotebookId,
+    ...(payloadSha256 ? { payloadSha256 } : {})
+  };
 
   try {
     const payloadDir = path.dirname(payloadPath);
@@ -988,7 +1012,13 @@ function _commitCandidateActivation({ CONFIG_NOTEBOOKS, chassisName, effectiveNo
       };
       safeWriteJsonAtomic(CONFIG_NOTEBOOKS, cfg);
     });
-    _syncPostflightVerificationReceipt(payloadDir, result.newSourceId);
+    _syncPostflightVerificationReceipt(payloadDir, result.newSourceId, {
+      notebookId: effectiveNotebookId,
+      verifiedSourceName: result.newSourceName,
+      payloadSha256,
+      readbackVerified: result.readbackVerified,
+      canaryVerified: result.canaryVerified
+    });
     activationCommitted = true;
   } catch (metadataErr) {
     updatedResult = {
@@ -1206,8 +1236,11 @@ function syncToNotebookLMWithinLease(notebookId, payloadPath, chassisName = 'Unk
       success: true,
       cloudVerified: true,
       mode: 'CLI',
+      notebookId: effectiveNotebookId,
       newSourceId,
       newSourceName: useCanonicalDrive ? `${chassisName} Canonical Knowledge` : canonicalSourceName,
+      readbackVerified: true,
+      canaryVerified: true,
       driveSyncStatus,
       consolidationVerified: remainingSourceIds.length === 0,
       retiredSourceIds: [],

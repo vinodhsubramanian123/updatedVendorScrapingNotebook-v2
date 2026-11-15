@@ -45,7 +45,7 @@ function cleanupOrphanedStaging(tempDir, logger) {
   }
 }
 
-function runStagingPostFlightAudit(outputDir, liveOutputDir, catalogXlsx, catalogJson, meta, stepTelemetry) {
+function runStagingPostFlightAudit(outputDir, liveOutputDir, catalogXlsx, catalogJson, meta, stepTelemetry, options = {}) {
   console.log('\n--- STEP 8: Staging Post-Flight Quality Audit ---');
   emitProgress(8, 10, 'Staging Tally Audit & Quality Certification', 'in_progress', 'Running 7-check post-flight audit suite', {
     stage: 'STAGING_AUDIT', percent: 90, category: meta.cleanName
@@ -73,6 +73,10 @@ function runStagingPostFlightAudit(outputDir, liveOutputDir, catalogXlsx, catalo
     });
 
     const captureReceipt = require('../lib/catalog/catalog_capture_receipt.js').createCaptureReceipt(outputDir, liveOutputDir, meta.cleanName);
+    if (captureReceipt) {
+      if (!captureReceipt.vendor && options.vendor) captureReceipt.vendor = options.vendor;
+      if (!captureReceipt.portalUrl && options.portalUrl) captureReceipt.portalUrl = options.portalUrl;
+    }
 
     const { verifyScrapingStep, AtomicStepAnomalyError } = require('../lib/scraper/scraping_verifiability.js');
     const isTallyVerified = skuCount > 0 && entriesCount > 0 && fs.existsSync(catalogXlsx);
@@ -157,7 +161,8 @@ function resolveFinalConditionalSkusCount(conditionalSkusCount, liveOutputDir) {
 
 function reportPipelineCompletion({
   nlmSyncPending, durationSec, treeInfo, meta, liveOutputDir, liveCatalogJson,
-  liveCatalogXlsx, actualPdfPath, totalSkuCount, hwSkuCount, serviceSkuCount, finalConditionalSkusCount
+  liveCatalogXlsx, actualPdfPath, totalSkuCount, hwSkuCount, serviceSkuCount, finalConditionalSkusCount,
+  vendor = 'HPE', portalUrl = null
 }) {
   const pipelineStatus = nlmSyncPending ? 'PARTIAL_SUCCESS' : 'SUCCESS';
   const completionLabel = nlmSyncPending
@@ -170,6 +175,8 @@ function reportPipelineCompletion({
 
   if (JSON_MODE) {
     emitResult(pipelineStatus, {
+      vendor:       vendor || 'HPE',
+      portalUrl:    portalUrl || null,
       solutionName: treeInfo.solutionName || 'OCA Solution',
       family:       meta.family,
       gen:          meta.gen,
@@ -216,9 +223,11 @@ async function auditAndPromoteStaging({
   pdfDestPath,
   pipelineStart,
   stepTelemetry = {},
-  conditionalSkusCount = 0
+  conditionalSkusCount = 0,
+  vendor = 'HPE',
+  portalUrl = null
 }) {
-  const captureReceipt = runStagingPostFlightAudit(outputDir, liveOutputDir, catalogXlsx, catalogJson, meta, stepTelemetry);
+  const captureReceipt = runStagingPostFlightAudit(outputDir, liveOutputDir, catalogXlsx, catalogJson, meta, stepTelemetry, { vendor, portalUrl });
 
   // STEP 9: Promote Staging to Live Workspace & Cloud NotebookLM Grounding
   console.log('\n--- STEP 9: Promoting Staging to Live Workspace & Cloud NotebookLM Grounding ---');
@@ -327,23 +336,26 @@ async function auditAndPromoteStaging({
     totalSkuCount,
     conditionalSkusCount: finalConditionalSkusCount,
     postFlowSyncResult,
-    preflightReport: stepTelemetry[0] || null
+    preflightReport: stepTelemetry[0] || null,
+    vendor: vendor || 'HPE',
+    portalUrl: portalUrl || null
   });
 
   reportPipelineCompletion({
     nlmSyncPending, durationSec, treeInfo, meta, liveOutputDir, liveCatalogJson,
-    liveCatalogXlsx, actualPdfPath, totalSkuCount, hwSkuCount, serviceSkuCount, finalConditionalSkusCount
+    liveCatalogXlsx, actualPdfPath, totalSkuCount, hwSkuCount, serviceSkuCount, finalConditionalSkusCount,
+    vendor, portalUrl
   });
 }
 
-function resolveExpectedProductIdentity(targetChassisQuery, notebookConfig) {
+function resolveExpectedProductIdentity(targetChassisQuery, notebookConfig, vendor = 'HPE') {
   let expectedIdentity = resolveProductIdentity(targetChassisQuery, notebookConfig);
   if (!expectedIdentity) {
     const { inferPillar } = require('../lib/catalog/product_scope.js');
     const derived = parseProductMeta(targetChassisQuery);
     if (derived && derived.family && derived.gen) {
       expectedIdentity = {
-        vendor: 'HPE',
+        vendor: vendor || 'HPE',
         pillar: inferPillar(derived.family, derived.cleanName),
         family: derived.family,
         generation: derived.gen,
@@ -638,15 +650,34 @@ async function navigateProductNode(ws, targetHint, options = {}) {
   });
 }
 
-function _parseCliArgs() {
-  const chassisArgIdx = process.argv.indexOf('--chassis');
-  const queryArgIdx = process.argv.indexOf('--query');
-  const targetChassisQuery = (chassisArgIdx !== -1 && process.argv[chassisArgIdx + 1])
-    ? process.argv[chassisArgIdx + 1].replace(/_/g, ' ')
-    : ((queryArgIdx !== -1 && process.argv[queryArgIdx + 1]) ? process.argv[queryArgIdx + 1] : '');
-  const isRecoverMode = process.argv.includes('--recover') || process.argv.includes('--fresh');
+function _readCliFlagValue(argv, flagName) {
+  const args = Array.isArray(argv) ? argv : [];
+  const prefix = `${flagName}=`;
+  for (let i = 0; i < args.length; i += 1) {
+    const token = String(args[i] || '');
+    if (token.startsWith(prefix)) {
+      return token.slice(prefix.length).trim() || null;
+    }
+    if (token === flagName && i + 1 < args.length) {
+      const nextToken = String(args[i + 1] || '').trim();
+      return nextToken && !nextToken.startsWith('--') ? nextToken : null;
+    }
+  }
+  return null;
+}
+
+function _parseCliArgs(argv = process.argv) {
+  const args = Array.isArray(argv) ? argv : [];
+  const rawChassis = _readCliFlagValue(args, '--chassis');
+  const rawQuery = _readCliFlagValue(args, '--query');
+  const targetChassisQuery = rawChassis ? rawChassis.replace(/_/g, ' ') : (rawQuery || '');
+  const isRecoverMode = args.includes('--recover') || args.includes('--fresh');
   const navQuery = targetChassisQuery || 'DL380 Gen12';
-  return { targetChassisQuery, isRecoverMode, navQuery };
+  const rawVendor = _readCliFlagValue(args, '--vendor');
+  const rawPortalUrl = _readCliFlagValue(args, '--portal-url');
+  const vendor = rawVendor || 'HPE';
+  const portalUrl = rawPortalUrl || null;
+  return { targetChassisQuery, isRecoverMode, navQuery, vendor, portalUrl };
 }
 
 async function initCdpAndSession({ navQuery, targetChassisQuery, isRecoverMode }) {
@@ -751,7 +782,7 @@ async function discoverSolutionTreeAndMenu(ws, targetHint) {
   return { treeInfo, alreadyAtMenu, step2Result };
 }
 
-function enforceProductIdentityGate(meta, targetChassisQuery) {
+function enforceProductIdentityGate(meta, targetChassisQuery, vendor = 'HPE') {
   if (targetChassisQuery && (!meta.gen || meta.gen === 'General') && meta.family === 'General') {
     const overrideMeta = parseProductMeta(targetChassisQuery);
     meta.family = overrideMeta.family || meta.family;
@@ -761,7 +792,7 @@ function enforceProductIdentityGate(meta, targetChassisQuery) {
 
   if (targetChassisQuery) {
     const notebookConfig = JSON.parse(fs.readFileSync(path.join(PROJECT_ROOT, 'scripts', 'config', 'notebooks.json'), 'utf8'));
-    const expectedIdentity = resolveExpectedProductIdentity(targetChassisQuery, notebookConfig);
+    const expectedIdentity = resolveExpectedProductIdentity(targetChassisQuery, notebookConfig, vendor);
     if (!expectedIdentity) {
       throw new Error(`Product identity gate: requested product "${targetChassisQuery}" is not registered.`);
     }
@@ -775,7 +806,7 @@ function enforceProductIdentityGate(meta, targetChassisQuery) {
   }
 }
 
-async function resolveActiveProductAndProfile(ws, targetChassisQuery, pageTarget, chassisDiscovery) {
+async function resolveActiveProductAndProfile(ws, targetChassisQuery, pageTarget, chassisDiscovery, vendor = 'HPE') {
   const headingRes = await sendCommand(ws, 'Runtime.evaluate', {
     expression: `(() => {
       const targetedSelectors = [
@@ -831,7 +862,7 @@ async function resolveActiveProductAndProfile(ws, targetChassisQuery, pageTarget
   const meta = ownedRegistration?.captureViaParent && pageHeading.endsWith(`[${ownedScope.baseSku}]`)
     ? { cleanName: ownedScope.productId, family: ownedRegistration.family, gen: ownedRegistration.gen || ownedRegistration.generation, pillar: ownedRegistration.pillar }
     : parseProductMeta(pageHeading, targetChassisQuery || pageTarget.title);
-  enforceProductIdentityGate(meta, targetChassisQuery);
+  enforceProductIdentityGate(meta, targetChassisQuery, vendor);
   const registered = require('../config/notebooks.json').notebooks[meta.cleanName];
   if ((registered?.requireExactOcaBase || registered?.captureViaParent) && !pageHeading.toUpperCase().includes(`[${registered.baseSku}]`)) {
     throw new Error(`Active OCA menu did not show the registered base ${registered.baseSku}.`);
@@ -992,7 +1023,7 @@ async function extractPageDomPayload(ws, meta, profile) {
   };
 }
 
-function resolveOrSynthesizeChassisDiscovery(initDiscovery, liveOutputDir, meta, profile, domPayload, pageHeading) {
+function resolveOrSynthesizeChassisDiscovery(initDiscovery, liveOutputDir, meta, profile, domPayload, pageHeading, vendor = 'HPE', portalUrl = null) {
   if (initDiscovery) return initDiscovery;
   let chassisDiscovery = null;
   const priorDiscoveryPath = path.join(liveOutputDir, 'raw_data', 'chassis_discovery.json');
@@ -1010,12 +1041,18 @@ function resolveOrSynthesizeChassisDiscovery(initDiscovery, liveOutputDir, meta,
   const baseSku = resolveBaseSkuForProduct(meta, chassisDiscovery, profile);
   const edtMatch = domPayload.fullText.match(/EDT[\s\n]*(\d+[\s\n]*-[\s\n]*\d+[\s\n]*days?)/i);
   const deliveryEstimate = edtMatch ? `EDT ${edtMatch[1].replace(/\s+/g, ' ')}` : (chassisDiscovery?.deliveryEstimate || '');
+  const resolvedVendor = vendor || 'HPE';
+  const sessionSource = resolvedVendor === 'HPE'
+    ? 'HPE OCA Configuration Session via authenticated CDP session'
+    : `${resolvedVendor} Portal Configuration Session via authenticated CDP session`;
 
   if (!chassisDiscovery || chassisDiscovery.selectedSku !== baseSku) {
     return {
       query: meta.cleanName,
+      vendor: resolvedVendor,
+      ...(portalUrl ? { portalUrl } : {}),
       selectedSku: baseSku,
-      source: 'HPE OCA Configuration Session via authenticated CDP session',
+      source: sessionSource,
       capturedAt: new Date().toISOString(),
       deliveryEstimate,
       candidates: [
@@ -1026,7 +1063,7 @@ function resolveOrSynthesizeChassisDiscovery(initDiscovery, liveOutputDir, meta,
           text: `${baseSku} - ${pageHeading}`,
           sku: baseSku,
           listPriceUsd: 0,
-          availability: 'Available in OCA product catalog',
+          availability: `Available in ${resolvedVendor} product catalog`,
           leadTime: deliveryEstimate,
           deliveryLabel: '',
           isBto: false,
@@ -1087,7 +1124,9 @@ async function setupStagingAndPersistRawData({
   qsLink,
   domPayload,
   chassisDiscovery: initDiscovery,
-  networkSniffer
+  networkSniffer,
+  vendor = 'HPE',
+  portalUrl = null
 }) {
   const BLOCKED_CHASSIS_NAMES = new Set([
     'External_OCA_Hewlett_Packard_Enterprise', 'General', '', 'outputs',
@@ -1098,7 +1137,7 @@ async function setupStagingAndPersistRawData({
   if (isInvalidName) {
     throw new Error(
       `Phantom chassis name rejected: "${meta.cleanName}" (parsed from: "${pageHeading}").\n` +
-      `Ensure you are on the correct Product Node Menu tab in OCA and the page heading contains a recognizable HPE product name.`
+      `Ensure you are on the correct Product Node Menu tab in ${vendor || 'HPE'} portal and the page heading contains a recognizable product name.`
     );
   }
 
@@ -1108,7 +1147,7 @@ async function setupStagingAndPersistRawData({
   const stagingDir = path.join(CATALOG_STAGING_ROOT, `staging_${meta.cleanName.replace(/[^a-zA-Z0-9_-]/g, '_')}_${Date.now()}`);
   const outputDir = stagingDir;
 
-  const chassisDiscovery = resolveOrSynthesizeChassisDiscovery(initDiscovery, liveOutputDir, meta, profile, domPayload, pageHeading);
+  const chassisDiscovery = resolveOrSynthesizeChassisDiscovery(initDiscovery, liveOutputDir, meta, profile, domPayload, pageHeading, vendor, portalUrl);
 
   console.log(`\n🛡️ Staging Isolation Active: Scraping & building inside temporary staging directory:`);
   console.log(`   ${stagingDir}`);
@@ -1125,8 +1164,11 @@ async function setupStagingAndPersistRawData({
 
   const resolvedBaseSku = chassisDiscovery?.selectedSku || resolveBaseSkuForProduct(meta, chassisDiscovery, profile);
   const { inferPillar } = require('../lib/catalog/product_scope.js');
+  const resolvedVendor = vendor || 'HPE';
   const rawData = {
     timestamp:  new Date().toISOString(),
+    vendor:     resolvedVendor,
+    portalUrl:  portalUrl || pageTarget?.url || null,
     pageTitle:  pageTarget.title,
     url:        pageTarget.url,
     nodeText:   pageHeading,
@@ -1271,14 +1313,17 @@ async function main() {
 
   cleanupOrphanedStaging(CATALOG_STAGING_ROOT, logger);
 
-  const { targetChassisQuery, isRecoverMode, navQuery } = _parseCliArgs();
+  const { targetChassisQuery, isRecoverMode, navQuery, vendor, portalUrl } = _parseCliArgs();
+  const resolvedVendor = vendor || 'HPE';
+  const resolvedPortalUrl = portalUrl || null;
   const skipCloudCheck = process.argv.includes('--skip-cloud-check') || process.argv.includes('--offline');
   const { runScrapingPreflightGate } = require('../lib/scraper/scraping_preflight_gate.js');
   const preflightReport = await runScrapingPreflightGate({
     targetChassisQuery,
     navQuery,
     skipCloudCheck,
-    vendor: 'HPE'
+    vendor: resolvedVendor,
+    portalUrl: resolvedPortalUrl
   });
 
   const { ensureChromeBrowserRunning } = require('../lib/scraper/browser_launcher.js');
@@ -1306,7 +1351,7 @@ async function main() {
     treeInfo = treeData.treeInfo;
     stepTelemetry[2] = treeData.step2Result;
 
-    const prodData = await resolveActiveProductAndProfile(ws, targetChassisQuery, pageTarget, chassisDiscovery);
+    const prodData = await resolveActiveProductAndProfile(ws, targetChassisQuery, pageTarget, chassisDiscovery, resolvedVendor);
     meta = prodData.meta;
     const profile = prodData.profile;
     stepTelemetry[3] = prodData.step3Result;
@@ -1328,7 +1373,9 @@ async function main() {
       qsLink: prodData.qsLink,
       domPayload,
       chassisDiscovery,
-      networkSniffer
+      networkSniffer,
+      vendor: resolvedVendor,
+      portalUrl: resolvedPortalUrl
     });
 
     outputDir = stagingData.outputDir;
@@ -1364,26 +1411,36 @@ async function main() {
     pdfDestPath,
     pipelineStart,
     stepTelemetry,
-    conditionalSkusCount: (conditionalSkus || []).length
+    conditionalSkusCount: (conditionalSkus || []).length,
+    vendor: resolvedVendor,
+    portalUrl: resolvedPortalUrl
   });
 }
 
-let releasePortalLease;
-Promise.resolve().then(() => {
-  releasePortalLease = require('../lib/system/workflow_lease.js').acquireWorkflowLease('hpe-oca-scrape');
-  return main();
-}).finally(() => releasePortalLease?.()).catch(err => {
-  // Emit SSE error event so UI receives immediate notification and diagnostics
-  try {
-    emitProgress(1, 10, 'Scrape Pipeline Aborted', 'error', err.message || String(err), {
-      stage: 'CDP_CONNECT', percent: 0
-    });
-  } catch (_) {}
+if (require.main === module) {
+  let releasePortalLease;
+  Promise.resolve().then(() => {
+    releasePortalLease = require('../lib/system/workflow_lease.js').acquireWorkflowLease('hpe-oca-scrape');
+    return main();
+  }).finally(() => releasePortalLease?.()).catch(err => {
+    // Emit SSE error event so UI receives immediate notification and diagnostics
+    try {
+      emitProgress(1, 10, 'Scrape Pipeline Aborted', 'error', err.message || String(err), {
+        stage: 'CDP_CONNECT', percent: 0
+      });
+    } catch (_) {}
 
-  if (JSON_MODE) {
-    emitResult('ERROR', {}, err.message || String(err));
-  } else {
-    console.error('\n❌ PIPELINE ERROR:', err.message || err);
-  }
-  process.exit(1);
-});
+    if (JSON_MODE) {
+      emitResult('ERROR', {}, err.message || String(err));
+    } else {
+      console.error('\n❌ PIPELINE ERROR:', err.message || err);
+    }
+    process.exit(1);
+  });
+}
+
+module.exports = {
+  _parseCliArgs,
+  resolveExpectedProductIdentity,
+  main
+};

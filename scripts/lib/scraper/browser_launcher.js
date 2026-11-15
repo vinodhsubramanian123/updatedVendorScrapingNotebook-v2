@@ -16,11 +16,13 @@ const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
 const PROFILE_DIR = path.join(PROJECT_ROOT, '.chrome_sso_profile');
 
 /**
- * Check if CDP port is responsive.
- * @param {number} port 
- * @returns {Promise<boolean>}
+ * Probe CDP port to distinguish an active CDP endpoint (HTTP 200),
+ * a non-CDP listener responder (e.g. HTTP 404 from background msedge.exe),
+ * or an unbound/closed port.
+ * @param {number} [port=9222]
+ * @returns {Promise<{ alive: boolean, occupiedByNonCdp: boolean, statusCode: number | null }>}
  */
-function isCdpAlive(port = 9222) {
+function probeCdpPort(port = 9222) {
   return new Promise((resolve) => {
     let settled = false;
     const done = (val) => {
@@ -31,21 +33,35 @@ function isCdpAlive(port = 9222) {
     };
     try {
       const req = http.get(`http://localhost:${port}/json/version`, (res) => {
-        done(res.statusCode === 200);
+        const statusCode = typeof res?.statusCode === 'number' ? res.statusCode : null;
+        if (typeof res?.resume === 'function') res.resume();
+        const alive = statusCode === 200;
+        const occupiedByNonCdp = statusCode !== null && statusCode !== 200;
+        done({ alive, occupiedByNonCdp, statusCode });
       });
       if (req && typeof req.on === 'function') {
-        req.on('error', () => done(false));
+        req.on('error', () => done({ alive: false, occupiedByNonCdp: false, statusCode: null }));
       }
       if (req && typeof req.setTimeout === 'function') {
         req.setTimeout(1000, () => {
           if (typeof req.destroy === 'function') req.destroy();
-          done(false);
+          done({ alive: false, occupiedByNonCdp: false, statusCode: null });
         });
       }
     } catch (_) {
-      done(false);
+      done({ alive: false, occupiedByNonCdp: false, statusCode: null });
     }
   });
+}
+
+/**
+ * Check if CDP port is responsive.
+ * @param {number} port 
+ * @returns {Promise<boolean>}
+ */
+async function isCdpAlive(port = 9222) {
+  const probe = await probeCdpPort(port);
+  return Boolean(probe.alive);
 }
 
 /**
@@ -114,16 +130,58 @@ function findChromeExecutable() {
 }
 
 
+function _buildPortConflictError(port, statusCode) {
+  return `CDP port ${port} is occupied by a non-CDP listener responder (HTTP ${statusCode}). Close conflicting processes (e.g. background msedge.exe) bound to port ${port} and retry.`;
+}
+
+function _spawnDetachedChromeProcess(chromeBin, chromeArgs, useHeadless) {
+  const proc = (process.platform === 'win32' && !useHeadless)
+    ? spawn('cmd.exe', ['/c', 'start', '""', chromeBin, ...chromeArgs], {
+        detached: true,
+        stdio: 'ignore',
+        windowsHide: false
+      })
+    : spawn(chromeBin, chromeArgs, {
+        detached: true,
+        stdio: 'ignore',
+        windowsHide: useHeadless
+      });
+  if (proc && typeof proc.unref === 'function') proc.unref();
+}
+
+async function _pollForCdpReadiness(port, timeoutMs = 25000, pollIntervalMs = 500) {
+  const startTime = Date.now();
+  let lastProbe = { alive: false, occupiedByNonCdp: false, statusCode: null };
+  while (Date.now() - startTime < timeoutMs) {
+    await new Promise(r => setTimeout(r, pollIntervalMs));
+    lastProbe = await probeCdpPort(port);
+    if (lastProbe.alive) return lastProbe;
+  }
+  return lastProbe;
+}
+
 /**
  * Ensure Chrome is running with remote debugging on specified port.
  * @param {number} port - Remote debugging port (default 9222)
  * @param {string} initialUrl - Initial URL to load (default Partner Portal)
- * @returns {Promise<{ ok: boolean, wasLaunched: boolean, port: number }>}
+ * @returns {Promise<{ ok: boolean, wasLaunched: boolean, port: number, occupiedByNonCdp?: boolean, statusCode?: number|null, error?: string }>}
  */
 async function ensureChromeBrowserRunning(port = 9222, initialUrl = 'https://partner.hpe.com/web/prp', options = {}) {
-  const alreadyRunning = await isCdpAlive(port);
-  if (alreadyRunning) {
-    return { ok: true, wasLaunched: false, port };
+  const initialProbe = await probeCdpPort(port);
+  if (initialProbe.alive) {
+    return { ok: true, wasLaunched: false, port, occupiedByNonCdp: false, statusCode: initialProbe.statusCode };
+  }
+  if (initialProbe.occupiedByNonCdp && !options.attemptLaunchOnOccupiedPort) {
+    const error = _buildPortConflictError(port, initialProbe.statusCode);
+    console.warn(`⚠️ ${error}`);
+    return {
+      ok: false,
+      wasLaunched: false,
+      port,
+      occupiedByNonCdp: true,
+      statusCode: initialProbe.statusCode,
+      error
+    };
   }
 
   const useHeadless = Boolean(options.headless || process.env.OCA_HEADLESS_MODE === '1' || process.argv.includes('--headless'));
@@ -145,37 +203,32 @@ async function ensureChromeBrowserRunning(port = 9222, initialUrl = 'https://par
   ];
 
   try {
-    let proc;
-    if (process.platform === 'win32' && !useHeadless) {
-      proc = spawn('cmd.exe', ['/c', 'start', '""', chromeBin, ...chromeArgs], {
-        detached: true,
-        stdio: 'ignore',
-        windowsHide: false
-      });
-    } else {
-      proc = spawn(chromeBin, chromeArgs, {
-        detached: true,
-        stdio: 'ignore',
-        windowsHide: useHeadless
-      });
-    }
-    proc.unref();
-
-    // Poll until port becomes active (up to 25 seconds)
-    const startTime = Date.now();
-    while (Date.now() - startTime < 25000) {
-      await new Promise(r => setTimeout(r, 500));
-      if (await isCdpAlive(port)) {
-        console.log(`✅ Chrome successfully launched and listening on CDP port ${port}.`);
-        return { ok: true, wasLaunched: true, port };
-      }
+    _spawnDetachedChromeProcess(chromeBin, chromeArgs, useHeadless);
+    const timeoutMs = Number.isFinite(options.timeoutMs) ? options.timeoutMs : 25000;
+    const pollIntervalMs = Number.isFinite(options.pollIntervalMs) ? options.pollIntervalMs : 500;
+    const finalProbe = await _pollForCdpReadiness(port, timeoutMs, pollIntervalMs);
+    if (finalProbe.alive) {
+      console.log(`✅ Chrome successfully launched and listening on CDP port ${port}.`);
+      return { ok: true, wasLaunched: true, port, occupiedByNonCdp: false, statusCode: finalProbe.statusCode };
     }
 
-    console.warn(`⚠️ Chrome launched but CDP port ${port} did not respond within 25s.`);
-    return { ok: false, wasLaunched: true, port };
+    const occupiedByNonCdp = Boolean(finalProbe.occupiedByNonCdp || initialProbe.occupiedByNonCdp);
+    const statusCode = finalProbe.statusCode ?? initialProbe.statusCode ?? null;
+    const error = occupiedByNonCdp
+      ? _buildPortConflictError(port, statusCode)
+      : `Chrome launched but CDP port ${port} did not respond within ${Math.round(timeoutMs / 1000)}s.`;
+    console.warn(`⚠️ ${error}`);
+    return { ok: false, wasLaunched: true, port, occupiedByNonCdp, statusCode, error };
   } catch (err) {
     console.error(`❌ Failed to launch Chrome: ${err.message}`);
-    return { ok: false, wasLaunched: false, port, error: err.message };
+    return {
+      ok: false,
+      wasLaunched: false,
+      port,
+      occupiedByNonCdp: Boolean(initialProbe.occupiedByNonCdp),
+      statusCode: initialProbe.statusCode,
+      error: err.message
+    };
   }
 }
 
@@ -221,6 +274,7 @@ async function launchPlaywrightChromium(chromium, options = {}) {
 }
 
 module.exports = {
+  probeCdpPort,
   isCdpAlive,
   findChromeExecutable,
   ensureChromeBrowserRunning,

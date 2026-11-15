@@ -25,10 +25,108 @@ function summarizeCatalog(dir, product) {
   }, hashes: Object.fromEntries(['Catalog.json', 'Services.json', 'Catalog_Rules.json', 'OCA_Catalog.xlsx']
     .map(suffix => [suffix, hash(fs.readFileSync(path.join(dir, `${product}_${suffix}`)))])) };
 }
+function _parseNumericPrice(value) {
+  if (value === null || value === undefined || value === '' || String(value).trim().toUpperCase() === 'N/A') return null;
+  const cleaned = Number(String(value).replace(/[$,\s]/g, ''));
+  return Number.isFinite(cleaned) ? cleaned : null;
+}
+
+function _isChangedSkuRow(row) {
+  if (!row || typeof row !== 'object') return false;
+  const status = String(row['Diff Status'] || row.diffStatus || '').trim().toUpperCase();
+  const attrDeltas = String(row['Attribute Deltas'] || row.attributeDeltas || '').trim();
+  const hasChangedStatus = Boolean(status && !['UNCHANGED', 'BASELINE'].includes(status));
+  const hasAttrDelta = Boolean(attrDeltas && attrDeltas !== 'None');
+  return hasChangedStatus || hasAttrDelta;
+}
+
+function _toSkuRowMap(source) {
+  const map = new Map();
+  if (!source) return map;
+  if (source instanceof Map) {
+    for (const [k, v] of source.entries()) {
+      const sku = String(k || v?.sku || v?.['Product #'] || '').trim();
+      if (sku) map.set(sku, v || {});
+    }
+    return map;
+  }
+  for (const row of currentRows(source)) {
+    const sku = String(row.sku || row['Product #'] || '').trim();
+    if (!sku) continue;
+    if (!map.has(sku) || (!_isChangedSkuRow(map.get(sku)) && _isChangedSkuRow(row))) {
+      map.set(sku, row);
+    }
+  }
+  return map;
+}
+
+function _formatComputedPriceDelta(prevNumeric, currNumeric) {
+  const delta = currNumeric - prevNumeric;
+  const sign = delta >= 0 ? '+' : '-';
+  return `${sign}$${Math.abs(delta).toFixed(2)}`;
+}
+
+function _pickFirstDefined(...values) {
+  for (const val of values) {
+    if (val !== undefined && val !== null) return val;
+  }
+  return null;
+}
+
+function _resolveModifiedEntry(sku, prevRow, nextRow) {
+  const rawStatus = String(nextRow['Diff Status'] || nextRow.diffStatus || '').trim().toUpperCase();
+  const rawAttrDeltas = _pickFirstDefined(nextRow['Attribute Deltas'], nextRow.attributeDeltas, 'None');
+  const attributeDeltas = String(rawAttrDeltas).trim() || 'None';
+  const currentPrice = _pickFirstDefined(nextRow['List Price (USD)'], nextRow.currentPrice, nextRow.listPrice);
+  const previousPrice = _pickFirstDefined(
+    nextRow['Previous List Price (USD)'],
+    nextRow['Previous Price (USD)'],
+    nextRow.previousPrice,
+    prevRow['List Price (USD)'],
+    prevRow.currentPrice,
+    prevRow.listPrice
+  );
+
+  const prevNumeric = _parseNumericPrice(_pickFirstDefined(prevRow['List Price (USD)'], prevRow.currentPrice, prevRow.listPrice, previousPrice));
+  const currNumeric = _parseNumericPrice(currentPrice);
+  const isPriceDiff = prevNumeric !== null && currNumeric !== null && Math.abs(currNumeric - prevNumeric) > 0.001;
+  const isStatusModified = Boolean(rawStatus && !['UNCHANGED', 'BASELINE', 'ADDED', 'REMOVED', 'DISCONTINUED'].includes(rawStatus));
+  const hasAttrDelta = attributeDeltas !== 'None';
+
+  if (!isPriceDiff && !isStatusModified && !hasAttrDelta) return null;
+
+  let diffStatus = 'MODIFIED';
+  if (isStatusModified) diffStatus = rawStatus;
+  else if (hasAttrDelta && isPriceDiff) diffStatus = 'PRICE_AND_ATTRIBUTE_CHANGED';
+  else if (isPriceDiff) diffStatus = 'PRICE_CHANGED';
+  else if (hasAttrDelta) diffStatus = 'ATTRIBUTE_CHANGED';
+
+  const explicitPriceChange = _pickFirstDefined(
+    nextRow['Price Change (USD)'],
+    nextRow['Price Delta (USD)'],
+    nextRow.priceChange,
+    nextRow.priceDelta
+  );
+  const priceChange = explicitPriceChange !== null
+    ? explicitPriceChange
+    : (isPriceDiff ? _formatComputedPriceDelta(prevNumeric, currNumeric) : null);
+
+  return { sku, diffStatus, previousPrice, currentPrice, priceChange, attributeDeltas };
+}
+
 function compareSkus(before, after) {
-  const previous = skuSet(before || {});
-  const current = skuSet(after);
-  return { added: [...current].filter(sku => !previous.has(sku)), removed: [...previous].filter(sku => !current.has(sku)) };
+  const prevMap = _toSkuRowMap(before);
+  const nextMap = _toSkuRowMap(after);
+  const added = [...nextMap.keys()].filter(sku => !prevMap.has(sku));
+  const removed = [...prevMap.keys()].filter(sku => !nextMap.has(sku));
+  const modified = [];
+  for (const [sku, nextRow] of nextMap.entries()) {
+    const prevRow = prevMap.get(sku);
+    if (!prevRow) continue;
+    const mod = _resolveModifiedEntry(sku, prevRow, nextRow);
+    if (mod) modified.push(mod);
+  }
+  return { added, removed, modified };
 }
 
 function _validateTestOnlySkipCoverage(options) {
@@ -152,11 +250,14 @@ function createCaptureReceipt(stagingDir, liveDir, product, options = {}) {
   _validateWorkbookSheetsAndSkus(workbook, next);
   const { previousFile, previousComplete, previous } = _loadPreviousCatalogBaseline(liveDir, product);
   const { selectedBase, ownerConfig, solutionDomain, observedSelectors, missingProvenance } = _extractCaptureProvenance(raw, options);
+  const hwSkuDelta = compareSkus(previous?.catalog, next.catalog);
+  const svcSkuDelta = compareSkus(previous?.services, next.services);
+  const modifiedSkus = [...hwSkuDelta.modified, ...svcSkuDelta.modified];
 
   const receipt = {
     schemaVersion: 1,
     product,
-    vendor: 'HPE',
+    vendor: raw.vendor || next.catalog?.metadata?.vendor || 'HPE',
     capturedAt: capture,
     auditedAt: new Date().toISOString(),
     incompleteLegacyBaselinePreserved: fs.existsSync(previousFile) && !previousComplete,
@@ -191,8 +292,10 @@ function createCaptureReceipt(stagingDir, liveDir, product, options = {}) {
     rawSha256: hash(fs.readFileSync(path.join(stagingDir, 'raw_data', 'oca_raw_data_full.json'))),
     sheets: workbook.SheetNames.map(name => ({ name, rows: require('xlsx-js-style').utils.sheet_to_json(workbook.Sheets[name], { header: 1 }).length })),
     deltas: {
-      hardware: compareSkus(previous?.catalog, next.catalog),
-      services: compareSkus(previous?.services, next.services),
+      hardware: hwSkuDelta,
+      services: svcSkuDelta,
+      modifiedCount: modifiedSkus.length,
+      modifiedSkus,
       rulesChanged: previous ? JSON.stringify(previous.rules.rules) !== JSON.stringify(next.rules.rules) : true,
       hardwareChanges: next.catalog.metadata.diffSummary || null,
       serviceChanges: next.services.metadata?.diffSummary || null
@@ -202,11 +305,29 @@ function createCaptureReceipt(stagingDir, liveDir, product, options = {}) {
   safeWriteJsonAtomic(path.join(stagingDir, 'capture_receipt.json'), receipt);
   return receipt;
 }
+function _applyCloudVerificationToPostflight(sv, sync, promotedAt) {
+  if (!sv?.postflight) return false;
+  sv.postflight.cloudSyncState = 'CLOUD_VERIFIED';
+  if (sync?.notebookId) sv.postflight.notebookId = sync.notebookId;
+  const sourceId = sync?.verifiedSourceId || sync?.uploadResult?.newSourceId;
+  if (sourceId) sv.postflight.verifiedSourceId = sourceId;
+  const sourceName = sync?.verifiedSourceName || sync?.uploadResult?.newSourceName;
+  if (sourceName) sv.postflight.verifiedSourceName = sourceName;
+  if (sync?.payloadSha256) sv.postflight.payloadSha256 = sync.payloadSha256;
+  if (sync?.readbackVerified !== undefined) sv.postflight.readbackVerified = Boolean(sync.readbackVerified);
+  if (sync?.canaryVerified !== undefined) sv.postflight.canaryVerified = sync.canaryVerified;
+  sv.postflight.cloudVerifiedAt = promotedAt;
+  sv.postflight.pass = sv.postflight.diffSummaryError == null && sv.postflight.diffSummaryPresent !== false;
+  sv.postflight.status = sv.postflight.pass ? 'PASSED' : 'ACTION_REQUIRED';
+  sv.verifiedAt = promotedAt;
+  return true;
+}
+
 function finalizeCaptureReceipt(dir, receipt, sync) {
   if (!['STAGING_AUDITED', 'DIAGNOSTIC_CAPTURE'].includes(receipt?.status)) throw new Error('Capture finalization requires a classified receipt.');
   const completed = { ...receipt, status: receipt.status === 'DIAGNOSTIC_CAPTURE' ? 'DIAGNOSTIC_LOCAL_PROMOTED' : 'LOCAL_PROMOTED', promotedAt: new Date().toISOString(),
     cloud: { status: sync?.syncStatus || 'CLOUD_FAILED', success: sync?.success === true,
-      sourceId: sync?.uploadResult?.newSourceId || null, consolidationVerified: sync?.uploadResult?.consolidationVerified === true,
+      sourceId: sync?.uploadResult?.newSourceId || sync?.verifiedSourceId || null, consolidationVerified: sync?.uploadResult?.consolidationVerified === true,
       error: sync?.error || sync?.uploadResult?.message || null } };
   safeWriteJsonAtomic(path.join(dir, 'capture_receipt.json'), completed);
   const history = path.join(dir, 'history', 'capture_receipts');
@@ -216,11 +337,7 @@ function finalizeCaptureReceipt(dir, receipt, sync) {
   if (fs.existsSync(svPath) && sync?.syncStatus === 'CLOUD_VERIFIED') {
     try {
       const sv = JSON.parse(fs.readFileSync(svPath, 'utf8'));
-      if (sv?.postflight) {
-        sv.postflight.cloudSyncState = 'CLOUD_VERIFIED';
-        sv.postflight.pass = sv.postflight.diffSummaryError == null && sv.postflight.diffSummaryPresent !== false;
-        sv.postflight.status = sv.postflight.pass ? 'PASSED' : 'ACTION_REQUIRED';
-        sv.verifiedAt = completed.promotedAt;
+      if (_applyCloudVerificationToPostflight(sv, sync, completed.promotedAt)) {
         safeWriteJsonAtomic(svPath, sv);
       }
     } catch (_) { /* preserve receipt if unreadable */ }
@@ -266,4 +383,4 @@ function reconcileRebuiltCaptureReceipt(dir, product) {
   }
 }
 
-module.exports = { createCaptureReceipt, finalizeCaptureReceipt, reconcileRebuiltCaptureReceipt, currentRows, skuSet };
+module.exports = { createCaptureReceipt, finalizeCaptureReceipt, reconcileRebuiltCaptureReceipt, compareSkus, currentRows, skuSet };

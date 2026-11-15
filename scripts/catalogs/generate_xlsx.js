@@ -133,6 +133,7 @@ const SKU_COL_WIDTHS = [
   { wch: 22 }, // Previous List Price (USD)
   { wch: 18 }, // Price Change (USD)
   { wch: 16 }, // Price Change (%)
+  { wch: 42 }, // Attribute Deltas
   { wch: 55 }, // Price History Trail
 ];
 
@@ -170,7 +171,7 @@ function applyDiffStyles(ws, data) {
       };
     } else if (status === 'ATTRIBUTE_CHANGED') {
       style = {
-        font: { name: 'Calibri', sz: 11, color: { rgb: 'FF1A73E8' } },
+        font: { name: 'Calibri', sz: 11, color: { rgb: 'FF1A73E8' }, bold: true },
         fill: { fgColor: { rgb: 'FFE8F0FE' } }   // Blue
       };
     } else if (status === 'PRICE_AND_ATTRIBUTE_CHANGED') {
@@ -184,9 +185,33 @@ function applyDiffStyles(ws, data) {
       for (let c = range.s.c; c <= range.e.c; c++) {
         const cellRef = XLSX.utils.encode_cell({ r, c });
         if (ws[cellRef]) {
-          ws[cellRef].s = style;
+          ws[cellRef].s = { ...style };
         }
       }
+    }
+  }
+}
+
+function _applyColumnWrap(ws, targetHeaders = ['Attribute Deltas']) {
+  if (!ws || !ws['!ref']) return;
+  const range = XLSX.utils.decode_range(ws['!ref']);
+  const wrapCols = [];
+  for (let c = range.s.c; c <= range.e.c; c++) {
+    const headerCell = ws[XLSX.utils.encode_cell({ r: 0, c })];
+    if (headerCell && targetHeaders.includes(String(headerCell.v || ''))) {
+      wrapCols.push(c);
+    }
+  }
+  if (wrapCols.length === 0) return;
+
+  for (let r = 1; r <= range.e.r; r++) {
+    for (const c of wrapCols) {
+      const cellRef = XLSX.utils.encode_cell({ r, c });
+      const cell = ws[cellRef];
+      if (!cell) continue;
+      const baseStyle = cell.s ? { ...cell.s } : { font: { name: 'Calibri', sz: 11 } };
+      baseStyle.alignment = { ...baseStyle.alignment, wrapText: true, vertical: 'top' };
+      cell.s = baseStyle;
     }
   }
 }
@@ -223,13 +248,13 @@ function normalizeRowsForExcel(rows) {
       }
       const sVal = String(v).trim();
       
-      // Price fields
-      if (k.includes('Price') || k.includes('Cost')) {
+      // Price fields (exclude text trails and percentage changes)
+      if ((k.includes('Price') || k.includes('Cost')) && k !== 'Price History Trail' && !k.includes('(%)')) {
         if (sVal === 'N/A' || sVal === '-' || sVal.startsWith('[REMOVED') || sVal.includes('(')) {
           out[k] = sVal;
         } else {
           const cleanNum = sVal.replace(/[$,\s]/g, '');
-          const num = parseFloat(cleanNum);
+          const num = /^[+-]?\d+(?:\.\d+)?$/.test(cleanNum) ? parseFloat(cleanNum) : NaN;
           out[k] = isNaN(num) ? sVal : num;
         }
       }
@@ -264,7 +289,7 @@ function formatNumericCells(ws) {
       const cellRef = XLSX.utils.encode_cell({ r, c });
       const cell = ws[cellRef];
       if (cell && typeof cell.v === 'number') {
-        if (h.includes('Price') || h.includes('Cost')) {
+        if ((h.includes('Price') || h.includes('Cost')) && h !== 'Price History Trail' && !h.includes('(%)')) {
           cell.z = '$#,##0.00';
         } else if (h.includes('Qty') || h.includes('Count') || h.includes('SKUs') || h === 'Days Active') {
           cell.z = '#,##0';
@@ -280,6 +305,7 @@ function createStyledSheet(data, colWidths = null, diffData = null, headerFg = '
   if (colWidths) ws['!cols'] = colWidths;
   if (diffData) applyDiffStyles(ws, diffData);
   else applyDiffStyles(ws, data);
+  _applyColumnWrap(ws, ['Attribute Deltas', 'Price History Trail']);
   formatNumericCells(ws);
   enableSheetUsability(ws, headerFg);
   return ws;
@@ -452,12 +478,13 @@ const timelineRows = allCombinedData.map(r => ({
   'Description': r['Description'],
   'Current Price (USD)': r['Unit Price (USD)'],
   'Diff Status': r['Diff Status'],
+  'Attribute Deltas': r['Attribute Deltas'] || 'None',
   'Price History Trail': r['Price History Trail']
 }));
 
 const timelineWS = createStyledSheet(timelineRows, [
   { wch: 25 }, { wch: 35 }, { wch: 16 }, { wch: 70 },
-  { wch: 18 }, { wch: 16 }, { wch: 100 }
+  { wch: 18 }, { wch: 16 }, { wch: 42 }, { wch: 100 }
 ], allCombinedData);
 XLSX.utils.book_append_sheet(wb, timelineWS, 'Price History Timeline');
 
@@ -642,8 +669,9 @@ const diffCounts = {
   added: allCombinedData.filter(r => r['Diff Status'] === 'ADDED').length,
   removed: allCombinedData.filter(r => r['Diff Status'] === 'REMOVED').length,
   reinstated: allCombinedData.filter(r => r['Diff Status'] === 'REINSTATED').length,
-  priceChanged: allCombinedData.filter(r => r['Diff Status'] === 'PRICE_CHANGED' || r['Diff Status'] === 'PRICE_AND_ATTRIBUTE_CHANGED').length,
+  priceChanged: allCombinedData.filter(r => r['Diff Status'] === 'PRICE_CHANGED').length,
   attributeChanged: allCombinedData.filter(r => r['Diff Status'] === 'ATTRIBUTE_CHANGED').length,
+  priceAndAttributeChanged: allCombinedData.filter(r => r['Diff Status'] === 'PRICE_AND_ATTRIBUTE_CHANGED').length,
   unchanged: allCombinedData.filter(r => r['Diff Status'] === 'UNCHANGED' || r['Diff Status'] === 'BASELINE' || !r['Diff Status']).length,
 };
 
@@ -665,6 +693,7 @@ const metaData = [
   { Field: 'Diff Removed SKUs',          Value: String(diffCounts.removed) },
   { Field: 'Diff Price Changed',         Value: String(diffCounts.priceChanged) },
   { Field: 'Diff Attr Changed',          Value: String(diffCounts.attributeChanged) },
+  { Field: 'Diff Price+Attr Changed',    Value: String(diffCounts.priceAndAttributeChanged) },
   { Field: 'Diff Reinstated SKUs',       Value: String(diffCounts.reinstated) },
   { Field: 'Diff Unchanged SKUs',        Value: String(diffCounts.unchanged) },
   { Field: 'Discontinued (All-Time)',    Value: String(discontinuedRows.filter(r => r['Status'] === 'DISCONTINUED' || r['Status'] === 'REMOVED').length) },

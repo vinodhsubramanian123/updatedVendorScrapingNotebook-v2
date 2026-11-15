@@ -83,13 +83,16 @@ function _resolveLifecycleMetrics(sku) {
   return { status, start, disc };
 }
 
+const cleanStr = value => String(value ?? '').replace(/[\t\r\n]+/g, ' ').trim();
+
 function _resolveDiffMetrics(sku) {
   const diffStatus = sku['Diff Status'] || 'UNCHANGED';
   const prevPrice = sku['Previous List Price (USD)'] || 'N/A';
   const priceChangeUsd = sku['Price Change (USD)'] || '$0.00';
   const priceChangePct = sku['Price Change (%)'] || '0.00%';
+  const attrDeltas = cleanStr(sku['Attribute Deltas']) || 'None';
   const historyTrail = sku['Price History Trail'] || '';
-  return { diffStatus, prevPrice, priceChangeUsd, priceChangePct, historyTrail };
+  return { diffStatus, prevPrice, priceChangeUsd, priceChangePct, attrDeltas, historyTrail };
 }
 
 function _formatSkuRow(entry, sku, hierarchyPath, constraintInfo, profile) {
@@ -100,7 +103,7 @@ function _formatSkuRow(entry, sku, hierarchyPath, constraintInfo, profile) {
   const costVal  = _extractSkuCost(sku);
   const isRecommended = _extractSkuRecommendation(sku, entry.parentCategory, entry.subCategory);
   const vendorAttributes = _extractVendorAttributesJson(sku);
-  const safeCell = value => String(value ?? '').replace(/[\t\r\n]+/g, ' ').trim();
+  const safeCell = cleanStr;
 
   const leadTimeDays = sku['Lead Time Days'] !== undefined ? String(sku['Lead Time Days'])
     : (sku.leadTimeDays !== undefined && sku.leadTimeDays !== null ? String(sku.leadTimeDays) : '');
@@ -121,7 +124,7 @@ function _formatSkuRow(entry, sku, hierarchyPath, constraintInfo, profile) {
     supply.clic,
     lifecycle.status,
     lifecycle.start, lifecycle.disc, vendorAttributes,
-    diff.diffStatus, diff.prevPrice, diff.priceChangeUsd, diff.priceChangePct, diff.historyTrail
+    diff.diffStatus, diff.prevPrice, diff.priceChangeUsd, diff.priceChangePct, diff.attrDeltas, diff.historyTrail
   ].map(safeCell).join('\t');
 }
 
@@ -132,12 +135,14 @@ function generateMainSheet(entries, chassisRoot, profile = null) {
     'Unit Price (USD)', 'Cost (USD)', 'Price Delta (USD)', 'Extended Price (USD)', 'Price per GB (USD)',
     'HPE Recommended', 'Availability', 'Lead Time', 'Lead Time Days', 'Speed Tier', 'Lead Time Source',
     'CLIC Status', 'Lifecycle Status', 'Start Date', 'Discontinued Date', 'Vendor Attributes (JSON)',
-    'Diff Status', 'Previous List Price (USD)', 'Price Change (USD)', 'Price Change (%)', 'Price History Trail'
+    'Diff Status', 'Previous List Price (USD)', 'Price Change (USD)', 'Price Change (%)', 'Attribute Deltas', 'Price History Trail'
   ].join('\t')];
+
+  const portalPrefix = (profile && profile.portalPrefix) ? String(profile.portalPrefix).trim() : 'HPE OCA';
 
   for (const entry of entries) {
     const constraintInfo = _formatEntryConstraint(entry);
-    const hierarchyPath = `HPE OCA > ${chassisRoot} > ${entry.parentCategory} > ${entry.subCategory}`;
+    const hierarchyPath = `${portalPrefix} > ${chassisRoot} > ${entry.parentCategory} > ${entry.subCategory}`;
 
     for (const sku of entry.skus) {
       rows.push(_formatSkuRow(entry, sku, hierarchyPath, constraintInfo, profile));

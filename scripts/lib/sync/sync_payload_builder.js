@@ -94,12 +94,14 @@ function _buildHeaderAndSummarySection(targetIdentity, chassisName, totalActiveH
   md += `This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.\n\n`;
   md += `---\n\n`;
 
+  const hwPriceAndAttr = hwDiff?.priceAndAttributeChanged || 0;
+  const srvPriceAndAttr = srvDiff?.priceAndAttributeChanged || 0;
   md += `## 🚀 Executive Delta & Recent Change Summary\n\n`;
-  md += `| Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Reinstated | Status |\n`;
-  md += `|----------|------------|---------------------|---------------|-------------------|------------|--------|\n`;
-  md += `| **Hardware Components** | ${totalActiveHwSKUs} | ${hwDiff.added || 0} | ${hwDiff.priceChanged || 0} | ${hwDiff.attributeChanged || 0} | ${hwDiff.reinstated || 0} | **CERTIFIED** |\n`;
-  md += `| **Support Services & SLAs** | ${totalActiveSrvSKUs} | ${srvDiff.added || 0} | ${srvDiff.priceChanged || 0} | ${srvDiff.attributeChanged || 0} | ${srvDiff.reinstated || 0} | **CERTIFIED** |\n`;
-  md += `| **Total Portfolio** | **${totalActiveHwSKUs + totalActiveSrvSKUs}** | **${(hwDiff.added || 0) + (srvDiff.added || 0)}** | **${(hwDiff.priceChanged || 0) + (srvDiff.priceChanged || 0)}** | **${(hwDiff.attributeChanged || 0) + (srvDiff.attributeChanged || 0)}** | **${(hwDiff.reinstated || 0) + (srvDiff.reinstated || 0)}** | **ACTIVE** |\n\n`;
+  md += `| Category | Total SKUs | Added (Last Scrape) | Price Changed | Attribute Changed | Price & Attr Changed | Reinstated | Status |\n`;
+  md += `|----------|------------|---------------------|---------------|-------------------|----------------------|------------|--------|\n`;
+  md += `| **Hardware Components** | ${totalActiveHwSKUs} | ${hwDiff?.added || 0} | ${hwDiff?.priceChanged || 0} | ${hwDiff?.attributeChanged || 0} | ${hwPriceAndAttr} | ${hwDiff?.reinstated || 0} | **CERTIFIED** |\n`;
+  md += `| **Support Services & SLAs** | ${totalActiveSrvSKUs} | ${srvDiff?.added || 0} | ${srvDiff?.priceChanged || 0} | ${srvDiff?.attributeChanged || 0} | ${srvPriceAndAttr} | ${srvDiff?.reinstated || 0} | **CERTIFIED** |\n`;
+  md += `| **Total Portfolio** | **${totalActiveHwSKUs + totalActiveSrvSKUs}** | **${(hwDiff?.added || 0) + (srvDiff?.added || 0)}** | **${(hwDiff?.priceChanged || 0) + (srvDiff?.priceChanged || 0)}** | **${(hwDiff?.attributeChanged || 0) + (srvDiff?.attributeChanged || 0)}** | **${hwPriceAndAttr + srvPriceAndAttr}** | **${(hwDiff?.reinstated || 0) + (srvDiff?.reinstated || 0)}** | **ACTIVE** |\n\n`;
   return md;
 }
 
@@ -361,28 +363,139 @@ function _buildCategoryTrendsAndPriceMovesSection(catalogData) {
   return md;
 }
 
-function _buildAttributeHistorySection(attributeHistory = []) {
-  let md = `## 🔄 5. Recent Attribute & Specification Modifications Log\n\n`;
-  if (attributeHistory.length === 0) {
-    md += `*No attribute or specification changes recorded across catalog snapshots.*\n\n`;
-  } else {
-    // Filter out trivial transitions and select meaningful ones
-    const meaningful = attributeHistory.filter(a => {
-      const field = a.field || a.attribute || '';
-      if (field === 'HPE Recommended' && (!a.oldValue || a.oldValue === 'No') && a.newValue === 'No') return false;
-      return true;
-    });
-
-    md += `| Timestamp | SKU | Attribute | Old Value | New Value |\n`;
-    md += `|-----------|-----|-----------|-----------|-----------|\n`;
-    meaningful.slice(-25).forEach(a => {
-      const aSku = a.productNumber || a.sku || a['Product #'] || 'N/A';
-      const aDate = a.date || a.timestamp?.split('T')[0] || 'N/A';
-      const aField = a.field || a.attribute || 'Specification';
-      md += `| ${aDate} | \`${aSku}\` | ${aField} | ${a.oldValue} | **${a.newValue}** |\n`;
-    });
-    md += `\n`;
+function _readJsonArraySafe(filePath) {
+  if (!filePath || !fs.existsSync(filePath)) return [];
+  try {
+    const parsed = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
   }
+}
+
+function _readJsonObjectSafe(filePath) {
+  if (!filePath || !fs.existsSync(filePath)) return null;
+  try {
+    const parsed = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+    return parsed && typeof parsed === 'object' ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
+function _sanitizeMarkdownCell(value) {
+  if (value === null || value === undefined || value === '') return 'N/A';
+  return String(value).replace(/\s*\|\s*/g, '; ').replace(/\r?\n/g, ' ').trim();
+}
+
+function _findCatalogPairInDir(catDir) {
+  if (!catDir || path.basename(catDir) === 'history' || !fs.existsSync(catDir)) {
+    return { catalogData: null, servicesData: null };
+  }
+  try {
+    const files = fs.readdirSync(catDir);
+    const catFile = files.find(f => f.endsWith('_Catalog.json'));
+    const svcFile = files.find(f => f.endsWith('_Services.json'));
+    return {
+      catalogData: catFile ? _readJsonObjectSafe(path.join(catDir, catFile)) : null,
+      servicesData: svcFile ? _readJsonObjectSafe(path.join(catDir, svcFile)) : null
+    };
+  } catch {
+    return { catalogData: null, servicesData: null };
+  }
+}
+
+function _loadAttributeHistorySources(catDirOrHistory, options = {}) {
+  if (Array.isArray(catDirOrHistory)) {
+    return {
+      hwHistory: catDirOrHistory,
+      svcHistory: options.servicesAttributeHistory || [],
+      catalogData: options.catalogData || null,
+      servicesData: options.servicesData || null
+    };
+  }
+  const catDir = typeof catDirOrHistory === 'string' ? catDirOrHistory : '';
+  const hwHistory = options.attributeHistory ?? (catDir ? _readJsonArraySafe(path.join(catDir, 'history', 'attribute_history.json')) : []);
+  const svcHistory = options.servicesAttributeHistory ?? (catDir ? _readJsonArraySafe(path.join(catDir, 'services_history', 'services_attribute_history.json')) : []);
+  const needsScan = !options.catalogData && !options.servicesData && catDir;
+  const scanned = needsScan ? _findCatalogPairInDir(catDir) : { catalogData: null, servicesData: null };
+  return {
+    hwHistory,
+    svcHistory,
+    catalogData: options.catalogData || scanned.catalogData,
+    servicesData: options.servicesData || scanned.servicesData
+  };
+}
+
+function _isMeaningfulAttributeChange(entry) {
+  const field = entry?.field || entry?.attribute || '';
+  if (field === 'HPE Recommended' && (!entry.oldValue || entry.oldValue === 'No') && entry.newValue === 'No') return false;
+  return Boolean(entry && typeof entry === 'object');
+}
+
+function _extractAttributeDeltaRows(catalogJson, sourceLabel) {
+  const rows = [];
+  const seen = new Set();
+  for (const entry of (catalogJson?.entries || [])) {
+    for (const row of (entry.skus || [])) {
+      const rawDelta = String(row['Attribute Deltas'] || '').trim();
+      if (!rawDelta || rawDelta === 'None') continue;
+      const sku = String(row['Product #'] || row.sku || '').trim() || 'N/A';
+      const dedupeKey = `${sourceLabel}:${sku}:${rawDelta}`;
+      if (seen.has(dedupeKey)) continue;
+      seen.add(dedupeKey);
+      rows.push({
+        sku,
+        sourceLabel,
+        diffStatus: String(row['Diff Status'] || 'MODIFIED').trim(),
+        formattedDelta: _sanitizeMarkdownCell(rawDelta)
+      });
+    }
+  }
+  return rows;
+}
+
+function _renderHistoryLogTable(meaningful) {
+  let md = `| Timestamp | Source | SKU | Attribute | Old Value | New Value | Detail |\n`;
+  md += `|-----------|--------|-----|-----------|-----------|-----------|--------|\n`;
+  meaningful.slice(-25).forEach(entry => {
+    const sku = _sanitizeMarkdownCell(entry.productNumber || entry.sku || entry['Product #']);
+    const date = _sanitizeMarkdownCell(entry.date || entry.timestamp?.split('T')[0]);
+    const field = _sanitizeMarkdownCell(entry.field || entry.attribute || 'Specification');
+    const sourceLabel = _sanitizeMarkdownCell(entry._sourceLabel || 'Hardware');
+    const oldVal = _sanitizeMarkdownCell(entry.oldValue);
+    const newVal = _sanitizeMarkdownCell(entry.newValue);
+    md += `| ${date} | ${sourceLabel} | \`${sku}\` | ${field} | ${oldVal} | **${newVal}** | ${field}: "${oldVal}" → "${newVal}" |\n`;
+  });
+  return `${md}\n`;
+}
+
+function _renderCurrentScrapeDeltasTable(deltaRows) {
+  let md = `### Current Scrape SKU Attribute Deltas\n\n`;
+  md += `| SKU | Source | Diff Status | Attribute Changes (Old → New) |\n`;
+  md += `|-----|--------|-------------|-------------------------------|\n`;
+  deltaRows.slice(0, 50).forEach(item => {
+    md += `| \`${item.sku}\` | ${item.sourceLabel} | ${item.diffStatus} | ${item.formattedDelta} |\n`;
+  });
+  return `${md}\n`;
+}
+
+function _buildAttributeHistorySection(catDirOrHistory = [], options = {}) {
+  const { hwHistory, svcHistory, catalogData, servicesData } = _loadAttributeHistorySources(catDirOrHistory, options);
+  const taggedHw = hwHistory.filter(_isMeaningfulAttributeChange).map(e => ({ ...e, _sourceLabel: 'Hardware' }));
+  const taggedSvc = svcHistory.filter(_isMeaningfulAttributeChange).map(e => ({ ...e, _sourceLabel: 'Services' }));
+  const meaningful = [...taggedHw, ...taggedSvc];
+  const currentDeltas = [
+    ..._extractAttributeDeltaRows(catalogData, 'Hardware'),
+    ..._extractAttributeDeltaRows(servicesData, 'Services')
+  ];
+
+  let md = `## 🔄 5. Recent Attribute & Specification Modifications Log\n\n`;
+  if (meaningful.length === 0 && currentDeltas.length === 0) {
+    return `${md}*No attribute or specification changes recorded across catalog snapshots.*\n\n`;
+  }
+  if (meaningful.length > 0) md += _renderHistoryLogTable(meaningful);
+  if (currentDeltas.length > 0) md += _renderCurrentScrapeDeltasTable(currentDeltas);
   return md;
 }
 
@@ -653,29 +766,16 @@ function _loadChassisHistory(targetDir, catalogPath, chassisName) {
     try { discontinuedRegistry = JSON.parse(fs.readFileSync(discontinuedSkusPath, 'utf-8')); } catch (_) {}
   }
 
-  let attributeHistory = [];
-  const attributeHistoryPath = path.join(historyDir, 'attribute_history.json');
-  if (fs.existsSync(attributeHistoryPath)) {
-    try {
-      attributeHistory = JSON.parse(fs.readFileSync(attributeHistoryPath, 'utf-8'));
-      if (!Array.isArray(attributeHistory)) attributeHistory = [];
-    } catch (_) {}
-  }
+  const attributeHistory = _readJsonArraySafe(path.join(historyDir, 'attribute_history.json'));
 
-  let servicesData = null;
   const servicesJsonPath = path.join(targetDir, `${path.basename(catalogPath || chassisName, '_Catalog.json')}_Services.json`);
-  if (fs.existsSync(servicesJsonPath)) {
-    try { servicesData = JSON.parse(fs.readFileSync(servicesJsonPath, 'utf-8')); } catch (_) {}
-  }
+  const servicesData = _readJsonObjectSafe(servicesJsonPath);
 
   const servicesHistoryDir = path.join(targetDir, 'services_history');
-  let servicesDiscontinuedRegistry = {};
-  const servicesDiscontinuedPath = path.join(servicesHistoryDir, 'services_discontinued_skus.json');
-  if (fs.existsSync(servicesDiscontinuedPath)) {
-    try { servicesDiscontinuedRegistry = JSON.parse(fs.readFileSync(servicesDiscontinuedPath, 'utf-8')); } catch (_) {}
-  }
+  const servicesDiscontinuedRegistry = _readJsonObjectSafe(path.join(servicesHistoryDir, 'services_discontinued_skus.json')) || {};
+  const servicesAttributeHistory = _readJsonArraySafe(path.join(servicesHistoryDir, 'services_attribute_history.json'));
 
-  return { discontinuedRegistry, attributeHistory, servicesData, servicesDiscontinuedRegistry };
+  return { discontinuedRegistry, attributeHistory, servicesAttributeHistory, servicesData, servicesDiscontinuedRegistry };
 }
 
 function _renderOwnedComponentScope(targetDir) {
@@ -761,10 +861,11 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
 
   const { targetDir, isTestChassis } = _resolveSyncTargetDirectory(chassisName, catalogPath, syncOptions.persist);
   const catalogData = _loadCatalogData(catalogPath, isTestChassis, targetDir, chassisName, syncOptions);
-  const { discontinuedRegistry, attributeHistory, servicesData, servicesDiscontinuedRegistry } = _loadChassisHistory(targetDir, catalogPath, chassisName);
+  const { discontinuedRegistry, attributeHistory, servicesAttributeHistory, servicesData, servicesDiscontinuedRegistry } = _loadChassisHistory(targetDir, catalogPath, chassisName);
 
-  const hwDiff = catalogData?.metadata?.diffSummary || { added: 0, removed: 0, priceChanged: 0, attributeChanged: 0, unchanged: 0, reinstated: 0 };
-  const srvDiff = servicesData?.metadata?.diffSummary || { added: 0, removed: 0, priceChanged: 0, attributeChanged: 0, unchanged: 0, reinstated: 0 };
+  const defaultDiff = { added: 0, removed: 0, priceChanged: 0, attributeChanged: 0, priceAndAttributeChanged: 0, unchanged: 0, reinstated: 0 };
+  const hwDiff = catalogData?.metadata?.diffSummary || defaultDiff;
+  const srvDiff = servicesData?.metadata?.diffSummary || defaultDiff;
   const totalActiveHwSKUs = catalogData?.metadata?.totalUniqueSKUs || 0;
   const totalActiveSrvSKUs = servicesData?.metadata?.totalUniqueSKUs || 0;
 
@@ -787,7 +888,7 @@ function generateNotebookSyncPayload(chassisName = 'Unknown_Chassis', autoUpload
   const md = _assembleMarkdownDocument(targetDir, chassisName, {
     targetIdentity, totalActiveHwSKUs, totalActiveSrvSKUs, totalRules, hwDiff, srvDiff,
     scopedRegistry, unavailableRules, discontinuedRegistry, servicesDiscontinuedRegistry,
-    cfg, catalogData, attributeHistory
+    cfg, catalogData, servicesData, attributeHistory, servicesAttributeHistory
   });
 
   const shouldPersist = syncOptions.persist !== false && (isTestChassis || process.env.NODE_ENV !== 'test' || syncOptions.persist === true);
@@ -842,7 +943,12 @@ function _assembleMarkdownDocument(targetDir, chassisName, ctx) {
   md += _buildUnavailableDomGatingRulesSection(ctx.unavailableRules);
   md += _buildDiscontinuedSection(chassisName, ctx.discontinuedRegistry, ctx.servicesDiscontinuedRegistry, ctx.cfg, ctx.catalogData);
   md += _buildCategoryTrendsAndPriceMovesSection(ctx.catalogData);
-  md += _buildAttributeHistorySection(ctx.attributeHistory);
+  md += _buildAttributeHistorySection(targetDir, {
+    attributeHistory: ctx.attributeHistory,
+    servicesAttributeHistory: ctx.servicesAttributeHistory,
+    catalogData: ctx.catalogData,
+    servicesData: ctx.servicesData
+  });
   md += _buildSameProductVariantSection(chassisName, ctx.targetIdentity);
   md += _buildSmartChassisAndRecommendedSection(ctx.catalogData);
   md += _renderLivePortalServices(targetDir, chassisName, ctx.cfg);
@@ -865,5 +971,7 @@ function _extractContentFingerprints(targetDir, chassisName, payloadPath) {
 
 module.exports = {
   generateNotebookSyncPayload,
-  loadNotebookConfig
+  loadNotebookConfig,
+  _buildHeaderAndSummarySection,
+  _buildAttributeHistorySection
 };

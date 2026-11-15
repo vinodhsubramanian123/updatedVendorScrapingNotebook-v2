@@ -9,6 +9,104 @@
 
 const crypto = require('crypto');
 
+function _pickNonEmpty(obj, keys, fallback = '') {
+  for (const key of keys) {
+    const val = obj?.[key];
+    if (val !== undefined && val !== null && String(val).trim() !== '') {
+      return String(val).trim();
+    }
+  }
+  return fallback;
+}
+
+function _pickDefined(obj, keys, fallback = null) {
+  for (const key of keys) {
+    const val = obj?.[key];
+    if (val !== undefined && val !== null) return val;
+  }
+  return fallback;
+}
+
+function _canonicalVendorAttrs(skuObj) {
+  const raw = _pickDefined(skuObj, ['Vendor Attributes (JSON)', 'vendorAttributes'], null);
+  if (raw === null || raw === '') return '';
+  let parsed = raw;
+  if (typeof raw === 'string') {
+    const trimmed = raw.trim();
+    if (!trimmed || trimmed === '{}') return '';
+    try {
+      parsed = JSON.parse(trimmed);
+    } catch {
+      return trimmed;
+    }
+  }
+  if (typeof parsed === 'object' && parsed !== null) {
+    const keys = Object.keys(parsed).sort((a, b) => a.localeCompare(b));
+    if (keys.length === 0) return '';
+    return JSON.stringify(Object.fromEntries(keys.map(k => [k, parsed[k]])));
+  }
+  return String(parsed).trim();
+}
+
+const STRING_FIELD_SPECS = [
+  ['SKU', ['sku', 'Product #', 'SKU'], ''],
+  ['Description', ['description', 'Description'], ''],
+  ['Unit Price (USD)', ['priceUsd', 'Unit Price (USD)', 'listPrice', 'price'], ''],
+  ['Option Type', ['optionType', 'Option Type'], ''],
+  ['Current Qty', ['currentQty', 'Current Qty'], ''],
+  ['Portal Visibility', ['visibilityState'], 'VISIBLE'],
+  ['Condition Type', ['conditionType'], ''],
+  ['Lifecycle Status', ['Lifecycle Status', 'lifecycleStatus'], ''],
+  ['Availability', ['Availability', 'Supply Status'], ''],
+  ['Start Date', ['Start Date'], ''],
+  ['Discontinued Date', ['Discontinued Date'], ''],
+  ['Condition Operator', ['conditionOperator', 'operator'], ''],
+  ['Condition Key', ['conditionKey'], ''],
+  ['Lead Time', ['Lead Time', 'leadTime', 'estimatedDelivery'], ''],
+  ['HPE Recommended', ['HPE Recommended', 'hpeRecommended'], ''],
+  ['Cost (USD)', ['Cost (USD)', 'costPrice'], ''],
+  ['Speed Tier', ['Speed Tier', 'speedTier'], ''],
+  ['CLIC Status', ['CLIC Status', 'clicStatus'], ''],
+  ['Component Role', ['Component Role', 'componentRole'], ''],
+  ['Constraint Text', ['Constraint Text', 'constraint'], ''],
+  ['Subcategory Max Qty', ['Subcategory Max Qty', 'maxQty'], '']
+];
+
+function _extractTrackedFields(skuObj, entry = {}) {
+  const fields = {};
+  for (const [label, keys, fallback] of STRING_FIELD_SPECS) {
+    fields[label] = _pickNonEmpty(skuObj, keys, fallback);
+  }
+  if (!fields['Constraint Text'] && entry.constraint) {
+    fields['Constraint Text'] = String(entry.constraint).trim();
+  }
+  if (!fields['Subcategory Max Qty'] && entry.maxQty !== undefined && entry.maxQty !== null && entry.maxQty !== '') {
+    fields['Subcategory Max Qty'] = String(entry.maxQty).trim();
+  }
+  fields['Threshold Value'] = _pickDefined(skuObj, ['thresholdValue', 'thresholdDegC'], null);
+  fields['Vendor Attributes (JSON)'] = _canonicalVendorAttrs(skuObj);
+  return fields;
+}
+
+function _computeFieldDeltas(oldFields, newFields) {
+  const deltas = [];
+  for (const field of Object.keys(newFields)) {
+    if (field === 'SKU') continue;
+    const oldRaw = oldFields?.[field];
+    const newRaw = newFields[field];
+    const oldStr = oldRaw === null || oldRaw === undefined ? '' : String(oldRaw);
+    const newStr = newRaw === null || newRaw === undefined ? '' : String(newRaw);
+    if (oldStr !== newStr) {
+      deltas.push({
+        field,
+        oldValue: oldStr || '(None)',
+        newValue: newStr || '(None)'
+      });
+    }
+  }
+  return deltas;
+}
+
 /**
  * Compute a deterministic SHA-256 hash for an individual SKU object.
  * @param {object} skuObj - SKU entry containing product #, description, price, optionType, etc.
@@ -16,19 +114,17 @@ const crypto = require('crypto');
  */
 function computeSkuHash(skuObj, options = {}) {
   if (!skuObj) return '';
-  const pn = String(skuObj.sku || skuObj['Product #'] || skuObj['SKU'] || '').trim();
-  const desc = String(skuObj.description || skuObj['Description'] || '').trim();
-  const price = String(skuObj.priceUsd ?? skuObj['Unit Price (USD)'] ?? skuObj.listPrice ?? skuObj.price ?? '').trim();
-  const optType = String(skuObj.optionType || skuObj['Option Type'] || '').trim();
-  const qty = String(skuObj.currentQty ?? skuObj['Current Qty'] ?? '').trim();
-
-  const visibility = String(skuObj.visibilityState || 'VISIBLE').trim();
-  const conditionType = String(skuObj.conditionType || '').trim();
-  const payload = JSON.stringify([pn, desc, price, optType, qty, visibility, conditionType,
-    skuObj['Lifecycle Status'] ?? skuObj.lifecycleStatus ?? '', skuObj['Availability'] ?? '',
-    skuObj['Start Date'] ?? '', skuObj['Discontinued Date'] ?? '',
-    skuObj.thresholdValue ?? skuObj.thresholdDegC ?? null,
-    skuObj.conditionOperator ?? skuObj.operator ?? '', skuObj.conditionKey ?? '']);
+  const fields = _extractTrackedFields(skuObj, options.entry || {});
+  const payload = JSON.stringify([
+    fields['SKU'], fields['Description'], fields['Unit Price (USD)'], fields['Option Type'],
+    fields['Current Qty'], fields['Portal Visibility'], fields['Condition Type'],
+    fields['Lifecycle Status'], fields['Availability'], fields['Start Date'],
+    fields['Discontinued Date'], fields['Threshold Value'], fields['Condition Operator'],
+    fields['Condition Key'], fields['Lead Time'], fields['HPE Recommended'],
+    fields['Cost (USD)'], fields['Speed Tier'], fields['CLIC Status'],
+    fields['Component Role'], fields['Constraint Text'], fields['Subcategory Max Qty'],
+    fields['Vendor Attributes (JSON)']
+  ]);
   const fullHash = crypto.createHash('sha256').update(payload).digest('hex');
   return options.full ? fullHash : fullHash.substring(0, 16);
 }
@@ -74,7 +170,10 @@ function computeIncrementalDifferential(scrapedEntries, existingCatalog) {
     unchangedSkus: [],
     modifiedSkus: [],
     addedSkus: [],
-    removedSkus: []
+    removedSkus: [],
+    newSnapshot: {
+      skus: {}
+    }
   };
 
   if (!existingCatalog || !Array.isArray(existingCatalog.entries) || existingCatalog.entries.length === 0) {
@@ -88,13 +187,14 @@ function computeIncrementalDifferential(scrapedEntries, existingCatalog) {
   const existingSkuMap = new Map();
   for (const entry of existingCatalog.entries) {
     for (const sku of (entry.skus || [])) {
-      const pn = String(sku.sku || sku['Product #'] || sku['SKU'] || '').trim();
+      const pn = _pickNonEmpty(sku, ['sku', 'Product #', 'SKU']);
       if (pn) {
         existingSkuMap.set(pn, {
           ...sku,
           parentCategory: entry.parentCategory,
           subCategory: entry.subCategory,
-          hash: computeSkuHash(sku)
+          fields: _extractTrackedFields(sku, entry),
+          hash: computeSkuHash(sku, { entry })
         });
       }
     }
@@ -105,14 +205,19 @@ function computeIncrementalDifferential(scrapedEntries, existingCatalog) {
   // Process incoming scraped entries
   for (const entry of (scrapedEntries || [])) {
     for (const sku of (entry.skus || [])) {
-      const pn = String(sku.sku || sku['Product #'] || sku['SKU'] || '').trim();
+      const pn = _pickNonEmpty(sku, ['sku', 'Product #', 'SKU']);
       if (!pn) continue;
       if (seenNewSkus.has(pn)) continue;
 
       result.stats.totalScrapedSkus++;
       seenNewSkus.add(pn);
 
-      const newHash = computeSkuHash(sku);
+      const newFields = _extractTrackedFields(sku, entry);
+      const newHash = computeSkuHash(sku, { entry });
+      result.newSnapshot.skus[pn] = {
+        hash: newHash,
+        fields: newFields
+      };
       const existing = existingSkuMap.get(pn);
 
       if (existing) {
@@ -126,7 +231,9 @@ function computeIncrementalDifferential(scrapedEntries, existingCatalog) {
             action: 'SKIP_RE_CLASSIFICATION'
           });
         } else {
-          // Checksum mismatch! SKU modified (e.g. price change or description update)
+          // Checksum mismatch! SKU modified (price or attribute update)
+          const attributeDeltas = _computeFieldDeltas(existing.fields, newFields);
+          const summary = attributeDeltas.map(d => `${d.field}: "${d.oldValue}" → "${d.newValue}"`).join(' | ');
           result.stats.modifiedSkusCount++;
           result.modifiedSkus.push({
             sku: pn,
@@ -134,10 +241,12 @@ function computeIncrementalDifferential(scrapedEntries, existingCatalog) {
             newHash,
             status: 'MODIFIED',
             changes: {
-              oldPrice: existing.priceUsd || existing['Unit Price (USD)'],
-              newPrice: sku.priceUsd || sku['Unit Price (USD)'],
+              oldPrice: existing.priceUsd ?? existing['Unit Price (USD)'] ?? existing.listPrice,
+              newPrice: sku.priceUsd ?? sku['Unit Price (USD)'] ?? sku.listPrice,
               oldDesc: existing.description || existing['Description'],
-              newDesc: sku.description || sku['Description']
+              newDesc: sku.description || sku['Description'],
+              attributeDeltas,
+              summary
             }
           });
         }

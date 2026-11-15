@@ -434,10 +434,29 @@ router.get('/sku-version-audit', (req, res) => {
   } catch (err) { res.status(err.message.startsWith('HTTP 403') ? 403 : 500).json({ error: err.message }); }
 });
 
+function _buildCdpPortConflictPayload(httpStatus, outputsDir) {
+  const hasOutputs = fs.existsSync(outputsDir) && fs.readdirSync(outputsDir).length > 0;
+  const warning = `Port 9222 has a non-CDP listener responder (HTTP ${httpStatus}). Close conflicting processes (e.g. background msedge.exe) bound to port 9222 so Chrome CDP can bind.`;
+  return {
+    status: 'STANDBY',
+    message: hasOutputs
+      ? 'DOM Cache Ready (Offline Catalog Mode — Port 9222 non-CDP listener conflict)'
+      : warning,
+    ...(hasOutputs ? { mode: 'OFFLINE_CACHE' } : {}),
+    portConflict: true,
+    httpStatus,
+    warning,
+    remediation: warning,
+    error: `HTTP ${httpStatus} non-CDP listener responder on port 9222`
+  };
+}
+
 router.get('/cdp-status', async (req, res) => {
   try {
     const response = await fetch('http://127.0.0.1:9222/json', { signal: AbortSignal.timeout(1500) });
-    if (!response.ok) throw new Error('CDP port not responding');
+    if (!response.ok) {
+      return res.json(_buildCdpPortConflictPayload(response.status, OUTPUTS_DIR));
+    }
     const targets = await response.json();
     const pages = targets.filter(t => t.type === 'page');
     const ocaPage = pages.find(t => t.url.includes('oca.ext.hpe.com'));
@@ -451,8 +470,8 @@ router.get('/cdp-status', async (req, res) => {
   } catch (err) {
     const hasOutputs = fs.existsSync(OUTPUTS_DIR) && fs.readdirSync(OUTPUTS_DIR).length > 0;
     res.json(hasOutputs
-      ? { status: 'STANDBY', message: 'DOM Cache Ready (Offline Catalog Mode)', mode: 'OFFLINE_CACHE', error: err.message }
-      : { status: 'DISCONNECTED', error: err.message });
+      ? { status: 'STANDBY', message: 'DOM Cache Ready (Offline Catalog Mode)', mode: 'OFFLINE_CACHE', portConflict: false, httpStatus: null, error: err.message }
+      : { status: 'DISCONNECTED', portConflict: false, httpStatus: null, error: err.message });
   }
 });
 

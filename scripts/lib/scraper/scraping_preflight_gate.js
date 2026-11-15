@@ -140,37 +140,92 @@ async function runScrapingPreflightGate({ targetChassisQuery, navQuery, skipClou
   };
 }
 
-function _updateDiffStatusCount(status, counts) {
-  if (counts[status] !== undefined) {
-    counts[status]++;
-  } else if (status.includes('PRICE') || status.includes('MOD')) {
+const DIFF_COUNT_KEYS = [
+  'ADDED',
+  'MODIFIED',
+  'PRICE_CHANGED',
+  'ATTRIBUTE_CHANGED',
+  'PRICE_AND_ATTRIBUTE_CHANGED',
+  'REINSTATED',
+  'REMOVED',
+  'DISCONTINUED',
+  'UNCHANGED'
+];
+
+const MODIFIED_DIFF_STATUSES = new Set([
+  'PRICE_CHANGED',
+  'ATTRIBUTE_CHANGED',
+  'PRICE_AND_ATTRIBUTE_CHANGED',
+  'REINSTATED',
+  'CATEGORY_MIGRATED'
+]);
+
+function _createDiffCounts() {
+  const counts = {};
+  for (const key of DIFF_COUNT_KEYS) counts[key] = 0;
+  return counts;
+}
+
+function _updateDiffStatusCount(status, counts = _createDiffCounts()) {
+  for (const key of DIFF_COUNT_KEYS) {
+    if (typeof counts[key] !== 'number') counts[key] = 0;
+  }
+  const normalized = String(status || 'UNCHANGED').toUpperCase();
+  if (MODIFIED_DIFF_STATUSES.has(normalized)) {
+    if (Object.prototype.hasOwnProperty.call(counts, normalized)) {
+      counts[normalized]++;
+    }
+    counts.MODIFIED++;
+    return counts;
+  }
+  if (Object.prototype.hasOwnProperty.call(counts, normalized)) {
+    counts[normalized]++;
+  } else if (normalized === 'BASELINE') {
+    counts.UNCHANGED++;
+  } else if (normalized.includes('PRICE') || normalized.includes('MOD') || normalized.includes('ATTR')) {
     counts.MODIFIED++;
   } else {
     counts.UNCHANGED++;
   }
+  return counts;
+}
+
+function _pickFirstPresent(row, keys, fallback = null) {
+  for (const key of keys) {
+    const val = row?.[key];
+    if (val !== undefined && val !== null && val !== '') return val;
+  }
+  return fallback;
 }
 
 function _buildChangedRow(row, status) {
-  const unitPriceUsd = row['Unit Price (USD)'] != null ? row['Unit Price (USD)']
-    : (row.price != null ? row.price : '');
-  const previousPriceUsd = row['Previous Price (USD)'] != null ? row['Previous Price (USD)'] : '';
-  const priceDeltaUsd = row['Price Delta (USD)'] != null ? row['Price Delta (USD)'] : '';
+  const unitPriceUsd = _pickFirstPresent(row, ['Unit Price (USD)', 'List Price (USD)', 'listPrice', 'price'], '');
+  const previousPrice = _pickFirstPresent(row, ['Previous List Price (USD)', 'Previous Price (USD)', 'previousPrice'], null);
+  const priceDelta = _pickFirstPresent(row, ['Price Change (USD)', 'Price Delta (USD)', 'priceDelta'], null);
+  const priceChangePct = _pickFirstPresent(row, ['Price Change (%)', 'priceChangePct'], null);
+  const attributeDeltas = row['Attribute Deltas'] || 'None';
 
   return {
     sku: row.sku || row['Product #'] || '',
     description: row.description || row['Description'] || '',
     category: row._category,
+    domain: row._domain || 'Hardware',
     status,
     unitPriceUsd,
-    previousPriceUsd,
-    priceDeltaUsd
+    currentPrice: unitPriceUsd !== '' ? unitPriceUsd : null,
+    previousPrice,
+    previousPriceUsd: previousPrice !== null ? previousPrice : '',
+    priceDelta,
+    priceDeltaUsd: priceDelta !== null ? priceDelta : '',
+    priceChangePct,
+    attributeDeltas
   };
 }
 
 function _processDiffRow(row, counts, changedRows) {
   const status = String(row['Diff Status'] || 'UNCHANGED').toUpperCase();
   _updateDiffStatusCount(status, counts);
-  if (status !== 'UNCHANGED') {
+  if (status !== 'UNCHANGED' && status !== 'BASELINE') {
     changedRows.push(_buildChangedRow(row, status));
   }
 }
@@ -192,58 +247,180 @@ function _resolveUnavailableRulesCount(catalog, liveCatalogJson) {
   return 0;
 }
 
-function summarizeCatalogDiffState(liveCatalogJson) {
-  const catalog = loadJsonFileSafe(liveCatalogJson, {});
-  const allSkus = (catalog.entries || []).flatMap(entry => (entry.skus || []).map(row => ({
+function _resolveServicesCatalogData(liveCatalogJson, catalog, servicesCatalogJson) {
+  if (servicesCatalogJson && typeof servicesCatalogJson === 'object') {
+    return servicesCatalogJson;
+  }
+  if (typeof servicesCatalogJson === 'string' && servicesCatalogJson.trim()) {
+    return loadJsonFileSafe(servicesCatalogJson, null);
+  }
+  if (!liveCatalogJson || typeof liveCatalogJson !== 'string') return null;
+
+  const dir = path.dirname(liveCatalogJson);
+  const base = path.basename(liveCatalogJson);
+  const candidates = [];
+  if (/_Catalog\.json$/i.test(base)) {
+    candidates.push(path.join(dir, base.replace(/_Catalog\.json$/i, '_Services.json')));
+  }
+  if (catalog?.metadata?.model) {
+    candidates.push(path.join(dir, `${catalog.metadata.model}_Services.json`));
+  }
+  for (const candidate of candidates) {
+    if (fs.existsSync(candidate)) {
+      return loadJsonFileSafe(candidate, null);
+    }
+  }
+  return null;
+}
+
+function _collectCatalogRows(catalogData, domainLabel) {
+  if (!catalogData || !Array.isArray(catalogData.entries)) return [];
+  const fallbackCat = domainLabel === 'Service' ? 'Services' : 'Hardware';
+  return catalogData.entries.flatMap(entry => (entry.skus || []).map(row => ({
     ...row,
-    _category: entry.parentCategory || entry.subcategory || 'Hardware'
+    _category: entry.parentCategory || entry.subCategory || entry.subcategory || fallbackCat,
+    _domain: domainLabel
   })));
-  const counts = { ADDED: 0, MODIFIED: 0, REMOVED: 0, DISCONTINUED: 0, UNCHANGED: 0 };
+}
+
+function summarizeCatalogDiffState(liveCatalogJson, servicesCatalogJson = null) {
+  const catalogPath = typeof liveCatalogJson === 'string' ? liveCatalogJson : null;
+  const catalog = (liveCatalogJson && typeof liveCatalogJson === 'object')
+    ? liveCatalogJson
+    : loadJsonFileSafe(catalogPath, {});
+  const services = _resolveServicesCatalogData(catalogPath, catalog, servicesCatalogJson);
+
+  const hwRows = _collectCatalogRows(catalog, 'Hardware');
+  const svcRows = _collectCatalogRows(services, 'Service');
+  const hwDiffCounts = _createDiffCounts();
+  const serviceDiffCounts = _createDiffCounts();
   const changedRows = [];
 
-  for (const row of allSkus) {
-    _processDiffRow(row, counts, changedRows);
+  for (const row of hwRows) _processDiffRow(row, hwDiffCounts, changedRows);
+  for (const row of svcRows) _processDiffRow(row, serviceDiffCounts, changedRows);
+
+  const counts = _createDiffCounts();
+  for (const key of DIFF_COUNT_KEYS) {
+    counts[key] = hwDiffCounts[key] + serviceDiffCounts[key];
   }
 
-  const unavailableRulesCount = _resolveUnavailableRulesCount(catalog, liveCatalogJson);
+  const unavailableRulesCount = _resolveUnavailableRulesCount(catalog, catalogPath);
+  const hwSkuCount = catalog.metadata?.totalUniqueSKUs || hwRows.length;
+  const serviceSkuCount = services?.metadata?.totalUniqueSKUs || svcRows.length;
 
   return {
     totalUniqueSKUs: catalog.metadata?.totalUniqueSKUs || 0,
+    hwSkuCount,
+    serviceSkuCount,
     totalSubcategories: catalog.metadata?.totalSubcategories || 0,
     unavailableRulesCount,
     diffCounts: counts,
+    hwDiffCounts,
+    serviceDiffCounts,
     changedRows
   };
 }
 
-function writeCatalogDiffSummaryMarkdown(diffSummaryMdPath, meta, diffMetrics, hwSkuCount, serviceSkuCount) {
-  const lines = [
-    `# ${meta.cleanName} — Catalog Refresh & Delta Summary`,
+function _normalizeDiffMarkdownArgs(arg1, arg2, arg3, arg4, arg5) {
+  if (typeof arg1 === 'string') {
+    return {
+      diffSummaryMdPath: arg1,
+      meta: arg2 || {},
+      diffMetrics: arg3 || {},
+      hwSkuCount: arg4,
+      serviceSkuCount: arg5
+    };
+  }
+  const metaObj = arg1 || {};
+  const metricsObj = arg2 || {};
+  const outPath = typeof arg3 === 'string'
+    ? arg3
+    : (metaObj.diffSummaryMdPath || metaObj.outputPath || null);
+  return {
+    diffSummaryMdPath: outPath,
+    meta: metaObj,
+    diffMetrics: metricsObj,
+    hwSkuCount: typeof arg3 === 'number' ? arg3 : arg4,
+    serviceSkuCount: typeof arg3 === 'number' ? arg4 : arg5
+  };
+}
+
+function _sanitizeMdCell(value, fallback = 'N/A') {
+  if (value === undefined || value === null) return fallback;
+  const text = String(value).replace(/\r?\n/g, ' ').trim();
+  if (!text) return fallback;
+  return text.replace(/\s*\|\s*/g, '; ').replace(/\|/g, '&#124;');
+}
+
+function _formatChangedDiffMarkdownRow(row) {
+  const safeDesc = _sanitizeMdCell(row.description, '');
+  const prevPrice = _sanitizeMdCell(row.previousPrice ?? row.previousPriceUsd, 'N/A');
+  const currPrice = _sanitizeMdCell(row.currentPrice ?? row.unitPriceUsd, 'N/A');
+  const deltaPrice = _sanitizeMdCell(row.priceDelta ?? row.priceDeltaUsd, 'N/A');
+  const attrChanges = _sanitizeMdCell(row.attributeDeltas, 'None');
+  return `| \`${row.sku}\` | ${safeDesc} | **${row.status}** | ${prevPrice} | ${currPrice} | ${deltaPrice} | ${attrChanges} |`;
+}
+
+function _buildDiffMarkdownHeaderLines(meta, diffMetrics, counts, hwSkuCount, serviceSkuCount) {
+  const cleanName = meta.cleanName || meta.model || meta.productId || 'Catalog';
+  const family = meta.family || 'General';
+  const gen = meta.gen || meta.generation || 'General';
+  const resolvedHwCount = hwSkuCount ?? diffMetrics?.hwSkuCount ?? diffMetrics?.totalUniqueSKUs ?? 0;
+  const resolvedSvcCount = serviceSkuCount ?? diffMetrics?.serviceSkuCount ?? 0;
+  const removedTotal = (counts.REMOVED || 0) + (counts.DISCONTINUED || 0);
+  return [
+    `# ${cleanName} — Catalog Refresh & Delta Summary`,
     ``,
     `- **Generated At**: ${new Date().toISOString()}`,
-    `- **Family / Generation**: ${meta.family} / ${meta.gen}`,
-    `- **Active Hardware SKUs**: ${hwSkuCount}`,
-    `- **Support & Service SKUs**: ${serviceSkuCount}`,
-    `- **Explicit Unavailable Rules**: ${diffMetrics.unavailableRulesCount}`,
-    `- **Diff Summary**: Added=${diffMetrics.diffCounts.ADDED}, Modified=${diffMetrics.diffCounts.MODIFIED}, Removed=${diffMetrics.diffCounts.REMOVED + diffMetrics.diffCounts.DISCONTINUED}, Unchanged=${diffMetrics.diffCounts.UNCHANGED}`,
+    `- **Family / Generation**: ${family} / ${gen}`,
+    `- **Active Hardware SKUs**: ${resolvedHwCount}`,
+    `- **Support & Service SKUs**: ${resolvedSvcCount}`,
+    `- **Explicit Unavailable Rules**: ${diffMetrics?.unavailableRulesCount ?? 0}`,
+    `- **Added**: ${counts.ADDED || 0}`,
+    `- **Modified (Total)**: ${counts.MODIFIED || 0} (Price Changed: ${counts.PRICE_CHANGED || 0}, Attribute Changed: ${counts.ATTRIBUTE_CHANGED || 0}, Price & Attribute Changed: ${counts.PRICE_AND_ATTRIBUTE_CHANGED || 0}, Reinstated: ${counts.REINSTATED || 0})`,
+    `- **Removed / Discontinued**: ${removedTotal}`,
+    `- **Unchanged**: ${counts.UNCHANGED || 0}`,
     ``
   ];
-  if (Array.isArray(diffMetrics.changedRows) && diffMetrics.changedRows.length > 0) {
+}
+
+function writeCatalogDiffSummaryMarkdown(arg1, arg2, arg3, arg4, arg5) {
+  const { diffSummaryMdPath, meta, diffMetrics, hwSkuCount, serviceSkuCount } =
+    _normalizeDiffMarkdownArgs(arg1, arg2, arg3, arg4, arg5);
+  const counts = { ..._createDiffCounts(), ...(diffMetrics?.diffCounts || diffMetrics) };
+  const lines = _buildDiffMarkdownHeaderLines(meta, diffMetrics, counts, hwSkuCount, serviceSkuCount);
+  const changedRows = Array.isArray(diffMetrics?.changedRows) ? diffMetrics.changedRows : [];
+  if (changedRows.length > 0) {
     lines.push(
-      `## Changed SKUs (${diffMetrics.changedRows.length})`,
+      `## Changed SKUs (${changedRows.length})`,
       ``,
-      `| SKU | Status | Category | Previous Price (USD) | Current Price (USD) | Delta (USD) | Description |`,
-      `| :--- | :--- | :--- | :--- | :--- | :--- | :--- |`
+      `| SKU | Description | Status | Previous Price (USD) | Current Price (USD) | Delta (USD) | Attribute Changes (Old → New) |`,
+      `| :--- | :--- | :--- | :--- | :--- | :--- | :--- |`,
+      ...changedRows.map(_formatChangedDiffMarkdownRow)
     );
-    for (const r of diffMetrics.changedRows) {
-      const safeDesc = String(r.description || '').replace(/\|/g, '/').replace(/\r?\n/g, ' ').trim();
-      lines.push(`| \`${r.sku}\` | **${r.status}** | ${r.category} | ${r.previousPriceUsd} | ${r.unitPriceUsd} | ${r.priceDeltaUsd} | ${safeDesc} |`);
-    }
   } else {
     lines.push(`## Changed SKUs`, ``, `No SKU additions, modifications, or removals detected against the prior snapshot.`);
   }
   lines.push(``);
-  fs.writeFileSync(diffSummaryMdPath, lines.join('\n'), 'utf8');
+  const markdown = lines.join('\n');
+  if (diffSummaryMdPath) {
+    fs.writeFileSync(diffSummaryMdPath, markdown, 'utf8');
+  }
+  return markdown;
+}
+
+function _buildPostflightCloudFields(postFlowSyncResult, cloudVerified) {
+  const isCloudSynced = Boolean(postFlowSyncResult?.cloudSynced ?? cloudVerified);
+  return {
+    cloudSyncState: postFlowSyncResult?.syncStatus || 'CLOUD_SYNC_PENDING',
+    notebookId: postFlowSyncResult?.notebookId || null,
+    verifiedSourceId: postFlowSyncResult?.verifiedSourceId || postFlowSyncResult?.uploadResult?.newSourceId || null,
+    verifiedSourceName: postFlowSyncResult?.verifiedSourceName || postFlowSyncResult?.uploadResult?.newSourceName || null,
+    payloadSha256: postFlowSyncResult?.payloadSha256 || null,
+    cloudVerifiedAt: isCloudSynced ? (postFlowSyncResult?.cloudVerifiedAt || new Date().toISOString()) : null,
+    readbackVerified: Boolean(postFlowSyncResult?.readbackVerified ?? isCloudSynced),
+    canaryVerified: postFlowSyncResult?.canaryVerified ?? null
+  };
 }
 
 function runScrapingPostflightVerification({
@@ -255,7 +432,8 @@ function runScrapingPostflightVerification({
   totalSkuCount,
   conditionalSkusCount,
   postFlowSyncResult,
-  preflightReport
+  preflightReport,
+  qualityPassed
 }) {
   console.log('\n--- STEP 10B: Post-Flight Completeness & Catalog Delta Verification ---');
   const diffSummaryMdPath = path.join(liveOutputDir, `${meta.cleanName}_Catalog_Diff_Summary.md`);
@@ -265,8 +443,12 @@ function runScrapingPostflightVerification({
     writeCatalogDiffSummaryMarkdown(diffSummaryMdPath, meta, diffMetrics, hwSkuCount, serviceSkuCount);
   } catch (error) { diffSummaryError = error.message; }
   const hasDiffSummaryMd = !diffSummaryError && fs.existsSync(diffSummaryMdPath);
+  const resolvedQualityPassed = qualityPassed !== undefined
+    ? Boolean(qualityPassed)
+    : Boolean(preflightReport?.pass === true && hasDiffSummaryMd);
   const cloudVerified = postFlowSyncResult?.success === true && postFlowSyncResult?.syncStatus === 'CLOUD_VERIFIED';
-  const postflightPassed = preflightReport?.pass === true && hasDiffSummaryMd && cloudVerified;
+  const postflightPassed = preflightReport?.pass === true && hasDiffSummaryMd && cloudVerified && resolvedQualityPassed;
+  const cloudFields = _buildPostflightCloudFields(postFlowSyncResult, cloudVerified);
 
   const receipt = {
     verifiedAt: new Date().toISOString(),
@@ -277,6 +459,7 @@ function runScrapingPostflightVerification({
     postflight: {
       pass: postflightPassed,
       status: postflightPassed ? 'VERIFIED' : 'ACTION_REQUIRED',
+      qualityAuditPassed: resolvedQualityPassed,
       diffSummaryError,
       hwSkuCount,
       serviceSkuCount,
@@ -285,7 +468,7 @@ function runScrapingPostflightVerification({
       unavailableRulesCount: diffMetrics.unavailableRulesCount,
       diffSummaryPresent: hasDiffSummaryMd,
       diffCounts: diffMetrics.diffCounts,
-      cloudSyncState: postFlowSyncResult?.syncStatus || 'CLOUD_SYNC_PENDING'
+      ...cloudFields
     }
   };
 
@@ -304,5 +487,8 @@ module.exports = {
   runScrapingPreflightGate,
   runScrapingPostflightVerification,
   verifyTargetProductAndNotebookConfig,
-  summarizeCatalogDiffState
+  summarizeCatalogDiffState,
+  writeCatalogDiffSummaryMarkdown,
+  _updateDiffStatusCount,
+  _buildChangedRow
 };

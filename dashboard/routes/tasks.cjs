@@ -96,8 +96,16 @@ router.post('/navigate-oca', (req, res) => {
 router.post('/launch-browser', async (req, res) => {
   try {
     const { ensureChromeBrowserRunning } = require('../../scripts/lib/scraper/browser_launcher.js');
-    await ensureChromeBrowserRunning(9222, 'https://partner.hpe.com');
-    res.json({ status: 'SUCCESS', message: 'Browser session active and verified on port 9222' });
+    const result = await ensureChromeBrowserRunning(9222, 'https://partner.hpe.com');
+    if (!result || !result.ok) {
+      return sendErrorResponse(
+        res,
+        503,
+        result?.error || 'Chrome CDP port 9222 did not become ready',
+        { source: 'TASKS_ROUTER', details: result || null, context: result || null }
+      );
+    }
+    res.json({ status: 'SUCCESS', message: 'Browser session active and verified on port 9222', details: result });
   } catch (err) {
     sendErrorResponse(res, 500, `Failed to launch browser: ${err.message}`, { source: 'TASKS_ROUTER' });
   }

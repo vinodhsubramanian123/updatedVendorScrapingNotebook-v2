@@ -1,9 +1,32 @@
 const path = require('path');
 const fs = require('fs');
+const crypto = require('crypto');
 const { buildMasterKnowledgeRegistry, generateNotebookSyncPayload, inspectKnowledgeDrift } = require('./knowledge_sync.js');
 const logger = require('../system/pipeline_logger.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
+
+function _computeFileSha256(filePath) {
+  if (!filePath || !fs.existsSync(filePath)) return null;
+  try {
+    return crypto.createHash('sha256').update(fs.readFileSync(filePath)).digest('hex');
+  } catch {
+    return null;
+  }
+}
+
+function _buildSyncConfirmationFields(uploadResult, drift, payloadPath, syncStatus) {
+  const cloudSynced = Boolean(syncStatus === 'CLOUD_VERIFIED' && uploadResult?.success === true);
+  return {
+    cloudSynced,
+    notebookId: uploadResult?.notebookId || drift?.notebookId || null,
+    verifiedSourceId: uploadResult?.newSourceId || null,
+    verifiedSourceName: uploadResult?.newSourceName || uploadResult?.canonicalSourceName || null,
+    payloadSha256: uploadResult?.payloadSha256 || _computeFileSha256(payloadPath),
+    readbackVerified: Boolean(uploadResult?.readbackVerified ?? cloudSynced),
+    canaryVerified: uploadResult?.canaryVerified ?? null
+  };
+}
 
 // GAP-7 FIX: Patterns matching ephemeral test chassis payload files that
 // should never accumulate in outputs/history/.
@@ -60,75 +83,82 @@ function cleanTestPayloads() {
  * @param {object} [options] Optional settings { autoUploadNLM: false }
  * @returns {object} Sync result summary
  */
+function _resolveSyncStatus(autoUpload, payload) {
+  if (!autoUpload) return 'LOCAL_PAYLOAD_ONLY';
+  return payload.uploadResult?.success ? 'CLOUD_VERIFIED' : 'CLOUD_FAILED';
+}
+
+function _startOptionalRunningKnowledgeSync(opts) {
+  if (!opts.syncRunningKnowledge) return null;
+  try {
+    const { syncRunningKnowledge } = require('../../services/running_knowledge_sync.js');
+    return syncRunningKnowledge({ dryRun: false });
+  } catch (rkErr) {
+    logger.warn('POST_FLOW_SYNC', `Running knowledge sync advisory: ${rkErr.message}`);
+    return null;
+  }
+}
+
+function _startOptionalQuickSpecsSync(chassisName, flowType, opts, shouldPersist, autoUpload) {
+  const shouldSync = shouldPersist && (autoUpload || opts.syncQuickSpecs === true) && (flowType === 'SCRAPE' || opts.syncQuickSpecs === true);
+  if (!shouldSync) return null;
+  try {
+    const { verifyNotebookQuickSpecs } = require('./quickspecs_sync.js');
+    return verifyNotebookQuickSpecs(chassisName, { autoUpload: true, persistOfficialSource: true })
+      .catch(qsErr => {
+        logger.warn('POST_FLOW_SYNC', `QuickSpecs sync advisory: ${qsErr.message}`);
+        return { success: false, status: 'QUICKSPECS_SYNC_ERROR', error: qsErr.message };
+      });
+  } catch (qsErr) {
+    logger.warn('POST_FLOW_SYNC', `QuickSpecs sync advisory: ${qsErr.message}`);
+    return null;
+  }
+}
+
 function triggerPostFlowSync(chassisName = 'Unknown_Chassis', flowType = 'EVALUATION', options = {}) {
   const opts = typeof options === 'string' ? { targetDir: options } : (options || {});
   if (opts.persist === false || process.env.NODE_ENV === 'test') return {
     success: true, skipped: true, syncStatus: 'SKIPPED', flowType, chassisName,
-    payloadPath: null, cloudUploaded: false, runningKnowledgeSynced: false,
+    payloadPath: null, cloudUploaded: false, cloudSynced: false, runningKnowledgeSynced: false,
+    notebookId: null, verifiedSourceId: null, verifiedSourceName: null, payloadSha256: null,
+    readbackVerified: false, canaryVerified: null, quickSpecsSync: null,
     uploadResult: null, reason: 'Persistence and publishing disabled for this invocation'
   };
   try {
     logger.info('POST_FLOW_SYNC', `Triggering post-flow knowledge sync for ${chassisName} (Flow: ${flowType})`);
-    
+
     // 1. Build / Update Master Knowledge Registry
     const shouldPersist = opts.persist !== false && process.env.NODE_ENV !== 'test';
     const registry = buildMasterKnowledgeRegistry({ persist: shouldPersist });
-    
+
     // 2. Generate updated sync payload for target chassis
     const autoUpload = opts.autoUploadNLM === undefined ? process.env.AUTO_UPLOAD_NLM === '1' : opts.autoUploadNLM === true;
+    const confirmRetirement = opts.confirmSourceRetirement !== undefined
+      ? opts.confirmSourceRetirement === true
+      : (flowType === 'SCRAPE' || process.env.AUTO_RETIRE_STALE_SOURCES === '1');
     const payload = shouldPersist
-      ? generateNotebookSyncPayload(chassisName, autoUpload, {
-          confirmSourceRetirement: opts.confirmSourceRetirement !== undefined
-            ? opts.confirmSourceRetirement === true
-            : (flowType === 'SCRAPE' || process.env.AUTO_RETIRE_STALE_SOURCES === '1'),
-          targetDir: opts.targetDir
-        })
+      ? generateNotebookSyncPayload(chassisName, autoUpload, { confirmSourceRetirement: confirmRetirement, targetDir: opts.targetDir })
       : { success: true, localPayloadPath: null, skipped: true };
-    
+
     // 3. Inspect drift metrics
     const drift = inspectKnowledgeDrift(chassisName);
-
-    let syncStatus;
-    if (!autoUpload) {
-      syncStatus = 'LOCAL_PAYLOAD_ONLY';
-    } else if (payload.uploadResult?.success) {
-      syncStatus = 'CLOUD_VERIFIED';
-    } else {
-      syncStatus = 'CLOUD_FAILED';
-    }
+    const syncStatus = _resolveSyncStatus(autoUpload, payload);
 
     logger.info('POST_FLOW_SYNC', `Post-flow sync complete. Status: ${syncStatus} (Drift: ${drift.status}), Total Rules: ${registry.totalLearnedRules}, Unsynced: ${drift.unSyncedDeltasCount}`);
 
     // 4. GAP-7 FIX: Clean up stale test payload files from outputs/history/
     cleanTestPayloads();
 
-    // 5. Optionally trigger running knowledge charter sync if requested
-    let runningKnowledgePromise = null;
-    if (opts.syncRunningKnowledge) {
-      try {
-        const { syncRunningKnowledge } = require('../../services/running_knowledge_sync.js');
-        runningKnowledgePromise = syncRunningKnowledge({ dryRun: false });
-      } catch (rkErr) {
-        logger.warn('POST_FLOW_SYNC', `Running knowledge sync advisory: ${rkErr.message}`);
-      }
-    }
+    // 5. Optionally trigger running knowledge charter and QuickSpecs syncs
+    const runningKnowledgePromise = _startOptionalRunningKnowledgeSync(opts);
+    const quickSpecsSyncPromise = _startOptionalQuickSpecsSync(chassisName, flowType, opts, shouldPersist, autoUpload);
 
-    // 6. Auto-verify and attach new official QuickSpecs PDF sources on SCRAPE or explicit syncQuickSpecs
-    let quickSpecsSyncPromise = null;
-    if (shouldPersist && (autoUpload || opts.syncQuickSpecs === true) && (flowType === 'SCRAPE' || opts.syncQuickSpecs === true)) {
-      try {
-        const { verifyNotebookQuickSpecs } = require('./quickspecs_sync.js');
-        quickSpecsSyncPromise = verifyNotebookQuickSpecs(chassisName, { autoUpload: true, persistOfficialSource: true })
-          .catch(qsErr => logger.warn('POST_FLOW_SYNC', `QuickSpecs sync advisory: ${qsErr.message}`));
-      } catch (qsErr) {
-        logger.warn('POST_FLOW_SYNC', `QuickSpecs sync advisory: ${qsErr.message}`);
-      }
-    }
-
+    const confirmationFields = _buildSyncConfirmationFields(payload.uploadResult || null, drift, payload.payloadPath, syncStatus);
     const result = {
       success: syncStatus !== 'CLOUD_FAILED',
       syncStatus,
       cloudUploaded: Boolean(autoUpload && payload.uploadResult?.success),
+      ...confirmationFields,
       flowType,
       chassisName,
       masterRegistryRulesCount: registry.totalLearnedRules,
@@ -137,6 +167,7 @@ function triggerPostFlowSync(chassisName = 'Unknown_Chassis', flowType = 'EVALUA
       unSyncedDeltasCount: drift.unSyncedDeltasCount,
       uploadResult: payload.uploadResult || null,
       runningKnowledgeSynced: false,
+      quickSpecsSync: null,
       runningKnowledgePromise,
       quickSpecsSyncPromise
     };
@@ -154,10 +185,30 @@ function triggerPostFlowSync(chassisName = 'Unknown_Chassis', flowType = 'EVALUA
     logger.error('POST_FLOW_SYNC', `Failed post-flow knowledge sync for ${chassisName}`, err);
     return {
       success: false,
+      cloudSynced: false,
+      notebookId: null,
+      verifiedSourceId: null,
+      verifiedSourceName: null,
+      payloadSha256: null,
+      readbackVerified: false,
+      canaryVerified: null,
+      quickSpecsSync: null,
       flowType,
       chassisName,
       error: err.message
     };
+  }
+}
+
+async function _awaitQuickSpecsSync(result) {
+  if (!result.quickSpecsSyncPromise) return;
+  try {
+    const qsRes = await result.quickSpecsSyncPromise;
+    result.quickSpecsSync = qsRes || { success: false, status: 'QUICKSPECS_SYNC_EMPTY' };
+  } catch (qsErr) {
+    result.quickSpecsSync = { success: false, status: 'QUICKSPECS_SYNC_ERROR', error: qsErr?.message || 'QuickSpecs sync failed' };
+  } finally {
+    delete result.quickSpecsSyncPromise;
   }
 }
 
@@ -172,10 +223,10 @@ async function triggerPostFlowSyncAsync(chassisName = 'Unknown_Chassis', flowTyp
     }
   }
   delete result.runningKnowledgePromise;
+  await _awaitQuickSpecsSync(result);
   if (options.syncRunningKnowledge && !result.runningKnowledgeSynced) {
     // GAP-2 FIX: Do not override result.success to false here.
     // A failure in running knowledge sync should be an advisory warning, not a fatal flow error.
-    const logger = require('../system/pipeline_logger.js');
     logger.warn('POST_FLOW_SYNC', 'Running knowledge synchronization did not complete successfully (non-fatal)');
   }
   return result;

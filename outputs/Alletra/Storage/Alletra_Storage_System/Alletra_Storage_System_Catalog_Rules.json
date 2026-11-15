@@ -9,18 +9,30 @@
   "rules": [
     {
       "ruleId": "RULE_ALLETRA_MP_B10000_CTO_CHASSIS",
-      "description": "HPE Alletra Storage MP B10000 base storage controller chassis is R0Q37A (,200.00). Disaggregated dual-node active-active controllers.",
+      "rule": "HPE Alletra Storage MP B10000 base storage controller chassis is R0Q37A ($43,200.00). Disaggregated dual-node active-active controllers.",
+      "ruleText": "HPE Alletra Storage MP B10000 base storage controller chassis is R0Q37A ($43,200.00). Disaggregated dual-node active-active controllers.",
+      "description": "HPE Alletra Storage MP B10000 base storage controller chassis is R0Q37A ($43,200.00). Disaggregated dual-node active-active controllers.",
+      "parentCategory": "Storage Systems",
+      "subCategory": "Base Storage Chassis",
       "affectedSku": "R0Q37A",
       "type": "BASE_CHASSIS_SELECTION"
     },
     {
       "ruleId": "RULE_ALLETRA_STORAGE_DOMAIN_ISOLATION",
+      "rule": "Storage domain isolation (INV-194): Alletra storage components cannot inherit ProLiant server rules or Tech Care server defaults.",
+      "ruleText": "Storage domain isolation (INV-194): Alletra storage components cannot inherit ProLiant server rules or Tech Care server defaults.",
       "description": "Storage domain isolation (INV-194): Alletra storage components cannot inherit ProLiant server rules or Tech Care server defaults.",
+      "parentCategory": "Storage Systems",
+      "subCategory": "Domain Isolation",
       "type": "DOMAIN_SEPARATION"
     },
     {
       "ruleId": "RULE_ALLETRA_QUARANTINE_UNVERIFIED_BOQS",
+      "rule": "Per INV-24, unverified customer BOQs are strictly quarantined from ground truth.",
+      "ruleText": "Per INV-24, unverified customer BOQs are strictly quarantined from ground truth.",
       "description": "Per INV-24, unverified customer BOQs are strictly quarantined from ground truth.",
+      "parentCategory": "Storage Systems",
+      "subCategory": "Grounding Governance",
       "type": "GROUNDING_GOVERNANCE"
     }
   ]

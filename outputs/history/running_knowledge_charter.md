@@ -2,8 +2,8 @@
 
 **Document Classification:** Canonical Ground-Truth Architecture & Validation Charter<br>
 **Maintained By:** HPE ProLiant AI Studio Autonomous Knowledge Engine (Antigravity AI)<br>
-**Last Synchronized:** 2026-11-15T06:57:27.323Z<br>
-**Total Deduplicated Learned Rules:** 153<br>
+**Last Synchronized:** 2026-11-15T08:16:21.085Z<br>
+**Total Deduplicated Learned Rules:** 155<br>
 **Universal Invariant Compliance:** INV-1 through INV-38 Certified<br>
 **Google Drive Destination:** `shared_folder_id: 1YR0lBh-gg00amKHRxuOqp5Aea3iL5O7-`
 
@@ -160,7 +160,7 @@ The Catalog Vendor Solution provides modular, AI-assisted catalog ingestion, nor
 
 ## 5. Deduplicated Learned Rule Ledger & Verification Provenance
 
-Total verified rules indexed in this build: **153**.
+Total verified rules indexed in this build: **155**.
 
 | Scope | Target Chassis | Category | Affected SKU | Dependency SKU | Rule Summary / Validation Directive | Verifications |
 | :--- | :--- | :--- | :--- | :--- | :--- | :---: |
@@ -171,6 +171,8 @@ Total verified rules indexed in this build: **153**.
 | 🌐 UNIVERSAL | `GLOBAL` | `WORKFLOW_CLIC_GLOBAL_AND_SEVERITY_TRIAGE` | `null` | `—` | For any full HPE solution in OCA: (1) Run CLIC Check at the Global Solution Level (top breadcrumb #eo_nav_li_0) rather t | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `WORKFLOW_CLOSENESS_LIFECYCLE_AND_LEADTIME` | `null` | `—` | Strategy synthesis and least-delta replacement (INV-237): (1) Filter out DISCONTINUED / OBSOLETE SKUs across both hardwa | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `WORKFLOW_CATEGORY_DEPENDENCY_AND_ESCALATION` | `null` | `—` | SKU category prerequisite intelligence & runtime escalation (INV-238): (1) Drive Cage / Backplane topology — NOT bare dr | 1x |
+| 🌐 UNIVERSAL | `GLOBAL` | `WORKFLOW_ATTRIBUTE_DELTAS_AND_SYNC_RECEIPTS` | `null` | `—` | End-to-end catalog diff & sync confirmation protocol (INV-239): (1) Preserve Attribute Deltas ("field: oldValue -> newVa | 1x |
+| 🌐 UNIVERSAL | `GLOBAL` | `WORKFLOW_MULTIVENDOR_PORTAL_AND_CDP_GUARD` | `null` | `—` | Multi-vendor portal, domain rules & CDP readiness protocol (INV-240): (1) Use registerCustomVendorPortalPolicy, register | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `SUPPORT_POLICY` | `undefined` | `—` | Preserve explicit customer support term and tier in the closest rank; use 3-year Tech Care Basic only when unspecified o | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `ICON_SUPPORT_ISOLATION` | `undefined` | `—` | Select Services from Components for the owning icon, edit its dropdowns, and leave both apply-to-all icons and apply-to- | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `SESSION_RECOVERY_PROTOCOL` | `undefined` | `—` | When OCA says it encountered a problem, restart from Partner Portal refresh/login and open One Config Advanced through Q | 1x |

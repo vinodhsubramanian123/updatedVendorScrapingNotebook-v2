@@ -150,10 +150,21 @@ test('Multi-Vendor Portal Router isolates HPE, Dell, and Cisco routing', async (
 });
 
 test('getVendorCredentials provides distinct configurations for HPE, Dell, Cisco, and Lenovo', () => {
-  const hpe = getVendorCredentials('HPE');
-  assert.equal(hpe.vendor, 'HPE');
-  assert.ok(hpe.portalUrl.includes('partner.hpe.com'));
-  assert.equal(hpe.username, 'hpeconfig@swiftline-uae.com');
+  const prevUser = process.env.HPE_PORTAL_USER;
+  try {
+    delete process.env.HPE_PORTAL_USER;
+    const hpeUnset = getVendorCredentials('HPE');
+    assert.equal(hpeUnset.vendor, 'HPE');
+    assert.ok(hpeUnset.portalUrl.includes('partner.hpe.com'));
+    assert.equal(hpeUnset.username, '');
+
+    process.env.HPE_PORTAL_USER = 'hpe-test@example.com';
+    const hpeConfigured = getVendorCredentials('HPE');
+    assert.equal(hpeConfigured.username, 'hpe-test@example.com');
+  } finally {
+    if (prevUser === undefined) delete process.env.HPE_PORTAL_USER;
+    else process.env.HPE_PORTAL_USER = prevUser;
+  }
 
   const dell = getVendorCredentials('Dell');
   assert.equal(dell.vendor, 'Dell');

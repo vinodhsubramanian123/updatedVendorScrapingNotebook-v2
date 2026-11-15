@@ -105,7 +105,21 @@ async function auditCdpPortal() {
     const timeout = setTimeout(() => controller.abort(), 2000);
     const res = await fetch(`http://localhost:${cdpPort}/json/list`, { signal: controller.signal });
     clearTimeout(timeout);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    if (!res.ok) {
+      const warning = `Port ${cdpPort} responded with HTTP ${res.status} from a non-CDP listener responder.`;
+      return {
+        name: 'Chrome CDP & Partner Portal SSO',
+        status: 'STANDBY',
+        valid: true,
+        portConflict: true,
+        httpStatus: res.status,
+        openTabsCount: 0,
+        partnerPortalActive: false,
+        ocaSessionActive: false,
+        warning,
+        remediation: `${warning} Close the conflicting process on port ${cdpPort} (e.g. background msedge.exe) so Chrome CDP can bind during live scrape.`
+      };
+    }
     const tabs = await res.json();
     const partnerTab = Array.isArray(tabs) ? tabs.find(t => (t.url || '').includes('partner.hpe.com')) : null;
     const ocaTab = Array.isArray(tabs) ? tabs.find(t => (t.url || '').includes('oca')) : null;
@@ -113,6 +127,8 @@ async function auditCdpPortal() {
       name: 'Chrome CDP & Partner Portal SSO',
       status: 'ONLINE',
       valid: true,
+      portConflict: false,
+      httpStatus: res.status,
       openTabsCount: Array.isArray(tabs) ? tabs.length : 0,
       partnerPortalActive: Boolean(partnerTab),
       ocaSessionActive: Boolean(ocaTab),
@@ -123,6 +139,8 @@ async function auditCdpPortal() {
       name: 'Chrome CDP & Partner Portal SSO',
       status: 'STANDBY',
       valid: true,
+      portConflict: false,
+      httpStatus: null,
       openTabsCount: 0,
       partnerPortalActive: false,
       ocaSessionActive: false,
@@ -225,4 +243,11 @@ if (require.main === module) {
   });
 }
 
-module.exports = { main };
+module.exports = {
+  main,
+  auditGoogleWorkspace,
+  auditNotebookLm,
+  auditGeminiRotator,
+  auditCdpPortal,
+  auditJules
+};

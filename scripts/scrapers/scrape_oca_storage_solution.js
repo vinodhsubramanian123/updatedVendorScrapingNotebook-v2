@@ -16,6 +16,34 @@ const PROJECT_ROOT  = path.resolve(__dirname, '..', '..');
 const OUTPUTS_ROOT  = path.join(PROJECT_ROOT, 'outputs');
 const JSON_MODE     = process.argv.includes('--json');
 
+function _readCliFlagValue(argv, flagName) {
+  const args = Array.isArray(argv) ? argv : [];
+  const prefix = `${flagName}=`;
+  for (let i = 0; i < args.length; i += 1) {
+    const token = String(args[i] || '');
+    if (token.startsWith(prefix)) {
+      return token.slice(prefix.length).trim() || null;
+    }
+    if (token === flagName && i + 1 < args.length) {
+      const nextToken = String(args[i + 1] || '').trim();
+      return nextToken && !nextToken.startsWith('--') ? nextToken : null;
+    }
+  }
+  return null;
+}
+
+function _parseCliArgs(argv = process.argv) {
+  const args = Array.isArray(argv) ? argv : [];
+  const rawChassis = _readCliFlagValue(args, '--chassis');
+  const rawQuery = _readCliFlagValue(args, '--query');
+  const targetChassisQuery = rawChassis ? rawChassis.replace(/_/g, ' ') : (rawQuery || '');
+  const isRecoverMode = args.includes('--recover') || args.includes('--fresh');
+  const navQuery = targetChassisQuery || 'Alletra';
+  const vendor = _readCliFlagValue(args, '--vendor') || 'HPE';
+  const portalUrl = _readCliFlagValue(args, '--portal-url') || null;
+  return { targetChassisQuery, isRecoverMode, navQuery, vendor, portalUrl };
+}
+
 async function extractWizardSubTab(ws, step, index, total, allTables, dropdownSKUs) {
   console.log(`\n  • Sub-tab ${index + 1}/${total}: "${step.text}"...`);
 
@@ -92,15 +120,15 @@ async function extractWizardSubTab(ws, step, index, total, allTables, dropdownSK
   return `\n\n=== ${step.text} ===\n\n` + stepData.text;
 }
 
-function auditAndPromoteStorageStaging(outputDir, meta, catalogJson, catalogXlsx) {
+function _auditStorageStagingArtifacts(outputDir, liveOutputDir, meta, catalogJson, catalogXlsx, options = {}) {
   console.log('\n--- STEP 6: Staging Post-Flight Quality Audit ---');
-  let captureReceipt = null;
-  const liveOutputDir = path.join(OUTPUTS_ROOT, meta.family, meta.gen, meta.cleanName);
   try {
-    execSync(
-      `node "${path.join(PROJECT_ROOT, 'tests', 'integration', 'verify_excel_tally.js')}" "${catalogXlsx}"`,
-      { stdio: 'inherit', cwd: PROJECT_ROOT }
-    );
+    if (!options.skipExcelTallyVerify) {
+      execSync(
+        `node "${path.join(PROJECT_ROOT, 'tests', 'integration', 'verify_excel_tally.js')}" "${catalogXlsx}"`,
+        { stdio: 'inherit', cwd: PROJECT_ROOT }
+      );
+    }
     const stagingCatalogContent = JSON.parse(fs.readFileSync(catalogJson, 'utf-8'));
     const skuCount = stagingCatalogContent.metadata?.totalUniqueSKUs || 0;
     const entriesCount = Array.isArray(stagingCatalogContent.entries) ? stagingCatalogContent.entries.length : 0;
@@ -110,23 +138,116 @@ function auditAndPromoteStorageStaging(outputDir, meta, catalogJson, catalogXlsx
     if (entriesCount === 0) {
       throw new Error(`Pre-Promotion Schema Guard Failed: entries[] is empty or not an array.`);
     }
-    captureReceipt = require('../lib/catalog/catalog_capture_receipt.js').createCaptureReceipt(outputDir, liveOutputDir, meta.cleanName, { solutionDomain: 'STORAGE' });
+    const captureReceipt = require('../lib/catalog/catalog_capture_receipt.js').createCaptureReceipt(
+      outputDir,
+      liveOutputDir,
+      meta.cleanName,
+      { solutionDomain: 'STORAGE', skipCoverageValidation: options.skipCoverageValidation === true }
+    );
+    if (captureReceipt) {
+      if (options.vendor) captureReceipt.vendor = options.vendor;
+      if (options.portalUrl) captureReceipt.portalUrl = options.portalUrl;
+    }
     console.log('✅ Staging audit passed 100%! Ready to promote to live workspace.');
+    return captureReceipt;
   } catch (e) {
+    if (options.throwOnAuditFailure) throw e;
     const failedStagingDir = path.join(OUTPUTS_ROOT, 'temp', `failed_staging_${meta.cleanName}_${Date.now()}`);
     console.error('❌ STAGING POST-FLIGHT AUDIT FAILED:', e.message);
     console.error(`🛡️ Live workspace intact! Preserving failed staging for audit inspection at: ${failedStagingDir}`);
     try { fs.renameSync(outputDir, failedStagingDir); } catch (_) {}
     process.exit(1);
   }
+}
+
+async function _runStoragePostPromotionSyncAndVerify(liveOutputDir, meta, captureReceipt, options = {}) {
+  const liveCatalogJson = path.join(liveOutputDir, `${meta.cleanName}_Catalog.json`);
+  const liveServicesJson = path.join(liveOutputDir, `${meta.cleanName}_Services.json`);
+  const diffSummaryMdPath = path.join(liveOutputDir, `${meta.cleanName}_Catalog_Diff_Summary.md`);
+  const {
+    summarizeCatalogDiffState,
+    writeCatalogDiffSummaryMarkdown,
+    runScrapingPostflightVerification
+  } = require('../lib/scraper/scraping_preflight_gate.js');
+
+  const diffSummary = summarizeCatalogDiffState(
+    liveCatalogJson,
+    fs.existsSync(liveServicesJson) ? liveServicesJson : null
+  );
+  writeCatalogDiffSummaryMarkdown(
+    diffSummaryMdPath,
+    meta,
+    diffSummary,
+    diffSummary.hwSkuCount,
+    diffSummary.serviceSkuCount
+  );
+
+  let postFlowSyncResult = null;
+  try {
+    const { triggerPostFlowSyncAsync } = require('../lib/sync/post_flow_sync.js');
+    const cloudConfigured = Boolean(options.preflightReport?.product?.notebookId);
+    postFlowSyncResult = await triggerPostFlowSyncAsync(meta.cleanName, 'SCRAPE', {
+      autoUploadNLM: cloudConfigured,
+      syncRunningKnowledge: cloudConfigured,
+      confirmSourceRetirement: !process.argv.includes('--keep-stale-sources'),
+      ...options.syncOptions
+    });
+  } catch (syncErr) {
+    console.warn('Warning during storage triggerPostFlowSyncAsync:', syncErr.message);
+    postFlowSyncResult = { success: false, error: syncErr.message };
+  }
+
+  if (captureReceipt) {
+    require('../lib/catalog/catalog_capture_receipt.js').finalizeCaptureReceipt(
+      liveOutputDir,
+      captureReceipt,
+      postFlowSyncResult
+    );
+  }
+
+  const hwSkuCount = diffSummary.hwSkuCount || 0;
+  const serviceSkuCount = diffSummary.serviceSkuCount || 0;
+  runScrapingPostflightVerification({
+    liveOutputDir,
+    liveCatalogJson,
+    meta,
+    hwSkuCount,
+    serviceSkuCount,
+    totalSkuCount: hwSkuCount + serviceSkuCount,
+    conditionalSkusCount: 0,
+    postFlowSyncResult,
+    preflightReport: options.preflightReport || null,
+    qualityPassed: true,
+    vendor: options.vendor || 'HPE',
+    portalUrl: options.portalUrl || null
+  });
+}
+
+async function auditAndPromoteStorageStaging(outputDir, meta, catalogJson, catalogXlsx, options = {}) {
+  const liveOutputDir = options.liveOutputDir || path.join(OUTPUTS_ROOT, meta.family, meta.gen, meta.cleanName);
+  const captureReceipt = _auditStorageStagingArtifacts(outputDir, liveOutputDir, meta, catalogJson, catalogXlsx, options);
 
   console.log('\n--- STEP 7: Promoting Staging to Live Workspace & Master Knowledge Sync ---');
   const { promoteStagingDirectory } = require('../lib/system/fs_compat.js');
   promoteStagingDirectory(outputDir, liveOutputDir);
-  if (captureReceipt) {
-    require('../lib/catalog/catalog_capture_receipt.js').finalizeCaptureReceipt(liveOutputDir, captureReceipt, null);
-  }
+  await _runStoragePostPromotionSyncAndVerify(liveOutputDir, meta, captureReceipt, options);
   return liveOutputDir;
+}
+
+async function _connectStorageOcaTarget(navQuery) {
+  try {
+    return await getOCATarget();
+  } catch (err) {
+    console.log(`⚠️ Active Storage OCA tab not found: ${err.message}`);
+    console.log(`🧭 Attempting smart auto-navigation via Partner Portal...`);
+    try {
+      const { navigateToOCAChassis } = require('../lib/scraper/navigate_oca.js');
+      await navigateToOCAChassis(navQuery || 'Alletra');
+      return await getOCATarget();
+    } catch (navErr) {
+      throw new Error(`Auto-navigation failed: ${navErr.message}\nOriginal CDP error: ${err.message}`);
+    }
+  }
 }
 
 async function main() {
@@ -134,20 +255,20 @@ async function main() {
   console.log('📦 HPE STORAGE SOLUTION WIZARD SCRAPER (Alletra / Nimble / MSA)');
   console.log('================================================================\n');
 
-  let pageTarget;
-  try {
-    pageTarget = await getOCATarget();
-  } catch (err) {
-    console.log(`⚠️ Active Storage OCA tab not found: ${err.message}`);
-    console.log(`🧭 Attempting smart auto-navigation via Partner Portal...`);
-    try {
-      const { navigateToOCAChassis } = require('../lib/scraper/navigate_oca.js');
-      await navigateToOCAChassis('Alletra');
-      pageTarget = await getOCATarget();
-    } catch (navErr) {
-      throw new Error(`Auto-navigation failed: ${navErr.message}\nOriginal CDP error: ${err.message}`);
-    }
-  }
+  const { targetChassisQuery, navQuery, vendor, portalUrl } = _parseCliArgs();
+  const resolvedVendor = vendor || 'HPE';
+  const resolvedPortalUrl = portalUrl || null;
+  const skipCloudCheck = process.argv.includes('--skip-cloud-check') || process.argv.includes('--offline');
+  const { runScrapingPreflightGate } = require('../lib/scraper/scraping_preflight_gate.js');
+  const preflightReport = await runScrapingPreflightGate({
+    targetChassisQuery,
+    navQuery,
+    skipCloudCheck,
+    vendor: resolvedVendor,
+    portalUrl: resolvedPortalUrl
+  });
+
+  const pageTarget = await _connectStorageOcaTarget(navQuery);
   console.log(`Connecting via CDP to target: ${pageTarget.id} (${pageTarget.title})...`);
   const ws = await connectWS(pageTarget.webSocketDebuggerUrl);
 
@@ -250,6 +371,8 @@ async function main() {
     const rawJsonPath = path.join(rawDir, 'oca_raw_data_full.json');
     const rawData = {
       timestamp:   new Date().toISOString(),
+      vendor:      resolvedVendor,
+      ...(resolvedPortalUrl ? { portalUrl: resolvedPortalUrl } : {}),
       pageTitle:   pageTarget.title,
       url:         pageTarget.url,
       nodeText:    heading,
@@ -298,7 +421,11 @@ async function main() {
   );
 
   // STEP 6 & 7: Audit and Promote Staging
-  const liveOutputDir = auditAndPromoteStorageStaging(outputDir, meta, catalogJson, catalogXlsx);
+  const liveOutputDir = await auditAndPromoteStorageStaging(outputDir, meta, catalogJson, catalogXlsx, {
+    preflightReport,
+    vendor: resolvedVendor,
+    portalUrl: resolvedPortalUrl
+  });
 
   const liveCatalogJson = path.join(liveOutputDir, `${meta.cleanName}_Catalog.json`);
   const liveCatalogXlsx = path.join(liveOutputDir, `${meta.cleanName}_OCA_Catalog.xlsx`);
@@ -331,6 +458,8 @@ async function main() {
 
   if (JSON_MODE) {
     emitResult('SUCCESS', {
+      vendor: resolvedVendor,
+      portalUrl: resolvedPortalUrl,
       solutionName: heading,
       family: meta.family,
       gen: meta.gen,
@@ -347,14 +476,21 @@ async function main() {
     console.log(`   ${liveOutputDir}`);
     console.log('================================================================\n');
   }
-
 }
 
-main().catch(err => {
-  if (JSON_MODE) {
-    emitResult('ERROR', {}, err.message || String(err));
-  } else {
-    console.error('\n❌ STORAGE SCRAPER ERROR:', err.message || err);
-  }
-  process.exit(1);
-});
+if (require.main === module) {
+  main().catch(err => {
+    if (JSON_MODE) {
+      emitResult('ERROR', {}, err.message || String(err));
+    } else {
+      console.error('\n❌ STORAGE SCRAPER ERROR:', err.message || err);
+    }
+    process.exit(1);
+  });
+}
+
+module.exports = {
+  _parseCliArgs,
+  auditAndPromoteStorageStaging,
+  main
+};

@@ -6,7 +6,7 @@
  * 1. CLIC Status vs Lifecycle Status decoupling (no blind mirroring).
  * 2. Cost vs List Price field separation (no collision or overwrite).
  * 3. Supply chain lead time honesty: unpublished lead times are NEVER defaulted to 'Standard Delivery (14-30d)'.
- * 4. 33-column lossless schema coverage in generateMainSheet.
+ * 4. 34-column lossless schema coverage in generateMainSheet (including Attribute Deltas).
  * 5. Extract functions in sku_resolver.js for cost and lead time.
  */
 
@@ -19,7 +19,7 @@ const { generateMainSheet } = require('../../scripts/lib/catalog/catalog_formatt
 const { extractCatalogItemPrice, extractCatalogItemCost, extractCatalogItemLeadTime } = require('../../scripts/lib/taxonomy/sku_resolver.js');
 
 describe('Supply Chain & Classification Integrity Suite', () => {
-  it('1. generateMainSheet produces exact 33-column schema with dedicated Cost, CLIC Status, and Lead Time metrics', () => {
+  it('1. generateMainSheet produces exact 34-column schema with Cost, CLIC Status, Lead Time, and Attribute Deltas metrics', () => {
     const mockEntries = [
       {
         parentCategory: 'Processor',
@@ -55,6 +55,7 @@ describe('Supply Chain & Classification Integrity Suite', () => {
             'Previous List Price (USD)': 'N/A',
             'Price Change (USD)': '$0.00',
             'Price Change (%)': '0.00%',
+            'Attribute Deltas': 'Description: "Xeon 6700E" → "Xeon 6710E"',
             'Price History Trail': ''
           }
         ]
@@ -66,7 +67,7 @@ describe('Supply Chain & Classification Integrity Suite', () => {
     assert.equal(lines.length, 2, 'Should have header row + 1 data row');
 
     const headers = lines[0].split('\t');
-    assert.equal(headers.length, 33, 'TSV header must contain exactly 33 columns');
+    assert.equal(headers.length, 34, 'TSV header must contain exactly 34 columns');
 
     // Verify key separated headers exist
     assert.ok(headers.includes('Unit Price (USD)'), 'Must include Unit Price (USD)');
@@ -76,9 +77,18 @@ describe('Supply Chain & Classification Integrity Suite', () => {
     assert.ok(headers.includes('Lead Time'), 'Must include Lead Time');
     assert.ok(headers.includes('Lead Time Days'), 'Must include Lead Time Days');
     assert.ok(headers.includes('Speed Tier'), 'Must include Speed Tier');
+    assert.ok(headers.includes('Attribute Deltas'), 'Must include Attribute Deltas');
+    assert.equal(
+      headers.indexOf('Attribute Deltas'),
+      headers.indexOf('Price History Trail') - 1,
+      'Attribute Deltas must sit immediately before Price History Trail'
+    );
 
     const rowCells = lines[1].split('\t');
-    assert.equal(rowCells.length, 33, 'Data row must contain exactly 33 values');
+    assert.equal(rowCells.length, 34, 'Data row must contain exactly 34 values');
+
+    const attrIdx = headers.indexOf('Attribute Deltas');
+    assert.equal(rowCells[attrIdx], 'Description: "Xeon 6700E" → "Xeon 6710E"');
 
     const priceIdx = headers.indexOf('Unit Price (USD)');
     const costIdx = headers.indexOf('Cost (USD)');

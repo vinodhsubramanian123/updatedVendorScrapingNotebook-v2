@@ -144,22 +144,30 @@ function buildTrailString(trail) {
   if (!trail || trail.length === 0) return '';
   let lastNonZeroPrice = null;
   return trail.map((h) => {
+    const status = String(h.status || '');
     let arrow = '';
-    if (h.status.includes('PRICE') && lastNonZeroPrice !== null && h.price > 0 && !h.quarantined) {
+    if (status.includes('PRICE') && lastNonZeroPrice !== null && h.price > 0 && !h.quarantined) {
       arrow = h.price > lastNonZeroPrice ? ' (▲)' : ' (▼)';
     }
     if (h.quarantined) {
       arrow = ' (⚠ ANOMALY)';
-    } else if (h.status === 'REMOVED') {
+    } else if (status === 'REMOVED') {
       arrow = ' (✕ REMOVED)';
-    } else if (h.status === 'REINSTATED') {
+    } else if (status === 'REINSTATED') {
       arrow = ' (↩ REINSTATED)';
-    } else if (h.status === 'CATEGORY_MIGRATED') {
+    } else if (status === 'CATEGORY_MIGRATED') {
       arrow = ' (⇋ MIGRATED)';
+    }
+    let attrNote = '';
+    if (status === 'ATTRIBUTE_CHANGED' || status === 'PRICE_AND_ATTRIBUTE_CHANGED') {
+      const deltas = Array.isArray(h.attributeDeltas) && h.attributeDeltas.length > 0
+        ? h.attributeDeltas.join('; ')
+        : '';
+      attrNote = deltas ? ` [Δ Attr: ${deltas}]` : ' [Δ Attr]';
     }
     if (h.price > 0 && !h.quarantined) lastNonZeroPrice = h.price;
     const priceStr = h.price > 0 ? `$${h.price.toFixed(2)}` : '(no price)';
-    return `${h.date}: ${priceStr}${arrow}`;
+    return `${h.date}: ${priceStr}${arrow}${attrNote}`;
   }).join(' → ');
 }
 
@@ -201,6 +209,8 @@ function isRemovalTombstone(sku) {
 }
 
 const TRACKED_ATTRIBUTES = [
+  { keys: ['Main Category', 'parentCategory'], label: 'Main Category' },
+  { keys: ['Sub-Category', 'subCategory'], label: 'Sub-Category' },
   { keys: ['Description', 'description'], label: 'Description' },
   { keys: ['Constraint Text'], label: 'Constraint' },
   { keys: ['Table Rule/Note'], label: 'Rule/Note' },
@@ -268,6 +278,35 @@ function isBusinessRelevantDiscontinuedSku(options, existingEntry, context) {
     Number(existingEntry?.dealReferenceCount || 0) > 0 || Number(existingEntry?.ruleReferenceCount || 0) > 0;
 }
 
+function _isMissingAttr(val) {
+  return val === undefined || val === null || String(val).trim() === '';
+}
+
+function _normalizeComparisonSku(sku, entry = {}) {
+  if (!sku || typeof sku !== 'object') return sku;
+  const out = { ...sku };
+  const parentCat = entry.parentCategory ?? out.parentCategory;
+  const subCat = entry.subCategory ?? out.subCategory;
+  const constraint = entry.constraint ?? out.constraint;
+  const rawMaxQty = entry.maxQty ?? out.maxQty;
+  const rulesText = Array.isArray(entry.rules)
+    ? entry.rules.join(' | ')
+    : (typeof out.rules === 'string' ? out.rules : '');
+
+  if (_isMissingAttr(out['Main Category']) && !_isMissingAttr(parentCat)) out['Main Category'] = String(parentCat);
+  if (_isMissingAttr(out['Sub-Category']) && !_isMissingAttr(subCat)) out['Sub-Category'] = String(subCat);
+  if (_isMissingAttr(out['Constraint Text']) && !_isMissingAttr(constraint)) out['Constraint Text'] = String(constraint);
+  if (_isMissingAttr(out['Subcategory Max Qty']) && !_isMissingAttr(rawMaxQty)) out['Subcategory Max Qty'] = String(rawMaxQty);
+  if (_isMissingAttr(out['Table Rule/Note']) && !_isMissingAttr(rulesText)) out['Table Rule/Note'] = rulesText;
+
+  if (!out.parentCategory && !_isMissingAttr(parentCat)) out.parentCategory = parentCat;
+  if (!out.subCategory && !_isMissingAttr(subCat)) out.subCategory = subCat;
+  if (!out.constraint && !_isMissingAttr(constraint)) out.constraint = constraint;
+  if (out.maxQty === undefined && rawMaxQty !== undefined) out.maxQty = rawMaxQty;
+  if (!out.rules && !_isMissingAttr(rulesText)) out.rules = rulesText;
+  return out;
+}
+
 function resolvePreviousCatalogAndSkus(historyDir, snapshotPrefix, scrapeDate, options) {
   const snapshotRegex = new RegExp(`^${snapshotPrefix}_\\d{4}-\\d{2}-\\d{2}.json$`);
   const snapshotFiles = fs.readdirSync(historyDir)
@@ -288,6 +327,8 @@ function resolvePreviousCatalogAndSkus(historyDir, snapshotPrefix, scrapeDate, o
   }
 
   const prevSkuMap = new Map();
+  const prevSkuCandidatesMap = new Map();
+  prevSkuMap._candidates = prevSkuCandidatesMap;
   const disallowedPreviousSkus = new Set();
   if (prevCatalog && Array.isArray(prevCatalog.entries)) {
     for (const entry of prevCatalog.entries) {
@@ -299,19 +340,18 @@ function resolvePreviousCatalogAndSkus(historyDir, snapshotPrefix, scrapeDate, o
             disallowedPreviousSkus.add(pn);
             continue;
           }
-          prevSkuMap.set(pn, {
-            ...sku,
-            parentCategory: entry.parentCategory,
-            subCategory:    entry.subCategory,
-            constraint:     entry.constraint,
-            rules:          (entry.rules || []).join(' | ')
-          });
+          const normalizedPrev = _normalizeComparisonSku(sku, entry);
+          prevSkuMap.set(pn, normalizedPrev);
+          if (!prevSkuCandidatesMap.has(pn)) {
+            prevSkuCandidatesMap.set(pn, []);
+          }
+          prevSkuCandidatesMap.get(pn).push({ sku: normalizedPrev, matched: false });
         }
       }
     }
   }
 
-  return { prevSnapshotPath, prevCatalog, prevSkuMap, disallowedPreviousSkus };
+  return { prevSnapshotPath, prevCatalog, prevSkuMap, prevSkuCandidatesMap, disallowedPreviousSkus };
 }
 
 function buildCompanionSkuMap(options, historyLabel) {
@@ -384,7 +424,10 @@ function _diffExistingSku(sku, pn, currPrice, prevSku, entry, catalogData, scrap
   const prevPrice = parsePrice(prevSku['Unit Price (USD)'] || prevSku['Price (USD)'] || prevSku['Price'] || prevSku.price);
   sku['Previous List Price (USD)'] = prevPrice > 0 ? prevPrice.toFixed(2) : 'N/A';
 
-  const attributeDeltas = recordAttributeDeltas(sku, prevSku, {
+  const currComp = _normalizeComparisonSku(sku, entry);
+  const prevComp = _normalizeComparisonSku(prevSku);
+
+  const attributeDeltas = recordAttributeDeltas(currComp, prevComp, {
     scrapeDate,
     productNumber: pn,
     chassis: catalogData.metadata?.chassis || 'Chassis',
@@ -399,13 +442,23 @@ function _diffExistingSku(sku, pn, currPrice, prevSku, entry, catalogData, scrap
     ? attributeDeltas.map(d => `${d.field}: "${d.oldValue}" → "${d.newValue}"`).join(' | ')
     : 'None';
 
+  const formattedTrailDeltas = attrsHaveChanged
+    ? attributeDeltas.map(d => `${d.field}: "${d.oldValue}" -> "${d.newValue}"`)
+    : [];
+
   if (priceHasChanged && attrsHaveChanged) {
     const delta = currPrice - prevPrice;
     const pct = prevPrice > 0 ? (delta / prevPrice * 100) : 0;
     sku['Diff Status'] = 'PRICE_AND_ATTRIBUTE_CHANGED';
     sku['Price Change (USD)'] = `${delta > 0 ? '+' : ''}$${delta.toFixed(2)}`;
     sku['Price Change (%)'] = `${pct > 0 ? '+' : ''}${pct.toFixed(2)}%`;
-    appendTrailEvent(priceHistory[pn], { date: scrapeDate, price: currPrice, status: 'PRICE_AND_ATTRIBUTE_CHANGED', prevPrice });
+    appendTrailEvent(priceHistory[pn], {
+      date: scrapeDate,
+      price: currPrice,
+      status: 'PRICE_AND_ATTRIBUTE_CHANGED',
+      prevPrice,
+      attributeDeltas: formattedTrailDeltas
+    });
     diffSummary.priceAndAttributeChanged++;
   } else if (priceHasChanged) {
     const delta = currPrice - prevPrice;
@@ -419,7 +472,12 @@ function _diffExistingSku(sku, pn, currPrice, prevSku, entry, catalogData, scrap
     sku['Diff Status'] = 'ATTRIBUTE_CHANGED';
     sku['Price Change (USD)'] = '$0.00';
     sku['Price Change (%)'] = '0.00%';
-    appendTrailEvent(priceHistory[pn], { date: scrapeDate, price: currPrice, status: 'ATTRIBUTE_CHANGED' });
+    appendTrailEvent(priceHistory[pn], {
+      date: scrapeDate,
+      price: currPrice,
+      status: 'ATTRIBUTE_CHANGED',
+      attributeDeltas: formattedTrailDeltas
+    });
     diffSummary.attributeChanged++;
   } else {
     sku['Diff Status'] = 'UNCHANGED';
@@ -430,6 +488,41 @@ function _diffExistingSku(sku, pn, currPrice, prevSku, entry, catalogData, scrap
     }
     diffSummary.unchanged++;
   }
+}
+
+function _scorePrevCandidate(cand, currDesc, currOpt, currSub) {
+  const s = cand.sku || {};
+  const descMatch = String(s['Description'] || s.description || '').trim() === currDesc ? 8 : 0;
+  const optMatch = String(s['Option Type'] || s.optionType || '').trim() === currOpt ? 4 : 0;
+  const subMatch = String(s['Sub-Category'] || s.subCategory || '').trim() === currSub ? 2 : 0;
+  const unmatchedBonus = cand.matched ? 0 : 16;
+  return unmatchedBonus + descMatch + optMatch + subMatch;
+}
+
+function _selectMatchingPrevSku(sku, entry, pn, prevSkuMap) {
+  const candidates = prevSkuMap?._candidates?.get(pn);
+  if (!candidates || candidates.length === 0) return prevSkuMap.get(pn);
+  if (candidates.length === 1) {
+    candidates[0].matched = true;
+    return candidates[0].sku;
+  }
+  const currDesc = String(sku['Description'] || sku.description || '').trim();
+  const currOpt = String(sku['Option Type'] || sku.optionType || '').trim();
+  const currSub = String(entry?.subCategory || sku['Sub-Category'] || sku.subCategory || '').trim();
+  let best = null;
+  let bestScore = -1;
+  for (const cand of candidates) {
+    const score = _scorePrevCandidate(cand, currDesc, currOpt, currSub);
+    if (score > bestScore) {
+      bestScore = score;
+      best = cand;
+    }
+  }
+  if (best) {
+    best.matched = true;
+    return best.sku;
+  }
+  return prevSkuMap.get(pn);
 }
 
 function _diffSingleCatalogSku(sku, pn, entry, prevCatalog, prevSkuMap, catalogData, priceHistory, discontinuedRegistry, attributeHistory, scrapeDate, diffSummary) {
@@ -448,7 +541,7 @@ function _diffSingleCatalogSku(sku, pn, entry, prevCatalog, prevSkuMap, catalogD
   } else if (!prevSkuMap.has(pn)) {
     _diffAddedSku(sku, pn, currPrice, entry, scrapeDate, priceHistory, discontinuedRegistry, diffSummary);
   } else {
-    const prevSku = prevSkuMap.get(pn);
+    const prevSku = _selectMatchingPrevSku(sku, entry, pn, prevSkuMap);
     _diffExistingSku(sku, pn, currPrice, prevSku, entry, catalogData, scrapeDate, priceHistory, attributeHistory, diffSummary);
   }
 
@@ -469,6 +562,8 @@ function diffCurrentCatalogEntries(catalogData, prevCatalog, prevSkuMap, priceHi
 
   return currSkuMap;
 }
+
+const _diffCatalogSkus = diffCurrentCatalogEntries;
 
 function _handleCategoryMigratedEntry(pn, prevSku, compSku, catalogData, priceHistory, attributeHistory, scrapeDate, diffSummary) {
   const compPrice = parsePrice(compSku['Unit Price (USD)'] || compSku['Price (USD)'] || compSku['Price'] || compSku.price);
@@ -808,4 +903,14 @@ function processCatalogDiff(catalogData, historyDir, historyLabel = 'catalog', o
   return { enrichedCatalog: catalogData, diffSummary, prevSnapshotPath };
 }
 
-module.exports = { processCatalogDiff, parsePrice, appendTrailEvent, dedupeAttributeHistory, sanitizePriceTrail };
+module.exports = {
+  processCatalogDiff,
+  parsePrice,
+  appendTrailEvent,
+  dedupeAttributeHistory,
+  sanitizePriceTrail,
+  buildTrailString,
+  resolvePreviousCatalogAndSkus,
+  diffCurrentCatalogEntries,
+  _diffCatalogSkus
+};

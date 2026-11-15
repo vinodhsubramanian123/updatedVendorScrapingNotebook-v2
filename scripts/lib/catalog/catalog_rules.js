@@ -299,24 +299,51 @@ function _loadRulesRawData(resolvedDir) {
   return { rawData, sourceFile, isFallback, catalogJsonPath };
 }
 
+function _normalizeSingleRuleEntry(r, fallbackParent = 'General', fallbackSub = 'General') {
+  if (typeof r === 'string') {
+    return classifyRule(r, fallbackParent || 'General', fallbackSub || 'General');
+  }
+  if (!r || typeof r !== 'object') return null;
+
+  const ruleText = r.rule || r.ruleText || r.description || r.ruleId || '';
+  const parentCat = r.parentCategory || r.pillar || fallbackParent || 'General';
+  const subCat = r.subCategory || r.type || fallbackSub || 'General';
+
+  let parsed;
+  if (r.ruleType === 'CONDITIONAL_VISIBILITY') {
+    parsed = { ...r, ruleText: ruleText, parentCategory: parentCat, subCategory: subCat };
+  } else if (r.level) {
+    parsed = { ...r, ruleText: r.ruleText || ruleText, parentCategory: parentCat, subCategory: subCat };
+  } else {
+    parsed = classifyRule(ruleText, parentCat, subCat);
+  }
+
+  if (r.ruleId !== undefined) parsed.ruleId = r.ruleId;
+  if (r.affectedSku !== undefined) parsed.affectedSku = r.affectedSku;
+  if (r.type !== undefined) parsed.type = r.type;
+  if (r.pillar !== undefined) parsed.pillar = r.pillar;
+  return parsed;
+}
+
 function _parseRawRules(rawData) {
   const parsedRules = [];
+  if (!rawData) return parsedRules;
+  const metaPillar = rawData.metadata?.pillar || 'General';
   if (Array.isArray(rawData)) {
     rawData.forEach(r => {
-      if (r && typeof r === 'object') {
-        parsedRules.push(r.level ? r : classifyRule(r.rule || r.ruleText || String(r), r.parentCategory, r.subCategory));
-      }
+      const item = _normalizeSingleRuleEntry(r, 'General', 'General');
+      if (item) parsedRules.push(item);
     });
   } else if (Array.isArray(rawData.rules)) {
     rawData.rules.forEach(r => {
-      parsedRules.push(r.ruleType === 'CONDITIONAL_VISIBILITY'
-        ? { ...r, ruleText: r.ruleText || r.rule }
-        : classifyRule(r.rule || r.ruleText, r.parentCategory, r.subCategory));
+      const item = _normalizeSingleRuleEntry(r, metaPillar, 'General');
+      if (item) parsedRules.push(item);
     });
   } else if (Array.isArray(rawData.entries)) {
     rawData.entries.forEach(e => {
       (e.rules || []).forEach(r => {
-        parsedRules.push(classifyRule(r, e.parentCategory, e.subCategory));
+        const item = _normalizeSingleRuleEntry(r, e.parentCategory || metaPillar, e.subCategory || 'General');
+        if (item) parsedRules.push(item);
       });
     });
   }
@@ -409,5 +436,6 @@ module.exports = {
   DEFAULT_MANDATORY_SKUS,
   getMandatorySkusForChassis,
   classifyRule,
-  loadCatalogRules
+  loadCatalogRules,
+  _parseRawRules
 };
