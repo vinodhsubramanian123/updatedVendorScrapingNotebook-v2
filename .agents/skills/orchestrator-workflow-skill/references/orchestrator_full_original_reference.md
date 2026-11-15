@@ -50,7 +50,7 @@ graph TD
 ## 🔁 The 6-Stage Continuous Learning Lifecycle
 
 ### 1. Ingestion (Live Scraping & Self-Healing Navigation)
-- **Actors**: [`oca-catalog-scraper`](../oca-catalog-scraper/SKILL.md) & [`oca-portal-navigator`](../oca-portal-navigator/SKILL.md)
+- **Actors**: [`oca-catalog-scraper`](../../oca-catalog-scraper/SKILL.md) & [`oca-portal-navigator`](../../oca-portal-navigator/SKILL.md)
 - **Action**: 
   - **Universal Auth Pre-Flight (`npm run auth:status`)**: Before initiating any scraping session, run `npm run auth:status` to audit all 5 authentication surfaces (Google Drive/Sheets ADC, NotebookLM CLI, Gemini Key Rotator, Chrome CDP port 9222, Jules CI/CD). This single command surfaces any expired tokens, missing scopes, or standby services before the scraping lifecycle begins. Products with `canonicalDriveEnabled: false` skip the Drive scope check in the preflight gate.
   - Navigates hands-free from HPE Partner Portal SSO (`https://partner.hpe.com`) to target chassis configuration Menu tabs via Chrome DevTools Protocol (`scripts/lib/scraper/cdp.js`, `scripts/lib/scraper/navigate_oca.js`) on port 9222.
@@ -59,7 +59,7 @@ graph TD
 - **Output**: Generates classified JSON catalogs, standalone rules files (`*_Catalog_Rules.json`), and multi-sheet Excel workbooks (`*_OCA_Catalog.xlsx`).
 
 ### 2. Decoupled Knowledge Sync & Dual Safety Net
-- **Actor**: [`diff_catalog.js`](../../../scripts/lib/catalog/diff_catalog.js) & [`knowledge-sync-skill`](../knowledge-sync-skill/SKILL.md)
+- **Actor**: [`diff_catalog.js`](../../../../scripts/lib/catalog/diff_catalog.js) & [`knowledge-sync-skill`](../../knowledge-sync-skill/SKILL.md)
 - **Action**: 
   - Compares newly scraped JSON against historical snapshots to log SKU additions, removals, and cumulative price trails.
   - Emits standalone `*_Catalog_Rules.json` for fast dual safety net loading.
@@ -67,7 +67,7 @@ graph TD
   - **Decoupled Workflow**: Knowledge Sync (pushing to NotebookLM via CLI or MCP) now runs as an independent background task (`/api/sync-knowledge`) to ensure core scraping speed is unaffected.
 
 ### 3. BOQ Ingestion, 8-Stage Atomicity & Conflict Graph
-- **Actor**: [`boq-eval-skill`](../boq-eval-skill/SKILL.md) (`npm run eval:boq <file>`)
+- **Actor**: [`boq-eval-skill`](../../boq-eval-skill/SKILL.md) (`npm run eval:boq <file>`)
 - **Action**:
   - **Pre-Flight Scraped-Catalog Gate (INV-96)**: Prior to running physical checks, the engine asserts `isCatalogCertified(chassisId)`. If the target chassis has never been scraped from OCA or has 0 SKUs, evaluation halts early with `[ERR_UNSCRAPED_SOLUTION]`, directing the agent/user to scrape ground truth first.
   - **8-Stage Atomic Execution**: Streams `STRUCTURED_PROGRESS` JSON events so dashboards provide visual timeline feedback.
@@ -79,13 +79,13 @@ graph TD
   - Exposes **Confidence Breakdown Tooltips** to drill down into specific physical mismatch penalties.
 
 ### 4. Grounded Gemini Notebook Validation (RAG) & Ephemeral Source Validation
-- **Actor**: [`nlm-skill`](../nlm-skill/SKILL.md), [`boq-eval-skill`](../boq-eval-skill/SKILL.md) & **React Dashboard** (`http://localhost:5173`)
+- **Actor**: [`nlm-skill`](../../nlm-skill/SKILL.md), [`boq-eval-skill`](../../boq-eval-skill/SKILL.md) & **React Dashboard** (`http://localhost:5173`)
 - **Action**: 
   - Initiates parallel, non-blocking asynchronous queries to Gemini NotebookLM to cross-reference identified physical constraints against vendor spec sheets.
   - **Autonomous Solution Strategy Double-Check (INV-97)**: Once the 5-Tier Strategy Matrix is generated, the newly synthesized Rank 1 and Rank 1L solutions are automatically verified against the product NotebookLM notebook (using ephemeral solution source validation) to double-check that added enablement kits (cables, SAS expanders, auxiliary GPU power) comply with QuickSpecs and newly learned rules.
   - **Ephemeral Solution Sheet Source Validation (INV-24)**: When whole-solution or multi-rank configurations exceed prompt character limits, the engine outputs a token-dense solution CSV, temporarily attaches it as a document source, executes grounded validation across all 7 physical aspects, extracts learnings into persistent `KnowledgeDelta` records, and immediately detaches the source.
   - If new verified deltas are extracted, `recomputeStrategyMatrixWithRag` dynamically recomputes physical checks and re-synthesizes the 5-Tier Strategy Matrix before final deliverable export.
-  - Automatically exports a 6-sheet **Multi-Rank Solution Deliverable** (`.xlsx`) and companion `.csv` via [`workbook-generator-skill`](../workbook-generator-skill/SKILL.md).
+  - Automatically exports a 6-sheet **Multi-Rank Solution Deliverable** (`.xlsx`) and companion `.csv` via [`workbook-generator-skill`](../../workbook-generator-skill/SKILL.md).
   - **Cloud Delivery & ADC Pre-Flight Health Gate (INV-90)**: Prior to any Google Drive deliverable upload or client sharing, the engine executes `ensureGoogleAuthValid({ autoHeal: true })` (or `npm run auth:check`). It audits token validity, granted scopes, and token age. If expired (`invalid_grant`) or expiring soon, the agent is 100% pre-authorized to autonomously execute `npm run auth:heal` or `npm run auth:drive` (using `~/.config/gcloud/client_secret.json`) to self-heal credentials without human intervention, ensuring seamless operation across laptop migrations. Note: The 7-day ADC token expiry cliff only applies to GCP OAuth apps in **Testing** mode; apps published to **In Production** generate permanent long-lived refresh tokens.
   - The React Dashboard provides a full Command-and-Control hub for triggering Knowledge Sync, exporting corrected BOQs, logging portal rejection KnowledgeDeltas, and managing the async RAG status polling (`GET /api/notebook-query-status/:jobId`).
 
@@ -96,7 +96,7 @@ graph TD
   - If a BOQ evaluation drops below 75% confidence, the **Ambiguity Inbox** prompts the user to Auto-Query NotebookLM via the MCP bridge to acquire missing configuration rules.
 
 ### 6. Closed-Loop Feedback & Telemetry Learning
-- **Actor**: [`feedback_loop.js`](../../../scripts/lib/feedback/feedback_loop.js), `server.cjs` Trace Ledger, & Dashboard Modal
+- **Actor**: [`feedback_loop.js`](../../../../scripts/lib/feedback/feedback_loop.js), `server.cjs` Trace Ledger, & Dashboard Modal
 - **Action**:
   - Log vendor rejections via `npm run eval:boq <boq> --simulate-portal-error "<error>"` or directly via the Dashboard **"Report Portal Rejection"** modal.
   - Permanently appends `KnowledgeDeltas` to `history/catalog_deltas.json` and updates `_Catalog_Rules.json`.
@@ -108,38 +108,38 @@ graph TD
 
 | Workflow Domain | Responsible Skill | Implementation Engine & Direct Links |
 |---|---|---|
-| **Macro Orchestration** | [`orchestrator-workflow-skill`](../orchestrator-workflow-skill/SKILL.md) | Macro continuous learning lifecycle across all 6 stages. |
-| **Presales Intent Routing** | [`presales-query-router`](../presales-query-router/SKILL.md) | 5-track intent dispatcher: [`route_query.js`](../../../scripts/evaluators/route_query.js). |
-| **SSO & Portal Navigation** | [`oca-portal-navigator`](../oca-portal-navigator/SKILL.md) | Hands-free SSO passing & Tab 1 self-healing: [`navigate_oca.js`](../../../scripts/lib/scraper/navigate_oca.js). |
-| **Live Scraping & Extraction** | [`oca-catalog-scraper`](../oca-catalog-scraper/SKILL.md) | Live CDP extraction: [`scrape_oca_solution.js`](../../../scripts/scrapers/scrape_oca_solution.js). |
-| **Catalog Intelligence & Price Trails** | [`catalog-intelligence-skill`](../catalog-intelligence-skill/SKILL.md) | Historical pricing & state changes: [`diff_catalog.js`](../../../scripts/lib/catalog/diff_catalog.js). |
-| **Knowledge Sync & Deltas** | [`knowledge-sync-skill`](../knowledge-sync-skill/SKILL.md) | Bi-directional NLM sync: [`knowledge_sync.js`](../../../scripts/lib/sync/knowledge_sync.js). |
-| **BOQ Evaluation & Aspects** | [`boq-eval-skill`](../boq-eval-skill/SKILL.md) | 7-aspect physical math: [`eval_boq.js`](../../../scripts/evaluators/eval_boq.js). |
-| **Workload DNA Matching** | [`workload-dna-skill`](../workload-dna-skill/SKILL.md) | Enterprise app workload matching: [`workload_dna.js`](../../../scripts/lib/conflict/workload_dna.js). |
-| **Least-Delta Combinator** | [`least-delta-combinator-skill`](../least-delta-combinator-skill/SKILL.md) | Generational upgrades & pruning: [`least_delta_combinator.js`](../../../scripts/lib/conflict/least_delta_combinator.js). |
-| **Active Knowledge Reachability** | [`continuous-learning-skill`](../continuous-learning-skill/SKILL.md) | Active rule discovery: [`active_knowledge_router.js`](../../../scripts/lib/catalog/active_knowledge_router.js). |
-| **Continuous Learning Verifier** | [`continuous-learning-skill`](../continuous-learning-skill/SKILL.md) | Zero-repetition certification: [`continuous_learning_verifier.js`](../../../scripts/lib/feedback/continuous_learning_verifier.js). |
-| **Execution Trace & Shared State** | [`execution-trace-skill`](../execution-trace-skill/SKILL.md) | 9-phase evidence ledger: [`evidence_ledger.js`](../../../scripts/lib/system/evidence_ledger.js). |
-| **Multi-Cluster Tender Splitting** | [`multi-cluster-tender-skill`](../multi-cluster-tender-skill/SKILL.md) | Multi-node cluster partitioning & 42U sizing: [`multi_cluster_splitter.js`](../../../scripts/lib/boq/multi_cluster_splitter.js). |
-| **RFP Sizing-to-BOM** | [`rfp-sizing-synthesizer`](../rfp-sizing-synthesizer/SKILL.md) | Natural language sizing requirements to starting BOM: [`requirement_intent_resolver.js`](../../../scripts/lib/boq/requirement_intent_resolver.js). |
-| **BOM Reconciliation** | [`bom-reconciliation-skill`](../bom-reconciliation-skill/SKILL.md) | Tender vs vendor quote verification: [`vendor_bom_verifier.js`](../../../scripts/lib/boq/vendor_bom_verifier.js). |
-| **Value Engineering & CapEx** | [`value-engineering-skill`](../value-engineering-skill/SKILL.md) | Post-buildability CapEx/OpEx deal optimizer: [`deal_optimizer.js`](../../../scripts/lib/boq/deal_optimizer.js). |
-| **Adversarial Chaos Validation** | [`adversarial-validation-skill`](../adversarial-validation-skill/SKILL.md) | Enterprise chaos red-teaming: [`adversarial_agent.js`](../../../scripts/evaluators/adversarial_agent.js). |
-| **Multimodal Vision OCR** | [`ocr-quote-ingestion-skill`](../ocr-quote-ingestion-skill/SKILL.md) | Vision OCR for PDF/image quotes: [`ocr_service.js`](../../../scripts/lib/ocr/ocr_service.js). |
-| **Deliverables & Workbook Export** | [`workbook-generator-skill`](../workbook-generator-skill/SKILL.md) | 12-column workbooks & CSV companions: [`generate_boq_xlsx.js`](../../../scripts/lib/boq/generate_boq_xlsx.js). |
-| **Output Acceptance Gate** | [`output-validation-skill`](../output-validation-skill/SKILL.md) | Pre-presentation 18-point acceptance criteria check (B1–B18): [`bom_verifier.js`](../../../scripts/lib/boq/bom_verifier.js). |
-| **Dual-Brain RAG & Grounding** | [`nlm-skill`](../nlm-skill/SKILL.md) | Gemini NotebookLM RAG verification: [`agentic_guardrail.js`](../../../scripts/lib/rag/agentic_guardrail.js). |
-| **Multi-Agent Jules Delegation** | [`jules-autonomous-protocol`](../jules-autonomous-protocol/SKILL.md) | Autonomous PR review: [`jules_task_manager.js`](../../../scripts/services/jules_task_manager.js). |
-| **Frontend UI/UX & Aesthetics** | [`design-taste-frontend`](../design-taste-frontend/SKILL.md) | Anti-slop UI aesthetics: [`App.jsx`](../../../dashboard/src/App.jsx). |
-| **Dynamic Semantic Graph** | `graphify` | Dynamic semantic graph & AST navigation: [`graphify-out/`](../../../graphify-out/). |
-| **Catalog Freshness & Degraded Mode Recovery** | [`degraded-mode-skill`](../degraded-mode-skill/SKILL.md) | Per-product-gen metadata freshness, BOQ-triggered resync, atomic commit contract: [`product_metadata_manager.js`](../../../scripts/lib/catalog/product_metadata_manager.js). |
-| **Live CLIC Portal Validation & Receipt Binding** | [`clic-portal-validation-skill`](../clic-portal-validation-skill/SKILL.md) | CLIC Advice parsing, divergent path resolution (Rank 1A/1B), SHA-256 receipt binding (INV-107): [`bom_verifier.js`](../../../scripts/lib/boq/bom_verifier.js). |
-| **Scraping-Time Conditional SKU Discovery** | [`conditional-sku-discovery-skill`](../conditional-sku-discovery-skill/SKILL.md) | Full DOM walk, 8-sweep macro selector, `Catalog_Rules.json` compilation, PORTAL_CONDITIONAL flagging (INV-118/119): [`scrape_oca_solution.js`](../../../scripts/scrapers/scrape_oca_solution.js). |
-| **Cross-Vendor Architectural Transpiler** | [`cross-vendor-transformation-skill`](../cross-vendor-transformation-skill/SKILL.md) | Competitor quote translation to HPE equivalents: [`cross_vendor_transformer.js`](../../../scripts/lib/boq/cross_vendor_transformer.js). |
-| **Heterogeneous Multi-Domain Modernization** | [`heterogeneous-tender-modernizer`](../heterogeneous-tender-modernizer/SKILL.md) | Mixed-domain tender planning & carrier allocation: [`heterogeneous_tender_modernizer.js`](../../../scripts/lib/boq/heterogeneous_tender_modernizer.js). |
-| **Commercial Remarks & Reconciliation Hierarchy** | [`boq-remarks-reconciliation-skill`](../boq-remarks-reconciliation-skill/SKILL.md) | Auditable commercial remarks & quantity bridges: [`commercial_remarks.js`](../../../scripts/lib/boq/commercial_remarks.js). |
-| **Popperian Falsification & Epistemic Audit** | [`epistemic-verification-skill`](../epistemic-verification-skill/SKILL.md) | Negative-path falsification & terminal 9-phase evidence ledger: [`evidence_ledger.js`](../../../scripts/lib/system/evidence_ledger.js). |
-| **Codex Autonomous Peer Review** | [`codex-peer-review-skill`](../codex-peer-review-skill/SKILL.md) | Independent static peer review, commit audits, and gap analysis: [`SKILL.md`](../codex-peer-review-skill/SKILL.md). |
+| **Macro Orchestration** | [`orchestrator-workflow-skill`](../../orchestrator-workflow-skill/SKILL.md) | Macro continuous learning lifecycle across all 6 stages. |
+| **Presales Intent Routing** | [`presales-query-router`](../../presales-query-router/SKILL.md) | 5-track intent dispatcher: [`route_query.js`](../../../../scripts/evaluators/route_query.js). |
+| **SSO & Portal Navigation** | [`oca-portal-navigator`](../../oca-portal-navigator/SKILL.md) | Hands-free SSO passing & Tab 1 self-healing: [`navigate_oca.js`](../../../../scripts/lib/scraper/navigate_oca.js). |
+| **Live Scraping & Extraction** | [`oca-catalog-scraper`](../../oca-catalog-scraper/SKILL.md) | Live CDP extraction: [`scrape_oca_solution.js`](../../../../scripts/scrapers/scrape_oca_solution.js). |
+| **Catalog Intelligence & Price Trails** | [`catalog-intelligence-skill`](../../catalog-intelligence-skill/SKILL.md) | Historical pricing & state changes: [`diff_catalog.js`](../../../../scripts/lib/catalog/diff_catalog.js). |
+| **Knowledge Sync & Deltas** | [`knowledge-sync-skill`](../../knowledge-sync-skill/SKILL.md) | Bi-directional NLM sync: [`knowledge_sync.js`](../../../../scripts/lib/sync/knowledge_sync.js). |
+| **BOQ Evaluation & Aspects** | [`boq-eval-skill`](../../boq-eval-skill/SKILL.md) | 7-aspect physical math: [`eval_boq.js`](../../../../scripts/evaluators/eval_boq.js). |
+| **Workload DNA Matching** | [`workload-dna-skill`](../../workload-dna-skill/SKILL.md) | Enterprise app workload matching: [`workload_dna.js`](../../../../scripts/lib/conflict/workload_dna.js). |
+| **Least-Delta Combinator** | [`least-delta-combinator-skill`](../../least-delta-combinator-skill/SKILL.md) | Generational upgrades & pruning: [`least_delta_combinator.js`](../../../../scripts/lib/conflict/least_delta_combinator.js). |
+| **Active Knowledge Reachability** | [`continuous-learning-skill`](../../continuous-learning-skill/SKILL.md) | Active rule discovery: [`active_knowledge_router.js`](../../../../scripts/lib/catalog/active_knowledge_router.js). |
+| **Continuous Learning Verifier** | [`continuous-learning-skill`](../../continuous-learning-skill/SKILL.md) | Zero-repetition certification: [`continuous_learning_verifier.js`](../../../../scripts/lib/feedback/continuous_learning_verifier.js). |
+| **Execution Trace & Shared State** | [`execution-trace-skill`](../../execution-trace-skill/SKILL.md) | 9-phase evidence ledger: [`evidence_ledger.js`](../../../../scripts/lib/system/evidence_ledger.js). |
+| **Multi-Cluster Tender Splitting** | [`multi-cluster-tender-skill`](../../multi-cluster-tender-skill/SKILL.md) | Multi-node cluster partitioning & 42U sizing: [`multi_cluster_splitter.js`](../../../../scripts/lib/boq/multi_cluster_splitter.js). |
+| **RFP Sizing-to-BOM** | [`rfp-sizing-synthesizer`](../../rfp-sizing-synthesizer/SKILL.md) | Natural language sizing requirements to starting BOM: [`requirement_intent_resolver.js`](../../../../scripts/lib/boq/requirement_intent_resolver.js). |
+| **BOM Reconciliation** | [`bom-reconciliation-skill`](../../bom-reconciliation-skill/SKILL.md) | Tender vs vendor quote verification: [`vendor_bom_verifier.js`](../../../../scripts/lib/boq/vendor_bom_verifier.js). |
+| **Value Engineering & CapEx** | [`value-engineering-skill`](../../value-engineering-skill/SKILL.md) | Post-buildability CapEx/OpEx deal optimizer: [`deal_optimizer.js`](../../../../scripts/lib/boq/deal_optimizer.js). |
+| **Adversarial Chaos Validation** | [`adversarial-validation-skill`](../../adversarial-validation-skill/SKILL.md) | Enterprise chaos red-teaming: [`adversarial_agent.js`](../../../../scripts/evaluators/adversarial_agent.js). |
+| **Multimodal Vision OCR** | [`ocr-quote-ingestion-skill`](../../ocr-quote-ingestion-skill/SKILL.md) | Vision OCR for PDF/image quotes: [`ocr_service.js`](../../../../scripts/lib/ocr/ocr_service.js). |
+| **Deliverables & Workbook Export** | [`workbook-generator-skill`](../../workbook-generator-skill/SKILL.md) | 12-column workbooks & CSV companions: [`generate_boq_xlsx.js`](../../../../scripts/lib/boq/generate_boq_xlsx.js). |
+| **Output Acceptance Gate** | [`output-validation-skill`](../../output-validation-skill/SKILL.md) | Pre-presentation 18-point acceptance criteria check (B1–B18): [`bom_verifier.js`](../../../../scripts/lib/boq/bom_verifier.js). |
+| **Dual-Brain RAG & Grounding** | [`nlm-skill`](../../nlm-skill/SKILL.md) | Gemini NotebookLM RAG verification: [`agentic_guardrail.js`](../../../../scripts/lib/rag/agentic_guardrail.js). |
+| **Multi-Agent Jules Delegation** | [`jules-autonomous-protocol`](../../jules-autonomous-protocol/SKILL.md) | Autonomous PR review: [`jules_task_manager.js`](../../../../scripts/services/jules_task_manager.js). |
+| **Frontend UI/UX & Aesthetics** | [`design-taste-frontend`](../../design-taste-frontend/SKILL.md) | Anti-slop UI aesthetics: [`App.jsx`](../../../../dashboard/src/App.jsx). |
+| **Dynamic Semantic Graph** | `graphify` | Dynamic semantic graph & AST navigation: [`graphify-out/`](../../../../graphify-out/). |
+| **Catalog Freshness & Degraded Mode Recovery** | [`degraded-mode-skill`](../../degraded-mode-skill/SKILL.md) | Per-product-gen metadata freshness, BOQ-triggered resync, atomic commit contract: [`product_metadata_manager.js`](../../../../scripts/lib/catalog/product_metadata_manager.js). |
+| **Live CLIC Portal Validation & Receipt Binding** | [`clic-portal-validation-skill`](../../clic-portal-validation-skill/SKILL.md) | CLIC Advice parsing, divergent path resolution (Rank 1A/1B), SHA-256 receipt binding (INV-107): [`bom_verifier.js`](../../../../scripts/lib/boq/bom_verifier.js). |
+| **Scraping-Time Conditional SKU Discovery** | [`conditional-sku-discovery-skill`](../../conditional-sku-discovery-skill/SKILL.md) | Full DOM walk, 8-sweep macro selector, `Catalog_Rules.json` compilation, PORTAL_CONDITIONAL flagging (INV-118/119): [`scrape_oca_solution.js`](../../../../scripts/scrapers/scrape_oca_solution.js). |
+| **Cross-Vendor Architectural Transpiler** | [`cross-vendor-transformation-skill`](../../cross-vendor-transformation-skill/SKILL.md) | Competitor quote translation to HPE equivalents: [`cross_vendor_transformer.js`](../../../../scripts/lib/boq/cross_vendor_transformer.js). |
+| **Heterogeneous Multi-Domain Modernization** | [`heterogeneous-tender-modernizer`](../../heterogeneous-tender-modernizer/SKILL.md) | Mixed-domain tender planning & carrier allocation: [`heterogeneous_tender_modernizer.js`](../../../../scripts/lib/boq/heterogeneous_tender_modernizer.js). |
+| **Commercial Remarks & Reconciliation Hierarchy** | [`boq-remarks-reconciliation-skill`](../../boq-remarks-reconciliation-skill/SKILL.md) | Auditable commercial remarks & quantity bridges: [`commercial_remarks.js`](../../../../scripts/lib/boq/commercial_remarks.js). |
+| **Popperian Falsification & Epistemic Audit** | [`epistemic-verification-skill`](../../epistemic-verification-skill/SKILL.md) | Negative-path falsification & terminal 9-phase evidence ledger: [`evidence_ledger.js`](../../../../scripts/lib/system/evidence_ledger.js). |
+| **Codex Autonomous Peer Review** | [`codex-peer-review-skill`](../../codex-peer-review-skill/SKILL.md) | Independent static peer review, commit audits, and gap analysis: [`SKILL.md`](../../codex-peer-review-skill/SKILL.md). |
 
 ---
 
@@ -220,7 +220,7 @@ To maximize velocity and offload heavy validation without human friction:
 ## 8. Complete System Invariants & Operational Guardrails (`INV-1` to `INV-120`)
 
 > [!NOTE]
-> **Complete Invariant Catalog Reference**: The complete, authoritative catalog of all 120 technical invariants (INV-1 through INV-120) is maintained in [`docs/INVARIANTS.md`](../../../docs/INVARIANTS.md). The table below highlights the foundational execution invariants for fast agent reference:
+> **Complete Invariant Catalog Reference**: The complete, authoritative catalog of all 120 technical invariants (INV-1 through INV-120) is maintained in [`docs/INVARIANTS.md`](../../../../docs/INVARIANTS.md). The table below highlights the foundational execution invariants for fast agent reference:
 
 | Invariant ID | Title | Summary & Guardrail Contract |
 | :--- | :--- | :--- |
@@ -307,24 +307,24 @@ To maximize velocity and offload heavy validation without human friction:
 
 | Phase | Execution Pathway | Specialized Skill | Primary Engine / Script | When to Invoke |
 |:---|:---|:---|:---|:---|
-| **0** | **Scanned PDF / Image Intake** | [`ocr-quote-ingestion-skill`](../ocr-quote-ingestion-skill/SKILL.md) | `scripts/lib/ocr/ocr_service.js` | Image files (.png, .jpg), scanned PDF quotes, portal screenshots |
-| **0** | **Multi-Node Tender Decomposition** | [`multi-cluster-tender-skill`](../multi-cluster-tender-skill/SKILL.md) | `scripts/lib/boq/multi_cluster_splitter.js` | Tenders with >1 server, multi-sheet RFQs, 42U rack & power sizing |
-| **0** | **OCA Portal Live Scraper** | [`oca-catalog-scraper`](../oca-catalog-scraper/SKILL.md) | `scripts/scrapers/scrape_oca_solution.js` | Live extraction of WebLogic OCA catalogs via CDP port 9222 |
-| **0** | **Hands-Free Portal Navigator** | [`oca-portal-navigator`](../oca-portal-navigator/SKILL.md) | `scripts/lib/scraper/navigate_oca.js` | Passing through Partner Portal SSO, search & menu navigation |
-| **1** | **Presales Intent Classification** | [`presales-query-router`](../presales-query-router/SKILL.md) | `scripts/evaluators/route_query.js` | Classifying inbound queries into the 5 canonical tracks |
-| **1** | **Workload DNA & App Matching** | [`workload-dna-skill`](../workload-dna-skill/SKILL.md) | `scripts/lib/conflict/workload_dna.js` | Sizing for SAP HANA, VMware VCF, VDI, SQL, AI inference, HPC |
-| **1** | **RFP Sizing to Starting BOM** | [`rfp-sizing-synthesizer`](../rfp-sizing-synthesizer/SKILL.md) | `scripts/evaluators/route_query.js` | Unstructured core/RAM/storage capacity wishes -> 100% buildable BOM |
-| **1** | **Catalog Pricing & Trends** | [`catalog-intelligence-skill`](../catalog-intelligence-skill/SKILL.md) | `scripts/lib/catalog/sku_versioning.js` | Historical price trails, lifecycle status changes (OB, DS, 90, EOL) |
-| **2** | **Customer BOQ Evaluation** | [`boq-eval-skill`](../boq-eval-skill/SKILL.md) | `scripts/evaluators/eval_boq.js` | Evaluating physical buildability across all 7 hardware dimensions |
-| **2** | **BOM Tender Reconciliation** | [`bom-reconciliation-skill`](../bom-reconciliation-skill/SKILL.md) | `scripts/lib/boq/vendor_bom_verifier.js` | Cross-verifying customer requirements vs partner portal quotes |
-| **3** | **Least-Delta Cascade Pruning** | [`least-delta-combinator-skill`](../least-delta-combinator-skill/SKILL.md) | `scripts/lib/conflict/least_delta_combinator.js` | Pruning cascading additions caused by troublesome SKUs (Rank 1L/1M) |
-| **3** | **Deal Value Engineering** | [`value-engineering-skill`](../value-engineering-skill/SKILL.md) | `scripts/lib/boq/deal_optimizer.js` | Evaluating post-buildability CapEx/OpEx savings (CPU, NIC, PSU) |
-| **4** | **NotebookLM RAG Grounding** | [`nlm-skill`](../nlm-skill/SKILL.md) | `gemini-notebook-mcp` tools | Fact-checking QuickSpecs PDFs & master catalogs via Cloud RAG |
-| **4** | **Knowledge Registry Delta Sync**| [`knowledge-sync-skill`](../knowledge-sync-skill/SKILL.md) | `scripts/lib/sync/knowledge_sync.js` | Bi-directional sync of verified KnowledgeDeltas across generations |
-| **5** | **Adversarial Chaos Red-Team** | [`adversarial-validation-skill`](../adversarial-validation-skill/SKILL.md) | `scripts/evaluators/adversarial_agent.js` | 10 Enterprise failure mode sanity checks (mandatory pre-presentation) |
-| **5** | **Output Acceptance Gate** | [`output-validation-skill`](../output-validation-skill/SKILL.md) | Pre-presentation checklist | Validating completeness, prices, badges, and structural soundness |
-| **6** | **Professional Excel Generator** | [`workbook-generator-skill`](../workbook-generator-skill/SKILL.md) | `scripts/lib/boq/generate_boq_xlsx.js` | Standardized 7-column upload sheets & executive multi-sheet workbooks |
-| **6** | **Execution Trace & Gate Audit** | [`execution-trace-skill`](../execution-trace-skill/SKILL.md) | `outputs/temp/execution_trace_*.json` | Capturing step-by-step trace timestamps, durations, and delta report |
+| **0** | **Scanned PDF / Image Intake** | [`ocr-quote-ingestion-skill`](../../ocr-quote-ingestion-skill/SKILL.md) | `scripts/lib/ocr/ocr_service.js` | Image files (.png, .jpg), scanned PDF quotes, portal screenshots |
+| **0** | **Multi-Node Tender Decomposition** | [`multi-cluster-tender-skill`](../../multi-cluster-tender-skill/SKILL.md) | `scripts/lib/boq/multi_cluster_splitter.js` | Tenders with >1 server, multi-sheet RFQs, 42U rack & power sizing |
+| **0** | **OCA Portal Live Scraper** | [`oca-catalog-scraper`](../../oca-catalog-scraper/SKILL.md) | `scripts/scrapers/scrape_oca_solution.js` | Live extraction of WebLogic OCA catalogs via CDP port 9222 |
+| **0** | **Hands-Free Portal Navigator** | [`oca-portal-navigator`](../../oca-portal-navigator/SKILL.md) | `scripts/lib/scraper/navigate_oca.js` | Passing through Partner Portal SSO, search & menu navigation |
+| **1** | **Presales Intent Classification** | [`presales-query-router`](../../presales-query-router/SKILL.md) | `scripts/evaluators/route_query.js` | Classifying inbound queries into the 5 canonical tracks |
+| **1** | **Workload DNA & App Matching** | [`workload-dna-skill`](../../workload-dna-skill/SKILL.md) | `scripts/lib/conflict/workload_dna.js` | Sizing for SAP HANA, VMware VCF, VDI, SQL, AI inference, HPC |
+| **1** | **RFP Sizing to Starting BOM** | [`rfp-sizing-synthesizer`](../../rfp-sizing-synthesizer/SKILL.md) | `scripts/evaluators/route_query.js` | Unstructured core/RAM/storage capacity wishes -> 100% buildable BOM |
+| **1** | **Catalog Pricing & Trends** | [`catalog-intelligence-skill`](../../catalog-intelligence-skill/SKILL.md) | `scripts/lib/catalog/sku_versioning.js` | Historical price trails, lifecycle status changes (OB, DS, 90, EOL) |
+| **2** | **Customer BOQ Evaluation** | [`boq-eval-skill`](../../boq-eval-skill/SKILL.md) | `scripts/evaluators/eval_boq.js` | Evaluating physical buildability across all 7 hardware dimensions |
+| **2** | **BOM Tender Reconciliation** | [`bom-reconciliation-skill`](../../bom-reconciliation-skill/SKILL.md) | `scripts/lib/boq/vendor_bom_verifier.js` | Cross-verifying customer requirements vs partner portal quotes |
+| **3** | **Least-Delta Cascade Pruning** | [`least-delta-combinator-skill`](../../least-delta-combinator-skill/SKILL.md) | `scripts/lib/conflict/least_delta_combinator.js` | Pruning cascading additions caused by troublesome SKUs (Rank 1L/1M) |
+| **3** | **Deal Value Engineering** | [`value-engineering-skill`](../../value-engineering-skill/SKILL.md) | `scripts/lib/boq/deal_optimizer.js` | Evaluating post-buildability CapEx/OpEx savings (CPU, NIC, PSU) |
+| **4** | **NotebookLM RAG Grounding** | [`nlm-skill`](../../nlm-skill/SKILL.md) | `gemini-notebook-mcp` tools | Fact-checking QuickSpecs PDFs & master catalogs via Cloud RAG |
+| **4** | **Knowledge Registry Delta Sync**| [`knowledge-sync-skill`](../../knowledge-sync-skill/SKILL.md) | `scripts/lib/sync/knowledge_sync.js` | Bi-directional sync of verified KnowledgeDeltas across generations |
+| **5** | **Adversarial Chaos Red-Team** | [`adversarial-validation-skill`](../../adversarial-validation-skill/SKILL.md) | `scripts/evaluators/adversarial_agent.js` | 10 Enterprise failure mode sanity checks (mandatory pre-presentation) |
+| **5** | **Output Acceptance Gate** | [`output-validation-skill`](../../output-validation-skill/SKILL.md) | Pre-presentation checklist | Validating completeness, prices, badges, and structural soundness |
+| **6** | **Professional Excel Generator** | [`workbook-generator-skill`](../../workbook-generator-skill/SKILL.md) | `scripts/lib/boq/generate_boq_xlsx.js` | Standardized 7-column upload sheets & executive multi-sheet workbooks |
+| **6** | **Execution Trace & Gate Audit** | [`execution-trace-skill`](../../execution-trace-skill/SKILL.md) | `outputs/temp/execution_trace_*.json` | Capturing step-by-step trace timestamps, durations, and delta report |
 
 ---
 

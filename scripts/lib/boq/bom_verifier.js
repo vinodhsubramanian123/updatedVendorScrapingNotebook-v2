@@ -1,12 +1,12 @@
 'use strict';
 /**
- * scripts/lib/boq/bom_verifier.js — 14-Point Pre-Presentation Acceptance Gate
+ * scripts/lib/boq/bom_verifier.js — Pre-Presentation Acceptance Gate (U1–U6, B1–B21)
  *
  * Implements authoritative pre-presentation output validation conforming to
  * output-validation-skill (.agents/skills/output-validation-skill/SKILL.md):
- * - Universal Acceptance Criteria (U1–U5) across all presales tracks
+ * - Universal Acceptance Criteria (U1–U6) across all presales tracks
  * - Track-Specific Criteria:
- *   - BOQ Evaluation (B1–B19)
+ *   - BOQ Evaluation (B1–B21)
  *   - RFP Sizing-to-BOM (R1–R6)
  *   - BOM Reconciliation (C1–C4)
  *   - Freeform Q&A (Q1–Q4)
@@ -19,7 +19,7 @@
  */
 
 const fs = require('fs');
-const { isValidHpeSKU, cleanBaseSKU, isSmartChoiceOrBtoSku, classifyCommercialFulfillmentMode, buildCatalogSkuIndex } = require('../catalog/sku.js');
+const { isValidHpeSKU, cleanBaseSKU, isSmartChoiceOrBtoSku, classifyCommercialFulfillmentMode, buildCatalogSkuIndex, classifyLifecycleState } = require('../catalog/sku.js');
 const { candidateReviewCurrent } = require('./solution_evidence.js');
 const { analyzeDeliveryPacing } = require('./delivery_pacing_analyzer.js');
 const { getRegisteredAspectsForDomain } = require('../aspects/aspect_registry.js');
@@ -1127,8 +1127,45 @@ function _checkTurnkeyDeploymentCompleteness(output, context = {}) {
   );
 }
 
+function _checkProductionLifecycleGate(output, context = {}) {
+  const isUnbuildable = output?.isMathClean === false || output?.isWholeSolutionValid === false || output?.status === 'UNBUILDABLE';
+  if (isUnbuildable) {
+    return makeCheck('B21', 'Active Production Lifecycle Gate (Non-OB / Non-EOL)', 'BLOCK', 'NOT_APPLICABLE', 'Unbuildable baseline diagnosis does not promote production SKUs.');
+  }
+  const topCandidate = output?.conflictGraph?.recommendedSolutions?.[0] ||
+    output?.conflictGraph?.rankedSolutions?.[0] ||
+    output?.rankedSolutions?.[0];
+  const parts = topCandidate?.skuPartsList || topCandidate?.skuList || [];
+  if (parts.length === 0) {
+    return makeCheck('B21', 'Active Production Lifecycle Gate (Non-OB / Non-EOL)', 'BLOCK', 'NOT_APPLICABLE', 'No candidate recommendation parts to verify lifecycle eligibility.');
+  }
+  const catalogData = context.catalogData || output?.catalogData || output?.chassisInfo?.catalogData;
+  const catalogIndex = catalogData ? buildCatalogSkuIndex(catalogData) : null;
+  const blockedSkus = [];
+  for (const part of parts) {
+    const clean = cleanBaseSKU(part.sku);
+    const catItem = catalogIndex?.get(clean);
+    const lc = classifyLifecycleState(
+      catItem?.lifecycleStatus || part.lifecycleStatus || '',
+      catItem?.diffStatus || part.diffStatus || '',
+      part.sku || '',
+      catItem?.skuData?.Description || part.description || ''
+    );
+    if (lc.isBlockedForProduction) {
+      blockedSkus.push(`${clean} (${lc.canonicalStatus})`);
+    }
+  }
+  if (blockedSkus.length > 0 && !context.allowClearanceOrObsolete) {
+    return makeCheck('B21', 'Active Production Lifecycle Gate (Non-OB / Non-EOL)', 'BLOCK', 'FAILED',
+      `Top production recommendation contains ${blockedSkus.length} obsolete/EOL/discontinued SKU(s): ${blockedSkus.join(', ')}.`,
+      { blockedSkus });
+  }
+  return makeCheck('B21', 'Active Production Lifecycle Gate (Non-OB / Non-EOL)', 'BLOCK', 'PASSED',
+    `All ${parts.length} SKU(s) in top production recommendation are free of OB/EOL/Discontinued lifecycle blocks.`);
+}
+
 /**
- * BOQ Evaluation Criteria (B1–B20)
+ * BOQ Evaluation Criteria (B1–B21)
  */
 function validateBoqEvaluationCriteria(output, context = {}) {
   return [
@@ -1144,6 +1181,7 @@ function validateBoqEvaluationCriteria(output, context = {}) {
     _checkUnresolvedRequirements(output, context),
     _checkQuantityConservation(output, context),
     _checkTurnkeyDeploymentCompleteness(output, context),
+    _checkProductionLifecycleGate(output, context),
     _checkPortalReceiptIntegrity(output, context)
   ];
 }
@@ -1369,11 +1407,16 @@ const SPECIALIZED_TRACK_VALIDATORS = Object.freeze({
     const valid = Boolean(output && (output.drift || (output.syncResult && output.status !== 'FAILED')));
     return makeCheck('KS1', 'Knowledge Sync & Drift Inspection', 'BLOCK', valid ? 'PASSED' : 'FAILED',
       valid ? 'Knowledge synchronization / drift inspection verified.' : 'Knowledge synchronization failed or returned no drift/sync evidence.');
+  },
+  PRESALES_CLEARANCE_STRATEGY: (output) => {
+    const hasDualTrack = Boolean(output && (output.productionBaseline || output.clearanceOption || Array.isArray(output.advisories)));
+    return makeCheck('PC1', 'Dual-Track Clearance vs Production Baseline', 'BLOCK', hasDualTrack ? 'PASSED' : 'ACTION_REQUIRED',
+      hasDualTrack ? 'Dual-track clearance and active production baseline strategy verified.' : 'Clearance strategy output requires production baseline and/or clearance advisories.');
   }
 });
 
 /**
- * Main 14-Point Pre-Presentation Acceptance Gate
+ * Main Pre-Presentation Acceptance Gate (U1–U6 + Track-Specific Criteria)
  *
  * @param {object} outputArtifact - The result data object to be presented to user
  * @param {string} [track='BOQ_EVALUATION'] - The execution track

@@ -4,11 +4,11 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen12/DL380_Gen12`
 
-**Sync Timestamp**: 2026-11-12T14:32:40.473Z
+**Sync Timestamp**: 2026-11-15T06:45:14.766Z
 
 **Total Verified SKUs**: `1172` (`619` Hardware + `553` Services)
 
-**Total Synced KnowledgeDeltas**: `71`
+**Total Synced KnowledgeDeltas**: `74`
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -283,6 +283,18 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 
 60. **[LEARN_REASONING_APPEND_ONLY_KNOWLEDGE_RETRACTION_20261108] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
    - **Rule**: Falsified, erroneous, or superseded learned rules must be deactivated across all registry arrays (chassis deltas, wrapped rules, master registries) with an append-only decision audit trail (active: false, decision: RETRACTED or SUPERSEDED) without deleting historical evidence records (INV-231).
+   - **Affected SKU**: `N/A` | **Required Dependency**: `N/A`
+
+61. **[LEARN_UNIVERSAL_NLM_READ_FAILOVER_AND_SYNC_PRESERVATION_20261114] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: Idempotent NotebookLM read RPCs (source list, source content, canary notebook query) MUST fail over from CDP to httpx via execNlmReadWithFallback() when CdpTransportError occurs. Transient CLI read/transport errors MUST NOT downgrade cloudSyncState from VERIFIED to FAILED when an active certifiedCatalogSourceIds publication already matches the current on-disk Catalog.json SHA-256.
+   - **Affected SKU**: `N/A` | **Required Dependency**: `N/A`
+
+62. **[LEARN_UNIVERSAL_CAPTURE_RECEIPT_REBUILD_RECONCILIATION_20261114] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: Local catalog rebuild scripts (build_catalog.js, generate_xlsx.js) MUST invoke reconcileRebuiltCaptureReceipt() to refresh capture_receipt.json artifact hashes and counts only when raw_data/oca_raw_data_full.json SHA-256 matches the verified receipt rawSha256. Rebuilt receipts MUST fail closed when rawSha256 differs.
+   - **Affected SKU**: `N/A` | **Required Dependency**: `N/A`
+
+63. **[LEARN_UNIVERSAL_QUARANTINE_SEMANTIC_REVALIDATION_20261114] DL380_Gen12** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen12 CTO Server`):
+   - **Rule**: Quarantined knowledge deltas MUST pass _checkSemanticExtractionIntegrity() (rejecting inverted discontinued-SKU dependencies, slash/disjunctive pairs misparsed as dependencies, and corrupted 6-digit SKU-prefix quantities) before promotion eligibility. Legacy quarantined deltas failing INV-230 re-validation MUST be pruned with append-only AUTO_REJECTED_BY_INV230_REVALIDATION records in knowledge_decisions.json.
    - **Affected SKU**: `N/A` | **Required Dependency**: `N/A`
 
 

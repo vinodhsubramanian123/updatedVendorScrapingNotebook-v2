@@ -58,6 +58,7 @@ const { evalPowerEnvironment } = require('../aspects/power_environment.js');
 const { evalSupportManufacturing } = require('../aspects/support_manufacturing.js');
 const { evalSupportServices } = require('../aspects/support_services.js');
 const { generateLifecycleRecommendations } = require('../conflict/resolution_matrix.js');
+const { analyzeCategoryDependencies, getCategoryDependencyMatrix, queryLocalGraphifyNeighborhood } = require('../catalog/category_dependencies.js');
 
 const HIGH_TDP_THRESHOLD_WATTS = 240;
 
@@ -679,6 +680,30 @@ function _checkSasExpanderAndRaidTranspilation(storage, serverCount, mandatorySk
   }
 }
 
+function _checkStorageControllerForCage(ctx, isServer) {
+  const { storage, serverCount, warnings, missingDependencies, catalogData } = ctx;
+  if (!isServer || !storage.needsStorageControllerForCage) return;
+  const { resolveComponentByRole } = require('../taxonomy/sku_resolver.js');
+  const ctrl = resolveComponentByRole(catalogData, {
+    role: 'Storage Controller',
+    keywords: ['mr416i', 'mr408i', 'sr932i', 'controller'],
+    preferredSku: 'P47777-B21'
+  });
+  const sku = (ctrl.isResolved && ctrl.sku) ? ctrl.sku : 'P47777-B21';
+  const desc = ctrl.description || 'HPE Tri-Mode / SAS Storage Controller';
+  const reason = `Storage Topology Rule: Controller-routed front drive cage requires a hardware Storage Controller (${sku}) plus enablement cable & cache battery — drives alone do not dictate controller selection; only No-Drive FIO or Direct-Connect NVMe cages omit a controller.`;
+  warnings.push(reason);
+  missingDependencies.push({
+    key: 'STORAGE_CONTROLLER_FOR_CAGE',
+    rule: 'Drive Cage Topology Storage Controller Mandate',
+    sku,
+    isResolved: Boolean(ctrl.isResolved && ctrl.sku),
+    description: desc,
+    quantity: serverCount,
+    reasoning: reason
+  });
+}
+
 function validateStorageRules(ctx) {
   const { items, storage, serverCount, mandatorySkus, errors, warnings, mathDeductions, missingDependencies } = ctx;
   _checkStorageDriveFormFactor(storage, errors, mathDeductions);
@@ -689,6 +714,7 @@ function validateStorageRules(ctx) {
 
   _checkDrivelessChassis(isServer, storage, serverCount, mandatorySkus, warnings, mathDeductions, missingDependencies);
   _checkDriveCageAndCables(ctx, isServer, isGen12);
+  _checkStorageControllerForCage(ctx, isServer);
   _checkNs204BootEnablement(ctx, isGen12);
   _checkControllerCablesAndBatteries(ctx);
   _checkSasExpanderAndRaidTranspilation(storage, serverCount, mandatorySkus, warnings, missingDependencies);
@@ -2083,6 +2109,11 @@ module.exports = {
   evalPcieRiserSlots,
   evalPowerEnvironment,
   evalSupportManufacturing,
+  evalSupportServices,
+  getMandatorySkusForChassis,
+  analyzeCategoryDependencies,
+  getCategoryDependencyMatrix,
+  queryLocalGraphifyNeighborhood,
   _assessConfidenceAndCleanliness,
   readBoqLines
 };

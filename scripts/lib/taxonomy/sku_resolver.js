@@ -9,7 +9,7 @@
  * and Parameterized Engineering Equations.
  */
 
-const { cleanBaseSKU, buildCatalogSkuIndex } = require('../catalog/sku.js');
+const { cleanBaseSKU, buildCatalogSkuIndex, classifyLifecycleState } = require('../catalog/sku.js');
 const { classifyComponentRole } = require('../catalog/product_meta.js');
 const { analyzeRetirementDate } = require('../catalog/lifecycle.js');
 
@@ -71,11 +71,14 @@ function extractCatalogItemCost(skuData) {
 function extractCatalogItemLeadTime(skuData) {
   if (!skuData) return { raw: 'Unpublished', days: null, speedTier: 'Unpublished', isPublished: false };
   const raw = String(skuData['Lead Time'] || skuData.leadTime || '').trim();
-  if (!raw || raw === 'Unpublished' || raw === 'Not published by OCA' || raw === 'Standard') {
-    return { raw: raw || 'Unpublished', days: null, speedTier: 'Unpublished', isPublished: false };
-  }
-  let days = skuData.leadTimeDays !== undefined && skuData.leadTimeDays !== null && skuData.leadTimeDays !== '' ? Number(skuData.leadTimeDays) : null;
-  if (days === null || !Number.isFinite(days)) {
+  const explicitDays = (skuData.leadTimeDays !== undefined && skuData.leadTimeDays !== null && skuData.leadTimeDays !== '')
+    ? Number(skuData.leadTimeDays)
+    : null;
+  let days = (explicitDays !== null && Number.isFinite(explicitDays)) ? explicitDays : null;
+  if (days === null) {
+    if (!raw || raw === 'Unpublished' || raw === 'Not published by OCA' || raw === 'Standard') {
+      return { raw: raw || 'Unpublished', days: null, speedTier: 'Unpublished', isPublished: false };
+    }
     const range = raw.match(/(\d+)\s*(?:-|to)\s*(\d+)/);
     if (range) days = Math.round((Number(range[1]) + Number(range[2])) / 2);
     else {
@@ -84,7 +87,7 @@ function extractCatalogItemLeadTime(skuData) {
     }
   }
   const speedTier = skuData['Speed Tier'] || (days !== null ? (days <= 7 ? 'Fast-Ship Certified (<=7d)' : days <= 30 ? 'Standard Delivery (8-30d)' : days <= 45 ? 'Extended Schedule (31-45d)' : 'Constrained / Long Lead Time (>45d)') : 'Unpublished');
-  return { raw, days, speedTier, isPublished: days !== null };
+  return { raw: raw || (days !== null ? `${days} days` : 'Unpublished'), days, speedTier, isPublished: days !== null };
 }
 
 /**
@@ -97,8 +100,13 @@ function extractCatalogItemLeadTime(skuData) {
  */
 function _checkLifecycleEligibility(skuData, allowObsolete) {
   if (allowObsolete) return true;
-  const lifecycle = String(skuData['Lifecycle Status'] || skuData.lifecycleStatus || '').toLowerCase();
-  if (lifecycle.includes('obsolete') || lifecycle.includes('discontinued') || skuData['Diff Status'] === 'REMOVED') {
+  const lc = classifyLifecycleState(
+    skuData['Lifecycle Status'] || skuData.lifecycleStatus || '',
+    skuData['Diff Status'] || skuData.diffStatus || '',
+    skuData['Product #'] || skuData.sku || '',
+    skuData.Description || skuData.description || ''
+  );
+  if (lc.isBlockedForProduction || lc.isDirectShip) {
     return false;
   }
   const discDate = skuData['Discontinued Date'] || skuData['Discontinuation Date'] || skuData.discontinuedDate || skuData.discontinuationDate;
@@ -221,6 +229,12 @@ function _computeCandidateScore({ skuData, targetRole, itemRole, matchedKwCount,
       score += 5;
     }
   }
+  const lead = extractCatalogItemLeadTime(skuData);
+  if (lead.isPublished) {
+    if (lead.days <= 7) score += 4;
+    else if (lead.days <= 14) score += 2;
+    else if (lead.days >= 45) score -= 3;
+  }
   return score;
 }
 
@@ -319,11 +333,14 @@ function resolveComponentByRole(catalogData, criteria = {}) {
 
     if (validation.eligible) {
       const priceInfo = extractCatalogItemPrice(skuData);
+      const leadInfo = extractCatalogItemLeadTime(skuData);
       candidateList.push({
         sku: cleanBaseSKU(skuId),
         description: skuData.Description || skuData.description || '',
         price: priceInfo.price,
         hasPrice: priceInfo.hasPrice,
+        leadTimeDays: leadInfo.days,
+        leadTime: leadInfo.raw,
         score: validation.score,
         provenance: skuData.provenance || 'Catalog Index (Capability Match)'
       });
@@ -334,12 +351,23 @@ function resolveComponentByRole(catalogData, criteria = {}) {
     // Return highest scoring candidate
     candidateList.sort((a, b) => b.score - a.score);
     const best = candidateList[0];
+    const fasterAlternative = (best.leadTimeDays !== null && best.leadTimeDays >= 21)
+      ? candidateList.slice(1).find(alt => alt.leadTimeDays !== null && alt.leadTimeDays <= best.leadTimeDays - 14 && alt.score >= best.score - 5) || null
+      : null;
     return {
       found: true,
       sku: best.sku,
       description: best.description,
       price: best.price,
       hasPrice: best.hasPrice,
+      leadTimeDays: best.leadTimeDays,
+      leadTime: best.leadTime,
+      availabilityAlternative: fasterAlternative ? {
+        sku: fasterAlternative.sku,
+        description: fasterAlternative.description,
+        leadTimeDays: fasterAlternative.leadTimeDays,
+        daysSaved: best.leadTimeDays - fasterAlternative.leadTimeDays
+      } : null,
       isResolved: true,
       requirementTag: null,
       provenance: best.provenance

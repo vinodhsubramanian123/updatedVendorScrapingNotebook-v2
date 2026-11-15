@@ -12,10 +12,17 @@
 
 const fs = require('fs');
 const path = require('path');
-const { cleanBaseSKU, buildCatalogSkuIndex } = require('../catalog/sku.js');
+const { cleanBaseSKU, buildCatalogSkuIndex, classifyLifecycleState } = require('../catalog/sku.js');
 const { classifyComponentRole } = require('../catalog/product_meta.js');
-const { extractWorkloadDna } = require('./workload_dna.js');
+const { extractCatalogItemLeadTime } = require('../taxonomy/sku_resolver.js');
+const { extractWorkloadDna, validateNumaMemoryTopology } = require('./workload_dna.js');
 const { analyzeCascadingImpact, discoverDynamicStrategyAddons } = require('./cascading_impact_analyzer.js');
+const {
+  extractComponentAttributes,
+  scoreReplacementCandidate,
+  identifyTroublesomeSkus,
+  buildLeastDeltaCandidate
+} = require('./least_delta_combinator.js');
 const { getHistoricalSkuPrice } = require('../catalog/sku_versioning.js');
 const { createDecisionTraceLedger } = require('./decision_trace.js');
 const { getMandatorySkusForChassis } = require('../catalog/catalog_rules.js');
@@ -117,7 +124,11 @@ function calculateSupplyMetrics(parts, resolveSupply) {
 
   const sortedTimes = [...knownLeadTimes].sort((a, b) => a - b);
   const medianLeadTime = sortedTimes.length > 0 ? sortedTimes[Math.floor(sortedTimes.length / 2)] : null;
-  const leadTimeOutliers = knownEntries.filter(e => e.leadTimeDays >= 45 || (medianLeadTime > 0 && e.leadTimeDays > 2 * medianLeadTime));
+  const leadTimeOutliers = knownEntries.filter(e =>
+    e.leadTimeDays >= 45 ||
+    (e.leadTimeDays >= 21 && medianLeadTime > 0 && (e.leadTimeDays - medianLeadTime) >= 14) ||
+    (medianLeadTime > 0 && e.leadTimeDays > 2 * medianLeadTime)
+  );
 
   return {
     knownLeadTimeCount: knownLeadTimes.length,
@@ -438,34 +449,63 @@ function _checkPsuDowngrade(reqDesc, candDescriptions) {
 
 function _checkCpuDowngrade(reqDesc, candDescriptions) {
   const isCpu = reqDesc.includes('intel') || reqDesc.includes('xeon') || reqDesc.includes('epyc') || reqDesc.includes('processor');
-  if (reqDesc.includes('platinum') && isCpu) {
+  if (!isCpu) return 0;
+  let penalty = 0;
+  if (reqDesc.includes('platinum')) {
     const hasPlat = candDescriptions.some(d => d.includes('platinum'));
     const hasLower = candDescriptions.some(d => (d.includes('gold') || d.includes('silver') || d.includes('bronze')) && d.includes('processor'));
-    if (!hasPlat && hasLower) return 5.0;
-  } else if (reqDesc.includes('gold') && isCpu) {
+    if (!hasPlat && hasLower) penalty += 5.0;
+  } else if (reqDesc.includes('gold')) {
     const hasGoldOrHigher = candDescriptions.some(d => (d.includes('gold') || d.includes('platinum')) && d.includes('processor'));
     const hasLower = candDescriptions.some(d => (d.includes('silver') || d.includes('bronze')) && d.includes('processor'));
-    if (!hasGoldOrHigher && hasLower) return 3.5;
+    if (!hasGoldOrHigher && hasLower) penalty += 3.5;
   }
-  return 0;
+
+  const reqCores = reqDesc.match(/\b(\d{1,3})\s*-?\s*cores?\b/i);
+  if (reqCores) {
+    const targetCores = parseInt(reqCores[1], 10);
+    const candMaxCores = candDescriptions.reduce((mx, d) => {
+      if (!/xeon|epyc|processor/i.test(d)) return mx;
+      const m = d.match(/\b(\d{1,3})\s*-?\s*cores?\b/i);
+      return m ? Math.max(mx, parseInt(m[1], 10)) : mx;
+    }, 0);
+    if (candMaxCores > 0 && candMaxCores < targetCores * 0.8) penalty += 3.0;
+  }
+  return penalty;
 }
 
 function _checkMemoryDowngrade(reqDesc, candDescriptions) {
+  let penalty = 0;
   if (reqDesc.includes('ddr5')) {
     const hasDdr5 = candDescriptions.some(d => d.includes('ddr5'));
     const hasDdr4 = candDescriptions.some(d => d.includes('ddr4'));
-    if (!hasDdr5 && hasDdr4) return 6.0;
+    if (!hasDdr5 && hasDdr4) penalty += 6.0;
   }
-  return 0;
+  const reqMts = reqDesc.match(/(?:ddr5[-\s]?|pc5[-\s]?)(\d{4})/i);
+  if (reqMts) {
+    const targetMts = parseInt(reqMts[1], 10);
+    const candMaxMts = candDescriptions.reduce((mx, d) => {
+      const m = d.match(/(?:ddr5[-\s]?|pc5[-\s]?)(\d{4})/i);
+      return m ? Math.max(mx, parseInt(m[1], 10)) : mx;
+    }, 0);
+    if (candMaxMts > 0 && candMaxMts < targetMts) penalty += 1.5;
+  }
+  return penalty;
 }
 
 function _checkGpuDowngrade(reqDesc, candDescriptions) {
-  if (reqDesc.includes('h100') || reqDesc.includes('h200') || reqDesc.includes('a100')) {
-    const hasHighTier = candDescriptions.some(d => d.includes('h100') || d.includes('h200') || d.includes('a100'));
-    const hasLowerTier = candDescriptions.some(d => (d.includes('l4') || d.includes('t4') || d.includes('l40')) && d.includes('accelerator'));
-    if (!hasHighTier && hasLowerTier) return 5.0;
+  let penalty = 0;
+  if (reqDesc.includes('h100') || reqDesc.includes('h200') || reqDesc.includes('a100') || reqDesc.includes('b200')) {
+    const hasHighTier = candDescriptions.some(d => d.includes('h100') || d.includes('h200') || d.includes('a100') || d.includes('b200'));
+    const hasLowerTier = candDescriptions.some(d => (d.includes('l4') || d.includes('t4') || d.includes('l40')) && (d.includes('accelerator') || d.includes('gpu') || d.includes('nvidia')));
+    if (!hasHighTier && hasLowerTier) penalty += 5.0;
   }
-  return 0;
+  if (reqDesc.includes('nvlink') || reqDesc.includes('nvl') || reqDesc.includes('sxm')) {
+    const hasNvlink = candDescriptions.some(d => d.includes('nvlink') || d.includes('nvl') || d.includes('sxm'));
+    const hasAnyGpu = candDescriptions.some(d => d.includes('nvidia') || d.includes('gpu') || d.includes('accelerator'));
+    if (hasAnyGpu && !hasNvlink) penalty += 4.0;
+  }
+  return penalty;
 }
 
 function computeCapabilityDowngradePenalty(cand, items) {
@@ -482,21 +522,76 @@ function computeCapabilityDowngradePenalty(cand, items) {
     penalty += _checkGpuDowngrade(reqDesc, candDescriptions);
   }
 
+  const reqNuma = validateNumaMemoryTopology(items || []);
+  const candNuma = validateNumaMemoryTopology(cand.skuPartsList || []);
+  if (reqNuma.isBalancedInterleaving && !candNuma.isBalancedInterleaving && candNuma.dimmCount > 0) {
+    penalty += 1.5;
+  }
+
   return parseFloat(penalty.toFixed(2));
 }
 
+const CATEGORY_WEIGHT_RULES = [
+  [/chassis|base/i, 10.0],
+  [/processor|cpu|xeon|epyc/i, 8.0],
+  [/gpu|accelerator|nvidia|h100|h200|l40|rtx/i, 8.0],
+  [/memory|dimm|ram/i, 5.0],
+  [/controller|storage|ssd|hdd|nvme/i, 4.0],
+  [/network|adapter|ocp|nic|hba/i, 3.0],
+  [/power|psu/i, 2.0],
+  [/cable|bracket|enablement|kit|fan|heatsink/i, 0.2]
+];
+
 function _getCategoryArchitecturalWeight(cat = '') {
-  if (cat.includes('chassis') || cat.includes('base')) return 10.0;
-  if (cat.includes('processor') || cat.includes('cpu') || cat.includes('xeon') || cat.includes('epyc')) return 8.0;
-  if (cat.includes('memory') || cat.includes('dimm') || cat.includes('ram')) return 5.0;
-  if (cat.includes('controller') || cat.includes('storage') || cat.includes('ssd') || cat.includes('hdd') || cat.includes('nvme')) return 4.0;
-  if (cat.includes('network') || cat.includes('adapter') || cat.includes('ocp') || cat.includes('nic') || cat.includes('hba')) return 3.0;
-  if (cat.includes('power') || cat.includes('psu')) return 2.0;
-  if (cat.includes('cable') || cat.includes('bracket') || cat.includes('enablement') || cat.includes('kit') || cat.includes('fan') || cat.includes('heatsink')) return 0.2;
+  const s = String(cat || '');
+  for (const [rx, weight] of CATEGORY_WEIGHT_RULES) {
+    if (rx.test(s)) return weight;
+  }
   return 0.5;
 }
 
-function computeArchitecturalDelta(requestedQuantities, candidateQuantities, partCategoryMap = new Map()) {
+function _computeEquivalenceReplacementCredit(requestedQuantities, candidateQuantities, origPartInfo, candPartInfo) {
+  if (!origPartInfo || !candPartInfo) return 0;
+  const unmatchedReq = [];
+  const unmatchedCand = [];
+  for (const [sku, qReq] of requestedQuantities.entries()) {
+    const qCand = candidateQuantities.get(sku) || 0;
+    if (qReq > qCand && origPartInfo.has(sku)) {
+      unmatchedReq.push({ sku, qty: qReq - qCand, info: origPartInfo.get(sku) });
+    }
+  }
+  for (const [sku, qCand] of candidateQuantities.entries()) {
+    const qReq = requestedQuantities.get(sku) || 0;
+    if (qCand > qReq && candPartInfo.has(sku)) {
+      unmatchedCand.push({ sku, qty: qCand - qReq, info: candPartInfo.get(sku) });
+    }
+  }
+  let credit = 0;
+  const usedCand = new Set();
+  for (const r of unmatchedReq) {
+    const origAttrs = extractComponentAttributes(r.info.description, r.sku, r.info.category);
+    if (origAttrs.componentCategory === 'UNKNOWN') continue;
+    let bestIdx = -1;
+    let bestScore = 0;
+    unmatchedCand.forEach((c, idx) => {
+      if (usedCand.has(idx)) return;
+      const eqScore = scoreReplacementCandidate({ sku: c.sku, description: c.info.description, price: c.info.unitPriceUsd || 0 }, origAttrs, r.info.unitPriceUsd || 0);
+      if (eqScore > bestScore) {
+        bestScore = eqScore;
+        bestIdx = idx;
+      }
+    });
+    if (bestIdx !== -1 && bestScore >= 60) {
+      usedCand.add(bestIdx);
+      const pairedQty = Math.min(r.qty, unmatchedCand[bestIdx].qty);
+      const weight = _getCategoryArchitecturalWeight(String(r.info.category || '').toLowerCase());
+      credit += pairedQty * weight * 1.65;
+    }
+  }
+  return credit;
+}
+
+function computeArchitecturalDelta(requestedQuantities, candidateQuantities, partCategoryMap = new Map(), origPartInfo = null, candPartInfo = null) {
   const allSkus = new Set([...requestedQuantities.keys(), ...candidateQuantities.keys()]);
   let totalWeightedDelta = 0;
 
@@ -510,7 +605,8 @@ function computeArchitecturalDelta(requestedQuantities, candidateQuantities, par
     totalWeightedDelta += diff * _getCategoryArchitecturalWeight(cat);
   }
 
-  return parseFloat(totalWeightedDelta.toFixed(2));
+  const eqCredit = _computeEquivalenceReplacementCredit(requestedQuantities, candidateQuantities, origPartInfo, candPartInfo);
+  return parseFloat(Math.max(0, totalWeightedDelta - eqCredit).toFixed(2));
 }
 
 function _indexRequestedQuantities(items) {
@@ -542,20 +638,28 @@ function _scoreCandidateMetrics(cand, requestedSkuSet, requestedQuantities, base
   cand.dynamicScore = parseFloat(((cand.intentMatchRatio * 0.6) + (cand.score * 0.4)).toFixed(2));
   cand.supplyMetrics = calculateSupplyMetrics(cand.skuPartsList, resolveSupply);
 
+  const origPartInfo = new Map();
+  for (const it of (items || [])) {
+    const k = cleanBaseSKU(it.sku);
+    if (k && !origPartInfo.has(k)) origPartInfo.set(k, it);
+  }
+
   const candidateCategoryMap = new Map(baseCategoryMap);
   const candidateQuantities = new Map();
+  const candPartInfo = new Map();
   for (const it of (cand.skuPartsList || [])) {
     const k = cleanBaseSKU(it.sku);
     if (!k) continue;
     const q = (typeof it.quantity === 'number' && Number.isFinite(it.quantity)) ? it.quantity : (Number(it.quantity) || 1);
     candidateQuantities.set(k, (candidateQuantities.get(k) || 0) + q);
+    if (!candPartInfo.has(k)) candPartInfo.set(k, it);
     if (it.category && !candidateCategoryMap.has(k)) {
       candidateCategoryMap.set(k, it.category);
     }
   }
   cand.quantityDelta = [...new Set([...requestedQuantities.keys(), ...candidateQuantities.keys()])]
     .reduce((sum, sku) => sum + Math.abs((requestedQuantities.get(sku) || 0) - (candidateQuantities.get(sku) || 0)), 0);
-  cand.architecturalDelta = computeArchitecturalDelta(requestedQuantities, candidateQuantities, candidateCategoryMap);
+  cand.architecturalDelta = computeArchitecturalDelta(requestedQuantities, candidateQuantities, candidateCategoryMap, origPartInfo, candPartInfo);
   cand.capabilityDowngradePenalty = computeCapabilityDowngradePenalty(cand, items);
 }
 
@@ -633,8 +737,10 @@ function _computeCandidateEditDistance(candPartMap, addedSkus, omittedSkus, quan
   addedSkus.forEach(s => {
     const part = candPartMap.get(s);
     const cat = (part?.category || '').toLowerCase();
-    if (cat.includes('controller') || cat.includes('processor') || cat.includes('memory') || cat.includes('power supply')) {
+    if (cat.includes('gpu') || cat.includes('accelerator') || cat.includes('processor') || cat.includes('cpu') || cat.includes('memory') || cat.includes('controller') || cat.includes('power supply')) {
       weightedEditDistance += 1.0;
+    } else if (cat.includes('storage') || cat.includes('drive') || cat.includes('network') || cat.includes('nic')) {
+      weightedEditDistance += 0.6;
     } else if (cat.includes('cable') || cat.includes('bracket') || cat.includes('enablement') || cat.includes('fix')) {
       weightedEditDistance += 0.2;
     } else {
@@ -890,6 +996,75 @@ function _injectDcLugKitIfMissing(updatedParts, partSkus, mandatory, getPrice, i
   }
 }
 
+function _applyRemoveDepMutation(dep, origSku, cleanDep, updatedParts, partSkus, injectedFixes, action) {
+  const idx = updatedParts.findIndex(p => cleanBaseSKU(p.sku) === (origSku || cleanDep));
+  if (idx === -1) return false;
+  const removed = updatedParts.splice(idx, 1)[0];
+  partSkus.delete(cleanBaseSKU(removed.sku));
+  injectedFixes.push({ sku: removed.sku, action, reason: dep.reason || 'Pruned conflicting option in 7-aspect revalidation' });
+  return true;
+}
+
+function _applySubstituteDepMutation(dep, origSku, cleanDep, updatedParts, partSkus, getPrice, injectedFixes) {
+  const idx = updatedParts.findIndex(p => cleanBaseSKU(p.sku) === origSku);
+  if (idx === -1) return false;
+  const depPrice = getPrice(cleanDep);
+  const qty = dep.quantity || updatedParts[idx].quantity || 1;
+  updatedParts[idx] = {
+    ...updatedParts[idx],
+    sku: cleanDep,
+    description: dep.description || `Substituted dependency (${cleanDep})`,
+    quantity: qty,
+    unitPriceUsd: depPrice,
+    extendedPriceUsd: depPrice * qty,
+    isFixInjected: true,
+    isCascadingFix: true
+  };
+  partSkus.delete(origSku);
+  partSkus.add(cleanDep);
+  injectedFixes.push({ sku: cleanDep, replacedSku: origSku, action: 'SUBSTITUTE', reason: dep.reason || 'Substituted incompatible option' });
+  return true;
+}
+
+function _applyDependencyMutationToParts(dep, updatedParts, partSkus, getPrice, injectedFixes) {
+  const cleanDep = cleanBaseSKU(dep.sku);
+  const origSku = cleanBaseSKU(dep.originalSku || '');
+  const action = String(dep.action || '').toUpperCase();
+
+  if (action === 'REMOVE' || action === 'PRUNE_REDUNDANT_RAID1_FIO') {
+    return _applyRemoveDepMutation(dep, origSku, cleanDep, updatedParts, partSkus, injectedFixes, action);
+  }
+  if ((action === 'SUBSTITUTE' || origSku) && origSku && cleanDep) {
+    return _applySubstituteDepMutation(dep, origSku, cleanDep, updatedParts, partSkus, getPrice, injectedFixes);
+  }
+  if (cleanDep && partSkus.has(cleanDep) && Number(dep.quantity) > 0 && action === 'ADJUST_QTY') {
+    const target = updatedParts.find(p => cleanBaseSKU(p.sku) === cleanDep);
+    if (target && target.quantity < dep.quantity) {
+      target.quantity = dep.quantity;
+      target.extendedPriceUsd = (target.unitPriceUsd || 0) * dep.quantity;
+      injectedFixes.push({ sku: cleanDep, action: 'ADJUST_QTY', reason: dep.reason || 'Adjusted quantity to satisfy physical aspect check' });
+      return true;
+    }
+  }
+  if (cleanDep && !partSkus.has(cleanDep)) {
+    const depPrice = getPrice(cleanDep);
+    updatedParts.push({
+      sku: cleanDep,
+      description: dep.description || `Required dependency (${cleanDep})`,
+      quantity: dep.quantity || 1,
+      unitPriceUsd: depPrice,
+      extendedPriceUsd: depPrice * (dep.quantity || 1),
+      isFixInjected: true,
+      isCascadingFix: true,
+      category: dep.category || 'Aspect Rule Fix'
+    });
+    partSkus.add(cleanDep);
+    injectedFixes.push({ sku: cleanDep, reason: dep.reason || 'Missing physical dependency from 7-aspect revalidation' });
+    return true;
+  }
+  return false;
+}
+
 function _runPhysicalAspectsValidationLoop(updatedParts, partSkus, catalogData, targetDir, validator, getPrice, injectedFixes) {
   let isClean = false;
   let aspectErrors = ['7-aspect candidate validation did not return evidence.'];
@@ -898,6 +1073,7 @@ function _runPhysicalAspectsValidationLoop(updatedParts, partSkus, catalogData, 
     return { isClean, aspectErrors };
   }
 
+  const visitedFingerprints = new Set([computeBomFingerprint(updatedParts)]);
   try {
     for (let pass = 0; pass < 8; pass++) {
       const mathResult = validator(updatedParts, catalogData, targetDir, { skipGraphValidation: true, skipLifecycle: true });
@@ -906,33 +1082,26 @@ function _runPhysicalAspectsValidationLoop(updatedParts, partSkus, catalogData, 
         aspectErrors = ['Candidate validation returned no evidence.'];
         break;
       }
-      const beforeCount = updatedParts.length;
       isClean = mathResult.isMathClean === true && !(mathResult.missingDependencies?.length);
       aspectErrors = mathResult.errors || [];
 
-      // If missing dependencies discovered during physical math re-check, inject them
+      let mutated = false;
       if (Array.isArray(mathResult.missingDependencies)) {
         for (const dep of mathResult.missingDependencies) {
-          const cleanDep = cleanBaseSKU(dep.sku);
-          if (cleanDep && !partSkus.has(cleanDep)) {
-            const depPrice = getPrice(cleanDep);
-            updatedParts.push({
-              sku: cleanDep,
-              description: dep.description || `Required dependency (${cleanDep})`,
-              quantity: dep.quantity || 1,
-              unitPriceUsd: depPrice,
-              extendedPriceUsd: depPrice * (dep.quantity || 1),
-              isFixInjected: true,
-              isCascadingFix: true,
-              category: dep.category || 'Aspect Rule Fix'
-            });
-            partSkus.add(cleanDep);
-            injectedFixes.push({ sku: cleanDep, reason: dep.reason || 'Missing physical dependency from 7-aspect revalidation' });
+          if (_applyDependencyMutationToParts(dep, updatedParts, partSkus, getPrice, injectedFixes)) {
+            mutated = true;
           }
         }
       }
 
-      if (updatedParts.length === beforeCount) break;
+      if (!mutated) break;
+      const nextFp = computeBomFingerprint(updatedParts);
+      if (visitedFingerprints.has(nextFp)) {
+        isClean = false;
+        aspectErrors = [...aspectErrors, 'Repair loop halted: repeated candidate BOM state detected (oscillation guard).'];
+        break;
+      }
+      visitedFingerprints.add(nextFp);
       // Every mutation needs a fresh pass, including the last permitted repair.
       isClean = false;
       aspectErrors = ['Candidate dependency repair requires further validation; iteration limit reached.'];
@@ -945,11 +1114,17 @@ function _runPhysicalAspectsValidationLoop(updatedParts, partSkus, catalogData, 
   return { isClean, aspectErrors };
 }
 
-function _injectManagementLicenseIfMissing(updatedParts, partSkus, getPrice, injectedFixes) {
+function _injectManagementLicenseIfMissing(updatedParts, partSkus, getPrice, injectedFixes, chassisInfo = {}) {
+  const family = String(chassisInfo?.family || '').toLowerCase();
+  const gen = String(chassisInfo?.gen || chassisInfo?.model || '').toLowerCase();
+  if (family && !family.includes('proliant') && !family.includes('compute')) return;
+  if (/gen\s*(?:8|9|10)\b/.test(gen)) return;
+
   const isCto = updatedParts.some(p => {
     const d = (p.description || '').toLowerCase();
     const s = cleanBaseSKU(p.sku);
-    return d.includes('cto') || ['P73282-B21', 'P52534-B21', 'P52533-B21', 'P52532-B21', 'P74700-B21', 'P75741-B21'].includes(s);
+    return (d.includes('cto') && !/alletra|synergy|sn3600|msl|storeever|cray/.test(d)) ||
+      ['P73282-B21', 'P52534-B21', 'P52533-B21', 'P52532-B21', 'P74700-B21', 'P75741-B21'].includes(s);
   });
   const hasMgmt = updatedParts.some(p => {
     const s = cleanBaseSKU(p.sku);
@@ -983,7 +1158,7 @@ function revalidateCandidateParts(parts, chassisInfo, getPrice, catalogData = nu
   _injectStorageBatteryIfMissing(updatedParts, partSkus, mandatory, getPrice, injectedFixes);
   _injectFanKitIfMissing(updatedParts, partSkus, mandatory, getPrice, injectedFixes);
   _injectDcLugKitIfMissing(updatedParts, partSkus, mandatory, getPrice, injectedFixes);
-  _injectManagementLicenseIfMissing(updatedParts, partSkus, getPrice, injectedFixes);
+  _injectManagementLicenseIfMissing(updatedParts, partSkus, getPrice, injectedFixes, chassisInfo);
 
   const validator = (options && typeof options.validateMath === 'function') ? options.validateMath : _physicalMathValidator;
   const { isClean, aspectErrors } = _runPhysicalAspectsValidationLoop(updatedParts, partSkus, catalogData, targetDir, validator, getPrice, injectedFixes);
@@ -999,9 +1174,20 @@ function revalidateCandidateParts(parts, chassisInfo, getPrice, catalogData = nu
   };
 }
 
+function _isCatalogOptionActiveForSynthesis(item) {
+  if (!item) return true;
+  const lc = classifyLifecycleState(
+    item.lifecycleStatus || item.skuData?.['Lifecycle Status'] || item.entry?.lifecycleStatus || '',
+    item.diffStatus || '',
+    item.sku || item.skuData?.['Product #'] || '',
+    item.skuData?.Description || item.entry?.description || ''
+  );
+  return !lc.isBlockedForProduction && !lc.isDirectShip;
+}
+
 function findFastShipDriveReplacement(catalogIndex) {
   for (const [s, item] of catalogIndex.entries()) {
-    if (item.lifecycleStatus === 'OB' || item.lifecycleStatus === 'EOL') continue;
+    if (!_isCatalogOptionActiveForSynthesis(item)) continue;
     const sDesc = (item.skuData?.Description || item.entry?.description || '').toLowerCase();
     const sLead = item.skuData?.['Lead Time'] || item.entry?.leadTime;
     const sDays = parseLeadTimeDays(sLead);
@@ -1019,7 +1205,7 @@ function findFastShipDriveReplacement(catalogIndex) {
 
 function findFastShipCpuReplacement(catalogIndex) {
   for (const [s, item] of catalogIndex.entries()) {
-    if (item.lifecycleStatus === 'OB' || item.lifecycleStatus === 'EOL') continue;
+    if (!_isCatalogOptionActiveForSynthesis(item)) continue;
     const sDesc = (item.skuData?.Description || item.entry?.description || '').toLowerCase();
     const sLead = item.skuData?.['Lead Time'] || item.entry?.leadTime;
     const sDays = parseLeadTimeDays(sLead);
@@ -1038,26 +1224,78 @@ function findFastShipCpuReplacement(catalogIndex) {
 function _isFastShipOutlier(part, outliers, v1SupplyMetrics) {
   const cleanSku = cleanBaseSKU(part.sku);
   return outliers.some(o => cleanBaseSKU(o.sku) === cleanSku) ||
-    (part.leadTimeDays && part.leadTimeDays >= 45) ||
-    (cleanSku === cleanBaseSKU(v1SupplyMetrics?.pacingItemSku) && (v1SupplyMetrics?.maxLeadTimeDays || 0) >= 45);
+    (part.leadTimeDays && part.leadTimeDays >= 21) ||
+    (cleanSku === cleanBaseSKU(v1SupplyMetrics?.pacingItemSku) && (v1SupplyMetrics?.maxLeadTimeDays || 0) >= 21);
 }
 
-function _findFastShipReplacement(part, catalogIndex, chassisInfo) {
+function _evaluateFastShipCandidateEntry(s, item, origAttrs, origLeadDays, cleanSku, origUnitPrice) {
+  if (s === cleanSku || !_isCatalogOptionActiveForSynthesis(item)) return null;
+  const sDesc = item.skuData?.Description || item.entry?.description || '';
+  const leadMeta = extractCatalogItemLeadTime(item.skuData || item.entry || {});
+  const sLead = item.skuData?.['Lead Time'] || item.entry?.leadTime || leadMeta?.raw || '';
+  const sDays = leadMeta?.days ?? parseLeadTimeDays(sLead) ?? null;
+  if (!Number.isFinite(sDays)) return null;
+
+  const minSavingsReq = Number.isFinite(origLeadDays) && origLeadDays >= 21 ? 14 : 7;
+  if (Number.isFinite(origLeadDays) && (origLeadDays - sDays) < minSavingsReq) return null;
+  if (!Number.isFinite(origLeadDays) && sDays > 14) return null;
+
+  const rawPrice = item.skuData?.['Unit Price (USD)'] || item.skuData?.['Price (USD)'] || item.entry?.priceUsd || '0';
+  const sPrice = parseFloat(String(rawPrice).replace(/[^0-9.]/g, '')) || 0;
+  const attrScore = scoreReplacementCandidate(
+    { sku: s, description: sDesc, price: sPrice, leadTimeDays: sDays },
+    origAttrs,
+    origUnitPrice || 0
+  );
+  if (origAttrs.componentCategory !== 'UNKNOWN' && attrScore <= 0) return null;
+
+  return {
+    sku: s,
+    description: sDesc || `HPE Active Fast-Ship Option (${s})`,
+    leadTimeDays: sDays,
+    leadTime: sLead || `${sDays} days`,
+    attributeScore: attrScore
+  };
+}
+
+function _scoreCatalogFastShipCandidates(part, catalogIndex, origLeadDays) {
+  const cleanSku = cleanBaseSKU(part.sku);
+  const origAttrs = extractComponentAttributes(part.description || '', cleanSku, part.category || '');
+  const matches = [];
+
+  for (const [s, item] of catalogIndex.entries()) {
+    const match = _evaluateFastShipCandidateEntry(s, item, origAttrs, origLeadDays, cleanSku, part.unitPriceUsd);
+    if (match) matches.push(match);
+  }
+
+  matches.sort((a, b) => b.attributeScore - a.attributeScore || a.leadTimeDays - b.leadTimeDays);
+  return matches[0] || null;
+}
+
+function _findFastShipReplacement(part, catalogIndex, chassisInfo, v1SupplyMetrics) {
+  const origLeadDays = part.leadTimeDays ?? v1SupplyMetrics?.maxLeadTimeDays ?? null;
+  const attributeMatched = _scoreCatalogFastShipCandidates(part, catalogIndex, origLeadDays);
+  if (attributeMatched) {
+    return {
+      replacement: attributeMatched,
+      reason: `Eliminated delivery bottleneck (${origLeadDays ?? '?'}d -> ${attributeMatched.leadTimeDays}d) via close-attribute active ${attributeMatched.sku}`
+    };
+  }
+
   const desc = (part.description || '').toLowerCase();
   const cat = (part.category || '').toLowerCase();
-
   if (cat.includes('storage') || cat.includes('drive') || cat.includes('disk') || desc.includes('hdd') || desc.includes('ssd') || desc.includes('hard drive')) {
     const replacement = findFastShipDriveReplacement(catalogIndex);
     return {
       replacement,
-      reason: 'Eliminated pacing delivery bottleneck (replaces long lead-time HDD/drive with catalog-listed SSD candidate)'
+      reason: 'Eliminated pacing delivery bottleneck (replaces long lead-time drive with catalog-listed fast-ship drive)'
     };
   }
   if (cat.includes('processor') || cat.includes('cpu') || desc.includes('xeon') || desc.includes('epyc') || desc.includes('processor')) {
     const replacement = findFastShipCpuReplacement(catalogIndex, chassisInfo);
     return {
       replacement,
-      reason: 'Replaced constrained processor pacing item with catalog-listed processor candidate'
+      reason: 'Replaced constrained processor pacing item with catalog-listed fast-ship processor'
     };
   }
   return { replacement: null, reason: '' };
@@ -1066,17 +1304,24 @@ function _findFastShipReplacement(part, catalogIndex, chassisInfo) {
 function _substituteSingleFastShipPart(part, isOutlier, catalogIndex, chassisInfo, getPrice, v1SupplyMetrics, substitutedItems) {
   if (!isOutlier) return { ...part };
   const cleanSku = cleanBaseSKU(part.sku);
-  const { replacement, reason } = _findFastShipReplacement(part, catalogIndex, chassisInfo);
+  const { replacement, reason } = _findFastShipReplacement(part, catalogIndex, chassisInfo, v1SupplyMetrics);
   if (!replacement || cleanBaseSKU(replacement.sku) === cleanSku) return { ...part };
 
   const replPrice = getPrice(replacement.sku);
+  const origDays = part.leadTimeDays ?? v1SupplyMetrics.maxLeadTimeDays;
+  const daysSaved = Number.isFinite(origDays) && Number.isFinite(replacement.leadTimeDays)
+    ? Math.max(0, origDays - replacement.leadTimeDays)
+    : null;
   substitutedItems.push({
     originalSku: cleanSku,
     originalDescription: part.description,
-    originalLeadTimeDays: part.leadTimeDays ?? v1SupplyMetrics.maxLeadTimeDays,
+    originalLeadTimeDays: origDays,
     replacementSku: replacement.sku,
     replacementDescription: replacement.description,
     replacementLeadTimeDays: replacement.leadTimeDays,
+    daysSaved,
+    attributeScore: replacement.attributeScore ?? null,
+    priceDeltaUsd: Number.isFinite(part.unitPriceUsd) && Number.isFinite(replPrice) ? (replPrice - part.unitPriceUsd) : null,
     reason
   });
 
@@ -1086,7 +1331,7 @@ function _substituteSingleFastShipPart(part, isOutlier, catalogIndex, chassisInf
     description: replacement.description,
     unitPriceUsd: replPrice,
     extendedPriceUsd: replPrice * (part.quantity || 1),
-    priceKnown: getPrice.hasPrice(replacement.sku),
+    priceKnown: typeof getPrice?.hasPrice === 'function' ? getPrice.hasPrice(replacement.sku) : Number.isFinite(replPrice),
     leadTime: replacement.leadTime,
     leadTimeDays: replacement.leadTimeDays,
     isFastShipSubstituted: true
@@ -1095,7 +1340,7 @@ function _substituteSingleFastShipPart(part, isOutlier, catalogIndex, chassisInf
 
 function synthesizeFastShipAlternative(v1Parts, v1SupplyMetrics, loadedCatalog, chassisInfo, getPrice, revalidateCached, resolveSupply) {
   const outliers = v1SupplyMetrics?.leadTimeOutliers || [];
-  if (outliers.length === 0 && (!v1SupplyMetrics?.maxLeadTimeDays || v1SupplyMetrics.maxLeadTimeDays < 45)) {
+  if (outliers.length === 0 && (!v1SupplyMetrics?.maxLeadTimeDays || v1SupplyMetrics.maxLeadTimeDays < 21)) {
     return null;
   }
 
@@ -1115,6 +1360,7 @@ function synthesizeFastShipAlternative(v1Parts, v1SupplyMetrics, loadedCatalog, 
   const originalEdt = v1SupplyMetrics.unknownLeadTimeCount === 0 ? v1SupplyMetrics.maxLeadTimeDays : null;
   const newEdt = newSupplyMetrics.unknownLeadTimeCount === 0 ? newSupplyMetrics.maxLeadTimeDays : null;
   const deliveryDaysSaved = originalEdt !== null && newEdt !== null ? Math.max(0, originalEdt - newEdt) : null;
+  if (deliveryDaysSaved !== null && deliveryDaysSaved < 14 && v1SupplyMetrics.maxLeadTimeDays < 45) return null;
 
   return {
     rank: '1S',
@@ -1283,7 +1529,7 @@ function _isCandidateMixedUseNvme(p) {
 function _findCatalogStorageReplacement(catIndex, origCapGb, isBc, curPrice, safeGetPrice) {
   if (!catIndex) return null;
   for (const [candSku, item] of catIndex.entries()) {
-    if (item.lifecycleStatus === 'OB' || item.lifecycleStatus === 'EOL') continue;
+    if (!_isCatalogOptionActiveForSynthesis(item)) continue;
     const cDesc = (item.skuData?.Description || item.entry?.description || '').toLowerCase();
     if (!cDesc.includes('ssd') || !cDesc.includes('nvme') || !cDesc.includes('read intensive')) continue;
     if (isBc && !cDesc.includes(' bc') && !cDesc.includes('basic carrier')) continue;
@@ -1617,6 +1863,7 @@ function _buildRank1Candidate({
     injectedCascadingFixes: v1.injectedFixes,
     supplyMetrics: v1SupplyMetrics,
     fastShipAlternative: fastShipAlternative || null,
+    availabilityTradeoffs: fastShipAlternative?.substitutedPacingItems || [],
     tradeoffMetrics: {
       intentAlignment: fixes.length === 0 ? '100% (Direct Match)' : `${Math.max(85, 100 - fixes.length * 3)}% (${fixes.length} Fixes)`,
       skuModifications: `${fixes.length + v1.injectedFixes.length} physical fixes injected`,
@@ -1908,7 +2155,6 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
   const getLiveRagGrounding = createLiveRagGrounding(chassisInfo);
 
   // Least-Delta Analysis: Detect troublesome SKUs that force cascading dependencies
-  const { identifyTroublesomeSkus, buildLeastDeltaCandidate } = require('./least_delta_combinator.js');
   const troublesomeSkus = identifyTroublesomeSkus(items, evalResults, loadedCatalog, chassisInfo);
   const leastDeltaCandidate = buildLeastDeltaCandidate(baseParts, fixParts, troublesomeSkus, evalResults, loadedCatalog, chassisInfo, getPrice);
 
@@ -2019,5 +2265,6 @@ module.exports = {
   computeArchitecturalDelta,
   computeCapabilityDowngradePenalty,
   scoreAndSortCandidates,
+  _runPhysicalAspectsValidationLoop,
   _clearStrategyAddonsCache
 };

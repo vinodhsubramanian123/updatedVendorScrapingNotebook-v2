@@ -16,7 +16,14 @@ const { observeRouterEntry, observeActualInvocation, resolveEntryTraceId } = req
 const path = require('path');
 const { queryLocalKnowledgeBase } = require('../lib/rag/local_rag_search.js');
 const { evaluateBOQMultiAspect } = require('../lib/boq/boq_evaluator.js');
-const { cleanBaseSKU, isValidHpeSKU, isSmartChoiceOrBtoSku, classifyCommercialFulfillmentMode } = require('../lib/catalog/sku.js');
+const {
+  cleanBaseSKU,
+  isValidHpeSKU,
+  isSmartChoiceOrBtoSku,
+  classifyCommercialFulfillmentMode,
+  classifyLifecycleState,
+  buildCatalogSkuIndex
+} = require('../lib/catalog/sku.js');
 const { resolveRequirementIntent } = require('../lib/boq/requirement_intent_resolver.js');
 const { verifyVendorBOM, auditSingleVendorBOM } = require('../lib/boq/vendor_bom_verifier.js');
 const { getChassisMap, listAllCatalogs } = require('../lib/catalog/catalog_discovery.js');
@@ -796,6 +803,17 @@ async function _handleFreeformQa(queryText, context) {
     ragResult = queryLocalKnowledgeBase(queryText, chassisName);
   }
 
+  const { analyzeCategoryDependencies, getCategoryDependencyMatrix } = require('../lib/catalog/category_dependencies.js');
+  const categoryMatrixHits = getCategoryDependencyMatrix(queryText.replace(/\?/g, '').trim()).slice(0, 4);
+  const itemsForDeps = Array.isArray(context.items) ? context.items : [];
+  const categoryDependencies = (itemsForDeps.length > 0 || categoryMatrixHits.length > 0)
+    ? {
+        analysis: itemsForDeps.length > 0 ? analyzeCategoryDependencies(itemsForDeps, chassisInfo.catalogData, { chassisId: chassisName }) : null,
+        relevantRules: categoryMatrixHits,
+        trustedWebEscalation: `site:hpe.com ${chassisName && chassisName !== 'UNKNOWN_PRODUCT' ? chassisName.replace(/_/g, ' ') + ' ' : ''}QuickSpecs ${queryText.slice(0, 80).trim()}`
+      }
+    : null;
+
   const qaPayload = {
     chassis: chassisName,
     catalogDir: chassisInfo.catalogDir,
@@ -805,7 +823,8 @@ async function _handleFreeformQa(queryText, context) {
     source: cloudSource || 'Local RAG Dual-Layer Search & Master Knowledge Registry',
     isCloudGrounded: Boolean(isCloudGrounded),
     effectivePolicy: policy,
-    feasibilityCheck: _buildFreeformFeasibilityCheck(queryText, chassisInfo, ragResult.answer)
+    feasibilityCheck: _buildFreeformFeasibilityCheck(queryText, chassisInfo, ragResult.answer),
+    ...(categoryDependencies ? { categoryDependencies } : {})
   };
   if (chassisInfo.catalogData) {
     Object.defineProperty(qaPayload, 'catalogData', {
@@ -1056,6 +1075,72 @@ function _handleCatalogIntelligence(queryText, context) {
   };
 }
 
+function _buildClearanceAdvisoryForSku(sku, catalogIndex, chassisInfo, generatePresalesLifecycleAdvisories, formatDualTrackClearanceRemarks) {
+  const item = catalogIndex.get(sku);
+  const lc = classifyLifecycleState(item?.lifecycleStatus || '', item?.diffStatus || '', sku, item?.description || '');
+  const versionAdvisory = chassisInfo.catalogDir
+    ? generatePresalesLifecycleAdvisories(sku, chassisInfo.catalogDir, item?.lifecycleStatus || lc.canonicalStatus || '')
+    : null;
+  const altSku = versionAdvisory?.replacementSku || versionAdvisory?.recommendedAlternative?.sku || '';
+  const leadDays = item?.leadTimeDays ?? null;
+  const riskNote = leadDays !== null && leadDays >= 21 ? `Estimated availability lead time ${leadDays} days.` : '';
+  const commercialRemarks = formatDualTrackClearanceRemarks({
+    clearanceSku: (lc.is90DayWarning || lc.isDirectShip || lc.isBlockedForProduction) ? sku : '',
+    productionSku: altSku || (!lc.isBlockedForProduction && !lc.isDirectShip ? sku : ''),
+    deliveryRiskNote: riskNote
+  });
+  return {
+    sku,
+    description: item?.description || '',
+    lifecycleState: lc.canonicalStatus,
+    clearanceEligible: lc.is90DayWarning || lc.isDirectShip,
+    productionEligible: !lc.isBlockedForProduction && !lc.isDirectShip,
+    leadTimeDays: leadDays,
+    recommendedProductionSku: altSku || null,
+    versionAdvisory,
+    commercialRemarks
+  };
+}
+
+function _handlePresalesClearanceStrategy(queryText, context) {
+  const { generatePresalesLifecycleAdvisories } = require('../lib/catalog/sku_versioning.js');
+  const { formatDualTrackClearanceRemarks } = require('../lib/boq/commercial_remarks.js');
+  const chassisInfo = getChassisCatalog(queryText, context);
+  const skuCandidates = (queryText.match(/\b([A-Z0-9]{3,8}-[A-Z0-9]{3,4}|[A-Z0-9]{6}|[A-Z0-9]{5,8}AAE|[HURS][A-Z0-9]{4,11})\b/gi) || [])
+    .filter(isValidHpeSKU)
+    .map(cleanBaseSKU);
+  const baseSku = getBaseChassisSku(chassisInfo.chassisKey);
+  const targetSku = skuCandidates.find(sku => sku !== baseSku) || skuCandidates[0] || null;
+  const catalogIndex = chassisInfo.catalogData ? buildCatalogSkuIndex(chassisInfo.catalogData) : new Map();
+
+  const inspectedSkus = [...skuCandidates];
+  if (inspectedSkus.length === 0) {
+    for (const [k, item] of catalogIndex.entries()) {
+      const lc = classifyLifecycleState(item.lifecycleStatus, item.diffStatus, k, item.description);
+      if (lc.is90DayWarning || lc.isDirectShip) {
+        inspectedSkus.push(k);
+        if (inspectedSkus.length >= 10) break;
+      }
+    }
+  }
+
+  const advisories = inspectedSkus.map(sku =>
+    _buildClearanceAdvisoryForSku(sku, catalogIndex, chassisInfo, generatePresalesLifecycleAdvisories, formatDualTrackClearanceRemarks)
+  );
+  const primary = advisories[0] || null;
+  return {
+    chassis: chassisInfo.chassisKey,
+    targetSku,
+    clearanceTrack: advisories.filter(a => a.clearanceEligible),
+    productionTrack: advisories.filter(a => a.productionEligible || a.recommendedProductionSku),
+    advisories,
+    commercialRemarks: primary?.commercialRemarks || formatDualTrackClearanceRemarks(),
+    message: advisories.length > 0
+      ? `Dual-track 90-day clearance & active production baseline evaluated for ${advisories.length} SKU(s) on ${chassisInfo.chassisKey}.`
+      : `No active 90-day clearance/Direct-Ship warnings identified on ${chassisInfo.chassisKey}.`
+  };
+}
+
 function _parseRfpRawLines(queryText) {
   let rawLines = queryText.split(/[\r\n;]+/).map(l => l.trim()).filter(Boolean);
   if (rawLines.length === 1) {
@@ -1240,7 +1325,11 @@ async function _continueRfpEvaluationIfRequested(context, candidateItems, chassi
   const shouldContinue = Boolean(context.continueEvaluation || context.evaluateImmediately || context.evaluate);
   if (!shouldContinue || candidateItems.length === 0) return null;
   try {
-    const evalPolicy = _resolveContextPolicy(context, { defaultOffline: true });
+    const inheritedDefaultCloud = context.effectivePolicy?.source === 'DEFAULT_CLOUD_PERMITTED' && context.enableCloudValidation !== true;
+    const evalPolicy = _resolveContextPolicy(
+      inheritedDefaultCloud ? { ...context, offline: undefined, offlineMode: undefined, effectivePolicy: null } : context,
+      { defaultOffline: true }
+    );
     const { runEvaluationPipeline } = require('./eval_boq.js');
     return await runEvaluationPipeline({
       inputItems: candidateItems,
@@ -2143,6 +2232,9 @@ async function _dispatchIntentHandler(classification, queryText, context) {
     case 'KNOWLEDGE_SYNC':
       return await observeActualInvocation('_handleKnowledgeSync', __filename, () => _handleKnowledgeSync(queryText, context));
 
+    case 'PRESALES_CLEARANCE_STRATEGY':
+      return await observeActualInvocation('_handlePresalesClearanceStrategy', __filename, () => _handlePresalesClearanceStrategy(queryText, context));
+
     default:
       return {
         intent: classification.intent,
@@ -2251,6 +2343,17 @@ function _attachAcceptanceGate(responseData, classification, context, chassisInf
       blockers: acceptance.blockers,
       warnings: acceptance.warnings
     };
+    const DELIVERABLE_BLOCKABLE_INTENTS = new Set([
+      'BOQ_EVALUATION', 'RFP_SIZING_TO_BOM', 'BOM_RECONCILIATION',
+      'CROSS_VENDOR_TRANSFORMATION', 'HETEROGENEOUS_TENDER_MODERNIZATION',
+      'LEAST_DELTA_SYNTHESIS', 'PRESALES_CLEARANCE_STRATEGY'
+    ]);
+    if (acceptance.isValid === false && DELIVERABLE_BLOCKABLE_INTENTS.has(classification.intent)) {
+      responseData.deliveryBlocked = true;
+      if (!responseData.customerDisposition || responseData.customerDisposition === 'PRESENTATION_READY') {
+        responseData.customerDisposition = 'DELIVERY_BLOCKED_ACCEPTANCE_FAILED';
+      }
+    }
   } catch (error) {
     responseData.acceptanceGate = {
       status: 'ERROR', isValid: false, blockersCount: 1, warningsCount: 0,

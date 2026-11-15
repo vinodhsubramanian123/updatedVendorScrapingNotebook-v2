@@ -9,11 +9,18 @@ const HEADERS = {
   price: /^(?:unit\s*price(?:\s*\([^)]*\))?|list\s*price|price)$/i
 };
 const ACTIONS = {
-  MATCHED: 'MATCHED (1:1)', MODERNIZED: '[MODERNIZED]',
-  REDUCED: '[QTY REDUCED]', BUFFERED: '[QTY BUFFERED]',
-  REMOVED: '[REMOVED FROM SERVER BUILD]', FACTORY_INCLUDED: '[FACTORY INCLUDED / LINE REMOVED]',
-  ABSORBED: '[ABSORBED INTO NEW SERVER POOL]', ADDED: '[ADDED]',
-  NOT_EVALUATED: '[NOT EVALUATED]'
+  MATCHED: 'MATCHED (1:1)',
+  MODERNIZED: '[MODERNIZED]',
+  REDUCED: '[QTY REDUCED]',
+  BUFFERED: '[QTY BUFFERED]',
+  REMOVED: '[REMOVED FROM SERVER BUILD]',
+  FACTORY_INCLUDED: '[FACTORY INCLUDED / LINE REMOVED]',
+  ABSORBED: '[ABSORBED INTO NEW SERVER POOL]',
+  ADDED: '[ADDED]',
+  NOT_EVALUATED: '[NOT EVALUATED]',
+  RECOMMENDED_PRODUCTION_BASELINE: '[RECOMMENDED PRODUCTION BASELINE]',
+  FAST_TRACK_CLEARANCE: '[FAST-TRACK / CLEARANCE OPTION]',
+  DELIVERY_RISK_WARNING: '[DELIVERY RISK WARNING]'
 };
 
 function resolveTenderColumns(headerRow) {
@@ -65,4 +72,46 @@ function appendCommercialRemarks(rows, remarksByRow, headerIndex = 0) {
   return { rows: output, columns };
 }
 
-module.exports = { resolveTenderColumns, formatCommercialRemark, appendCommercialRemarks };
+/**
+ * Dual-track 90-day clearance vs. active production baseline commercial remarks
+ * per INV-179 / presales-clearance-strategy-skill.
+ *
+ * @param {object} [options]
+ * @param {string} [options.clearanceSku] - SKU in 90-day / Direct Ship / EOL warning
+ * @param {string} [options.productionSku] - Active replacement SKU for production baseline
+ * @param {string} [options.deliveryRiskNote] - Optional supply chain or lead-time risk note
+ * @returns {{productionRemark:string, clearanceRemark:string, deliveryRiskRemark:string|null, summary:string[]}}
+ */
+function formatDualTrackClearanceRemarks(options = {}) {
+  const {
+    clearanceSku = '',
+    productionSku = '',
+    deliveryRiskNote = ''
+  } = options;
+
+  const productionRemark = productionSku
+    ? `${ACTIONS.RECOMMENDED_PRODUCTION_BASELINE}: ${productionSku} recommended for new/repeat production rollouts (active lifecycle, full warranty/supply continuity).`
+    : `${ACTIONS.RECOMMENDED_PRODUCTION_BASELINE}: Use active lifecycle replacement SKU for new/repeat production rollouts.`;
+  const clearanceRemark = clearanceSku
+    ? `${ACTIONS.FAST_TRACK_CLEARANCE}: ${clearanceSku} available during 90-day EOL/Direct-Ship clearance window for tactical same-quarter fulfillment only.`
+    : `${ACTIONS.FAST_TRACK_CLEARANCE}: Tactical clearance SKU valid only during remaining 90-day window.`;
+  const deliveryRiskRemark = deliveryRiskNote
+    ? `${ACTIONS.DELIVERY_RISK_WARNING}: ${deliveryRiskNote}`
+    : null;
+
+  const summary = [productionRemark, clearanceRemark];
+  if (deliveryRiskRemark) summary.push(deliveryRiskRemark);
+  return {
+    productionRemark,
+    clearanceRemark,
+    deliveryRiskRemark,
+    summary
+  };
+}
+
+module.exports = {
+  resolveTenderColumns,
+  formatCommercialRemark,
+  appendCommercialRemarks,
+  formatDualTrackClearanceRemarks
+};

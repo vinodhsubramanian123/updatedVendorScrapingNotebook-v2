@@ -236,9 +236,63 @@ function isServiceSku(skuStr) {
 }
 
 /**
+ * Normalize HPE catalog/row lifecycle status & badges into canonical lifecycle flags.
+ * Handles catalog formats ("Obsolete (OB)", "End of Life (EOL)", "Direct Ship (DS)",
+ * "EOL Warning (90-Day)", "DISCONTINUED", "REMOVED", "ACTIVE") and compact codes.
+ *
+ * @param {string} [lifecycleStatus='']
+ * @param {string} [diffStatus='']
+ * @param {string} [rawSku='']
+ * @param {string} [rawDesc='']
+ * @returns {{ canonicalStatus: string, isObsolete: boolean, isDiscontinued: boolean, isHardEol: boolean, is90DayWarning: boolean, isDirectShip: boolean, isBlockedForProduction: boolean, isClearanceOrRestricted: boolean, isNonActive: boolean }}
+ */
+function _resolveCanonicalLifecycle(isDiscontinued, isObsolete, isHardEol, is90DayWarning, isDirectShip) {
+  if (isDiscontinued) return 'DISCONTINUED';
+  if (isObsolete) return 'OBSOLETE';
+  if (isHardEol) return 'EOL';
+  if (is90DayWarning) return '90_DAY_WARNING';
+  if (isDirectShip) return 'DIRECT_SHIP';
+  return 'ACTIVE';
+}
+
+function classifyLifecycleState(lifecycleStatus = '', diffStatus = '', rawSku = '', rawDesc = '') {
+  const status = String(lifecycleStatus || '').trim().toUpperCase();
+  const diff = String(diffStatus || '').trim().toUpperCase();
+  const text = `${String(rawSku || '').trim().toUpperCase()} ${String(rawDesc || '').trim().toUpperCase()}`;
+
+  const is90DayWarning = /\b90[-\s]?DAY\b|WARNING|\[90\]|^90(?=\s)/i.test(status) || /(?:^|\s)\[?90\]?\s|90[-\s]?DAY/i.test(text);
+  const isObsolete = /\bOB\b|\(OB\)|OBSOLETE|^OB(?=\s)/i.test(status) || /(?:^|\s)(?:\[OB\]|OB\s+)/i.test(text);
+  const isDiscontinued = status.includes('DISCONTINUED') || diff === 'REMOVED';
+  const isHardEol = !is90DayWarning && (
+    /\bEOL\b|\(EOL\)|END[-\s]OF[-\s]LIFE/i.test(status) || /(?:^|\s)(?:\[EOL\]|EOL\s+)/i.test(text)
+  );
+  const isDirectShip = /\bDS\b|\(DS\)|DIRECT\s*SHIP/i.test(status) || /(?:^|\s)(?:\[DS\]|DS\s+)/i.test(text);
+
+  const isBlockedForProduction = isObsolete || isDiscontinued || isHardEol;
+  const isClearanceOrRestricted = is90DayWarning || isDirectShip;
+  const isNonActive = isBlockedForProduction || isClearanceOrRestricted;
+
+  return {
+    canonicalStatus: _resolveCanonicalLifecycle(isDiscontinued, isObsolete, isHardEol, is90DayWarning, isDirectShip),
+    isObsolete,
+    isDiscontinued,
+    isHardEol,
+    is90DayWarning,
+    isDirectShip,
+    isBlockedForProduction,
+    isClearanceOrRestricted,
+    isNonActive
+  };
+}
+
+function _isNonActiveLifecycle(lifecycleStatus = '', diffStatus = '', rawSku = '', rawDesc = '') {
+  return classifyLifecycleState(lifecycleStatus, diffStatus, rawSku, rawDesc).isBlockedForProduction;
+}
+
+/**
  * Build or retrieve a memoized Map index for O(1) catalog SKU lookups.
  * @param {object} catalogData - Catalog JSON data object
- * @returns {Map<string, { entry: object, skuData: object, parentCategory: string, subCategory: string, lifecycleStatus: string }>}
+ * @returns {Map<string, { entry: object, skuData: object, parentCategory: string, subCategory: string, lifecycleStatus: string, diffStatus: string, lifecycleState: object }>}
  */
 function buildCatalogSkuIndex(catalogData) {
   if (!catalogData || !Array.isArray(catalogData.entries)) return new Map();
@@ -250,15 +304,19 @@ function buildCatalogSkuIndex(catalogData) {
     const subCategory = entry.subCategory || '';
     if (Array.isArray(entry.skus)) {
       for (const s of entry.skus) {
-        const raw = s['Product #'] || s.sku;
+        const raw = s['Product #'] || s.sku || s['SKU'];
         const clean = cleanBaseSKU(raw);
         if (clean && !index.has(clean)) {
+          const lifecycleStatus = s['Lifecycle Status'] || s.lifecycleStatus || s.Status || '';
+          const diffStatus = s['Diff Status'] || s.diffStatus || '';
           index.set(clean, {
             entry,
             skuData: s,
             parentCategory,
             subCategory,
-            lifecycleStatus: s['Lifecycle Status'] || ''
+            lifecycleStatus,
+            diffStatus,
+            lifecycleState: classifyLifecycleState(lifecycleStatus, diffStatus, raw, s.Description || s.description || '')
           });
         }
       }
@@ -361,6 +419,8 @@ module.exports = {
   isOcaModifierTrackingRow,
   isServiceSku,
   isTaaGtaCatalogOption,
+  classifyLifecycleState,
+  isNonActiveLifecycle: _isNonActiveLifecycle,
   buildCatalogSkuIndex,
   classifySkuValidation,
   getUniqueSkuCount

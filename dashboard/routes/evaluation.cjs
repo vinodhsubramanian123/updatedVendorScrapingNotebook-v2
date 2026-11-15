@@ -1027,10 +1027,14 @@ function resolveQueryContext(input) {
 router.post('/query/route', async (req, res) => {
   if (isTaskRunning()) return sendErrorResponse(res, 409, 'Another workflow is currently running', { source: 'EVALUATION_ROUTER' });
   const { query, context: inputContext } = req.body || {};
-  if (typeof query !== 'string' || !query.trim()) return sendErrorResponse(res, 400, 'Missing query parameter', { source: 'EVALUATION_ROUTER' });
   let context;
   try { context = resolveQueryContext(inputContext || {}); }
   catch (err) { return sendErrorResponse(res, 400, err, { source: 'EVALUATION_ROUTER' }); }
+  const hasAttachedFile = Boolean(context.filePath || context.file || context.secondaryFilePath || context.vendorFilePath || context.customerFilePath);
+  if ((typeof query !== 'string' || !query.trim()) && !hasAttachedFile) {
+    return sendErrorResponse(res, 400, 'Missing query parameter', { source: 'EVALUATION_ROUTER' });
+  }
+  const effectiveQuery = typeof query === 'string' && query.trim() ? query : '';
 
   const idCheck = _resolveRequestedRunId(req.body?.runId || context.runId, 'query');
   if (idCheck.errorStatus) {
@@ -1047,7 +1051,7 @@ router.post('/query/route', async (req, res) => {
   let code = 1;
   try {
     const { executeRoutedQuery } = require('../../scripts/evaluators/route_query.js');
-    const result = await executeRoutedQuery(query, { ...context, signal: abortController.signal, runId });
+    const result = await executeRoutedQuery(effectiveQuery, { ...context, signal: abortController.signal, runId });
     const cancelled = Boolean(abortController.signal.aborted || isCancellationRequested(runId) || result?.result?.status === 'CANCELLED');
     result.runId = runId;
     result.effectivePolicy = context.effectivePolicy;
@@ -1077,8 +1081,11 @@ router.post('/query/classify', (req, res) => {
   try {
     const { classifyQueryIntent } = require('../../scripts/evaluators/route_query.js');
     const { query, context } = req.body || {};
-    if (!query) return sendErrorResponse(res, 400, 'Missing query parameter', { source: 'EVALUATION_ROUTER' });
-    const classification = classifyQueryIntent(query, context || {});
+    const hasAttachedFile = Boolean(context?.filePath || context?.file || context?.secondaryFilePath || context?.vendorFilePath || context?.customerFilePath);
+    if ((!query || !String(query).trim()) && !hasAttachedFile) {
+      return sendErrorResponse(res, 400, 'Missing query parameter', { source: 'EVALUATION_ROUTER' });
+    }
+    const classification = classifyQueryIntent(typeof query === 'string' ? query : '', context || {});
     res.json(classification);
   } catch (err) {
     sendErrorResponse(res, 500, err, { source: 'EVALUATION_ROUTER' });

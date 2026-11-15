@@ -15,8 +15,18 @@
  * 3. Dynamic Strategy Addon Discovery across arbitrary vendor product catalogs.
  */
 
-const { cleanBaseSKU } = require('../catalog/sku.js');
+const { cleanBaseSKU, classifyLifecycleState } = require('../catalog/sku.js');
 const { classifyComponentRole } = require('../catalog/product_meta.js');
+
+function _isAddonLifecycleEligible(skuObj) {
+  const lc = classifyLifecycleState(
+    skuObj['Lifecycle Status'] || skuObj.lifecycleStatus || '',
+    skuObj['Diff Status'] || skuObj.diffStatus || '',
+    skuObj['Product #'] || skuObj.sku || '',
+    skuObj.Description || skuObj.description || ''
+  );
+  return !lc.isBlockedForProduction;
+}
 
 /**
  * Generic SKU Introspector: Extracts limits, defaults, capabilities, and constraints for any SKU.
@@ -313,6 +323,7 @@ function _findRank2BaselineAddon(parentCat, subCat, skus) {
     return null;
   }
   const validSku = skus.find(s => {
+    if (!_isAddonLifecycleEligible(s)) return false;
     const desc = (s.Description || s.description || '').toLowerCase();
     const price = _parseItemPrice(s, 0);
     return (desc.includes('rail') || desc.includes('management arm') || desc.includes('cma')) && price > 0 && price < 500;
@@ -333,8 +344,9 @@ function _findRank3StorageAddon(parentCat, subCat, skus) {
     return null;
   }
   const validSku = skus.find(s => {
+    if (!_isAddonLifecycleEligible(s)) return false;
     const desc = (s.Description || s.description || '').toLowerCase();
-    return (desc.includes('battery') || desc.includes('capacitor') || desc.includes('cache') || desc.includes('performance')) && !desc.includes('obsolete');
+    return (desc.includes('battery') || desc.includes('capacitor') || desc.includes('cache') || desc.includes('performance'));
   });
   if (!validSku) return null;
 
@@ -352,8 +364,9 @@ function _findRank4ExpansionAddon(parentCat, subCat, skus) {
     return null;
   }
   const validSku = skus.find(s => {
+    if (!_isAddonLifecycleEligible(s)) return false;
     const desc = (s.Description || s.description || '').toLowerCase();
-    return (desc.includes('riser') || desc.includes('fan kit') || desc.includes('expansion')) && !desc.includes('obsolete');
+    return (desc.includes('riser') || desc.includes('fan kit') || desc.includes('expansion'));
   });
   if (!validSku) return null;
 

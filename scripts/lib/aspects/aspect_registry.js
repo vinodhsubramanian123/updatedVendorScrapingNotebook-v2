@@ -74,7 +74,11 @@ function adapterSupportManufacturing(items, catalogData, _mandatorySkus, serverC
 }
 
 function adapterSupportServices(items, catalogData, _mandatorySkus, _serverCount, ctx) {
-  return evalSupportServices(items, catalogData, ctx?.options?.lifecycle || {});
+  const lifecycleOpts = {
+    ...ctx?.options?.lifecycle,
+    chassisDir: ctx?.chassisDir || ctx?.targetDir || ctx?.options?.chassisDir || ''
+  };
+  return evalSupportServices(items, catalogData, lifecycleOpts);
 }
 
 function adapterSanSwitchAspect(aspectId) {

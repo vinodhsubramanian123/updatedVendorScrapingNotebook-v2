@@ -33,32 +33,51 @@ function _tallyDriveCount(tally, desc, qty, role) {
   const isSff = (desc.includes('sff') || desc.includes('2.5in') || desc.includes('2.5"') || desc.includes('2.5 in')) && !desc.includes('cage');
   if (isLff) tally.lffDriveCount = (tally.lffDriveCount || 0) + qty;
   if (isSff) tally.sffDriveCount = (tally.sffDriveCount || 0) + qty;
+  if ((desc.includes('sas') || desc.includes('sata')) && !desc.includes('nvme')) tally.hasSasOrSataDrive = true;
+  if (desc.includes('nvme')) tally.hasNvmeDrive = true;
 }
 
 function _tallyDl380aCageKits(tally, desc, sku, qty, mandatorySkus = {}) {
   if ((desc.includes('4sff') && desc.includes('dl380a')) || (mandatorySkus?.GENERIC_CAGE?.sku && sku === cleanBaseSKU(mandatorySkus.GENERIC_CAGE.sku) && desc.includes('4sff'))) {
     tally.has4SffCage = true;
     tally.hasDriveCage = true;
+    tally.hasExplicitFrontCageKit = true;
     tally.cageCapacity = (tally.cageCapacity || 0) + (4 * qty);
   }
   if ((desc.includes('4edsff') && desc.includes('dl380a')) || (mandatorySkus?.PREMIUM_CAGE?.sku && sku === cleanBaseSKU(mandatorySkus.PREMIUM_CAGE.sku) && desc.includes('4edsff'))) {
     tally.has4EdsffCage = true;
     tally.hasDriveCage = true;
+    tally.hasExplicitFrontCageKit = true;
     tally.cageCapacity = (tally.cageCapacity || 0) + (4 * qty);
   }
 }
 
+function _isDirectConnectCageDesc(desc) {
+  return /\b(?:direct[\s-]*attach|direct[\s-]*connect|nvme[\s-]*direct|cpu[\s-]*direct|x1\s*(?:nvme|pcie)?\s*direct|direct[\s-]*cable|emb(?:edded)?[\s-]*direct)\b/i.test(desc);
+}
+
+const CAGE_KEYWORDS = ['drive cage', 'sff cage', 'lff cage', 'cage kit', 'box 1', 'box 2', 'backplane'];
+const ROUTED_CAGE_KEYWORDS = ['tri-mode', 'tri mode', 'u.3', 'sas', 'sata', '8sff', '12lff'];
+
+function _recordCageRoutingType(tally, desc, isAnyCage) {
+  if (!isAnyCage || desc.includes('controller') || desc.includes('chassis')) return;
+  tally.hasExplicitFrontCageKit = true;
+  if (_isDirectConnectCageDesc(desc)) tally.hasDirectConnectCage = true;
+  else if (ROUTED_CAGE_KEYWORDS.some(k => desc.includes(k))) tally.hasControllerRoutedCage = true;
+}
+
 function _tallyCageKits(tally, desc, sku, qty, mandatorySkus = {}) {
-  const isGenericCage = desc.includes('drive cage') || desc.includes('sff cage') || desc.includes('lff cage') || 
-      desc.includes('cage kit') || desc.includes('box 1') || desc.includes('box 2') || 
-      desc.includes('backplane') || desc.includes('backplane kit') ||
+  const isGenericCage = CAGE_KEYWORDS.some(k => desc.includes(k)) ||
       (mandatorySkus?.GENERIC_CAGE?.sku && sku === cleanBaseSKU(mandatorySkus.GENERIC_CAGE.sku));
+  const isPremium = desc.includes('u.3 prem') || desc.includes('premium kit') || desc.includes('premium cage') ||
+      (mandatorySkus?.PREMIUM_CAGE?.sku && sku === cleanBaseSKU(mandatorySkus.PREMIUM_CAGE.sku));
+
+  _recordCageRoutingType(tally, desc, isGenericCage || isPremium);
   if (isGenericCage && !desc.includes('premium') && !desc.includes('u.3 prem')) {
     tally.hasDriveCage = true;
     tally.cageCapacity = (tally.cageCapacity || 0) + (8 * qty);
   }
-  if (desc.includes('u.3 prem') || desc.includes('premium kit') || desc.includes('premium cage') || 
-      (mandatorySkus?.PREMIUM_CAGE?.sku && sku === cleanBaseSKU(mandatorySkus.PREMIUM_CAGE.sku))) {
+  if (isPremium) {
     tally.hasDriveCage = true;
     tally.hasPremiumCage = true;
     tally.cageCapacity = (tally.cageCapacity || 0) + (8 * qty);
@@ -269,7 +288,12 @@ function tallyStorageItems(items, skuCategoryMap, batterySku, noDriveSku, mandat
     hasRaid1FioSetting: false,
     hasCustomerDefinedRaidSetting: false,
     hasRaid5FioSetting: false,
-    hasRaid5SpFioSetting: false
+    hasRaid5SpFioSetting: false,
+    hasExplicitFrontCageKit: false,
+    hasDirectConnectCage: false,
+    hasControllerRoutedCage: false,
+    hasSasOrSataDrive: false,
+    hasNvmeDrive: false
   };
 
   for (const it of items) {
@@ -340,12 +364,22 @@ function validateStorageCablingAndBackplane(t, serverCount = 1) {
   const needsCableKit = Boolean(isServerChassis && t.hasStorageController && !hasControllerCable);
   const isBackplaneCapacityExceeded = Boolean(isServerChassis && perNodeDrives > perNodeBackplaneCapacity);
 
+  const needsStorageControllerForCage = Boolean(
+    isServerChassis &&
+    t.hasControllerRoutedCage &&
+    !t.hasDirectConnectCage &&
+    !t.hasNoDriveKit &&
+    !t.hasStorageController &&
+    !t.hasVroc
+  );
+
   return {
     controllerDirectCapacity,
     needsSasExpander: t.hasStorageController && perNodeDrives > controllerDirectCapacity && !t.hasSasExpander && !t.hasTriModeSwitch,
     hasIncompatibleYCable: t.hasYCable && (!t.hasPcieController || !t.hasPremiumCage),
     needsCapacitorCable: Boolean(isServerChassis && t.hasSmartBattery && !t.hasOcpCable),
     needsDriveCageForController: isServerChassis && !t.isLffChassis && t.hasStorageController && !t.hasDriveCage && !t.has4SffCage && !t.has4EdsffCage,
+    needsStorageControllerForCage,
     hasControllerNoDriveConflict: isServerChassis && t.hasStorageController && t.hasNoDriveKit,
     needsCableKit,
     isBackplaneCapacityExceeded,
@@ -445,6 +479,10 @@ function evalStorageTriMode(items, catalogData = null, mandatorySkus = {}, serve
     hasCustomerDefinedRaidSetting: t.hasCustomerDefinedRaidSetting,
     hasRaid5FioSetting: t.hasRaid5FioSetting,
     hasRaid5SpFioSetting: t.hasRaid5SpFioSetting,
+    hasExplicitFrontCageKit: t.hasExplicitFrontCageKit,
+    hasDirectConnectCage: t.hasDirectConnectCage,
+    hasControllerRoutedCage: t.hasControllerRoutedCage,
+    needsStorageControllerForCage: cabling.needsStorageControllerForCage,
     hasRaid1MultiDriveConflict: compat.hasRaid1MultiDriveConflict,
     needsRaid1FioPruning: compat.needsRaid1FioPruning,
     needsCustomerDefinedRaidTranspilation: compat.needsCustomerDefinedRaidTranspilation

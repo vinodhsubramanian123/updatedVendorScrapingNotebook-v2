@@ -46,6 +46,17 @@ function _inspectGpuItem(it, desc, qty, state) {
     state.gpuModels.push(it.description);
   }
   state.totalGpuCount += qty;
+  const vramMatch = desc.match(/\b(\d{2,3})\s*gb\b/i);
+  if (vramMatch) {
+    state.gpuTotalVramGb = (state.gpuTotalVramGb || 0) + (parseInt(vramMatch[1], 10) * qty);
+  }
+  const tdpMatch = desc.match(/\b(\d{2,3})\s*w\b/i);
+  const estWatts = tdpMatch ? parseInt(tdpMatch[1], 10)
+    : (/h200|h100|b100|b200/i.test(desc) ? 700 : (/l40s?|a40/i.test(desc) ? 350 : 75));
+  state.gpuEstimatedPowerWatts = (state.gpuEstimatedPowerWatts || 0) + (estWatts * qty);
+  if (desc.includes('nvlink') || desc.includes('nvl') || desc.includes('sxm')) {
+    state.gpuHasNvlink = true;
+  }
   return true;
 }
 
@@ -197,6 +208,9 @@ function extractWorkloadDna(items = []) {
     gpuModel: gpuModelStr,
     gpuModels: state.gpuModels,
     totalGpuCount: state.totalGpuCount,
+    gpuTotalVramGb: state.gpuTotalVramGb || 0,
+    gpuEstimatedPowerWatts: state.gpuEstimatedPowerWatts || 0,
+    gpuHasNvlink: Boolean(state.gpuHasNvlink),
     driveCount: state.driveCount,
     storageType: state.storageType,
     storageWorkload: state.storageWorkload

@@ -51,7 +51,7 @@ nlm --version           # Check installed version
 12. **DO NOT launch REPL**: Never use `nlm chat start` - it opens an interactive REPL that AI tools cannot control. Use `nlm notebook query` for one-shot Q&A instead.
 13. **Choose output format wisely**: Default output (no flags) is compact and token-efficient—use it for status checks. Use `--quiet` to capture IDs for piping. Only use `--json` when you need to parse specific fields programmatically.
 14. **Use `--help` when unsure**: Run `nlm <command> --help` to see available options and flags for any command.
-15. **Studio: fast track by default**: Infer format/style/prompt silently—one compact line, then `studio_create(confirm=True)`. No intake questionnaires. Fast track reduces clarifying questions, not the confirm gate. **Cinematic video is always guided** (quota-limited). Full preview only when vague, high-stakes, cinematic, or user asks. See **[references/studio-prompting-guide.md](references/studio-prompting-guide.md)**.
+15. **Studio: fast track by default**: Infer format/style/prompt silently—one compact line, then `studio_create(confirm=True)`. No intake questionnaires. Fast track reduces clarifying questions, not the confirm gate. **Cinematic video is always guided** (quota-limited). Full preview only when vague, high-stakes, cinematic, or user asks. See **[references/studio-prompting-guide.md](studio-prompting-guide.md)**.
 
 **Current MCP surface:** 43 tools. Consolidated action tools include `note`,
 `label`, `studio_status`, `batch`, `pipeline`, and `tag`. Consolidated type
@@ -401,7 +401,7 @@ nlm data-table create <id> "Extract all dates and events" --confirm
 
 #### Studio Prompting (Read Before Generating)
 
-**Full guides:** [studio-prompting-guide.md](references/studio-prompting-guide.md) | [studio-prompt-examples.md](references/studio-prompt-examples.md)
+**Full guides:** [studio-prompting-guide.md](studio-prompting-guide.md) | [studio-prompt-examples.md](studio-prompt-examples.md)
 
 **Fast track (default):** Silently infer (user message → notebook title → `notebook_describe` if needed) → **minimal** 1–3 sentence prompt with grounding anchor → one-line notice → `studio_create(confirm=True)`. Never run multi-question intake.
 
@@ -936,12 +936,12 @@ Wait between operations to avoid rate limits:
 ## Advanced Reference
 
 For detailed information, see:
-- **[references/studio-prompting-guide.md](references/studio-prompting-guide.md)**: Studio prompt best practices, fast vs guided modes, per-artifact decision trees
-- **[references/studio-prompt-examples.md](references/studio-prompt-examples.md)**: Copy-paste prompt templates and command examples
-- **[references/command_reference.md](references/command_reference.md)**: Complete command signatures
-- **[references/troubleshooting.md](references/troubleshooting.md)**: Detailed error handling
-- **[references/workflows.md](references/workflows.md)**: End-to-end task sequences
-- **[references/remote-mcp.md](references/remote-mcp.md)**: Remote HTTP deployment boundaries, security, account isolation, and file-transfer limitations
+- **[references/studio-prompting-guide.md](studio-prompting-guide.md)**: Studio prompt best practices, fast vs guided modes, per-artifact decision trees
+- **[references/studio-prompt-examples.md](studio-prompt-examples.md)**: Copy-paste prompt templates and command examples
+- **[references/command_reference.md](command_reference.md)**: Complete command signatures
+- **[references/troubleshooting.md](troubleshooting.md)**: Detailed error handling
+- **[references/workflows.md](workflows.md)**: End-to-end task sequences
+- **[references/remote-mcp.md](remote-mcp.md)**: Remote HTTP deployment boundaries, security, account isolation, and file-transfer limitations
 
 ---
 
@@ -992,11 +992,11 @@ Use the canonical ephemeral validator. Internal candidate prompts must set struc
 ## 🔗 Peer Skills & Code Implementation Links
 
 - **Peer Skills**:
-  - [`knowledge-sync-skill`](../knowledge-sync-skill/SKILL.md) — Bi-directional catalog and knowledge delta synchronization with Gemini NotebookLM.
-  - [`degraded-mode-skill`](../degraded-mode-skill/SKILL.md) — Staleness detection, health asserts, and local RAG fallback.
-  - [`boq-eval-skill`](../boq-eval-skill/SKILL.md) — Core Dual-Brain BOQ evaluation with NotebookLM RAG grounding.
+  - [`knowledge-sync-skill`](../../knowledge-sync-skill/SKILL.md) — Bi-directional catalog and knowledge delta synchronization with Gemini NotebookLM.
+  - [`degraded-mode-skill`](../../degraded-mode-skill/SKILL.md) — Staleness detection, health asserts, and local RAG fallback.
+  - [`boq-eval-skill`](../../boq-eval-skill/SKILL.md) — Core Dual-Brain BOQ evaluation with NotebookLM RAG grounding.
 - **Code Implementations**:
-  - [`executeNotebookQuery()`](../../../scripts/lib/notebook/notebook_query_utils.js) — Centralized NotebookLM cloud query coordinator with in-flight auto-healing (`INV-157`).
-  - [`checkAuthHealth()`](../../../scripts/maintenance/check_nlm_auth.js) — Headless NotebookLM authentication verification and non-interactive auto-healing.
-  - [`validateSolutionWithEphemeralSource()`](../../../scripts/lib/sync/nlm_solution_source_validator.js) — Ephemeral candidate validation and source cleanup (`INV-24`).
-  - [`triggerPostFlowSync()`](../../../scripts/lib/sync/post_flow_sync.js) — Post-evaluation delta synchronization into authoritative NotebookLM sources.
+  - [`executeNotebookQuery()`](../../../../scripts/lib/notebook/notebook_query_utils.js) — Centralized NotebookLM cloud query coordinator with in-flight auto-healing (`INV-157`).
+  - [`checkAuthHealth()`](../../../../scripts/maintenance/check_nlm_auth.js) — Headless NotebookLM authentication verification and non-interactive auto-healing.
+  - [`validateSolutionWithEphemeralSource()`](../../../../scripts/lib/sync/nlm_solution_source_validator.js) — Ephemeral candidate validation and source cleanup (`INV-24`).
+  - [`triggerPostFlowSync()`](../../../../scripts/lib/sync/post_flow_sync.js) — Post-evaluation delta synchronization into authoritative NotebookLM sources.

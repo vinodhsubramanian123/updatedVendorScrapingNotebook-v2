@@ -9,7 +9,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { cleanBaseSKU } = require('../catalog/sku.js');
+const { cleanBaseSKU, classifyLifecycleState, buildCatalogSkuIndex } = require('../catalog/sku.js');
 const { parseObservedUnitPrice } = require('./pricing_presence');
 
 /**
@@ -186,10 +186,18 @@ function _buildUpgradeRecommendations(remainingBudgetUsd, catalogData, resolvedC
   if (remainingBudgetUsd <= 0) return [];
   const family = catalogData?.metadata?.family || 'ProLiant';
   const templates = loadUpgradeTemplates(family);
+  const skuIndex = catalogData ? buildCatalogSkuIndex(catalogData) : null;
   const recommendedUpgrades = [];
 
   templates.forEach(tpl => {
     if (remainingBudgetUsd >= tpl.minSurplusUsd) {
+      if (skuIndex) {
+        const entry = skuIndex.get(cleanBaseSKU(tpl.sku));
+        if (entry) {
+          const lc = classifyLifecycleState(entry.lifecycleStatus, entry.diffStatus, entry.sku, entry.description);
+          if (lc.isBlockedForProduction || lc.isDirectShip) return;
+        }
+      }
       const catalogPrice = getSkuListPrice(tpl.sku, catalogData, resolvedChassisDir);
       const finalPrice = catalogPrice > 0 ? catalogPrice : tpl.estimatedCostUsd;
       const qty = tpl.qty || 1;

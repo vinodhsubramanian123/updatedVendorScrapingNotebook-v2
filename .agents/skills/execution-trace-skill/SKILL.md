@@ -16,65 +16,48 @@ description: >-
 
 ## 🏗️ Execution Trace Architecture
 
-Every agent-driven presales flow produces two artifacts via [`evidence_ledger.js`](../../../scripts/lib/system/evidence_ledger.js):
+Every agent-driven presales flow records an immutable 9-phase `EvidenceLedger` via [`evidence_ledger.js`](../../../scripts/lib/system/evidence_ledger.js), persisting:
 
-1. **Machine-Readable Trace** (`evidence_log_{traceId}.json`) — saved to `outputs/history/evidence_logs/`
-2. **Human-Readable Summary** (`evidence_summary_{traceId}.md`) — saved to `outputs/history/evidence_logs/` and presented inline to the user
+1. **Machine-Readable Ledger** (`evidence_ledger_{traceId}.json` / `evidence_log_{traceId}.json`) — saved alongside evaluation evidence and `outputs/history/evidence_logs/`
+2. **Human-Readable Summary & Narrative** — emitted by `eval_output_serializer.js` and Phase 9 reflection
 
-### Trace JSON Schema
+### Evidence Ledger Schema (`evidence_ledger.js` v2)
 
 ```json
 {
-  "traceId": "UUID-v4",
+  "traceId": "TRC-...",
   "startedAt": "ISO-8601",
-  "completedAt": "ISO-8601",
-  "totalDurationMs": 12340,
-  "intent": {
-    "classification": "BOQ_EVALUATION | RFP_SIZING_TO_BOM | BOM_RECONCILIATION | FREEFORM_QA | CATALOG_INTELLIGENCE",
-    "confidence": 0.98,
-    "skillTarget": "boq-eval-skill",
-    "rationale": "Input contains customer BOQ spreadsheet..."
-  },
+  "chassis": "DL380_Gen12",
   "customerInput": {
-    "rawQuery": "Evaluate this DL380 Gen12 BOQ...",
     "filePath": "/path/to/boq.xlsx",
-    "detectedModel": "DL380_Gen12",
-    "detectedGeneration": "Gen12",
-    "detectedFamily": "ProLiant"
+    "serverCount": 1,
+    "totalRequestedLines": 14
   },
-  "steps": [
-    {
-      "stepNumber": 1,
-      "stepName": "Intent Classification & Routing",
-      "status": "PASSED | FAILED | SKIPPED | WARNING",
+  "sharedState": {
+    "currentChassis": "DL380_Gen12",
+    "nodeMultiplier": 1,
+    "aspectChecksCompleted": true,
+    "conflictGraphCompleted": true,
+    "strategySynthesized": true,
+    "dualBrainVerified": true
+  },
+  "phases": {
+    "phase_1": {
+      "phaseNumber": 1,
+      "phaseName": "WORKLOAD_DNA_PRE_PROCESSING",
+      "status": "PASSED | FAILED | WARNING | SKIPPED | DEGRADED | ACTION_REQUIRED | RESOLVED | NOT_REACHED | NOT_RUN",
+      "startedAt": "ISO-8601",
+      "completedAt": "ISO-8601",
       "durationMs": 45,
-      "input": { "queryText": "...", "hasFile": true },
-      "output": { "intent": "BOQ_EVALUATION", "confidence": 0.98 },
-      "verificationChecks": [
-        { "check": "Intent classified with ≥0.85 confidence", "result": true },
-        { "check": "Skill target mapped", "result": true }
-      ],
-      "notes": ""
+      "checks": [],
+      "warnings": [],
+      "errors": []
     }
-  ],
-  "finalOutput": {
-    "solutionRanksProduced": ["Rank1A", "Rank1B", "Rank2", "Rank3", "Rank5"],
-    "totalCapExBudget": 45230.00,
-    "unresolvedSkuCount": 0,
-    "allAspectsEvaluated": true,
-    "badgesPresented": ["DETERMINISTIC_PASSED", "CLOUD_NLM_VERIFIED", "CLIC_BUILDABLE"]
   },
-  "outputValidation": {
-    "allAcceptanceCriteriaMet": true,
-    "failures": []
-  },
-  "deltaReport": {
-    "customerRequested": ["P67088-B21 x2", "P64707-B21 x16", "..."],
-    "weProduced": ["P67088-B21 x2", "P64707-B21 x16", "P48818-B21 x1 (ADDED)", "..."],
-    "additions": [{ "sku": "P48818-B21", "reason": "Secondary CPU Heatsink mandatory for dual-socket" }],
-    "removals": [],
-    "substitutions": []
-  }
+  "candidateAttempts": [],
+  "phaseResolutions": [],
+  "workflowFailures": [],
+  "events": []
 }
 ```
 

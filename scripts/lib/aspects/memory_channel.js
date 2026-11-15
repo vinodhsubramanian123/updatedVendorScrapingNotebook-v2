@@ -5,6 +5,7 @@
 
 const { cleanBaseSKU, buildCatalogSkuIndex, isOcaModifierTrackingRow } = require('../catalog/sku.js');
 const { classifyComponentRole } = require('../catalog/product_meta.js');
+const { validateNumaMemoryTopology } = require('../conflict/workload_dna.js');
 
 function isDriveOrStorageItem(desc, role = '', catRole = '') {
   return (
@@ -67,6 +68,15 @@ function _processMemoryLine(it, desc, rawSku, isDdr4, isDdr5, isCto, ctx) {
     ctx.totalMemoryGb += (parseInt(gbMatch[1], 10) * qty);
   }
 
+  const mtsMatch = desc.match(/(?:ddr[45][-\s]?|pc[45][-\s]?|@)(\d{4,5})/i);
+  if (mtsMatch) {
+    ctx.speedsMts.add(parseInt(mtsMatch[1], 10));
+  }
+  const rankMatch = desc.match(/\b([124]rx[48])\b/i);
+  if (rankMatch) {
+    ctx.ranks.add(rankMatch[1].toLowerCase());
+  }
+
   // Check BTO (-B21) vs FIO (-F21) within CTO base models
   if (isCto && rawSku.endsWith('-B21') && !desc.includes('fio') && !desc.includes('factory integrated')) {
     const fioSku = rawSku.replace(/-B21$/i, '-F21');
@@ -120,15 +130,25 @@ function _inspectMemoryOrCpuItem(it, skuIndex, isCto, hasExplicitCpuCount, ctx) 
 }
 
 function _buildMemoryMetrics(ctx, cpuCount, chWidth) {
-  const { memoryCount, totalMemoryGb, hasDdr4Memory, hasDdr5Memory, hasRdimm, hasLrdimm, hasMrdimm, btoMemoryViolations, memoryItems } = ctx;
+  const { memoryCount, totalMemoryGb, hasDdr4Memory, hasDdr5Memory, hasRdimm, hasLrdimm, hasMrdimm, btoMemoryViolations, memoryItems, speedsMts, ranks } = ctx;
 
   const dimmsPerCpu = cpuCount > 0 ? (memoryCount / cpuCount) : 0;
   const isSupportedPopulation = cpuCount > 0 && memoryCount > 0 && (memoryCount % cpuCount === 0) && [1, 2, 4, 6, 8, 12, 16].includes(dimmsPerCpu);
   const isBalancedChannel = cpuCount > 0 && memoryCount > 0 && (memoryCount % cpuCount === 0) && ((memoryCount / cpuCount) % chWidth === 0);
   const hasMixedDdrGeneration = hasDdr4Memory && hasDdr5Memory;
   const hasMixedMemoryTypes = (hasRdimm && (hasLrdimm || hasMrdimm)) || (hasLrdimm && hasMrdimm);
+  const hasMixedSpeeds = speedsMts.size > 1;
+  const hasMixedRanks = ranks.size > 1;
+  const dimmsPerChannel = chWidth > 0 ? dimmsPerCpu / chWidth : 0;
+  const is2DpcSpeedDerated = dimmsPerChannel > 1 && Math.max(0, ...speedsMts) >= 5600;
   const isInvalidChannelConfiguration = (memoryCount > 0 && cpuCount > 0 && !isSupportedPopulation) || (memoryCount > 0 && cpuCount === 0);
   const needsMemory = cpuCount > 0 && memoryCount === 0;
+  const numaTopology = validateNumaMemoryTopology([], {
+    channelWidth: chWidth,
+    cpuSockets: cpuCount,
+    dimmCount: memoryCount,
+    totalMemoryGb
+  });
 
   return {
     cpuCount,
@@ -150,6 +170,12 @@ function _buildMemoryMetrics(ctx, cpuCount, chWidth) {
     hasLrdimm,
     hasMrdimm,
     hasMixedMemoryTypes,
+    speedsMts: Array.from(speedsMts).sort((a, b) => a - b),
+    ranks: Array.from(ranks).sort(),
+    hasMixedSpeeds,
+    hasMixedRanks,
+    is2DpcSpeedDerated,
+    numaTopology,
     memoryItems
   };
 }
@@ -171,7 +197,9 @@ function evalMemoryChannel(items, passedCpuCount = 0, catalogData = null, isCtoC
     hasLrdimm: false,
     hasMrdimm: false,
     btoMemoryViolations: [],
-    memoryItems: []
+    memoryItems: [],
+    speedsMts: new Set(),
+    ranks: new Set()
   };
 
   for (const it of items) {

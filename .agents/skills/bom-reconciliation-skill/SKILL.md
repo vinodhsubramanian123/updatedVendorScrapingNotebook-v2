@@ -106,7 +106,7 @@ node -e "
 node scripts/catalogs/generate_tender_partner_bom.js
 ```
 
-> **Note**: The actual verifier module is [`vendor_bom_verifier.js`](file:///scripts/lib/boq/vendor_bom_verifier.js) (and its canonical semantic alias [`vendor_quote_reconciler.js`](file:///scripts/lib/boq/vendor_quote_reconciler.js)) located in `scripts/lib/boq/`, not `scripts/evaluators/verify_vendor_bom.js`.
+> **Note**: Use [`vendor_bom_verifier.js`](../../../scripts/lib/boq/vendor_bom_verifier.js) (and its canonical semantic alias [`vendor_quote_reconciler.js`](../../../scripts/lib/boq/vendor_quote_reconciler.js)) in `scripts/lib/boq/`.
 
 ---
 

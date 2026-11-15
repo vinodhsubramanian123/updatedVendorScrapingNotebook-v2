@@ -17,6 +17,7 @@ const { emitProgress } = require('../system/progress.js');
 const { recordGuardrailTelemetry } = require('../system/telemetry.js');
 const { listAllCatalogs } = require('../catalog/catalog_discovery.js');
 const { buildGuardrailSystemPrompt } = require('../prompts/guardrail_prompt.js');
+const { analyzeCategoryDependencies, getCategoryDependencyMatrix, queryLocalGraphifyNeighborhood } = require('../catalog/category_dependencies.js');
 const geminiRotator = require('../system/gemini_rotator.js');
 const logger = require('../system/pipeline_logger.js');
 const { createChat, sendGuardrailMessage } = require('./guardrail_transport');
@@ -56,6 +57,30 @@ function failedReview(error, state = {}, details = {}) {
  * @param {object} ctx  Session context passed into each handler.
  * @returns {Map<string, {schema: object, execute: Function}>}
  */
+function _diffItemsIntoSubstitutions(origItems = [], simulatedItems = []) {
+  const normalize = list => {
+    const map = new Map();
+    for (const it of list || []) {
+      const k = String(it?.sku || '').trim().toUpperCase();
+      if (!k) continue;
+      map.set(k, (map.get(k) || 0) + (Number(it.quantity) || 1));
+    }
+    return map;
+  };
+  const origMap = normalize(origItems);
+  const simMap = normalize(simulatedItems);
+  const subs = [];
+  for (const [sku, qty] of simMap.entries()) {
+    const origQty = origMap.get(sku) || 0;
+    if (origQty === 0) subs.push({ action: 'ADD', sku, quantity: qty, source: 'GUARDRAIL_SIMULATE_BUILD' });
+    else if (qty !== origQty) subs.push({ action: 'ADJUST_QTY', sku, fromQuantity: origQty, quantity: qty, source: 'GUARDRAIL_SIMULATE_BUILD' });
+  }
+  for (const [sku, origQty] of origMap.entries()) {
+    if (!simMap.has(sku)) subs.push({ action: 'REMOVE', sku, quantity: origQty, source: 'GUARDRAIL_SIMULATE_BUILD' });
+  }
+  return subs;
+}
+
 function buildToolRegistry(ctx) {
   return new Map([
     [
@@ -82,6 +107,13 @@ function buildToolRegistry(ctx) {
             ctx.latestConfidence = result.confidence.score;
           }
           ctx.isOptimalResolved = result?.isMathClean === true && result?.isGraphClean === true && (result?.errors || []).length === 0;
+          if (ctx.isOptimalResolved && Array.isArray(parsedItems)) {
+            const subs = _diffItemsIntoSubstitutions(ctx.initialItems, parsedItems);
+            if (subs.length > 0) {
+              ctx.proposedSubstitutions = subs;
+              ctx.validatedPatchItems = parsedItems;
+            }
+          }
           return result;
         }
       }
@@ -200,6 +232,55 @@ function buildToolRegistry(ctx) {
           return { status: 'QUEUED', delta: pendingDelta };
         }
       }
+    ],
+    [
+      'inspect_category_dependencies',
+      {
+        schema: {
+          name: 'inspect_category_dependencies',
+          description:
+            'Inspects cross-category prerequisites, exemptions (e.g. Direct-Connect / No-Drive vs Controller-Routed drive cages), and ambiguity escalation hints (NotebookLM / Graphify / HPE QuickSpecs web queries).',
+          parameters: {
+            type: Type.OBJECT,
+            properties: {
+              chassis_id: { type: Type.STRING, description: "Target chassis ID, e.g., 'DL380_Gen12'" },
+              items_json: { type: Type.STRING, description: 'Optional JSON stringified BOM items array to analyze.' },
+              category_filter: { type: Type.STRING, description: 'Optional category keyword filter, e.g., Drive Cage, GPU, Memory.' }
+            },
+            required: ['chassis_id']
+          }
+        },
+        execute: async (args) => {
+          assertSessionScope(args, ctx);
+          const parsedItems = args.items_json ? JSON.parse(args.items_json) : ctx.initialItems;
+          return {
+            analysis: analyzeCategoryDependencies(parsedItems, ctx.catalogData, { chassisId: ctx.chassisId }),
+            matrix: args.category_filter ? getCategoryDependencyMatrix(args.category_filter) : undefined
+          };
+        }
+      }
+    ],
+    [
+      'query_codebase_graph',
+      {
+        schema: {
+          name: 'query_codebase_graph',
+          description:
+            'Queries the local Graphify semantic knowledge graph (graphify-out/graph.json) to locate rule evaluators, conflict arbitration functions, and cross-module dependencies at runtime.',
+          parameters: {
+            type: Type.OBJECT,
+            properties: {
+              chassis_id: { type: Type.STRING, description: "Target chassis ID, e.g., 'DL380_Gen12'" },
+              concept: { type: Type.STRING, description: 'Keywords or symbol names to search in the codebase graph.' }
+            },
+            required: ['chassis_id', 'concept']
+          }
+        },
+        execute: async (args) => {
+          assertSessionScope(args, ctx);
+          return queryLocalGraphifyNeighborhood(args.concept || '');
+        }
+      }
     ]
   ]);
 }
@@ -276,13 +357,16 @@ function _initGuardrailContext(items, chassisDir, activeKeyInfo) {
 
   const ctx = {
     chassisId, chassisDir, catalogData,
+    initialItems: Array.isArray(items) ? items : [],
     latestConfidence: preConfidence,
     preConfidence,
     isOptimalResolved: false,
     turns: 0,
     nlmCallCount: 0,
     successfulTools: new Set(),
-    pendingDeltas: []
+    pendingDeltas: [],
+    proposedSubstitutions: [],
+    validatedPatchItems: null
   };
 
   const toolRegistry = buildToolRegistry(ctx);
@@ -463,7 +547,9 @@ async function runAgenticGuardrail(items, chassisDir, options = {}) {
     activatedDeltaCount,
     quarantinedDeltaCount,
     rejectedDeltaCount,
-    rejectedCandidateReasons
+    rejectedCandidateReasons,
+    proposedSubstitutions: ctx.proposedSubstitutions || [],
+    validatedPatchItems: ctx.validatedPatchItems || null
   };
 
   // GAP-C3: Record Guardrail Telemetry

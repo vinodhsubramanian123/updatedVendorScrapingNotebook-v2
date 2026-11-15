@@ -10,7 +10,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { safeWriteJsonAtomic } = require('../system/fs_compat.js');
-const { cleanBaseSKU } = require('./sku.js');
+const { cleanBaseSKU, classifyLifecycleState } = require('./sku.js');
 
 const catalogPriceCache = new Map();
 
@@ -161,8 +161,10 @@ function _loadDiscontinuedInfo(historyDir, cleanSku) {
     const candidates = Array.isArray(discontinuedList) ? discontinuedList : Object.values(discontinuedList || {});
     const match = candidates.find(d => d.productNumber === cleanSku || d.sku === cleanSku);
     if (match) {
-      const currentStatus = String(match.status || '').toUpperCase() === 'REINSTATED' ? 'ACTIVE' : 'DISCONTINUED';
-      return { discontinuedInfo: match, currentStatus };
+      const st = String(match.status || '').toUpperCase();
+      const isActivelyDiscontinued = st === 'DISCONTINUED' || st === 'REMOVED';
+      const currentStatus = isActivelyDiscontinued ? 'DISCONTINUED' : 'ACTIVE';
+      return { discontinuedInfo: isActivelyDiscontinued ? match : null, currentStatus };
     }
   } catch (err) {
     console.warn(`[sku_versioning] Error reading discontinued_skus.json: ${err.message}`);
@@ -182,7 +184,9 @@ function _findSkuInSnapshotEntries(content, cleanSku) {
           subCategory: entry.subCategory,
           description: s.description || s['Description'] || '',
           priceUsd: s.priceUsd || s['Unit Price (USD)'] || '0.00',
-          optionType: s.optionType || s['Option Type'] || ''
+          optionType: s.optionType || s['Option Type'] || '',
+          lifecycleStatus: s['Lifecycle Status'] || s.lifecycleStatus || s.Status || 'Active',
+          diffStatus: s['Diff Status'] || s.diffStatus || ''
         };
       }
     }
@@ -209,7 +213,14 @@ function _scanSnapshotOccurrences(historyDir, cleanSku, initialStatus) {
 
       const skuDetails = _findSkuInSnapshotEntries(content, cleanSku);
       if (skuDetails) {
-        if (currentStatus !== 'DISCONTINUED') currentStatus = 'ACTIVE';
+        if (currentStatus !== 'DISCONTINUED') {
+          const lc = classifyLifecycleState(skuDetails.lifecycleStatus, skuDetails.diffStatus, cleanSku, skuDetails.description);
+          if (lc.isObsolete) currentStatus = 'OBSOLETE';
+          else if (lc.isHardEol) currentStatus = 'EOL';
+          else if (lc.is90DayWarning) currentStatus = '90-Day Warning';
+          else if (lc.isDirectShip) currentStatus = 'Direct Ship (DS)';
+          else currentStatus = 'ACTIVE';
+        }
         latestDetails = skuDetails;
         snapshotOccurrences.push({
           snapshotFile: file,
@@ -814,15 +825,16 @@ function generatePresalesLifecycleAdvisories(items = [], chassisDir = '') {
       const history = getSkuAuditHistory(sku, chassisDir);
 
       // 1. EOL / Announced Discontinuation Risk
-      if (history.discontinuedInfo || history.currentStatus === '90-Day Warning' || history.currentStatus === 'EOL') {
-        const discDate = history.discontinuedInfo?.discontinuedAt || 'within 90 days';
+      if (history.discontinuedInfo || ['90-Day Warning', 'EOL', 'OBSOLETE', 'DISCONTINUED'].includes(history.currentStatus)) {
+        const discDate = history.discontinuedInfo?.discontinuedAt || (history.currentStatus === '90-Day Warning' ? 'within 90 days' : history.currentStatus);
         const subst = history.discontinuedInfo?.replacementSku ? ` (Recommended replacement: ${history.discontinuedInfo.replacementSku})` : '';
         advisories.push({
           sku,
           type: 'EOL_DISCONTINUATION_RISK',
           severity: 'HIGH',
+          lifecycleStatus: history.currentStatus,
           discontinuationDate: discDate,
-          message: `SKU ${sku} has an announced discontinuation ${discDate}.${subst} Advance migration recommended.`
+          message: `SKU ${sku} has lifecycle risk (${history.currentStatus}, ${discDate}).${subst} Advance migration recommended.`
         });
       }
 

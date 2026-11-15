@@ -467,9 +467,27 @@ function allocateClusterChassisQuotas(cpuItems, totalChassis, globalCpusPerServe
 }
 
 /**
- * Match PSUs to clusters by wattage and TDP priority.
+ * Estimate additional GPU power draw per server from GPU line items.
  */
-function matchPsusToClusters(clusters, psuItems) {
+function _estimateClusterPowerEnvelope(cluster, rawItems, totalChassis) {
+  const cpuPower = (cluster.cpuTdp || 250) * (cluster.cpusPerServer || 2);
+  let sharedGpuWatts = 0;
+  for (const it of (rawItems || [])) {
+    const desc = (it.description || '').toLowerCase();
+    if (/cable|bridge|enablement|riser|fan|heatsink/.test(desc)) continue;
+    if (/nvidia|gpu|h100|h200|l40s?|l4|a100|rtx/i.test(desc)) {
+      const m = desc.match(/\b(\d{2,3})\s*w\b/i);
+      const unitW = m ? parseInt(m[1], 10) : (/h100|h200|b100|b200/i.test(desc) ? 700 : (/l40s?|a40/i.test(desc) ? 350 : 75));
+      sharedGpuWatts += unitW * Math.max(1, Math.round((it.quantity || 1) / Math.max(1, totalChassis || 1)));
+    }
+  }
+  return cpuPower + sharedGpuWatts;
+}
+
+/**
+ * Match PSUs to clusters by total compute+GPU power envelope, wattage and TDP priority.
+ */
+function matchPsusToClusters(clusters, psuItems, rawItems = [], totalChassis = 1) {
   const psuListWithWattage = psuItems.map(p => {
     const wMatch = (p.description || '').match(/(\d{3,4})\s*w/i);
     const isTitanium = /titanium/i.test(p.description || '');
@@ -479,8 +497,11 @@ function matchPsusToClusters(clusters, psuItems) {
 
   const unassignedPsus = [...psuListWithWattage];
   const clusterPsuMap = new Map();
+  const sortedClusters = [...clusters].sort((a, b) =>
+    _estimateClusterPowerEnvelope(b, rawItems, totalChassis) - _estimateClusterPowerEnvelope(a, rawItems, totalChassis)
+  );
 
-  clusters.forEach(c => {
+  sortedClusters.forEach(c => {
     const exactMatchIdx = unassignedPsus.findIndex(p => {
       const perServer = p.quantity / c.multiplier;
       return perServer >= 1 && Number.isInteger(perServer);
@@ -490,7 +511,7 @@ function matchPsusToClusters(clusters, psuItems) {
     }
   });
 
-  clusters.forEach(c => {
+  sortedClusters.forEach(c => {
     if (!clusterPsuMap.has(c.clusterId)) {
       const nextPsu = unassignedPsus.shift() || psuListWithWattage[0] || psuItems[0];
       clusterPsuMap.set(c.clusterId, nextPsu);
@@ -1014,7 +1035,7 @@ function analyzeAndPartitionClusters(rawItems, boqName = '', options = {}) {
   });
   const totalPsus = psuItems.reduce((sum, p) => sum + (p.quantity || 1), 0);
   const defaultPsusPerServer = Math.max(1, Math.round(totalPsus / totalChassis)) || 2;
-  const clusterPsuMap = matchPsusToClusters(clusters, psuItems);
+  const clusterPsuMap = matchPsusToClusters(clusters, psuItems, rawItems, totalChassis);
 
   const isExcludedItem = (item, clean) =>
     cpuItems.some(c => cleanBaseSKU(c.sku) === clean) ||

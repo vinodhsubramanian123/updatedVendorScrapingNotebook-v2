@@ -8,7 +8,7 @@
  * Low-confidence candidates are returned for HITL review and are never applied.
  */
 
-const { cleanBaseSKU, buildCatalogSkuIndex } = require('../catalog/sku.js');
+const { cleanBaseSKU, buildCatalogSkuIndex, classifyLifecycleState } = require('../catalog/sku.js');
 const { classifyComponentRole } = require('../catalog/product_meta.js');
 
 const ROLE_PATTERNS = [
@@ -72,32 +72,41 @@ function skuSimilarity(left, right) {
   return 1 - (levenshtein(a, b) / Math.max(a.length, b.length));
 }
 
+function _buildFlattenedCandidate(skuData, entry) {
+  const sku = cleanBaseSKU(skuData['Product #'] || skuData.sku);
+  const description = skuData.Description || skuData.description || '';
+  if (!sku || !description) return null;
+  const declaredRole = skuData['Component Role'] || '';
+  const descriptionRole = classifyComponentRole('', description);
+  const role = descriptionRole !== 'Option Component' ? descriptionRole : (declaredRole || classifyComponentRole(entry.parentCategory, description));
+  const rawLeadDays = skuData.leadTimeDays;
+  const parsedLeadDays = (rawLeadDays !== '' && rawLeadDays !== null && Number.isFinite(Number(rawLeadDays)))
+    ? Number(rawLeadDays)
+    : null;
+  return {
+    sku,
+    description,
+    role,
+    declaredRole,
+    categoryConflict: Boolean(declaredRole && descriptionRole !== 'Option Component' && declaredRole !== descriptionRole),
+    parentCategory: entry.parentCategory || '',
+    subCategory: entry.subCategory || '',
+    lifecycleStatus: skuData['Lifecycle Status'] || skuData.lifecycleStatus || skuData.Status || '',
+    diffStatus: skuData['Diff Status'] || skuData.diffStatus || '',
+    listPrice: Number(skuData.listPrice || skuData['Unit Price (USD)'] || 0),
+    hpeRecommended: skuData['HPE Recommended'] || skuData.hpeRecommended || '',
+    leadTime: skuData['Lead Time'] || skuData.leadTime || '',
+    leadTimeDays: parsedLeadDays,
+    vendorAttributes: skuData.vendorAttributes || {}
+  };
+}
+
 function flattenCatalog(catalogData) {
   const candidates = [];
   for (const entry of catalogData?.entries || []) {
     for (const skuData of entry.skus || []) {
-      const sku = cleanBaseSKU(skuData['Product #'] || skuData.sku);
-      const description = skuData.Description || skuData.description || '';
-      if (!sku || !description) continue;
-      const declaredRole = skuData['Component Role'] || '';
-      const descriptionRole = classifyComponentRole('', description);
-      // Description semantics take precedence when a scraped category/component
-      // label is stale or misplaced. The disagreement remains observable.
-      const role = descriptionRole !== 'Option Component' ? descriptionRole : (declaredRole || classifyComponentRole(entry.parentCategory, description));
-      candidates.push({
-        sku,
-        description,
-        role,
-        declaredRole,
-        categoryConflict: Boolean(declaredRole && descriptionRole !== 'Option Component' && declaredRole !== descriptionRole),
-        parentCategory: entry.parentCategory || '',
-        subCategory: entry.subCategory || '',
-        lifecycleStatus: skuData['Lifecycle Status'] || skuData.Status || '',
-        listPrice: Number(skuData.listPrice || skuData['Unit Price (USD)'] || 0),
-        hpeRecommended: skuData['HPE Recommended'] || skuData.hpeRecommended || '',
-        leadTime: skuData['Lead Time'] || skuData.leadTime || '',
-        vendorAttributes: skuData.vendorAttributes || {}
-      });
+      const candidate = _buildFlattenedCandidate(skuData, entry);
+      if (candidate) candidates.push(candidate);
     }
   }
   return candidates;
@@ -112,14 +121,36 @@ function inferExpectedRole(line, requirementRoles, coveredRoles) {
   return { role: null, certainty: 0, source: 'CATEGORY_UNRESOLVED', alternatives: missing };
 }
 
+function _computeLeadTimeDaysAndBoost(candidate, line) {
+  let days = candidate.leadTimeDays;
+  const lt = String(candidate.leadTime || candidate.vendorAttributes?.leadTime || '').toLowerCase();
+  if (days === null && lt && !/unpublished|unknown|n\/a/i.test(lt)) {
+    const m = lt.match(/(\d+)/);
+    if (m) days = Number(m[1]);
+  }
+  const wantsFast = /\b(?:short(?:est)?\s*lead\s*time|fast(?:est)?\s*delivery|immediate|quick)\b/i.test(line);
+  let boost = 0;
+  if (days !== null && Number.isFinite(days)) {
+    if (days <= 7) boost = wantsFast ? 0.08 : 0.03;
+    else if (days <= 14) boost = wantsFast ? 0.05 : 0.015;
+    else if (days >= 45) boost = -0.04;
+  } else if (wantsFast && (lt.includes('short') || lt.includes('stock') || lt.includes('standard') || lt.includes('fast'))) {
+    boost = 0.05;
+  }
+  return { days, boost };
+}
+
 function scoreCandidate(candidate, line, suspectedSku, roleInference) {
   if (!roleInference.role || candidate.role !== roleInference.role) return null;
+  const lc = classifyLifecycleState(candidate.lifecycleStatus, candidate.diffStatus, candidate.sku, candidate.description);
+  if (lc.isBlockedForProduction) return null;
+
   const words = jaccard(tokenize(line), tokenize(candidate.description));
   const requestedNumbers = numericTokens(line);
   const candidateNumbers = numericTokens(candidate.description);
   const numeric = requestedNumbers.size ? jaccard(requestedNumbers, candidateNumbers) : 0.5;
   const sku = suspectedSku ? skuSimilarity(suspectedSku, candidate.sku) : 0;
-  const lifecyclePenalty = /\b(?:ob|obsolete|eol|discontinued)\b/i.test(candidate.lifecycleStatus) ? 0.2 : 0;
+  const lifecyclePenalty = lc.isClearanceOrRestricted ? 0.15 : 0;
 
   let recommendationBoost = 0;
   if (/\b(?:recommended|hpe\s*recommended|hpe-recommended)\b/i.test(line)) {
@@ -137,18 +168,18 @@ function scoreCandidate(candidate, line, suspectedSku, roleInference) {
     workloadBoost = 0.1;
   }
 
-  let leadTimeBoost = 0;
-  if (/\b(?:short(?:est)?\s*lead\s*time|fast(?:est)?\s*delivery|immediate|quick)\b/i.test(line)) {
-    const lt = String(candidate.leadTime || candidate.vendorAttributes?.leadTime || '').toLowerCase();
-    if (lt.includes('short') || lt.includes('stock') || lt.includes('standard') || lt.includes('fast')) {
-      leadTimeBoost = 0.05;
-    }
-  }
+  const { days: parsedLeadDays, boost: leadTimeBoost } = _computeLeadTimeDaysAndBoost(candidate, line);
 
   const score = Math.max(0, Math.min(1,
     (0.42 * roleInference.certainty) + (0.33 * words) + (0.2 * numeric) + (0.05 * sku) + recommendationBoost + workloadBoost + leadTimeBoost - lifecyclePenalty
   ));
-  return { ...candidate, score: Number(score.toFixed(4)), scoreBreakdown: { category: roleInference.certainty, semantic: words, numeric, skuTieBreak: sku, recommendationBoost, workloadBoost, leadTimeBoost, lifecyclePenalty } };
+  return {
+    ...candidate,
+    leadTimeDays: parsedLeadDays,
+    lifecycleClass: lc.canonicalStatus,
+    score: Number(score.toFixed(4)),
+    scoreBreakdown: { category: roleInference.certainty, semantic: words, numeric, skuTieBreak: sku, recommendationBoost, workloadBoost, leadTimeBoost, lifecyclePenalty }
+  };
 }
 
 function extractRequirementIntent(rawLines) {
@@ -196,6 +227,27 @@ function _resolveTargetService(target, vendorQualifiedServices, suspectedSku) {
   };
 }
 
+function _findAvailabilityTradeoff(ranked) {
+  const best = ranked[0];
+  if (!best || !Number.isFinite(best.leadTimeDays) || best.leadTimeDays < 21) return null;
+  const better = ranked.slice(1).find(alt =>
+    Number.isFinite(alt.leadTimeDays) &&
+    alt.leadTimeDays <= best.leadTimeDays - 14 &&
+    alt.score >= best.score - 0.08
+  );
+  if (!better) return null;
+  return {
+    recommendedSku: best.sku,
+    recommendedLeadTimeDays: best.leadTimeDays,
+    fasterAlternativeSku: better.sku,
+    fasterAlternativeDescription: better.description,
+    fasterAlternativeLeadTimeDays: better.leadTimeDays,
+    daysSaved: best.leadTimeDays - better.leadTimeDays,
+    scoreDelta: Number((best.score - better.score).toFixed(4)),
+    rationale: `Close match ${better.sku} delivers in ${better.leadTimeDays}d vs ${best.leadTimeDays}d for ${best.sku} (saves ${best.leadTimeDays - better.leadTimeDays} days).`
+  };
+}
+
 function _resolveTargetHardware(target, candidates, suspectedSku, intent, coveredRoles, productConfirmed) {
   const roleInference = inferExpectedRole(target.line, intent.requestedRoles, coveredRoles);
   const ranked = candidates
@@ -205,13 +257,16 @@ function _resolveTargetHardware(target, candidates, suspectedSku, intent, covere
     .slice(0, 3);
   const best = ranked[0] || null;
   const margin = best ? best.score - (ranked[1]?.score || 0) : 0;
-  const autoApply = Boolean(productConfirmed && best && best.score >= 0.9 && margin >= 0.08 && roleInference.certainty >= 0.9);
+  const isActiveBest = best?.lifecycleClass === 'ACTIVE' || !best?.lifecycleClass;
+  const autoApply = Boolean(productConfirmed && best && isActiveBest && best.score >= 0.9 && margin >= 0.08 && roleInference.certainty >= 0.9);
+  const availabilityAlternative = _findAvailabilityTradeoff(ranked);
   return {
     input: target.line,
     suspectedSku: suspectedSku || null,
     expectedRole: roleInference.role,
     categoryInference: roleInference,
     candidates: ranked,
+    availabilityAlternative,
     confidence: best?.score || 0,
     margin: Number(margin.toFixed(4)),
     status: autoApply ? 'AUTO_RESOLVED' : 'NEEDS_HUMAN_CLARIFICATION',

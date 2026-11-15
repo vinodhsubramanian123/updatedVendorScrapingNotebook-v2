@@ -13,7 +13,8 @@
  *    and how customer functional goals are guaranteed.
  */
 
-const { cleanBaseSKU, buildCatalogSkuIndex } = require('../catalog/sku.js');
+const { cleanBaseSKU, buildCatalogSkuIndex, classifyLifecycleState } = require('../catalog/sku.js');
+const { extractCatalogItemLeadTime } = require('../taxonomy/sku_resolver.js');
 const fs = require('fs');
 const path = require('path');
 
@@ -130,10 +131,21 @@ function _findFallbackAlternative(roleType, constraints, duals, isGen12) {
   return null;
 }
 
+function _isActiveCatalogOption(item) {
+  if (!item) return true;
+  const lc = classifyLifecycleState(
+    item.lifecycleStatus || item.skuData?.['Lifecycle Status'] || item.entry?.lifecycleStatus || '',
+    item.diffStatus || '',
+    item.sku || item.skuData?.['Product #'] || '',
+    item.skuData?.Description || item.entry?.description || ''
+  );
+  return !lc.isBlockedForProduction && !lc.isDirectShip;
+}
+
 function _findStorageExpanderAlternative(skuIndex, catalogDir) {
   const candidates = [];
   for (const [sku, item] of skuIndex.entries()) {
-    if (item.lifecycleStatus && (item.lifecycleStatus === 'OB' || item.lifecycleStatus === 'EOL')) continue;
+    if (!_isActiveCatalogOption(item)) continue;
     const desc = (item.skuData?.Description || item.entry?.description || '').toLowerCase();
     if ((desc.includes('controller') || desc.includes('raid')) &&
         (desc.includes('16-port') || desc.includes('x16') || desc.includes('416i')) &&
@@ -154,7 +166,7 @@ function _findStorageExpanderAlternative(skuIndex, catalogDir) {
 function _findContestedOcpSlotAlternative(skuIndex, catalogDir, duals, isGen12) {
   const candidates = [];
   for (const [sku, item] of skuIndex.entries()) {
-    if (item.lifecycleStatus && (item.lifecycleStatus === 'OB' || item.lifecycleStatus === 'EOL')) continue;
+    if (!_isActiveCatalogOption(item)) continue;
     const desc = (item.skuData?.Description || item.entry?.description || '').toLowerCase();
     if ((desc.includes('controller') || desc.includes('raid')) &&
         (desc.includes('pcie') || desc.includes('-p') || desc.includes('416i-p') || desc.includes('216i-p')) &&
@@ -178,7 +190,7 @@ function _findMemoryBusSpeedAlternative(skuIndex, catalogDir, constraints) {
   const targetCapacity = constraints.targetCapacityGb || 32;
   const candidates = [];
   for (const [sku, item] of skuIndex.entries()) {
-    if (item.lifecycleStatus && (item.lifecycleStatus === 'OB' || item.lifecycleStatus === 'EOL')) continue;
+    if (!_isActiveCatalogOption(item)) continue;
     const desc = (item.skuData?.Description || item.entry?.description || '').toLowerCase();
     if ((desc.includes('memory') || desc.includes('dimm') || desc.includes('smart memory')) &&
         desc.includes('4800') &&
@@ -577,57 +589,104 @@ function _checkGenerationalCpuAndMemory(items, missing, chassisInfo, catalogData
   return [cpuUpgrade, ...memUpgrades];
 }
 
+const REPLACEMENT_CATEGORY_RULES = [
+  ['GPU', /\b(?:nvidia|gpu|h100|h200|l40s?|l4|a100|a40|b100|b200|rtx\s*\d+|accelerator)\b/i, null],
+  ['CONTROLLER', /\b(?:controller|raid|tri-mode|hba|mr416|mr216|sr932|sr416)\b/i, /\bcable\b/i],
+  ['CPU', /\b(?:xeon|epyc|processor|cpu)\b/i, null],
+  ['MEMORY', /\b(?:dimm|rdimm|lrdimm|mrdimm|smart memory|memory|ddr[45])\b/i, null],
+  ['PSU', /\b(?:power supply|flex slot|-48vdc|psu|power)\b/i, /\bcable\b/i],
+  ['NETWORK', /\b(?:ethernet|nic|connectx|infiniband|transceiver|sfp|network|\d{2,3}gbe?)\b/i, null],
+  ['THERMAL', /\b(?:heatsink|fan|cooling|thermal)\b/i, null],
+  ['STORAGE_DRIVE', /\b(?:ssd|hdd|nvme|hard drive|storage|drive)\b/i, /\b(?:cable|cage|backplane)\b/i]
+];
+
+function _detectReplacementCategory(d, categoryHint = '') {
+  const combined = `${d} ${String(categoryHint || '').toLowerCase()}`;
+  for (const [cat, includeRx, excludeRx] of REPLACEMENT_CATEGORY_RULES) {
+    if (includeRx.test(combined) && (!excludeRx || !excludeRx.test(d))) {
+      return cat;
+    }
+  }
+  return 'UNKNOWN';
+}
+
+function _extractComputeAndMemoryAttrs(d) {
+  const memGbMatch = d.match(/\b(\d+)\s*gb\b/i);
+  const mtsMatch = d.match(/(?:ddr[45][-\s]?|mt\/s\s*|@)(\d{4,5})/i);
+  const rankMatch = d.match(/\b([124]rx[48])\b/i);
+  const coreMatch = d.match(/\b(\d{1,3})\s*(?:c|core|cores)\b/i);
+  const ghzMatch = d.match(/\b(\d+(?:\.\d+)?)\s*ghz\b/i);
+  const tdpMatch = d.match(/\b(\d{2,3})\s*w\b/i);
+  const vramMatch = d.match(/\b(\d{2,3})\s*gb\b/i);
+  const gpuModelMatch = d.match(/\b(h100|h200|l40s?|l4|a100|a40|b100|b200|rtx\s*\d+)\b/i);
+  const speedGbpsMatch = d.match(/\b(10|25|40|50|100|200|400|800)\s*(?:gb|gbe|gb\/s|g)\b/i);
+  const portMatch = d.match(/\b([1248])[-\s]?(?:p|port)\b/i);
+  const psuWattsMatch = d.match(/\b(\d{3,4})\s*w\b/i);
+
+  return {
+    memGb: memGbMatch ? parseInt(memGbMatch[1], 10) : 0,
+    ddrGen: d.includes('ddr5') ? 'ddr5' : (d.includes('ddr4') ? 'ddr4' : ''),
+    mts: mtsMatch ? parseInt(mtsMatch[1], 10) : 0,
+    dimmType: d.includes('mrdimm') ? 'mrdimm' : (d.includes('lrdimm') ? 'lrdimm' : (d.includes('rdimm') || d.includes('registered') ? 'rdimm' : '')),
+    rankWidth: rankMatch ? rankMatch[1].toLowerCase() : '',
+    cores: coreMatch ? parseInt(coreMatch[1], 10) : 0,
+    freqGhz: ghzMatch ? parseFloat(ghzMatch[1]) : 0,
+    tdpWatts: tdpMatch ? parseInt(tdpMatch[1], 10) : 0,
+    isXeon6: d.includes('xeon 6') || /\b6[579]\d{2}[pe]\b/i.test(d),
+    vramGb: vramMatch ? parseInt(vramMatch[1], 10) : 0,
+    gpuSeries: gpuModelMatch ? gpuModelMatch[1].replace(/\s+/g, '').toLowerCase() : '',
+    isNvlink: d.includes('nvlink') || d.includes('nvl') || d.includes('sxm'),
+    speedGbps: speedGbpsMatch ? parseInt(speedGbpsMatch[1], 10) : 0,
+    portCount: portMatch ? parseInt(portMatch[1], 10) : 0,
+    isOcp: d.includes('ocp'),
+    psuWatts: psuWattsMatch ? parseInt(psuWattsMatch[1], 10) : 0,
+    efficiency: d.includes('titanium') ? 'titanium' : (d.includes('platinum') ? 'platinum' : '')
+  };
+}
+
 /**
  * Extract component attributes from description and SKU for multi-attribute matching
  */
-function _extractDriveOrComponentAttrs(desc = '', sku = '') {
-  const d = String(desc || '').toLowerCase();
-
+function _extractDriveCapacityAndWorkload(d, componentCategory) {
   let capacityTb = 0;
   const tbMatch = d.match(/(\d+(?:\.\d+)?)\s*tb/i);
   if (tbMatch) {
     capacityTb = parseFloat(tbMatch[1]);
-  } else {
+  } else if (componentCategory === 'STORAGE_DRIVE' || componentCategory === 'UNKNOWN') {
     const gbMatch = d.match(/(\d+)\s*gb/i);
-    if (gbMatch) {
-      capacityTb = parseFloat(gbMatch[1]) / 1000;
-    }
+    if (gbMatch) capacityTb = parseFloat(gbMatch[1]) / 1000;
   }
 
-  const isNvme = d.includes('nvme');
-  const isSas = d.includes('sas');
-  const isSata = d.includes('sata');
-  const isGen4 = d.includes('gen4') || d.includes('pcie4') || d.includes('pcie 4');
-  const isGen5 = d.includes('gen5') || d.includes('pcie5') || d.includes('pcie 5');
+  let workload = 'UNKNOWN';
+  if (/\bread intensive\b|\bri\b|-ri/i.test(d)) workload = 'RI';
+  else if (/\bmixed use\b|\bmu\b|-mu/i.test(d)) workload = 'MU';
+  else if (/\bwrite intensive\b|\bwi\b|-wi/i.test(d)) workload = 'WI';
 
-  const isRI = d.includes('read intensive') || d.includes(' ri ') || d.endsWith(' ri') || d.includes('-ri');
-  const isMU = d.includes('mixed use') || d.includes(' mu ') || d.endsWith(' mu') || d.includes('-mu');
-  const isWI = d.includes('write intensive') || d.includes(' wi ') || d.endsWith(' wi') || d.includes('-wi');
+  return { capacityTb, workload };
+}
 
-  const isHighPerf = d.includes('high performance') || d.includes('pm1733') || d.includes('ps1010') || d.includes('cm7') || d.includes('cm9');
-  const isMainstream = d.includes('mainstream') || d.includes('spdm 7500') || d.includes('cd9');
-
-  const isSff = d.includes('sff');
-  const isLff = d.includes('lff');
-  const isBc = d.includes('bc') || d.includes('basic carrier');
-  const isU3 = d.includes('u.3');
-  const isU2 = d.includes('u.2');
+function _extractDriveOrComponentAttrs(desc = '', sku = '', categoryHint = '') {
+  const d = String(desc || '').toLowerCase();
+  const componentCategory = _detectReplacementCategory(d, categoryHint);
+  const { capacityTb, workload } = _extractDriveCapacityAndWorkload(d, componentCategory);
 
   return {
+    componentCategory,
     capacityTb,
-    isNvme,
-    isSas,
-    isSata,
-    isGen4,
-    isGen5,
-    workload: isRI ? 'RI' : (isMU ? 'MU' : (isWI ? 'WI' : 'UNKNOWN')),
-    isHighPerf,
-    isMainstream,
-    isSff,
-    isLff,
-    isBc,
-    isU3,
-    isU2
+    isNvme: d.includes('nvme'),
+    isSas: d.includes('sas'),
+    isSata: d.includes('sata'),
+    isGen4: /gen4|pcie\s*4/i.test(d),
+    isGen5: /gen5|pcie\s*5/i.test(d),
+    workload,
+    isHighPerf: /high performance|pm1733|ps1010|cm[79]/i.test(d),
+    isMainstream: /mainstream|spdm 7500|cd9/i.test(d),
+    isSff: d.includes('sff'),
+    isLff: d.includes('lff'),
+    isBc: /\bbc\b|basic carrier/i.test(d),
+    isU3: d.includes('u.3'),
+    isU2: d.includes('u.2'),
+    ..._extractComputeAndMemoryAttrs(d)
   };
 }
 
@@ -661,26 +720,101 @@ function _scoreBudgetProximity(histPrice, candidatePrice) {
   return 0;
 }
 
+function _scoreCpuAndMemoryParity(origAttrs, cAttrs) {
+  let score = 0;
+  if (origAttrs.componentCategory === 'CPU') {
+    if (origAttrs.cores > 0 && cAttrs.cores > 0) {
+      if (cAttrs.cores < origAttrs.cores) return -1;
+      score += origAttrs.cores === cAttrs.cores ? 120 : Math.max(40, 100 - Math.abs(cAttrs.cores - origAttrs.cores) * 3);
+    }
+    if (origAttrs.freqGhz > 0 && cAttrs.freqGhz > 0) {
+      score += cAttrs.freqGhz >= origAttrs.freqGhz ? 40 : Math.max(0, 25 - (origAttrs.freqGhz - cAttrs.freqGhz) * 30);
+    }
+    if (origAttrs.isXeon6 === cAttrs.isXeon6) score += 40;
+    if (origAttrs.tdpWatts > 0 && cAttrs.tdpWatts > 0 && cAttrs.tdpWatts <= origAttrs.tdpWatts + 25) score += 20;
+    return score;
+  }
+  if (origAttrs.componentCategory === 'MEMORY') {
+    if (origAttrs.ddrGen && cAttrs.ddrGen && origAttrs.ddrGen !== cAttrs.ddrGen) return -1;
+    if (origAttrs.memGb > 0 && cAttrs.memGb > 0) {
+      if (origAttrs.memGb !== cAttrs.memGb) return -1;
+      score += 120;
+    }
+    if (origAttrs.dimmType && cAttrs.dimmType && origAttrs.dimmType === cAttrs.dimmType) score += 50;
+    if (origAttrs.mts > 0 && cAttrs.mts > 0) {
+      score += cAttrs.mts >= origAttrs.mts ? (cAttrs.mts === origAttrs.mts ? 50 : 35) : 0;
+    }
+    if (origAttrs.rankWidth && cAttrs.rankWidth && origAttrs.rankWidth === cAttrs.rankWidth) score += 25;
+  }
+  return score;
+}
+
+function _scoreGpuNetworkPsuParity(origAttrs, cAttrs) {
+  let score = 0;
+  if (origAttrs.componentCategory === 'GPU') {
+    if (origAttrs.gpuSeries && cAttrs.gpuSeries && origAttrs.gpuSeries === cAttrs.gpuSeries) score += 120;
+    if (origAttrs.vramGb > 0 && cAttrs.vramGb > 0) {
+      if (cAttrs.vramGb < origAttrs.vramGb) return -1;
+      score += origAttrs.vramGb === cAttrs.vramGb ? 80 : 40;
+    }
+    if (origAttrs.isNvlink === cAttrs.isNvlink) score += 30;
+    return score;
+  }
+  if (origAttrs.componentCategory === 'NETWORK') {
+    if (origAttrs.speedGbps > 0 && cAttrs.speedGbps > 0) {
+      if (cAttrs.speedGbps < origAttrs.speedGbps) return -1;
+      score += origAttrs.speedGbps === cAttrs.speedGbps ? 90 : 45;
+    }
+    if (origAttrs.portCount > 0 && cAttrs.portCount > 0 && cAttrs.portCount >= origAttrs.portCount) {
+      score += origAttrs.portCount === cAttrs.portCount ? 45 : 20;
+    }
+    if (origAttrs.isOcp === cAttrs.isOcp) score += 35;
+    return score;
+  }
+  if (origAttrs.componentCategory === 'PSU') {
+    if (origAttrs.psuWatts > 0 && cAttrs.psuWatts > 0) {
+      if (cAttrs.psuWatts < origAttrs.psuWatts) return -1;
+      score += origAttrs.psuWatts === cAttrs.psuWatts ? 100 : 50;
+    }
+    if (origAttrs.efficiency && cAttrs.efficiency && origAttrs.efficiency === cAttrs.efficiency) score += 40;
+  }
+  return score;
+}
+
 /**
  * Score candidate active replacement against discontinued component attributes and budget anchor
  */
 function _scoreActiveReplacementCandidate(candidate, origAttrs, histPrice = 0) {
   const cAttrs = _extractDriveOrComponentAttrs(candidate.description, candidate.sku);
-
-  if (origAttrs.capacityTb > 0 && cAttrs.capacityTb > 0) {
-    if (Math.abs(origAttrs.capacityTb - cAttrs.capacityTb) >= 0.01) {
-      return -1;
-    }
+  if (origAttrs.componentCategory !== 'UNKNOWN' && cAttrs.componentCategory !== 'UNKNOWN' &&
+      origAttrs.componentCategory !== cAttrs.componentCategory) {
+    return -1;
   }
 
-  let score = (origAttrs.capacityTb > 0 && cAttrs.capacityTb > 0) ? 120 : 0;
-  score += _scoreInterfaceAndGenParity(origAttrs, cAttrs);
-  score += _scorePhysicalAndWorkloadParity(origAttrs, cAttrs);
+  let score = 0;
+  if (origAttrs.componentCategory === 'STORAGE_DRIVE' || origAttrs.componentCategory === 'UNKNOWN') {
+    if (origAttrs.capacityTb > 0 && cAttrs.capacityTb > 0 && Math.abs(origAttrs.capacityTb - cAttrs.capacityTb) >= 0.01) {
+      return -1;
+    }
+    score += (origAttrs.capacityTb > 0 && cAttrs.capacityTb > 0) ? 120 : 0;
+    score += _scoreInterfaceAndGenParity(origAttrs, cAttrs);
+    score += _scorePhysicalAndWorkloadParity(origAttrs, cAttrs);
+  } else {
+    const specialtyScore = origAttrs.componentCategory === 'CPU' || origAttrs.componentCategory === 'MEMORY'
+      ? _scoreCpuAndMemoryParity(origAttrs, cAttrs)
+      : _scoreGpuNetworkPsuParity(origAttrs, cAttrs);
+    if (specialtyScore < 0) return -1;
+    score += specialtyScore;
+  }
 
   const cDescLower = (candidate.description || '').toLowerCase();
   if (cDescLower.includes('multi vendor')) score += 30;
 
   score += _scoreBudgetProximity(histPrice, candidate.price);
+  if (typeof candidate.leadTimeDays === 'number' && Number.isFinite(candidate.leadTimeDays)) {
+    if (candidate.leadTimeDays <= 14) score += 15;
+    else if (candidate.leadTimeDays >= 45) score -= 15;
+  }
   return score;
 }
 
@@ -712,6 +846,13 @@ function _findDirectSuccessorSku(successorSku, activeSkuMap, catalogData, histPr
     for (const e of catalogData.entries) {
       const found = (e.skus || []).find(s => cleanBaseSKU(s['Product #'] || s.sku || s['SKU']) === successorSku);
       if (found) {
+        const lc = classifyLifecycleState(
+          found['Lifecycle Status'] || found.lifecycleStatus || found.Status || '',
+          found['Diff Status'] || found.diffStatus || '',
+          successorSku,
+          found.Description || found.description || ''
+        );
+        if (lc.isBlockedForProduction || lc.isDirectShip) return null;
         const price = parseFloat(String(found['Unit Price (USD)'] || found['Price (USD)'] || found.priceUsd || '0').replace(/[^0-9.]/g, '')) || 0;
         return {
           sku: successorSku,
@@ -734,18 +875,29 @@ function _collectActiveReplacementCandidates(catalogData, cleanSku, origAttrs, h
     (e.skus || []).forEach(s => {
       const sSku = cleanBaseSKU(s['Product #'] || s.sku || s['SKU']);
       if (!sSku || sSku === cleanSku) return;
-      const status = (s['Lifecycle Status'] || s.lifecycleStatus || '').toUpperCase();
-      if (status === 'OB' || status === 'EOL' || status === 'DISCONTINUED') return;
+      const lc = classifyLifecycleState(
+        s['Lifecycle Status'] || s.lifecycleStatus || s.Status || '',
+        s['Diff Status'] || s.diffStatus || '',
+        sSku,
+        s.Description || s.description || ''
+      );
+      if (lc.isBlockedForProduction || lc.isDirectShip) return;
 
       const sDesc = s.Description || s.description || '';
       const sPrice = parseFloat(String(s['Unit Price (USD)'] || s['Price (USD)'] || s.priceUsd || '0').replace(/[^0-9.]/g, '')) || 0;
+      const leadMeta = extractCatalogItemLeadTime(s);
 
-      const score = _scoreActiveReplacementCandidate({ sku: sSku, description: sDesc, price: sPrice }, origAttrs, histPrice);
+      const score = _scoreActiveReplacementCandidate(
+        { sku: sSku, description: sDesc, price: sPrice, leadTimeDays: leadMeta?.days ?? null },
+        origAttrs,
+        histPrice
+      );
       if (score > 0) {
         candidates.push({
           sku: sSku,
           description: sDesc,
           price: sPrice,
+          leadTimeDays: leadMeta?.days ?? null,
           score
         });
       }
@@ -802,8 +954,13 @@ function _buildActiveSkuMap(catalogData) {
     (e.skus || []).forEach(s => {
       const rawSku = s['Product #'] || s.sku || s['SKU'];
       const k = cleanBaseSKU(rawSku);
-      const status = (s['Lifecycle Status'] || s.lifecycleStatus || '').toUpperCase();
-      if (k && status !== 'OB' && status !== 'EOL' && status !== 'DISCONTINUED') {
+      const lc = classifyLifecycleState(
+        s['Lifecycle Status'] || s.lifecycleStatus || s.Status || '',
+        s['Diff Status'] || s.diffStatus || '',
+        k,
+        s.Description || s.description || ''
+      );
+      if (k && !lc.isBlockedForProduction && !lc.isDirectShip) {
         activeSkuMap.set(k, {
           sku: k,
           rawSku,
@@ -944,6 +1101,48 @@ function _checkRaid1FactoryArrayGeometry(items = [], storage = {}, missing = [],
   return null;
 }
 
+function _checkRuleGraphCascadingTroublemakers(items = [], evalResults = {}, chassisInfo = {}, existingTroublesome = []) {
+  const missing = evalResults.missingDependencies || [];
+  const errors = evalResults.errors || [];
+  if (missing.length === 0 && errors.length === 0) return [];
+
+  const alreadyFlagged = new Set(existingTroublesome.map(t => cleanBaseSKU(t.originalSku)));
+  const results = [];
+  const chassisDir = chassisInfo?.chassisDir || chassisInfo?.catalogDir || '';
+  let rulesList = [];
+  if (chassisDir) {
+    try {
+      const files = fs.readdirSync(chassisDir);
+      const rFile = files.find(f => f.endsWith('_Catalog_Rules.json'));
+      if (rFile) {
+        const parsed = JSON.parse(fs.readFileSync(path.join(chassisDir, rFile), 'utf8'));
+        rulesList = Array.isArray(parsed?.rules) ? parsed.rules : (Array.isArray(parsed) ? parsed : []);
+      }
+    } catch (_) {}
+  }
+
+  for (const dep of missing) {
+    const depSku = cleanBaseSKU(dep.sku);
+    const matchedRule = rulesList.find(r => cleanBaseSKU(r.requiredDependencySku || r.requiredSku) === depSku);
+    const triggerSku = cleanBaseSKU(dep.triggerSku || dep.sourceSku || matchedRule?.affectedSku || '');
+    if (!triggerSku || alreadyFlagged.has(triggerSku)) continue;
+    const item = items.find(it => cleanBaseSKU(it.sku) === triggerSku);
+    if (!item) continue;
+
+    alreadyFlagged.add(triggerSku);
+    results.push({
+      type: 'RULE_GRAPH_DEPENDENCY_CASCADE',
+      originalSku: triggerSku,
+      originalDesc: item.description || triggerSku,
+      troublesomeReason: dep.reason || `SKU ${triggerSku} triggers mandatory dependency ${depSku} via rule graph attribution.`,
+      triggeredDependencies: [depSku],
+      action: dep.action || 'RESOLVE_RULE_CASCADE',
+      cascadingSkusEliminated: []
+    });
+  }
+  return results;
+}
+
 function identifyTroublesomeSkus(items = [], evalResults = {}, catalogData = null, chassisInfo = {}) {
   const troublesome = [];
   const missing = evalResults.missingDependencies || [];
@@ -971,6 +1170,8 @@ function identifyTroublesomeSkus(items = [], evalResults = {}, catalogData = nul
 
   const raid1Geometry = _checkRaid1FactoryArrayGeometry(items, storage, missing, catalogData, chassisInfo);
   if (raid1Geometry) troublesome.push(raid1Geometry);
+
+  troublesome.push(..._checkRuleGraphCascadingTroublemakers(items, evalResults, chassisInfo, troublesome));
 
   return troublesome;
 }
@@ -1189,7 +1390,10 @@ module.exports = {
   buildLeastDeltaCandidate,
   findBestAlternativeInCatalog,
   findBestAlternativeForDiscontinuedSku,
-  isSkuVisibleAtDefaultAmbient
+  isSkuVisibleAtDefaultAmbient,
+  extractComponentAttributes: _extractDriveOrComponentAttrs,
+  scoreReplacementCandidate: _scoreActiveReplacementCandidate,
+  isActiveCatalogOption: _isActiveCatalogOption
 };
 
 // ── CLI Runner ─────────────────────────────────────────────────────────────

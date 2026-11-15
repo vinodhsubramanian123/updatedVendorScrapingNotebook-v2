@@ -4,11 +4,11 @@
 
 **Scope Identity**: `HPE/SERVER/ProLiant/Gen11/DL380_Gen11`
 
-**Sync Timestamp**: 2026-11-12T14:32:27.312Z
+**Sync Timestamp**: 2026-11-15T06:45:05.376Z
 
 **Total Verified SKUs**: `1408` (`753` Hardware + `655` Services)
 
-**Total Synced KnowledgeDeltas**: `24`
+**Total Synced KnowledgeDeltas**: `27`
 
 This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized with local Antigravity AI physical pre-checks, catalog deltas, historical price trails, support service SLAs, and learned vendor portal feedback.
 
@@ -93,6 +93,18 @@ This source file ensures Gemini NotebookLM RAG reasoning stays 100% synchronized
 13. **[LEARN_DL380_GEN11_P71674_425_SMART_CHOICE_20261112] DL380_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen11 CTO Server`):
    - **Rule**: P71674-425 (EMEA DL380 Gen11 Smart Choice 4510 12c 1P 64GB-R 8SFF MR408i-o 2x960GB SSD 2x1000W PS) is absent from DL380_Gen11_Catalog.json and DL380 Gen11 CTO QuickSpecs (deferred to Smart Choice Supplemental QuickSpecs a50009219enw). Baseline fixed by title + chassis spec: Silver 4510 1P, 64GB-R, 8SFF, MR408i-o, 2x960GB SSD, 2x1000W PSU, 1Gb dedicated rear iLO 6 port, and a pre-selected primary NIC (distributor listings cite BCM5719 1Gb 4p OCP3 P51181-B21). In live OCA Customize, P71674-425 loads as 0 CPU/0GB with PSU error, auto-adds separately priced P47777-B21 ($5,999 MR416i-p despite built-in MR408i-o), P01366-B21 ($110), P48918-B21 ($38), P51181-B21 ($485), S7P77AAE ($750), AC114A ($210) totaling $19,425 vs $11,833 base, and fails CLIC with Rule 81016667 (use iQuote Universal / distributor). Use CTO -B21 bases for customizable DL380 Gen11 configurations.
    - **Affected SKU**: `P71674-425` | **Required Dependency**: `N/A`
+
+14. **[LEARN_UNIVERSAL_NLM_READ_FAILOVER_AND_SYNC_PRESERVATION_20261114] DL380_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen11 CTO Server`):
+   - **Rule**: Idempotent NotebookLM read RPCs (source list, source content, canary notebook query) MUST fail over from CDP to httpx via execNlmReadWithFallback() when CdpTransportError occurs. Transient CLI read/transport errors MUST NOT downgrade cloudSyncState from VERIFIED to FAILED when an active certifiedCatalogSourceIds publication already matches the current on-disk Catalog.json SHA-256.
+   - **Affected SKU**: `N/A` | **Required Dependency**: `N/A`
+
+15. **[LEARN_UNIVERSAL_CAPTURE_RECEIPT_REBUILD_RECONCILIATION_20261114] DL380_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen11 CTO Server`):
+   - **Rule**: Local catalog rebuild scripts (build_catalog.js, generate_xlsx.js) MUST invoke reconcileRebuiltCaptureReceipt() to refresh capture_receipt.json artifact hashes and counts only when raw_data/oca_raw_data_full.json SHA-256 matches the verified receipt rawSha256. Rebuilt receipts MUST fail closed when rawSha256 differs.
+   - **Affected SKU**: `N/A` | **Required Dependency**: `N/A`
+
+16. **[LEARN_UNIVERSAL_QUARANTINE_SEMANTIC_REVALIDATION_20261114] DL380_Gen11** (Taxonomy: `CHASSIS_SPECIFIC` | Solution: `DL380_Gen11 CTO Server`):
+   - **Rule**: Quarantined knowledge deltas MUST pass _checkSemanticExtractionIntegrity() (rejecting inverted discontinued-SKU dependencies, slash/disjunctive pairs misparsed as dependencies, and corrupted 6-digit SKU-prefix quantities) before promotion eligibility. Legacy quarantined deltas failing INV-230 re-validation MUST be pruned with append-only AUTO_REJECTED_BY_INV230_REVALIDATION records in knowledge_decisions.json.
+   - **Affected SKU**: `N/A` | **Required Dependency**: `N/A`
 
 
 ## 🔒 3b. Physical & Architectural Gating Rules (DOM Unavailable Tables)

@@ -13,7 +13,7 @@ description: >-
 ## 1. Scope & Lifecycle Authority
 This skill guides the agent in querying, analyzing, and explaining catalog updates, pricing drift, obsolescence notifications, and generational option differences across HPE ProLiant, Synergy, Alletra, StoreEver, and Cray platforms.
 
-- **Dual-track clearance strategy**: When a SKU is in a 90-Day EOL or Clearance state, hand off to [`presales-clearance-strategy-skill`](../presales-clearance-strategy-skill/SKILL.md) (source: docs/audits/2026-10-20-sku-lifecycle-and-presales-clearance-strategy.md). This skill reports lifecycle facts only.
+- **Dual-track clearance strategy**: When a SKU is in a 90-Day EOL or Clearance state, hand off to [`presales-clearance-strategy-skill`](../presales-clearance-strategy-skill/SKILL.md) (intent `PRESALES_CLEARANCE_STRATEGY`; source: [`2026-10-20-sku-lifecycle-and-presales-clearance-strategy.md`](../../../docs/audits/2026-10-20-sku-lifecycle-and-presales-clearance-strategy.md)). This skill reports lifecycle facts only.
 - **Normative Directives**: Comply with [Normative Language Standard](../../rules/normative_language.md).
 
 ---

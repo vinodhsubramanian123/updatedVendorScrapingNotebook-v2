@@ -2,8 +2,8 @@
 
 **Document Classification:** Canonical Ground-Truth Architecture & Validation Charter<br>
 **Maintained By:** HPE ProLiant AI Studio Autonomous Knowledge Engine (Antigravity AI)<br>
-**Last Synchronized:** 2026-11-12T14:35:53.012Z<br>
-**Total Deduplicated Learned Rules:** 145<br>
+**Last Synchronized:** 2026-11-15T06:57:27.323Z<br>
+**Total Deduplicated Learned Rules:** 153<br>
 **Universal Invariant Compliance:** INV-1 through INV-38 Certified<br>
 **Google Drive Destination:** `shared_folder_id: 1YR0lBh-gg00amKHRxuOqp5Aea3iL5O7-`
 
@@ -160,7 +160,7 @@ The Catalog Vendor Solution provides modular, AI-assisted catalog ingestion, nor
 
 ## 5. Deduplicated Learned Rule Ledger & Verification Provenance
 
-Total verified rules indexed in this build: **145**.
+Total verified rules indexed in this build: **153**.
 
 | Scope | Target Chassis | Category | Affected SKU | Dependency SKU | Rule Summary / Validation Directive | Verifications |
 | :--- | :--- | :--- | :--- | :--- | :--- | :---: |
@@ -169,6 +169,8 @@ Total verified rules indexed in this build: **145**.
 | 🌐 UNIVERSAL | `GLOBAL` | `SESSION_RECOVERY_PROTOCOL` | `HU4B2A3` | `—` | Historical service-selector workaround only: in an authenticated working OCA configuration with contradictory service se | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `WORKFLOW_SMART_CHOICE_CTO_VALIDATION_STEPS` | `null` | `—` | HPE Smart Choice (xxxxxx-xx5) and regional BTO SKUs are pre-configured distributor builds, NOT CTO (-B21) configurables: | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `WORKFLOW_CLIC_GLOBAL_AND_SEVERITY_TRIAGE` | `null` | `—` | For any full HPE solution in OCA: (1) Run CLIC Check at the Global Solution Level (top breadcrumb #eo_nav_li_0) rather t | 1x |
+| 🌐 UNIVERSAL | `GLOBAL` | `WORKFLOW_CLOSENESS_LIFECYCLE_AND_LEADTIME` | `null` | `—` | Strategy synthesis and least-delta replacement (INV-237): (1) Filter out DISCONTINUED / OBSOLETE SKUs across both hardwa | 1x |
+| 🌐 UNIVERSAL | `GLOBAL` | `WORKFLOW_CATEGORY_DEPENDENCY_AND_ESCALATION` | `null` | `—` | SKU category prerequisite intelligence & runtime escalation (INV-238): (1) Drive Cage / Backplane topology — NOT bare dr | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `SUPPORT_POLICY` | `undefined` | `—` | Preserve explicit customer support term and tier in the closest rank; use 3-year Tech Care Basic only when unspecified o | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `ICON_SUPPORT_ISOLATION` | `undefined` | `—` | Select Services from Components for the owning icon, edit its dropdowns, and leave both apply-to-all icons and apply-to- | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `SESSION_RECOVERY_PROTOCOL` | `undefined` | `—` | When OCA says it encountered a problem, restart from Partner Portal refresh/login and open One Config Advanced through Q | 1x |
@@ -208,6 +210,9 @@ Total verified rules indexed in this build: **145**.
 | 📦 CHASSIS | `DL380_Gen11` | `DEPENDENCY_CHAIN` | `P58335-B21` | `P48918-B21` | P58335-B21`)** with the **Smart Storage Hybrid Capacitor (`P02377-B21`)** strictly requires `P48918-B21 | 1x |
 | 📦 CHASSIS | `DL380_Gen11` | `STORAGE_CACHE_CABLE_DEPENDENCY` | `P58335-B21` | `P48918-B21` | Selecting storage controller P58335-B21 write-cache backup requires enablement cable P48918-B21. | 1x |
 | 📦 CHASSIS | `DL380_Gen11` | `WORKFLOW_SMART_CHOICE_OBSERVATION` | `P71674-425` | `—` | P71674-425 (EMEA DL380 Gen11 Smart Choice 4510 12c 1P 64GB-R 8SFF MR408i-o 2x960GB SSD 2x1000W PS) is absent from DL380_ | 1x |
+| 📦 CHASSIS | `DL380_Gen11` | `WORKFLOW_NLM_SYNC_RESILIENCE_ADVISORY` | `undefined` | `—` | Idempotent NotebookLM read RPCs (source list, source content, canary notebook query) MUST fail over from CDP to httpx vi | 1x |
+| 📦 CHASSIS | `DL380_Gen11` | `WORKFLOW_CAPTURE_RECEIPT_ADVISORY` | `undefined` | `—` | Local catalog rebuild scripts (build_catalog.js, generate_xlsx.js) MUST invoke reconcileRebuiltCaptureReceipt() to refre | 1x |
+| 📦 CHASSIS | `DL380_Gen11` | `WORKFLOW_QUARANTINE_GOVERNANCE_ADVISORY` | `undefined` | `—` | Quarantined knowledge deltas MUST pass _checkSemanticExtractionIntegrity() (rejecting inverted discontinued-SKU dependen | 1x |
 | 📦 CHASSIS | `DL385_Gen11` | `MANDATORY_SOFTWARE_ATTACH` | `P53921-B21` | `R7A11AAE` | All compatible NPI CTO base models for Gen11 DL and ML platforms (such as DL385 Gen11 P53921-B21) strictly mandate at le | 1x |
 | 📦 CHASSIS | `DL385_Gen11` | `THERMAL_COOLING_PACKAGING_RULE` | `P58464-B21` | `P58465-B21` | On AMD DL3X5 Gen11 platforms, Standard Fan Kit (P58464-B21, $157) is ordered as individual fan modules (4 for 1P = $628, | 1x |
 | 📦 CHASSIS | `DL385_Gen11` | `MANDATORY_THERMAL_AIR_BAFFLE` | `P53921-B21` | `P57886-B21` | P57886-B21 (HPE ProLiant DL385 Gen11 2U Standard/Performance FIO Air Baffle Kit, $41.00 USD, Qty 1) is physically and lo | 1x |
@@ -286,6 +291,9 @@ Total verified rules indexed in this build: **145**.
 | 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_EVIDENCE_DECOUPLING_ADVISORY` | `undefined` | `—` | Acceptance blockers regarding evidence deficits (missing document grounding, citations, or portal session receipts) must | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_TIER3_RECEIPT_VERIFICATION_ADVISORY` | `undefined` | `—` | Tier 3 Official Vendor Acceptance strictly requires an authentic cryptographic session receipt re-verified from disk mat | 1x |
 | 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_APPEND_ONLY_RETRACTION_ADVISORY` | `undefined` | `—` | Falsified, erroneous, or superseded learned rules must be deactivated across all registry arrays (chassis deltas, wrappe | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_NLM_SYNC_RESILIENCE_ADVISORY` | `undefined` | `—` | Idempotent NotebookLM read RPCs (source list, source content, canary notebook query) MUST fail over from CDP to httpx vi | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_CAPTURE_RECEIPT_ADVISORY` | `undefined` | `—` | Local catalog rebuild scripts (build_catalog.js, generate_xlsx.js) MUST invoke reconcileRebuiltCaptureReceipt() to refre | 1x |
+| 📦 CHASSIS | `DL380_Gen12` | `WORKFLOW_QUARANTINE_GOVERNANCE_ADVISORY` | `undefined` | `—` | Quarantined knowledge deltas MUST pass _checkSemanticExtractionIntegrity() (rejecting inverted discontinued-SKU dependen | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `EXCLUSION_UNBUILDABLE` | `R3P67A` | `Q2E58AAE` | On HPE Synergy 12000 Frames (P51174-B21) populated solely with SY480 Gen12 compute nodes (P68217-B21), selecting Virtual | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `STANDALONE_ORDERING_TAXONOMY` | `R3P67A` | `R3P67AAE` | R3P67A is a Factory Integrated Option (FIO LTU) ending in 'A', which strictly requires sub-iteming under a factory CTO c | 1x |
 | 📦 CHASSIS | `SY480_Gen12` | `MULTI_ORDER_PARTITIONING_PATTERN` | `P51174-B21` | `Q2E58AAE` | When a multi-frame Synergy deployment (e.g. 2 frames, 24 nodes) is partitioned into separate commercial orders (Option B | 1x |

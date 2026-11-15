@@ -749,26 +749,36 @@ ${evalResults.errors.length === 0 ? '- ✅ No critical physical violations detec
 ${evalResults.warnings.length === 0 ? '' : evalResults.warnings.map(w => `- ⚠️ Advisory: ${w}`).join('\n')}`;
 }
 
-async function _executeAgenticGuardrailReview(items, chassisDir, inputFile, evalResults, OFFLINE_MODE, JSON_MODE, catalogData) {
-  let stage4GuardrailMs = 0;
-  const needsGuardrail = Boolean(
-    !OFFLINE_MODE && (
-      (evalResults.errors && evalResults.errors.length > 0) ||
-      (evalResults.confidence && (evalResults.confidence.isHitlTriggered || evalResults.confidence.score < 0.88)) ||
-      (evalResults.opinionDiscrepancies && evalResults.opinionDiscrepancies.length > 0)
-    )
-  );
+function _applyProposedSubstitutions(baseItems, guardrailResult) {
+  if (Array.isArray(guardrailResult.validatedPatchItems) && guardrailResult.validatedPatchItems.length > 0) {
+    return guardrailResult.validatedPatchItems.map(it => ({ ...it }));
+  }
+  const cloned = (baseItems || []).map(it => ({ ...it }));
+  for (const sub of guardrailResult.proposedSubstitutions || []) {
+    const sku = String(sub.sku || '').trim().toUpperCase();
+    const action = String(sub.action || '').toUpperCase();
+    if (!sku) continue;
+    if (action === 'REMOVE') {
+      const idx = cloned.findIndex(it => String(it.sku || '').trim().toUpperCase() === sku);
+      if (idx !== -1) cloned.splice(idx, 1);
+    } else if (action === 'ADJUST_QTY' && Number(sub.quantity) > 0) {
+      const found = cloned.find(it => String(it.sku || '').trim().toUpperCase() === sku);
+      if (found) found.quantity = Number(sub.quantity);
+    } else if (action === 'ADD') {
+      cloned.push({ sku, quantity: Number(sub.quantity) || 1, description: sub.description || `Guardrail Added (${sku})` });
+    }
+  }
+  return cloned;
+}
 
-  if (!needsGuardrail) return stage4GuardrailMs;
+function _buildWorkingBomFingerprint(bomItems = []) {
+  return bomItems
+    .map(it => `${String(it.sku || '').trim().toUpperCase()}:${Number(it.quantity) || 1}`)
+    .sort()
+    .join('|');
+}
 
-  const tGuardrailStart = Date.now();
-  if (!JSON_MODE) console.log('\n🤖 Triggering Agentic Guardrail Loop for resolution...');
-
-  const guardrailResult = await runAgenticGuardrail(items, chassisDir, {
-    offline: OFFLINE_MODE,
-    offlineMode: OFFLINE_MODE,
-    effectivePolicy: evalResults.effectivePolicy || null
-  });
+function _recordGuardrailResultMetadata(evalResults, guardrailResult, tGuardrailStart, JSON_MODE) {
   evalResults.agenticReviewStatus = guardrailResult.success === true && !guardrailResult.error ? 'ADVISORY_RETURNED' : 'UNAVAILABLE';
   evalResults.agenticReview = {
     status: evalResults.agenticReviewStatus,
@@ -783,32 +793,77 @@ async function _executeAgenticGuardrailReview(items, chassisDir, inputFile, eval
     console.log(guardrailResult.text || guardrailResult.error);
   }
   evalResults.agenticExplanation = guardrailResult.text || null;
-  stage4GuardrailMs = Math.max(Date.now() - tGuardrailStart, 1);
+}
 
-  const MAX_GUARDRAIL_RETRIES = 1;
+function _applyGuardrailRetryResults(evalResults, retryResults) {
+  evalResults.errors = retryResults.errors;
+  evalResults.warnings = retryResults.warnings;
+  evalResults.missingDependencies = retryResults.missingDependencies;
+  evalResults.confidence = retryResults.confidence;
+  evalResults.mathDeductions = retryResults.mathDeductions;
+  evalResults.conflictGraph = retryResults.conflictGraph;
+  evalResults.aspectChecks = retryResults.aspectChecks;
+}
+
+async function _executeAgenticGuardrailReview(items, chassisDir, inputFile, evalResults, OFFLINE_MODE, JSON_MODE, catalogData) {
+  const needsGuardrail = Boolean(
+    !OFFLINE_MODE && (
+      evalResults.errors?.length > 0 ||
+      (evalResults.confidence && (evalResults.confidence.isHitlTriggered || evalResults.confidence.score < 0.88)) ||
+      evalResults.opinionDiscrepancies?.length > 0
+    )
+  );
+  if (!needsGuardrail) return 0;
+
+  const tGuardrailStart = Date.now();
+  if (!JSON_MODE) console.log('\n🤖 Triggering Agentic Guardrail Loop for resolution...');
+
+  const MAX_GUARDRAIL_RETRIES = 2;
   let guardrailRetries = 0;
-  const hasNewGuardrailRules = guardrailResult.activatedDeltaCount > 0
-    || (Array.isArray(guardrailResult.proposedSubstitutions) && guardrailResult.proposedSubstitutions.length > 0);
-  if (hasNewGuardrailRules && guardrailRetries < MAX_GUARDRAIL_RETRIES) {
+  let workingItems = (items || []).map(it => ({ ...it }));
+  const seenStates = new Set([_buildWorkingBomFingerprint(workingItems)]);
+  const { evaluateBOQMultiAspect } = require('../lib/boq/boq_evaluator.js');
+  let convergenceStatus = 'ADVISORY_ONLY';
+  let latestGuardrail = null;
+
+  while (guardrailRetries < MAX_GUARDRAIL_RETRIES) {
+    const guardrailResult = await runAgenticGuardrail(workingItems, chassisDir, {
+      offline: OFFLINE_MODE,
+      offlineMode: OFFLINE_MODE,
+      effectivePolicy: evalResults.effectivePolicy || null
+    });
+    latestGuardrail = guardrailResult;
+    _recordGuardrailResultMetadata(evalResults, guardrailResult, tGuardrailStart, JSON_MODE);
+
+    const hasSubstitutions = Array.isArray(guardrailResult.proposedSubstitutions) && guardrailResult.proposedSubstitutions.length > 0;
+    if (!guardrailResult.activatedDeltaCount && !hasSubstitutions) break;
+
+    const candidateItems = hasSubstitutions ? _applyProposedSubstitutions(workingItems, guardrailResult) : workingItems;
+    const nextFp = _buildWorkingBomFingerprint(candidateItems);
+    if (hasSubstitutions && seenStates.has(nextFp) && guardrailResult.activatedDeltaCount === 0) {
+      convergenceStatus = 'CYCLE_PREVENTED';
+      break;
+    }
+    seenStates.add(nextFp);
+    workingItems = candidateItems;
     guardrailRetries++;
     evalResults.guardrailRetries = guardrailRetries;
-    if (!JSON_MODE) console.log(`\n🔄 Auto-retrying physical evaluation after autonomously learning ${guardrailResult.activatedDeltaCount || 0} new rule(s) (attempt ${guardrailRetries}/${MAX_GUARDRAIL_RETRIES})...`);
+    if (hasSubstitutions) evalResults.guardrailSubstitutionsApplied = guardrailResult.proposedSubstitutions;
 
-    const { evaluateBOQMultiAspect } = require('../lib/boq/boq_evaluator.js');
-    const retryResults = evaluateBOQMultiAspect(items, { filePath: inputFile || '', catalogData, targetDir: chassisDir });
+    if (!JSON_MODE) console.log(`\n🔄 Auto-retrying physical evaluation (attempt ${guardrailRetries}/${MAX_GUARDRAIL_RETRIES})...`);
+    const retryResults = evaluateBOQMultiAspect(workingItems, { filePath: inputFile || '', catalogData, targetDir: chassisDir });
+    _applyGuardrailRetryResults(evalResults, retryResults);
 
-    evalResults.errors = retryResults.errors;
-    evalResults.warnings = retryResults.warnings;
-    evalResults.missingDependencies = retryResults.missingDependencies;
-    evalResults.confidence = retryResults.confidence;
-    evalResults.mathDeductions = retryResults.mathDeductions;
-    evalResults.conflictGraph = retryResults.conflictGraph;
-    evalResults.aspectChecks = retryResults.aspectChecks;
-
-    if (!JSON_MODE) console.log(`✅ Retry Complete. New Score: ${evalResults.confidence.score}`);
+    if (!retryResults.errors?.length && !retryResults.missingDependencies?.length) {
+      convergenceStatus = 'CONVERGED';
+      break;
+    }
+    convergenceStatus = 'RETRY_PARTIAL';
   }
 
-  return stage4GuardrailMs;
+  evalResults.guardrailConvergenceStatus = convergenceStatus;
+  if (latestGuardrail && !JSON_MODE) console.log(`✅ Guardrail Loop Complete (${convergenceStatus}). Score: ${evalResults.confidence?.score}`);
+  return Math.max(Date.now() - tGuardrailStart, 1);
 }
 
 // ============================================================
@@ -1004,6 +1059,52 @@ async function executeEphemeralSourceValidation(options, ingestCtx, evalResults)
 // ============================================================
 // Stage 7: Continuous Learning Reflection & Self-Reinforcement
 // ============================================================
+function _reconcileQuarantinedAndPromotedDeltas(chassisDir, activeRules, evalResults, evidenceLedger) {
+  const {
+    getQuarantinedDeltas,
+    promoteQuarantinedDelta,
+    retractPromotedDelta,
+    pruneInvalidQuarantinedDeltas
+  } = require('../lib/feedback/quarantined_deltas.js');
+
+  const summary = { pruned: 0, autoPromoted: 0, retracted: 0 };
+  try {
+    const pruneRes = pruneInvalidQuarantinedDeltas();
+    summary.pruned = pruneRes?.prunedCount || 0;
+  } catch (_) {}
+
+  try {
+    const chassisName = path.basename(chassisDir);
+    const quarantined = getQuarantinedDeltas();
+    for (const item of quarantined) {
+      if (item.chassis !== chassisName && !String(item.chassis || '').toLowerCase().includes(chassisName.toLowerCase())) continue;
+      const hasCitations = Array.isArray(item.citations) && item.citations.length > 0;
+      if (item.autoPromotable === true && hasCitations && Number(item.confidenceScore) >= 0.85) {
+        const promoted = promoteQuarantinedDelta(item.quarantineId || item.deltaId, 'AUTONOMOUS_REINFORCEMENT_GATE', {
+          activationDirectory: chassisDir,
+          reasoning: `Auto-promoted reinforced rule (${item.observationCount || 1} observations, score ${item.confidenceScore}) with verified citations.`
+        });
+        if (promoted) {
+          summary.autoPromoted++;
+          evidenceLedger?.recordSkuAudit?.(promoted.requiredDependencySku || promoted.affectedSku, 'DELTA_AUTO_PROMOTED', promoted.ruleUpdate, promoted.deltaId, 'Continuous Learning Auto-Promotion', { observationCount: item.observationCount });
+        }
+      }
+    }
+  } catch (_) {}
+
+  try {
+    const contradictions = evalResults?.contradictedLearnedRuleIds || [];
+    for (const ruleId of contradictions) {
+      if (retractPromotedDelta(ruleId, 'CONTRADICTED_BY_RUNTIME_VERIFICATION', { chassisDir })) {
+        summary.retracted++;
+        evidenceLedger?.recordSkuAudit?.(ruleId, 'DELTA_RETRACTED', 'Learned rule contradicted by verified runtime check and retracted.', ruleId, 'Continuous Learning Retraction', {});
+      }
+    }
+  } catch (_) {}
+
+  return summary;
+}
+
 function executeContinuousLearningReflection(evidenceLedger, ingestCtx, evalResults, _options) {
   const chassisDir = ingestCtx.chassisDir;
   terminalOwner.recordReflectionTarget(evidenceLedger, chassisDir);
@@ -1049,6 +1150,8 @@ function executeContinuousLearningReflection(evidenceLedger, ingestCtx, evalResu
       }
     }
   }
+
+  evalResults.quarantineReconciliation = _reconcileQuarantinedAndPromotedDeltas(chassisDir, activeRules, evalResults, evidenceLedger);
   return learnedCount;
 }
 
@@ -1259,6 +1362,40 @@ function _executePhase4And5(options, evidenceLedger, graph, activeRules) {
   }
 }
 
+function _sortAndSyncRecommendations(evalResults, ingestCtx) {
+  if (!evalResults.conflictGraph?.recommendedSolutions) return;
+  const validCandidates = (evalResults.conflictGraph.rankedSolutions || [])
+    .filter(c => c.physicalMathClean && c.isUniqueBom !== false && c.isParetoOptimal !== false);
+  if (validCandidates.length === 0) {
+    evalResults.conflictGraph.recommendedSolutions = [];
+    return;
+  }
+  const closestUnits = Math.min(...validCandidates.map(c => c.customerDistance.changedUnits));
+  const distanceWindow = Math.max(1, Math.ceil(ingestCtx.items.filter(it => it.quantityScope !== 'global').length * 0.15));
+  const sortedValid = validCandidates
+    .filter(c => c.customerDistance.changedUnits <= closestUnits + distanceWindow)
+    .sort((a, b) =>
+      (a.capabilityDowngradePenalty ?? 0) - (b.capabilityDowngradePenalty ?? 0) ||
+      (a.architecturalDelta ?? Number.POSITIVE_INFINITY) - (b.architecturalDelta ?? Number.POSITIVE_INFINITY) ||
+      a.customerDistance.changedLines - b.customerDistance.changedLines ||
+      a.customerDistance.changedUnits - b.customerDistance.changedUnits ||
+      (a.strategyRank ?? a.rank) - (b.strategyRank ?? b.rank)
+    );
+  const topRecs = sortedValid.slice(0, 3).map((candidate, index) => ({
+    ...candidate,
+    strategyRank: candidate.strategyRank ?? candidate.rank,
+    rank: index + 1,
+    name: candidate.name.replace(/^Rank \d+:/, `Rank ${index + 1}:`)
+  }));
+  evalResults.conflictGraph.recommendedSolutions = topRecs;
+
+  const recFingerprints = new Set(topRecs.map(c => c.bomFingerprint || c.strategyId || c.name));
+  const remaining = (evalResults.conflictGraph.rankedSolutions || [])
+    .filter(c => !recFingerprints.has(c.bomFingerprint || c.strategyId || c.name));
+  evalResults.conflictGraph.rankedSolutions = [...topRecs, ...remaining]
+    .map((c, idx) => ({ ...c, strategyRank: c.strategyRank ?? c.rank, rank: idx + 1 }));
+}
+
 function _revalidateAndRankCandidates(evalResults, ingestCtx, evidenceLedger) {
   for (const candidate of evalResults.conflictGraph?.rankedSolutions || []) {
     const perNodeParts = (candidate.skuPartsList || []).filter(item => item.quantityScope !== 'global');
@@ -1270,17 +1407,24 @@ function _revalidateAndRankCandidates(evalResults, ingestCtx, evidenceLedger) {
       graph: checked.conflictGraph,
       checkedAt: new Date().toISOString()
     };
-    candidate.physicalMathClean = (candidate.skuPartsList || []).length > 0 && checked.isMathClean === true && checked.conflictGraph?.isWholeSolutionValid === true && !(checked.missingDependencies || []).length;
+    candidate.physicalMathClean = (candidate.skuPartsList || []).length > 0 &&
+      checked.isMathClean === true &&
+      checked.conflictGraph?.isWholeSolutionValid === true &&
+      !(checked.missingDependencies || []).length;
     candidate.buildabilityStatus = candidate.physicalMathClean ? 'LOCAL_RULE_CHECKED' : 'UNRESOLVED_PHYSICAL_GAPS';
     const delta = candidateDelta(ingestCtx.items, candidate);
-    candidate.customerDistance = { changedLines: delta.length, changedUnits: delta.reduce((sum, row) => sum + Math.abs(row.after - row.before), 0), metric: 'SKU quantity delta; functional preservation requires independent candidate review' };
+    candidate.customerDistance = {
+      changedLines: delta.length,
+      changedUnits: delta.reduce((sum, row) => sum + Math.abs(row.after - row.before), 0),
+      metric: 'SKU quantity delta; functional preservation requires independent candidate review'
+    };
   }
   const validatedCandidates = evalResults.conflictGraph?.rankedSolutions || [];
   evalResults.adversarialGateResult = {
     kind: 'DETERMINISTIC_FINAL_CANDIDATE_REVALIDATION',
     manifestSha256: solutionFingerprint(evalResults),
-    candidateResults: validatedCandidates.map(candidate => ({ rank: candidate.rank, passed: candidate.physicalMathClean, validation: candidate.finalValidation })),
-    passed: validatedCandidates.length > 0 && validatedCandidates.every(candidate => candidate.physicalMathClean)
+    candidateResults: validatedCandidates.map(c => ({ rank: c.rank, passed: c.physicalMathClean, validation: c.finalValidation })),
+    passed: validatedCandidates.length > 0 && validatedCandidates.every(c => c.physicalMathClean)
   };
   evalResults.adversarialGatePassed = evalResults.adversarialGateResult.passed;
   if (typeof evidenceLedger.recordCandidateAttempt === 'function') {
@@ -1290,17 +1434,7 @@ function _revalidateAndRankCandidates(evalResults, ingestCtx, evidenceLedger) {
       passed: evalResults.adversarialGateResult.passed
     });
   }
-  if (evalResults.conflictGraph?.recommendedSolutions) {
-    const validCandidates = (evalResults.conflictGraph.rankedSolutions || [])
-      .filter(candidate => candidate.physicalMathClean && candidate.isUniqueBom !== false && candidate.isParetoOptimal !== false);
-    const closestUnits = Math.min(...validCandidates.map(candidate => candidate.customerDistance.changedUnits));
-    const distanceWindow = Math.max(1, Math.ceil(ingestCtx.items.filter(item => item.quantityScope !== 'global').length * 0.15));
-    evalResults.conflictGraph.recommendedSolutions = validCandidates
-      .filter(candidate => candidate.customerDistance.changedUnits <= closestUnits + distanceWindow)
-      .sort((a, b) => a.customerDistance.changedLines - b.customerDistance.changedLines || a.customerDistance.changedUnits - b.customerDistance.changedUnits || a.rank - b.rank)
-      .slice(0, 3)
-      .map((candidate, index) => ({ ...candidate, strategyRank: candidate.rank, rank: index + 1, name: candidate.name.replace(/^Rank \d+:/, `Rank ${index + 1}:`) }));
-  }
+  _sortAndSyncRecommendations(evalResults, ingestCtx);
   _recordCandidateValidationsEvidence(evidenceLedger, evalResults, ingestCtx);
 }
 
@@ -1464,7 +1598,13 @@ async function _handleBoqStrategySynthesisPhase(ctx, options, evidenceLedger) {
 }
 
 function _recordPhase7ResolutionsAndAudits(ctx, evidenceLedger, ephemeralSourceResult) {
-  if (ephemeralSourceResult?.success) {
+  const documentReviewVerified = Boolean(
+    ephemeralSourceResult?.success === true &&
+    ephemeralSourceResult.doubleCheckVerdict !== 'FAILED' &&
+    (ephemeralSourceResult.isCloudGrounded === true || ephemeralSourceResult.isMock === true) &&
+    !(ephemeralSourceResult.quarantinedSourceCitations?.length)
+  );
+  if (documentReviewVerified) {
     for (const phaseNumber of [3, 4]) {
       const phase = evidenceLedger.phases[`phase_${phaseNumber}`];
       if (phase.status === 'ACTION_REQUIRED' && ctx.evalResults.adversarialGatePassed === true) {
@@ -1472,7 +1612,7 @@ function _recordPhase7ResolutionsAndAudits(ctx, evidenceLedger, ephemeralSourceR
           manifestSha256: solutionFingerprint(ctx.evalResults),
           candidateGatePassed: true,
           documentReviewVerified: true,
-          resolvedBy: 'Final physical candidate validation and cited candidate review in phase 7'
+          resolvedBy: 'Candidate BOM physical validation and grounded document review in phase 7 (baseline input status preserved)'
         });
       }
     }
@@ -1846,7 +1986,24 @@ function _createOwnedPhaseHandlers(options, evidenceLedger, startTime) {
       RAG_GROUNDING: ctx => _handleBoqRagGroundingPhase(ctx, options, evidenceLedger),
       DELIVERABLES_FINALIZATION: ctx => _handleBoqDeliverablesPhase(ctx, options, evidenceLedger, startTime),
       REFLECTION_LEARNING: ctx => terminalOwner.runReflection(ctx,
-        () => executeContinuousLearningReflection(evidenceLedger, ctx.ingestCtx, ctx.evalResults, options),
+        () => {
+          const learnedCount = executeContinuousLearningReflection(evidenceLedger, ctx.ingestCtx, ctx.evalResults, options);
+          try {
+            const { performReasoningPostAnalysis } = require('../lib/system/reasoning_post_analyzer.js');
+            ctx.evalResults.reasoningAnalysis = performReasoningPostAnalysis({
+              queryText: ctx.options.inputFile || ctx.options.BOQ_FILE || 'BOQ_EVALUATION',
+              context: ctx.options,
+              classification: { intent: 'BOQ_EVALUATION', confidence: 1.0, rationale: 'Canonical Multi-Rank BOQ Evaluation' },
+              responseData: ctx.evalResults,
+              traceId: ctx.evalResults.traceId || evidenceLedger?.traceId,
+              executionTimeMs: Date.now() - ctx.startTime,
+              evidenceLedger
+            });
+          } catch (err) {
+            ctx.evalResults.reflectionError = err.message;
+          }
+          return learnedCount;
+        },
         () => _promoteTerminalPriceDrift(ctx, options))
   };
 }

@@ -7,8 +7,20 @@ const INTENT_FRIENDLY_NAMES = {
   RFP_SIZING_TO_BOM: 'Natural Language Sizing to Buildable BOM',
   BOQ_EVALUATION: 'Hardware Evaluation & Strategy Matrix',
   BOM_RECONCILIATION: 'Tender vs. Vendor Quote Reconciliation',
-  CROSS_VENDOR_TRANSLATION: 'Cross-Vendor Hardware Transpiler',
+  CROSS_VENDOR_TRANSFORMATION: 'Cross-Vendor Hardware Transpiler',
+  HETEROGENEOUS_TENDER_MODERNIZATION: 'Heterogeneous Multi-Domain Tender Modernization',
+  MULTI_CLUSTER_TENDER: 'Multi-Cluster Architecture & Rack Layout',
+  OCR_QUOTE_INGESTION: 'Scanned Quote & Image OCR Ingestion',
   CATALOG_INTELLIGENCE: 'SKU Lifecycle & Pricing Intelligence',
+  PRESALES_CLEARANCE_STRATEGY: '90-Day Clearance vs. Production Baseline Strategy',
+  WORKLOAD_DNA: 'Workload DNA & Topology Analysis',
+  VALUE_ENGINEERING: 'Value Engineering & CapEx/OpEx Optimization',
+  LEAST_DELTA_SYNTHESIS: 'Least-Delta Conflict Synthesis',
+  WORKBOOK_GENERATION: 'Portal & Customer Workbook Generation',
+  REMARKS_RECONCILIATION: 'Commercial Remarks & Reconciliation Annotation',
+  ADVERSARIAL_VALIDATION: 'Adversarial Red-Team Stress Validation',
+  CONTINUOUS_LEARNING: 'Continuous Learning & Feedback Governance',
+  KNOWLEDGE_SYNC: 'Catalog & NotebookLM Knowledge Sync',
   FREEFORM_QA: 'Architecture & QuickSpecs Grounded Q&A',
   AMBIGUOUS_QUERY: 'Clarification Required (Ambiguous Requirements)'
 };
@@ -23,7 +35,9 @@ async function prepareRequest(query, product, primary, secondary, localOnly) {
   const context = { chassisName: product?.id, chassisDir: product?.chassisDir, offline: localOnly, offlineMode: localOnly };
   if (primary) context.filePath = (await uploadBoqFile(primary)).filepath;
   if (secondary) context.secondaryFilePath = (await uploadBoqFile(secondary)).filepath;
-  return { query, context };
+  const effectiveQuery = String(query || '').trim()
+    || (primary ? `Evaluate attached tender/quote file: ${primary.name}` : '');
+  return { query: effectiveQuery, context };
 }
 
 function OutcomeHeader({ envelope, result, exportEligibility, onExportExcel, onEvaluateCandidateBom }) {
@@ -337,11 +351,16 @@ async function runExportExcel(result, product, setError) {
     if (setError) setError(`Export blocked: ${eligibility.reason}`);
     return;
   }
+  const resolvedChassis = candidateRef?.product || result.result?.chassis || evalData?.chassis || product?.id;
+  if (!resolvedChassis) {
+    if (setError) setError('Export blocked: target chassis could not be determined.');
+    return;
+  }
   try {
     if (setError) setError(null);
     const resp = await postJson('/api/export-boq', {
       runId,
-      chassisId: candidateRef?.product || result.result?.chassis || evalData?.chassis || product?.id || 'DL380_Gen12'
+      chassisId: resolvedChassis
     });
     if (typeof window !== 'undefined') {
       window.dispatchEvent(new CustomEvent('dashboard-export-created', { detail: resp }));
@@ -483,7 +502,7 @@ function usePresalesRunner(query, product, primary, secondary, localOnly, onEval
   return { plan, result, busy, error, classify, execute, exportExcel, evaluateCandidateBom };
 }
 
-function PresalesInputControls({ query, setQuery, setPrimary, setSecondary, localOnly, setLocalOnly }) {
+function PresalesInputControls({ query, setQuery, primary, setPrimary, secondary, setSecondary, localOnly, setLocalOnly }) {
   return (
     <>
       <label className="block text-sm">
@@ -523,6 +542,11 @@ function PresalesInputControls({ query, setQuery, setPrimary, setSecondary, loca
           Use local catalog only
         </label>
       </div>
+      {(primary || secondary) && !query.trim() && (
+        <p className="text-xs text-slate-600">
+          Attached file ready without prompt text: {primary ? primary.name : ''}{primary && secondary ? ', ' : ''}{secondary ? secondary.name : ''}
+        </p>
+      )}
     </>
   );
 }
@@ -574,11 +598,12 @@ export default function PresalesRequestPanel({ product, isTaskRunning, onEvaluat
       </p>
       <PresalesInputControls
         query={query} setQuery={setQuery}
-        setPrimary={setPrimary} setSecondary={setSecondary}
+        primary={primary} setPrimary={setPrimary}
+        secondary={secondary} setSecondary={setSecondary}
         localOnly={localOnly} setLocalOnly={setLocalOnly}
       />
       <PresalesActionToolbar
-        busy={busy} isTaskRunning={isTaskRunning} queryEmpty={!query.trim()}
+        busy={busy} isTaskRunning={isTaskRunning} queryEmpty={!query.trim() && !primary && !secondary}
         classify={classify} plan={plan} execute={execute}
       />
       {error && <p role="alert" className="text-sm text-rose-800 bg-rose-50 p-2 rounded-lg border border-rose-200">{error}</p>}

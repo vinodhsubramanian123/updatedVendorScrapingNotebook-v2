@@ -54,7 +54,7 @@ npm run auth:nlm:heal
 ### High-Density Compression & Transport Failover (`INV-176`)
 - Read RPCs (`source list`, `source content`, `notebook query`) utilize Chrome's in-page CDP transport (`nlmReadEnv`) with HTTP/3 Brotli compression.
 - Mutating operations cleanly fail over to `httpx` if CDP is unavailable.
-- CLI auth pre-submission rejections are classified as `NOT_SUBMITTED`, unblocking in-flight `checkAuthHealth({ autoHeal: true })` (`INV-221`).
+- CLI auth pre-submission rejections are classified via `_isPreSubmissionAuthError()` as `NOT_SUBMITTED`, unblocking in-flight `checkAuthHealth({ autoHeal: true })` and `attemptGatewaySessionRecovery()` (`INV-221`).
 
 ---
 
@@ -82,11 +82,11 @@ npm run auth:nlm:heal
 ```
 
 ### D. Ephemeral Solution Source Validation Pattern (`INV-24`)
-1. Multi-rank candidate configurations are serialized to a compact CSV.
-2. Attached temporarily to the product notebook as an ephemeral document source (`source_add`).
-3. Targeted prompt executes grounded verification across all 7 physical aspects.
+1. Multi-rank candidate configurations are serialized via `buildSolutionSourceValidationPrompt()` and compact CSV exports.
+2. Attached temporarily to the resolved product notebook (`resolveNotebookIdAsync()`) via `attachSolutionSource()` (`source_add`).
+3. Targeted prompt executes grounded verification (`startAsyncNotebookQueryJob()`) across all 7 physical aspects.
 4. Extracted rules and citations are saved to persistent `KnowledgeDelta` records.
-5. The temporary source is **immediately detached** (`source_delete`), strictly preventing baseline QuickSpecs contamination.
+5. The temporary source is **immediately detached** via `detachSolutionSource()` (`source_delete`), strictly preventing baseline QuickSpecs contamination.
 
 ---
 

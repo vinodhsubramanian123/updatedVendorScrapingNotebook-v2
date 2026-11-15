@@ -54,6 +54,7 @@ Every output, regardless of track, MUST pass these universal checks:
 | B16 | **Zero Unmatched Customer SKUs** | All customer SKU-like tokens affirmatively matched in catalog or cleanly resolved; unmatched SKUs block delivery (`FP-1`) | 🔴 BLOCK | Programmatic (`bom_verifier.js`) |
 | B17 | **Zero Unresolved Customer Requirements** | Descriptive tender requirements lacking physical SKU resolution trigger hard delivery block (`INV-195`) | 🔴 BLOCK | Programmatic (`bom_verifier.js`) |
 | B18 | **Tender Quantity Conservation** | Mathematical line-by-line conservation ledger; residual deficits ($\Delta < 0$) block deliverable export (`INV-192`, `INV-196`) | 🔴 BLOCK | Programmatic (`bom_verifier.js`) |
+| B21 | **Production Lifecycle Gate** | Non-overrideable production deliverables must not rely on Obsolete/EOL/Discontinued SKUs without active replacement or explicit clearance/dual-track remark disclosure | 🔴 BLOCK | Programmatic (`bom_verifier.js`) |
 
 > 🔒 **Cryptographic Delivery Authorization Gate (`INV-128`)**: Customer deliverables (Excel workbooks, serialized JSON, and Drive uploads) require an issued `DeliveryAuthorization` certificate. If any BLOCK criterion fails, deliverable export is strictly halted with `customerDisposition = 'DELIVERY_BLOCKED_UNBUILDABLE'`.
 
