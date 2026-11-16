@@ -59,7 +59,8 @@ function parseModelAndGeneration(rawText, pageTitle) {
 
   // 1. Generation Detection
   const genMatch = fullText.match(/Gen\d+(?:Plus)?/i);
-  let gen = genMatch ? genMatch[0] : 'General';
+  const shortGenMatch = !genMatch ? fullText.match(/\b(?:DL|ML|RL|SY)\s*\d+[a-z]?\s+G(\d+)\b/i) : null;
+  let gen = genMatch ? genMatch[0] : (shortGenMatch ? `Gen${shortGenMatch[1]}` : 'General');
   if (gen === 'General' && /tape|msl|storeever/i.test(fullText)) gen = 'Tape';
   if (gen === 'General' && /alletra|nimble|storeonce|msa|simplivity/i.test(fullText)) gen = 'Storage';
   if (gen === 'General' && /\bsn\s*\d{4}[a-z]\b|fibre\s+channel\s+switch/i.test(fullText)) gen = 'FC';

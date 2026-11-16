@@ -31,8 +31,11 @@ function validQuantity(value) {
 
 function isGlobalItem(it, multiplier = 1) {
   if (it.quantityScope) return it.quantityScope === 'global';
-  if (/\b(?:spare|order.level|bulk accessory|lift handle)\b/i.test(it.description || '') ||
-    /^(?:HPE )?(?:Installation Service|3Y Tech Care Basic Service)$/i.test(it.description || '')) {
+  const desc = (it.description || '').trim();
+  const sku = String(it.sku || '').trim().toUpperCase();
+  if (/\b(?:spare|order.level|bulk accessory|lift handle)\b/i.test(desc) ||
+    /^(?:HPE )?(?:Installation Service|\d+Y\s+Tech\s+Care(?:\s+(?:Basic|Essential|Critical))?\s+Service)$/i.test(desc) ||
+    /^(?:HA113A1|HU4A6A5|HU4B2A3|HU4A6A3|HU4B2A5)$/i.test(sku)) {
     return true;
   }
   // Transceivers, switches, racks, cables that cannot divide evenly into the configuration multiplier are order-level infrastructure

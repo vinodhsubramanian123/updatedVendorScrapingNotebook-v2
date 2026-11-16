@@ -5,6 +5,7 @@
 
 const { cleanBaseSKU, buildCatalogSkuIndex, isOcaModifierTrackingRow } = require('../catalog/sku.js');
 const { classifyComponentRole } = require('../catalog/product_meta.js');
+const { getStorageRoleSets } = require('../catalog/catalog_rules.js');
 
 function buildSkuCategoryMap(catalogData) {
   const index = buildCatalogSkuIndex(catalogData);
@@ -60,17 +61,21 @@ const CAGE_KEYWORDS = ['drive cage', 'sff cage', 'lff cage', 'cage kit', 'box 1'
 const ROUTED_CAGE_KEYWORDS = ['tri-mode', 'tri mode', 'u.3', 'sas', 'sata', '8sff', '12lff'];
 
 function _recordCageRoutingType(tally, desc, isAnyCage) {
-  if (!isAnyCage || desc.includes('controller') || desc.includes('chassis')) return;
+  if (!isAnyCage || desc.includes('controller') || desc.includes('chassis') || desc.includes('power cable') || desc.includes('cable kit')) return;
   tally.hasExplicitFrontCageKit = true;
   if (_isDirectConnectCageDesc(desc)) tally.hasDirectConnectCage = true;
   else if (ROUTED_CAGE_KEYWORDS.some(k => desc.includes(k))) tally.hasControllerRoutedCage = true;
 }
 
-function _tallyCageKits(tally, desc, sku, qty, mandatorySkus = {}) {
-  const isGenericCage = CAGE_KEYWORDS.some(k => desc.includes(k)) ||
-      (mandatorySkus?.GENERIC_CAGE?.sku && sku === cleanBaseSKU(mandatorySkus.GENERIC_CAGE.sku));
-  const isPremium = desc.includes('u.3 prem') || desc.includes('premium kit') || desc.includes('premium cage') ||
-      (mandatorySkus?.PREMIUM_CAGE?.sku && sku === cleanBaseSKU(mandatorySkus.PREMIUM_CAGE.sku));
+function _tallyCageKits(tally, desc, sku, qty, mandatorySkus = {}, roleSets = getStorageRoleSets(mandatorySkus)) {
+  const isCableKitDesc = desc.includes('power cable') || desc.includes('cable kit');
+  if (!isCableKitDesc && !desc.includes('chassis') && (roleSets.stackingBackplaneSkus.has(sku) || desc.includes('stacking') || desc.includes('backplane'))) {
+    tally.hasStackingOrBackplaneKit = true;
+  }
+  const isGenericCage = !isCableKitDesc && (CAGE_KEYWORDS.some(k => desc.includes(k)) ||
+      (mandatorySkus?.GENERIC_CAGE?.sku && sku === cleanBaseSKU(mandatorySkus.GENERIC_CAGE.sku)));
+  const isPremium = !isCableKitDesc && (desc.includes('u.3 prem') || desc.includes('premium kit') || desc.includes('premium cage') ||
+      (mandatorySkus?.PREMIUM_CAGE?.sku && sku === cleanBaseSKU(mandatorySkus.PREMIUM_CAGE.sku)));
 
   _recordCageRoutingType(tally, desc, isGenericCage || isPremium);
   if (isGenericCage && !desc.includes('premium') && !desc.includes('u.3 prem')) {
@@ -98,36 +103,36 @@ function _tallyChassisBays(tally, desc, qty, role) {
   }
 }
 
-function tallyCagesAndDrives(tally, desc, sku, qty, role, mandatorySkus = {}) {
+function tallyCagesAndDrives(tally, desc, sku, qty, role, mandatorySkus = {}, roleSets = getStorageRoleSets(mandatorySkus)) {
   _tallyDriveCount(tally, desc, qty, role);
-  _tallyCageKits(tally, desc, sku, qty, mandatorySkus);
+  _tallyCageKits(tally, desc, sku, qty, mandatorySkus, roleSets);
   _tallyChassisBays(tally, desc, qty, role);
 }
 
-function _tallyRaidFioSettings(tally, desc, sku) {
-  if (desc.includes('vroc') || desc.includes('virtual raid on cpu') || sku === 'R7J57A' || sku === 'S3Q19A') {
+function _tallyRaidFioSettings(tally, desc, sku, roleSets = getStorageRoleSets()) {
+  if (desc.includes('vroc') || desc.includes('virtual raid on cpu') || roleSets.vrocLicenseSkus.has(sku)) {
     tally.hasVroc = true;
   }
-  if (desc.includes('ns204i') || desc.includes('boot optimized') || desc.includes('nvme boot') || sku === 'P78279-B21') {
+  if (desc.includes('ns204i') || desc.includes('boot optimized') || desc.includes('nvme boot') || roleSets.bootControllerSkus.has(sku)) {
     tally.hasBootController = true;
   }
-  if (sku === '339778-B21' || (desc.includes('raid 1') && (desc.includes('drive 1') || desc.includes('fio setting')))) {
+  if (roleSets.raid1FioSkus.has(sku) || (desc.includes('raid 1') && (desc.includes('drive 1') || desc.includes('fio setting')))) {
     tally.hasRaid1FioSetting = true;
   }
-  if (sku === '389692-B21' || desc.includes('customer defined raid')) {
+  if (roleSets.customerDefinedRaidSkus.has(sku) || desc.includes('customer defined raid')) {
     tally.hasCustomerDefinedRaidSetting = true;
   }
-  if (sku === '339779-B21' || (desc.includes('raid 5') && desc.includes('drive 1'))) {
+  if (roleSets.raid5FioSkus.has(sku) || (desc.includes('raid 5') && desc.includes('drive 1'))) {
     tally.hasRaid5FioSetting = true;
   }
-  if (sku === '339780-B21' || (desc.includes('raid 5 w/sp') && desc.includes('drive 1'))) {
+  if (roleSets.raid5SpFioSkus.has(sku) || (desc.includes('raid 5 w/sp') && desc.includes('drive 1'))) {
     tally.hasRaid5SpFioSetting = true;
   }
 }
 
-function _isHardwareStorageController(desc, sku, tally) {
-  const isBootController = tally.hasBootController || desc.includes('ns204i') || desc.includes('boot optimized') || desc.includes('nvme boot') || sku === 'P78279-B21';
-  const isVroc = tally.hasVroc || desc.includes('vroc') || desc.includes('virtual raid on cpu') || sku === 'R7J57A' || sku === 'S3Q19A';
+function _isHardwareStorageController(desc, sku, tally, roleSets = getStorageRoleSets()) {
+  const isBootController = tally.hasBootController || desc.includes('ns204i') || desc.includes('boot optimized') || desc.includes('nvme boot') || roleSets.bootControllerSkus.has(sku);
+  const isVroc = tally.hasVroc || desc.includes('vroc') || desc.includes('virtual raid on cpu') || roleSets.vrocLicenseSkus.has(sku);
 
   return ((desc.includes('controller') || /\b(mr|sr)\d{3}i/i.test(desc) || desc.includes('smart array')) &&
     !isBootController &&
@@ -140,8 +145,8 @@ function _isHardwareStorageController(desc, sku, tally) {
     !desc.includes('ethernet controller'));
 }
 
-function _tallyHardwareStorageController(tally, desc, sku) {
-  if (!_isHardwareStorageController(desc, sku, tally)) return;
+function _tallyHardwareStorageController(tally, desc, sku, roleSets = getStorageRoleSets()) {
+  if (!_isHardwareStorageController(desc, sku, tally, roleSets)) return;
 
   tally.hasStorageController = true;
   if (desc.includes('416i') || desc.includes('216i') || desc.includes('932i') || 
@@ -159,21 +164,47 @@ function _tallyHardwareStorageController(tally, desc, sku) {
   }
 }
 
-function tallyRaidControllers(tally, desc, sku) {
-  _tallyRaidFioSettings(tally, desc, sku);
-  _tallyHardwareStorageController(tally, desc, sku);
+function tallyRaidControllers(tally, desc, sku, roleSets = getStorageRoleSets()) {
+  _tallyRaidFioSettings(tally, desc, sku, roleSets);
+  _tallyHardwareStorageController(tally, desc, sku, roleSets);
 }
 
-function _tallyStorageCabling(tally, it, desc, sku, mandatorySkus = {}) {
+function _isSidebandEnablementCable(desc, sku, mandatorySkus = {}, roleSets = getStorageRoleSets(mandatorySkus)) {
+  const isBattery = roleSets.smartStorageBatterySkus.has(sku) || desc.includes('battery') || desc.includes('capacitor');
+  if (isBattery) return false;
+  return roleSets.sidebandEnablementSkus.has(sku) ||
+    desc.includes('storage controller enablement cable') || desc.includes('controller enablement cable') ||
+    desc.includes('controller enablement kit');
+}
+
+function _classifyBackplaneSignalCable(desc, sku, mandatorySkus = {}, roleSets = getStorageRoleSets(mandatorySkus)) {
+  if (desc.includes('power cable') || desc.includes('cpu1 to rear ocp') || desc.includes('cpu2 to')) return null;
+  if (roleSets.backplaneOcpSignalSkus.has(sku)) return 'OCP';
+  if (roleSets.backplanePcieSignalSkus.has(sku)) return 'PCIE';
+  const hasSignalDesc = (desc.includes('controller cable') || desc.includes('ctrl cable') || desc.includes('splitter cable') ||
+    desc.includes('tri-mode pcie fio cable kit') || desc.includes('nvme to tri-mode')) && !desc.includes('enablement cable');
+  if (!hasSignalDesc) return null;
+  if ((desc.includes('ocp') || desc.includes('slota') || desc.includes('slot a')) && !desc.includes('pcie')) return 'OCP';
+  if (desc.includes('pcie') || desc.includes('splitter cable') || desc.includes('slot1') || desc.includes('box')) return 'PCIE';
+  return 'GENERIC';
+}
+
+function _tallyStorageCabling(tally, it, desc, sku, mandatorySkus = {}, roleSets = getStorageRoleSets(mandatorySkus)) {
   if (desc.includes('splitter cable') || desc.includes('tm y-cbl') || desc.includes('tri-mode splitter') || desc.includes('y-cable') ||
       (mandatorySkus?.TRI_MODE_SPLITTER_CABLE?.sku && sku === cleanBaseSKU(mandatorySkus.TRI_MODE_SPLITTER_CABLE.sku))) {
     tally.hasYCable = true;
     tally.conflictingCableItems.push(it);
   }
-  if (desc.includes('storage controller enablement cable') || desc.includes('controller enablement cable') || desc.includes('controller enablement kit') ||
-      desc.includes('tri-mode pcie fio cable kit') || desc.includes('nvme to tri-mode') || sku === 'P76700-B21' || sku === 'P48918-B21' ||
-      (mandatorySkus?.CONTROLLER_CABLE_KIT?.sku && sku === cleanBaseSKU(mandatorySkus.CONTROLLER_CABLE_KIT.sku))) {
+  if (_isSidebandEnablementCable(desc, sku, mandatorySkus, roleSets)) {
+    tally.hasSidebandEnablementCable = true;
     tally.hasOcpCable = true;
+  }
+  const signalKind = _classifyBackplaneSignalCable(desc, sku, mandatorySkus, roleSets);
+  if (signalKind) {
+    tally.hasBackplaneSignalCable = true;
+    tally.hasOcpCable = true;
+    if (signalKind === 'OCP') tally.hasBackplaneOcpSignalCable = true;
+    if (signalKind === 'PCIE') tally.hasBackplanePcieSignalCable = true;
   }
   if (desc.includes('sas expander') || desc.includes('expander card') ||
       (mandatorySkus?.SAS_EXPANDER?.sku && sku === cleanBaseSKU(mandatorySkus.SAS_EXPANDER.sku))) {
@@ -185,8 +216,8 @@ function _tallyStorageCabling(tally, it, desc, sku, mandatorySkus = {}) {
   }
 }
 
-function _tallyBatteryAndNoDrive(tally, desc, sku, role, batterySku, noDriveSku, mandatorySkus = {}) {
-  if (role === 'Storage Battery' || (batterySku && sku === batterySku) || sku === 'P01367-B21' || sku === 'P01366-B21' || (desc.includes('smart storage') && desc.includes('battery')) || desc.includes('lithium-ion battery') || desc.includes('hybrid capacitor') || desc.includes('bbu') ||
+function _tallyBatteryAndNoDrive(tally, desc, sku, role, batterySku, noDriveSku, mandatorySkus = {}, roleSets = getStorageRoleSets(mandatorySkus)) {
+  if (role === 'Storage Battery' || (batterySku && sku === batterySku) || roleSets.smartStorageBatterySkus.has(sku) || (desc.includes('smart storage') && desc.includes('battery')) || desc.includes('lithium-ion battery') || desc.includes('hybrid capacitor') || desc.includes('bbu') ||
       (mandatorySkus?.SMART_STORAGE_BATTERY?.sku && sku === cleanBaseSKU(mandatorySkus.SMART_STORAGE_BATTERY.sku))) {
     tally.hasSmartBattery = true;
   }
@@ -196,9 +227,9 @@ function _tallyBatteryAndNoDrive(tally, desc, sku, role, batterySku, noDriveSku,
   }
 }
 
-function tallyStorageCablingAndBatteries(tally, it, desc, sku, role, batterySku, noDriveSku, mandatorySkus = {}) {
-  _tallyStorageCabling(tally, it, desc, sku, mandatorySkus);
-  _tallyBatteryAndNoDrive(tally, desc, sku, role, batterySku, noDriveSku, mandatorySkus);
+function tallyStorageCablingAndBatteries(tally, it, desc, sku, role, batterySku, noDriveSku, mandatorySkus = {}, roleSets = getStorageRoleSets(mandatorySkus)) {
+  _tallyStorageCabling(tally, it, desc, sku, mandatorySkus, roleSets);
+  _tallyBatteryAndNoDrive(tally, desc, sku, role, batterySku, noDriveSku, mandatorySkus, roleSets);
 }
 
 function tallyAlletraStorage(tally, desc, sku, qty) {
@@ -231,9 +262,9 @@ function tallyStoreEverTapeStorage(tally, desc, sku, qty) {
   if ((desc.includes('lto-') || desc.includes('ultrium')) && (desc.includes('data cartridge') || desc.includes('rw data'))) tally.dataCartridgeCount += qty;
 }
 
-function tallyControllersAndCables(tally, it, desc, sku, role, batterySku, noDriveSku, mandatorySkus = {}) {
-  tallyRaidControllers(tally, desc, sku);
-  tallyStorageCablingAndBatteries(tally, it, desc, sku, role, batterySku, noDriveSku, mandatorySkus);
+function tallyControllersAndCables(tally, it, desc, sku, role, batterySku, noDriveSku, mandatorySkus = {}, roleSets = getStorageRoleSets(mandatorySkus)) {
+  tallyRaidControllers(tally, desc, sku, roleSets);
+  tallyStorageCablingAndBatteries(tally, it, desc, sku, role, batterySku, noDriveSku, mandatorySkus, roleSets);
 }
 
 function tallyModularAndTapeStorage(tally, desc, sku, qty) {
@@ -255,6 +286,11 @@ function tallyStorageItems(items, skuCategoryMap, batterySku, noDriveSku, mandat
     hasPremiumCage: false,
     hasYCable: false,
     hasOcpCable: false,
+    hasSidebandEnablementCable: false,
+    hasBackplaneSignalCable: false,
+    hasBackplaneOcpSignalCable: false,
+    hasBackplanePcieSignalCable: false,
+    hasStackingOrBackplaneKit: false,
     hasSasExpander: false,
     hasTriModeSwitch: false,
     isAlletraArray: false,
@@ -296,6 +332,8 @@ function tallyStorageItems(items, skuCategoryMap, batterySku, noDriveSku, mandat
     hasNvmeDrive: false
   };
 
+  const roleSets = getStorageRoleSets(mandatorySkus);
+
   for (const it of items) {
     if (isOcaModifierTrackingRow(it.sku, it.description)) continue;
     const desc = (it.description || '').toLowerCase();
@@ -304,8 +342,8 @@ function tallyStorageItems(items, skuCategoryMap, batterySku, noDriveSku, mandat
     const mappedCategory = skuCategoryMap.get(sku) || '';
     const role = classifyComponentRole(mappedCategory, desc);
 
-    tallyCagesAndDrives(tally, desc, sku, qty, role, mandatorySkus);
-    tallyControllersAndCables(tally, it, desc, sku, role, batterySku, noDriveSku, mandatorySkus);
+    tallyCagesAndDrives(tally, desc, sku, qty, role, mandatorySkus, roleSets);
+    tallyControllersAndCables(tally, it, desc, sku, role, batterySku, noDriveSku, mandatorySkus, roleSets);
     tallyModularAndTapeStorage(tally, desc, sku, qty);
   }
 
@@ -352,6 +390,53 @@ function calculateBackplaneCapacity(t, serverCount = 1) {
   return 8 * nodes;
 }
 
+function _evaluateBackplaneSignalCableGap(t, isServerChassis) {
+  if (!isServerChassis || !t.hasStorageController || !t.hasStackingOrBackplaneKit || t.hasDirectConnectCage) {
+    return { needsBackplaneSignalCable: false, missingSignalReason: null };
+  }
+  if (t.hasOcpController && !t.hasBackplaneOcpSignalCable) {
+    return {
+      needsBackplaneSignalCable: true,
+      missingSignalReason: 'OCP storage controller with stacking/backplane kit requires an OCP backplane-to-controller signal cable (e.g. P72600-B21 / P72603-B21); sideband enablement (P48918-B21) and CPU-to-OCP NIC cables (P72203-B21) do not provide the drive signal path.'
+    };
+  }
+  if (t.hasPcieController && !t.hasBackplanePcieSignalCable && !t.hasYCable) {
+    return {
+      needsBackplaneSignalCable: true,
+      missingSignalReason: 'PCIe storage controller with stacking/backplane kit requires a PCIe backplane-to-controller signal cable (e.g. P72604-B21 / P72602-B21).'
+    };
+  }
+  if (!t.hasOcpController && !t.hasPcieController && !t.hasBackplaneSignalCable && !t.hasYCable) {
+    return {
+      needsBackplaneSignalCable: true,
+      missingSignalReason: 'Storage cable kit required for backplane-to-controller signal path.'
+    };
+  }
+  return { needsBackplaneSignalCable: false, missingSignalReason: null };
+}
+
+function _computeCageRequirements(t, isServerChassis) {
+  const needsStorageControllerForCage = Boolean(
+    isServerChassis && t.hasControllerRoutedCage && !t.hasDirectConnectCage && !t.hasNoDriveKit && !t.hasStorageController && !t.hasVroc
+  );
+  const needsDriveCageForController = Boolean(
+    isServerChassis && !t.isLffChassis && t.hasStorageController && !t.hasDriveCage && !t.has4SffCage && !t.has4EdsffCage
+  );
+  const hasControllerNoDriveConflict = Boolean(isServerChassis && t.hasStorageController && t.hasNoDriveKit);
+  return { needsStorageControllerForCage, needsDriveCageForController, hasControllerNoDriveConflict };
+}
+
+function _computeCablingRequirements(t, isServerChassis, perNodeDrives, controllerDirectCapacity) {
+  const hasControllerCable = Boolean(t.hasOcpCable || (t.hasYCable && !t.hasIncompatibleYCable));
+  const signalGap = _evaluateBackplaneSignalCableGap(t, isServerChassis);
+  const needsCableKit = Boolean((isServerChassis && t.hasStorageController && !hasControllerCable) || signalGap.needsBackplaneSignalCable);
+  const hasCapacitorCable = Boolean(t.hasSidebandEnablementCable || (!t.hasStackingOrBackplaneKit && t.hasOcpCable));
+  const needsCapacitorCable = Boolean(isServerChassis && t.hasSmartBattery && !hasCapacitorCable);
+  const needsSasExpander = Boolean(t.hasStorageController && perNodeDrives > controllerDirectCapacity && !t.hasSasExpander && !t.hasTriModeSwitch);
+  const hasIncompatibleYCable = Boolean(t.hasYCable && (!t.hasPcieController || !t.hasPremiumCage));
+  return { ...signalGap, needsCableKit, needsCapacitorCable, needsSasExpander, hasIncompatibleYCable };
+}
+
 function validateStorageCablingAndBackplane(t, serverCount = 1) {
   const nodes = Math.max(1, serverCount || 1);
   const perNodeDrives = t.driveCount / nodes;
@@ -359,30 +444,14 @@ function validateStorageCablingAndBackplane(t, serverCount = 1) {
   const isServerChassis = !t.isAlletraArray && !t.ltoSasDriveCount && !t.ltoFcDriveCount && !t.msl3040BaseModuleCount;
   const backplaneCapacity = calculateBackplaneCapacity(t, nodes);
   const perNodeBackplaneCapacity = backplaneCapacity / nodes;
-
-  const hasControllerCable = t.hasOcpCable || (t.hasYCable && !t.hasIncompatibleYCable);
-  const needsCableKit = Boolean(isServerChassis && t.hasStorageController && !hasControllerCable);
-  const isBackplaneCapacityExceeded = Boolean(isServerChassis && perNodeDrives > perNodeBackplaneCapacity);
-
-  const needsStorageControllerForCage = Boolean(
-    isServerChassis &&
-    t.hasControllerRoutedCage &&
-    !t.hasDirectConnectCage &&
-    !t.hasNoDriveKit &&
-    !t.hasStorageController &&
-    !t.hasVroc
-  );
+  const cageReqs = _computeCageRequirements(t, isServerChassis);
+  const cableReqs = _computeCablingRequirements(t, isServerChassis, perNodeDrives, controllerDirectCapacity);
 
   return {
     controllerDirectCapacity,
-    needsSasExpander: t.hasStorageController && perNodeDrives > controllerDirectCapacity && !t.hasSasExpander && !t.hasTriModeSwitch,
-    hasIncompatibleYCable: t.hasYCable && (!t.hasPcieController || !t.hasPremiumCage),
-    needsCapacitorCable: Boolean(isServerChassis && t.hasSmartBattery && !t.hasOcpCable),
-    needsDriveCageForController: isServerChassis && !t.isLffChassis && t.hasStorageController && !t.hasDriveCage && !t.has4SffCage && !t.has4EdsffCage,
-    needsStorageControllerForCage,
-    hasControllerNoDriveConflict: isServerChassis && t.hasStorageController && t.hasNoDriveKit,
-    needsCableKit,
-    isBackplaneCapacityExceeded,
+    ...cageReqs,
+    ...cableReqs,
+    isBackplaneCapacityExceeded: Boolean(isServerChassis && perNodeDrives > perNodeBackplaneCapacity),
     backplaneCapacity,
     isServerChassis
   };
@@ -443,6 +512,13 @@ function evalStorageTriMode(items, catalogData = null, mandatorySkus = {}, serve
     needsSmartStorageBattery: Boolean(cabling.isServerChassis && t.hasStorageController && !t.hasSmartBattery),
     needsCapacitorCable: cabling.needsCapacitorCable,
     needsCableKit: cabling.needsCableKit,
+    needsBackplaneSignalCable: cabling.needsBackplaneSignalCable,
+    missingSignalReason: cabling.missingSignalReason,
+    hasSidebandEnablementCable: t.hasSidebandEnablementCable,
+    hasBackplaneSignalCable: t.hasBackplaneSignalCable,
+    hasBackplaneOcpSignalCable: t.hasBackplaneOcpSignalCable,
+    hasBackplanePcieSignalCable: t.hasBackplanePcieSignalCable,
+    hasStackingOrBackplaneKit: t.hasStackingOrBackplaneKit,
     isBackplaneCapacityExceeded: cabling.isBackplaneCapacityExceeded,
     backplaneCapacity: cabling.backplaneCapacity,
     controllerDirectCapacity: cabling.controllerDirectCapacity,

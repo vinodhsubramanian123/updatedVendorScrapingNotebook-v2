@@ -726,7 +726,8 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
     { missingDependencies: depsList, arbitrationResults, learnedSubstitutions },
     { isWholeSolutionValid, conflicts },
     chassisInfo,
-    targetDir
+    targetDir,
+    options
   );
   const recommendedSolutions = _filterRecommendedSolutions(rankedSolutions, fullBomList);
 

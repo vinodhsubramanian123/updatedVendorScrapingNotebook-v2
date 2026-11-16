@@ -65,6 +65,7 @@ const MANDATORY_SKU_PROP_MAPPINGS = [
   ['CONTROLLER_CABLE_KIT', 'controllerCableKit'],
   ['TRI_MODE_SPLITTER_CABLE', 'triModeSplitterCable'],
   ['TRI_MODE_BOX12_CABLE', 'triModeBox12Cable'],
+  ['OCP_BOX12_CABLE', 'ocpBox12Cable'],
   ['PRIMARY_CABLE_KIT', 'primaryRiserCableKit'],
   ['SECONDARY_CABLE_KIT', 'secondaryRiserCableKit'],
   ['GPU_POWER_CABLE_KIT', 'gpuPowerCableKit'],
@@ -75,8 +76,49 @@ const MANDATORY_SKU_PROP_MAPPINGS = [
   ['GENERIC_CAGE', 'genericCage'],
   ['PREMIUM_CAGE', 'premiumCage'],
   ['CPU1_OCP_CABLE', 'cpu1OcpCable'],
-  ['CPU2_OCP_CABLE', 'cpu2OcpCable']
+  ['CPU2_OCP_CABLE', 'cpu2OcpCable'],
+  ['STACKING_BACKPLANE_KIT', 'stackingBackplaneKit'],
+  ['BOOT_CONTROLLER', 'bootController']
 ];
+
+function _addNormalizedSkuToSet(set, val) {
+  if (!val || typeof val !== 'string') return;
+  const cleaned = val.trim().toUpperCase().replace(/\s+(?:B19|0D1|0D2|AKM|1D1|1D2)$/i, '');
+  if (cleaned) set.add(cleaned);
+}
+
+function getStorageRoleSets(mandatorySkus = {}) {
+  const catalog = getChassisMap().storage_role_catalog || {};
+  const toSet = (list = [], extra = []) => {
+    const set = new Set();
+    for (const entry of [...list, ...extra]) _addNormalizedSkuToSet(set, entry);
+    return set;
+  };
+  const backplanePcieSignalSkus = toSet(catalog.backplanePcieSignalSkus, [
+    mandatorySkus?.TRI_MODE_BOX12_CABLE?.sku,
+    mandatorySkus?.TRI_MODE_SPLITTER_CABLE?.sku
+  ]);
+  const backplaneOcpSignalSkus = toSet(catalog.backplaneOcpSignalSkus, [
+    mandatorySkus?.OCP_BOX12_CABLE?.sku
+  ]);
+  const controllerKitSku = mandatorySkus?.CONTROLLER_CABLE_KIT?.sku || '';
+  const cleanedKitSku = controllerKitSku ? controllerKitSku.trim().toUpperCase() : '';
+  const sidebandExtra = cleanedKitSku && !backplanePcieSignalSkus.has(cleanedKitSku) ? [cleanedKitSku] : [];
+  const raidCfg = catalog.raidFioSettingSkus || {};
+  return {
+    backplaneOcpSignalSkus,
+    backplanePcieSignalSkus,
+    sidebandEnablementSkus: toSet(catalog.sidebandEnablementSkus, sidebandExtra),
+    stackingBackplaneSkus: toSet(catalog.stackingBackplaneSkus, [mandatorySkus?.STACKING_BACKPLANE_KIT?.sku]),
+    smartStorageBatterySkus: toSet(catalog.smartStorageBatterySkus, [mandatorySkus?.SMART_STORAGE_BATTERY?.sku]),
+    bootControllerSkus: toSet(catalog.bootControllerSkus, [mandatorySkus?.BOOT_CONTROLLER?.sku]),
+    vrocLicenseSkus: toSet(catalog.vrocLicenseSkus),
+    raid1FioSkus: toSet(raidCfg.raid1),
+    customerDefinedRaidSkus: toSet(raidCfg.customerDefined),
+    raid5FioSkus: toSet(raidCfg.raid5),
+    raid5SpFioSkus: toSet(raidCfg.raid5Sp)
+  };
+}
 
 function _resolveKitKeyFromMatchers(matchers, familyNorm, modelNorm, genNorm, normalizeStr) {
   for (const m of matchers) {
@@ -94,7 +136,7 @@ function _resolveKitKeyLegacy(familyNorm, modelNorm, genNorm) {
   if (familyNorm.includes('alletra')) return 'Alletra_Storage';
   if (modelNorm.includes('dl380a')) return 'ProLiant_DL380a_Gen12';
   if (modelNorm.includes('dl145')) return 'ProLiant_DL145_Gen11';
-  if (modelNorm.includes('dl360')) return 'ProLiant_DL360_Gen11';
+  if (modelNorm.includes('dl360')) return genNorm.includes('12') ? 'ProLiant_DL360_Gen12' : 'ProLiant_DL360_Gen11';
   if (familyNorm.includes('synergy')) return genNorm.includes('12') ? 'Synergy_Gen12' : 'Synergy_General';
   if (familyNorm.includes('storeever') || modelNorm.includes('msl')) return 'StoreEver_Tape';
   if (familyNorm.includes('cray')) return 'Cray_General';
@@ -435,6 +477,7 @@ function loadCatalogRules(targetDir) {
 module.exports = {
   DEFAULT_MANDATORY_SKUS,
   getMandatorySkusForChassis,
+  getStorageRoleSets,
   classifyRule,
   loadCatalogRules,
   _parseRawRules

@@ -60,8 +60,25 @@ test('persisted conditional rules and services are used; unreadable evidence rem
     safeWriteJsonAtomic(path.join(dir, 'DL380_Gen12_Catalog.json'), catalog);
     safeWriteJsonAtomic(path.join(dir, 'DL380_Gen12_Services.json'), { entries: [{ skus: [{ sku: 'H01A1E' }] }] });
     safeWriteJsonAtomic(path.join(dir, 'raw_data/conditional_skus.json'), { skus: [{ sku: 'P99999-B21', conditionType: 'AMBIENT_GATE', thresholdDegC: 25, operator: 'lte' }] });
+    safeWriteJsonAtomic(path.join(dir, 'DL380_Gen12_Catalog_Rules.json'), { rules: [{
+      ruleType: 'CONDITIONAL_VISIBILITY',
+      affectedSkus: ['P99999-B21'],
+      conditionKey: 'backplaneSelector',
+      conditionOperator: 'requires_selection',
+      selectorTriggerSku: 'P75741-B21',
+      baseSku: 'P73282-B21'
+    }] });
     const plan = buildRuntimeDiscoveryPlan({ items: [...items, { sku: 'H01A1E', quantity: 1, configurationId: 'sheet1/configA' }] }, { targetDir: dir });
-    assert.ok(plan.configurations[0].probes.some(probe => probe.sku === 'P99999-B21' && probe.reason === 'PORTAL_CONDITIONAL'));
+    const probe = plan.configurations[0].probes.find(probe => probe.sku === 'P99999-B21' && probe.reason === 'PORTAL_CONDITIONAL');
+    assert.ok(probe);
+    assert.deepEqual(probe.conditions.find(gate => gate.selectorTriggerSku), {
+      conditionKey: 'backplaneSelector',
+      conditionOperator: 'requires_selection',
+      thresholdValue: null,
+      selectorTriggerSku: 'P75741-B21',
+      evidenceBaseSku: 'P73282-B21'
+    });
+    assert.match(formatRuntimeDiscoveryPlan(plan), /P75741-B21/);
     assert.ok(!plan.configurations[0].probes.some(probe => probe.sku === 'H01A1E'));
     fs.writeFileSync(path.join(dir, 'raw_data/conditional_skus.json'), '{');
     assert.ok(buildRuntimeDiscoveryPlan({ items }, { targetDir: dir }).configurations[0].blockers.some(reason => reason.startsWith('UNREADABLE_EVIDENCE')));

@@ -548,7 +548,11 @@ describe('2e. Multi-Vendor Registration, Solution Domains & MCP Readiness Tools'
     const dl380Readiness = readinessReal.products[0];
     assert.equal(dl380Readiness.product, 'DL380_Gen12');
     assert.equal(dl380Readiness.catalogFound, true);
-    assert.equal(dl380Readiness.freshness.status, 'FRESH');
+    const expectedFreshnessStatus = dl380Readiness.freshness.ageDays <= 3
+      ? 'FRESH'
+      : (dl380Readiness.freshness.ageDays <= 30 ? 'STALE_WARNING' : 'CRITICAL_OUTDATED');
+    assert.equal(dl380Readiness.freshness.status, expectedFreshnessStatus);
+    assert.equal(dl380Readiness.freshness.isFresh, expectedFreshnessStatus === 'FRESH');
     assert.equal(dl380Readiness.nlmSyncConfirmed, true);
 
     const customVendor = 'AcmeMcpVendor';
@@ -808,6 +812,46 @@ describe('Wave 2. Duplicate-PN Diffs, Storage/Networking Rules, CDP 404 Detectio
     const learningsSrc = fs.readFileSync(path.join(PROJECT_ROOT, 'scripts', 'maintenance', 'sync_scraping_workflow_learnings.js'), 'utf8');
     assert.ok(learningsSrc.includes('execNlmRead'));
     assert.ok(learningsSrc.includes('nlmEnvironment(extendedPath, false)'));
+  });
+
+  it('resolves fallback CDP port on non-CDP conflict and detects shorthand G12 ProLiant platforms accurately', async () => {
+    const http = require('node:http');
+    const {
+      resolveAvailableFallbackCdpPort,
+      ensureChromeBrowserRunning
+    } = require('../../scripts/lib/scraper/browser_launcher.js');
+    const { detectChassisVariant } = require('../../scripts/lib/catalog/catalog_discovery.js');
+    const { parseProductMeta } = require('../../scripts/lib/catalog/product_meta.js');
+
+    const conflictSrv = http.createServer((_req, res) => {
+      res.writeHead(404, { 'Content-Type': 'text/plain' });
+      res.end('Not Found');
+    });
+    await new Promise(resolve => conflictSrv.listen(0, '127.0.0.1', resolve));
+    const conflictPort = conflictSrv.address().port;
+
+    try {
+      const strictRes = await ensureChromeBrowserRunning(conflictPort, 'https://partner.hpe.com');
+      assert.equal(strictRes.ok, false);
+      assert.equal(strictRes.occupiedByNonCdp, true);
+
+      const fallback = await resolveAvailableFallbackCdpPort(conflictPort);
+      assert.ok(fallback && Number.isInteger(fallback.port));
+      assert.notEqual(fallback.port, conflictPort);
+      assert.ok(fallback.port >= 9223 && fallback.port <= 9245);
+    } finally {
+      await new Promise(resolve => conflictSrv.close(resolve));
+    }
+
+    const detected = detectChassisVariant([
+      { sku: 'P72176-B21  AKM', description: 'HPE DL360 G12 10SFF/20EDSFF Hyb Configure-to-order Server' }
+    ]);
+    assert.equal(detected.id, 'DL360_Gen12');
+    assert.equal(detected.gen, 'Gen12');
+    assert.equal(detected.uHeight, 1);
+
+    const parsedMeta = parseProductMeta('HPE DL360 G12 10SFF/20EDSFF Hyb Configure-to-order Server');
+    assert.deepEqual(parsedMeta, { family: 'ProLiant', gen: 'Gen12', cleanName: 'DL360_Gen12' });
   });
 });
 

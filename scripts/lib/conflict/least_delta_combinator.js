@@ -108,7 +108,28 @@ function _selectBestVisibleCandidate(cands, catalogDir) {
   return visible || cands[0];
 }
 
-function _findFallbackAlternative(roleType, constraints, duals, isGen12) {
+function _isDl360Family(chassisInfo) {
+  const txt = `${chassisInfo?.model || ''} ${chassisInfo?.chassis || ''} ${chassisInfo?.id || ''}`.toLowerCase();
+  return txt.includes('dl360');
+}
+
+function _resolveContestedPcieFallback(duals, isGen12, chassisInfo) {
+  const pcieAlt = duals.pcie;
+  if (pcieAlt?.sku) {
+    return { sku: pcieAlt.sku, description: pcieAlt.description };
+  }
+  if (_isDl360Family(chassisInfo)) {
+    return isGen12
+      ? { sku: 'P74775-B21', description: 'HPE MR408i-p Gen11 x8 Lanes 4GB Cache PCI SPDM Plug-in Storage Controller' }
+      : { sku: 'P47777-B21', description: 'HPE MR416i-p x16 Lanes 8GB Cache PCIe Storage Controller' };
+  }
+  return {
+    sku: isGen12 ? 'P75750-B21' : 'P47777-B21',
+    description: 'HPE MR416i-p x16 Lanes 8GB Cache PCIe Storage Controller'
+  };
+}
+
+function _findFallbackAlternative(roleType, constraints, duals, isGen12, chassisInfo) {
   if (roleType === 'STORAGE_EXPANDER_CASCADE') {
     return {
       sku: 'P55415-B21',
@@ -116,11 +137,7 @@ function _findFallbackAlternative(roleType, constraints, duals, isGen12) {
     };
   }
   if (roleType === 'CONTESTED_OCP_SLOT_COLLISION') {
-    const pcieAlt = duals.pcie;
-    return {
-      sku: pcieAlt?.sku || (isGen12 ? 'P75750-B21' : 'P47777-B21'),
-      description: pcieAlt?.description || 'HPE MR416i-p x16 Lanes 8GB Cache PCIe Storage Controller'
-    };
+    return _resolveContestedPcieFallback(duals, isGen12, chassisInfo);
   }
   if (roleType === 'MEMORY_BUS_SPEED_BOTTLENECK') {
     const targetCapacity = constraints.targetCapacityGb || 32;
@@ -163,7 +180,7 @@ function _findStorageExpanderAlternative(skuIndex, catalogDir) {
   };
 }
 
-function _findContestedOcpSlotAlternative(skuIndex, catalogDir, duals, isGen12) {
+function _findContestedOcpSlotAlternative(skuIndex, catalogDir, duals, isGen12, chassisInfo) {
   const candidates = [];
   for (const [sku, item] of skuIndex.entries()) {
     if (!_isActiveCatalogOption(item)) continue;
@@ -179,11 +196,7 @@ function _findContestedOcpSlotAlternative(skuIndex, catalogDir, duals, isGen12) 
   }
   const chosen = _selectBestVisibleCandidate(candidates, catalogDir);
   if (chosen) return chosen;
-  const pcieAlt = duals.pcie;
-  return {
-    sku: pcieAlt?.sku || (isGen12 ? 'P75750-B21' : 'P47777-B21'),
-    description: pcieAlt?.description || 'HPE MR416i-p x16 Lanes 8GB Cache PCIe Storage Controller'
-  };
+  return _resolveContestedPcieFallback(duals, isGen12, chassisInfo);
 }
 
 function _findMemoryBusSpeedAlternative(skuIndex, catalogDir, constraints) {
@@ -223,7 +236,7 @@ function findBestAlternativeInCatalog(roleType, currentSku, constraints = {}, ca
   const duals = cmap.form_factor_duals?.[genKey]?.storage_controller || {};
 
   if (!catalogData || !Array.isArray(catalogData.entries) || catalogData.entries.length === 0) {
-    return _findFallbackAlternative(roleType, constraints, duals, isGen12);
+    return _findFallbackAlternative(roleType, constraints, duals, isGen12, chassisInfo);
   }
 
   const skuIndex = buildCatalogSkuIndex(catalogData);
@@ -233,7 +246,7 @@ function findBestAlternativeInCatalog(roleType, currentSku, constraints = {}, ca
     return _findStorageExpanderAlternative(skuIndex, catalogDir);
   }
   if (roleType === 'CONTESTED_OCP_SLOT_COLLISION') {
-    return _findContestedOcpSlotAlternative(skuIndex, catalogDir, duals, isGen12);
+    return _findContestedOcpSlotAlternative(skuIndex, catalogDir, duals, isGen12, chassisInfo);
   }
   if (roleType === 'MEMORY_BUS_SPEED_BOTTLENECK') {
     return _findMemoryBusSpeedAlternative(skuIndex, catalogDir, constraints);
@@ -590,17 +603,21 @@ function _checkGenerationalCpuAndMemory(items, missing, chassisInfo, catalogData
 }
 
 const REPLACEMENT_CATEGORY_RULES = [
-  ['GPU', /\b(?:nvidia|gpu|h100|h200|l40s?|l4|a100|a40|b100|b200|rtx\s*\d+|accelerator)\b/i, null],
-  ['CONTROLLER', /\b(?:controller|raid|tri-mode|hba|mr416|mr216|sr932|sr416)\b/i, /\bcable\b/i],
-  ['CPU', /\b(?:xeon|epyc|processor|cpu)\b/i, null],
-  ['MEMORY', /\b(?:dimm|rdimm|lrdimm|mrdimm|smart memory|memory|ddr[45])\b/i, null],
-  ['PSU', /\b(?:power supply|flex slot|-48vdc|psu|power)\b/i, /\bcable\b/i],
-  ['NETWORK', /\b(?:ethernet|nic|connectx|infiniband|transceiver|sfp|network|\d{2,3}gbe?)\b/i, null],
-  ['THERMAL', /\b(?:heatsink|fan|cooling|thermal)\b/i, null],
-  ['STORAGE_DRIVE', /\b(?:ssd|hdd|nvme|hard drive|storage|drive)\b/i, /\b(?:cable|cage|backplane)\b/i]
+  ['GPU', /\b(?:nvidia|gpu|h100|h200|l40s?|l4|a100|a40|b100|b200|rtx\s*\d+|accelerator)\b/i, /\b(?:enablement|cable|trigger)\b/i],
+  ['FC_HBA', /\b(?:fibre\s*channel|fc\s+hba|sn1[67]\d{2}|qlogic|emulex|host\s*bus\s*adapter)\b/i, /\b(?:transceiver|cable)\b/i],
+  ['CONTROLLER', /\b(?:storage\s*controller|raid|tri-mode|mr\d{3}i|sr\d{3}i|smart\s*array)\b/i, /\b(?:cable|battery|capacitor|enablement)\b/i],
+  ['CPU', /\b(?:xeon|epyc|processor|cpu)\b/i, /\b(?:heatsink|cable|license)\b/i],
+  ['MEMORY', /\b(?:dimm|rdimm|lrdimm|mrdimm|smart memory|memory|ddr[45])\b/i, /\b(?:blank|filler|license|operating\s*system)\b/i],
+  ['PSU', /\b(?:power supply|flex slot|-48vdc|psu|power)\b/i, /\b(?:cable|cord|lug)\b/i],
+  ['NETWORK', /\b(?:ethernet|nic|connectx|infiniband|transceiver|sfp|network|\d{2,3}gbe?)\b/i, /\b(?:cable\s*kit|fibre\s*channel|enablement|operating\s*configuration)\b/i],
+  ['THERMAL', /\b(?:heatsink|fan|cooling|thermal)\b/i, /\b(?:ambient|tracking|cable)\b/i],
+  ['STORAGE_DRIVE', /\b(?:ssd|hdd|nvme|hard drive|storage|drive)\b/i, /\b(?:cable|cage|backplane|boot\s*dev|ns204i)\b/i]
 ];
 
 function _detectReplacementCategory(d, categoryHint = '') {
+  if (/\b(?:windows\s*server|microsoft|red\s*hat|rhel|suse|vmware|esxi|energy\s*star|trigger|enablement\s*kit|operating\s*system)\b/i.test(d)) {
+    return 'UNKNOWN';
+  }
   const combined = `${d} ${String(categoryHint || '').toLowerCase()}`;
   for (const [cat, includeRx, excludeRx] of REPLACEMENT_CATEGORY_RULES) {
     if (includeRx.test(combined) && (!excludeRx || !excludeRx.test(d))) {
@@ -640,6 +657,7 @@ function _extractComputeAndMemoryAttrs(d) {
     portCount: portMatch ? parseInt(portMatch[1], 10) : 0,
     isOcp: d.includes('ocp'),
     psuWatts: psuWattsMatch ? parseInt(psuWattsMatch[1], 10) : 0,
+    isDcPsu: /-48\s*vdc/i.test(d),
     efficiency: d.includes('titanium') ? 'titanium' : (d.includes('platinum') ? 'platinum' : '')
   };
 }
@@ -772,6 +790,7 @@ function _scoreGpuNetworkPsuParity(origAttrs, cAttrs) {
     return score;
   }
   if (origAttrs.componentCategory === 'PSU') {
+    if (Boolean(origAttrs.isDcPsu) !== Boolean(cAttrs.isDcPsu)) return -1;
     if (origAttrs.psuWatts > 0 && cAttrs.psuWatts > 0) {
       if (cAttrs.psuWatts < origAttrs.psuWatts) return -1;
       score += origAttrs.psuWatts === cAttrs.psuWatts ? 100 : 50;
@@ -784,10 +803,48 @@ function _scoreGpuNetworkPsuParity(origAttrs, cAttrs) {
 /**
  * Score candidate active replacement against discontinued component attributes and budget anchor
  */
-function _scoreActiveReplacementCandidate(candidate, origAttrs, histPrice = 0) {
+function _scoreFcHbaParity(origDesc, candDesc, origAttrs, cAttrs) {
+  const oLow = String(origDesc || '').toLowerCase();
+  const cLow = String(candDesc || '').toLowerCase();
+  const oVendor = (oLow.includes('qlogic') || /sn1[67]\d{2}q/i.test(oLow)) ? 'QLOGIC'
+    : ((oLow.includes('emulex') || oLow.includes('broadcom') || /sn1[67]\d{2}e/i.test(oLow)) ? 'EMULEX' : '');
+  const cVendor = (cLow.includes('qlogic') || /sn1[67]\d{2}q/i.test(cLow)) ? 'QLOGIC'
+    : ((cLow.includes('emulex') || cLow.includes('broadcom') || /sn1[67]\d{2}e/i.test(cLow)) ? 'EMULEX' : '');
+  if (oVendor && cVendor && oVendor !== cVendor) return -1;
+  if (origAttrs.speedGbps > 0 && cAttrs.speedGbps > 0 && cAttrs.speedGbps < origAttrs.speedGbps) return -1;
+  if (origAttrs.portCount > 0 && cAttrs.portCount > 0 && cAttrs.portCount < origAttrs.portCount) return -1;
+  let score = 80;
+  if (oVendor && oVendor === cVendor) score += 60;
+  if (origAttrs.speedGbps > 0 && origAttrs.speedGbps === cAttrs.speedGbps) score += 40;
+  return score;
+}
+
+function _parseStorageControllerSpecs(desc) {
+  const low = String(desc || '').toLowerCase();
+  const series = low.match(/\b((?:mr|sr)\d{3}i)/i)?.[1]?.toLowerCase() || '';
+  const cacheGb = parseInt(low.match(/\b(\d+)\s*gb(?:\s*cache)?/i)?.[1] || '0', 10);
+  let ports = 0;
+  if (series.includes('416') || series.includes('932')) ports = 16;
+  else if (series.includes('408') || series.includes('216')) ports = 8;
+  const lanes = low.match(/\bx(8|16)\s*lanes?/i)?.[1] || '';
+  return { series, cacheGb, ports, lanes };
+}
+
+function _scoreStorageControllerParity(origDesc, candDesc) {
+  const orig = _parseStorageControllerSpecs(origDesc);
+  const cand = _parseStorageControllerSpecs(candDesc);
+  if (orig.ports > 0 && cand.ports > 0 && cand.ports < orig.ports) return -1;
+  if (orig.cacheGb > 0 && cand.cacheGb > 0 && cand.cacheGb < orig.cacheGb) return -1;
+  let score = 60;
+  if (orig.series && cand.series && orig.series === cand.series) score += 160;
+  if (orig.cacheGb > 0 && orig.cacheGb === cand.cacheGb) score += 40;
+  if (orig.lanes && cand.lanes && orig.lanes === cand.lanes) score += 20;
+  return score;
+}
+
+function _scoreActiveReplacementCandidate(candidate, origAttrs, histPrice = 0, origDesc = '') {
   const cAttrs = _extractDriveOrComponentAttrs(candidate.description, candidate.sku);
-  if (origAttrs.componentCategory !== 'UNKNOWN' && cAttrs.componentCategory !== 'UNKNOWN' &&
-      origAttrs.componentCategory !== cAttrs.componentCategory) {
+  if (origAttrs.componentCategory !== 'UNKNOWN' && cAttrs.componentCategory !== origAttrs.componentCategory) {
     return -1;
   }
 
@@ -799,6 +856,14 @@ function _scoreActiveReplacementCandidate(candidate, origAttrs, histPrice = 0) {
     score += (origAttrs.capacityTb > 0 && cAttrs.capacityTb > 0) ? 120 : 0;
     score += _scoreInterfaceAndGenParity(origAttrs, cAttrs);
     score += _scorePhysicalAndWorkloadParity(origAttrs, cAttrs);
+  } else if (origAttrs.componentCategory === 'FC_HBA') {
+    const hbaScore = _scoreFcHbaParity(origDesc, candidate.description, origAttrs, cAttrs);
+    if (hbaScore < 0) return -1;
+    score += hbaScore;
+  } else if (origAttrs.componentCategory === 'CONTROLLER') {
+    const ctrlScore = _scoreStorageControllerParity(origDesc, candidate.description);
+    if (ctrlScore < 0) return -1;
+    score += ctrlScore;
   } else {
     const specialtyScore = origAttrs.componentCategory === 'CPU' || origAttrs.componentCategory === 'MEMORY'
       ? _scoreCpuAndMemoryParity(origAttrs, cAttrs)

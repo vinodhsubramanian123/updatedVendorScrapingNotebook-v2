@@ -9,12 +9,10 @@
 
 const http = require('http');
 const path = require('path');
-const { sendCommand, connectWS, waitForDOMPredicate, sleep } = require('./cdp.js');
+const { sendCommand, connectWS, waitForDOMPredicate, sleep, getCdpPort } = require('./cdp.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
 require('dotenv').config({ path: path.join(PROJECT_ROOT, '.env') });
-
-const CDP_PORT = 9222;
 
 function normalizeProductText(value) {
   return String(value || '')
@@ -115,8 +113,9 @@ function isExactProductCandidate(query, candidate) {
  * List all open page targets in Chrome on port 9222.
  */
 function getPageTargets() {
+  const cdpPort = getCdpPort();
   return new Promise((resolve, reject) => {
-    const req = http.get(`http://localhost:${CDP_PORT}/json`, (res) => {
+    const req = http.get(`http://localhost:${cdpPort}/json`, (res) => {
       let data = '';
       res.on('data', chunk => (data += chunk));
       res.on('end', () => {
@@ -130,7 +129,7 @@ function getPageTargets() {
     });
     
     req.on('error', (err) => {
-      reject(new Error(`Chrome remote debugging port ${CDP_PORT} is not accessible (${err.message}). Ensure Chrome is running with --remote-debugging-port=${CDP_PORT}.`));
+      reject(new Error(`Chrome remote debugging port ${cdpPort} is not accessible (${err.message}). Ensure Chrome is running with --remote-debugging-port=${cdpPort}.`));
     });
   });
 }
@@ -140,15 +139,16 @@ function safeNavigationLabel(value) {
 }
 
 async function closePageTarget(targetId) {
+  const cdpPort = getCdpPort();
   try {
-    const ws = await connectWS(`ws://localhost:${CDP_PORT}/devtools/page/${targetId}`);
+    const ws = await connectWS(`ws://localhost:${cdpPort}/devtools/page/${targetId}`);
     await sendCommand(ws, 'Runtime.evaluate', { expression: 'window.onbeforeunload = null;' });
     await sendCommand(ws, 'Page.enable');
     await sendCommand(ws, 'Page.handleJavaScriptDialog', { accept: true });
     ws.close();
   } catch (_) {}
   return new Promise((resolve) => {
-    const req = http.get(`http://localhost:${CDP_PORT}/json/close/${encodeURIComponent(targetId)}`, res => {
+    const req = http.get(`http://localhost:${cdpPort}/json/close/${encodeURIComponent(targetId)}`, res => {
       if (typeof res.resume === 'function') res.resume();
       res.on('end', () => resolve(res.statusCode >= 200 && res.statusCode < 300));
     });
@@ -260,10 +260,16 @@ async function _handleActiveMatchesOrReopen(ocaTarget, ws, query, options, hasMe
 async function checkActiveMenuTab(ocaTarget, query, options) {
   const ws = await connectWS(ocaTarget.webSocketDebuggerUrl);
   ws._isOcaTarget = true;
-  const checkState = await sendCommand(ws, 'Runtime.evaluate', {
-    expression: CHECK_ACTIVE_MENU_TAB_SCRIPT,
-    returnByValue: true
-  });
+  let checkState;
+  try {
+    checkState = await sendCommand(ws, 'Runtime.evaluate', {
+      expression: CHECK_ACTIVE_MENU_TAB_SCRIPT,
+      returnByValue: true
+    });
+  } catch (err) {
+    ws.close();
+    throw err;
+  }
 
   const activeState = checkState?.result?.value;
   const staleHandled = await _handleMenuTabStaleOrException(ocaTarget, ws, activeState);
@@ -489,57 +495,97 @@ function buildDiscoveryExpression(query) {
   `;
 }
 
+function _clientFindLiveCardFunction(selected) {
+  const directSelectorJson = JSON.stringify(selected.cardSelector || '');
+  const optValJson = JSON.stringify(selected.optionValue || '');
+  const skuTokenJson = JSON.stringify((selected.sku || '').toUpperCase());
+  return String.raw`
+      const findLiveCard = () => {
+        const directSelector = ${directSelectorJson};
+        const direct = directSelector ? document.querySelector(directSelector) : null;
+        if (direct && direct.isConnected) return direct;
+        const optVal = ${optValJson};
+        if (optVal) {
+          const liveSel = Array.from(document.querySelectorAll('select.dqe-products, select[class*="product"], select'))
+            .find(el => Array.from(el.options || []).some(opt => opt.value === optVal));
+          if (liveSel) return liveSel.closest('.cto-card, .dqe-card, .card-type-catalog') || liveSel.parentElement;
+        }
+        const skuToken = ${skuTokenJson};
+        if (skuToken) {
+          return Array.from(document.querySelectorAll('.cto-card, .dqe-card, .card-type-catalog'))
+            .find(el => (el.innerText || '').toUpperCase().includes(skuToken)) || null;
+        }
+        return null;
+      };`;
+}
+
+function _clientSelectDropdownControls(selected) {
+  if (selected.type !== 'dropdown-option') return '';
+  const optValJson = JSON.stringify(selected.optionValue);
+  return String.raw`
+      const productSelect = card.querySelector('select.dqe-products, select[class*="product"], select');
+      if (productSelect) {
+        productSelect.value = ${optValJson};
+        if (window.jQuery) {
+          window.jQuery(productSelect).trigger('change');
+        } else productSelect.dispatchEvent(new Event('change', { bubbles: true }));
+        await new Promise(r => setTimeout(r, 2500));
+      }
+
+      // Auto-select enclosure & rack if required by product (e.g. Synergy compute module or chassis)
+      const encSelect = card.querySelector('select.dqe-enclosure');
+      if (encSelect && !encSelect.classList.contains('dqe-hidden') && encSelect.value === '-1') {
+        encSelect.value = 'standalone';
+        encSelect.dispatchEvent(new Event('change', { bubbles: true }));
+        if (window.jQuery) window.jQuery(encSelect).trigger('change');
+      }
+
+      const rackSelect = card.querySelector('select.dqe-rack');
+      if (rackSelect && !rackSelect.classList.contains('dqe-hidden') && rackSelect.value === '-1') {
+        rackSelect.value = 'standalone';
+        rackSelect.dispatchEvent(new Event('change', { bubbles: true }));
+        if (window.jQuery) window.jQuery(rackSelect).trigger('change');
+      }
+      await new Promise(r => setTimeout(r, 1000));`;
+}
+
+function _clientReacquireDropdownOption(selected) {
+  if (selected.type !== 'dropdown-option') return '';
+  const optValJson = JSON.stringify(selected.optionValue);
+  return String.raw`
+      // AJAX search results can replace the card after selection. Reacquire
+      // by exact SKU and verify the selected value before clicking anything.
+      for (let attempt = 0; attempt < 30; attempt++) {
+        const liveSelect = Array.from(document.querySelectorAll('select.dqe-products')).find(el => Array.from(el.options).some(opt => opt.value === ${optValJson}));
+        if (liveSelect) {
+          card = liveSelect.closest('.cto-card, .dqe-card, .card-type-catalog') || card;
+          if (liveSelect.value !== ${optValJson}) {
+            liveSelect.value = ${optValJson};
+            if (window.jQuery) window.jQuery(liveSelect).trigger('change');
+            else liveSelect.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+          const liveButton = card.querySelector('.dqe-customize-btn');
+          if (liveButton && !liveButton.disabled && !liveButton.classList.contains('dqe-disabled')) break;
+        }
+        await new Promise(r => setTimeout(r, 500));
+      }`;
+}
+
 function buildSelectAndClickExpression(selected) {
   return String.raw`
     (async function() {
-      let card = document.querySelector(${JSON.stringify(selected.cardSelector)});
+      ${_clientFindLiveCardFunction(selected)}
+
+      let card = findLiveCard();
+      for (let w = 0; !card && w < 20; w++) {
+        await new Promise(r => setTimeout(r, 500));
+        card = findLiveCard();
+      }
       if (!card) return { success: false, reason: 'CARD_NOT_FOUND' };
 
-      if (${JSON.stringify(selected.type)} === 'dropdown-option') {
-        const productSelect = card.querySelector('select.dqe-products, select[class*="product"], select');
-        if (productSelect) {
-          productSelect.value = ${JSON.stringify(selected.optionValue)};
-          if (window.jQuery) {
-            window.jQuery(productSelect).trigger('change');
-          } else productSelect.dispatchEvent(new Event('change', { bubbles: true }));
-          await new Promise(r => setTimeout(r, 2500));
-        }
+      ${_clientSelectDropdownControls(selected)}
+      ${_clientReacquireDropdownOption(selected)}
 
-        // Auto-select enclosure & rack if required by product (e.g. Synergy compute module or chassis)
-        const encSelect = card.querySelector('select.dqe-enclosure');
-        if (encSelect && !encSelect.classList.contains('dqe-hidden') && encSelect.value === '-1') {
-          encSelect.value = 'standalone';
-          encSelect.dispatchEvent(new Event('change', { bubbles: true }));
-          if (window.jQuery) window.jQuery(encSelect).trigger('change');
-        }
-
-        const rackSelect = card.querySelector('select.dqe-rack');
-        if (rackSelect && !rackSelect.classList.contains('dqe-hidden') && rackSelect.value === '-1') {
-          rackSelect.value = 'standalone';
-          rackSelect.dispatchEvent(new Event('change', { bubbles: true }));
-          if (window.jQuery) window.jQuery(rackSelect).trigger('change');
-        }
-        await new Promise(r => setTimeout(r, 1000));
-      }
-
-      // AJAX search results can replace the card after selection. Reacquire
-      // by exact SKU and verify the selected value before clicking anything.
-      if (${JSON.stringify(selected.type)} === 'dropdown-option') {
-        for (let attempt = 0; attempt < 30; attempt++) {
-          const liveSelect = Array.from(document.querySelectorAll('select.dqe-products')).find(el => Array.from(el.options).some(opt => opt.value === ${JSON.stringify(selected.optionValue)}));
-          if (liveSelect) {
-            card = liveSelect.closest('.cto-card, .dqe-card, .card-type-catalog') || card;
-            if (liveSelect.value !== ${JSON.stringify(selected.optionValue)}) {
-              liveSelect.value = ${JSON.stringify(selected.optionValue)};
-              if (window.jQuery) window.jQuery(liveSelect).trigger('change');
-              else liveSelect.dispatchEvent(new Event('change', { bubbles: true }));
-            }
-            const liveButton = card.querySelector('.dqe-customize-btn');
-            if (liveButton && !liveButton.disabled && !liveButton.classList.contains('dqe-disabled')) break;
-          }
-          await new Promise(r => setTimeout(r, 500));
-        }
-      }
       const button = card.querySelector('.dqe-customize-btn, button, input[type="button"], a.btn');
       if (!button) return { success: false, reason: 'CUSTOMIZE_BUTTON_NOT_FOUND' };
       if (!card.isConnected || button.disabled || button.classList.contains('dqe-disabled')) return { success: false, reason: 'CUSTOMIZE_NOT_READY' };
@@ -598,10 +644,11 @@ function _sortAndFilterEligibleCandidates(candidates, query) {
   return eligible;
 }
 
-function _resolveSelectedCandidate(eligibleCandidates, candidates, query, options) {
+function _resolveSelectedCandidate(eligibleCandidates, candidates, query, options = {}) {
   let selected = null;
-  if (options.targetSku) {
-    selected = eligibleCandidates.find(c => String(c.sku || '').toUpperCase() === String(options.targetSku).toUpperCase());
+  const targetSku = options.targetSku || process.env.OCA_TARGET_SKU;
+  if (targetSku) {
+    selected = eligibleCandidates.find(c => String(c.sku || '').toUpperCase() === String(targetSku).toUpperCase());
     if (selected) console.log(`🎯 Matched requested target SKU: ${selected.sku} - "${selected.text}"`);
   } else if (options.variantFilter) {
     const vRe = new RegExp(options.variantFilter, 'i');
@@ -640,7 +687,9 @@ async function _pollForActiveOcaReadiness() {
         )`, 3000, 500);
         testWs.close();
         if (isReadyOrIntermediate) break;
-      } catch (_) {}
+      } catch (pollErr) {
+        if (/(?:syntaxerror|referenceerror):/i.test(String(pollErr?.message || ''))) throw pollErr;
+      }
     }
   }
 }
@@ -1285,8 +1334,9 @@ async function handlePartnerPortalLaunch(partnerTarget, query, options) {
 }
 
 async function openPartnerPortalAnchorTab(errorMessage) {
+  const cdpPort = getCdpPort();
   const portalHomeUrl = 'https://partner.hpe.com/group/prp';
-  const response = await fetch(`http://localhost:${CDP_PORT}/json/new?${encodeURIComponent(portalHomeUrl)}`, { method: 'PUT' });
+  const response = await fetch(`http://localhost:${cdpPort}/json/new?${encodeURIComponent(portalHomeUrl)}`, { method: 'PUT' });
   if (!response.ok) throw new Error(errorMessage || `Unable to open Partner Portal tab: HTTP ${response.status}`);
   if (typeof response.json === 'function') {
     try {
@@ -1305,9 +1355,11 @@ async function openPartnerPortalAnchorTab(errorMessage) {
  * Polls for user to log in or open Partner Portal / OCA in browser window.
  */
 async function waitForBrowserSession(query, options) {
-  console.log(`🌐 Checking for Partner Portal session or launching Chrome on port ${CDP_PORT}...`);
+  const requestedPort = getCdpPort();
+  console.log(`🌐 Checking for Partner Portal session or launching Chrome on port ${requestedPort}...`);
   const { ensureChromeBrowserRunning } = require('./browser_launcher.js');
-  await ensureChromeBrowserRunning(CDP_PORT, 'https://partner.hpe.com/web/prp');
+  const launchRes = await ensureChromeBrowserRunning(requestedPort, 'https://partner.hpe.com/web/prp', { autoSelectFreePort: true });
+  const cdpPort = launchRes?.port || getCdpPort();
 
   let waitAttempts = 0;
   const initialPages = await getPageTargets();
@@ -1331,8 +1383,8 @@ async function waitForBrowserSession(query, options) {
   }
 
   throw new Error(
-    `🔒 Timeout waiting for Partner Portal SSO login on CDP port ${CDP_PORT}.\n` +
-    `   Please ensure Chrome is running on port ${CDP_PORT} and re-run navigation.`
+    `🔒 Timeout waiting for Partner Portal SSO login on CDP port ${cdpPort}.\n` +
+    `   Please ensure Chrome is running on port ${cdpPort} and re-run navigation.`
   );
 }
 
@@ -1353,6 +1405,19 @@ async function pruneSeismicTabs(pages) {
   }
 }
 
+async function _recoverNavigationInteraction(err, ocaTarget, query, options) {
+  if (['OCA_PRODUCT_NOT_FOUND', 'OCA_SELECTION_FAILED'].includes(err.code)) throw err;
+  if (/^CDP timeout\b/i.test(err.message)) {
+    const timeout = new Error('OCA did not respond in time. The existing workspace is still open for a retry.', { cause: err });
+    timeout.code = 'OCA_RESPONSE_TIMEOUT';
+    throw timeout;
+  }
+  console.warn(`⚠️ [RECOVERY] OCA interaction error: ${err.message}. Re-establishing session via Partner Portal...`);
+  try { await closePageTarget(ocaTarget.id); } catch (_) {}
+  await new Promise(r => setTimeout(r, 2000));
+  return recoverAndLaunchFreshOCA(query, options);
+}
+
 /**
  * Automate navigation from Partner Portal or OCA Search page into target chassis Menu tab.
  * @param {string} chassisQuery E.g. "DL380 Gen12", "Alletra 9000", "Synergy 12000"
@@ -1366,9 +1431,9 @@ async function navigateToOCAChassis(chassisQuery, options = {}) {
   console.log(`   Target Chassis Query: "${query}"`);
   console.log(`===============================================================\n`);
 
-  // 0. Ensure Chrome is running with remote debugging port 9222 and persistent profile
+  // 0. Ensure Chrome is running with remote debugging port and persistent profile
   const { ensureChromeBrowserRunning } = require('./browser_launcher.js');
-  await ensureChromeBrowserRunning(CDP_PORT, 'https://partner.hpe.com/web/prp');
+  await ensureChromeBrowserRunning(getCdpPort(), 'https://partner.hpe.com/web/prp', { autoSelectFreePort: true });
 
   let pages = await getPageTargets();
   await pruneSeismicTabs(pages);
@@ -1413,11 +1478,7 @@ async function navigateToOCAChassis(chassisQuery, options = {}) {
       }
       return await searchAndConfigureChassis(menuCheck.ws, query, ocaTarget, options);
     } catch (ocaErr) {
-      if (['OCA_PRODUCT_NOT_FOUND', 'OCA_SELECTION_FAILED'].includes(ocaErr.code)) throw ocaErr;
-      console.warn(`⚠️ [RECOVERY] OCA interaction error: ${ocaErr.message}. Re-establishing session via Partner Portal...`);
-      try { await closePageTarget(ocaTarget.id); } catch (_) {}
-      await new Promise(r => setTimeout(r, 2000));
-      return recoverAndLaunchFreshOCA(query, options);
+      return _recoverNavigationInteraction(ocaErr, ocaTarget, query, options);
     }
   }
 
@@ -1471,7 +1532,7 @@ async function _resolvePartnerPortalRecoveryTarget(freshPages, query, options) {
     return { partnerTarget: signedIn };
   }
   const { ensureChromeBrowserRunning } = require('./browser_launcher.js');
-  await ensureChromeBrowserRunning(CDP_PORT, 'https://partner.hpe.com/web/prp');
+  await ensureChromeBrowserRunning(getCdpPort(), 'https://partner.hpe.com/web/prp', { autoSelectFreePort: true });
   return { sessionPromise: waitForBrowserSession(query, options) };
 }
 
@@ -1503,7 +1564,7 @@ async function recoverAndLaunchFreshOCA(chassisQuery = 'DL380 Gen12', options = 
   const recoveryAttempt = (options.recoveryAttempt || 0) + 1;
   if (recoveryAttempt > 2) throw new Error('OCA_RECOVERY_EXHAUSTED: two fresh Partner Portal sessions failed; retain pending vendor validation.');
   options = { ...options, recoveryAttempt };
-  const browser = await require('./browser_launcher').ensureChromeBrowserRunning(CDP_PORT, 'https://partner.hpe.com/web/prp');
+  const browser = await require('./browser_launcher').ensureChromeBrowserRunning(getCdpPort(), 'https://partner.hpe.com/web/prp', { autoSelectFreePort: true });
   if (!browser.ok) {
     const error = new Error('CDP_UNAVAILABLE: Chrome remote debugging did not become ready.');
     error.code = 'CDP_UNAVAILABLE';
@@ -1656,7 +1717,7 @@ if (require.main === module) {
   const saveReceipt = fields => {
     safeWriteJsonAtomic(receiptPath, { schemaVersion: 1, startedAt, finishedAt: new Date().toISOString(),
       navigatorSha256: require('crypto').createHash('sha256').update(require('fs').readFileSync(__filename)).digest('hex'),
-      query: chassisArg, cdpPort: CDP_PORT, ...fields });
+      query: chassisArg, cdpPort: getCdpPort(), ...fields });
     console.log(`Session receipt: ${path.relative(PROJECT_ROOT, receiptPath)}`);
   };
   const chassisArg = process.argv.slice(2).find(arg => !arg.startsWith('--')) || 'DL380 Gen12';

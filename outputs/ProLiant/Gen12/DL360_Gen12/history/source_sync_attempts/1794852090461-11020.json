@@ -1,0 +1,14 @@
+{
+  "product": "DL360_Gen12",
+  "notebookId": "dbe7a857-542f-4d3b-b2f0-e60d3883642b",
+  "replacementSourceId": "11542099-6371-4e3e-9505-03e48b13a322",
+  "verifiedAt": "2026-11-16T18:01:30.463Z",
+  "contentFingerprints": null,
+  "legacyFingerprint": "ce11d6e117df024e289c6994b90cd8b367e7d02e88b4530a6663986f9ee3c7b3",
+  "retirementRequested": true,
+  "plannedRetirementIds": [],
+  "status": "CONSOLIDATED",
+  "retiredSourceIds": [],
+  "remainingSourceIds": [],
+  "retirementErrors": []
+}

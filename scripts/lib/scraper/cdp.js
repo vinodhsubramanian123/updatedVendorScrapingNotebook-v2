@@ -16,6 +16,12 @@ const DEFAULT_TIMEOUT = 45000;   // ms — generous for slow OCA pages
 
 let _nextMsgId = 1;
 
+function getCdpPort() {
+  const raw = process.env.OCA_CDP_PORT || process.env.CDP_PORT;
+  const parsed = Number(raw);
+  return Number.isInteger(parsed) && parsed > 0 && parsed <= 65535 ? parsed : CDP_PORT;
+}
+
 /**
  * Transport-layer guard (INV-89) preventing direct URL navigation to HPE OCA SAML endpoints
  * or in-place reloads of active WebLogic OCA tabs.
@@ -127,8 +133,9 @@ return; }
  * Throws a detailed diagnostic error if no matching tab is open.
  */
 function getOCATarget() {
+  const cdpPort = getCdpPort();
   return new Promise((resolve, reject) => {
-    http.get(`http://localhost:${CDP_PORT}/json`, (res) => {
+    http.get(`http://localhost:${cdpPort}/json`, (res) => {
       let data = '';
       res.on('data', c => (data += c));
       res.on('end', () => {
@@ -158,7 +165,7 @@ function getOCATarget() {
           const partnerPage = pages.find(t => t.url && t.url.includes('partner.hpe.com') && !t.url.includes('seismic.com'));
           const openTabList = pages.map(t => `   - [${t.id}] ${t.title || 'Untitled'} (${t.url})`).join('\n');
 
-          let errHelp = `No active HPE OCA page (oca.ext.hpe.com) found on CDP port ${CDP_PORT}.\n`;
+          let errHelp = `No active HPE OCA page (oca.ext.hpe.com) found on CDP port ${cdpPort}.\n`;
           if (partnerPage) {
             errHelp += `💡 Found active HPE Partner Portal session at: ${partnerPage.url}\n` +
                        `   Please click through to the OCA / Configuration Application portal in your browser tab.\n`;
@@ -171,7 +178,7 @@ function getOCATarget() {
         } catch (e) { reject(e); }
       });
     }).on('error', e =>
-      reject(new Error(`Cannot reach CDP on port ${CDP_PORT}: ${e.message}\nEnsure Chrome / Antigravity browser is running with --remote-debugging-port=${CDP_PORT}`))
+      reject(new Error(`Cannot reach CDP on port ${cdpPort}: ${e.message}\nEnsure Chrome / Antigravity browser is running with --remote-debugging-port=${cdpPort}`))
     );
   });
 }
@@ -182,8 +189,9 @@ function getOCATarget() {
  * without disturbing the active OCA session.
  */
 function getAnyPageTarget() {
+  const cdpPort = getCdpPort();
   return new Promise((resolve, reject) => {
-    http.get(`http://localhost:${CDP_PORT}/json`, (res) => {
+    http.get(`http://localhost:${cdpPort}/json`, (res) => {
       let data = '';
       res.on('data', c => (data += c));
       res.on('end', () => {
@@ -193,11 +201,11 @@ function getAnyPageTarget() {
             t => t.type === 'page' && !t.url.includes('antigravity')
           );
           if (page) resolve(page);
-          else reject(new Error('No usable Chrome page target found on port 9222'));
+          else reject(new Error(`No usable Chrome page target found on port ${cdpPort}`));
         } catch (e) { reject(e); }
       });
     }).on('error', e =>
-      reject(new Error(`Cannot reach CDP on port ${CDP_PORT}: ${e.message}`))
+      reject(new Error(`Cannot reach CDP on port ${cdpPort}: ${e.message}`))
     );
   });
 }
@@ -476,9 +484,11 @@ async function waitForDOMPredicate(ws, expression, maxTimeoutMs = 15000, interva
                       msg.includes('websocket closed') ||
                       msg.includes('connection refused') ||
                       msg.includes('epipe') ||
-                      msg.includes('econnreset');
-      if (isFatal) throw err; // rethrow immediately — no point polling a dead session
-      // Transient eval errors (e.g. page still loading, temp JS exception) — continue polling
+                      msg.includes('econnreset') ||
+                      msg.includes('syntaxerror:') ||
+                      msg.includes('referenceerror:');
+      if (isFatal) throw err; // rethrow immediately — no point polling a dead session or broken JS expression
+      // Transient eval errors (e.g. page still loading) — continue polling
     }
 
     await sleep(intervalMs);
@@ -705,6 +715,7 @@ module.exports = {
   sleep,
   waitForDOMPredicate,
   CDP_PORT,
+  getCdpPort,
   deriveTextFromTables: domExtract.deriveTextFromTables,
   extractHiddenElements: domExtract.extractHiddenElements,
   probeConditionalSkuVisibility: domExtract.probeConditionalSkuVisibility,

@@ -91,6 +91,7 @@ function _inspectRowProbesAndGates(row, index, conditional, baseSkus, probes) {
         conditionKey: gate.conditionKey || gate.trigger?.conditionKey || (gate.conditionType === 'AMBIENT_GATE' ? 'ambientTempC' : 'UNKNOWN'),
         conditionOperator: gate.conditionOperator || gate.operator || gate.trigger?.conditionOperator || 'unknown',
         thresholdValue: gate.thresholdValue ?? gate.thresholdDegC ?? gate.trigger?.thresholdValue ?? null,
+        ...(gate.selectorTriggerSku ? { selectorTriggerSku: gate.selectorTriggerSku } : {}),
         evidenceBaseSku: gate.baseSku || null
       }))
     });

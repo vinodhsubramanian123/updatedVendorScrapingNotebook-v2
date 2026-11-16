@@ -15,39 +15,39 @@
 
 const fs = require('fs');
 const path = require('path');
-const { parseAndConsolidateBOQ } = require('./boq_evaluator.js');
+const { parseAndConsolidateBOQDetailed } = require('./boq_evaluator.js');
 const { processPortalFeedback } = require('../feedback/feedback_loop.js');
 const { isValidHpeSKU, cleanBaseSKU } = require('../catalog/sku.js');
 const { normalizeSku } = require('./portal_receipt');
 
+function _loadCatalogFileIntoMaps(jsonPath, catalogSkus, catalogPriceMap) {
+  if (!fs.existsSync(jsonPath)) return;
+  try {
+    const cat = JSON.parse(fs.readFileSync(jsonPath, 'utf-8'));
+    (cat.entries || []).forEach(entry => {
+      (entry.skus || []).forEach(s => {
+        const sku = s['Product #'] || s.sku;
+        if (!sku) return;
+        const exact = normalizeSku(sku);
+        catalogSkus.add(exact);
+        const price = parseFloat(String(s['Unit Price (USD)'] || s['Price (USD)'] || '0').replace(/[^0-9.]/g, '')) || 0;
+        if (!catalogPriceMap.has(exact) || price > 0) catalogPriceMap.set(exact, price);
+      });
+    });
+  } catch (_) {
+    const _logger = require('../system/pipeline_logger.js');
+    _logger.warn('ERROR', 'vendor_bom_verifier.js', _);
+  }
+}
+
 function loadCatalogSkusAndPrices(chassisDir) {
   const chassisPrefix = path.basename(chassisDir || '');
-  const catalogPath = path.join(chassisDir || '', `${chassisPrefix}_Catalog.json`);
   const catalogSkus = new Set();
   const catalogPriceMap = new Map();
-
-  if (fs.existsSync(catalogPath)) {
-    try {
-      const cat = JSON.parse(fs.readFileSync(catalogPath, 'utf-8'));
-      if (cat.entries) {
-        cat.entries.forEach(entry => {
-          (entry.skus || []).forEach(s => {
-            const sku = s['Product #'] || s.sku;
-            if (sku) {
-              const exact = normalizeSku(sku);
-              catalogSkus.add(exact);
-              const price = parseFloat(String(s['Unit Price (USD)'] || s['Price (USD)'] || '0').replace(/[^0-9.]/g, '')) || 0;
-              catalogPriceMap.set(exact, price);
-            }
-          });
-        });
-      }
-    } catch (_) {
-      const _logger = require('../system/pipeline_logger.js');
-      _logger.warn('ERROR', 'vendor_bom_verifier.js', _);
-    }
+  if (chassisDir) {
+    _loadCatalogFileIntoMaps(path.join(chassisDir, `${chassisPrefix}_Catalog.json`), catalogSkus, catalogPriceMap);
+    _loadCatalogFileIntoMaps(path.join(chassisDir, `${chassisPrefix}_Services.json`), catalogSkus, catalogPriceMap);
   }
-
   return { catalogSkus, catalogPriceMap };
 }
 
@@ -264,20 +264,27 @@ function _quarantineAddedVendorItems(addedByVendor, chassisDir) {
  * @param {object} [options]
  * @returns {object} Audit report with catalog membership, valid format, and uncataloged analysis
  */
-function auditSingleVendorBOM(vendorBomInput, chassisDir, _options = {}) {
+function _loadVendorBomInput(vendorBomInput, emptyMessage) {
   let vendorItems = [];
+  let clicStatusSummary = null;
   if (typeof vendorBomInput === 'string' && fs.existsSync(vendorBomInput)) {
     const rawContent = fs.readFileSync(vendorBomInput, 'utf-8');
-    vendorItems = parseAndConsolidateBOQ(rawContent, vendorBomInput);
+    const parsedVendor = parseAndConsolidateBOQDetailed(rawContent, vendorBomInput);
+    vendorItems = parsedVendor.items;
+    clicStatusSummary = parsedVendor.clicStatusSummary || null;
   } else if (Array.isArray(vendorBomInput)) {
     vendorItems = vendorBomInput;
   } else {
     throw new Error('Invalid Vendor BOM input. Must be a valid file path or item array.');
   }
-
   if (vendorItems.length === 0) {
-    throw new Error('Vendor BOM input contains zero items.');
+    throw new Error(emptyMessage);
   }
+  return { vendorItems, clicStatusSummary };
+}
+
+function auditSingleVendorBOM(vendorBomInput, chassisDir, _options = {}) {
+  const { vendorItems, clicStatusSummary } = _loadVendorBomInput(vendorBomInput, 'Vendor BOM input contains zero items.');
   const auditedItems = aggregateItemQuantities(vendorItems); // Reject malformed rows; do not silently omit them.
   const pricingGaps = [...auditedItems].filter(([, item]) => !item.pricingComplete).map(([identity, item]) => ({
     sku: item.rawSku, scopeIdentity: identity, reason: 'Quote price is missing, malformed or an unconfirmed zero.'
@@ -308,6 +315,8 @@ function auditSingleVendorBOM(vendorBomInput, chassisDir, _options = {}) {
     catalogMissing: catalogSkus.size === 0,
     isCatalogClean: catalogSkus.size > 0 && uncatalogedSkus.length === 0,
     requiresFreshScrape,
+    clicStatusSummary,
+    portalValidationStatus: clicStatusSummary?.status || 'PORTAL VALIDATION PENDING',
     is100PercentMatch: false,
     hasDiscrepancies: uncatalogedSkus.length > 0 || invalidFormatSkus.length > 0 || pricingGaps.length > 0,
     pricingComplete: pricingGaps.length === 0,
@@ -343,19 +352,7 @@ function verifyVendorBOM(vendorBomInput, proposedRankSolution, chassisDir, optio
     return auditSingleVendorBOM(vendorBomInput, chassisDir, options);
   }
 
-  let vendorItems = [];
-  if (typeof vendorBomInput === 'string' && fs.existsSync(vendorBomInput)) {
-    const rawContent = fs.readFileSync(vendorBomInput, 'utf-8');
-    vendorItems = parseAndConsolidateBOQ(rawContent, vendorBomInput);
-  } else if (Array.isArray(vendorBomInput)) {
-    vendorItems = vendorBomInput;
-  } else {
-    throw new Error('Invalid Vendor BOM input. Must be a valid file path or item array.');
-  }
-
-  if (vendorItems.length === 0) {
-    throw new Error('Comparison mode requires non-empty vendor BOM items.');
-  }
+  const { vendorItems, clicStatusSummary } = _loadVendorBomInput(vendorBomInput, 'Comparison mode requires non-empty vendor BOM items.');
 
   const { catalogSkus } = loadCatalogSkusAndPrices(chassisDir);
 
@@ -401,7 +398,9 @@ function verifyVendorBOM(vendorBomInput, proposedRankSolution, chassisDir, optio
   const requiresFreshScrape = discrepancies.uncatalogedSkus.length > 0;
 
   // 3. Record vendor observations in product-scoped quarantine only for real additions
-  const { quarantinedObservations, observationErrors } = _quarantineAddedVendorItems(discrepancies.addedByVendor, chassisDir);
+  const { quarantinedObservations, observationErrors } = options.skipQuarantine === true
+    ? { quarantinedObservations: [], observationErrors: [] }
+    : _quarantineAddedVendorItems(discrepancies.addedByVendor, chassisDir);
 
   const auditReport = {
     chassisModel: path.basename(chassisDir || ''),
@@ -416,6 +415,8 @@ function verifyVendorBOM(vendorBomInput, proposedRankSolution, chassisDir, optio
     hasDiscrepancies,
     requiresFreshScrape,
     learnedDeltaCount: 0,
+    clicStatusSummary,
+    portalValidationStatus: clicStatusSummary?.status || 'PORTAL VALIDATION PENDING',
     quarantinedObservationCount: quarantinedObservations.length,
     quarantinedObservationIds: quarantinedObservations,
     observationErrors,
@@ -610,6 +611,8 @@ function _parseCliArgs(args) {
   let vendorFile = null;
   let catalogDir = null;
   let jsonOutput = false;
+  let nodeMultiplier = 1;
+  let skipQuarantine = false;
 
   for (let i = 0; i < args.length; i++) {
     if (args[i] === '--customer' && args[i + 1]) {
@@ -618,6 +621,11 @@ function _parseCliArgs(args) {
       vendorFile = args[++i];
     } else if (args[i] === '--catalog' && args[i + 1]) {
       catalogDir = args[++i];
+    } else if ((args[i] === '--nodes' || args[i] === '--multiplier') && args[i + 1]) {
+      const parsedMult = parseInt(args[++i], 10);
+      if (Number.isInteger(parsedMult) && parsedMult > 1) nodeMultiplier = parsedMult;
+    } else if (args[i] === '--no-quarantine') {
+      skipQuarantine = true;
     } else if (args[i] === '--json') {
       jsonOutput = true;
     } else if (!vendorFile && !args[i].startsWith('--')) {
@@ -629,7 +637,7 @@ function _parseCliArgs(args) {
     }
   }
 
-  return { customerFile, vendorFile, catalogDir, jsonOutput };
+  return { customerFile, vendorFile, catalogDir, jsonOutput, nodeMultiplier, skipQuarantine };
 }
 
 function _resolveChassisCatalogDir(candidateName) {
@@ -700,7 +708,7 @@ function _handleNonHpeVendorFlow(customerFile, vendorFile, jsonOutput) {
   process.exit(crossReport.is100PercentMatch ? 0 : 2);
 }
 
-function _loadProposedSolution(customerFile) {
+async function _loadProposedSolution(customerFile, options = {}) {
   if (!customerFile || !fs.existsSync(customerFile)) return null;
   if (customerFile.endsWith('.json')) {
     try {
@@ -711,12 +719,22 @@ function _loadProposedSolution(customerFile) {
       process.exit(1);
     }
   }
-  const { evaluateBOQMultiAspect } = require('./boq_evaluator.js');
-  const evalRes = evaluateBOQMultiAspect(customerFile);
-  return evalRes.matrix?.rank1 || {
+  const { parseAndConsolidateBOQDetailed, evaluateBOQMultiAspect } = require('./boq_evaluator.js');
+  const parsed = parseAndConsolidateBOQDetailed('', customerFile);
+  let baseItems = parsed?.items?.length ? parsed.items : [];
+  if (baseItems.length === 0) {
+    const evalRes = await evaluateBOQMultiAspect(customerFile, { enableCloudValidation: false, offline: true });
+    baseItems = evalRes?.items || evalRes?.parsedItems || evalRes?.matrix?.rank1?.skuList || [];
+  }
+  const mult = Number.isInteger(options.nodeMultiplier) && options.nodeMultiplier > 1 ? options.nodeMultiplier : 1;
+  const { isGlobalItem } = require('./configuration_context.js');
+  const scaledItems = mult > 1
+    ? baseItems.map(it => (isGlobalItem(it, 1) ? { ...it, quantityScope: 'global' } : { ...it, quantity: (it.quantity || 1) * mult }))
+    : baseItems;
+  return {
     rank: 1,
-    name: 'Rank 1: Baseline Intent Preserved',
-    skuList: evalRes.parsedItems || []
+    name: 'Baseline Customer Tender Intent',
+    skuList: scaledItems
   };
 }
 
@@ -732,6 +750,10 @@ function _printReconciliationReport(report) {
   console.log(`- Dropped by Vendor: ${report.discrepancies.removedByVendor.length}`);
   console.log(`- Quantity Deltas: ${report.discrepancies.quantityDeltas?.length || 0}`);
   console.log(`- Price Deltas: ${report.discrepancies.priceDeltas.length}`);
+  if (report.clicStatusSummary?.hasClicStatusColumn) {
+    const cs = report.clicStatusSummary;
+    console.log(`- CLIC Portal Status: ${cs.status}${cs.ucid ? ` (UCID ${cs.ucid})` : ''} | Unbuildables: ${cs.unbuildableCount}, Errors: ${cs.errorCount}, Warnings: ${cs.warningCount}`);
+  }
 
   if (report.discrepancies.uncatalogedSkus.length > 0) {
     console.log('\n⚠️ UNCATALOGED SKUs (Require CDP Scraping):');
@@ -761,17 +783,17 @@ function _printReconciliationReport(report) {
 }
 
 // ── CLI Runner ─────────────────────────────────────────────────────────────
-function runCli(args = process.argv.slice(2)) {
+async function runCli(args = process.argv.slice(2)) {
   if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
     console.log('Usage: node scripts/lib/boq/vendor_bom_verifier.js --vendor <vendor_quote.xlsx> [--customer <customer_boq.xlsx>] [--catalog <catalog_dir>] [--json]');
     console.log('       node scripts/lib/boq/vendor_bom_verifier.js <vendor_quote.xlsx> [customer_boq.xlsx] [catalog_dir] [--json]');
     process.exit(0);
   }
 
-  const { customerFile, vendorFile, catalogDir, jsonOutput } = _parseCliArgs(args);
+  const { customerFile, vendorFile, catalogDir, jsonOutput, nodeMultiplier, skipQuarantine } = _parseCliArgs(args);
 
   if (!vendorFile) {
-    console.error('Usage: node scripts/lib/boq/vendor_bom_verifier.js --vendor <vendor_quote.xlsx> [--customer <customer_boq.xlsx>] [--catalog <catalog_dir>] [--json]');
+    console.error('Usage: node scripts/lib/boq/vendor_bom_verifier.js --vendor <vendor_quote.xlsx> [--customer <customer_boq.xlsx>] [--catalog <catalog_dir>] [--nodes <n>] [--json]');
     process.exit(1);
   }
 
@@ -786,11 +808,11 @@ function runCli(args = process.argv.slice(2)) {
     process.exit(1);
   }
 
-  const proposedSolution = _loadProposedSolution(customerFile);
+  const proposedSolution = await _loadProposedSolution(customerFile, { nodeMultiplier });
 
   try {
     const report = proposedSolution
-      ? verifyVendorBOM(path.resolve(vendorFile), proposedSolution, resolvedCatalogDir)
+      ? verifyVendorBOM(path.resolve(vendorFile), proposedSolution, resolvedCatalogDir, { skipQuarantine })
       : auditSingleVendorBOM(path.resolve(vendorFile), resolvedCatalogDir);
 
     if (jsonOutput) {
@@ -805,7 +827,10 @@ function runCli(args = process.argv.slice(2)) {
 }
 
 if (require.main === module) {
-  runCli();
+  runCli().catch(err => {
+    console.error(`Reconciliation failed: ${err.message}`);
+    process.exit(1);
+  });
 }
 
 module.exports = {

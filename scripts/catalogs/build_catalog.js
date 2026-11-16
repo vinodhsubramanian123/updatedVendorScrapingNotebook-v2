@@ -1588,7 +1588,10 @@ function buildBaseChassisRecordFromMetadata(effectiveSku, discovered, mapInfo, c
   let rawDesc = discovered?.description || discovered?.text || mapInfo?.description || `${chassisLabel} Configure-to-order Server`;
   rawDesc = rawDesc.replace(/^[A-Z0-9-]+\s*-\s*/, '').trim();
   const discPrice = Number(discovered?.listPriceUsd || 0);
-  const price = discPrice > 0 ? discPrice : Number(mapInfo?.listPrice || 0);
+  const resolvedPrice = discPrice > 0 ? discPrice : Number(mapInfo?.listPrice || 0);
+  const registration = require('../config/notebooks.json').notebooks[parseProductMeta(chassisLabel).cleanName];
+  const price = resolvedPrice > 0 ? resolvedPrice : (registration?.requireExactOcaBase ? null : 0);
+  const formattedPrice = price === null ? '' : price.toFixed(2);
   const status = discovered?.status || 'Active';
   const leadTime = discovered?.leadTime || chassisDiscovery?.deliveryEstimate || '';
   return {
@@ -1598,7 +1601,7 @@ function buildBaseChassisRecordFromMetadata(effectiveSku, discovered, mapInfo, c
     'Component Role': 'Base Chassis',
     Description: rawDesc,
     'Current Qty': '1',
-    'Unit Price (USD)': price > 0 ? price.toFixed(2) : '0.00',
+    'Unit Price (USD)': formattedPrice,
     listPrice: price,
     'CLIC Status': status,
     'Lifecycle Status': status,
@@ -1706,11 +1709,11 @@ function resolveDiscoveredVariantPrice(candidate, previous, chassisLabel, produc
   if (candidate.priceVerified && candidate.listPriceUsd === 0) return 0;
   const currentPrice = Number(candidate.listPriceUsd || 0);
   if (currentPrice > 0) return currentPrice;
-  const registration = require('../config/notebooks.json').notebooks[parseProductMeta(chassisLabel).cleanName];
-  if (registration?.requireExactOcaBase || registration?.captureViaParent) return null;
   const mapInfo = lookupChassisMapBaseSku(chassisLabel, null, productNumber);
   const mapPrice = Number(mapInfo?.listPrice || 0);
   if (mapPrice > 0) return mapPrice;
+  const registration = require('../config/notebooks.json').notebooks[parseProductMeta(chassisLabel).cleanName];
+  if (registration?.requireExactOcaBase || registration?.captureViaParent) return null;
   const historicalPrice = Number(previous.listPrice || previous['Unit Price (USD)'] || previous['Price (USD)'] || 0);
   return historicalPrice > 0 ? historicalPrice : 0;
 }
@@ -2322,6 +2325,30 @@ async function exportCatalogArtifacts(ctx) {
   }
 }
 
+function resolveConditionalRawData(rawData, rawInputPath) {
+  const obs = [...(rawData?.conditionalSkus || [])];
+  const seen = new Set(obs.map(s => `${cleanBaseSKU(s.sku || '')}|${s.conditionType || ''}|${s.selectorTriggerSku || ''}|${s.ruleContext || ''}`));
+  if (rawInputPath) {
+    try {
+      const condPath = path.join(path.dirname(rawInputPath), 'conditional_skus.json');
+      if (fs.existsSync(condPath)) {
+        const parsed = JSON.parse(fs.readFileSync(condPath, 'utf8'));
+        const extra = Array.isArray(parsed) ? parsed : (parsed.skus || parsed.conditionalSkus || []);
+        for (const item of extra) {
+          const key = `${cleanBaseSKU(item?.sku || '')}|${item?.conditionType || ''}|${item?.selectorTriggerSku || ''}|${item?.ruleContext || ''}`;
+          if (item && !seen.has(key)) {
+            seen.add(key);
+            obs.push(item);
+          }
+        }
+      }
+    } catch (err) {
+      PipelineLogger.warn('BUILD_CATALOG', `Failed reading conditional_skus.json from ${rawInputPath}: ${err.message}`);
+    }
+  }
+  return obs;
+}
+
 function resolveUnavailableRawData(rawData, rawInputPath) {
   const rules = [...(rawData?.unavailableRules || [])];
   const skus = [...(rawData?.unavailableSkus || [])];
@@ -2390,8 +2417,9 @@ async function main(rawInputPath = process.argv[2], jsonOutputPath = process.arg
   ctx.smartChassisCombinations = smartChassisCombinations || [];
   ctx.solutionManifest = extractSolutionManifest(ctx.rawData?.tables || ctx.tables || []);
   const { applyConditionalDiscovery, applyUnavailableDomRulesAndSkus } = require('../lib/catalog/conditional_discovery.js');
+  const conditionalObs = resolveConditionalRawData(ctx.rawData, rawInputPath);
   ctx.conditionalRules = applyConditionalDiscovery(
-    [...hardwareEntries, ...cleanServicesEntries], ctx.rawData.conditionalSkus || []);
+    [...hardwareEntries, ...cleanServicesEntries], conditionalObs, hardwareEntries);
   const unavail = resolveUnavailableRawData(ctx.rawData, rawInputPath);
   ctx.unavailableRules = applyUnavailableDomRulesAndSkus(
     hardwareEntries, cleanServicesEntries, unavail.rules, unavail.skus);

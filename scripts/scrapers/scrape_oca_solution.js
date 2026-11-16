@@ -886,6 +886,28 @@ async function resolveActiveProductAndProfile(ws, targetChassisQuery, pageTarget
   return { meta, profile, pageHeading, qsLink, step3Result };
 }
 
+async function _appendBackplaneSelectorSkus(ws, tables, conditionalSkus, sendCommandFn, expandFn) {
+  const { probeBackplaneSelectorSkus } = require('../lib/scraper/drive_cage_selector_probe.js');
+  const { cleanBaseSKU } = require('../lib/catalog/sku.js');
+  const baselineSkus = new Set();
+  for (const t of (tables || [])) {
+    for (const row of (t.rows || [])) {
+      const cleaned = cleanBaseSKU(String(row[0] || '').replace(/^(?:OB|CS|90|DS|PVT)\s+/i, '').trim());
+      if (cleaned) baselineSkus.add(cleaned);
+    }
+  }
+  const probe = await probeBackplaneSelectorSkus(ws, sendCommandFn, { expandSections: expandFn, baselineSkus });
+  const existingKeys = new Set(conditionalSkus.map(s => `${s.sku}:${s.conditionType || ''}:${s.selectorTriggerSku || ''}`));
+  for (const item of (probe.conditionalSkus || [])) {
+    const key = `${item.sku}:${item.conditionType || ''}:${item.selectorTriggerSku || ''}`;
+    if (!existingKeys.has(key)) {
+      existingKeys.add(key);
+      conditionalSkus.push(item);
+    }
+  }
+  return probe.observedSelectors || [];
+}
+
 async function extractPageDomPayload(ws, meta, profile) {
   const scrollThreshold = profile.scraping_tuning?.scrollHeightThreshold || 15000;
   const targetTabsRegex = profile.scraping_tuning?.targetTabsRegex || "pointnext|services|support services|tech care|^bom$";
@@ -962,6 +984,7 @@ async function extractPageDomPayload(ws, meta, profile) {
 
   console.log('\nRunning conditional SKU visibility sweep (ambient temperature gates)...');
   let conditionalSkus = [];
+  let backplaneSelectors = [];
   try {
     const hidden = await extractHiddenElements(ws, sendCommand);
     const seenTables = new Set(tables.map(table => JSON.stringify(table)));
@@ -981,6 +1004,7 @@ async function extractPageDomPayload(ws, meta, profile) {
       visibleAtDefaultC: false,
       portalVerificationRequired: true
     })));
+    backplaneSelectors = await _appendBackplaneSelectorSkus(ws, tables, conditionalSkus, sendCommand, expandSections);
     if (conditionalSkus.length > 0) {
       console.log(`  🔍 Discovered ${conditionalSkus.length} conditionally-gated SKU(s):`);
       for (const cs of conditionalSkus) {
@@ -1014,6 +1038,7 @@ async function extractPageDomPayload(ws, meta, profile) {
     tables,
     sections,
     conditionalSkus,
+    backplaneSelectors,
     unavailableRules,
     unavailableSkus,
     textExtractionMode,
@@ -1187,7 +1212,8 @@ async function setupStagingAndPersistRawData({
       { selector: '#extended_overview_menu', value: 'EXPANDED' },
       ...(chassisDiscovery?.scopePath || []).filter(step => step.parentOption)
         .map(step => ({ selector: 'parentOption', productId: step.productId, value: step.parentOption })),
-      { selector: 'ambientTemperature', value: 'DEFAULT_AND_SWEEP_RESTORED' }
+      { selector: 'ambientTemperature', value: 'DEFAULT_AND_SWEEP_RESTORED' },
+      ...(domPayload.backplaneSelectors || [])
     ],
     finalSelectorsRestored: true,
     scrollHeight: domPayload.metrics.scrollHeight,
@@ -1200,7 +1226,9 @@ async function setupStagingAndPersistRawData({
     tableCount: domPayload.tables.length,
     conditionalSkus: domPayload.conditionalSkus,
     conditionalSkusCount: domPayload.conditionalSkus.length,
-    conditionalDiscovery: 'HIDDEN_DOM_AND_AMBIENT_ONLY_OTHER_MACROS_UNVERIFIED',
+    conditionalDiscovery: domPayload.backplaneSelectors?.length
+      ? 'HIDDEN_DOM_AMBIENT_AND_SCOPED_BACKPLANE_SELECTORS_OTHER_MACROS_UNVERIFIED'
+      : 'HIDDEN_DOM_AND_AMBIENT_ONLY_OTHER_MACROS_UNVERIFIED',
     unavailableRules: domPayload.unavailableRules,
     unavailableRulesCount: domPayload.unavailableRules.length,
     unavailableSkus: domPayload.unavailableSkus,
@@ -1326,8 +1354,11 @@ async function main() {
     portalUrl: resolvedPortalUrl
   });
 
-  const { ensureChromeBrowserRunning } = require('../lib/scraper/browser_launcher.js');
-  await ensureChromeBrowserRunning(9222);
+  const { ensureChromeBrowserRunning, getConfiguredCdpPort } = require('../lib/scraper/browser_launcher.js');
+  const browserResult = await ensureChromeBrowserRunning(getConfiguredCdpPort(), 'https://partner.hpe.com/web/prp', { autoSelectFreePort: true });
+  if (!browserResult.ok) {
+    throw new Error(browserResult.error || `Chrome CDP port ${browserResult.port} did not become ready`);
+  }
 
   const { ws, pageTarget, chassisDiscovery: initDiscovery, stepTelemetry, networkSniffer } =
     await initCdpAndSession({ navQuery, targetChassisQuery, isRecoverMode });

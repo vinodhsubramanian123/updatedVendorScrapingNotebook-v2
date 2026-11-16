@@ -549,7 +549,7 @@ function normalizeStorageEnterpriseDiagnostics(result, errors, warnings) {
 function normalizeStorageTriModeResult(result, errors, warnings) {
   if (result.hasIncompatibleYCable) errors.push('Tri-Mode Splitter Cable Kit is incompatible with standard cages');
   if (result.needsSasExpander) errors.push('SAS Expander required for configuration exceeding 8 drives');
-  if (result.needsCableKit) errors.push('Storage cable kit required for controller backplane connection');
+  if (result.needsCableKit) errors.push(result.missingSignalReason || 'Storage cable kit required for controller backplane connection');
   if (result.needsSmartStorageBattery) errors.push('Smart Storage Battery or Hybrid Capacitor required for storage controller cache backup');
   if (result.isBackplaneCapacityExceeded) errors.push(`Installed drives (${result.driveCount || 0}) exceed backplane drive capacity (${result.backplaneCapacity || 0})`);
   normalizeStorageEnterpriseDiagnostics(result, errors, warnings);

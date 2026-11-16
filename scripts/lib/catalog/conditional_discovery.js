@@ -1,7 +1,99 @@
 'use strict';
 const { cleanBaseSKU, isValidHpeSKU, classifyOptionType, isTaaGtaCatalogOption } = require('./sku.js');
+const { extractCatalogItemLeadTime, extractCatalogItemPrice } = require('../taxonomy/sku_resolver.js');
 
-function applyConditionalDiscovery(entries, observations = []) {
+function _buildConditionalRule(observation, sku) {
+  const ambient = observation.conditionType === 'AMBIENT_GATE' && Number.isFinite(observation.thresholdDegC);
+  const selectorScoped = observation.conditionType === 'SELECTOR_STATE_CONDITIONAL';
+  const condType = ambient ? 'AMBIENT_GATE' : (observation.conditionType && observation.conditionType !== 'UNKNOWN_PORTAL_CONDITION' ? observation.conditionType : 'PORTAL_CONDITIONAL_VIEW');
+  const condKey = ambient ? 'ambientTempC' : (selectorScoped ? (observation.conditionKey || 'backplaneSelector') : 'portalSelector');
+  const condOp = ambient ? observation.operator : (observation.operator || 'requires_selection');
+  const ruleContextDesc = observation.ruleContext ? ` (${observation.ruleContext})` : '';
+  return {
+    level: 'CHASSIS',
+    ruleType: 'CONDITIONAL_VISIBILITY',
+    affectedSkus: [sku],
+    conditionType: condType,
+    conditionKey: condKey,
+    conditionOperator: condOp,
+    thresholdValue: ambient ? observation.thresholdDegC : null,
+    ...(observation.selectorTriggerSku ? { selectorTriggerSku: observation.selectorTriggerSku } : {}),
+    portalVerificationRequired: true,
+    rule: ambient
+      ? `${sku} conditional visibility: ambient temperature ${{ lte: '<=', gte: '>=', eq: '==' }[observation.operator] || 'unknown'} ${observation.thresholdDegC} C; PORTAL_CONDITIONAL`
+      : `${sku} conditional visibility: portal selector activation required${ruleContextDesc}; PORTAL_CONDITIONAL`
+  };
+}
+
+function _createSelectorDiscoveredRow(observation, sku, rule) {
+  const { price: parsedPrice } = extractCatalogItemPrice({ listPrice: observation.numericListPrice ?? observation.listPrice });
+  const hasPrice = parsedPrice > 0;
+  const badge = String(observation.badge || observation.lifecycleBadge || '').trim().toUpperCase();
+  const { raw: leadTime, days: leadTimeDays, isPublished } = extractCatalogItemLeadTime(observation);
+  const cleanDesc = String(observation.description || 'HPE Hardware Option').replace(/[\r\n\t]+/g, ' ').trim();
+  const lifecycle = badge === 'OB' ? 'Obsolete' : (badge === '90' ? '90-Day EOL Warning' : (observation.lifecycleStatus || 'Active'));
+  return {
+    'Product #': sku,
+    sku,
+    Description: cleanDesc,
+    'Option Type': observation.optionType || classifyOptionType(sku),
+    'Current Qty': '0',
+    'Unit Price (USD)': hasPrice ? parsedPrice.toFixed(2) : '',
+    'Extended Price (USD)': 'NA',
+    'List Price (USD)': hasPrice ? parsedPrice.toFixed(2) : '',
+    listPrice: hasPrice ? parsedPrice : null,
+    'HPE Recommended': observation.preferred ? 'Yes' : (observation['HPE Recommended'] || 'No'),
+    vendorRecommended: Boolean(observation.preferred),
+    'Lead Time': leadTime,
+    leadTimeDays,
+    'Lead Time Days': leadTimeDays === null ? '' : String(leadTimeDays),
+    'Lead Time Source': isPublished ? 'OCA selector probe row attribute' : 'Unknown',
+    'Start Date': observation.startDate || '',
+    'Discontinued Date': observation.discontinuedDate || '',
+    'Obsolete Date': observation.obsoleteDate || '',
+    'CLIC Status': observation.inUnavail ? 'Conditional' : 'Selectable under selector gate',
+    'Lifecycle Status': lifecycle,
+    lifecycleStatus: lifecycle,
+    lifecycleBadge: badge,
+    Availability: observation.inUnavail ? 'Unavailable under default config' : 'Conditionally selectable via portal selector',
+    visibilityState: 'PORTAL_CONDITIONAL',
+    conditionType: rule.conditionType,
+    thresholdValue: rule.thresholdValue,
+    conditionOperator: rule.conditionOperator,
+    conditionKey: rule.conditionKey,
+    selectorTriggerSku: observation.selectorTriggerSku || null,
+    observedInPortal: true,
+    provenance: observation.ruleContext || rule.rule
+  };
+}
+
+function _attachSelectorDiscoveredRow(targetEntries, observation, newRow, rule) {
+  const parentCategory = observation.parentCategory || 'Drive Enclosures / Drives';
+  const subCategory = observation.subCategory || 'Hot Plug SFF Drives (Selector Conditional)';
+  let entry = targetEntries.find(e =>
+    (e.parentCategory || '').toLowerCase() === parentCategory.toLowerCase() &&
+    (e.subCategory || '').toLowerCase() === subCategory.toLowerCase()
+  );
+  if (!entry) {
+    entry = {
+      parentCategory,
+      subCategory,
+      constraint: observation.selectorTriggerSku ? `Requires selector ${observation.selectorTriggerSku}` : 'Selector conditional',
+      rules: [],
+      skus: []
+    };
+    targetEntries.push(entry);
+  }
+  if (!entry.skus.some(row => cleanBaseSKU(row.sku || row['Product #']) === newRow.sku)) {
+    entry.skus.push(newRow);
+  }
+  entry.skuCount = entry.skus.length;
+  entry.rules = [...new Set([...(entry.rules || []), rule.rule])];
+  rule.parentCategory = entry.parentCategory;
+  rule.subCategory = entry.subCategory;
+}
+
+function applyConditionalDiscovery(entries, observations = [], targetEntries = entries) {
   const rules = [];
   for (const observation of observations) {
     if (isTaaGtaCatalogOption(observation.rawSku || observation.sku, observation.description)) continue;
@@ -9,27 +101,12 @@ function applyConditionalDiscovery(entries, observations = []) {
       /^(?:OB|DS|CS|90|PVT)$/i.test(String(observation.ruleContext || '').trim())) continue;
     const sku = cleanBaseSKU(observation.sku);
     if (!sku || !isValidHpeSKU(sku)) continue;
-    const ambient = observation.conditionType === 'AMBIENT_GATE' && Number.isFinite(observation.thresholdDegC);
-    const condType = ambient ? 'AMBIENT_GATE' : (observation.conditionType && observation.conditionType !== 'UNKNOWN_PORTAL_CONDITION' ? observation.conditionType : 'PORTAL_CONDITIONAL_VIEW');
-    const condKey = ambient ? 'ambientTempC' : 'portalSelector';
-    const condOp = ambient ? observation.operator : 'requires_selection';
-    const ruleContextDesc = observation.ruleContext ? ` (${observation.ruleContext})` : '';
-    const rule = {
-      level: 'CHASSIS',
-      ruleType: 'CONDITIONAL_VISIBILITY',
-      affectedSkus: [sku],
-      conditionType: condType,
-      conditionKey: condKey,
-      conditionOperator: condOp,
-      thresholdValue: ambient ? observation.thresholdDegC : null,
-      portalVerificationRequired: true,
-      rule: ambient
-        ? `${sku} conditional visibility: ambient temperature ${{ lte: '<=', gte: '>=', eq: '==' }[observation.operator] || 'unknown'} ${observation.thresholdDegC} C; PORTAL_CONDITIONAL`
-        : `${sku} conditional visibility: portal selector activation required${ruleContextDesc}; PORTAL_CONDITIONAL`
-    };
+    const rule = _buildConditionalRule(observation, sku);
+    let matchedCount = 0;
     for (const entry of entries) {
       const matched = (entry.skus || []).filter(row => cleanBaseSKU(row.sku || row['Product #']) === sku);
       if (!matched.length) continue;
+      matchedCount += matched.length;
       rule.parentCategory = entry.parentCategory;
       rule.subCategory = entry.subCategory;
       entry.rules = [...new Set([...(entry.rules || []), rule.rule])];
@@ -39,9 +116,15 @@ function applyConditionalDiscovery(entries, observations = []) {
           conditionType: rule.conditionType,
           thresholdValue: rule.thresholdValue,
           conditionOperator: rule.conditionOperator,
-          conditionKey: rule.conditionKey
+          conditionKey: rule.conditionKey,
+          ...(observation.selectorTriggerSku ? { selectorTriggerSku: observation.selectorTriggerSku } : {}),
+          ...(observation.observedInPortal ? { observedInPortal: true } : {})
         });
       }
+    }
+    if (matchedCount === 0 && observation.observedInPortal === true && observation.description && Array.isArray(targetEntries)) {
+      const newRow = _createSelectorDiscoveredRow(observation, sku, rule);
+      _attachSelectorDiscoveredRow(targetEntries, observation, newRow, rule);
     }
     rules.push(rule);
   }

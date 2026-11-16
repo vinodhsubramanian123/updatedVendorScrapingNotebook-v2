@@ -186,10 +186,16 @@ test('Codex Audit Remediation — Full 13-Finding Validation Matrix', async (t) 
     const img2 = classifyQueryIntent('quote_photo.jpeg');
     assert.strictEqual(img2.intent, 'OCR_QUOTE_INGESTION');
 
-    // 2. DL360 Gen12 does NOT map to Gen11 or default to DL380 Gen12
-    const resGen12 = getChassisCatalog('Can you configure DL360 Gen12?');
-    assert.strictEqual(resGen12.isAmbiguous, true, 'DL360 Gen12 must be flagged as ambiguous/unsupported');
+    // 2. Unmapped DL360 Gen12 (when omitted from portfolio) or DL360 Gen14 does NOT map to Gen11 or default to DL380 Gen12
+    const resGen12 = getChassisCatalog('Can you configure DL360 Gen12?', {
+      availableCatalogs: [{ id: 'DL360_Gen11', chassis: 'DL360_Gen11' }, { id: 'DL380_Gen12', chassis: 'DL380_Gen12' }]
+    });
+    assert.strictEqual(resGen12.isAmbiguous, true, 'Unmapped DL360 Gen12 must be flagged as ambiguous/unsupported');
     assert.strictEqual(resGen12.chassisKey, 'DL360_Gen12_UNSUPPORTED');
+
+    const resGen14 = getChassisCatalog('Can you configure DL360 Gen14?');
+    assert.strictEqual(resGen14.isAmbiguous, true, 'Unsupported DL360 Gen14 must fail closed');
+    assert.strictEqual(resGen14.chassisKey, 'DL360_Gen14_UNSUPPORTED');
 
     // 3. Structured item array parsing in readBoqLines
     const structuredItems = [

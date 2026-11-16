@@ -1,8 +1,8 @@
 # HPE Knowledge Registry — Local Audit Index
 
-**Document Version**: `2.0.0` | **Generated**: `2026-11-15T08:17:57.496Z`
+**Document Version**: `2.0.0` | **Generated**: `2026-11-16T21:09:55.010Z`
 **Scope**: Local governance index. This file is not a NotebookLM source; product notebooks receive independently scoped projections.
-**Total Verified Knowledge Deltas**: `155` (`15` Universal + `0` Family/Gen + `140` Chassis Specific)
+**Total Verified Knowledge Deltas**: `165` (`21` Universal + `0` Family/Gen + `144` Chassis Specific)
 
 ---
 
@@ -49,27 +49,51 @@
 - **Scope**: `UNIVERSAL_VENDOR`
 - **Rule**: Multi-vendor portal, domain rules & CDP readiness protocol (INV-240): (1) Use registerCustomVendorPortalPolicy, registerVendorScraperAdapter (ConfigurablePortalDomAdapter / LenovoDcscAdapter), normalizeSolutionPillar (Server/Storage/Networking/Composite), and --vendor/--portal-url CLI flags to onboard new vendor portals cleanly without hardcoded credentials. (2) Expose inspect_catalog_deltas and check_portal_and_sync_readiness via mcp_server.js (14 tools). (3) Enforce preflight/postflight, diff summary, capture receipt, and NLM sync parity in scrape_oca_storage_solution.js and normalize alternate rule schemas (ruleId/description/type) in catalog_rules.js before classifyRule. (4) Use probeCdpPort(9222) so non-CDP HTTP listeners (e.g. background msedge HTTP 404) surface portConflict: true / occupiedByNonCdp: true and return HTTP 503 on POST /api/tasks/launch-browser instead of masking as SUCCESS.
 
-#### U10. [OWNER_STANDARD_3Y_BASIC] SUPPORT_POLICY
+#### U10. [LEARN_UNIVERSAL_CDP_FATAL_EVAL_AND_RETRY_GUARD_20261117] WORKFLOW_CDP_FATAL_EVAL_AND_RETRY_GUARD
+- **Scope**: `UNIVERSAL_VENDOR`
+- **Rule**: CDP polling helpers must classify SyntaxError and ReferenceError exceptions as immediate fatal errors instead of retrying silently to false, DOM evaluation builders must serialize inputs safely via JSON.stringify, OCA navigation timeouts must surface OCA_RESPONSE_TIMEOUT without closing active OCA workspaces (keeping Partner Portal tabs alive), and QuickSpecs downloads must try vendor HTTPS first with isolated browser-context fallback so active configuration tabs remain untouched (INV-241).
+
+#### U11. [LEARN_UNIVERSAL_BACKPLANE_SELECTOR_STATE_DISCOVERY_20261117] WORKFLOW_SELECTOR_STATE_BACKPLANE_DISCOVERY
+- **Scope**: `UNIVERSAL_VENDOR`
+- **Rule**: Runtime discovery plans must forward exact selector trigger SKUs into bounded inactive backplane selector probes when hot-plug drive tables are collapsed, record a completed sweep only after verified quantity 1 readback and confirmed return to quantity 0 in try/finally (throwing loudly if restore fails or readback drops), materialize portal-observed conditional rows into hardwareEntries, and render selector tables with explicit scope disclosure into NotebookLM payloads (INV-241).
+
+#### U12. [LEARN_UNIVERSAL_PARSER_PRICE_AND_HEADER_OWNERSHIP_20261117] WORKFLOW_PARSER_PRICE_AND_HEADER_OWNERSHIP
+- **Scope**: `UNIVERSAL_VENDOR`
+- **Rule**: Workbook parsers must enforce strict header precedence so Extended List Price columns never overwrite Unit Price values, consolidate zero-dollar factory modifier or country-suffix companion lines without inflating quantities, tag quantity-1 installation and support wrapper headers as order-level global scope across multi-node tenders, and exempt non-fix customer-originated service lines in pre-presentation checks (INV-241).
+
+#### U13. [LEARN_UNIVERSAL_RECONCILIATION_UNSPLIT_AND_SERVICES_20261117] WORKFLOW_RECONCILIATION_UNSPLIT_AND_SERVICES_LOOKUP
+- **Scope**: `UNIVERSAL_VENDOR`
+- **Rule**: Two-baseline BOM reconciliation must resolve unsplit customer baseline items directly from parsed workbook lines scaled across per-node multipliers (preserving global wrapper items at quantity 1), check sibling services JSON catalogs alongside hardware catalog entries so valid SaaS and care SKUs are not misclassified as uncataloged, and support explicit no-quarantine flags in verification runs (INV-241).
+
+#### U14. [LEARN_UNIVERSAL_SEPARATED_CABLE_PATHS_AND_CATEGORY_MATCHING_20261117] WORKFLOW_TOPOLOGY_CATEGORY_AND_CABLE_ENFORCEMENT
+- **Scope**: `UNIVERSAL_VENDOR`
+- **Rule**: Physical validation must distinguish backplane-to-controller storage signal cables, CPU-to-slot OCP enablement cables, and controller sideband telemetry paths separately without miscounting storage cables as adapters or passing disconnected backplanes, enforce product-specific thermal kit lookup before falling back, and reject cross-category hardware mismatches plus non-hardware OS/management tokens in replacement scoring (INV-241).
+
+#### U15. [LEARN_UNIVERSAL_FAST_SHIP_TOPOLOGY_AND_CLIC_CARRYFORWARD_20261117] WORKFLOW_FAST_SHIP_TOPOLOGY_AND_CLIC_CARRYFORWARD
+- **Scope**: `UNIVERSAL_VENDOR`
+- **Rule**: Fast-ship candidate synthesis must resolve coupled cabling and enablement paths and pass full multi-aspect physical revalidation before ranking, spare non-bottleneck compute/power parts when another hardware option sets the >=21-day lead-time bottleneck, report configurator solution Estimated Delivery Time separately from single-part component lead times, and classify BOM CLIC Status or live configurator results with 0 unbuildables, 0 errors, and 0 process-control blocks (even with warning advisories) as PORTAL_VALIDATED_WITH_WARNINGS while failing closed on any unbuildable/error row or unbacked validation claim (INV-241).
+
+#### U16. [OWNER_STANDARD_3Y_BASIC] SUPPORT_POLICY
 - **Scope**: `UNIVERSAL_VENDOR`
 - **Rule**: Preserve explicit customer support term and tier in the closest rank; use 3-year Tech Care Basic only when unspecified or explicitly authorized. For this SN3600B BOQ the owner authorized 5-year Essential to 3-year Basic. Compare qualified fixed and flexible service options; disclose retention and preserve parent/suffix pairs. This commercial preference is not vendor qualification.
 
-#### U11. [OWNER_ICON_SERVICE_ISOLATION] ICON_SUPPORT_ISOLATION
+#### U17. [OWNER_ICON_SERVICE_ISOLATION] ICON_SUPPORT_ISOLATION
 - **Scope**: `UNIVERSAL_VENDOR`
 - **Rule**: Select Services from Components for the owning icon, edit its dropdowns, and leave both apply-to-all icons and apply-to-all nodes off. Different icons retain their own SLA.
 
-#### U12. [OWNER_OCA_EXPIRED_SESSION] SESSION_RECOVERY_PROTOCOL
+#### U18. [OWNER_OCA_EXPIRED_SESSION] SESSION_RECOVERY_PROTOCOL
 - **Scope**: `UNIVERSAL_VENDOR`
 - **Rule**: When OCA says it encountered a problem, restart from Partner Portal refresh/login and open One Config Advanced through Quick Links. Do not reload the failed OCA session. Keep a Partner Portal tab before closing stale OCA so CDP does not disappear. This supersedes cache-flush advice for encountered-a-problem errors.
 
-#### U13. [OWNER_CLOSEST_REQUIREMENT_RANK] CUSTOMER_INTENT_POLICY
+#### U19. [OWNER_CLOSEST_REQUIREMENT_RANK] CUSTOMER_INTENT_POLICY
 - **Scope**: `UNIVERSAL_VENDOR`
 - **Rule**: Closest rank preserves customer requirements and makes only necessary compatibility/buildability changes. Budget alternatives disclose every deviation; do not silently reduce term, tier, capacity or resilience. Keep explicit owner overrides auditable against the original customer BOQ.
 
-#### U14. [OWNER_COMPONENT_DOMAIN_ROUTING] COMPONENT_DOMAIN_ROUTING
+#### U20. [OWNER_COMPONENT_DOMAIN_ROUTING] COMPONENT_DOMAIN_ROUTING
 - **Scope**: `UNIVERSAL_VENDOR`
 - **Rule**: Route by component role and exact product, never vendor or family alone. Synergy compute, fabric and frame use separate scopes. Resolve ownership before quantities. Validate each component and enclosure/bay, adapter/fabric, optical endpoints, shared power and per-icon SLA relationships; missing profiles remain NOT_EVALUATED and cannot inherit server defaults. Scraping completeness is not buildability certification.
 
-#### U15. [GUARDRAIL_TRANSPORT_RECOVERY] GUARDRAIL_RECOVERY_POLICY
+#### U21. [GUARDRAIL_TRANSPORT_RECOVERY] GUARDRAIL_RECOVERY_POLICY
 - **Scope**: `UNIVERSAL_VENDOR`
 - **Rule**: Gemini guardrail API sends must retain systemInstruction and function declarations when overriding SDK send config. Enforce scoped local simulation and NotebookLM checks. Retry bounded transient provider errors without exhausting keys, distinguish per-minute from explicit daily quotas, and use configured approved model fallback with preserved tool results and no replay side effects. Empty or unfinished responses are unavailable, not verification. Dashboard status is independent of NotebookLM and vendor acceptance.
 
@@ -311,491 +335,514 @@
 - **Affected SKU**: `S1A05A`
 - **Required Dependency**: `R7A11AAE`
 
-#### C43. [DELTA-1789752537004-v9j6p] DL380a_Gen12 — RULE
+#### C43. [LEARN_DL360_GEN12_P72223_P40497_SELECTOR_20261117] DL360_Gen12 — SELECTOR_STATE_CONDITIONAL
+- **Scope**: `CHASSIS_SPECIFIC`
+- **Rule**: P40497-B21 on DL360 Gen12 hybrid base P72176-B21 is conditionally revealed behind backplane stacking kit P72223-B21 (= 1) and must be captured with P72223-B21 trigger provenance and restored to 0.
+- **Affected SKU**: `P40497-B21`
+- **Required Dependency**: `P72223-B21`
+
+#### C44. [LEARN_DL360_GEN12_MR408IO_TOPOLOGY_PATH_20261117] DL360_Gen12 — STORAGE_OCP_TOPOLOGY_CABLE_PATH
+- **Scope**: `CHASSIS_SPECIFIC`
+- **Rule**: MR408i-o OCP Slot A (P58335-B21) with Slot B OCP3 NIC (P26256-B21) requires Slot A storage cable P72600-B21, Slot B enablement cable P72203-B21, sideband cable P48918-B21, and battery P01366-B21; P72604-B21 PCIe cable does not satisfy Slot A OCP storage.
+- **Affected SKU**: `P58335-B21`
+- **Required Dependency**: `P72600-B21`
+
+#### C45. [LEARN_DL360_GEN12_KIT_DEFAULTS_20261117] DL360_Gen12 — CHASSIS_THERMAL_AND_OCP_SLOT_RULES
+- **Scope**: `CHASSIS_SPECIFIC`
+- **Rule**: Use DL360 Gen12 thermal kits P48908-B21 and P74787-B21, classify P72600-B21/P72203-B21 as cables rather than OCP adapters, and preserve HA113A1 / HU4A6A5 quantity-1 global headers for multi-node solutions.
+- **Affected SKU**: `P72176-B21`
+- **Required Dependency**: `P48908-B21`
+
+#### C46. [LEARN_DL360_GEN12_CLIC_ADVISORIES_20261117] DL360_Gen12 — WORKFLOW_CLIC_ADVISORY_DISPOSITION
+- **Scope**: `CHASSIS_SPECIFIC`
+- **Rule**: Carry forward live CLIC warning count so 0-error configurations with 10 advisories stay PORTAL VALIDATION PENDING until R7A12AAE/81302926, iLO 81031845, factory RAID 1, OS, 20C inlet, and AKM/B19 suffix are dispositioned.
+- **Affected SKU**: `P72176-B21`
+
+#### C47. [DELTA-1789752537004-v9j6p] DL380a_Gen12 — RULE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Observed price drift on P74700-B21 (memory)
 - **Affected SKU**: `P74700-B21`
 - **Engineering Rationale**: *Manual price drift reconciliation from phase 15 audit*
 
-#### C44. [DELTA-1789752537592-otj9t] DL380a_Gen12 — RULE
+#### C48. [DELTA-1789752537592-otj9t] DL380a_Gen12 — RULE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Observed price drift on S4A91C (drive)
 - **Affected SKU**: `S4A91C`
 - **Engineering Rationale**: *Manual price drift reconciliation from phase 15 audit*
 
-#### C45. [DELTA-1789752537783-790yf] DL380a_Gen12 — RULE
+#### C49. [DELTA-1789752537783-790yf] DL380a_Gen12 — RULE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Observed price drift on HA113A1 (support)
 - **Affected SKU**: `HA113A1`
 - **Engineering Rationale**: *Manual price drift reconciliation from phase 15 audit*
 
-#### C46. [DELTA-1789752537975-31r35] DL380a_Gen12 — RULE
+#### C50. [DELTA-1789752537975-31r35] DL380a_Gen12 — RULE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Observed price drift on HU4B2A30C4W (service)
 - **Affected SKU**: `HU4B2A30C4W`
 - **Engineering Rationale**: *Manual price drift reconciliation from phase 15 audit*
 
-#### C47. [DELTA_P70436_DELISTED_REPLACED_BY_P91249] DL380a_Gen12 — SKU_SUBSTITUTION
+#### C51. [DELTA_P70436_DELISTED_REPLACED_BY_P91249] DL380a_Gen12 — SKU_SUBSTITUTION
 - **Scope**: `PRODUCT_GENERATION`
 - **Rule**: When customer quotes specify P70436-B21, substitute with active Multi Vendor SKU P91249-B21 (same High Performance U.3 specification) or value-engineered P84236-B21.
 - **Affected SKU**: `P70436-B21`
 - **Required Dependency**: `P91249-B21`
 
-#### C48. [DELTA_VROC_DIRECT_ATTACH_NO_BATTERY] DL380a_Gen12 — BATTERY_EXEMPTION
+#### C52. [DELTA_VROC_DIRECT_ATTACH_NO_BATTERY] DL380a_Gen12 — BATTERY_EXEMPTION
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Exempt Intel VROC and NS204i-u boot devices from Smart Storage Battery P01367-B21 requirement. Battery is exclusively required for hardware MR416i/SR932i storage controllers.
 - **Affected SKU**: `R7J57A`
 
-#### C49. [LEARN_DL380A_GEN12_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029] DL380a_Gen12 — WORKFLOW_DUAL_PUBLICATION_ADVISORY
+#### C53. [LEARN_DL380A_GEN12_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029] DL380a_Gen12 — WORKFLOW_DUAL_PUBLICATION_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Google Sheets is not a supported NotebookLM Drive source. A recent upload timestamp does not refresh old vendor observations.
 
-#### C50. [LEARN_DL380A_GEN12_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029] DL380a_Gen12 — WORKFLOW_SOURCE_RETIREMENT_ADVISORY
+#### C54. [LEARN_DL380A_GEN12_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029] DL380a_Gen12 — WORKFLOW_SOURCE_RETIREMENT_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata before removing only managed stale catalog snapshots. Preserve QuickSpecs, separate learnings, shared enclosure/fabric sources and unrelated documents. Inventory absence is not authority to remove another product source.
 
-#### C51. [LEARN_DL380A_GEN12_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029] DL380a_Gen12 — WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY
+#### C55. [LEARN_DL380A_GEN12_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029] DL380a_Gen12 — WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending dated vendor evidence; resolve contradictions before promoting hardware dependencies. Conflicting quantity claims require dated evidence for this exact product and selector state.
 
-#### C52. [LEARN_DL380A_GEN12_SUPPORT_PRICING_UPDATE_20261102] DL380a_Gen12 — SUPPORT_PRICING_UPDATE
+#### C56. [LEARN_DL380A_GEN12_SUPPORT_PRICING_UPDATE_20261102] DL380a_Gen12 — SUPPORT_PRICING_UPDATE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: HPE DL380a Gen12 Support (HU4B2A30C4W, under HU4B2A3 3Y Tech Care Basic) list price updated in November 2026 OCA catalog from $11,306.00 to $11,871.00 USD (+$565.00 / +5.00% per node). Total server list price adjusted from $1,656,550.00 to $1,657,115.00 USD.
 - **Affected SKU**: `HU4B2A30C4W`
 - **Required Dependency**: `P76706-B21`
 
-#### C53. [LEARN_DL380A_GEN12_H200_LEAD_TIME_BOTTLENECK_20261102] DL380a_Gen12 — SUPPLY_CHAIN_LEAD_TIME_BOTTLENECK
+#### C57. [LEARN_DL380A_GEN12_H200_LEAD_TIME_BOTTLENECK_20261102] DL380a_Gen12 — SUPPLY_CHAIN_LEAD_TIME_BOTTLENECK
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: CRITICAL PRESALES CONSTRAINT: NVIDIA H200 NVL 141GB PCIe Accelerator (S3U30C) carries an estimated availability factory lead time of 168 business days (~24 weeks / 5.5 months), establishing it as the primary supply chain gating factor for DL380a Gen12 AI accelerator deployments. FC HBA (R2E09A) is 30 days; Base chassis (P76706-B21) is 14 days; CPU (P74571-B21) and DDR5 memory (P69728-F21) are 10 days.
 - **Affected SKU**: `S3U30C`
 
-#### C54. [LEARN_DL380A_GEN12_CLIC_STATUS_CLEARANCE_20261102] DL380a_Gen12 — CLIC_STATUS_CLEARANCE
+#### C58. [LEARN_DL380A_GEN12_CLIC_STATUS_CLEARANCE_20261102] DL380a_Gen12 — CLIC_STATUS_CLEARANCE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Portal validation warnings on HPE ProLiant Compute DL380a Gen12 8DW/16SW CTO Server (P76706-B21) and HPE Compute Ops Management Standard 3-year SaaS (R7A11AAE) have cleared to clean/pass in latest OCA release. 64GB DDR5-6400 memory (P69728-F21) discontinuation date extended to 2030-06-30.
 - **Affected SKU**: `P76706-B21`
 
-#### C55. [LEARN_DL380A_GEN12_RAID1_MULTI_DRIVE_20261104] DL380a_Gen12 — ARRAY_GEOMETRY_BUILD_BLOCKER
+#### C59. [LEARN_DL380A_GEN12_RAID1_MULTI_DRIVE_20261104] DL380a_Gen12 — ARRAY_GEOMETRY_BUILD_BLOCKER
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: In HPE OCA / CLIC on DL380a Gen12, 339778-B21 (HPE RAID 1 Drive 1 FIO Setting) strictly enforces Drive Count == 2. When >2 drives (e.g. 4x NVMe SSDs) are configured without a full-cage RAID 5/10 setting, CLIC marks the build as UNBUILDABLE (Action-Required) due to unassigned drive geometry mismatch and mandates 389692-B21 (HPE Customer Defined RAID Setting Service, max 1) or omitting FIO settings when dedicated NS204i-u boot device P78279-B21 is present.
 - **Affected SKU**: `339778-B21`
 
-#### C56. [LEARN_DL380A_GEN12_BOOT_DATA_DECOUPLING_20261104] DL380a_Gen12 — WORKFLOW_VENDOR_OBSERVATION_ADVISORY
+#### C60. [LEARN_DL380A_GEN12_BOOT_DATA_DECOUPLING_20261104] DL380a_Gen12 — WORKFLOW_VENDOR_OBSERVATION_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: HPE NS204i-u v2 480GB Boot Device (P78279-B21) and front boot cage (P75284-B21) have zero hardware, cage, or bus dependency on SFF data drives (P63833-B21 / P50219-B21 / P50216-B21), 4SFF drive cage (P74710-B21), or direct-attach cables (P74702-B21). Boot tier and data tier can be configured independently or together.
 - **Affected SKU**: `P78279-B21`
 
-#### C57. [LEARN_DL380A_GEN12_TURNKEY_RACKING_CABLING_20261104] DL380a_Gen12 — WORKFLOW_VENDOR_OBSERVATION_ADVISORY
+#### C61. [LEARN_DL380A_GEN12_TURNKEY_RACKING_CABLING_20261104] DL380a_Gen12 — WORKFLOW_VENDOR_OBSERVATION_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: DL380a Gen12 base CTO chassis P76706-B21 does not bundle rack rails. When customer tender requests installation, racking, and cabling, P69770-B21 (Ball Bearing Rail Kit) is mandatory to mount the 4U chassis. Furthermore, SFP28 networking adapters (P10115-B21) require 2x 845398-B21 (25Gb SFP28 SR Transceivers) or DAC cables to prevent site cabling failure.
 - **Affected SKU**: `P69770-B21`
 
-#### C58. [LEARN_DL380A_GEN12_WORKFLOW_NORMATIVE_LANGUAGE_PRECISION_20261107] DL380a_Gen12 — WORKFLOW_NORMATIVE_LANGUAGE_PRECISION
+#### C62. [LEARN_DL380A_GEN12_WORKFLOW_NORMATIVE_LANGUAGE_PRECISION_20261107] DL380a_Gen12 — WORKFLOW_NORMATIVE_LANGUAGE_PRECISION
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: All agent skill directives, checklists, and execution handoffs must adhere to strict RFC-2119 normative vocabulary (MUST, MUST NOT, SHALL, SHOULD, MAY). Ambiguous hedge words (appropriate, as needed, etc., consider, typically, usually, generally, if possible, try to) are strictly prohibited in operational procedures to eliminate agent hesitation and non-deterministic loops.
 
-#### C59. [LEARN_DL380A_GEN12_WORKFLOW_MODULAR_SKILL_TOKEN_OPTIMIZATION_20261107] DL380a_Gen12 — WORKFLOW_MODULAR_SKILL_TOKEN_OPTIMIZATION
+#### C63. [LEARN_DL380A_GEN12_WORKFLOW_MODULAR_SKILL_TOKEN_OPTIMIZATION_20261107] DL380a_Gen12 — WORKFLOW_MODULAR_SKILL_TOKEN_OPTIMIZATION
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Monolithic skills exceeding 25KB must be modularized into a concise core execution SKILL.md (<=250 lines) plus dedicated references/ documentation files. This preserves agent prompt token budgets, accelerates model reasoning, and prevents guardrail context window exhaustion.
 
-#### C60. [LEARN_DL380A_GEN12_WORKFLOW_UNIVERSAL_CC30_AND_QUALITY_CEILING_20261107] DL380a_Gen12 — WORKFLOW_UNIVERSAL_CC30_AND_QUALITY_CEILING
+#### C64. [LEARN_DL380A_GEN12_WORKFLOW_UNIVERSAL_CC30_AND_QUALITY_CEILING_20261107] DL380a_Gen12 — WORKFLOW_UNIVERSAL_CC30_AND_QUALITY_CEILING
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Every function across all repository scripts and test fixtures must strictly comply with the universal cyclomatic complexity ceiling <= 30 (INV-229, INV-230). All modified code must pass oxlint with zero warnings, maintain a clean DAG with zero circular dependencies, and preserve non-empty test discovery.
 
-#### C61. [LEARN_DL380A_GEN12_WORKFLOW_SPECIALIZED_ARCHITECTURAL_DISPATCH_20261107] DL380a_Gen12 — WORKFLOW_SPECIALIZED_ARCHITECTURAL_DISPATCH
+#### C65. [LEARN_DL380A_GEN12_WORKFLOW_SPECIALIZED_ARCHITECTURAL_DISPATCH_20261107] DL380a_Gen12 — WORKFLOW_SPECIALIZED_ARCHITECTURAL_DISPATCH
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Incoming presales inquiries must be classified and dispatched by presales-query-router across 34 specialized skill tracks, including code-quality-gate, self-correction-counterfactual, presales-clearance-strategy, and turnkey-racking-cabling, with zero ad-hoc script generation.
 
-#### C62. [DELTA-1787939298644] DL380_Gen12 — RULE
+#### C66. [DELTA-1787939298644] DL380_Gen12 — RULE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Portal validation flagged restriction on P76453-B21.
 - **Affected SKU**: `P76453-B21`
 
-#### C63. [DELTA-1787939245188] DL380_Gen12 — RULE
+#### C67. [DELTA-1787939245188] DL380_Gen12 — RULE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Portal validation flagged restriction on P76450-B21.
 - **Affected SKU**: `P76449-B21`
 - **Required Dependency**: `P76450-B21`
 
-#### C64. [PREPROC-DELTA-1786781599909] DL380_Gen12 — PREPROCESSING_SPLIT_CONFIRMED
+#### C68. [PREPROC-DELTA-1786781599909] DL380_Gen12 — PREPROCESSING_SPLIT_CONFIRMED
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Confirmed configuration variation reason 'WORKLOAD_NODE_PURPOSE' for config_1
 
-#### C65. [DELTA-1786880389958] DL380_Gen12 — RULE
+#### C69. [DELTA-1786880389958] DL380_Gen12 — RULE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Intel Xeon 6730P 250W CPU requires HPE ProLiant Compute DL380 Gen12 Performance Heat Sink Kit (P74792-B21) due to exceeding the 185W standard thermal envelope.
 - **Affected SKU**: `P74573-B21`
 - **Required Dependency**: `P74792-B21`
 - **Engineering Rationale**: *Agentic Guardrail Loop derived from RAG/DB fact-check*
 
-#### C66. [DELTA-1786880394092] DL380_Gen12 — RULE
+#### C70. [DELTA-1786880394092] DL380_Gen12 — RULE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Intel Xeon 6730P 250W CPU requires HPE ProLiant High Performance Fan Kit (P48820-B21) because it exceeds the 240W system limit for standard chassis fans.
 - **Affected SKU**: `P74573-B21`
 - **Required Dependency**: `P48820-B21`
 - **Engineering Rationale**: *Agentic Guardrail Loop derived from RAG/DB fact-check*
 
-#### C67. [DELTA_RAG_FIO_P69728-B21_P69728-F21_1788145618089] DL380_Gen12 — OPTION_TYPE_SUBSTITUTION
+#### C71. [DELTA_RAG_FIO_P69728-B21_P69728-F21_1788145618089] DL380_Gen12 — OPTION_TYPE_SUBSTITUTION
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: | **`P69728-B21`** | HPE 64GB (1x64GB) Dual Rank x4 DDR5-6400 Smart Memory Kit | Memory / RDIMM (BTO) | **❌ BLOCKED in CTO (CLIC Suffix Violation)** | Standalone retail Build-to-Order (BTO) SKU [9, 15, 16]. Factory Configure-to-Order sessions enforce the rule: *"BTO products are not allowed in CTO B
 - **Affected SKU**: `P69728-B21`
 - **Required Dependency**: `P69728-F21`
 
-#### C68. [DELTA_RAG_DEP_P75740-B21_873763-B21_1788145618089] DL380_Gen12 — DEPENDENCY_CHAIN
+#### C72. [DELTA_RAG_DEP_P75740-B21_873763-B21_1788145618089] DL380_Gen12 — DEPENDENCY_CHAIN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: | **`P75740-B21`** | HPE DL3XX Gen12 8SFF x1 U.3 Tri-Mode Drive Cage Kit | Smart Chassis / Drive Cage | **✅ Valid Front Cage** | Installs an 8-bay SFF x1 U.3 Tri-Mode backplane into Box 1, 2, or 3 [19-23]. Installing this cage **clears the factory unbuildable drive-less chassis block** (which otherw
 - **Affected SKU**: `P75740-B21`
 - **Required Dependency**: `873763-B21`
 
-#### C69. [DELTA_RAG_DEP_P28586-B21_P75740-B21_1788145618089] DL380_Gen12 — DEPENDENCY_CHAIN
+#### C73. [DELTA_RAG_DEP_P28586-B21_P75740-B21_1788145618089] DL380_Gen12 — DEPENDENCY_CHAIN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: | **`P28586-B21`** | HPE 1.2TB SAS 12G 10K SFF BC 3yr Wty HDD | Storage / SFF SAS HDD | **✅ Valid SAS HDD** | 12G SAS 10K RPM Basic Carrier (BC) drive [21, 28]. Supported inside the `P75740-B21` drive cage [21, 22]. Requires a dedicated hardware storage controller (`P47777-B21`) as the system board
 - **Affected SKU**: `P28586-B21`
 - **Required Dependency**: `P75740-B21`
 
-#### C70. [DELTA_RAG_DEP_P47777-B21_P01366-B21_1788145618091] DL380_Gen12 — DEPENDENCY_CHAIN
+#### C74. [DELTA_RAG_DEP_P47777-B21_P01366-B21_1788145618091] DL380_Gen12 — DEPENDENCY_CHAIN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: | **`P47777-B21`** | HPE MR416i-p Gen11 x16 Lanes 8GB Cache PCI SPDM Storage Controller | Storage Controller / Tri-Mode | **⚠️ Conditional Pass (Requires 3 Co-Dependencies)** | Stand-up PCIe card (-p) installed into a PCIe riser slot [30, 36, 39-41]. Requires **`P01366-B21`** (battery), **`P48918-B2
 - **Affected SKU**: `P47777-B21`
 - **Required Dependency**: `P01366-B21`
 
-#### C71. [DELTA_RAG_DEP_P76453-B21_P75740-B21_1788145618092] DL380_Gen12 — DEPENDENCY_CHAIN
+#### C75. [DELTA_RAG_DEP_P76453-B21_P75740-B21_1788145618092] DL380_Gen12 — DEPENDENCY_CHAIN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: 4.  **High-Speed Backplane Data Cable (`P76453-B21`):** Routing SAS/SATA/NVMe data lanes from Box 1 or Box 2 backplanes of the `P75740-B21` drive cage to the stand-up MR416i-p requires the **HPE ProLiant Compute DL380 Gen12 8SFF/2SFF UMB PCIe Cable Kit (`P76453-B21`)** [76, 80–85, 113, 117–122, 145,
 - **Affected SKU**: `P76453-B21`
 - **Required Dependency**: `P75740-B21`
 
-#### C72. [DELTA_RAG_FIO_P64707-B21_P69728-F21_1788148383105] DL380_Gen12 — OPTION_TYPE_SUBSTITUTION
+#### C76. [DELTA_RAG_FIO_P64707-B21_P69728-F21_1788148383105] DL380_Gen12 — OPTION_TYPE_SUBSTITUTION
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: | **`P64707-B21`** | HPE 64GB 2Rx4 DDR5-5600 Registered Memory | Memory / RDIMM | **❌ Incompatible Gen11 Memory** | Gen12 strictly mandates **DDR5-6400 Smart Memory** [200, 208–209, 240, 270]. DDR5-5600 is blocked. Factory CTO builds also mandate the **`-F21`** suffix (**`P69728-F21`**) [8-12]. |
 - **Affected SKU**: `P64707-B21`
 - **Required Dependency**: `P69728-F21`
 
-#### C73. [DELTA_RAG_DEP_P48818-B21_P38995-B21_1788148383108] DL380_Gen12 — SKU_SUBSTITUTION
+#### C77. [DELTA_RAG_DEP_P48818-B21_P38995-B21_1788148383108] DL380_Gen12 — SKU_SUBSTITUTION
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: | **`P48818-B21`** | HPE 800W Flex Slot Platinum Hot Plug Power Supply | Power Supplies | **❌ Invalid SKU & Lack of Redundancy** | The valid 800W Platinum SKU is **`P38995-B21`** [23, 24]. A single PSU provides no 1+1 redundancy [25]. (EU ErP Lot 9 requires 96% Titanium `P03178-B21`) [25, 26]. |
 - **Affected SKU**: `P48818-B21`
 - **Required Dependency**: `P38995-B21`
 
-#### C74. [DELTA_RAG_CARRYOVER_P47777-B21_1788459469422] DL380_Gen12 — CARRY_OVER_VALIDATED
+#### C78. [DELTA_RAG_CARRYOVER_P47777-B21_1788459469422] DL380_Gen12 — CARRY_OVER_VALIDATED
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: | **P47777-B21** | HPE MR416i-p Gen11 Storage Controller | **✅ VALID** | This PCIe plug-in controller is fully supported on Gen12 as a carry-forward option [16]. However, it **requires the P48918-B21 enablement cable kit** to bridge SPDM security and sideband power to the Gen12 motherboard [16]. | *
 - **Affected SKU**: `P47777-B21`
 
-#### C75. [DELTA_RAG_DEP_P01366-B21_P48918-B21_1788459469423] DL380_Gen12 — DEPENDENCY_CHAIN
+#### C79. [DELTA_RAG_DEP_P01366-B21_P48918-B21_1788459469423] DL380_Gen12 — DEPENDENCY_CHAIN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: | **P01366-B21** | HPE 96W Smart Storage Battery | **✅ VALID** | Fully compatible battery to protect the MR416i-p's volatile write cache [16]. It **requires the P48918-B21 enablement cable** to physically connect to the controller's cache module [16]. | **P01366-B21** *(Keep)* |
 - **Affected SKU**: `P01366-B21`
 - **Required Dependency**: `P48918-B21`
 
-#### C76. [DELTA_RAG_DEP_P10180-B21_P72203-B21_1788459469424] DL380_Gen12 — DEPENDENCY_CHAIN
+#### C80. [DELTA_RAG_DEP_P10180-B21_P72203-B21_1788459469424] DL380_Gen12 — DEPENDENCY_CHAIN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: | **P10180-B21** | Broadcom BCM5719 1Gb 4p BASE-T OCP3 NIC | **❌ OBSOLETE** | Legacy Gen11 part number [8]. It also **requires OCP enablement cable P72203-B21** to route high-speed PCIe lanes from CPU1 to rear OCP Slot B [25]. | **P51181-B21** (BCM5719 OCP3 NIC) and **P72203-B21** (OCP rear cable ki
 - **Affected SKU**: `P10180-B21`
 - **Required Dependency**: `P72203-B21`
 
-#### C77. [DELTA_RAG_DEP_P74573-B21_P48820-B21_1788461136463] DL380_Gen12 — DEPENDENCY_CHAIN
+#### C81. [DELTA_RAG_DEP_P74573-B21_P48820-B21_1788461136463] DL380_Gen12 — DEPENDENCY_CHAIN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: • [DL380_Gen12 Catalog Rule] Category: Learned Feedback Rules > P74573-B21 | Constraint: learned (Intel Xeon 6730P 250W CPU requires HPE ProLiant High Performance Fan Kit (P48820-B21) because it exceeds the 240W system limit for standard chassis fans.)
 - **Affected SKU**: `P74573-B21`
 - **Required Dependency**: `P48820-B21`
 
-#### C78. [DELTA_RAG_DEP_P74573-B21_P74792-B21_1788461136464] DL380_Gen12 — DEPENDENCY_CHAIN
+#### C82. [DELTA_RAG_DEP_P74573-B21_P74792-B21_1788461136464] DL380_Gen12 — DEPENDENCY_CHAIN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: • [DL380_Gen12 Catalog Rule] Category: Learned Feedback Rules > P74573-B21 | Constraint: learned (Intel Xeon 6730P 250W CPU requires HPE ProLiant Compute DL380 Gen12 Performance Heat Sink Kit (P74792-B21) due to exceeding the 185W standard thermal envelope.)
 - **Affected SKU**: `P74573-B21`
 - **Required Dependency**: `P74792-B21`
 
-#### C79. [DELTA-1788462981839] DL380_Gen12 — RULE
+#### C83. [DELTA-1788462981839] DL380_Gen12 — RULE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: P10180-B21 is obsolete Gen11 SKU for DL380 Gen12; replaced by P51181-B21 with mandatory OCP rear cable kit P72203-B21.
 - **Affected SKU**: `P10180-B21`
 - **Required Dependency**: `P51181-B21`
 - **Engineering Rationale**: *Agentic Guardrail Loop derived from RAG/DB fact-check*
 
-#### C80. [DELTA_RAG_DEP_P76453-B21_P48918-B21_1788463665182] DL380_Gen12 — DEPENDENCY_CHAIN
+#### C84. [DELTA_RAG_DEP_P76453-B21_P48918-B21_1788463665182] DL380_Gen12 — DEPENDENCY_CHAIN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: 3.  **Storage Cable Integration:** The inclusion of `P76453-B21` is correct for routing PCIe lanes from SFF drive cages back to the PCIe slot [16]. However, the configurator will throw an error unless it sees the **Storage Controller Enablement Cable Kit (`P48918-B21`)** which is physically required
 - **Affected SKU**: `P76453-B21`
 - **Required Dependency**: `P48918-B21`
 
-#### C81. [DELTA_RAG_DEP_P81130-B21_P74787-B21_1790182000001] DL380_Gen12 — OPTION_TYPE_SUBSTITUTION
+#### C85. [DELTA_RAG_DEP_P81130-B21_P74787-B21_1790182000001] DL380_Gen12 — OPTION_TYPE_SUBSTITUTION
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: When HPE ProLiant Compute DL380 Gen12 Cooling Upgrade Enablement Kit (P81130-B21) is selected, the only supported heatsink is HPE ProLiant Compute DL3XX Gen12 High Performance Heat Sink Kit (P74787-B21).
 - **Affected SKU**: `P81130-B21`
 - **Required Dependency**: `P74787-B21`
 
-#### C82. [DELTA_RAG_DEP_P81130-B21_P79555-B21_1790182000002] DL380_Gen12 — DEPENDENCY_CHAIN
+#### C86. [DELTA_RAG_DEP_P81130-B21_P79555-B21_1790182000002] DL380_Gen12 — DEPENDENCY_CHAIN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: HPE ProLiant Compute DL380 Gen12 Cooling Upgrade Enablement Kit (P81130-B21) supports processors up to 270W at 30C or up to 350W at 27C (P79555-B21).
 - **Affected SKU**: `P81130-B21`
 - **Required Dependency**: `P79555-B21`
 
-#### C83. [DELTA_RAG_DEP_P10115-B21_P72203-B21_1790182000003] DL380_Gen12 — DEPENDENCY_CHAIN
+#### C87. [DELTA_RAG_DEP_P10115-B21_P72203-B21_1790182000003] DL380_Gen12 — DEPENDENCY_CHAIN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Rear OCP Slot B on DL380 Gen12 NC chassis is unpowered and logically disconnected by default; configuring an OCP NIC requires P72203-B21 cable kit to route PCIe lanes from CPU 1.
 - **Affected SKU**: `P10115-B21`
 - **Required Dependency**: `P72203-B21`
 
-#### C84. [DELTA_RAG_DEP_P78279-B21_P74755-B21_1790182000004] DL380_Gen12 — DEPENDENCY_CHAIN
+#### C88. [DELTA_RAG_DEP_P78279-B21_P74755-B21_1790182000004] DL380_Gen12 — DEPENDENCY_CHAIN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: HPE NS204i-u v2 480GB NVMe Hot Plug Boot Storage Device (P78279-B21) requires HPE ProLiant Compute DL380 Gen12 NS204i-u Rear Boot Device Enablement Kit (P74755-B21).
 - **Affected SKU**: `P78279-B21`
 - **Required Dependency**: `P74755-B21`
 
-#### C85. [DELTA_CLIC_RULE_81392332_H200_16PIN_P93055-B21] DL380_Gen12 — DEPENDENCY_CHAIN
+#### C89. [DELTA_CLIC_RULE_81392332_H200_16PIN_P93055-B21] DL380_Gen12 — DEPENDENCY_CHAIN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Rule 81392332: P56072-B21 requires to be ordered with supported 8-pin GPUs. H200 NVL mandates P93055-B21 HPE GPU 16-pin Power Cable Kit.
 - **Affected SKU**: `S3U30C`
 - **Required Dependency**: `P93055-B21`
 
-#### C86. [DELTA_CLIC_RULE_81394885_SECONDARY_RISER_25C_AMBIENT] DL380_Gen12 — DEPENDENCY_CHAIN
+#### C90. [DELTA_CLIC_RULE_81394885_SECONDARY_RISER_25C_AMBIENT] DL380_Gen12 — DEPENDENCY_CHAIN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Rule 81394885: 1 qty 8SFF Cage + Processor above 270W + Air Cooled: H200 NVL (S3U30C) is not supported on Primary Riser (20C-30C) or Tertiary Riser (20C-30C). Supported on Secondary Riser only with <= 25C ambient temperature.
 - **Affected SKU**: `S3U30C`
 - **Required Dependency**: `P51083-B21`
 
-#### C87. [DELTA_CLIC_RULE_81393803_STORAGE_CABLE_P76453-B21] DL380_Gen12 — DEPENDENCY_CHAIN
+#### C91. [DELTA_CLIC_RULE_81393803_STORAGE_CABLE_P76453-B21] DL380_Gen12 — DEPENDENCY_CHAIN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Rule 81393803: P73282-B21 with 8SFF x1 Cage (P75740-B21) and 1 qty MR416i-p (P47777-B21) requires 1 qty of P76453-B21 (2SFF B1/ 8SFF x1 PCIe Cable).
 - **Affected SKU**: `P75740-B21`
 - **Required Dependency**: `P76453-B21`
 
-#### C88. [LEARN_DL380_GEN12_OEM_DEFAULT_20260930] DL380_Gen12 — WORKFLOW_OEM_SELECTION_ADVISORY
+#### C92. [LEARN_DL380_GEN12_OEM_DEFAULT_20260930] DL380_Gen12 — WORKFLOW_OEM_SELECTION_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: OCA observed P77819-B21 as OEM DL380 Gen12 CTO. Preserve it in scoped discovery; a generic commercial DL380 Gen12 request must not automatically choose OEM. P73282-B21 was observed as commercial CTO, not certified as a permanent substitute or live-price guarantee.
 - **Affected SKU**: `P77819-B21`
 
-#### C89. [LEARN_DL380_GEN12_RUNTIME_DISCOVERY_20260930] DL380_Gen12 — WORKFLOW_RUNTIME_DISCOVERY_ADVISORY
+#### C93. [LEARN_DL380_GEN12_RUNTIME_DISCOVERY_20260930] DL380_Gen12 — WORKFLOW_RUNTIME_DISCOVERY_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Catalog absence is not proof of unsupported hardware. Investigate missing and conditional BOQ SKUs on the exact base and owning configuration, with the requested quantities and environmental state. Hidden presence establishes observation only. Revalidate each changed manifest in CLIC; a runtime plan does not establish acceptance.
 
-#### C90. [LEARN_DL380_GEN12_COVERAGE_BOUNDARY_20260930] DL380_Gen12 — WORKFLOW_CAPTURE_COVERAGE_ADVISORY
+#### C94. [LEARN_DL380_GEN12_COVERAGE_BOUNDARY_20260930] DL380_Gen12 — WORKFLOW_CAPTURE_COVERAGE_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Chassis discovery does not establish traversal. Current automated conditional capture covers hidden DOM and ambient probes; other selector combinations and all-base coverage remain unverified. Unknown recommendation, price and variant capability stay unknown. Do not retire prior NotebookLM sources before replacement verification.
 
-#### C91. [LEARN_DL380_GEN12_H200_OBSERVED_STATES_20261001] DL380_Gen12 — WORKFLOW_VENDOR_OBSERVATION_ADVISORY
+#### C95. [LEARN_DL380_GEN12_H200_OBSERVED_STATES_20261001] DL380_Gen12 — WORKFLOW_VENDOR_OBSERVATION_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Live OCA evidence on commercial DL380 Gen12 base P73282-B21: S3U30C NVIDIA H200 NVL 141GB was already present in the DOM at selected 30C tracking SKU P79552-B21, but hidden and marked unavailable. Vendor text says H200 NVL and 30C cannot be selected together. At selected 27C tracking SKU P79555-B21 the unavailable flag and restriction disappeared; the collapsed section still hid the row visually. Original 30C was restored. This is two observed selector states, not proof of every lower temperature or final CLIC build acceptance. Evidence: evidence/scraping_review/h200_at_30c_before.json and h200_at_27c.json. Do not compile the 30C prohibition as an allowed <=30C gate.
 - **Affected SKU**: `S3U30C`
 
-#### C92. [LEARN_CHASSIS_THREE_TIER_DOMAIN_CLASSIFICATION_20261012] DL380_Gen12 — WORKFLOW_CHASSIS_CLASSIFICATION_ADVISORY
+#### C96. [LEARN_CHASSIS_THREE_TIER_DOMAIN_CLASSIFICATION_20261012] DL380_Gen12 — WORKFLOW_CHASSIS_CLASSIFICATION_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Use the registered product and its component role for catalog coverage. Server and compute-module catalogs require processor and memory options where specified by their profile. Shared-enclosure power belongs to the owning frame. Validate switch, fabric and tape catalogs against their own profile rather than server categories (INV-158).
 
-#### C93. [LEARN_UNIVERSAL_ACCESSORY_SCOPE_ISOLATION_20261012] DL380_Gen12 — WORKFLOW_SCOPE_ISOLATION_ADVISORY
+#### C97. [LEARN_UNIVERSAL_ACCESSORY_SCOPE_ISOLATION_20261012] DL380_Gen12 — WORKFLOW_SCOPE_ISOLATION_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Passive accessories such as DC lug terminal kits (P36877-B21), power cords, and rail kits are architecture-invariant and span multiple product generations. They must be registered in APPROVED_UNIVERSAL_POLICY_SKUS in product_scope.js to prevent false-positive cross-generation isolation quarantines by the drift engine (INV-159).
 - **Affected SKU**: `P36877-B21`
 
-#### C94. [LEARN_WEBLOGIC_EXPAND_SECTIONS_COST_CAPTURE_20261012] DL380_Gen12 — WORKFLOW_DOM_EXTRACTION_ADVISORY
+#### C98. [LEARN_WEBLOGIC_EXPAND_SECTIONS_COST_CAPTURE_20261012] DL380_Gen12 — WORKFLOW_DOM_EXTRACTION_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: WebLogic OCA table expansion in cdp.js must explicitly toggle show_cost alongside show_price and trigger change events on all discovered showmore inputs. Omitting show_cost prevents cost column rendering, leaving tabular price-breakdown structures incomplete (INV-161).
 
-#### C95. [DELTA_DL380_GEN12_CPU_PARITY_AND_SST_CP_LEARNING] DL380_Gen12 — PROCESSOR_ARCHITECTURAL_MATCH_STRATEGY
+#### C99. [DELTA_DL380_GEN12_CPU_PARITY_AND_SST_CP_LEARNING] DL380_Gen12 — PROCESSOR_ARCHITECTURAL_MATCH_STRATEGY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: When modernizing Cascade Lake Xeon Gold 6258R (28c, 2.7GHz, 38.5MB L3, 205W), Xeon 6530P (32c, 2.3GHz, 144MB L3, 225W, $4,830 USD) provides superior per-core IPC (+22%) and total throughput, with Intel Speed Select (SST-CP) supporting 2.8GHz Compute Mode. If customer mandates strict base clock >=2.7GHz without BIOS profile dependencies, Xeon 6738P (32c, 2.9GHz, 144MB L3, 270W, $7,305 USD) provides strict numerical parity (+188.5k USD delta across 9 servers). Evaluator must present both tracks with transparent trade-offs for customer negotiation (INV-184).
 - **Affected SKU**: `P74571-B21`
 - **Required Dependency**: `P74577-B21`
 
-#### C96. [DELTA_DL380_GEN12_MEMORY_SYMMETRICAL_CHANNEL_LEARNING] DL380_Gen12 — MEMORY_CHANNEL_POPULATION_STRATEGY
+#### C100. [DELTA_DL380_GEN12_MEMORY_SYMMETRICAL_CHANNEL_LEARNING] DL380_Gen12 — MEMORY_CHANNEL_POPULATION_STRATEGY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: On Intel Xeon 6 (8 memory channels per CPU, 16 channels dual socket), legacy 6-channel memory capacities (such as 1,152 GB achieved via 12x 64GB + 12x 32GB on Gen10) cannot be satisfied with 12 DIMMs without leaving 2 channels unpopulated per CPU and suffering a 25% throughput penalty. Symmetrical population mandates 16 DIMMs (1DPC) or 32 DIMMs (2DPC). Present 1,536 GB (16x 96GB P69729-F21 @ 6400 MT/s) for full 1DPC capacity surplus, or 1,024 GB (16x 64GB P69728-F21 @ 6400 MT/s) for CapEx optimization with documented 128GB delta (INV-184).
 - **Affected SKU**: `P69728-F21`
 - **Required Dependency**: `P69729-F21`
 
-#### C97. [DELTA_DL380_GEN12_HEATSINK_TIER_RIGHT_SIZING_INV208] DL380_Gen12 — THERMAL_HEATSINK_RIGHT_SIZING_RULE
+#### C101. [DELTA_DL380_GEN12_HEATSINK_TIER_RIGHT_SIZING_INV208] DL380_Gen12 — THERMAL_HEATSINK_RIGHT_SIZING_RULE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: On HPE ProLiant DL380 Gen12 (P73282-B21), processors with 185W < TDP <= 270W (such as Intel Xeon 6530P 225W P74571-B21) are 100% thermally certified with P74792-B21 (HPE ProLiant Compute DL380 Gen12 2U High Performance Heat Sink Kit, 316.00 USD list per socket, max 2 per 2P server = 632.00 USD/server, 4-day lead time). Do not over-provision P74794-B21 (2U Max Performance Heat Sink Kit, 624.00 USD list per dual-socket server, max 1 per server, 45-day lead time), which is only required for >270W extreme TDP processors (275W-350W+) or dense GPU workloads. Substituting 1x P74794-B21/server (624.00 USD) with 2x P74792-B21/server (632.00 USD) has virtually identical cost (+8.00 USD/server or +72.00 USD across 9 servers) while slashing cooling lead time by 41 days from 45 days down to 4 days (INV-208).
 - **Affected SKU**: `P74794-B21`
 - **Required Dependency**: `P74792-B21`
 
-#### C98. [DELTA_DL380_GEN12_COM_R7A11AAE_VS_S1A05A_SEPARATION_INV207] DL380_Gen12 — MANAGEMENT_LICENSE_VS_FIO_TOKEN_SEPARATION
+#### C102. [DELTA_DL380_GEN12_COM_R7A11AAE_VS_S1A05A_SEPARATION_INV207] DL380_Gen12 — MANAGEMENT_LICENSE_VS_FIO_TOKEN_SEPARATION
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: On DL380 Gen12 CTO builds (P73282-B21), R7A11AAE (HPE Compute Ops Management Standard 3-year Upfront SaaS, $515.00 USD) satisfies CLIC Rule 81322276 for portal orderability, whereas S1A05A ($0.00 USD FIO cloud pre-claim token) is optional and safe to omit (INV-207).
 - **Affected SKU**: `S1A05A`
 - **Required Dependency**: `R7A11AAE`
 
-#### C99. [LEARN_DL380_GEN12_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029] DL380_Gen12 — WORKFLOW_DUAL_PUBLICATION_ADVISORY
+#### C103. [LEARN_DL380_GEN12_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029] DL380_Gen12 — WORKFLOW_DUAL_PUBLICATION_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Google Sheets is not a supported NotebookLM Drive source. A recent upload timestamp does not refresh old vendor observations.
 
-#### C100. [LEARN_DL380_GEN12_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029] DL380_Gen12 — WORKFLOW_SOURCE_RETIREMENT_ADVISORY
+#### C104. [LEARN_DL380_GEN12_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029] DL380_Gen12 — WORKFLOW_SOURCE_RETIREMENT_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata before removing only managed stale catalog snapshots. Preserve QuickSpecs, separate learnings, shared enclosure/fabric sources and unrelated documents. Inventory absence is not authority to remove another product source.
 
-#### C101. [LEARN_DL380_GEN12_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029] DL380_Gen12 — WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY
+#### C105. [LEARN_DL380_GEN12_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029] DL380_Gen12 — WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending dated vendor evidence; resolve contradictions before promoting hardware dependencies. Conflicting quantity claims require dated evidence for this exact product and selector state.
 
-#### C102. [LEARN_DL380_GEN12_SUPPORT_PRICING_UPDATE_20261102] DL380_Gen12 — SUPPORT_PRICING_UPDATE
+#### C106. [LEARN_DL380_GEN12_SUPPORT_PRICING_UPDATE_20261102] DL380_Gen12 — SUPPORT_PRICING_UPDATE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: HPE DL380 Gen12 Support (HU4B2A30C4V, under HU4B2A3 3Y Tech Care Basic) list price updated in November 2026 OCA catalog from $5,509.00 to $5,784.00 USD (+$275.00 / +4.99% per server node). 12-node cluster extended price increases from $66,108.00 to $69,408.00 USD (+$3,300.00).
 - **Affected SKU**: `HU4B2A30C4V`
 - **Required Dependency**: `P73282-B21`
 
-#### C103. [LEARN_DL380_GEN12_CLIC_STATUS_CLEARANCE_20261102] DL380_Gen12 — CLIC_STATUS_CLEARANCE
+#### C107. [LEARN_DL380_GEN12_CLIC_STATUS_CLEARANCE_20261102] DL380_Gen12 — CLIC_STATUS_CLEARANCE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Portal validation warnings on HPE ProLiant DL380 Gen12 SFF NC CTO Server (P73282-B21) and HPE Compute Ops Management Standard 3-year SaaS (R7A11AAE) have cleared to clean/pass in latest OCA engine release.
 - **Affected SKU**: `P73282-B21`
 
-#### C104. [LEARN_DL380_GEN12_LEAD_TIME_AND_LIFECYCLE_20261102] DL380_Gen12 — LEAD_TIME_AND_LIFECYCLE
+#### C108. [LEARN_DL380_GEN12_LEAD_TIME_AND_LIFECYCLE_20261102] DL380_Gen12 — LEAD_TIME_AND_LIFECYCLE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: DL380 Gen12 CTO base chassis (P73282-B21) availability lead time improved to 14 days (down from 30 days). Xeon 6787P CPU (P73837-B21) is 10 days; 8SFF drive cage (P75740-B21) is 14 days. 64GB DDR5-6400 Smart FIO memory (P69728-F21) discontinuation date extended to 2030-06-30 (+27 months).
 - **Affected SKU**: `P73282-B21`
 
-#### C105. [LEARN_DL380_GEN12_WORKFLOW_NORMATIVE_LANGUAGE_PRECISION_20261107] DL380_Gen12 — WORKFLOW_NORMATIVE_LANGUAGE_PRECISION
+#### C109. [LEARN_DL380_GEN12_WORKFLOW_NORMATIVE_LANGUAGE_PRECISION_20261107] DL380_Gen12 — WORKFLOW_NORMATIVE_LANGUAGE_PRECISION
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: All agent skill directives, checklists, and execution handoffs must adhere to strict RFC-2119 normative vocabulary (MUST, MUST NOT, SHALL, SHOULD, MAY). Ambiguous hedge words (appropriate, as needed, etc., consider, typically, usually, generally, if possible, try to) are strictly prohibited in operational procedures to eliminate agent hesitation and non-deterministic loops.
 
-#### C106. [LEARN_DL380_GEN12_WORKFLOW_MODULAR_SKILL_TOKEN_OPTIMIZATION_20261107] DL380_Gen12 — WORKFLOW_MODULAR_SKILL_TOKEN_OPTIMIZATION
+#### C110. [LEARN_DL380_GEN12_WORKFLOW_MODULAR_SKILL_TOKEN_OPTIMIZATION_20261107] DL380_Gen12 — WORKFLOW_MODULAR_SKILL_TOKEN_OPTIMIZATION
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Monolithic skills exceeding 25KB must be modularized into a concise core execution SKILL.md (<=250 lines) plus dedicated references/ documentation files. This preserves agent prompt token budgets, accelerates model reasoning, and prevents guardrail context window exhaustion.
 
-#### C107. [LEARN_DL380_GEN12_WORKFLOW_UNIVERSAL_CC30_AND_QUALITY_CEILING_20261107] DL380_Gen12 — WORKFLOW_UNIVERSAL_CC30_AND_QUALITY_CEILING
+#### C111. [LEARN_DL380_GEN12_WORKFLOW_UNIVERSAL_CC30_AND_QUALITY_CEILING_20261107] DL380_Gen12 — WORKFLOW_UNIVERSAL_CC30_AND_QUALITY_CEILING
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Every function across all repository scripts and test fixtures must strictly comply with the universal cyclomatic complexity ceiling <= 30 (INV-229, INV-230). All modified code must pass oxlint with zero warnings, maintain a clean DAG with zero circular dependencies, and preserve non-empty test discovery.
 
-#### C108. [LEARN_DL380_GEN12_WORKFLOW_SPECIALIZED_ARCHITECTURAL_DISPATCH_20261107] DL380_Gen12 — WORKFLOW_SPECIALIZED_ARCHITECTURAL_DISPATCH
+#### C112. [LEARN_DL380_GEN12_WORKFLOW_SPECIALIZED_ARCHITECTURAL_DISPATCH_20261107] DL380_Gen12 — WORKFLOW_SPECIALIZED_ARCHITECTURAL_DISPATCH
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Incoming presales inquiries must be classified and dispatched by presales-query-router across 34 specialized skill tracks, including code-quality-gate, self-correction-counterfactual, presales-clearance-strategy, and turnkey-racking-cabling, with zero ad-hoc script generation.
 
-#### C109. [LEARN_REASONING_COUNTERFACTUAL_HYPOTHESIS_SEMANTICS_20261108] DL380_Gen12 — WORKFLOW_HYPOTHESIS_SEMANTICS_ADVISORY
+#### C113. [LEARN_REASONING_COUNTERFACTUAL_HYPOTHESIS_SEMANTICS_20261108] DL380_Gen12 — WORKFLOW_HYPOTHESIS_SEMANTICS_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Hardware repair proposals generated during counterfactual repair are unvalidated delta hypotheses (PROPOSED_UNVALIDATED), never certifications of 100% buildability prior to whole-candidate re-evaluation across physical, topological, customer-intent, and vendor portal acceptance gates (INV-231).
 
-#### C110. [LEARN_REASONING_ARITHMETIC_PREDICATE_INFEASIBILITY_20261108] DL380_Gen12 — WORKFLOW_PREDICATE_INFEASIBILITY_ADVISORY
+#### C114. [LEARN_REASONING_ARITHMETIC_PREDICATE_INFEASIBILITY_20261108] DL380_Gen12 — WORKFLOW_PREDICATE_INFEASIBILITY_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: When physical demand exceeds available catalog capacity (e.g. required wattage exceeds maximum rated PSU candidate, or socket TDP exceeds available heatsink rating), the engine must emit REPAIR_INFEASIBLE with remaining deficits quantitatively disclosed, rather than fabricating out-of-catalog hardware quantities or assuming unevidenced vendor support (INV-231).
 
-#### C111. [LEARN_REASONING_EXACT_CATALOG_SCOPED_DISCOVERY_20261108] DL380_Gen12 — WORKFLOW_CATALOG_SCOPED_DISCOVERY_ADVISORY
+#### C115. [LEARN_REASONING_EXACT_CATALOG_SCOPED_DISCOVERY_20261108] DL380_Gen12 — WORKFLOW_CATALOG_SCOPED_DISCOVERY_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Repair discovery must select options exclusively from the verified target product catalog snapshot. Input electrical conditions (AC vs -48VDC) and customer SLA/duration requirements must be preserved, defaulting to product-qualified 3-year Basic support only when customer requirements leave support unspecified (INV-231).
 
-#### C112. [LEARN_REASONING_EVIDENCE_VS_HARDWARE_DECOUPLING_20261108] DL380_Gen12 — WORKFLOW_EVIDENCE_DECOUPLING_ADVISORY
+#### C116. [LEARN_REASONING_EVIDENCE_VS_HARDWARE_DECOUPLING_20261108] DL380_Gen12 — WORKFLOW_EVIDENCE_DECOUPLING_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Acceptance blockers regarding evidence deficits (missing document grounding, citations, or portal session receipts) must evaluate to ACTION_REQUIRED_EVIDENCE_PROBE with zero hardware deltas, and must never invent fake hardware SKUs or convert evidence failures into hardware additions (INV-231).
 
-#### C113. [LEARN_REASONING_CRYPTOGRAPHIC_TIER3_RECEIPT_VERIFICATION_20261108] DL380_Gen12 — WORKFLOW_TIER3_RECEIPT_VERIFICATION_ADVISORY
+#### C117. [LEARN_REASONING_CRYPTOGRAPHIC_TIER3_RECEIPT_VERIFICATION_20261108] DL380_Gen12 — WORKFLOW_TIER3_RECEIPT_VERIFICATION_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Tier 3 Official Vendor Acceptance strictly requires an authentic cryptographic session receipt re-verified from disk matching the exact candidate manifest, scope, and fresh timestamp (<24h). Truthy boolean flags or bare IDs evaluate to Tier 0 or Tier 1 (INV-201, Gate B19, INV-231).
 
-#### C114. [LEARN_REASONING_APPEND_ONLY_KNOWLEDGE_RETRACTION_20261108] DL380_Gen12 — WORKFLOW_APPEND_ONLY_RETRACTION_ADVISORY
+#### C118. [LEARN_REASONING_APPEND_ONLY_KNOWLEDGE_RETRACTION_20261108] DL380_Gen12 — WORKFLOW_APPEND_ONLY_RETRACTION_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Falsified, erroneous, or superseded learned rules must be deactivated across all registry arrays (chassis deltas, wrapped rules, master registries) with an append-only decision audit trail (active: false, decision: RETRACTED or SUPERSEDED) without deleting historical evidence records (INV-231).
 
-#### C115. [LEARN_UNIVERSAL_NLM_READ_FAILOVER_AND_SYNC_PRESERVATION_20261114] DL380_Gen12 — WORKFLOW_NLM_SYNC_RESILIENCE_ADVISORY
+#### C119. [LEARN_UNIVERSAL_NLM_READ_FAILOVER_AND_SYNC_PRESERVATION_20261114] DL380_Gen12 — WORKFLOW_NLM_SYNC_RESILIENCE_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Idempotent NotebookLM read RPCs (source list, source content, canary notebook query) MUST fail over from CDP to httpx via execNlmReadWithFallback() when CdpTransportError occurs. Transient CLI read/transport errors MUST NOT downgrade cloudSyncState from VERIFIED to FAILED when an active certifiedCatalogSourceIds publication already matches the current on-disk Catalog.json SHA-256.
 
-#### C116. [LEARN_UNIVERSAL_CAPTURE_RECEIPT_REBUILD_RECONCILIATION_20261114] DL380_Gen12 — WORKFLOW_CAPTURE_RECEIPT_ADVISORY
+#### C120. [LEARN_UNIVERSAL_CAPTURE_RECEIPT_REBUILD_RECONCILIATION_20261114] DL380_Gen12 — WORKFLOW_CAPTURE_RECEIPT_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Local catalog rebuild scripts (build_catalog.js, generate_xlsx.js) MUST invoke reconcileRebuiltCaptureReceipt() to refresh capture_receipt.json artifact hashes and counts only when raw_data/oca_raw_data_full.json SHA-256 matches the verified receipt rawSha256. Rebuilt receipts MUST fail closed when rawSha256 differs.
 
-#### C117. [LEARN_UNIVERSAL_QUARANTINE_SEMANTIC_REVALIDATION_20261114] DL380_Gen12 — WORKFLOW_QUARANTINE_GOVERNANCE_ADVISORY
+#### C121. [LEARN_UNIVERSAL_QUARANTINE_SEMANTIC_REVALIDATION_20261114] DL380_Gen12 — WORKFLOW_QUARANTINE_GOVERNANCE_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Quarantined knowledge deltas MUST pass _checkSemanticExtractionIntegrity() (rejecting inverted discontinued-SKU dependencies, slash/disjunctive pairs misparsed as dependencies, and corrupted 6-digit SKU-prefix quantities) before promotion eligibility. Legacy quarantined deltas failing INV-230 re-validation MUST be pruned with append-only AUTO_REJECTED_BY_INV230_REVALIDATION records in knowledge_decisions.json.
 
-#### C118. [DELTA_SYNERGY_GEN12_FC_LICENSE_PROHIBITION] SY480_Gen12 — EXCLUSION_UNBUILDABLE
+#### C122. [DELTA_SYNERGY_GEN12_FC_LICENSE_PROHIBITION] SY480_Gen12 — EXCLUSION_UNBUILDABLE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: On HPE Synergy 12000 Frames (P51174-B21) populated solely with SY480 Gen12 compute nodes (P68217-B21), selecting Virtual Connect Fibre Channel upgrade licenses (R3P67A FIO LTU or R3P67AAE BTO E-LTU) is strictly forbidden and triggers CLIC Rules 81410905 and 81314323 (UNBUILDABLE CONFIGURATION: OVERRIDE REQUIRES FACTORY APPROVAL). SY480 Gen12 compute nodes route dedicated SAN traffic via Mezzanine 1 (P68131-B21 64Gb FC HBA) directly to Brocade 64Gb FC Switch Modules (P77653-B21) in Bays 1 & 4. Fibre Channel port expansion must be licensed via Brocade 8-port upgrade E-LTU (Q2E58AAE). Virtual Connect SE 100Gb F32 modules (867796-B21) in Bays 3 & 6 are dedicated to 25G/50G/100G Ethernet (via P64724-B21 adapter in Mezzanine 3), with no FCoE path on Gen12.
 - **Affected SKU**: `R3P67A`
 - **Required Dependency**: `Q2E58AAE`
 
-#### C119. [DELTA_SYNERGY_FIO_VS_ELTU_STANDALONE_ORDERING] SY480_Gen12 — STANDALONE_ORDERING_TAXONOMY
+#### C123. [DELTA_SYNERGY_FIO_VS_ELTU_STANDALONE_ORDERING] SY480_Gen12 — STANDALONE_ORDERING_TAXONOMY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: R3P67A is a Factory Integrated Option (FIO LTU) ending in 'A', which strictly requires sub-iteming under a factory CTO chassis base (P51174-B21), triggering CLIC Rules 81013168 and 81125904 ('must be ordered as a sub-item to the Base') if quoted standalone. If a customer procurement contract mandates this 32Gb FC license, it CANNOT be fulfilled using R3P67A. It must be ordered as R3P67AAE (BTO Electronic License / E-LTU) placed in a completely separate standalone software quote (new UCID) where no P51174-B21 chassis or Gen12 compute nodes exist, bypassing both Rule 81125904 and Rule 81410905.
 - **Affected SKU**: `R3P67A`
 - **Required Dependency**: `R3P67AAE`
 
-#### C120. [DELTA_SYNERGY_MULTI_ORDER_ADHOC_CONTAINER_PARTITIONING] SY480_Gen12 — MULTI_ORDER_PARTITIONING_PATTERN
+#### C124. [DELTA_SYNERGY_MULTI_ORDER_ADHOC_CONTAINER_PARTITIONING] SY480_Gen12 — MULTI_ORDER_PARTITIONING_PATTERN
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: When a multi-frame Synergy deployment (e.g. 2 frames, 24 nodes) is partitioned into separate commercial orders (Option B): (1) Order 2 (Frame 2) is structured as a clean hardware clone with zero loose cables, zero loose transceivers, and zero unpack services; (2) Order 1 (Frame 1) hosts a dedicated Adhoc container carrying 100% of all loose physical connectivity for both frames (DAC cables: 487655-B21 10G, 845406-B21 100G; AOC cables: 845410-B21 100G; fiber: QK734A OM4; transceivers: 455883-B21 10G SFP+ SR, 845398-B21 25G SFP28 SR, 841716-B21 40G QSFP+ BiDi) totaling $96,236.00 list; (3) Embedded switch licenses (Q2E58AAE Brocade 8-port upgrade E-LTU) must NEVER be lumped into Adhoc—they must be split evenly inside the physical switch modules (4 in Frame 1, 4 in Frame 2) to preserve 1:1 hardware module licensing integrity; (4) Tech Care Basic support (HU4B2A3) must be preserved 1:1 on both frames ($46,156 each) to satisfy CLIC Rules 99916598/99916599.
 - **Affected SKU**: `P51174-B21`
 - **Required Dependency**: `Q2E58AAE`
 
-#### C121. [DELTA_SYNERGY_MULTI_FRAME_SPLIT_STARTUP_SIZING] SY480_Gen12 — MULTI_FRAME_SPLIT_STARTUP_FORMULA
+#### C125. [DELTA_SYNERGY_MULTI_FRAME_SPLIT_STARTUP_SIZING] SY480_Gen12 — MULTI_FRAME_SPLIT_STARTUP_FORMULA
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: When a multi-frame Synergy deployment (e.g. 2 frames, 24 nodes) is partitioned into separate commercial quotes/orders: (1) Frame 1 carries 1x HA124A1#5ZM (First Frame Onsite Startup, $16,742 USD); (2) Frame 2 carries 1x HA124A1#5ZQ (Additional Frame Onsite Startup, $4,627 USD), saving $12,115 USD vs duplicating First Frame; (3) Order 2 remarks must cross-reference Order 1's UCID (e.g. 5157071497-02) to satisfy automated CLIC Rule 81039677 order acceptance; (4) If frames are deployed as independent standalone islands (separate sites or unlinked OneView domains), both frames require HA124A1#5ZM; (5) Remote Startup (HA124A1#V0F) and Onsite Startup (HA124A1#5ZM) are strictly mutually exclusive and must never be combined.
 - **Affected SKU**: `HA124A1`
 - **Required Dependency**: `HA124A1#5ZM`
 
-#### C122. [LEARN_SY480_GEN12_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029] SY480_Gen12 — WORKFLOW_DUAL_PUBLICATION_ADVISORY
+#### C126. [LEARN_SY480_GEN12_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029] SY480_Gen12 — WORKFLOW_DUAL_PUBLICATION_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Google Sheets is not a supported NotebookLM Drive source. A recent upload timestamp does not refresh old vendor observations.
 
-#### C123. [LEARN_SY480_GEN12_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029] SY480_Gen12 — WORKFLOW_SOURCE_RETIREMENT_ADVISORY
+#### C127. [LEARN_SY480_GEN12_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029] SY480_Gen12 — WORKFLOW_SOURCE_RETIREMENT_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata before removing only managed stale catalog snapshots. Preserve QuickSpecs, separate learnings, shared enclosure/fabric sources and unrelated documents. Inventory absence is not authority to remove another product source.
 
-#### C124. [LEARN_SY480_GEN12_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029] SY480_Gen12 — WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY
+#### C128. [LEARN_SY480_GEN12_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029] SY480_Gen12 — WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending dated vendor evidence; resolve contradictions before promoting hardware dependencies. Conflicting quantity claims require dated evidence for this exact product and selector state.
 
-#### C125. [LEARN_SY480_GEN12_128GB_MEMORY_ERROR_CLEARED_20261102] SY480_Gen12 — CLIC_ERROR_RESOLUTION_CERTIFIED
+#### C129. [LEARN_SY480_GEN12_128GB_MEMORY_ERROR_CLEARED_20261102] SY480_Gen12 — CLIC_ERROR_RESOLUTION_CERTIFIED
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: CRITICAL BUILDABILITY BREAKTHROUGH: HPE 128GB (1x128GB) Dual Rank x4 DDR5-6400 CAS-52-52-52 Smart FIO Memory Kit (P69730-F21) previously triggered a blocking validation Error in CLIC on SY480 Gen12 compute modules. In November 2026 OCA release, this validation Error is fully resolved and cleared to clean/pass. High-density 128GB memory configurations (up to 384 kits per frame across 12 nodes, 49.15TB total RAM) are now 100% certified buildable. Discontinued date extended to 2030-06-30.
 - **Affected SKU**: `P69730-F21`
 - **Required Dependency**: `P51174-B21`
 
-#### C126. [LEARN_SYNERGY_SUPPORT_PRICING_UPDATE_20261102] SY480_Gen12 — SUPPORT_PRICING_UPDATE
+#### C130. [LEARN_SYNERGY_SUPPORT_PRICING_UPDATE_20261102] SY480_Gen12 — SUPPORT_PRICING_UPDATE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: SY480 Gen12 Compute Node 3Y Tech Care Basic Support (HU4B2A30BT7) updated to $3,497.00 (+$167.00/node).
 - **Affected SKU**: `HU4B2A30BT7`
 
-#### C127. [LEARN_SYNERGY_LEAD_TIME_AND_VALIDATION_20261102] SY480_Gen12 — LEAD_TIME_AND_VALIDATION
+#### C131. [LEARN_SYNERGY_LEAD_TIME_AND_VALIDATION_20261102] SY480_Gen12 — LEAD_TIME_AND_VALIDATION
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: HPE 960GB NVMe M.2 2280 PE9010 SSD (P80321-B21) factory lead time extended from 11 days to 30 days (+19 days).
 - **Affected SKU**: `P80321-B21`
 
-#### C128. [LEARN_SY100GB_F32_MODULE_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029] SY100Gb_F32_Module — WORKFLOW_DUAL_PUBLICATION_ADVISORY
+#### C132. [LEARN_SY100GB_F32_MODULE_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029] SY100Gb_F32_Module — WORKFLOW_DUAL_PUBLICATION_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Google Sheets is not a supported NotebookLM Drive source. A recent upload timestamp does not refresh old vendor observations.
 
-#### C129. [LEARN_SY100GB_F32_MODULE_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029] SY100Gb_F32_Module — WORKFLOW_SOURCE_RETIREMENT_ADVISORY
+#### C133. [LEARN_SY100GB_F32_MODULE_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029] SY100Gb_F32_Module — WORKFLOW_SOURCE_RETIREMENT_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata before removing only managed stale catalog snapshots. Preserve QuickSpecs, separate learnings, shared enclosure/fabric sources and unrelated documents. Inventory absence is not authority to remove another product source.
 
-#### C130. [LEARN_SY100GB_F32_MODULE_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029] SY100Gb_F32_Module — WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY
+#### C134. [LEARN_SY100GB_F32_MODULE_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029] SY100Gb_F32_Module — WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending dated vendor evidence; resolve contradictions before promoting hardware dependencies. Conflicting quantity claims require dated evidence for this exact product and selector state.
 
-#### C131. [LEARN_SY100GB_F32_MODULE_SUPPORT_PRICING_UPDATE_20261102] SY100Gb_F32_Module — SUPPORT_PRICING_UPDATE
+#### C135. [LEARN_SY100GB_F32_MODULE_SUPPORT_PRICING_UPDATE_20261102] SY100Gb_F32_Module — SUPPORT_PRICING_UPDATE
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: HPE Virtual Connect SE 100Gb F32 Module for Synergy Support (HU4B2A3 Z1R, under HU4B2A3 3Y Tech Care Basic) list price updated in November 2026 OCA catalog from .00 to .00 USD (+.00 / +5.04% per module).
 - **Affected SKU**: `HU4B2A3 Z1R`
 
-#### C132. [LEARN_SYNERGY_12000_FRAME_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029] Synergy_12000_Frame — WORKFLOW_DUAL_PUBLICATION_ADVISORY
+#### C136. [LEARN_SYNERGY_12000_FRAME_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029] Synergy_12000_Frame — WORKFLOW_DUAL_PUBLICATION_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Google Sheets is not a supported NotebookLM Drive source. A recent upload timestamp does not refresh old vendor observations.
 
-#### C133. [LEARN_SYNERGY_12000_FRAME_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029] Synergy_12000_Frame — WORKFLOW_SOURCE_RETIREMENT_ADVISORY
+#### C137. [LEARN_SYNERGY_12000_FRAME_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029] Synergy_12000_Frame — WORKFLOW_SOURCE_RETIREMENT_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata before removing only managed stale catalog snapshots. Preserve QuickSpecs, separate learnings, shared enclosure/fabric sources and unrelated documents. Inventory absence is not authority to remove another product source.
 
-#### C134. [LEARN_SYNERGY_12000_FRAME_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029] Synergy_12000_Frame — WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY
+#### C138. [LEARN_SYNERGY_12000_FRAME_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029] Synergy_12000_Frame — WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending dated vendor evidence; resolve contradictions before promoting hardware dependencies. Conflicting quantity claims require dated evidence for this exact product and selector state.
 
-#### C135. [LEARN_SYNERGY_4PORT_FRAME_LINK_MODULE_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029] Synergy_4Port_Frame_Link_Module — WORKFLOW_DUAL_PUBLICATION_ADVISORY
+#### C139. [LEARN_SYNERGY_4PORT_FRAME_LINK_MODULE_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029] Synergy_4Port_Frame_Link_Module — WORKFLOW_DUAL_PUBLICATION_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Google Sheets is not a supported NotebookLM Drive source. A recent upload timestamp does not refresh old vendor observations.
 
-#### C136. [LEARN_SYNERGY_4PORT_FRAME_LINK_MODULE_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029] Synergy_4Port_Frame_Link_Module — WORKFLOW_SOURCE_RETIREMENT_ADVISORY
+#### C140. [LEARN_SYNERGY_4PORT_FRAME_LINK_MODULE_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029] Synergy_4Port_Frame_Link_Module — WORKFLOW_SOURCE_RETIREMENT_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata before removing only managed stale catalog snapshots. Preserve QuickSpecs, separate learnings, shared enclosure/fabric sources and unrelated documents. Inventory absence is not authority to remove another product source.
 
-#### C137. [LEARN_SYNERGY_4PORT_FRAME_LINK_MODULE_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029] Synergy_4Port_Frame_Link_Module — WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY
+#### C141. [LEARN_SYNERGY_4PORT_FRAME_LINK_MODULE_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029] Synergy_4Port_Frame_Link_Module — WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending dated vendor evidence; resolve contradictions before promoting hardware dependencies. Conflicting quantity claims require dated evidence for this exact product and selector state.
 
-#### C138. [LEARN_SYNERGY_BROCADE_64GB_FC_MODULE_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029] Synergy_Brocade_64Gb_FC_Module — WORKFLOW_DUAL_PUBLICATION_ADVISORY
+#### C142. [LEARN_SYNERGY_BROCADE_64GB_FC_MODULE_WORKFLOW_DUAL_PUBLICATION_ADVISORY_20261029] Synergy_Brocade_64Gb_FC_Module — WORKFLOW_DUAL_PUBLICATION_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Publish and read back the human Drive workbook separately from the complete semantic Markdown source in NotebookLM. Google Sheets is not a supported NotebookLM Drive source. A recent upload timestamp does not refresh old vendor observations.
 
-#### C139. [LEARN_SYNERGY_BROCADE_64GB_FC_MODULE_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029] Synergy_Brocade_64Gb_FC_Module — WORKFLOW_SOURCE_RETIREMENT_ADVISORY
+#### C143. [LEARN_SYNERGY_BROCADE_64GB_FC_MODULE_WORKFLOW_SOURCE_RETIREMENT_ADVISORY_20261029] Synergy_Brocade_64Gb_FC_Module — WORKFLOW_SOURCE_RETIREMENT_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Verify exact-product replacement content, indexing and source-restricted grounded canary, then commit trust metadata before removing only managed stale catalog snapshots. Preserve QuickSpecs, separate learnings, shared enclosure/fabric sources and unrelated documents. Inventory absence is not authority to remove another product source.
 
-#### C140. [LEARN_SYNERGY_BROCADE_64GB_FC_MODULE_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029] Synergy_Brocade_64Gb_FC_Module — WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY
+#### C144. [LEARN_SYNERGY_BROCADE_64GB_FC_MODULE_WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY_20261029] Synergy_Brocade_64Gb_FC_Module — WORKFLOW_CLOUD_LEARNING_REVIEW_ADVISORY
 - **Scope**: `CHASSIS_SPECIFIC`
 - **Rule**: Preserve retrieved cloud learning documents locally with their source IDs. Treat prose claims as candidates pending dated vendor evidence; resolve contradictions before promoting hardware dependencies. Conflicting quantity claims require dated evidence for this exact product and selector state.

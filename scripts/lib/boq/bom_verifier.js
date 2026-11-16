@@ -441,11 +441,21 @@ function _checkUnsolicitedServices(output, context = {}) {
   }
   const rank1 = rankedSolutions[0];
   const parts = rank1.skuPartsList || rank1.skuList || [];
+  const requestedSkus = new Set(
+    [...(context?.items || []), ...(output?.items || [])]
+      .map(item => cleanBaseSKU(item?.sku || item?.['Product #']))
+      .filter(Boolean)
+  );
   const unsolicited = parts.filter(p => {
     const desc = (p.description || '').toLowerCase();
     const sku = cleanBaseSKU(p.sku);
+    const shortSku = cleanBaseSKU(String(p.sku || '').split(/\s+/)[0]);
     const isService = /\b(installation|startup|deployment|pointnext|tech care)\b/i.test(desc) || /^(HA|HU|H7)/i.test(sku);
-    return isService && !p.customerRequested && p.isFixInjected !== true && !context.customerRequestedServices;
+    const isOriginCustomerItem = Boolean(
+      p.customerRequested ||
+      (!p.isFixInjected && !p.isStrategyAddon && (requestedSkus.has(sku) || requestedSkus.has(shortSku)))
+    );
+    return isService && !isOriginCustomerItem && p.isFixInjected !== true && !context.customerRequestedServices;
   });
   return unsolicited.length === 0
     ? makeCheck('B8', 'No Unsolicited Services in Rank 1 (INV-32)', 'BLOCK', 'PASSED', 'Rank 1 maintains pure hardware intent without unrequested services.')
@@ -875,6 +885,21 @@ function _validateReceiptContent(receiptObj, portalStatus, clicValid, ACCEPTANCE
   return null;
 }
 
+function _normalizeClicEvidence(output, context) {
+  const liveClic = output?.liveClicValidation || context?.liveClicValidation || output?.clicValidation || context?.clicValidation || null;
+  const bomClic = output?.clicStatusSummary || context?.clicStatusSummary || null;
+  const source = liveClic || bomClic;
+  const unbuildables = Number(source?.unbuildablesCount ?? source?.unbuildables ?? source?.unbuildableCount ?? 0);
+  const errors = Number(source?.errorsCount ?? source?.errors ?? source?.errorCount ?? 0);
+  const processControl = Number(source?.processControlCount ?? source?.processControl ?? 0);
+  const warnings = Number(source?.warningsCount ?? source?.warnings ?? source?.warningCount ?? 0);
+  const ruleIds = Array.isArray(source?.warningRuleIds) ? source.warningRuleIds : [];
+  const ucid = source?.ucid || null;
+  const hasFailures = unbuildables > 0 || errors > 0 || processControl > 0;
+  const hasEvidence = Boolean(liveClic || bomClic?.portalValidatedFromBom || (bomClic?.hasClicStatusColumn && hasFailures));
+  return { liveClic, bomClic, unbuildables, errors, processControl, warnings, ruleIds, ucid, hasFailures, hasEvidence };
+}
+
 /**
  * Gate B19: Live Portal Validation & Receipt Integrity (INV-0 / INV-104)
  * Forbids false claims of live vendor acceptance without a verifiable session receipt.
@@ -898,8 +923,29 @@ function _checkPortalReceiptIntegrity(output, context = {}) {
       { outStatus: claim.outStatus, ctxStatus: claim.ctxStatus });
   }
 
-  // When portal validation is pending (Tier 0-2), status is NOT_APPLICABLE with honest pending advisory
+  // When Tier 3 cryptographic receipt acceptance is not claimed directly, verify CLIC status evidence
   if (!claim.isClaimingVendorAcceptance) {
+    const ev = _normalizeClicEvidence(output, context);
+    const claimsBomValidated = claim.outStatus === 'PORTAL_VALIDATED' || claim.outStatus === 'PORTAL_VALIDATED_WITH_WARNINGS' ||
+      claim.ctxStatus === 'PORTAL_VALIDATED' || claim.ctxStatus === 'PORTAL_VALIDATED_WITH_WARNINGS';
+    if (claimsBomValidated && !ev.hasEvidence) {
+      return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'FAILED',
+        `Output claims ${claim.outStatus || claim.ctxStatus} without live CLIC check or BOM CLIC Status column evidence.`,
+        { portalStatus: claim.portalStatus });
+    }
+    if (ev.hasEvidence && ev.hasFailures) {
+      return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'FAILED',
+        `Portal CLIC validation reported ${ev.unbuildables} unbuildable(s), ${ev.errors} error(s), ${ev.processControl} process control block(s).`,
+        { portalStatus: 'PORTAL_VALIDATION_FAILED', liveClicValidation: ev.liveClic, clicStatusSummary: ev.bomClic });
+    }
+    if (ev.hasEvidence) {
+      const resolvedStatus = ev.warnings > 0 ? 'PORTAL_VALIDATED_WITH_WARNINGS' : 'PORTAL_VALIDATED';
+      const ucidNote = ev.ucid ? ` (UCID ${ev.ucid})` : '';
+      const rulesNote = ev.ruleIds.length ? ` [${ev.ruleIds.join(', ')}]` : '';
+      return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'WARN', 'PASSED',
+        `Portal CLIC validated${ucidNote}: 0 unbuildables, 0 errors, 0 process control, ${ev.warnings} warning(s)${rulesNote}. Solution has no unbuildable errors; warning advisories surfaced.`,
+        { portalStatus: resolvedStatus, portalValidated: true, liveClicValidation: ev.liveClic, clicStatusSummary: ev.bomClic });
+    }
     return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'WARN', 'NOT_APPLICABLE',
       'Live portal validation pending. Output appropriately marked as PORTAL VALIDATION PENDING (Tier 1/2).',
       { portalStatus: claim.portalStatus });

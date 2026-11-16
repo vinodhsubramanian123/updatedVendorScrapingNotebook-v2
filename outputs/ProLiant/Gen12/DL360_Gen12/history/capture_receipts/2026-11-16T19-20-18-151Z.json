@@ -1,0 +1,225 @@
+{
+  "schemaVersion": 1,
+  "product": "DL360_Gen12",
+  "vendor": "HPE",
+  "capturedAt": "2026-11-16T17:57:29.261Z",
+  "auditedAt": "2026-11-16T19:20:18.151Z",
+  "incompleteLegacyBaselinePreserved": false,
+  "mode": "REFRESH",
+  "status": "LOCAL_PROMOTED",
+  "provenance": {
+    "baseSku": "P72176-B21",
+    "ownerConfiguration": "HPE ProLiant Compute DL360 Gen12 10SFF/20EDSFF Hybrid NC Configure-to-order Server [P72176-B21]",
+    "solutionDomain": "SERVER",
+    "observedUrl": "https://oca.ext.hpe.com/oca/OCAInternalLogin"
+  },
+  "coverage": {
+    "textExtractionMode": "FULL_BODY_TEXT",
+    "outsideTableNotesCaptured": true,
+    "conditionalDiscovery": "HIDDEN_DOM_AMBIENT_AND_SCOPED_P72223_BACKPLANE_SELECTOR_OTHER_MACROS_UNVERIFIED",
+    "ownedMenuDiscovery": {
+      "status": "OBSERVED_CONFIGURED_CHILD_MENUS",
+      "children": []
+    },
+    "baseSku": "P72176-B21",
+    "ownerConfiguration": "HPE ProLiant Compute DL360 Gen12 10SFF/20EDSFF Hybrid NC Configure-to-order Server [P72176-B21]",
+    "solutionDomain": "SERVER",
+    "observedSelectors": [
+      {
+        "selector": "#extended_overview_menu",
+        "value": "EXPANDED"
+      },
+      {
+        "selector": "ambientTemperature",
+        "value": "DEFAULT_AND_SWEEP_RESTORED"
+      },
+      {
+        "selector": "item_tr_P72223-B21_smartChassisSection_smartChassisDriveCage",
+        "sku": "P72223-B21",
+        "value": "SET_1_CAPTURED_AND_RESTORED_0",
+        "revealedRows": 89,
+        "restoredCountAfter": 0
+      }
+    ],
+    "missingProvenance": [],
+    "completeness": "CAPTURED_STATES_ONLY",
+    "policy": {
+      "valid": true,
+      "reason": "",
+      "profileProduct": "DL360_Gen12",
+      "scope": "PROFILE_MINIMUM_CAPTURE"
+    }
+  },
+  "counts": {
+    "hardware": 626,
+    "services": 419,
+    "rules": 201,
+    "categories": 15,
+    "retainedHardware": 626,
+    "hardwareTombstones": 0
+  },
+  "previousCounts": {
+    "hardware": 626,
+    "services": 419,
+    "rules": 201,
+    "categories": 15
+  },
+  "hashes": {
+    "Catalog.json": "b7da7a1d2294cb7711655dc0fc924b4c2a2d3e794ff75974599871b719e086be",
+    "Services.json": "515fc37f96939101e8ef57e42cd28e4f25b73a27e6564bab8104f9e0760da7b6",
+    "Catalog_Rules.json": "0ab8fa16c8660d000a82621217bab58ead626e9ce9251db330cdb8406fd1bdf1",
+    "OCA_Catalog.xlsx": "dffb1d2b4b9a4c1cf84d206c7a1e72fac9a60764dbae292532d0109b58e92376"
+  },
+  "rawSha256": "269c6c47ff265f6c5fcd1f553d4346c22896e5fde4ce5e18467818bb01223516",
+  "sheets": [
+    {
+      "name": "Category Summary",
+      "rows": 134
+    },
+    {
+      "name": "All SKUs",
+      "rows": 888
+    },
+    {
+      "name": "Chassis Variants",
+      "rows": 4
+    },
+    {
+      "name": "Chassis Options Matrix",
+      "rows": 4
+    },
+    {
+      "name": "Rules & Constraints",
+      "rows": 289
+    },
+    {
+      "name": "Unavailable Rules & Gates",
+      "rows": 14
+    },
+    {
+      "name": "Hardware Accessories",
+      "rows": 13
+    },
+    {
+      "name": "Software & Licenses",
+      "rows": 799
+    },
+    {
+      "name": "Support Services",
+      "rows": 115
+    },
+    {
+      "name": "Price History Timeline",
+      "rows": 1307
+    },
+    {
+      "name": "Processor",
+      "rows": 35
+    },
+    {
+      "name": "Memory",
+      "rows": 23
+    },
+    {
+      "name": "Networking",
+      "rows": 75
+    },
+    {
+      "name": "Power Supplies",
+      "rows": 6
+    },
+    {
+      "name": "Chassis",
+      "rows": 4
+    },
+    {
+      "name": "Accessories & Infrastructure",
+      "rows": 33
+    },
+    {
+      "name": "Cooling  Thermal",
+      "rows": 14
+    },
+    {
+      "name": "Cables & Enablement Kits",
+      "rows": 47
+    },
+    {
+      "name": "Drive Enclosures  Drives",
+      "rows": 100
+    },
+    {
+      "name": "OS Boot Device",
+      "rows": 2
+    },
+    {
+      "name": "Storage Controllers",
+      "rows": 49
+    },
+    {
+      "name": "Support Services_2",
+      "rows": 2
+    },
+    {
+      "name": "PCIe Risers",
+      "rows": 4
+    },
+    {
+      "name": "Graphics & GPU",
+      "rows": 2
+    },
+    {
+      "name": "Supply Chain & Lead Times",
+      "rows": 1307
+    },
+    {
+      "name": "Metadata",
+      "rows": 23
+    }
+  ],
+  "deltas": {
+    "hardware": {
+      "added": [],
+      "removed": [],
+      "modified": []
+    },
+    "services": {
+      "added": [],
+      "removed": [],
+      "modified": []
+    },
+    "modifiedCount": 0,
+    "modifiedSkus": [],
+    "rulesChanged": false,
+    "hardwareChanges": {
+      "added": 0,
+      "removed": 0,
+      "categoryMigrated": 0,
+      "priceChanged": 0,
+      "attributeChanged": 0,
+      "priceAndAttributeChanged": 0,
+      "unchanged": 887,
+      "reinstated": 0,
+      "discontinuedTotal": 0
+    },
+    "serviceChanges": {
+      "added": 0,
+      "removed": 0,
+      "categoryMigrated": 0,
+      "priceChanged": 0,
+      "attributeChanged": 0,
+      "priceAndAttributeChanged": 0,
+      "unchanged": 419,
+      "reinstated": 0,
+      "discontinuedTotal": 0
+    }
+  },
+  "cloud": {
+    "status": "CLOUD_VERIFIED",
+    "success": true,
+    "sourceId": "256a7771-b08b-480e-9b27-288165e26de9",
+    "consolidationVerified": true,
+    "error": "Uploaded and canary-verified \"DL360_Gen12_OCA_Catalog_2026-11-16\" in NotebookLM (dbe7a857-542f-4d3b-b2f0-e60d3883642b). Existing sources were preserved unless explicit retirement was confirmed."
+  },
+  "promotedAt": "2026-11-16T19:22:37.119Z"
+}

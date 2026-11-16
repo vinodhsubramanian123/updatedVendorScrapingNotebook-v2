@@ -17,7 +17,7 @@ const path = require('path');
 const xlsx = require('xlsx-js-style');
 
 const { cleanBaseSKU } = require('../catalog/sku.js');
-const { getMandatorySkusForChassis, DEFAULT_MANDATORY_SKUS } = require('../catalog/catalog_rules.js');
+const { getMandatorySkusForChassis, getStorageRoleSets, DEFAULT_MANDATORY_SKUS } = require('../catalog/catalog_rules.js');
 const { detectChassisVariant, validateConflictGraph, getChassisMap } = require('../conflict/conflict_graph.js');
 const { setPhysicalMathValidator } = require('../conflict/strategy_synthesizer.js');
 const { parseSkuLines, isNonBomSheet, isBomSheet } = require('./boq_parser.js');
@@ -288,6 +288,18 @@ function validateNetworkingRules(ctx) {
     const reason = `CLIC Rule 81355854 Failed: CPU1/OCP2 Enablement Kit (${cpu1OcpSku}) and CPU2/OCP2 Enablement Kit (${cpu2OcpSku}) cannot be selected together. Unselect ${cpu1OcpSku} on dual-CPU servers.`;
     errors.push(reason);
     mathDeductions.push(reason);
+  }
+  if (network.needsOcpEnablementCable) {
+    const enableSku = mandatorySkus?.CPU1_OCP_CABLE?.sku || mandatorySkus?.CPU2_OCP_CABLE?.sku || 'P72203-B21';
+    const enableDesc = mandatorySkus?.CPU1_OCP_CABLE?.name || mandatorySkus?.CPU2_OCP_CABLE?.name || 'CPU-to-OCP Enablement Cable Kit';
+    missingDependencies.push({
+      key: 'CPU1_OCP_CABLE',
+      rule: 'Dual-OCP Slot Enablement Rule',
+      sku: enableSku,
+      description: enableDesc,
+      quantity: serverCount,
+      reasoning: `Dual OCP adapters require ${enableSku} to enable the second rear OCP slot.`
+    });
   }
 
   const { resolveComponentByRole } = require('../taxonomy/sku_resolver.js');
@@ -607,15 +619,18 @@ function _checkControllerCablesAndBatteries(ctx) {
     });
   }
 
-  const controllerCableSku = mandatorySkus.CONTROLLER_CABLE_KIT?.sku || 'P48918-B21';
-  const controllerCableName = mandatorySkus.CONTROLLER_CABLE_KIT?.name || 'HPE ProLiant Storage Controller Enablement Cable Kit';
-  const hasEnablementCable = storage.hasOcpCable || items.some(it => {
+  const controllerCableSku = mandatorySkus.CONTROLLER_CABLE_KIT?.sku || DEFAULT_MANDATORY_SKUS.CONTROLLER_CABLE_KIT.sku;
+  const controllerCableName = mandatorySkus.CONTROLLER_CABLE_KIT?.name || DEFAULT_MANDATORY_SKUS.CONTROLLER_CABLE_KIT.name;
+  const roleSets = getStorageRoleSets(mandatorySkus);
+  const hasEnablementCable = storage.hasSidebandEnablementCable || (!storage.hasStackingOrBackplaneKit && storage.hasOcpCable) || items.some(it => {
     const clean = ctx.cleanBaseSKU(it.sku);
     const d = (it.description || '').toLowerCase();
-    return clean === ctx.cleanBaseSKU(controllerCableSku) || clean === 'P76700-B21' || clean === 'P01367-B21' ||
-      d.includes('tri-mode pcie fio cable kit') || d.includes('with 260mm cable');
+    const isBattery = roleSets.smartStorageBatterySkus.has(clean) || d.includes('battery') || d.includes('capacitor');
+    if (isBattery) return false;
+    return roleSets.sidebandEnablementSkus.has(clean) ||
+      d.includes('storage controller enablement cable') || d.includes('tri-mode pcie fio cable kit');
   });
-  if ((storage.needsCapacitorCable || storage.hasStorageController) && !hasEnablementCable) {
+  if ((storage.needsCapacitorCable || (storage.hasStorageController && !hasEnablementCable))) {
     const reason = `CLIC Rule 81354652: Smart Storage Hybrid Capacitor / Battery and Controller require Storage Controller Enablement Cable Kit (${controllerCableSku}) to connect power and sideband telemetry.`;
     warnings.push(reason);
     missingDependencies.push({
@@ -625,6 +640,24 @@ function _checkControllerCablesAndBatteries(ctx) {
       description: controllerCableName,
       quantity: serverCount,
       reasoning: reason
+    });
+  }
+  if (storage.needsBackplaneSignalCable) {
+    const isOcpCtrl = Boolean(storage.hasOcpController);
+    const signalCableCfg = isOcpCtrl
+      ? mandatorySkus.OCP_BOX12_CABLE
+      : (mandatorySkus.TRI_MODE_BOX12_CABLE || mandatorySkus.TRI_MODE_SPLITTER_CABLE);
+    const signalCableSku = signalCableCfg?.sku || (isOcpCtrl ? 'OCP_BOX12_CABLE' : 'TRI_MODE_BOX12_CABLE');
+    const signalCableDesc = signalCableCfg?.name || (isOcpCtrl ? 'Backplane Rear OCP Controller Signal Cable Kit' : 'Backplane PCIe Controller Signal Cable Kit');
+    const signalReason = storage.missingSignalReason || `Backplane-to-controller storage signal path requires ${signalCableSku}.`;
+    warnings.push(signalReason);
+    missingDependencies.push({
+      key: 'CONTROLLER_DRIVE_CABLE_KIT',
+      rule: 'Backplane-to-Controller Signal Cable Requirement',
+      sku: signalCableSku,
+      description: signalCableDesc,
+      quantity: serverCount,
+      reasoning: signalReason
     });
   }
 }
@@ -1269,7 +1302,7 @@ function _resolveStorageAspectStatus(isServer, hasBaseChassis, storage, hasDrive
   if (!_storagePresent) {
     return 'UNKNOWN';
   }
-  if (storage.hasIncompatibleYCable || (storage.driveCount === 0 && !storage.hasNoDriveKit) || (storage.hasStorageController && !storage.hasSmartBattery)) {
+  if (storage.hasIncompatibleYCable || storage.needsBackplaneSignalCable || (storage.hasStackingOrBackplaneKit && storage.needsCapacitorCable) || (storage.driveCount === 0 && !storage.hasNoDriveKit) || (storage.hasStorageController && !storage.hasSmartBattery)) {
     return 'FAIL';
   }
   return 'PASS';
@@ -1287,6 +1320,12 @@ function _resolveStorageAspectDetail(isServer, hasBaseChassis, storage, hasDrive
   }
   if (storage.hasIncompatibleYCable) {
     return `CLIC Rules 81354627 & 81354632 Failed: Tri-Mode Splitter Cable Kit is incompatible with OCP storage controllers / standard cages. Controller Enablement Cable (${mandatorySkus?.CONTROLLER_CABLE_KIT?.sku || 'P48918-B21'}) is the correct cable.`;
+  }
+  if (storage.needsBackplaneSignalCable) {
+    return storage.missingSignalReason || 'Storage Math Failed: Missing backplane-to-controller storage signal/enablement cable kit.';
+  }
+  if (storage.needsCapacitorCable) {
+    return `CLIC Rule 81354652 Failed: Storage controller enablement cable (${mandatorySkus?.CONTROLLER_CABLE_KIT?.sku || 'P48918-B21'}) required for battery/controller link.`;
   }
   if (storage.driveCount === 0 && !storage.hasNoDriveKit && !hasDriveCageKit) {
     return 'Storage Math Failed: 0 drives requires No Drive Configuration FIO Kit.';
@@ -1838,6 +1877,25 @@ function _buildEvaluationSummaryData(params) {
   };
 }
 
+function _resolvePortalValidationState(options = {}) {
+  const liveClic = options.liveClicValidation || options.clicValidation || null;
+  const bomClic = options.clicStatusSummary || null;
+  const hasBomEvidence = Boolean(bomClic?.portalValidatedFromBom ||
+    (bomClic?.hasClicStatusColumn && (bomClic.unbuildableCount > 0 || bomClic.errorCount > 0 || bomClic.processControlCount > 0)));
+  if (!liveClic && !hasBomEvidence) {
+    return { portalValidationStatus: 'PORTAL VALIDATION PENDING', liveClicValidation: null, clicStatusSummary: bomClic };
+  }
+  const source = liveClic || bomClic;
+  const unbuildables = Number(source?.unbuildablesCount ?? source?.unbuildables ?? source?.unbuildableCount ?? 0);
+  const errors = Number(source?.errorsCount ?? source?.errors ?? source?.errorCount ?? 0);
+  const processControl = Number(source?.processControlCount ?? source?.processControl ?? 0);
+  const warnings = Number(source?.warningsCount ?? source?.warnings ?? source?.warningCount ?? 0);
+  const portalValidationStatus = (unbuildables > 0 || errors > 0 || processControl > 0)
+    ? 'PORTAL_VALIDATION_FAILED'
+    : (warnings > 0 ? 'PORTAL_VALIDATED_WITH_WARNINGS' : 'PORTAL_VALIDATED');
+  return { portalValidationStatus, liveClicValidation: liveClic, clicStatusSummary: bomClic };
+}
+
 function _executeConflictGraphValidation(items, missingDependencies, targetDir, options, aspectChecks, errors, warnings) {
   if (options.skipGraphValidation) {
     return { isWholeSolutionValid: true, conflicts: [], resolvedFixes: [], unresolvedConflicts: [], rankedSolutions: [] };
@@ -1857,7 +1915,13 @@ function _executeConflictGraphValidation(items, missingDependencies, targetDir, 
       aspectChecks,
       errors,
       warnings,
-      useNumericStep: true
+      useNumericStep: true,
+      ...(options.prioritizeFastShipAsRank2 !== undefined ? { prioritizeFastShipAsRank2: options.prioritizeFastShipAsRank2 } : {}),
+      ...(options.liveSolutionEdt ? { liveSolutionEdt: options.liveSolutionEdt } : {}),
+      ...(options.liveClicValidation ? { liveClicValidation: options.liveClicValidation } : {}),
+      ...(options.clicStatusSummary ? { clicStatusSummary: options.clicStatusSummary } : {}),
+      ...(options.preserveRoles ? { preserveRoles: options.preserveRoles } : {}),
+      ...(options.allowFcHbaSubstitution !== undefined ? { allowFcHbaSubstitution: options.allowFcHbaSubstitution } : {})
     }
   );
 }
@@ -1948,8 +2012,13 @@ function evaluatePhysicalMath(items, catalogData = null, targetDir = '', options
     errors, warnings, topology, aspectChecks, domainAspectAudit, conflictGraphResults
   );
 
+  const portalState = _resolvePortalValidationState(options);
+
   return {
     isMathClean,
+    portalValidationStatus: portalState.portalValidationStatus,
+    liveClicValidation: portalState.liveClicValidation,
+    clicStatusSummary: portalState.clicStatusSummary,
     runtimeDiscoveryPlan: buildRuntimeDiscoveryPlan(
       { items, conflictGraph: conflictGraphResults },
       { catalogData, targetDir, selectorsByConfiguration: options.selectorsByConfiguration }
@@ -2068,7 +2137,12 @@ function evaluateBOQMultiAspect(filePathOrText, options = {}) {
       learningEligible: false
     };
   const items = requirementResolution.resolvedItems;
-  const result = evaluatePhysicalMath(items, options.catalogData, options.targetDir || '');
+  const resolvedTargetDir = options.targetDir || options.chassisDir || '';
+  const evalOptions = {
+    ...options,
+    clicStatusSummary: options.clicStatusSummary || parsed.clicStatusSummary || null
+  };
+  const result = evaluatePhysicalMath(items, options.catalogData, resolvedTargetDir, evalOptions);
   if (requirementResolution.requiresHumanClarification) {
     result.confidence.isHitlTriggered = true;
     result.confidence.score = Math.min(result.confidence.score, 0.74);
@@ -2077,7 +2151,7 @@ function evaluateBOQMultiAspect(filePathOrText, options = {}) {
   const { analyzeDealValueEngineering } = require('./deal_optimizer.js');
   let valueEngineering = null;
   try {
-    valueEngineering = analyzeDealValueEngineering(result.items || items, result, options.catalogData, options.targetDir || '');
+    valueEngineering = analyzeDealValueEngineering(result.items || items, result, options.catalogData, resolvedTargetDir);
   } catch (veErr) {
     // Non-blocking value engineering analysis
   }

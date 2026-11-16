@@ -137,6 +137,7 @@ const HEADER_CHASSIS_PATTERNS = [
   [/dl380a/i, 'DL380a_Gen12'],
   [/dl380[_\s-]?gen[_\s-]?12/i, 'DL380_Gen12'],
   [/dl380[_\s-]?gen[_\s-]?11/i, 'DL380_Gen11'],
+  [/dl360[_\s-]?gen[_\s-]?12/i, 'DL360_Gen12'],
   [/dl360[_\s-]?gen[_\s-]?11|dl360/i, 'DL360_Gen11'],
   [/dl145/i, 'DL145_Gen11'],
   [/dl580/i, 'DL580_Gen12'],
@@ -295,6 +296,7 @@ function generateRunningKnowledgeCharterMarkdown(deduplicatedRules, syncMetadata
 2. [Universal Cross-Platform Hardware Laws & Invariants](#2-universal-cross-platform-hardware-laws--invariants)
 3. [Chassis-by-Chassis Deep-Dive Knowledge Matrix & Blueprints](#3-chassis-by-chassis-deep-dive-knowledge-matrix--blueprints)
    - [HPE ProLiant Compute DL380 Gen12](#31-hpe-proliant-compute-dl380-gen12)
+   - [HPE ProLiant Compute DL360 Gen12](#31b-hpe-proliant-compute-dl360-gen12)
    - [HPE ProLiant Compute DL380a Gen12 (AI Accelerator Server)](#32-hpe-proliant-compute-dl380a-gen12-ai-accelerator-server)
    - [HPE ProLiant DL380 Gen11](#33-hpe-proliant-dl380-gen11)
    - [HPE ProLiant DL145 Gen11 (Edge Server)](#34-hpe-proliant-dl145-gen11-edge-server)
@@ -356,6 +358,13 @@ The **HPE AI Studio BOQ Evaluator & Conflict Resolution Engine** maintains a dua
   - **Immediate Availability (Excellent)**: 6505P (12C/150W), 6507P (8C/150W), 6515P (16C/150W), 6520P (24C/210W), 6530P (32C/225W), 6710E (64C/205W), 6740E (96C/250W), 6730P (32C/250W).
   - **Standard Channel (Good)**: 6517P, 6728P, 6527P, 6731E, 6714P, 6746E, 6736P, 6724P, 6740P, 6732P, 6737P, 6745P, 6760P, 6747P, 6738P, 6767P, 6787P.
   - **Special Order (45+ Days)**: 6766E, 6748P, 6768P, 6788P.
+
+### 3.1b HPE ProLiant Compute DL360 Gen12
+- **Architecture**: 1U dual-socket rack server supporting Intel Xeon 6 P-Core / E-Core processors, DDR5-6400 RDIMM memory (including \`P69728-F21\` 64GB), dual rear OCP3 slots (Slot A and Slot B), and high-density front SFF / EDSFF backplanes.
+- **Hybrid Base & Selector-State Drive Gating**: Hybrid 10SFF/20EDSFF CTO base \`P72176-B21\` keeps \`storage_HotPlugSFFChoice\` drives collapsed at default Qty 0; activating Stacking Backplane Kit \`P72223-B21\` (= 1) conditionally reveals 91 selectable SFF SATA/SAS/U.3 drives including \`P40497-B21\` (480GB SATA 6G RI SFF SSD, $4,411 list, 3d lead time, Discontinued \`06/30/2027\`).
+- **Dual-OCP Slot A Storage + Slot B NIC Cabling Topology**: Switching from PCIe controller \`P74775-B21\` + PCIe Slot 1 cable \`P72604-B21\` to faster-delivery OCP Slot A controller \`P58335-B21\` (\`MR408i-o\`) mandates replacing \`P72604-B21\` with Rear OCP Slot A signal cable \`P72600-B21\` AND adding CPU1-to-Rear OCP Slot B enablement cable \`P72203-B21\` to preserve Slot B Ethernet OCP3 connectivity (\`P26256-B21\`), plus sideband telemetry cable \`P48918-B21\` and 96W battery \`P01366-B21\`. Reduces live 10-node OCA solution EDT from **73–91 days** (\`5158388738-01\`) to **43–54 days** (\`5158389518-01\`).
+- **Platform Kit Defaults**: 1U High-Performance Fan Kit resolves to \`P48908-B21\` and High-Performance Heat Sink resolves to \`P74787-B21\`; installation wrapper \`HA113A1\` and 5Y Tech Care Essential wrapper \`HU4A6A5\` remain quantity-1 order headers spanning all 10 covered nodes (\`HU4A6A50C4U\`).
+- **Live CLIC Warning Discipline**: Even with 0 errors and 0 unbuildables, live CLIC checks returned 10 warnings requiring partner/customer disposition before release (Cloud Enablement \`81302926\` / \`R7A12AAE\`, iLO Advanced \`81031845\` / \`512485-B21\`, unspecified factory RAID on mirrored SSDs, OS supply, \`P79564-B21\` 20C inlet tracking, and \`AKM\` vs \`B19\` suffix alignment) — keeping status \`PORTAL VALIDATION PENDING\`.
 
 ### 3.2 HPE ProLiant Compute DL380a Gen12 (AI Accelerator Server)
 - **Architecture**: 4U specialized dual-socket platform housing front-loading accelerator bays supporting up to 10 Double-Wide (DW) or 16 Single-Wide (SW) GPUs.

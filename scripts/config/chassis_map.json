@@ -88,6 +88,40 @@
         }
       }
     },
+    "ProLiant_DL360_Gen12": {
+      "catalogProductId": "DL360_Gen12",
+      "family": "ProLiant",
+      "gen": "Gen12",
+      "modelFamily": "DL360 Gen12",
+      "uHeight": 1,
+      "skus": {
+        "P72174-B21": {
+          "model": "DL360 Gen12 4LFF",
+          "formFactor": "4LFF",
+          "family": "ProLiant",
+          "gen": "Gen12",
+          "description": "HPE ProLiant Compute DL360 Gen12 4LFF NC Configure-to-order Server",
+          "optionType": "CTO"
+        },
+        "P72175-B21": {
+          "model": "DL360 Gen12 8SFF",
+          "formFactor": "8SFF",
+          "family": "ProLiant",
+          "gen": "Gen12",
+          "description": "HPE ProLiant Compute DL360 Gen12 8SFF NC Configure-to-order Server",
+          "optionType": "CTO"
+        },
+        "P72176-B21": {
+          "model": "DL360 Gen12 10SFF/20EDSFF",
+          "formFactor": "10SFF/20EDSFF",
+          "family": "ProLiant",
+          "gen": "Gen12",
+          "description": "HPE ProLiant Compute DL360 Gen12 10SFF/20EDSFF Hybrid NC Configure-to-order Server",
+          "optionType": "CTO",
+          "listPrice": 5022
+        }
+      }
+    },
     "ProLiant_DL360_Gen11": {
       "catalogProductId": "DL360_Gen11",
       "family": "ProLiant",
@@ -1568,6 +1602,60 @@
         "name": "HPE ProLiant DL380 Gen12 CPU2 to OCP2 x8 Enablement Kit"
       }
     },
+    "ProLiant_DL360_Gen12": {
+      "highPerfFanKit": {
+        "sku": "P48908-B21",
+        "name": "HPE ProLiant DL3X0 Gen11 1U High Performance Fan Kit"
+      },
+      "highPerfHeatsink": {
+        "sku": "P74787-B21",
+        "name": "HPE ProLiant Compute DL3XX Gen12 High Performance Heat Sink Kit"
+      },
+      "dcLugKit": {
+        "sku": "P36877-B21",
+        "name": "HPE 1600W -48VDC Power Cable Lug Kit"
+      },
+      "smartStorageBattery": {
+        "sku": "P01366-B21",
+        "name": "HPE 96W Smart Storage Lithium-ion Battery with 145mm Cable Kit"
+      },
+      "controllerCableKit": {
+        "sku": "P48918-B21",
+        "name": "HPE ProLiant Storage Controller Enablement Cable Kit"
+      },
+      "stackingBackplaneKit": {
+        "sku": "P72223-B21",
+        "name": "HPE ProLiant Compute DL3XX Gen12 1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit"
+      },
+      "triModeBox12Cable": {
+        "sku": "P72604-B21",
+        "name": "HPE ProLiant Compute DL360 Gen12 2SFF Stacking x2 Box1 Box2 PCIe Slot1 Controller Cable Kit"
+      },
+      "ocpBox12Cable": {
+        "sku": "P72600-B21",
+        "name": "HPE ProLiant Compute DL360 Gen12 2SFF Stacking x2 Box1 Box2 Rear OCP SlotA Controller Cable Kit"
+      },
+      "noDriveFioKit": {
+        "sku": "873763-B21",
+        "name": "HPE ProLiant Compute No Drive Configuration FIO Kit"
+      },
+      "primaryRiserCableKit": {
+        "sku": "P72598-B21",
+        "name": "HPE ProLiant Compute DL360 Gen12 x16 Full Height Riser Kit"
+      },
+      "secondaryRiserCableKit": {
+        "sku": "P48903-B21",
+        "name": "HPE ProLiant DL360 Gen11 x16 LP Riser Kit"
+      },
+      "ceRemovalKit": {
+        "sku": "P35876-B21",
+        "name": "HPE CE Mark Removal FIO Enablement Kit"
+      },
+      "cpu1OcpCable": {
+        "sku": "P72203-B21",
+        "name": "HPE ProLiant Compute DL3XX/ML350 Gen12 CPU1 to Rear OCP SlotB x8 Cable Kit"
+      }
+    },
     "ProLiant_DL580_Gen12": {
       "highPerfFanKit": {
         "sku": "P80383-B21",
@@ -1806,9 +1894,25 @@
     "baseSku": "R7R97A",
     "productId": "SN3600B_FC"
   },
+  "storage_role_catalog": {
+    "backplaneOcpSignalSkus": ["P72600-B21", "P72603-B21"],
+    "backplanePcieSignalSkus": ["P72604-B21", "P72602-B21", "P76456-B21", "P76453-B21", "P48832-B21"],
+    "sidebandEnablementSkus": ["P48918-B21", "P76700-B21"],
+    "stackingBackplaneSkus": ["P72223-B21"],
+    "smartStorageBatterySkus": ["P01366-B21", "P01367-B21"],
+    "bootControllerSkus": ["P78279-B21"],
+    "vrocLicenseSkus": ["R7J57A", "S3Q19A"],
+    "raidFioSettingSkus": {
+      "raid1": ["339778-B21"],
+      "customerDefined": ["389692-B21"],
+      "raid5": ["339779-B21"],
+      "raid5Sp": ["339780-B21"]
+    }
+  },
   "kit_routing": {
     "matchers": [
       { "familyPattern": "proliant", "genPattern": "gen12", "modelPattern": "dl380a", "kitKey": "ProLiant_DL380a_Gen12" },
+      { "familyPattern": "proliant", "genPattern": "gen12", "modelPattern": "dl360", "kitKey": "ProLiant_DL360_Gen12" },
       { "familyPattern": "proliant", "genPattern": "gen11", "modelPattern": "dl145", "kitKey": "ProLiant_DL145_Gen11" },
       { "familyPattern": "proliant", "genPattern": "gen11", "modelPattern": "dl360", "kitKey": "ProLiant_DL360_Gen11" },
       { "familyPattern": "proliant", "genPattern": "gen11", "modelPattern": "dl385", "kitKey": "ProLiant_DL385_Gen11" },

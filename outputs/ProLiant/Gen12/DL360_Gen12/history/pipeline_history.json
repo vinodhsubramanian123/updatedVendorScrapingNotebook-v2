@@ -1,0 +1,426 @@
+[
+  {
+    "summary": {
+      "runId": "run_DL360_Gen12_1794862545881",
+      "sessionName": "DL360_Gen12",
+      "startTime": "2026-11-16T20:55:45.880Z",
+      "endTime": "2026-11-16T20:55:49.808Z",
+      "durationMs": 3928,
+      "durationSec": "3.93",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 887,
+      "warningCount": 2,
+      "errorCount": 0,
+      "totalUniqueSKUs": 626,
+      "validationStats": {
+        "totalEntries": 91,
+        "totalSKUs": 887,
+        "validSKUs": 887,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 3,
+        "zeroPriceSKUs": 65,
+        "priceErrors": 0,
+        "ruleCount": 197,
+        "categoryCount": 15
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-11-16T20:55:45.881Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "outputs/ProLiant/Gen12/DL360_Gen12/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/ProLiant/Gen12/DL360_Gen12/DL360_Gen12_Catalog.json",
+          "chassisLabel": "DL360 Gen12"
+        }
+      },
+      {
+        "timestamp": "2026-11-16T20:55:47.423Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 59,
+          "totalUniqueSKUs": 626,
+          "incrementalStats": {
+            "totalScrapedSkus": 626,
+            "unchangedSkusCount": 597,
+            "modifiedSkusCount": 29,
+            "addedSkusCount": 0,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-16T20:55:47.466Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 2,
+          "stats": {
+            "totalEntries": 91,
+            "totalSKUs": 887,
+            "validSKUs": 887,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 3,
+            "zeroPriceSKUs": 65,
+            "priceErrors": 0,
+            "ruleCount": 197,
+            "categoryCount": 15
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-16T20:55:49.807Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "outputs/ProLiant/Gen12/DL360_Gen12/DL360_Gen12_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [
+      {
+        "timestamp": "2026-11-16T20:55:47.463Z",
+        "message": "Base Chassis Variant SKU [P72175-B21] has $0 list price. Verify if CTO chassis price was scraped correctly."
+      },
+      {
+        "timestamp": "2026-11-16T20:55:47.464Z",
+        "message": "Base Chassis Variant SKU [P72174-B21] has $0 list price. Verify if CTO chassis price was scraped correctly."
+      }
+    ],
+    "errors": [],
+    "skuSummary": {
+      "total": 887,
+      "classified": 887,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
+      "runId": "run_DL360_Gen12_1794856462613",
+      "sessionName": "DL360_Gen12",
+      "startTime": "2026-11-16T19:14:22.612Z",
+      "endTime": "2026-11-16T19:14:26.068Z",
+      "durationMs": 3456,
+      "durationSec": "3.46",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 887,
+      "warningCount": 3,
+      "errorCount": 0,
+      "totalUniqueSKUs": 626,
+      "validationStats": {
+        "totalEntries": 91,
+        "totalSKUs": 887,
+        "validSKUs": 887,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 3,
+        "zeroPriceSKUs": 66,
+        "priceErrors": 0,
+        "ruleCount": 197,
+        "categoryCount": 15
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-11-16T19:14:22.613Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "outputs/ProLiant/Gen12/DL360_Gen12/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/ProLiant/Gen12/DL360_Gen12/DL360_Gen12_Catalog.json",
+          "chassisLabel": "DL360 Gen12"
+        }
+      },
+      {
+        "timestamp": "2026-11-16T19:14:23.815Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 59,
+          "totalUniqueSKUs": 626,
+          "incrementalStats": {
+            "totalScrapedSkus": 626,
+            "unchangedSkusCount": 623,
+            "modifiedSkusCount": 3,
+            "addedSkusCount": 0,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-16T19:14:23.830Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 3,
+          "stats": {
+            "totalEntries": 91,
+            "totalSKUs": 887,
+            "validSKUs": 887,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 3,
+            "zeroPriceSKUs": 66,
+            "priceErrors": 0,
+            "ruleCount": 197,
+            "categoryCount": 15
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-16T19:14:26.067Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "outputs/ProLiant/Gen12/DL360_Gen12/DL360_Gen12_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [
+      {
+        "timestamp": "2026-11-16T19:14:23.829Z",
+        "message": "Base Chassis Variant SKU [P72175-B21] has $0 list price. Verify if CTO chassis price was scraped correctly."
+      },
+      {
+        "timestamp": "2026-11-16T19:14:23.830Z",
+        "message": "Base Chassis Variant SKU [P72174-B21] has $0 list price. Verify if CTO chassis price was scraped correctly."
+      },
+      {
+        "timestamp": "2026-11-16T19:14:23.830Z",
+        "message": "Base Chassis Variant SKU [P72176-B21] has $0 list price. Verify if CTO chassis price was scraped correctly."
+      }
+    ],
+    "errors": [],
+    "skuSummary": {
+      "total": 887,
+      "classified": 887,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
+      "runId": "run_DL360_Gen12_1794856423629",
+      "sessionName": "DL360_Gen12",
+      "startTime": "2026-11-16T19:13:43.628Z",
+      "endTime": "2026-11-16T19:13:45.848Z",
+      "durationMs": 2220,
+      "durationSec": "2.22",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 887,
+      "warningCount": 3,
+      "errorCount": 0,
+      "totalUniqueSKUs": 626,
+      "validationStats": {
+        "totalEntries": 91,
+        "totalSKUs": 887,
+        "validSKUs": 887,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 3,
+        "zeroPriceSKUs": 66,
+        "priceErrors": 0,
+        "ruleCount": 197,
+        "categoryCount": 15
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-11-16T19:13:43.629Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "outputs/ProLiant/Gen12/DL360_Gen12/raw_data/oca_raw_data_full.json",
+          "jsonOutputPath": "outputs/ProLiant/Gen12/DL360_Gen12/DL360_Gen12_Catalog.json",
+          "chassisLabel": "DL360 Gen12"
+        }
+      },
+      {
+        "timestamp": "2026-11-16T19:13:45.394Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 59,
+          "totalUniqueSKUs": 626,
+          "incrementalStats": {
+            "totalScrapedSkus": 626,
+            "unchangedSkusCount": 534,
+            "modifiedSkusCount": 3,
+            "addedSkusCount": 89,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-16T19:13:45.413Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 3,
+          "stats": {
+            "totalEntries": 91,
+            "totalSKUs": 887,
+            "validSKUs": 887,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 3,
+            "zeroPriceSKUs": 66,
+            "priceErrors": 0,
+            "ruleCount": 197,
+            "categoryCount": 15
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-16T19:13:45.847Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "outputs/ProLiant/Gen12/DL360_Gen12/DL360_Gen12_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [
+      {
+        "timestamp": "2026-11-16T19:13:45.412Z",
+        "message": "Base Chassis Variant SKU [P72175-B21] has $0 list price. Verify if CTO chassis price was scraped correctly."
+      },
+      {
+        "timestamp": "2026-11-16T19:13:45.413Z",
+        "message": "Base Chassis Variant SKU [P72174-B21] has $0 list price. Verify if CTO chassis price was scraped correctly."
+      },
+      {
+        "timestamp": "2026-11-16T19:13:45.413Z",
+        "message": "Base Chassis Variant SKU [P72176-B21] has $0 list price. Verify if CTO chassis price was scraped correctly."
+      }
+    ],
+    "errors": [],
+    "skuSummary": {
+      "total": 887,
+      "classified": 887,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  },
+  {
+    "summary": {
+      "runId": "run_DL360_Gen12_1794851849871",
+      "sessionName": "DL360_Gen12",
+      "startTime": "2026-11-16T17:57:29.836Z",
+      "endTime": "2026-11-16T17:57:31.932Z",
+      "durationMs": 2096,
+      "durationSec": "2.10",
+      "overallStatus": "COMPLETED",
+      "totalSteps": 4,
+      "totalSKUsProcessed": 798,
+      "warningCount": 3,
+      "errorCount": 0,
+      "totalUniqueSKUs": 537,
+      "validationStats": {
+        "totalEntries": 90,
+        "totalSKUs": 798,
+        "validSKUs": 798,
+        "invalidSKUs": 0,
+        "baseVariantsCount": 3,
+        "zeroPriceSKUs": 66,
+        "priceErrors": 0,
+        "ruleCount": 108,
+        "categoryCount": 15
+      }
+    },
+    "steps": [
+      {
+        "timestamp": "2026-11-16T17:57:29.872Z",
+        "stepName": "Initialize Classification Engine",
+        "status": "SUCCESS",
+        "details": {
+          "rawInputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\.catalog-staging\\staging_DL360_Gen12_1794851849253\\raw_data\\oca_raw_data_full.json",
+          "jsonOutputPath": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\.catalog-staging\\staging_DL360_Gen12_1794851849253\\DL360_Gen12_Catalog.json",
+          "chassisLabel": "DL360 Gen12"
+        }
+      },
+      {
+        "timestamp": "2026-11-16T17:57:31.640Z",
+        "stepName": "Step 5: Catalog Diff Engine",
+        "status": "SUCCESS",
+        "details": {
+          "totalSubcategories": 58,
+          "totalUniqueSKUs": 537,
+          "incrementalStats": {
+            "totalScrapedSkus": 537,
+            "unchangedSkusCount": 0,
+            "modifiedSkusCount": 0,
+            "addedSkusCount": 537,
+            "removedSkusCount": 0,
+            "estimatedTokensSaved": 0,
+            "estimatedProcessingTimeSavedMs": 0
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-16T17:57:31.653Z",
+        "stepName": "Pre-Commit Data Integrity Validation",
+        "status": "SUCCESS",
+        "details": {
+          "isValid": true,
+          "errorCount": 0,
+          "warningCount": 3,
+          "stats": {
+            "totalEntries": 90,
+            "totalSKUs": 798,
+            "validSKUs": 798,
+            "invalidSKUs": 0,
+            "baseVariantsCount": 3,
+            "zeroPriceSKUs": 66,
+            "priceErrors": 0,
+            "ruleCount": 108,
+            "categoryCount": 15
+          }
+        }
+      },
+      {
+        "timestamp": "2026-11-16T17:57:31.932Z",
+        "stepName": "Step 6: Atomic Save Output JSON",
+        "status": "SUCCESS",
+        "details": {
+          "path": "C:\\Users\\latha\\.gemini\\antigravity\\scratch\\antigravityProjects\\updatedVendorScrapingNotebook-v2\\outputs\\.catalog-staging\\staging_DL360_Gen12_1794851849253\\DL360_Gen12_Catalog.json"
+        }
+      }
+    ],
+    "warnings": [
+      {
+        "timestamp": "2026-11-16T17:57:31.653Z",
+        "message": "Base Chassis Variant SKU [P72175-B21] has $0 list price. Verify if CTO chassis price was scraped correctly."
+      },
+      {
+        "timestamp": "2026-11-16T17:57:31.653Z",
+        "message": "Base Chassis Variant SKU [P72174-B21] has $0 list price. Verify if CTO chassis price was scraped correctly."
+      },
+      {
+        "timestamp": "2026-11-16T17:57:31.653Z",
+        "message": "Base Chassis Variant SKU [P72176-B21] has $0 list price. Verify if CTO chassis price was scraped correctly."
+      }
+    ],
+    "errors": [],
+    "skuSummary": {
+      "total": 798,
+      "classified": 798,
+      "ambiguous": 0,
+      "failed": 0
+    }
+  }
+]

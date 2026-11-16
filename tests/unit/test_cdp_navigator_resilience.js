@@ -133,6 +133,29 @@ test('CDP Navigator Resilience Test Suite', async (t) => {
 
   wss = new WebSocket.Server({ port: 18999 });
 
+  await t.test('A slow OCA tab stays open alongside a QuickSpecs tab', async () => {
+    activeConnections = [];
+    wss.removeAllListeners('connection');
+    wss.on('connection', ws => {
+      activeConnections.push(ws);
+      // Keep the socket open while Runtime.evaluate times out.
+    });
+    mockTargets = [
+      { type: 'page', id: 'quickspecs', url: 'https://www.hpe.com/psnow/doc/a50006984enw', title: 'QuickSpecs' },
+      { type: 'page', id: 'working-oca', url: 'https://oca.ext.hpe.com/oca/config', title: 'External OCA', webSocketDebuggerUrl: 'ws://localhost:18999' },
+      { type: 'page', id: 'portal', url: 'https://partner.hpe.com/group/prp', title: 'Partner Portal' }
+    ];
+    const previous = global.setTimeout;
+    global.setTimeout = (fn, ms) => previous(fn, ms === 45000 ? 10 : ms);
+    try {
+      await assert.rejects(navigateToOCAChassis('DL360 Gen12'), { code: 'OCA_RESPONSE_TIMEOUT' });
+      assert.deepEqual(mockTargets.map(tab => tab.id), ['quickspecs', 'working-oca', 'portal']);
+    } finally {
+      global.setTimeout = previous;
+      for (const ws of activeConnections) ws.close();
+    }
+  });
+
   await t.test('Test 1: Testing >10s timeout recovery (Login polling)', async () => {
     activeConnections = [];
     wss.removeAllListeners('connection');
@@ -477,6 +500,45 @@ test('CDP Navigator Resilience Test Suite', async (t) => {
 
     const fatalState = evaluateDocumentTreeState(fatalTree);
     assert.strictEqual(fatalState.hasException, true, 'WebLogic bridge error must be accurately detected as fatal exception');
+  });
+
+  await t.test('Test 8: waitForDOMPredicate fails loudly on SyntaxError instead of silently polling or returning false', async () => {
+    wss.removeAllListeners('connection');
+    let evalCalls = 0;
+    wss.on('connection', ws => {
+      activeConnections.push(ws);
+      ws.on('message', msg => {
+        const req = JSON.parse(msg);
+        if (req.method === 'Runtime.evaluate') {
+          evalCalls++;
+          ws.send(JSON.stringify({
+            id: req.id,
+            result: {
+              exceptionDetails: {
+                text: 'Uncaught',
+                exception: { description: 'SyntaxError: missing ) after argument list' }
+              }
+            }
+          }));
+        } else {
+          ws.send(JSON.stringify({ id: req.id, result: {} }));
+        }
+      });
+      ws.on('close', () => {
+        activeConnections = activeConnections.filter(c => c !== ws);
+      });
+    });
+
+    const ws = await cdp.connectWS('ws://localhost:18999');
+    try {
+      await assert.rejects(
+        () => cdp.waitForDOMPredicate(ws, 'bad(expr', 2000, 50),
+        /SyntaxError: missing \) after argument list/
+      );
+      assert.strictEqual(evalCalls, 1, 'SyntaxError must abort on first attempt without polling to timeout');
+    } finally {
+      ws.close();
+    }
   });
 });
 

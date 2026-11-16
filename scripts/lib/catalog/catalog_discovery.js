@@ -37,6 +37,7 @@ function getChassisMap() {
     "Synergy_Brocade_64Gb_FC_Module": { "family": "Synergy", "gen": "General", "formFactor": "FC Switch Module", "uHeight": 0, "baseSku": "P77653-B21", "model": "Brocade 64Gb FC Module for Synergy" },
     "Alletra_Storage_System": { "family": "Alletra", "gen": "Gen1", "formFactor": "Array", "uHeight": 4, "baseSku": "R0Q21A", "model": "Alletra Storage System" },
     "DL380a_Gen12": { "family": "ProLiant", "gen": "Gen12", "formFactor": "8DW/16SW", "uHeight": 4, "baseSku": "P76706-B21", "model": "DL380a Gen12" },
+    "DL360_Gen12": { "family": "ProLiant", "gen": "Gen12", "formFactor": "10SFF/20EDSFF", "uHeight": 1, "baseSku": "P72176-B21", "model": "DL360 Gen12" },
     "DL360_Gen11": { "family": "ProLiant", "gen": "Gen11", "formFactor": "8SFF", "uHeight": 1, "baseSku": "P52499-B21", "model": "DL360 Gen11 8SFF" },
     "DL145_Gen11": { "family": "ProLiant", "gen": "Gen11", "formFactor": "4EDSFF", "uHeight": 2, "baseSku": "P71964-B21", "model": "DL145 Gen11" },
     "DL385_Gen11": { "family": "ProLiant", "gen": "Gen11", "formFactor": "8SFF", "uHeight": 2, "baseSku": "P53921-B21", "model": "DL385 Gen11" },
@@ -141,10 +142,12 @@ function detectChassisVariant(items, overrideVariant = '') {
   const PLATFORM_MATCHERS = [
     { pattern: /\bdl\s*(?:384|380\s*a)\b|dl380a|dl384/i, id: 'DL380a_Gen12' },
     { pattern: /\bdl\s*145\b|dl145/i, id: 'DL145_Gen11' },
-    { pattern: /\bdl\s*360\b|dl360/i, id: 'DL360_Gen11' },
+    { pattern: /(?:\bdl\s*360\b|dl360|360).*(?:gen\s*12|gen12|\bg\s*12\b|\bg12\b)/i, id: 'DL360_Gen12' },
+    { pattern: /(?:\bdl\s*360\b|dl360|360).*(?:gen\s*11|gen11|\bg\s*11\b|\bg11\b)/i, id: 'DL360_Gen11' },
+    { pattern: /\bdl\s*360\b|dl360/i, id: 'DL360_Gen11', exclude: /\b(?:gen\s*1[2-9]|gen1[2-9]|g\s*1[2-9]|g1[2-9])\b/i },
     { pattern: /\bdl\s*580\b|dl580/i, id: 'DL580_Gen12' },
-    { pattern: /(?:\bdl\s*380\b|dl380).*(?:gen\s*12|gen12)/i, id: 'DL380_Gen12' },
-    { pattern: /(?:\bdl\s*380\b|dl380).*(?:gen\s*11|gen11)/i, id: 'DL380_Gen11' },
+    { pattern: /(?:\bdl\s*380\b|dl380).*(?:gen\s*12|gen12|\bg\s*12\b|\bg12\b)/i, id: 'DL380_Gen12' },
+    { pattern: /(?:\bdl\s*380\b|dl380).*(?:gen\s*11|gen11|\bg\s*11\b|\bg11\b)/i, id: 'DL380_Gen11' },
     { pattern: /\balletra\b/i, id: 'Alletra_Storage_System' },
     { pattern: /\bmsl\b|\btape\b/i, id: 'MSL3040_Tape' },
     { pattern: /\bcray\b|\bgx5000\b/i, id: 'GX5000_General_RACK' },
@@ -159,7 +162,7 @@ function detectChassisVariant(items, overrideVariant = '') {
   // Check descriptions
   for (const it of (items || [])) {
     const desc = (it.description || '').toLowerCase();
-    const explicitPlatform = desc.match(/\b(dl\s*\d{3}[a-z]?)\s*gen\s*(\d+)\b/i);
+    const explicitPlatform = desc.match(/\b(dl\s*\d{3}[a-z]?)\s*(?:gen|g)\s*(\d+)\b/i);
     if (explicitPlatform) {
       const id = `${explicitPlatform[1].replace(/\s/g, '').toUpperCase().replace(/A$/, 'a')}_Gen${explicitPlatform[2]}`;
       if (chassisMap[id]) return { ...chassisMap[id], id };

@@ -26,7 +26,9 @@ const {
 } = require('../lib/catalog/sku.js');
 const { resolveRequirementIntent } = require('../lib/boq/requirement_intent_resolver.js');
 const { verifyVendorBOM, auditSingleVendorBOM } = require('../lib/boq/vendor_bom_verifier.js');
-const { getChassisMap, listAllCatalogs } = require('../lib/catalog/catalog_discovery.js');
+const catalogDiscovery = require('../lib/catalog/catalog_discovery.js');
+const getChassisMap = (...args) => catalogDiscovery.getChassisMap(...args);
+const listAllCatalogs = (...args) => catalogDiscovery.listAllCatalogs(...args);
 const { resolveEffectivePolicy } = require('../lib/system/policy_resolver.js');
 const logger = require('../lib/system/pipeline_logger.js');
 
@@ -190,7 +192,7 @@ function getChassisCatalog(queryText = '', context = {}) {
 
   let catalogs = [];
   try {
-    catalogs = listAllCatalogs();
+    catalogs = Array.isArray(context?.availableCatalogs) ? context.availableCatalogs : listAllCatalogs();
   } catch (err) {
     logger.debug('ROUTE_QUERY', `Dynamic catalog discovery note: ${err?.message}`);
   }
@@ -1471,10 +1473,16 @@ function _normalizeUncatalogedSkus(skus = []) {
 
 function _resolveReconciliationBaseline(customerFile, context) {
   if (customerFile && fs.existsSync(customerFile)) {
-    const customerItems = readRoutedItems({ filePath: customerFile, targetSheet: context.targetSheet });
-    if (Array.isArray(customerItems) && customerItems.length > 0) {
+    const parsedDetailed = require('../lib/boq/boq_evaluator').parseAndConsolidateBOQDetailed('', customerFile, context.targetSheet);
+    const baseItems = parsedDetailed?.items?.length ? parsedDetailed.items : readRoutedItems({ filePath: customerFile, targetSheet: context.targetSheet });
+    if (Array.isArray(baseItems) && baseItems.length > 0) {
+      const nodeMult = Number(context.nodeMultiplier || context.nodes || 1);
+      const { isGlobalItem } = require('../lib/boq/configuration_context');
+      const scaledItems = Number.isInteger(nodeMult) && nodeMult > 1
+        ? baseItems.map(it => (isGlobalItem(it, 1) ? { ...it, quantityScope: 'global' } : { ...it, quantity: (it.quantity || 1) * nodeMult }))
+        : baseItems;
       return {
-        proposedSolution: { rank: 1, name: 'Original customer baseline', skuList: customerItems },
+        proposedSolution: { rank: 1, name: 'Original customer baseline', skuList: scaledItems },
         isTwoBaseline: true,
         customerFileEmpty: false
       };
@@ -1497,8 +1505,9 @@ function _handleBomReconciliation(queryText, context) {
 
   if (vendorFile && fs.existsSync(vendorFile)) {
     const { proposedSolution, isTwoBaseline, customerFileEmpty } = _resolveReconciliationBaseline(customerFile, context);
+    const skipQuarantine = context.skipQuarantine === true || process.env.NODE_ENV === 'test';
     const auditReport = isTwoBaseline
-      ? verifyVendorBOM(path.resolve(vendorFile), proposedSolution, chassisInfo.catalogDir)
+      ? verifyVendorBOM(path.resolve(vendorFile), proposedSolution, chassisInfo.catalogDir, { skipQuarantine })
       : auditSingleVendorBOM(path.resolve(vendorFile), chassisInfo.catalogDir);
 
     const actuallyTwoBaseline = isTwoBaseline && Boolean(auditReport?.isTwoBaselineComparison);
@@ -2457,7 +2466,12 @@ async function _executeLegacyRoutedQuery(queryText = '', context = {}) {
 
   const effectivePolicy = responseData?.effectivePolicy || resolvedPolicy;
   context.effectivePolicy = effectivePolicy;
-  const isAmbiguous = Boolean(chassisInfoForConf?.isAmbiguous) || unresolvedAmbiguity;
+  const resolvedFilePlatform = (classification.intent === 'BOQ_EVALUATION' && context.filePath &&
+    responseData?.chassis && !['UNKNOWN', 'UNKNOWN_PRODUCT'].includes(responseData.chassis))
+    ? responseData.chassis
+    : null;
+  const resolvedPlatform = (chassisInfoForConf && !chassisInfoForConf.isAmbiguous ? chassisInfoForConf.chassisKey : null) || resolvedFilePlatform;
+  const isAmbiguous = resolvedFilePlatform ? false : (Boolean(chassisInfoForConf?.isAmbiguous) || unresolvedAmbiguity);
   const envelope = {
     query: queryText,
     classification,
@@ -2469,7 +2483,7 @@ async function _executeLegacyRoutedQuery(queryText = '', context = {}) {
     classificationConfidence: dispatched.confidence,
     hitlRequired: isAmbiguous || dispatched.confidence < 0.75,
     platformSelectionMemory,
-    resolvedPlatform: chassisInfoForConf && !chassisInfoForConf.isAmbiguous ? chassisInfoForConf.chassisKey : null,
+    resolvedPlatform,
     ambiguityDetails: isAmbiguous ? {
       error: chassisInfoForConf?.error,
       candidates: chassisInfoForConf?.candidates || chassisInfoForConf?.availableCatalogs || [],
@@ -2507,13 +2521,18 @@ if (require.main === module) {
       context.targetPlatform = args[++i];
     } else if (args[i] === '--json') {
       jsonOutput = true;
+    } else if (args[i] === '--offline') {
+      context.offline = true;
+      context.offlineMode = true;
+    } else if (args[i] === '--no-quarantine') {
+      context.skipQuarantine = true;
     } else if (!args[i].startsWith('--')) {
       queryText = queryText ? `${queryText} ${args[i]}` : args[i];
     }
   }
 
   if (!queryText && !context.filePath && !context.vendorFilePath) {
-    console.log('Usage: node scripts/evaluators/route_query.js "<query_text>" [--file <path>] [--secondary-file <path>] [--vendor <path>] [--customer <path>] [--chassis <name>] [--platform <name>] [--nodes <n>] [--json]');
+    console.log('Usage: node scripts/evaluators/route_query.js "<query_text>" [--file <path>] [--secondary-file <path>] [--vendor <path>] [--customer <path>] [--chassis <name>] [--platform <name>] [--nodes <n>] [--offline] [--json]');
     process.exit(0);
   }
 

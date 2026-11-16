@@ -39,7 +39,27 @@ node scripts/catalogs/ensure_catalogs.js --product Synergy_12000_Frame --include
 node scripts/catalogs/ensure_catalogs.js --product Synergy_12000_Frame --include-owned --execute
 ```
 
-**Current automation boundary:** hidden-DOM extraction and ambient probing exist. CPU/backplane/PSU/GPU/NIC/fan multi-selector traversal and exhaustive all-base capture are not implemented as unattended enumeration. Mark unvisited branches explicitly. Do not convert intended sweep tables in a skill into a success claim.
+**Current automation boundary:** hidden-DOM extraction (`extractHiddenElements`), ambient probing (`probeConditionalSkuVisibility`), and single-selector unconfigured backplane/drive-cage probing (`drive_cage_selector_probe.js:probeBackplaneSelectorSkus`, capped at `maxSelectors = 2` when hot-plug drive tables are absent in default DOM) exist automatically. Multi-selector CPU/backplane/PSU/GPU/NIC/fan Cartesian traversal and exhaustive all-base capture are not implemented as unattended enumeration. Mark unvisited branches explicitly (e.g., `HIDDEN_DOM_AMBIENT_AND_SCOPED_BACKPLANE_SELECTORS_OTHER_MACROS_UNVERIFIED`). Do not convert intended sweep tables in a skill into a success claim.
+
+### WebLogic AJAX DOM vs CSS-Hidden DOM & Live Update Feedback Loop
+
+Vendor configurators like HPE WebLogic OCA expose conditional options through **two distinct DOM behaviors**:
+1. **CSS-hidden / collapsed DOM & `table.UavailableTable`:** Present in initial HTML (`display:none` or accordion tabs) and captured automatically by `extractHiddenElements`, `extractUnavailableDomRules`, and CDP network response snapping (`networkSniffer`).
+2. **Server-rendered AJAX-injected sections:** Absent from the initial DOM (`0` table rows at default state) until an owning selector option (e.g., stacking drive cage/backplane kit) is toggled to `1` (`>0`), triggering a server round-trip; resetting that selector back to `0` strips those rows back out of the DOM.
+
+When a customer BOQ or scrape hits an uncaptured AJAX-gated dependency:
+1. Run `drive_cage_selector_probe.js:probeBackplaneSelectorSkus` during scraping (automatically invoked by `scrape_oca_solution.js:_appendBackplaneSelectorSkus` when `HotPlugSFFChoice` / `HotPlugLFFChoice` rows are hidden) OR execute a BOQ-scoped live CDP probe from `<report>_runtime_discovery_plan.json` for non-backplane selector trees.
+2. Record each revealed item with `conditionType: "SELECTOR_STATE_CONDITIONAL"`, `observedInPortal: true`, `selectorTriggerSku`, lead time, lifecycle dates, and price; strictly restore selector quantity to `0` in `try/finally` (failing loudly with `BACKPLANE_SELECTOR_RESTORE_FAILED` on restore failure).
+3. Persist into `raw_data/conditional_skus.json`, rebuild via `scripts/catalogs/build_catalog.js` (`resolveConditionalRawData` + `conditional_discovery.js:applyConditionalDiscovery` materializing portal-observed entries into `hardwareEntries`), verify `sync_payload_builder.js` selector tables + NotebookLM readback via `post_flow_sync.js`, and record scoped learnings via `recordAndCertifyLearnedRule()`.
+
+For a scoped backplane check, pass the plan's `selectorTriggerSku` in `probeBackplaneSelectorSkus` option `selectorSkus`. The probe records a completed sweep only after it reads quantity `1` in the target row and confirms that the same row returns to `0`. An unavailable requested selector produces an explicit skip.
+
+### Non-Negotiable BOQ, Parser & Topology Validation Gates (`INV-241`)
+
+- **CDP Fail-Loud Polling:** `cdp.js:waitForDOMPredicate` and `navigate_oca.js:_pollForActiveOcaReadiness` abort immediately on `SyntaxError` / `ReferenceError` evaluation exceptions; DOM helpers serialize arguments via `JSON.stringify`.
+- **Workbook Price & Service Header Fidelity:** `boq_parser.js` enforces strict header precedence so `Extended List Price` never overwrites `Unit Price`; `0D1`/`B19` modifiers consolidate without quantity inflation; `configuration_context.js` treats qty-1 install/support wrappers as `quantityScope: "global"` while preserving customer-originated services across `B8`.
+- **Reconciliation & Catalogs:** `route_query.js:_resolveReconciliationBaseline` resolves raw pre-expansion items across per-node multipliers vs global scope and validates SaaS/care SKUs against sibling `*_Services.json` catalogs alongside hardware `entries`.
+- **Path-Separated Cabling, Category Parity & Fast-Ship Clarity:** `storage_tri_mode.js` validates backplane-to-controller storage signal cables independently from CPU-to-slot OCP enablement cables and sideband telemetry cables; `networking_ocp.js` excludes storage/backplane cables when counting OCP adapters; `least_delta_combinator.js` enforces strict component-category matching and excludes non-hardware OS/management licenses before replacement scoring; `strategy_synthesizer.js` revalidates coupled topology fast-ship candidates cleanly, labels configurator solution EDT ranges separately from single-part catalog lead times, and carries forward live configurator warnings so `0`-error configurations with advisories remain `PORTAL VALIDATION PENDING`.
 
 ## Workflow B: runtime checks for a concrete BOQ
 

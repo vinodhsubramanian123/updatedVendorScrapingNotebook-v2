@@ -221,6 +221,30 @@ function introspectSku(itemOrSku, catalogData = null, chassisInfo = {}) {
  * @param {object} chassisInfo - Base chassis metadata
  * @returns {object} Structured multi-degree cascading impact report
  */
+function _resolvePcieCableCascadeKit(chassisInfo) {
+  const genKey = (chassisInfo?.gen || '').includes('12') ? 'Gen12' : 'Gen11';
+  if (genKey === 'Gen12') {
+    const model = String(chassisInfo?.model || chassisInfo?.chassis || chassisInfo?.id || '').toLowerCase();
+    if (model.includes('dl360')) {
+      return {
+        genKey,
+        splitterCableSku: 'P72604-B21',
+        splitterCableDesc: 'HPE ProLiant Compute DL360 Gen12 2SFF Stacking x2 Box1 Box2 PCIe Slot1 Controller Cable Kit'
+      };
+    }
+    return {
+      genKey,
+      splitterCableSku: 'P76453-B21',
+      splitterCableDesc: 'HPE ProLiant DL380 Gen12 UMB PCIe Box 1/2 Cable Kit'
+    };
+  }
+  return {
+    genKey,
+    splitterCableSku: 'P48832-B21',
+    splitterCableDesc: 'HPE ProLiant DL380 Gen11 Tri-Mode Splitter Cable Kit'
+  };
+}
+
 function analyzeCascadingImpact(changeProposal = {}, currentBom = [], catalogData = null, chassisInfo = {}) {
   const proposal = changeProposal || {};
   const action = proposal.action || 'SWAP';
@@ -246,9 +270,7 @@ function analyzeCascadingImpact(changeProposal = {}, currentBom = [], catalogDat
       netCostDeltaUsd += (newProfile.priceUsd - origProfile.priceUsd);
 
       // Downstream Cable Cascade
-      const genKey = (chassisInfo?.gen || '').includes('12') ? 'Gen12' : 'Gen11';
-      const splitterCableSku = genKey === 'Gen12' ? 'P76453-B21' : 'P48832-B21';
-      const splitterCableDesc = genKey === 'Gen12' ? 'HPE ProLiant DL380 Gen12 UMB PCIe Box 1/2 Cable Kit' : 'HPE ProLiant DL380 Gen11 Tri-Mode Splitter Cable Kit';
+      const { genKey, splitterCableSku, splitterCableDesc } = _resolvePcieCableCascadeKit(chassisInfo);
       const ocpCableSku = 'P48918-B21';
 
       cascadingSteps.push({

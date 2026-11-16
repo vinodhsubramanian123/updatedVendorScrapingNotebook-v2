@@ -2,8 +2,8 @@
 
 **Document Classification:** Canonical Ground-Truth Architecture & Validation Charter<br>
 **Maintained By:** HPE ProLiant AI Studio Autonomous Knowledge Engine (Antigravity AI)<br>
-**Last Synchronized:** 2026-11-15T08:16:21.085Z<br>
-**Total Deduplicated Learned Rules:** 155<br>
+**Last Synchronized:** 2026-11-16T21:01:04.090Z<br>
+**Total Deduplicated Learned Rules:** 165<br>
 **Universal Invariant Compliance:** INV-1 through INV-38 Certified<br>
 **Google Drive Destination:** `shared_folder_id: 1YR0lBh-gg00amKHRxuOqp5Aea3iL5O7-`
 
@@ -14,6 +14,7 @@
 2. [Universal Cross-Platform Hardware Laws & Invariants](#2-universal-cross-platform-hardware-laws--invariants)
 3. [Chassis-by-Chassis Deep-Dive Knowledge Matrix & Blueprints](#3-chassis-by-chassis-deep-dive-knowledge-matrix--blueprints)
    - [HPE ProLiant Compute DL380 Gen12](#31-hpe-proliant-compute-dl380-gen12)
+   - [HPE ProLiant Compute DL360 Gen12](#31b-hpe-proliant-compute-dl360-gen12)
    - [HPE ProLiant Compute DL380a Gen12 (AI Accelerator Server)](#32-hpe-proliant-compute-dl380a-gen12-ai-accelerator-server)
    - [HPE ProLiant DL380 Gen11](#33-hpe-proliant-dl380-gen11)
    - [HPE ProLiant DL145 Gen11 (Edge Server)](#34-hpe-proliant-dl145-gen11-edge-server)
@@ -75,6 +76,13 @@ The **HPE AI Studio BOQ Evaluator & Conflict Resolution Engine** maintains a dua
   - **Immediate Availability (Excellent)**: 6505P (12C/150W), 6507P (8C/150W), 6515P (16C/150W), 6520P (24C/210W), 6530P (32C/225W), 6710E (64C/205W), 6740E (96C/250W), 6730P (32C/250W).
   - **Standard Channel (Good)**: 6517P, 6728P, 6527P, 6731E, 6714P, 6746E, 6736P, 6724P, 6740P, 6732P, 6737P, 6745P, 6760P, 6747P, 6738P, 6767P, 6787P.
   - **Special Order (45+ Days)**: 6766E, 6748P, 6768P, 6788P.
+
+### 3.1b HPE ProLiant Compute DL360 Gen12
+- **Architecture**: 1U dual-socket rack server supporting Intel Xeon 6 P-Core / E-Core processors, DDR5-6400 RDIMM memory (including `P69728-F21` 64GB), dual rear OCP3 slots (Slot A and Slot B), and high-density front SFF / EDSFF backplanes.
+- **Hybrid Base & Selector-State Drive Gating**: Hybrid 10SFF/20EDSFF CTO base `P72176-B21` keeps `storage_HotPlugSFFChoice` drives collapsed at default Qty 0; activating Stacking Backplane Kit `P72223-B21` (= 1) conditionally reveals 91 selectable SFF SATA/SAS/U.3 drives including `P40497-B21` (480GB SATA 6G RI SFF SSD, $4,411 list, 3d lead time, Discontinued `06/30/2027`).
+- **Dual-OCP Slot A Storage + Slot B NIC Cabling Topology**: Switching from PCIe controller `P74775-B21` + PCIe Slot 1 cable `P72604-B21` to faster-delivery OCP Slot A controller `P58335-B21` (`MR408i-o`) mandates replacing `P72604-B21` with Rear OCP Slot A signal cable `P72600-B21` AND adding CPU1-to-Rear OCP Slot B enablement cable `P72203-B21` to preserve Slot B Ethernet OCP3 connectivity (`P26256-B21`), plus sideband telemetry cable `P48918-B21` and 96W battery `P01366-B21`. Reduces live 10-node OCA solution EDT from **73–91 days** (`5158388738-01`) to **43–54 days** (`5158389518-01`).
+- **Platform Kit Defaults**: 1U High-Performance Fan Kit resolves to `P48908-B21` and High-Performance Heat Sink resolves to `P74787-B21`; installation wrapper `HA113A1` and 5Y Tech Care Essential wrapper `HU4A6A5` remain quantity-1 order headers spanning all 10 covered nodes (`HU4A6A50C4U`).
+- **Live CLIC Warning Discipline**: Even with 0 errors and 0 unbuildables, live CLIC checks returned 10 warnings requiring partner/customer disposition before release (Cloud Enablement `81302926` / `R7A12AAE`, iLO Advanced `81031845` / `512485-B21`, unspecified factory RAID on mirrored SSDs, OS supply, `P79564-B21` 20C inlet tracking, and `AKM` vs `B19` suffix alignment) — keeping status `PORTAL VALIDATION PENDING`.
 
 ### 3.2 HPE ProLiant Compute DL380a Gen12 (AI Accelerator Server)
 - **Architecture**: 4U specialized dual-socket platform housing front-loading accelerator bays supporting up to 10 Double-Wide (DW) or 16 Single-Wide (SW) GPUs.
@@ -160,7 +168,7 @@ The Catalog Vendor Solution provides modular, AI-assisted catalog ingestion, nor
 
 ## 5. Deduplicated Learned Rule Ledger & Verification Provenance
 
-Total verified rules indexed in this build: **155**.
+Total verified rules indexed in this build: **165**.
 
 | Scope | Target Chassis | Category | Affected SKU | Dependency SKU | Rule Summary / Validation Directive | Verifications |
 | :--- | :--- | :--- | :--- | :--- | :--- | :---: |
@@ -173,6 +181,12 @@ Total verified rules indexed in this build: **155**.
 | 🌐 UNIVERSAL | `GLOBAL` | `WORKFLOW_CATEGORY_DEPENDENCY_AND_ESCALATION` | `null` | `—` | SKU category prerequisite intelligence & runtime escalation (INV-238): (1) Drive Cage / Backplane topology — NOT bare dr | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `WORKFLOW_ATTRIBUTE_DELTAS_AND_SYNC_RECEIPTS` | `null` | `—` | End-to-end catalog diff & sync confirmation protocol (INV-239): (1) Preserve Attribute Deltas ("field: oldValue -> newVa | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `WORKFLOW_MULTIVENDOR_PORTAL_AND_CDP_GUARD` | `null` | `—` | Multi-vendor portal, domain rules & CDP readiness protocol (INV-240): (1) Use registerCustomVendorPortalPolicy, register | 1x |
+| 🌐 UNIVERSAL | `GLOBAL` | `WORKFLOW_CDP_FATAL_EVAL_AND_RETRY_GUARD` | `null` | `—` | CDP polling helpers must classify SyntaxError and ReferenceError exceptions as immediate fatal errors instead of retryin | 1x |
+| 🌐 UNIVERSAL | `GLOBAL` | `WORKFLOW_SELECTOR_STATE_BACKPLANE_DISCOVERY` | `null` | `—` | Runtime discovery plans must forward exact selector trigger SKUs into bounded inactive backplane selector probes when ho | 1x |
+| 🌐 UNIVERSAL | `GLOBAL` | `WORKFLOW_PARSER_PRICE_AND_HEADER_OWNERSHIP` | `null` | `—` | Workbook parsers must enforce strict header precedence so Extended List Price columns never overwrite Unit Price values, | 1x |
+| 🌐 UNIVERSAL | `GLOBAL` | `WORKFLOW_RECONCILIATION_UNSPLIT_AND_SERVICES_LOOKUP` | `null` | `—` | Two-baseline BOM reconciliation must resolve unsplit customer baseline items directly from parsed workbook lines scaled  | 1x |
+| 🌐 UNIVERSAL | `GLOBAL` | `WORKFLOW_TOPOLOGY_CATEGORY_AND_CABLE_ENFORCEMENT` | `null` | `—` | Physical validation must distinguish backplane-to-controller storage signal cables, CPU-to-slot OCP enablement cables, a | 1x |
+| 🌐 UNIVERSAL | `GLOBAL` | `WORKFLOW_FAST_SHIP_TOPOLOGY_AND_CLIC_CARRYFORWARD` | `null` | `—` | Fast-ship candidate synthesis must resolve coupled cabling and enablement paths and pass full multi-aspect physical reva | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `SUPPORT_POLICY` | `undefined` | `—` | Preserve explicit customer support term and tier in the closest rank; use 3-year Tech Care Basic only when unspecified o | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `ICON_SUPPORT_ISOLATION` | `undefined` | `—` | Select Services from Components for the owning icon, edit its dropdowns, and leave both apply-to-all icons and apply-to- | 1x |
 | 🌐 UNIVERSAL | `GLOBAL` | `SESSION_RECOVERY_PROTOCOL` | `undefined` | `—` | When OCA says it encountered a problem, restart from Partner Portal refresh/login and open One Config Advanced through Q | 1x |
@@ -221,6 +235,10 @@ Total verified rules indexed in this build: **155**.
 | 📦 CHASSIS | `DL385_Gen11` | `PROCESSOR_CACHE_TRADE_OFF_STRATEGY` | `P53712-B21` | `P53701-B21` | When modernizing AMD EPYC 7543 (32c, 2.8GHz, 256MB L3, 225W), EPYC 9334 (32c, 2.7GHz, 128MB L3, 210W, ,170 USD) saves Ca | 1x |
 | 📦 CHASSIS | `DL385_Gen11` | `FAN_PACKAGING_MODALITY_RULE` | `P58465-B21` | `P53921-B21` | On HPE ProLiant DL385 Gen11 (and DL3X5 AMD platforms), P58465-B21 (HPE ProLiant DL3X5 Gen11 2U Performance Fan Kit, .00  | 1x |
 | 📦 CHASSIS | `DL385_Gen11` | `MANAGEMENT_LICENSE_VS_FIO_TOKEN_SEPARATION` | `S1A05A` | `R7A11AAE` | On DL385 Gen11 CTO builds (P53921-B21), R7A11AAE (HPE Compute Ops Management Standard 3-year Upfront SaaS, .00 USD) sati | 1x |
+| 📦 CHASSIS | `DL360_Gen12` | `SELECTOR_STATE_CONDITIONAL` | `P40497-B21` | `P72223-B21` | P40497-B21 on DL360 Gen12 hybrid base P72176-B21 is conditionally revealed behind backplane stacking kit P72223-B21 (= 1 | 1x |
+| 📦 CHASSIS | `DL360_Gen12` | `STORAGE_OCP_TOPOLOGY_CABLE_PATH` | `P58335-B21` | `P72600-B21` | MR408i-o OCP Slot A (P58335-B21) with Slot B OCP3 NIC (P26256-B21) requires Slot A storage cable P72600-B21, Slot B enab | 1x |
+| 📦 CHASSIS | `DL360_Gen12` | `CHASSIS_THERMAL_AND_OCP_SLOT_RULES` | `P72176-B21` | `P48908-B21` | Use DL360 Gen12 thermal kits P48908-B21 and P74787-B21, classify P72600-B21/P72203-B21 as cables rather than OCP adapter | 1x |
+| 📦 CHASSIS | `DL360_Gen12` | `WORKFLOW_CLIC_ADVISORY_DISPOSITION` | `P72176-B21` | `—` | Carry forward live CLIC warning count so 0-error configurations with 10 advisories stay PORTAL VALIDATION PENDING until  | 1x |
 | 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `P74700-B21` | `—` | Observed price drift on P74700-B21 (memory) | 1x |
 | 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `S4A91C` | `—` | Observed price drift on S4A91C (drive) | 1x |
 | 📦 CHASSIS | `DL380a_Gen12` | `undefined` | `HA113A1` | `—` | Observed price drift on HA113A1 (support) | 1x |

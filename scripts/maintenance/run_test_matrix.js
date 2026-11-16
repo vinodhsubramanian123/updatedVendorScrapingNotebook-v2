@@ -324,7 +324,10 @@ const LONG_RUNNING_TEST_PATTERNS = [
   'test_boq_eval_benchmarks',
   'test_cross_vendor_and_candidate_scrutiny',
   'test_product_notebook_resolution',
-  'test_clic_cross_product_validation'
+  'test_clic_cross_product_validation',
+  'test_run_recovery_and_sizing_context',
+  'test_skill_workflow_isolation',
+  'test_concurrent_fuzz_memory'
 ];
 
 function getEffectiveTimeoutMs(testFile, timeoutMs) {

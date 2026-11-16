@@ -39,25 +39,37 @@ function parseSynergyMezzanine(it, desc, sku) {
   return { it, desc, sku, mezzSlot, type };
 }
 
+function _isBackplaneStorageCableDesc(desc) {
+  return desc.includes('controller cable') || desc.includes('ctrl cable') ||
+    desc.includes('storage controller') || desc.includes('stacking') ||
+    desc.includes('backplane') || desc.includes('splitter cable') ||
+    /\bbox\s*\d/i.test(desc);
+}
+
+function _matchesOcpEnablementCable(desc, sku, mandatoryCable, slotKeywords) {
+  if (mandatoryCable?.sku && sku === cleanBaseSKU(mandatoryCable.sku)) return true;
+  if (!desc.includes('ocp') || _isBackplaneStorageCableDesc(desc)) return false;
+  const hasEnablementOrCpuCable = desc.includes('enablement') ||
+    (desc.includes('cable') && (desc.includes('cpu1') || desc.includes('cpu2') || desc.includes('slotb') || desc.includes('slot b') || desc.includes('ocp2')));
+  return hasEnablementOrCpuCable && slotKeywords.some(kw => desc.includes(kw));
+}
+
 function tallyOcpAndCables(tally, it, desc, sku, qty, role, mandatorySkus = {}) {
-  // CPU/OCP Enablement Cables
-  const isCpu1Ocp = (mandatorySkus?.CPU1_OCP_CABLE?.sku && sku === cleanBaseSKU(mandatorySkus.CPU1_OCP_CABLE.sku)) ||
-                    (desc.includes('ocp') && desc.includes('enablement') && (desc.includes('pri') || desc.includes('primary') || desc.includes('cpu1')));
-  if (isCpu1Ocp) {
+  if (_matchesOcpEnablementCable(desc, sku, mandatorySkus?.CPU1_OCP_CABLE, ['pri', 'primary', 'cpu1', 'slotb', 'slot b'])) {
     tally.hasCpu1Ocp2Cable = true;
     tally.ocpCableItems.push(it);
   }
 
-  const isCpu2Ocp = (mandatorySkus?.CPU2_OCP_CABLE?.sku && sku === cleanBaseSKU(mandatorySkus.CPU2_OCP_CABLE.sku)) ||
-                    (desc.includes('ocp') && desc.includes('enablement') && (desc.includes('sec') || desc.includes('secondary') || desc.includes('cpu2')));
-  if (isCpu2Ocp) {
+  if (_matchesOcpEnablementCable(desc, sku, mandatorySkus?.CPU2_OCP_CABLE, ['sec', 'secondary', 'cpu2', 'ocp2'])) {
     tally.hasCpu2Ocp2Cable = true;
     tally.ocpCableItems.push(it);
   }
 
-  // OCP Storage Controllers
-  const isOcpStorage = (role === 'Storage Controller' || desc.includes('controller') || desc.includes('raid')) && 
-                       (desc.includes('ocp') || /\b(mr|sr)\d{3}i-o\b/i.test(desc) || desc.includes('-o'));
+  // OCP Storage Controllers (exclude internal controller/enablement cables and backplanes whose text mentions 'OCP' and 'controller')
+  const isInternalCableOrKit = role === 'Internal Cable' || role === 'Cable Kit' || desc.includes('cable') || desc.includes('enablement') || desc.includes('backplane');
+  const isOcpStorage = !isInternalCableOrKit &&
+                       (role === 'Storage Controller' || desc.includes('controller') || desc.includes('raid')) &&
+                       (desc.includes('ocp') || /\b(mr|sr)\d{3}i-o\b/i.test(desc));
   if (isOcpStorage) {
     tally.ocpAdapterCount += qty;
   }
@@ -75,8 +87,8 @@ function tallyFcHbas(tally, desc, sku, qty, role) {
 
     const totalPorts = ports * qty;
     const cleanSku = cleanBaseSKU(sku);
-    // HPE SN1610Q / SN1610E include optical transceivers pre-installed in the box per HPE QuickSpecs
-    const includesTransceivers = cleanSku === 'R2E09A' || cleanSku === 'R2E08A' || cleanSku === 'R2J62A' || cleanSku === 'R2J63A';
+    // HPE SN1610Q / SN1610E / SN1620E include optical transceivers pre-installed in the box per HPE QuickSpecs
+    const includesTransceivers = ['R2E09A', 'R2E08A', 'R2J62A', 'R2J63A', 'S4S01A', 'S4T09A'].includes(cleanSku);
 
     if (desc.includes('32gb')) {
       tally.fcHbaPortCount32Gb += totalPorts;

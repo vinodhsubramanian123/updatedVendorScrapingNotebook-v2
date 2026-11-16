@@ -4,7 +4,7 @@
  * scripts/lib/boq/pricing_presence.js — Bounded pricing presence and completeness helpers.
  */
 
-const CONFIRMED_ZERO_PARENT_CONTRACTS = new Set(['HA113A1', 'HU4B2A3']);
+const CONFIRMED_ZERO_PARENT_CONTRACTS = new Set(['HA113A1', 'HU4B2A3', 'HU4A6A5', 'HU4A6A3', 'HU4B2A5']);
 
 function isConfirmedZeroSku(sku, item = {}) {
   if (item.isConfirmedZeroPrice === true) return true;

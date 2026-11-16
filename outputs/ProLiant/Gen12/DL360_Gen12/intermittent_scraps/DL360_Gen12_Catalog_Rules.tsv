@@ -1,0 +1,289 @@
+Main Category	Sub-Category	Constraint	Rule Type	Rule Text
+Unknown	Logical Size Settings	max 1	Quantity Constraint	Quantity: max 1
+Unknown	Riser Cards	min 1, Required	Quantity Constraint	Quantity: min 1, Required
+Manufacturing Services	Manufacturing Services	min 1, Required	Quantity Constraint	Quantity: min 1, Required
+Energy Star	Energy Star	max 1	Quantity Constraint	Quantity: max 1
+Processor	Processor	max 2	Quantity Constraint	Quantity: max 2
+Processor	Heatsink Kit	max 2	Quantity Constraint	Quantity: max 2
+Memory	Memory	max 32	Quantity Constraint	Quantity: max 32
+Memory	Memory Blank Kit	max 1	Quantity Constraint	Quantity: max 1
+Smart Chassis	Top Selling Smart Chassis Combinations	Unlimited	Quantity Constraint	Quantity: Unlimited
+Smart Chassis	Cabling Option	min 1, Required	Quantity Constraint	Quantity: min 1, Required
+Smart Chassis	Drive Cage (required)	max 5	Quantity Constraint	Quantity: max 5
+Smart Chassis	Drive Cage	min 1, Required	Quantity Constraint	Quantity: min 1, Required
+Smart Chassis	Upgrades	max 2	Quantity Constraint	Quantity: max 2
+Smart Chassis	OS Boot Device	max 2	Quantity Constraint	Quantity: max 2
+Smart Chassis	SAS Controller	max 3	Quantity Constraint	Quantity: max 3
+Smart Chassis	Smart Chassis Configuration	min 1, Required	Quantity Constraint	Quantity: min 1, Required
+Ambient Temperature	AmbientTemperature	min 1, Required	Quantity Constraint	Quantity: min 1, Required
+Storage Devices	Smart Storage Battery	max 2	Quantity Constraint	Quantity: max 2
+Storage Devices	RAID Settings	max 1	Quantity Constraint	Quantity: max 1
+Storage Devices	Internal Storage Controller Cables	max 6	Quantity Constraint	Quantity: max 6
+Storage Devices	Drive Cage Accessories (required)	max 1	Quantity Constraint	Quantity: max 1
+Storage Devices	Drive Cage Accessories	min 1, Required	Quantity Constraint	Quantity: min 1, Required
+Storage Devices	Optical Drive	max 1	Quantity Constraint	Quantity: max 1
+Factory Configuration Settings	Factory Configuration Settings	max 1	Quantity Constraint	Quantity: max 1
+Factory Configuration Settings	BIOS Mode	max 1	Quantity Constraint	Quantity: max 1
+Factory Configuration Settings	Trusted Supply Chain	max 1	Quantity Constraint	Quantity: max 1
+Factory Configuration Settings	vSAN Tracking SKUs	max 1	Quantity Constraint	Quantity: max 1
+Factory Configuration Settings	iLO Common Password	max 1	Quantity Constraint	Quantity: max 1
+Factory Configuration Settings	Memory Setting	max 1	Quantity Constraint	Quantity: max 1
+Factory Configuration Settings	Riser Cards (required)	max 2	Quantity Constraint	Quantity: max 2
+Networking	Ethernet PCIe	max 2	Quantity Constraint	Quantity: max 2
+Networking	InfiniBand PCIe	max 2	Quantity Constraint	Quantity: max 2
+Networking	OCP Ethernet	max 2	Quantity Constraint	Quantity: max 2
+Networking	Fibre Channel HBA	max 3	Quantity Constraint	Quantity: max 3
+Networking	Transceivers	max 12	Quantity Constraint	Quantity: max 12
+Networking	Networking Accessories	max 2	Quantity Constraint	Quantity: max 2
+Power Supplies	Power Supplies	max 2	Quantity Constraint	Quantity: max 2
+Power Supplies	Accessories	max 2	Quantity Constraint	Quantity: max 2
+Power Supplies	Power Cooling Options	max 2	Quantity Constraint	Quantity: max 2
+Power Supplies	Power Cords	max 2	Quantity Constraint	Quantity: max 2
+Security Options	Security Hardware	max 3	Quantity Constraint	Quantity: max 3
+Graphics Options	Graphics Options	max 2	Quantity Constraint	Quantity: max 2
+Accessories	Management Hardware	max 1	Quantity Constraint	Quantity: max 1
+Rack Options	Rack Options	max 2	Quantity Constraint	Quantity: max 2
+Manufacturing Services	Manufacturing Services (required)	max 3	Quantity Constraint	Quantity: max 3
+HPC Software Products	HPC Software Products	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPC Software Products	High Availability Computing - Cluster Software	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPC Software Products	NVIDIA GPU SW	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPC Software Products	Partner Software - Operating System	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPC Software Products	Compute Ops Management SKUs (required)	max 1	Quantity Constraint	Quantity: max 1
+HPC Software Products	Compute Ops Management SKUs	min 1, Required	Quantity Constraint	Quantity: min 1, Required
+HPC Software Products	Compute Ops Management Enablement SKUs	max 1	Quantity Constraint	Quantity: max 1
+HPC Software Products	OEM Software	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPC Software Products	Proliant Software Media Kits	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPC Software Products	Red Hat (add-ons)	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPC Software Products	SUSE Add-ons	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPC Software Products	iLO	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPC Software Products	OneView Management Software	max 1	Quantity Constraint	Quantity: max 1
+HPC Software Products	Data Management Framework (SGI DMF)	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPC Software Products	Supported Operating System	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPC Software Products	MS Windows Server	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPC Software Products	MS Windows Server - Essentials	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPC Software Products	Red Hat OpenShift Platform Container	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPC Software Products	Resale Option Kit	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPC Software Products	SUSE containers	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPC Software Products	SUSE Linux Enterprise Server	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPC Software Products	Microsoft Windows CAL Packs	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPC Software Products	HPE Virtualization	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPC Software Products	Red Hat Enterprise Linux Server-Virtualization	Unlimited	Quantity Constraint	Quantity: Unlimited
+HPC Software Products	VMware vCloud Products	Unlimited	Quantity Constraint	Quantity: Unlimited
+Chassis	Variants	min 1, max 1 — Active OCA CTO chassis	Configuration Rule	Select exactly one currently discoverable, non-TAA/non-GTA CTO base chassis
+Accessories & Infrastructure	Energy Star Configuration Presets	max 1	Configuration Rule	Selection constraint for Energy Star Configuration Presets: max 1
+Processor	Processor	max 2	Configuration Rule	Selection constraint for Processor: max 2
+Cooling / Thermal	Heatsink Kit	max 2	Configuration Rule	Selection constraint for Heatsink Kit: max 2
+Memory	Memory	max 32	Configuration Rule	Selection constraint for Memory: max 32
+Memory	Memory	max 32	Configuration Rule	BTO Memories are not allowed in CTO Base Model.
+Memory	Memory	max 32	Configuration Rule	P69726-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
+Memory	Memory	max 32	Configuration Rule	P69727-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
+Memory	Memory	max 32	Configuration Rule	P69728-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
+Memory	Memory	max 32	Configuration Rule	P69729-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
+Memory	Memory	max 32	Configuration Rule	P69730-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
+Memory	Memory	max 32	Configuration Rule	P73447-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
+Memory	Memory	max 32	Configuration Rule	P83865-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
+Memory	Memory	max 32	Configuration Rule	P83867-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
+Memory	Memory Blank Kit	max 1	Configuration Rule	Selection constraint for Memory Blank Kit: max 1
+Cables & Enablement Kits	Optical Transceivers & DAC Cables	required	Configuration Rule	Selection constraint for Optical Transceivers & DAC Cables: required
+Drive Enclosures / Drives	Drive Cage	required	Configuration Rule	Selection constraint for Drive Cage: required
+Cables & Enablement Kits	OCP3 Networking Adapters	max 2	Configuration Rule	Selection constraint for OCP3 Networking Adapters: max 2
+Cables & Enablement Kits	Solid State Drives (NVMe/SAS/SATA)	max 2	Configuration Rule	Selection constraint for Solid State Drives (NVMe/SAS/SATA): max 2
+OS Boot Device	Energy Star	max 1	Configuration Rule	Private Product is not valid for current customer account
+OS Boot Device	Energy Star	max 1	Configuration Rule	P75693-B21 conditional visibility: portal selector activation required (Private Product is not valid for current customer account); PORTAL_CONDITIONAL
+Storage Controllers	SAS Controller	max 3	Configuration Rule	Selection constraint for SAS Controller: max 3
+Accessories & Infrastructure	AmbientTemperature	required	Configuration Rule	Selection constraint for AmbientTemperature: required
+Storage Controllers	Smart Storage Batteries	max 2	Configuration Rule	Selection constraint for Smart Storage Batteries: max 2
+Storage Controllers	Storage Controllers Options	max 1	Configuration Rule	Selection constraint for RAID Settings: max 1
+Support Services	Support Services Options	max 1	Configuration Rule	Selection constraint for RAID Settings: max 1
+Storage Controllers	Internal Storage Controller Cables	max 6	Configuration Rule	Selection constraint for Internal Storage Controller Cables: max 6
+Drive Enclosures / Drives	Drive Cage Accessories	required	Configuration Rule	Selection constraint for Drive Cage Accessories: required
+Drive Enclosures / Drives	Optical Drive	max 1	Configuration Rule	Selection constraint for Optical Drive: max 1
+Drive Enclosures / Drives	Optical Drive	max 1	Configuration Rule	BTO products are not allowed in CTO Base Model.
+Drive Enclosures / Drives	Optical Drive	max 1	Configuration Rule	701498-B21 conditional visibility: portal selector activation required (BTO products are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
+Memory	Memory Blank Kit	max 1	Configuration Rule	BTO products are not allowed in CTO Base Model.
+Memory	Memory Blank Kit	max 1	Configuration Rule	807878-B21 conditional visibility: portal selector activation required (BTO products are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
+Memory	Memory Blank Kit	max 1	Configuration Rule	666987-B21 conditional visibility: portal selector activation required (BTO products are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
+Cables & Enablement Kits	Factory Configuration Settings	max 1	Configuration Rule	Selection constraint for Factory Configuration Settings: max 1
+Software & Licenses	Software & Licenses Options	max 1	Configuration Rule	Selection constraint for BIOS Mode: max 1
+Accessories & Infrastructure	Trusted Supply Chain	max 1	Configuration Rule	Selection constraint for Trusted Supply Chain: max 1
+Accessories & Infrastructure	Logical Size Settings	max 1	Configuration Rule	Selection constraint for Logical Size Settings: max 1
+Accessories & Infrastructure	vSAN Tracking SKUs	max 1	Configuration Rule	Selection constraint for vSAN Tracking SKUs: max 1
+Software & Licenses	Server Management & Operating System Licenses	max 1	Configuration Rule	Selection constraint for iLO Common Password: max 1
+Memory	Memory Setting	max 1	Configuration Rule	Selection constraint for Memory Setting: max 1
+Accessories & Infrastructure	Energy Star	max 1	Configuration Rule	Supported only for NEBS Models
+Accessories & Infrastructure	Energy Star	max 1	Configuration Rule	P40010-B21 conditional visibility: portal selector activation required (Supported only for NEBS Models); PORTAL_CONDITIONAL
+PCIe Risers	Riser Cards (required)	max 2	Configuration Rule	Selection constraint for Riser Cards (required): max 2
+PCIe Risers	Riser Cards	required	Configuration Rule	BTO products are not allowed in CTO Base Model.
+PCIe Risers	Riser Cards	required	Configuration Rule	P75407-B21 conditional visibility: portal selector activation required (BTO products are not allowed in CTO Base Model.); PORTAL_CONDITIONAL
+Networking	Ethernet PCIe	max 2	Configuration Rule	Selection constraint for Ethernet PCIe: max 2
+Networking	Optical Transceivers & DAC Cables	max 1	Configuration Rule	Private Product is not valid for current customer account
+Networking	Optical Transceivers & DAC Cables	max 1	Configuration Rule	P74383-B21 conditional visibility: portal selector activation required (Private Product is not valid for current customer account); PORTAL_CONDITIONAL
+Networking	Optical Transceivers & DAC Cables	max 1	Configuration Rule	P80855-B21 conditional visibility: portal selector activation required (Private Product is not valid for current customer account); PORTAL_CONDITIONAL
+Networking	InfiniBand PCIe	max 2	Configuration Rule	Selection constraint for InfiniBand PCIe: max 2
+Networking	OCP Ethernet	max 2	Configuration Rule	Selection constraint for OCP Ethernet: max 2
+Networking	Fibre Channel HBA	max 3	Configuration Rule	Selection constraint for Fibre Channel HBA: max 3
+Networking	Transceivers	max 12	Configuration Rule	Selection constraint for Transceivers: max 12
+Networking	Networking Accessories	max 2	Configuration Rule	Selection constraint for Networking Accessories: max 2
+Accessories & Infrastructure	Energy Star	max 1	Configuration Rule	Private Product is not valid for current customer account
+Accessories & Infrastructure	Energy Star	max 1	Configuration Rule	P74606-B21 conditional visibility: portal selector activation required (Private Product is not valid for current customer account); PORTAL_CONDITIONAL
+Power Supplies	Power Supplies	max 2	Configuration Rule	Selection constraint for Power Supplies: max 2
+Cables & Enablement Kits	-48VDC Power Supplies & Cable Kits	max 2	Configuration Rule	Selection constraint for -48VDC Power Supplies & Cable Kits: max 2
+Cooling / Thermal	Power Cooling Options	max 2	Configuration Rule	Selection constraint for Power Cooling Options: max 2
+Cables & Enablement Kits	Power Cords	max 2	Configuration Rule	Selection constraint for Power Cords: max 2
+Accessories & Infrastructure	Chassis Infrastructure & Rail Kits	max 3	Configuration Rule	Selection constraint for Chassis Infrastructure & Rail Kits: max 3
+Graphics & GPU	GPU Accelerators	max 2	Configuration Rule	Selection constraint for GPU Accelerators: max 2
+Cables & Enablement Kits	Management Hardware	max 1	Configuration Rule	Selection constraint for Management Hardware: max 1
+Accessories & Infrastructure	Chassis Infrastructure & Rail Kits	max 2	Configuration Rule	Selection constraint for Chassis Infrastructure & Rail Kits: max 2
+Storage Controllers	Rack Options	max 2	Configuration Rule	Selection constraint for Rack Options: max 2
+Accessories & Infrastructure	Accessories & Infrastructure Options	max 3	Configuration Rule	Selection constraint for Manufacturing Services (required): max 3
+Software & Licenses	Proliant Software Media Kits	no max	Configuration Rule	Not Supported ProStack Server Software
+Software & Licenses	Proliant Software Media Kits	no max	Configuration Rule	S7J52A conditional visibility: portal selector activation required (Not Supported ProStack Server Software); PORTAL_CONDITIONAL
+Software & Licenses	High Availability Computing - Cluster Software	no max	Configuration Rule	Selection constraint for High Availability Computing - Cluster Software: no max
+Software & Licenses	Partner Software - Operating System	no max	Configuration Rule	Selection constraint for Partner Software - Operating System: no max
+Software & Licenses	Compute Ops Management SKUs	required	Configuration Rule	Selection constraint for Compute Ops Management SKUs: required
+Software & Licenses	OEM Software	no max	Configuration Rule	Selection constraint for OEM Software: no max
+Software & Licenses	Proliant Software Media Kits	no max	Configuration Rule	Selection constraint for Proliant Software Media Kits: no max
+Software & Licenses	Red Hat (add-ons)	no max	Configuration Rule	Selection constraint for Red Hat (add-ons): no max
+Software & Licenses	SUSE Add-ons	no max	Configuration Rule	Selection constraint for SUSE Add-ons: no max
+Software & Licenses	iLO	no max	Configuration Rule	Selection constraint for iLO: no max
+Software & Licenses	OneView Management Software	max 1	Configuration Rule	Selection constraint for OneView Management Software: max 1
+Software & Licenses	Supported Operating System	no max	Configuration Rule	Selection constraint for Supported Operating System: no max
+Software & Licenses	MS Windows Server	no max	Configuration Rule	Selection constraint for MS Windows Server: no max
+Software & Licenses	MS Windows Server - Essentials	no max	Configuration Rule	Selection constraint for MS Windows Server - Essentials: no max
+Software & Licenses	Server Management & Operating System Licenses	no max	Configuration Rule	Selection constraint for MS Windows Server - Essentials: no max
+Software & Licenses	Server Management & Operating System Licenses	no max	Configuration Rule	Selection constraint for Server Management & Operating System Licenses: no max
+Software & Licenses	SUSE Linux Enterprise Server	no max	Configuration Rule	Selection constraint for SUSE Linux Enterprise Server: no max
+Software & Licenses	Microsoft Windows CAL Packs	no max	Configuration Rule	Selection constraint for Microsoft Windows CAL Packs: no max
+Software & Licenses	Red Hat Enterprise Linux Server-Virtualization	no max	Configuration Rule	Selection constraint for Red Hat Enterprise Linux Server-Virtualization: no max
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P40497-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P40498-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P40499-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P40500-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P40504-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P40509-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P40510-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P40511-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P49035-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P49041-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P50216-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P50219-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P50224-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P50227-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P50233-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P64842-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P64846-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P84236-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P91241-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P28352-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P28586-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P40430-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P40502-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P40503-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P40507-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P40512-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P49031-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P49045-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P49047-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P49049-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P49053-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P49057-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P53561-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P58244-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P64844-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P64848-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P64999-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P65007-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P65015-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P65023-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P78801-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P78804-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P78806-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P83347-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P84239-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P84242-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P84244-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P91243-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P91247-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P91249-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P40506-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P40508-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P85676-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P40501-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P40505-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P40557-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P40560-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P49029-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P50230-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P53562-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P58236-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P61019-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P61027-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P61035-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P61043-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P61051-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P61059-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P78808-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P78810-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P83344-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P83350-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P85662-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P85664-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P85666-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P85668-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P85670-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P85672-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P85674-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P88533-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P91237-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P91239-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P91245-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P92309-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P92311-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P92313-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P92315-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P92317-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P92319-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Drive Enclosures / Drives	Hot Plug SFF Drives (2SFF Stacking Backplane)	Requires selector P72223-B21	Configuration Rule	P92321-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL
+Support Services	RAID Settings	max 1	Configuration Rule	Selection constraint for RAID Settings: max 1
+Support Services	Manufacturing Services (required)	max 3	Configuration Rule	Selection constraint for Manufacturing Services (required): max 3
+Software & Licenses	HPC Software Products	no max	Configuration Rule	Selection constraint for HPC Software Products: no max
+Graphics & GPU	NVIDIA GPU SW	no max	Configuration Rule	Selection constraint for NVIDIA GPU SW: no max
+Software & Licenses	Compute Ops Management Enablement SKUs	max 1	Configuration Rule	Selection constraint for Compute Ops Management Enablement SKUs: max 1
+Software & Licenses	Red Hat OpenShift Platform Container	no max	Configuration Rule	Selection constraint for Red Hat OpenShift Platform Container: no max
+Software & Licenses	SUSE containers	no max	Configuration Rule	Selection constraint for SUSE containers: no max
+Support Services	Energy Star	max 1	Configuration Rule	Selection constraint for Energy Star: max 1
+Support Services	Energy Star	max 1	Configuration Rule	Private Product is not valid for current customer account
+Support Services	Energy Star	max 1	Configuration Rule	S4F94AAE conditional visibility: portal selector activation required (Private Product is not valid for current customer account); PORTAL_CONDITIONAL
+Support Services	Energy Star	max 1	Configuration Rule	S4G00AAE conditional visibility: portal selector activation required (Private Product is not valid for current customer account); PORTAL_CONDITIONAL
+Support Services	Energy Star	max 1	Configuration Rule	S4R76AAE conditional visibility: portal selector activation required (Private Product is not valid for current customer account); PORTAL_CONDITIONAL
+Support Services	HPE Virtualization	no max	Configuration Rule	Selection constraint for HPE Virtualization: no max
+Support Services	Data Management Framework (SGI DMF)	no max	Configuration Rule	Selection constraint for Data Management Framework (SGI DMF): no max
+Support Services	Cabling Option	required	Configuration Rule	Selection constraint for Cabling Option: required
+Memory	Configuration Rules	BTO Memories are not allowed in CTO Base Model.	Learned Feedback Rule	[BTO_DISALLOWED] BTO Memories are not allowed in CTO Base Model.
+Smart Chassis	Configuration Rules	Private Product is not valid for current customer account	Learned Feedback Rule	[MUTUAL_EXCLUSION] Private Product is not valid for current customer account
+Smart Chassis	Configuration Rules	Selected Smart Chassis Configuration is not valid	Learned Feedback Rule	[CHASSIS_GATE] Selected Smart Chassis Configuration is not valid
+Storage Devices	Configuration Rules	BTO products are not allowed in CTO Base Model.	Learned Feedback Rule	[BTO_DISALLOWED] BTO products are not allowed in CTO Base Model.
+Factory Configuration Settings	Configuration Rules	Supported only for NEBS Models	Learned Feedback Rule	[MUTUAL_EXCLUSION] Supported only for NEBS Models
+Riser Cards	Configuration Rules	BTO products are not allowed in CTO Base Model.	Learned Feedback Rule	[BTO_DISALLOWED] BTO products are not allowed in CTO Base Model.
+Networking	Configuration Rules	Private Product is not valid for current customer account	Learned Feedback Rule	[MUTUAL_EXCLUSION] Private Product is not valid for current customer account
+Private Cloud Business Edition	Configuration Rules	Not Supported ProStack Server Software	Learned Feedback Rule	[MUTUAL_EXCLUSION] Not Supported ProStack Server Software
+HPE Compute Ops Management	Configuration Rules	Max 1 per server (This is applicable for both 3year and 5 year license in TOTAL) Total number of licenses within an order cannot exceed the number of servers	Learned Feedback Rule	[MUTUAL_EXCLUSION] Max 1 per server (This is applicable for both 3year and 5 year license in TOTAL) Total number of licenses within an order cannot exceed the number of servers
+HPE Compute Ops Management	Configuration Rules	For Gen11/Gen12 servers ONLY Min 1/Max 1 per server. Total number of licenses within an order cannot exceed the number of servers	Learned Feedback Rule	[MUTUAL_EXCLUSION] For Gen11/Gen12 servers ONLY Min 1/Max 1 per server. Total number of licenses within an order cannot exceed the number of servers
+Virtualization	Configuration Rules	Private Product is not valid for current customer account	Learned Feedback Rule	[MUTUAL_EXCLUSION] Private Product is not valid for current customer account
+Networking	Transceivers		Reference Link	For More details on Adapter - Transceiver support, please refer to: https://www.hpe.com/psnow/doc/A00002507ENW?jumpid=in_lit-psnow-red (Transceivers)
+Power Supplies	Power Supplies		Minimum Requirement	Minimum 1 of power supply must be selected. (Power Supplies)
+HPC Software Products	Partner Software - Operating System		Minimum Requirement	Minimum 1 of any of the OS SKUs must be selected.
+HPC Software Products	Supported Operating System		Minimum Requirement	Minimum 1 of any of the OS SKUs must be selected.
+HPC Software Products	MS Windows Server		Minimum Requirement	Minimum 1 of any of the OS SKUs must be selected.
+HPC Software Products	Resale Option Kit		Minimum Requirement	Minimum 1 of any of the OS SKUs must be selected.
+HPC Software Products	SUSE containers		Minimum Requirement	Minimum 1 of any of the OS SKUs must be selected.
+HPC Software Products	SUSE Linux Enterprise Server		Minimum Requirement	Minimum 1 of any of the OS SKUs must be selected.
+HPC Software Products	Red Hat Enterprise Linux Server-Virtualization		Minimum Requirement	Minimum 1 of any of the OS SKUs must be selected.
+HPC Software Products	Partner Software - Operating System		Recommendation	It is recommended to select an Operating System (Partner Software - Operating System, Supported Operating System, MS Windows Server, Resale Option Kit, SUSE containers, SUSE Linux Enterprise Server, Red Hat Enterprise Linux Server-Virtualization)
+HPC Software Products	Supported Operating System		Recommendation	It is recommended to select an Operating System (Partner Software - Operating System, Supported Operating System, MS Windows Server, Resale Option Kit, SUSE containers, SUSE Linux Enterprise Server, Red Hat Enterprise Linux Server-Virtualization)
+HPC Software Products	MS Windows Server		Recommendation	It is recommended to select an Operating System (Partner Software - Operating System, Supported Operating System, MS Windows Server, Resale Option Kit, SUSE containers, SUSE Linux Enterprise Server, Red Hat Enterprise Linux Server-Virtualization)
+HPC Software Products	Resale Option Kit		Recommendation	It is recommended to select an Operating System (Partner Software - Operating System, Supported Operating System, MS Windows Server, Resale Option Kit, SUSE containers, SUSE Linux Enterprise Server, Red Hat Enterprise Linux Server-Virtualization)
+HPC Software Products	SUSE containers		Recommendation	It is recommended to select an Operating System (Partner Software - Operating System, Supported Operating System, MS Windows Server, Resale Option Kit, SUSE containers, SUSE Linux Enterprise Server, Red Hat Enterprise Linux Server-Virtualization)
+HPC Software Products	SUSE Linux Enterprise Server		Recommendation	It is recommended to select an Operating System (Partner Software - Operating System, Supported Operating System, MS Windows Server, Resale Option Kit, SUSE containers, SUSE Linux Enterprise Server, Red Hat Enterprise Linux Server-Virtualization)
+HPC Software Products	Red Hat Enterprise Linux Server-Virtualization		Recommendation	It is recommended to select an Operating System (Partner Software - Operating System, Supported Operating System, MS Windows Server, Resale Option Kit, SUSE containers, SUSE Linux Enterprise Server, Red Hat Enterprise Linux Server-Virtualization)
+Smart Chassis	Drive Cage		Conditional Rule	If P77198-B21 (part of OS Boot Device section) is selected, the max front drive cage q’ty can be only q’ty 4. (Drive Cage)

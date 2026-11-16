@@ -21,7 +21,7 @@ function restoreLegacySource(actual) {
   assert.ok(wrapperStart > 0 && wrapperEnd > wrapperStart);
   const restored = (actual.slice(0, wrapperStart) + actual.slice(wrapperEnd))
     .replace('async function _executeLegacyRoutedQuery(', 'async function executeRoutedQuery(');
-  assert.equal(sha(restored), 'dd6fc472e899027a943299d11d32fd3b265f4e10a6f7457c12949742afa64862');
+  assert.equal(sha(restored), 'a849070a03a8be6a2da7eaf4f52edd83b3bd827e4b120f7ccecdbd9bf94804cf');
   return restored;
 }
 

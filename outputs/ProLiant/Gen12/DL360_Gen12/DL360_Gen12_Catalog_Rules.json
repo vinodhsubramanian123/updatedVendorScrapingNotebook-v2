@@ -1,0 +1,3794 @@
+{
+  "metadata": {
+    "chassis": "DL360 Gen12",
+    "model": "DL360_Gen12",
+    "family": "ProLiant",
+    "generation": "Gen12",
+    "pillar": "SERVER",
+    "validationScope": "CATALOG_ONLY_REQUIRES_PRODUCT_AND_TOPOLOGY_CHECKS",
+    "scrapeDate": "2026-11-16",
+    "scrapeTimestamp": "2026-11-16T17:57:29.261Z",
+    "builtAt": "2026-11-16T20:55:46.783Z",
+    "totalSubcategories": 59,
+    "totalUniqueSKUs": 626,
+    "totalTables": 91,
+    "diffSummary": {
+      "added": 0,
+      "removed": 0,
+      "categoryMigrated": 0,
+      "priceChanged": 0,
+      "attributeChanged": 0,
+      "priceAndAttributeChanged": 0,
+      "unchanged": 887,
+      "reinstated": 0,
+      "discontinuedTotal": 0
+    },
+    "historySnapshot": "catalog_2026-11-16.json",
+    "priceAnalytics": {
+      "scrapeDate": "2026-11-16",
+      "categoryBreakdown": {
+        "Chassis": {
+          "totalSKUs": 1,
+          "totalPrice": 5022,
+          "minPrice": 5022,
+          "maxPrice": 5022,
+          "subcategories": {
+            "Variants": {
+              "totalSKUs": 1,
+              "totalPrice": 5022,
+              "avgPrice": 5022
+            }
+          },
+          "avgPrice": 5022
+        },
+        "Accessories & Infrastructure": {
+          "totalSKUs": 32,
+          "totalPrice": 2753,
+          "minPrice": 1,
+          "maxPrice": 1839,
+          "subcategories": {
+            "Energy Star Configuration Presets": {
+              "totalSKUs": 1,
+              "totalPrice": 1,
+              "avgPrice": 1
+            },
+            "AmbientTemperature": {
+              "totalSKUs": 18,
+              "totalPrice": 18,
+              "avgPrice": 1
+            },
+            "Trusted Supply Chain": {
+              "totalSKUs": 1,
+              "totalPrice": 1839,
+              "avgPrice": 1839
+            },
+            "Logical Size Settings": {
+              "totalSKUs": 1,
+              "totalPrice": 1,
+              "avgPrice": 1
+            },
+            "vSAN Tracking SKUs": {
+              "totalSKUs": 1,
+              "totalPrice": 1,
+              "avgPrice": 1
+            },
+            "Energy Star": {
+              "totalSKUs": 2,
+              "totalPrice": 13,
+              "avgPrice": 6.5
+            },
+            "Chassis Infrastructure & Rail Kits": {
+              "totalSKUs": 6,
+              "totalPrice": 787,
+              "avgPrice": 131.16666666666666
+            },
+            "Accessories & Infrastructure Options": {
+              "totalSKUs": 2,
+              "totalPrice": 93,
+              "avgPrice": 46.5
+            }
+          },
+          "avgPrice": 86.03125
+        },
+        "Processor": {
+          "totalSKUs": 34,
+          "totalPrice": 509377,
+          "minPrice": 1756,
+          "maxPrice": 58094,
+          "subcategories": {
+            "Processor": {
+              "totalSKUs": 34,
+              "totalPrice": 509377,
+              "avgPrice": 14981.676470588236
+            }
+          },
+          "avgPrice": 14981.676470588236
+        },
+        "Cooling / Thermal": {
+          "totalSKUs": 13,
+          "totalPrice": 14119,
+          "minPrice": 12,
+          "maxPrice": 3111,
+          "subcategories": {
+            "Heatsink Kit": {
+              "totalSKUs": 7,
+              "totalPrice": 11071,
+              "avgPrice": 1581.5714285714287
+            },
+            "Power Cooling Options": {
+              "totalSKUs": 6,
+              "totalPrice": 3048,
+              "avgPrice": 508
+            }
+          },
+          "avgPrice": 1086.076923076923
+        },
+        "Memory": {
+          "totalSKUs": 22,
+          "totalPrice": 893094,
+          "minPrice": 1,
+          "maxPrice": 133186,
+          "subcategories": {
+            "Memory": {
+              "totalSKUs": 18,
+              "totalPrice": 892914,
+              "avgPrice": 49606.333333333336
+            },
+            "Memory Blank Kit": {
+              "totalSKUs": 3,
+              "totalPrice": 179,
+              "avgPrice": 59.666666666666664
+            },
+            "Memory Setting": {
+              "totalSKUs": 1,
+              "totalPrice": 1,
+              "avgPrice": 1
+            }
+          },
+          "avgPrice": 40595.181818181816
+        },
+        "Cables & Enablement Kits": {
+          "totalSKUs": 44,
+          "totalPrice": 43721,
+          "minPrice": 1,
+          "maxPrice": 14999,
+          "subcategories": {
+            "Optical Transceivers & DAC Cables": {
+              "totalSKUs": 2,
+              "totalPrice": 2,
+              "avgPrice": 1
+            },
+            "OCP3 Networking Adapters": {
+              "totalSKUs": 4,
+              "totalPrice": 409,
+              "avgPrice": 102.25
+            },
+            "Solid State Drives (NVMe/SAS/SATA)": {
+              "totalSKUs": 6,
+              "totalPrice": 40478,
+              "avgPrice": 6746.333333333333
+            },
+            "Factory Configuration Settings": {
+              "totalSKUs": 1,
+              "totalPrice": 1,
+              "avgPrice": 1
+            },
+            "-48VDC Power Supplies & Cable Kits": {
+              "totalSKUs": 1,
+              "totalPrice": 135,
+              "avgPrice": 135
+            },
+            "Power Cords": {
+              "totalSKUs": 29,
+              "totalPrice": 2660,
+              "avgPrice": 91.72413793103448
+            },
+            "Management Hardware": {
+              "totalSKUs": 1,
+              "totalPrice": 36,
+              "avgPrice": 36
+            }
+          },
+          "avgPrice": 993.6590909090909
+        },
+        "Drive Enclosures / Drives": {
+          "totalSKUs": 96,
+          "totalPrice": 3203828,
+          "minPrice": 41,
+          "maxPrice": 191675,
+          "subcategories": {
+            "Drive Cage": {
+              "totalSKUs": 3,
+              "totalPrice": 556,
+              "avgPrice": 185.33333333333334
+            },
+            "Drive Cage Accessories": {
+              "totalSKUs": 1,
+              "totalPrice": 41,
+              "avgPrice": 41
+            },
+            "Optical Drive": {
+              "totalSKUs": 3,
+              "totalPrice": 488,
+              "avgPrice": 162.66666666666666
+            },
+            "Hot Plug SFF Drives (2SFF Stacking Backplane)": {
+              "totalSKUs": 89,
+              "totalPrice": 3202743,
+              "avgPrice": 35985.87640449438
+            }
+          },
+          "avgPrice": 33373.208333333336
+        },
+        "OS Boot Device": {
+          "totalSKUs": 1,
+          "totalPrice": 7200,
+          "minPrice": 7200,
+          "maxPrice": 7200,
+          "subcategories": {
+            "Energy Star": {
+              "totalSKUs": 1,
+              "totalPrice": 7200,
+              "avgPrice": 7200
+            }
+          },
+          "avgPrice": 7200
+        },
+        "Storage Controllers": {
+          "totalSKUs": 46,
+          "totalPrice": 54883,
+          "minPrice": 1,
+          "maxPrice": 12999,
+          "subcategories": {
+            "SAS Controller": {
+              "totalSKUs": 8,
+              "totalPrice": 49738,
+              "avgPrice": 6217.25
+            },
+            "Smart Storage Batteries": {
+              "totalSKUs": 4,
+              "totalPrice": 942,
+              "avgPrice": 235.5
+            },
+            "Storage Controllers Options": {
+              "totalSKUs": 4,
+              "totalPrice": 4,
+              "avgPrice": 1
+            },
+            "Internal Storage Controller Cables": {
+              "totalSKUs": 28,
+              "totalPrice": 3599,
+              "avgPrice": 128.53571428571428
+            },
+            "Rack Options": {
+              "totalSKUs": 2,
+              "totalPrice": 600,
+              "avgPrice": 300
+            }
+          },
+          "avgPrice": 1193.108695652174
+        },
+        "Support Services": {
+          "totalSKUs": 1,
+          "totalPrice": 1,
+          "minPrice": 1,
+          "maxPrice": 1,
+          "subcategories": {
+            "Support Services Options": {
+              "totalSKUs": 1,
+              "totalPrice": 1,
+              "avgPrice": 1
+            }
+          },
+          "avgPrice": 1
+        },
+        "Software & Licenses": {
+          "totalSKUs": 449,
+          "totalPrice": 6295337,
+          "minPrice": 1,
+          "maxPrice": 99999,
+          "subcategories": {
+            "Software & Licenses Options": {
+              "totalSKUs": 1,
+              "totalPrice": 1,
+              "avgPrice": 1
+            },
+            "Server Management & Operating System Licenses": {
+              "totalSKUs": 59,
+              "totalPrice": 2114555,
+              "avgPrice": 35839.91525423729
+            },
+            "Proliant Software Media Kits": {
+              "totalSKUs": 3,
+              "totalPrice": 1505,
+              "avgPrice": 501.6666666666667
+            },
+            "High Availability Computing - Cluster Software": {
+              "totalSKUs": 1,
+              "totalPrice": 50,
+              "avgPrice": 50
+            },
+            "Partner Software - Operating System": {
+              "totalSKUs": 9,
+              "totalPrice": 40444,
+              "avgPrice": 4493.777777777777
+            },
+            "Compute Ops Management SKUs": {
+              "totalSKUs": 2,
+              "totalPrice": 2,
+              "avgPrice": 1
+            },
+            "OEM Software": {
+              "totalSKUs": 12,
+              "totalPrice": 209176,
+              "avgPrice": 17431.333333333332
+            },
+            "Red Hat (add-ons)": {
+              "totalSKUs": 24,
+              "totalPrice": 55762,
+              "avgPrice": 2323.4166666666665
+            },
+            "SUSE Add-ons": {
+              "totalSKUs": 2,
+              "totalPrice": 4080,
+              "avgPrice": 2040
+            },
+            "iLO": {
+              "totalSKUs": 12,
+              "totalPrice": 5204,
+              "avgPrice": 433.6666666666667
+            },
+            "OneView Management Software": {
+              "totalSKUs": 10,
+              "totalPrice": 7252,
+              "avgPrice": 725.2
+            },
+            "Supported Operating System": {
+              "totalSKUs": 76,
+              "totalPrice": 1104130,
+              "avgPrice": 14528.026315789473
+            },
+            "MS Windows Server": {
+              "totalSKUs": 52,
+              "totalPrice": 1081982,
+              "avgPrice": 20807.346153846152
+            },
+            "MS Windows Server - Essentials": {
+              "totalSKUs": 64,
+              "totalPrice": 603956,
+              "avgPrice": 9436.8125
+            },
+            "SUSE Linux Enterprise Server": {
+              "totalSKUs": 32,
+              "totalPrice": 172148,
+              "avgPrice": 5379.625
+            },
+            "Microsoft Windows CAL Packs": {
+              "totalSKUs": 54,
+              "totalPrice": 682588,
+              "avgPrice": 12640.518518518518
+            },
+            "Red Hat Enterprise Linux Server-Virtualization": {
+              "totalSKUs": 36,
+              "totalPrice": 212502,
+              "avgPrice": 5902.833333333333
+            }
+          },
+          "avgPrice": 14020.795100222716
+        },
+        "PCIe Risers": {
+          "totalSKUs": 3,
+          "totalPrice": 834,
+          "minPrice": 184,
+          "maxPrice": 450,
+          "subcategories": {
+            "Riser Cards (required)": {
+              "totalSKUs": 2,
+              "totalPrice": 650,
+              "avgPrice": 325
+            },
+            "Riser Cards": {
+              "totalSKUs": 1,
+              "totalPrice": 184,
+              "avgPrice": 184
+            }
+          },
+          "avgPrice": 278
+        },
+        "Networking": {
+          "totalSKUs": 74,
+          "totalPrice": 318330,
+          "minPrice": 17,
+          "maxPrice": 15334,
+          "subcategories": {
+            "Ethernet PCIe": {
+              "totalSKUs": 17,
+              "totalPrice": 56080,
+              "avgPrice": 3298.823529411765
+            },
+            "Optical Transceivers & DAC Cables": {
+              "totalSKUs": 2,
+              "totalPrice": 20793,
+              "avgPrice": 10396.5
+            },
+            "InfiniBand PCIe": {
+              "totalSKUs": 14,
+              "totalPrice": 103591,
+              "avgPrice": 7399.357142857143
+            },
+            "OCP Ethernet": {
+              "totalSKUs": 14,
+              "totalPrice": 31332,
+              "avgPrice": 2238
+            },
+            "Fibre Channel HBA": {
+              "totalSKUs": 6,
+              "totalPrice": 50071,
+              "avgPrice": 8345.166666666666
+            },
+            "Transceivers": {
+              "totalSKUs": 20,
+              "totalPrice": 56446,
+              "avgPrice": 2822.3
+            },
+            "Networking Accessories": {
+              "totalSKUs": 1,
+              "totalPrice": 17,
+              "avgPrice": 17
+            }
+          },
+          "avgPrice": 4301.756756756757
+        },
+        "Power Supplies": {
+          "totalSKUs": 5,
+          "totalPrice": 5489,
+          "minPrice": 524,
+          "maxPrice": 1588,
+          "subcategories": {
+            "Power Supplies": {
+              "totalSKUs": 5,
+              "totalPrice": 5489,
+              "avgPrice": 1097.8
+            }
+          },
+          "avgPrice": 1097.8
+        },
+        "Graphics & GPU": {
+          "totalSKUs": 1,
+          "totalPrice": 10589,
+          "minPrice": 10589,
+          "maxPrice": 10589,
+          "subcategories": {
+            "GPU Accelerators": {
+              "totalSKUs": 1,
+              "totalPrice": 10589,
+              "avgPrice": 10589
+            }
+          },
+          "avgPrice": 10589
+        }
+      }
+    },
+    "incrementalStats": {
+      "totalScrapedSkus": 626,
+      "unchangedSkusCount": 597,
+      "modifiedSkusCount": 29,
+      "addedSkusCount": 0,
+      "removedSkusCount": 0,
+      "estimatedTokensSaved": 0,
+      "estimatedProcessingTimeSavedMs": 0
+    },
+    "snapshotFingerprint": "09d9fc8880f28ee3babf95482345ca862ebaa19f870bbade27de3eb12a64ecc8",
+    "chassisVariantCount": 3,
+    "rulesGeneratedAt": "2026-11-16T20:55:47.743Z"
+  },
+  "chassisVariants": [
+    {
+      "sku": "P72175-B21",
+      "description": "HPE ProLiant Compute DL360 Gen12 8SFF NC Configure-to-order Server",
+      "formFactor": "Small Form Factor (8-Bay SFF)",
+      "listPrice": 0,
+      "listPriceFormatted": "$0.00",
+      "optionType": "CTO",
+      "hpeRecommended": "Yes",
+      "HPE Recommended": "Unknown",
+      "startDate": "",
+      "discontinuedDate": "",
+      "constraint": "min 1, max 1",
+      "maxQty": "1",
+      "diffStatus": "BASELINE",
+      "priceHistoryTrail": "2026-11-16: (no price)"
+    },
+    {
+      "sku": "P72174-B21",
+      "description": "HPE ProLiant Compute DL360 Gen12 4LFF NC Configure-to-order Server",
+      "formFactor": "Large Form Factor (8-Bay LFF)",
+      "listPrice": 0,
+      "listPriceFormatted": "$0.00",
+      "optionType": "CTO",
+      "hpeRecommended": "Yes",
+      "HPE Recommended": "Unknown",
+      "startDate": "",
+      "discontinuedDate": "",
+      "constraint": "min 1, max 1",
+      "maxQty": "1",
+      "diffStatus": "BASELINE",
+      "priceHistoryTrail": "2026-11-16: (no price)"
+    },
+    {
+      "sku": "P72176-B21",
+      "description": "HPE ProLiant Compute DL360 Gen12 10SFF/20EDSFF Hybrid NC Configure-to-order Server",
+      "formFactor": "eDesign SFF (16-Bay EDSFF)",
+      "listPrice": 5022,
+      "listPriceFormatted": "$5022.00",
+      "optionType": "CTO",
+      "hpeRecommended": "Yes",
+      "HPE Recommended": "Unknown",
+      "startDate": "",
+      "discontinuedDate": "",
+      "constraint": "min 1, max 1",
+      "maxQty": "1",
+      "diffStatus": "BASELINE",
+      "priceHistoryTrail": "2026-11-16: $5022.00"
+    }
+  ],
+  "chassisVariantMatrix": {
+    "P72175-B21": {
+      "sku": "P72175-B21",
+      "description": "HPE ProLiant Compute DL360 Gen12 8SFF NC Configure-to-order Server",
+      "formFactor": "Small Form Factor (8-Bay SFF)",
+      "listPrice": 0,
+      "listPriceFormatted": "$0.00",
+      "optionType": "CTO",
+      "hpeRecommended": "Yes",
+      "HPE Recommended": "Unknown",
+      "startDate": "",
+      "discontinuedDate": "",
+      "constraint": "min 1, max 1",
+      "maxQty": "1",
+      "diffStatus": "BASELINE",
+      "priceHistoryTrail": "2026-11-16: (no price)"
+    },
+    "P72174-B21": {
+      "sku": "P72174-B21",
+      "description": "HPE ProLiant Compute DL360 Gen12 4LFF NC Configure-to-order Server",
+      "formFactor": "Large Form Factor (8-Bay LFF)",
+      "listPrice": 0,
+      "listPriceFormatted": "$0.00",
+      "optionType": "CTO",
+      "hpeRecommended": "Yes",
+      "HPE Recommended": "Unknown",
+      "startDate": "",
+      "discontinuedDate": "",
+      "constraint": "min 1, max 1",
+      "maxQty": "1",
+      "diffStatus": "BASELINE",
+      "priceHistoryTrail": "2026-11-16: (no price)"
+    },
+    "P72176-B21": {
+      "sku": "P72176-B21",
+      "description": "HPE ProLiant Compute DL360 Gen12 10SFF/20EDSFF Hybrid NC Configure-to-order Server",
+      "formFactor": "eDesign SFF (16-Bay EDSFF)",
+      "listPrice": 5022,
+      "listPriceFormatted": "$5022.00",
+      "optionType": "CTO",
+      "hpeRecommended": "Yes",
+      "HPE Recommended": "Unknown",
+      "startDate": "",
+      "discontinuedDate": "",
+      "constraint": "min 1, max 1",
+      "maxQty": "1",
+      "diffStatus": "BASELINE",
+      "priceHistoryTrail": "2026-11-16: $5022.00"
+    }
+  },
+  "smartChassisCombinations": [],
+  "solutionManifest": {
+    "commercialBreakdown": {
+      "hardware": 5842,
+      "support": 14149,
+      "services": 1432,
+      "software": 1220,
+      "total": 22643
+    },
+    "deliveryAndSupport": {
+      "iconId": "I158389620-01",
+      "edt": "24 - 30 days",
+      "configName": "OCA Config 2",
+      "attachedServices": [
+        {
+          "deviceTarget": "DL360 Gen12 #1\nP72176-B21CTO",
+          "reactiveSupport": "HU4A6A50C4U HPE 5Y Tech Care Essential Service",
+          "installation": "H39VPA1#5A6 HPE Technology Remote Installation and Startup Service",
+          "deviceSpecific": ""
+        },
+        {
+          "deviceTarget": "Broadcom BCM5719 Ethernet 1Gb 4-port BASE-T OCP3 Adapter for HPE",
+          "reactiveSupport": "HU4A6A5#699 HPE 5Y Tech Care Essential Service",
+          "installation": "N/A",
+          "deviceSpecific": ""
+        },
+        {
+          "deviceTarget": "HPE DL360Gen12 Standard Riser",
+          "reactiveSupport": "",
+          "installation": "N/A",
+          "deviceSpecific": ""
+        },
+        {
+          "deviceTarget": "HPE iLO Advanced 1-server License with 3yr Support on iLO Licensed Features",
+          "reactiveSupport": "HU4A6A5#R2M HPE 5Y Tech Care Essential Service",
+          "installation": "N/A",
+          "deviceSpecific": ""
+        }
+      ]
+    },
+    "baselineHierarchy": [
+      {
+        "hierarchyLevel": "(1)",
+        "sku": "P72176-B21",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE ProLiant Compute DL360 Gen12 10SFF/20EDSFF Hybrid NC Configure-to-order Server",
+        "configName": "DL360 Gen12 #1",
+        "unitPrice": 5022,
+        "extPrice": 5022,
+        "startDate": "02/24/2025",
+        "discDate": "06/30/2029"
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "P72176-B21",
+        "optionCode": "B19",
+        "quantity": 1,
+        "description": "HPE DL360 G12 10SFF/20EDSFF Hyb Configure-to-order Server",
+        "configName": "DL360 Gen12 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "02/24/2025",
+        "discDate": "06/30/2029"
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "P51181-B21",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "Broadcom BCM5719 Ethernet 1Gb 4-port BASE-T OCP3 Adapter for HPE",
+        "configName": "DL360 Gen12 #1",
+        "unitPrice": 485,
+        "extPrice": 485,
+        "startDate": "06/06/2022",
+        "discDate": "12/31/2028"
+      },
+      {
+        "hierarchyLevel": "(3)",
+        "sku": "P51181-B21",
+        "optionCode": "0D1",
+        "quantity": 1,
+        "description": "Factory Integrated",
+        "configName": "DL360 Gen12 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "06/06/2022",
+        "discDate": "12/31/2028"
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "BD505A",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE iLO Advanced 1-server License with 3yr Support on iLO Licensed Features",
+        "configName": "DL360 Gen12 #1",
+        "unitPrice": 469,
+        "extPrice": 469,
+        "startDate": "03/26/2012",
+        "discDate": "01/25/2036"
+      },
+      {
+        "hierarchyLevel": "(3)",
+        "sku": "BD505A",
+        "optionCode": "0D1",
+        "quantity": 1,
+        "description": "Factory Integrated",
+        "configName": "DL360 Gen12 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "01/08/2013",
+        "discDate": "01/25/2036"
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "S1A05A",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE Compute Cloud Management Server FIO Enablement",
+        "configName": "DL360 Gen12 #1",
+        "unitPrice": 1,
+        "extPrice": 1,
+        "startDate": "04/01/2024",
+        "discDate": "02/29/2028"
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "P52343-B21",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE Easy Install Rail 5 Kit",
+        "configName": "DL360 Gen12 #1",
+        "unitPrice": 288,
+        "extPrice": 288,
+        "startDate": "01/10/2023",
+        "discDate": "05/31/2029"
+      },
+      {
+        "hierarchyLevel": "(3)",
+        "sku": "P52343-B21",
+        "optionCode": "0D1",
+        "quantity": 1,
+        "description": "Factory Integrated",
+        "configName": "DL360 Gen12 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "01/10/2023",
+        "discDate": "05/31/2029"
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "P72209-B21",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE ProLiant Compute DL360 Gen12 10SFF/20EDSFF Hybrid Backplane Power Cable Kit",
+        "configName": "DL360 Gen12 #1",
+        "unitPrice": 41,
+        "extPrice": 41,
+        "startDate": "02/24/2025",
+        "discDate": "06/30/2029"
+      },
+      {
+        "hierarchyLevel": "(3)",
+        "sku": "P72209-B21",
+        "optionCode": "0D1",
+        "quantity": 1,
+        "description": "Factory Integrated",
+        "configName": "DL360 Gen12 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "02/24/2025",
+        "discDate": "06/30/2029"
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "P73325-B21",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE ProLiant Compute Localization FIO Kit",
+        "configName": "DL360 Gen12 #1",
+        "unitPrice": 4,
+        "extPrice": 4,
+        "startDate": "02/24/2025",
+        "discDate": "02/28/2028"
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "P79552-B21",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE ProLiant Compute 30C Maximum Recommended Ambient Temperature Configuration Tracking",
+        "configName": "DL360 Gen12 #1",
+        "unitPrice": 1,
+        "extPrice": 1,
+        "startDate": "02/24/2025",
+        "discDate": "06/30/2029"
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "P79630-B21",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE ProLiant Compute AOC Networking Cable Operating Configuration Tracking",
+        "configName": "DL360 Gen12 #1",
+        "unitPrice": 1,
+        "extPrice": 1,
+        "startDate": "02/24/2025",
+        "discDate": "04/30/2028"
+      },
+      {
+        "hierarchyLevel": "(1)",
+        "sku": "R7A12AAE",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE Compute Ops Management Standard 5-year Upfront ProLiant SaaS",
+        "configName": "DL360 Gen12 #1",
+        "unitPrice": 750,
+        "extPrice": 750,
+        "startDate": "06/06/2022",
+        "discDate": "02/29/2028"
+      },
+      {
+        "hierarchyLevel": "(1)",
+        "sku": "AC111A",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE ProLiant Door/dock Small Logistic Service",
+        "configName": "DL360 Gen12 #1",
+        "unitPrice": 198,
+        "extPrice": 198,
+        "startDate": "08/26/2008",
+        "discDate": "12/31/2098"
+      },
+      {
+        "hierarchyLevel": "(1)",
+        "sku": "H39VPA1",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE Technology Remote Installation and Startup Service",
+        "configName": "DL360 Gen12 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "07/24/2023",
+        "discDate": "12/31/2099"
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "H39VPA1",
+        "optionCode": "5A6",
+        "quantity": 1,
+        "description": "HPE Proliant DL/ML Rmt Startup SVC",
+        "configName": "DL360 Gen12 #1",
+        "unitPrice": 1234,
+        "extPrice": 1234,
+        "startDate": "07/24/2023",
+        "discDate": "12/31/2099"
+      },
+      {
+        "hierarchyLevel": "(1)",
+        "sku": "HU4A6A5",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE 5Y Tech Care Essential Service",
+        "configName": "DL360 Gen12 #1",
+        "unitPrice": 0,
+        "extPrice": 0,
+        "startDate": "03/01/2021",
+        "discDate": "12/31/2099"
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "HU4A6A5",
+        "optionCode": "R2M",
+        "quantity": 1,
+        "description": "HPE iLO Advanced Non Blade Support",
+        "configName": "DL360 Gen12 #1",
+        "unitPrice": 77,
+        "extPrice": 77,
+        "startDate": "03/01/2021",
+        "discDate": "02/08/2050"
+      },
+      {
+        "hierarchyLevel": "(2)",
+        "sku": "HU4A6A50C4U",
+        "optionCode": "",
+        "quantity": 1,
+        "description": "HPE DL360 Gen12 Support",
+        "configName": "DL360 Gen12 #1",
+        "unitPrice": 14072,
+        "extPrice": 14072,
+        "startDate": "03/01/2021",
+        "discDate": "12/31/2099"
+      }
+    ]
+  },
+  "subcategories": [
+    {
+      "parentCategory": "Processor",
+      "name": "Processor",
+      "constraint": "max 2",
+      "minQty": 0,
+      "maxQty": 2
+    },
+    {
+      "parentCategory": "Memory",
+      "name": "Memory",
+      "constraint": "max 32",
+      "minQty": 0,
+      "maxQty": 32
+    },
+    {
+      "parentCategory": "Memory",
+      "name": "Memory Blank Kit",
+      "constraint": "max 1",
+      "minQty": 0,
+      "maxQty": 1
+    },
+    {
+      "parentCategory": "Networking",
+      "name": "Ethernet PCIe",
+      "constraint": "max 2",
+      "minQty": 0,
+      "maxQty": 2
+    },
+    {
+      "parentCategory": "Networking",
+      "name": "InfiniBand PCIe",
+      "constraint": "max 2",
+      "minQty": 0,
+      "maxQty": 2
+    },
+    {
+      "parentCategory": "Networking",
+      "name": "OCP Ethernet",
+      "constraint": "max 2",
+      "minQty": 0,
+      "maxQty": 2
+    },
+    {
+      "parentCategory": "Networking",
+      "name": "Fibre Channel HBA",
+      "constraint": "max 3",
+      "minQty": 0,
+      "maxQty": 3
+    },
+    {
+      "parentCategory": "Networking",
+      "name": "Transceivers",
+      "constraint": "max 12",
+      "minQty": 0,
+      "maxQty": 12
+    },
+    {
+      "parentCategory": "Networking",
+      "name": "Networking Accessories",
+      "constraint": "max 2",
+      "minQty": 0,
+      "maxQty": 2
+    },
+    {
+      "parentCategory": "Power Supplies",
+      "name": "Power Supplies",
+      "constraint": "max 2",
+      "minQty": 0,
+      "maxQty": 2
+    }
+  ],
+  "rules": [
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P69726-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P69726-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P69727-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P69727-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P69728-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P69728-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P69729-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P69729-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P69730-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P69730-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P73447-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P73447-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P83865-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P83865-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P83867-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P83867-B21 conditional visibility: portal selector activation required (BTO Memories are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P75693-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P75693-B21 conditional visibility: portal selector activation required (Private Product is not valid for current customer account); PORTAL_CONDITIONAL",
+      "parentCategory": "OS Boot Device",
+      "subCategory": "Energy Star",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "701498-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "701498-B21 conditional visibility: portal selector activation required (BTO products are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Optical Drive",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "807878-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "807878-B21 conditional visibility: portal selector activation required (BTO products are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory Blank Kit",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "666987-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "666987-B21 conditional visibility: portal selector activation required (BTO products are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
+      "parentCategory": "Memory",
+      "subCategory": "Memory Blank Kit",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40010-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P40010-B21 conditional visibility: portal selector activation required (Supported only for NEBS Models); PORTAL_CONDITIONAL",
+      "parentCategory": "Accessories & Infrastructure",
+      "subCategory": "Energy Star",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P75407-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P75407-B21 conditional visibility: portal selector activation required (BTO products are not allowed in CTO Base Model.); PORTAL_CONDITIONAL",
+      "parentCategory": "PCIe Risers",
+      "subCategory": "Riser Cards",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P74383-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P74383-B21 conditional visibility: portal selector activation required (Private Product is not valid for current customer account); PORTAL_CONDITIONAL",
+      "parentCategory": "Networking",
+      "subCategory": "Optical Transceivers & DAC Cables",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P80855-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P80855-B21 conditional visibility: portal selector activation required (Private Product is not valid for current customer account); PORTAL_CONDITIONAL",
+      "parentCategory": "Networking",
+      "subCategory": "Optical Transceivers & DAC Cables",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P74606-B21"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "P74606-B21 conditional visibility: portal selector activation required (Private Product is not valid for current customer account); PORTAL_CONDITIONAL",
+      "parentCategory": "Accessories & Infrastructure",
+      "subCategory": "Energy Star",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S7J52A"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "S7J52A conditional visibility: portal selector activation required (Not Supported ProStack Server Software); PORTAL_CONDITIONAL",
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Proliant Software Media Kits",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S4F94AAE"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "S4F94AAE conditional visibility: portal selector activation required (Private Product is not valid for current customer account); PORTAL_CONDITIONAL",
+      "parentCategory": "Support Services",
+      "subCategory": "Energy Star",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S4G00AAE"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "S4G00AAE conditional visibility: portal selector activation required (Private Product is not valid for current customer account); PORTAL_CONDITIONAL",
+      "parentCategory": "Support Services",
+      "subCategory": "Energy Star",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "S4R76AAE"
+      ],
+      "conditionType": "PORTAL_CONDITIONAL_VIEW",
+      "conditionKey": "portalSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "portalVerificationRequired": true,
+      "rule": "S4R76AAE conditional visibility: portal selector activation required (Private Product is not valid for current customer account); PORTAL_CONDITIONAL",
+      "parentCategory": "Support Services",
+      "subCategory": "Energy Star",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40497-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40497-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40498-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40498-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40499-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40499-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40500-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40500-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40504-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40504-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40509-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40509-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40510-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40510-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40511-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40511-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P49035-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P49035-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P49041-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P49041-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P50216-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P50216-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P50219-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P50219-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P50224-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P50224-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P50227-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P50227-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P50233-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P50233-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P64842-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P64842-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P64846-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P64846-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P84236-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P84236-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P91241-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P91241-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P28352-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P28352-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P28586-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P28586-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40430-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40430-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40502-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40502-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40503-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40503-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40507-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40507-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40512-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40512-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P49031-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P49031-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P49045-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P49045-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P49047-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P49047-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P49049-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P49049-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P49053-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P49053-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P49057-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P49057-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P53561-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P53561-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P58244-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P58244-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P64844-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P64844-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P64848-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P64848-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P64999-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P64999-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P65007-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P65007-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P65015-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P65015-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P65023-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P65023-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P78801-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P78801-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P78804-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P78804-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P78806-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P78806-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P83347-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P83347-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P84239-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P84239-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P84242-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P84242-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P84244-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P84244-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P91243-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P91243-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P91247-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P91247-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P91249-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P91249-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40506-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40506-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40508-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40508-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P85676-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P85676-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40501-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40501-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40505-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40505-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40557-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40557-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P40560-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P40560-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P49029-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P49029-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P50230-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P50230-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P53562-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P53562-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P58236-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P58236-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P61019-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P61019-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P61027-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P61027-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P61035-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P61035-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P61043-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P61043-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P61051-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P61051-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P61059-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P61059-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P78808-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P78808-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P78810-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P78810-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P83344-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P83344-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P83350-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P83350-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P85662-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P85662-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P85664-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P85664-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P85666-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P85666-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P85668-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P85668-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P85670-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P85670-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P85672-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P85672-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P85674-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P85674-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P88533-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P88533-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P91237-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P91237-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P91239-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P91239-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P91245-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P91245-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P92309-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P92309-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P92311-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P92311-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P92313-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P92313-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P92315-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P92315-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P92317-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P92317-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P92319-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P92319-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "affectedSkus": [
+        "P92321-B21"
+      ],
+      "conditionType": "SELECTOR_STATE_CONDITIONAL",
+      "conditionKey": "backplaneSelector",
+      "conditionOperator": "requires_selection",
+      "thresholdValue": null,
+      "selectorTriggerSku": "P72223-B21",
+      "portalVerificationRequired": true,
+      "rule": "P92321-B21 conditional visibility: portal selector activation required (Revealed on P72176-B21 when P72223-B21 (1U 2SFF x4 Tri-Mode U.3 Stacking Backplane Kit) = 1; restored to 0); PORTAL_CONDITIONAL",
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Hot Plug SFF Drives (2SFF Stacking Backplane)",
+      "constraint": "",
+      "maxQty": ""
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "BTO_DISALLOWED",
+      "parentCategory": "Memory",
+      "subCategory": "Configuration Rules",
+      "constraint": "BTO Memories are not allowed in CTO Base Model.",
+      "maxQty": "",
+      "rule": "[BTO_DISALLOWED] BTO Memories are not allowed in CTO Base Model.",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "P69726-B21",
+        "P69727-B21",
+        "P69728-B21",
+        "P69729-B21",
+        "P69730-B21",
+        "P73447-B21",
+        "P83865-B21",
+        "P83867-B21"
+      ],
+      "ineligibilityReason": "BTO Memories are not allowed in CTO Base Model.",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "Smart Chassis",
+      "subCategory": "Configuration Rules",
+      "constraint": "Private Product is not valid for current customer account",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] Private Product is not valid for current customer account",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "P75693-B21"
+      ],
+      "ineligibilityReason": "Private Product is not valid for current customer account",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "CHASSIS_GATE",
+      "parentCategory": "Smart Chassis",
+      "subCategory": "Configuration Rules",
+      "constraint": "Selected Smart Chassis Configuration is not valid",
+      "maxQty": "",
+      "rule": "[CHASSIS_GATE] Selected Smart Chassis Configuration is not valid",
+      "conditionKey": "chassisModel",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "smartChassis_3-1",
+        "smartChassis_3-1-1",
+        "smartChassis_3-1-2",
+        "smartChassis_3-11",
+        "smartChassis_3-12",
+        "smartChassis_3-13",
+        "smartChassis_3-15",
+        "smartChassis_3-15-1",
+        "smartChassis_3-16",
+        "smartChassis_3-16-1",
+        "smartChassis_3-18",
+        "smartChassis_3-18-1",
+        "smartChassis_3-19",
+        "smartChassis_3-19-1",
+        "smartChassis_3-19-2",
+        "smartChassis_3-20",
+        "smartChassis_3-21",
+        "smartChassis_3-22",
+        "smartChassis_3-22-1",
+        "smartChassis_3-22-2",
+        "smartChassis_3-23",
+        "smartChassis_3-23-2",
+        "smartChassis_3-23-3",
+        "smartChassis_3-23-4",
+        "smartChassis_3-24",
+        "smartChassis_3-25",
+        "smartChassis_3-25-2",
+        "smartChassis_3-25-3",
+        "smartChassis_3-26",
+        "smartChassis_3-26-2",
+        "smartChassis_3-27",
+        "smartChassis_3-27-2",
+        "smartChassis_3-28",
+        "smartChassis_3-29",
+        "smartChassis_3-31",
+        "smartChassis_3-31-1",
+        "smartChassis_3-33",
+        "smartChassis_3-33-1",
+        "smartChassis_3-33-2",
+        "smartChassis_3-34",
+        "smartChassis_3-34-1",
+        "smartChassis_3-34-3",
+        "smartChassis_3-44",
+        "smartChassis_3-46",
+        "smartChassis_3-6-2",
+        "smartChassis_3-65",
+        "smartChassis_3-65-1",
+        "smartChassis_3-67",
+        "smartChassis_3-69",
+        "smartChassis_3-69-1",
+        "smartChassis_3-69-2",
+        "smartChassis_3-69-3",
+        "smartChassis_3-7-2",
+        "smartChassis_3-73",
+        "smartChassis_3-73-1",
+        "smartChassis_3-73-2",
+        "smartChassis_3-74",
+        "smartChassis_3-74-1",
+        "smartChassis_3-8",
+        "smartChassis_3-9",
+        "smartChassis_3-1-3",
+        "smartChassis_3-1-4",
+        "smartChassis_3-10",
+        "smartChassis_3-12-1",
+        "smartChassis_3-14",
+        "smartChassis_3-14-1",
+        "smartChassis_3-14-2",
+        "smartChassis_3-18-2",
+        "smartChassis_3-2",
+        "smartChassis_3-3",
+        "smartChassis_3-30-3",
+        "smartChassis_3-30-4",
+        "smartChassis_3-34-4",
+        "smartChassis_3-36",
+        "smartChassis_3-37",
+        "smartChassis_3-38",
+        "smartChassis_3-39",
+        "smartChassis_3-4-1",
+        "smartChassis_3-4-2",
+        "smartChassis_3-4-3",
+        "smartChassis_3-40",
+        "smartChassis_3-41",
+        "smartChassis_3-42",
+        "smartChassis_3-43",
+        "smartChassis_3-5-1",
+        "smartChassis_3-6",
+        "smartChassis_3-6-1",
+        "smartChassis_3-7",
+        "smartChassis_3-7-1"
+      ],
+      "ineligibilityReason": "Selected Smart Chassis Configuration is not valid",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "BTO_DISALLOWED",
+      "parentCategory": "Storage Devices",
+      "subCategory": "Configuration Rules",
+      "constraint": "BTO products are not allowed in CTO Base Model.",
+      "maxQty": "",
+      "rule": "[BTO_DISALLOWED] BTO products are not allowed in CTO Base Model.",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "701498-B21"
+      ],
+      "ineligibilityReason": "BTO products are not allowed in CTO Base Model.",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "Factory Configuration Settings",
+      "subCategory": "Configuration Rules",
+      "constraint": "Supported only for NEBS Models",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] Supported only for NEBS Models",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "P40010-B21"
+      ],
+      "ineligibilityReason": "Supported only for NEBS Models",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "BTO_DISALLOWED",
+      "parentCategory": "Riser Cards",
+      "subCategory": "Configuration Rules",
+      "constraint": "BTO products are not allowed in CTO Base Model.",
+      "maxQty": "",
+      "rule": "[BTO_DISALLOWED] BTO products are not allowed in CTO Base Model.",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "P75407-B21"
+      ],
+      "ineligibilityReason": "BTO products are not allowed in CTO Base Model.",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "Networking",
+      "subCategory": "Configuration Rules",
+      "constraint": "Private Product is not valid for current customer account",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] Private Product is not valid for current customer account",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "P74383-B21",
+        "P80855-B21"
+      ],
+      "ineligibilityReason": "Private Product is not valid for current customer account",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "Private Cloud Business Edition",
+      "subCategory": "Configuration Rules",
+      "constraint": "Not Supported ProStack Server Software",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] Not Supported ProStack Server Software",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "S7J52A"
+      ],
+      "ineligibilityReason": "Not Supported ProStack Server Software",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "HPE Compute Ops Management",
+      "subCategory": "Configuration Rules",
+      "constraint": "Max 1 per server (This is applicable for both 3year and 5 year license in TOTAL) Total number of licenses within an order cannot exceed the number of servers",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] Max 1 per server (This is applicable for both 3year and 5 year license in TOTAL) Total number of licenses within an order cannot exceed the number of servers",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "R7A11AAE",
+        "S2E10AAE"
+      ],
+      "ineligibilityReason": "Max 1 per server (This is applicable for both 3year and 5 year license in TOTAL) Total number of licenses within an order cannot exceed the number of servers",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "HPE Compute Ops Management",
+      "subCategory": "Configuration Rules",
+      "constraint": "For Gen11/Gen12 servers ONLY Min 1/Max 1 per server. Total number of licenses within an order cannot exceed the number of servers",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] For Gen11/Gen12 servers ONLY Min 1/Max 1 per server. Total number of licenses within an order cannot exceed the number of servers",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "S5E59AAE",
+        "S5E60AAE",
+        "S5E61AAE"
+      ],
+      "ineligibilityReason": "For Gen11/Gen12 servers ONLY Min 1/Max 1 per server. Total number of licenses within an order cannot exceed the number of servers",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "level": "CHASSIS",
+      "ruleType": "CONDITIONAL_VISIBILITY",
+      "vendorRuleClassification": "MUTUAL_EXCLUSION",
+      "parentCategory": "Virtualization",
+      "subCategory": "Configuration Rules",
+      "constraint": "Private Product is not valid for current customer account",
+      "maxQty": "",
+      "rule": "[MUTUAL_EXCLUSION] Private Product is not valid for current customer account",
+      "conditionKey": "portalSelection",
+      "conditionOperator": "unknown",
+      "thresholdValue": null,
+      "observedTemperatureC": null,
+      "affectedSkus": [
+        "S4F94AAE",
+        "S4G00AAE",
+        "S4R76AAE"
+      ],
+      "ineligibilityReason": "Private Product is not valid for current customer account",
+      "source": "HPE_OCA_DOM_UNAVAILABLE_TABLE",
+      "portalVerificationRequired": true
+    },
+    {
+      "parentCategory": "Chassis",
+      "subCategory": "Variants",
+      "constraint": "min 1, max 1 — Active OCA CTO chassis",
+      "maxQty": 1,
+      "rule": "Select exactly one currently discoverable, non-TAA/non-GTA CTO base chassis"
+    },
+    {
+      "parentCategory": "Accessories & Infrastructure",
+      "subCategory": "Energy Star Configuration Presets",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for Energy Star Configuration Presets: max 1"
+    },
+    {
+      "parentCategory": "Processor",
+      "subCategory": "Processor",
+      "constraint": "max 2",
+      "maxQty": 2,
+      "rule": "Selection constraint for Processor: max 2"
+    },
+    {
+      "parentCategory": "Cooling / Thermal",
+      "subCategory": "Heatsink Kit",
+      "constraint": "max 2",
+      "maxQty": 2,
+      "rule": "Selection constraint for Heatsink Kit: max 2"
+    },
+    {
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "max 32",
+      "maxQty": 32,
+      "rule": "Selection constraint for Memory: max 32"
+    },
+    {
+      "parentCategory": "Memory",
+      "subCategory": "Memory",
+      "constraint": "max 32",
+      "maxQty": 32,
+      "rule": "BTO Memories are not allowed in CTO Base Model."
+    },
+    {
+      "parentCategory": "Memory",
+      "subCategory": "Memory Blank Kit",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for Memory Blank Kit: max 1"
+    },
+    {
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "Optical Transceivers & DAC Cables",
+      "constraint": "required",
+      "maxQty": -2,
+      "rule": "Selection constraint for Optical Transceivers & DAC Cables: required"
+    },
+    {
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Drive Cage",
+      "constraint": "required",
+      "maxQty": -2,
+      "rule": "Selection constraint for Drive Cage: required"
+    },
+    {
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "OCP3 Networking Adapters",
+      "constraint": "max 2",
+      "maxQty": 2,
+      "rule": "Selection constraint for OCP3 Networking Adapters: max 2"
+    },
+    {
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "Solid State Drives (NVMe/SAS/SATA)",
+      "constraint": "max 2",
+      "maxQty": 2,
+      "rule": "Selection constraint for Solid State Drives (NVMe/SAS/SATA): max 2"
+    },
+    {
+      "parentCategory": "OS Boot Device",
+      "subCategory": "Energy Star",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Private Product is not valid for current customer account"
+    },
+    {
+      "parentCategory": "Storage Controllers",
+      "subCategory": "SAS Controller",
+      "constraint": "max 3",
+      "maxQty": 3,
+      "rule": "Selection constraint for SAS Controller: max 3"
+    },
+    {
+      "parentCategory": "Accessories & Infrastructure",
+      "subCategory": "AmbientTemperature",
+      "constraint": "required",
+      "maxQty": -2,
+      "rule": "Selection constraint for AmbientTemperature: required"
+    },
+    {
+      "parentCategory": "Storage Controllers",
+      "subCategory": "Smart Storage Batteries",
+      "constraint": "max 2",
+      "maxQty": 2,
+      "rule": "Selection constraint for Smart Storage Batteries: max 2"
+    },
+    {
+      "parentCategory": "Storage Controllers",
+      "subCategory": "Storage Controllers Options",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for RAID Settings: max 1"
+    },
+    {
+      "parentCategory": "Support Services",
+      "subCategory": "Support Services Options",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for RAID Settings: max 1"
+    },
+    {
+      "parentCategory": "Storage Controllers",
+      "subCategory": "Internal Storage Controller Cables",
+      "constraint": "max 6",
+      "maxQty": 6,
+      "rule": "Selection constraint for Internal Storage Controller Cables: max 6"
+    },
+    {
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Drive Cage Accessories",
+      "constraint": "required",
+      "maxQty": -2,
+      "rule": "Selection constraint for Drive Cage Accessories: required"
+    },
+    {
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Optical Drive",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for Optical Drive: max 1"
+    },
+    {
+      "parentCategory": "Drive Enclosures / Drives",
+      "subCategory": "Optical Drive",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "BTO products are not allowed in CTO Base Model."
+    },
+    {
+      "parentCategory": "Memory",
+      "subCategory": "Memory Blank Kit",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "BTO products are not allowed in CTO Base Model."
+    },
+    {
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "Factory Configuration Settings",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for Factory Configuration Settings: max 1"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Software & Licenses Options",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for BIOS Mode: max 1"
+    },
+    {
+      "parentCategory": "Accessories & Infrastructure",
+      "subCategory": "Trusted Supply Chain",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for Trusted Supply Chain: max 1"
+    },
+    {
+      "parentCategory": "Accessories & Infrastructure",
+      "subCategory": "Logical Size Settings",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for Logical Size Settings: max 1"
+    },
+    {
+      "parentCategory": "Accessories & Infrastructure",
+      "subCategory": "vSAN Tracking SKUs",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for vSAN Tracking SKUs: max 1"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Server Management & Operating System Licenses",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for iLO Common Password: max 1"
+    },
+    {
+      "parentCategory": "Memory",
+      "subCategory": "Memory Setting",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for Memory Setting: max 1"
+    },
+    {
+      "parentCategory": "Accessories & Infrastructure",
+      "subCategory": "Energy Star",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Supported only for NEBS Models"
+    },
+    {
+      "parentCategory": "PCIe Risers",
+      "subCategory": "Riser Cards (required)",
+      "constraint": "max 2",
+      "maxQty": 2,
+      "rule": "Selection constraint for Riser Cards (required): max 2"
+    },
+    {
+      "parentCategory": "PCIe Risers",
+      "subCategory": "Riser Cards",
+      "constraint": "required",
+      "maxQty": -2,
+      "rule": "BTO products are not allowed in CTO Base Model."
+    },
+    {
+      "parentCategory": "Networking",
+      "subCategory": "Ethernet PCIe",
+      "constraint": "max 2",
+      "maxQty": 2,
+      "rule": "Selection constraint for Ethernet PCIe: max 2"
+    },
+    {
+      "parentCategory": "Networking",
+      "subCategory": "Optical Transceivers & DAC Cables",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Private Product is not valid for current customer account"
+    },
+    {
+      "parentCategory": "Networking",
+      "subCategory": "InfiniBand PCIe",
+      "constraint": "max 2",
+      "maxQty": 2,
+      "rule": "Selection constraint for InfiniBand PCIe: max 2"
+    },
+    {
+      "parentCategory": "Networking",
+      "subCategory": "OCP Ethernet",
+      "constraint": "max 2",
+      "maxQty": 2,
+      "rule": "Selection constraint for OCP Ethernet: max 2"
+    },
+    {
+      "parentCategory": "Networking",
+      "subCategory": "Fibre Channel HBA",
+      "constraint": "max 3",
+      "maxQty": 3,
+      "rule": "Selection constraint for Fibre Channel HBA: max 3"
+    },
+    {
+      "parentCategory": "Networking",
+      "subCategory": "Transceivers",
+      "constraint": "max 12",
+      "maxQty": 12,
+      "rule": "Selection constraint for Transceivers: max 12"
+    },
+    {
+      "parentCategory": "Networking",
+      "subCategory": "Networking Accessories",
+      "constraint": "max 2",
+      "maxQty": 2,
+      "rule": "Selection constraint for Networking Accessories: max 2"
+    },
+    {
+      "parentCategory": "Accessories & Infrastructure",
+      "subCategory": "Energy Star",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Private Product is not valid for current customer account"
+    },
+    {
+      "parentCategory": "Power Supplies",
+      "subCategory": "Power Supplies",
+      "constraint": "max 2",
+      "maxQty": 2,
+      "rule": "Selection constraint for Power Supplies: max 2"
+    },
+    {
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "-48VDC Power Supplies & Cable Kits",
+      "constraint": "max 2",
+      "maxQty": 2,
+      "rule": "Selection constraint for -48VDC Power Supplies & Cable Kits: max 2"
+    },
+    {
+      "parentCategory": "Cooling / Thermal",
+      "subCategory": "Power Cooling Options",
+      "constraint": "max 2",
+      "maxQty": 2,
+      "rule": "Selection constraint for Power Cooling Options: max 2"
+    },
+    {
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "Power Cords",
+      "constraint": "max 2",
+      "maxQty": 2,
+      "rule": "Selection constraint for Power Cords: max 2"
+    },
+    {
+      "parentCategory": "Accessories & Infrastructure",
+      "subCategory": "Chassis Infrastructure & Rail Kits",
+      "constraint": "max 3",
+      "maxQty": 3,
+      "rule": "Selection constraint for Chassis Infrastructure & Rail Kits: max 3"
+    },
+    {
+      "parentCategory": "Graphics & GPU",
+      "subCategory": "GPU Accelerators",
+      "constraint": "max 2",
+      "maxQty": 2,
+      "rule": "Selection constraint for GPU Accelerators: max 2"
+    },
+    {
+      "parentCategory": "Cables & Enablement Kits",
+      "subCategory": "Management Hardware",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for Management Hardware: max 1"
+    },
+    {
+      "parentCategory": "Accessories & Infrastructure",
+      "subCategory": "Chassis Infrastructure & Rail Kits",
+      "constraint": "max 2",
+      "maxQty": 2,
+      "rule": "Selection constraint for Chassis Infrastructure & Rail Kits: max 2"
+    },
+    {
+      "parentCategory": "Storage Controllers",
+      "subCategory": "Rack Options",
+      "constraint": "max 2",
+      "maxQty": 2,
+      "rule": "Selection constraint for Rack Options: max 2"
+    },
+    {
+      "parentCategory": "Accessories & Infrastructure",
+      "subCategory": "Accessories & Infrastructure Options",
+      "constraint": "max 3",
+      "maxQty": 3,
+      "rule": "Selection constraint for Manufacturing Services (required): max 3"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Proliant Software Media Kits",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Not Supported ProStack Server Software"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "High Availability Computing - Cluster Software",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for High Availability Computing - Cluster Software: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Partner Software - Operating System",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for Partner Software - Operating System: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Compute Ops Management SKUs",
+      "constraint": "required",
+      "maxQty": -2,
+      "rule": "Selection constraint for Compute Ops Management SKUs: required"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "OEM Software",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for OEM Software: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Proliant Software Media Kits",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for Proliant Software Media Kits: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Red Hat (add-ons)",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for Red Hat (add-ons): no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "SUSE Add-ons",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for SUSE Add-ons: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "iLO",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for iLO: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "OneView Management Software",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for OneView Management Software: max 1"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Supported Operating System",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for Supported Operating System: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "MS Windows Server",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for MS Windows Server: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "MS Windows Server - Essentials",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for MS Windows Server - Essentials: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Server Management & Operating System Licenses",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for MS Windows Server - Essentials: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Server Management & Operating System Licenses",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for Server Management & Operating System Licenses: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "SUSE Linux Enterprise Server",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for SUSE Linux Enterprise Server: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Microsoft Windows CAL Packs",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for Microsoft Windows CAL Packs: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Red Hat Enterprise Linux Server-Virtualization",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for Red Hat Enterprise Linux Server-Virtualization: no max"
+    },
+    {
+      "parentCategory": "Support Services",
+      "subCategory": "RAID Settings",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for RAID Settings: max 1"
+    },
+    {
+      "parentCategory": "Support Services",
+      "subCategory": "Manufacturing Services (required)",
+      "constraint": "max 3",
+      "maxQty": 3,
+      "rule": "Selection constraint for Manufacturing Services (required): max 3"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "HPC Software Products",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for HPC Software Products: no max"
+    },
+    {
+      "parentCategory": "Graphics & GPU",
+      "subCategory": "NVIDIA GPU SW",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for NVIDIA GPU SW: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Compute Ops Management Enablement SKUs",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for Compute Ops Management Enablement SKUs: max 1"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "Red Hat OpenShift Platform Container",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for Red Hat OpenShift Platform Container: no max"
+    },
+    {
+      "parentCategory": "Software & Licenses",
+      "subCategory": "SUSE containers",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for SUSE containers: no max"
+    },
+    {
+      "parentCategory": "Support Services",
+      "subCategory": "Energy Star",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Selection constraint for Energy Star: max 1"
+    },
+    {
+      "parentCategory": "Support Services",
+      "subCategory": "Energy Star",
+      "constraint": "max 1",
+      "maxQty": 1,
+      "rule": "Private Product is not valid for current customer account"
+    },
+    {
+      "parentCategory": "Support Services",
+      "subCategory": "HPE Virtualization",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for HPE Virtualization: no max"
+    },
+    {
+      "parentCategory": "Support Services",
+      "subCategory": "Data Management Framework (SGI DMF)",
+      "constraint": "no max",
+      "maxQty": -1,
+      "rule": "Selection constraint for Data Management Framework (SGI DMF): no max"
+    },
+    {
+      "parentCategory": "Support Services",
+      "subCategory": "Cabling Option",
+      "constraint": "required",
+      "maxQty": -2,
+      "rule": "Selection constraint for Cabling Option: required"
+    }
+  ]
+}

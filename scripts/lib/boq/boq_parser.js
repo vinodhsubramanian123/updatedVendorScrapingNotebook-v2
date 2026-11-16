@@ -190,7 +190,12 @@ function _isQtyHeader(col) {
   return col === 'qty' || col === 'quantity' || col === 'menge' || col === 'count' || col === 'units' || col.includes('quantity') || col.includes('qty');
 }
 
+function _isExtendedOrTotalPriceHeader(col) {
+  return col.includes('extended') || col.includes('total price') || col.includes('ext price') || col.includes('ext. price') || col.includes('ext list');
+}
+
 function _isPriceHeader(col) {
+  if (_isExtendedOrTotalPriceHeader(col)) return false;
   return col.includes('unit price') || col.includes('einzelpreis') || col.includes('net price') || col.includes('list price') || col === 'price' || col === 'preis' || col.includes('option list price');
 }
 
@@ -428,6 +433,12 @@ function extractStructuredSkuRow(parts, activeColumnMap) {
   const rawClicStatus = activeColumnMap?.clicStatus !== undefined && activeColumnMap.clicStatus !== -1
     ? String(parts[activeColumnMap.clicStatus] || '').trim() : null;
 
+  const isFioModifierCompanion = Boolean(
+    (/\b(?:0D1|B19|0D2)\b/i.test(rawSkuPart) || rawDescPart.trim().toLowerCase() === 'factory integrated') &&
+    (!unitPriceUsd || unitPriceUsd === 0) &&
+    !isConfirmedZeroPrice
+  );
+
   return {
     ..._extractOwnershipEntries(parts, activeColumnMap),
     sku: /^H[A-Z0-9]+\s+[A-Z0-9]{3,}$/i.test(rawSkuPart.trim()) ? rawSkuPart.trim() : cleanSku,
@@ -439,7 +450,8 @@ function extractStructuredSkuRow(parts, activeColumnMap) {
     leadTime: rawLeadTime || null,
     clicStatus: rawClicStatus || null,
     isConfirmedZeroPrice,
-    isFactoryIntegrated: isFioLine
+    isFactoryIntegrated: isFioLine,
+    isFioModifierCompanion
   };
 }
 
@@ -512,7 +524,30 @@ function _isPriceKnown(price, isConfirmedZero) {
   return typeof price === 'number' && Number.isFinite(price) && (price > 0 || (price === 0 && isConfirmedZero));
 }
 
+function _applyModifierCompanionMerge(existing, item, totalQty) {
+  if (item.isFioModifierCompanion) {
+    existing.isFactoryIntegrated = true;
+    return true;
+  }
+  if (!existing.isFioModifierCompanion) return false;
+  const isKnown = _isPriceKnown(item.unitPriceUsd, item.isConfirmedZeroPrice);
+  const finalUnitPrice = isKnown ? item.unitPriceUsd : null;
+  existing.isFioModifierCompanion = false;
+  existing.isFactoryIntegrated = true;
+  existing.description = item.description;
+  existing.quantity = totalQty;
+  existing.unitPriceUsd = finalUnitPrice;
+  existing.isConfirmedZeroPrice = item.isConfirmedZeroPrice || false;
+  existing.extendedPriceUsd = finalUnitPrice !== null ? finalUnitPrice * totalQty : null;
+  existing.leadTime = existing.leadTime || item.leadTime || null;
+  existing.clicStatus = existing.clicStatus || item.clicStatus || null;
+  existing.priceObservations = [item.unitPriceUsd];
+  return true;
+}
+
 function _updateExistingItemPricing(existing, item, totalQty) {
+  if (_applyModifierCompanionMerge(existing, item, totalQty)) return;
+
   if (item.isFactoryIntegrated) {
     existing.isFactoryIntegrated = true;
   } else {
@@ -613,101 +648,145 @@ function _captureUnmatchedTokens(line, unmatchedSkus) {
   }
 }
 
-function parseSkuLines(lines) {
-  const itemMap = new Map();
-  let currentMultiplier = 1;
-  let activeColumnMap = null;
-  let ocrError = null;
-  let ocrNotice = null;
-  const clusters = [];
-  let currentCluster = null;
-  const unresolvedRequirements = [];
-  const unmatchedSkus = []; // P2-3: collect raw SKU tokens that fail catalog matching
+function _recordClicRowStatus(clicTotals, sku, rawStatus) {
+  const statusStr = String(rawStatus || '').trim();
+  if (!statusStr) return;
+  const lower = statusStr.toLowerCase();
+  if (lower.includes('unbuildable')) {
+    clicTotals.unbuildableCount += 1;
+    clicTotals.unbuildableSkus.push({ sku, status: statusStr });
+  } else if (lower.includes('process control')) {
+    clicTotals.processControlCount += 1;
+    clicTotals.processControlSkus.push({ sku, status: statusStr });
+  } else if (lower.includes('error') || lower.includes('fail')) {
+    clicTotals.errorCount += 1;
+    clicTotals.errorSkus.push({ sku, status: statusStr });
+  } else if (lower.includes('warn') || lower.includes('advisory')) {
+    clicTotals.warningCount += 1;
+    clicTotals.warningSkus.push({ sku, status: statusStr });
+  } else if (lower === 'ok' || lower.includes('valid') || lower.includes('pass') || lower.includes('clean')) {
+    clicTotals.okCount += 1;
+  }
+}
 
+function _buildClicStatusSummary(hasClicStatusColumn, ucid, clicTotals) {
+  const hasFailures = clicTotals.unbuildableCount > 0 || clicTotals.errorCount > 0 || clicTotals.processControlCount > 0;
+  const hasValidatedEvidence = Boolean(
+    hasClicStatusColumn &&
+    !hasFailures &&
+    (clicTotals.warningCount > 0 || clicTotals.okCount > 0 || Boolean(ucid))
+  );
+  let status = 'PORTAL VALIDATION PENDING';
+  if (hasClicStatusColumn && hasFailures) {
+    status = 'PORTAL_VALIDATION_FAILED';
+  } else if (hasValidatedEvidence) {
+    status = clicTotals.warningCount > 0 ? 'PORTAL_VALIDATED_WITH_WARNINGS' : 'PORTAL_VALIDATED';
+  }
+  return {
+    hasClicStatusColumn: Boolean(hasClicStatusColumn),
+    ucid: ucid || null,
+    unbuildableCount: clicTotals.unbuildableCount,
+    errorCount: clicTotals.errorCount,
+    processControlCount: clicTotals.processControlCount,
+    warningCount: clicTotals.warningCount,
+    okCount: clicTotals.okCount,
+    warningSkus: clicTotals.warningSkus,
+    errorSkus: clicTotals.errorSkus,
+    unbuildableSkus: clicTotals.unbuildableSkus,
+    processControlSkus: clicTotals.processControlSkus,
+    portalValidatedFromBom: hasValidatedEvidence,
+    status
+  };
+}
+
+function _createParseSkuState() {
+  return {
+    itemMap: new Map(),
+    currentMultiplier: 1,
+    activeColumnMap: null,
+    ocrError: null,
+    ocrNotice: null,
+    ucid: null,
+    hasClicStatusColumn: false,
+    clicTotals: {
+      warningCount: 0, errorCount: 0, unbuildableCount: 0, processControlCount: 0, okCount: 0,
+      warningSkus: [], errorSkus: [], unbuildableSkus: [], processControlSkus: []
+    },
+    clusters: [],
+    currentCluster: null,
+    unresolvedRequirements: [],
+    unmatchedSkus: []
+  };
+}
+
+function _processParsedLine(line, state) {
+  if (!state.ucid) {
+    const ucidMatch = line.match(/\bUCID:\s*([A-Z0-9-]+)/i);
+    if (ucidMatch) state.ucid = ucidMatch[1].trim();
+  }
+  if (line.startsWith('[OCR_ERROR]')) { state.ocrError = line.replace('[OCR_ERROR]', '').trim(); return; }
+  if (line.startsWith('[OCR_NOTICE]')) { state.ocrNotice = line.replace('[OCR_NOTICE]', '').trim(); return; }
+  if (isMetadataOrDisclaimerLine(line.toLowerCase())) return;
+
+  const clusterMatch = line.match(/^CONFIGURATION\s*#?(\d+):\s*(\d+)\s*x\s*(.+)$/i);
+  if (clusterMatch) {
+    if (state.currentCluster && state.currentCluster.items.length > 0) state.clusters.push(state.currentCluster);
+    state.currentMultiplier = parseInt(clusterMatch[2], 10) || 1;
+    state.currentCluster = { configIndex: parseInt(clusterMatch[1], 10), multiplier: state.currentMultiplier, name: clusterMatch[3].trim(), items: [] };
+    return;
+  }
+
+  const delimiter = line.includes('\t') ? '\t' : (line.includes(',') ? ',' : (line.includes('|') ? '|' : (line.includes(';') ? ';' : null)));
+  if (delimiter) {
+    const headerMap = detectHeaderColumnMap(line, delimiter);
+    if (headerMap) {
+      state.activeColumnMap = headerMap;
+      if (headerMap.clicStatus !== undefined && headerMap.clicStatus !== -1) state.hasClicStatusColumn = true;
+      return;
+    }
+  }
+
+  const detectedMult = _detectLineMultiplier(line);
+  if (detectedMult !== null) {
+    state.currentMultiplier = detectedMult;
+    if (state.currentCluster) state.currentCluster.multiplier = state.currentMultiplier;
+    return;
+  }
+
+  const allLineSkus = (line.match(new RegExp(HPE_SKU_EXTRACT_REGEX.source, 'gi')) || []).map(m => cleanBaseSKU(m)).filter(s => s && isValidHpeSKU(s));
+  const extractedRows = _extractLineRows(line, delimiter, state.activeColumnMap, allLineSkus);
+  if (extractedRows.length === 0) {
+    if (REQUIREMENT_SIGNAL_PATTERN.test(line)) {
+      state.unresolvedRequirements.push({ line, suspectedPartTokens: extractSuspectedPartTokens(line), reason: 'NO_VALID_CATALOG_PART_PARSED' });
+    }
+    _captureUnmatchedTokens(line, state.unmatchedSkus);
+    return;
+  }
+
+  for (const item of extractedRows) {
+    _recordClicRowStatus(state.clicTotals, item.sku, item.clicStatus);
+    _mergeParsedItemIntoMap(item, state.itemMap, state.currentMultiplier, state.currentCluster);
+  }
+}
+
+function parseSkuLines(lines) {
+  const state = _createParseSkuState();
   for (const rawLine of lines) {
     const line = String(rawLine || '').trim();
-    if (!line) continue;
-
-    // Check for OCR Error / Notice banners
-    if (line.startsWith('[OCR_ERROR]')) {
-      ocrError = line.replace('[OCR_ERROR]', '').trim();
-      continue;
-    }
-    if (line.startsWith('[OCR_NOTICE]')) {
-      ocrNotice = line.replace('[OCR_NOTICE]', '').trim();
-      continue;
-    }
-
-    if (isMetadataOrDisclaimerLine(line.toLowerCase())) continue;
-
-    // Detect cluster demarcation: CONFIGURATION #N: 20x Cluster_A
-    const clusterMatch = line.match(/^CONFIGURATION\s*#?(\d+):\s*(\d+)\s*x\s*(.+)$/i);
-    if (clusterMatch) {
-      if (currentCluster && currentCluster.items.length > 0) {
-        clusters.push(currentCluster);
-      }
-      currentMultiplier = parseInt(clusterMatch[2], 10) || 1;
-      currentCluster = {
-        configIndex: parseInt(clusterMatch[1], 10),
-        multiplier: currentMultiplier,
-        name: clusterMatch[3].trim(),
-        items: []
-      };
-      continue;
-    }
-
-    const delimiter = line.includes('\t') ? '\t' : (line.includes(',') ? ',' : (line.includes('|') ? '|' : (line.includes(';') ? ';' : null)));
-    
-    // Check if line is a table header row
-    if (delimiter) {
-      const headerMap = detectHeaderColumnMap(line, delimiter);
-      if (headerMap) {
-        activeColumnMap = headerMap;
-        continue;
-      }
-    }
-
-    // Detect chassis/node multiplier line
-    const detectedMult = _detectLineMultiplier(line);
-    if (detectedMult !== null) {
-      currentMultiplier = detectedMult;
-      if (currentCluster) currentCluster.multiplier = currentMultiplier;
-      continue;
-    }
-
-    const allLineSkus = (line.match(new RegExp(HPE_SKU_EXTRACT_REGEX.source, 'gi')) || []).map(m => cleanBaseSKU(m)).filter(s => s && isValidHpeSKU(s));
-    const extractedRows = _extractLineRows(line, delimiter, activeColumnMap, allLineSkus);
-
-    if (extractedRows.length === 0) {
-      if (REQUIREMENT_SIGNAL_PATTERN.test(line)) {
-        unresolvedRequirements.push({
-          line,
-          suspectedPartTokens: extractSuspectedPartTokens(line),
-          reason: 'NO_VALID_CATALOG_PART_PARSED'
-        });
-      }
-      _captureUnmatchedTokens(line, unmatchedSkus);
-      continue;
-    }
-
-    // Accumulate items into itemMap
-    for (const item of extractedRows) {
-      _mergeParsedItemIntoMap(item, itemMap, currentMultiplier, currentCluster);
-    }
+    if (line) _processParsedLine(line, state);
   }
-
-  if (currentCluster && currentCluster.items.length > 0) {
-    clusters.push(currentCluster);
+  if (state.currentCluster && state.currentCluster.items.length > 0) {
+    state.clusters.push(state.currentCluster);
   }
-
   return {
-    items: Array.from(itemMap.values()),
-    multiplier: currentMultiplier,
-    clusters,
-    ocrError,
-    ocrNotice,
-    unresolvedRequirements,
-    unmatchedSkus
+    items: Array.from(state.itemMap.values()),
+    multiplier: state.currentMultiplier,
+    clusters: state.clusters,
+    ocrError: state.ocrError,
+    ocrNotice: state.ocrNotice,
+    unresolvedRequirements: state.unresolvedRequirements,
+    unmatchedSkus: state.unmatchedSkus,
+    clicStatusSummary: _buildClicStatusSummary(state.hasClicStatusColumn, state.ucid, state.clicTotals)
   };
 }
 

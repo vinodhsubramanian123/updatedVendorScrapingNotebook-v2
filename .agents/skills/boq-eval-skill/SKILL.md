@@ -48,10 +48,10 @@ HALT-BOQ4: If any customer SKU is unmatched in the catalog (customer unmatched S
 ## 2. The 8 Atomic Steps of the BOQ Evaluation Journey
 
 1. **Scraped Catalog Grounding & Freshness Gate (`INV-96`, `INV-118`)**:
-   - Asserts catalog exists and is certified under `outputs/{Family}/{Gen}/{Model}/catalog.json`.
-   - Rejects uncertified loose files at repository root.
+   - Asserts catalog exists and is certified under `outputs/{Family}/{Gen}/{Model}/catalog.json` (plus sibling `*_Services.json` for SaaS/care SKUs and `SELECTOR_STATE_CONDITIONAL` entries revealed by selector probes).
+   - If a customer SKU is absent from default capture, inspect `evidence/<report>_runtime_discovery_plan.json` via `conditional-sku-discovery-skill` rather than guessing or dropping the line.
 2. **Deterministic 7-Aspect Physical Math Pre-Checks**:
-   - Executes offline checkers: Compute/Thermal, Memory Channel, Storage/Tri-Mode, PCIe/Riser, Power/Environment, Networking/OCP, Support/Manufacturing.
+   - Executes offline checkers: Compute/Thermal, Memory Channel, Storage/Tri-Mode (validating backplane signal cables separately from sideband and CPU-to-OCP enablement cables), PCIe/Riser, Power/Environment, Networking/OCP, Support/Manufacturing (honoring `Unit Price` vs `Extended Price` precedence and `qty: 1` `global` order headers).
 3. **5-Level Dependency Conflict Graph & Delta Auto-Injection**:
    - Detects missing mandatory kits (riser boards, heatsinks, power cables, SAS expanders, fan modules).
    - Injects enablement kits with exact `#0D1` / `-F21` FIO tags (`INV-25`).
@@ -69,7 +69,7 @@ HALT-BOQ4: If any customer SKU is unmatched in the catalog (customer unmatched S
    - Evaluated strictly AFTER 100% buildability is confirmed (`value-engineering-skill`).
 8. **18-Point Pre-Presentation Gate & Dual Deliverable Generation (`INV-99`, `INV-128`)**:
    - Emits Analytical Engineering Workbook (`.xlsx`) and standardized 7-Column Partner Portal upload sheet.
-   - Cryptographic `DeliveryAuthorization` certificate required for export. Deliverables remain `PORTAL VALIDATION PENDING` until live CLIC receipt is recorded (`INV-201`, Gate B19).
+   - Cryptographic `DeliveryAuthorization` certificate required for export. Deliverables remain `PORTAL VALIDATION PENDING` until a clean live CLIC receipt (0 errors, 0 unbuildables, and resolved advisories) is recorded (`INV-201`, `INV-241`, Gate B19); `0`-error builds with open CLIC warnings preserve warning counts and retain `PORTAL VALIDATION PENDING`.
 
 ---
 

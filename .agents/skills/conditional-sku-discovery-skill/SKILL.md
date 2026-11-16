@@ -22,25 +22,36 @@ HALT-CSD1: If ambient state cannot be restored to baseline after probing:
 
 HALT-CSD2: If probe modifies customer requested environmental requirements without authorization:
   emit [ERR_UNAUTHORIZED_ENVIRONMENT_MUTATION] and revert changes.
+
+HALT-CSD3: If an inspected selector (e.g., backplane/drive cage toggle) fails to restore to baseline qty 0 after probing:
+  throw BACKPLANE_SELECTOR_RESTORE_FAILED and abort staging promotion immediately.
 ```
 
 ## When to use
 
-- During an authenticated catalog scrape before staging promotion.
-- During BOQ evaluation when the runtime discovery plan identifies an absent or conditional SKU, unresolved trigger, or unverified configuration combination. This is scoped evidence gathering, not a full catalog rescrape.
+- During an authenticated catalog scrape before staging promotion (hidden DOM, ambient sweeps, and automated inactive backplane selector probing when hot-plug drives are absent in default DOM).
+- During BOQ evaluation when `<report>_runtime_discovery_plan.json` identifies an absent or conditional SKU, unresolved trigger, or unverified selector combination (`BOM_VERIFIER` gate `U6` flags unverified misses as `UNKNOWN`). This is scoped evidence gathering, not a full catalog rescrape.
 - Do not invoke Jules or background CI/CD for customer portal investigations. INV-72 isolates CI/CD work; it does not prohibit BOQ-specific live investigation.
+
+## DOM Visibility vs AJAX-Injected Sections
+
+- **CSS-hidden DOM & `table.UavailableTable`**: Present in initial HTML (`display:none` or collapsed panels) and captured directly by `extractHiddenElements` and `extractUnavailableDomRules`.
+- **AJAX-injected WebLogic sub-tables** (e.g., hot-plug drives gated behind a stacking backplane selector): Absent from initial DOM (`0` nodes when selector qty = `0`) until WebLogic receives a non-zero selector click, and stripped from the DOM again when reset to `0`. Only the unconfigured **selector rows** and rule hints exist in the unconfigured DOM.
 
 ## Real implementation
 
 ```javascript
-const { sendCommand, setupNetworkSniffer } = require('./scripts/lib/scraper/cdp');
+const { sendCommand, setupNetworkSniffer, expandSections } = require('./scripts/lib/scraper/cdp');
 const { extractHiddenElements, probeConditionalSkuVisibility } = require('./scripts/lib/scraper/dom_extract');
+const { probeBackplaneSelectorSkus } = require('./scripts/lib/scraper/drive_cage_selector_probe');
 // ws must belong to the verified exact product/base/configuration.
 const capture = await setupNetworkSniffer(ws);
 try {
-  const hidden = await extractHiddenElements(ws, sendCommand); // array
+  const hidden = await extractHiddenElements(ws, sendCommand); // CSS-hidden DOM elements
   // Execute probe ONLY when ambient investigation is requested; mutates and restores ambient.
   const conditional = await probeConditionalSkuVisibility(ws, sendCommand, [35, 30, 27, 25]);
+  // Probe up to maxSelectors=2 inactive drive-cage/backplane selectors only when hot-plug drives are hidden; restores qty 0 in try/finally.
+  const backplaneProbe = await probeBackplaneSelectorSkus(ws, sendCommand, { baselineSkus, expandSections });
   await capture.flush?.();
   const rules = capture.getCapturedRules();
   const coverage = capture.getCoverage?.() || { scope: 'UNAVAILABLE' };
@@ -50,7 +61,7 @@ try {
 }
 ```
 
-Those thresholds are probe inputs, not supported values for every product. The implementation inspects available options. Hidden DOM and ambient probing exist; arbitrary CPU/backplane/PSU/GPU/NIC/fan sweeps are live-agent work until an adapter is implemented and verified. Never set `sweepsExecuted` for an intended or skipped sweep.
+Those thresholds are probe inputs, not supported values for every product. The implementation inspects available options. Hidden DOM, ambient probing, and single unconfigured backplane selector probing (capped at `maxSelectors = 2` when hot-plug drive tables are collapsed) run automatically; multi-selector Cartesian sweeps (`CPU × backplane × PSU × GPU × NIC × fan`) remain live-agent work until a scoped adapter is implemented and verified. Never set `sweepsExecuted` for an intended or skipped sweep.
 
 ## Runtime sequence
 
@@ -64,7 +75,8 @@ Missing from capture does not mean unsupported. Hidden does not mean orderable, 
 
 ## Persistence and compilation
 
-- Raw scrape observations: `outputs/{Family}/{Gen}/{Model}/raw_data/conditional_skus.json` and `raw_data/unavailable_rules.json`.
+- Raw scrape observations: `outputs/{Family}/{Gen}/{Model}/raw_data/conditional_skus.json` and `raw_data/unavailable_rules.json` (plus `SELECTOR_STATE_CONDITIONAL` entries emitted with `observedInPortal: true` and `selectorTriggerSku`).
+- Incremental catalog update feedback loop: `build_catalog.js:resolveConditionalRawData` merges `raw_data/conditional_skus.json` and runs `conditional_discovery.js:applyConditionalDiscovery` to materialize portal-observed selector entries into `hardwareEntries` with `visibilityState: "PORTAL_CONDITIONAL"`, followed by `sync_payload_builder.js` Markdown selector tables + `post_flow_sync.js` NotebookLM readback verification and `recordAndCertifyLearnedRule()` continuous learning persistence.
 - Universal DOM unavailable tables: `extractUnavailableDomRules(ws, sendCommand)` parses `table.UavailableTable`, `tr.uavailableTable_tr`, `.choice_header1[style*="red"]`, and row IDs `choice_column_titles_<choiceId>-<reason>` across all product categories.
 - Classification engine: categorizes reasoning into machine-readable rule types: `AMBIENT_GATE`, `CHASSIS_GATE`, `MEMORY_MIXING`, `SLOT_COLLISION`, `PAIRED_KIT_REQUIRED`, `SUPPLY_RESTRICTED`, `MUTUAL_EXCLUSION`, and `BTO_DISALLOWED`.
 - Catalog compilation: `applyUnavailableDomRulesAndSkus()` merges unavailable SKUs into `hardwareEntries` as `PORTAL_CONDITIONAL` with `isSelectable: false` and their explicit `ineligibilityReason`, while emitting compiled rules to `<Product>_Catalog_Rules.json` and `<Product>_Unavailable_Rules.tsv`.

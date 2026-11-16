@@ -812,6 +812,58 @@ function _renderLivePortalServices(targetDir, chassisName, cfg) {
   return md;
 }
 
+function _collectSelectorConditionalRows(catalogData) {
+  const rows = [];
+  for (const entry of catalogData.entries) {
+    for (const s of (entry.skus || [])) {
+      if (s.conditionType !== 'SELECTOR_STATE_CONDITIONAL' && !s.selectorTriggerSku) continue;
+      rows.push({
+        sku: s['Product #'] || s.sku,
+        description: s.Description || s.description || '',
+        triggerSku: s.selectorTriggerSku || s.conditionKey || 'selector',
+        price: s['Unit Price (USD)'] || s.listPrice || 'N/A',
+        leadTime: s['Lead Time'] || (Number.isFinite(s.leadTimeDays) ? String(s.leadTimeDays) : 'Unknown'),
+        discontinued: s['Discontinued Date'] || 'Active',
+        lifecycle: s['Lifecycle Status'] || s.lifecycleBadge || 'Active'
+      });
+    }
+  }
+  return rows;
+}
+
+function _formatSelectorPrice(price) {
+  if (!price || price === 'N/A') return 'N/A';
+  const str = String(price);
+  if (str.startsWith('$')) return str;
+  const num = Number(str.replace(/,/g, ''));
+  return Number.isFinite(num) ? `$${num.toLocaleString()}` : str;
+}
+
+function _renderSelectorConditionalSection(targetDir, catalogData) {
+  if (!catalogData || !Array.isArray(catalogData.entries)) return '';
+  const selectorRows = _collectSelectorConditionalRows(catalogData);
+  if (selectorRows.length === 0) return '';
+  const rawCapturePath = path.join(targetDir, 'raw_data', 'oca_raw_data_full.json');
+  let rawCapture = {};
+  if (fs.existsSync(rawCapturePath)) {
+    try { rawCapture = JSON.parse(fs.readFileSync(rawCapturePath, 'utf8')); } catch (_) {}
+  }
+  const selectorLog = (rawCapture.observedSelectors || [])
+    .filter(s => s.sku || s.revealedRows)
+    .map(s => `\`${s.sku || s.selector}\` (${s.value})`)
+    .join(', ');
+  let md = `\n## Selector-Revealed Conditional Options (Scoped Observations)\n\n`;
+  md += `**Scope Notice**: Revealed during scoped live portal selector probe${selectorLog ? ` (${selectorLog})` : ''} and restored cleanly afterwards. `;
+  md += `Coverage is restricted to the visited selector state(s); other untested chassis/controller/backplane selector combinations were not swept.\n\n`;
+  md += `| Product # | Description | Trigger Selector | List Price (USD) | Lead Time (Days) | Discontinued | Lifecycle |\n`;
+  md += `|---|---|---|---:|---:|---|---|\n`;
+  for (const r of selectorRows) {
+    md += `| \`${r.sku}\` | ${r.description} | \`${r.triggerSku}\` | ${_formatSelectorPrice(r.price)} | ${r.leadTime || 'Unknown'} | ${r.discontinued} | ${r.lifecycle} |\n`;
+  }
+  md += `\n`;
+  return md;
+}
+
 function _persistPayloadFileAtomically(targetDir, chassisName, md) {
   const safeFilename = `notebook_sync_payload_${chassisName}.md`;
   const payloadPath = path.join(targetDir, safeFilename);
@@ -938,6 +990,7 @@ function _loadUnavailableRules(targetDir) {
 function _assembleMarkdownDocument(targetDir, chassisName, ctx) {
   let md = _buildHeaderAndSummarySection(ctx.targetIdentity, chassisName, ctx.totalActiveHwSKUs, ctx.totalActiveSrvSKUs, ctx.totalRules, ctx.hwDiff, ctx.srvDiff);
   md += _renderOwnedComponentScope(targetDir);
+  md += _renderSelectorConditionalSection(targetDir, ctx.catalogData);
   md += _buildUniversalAndFamilyRulesSection(ctx.targetIdentity, ctx.scopedRegistry.universalRules, ctx.scopedRegistry.familyGenRules);
   md += _buildChassisSpecificRulesSection(chassisName, ctx.scopedRegistry.chassisSpecificRules, ctx.targetIdentity, ctx.cfg);
   md += _buildUnavailableDomGatingRulesSection(ctx.unavailableRules);

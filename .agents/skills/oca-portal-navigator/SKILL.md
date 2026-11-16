@@ -43,6 +43,8 @@ npm.cmd run oca:session -- --recover "DL380 Gen12"
 
 The first command reuses an exact active commercial configuration. The second deliberately replaces OCA via Partner Portal. Both write sanitized receipts under `outputs/history/oca_sessions/`. `READY_AT_MENU_TAB` / `NAVIGATED_TO_CONFIG_PAGE` proves navigation only; it does not prove scrape coverage, customer buildability, CLIC acceptance or cloud synchronization.
 
+For QuickSpecs, read the link from OCA and pass it to `scripts/scrapers/download_quickspecs_pdf.js`. The downloader uses HPE HTTPS first and a separate browser context as fallback. Keep the active OCA workspace open during document retrieval.
+
 Do not classify a commercial configuration as OEM because it contains the **OEM Software** category. OEM eligibility and target SKU must be checked against the base-product identity. Verify the actual password field after CDP input and dispatch input/change events; background focus and delayed Onepass dialogs can otherwise leave an empty form. Do not treat `/group/prp` alone as proof of authentication while a password dialog remains visible.
 
 Authentication failures must retain their stage: `HPE_AUTH_CREDENTIALS_REQUIRED`, `HPE_AUTH_REJECTED`, `HPE_AUTH_INTERACTION_REQUIRED`, or `HPE_AUTH_TIMEOUT`. They must not be swallowed and followed by a misleading launcher attempt. The connected profile may require a vendor-controlled challenge; report that exact blocker instead of claiming automatic MFA bypass.
@@ -119,7 +121,7 @@ A major challenge when interacting with enterprise WebLogic OCA is distinguishin
 | **Sub-Tab Context Switches** | Leaving `Services`, `BOM`, or `Summary` sub-tabs active | Normal user/scraping navigation between configuration sections | **RESTORE SUB-TAB**: Click `a.ui-tabs-anchor[href="#extended_overview_menu"]` to re-focus the configuration workspace (`INV-174`). |
 | **Fatal Session Expiration** | "You are logged out successfully!", "session expired", "session invalid", "please sign in again", or URLs with `/logout` or `session_expired` | Short-lived SAML token expired or server invalidated cookie | **FATAL**: Close OCA tab via CDP `/json/close` $\rightarrow$ execute Tab 1 Self-Healing Recovery Loop. |
 | **Fatal WebLogic Server Crash** | Modals containing: "an unexpected error", "encountered a problem", "exception occurred", "internal server error", "weblogic bridge message" | Java WebLogic unhandled exception or broken state | **FATAL**: Close OCA tab via CDP `/json/close` $\rightarrow$ execute Tab 1 Self-Healing Recovery Loop. |
-| **Socket Freeze / Hang** | CDP WebSocket times out (>45s) or HTTP 9222 drops | Browser or server thread deadlocked | **FATAL**: Reconnect WS or trigger Tab 1 Self-Healing Recovery Loop. |
+| **CDP response timeout** | The active OCA page does not answer a CDP command in time | The session state still needs verification | Keep the OCA tab open and retry against it. The navigator returns `OCA_RESPONSE_TIMEOUT`. |
 
 ---
 

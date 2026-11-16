@@ -199,6 +199,33 @@ function copyDirRecursive(srcDir, destDir) {
   }
 }
 
+function _sleepSyncMs(ms) {
+  try {
+    Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
+  } catch (_) {}
+}
+
+function moveDirWithFallback(src, dest) {
+  const retryable = new Set(['EPERM', 'EBUSY', 'EACCES']);
+  for (let attempt = 0; attempt < 5; attempt++) {
+    try {
+      fs.renameSync(src, dest);
+      return;
+    } catch (err) {
+      if (attempt < 4 && retryable.has(err.code)) {
+        _sleepSyncMs(150 * (attempt + 1));
+        continue;
+      }
+      if (err.code === 'EXDEV' || retryable.has(err.code)) {
+        copyDirRecursive(src, dest);
+        try { fs.rmSync(src, { recursive: true, force: true }); } catch (_) {}
+        return;
+      }
+      throw err;
+    }
+  }
+}
+
 /**
  * Promote an isolated staging directory to live workspace output path.
  * Prepare a complete sibling snapshot, then swap directories. Never merge a
@@ -249,11 +276,11 @@ function recoverPromotionUnderLease(target) {
     if (fs.existsSync(journal.backup)) {
       if (fs.existsSync(target)) {
         if (fs.existsSync(journal.prepared)) throw new Error('Ambiguous promotion recovery; preserve all snapshots.');
-        fs.renameSync(target, journal.prepared);
+        moveDirWithFallback(target, journal.prepared);
       }
-      fs.renameSync(journal.backup, target);
+      moveDirWithFallback(journal.backup, target);
     } else if (journal.baselineExisted === false && fs.existsSync(target) && !fs.existsSync(journal.prepared)) {
-      fs.renameSync(target, journal.prepared);
+      moveDirWithFallback(target, journal.prepared);
     } else if (!fs.existsSync(journal.prepared)) {
       throw new Error('Promotion recovery has no verified prior/prepared snapshot.');
     }
@@ -308,20 +335,20 @@ function promoteStagingDirectory(stagingDir, liveTargetDir) {
     }
     journal.status = 'PREPARED';
     safeWriteJsonAtomic(journalPath, journal);
-    if (fs.existsSync(target)) { fs.renameSync(target, backup); baselineMoved = true; }
+    if (fs.existsSync(target)) { moveDirWithFallback(target, backup); baselineMoved = true; }
     journal.status = 'BASELINE_MOVED';
     safeWriteJsonAtomic(journalPath, journal);
-    fs.renameSync(prepared, target);
+    moveDirWithFallback(prepared, target);
     preparedPublished = true;
     journal.status = 'COMMITTED';
     safeWriteJsonAtomic(journalPath, journal);
     return { success: true, liveTargetDir: target, backupDir: baselineMoved ? backup : null, journalPath };
   } catch (error) {
     if (baselineMoved) {
-      if (fs.existsSync(target) && !fs.existsSync(prepared)) fs.renameSync(target, prepared);
-      if (!fs.existsSync(target)) fs.renameSync(backup, target);
+      if (fs.existsSync(target) && !fs.existsSync(prepared)) moveDirWithFallback(target, prepared);
+      if (!fs.existsSync(target)) moveDirWithFallback(backup, target);
     } else if (preparedPublished && journal.baselineExisted === false && fs.existsSync(target) && !fs.existsSync(prepared)) {
-      fs.renameSync(target, prepared);
+      moveDirWithFallback(target, prepared);
     }
     if (fs.existsSync(journalPath)) {
       journal.status = fs.existsSync(prepared) ? 'ROLLED_BACK' : 'RECOVERY_REQUIRED';
@@ -389,6 +416,7 @@ module.exports = {
   withFileLock,
   copyDirRecursive,
   mergeDirRecursive,
+  moveDirWithFallback,
   promoteStagingDirectory,
   recoverUnfinishedPromotion
 };

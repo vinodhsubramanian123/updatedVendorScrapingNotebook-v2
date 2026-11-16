@@ -91,6 +91,16 @@ function createSupplyAttributeResolver(catalog) {
   };
 }
 
+function _isPhysicalReplaceableOption(attr) {
+  const sku = String(attr?.sku || '').trim();
+  const desc = String(attr?.description || '').toLowerCase();
+  if (/^(?:HA|HU|H7)/i.test(sku)) return false;
+  if (/\b(tech care|installation service|startup service|deployment service|pointnext|care pack|compute ops|saas)\b/i.test(desc)) return false;
+  if (/\bilo\s+advanced\b.*\blicense\b/i.test(desc)) return false;
+  if (/configure[\s-]to[\s-]order/i.test(desc)) return false;
+  return true;
+}
+
 function calculateSupplyMetrics(parts, resolveSupply) {
   const partsList = parts || [];
   const attributes = partsList.map(part => {
@@ -110,6 +120,8 @@ function calculateSupplyMetrics(parts, resolveSupply) {
 
   const knownEntries = attributes.filter(a => Number.isFinite(a.leadTimeDays));
   const knownLeadTimes = knownEntries.map(a => a.leadTimeDays);
+  const hardwareAttributes = attributes.filter(a => Number.isFinite(a.leadTimeDays) || _isPhysicalReplaceableOption(a));
+  const hardwareKnownEntries = hardwareAttributes.filter(a => Number.isFinite(a.leadTimeDays));
   const unavailableCount = attributes.filter(a => /unavailable|out of stock|not yet available|allocation hold|constrained/i.test(a.availability)).length;
 
   let maxLeadTimeDays = null;
@@ -133,6 +145,9 @@ function calculateSupplyMetrics(parts, resolveSupply) {
   return {
     knownLeadTimeCount: knownLeadTimes.length,
     unknownLeadTimeCount: attributes.length - knownLeadTimes.length,
+    hardwareKnownLeadTimeCount: hardwareKnownEntries.length,
+    hardwareUnknownLeadTimeCount: hardwareAttributes.length - hardwareKnownEntries.length,
+    hardwareMaxLeadTimeDays: hardwareKnownEntries.length > 0 ? maxLeadTimeDays : null,
     unavailableCount,
     maxLeadTimeDays,
     pacingItemSku,
@@ -686,7 +701,7 @@ function _compareCandidateRanks(a, b) {
   return fpA.localeCompare(fpB);
 }
 
-function scoreAndSortCandidates(rawCandidates, items, resolveSupply = () => ({ leadTimeDays: null, availability: 'Unknown' })) {
+function scoreAndSortCandidates(rawCandidates, items, resolveSupply = () => ({ leadTimeDays: null, availability: 'Unknown' }), options = {}) {
   const { requestedSkuSet, requestedQuantities, baseCategoryMap } = _indexRequestedQuantities(items);
 
   rawCandidates.forEach(cand => {
@@ -694,6 +709,13 @@ function scoreAndSortCandidates(rawCandidates, items, resolveSupply = () => ({ l
   });
 
   rawCandidates.sort(_compareCandidateRanks);
+  if (options?.prioritizeFastShipAsRank2) {
+    const fsIdx = rawCandidates.findIndex((c, idx) => idx > 0 && c.isFastShipRank2 && c.physicalMathClean);
+    if (fsIdx > 1) {
+      const [fsCand] = rawCandidates.splice(fsIdx, 1);
+      rawCandidates.splice(1, 0, fsCand);
+    }
+  }
   return requestedSkuSet;
 }
 
@@ -1123,8 +1145,8 @@ function _injectManagementLicenseIfMissing(updatedParts, partSkus, getPrice, inj
   const isCto = updatedParts.some(p => {
     const d = (p.description || '').toLowerCase();
     const s = cleanBaseSKU(p.sku);
-    return (d.includes('cto') && !/alletra|synergy|sn3600|msl|storeever|cray/.test(d)) ||
-      ['P73282-B21', 'P52534-B21', 'P52533-B21', 'P52532-B21', 'P74700-B21', 'P75741-B21'].includes(s);
+    return ((d.includes('cto') || d.includes('configure-to-order')) && !/alletra|synergy|sn3600|msl|storeever|cray/.test(d)) ||
+      ['P73282-B21', 'P52534-B21', 'P52533-B21', 'P52532-B21', 'P74700-B21', 'P75741-B21', 'P72176-B21', 'P72175-B21', 'P72174-B21'].includes(s);
   });
   const hasMgmt = updatedParts.some(p => {
     const s = cleanBaseSKU(p.sku);
@@ -1223,12 +1245,18 @@ function findFastShipCpuReplacement(catalogIndex) {
 
 function _isFastShipOutlier(part, outliers, v1SupplyMetrics) {
   const cleanSku = cleanBaseSKU(part.sku);
-  return outliers.some(o => cleanBaseSKU(o.sku) === cleanSku) ||
-    (part.leadTimeDays && part.leadTimeDays >= 21) ||
+  const outlierMatch = outliers.find(o => cleanBaseSKU(o.sku) === cleanSku);
+  const partDays = Number.isFinite(part.leadTimeDays) ? part.leadTimeDays : (outlierMatch?.leadTimeDays ?? null);
+  if (Number.isFinite(v1SupplyMetrics?.maxLeadTimeDays) && v1SupplyMetrics.maxLeadTimeDays >= 21) {
+    return (Number.isFinite(partDays) && partDays >= 21) ||
+      cleanSku === cleanBaseSKU(v1SupplyMetrics?.pacingItemSku);
+  }
+  return Boolean(outlierMatch) ||
+    (Number.isFinite(partDays) && partDays >= 21) ||
     (cleanSku === cleanBaseSKU(v1SupplyMetrics?.pacingItemSku) && (v1SupplyMetrics?.maxLeadTimeDays || 0) >= 21);
 }
 
-function _evaluateFastShipCandidateEntry(s, item, origAttrs, origLeadDays, cleanSku, origUnitPrice) {
+function _evaluateFastShipCandidateEntry(s, item, origAttrs, origLeadDays, cleanSku, origUnitPrice, origDesc = '') {
   if (s === cleanSku || !_isCatalogOptionActiveForSynthesis(item)) return null;
   const sDesc = item.skuData?.Description || item.entry?.description || '';
   const leadMeta = extractCatalogItemLeadTime(item.skuData || item.entry || {});
@@ -1245,7 +1273,8 @@ function _evaluateFastShipCandidateEntry(s, item, origAttrs, origLeadDays, clean
   const attrScore = scoreReplacementCandidate(
     { sku: s, description: sDesc, price: sPrice, leadTimeDays: sDays },
     origAttrs,
-    origUnitPrice || 0
+    origUnitPrice || 0,
+    origDesc
   );
   if (origAttrs.componentCategory !== 'UNKNOWN' && attrScore <= 0) return null;
 
@@ -1264,7 +1293,7 @@ function _scoreCatalogFastShipCandidates(part, catalogIndex, origLeadDays) {
   const matches = [];
 
   for (const [s, item] of catalogIndex.entries()) {
-    const match = _evaluateFastShipCandidateEntry(s, item, origAttrs, origLeadDays, cleanSku, part.unitPriceUsd);
+    const match = _evaluateFastShipCandidateEntry(s, item, origAttrs, origLeadDays, cleanSku, part.unitPriceUsd, part.description || '');
     if (match) matches.push(match);
   }
 
@@ -1338,7 +1367,137 @@ function _substituteSingleFastShipPart(part, isOutlier, catalogIndex, chassisInf
   };
 }
 
-function synthesizeFastShipAlternative(v1Parts, v1SupplyMetrics, loadedCatalog, chassisInfo, getPrice, revalidateCached, resolveSupply) {
+function _findOcpSlotACableInCatalog(catalogIndex, mandatory) {
+  const prefSku = mandatory?.OCP_BOX12_CABLE?.sku ? cleanBaseSKU(mandatory.OCP_BOX12_CABLE.sku) : null;
+  if (prefSku && catalogIndex.has(prefSku)) {
+    const item = catalogIndex.get(prefSku);
+    return { sku: prefSku, description: item.skuData?.Description || item.entry?.description || mandatory.OCP_BOX12_CABLE.name };
+  }
+  for (const [sku, item] of catalogIndex.entries()) {
+    const d = (item.skuData?.Description || item.entry?.description || '').toLowerCase();
+    if (d.includes('rear ocp slota') && d.includes('controller cable')) {
+      return { sku, description: item.skuData?.Description || item.entry?.description };
+    }
+  }
+  return mandatory?.OCP_BOX12_CABLE?.sku
+    ? { sku: cleanBaseSKU(mandatory.OCP_BOX12_CABLE.sku), description: mandatory.OCP_BOX12_CABLE.name }
+    : null;
+}
+
+function _isPcieBackplaneSignalCablePart(part) {
+  const s = cleanBaseSKU(part?.sku);
+  const d = (part?.description || '').toLowerCase();
+  return ['P72604-B21', 'P72602-B21', 'P76456-B21', 'P76453-B21', 'P48832-B21'].includes(s) ||
+    (d.includes('pcie') && (d.includes('controller cable') || d.includes('ctrl cable') || d.includes('splitter cable')));
+}
+
+function _countOcp3Adapters(parts) {
+  let count = 0;
+  for (const p of parts) {
+    const d = (p.description || '').toLowerCase();
+    if (d.includes('cable') || d.includes('backplane') || d.includes('enablement')) continue;
+    if (d.includes('ocp3') || d.includes('ocp 3') || /\b(mr|sr)\d{3}i-o\b/i.test(d)) count += (p.quantity || 1);
+  }
+  return count;
+}
+
+function _applyFastShipTopologyTransitions(candidateParts, substitutedItems, catalogIndex, chassisInfo, getPrice) {
+  const hasPcieToOcpCtrl = substitutedItems.some(sub =>
+    (/\b(mr|sr)\d{3}i-p\b/i.test(sub.originalDescription || '') || /\bp74775\b/i.test(sub.originalSku || '')) &&
+    (/\b(mr|sr)\d{3}i-o\b/i.test(sub.replacementDescription || '') || /\bp58335\b/i.test(sub.replacementSku || ''))
+  );
+  if (!hasPcieToOcpCtrl) return [];
+
+  const mandatory = getMandatorySkusForChassis(chassisInfo);
+  const transitions = [];
+  const ocpSignalCable = _findOcpSlotACableInCatalog(catalogIndex, mandatory);
+  if (ocpSignalCable) {
+    const idx = candidateParts.findIndex(_isPcieBackplaneSignalCablePart);
+    if (idx !== -1) {
+      const prev = candidateParts[idx];
+      const sigPrice = getPrice(ocpSignalCable.sku);
+      const qty = prev.quantity || 1;
+      candidateParts[idx] = {
+        ...prev,
+        sku: ocpSignalCable.sku,
+        description: ocpSignalCable.description,
+        unitPriceUsd: sigPrice,
+        extendedPriceUsd: sigPrice * qty,
+        isFastShipTopologyCable: true
+      };
+      transitions.push({ action: 'REPLACE_SIGNAL_CABLE', fromSku: cleanBaseSKU(prev.sku), toSku: ocpSignalCable.sku, quantity: qty });
+    }
+  }
+
+  const baseChassisQty = candidateParts.find(p => /configure-to-order|cto\s+server/i.test(p.description || ''))?.quantity || 1;
+  const ocpPerNode = _countOcp3Adapters(candidateParts) / baseChassisQty;
+  const hasSlotBCable = candidateParts.some(p => {
+    const s = cleanBaseSKU(p.sku);
+    const d = (p.description || '').toLowerCase();
+    return s === cleanBaseSKU(mandatory?.CPU1_OCP_CABLE?.sku || 'P72203-B21') || (d.includes('cpu1') && d.includes('ocp') && d.includes('slotb'));
+  });
+  if (ocpPerNode >= 2 && !hasSlotBCable) {
+    const slotBSku = cleanBaseSKU(mandatory?.CPU1_OCP_CABLE?.sku || 'P72203-B21');
+    const slotBDesc = mandatory?.CPU1_OCP_CABLE?.name || catalogIndex.get(slotBSku)?.skuData?.Description || 'CPU1 to Rear OCP SlotB x8 Cable Kit';
+    const slotBPrice = getPrice(slotBSku);
+    candidateParts.push({
+      sku: slotBSku,
+      description: slotBDesc,
+      quantity: baseChassisQty,
+      unitPriceUsd: slotBPrice,
+      extendedPriceUsd: slotBPrice * baseChassisQty,
+      isFastShipTopologyCable: true,
+      category: 'OCP Networking Enablement'
+    });
+    transitions.push({ action: 'ENABLE_OCP_SLOT_B', sku: slotBSku, quantity: baseChassisQty });
+  }
+  return transitions;
+}
+
+function _buildDeliveryScheduleSummary(originalEdt, newEdt, deliveryDaysSaved, options = {}) {
+  const componentEstimate = {
+    originalMaxComponentDays: originalEdt,
+    fastShipMaxComponentDays: newEdt,
+    deliveryDaysSaved,
+    scope: 'COMPONENT_ESTIMATE_ONLY',
+    label: 'Component-level catalog lead time only (excludes factory CTO chassis build and transit)'
+  };
+  const liveEdt = options?.liveSolutionEdt || null;
+  const fastShipRange = liveEdt?.fastShipRange || (Array.isArray(liveEdt?.candidateEdtDaysRange) ? `${liveEdt.candidateEdtDaysRange[0]}–${liveEdt.candidateEdtDaysRange[1]} days` : null);
+  const baselineRange = liveEdt?.baselineRange || (Array.isArray(liveEdt?.baselineEdtDaysRange) ? `${liveEdt.baselineEdtDaysRange[0]}–${liveEdt.baselineEdtDaysRange[1]} days` : null);
+  if (fastShipRange && baselineRange) {
+    const startSaved = liveEdt.startWindowDaysSaved ?? liveEdt.daysSavedStart;
+    const endSaved = liveEdt.endWindowDaysSaved ?? liveEdt.daysSavedEnd;
+    return {
+      componentEstimate,
+      liveSolutionEdt: { ...liveEdt, fastShipRange, baselineRange, label: 'LIVE_HPE_OCA_SOLUTION_EDT' },
+      deliveryImpact: `Live HPE OCA Solution EDT: ${fastShipRange} vs. ${baselineRange}` +
+        (startSaved && endSaved ? ` (cuts start by ${startSaved}d and end by ${endSaved}d)` : '') +
+        `. Component estimate: ${newEdt ?? '?'}d vs. ${originalEdt ?? '?'}d.`
+    };
+  }
+  return {
+    componentEstimate,
+    liveSolutionEdt: null,
+    deliveryImpact: deliveryDaysSaved === null
+      ? 'Delivery estimate incomplete: one or more component lead times are unknown'
+      : `Component catalog estimate improves by ${deliveryDaysSaved} days (${originalEdt}d -> ${newEdt}d); live OCA solution EDT remains unverified`
+  };
+}
+
+function _isProtectedCustomerFastShipPart(part, options = {}) {
+  const preserve = new Set((options?.preserveRoles || ['FC_HBA', 'NETWORK', 'STORAGE_DRIVE', 'SUPPORT']).map(r => String(r).toUpperCase()));
+  const d = (part.description || '').toLowerCase();
+  const cat = (part.category || '').toLowerCase();
+  const sku = cleanBaseSKU(part.sku);
+  if (preserve.has('SUPPORT') && (/^(HA|HU|H7)/i.test(sku) || d.includes('tech care') || d.includes('installation'))) return true;
+  if (preserve.has('FC_HBA') && /\b(?:fibre\s*channel|fc\s+hba|sn1[67]\d{2}|qlogic|emulex)\b/i.test(`${d} ${cat}`)) {
+    return !options?.allowFcHbaSubstitution;
+  }
+  return false;
+}
+
+function synthesizeFastShipAlternative(v1Parts, v1SupplyMetrics, loadedCatalog, chassisInfo, getPrice, revalidateCached, resolveSupply, options = {}) {
   const outliers = v1SupplyMetrics?.leadTimeOutliers || [];
   if (outliers.length === 0 && (!v1SupplyMetrics?.maxLeadTimeDays || v1SupplyMetrics.maxLeadTimeDays < 21)) {
     return null;
@@ -1348,24 +1507,37 @@ function synthesizeFastShipAlternative(v1Parts, v1SupplyMetrics, loadedCatalog, 
   const substitutedItems = [];
 
   const candidateParts = v1Parts.map(part => {
+    if (_isProtectedCustomerFastShipPart(part, options)) return { ...part };
     const isOutlier = _isFastShipOutlier(part, outliers, v1SupplyMetrics);
     return _substituteSingleFastShipPart(part, isOutlier, catalogIndex, chassisInfo, getPrice, v1SupplyMetrics, substitutedItems);
   });
 
   if (substitutedItems.length === 0) return null;
 
+  const topologyTransitions = _applyFastShipTopologyTransitions(candidateParts, substitutedItems, catalogIndex, chassisInfo, getPrice);
   const revalidated = revalidateCached(candidateParts);
   if (revalidated.physicalMathClean !== true || revalidated.aspectErrors?.length) return null;
   const newSupplyMetrics = calculateSupplyMetrics(revalidated.parts, resolveSupply);
-  const originalEdt = v1SupplyMetrics.unknownLeadTimeCount === 0 ? v1SupplyMetrics.maxLeadTimeDays : null;
-  const newEdt = newSupplyMetrics.unknownLeadTimeCount === 0 ? newSupplyMetrics.maxLeadTimeDays : null;
+  const originalEdt = v1SupplyMetrics.unknownLeadTimeCount === 0
+    ? v1SupplyMetrics.maxLeadTimeDays
+    : (v1SupplyMetrics.hardwareUnknownLeadTimeCount === 0 ? v1SupplyMetrics.hardwareMaxLeadTimeDays : null);
+  const newEdt = newSupplyMetrics.unknownLeadTimeCount === 0
+    ? newSupplyMetrics.maxLeadTimeDays
+    : (newSupplyMetrics.hardwareUnknownLeadTimeCount === 0 ? newSupplyMetrics.hardwareMaxLeadTimeDays : null);
   const deliveryDaysSaved = originalEdt !== null && newEdt !== null ? Math.max(0, originalEdt - newEdt) : null;
   if (deliveryDaysSaved !== null && deliveryDaysSaved < 14 && v1SupplyMetrics.maxLeadTimeDays < 45) return null;
+
+  const scheduleInfo = _buildDeliveryScheduleSummary(originalEdt, newEdt, deliveryDaysSaved, options);
+  const liveClic = options?.liveClicValidation || null;
+  const clicStatus = _resolveStrategyPortalStatus(options);
 
   return {
     rank: '1S',
     subRank: '1S',
-    validationStatus: 'DOCUMENT_AND_PORTAL_VALIDATION_PENDING',
+    validationStatus: clicStatus === 'PORTAL VALIDATION PENDING' ? 'DOCUMENT_AND_PORTAL_VALIDATION_PENDING' : clicStatus,
+    portalValidationStatus: clicStatus,
+    liveClicValidation: liveClic,
+    clicStatusSummary: options?.clicStatusSummary || null,
     requiresRequirementReview: true,
     name: 'Rank 1S: Fast-Ship Delivery-Optimized Baseline',
     tierTitle: 'Fast-Ship Delivery-Optimized Baseline (Pacing Items Substituted)',
@@ -1386,14 +1558,36 @@ function synthesizeFastShipAlternative(v1Parts, v1SupplyMetrics, loadedCatalog, 
     deliveryDaysSaved,
     originalEdtDays: originalEdt,
     fastShipEdtDays: newEdt,
+    componentLeadTimeEstimate: scheduleInfo.componentEstimate,
+    liveSolutionEdt: scheduleInfo.liveSolutionEdt,
+    topologyTransitions,
     substitutedPacingItems: substitutedItems,
     tradeoffMetrics: {
-      intentAlignment: 'UNVERIFIED: substitutions require customer-requirement and grounded review',
-      deliveryImpact: deliveryDaysSaved === null ? 'Delivery estimate incomplete: one or more lead times are unknown' : `Catalog lead-time estimate improves by ${deliveryDaysSaved} days; current vendor availability remains unverified`,
-      skuModifications: `${substitutedItems.length} bottleneck substitution(s)`
+      intentAlignment: topologyTransitions.length > 0
+        ? `Preserves requested NIC, SSDs, FC, support, and quantities with co-resolved OCP topology transition (${topologyTransitions.length} cable update(s)); ${clicStatus === 'PORTAL VALIDATION PENDING' ? 'portal validation pending' : 'portal CLIC validated (0 unbuildable errors)'}`
+        : 'UNVERIFIED: substitutions require customer-requirement and grounded review',
+      deliveryImpact: scheduleInfo.deliveryImpact,
+      skuModifications: `${substitutedItems.length} bottleneck substitution(s)${topologyTransitions.length ? `, ${topologyTransitions.length} topology cable update(s)` : ''}`
     },
-    reasoning: 'Catalog-derived substitution proposal passed local physical checks only. Capacity, performance, customer requirements, current availability, grounded document review and exact portal acceptance still require validation.'
+    reasoning: clicStatus === 'PORTAL VALIDATION PENDING'
+      ? 'Fast-ship candidate revalidated as one topology with co-resolved controller and OCP enablement cabling; component estimates and live OCA EDT (when supplied) remain labeled separately and portal acceptance stays PORTAL VALIDATION PENDING.'
+      : 'Fast-ship candidate revalidated as one topology with co-resolved controller and OCP enablement cabling; CLIC reported 0 unbuildables and 0 errors (warnings surfaced as advisories).'
   };
+}
+
+function _resolveStrategyPortalStatus(options = {}) {
+  const source = options?.liveClicValidation || options?.clicValidation || options?.clicStatusSummary || null;
+  if (!source) return 'PORTAL VALIDATION PENDING';
+  const isBomSummary = source === options?.clicStatusSummary;
+  const unbuildables = Number(source.unbuildablesCount ?? source.unbuildables ?? source.unbuildableCount ?? 0);
+  const errors = Number(source.errorsCount ?? source.errors ?? source.errorCount ?? 0);
+  const processControl = Number(source.processControlCount ?? source.processControl ?? 0);
+  const warnings = Number(source.warningsCount ?? source.warnings ?? source.warningCount ?? 0);
+  if (isBomSummary && !source.portalValidatedFromBom && unbuildables === 0 && errors === 0 && processControl === 0) {
+    return 'PORTAL VALIDATION PENDING';
+  }
+  if (unbuildables > 0 || errors > 0 || processControl > 0) return 'PORTAL_VALIDATION_FAILED';
+  return warnings > 0 ? 'PORTAL_VALIDATED_WITH_WARNINGS' : 'PORTAL_VALIDATED';
 }
 
 function _tryBudgetMemorySubstitution(parts, aspectCompute, getPrice) {
@@ -1887,8 +2081,9 @@ function _buildRank2FastShipCandidate({
 }) {
   return {
     rank: 2,
-    strategyId: 'STRATEGY_CTO_BASELINE',
-    strategyIdentity: 'STRATEGY_CTO_BASELINE',
+    strategyId: 'STRATEGY_FAST_SHIP_RANK2',
+    strategyIdentity: 'STRATEGY_FAST_SHIP_RANK2',
+    isFastShipRank2: true,
     name: fastShipAlternative.name,
     score: parseFloat(Math.max(0.65, 0.92 - (fixes.length * 0.02)).toFixed(2)),
     estimatedCostUsd: fastShipAlternative.estimatedCostUsd,
@@ -1905,7 +2100,11 @@ function _buildRank2FastShipCandidate({
     physicalMathClean: fastShipAlternative.physicalMathClean,
     isMathClean: fastShipAlternative.physicalMathClean,
     isPortalConditional: false,
-    portalValidationStatus: 'PENDING',
+    portalValidationStatus: fastShipAlternative.portalValidationStatus || 'PORTAL VALIDATION PENDING',
+    liveClicValidation: fastShipAlternative.liveClicValidation || null,
+    componentLeadTimeEstimate: fastShipAlternative.componentLeadTimeEstimate || null,
+    liveSolutionEdt: fastShipAlternative.liveSolutionEdt || null,
+    topologyTransitions: fastShipAlternative.topologyTransitions || [],
     portalConditionalSkus: [],
     aspectErrors: fastShipAlternative.aspectErrors || [],
     injectedCascadingFixes: fastShipAlternative.injectedCascadingFixes,
@@ -2215,7 +2414,7 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
 
   const v1SupplyMetrics = calculateSupplyMetrics(v1.parts, resolveSupply);
   const fastShipAlternative = synthesizeFastShipAlternative(
-    v1.parts, v1SupplyMetrics, loadedCatalog, chassisInfo, getPrice, revalidateCached, resolveSupply
+    v1.parts, v1SupplyMetrics, loadedCatalog, chassisInfo, getPrice, revalidateCached, resolveSupply, options
   );
 
   // Assemble 5 Candidates cleanly via modular builders
@@ -2241,7 +2440,7 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
     })
   ];
 
-  const requestedSkuSet = scoreAndSortCandidates(rawCandidates, items, resolveSupply);
+  const requestedSkuSet = scoreAndSortCandidates(rawCandidates, items, resolveSupply, options);
   const baselineCost = rawCandidates[0]?.estimatedCostUsd || rank1Cost;
 
   try {
