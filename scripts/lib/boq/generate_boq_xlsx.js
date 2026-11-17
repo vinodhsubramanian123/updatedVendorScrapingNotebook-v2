@@ -1097,7 +1097,7 @@ if (require.main === module) {
     console.log('Usage: node scripts/lib/boq/generate_boq_xlsx.js <input_file> [output_path.xlsx] [--tier <rank>] [--partner-portal]');
     console.log('  <input_file>        Evaluation JSON or BOQ file (.csv, .xlsx)');
     console.log('  [output_path.xlsx]  Target output path (default: outputs/temp/<name>_evaluated.xlsx)');
-    console.log('  --tier <rank>       Strategy Rank tier to export (1-5, default: 1)');
+    console.log('  --tier <rank>       Candidate rank to export (default: 1)');
     console.log('  --partner-portal    Generate 7-column Partner Portal Upload format');
     process.exit(0);
   }

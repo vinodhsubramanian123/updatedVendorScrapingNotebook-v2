@@ -631,12 +631,12 @@ function _extractComputeAndMemoryAttrs(d) {
   const memGbMatch = d.match(/\b(\d+)\s*gb\b/i);
   const mtsMatch = d.match(/(?:ddr[45][-\s]?|mt\/s\s*|@)(\d{4,5})/i);
   const rankMatch = d.match(/\b([124]rx[48])\b/i);
-  const coreMatch = d.match(/\b(\d{1,3})\s*(?:c|core|cores)\b/i);
+  const coreMatch = d.match(/\b(\d{1,3})[\s-]*(?:c|core|cores)\b/i);
   const ghzMatch = d.match(/\b(\d+(?:\.\d+)?)\s*ghz\b/i);
   const tdpMatch = d.match(/\b(\d{2,3})\s*w\b/i);
   const vramMatch = d.match(/\b(\d{2,3})\s*gb\b/i);
   const gpuModelMatch = d.match(/\b(h100|h200|l40s?|l4|a100|a40|b100|b200|rtx\s*\d+)\b/i);
-  const speedGbpsMatch = d.match(/\b(10|25|40|50|100|200|400|800)\s*(?:gb|gbe|gb\/s|g)\b/i);
+  const speedGbpsMatch = d.match(/\b(8|10|16|25|32|40|50|64|100|128|200|400|800)\s*(?:gb|gbe|gb\/s|g)\b/i);
   const portMatch = d.match(/\b([1248])[-\s]?(?:p|port)\b/i);
   const psuWattsMatch = d.match(/\b(\d{3,4})\s*w\b/i);
 
@@ -881,6 +881,75 @@ function _scoreActiveReplacementCandidate(candidate, origAttrs, histPrice = 0, o
     else if (candidate.leadTimeDays >= 45) score -= 15;
   }
   return score;
+}
+
+// Availability substitutions need evidence of parity before the weighted scorer is used.
+const AVAILABILITY_SPEC_FIELDS = {
+  CPU: { minimum: ['cores', 'freqGhz'], same: ['isXeon6'] },
+  MEMORY: { minimum: ['mts'], same: ['memGb', 'ddrGen', 'dimmType', 'rankWidth'] },
+  GPU: { minimum: ['vramGb'], same: ['gpuSeries', 'isNvlink'] },
+  NETWORK: { minimum: ['speedGbps', 'portCount'], same: ['isOcp'] },
+  FC_HBA: { minimum: ['speedGbps', 'portCount'], same: ['isOcp'] },
+  PSU: { minimum: ['psuWatts'], same: ['isDcPsu', 'efficiency'] }
+};
+
+function _availabilitySpecFit(original, candidate, { minimum, same }) {
+  if (same.some(key => original[key] !== candidate[key] || original[key] === '' || original[key] === 0)) return null;
+  if (minimum.some(key => !original[key] || !candidate[key] || candidate[key] < original[key])) return null;
+  return minimum.some(key => candidate[key] > original[key]) ? 'UPGRADE' : 'EQUIVALENT';
+}
+
+function _driveAvailabilityFit(original, candidate, originalDesc, candidateDesc) {
+  const media = desc => desc.match(/\b(?:ssd|hdd|solid state drive|hard disk drive|hard drive)\b/i)?.[0].toLowerCase()
+    .replace(/solid state drive/, 'ssd').replace(/hard (?:disk )?drive/, 'hdd');
+  const originalMedia = media(originalDesc);
+  if (!originalMedia || originalMedia !== media(candidateDesc)) return null;
+  if (!original.capacityTb || !(original.isNvme || original.isSas || original.isSata)) return null;
+  const fields = ['capacityTb', 'isNvme', 'isSas', 'isSata', 'isGen4', 'isGen5', 'isSff', 'isLff', 'isBc', 'isU2', 'isU3'];
+  if (fields.some(key => original[key] !== candidate[key])) return null;
+  const rate = desc => Number(desc.match(/\b(6|12|24)\s*(?:gb\/s|gbps|g)\b/i)?.[1] || 0);
+  if (rate(candidateDesc) < rate(originalDesc)) return null;
+  const endurance = { UNKNOWN: 0, RI: 1, MU: 2, WI: 3 };
+  if (originalMedia === 'ssd' && !endurance[original.workload]) return null;
+  if (endurance[candidate.workload] < endurance[original.workload]) return null;
+  const rpm = desc => desc.match(/\b\d+(?:\.\d+)?\s*k(?:\s*rpm)?\b/i)?.[0].replace(/\s|rpm/gi, '').toLowerCase();
+  if (originalMedia === 'hdd' && (!rpm(originalDesc) || rpm(originalDesc) !== rpm(candidateDesc))) return null;
+  return endurance[candidate.workload] > endurance[original.workload] || rate(candidateDesc) > rate(originalDesc)
+    ? 'UPGRADE'
+    : 'EQUIVALENT';
+}
+
+function _availabilityFamilyFit(category, originalDesc, candidateDesc) {
+  const familyPattern = {
+    CPU: /\b(?:xeon|epyc)\b/i,
+    NETWORK: /\b(?:infiniband|ethernet|roce)\b/i,
+    FC_HBA: /\b(?:qlogic|emulex|sn1[67]\d{2}[eq])\b/i
+  }[category];
+  if (!familyPattern) return true;
+  const family = desc => desc.match(familyPattern)?.[0].toLowerCase()
+    .replace(/sn1[67]\d{2}q/, 'qlogic').replace(/sn1[67]\d{2}e/, 'emulex');
+  return Boolean(family(originalDesc)) && family(originalDesc) === family(candidateDesc);
+}
+
+function compareAvailabilityReplacement(originalDesc, originalAttrs, candidateDesc, candidateSku) {
+  const candidateAttrs = _extractDriveOrComponentAttrs(candidateDesc, candidateSku);
+  const category = originalAttrs.componentCategory;
+  if (category !== candidateAttrs.componentCategory) return null;
+  const specs = AVAILABILITY_SPEC_FIELDS[category];
+  if (specs) {
+    if (!_availabilityFamilyFit(category, originalDesc, candidateDesc)) return null;
+    return _availabilitySpecFit(originalAttrs, candidateAttrs, specs);
+  }
+  if (category === 'STORAGE_DRIVE') {
+    return _driveAvailabilityFit(originalAttrs, candidateAttrs, originalDesc, candidateDesc);
+  }
+  if (category === 'CONTROLLER') {
+    const original = _parseStorageControllerSpecs(originalDesc);
+    const candidate = _parseStorageControllerSpecs(candidateDesc);
+    return _availabilitySpecFit(original, candidate, { minimum: ['ports', 'cacheGb'], same: ['series', 'lanes'] });
+  }
+  const sameDescription = originalDesc.trim().toLowerCase() === candidateDesc.trim().toLowerCase();
+  return category === 'THERMAL' && sameDescription ? 'EQUIVALENT' : null;
 }
 
 function _resolveHistoricalSkuPrice(cleanSku, chassisInfo) {
@@ -1458,6 +1527,7 @@ module.exports = {
   isSkuVisibleAtDefaultAmbient,
   extractComponentAttributes: _extractDriveOrComponentAttrs,
   scoreReplacementCandidate: _scoreActiveReplacementCandidate,
+  compareAvailabilityReplacement,
   isActiveCatalogOption: _isActiveCatalogOption
 };
 

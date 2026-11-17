@@ -12,14 +12,16 @@
 
 const fs = require('fs');
 const path = require('path');
-const { cleanBaseSKU, buildCatalogSkuIndex, classifyLifecycleState } = require('../catalog/sku.js');
+const { cleanBaseSKU, buildCatalogSkuIndex, isServiceSku } = require('../catalog/sku.js');
+const { analyzeRetirementDate } = require('../catalog/lifecycle.js');
 const { classifyComponentRole } = require('../catalog/product_meta.js');
-const { extractCatalogItemLeadTime } = require('../taxonomy/sku_resolver.js');
 const { extractWorkloadDna, validateNumaMemoryTopology } = require('./workload_dna.js');
 const { analyzeCascadingImpact, discoverDynamicStrategyAddons } = require('./cascading_impact_analyzer.js');
 const {
   extractComponentAttributes,
   scoreReplacementCandidate,
+  compareAvailabilityReplacement,
+  isActiveCatalogOption,
   identifyTroublesomeSkus,
   buildLeastDeltaCandidate
 } = require('./least_delta_combinator.js');
@@ -29,6 +31,8 @@ const { getMandatorySkusForChassis } = require('../catalog/catalog_rules.js');
 
 let _strategyAddonsCache = null;
 let _physicalMathValidator = null;
+const AVAILABILITY_TARGET_DAYS = 30;
+const MAX_AVAILABILITY_VALIDATIONS = 12;
 
 function setPhysicalMathValidator(fn) {
   _physicalMathValidator = fn;
@@ -70,59 +74,62 @@ function parseLeadTimeDays(value) {
   if (typeof value === 'number' && Number.isFinite(value) && value >= 0) return value;
   const text = String(value || '').trim().toLowerCase();
   if (!text || text === 'n/a' || text === 'na' || text === 'unknown' || text === 'standard' || text === 'null') return null;
-  const range = text.match(/(\d+)\s*(?:-|to)\s*(\d+)(?:\s*days?)?/);
+  const range = text.match(/^(\d+)\s*(?:-|–|to)\s*(\d+)(?:\s*(?:(?:business|calendar)\s+)?days?)?$/);
   if (range) return (Number(range[1]) + Number(range[2])) / 2;
   const plain = text.match(/^(\d+)$/);
   if (plain) return Number(plain[1]);
-  const single = text.match(/(\d+)\s*days?/);
+  const single = text.match(/^(\d+)\s*(?:(?:business|calendar)\s+)?days?$/);
   return single ? Number(single[1]) : null;
+}
+
+function _catalogSupplyAttributes(item) {
+  const row = item?.skuData || {};
+  const leadTime = row['Lead Time'] ?? row.leadTime ?? row['Estimated Availability Lead Time'] ?? row.estimatedDelivery ?? '';
+  return {
+    availability: row.Availability || row.availability || row['Supply Status'] || 'Unknown',
+    leadTime,
+    leadTimeDays: parseLeadTimeDays(row.leadTimeDays) ?? parseLeadTimeDays(leadTime)
+  };
 }
 
 function createSupplyAttributeResolver(catalog) {
   const index = buildCatalogSkuIndex(catalog || {});
-  return sku => {
-    const data = index.get(cleanBaseSKU(sku))?.skuData || {};
-    const leadTime = data['Lead Time'] || data.estimatedDelivery || '';
-    return {
-      availability: data.Availability || data['Supply Status'] || 'Unknown',
-      leadTime,
-      leadTimeDays: parseLeadTimeDays(leadTime)
-    };
-  };
+  return sku => _catalogSupplyAttributes(index.get(cleanBaseSKU(sku)));
 }
 
-function _isPhysicalReplaceableOption(attr) {
+function _isHardwareSupplyItem(attr) {
   const sku = String(attr?.sku || '').trim();
   const desc = String(attr?.description || '').toLowerCase();
-  if (/^(?:HA|HU|H7)/i.test(sku)) return false;
+  if (isServiceSku(sku) || /^(?:HA|HU|H7)/i.test(sku)) return false;
   if (/\b(tech care|installation service|startup service|deployment service|pointnext|care pack|compute ops|saas)\b/i.test(desc)) return false;
   if (/\bilo\s+advanced\b.*\blicense\b/i.test(desc)) return false;
-  if (/configure[\s-]to[\s-]order/i.test(desc)) return false;
   return true;
 }
 
-function calculateSupplyMetrics(parts, resolveSupply) {
-  const partsList = parts || [];
-  const attributes = partsList.map(part => {
-    const supply = resolveSupply ? resolveSupply(part.sku || part['Product #']) : {};
-    const directLeadTime = part.leadTimeDays !== undefined && part.leadTimeDays !== null
-      ? part.leadTimeDays
-      : (part.leadTime || part['Estimated Availability Lead Time'] || supply.leadTime);
-    const parsedDays = parseLeadTimeDays(directLeadTime) ?? supply.leadTimeDays ?? null;
-    return {
-      sku: part.sku || part['Product #'] || '',
-      description: part.description || part.Description || '',
-      availability: part.availability || supply.availability || 'Unknown',
-      leadTime: directLeadTime || '',
-      leadTimeDays: parsedDays
-    };
-  });
+const UNAVAILABLE_SUPPLY = /unavailable|out of stock|not (?:yet )?available|allocation hold|constrained|discontinued|obsolete/i;
+const REPLACEMENT_SUPPLY_UNKNOWN = { availability: null, leadTime: null, leadTimeDays: null };
 
+function _partSupplyAttributes(part, resolveSupply) {
+  const sku = part.sku || part['Product #'] || '';
+  const supply = resolveSupply?.(sku) || {};
+  const directLeadTime = part.leadTime || part['Estimated Availability Lead Time'] || part['Lead Time'];
+  return {
+    sku,
+    description: part.description || part.Description || '',
+    quantity: part.quantity ?? 1,
+    availability: part.availability || supply.availability || 'Unknown',
+    leadTimeDays: parseLeadTimeDays(part.leadTimeDays) ?? parseLeadTimeDays(directLeadTime) ??
+      parseLeadTimeDays(supply.leadTimeDays) ?? parseLeadTimeDays(supply.leadTime)
+  };
+}
+
+function calculateSupplyMetrics(parts, resolveSupply) {
+  const attributes = (parts || []).map(part => _partSupplyAttributes(part, resolveSupply));
   const knownEntries = attributes.filter(a => Number.isFinite(a.leadTimeDays));
   const knownLeadTimes = knownEntries.map(a => a.leadTimeDays);
-  const hardwareAttributes = attributes.filter(a => Number.isFinite(a.leadTimeDays) || _isPhysicalReplaceableOption(a));
+  const hardwareAttributes = attributes.filter(_isHardwareSupplyItem);
   const hardwareKnownEntries = hardwareAttributes.filter(a => Number.isFinite(a.leadTimeDays));
-  const unavailableCount = attributes.filter(a => /unavailable|out of stock|not yet available|allocation hold|constrained/i.test(a.availability)).length;
+  const unavailableCount = attributes.filter(a => UNAVAILABLE_SUPPLY.test(a.availability)).length;
 
   let maxLeadTimeDays = null;
   let pacingItemSku = null;
@@ -137,21 +144,28 @@ function calculateSupplyMetrics(parts, resolveSupply) {
   const sortedTimes = [...knownLeadTimes].sort((a, b) => a - b);
   const medianLeadTime = sortedTimes.length > 0 ? sortedTimes[Math.floor(sortedTimes.length / 2)] : null;
   const leadTimeOutliers = knownEntries.filter(e =>
-    e.leadTimeDays >= 45 ||
+    e.leadTimeDays > AVAILABILITY_TARGET_DAYS ||
     (e.leadTimeDays >= 21 && medianLeadTime > 0 && (e.leadTimeDays - medianLeadTime) >= 14) ||
     (medianLeadTime > 0 && e.leadTimeDays > 2 * medianLeadTime)
   );
+  const hardwareMaxLeadTimeDays = hardwareKnownEntries.reduce((max, item) => Math.max(max ?? 0, item.leadTimeDays), null);
+  const unknownLeadTimeSkus = [...new Set(attributes.filter(a => a.leadTimeDays === null).map(a => a.sku).filter(Boolean))];
 
   return {
     knownLeadTimeCount: knownLeadTimes.length,
     unknownLeadTimeCount: attributes.length - knownLeadTimes.length,
     hardwareKnownLeadTimeCount: hardwareKnownEntries.length,
     hardwareUnknownLeadTimeCount: hardwareAttributes.length - hardwareKnownEntries.length,
-    hardwareMaxLeadTimeDays: hardwareKnownEntries.length > 0 ? maxLeadTimeDays : null,
+    hardwareMaxLeadTimeDays,
     unavailableCount,
     maxLeadTimeDays,
     pacingItemSku,
     pacingItemDescription,
+    availabilityTargetDays: AVAILABILITY_TARGET_DAYS,
+    pacingItems: knownEntries.filter(item => item.leadTimeDays === maxLeadTimeDays),
+    itemsOverAvailabilityTarget: knownEntries.filter(item => item.leadTimeDays > AVAILABILITY_TARGET_DAYS)
+      .sort((a, b) => b.leadTimeDays - a.leadTimeDays || a.sku.localeCompare(b.sku)),
+    unknownLeadTimeSkus,
     medianLeadTimeDays: medianLeadTime,
     leadTimeOutliers: leadTimeOutliers.map(o => ({
       sku: o.sku,
@@ -640,7 +654,7 @@ function _indexRequestedQuantities(items) {
   return { requestedSkuSet, requestedQuantities, baseCategoryMap };
 }
 
-function _scoreCandidateMetrics(cand, requestedSkuSet, requestedQuantities, baseCategoryMap, resolveSupply, items) {
+function _scoreCandidateMetrics(cand, requestedSkuSet, requestedQuantities, baseCategoryMap, resolveSupply, items, globalItems) {
   cand.strategyIdentity = cand.strategyIdentity || cand.name;
 
   const candSkuSet = new Set((cand.skuPartsList || []).map(p => cleanBaseSKU(p.sku)).filter(Boolean));
@@ -651,7 +665,7 @@ function _scoreCandidateMetrics(cand, requestedSkuSet, requestedQuantities, base
   const matchRatio = requestedSkuSet.size > 0 ? (matchedUniqueCount / requestedSkuSet.size) : 1.0;
   cand.intentMatchRatio = parseFloat(Math.min(1.0, Math.max(0.0, matchRatio)).toFixed(2));
   cand.dynamicScore = parseFloat(((cand.intentMatchRatio * 0.6) + (cand.score * 0.4)).toFixed(2));
-  cand.supplyMetrics = calculateSupplyMetrics(cand.skuPartsList, resolveSupply);
+  cand.supplyMetrics = calculateSupplyMetrics([...(cand.skuPartsList || []), ...globalItems], resolveSupply);
 
   const origPartInfo = new Map();
   for (const it of (items || [])) {
@@ -687,10 +701,13 @@ function _compareCandidateRanks(a, b) {
   if (a.supplyMetrics.unavailableCount !== b.supplyMetrics.unavailableCount) {
     return a.supplyMetrics.unavailableCount - b.supplyMetrics.unavailableCount;
   }
-  const leadA = a.supplyMetrics.estimatedAverageLeadTimeDays ?? Number.POSITIVE_INFINITY;
-  const leadB = b.supplyMetrics.estimatedAverageLeadTimeDays ?? Number.POSITIVE_INFINITY;
+  const leadA = a.supplyMetrics.solutionEdtDays ?? Number.POSITIVE_INFINITY;
+  const leadB = b.supplyMetrics.solutionEdtDays ?? Number.POSITIVE_INFINITY;
   if (leadA !== leadB) return leadA - leadB;
 
+  if (Boolean(a.availabilityPreference) !== Boolean(b.availabilityPreference)) {
+    return a.availabilityPreference ? -1 : 1;
+  }
   const nameA = a.strategyIdentity || a.name || '';
   const nameB = b.strategyIdentity || b.name || '';
   const nameDiff = nameA.localeCompare(nameB);
@@ -705,7 +722,7 @@ function scoreAndSortCandidates(rawCandidates, items, resolveSupply = () => ({ l
   const { requestedSkuSet, requestedQuantities, baseCategoryMap } = _indexRequestedQuantities(items);
 
   rawCandidates.forEach(cand => {
-    _scoreCandidateMetrics(cand, requestedSkuSet, requestedQuantities, baseCategoryMap, resolveSupply, items);
+    _scoreCandidateMetrics(cand, requestedSkuSet, requestedQuantities, baseCategoryMap, resolveSupply, items, options.availabilityGlobalItems || []);
   });
 
   rawCandidates.sort(_compareCandidateRanks);
@@ -717,6 +734,13 @@ function scoreAndSortCandidates(rawCandidates, items, resolveSupply = () => ({ l
     }
   }
   return requestedSkuSet;
+}
+
+function includeAvailabilityRecommendations(closest, ranked) {
+  const availability = ['CLOSEST_MATCH', 'FASTEST'].map(preference => ranked.find(candidate =>
+    candidate.availabilityPreference === preference && candidate.physicalMathClean && candidate.isUniqueBom !== false
+  )).filter(Boolean);
+  return [...new Set([...closest.slice(0, 1), ...availability, ...closest.slice(1)])].slice(0, 3);
 }
 
 function _normalizeCandidatePartsPricing(cand, priceResolver) {
@@ -811,6 +835,9 @@ function _buildCandidateProximityMetrics(cand, idx, costDeltaFromRank1, costDelt
 }
 
 function _resolveCandidateDecisionGuide(cand) {
+  if (cand.availabilityPreference) {
+    return 'Compare catalog lead times and review the substitutions before confirming delivery in OCA.';
+  }
   const lowerName = cand.name.toLowerCase();
   if (lowerName.includes('intent preserved')) {
     return 'Choose this when maximum fidelity to the customer RFP is mandated and minimum SKU deviations are required.';
@@ -843,9 +870,11 @@ function _applyParetoDominance(normalized) {
       const riskB = b.proximityMetrics.riskScore;
       const distA = a.proximityMetrics.weightedEditDistance;
       const distB = b.proximityMetrics.weightedEditDistance;
+      const leadA = a.supplyMetrics.solutionEdtDays ?? Number.POSITIVE_INFINITY;
+      const leadB = b.supplyMetrics.solutionEdtDays ?? Number.POSITIVE_INFINITY;
 
-      const aDominatesB = (costA <= costB && riskA <= riskB && distA <= distB) &&
-                          (costA < costB || riskA < riskB || distA < distB);
+      const aDominatesB = (costA <= costB && riskA <= riskB && distA <= distB && leadA <= leadB) &&
+                          (costA < costB || riskA < riskB || distA < distB || leadA < leadB);
 
       if (aDominatesB) {
         b.isParetoOptimal = false;
@@ -1034,6 +1063,7 @@ function _applySubstituteDepMutation(dep, origSku, cleanDep, updatedParts, partS
   const qty = dep.quantity || updatedParts[idx].quantity || 1;
   updatedParts[idx] = {
     ...updatedParts[idx],
+    ...REPLACEMENT_SUPPLY_UNKNOWN,
     sku: cleanDep,
     description: dep.description || `Substituted dependency (${cleanDep})`,
     quantity: qty,
@@ -1196,171 +1226,69 @@ function revalidateCandidateParts(parts, chassisInfo, getPrice, catalogData = nu
   };
 }
 
-function _isCatalogOptionActiveForSynthesis(item) {
-  if (!item) return true;
-  const lc = classifyLifecycleState(
-    item.lifecycleStatus || item.skuData?.['Lifecycle Status'] || item.entry?.lifecycleStatus || '',
-    item.diffStatus || '',
-    item.sku || item.skuData?.['Product #'] || '',
-    item.skuData?.Description || item.entry?.description || ''
-  );
-  return !lc.isBlockedForProduction && !lc.isDirectShip;
+function _isAvailableCatalogOption(item) {
+  const row = item?.skuData;
+  if (!row || item.lifecycleState?.isNonActive) return false;
+  if (/\binactive\b/i.test(item.lifecycleStatus)) return false;
+  const retired = [row['Discontinued Date'], row['Obsolete Date'], row.discontinuedDate, row.obsoleteDate]
+    .some(date => date && analyzeRetirementDate(date).isPast);
+  return !retired && !UNAVAILABLE_SUPPLY.test(_catalogSupplyAttributes(item).availability);
 }
 
-function findFastShipDriveReplacement(catalogIndex) {
-  for (const [s, item] of catalogIndex.entries()) {
-    if (!_isCatalogOptionActiveForSynthesis(item)) continue;
-    const sDesc = (item.skuData?.Description || item.entry?.description || '').toLowerCase();
-    const sLead = item.skuData?.['Lead Time'] || item.entry?.leadTime;
-    const sDays = parseLeadTimeDays(sLead);
-    if (sDays !== null && sDays <= 14 && (sDesc.includes('ssd') || sDesc.includes('read intensive') || sDesc.includes('nvme'))) {
-      return {
-        sku: s,
-        description: item.skuData?.Description || item.entry?.description || 'HPE Fast-Ship Multi-Vendor SSD',
-        leadTimeDays: sDays,
-        leadTime: sLead
-      };
-    }
-  }
-  return null;
+function _compareAvailabilityMatches(a, b) {
+  return Number(a.matchType === 'UPGRADE') - Number(b.matchType === 'UPGRADE') ||
+    b.attributeScore - a.attributeScore ||
+    a.leadTimeDays - b.leadTimeDays ||
+    a.sku.localeCompare(b.sku);
 }
 
-function findFastShipCpuReplacement(catalogIndex) {
-  for (const [s, item] of catalogIndex.entries()) {
-    if (!_isCatalogOptionActiveForSynthesis(item)) continue;
-    const sDesc = (item.skuData?.Description || item.entry?.description || '').toLowerCase();
-    const sLead = item.skuData?.['Lead Time'] || item.entry?.leadTime;
-    const sDays = parseLeadTimeDays(sLead);
-    if (sDays !== null && sDays <= 14 && (sDesc.includes('xeon') || sDesc.includes('processor'))) {
-      return {
-        sku: s,
-        description: item.skuData?.Description || item.entry?.description,
-        leadTimeDays: sDays,
-        leadTime: sLead
-      };
-    }
-  }
-  return null;
-}
-
-function _isFastShipOutlier(part, outliers, v1SupplyMetrics) {
+function findCatalogAvailabilityMatches(part, originalDays, catalogIndex) {
   const cleanSku = cleanBaseSKU(part.sku);
-  const outlierMatch = outliers.find(o => cleanBaseSKU(o.sku) === cleanSku);
-  const partDays = Number.isFinite(part.leadTimeDays) ? part.leadTimeDays : (outlierMatch?.leadTimeDays ?? null);
-  if (Number.isFinite(v1SupplyMetrics?.maxLeadTimeDays) && v1SupplyMetrics.maxLeadTimeDays >= 21) {
-    return (Number.isFinite(partDays) && partDays >= 21) ||
-      cleanSku === cleanBaseSKU(v1SupplyMetrics?.pacingItemSku);
-  }
-  return Boolean(outlierMatch) ||
-    (Number.isFinite(partDays) && partDays >= 21) ||
-    (cleanSku === cleanBaseSKU(v1SupplyMetrics?.pacingItemSku) && (v1SupplyMetrics?.maxLeadTimeDays || 0) >= 21);
-}
-
-function _evaluateFastShipCandidateEntry(s, item, origAttrs, origLeadDays, cleanSku, origUnitPrice, origDesc = '') {
-  if (s === cleanSku || !_isCatalogOptionActiveForSynthesis(item)) return null;
-  const sDesc = item.skuData?.Description || item.entry?.description || '';
-  const leadMeta = extractCatalogItemLeadTime(item.skuData || item.entry || {});
-  const sLead = item.skuData?.['Lead Time'] || item.entry?.leadTime || leadMeta?.raw || '';
-  const sDays = leadMeta?.days ?? parseLeadTimeDays(sLead) ?? null;
-  if (!Number.isFinite(sDays)) return null;
-
-  const minSavingsReq = Number.isFinite(origLeadDays) && origLeadDays >= 21 ? 14 : 7;
-  if (Number.isFinite(origLeadDays) && (origLeadDays - sDays) < minSavingsReq) return null;
-  if (!Number.isFinite(origLeadDays) && sDays > 14) return null;
-
-  const rawPrice = item.skuData?.['Unit Price (USD)'] || item.skuData?.['Price (USD)'] || item.entry?.priceUsd || '0';
-  const sPrice = parseFloat(String(rawPrice).replace(/[^0-9.]/g, '')) || 0;
-  const attrScore = scoreReplacementCandidate(
-    { sku: s, description: sDesc, price: sPrice, leadTimeDays: sDays },
-    origAttrs,
-    origUnitPrice || 0,
-    origDesc
-  );
-  if (origAttrs.componentCategory !== 'UNKNOWN' && attrScore <= 0) return null;
-
-  return {
-    sku: s,
-    description: sDesc || `HPE Active Fast-Ship Option (${s})`,
-    leadTimeDays: sDays,
-    leadTime: sLead || `${sDays} days`,
-    attributeScore: attrScore
-  };
-}
-
-function _scoreCatalogFastShipCandidates(part, catalogIndex, origLeadDays) {
-  const cleanSku = cleanBaseSKU(part.sku);
-  const origAttrs = extractComponentAttributes(part.description || '', cleanSku, part.category || '');
+  const original = catalogIndex.get(cleanSku);
+  const description = original?.skuData?.Description || original?.skuData?.description || part.description || '';
+  const originalAttrs = extractComponentAttributes(description, cleanSku, part.category);
   const matches = [];
-
-  for (const [s, item] of catalogIndex.entries()) {
-    const match = _evaluateFastShipCandidateEntry(s, item, origAttrs, origLeadDays, cleanSku, part.unitPriceUsd, part.description || '');
-    if (match) matches.push(match);
+  for (const [sku, item] of catalogIndex) {
+    if (sku === cleanSku || !_isAvailableCatalogOption(item)) continue;
+    if (/conditional/i.test(item.skuData.visibilityState || '') || item.skuData.selectorTriggerSku) continue;
+    const supply = _catalogSupplyAttributes(item);
+    if (supply.leadTimeDays === null || supply.leadTimeDays >= originalDays) continue;
+    const candidateDesc = item.skuData.Description || item.skuData.description || '';
+    const matchType = compareAvailabilityReplacement(description, originalAttrs, candidateDesc, sku);
+    if (!matchType) continue;
+    const attributeScore = scoreReplacementCandidate({ sku, description: candidateDesc }, originalAttrs, 0, description);
+    if (attributeScore >= 0) matches.push({ sku, description: candidateDesc, ...supply, matchType, attributeScore });
   }
-
-  matches.sort((a, b) => b.attributeScore - a.attributeScore || a.leadTimeDays - b.leadTimeDays);
-  return matches[0] || null;
+  return matches.sort(_compareAvailabilityMatches);
 }
 
-function _findFastShipReplacement(part, catalogIndex, chassisInfo, v1SupplyMetrics) {
-  const origLeadDays = part.leadTimeDays ?? v1SupplyMetrics?.maxLeadTimeDays ?? null;
-  const attributeMatched = _scoreCatalogFastShipCandidates(part, catalogIndex, origLeadDays);
-  if (attributeMatched) {
-    return {
-      replacement: attributeMatched,
-      reason: `Eliminated delivery bottleneck (${origLeadDays ?? '?'}d -> ${attributeMatched.leadTimeDays}d) via close-attribute active ${attributeMatched.sku}`
-    };
-  }
-
-  const desc = (part.description || '').toLowerCase();
-  const cat = (part.category || '').toLowerCase();
-  if (cat.includes('storage') || cat.includes('drive') || cat.includes('disk') || desc.includes('hdd') || desc.includes('ssd') || desc.includes('hard drive')) {
-    const replacement = findFastShipDriveReplacement(catalogIndex);
-    return {
-      replacement,
-      reason: 'Eliminated pacing delivery bottleneck (replaces long lead-time drive with catalog-listed fast-ship drive)'
-    };
-  }
-  if (cat.includes('processor') || cat.includes('cpu') || desc.includes('xeon') || desc.includes('epyc') || desc.includes('processor')) {
-    const replacement = findFastShipCpuReplacement(catalogIndex, chassisInfo);
-    return {
-      replacement,
-      reason: 'Replaced constrained processor pacing item with catalog-listed fast-ship processor'
-    };
-  }
-  return { replacement: null, reason: '' };
-}
-
-function _substituteSingleFastShipPart(part, isOutlier, catalogIndex, chassisInfo, getPrice, v1SupplyMetrics, substitutedItems) {
-  if (!isOutlier) return { ...part };
-  const cleanSku = cleanBaseSKU(part.sku);
-  const { replacement, reason } = _findFastShipReplacement(part, catalogIndex, chassisInfo, v1SupplyMetrics);
-  if (!replacement || cleanBaseSKU(replacement.sku) === cleanSku) return { ...part };
-
-  const replPrice = getPrice(replacement.sku);
-  const origDays = part.leadTimeDays ?? v1SupplyMetrics.maxLeadTimeDays;
-  const daysSaved = Number.isFinite(origDays) && Number.isFinite(replacement.leadTimeDays)
-    ? Math.max(0, origDays - replacement.leadTimeDays)
-    : null;
-  substitutedItems.push({
-    originalSku: cleanSku,
+function _applyAvailabilityReplacement(part, replacement, originalDays, getPrice, substitutions) {
+  const price = getPrice(replacement.sku);
+  const priceKnown = typeof getPrice.hasPrice === 'function' ? getPrice.hasPrice(replacement.sku) : Number.isFinite(price);
+  substitutions.push({
+    originalSku: cleanBaseSKU(part.sku),
     originalDescription: part.description,
-    originalLeadTimeDays: origDays,
+    originalLeadTimeDays: originalDays,
     replacementSku: replacement.sku,
     replacementDescription: replacement.description,
     replacementLeadTimeDays: replacement.leadTimeDays,
-    daysSaved,
-    attributeScore: replacement.attributeScore ?? null,
-    priceDeltaUsd: Number.isFinite(part.unitPriceUsd) && Number.isFinite(replPrice) ? (replPrice - part.unitPriceUsd) : null,
-    reason
+    quantity: part.quantity ?? 1,
+    daysSaved: originalDays - replacement.leadTimeDays,
+    matchType: replacement.matchType,
+    attributeScore: replacement.attributeScore,
+    priceDeltaUsd: priceKnown && part.priceKnown !== false && Number.isFinite(part.unitPriceUsd)
+      ? price - part.unitPriceUsd
+      : null
   });
 
   return {
     ...part,
     sku: replacement.sku,
     description: replacement.description,
-    unitPriceUsd: replPrice,
-    extendedPriceUsd: replPrice * (part.quantity || 1),
-    priceKnown: typeof getPrice?.hasPrice === 'function' ? getPrice.hasPrice(replacement.sku) : Number.isFinite(replPrice),
+    unitPriceUsd: priceKnown ? price : null,
+    extendedPriceUsd: priceKnown ? price * (part.quantity ?? 1) : null,
+    priceKnown,
+    availability: replacement.availability,
     leadTime: replacement.leadTime,
     leadTimeDays: replacement.leadTimeDays,
     isFastShipSubstituted: true
@@ -1419,6 +1347,7 @@ function _applyFastShipTopologyTransitions(candidateParts, substitutedItems, cat
       const qty = prev.quantity || 1;
       candidateParts[idx] = {
         ...prev,
+        ...REPLACEMENT_SUPPLY_UNKNOWN,
         sku: ocpSignalCable.sku,
         description: ocpSignalCable.description,
         unitPriceUsd: sigPrice,
@@ -1454,15 +1383,17 @@ function _applyFastShipTopologyTransitions(candidateParts, substitutedItems, cat
   return transitions;
 }
 
-function _buildDeliveryScheduleSummary(originalEdt, newEdt, deliveryDaysSaved, options = {}) {
+function _buildDeliveryScheduleSummary(baseline, candidate, deliveryDaysSaved, liveEdt) {
+  const originalEdt = baseline.solutionEdtDays;
+  const newEdt = candidate.solutionEdtDays;
   const componentEstimate = {
-    originalMaxComponentDays: originalEdt,
-    fastShipMaxComponentDays: newEdt,
+    originalMaxComponentDays: baseline.maxLeadTimeDays,
+    fastShipMaxComponentDays: candidate.maxLeadTimeDays,
+    complete: Number.isFinite(originalEdt) && Number.isFinite(newEdt),
     deliveryDaysSaved,
     scope: 'COMPONENT_ESTIMATE_ONLY',
-    label: 'Component-level catalog lead time only (excludes factory CTO chassis build and transit)'
+    label: 'Longest known component lead times. Factory build and transit require a solution estimate.'
   };
-  const liveEdt = options?.liveSolutionEdt || null;
   const fastShipRange = liveEdt?.fastShipRange || (Array.isArray(liveEdt?.candidateEdtDaysRange) ? `${liveEdt.candidateEdtDaysRange[0]}–${liveEdt.candidateEdtDaysRange[1]} days` : null);
   const baselineRange = liveEdt?.baselineRange || (Array.isArray(liveEdt?.baselineEdtDaysRange) ? `${liveEdt.baselineEdtDaysRange[0]}–${liveEdt.baselineEdtDaysRange[1]} days` : null);
   if (fastShipRange && baselineRange) {
@@ -1473,63 +1404,151 @@ function _buildDeliveryScheduleSummary(originalEdt, newEdt, deliveryDaysSaved, o
       liveSolutionEdt: { ...liveEdt, fastShipRange, baselineRange, label: 'LIVE_HPE_OCA_SOLUTION_EDT' },
       deliveryImpact: `Live HPE OCA Solution EDT: ${fastShipRange} vs. ${baselineRange}` +
         (startSaved && endSaved ? ` (cuts start by ${startSaved}d and end by ${endSaved}d)` : '') +
-        `. Component estimate: ${newEdt ?? '?'}d vs. ${originalEdt ?? '?'}d.`
+        `. Longest known component estimate ${candidate.maxLeadTimeDays} vs. ${baseline.maxLeadTimeDays} days.`
     };
   }
   return {
     componentEstimate,
     liveSolutionEdt: null,
     deliveryImpact: deliveryDaysSaved === null
-      ? 'Delivery estimate incomplete: one or more component lead times are unknown'
-      : `Component catalog estimate improves by ${deliveryDaysSaved} days (${originalEdt}d -> ${newEdt}d); live OCA solution EDT remains unverified`
+      ? `Some lead times are missing. The longest known component falls from ${baseline.maxLeadTimeDays} to ${candidate.maxLeadTimeDays} days.`
+      : `The component lead-time estimate falls by ${deliveryDaysSaved} days, from ${originalEdt} to ${newEdt} days. Live OCA delivery confirmation is pending.`
   };
 }
 
 function _isProtectedCustomerFastShipPart(part, options = {}) {
-  const preserve = new Set((options?.preserveRoles || ['FC_HBA', 'NETWORK', 'STORAGE_DRIVE', 'SUPPORT']).map(r => String(r).toUpperCase()));
+  if (!_isHardwareSupplyItem(part) || part.quantityScope === 'global') return true;
+  const preserve = new Set((options.preserveRoles || ['FC_HBA']).map(r => String(r).toUpperCase()));
   const d = (part.description || '').toLowerCase();
   const cat = (part.category || '').toLowerCase();
-  const sku = cleanBaseSKU(part.sku);
-  if (preserve.has('SUPPORT') && (/^(HA|HU|H7)/i.test(sku) || d.includes('tech care') || d.includes('installation'))) return true;
-  if (preserve.has('FC_HBA') && /\b(?:fibre\s*channel|fc\s+hba|sn1[67]\d{2}|qlogic|emulex)\b/i.test(`${d} ${cat}`)) {
-    return !options?.allowFcHbaSubstitution;
+  const role = extractComponentAttributes(d, part.sku, cat).componentCategory;
+  if (role === 'FC_HBA') {
+    return preserve.has(role) && !options.allowFcHbaSubstitution;
   }
-  return false;
+  return preserve.has(role) || /\b(?:cto|configure[\s-]to[\s-]order)\b/.test(d);
 }
 
-function synthesizeFastShipAlternative(v1Parts, v1SupplyMetrics, loadedCatalog, chassisInfo, getPrice, revalidateCached, resolveSupply, options = {}) {
-  const outliers = v1SupplyMetrics?.leadTimeOutliers || [];
-  if (outliers.length === 0 && (!v1SupplyMetrics?.maxLeadTimeDays || v1SupplyMetrics.maxLeadTimeDays < 21)) {
-    return null;
+function _compareClosestAvailability(a, b) {
+  return a.upgradeCount - b.upgradeCount ||
+    Number(a.maxDays > AVAILABILITY_TARGET_DAYS) - Number(b.maxDays > AVAILABILITY_TARGET_DAYS) ||
+    a.changeCount - b.changeCount ||
+    b.attributeScore - a.attributeScore ||
+    a.maxDays - b.maxDays;
+}
+
+function _compareFastestAvailability(a, b) {
+  return a.maxDays - b.maxDays || _compareClosestAvailability(a, b);
+}
+
+function _availabilityPlan({ maxDays, choices }) {
+  return {
+    choices,
+    maxDays,
+    changeCount: choices.size,
+    upgradeCount: [...choices.values()].filter(match => match.matchType === 'UPGRADE').length,
+    attributeScore: [...choices.values()].reduce((sum, match) => sum + match.attributeScore, 0)
+  };
+}
+
+function _planAvailabilityAtCeiling(pacing, ceiling, plans) {
+  const required = pacing.filter(item => item.originalDays > ceiling);
+  const eligible = required.map(item => item.matches.filter(match => match.leadTimeDays <= ceiling).slice(0, 3));
+  if (!required.length || eligible.some(matches => matches.length === 0)) return;
+  const firstChoices = new Map(required.map((item, i) => [item.sku, eligible[i][0]]));
+  const add = choices => {
+    const key = JSON.stringify([...choices].map(([sku, match]) => [sku, match.sku]));
+    if (!plans.has(key)) plans.set(key, _availabilityPlan({ maxDays: ceiling, choices }));
+  };
+  add(firstChoices);
+  // Try other matching SKUs when the top choice triggers a topology conflict.
+  for (const [i, item] of required.entries()) {
+    for (const match of eligible[i].slice(1)) {
+      add(new Map(firstChoices).set(item.sku, match));
+    }
+  }
+}
+
+function _findAvailabilityPlans(parts, originalMax, resolveSupply, catalogIndex, options) {
+  const threshold = options.prioritizeFastShipAsRank2 ? 20 : AVAILABILITY_TARGET_DAYS;
+  const pacingBySku = new Map();
+  let untouchedMax = 0;
+  for (const part of parts) {
+    const days = _partSupplyAttributes(part, resolveSupply).leadTimeDays;
+    if (days === null) continue;
+    if (days <= threshold || _isProtectedCustomerFastShipPart(part, options)) {
+      untouchedMax = Math.max(untouchedMax, days);
+      continue;
+    }
+    const sku = cleanBaseSKU(part.sku);
+    if (!pacingBySku.has(sku) || days > pacingBySku.get(sku).originalDays) {
+      pacingBySku.set(sku, { sku, part, originalDays: days });
+    }
+  }
+  const pacing = [...pacingBySku.values()];
+  const ceilings = new Set(pacing.map(item => item.originalDays));
+  for (const item of pacing) {
+    item.matches = findCatalogAvailabilityMatches(item.part, item.originalDays, catalogIndex);
+    for (const match of item.matches) ceilings.add(match.leadTimeDays);
+  }
+  const plans = new Map();
+  for (const ceiling of [...ceilings, untouchedMax].sort((a, b) => a - b)) {
+    if (ceiling >= untouchedMax && ceiling < originalMax) _planAvailabilityAtCeiling(pacing, ceiling, plans);
   }
 
-  const catalogIndex = buildCatalogSkuIndex(loadedCatalog || {});
+  const closest = [...plans.values()].sort(_compareClosestAvailability);
+  const fastest = [...plans.values()].sort(_compareFastestAvailability);
+  const queue = closest.slice(0, MAX_AVAILABILITY_VALIDATIONS / 2).flatMap((plan, i) => [plan, fastest[i]]);
+  return [...new Set(queue)];
+}
+
+function _preservesAvailabilityPlan(before, after) {
+  const quantities = parts => {
+    const result = new Map();
+    for (const part of parts) {
+      const sku = cleanBaseSKU(part.sku);
+      result.set(sku, (result.get(sku) || 0) + Number(part.quantity ?? 1));
+    }
+    return result;
+  };
+  const validated = quantities(after);
+  return [...quantities(before)].every(([sku, count]) => (validated.get(sku) || 0) >= count);
+}
+
+function _validateAvailabilityPlan(plan, context) {
+  const { parts, baseline, catalogIndex, chassisInfo, getPrice, revalidateCached, resolveSupply } = context;
   const substitutedItems = [];
-
-  const candidateParts = v1Parts.map(part => {
-    if (_isProtectedCustomerFastShipPart(part, options)) return { ...part };
-    const isOutlier = _isFastShipOutlier(part, outliers, v1SupplyMetrics);
-    return _substituteSingleFastShipPart(part, isOutlier, catalogIndex, chassisInfo, getPrice, v1SupplyMetrics, substitutedItems);
+  const candidateParts = parts.map(part => {
+    const replacement = plan.choices.get(cleanBaseSKU(part.sku));
+    if (!replacement || _isProtectedCustomerFastShipPart(part, context.options)) return { ...part };
+    const originalDays = _partSupplyAttributes(part, resolveSupply).leadTimeDays;
+    if (originalDays === null || originalDays <= replacement.leadTimeDays) return { ...part };
+    return _applyAvailabilityReplacement(part, replacement, originalDays, getPrice, substitutedItems);
   });
-
-  if (substitutedItems.length === 0) return null;
-
   const topologyTransitions = _applyFastShipTopologyTransitions(candidateParts, substitutedItems, catalogIndex, chassisInfo, getPrice);
   const revalidated = revalidateCached(candidateParts);
   if (revalidated.physicalMathClean !== true || revalidated.aspectErrors?.length) return null;
-  const newSupplyMetrics = calculateSupplyMetrics(revalidated.parts, resolveSupply);
-  const originalEdt = v1SupplyMetrics.unknownLeadTimeCount === 0
-    ? v1SupplyMetrics.maxLeadTimeDays
-    : (v1SupplyMetrics.hardwareUnknownLeadTimeCount === 0 ? v1SupplyMetrics.hardwareMaxLeadTimeDays : null);
-  const newEdt = newSupplyMetrics.unknownLeadTimeCount === 0
-    ? newSupplyMetrics.maxLeadTimeDays
-    : (newSupplyMetrics.hardwareUnknownLeadTimeCount === 0 ? newSupplyMetrics.hardwareMaxLeadTimeDays : null);
-  const deliveryDaysSaved = originalEdt !== null && newEdt !== null ? Math.max(0, originalEdt - newEdt) : null;
-  if (deliveryDaysSaved !== null && deliveryDaysSaved < 14 && v1SupplyMetrics.maxLeadTimeDays < 45) return null;
+  if (!_preservesAvailabilityPlan(candidateParts, revalidated.parts)) return null;
+  const originalSkus = new Set(parts.map(part => cleanBaseSKU(part.sku)));
+  const introduced = revalidated.parts.filter(part => !originalSkus.has(cleanBaseSKU(part.sku)));
+  if (introduced.some(part => !_isAvailableCatalogOption(catalogIndex.get(cleanBaseSKU(part.sku))))) return null;
+  const newSupplyMetrics = calculateSupplyMetrics([...revalidated.parts, ...context.globalItems], resolveSupply);
+  if (newSupplyMetrics.maxLeadTimeDays === null || newSupplyMetrics.maxLeadTimeDays >= baseline.maxLeadTimeDays) return null;
+  const baselineUnknown = new Set(baseline.unknownLeadTimeSkus || []);
+  if (newSupplyMetrics.unknownLeadTimeSkus.some(sku => !baselineUnknown.has(sku))) return null;
+  return { ...plan, maxDays: newSupplyMetrics.maxLeadTimeDays, revalidated, newSupplyMetrics, topologyTransitions, substitutedItems };
+}
 
-  const scheduleInfo = _buildDeliveryScheduleSummary(originalEdt, newEdt, deliveryDaysSaved, options);
-  const liveClic = options?.liveClicValidation || null;
-  const clicStatus = _resolveStrategyPortalStatus(options);
+function _buildAvailabilityCandidate(solution, baseline, preference, options) {
+  const { revalidated, newSupplyMetrics, topologyTransitions, substitutedItems } = solution;
+  const originalEdt = baseline.solutionEdtDays;
+  const newEdt = newSupplyMetrics.solutionEdtDays;
+  const deliveryDaysSaved = Number.isFinite(originalEdt) && Number.isFinite(newEdt) ? originalEdt - newEdt : null;
+  const bomFingerprint = computeBomFingerprint(revalidated.parts);
+  const liveEdt = options.liveSolutionEdt?.candidateBomFingerprint === bomFingerprint ? options.liveSolutionEdt : null;
+  const liveClic = options.liveClicValidation?.bomFingerprint === bomFingerprint ? options.liveClicValidation : null;
+  const scheduleInfo = _buildDeliveryScheduleSummary(baseline, newSupplyMetrics, deliveryDaysSaved, liveEdt);
+  const clicStatus = _resolveStrategyPortalStatus({ liveClicValidation: liveClic });
+  const title = preference === 'CLOSEST_MATCH' ? 'Closest Faster-Availability Match' : 'Fastest Catalog Availability';
 
   return {
     rank: '1S',
@@ -1537,12 +1556,12 @@ function synthesizeFastShipAlternative(v1Parts, v1SupplyMetrics, loadedCatalog, 
     validationStatus: clicStatus === 'PORTAL VALIDATION PENDING' ? 'DOCUMENT_AND_PORTAL_VALIDATION_PENDING' : clicStatus,
     portalValidationStatus: clicStatus,
     liveClicValidation: liveClic,
-    clicStatusSummary: options?.clicStatusSummary || null,
     requiresRequirementReview: true,
-    name: 'Rank 1S: Fast-Ship Delivery-Optimized Baseline',
-    tierTitle: 'Fast-Ship Delivery-Optimized Baseline (Pacing Items Substituted)',
+    availabilityPreference: preference,
+    name: title,
+    tierTitle: title,
     skuPartsList: revalidated.parts,
-    bomFingerprint: computeBomFingerprint(revalidated.parts),
+    bomFingerprint,
     estimatedCostUsd: revalidated.totalCost,
     budgetBreakdown: {
       baseBomCost: revalidated.totalCost,
@@ -1563,16 +1582,36 @@ function synthesizeFastShipAlternative(v1Parts, v1SupplyMetrics, loadedCatalog, 
     topologyTransitions,
     substitutedPacingItems: substitutedItems,
     tradeoffMetrics: {
-      intentAlignment: topologyTransitions.length > 0
-        ? `Preserves requested NIC, SSDs, FC, support, and quantities with co-resolved OCP topology transition (${topologyTransitions.length} cable update(s)); ${clicStatus === 'PORTAL VALIDATION PENDING' ? 'portal validation pending' : 'portal CLIC validated (0 unbuildable errors)'}`
-        : 'UNVERIFIED: substitutions require customer-requirement and grounded review',
+      intentAlignment: 'Catalog-matched substitutions passed local checks. Customer requirements review pending.',
       deliveryImpact: scheduleInfo.deliveryImpact,
       skuModifications: `${substitutedItems.length} bottleneck substitution(s)${topologyTransitions.length ? `, ${topologyTransitions.length} topology cable update(s)` : ''}`
     },
-    reasoning: clicStatus === 'PORTAL VALIDATION PENDING'
-      ? 'Fast-ship candidate revalidated as one topology with co-resolved controller and OCP enablement cabling; component estimates and live OCA EDT (when supplied) remain labeled separately and portal acceptance stays PORTAL VALIDATION PENDING.'
-      : 'Fast-ship candidate revalidated as one topology with co-resolved controller and OCP enablement cabling; CLIC reported 0 unbuildables and 0 errors (warnings surfaced as advisories).'
+    reasoning: `Pacing-item substitutions and dependent parts passed local configuration checks. ${scheduleInfo.deliveryImpact}`
   };
+}
+
+function synthesizeAvailabilityAlternatives(parts, baseline, catalog, chassisInfo, getPrice, revalidateCached, resolveSupply, options = {}) {
+  const threshold = options.prioritizeFastShipAsRank2 ? 20 : AVAILABILITY_TARGET_DAYS;
+  if (!Number.isFinite(baseline?.maxLeadTimeDays) || baseline.maxLeadTimeDays <= threshold) return [];
+
+  const catalogIndex = buildCatalogSkuIndex(catalog);
+  const supplyResolver = resolveSupply || (sku => _catalogSupplyAttributes(catalogIndex.get(cleanBaseSKU(sku))));
+  const globalItems = options.availabilityGlobalItems || [];
+  const plans = _findAvailabilityPlans([...parts, ...globalItems], baseline.maxLeadTimeDays, supplyResolver, catalogIndex, options);
+  const context = { parts, baseline, catalogIndex, chassisInfo, getPrice, revalidateCached, resolveSupply: supplyResolver, options, globalItems };
+  const validated = plans.map(plan => _validateAvailabilityPlan(plan, context)).filter(Boolean);
+  if (!validated.length) return [];
+  const closest = validated.sort(_compareClosestAvailability)[0];
+  const fastest = validated.sort(_compareFastestAvailability)[0];
+  const result = [_buildAvailabilityCandidate(closest, baseline, 'CLOSEST_MATCH', options)];
+  if (fastest.maxDays < closest.maxDays) {
+    result.push(_buildAvailabilityCandidate(fastest, baseline, 'FASTEST', options));
+  }
+  return result;
+}
+
+function synthesizeFastShipAlternative(parts, baseline, catalog, chassisInfo, getPrice, revalidateCached, resolveSupply, options = {}) {
+  return synthesizeAvailabilityAlternatives(parts, baseline, catalog, chassisInfo, getPrice, revalidateCached, resolveSupply, options)[0] || null;
 }
 
 function _resolveStrategyPortalStatus(options = {}) {
@@ -1609,6 +1648,7 @@ function _tryBudgetMemorySubstitution(parts, aspectCompute, getPrice) {
       if (altPrice < curPrice) {
         parts[i] = {
           ...p,
+          ...REPLACEMENT_SUPPLY_UNKNOWN,
           sku: altSku,
           description: 'HPE 32GB 2Rx8 DDR5-4800 Smart Memory',
           unitPriceUsd: altPrice,
@@ -1639,6 +1679,7 @@ function _tryBudgetPowerSubstitution(parts, aspectPower, getPrice) {
       if (altPrice < curPrice) {
         parts[i] = {
           ...p,
+          ...REPLACEMENT_SUPPLY_UNKNOWN,
           sku: altSku,
           description: 'HPE 800W Flex Slot Platinum Hot Plug Power Supply',
           unitPriceUsd: altPrice,
@@ -1668,6 +1709,7 @@ function _tryBudgetThermalSubstitution(parts, aspectCompute, aspectPcie, getPric
       const altPrice = getPrice(altSku) || 316.0;
       parts[i] = {
         ...p,
+        ...REPLACEMENT_SUPPLY_UNKNOWN,
         sku: altSku,
         description: 'HPE ProLiant Compute DL380 Gen12 2U High Performance Heat Sink Kit',
         unitPriceUsd: altPrice,
@@ -1723,7 +1765,7 @@ function _isCandidateMixedUseNvme(p) {
 function _findCatalogStorageReplacement(catIndex, origCapGb, isBc, curPrice, safeGetPrice) {
   if (!catIndex) return null;
   for (const [candSku, item] of catIndex.entries()) {
-    if (!_isCatalogOptionActiveForSynthesis(item)) continue;
+    if (!isActiveCatalogOption(item)) continue;
     const cDesc = (item.skuData?.Description || item.entry?.description || '').toLowerCase();
     if (!cDesc.includes('ssd') || !cDesc.includes('nvme') || !cDesc.includes('read intensive')) continue;
     if (isBc && !cDesc.includes(' bc') && !cDesc.includes('basic carrier')) continue;
@@ -1793,6 +1835,7 @@ function _tryBudgetStorageSubstitution(parts, workloadDna, loadedCatalog, getPri
     if (replacement && cleanBaseSKU(replacement.sku) !== cleanBaseSKU(p.sku)) {
       parts[i] = {
         ...p,
+        ...REPLACEMENT_SUPPLY_UNKNOWN,
         sku: replacement.sku,
         description: replacement.desc,
         unitPriceUsd: replacement.price,
@@ -2064,7 +2107,7 @@ function _buildRank1Candidate({
       costDeltaUsd: `+$${fixCost.toLocaleString()} (Mandatory Buildability)`,
       capacityExpansion: 'Optimal (Zero over/under-provisioning)',
       fastShipAlternativeAvailable: Boolean(fastShipAlternative),
-      deliveryDaysSaved: fastShipAlternative?.deliveryDaysSaved || 0
+      deliveryDaysSaved: fastShipAlternative?.deliveryDaysSaved ?? null
     },
     ragSecondOpinion: getLiveRagGrounding(
       'Intent Preserved',
@@ -2076,14 +2119,15 @@ function _buildRank1Candidate({
   };
 }
 
-function _buildRank2FastShipCandidate({
+function _buildRankedAvailabilityCandidate({
   fastShipAlternative, fixes, baseCost, fixCost, decisionLedger
 }) {
   return {
     rank: 2,
-    strategyId: 'STRATEGY_FAST_SHIP_RANK2',
-    strategyIdentity: 'STRATEGY_FAST_SHIP_RANK2',
-    isFastShipRank2: true,
+    strategyId: fastShipAlternative.availabilityPreference === 'CLOSEST_MATCH' ? 'STRATEGY_FAST_SHIP_RANK2' : 'STRATEGY_FASTEST_AVAILABILITY',
+    isFastShipRank2: fastShipAlternative.availabilityPreference === 'CLOSEST_MATCH',
+    availabilityPreference: fastShipAlternative.availabilityPreference,
+    requiresRequirementReview: fastShipAlternative.requiresRequirementReview,
     name: fastShipAlternative.name,
     score: parseFloat(Math.max(0.65, 0.92 - (fixes.length * 0.02)).toFixed(2)),
     estimatedCostUsd: fastShipAlternative.estimatedCostUsd,
@@ -2103,6 +2147,8 @@ function _buildRank2FastShipCandidate({
     portalValidationStatus: fastShipAlternative.portalValidationStatus || 'PORTAL VALIDATION PENDING',
     liveClicValidation: fastShipAlternative.liveClicValidation || null,
     componentLeadTimeEstimate: fastShipAlternative.componentLeadTimeEstimate || null,
+    deliveryDaysSaved: fastShipAlternative.deliveryDaysSaved,
+    substitutedPacingItems: fastShipAlternative.substitutedPacingItems,
     liveSolutionEdt: fastShipAlternative.liveSolutionEdt || null,
     topologyTransitions: fastShipAlternative.topologyTransitions || [],
     portalConditionalSkus: [],
@@ -2182,7 +2228,7 @@ function _buildRank2StandardCandidate({
 
 function _buildRank2Candidate(ctx) {
   if (ctx.options?.prioritizeFastShipAsRank2 && ctx.fastShipAlternative) {
-    return _buildRank2FastShipCandidate(ctx);
+    return _buildRankedAvailabilityCandidate(ctx);
   }
   return _buildRank2StandardCandidate(ctx);
 }
@@ -2412,10 +2458,11 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
   // Rank 5: Budget & CapEx Minimized Candidate
   const v5 = synthesizeBudgetMinimizationCandidate(v1, evalResults, loadedCatalog, chassisInfo, getPrice, revalidateCached, { dna });
 
-  const v1SupplyMetrics = calculateSupplyMetrics(v1.parts, resolveSupply);
-  const fastShipAlternative = synthesizeFastShipAlternative(
+  const v1SupplyMetrics = calculateSupplyMetrics([...v1.parts, ...(options.availabilityGlobalItems || [])], resolveSupply);
+  const availabilityAlternatives = synthesizeAvailabilityAlternatives(
     v1.parts, v1SupplyMetrics, loadedCatalog, chassisInfo, getPrice, revalidateCached, resolveSupply, options
   );
+  const fastShipAlternative = availabilityAlternatives[0];
 
   // Assemble 5 Candidates cleanly via modular builders
   const rawCandidates = [
@@ -2437,7 +2484,9 @@ function synthesize5TierRankedSolutions(items = [], evalResults = {}, graphResul
     }),
     _buildRank5Candidate({
       v5, fixes, baseCost, fixCost, getLiveRagGrounding
-    })
+    }),
+    ...availabilityAlternatives.slice(options.prioritizeFastShipAsRank2 ? 1 : 0).map(alternative =>
+      _buildRankedAvailabilityCandidate({ fastShipAlternative: alternative, fixes, baseCost, fixCost, decisionLedger }))
   ];
 
   const requestedSkuSet = scoreAndSortCandidates(rawCandidates, items, resolveSupply, options);
@@ -2454,6 +2503,8 @@ module.exports = {
   synthesize5TierRankedSolutions,
   synthesizeStrategies: synthesize5TierRankedSolutions,
   synthesizeFastShipAlternative,
+  synthesizeAvailabilityAlternatives,
+  findCatalogAvailabilityMatches,
   synthesizeBudgetMinimizationCandidate,
   _tryBudgetStorageSubstitution,
   CERTIFIED_STORAGE_DOWNTIER_MAP,
@@ -2464,6 +2515,7 @@ module.exports = {
   computeArchitecturalDelta,
   computeCapabilityDowngradePenalty,
   scoreAndSortCandidates,
+  includeAvailabilityRecommendations,
   _runPhysicalAspectsValidationLoop,
   _clearStrategyAddonsCache
 };

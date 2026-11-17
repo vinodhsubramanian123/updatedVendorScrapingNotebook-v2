@@ -1,5 +1,22 @@
 import React from 'react';
 
+function AvailabilityCell({ tier }) {
+  const supply = tier.supplyMetrics;
+  if (!supply) return 'Unavailable';
+  return (
+    <>
+      <div>{supply.solutionEdtDays == null ? 'Incomplete' : `${supply.solutionEdtDays} days`}</div>
+      {supply.solutionEdtDays == null && supply.maxLeadTimeDays != null && (
+        <div className="text-slate-500">{supply.maxLeadTimeDays} days for slowest known SKU</div>
+      )}
+      {supply.pacingItems?.length > 0 && (
+        <div className="break-words font-mono text-slate-600">{[...new Set(supply.pacingItems.map(part => part.sku))].join(', ')}</div>
+      )}
+      {tier.liveSolutionEdt?.fastShipRange && <div>Live OCA {tier.liveSolutionEdt.fastShipRange}</div>}
+    </>
+  );
+}
+
 export default function MatrixComparisonTable({ tiers = [], standardCategories = [] }) {
   if (!tiers || tiers.length === 0) return null;
 
@@ -7,7 +24,7 @@ export default function MatrixComparisonTable({ tiers = [], standardCategories =
     <div className="glass-card p-6 overflow-x-auto border border-slate-200 shadow-sm rounded-xl">
       <div className="mb-4">
         <h3 className="font-bold text-slate-900 text-sm">Strategic Solution Matrix — Side-by-Side Spec Comparison</h3>
-        <p className="text-xs text-slate-500">Compare hardware configuration attributes and capacity allocation across Rank 1 through Rank 5 tiers.</p>
+        <p className="text-xs text-slate-500">Compare hardware specifications, capacity, and availability across candidate BOMs.</p>
       </div>
 
       <table className="w-full text-left text-xs border-collapse min-w-[700px]">
@@ -37,6 +54,16 @@ export default function MatrixComparisonTable({ tiers = [], standardCategories =
               </td>
             ))}
           </tr>
+          {tiers.some(tier => tier.supplyMetrics) && (
+            <tr className="bg-slate-50/50">
+              <td className="py-2 px-3 font-semibold text-slate-600">BOM lead-time estimate</td>
+              {tiers.map(tier => (
+                <td key={tier.rank} className="px-3 py-2 text-center">
+                  <AvailabilityCell tier={tier} />
+                </td>
+              ))}
+            </tr>
+          )}
 
           {standardCategories.map(cat => (
             <tr key={cat.id} className="hover:bg-slate-50/80 transition-colors">

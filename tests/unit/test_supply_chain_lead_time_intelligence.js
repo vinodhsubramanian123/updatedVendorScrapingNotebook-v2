@@ -19,6 +19,7 @@ const {
   parseLeadTimeDays,
   calculateSupplyMetrics,
   synthesizeFastShipAlternative,
+  synthesizeAvailabilityAlternatives,
   synthesize5TierRankedSolutions
 } = require('../../scripts/lib/conflict/strategy_synthesizer.js');
 const { CatalogSkuItemSchema } = require('../../scripts/lib/system/schemas.js');
@@ -132,7 +133,7 @@ test('3. Rank 1S Synthesis — Replaces Pacing Bottlenecks & Collapses Schedule'
   const mockCatalog = {
     entries: [
       {
-        skus: [{ 'Product #': 'P40507-B21', Description: 'HPE 1.92TB SAS 12G Read Intensive SFF BC Multi Vendor SSD', 'Lead Time': '7 days', 'Unit Price (USD)': 580 }]
+        skus: [{ 'Product #': 'P40507-B21', Description: 'HPE 2.4TB SAS 12G 10K SFF HDD', 'Lead Time': '7 days', 'Unit Price (USD)': 580 }]
       }
     ]
   };
@@ -297,18 +298,81 @@ test('6. Dynamic OCA Tools Menu Probe — Simulates CDP Interaction & Fallback',
 });
 
 test('Fast-Ship rejects invented replacements and failed math; incomplete ETA stays unknown', () => {
-  const parts = [{ sku: 'P28352-B21', description: 'SAS HDD', quantity: 1, leadTimeDays: 90 }];
+  const parts = [
+    { sku: 'P28352-B21', description: '2.4TB SAS 12G 10K SFF HDD', quantity: 1, leadTimeDays: 90 },
+    { sku: 'UNKNOWN', quantity: 1 }
+  ];
   const price = () => 100; price.hasPrice = () => true;
   const metrics = calculateSupplyMetrics(parts);
   const run = (catalog, validate) => synthesizeFastShipAlternative(parts, metrics, catalog, {}, price, validate, () => ({}));
   const clean = p => ({ parts: p, physicalMathClean: true, aspectErrors: [], totalCost: 100 });
   assert.equal(run({}, clean), null);
-  const catalog = { entries: [{ skus: [{ 'Product #': 'P40507-B21', Description: 'SAS SSD', 'Lead Time': '7 days' }] }] };
+  const rejected = { entries: [{ skus: [{
+    'Product #': 'P40507-B21', Description: '1.92TB SAS 12G Read Intensive SFF SSD', 'Lead Time': '7 days'
+  }] }] };
+  assert.equal(run(rejected, clean), null);
+  const catalog = { entries: [{ skus: [{ 'Product #': 'P40508-B21', Description: '2.4TB SAS 12G 10K SFF HDD', 'Lead Time': '7 days' }] }] };
   assert.equal(run(catalog, p => ({ ...clean(p), physicalMathClean: false })), null);
-  const candidate = run(catalog, p => clean([...p, { sku: 'UNKNOWN', quantity: 1 }]));
+  const candidate = run(catalog, clean);
   assert.equal(candidate.deliveryDaysSaved, null);
   assert.equal(candidate.fastShipEdtDays, null);
+  assert.deepEqual(candidate.supplyMetrics.unknownLeadTimeSkus, ['UNKNOWN']);
   assert.equal(candidate.requiresRequirementReview, true);
   assert.doesNotMatch(candidate.reasoning, /100% buildable/);
   assert.equal(calculateSupplyMetrics([...parts, { sku: 'UNKNOWN' }]).solutionEdtDays, null);
+});
+
+test('Availability options preserve both pacing quantities, prefer equivalence, and retry a failed candidate', () => {
+  const cpu = 'Intel Xeon Gold 2.1GHz 32-core Processor';
+  const memory = 'HPE 64GB DDR5-5600 2Rx4 RDIMM';
+  const parts = [
+    { sku: 'P11800-B21', description: cpu, quantity: 2, leadTimeDays: 31 },
+    { sku: 'P11900-B21', description: memory, quantity: 8, leadTimeDays: 31 },
+    { sku: 'P12000-B21', description: 'Chassis', quantity: 1, leadTimeDays: 18 }
+  ];
+  const row = (sku, description, days, extras = {}) => ({ 'Product #': sku, Description: description, leadTimeDays: days, ...extras });
+  const skus = [
+    row('P11801-B21', cpu, 27),
+    row('P11802-B21', cpu, 28),
+    row('P11803-B21', cpu.replace('32-core', '40-core'), 6),
+    row('P11804-B21', cpu, 1, { 'Lifecycle Status': 'Obsolete' }),
+    row('P11805-B21', cpu, 1, { 'Diff Status': 'REMOVED' }),
+    row('P11806-B21', cpu, 1, { 'Discontinued Date': '01/01/2020' }),
+    row('P11807-B21', cpu.replace('32-core', '16-core'), 1),
+    row('P11808-B21', cpu, 1, { Availability: 'Out of stock' }),
+    row('P11809-B21', cpu, 1, { visibilityState: 'PORTAL_CONDITIONAL' }),
+    row('P11901-B21', memory, 14)
+  ];
+  const metrics = calculateSupplyMetrics(parts);
+  assert.deepEqual(metrics.pacingItems.map(part => part.sku), ['P11800-B21', 'P11900-B21']);
+  assert.equal(metrics.itemsOverAvailabilityTarget.length, 2);
+  const validate = bom => ({
+    parts: bom,
+    physicalMathClean: !bom.some(part => part.sku === 'P11801-B21'),
+    aspectErrors: [],
+    totalCost: 0
+  });
+  const resolve = (baseline, catalogRows = skus) => synthesizeAvailabilityAlternatives(
+    baseline, calculateSupplyMetrics(baseline), { entries: [{ skus: catalogRows }] }, {}, () => 100, validate
+  );
+  const [closest, fastest] = resolve(parts);
+  assert.equal(closest.availabilityPreference, 'CLOSEST_MATCH');
+  assert.equal(closest.fastShipEdtDays, 28);
+  assert.equal(closest.deliveryDaysSaved, 3);
+  assert.deepEqual(closest.substitutedPacingItems.map(swap => [swap.replacementSku, swap.quantity, swap.matchType]), [
+    ['P11802-B21', 2, 'EQUIVALENT'],
+    ['P11901-B21', 8, 'EQUIVALENT']
+  ]);
+  assert.equal(fastest.availabilityPreference, 'FASTEST');
+  assert.equal(fastest.fastShipEdtDays, 18);
+  assert.equal(fastest.supplyMetrics.pacingItemSku, 'P12000-B21');
+  assert.equal(fastest.substitutedPacingItems[0].matchType, 'UPGRADE');
+  assert.deepEqual(resolve(parts, skus.slice(0, -1)), [], 'One unchanged tied pacing item prevents a whole BOM improvement');
+  assert.deepEqual(resolve(parts.map(part => ({ ...part, leadTimeDays: Math.min(part.leadTimeDays, 30) }))), []);
+
+  const sharedParts = [{ sku: 'HU123A5', description: 'Shared service', quantityScope: 'global', leadTimeDays: 36 }];
+  const wholeOrder = calculateSupplyMetrics([...parts, ...sharedParts]);
+  assert.deepEqual(synthesizeAvailabilityAlternatives(
+    parts, wholeOrder, { entries: [{ skus }] }, {}, () => 100, validate, undefined, { availabilityGlobalItems: sharedParts }
+  ), [], 'An unchanged shared line can set the overall BOM lead time');
 });

@@ -70,6 +70,35 @@ describe('ResolutionMatrix', () => {
     expect(screen.getByText(/No candidate passed the buildability/i)).toBeInTheDocument();
   });
 
+  it('shows the next pacing SKU, incomplete lead times, and changed SKUs on the candidate', () => {
+    const result = {
+      conflictGraph: {
+        rankedSolutions: [{
+          ...mockEvalResults.conflictGraph.rankedSolutions[0],
+          name: 'Closest Faster-Availability Match',
+          supplyMetrics: {
+            solutionEdtDays: null,
+            maxLeadTimeDays: 28,
+            pacingItems: [{ sku: 'P11000-B21', leadTimeDays: 28 }],
+            unknownLeadTimeSkus: ['P11500-B21']
+          },
+          substitutedPacingItems: [{
+            originalSku: 'P49057-B21',
+            replacementSku: 'P11000-B21',
+            originalLeadTimeDays: 44,
+            replacementLeadTimeDays: 28,
+            matchType: 'EQUIVALENT'
+          }]
+        }]
+      }
+    };
+    render(<ResolutionMatrix evalResults={result} />);
+    expect(screen.getByText(/28 days for the slowest known SKU/)).toBeInTheDocument();
+    expect(screen.getByText('P11000-B21')).toBeInTheDocument();
+    expect(screen.getByText('P49057-B21 → P11000-B21')).toBeInTheDocument();
+    expect(screen.getByText('Lead time missing for 1 SKU')).toBeInTheDocument();
+  });
+
   it('blocks customer export with explicit reason when authorization is absent or blocked, and enables export when authorized', () => {
     const blockedEval = {
       ...mockEvalResults,

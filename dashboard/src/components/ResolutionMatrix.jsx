@@ -80,6 +80,9 @@ function mapSolutionToTier(sol, evalResults) {
     portalConditionalSkus: sol.portalConditionalSkus || [],
     physicalMathClean: sol.physicalMathClean ?? null,
     portalValidationStatus: sol.portalValidationStatus || null,
+    supplyMetrics: sol.supplyMetrics || null,
+    liveSolutionEdt: sol.liveSolutionEdt || null,
+    substitutedPacingItems: sol.substitutedPacingItems || [],
     isLeastDeltaPath: Boolean(sol.leastDeltaAnalysis?.isLeastDeltaPath || sol.isLeastDeltaPath)
   };
 }

@@ -25,7 +25,7 @@ const { loadCatalogRules, getMandatorySkusForChassis } = require('../catalog/cat
 // Modular subcomponents
 const { extractWorkloadDna } = require('./workload_dna.js');
 const { arbitrateContestedResources } = require('./resource_arbitrator.js');
-const { synthesize5TierRankedSolutions } = require('./strategy_synthesizer.js');
+const { synthesize5TierRankedSolutions, includeAvailabilityRecommendations } = require('./strategy_synthesizer.js');
 const { introspectSku } = require('./cascading_impact_analyzer.js');
 
 const { getChassisMap, invalidateChassisMapCache, detectChassisVariant } = require('../catalog/catalog_discovery.js');
@@ -630,7 +630,7 @@ function _filterRecommendedSolutions(rankedSolutions, fullBomList) {
     .map(solution => solution.proximityMetrics?.weightedEditDistance ?? Number.POSITIVE_INFINITY);
   const minimumDistance = validDistances.length > 0 ? Math.min(...validDistances) : Number.POSITIVE_INFINITY;
   const closenessWindow = Math.max(1, Math.ceil(fullBomList.length * 0.15));
-  return rankedSolutions
+  const closest = rankedSolutions
     .filter(solution =>
       solution.isUniqueBom &&
       solution.isParetoOptimal &&
@@ -638,6 +638,7 @@ function _filterRecommendedSolutions(rankedSolutions, fullBomList) {
       (solution.proximityMetrics?.weightedEditDistance ?? Number.POSITIVE_INFINITY) <= minimumDistance + closenessWindow
     )
     .slice(0, 3);
+  return includeAvailabilityRecommendations(closest, rankedSolutions);
 }
 
 /**

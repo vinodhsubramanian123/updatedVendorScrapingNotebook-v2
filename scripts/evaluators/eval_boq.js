@@ -546,7 +546,10 @@ function evaluateIngestedPhysicalContext(items, catalogData, chassisDir, configu
   }
   const { applyConfigurationContext } = require('../lib/boq/configuration_context');
   const baseItems = configurationContext.items.filter(item => item.quantityScope !== 'global');
-  const result = evaluatePhysicalMath(baseItems, catalogData, chassisDir, { baseConfigurationOnly: true });
+  const result = evaluatePhysicalMath(baseItems, catalogData, chassisDir, {
+    baseConfigurationOnly: true,
+    availabilityGlobalItems: configurationContext.items.filter(item => item.quantityScope === 'global')
+  });
   return applyConfigurationContext(result, configurationContext);
 }
 
@@ -1364,12 +1367,10 @@ function _executePhase4And5(options, evidenceLedger, graph, activeRules) {
 
 function _sortAndSyncRecommendations(evalResults, ingestCtx) {
   if (!evalResults.conflictGraph?.recommendedSolutions) return;
-  const validCandidates = (evalResults.conflictGraph.rankedSolutions || [])
+  const { includeAvailabilityRecommendations } = require('../lib/conflict/strategy_synthesizer.js');
+  const ranked = evalResults.conflictGraph.rankedSolutions || [];
+  const validCandidates = ranked
     .filter(c => c.physicalMathClean && c.isUniqueBom !== false && c.isParetoOptimal !== false);
-  if (validCandidates.length === 0) {
-    evalResults.conflictGraph.recommendedSolutions = [];
-    return;
-  }
   const closestUnits = Math.min(...validCandidates.map(c => c.customerDistance.changedUnits));
   const distanceWindow = Math.max(1, Math.ceil(ingestCtx.items.filter(it => it.quantityScope !== 'global').length * 0.15));
   const sortedValid = validCandidates
@@ -1381,7 +1382,7 @@ function _sortAndSyncRecommendations(evalResults, ingestCtx) {
       a.customerDistance.changedUnits - b.customerDistance.changedUnits ||
       (a.strategyRank ?? a.rank) - (b.strategyRank ?? b.rank)
     );
-  const topRecs = sortedValid.slice(0, 3).map((candidate, index) => ({
+  const topRecs = includeAvailabilityRecommendations(sortedValid, ranked).map((candidate, index) => ({
     ...candidate,
     strategyRank: candidate.strategyRank ?? candidate.rank,
     rank: index + 1,
@@ -1420,11 +1421,24 @@ function _revalidateAndRankCandidates(evalResults, ingestCtx, evidenceLedger) {
     };
   }
   const validatedCandidates = evalResults.conflictGraph?.rankedSolutions || [];
+  const publishedCandidates = validatedCandidates.filter(c => !c.availabilityPreference || c.physicalMathClean);
+  if (evalResults.conflictGraph && publishedCandidates.length < validatedCandidates.length) {
+    const retained = new Set(publishedCandidates.map(candidate => candidate.bomFingerprint));
+    for (const candidate of publishedCandidates) {
+      if (candidate.fastShipAlternative && !retained.has(candidate.fastShipAlternative.bomFingerprint)) {
+        candidate.fastShipAlternative = null;
+        candidate.availabilityTradeoffs = [];
+        candidate.tradeoffMetrics.fastShipAlternativeAvailable = false;
+        candidate.tradeoffMetrics.deliveryDaysSaved = null;
+      }
+    }
+    evalResults.conflictGraph.rankedSolutions = publishedCandidates;
+  }
   evalResults.adversarialGateResult = {
     kind: 'DETERMINISTIC_FINAL_CANDIDATE_REVALIDATION',
     manifestSha256: solutionFingerprint(evalResults),
     candidateResults: validatedCandidates.map(c => ({ rank: c.rank, passed: c.physicalMathClean, validation: c.finalValidation })),
-    passed: validatedCandidates.length > 0 && validatedCandidates.every(c => c.physicalMathClean)
+    passed: publishedCandidates.length > 0 && publishedCandidates.every(c => c.physicalMathClean)
   };
   evalResults.adversarialGatePassed = evalResults.adversarialGateResult.passed;
   if (typeof evidenceLedger.recordCandidateAttempt === 'function') {
@@ -2156,14 +2170,15 @@ function recomputeStrategyMatrixWithRag(baseData, ragResult, chassisDirOverride 
   const { synthesize5TierRankedSolutions } = require('../lib/conflict/conflict_graph.js');
   const hasUnambiguousScope = configContext && configContext.ownershipEvidence !== 'AMBIGUOUS_OWNERSHIP_RAW';
   const perNodeItems = hasUnambiguousScope ? items.filter(it => it.quantityScope !== 'global') : items;
-  const rawReEval = evaluateBOQMultiAspect(perNodeItems, { filePath: baseData.inputFile, catalogData, targetDir });
+  const availabilityGlobalItems = hasUnambiguousScope ? items.filter(it => it.quantityScope === 'global') : [];
+  const rawReEval = evaluateBOQMultiAspect(perNodeItems, { filePath: baseData.inputFile, catalogData, targetDir, availabilityGlobalItems });
 
   const updatedGraph = rawReEval.conflictGraph || {};
   const combinedGraph = {
     ...baseData.conflictGraph,
     ...updatedGraph,
     rankedSolutions: synthesize5TierRankedSolutions(
-      perNodeItems, rawReEval, updatedGraph, updatedGraph.chassisInfo || { model: chassisPrefix }, targetDir
+      perNodeItems, rawReEval, updatedGraph, updatedGraph.chassisInfo || { model: chassisPrefix }, targetDir, { availabilityGlobalItems }
     )
   };
   const reEval = hasUnambiguousScope

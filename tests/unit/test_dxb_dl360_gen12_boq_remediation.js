@@ -279,13 +279,23 @@ test('Area B: Synthesizes topology-aware Rank 2 OCP fast-ship candidate with str
     const rfqFile = path.join(tmpDir, 'rfq_1q.xlsx');
     writeTempBoqWorkbook(rfqFile, buildDxbRfq1NodeRows());
 
-    const liveClic = { ucid: '5158389518-01', unbuildables: 0, errors: 0, warnings: 10, warningRuleIds: ['81302926', '81031845'] };
-    const evalRes = await evaluateBOQMultiAspect(rfqFile, {
+    const options = {
       chassisDir: CHASSIS_DIR,
       offline: true,
       enableCloudValidation: false,
-      prioritizeFastShipAsRank2: true,
+      prioritizeFastShipAsRank2: true
+    };
+    const unboundClic = { ucid: '5158389518-01', unbuildables: 0, errors: 0, warnings: 10, warningRuleIds: ['81302926', '81031845'] };
+    const pending = await evaluateBOQMultiAspect(rfqFile, { ...options, prioritizeFastShipAsRank2: false, liveClicValidation: unboundClic });
+    const pendingRank2 = pending.conflictGraph?.recommendedSolutions?.find(candidate => candidate.availabilityPreference === 'CLOSEST_MATCH');
+    assert.ok(pendingRank2, 'A lead time over 30 days automatically adds the closest availability option');
+    assert.strictEqual(pendingRank2.portalValidationStatus, 'PORTAL VALIDATION PENDING');
+
+    const liveClic = { ...unboundClic, bomFingerprint: pendingRank2.bomFingerprint };
+    const evalRes = await evaluateBOQMultiAspect(rfqFile, {
+      ...options,
       liveSolutionEdt: {
+        candidateBomFingerprint: pendingRank2.bomFingerprint,
         fastShipRange: '43–54 days',
         baselineRange: '73–91 days',
         startWindowDaysSaved: 30,
@@ -310,6 +320,8 @@ test('Area B: Synthesizes topology-aware Rank 2 OCP fast-ship candidate with str
     assert.ok(rank2.skuPartsList.some(p => p.sku.startsWith('HU4A6A5')));
     assert.strictEqual(rank2.componentLeadTimeEstimate.originalMaxComponentDays, 60);
     assert.strictEqual(rank2.componentLeadTimeEstimate.fastShipMaxComponentDays, 30);
+    assert.strictEqual(rank2.componentLeadTimeEstimate.complete, false);
+    assert.ok(rank2.supplyMetrics.pacingItems.some(part => part.sku === 'R2E09A'));
     assert.strictEqual(rank2.liveSolutionEdt.fastShipRange, '43–54 days');
     assert.strictEqual(rank2.liveSolutionEdt.baselineRange, '73–91 days');
 

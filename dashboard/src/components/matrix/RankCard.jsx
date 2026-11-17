@@ -194,6 +194,59 @@ function DecisionTraceSection({ decisionTrace, isExpanded, onToggle }) {
   );
 }
 
+function RankAvailability({ tier }) {
+  const supply = tier.supplyMetrics;
+  if (!supply) return null;
+  const long = supply.itemsOverAvailabilityTarget || [];
+  const pacing = supply.pacingItems || [];
+  const pacingSkus = new Set(pacing.map(part => part.sku));
+  const listed = long.length ? long : pacing;
+  return (
+    <div className="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-3 text-xs">
+      <h4 className="font-semibold text-slate-800">BOM availability</h4>
+      <p className="mt-1 text-slate-700">
+        {supply.solutionEdtDays != null
+          ? `${supply.solutionEdtDays} days estimated from component lead times`
+          : supply.maxLeadTimeDays != null
+            ? `Incomplete • ${supply.maxLeadTimeDays} days for the slowest known SKU`
+            : 'Component lead times unavailable'}
+      </p>
+      {tier.liveSolutionEdt?.fastShipRange && (
+        <p className="mt-1 text-slate-700">Live OCA solution estimate {tier.liveSolutionEdt.fastShipRange}</p>
+      )}
+      {listed.length > 0 && (
+        <ul className="mt-2 space-y-1">
+          {listed.map((part, index) => (
+            <li key={index} className="text-slate-600" title={part.description}>
+              <span className="font-mono font-semibold text-slate-800">{part.sku}</span>
+              {' · '}{part.leadTimeDays} days{pacingSkus.has(part.sku) ? ' · Pacing item' : ''}
+            </li>
+          ))}
+        </ul>
+      )}
+      {supply.unknownLeadTimeSkus?.length > 0 && (
+        <details className="mt-2 text-slate-600">
+          <summary className="cursor-pointer">
+            Lead time missing for {supply.unknownLeadTimeSkus.length} {supply.unknownLeadTimeSkus.length === 1 ? 'SKU' : 'SKUs'}
+          </summary>
+          <p className="mt-1 break-words font-mono">{supply.unknownLeadTimeSkus.join(', ')}</p>
+        </details>
+      )}
+      {tier.substitutedPacingItems?.length > 0 && (
+        <ul className="mt-2 space-y-1 border-t border-slate-200 pt-2">
+          {tier.substitutedPacingItems.map((swap, index) => (
+            <li key={index} className="text-slate-600">
+              <span className="font-mono font-semibold text-slate-800">{swap.originalSku} → {swap.replacementSku}</span>
+              {' · '}{swap.originalLeadTimeDays} → {swap.replacementLeadTimeDays} days
+              {' · '}{swap.matchType === 'UPGRADE' ? 'Upgrade' : 'Equivalent'}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
 export default function RankCard({
   tier,
   isExpanded,
@@ -276,6 +329,8 @@ export default function RankCard({
             ))}
           </ul>
         </div>
+
+        <RankAvailability tier={tier} />
 
         <RankSkuPartsSection
           tier={tier}

@@ -224,7 +224,7 @@ const AspectMathSchema = z.object({
 // ==========================================
 
 const RankedSolutionSchema = z.object({
-  rank: z.number().int().min(1).max(5),
+  rank: z.number().int().min(1).max(7),
   name: z.string().min(1),
   score: z.number().min(0).max(1).default(1.0),
   estimatedCostUsd: CoercedNumber.default(0),

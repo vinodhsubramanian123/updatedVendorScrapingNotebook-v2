@@ -1535,7 +1535,11 @@ function _handleTopologyAndScaling(items, catalogData, targetDir, options) {
       try {
         const context = normalizeConfiguration(items);
         const baseItems = context.items.filter(it => it.quantityScope !== 'global');
-        const result = evaluatePhysicalMath(baseItems, catalogData, targetDir, { ...options, baseConfigurationOnly: true });
+        const result = evaluatePhysicalMath(baseItems, catalogData, targetDir, {
+          ...options,
+          baseConfigurationOnly: true,
+          availabilityGlobalItems: context.items.filter(it => it.quantityScope === 'global')
+        });
         const applied = applyConfigurationContext(result, context);
         if (applied.evalSummary && applied.clusterSizing && context.multiplier > 1) {
           const m = context.multiplier;
@@ -1916,6 +1920,7 @@ function _executeConflictGraphValidation(items, missingDependencies, targetDir, 
       errors,
       warnings,
       useNumericStep: true,
+      availabilityGlobalItems: options.availabilityGlobalItems,
       ...(options.prioritizeFastShipAsRank2 !== undefined ? { prioritizeFastShipAsRank2: options.prioritizeFastShipAsRank2 } : {}),
       ...(options.liveSolutionEdt ? { liveSolutionEdt: options.liveSolutionEdt } : {}),
       ...(options.liveClicValidation ? { liveClicValidation: options.liveClicValidation } : {}),

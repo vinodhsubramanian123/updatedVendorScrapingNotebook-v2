@@ -193,8 +193,34 @@ function _buildWorkloadSection(graph, chassisDir, chassisDetection) {
       md += `| **Rank ${rs.rank}** | ${rs.name || 'Custom Solution'} | \`${rs.score || 'N/A'}\` | ${costCell} | ${rs.workloadDnaMatch || 'N/A'} | ${rs.changesCount ?? 0} | ${rs.reasoning || 'N/A'} |\n`;
     });
     md += `\n`;
+    md += _renderAvailabilitySection(graph.recommendedSolutions);
   }
   return md;
+}
+
+function _renderAvailabilitySection(solutions) {
+  const candidates = solutions.filter(solution => solution.supplyMetrics?.maxLeadTimeDays != null);
+  if (!candidates.length) return '';
+  const lines = ['### BOM availability', '', 'Estimates use component lead times. Live OCA solution estimates are shown when available.', ''];
+  for (const candidate of candidates) {
+    const supply = candidate.supplyMetrics;
+    const estimate = supply.solutionEdtDays == null
+      ? `Incomplete (${supply.maxLeadTimeDays} days for the slowest known SKU)`
+      : `${supply.solutionEdtDays} days`;
+    lines.push(`- **Rank ${candidate.rank}** · ${estimate}`);
+    const bottlenecks = supply.itemsOverAvailabilityTarget?.length ? supply.itemsOverAvailabilityTarget : supply.pacingItems;
+    for (const part of bottlenecks || []) {
+      lines.push(`  - \`${part.sku}\` · ${part.leadTimeDays} days`);
+    }
+    if (supply.unknownLeadTimeSkus?.length) {
+      lines.push(`  - Lead time missing for ${supply.unknownLeadTimeSkus.map(sku => `\`${sku}\``).join(', ')}`);
+    }
+    for (const swap of candidate.substitutedPacingItems || []) {
+      lines.push(`  - \`${swap.originalSku}\` → \`${swap.replacementSku}\` · ${swap.originalLeadTimeDays} → ${swap.replacementLeadTimeDays} days (${swap.matchType === 'UPGRADE' ? 'upgrade' : 'equivalent'})`);
+    }
+    if (candidate.liveSolutionEdt?.fastShipRange) lines.push(`  - Live OCA solution estimate ${candidate.liveSolutionEdt.fastShipRange}`);
+  }
+  return `${lines.join('\n')}\n\n`;
 }
 
 function _buildBudgetSection(budgetOpt, targetBudgetUsd) {

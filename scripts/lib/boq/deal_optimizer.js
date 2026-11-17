@@ -11,7 +11,7 @@ const { getSkuListPrice } = require('./budget_optimizer.js');
 const { extractWorkloadDna } = require('../conflict/workload_dna.js');
 const { cleanBaseSKU, buildCatalogSkuIndex } = require('../catalog/sku.js');
 const { extractCatalogItemLeadTime } = require('../taxonomy/sku_resolver.js');
-const { extractComponentAttributes, scoreReplacementCandidate, isActiveCatalogOption } = require('../conflict/least_delta_combinator.js');
+const { findCatalogAvailabilityMatches } = require('../conflict/strategy_synthesizer.js');
 
 function _hasAspectEvidence(aspects, compute, memory, storage, pcie) {
   if (!aspects) return false;
@@ -375,23 +375,6 @@ function _checkHeatsinkLeadTimeRightSizing(items, compute, workload, catalogData
   };
 }
 
-function _findFastActiveLeadCandidate(cleanSku, origAttrs, curLead, curPrice, catalogIndex, catalogData, chassisDir) {
-  let best = null;
-  for (const [candSku, item] of catalogIndex.entries()) {
-    if (candSku === cleanSku || !isActiveCatalogOption(item)) continue;
-    const candLead = item.leadTimeDays ?? extractCatalogItemLeadTime(item.skuData || item.entry || {})?.days ?? null;
-    if (!Number.isFinite(candLead) || (curLead - candLead) < 14) continue;
-    const candDesc = item.skuData?.Description || item.entry?.description || '';
-    const candPrice = getSkuListPrice(candSku, catalogData, chassisDir) || 0;
-    const attrScore = scoreReplacementCandidate({ sku: candSku, description: candDesc, price: candPrice, leadTimeDays: candLead }, origAttrs, curPrice);
-    if (origAttrs.componentCategory !== 'UNKNOWN' && attrScore <= 0) continue;
-    if (!best || attrScore > best.attrScore || (attrScore === best.attrScore && candLead < best.candLead)) {
-      best = { candSku, candDesc, candLead, candPrice, attrScore };
-    }
-  }
-  return best;
-}
-
 function _checkGeneralAvailabilityLeadTimeOpportunities(items, catalogData, chassisDir) {
   if (!catalogData || !Array.isArray(catalogData.entries)) return null;
   const catalogIndex = buildCatalogSkuIndex(catalogData);
@@ -405,29 +388,29 @@ function _checkGeneralAvailabilityLeadTimeOpportunities(items, catalogData, chas
     const curLead = it.leadTimeDays ?? catItem?.leadTimeDays ?? extractCatalogItemLeadTime(catItem?.skuData || it)?.days ?? null;
     if (!Number.isFinite(curLead) || curLead < 21) continue;
 
-    const origAttrs = extractComponentAttributes(it.description || catItem?.description || '', cleanSku, it.category || '');
     const curPrice = it.unitListPrice || getSkuListPrice(cleanSku, catalogData, chassisDir) || 0;
-    const best = _findFastActiveLeadCandidate(cleanSku, origAttrs, curLead, curPrice, catalogIndex, catalogData, chassisDir);
+    const best = findCatalogAvailabilityMatches(it, curLead, catalogIndex).find(match => curLead - match.leadTimeDays >= 14);
     if (!best) continue;
 
-    const daysSaved = curLead - best.candLead;
+    const daysSaved = curLead - best.leadTimeDays;
+    const candidatePrice = getSkuListPrice(best.sku, catalogData, chassisDir) || 0;
     const qty = it.quantity || 1;
-    const savingsUsd = (curPrice > 0 && best.candPrice > 0 && curPrice > best.candPrice) ? (curPrice - best.candPrice) * qty : 0;
+    const savingsUsd = (curPrice > 0 && candidatePrice > 0 && curPrice > candidatePrice) ? (curPrice - candidatePrice) * qty : 0;
     totalSavings += savingsUsd;
     foundOpps.push({
       id: `VE-OPT-LEADTIME-${cleanSku}`,
-      component: origAttrs.componentCategory || it.category || 'Hardware Option',
+      component: it.category || 'Hardware Option',
       type: 'Supply Chain & Lead-Time Availability',
-      title: `Faster Active Availability for ${cleanSku} (${curLead}d -> ${best.candLead}d, saves ${daysSaved}d)`,
-      headline: `Faster Active Availability for ${cleanSku} (${curLead}d -> ${best.candLead}d, saves ${daysSaved}d)`,
+      title: `Faster catalog availability for ${cleanSku} (${curLead}d → ${best.leadTimeDays}d)`,
+      headline: `Faster catalog availability for ${cleanSku} (${curLead}d → ${best.leadTimeDays}d)`,
       severity: 'OPPORTUNITY',
       currentSelection: `${cleanSku} (${curLead}-day lead time)`,
-      recommendedAlternative: `${best.candDesc} (${best.candSku}, ${best.candLead}-day lead time)`,
+      recommendedAlternative: `${best.description} (${best.sku}, ${best.leadTimeDays}-day lead time)`,
       leadTimeSavedDays: daysSaved,
       estimatedSavingsUsd: savingsUsd,
       potentialSavingsUsd: savingsUsd,
-      rationale: `Active close-attribute alternative ${best.candSku} reduces delivery lead time by ${daysSaved} days (${curLead}d -> ${best.candLead}d).`,
-      presalesPitch: `Suggesting ${best.candSku} keeps core functional parity while pulling delivery forward by ${daysSaved} days.`
+      rationale: `Catalog match ${best.sku} has a component estimate ${daysSaved} days earlier.`,
+      presalesPitch: 'Check compatibility and the delivery estimate for the complete configuration in OCA.'
     });
   }
 
