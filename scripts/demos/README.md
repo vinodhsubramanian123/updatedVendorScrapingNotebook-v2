@@ -8,6 +8,5 @@ Contains developer utilities for interactive browser audits, CDP visual demonstr
 |---|---|---|
 | `live_visual_demo_cdp.js` | `npm run demo:live` | Live interactive demonstration highlighting OCA DOM navigation in real-time. |
 | `demo_qs_vs_menu_cdp.js` | `npm run demo:qs` | Comparative demo showing QuickSpecs rules vs live OCA menu options. |
-| `capture_topology_screenshot.js` | `node scripts/demos/capture_topology_screenshot.js` | Captures headless PNG render of the hardware topology graph. |
-| `deep_e2e_browser_audit.js` | `node scripts/demos/deep_e2e_browser_audit.js` | Full browser automation audit verifying UI rendering and button actions. |
-| `interactive_browser_eval_suite.js` | `node scripts/demos/interactive_browser_eval_suite.js` | Comprehensive browser test runner for dashboard workflows. |
+
+Browser E2E UI audits live in [`scripts/maintenance/test_dashboard_browser_e2e.js`](../maintenance/test_dashboard_browser_e2e.js) and [`tests/e2e/test_dashboard_full_portfolio_e2e.js`](../../tests/e2e/test_dashboard_full_portfolio_e2e.js).

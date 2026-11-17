@@ -1575,12 +1575,21 @@ if (require.main === module) {
       items = parseSkuLines(fileContent.split(/\r?\n/)).items;
     }
 
-    const { getChassisCatalog } = require('../catalog/catalog_discovery.js');
-    const chassisInfo = getChassisCatalog ? getChassisCatalog(chassisName, {}) : null;
-    const catalogData = chassisInfo?.catalogData || null;
+    const { listAllCatalogs, getCatalogDetail } = require('../catalog/catalog_discovery.js');
+    const needle = String(chassisName || '').replace(/\s+/g, '_').toLowerCase();
+    const matchedCatalog = listAllCatalogs().find(c =>
+      c.id.toLowerCase() === needle ||
+      c.chassis.toLowerCase() === needle ||
+      path.basename(c.catalogDir).toLowerCase() === needle
+    );
+    const catalogData = matchedCatalog?.catalogJsonPath ? getCatalogDetail(matchedCatalog.catalogJsonPath) : null;
 
-    const troublesome = identifyTroublesomeSkus(items, catalogData, { chassis: chassisName });
-    const candidate = buildLeastDeltaCandidate(items, catalogData, { chassis: chassisName });
+    const chassisInfo = matchedCatalog
+      ? { id: matchedCatalog.id, chassis: matchedCatalog.chassis, model: matchedCatalog.chassis, catalogDir: matchedCatalog.catalogDir }
+      : { id: chassisName, chassis: chassisName, model: chassisName };
+    const evalResults = {};
+    const troublesome = identifyTroublesomeSkus(items, evalResults, catalogData, chassisInfo);
+    const candidate = buildLeastDeltaCandidate(items, [], troublesome, evalResults, catalogData, chassisInfo);
 
     if (jsonOut) {
       console.log(JSON.stringify({ troublesome, candidate }, null, 2));
@@ -1591,8 +1600,12 @@ if (require.main === module) {
       console.log('---------------------------------------------------------------');
       console.log(`⚠️ Troublesome SKUs Identified: ${troublesome.length}`);
       troublesome.forEach((t, i) => {
-        console.log(`  ${i + 1}. SKU [${t.sku}] (${t.roleType}): ${t.reason}`);
-        console.log(`     Cascading additions: ${t.cascadingSkus.join(', ') || 'None'}`);
+        const skuLabel = t.originalSku || t.sku || 'UNKNOWN';
+        const kindLabel = t.type || t.roleType || 'TROUBLESOME_SKU';
+        const reasonText = t.troublesomeReason || t.reason || '';
+        const cascadeList = Array.isArray(t.cascadingSkusEliminated) ? t.cascadingSkusEliminated : (t.cascadingSkus || []);
+        console.log(`  ${i + 1}. SKU [${skuLabel}] (${kindLabel}): ${reasonText}`);
+        console.log(`     Cascading additions: ${cascadeList.join(', ') || 'None'}`);
       });
       console.log('---------------------------------------------------------------');
       if (candidate) {

@@ -730,10 +730,10 @@ function _buildFreeformFeasibilityCheck(queryText, chassisInfo, answerText) {
   let activeRulesCount = 0;
   if (chassisInfo.catalogDir) {
     try {
-      const { loadActiveKnowledgeRules } = require('../lib/feedback/feedback_loop.js');
-      if (typeof loadActiveKnowledgeRules === 'function') {
-        activeRulesCount = loadActiveKnowledgeRules(chassisInfo.catalogDir).length;
-      }
+      const { loadActiveKnowledgeRules } = require('../lib/catalog/active_knowledge_router.js');
+      const chassisVariant = chassisInfo.chassisKey || path.basename(chassisInfo.catalogDir);
+      const categorized = loadActiveKnowledgeRules(chassisVariant, chassisInfo.catalogDir);
+      activeRulesCount = Array.isArray(categorized?.allRules) ? categorized.allRules.length : 0;
     } catch { /* ignore */ }
   }
   return {

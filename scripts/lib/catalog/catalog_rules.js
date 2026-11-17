@@ -291,9 +291,14 @@ function _resolveRulesDirectory(targetDir) {
   if (!resolvedDir) return null;
   if (!fs.existsSync(resolvedDir)) {
     try {
-      const { findCatalogDirectory } = require('./catalog_discovery.js');
-      const found = findCatalogDirectory(resolvedDir);
-      return found || null;
+      const { listAllCatalogs } = require('./catalog_discovery.js');
+      const needle = path.basename(resolvedDir).replace(/\s+/g, '_').toLowerCase();
+      const found = listAllCatalogs().find(c =>
+        c.id.toLowerCase() === needle ||
+        c.chassis.toLowerCase() === needle ||
+        path.basename(c.catalogDir).toLowerCase() === needle
+      );
+      return found ? found.catalogDir : null;
     } catch (_) {
       return null;
     }

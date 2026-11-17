@@ -9,7 +9,6 @@ Houses the 7-aspect physical pre-check math kernels, batch BOQ processors, strat
 | `eval_boq.js` | `evaluateBoq(filePath, chassisId)` | Main CLI runner for customer quotes and BOMs against catalog rules, with circuit breakers and Section 3.5 value engineering reports. |
 | `route_query.js` | `routePresalesQuery(text, payload)` | Deterministic single-user presales query router classifying queries into Freeform Q&A, RFP Sizing, BOQ Evaluation, BOM Reconciliation, or Catalog Intelligence (`INV-78`). |
 | `eval_multi_boq.js` | `evaluateMultiBoq()` | Evaluates multi-chassis batch customer proposals and splits by chassis type. |
-| `agentic_eval.js` | `runAgenticEval()` | Dual-brain evaluation using MCP tools and Gemini verification loop. |
 | `adversarial_agent.js` | `runChaosSuite()` | Adversarial red-teaming and boundary fuzzing agent. |
 
 ## 3. Evaluation Pipeline Stages

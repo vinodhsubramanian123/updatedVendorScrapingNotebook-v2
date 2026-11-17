@@ -26,7 +26,6 @@ Handles parsing, preprocessing, validation, physical evaluation, budget optimiza
 | Module | Main Exports | Purpose |
 |---|---|---|
 | `bom_verifier.js` | `validateBoqEvaluationCriteria()` | 18-point pre-presentation acceptance gate (B1–B18) and universal criteria (U1–U6). |
-| `acceptance_gate.js` | `evaluateAcceptanceGate()`, `issueDeliveryAuthorization()` | Cryptographic pre-presentation delivery authorization (`INV-128`). |
 | `quantity_conservation.js` | `buildUniversalQuantityConservationLedger()` | Line-by-line tender quantity conservation engine and deficit delivery gate (`INV-192`, `INV-196`). |
 | `solution_evidence.js` | `solutionFingerprint()`, `candidateReviewCurrent()` | Binds canonical manifest fingerprints and verifies NotebookLM double-check freshness. |
 | `vendor_bom_verifier.js` | `verifyVendorBom()` | Cross-verifies vendor quote SKUs against promoted catalog rules and detects missing base options. |
@@ -61,7 +60,6 @@ Handles parsing, preprocessing, validation, physical evaluation, budget optimiza
 | `delivery_pacing_analyzer.js` | `analyzeDeliveryPacing()` | Identifies component GA wave gaps and factory lead-time pacing bottlenecks (`INV-177`, `INV-180`). |
 | `cross_vendor_transformer.js` | `transformCompetitorBom()` | Transpiles Cisco/Dell competitor quotes to evidence-backed HPE equivalents (`INV-190`). |
 | `heterogeneous_tender_modernizer.js`| `modernizeHeterogeneousTender()` | Plans mixed-domain hardware tenders and loose-component carrier allocations. |
-| `vendor_quote_reconciler.js` | `reconcileVendorQuote()` | Compares customer tender requirements against partner quotes across 4 dimensions. |
 | `support_policy.js` | `resolveSupportPolicy()` | Resolves product-specific HPE Tech Care tiers and retention options. |
 
 ### Deliverable Generation, Serialization & Discovery Plans

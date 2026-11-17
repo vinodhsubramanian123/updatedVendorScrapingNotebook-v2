@@ -130,7 +130,7 @@ node -e "
 "
 
 # Run catalog diff against previous snapshot to view additions & price changes
-node scripts/catalogs/diff_catalog.js outputs/ProLiant/Gen12/DL380_Gen12
+node scripts/lib/catalog/diff_catalog.js outputs/ProLiant/Gen12/DL380_Gen12
 
 # Sync Master Scraped Catalog Registry
 npm run registry:sync

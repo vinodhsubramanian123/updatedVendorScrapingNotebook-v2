@@ -368,7 +368,7 @@ node scripts/evaluators/eval_boq.js tests/fixtures/test_boq_dl380_gen12.csv --ch
 node scripts/evaluators/eval_multi_boq.js /path/to/tender_rfq.xlsx
 
 # Generate Partner Portal BOM with Merged Multiplier Spans & 2-Line Separation
-node scripts/catalogs/generate_tender_partner_bom.js
+node scripts/lib/boq/generate_boq_xlsx.js eval_output.json --partner-portal
 
 # Simulate partner portal rejection and log KnowledgeDelta
 npm run eval:boq tests/fixtures/test_boq_dl380_gen12.csv --simulate-portal-error "ERR_STORAGE_CABLE: Controller MR416i-p requires Cable Kit P76453-B21"

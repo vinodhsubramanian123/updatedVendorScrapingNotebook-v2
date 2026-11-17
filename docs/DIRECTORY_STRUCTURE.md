@@ -54,7 +54,7 @@ vendorNotebookSolution/
 │   ├── config/                            ← Chassis maps, JSON profiles, category configs, catalog_coverage_profiles.json
 │   ├── lib/                               ← Domain library subsystems
 │   │   ├── aspects/                       ← 7 Physical hardware aspect math checkers
-│   │   ├── boq/                           ← Preprocessor, parser, math engine, bom_verifier.js, quantity_conservation.js, vendor_quote_reconciler.js & Excel exporter
+│   │   ├── boq/                           ← Preprocessor, parser, math engine, bom_verifier.js, quantity_conservation.js, vendor_bom_verifier.js & Excel exporter
 │   │   ├── catalog/                       ← Rules extractor, discovery, diffing, catalog_coverage.js & versioning
 │   │   ├── conflict/                      ← Conflict graph, least_delta_combinator.js, decision_trace.js & strategy synthesis
 │   │   ├── contracts/                     ← Typed workflow schemas, delivery authorization & signing secrets

@@ -102,11 +102,11 @@ node -e "
   console.log(JSON.stringify(verifyVendorBOM(quote, baseline, 'outputs/ProLiant/Gen12/DL380_Gen12'), null, 2));
 "
 
-# Generate standardized 7-column Partner Upload workbook from reconciliation output
-node scripts/catalogs/generate_tender_partner_bom.js
+# Generate standardized 7-column Partner Upload workbook from reconciliation/evaluation output
+node scripts/lib/boq/generate_boq_xlsx.js eval_output.json --partner-portal
 ```
 
-> **Note**: Use [`vendor_bom_verifier.js`](../../../scripts/lib/boq/vendor_bom_verifier.js) (and its canonical semantic alias [`vendor_quote_reconciler.js`](../../../scripts/lib/boq/vendor_quote_reconciler.js)) in `scripts/lib/boq/`.
+> **Note**: Use [`vendor_bom_verifier.js`](../../../scripts/lib/boq/vendor_bom_verifier.js) in `scripts/lib/boq/`. It is the only reconciliation module; the former `vendor_quote_reconciler.js` alias was retired.
 
 ---
 

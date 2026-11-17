@@ -39,4 +39,13 @@ describe('Active Knowledge Router & Reachability Suite', () => {
       }
     }
   });
+
+  test('4. Scope-aware deltaId deduplication preserves DL380_Gen12 learned rules when DL380_Gen11 shares the same deltaId', () => {
+    const rulesGen12 = loadActiveKnowledgeRules('DL380_Gen12', path.join(process.cwd(), 'outputs', 'ProLiant', 'Gen12', 'DL380_Gen12'));
+    const ruleIds = new Set(rulesGen12.allRules.map(r => r.ruleId));
+    assert.ok(
+      ruleIds.has('LEARN_UNIVERSAL_NLM_READ_FAILOVER_AND_SYNC_PRESERVATION_20261114'),
+      'DL380_Gen12 must reach its own learned rule even when DL380_Gen11 has an identically-named deltaId in master_knowledge_registry.json'
+    );
+  });
 });

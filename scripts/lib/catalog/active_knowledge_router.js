@@ -50,7 +50,10 @@ function _loadRawDeltasFromDisk(chassisDir) {
       }
 
       for (const d of list) {
-        const key = d.deltaId || `${d.chassis}:${d.affectedSku}:${d.requiredDependencySku || ''}:${d.ruleType || ''}`;
+        const scopeKey = d.productId || d.chassis || '';
+        const key = d.deltaId
+          ? `${d.deltaId}::${scopeKey}`
+          : `${scopeKey}:${d.affectedSku}:${d.requiredDependencySku || ''}:${d.ruleType || ''}`;
         if (!seenKeys.has(key)) {
           seenKeys.add(key);
           rawDeltas.push(d);

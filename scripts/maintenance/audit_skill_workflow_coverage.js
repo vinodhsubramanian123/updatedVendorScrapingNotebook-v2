@@ -65,7 +65,7 @@ function documentedModules(root, skills, modules) {
     const references = new Map();
     for (const file of skill.files) {
       const text = fs.readFileSync(path.join(root, file), 'utf8');
-      for (const match of text.matchAll(/(?:scripts|dashboard|tests)\/[A-Za-z0-9_./-]+\.(?:[cm]?js|jsx|tsx?|json)/g)) {
+      for (const match of text.matchAll(/(?:scripts|dashboard|tests)\/[A-Za-z0-9_./-]+\.(?:json|jsx|tsx?|[cm]?js)/g)) {
         const target = match[0];
         references.set(`${file}:${target}`, { document: file, target, method: 'explicit-path', exists: fs.existsSync(path.join(root, target)) });
       }
