@@ -6,8 +6,8 @@ description: >-
   Cisco/Dell/cross-vendor work, use cross-vendor-transformation-skill. For freeform Q&A or sizing
   without SKUs, use presales-query-router. ALWAYS called via presales-query-router first for intent
   classification — do NOT invoke directly from raw user input without routing. **DO call for**:
-  concrete part numbers or tabular tender files that need the 7-aspect physical evaluation and 5-tier
-  strategy matrix. **DO NOT call for**: freeform Q&A or sizing without SKUs (presales-query-router),
+  concrete part numbers or tabular tender files that need the 7-aspect physical evaluation and
+  ranked strategy matrix. **DO NOT call for**: freeform Q&A or sizing without SKUs (presales-query-router),
   or non-HPE tenders (cross-vendor-transformation-skill).
 ---
 
@@ -60,10 +60,12 @@ HALT-BOQ4: If any customer SKU is unmatched in the catalog (customer unmatched S
 5. **Gemini NotebookLM Grounding & Ephemeral Solution Validation (`INV-24`)**:
    - Grounded RAG against official QuickSpecs PDFs and master 22-sheet catalogs.
    - Ephemeral solution validation: temporarily attaches candidate sheet, extracts citations, and detaches immediately (`INV-24`).
-6. **5-Tier Strategic Resolution Matrix Ranking (`INV-74`, `INV-193`)**:
+6. **Strategic Resolution Matrix Ranking (`INV-74`, `INV-193`, `INV-237`)**:
    - **Rank 1**: Customer intent preserved with minimum changes to achieve 100% buildability.
    - **Rank 1A / 1B**: Parallel valid topological paths (e.g., SAS Expander vs. 2nd Controller).
    - **Rank 1L**: Least-Delta functional alternative pruning cascading dependencies (`least-delta-combinator-skill`).
+   - For a server BOM with a known lead time above 30 days, review the original option and the availability candidates returned by the evaluator. Present the closest equivalent first when available. Include a faster upgrade option when the evaluator finds a further reduction in the longest known lead time across the full order. Use the candidate's complete BOM, including any dependent kits, when configuring it in OCA.
+   - Report the SKU and lead time for each bottleneck, any tied pacing SKUs, and the new pacing SKU after substitutions. Mark the full-order component estimate incomplete if any line is missing lead time. Use candidate-specific OCA evidence for a live solution estimate. [Delivery lead-time invariants](../../../docs/INVARIANTS.md)
    - **The Zero-Rank Invariant**: Unbuildable configurations receive ZERO rank and are excluded from customer deliverables.
 7. **Value Engineering & CapEx/OpEx Optimization (`INV-75`, `INV-76`)**:
    - Evaluated strictly AFTER 100% buildability is confirmed (`value-engineering-skill`).

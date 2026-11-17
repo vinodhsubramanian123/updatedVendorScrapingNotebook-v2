@@ -56,6 +56,8 @@ Every output, regardless of track, MUST pass these universal checks:
 | B18 | **Tender Quantity Conservation** | Mathematical line-by-line conservation ledger; residual deficits ($\Delta < 0$) block deliverable export (`INV-192`, `INV-196`) | 🔴 BLOCK | Programmatic (`bom_verifier.js`) |
 | B21 | **Production Lifecycle Gate** | Non-overrideable production deliverables must not rely on Obsolete/EOL/Discontinued SKUs without active replacement or explicit clearance/dual-track remark disclosure | 🔴 BLOCK | Programmatic (`bom_verifier.js`) |
 
+When reviewing a server BOM with an availability alternative, verify that the comparison includes shared order lines and that the slowest known lead time improves. Check the original and replacement SKU, quantity, lead time, and equivalent or upgrade classification. Mark the full-order component estimate incomplete when any lead time is missing. Use the exact candidate's OCA evidence for a live delivery estimate and its CLIC receipt for vendor acceptance. [Delivery lead-time invariants](../../../docs/INVARIANTS.md)
+
 > 🔒 **Cryptographic Delivery Authorization Gate (`INV-128`)**: Customer deliverables (Excel workbooks, serialized JSON, and Drive uploads) require an issued `DeliveryAuthorization` certificate. If any BLOCK criterion fails, deliverable export is strictly halted with `customerDisposition = 'DELIVERY_BLOCKED_UNBUILDABLE'`.
 
 ### Track: RFP Sizing-to-BOM
