@@ -43,6 +43,11 @@ HALT-CQG4: If run_test_matrix.js discovers 0 suites or a suite executes 0 tests:
 
 HALT-CQG5: If failure_ledger.json contains unhandled crash or failure entries:
   emit [ERR_FAILURE_LEDGER_NOT_CLEAN] and HALT. Investigate root cause before release.
+
+HALT-CQG6: If analyze_unreachable_modules.js reports a library module unreachable from every production root
+  and absent from ORPHAN_ALLOWLIST, or reports a stale allowlist entry:
+  emit [ERR_UNREACHABLE_MODULE] and HALT. Wire the module to a skill, npm script or caller, or delete it with its tests and docs.
+  Verification: npm run test:deadcode
 ```
 
 ---
@@ -63,6 +68,9 @@ npm run lint:core
 
 # 4. Circular dependency DAG check (690+ files)
 npm run test:circular
+
+# 4b. Unreachable-module gate (no dead library code)
+npm run test:deadcode
 
 # 5. Domain-specific regression testing
 npm run test:domain aspects

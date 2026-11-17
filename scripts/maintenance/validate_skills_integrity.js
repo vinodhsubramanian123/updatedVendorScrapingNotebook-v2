@@ -166,11 +166,10 @@ function checkEncoding(content, issues) {
 
 function checkBanned(body, warnings) {
   const lines = stripCodeAndComments(body).split(/\r?\n/);
-  lines.forEach((line, i) => {
+  lines.forEach(line => {
     for (const { word, re } of BANNED) {
       if (re.test(line)) warnings.push(`banned term "${word}": ${line.trim().slice(0, 90)}`);
     }
-    if (i < 0) warnings.push('unreachable');
   });
 }
 
