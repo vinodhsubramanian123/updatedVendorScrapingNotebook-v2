@@ -22,6 +22,7 @@ const {
   isSmartChoiceOrBtoSku,
   classifyCommercialFulfillmentMode,
   classifyLifecycleState,
+  attachCompanionServices,
   buildCatalogSkuIndex
 } = require('../lib/catalog/sku.js');
 const { resolveRequirementIntent } = require('../lib/boq/requirement_intent_resolver.js');
@@ -71,7 +72,7 @@ const BASE_PLATFORM_SIGNATURES = [
   { key: 'sn3600b', pattern: /\bsn\s*3600b\b/i, prefix: 'sn3600b' }
 ];
 
-const COMPETITOR_VENDORS = ['cisco', 'lenovo', 'supermicro', 'dell'];
+const COMPETITOR_VENDORS = ['cisco', 'lenovo', 'supermicro', 'dell', 'huawei'];
 const OCR_IMAGE_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp', '.tiff', '.bmp', '.pdf'];
 
 function _buildPlatformSignatures(catalogs) {
@@ -180,7 +181,8 @@ function _matchPlatformCandidates(text, catalogs, platformSignatures, explicitGe
 function _loadCatalogDataSafe(catalogJsonPath) {
   if (!catalogJsonPath || !fs.existsSync(catalogJsonPath)) return null;
   try {
-    return JSON.parse(fs.readFileSync(catalogJsonPath, 'utf-8'));
+    const parsed = JSON.parse(fs.readFileSync(catalogJsonPath, 'utf-8'));
+    return attachCompanionServices(parsed, catalogJsonPath);
   } catch (err) {
     logger.warn('ROUTE_QUERY', `Error parsing catalog JSON at ${catalogJsonPath}: ${err?.message}`);
     return null;
@@ -902,6 +904,15 @@ async function _handleBoqEvaluation(queryText, context) {
   }
 }
 
+async function _continueOcrDownstreamIfRequested(queryText, context, parsedItems) {
+  if (context?.continueDownstream !== true || !context?.downstreamIntent) return null;
+  return _dispatchIntentHandler(
+    { intent: context.downstreamIntent },
+    queryText,
+    { ...context, items: parsedItems, filePath: undefined }
+  );
+}
+
 async function _handleOcrQuoteIngestion(queryText, context) {
   const imgPath = context.filePath || (queryText.match(/[\w\-./\\]+\.(?:png|jpg|jpeg|webp|tiff|bmp|pdf)/i)?.[0] || '');
   const policy = _resolveContextPolicy(context, { defaultOffline: false });
@@ -961,6 +972,7 @@ async function _handleOcrQuoteIngestion(queryText, context) {
         message: 'OCR extracted document text but identified zero valid enterprise hardware part numbers.'
       };
     }
+    const downstreamResult = await _continueOcrDownstreamIfRequested(queryText, context, parsed.items);
     return {
       intent: 'OCR_QUOTE_INGESTION',
       filePath: imgPath,
@@ -975,6 +987,7 @@ async function _handleOcrQuoteIngestion(queryText, context) {
       },
       itemCount: parsed.items.length,
       items: parsed.items,
+      ...(downstreamResult ? { downstreamResult } : {}),
       effectivePolicy: policy,
       message: `Successfully extracted ${parsed.items.length} hardware BOM item(s) from ${path.basename(imgPath)} via Gemini Vision OCR.`
     };
@@ -1023,7 +1036,8 @@ function _mapCatalogSkuDetail(entry, found) {
 
 function _findLiveSkuDetails(catalogData, targetSku) {
   if (!targetSku || !catalogData?.entries) return null;
-  for (const entry of catalogData.entries) {
+  const allEntries = [...catalogData.entries, ...(catalogData._servicesEntries || [])];
+  for (const entry of allEntries) {
     if (!Array.isArray(entry.skus)) continue;
     const found = entry.skus.find(it => cleanBaseSKU(it.sku || it['Product #']) === targetSku);
     if (found) return _mapCatalogSkuDetail(entry, found);
@@ -1043,6 +1057,13 @@ function _handleCatalogIntelligence(queryText, context) {
     .auditCatalogFreshness(chassisInfo.catalogData, { staleWarningDays: 3, criticalOutdatedDays: 30 });
   const platform = getChassisMap()[chassisInfo.chassisKey];
   const commercialFulfillment = targetSku ? classifyCommercialFulfillmentMode(targetSku, liveSkuDetails?.description || '') : null;
+  let crossSolutionComparison = null;
+  if (targetSku) {
+    try {
+      const { compareSkuAcrossSolutions } = require('../lib/catalog/cross_solution_pricing.js');
+      crossSolutionComparison = compareSkuAcrossSolutions(targetSku);
+    } catch { /* non-blocking if cross-solution catalogs absent */ }
+  }
 
   return {
     targetSku,
@@ -1053,6 +1074,7 @@ function _handleCatalogIntelligence(queryText, context) {
     }),
     pricingTrail: skuHistory,
     commercialFulfillment,
+    crossSolutionComparison,
     liveDetails: liveSkuDetails ? {
       description: liveSkuDetails.description,
       category: liveSkuDetails.category,
@@ -1800,11 +1822,14 @@ async function _handleCrossVendorTransformation(queryText, context) {
   const fileIngest = await _ingestCompetitorFileInput(context, context.sourceVendor || _detectVendorFromText(queryText));
   if (fileIngest.earlyReturn) return fileIngest.earlyReturn;
   const candidateItems = context.targetBom || (Array.isArray(context.items) ? context.items : null);
+  const chassisInfo = targetChassis ? getChassisCatalog(targetChassis, context) : null;
   const transformResult = transformCompetitorQuote(fileIngest.inputData || queryText, fileIngest.sourceVendor, targetChassis, {
-    nodeMultiplier: nodeCount, targetBom: candidateItems || []
+    nodeMultiplier: nodeCount,
+    targetBom: candidateItems || [],
+    sourceItems: Array.isArray(context.sourceItems) ? context.sourceItems : (Array.isArray(fileIngest.parsedItems) ? fileIngest.parsedItems : []),
+    targetCatalogData: chassisInfo?.catalogData || null
   });
 
-  const chassisInfo = targetChassis ? getChassisCatalog(targetChassis, context) : null;
   const { parityGaps, evaluatedSolution } = _evaluateCrossVendorBomIfRequested(targetChassis, chassisInfo, transformResult, context);
   const effectivePolicy = _resolveContextPolicy(context, { defaultOffline: false, includeRagOnly: false });
   const candidateBom = transformResult.candidateBom || [];
@@ -1873,10 +1898,20 @@ function requireScopedCatalog(queryText, context) {
 async function _handleWorkloadDna(queryText, context) {
   const { extractWorkloadDna } = require('../lib/conflict/workload_dna');
   const { arbitrateContestedResources } = require('../lib/conflict/resource_arbitrator');
-  if (!context.items && !context.filePath) return {
-    intent: 'WORKLOAD_DNA', status: 'SCOPED_SIZING_REQUIRED', requestedWorkload: queryText,
-    message: 'Preserve the requested workload and size an exact product candidate before hardware profiling.'
-  };
+  if (!context.items && !context.filePath) {
+    const dnaProfile = extractWorkloadDna([{ description: queryText }]);
+    return {
+      intent: 'WORKLOAD_DNA',
+      status: 'SCOPED_SIZING_REQUIRED',
+      requestedWorkload: queryText,
+      dnaProfile,
+      recommendedSizingConstraints: {
+        memoryChannelMode: 'BALANCED_1DPC_OR_2DPC',
+        minFlashEndurance: /hana|redis|kafka|cassandra|sql|oltp/i.test(queryText) ? 'MU_OR_WI' : 'RI'
+      },
+      message: 'Preserve the requested workload and size an exact product candidate before hardware profiling.'
+    };
+  }
   const items = readRoutedItems(context);
   const dna = extractWorkloadDna(items);
   const chassisInfo = getChassisCatalog(queryText, context);
@@ -2127,10 +2162,32 @@ function _extractClusterPartition(context) {
   return null;
 }
 
+function _evaluatePartitionedClusters(partitionResult, scope) {
+  if (!Array.isArray(partitionResult?.clusters) || partitionResult.clusters.length === 0 || !scope?.catalogData) {
+    return null;
+  }
+  return partitionResult.clusters
+    .filter(c => Array.isArray(c?.items) && c.items.length > 0)
+    .map(c => {
+      try {
+        const evalRes = evaluateBOQMultiAspect(c.items, {
+          chassis: scope.chassisKey,
+          catalogData: scope.catalogData,
+          targetDir: scope.catalogDir,
+          serverCount: c.multiplier || 1
+        });
+        return { clusterName: c.name || c.clusterId || 'Cluster', serverCount: c.multiplier || 1, evaluation: evalRes };
+      } catch (err) {
+        return { clusterName: c.name || c.clusterId || 'Cluster', serverCount: c.multiplier || 1, error: err.message };
+      }
+    });
+}
+
 async function _handleMultiClusterTender(queryText, context) {
   const scope = requireScopedCatalog(queryText, context);
   const profile = getChassisMap()[scope.chassisKey];
   const partitionResult = _extractClusterPartition(context);
+  const perClusterEvaluations = _evaluatePartitionedClusters(partitionResult, scope);
 
   const counts = [...queryText.matchAll(/\b(\d+)\s*(?:nodes?|servers?|units?)\b/gi)].map(match => Number(match[1]));
   const count = context.serverCount ?? (partitionResult?.totalChassis || (counts.length === 1 ? counts[0] : null));
@@ -2147,6 +2204,7 @@ async function _handleMultiClusterTender(queryText, context) {
       powerEnvelopeKw: watts != null ? count * watts / 1000 : null,
       discoveredClusters: partitionResult?.clusters || null,
       clusterCount: partitionResult?.clusters?.length || 1,
+      perClusterEvaluations,
       quantityConservation: partitionResult?.quantityConservation || null },
     message: 'Rack and power estimates use explicit product height and supplied site/power inputs. Blade enclosure and multi-tier relationships require separate sizing.' };
 }

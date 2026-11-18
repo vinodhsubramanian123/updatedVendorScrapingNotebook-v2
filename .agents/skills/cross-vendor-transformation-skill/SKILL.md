@@ -12,9 +12,10 @@ description: >-
 # Cross-Vendor Transformation & Parity Translation Engine (`cross-vendor-transformation-skill`)
 
 ## 1. Scope & Parity Invariants
-This skill governs the systematic translation of competitor hardware tenders (Dell PowerEdge, Cisco UCS, Lenovo ThinkSystem, Supermicro) into verified HPE ProLiant/Synergy equivalents while preserving core customer specifications and documenting technical parity gaps (`INV-190`).
+This skill governs the systematic translation of competitor hardware tenders (Dell PowerEdge, Cisco UCS, Lenovo ThinkSystem, Huawei FusionServer/OceanStor, Supermicro) into verified HPE ProLiant/Synergy equivalents while preserving core customer specifications and documenting technical parity gaps (`INV-190`, `INV-243`).
 
 - **Competitor Ingress Detection (`INV-190`)**: Competitor part numbers are candidate evaluation requirements, never ground truth. They MUST be mapped to functional equivalents in the certified HPE catalog.
+- **Canonical Attribute-Vector Equivalence (`INV-243`)**: Extract canonical category attributes via `extractCanonicalAttributes()` and run `mapSourceBomToTargetCatalog()` / `mapSourceItemToTargetSku()` across active target hardware and companion `*_Services.json` entries. Preserve write-endurance and interconnect parity strictly; unresolved lines remain explicit parity gaps rather than silent downgrades.
 - **Fabric & Protocol Parity (`INV-216`)**: InfiniBand and RoCEv2 fabrics are distinct; high-performance compute interconnects (e.g., NVIDIA Quantum-2 IB vs. 200Gb/400Gb RoCEv2) MUST NOT be silently conflated or substituted without parity disclosure.
 - **Turnkey Completeness (`INV-228`)**: Turnkey competitor proposals specifying installation mandate equivalent HPE rail kits, optical transceivers, and PDU cables (`turnkey-racking-cabling-skill`).
 - **Normative Directives**: Comply with [Normative Language Standard](../../rules/normative_language.md).
@@ -51,8 +52,10 @@ HALT-CV3: If target chassis catalog is missing from outputs/{Family}/{Gen}/{Mode
 
 ## 💻 Implementation Engine & Direct Execution
 
-The implementation is `scripts/lib/boq/cross_vendor_transformer.js`:
+The implementation spans `scripts/lib/boq/cross_vendor_transformer.js`, `scripts/lib/boq/attribute_equivalence_mapper.js`, `scripts/lib/catalog/attribute_vectors.js`, and vendor adapters (`dell_adapter.js`, `huawei_adapter.js`):
 - `transformCompetitorQuote` transforms competitor hardware tenders into equivalent HPE ProLiant configurations.
+- `mapSourceBomToTargetCatalog` and `mapSourceItemToTargetSku` perform attribute-vector BOM-to-BOM mapping without endurance or protocol downgrades (`INV-243`).
+- `extractCanonicalAttributes` normalizes component specifications across CPU, RAM, storage, GPU, networking, and services.
 - `parseCompetitorSpecification` extracts core specifications (CPU, RAM, storage, GPU, networking) from raw rows.
 - `audit12PointPhysicalParity` audits physical parity across 12 architectural subsystems.
 - `detectFabricProtocol` distinguishes InfiniBand and RoCEv2 interconnect fabrics.
@@ -64,6 +67,9 @@ Presales query dispatch executes via `scripts/evaluators/route_query.js` (`execu
 
 ## 3. References & Related Charters
 - [`cross_vendor_transformer.js`](../../../scripts/lib/boq/cross_vendor_transformer.js) via `parseCompetitorSpecification()` and `transformCompetitorQuote()`
+- [`attribute_equivalence_mapper.js`](../../../scripts/lib/boq/attribute_equivalence_mapper.js) via `mapSourceBomToTargetCatalog()` and `mapSourceItemToTargetSku()`
+- [`attribute_vectors.js`](../../../scripts/lib/catalog/attribute_vectors.js) via `extractCanonicalAttributes()` and `getCanonicalCategorySchema()`
+- [`dell_adapter.js`](../../../scripts/lib/adapters/dell_adapter.js) and [`huawei_adapter.js`](../../../scripts/lib/adapters/huawei_adapter.js)
 - [Heterogeneous Tender Modernizer](../heterogeneous-tender-modernizer/SKILL.md)
 - [RFP Sizing Synthesizer](../rfp-sizing-synthesizer/SKILL.md)
-- [Master System Invariants Directory (INV-190, INV-216, INV-228)](../../../docs/INVARIANTS.md)
+- [Master System Invariants Directory (INV-190, INV-216, INV-228, INV-243)](../../../docs/INVARIANTS.md)

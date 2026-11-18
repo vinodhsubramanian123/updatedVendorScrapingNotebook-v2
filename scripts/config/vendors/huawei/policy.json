@@ -1,0 +1,22 @@
+{
+  "vendorId": "HUAWEI",
+  "vendorName": "Huawei Technologies",
+  "defaultSupportPolicy": {
+    "tier": "HI_CARE_ONSITE",
+    "durationYears": 3,
+    "description": "Huawei 3-Year Hi-Care Standard Onsite Hardware Support"
+  },
+  "terminology": {
+    "ctoTerm": "Configure-To-Order (CTO)",
+    "smartCto": "SCT Recommended",
+    "portalName": "Huawei SCT / UniSTAR Configurator",
+    "rulesEngine": "Huawei SCT Dependency Engine",
+    "bmcTerm": "iBMC",
+    "fleetMgmtTerm": "iMaster NCE / FusionDirector"
+  },
+  "domains": ["server", "storage", "networking"],
+  "evidenceLimits": [
+    "Huawei technical datasheets and SCT exports provide specification evidence, not live HPE CLIC acceptance.",
+    "Live Huawei partner portal scraping requires authenticated SCT/UniSTAR session."
+  ]
+}

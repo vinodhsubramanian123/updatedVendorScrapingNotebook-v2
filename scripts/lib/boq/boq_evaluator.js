@@ -943,6 +943,18 @@ function validatePowerRules(ctx) {
   }
 }
 
+function _validateSupportQuantityAlignment(support, serverCount, warnings) {
+  if (support.isManagementLicenseUnderprovisioned) {
+    warnings.push(`Management License Quantity Deficit (CLIC Rule 81322276 / INV-179): Configured ${support.managementLicenseCount} management license(s) for ${serverCount} server node(s); requires ${support.missingManagementLicenses} additional license(s).`);
+  }
+  if (support.isIloLicenseUnderprovisioned) {
+    warnings.push(`iLO License Quantity Deficit (INV-179): Configured ${support.iloLicenseCount} iLO license(s) for ${serverCount} server node(s); requires ${support.missingIloLicenses} additional license(s).`);
+  }
+  if (support.isChildSupportUnderprovisioned) {
+    warnings.push(`Hardware Support Child SKU Quantity Deficit (INV-32): Configured ${support.childSupportCount} child support unit(s) for ${serverCount} server node(s).`);
+  }
+}
+
 function validateSupportRules(ctx) {
   const { support, serverCount, warnings, errors, mathDeductions, missingDependencies } = ctx;
   if (support.hasContradictoryInstallServices) {
@@ -957,6 +969,18 @@ function validateSupportRules(ctx) {
     const reason = `SaaS vs Hardware Support Delineation: Configuration includes SaaS software subscriptions without physical Pointnext hardware support/warranty (Tech Care/Foundation Care). SaaS cloud management cannot substitute for physical server break-fix maintenance coverage.`;
     warnings.push(reason);
   }
+
+  if (support.hasManagementSupportTermMismatch) {
+    const reason = `Management vs Hardware Support Term Alignment: COM Ops / management SaaS term (${support.managementTermYears}-year) does not match physical Tech Care hardware support term (${support.hardwareSupportTermYears}-year). Align subscription and support durations unless staged renewal is intentional.`;
+    warnings.push(reason);
+  }
+
+  if (support.hasDiscontinuedIloLicense) {
+    const reason = `Discontinued Standalone iLO License: Legacy iLO Advanced SKU (512485-B21) is barred on modern Gen11/Gen12 platforms; use active iLO Advanced (BD505A) or qualifying Compute Ops Management SaaS (R7A11AAE / R7A12AAE).`;
+    warnings.push(reason);
+  }
+
+  _validateSupportQuantityAlignment(support, serverCount, warnings);
 
   if (support.needsAdditionalWindowsCores) {
     const reason = `OS Licensing Math: Server has ${support.detectedCpuCores} physical cores (${support.requiredWindowsCores} required across ${serverCount} node(s)) but only ${support.totalWindowsLicensedCores || support.totalCoveredWindowsCores} Windows Server licensed cores. Requires ${support.missingCoreLicenses} additional core license packs.`;

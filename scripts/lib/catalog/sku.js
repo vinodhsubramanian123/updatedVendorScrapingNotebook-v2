@@ -6,6 +6,8 @@
  * and categorizing HPE hardware SKUs, option suffixes, and service SKUs.
  */
 
+const fs = require('fs');
+
 // Universal HPE SKU Regex
 // Matches:
 // 1. Hyphenated hardware SKUs: P73282-B21, 867796-B21, P07646-B21
@@ -289,6 +291,66 @@ function _isNonActiveLifecycle(lifecycleStatus = '', diffStatus = '', rawSku = '
   return classifyLifecycleState(lifecycleStatus, diffStatus, rawSku, rawDesc).isBlockedForProduction;
 }
 
+function _indexCatalogEntries(entries, index) {
+  for (const entry of (entries || [])) {
+    const parentCategory = entry.parentCategory || '';
+    const subCategory = entry.subCategory || '';
+    if (!Array.isArray(entry.skus)) continue;
+    for (const s of entry.skus) {
+      const raw = s['Product #'] || s.sku || s['SKU'];
+      const clean = cleanBaseSKU(raw);
+      if (clean && !index.has(clean)) {
+        const lifecycleStatus = s['Lifecycle Status'] || s.lifecycleStatus || s.Status || '';
+        const diffStatus = s['Diff Status'] || s.diffStatus || '';
+        index.set(clean, {
+          entry,
+          skuData: s,
+          parentCategory,
+          subCategory,
+          lifecycleStatus,
+          diffStatus,
+          lifecycleState: classifyLifecycleState(lifecycleStatus, diffStatus, raw, s.Description || s.description || '')
+        });
+      }
+    }
+  }
+}
+
+/**
+ * Attach companion *_Services.json entries as a non-enumerable _servicesEntries
+ * property without mutating catalogData.entries or metadata counts (INV-186).
+ * @param {object} catalogData
+ * @param {string} catalogJsonPath
+ * @returns {object}
+ */
+function attachCompanionServices(catalogData, catalogJsonPath) {
+  if (!catalogData || typeof catalogData !== 'object' || !catalogJsonPath || catalogData._servicesEntries) {
+    return catalogData;
+  }
+  const servicesPath = String(catalogJsonPath).replace(/_Catalog\.json$/i, '_Services.json');
+  if (servicesPath === String(catalogJsonPath) || !fs.existsSync(servicesPath)) {
+    return catalogData;
+  }
+  try {
+    const parsed = JSON.parse(fs.readFileSync(servicesPath, 'utf8'));
+    Object.defineProperty(catalogData, '_servicesEntries', {
+      value: Array.isArray(parsed?.entries) ? parsed.entries : [],
+      enumerable: false,
+      configurable: true
+    });
+  } catch { /* ignore unreadable companion services file */ }
+  return catalogData;
+}
+
+/**
+ * Normalize WebLogic OCA negative maxQty sentinels (-1/-2/-3) to null.
+ * @param {number|null|undefined} maxQty
+ * @returns {number|null|undefined}
+ */
+function normalizeMaxQtySentinel(maxQty) {
+  return (typeof maxQty === 'number' && maxQty < 0) ? null : maxQty;
+}
+
 /**
  * Build or retrieve a memoized Map index for O(1) catalog SKU lookups.
  * @param {object} catalogData - Catalog JSON data object
@@ -299,28 +361,9 @@ function buildCatalogSkuIndex(catalogData) {
   if (catalogData._skuIndex instanceof Map) return catalogData._skuIndex;
 
   const index = new Map();
-  for (const entry of catalogData.entries) {
-    const parentCategory = entry.parentCategory || '';
-    const subCategory = entry.subCategory || '';
-    if (Array.isArray(entry.skus)) {
-      for (const s of entry.skus) {
-        const raw = s['Product #'] || s.sku || s['SKU'];
-        const clean = cleanBaseSKU(raw);
-        if (clean && !index.has(clean)) {
-          const lifecycleStatus = s['Lifecycle Status'] || s.lifecycleStatus || s.Status || '';
-          const diffStatus = s['Diff Status'] || s.diffStatus || '';
-          index.set(clean, {
-            entry,
-            skuData: s,
-            parentCategory,
-            subCategory,
-            lifecycleStatus,
-            diffStatus,
-            lifecycleState: classifyLifecycleState(lifecycleStatus, diffStatus, raw, s.Description || s.description || '')
-          });
-        }
-      }
-    }
+  _indexCatalogEntries(catalogData.entries, index);
+  if (Array.isArray(catalogData._servicesEntries)) {
+    _indexCatalogEntries(catalogData._servicesEntries, index);
   }
 
   catalogData._skuIndex = index;
@@ -421,6 +464,8 @@ module.exports = {
   isTaaGtaCatalogOption,
   classifyLifecycleState,
   isNonActiveLifecycle: _isNonActiveLifecycle,
+  attachCompanionServices,
+  normalizeMaxQtySentinel,
   buildCatalogSkuIndex,
   classifySkuValidation,
   getUniqueSkuCount

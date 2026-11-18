@@ -119,6 +119,61 @@ function parseCpuInfo(desc, qty) {
   };
 }
 
+const MANAGEMENT_LICENSE_METADATA = Object.freeze({
+  R7A11AAE: { tier: 'COM_STANDARD', termYears: 3 },
+  R7A12AAE: { tier: 'COM_STANDARD', termYears: 5 },
+  S2E10AAE: { tier: 'COM_STANDARD', termYears: 7 },
+  S5E59AAE: { tier: 'COM_ENHANCED', termYears: 3 },
+  S5E60AAE: { tier: 'COM_ENHANCED', termYears: 5 },
+  S5E61AAE: { tier: 'COM_ENHANCED', termYears: 7 },
+  E5Y43A: { tier: 'ONEVIEW_ADV', termYears: null },
+  E5Y43AAE: { tier: 'ONEVIEW_ADV', termYears: null },
+  E5Y35AAE: { tier: 'ONEVIEW_ADV', termYears: null },
+  P8B31A: { tier: 'ONEVIEW_NO_ILO', termYears: null }
+});
+
+function extractManagementLicenseMetadata(sku = '', description = '') {
+  const clean = cleanBaseSKU(sku);
+  const desc = String(description || '').toLowerCase();
+  if (MANAGEMENT_LICENSE_METADATA[clean]) {
+    return { sku: clean, ...MANAGEMENT_LICENSE_METADATA[clean] };
+  }
+  if (clean === 'S1A05A') return { sku: clean, tier: 'FIO_PRECLAIM_TOKEN', termYears: null };
+  if (!desc.includes('compute ops management') && !desc.includes('oneview') && !desc.includes('com adv')) {
+    return null;
+  }
+  const yrMatch = desc.match(/\b(\d+)\s*-?\s*(?:year|yr|y)\b/i);
+  const termYears = yrMatch ? parseInt(yrMatch[1], 10) : null;
+  const tier = desc.includes('oneview')
+    ? 'ONEVIEW_ADV'
+    : (desc.includes('enhanced') || desc.includes('adv') ? 'COM_ENHANCED' : 'COM_STANDARD');
+  return { sku: clean || sku, tier, termYears };
+}
+
+function extractSupportTermYears(sku = '', description = '') {
+  const clean = cleanBaseSKU(sku);
+  const desc = String(description || '').toLowerCase();
+  const yrMatch = desc.match(/\b(\d+)\s*-?\s*(?:year|yr|y)\b/i);
+  if (yrMatch) return parseInt(yrMatch[1], 10);
+  const suffixMatch = clean.match(/^H[A-Z0-9]{4}A([13457])\b/i);
+  if (suffixMatch) return parseInt(suffixMatch[1], 10);
+  return null;
+}
+
+function extractIloLicenseMetadata(sku = '', description = '') {
+  const clean = cleanBaseSKU(sku);
+  const desc = String(description || '').toLowerCase();
+  if (clean === '512485-B21') {
+    return { sku: clean, tier: 'ILO_ADVANCED_DISCONTINUED', isDiscontinued: true };
+  }
+  if (['BD505A', 'BD506A', 'BD507A', 'E6U59ABE', 'E6U64ABE'].includes(clean) ||
+      (desc.includes('ilo') && (desc.includes('advanced') || desc.includes('essentials') || desc.includes('scale')))) {
+    const tier = desc.includes('essentials') ? 'ILO_ESSENTIALS' : 'ILO_ADVANCED';
+    return { sku: clean || sku, tier, isDiscontinued: false };
+  }
+  return null;
+}
+
 function _createEmptySupportTally() {
   return {
     hasSupportService: false,
@@ -144,7 +199,14 @@ function _createEmptySupportTally() {
     hasHardwareSupport: false,
     onsiteInstallItems: [],
     remoteInstallItems: [],
-    unsolicitedOptionalItems: []
+    unsolicitedOptionalItems: [],
+    managementLicenses: [],
+    hardwareSupportTerms: [],
+    iloLicenses: [],
+    managementLicenseCount: 0,
+    iloLicenseCount: 0,
+    childSupportCount: 0,
+    parentSupportWrapperCount: 0
   };
 }
 
@@ -192,13 +254,39 @@ function _tallyProcessorMetrics(desc, qty, role, tally) {
   }
 }
 
-function _tallySupportAndManagement(sku, desc, role, tally) {
+function _tallyLicenseAndSupportQuantities(sku, desc, qty, mgmtMeta, iloMeta, tally) {
+  if (mgmtMeta && mgmtMeta.tier !== 'FIO_PRECLAIM_TOKEN') {
+    tally.managementLicenseCount += qty;
+  }
+  if (iloMeta && !iloMeta.isDiscontinued) {
+    tally.iloLicenseCount += qty;
+  }
+  if (isHardwareBreakFixSupport(sku, desc)) {
+    if (/^(?:HU4|H7J|H8Q)[A-Z0-9]{4}$/i.test(sku)) {
+      tally.parentSupportWrapperCount += qty;
+    } else if (/^(?:HU4|H7J|H8Q)[A-Z0-9]{4}(?:[A-Z0-9]{3,4}|#[A-Z0-9]{3,4})$/i.test(sku)) {
+      tally.childSupportCount += qty;
+    }
+  }
+}
+
+function _tallySupportAndManagement(sku, desc, role, tally, qty = 1) {
   if (role === 'Service & Support' || desc.includes('tech care') || desc.includes('support') || desc.includes('warranty') || /^h[a-z0-9]{6}/i.test(sku)) {
     tally.hasSupportService = true;
+    if (isHardwareBreakFixSupport(sku, desc)) {
+      const term = extractSupportTermYears(sku, desc);
+      if (term) tally.hardwareSupportTerms.push(term);
+    }
   }
+  let mgmtMeta = null;
   if (VALID_MANAGEMENT_SKUS.has(sku) || desc.includes('compute ops management') || desc.includes('oneview') || desc.includes('com adv')) {
     tally.hasManagementLicense = true;
+    mgmtMeta = extractManagementLicenseMetadata(sku, desc);
+    if (mgmtMeta) tally.managementLicenses.push(mgmtMeta);
   }
+  const iloMeta = extractIloLicenseMetadata(sku, desc);
+  if (iloMeta) tally.iloLicenses.push(iloMeta);
+  _tallyLicenseAndSupportQuantities(sku, desc, qty, mgmtMeta, iloMeta, tally);
 }
 
 function _tallyOsHypervisorLicensing(desc, qty, tally) {
@@ -262,7 +350,7 @@ function tallySupportItems(items, catalogData) {
     }
 
     _tallyProcessorMetrics(desc, qty, role, tally);
-    _tallySupportAndManagement(sku, desc, role, tally);
+    _tallySupportAndManagement(sku, desc, role, tally, qty);
     _tallyOsHypervisorLicensing(desc, qty, tally);
     _tallyTapeMedia(sku, desc, qty, tally);
   }
@@ -328,6 +416,29 @@ function computeTapeAutomationMath(dataCartridgeCount, cleaningCartridgeCount, b
     expectedBarcodeLabels,
     needsMoreBarcodeLabels,
     missingBarcodeLabels
+  };
+}
+
+function _computeSupportQuantityDeficits(t, nodes) {
+  const isManagementLicenseUnderprovisioned = Boolean(
+    t.hasManagementLicense && t.managementLicenseCount > 0 && t.managementLicenseCount < nodes
+  );
+  const missingManagementLicenses = (t.hasManagementLicense && t.managementLicenseCount > 0)
+    ? Math.max(0, nodes - t.managementLicenseCount)
+    : 0;
+  const isIloLicenseUnderprovisioned = Boolean(t.iloLicenseCount > 0 && t.iloLicenseCount < nodes);
+  const missingIloLicenses = t.iloLicenseCount > 0 ? Math.max(0, nodes - t.iloLicenseCount) : 0;
+  const isChildSupportUnderprovisioned = Boolean(t.childSupportCount > 0 && t.childSupportCount < nodes);
+  return {
+    managementLicenseCount: t.managementLicenseCount,
+    isManagementLicenseUnderprovisioned,
+    missingManagementLicenses,
+    iloLicenseCount: t.iloLicenseCount,
+    isIloLicenseUnderprovisioned,
+    missingIloLicenses,
+    childSupportCount: t.childSupportCount,
+    parentSupportWrapperCount: t.parentSupportWrapperCount,
+    isChildSupportUnderprovisioned
   };
 }
 
@@ -401,7 +512,25 @@ function evalSupportManufacturing(items, catalogData = null, totalSocketCores = 
     serverCount: nodes,
     defaultSupportSku: 'HU4B2A3',
     supportPolicy: require('../boq/support_policy').resolveSupportPolicy(items),
-    defaultManagementSku: null
+    defaultManagementSku: null,
+    managementLicenses: t.managementLicenses,
+    managementTermYears: (() => {
+      const terms = [...new Set(t.managementLicenses.map(m => m.termYears).filter(Boolean))];
+      return terms.length === 1 ? terms[0] : null;
+    })(),
+    managementTier: t.managementLicenses[0]?.tier || null,
+    hardwareSupportTermYears: (() => {
+      const terms = [...new Set(t.hardwareSupportTerms.filter(Boolean))];
+      return terms.length === 1 ? terms[0] : null;
+    })(),
+    hasManagementSupportTermMismatch: (() => {
+      const mgmtTerms = [...new Set(t.managementLicenses.map(m => m.termYears).filter(Boolean))];
+      const hwTerms = [...new Set(t.hardwareSupportTerms.filter(Boolean))];
+      return mgmtTerms.length === 1 && hwTerms.length === 1 && mgmtTerms[0] !== hwTerms[0];
+    })(),
+    iloLicenses: t.iloLicenses,
+    hasDiscontinuedIloLicense: t.iloLicenses.some(i => i.isDiscontinued),
+    ..._computeSupportQuantityDeficits(t, nodes)
   };
 }
 
@@ -413,6 +542,9 @@ module.exports = {
   isSaasSoftwareSubscription,
   isHardwareBreakFixSupport,
   isCtoServerItem,
+  extractManagementLicenseMetadata,
+  extractSupportTermYears,
+  extractIloLicenseMetadata,
   VALID_MANAGEMENT_SKUS,
   UNSOLICITED_OPTIONAL_SERVICE_SKUS
 };

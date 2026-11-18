@@ -34,8 +34,6 @@ const ORPHAN_ALLOWLIST = new Map([
   ['scripts/lib/system/telemetry_measurement_store.js', 'CP6 measurement store deliberately has no production consumer (audit_telemetry_measurement_contracts asserts this); wire in or remove at CP11.'],
   ['scripts/lib/index.js', 'Documented master barrel (docs/ARCHITECTURE_AND_DESIGN.md); verified by test_m5_packaging_and_hygiene. No production importer yet.'],
   ['scripts/lib/orchestrator/evaluation_orchestrator.js', 'Programmatic adapter over runEvaluationPipeline kept for library consumers; covered by test_evaluation_orchestrator. Review for removal.'],
-  ['scripts/lib/adapters/hpe_adapter.js', 'Vendor adapter scaffolding; registry vendorAdapterInterface is CONTRACT_ONLY_NO_VENDOR_MIGRATION.'],
-  ['scripts/lib/adapters/dell_adapter.js', 'Vendor adapter scaffolding; registry vendorAdapterInterface is CONTRACT_ONLY_NO_VENDOR_MIGRATION.'],
   ['scripts/lib/adapters/vendor_x_adapter.js', 'Vendor adapter scaffolding; registry vendorAdapterInterface is CONTRACT_ONLY_NO_VENDOR_MIGRATION.']
 ]);
 

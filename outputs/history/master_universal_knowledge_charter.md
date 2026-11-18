@@ -1,8 +1,8 @@
 # HPE Knowledge Registry — Local Audit Index
 
-**Document Version**: `2.0.0` | **Generated**: `2026-11-16T21:09:55.010Z`
+**Document Version**: `2.0.0` | **Generated**: `2026-11-18T12:13:22.087Z`
 **Scope**: Local governance index. This file is not a NotebookLM source; product notebooks receive independently scoped projections.
-**Total Verified Knowledge Deltas**: `165` (`21` Universal + `0` Family/Gen + `144` Chassis Specific)
+**Total Verified Knowledge Deltas**: `166` (`22` Universal + `0` Family/Gen + `144` Chassis Specific)
 
 ---
 
@@ -73,27 +73,31 @@
 - **Scope**: `UNIVERSAL_VENDOR`
 - **Rule**: Fast-ship candidate synthesis must resolve coupled cabling and enablement paths and pass full multi-aspect physical revalidation before ranking, spare non-bottleneck compute/power parts when another hardware option sets the >=21-day lead-time bottleneck, report configurator solution Estimated Delivery Time separately from single-part component lead times, and classify BOM CLIC Status or live configurator results with 0 unbuildables, 0 errors, and 0 process-control blocks (even with warning advisories) as PORTAL_VALIDATED_WITH_WARNINGS while failing closed on any unbuildable/error row or unbacked validation claim (INV-241).
 
-#### U16. [OWNER_STANDARD_3Y_BASIC] SUPPORT_POLICY
+#### U16. [LEARN_UNIVERSAL_BLINDSPOT_SUPPORT_PARITY_AND_MULTIVENDOR_BOM_20261118] WORKFLOW_BLINDSPOT_SUPPORT_PARITY_AND_MULTIVENDOR_BOM
+- **Scope**: `UNIVERSAL_VENDOR`
+- **Rule**: Universal portfolio intelligence, support governance & multi-vendor attribute mapping rules (INV-242, INV-243): (1) Index companion *_Services.json entries non-destructively onto catalogData via non-enumerable _servicesEntries (preserving catalogData.entries and snapshotFingerprint), normalize -2/-1 max-qty sentinels to null, and recover or flag SHIFTED_COLUMN_CORRUPTION rows where SKU/badge tokens leak into Unit Price columns. (2) Enforce per-node quantity parity (Qty >= serverCount) for COM, iLO, and child support SKUs, flag COM-vs-hardware term mismatches and discontinued iLO licenses, fail Gate B14 as ACTION_REQUIRED when multi-node Gen11/Gen12 servers have qualifyingComQty < chassisQty without an approved SmartForm override, and separate Gate B19 PORTAL_VALIDATED_WITH_PC_OVERRIDE from unresolved P+ Process Control blocks. (3) Keep cross-solution price/lead-time backfill scoped strictly to same-generation matches while preserving nullable unpriced SKUs. (4) Map competitor Dell/Huawei/Cisco/Lenovo BOM lines using canonical attribute vectors without silent write-endurance or InfiniBand-to-Ethernet downgrades, and keep deadcode/orphan and scope-aware delta deduplication gates green.
+
+#### U17. [OWNER_STANDARD_3Y_BASIC] SUPPORT_POLICY
 - **Scope**: `UNIVERSAL_VENDOR`
 - **Rule**: Preserve explicit customer support term and tier in the closest rank; use 3-year Tech Care Basic only when unspecified or explicitly authorized. For this SN3600B BOQ the owner authorized 5-year Essential to 3-year Basic. Compare qualified fixed and flexible service options; disclose retention and preserve parent/suffix pairs. This commercial preference is not vendor qualification.
 
-#### U17. [OWNER_ICON_SERVICE_ISOLATION] ICON_SUPPORT_ISOLATION
+#### U18. [OWNER_ICON_SERVICE_ISOLATION] ICON_SUPPORT_ISOLATION
 - **Scope**: `UNIVERSAL_VENDOR`
 - **Rule**: Select Services from Components for the owning icon, edit its dropdowns, and leave both apply-to-all icons and apply-to-all nodes off. Different icons retain their own SLA.
 
-#### U18. [OWNER_OCA_EXPIRED_SESSION] SESSION_RECOVERY_PROTOCOL
+#### U19. [OWNER_OCA_EXPIRED_SESSION] SESSION_RECOVERY_PROTOCOL
 - **Scope**: `UNIVERSAL_VENDOR`
 - **Rule**: When OCA says it encountered a problem, restart from Partner Portal refresh/login and open One Config Advanced through Quick Links. Do not reload the failed OCA session. Keep a Partner Portal tab before closing stale OCA so CDP does not disappear. This supersedes cache-flush advice for encountered-a-problem errors.
 
-#### U19. [OWNER_CLOSEST_REQUIREMENT_RANK] CUSTOMER_INTENT_POLICY
+#### U20. [OWNER_CLOSEST_REQUIREMENT_RANK] CUSTOMER_INTENT_POLICY
 - **Scope**: `UNIVERSAL_VENDOR`
 - **Rule**: Closest rank preserves customer requirements and makes only necessary compatibility/buildability changes. Budget alternatives disclose every deviation; do not silently reduce term, tier, capacity or resilience. Keep explicit owner overrides auditable against the original customer BOQ.
 
-#### U20. [OWNER_COMPONENT_DOMAIN_ROUTING] COMPONENT_DOMAIN_ROUTING
+#### U21. [OWNER_COMPONENT_DOMAIN_ROUTING] COMPONENT_DOMAIN_ROUTING
 - **Scope**: `UNIVERSAL_VENDOR`
 - **Rule**: Route by component role and exact product, never vendor or family alone. Synergy compute, fabric and frame use separate scopes. Resolve ownership before quantities. Validate each component and enclosure/bay, adapter/fabric, optical endpoints, shared power and per-icon SLA relationships; missing profiles remain NOT_EVALUATED and cannot inherit server defaults. Scraping completeness is not buildability certification.
 
-#### U21. [GUARDRAIL_TRANSPORT_RECOVERY] GUARDRAIL_RECOVERY_POLICY
+#### U22. [GUARDRAIL_TRANSPORT_RECOVERY] GUARDRAIL_RECOVERY_POLICY
 - **Scope**: `UNIVERSAL_VENDOR`
 - **Rule**: Gemini guardrail API sends must retain systemInstruction and function declarations when overriding SDK send config. Enforce scoped local simulation and NotebookLM checks. Retry bounded transient provider errors without exhausting keys, distinguish per-minute from explicit daily quotas, and use configured approved model fallback with preserved tool results and no replay side effects. Empty or unfinished responses are unavailable, not verification. Dashboard status is independent of NotebookLM and vendor acceptance.
 

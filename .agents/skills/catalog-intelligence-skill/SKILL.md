@@ -135,3 +135,11 @@ node scripts/lib/catalog/diff_catalog.js outputs/ProLiant/Gen12/DL380_Gen12
 # Sync Master Scraped Catalog Registry
 npm run registry:sync
 ```
+
+---
+
+## 🌐 5. Cross-Solution Pricing, Portfolio Blind-Spot Auditing & Canonical Attribute Vectors
+
+- **Cross-Solution SKU Comparison & Variance Detection:** Use `compareSkuAcrossSolutions()`, `findCrossSolutionPriceVariances()`, and `backfillMissingPricesAndLeadTimes()` in [`scripts/lib/catalog/cross_solution_pricing.js`](../../../scripts/lib/catalog/cross_solution_pricing.js) (also exposed via `/api/cross-solution-sku-compare` and MCP `compare_sku_across_solutions`) to compare shared SKU list prices, shifted-column price rejections, lead times, and lifecycle states across all scraped solutions while preserving nullable price honesty.
+- **Portfolio Blind-Spot Auditing:** Run `npm run audit:blindspots` ([`scripts/maintenance/audit_portfolio_blindspots.js`](../../../scripts/maintenance/audit_portfolio_blindspots.js)) or call `auditPortfolioBlindspots()` in [`scripts/lib/catalog/portfolio_blindspots.js`](../../../scripts/lib/catalog/portfolio_blindspots.js) to detect `$0` base variants, fragmented lifecycle strings, negative `maxQty` sentinels, shifted SKU/price rows, and lead-time coverage deficits across `classification_diagnostics.json`.
+- **Canonical Attribute Vectors:** Use `extractCanonicalAttributes()` and `getCanonicalCategorySchema()` in [`scripts/lib/catalog/attribute_vectors.js`](../../../scripts/lib/catalog/attribute_vectors.js) to normalize vendor-neutral physical, software, and support attributes prior to cross-vendor BOM-to-BOM equivalence scoring.

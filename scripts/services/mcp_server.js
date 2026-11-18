@@ -238,6 +238,28 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
             portalUrl: { type: "string", description: "Optional portal URL to resolve vendor portal policy and DOM adapter readiness." }
           }
         }
+      },
+      {
+        name: "inspect_portfolio_blindspots",
+        description: "Audits collected, skipped, and classified catalog artifacts across all scraped solutions for hidden blind spots ($0 base variants, fragmented lifecycle labels, sentinel maxQty, lead time and cost gaps).",
+        inputSchema: {
+          type: "object",
+          properties: {
+            product: { type: "string", description: "Optional product ID filter (e.g. 'DL360_Gen12')." }
+          }
+        }
+      },
+      {
+        name: "compare_sku_across_solutions",
+        description: "Compares a SKU's list price, FIO/BTO status, lead time, CLIC status, and lifecycle state across all scraped solutions, or lists top cross-solution price variances when sku is omitted.",
+        inputSchema: {
+          type: "object",
+          properties: {
+            sku: { type: "string", description: "Optional target SKU (e.g. 'R7A11AAE' or 'P50224-B21'). Omit to return top cross-solution price variances." },
+            minSpreadUsd: { type: "number", description: "Minimum USD price spread when listing variances." },
+            limit: { type: "number", description: "Maximum number of variance entries to return." }
+          }
+        }
       }
     ],
   };
@@ -897,6 +919,17 @@ async function _dispatchMcpTool(toolName, args, items, context, signal) {
   }
   if (toolName === "inspect_catalog_deltas") return handleInspectCatalogDeltasTool(args);
   if (toolName === "check_portal_and_sync_readiness") return handleCheckPortalAndSyncReadinessTool(args);
+  if (toolName === "inspect_portfolio_blindspots") {
+    const { auditPortfolioBlindspots } = require('../lib/catalog/portfolio_blindspots.js');
+    return formatMcpJsonText(auditPortfolioBlindspots({ product: args.product || null }));
+  }
+  if (toolName === "compare_sku_across_solutions") {
+    const { compareSkuAcrossSolutions, findCrossSolutionPriceVariances } = require('../lib/catalog/cross_solution_pricing.js');
+    const payload = args.sku
+      ? compareSkuAcrossSolutions(args.sku)
+      : findCrossSolutionPriceVariances({ minSpreadUsd: args.minSpreadUsd ?? 1, limit: args.limit ?? 25 });
+    return formatMcpJsonText(payload);
+  }
   throw new Error(`Unknown tool: ${toolName}`);
 }
 

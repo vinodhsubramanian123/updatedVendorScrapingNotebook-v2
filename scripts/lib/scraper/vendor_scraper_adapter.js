@@ -439,6 +439,26 @@ class LenovoDcscAdapter extends BaseVendorScraperAdapter {
   }
 }
 
+class HuaweiSctAdapter extends BaseVendorScraperAdapter {
+  constructor() {
+    super('Huawei', { supportedPillars: ['Server', 'Storage', 'Networking'] });
+  }
+
+  detectPortal(url = '', html = '') {
+    return /huawei\.com|unistar\.huawei\.com|sct\.huawei\.com/i.test(url) || /fusionserver|taishan|oceanstor|cloudengine|ibmc/i.test(html);
+  }
+
+  normalizeRawCatalogRow(rawRow = {}, context = {}) {
+    const enrichedRow = {
+      ...rawRow,
+      sku: rawRow.sku || rawRow['BOM Code'] || rawRow.bomCode || rawRow.partNumber || ''
+    };
+    const norm = super.normalizeRawCatalogRow(enrichedRow, context);
+    norm.vendor = 'Huawei';
+    return norm;
+  }
+}
+
 const DEFAULT_COLUMN_ALIASES = Object.freeze({
   sku: ['sku', 'partNumber', 'Product #', 'Part Number', 'Option ID', 'Feature Code', 'PID', 'MTM'],
   description: ['description', 'Description', 'desc', 'name', 'Title', 'Option Name', 'Component Name'],
@@ -613,6 +633,7 @@ const BUILTIN_ADAPTERS = [
   new DellPremierAdapter(),
   new CiscoCcwAdapter(),
   new LenovoDcscAdapter(),
+  new HuaweiSctAdapter(),
   new GenericSpreadsheetAdapter()
 ];
 

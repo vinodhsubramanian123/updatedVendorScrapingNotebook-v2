@@ -350,8 +350,17 @@ function queryLocalGraphifyNeighborhood(concept = '', maxResults = 8) {
   }
 }
 
+const {
+  CANONICAL_CATEGORY_SCHEMA,
+  extractCanonicalAttributes,
+  getCanonicalCategorySchema
+} = require('./attribute_vectors.js');
+
 module.exports = {
   CATEGORY_DEPENDENCY_MATRIX,
+  CANONICAL_CATEGORY_SCHEMA,
+  extractCanonicalAttributes,
+  getCanonicalCategorySchema,
   classifyDriveCageTopology,
   getCategoryDependencyMatrix,
   analyzeCategoryDependencies,

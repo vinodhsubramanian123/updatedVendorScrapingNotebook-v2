@@ -662,6 +662,31 @@ router.get('/reconcile-quickspecs/latest', (req, res) => {
   }
 });
 
+router.get('/portfolio-blindspots', (req, res) => {
+  try {
+    const { auditPortfolioBlindspots } = require(path.join(PROJECT_ROOT, 'scripts', 'lib', 'catalog', 'portfolio_blindspots.js'));
+    const product = req.query.product ? String(req.query.product) : null;
+    return res.json(auditPortfolioBlindspots({ product }));
+  } catch (err) {
+    return sendErrorResponse(res, 500, `Portfolio blind-spot audit failed: ${err.message}`);
+  }
+});
+
+router.get('/cross-solution-sku-compare', (req, res) => {
+  try {
+    const { compareSkuAcrossSolutions, findCrossSolutionPriceVariances } = require(path.join(PROJECT_ROOT, 'scripts', 'lib', 'catalog', 'cross_solution_pricing.js'));
+    const sku = req.query.sku ? String(req.query.sku).trim() : '';
+    if (sku) {
+      return res.json(compareSkuAcrossSolutions(sku));
+    }
+    const minSpreadUsd = req.query.minSpreadUsd !== undefined ? Number(req.query.minSpreadUsd) : 1;
+    const limit = req.query.limit !== undefined ? Number(req.query.limit) : 50;
+    return res.json(findCrossSolutionPriceVariances({ minSpreadUsd, limit }));
+  } catch (err) {
+    return sendErrorResponse(res, 500, `Cross-solution SKU comparison failed: ${err.message}`);
+  }
+});
+
 module.exports = router;
 module.exports.invalidateCatalogCache = invalidateCatalogCache;
 

@@ -992,23 +992,39 @@ function audit12PointPhysicalParity(competitorSpec, targetBom = [], targetChassi
   };
 }
 
+const { mapSourceBomToTargetCatalog } = require('./attribute_equivalence_mapper.js');
+
 function transformCompetitorQuote(input, sourceVendor = null, targetChassis = null, options = {}) {
   const safeOptions = options || {};
   const competitorSpec = parseCompetitorSpecification(input, sourceVendor);
   const nodeMultiplier = safeOptions.nodeMultiplier ?? safeOptions.nodes ?? 1;
   if (!Number.isSafeInteger(nodeMultiplier) || nodeMultiplier < 1) throw new Error('Node multiplier must be a positive integer.');
-  const candidateBom = structuredClone(safeOptions.targetBom || []);
+  let candidateBom = structuredClone(safeOptions.targetBom || []);
   if (!Array.isArray(candidateBom)) throw new Error('targetBom must be an array of per-node items.');
   for (const item of candidateBom) {
     const quantity = item.quantity ?? item.qty;
     if (!item.sku || !Number.isSafeInteger(quantity) || quantity < 1) throw new Error('Candidate items require a SKU and positive integer quantity.');
   }
+
+  let equivalenceMapping = null;
+  let recommendedBom = [];
+  if (safeOptions.targetCatalogData && Array.isArray(safeOptions.sourceItems) && safeOptions.sourceItems.length > 0) {
+    equivalenceMapping = mapSourceBomToTargetCatalog(safeOptions.sourceItems, safeOptions.targetCatalogData, {
+      sourceVendor: sourceVendor || competitorSpec.sourceVendor,
+      targetVendor: safeOptions.targetVendor || 'HPE'
+    });
+    recommendedBom = equivalenceMapping.recommendedBom;
+    if (candidateBom.length === 0 && recommendedBom.length > 0) {
+      candidateBom = recommendedBom.map(it => ({ ...it }));
+    }
+  }
+
   const auditReport = audit12PointPhysicalParity(competitorSpec, candidateBom, targetChassis);
   return {
     status: !targetChassis ? 'TARGET_PRODUCT_REQUIRED' : candidateBom.length ? 'CANDIDATE_EVALUATION_REQUIRED' : 'SCOPED_SIZING_REQUIRED',
     portalValidationStatus: 'PORTAL VALIDATION PENDING',
     competitorSpec, targetChassis, nodeMultiplier, quantityBasis: 'PER_NODE', candidateBom,
-    auditReport, strategyMatrix: {}, recommendedBom: [],
+    auditReport, strategyMatrix: {}, recommendedBom, equivalenceMapping,
     nextAction: 'Use route_query RFP sizing for the exact target, then eval_boq for each candidate and the structured NotebookLM validator before live vendor acceptance.'
   };
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TrendingUp, TrendingDown, DollarSign, Calendar, Layers, Activity, History } from 'lucide-react';
+import { TrendingUp, TrendingDown, DollarSign, Calendar, Layers, Activity, History, Search } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend } from 'recharts';
 
 function formatSnapshotDate(scrapeDate, index) {
@@ -295,6 +295,100 @@ export default function PriceAnalyticsCard({ selectedChassis, chassisDir }) {
           ))}
         </div>
       </div>
+
+      <CrossSolutionSkuPanel />
+    </div>
+  );
+}
+
+function CrossSolutionSkuPanel() {
+  const [skuQuery, setSkuQuery] = useState('R7A11AAE');
+  const [compareResult, setCompareResult] = useState(null);
+  const [searching, setSearching] = useState(false);
+
+  const runLookup = async (e) => {
+    if (e) e.preventDefault();
+    const cleaned = String(skuQuery || '').trim();
+    if (!cleaned) return;
+    setSearching(true);
+    try {
+      const res = await fetch(`/api/cross-solution-sku-compare?sku=${encodeURIComponent(cleaned)}`);
+      const data = await res.json();
+      setCompareResult(data);
+    } catch {
+      setCompareResult(null);
+    } finally {
+      setSearching(false);
+    }
+  };
+
+  return (
+    <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+        <h3 className="text-base font-bold text-slate-800 flex items-center gap-2">
+          <DollarSign className="w-5 h-5 text-emerald-600" />
+          Cross-Solution SKU Price &amp; Status Comparison
+        </h3>
+        <form onSubmit={runLookup} className="flex items-center gap-2">
+          <input
+            type="text"
+            value={skuQuery}
+            onChange={e => setSkuQuery(e.target.value)}
+            placeholder="SKU (e.g. R7A11AAE)"
+            className="px-3 py-1.5 border border-slate-200 rounded-lg text-xs text-slate-800 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <button
+            type="submit"
+            disabled={searching}
+            className="px-3 py-1.5 bg-blue-600 text-white text-xs font-semibold rounded-lg hover:bg-blue-700 disabled:opacity-50 flex items-center gap-1"
+          >
+            <Search className="w-3.5 h-3.5" />
+            {searching ? 'Checking...' : 'Compare'}
+          </button>
+        </form>
+      </div>
+
+      {compareResult?.summary && (
+        <div className="space-y-3 text-xs">
+          <div className="flex flex-wrap gap-3 text-slate-600 bg-slate-50 p-3 rounded-lg border border-slate-200">
+            <span><strong>Solutions:</strong> {compareResult.summary.solutionsFound}</span>
+            <span><strong>Priced:</strong> {compareResult.summary.pricedCount}</span>
+            <span><strong>Unpriced:</strong> {compareResult.summary.unpricedCount}</span>
+            {compareResult.summary.minPriceUsd !== null && (
+              <span><strong>Range:</strong> ${compareResult.summary.minPriceUsd.toLocaleString()} – ${compareResult.summary.maxPriceUsd.toLocaleString()}</span>
+            )}
+            {compareResult.summary.hasPriceVariance && (
+              <span className="text-amber-700 font-semibold">Spread: ${compareResult.summary.spreadUsd.toLocaleString()} ({compareResult.summary.spreadPct}%)</span>
+            )}
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="border-b border-slate-200 text-slate-500">
+                  <th className="py-2 pr-3">Solution</th>
+                  <th className="py-2 pr-3">SKU</th>
+                  <th className="py-2 pr-3">Price (USD)</th>
+                  <th className="py-2 pr-3">Status</th>
+                  <th className="py-2 pr-3">Lead Time</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {(compareResult.matches || []).map((m, i) => (
+                  <tr key={`${m.product}-${m.sku}-${i}`}>
+                    <td className="py-2 pr-3 font-semibold text-slate-800">{m.product}</td>
+                    <td className="py-2 pr-3 font-mono">{m.sku}</td>
+                    <td className="py-2 pr-3 font-semibold">
+                      {m.listPriceUsd !== null ? `$${m.listPriceUsd.toLocaleString()}` : 'Unpriced'}
+                    </td>
+                    <td className="py-2 pr-3">{m.lifecycleStatus}</td>
+                    <td className="py-2 pr-3">{m.leadTimeDays !== null ? `${m.leadTimeDays}d` : (m.leadTimeText || '—')}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

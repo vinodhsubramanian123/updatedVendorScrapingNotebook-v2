@@ -24,6 +24,7 @@ const { candidateReviewCurrent } = require('./solution_evidence.js');
 const { analyzeDeliveryPacing } = require('./delivery_pacing_analyzer.js');
 const { getRegisteredAspectsForDomain } = require('../aspects/aspect_registry.js');
 const { auditOpticalLinkEndpoints } = require('../aspects/networking_ocp.js');
+const { isCtoServerItem } = require('../aspects/support_manufacturing.js');
 const { readPortalReceipt, receiptMatches } = require('./portal_receipt.js');
 
 /**
@@ -540,6 +541,30 @@ const QUALIFYING_COM_ONEVIEW_SKUS = new Set([
   'E5Y43A', 'P8B31A', 'E5Y35AAE', 'P8B25A', 'E5Y36A', 'E5Y44A'
 ]);
 
+function _countQualifyingComAndChassis(parts, output) {
+  let hasQualifyingComOrOneView = false;
+  let qualifyingComQty = 0;
+  let chassisQty = 0;
+  for (const p of (parts || [])) {
+    const sku = cleanBaseSKU(p.sku || p['Product #']);
+    const desc = (p.description || p.Description || '').toLowerCase();
+    const qty = Number(p.quantity ?? p.qty ?? 1) || 1;
+    const isMgmt = QUALIFYING_COM_ONEVIEW_SKUS.has(sku) ||
+      desc.includes('compute ops management') ||
+      (desc.includes('oneview') && !desc.includes('without oneview'));
+    if (isMgmt) {
+      hasQualifyingComOrOneView = true;
+      qualifyingComQty += qty;
+    }
+    if (isCtoServerItem({ sku, description: p.description || p.Description || '', category: p.category || '' })) {
+      chassisQty += qty;
+    }
+  }
+  const declaredServers = Number(output?.serverCount || output?.nodeCount || 0);
+  if (declaredServers > chassisQty) chassisQty = declaredServers;
+  return { hasQualifyingComOrOneView, qualifyingComQty, chassisQty };
+}
+
 function _checkMandatoryComPolicy(output, _context = {}) {
   const chassis = String(output?.chassis || output?.targetChassis || output?.detectedChassis?.model || '').toLowerCase();
   const isGen11Or12ProLiant = /gen11|gen12/i.test(chassis) && /dl|ml/i.test(chassis);
@@ -562,20 +587,29 @@ function _checkMandatoryComPolicy(output, _context = {}) {
     return makeCheck('B14', 'Mandatory COM / OneView Policy (Rule 81322276)', 'WARN', 'UNKNOWN', 'Cannot verify COM policy compliance without candidate BOM items.');
   }
 
-  const hasQualifyingComOrOneView = parts.some(p => {
-    const sku = cleanBaseSKU(p.sku || p['Product #']);
-    const desc = (p.description || p.Description || '').toLowerCase();
-    return QUALIFYING_COM_ONEVIEW_SKUS.has(sku) ||
-           desc.includes('compute ops management') ||
-           (desc.includes('oneview') && !desc.includes('without oneview'));
-  });
+  const { hasQualifyingComOrOneView, qualifyingComQty, chassisQty } = _countQualifyingComAndChassis(parts, output);
+  const {
+    smartFormExceptionId,
+    processControlOverrideApproved: hasApprovedPcException
+  } = _resolveProcessControlOverride(output?.liveClicValidation || _context?.liveClicValidation, output, _context, 1);
 
-  return hasQualifyingComOrOneView
-    ? makeCheck('B14', 'Mandatory COM / OneView Policy (Rule 81322276)', 'WARN', 'PASSED', 'Mandatory COM or OneView management software policy satisfied per CLIC Rule 81322276.')
-    : makeCheck('B14', 'Mandatory COM / OneView Policy (Rule 81322276)', 'WARN', 'ACTION_REQUIRED',
-        'ProLiant Gen11/Gen12 CTO configuration lacks mandatory HPE GreenLake for Compute Ops Management (COM) or OneView license (CLIC Rule 81322276). Add R7A11AAE (or approved replacement E5Y35AAE/E5Y43A) or submit an exception via https://solutionsdeliveryhpe.com/clicsmartform to avoid CLIC Process Control block.',
-        { ruleId: '81322276', targetChassis: chassis }
-      );
+  if (hasQualifyingComOrOneView && !hasApprovedPcException && chassisQty > 1 && qualifyingComQty < chassisQty) {
+    return makeCheck('B14', 'Mandatory COM / OneView Policy (Rule 81322276)', 'WARN', 'ACTION_REQUIRED',
+      `ProLiant Gen11/Gen12 CTO configuration has under-provisioned COM/OneView licenses (${qualifyingComQty} license(s) for ${chassisQty} servers) per CLIC Rule 81322276 / INV-179.`,
+      { ruleId: '81322276', targetChassis: chassis, qualifyingComQty, requiredServers: chassisQty });
+  }
+  if (hasQualifyingComOrOneView) {
+    return makeCheck('B14', 'Mandatory COM / OneView Policy (Rule 81322276)', 'WARN', 'PASSED', 'Mandatory COM or OneView management software policy satisfied per CLIC Rule 81322276.');
+  }
+  if (hasApprovedPcException) {
+    return makeCheck('B14', 'Mandatory COM / OneView Policy (Rule 81322276)', 'WARN', 'PASSED',
+      `COM/OneView omission covered by approved CLIC SmartForm exception (${smartFormExceptionId}) for Process Control Rule 81322276.`,
+      { ruleId: '81322276', targetChassis: chassis, smartFormExceptionId });
+  }
+  return makeCheck('B14', 'Mandatory COM / OneView Policy (Rule 81322276)', 'WARN', 'ACTION_REQUIRED',
+    'ProLiant Gen11/Gen12 CTO configuration lacks mandatory HPE GreenLake for Compute Ops Management (COM) or OneView license (CLIC Rule 81322276). Add R7A11AAE (or approved replacement E5Y35AAE/E5Y43A) or submit an exception via https://solutionsdeliveryhpe.com/clicsmartform to avoid CLIC Process Control block.',
+    { ruleId: '81322276', targetChassis: chassis }
+  );
 }
 
 function _checkDeliveryFeasibility(output, context = {}) {
@@ -885,19 +919,39 @@ function _validateReceiptContent(receiptObj, portalStatus, clicValid, ACCEPTANCE
   return null;
 }
 
+function _resolveProcessControlOverride(source, output, context, processControl) {
+  const pcApproval = source?.processControlApproval || output?.processControlApproval || context?.processControlApproval || null;
+  const smartFormExceptionId = String(pcApproval?.exceptionId || '').trim() || null;
+  const processControlOverrideApproved = Boolean(processControl > 0 && pcApproval?.approved === true && smartFormExceptionId);
+  return {
+    smartFormExceptionId,
+    processControlOverrideApproved,
+    unresolvedProcessControl: processControlOverrideApproved ? 0 : processControl
+  };
+}
+
 function _normalizeClicEvidence(output, context) {
   const liveClic = output?.liveClicValidation || context?.liveClicValidation || output?.clicValidation || context?.clicValidation || null;
   const bomClic = output?.clicStatusSummary || context?.clicStatusSummary || null;
-  const source = liveClic || bomClic;
-  const unbuildables = Number(source?.unbuildablesCount ?? source?.unbuildables ?? source?.unbuildableCount ?? 0);
-  const errors = Number(source?.errorsCount ?? source?.errors ?? source?.errorCount ?? 0);
-  const processControl = Number(source?.processControlCount ?? source?.processControl ?? 0);
-  const warnings = Number(source?.warningsCount ?? source?.warnings ?? source?.warningCount ?? 0);
-  const ruleIds = Array.isArray(source?.warningRuleIds) ? source.warningRuleIds : [];
-  const ucid = source?.ucid || null;
-  const hasFailures = unbuildables > 0 || errors > 0 || processControl > 0;
-  const hasEvidence = Boolean(liveClic || bomClic?.portalValidatedFromBom || (bomClic?.hasClicStatusColumn && hasFailures));
-  return { liveClic, bomClic, unbuildables, errors, processControl, warnings, ruleIds, ucid, hasFailures, hasEvidence };
+  const source = liveClic || bomClic || {};
+  const unbuildables = Number(source.unbuildablesCount ?? source.unbuildables ?? source.unbuildableCount ?? 0);
+  const errors = Number(source.errorsCount ?? source.errors ?? source.errorCount ?? 0);
+  const processControl = Number(source.processControlCount ?? source.processControl ?? 0);
+  const warnings = Number(source.warningsCount ?? source.warnings ?? source.warningCount ?? 0);
+  const ruleIds = Array.isArray(source.warningRuleIds) ? source.warningRuleIds : [];
+  const ucid = source.ucid || null;
+  const {
+    smartFormExceptionId,
+    processControlOverrideApproved,
+    unresolvedProcessControl
+  } = _resolveProcessControlOverride(source, output, context, processControl);
+  const hasFailures = unbuildables > 0 || errors > 0 || unresolvedProcessControl > 0;
+  const hasEvidence = Boolean(liveClic || bomClic?.portalValidatedFromBom || (bomClic?.hasClicStatusColumn && (hasFailures || processControl > 0)));
+  return {
+    liveClic, bomClic, unbuildables, errors, processControl,
+    unresolvedProcessControl, processControlOverrideApproved, smartFormExceptionId,
+    warnings, ruleIds, ucid, hasFailures, hasEvidence
+  };
 }
 
 /**
@@ -926,8 +980,12 @@ function _checkPortalReceiptIntegrity(output, context = {}) {
   // When Tier 3 cryptographic receipt acceptance is not claimed directly, verify CLIC status evidence
   if (!claim.isClaimingVendorAcceptance) {
     const ev = _normalizeClicEvidence(output, context);
-    const claimsBomValidated = claim.outStatus === 'PORTAL_VALIDATED' || claim.outStatus === 'PORTAL_VALIDATED_WITH_WARNINGS' ||
-      claim.ctxStatus === 'PORTAL_VALIDATED' || claim.ctxStatus === 'PORTAL_VALIDATED_WITH_WARNINGS';
+    const BOM_VALIDATED_STATUSES = new Set([
+      'PORTAL_VALIDATED',
+      'PORTAL_VALIDATED_WITH_WARNINGS',
+      'PORTAL_VALIDATED_WITH_PC_OVERRIDE'
+    ]);
+    const claimsBomValidated = BOM_VALIDATED_STATUSES.has(claim.outStatus) || BOM_VALIDATED_STATUSES.has(claim.ctxStatus);
     if (claimsBomValidated && !ev.hasEvidence) {
       return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'FAILED',
         `Output claims ${claim.outStatus || claim.ctxStatus} without live CLIC check or BOM CLIC Status column evidence.`,
@@ -935,16 +993,21 @@ function _checkPortalReceiptIntegrity(output, context = {}) {
     }
     if (ev.hasEvidence && ev.hasFailures) {
       return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'BLOCK', 'FAILED',
-        `Portal CLIC validation reported ${ev.unbuildables} unbuildable(s), ${ev.errors} error(s), ${ev.processControl} process control block(s).`,
+        `Portal CLIC validation reported ${ev.unbuildables} unbuildable(s), ${ev.errors} error(s), ${ev.unresolvedProcessControl} unresolved process control block(s).`,
         { portalStatus: 'PORTAL_VALIDATION_FAILED', liveClicValidation: ev.liveClic, clicStatusSummary: ev.bomClic });
     }
     if (ev.hasEvidence) {
-      const resolvedStatus = ev.warnings > 0 ? 'PORTAL_VALIDATED_WITH_WARNINGS' : 'PORTAL_VALIDATED';
+      const resolvedStatus = ev.processControlOverrideApproved
+        ? 'PORTAL_VALIDATED_WITH_PC_OVERRIDE'
+        : (ev.warnings > 0 ? 'PORTAL_VALIDATED_WITH_WARNINGS' : 'PORTAL_VALIDATED');
       const ucidNote = ev.ucid ? ` (UCID ${ev.ucid})` : '';
       const rulesNote = ev.ruleIds.length ? ` [${ev.ruleIds.join(', ')}]` : '';
+      const pcNote = ev.processControlOverrideApproved
+        ? ` Approved SmartForm override ${ev.smartFormExceptionId} covers ${ev.processControl} Process Control (P+) block(s) for quote/partner release.`
+        : '';
       return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'WARN', 'PASSED',
-        `Portal CLIC validated${ucidNote}: 0 unbuildables, 0 errors, 0 process control, ${ev.warnings} warning(s)${rulesNote}. Solution has no unbuildable errors; warning advisories surfaced.`,
-        { portalStatus: resolvedStatus, portalValidated: true, liveClicValidation: ev.liveClic, clicStatusSummary: ev.bomClic });
+        `Portal CLIC validated${ucidNote}: 0 unbuildables, 0 errors, ${ev.unresolvedProcessControl} unresolved process control, ${ev.warnings} warning(s)${rulesNote}.${pcNote} Solution has no unbuildable errors; advisories surfaced.`,
+        { portalStatus: resolvedStatus, portalValidated: true, smartFormExceptionId: ev.smartFormExceptionId, liveClicValidation: ev.liveClic, clicStatusSummary: ev.bomClic });
     }
     return makeCheck('B19', 'Live Portal Validation & Receipt Integrity (INV-0)', 'WARN', 'NOT_APPLICABLE',
       'Live portal validation pending. Output appropriately marked as PORTAL VALIDATION PENDING (Tier 1/2).',

@@ -109,6 +109,7 @@
     "verify:qs:gen11": "node scripts/lib/sync/quickspecs_sync.js --chassis DL380_Gen11",
     "maintain:portfolio": "node scripts/maintenance/maintain_portfolio.js",
     "status:sync": "node scripts/maintenance/generate_portfolio_status.js",
+    "audit:blindspots": "node scripts/maintenance/audit_portfolio_blindspots.js",
     "jules:watch": "node scripts/services/jules_daemon.js",
     "test:aspect_units": "node tests/unit/test_aspect_compute_thermal.js && node tests/unit/test_aspect_memory_channel.js && node tests/unit/test_aspect_networking_ocp.js && node tests/unit/test_aspect_pcie_riser.js && node tests/unit/test_aspect_power_environment.js && node tests/unit/test_aspect_storage_tri_mode.js && node tests/unit/test_aspect_support_manufacturing.js && node tests/unit/test_lifecycle_aspect_evaluation.js && node tests/unit/test_aspect_registry.js",
     "test:m1": "node scripts/maintenance/run_test_matrix.js --pattern \"aspect|lifecycle\"",

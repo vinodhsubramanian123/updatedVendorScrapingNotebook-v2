@@ -397,6 +397,8 @@ function _loadAndAuditCatalogData(chassisDir, isExplicitTestPath) {
   if (fs.existsSync(catalogPath)) {
     try {
       catalogData = JSON.parse(fs.readFileSync(catalogPath, 'utf-8'));
+      const { attachCompanionServices } = require('../lib/catalog/sku.js');
+      attachCompanionServices(catalogData, catalogPath);
     } catch (err) {
       throw new Error(JSON.stringify({
         error: 'EvaluationError',

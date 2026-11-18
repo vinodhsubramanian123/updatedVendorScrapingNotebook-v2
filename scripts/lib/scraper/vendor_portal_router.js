@@ -190,33 +190,41 @@ function defaultExtractNormalizedRules(rawEntries = [], fullText = '', networkRu
  * @param {string} [explicitVendor] E.g. "HPE", "Dell", "Cisco", or custom registered vendor
  * @returns {string} Normalized vendor ("HPE", "Dell", "Cisco", "Lenovo", or custom key)
  */
+const EXPLICIT_VENDOR_ALIASES = Object.freeze({
+  DELL: 'Dell',
+  CISCO: 'Cisco',
+  LENOVO: 'Lenovo',
+  HUAWEI: 'Huawei',
+  HPE: 'HPE',
+  HP: 'HPE',
+  'HEWLETT PACKARD ENTERPRISE': 'HPE'
+});
+
+const VENDOR_PRODUCT_MATCHERS = Object.freeze([
+  { vendor: 'Dell', pattern: /poweredge|powerstore|powerswitch|\bdell\b|\br\d{3}\b/i },
+  { vendor: 'Huawei', pattern: /huawei|fusionserver|taishan|kunlun|oceanstor|cloudengine/i },
+  { vendor: 'Cisco', pattern: /\bucs\b|cisco|catalyst|nexus/i },
+  { vendor: 'Lenovo', pattern: /thinksystem|thinkagile|lenovo/i },
+  { vendor: 'HPE', pattern: /\bhpe\b|proliant|\b(?:dl|ml|rl)\s*\d{3}|synergy|alletra|storeever|\bsn\d{4}/i }
+]);
+
 function inferVendor(productQuery = '', explicitVendor = '') {
   if (explicitVendor && typeof explicitVendor === 'string') {
-    const v = explicitVendor.trim().toUpperCase();
-    if (v === 'DELL') return 'Dell';
-    if (v === 'CISCO') return 'Cisco';
-    if (v === 'LENOVO') return 'Lenovo';
-    if (['HPE', 'HP', 'HEWLETT PACKARD ENTERPRISE'].includes(v)) return 'HPE';
+    const key = explicitVendor.trim().toUpperCase();
+    if (EXPLICIT_VENDOR_ALIASES[key]) return EXPLICIT_VENDOR_ALIASES[key];
     const custom = _findCustomPolicy(explicitVendor);
     if (custom) return custom.vendor;
     throw new Error(`UNSUPPORTED_VENDOR: ${explicitVendor}`);
   }
 
-  const pq = String(productQuery || '').toLowerCase();
-  if (pq.includes('poweredge') || pq.includes('powerstore') || pq.includes('powerswitch') || pq.includes('dell') || /\br\d{3}\b/.test(pq)) {
-    return 'Dell';
-  }
-  if (pq.includes('ucs') || pq.includes('cisco') || pq.includes('catalyst') || pq.includes('nexus')) {
-    return 'Cisco';
-  }
-  if (pq.includes('thinksystem') || pq.includes('thinkagile') || pq.includes('lenovo')) {
-    return 'Lenovo';
-  }
-  if (/\bhpe\b|proliant|\b(?:dl|ml|rl)\s*\d{3}|synergy|alletra|storeever|\bsn\d{4}/i.test(productQuery)) return 'HPE';
+  const pq = String(productQuery || '');
+  const matched = VENDOR_PRODUCT_MATCHERS.find(entry => entry.pattern.test(pq));
+  if (matched) return matched.vendor;
 
+  const lowerPq = pq.toLowerCase();
   for (const policy of _customVendorPolicies.values()) {
     const kws = policy.productKeywords || [];
-    if (kws.some(kw => kw && pq.includes(String(kw).toLowerCase()))) return policy.vendor;
+    if (kws.some(kw => kw && lowerPq.includes(String(kw).toLowerCase()))) return policy.vendor;
   }
 
   throw new Error('VENDOR_IDENTITY_REQUIRED: No registered vendor identified');
@@ -284,7 +292,8 @@ const BUILTIN_CREDENTIAL_SPECS = {
   HPE: { urlEnv: 'HPE_PORTAL_URL', userEnv: 'HPE_PORTAL_USER', passEnv: 'HPE_PORTAL_PASS', defaultUrl: 'https://partner.hpe.com/web/prp' },
   Dell: { urlEnv: 'DELL_PORTAL_URL', userEnv: 'DELL_PORTAL_USER', passEnv: 'DELL_PORTAL_PASS', defaultUrl: 'https://www.dell.com/premier' },
   Cisco: { urlEnv: 'CISCO_PORTAL_URL', userEnv: 'CISCO_PORTAL_USER', passEnv: 'CISCO_PORTAL_PASS', defaultUrl: 'https://apps.cisco.com/Commerce/' },
-  Lenovo: { urlEnv: 'LENOVO_PORTAL_URL', userEnv: 'LENOVO_PORTAL_USER', passEnv: 'LENOVO_PORTAL_PASS', defaultUrl: 'https://dcsc.lenovo.com/' }
+  Lenovo: { urlEnv: 'LENOVO_PORTAL_URL', userEnv: 'LENOVO_PORTAL_USER', passEnv: 'LENOVO_PORTAL_PASS', defaultUrl: 'https://dcsc.lenovo.com/' },
+  Huawei: { urlEnv: 'HUAWEI_PORTAL_URL', userEnv: 'HUAWEI_PORTAL_USER', passEnv: 'HUAWEI_PORTAL_PASS', defaultUrl: 'https://e.huawei.com/en/partner' }
 };
 
 /**
@@ -502,6 +511,51 @@ const VENDOR_PORTAL_POLICIES = Object.freeze({
       requiresTab1Handoff: false,
       supportsHeadless: true,
       steps: ['Open DCSC product configurator', 'Expand hardware/storage/networking/services groups', 'Extract Feature Codes, MTM SKUs, prices, and compatibility rules']
+    }),
+    defaultDomainClassifier: defaultClassifySolutionDomain,
+    defaultRuleExtractor: defaultExtractNormalizedRules
+  }),
+  Huawei: Object.freeze({
+    vendor: 'Huawei',
+    configuratorName: 'Huawei SCT / UniSTAR Solution Configurator',
+    supportedPillars: ['Server', 'Storage', 'Networking'],
+    anchorTabUrl: 'https://e.huawei.com/en/partner',
+    portalUrl: 'https://e.huawei.com/en/partner',
+    urlPatterns: ['e.huawei.com', 'unistar.huawei.com', 'sct.huawei.com'],
+    launchSelector: 'a[href*="sct"], a[href*="unistar"], a[href*="config"]',
+    handoffMechanism: 'OAUTH_SSO_REDIRECT',
+    allowInPlaceReload: true,
+    forbiddenDirectNavigatePatterns: [],
+    recoveryProtocol: 'REAUTHENTICATE_HUAWEI_SCT',
+    loginSelectors: Object.freeze({
+      usernameSelector: 'input[name="username"], input[type="email"]',
+      passwordSelector: 'input[type="password"]',
+      submitSelector: 'button[type="submit"]'
+    }),
+    navigationSelectors: Object.freeze({
+      treeNodeSelector: '.sct-category-tree, .config-nav-tree',
+      menuTabSelector: '.sct-tab-content',
+      expandAllSelector: '.expand-all'
+    }),
+    tableSelectors: Object.freeze({
+      tableSelector: 'table, .sct-bom-table',
+      rowSelector: 'tr',
+      headerSelector: 'th',
+      skuColumnAliases: ['BOM Code', 'Part Number', 'Model', 'SKU'],
+      descriptionColumnAliases: ['Description', 'Component Description', 'Item Name'],
+      priceColumnAliases: ['List Price', 'Unit Price (USD)', 'Price'],
+      constraintColumnAliases: ['Dependency', 'Compatibility', 'Notes']
+    }),
+    ruleSelectors: Object.freeze({
+      unavailableRuleSelector: '.sct-error-banner, .sct-incompatible',
+      ruleContainerSelector: '.sct-rule-note'
+    }),
+    networkRulePatterns: ['/sct/', '/unistar/', 'validate', 'rules'],
+    scrapingInstructions: Object.freeze({
+      mode: 'OAUTH_SPA_DOM',
+      requiresTab1Handoff: false,
+      supportsHeadless: true,
+      steps: ['Authenticate to Huawei Partner / UniSTAR SCT', 'Open FusionServer / OceanStor / CloudEngine BOM', 'Extract BOM Codes, descriptions, prices, and compatibility rules']
     }),
     defaultDomainClassifier: defaultClassifySolutionDomain,
     defaultRuleExtractor: defaultExtractNormalizedRules

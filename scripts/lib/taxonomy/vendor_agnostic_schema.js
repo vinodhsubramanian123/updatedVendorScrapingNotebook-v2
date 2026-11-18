@@ -16,6 +16,7 @@ const { classifyComponentRole } = require('../catalog/product_meta.js');
 const VENDOR_SIGNATURES = [
   { vendor: 'HPE', patterns: [/\bhpe\b/i, /\bproliant\b/i, /\bsynergy\b/i, /\balletra\b/i, /\bnimble\b/i, /\bstoreever\b/i, /\bstoreonce\b/i, /\bcray\b/i, /\bpointnext\b/i, /\bil[o0]\b/i, /\bsmart\s*array\b/i] },
   { vendor: 'Dell', patterns: [/\bdell\b/i, /\bpoweredge\b/i, /\bpowerstore\b/i, /\bpowervault\b/i, /\bpowerscale\b/i, /\bidrac\b/i, /\bperc\b/i, /\bprosupport\b/i, /\bcompellent\b/i, /\boption\s*id\b/i] },
+  { vendor: 'Huawei', patterns: [/\bhuawei\b/i, /\bfusionserver\b/i, /\btaishan\b/i, /\bkunlun\b/i, /\boceanstor\b/i, /\bcloudengine\b/i, /\bibmc\b/i, /\bimaster\b/i, /\bfusiondirector\b/i, /\bhi-care\b/i] },
   { vendor: 'Cisco', patterns: [/\bcisco\b/i, /\bucs\b/i, /\bnexus\b/i, /\bcatalyst\b/i, /\bintersight\b/i, /\bsmartnet\b/i, /\bvic\s*\d{4}\b/i] },
   { vendor: 'Lenovo', patterns: [/\blenovo\b/i, /\bthinksystem\b/i, /\bthinkagile\b/i, /\bxclarity\b/i] },
   { vendor: 'Supermicro', patterns: [/\bsupermicro\b/i, /\bsuperblade\b/i, /\bsupertwin\b/i, /\bmotherboard\b/i] }
@@ -56,7 +57,7 @@ function detectVendor(text = '', partNumber = '', metadata = {}) {
   // 1. Explicit metadata
   if (metadata?.vendor && typeof metadata.vendor === 'string') {
     const vNorm = metadata.vendor.toUpperCase();
-    if (['HPE', 'DELL', 'CISCO', 'LENOVO', 'SUPERMICRO'].includes(vNorm)) {
+    if (['HPE', 'DELL', 'HUAWEI', 'CISCO', 'LENOVO', 'SUPERMICRO'].includes(vNorm)) {
       return vNorm === 'HPE' ? 'HPE' : vNorm.charAt(0) + vNorm.slice(1).toLowerCase();
     }
   }
