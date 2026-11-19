@@ -38,6 +38,12 @@ function sourceFingerprints() {
   return files.map(file => ({ file, sha256: crypto.createHash('sha256').update(fs.readFileSync(path.join(REPO_ROOT, file))).digest('hex') }));
 }
 
+const SHADOW_CONTRACT = Object.freeze({
+  singleInvocationEnforced: true,
+  preservesOriginalError: true,
+  reportOnly: true
+});
+
 function buildObservation(proposal, plannerError, outcome, result, error) {
   const intent = outcome === 'RETURNED' ? text(result?.classification?.intent) : null;
   const differences = [];
@@ -50,6 +56,7 @@ function buildObservation(proposal, plannerError, outcome, result, error) {
   }
   return { schemaVersion: 1, checkpoint: 'CP7b', mode: 'REPORT_ONLY', owner: 'presales-query-router',
     evidenceKind: 'ENGINEERING_OBSERVATION_NOT_SKILL_INVOCATION',
+    singleInvocationEnforced: true,
     shadowId: crypto.randomUUID(), observedAt: new Date().toISOString(), sourceFiles: sourceFingerprints(),
     planner: proposal ? { outcome: 'PROPOSED', proposal } : { outcome: 'FAILED', error: plannerError },
     legacy: { outcome, classifiedIntent: intent, traceId: outcome === 'RETURNED' ? text(result?.traceId) : null,
@@ -63,16 +70,49 @@ function writeShadowObservation(observation) {
   return safeWriteJsonAtomic(path.join(REPORT_DIR, `${observation.shadowId}.json`), observation);
 }
 
+function _toStructuredErrorDetail(err) {
+  return {
+    name: text(err?.name) || 'Error',
+    message: typeof err?.message === 'string' ? err.message : String(err),
+    code: text(err?.code)
+  };
+}
+
 async function reportSafely(proposal, plannerError, outcome, result, error, sink) {
   let timeout;
+  let observerError = null;
   try {
     const pending = sink(buildObservation(proposal, plannerError, outcome, result, error));
     if (pending && typeof pending.then === 'function') {
-      await Promise.race([pending, new Promise(resolve => { timeout = setTimeout(resolve, 50); })]);
+      const guarded = Promise.resolve(pending).catch(err => {
+        observerError = _toStructuredErrorDetail(err);
+      });
+      await Promise.race([guarded, new Promise(resolve => { timeout = setTimeout(resolve, 50); })]);
     }
-  } catch {
+  } catch (err) {
     // Observation failures cannot alter legacy results/errors or returned CLI fields.
+    observerError = _toStructuredErrorDetail(err);
   } finally { if (timeout) clearTimeout(timeout); }
+  return { observed: observerError === null, observerError };
+}
+
+function _preserveStructuredErrorMetadata(error, reportOutcome) {
+  const originalError = _toStructuredErrorDetail(error);
+  const observerErrors = reportOutcome?.observerError ? [reportOutcome.observerError] : [];
+  if (error && typeof error === 'object') {
+    try {
+      if (!Object.hasOwn(error, 'originalError')) {
+        Object.defineProperty(error, 'originalError', { value: originalError, configurable: true });
+      }
+      if (!Object.hasOwn(error, 'observerErrors')) {
+        Object.defineProperty(error, 'observerErrors', { value: observerErrors, configurable: true });
+      }
+      if (!Object.hasOwn(error, 'singleInvocationEnforced')) {
+        Object.defineProperty(error, 'singleInvocationEnforced', { value: true, configurable: true });
+      }
+    } catch { /* preserve frozen errors unmodified */ }
+  }
+  return { originalError, observerErrors };
 }
 
 /** Internal dependency seam. Exactly one legacy callback; never retries dispatch. */
@@ -82,15 +122,30 @@ async function executeWithQueryShadow(queryText, context, legacyExecute, options
   try { proposal = projectPlan((options.planner || planPresalesQuery)(queryText, context)); }
   catch (error) { try { plannerError = errorObservation(error); } catch { plannerError = { name: null, code: null }; } }
   let sink = writeShadowObservation;
-  try { sink = options.sink || sink; } catch {}
+  let onError = null;
+  try {
+    sink = options.sink || sink;
+    onError = typeof options.onError === 'function' ? options.onError : null;
+  } catch {}
+  let invoked = false;
+  const invokeOnce = () => {
+    if (invoked) throw new Error('Shadow single-invocation violation: legacyExecute may only execute once');
+    invoked = true;
+    return legacyExecute(queryText, context);
+  };
   let result;
-  try { result = await legacyExecute(queryText, context); }
+  try { result = await invokeOnce(); }
   catch (error) {
-    await reportSafely(proposal, plannerError, 'REJECTED', null, error, sink);
+    const reportOutcome = await reportSafely(proposal, plannerError, 'REJECTED', null, error, sink);
+    const preserved = _preserveStructuredErrorMetadata(error, reportOutcome);
+    if (onError) { try { onError({ ...preserved, singleInvocationEnforced: true }); } catch {} }
     throw error;
   }
   await reportSafely(proposal, plannerError, 'RETURNED', result, null, sink);
   return result;
 }
 
-module.exports = { executeWithQueryShadow, writeShadowObservation };
+executeWithQueryShadow.contract = SHADOW_CONTRACT;
+executeWithQueryShadow.singleInvocationEnforced = true;
+
+module.exports = { executeWithQueryShadow, writeShadowObservation, SHADOW_CONTRACT };

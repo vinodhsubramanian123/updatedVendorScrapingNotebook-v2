@@ -6,6 +6,7 @@ const { outputQuantities } = require('./configuration_context');
 const { solutionFingerprint, deliveryFingerprint, candidateReviewCurrent } = require('./solution_evidence');
 const { assertDeliveryAuthorization } = require('../contracts/workflow_contract');
 const { receiptMatches } = require('./portal_receipt');
+const { projectCustomerDecision } = require('./decision_projection');
 
 function portalLabel(candidate) {
   return candidate && receiptMatches(candidate.portalReceipt, candidate) ? `CLIC ACCEPTED — ${candidate.portalReceipt.capturedAt}` : 'PORTAL VALIDATION PENDING';
@@ -275,6 +276,7 @@ function generateProfessionalBOQ(evalResults, exportPath, chassisId, rankTier, o
   _createSkusSheet(wb, baseSkus, 'Base BOM', 'No base SKUs found in this tier.', evalResults, headerStyle, currencyStyle, options);
   _createSkusSheet(wb, missingDeps, 'Missing Dependencies', 'No missing physical dependencies injected.', evalResults, headerStyle, currencyStyle, options);
   _createSkusSheet(wb, strategyOptions, 'Strategy Add-ons', 'No strategy up-sell add-ons for this tier.', evalResults, headerStyle, currencyStyle, options);
+  _appendDecisionAndEvidenceSheet(wb, evalResults);
 
   if (exportPath) XLSX.writeFile(wb, exportPath);
   return exportPath || wb;
@@ -940,6 +942,152 @@ function _styleRankSheet(wsRank, rankData, items, styles) {
  * @param {object} [options] - Options (title, driveSync, etc.)
  * @returns {object} XLSX workbook
  */
+function _hasDecisionEvidenceContext(evalResults) {
+  if (!evalResults || typeof evalResults !== 'object') return false;
+  return Boolean(
+    evalResults.requirementAccounting ||
+    evalResults.requirementResolution?.requirementAccounting ||
+    evalResults.claimAdjudication ||
+    evalResults.ephemeralSourceValidation?.claimAdjudication ||
+    evalResults.solutionIntelligence ||
+    evalResults.dependencyInvalidation
+  );
+}
+
+function _buildDecisionOutcomeAndEvidenceRows(projection) {
+  const out = projection.outcome;
+  const es = projection.evidenceStates;
+  return [
+    ['HPE SOLUTION INTELLIGENCE — DECISION & EVIDENCE PROJECTION'],
+    ['Schema Version', projection.schemaVersion],
+    [],
+    ['OUTCOME & INDEPENDENT EVIDENCE STATES', 'Value'],
+    ['Outcome Disposition', out.disposition],
+    ['Is Buildable', String(out.isBuildable)],
+    ['Selected Rank', out.selectedRank ?? 'NONE'],
+    ['Candidate Count', out.candidateCount],
+    ['Outcome Summary', out.summary],
+    ['Local Physical Checks', es.localPhysicalChecks],
+    ['Document Grounding', es.documentGrounding],
+    ['Live Vendor Acceptance', es.liveVendorAcceptance],
+    ['Cloud Synchronization', es.cloudSynchronization],
+    ['Delivery Authorization', es.deliveryAuthorization],
+    ['Dependency Invalidation Status', es.dependencyInvalidationStatus]
+  ];
+}
+
+function _buildDecisionCoverageAndChangesRows(projection) {
+  const rc = projection.requirementCoverage;
+  const rows = [
+    [],
+    ['REQUIREMENT COVERAGE', 'Count'],
+    ['Total Clauses', rc.totalClauses],
+    ['Hard Requirements', rc.hardRequirementsCount],
+    ['Omitted Clauses', rc.omittedClausesCount],
+    ['Violated Hard Requirements', rc.violatedHardCount],
+    ['Unresolved Hard Requirements', rc.unresolvedHardCount]
+  ];
+  if (rc.clauses.length > 0) {
+    rows.push(['Requirement ID', 'Clause', 'Hardness', 'Disposition', 'Reason']);
+    rc.clauses.forEach(c => rows.push([c.id, c.rawText, c.hardness, c.disposition, c.reason || '']));
+  }
+  rows.push([], ['CHANGES & FACTUAL RATIONALES']);
+  if (projection.changesAndRationales.length > 0) {
+    rows.push(['SKU', 'Action', 'Before Qty', 'After Qty', 'Reason', 'Source Ref']);
+    projection.changesAndRationales.forEach(ch => {
+      rows.push([ch.sku, ch.action, ch.beforeQty ?? '', ch.afterQty ?? '', ch.reason, ch.sourceRef]);
+    });
+  } else {
+    rows.push(['No configuration deltas recorded.']);
+  }
+  return rows;
+}
+
+function _buildDecisionAlternativesAndUncertaintyRows(projection) {
+  const cm = projection.confidenceMetrics;
+  const rows = [
+    [],
+    ['EVALUATED ALTERNATIVES'],
+    ['Rank', 'Name', 'Cost (USD)', 'Pricing Complete', 'Lead Time (Days)', 'Lead Time Status', 'Qualified', 'Trade-off Notes']
+  ];
+  projection.alternatives.forEach(alt => {
+    const notes = Array.isArray(alt.tradeOffNotes) ? alt.tradeOffNotes.join('; ') : '';
+    rows.push([
+      alt.rank ?? '',
+      alt.name,
+      alt.pricingComplete && alt.costUsd !== null ? alt.costUsd : 'INCOMPLETE (NULL)',
+      String(alt.pricingComplete),
+      alt.leadTimeDays !== null ? alt.leadTimeDays : 'UNKNOWN',
+      alt.leadTimeStatus,
+      String(alt.qualifiedForRecommendation),
+      notes
+    ]);
+  });
+  rows.push(
+    [],
+    ['CONFIDENCE METRICS (UNCOLLAPSED)', 'Value'],
+    ['Routing Score', cm.routingScore ?? 'UNASSESSED'],
+    ['Similarity Score', cm.similarityScore ?? 'UNASSESSED'],
+    ['Evidence Coverage', cm.evidenceCoverage ?? 'UNASSESSED'],
+    ['Calibrated Probability', cm.calibratedProbability ?? 'UNASSESSED'],
+    [],
+    ['UNRESOLVED FACTS & UNCERTAINTIES'],
+    ['Uncertainty ID', 'Kind', 'Affected Decision', 'Missing Fact', 'Impact', 'Next Evidence Action']
+  );
+  if (projection.uncertainties.length === 0) {
+    rows.push(['NONE', 'NONE', 'NONE', 'No unresolved uncertainties recorded', 'NONE', 'NONE']);
+  } else {
+    projection.uncertainties.forEach(u => rows.push([u.id, u.kind, u.affectedDecision, u.missingFact, u.impact, u.nextEvidenceAction]));
+  }
+  return rows;
+}
+
+function _styleDecisionAndEvidenceSheet(ws, rows, styles) {
+  ws['!cols'] = [{ wch: 30 }, { wch: 38 }, { wch: 22 }, { wch: 20 }, { wch: 28 }, { wch: 34 }, { wch: 16 }, { wch: 42 }];
+  if (ws.A1) ws.A1.s = styles.headerStyle(styles.C_DARK, styles.C_WHITE, 12);
+  const sectionTitles = new Set([
+    'OUTCOME & INDEPENDENT EVIDENCE STATES',
+    'REQUIREMENT COVERAGE',
+    'CHANGES & FACTUAL RATIONALES',
+    'EVALUATED ALTERNATIVES',
+    'CONFIDENCE METRICS (UNCOLLAPSED)',
+    'UNRESOLVED FACTS & UNCERTAINTIES'
+  ]);
+  for (let r = 1; r < rows.length; r++) {
+    const first = String(rows[r]?.[0] || '');
+    if (sectionTitles.has(first)) {
+      for (let c = 0; c < rows[r].length; c++) {
+        const addr = XLSX.utils.encode_cell({ r, c });
+        if (ws[addr]) ws[addr].s = styles.headerStyle(styles.C_SLATE, styles.C_WHITE, 10);
+      }
+    }
+  }
+}
+
+function _appendDecisionAndEvidenceSheet(wb, evalResults) {
+  if (!_hasDecisionEvidenceContext(evalResults)) return;
+  const projection = projectCustomerDecision(evalResults);
+  const rows = [
+    ..._buildDecisionOutcomeAndEvidenceRows(projection),
+    ..._buildDecisionCoverageAndChangesRows(projection),
+    ..._buildDecisionAlternativesAndUncertaintyRows(projection)
+  ];
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+  _styleDecisionAndEvidenceSheet(ws, rows, _getWorkbookStyles());
+  XLSX.utils.book_append_sheet(wb, ws, 'Decision & Evidence');
+}
+
+function _appendRankedWorkbookSheets(wb, rankedSolutions, serverCount, evalResults, options, styles) {
+  for (const s of rankedSolutions) {
+    const cleanName = (s.name || 'Solution').slice(0, 20).replace(/[/\\?*[\]:]/g, '');
+    const sheetTitle = `Rank ${s.rank} - ${cleanName}`.trim().slice(0, 31);
+    const { rankData, items } = _buildRankSheetData(s, serverCount, evalResults, options);
+    const wsRank = XLSX.utils.aoa_to_sheet(rankData);
+    _styleRankSheet(wsRank, rankData, items, styles);
+    XLSX.utils.book_append_sheet(wb, wsRank, sheetTitle);
+  }
+}
+
 function generateMultiRankSolutionWorkbook(evalResults, exportPath = '', chassisId = '', options = {}) {
   _enforceDeliveryAuthorization(evalResults, options, chassisId);
   const wb = XLSX.utils.book_new();
@@ -958,25 +1106,16 @@ function generateMultiRankSolutionWorkbook(evalResults, exportPath = '', chassis
     throw new Error('Cannot export multi-rank workbook without validated candidate solutions.');
   }
 
-  // --- SHEET 1: EXECUTIVE SUMMARY & ASPECTS ---
   const summaryData = _buildSummaryData(evalResults, chassis, serverCount, rankedSolutions, options);
   const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
   _styleSummarySheet(wsSummary, summaryData, styles);
   XLSX.utils.book_append_sheet(wb, wsSummary, 'Executive Summary & Aspects');
 
-  // --- SHEETS 2 TO N: INDIVIDUAL RANK SHEETS ---
-  rankedSolutions.forEach((s) => {
-    const rawTitle = `Rank ${s.rank} - ${(s.name || 'Solution').slice(0, 20).replace(/[/\\?*[\]:]/g, '')}`.trim();
-    const sheetTitle = rawTitle.slice(0, 31);
-    const { rankData, items } = _buildRankSheetData(s, serverCount, evalResults, options);
-    const wsRank = XLSX.utils.aoa_to_sheet(rankData);
-    _styleRankSheet(wsRank, rankData, items, styles);
-    XLSX.utils.book_append_sheet(wb, wsRank, sheetTitle);
-  });
+  _appendRankedWorkbookSheets(wb, rankedSolutions, serverCount, evalResults, options, styles);
+  _appendDecisionAndEvidenceSheet(wb, evalResults);
 
   if (exportPath) {
-    const outDir = path.dirname(exportPath);
-    if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
+    fs.mkdirSync(path.dirname(exportPath), { recursive: true });
     XLSX.writeFile(wb, exportPath);
   }
 

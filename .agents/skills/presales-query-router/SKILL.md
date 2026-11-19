@@ -307,6 +307,7 @@ If any verification gate fails, the agent MUST:
 - **Financial Transparency**: All solutions must include SKU, Description, Qty, Unit List Price, Extended List Price, and Total CapEx Budget in USD.
 - **Execution Tracing**: Every flow MUST produce a structured execution trace per [`execution-trace-skill`](../execution-trace-skill/SKILL.md).
 - **Output Validation**: Every output MUST pass acceptance criteria per [`output-validation-skill`](../output-validation-skill/SKILL.md) before presentation.
+- **Requirements & Uncertainty Handoffs**: Extract immutable clauses, units, ownership scopes, and exclusions via [`requirements-accounting-skill`](../requirements-accounting-skill/SKILL.md); enforce consequential clarification triggers and pre-ranking qualification via [`decision-uncertainty-skill`](../decision-uncertainty-skill/SKILL.md); reserve [`solution-quality-evaluation-skill`](../solution-quality-evaluation-skill/SKILL.md) strictly for `ENGINEERING` benchmark and post-analysis audits (`INV-72`).
 - **Normative Directives**: Comply with [Normative Language Standard](../../rules/normative_language.md).
 
 ### Component-Domain Routing

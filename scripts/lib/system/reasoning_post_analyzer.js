@@ -17,6 +17,34 @@ const { createEvidenceLedger } = require('./evidence_ledger.js');
 const logger = require('./pipeline_logger.js');
 const { detectVendor, detectHardwareDomain } = require('../taxonomy/vendor_agnostic_schema.js');
 
+function _isAuthoritativeCitationEntry(entry, ephemeralSourceId) {
+  if (!entry) return false;
+  if (typeof entry === 'string') return entry.trim().length > 0;
+  if (typeof entry !== 'object' || entry.isEphemeral === true) return false;
+  const sourceId = entry.sourceId || entry.source_id || entry.id || null;
+  if (ephemeralSourceId && sourceId && String(sourceId) === String(ephemeralSourceId)) return false;
+  return Boolean(sourceId || entry.title || entry.source || entry.excerpt || entry.quote || entry.passage);
+}
+
+function _hasVerifiedTier2Evidence(responseData) {
+  const hasCandidateReview = Boolean(responseData?.ephemeralSourceValidation || responseData?.solutionDoubleCheck);
+  if (hasCandidateReview) {
+    const { candidateReviewCurrent } = require('../boq/solution_evidence.js');
+    return candidateReviewCurrent(responseData);
+  }
+  const hasCandidates = Boolean(
+    responseData?.conflictGraph?.recommendedSolutions?.length ||
+    responseData?.conflictGraph?.rankedSolutions?.length ||
+    responseData?.rankedSolutions?.length
+  );
+  if (hasCandidates) return false;
+  const nlm = responseData?.notebookLmStatus;
+  if (!nlm || nlm.isCloudGrounded !== true) return false;
+  if (nlm.cloudSyncState === 'FAILED' || nlm.cloudSyncState === 'DEGRADED') return false;
+  if (!Array.isArray(nlm.citations) || nlm.citations.length === 0) return false;
+  return nlm.citations.some(entry => _isAuthoritativeCitationEntry(entry, nlm.ephemeralSourceId));
+}
+
 /**
  * Determine the Epistemic Tier of the completed solution (INV-231)
  */
@@ -36,16 +64,8 @@ function determineEpistemicTier(responseData, _classification, context = {}) {
     };
   }
 
-  // Tier 2: Requires authentic cloud document citations from trusted sources
-  const nlm = responseData?.notebookLmStatus;
-  const hasGroundedCitations = Boolean(
-    nlm?.isCloudGrounded === true &&
-    (nlm?.citationsCount || 0) > 0 &&
-    (!Array.isArray(nlm?.citations) || nlm.citations.length > 0) &&
-    nlm?.cloudSyncState !== 'FAILED' &&
-    nlm?.cloudSyncState !== 'DEGRADED'
-  );
-  if (hasGroundedCitations) {
+  // Tier 2: Requires canonical verified candidate review or authentic non-empty document citations
+  if (_hasVerifiedTier2Evidence(responseData)) {
     return {
       tier: 'TIER_2_DOCUMENT_CITATION',
       label: 'Tier 2: Grounded Document Citation Check',
@@ -139,7 +159,8 @@ function _determineContextClassification(queryText, responseData, context) {
   const platformName = responseData.chassis || context.chassisName || responseData.chassisInfo?.model || (context.chassisDir ? path.basename(context.chassisDir) : 'GENERAL_INFRASTRUCTURE');
   const genMatch = String(platformName).match(/Gen(\d+)/i) || String(sampleContextText).match(/Gen(\d+)/i);
   const generation = genMatch ? `Gen${genMatch[1]}` : (responseData.chassisInfo?.gen || 'N/A');
-  const formFactor = responseData.chassisInfo?.formFactor || (responseData.is1U ? '1U' : responseData.is4U ? '4U' : '2U');
+  const formFactor = responseData.chassisInfo?.formFactor ||
+    (responseData.is1U ? '1U' : responseData.is4U ? '4U' : responseData.is2U ? '2U' : 'UNKNOWN');
 
   return {
     detectedVendor,
@@ -163,30 +184,62 @@ function _extractSelfCorrectionTrail(responseData) {
     [];
 }
 
+function _resolveValidatorRequiredPower(power, wNode) {
+  if (Number.isFinite(power.requiredWattageWithHeadroom) && power.requiredWattageWithHeadroom > 0) {
+    const deltaW = Math.max(0, power.requiredWattageWithHeadroom - wNode);
+    const label = power.headroomPolicy || (Number.isFinite(power.headroomPct)
+      ? `${power.headroomPct}% headroom`
+      : `validator-supplied headroom (+${deltaW}W)`);
+    return { wReq: power.requiredWattageWithHeadroom, label, deltaW };
+  }
+  if (Number.isFinite(power.headroomFactor) && power.headroomFactor > 0) {
+    const wReq = Math.ceil(wNode * (1 + power.headroomFactor));
+    const pct = Math.round(power.headroomFactor * 100);
+    return { wReq, label: power.headroomPolicy || `${pct}% headroom`, deltaW: wReq - wNode };
+  }
+  if (Number.isFinite(power.headroomPct) && power.headroomPct >= 0) {
+    const wReq = Math.ceil(wNode * (1 + power.headroomPct / 100));
+    return { wReq, label: power.headroomPolicy || `${power.headroomPct}% headroom`, deltaW: wReq - wNode };
+  }
+  return { wReq: null, label: null, deltaW: null };
+}
+
 function _derivePowerProof(power) {
   const wNode = power.estimatedNodeWattage || 0;
   const wPsu = power.maxPsuWattage || 0;
-  const wReq = power.requiredWattageWithHeadroom || Math.ceil(wNode * 1.20);
   if (wNode <= 0) return null;
 
-  if (wPsu < wReq && wPsu > 0) {
+  const { wReq, label, deltaW } = _resolveValidatorRequiredPower(power, wNode);
+  if (wReq === null) {
+    const psuLabel = wPsu > 0 ? `${wPsu}W` : 'UNKNOWN';
+    return `Power Check: Node load = ${wNode}W vs ${psuLabel} PSU capacity; headroom policy not supplied by validator (required wattage with headroom: UNKNOWN).`;
+  }
+  if (wPsu <= 0) {
+    return `Power Check: Node load = ${wNode}W + ${label} (+${deltaW}W) = ${wReq}W required vs UNKNOWN PSU capacity.`;
+  }
+  if (wPsu < wReq) {
     const deficit = wReq - wPsu;
     const overagePct = Math.round((deficit / wPsu) * 100);
-    return `Power Deficit Proof: Node load = ${wNode}W + 20% headroom (${Math.ceil(wNode * 0.2)}W) = ${wReq}W required vs ${wPsu}W PSU capacity -> Deficit: -${deficit}W (${overagePct}% overage). Minimum required PSU: >=${Math.ceil(wReq / 100) * 100}W.`;
+    return `Power Deficit Proof: Node load = ${wNode}W + ${label} (${deltaW}W) = ${wReq}W required vs ${wPsu}W PSU capacity -> Deficit: -${deficit}W (${overagePct}% overage). Minimum required PSU: >=${Math.ceil(wReq / 100) * 100}W.`;
   }
-  if (wPsu >= wReq) {
-    return `Power Headroom Proof: Node load = ${wNode}W + 20% headroom (${Math.ceil(wNode * 0.2)}W) = ${wReq}W <= ${wPsu}W installed PSU capacity (Headroom: +${wPsu - wReq}W / ${Math.round(((wPsu - wReq) / wReq) * 100)}% margin).`;
-  }
-  return null;
+  return `Power Headroom Proof: Node load = ${wNode}W + ${label} (${deltaW}W) = ${wReq}W <= ${wPsu}W installed PSU capacity (Headroom: +${wPsu - wReq}W / ${Math.round(((wPsu - wReq) / wReq) * 100)}% margin).`;
 }
 
 function _deriveMemoryProof(memory) {
   const cpus = memory.cpuCount || 0;
   const dimms = memory.memoryCount || 0;
-  const chWidth = memory.channelWidth || 8;
-  const totalCh = cpus * chWidth;
-  if (cpus <= 0 || dimms <= 0) return null;
+  if (dimms <= 0) return null;
 
+  const chWidth = (Number.isSafeInteger(memory.channelWidth) && memory.channelWidth > 0)
+    ? memory.channelWidth
+    : ((Number.isSafeInteger(memory.detectedChannelWidth) && memory.detectedChannelWidth > 0) ? memory.detectedChannelWidth : null);
+
+  if (cpus <= 0 || chWidth === null) {
+    const cpuLabel = cpus > 0 ? `${cpus} CPU(s)` : 'UNKNOWN CPU count';
+    return `Memory Balance Check: ${dimms} DIMM(s) across ${cpuLabel}; memory channel width ${chWidth ?? 'UNKNOWN'} (interleaving balance: UNKNOWN).`;
+  }
+
+  const totalCh = cpus * chWidth;
   const satPct = Math.min(100, Math.round((dimms / totalCh) * 100));
   const isUnbalanced = memory.isBalancedChannel === false || memory.isInvalidChannelConfiguration === true || (dimms % cpus !== 0) || ((dimms / cpus) % chWidth !== 0);
   if (isUnbalanced) {
@@ -198,23 +251,30 @@ function _deriveMemoryProof(memory) {
 function _derivePcieProof(pcie) {
   const cards = pcie.requiredPcieCards || 0;
   const activeSlots = pcie.activeSlotsAvailable || 0;
-  const mechSlots = pcie.totalPhysicalSlots || 0;
+  const mechSlots = pcie.totalPhysicalSlots ?? 'UNKNOWN';
   if (cards <= 0 && activeSlots <= 0) return null;
 
   if (cards > activeSlots) {
-    return `PCIe Capacity Proof: Demand = ${cards} card(s) vs Active = ${activeSlots} slot(s) (Mechanical: ${mechSlots}) -> Deficit: -${cards - activeSlots} slot(s). Cabled vs active: Slot 1 dormant without primary cable kit; Primary cable kit mandatory.`;
+    let causeNote = 'Cause and enablement kit require scoped chassis PCIe rule verification.';
+    if (pcie.deficitCause) {
+      causeNote = String(pcie.deficitCause);
+    } else if (pcie.needsPrimaryCableKit === true) {
+      causeNote = 'Validator flagged primary riser cable kit deficit (needsPrimaryCableKit: true).';
+    }
+    return `PCIe Capacity Proof: Demand = ${cards} card(s) vs Active = ${activeSlots} slot(s) (Mechanical: ${mechSlots}) -> Deficit: -${cards - activeSlots} slot(s). ${causeNote}`;
   }
-  return `PCIe Capacity Proof: Demand = ${cards} card(s) <= Active = ${activeSlots} slot(s) (Mechanical: ${mechSlots}, x16 lanes: ${pcie.x16LanesAvailable || 1}) -> 100% PCIe coverage (+${activeSlots - cards} slot headroom).`;
+  const x16Label = pcie.x16LanesAvailable ?? 'UNKNOWN';
+  return `PCIe Capacity Proof: Demand = ${cards} card(s) <= Active = ${activeSlots} slot(s) (Mechanical: ${mechSlots}, x16 lanes: ${x16Label}) -> 100% PCIe coverage (+${activeSlots - cards} slot headroom).`;
 }
 
-function _deriveThermalProof(compute, cpus = 2) {
+function _deriveThermalProof(compute, cpus = null) {
   const tdp = compute.maxCpuTdpWatts;
   if (!Number.isFinite(tdp) || tdp <= 0) return null;
   const rating = compute.installedCoolingCapacityWatts;
   const capacity = Number.isFinite(rating) && rating > 0
     ? `Reported per-socket cooling capacity: ${rating}W (${rating >= tdp ? 'meets' : 'below'} ${tdp}W TDP).`
     : 'Cooling capacity and enablement rules require scoped validation.';
-  return `Thermal Check: ${tdp}W maximum CPU TDP across ${cpus} reported sockets. ${capacity}`;
+  return `Thermal Check: ${tdp}W maximum CPU TDP across ${cpus ?? 'UNKNOWN'} reported socket(s). ${capacity}`;
 }
 /**
  * Step 3 Mathematical Derivations (Power, Memory, PCIe, Thermal)
@@ -225,7 +285,7 @@ function _deriveStep3MathematicalProofs(responseData) {
   const memory = summary.memory || responseData.memory || {};
   const pcie = summary.pcie || responseData.pcie || {};
   const compute = summary.compute || responseData.compute || {};
-  const cpus = memory.cpuCount || compute.cpuCount || 2;
+  const cpus = memory.cpuCount || compute.cpuCount || null;
   const proofs = [];
 
   const pProof = _derivePowerProof(power);
@@ -257,6 +317,17 @@ function _deriveStep6ResolutionProofs(selfCorrectionTrail = []) {
   });
 }
 
+function _deriveDocumentGroundingStatus(epistemic, responseData) {
+  if (epistemic.tier === 'TIER_2_DOCUMENT_CITATION') return 'VERIFIED';
+  if (epistemic.tier === 'TIER_3_OFFICIAL_VENDOR_ACCEPTANCE' && _hasVerifiedTier2Evidence(responseData)) {
+    return 'VERIFIED';
+  }
+  if (responseData.notebookLmStatus?.isCloudGrounded === true || responseData.ephemeralSourceValidation?.isCloudGrounded === true) {
+    return 'UNVERIFIED';
+  }
+  return 'PENDING';
+}
+
 /**
  * Step-by-step numbered reasoning narrative builder (Steps 1 to 7).
  */
@@ -279,11 +350,16 @@ function _buildReasoningNarrative({
   const step3Line = `3. Physical Math & Constraint Verification: ${conflictsCount} conflict(s) detected, ${missingDeps.length} missing dependency/enablement item(s) identified across ${responseData.aspectChecks?.length || 0} aspect check(s).` +
     (step3MathProofs.length > 0 ? `\n   - ${step3MathProofs.join('\n   - ')}` : '');
 
+  const confText = Number.isFinite(classification?.confidence)
+    ? `${(classification.confidence * 100).toFixed(0)}% score`
+    : 'UNASSESSED';
+  const docStatus = _deriveDocumentGroundingStatus(epistemic, responseData);
+
   const narrative = [
-    `1. Intake Classification: Intent identified as ${effectiveIntent} (${((classification.confidence ?? 1.0) * 100).toFixed(0)}% confidence). Hardware Vendor: ${detectedVendor}, Solution Domain: ${solutionDomain}.`,
+    `1. Intake Classification: Intent identified as ${effectiveIntent} (${confText}). Hardware Vendor: ${detectedVendor}, Solution Domain: ${solutionDomain}.`,
     `2. Platform & Generation Scoping: Evaluated against target platform ${platform} (${generation}, ${formFactor}). Applied scoped physical rules without blind cross-domain leakage.`,
     step3Line,
-    `4. Epistemic Grounding: Ranked at ${epistemic.label}. Document Grounding: ${responseData.notebookLmStatus?.isCloudGrounded ? 'VERIFIED' : 'PENDING'}. Portal Verification: ${epistemic.vendorAcceptancePending ? 'PORTAL VALIDATION PENDING' : 'ACCEPTED_BY_VENDOR'}.`,
+    `4. Epistemic Grounding: Ranked at ${epistemic.label}. Document Grounding: ${docStatus}. Portal Verification: ${epistemic.vendorAcceptancePending ? 'PORTAL VALIDATION PENDING' : 'ACCEPTED_BY_VENDOR'}.`,
     `5. Continuous Learning: Reflection hook status: ${feedbackResult.hookStatus} (${feedbackResult.deltasProposed} candidate delta(s) proposed to quarantine).`
   ];
 
@@ -503,7 +579,7 @@ function _buildAnalysisPayload({
     traceId: effectiveTraceId,
     executionTimeMs,
     intent: effectiveIntent,
-    confidence: classification.confidence ?? 1.0,
+    confidence: Number.isFinite(classification?.confidence) ? classification.confidence : null,
     intentRationale: classification.rationale || 'Canonical execution dispatched.',
     contextClassification,
     reasoningNarrative,

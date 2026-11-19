@@ -576,3 +576,28 @@ Emitted by `scripts/scrapers/parse_clic_modal.js` via `parseClicAdviceExcel`.
 
 
 
+
+---
+
+## 15. Solution Intelligence Contracts (`SI-02` through `SI-10`, `schemaVersion: '1.0'`)
+
+- **`RequirementRecord` & `RequirementAccounting`** (`scripts/lib/boq/requirements/requirement_records.js`, `coverage.js`):
+  - `schemaVersion: '1.0'`, `inputRevisionSha256`, `totalClauses`, `parsedCount`, `uninterpretedCount`, `ambiguityCount`, `records[]` (`{ id: 'REQ-<8hex>-<seq>', rawText, parseStatus: 'PARSED' | 'UNINTERPRETED', hardness: 'HARD_CONSTRAINT' | 'PREFERENCE' | 'EXCLUSION', scope: 'PER_NODE' | 'PER_CLUSTER' | 'GLOBAL' | 'SPARE' | 'UNSPECIFIED', typedValue, extractedMetrics, isAmbiguous, provenance }`), `ambiguities[]`, `clarificationQuestions[]`, and candidate `requirementCoverage` (`dispositions[]`, `summary`, `blocksPositiveRecommendation`, `rejectedWaivers[]`, `quantityConservation`).
+- **`EvidenceRecord`, `ClaimRecord` & `IndependentEvidenceStates`** (`scripts/lib/boq/evidence/claim_records.js`, `source_adjudicator.js`):
+  - `EvidenceRecord` binds `evidenceId`, `sourceId`, `sourceType` (`DETERMINISTIC_CALCULATION`, `CATALOG_OBSERVATION`, `OFFICIAL_DOCUMENT_PASSAGE`, `PORTAL_RECEIPT_CAPTURE`, `UNTRUSTED_INPUT`, `MODEL_PROPOSAL`), `contentSha256`, `revisionSha256`, `retrievedAt`, `scope` (`product`, `generation`, `baseSku`, `owner`, `region`, `selectors`), `authority`, `freshnessPolicy`, and `polarity` (`SUPPORTING` | `OPPOSING`).
+  - `adjudicateSolutionClaims` emits `{ schemaVersion: '1.0', overallStatus: 'SUPPORTED' | 'CONTRADICTED' | 'REJECTED' | 'UNKNOWN', counts, hasContradictions, hasRejections, claims[], evidenceDigestSha256 }` plus 5 separate evidence lanes (`localPhysicalChecks`, `documentGrounding`, `liveVendorAcceptance`, `cloudSynchronization`, `deliveryAuthorization`).
+- **`ConstraintResult` & `FeasibilityDiagnosis`** (`scripts/lib/conflict/constraints/constraint_results.js`, `conflict_explanations.js`):
+  - `ConstraintResult`: `{ schemaVersion: '1.0', constraintId, ruleVersion, domain, owner, predicate, inputs, unitMap, missingInputs, status: 'PASS' | 'FAIL' | 'UNKNOWN' | 'NOT_EVALUATED' | 'NOT_APPLICABLE', hardness: 'HARD' | 'PREFERENCE', requirementIds, evidenceRefs, proof, detail }`.
+  - `FeasibilityDiagnosis`: `{ schemaVersion: '1.0', outcome: 'FEASIBLE' | 'INFEASIBLE_IN_EVALUATED_SCOPE' | 'UNKNOWN' | 'SEARCH_EXHAUSTED', universalImpossibilityClaimed: false, scope, minimalConflictingSet: { constraintIds, isIrreducible, ablationChecks }, hardBeforePreferences, bestValidatedCandidate }`.
+- **`RepairTransaction` & `CompoundExecutionPlan`** (`scripts/lib/conflict/repair_transactions.js`, `scripts/lib/boq/compound_execution.js`):
+  - `RepairTransaction`: `{ schemaVersion: '1.0', outcome: 'ACCEPTED' | 'ROLLED_BACK' | 'CANCELLED', parentManifestSha256, resultingManifestSha256, manifestChanged, receiptInvalidated, invalidatedReceipts[], regressionDetected, rollbackReason, state }`.
+  - `CompoundExecutionPlan`: ordered `steps[]`, `excludedOperations[]`, `exclusions[]`, `pathQualifications`, `invocationLedger` (`invocations <= 1`, `singleInvocationEnforced: true`), `status`, `blockerCode`, `originalError`, and `observerErrors[]`.
+- **`WorkloadDemandRecord` & `ParetoFrontier`** (`scripts/lib/conflict/sizing/workload_demand.js`, `pareto_ranker.js`):
+  - `WorkloadDemandRecord`: `{ schemaVersion: '1.0', workloadFamily, throughputOrConcurrency, latencySla, workingSetGb, requiredCores, growthFactor, resilienceMode, storageSpec, fabricParityRequired, explicitServiceRequirement, authoritativeSizingBasis, provenance }`.
+  - `ParetoFrontier`: `{ schemaVersion: '1.0', frontierCandidates, dominatedCandidates, disqualifiedCandidates, evaluatedCandidateSet, isGlobalMinimum, minimumCostClaim }` preserving `costUsd: null` when incomplete, `comparableLeadTimeDays: null` when stale/missing, and distinct `priceBasis` (`QUOTE` | `LIST` | `HISTORICAL`).
+- **`SolutionIntelligenceEnvelope`** (`scripts/lib/boq/decision_projection.js`):
+  - `{ schemaVersion: '1.0', envelopeType: 'SOLUTION_INTELLIGENCE_ENVELOPE', track, product, manifestFingerprint, outcome, requirementCoverage, changesAndRationales, alternatives, uncertainties[], confidenceMetrics: { routingScore, similarityScore, evidenceCoverage, calibratedProbability }, evidenceStates }`.
+- **`EvidenceDependency` Index** (`scripts/lib/boq/evidence/dependency_index.js`):
+  - `{ schemaVersion: '1.0', indexRevisionSha256, updatedAt, nodes, edges, reevaluationQueue[], preservedReceipts[] }` enforcing cycle rejection (`cyclicEvidenceRejected`) and `evaluateInvalidationBoundary` across `REQUIREMENT`, `FACT`, `RULE`, `SOURCE`, `CLAIM`, `CANDIDATE`, `REVIEW`, `ARTIFACT`, and `AUTHORIZATION`.
+- **`SI-10` Quality Evaluation Receipt** (`outputs/history/solution_intelligence/si10_quality_evaluation_receipt.json`):
+  - `{ schemaVersion: '1.0', workPackage: 'SI-10', environment: 'offline', liveQualificationStatus: 'NOT_RUN_OFFLINE_CERTIFICATION_ONLY', familyCount, requiredDimensions[], dependencyHashes, overall, splits: { dev, held_out }, results[] }` with strict `null` ratios on zero denominators.

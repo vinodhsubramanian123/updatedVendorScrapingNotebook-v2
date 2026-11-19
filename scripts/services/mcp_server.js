@@ -260,6 +260,19 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
             limit: { type: "number", description: "Maximum number of variance entries to return." }
           }
         }
+      },
+      {
+        name: "get_solution_intelligence_envelope",
+        description: "Produces the canonical SolutionIntelligenceEnvelope (v1.0) projecting outcome, requirement coverage, factual changes/rationales, candidate alternatives, typed uncertainties, and strictly separated evidence states (local checks, document grounding, live vendor acceptance, cloud sync, delivery authorization).",
+        inputSchema: {
+          type: "object",
+          properties: {
+            eval_result: { type: "object", description: "Optional pre-computed evaluation result object to project deterministically into SolutionIntelligenceEnvelope v1.0. When omitted without items, returns NOT_EVALUATED / NO_CLAIMS_RECORDED." },
+            chassis_id: { type: "string", description: "Optional target chassis ID when evaluating raw items directly." },
+            items_json: { type: "string", description: "Optional JSON string of [{ sku, description, qty }] items to simulate and project if eval_result is omitted." },
+            options: { type: "object", description: "Optional projection flags (e.g. { offline: true })." }
+          }
+        }
       }
     ],
   };
@@ -885,51 +898,90 @@ function checkPortalAndSyncReadiness(args = {}) {
   };
 }
 
+function _loadDecisionProjection() {
+  if (typeof require.resolve !== 'function') return null;
+  return require('../lib/boq/decision_projection.js');
+}
+
+function handleGetSolutionIntelligenceEnvelopeTool(args = {}, items = []) {
+  const dp = _loadDecisionProjection();
+  if (!dp || typeof dp.buildSolutionIntelligenceEnvelope !== 'function') {
+    throw new Error('decision_projection module is unavailable in this environment');
+  }
+  const effectiveItems = Array.isArray(items) && items.length > 0
+    ? items
+    : (Array.isArray(args.items) ? args.items : []);
+  let evalInput = args.eval_result !== undefined ? args.eval_result : null;
+  if (!evalInput && effectiveItems.length > 0 && args.chassis_id) {
+    const chassisId = normalizeChassisName(args.chassis_id);
+    const matchedCat = listAllCatalogs().find(c => c.id === chassisId || c.id === args.chassis_id);
+    evalInput = evaluateBOQMultiAspect(effectiveItems, { chassis: chassisId, targetDir: matchedCat?.catalogDir });
+  }
+  const envelope = dp.buildSolutionIntelligenceEnvelope(evalInput, args.options || {});
+  return formatMcpJsonText(envelope);
+}
+
 function handleCheckPortalAndSyncReadinessTool(args = {}) {
   return formatMcpJsonText(checkPortalAndSyncReadiness(args));
+}
+
+function handleSimulateBuildTool(args = {}, items = []) {
+  const chassisId = normalizeChassisName(args.chassis_id);
+  const matchedCat = listAllCatalogs().find(c => c.id === chassisId || c.id === args.chassis_id);
+  const result = evaluateBOQMultiAspect(items, { chassis: chassisId, targetDir: matchedCat?.catalogDir });
+  const simPayload = {
+    simulationType: 'LOCAL_PHYSICAL_MATH_SIMULATION',
+    portalValidationStatus: 'PORTAL VALIDATION PENDING',
+    ...result
+  };
+  const dp = _loadDecisionProjection();
+  if (dp?.buildSolutionIntelligenceEnvelope) {
+    simPayload.solutionIntelligence = dp.buildSolutionIntelligenceEnvelope(simPayload);
+  }
+  return formatMcpJsonText(simPayload);
+}
+
+function handleInspectCategoryDependenciesTool(args = {}, items = [], context = {}) {
+  const analysis = items.length > 0 && typeof analyzeCategoryDependencies === 'function'
+    ? analyzeCategoryDependencies(items, context.catalogData, { chassisId: context.chassisId || args.chassis_id })
+    : null;
+  const matrix = typeof getCategoryDependencyMatrix === 'function' ? getCategoryDependencyMatrix(args.category_filter || '') : [];
+  const graphMatches = args.graph_concept && typeof queryLocalGraphifyNeighborhood === 'function'
+    ? queryLocalGraphifyNeighborhood(args.graph_concept)
+    : undefined;
+  return formatMcpJsonText({ matrix, analysis, graphMatches });
+}
+
+function handleInspectPortfolioBlindspotsTool(args = {}) {
+  const { auditPortfolioBlindspots } = require('../lib/catalog/portfolio_blindspots.js');
+  return formatMcpJsonText(auditPortfolioBlindspots({ product: args.product || null }));
+}
+
+function handleCompareSkuAcrossSolutionsTool(args = {}) {
+  const { compareSkuAcrossSolutions, findCrossSolutionPriceVariances } = require('../lib/catalog/cross_solution_pricing.js');
+  const payload = args.sku
+    ? compareSkuAcrossSolutions(args.sku)
+    : findCrossSolutionPriceVariances({ minSpreadUsd: args.minSpreadUsd ?? 1, limit: args.limit ?? 25 });
+  return formatMcpJsonText(payload);
 }
 
 async function _dispatchMcpTool(toolName, args, items, context, signal) {
   const aspectResp = _executeAspectMcpTool(toolName, args, items, context);
   if (aspectResp) return aspectResp;
   if (toolName === "query_notebooklm") return await handleQueryNotebookLmTool(args, signal);
-  if (toolName === "query_catalog_db") return formatMcpJsonText(queryLocalKnowledgeBase(args.query, normalizeChassisName(args.chassis_id)));
-  if (toolName === "simulate_build") {
-    const chassisId = normalizeChassisName(args.chassis_id);
-    const matchedCat = listAllCatalogs().find(c => c.id === chassisId || c.id === args.chassis_id);
-    const result = evaluateBOQMultiAspect(items, { chassis: chassisId, targetDir: matchedCat?.catalogDir });
-    return formatMcpJsonText({
-      simulationType: 'LOCAL_PHYSICAL_MATH_SIMULATION',
-      portalValidationStatus: 'PORTAL VALIDATION PENDING',
-      ...result
-    });
-  }
-  if (toolName === "record_knowledge_delta") return handleRecordKnowledgeDeltaTool(args);
-  if (toolName === "inspect_category_dependencies") {
-    const analysis = items.length > 0 && typeof analyzeCategoryDependencies === 'function'
-      ? analyzeCategoryDependencies(items, context.catalogData, { chassisId: context.chassisId || args.chassis_id })
-      : null;
-    return formatMcpJsonText({
-      matrix: typeof getCategoryDependencyMatrix === 'function' ? getCategoryDependencyMatrix(args.category_filter || '') : [],
-      analysis,
-      graphMatches: args.graph_concept && typeof queryLocalGraphifyNeighborhood === 'function'
-        ? queryLocalGraphifyNeighborhood(args.graph_concept)
-        : undefined
-    });
-  }
-  if (toolName === "inspect_catalog_deltas") return handleInspectCatalogDeltasTool(args);
-  if (toolName === "check_portal_and_sync_readiness") return handleCheckPortalAndSyncReadinessTool(args);
-  if (toolName === "inspect_portfolio_blindspots") {
-    const { auditPortfolioBlindspots } = require('../lib/catalog/portfolio_blindspots.js');
-    return formatMcpJsonText(auditPortfolioBlindspots({ product: args.product || null }));
-  }
-  if (toolName === "compare_sku_across_solutions") {
-    const { compareSkuAcrossSolutions, findCrossSolutionPriceVariances } = require('../lib/catalog/cross_solution_pricing.js');
-    const payload = args.sku
-      ? compareSkuAcrossSolutions(args.sku)
-      : findCrossSolutionPriceVariances({ minSpreadUsd: args.minSpreadUsd ?? 1, limit: args.limit ?? 25 });
-    return formatMcpJsonText(payload);
-  }
+  const syncHandlers = {
+    query_catalog_db: () => formatMcpJsonText(queryLocalKnowledgeBase(args.query, normalizeChassisName(args.chassis_id))),
+    simulate_build: () => handleSimulateBuildTool(args, items),
+    record_knowledge_delta: () => handleRecordKnowledgeDeltaTool(args),
+    inspect_category_dependencies: () => handleInspectCategoryDependenciesTool(args, items, context),
+    inspect_catalog_deltas: () => handleInspectCatalogDeltasTool(args),
+    check_portal_and_sync_readiness: () => handleCheckPortalAndSyncReadinessTool(args),
+    inspect_portfolio_blindspots: () => handleInspectPortfolioBlindspotsTool(args),
+    compare_sku_across_solutions: () => handleCompareSkuAcrossSolutionsTool(args),
+    get_solution_intelligence_envelope: () => handleGetSolutionIntelligenceEnvelopeTool(args, items)
+  };
+  const handler = syncHandlers[toolName];
+  if (handler) return handler();
   throw new Error(`Unknown tool: ${toolName}`);
 }
 
@@ -965,6 +1017,7 @@ module.exports = {
   checkPortalAndSyncReadiness,
   handleInspectCatalogDeltasTool,
   handleCheckPortalAndSyncReadinessTool,
+  handleGetSolutionIntelligenceEnvelopeTool,
   server,
   run
 };

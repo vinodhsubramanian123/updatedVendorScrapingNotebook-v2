@@ -7,6 +7,8 @@
 const fs = require('fs');
 const path = require('path');
 const { baseProductId, resolveProductIdentity, ruleAppliesToProduct } = require('../catalog/product_scope.js');
+const { normalizeLocalEvidenceRecords } = require('../boq/evidence/claim_records.js');
+const { evaluateInvalidationBoundary, loadDependencyIndex } = require('../boq/evidence/dependency_index.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
 require('dotenv').config({ path: path.join(PROJECT_ROOT, '.env') });
@@ -60,52 +62,124 @@ function prepareSearchTerms(query) {
   return { cleanQuery, searchTerms, activeTerms, minCores, isProcessorQuery };
 }
 
-function searchKnowledgeDeltas(chassisName, activeTerms, rawMatches) {
-  if (!fs.existsSync(KNOWLEDGE_FILE)) return;
+function _scoreRuleAgainstTerms(rule, activeTerms) {
+  if (activeTerms.length === 0) return 0;
+  const hay = `${rule.rawMessage || ''} ${rule.ruleUpdate || ''} ${rule.affectedSku || ''}`.toLowerCase();
+  return activeTerms.reduce((acc, term) => acc + (hay.includes(term) ? 1 : 0), 0);
+}
+
+function _buildDeltaEvidenceMeta(rule, isUniversal, chassisName) {
+  return {
+    sourceType: rule.verificationStatus === 'QUARANTINED' ? 'UNTRUSTED_INPUT' : 'CATALOG_OBSERVATION',
+    sourceRole: 'LEARNED_KNOWLEDGE_REGISTRY',
+    product: isUniversal ? 'UNIVERSAL' : (rule.chassis || chassisName),
+    generation: rule.generation || rule.gen || null,
+    ruleId: rule.deltaId || rule.ruleId || null,
+    verificationStatus: rule.verificationStatus || null,
+    region: rule.region || null,
+    applicabilityConditions: rule.applicabilityConditions || null
+  };
+}
+
+function _buildKnowledgeDeltaMatch(rule, score, chassisName) {
+  const isUniversal = rule.scope === 'UNIVERSAL_VENDOR' || rule.scopeTaxonomy === 'UNIVERSAL_VENDOR';
+  const deltaTitle = isUniversal ? 'Learned Rule (Universal Vendor)' : `Learned Rule for ${rule.chassis}`;
+  const deltaTag = isUniversal ? 'Universal' : rule.chassis;
+  const textBody = rule.rawMessage || rule.ruleUpdate || '';
+  return {
+    score,
+    text: `• [Knowledge Delta - ${deltaTag}] ${textBody}`,
+    citation: {
+      title: deltaTitle,
+      snippet: textBody,
+      url: `/artifacts/outputs/history/master_knowledge_registry.json`
+    },
+    evidenceMeta: _buildDeltaEvidenceMeta(rule, isUniversal, chassisName)
+  };
+}
+
+const INACTIVE_RULE_STATUSES = new Set([
+  'RETRACTED', 'REVOKED', 'REJECTED', 'SUPERSEDED', 'EXPIRED', 'DEPRECATED', 'QUARANTINED', 'PENDING'
+]);
+const NON_PHYSICAL_RECORD_MARKERS = new Set([
+  'OPERATIONAL_INCIDENT', 'WORKFLOW_INCIDENT', 'USER_PREFERENCE',
+  'LOCAL_USER_PREFERENCE', 'USER_PLATFORM_SELECTION',
+  'AGENT_SELF_EXPLANATION', 'AGENT_EXPLANATION', 'AGENT_GENERATED_EXPLANATION'
+]);
+
+function _resolveDepIndexFromOptions(options) {
+  if (options?.dependencyIndex && typeof options.dependencyIndex === 'object') {
+    return options.dependencyIndex;
+  }
+  if (options?.dependencyIndexPath) {
+    return loadDependencyIndex(options.dependencyIndexPath);
+  }
+  return null;
+}
+
+function _buildRevokedRuleSet(options = {}, depIndex = null) {
+  const revoked = new Set();
+  const rawList = options?.revokedRuleIds;
+  if (Array.isArray(rawList) || rawList instanceof Set) {
+    for (const id of rawList) {
+      if (id) revoked.add(String(id));
+    }
+  }
+  for (const node of Object.values(depIndex?.nodes || {})) {
+    if (node && node.status === 'RETRACTED' && node.id) {
+      revoked.add(String(node.id));
+    }
+  }
+  return revoked;
+}
+
+function _isKnowledgeDeltaExcluded(rule, revokedSet) {
+  if (!rule || rule.active === false || rule.revoked === true || rule.isRevoked === true) return true;
+  const ids = [rule.deltaId, rule.ruleId, rule.knowledgeFingerprint].filter(Boolean).map(String);
+  if (ids.some(id => revokedSet.has(id))) return true;
+  if (rule.ruleType?.startsWith('WORKFLOW_') || rule.evidenceType === 'WORKFLOW_REVIEW') return true;
+
+  const statusTokens = [rule.status, rule.governanceStatus].map(v => String(v || '').toUpperCase());
+  if (statusTokens.some(s => INACTIVE_RULE_STATUSES.has(s))) return true;
+
+  const kindTokens = [
+    rule.ruleType, rule.errorType, rule.category, rule.type,
+    rule.sourceType, rule.evidenceType, rule.origin
+  ].map(v => String(v || '').toUpperCase());
+  return kindTokens.some(tok => NON_PHYSICAL_RECORD_MARKERS.has(tok));
+}
+
+function _extractRegistryDeltaList(registry) {
+  if (Array.isArray(registry)) return registry;
+  if (Array.isArray(registry?.deltas)) return registry.deltas;
+  return [
+    ...(registry?.universalRules || []).map(r => ({ ...r, scope: 'UNIVERSAL_VENDOR' })),
+    ...(registry?.familyGenRules || []).map(r => ({ ...r, scope: 'FAMILY_GEN' })),
+    ...(registry?.chassisSpecificRules || []).map(r => ({ ...r, scope: 'CHASSIS_SPECIFIC' }))
+  ];
+}
+
+function searchKnowledgeDeltas(chassisName, activeTerms, rawMatches, options = {}) {
+  const knowledgeFile = options?.registryPath || options?.masterRegistryPath || KNOWLEDGE_FILE;
+  if (!fs.existsSync(knowledgeFile)) return;
   try {
-    const registry = JSON.parse(fs.readFileSync(KNOWLEDGE_FILE, 'utf-8'));
-    const config = JSON.parse(fs.readFileSync(path.join(PROJECT_ROOT, 'scripts', 'config', 'notebooks.json'), 'utf-8'));
+    const registry = JSON.parse(fs.readFileSync(knowledgeFile, 'utf-8'));
+    const config = options?.notebooksConfig
+      || JSON.parse(fs.readFileSync(path.join(PROJECT_ROOT, 'scripts', 'config', 'notebooks.json'), 'utf-8'));
     const targetIdentity = resolveProductIdentity(chassisName, config);
     if (!targetIdentity) return;
-    const universalRules = (registry.universalRules || []).map(r => ({ ...r, scope: 'UNIVERSAL_VENDOR' }));
-    const familyGenRules = (registry.familyGenRules || []).map(r => ({ ...r, scope: 'FAMILY_GEN' }));
-    const chassisRules = (registry.chassisSpecificRules || []).map(r => ({ ...r, scope: 'CHASSIS_SPECIFIC' }));
-    const rules = [...universalRules, ...familyGenRules, ...chassisRules];
 
+    const depIndex = _resolveDepIndexFromOptions(options);
+    const revokedSet = _buildRevokedRuleSet(options, depIndex);
+    const rules = _extractRegistryDeltaList(registry);
     for (const rule of rules) {
       if (!ruleAppliesToProduct(rule, targetIdentity, config)) continue;
-      if (rule.ruleType && rule.ruleType.startsWith('WORKFLOW_')) continue;
-      if (rule.evidenceType === 'WORKFLOW_REVIEW') continue;
-
-      const raw = (rule.rawMessage || '').toLowerCase();
-      const update = (rule.ruleUpdate || '').toLowerCase();
-      const affected = (rule.affectedSku || '').toLowerCase();
-
-      let score = 0;
-      if (activeTerms.length > 0) {
-        activeTerms.forEach(term => {
-          if (raw.includes(term) || update.includes(term) || affected.includes(term)) score += 1;
-        });
-      }
-
-      if (score > 0) {
-        const isUniversal = rule.scope === 'UNIVERSAL_VENDOR' || rule.scopeTaxonomy === 'UNIVERSAL_VENDOR';
-        const deltaTitle = isUniversal ? 'Learned Rule (Universal Vendor)' : `Learned Rule for ${rule.chassis}`;
-        const deltaTag = isUniversal ? 'Universal' : rule.chassis;
-        rawMatches.push({
-          score,
-          text: `• [Knowledge Delta - ${deltaTag}] ${rule.rawMessage || rule.ruleUpdate}`,
-          citation: {
-            title: deltaTitle,
-            snippet: rule.rawMessage || rule.ruleUpdate,
-            url: `/artifacts/outputs/history/master_knowledge_registry.json`
-          }
-        });
-      }
+      if (_isKnowledgeDeltaExcluded(rule, revokedSet)) continue;
+      const score = _scoreRuleAgainstTerms(rule, activeTerms);
+      if (score > 0) rawMatches.push(_buildKnowledgeDeltaMatch(rule, score, chassisName));
     }
   } catch (e) {
-    const _logger = require('../system/pipeline_logger.js');
-    _logger.warn('ERROR', 'local_rag_search.js parsing master_knowledge_registry.json', e);
+    require('../system/pipeline_logger.js').warn('ERROR', 'local_rag_search.js parsing master_knowledge_registry.json', e);
   }
 }
 
@@ -204,39 +278,46 @@ function searchCategorySkusInEntry(entry, folderName, catalogJson, activeTerms, 
           title: `${folderName} ${entry.subCategory} SKUs`,
           snippet: skuList,
           url: `/artifacts/${path.relative(OUTPUTS_DIR, catalogJson)}`
+        },
+        evidenceMeta: {
+          sourceType: 'CATALOG_OBSERVATION',
+          sourceRole: 'CATALOG_SKUS',
+          product: folderName,
+          catalogPath: `/artifacts/${path.relative(OUTPUTS_DIR, catalogJson)}`
         }
       });
     }
   }
 }
 
+function _formatVariantPrice(variant) {
+  if (variant.listPriceFormatted) return variant.listPriceFormatted;
+  if (variant['Unit Price (USD)']) return `$${variant['Unit Price (USD)']}`;
+  return variant.listPrice ? `$${variant.listPrice}` : '$0.00';
+}
+
+function _buildVariantMatch(variant, varScore, folderName, catalogJson) {
+  const skuPn = variant.sku || variant['Product #'] || '';
+  const desc = variant.description || variant['Description'] || variant.desc || '';
+  const priceStr = _formatVariantPrice(variant);
+  const artifactUrl = `/artifacts/${path.relative(OUTPUTS_DIR, catalogJson)}`;
+  return {
+    score: varScore,
+    text: `• [${folderName} Base Chassis CTO Variant] ${skuPn}: ${desc} — ${priceStr}`,
+    citation: { title: `${folderName} Base Chassis CTO (${skuPn})`, snippet: `${skuPn}: ${desc} (${priceStr})`, url: artifactUrl },
+    evidenceMeta: { sourceType: 'CATALOG_OBSERVATION', sourceRole: 'CHASSIS_BASE_VARIANT', product: folderName, baseSku: skuPn, catalogPath: artifactUrl }
+  };
+}
+
 function searchChassisBaseVariants(baseVariants, folderName, catalogJson, activeTerms, cleanQuery, rawMatches) {
-  const isChassisQuery = cleanQuery.includes('chassis') || cleanQuery.includes('variant') || cleanQuery.includes('base') || cleanQuery.includes('cto');
-
+  const isChassisQuery = ['chassis', 'variant', 'base', 'cto'].some(tok => cleanQuery.includes(tok));
   for (const variant of baseVariants) {
-    const skuLower = (variant.sku || variant['Product #'] || '').toLowerCase();
-    const descLower = (variant.description || variant['Description'] || variant.desc || '').toLowerCase();
-
-    let varScore = 0;
-    if (isChassisQuery) varScore += 1;
-    activeTerms.forEach(term => {
-      if (skuLower.includes(term) || descLower.includes(term)) varScore += 1;
-    });
-
-    if (varScore > 0) {
-      const skuPn = variant.sku || variant['Product #'] || '';
-      const desc = variant.description || variant['Description'] || variant.desc || '';
-      const priceStr = variant.listPriceFormatted || (variant['Unit Price (USD)'] ? `$${variant['Unit Price (USD)']}` : (variant.listPrice ? `$${variant.listPrice}` : '$0.00'));
-      rawMatches.push({
-        score: varScore,
-        text: `• [${folderName} Base Chassis CTO Variant] ${skuPn}: ${desc} — ${priceStr}`,
-        citation: {
-          title: `${folderName} Base Chassis CTO (${skuPn})`,
-          snippet: `${skuPn}: ${desc} (${priceStr})`,
-          url: `/artifacts/${path.relative(OUTPUTS_DIR, catalogJson)}`
-        }
-      });
+    const hay = `${variant.sku || variant['Product #'] || ''} ${variant.description || variant['Description'] || variant.desc || ''}`.toLowerCase();
+    let varScore = isChassisQuery ? 1 : 0;
+    for (const term of activeTerms) {
+      if (hay.includes(term)) varScore += 1;
     }
+    if (varScore > 0) rawMatches.push(_buildVariantMatch(variant, varScore, folderName, catalogJson));
   }
 }
 
@@ -254,41 +335,49 @@ function searchCatalogSkusAndVariants(catData, folderName, catalogJson, isProces
   searchChassisBaseVariants(baseVariants, folderName, catalogJson, activeTerms, cleanQuery, rawMatches);
 }
 
+function _buildCatalogRuleMatch(rule, ruleScore, folderName, rulesJson) {
+  const mainCat = rule.category || rule.parentCategory || '';
+  const subCat = rule.subCategory || '';
+  const constraint = rule.constraint || rule.ruleType || '';
+  const ruleText = rule.description || rule.rule || rule.ruleText || JSON.stringify(rule);
+  const artifactUrl = `/artifacts/${path.relative(OUTPUTS_DIR, rulesJson)}`;
+  return {
+    score: ruleScore,
+    text: `• [${folderName} Catalog Rule] Category: ${mainCat} > ${subCat} | Constraint: ${constraint} (${ruleText})`,
+    citation: { title: `${folderName} Catalog Rules`, snippet: `${mainCat} > ${subCat}: ${ruleText}`, url: artifactUrl },
+    evidenceMeta: {
+      sourceType: 'CATALOG_OBSERVATION',
+      sourceRole: 'CATALOG_RULE',
+      product: folderName,
+      ruleId: rule.ruleId || null,
+      region: rule.region || null,
+      selectors: rule.selectors || {},
+      applicabilityConditions: rule.applicabilityConditions || null,
+      catalogPath: artifactUrl
+    }
+  };
+}
+
+function _scoreCatalogRuleJson(rule, activeTerms, isRuleQuery) {
+  const text = rule.description || rule.rule || rule.ruleText || JSON.stringify(rule);
+  const hay = `${rule.category || rule.parentCategory || ''} ${rule.subCategory || ''} ${rule.constraint || rule.ruleType || ''} ${text}`.toLowerCase();
+  let score = 0;
+  for (const term of activeTerms) {
+    if (hay.includes(term)) score += 2;
+  }
+  return score > 0 && isRuleQuery ? score + 10 : score;
+}
+
 function _searchCatalogRulesFromJson(rulesJson, folderName, activeTerms, isRuleQuery, rawMatches) {
   try {
     const rulesData = JSON.parse(fs.readFileSync(rulesJson, 'utf-8'));
     const rulesArray = Array.isArray(rulesData) ? rulesData : (rulesData.rules || rulesData.entries || []);
-
     for (const rule of rulesArray) {
-      const mainCat = rule.category || rule.parentCategory || '';
-      const subCat = rule.subCategory || '';
-      const constraint = rule.constraint || rule.ruleType || '';
-      const ruleText = rule.description || rule.rule || rule.ruleText || JSON.stringify(rule);
-      const ruleStringLower = `${mainCat} ${subCat} ${constraint} ${ruleText}`.toLowerCase();
-
-      let ruleScore = 0;
-      if (activeTerms.length > 0) {
-        activeTerms.forEach(term => {
-          if (ruleStringLower.includes(term)) ruleScore += 2;
-        });
-      }
-      if (ruleScore > 0 && isRuleQuery) ruleScore += 10;
-
-      if (ruleScore > 0) {
-        rawMatches.push({
-          score: ruleScore,
-          text: `• [${folderName} Catalog Rule] Category: ${mainCat} > ${subCat} | Constraint: ${constraint} (${ruleText})`,
-          citation: {
-            title: `${folderName} Catalog Rules`,
-            snippet: `${mainCat} > ${subCat}: ${ruleText}`,
-            url: `/artifacts/${path.relative(OUTPUTS_DIR, rulesJson)}`
-          }
-        });
-      }
+      const ruleScore = _scoreCatalogRuleJson(rule, activeTerms, isRuleQuery);
+      if (ruleScore > 0) rawMatches.push(_buildCatalogRuleMatch(rule, ruleScore, folderName, rulesJson));
     }
   } catch (e) {
-    const _logger = require('../system/pipeline_logger.js');
-    _logger.warn('ERROR', 'local_rag_search.js processing rules.json', e);
+    require('../system/pipeline_logger.js').warn('ERROR', 'local_rag_search.js processing rules.json', e);
   }
 }
 
@@ -322,6 +411,12 @@ function _searchCatalogRulesFromCsv(rulesCsv, folderName, activeTerms, isRuleQue
             title: `${folderName} Catalog Rules`,
             snippet: `${mainCat} > ${subCat}: ${ruleText}`,
             url: `/artifacts/${path.relative(OUTPUTS_DIR, rulesCsv)}`
+          },
+          evidenceMeta: {
+            sourceType: 'CATALOG_OBSERVATION',
+            sourceRole: 'CATALOG_RULE',
+            product: folderName,
+            catalogPath: `/artifacts/${path.relative(OUTPUTS_DIR, rulesCsv)}`
           }
         });
       }
@@ -397,7 +492,15 @@ function formatProcessorMatches(matchedProcessorSkus, minCores, citations, rawMa
   rawMatches.push({
     score: matchedProcessorSkus.length * 2,
     text: `${heading}\n\n${procLines.join('\n')}`,
-    isProcMatch: true
+    isProcMatch: true,
+    evidenceMeta: {
+      sourceType: 'CATALOG_OBSERVATION',
+      sourceRole: 'PROCESSOR_CATALOG',
+      product: matchedProcessorSkus[0]?.chassis || null,
+      catalogPath: matchedProcessorSkus[0]?.catalogPath
+        ? `/artifacts/${path.relative(OUTPUTS_DIR, matchedProcessorSkus[0].catalogPath)}`
+        : null
+    }
   });
 }
 
@@ -435,82 +538,107 @@ function synthesizeRankedRagAnswer(rawMatches, citations, query, chassisName) {
     ? matches.join('\n\n')
     : `### Local RAG Engine Response\n\nNo specific catalog items or rules found matching query '${query}' for ${chassisName || 'the selected chassis'}.`;
 
+  const evidenceRecords = normalizeLocalEvidenceRecords(topKMatches, uniqueCitations, { query, chassisName });
+
   return {
     query,
     answer: formattedAnswer,
     citations: uniqueCitations,
     confidenceScore: confidenceScore,
-    source: 'LOCAL_CATALOG_RAG'
+    source: 'LOCAL_CATALOG_RAG',
+    evidenceRecords
   };
 }
 
-function queryLocalKnowledgeBase(query, chassisName = '') {
+function _evaluateRagDependencyBoundary(options = {}) {
+  const depIndex = _resolveDepIndexFromOptions(options);
+  if (!depIndex) return null;
+  const targetNodeId = options?.targetDependencyNodeId || options?.dependencyNodeId || null;
+  return evaluateInvalidationBoundary(depIndex, targetNodeId, options?.currentRevisions || {});
+}
+
+function _attachDependencyBoundaryStatus(result, options) {
+  const dependencyStatus = _evaluateRagDependencyBoundary(options);
+  if (!dependencyStatus) return result;
+  return {
+    ...result,
+    dependencyStatus,
+    isStale: dependencyStatus.isStale === true,
+    status: dependencyStatus.status
+  };
+}
+
+function _scanCatalogDirectory(cDir, isProcessorQuery, minCores, searchTerms, activeTerms, cleanQuery, matchedProcessorSkus, rawMatches) {
+  if (!fs.existsSync(cDir)) return;
+  const folderName = path.basename(cDir);
+  const catalogJson = path.join(cDir, `${folderName}_Catalog.json`);
+
+  if (fs.existsSync(catalogJson)) {
+    try {
+      const catData = JSON.parse(fs.readFileSync(catalogJson, 'utf-8'));
+      searchCatalogSkusAndVariants(catData, folderName, catalogJson, isProcessorQuery, minCores, searchTerms, activeTerms, cleanQuery, matchedProcessorSkus, rawMatches);
+    } catch (e) {
+      const _logger = require('../system/pipeline_logger.js');
+      _logger.warn('ERROR', 'local_rag_search.js', e);
+    }
+  }
+
+  searchCatalogRules(cDir, folderName, cleanQuery, activeTerms, isProcessorQuery, rawMatches);
+}
+
+function queryLocalKnowledgeBase(query, chassisName = '', options = {}) {
   const citations = [];
   const rawMatches = [];
   const matchedProcessorSkus = [];
 
   const { cleanQuery, searchTerms, activeTerms, minCores, isProcessorQuery } = prepareSearchTerms(query);
   const { listAllCatalogs } = require('../catalog/catalog_discovery.js');
-  const catalogPaths = listAllCatalogs().map(c => c.catalogDir);
+  const catalogPaths = listAllCatalogs(options?.outputsDir || OUTPUTS_DIR).map(c => c.catalogDir);
   const filteredCatalogPaths = filterCatalogsByChassisFirewall(catalogPaths, chassisName);
 
-  if (chassisName && filteredCatalogPaths.length === 0) {
-    return synthesizeRankedRagAnswer([], [], query, chassisName);
+  const hasCustomRegistry = Boolean(options?.registryPath || options?.masterRegistryPath);
+  if (chassisName && filteredCatalogPaths.length === 0 && !hasCustomRegistry) {
+    return _attachDependencyBoundaryStatus(synthesizeRankedRagAnswer([], [], query, chassisName), options);
   }
 
-  searchKnowledgeDeltas(chassisName, activeTerms, rawMatches);
+  searchKnowledgeDeltas(chassisName, activeTerms, rawMatches, options);
 
   for (const cDir of filteredCatalogPaths) {
-    if (!fs.existsSync(cDir)) continue;
-    const folderName = path.basename(cDir);
-    const catalogJson = path.join(cDir, `${folderName}_Catalog.json`);
-
-    if (fs.existsSync(catalogJson)) {
-      try {
-        const catData = JSON.parse(fs.readFileSync(catalogJson, 'utf-8'));
-        searchCatalogSkusAndVariants(catData, folderName, catalogJson, isProcessorQuery, minCores, searchTerms, activeTerms, cleanQuery, matchedProcessorSkus, rawMatches);
-      } catch (e) {
-        const _logger = require('../system/pipeline_logger.js');
-        _logger.warn('ERROR', 'local_rag_search.js', e);
-      }
-    }
-
-    searchCatalogRules(cDir, folderName, cleanQuery, activeTerms, isProcessorQuery, rawMatches);
+    _scanCatalogDirectory(cDir, isProcessorQuery, minCores, searchTerms, activeTerms, cleanQuery, matchedProcessorSkus, rawMatches);
   }
 
   formatProcessorMatches(matchedProcessorSkus, minCores, citations, rawMatches);
-  return synthesizeRankedRagAnswer(rawMatches, citations, query, chassisName);
+  return _attachDependencyBoundaryStatus(synthesizeRankedRagAnswer(rawMatches, citations, query, chassisName), options);
+}
+
+function _resolveChassisFromNotebookId(chassisName, notebookId) {
+  if (chassisName || !notebookId) return chassisName;
+  try {
+    const config = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'config', 'notebooks.json'), 'utf-8'));
+    for (const [chassis, entry] of Object.entries(config.notebooks || {})) {
+      const nid = typeof entry === 'object' && entry !== null ? entry.notebookId : entry;
+      if (nid === notebookId) return chassis;
+    }
+  } catch (e) {
+    require('../system/pipeline_logger.js').warn('ERROR', 'local_rag_search.js', e);
+  }
+  return chassisName;
+}
+
+function _isOfflineRagRequest(options) {
+  const serverOffline = [process.env.OFFLINE_MODE, process.env.LOCAL_EVAL_ONLY, process.env.USE_LOCAL_RAG_ONLY]
+    .some(value => ['true', '1'].includes(String(value || '').trim().toLowerCase()));
+  return serverOffline || options?.offline === true || options?.offlineMode === true || options?.effectivePolicy?.offline === true;
 }
 
 async function queryLocalKnowledgeBaseAsync(query, chassisName = '', notebookId = '', options = {}) {
-  let resolvedChassis = chassisName;
-  if (!resolvedChassis && notebookId) {
-    try {
-      const config = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'config', 'notebooks.json'), 'utf-8'));
-      if (config.notebooks) {
-        for (const [chassis, entry] of Object.entries(config.notebooks)) {
-          const nid = typeof entry === 'object' && entry !== null ? entry.notebookId : entry;
-          if (nid === notebookId) {
-            resolvedChassis = chassis;
-            break;
-          }
-        }
-      }
-    } catch (e) { const _logger = require('../system/pipeline_logger.js'); _logger.warn('ERROR', 'local_rag_search.js', e); }
-  }
-  const localRes = queryLocalKnowledgeBase(query, resolvedChassis);
-
-  const isServerOffline = [process.env.OFFLINE_MODE, process.env.LOCAL_EVAL_ONLY, process.env.USE_LOCAL_RAG_ONLY]
-    .some(value => ['true', '1'].includes(String(value || '').trim().toLowerCase()));
-  if (isServerOffline || options?.offline === true || options?.offlineMode === true || options?.effectivePolicy?.offline === true) {
-    return localRes;
-  }
+  const resolvedChassis = _resolveChassisFromNotebookId(chassisName, notebookId);
+  const localRes = queryLocalKnowledgeBase(query, resolvedChassis, options);
+  if (_isOfflineRagRequest(options)) return localRes;
 
   const geminiRotator = require('../system/gemini_rotator.js');
   const activeKeyInfo = geminiRotator.getActiveKey();
-  if (!activeKeyInfo || !activeKeyInfo.apiKey) {
-    return localRes;
-  }
+  if (!activeKeyInfo || !activeKeyInfo.apiKey) return localRes;
 
   try {
     const prompt = `You are the official Gemini NotebookLM RAG Assistant for HPE Solution Configurator (Notebook ID: ${notebookId || 'Mapped Notebook'}).
@@ -532,12 +660,13 @@ Instructions:
     });
 
     if (response && response.text) {
-      return {
+      return _attachDependencyBoundaryStatus({
         query,
         answer: response.text.trim(),
         citations: localRes.citations,
+        evidenceRecords: localRes.evidenceRecords,
         source: 'GEMINI_NOTEBOOK_RAG'
-      };
+      }, options);
     }
   } catch (err) {
     console.error('Gemini API query error:', err.message);

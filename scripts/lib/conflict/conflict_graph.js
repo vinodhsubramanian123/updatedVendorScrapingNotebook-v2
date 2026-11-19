@@ -30,6 +30,9 @@ const { introspectSku } = require('./cascading_impact_analyzer.js');
 
 const { getChassisMap, invalidateChassisMapCache, detectChassisVariant } = require('../catalog/catalog_discovery.js');
 const { loadActiveKnowledgeRules } = require('../catalog/active_knowledge_router.js');
+const { createConstraintResult, adaptAspectChecksToConstraints } = require('./constraints/constraint_results.js');
+const { diagnoseInfeasibility } = require('./constraints/conflict_explanations.js');
+const { auditOpticalLinkEndpoints } = require('../aspects/networking_ocp.js');
 
 function loadLearnedKnowledgeDeltas(resolvedTargetDir, chassisVariant = '') {
   try {
@@ -650,6 +653,159 @@ function _filterRecommendedSolutions(rankedSolutions, fullBomList) {
  * @param {string} chassisVariantOverride - Optional CLI override
  * @returns {object} Graph validation results & audit log
  */
+function _conflictToConstraintResult(conflict, idx) {
+  const hint = conflict.diagnosticHint || {};
+  const refs = Array.isArray(conflict.clicRuleIds) ? conflict.clicRuleIds : (hint.deltaId ? [hint.deltaId] : []);
+  return createConstraintResult({
+    constraintId: `CONSTR-GRAPH-${String(conflict.level || 'RULE').toUpperCase()}-${idx + 1}`,
+    domain: String(conflict.level || 'conflict_graph').toLowerCase(),
+    owner: conflict.sku || 'solution:graph',
+    predicate: { subject: String(conflict.type || 'GRAPH_RULE'), operator: 'NO_CONFLICT', target: true, unit: 'boolean' },
+    inputs: { conflictPresent: { value: true, unit: 'boolean' } },
+    status: 'FAIL',
+    hardness: 'HARD',
+    evidenceRefs: refs,
+    detail: conflict.message || 'Graph conflict detected'
+  });
+}
+
+function _contentionToConstraintResult(con, idx) {
+  return createConstraintResult({
+    constraintId: `CONSTR-CONTENTION-${String(con.resourceType || 'RESOURCE').toUpperCase()}-${idx + 1}`,
+    domain: 'contested_resource',
+    owner: String(con.resourceType || 'shared_resource').toLowerCase(),
+    predicate: { subject: String(con.resourceType || 'resource'), operator: 'LTE', target: con.maxCapacity ?? null, unit: 'slots' },
+    inputs: {
+      maxCapacity: { value: con.maxCapacity ?? null, unit: 'slots' },
+      requestedDemands: { value: con.requestedDemands ?? null, unit: 'slots' }
+    },
+    status: 'FAIL',
+    hardness: 'HARD',
+    evidenceRefs: con.branchId ? [con.branchId] : [],
+    detail: con.tradeoffSummary || con.detectedFailure || 'Shared resource contention detected'
+  });
+}
+
+function _summarizeUnevaluatedChassisRules(rulesEvaluated) {
+  if (!Array.isArray(rulesEvaluated) || rulesEvaluated.length === 0) return null;
+  const uneval = rulesEvaluated.filter(r => r && r.status === 'UNEVALUATED');
+  if (uneval.length === 0) return null;
+  const samples = uneval
+    .slice(0, 5)
+    .map(r => String(r.ruleText || '').trim().replace(/\s+/g, ' '))
+    .filter(Boolean)
+    .join('; ')
+    .slice(0, 220);
+  const detail = `${uneval.length} unevaluated chassis rule(s)${samples ? `: ${samples}` : ''}`.slice(0, 280);
+  return createConstraintResult({
+    constraintId: 'CONSTR-CHASSIS-RULES-UNEVAL-SUMMARY',
+    domain: 'chassis',
+    owner: 'chassis:rules',
+    predicate: { subject: 'chassisRule', operator: 'EVALUATED', target: 0, unit: 'rules' },
+    inputs: { unevaluatedRuleCount: { value: uneval.length, unit: 'rules' } },
+    status: 'NOT_EVALUATED',
+    hardness: 'PREFERENCE',
+    detail
+  });
+}
+
+function _collectGraphLevelConstraints(conflicts, unresolvedConflicts, arbitrationResults, rulesEvaluated) {
+  const out = [];
+  conflicts.forEach((c, idx) => out.push(_conflictToConstraintResult(c, idx)));
+  unresolvedConflicts.forEach((u, idx) => out.push(createConstraintResult({
+    constraintId: `CONSTR-UNRESOLVED-${idx + 1}`,
+    domain: 'conflict_graph',
+    owner: u.sku || 'solution:graph',
+    predicate: { subject: String(u.type || 'DEPENDENCY_RESOLUTION'), operator: 'RESOLVED', target: true, unit: 'boolean' },
+    status: 'FAIL',
+    hardness: 'HARD',
+    detail: u.reason || u.message || 'Unresolved conflict'
+  })));
+  const contentions = arbitrationResults?.contentions || [];
+  contentions.forEach((con, idx) => out.push(_contentionToConstraintResult(con, idx)));
+  const unevalSummary = _summarizeUnevaluatedChassisRules(rulesEvaluated);
+  if (unevalSummary) out.push(unevalSummary);
+  return out;
+}
+
+function _resolveDiagnosticOpticalAudit(fullBomList, options) {
+  if (options?.opticalAudit) return options.opticalAudit;
+  const audit = auditOpticalLinkEndpoints(fullBomList);
+  const hasOpticalParts = audit.opticalNics.length > 0 || audit.transceivers.length > 0;
+  return hasOpticalParts ? audit : null;
+}
+
+function _isMissingDomainOrChassisProfile(chassisInfo, options) {
+  return Boolean(chassisInfo?.unknown === true || options?.domainProfileAvailable === false);
+}
+
+function _buildMissingProfileConstraint(chassisInfo, options) {
+  const domain = options?.domain || chassisInfo?.family || 'unknown_domain';
+  return createConstraintResult({
+    constraintId: 'CONSTR-DOMAIN-PROFILE',
+    domain,
+    owner: chassisInfo?.baseSku || 'solution:domain',
+    predicate: { subject: 'domainProfile', operator: 'EXISTS', target: true, unit: 'profile' },
+    inputs: { domainProfile: { value: null, unit: 'profile' } },
+    missingInputs: ['domainProfile'],
+    status: 'NOT_EVALUATED',
+    hardness: 'HARD',
+    domainProfileAvailable: false,
+    evidenceRefs: ['DOMAIN_PROFILE_REGISTRY'],
+    detail: `Unrecognized or unprofiled chassis/domain (${chassisInfo?.model || domain}); physical constraints remain NOT_EVALUATED.`
+  });
+}
+
+function _buildBaselineConsistencyConstraint(chassisInfo, conflicts, unresolvedConflicts) {
+  return createConstraintResult({
+    constraintId: 'CONSTR-GRAPH-CONSISTENCY',
+    domain: 'conflict_graph',
+    owner: chassisInfo?.baseSku || 'chassis',
+    predicate: { subject: 'graphCategoryAndVendorRules', operator: 'EQ', target: 0, unit: 'conflicts' },
+    inputs: {
+      conflictCount: { value: conflicts.length, unit: 'conflicts' },
+      unresolvedCount: { value: unresolvedConflicts.length, unit: 'conflicts' }
+    },
+    status: 'PASS',
+    hardness: 'HARD',
+    detail: 'All evaluated 5-level graph category, vendor, and chassis checks passed.'
+  });
+}
+
+function _adaptDiagnosticInputs(options, opticalAudit, missingProfile) {
+  const domainProfileAvailable = missingProfile ? false : options?.domainProfileAvailable;
+  if (options?.aspectChecks) {
+    return adaptAspectChecksToConstraints(options.aspectChecks, {
+      domain: options.domain,
+      domainProfileAvailable,
+      opticalAudit
+    });
+  }
+  return opticalAudit ? adaptAspectChecksToConstraints([], { opticalAudit }) : [];
+}
+
+function _buildConstraintDiagnostics({ fullBomList, chassisInfo, catalogData, conflicts, unresolvedConflicts, arbitrationResults, rulesEvaluated, options }) {
+  const missingProfile = _isMissingDomainOrChassisProfile(chassisInfo, options);
+  const opticalAudit = _resolveDiagnosticOpticalAudit(fullBomList, options);
+  const adapted = _adaptDiagnosticInputs(options, opticalAudit, missingProfile);
+  const graphConstraints = _collectGraphLevelConstraints(conflicts, unresolvedConflicts, arbitrationResults, rulesEvaluated);
+  const constraintResults = [...adapted, ...graphConstraints];
+
+  if (missingProfile && !constraintResults.some(c => c.status === 'NOT_EVALUATED')) {
+    constraintResults.push(_buildMissingProfileConstraint(chassisInfo, options));
+  } else if (constraintResults.length === 0) {
+    constraintResults.push(_buildBaselineConsistencyConstraint(chassisInfo, conflicts, unresolvedConflicts));
+  }
+
+  const feasibilityDiagnosis = diagnoseInfeasibility(constraintResults, {
+    product: chassisInfo?.model || chassisInfo?.id || 'UNKNOWN_PRODUCT',
+    catalogRevision: catalogData?.sourceFile || 'UNSPECIFIED',
+    checkFeasibleSubsetFn: options?.checkFeasibleSubsetFn,
+    searchSpaceExhaustive: false
+  });
+  return { constraintResults, feasibilityDiagnosis };
+}
+
 function validateConflictGraph(boqItems = [], missingDependencies = [], targetDir = '', chassisVariantOverride = '', options = {}) {
   let resolvedTargetDir = '';
   if (typeof targetDir === 'string') {
@@ -737,6 +893,16 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
 
   const applicableRules = rulesEvaluated.filter(r => r.status === 'APPLICABLE');
   const unevaluatedRules = rulesEvaluated.filter(r => r.status === 'UNEVALUATED');
+  const diagnostics = _buildConstraintDiagnostics({
+    fullBomList,
+    chassisInfo,
+    catalogData,
+    conflicts,
+    unresolvedConflicts,
+    arbitrationResults,
+    rulesEvaluated,
+    options
+  });
 
   return {
     chassisInfo,
@@ -756,6 +922,8 @@ function validateConflictGraph(boqItems = [], missingDependencies = [], targetDi
     rankedSolutions,
     recommendedSolutions,
     introspectedComponents,
+    constraintResults: diagnostics.constraintResults,
+    feasibilityDiagnosis: diagnostics.feasibilityDiagnosis,
     auditLog,
     rulesSource: catalogData.sourceFile,
     isFallbackSource: catalogData.isFallback

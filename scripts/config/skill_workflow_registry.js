@@ -122,7 +122,10 @@ const registry = {
       coverageLimits: ['Late router tracing and terminal lifecycle gaps remain CP11.'] }),
     capability({ capabilityId: 'output-validation-skill', kind: 'SHARED', intents: [],
       triggers: ['Before customer presentation or authorized artifact export'], applicability: ['Criteria for actual response/candidate profile'],
-      entrypoints: [entry('scripts/lib/boq/bom_verifier.js', 'verifyPrePresentationAcceptance')],
+      entrypoints: [
+        entry('scripts/lib/boq/bom_verifier.js', 'verifyPrePresentationAcceptance'),
+        entry('scripts/lib/boq/decision_projection.js', 'projectCustomerDecision')
+      ],
       completionEvidence: ['Applicable criteria and response disposition, distinct from delivery authorization'],
       coverageLimits: ['Some current route profiles are UNKNOWN; CP5 remains. Requirement-discarding repair is not approved.'] }),
     capability({ capabilityId: 'adversarial-validation-skill', intents: ['ADVERSARIAL_VALIDATION'],
@@ -217,7 +220,91 @@ const registry = {
       vendorScope: ['NOT_APPLICABLE'], domainScope: ['ENGINEERING'], executionMode: 'CLI',
       entrypoints: [entry('.agents/skills/codex-peer-review-skill/SKILL.md', null, 'CLI')],
       completionEvidence: ['Static peer review report, gap analysis, and identified risks or approvals'],
-      coverageLimits: ['Codex is strictly an independent review layer; never part of live customer BOQ generation pipelines.'] })
+      coverageLimits: ['Codex is strictly an independent review layer; never part of live customer BOQ generation pipelines.'] }),
+    capability({ capabilityId: 'requirements-accounting-skill', kind: 'CUSTOMER', intents: [],
+      triggers: ['Customer tender, RFP, or BOQ carrying typed requirement clauses, units, scopes, exclusions, or candidate coverage needs'],
+      applicability: ['Lossless clause extraction, currency-qualified budget parsing, ownership scoping, and candidate disposition coverage'],
+      vendorScope: ['EXPLICIT_OR_UNRESOLVED'], domainScope: ['EXACT_SUPPORTED_PROFILE'], executionMode: 'LOCAL',
+      entrypoints: [
+        entry('scripts/lib/boq/requirements/requirement_records.js', 'extractRequirementRecords'),
+        entry('scripts/lib/boq/requirements/coverage.js', 'evaluateCandidateRequirementCoverage')
+      ],
+      next: [next('boq-eval-skill', 'Normalized clauses complete for candidate requirement coverage evaluation')],
+      completionEvidence: ['Immutable RequirementRecord[] with inputRevisionSha256, provenance, dispositions, and blocksPositiveRecommendation'],
+      coverageLimits: ['Requirement accounting does not perform 7-aspect hardware physics validation or establish Tier-3 portal acceptance.'],
+      tests: [
+        'tests/unit/test_si02_requirements_accounting.js',
+        'tests/unit/test_si09_skills_and_registry.js',
+        'tests/unit/test_skill_workflow_registry_contracts.js'
+      ] }),
+    capability({ capabilityId: 'claim-evidence-adjudication-skill', kind: 'SHARED', intents: [],
+      triggers: ['Material claims, document citations, or portal receipts requiring applicability, contradiction, and evidence lane adjudication'],
+      applicability: ['Mechanical verification of scope, contentSha256 freshness, contradiction preservation, and independent Tier-1/Tier-2/Tier-3 lanes'],
+      vendorScope: ['HPE'], domainScope: ['CROSS_DOMAIN'], executionMode: 'LOCAL',
+      entrypoints: [
+        entry('scripts/lib/boq/evidence/source_adjudicator.js', 'adjudicateSolutionClaims'),
+        entry('scripts/lib/boq/evidence/claim_records.js', 'buildIndependentEvidenceStates'),
+        entry('scripts/lib/boq/evidence/dependency_index.js', 'evaluateInvalidationBoundary')
+      ],
+      next: [next('output-validation-skill', 'Adjudicated claim statuses and independent evidence lanes ready for acceptance checks')],
+      completionEvidence: ['Adjudication verdict with evidenceDigestSha256, rejection codes, and separate local/document/portal lanes'],
+      coverageLimits: ['Document grounding alone remains PORTAL VALIDATION PENDING and never substitutes for a verified Tier-3 CLIC receipt.'],
+      tests: [
+        'tests/unit/test_si03_claim_evidence_adjudication.js',
+        'tests/unit/test_si09_skills_and_registry.js',
+        'tests/unit/test_skill_workflow_registry_contracts.js'
+      ] }),
+    capability({ capabilityId: 'constraint-diagnosis-skill', kind: 'SHARED', intents: [],
+      triggers: ['Infeasible or unknown constraint sets requiring minimal conflicting set extraction or verified candidate repair deltas'],
+      applicability: ['Typed ConstraintResult evaluation, ablation-verified minimal conflicting sets, bounded search, and rollback-safe repair transactions'],
+      vendorScope: ['HPE'], domainScope: ['CROSS_DOMAIN'], executionMode: 'LOCAL',
+      entrypoints: [
+        entry('scripts/lib/conflict/constraints/conflict_explanations.js', 'diagnoseInfeasibility'),
+        entry('scripts/lib/conflict/repair_transactions.js', 'executeVerifiedRepairTransaction')
+      ],
+      next: [next('self-correction-counterfactual-skill', 'Minimal conflicting set and verified repair context ready for counterfactual backtracking')],
+      completionEvidence: ['Feasibility diagnosis with ablationChecks, parent/resulting manifest SHA-256 hashes, receiptInvalidation, and blocker reconciliation'],
+      coverageLimits: ['Evaluated-scope diagnosis never claims universal vendor impossibility; changed manifests invalidate prior portal receipts.'],
+      tests: [
+        'tests/unit/test_si04_constraints_and_infeasibility.js',
+        'tests/unit/test_si05_compound_and_repair_transactions.js',
+        'tests/unit/test_si09_skills_and_registry.js',
+        'tests/unit/test_skill_workflow_registry_contracts.js'
+      ] }),
+    capability({ capabilityId: 'decision-uncertainty-skill', kind: 'SHARED', intents: [],
+      triggers: ['Workload sizing with incomplete or unprofiled demands, or candidate ranking requiring hard pre-qualification and null preservation'],
+      applicability: ['Explicit demand provenance, SIZING_DRAFT_SCENARIO_RANGE clarification triggers, hard pre-ranking qualification, and scoped Pareto frontier'],
+      vendorScope: ['EXPLICIT_OR_UNRESOLVED'], domainScope: ['CROSS_DOMAIN'], executionMode: 'LOCAL',
+      entrypoints: [
+        entry('scripts/lib/conflict/sizing/workload_demand.js', 'evaluateWorkloadSizingPilot'),
+        entry('scripts/lib/conflict/sizing/pareto_ranker.js', 'qualifyCandidatesBeforeRanking')
+      ],
+      next: [next('rfp-sizing-synthesizer', 'Qualified demand and explicit missing critical inputs ready for candidate BOM synthesis')],
+      completionEvidence: ['Per-field provenance map, nextRequiredInput trigger, disqualificationReasons[], and evaluatedCandidateSet scope bounds'],
+      coverageLimits: ['Pilot coverage is bounded to supported workloads; unprofiled workloads and missing prices remain unqualified rather than extrapolated.'],
+      tests: [
+        'tests/unit/test_si06_sizing_and_alternatives.js',
+        'tests/unit/test_si09_skills_and_registry.js',
+        'tests/unit/test_skill_workflow_registry_contracts.js'
+      ] }),
+    capability({ capabilityId: 'solution-quality-evaluation-skill', kind: 'ENGINEERING', intents: [],
+      triggers: ['Held-out benchmark scoring, factual reasoning post-analysis audits, and pre-presentation acceptance verification'],
+      applicability: ['Engineering-only quality metrics, zero-denominator null precision/recall preservation, and audit-trail fidelity checks; excluded from customer dispatch'],
+      vendorScope: ['NOT_APPLICABLE'], domainScope: ['ENGINEERING'], executionMode: 'LOCAL',
+      entrypoints: [
+        entry('scripts/lib/system/reasoning_post_analyzer.js', 'performReasoningPostAnalysis'),
+        entry('scripts/lib/boq/bom_verifier.js', 'verifyPrePresentationAcceptance'),
+        entry('scripts/maintenance/evaluate_solution_intelligence_quality.js', 'runSolutionIntelligenceQualityEvaluation')
+      ],
+      completionEvidence: ['Factual ReasoningAnalysis payload, PrePresentationGateResult checks, and schema v2 benchmark metrics with honest null denominators'],
+      coverageLimits: ['Engineering verification skill only; never routes live customer BOQs or certifies Tier-3 vendor portal acceptance.'],
+      tests: [
+        'tests/unit/test_si01_honest_claims_and_benchmarks.js',
+        'tests/unit/test_reasoning_post_analyzer.js',
+        'tests/unit/test_si09_skills_and_registry.js',
+        'tests/unit/test_si10_quality_evaluation.js',
+        'tests/unit/test_skill_workflow_registry_contracts.js'
+      ] })
   ],
   internalEngineeringObservations: [{
     ownerCapabilityId: 'presales-query-router', checkpoint: 'CP7b', activation: 'DEFAULT_DISABLED_PROPOSAL',

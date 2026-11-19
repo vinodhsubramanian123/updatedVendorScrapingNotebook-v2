@@ -24,19 +24,25 @@ const { emitProgress } = require('../system/progress.js');
 const logger = require('../system/pipeline_logger.js');
 const { candidateReviewCurrent, deliveryFingerprint } = require('./solution_evidence');
 const { verifyDeliveryAuthorization, assertDeliveryAuthorization, signArtifactIntegrityManifest, verifyArtifactIntegrityManifest } = require('../contracts/workflow_contract');
+const { verifyCurrentPortalReceipt } = require('./portal_receipt.js');
 const { toClickableFileUri, toReportLink } = require('../system/uri_helper.js');
+const { projectCustomerDecision } = require('./decision_projection.js');
 
 function _buildHeaderSection(ctx) {
   const { inputFile, catalogData, notebookId, evalResults, targetBudgetUsd, notebookDegradedMode } = ctx;
   const chassisLabel = (catalogData && catalogData.metadata && catalogData.metadata.chassis) || 'HPE ProLiant BOQ';
   const notebookLabel = notebookId ? `${chassisLabel} Notebook (\`${notebookId}\`)` : `${chassisLabel} — Local Catalog Rules (no Notebook configured)`;
+  const verifiedReceipt = verifyCurrentPortalReceipt(evalResults, ctx);
+  const portalHeaderStatus = verifiedReceipt?.manifestSha256
+    ? `PORTAL ACCEPTANCE VERIFIED (Receipt ${verifiedReceipt.manifestSha256.slice(0, 12)}).`
+    : 'PORTAL VALIDATION PENDING.';
 
   const boqFileName = inputFile || ctx.inputPath || 'N/A';
   let md = `# HPE Pre-Flight BOQ Evaluation & Validation Report\n\n`;
   md += `**Target BOQ File**: \`${boqFileName}\`  \n`;
   md += `**Target Gemini Notebook**: ${notebookLabel}  \n`;
   md += `**Evaluation Date**: ${new Date().toISOString()}  \n`;
-  md += `**Quantity basis**: Physical validation and category figures describe 1 base configuration; requested configurations: ${evalResults.configurationContext?.multiplier || 1}. Order-level rows retain their own quantities. PORTAL VALIDATION PENDING.\n`;
+  md += `**Quantity basis**: Physical validation and category figures describe 1 base configuration; requested configurations: ${evalResults.configurationContext?.multiplier || 1}. Order-level rows retain their own quantities. ${portalHeaderStatus}\n`;
   md += `**Quantitative Confidence Score**: \`${evalResults.confidence?.score ?? 'UNKNOWN'} / 1.00\` (model confidence; not a portal certification)  \n`;
   if (targetBudgetUsd > 0) {
     md += `**Target CapEx Budget**: \`$${targetBudgetUsd.toLocaleString()} USD\`  \n`;
@@ -94,6 +100,12 @@ function _buildItemsSection(items = [], budgetOpt) {
   return md;
 }
 
+function _formatFallbackPresence(value) {
+  if (value === true) return '✅ Present';
+  if (value === false) return '❌ Absent';
+  return '❓ Unknown';
+}
+
 function _buildAspectsSection(evalResults) {
   const aspectCount = evalResults.aspectChecks ? evalResults.aspectChecks.length : 7;
   let md = `## ⚡ 2. Modular ${aspectCount}-Aspect Physical Pre-Checks\n\n`;
@@ -108,9 +120,9 @@ function _buildAspectsSection(evalResults) {
     });
     md += `\n`;
   } else {
-    md += `- **Aspect 1: Compute & Thermal**: ${evalResults.cpuCount || 0} CPUs (Max TDP: ${evalResults.maxCpuTdpWatts || 0}W) | High-Perf Fans: ${evalResults.hasHighPerfFans ? '✅ Present' : '❌ Missing'}\n`;
-    md += `- **Aspect 2: Memory & Channels**: ${evalResults.memoryCount || 0} DIMMs (${evalResults.totalMemoryGb || 0} GB Total)\n`;
-    md += `- **Aspect 3: Storage & Tri-Mode**: ${evalResults.driveCount || 0} Drives | Controller Battery: ${evalResults.hasSmartBattery ? '✅ Present' : '❌ Missing'}\n`;
+    md += `- **Aspect 1: Compute & Thermal**: ${evalResults.cpuCount ?? 'Unknown'} CPUs (Max TDP: ${evalResults.maxCpuTdpWatts ?? 'Unknown'}W) | High-Perf Fans: ${_formatFallbackPresence(evalResults.hasHighPerfFans)}\n`;
+    md += `- **Aspect 2: Memory & Channels**: ${evalResults.memoryCount ?? 'Unknown'} DIMMs (${evalResults.totalMemoryGb ?? 'Unknown'} GB Total)\n`;
+    md += `- **Aspect 3: Storage & Tri-Mode**: ${evalResults.driveCount ?? 'Unknown'} Drives | Controller Battery: ${_formatFallbackPresence(evalResults.hasSmartBattery)}\n`;
     md += `\n`;
   }
 
@@ -144,12 +156,25 @@ function _buildAuditLogTable(auditLog) {
 
 function _formatDnaSummary(workloadDna) {
   const dna = workloadDna || {};
+  const storageWorkloadLabel = dna.storageWorkload || (dna.driveCount === 0 ? 'NONE' : 'UNKNOWN');
+  const storageTypeLabel = dna.storageType || (dna.driveCount === 0 ? 'NONE' : 'UNKNOWN');
   let md = `### 🏆 2.6 Workload DNA Profile & Top 5 Strategic Resolution Matrix\n\n`;
-  md += `- **Inferred Workload DNA Profile**: \`${dna.workloadDescription || 'Balanced Enterprise'}\`  \n`;
-  md += `- **CPU / Core Density**: \`${dna.totalCores || 0} Total Cores\` (Max Freq: \`${dna.maxFreqGhz || 0} GHz\`)  \n`;
-  md += `- **Memory Density Ratio**: \`${dna.totalMemoryGb || 0} GB Total RAM\` (\`${dna.gbPerCore || 0} GB/Core\`)  \n`;
-  md += `- **Storage I/O Profile**: \`${dna.storageWorkload || 'READ_INTENSIVE'} (${dna.storageType || 'SATA/NVMe'})\`  \n\n`;
+  md += `- **Inferred Workload DNA Profile**: \`${dna.workloadDescription || 'UNCLASSIFIED'}\`  \n`;
+  md += `- **CPU / Core Density**: \`${dna.totalCores ?? 'UNKNOWN'} Total Cores\` (Max Freq: \`${dna.maxFreqGhz ?? 'UNKNOWN'} GHz\`)  \n`;
+  md += `- **Memory Density Ratio**: \`${dna.totalMemoryGb ?? 'UNKNOWN'} GB Total RAM\` (\`${dna.gbPerCore ?? 'UNKNOWN'} GB/Core\`)  \n`;
+  md += `- **Storage I/O Profile**: \`${storageWorkloadLabel} (${storageTypeLabel})\`  \n\n`;
   return md;
+}
+
+function _formatSolutionCostCell(rs) {
+  const completeTotal = rs.totalOrderCostUsd ?? rs.estimatedCostUsd ?? null;
+  if (rs.pricingComplete === false || completeTotal === null) {
+    if (rs.knownOrderSubtotalUsd !== null && rs.knownOrderSubtotalUsd !== undefined) {
+      return `INCOMPLETE (Subtotal: \$${Number(rs.knownOrderSubtotalUsd).toLocaleString()})`;
+    }
+    return rs.pricingComplete === false ? 'INCOMPLETE' : 'UNKNOWN';
+  }
+  return `\$${Number(completeTotal).toLocaleString()}`;
 }
 
 function _buildWorkloadSection(graph, chassisDir, chassisDetection) {
@@ -160,7 +185,7 @@ function _buildWorkloadSection(graph, chassisDir, chassisDetection) {
     ? (chassisDir.split(/[/\\]/).pop() || 'Unknown')
     : 'Unknown';
   md += `- **Detected Chassis Variant**: \`${graph?.chassisInfo ? graph.chassisInfo.model : fallbackModel}\`  \n`;
-  md += `- **Primary Workload DNA**: \`${graph?.workloadDna ? graph.workloadDna.workloadDescription : 'Balanced Enterprise'}\`  \n`;
+  md += `- **Primary Workload DNA**: \`${graph?.workloadDna?.workloadDescription || 'UNCLASSIFIED'}\`  \n`;
   if (chassisDetection) {
     md += `- **Chassis Auto-Detection**: Match Type \`${chassisDetection.matchType}\` (Confidence: ${Math.round(chassisDetection.confidenceScore * 100)}%)  \n`;
   }
@@ -182,14 +207,7 @@ function _buildWorkloadSection(graph, chassisDir, chassisDetection) {
     md += `| Rank | Solution Tier Name | Score | Est. Cost (USD) | Workload Match | SKU Mods | Technical Tradeoff Rationale |\n`;
     md += `|---|---|---|---|---|---|---|\n`;
     graph.recommendedSolutions.forEach(rs => {
-      let costCell = '';
-      if (rs.pricingComplete === false) {
-        costCell = rs.knownOrderSubtotalUsd !== null && rs.knownOrderSubtotalUsd !== undefined
-          ? `INCOMPLETE (Subtotal: \$${Number(rs.knownOrderSubtotalUsd).toLocaleString()})`
-          : 'INCOMPLETE';
-      } else {
-        costCell = `\$${(rs.totalOrderCostUsd ?? rs.estimatedCostUsd ?? 0).toLocaleString()}`;
-      }
+      const costCell = _formatSolutionCostCell(rs);
       md += `| **Rank ${rs.rank}** | ${rs.name || 'Custom Solution'} | \`${rs.score || 'N/A'}\` | ${costCell} | ${rs.workloadDnaMatch || 'N/A'} | ${rs.changesCount ?? 0} | ${rs.reasoning || 'N/A'} |\n`;
     });
     md += `\n`;
@@ -353,46 +371,153 @@ function _buildDeliverablesSection(ctx) {
   return md;
 }
 
+function _formatProjectionCost(costUsd, pricingComplete) {
+  if (!pricingComplete || costUsd === null || costUsd === undefined) return 'INCOMPLETE (NULL)';
+  return `$${Number(costUsd).toLocaleString()} USD`;
+}
+
+function _formatProjectionLeadTime(days, status) {
+  if (days === null || days === undefined) return `UNKNOWN (${status || 'UNKNOWN'})`;
+  return `${days}d (${status || 'KNOWN'})`;
+}
+
+function _renderRequirementCoverageMarkdown(reqCov) {
+  let md = `### Requirement Coverage\n`;
+  md += `- **Total Clauses**: ${reqCov.totalClauses} | **Hard Requirements**: ${reqCov.hardRequirementsCount} | **Omitted**: ${reqCov.omittedClausesCount} | **Violated Hard**: ${reqCov.violatedHardCount} | **Unresolved Hard**: ${reqCov.unresolvedHardCount}\n\n`;
+  if (reqCov.clauses.length > 0) {
+    md += `| ID | Clause | Hardness | Disposition | Reason |\n|---|---|---|---|---|\n`;
+    for (const c of reqCov.clauses) {
+      md += `| \`${c.id}\` | ${String(c.rawText || '').replace(/\|/g, '/')} | ${c.hardness} | ${c.disposition} | ${c.reason || '-'} |\n`;
+    }
+    md += `\n`;
+  }
+  return md;
+}
+
+function _renderChangesMarkdown(changes) {
+  let md = `### Changes & Factual Rationales\n`;
+  if (!changes.length) return `${md}- No configuration deltas recorded.\n\n`;
+  md += `| SKU | Action | Before Qty | After Qty | Reason | Source Ref |\n|---|---|---:|---:|---|---|\n`;
+  for (const ch of changes) {
+    md += `| \`${ch.sku}\` | ${ch.action} | ${ch.beforeQty ?? '-'} | ${ch.afterQty ?? '-'} | ${ch.reason || '-'} | \`${ch.sourceRef || 'RULE_ENGINE'}\` |\n`;
+  }
+  return `${md}\n`;
+}
+
+function _renderAlternativesAndEvidenceMarkdown(projection) {
+  const es = projection.evidenceStates;
+  let md = `### Independent Evidence States\n`;
+  md += `- **Local Physical Checks**: \`${es.localPhysicalChecks}\`\n`;
+  md += `- **Document Grounding**: \`${es.documentGrounding}\`\n`;
+  md += `- **Live Vendor Acceptance**: \`${es.liveVendorAcceptance}\`\n`;
+  md += `- **Cloud Synchronization**: \`${es.cloudSynchronization}\`\n`;
+  md += `- **Delivery Authorization**: \`${es.deliveryAuthorization}\`\n`;
+  md += `- **Dependency Invalidation**: \`${es.dependencyInvalidationStatus}\`\n\n`;
+
+  if (projection.alternatives.length > 0) {
+    md += `### Evaluated Candidate Alternatives\n`;
+    md += `| Rank | Name | Est. Cost | Lead Time | Qualified | Trade-off Notes |\n|---|---|---|---|---|---|\n`;
+    for (const alt of projection.alternatives) {
+      const notes = Array.isArray(alt.tradeOffNotes) && alt.tradeOffNotes.length ? alt.tradeOffNotes.join('; ') : '-';
+      md += `| ${alt.rank ?? '-'} | ${alt.name || 'Candidate'} | ${_formatProjectionCost(alt.costUsd, alt.pricingComplete)} | ${_formatProjectionLeadTime(alt.leadTimeDays, alt.leadTimeStatus)} | ${alt.qualifiedForRecommendation ? 'YES' : 'NO'} | ${notes} |\n`;
+    }
+    md += `\n`;
+  }
+  return md;
+}
+
+function _renderUncertaintiesMarkdown(uncertainties, metrics) {
+  let md = `### Unresolved Facts & Uncertainties\n`;
+  md += `- **Confidence Metrics**: routingScore=\`${metrics.routingScore ?? 'UNASSESSED'}\`, similarityScore=\`${metrics.similarityScore ?? 'UNASSESSED'}\`, evidenceCoverage=\`${metrics.evidenceCoverage ?? 'UNASSESSED'}\`, calibratedProbability=\`${metrics.calibratedProbability ?? 'UNASSESSED'}\`\n`;
+  if (!uncertainties.length) {
+    return `${md}- None recorded.\n\n`;
+  }
+  for (const u of uncertainties) {
+    md += `- **[${u.kind}]** (${u.affectedDecision}): ${u.missingFact} — Impact: \`${u.impact}\` — Next: ${u.nextEvidenceAction}\n`;
+  }
+  return `${md}\n`;
+}
+
+function _buildDecisionProjectionSection(evalResults) {
+  const projection = projectCustomerDecision(evalResults);
+  if (projection.outcome.summary === 'NO_CLAIMS_RECORDED') {
+    return `---\n\n## 📊 3.8 Decision & Evidence Projection\n\n- **Outcome**: \`NOT_EVALUATED\` — \`NO_CLAIMS_RECORDED\`\n\n`;
+  }
+  let md = `---\n\n## 📊 3.8 Decision & Evidence Projection\n\n`;
+  md += `- **Outcome Disposition**: \`${projection.outcome.disposition}\` | **Buildable**: \`${String(projection.outcome.isBuildable)}\` | **Selected Rank**: \`${projection.outcome.selectedRank ?? 'NONE'}\` | **Candidates**: ${projection.outcome.candidateCount}\n`;
+  md += `- **Summary**: ${projection.outcome.summary}\n\n`;
+  md += _renderRequirementCoverageMarkdown(projection.requirementCoverage);
+  md += _renderChangesMarkdown(projection.changesAndRationales);
+  md += _renderAlternativesAndEvidenceMarkdown(projection);
+  md += _renderUncertaintiesMarkdown(projection.uncertainties, projection.confidenceMetrics);
+  return md;
+}
+
+function _appendAcceptedPortalReceiptMarkdown(report, safeCtx, accepted) {
+  let out = report.replace('Order-level rows retain their own quantities. PORTAL VALIDATION PENDING.', 'Order-level rows retain their own quantities. The corrected candidate below has an exact live CLIC receipt; the original BOQ is not that accepted manifest.');
+  out += `## Corrected configuration — live vendor receipt\n\nCLIC accepted at **${accepted.portalReceipt.capturedAt}**: zero unbuildables, errors, warnings and process-control issues. Live OCA list total: **$${accepted.portalReceipt.totalUsd.toLocaleString()} USD**. This is list pricing, not a discounted commercial quote.\n\n`;
+  out += '| SKU | Qty | Unit list USD | Extended USD |\n|---|---:|---:|---:|\n';
+  for (const part of accepted.skuPartsList) {
+    out += `| ${part.sku} | ${part.quantity} | ${part.unitPriceUsd.toLocaleString()} | ${part.extendedPriceUsd.toLocaleString()} |\n`;
+  }
+  out += `\nRemoved redundant optics: ${(accepted.removedSkus || []).join(', ') || 'none'}. Base and two upgrade kits supply 24 optics for 24 licensed ports.\n\n`;
+  const change = safeCtx.evalResults.requirementResolution?.supportPolicyChange;
+  if (change) {
+    out += `User-requested support change: ${change.removedServices.map(row => row.sku).join(', ')} replaced by product-qualified 3-year Basic support and the requested installation service. Retention is ${change.retention || 'as labelled by OCA'}. Each service remains scoped to its owning icon; both apply-to-all controls were off.\n\n`;
+  }
+  out += `Receipt artifacts: [CLIC response](evidence/clic_corrected_configuration.json), [complete solution BOM](evidence/clic_corrected_bom.json).\n\n`;
+  return out;
+}
+
+function _applyAcceptedBaselineRewrites(report) {
+  return report
+    .replace('Live exact-configuration acceptance remains pending.', 'The corrected candidate above matches the live CLIC receipt.')
+    .replace('Consolidated BOQ Hardware Items', 'Baseline Items Before Optics Correction')
+    .replace('showing mandatory buildable cost only.', 'showing the baseline cost before optics correction; the accepted corrected total is shown above.')
+    .replace('Mandatory Component Cost', 'Baseline Cost Before Optics Correction')
+    .replace('(Includes all direct SKU fixes)', '(Includes the redundant optics pack; exclude it from the corrected order)');
+}
+
+function _buildRagAndDeliverablesTail(safeCtx) {
+  let tail = `---\n\n## 🤖 4. Gemini Notebook RAG Status\n\n`;
+  const status = safeCtx.evalResults.agenticReviewStatus;
+  if (status === 'UNAVAILABLE') {
+    tail += '**Separate agentic model review:** unavailable or incomplete. This is not a successful independent model review; NotebookLM document grounding and live CLIC acceptance are reported separately.\n\n';
+  } else if (status === 'ADVISORY_RETURNED') {
+    const modelName = safeCtx.evalResults.agenticReview?.model || 'configured model';
+    const evCount = safeCtx.evalResults.agenticReview?.recoveryEvents?.length || 0;
+    tail += `**Separate agentic model review:** advisory returned by ${modelName}; ${evCount} recovery events. This advisory is separate from NotebookLM source validation and vendor acceptance.\n\n`;
+  }
+  tail += `${safeCtx.ragAnswer || 'No Gemini Notebook RAG answer recorded.'}\n\n`;
+  tail += _buildDeliverablesSection(safeCtx);
+  tail += `---\n\n*Report generated automatically by HPE BOQ Evaluation Engine.*  \n`;
+  return tail;
+}
+
 /**
  * Generates the full evaluation markdown report
  * @param {object} ctx - Serialization context
  * @returns {string} Markdown text
  */
 function generateMarkdownReport(ctx) {
-  let report = _buildHeaderSection(ctx);
-  const accepted = ctx.evalResults.conflictGraph?.rankedSolutions?.find(candidate => candidate.portalValidationStatus === 'CLIC_ACCEPTED' && candidate.portalReceipt);
-  if (accepted) {
-    report = report.replace('Order-level rows retain their own quantities. PORTAL VALIDATION PENDING.', 'Order-level rows retain their own quantities. The corrected candidate below has an exact live CLIC receipt; the original BOQ is not that accepted manifest.');
-    report += `## Corrected configuration — live vendor receipt\n\nCLIC accepted at **${accepted.portalReceipt.capturedAt}**: zero unbuildables, errors, warnings and process-control issues. Live OCA list total: **$${accepted.portalReceipt.totalUsd.toLocaleString()} USD**. This is list pricing, not a discounted commercial quote.\n\n`;
-    report += '| SKU | Qty | Unit list USD | Extended USD |\n|---|---:|---:|---:|\n';
-    for (const part of accepted.skuPartsList) report += `| ${part.sku} | ${part.quantity} | ${part.unitPriceUsd.toLocaleString()} | ${part.extendedPriceUsd.toLocaleString()} |\n`;
-    report += `\nRemoved redundant optics: ${(accepted.removedSkus || []).join(', ') || 'none'}. Base and two upgrade kits supply 24 optics for 24 licensed ports.\n\n`;
-    const change = ctx.evalResults.requirementResolution?.supportPolicyChange;
-    if (change) report += `User-requested support change: ${change.removedServices.map(row => row.sku).join(', ')} replaced by product-qualified 3-year Basic support and the requested installation service. Retention is ${change.retention || 'as labelled by OCA'}. Each service remains scoped to its owning icon; both apply-to-all controls were off.\n\n`;
-    report += `Receipt artifacts: [CLIC response](evidence/clic_corrected_configuration.json), [complete solution BOM](evidence/clic_corrected_bom.json).\n\n`;
-  }
-  report += _buildItemsSection(ctx.items || ctx.evalResults?.items || [], ctx.budgetOpt);
-  report += _buildAspectsSection(ctx.evalResults);
-  report += _buildWorkloadSection(ctx.graph, ctx.chassisDir, ctx.chassisDetection);
-  report += _buildBudgetSection(ctx.budgetOpt, ctx.targetBudgetUsd);
-  if (accepted) {
-    report = report.replace('Live exact-configuration acceptance remains pending.', 'The corrected candidate above matches the live CLIC receipt.');
-    report = report.replace('Consolidated BOQ Hardware Items', 'Baseline Items Before Optics Correction');
-    report = report.replace('showing mandatory buildable cost only.', 'showing the baseline cost before optics correction; the accepted corrected total is shown above.');
-    report = report.replace('Mandatory Component Cost', 'Baseline Cost Before Optics Correction');
-    report = report.replace('(Includes all direct SKU fixes)', '(Includes the redundant optics pack; exclude it from the corrected order)');
-  }
-  report += _buildValueEngineeringSection(ctx.evalResults);
-
-  report += `---\n\n`;
-  report += `## 🤖 4. Gemini Notebook RAG Status\n\n`;
-  if (ctx.evalResults.agenticReviewStatus === 'UNAVAILABLE') report += '**Separate agentic model review:** unavailable or incomplete. This is not a successful independent model review; NotebookLM document grounding and live CLIC acceptance are reported separately.\n\n';
-  if (ctx.evalResults.agenticReviewStatus === 'ADVISORY_RETURNED') report += `**Separate agentic model review:** advisory returned by ${ctx.evalResults.agenticReview?.model || 'configured model'}; ${ctx.evalResults.agenticReview?.recoveryEvents?.length || 0} recovery events. This advisory is separate from NotebookLM source validation and vendor acceptance.\n\n`;
-  report += `${ctx.ragAnswer || 'No Gemini Notebook RAG answer recorded.'}\n\n`;
-  report += _buildDeliverablesSection(ctx);
-  report += `---\n\n`;
-  report += `*Report generated automatically by HPE BOQ Evaluation Engine.*  \n`;
-
+  const safeCtx = ctx && ctx.evalResults ? ctx : { ...ctx, evalResults: ctx?.evalResults || {} };
+  let report = _buildHeaderSection(safeCtx);
+  const ranked = safeCtx.evalResults.conflictGraph?.rankedSolutions;
+  const accepted = Array.isArray(ranked)
+    ? ranked.find(c => c.portalValidationStatus === 'CLIC_ACCEPTED' && c.portalReceipt)
+    : null;
+  if (accepted) report = _appendAcceptedPortalReceiptMarkdown(report, safeCtx, accepted);
+  report += _buildItemsSection(safeCtx.items || safeCtx.evalResults?.items || [], safeCtx.budgetOpt);
+  report += _buildAspectsSection(safeCtx.evalResults);
+  report += _buildWorkloadSection(safeCtx.graph, safeCtx.chassisDir, safeCtx.chassisDetection);
+  report += _buildBudgetSection(safeCtx.budgetOpt, safeCtx.targetBudgetUsd);
+  if (accepted) report = _applyAcceptedBaselineRewrites(report);
+  report += _buildValueEngineeringSection(safeCtx.evalResults);
+  const projectionInput = safeCtx.graph && !safeCtx.evalResults.conflictGraph
+    ? { ...safeCtx.evalResults, conflictGraph: safeCtx.graph }
+    : safeCtx.evalResults;
+  report += _buildDecisionProjectionSection(projectionInput);
+  report += _buildRagAndDeliverablesTail(safeCtx);
   return report;
 }
 
@@ -922,23 +1047,30 @@ function _buildTelemetryData(ctx, safeStartTime) {
   };
 }
 
-function _buildNestedEvalResults(evalResults, provenanceTrace, narrative) {
+function _buildNestedEvalMeta(evalResults) {
   const serverCount = evalResults.serverCount || evalResults.configurationContext?.multiplier || 1;
   return {
-    ...evalResults,
     serverCount,
     nodeCount: evalResults.nodeCount || serverCount,
     quantityBasis: evalResults.quantityBasis || (serverCount > 1 ? 'CLUSTER_MULTIPLIED' : 'SINGLE_NODE'),
     candidateReference: evalResults.candidateReference || null,
     notebookLmStatus: evalResults.notebookLmStatus || null,
-    postFlowSync: evalResults.postFlowSync || null,
+    postFlowSync: evalResults.postFlowSync || null
+  };
+}
+
+function _buildNestedEvalResults(evalResults, provenanceTrace, narrative, solutionIntelligence) {
+  return {
+    ...evalResults,
+    ..._buildNestedEvalMeta(evalResults),
     needsActions: evalResults.evalSummary?.needsActions || [],
     unsolicitedOptionalItems: evalResults.unsolicitedOptionalItems || [],
     totalUnsolicitedCostUsd: evalResults.totalUnsolicitedCostUsd || 0,
     aspectChecks: evalResults.aspectChecks || [],
     stageBreakdown: evalResults.stageBreakdown || {},
     provenanceTrace,
-    evaluationNarrative: narrative
+    evaluationNarrative: narrative,
+    solutionIntelligence
   };
 }
 
@@ -1020,7 +1152,7 @@ function _buildCoreSerializedData(ctx, evalResults, traceId, provenanceTrace, na
   };
 }
 
-function _buildExtendedSerializedData(evalResults, graph, budgetOpt, queryPayload, provenanceTrace, narrative, safeStartTime) {
+function _buildRagReviewFields(evalResults) {
   return {
     ragAnswer: evalResults.ragAnswer || null,
     ragResult: evalResults.ragResult || null,
@@ -1028,27 +1160,48 @@ function _buildExtendedSerializedData(evalResults, graph, budgetOpt, queryPayloa
     agenticReviewStatus: evalResults.agenticReviewStatus || 'NOT_RUN',
     agenticReview: evalResults.agenticReview || null,
     postFlowSync: evalResults.postFlowSync || null,
+    ragVerified: evalResults.ragVerified ?? null,
+    ragViolationDetected: evalResults.ragViolationDetected ?? null,
+    ephemeralSourceValidation: evalResults.ephemeralSourceValidation || null
+  };
+}
+
+function _buildTopologyAndDefaultsFields(evalResults) {
+  return {
+    solutionTopology: evalResults.solutionTopology || null,
+    stageBreakdown: evalResults.stageBreakdown || {},
+    clusterSizing: evalResults.clusterSizing || null,
+    chassisDefaults: evalResults.chassisDefaults || [],
+    redundantDefaults: evalResults.redundantDefaults || [],
+    opinionDiscrepancies: evalResults.opinionDiscrepancies || []
+  };
+}
+
+function _buildAnalysisSerializedFields(evalResults) {
+  return {
     needsActions: evalResults.evalSummary?.needsActions || [],
     requirementResolution: evalResults.requirementResolution || null,
     pcieTopology: evalResults.evalSummary?.pcie?.slotLayout || null,
     unsolicitedOptionalItems: evalResults.unsolicitedOptionalItems || [],
     totalUnsolicitedCostUsd: evalResults.totalUnsolicitedCostUsd || 0,
     aspectChecks: evalResults.aspectChecks || [],
-    solutionTopology: evalResults.solutionTopology || null,
-    stageBreakdown: evalResults.stageBreakdown || {},
-    evalResults: _buildNestedEvalResults(evalResults, provenanceTrace, narrative),
-    clusterSizing: evalResults.clusterSizing || null,
-    chassisDefaults: evalResults.chassisDefaults || [],
-    redundantDefaults: evalResults.redundantDefaults || [],
-    opinionDiscrepancies: evalResults.opinionDiscrepancies || [],
+    ..._buildTopologyAndDefaultsFields(evalResults),
+    multiRankWorkbookPath: evalResults.multiRankWorkbookPath || null,
+    multiRankCsvPath: evalResults.multiRankCsvPath || null
+  };
+}
+
+function _buildExtendedSerializedData(evalResults, graph, budgetOpt, queryPayload, provenanceTrace, narrative, safeStartTime) {
+  const projectionSource = !evalResults.conflictGraph && graph ? { ...evalResults, conflictGraph: graph } : evalResults;
+  const solutionIntelligence = projectCustomerDecision(projectionSource);
+  return {
+    ..._buildRagReviewFields(evalResults),
+    ..._buildAnalysisSerializedFields(evalResults),
+    evalResults: _buildNestedEvalResults(evalResults, provenanceTrace, narrative, solutionIntelligence),
+    solutionIntelligence,
     conflictGraph: _buildConflictGraphData(graph, evalResults),
     budgetOptimization: budgetOpt,
     notebookPayload: queryPayload,
-    ragVerified: evalResults.ragVerified ?? null,
-    ragViolationDetected: evalResults.ragViolationDetected ?? null,
-    multiRankWorkbookPath: evalResults.multiRankWorkbookPath || null,
-    multiRankCsvPath: evalResults.multiRankCsvPath || null,
-    ephemeralSourceValidation: evalResults.ephemeralSourceValidation || null,
     durationMs: Date.now() - safeStartTime
   };
 }
@@ -1381,6 +1534,7 @@ function generateEvaluationNarrative(evalResult, chassisInfo, _options = {}) {
 module.exports = {
   generateMarkdownReport,
   generateEvaluationNarrative,
+  _buildDecisionProjectionSection,
   handleGoogleDriveUpload,
   assertArtifactIntegrity,
   _executeStagedFileAtomicity,

@@ -69,6 +69,15 @@ export function getCandidateExportEligibility(evalResults, tier = null) {
   };
 }
 
+export function isVerifiedCandidateDocumentReview(docReview) {
+  if (!docReview || typeof docReview !== 'object') return false;
+  if (docReview.success !== true || docReview.isCloudGrounded !== true || docReview.sourceDetached !== true) return false;
+  if (docReview.doubleCheckVerdict !== 'DOUBLE_CHECK_PASSED') return false;
+  if (docReview.attachment?.isMock === true || docReview.simulationPassed === true) return false;
+  if (!Array.isArray(docReview.citations) || docReview.citations.length === 0) return false;
+  return Array.isArray(docReview.authoritativeSourceIds) && docReview.authoritativeSourceIds.length > 0;
+}
+
 export function deriveEvidenceStates(evalResults) {
   if (!evalResults || typeof evalResults !== 'object') {
     return {
@@ -83,10 +92,12 @@ export function deriveEvidenceStates(evalResults) {
 
   const docReview = evalResults.ephemeralSourceValidation;
   let candidateDocumentReview = 'UNVERIFIED';
-  if (docReview?.isCloudGrounded === true && docReview?.success === true) {
-    candidateDocumentReview = docReview.doubleCheckVerdict || 'VERIFIED (GROUNDED)';
-  } else if (docReview?.doubleCheckVerdict) {
-    candidateDocumentReview = docReview.doubleCheckVerdict;
+  if (isVerifiedCandidateDocumentReview(docReview)) {
+    candidateDocumentReview = 'DOUBLE_CHECK_PASSED';
+  } else if (docReview && typeof docReview === 'object') {
+    candidateDocumentReview = (docReview.doubleCheckVerdict && docReview.doubleCheckVerdict !== 'DOUBLE_CHECK_PASSED')
+      ? docReview.doubleCheckVerdict
+      : 'INCOMPLETE_EVIDENCE';
   } else if (evalResults.offlineMode === true || evalResults.effectivePolicy?.offline === true) {
     candidateDocumentReview = 'NOT RUN (LOCAL ONLY)';
   }

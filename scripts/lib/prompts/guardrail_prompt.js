@@ -47,16 +47,83 @@ PROMPT_VERSIONS.v3 = chassisId => `${PROMPT_VERSIONS.v2(chassisId)}
 
 const ACTIVE_VERSION = 'v3';
 
+function _formatSingleHardRequirement(req) {
+  const id = req.id || req.requirementId || 'REQ';
+  const text = req.rawText || req.text || req.summary || req.key || req.targetSku || 'Hard requirement';
+  return `- [${id}] ${String(text).trim()}`;
+}
+
+function _formatHardRequirementsCountLine(reqAcc, hardCount) {
+  return (
+    `Hard Requirement Accounting: hard=${reqAcc.hardRequirementsCount ?? hardCount}, ` +
+    `omitted=${reqAcc.omittedClausesCount ?? 0}, violated=${reqAcc.violatedHardCount ?? 0}, ` +
+    `unresolved=${reqAcc.unresolvedHardCount ?? 0}`
+  );
+}
+
+function _formatHardRequirementsSummary(reqAcc) {
+  if (!reqAcc || typeof reqAcc !== 'object') return [];
+  const rawList = Array.isArray(reqAcc.records) ? reqAcc.records : (reqAcc.hardRequirements || []);
+  const hardItems = Array.isArray(rawList) ? rawList.filter(r => r && r.hardness !== 'PREFERENCE') : [];
+  const lines = [];
+  if (hardItems.length > 0 || reqAcc.totalClauses !== undefined || reqAcc.omittedClausesCount !== undefined) {
+    lines.push(_formatHardRequirementsCountLine(reqAcc, hardItems.length));
+  }
+  return [...lines, ...hardItems.slice(0, 12).map(_formatSingleHardRequirement)];
+}
+
+function _formatSingleFlaggedConstraint(c) {
+  const id = c.constraintId || c.id || 'CONSTR';
+  const status = String(c.status || 'UNKNOWN').toUpperCase();
+  const hardness = c.hardness || 'HARD';
+  const detail = c.message || c.summary || c.domain || c.predicate?.subject || 'Unresolved physical constraint';
+  return `- [${id} | ${status} | ${hardness}] ${detail}`;
+}
+
+function _formatConstraintSummary(constraintResults) {
+  if (!Array.isArray(constraintResults)) return [];
+  const flagged = constraintResults.filter(c => ['FAIL', 'UNKNOWN'].includes(String(c?.status || '').toUpperCase()));
+  if (flagged.length === 0) return [];
+  return [
+    'Violated / Unknown Physical Constraints:',
+    ...flagged.slice(0, 12).map(_formatSingleFlaggedConstraint)
+  ];
+}
+
+/**
+ * Format deterministic hard-requirement & constraint context suffix for guardrail system prompt.
+ * @param {object|null} [context]
+ * @returns {string}
+ */
+function formatGuardrailContextSuffix(context) {
+  if (!context || typeof context !== 'object') return '';
+  const reqLines = _formatHardRequirementsSummary(context.requirementAccounting);
+  const constrLines = _formatConstraintSummary(context.constraintResults);
+  const combined = [...reqLines, ...constrLines];
+  if (combined.length === 0) return '';
+  return [
+    'Evaluation Context Constraints (Hard-Before-Preference Grounding):',
+    ...combined
+  ].join('\n');
+}
+
 /**
  * Build the system instruction string for the Guardrail agent.
  * @param {string} chassisId  e.g. 'DL380_Gen12'
  * @param {string} [version]  Optional override; defaults to ACTIVE_VERSION
+ * @param {object|null} [context]  Optional requirementAccounting / constraintResults context
  * @returns {string}
  */
-function buildGuardrailSystemPrompt(chassisId, version = ACTIVE_VERSION) {
+function buildGuardrailSystemPrompt(chassisId, version = ACTIVE_VERSION, context = null) {
   const factory = PROMPT_VERSIONS[version];
   if (!factory) throw new Error(`Unknown guardrail prompt version: '${version}'`);
-  return factory(chassisId);
+  const basePrompt = factory(chassisId);
+  const suffix = formatGuardrailContextSuffix(context);
+  return suffix ? `${basePrompt}\n\n${suffix}` : basePrompt;
 }
 
-module.exports = { buildGuardrailSystemPrompt, ACTIVE_VERSION };
+module.exports = {
+  buildGuardrailSystemPrompt,
+  formatGuardrailContextSuffix,
+  ACTIVE_VERSION
+};

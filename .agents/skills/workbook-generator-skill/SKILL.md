@@ -42,6 +42,7 @@ Activate this skill whenever:
 
 - **Execution Phase**: **Phase 6 (Deliverable Generation & Output Assembly)**.
 - **Upstream Trigger**: Receives certified Rank 1 through Rank 5 solutions from [`boq-eval-skill`](../boq-eval-skill/SKILL.md) or discrepancy reports from [`bom-reconciliation-skill`](../bom-reconciliation-skill/SKILL.md).
+- **Acceptance & Evidence Cross-Links**: Enforces pre-presentation approval via [`output-validation-skill`](../output-validation-skill/SKILL.md), blocks export on violated or unresolved hard clauses per [`requirements-accounting-skill`](../requirements-accounting-skill/SKILL.md), and preserves independent Tier-1/Tier-2/Tier-3 evidence states and `PORTAL VALIDATION PENDING` disclosures per [`claim-evidence-adjudication-skill`](../claim-evidence-adjudication-skill/SKILL.md) inside analytical exports without altering the 7-column Partner Portal upload layout.
 - **Downstream Handoff**: Writes `.xlsx` files to `outputs/{Family}/{Gen}/{Model}/reports/` or `outputs/temp/` and provides clickable file links to the user.
 
 ---

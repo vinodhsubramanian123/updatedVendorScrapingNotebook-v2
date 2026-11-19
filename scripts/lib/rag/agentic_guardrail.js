@@ -347,7 +347,20 @@ async function sendWithRotation(message, rotationState, maxRetries, startTime) {
 // Main Guardrail Entry Point
 // ─────────────────────────────────────────────────────────────────────────────
 
-function _initGuardrailContext(items, chassisDir, activeKeyInfo) {
+function _extractGuardrailPromptContext(options, initialEval) {
+  const evalResult = options?.evalResult || initialEval || null;
+  const requirementAccounting = options?.requirementAccounting
+    || evalResult?.requirementAccounting
+    || evalResult?.requirementResolution?.requirementAccounting
+    || null;
+  const constraintResults = options?.constraintResults
+    || evalResult?.conflictGraph?.constraintResults
+    || evalResult?.constraintResults
+    || null;
+  return { requirementAccounting, constraintResults };
+}
+
+function _initGuardrailContext(items, chassisDir, activeKeyInfo, options = {}) {
   const chassisId = path.basename(chassisDir);
   const files = fs.readdirSync(chassisDir).filter(file => file.endsWith('_Catalog.json'));
   if (files.length !== 1) throw new Error('Require one exact catalog in the selected product directory.');
@@ -371,7 +384,8 @@ function _initGuardrailContext(items, chassisDir, activeKeyInfo) {
 
   const toolRegistry = buildToolRegistry(ctx);
   const toolDeclarations = Array.from(toolRegistry.values()).map(t => t.schema);
-  const systemInstruction = buildGuardrailSystemPrompt(chassisId);
+  const promptContext = _extractGuardrailPromptContext(options, initialEval);
+  const systemInstruction = buildGuardrailSystemPrompt(chassisId, undefined, promptContext);
 
   const rotationState = {
     currentApiKey: activeKeyInfo.apiKey,
@@ -454,7 +468,7 @@ async function runAgenticGuardrail(items, chassisDir, options = {}) {
 
   let contextBundle;
   try {
-    contextBundle = _initGuardrailContext(items, chassisDir, activeKeyInfo);
+    contextBundle = _initGuardrailContext(items, chassisDir, activeKeyInfo, options);
   } catch (err) {
     return failedReview(`GUARDRAIL_CONTEXT_UNAVAILABLE: ${err.message}`);
   }
@@ -565,6 +579,7 @@ async function runAgenticGuardrail(items, chassisDir, options = {}) {
 module.exports = {
   runAgenticGuardrail,
   submitGuardrailCandidates,
+  _initGuardrailContext,
   GUARDRAIL_OVERALL_TIMEOUT_MS,
   GUARDRAIL_NLM_MAX_CALLS
 };

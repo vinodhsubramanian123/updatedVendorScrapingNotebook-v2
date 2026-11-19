@@ -89,6 +89,68 @@ function ClusterSizingBanner({ cluster, clusterNodes, parentRunId }) {
   );
 }
 
+function _pickDefined(list, fallback) {
+  for (const val of list) {
+    if (val !== undefined && val !== null) return val;
+  }
+  return fallback;
+}
+
+function _readAlertInputs(evalResults) {
+  if (!evalResults || typeof evalResults !== 'object') return null;
+  const inner = evalResults.evalResults && typeof evalResults.evalResults === 'object' ? evalResults.evalResults : {};
+  return {
+    si: _pickDefined([evalResults.solutionIntelligence, inner.solutionIntelligence], null),
+    reqAcc: _pickDefined([evalResults.requirementAccounting, inner.requirementAccounting], null),
+    dep: _pickDefined([evalResults.dependencyInvalidation, inner.dependencyInvalidation], null)
+  };
+}
+
+function _buildCoverageAlertState(evalResults) {
+  const ctx = _readAlertInputs(evalResults);
+  if (!ctx) return null;
+  const cov = ctx.si?.requirementCoverage;
+  const omitted = Number(_pickDefined([cov?.omittedClausesCount, ctx.reqAcc?.omittedClausesCount], 0));
+  const violated = Number(_pickDefined([cov?.violatedHardCount, ctx.reqAcc?.violatedHardCount], 0));
+  const unresolved = Number(_pickDefined([cov?.unresolvedHardCount, ctx.reqAcc?.unresolvedHardCount], 0));
+  const uncertainties = Array.isArray(ctx.si?.uncertainties) ? ctx.si.uncertainties : [];
+  const ambig = Array.isArray(ctx.reqAcc?.ambiguities) ? ctx.reqAcc.ambiguities : [];
+  const uninterp = Array.isArray(ctx.reqAcc?.uninterpretedClauses) ? ctx.reqAcc.uninterpretedClauses : [];
+  const uncertaintyCount = uncertainties.length || (ambig.length + uninterp.length);
+  const isStale = ctx.si?.evidenceStates?.dependencyInvalidationStatus === 'STALE_INVALIDATED' || ctx.dep?.isStale === true;
+  if (!omitted && !violated && !unresolved && !uncertaintyCount && !isStale) return null;
+  const isBlocked = violated > 0 || isStale;
+  const firstItem = _pickDefined([uncertainties[0]?.missingFact, ambig[0]?.message, ambig[0]?.reason], null);
+  return { omitted, violated, unresolved, uncertaintyCount, isStale, isBlocked, firstItem };
+}
+
+function _resolveCoverageBadgeLabel(alert) {
+  if (alert.isStale) return 'STALE DEPENDENCIES';
+  if (alert.violated > 0) return 'REQUIREMENTS VIOLATED';
+  return 'COVERAGE & UNCERTAINTIES';
+}
+
+function RequirementCoverageUncertaintyBanner({ evalResults }) {
+  const alert = _buildCoverageAlertState(evalResults);
+  if (!alert) return null;
+  const toneClass = alert.isBlocked
+    ? 'border-rose-300 bg-rose-50/90 text-rose-950'
+    : 'border-amber-300 bg-amber-50/90 text-amber-950';
+  const badgeClass = alert.isBlocked ? 'bg-rose-700 text-white' : 'bg-amber-700 text-white';
+  const badgeLabel = _resolveCoverageBadgeLabel(alert);
+  return (
+    <div data-testid="requirement-uncertainty-banner" className={`p-3 rounded-xl border text-xs flex flex-col gap-1 shadow-xs ${toneClass}`}>
+      <div className="flex flex-wrap items-center gap-2">
+        <span className={`px-2 py-0.5 rounded text-[10px] font-bold font-mono uppercase ${badgeClass}`}>{badgeLabel}</span>
+        <span className="font-mono">
+          Omitted: <strong>{alert.omitted}</strong> | Violated Hard: <strong>{alert.violated}</strong> | Unresolved Hard: <strong>{alert.unresolved}</strong> | Open Uncertainties: <strong>{alert.uncertaintyCount}</strong>
+        </span>
+      </div>
+      {alert.firstItem && <div className="text-[11px] opacity-90">{alert.firstItem}</div>}
+    </div>
+  );
+}
+
 export default function MatrixStatusBanners({ evalResults }) {
   const cluster = evalResults?.clusterSizing;
   const clusterNodes = cluster?.totalServers || cluster?.serverCount || 0;
@@ -108,7 +170,7 @@ export default function MatrixStatusBanners({ evalResults }) {
             <span className="font-medium">Candidate review remains incomplete. Consult the stage outcomes for local checks and cloud review status.</span>
           </div>
         </div>
-      ) : evalResults?.ephemeralSourceValidation?.success === true ? (
+      ) : evidence.candidateDocumentReview === 'DOUBLE_CHECK_PASSED' ? (
         <div className="p-2.5 rounded-xl border border-emerald-200 bg-emerald-50/80 text-emerald-900 text-xs flex items-center justify-between shadow-xs">
           <div className="flex items-center gap-2">
             <span className="badge badge-emerald font-mono font-bold">Grounded candidate review recorded</span>
@@ -117,6 +179,7 @@ export default function MatrixStatusBanners({ evalResults }) {
         </div>
       ) : null}
 
+      {evalResults && <RequirementCoverageUncertaintyBanner evalResults={evalResults} />}
       {evalResults && <EvidenceStatesBar evidence={evidence} authState={authState} />}
       {evalResults?.valueEngineering && <ValueEngineeringPanel valueEngineering={evalResults.valueEngineering} />}
       <ClusterSizingBanner cluster={cluster} clusterNodes={clusterNodes} parentRunId={evalResults?.parentRunId} />

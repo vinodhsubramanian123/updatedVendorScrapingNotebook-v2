@@ -397,6 +397,11 @@ const results = await searchLocalRAG({
 - `knowledge-sync-skill` — pre-sync health gate
 - Any skill that reads from `outputs/{Family}/{Gen}/{Model}/` catalogs
 
+### 10.3 Related Evidence & Uncertainty Skills
+
+- [`claim-evidence-adjudication-skill`](../claim-evidence-adjudication-skill/SKILL.md) — Keeps inaccessible source inventory `UNKNOWN`, enforces `contentSha256` and `maxAgeMs` freshness bounds, and preserves contradictions.
+- [`decision-uncertainty-skill`](../decision-uncertainty-skill/SKILL.md) — Preserves missing or stale prices and lead times as explicit `null` uncertainty rather than coerced defaults.
+
 ---
 
 ## §11 — Google OAuth "In Production" Requirement

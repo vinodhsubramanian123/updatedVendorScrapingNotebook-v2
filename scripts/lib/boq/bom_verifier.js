@@ -26,6 +26,7 @@ const { getRegisteredAspectsForDomain } = require('../aspects/aspect_registry.js
 const { auditOpticalLinkEndpoints } = require('../aspects/networking_ocp.js');
 const { isCtoServerItem } = require('../aspects/support_manufacturing.js');
 const { readPortalReceipt, receiptMatches } = require('./portal_receipt.js');
+const { projectCustomerDecision } = require('./decision_projection.js');
 
 /**
  * Construct an epistemic check result conforming to INV-105.
@@ -1273,8 +1274,174 @@ function _checkProductionLifecycleGate(output, context = {}) {
     `All ${parts.length} SKU(s) in top production recommendation are free of OB/EOL/Discontinued lifecycle blocks.`);
 }
 
+function _resolveRequirementCoverageForGate(outputArtifact) {
+  const fromSi = outputArtifact?.solutionIntelligence?.requirementCoverage || null;
+  const fromProj = projectCustomerDecision(outputArtifact).requirementCoverage;
+  if (!fromSi) return fromProj;
+  return {
+    totalClauses: Math.max(Number(fromSi.totalClauses || 0), Number(fromProj.totalClauses || 0)),
+    omittedClausesCount: Math.max(Number(fromSi.omittedClausesCount || 0), Number(fromProj.omittedClausesCount || 0)),
+    violatedHardCount: Math.max(Number(fromSi.violatedHardCount || 0), Number(fromProj.violatedHardCount || 0)),
+    unresolvedHardCount: Math.max(Number(fromSi.unresolvedHardCount || 0), Number(fromProj.unresolvedHardCount || 0))
+  };
+}
+
+function _checkRequirementAccountingGate(outputArtifact) {
+  if (!outputArtifact?.requirementAccounting && !outputArtifact?.solutionIntelligence?.requirementCoverage) {
+    return null;
+  }
+  const cov = _resolveRequirementCoverageForGate(outputArtifact);
+  const omitted = Number(cov.omittedClausesCount || 0);
+  const violated = Number(cov.violatedHardCount || 0);
+  const unresolved = Number(cov.unresolvedHardCount || 0);
+
+  if (omitted > 0 || violated > 0) {
+    return makeCheck(
+      'B22',
+      'Requirement Accounting & Hard-Constraint Preservation',
+      'BLOCK',
+      'FAILED',
+      `Requirement accounting failed: ${omitted} omitted clause(s) and ${violated} violated hard requirement(s).`,
+      { omittedClausesCount: omitted, violatedHardCount: violated, unresolvedHardCount: unresolved }
+    );
+  }
+  if (unresolved > 0) {
+    return makeCheck(
+      'B22',
+      'Requirement Accounting & Hard-Constraint Preservation',
+      'BLOCK',
+      'ACTION_REQUIRED',
+      `Requirement accounting requires resolution: ${unresolved} unresolved hard requirement(s).`,
+      { omittedClausesCount: 0, violatedHardCount: 0, unresolvedHardCount: unresolved }
+    );
+  }
+  return makeCheck(
+    'B22',
+    'Requirement Accounting & Hard-Constraint Preservation',
+    'BLOCK',
+    'PASSED',
+    `All ${cov.totalClauses || 0} accounted customer requirement clause(s) satisfied without omissions or hard violations.`,
+    { totalClauses: cov.totalClauses || 0 }
+  );
+}
+
+function _isMaterialClaimRecord(claim) {
+  if (!claim || typeof claim !== 'object') return false;
+  if (claim.isMaterial === false || claim.material === false) return false;
+  const mat = String(claim.materiality || '').toUpperCase();
+  if (mat === 'INFORMATIONAL') return false;
+  return claim.isMaterial === true || claim.material === true || mat === 'MATERIAL';
+}
+
+function _isHardFailedMaterialClaim(claim) {
+  if (!_isMaterialClaimRecord(claim)) return false;
+  const st = String(claim.supportState || claim.status || '').toUpperCase();
+  return st === 'UNSUPPORTED' || st === 'CONTRADICTED' || st === 'REJECTED';
+}
+
+function _isUnverifiedMaterialClaim(claim) {
+  if (!_isMaterialClaimRecord(claim)) return false;
+  const st = String(claim.supportState || claim.status || '').toUpperCase();
+  return st === 'UNKNOWN' || st === '' || claim.isSupported === false;
+}
+
+function _hasHardClaimAdjudicationFailure(adj, failedClaims, contradictionCount, unsupportedCount) {
+  if (failedClaims.length > 0 || contradictionCount > 0 || unsupportedCount > 0) return true;
+  if (adj.hasContradictions === true || (adj.counts?.rejected || 0) > 0) return true;
+  return adj.overallStatus === 'CONTRADICTED' || adj.overallStatus === 'REJECTED';
+}
+
+function _hasUnknownMaterialClaimBlocker(adj, materialClaims, unknownClaims) {
+  if (unknownClaims.length > 0) return true;
+  const explicitUnknown = Number(adj.counts?.unknown ?? 0);
+  if (Array.isArray(adj.claims) && adj.claims.length > 0 && materialClaims.length === 0) return false;
+  return adj.overallStatus === 'UNKNOWN' || explicitUnknown > 0;
+}
+
+function _extractClaimIds(list) {
+  return list.map(c => c.claimId || c.assertion);
+}
+
+function _buildB23UnknownCheck(adj, unknownClaims) {
+  const count = unknownClaims.length || Number(adj.counts?.unknown || 0);
+  return makeCheck(
+    'B23',
+    'Material Claim Support & Contradiction Integrity',
+    'BLOCK',
+    'ACTION_REQUIRED',
+    `Material claim support remains unverified (${count} UNKNOWN material claim(s)).`,
+    { unknownClaimIds: _extractClaimIds(unknownClaims), unknownCount: count }
+  );
+}
+
+function _checkClaimAdjudicationGate(outputArtifact) {
+  const adj = outputArtifact?.claimAdjudication;
+  if (!adj || typeof adj !== 'object') return null;
+
+  const claims = Array.isArray(adj.claims) ? adj.claims : [];
+  const materialClaims = claims.filter(_isMaterialClaimRecord);
+  const failedClaims = materialClaims.filter(_isHardFailedMaterialClaim);
+  const unknownClaims = materialClaims.filter(_isUnverifiedMaterialClaim);
+  const contradictionCount = Number(adj.contradictionCount ?? adj.counts?.contradicted ?? 0);
+  const unsupportedCount = Number(adj.unsupportedMaterialCount ?? 0);
+
+  if (_hasHardClaimAdjudicationFailure(adj, failedClaims, contradictionCount, unsupportedCount)) {
+    return makeCheck(
+      'B23',
+      'Material Claim Support & Contradiction Integrity',
+      'BLOCK',
+      'FAILED',
+      `Material claim adjudication failed: ${failedClaims.length} unsupported/contradicted/rejected material claim(s), ${contradictionCount} contradiction(s).`,
+      { badClaimIds: _extractClaimIds(failedClaims), contradictionCount, unsupportedMaterialCount: unsupportedCount }
+    );
+  }
+  if (_hasUnknownMaterialClaimBlocker(adj, materialClaims, unknownClaims)) {
+    return _buildB23UnknownCheck(adj, unknownClaims);
+  }
+  return makeCheck(
+    'B23',
+    'Material Claim Support & Contradiction Integrity',
+    'BLOCK',
+    'PASSED',
+    `All ${claims.length} adjudicated claim(s) free of unverified assertions or contradictions.`,
+    { claimsCount: claims.length }
+  );
+}
+
+function _checkDependencyInvalidationGate(outputArtifact) {
+  const dep = outputArtifact?.dependencyInvalidation;
+  if (!dep || typeof dep !== 'object') return null;
+  if (dep.isStale === true) {
+    return makeCheck(
+      'B24',
+      'Evidence Dependency Invalidation Guard',
+      'BLOCK',
+      'FAILED',
+      `Evidence dependencies are stale and invalidated (${dep.reason || 'upstream revision changed'}).`,
+      { isStale: true, invalidatedReasons: dep.reasons || [] }
+    );
+  }
+  return makeCheck(
+    'B24',
+    'Evidence Dependency Invalidation Guard',
+    'BLOCK',
+    'PASSED',
+    'Evidence dependency chain is valid and current.',
+    { isStale: false }
+  );
+}
+
+function _validateSolutionIntelligencePolicyChecks(outputArtifact) {
+  if (!outputArtifact || typeof outputArtifact !== 'object') return [];
+  return [
+    _checkRequirementAccountingGate(outputArtifact),
+    _checkClaimAdjudicationGate(outputArtifact),
+    _checkDependencyInvalidationGate(outputArtifact)
+  ].filter(Boolean);
+}
+
 /**
- * BOQ Evaluation Criteria (B1–B21)
+ * BOQ Evaluation Criteria (B1–B24)
  */
 function validateBoqEvaluationCriteria(output, context = {}) {
   return [
@@ -1291,7 +1458,8 @@ function validateBoqEvaluationCriteria(output, context = {}) {
     _checkQuantityConservation(output, context),
     _checkTurnkeyDeploymentCompleteness(output, context),
     _checkProductionLifecycleGate(output, context),
-    _checkPortalReceiptIntegrity(output, context)
+    _checkPortalReceiptIntegrity(output, context),
+    ..._validateSolutionIntelligencePolicyChecks(output)
   ];
 }
 

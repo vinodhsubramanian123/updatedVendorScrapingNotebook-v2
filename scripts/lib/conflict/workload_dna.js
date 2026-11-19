@@ -9,16 +9,36 @@
 const GPU_EXCLUSION_PATTERN = /cable|bridge|enablement|riser|fan|heatsink|switchboard|configuration/i;
 const GPU_DETECTION_PATTERN = /nvidia|gpu|rtx|h200|l40s|l4|accelerator|h100|a100/i;
 const MEMORY_DETECTION_PATTERN = /memory|rdimm|ddr5|ddr4|dimm/i;
+const {
+  createWorkloadDemandRecord,
+  extractWorkloadDemand,
+  evaluateWorkloadSizingPilot
+} = require('./sizing/workload_demand.js');
+
+function _detectCpuChannelWidth(desc) {
+  if (desc.includes('epyc') && (desc.includes('9004') || desc.includes('9005') || desc.includes('genoa') || desc.includes('bergamo') || desc.includes('turin'))) {
+    return 12;
+  }
+  if (/\b(?:67|69)\d{2}p\b|granite\s*rapids/i.test(desc)) {
+    return 12;
+  }
+  if (/\b(?:43|53|63|83|44|54|64|84|45|55|65|85)\d{2}[a-z+]*\b|ice\s*lake|sapphire\s*rapids|emerald\s*rapids|sierra\s*forest|\b67\d{2}e\b/i.test(desc)) {
+    return 8;
+  }
+  if (desc.includes('xeon') && (desc.includes('4200') || desc.includes('5200') || desc.includes('6200') || desc.includes('8200') || /\b(?:42|52|62|82)\d{2}[a-z]*\b/i.test(desc) || desc.includes('cascade lake') || desc.includes('skylake'))) {
+    return 6;
+  }
+  return null;
+}
 
 function _inspectCpuItem(desc, qty, state) {
   if (!desc.includes('processor') && !desc.includes('xeon') && !desc.includes('epyc')) return false;
   if (!desc.includes('heatsink') && !desc.includes('heat sink') && !desc.includes('fan') && !desc.includes('cage') && !desc.includes('cable')) {
     state.cpuCount += qty;
   }
-  if (desc.includes('epyc') && (desc.includes('9004') || desc.includes('9005') || desc.includes('genoa') || desc.includes('bergamo') || desc.includes('turin'))) {
-    state.detectedChannelWidth = 12;
-  } else if (desc.includes('xeon') && (desc.includes('4200') || desc.includes('5200') || desc.includes('6200') || desc.includes('8200') || desc.includes('cascade lake') || desc.includes('skylake'))) {
-    state.detectedChannelWidth = 6;
+  const detectedWidth = _detectCpuChannelWidth(desc);
+  if (detectedWidth !== null) {
+    state.detectedChannelWidth = detectedWidth;
   }
   const coreMatch = desc.match(/(\d+)\s*-?\s*core/i);
   if (coreMatch) state.totalCores += (parseInt(coreMatch[1], 10) * qty);
@@ -51,6 +71,7 @@ function _inspectGpuItem(it, desc, qty, state) {
     state.gpuTotalVramGb = (state.gpuTotalVramGb || 0) + (parseInt(vramMatch[1], 10) * qty);
   }
   const tdpMatch = desc.match(/\b(\d{2,3})\s*w\b/i);
+  if (!tdpMatch) state.gpuPowerAssumed = true;
   const estWatts = tdpMatch ? parseInt(tdpMatch[1], 10)
     : (/h200|h100|b100|b200/i.test(desc) ? 700 : (/l40s?|a40/i.test(desc) ? 350 : 75));
   state.gpuEstimatedPowerWatts = (state.gpuEstimatedPowerWatts || 0) + (estWatts * qty);
@@ -65,10 +86,11 @@ function _inspectStorageItem(desc, qty, state) {
   if (desc.includes('controller') || desc.includes('cage') || desc.includes('no drive')) return false;
 
   state.driveCount += qty;
-  if (desc.includes('write intensive') || desc.includes('wi')) state.storageWorkload = 'WRITE_INTENSIVE';
-  else if (desc.includes('mixed use') || desc.includes('mu')) state.storageWorkload = 'MIXED_USE';
-  else if (desc.includes('read intensive') || desc.includes('ri')) state.storageWorkload = 'READ_INTENSIVE';
+  if (desc.includes('write intensive') || /\bwi\b/i.test(desc)) state.storageWorkload = 'WRITE_INTENSIVE';
+  else if (desc.includes('mixed use') || /\bmu\b/i.test(desc)) state.storageWorkload = 'MIXED_USE';
+  else if (desc.includes('read intensive') || /\bri\b/i.test(desc)) state.storageWorkload = 'READ_INTENSIVE';
   else if (desc.includes('hdd') || desc.includes('sas 10k')) state.storageWorkload = 'CAPACITY_STORAGE';
+  else if (state.storageWorkload === 'NONE') state.storageWorkload = 'UNKNOWN';
 
   if (desc.includes('nvme')) state.storageType = 'NVME_GEN4';
   else if (desc.includes('sas')) state.storageType = 'SAS_12G';
@@ -119,9 +141,23 @@ function _classifyPrimaryWorkload({ hasGpu, totalGpuCount, gpuModelStr, totalCor
 }
 
 function _computeNumaTopology({ cpuCount, memoryCount, totalMemoryGb, detectedChannelWidth }) {
-  const sockets = Math.max(1, cpuCount || 1);
-  const dimmsPerSocket = memoryCount > 0 ? (memoryCount / sockets) : 0;
+  const dimmsPerSocket = cpuCount > 0 && memoryCount > 0 ? (memoryCount / cpuCount) : 0;
   const isSocketSymmetric = memoryCount > 0 && cpuCount > 0 && (memoryCount % cpuCount === 0);
+  if (!Number.isSafeInteger(detectedChannelWidth) || detectedChannelWidth <= 0) {
+    return {
+      cpuSockets: cpuCount,
+      memoryDimmCount: memoryCount,
+      totalMemoryGb,
+      dimmsPerSocket,
+      channelWidth: null,
+      isSocketSymmetric,
+      isBalancedInterleaving: false,
+      is1DpcBalanced: false,
+      is2DpcBalanced: false,
+      isSupportedPopulation: false,
+      interleavingMode: 'UNKNOWN_CHANNEL_WIDTH'
+    };
+  }
   const is1DpcBalanced = isSocketSymmetric && (dimmsPerSocket === detectedChannelWidth);
   const is2DpcBalanced = isSocketSymmetric && (dimmsPerSocket === detectedChannelWidth * 2);
   const isBalancedInterleaving = is1DpcBalanced || is2DpcBalanced;
@@ -162,13 +198,14 @@ function extractWorkloadDna(items = []) {
     cpuCount: 0,
     totalMemoryGb: 0,
     memoryCount: 0,
-    detectedChannelWidth: 8,
+    detectedChannelWidth: null,
     hasGpu: false,
     gpuModels: [],
     totalGpuCount: 0,
+    gpuPowerAssumed: false,
     driveCount: 0,
     storageType: 'NONE',
-    storageWorkload: 'READ_INTENSIVE'
+    storageWorkload: 'NONE'
   };
 
   safeItems.forEach(it => _inspectDnaHardwareItem(it, state));
@@ -210,6 +247,7 @@ function extractWorkloadDna(items = []) {
     totalGpuCount: state.totalGpuCount,
     gpuTotalVramGb: state.gpuTotalVramGb || 0,
     gpuEstimatedPowerWatts: state.gpuEstimatedPowerWatts || 0,
+    gpuPowerBasis: state.hasGpu ? (state.gpuPowerAssumed ? 'HEURISTIC_ESTIMATE' : 'PARSED_DESCRIPTION') : 'NONE',
     gpuHasNvlink: Boolean(state.gpuHasNvlink),
     driveCount: state.driveCount,
     storageType: state.storageType,
@@ -352,10 +390,79 @@ function inferWorkloadDnaFromText(text = '') {
   return null;
 }
 
+function _buildCandidateHardwareFromDna(dna, options = {}) {
+  if (!dna) return null;
+  return {
+    totalNodes: options.totalNodes ?? options.nodeCount,
+    perNodeMemoryGb: dna.totalMemoryGb > 0 ? dna.totalMemoryGb : undefined,
+    perNodeCores: dna.totalCores > 0 ? dna.totalCores : undefined,
+    cpuSocketsPerNode: dna.cpuCount > 0 ? dna.cpuCount : undefined,
+    perNodeDimms: dna.memoryDimmCount > 0 ? dna.memoryDimmCount : undefined,
+    channelWidth: dna.numaTopology?.channelWidth ?? undefined
+  };
+}
+
+function _firstValue(values, fallback = null) {
+  for (const val of values) {
+    if (val !== undefined && val !== null && val !== '') return val;
+  }
+  return fallback;
+}
+
+function _resolveDemandProfileInputs(input, options) {
+  const safeOpts = _firstValue([options], {});
+  if (typeof input === 'string') {
+    return { rawText: input, items: null, demandSource: input, candidate: _firstValue([safeOpts.candidate]) };
+  }
+  if (Array.isArray(input)) {
+    return {
+      rawText: String(_firstValue([safeOpts.rawText], '')),
+      items: input,
+      demandSource: _firstValue([safeOpts.demand], {}),
+      candidate: _firstValue([safeOpts.candidate])
+    };
+  }
+  const src = (input && typeof input === 'object') ? input : {};
+  return {
+    rawText: String(_firstValue([src.text, src.queryText, safeOpts.rawText], '')),
+    items: Array.isArray(src.items) ? src.items : null,
+    demandSource: _firstValue([src.demand, src], {}),
+    candidate: _firstValue([src.candidate, safeOpts.candidate])
+  };
+}
+
+/**
+ * Build an explicit Workload Demand Profile & VMware VCF Sizing Pilot assessment.
+ */
+function buildWorkloadDemandProfile(input = {}, options = {}) {
+  const safeOpts = options || {};
+  const { rawText, items, demandSource, candidate } = _resolveDemandProfileInputs(input, safeOpts);
+  const workloadDna = items ? extractWorkloadDna(items) : null;
+  const inferredTextDna = rawText ? inferWorkloadDnaFromText(rawText) : null;
+
+  const inferredFamily = safeOpts.workloadFamily || inferredTextDna?.workloadType;
+  const demandOpts = { ...safeOpts, rawText, workloadFamily: inferredFamily };
+  const demandRecord = extractWorkloadDemand(demandSource, demandOpts);
+  const candidateSpec = candidate || _buildCandidateHardwareFromDna(workloadDna, safeOpts);
+  const sizingEvaluation = evaluateWorkloadSizingPilot(demandRecord, candidateSpec, demandOpts);
+
+  return {
+    schemaVersion: '1.0',
+    demandRecord,
+    sizingEvaluation,
+    workloadDna,
+    inferredTextDna
+  };
+}
+
 module.exports = {
   extractWorkloadDna,
   inferWorkloadDnaFromText,
-  validateNumaMemoryTopology
+  validateNumaMemoryTopology,
+  buildWorkloadDemandProfile,
+  createWorkloadDemandRecord,
+  extractWorkloadDemand,
+  evaluateWorkloadSizingPilot
 };
 
 // ── CLI Runner ─────────────────────────────────────────────────────────────

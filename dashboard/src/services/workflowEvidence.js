@@ -1,3 +1,5 @@
+import { isVerifiedCandidateDocumentReview } from './exportEligibility.js';
+
 /** Present execution evidence without converting an absent result into a passing stage. */
 const STEP_IDS = { LOAD: 1, CLEANING: 1, VALIDATION: 2, RANKING: 5, POST_VERIFICATION: 3 };
 const LEGACY_LIVE_STAGE = {
@@ -35,7 +37,7 @@ function finalStageStatus(id, state) {
   if (['ERROR', 'CANCELLED'].includes(result.status)) return 'FAILED';
   if (result.clarificationRequired) return 'WARNING';
   if (id === 'VALIDATION') return validationStatus(result);
-  if (id === 'POST_VERIFICATION') return result.ephemeralSourceValidation?.success === true ? 'COMPLETED' : 'WARNING';
+  if (id === 'POST_VERIFICATION') return isVerifiedCandidateDocumentReview(result.ephemeralSourceValidation) ? 'COMPLETED' : 'WARNING';
   if (id === 'SOLUTION_PRESENTATION') return result.customerDisposition === 'PRESENTATION_READY' ? 'COMPLETED' : 'WARNING';
   if (id === 'TELEMETRY') return result.traceId ? 'COMPLETED' : 'WARNING';
   if (id === 'RANKING' && !(result.rankedSolutions?.length > 0)) return 'WARNING';
@@ -64,8 +66,12 @@ export function deriveEvidenceMetrics(id, state) {
   const result = state.evalResults;
   if (id === 'VALIDATION') return validationMetrics(result);
   if (id === 'RANKING') return { 'Candidate tiers': result?.rankedSolutions?.length ?? 0, 'Confidence': result?.confidence?.score ?? 'Not assessed' };
-  if (id === 'POST_VERIFICATION') return { 'Candidate review': result?.ephemeralSourceValidation?.success === true ? 'Recorded' : 'Pending',
-    'Guardrail': result?.agenticReviewStatus ?? 'NOT_RUN' };
+  if (id === 'POST_VERIFICATION') {
+    const docStatus = isVerifiedCandidateDocumentReview(result?.ephemeralSourceValidation)
+      ? 'Verified'
+      : (result?.ephemeralSourceValidation ? 'Incomplete' : 'Pending');
+    return { 'Candidate review': docStatus, 'Guardrail': result?.agenticReviewStatus ?? 'NOT_RUN' };
+  }
   if (id === 'SOLUTION_PRESENTATION') return { 'Disposition': result?.customerDisposition ?? 'Not evaluated', 'Vendor acceptance': result?.portalValidationStatus ?? 'PENDING' };
   if (id === 'NOTEBOOK_SYNC') return { 'Sync status': result?.postFlowSync?.syncStatus ?? 'Not verified', 'Product': result?.chassis ?? state.selectedChassis ?? 'Unknown' };
   if (id === 'RECONCILIATION') return { 'Quote match': state.auditReport?.is100PercentMatch === true ? 'Rows matched' : 'Pending or differences require review' };

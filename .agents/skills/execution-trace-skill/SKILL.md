@@ -191,3 +191,9 @@ When executing ANY presales flow, the agent MUST:
 ### Trace Storage Convention
 - Production traces: `outputs/temp/agent_traces/execution_trace_{YYYY-MM-DD}_{traceId}.json`
 - Test traces: `outputs/temp/test_payloads/trace_{traceId}.json` (follows `INV-7`)
+
+### Related Governance & Diagnostic Skills
+- Comply with [Normative Language Standard](../../rules/normative_language.md).
+- [`claim-evidence-adjudication-skill`](../claim-evidence-adjudication-skill/SKILL.md) — SHA-256 bound `EvidenceDigestSha256` and separate Tier-1/Tier-2/Tier-3 evidence lanes.
+- [`constraint-diagnosis-skill`](../constraint-diagnosis-skill/SKILL.md) — Typed `ConstraintResult` diagnosis, ablation checks, and bounded repair transaction trails.
+- [`solution-quality-evaluation-skill`](../solution-quality-evaluation-skill/SKILL.md) — Factual `performReasoningPostAnalysis` verification and held-out benchmark audit rules.

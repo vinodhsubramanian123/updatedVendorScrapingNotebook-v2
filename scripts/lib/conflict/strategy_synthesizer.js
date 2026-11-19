@@ -28,6 +28,11 @@ const {
 const { getHistoricalSkuPrice } = require('../catalog/sku_versioning.js');
 const { createDecisionTraceLedger } = require('./decision_trace.js');
 const { getMandatorySkusForChassis } = require('../catalog/catalog_rules.js');
+const {
+  qualifyCandidatesBeforeRanking,
+  rankQualifiedCandidatesDeterministically,
+  computeParetoFrontier
+} = require('./sizing/pareto_ranker.js');
 
 let _strategyAddonsCache = null;
 let _physicalMathValidator = null;
@@ -74,11 +79,11 @@ function parseLeadTimeDays(value) {
   if (typeof value === 'number' && Number.isFinite(value) && value >= 0) return value;
   const text = String(value || '').trim().toLowerCase();
   if (!text || text === 'n/a' || text === 'na' || text === 'unknown' || text === 'standard' || text === 'null') return null;
-  const range = text.match(/^(\d+)\s*(?:-|–|to)\s*(\d+)(?:\s*(?:(?:business|calendar)\s+)?days?)?$/);
+  const range = text.match(/^(?:edt[:\s]+)?(\d+)\s*(?:-|–|to)\s*(\d+)(?:\s*(?:(?:business|calendar)\s+)?days?)?$/);
   if (range) return (Number(range[1]) + Number(range[2])) / 2;
   const plain = text.match(/^(\d+)$/);
   if (plain) return Number(plain[1]);
-  const single = text.match(/^(\d+)\s*(?:(?:business|calendar)\s+)?days?$/);
+  const single = text.match(/^(?:edt[:\s]+)?(\d+)\s*(?:(?:business|calendar)\s+)?days?$/);
   return single ? Number(single[1]) : null;
 }
 
@@ -692,12 +697,7 @@ function _scoreCandidateMetrics(cand, requestedSkuSet, requestedQuantities, base
   cand.capabilityDowngradePenalty = computeCapabilityDowngradePenalty(cand, items);
 }
 
-function _compareCandidateRanks(a, b) {
-  if (Boolean(a.physicalMathClean) !== Boolean(b.physicalMathClean)) return a.physicalMathClean ? -1 : 1;
-  if (a.capabilityDowngradePenalty !== b.capabilityDowngradePenalty) return a.capabilityDowngradePenalty - b.capabilityDowngradePenalty;
-  if (a.architecturalDelta !== b.architecturalDelta) return a.architecturalDelta - b.architecturalDelta;
-  if (a.quantityDelta !== b.quantityDelta) return a.quantityDelta - b.quantityDelta;
-  if (b.dynamicScore !== a.dynamicScore) return b.dynamicScore - a.dynamicScore;
+function _compareCandidateTieBreakers(a, b) {
   if (a.supplyMetrics.unavailableCount !== b.supplyMetrics.unavailableCount) {
     return a.supplyMetrics.unavailableCount - b.supplyMetrics.unavailableCount;
   }
@@ -718,20 +718,66 @@ function _compareCandidateRanks(a, b) {
   return fpA.localeCompare(fpB);
 }
 
+function _compareNumAsc(a, b) {
+  if (a === b) return 0;
+  return a - b;
+}
+
+function _compareCandidateRanks(a, b) {
+  const qualA = a.qualifiedForRecommendation !== false;
+  const qualB = b.qualifiedForRecommendation !== false;
+  if (qualA !== qualB) return qualA ? -1 : 1;
+  if (Boolean(a.physicalMathClean) !== Boolean(b.physicalMathClean)) return a.physicalMathClean ? -1 : 1;
+
+  const primary = _compareNumAsc(a.capabilityDowngradePenalty, b.capabilityDowngradePenalty) ||
+    _compareNumAsc(a.changedSkuLines || 0, b.changedSkuLines || 0) ||
+    _compareNumAsc(a.quantityDelta, b.quantityDelta) ||
+    _compareNumAsc(a.architecturalDelta, b.architecturalDelta) ||
+    _compareNumAsc(b.dynamicScore, a.dynamicScore);
+  if (primary !== 0) return primary;
+  return _compareCandidateTieBreakers(a, b);
+}
+
+function _annotateSingleCandidateQualification(cand, items, options) {
+  const rankedSingle = rankQualifiedCandidatesDeterministically([cand], {
+    ...options,
+    baselineItems: items,
+    enforcePhysicalMath: options.enforcePhysicalMath === true
+  });
+  const evaluated = rankedSingle.allCandidatesOrdered[0];
+  cand.qualifiedForRecommendation = evaluated ? evaluated.qualifiedForRecommendation : true;
+  cand.disqualificationReasons = evaluated ? evaluated.disqualificationReasons : [];
+  cand.changedSkuLines = evaluated ? evaluated.changedSkuLines : 0;
+  cand.changedUnits = evaluated ? evaluated.changedUnits : (cand.quantityDelta || 0);
+}
+
+function _annotatePreRankingQualification(rawCandidates, items, options = {}) {
+  rawCandidates.forEach(cand => {
+    _annotateSingleCandidateQualification(cand, items, options);
+  });
+}
+
+function _promoteFastShipToRank2IfEligible(rawCandidates) {
+  const fsIdx = rawCandidates.findIndex(
+    (c, idx) => idx > 0 && c.isFastShipRank2 && c.physicalMathClean && c.qualifiedForRecommendation !== false
+  );
+  if (fsIdx > 1 && rawCandidates[0]?.qualifiedForRecommendation !== false) {
+    const [fsCand] = rawCandidates.splice(fsIdx, 1);
+    rawCandidates.splice(1, 0, fsCand);
+  }
+}
+
 function scoreAndSortCandidates(rawCandidates, items, resolveSupply = () => ({ leadTimeDays: null, availability: 'Unknown' }), options = {}) {
   const { requestedSkuSet, requestedQuantities, baseCategoryMap } = _indexRequestedQuantities(items);
 
   rawCandidates.forEach(cand => {
     _scoreCandidateMetrics(cand, requestedSkuSet, requestedQuantities, baseCategoryMap, resolveSupply, items, options.availabilityGlobalItems || []);
   });
+  _annotatePreRankingQualification(rawCandidates, items, options);
 
   rawCandidates.sort(_compareCandidateRanks);
   if (options?.prioritizeFastShipAsRank2) {
-    const fsIdx = rawCandidates.findIndex((c, idx) => idx > 0 && c.isFastShipRank2 && c.physicalMathClean);
-    if (fsIdx > 1) {
-      const [fsCand] = rawCandidates.splice(fsIdx, 1);
-      rawCandidates.splice(1, 0, fsCand);
-    }
+    _promoteFastShipToRank2IfEligible(rawCandidates);
   }
   return requestedSkuSet;
 }
@@ -884,6 +930,17 @@ function _applyParetoDominance(normalized) {
   }
 }
 
+function _attachParetoFrontierMetadata(normalized, options = {}) {
+  const frontierReport = computeParetoFrontier(normalized, {
+    ...options,
+    enforcePhysicalMath: options.enforcePhysicalMath === true
+  });
+  normalized.paretoFrontier = frontierReport;
+  normalized.disqualifiedCandidates = frontierReport.disqualifiedCandidates;
+  normalized.evaluatedCandidateSet = frontierReport.evaluatedCandidateSet;
+  normalized.isGlobalMinimum = frontierReport.isGlobalMinimum;
+}
+
 function normalizeCandidates(rawCandidates, requestedSkuSet, baselineCost, options = {}) {
   const priceResolver = options.priceResolver;
   const seenFp = new Map();
@@ -921,6 +978,7 @@ function normalizeCandidates(rawCandidates, requestedSkuSet, baselineCost, optio
   });
 
   _applyParetoDominance(normalized);
+  _attachParetoFrontierMetadata(normalized, options);
 
   const paretoSolutions = normalized.filter(c => c.isParetoOptimal && c.isUniqueBom);
   normalized.paretoSolutions = paretoSolutions;
@@ -2516,6 +2574,9 @@ module.exports = {
   computeCapabilityDowngradePenalty,
   scoreAndSortCandidates,
   includeAvailabilityRecommendations,
+  qualifyCandidatesBeforeRanking,
+  rankQualifiedCandidatesDeterministically,
+  computeParetoFrontier,
   _runPhysicalAspectsValidationLoop,
   _clearStrategyAddonsCache
 };

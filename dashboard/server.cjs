@@ -160,6 +160,8 @@ async function initAndStartServer() {
     console.log(`⚡ HPE OCA Dashboard Server Bridge running on http://127.0.0.1:${PORT}`);
     console.log(`📁 Static artifacts served from: ${OUTPUTS_DIR}`);
   });
+  server.keepAliveTimeout = 65000;
+  server.headersTimeout = 66000;
 
   // Graceful shutdown — prevent zombie processes on SIGTERM
   const shutdown = () => {

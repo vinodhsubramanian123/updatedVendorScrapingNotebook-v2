@@ -4,6 +4,101 @@ const { INTENT_RULES, LEGACY_EXPLICIT_INTENTS, TRANSFORM_ORDER, PLANNER_POLICY }
 const knownIntents = new Set(INTENT_RULES.map(r => r.intent));
 const roleOf = intent => INTENT_RULES.find(r => r.intent === intent)?.role;
 const unique = values => [...new Set(values)];
+const NEGATED_OP_TARGET_RE = /\b(?:do\s+not|don't|never|avoid|without)\s+(?:\w+\s+){0,2}(export(?:\s+excel|\s+workbook)?|generat\w*\s+(?:excel|workbook)|sync\w*(?:\s+catalog|\s+cloud)?|cloud\s+sync|convert\w*|reconcil\w*|optimiz\w*|evaluat\w*|validat\w*|install\w*)/gi;
+
+function _mapNegatedTargetToOperation(target = '') {
+  const t = String(target || '').toLowerCase();
+  if (/export|excel|workbook|generat/.test(t)) return 'WORKBOOK_GENERATION';
+  if (/sync/.test(t)) return 'KNOWLEDGE_SYNC';
+  if (/convert|convers|cross[\s-]*vendor|transpil/.test(t)) return 'CROSS_VENDOR_TRANSFORMATION';
+  if (/reconcil/.test(t)) return 'BOM_RECONCILIATION';
+  if (/optimiz|value[\s-]*engineering/.test(t)) return 'VALUE_ENGINEERING';
+  if (/evaluat|validat/.test(t)) return 'BOQ_EVALUATION';
+  if (/install/.test(t)) return 'INSTALLATION_SERVICE';
+  return null;
+}
+
+function _extractTextExclusions(text) {
+  const exclusions = [];
+  if (!text) return exclusions;
+  const re = new RegExp(NEGATED_OP_TARGET_RE.source, 'gi');
+  let match;
+  while ((match = re.exec(text)) !== null) {
+    const operation = _mapNegatedTargetToOperation(match[1]);
+    exclusions.push({
+      source: 'QUERY_TEXT',
+      operation,
+      rawText: match[0].trim(),
+      requirementId: null,
+      excludedSku: null,
+      excludedCategory: null
+    });
+  }
+  return exclusions;
+}
+
+function _extractAccountingExclusions(accounting) {
+  const records = Array.isArray(accounting?.records) ? accounting.records : [];
+  const out = [];
+  for (const rec of records) {
+    if (!rec || rec.hardness !== 'EXCLUSION') continue;
+    const metrics = Array.isArray(rec.extractedMetrics) ? rec.extractedMetrics : [];
+    const skuMetric = metrics.find(m => m.metric === 'excludedSku');
+    const catMetric = metrics.find(m => m.metric === 'excludedCategory');
+    const textMatch = new RegExp(NEGATED_OP_TARGET_RE.source, 'i').exec(String(rec.rawText || ''));
+    const operation = textMatch ? _mapNegatedTargetToOperation(textMatch[1]) : _mapNegatedTargetToOperation(catMetric?.value || rec.rawText);
+    out.push({
+      source: 'REQUIREMENT_ACCOUNTING',
+      operation,
+      rawText: String(rec.rawText || ''),
+      requirementId: rec.id || null,
+      excludedSku: skuMetric?.value || null,
+      excludedCategory: catMetric?.value || null
+    });
+  }
+  return out;
+}
+
+function _collectExclusions(text, context, questionStyle) {
+  const textExclusions = questionStyle ? [] : _extractTextExclusions(text);
+  const accountingExclusions = _extractAccountingExclusions(context.requirementAccounting);
+  const explicit = Array.isArray(context.exclusions)
+    ? context.exclusions.map(item => (typeof item === 'string'
+      ? { source: 'CONTEXT', operation: item, rawText: item, requirementId: null, excludedSku: null, excludedCategory: null }
+      : { source: 'CONTEXT', operation: item?.operation || null, rawText: String(item?.rawText || ''), requirementId: item?.requirementId || null, excludedSku: item?.excludedSku || null, excludedCategory: item?.excludedCategory || null }))
+    : [];
+  return [...textExclusions, ...accountingExclusions, ...explicit];
+}
+
+function _textOperationPosition(text, intent) {
+  const rule = INTENT_RULES.find(r => r.intent === intent);
+  if (!rule?.pattern || !text) return null;
+  const m = rule.pattern.exec(text);
+  return m ? m.index : null;
+}
+
+function _buildOrderedOperations(text, declared, resolution, modality, exclusions) {
+  const excludedOps = new Set(exclusions.map(e => e.operation).filter(Boolean));
+  const pool = unique([
+    ...(modality.inspectionRequired || modality.requestedOcr ? ['OCR_QUOTE_INGESTION'] : []),
+    ...(resolution.objective ? [resolution.objective] : []),
+    ...declared
+  ]).filter(op => op && !excludedOps.has(op));
+
+  const entries = pool.map((intent, idx) => {
+    const pos = _textOperationPosition(text, intent);
+    const isOcrIntake = intent === 'OCR_QUOTE_INGESTION';
+    const orderRank = isOcrIntake && pos === null ? -1 : (pos !== null ? pos : 100000 + idx);
+    return { intent, role: roleOf(intent) || 'OBJECTIVE', orderRank, source: pos !== null ? 'TEXT_ORDER' : 'INFERRED_PIPELINE_ORDER' };
+  });
+  entries.sort((a, b) => a.orderRank - b.orderRank);
+  return entries.map((entry, idx) => ({
+    sequence: idx + 1,
+    operation: entry.intent,
+    role: entry.role,
+    source: entry.source
+  }));
+}
 
 function inputModality(text, context, requested) {
   const supplied = context.filePath || context.file || '';
@@ -82,12 +177,18 @@ function planPresalesQuery(queryText = '', context = {}) {
   const ambiguities = clarificationIssues(resolution, context, modality, nodeCounts, invalidNodeCount, text, questionStyle);
   const capabilities = unique([resolution.objective, ...declared].filter(Boolean));
   const transforms = TRANSFORM_ORDER.filter(i => declared.includes(i) && i !== resolution.objective);
+  const exclusions = _collectExclusions(text, context, questionStyle);
+  const orderedOperations = _buildOrderedOperations(text, declared, resolution, modality, exclusions);
+  const requirementRevisionSha256 = typeof context.requirementAccounting?.inputRevisionSha256 === 'string'
+    ? context.requirementAccounting.inputRevisionSha256
+    : null;
   return { schemaVersion: 1, ...PLANNER_POLICY,
     status: ambiguities.length ? 'CLARIFICATION_REQUIRED' : 'PLANNED',
     objective: resolution.objective, objectiveCandidates: resolution.candidates,
     classificationBasis: resolution.basis,
     explicitIntent: context.intent || null, legacyExplicitOverride: LEGACY_EXPLICIT_INTENTS.includes(context.intent),
     inputModality: modality, transforms, requestedCapabilities: capabilities,
+    exclusions, orderedOperations, requirementRevisionSha256,
     scope: { kind: declared.includes('MULTI_CLUSTER_TENDER') ? 'MULTI_GROUP_REQUEST' : /\b(?:compare|comparison)\b.*\b(?:models|platforms|portfolio)\b/i.test(text) ? 'PORTFOLIO_COMPARISON' : 'UNRESOLVED', nodeCounts,
       chassisHint: typeof context.chassisName === 'string' ? context.chassisName : null,
       vendorHint: typeof context.vendor === 'string' ? context.vendor : null, resolutionState: 'NOT_VALIDATED' },

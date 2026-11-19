@@ -20,9 +20,18 @@ test('reasoning_post_analyzer: determines epistemic tiers accurately', () => {
   assert.equal(t1.tier, 'TIER_1_PHYSICAL_SANITY');
   assert.equal(t1.vendorAcceptancePending, true);
 
-  // Tier 2: Document / QuickSpecs grounding with citations
-  const t2 = determineEpistemicTier({
+  // Tier 2: Document / QuickSpecs grounding requires authentic non-empty citations
+  const t2Invalid = determineEpistemicTier({
     notebookLmStatus: { isCloudGrounded: true, citationsCount: 3 }
+  }, { intent: 'BOQ_EVALUATION' });
+  assert.equal(t2Invalid.tier, 'TIER_0_UNTRUSTED_CLAIM');
+
+  const t2 = determineEpistemicTier({
+    notebookLmStatus: {
+      isCloudGrounded: true,
+      citationsCount: 1,
+      citations: [{ sourceId: 'src-qs-1', title: 'HPE DL380 Gen12 QuickSpecs' }]
+    }
   }, { intent: 'BOQ_EVALUATION' });
   assert.equal(t2.tier, 'TIER_2_DOCUMENT_CITATION');
   assert.equal(t2.vendorAcceptancePending, true);

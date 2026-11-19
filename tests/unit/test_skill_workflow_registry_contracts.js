@@ -19,10 +19,29 @@ const descriptor = capabilities => ({ vendorId: 'Vendor X', contractVersion: 1, 
 test('all repository skills have path/export-valid declarations, frozen and unused', () => {
   const result = validateRegistry(root);
   assert.equal(result.valid, true, JSON.stringify(result.issues));
-  assert.equal(result.summary.capabilities, 34);
+  assert.equal(result.summary.capabilities, 39);
   assert.equal(registry.activation, 'UNUSED');
   assert.ok(Object.isFrozen(registry.capabilities[0].entrypoints[0]));
   assert.throws(() => { registry.capabilities[0].intents.push('MUTATION'); }, TypeError);
+
+  const expectedNew = [
+    ['requirements-accounting-skill', 'CUSTOMER', ['boq-eval-skill']],
+    ['claim-evidence-adjudication-skill', 'SHARED', ['output-validation-skill']],
+    ['constraint-diagnosis-skill', 'SHARED', ['self-correction-counterfactual-skill']],
+    ['decision-uncertainty-skill', 'SHARED', ['rfp-sizing-synthesizer']],
+    ['solution-quality-evaluation-skill', 'ENGINEERING', []]
+  ];
+  for (const [id, kind, nextIds] of expectedNew) {
+    const cap = registry.capabilities.find(c => c.capabilityId === id);
+    assert.ok(cap, `Missing capability ${id}`);
+    assert.equal(cap.kind, kind);
+    assert.deepEqual(cap.intents, []);
+    assert.deepEqual(cap.next.map(n => n.capabilityId), nextIds);
+    assert.ok(Object.isFrozen(cap.entrypoints[0]));
+  }
+  const sqe = registry.capabilities.find(c => c.capabilityId === 'solution-quality-evaluation-skill');
+  assert.deepEqual(sqe.vendorScope, ['NOT_APPLICABLE']);
+  assert.deepEqual(sqe.domainScope, ['ENGINEERING']);
 });
 
 test('dangling, self and cyclic dependencies are rejected separately', () => {

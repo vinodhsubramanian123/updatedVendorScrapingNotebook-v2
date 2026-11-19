@@ -178,6 +178,7 @@ or
 
 Before customer presentation or delivery sign-off:
 - **Epistemic Falsification Audit**: Consult [`epistemic-verification-skill`](../epistemic-verification-skill/SKILL.md) to execute rigorous Popperian falsification, negative-path counterexamples, and terminal 9-phase evidence ledger verification ([`evidence_ledger.js`](../../../scripts/lib/system/evidence_ledger.js)).
+- **Requirements, Evidence, Uncertainty & Benchmark Gates**: Enforce hard requirement coverage per [`requirements-accounting-skill`](../requirements-accounting-skill/SKILL.md), independent Tier-1/Tier-2/Tier-3 lane separation and contradiction preservation per [`claim-evidence-adjudication-skill`](../claim-evidence-adjudication-skill/SKILL.md), pre-ranking qualification and null price/lead-time preservation per [`decision-uncertainty-skill`](../decision-uncertainty-skill/SKILL.md), and factual `ENGINEERING` post-analysis verification per [`solution-quality-evaluation-skill`](../solution-quality-evaluation-skill/SKILL.md).
 - **Independent Codex Peer Review**: Consult [`codex-peer-review-skill`](../codex-peer-review-skill/SKILL.md) for asynchronous static peer review and architectural gap analysis.
 - **Macro Lifecycle Orchestration**: Consult [`orchestrator-workflow-skill`](../orchestrator-workflow-skill/SKILL.md) to integrate validation outcomes with the continuous learning loop.
 

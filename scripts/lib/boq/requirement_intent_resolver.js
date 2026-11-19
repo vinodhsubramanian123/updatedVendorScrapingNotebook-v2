@@ -10,6 +10,8 @@
 
 const { cleanBaseSKU, buildCatalogSkuIndex, classifyLifecycleState } = require('../catalog/sku.js');
 const { classifyComponentRole } = require('../catalog/product_meta.js');
+const { extractBudgetConstraint } = require('./requirements/typed_values.js');
+const { extractRequirementRecords } = require('./requirements/requirement_records.js');
 
 const ROLE_PATTERNS = [
   ['Base Chassis', /\b(?:server|chassis|cto|configure.to.order|dl\d{3}a?|alletra|synergy)\b/i],
@@ -182,14 +184,15 @@ function scoreCandidate(candidate, line, suspectedSku, roleInference) {
   };
 }
 
-function extractRequirementIntent(rawLines) {
+function extractRequirementIntent(rawLines, options = {}) {
   const lines = (rawLines || []).map(line => String(line || '').trim()).filter(Boolean);
-  const text = lines.join('\n');
+  const coverLines = (options.coverNoteRecords || []).map(c => String(c?.text || '').trim()).filter(Boolean);
+  const text = [...coverLines, ...lines].join('\n');
   const requestedRoles = Array.from(new Set(rolesFromText(text)));
-  const budgetMatch = text.match(/\b(?:budget|maximum|max|under|upto|up to)\s*(?:of|is|:)?\s*\$?([\d,]+(?:\.\d+)?)\b/i);
+  const budgetConstraint = extractBudgetConstraint(text);
   return {
     requestedRoles,
-    budgetUsd: budgetMatch ? Number(budgetMatch[1].replace(/,/g, '')) : null,
+    budgetUsd: budgetConstraint ? budgetConstraint.budgetUsd : null,
     hasBaseProductSignal: rolesFromText(text).includes('Base Chassis'),
     rawLineCount: lines.length
   };
@@ -319,8 +322,15 @@ function _buildConstructionPlan(missingRoles, candidates, completeRequirement) {
   });
 }
 
-function resolveRequirementIntent({ items = [], unresolvedRequirements = [], rawLines = [], catalogData = null, productConfirmed = false, vendorQualifiedServices = [] } = {}) {
-  const intent = extractRequirementIntent(rawLines);
+function resolveRequirementIntent({ items = [], unresolvedRequirements = [], rawLines = [], coverNoteRecords = [], filePath = null, catalogData = null, productConfirmed = false, vendorQualifiedServices = [] } = {}) {
+  const intent = extractRequirementIntent(rawLines, { coverNoteRecords });
+  const requirementAccounting = extractRequirementRecords({
+    rawLines,
+    coverNoteRecords,
+    unresolvedRequirements,
+    items,
+    file: filePath || null
+  });
   const candidates = flattenCatalog(catalogData);
   const skuIndex = buildCatalogSkuIndex(catalogData);
   const { coveredRoles, unknownItems } = _collectCoveredRolesAndUnknownItems(items, skuIndex);
@@ -338,6 +348,7 @@ function resolveRequirementIntent({ items = [], unresolvedRequirements = [], raw
   const requiresHumanClarification = !productConfirmed || resolutions.some(r => r.status !== 'AUTO_RESOLVED') || (items.length === 0 && missingRoles.length > 0);
   return {
     intent,
+    requirementAccounting,
     supportPolicy: require('./support_policy').resolveSupportPolicy(items),
     resolvedItems,
     resolutions,

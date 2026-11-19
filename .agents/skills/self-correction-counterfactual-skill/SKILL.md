@@ -69,4 +69,6 @@ Every customer deliverable MUST serialize the standardized 5-step numbered reaso
 - [`EvidenceLedger`](../../../scripts/lib/system/evidence_ledger.js) — Tracks `candidateAttempts`, `phaseResolutions`, and `activeRulesReached`.
 - [`generateEvaluationNarrative()`](../../../scripts/lib/boq/eval_output_serializer.js) — Renders the canonical 5-step narrative.
 - [`least-delta-combinator-skill`](../least-delta-combinator-skill/SKILL.md) — Prunes cascading dependency trees.
+- [`constraint-diagnosis-skill`](../constraint-diagnosis-skill/SKILL.md) — Minimal conflicting set extraction (`computeMinimalConflictingSet`), scope-honest `diagnoseInfeasibility`, rollback-safe `executeVerifiedRepairTransaction`, and multi-class blocker reconciliation.
+- [`claim-evidence-adjudication-skill`](../claim-evidence-adjudication-skill/SKILL.md) — Independent evidence lanes and stale receipt invalidation on changed candidate manifests.
 - [Master System Invariants Directory (INV-202, INV-215)](../../../docs/INVARIANTS.md)

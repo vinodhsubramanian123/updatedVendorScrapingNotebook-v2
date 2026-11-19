@@ -110,6 +110,49 @@ const { deliveryFingerprint } = require('../../scripts/lib/boq/solution_evidence
 const { verifyDeliveryAuthorization } = require('../../scripts/lib/contracts/workflow_contract.js');
 const { safeParseEvalResult } = require('../../scripts/lib/system/schemas.js');
 const { spawnObservedChild } = require('../../scripts/lib/system/observed_child_process.js');
+const { projectCustomerDecision, isStrictDocumentReviewVerified } = require('../../scripts/lib/boq/decision_projection.js');
+
+function _projectDecisionSafe(evalObj) {
+  return typeof projectCustomerDecision === 'function' ? projectCustomerDecision(evalObj) : null;
+}
+
+function _isDocReviewVerifiedSafe(docReview) {
+  return typeof isStrictDocumentReviewVerified === 'function' && isStrictDocumentReviewVerified(docReview);
+}
+
+function _withSolutionIntelligence(dataObj) {
+  if (!dataObj || typeof dataObj !== 'object') return dataObj;
+  const projection = _projectDecisionSafe(dataObj);
+  return projection ? { ...dataObj, solutionIntelligence: projection } : dataObj;
+}
+
+function _combineStoredProjectionInput(storedTop, storedEval) {
+  if (!storedTop || storedTop === storedEval) return storedEval;
+  return { ...storedTop, ...storedEval, evalResults: storedEval };
+}
+
+function _isStaleExportDependency(storedTop, storedEval) {
+  return Boolean(storedEval?.dependencyInvalidation?.isStale === true || storedTop?.dependencyInvalidation?.isStale === true);
+}
+
+function _resolveExportDocumentReviewState(storedEval, storedTop = null) {
+  const docReview = storedEval?.ephemeralSourceValidation || storedTop?.ephemeralSourceValidation;
+  if (_isDocReviewVerifiedSafe(docReview)) return 'DOUBLE_CHECK_PASSED';
+  if (docReview && typeof docReview === 'object') {
+    if (docReview.doubleCheckVerdict && docReview.doubleCheckVerdict !== 'DOUBLE_CHECK_PASSED') {
+      return docReview.doubleCheckVerdict;
+    }
+    return 'INCOMPLETE_EVIDENCE';
+  }
+  const offline = Boolean(
+    storedEval?.offlineMode === true ||
+    storedTop?.offlineMode === true ||
+    storedEval?.effectivePolicy?.offline === true ||
+    storedTop?.effectivePolicy?.offline === true ||
+    storedEval?.executionMode === 'OFFLINE_LOCAL_ONLY'
+  );
+  return offline ? 'NOT_RUN_LOCAL_ONLY' : 'UNVERIFIED';
+}
 
 function isServerOffline() {
   if (typeof policyResolver.isServerOffline === 'function') {
@@ -359,6 +402,10 @@ function _extractLineJsonPayload(stdoutBuffer) {
   return null;
 }
 
+function _isEvalTransportSentinelLine(line) {
+  return typeof line === 'string' && line.includes('__EVAL_RESULT_JSON__');
+}
+
 function _parseEvalResultPayload(ipcResultPayload, stdoutBuffer) {
   if (ipcResultPayload) return ipcResultPayload;
   const markerTag = '__EVAL_RESULT_JSON__';
@@ -370,50 +417,52 @@ function _parseEvalResultPayload(ipcResultPayload, stdoutBuffer) {
   return _extractStatusJsonPayload(stdoutBuffer) || _extractLineJsonPayload(stdoutBuffer);
 }
 
+function _hasParsedEvalDataPayload(parsedData) {
+  if (!parsedData?.data) return false;
+  if (['SUCCESS', 'ACTION_REQUIRED'].includes(parsedData.status)) return true;
+  return Boolean(parsedData.data.items || parsedData.data.evalResults);
+}
+
+function _buildSchemaInvalidOutcomeEvent(parsedData, validated, runId) {
+  const issues = validated.errors || validated.error?.issues;
+  return {
+    type: 'EVAL_RESULT',
+    status: 'SCHEMA_INVALID',
+    customerDisposition: 'DELIVERY_BLOCKED_UNBUILDABLE',
+    error: {
+      code: 'SCHEMA_VALIDATION_FAILED',
+      message: 'Evaluator output failed runtime schema contract validation',
+      issues,
+      runId
+    },
+    data: {
+      ...parsedData.data,
+      isContractInvalid: true,
+      schemaErrors: issues,
+      customerDisposition: 'DELIVERY_BLOCKED_UNBUILDABLE'
+    },
+    runId
+  };
+}
+
 function _publishClosedEvalOutcome({ parsedData, cancelled, lastErrorMessage, runId, publishEvaluation }) {
   if (cancelled) {
-    publishEvaluation({
-      type: 'EVAL_RESULT',
-      status: 'CANCELLED',
-      error: { status: 'CANCELLED', message: 'Evaluation cancelled by user' },
-      runId
-    });
+    publishEvaluation({ type: 'EVAL_RESULT', status: 'CANCELLED', error: { status: 'CANCELLED', message: 'Evaluation cancelled by user' }, runId });
     return;
   }
-  if (parsedData?.data && (['SUCCESS', 'ACTION_REQUIRED'].includes(parsedData.status) || parsedData.data.items || parsedData.data.evalResults)) {
+  if (_hasParsedEvalDataPayload(parsedData)) {
     const validated = safeParseEvalResult(parsedData.data);
-    if (validated.success) {
-      const blocked = validated.data.customerDisposition === 'DELIVERY_BLOCKED_UNBUILDABLE' ||
-        validated.data.evalResults?.customerDisposition === 'DELIVERY_BLOCKED_UNBUILDABLE';
-      const resultStatus = blocked && parsedData.status !== 'ERROR' ? 'ACTION_REQUIRED' : parsedData.status || validated.data.status;
-      publishEvaluation({ type: 'EVAL_RESULT', data: { ...validated.data, status: resultStatus }, runId });
+    if (!validated.success) {
+      publishEvaluation(_buildSchemaInvalidOutcomeEvent(parsedData, validated, runId));
       return;
     }
-    publishEvaluation({
-      type: 'EVAL_RESULT',
-      status: 'SCHEMA_INVALID',
-      customerDisposition: 'DELIVERY_BLOCKED_UNBUILDABLE',
-      error: {
-        code: 'SCHEMA_VALIDATION_FAILED',
-        message: 'Evaluator output failed runtime schema contract validation',
-        issues: validated.errors || validated.error?.issues,
-        runId
-      },
-      data: {
-        ...parsedData.data,
-        isContractInvalid: true,
-        schemaErrors: validated.errors || validated.error?.issues,
-        customerDisposition: 'DELIVERY_BLOCKED_UNBUILDABLE'
-      },
-      runId
-    });
+    const blocked = validated.data.customerDisposition === 'DELIVERY_BLOCKED_UNBUILDABLE' ||
+      validated.data.evalResults?.customerDisposition === 'DELIVERY_BLOCKED_UNBUILDABLE';
+    const resultStatus = blocked && parsedData.status !== 'ERROR' ? 'ACTION_REQUIRED' : (parsedData.status || validated.data.status);
+    publishEvaluation({ type: 'EVAL_RESULT', data: _withSolutionIntelligence({ ...validated.data, status: resultStatus }), runId });
     return;
   }
-  if (parsedData) {
-    publishEvaluation({ type: 'EVAL_RESULT', error: parsedData, runId });
-  } else {
-    publishEvaluation({ type: 'EVAL_RESULT', error: lastErrorMessage || 'Failed to parse evaluator JSON', runId });
-  }
+  publishEvaluation({ type: 'EVAL_RESULT', error: parsedData || lastErrorMessage || 'Failed to parse evaluator JSON', runId });
 }
 
 router.post('/eval-boq', (req, res) => {
@@ -560,7 +609,7 @@ router.post('/eval-boq', (req, res) => {
     const lines = fullStr.split('\n');
     lineBuffers[streamType] = lines.pop() || '';
     lines.forEach(line => {
-      if (!line.trim()) return;
+      if (!line.trim() || _isEvalTransportSentinelLine(line)) return;
       if (logs.length >= 5000) logs.shift();
       logs.push({ timestamp: new Date().toISOString(), stream: streamType, text: line });
       try {
@@ -596,7 +645,7 @@ router.post('/eval-boq', (req, res) => {
     completed = true;
 
     ['stdout', 'stderr'].forEach(st => {
-      if (lineBuffers[st]?.trim()) {
+      if (lineBuffers[st]?.trim() && !_isEvalTransportSentinelLine(lineBuffers[st])) {
         logs.push({ timestamp: new Date().toISOString(), stream: st, text: lineBuffers[st] });
         broadcastSSE({ type: 'LOG', text: lineBuffers[st], stream: st, runId });
       }
@@ -783,6 +832,15 @@ router.post(['/export-boq', '/export-boq-xlsx'], (req, res) => {
     return sendErrorResponse(res, 409, 'Export blocked: Stored run has no completed evaluation candidate', { source: 'EVALUATION_ROUTER', code: 'CANDIDATE_MISSING', runId: requestedRunId });
   }
 
+  if (_isStaleExportDependency(storedTop, storedEval)) {
+    return sendErrorResponse(
+      res,
+      409,
+      'Export blocked: Evaluation dependencies are stale or invalidated. Re-evaluate the BOQ before customer export.',
+      { source: 'EVALUATION_ROUTER', code: 'STALE_INVALIDATED_DEPENDENCY', runId: requestedRunId }
+    );
+  }
+
   const storedProduct = storedEval.chassis || storedTop?.chassisPrefix || (storedTop?.chassisDir ? path.basename(storedTop.chassisDir) : '') || serverRun.product || 'unknown';
   const requestedChassis = body.chassisId || actualClientEval.chassis || actualClientEval.chassisVariant || actualClientEval.model || '';
   if (!_isMatchingExportProduct(requestedChassis, storedTop, storedEval, serverRun)) {
@@ -828,9 +886,11 @@ router.post(['/export-boq', '/export-boq-xlsx'], (req, res) => {
   }
 
   const { candidateSha256, workbookSha256 } = _buildCandidateAndWorkbookDigests(requestedRunId, authCheck.authChassis, tier, candidateItems, exportPath);
-  const reviewState = storedEval.ephemeralSourceValidation?.doubleCheckVerdict || (storedEval.ephemeralSourceValidation?.success ? 'VERIFIED' : 'UNVERIFIED');
+  const reviewState = _resolveExportDocumentReviewState(storedEval, storedTop);
+  const combinedProjectionInput = _combineStoredProjectionInput(storedTop, storedEval);
+  const solutionIntelligence = _projectDecisionSafe(combinedProjectionInput);
   const evidenceState = {
-    vendorAcceptance: storedEval.portalValidationStatus || 'PORTAL_VALIDATION_PENDING',
+    vendorAcceptance: storedEval.portalValidationStatus || storedTop?.portalValidationStatus || 'PORTAL_VALIDATION_PENDING',
     candidateDocumentReview: reviewState,
     deliveryAuthorization: 'AUTHORIZED',
     deliveryTokenPrefix: String(authCheck.storedAuth.token).slice(0, 22)
@@ -872,7 +932,8 @@ router.post(['/export-boq', '/export-boq-xlsx'], (req, res) => {
     exportedAt: metadata.exportedAt,
     candidateSha256,
     workbookSha256,
-    evidenceState
+    evidenceState,
+    ...(solutionIntelligence ? { solutionIntelligence } : {})
   });
 });
 
@@ -978,7 +1039,7 @@ router.post('/recompute-matrix', (req, res) => {
     let safeChassisDir;
     try { safeChassisDir = resolveRecomputeProduct(evalData, chassisDir); }
     catch (err) { return sendErrorResponse(res, err.status || 403, err, { source: 'EVALUATION_ROUTER' }); }
-    const updatedData = recomputeStrategyMatrixWithRag(evalData, ragResult, safeChassisDir);
+    const updatedData = _withSolutionIntelligence(recomputeStrategyMatrixWithRag(evalData, ragResult, safeChassisDir));
     broadcastSSE({ type: 'EVAL_RESULT_UPDATED', data: updatedData, runId, inputDescriptor: stored.inputDescriptor });
     res.json({ success: true, data: updatedData });
   } catch (err) {

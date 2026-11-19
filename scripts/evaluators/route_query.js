@@ -2434,6 +2434,14 @@ function _attachQueryPlanIfAvailable(envelope, queryText, context) {
     const { planPresalesQuery } = require('../lib/boq/presales_query_planner.js');
     if (typeof planPresalesQuery === 'function') {
       const plan = planPresalesQuery(queryText, context);
+      try {
+        const { buildCompoundExecutionPlan } = require('../lib/boq/compound_execution.js');
+        if (typeof buildCompoundExecutionPlan === 'function') {
+          plan.compoundExecutionPlan = buildCompoundExecutionPlan(plan, context, {
+            requirementAccounting: context?.requirementAccounting || envelope?.result?.requirementAccounting || null
+          });
+        }
+      } catch { /* non-blocking if compound planner fails on malformed inputs */ }
       Object.defineProperty(envelope, 'queryPlan', {
         value: plan,
         enumerable: Boolean(context.includeQueryPlan),

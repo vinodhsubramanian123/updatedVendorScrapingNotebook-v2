@@ -41,6 +41,8 @@ const { extractKnowledgeFromRagAnswer } = require('../notebook/knowledge_extract
 const { executeNotebookQuery, getCachedRagResult, setCachedRagResult, getNotebookConfigEntry, getAuthoritativeSourceIds } = require('../notebook/notebook_query_utils.js');
 const logger = require('../system/pipeline_logger.js');
 const { solutionFingerprint, solutionManifest, candidateReviewCurrent } = require('../boq/solution_evidence');
+const { buildEphemeralValidationEvidence, buildIndependentEvidenceStates } = require('../boq/evidence/claim_records.js');
+const { adjudicateSolutionClaims } = require('../boq/evidence/source_adjudicator.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
 const CONFIG_NOTEBOOKS = path.join(PROJECT_ROOT, 'scripts', 'config', 'notebooks.json');
@@ -536,6 +538,47 @@ function _determineEphemeralValidationStatus(rankVerdicts, isCloudGrounded, sour
   return { doubleCheckVerdict, isRealCloudCertified, isSimulationPassed, operationalStatus };
 }
 
+function _attachEvidenceSidecar(result, evalResults, trustEntry, options, reviewCurrent) {
+  const { claims, evidenceRecords, context } = buildEphemeralValidationEvidence(evalResults, result, {
+    ...options,
+    quarantinedSourceIds: trustEntry?.quarantinedSourceIds || []
+  });
+  const claimAdjudication = adjudicateSolutionClaims(claims, evidenceRecords, context);
+  const evidenceStates = buildIndependentEvidenceStates({
+    evalResults,
+    ephemeralReview: result,
+    claimAdjudication,
+    trustEntry,
+    candidateReviewIsCurrent: reviewCurrent,
+    isMock: Boolean(result.attachment?.isMock || result.simulationPassed || options.isMock),
+    isOffline: Boolean(options.offline || options.OFFLINE_MODE)
+  });
+  return { ...result, claimAdjudication, evidenceStates };
+}
+
+function _hydrateCachedValidation(cachedHit, evalResults, trustEntry, options) {
+  if (cachedHit.claimAdjudication && cachedHit.evidenceStates) return cachedHit;
+  const cachedReviewCurrent = cachedHit.success === true && candidateReviewCurrent({ ...evalResults, ephemeralSourceValidation: cachedHit });
+  return _attachEvidenceSidecar(cachedHit, evalResults, trustEntry, options, cachedReviewCurrent);
+}
+
+function _finalizeValidationOutcome(result, evalResults, trustEntry, options, manifestSha256, cacheKey, isSimulationPassed) {
+  let reviewCurrent = false;
+  if (result.success) {
+    reviewCurrent = candidateReviewCurrent({ ...evalResults, ephemeralSourceValidation: result });
+    if (!reviewCurrent) {
+      result.success = false;
+      result.operationalStatus = 'UNVERIFIED';
+      result.doubleCheckVerdict = 'DOUBLE_CHECK_UNVERIFIED';
+    }
+  }
+  const enrichedResult = _attachEvidenceSidecar(result, evalResults, trustEntry, options, reviewCurrent);
+  if (manifestSha256 && (enrichedResult.success || isSimulationPassed)) {
+    setCachedRagResult(cacheKey, enrichedResult);
+  }
+  return enrichedResult;
+}
+
 async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
   const { chassisName, notebookId } = _checkValidationPreconditions(evalResults, options);
   const timestamp = Date.now();
@@ -548,9 +591,7 @@ async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
   const cacheKey = `solution_validator:v2:${manifestSha256}:${notebookId}:${modeTag}:${JSON.stringify(trustEntry)}`;
 
   const cachedHit = _checkValidationCache(evalResults, options, manifestSha256, notebookId, chassisName, cacheKey, isMock);
-  if (cachedHit) {
-    return cachedHit;
-  }
+  if (cachedHit) return _hydrateCachedValidation(cachedHit, evalResults, trustEntry, options);
 
   const sourceTitle = `Solution_BOM_${chassisName}_${timestamp}`;
   const queryPayload = `${buildSolutionSourceValidationPrompt(sourceTitle, chassisName)}\nUse NotebookLM native inline citation markers such as [1] inside the JSON citation strings, linked to official vendor sources. Plain source titles without native citations are insufficient. Do not cite the temporary candidate source as compatibility evidence.\nUnverified customer baseline (evaluation input, not authority): ${JSON.stringify((evalResults.items || []).map(item => ({ sku: item.sku, quantity: item.quantity, description: item.description, purpose: item.purpose })))}\nCandidate manifests: ${JSON.stringify(manifest)}\nExplicit support policy: ${JSON.stringify(evalResults.supportPolicy || null)}`;
@@ -570,7 +611,6 @@ async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
 
   const { ragAnswer, citations, isCloudGrounded, queryRecovery } = queryOutcome;
   const extractedDeltas = _extractEphemeralValidationDeltas(ragAnswer, isCloudGrounded, options, chassisName);
-  const syncStatus = { status: 'DEFERRED_TO_EVALUATION', persistedLearnings: false };
   const rankVerdicts = parseRankVerdicts(ragAnswer, evalResults);
   const { doubleCheckVerdict, isRealCloudCertified, isSimulationPassed, operationalStatus } =
     _determineEphemeralValidationStatus(rankVerdicts, isCloudGrounded, sourceDetached, attachRes);
@@ -601,20 +641,11 @@ async function validateSolutionWithEphemeralSource(evalResults, options = {}) {
     authoritativeSourceIds,
     authoritativeScopeSha256: require('crypto').createHash('sha256').update(require('../boq/solution_evidence.js').canonicalJson(trustEntry)).digest('hex'),
     extractedDeltas,
-    syncStatus,
+    syncStatus: { status: 'DEFERRED_TO_EVALUATION', persistedLearnings: false },
     isCached: false
   };
 
-  if (result.success && !candidateReviewCurrent({ ...evalResults, ephemeralSourceValidation: result })) {
-    result.success = false;
-    result.operationalStatus = 'UNVERIFIED';
-    result.doubleCheckVerdict = 'DOUBLE_CHECK_UNVERIFIED';
-  }
-  if (manifestSha256 && (result.success || isSimulationPassed)) {
-    setCachedRagResult(cacheKey, result);
-  }
-
-  return result;
+  return _finalizeValidationOutcome(result, evalResults, trustEntry, options, manifestSha256, cacheKey, isSimulationPassed);
 }
 
 module.exports = {

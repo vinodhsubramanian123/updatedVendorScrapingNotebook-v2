@@ -113,6 +113,21 @@ function canonicalReviewEnvelope(evaluation, catalogData = null) {
     selectorsByConfiguration: ev.selectorsByConfiguration || null,
     supportPolicy: ev.supportPolicy || null,
     requirements: ev.requirementResolution || null,
+    ...(ev.requirementAccounting ? {
+      requirementAccounting: {
+        inputRevisionSha256: ev.requirementAccounting.inputRevisionSha256 || null,
+        normalizedClauses: ev.requirementAccounting.normalizedClauses || []
+      }
+    } : {}),
+    ...(ev.dependencyInvalidation ? {
+      dependencyInvalidation: {
+        isStale: Boolean(ev.dependencyInvalidation.isStale),
+        indexRevisionSha256: ev.dependencyInvalidation.indexRevisionSha256 || null
+      }
+    } : {}),
+    ...(ev.claimAdjudication?.evidenceDigestSha256 ? {
+      evidenceDigestSha256: ev.claimAdjudication.evidenceDigestSha256
+    } : {}),
     configurationContext: ev.configurationContext || null,
     clusters: ev.clusters || null,
     multiplier: ev.multiplier ?? null,
@@ -136,6 +151,9 @@ function solutionFingerprint(evaluation, catalogData = null) {
 function deliveryFingerprint(evaluation) {
   const ev = evaluation && typeof evaluation === 'object' ? evaluation : {};
   const graph = ev.conflictGraph || {};
+  const evidenceDigestSha256 = ev.claimAdjudication?.evidenceDigestSha256 ||
+    ev.ephemeralSourceValidation?.claimAdjudication?.evidenceDigestSha256 ||
+    null;
   const content = {
     chassis: ev.chassis || ev.chassisVariant || ev.targetChassis || ev.detectedChassis || null,
     productType: ev.productType,
@@ -150,6 +168,28 @@ function deliveryFingerprint(evaluation) {
     clusterSizing: ev.clusterSizing,
     serverCount: ev.serverCount,
     requirements: ev.requirementResolution,
+    ...(ev.requirementAccounting ? {
+      requirementAccounting: {
+        inputRevisionSha256: ev.requirementAccounting.inputRevisionSha256 || null,
+        normalizedClauses: ev.requirementAccounting.normalizedClauses || []
+      }
+    } : {}),
+    ...(ev.dependencyInvalidation ? {
+      dependencyInvalidation: {
+        isStale: Boolean(ev.dependencyInvalidation.isStale),
+        indexRevisionSha256: ev.dependencyInvalidation.indexRevisionSha256 || null
+      }
+    } : {}),
+    ...(ev.solutionIntelligence ? {
+      solutionIntelligence: {
+        schemaVersion: ev.solutionIntelligence.schemaVersion || '1.0',
+        disposition: ev.solutionIntelligence.outcome?.disposition || null,
+        omittedClausesCount: ev.solutionIntelligence.requirementCoverage?.omittedClausesCount ?? null,
+        violatedHardCount: ev.solutionIntelligence.requirementCoverage?.violatedHardCount ?? null,
+        unresolvedHardCount: ev.solutionIntelligence.requirementCoverage?.unresolvedHardCount ?? null
+      }
+    } : {}),
+    ...(evidenceDigestSha256 ? { evidenceDigestSha256 } : {}),
     selectors: ev.selectors,
     selectorsByConfiguration: ev.selectorsByConfiguration,
     supportPolicy: ev.supportPolicy,

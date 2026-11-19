@@ -3,6 +3,11 @@
 const fs = require('fs');
 const path = require('path');
 const { cleanBaseSKU } = require('../catalog/sku');
+const {
+  executeVerifiedRepairTransaction,
+  executeRepairSession,
+  reconcileBlockers
+} = require('../conflict/repair_transactions.js');
 const normalize = value => String(value || '').toLowerCase().replace(/[^a-z0-9]/g, '');
 const positive = value => typeof value === 'number' && Number.isFinite(value) && value > 0;
 
@@ -88,12 +93,36 @@ function _filterPsuCandidates(candidates, power) {
   });
 }
 
+function _resolvePowerRequirement(power) {
+  if (positive(power.requiredWattageWithHeadroom)) {
+    return {
+      required: power.requiredWattageWithHeadroom,
+      headroomAssumed: false,
+      headroomPolicy: power.headroomPolicy || 'VALIDATOR_SUPPLIED',
+      disclosure: ''
+    };
+  }
+  if (!positive(power.estimatedNodeWattage)) {
+    return { required: null, headroomAssumed: false, headroomPolicy: null, disclosure: '' };
+  }
+  const hasExplicitFactor = typeof power.headroomFactor === 'number' && Number.isFinite(power.headroomFactor) && power.headroomFactor > 0;
+  const factor = hasExplicitFactor ? power.headroomFactor : 0.2;
+  const assumed = !hasExplicitFactor;
+  const pct = Math.round(factor * 100);
+  return {
+    required: Math.ceil(power.estimatedNodeWattage * (1 + factor)),
+    headroomAssumed: assumed,
+    headroomPolicy: assumed ? 'ASSUMED_20_PCT_FALLBACK' : (power.headroomPolicy || `${pct}%_FACTOR`),
+    disclosure: assumed ? ' (assuming 20% headroom; validator requiredWattageWithHeadroom not supplied)' : ''
+  };
+}
+
 function powerRepair(power, scope, count, errors, proofs) {
   const missing = power.hasZeroPsus || power.psuCount === 0 && !power.hasIntegratedPower;
   if (!missing && !power.hasPsuWattageDeficit && !power.hasPsuHeadroomDeficit && !errors.some(e => /psu.*wattage|power.*headroom/i.test(e))) return;
   const type = missing ? 'POWER_PSU_MISSING' : 'POWER_WATTAGE_DEFICIT';
-  const required = positive(power.requiredWattageWithHeadroom) ? power.requiredWattageWithHeadroom :
-    positive(power.estimatedNodeWattage) ? Math.ceil(power.estimatedNodeWattage * 1.2) : null;
+  const reqInfo = _resolvePowerRequirement(power);
+  const required = reqInfo.required;
   if (!required) { proofs.push(unresolved(type, 'Node power requirement is unknown.')); return; }
   const allCandidates = matching(scope, /power suppl/i).map(row => ({ ...row,
     watts: Number(row.wattage || row.watts || row.description.match(/\b(\d+)\s*W\b/i)?.[1])
@@ -107,12 +136,18 @@ function powerRepair(power, scope, count, errors, proofs) {
   const feasible = candidates.filter(row => row.watts >= required);
   if (!feasible.length) {
     const max = Math.max(...candidates.map(row => row.watts));
-    proofs.push({ ...unresolved(type, `${max}W >= ${required}W fails; ${required - max}W deficit remains in available catalog candidates.`), resultingStatus: 'REPAIR_INFEASIBLE' });
+    const infeasibleProof = { ...unresolved(type, `${max}W >= ${required}W fails; ${required - max}W deficit remains in available catalog candidates.${reqInfo.disclosure}`), resultingStatus: 'REPAIR_INFEASIBLE' };
+    infeasibleProof.headroomAssumed = reqInfo.headroomAssumed;
+    infeasibleProof.headroomPolicy = reqInfo.headroomPolicy;
+    proofs.push(infeasibleProof);
     return;
   }
   const target = feasible[0];
   const quantity = missing ? (Number.isSafeInteger(count) && count > 0 ? count * 2 : null) : power.psuCount;
-  proofs.push(proposal(type, `${target.watts}W >= ${required}W for the proposed 1+1 power topology.`, [target], quantity, missing ? 'ADD' : 'SUBSTITUTE', scope));
+  const built = proposal(type, `${target.watts}W >= ${required}W for the proposed 1+1 power topology.${reqInfo.disclosure}`, [target], quantity, missing ? 'ADD' : 'SUBSTITUTE', scope);
+  built.headroomAssumed = reqInfo.headroomAssumed;
+  built.headroomPolicy = reqInfo.headroomPolicy;
+  proofs.push(built);
 }
 
 function thermalRepairs(compute, scope, count, errors, proofs) {
@@ -163,13 +198,27 @@ function otherRepairs(aspects, errors, proofs) {
 
 function supportRepair(support, scope, count, requirements, errors, proofs) {
   if (support.hasSupportService !== false && !support.needsSupportService && !errors.some(e => /tech care|pointnext.*support/i.test(e))) return;
-  const level = String(requirements.supportSla || requirements.serviceLevel || requirements.supportLevel || 'Basic');
+  const rawLevel = requirements.supportSla || requirements.serviceLevel || requirements.supportLevel;
+  const hasExplicitLevel = Boolean(rawLevel);
+  const hasExplicitYears = requirements.supportYears != null;
+  if (!hasExplicitLevel && !hasExplicitYears) {
+    proofs.push(unresolved('SUPPORT_SERVICE_MISSING', 'Required support SLA level and duration were not supplied in customer requirements.'));
+    return;
+  }
+  const level = String(rawLevel || 'Basic');
   const years = requirements.supportYears ?? 3;
   const candidates = matching(scope, /tech care/i).filter(row => {
     const desc = row.description.toLowerCase();
     return desc.includes(level.toLowerCase()) && Number(desc.match(/\b(\d+)\s*(?:year|yr)\b/i)?.[1]) === years;
   });
-  proofs.push(proposal('SUPPORT_SERVICE_MISSING', `Select product-qualified ${years}-year ${level} support for each owning component.`, candidates, count, 'ADD', scope));
+  const assumedParts = [];
+  if (!hasExplicitYears) assumedParts.push('assumedTermYears=3 (unspecified)');
+  if (!hasExplicitLevel) assumedParts.push('assumedServiceLevel=Basic (unspecified)');
+  const assumptionNote = assumedParts.length > 0 ? ` [${assumedParts.join(', ')}]` : '';
+  const result = proposal('SUPPORT_SERVICE_MISSING', `Select product-qualified ${years}-year ${level} support for each owning component.${assumptionNote}`, candidates, count, 'ADD', scope);
+  if (!hasExplicitYears) result.assumedTermYears = 3;
+  if (!hasExplicitLevel) result.assumedServiceLevel = 'Basic';
+  proofs.push(result);
 }
 
 function blockerProposal(blocker, index) {
@@ -208,4 +257,17 @@ function generateCounterfactualRepairProofs(evalResults = {}, options = {}) {
   if (acceptance.blockersCount > blockers.length) proofs.push(unresolved('BLOCKER_DETAILS_MISSING', `${acceptance.blockersCount - blockers.length} acceptance blocker details are missing.`, 'GENERAL_BLOCKER'));
   return proofs;
 }
-module.exports = { generateCounterfactualRepairProofs };
+function reconcileProofsAndBlockers(evalResults = {}, options = {}, blockerContext = {}) {
+  const proofs = generateCounterfactualRepairProofs(evalResults, options);
+  const gateBlockers = Array.isArray(evalResults?.acceptanceGate?.blockers) ? evalResults.acceptanceGate.blockers : [];
+  const combined = [...proofs, ...gateBlockers];
+  return { proofs, reconciliation: reconcileBlockers(combined, blockerContext) };
+}
+
+module.exports = {
+  generateCounterfactualRepairProofs,
+  reconcileProofsAndBlockers,
+  executeVerifiedRepairTransaction,
+  executeRepairSession,
+  reconcileBlockers
+};

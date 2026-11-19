@@ -201,3 +201,8 @@ For server, storage and networking solutions, attempt **3-year HPE Tech Care Bas
 ### Sizing-to-Matrix Scope Continuity (`INV-235`)
 
 When a freeform RFP sizing synthesis routes into the BOQ evaluation matrix (`PresalesRequestPanel.jsx` -> `scripts/evaluators/route_query.js` -> `scripts/evaluators/eval_boq.js` -> `scripts/lib/boq/eval_output_serializer.js` -> `scripts/lib/boq/boq_evaluator.js` and `dashboard/routes/evaluation.cjs`), the pipeline MUST preserve the originating sizing context end-to-end: resolved `product`, `nodeCount`, `quantityBasis`, `parentRunId`, and component ownership metadata. Header product selector switches on the dashboard MUST NOT overwrite or orphan an active sizing result's target platform or node multiplicity when sending the candidate BOM to evaluation.
+
+### Related Requirement & Uncertainty Skills
+- Comply with [Normative Language Standard](../../rules/normative_language.md).
+- [`requirements-accounting-skill`](../requirements-accounting-skill/SKILL.md) — Extract typed `RequirementRecord[]` clauses and evaluate candidate requirement coverage (`SATISFIED`, `VIOLATED`, `UNRESOLVED`) before synthesis sign-off.
+- [`decision-uncertainty-skill`](../decision-uncertainty-skill/SKILL.md) — Refuse unprofiled workload extrapolation, emit `SIZING_DRAFT_SCENARIO_RANGE` when critical inputs are absent, and execute `qualifyCandidatesBeforeRanking` before ranking.

@@ -43,7 +43,7 @@ Activate this skill whenever:
 
 - **Execution Phase**: **Phase 1 (Intent & Workload Profiling)** and **Phase 2 (Contested Resource Arbitration)**.
 - **Upstream Trigger**: Receives application specs from [`presales-query-router`](../presales-query-router/SKILL.md) or raw item lists from [`boq-eval-skill`](../boq-eval-skill/SKILL.md).
-- **Downstream Handoff**: Feeds optimized hardware role constraints to [`rfp-sizing-synthesizer`](../rfp-sizing-synthesizer/SKILL.md) and [`value-engineering-skill`](../value-engineering-skill/SKILL.md).
+- **Downstream Handoff**: Feeds optimized hardware role constraints to [`rfp-sizing-synthesizer`](../rfp-sizing-synthesizer/SKILL.md) and [`value-engineering-skill`](../value-engineering-skill/SKILL.md), routes incomplete or unprofiled workload demand through [`decision-uncertainty-skill`](../decision-uncertainty-skill/SKILL.md), and routes typed slot/hardware constraint failures through [`constraint-diagnosis-skill`](../constraint-diagnosis-skill/SKILL.md).
 
 ---
 

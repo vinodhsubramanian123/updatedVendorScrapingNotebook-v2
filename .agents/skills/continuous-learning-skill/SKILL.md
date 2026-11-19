@@ -113,6 +113,8 @@ Sheet 1 (`Executive Summary & Aspects`) must include the **Dual-Brain & Notebook
 - [least-delta-combinator-skill](../least-delta-combinator-skill/SKILL.md) — Troublesome SKU pruning and modernization
 - [catalog-intelligence-skill](../catalog-intelligence-skill/SKILL.md) — Price trails and lifecycle state changes
 - [workbook-generator-skill](../workbook-generator-skill/SKILL.md) — 12-column multi-rank solution deliverable generator
+- [claim-evidence-adjudication-skill](../claim-evidence-adjudication-skill/SKILL.md) — Independent evidence lanes, stale-dependency boundaries, and exclusion of `UNTRUSTED_INPUT`, `MODEL_PROPOSAL`, and self-citations from promotion
+- [solution-quality-evaluation-skill](../solution-quality-evaluation-skill/SKILL.md) — Held-out benchmark scoring and factual post-analysis verification
 
 
 ### Registry and evidence continuity (2026-09-22)

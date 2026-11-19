@@ -84,7 +84,7 @@ test('DecisionTrace — Accumulates multiple decisions', () => {
   assert.strictEqual(all[2].decisionPoint, 'DECISION_C');
 });
 
-test('DecisionTrace — Handles empty alternatives gracefully', () => {
+test('DecisionTrace — Handles empty alternatives gracefully with null confidence', () => {
   const ledger = createDecisionTraceLedger();
   const entry = ledger.recordDecision({
     decisionPoint: 'SIMPLE_FIX',
@@ -95,7 +95,20 @@ test('DecisionTrace — Handles empty alternatives gracefully', () => {
   assert.deepStrictEqual(entry.alternativesEvaluated, []);
   assert.strictEqual(entry.selectedAlternative, null);
   assert.deepStrictEqual(entry.downstreamImpact, []);
-  assert.strictEqual(entry.confidence, 1.0);
+  assert.strictEqual(entry.confidence, null);
+
+  const explicitZero = ledger.recordDecision({
+    decisionPoint: 'ZERO_DELTA_CHECK',
+    trigger: 'Verify zero delta vs omitted',
+    alternativesEvaluated: [{ id: 'OPT_A', description: 'Omitted delta' }, { id: 'OPT_B', description: 'Explicit zero', capExDeltaUsd: 0 }],
+    selectedAlternative: { id: 'OPT_B', description: 'Explicit zero', capExDeltaUsd: 0 },
+    confidence: 0
+  });
+  assert.strictEqual(explicitZero.alternativesEvaluated[0].capExDeltaUsd, null);
+  assert.strictEqual(explicitZero.alternativesEvaluated[1].capExDeltaUsd, 0);
+  assert.strictEqual(explicitZero.selectedAlternative.capExDeltaUsd, 0);
+  assert.strictEqual(explicitZero.selectedAlternative.selectionRationale, null);
+  assert.strictEqual(explicitZero.confidence, 0);
 });
 
 test('DecisionTrace — Defaults string fields for null inputs', () => {
@@ -113,10 +126,11 @@ test('DecisionTrace — Defaults string fields for null inputs', () => {
 // toMarkdownSummary
 // ═══════════════════════════════════════════════════════════════════════════════
 
-test('DecisionTrace — Markdown summary for zero decisions', () => {
+test('DecisionTrace — Markdown summary for zero decisions makes no buildability claim', () => {
   const ledger = createDecisionTraceLedger();
   const md = ledger.toMarkdownSummary();
-  assert.ok(md.includes('No alternative substitutions'), 'Should say no substitutions');
+  assert.ok(md.includes('No decision records were logged'), 'Should say no decisions were logged');
+  assert.ok(!/100%\s*buildable/i.test(md), 'Must never claim 100% buildable from empty ledger');
 });
 
 test('DecisionTrace — Markdown summary includes decision point and trigger', () => {

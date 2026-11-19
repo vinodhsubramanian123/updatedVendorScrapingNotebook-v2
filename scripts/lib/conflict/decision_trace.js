@@ -6,6 +6,12 @@
  * during conflict resolution and 5-tier strategy synthesis.
  */
 
+function _parseNullableNumber(value) {
+  if (value === null || value === undefined || value === '') return null;
+  const num = Number(value);
+  return Number.isFinite(num) ? num : null;
+}
+
 class DecisionTraceLedger {
   constructor(sessionId = null) {
     this.sessionId = sessionId || `SESSION-${Date.now()}`;
@@ -30,7 +36,7 @@ class DecisionTraceLedger {
     alternativesEvaluated = [],
     selectedAlternative = null,
     downstreamImpact = [],
-    confidence = 1.0
+    confidence = null
   }) {
     const entry = {
       decisionId: `DEC-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
@@ -41,7 +47,7 @@ class DecisionTraceLedger {
       alternativesEvaluated: alternativesEvaluated.map(alt => ({
         id: alt.id || alt.name || 'OPTION',
         description: alt.description || '',
-        capExDeltaUsd: Number(alt.capExDeltaUsd || 0),
+        capExDeltaUsd: _parseNullableNumber(alt.capExDeltaUsd),
         status: alt.status || (alt.id === selectedAlternative?.id ? 'SELECTED' : 'REJECTED'),
         pros: Array.isArray(alt.pros) ? alt.pros : [],
         cons: Array.isArray(alt.cons) ? alt.cons : [],
@@ -50,11 +56,11 @@ class DecisionTraceLedger {
       selectedAlternative: selectedAlternative ? {
         id: selectedAlternative.id || selectedAlternative.name || 'SELECTED',
         description: selectedAlternative.description || '',
-        capExDeltaUsd: Number(selectedAlternative.capExDeltaUsd || 0),
-        selectionRationale: selectedAlternative.selectionRationale || 'Optimal workload match with minimum disruption'
+        capExDeltaUsd: _parseNullableNumber(selectedAlternative.capExDeltaUsd),
+        selectionRationale: selectedAlternative.selectionRationale ? String(selectedAlternative.selectionRationale) : null
       } : null,
       downstreamImpact: Array.isArray(downstreamImpact) ? downstreamImpact : [],
-      confidence: Number(confidence)
+      confidence: _parseNullableNumber(confidence)
     };
 
     this.decisions.push(entry);
@@ -75,7 +81,7 @@ class DecisionTraceLedger {
    */
   toMarkdownSummary() {
     if (this.decisions.length === 0) {
-      return '> ℹ️ No alternative substitutions were required. Original customer hardware was 100% buildable as drafted.\n';
+      return '> ℹ️ No decision records were logged (no alternative substitutions recorded). Buildability and compliance require separate validation evidence.\n';
     }
 
     let md = `### 🧠 Solution Thinking & Decision Chain (${this.decisions.length} decisions evaluated)\n\n`;
@@ -83,7 +89,10 @@ class DecisionTraceLedger {
       md += `#### 🔹 ${d.decisionPoint}\n`;
       md += `- **Trigger**: ${d.trigger}\n`;
       if (d.selectedAlternative) {
-        md += `- **Winning Choice**: **${d.selectedAlternative.id}** (${d.selectedAlternative.description}) — ${d.selectedAlternative.selectionRationale}\n`;
+        const rationaleSuffix = d.selectedAlternative.selectionRationale
+          ? ` — ${d.selectedAlternative.selectionRationale}`
+          : '';
+        md += `- **Winning Choice**: **${d.selectedAlternative.id}** (${d.selectedAlternative.description})${rationaleSuffix}\n`;
       }
       if (d.alternativesEvaluated.length > 1) {
         md += `- **Rejected Alternatives**:\n`;

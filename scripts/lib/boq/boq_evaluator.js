@@ -22,6 +22,8 @@ const { detectChassisVariant, validateConflictGraph, getChassisMap } = require('
 const { setPhysicalMathValidator } = require('../conflict/strategy_synthesizer.js');
 const { parseSkuLines, isNonBomSheet, isBomSheet } = require('./boq_parser.js');
 const { resolveRequirementIntent } = require('./requirement_intent_resolver.js');
+const { extractRequirementRecords, extractWorkbookCoverNotes } = require('./requirements/requirement_records.js');
+const { attachCandidateDispositions } = require('./requirements/coverage.js');
 const { resolveSolutionTopology, evaluateUnprofiledTopology } = require('./solution_topology');
 const { normalizeConfiguration, applyConfigurationContext } = require('./configuration_context');
 const { evaluateBundleComposition } = require('./bundle_composition');
@@ -92,37 +94,41 @@ function emitProgress(step, total, label, status = 'in_progress', detail = '') {
   }
 }
 
-function _readBoqLinesFromWorkbook(targetPath, targetSheet) {
-  const lines = [];
-  const workbook = xlsx.readFile(targetPath);
-  let sheetNames = [];
+function _selectWorkbookSheetNames(workbook, targetSheet) {
   if (targetSheet) {
-    if (workbook.SheetNames.includes(targetSheet)) {
-      sheetNames = [targetSheet];
-    } else {
-      throw new Error(`Requested sheet "${targetSheet}" not found in workbook.`);
-    }
-  } else {
-    // Prioritize dedicated BOM/Quote sheets if present (INV-63 canonical filter)
-    const preferredSheet = workbook.SheetNames.find(name => isBomSheet(name));
-    if (preferredSheet) {
-      sheetNames = [preferredSheet];
-    } else {
-      // Skip non-BOM documentation / diagnostic sheets using canonical filter (INV-63)
-      const candidateSheets = workbook.SheetNames.filter(name => !isNonBomSheet(name));
-      sheetNames = candidateSheets.length > 0 ? [candidateSheets[0]] : [workbook.SheetNames[0]];
-    }
+    if (workbook.SheetNames.includes(targetSheet)) return [targetSheet];
+    throw new Error(`Requested sheet "${targetSheet}" not found in workbook.`);
   }
+  // Prioritize dedicated BOM/Quote sheets if present (INV-63 canonical filter)
+  const preferredSheet = workbook.SheetNames.find(name => isBomSheet(name));
+  if (preferredSheet) return [preferredSheet];
+  // Skip non-BOM documentation / diagnostic sheets using canonical filter (INV-63)
+  const candidateSheets = workbook.SheetNames.filter(name => !isNonBomSheet(name));
+  return candidateSheets.length > 0 ? [candidateSheets[0]] : [workbook.SheetNames[0]];
+}
+
+function _readWorkbookWithCoverNotes(targetPath, targetSheet) {
+  const lines = [];
+  const coverNoteRecords = [];
+  const workbook = xlsx.readFile(targetPath);
+  const sheetNames = _selectWorkbookSheetNames(workbook, targetSheet);
   sheetNames.forEach(sheetName => {
     const sheet = workbook.Sheets[sheetName];
     const rows = xlsx.utils.sheet_to_json(sheet, { header: 1, defval: '' });
     const headerRow = rows.findIndex(row => row.some(cell => /^(product\s*#|part\s*(?:no\.?|number|#)|sku|skus|option\s*id|item\s*#)$/i.test(String(cell).trim())) && row.some(cell => /^(qty|quantity|product\s*qty)$/i.test(String(cell).trim())));
+    if (headerRow > 0) {
+      coverNoteRecords.push(...extractWorkbookCoverNotes(rows, sheetName, headerRow, targetPath));
+    }
     // Report titles may contain model names resembling orderable SKUs.
     // When a structured BOM header exists, never ingest the cover rows.
     const csvText = xlsx.utils.sheet_to_csv(headerRow >= 0 ? xlsx.utils.aoa_to_sheet(rows.slice(headerRow)) : sheet);
     lines.push(...csvText.split(/\r?\n/));
   });
-  return lines;
+  return { lines, coverNoteRecords };
+}
+
+function _readBoqLinesFromWorkbook(targetPath, targetSheet) {
+  return _readWorkbookWithCoverNotes(targetPath, targetSheet).lines;
 }
 
 function _readBoqLinesFromArray(rawInput) {
@@ -153,7 +159,7 @@ function readBoqLines(rawInput, filePath = '', targetSheet = null) {
     : '';
 
   let lines;
-  if (targetPath && (/\.xlsx?$/i.test(targetPath))) {
+  if (targetPath && /\.xlsx?$/i.test(targetPath) && fs.existsSync(targetPath)) {
     lines = _readBoqLinesFromWorkbook(targetPath, targetSheet);
   } else if (Array.isArray(rawInput)) {
     lines = _readBoqLinesFromArray(rawInput);
@@ -172,23 +178,33 @@ function _normalizeStructuredBoqItem(item) {
   };
 }
 
+function _firstNonEmpty(values, fallback = null) {
+  for (const v of values) {
+    if (v !== undefined && v !== null) return v;
+  }
+  return fallback;
+}
+
 function _buildStructuredBoqResult(parsed) {
-  const jsonItems = Array.isArray(parsed)
-    ? parsed
-    : (Array.isArray(parsed?.items) ? parsed.items : parsed?.candidateReference?.items);
+  const jsonItems = _firstNonEmpty([
+    Array.isArray(parsed) ? parsed : null,
+    Array.isArray(parsed?.items) ? parsed.items : null,
+    Array.isArray(parsed?.candidateReference?.items) ? parsed.candidateReference.items : null
+  ]);
   if (!Array.isArray(jsonItems) || jsonItems.length === 0) return null;
-  const candidateReference = parsed?.candidateReference || null;
-  const rawMult = candidateReference?.serverCount || candidateReference?.nodeCount || parsed?.serverCount || parsed?.nodeCount || 1;
+  const ref = parsed?.candidateReference || null;
+  const rawMult = _firstNonEmpty([ref?.serverCount, ref?.nodeCount, parsed?.serverCount, parsed?.nodeCount], 1);
   return {
     items: jsonItems.map(_normalizeStructuredBoqItem),
     rawLines: [],
+    coverNoteRecords: parsed?.coverNoteRecords || [],
     unresolvedRequirements: [],
     clusters: [],
     multiplier: Number(rawMult) || 1,
-    candidateReference,
-    chassisDir: candidateReference?.chassisDir || parsed?.chassisDir || null,
-    parentRunId: candidateReference?.parentRunId || parsed?.parentRunId || null,
-    candidateDigest: candidateReference?.digest || parsed?.candidateDigest || null
+    candidateReference: ref,
+    chassisDir: _firstNonEmpty([ref?.chassisDir, parsed?.chassisDir]),
+    parentRunId: _firstNonEmpty([ref?.parentRunId, parsed?.parentRunId]),
+    candidateDigest: _firstNonEmpty([ref?.digest, parsed?.candidateDigest])
   };
 }
 
@@ -204,14 +220,26 @@ function _tryParseStructuredBoqJson(rawInput, filePath) {
   }
 }
 
+function _resolveBoqInputPath(rawInput, filePath) {
+  if (filePath && typeof filePath === 'string') return filePath;
+  if (typeof rawInput === 'string' && !rawInput.includes('\n') && rawInput.length < 512 && fs.existsSync(rawInput)) return rawInput;
+  return '';
+}
+
 function parseAndConsolidateBOQDetailed(rawInput, filePath = '', targetSheet = null) {
   if (Array.isArray(rawInput) && rawInput.every(item => item && typeof item === 'object')) {
-    return { items: rawInput.map(item => ({ ...item, sku: item.sku || item.partNumber || item.pn || item['Product #'] || item['Part No'], quantity: item.quantity ?? item.qty ?? 1 })), rawLines: [], unresolvedRequirements: [], clusters: [], multiplier: 1 };
+    return { items: rawInput.map(_normalizeStructuredBoqItem), rawLines: [], coverNoteRecords: [], unresolvedRequirements: [], clusters: [], multiplier: 1 };
   }
   const structuredJson = _tryParseStructuredBoqJson(rawInput, filePath);
   if (structuredJson) return structuredJson;
+  const targetPath = _resolveBoqInputPath(rawInput, filePath);
+  if (targetPath && /\.xlsx?$/i.test(targetPath) && fs.existsSync(targetPath)) {
+    const { lines, coverNoteRecords } = _readWorkbookWithCoverNotes(targetPath, targetSheet);
+    const rawLines = lines.filter(l => l.trim().length > 0);
+    return { ...parseSkuLines(rawLines), rawLines, coverNoteRecords };
+  }
   const rawLines = readBoqLines(rawInput, filePath, targetSheet);
-  return { ...parseSkuLines(rawLines), rawLines };
+  return { ...parseSkuLines(rawLines), rawLines, coverNoteRecords: [] };
 }
 
 function parseAndConsolidateBOQ(rawInput, filePath = '', targetSheet = null) {
@@ -2130,31 +2158,50 @@ function formatNotebookQueryPayload(items, evalResults, rankedSolutions = []) {
   };
 }
 
-function evaluateBOQMultiAspect(filePathOrText, options = {}) {
-  // Typed Catalog Freshness Pre-Flight (INV-127 / R-07)
-  let catalogFreshness = null;
+function _attachEvaluationRequirementCoverage(result, requirementAccounting, baselineItems, options) {
+  const ctx = {
+    baselineItems: baselineItems || [],
+    evalSummary: result.evalSummary,
+    nodeCount: result.clusterSizing?.serverCount || result.configurationContext?.multiplier || undefined,
+    waivers: options.requirementWaivers || []
+  };
+  const ranked = result.conflictGraph?.rankedSolutions;
+  if (Array.isArray(ranked) && ranked.length > 0) {
+    attachCandidateDispositions(ranked, requirementAccounting, ctx);
+  }
+  const recommended = result.conflictGraph?.recommendedSolutions;
+  if (Array.isArray(recommended) && recommended.length > 0) {
+    attachCandidateDispositions(recommended.filter(c => !c?.requirementCoverage), requirementAccounting, ctx);
+  }
+}
+
+function _checkMultiAspectFreshness(options) {
   try {
     const { evaluateCatalogFreshness } = require('../catalog/catalog_freshness_guard.js');
-    const catalogDirForFreshness = options.targetDir || options.catalogDir || null;
-    if (catalogDirForFreshness) {
-      catalogFreshness = evaluateCatalogFreshness(catalogDirForFreshness, { maxAgeHours: 72 });
-      if (!catalogFreshness.isFresh) {
-        console.warn(`[WARN] [FRESHNESS] ${catalogFreshness.reason}`);
-        if (!options.context) options.context = {};
-        options.context.staleCatalogWarning = catalogFreshness.status === 'STALE';
-        options.context.catalogFreshness = catalogFreshness;
-      }
+    const dir = options.targetDir || options.catalogDir || null;
+    if (!dir) return null;
+    const catalogFreshness = evaluateCatalogFreshness(dir, { maxAgeHours: 72 });
+    if (!catalogFreshness.isFresh) {
+      console.warn(`[WARN] [FRESHNESS] ${catalogFreshness.reason}`);
+      if (!options.context) options.context = {};
+      options.context.staleCatalogWarning = catalogFreshness.status === 'STALE';
+      options.context.catalogFreshness = catalogFreshness;
     }
+    return catalogFreshness;
   } catch (_freshnessErr) {
-    // Non-fatal — freshness check must never abort evaluation
+    return null;
   }
+}
 
-  const parsed = parseAndConsolidateBOQDetailed(filePathOrText, options.filePath || '', options.targetSheet || null);
+function _prepareMultiAspectRequirements(parsed, sourceFilePath, options) {
+  const coverNoteRecords = parsed.coverNoteRecords || [];
   const requirementResolution = options.catalogData
     ? resolveRequirementIntent({
       items: parsed.items,
       unresolvedRequirements: parsed.unresolvedRequirements,
       rawLines: parsed.rawLines,
+      coverNoteRecords,
+      filePath: sourceFilePath,
       catalogData: options.catalogData,
       productConfirmed: Boolean(options.productConfirmed || options.targetDir)
     })
@@ -2165,6 +2212,30 @@ function evaluateBOQMultiAspect(filePathOrText, options = {}) {
       requiresHumanClarification: false,
       learningEligible: false
     };
+  const requirementAccounting = requirementResolution.requirementAccounting || extractRequirementRecords({
+    rawLines: parsed.rawLines || [],
+    coverNoteRecords,
+    unresolvedRequirements: parsed.unresolvedRequirements || [],
+    items: parsed.items || [],
+    file: sourceFilePath
+  });
+  return { requirementResolution, requirementAccounting };
+}
+
+function _runDealValueEngineeringSafe(items, result, catalogData, resolvedTargetDir) {
+  try {
+    const { analyzeDealValueEngineering } = require('./deal_optimizer.js');
+    return analyzeDealValueEngineering(items, result, catalogData, resolvedTargetDir);
+  } catch (_veErr) {
+    return null;
+  }
+}
+
+function evaluateBOQMultiAspect(filePathOrText, options = {}) {
+  const catalogFreshness = _checkMultiAspectFreshness(options);
+  const parsed = parseAndConsolidateBOQDetailed(filePathOrText, options.filePath || '', options.targetSheet || null);
+  const sourceFilePath = _resolveBoqInputPath(filePathOrText, options.filePath || '') || null;
+  const { requirementResolution, requirementAccounting } = _prepareMultiAspectRequirements(parsed, sourceFilePath, options);
   const items = requirementResolution.resolvedItems;
   const resolvedTargetDir = options.targetDir || options.chassisDir || '';
   const evalOptions = {
@@ -2177,14 +2248,10 @@ function evaluateBOQMultiAspect(filePathOrText, options = {}) {
     result.confidence.score = Math.min(result.confidence.score, 0.74);
     result.confidence.confidenceReasons.push('[REQUIREMENT_AMBIGUITY] One or more requested components require human category/part confirmation.');
   }
-  const { analyzeDealValueEngineering } = require('./deal_optimizer.js');
-  let valueEngineering = null;
-  try {
-    valueEngineering = analyzeDealValueEngineering(result.items || items, result, options.catalogData, resolvedTargetDir);
-  } catch (veErr) {
-    // Non-blocking value engineering analysis
-  }
-  return { ...result, items: result.items || items, requirementResolution, valueEngineering, catalogFreshness };
+  _attachEvaluationRequirementCoverage(result, requirementAccounting, parsed.items, options);
+  const effectiveItems = result.items || items;
+  const valueEngineering = _runDealValueEngineeringSafe(effectiveItems, result, options.catalogData, resolvedTargetDir);
+  return { ...result, items: effectiveItems, requirementResolution, requirementAccounting, valueEngineering, catalogFreshness };
 }
 
 setPhysicalMathValidator((items, catalogData, targetDir, options = {}) => {
@@ -2218,5 +2285,6 @@ module.exports = {
   getCategoryDependencyMatrix,
   queryLocalGraphifyNeighborhood,
   _assessConfidenceAndCleanliness,
+  _readWorkbookWithCoverNotes,
   readBoqLines
 };

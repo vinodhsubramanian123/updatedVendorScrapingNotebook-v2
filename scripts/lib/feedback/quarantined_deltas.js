@@ -16,6 +16,11 @@ const crypto = require('crypto');
 const { isValidHpeSKU, cleanBaseSKU, buildCatalogSkuIndex } = require('../catalog/sku.js');
 const { safeWriteJsonAtomic } = require('../system/fs_compat.js');
 const logger = require('../system/pipeline_logger.js');
+const {
+  loadDependencyIndex,
+  saveDependencyIndexAtomic,
+  invalidateByRetractedRule
+} = require('../boq/evidence/dependency_index.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
 const DEFAULT_OCA_SESSIONS_DIR = path.join(PROJECT_ROOT, 'outputs', 'history', 'oca_sessions');
@@ -1103,10 +1108,16 @@ function rejectQuarantinedDelta(quarantineIdOrDeltaId, reason = 'REJECTED_BY_REV
   return true;
 }
 
+function _recordMatchedRuleIds(item, matchedRuleIds) {
+  if (!matchedRuleIds) return;
+  if (item.deltaId) matchedRuleIds.add(item.deltaId);
+  if (item.ruleId) matchedRuleIds.add(item.ruleId);
+}
+
 /**
  * Deactivate a delta in a registry without deleting historical entries (INV-231).
  */
-function _deactivateDeltaInRegistry(registryPath, idOrFp, updateFields) {
+function _deactivateDeltaInRegistry(registryPath, idOrFp, updateFields, matchedRuleIds = null) {
   if (!fs.existsSync(registryPath)) return false;
   try {
     const data = JSON.parse(fs.readFileSync(registryPath, 'utf-8'));
@@ -1117,6 +1128,7 @@ function _deactivateDeltaInRegistry(registryPath, idOrFp, updateFields) {
         const fp = item.knowledgeFingerprint || buildKnowledgeFingerprint(item);
         if (item.deltaId === idOrFp || fp === idOrFp || item.quarantineId === idOrFp) {
           Object.assign(item, updateFields);
+          _recordMatchedRuleIds(item, matchedRuleIds);
           modified = true;
         }
       }
@@ -1139,6 +1151,44 @@ function _deactivateDeltaInRegistry(registryPath, idOrFp, updateFields) {
   return false;
 }
 
+function _invalidateDependencyIndexForRetraction(targetIds, reason, options = {}) {
+  const hasIndexObj = Boolean(options?.dependencyIndex && typeof options.dependencyIndex === 'object');
+  const indexPath = options?.dependencyIndexPath || null;
+  if (!hasIndexObj && !indexPath) return null;
+
+  const index = hasIndexObj ? options.dependencyIndex : loadDependencyIndex(indexPath);
+  const uniqueIds = [...new Set((Array.isArray(targetIds) ? targetIds : [targetIds]).filter(Boolean).map(String))];
+  const results = uniqueIds.map(id => invalidateByRetractedRule(index, id, reason));
+  if (indexPath) {
+    saveDependencyIndexAtomic(indexPath, index, options.dependencyWriter);
+  }
+  const primary = results[0] || null;
+  return {
+    triggerNodeIds: uniqueIds,
+    triggerNodeId: primary?.triggerNodeId || uniqueIds[0] || null,
+    existedInIndex: results.some(r => r.existedInIndex),
+    affectedNodeIds: [...new Set(results.flatMap(r => r.affectedNodeIds || []))],
+    queuedItems: results.flatMap(r => r.queuedItems || []),
+    indexRevisionSha256: index.indexRevisionSha256,
+    persistedPath: indexPath
+  };
+}
+
+function _deactivateAcrossRegistries(idOrFp, updateFields, options) {
+  const root = path.resolve(__dirname, '..', '..', '..');
+  const masterReg = options.masterRegistryPath || path.join(root, 'outputs', 'history', 'master_knowledge_registry.json');
+  const globalDeltas = options.globalDeltasPath || path.join(root, 'outputs', 'history', 'catalog_deltas.json');
+  const matchedIds = new Set();
+
+  let deactivated = _deactivateDeltaInRegistry(masterReg, idOrFp, updateFields, matchedIds);
+  deactivated = _deactivateDeltaInRegistry(globalDeltas, idOrFp, updateFields, matchedIds) || deactivated;
+  if (options.chassisDir) {
+    const chassisDeltas = path.join(options.chassisDir, 'history', 'catalog_deltas.json');
+    deactivated = _deactivateDeltaInRegistry(chassisDeltas, idOrFp, updateFields, matchedIds) || deactivated;
+  }
+  return { deactivated, matchedIds };
+}
+
 /**
  * Retract an active promoted delta and mark it inactive with append-only audit trail (INV-231).
  */
@@ -1153,17 +1203,7 @@ function retractPromotedDelta(deltaIdOrFingerprint, reason = 'RETRACTED_BY_REVIE
     retractionReason: String(reason)
   };
 
-  const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
-  const masterReg = options.masterRegistryPath || path.join(PROJECT_ROOT, 'outputs', 'history', 'master_knowledge_registry.json');
-  let deactivated = _deactivateDeltaInRegistry(masterReg, deltaIdOrFingerprint, updateFields);
-  deactivated = _deactivateDeltaInRegistry(options.globalDeltasPath || path.join(PROJECT_ROOT, 'outputs', 'history', 'catalog_deltas.json'), deltaIdOrFingerprint, updateFields) || deactivated;
-
-  if (options.chassisDir) {
-    const chassisDeltas = path.join(options.chassisDir, 'history', 'catalog_deltas.json');
-    const chDeactivated = _deactivateDeltaInRegistry(chassisDeltas, deltaIdOrFingerprint, updateFields);
-    deactivated = deactivated || chDeactivated;
-  }
-
+  const { deactivated, matchedIds } = _deactivateAcrossRegistries(deltaIdOrFingerprint, updateFields, options);
   const quarantineFile = options.filePath || currentQuarantineFile;
   appendDecision({
     decisionId: `DECISION_${Date.now()}_RETRACT`,
@@ -1174,6 +1214,14 @@ function retractPromotedDelta(deltaIdOrFingerprint, reason = 'RETRACTED_BY_REVIE
     reasoning: String(reason)
   }, quarantineFile);
 
+  const depInv = _invalidateDependencyIndexForRetraction([deltaIdOrFingerprint, ...matchedIds], reason, options);
+  if (depInv || options.returnDetails === true) {
+    return {
+      retracted: Boolean(deactivated || depInv?.existedInIndex),
+      deactivated,
+      dependencyInvalidation: depInv
+    };
+  }
   return deactivated;
 }
 
@@ -1192,16 +1240,7 @@ function supersedeKnowledgeDelta(oldDeltaId, newDeltaId, reason = 'SUPERSEDED_BY
     supersessionReason: String(reason)
   };
 
-  const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
-  const masterReg = options.masterRegistryPath || path.join(PROJECT_ROOT, 'outputs', 'history', 'master_knowledge_registry.json');
-  _deactivateDeltaInRegistry(masterReg, oldDeltaId, updateFields);
-  _deactivateDeltaInRegistry(options.globalDeltasPath || path.join(PROJECT_ROOT, 'outputs', 'history', 'catalog_deltas.json'), oldDeltaId, updateFields);
-
-  if (options.chassisDir) {
-    const chassisDeltas = path.join(options.chassisDir, 'history', 'catalog_deltas.json');
-    _deactivateDeltaInRegistry(chassisDeltas, oldDeltaId, updateFields);
-  }
-
+  const { matchedIds } = _deactivateAcrossRegistries(oldDeltaId, updateFields, options);
   const quarantineFile = options.filePath || currentQuarantineFile;
   appendDecision({
     decisionId: `DECISION_${Date.now()}_SUPERSEDE`,
@@ -1213,7 +1252,43 @@ function supersedeKnowledgeDelta(oldDeltaId, newDeltaId, reason = 'SUPERSEDED_BY
     reasoning: String(reason)
   }, quarantineFile);
 
+  const depInv = _invalidateDependencyIndexForRetraction([oldDeltaId, ...matchedIds], reason, options);
+  if (depInv || options.returnDetails === true) {
+    return {
+      superseded: true,
+      retracted: true,
+      oldDeltaId,
+      newDeltaId,
+      dependencyInvalidation: depInv
+    };
+  }
   return true;
+}
+
+function _normalizeReflectionError(err) {
+  return err instanceof Error ? err : new Error(String(err));
+}
+
+/**
+ * Execute a post-evaluation reflection hook while guaranteeing primaryError is never masked or discarded.
+ */
+function preservePrimaryErrorOnReflectionFailure(primaryError, reflectionFn) {
+  const preserved = primaryError !== undefined ? primaryError : null;
+  if (typeof reflectionFn !== 'function') {
+    return { primaryError: preserved, reflectionFailed: false, reflectionError: null, reflectionResult: null };
+  }
+  try {
+    const result = reflectionFn();
+    if (result && typeof result.then === 'function') {
+      return result.then(
+        reflectionResult => ({ primaryError: preserved, reflectionFailed: false, reflectionError: null, reflectionResult }),
+        err => ({ primaryError: preserved, reflectionFailed: true, reflectionError: _normalizeReflectionError(err), reflectionResult: null })
+      );
+    }
+    return { primaryError: preserved, reflectionFailed: false, reflectionError: null, reflectionResult: result };
+  } catch (err) {
+    return { primaryError: preserved, reflectionFailed: true, reflectionError: _normalizeReflectionError(err), reflectionResult: null };
+  }
 }
 
 /**
@@ -1291,6 +1366,7 @@ module.exports = {
   rejectQuarantinedDelta,
   retractPromotedDelta,
   supersedeKnowledgeDelta,
+  preservePrimaryErrorOnReflectionFailure,
   pruneInvalidQuarantinedDeltas,
   deleteQuarantinedDelta: rejectQuarantinedDelta,
   clearQuarantinedDeltas,

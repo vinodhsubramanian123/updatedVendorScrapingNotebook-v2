@@ -1,0 +1,93 @@
+{
+  "product": "DL380_Gen12",
+  "recordedAt": "2026-11-19T17:11:57.775Z",
+  "source": "docs/audits/2026-11-19-solution-intelligence-certification-report.md",
+  "results": [
+    {
+      "deltaId": "LEARN_DL380_GEN12_WORKFLOW_SI_NO_SILENT_DEFAULT_CONVERSION_20261119",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_DL380_GEN12_WORKFLOW_SI_NO_SILENT_DEFAULT_CONVERSION_20261119",
+        "ruleType": "WORKFLOW_SI_NO_SILENT_DEFAULT_CONVERSION",
+        "affectedSku": "",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-11-19T17:11:57.591Z"
+      }
+    },
+    {
+      "deltaId": "LEARN_DL380_GEN12_WORKFLOW_SI_STRICT_DOCUMENT_REVIEW_GATE_20261119",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_DL380_GEN12_WORKFLOW_SI_STRICT_DOCUMENT_REVIEW_GATE_20261119",
+        "ruleType": "WORKFLOW_SI_STRICT_DOCUMENT_REVIEW_GATE",
+        "affectedSku": "",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-11-19T17:11:57.632Z"
+      }
+    },
+    {
+      "deltaId": "LEARN_DL380_GEN12_WORKFLOW_SI_INDEPENDENT_WAVE_VERIFICATION_20261119",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_DL380_GEN12_WORKFLOW_SI_INDEPENDENT_WAVE_VERIFICATION_20261119",
+        "ruleType": "WORKFLOW_SI_INDEPENDENT_WAVE_VERIFICATION",
+        "affectedSku": "",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-11-19T17:11:57.669Z"
+      }
+    },
+    {
+      "deltaId": "LEARN_DL380_GEN12_WORKFLOW_SI_NON_PHYSICAL_SEGREGATION_20261119",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_DL380_GEN12_WORKFLOW_SI_NON_PHYSICAL_SEGREGATION_20261119",
+        "ruleType": "WORKFLOW_SI_NON_PHYSICAL_SEGREGATION",
+        "affectedSku": "",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-11-19T17:11:57.704Z"
+      }
+    },
+    {
+      "deltaId": "LEARN_DL380_GEN12_WORKFLOW_SI_PORTAL_SEVEN_COLUMN_PRESERVATION_20261119",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_DL380_GEN12_WORKFLOW_SI_PORTAL_SEVEN_COLUMN_PRESERVATION_20261119",
+        "ruleType": "WORKFLOW_SI_PORTAL_SEVEN_COLUMN_PRESERVATION",
+        "affectedSku": "",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-11-19T17:11:57.742Z"
+      }
+    },
+    {
+      "deltaId": "LEARN_DL380_GEN12_WORKFLOW_SI_CHECKPOINT_AND_ISOLATION_20261119",
+      "persisted": true,
+      "certification": {
+        "reachable": true,
+        "ruleId": "LEARN_DL380_GEN12_WORKFLOW_SI_CHECKPOINT_AND_ISOLATION_20261119",
+        "ruleType": "WORKFLOW_SI_CHECKPOINT_AND_ISOLATION",
+        "affectedSku": "",
+        "targetSku": "",
+        "scopeTaxonomy": "CHASSIS_SPECIFIC",
+        "simulationResult": null,
+        "verifiedAt": "2026-11-19T17:11:57.775Z"
+      }
+    }
+  ],
+  "allReachable": true,
+  "hardwareCompatibilityCertified": false
+}
