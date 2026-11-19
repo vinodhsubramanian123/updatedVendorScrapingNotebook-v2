@@ -111,13 +111,15 @@ function _parseDrivePart(desc, qty) {
 function _parseNetworkPart(part, qty) {
   const desc = String(part.description || '');
   const speeds = [];
-  const speedRe = /\b(\d+(?:\.\d+)?)\s*(?:GbE|Gbps|Gb)\b/gi;
+  const speedRe = /\b(\d+(?:\.\d+)?(?:\s*\/\s*\d+(?:\.\d+)?)*)\s*(?:GbE|Gbps|Gb)\b/gi;
   let m;
-  while ((m = speedRe.exec(desc)) !== null) speeds.push(Number(m[1]));
+  while ((m = speedRe.exec(desc)) !== null) speeds.push(...m[1].split('/').map(Number));
   const portMatch = desc.match(/\b(\d+)\s*-?\s*ports?\b/i);
   const defaultPorts = /dual/i.test(desc) ? 2 : (/quad/i.test(desc) ? 4 : 1);
   const portsEach = portMatch ? Number(portMatch[1]) : defaultPorts;
-  const isOptic = OPTIC_HINT_RE.test(desc);
+  // A NIC description can name its connector without describing an optic.
+  const isPortAdapter = Boolean(portMatch && /\b(?:adapter|nic)\b/i.test(desc));
+  const isOptic = !isPortAdapter && OPTIC_HINT_RE.test(desc);
   const scopeText = `${part.purpose || ''} ${part.allocation || ''} ${desc}`;
   const isSpareOrShared = Boolean(part.isSpare || part.isShared || part.quantityScope === 'global' || /\b(?:spare|shared|global)\b/i.test(scopeText));
   return { speeds, ports: isOptic ? 0 : qty * portsEach, isOptic, opticQty: isOptic ? qty : 0, isSpareOrShared };
@@ -175,6 +177,7 @@ function _createFactsAccumulator(parts, nodeCount, pricing) {
     psuCountPerNode: 0,
     totalPsuWattsPerNode: 0,
     networkSpeedSet: new Set(),
+    installedNetworkPorts: [],
     supportEntries: [],
     skuSet: new Set(),
     excludedHits: []
@@ -216,12 +219,15 @@ function _accumulateDriveOrPsu(acc, desc, perNodeQty) {
 function _accumulateNetworkAndSupport(acc, part, sku, desc, role, qty, scale, perNodeQty) {
   if (role === 'Network Adapter' || NETWORK_HINT_RE.test(desc)) {
     const net = _parseNetworkPart(part, qty);
-    for (const s of net.speeds) {
-      acc.networkSpeedSet.add(s);
-      if (s > acc.maxNetworkSpeedGbps) acc.maxNetworkSpeedGbps = s;
-    }
     const factor = scale === null ? (perNodeQty / (qty || 1)) : scale;
-    if (!net.isSpareOrShared) acc.portsPerNode += net.ports * factor;
+    if (!net.isOptic && !net.isSpareOrShared && perNodeQty > 0) {
+      for (const s of net.speeds) {
+        acc.networkSpeedSet.add(s);
+        if (s > acc.maxNetworkSpeedGbps) acc.maxNetworkSpeedGbps = s;
+      }
+      acc.portsPerNode += net.ports * factor;
+      acc.installedNetworkPorts.push({ ports: net.ports * factor, speeds: net.speeds });
+    }
     if (net.isOptic && net.isSpareOrShared) {
       acc.spareOpticsCount += qty;
       acc.sharedOpticsCount += qty;
@@ -242,19 +248,13 @@ function _accumulateSharedItems(acc, sharedItems) {
     acc.spareOpticsCount += net.opticQty;
     acc.sharedOpticsCount += net.opticQty;
     for (const s of net.speeds) {
-      acc.networkSpeedSet.add(s);
       acc.spareOpticsBySpeed.set(s, (acc.spareOpticsBySpeed.get(s) || 0) + net.opticQty);
-      if (s > acc.maxNetworkSpeedGbps) acc.maxNetworkSpeedGbps = s;
     }
   }
 }
 
-function _resolveActiveRaidLevel(candidate, requirementAccounting, context) {
-  const reqRaidRec = (requirementAccounting?.records || []).find(r =>
-    r.hardness !== HARDNESS_LEVELS.PREFERENCE && r.extractedMetrics?.some(m => m.metric === 'raidLevel')
-  );
-  const reqRaid = reqRaidRec?.extractedMetrics.find(m => m.metric === 'raidLevel')?.value || null;
-  return normalizeRaidLevel(candidate?.raidLevel || context?.raidLevel || reqRaid);
+function _resolveActiveRaidLevel(candidate, context) {
+  return normalizeRaidLevel(candidate?.raidLevel || context?.raidLevel);
 }
 
 function _processSingleCandidatePart(acc, part, scaleFor) {
@@ -285,7 +285,7 @@ function _finalizeCandidateFacts(acc, candidate, requirementAccounting, context)
     perNodeRawStorageTb: Number(acc.perNodeRawStorageTb.toFixed(4)),
     clusterRawStorageTb: Number((acc.perNodeRawStorageTb * mult).toFixed(4)),
     explicitUsableStorageTb: _firstNumber([candidate?.usableStorageTb]),
-    activeRaidLevel: _resolveActiveRaidLevel(candidate, requirementAccounting, context),
+    activeRaidLevel: _resolveActiveRaidLevel(candidate, context),
     estimatedNodeWattage: _firstNumber([context?.evalSummary?.power?.estimatedNodeWattage, candidate?.estimatedNodeWattage]),
     rackUnits: _firstNumber([candidate?.rackUnits, context?.rackUnits]),
     maxLeadTimeDays: _firstNumber([candidate?.supplyMetrics?.hardwareMaxLeadTimeDays, candidate?.supplyMetrics?.maxLeadTimeDays, candidate?.supplyMetrics?.solutionEdtDays]),
@@ -342,7 +342,7 @@ function _evalExplicitUsableStorage(metric, facts) {
 
 function _evalUsableStorageMetric(metric, facts) {
   if (facts.explicitUsableStorageTb !== null) return _evalExplicitUsableStorage(metric, facts);
-  const raidLevel = metric.raidLevel || facts.activeRaidLevel;
+  const raidLevel = facts.activeRaidLevel;
   const isCluster = metric.scope === SCOPE_TYPES.PER_CLUSTER;
   const rawTb = isCluster ? facts.clusterRawStorageTb : facts.perNodeRawStorageTb;
   const driveCount = isCluster ? facts.clusterDriveCount : facts.perNodeDriveCount;
@@ -375,7 +375,8 @@ function _zeroSensitiveCount(n, metric, facts) {
 }
 
 function _resolveMetricActualValue(metric, facts, recordMetrics) {
-  const speedInRecord = recordMetrics.find(m => m.metric === 'speedGbps')?.value ?? null;
+  const speedMetric = recordMetrics.find(m => m.metric === 'speedGbps');
+  const speedInRecord = speedMetric?.value ?? null;
   const spareOpticsVal = (speedInRecord !== null && facts.spareOpticsBySpeed.size > 0)
     ? (facts.spareOpticsBySpeed.get(speedInRecord) || 0)
     : facts.spareOpticsCount;
@@ -389,12 +390,21 @@ function _resolveMetricActualValue(metric, facts, recordMetrics) {
     ramCapacityGb: isCluster ? facts.clusterRamGb : _zeroSensitiveCount(facts.perNodeRamGb, metric, facts),
     dimmCount: _zeroSensitiveCount(facts.perNodeDimmCount, metric, facts),
     rawStorageTb: isCluster ? facts.clusterRawStorageTb : _zeroSensitiveCount(facts.perNodeRawStorageTb, metric, facts),
-    speedGbps: _zeroSensitiveCount(facts.maxNetworkSpeedGbps, metric, facts),
-    portCount: _zeroSensitiveCount(facts.portsPerNode, metric, facts),
+    speedGbps: _zeroSensitiveCount(metric.isSpare || metric.isShared
+      ? Math.max(0, ...facts.spareOpticsBySpeed.keys()) : facts.maxNetworkSpeedGbps, metric, facts),
+    portCount: _zeroSensitiveCount(_countPortsAtRequiredSpeed(facts, speedMetric), metric, facts),
     spareOpticsCount: spareOpticsVal,
     deliveryDeadlineDays: facts.maxLeadTimeDays
   };
   return (metric.metric in lookup) ? { known: true, actual: lookup[metric.metric] } : { known: false, actual: null };
+}
+
+function _countPortsAtRequiredSpeed(facts, speedMetric) {
+  if (!speedMetric) return facts.portsPerNode;
+  return facts.installedNetworkPorts.reduce((sum, adapter) => {
+    const matches = adapter.speeds.some(speed => _compareNumeric(speed, speedMetric.comparator, speedMetric.value) === true);
+    return sum + (matches ? adapter.ports : 0);
+  }, 0);
 }
 
 function _evalNumericSimpleMetric(metric, facts, recordMetrics = []) {

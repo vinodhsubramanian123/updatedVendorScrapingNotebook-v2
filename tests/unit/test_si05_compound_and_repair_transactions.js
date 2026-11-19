@@ -12,6 +12,7 @@ const {
   executeCompoundWorkflow
 } = require('../../scripts/lib/boq/compound_execution.js');
 const {
+  applyManifestDelta,
   computeManifestSha256,
   executeVerifiedRepairTransaction,
   executeRepairSession,
@@ -32,6 +33,58 @@ function deepFreeze(obj) {
   }
   return obj;
 }
+
+test('repair transactions roll back when candidate validation is missing or empty', async () => {
+  const baseline = deepFreeze({ items: [{ sku: 'CPU', quantity: 1 }], errors: [] });
+  for (const validateFn of [undefined, () => null, () => undefined, () => ({}), () => false, () => ({ isValid: null, errors: null })]) {
+    const tx = await executeVerifiedRepairTransaction(baseline, { action: 'REMOVE', sku: 'CPU' }, { validateFn });
+    assert.equal(tx.outcome, 'ROLLED_BACK');
+    assert.match(tx.rollbackReason, /VALIDATION_(?:REQUIRED|RESULT_REQUIRED)/);
+    assert.equal(tx.state.items[0].quantity, 1);
+    assert.equal(tx.validation, null);
+  }
+});
+
+test('repair sessions without baseline validation cannot declare an unchecked baseline solved', async () => {
+  const baseline = { items: [{ sku: 'CPU', quantity: 1 }] };
+  for (const validateFn of [undefined, () => null, () => ({}), () => { throw new Error('validation unavailable'); }]) {
+    const session = await executeRepairSession({ baseline, proposals: [], validateFn });
+    assert.equal(session.outcome, 'SEARCH_EXHAUSTED');
+    assert.equal(session.iterationsRun, 0);
+  }
+  const checked = await executeRepairSession({ baseline, proposals: [], validateFn: () => ({ errors: [], isValid: true }) });
+  assert.equal(checked.outcome, 'ACCEPTED');
+});
+
+test('packed repair arguments invoke the supplied validator and apply the requested delta', async () => {
+  const baseline = deepFreeze({ items: [{ sku: 'CPU', quantity: 1 }] });
+  let calls = 0;
+  const tx = await executeVerifiedRepairTransaction({
+    baseline,
+    delta: { action: 'ADD', sku: 'RAM', quantity: 2 },
+    validateFn: candidate => {
+      calls++;
+      assert.equal(candidate.items.find(p => p.sku === 'RAM').quantity, 2);
+      return { errors: [], isValid: true };
+    }
+  });
+  assert.equal(calls, 1);
+  assert.equal(tx.outcome, 'ACCEPTED');
+  assert.equal(tx.manifestChanged, true);
+  assert.equal(baseline.items.length, 1);
+});
+
+test('SET_QUANTITY retains the owner and quantity scope when creating a part', () => {
+  const baseline = { items: [{ sku: 'RAM', owner: 'node-a', quantity: 1 }] };
+  const first = applyManifestDelta(baseline, {
+    action: 'SET_QUANTITY', sku: 'RAM', owner: 'node-b', quantityScope: 'PER_NODE', quantity: 2
+  });
+  assert.deepEqual(first.candidate.items[1], { sku: 'RAM', owner: 'node-b', quantityScope: 'PER_NODE', quantity: 2 });
+  const next = applyManifestDelta(first.candidate, { action: 'SET_QUANTITY', sku: 'RAM', owner: 'node-b', quantity: 3 });
+  assert.equal(next.candidate.items.length, 2);
+  assert.equal(next.candidate.items[1].quantity, 3);
+  assert.equal(next.candidate.items[0].quantity, 1);
+});
 
 // 1. Compound ingest + reconcile + export with real second baseline & missing baseline block
 test('SI-05 Case 1: compound ingest + reconcile + export orders steps, passes second baseline, and blocks missing baseline', async () => {

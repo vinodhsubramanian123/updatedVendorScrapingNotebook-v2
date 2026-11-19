@@ -338,6 +338,65 @@ test('SI-08 [2/8]: Requirement, source, and rule invalidation mark downstream st
   assert.equal(evaluateInvalidationBoundary(index, 'CLAIM-BAD').canGrantAcceptance, false);
 });
 
+test('SI-08: failed or unknown reevaluations stay blocked after successful sibling reevaluation', () => {
+  for (const failedStatus of ['FAILED', 'UNKNOWN']) {
+    const index = createDependencyIndex();
+    for (const [id, kind] of [['SOURCE', 'SOURCE'], ['FAILED', 'AUTHORIZATION'], ['SIBLING', 'AUTHORIZATION']]) {
+      registerDependencyNode(index, { id, kind, revision: 'v1' });
+    }
+    addDependencyEdge(index, 'SOURCE', 'FAILED');
+    addDependencyEdge(index, 'SOURCE', 'SIBLING');
+    invalidateBySourceChange(index, 'SOURCE', 'v2');
+    recordReevaluationOutcome(index, { nodeId: 'FAILED', status: failedStatus });
+    recordReevaluationOutcome(index, { nodeId: 'SIBLING', status: 'VALID' });
+    assert.equal(index.nodes.SOURCE.status, 'VALID');
+    assert.equal(evaluateInvalidationBoundary(index, 'SIBLING').canGrantAcceptance, true);
+    assert.equal(index.nodes.FAILED.status, failedStatus);
+    assert.equal(evaluateInvalidationBoundary(index, 'FAILED').canGrantAcceptance, false);
+    registerDependencyNode(index, { id: 'DOWNSTREAM', kind: 'ARTIFACT' });
+    addDependencyEdge(index, 'FAILED', 'DOWNSTREAM');
+    assert.equal(evaluateInvalidationBoundary(index, 'DOWNSTREAM').canGrantAcceptance, false);
+    recordReevaluationOutcome(index, { nodeId: 'FAILED', status: 'VALID' });
+    assert.equal(evaluateInvalidationBoundary(index, 'DOWNSTREAM').canGrantAcceptance, true);
+  }
+  const dangling = createDependencyIndex();
+  registerDependencyNode(dangling, { id: 'AUTH', kind: 'AUTHORIZATION' });
+  addDependencyEdge(dangling, 'MISSING-SOURCE', 'AUTH');
+  assert.equal(evaluateInvalidationBoundary(dangling, 'AUTH').canGrantAcceptance, false);
+  recordReevaluationOutcome(dangling, { nodeId: 'AUTH' });
+  assert.equal(dangling.nodes.AUTH.status, 'UNKNOWN');
+  assert.equal(evaluateInvalidationBoundary(dangling, 'AUTH').canGrantAcceptance, false);
+});
+
+test('late or repeated reevaluation results cannot replace a newer dependency revision', () => {
+  const index = createDependencyIndex();
+  registerDependencyNode(index, { id: 'source', kind: 'SOURCE', revision: 'v1' });
+  registerDependencyNode(index, { id: 'artifact', kind: 'ARTIFACT' });
+  addDependencyEdge(index, 'source', 'artifact');
+  const [old] = invalidateBySourceChange(index, 'source', 'v2').queuedItems;
+  const [current] = invalidateBySourceChange(index, 'source', 'v3').queuedItems;
+  assert.equal(recordReevaluationOutcome(index, { queueId: old.queueId, status: 'VALID' }).updated, false);
+  assert.equal(evaluateInvalidationBoundary(index, 'artifact').canGrantAcceptance, false);
+  assert.equal(recordReevaluationOutcome(index, { queueId: current.queueId, status: 'VALID' }).updated, true);
+  assert.equal(recordReevaluationOutcome(index, { queueId: current.queueId, status: 'FAILED' }).updated, false);
+  assert.equal(evaluateInvalidationBoundary(index, 'artifact').canGrantAcceptance, true);
+});
+
+test('queued reevaluation keeps an artifact blocked until each current trigger is resolved', () => {
+  const index = createDependencyIndex();
+  registerDependencyNode(index, { id: 'artifact', kind: 'ARTIFACT' });
+  for (const id of ['a', 'b']) {
+    registerDependencyNode(index, { id, kind: 'SOURCE', revision: 'v1' });
+    addDependencyEdge(index, id, 'artifact');
+  }
+  const [first] = invalidateBySourceChange(index, 'a', 'v2').queuedItems;
+  const [second] = invalidateBySourceChange(index, 'b', 'v2').queuedItems;
+  assert.equal(recordReevaluationOutcome(index, { queueId: first.queueId, status: 'VALID' }).status, 'STALE_INVALIDATED');
+  assert.equal(evaluateInvalidationBoundary(index, 'artifact').canGrantAcceptance, false);
+  assert.equal(recordReevaluationOutcome(index, { queueId: second.queueId, status: 'VALID' }).status, 'VALID');
+  assert.equal(evaluateInvalidationBoundary(index, 'artifact').canGrantAcceptance, true);
+});
+
 test('SI-08 [3/8]: Fresh process restart reloads persisted dependency index accurately', (t) => {
   const tmpDir = makeTempSandbox(t, 'si08-restart-');
   const depPath = path.join(tmpDir, 'evidence_dependency_index.json');

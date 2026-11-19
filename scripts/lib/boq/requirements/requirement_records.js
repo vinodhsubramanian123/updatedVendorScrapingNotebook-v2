@@ -404,6 +404,7 @@ function _buildRecordFromClause(clause, idx, revHex8) {
     provenance: clause.provenance,
     parseStatus: parsed.parseStatus,
     interpreted: parsed.interpreted,
+    ...(parsed.uninterpretedFragments ? { uninterpretedFragments: parsed.uninterpretedFragments } : {}),
     hardness: parsed.hardness,
     promoteToPhysicalRule: parsed.promoteToPhysicalRule,
     isHardBlocking: parsed.isHardBlocking,

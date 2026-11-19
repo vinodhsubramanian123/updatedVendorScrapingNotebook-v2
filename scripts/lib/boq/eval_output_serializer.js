@@ -22,7 +22,7 @@ const { triggerPostFlowSyncAsync } = require('../sync/post_flow_sync.js');
 const { recordEvaluationTelemetry } = require('../system/telemetry.js');
 const { emitProgress } = require('../system/progress.js');
 const logger = require('../system/pipeline_logger.js');
-const { candidateReviewCurrent, deliveryFingerprint } = require('./solution_evidence');
+const { candidateReviewCurrent, deliveryFingerprint, blocksDependencyAcceptance } = require('./solution_evidence');
 const { verifyDeliveryAuthorization, assertDeliveryAuthorization, signArtifactIntegrityManifest, verifyArtifactIntegrityManifest } = require('../contracts/workflow_contract');
 const { verifyCurrentPortalReceipt } = require('./portal_receipt.js');
 const { toClickableFileUri, toReportLink } = require('../system/uri_helper.js');
@@ -717,6 +717,9 @@ function _buildTracePayloads(ctx) {
  * Handle Google Drive deliverable upload if requested
  */
 function assertArtifactIntegrity(evaluation) {
+  if (blocksDependencyAcceptance(evaluation.dependencyInvalidation)) {
+    throw new Error('Google Sheet publication blocked: Evidence dependency validity is not confirmed.');
+  }
   const receipt = evaluation.artifactIntegrityManifest;
   const keys = ['multiRankWorkbookPath', 'multiRankCsvPath', 'proposalWorkbookPath', 'portalWorkbookPath'];
   if (!verifyArtifactIntegrityManifest(receipt, evaluation.deliveryAuthorization) ||
@@ -1357,7 +1360,8 @@ async function serializeAndExportResults(ctx) {
 
   const targetChassisName = evalResults.chassis || chassisPrefix || ctx.detectedChassisName || (graph.chassisInfo ? graph.chassisInfo.model : '') || (ctx.chassisDir ? path.basename(ctx.chassisDir) : '') || 'PROLIANT_SERVER';
   const candidateFingerprint = deliveryFingerprint(evalResults);
-  const isAuthValid = evalResults.acceptanceGate?.isValid === true && verifyDeliveryAuthorization(evalResults.deliveryAuthorization, candidateFingerprint, {
+  const isAuthValid = !blocksDependencyAcceptance(evalResults.dependencyInvalidation) &&
+    evalResults.acceptanceGate?.isValid === true && verifyDeliveryAuthorization(evalResults.deliveryAuthorization, candidateFingerprint, {
     chassisKey: targetChassisName,
     profile: 'BOQ_EVALUATION'
   });

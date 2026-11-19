@@ -106,7 +106,7 @@ const { isImageFile, performGeminiOcr } = require('../../scripts/lib/ocr/ocr_ser
 const { recordCleansingPreflightTelemetry, recordOcrTelemetry } = require('../../scripts/lib/system/telemetry.js');
 const telemetryLib = require('../../scripts/lib/system/telemetry.js');
 const { generateProfessionalBOQ, _getRankedSolutions, _parseStrictRankTier } = require('../../scripts/lib/boq/generate_boq_xlsx.js');
-const { deliveryFingerprint } = require('../../scripts/lib/boq/solution_evidence.js');
+const { deliveryFingerprint, dependencyAcceptanceState } = require('../../scripts/lib/boq/solution_evidence.js');
 const { verifyDeliveryAuthorization } = require('../../scripts/lib/contracts/workflow_contract.js');
 const { safeParseEvalResult } = require('../../scripts/lib/system/schemas.js');
 const { spawnObservedChild } = require('../../scripts/lib/system/observed_child_process.js');
@@ -129,10 +129,6 @@ function _withSolutionIntelligence(dataObj) {
 function _combineStoredProjectionInput(storedTop, storedEval) {
   if (!storedTop || storedTop === storedEval) return storedEval;
   return { ...storedTop, ...storedEval, evalResults: storedEval };
-}
-
-function _isStaleExportDependency(storedTop, storedEval) {
-  return Boolean(storedEval?.dependencyInvalidation?.isStale === true || storedTop?.dependencyInvalidation?.isStale === true);
 }
 
 function _resolveExportDocumentReviewState(storedEval, storedTop = null) {
@@ -832,13 +828,19 @@ router.post(['/export-boq', '/export-boq-xlsx'], (req, res) => {
     return sendErrorResponse(res, 409, 'Export blocked: Stored run has no completed evaluation candidate', { source: 'EVALUATION_ROUTER', code: 'CANDIDATE_MISSING', runId: requestedRunId });
   }
 
-  if (_isStaleExportDependency(storedTop, storedEval)) {
+  const dependencyStates = [storedTop?.dependencyInvalidation, storedEval.dependencyInvalidation].map(dependencyAcceptanceState);
+  if (dependencyStates.includes('STALE_INVALIDATED')) {
     return sendErrorResponse(
       res,
       409,
       'Export blocked: Evaluation dependencies are stale or invalidated. Re-evaluate the BOQ before customer export.',
       { source: 'EVALUATION_ROUTER', code: 'STALE_INVALIDATED_DEPENDENCY', runId: requestedRunId }
     );
+  }
+  if (dependencyStates.includes('UNKNOWN')) {
+    return sendErrorResponse(res, 409, 'Export blocked: Evaluation dependency validity is unconfirmed. Re-evaluate the BOQ before customer export.', {
+      source: 'EVALUATION_ROUTER', code: 'UNKNOWN_DEPENDENCY', runId: requestedRunId
+    });
   }
 
   const storedProduct = storedEval.chassis || storedTop?.chassisPrefix || (storedTop?.chassisDir ? path.basename(storedTop.chassisDir) : '') || serverRun.product || 'unknown';

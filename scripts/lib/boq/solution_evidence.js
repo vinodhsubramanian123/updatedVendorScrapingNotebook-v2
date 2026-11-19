@@ -93,6 +93,27 @@ function _resolveReviewChassis(ev) {
   return ev.chassis || ev.chassisVariant || ev.targetChassis || ev.detectedChassis || null;
 }
 
+function dependencyAcceptanceState(boundary) {
+  if (boundary == null) return 'NOT_EVALUATED';
+  if (boundary.isStale === true || boundary.status === 'STALE_INVALIDATED') return 'STALE_INVALIDATED';
+  if (boundary.canGrantAcceptance === false) return 'UNKNOWN';
+  if (boundary.status === 'VALID' || (boundary.status == null && boundary.isStale === false)) return 'VALID';
+  return 'UNKNOWN';
+}
+
+function blocksDependencyAcceptance(boundary) {
+  return ['STALE_INVALIDATED', 'UNKNOWN'].includes(dependencyAcceptanceState(boundary));
+}
+
+function _dependencyFingerprintFields(boundary) {
+  return {
+    isStale: Boolean(boundary.isStale),
+    indexRevisionSha256: boundary.indexRevisionSha256 || null,
+    ...(boundary.status != null ? { status: boundary.status } : {}),
+    ...(boundary.canGrantAcceptance != null ? { canGrantAcceptance: boundary.canGrantAcceptance } : {})
+  };
+}
+
 function canonicalReviewEnvelope(evaluation, catalogData = null) {
   const ev = evaluation && typeof evaluation === 'object' ? evaluation : {};
   const catalog = catalogData || ev.catalogData || null;
@@ -120,10 +141,7 @@ function canonicalReviewEnvelope(evaluation, catalogData = null) {
       }
     } : {}),
     ...(ev.dependencyInvalidation ? {
-      dependencyInvalidation: {
-        isStale: Boolean(ev.dependencyInvalidation.isStale),
-        indexRevisionSha256: ev.dependencyInvalidation.indexRevisionSha256 || null
-      }
+      dependencyInvalidation: _dependencyFingerprintFields(ev.dependencyInvalidation)
     } : {}),
     ...(ev.claimAdjudication?.evidenceDigestSha256 ? {
       evidenceDigestSha256: ev.claimAdjudication.evidenceDigestSha256
@@ -175,10 +193,7 @@ function deliveryFingerprint(evaluation) {
       }
     } : {}),
     ...(ev.dependencyInvalidation ? {
-      dependencyInvalidation: {
-        isStale: Boolean(ev.dependencyInvalidation.isStale),
-        indexRevisionSha256: ev.dependencyInvalidation.indexRevisionSha256 || null
-      }
+      dependencyInvalidation: _dependencyFingerprintFields(ev.dependencyInvalidation)
     } : {}),
     ...(ev.solutionIntelligence ? {
       solutionIntelligence: {
@@ -339,6 +354,8 @@ module.exports = {
   solutionManifest,
   solutionFingerprint,
   deliveryFingerprint,
+  dependencyAcceptanceState,
+  blocksDependencyAcceptance,
   candidateReviewCurrent,
   candidateDelta,
   canonicalReviewEnvelope

@@ -3,7 +3,7 @@ const XLSX = require('xlsx-js-style');
 const fs = require('fs');
 const path = require('path');
 const { outputQuantities } = require('./configuration_context');
-const { solutionFingerprint, deliveryFingerprint, candidateReviewCurrent } = require('./solution_evidence');
+const { solutionFingerprint, deliveryFingerprint, candidateReviewCurrent, blocksDependencyAcceptance } = require('./solution_evidence');
 const { assertDeliveryAuthorization } = require('../contracts/workflow_contract');
 const { receiptMatches } = require('./portal_receipt');
 const { projectCustomerDecision } = require('./decision_projection');
@@ -43,6 +43,9 @@ function _parseStrictRankTier(rankTier) {
 function _enforceDeliveryAuthorization(evaluation, options = {}, targetChassis = '') {
   if (options.diagnostic === true) {
     return true;
+  }
+  if (blocksDependencyAcceptance(evaluation?.dependencyInvalidation)) {
+    throw new Error('Cannot export deliverable: Evidence dependency validity is not confirmed.');
   }
   if (!evaluation?.acceptanceGate || evaluation.acceptanceGate.isValid !== true) {
     throw new Error(`Cannot export deliverable: Pre-presentation acceptance failed (${evaluation?.acceptanceGate?.blockersCount || 0} blocker(s)).`);

@@ -408,6 +408,7 @@ const SCENARIO_CASES = Object.freeze([
     input: {
       requirementsText: '>= 15 TB usable RAID 6',
       candidate: {
+        raidLevel: 'RAID 6',
         rank: 1,
         physicalMathClean: true,
         items: [
@@ -749,6 +750,7 @@ const SCENARIO_CASES = Object.freeze([
     title: 'Manifest mutation invalidates ephemeralSourceValidation, portalReceipt, deliveryAuthorization, evidenceStates and acceptanceGate',
     input: {
       mode: 'MANIFEST_INVALIDATION',
+      candidateValidation: { errors: [], isValid: true },
       baseline: {
         chassis: 'DL380_Gen12',
         items: [{ sku: 'P73282-B21', quantity: 1 }],

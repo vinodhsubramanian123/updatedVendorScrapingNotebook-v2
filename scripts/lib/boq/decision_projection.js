@@ -12,6 +12,7 @@
  */
 
 const { verifyCurrentPortalReceipt } = require('./portal_receipt.js');
+const { dependencyAcceptanceState, blocksDependencyAcceptance } = require('./solution_evidence.js');
 
 const SCHEMA_VERSION = '1.0';
 
@@ -85,7 +86,8 @@ function _unwrapEvaluation(evalResults) {
     top.ephemeralSourceValidation?.claimAdjudication,
     inner.ephemeralSourceValidation?.claimAdjudication
   ]);
-  const depInvalidation = _firstNonNull([top.dependencyInvalidation, inner.dependencyInvalidation]);
+  const boundaries = [top.dependencyInvalidation, inner.dependencyInvalidation];
+  const depInvalidation = boundaries.find(blocksDependencyAcceptance) ?? _firstNonNull(boundaries);
   const docReview = _firstNonNull([top.ephemeralSourceValidation, inner.ephemeralSourceValidation, top.solutionDoubleCheck, inner.solutionDoubleCheck]);
   const constraintResults = _firstNonEmptyArr([
     top.conflictGraph?.constraintResults,
@@ -244,7 +246,9 @@ function _resolveCloudSyncState(ctx, hasData, isOffline) {
 }
 
 function _resolveDeliveryAuthState(ctx, hasData) {
-  if (ctx.depInvalidation?.isStale === true) return 'BLOCKED_STALE_DEPENDENCY';
+  const dependencyState = dependencyAcceptanceState(ctx.depInvalidation);
+  if (dependencyState === 'STALE_INVALIDATED') return 'BLOCKED_STALE_DEPENDENCY';
+  if (dependencyState === 'UNKNOWN') return 'BLOCKED_UNKNOWN_DEPENDENCY';
   if (ctx.ev.acceptanceGate?.isValid === false || ctx.ev.customerDisposition === 'DELIVERY_BLOCKED_UNBUILDABLE' || ctx.ev.deliveryAuthError) {
     return 'BLOCKED';
   }
@@ -253,12 +257,6 @@ function _resolveDeliveryAuthState(ctx, hasData) {
   }
   if (!hasData) return 'NOT_EVALUATED';
   return 'PENDING';
-}
-
-function _resolveDependencyInvalidationState(ctx) {
-  if (ctx.depInvalidation?.isStale === true) return 'STALE_INVALIDATED';
-  if (_isPlainObject(ctx.depInvalidation)) return 'VALID';
-  return 'NOT_EVALUATED';
 }
 
 function _buildEvidenceStatesFromCtx(ctx, hasData, options = {}) {
@@ -273,7 +271,7 @@ function _buildEvidenceStatesFromCtx(ctx, hasData, options = {}) {
     liveVendorAcceptance: _resolveLiveVendorState(ctx, options),
     cloudSynchronization: _resolveCloudSyncState(ctx, hasData, isOffline),
     deliveryAuthorization: _resolveDeliveryAuthState(ctx, hasData),
-    dependencyInvalidationStatus: _resolveDependencyInvalidationState(ctx)
+    dependencyInvalidationStatus: dependencyAcceptanceState(ctx.depInvalidation)
   };
 }
 
@@ -810,6 +808,9 @@ function _resolveBuildReadyOutcome(ctx, evidenceStates) {
 }
 
 function _resolveDispositionAndSummary(ctx, evidenceStates, flags) {
+  if (evidenceStates.dependencyInvalidationStatus === 'UNKNOWN') {
+    return { disposition: 'ACTION_REQUIRED', summary: 'Evidence dependency validity remains unverified.' };
+  }
   if (flags.stale) {
     return { disposition: 'STALE_INVALIDATED', summary: 'Upstream requirement, catalog, or rule dependencies are stale and invalidated.' };
   }
@@ -838,7 +839,7 @@ function _deriveOutcome(ctx, hasData, reqCoverage, evidenceStates) {
   const selected = _resolveSelectedCandidate(ctx.candidates);
   const selectedRank = selected?.rank ?? null;
   const candidateCount = ctx.candidates.length;
-  const stale = evidenceStates.dependencyInvalidationStatus === 'STALE_INVALIDATED';
+  const stale = ['STALE_INVALIDATED', 'UNKNOWN'].includes(evidenceStates.dependencyInvalidationStatus);
   const reqBlocked = reqCoverage.omittedClausesCount > 0 || reqCoverage.violatedHardCount > 0 || reqCoverage.unresolvedHardCount > 0;
   const claimBlocked = _hasBlockingClaims(ctx);
   const { mathFailed, localIncomplete, mathPassed } = _deriveMathStatusFlags(ctx, selected, evidenceStates);

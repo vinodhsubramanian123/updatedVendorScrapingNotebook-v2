@@ -20,7 +20,7 @@
 
 const fs = require('fs');
 const { isValidHpeSKU, cleanBaseSKU, isSmartChoiceOrBtoSku, classifyCommercialFulfillmentMode, buildCatalogSkuIndex, classifyLifecycleState } = require('../catalog/sku.js');
-const { candidateReviewCurrent } = require('./solution_evidence.js');
+const { candidateReviewCurrent, dependencyAcceptanceState } = require('./solution_evidence.js');
 const { analyzeDeliveryPacing } = require('./delivery_pacing_analyzer.js');
 const { getRegisteredAspectsForDomain } = require('../aspects/aspect_registry.js');
 const { auditOpticalLinkEndpoints } = require('../aspects/networking_ocp.js');
@@ -1410,8 +1410,9 @@ function _checkClaimAdjudicationGate(outputArtifact) {
 
 function _checkDependencyInvalidationGate(outputArtifact) {
   const dep = outputArtifact?.dependencyInvalidation;
-  if (!dep || typeof dep !== 'object') return null;
-  if (dep.isStale === true) {
+  const state = dependencyAcceptanceState(dep);
+  if (state === 'NOT_EVALUATED') return null;
+  if (state === 'STALE_INVALIDATED') {
     return makeCheck(
       'B24',
       'Evidence Dependency Invalidation Guard',
@@ -1419,6 +1420,16 @@ function _checkDependencyInvalidationGate(outputArtifact) {
       'FAILED',
       `Evidence dependencies are stale and invalidated (${dep.reason || 'upstream revision changed'}).`,
       { isStale: true, invalidatedReasons: dep.reasons || [] }
+    );
+  }
+  if (state === 'UNKNOWN') {
+    return makeCheck(
+      'B24',
+      'Evidence Dependency Invalidation Guard',
+      'BLOCK',
+      'ACTION_REQUIRED',
+      `Evidence dependency validity remains unverified (${dep.reason || dep.status || 'boundary did not grant acceptance'}).`,
+      { isStale: false, dependencyStatus: dep.status || 'UNKNOWN' }
     );
   }
   return makeCheck(

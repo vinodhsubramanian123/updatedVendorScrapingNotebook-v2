@@ -44,6 +44,8 @@ const NO_SUBSTITUTE_RE = /\b(?:do\s+not\s+substitute|no\s+substitutions?|must\s+
 const EXCLUSION_ACTION_RE = /\b(?:exclude|excluding|without|do\s+not\s+include|must\s+not\s+include|omit|prohibit(?:ed)?|forbidden|never\s+include)\b/i;
 const NO_SERVICE_OR_PART_RE = /\bno\s+(?:installation|install(?:\s+service)?|deployment(?:\s+service)?|rail\s*kits?|optics?|transceivers?|support|services?|cables?|drives?|gpus?|substitutions?)\b/i;
 const PREFERENCE_RE = /\b(?:prefer(?:red|ence)?|ideally|nice\s+to\s+have|optional(?:ly)?|if\s+possible|would\s+like|desirable|best\s+effort)\b/i;
+const MANDATORY_RE = /\b(?:must|mandatory|required)\b/i;
+const CONJUNCTION_RE = /\s+(?:and|plus|as\s+well\s+as)\s+/i;
 
 const SPARE_RE = /\b(?:spares?|hot\s+spares?|cold\s+spares?|on-?hand\s+spares?)\b/i;
 const SHARED_RE = /\b(?:shared|shared\s+infra(?:structure)?|top-?of-?rack|tor\s+switch)\b/i;
@@ -88,7 +90,7 @@ function normalizeTextUnicode(input) {
 
 function detectLocalComparator(text, matchIndex, matchLength, defaultComparator = COMPARATORS.EXACT) {
   const prefixStart = Math.max(0, matchIndex - 36);
-  const prefix = text.slice(prefixStart, matchIndex);
+  const prefix = text.slice(prefixStart, matchIndex).split(CONJUNCTION_RE).at(-1);
   const suffix = text.slice(matchIndex + matchLength, matchIndex + matchLength + 20);
   if (MIN_COMPARATOR_RE.test(prefix) || TRAILING_MIN_RE.test(suffix)) return COMPARATORS.MIN;
   if (MAX_COMPARATOR_RE.test(prefix)) return COMPARATORS.MAX;
@@ -720,9 +722,7 @@ function _detectCrossMetricImpossibility(metrics) {
   return metrics.some(m => m.physicalImpossibility === true);
 }
 
-function parseTypedClauseValue(rawClause) {
-  const text = normalizeTextUnicode(rawClause);
-  const hardnessInfo = detectHardnessAndScope(text);
+function _extractClauseMetrics(text, hardnessInfo) {
   const metrics = [];
 
   const budget = _matchBudgetCandidateOnLine(text);
@@ -750,18 +750,42 @@ function parseTypedClauseValue(rawClause) {
   );
 
   metrics.sort((a, b) => (a._pos ?? 100000) - (b._pos ?? 100000));
-  const cleanMetrics = metrics.map(({ _pos, ...rest }) => rest);
+  return metrics.map(({ _pos, ...rest }) => rest);
+}
+
+function _findUninterpretedConjuncts(text) {
+  const fragments = text.split(CONJUNCTION_RE);
+  if (fragments.length < 2) return [];
+  return fragments.filter(fragment => {
+    const scope = detectHardnessAndScope(fragment);
+    if (_extractClauseMetrics(fragment, scope).length > 0) return false;
+    // A trailing SLA/retention term can inherit the support subject of its clause.
+    if (SUPPORT_CONTEXT_RE.test(text) && _extractSupportMetrics(`${fragment} support`, scope).length > 0) return false;
+    return true;
+  });
+}
+
+function parseTypedClauseValue(rawClause) {
+  const text = normalizeTextUnicode(rawClause);
+  const hardnessInfo = detectHardnessAndScope(text);
+  const cleanMetrics = _extractClauseMetrics(text, hardnessInfo);
+  const uninterpretedFragments = _findUninterpretedConjuncts(text);
+  if (uninterpretedFragments.some(fragment => MANDATORY_RE.test(fragment) && !PREFERENCE_RE.test(fragment))) {
+    hardnessInfo.hardness = HARDNESS_LEVELS.HARD_CONSTRAINT;
+    hardnessInfo.isHardBlocking = true;
+  }
 
   const physicalImpossibility = _detectCrossMetricImpossibility(cleanMetrics);
   const primary = cleanMetrics[0] || null;
-  const interpreted = cleanMetrics.length > 0;
+  const interpreted = cleanMetrics.length > 0 && uninterpretedFragments.length === 0;
 
   return {
     rawText: String(rawClause || '').trim(),
     interpreted,
     parseStatus: interpreted ? 'PARSED' : 'UNINTERPRETED',
+    ...(uninterpretedFragments.length > 0 ? { uninterpretedFragments } : {}),
     hardness: hardnessInfo.hardness,
-    promoteToPhysicalRule: hardnessInfo.promoteToPhysicalRule,
+    promoteToPhysicalRule: interpreted && hardnessInfo.promoteToPhysicalRule,
     isHardBlocking: hardnessInfo.isHardBlocking,
     scope: primary ? (primary.scope || hardnessInfo.scope) : hardnessInfo.scope,
     scopes: hardnessInfo.scopes,

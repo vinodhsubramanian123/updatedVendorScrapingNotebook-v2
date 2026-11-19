@@ -86,6 +86,7 @@ function makeCandidateEval(options = {}) {
     ]
   };
 
+  if (options.dependencyInvalidation !== undefined) baseEval.dependencyInvalidation = options.dependencyInvalidation;
   if (options.omitAuth) return baseEval;
   const fingerprint = deliveryFingerprint(baseEval);
   let deliveryAuthorization = issueDeliveryAuthorization({
@@ -114,7 +115,7 @@ function makeCandidateEval(options = {}) {
   };
 }
 
-function seedServerRun(runId, evalObj, product = 'DL380_Gen12') {
+function seedServerRun(runId, evalObj, product = 'DL380_Gen12', runFields = {}) {
   runState.captureEvent({ type: 'TASK_STARTED', task: 'EVAL_BOQ', runId, product });
   runState.captureEvent({
     type: 'EVAL_RESULT',
@@ -122,6 +123,7 @@ function seedServerRun(runId, evalObj, product = 'DL380_Gen12') {
     data: {
       status: evalObj.customerDisposition === 'DELIVERY_BLOCKED_UNBUILDABLE' ? 'ACTION_REQUIRED' : 'SUCCESS',
       chassisPrefix: product,
+      ...runFields,
       evalResults: evalObj
     }
   });
@@ -207,6 +209,28 @@ describe('P0 · Export Candidate & Authorization Enforcement', () => {
       () => generateProfessionalBOQ(invalidEval, null, 'DL380_Gen12', 1, { diagnostic: false }),
       err => /Pre-presentation acceptance failed/i.test(err.message)
     );
+  });
+
+  it('blocks an unknown dependency even with a previously approved gate and signed artifact inputs', async () => {
+    const valid = { isStale: false, status: 'VALID', canGrantAcceptance: true, indexRevisionSha256: 'same-revision' };
+    const unknown = { ...valid, status: 'UNKNOWN', canGrantAcceptance: false };
+    const prior = makeCandidateEval({ dependencyInvalidation: valid });
+    const blocked = makeCandidateEval({ dependencyInvalidation: unknown });
+    assert.notEqual(deliveryFingerprint(prior), deliveryFingerprint(blocked));
+    assert.throws(() => generateProfessionalBOQ(blocked, null, 'DL380_Gen12', 1), /dependency validity/i);
+
+    const { server, port } = await startEphemeralRouterServer();
+    try {
+      const runId = `run_unknown_dependency_${Date.now()}`;
+      seedServerRun(runId, prior, 'DL380_Gen12', { dependencyInvalidation: unknown });
+      for (const route of ['/api/export-boq', '/api/export-boq-xlsx']) {
+        const reply = await postJson(port, route, { runId, rankTier: 1 });
+        assert.equal(reply.status, 409);
+        assert.equal(reply.data.code, 'UNKNOWN_DEPENDENCY');
+      }
+    } finally {
+      await new Promise(resolve => server.close(resolve));
+    }
   });
 
   it('3. Internal diagnostic workbook is visibly marked with [INTERNAL DIAGNOSTIC] across summary and BOM sheets', () => {

@@ -273,8 +273,8 @@ function _appendInvalidationMark(node, marker, nowIso) {
   node.updatedAt = nowIso;
 }
 
-function _buildQueueItem(triggerNodeId, triggerType, affectedNode, reason, priorRevision, newRevision, nowIso) {
-  const seed = `${triggerNodeId}::${triggerType}::${affectedNode.id}::${newRevision ?? ''}::${nowIso}`;
+function _buildQueueItem(triggerNodeId, triggerType, affectedNode, reason, priorRevision, newRevision, nowIso, queueIndex) {
+  const seed = `${triggerNodeId}::${triggerType}::${affectedNode.id}::${newRevision ?? ''}::${nowIso}::${queueIndex}`;
   const queueId = `REEVAL-${crypto.createHash('sha256').update(seed).digest('hex').slice(0, 12).toUpperCase()}`;
   return {
     queueId,
@@ -320,7 +320,7 @@ function _applyTransitiveInvalidation(index, spec) {
     if (DOWNSTREAM_INVALIDATABLE_KINDS.has(node.kind)) {
       node.status = 'STALE_INVALIDATED';
       _appendInvalidationMark(node, marker, nowIso);
-      const qItem = _buildQueueItem(triggerId, triggerType, node, reason, priorRevision, marker.newRevision, nowIso);
+      const qItem = _buildQueueItem(triggerId, triggerType, node, reason, priorRevision, marker.newRevision, nowIso, target.reevaluationQueue.length);
       target.reevaluationQueue.push(qItem);
       affectedNodeIds.push(nodeId);
       queuedItems.push(qItem);
@@ -417,8 +417,11 @@ function _collectBoundaryIssues(index, nodesToCheck, currentRevisions) {
   const mismatchedRevisions = [];
   for (const id of nodesToCheck) {
     const node = index.nodes[id];
-    if (!node) continue;
-    if (node.status === 'STALE_INVALIDATED' || node.status === 'RETRACTED') {
+    if (!node) {
+      invalidatedBy.push({ nodeId: id, kind: null, status: 'UNKNOWN', invalidatedBy: [] });
+      continue;
+    }
+    if (node.status !== 'VALID') {
       invalidatedBy.push({ nodeId: id, kind: node.kind, status: node.status, invalidatedBy: node.invalidatedBy || [] });
     }
     if (currentRevisions && currentRevisions[id] && node.revision && currentRevisions[id] !== node.revision) {
@@ -484,13 +487,29 @@ function _resolveTargetNodeIdForOutcome(target, outcomeSpec) {
   return null;
 }
 
+function _findLatestReevaluationByTrigger(target, affectedNodeId) {
+  const latest = new Map();
+  for (const item of target.reevaluationQueue) {
+    if (item.affectedNodeId === affectedNodeId) latest.set(item.triggerNodeId, item);
+  }
+  return latest;
+}
+
+function _checkQueuedOutcome(target, affectedNodeId, queueId) {
+  const latest = _findLatestReevaluationByTrigger(target, affectedNodeId);
+  const item = [...latest.values()].find(entry => entry.queueId === queueId);
+  if (!item || item.status !== 'PENDING_REEVALUATION') return 'REEVALUATION_QUEUE_ITEM_NOT_CURRENT';
+  if (target.nodes[item.triggerNodeId]?.revision !== item.newRevision) return 'REEVALUATION_REVISION_CHANGED';
+  return null;
+}
+
 function _canRestoreRevisionTrigger(index, triggerNodeId) {
   const triggerNode = index.nodes[triggerNodeId];
   if (!triggerNode || triggerNode.status !== 'STALE_INVALIDATED') return false;
   const incoming = _buildIncomingAdjacency(index.edges);
   const { ancestors, cyclePath } = _walkUpstreamAncestors(incoming, triggerNodeId);
   if (cyclePath) return false;
-  return !ancestors.some(id => ['STALE_INVALIDATED', 'RETRACTED'].includes(index.nodes[id]?.status));
+  return ancestors.every(id => index.nodes[id]?.status === 'VALID');
 }
 
 function _updateQueueEntriesForOutcome(target, outcomeSpec, affectedNodeId, nextStatus, nowIso) {
@@ -529,20 +548,29 @@ function recordReevaluationOutcome(index, outcomeSpec = {}) {
   if (!affectedNodeId || !target.nodes[affectedNodeId]) {
     return { updated: false, reason: 'AFFECTED_NODE_NOT_FOUND' };
   }
+  if (outcomeSpec.queueId) {
+    const reason = _checkQueuedOutcome(target, affectedNodeId, outcomeSpec.queueId);
+    if (reason) return { updated: false, reason };
+  }
 
   const nowIso = outcomeSpec.resolvedAt || new Date().toISOString();
-  const nextStatus = String(outcomeSpec.status || outcomeSpec.outcome || 'VALID').toUpperCase();
+  const nextStatus = String(outcomeSpec.status || outcomeSpec.outcome || 'UNKNOWN').toUpperCase();
   const { resolvedQueueIds, triggerIds } = _updateQueueEntriesForOutcome(
     target, outcomeSpec, affectedNodeId, nextStatus, nowIso
   );
 
   const node = target.nodes[affectedNodeId];
+  const latest = _findLatestReevaluationByTrigger(target, affectedNodeId);
+  if (outcomeSpec.queueId && nextStatus === 'VALID' && [...latest.values()].some(item => item.status !== 'COMPLETED')) {
+    _refreshIndexDigest(target, nowIso);
+    return { updated: true, affectedNodeId, status: node.status, resolvedQueueIds, indexRevisionSha256: target.indexRevisionSha256 };
+  }
   node.status = nextStatus;
   node.updatedAt = nowIso;
   if (outcomeSpec.newRevision !== undefined) node.revision = outcomeSpec.newRevision;
   if (nextStatus === 'VALID') {
     node.invalidatedBy = [];
-    _restoreEligibleTriggers(target, triggerIds, nowIso);
+    _restoreEligibleTriggers(target, new Set([...triggerIds, ...latest.keys()]), nowIso);
   }
   _refreshIndexDigest(target, nowIso);
   return {

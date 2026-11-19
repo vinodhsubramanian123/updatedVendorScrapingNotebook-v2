@@ -536,6 +536,22 @@ describe('SI-07 Unified Decision Projection, Delivery Gates, Exports, Dashboard,
     assert.equal(fullGate.isValid, false);
   });
 
+  it('blocks an explicit unknown dependency boundary without promoting it to valid', () => {
+    const { evaluateInvalidationBoundary } = require('../../scripts/lib/boq/evidence/dependency_index.js');
+    const fixture = buildBaselineFixture();
+    fixture.dependencyInvalidation = evaluateInvalidationBoundary(null, 'missing-authorization');
+    const check = validateBoqEvaluationCriteria(fixture).find(c => c.id === 'B24');
+    assert.equal(check.status, 'ACTION_REQUIRED');
+    assert.equal(check.passed, false);
+    const projection = projectCustomerDecision(fixture);
+    assert.equal(projection.evidenceStates.dependencyInvalidationStatus, 'UNKNOWN');
+    assert.equal(projection.evidenceStates.deliveryAuthorization, 'BLOCKED_UNKNOWN_DEPENDENCY');
+    assert.equal(projection.outcome.disposition, 'ACTION_REQUIRED');
+    assert.equal(projection.outcome.isBuildable, false);
+    delete fixture.dependencyInvalidation;
+    assert.ok(!validateBoqEvaluationCriteria(fixture).some(c => c.id === 'B24'));
+  });
+
   it('6) rejects partial docReview on strict validator, evidence states, and dashboard /export-boq; blocks stale export with HTTP 409', async () => {
     assert.equal(isStrictDocumentReviewVerified({ success: true }), false);
     assert.equal(isStrictDocumentReviewVerified({ ...buildStrictDocReview(), attachment: { isMock: true } }), false);

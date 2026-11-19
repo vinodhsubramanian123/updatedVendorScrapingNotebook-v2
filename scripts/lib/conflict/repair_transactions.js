@@ -168,7 +168,7 @@ function _applySetQuantityDelta(items, delta) {
     items[idx] = { ...items[idx], quantity: qty };
     return true;
   }
-  items.push({ sku, quantity: qty, ...(delta.description ? { description: delta.description } : {}) });
+  items.push(_copyDeltaOptionalFields({ sku, quantity: qty }, delta));
   return true;
 }
 
@@ -282,7 +282,7 @@ function _collectViolatedHardRequirements(obj) {
 
 function _resolveValidityFlag(source, criticalErrorCount, violatedHardRequirements) {
   if (source.isValid === false || source.isMathClean === false) return false;
-  return criticalErrorCount === 0 && violatedHardRequirements.size === 0;
+  return _hasEmbeddedValidation(source) && criticalErrorCount === 0 && violatedHardRequirements.size === 0;
 }
 
 function _extractValidationMetrics(validationObj, fallbackState) {
@@ -313,8 +313,8 @@ function _detectRegression(baselineMetrics, candidateMetrics, validationError) {
   return { regressionDetected: reasons.length > 0, newlyViolated, reasons };
 }
 
-function _unpackTransactionArgs(baselineOrConfig, deltaArg, optionsArg) {
-  const isPacked = arguments.length === 1 && baselineOrConfig && typeof baselineOrConfig === 'object' && !Array.isArray(baselineOrConfig)
+function _unpackTransactionArgs(baselineOrConfig, deltaArg, optionsArg, argumentCount) {
+  const isPacked = argumentCount === 1 && baselineOrConfig && typeof baselineOrConfig === 'object' && !Array.isArray(baselineOrConfig)
     && ('baseline' in baselineOrConfig || 'baselineState' in baselineOrConfig);
   if (isPacked) {
     return {
@@ -372,9 +372,13 @@ function _cancelledTransaction(baselineSnapshot, parentSha, deltaList, elapsedMs
 }
 
 async function _runCandidateValidation(validateFn, candidate, context) {
-  if (typeof validateFn !== 'function') return { validation: null, error: null };
   try {
-    return { validation: await validateFn(candidate, context), error: null };
+    if (typeof validateFn !== 'function') throw new Error('VALIDATION_REQUIRED: A repair requires a candidate validator.');
+    const validation = await validateFn(candidate, context);
+    if (!_hasEmbeddedValidation(validation)) {
+      throw new Error('VALIDATION_RESULT_REQUIRED: The candidate validator returned no validation checks.');
+    }
+    return { validation, error: null };
   } catch (err) {
     return { validation: null, error: err instanceof Error ? err : new Error(String(err)) };
   }
@@ -384,7 +388,7 @@ const elapsedMsSince = startNs => Number((Number(process.hrtime.bigint() - start
 
 async function executeVerifiedRepairTransaction(baselineOrConfig, deltaArg, optionsArg = {}) {
   const startNs = process.hrtime.bigint();
-  const { baseline, delta, options } = _unpackTransactionArgs(baselineOrConfig, deltaArg, optionsArg);
+  const { baseline, delta, options } = _unpackTransactionArgs(baselineOrConfig, deltaArg, optionsArg, arguments.length);
   const deltaList = Array.isArray(delta) ? delta : (delta ? [delta] : []);
   const baselineSnapshot = _cloneState(baseline);
   const parentManifestSha256 = computeManifestSha256(baselineSnapshot);
@@ -539,8 +543,9 @@ async function _executeSessionIteration(state, proposal, context) {
 
 function _hasEmbeddedValidation(obj) {
   if (!obj || typeof obj !== 'object' || Array.isArray(obj)) return false;
-  return Boolean(obj.errors || obj.criticalErrors || obj.criticalErrorCount != null ||
-    obj.requirementCoverage || obj.constraintResults || obj.isValid !== undefined);
+  return Boolean(Array.isArray(obj.errors) || Array.isArray(obj.criticalErrors) || Number.isFinite(obj.criticalErrorCount) ||
+    obj.requirementCoverage?.dispositions?.length || obj.constraintResults?.length ||
+    typeof obj.isValid === 'boolean' || typeof obj.isMathClean === 'boolean');
 }
 
 async function _resolveSessionBaselineValidation(config, baselineSnapshot) {

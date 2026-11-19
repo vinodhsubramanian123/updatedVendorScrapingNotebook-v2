@@ -227,6 +227,7 @@ test('Case 5: Usable RAID vs raw storage math and candidate evaluation', () => {
 
   // 5 x 3.84TB = 19.2TB raw (>15TB raw), but RAID 6 usable is 11.52TB (<15TB) -> VIOLATED
   const fiveDrives = {
+    raidLevel: 'RAID 6',
     skuPartsList: [
       { sku: 'P73282-B21', description: 'HPE DL380 Gen12 CTO Server', quantity: 1 },
       { sku: 'P40500-B21', description: 'HPE 3.84TB NVMe Read Intensive SSD', quantity: 5 }
@@ -238,6 +239,7 @@ test('Case 5: Usable RAID vs raw storage math and candidate evaluation', () => {
 
   // 6 x 3.84TB = 23.04TB raw, RAID 6 usable = 15.36TB >= 15TB -> SATISFIED
   const sixDrives = {
+    raidLevel: 'RAID 6',
     skuPartsList: [
       { sku: 'P73282-B21', description: 'HPE DL380 Gen12 CTO Server', quantity: 1 },
       { sku: 'P40500-B21', description: 'HPE 3.84TB NVMe Read Intensive SSD', quantity: 6 }
@@ -597,4 +599,31 @@ test('Case 11: solution_evidence fingerprints bind requirementAccounting revisio
   assert.notEqual(solutionFingerprint(evalA), solutionFingerprint(evalB));
   assert.notEqual(deliveryFingerprint(baseEval), deliveryFingerprint(evalA));
   assert.notEqual(deliveryFingerprint(evalA), deliveryFingerprint(evalB));
+});
+
+test('Review regression: RAID requirements never supply candidate RAID evidence', () => {
+  const req = extractRequirementRecords('RAID 6');
+  const cand = { items: [{ sku: 'P11111-B21', description: '8 TB SAS HDD', quantity: 4 }] };
+  const missing = evaluateCandidateRequirementCoverage(cand, req);
+  assert.equal(missing.dispositions[0].disposition, DISPOSITIONS.UNRESOLVED);
+  assert.equal(missing.blocksPositiveRecommendation, true);
+  assert.equal(evaluateCandidateRequirementCoverage({ ...cand, raidLevel: 'RAID 6' }, req).dispositions[0].disposition, DISPOSITIONS.SATISFIED);
+});
+
+test('Review regression: required network speed and port count belong to installed adapters', () => {
+  const req = extractRequirementRecords('At least 2 ports at 100 GbE per node');
+  const low = { sku: 'P11111-B21', description: 'Dual port 1 GbE Ethernet Adapter', quantity: 1 };
+  const fast = { sku: 'P33333-B21', description: 'Single port 100 GbE Ethernet Adapter', quantity: 1 };
+  const spare = { sku: 'P22222-B21', description: '100 GbE QSFP transceiver spare', quantity: 1, isSpare: true };
+  for (const extra of [spare, fast]) {
+    const cov = evaluateCandidateRequirementCoverage({ items: [low, extra] }, req);
+    assert.equal(cov.dispositions[0].disposition, DISPOSITIONS.VIOLATED);
+    assert.equal(cov.blocksPositiveRecommendation, true);
+  }
+  const cov = evaluateCandidateRequirementCoverage({ items: [low, { ...fast, quantity: 2 }, spare] }, req);
+  assert.equal(cov.dispositions[0].disposition, DISPOSITIONS.SATISFIED);
+
+  const qsfpAdapter = { sku: 'P44444-B21', description: 'Intel Ethernet 100Gb 2-port QSFP28 Adapter for HPE', quantity: 1 };
+  const qsfpCoverage = evaluateCandidateRequirementCoverage({ items: [qsfpAdapter] }, req);
+  assert.equal(qsfpCoverage.dispositions[0].disposition, DISPOSITIONS.SATISFIED);
 });
