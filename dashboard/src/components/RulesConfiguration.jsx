@@ -341,8 +341,11 @@ export default function RulesConfiguration({ catalogData, chassisDir, chassisNam
         <div className="flex items-center gap-2 pl-2 border-l border-slate-200 shrink-0">
           <span className="text-xs font-bold text-slate-600">Strict Only</span>
           <button
+            role="switch"
+            aria-checked={showStrictOnly}
+            aria-label="Show strict rules only"
             onClick={() => setShowStrictOnly(!showStrictOnly)}
-            className={`w-9 h-5 rounded-full transition-colors flex items-center p-0.5 ${
+            className={`w-9 h-5 rounded-full transition-colors flex items-center p-0.5 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-1 ${
               showStrictOnly ? 'bg-rose-500 justify-end' : 'bg-slate-300 justify-start'
             }`}
           >
