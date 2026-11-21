@@ -94,6 +94,7 @@ async function startIsolatedServer({ port, runsDir, authSecret, extraEnv = {} })
       DASHBOARD_RUNS_DIR: runsDir,
       OFFLINE_MODE: '1',
       LOCAL_EVAL_ONLY: '1',
+      DASHBOARD_RECONCILIATION_READ_ONLY: '1',
       DELIVERY_AUTH_SECRET: authSecret,
       ...extraEnv
     },
@@ -715,6 +716,7 @@ async function verifyReconcileTopologyAndA11y(page, baseUrl) {
   assert.strictEqual(reconciliationResponse.status(), 200, 'Partner quote reconciliation request must succeed');
   const report = await reconciliationResponse.json();
   assert.strictEqual(report.totalVendorSkus, 1, 'Report must reconcile the single uploaded quote line');
+  assert.strictEqual(report.quarantinedObservationCount, 0, 'Browser fixtures must not enter the product learning store');
   assert.strictEqual(typeof report.is100PercentMatch, 'boolean', 'Report must include the match disposition');
   const reportHeading = report.is100PercentMatch ? '100% Match Certified with HPE Partner Portal' : 'Partner Portal Discrepancies Detected';
   await reconciliationDialog.getByRole('heading', { name: reportHeading, exact: true }).waitFor({ timeout: 10000 });

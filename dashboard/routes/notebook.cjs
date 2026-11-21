@@ -478,7 +478,8 @@ router.post('/verify-vendor-bom', (req, res) => {
     if (!fs.existsSync(safeChassisDir)) return sendErrorResponse(res, 404, 'Exact product-generation directory does not exist', { source: 'NOTEBOOK_ROUTER' });
   } catch (err) { return sendErrorResponse(res, 403, err, { source: 'NOTEBOOK_ROUTER' }); }
   try {
-    const auditReport = verifyVendorBOM(vendorItems, proposedRankSolution, safeChassisDir);
+    const skipQuarantine = process.env.DASHBOARD_RECONCILIATION_READ_ONLY === '1';
+    const auditReport = verifyVendorBOM(vendorItems, proposedRankSolution, safeChassisDir, { skipQuarantine });
     broadcastSSE({ type: 'LOG', text: auditReport.requiresFreshScrape ? '⚠️ [VENDOR_BOM_AUDIT] Uncataloged SKUs found. Fresh targeted CDP scrape recommended.' : `✅ [VENDOR_BOM_AUDIT] Vendor BOM cross-verified (${auditReport.is100PercentMatch ? '100% Match' : `${auditReport.quarantinedObservationCount} observations quarantined`}).`, stream: auditReport.requiresFreshScrape ? 'stderr' : 'stdout' });
 
     // Only already-promoted knowledge may trigger sync. Raw vendor differences
